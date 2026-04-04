@@ -1,0 +1,157 @@
+---
+import { getCollection, render } from "astro:content";
+import ProjectLayout from "../../layouts/ProjectLayout.astro";
+
+export async function getStaticPaths() {
+  const projects = await getCollection("projects");
+  return projects.map((project) => ({
+    params: { slug: project.data.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+const { title, tagline, description, date, endDate, status, techStack, links } = project.data;
+
+function formatDate(d: Date): string {
+  return d.toLocaleDateString("en-US", { year: "numeric", month: "long" });
+}
+---
+
+<ProjectLayout title={title} description={description}>
+  <!-- Project header -->
+  <header class="mb-12">
+    <div class="flex items-center gap-3 mb-4">
+      <span
+        class="text-xs font-medium px-2 py-1 rounded-full"
+        style={`background-color: ${status === "completed" ? "oklch(0.45 0.15 145 / 0.2)" : "oklch(0.55 0.15 60 / 0.2)"}; color: ${status === "completed" ? "oklch(0.7 0.15 145)" : "oklch(0.75 0.15 60)"};`}
+      >
+        {status === "completed" ? "Completed" : "In Progress"}
+      </span>
+      <span class="text-sm" style="color: var(--color-text-secondary);">
+        {formatDate(date)}{endDate ? ` — ${formatDate(endDate)}` : ""}
+      </span>
+    </div>
+
+    <h1
+      class="text-3xl md:text-4xl font-semibold mb-4"
+      style="color: var(--color-text-primary); letter-spacing: -0.02em;"
+    >
+      {title}
+    </h1>
+
+    <p class="text-lg mb-6" style="color: var(--color-accent);">
+      {tagline}
+    </p>
+
+    <!-- Tech stack -->
+    <div class="flex flex-wrap gap-2 mb-6">
+      {techStack.map((tech) => (
+        <span
+          class="text-xs px-2 py-1 rounded-md"
+          style="background-color: var(--color-surface-secondary); color: var(--color-text-secondary);"
+        >
+          {tech}
+        </span>
+      ))}
+    </div>
+
+    <!-- Links -->
+    <div class="flex items-center gap-4">
+      {links.github && (
+        <a
+          href={links.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="glass glass-hover inline-flex items-center gap-2 px-4 py-2 text-sm font-medium"
+          style="color: var(--color-text-primary); text-decoration: none;"
+        >
+          GitHub
+        </a>
+      )}
+      {links.live && (
+        <a
+          href={links.live}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="glass glass-hover inline-flex items-center gap-2 px-4 py-2 text-sm font-medium"
+          style="color: var(--color-text-primary); text-decoration: none;"
+        >
+          Live Demo
+        </a>
+      )}
+    </div>
+  </header>
+
+  <!-- MDX content -->
+  <div class="prose-custom">
+    <Content />
+  </div>
+</ProjectLayout>
+
+<style>
+  /* Prose-like styling for MDX content without @tailwindcss/typography */
+  .prose-custom :global(h2) {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+    letter-spacing: -0.01em;
+  }
+
+  .prose-custom :global(h3) {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-text-primary);
+  }
+
+  .prose-custom :global(p) {
+    margin-bottom: 1.25rem;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+  }
+
+  .prose-custom :global(ul),
+  .prose-custom :global(ol) {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+    color: var(--color-text-secondary);
+  }
+
+  .prose-custom :global(li) {
+    margin-bottom: 0.5rem;
+    line-height: 1.6;
+  }
+
+  .prose-custom :global(code) {
+    font-size: 0.875rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.25rem;
+    background-color: var(--color-surface-secondary);
+    color: var(--color-accent);
+  }
+
+  .prose-custom :global(pre) {
+    padding: 1.25rem;
+    border-radius: 0.75rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    background-color: var(--color-surface-secondary) !important;
+  }
+
+  .prose-custom :global(strong) {
+    color: var(--color-text-primary);
+    font-weight: 600;
+  }
+
+  .prose-custom :global(a) {
+    color: var(--color-accent);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>
