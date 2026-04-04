@@ -15,6 +15,18 @@ import { SITE, SOCIAL_LINKS } from "../../lib/constants";
   </div>
 
   <div class="relative z-10">
+    <!-- Profile photo -->
+    <div class="mb-8">
+      <img
+        src="/images/profile.jpg"
+        alt={`Photo of ${SITE.name}`}
+        width="160"
+        height="160"
+        class="profile-photo rounded-full mx-auto object-cover"
+        loading="eager"
+      />
+    </div>
+
     <h1
       class="font-semibold mb-6"
       style="font-size: var(--text-display); line-height: var(--text-display--line-height); letter-spacing: var(--text-display--letter-spacing); color: var(--color-text-primary);"
@@ -58,11 +70,26 @@ import { SITE, SOCIAL_LINKS } from "../../lib/constants";
 </section>
 
 <style>
+  .profile-photo {
+    width: 160px;
+    height: 160px;
+    border: 3px solid var(--color-border-subtle);
+    box-shadow: 0 8px 32px oklch(0 0 0 / 0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .profile-photo:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 40px oklch(0 0 0 / 0.3);
+  }
   @media (max-width: 768px) {
     h1 {
       font-size: var(--text-display-mobile) !important;
       line-height: var(--text-display-mobile--line-height) !important;
       letter-spacing: var(--text-display-mobile--letter-spacing) !important;
+    }
+    .profile-photo {
+      width: 120px;
+      height: 120px;
     }
   }
 </style>
