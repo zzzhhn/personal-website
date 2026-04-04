@@ -12,23 +12,73 @@ import { NAV_ITEMS } from "../../lib/constants";
       HZ
     </a>
 
-    <div class="flex items-center gap-6">
+    <!-- Desktop nav -->
+    <div class="hidden sm:flex items-center gap-6">
       {NAV_ITEMS.map((item) => (
         <a
           href={item.href}
-          class="text-sm font-medium transition-colors hidden sm:block"
-          style={`color: var(--color-text-secondary); text-decoration: none;`}
+          class="text-sm font-medium transition-colors nav-link"
+          style="color: var(--color-text-secondary); text-decoration: none;"
         >
           {item.label}
         </a>
       ))}
       <ThemeToggle />
     </div>
+
+    <!-- Mobile controls -->
+    <div class="flex sm:hidden items-center gap-2">
+      <ThemeToggle />
+      <button
+        id="mobile-menu-btn"
+        aria-label="Toggle menu"
+        class="p-2 rounded-lg transition-colors cursor-pointer"
+        style="background: transparent;"
+      >
+        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+        </svg>
+      </button>
+    </div>
   </nav>
+
+  <!-- Mobile dropdown -->
+  <div id="mobile-menu" class="hidden sm:hidden px-6 pb-4">
+    {NAV_ITEMS.map((item) => (
+      <a
+        href={item.href}
+        class="block py-2 text-sm font-medium transition-colors nav-link mobile-nav-link"
+        style="color: var(--color-text-secondary); text-decoration: none;"
+      >
+        {item.label}
+      </a>
+    ))}
+  </div>
 </header>
 
 <style>
-  header a:hover {
+  .nav-link:hover {
     color: var(--color-text-primary) !important;
   }
+  #mobile-menu-btn:hover {
+    background: var(--color-surface-secondary) !important;
+  }
 </style>
+
+<script is:inline>
+  (function () {
+    var btn = document.getElementById("mobile-menu-btn");
+    var menu = document.getElementById("mobile-menu");
+    if (btn && menu) {
+      btn.addEventListener("click", function () {
+        menu.classList.toggle("hidden");
+      });
+      // Close menu when a link is clicked
+      menu.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", function () {
+          menu.classList.add("hidden");
+        });
+      });
+    }
+  })();
+</script>
