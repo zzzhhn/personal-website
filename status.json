@@ -1,0 +1,36 @@
+{
+  "project_name": "personal-website",
+  "status": "in_progress",
+  "current_milestone": 1,
+  "total_milestones": 5,
+  "milestones": [
+    {
+      "id": 1,
+      "name": "Scaffold + Design Tokens + Shell",
+      "status": "completed",
+      "started_at": "2026-04-04T21:17:00Z",
+      "completed_at": "2026-04-04T21:22:00Z"
+    },
+    {
+      "id": 2,
+      "name": "Content Collections + Static Sections",
+      "status": "not_started"
+    },
+    {
+      "id": 3,
+      "name": "React Islands (Timeline + Projects)",
+      "status": "not_started"
+    },
+    {
+      "id": 4,
+      "name": "Project Detail Pages + SEO",
+      "status": "not_started"
+    },
+    {
+      "id": 5,
+      "name": "Polish + Deploy",
+      "status": "not_started"
+    }
+  ],
+  "last_session": "2026-04-04T21:22:00Z"
+}

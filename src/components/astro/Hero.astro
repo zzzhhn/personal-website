@@ -1,0 +1,68 @@
+---
+import { SITE, SOCIAL_LINKS } from "../../lib/constants";
+---
+
+<section class="flex flex-col items-center justify-center text-center px-6" style={`min-height: 90vh; padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
+  <!-- Subtle gradient orb background effect -->
+  <div
+    class="absolute inset-0 overflow-hidden pointer-events-none"
+    aria-hidden="true"
+  >
+    <div
+      class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-20 blur-3xl"
+      style="width: 600px; height: 600px; background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);"
+    />
+  </div>
+
+  <div class="relative z-10">
+    <h1
+      class="font-semibold mb-6"
+      style="font-size: var(--text-display); line-height: var(--text-display--line-height); letter-spacing: var(--text-display--letter-spacing); color: var(--color-text-primary);"
+    >
+      {SITE.name}
+    </h1>
+
+    <p
+      class="text-xl md:text-2xl mb-10 font-medium"
+      style="color: var(--color-text-secondary);"
+    >
+      {SITE.tagline}
+    </p>
+
+    <div class="flex items-center justify-center gap-4 flex-wrap">
+      <a
+        href="/resume.pdf"
+        class="glass glass-hover inline-flex items-center gap-2 px-6 py-3 text-sm font-medium"
+        style="color: var(--color-text-primary); text-decoration: none;"
+      >
+        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+        </svg>
+        Resume
+      </a>
+
+      {SOCIAL_LINKS.map((link) => (
+        <a
+          href={link.url}
+          target={link.icon === "mail" ? undefined : "_blank"}
+          rel={link.icon === "mail" ? undefined : "noopener noreferrer"}
+          class="glass glass-hover inline-flex items-center gap-2 px-5 py-3 text-sm font-medium"
+          style="color: var(--color-text-primary); text-decoration: none;"
+          aria-label={link.name}
+        >
+          {link.name}
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (max-width: 768px) {
+    h1 {
+      font-size: var(--text-display-mobile) !important;
+      line-height: var(--text-display-mobile--line-height) !important;
+      letter-spacing: var(--text-display-mobile--letter-spacing) !important;
+    }
+  }
+</style>

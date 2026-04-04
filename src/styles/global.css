@@ -1,0 +1,90 @@
+@import "tailwindcss";
+@import "./fonts.css";
+
+/* ── Dark theme tokens (default) ── */
+@theme {
+  --color-surface-primary: oklch(0.13 0.01 260);
+  --color-surface-secondary: oklch(0.17 0.01 260);
+  --color-surface-glass: oklch(0.18 0.015 260 / 0.6);
+  --color-border-subtle: oklch(0.28 0.01 260);
+  --color-text-primary: oklch(0.95 0 0);
+  --color-text-secondary: oklch(0.65 0 0);
+  --color-accent: oklch(0.7 0.15 250);
+  --color-accent-hover: oklch(0.75 0.18 250);
+
+  --font-sans: "Geist Sans", system-ui, -apple-system, sans-serif;
+
+  --text-display: 4.5rem;
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.03em;
+
+  --text-display-mobile: 2.5rem;
+  --text-display-mobile--line-height: 1.1;
+  --text-display-mobile--letter-spacing: -0.02em;
+
+  --spacing-section: 8rem;
+  --spacing-section-mobile: 4rem;
+
+  --max-width-content: 72rem;
+}
+
+/* ── Light mode overrides ── */
+@layer base {
+  [data-theme="light"] {
+    --color-surface-primary: oklch(0.98 0 0);
+    --color-surface-secondary: oklch(0.94 0 0);
+    --color-surface-glass: oklch(0.97 0.005 260 / 0.72);
+    --color-border-subtle: oklch(0.85 0.01 260);
+    --color-text-primary: oklch(0.12 0 0);
+    --color-text-secondary: oklch(0.45 0 0);
+    --color-accent: oklch(0.5 0.2 250);
+    --color-accent-hover: oklch(0.45 0.22 250);
+  }
+
+  html {
+    font-family: var(--font-sans);
+    background-color: var(--color-surface-primary);
+    color: var(--color-text-primary);
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: white;
+  }
+}
+
+/* ── Glassmorphism utilities ── */
+@layer utilities {
+  .glass {
+    background: var(--color-surface-glass);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    border: 1px solid var(--color-border-subtle);
+    border-radius: 1rem;
+  }
+
+  .glass-hover {
+    transition: transform 200ms ease, box-shadow 200ms ease;
+  }
+  .glass-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px oklch(0 0 0 / 0.3);
+  }
+
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .stagger-child {
+    transition-delay: calc(var(--stagger-index, 0) * 80ms);
+  }
+}
