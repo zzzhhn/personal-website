@@ -2,7 +2,7 @@
 import { SITE, SOCIAL_LINKS } from "../../lib/constants";
 ---
 
-<section class="flex flex-col items-center justify-center text-center px-6" style={`min-height: 90vh; padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
+<section class="hero-section flex flex-col items-center justify-center text-center px-6">
   <!-- Subtle gradient orb background effect -->
   <div
     class="absolute inset-0 overflow-hidden pointer-events-none"
@@ -14,15 +14,15 @@ import { SITE, SOCIAL_LINKS } from "../../lib/constants";
     />
   </div>
 
-  <div class="relative z-10">
-    <!-- Profile photo -->
-    <div class="mb-8">
+  <div class="relative z-10 w-full">
+    <!-- Profile photo with fade-to-background mask -->
+    <div class="profile-container mx-auto mb-10">
       <img
         src="/images/profile.jpg"
         alt={`Photo of ${SITE.name}`}
-        width="160"
-        height="160"
-        class="profile-photo rounded-full mx-auto object-cover"
+        width="280"
+        height="340"
+        class="profile-photo mx-auto"
         loading="eager"
       />
     </div>
@@ -70,26 +70,50 @@ import { SITE, SOCIAL_LINKS } from "../../lib/constants";
 </section>
 
 <style>
+  .hero-section {
+    min-height: 100vh;
+    padding-top: 6rem;
+    padding-bottom: var(--spacing-section);
+  }
+
+  .profile-container {
+    width: 220px;
+    height: 280px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.25rem;
+  }
+
   .profile-photo {
-    width: 160px;
-    height: 160px;
-    border: 3px solid var(--color-border-subtle);
-    box-shadow: 0 8px 32px oklch(0 0 0 / 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    /* Fade bottom edge into the page background */
+    mask-image: linear-gradient(
+      to bottom,
+      black 0%,
+      black 55%,
+      transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      black 0%,
+      black 55%,
+      transparent 100%
+    );
   }
-  .profile-photo:hover {
-    transform: scale(1.03);
-    box-shadow: 0 12px 40px oklch(0 0 0 / 0.3);
-  }
+
   @media (max-width: 768px) {
     h1 {
       font-size: var(--text-display-mobile) !important;
       line-height: var(--text-display-mobile--line-height) !important;
       letter-spacing: var(--text-display-mobile--letter-spacing) !important;
     }
-    .profile-photo {
-      width: 120px;
-      height: 120px;
+    .profile-container {
+      width: 180px;
+      height: 230px;
     }
   }
 </style>
