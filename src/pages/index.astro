@@ -2,35 +2,63 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/astro/Hero.astro";
 import About from "../components/astro/About.astro";
+import SectionHeading from "../components/astro/SectionHeading.astro";
 import Contact from "../components/astro/Contact.astro";
+import ExperienceTimeline from "../components/react/ExperienceTimeline";
+import ProjectGrid from "../components/react/ProjectGrid";
+import { getCollection } from "astro:content";
 import { SITE } from "../lib/constants";
+
+// Fetch and sort experiences
+const rawExperiences = await getCollection("experiences");
+const experiences = rawExperiences
+  .sort((a, b) => a.data.order - b.data.order)
+  .map((e) => ({
+    role: e.data.role,
+    organization: e.data.organization,
+    location: e.data.location,
+    startDate: e.data.startDate.toISOString(),
+    endDate: e.data.endDate?.toISOString(),
+    type: e.data.type,
+    highlights: e.data.highlights,
+    techStack: e.data.techStack,
+  }));
+
+// Fetch and sort projects (featured first, then by order)
+const rawProjects = await getCollection("projects");
+const projects = rawProjects
+  .sort((a, b) => {
+    if (a.data.featured !== b.data.featured) return a.data.featured ? -1 : 1;
+    return a.data.order - b.data.order;
+  })
+  .map((p) => ({
+    title: p.data.title,
+    slug: p.data.slug,
+    tagline: p.data.tagline,
+    description: p.data.description,
+    status: p.data.status,
+    techStack: p.data.techStack,
+    links: p.data.links,
+  }));
 ---
 
 <BaseLayout title={SITE.title} description={SITE.description}>
   <Hero />
   <About />
 
-  <!-- Experience: placeholder until Milestone 3 (React Islands) -->
   <section id="experience" class="px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section); background-color: var(--color-surface-secondary);`}>
     <div class="mx-auto" style="max-width: var(--max-width-content);">
-      <h2 class="text-3xl md:text-4xl font-semibold mb-12 text-center" style="color: var(--color-text-primary); letter-spacing: -0.02em;">
-        Experience
-      </h2>
-      <p class="text-lg text-center" style="color: var(--color-text-secondary);">
-        Coming soon — Interactive timeline with expand/collapse cards.
-      </p>
+      <SectionHeading title="Experience" />
+      <div class="mx-auto" style="max-width: 48rem;">
+        <ExperienceTimeline client:visible experiences={experiences} />
+      </div>
     </div>
   </section>
 
-  <!-- Projects: placeholder until Milestone 3 (React Islands) -->
   <section id="projects" class="px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
     <div class="mx-auto" style="max-width: var(--max-width-content);">
-      <h2 class="text-3xl md:text-4xl font-semibold mb-12 text-center" style="color: var(--color-text-primary); letter-spacing: -0.02em;">
-        Projects
-      </h2>
-      <p class="text-lg text-center" style="color: var(--color-text-secondary);">
-        Coming soon — Project cards with live demo links and tech stack tags.
-      </p>
+      <SectionHeading title="Projects" />
+      <ProjectGrid client:visible projects={projects} />
     </div>
   </section>
 
