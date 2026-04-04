@@ -2,7 +2,9 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/astro/Hero.astro";
 import About from "../components/astro/About.astro";
+import Education from "../components/astro/Education.astro";
 import SectionHeading from "../components/astro/SectionHeading.astro";
+import Campus from "../components/astro/Campus.astro";
 import Contact from "../components/astro/Contact.astro";
 import ExperienceTimeline from "../components/react/ExperienceTimeline";
 import ProjectGrid from "../components/react/ProjectGrid";
@@ -45,22 +47,24 @@ const projects = rawProjects
 <BaseLayout title={SITE.title} description={SITE.description}>
   <Hero />
   <About />
+  <Education />
 
-  <section id="experience" class="px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section); background-color: var(--color-surface-secondary);`}>
+  <section id="experience" class="px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
     <div class="mx-auto" style="max-width: var(--max-width-content);">
-      <SectionHeading title="Experience" />
+      <SectionHeading title="Internship Experience" />
       <div class="mx-auto" style="max-width: 48rem;">
         <ExperienceTimeline client:visible experiences={experiences} />
       </div>
     </div>
   </section>
 
-  <section id="projects" class="px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
+  <section id="projects" class="px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section); background-color: var(--color-surface-secondary);`}>
     <div class="mx-auto" style="max-width: var(--max-width-content);">
       <SectionHeading title="Projects" />
       <ProjectGrid client:visible projects={projects} />
     </div>
   </section>
 
+  <Campus />
   <Contact />
 </BaseLayout>

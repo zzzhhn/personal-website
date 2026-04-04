@@ -1,0 +1,90 @@
+---
+import SectionHeading from "./SectionHeading.astro";
+
+const awards = [
+  '2024 逸夫书院 "逸夫精神奖"',
+  '2025 逸夫书院 "逸夫服务奖"',
+  "WorldQuant BRAIN Challenge Top 0.05%",
+  "2024-25 Dean's List（数据科学学院）",
+  "2024-25 校园文化贡献奖",
+];
+
+const certificates = [
+  "JPMorgan Chase & Co. Quantitative Research Completion Certificate",
+  "2025 德勤数字化精英挑战赛参赛证书",
+];
+
+const languages = [
+  { name: "普通话", level: "母语" },
+  { name: "英语", level: "熟练；托福 106，大学英语四级 660 分，英语相关课程均 A range" },
+  { name: "日语", level: "基础" },
+  { name: "西班牙语", level: "基础，CEFR: B1" },
+];
+---
+
+<section class="px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
+  <div class="mx-auto" style="max-width: var(--max-width-content);">
+    <SectionHeading title="Education & Awards" />
+
+    <!-- Education -->
+    <div class="glass p-8 mb-8 mx-auto" style="max-width: 48rem;">
+      <div class="flex items-start justify-between gap-4 flex-wrap mb-4">
+        <div>
+          <h3 class="text-lg font-semibold" style="color: var(--color-text-primary);">
+            香港中文大学（深圳）
+          </h3>
+          <p class="text-sm mt-1" style="color: var(--color-text-secondary);">
+            量化金融专业
+          </p>
+        </div>
+        <span class="text-sm" style="color: var(--color-text-secondary);">
+          2023.9 – 至今
+        </span>
+      </div>
+    </div>
+
+    <!-- Awards -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mx-auto mb-8" style="max-width: 48rem;">
+      {awards.map((award) => (
+        <div class="glass p-4 flex items-center gap-3">
+          <span style="color: var(--color-accent);">
+            <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-4.5A3.75 3.75 0 0012.75 10.5h-1.5A3.75 3.75 0 007.5 14.25v4.5m6-6V6.75a3.75 3.75 0 10-7.5 0v1.5" />
+            </svg>
+          </span>
+          <span class="text-sm" style="color: var(--color-text-secondary);">{award}</span>
+        </div>
+      ))}
+    </div>
+
+    <!-- Certificates -->
+    <div class="mx-auto mb-8" style="max-width: 48rem;">
+      <h3 class="text-sm font-semibold uppercase tracking-wider mb-4" style="color: var(--color-accent);">
+        Certificates
+      </h3>
+      <div class="space-y-3">
+        {certificates.map((cert) => (
+          <div class="flex items-center gap-3">
+            <span style="color: var(--color-border-subtle);">·</span>
+            <span class="text-sm" style="color: var(--color-text-secondary);">{cert}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Languages -->
+    <div class="mx-auto" style="max-width: 48rem;">
+      <h3 class="text-sm font-semibold uppercase tracking-wider mb-4" style="color: var(--color-accent);">
+        Languages
+      </h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {languages.map((lang) => (
+          <div class="flex items-start gap-2">
+            <span class="text-sm font-medium" style="color: var(--color-text-primary); min-width: 4rem;">{lang.name}</span>
+            <span class="text-sm" style="color: var(--color-text-secondary);">{lang.level}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

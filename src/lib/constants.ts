@@ -6,6 +6,7 @@ export const SITE = {
   url: "https://haonanzhong.com",
   email: "123090894@link.cuhk.edu.cn",
   tagline: "Quantitative Finance × AI",
+  phone: "(+86)13798309920",
 } as const;
 
 export const SOCIAL_LINKS = [
@@ -32,3 +33,9 @@ export const NAV_ITEMS = [
   { label: "Projects", href: "#projects" },
   { label: "Contact", href: "#contact" },
 ] as const;
+
+export const EDUCATION = {
+  school: "香港中文大学（深圳）",
+  major: "量化金融专业",
+  period: "2023.9 – 至今",
+} as const;

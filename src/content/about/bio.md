@@ -1,16 +1,16 @@
 ---
 headline: About Me
 techCategories:
-  - label: Languages
-    items: [Python, TypeScript, JavaScript, SQL, R]
-  - label: Frameworks
-    items: [React, Astro, Next.js, PyTorch, pandas]
+  - label: Programming
+    items: [Python, SQL, STATA, MATLAB, LaTeX]
+  - label: Data & ML
+    items: [NumPy, Pandas, matplotlib, Scikit-learn, TensorFlow]
+  - label: Finance
+    items: [Wind, Choice, PitchBook]
   - label: Tools
-    items: [Git, Docker, Jupyter, VS Code, Claude Code]
-  - label: Domains
-    items: [Quantitative Finance, Machine Learning, Data Analysis, Web Development]
+    items: [Claude Code, MSOffice/WPS, Word, Excel, PowerPoint, Outlook]
 ---
 
-I'm a student at the Chinese University of Hong Kong, Shenzhen (CUHK-Shenzhen), majoring in Financial Engineering. My work sits at the intersection of quantitative finance and artificial intelligence — building systems that bridge financial theory with modern ML techniques.
+I'm an undergraduate at the Chinese University of Hong Kong, Shenzhen, majoring in Quantitative Finance. My work spans AI-driven evaluation systems, venture capital analysis, and quantitative alpha research.
 
-From interactive learning platforms to text-to-video evaluation pipelines, I enjoy creating tools that make complex concepts accessible and measurable. I believe in learning by building, and every project here represents a problem I wanted to solve.
+From building end-to-end video evaluation pipelines to developing automated agent assessment frameworks, I focus on creating systematic, data-driven solutions at the intersection of finance and technology.
