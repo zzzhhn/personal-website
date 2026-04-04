@@ -1,0 +1,36 @@
+---
+import { getCollection, render } from "astro:content";
+import SectionHeading from "./SectionHeading.astro";
+
+const aboutEntries = await getCollection("about");
+const bio = aboutEntries[0];
+const { Content } = await render(bio);
+const { techCategories } = bio.data;
+---
+
+<section id="about" class="px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
+  <div class="mx-auto" style="max-width: var(--max-width-content);">
+    <SectionHeading title={bio.data.headline} />
+
+    <div class="mx-auto mb-16 text-lg leading-relaxed" style="max-width: 40rem; color: var(--color-text-secondary);">
+      <Content />
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mx-auto" style="max-width: 56rem;">
+      {techCategories.map((category) => (
+        <div class="glass p-6">
+          <h3 class="text-sm font-semibold uppercase tracking-wider mb-4" style="color: var(--color-accent);">
+            {category.label}
+          </h3>
+          <ul class="space-y-2">
+            {category.items.map((item) => (
+              <li class="text-sm" style="color: var(--color-text-secondary);">
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

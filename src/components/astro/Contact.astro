@@ -1,0 +1,50 @@
+---
+import { SITE, SOCIAL_LINKS } from "../../lib/constants";
+import SectionHeading from "./SectionHeading.astro";
+---
+
+<section
+  id="contact"
+  class="px-6"
+  style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section); background-color: var(--color-surface-secondary);`}
+>
+  <div class="mx-auto text-center" style="max-width: var(--max-width-content);">
+    <SectionHeading title="Get in Touch" />
+
+    <p class="text-lg mb-10 mx-auto" style="color: var(--color-text-secondary); max-width: 32rem;">
+      I'm always open to discussing new projects, research opportunities, or interesting ideas at the intersection of finance and AI.
+    </p>
+
+    <a
+      href={`mailto:${SITE.email}`}
+      class="glass glass-hover inline-flex items-center gap-2 px-8 py-4 text-base font-medium mb-12"
+      style="color: var(--color-text-primary); text-decoration: none;"
+    >
+      <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+      </svg>
+      {SITE.email}
+    </a>
+
+    <div class="flex items-center justify-center gap-6">
+      {SOCIAL_LINKS.map((link) => (
+        <a
+          href={link.url}
+          target={link.icon === "mail" ? undefined : "_blank"}
+          rel={link.icon === "mail" ? undefined : "noopener noreferrer"}
+          class="text-sm font-medium transition-colors"
+          style="color: var(--color-text-secondary); text-decoration: none;"
+          aria-label={link.name}
+        >
+          {link.name}
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  a.text-sm:hover {
+    color: var(--color-text-primary) !important;
+  }
+</style>

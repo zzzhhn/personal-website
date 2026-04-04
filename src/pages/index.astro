@@ -1,24 +1,16 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/astro/Hero.astro";
+import About from "../components/astro/About.astro";
+import Contact from "../components/astro/Contact.astro";
 import { SITE } from "../lib/constants";
 ---
 
 <BaseLayout title={SITE.title} description={SITE.description}>
   <Hero />
+  <About />
 
-  <!-- Sections will be added in subsequent milestones -->
-  <section id="about" class="px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
-    <div class="mx-auto" style="max-width: var(--max-width-content);">
-      <h2 class="text-3xl md:text-4xl font-semibold mb-12 text-center" style="color: var(--color-text-primary); letter-spacing: -0.02em;">
-        About
-      </h2>
-      <p class="text-lg text-center mx-auto" style="color: var(--color-text-secondary); max-width: 40rem;">
-        Coming soon — About section with bio and tech stack icons.
-      </p>
-    </div>
-  </section>
-
+  <!-- Experience: placeholder until Milestone 3 (React Islands) -->
   <section id="experience" class="px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section); background-color: var(--color-surface-secondary);`}>
     <div class="mx-auto" style="max-width: var(--max-width-content);">
       <h2 class="text-3xl md:text-4xl font-semibold mb-12 text-center" style="color: var(--color-text-primary); letter-spacing: -0.02em;">
@@ -30,6 +22,7 @@ import { SITE } from "../lib/constants";
     </div>
   </section>
 
+  <!-- Projects: placeholder until Milestone 3 (React Islands) -->
   <section id="projects" class="px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
     <div class="mx-auto" style="max-width: var(--max-width-content);">
       <h2 class="text-3xl md:text-4xl font-semibold mb-12 text-center" style="color: var(--color-text-primary); letter-spacing: -0.02em;">
@@ -41,14 +34,5 @@ import { SITE } from "../lib/constants";
     </div>
   </section>
 
-  <section id="contact" class="px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section); background-color: var(--color-surface-secondary);`}>
-    <div class="mx-auto text-center" style="max-width: var(--max-width-content);">
-      <h2 class="text-3xl md:text-4xl font-semibold mb-12" style="color: var(--color-text-primary); letter-spacing: -0.02em;">
-        Contact
-      </h2>
-      <p class="text-lg" style="color: var(--color-text-secondary);">
-        Coming soon — Contact information and social links.
-      </p>
-    </div>
-  </section>
+  <Contact />
 </BaseLayout>
