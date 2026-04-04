@@ -31,7 +31,8 @@ const { title, description, image } = Astro.props;
     <ClientRouter />
 
     <!-- Theme init: runs synchronously before first paint to prevent FOUC -->
-    <script is:inline>
+    <!-- data-astro-rerun ensures this re-executes after View Transitions -->
+    <script is:inline data-astro-rerun>
       (function () {
         var stored = localStorage.getItem("theme");
         var preferred = stored

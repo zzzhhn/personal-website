@@ -2,14 +2,13 @@
 ---
 
 <button
-  id="theme-toggle"
   aria-label="Toggle color theme"
-  class="p-2 rounded-lg transition-colors cursor-pointer"
+  class="theme-toggle p-2 rounded-lg transition-colors cursor-pointer"
   style="background: transparent;"
 >
   <!-- Sun icon (shown in dark mode → click to go light) -->
   <svg
-    class="icon-sun w-5 h-5"
+    class="theme-icon-sun w-5 h-5"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
@@ -24,7 +23,7 @@
   </svg>
   <!-- Moon icon (shown in light mode → click to go dark) -->
   <svg
-    class="icon-moon w-5 h-5 hidden"
+    class="theme-icon-moon w-5 h-5"
     xmlns="http://www.w3.org/2000/svg"
     fill="none"
     viewBox="0 0 24 24"
@@ -39,23 +38,41 @@
   </svg>
 </button>
 
-<style>
-  [data-theme="light"] .icon-sun {
+<style is:global>
+  /* Default: dark mode — show sun, hide moon */
+  .theme-icon-moon {
     display: none;
   }
-  [data-theme="light"] .icon-moon {
+  .theme-icon-sun {
     display: block;
   }
-  #theme-toggle:hover {
-    background: var(--color-surface-secondary);
+
+  /* Light mode: show moon, hide sun */
+  [data-theme="light"] .theme-icon-sun {
+    display: none;
+  }
+  [data-theme="light"] .theme-icon-moon {
+    display: block;
+  }
+
+  .theme-toggle:hover {
+    background: var(--color-surface-secondary) !important;
   }
 </style>
 
 <script is:inline>
-  document.getElementById("theme-toggle").addEventListener("click", function () {
-    var current = document.documentElement.getAttribute("data-theme");
-    var next = current === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem("theme", next);
-  });
+  // Use event delegation on document — works for all toggle buttons,
+  // survives View Transitions, and handles duplicate instances.
+  (function () {
+    if (window.__themeToggleInit) return;
+    window.__themeToggleInit = true;
+    document.addEventListener("click", function (e) {
+      var btn = e.target.closest(".theme-toggle");
+      if (!btn) return;
+      var current = document.documentElement.getAttribute("data-theme");
+      var next = current === "dark" ? "light" : "dark";
+      document.documentElement.setAttribute("data-theme", next);
+      localStorage.setItem("theme", next);
+    });
+  })();
 </script>
