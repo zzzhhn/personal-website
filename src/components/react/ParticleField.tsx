@@ -43,11 +43,16 @@ export default function ParticleField() {
     if (!ctx) return;
 
     const resize = () => {
-      const parent = canvas.parentElement;
-      if (!parent) return;
+      // Walk up past <astro-island display:contents> to find
+      // the .hero-particles div that has actual dimensions
+      let container = canvas.parentElement;
+      while (container && container.clientHeight === 0) {
+        container = container.parentElement;
+      }
+      if (!container) return;
       const dpr = window.devicePixelRatio || 1;
-      const w = parent.clientWidth;
-      const h = parent.clientHeight;
+      const w = container.clientWidth;
+      const h = container.clientHeight;
       canvas.width = w * dpr;
       canvas.height = h * dpr;
       canvas.style.width = `${w}px`;
