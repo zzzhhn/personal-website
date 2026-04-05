@@ -422,12 +422,12 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       // Gentle size pulse
       pulse = 1 + Math.sin(t * 0.0008 + p.phase) * 0.15;
       var radius = p.br * pulse;
-      var baseAlpha = p.o * 0.12;
+      var baseAlpha = p.o * 0.45;
 
       // Radial gradient for soft bokeh glow
       grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius);
-      grad.addColorStop(0, "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (baseAlpha * 1.8) + ")");
-      grad.addColorStop(0.4, "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (baseAlpha * 0.8) + ")");
+      grad.addColorStop(0, "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (baseAlpha * 1.0) + ")");
+      grad.addColorStop(0.5, "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (baseAlpha * 0.5) + ")");
       grad.addColorStop(1, "rgba(" + c[0] + "," + c[1] + "," + c[2] + ",0)");
 
       ctx.beginPath();
@@ -438,7 +438,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       // Thin bright ring at edge (like a lens bokeh ring)
       ctx.beginPath();
       ctx.arc(p.x, p.y, radius * 0.85, 0, 6.283);
-      ctx.strokeStyle = "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (baseAlpha * 0.6) + ")";
+      ctx.strokeStyle = "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (baseAlpha * 0.7) + ")";
       ctx.lineWidth = 0.5;
       ctx.stroke();
     }
@@ -457,8 +457,8 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
 
         // Bright inner glow
         grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowR);
-        grad.addColorStop(0, "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (alpha * 0.35) + ")");
-        grad.addColorStop(0.5, "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (alpha * 0.1) + ")");
+        grad.addColorStop(0, "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (alpha * 0.6) + ")");
+        grad.addColorStop(0.5, "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (alpha * 0.2) + ")");
         grad.addColorStop(1, "rgba(" + c[0] + "," + c[1] + "," + c[2] + ",0)");
         ctx.beginPath();
         ctx.arc(p.x, p.y, glowR, 0, 6.283);
@@ -469,7 +469,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
         ctx.lineTo(mouse.x, mouse.y);
-        ctx.strokeStyle = "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (alpha * 0.15) + ")";
+        ctx.strokeStyle = "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (alpha * 0.3) + ")";
         ctx.lineWidth = 0.6;
         ctx.stroke();
       }
