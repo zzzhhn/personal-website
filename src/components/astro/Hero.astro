@@ -2,7 +2,6 @@
 import { SITE, SOCIAL_LINKS } from "../../lib/constants";
 import { UI } from "../../lib/i18n";
 import TypewriterText from "../react/TypewriterText";
-import ParticleField from "../react/ParticleField";
 
 const githubUrl = SOCIAL_LINKS.find((l) => l.icon === "github")!.url;
 const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
@@ -31,10 +30,8 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
 
     <!-- RIGHT: Content (60%) -->
     <div class="hero-content-side">
-      <!-- Particle background -->
-      <div class="hero-particles" aria-hidden="true">
-        <ParticleField client:idle />
-      </div>
+      <!-- Particle canvas — vanilla JS, no React Island -->
+      <canvas id="particle-canvas" class="hero-particles" aria-hidden="true"></canvas>
 
       <!-- Name -->
       <h1 class="hero-name font-semibold">
@@ -210,7 +207,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     position: absolute;
     inset: 0;
     z-index: 0;
-    overflow: hidden;
+    pointer-events: none;
   }
   .hero-content-side > :not(.hero-particles) {
     position: relative;
@@ -307,3 +304,138 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     .orb { animation: none !important; }
   }
 </style>
+
+<script is:inline>
+(function () {
+  var canvas = document.getElementById("particle-canvas");
+  if (!canvas) return;
+  var ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  var particles = [];
+  var mouse = { x: -1000, y: -1000 };
+  var raf = 0;
+
+  function resize() {
+    var parent = canvas.parentElement;
+    if (!parent) return;
+    var dpr = window.devicePixelRatio || 1;
+    var w = parent.clientWidth;
+    var h = parent.clientHeight;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + "px";
+    canvas.style.height = h + "px";
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    initParticles(w, h);
+  }
+
+  function initParticles(w, h) {
+    var count = Math.max(30, Math.min(Math.floor((w * h) / 18000), 80));
+    particles = [];
+    for (var i = 0; i < count; i++) {
+      particles.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: Math.random() * 1.5 + 0.5,
+        o: Math.random() * 0.5 + 0.3
+      });
+    }
+  }
+
+  function isDark() {
+    return document.documentElement.getAttribute("data-theme") !== "light";
+  }
+
+  function draw() {
+    var w = canvas.clientWidth;
+    var h = canvas.clientHeight;
+    if (w === 0 || h === 0) { raf = requestAnimationFrame(draw); return; }
+    ctx.clearRect(0, 0, w, h);
+
+    var dark = isDark();
+    var connectDist = 120;
+    var i, j, p, q, dx, dy, dist, alpha;
+
+    // Update
+    for (i = 0; i < particles.length; i++) {
+      p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > w) p.vx *= -1;
+      if (p.y < 0 || p.y > h) p.vy *= -1;
+    }
+
+    // Lines
+    ctx.lineWidth = 0.5;
+    for (i = 0; i < particles.length; i++) {
+      for (j = i + 1; j < particles.length; j++) {
+        dx = particles[i].x - particles[j].x;
+        dy = particles[i].y - particles[j].y;
+        dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < connectDist) {
+          alpha = (1 - dist / connectDist) * 0.2;
+          ctx.strokeStyle = dark
+            ? "rgba(148,163,184," + alpha + ")"
+            : "rgba(100,116,139," + (alpha * 0.5) + ")";
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Mouse lines
+    ctx.lineWidth = 0.8;
+    for (i = 0; i < particles.length; i++) {
+      p = particles[i];
+      dx = p.x - mouse.x;
+      dy = p.y - mouse.y;
+      dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 150) {
+        alpha = (1 - dist / 150) * 0.35;
+        ctx.strokeStyle = dark
+          ? "rgba(120,140,255," + alpha + ")"
+          : "rgba(60,80,200," + (alpha * 0.5) + ")";
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(mouse.x, mouse.y);
+        ctx.stroke();
+      }
+    }
+
+    // Dots
+    for (i = 0; i < particles.length; i++) {
+      p = particles[i];
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, 6.283);
+      ctx.fillStyle = dark
+        ? "rgba(148,163,184," + (p.o * 0.7) + ")"
+        : "rgba(100,116,139," + (p.o * 0.4) + ")";
+      ctx.fill();
+    }
+
+    raf = requestAnimationFrame(draw);
+  }
+
+  canvas.addEventListener("mousemove", function (e) {
+    var rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+  canvas.addEventListener("mouseleave", function () {
+    mouse.x = -1000;
+    mouse.y = -1000;
+  });
+
+  // Enable pointer events only for mouse tracking
+  canvas.style.pointerEvents = "auto";
+
+  window.addEventListener("resize", resize);
+  resize();
+  raf = requestAnimationFrame(draw);
+})();
+</script>
