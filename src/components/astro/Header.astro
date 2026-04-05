@@ -109,5 +109,16 @@ import { UI } from "../../lib/i18n";
         if (menu) menu.classList.add("hidden");
       }
     });
+    // Smooth scroll for nav anchor links (not on page load)
+    document.addEventListener("click", function (e) {
+      var anchor = e.target.closest('a[href^="#"]');
+      if (anchor) {
+        var target = document.querySelector(anchor.getAttribute("href"));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    });
   })();
 </script>

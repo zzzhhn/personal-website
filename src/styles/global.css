@@ -76,7 +76,7 @@
     font-family: var(--font-sans);
     background-color: var(--color-surface-primary);
     color: var(--color-text-primary);
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

@@ -45,6 +45,10 @@ const { title, description, image } = Astro.props;
         var lang = localStorage.getItem("lang") || "en";
         document.documentElement.setAttribute("data-site-lang", lang);
         document.documentElement.setAttribute("lang", lang === "zh" ? "zh-CN" : "en");
+        // Fix: scroll to top on full page load (prevents ClientRouter scroll restore bug)
+        if (!window.__astroNavigation) {
+          window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        }
       })();
     </script>
   </head>
