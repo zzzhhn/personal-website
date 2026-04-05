@@ -187,8 +187,14 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     object-fit: cover;
     object-position: center 20%;
     display: block;
-    mask-image: linear-gradient(to right, black 0%, black 50%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, black 0%, black 50%, transparent 100%);
+    mask-image:
+      linear-gradient(to right, black 0%, black 50%, transparent 100%),
+      linear-gradient(to bottom, black 0%, black 70%, transparent 100%);
+    mask-composite: intersect;
+    -webkit-mask-image:
+      linear-gradient(to right, black 0%, black 50%, transparent 100%),
+      linear-gradient(to bottom, black 0%, black 70%, transparent 100%);
+    -webkit-mask-composite: source-in;
   }
 
   /* Content side */
