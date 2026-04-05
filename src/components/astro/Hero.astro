@@ -35,8 +35,8 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
 
       <!-- Name -->
       <h1 class="hero-name">
-        <span data-lang="en">{SITE.name}</span>
-        <span data-lang="zh">钟昊楠</span>
+        <span class="hero-name-en" data-lang="en">{SITE.name}</span>
+        <span class="hero-name-zh" data-lang="zh">钟昊楠</span>
       </h1>
 
       <!-- Typewriter tagline -->
@@ -65,8 +65,8 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       <div class="hero-chips">
         <span class="hero-chip" data-lang="en">CUHK-Shenzhen</span>
         <span class="hero-chip" data-lang="zh">港中大（深圳）</span>
-        <span class="hero-chip" data-lang="en">ByteDance PM</span>
-        <span class="hero-chip" data-lang="zh">字节跳动 产品经理</span>
+        <span class="hero-chip" data-lang="en">PM × Engineer</span>
+        <span class="hero-chip" data-lang="zh">产品 × 工程</span>
         <span class="hero-chip" data-lang="en">Alpha Research</span>
         <span class="hero-chip" data-lang="zh">Alpha 策略研究</span>
         <span class="hero-chip" data-lang="en">Full-Stack</span>
@@ -223,13 +223,20 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
   }
 
   .hero-name {
-    font-family: var(--font-display);
-    font-weight: 400;
     font-size: clamp(2.5rem, 5vw, 4.5rem);
     line-height: 1.05;
-    letter-spacing: -0.02em;
     color: var(--color-text-primary);
     margin-bottom: 0.75rem;
+  }
+  .hero-name-en {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+  .hero-name-zh {
+    font-family: "Noto Serif SC", "Source Han Serif SC", "SimSun", "STSong", serif;
+    font-weight: 500;
+    letter-spacing: 0.05em;
   }
 
   .hero-tagline {
