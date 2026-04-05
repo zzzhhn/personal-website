@@ -1,6 +1,13 @@
 @import "tailwindcss";
 @import "./fonts.css";
 
+/* Register --glow so it can be transitioned smoothly */
+@property --glow {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 0;
+}
+
 /* ── Dark theme tokens (default) ── */
 @theme {
   /* Surfaces — deeper, richer darks for better glass contrast */
@@ -216,10 +223,11 @@
     background: var(--color-surface-secondary);
     border: 1px solid color-mix(in oklch, var(--color-accent) calc(var(--glow) * 40%), var(--color-border-subtle));
     border-radius: var(--radius-lg);
-    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+    transition: --glow 0.3s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
     box-shadow: 0 0 calc(var(--glow) * 20px) oklch(0.68 0.16 255 / calc(var(--glow) * 0.12));
   }
   .card-solid:hover {
+    --glow: 1;
     transform: translateY(-2px);
   }
 
@@ -228,8 +236,11 @@
     background: transparent;
     border: 1px solid color-mix(in oklch, var(--color-accent) calc(var(--glow) * 50%), var(--color-border-subtle));
     border-radius: var(--radius-md);
-    transition: box-shadow 0.25s ease;
+    transition: --glow 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     box-shadow: 0 0 calc(var(--glow) * 16px) oklch(0.68 0.16 255 / calc(var(--glow) * 0.08));
+  }
+  .card-outline:hover {
+    --glow: 1;
   }
 
   .card-accent-border {
@@ -238,8 +249,11 @@
     border: 1px solid color-mix(in oklch, var(--color-accent) calc(var(--glow) * 40%), var(--color-border-subtle));
     border-left: 3px solid color-mix(in oklch, var(--color-accent-hover) calc(var(--glow) * 60%), var(--color-accent));
     border-radius: var(--radius-md);
-    transition: box-shadow 0.25s ease;
+    transition: --glow 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     box-shadow: 0 0 calc(var(--glow) * 16px) oklch(0.68 0.16 255 / calc(var(--glow) * 0.08));
+  }
+  .card-accent-border:hover {
+    --glow: 1;
   }
 
   /* Section divider — soft gradient instead of hard border */
