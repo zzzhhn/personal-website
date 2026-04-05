@@ -7,10 +7,10 @@ import { UI } from "../../lib/i18n";
 <header class="fixed top-0 left-0 right-0 z-50 header-glass">
   <nav class="mx-auto flex items-center justify-between px-6 py-3" style="max-width: var(--max-width-content);">
     <a href="/" class="logo-mark" style="text-decoration: none;" aria-label="Home">
-      <svg class="logo-svg" viewBox="0 0 48 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="logo-svg" viewBox="0 0 58 30" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <!-- Gold foil gradient (light mode default) -->
-          <linearGradient id="foil-grad" x1="0" y1="0" x2="48" y2="28" gradientUnits="userSpaceOnUse">
+          <linearGradient id="foil-grad" x1="0" y1="0" x2="58" y2="30" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stop-color="#C9A84C" />
             <stop offset="25%" stop-color="#F0D78C" />
             <stop offset="50%" stop-color="#C9A84C" />
@@ -18,7 +18,7 @@ import { UI } from "../../lib/i18n";
             <stop offset="100%" stop-color="#B8943F" />
           </linearGradient>
           <!-- Shimmer sweep -->
-          <linearGradient id="foil-shimmer" x1="-48" y1="0" x2="0" y2="28" gradientUnits="userSpaceOnUse">
+          <linearGradient id="foil-shimmer" x1="-58" y1="0" x2="0" y2="30" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stop-color="transparent" />
             <stop offset="45%" stop-color="transparent" />
             <stop offset="50%" stop-color="rgba(255,255,255,0.6)" />
@@ -26,16 +26,21 @@ import { UI } from "../../lib/i18n";
             <stop offset="100%" stop-color="transparent" />
           </linearGradient>
         </defs>
-        <!-- H letterform — thin line strokes -->
-        <path d="M4 3 L4 25" stroke="url(#foil-grad)" stroke-width="1.6" stroke-linecap="round" />
-        <path d="M4 14 L16 14" stroke="url(#foil-grad)" stroke-width="1.6" stroke-linecap="round" />
-        <path d="M16 3 L16 25" stroke="url(#foil-grad)" stroke-width="1.6" stroke-linecap="round" />
-        <!-- Z letterform -->
-        <path d="M22 5 L36 5 L22 23 L36 23" stroke="url(#foil-grad)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-        <!-- Period dot -->
-        <circle cx="42" cy="23" r="1.8" fill="url(#foil-grad)" />
-        <!-- Shimmer overlay layer -->
-        <rect class="logo-shimmer" x="0" y="0" width="48" height="28" fill="url(#foil-shimmer)" />
+        <!-- Hollow serif letterforms -->
+        <text
+          x="29" y="24"
+          text-anchor="middle"
+          font-family="'Instrument Serif', Georgia, 'Noto Serif SC', serif"
+          font-size="28"
+          font-weight="400"
+          fill="none"
+          stroke="url(#foil-grad)"
+          stroke-width="0.7"
+          letter-spacing="2"
+          paint-order="stroke"
+        >HZ.</text>
+        <!-- Shimmer overlay -->
+        <rect class="logo-shimmer" x="0" y="0" width="58" height="30" fill="url(#foil-shimmer)" />
       </svg>
     </a>
 
@@ -104,8 +109,8 @@ import { UI } from "../../lib/i18n";
     align-items: center;
   }
   .logo-svg {
-    width: 42px;
-    height: 24px;
+    width: 50px;
+    height: 26px;
   }
 
   /* Shimmer sweep animation on hover */
@@ -118,8 +123,8 @@ import { UI } from "../../lib/i18n";
     animation: foil-sweep 0.8s ease-out forwards;
   }
   @keyframes foil-sweep {
-    from { transform: translateX(-48px); }
-    to   { transform: translateX(48px); }
+    from { transform: translateX(-58px); }
+    to   { transform: translateX(58px); }
   }
 
   /* Dark mode: gold → silver (CSS on SVG stops) */
