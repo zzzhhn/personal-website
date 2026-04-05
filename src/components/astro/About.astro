@@ -14,30 +14,36 @@ import SectionHeading from "./SectionHeading.astro";
 
     <!-- EN tech categories -->
     <div data-lang="en" class="grid grid-cols-2 md:grid-cols-4 gap-5 mx-auto" style="max-width: 56rem;">
-      {UI.about.techCategories.en.map((cat, i) => (
-        <div class="card-outline p-6 fade-up stagger-child" style={`--stagger-index: ${i};`}>
-          <h3 class="text-xs font-semibold uppercase tracking-widest mb-4" style="color: var(--color-accent);">{cat.label}</h3>
-          <ul class="space-y-2.5">
-            {cat.items.map((item) => (
-              <li class="text-sm" style="color: var(--color-text-secondary);">{item}</li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      {UI.about.techCategories.en.map((cat, i) => {
+        const foilKeys = ["code", "data", "finance", "tools"];
+        return (
+          <div class="card-outline p-6 fade-up stagger-child" data-foil={foilKeys[i]} style={`--stagger-index: ${i};`}>
+            <h3 class="text-xs font-semibold uppercase tracking-widest mb-4" style="color: var(--color-accent);">{cat.label}</h3>
+            <ul class="space-y-2.5">
+              {cat.items.map((item) => (
+                <li class="text-sm" style="color: var(--color-text-secondary);">{item}</li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
     </div>
 
     <!-- ZH tech categories -->
     <div data-lang="zh" class="grid grid-cols-2 md:grid-cols-4 gap-5 mx-auto" style="max-width: 56rem;">
-      {UI.about.techCategories.zh.map((cat, i) => (
-        <div class="card-outline p-6 fade-up stagger-child" style={`--stagger-index: ${i};`}>
-          <h3 class="text-xs font-semibold uppercase tracking-widest mb-4" style="color: var(--color-accent);">{cat.label}</h3>
-          <ul class="space-y-2.5">
-            {cat.items.map((item) => (
-              <li class="text-sm" style="color: var(--color-text-secondary);">{item}</li>
-            ))}
-          </ul>
-        </div>
-      ))}
+      {UI.about.techCategories.zh.map((cat, i) => {
+        const foilKeys = ["code", "data", "finance", "tools"];
+        return (
+          <div class="card-outline p-6 fade-up stagger-child" data-foil={foilKeys[i]} style={`--stagger-index: ${i};`}>
+            <h3 class="text-xs font-semibold uppercase tracking-widest mb-4" style="color: var(--color-accent);">{cat.label}</h3>
+            <ul class="space-y-2.5">
+              {cat.items.map((item) => (
+                <li class="text-sm" style="color: var(--color-text-secondary);">{item}</li>
+              ))}
+            </ul>
+          </div>
+        );
+      })}
     </div>
   </div>
 </section>
