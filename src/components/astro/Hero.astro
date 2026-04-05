@@ -2,6 +2,7 @@
 import { SITE, SOCIAL_LINKS } from "../../lib/constants";
 import { UI } from "../../lib/i18n";
 import TypewriterText from "../react/TypewriterText";
+import ParticleField from "../react/ParticleField";
 
 const githubUrl = SOCIAL_LINKS.find((l) => l.icon === "github")!.url;
 const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
@@ -30,6 +31,11 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
 
     <!-- RIGHT: Content (60%) -->
     <div class="hero-content-side">
+      <!-- Particle background -->
+      <div class="hero-particles" aria-hidden="true">
+        <ParticleField client:idle />
+      </div>
+
       <!-- Name -->
       <h1 class="hero-name font-semibold">
         <span data-lang="en">{SITE.name}</span>
@@ -197,6 +203,18 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     padding: 6rem 4rem 4rem 2rem;
     position: relative;
     z-index: 2;
+  }
+
+  /* Particle canvas — fills content side, behind text */
+  .hero-particles {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .hero-content-side > :not(.hero-particles) {
+    position: relative;
+    z-index: 1;
   }
 
   .hero-name {
