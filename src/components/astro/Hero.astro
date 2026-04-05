@@ -316,6 +316,16 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
   var mouse = { x: -1000, y: -1000 };
   var raf = 0;
 
+  // Bokeh color palette for light mode (warm refractive tones)
+  var bokehColors = [
+    [180, 160, 255],  // lavender
+    [130, 180, 255],  // sky blue
+    [255, 180, 130],  // warm amber
+    [255, 150, 180],  // rose
+    [160, 210, 180],  // mint
+    [200, 170, 240],  // soft violet
+  ];
+
   function resize() {
     var parent = canvas.parentElement;
     if (!parent) return;
@@ -334,13 +344,17 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     var count = Math.max(50, Math.min(Math.floor((w * h) / 10000), 120));
     particles = [];
     for (var i = 0; i < count; i++) {
+      var col = bokehColors[Math.floor(Math.random() * bokehColors.length)];
       particles.push({
         x: Math.random() * w,
         y: Math.random() * h,
         vx: (Math.random() - 0.5) * 0.3,
         vy: (Math.random() - 0.5) * 0.3,
-        r: Math.random() * 1.5 + 0.5,
-        o: Math.random() * 0.5 + 0.3
+        r: Math.random() * 1.5 + 0.5,         // star radius (dark)
+        br: Math.random() * 12 + 4,            // bokeh radius (light)
+        o: Math.random() * 0.5 + 0.3,
+        col: col,                               // bokeh color
+        phase: Math.random() * 6.283            // pulse phase offset
       });
     }
   }
@@ -349,26 +363,11 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     return document.documentElement.getAttribute("data-theme") !== "light";
   }
 
-  function draw() {
-    var w = canvas.clientWidth;
-    var h = canvas.clientHeight;
-    if (w === 0 || h === 0) { raf = requestAnimationFrame(draw); return; }
-    ctx.clearRect(0, 0, w, h);
-
-    var dark = isDark();
+  function drawDark(w, h, t) {
     var connectDist = 120;
-    var i, j, p, q, dx, dy, dist, alpha;
+    var i, j, p, dx, dy, dist, alpha;
 
-    // Update
-    for (i = 0; i < particles.length; i++) {
-      p = particles[i];
-      p.x += p.vx;
-      p.y += p.vy;
-      if (p.x < 0 || p.x > w) p.vx *= -1;
-      if (p.y < 0 || p.y > h) p.vy *= -1;
-    }
-
-    // Lines
+    // Lines between stars
     ctx.lineWidth = 0.5;
     for (i = 0; i < particles.length; i++) {
       for (j = i + 1; j < particles.length; j++) {
@@ -377,9 +376,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
         dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < connectDist) {
           alpha = (1 - dist / connectDist) * 0.35;
-          ctx.strokeStyle = dark
-            ? "rgba(180,195,210," + alpha + ")"
-            : "rgba(60,75,95," + (alpha * 0.6) + ")";
+          ctx.strokeStyle = "rgba(180,195,210," + alpha + ")";
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
@@ -388,7 +385,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       }
     }
 
-    // Mouse lines
+    // Mouse constellation lines
     ctx.lineWidth = 0.8;
     for (i = 0; i < particles.length; i++) {
       p = particles[i];
@@ -397,9 +394,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       dist = Math.sqrt(dx * dx + dy * dy);
       if (dist < 150) {
         alpha = (1 - dist / 150) * 0.5;
-        ctx.strokeStyle = dark
-          ? "rgba(130,150,255," + alpha + ")"
-          : "rgba(50,70,190," + (alpha * 0.5) + ")";
+        ctx.strokeStyle = "rgba(130,150,255," + alpha + ")";
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
         ctx.lineTo(mouse.x, mouse.y);
@@ -407,15 +402,102 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       }
     }
 
-    // Dots
+    // Star dots
     for (i = 0; i < particles.length; i++) {
       p = particles[i];
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, 6.283);
-      ctx.fillStyle = dark
-        ? "rgba(200,210,225," + (p.o * 0.85) + ")"
-        : "rgba(50,65,85," + (p.o * 0.55) + ")";
+      ctx.fillStyle = "rgba(200,210,225," + (p.o * 0.85) + ")";
       ctx.fill();
+    }
+  }
+
+  function drawLight(w, h, t) {
+    var i, p, dx, dy, dist, alpha, pulse, grad, c;
+
+    // Bokeh circles — soft glowing orbs
+    for (i = 0; i < particles.length; i++) {
+      p = particles[i];
+      c = p.col;
+      // Gentle size pulse
+      pulse = 1 + Math.sin(t * 0.0008 + p.phase) * 0.15;
+      var radius = p.br * pulse;
+      var baseAlpha = p.o * 0.12;
+
+      // Radial gradient for soft bokeh glow
+      grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, radius);
+      grad.addColorStop(0, "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (baseAlpha * 1.8) + ")");
+      grad.addColorStop(0.4, "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (baseAlpha * 0.8) + ")");
+      grad.addColorStop(1, "rgba(" + c[0] + "," + c[1] + "," + c[2] + ",0)");
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, radius, 0, 6.283);
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Thin bright ring at edge (like a lens bokeh ring)
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, radius * 0.85, 0, 6.283);
+      ctx.strokeStyle = "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (baseAlpha * 0.6) + ")";
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    }
+
+    // Mouse proximity: light refraction effect — particles near cursor glow brighter
+    for (i = 0; i < particles.length; i++) {
+      p = particles[i];
+      dx = p.x - mouse.x;
+      dy = p.y - mouse.y;
+      dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 180) {
+        c = p.col;
+        alpha = (1 - dist / 180);
+        pulse = 1 + Math.sin(t * 0.0008 + p.phase) * 0.15;
+        var glowR = p.br * pulse * (1 + alpha * 0.5);
+
+        // Bright inner glow
+        grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, glowR);
+        grad.addColorStop(0, "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (alpha * 0.35) + ")");
+        grad.addColorStop(0.5, "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (alpha * 0.1) + ")");
+        grad.addColorStop(1, "rgba(" + c[0] + "," + c[1] + "," + c[2] + ",0)");
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, glowR, 0, 6.283);
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // Soft connecting line to cursor (light ray)
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(mouse.x, mouse.y);
+        ctx.strokeStyle = "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + (alpha * 0.15) + ")";
+        ctx.lineWidth = 0.6;
+        ctx.stroke();
+      }
+    }
+  }
+
+  function draw(t) {
+    var w = canvas.clientWidth;
+    var h = canvas.clientHeight;
+    if (w === 0 || h === 0) { raf = requestAnimationFrame(draw); return; }
+    ctx.clearRect(0, 0, w, h);
+
+    var dark = isDark();
+    var i, p;
+
+    // Update positions (shared)
+    for (i = 0; i < particles.length; i++) {
+      p = particles[i];
+      p.x += p.vx;
+      p.y += p.vy;
+      if (p.x < 0 || p.x > w) p.vx *= -1;
+      if (p.y < 0 || p.y > h) p.vy *= -1;
+    }
+
+    if (dark) {
+      drawDark(w, h, t);
+    } else {
+      drawLight(w, h, t);
     }
 
     raf = requestAnimationFrame(draw);
@@ -431,9 +513,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     mouse.y = -1000;
   });
 
-  // Enable pointer events only for mouse tracking
   canvas.style.pointerEvents = "auto";
-
   window.addEventListener("resize", resize);
   resize();
   raf = requestAnimationFrame(draw);
