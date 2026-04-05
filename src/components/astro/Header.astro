@@ -6,8 +6,37 @@ import { UI } from "../../lib/i18n";
 
 <header class="fixed top-0 left-0 right-0 z-50 header-glass">
   <nav class="mx-auto flex items-center justify-between px-6 py-3" style="max-width: var(--max-width-content);">
-    <a href="/" class="logo-text" style="text-decoration: none;">
-      HZ.
+    <a href="/" class="logo-mark" style="text-decoration: none;" aria-label="Home">
+      <svg class="logo-svg" viewBox="0 0 48 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Gold foil gradient (light mode default) -->
+          <linearGradient id="foil-grad" x1="0" y1="0" x2="48" y2="28" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#C9A84C" />
+            <stop offset="25%" stop-color="#F0D78C" />
+            <stop offset="50%" stop-color="#C9A84C" />
+            <stop offset="75%" stop-color="#F0D78C" />
+            <stop offset="100%" stop-color="#B8943F" />
+          </linearGradient>
+          <!-- Shimmer sweep -->
+          <linearGradient id="foil-shimmer" x1="-48" y1="0" x2="0" y2="28" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="transparent" />
+            <stop offset="45%" stop-color="transparent" />
+            <stop offset="50%" stop-color="rgba(255,255,255,0.6)" />
+            <stop offset="55%" stop-color="transparent" />
+            <stop offset="100%" stop-color="transparent" />
+          </linearGradient>
+        </defs>
+        <!-- H letterform — thin line strokes -->
+        <path d="M4 3 L4 25" stroke="url(#foil-grad)" stroke-width="1.6" stroke-linecap="round" />
+        <path d="M4 14 L16 14" stroke="url(#foil-grad)" stroke-width="1.6" stroke-linecap="round" />
+        <path d="M16 3 L16 25" stroke="url(#foil-grad)" stroke-width="1.6" stroke-linecap="round" />
+        <!-- Z letterform -->
+        <path d="M22 5 L36 5 L22 23 L36 23" stroke="url(#foil-grad)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+        <!-- Period dot -->
+        <circle cx="42" cy="23" r="1.8" fill="url(#foil-grad)" />
+        <!-- Shimmer overlay layer -->
+        <rect class="logo-shimmer" x="0" y="0" width="48" height="28" fill="url(#foil-shimmer)" />
+      </svg>
     </a>
 
     <!-- Desktop nav -->
@@ -70,12 +99,35 @@ import { UI } from "../../lib/i18n";
       0 4px 24px oklch(0 0 0 / 0.08);
   }
 
-  .logo-text {
-    font-size: 0.9375rem;
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    color: var(--color-text-primary);
+  .logo-mark {
+    display: flex;
+    align-items: center;
   }
+  .logo-svg {
+    width: 42px;
+    height: 24px;
+  }
+
+  /* Shimmer sweep animation on hover */
+  .logo-shimmer {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .logo-mark:hover .logo-shimmer {
+    opacity: 1;
+    animation: foil-sweep 0.8s ease-out forwards;
+  }
+  @keyframes foil-sweep {
+    from { transform: translateX(-48px); }
+    to   { transform: translateX(48px); }
+  }
+
+  /* Dark mode: gold → silver (CSS on SVG stops) */
+  :global([data-theme="dark"]) #foil-grad stop:nth-child(1) { stop-color: #9CA3AF; }
+  :global([data-theme="dark"]) #foil-grad stop:nth-child(2) { stop-color: #E5E7EB; }
+  :global([data-theme="dark"]) #foil-grad stop:nth-child(3) { stop-color: #9CA3AF; }
+  :global([data-theme="dark"]) #foil-grad stop:nth-child(4) { stop-color: #E5E7EB; }
+  :global([data-theme="dark"]) #foil-grad stop:nth-child(5) { stop-color: #6B7280; }
 
   .nav-pill {
     color: var(--color-text-secondary);
@@ -144,5 +196,16 @@ import { UI } from "../../lib/i18n";
       }, { rootMargin: "-20% 0px -70% 0px" });
       sections.forEach(function (s) { spyObs.observe(s); });
     }
+    // Logo foil: sync gradient to theme (JS fallback for SVG stop-color)
+    var gold = ["#C9A84C","#F0D78C","#C9A84C","#F0D78C","#B8943F"];
+    var silver = ["#9CA3AF","#E5E7EB","#9CA3AF","#E5E7EB","#6B7280"];
+    function syncLogoFoil() {
+      var isDark = document.documentElement.getAttribute("data-theme") === "dark";
+      var colors = isDark ? silver : gold;
+      var stops = document.querySelectorAll("#foil-grad stop");
+      stops.forEach(function (s, i) { if (colors[i]) s.setAttribute("stop-color", colors[i]); });
+    }
+    syncLogoFoil();
+    new MutationObserver(syncLogoFoil).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   })();
 </script>
