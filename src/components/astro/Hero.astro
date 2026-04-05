@@ -53,6 +53,26 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
         />
       </div>
 
+      <!-- Bio summary -->
+      <p class="hero-bio" data-lang="en">
+        Undergraduate at CUHK-Shenzhen, building data-driven solutions at the intersection of finance and technology.
+      </p>
+      <p class="hero-bio" data-lang="zh">
+        香港中文大学（深圳）本科生，专注于金融与科技交汇处的数据驱动解决方案。
+      </p>
+
+      <!-- Keyword chips -->
+      <div class="hero-chips">
+        <span class="hero-chip" data-lang="en">CUHK-Shenzhen</span>
+        <span class="hero-chip" data-lang="zh">港中大（深圳）</span>
+        <span class="hero-chip" data-lang="en">ByteDance PM</span>
+        <span class="hero-chip" data-lang="zh">字节跳动 产品经理</span>
+        <span class="hero-chip" data-lang="en">Alpha Research</span>
+        <span class="hero-chip" data-lang="zh">Alpha 策略研究</span>
+        <span class="hero-chip" data-lang="en">Full-Stack</span>
+        <span class="hero-chip" data-lang="zh">全栈开发</span>
+      </div>
+
       <!-- CTA: Primary resume + icon links -->
       <div class="hero-actions">
         <a data-lang="en" href="/resume-en.pdf" class="hero-primary-cta">
@@ -170,12 +190,12 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     object-position: center 20%;
     display: block;
     mask-image:
-      linear-gradient(to right, black 0%, black 50%, transparent 100%),
-      linear-gradient(to bottom, black 0%, black 70%, transparent 100%);
+      linear-gradient(to right, black 0%, black 65%, transparent 95%),
+      linear-gradient(to bottom, black 0%, black 82%, transparent 100%);
     mask-composite: intersect;
     -webkit-mask-image:
-      linear-gradient(to right, black 0%, black 50%, transparent 100%),
-      linear-gradient(to bottom, black 0%, black 70%, transparent 100%);
+      linear-gradient(to right, black 0%, black 65%, transparent 95%),
+      linear-gradient(to bottom, black 0%, black 82%, transparent 100%);
     -webkit-mask-composite: source-in;
   }
 
@@ -219,6 +239,40 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     min-height: 2em;
     font-weight: 500;
     letter-spacing: -0.01em;
+  }
+
+  /* Bio summary */
+  .hero-bio {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+    margin-top: 0.75rem;
+    max-width: 28rem;
+  }
+
+  /* Keyword chips */
+  .hero-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  .hero-chip {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    padding: 0.3rem 0.75rem;
+    border-radius: 100px;
+    background: var(--color-surface-glass);
+    border: 1px solid var(--color-border-subtle);
+    color: var(--color-text-secondary);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: border-color 0.25s ease, color 0.25s ease;
+  }
+  .hero-chip:hover {
+    border-color: var(--color-accent);
+    color: var(--color-text-primary);
   }
 
   /* CTA — primary pill + icon links row */
@@ -304,6 +358,13 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       padding: 2rem 1.5rem 4rem;
       align-items: center;
       text-align: center;
+    }
+    .hero-bio {
+      text-align: center;
+      max-width: 100%;
+    }
+    .hero-chips {
+      justify-content: center;
     }
     .hero-actions {
       justify-content: center;
