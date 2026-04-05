@@ -30,6 +30,7 @@ const { title, description, image } = Astro.props;
     <!-- Theme & language init: runs synchronously before first paint to prevent FOUC -->
     <script is:inline>
       (function () {
+        // Theme
         var stored = localStorage.getItem("theme");
         var preferred = stored
           ? stored
@@ -37,9 +38,19 @@ const { title, description, image } = Astro.props;
             ? "light"
             : "dark";
         document.documentElement.setAttribute("data-theme", preferred);
+        // Language
         var lang = localStorage.getItem("lang") || "en";
         document.documentElement.setAttribute("data-site-lang", lang);
         document.documentElement.setAttribute("lang", lang === "zh" ? "zh-CN" : "en");
+        // Block Framer Motion's scroll restoration during hydration.
+        // FM's AnimatePresence calls window.scrollTo(0, suspendedScrollY)
+        // on mount, which scrolls to a stale position on page refresh.
+        var realScrollTo = window.scrollTo.bind(window);
+        window.scrollTo = function () {};
+        window.addEventListener("load", function () {
+          realScrollTo(0, 0);
+          window.scrollTo = realScrollTo;
+        });
       })();
     </script>
   </head>

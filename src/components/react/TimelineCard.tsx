@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 interface TimelineCardProps {
   en: {
@@ -114,28 +114,23 @@ export default function TimelineCard({
           </ul>
         </div>
 
-        <AnimatePresence>
-          {expanded && (
-            <motion.div
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="overflow-hidden"
-            >
-              <div data-lang="en" className="flex flex-wrap gap-2 mt-4 pt-4" style={{ borderTop: "1px solid var(--color-border-glass)" }}>
-                {en.techStack.map((tech) => (
-                  <span key={tech} className="glass-subtle text-xs px-2.5 py-1" style={{ color: "var(--color-text-secondary)" }}>{tech}</span>
-                ))}
-              </div>
-              <div data-lang="zh" className="flex flex-wrap gap-2 mt-4 pt-4" style={{ borderTop: "1px solid var(--color-border-glass)" }}>
-                {zh.techStack.map((tech) => (
-                  <span key={tech} className="glass-subtle text-xs px-2.5 py-1" style={{ color: "var(--color-text-secondary)" }}>{tech}</span>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {expanded && (
+          <div
+            className="flex flex-wrap gap-2 mt-4 pt-4"
+            style={{ borderTop: "1px solid var(--color-border-glass)" }}
+          >
+            <div data-lang="en" className="flex flex-wrap gap-2">
+              {en.techStack.map((tech) => (
+                <span key={tech} className="glass-subtle text-xs px-2.5 py-1" style={{ color: "var(--color-text-secondary)" }}>{tech}</span>
+              ))}
+            </div>
+            <div data-lang="zh" className="flex flex-wrap gap-2">
+              {zh.techStack.map((tech) => (
+                <span key={tech} className="glass-subtle text-xs px-2.5 py-1" style={{ color: "var(--color-text-secondary)" }}>{tech}</span>
+              ))}
+            </div>
+          </div>
+        )}
       </button>
     </motion.div>
   );
