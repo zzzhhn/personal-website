@@ -331,7 +331,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
   }
 
   function initParticles(w, h) {
-    var count = Math.max(30, Math.min(Math.floor((w * h) / 18000), 80));
+    var count = Math.max(50, Math.min(Math.floor((w * h) / 10000), 120));
     particles = [];
     for (var i = 0; i < count; i++) {
       particles.push({
@@ -376,10 +376,10 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
         dy = particles[i].y - particles[j].y;
         dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < connectDist) {
-          alpha = (1 - dist / connectDist) * 0.2;
+          alpha = (1 - dist / connectDist) * 0.35;
           ctx.strokeStyle = dark
-            ? "rgba(148,163,184," + alpha + ")"
-            : "rgba(100,116,139," + (alpha * 0.5) + ")";
+            ? "rgba(180,195,210," + alpha + ")"
+            : "rgba(60,75,95," + (alpha * 0.6) + ")";
           ctx.beginPath();
           ctx.moveTo(particles[i].x, particles[i].y);
           ctx.lineTo(particles[j].x, particles[j].y);
@@ -396,10 +396,10 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       dy = p.y - mouse.y;
       dist = Math.sqrt(dx * dx + dy * dy);
       if (dist < 150) {
-        alpha = (1 - dist / 150) * 0.35;
+        alpha = (1 - dist / 150) * 0.5;
         ctx.strokeStyle = dark
-          ? "rgba(120,140,255," + alpha + ")"
-          : "rgba(60,80,200," + (alpha * 0.5) + ")";
+          ? "rgba(130,150,255," + alpha + ")"
+          : "rgba(50,70,190," + (alpha * 0.5) + ")";
         ctx.beginPath();
         ctx.moveTo(p.x, p.y);
         ctx.lineTo(mouse.x, mouse.y);
@@ -413,8 +413,8 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       ctx.beginPath();
       ctx.arc(p.x, p.y, p.r, 0, 6.283);
       ctx.fillStyle = dark
-        ? "rgba(148,163,184," + (p.o * 0.7) + ")"
-        : "rgba(100,116,139," + (p.o * 0.4) + ")";
+        ? "rgba(200,210,225," + (p.o * 0.85) + ")"
+        : "rgba(50,65,85," + (p.o * 0.55) + ")";
       ctx.fill();
     }
 
