@@ -16,16 +16,18 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
   </div>
 
   <div class="hero-layout">
-    <!-- LEFT: Photo (40%) -->
+    <!-- LEFT: Photo in glass frame -->
     <div class="hero-photo-side">
-      <img
-        src="/images/profile.jpg"
-        alt={`Photo of ${SITE.name}`}
-        width="800"
-        height="1000"
-        class="hero-photo"
-        loading="eager"
-      />
+      <div class="hero-photo-frame glass">
+        <img
+          src="/images/profile.jpg"
+          alt={`Photo of ${SITE.name}`}
+          width="800"
+          height="1000"
+          class="hero-photo"
+          loading="eager"
+        />
+      </div>
     </div>
 
     <!-- RIGHT: Content (60%) -->
@@ -175,24 +177,33 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
   /* Photo side */
   .hero-photo-side {
     width: 40%;
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6rem 1rem 4rem 3rem;
     flex-shrink: 0;
+  }
+  .hero-photo-frame {
+    width: 100%;
+    max-width: 320px;
+    aspect-ratio: 3 / 4;
+    padding: 0;
+    overflow: hidden;
+    border-radius: var(--radius-xl) !important;
+    box-shadow:
+      0 0 0 1px var(--color-border-glass),
+      0 8px 40px oklch(0 0 0 / 0.18),
+      0 2px 8px oklch(0 0 0 / 0.08);
+  }
+  .hero-photo-frame::before {
+    border-radius: var(--radius-xl);
   }
   .hero-photo {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 20%;
+    object-position: center 15%;
     display: block;
-    /* multiply: white pixels become page bg color automatically */
-    mix-blend-mode: multiply;
-    filter: brightness(1.1);
-    /* Soft edge fade */
-    mask-image: linear-gradient(to right, black 0%, black 30%, transparent 70%);
-    -webkit-mask-image: linear-gradient(to right, black 0%, black 30%, transparent 70%);
-  }
-  [data-theme="dark"] .hero-photo {
-    filter: brightness(1.6) contrast(1.15);
   }
 
   /* Content side */
@@ -269,9 +280,12 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       width: 100%;
       height: 50vh;
     }
-    .hero-photo {
-      mask-image: linear-gradient(to bottom, black 0%, black 30%, transparent 70%);
-      -webkit-mask-image: linear-gradient(to bottom, black 0%, black 30%, transparent 70%);
+    .hero-photo-side {
+      width: 100%;
+      padding: 6rem 2rem 2rem;
+    }
+    .hero-photo-frame {
+      max-width: 240px;
     }
     .hero-content-side {
       width: 100%;
