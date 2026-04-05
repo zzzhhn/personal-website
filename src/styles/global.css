@@ -254,6 +254,22 @@
   }
 }
 
+/* ── Typewriter cursor animation ── */
+.typewriter-wrapper {
+  display: inline;
+}
+.typewriter-cursor {
+  display: inline-block;
+  color: var(--color-accent);
+  font-weight: 300;
+  animation: blink 1s step-end infinite;
+  margin-left: 1px;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 /* ── Language toggle: show/hide by data-site-lang ── */
 [data-site-lang="en"] [data-lang="zh"] {
   display: none !important;
