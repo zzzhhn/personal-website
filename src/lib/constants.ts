@@ -3,7 +3,7 @@ export const SITE = {
   title: "Haonan Zhong | Quantitative Finance × AI",
   description:
     "Personal portfolio of Haonan Zhong — CUHK-Shenzhen student exploring the intersection of quantitative finance and artificial intelligence.",
-  url: "https://haonanzhong.com",
+  url: "https://bobbyzhong.com",
   email: "123090894@link.cuhk.edu.cn",
   tagline: "Quantitative Finance × AI",
   phone: "(+86)13798309920",
@@ -12,7 +12,7 @@ export const SITE = {
 export const SOCIAL_LINKS = [
   {
     name: "GitHub",
-    url: "https://github.com/haonanzhong",
+    url: "https://github.com/zzzhhn",
     icon: "github",
   },
   {

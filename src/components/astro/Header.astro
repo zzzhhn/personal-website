@@ -1,39 +1,41 @@
 ---
 import ThemeToggle from "./ThemeToggle.astro";
-import { NAV_ITEMS } from "../../lib/constants";
+import LangToggle from "./LangToggle.astro";
+import { UI } from "../../lib/i18n";
 ---
 
-<header
-  class="fixed top-0 left-0 right-0 z-50 glass"
-  style="border-radius: 0; border-top: none; border-left: none; border-right: none;"
->
-  <nav class="mx-auto flex items-center justify-between px-6 py-4" style="max-width: var(--max-width-content);">
-    <a href="/" class="text-lg font-semibold tracking-tight" style="color: var(--color-text-primary); text-decoration: none;">
+<header class="fixed top-0 left-0 right-0 z-50 header-glass">
+  <nav class="mx-auto flex items-center justify-between px-6 py-3" style="max-width: var(--max-width-content);">
+    <a href="/" class="text-base font-semibold tracking-tight logo-text" style="text-decoration: none;">
       HZ
     </a>
 
     <!-- Desktop nav -->
-    <div class="hidden sm:flex items-center gap-6">
-      {NAV_ITEMS.map((item) => (
+    <div class="hidden sm:flex items-center gap-1">
+      {Object.entries(UI.nav).map(([_key, val]) => (
         <a
-          href={item.href}
-          class="text-sm font-medium transition-colors nav-link"
-          style="color: var(--color-text-secondary); text-decoration: none;"
+          href={`#${_key}`}
+          class="nav-pill text-sm font-medium px-3 py-1.5 rounded-lg transition-all"
+          style="text-decoration: none;"
         >
-          {item.label}
+          <span data-lang="en">{val.en}</span>
+          <span data-lang="zh">{val.zh}</span>
         </a>
       ))}
+      <div class="w-px h-4 mx-2" style="background: var(--color-border-subtle);" />
+      <LangToggle />
       <ThemeToggle />
     </div>
 
     <!-- Mobile controls -->
-    <div class="flex sm:hidden items-center gap-2">
+    <div class="flex sm:hidden items-center gap-1.5">
+      <LangToggle />
       <ThemeToggle />
       <button
         id="mobile-menu-btn"
         aria-label="Toggle menu"
         class="p-2 rounded-lg transition-colors cursor-pointer"
-        style="background: transparent;"
+        style="background: transparent; color: var(--color-text-secondary);"
       >
         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
@@ -44,41 +46,68 @@ import { NAV_ITEMS } from "../../lib/constants";
 
   <!-- Mobile dropdown -->
   <div id="mobile-menu" class="hidden sm:hidden px-6 pb-4">
-    {NAV_ITEMS.map((item) => (
+    {Object.entries(UI.nav).map(([_key, val]) => (
       <a
-        href={item.href}
-        class="block py-2 text-sm font-medium transition-colors nav-link mobile-nav-link"
-        style="color: var(--color-text-secondary); text-decoration: none;"
+        href={`#${_key}`}
+        class="block py-2.5 text-sm font-medium transition-colors nav-pill mobile-nav-link"
+        style="text-decoration: none;"
       >
-        {item.label}
+        <span data-lang="en">{val.en}</span>
+        <span data-lang="zh">{val.zh}</span>
       </a>
     ))}
   </div>
 </header>
 
 <style>
-  .nav-link:hover {
-    color: var(--color-text-primary) !important;
+  .header-glass {
+    background: var(--color-surface-glass);
+    backdrop-filter: blur(60px) saturate(2);
+    -webkit-backdrop-filter: blur(60px) saturate(2);
+    border-bottom: 1px solid var(--color-border-glass);
+    box-shadow:
+      0 1px 0 0 var(--color-specular),
+      0 4px 24px oklch(0 0 0 / 0.08);
   }
+
+  .logo-text {
+    color: var(--color-text-primary);
+    background: linear-gradient(135deg, var(--color-text-primary), var(--color-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .nav-pill {
+    color: var(--color-text-secondary);
+  }
+  .nav-pill:hover {
+    color: var(--color-text-primary);
+    background: var(--color-glow-ambient);
+  }
+
   #mobile-menu-btn:hover {
-    background: var(--color-surface-secondary) !important;
+    background: var(--color-glow-ambient) !important;
+    color: var(--color-text-primary) !important;
   }
 </style>
 
 <script is:inline>
   (function () {
-    var btn = document.getElementById("mobile-menu-btn");
-    var menu = document.getElementById("mobile-menu");
-    if (btn && menu) {
-      btn.addEventListener("click", function () {
-        menu.classList.toggle("hidden");
-      });
-      // Close menu when a link is clicked
-      menu.querySelectorAll("a").forEach(function (link) {
-        link.addEventListener("click", function () {
-          menu.classList.add("hidden");
-        });
-      });
-    }
+    if (window.__mobileMenuInit) return;
+    window.__mobileMenuInit = true;
+    document.addEventListener("click", function (e) {
+      var btn = e.target.closest("#mobile-menu-btn");
+      if (btn) {
+        var menu = document.getElementById("mobile-menu");
+        if (menu) menu.classList.toggle("hidden");
+        return;
+      }
+      var link = e.target.closest(".mobile-nav-link");
+      if (link) {
+        var menu = document.getElementById("mobile-menu");
+        if (menu) menu.classList.add("hidden");
+      }
+    });
   })();
 </script>

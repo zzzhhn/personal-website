@@ -1,23 +1,28 @@
 ---
 import { SITE, SOCIAL_LINKS } from "../../lib/constants";
-import SectionHeading from "./SectionHeading.astro";
+import { UI } from "../../lib/i18n";
 ---
 
 <section
   id="contact"
-  class="px-6"
-  style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section); background-color: var(--color-surface-secondary);`}
+  class="section-glow px-6"
+  style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}
 >
   <div class="mx-auto text-center" style="max-width: var(--max-width-content);">
-    <SectionHeading title="Get in Touch" />
+    <h2 class="text-3xl md:text-4xl font-semibold mb-4" style="color: var(--color-text-primary); letter-spacing: -0.02em;">
+      <span data-lang="en">{UI.sections.contact.en}</span>
+      <span data-lang="zh">{UI.sections.contact.zh}</span>
+    </h2>
+    <div class="mx-auto mb-12" style="width: 2rem; height: 2px; background: var(--color-accent); border-radius: 1px;" />
 
     <p class="text-lg mb-10 mx-auto" style="color: var(--color-text-secondary); max-width: 32rem;">
-      I'm always open to discussing new projects, research opportunities, or interesting ideas at the intersection of finance and AI.
+      <span data-lang="en">{UI.contact.description.en}</span>
+      <span data-lang="zh">{UI.contact.description.zh}</span>
     </p>
 
     <a
       href={`mailto:${SITE.email}`}
-      class="glass glass-hover inline-flex items-center gap-2 px-8 py-4 text-base font-medium mb-12"
+      class="glass glass-hover glow-accent inline-flex items-center gap-2.5 px-8 py-4 text-base font-medium mb-12"
       style="color: var(--color-text-primary); text-decoration: none;"
     >
       <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -32,8 +37,8 @@ import SectionHeading from "./SectionHeading.astro";
           href={link.url}
           target={link.icon === "mail" ? undefined : "_blank"}
           rel={link.icon === "mail" ? undefined : "noopener noreferrer"}
-          class="text-sm font-medium transition-colors"
-          style="color: var(--color-text-secondary); text-decoration: none;"
+          class="social-link text-sm font-medium transition-all"
+          style="text-decoration: none;"
           aria-label={link.name}
         >
           {link.name}
@@ -44,7 +49,10 @@ import SectionHeading from "./SectionHeading.astro";
 </section>
 
 <style>
-  a.text-sm:hover {
-    color: var(--color-text-primary) !important;
+  .social-link {
+    color: var(--color-text-tertiary);
+  }
+  .social-link:hover {
+    color: var(--color-text-primary);
   }
 </style>

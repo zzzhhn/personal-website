@@ -15,7 +15,7 @@ const { title, description, image } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark" data-site-lang="en">
   <head>
     <SEO title={title} description={description} image={image} />
 
@@ -41,6 +41,10 @@ const { title, description, image } = Astro.props;
             ? "light"
             : "dark";
         document.documentElement.setAttribute("data-theme", preferred);
+        // Language init (default: en)
+        var lang = localStorage.getItem("lang") || "en";
+        document.documentElement.setAttribute("data-site-lang", lang);
+        document.documentElement.setAttribute("lang", lang === "zh" ? "zh-CN" : "en");
       })();
     </script>
   </head>

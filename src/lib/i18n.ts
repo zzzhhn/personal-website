@@ -1,0 +1,268 @@
+// ── Bilingual content aligned to EN and ZH resumes ──
+
+export type Lang = "en" | "zh";
+
+export const UI = {
+  // ── Nav & Global ──
+  nav: {
+    about: { en: "About", zh: "关于" },
+    experience: { en: "Experience", zh: "实习经历" },
+    projects: { en: "Projects", zh: "项目" },
+    contact: { en: "Contact", zh: "联系" },
+  },
+  sections: {
+    education: { en: "Education & Awards", zh: "教育背景与荣誉" },
+    experience: { en: "Internship Experience", zh: "实习经历" },
+    projects: { en: "Projects", zh: "项目经历" },
+    campus: { en: "Campus Activities", zh: "校园经历" },
+    contact: { en: "Get in Touch", zh: "联系方式" },
+    about: { en: "About Me", zh: "关于我" },
+    certificates: { en: "Certificates", zh: "证书" },
+    languages: { en: "Languages", zh: "语言能力" },
+  },
+
+  // ── Hero ──
+  hero: {
+    tagline: {
+      en: "Quantitative Finance × AI",
+      zh: "量化金融 × 人工智能",
+    },
+    resume: { en: "Resume", zh: "简历" },
+  },
+
+  // ── About ──
+  about: {
+    bio: {
+      en: "I'm an undergraduate at the Chinese University of Hong Kong, Shenzhen, majoring in Quantitative Finance. My work spans AI-driven evaluation systems, venture capital analysis, and quantitative alpha research. From building end-to-end video evaluation pipelines to developing automated agent assessment frameworks, I focus on creating systematic, data-driven solutions at the intersection of finance and technology.",
+      zh: "我是香港中文大学（深圳）量化金融专业本科生。我的工作横跨 AI 驱动的评测系统、风险投资分析和量化 Alpha 研究。从搭建端到端的视频评测流水线到开发自动化 Agent 评估框架，我专注于在金融与科技交汇处构建系统化、数据驱动的解决方案。",
+    },
+    techCategories: {
+      en: [
+        { label: "Programming", items: ["Python", "SQL", "STATA", "MATLAB", "LaTeX"] },
+        { label: "Data & ML", items: ["NumPy", "Pandas", "matplotlib", "Scikit-learn", "TensorFlow"] },
+        { label: "Finance", items: ["Wind", "Choice", "PitchBook"] },
+        { label: "Tools", items: ["Claude Code", "MSOffice/WPS", "Word", "Excel", "PowerPoint"] },
+      ],
+      zh: [
+        { label: "编程", items: ["Python", "SQL", "STATA", "MATLAB", "LaTeX"] },
+        { label: "数据 & 机器学习", items: ["NumPy", "Pandas", "matplotlib", "Scikit-learn", "TensorFlow"] },
+        { label: "金融", items: ["Wind", "Choice", "PitchBook"] },
+        { label: "工具", items: ["Claude Code", "MSOffice/WPS", "Word", "Excel", "PowerPoint"] },
+      ],
+    },
+  },
+
+  // ── Education ──
+  education: {
+    school: {
+      en: "The Chinese University of Hong Kong, Shenzhen (CUHKSZ)",
+      zh: "香港中文大学（深圳）",
+    },
+    degree: {
+      en: "Bachelor of Business Administration, Stream: Quantitative Finance",
+      zh: "量化金融专业",
+    },
+    period: { en: "Sep 2023 – Present", zh: "2023.9 – 至今" },
+    awards: {
+      en: [
+        "2024 Shaw Spirit Award",
+        "2025 Shaw Service Award",
+        "WorldQuant BRAIN Challenge Top 0.05%",
+        "2024-25 Dean's List (School of Data Science)",
+        "2024-25 Campus Culture Development Award",
+      ],
+      zh: [
+        '2024 逸夫书院 "逸夫精神奖"',
+        '2025 逸夫书院 "逸夫服务奖"',
+        "WorldQuant BRAIN Challenge Top 0.05%",
+        "2024-25 Dean's List（数据科学学院）",
+        "2024-25 校园文化贡献奖",
+      ],
+    },
+    certificates: {
+      en: [
+        "J.P.Morgan Chase & Co. Quantitative Research Completion Certificate",
+        "2025 Deloitte Digital Camp Certificate of Participation",
+      ],
+      zh: [
+        "JPMorgan Chase & Co. Quantitative Research Completion Certificate",
+        "2025 德勤数字化精英挑战赛参赛证书",
+      ],
+    },
+    languages: {
+      en: [
+        { name: "Putonghua", level: "Native" },
+        { name: "English", level: "Proficient; TOEFL 106, CET4 660, English courses all A range" },
+        { name: "Japanese", level: "Basic" },
+        { name: "Spanish", level: "Basic, CEFR: B1" },
+      ],
+      zh: [
+        { name: "普通话", level: "母语" },
+        { name: "英语", level: "熟练；托福 106，大学英语四级 660 分，英语相关课程均 A range" },
+        { name: "日语", level: "基础" },
+        { name: "西班牙语", level: "基础，CEFR: B1" },
+      ],
+    },
+  },
+
+  // ── Contact ──
+  contact: {
+    description: {
+      en: "I'm always open to discussing new projects, research opportunities, or interesting ideas at the intersection of finance and AI.",
+      zh: "欢迎就新项目、研究机会或金融与 AI 交叉领域的有趣想法与我交流。",
+    },
+  },
+
+  // ── Footer ──
+  footer: {
+    disclaimer: {
+      en: "Information on this site may not reflect the most recent updates. For the latest details, please contact me at",
+      zh: "本站信息可能未及时更新。如需最新信息，请通过以下邮箱联系我：",
+    },
+  },
+
+  // ── Campus ──
+  campus: {
+    role: {
+      en: "Operation & Management",
+      zh: "组织者 & 运营",
+    },
+    org: {
+      en: "AceSeed+ (Job-description online sharing community)",
+      zh: "求职信息分享社群 AceSeed+",
+    },
+    period: { en: "Sep 2025 – Present", zh: "2025.09 – 至今" },
+    items: {
+      en: [
+        { label: "Community Management", text: "Oversee a community of 3,000+ members; design and automate JD distribution processes to improve information dissemination and community engagement." },
+        { label: "Event Planning", text: "Organize 3-4 recruitment-related activities per month, focusing on professional skills, career development, and industry insights to drive community growth." },
+        { label: "Cross-team Collaboration", text: "Collaborate with CPDO, CDC, and other external teams to establish long-term partnerships." },
+        { label: "Achievements", text: "Successfully increased weekly user acquisition by 50+ new users, executed 10+ major events with 100+ attendees each, and established a highly efficient JD automation workflow." },
+      ],
+      zh: [
+        { label: "社群运营", text: "管理 3000+ 成员，设计并自动化 JD 转发流程，提升信息传递效率和社群活跃度" },
+        { label: "活动策划", text: "每月策划 3-4 场求职相关活动，涉及行业分享、求职技巧等多个主题，促进社群用户增长" },
+        { label: "跨组织合作", text: "与 CPDO、CDC 等校内外求职招聘组织建立长期合作关系，推动资源整合与信息共享" },
+        { label: "成果", text: "每周吸引 50+ 新成员，成功策划并组织 10+ 场主题活动，场均报名人数 100+；建立了高效的 JD 自动转发 workflow" },
+      ],
+    },
+  },
+} as const;
+
+// ── Experiences (bilingual) ──
+export const EXPERIENCES = {
+  en: [
+    {
+      role: "Data Engineer",
+      organization: "Video Rebirth",
+      location: "Hong Kong, China",
+      startDate: "2026-02-01",
+      type: "full-time",
+      highlights: [
+        "Reproduced and built evaluation pipelines for text-to-video generation models, focusing on key dimensions including generation quality, instruction following, and semantic consistency",
+        "Independently completed the full workflow from methodology understanding and environment setup to experiment execution within the first two and a half weeks, delivering a complete evaluation output",
+        "Led the development of core evaluation modules for text-to-video tasks, including data processing, metric decomposition, and result analysis, and promoted reusable, low-cost evaluation workflow engineering",
+        "Rapidly tracked and adapted state-of-the-art evaluation methods from leading video-generation papers, bridging research paradigms with business-oriented model benchmarking and iteration infrastructure",
+      ],
+      techStack: ["Python", "Video Evaluation", "SOTA Reproduction"],
+    },
+    {
+      role: "Product Manager",
+      organization: "ByteDance",
+      location: "Shenzhen, Guangdong",
+      startDate: "2025-12-01",
+      endDate: "2026-02-01",
+      type: "internship",
+      highlights: [
+        "Built an automated evaluation data-processing pipeline for R&D agents; independently developed Python scripts to parse user prompt intent at a scale of 100M+ tokens per day",
+        "Independently designed a three-level intent taxonomy covering coding, knowledge, general-purpose, and 15+ fine-grained scenarios; continuously facilitated evaluation process by using Human-in-the-loop, harness engineering and other techniques",
+        "Conducted falsification experiments on 8+ core cases for anomalies in open-ended QA scenarios and generated high-confidence attribution conclusions",
+      ],
+      techStack: ["Python", "API", "Agent Evaluation", "Prompt Engineering"],
+    },
+    {
+      role: "Venture Capital Assistant",
+      organization: "MoE Capital",
+      location: "Silicon Valley, California (Remote)",
+      startDate: "2025-11-01",
+      endDate: "2026-03-01",
+      type: "internship",
+      highlights: [
+        "Conducted primary-market screening via PitchBook and independently wrote the historical financing section of investment memos by integrating data on funding rounds, investor structure, and valuation trends",
+        "Researched the MCP managed services space and produced in-depth competitive analysis by extracting unstructured information from social media, company websites, and third-party reviews",
+        "Designed and built an automated audio-processing workflow with multimodal LLMs for GP meetings and expert interviews, improving meeting-note generation efficiency by 50%+",
+      ],
+      techStack: ["PitchBook", "LLM", "Venture Capital", "Competitive Analysis"],
+    },
+    {
+      role: "Research Consultant",
+      organization: "WorldQuant",
+      location: "Remote",
+      startDate: "2025-08-01",
+      endDate: "2025-11-01",
+      type: "research",
+      highlights: [
+        "Relying on the BRAIN platform and focusing on the TOP 3000 Universe of US stocks, using price and volume data as inputs, along with timing and cross-sectional operators such as ts_rank, ts_decay_linear, and rank, 100+ Alphas covering short-term reversals, momentum, and fundamental value were constructed",
+        "To address the issue of transaction cost erosion caused by high Turnover during backtesting, ts_decay_linear attenuation smoothing and group_neutralize industry neutralization were introduced, significantly enhancing the RankIC stability (ICIR) and reducing the turnover rate by approximately 15%",
+      ],
+      techStack: ["BRAIN Platform", "Alpha Factors", "Quantitative Research", "Python"],
+    },
+  ],
+  zh: [
+    {
+      role: "Data Engineer – 评测",
+      organization: "Video Rebirth",
+      location: "中国 – 香港",
+      startDate: "2026-02-01",
+      type: "full-time",
+      highlights: [
+        "聚焦文生视频模型评测方向，围绕生成质量、指令遵循、语义一致性等核心维度，独立复现并跑通业界前沿论文中的主流评测流程",
+        "在入职两周半内完成从方案理解、环境配置到实验执行的全流程落地，形成完整评测产出",
+        "针对文生视频任务的数据处理、指标拆解与结果分析需求，自主推进评测方案工程化，实现低成本、高可复用的评测流程工具化",
+        "快速跟进视频生成领域和相关 SOTA 评测方法，对论文中的评测范式进行拆解、复现与适配，打通研究方法向业务评测链路的迁移路径",
+      ],
+      techStack: ["Python", "视频评测", "SOTA复现"],
+    },
+    {
+      role: "产品经理 – Agent 评测",
+      organization: "字节跳动",
+      location: "广东 – 深圳",
+      startDate: "2025-12-01",
+      endDate: "2026-02-01",
+      type: "internship",
+      highlights: [
+        "针对研发 Agent 构建自动化数据提取和处理体系，利用 Python 独立编写分析脚本，实现日均万亿级别 Token 规模的用户 Prompt 意图解析，通过 API 调用强模型打标，实现 95% 以上的自动化打标覆盖率",
+        "独立设计 3 级意图分类树（涵盖代码、知识、通用等 15+ 细分场景），通过 Human-in-the-loop、few-shots 等机制持续优化提示词，将人机一致率从初始的 60% 提升至 90% 以上",
+        "负责包含 AI 编程模式指标分析，通过复用 Aime 评测工作流，将报告产出周期缩短 40%",
+      ],
+      techStack: ["Python", "API", "Agent评测", "Prompt Engineering"],
+    },
+    {
+      role: "风险投资",
+      organization: "MoE Capital",
+      location: "加利福尼亚 – 硅谷（远程）",
+      startDate: "2025-10-01",
+      endDate: "2025-12-01",
+      type: "internship",
+      highlights: [
+        "熟练运用 PitchBook 平台进行一级市场扫描，深度检索并整合目标公司的融资轮次、投资者构成及估值走向，独立完成投资备忘录中往期融资历史模块的撰写",
+        "针对 MCP 管理服务赛道进行专项调研，通过多渠道信息提取产出深度竞对分析报告",
+        "针对 GP 的会议与专家访谈场景，利用多模态大语言模型设计并搭建自动化录音处理工作流，将纪要产出效率提升 50% 以上",
+      ],
+      techStack: ["PitchBook", "LLM", "风险投资", "竞对分析"],
+    },
+    {
+      role: "研究顾问",
+      organization: "WorldQuant 世坤",
+      location: "远程",
+      startDate: "2025-07-01",
+      endDate: "2025-10-01",
+      type: "research",
+      highlights: [
+        "依托 BRAIN 平台，聚焦美股 TOP 3000 Universe，利用价量数据与基本面数据为输入，采用 ts_rank、ts_decay_linear、rank 等时序与截面算子，系统性构建了涵盖短期反转、动量及基本面价值等多类信号的 Alpha，最终产出 100+ 个通过平台检验的高质因子",
+        "针对回测中高 Turnover 导致的交易成本侵蚀问题，引入 ts_decay_linear 衰减平滑与 group_neutralize 行业中性化，提升因子回测通过率约 15%",
+      ],
+      techStack: ["BRAIN Platform", "Alpha因子", "量化研究", "Python"],
+    },
+  ],
+} as const;

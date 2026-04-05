@@ -1,18 +1,23 @@
 import TimelineCard from "./TimelineCard";
 
-interface Experience {
+interface ExperienceEntry {
   role: string;
   organization: string;
   location: string;
-  startDate: string;
-  endDate?: string;
   type: string;
   highlights: string[];
   techStack: string[];
 }
 
+interface BilingualExperience {
+  en: ExperienceEntry;
+  zh: ExperienceEntry;
+  startDate: string;
+  endDate?: string;
+}
+
 interface Props {
-  experiences: Experience[];
+  experiences: BilingualExperience[];
 }
 
 export default function ExperienceTimeline({ experiences }: Props) {
@@ -20,8 +25,11 @@ export default function ExperienceTimeline({ experiences }: Props) {
     <div className="relative">
       {experiences.map((exp, i) => (
         <TimelineCard
-          key={`${exp.organization}-${exp.role}`}
-          {...exp}
+          key={`${exp.en.organization}-${exp.en.role}`}
+          en={exp.en}
+          zh={exp.zh}
+          startDate={exp.startDate}
+          endDate={exp.endDate}
           index={i}
         />
       ))}

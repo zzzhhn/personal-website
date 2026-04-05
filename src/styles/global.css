@@ -3,16 +3,33 @@
 
 /* ── Dark theme tokens (default) ── */
 @theme {
-  --color-surface-primary: oklch(0.13 0.01 260);
-  --color-surface-secondary: oklch(0.17 0.01 260);
-  --color-surface-glass: oklch(0.18 0.015 260 / 0.6);
-  --color-border-subtle: oklch(0.28 0.01 260);
-  --color-text-primary: oklch(0.95 0 0);
-  --color-text-secondary: oklch(0.65 0 0);
-  --color-accent: oklch(0.7 0.15 250);
-  --color-accent-hover: oklch(0.75 0.18 250);
+  /* Surfaces — deeper, richer darks for better glass contrast */
+  --color-surface-primary: oklch(0.11 0.015 265);
+  --color-surface-secondary: oklch(0.14 0.012 265);
+  --color-surface-glass: oklch(0.16 0.015 265 / 0.45);
+  --color-surface-elevated: oklch(0.19 0.015 265 / 0.55);
 
-  --font-sans: "Geist Sans", system-ui, -apple-system, sans-serif;
+  /* Borders — gradient-friendly, subtle luminance */
+  --color-border-subtle: oklch(0.3 0.01 265 / 0.25);
+  --color-border-glass: oklch(0.45 0.01 265 / 0.12);
+  --color-border-highlight: oklch(1 0 0 / 0.08);
+
+  /* Text — refined contrast hierarchy */
+  --color-text-primary: oklch(0.96 0 0);
+  --color-text-secondary: oklch(0.62 0 0);
+  --color-text-tertiary: oklch(0.45 0 0);
+
+  /* Accent — refined blue, slightly more saturated */
+  --color-accent: oklch(0.68 0.16 255);
+  --color-accent-hover: oklch(0.74 0.18 255);
+  --color-accent-glow: oklch(0.68 0.16 255 / 0.2);
+
+  /* Specular & Light */
+  --color-specular: oklch(1 0 0 / 0.06);
+  --color-specular-strong: oklch(1 0 0 / 0.12);
+  --color-glow-ambient: oklch(0.5 0.12 265 / 0.08);
+
+  --font-sans: "Geist Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
 
   --text-display: 4.5rem;
   --text-display--line-height: 1.05;
@@ -22,23 +39,37 @@
   --text-display-mobile--line-height: 1.1;
   --text-display-mobile--letter-spacing: -0.02em;
 
-  --spacing-section: 8rem;
+  --spacing-section: 7rem;
   --spacing-section-mobile: 4rem;
 
   --max-width-content: 72rem;
+
+  /* Squircle radius system */
+  --radius-sm: 0.625rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.375rem;
+  --radius-xl: 1.75rem;
 }
 
 /* ── Light mode overrides ── */
 @layer base {
   [data-theme="light"] {
-    --color-surface-primary: oklch(0.98 0 0);
-    --color-surface-secondary: oklch(0.94 0 0);
-    --color-surface-glass: oklch(0.97 0.005 260 / 0.72);
-    --color-border-subtle: oklch(0.85 0.01 260);
-    --color-text-primary: oklch(0.12 0 0);
-    --color-text-secondary: oklch(0.45 0 0);
-    --color-accent: oklch(0.5 0.2 250);
-    --color-accent-hover: oklch(0.45 0.22 250);
+    --color-surface-primary: oklch(0.975 0.002 265);
+    --color-surface-secondary: oklch(0.945 0.004 265);
+    --color-surface-glass: oklch(0.98 0.003 265 / 0.65);
+    --color-surface-elevated: oklch(0.99 0.002 265 / 0.75);
+    --color-border-subtle: oklch(0.82 0.01 265 / 0.3);
+    --color-border-glass: oklch(0.7 0.01 265 / 0.12);
+    --color-border-highlight: oklch(1 0 0 / 0.5);
+    --color-text-primary: oklch(0.12 0.01 265);
+    --color-text-secondary: oklch(0.42 0.01 265);
+    --color-text-tertiary: oklch(0.6 0.005 265);
+    --color-accent: oklch(0.48 0.2 255);
+    --color-accent-hover: oklch(0.42 0.22 255);
+    --color-accent-glow: oklch(0.48 0.2 255 / 0.12);
+    --color-specular: oklch(1 0 0 / 0.65);
+    --color-specular-strong: oklch(1 0 0 / 0.85);
+    --color-glow-ambient: oklch(0.5 0.08 265 / 0.04);
   }
 
   html {
@@ -56,22 +87,132 @@
   }
 }
 
-/* ── Glassmorphism utilities ── */
+/* ── Ambient mesh background — creates spatial depth ── */
+@layer base {
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 40%, oklch(0.22 0.08 280 / 0.25), transparent),
+      radial-gradient(ellipse 50% 40% at 80% 20%, oklch(0.18 0.1 230 / 0.18), transparent),
+      radial-gradient(ellipse 70% 50% at 50% 100%, oklch(0.16 0.06 310 / 0.12), transparent);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  [data-theme="light"] body::before {
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 40%, oklch(0.88 0.04 280 / 0.2), transparent),
+      radial-gradient(ellipse 50% 40% at 80% 20%, oklch(0.9 0.05 230 / 0.15), transparent),
+      radial-gradient(ellipse 70% 50% at 50% 100%, oklch(0.85 0.03 310 / 0.1), transparent);
+  }
+
+  body > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* ── Liquid Glass material system ── */
 @layer utilities {
   .glass {
     background: var(--color-surface-glass);
-    backdrop-filter: blur(20px) saturate(1.4);
-    -webkit-backdrop-filter: blur(20px) saturate(1.4);
-    border: 1px solid var(--color-border-subtle);
-    border-radius: 1rem;
+    backdrop-filter: blur(40px) saturate(1.8);
+    -webkit-backdrop-filter: blur(40px) saturate(1.8);
+    border: 1px solid var(--color-border-glass);
+    border-radius: var(--radius-lg);
+    box-shadow:
+      0 0 0 0.5px var(--color-border-subtle),
+      0 2px 4px oklch(0 0 0 / 0.06),
+      0 8px 24px oklch(0 0 0 / 0.12),
+      inset 0 1px 0 0 var(--color-specular);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Specular top-edge highlight — simulates light refraction */
+  .glass::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      180deg,
+      var(--color-specular-strong) 0%,
+      transparent 40%
+    );
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Ensure glass children sit above the specular layer */
+  .glass > * {
+    position: relative;
+    z-index: 1;
   }
 
   .glass-hover {
-    transition: transform 200ms ease, box-shadow 200ms ease;
+    transition:
+      transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.35s ease;
   }
   .glass-hover:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 32px oklch(0 0 0 / 0.3);
+    transform: translateY(-3px) scale(1.005);
+    border-color: var(--color-border-highlight);
+    box-shadow:
+      0 0 0 0.5px var(--color-border-subtle),
+      0 4px 8px oklch(0 0 0 / 0.08),
+      0 16px 48px oklch(0 0 0 / 0.18),
+      0 0 24px var(--color-accent-glow),
+      inset 0 1px 0 0 var(--color-specular-strong);
+  }
+
+  /* Elevated glass — for headers, overlays */
+  .glass-elevated {
+    background: var(--color-surface-elevated);
+    backdrop-filter: blur(60px) saturate(2);
+    -webkit-backdrop-filter: blur(60px) saturate(2);
+    border: 1px solid var(--color-border-glass);
+    box-shadow:
+      0 0 0 0.5px var(--color-border-subtle),
+      0 1px 2px oklch(0 0 0 / 0.05),
+      0 4px 16px oklch(0 0 0 / 0.1),
+      0 12px 40px oklch(0 0 0 / 0.15),
+      inset 0 1px 0 0 var(--color-specular);
+  }
+
+  /* Subtle glass — for tags, badges */
+  .glass-subtle {
+    background: var(--color-surface-glass);
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    border: 1px solid var(--color-border-glass);
+    border-radius: var(--radius-sm);
+    box-shadow: inset 0 1px 0 0 var(--color-specular);
+  }
+
+  /* Section divider — soft gradient instead of hard border */
+  .section-glow {
+    position: relative;
+  }
+  .section-glow::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(32rem, 60%);
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--color-border-subtle) 20%,
+      var(--color-accent-glow) 50%,
+      var(--color-border-subtle) 80%,
+      transparent 100%
+    );
   }
 
   .fade-up {
@@ -87,4 +228,36 @@
   .stagger-child {
     transition-delay: calc(var(--stagger-index, 0) * 80ms);
   }
+
+  /* Accent glow effect for CTA buttons */
+  .glow-accent {
+    position: relative;
+  }
+  .glow-accent::after {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    background: linear-gradient(
+      135deg,
+      var(--color-accent-glow),
+      transparent 40%,
+      transparent 60%,
+      var(--color-accent-glow)
+    );
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+  }
+  .glow-accent:hover::after {
+    opacity: 1;
+  }
+}
+
+/* ── Language toggle: show/hide by data-site-lang ── */
+[data-site-lang="en"] [data-lang="zh"] {
+  display: none !important;
+}
+[data-site-lang="zh"] [data-lang="en"] {
+  display: none !important;
 }

@@ -1,0 +1,38 @@
+---
+---
+
+<button
+  aria-label="Toggle language"
+  class="lang-toggle px-2.5 py-1 rounded-lg text-xs font-semibold transition-all cursor-pointer"
+>
+  <span data-lang="en">中</span>
+  <span data-lang="zh">EN</span>
+</button>
+
+<style is:global>
+  .lang-toggle {
+    background: transparent;
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border-glass);
+  }
+  .lang-toggle:hover {
+    background: var(--color-glow-ambient);
+    color: var(--color-text-primary);
+    border-color: var(--color-border-highlight);
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    if (window.__langToggleInit) return;
+    window.__langToggleInit = true;
+    document.addEventListener("click", function (e) {
+      var btn = e.target.closest(".lang-toggle");
+      if (!btn) return;
+      var current = document.documentElement.getAttribute("data-site-lang") || "en";
+      var next = current === "en" ? "zh" : "en";
+      document.documentElement.setAttribute("data-site-lang", next);
+      localStorage.setItem("lang", next);
+    });
+  })();
+</script>

@@ -1,32 +1,42 @@
 ---
-import { getCollection, render } from "astro:content";
-import SectionHeading from "./SectionHeading.astro";
-
-const aboutEntries = await getCollection("about");
-const bio = aboutEntries[0];
-const { Content } = await render(bio);
-const { techCategories } = bio.data;
+import { UI } from "../../lib/i18n";
 ---
 
-<section id="about" class="px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
+<section id="about" class="section-glow px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
   <div class="mx-auto" style="max-width: var(--max-width-content);">
-    <SectionHeading title={bio.data.headline} />
+    <h2 class="text-3xl md:text-4xl font-semibold mb-4 text-center" style="color: var(--color-text-primary); letter-spacing: -0.02em;">
+      <span data-lang="en">{UI.sections.about.en}</span>
+      <span data-lang="zh">{UI.sections.about.zh}</span>
+    </h2>
+    <div class="mx-auto mb-4" style="width: 2rem; height: 2px; background: var(--color-accent); border-radius: 1px;" />
 
-    <div class="mx-auto mb-16 text-lg leading-relaxed" style="max-width: 40rem; color: var(--color-text-secondary);">
-      <Content />
+    <div class="mx-auto mb-16 text-lg leading-relaxed text-center" style="max-width: 40rem; color: var(--color-text-secondary);">
+      <p data-lang="en">{UI.about.bio.en}</p>
+      <p data-lang="zh">{UI.about.bio.zh}</p>
     </div>
 
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mx-auto" style="max-width: 56rem;">
-      {techCategories.map((category) => (
-        <div class="glass p-6">
-          <h3 class="text-sm font-semibold uppercase tracking-wider mb-4" style="color: var(--color-accent);">
-            {category.label}
-          </h3>
-          <ul class="space-y-2">
-            {category.items.map((item) => (
-              <li class="text-sm" style="color: var(--color-text-secondary);">
-                {item}
-              </li>
+    <!-- EN tech categories -->
+    <div data-lang="en" class="grid grid-cols-2 md:grid-cols-4 gap-5 mx-auto" style="max-width: 56rem;">
+      {UI.about.techCategories.en.map((cat) => (
+        <div class="glass glass-hover p-6">
+          <h3 class="text-xs font-semibold uppercase tracking-widest mb-4" style="color: var(--color-accent);">{cat.label}</h3>
+          <ul class="space-y-2.5">
+            {cat.items.map((item) => (
+              <li class="text-sm" style="color: var(--color-text-secondary);">{item}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <!-- ZH tech categories -->
+    <div data-lang="zh" class="grid grid-cols-2 md:grid-cols-4 gap-5 mx-auto" style="max-width: 56rem;">
+      {UI.about.techCategories.zh.map((cat) => (
+        <div class="glass glass-hover p-6">
+          <h3 class="text-xs font-semibold uppercase tracking-widest mb-4" style="color: var(--color-accent);">{cat.label}</h3>
+          <ul class="space-y-2.5">
+            {cat.items.map((item) => (
+              <li class="text-sm" style="color: var(--color-text-secondary);">{item}</li>
             ))}
           </ul>
         </div>

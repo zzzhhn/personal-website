@@ -3,28 +3,35 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/astro/Hero.astro";
 import About from "../components/astro/About.astro";
 import Education from "../components/astro/Education.astro";
-import SectionHeading from "../components/astro/SectionHeading.astro";
 import Campus from "../components/astro/Campus.astro";
 import Contact from "../components/astro/Contact.astro";
 import ExperienceTimeline from "../components/react/ExperienceTimeline";
 import ProjectGrid from "../components/react/ProjectGrid";
 import { getCollection } from "astro:content";
 import { SITE } from "../lib/constants";
+import { UI, EXPERIENCES } from "../lib/i18n";
 
-// Fetch and sort experiences
-const rawExperiences = await getCollection("experiences");
-const experiences = rawExperiences
-  .sort((a, b) => a.data.order - b.data.order)
-  .map((e) => ({
-    role: e.data.role,
-    organization: e.data.organization,
-    location: e.data.location,
-    startDate: e.data.startDate.toISOString(),
-    endDate: e.data.endDate?.toISOString(),
-    type: e.data.type,
-    highlights: e.data.highlights,
-    techStack: e.data.techStack,
-  }));
+// Build bilingual experience array
+const bilingualExperiences = EXPERIENCES.en.map((enExp, i) => ({
+  en: {
+    role: enExp.role,
+    organization: enExp.organization,
+    location: enExp.location,
+    type: enExp.type,
+    highlights: [...enExp.highlights],
+    techStack: [...enExp.techStack],
+  },
+  zh: {
+    role: EXPERIENCES.zh[i].role,
+    organization: EXPERIENCES.zh[i].organization,
+    location: EXPERIENCES.zh[i].location,
+    type: EXPERIENCES.zh[i].type,
+    highlights: [...EXPERIENCES.zh[i].highlights],
+    techStack: [...EXPERIENCES.zh[i].techStack],
+  },
+  startDate: enExp.startDate,
+  endDate: enExp.endDate,
+}));
 
 // Fetch and sort projects (featured first, then by order)
 const rawProjects = await getCollection("projects");
@@ -49,18 +56,26 @@ const projects = rawProjects
   <About />
   <Education />
 
-  <section id="experience" class="px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
+  <section id="experience" class="section-glow px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
     <div class="mx-auto" style="max-width: var(--max-width-content);">
-      <SectionHeading title="Internship Experience" />
+      <h2 class="text-3xl md:text-4xl font-semibold mb-4 text-center" style="color: var(--color-text-primary); letter-spacing: -0.02em;">
+        <span data-lang="en">{UI.sections.experience.en}</span>
+        <span data-lang="zh">{UI.sections.experience.zh}</span>
+      </h2>
+      <div class="mx-auto mb-12" style="width: 2rem; height: 2px; background: var(--color-accent); border-radius: 1px;" />
       <div class="mx-auto" style="max-width: 48rem;">
-        <ExperienceTimeline client:visible experiences={experiences} />
+        <ExperienceTimeline client:visible experiences={bilingualExperiences} />
       </div>
     </div>
   </section>
 
-  <section id="projects" class="px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section); background-color: var(--color-surface-secondary);`}>
+  <section id="projects" class="section-glow px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
     <div class="mx-auto" style="max-width: var(--max-width-content);">
-      <SectionHeading title="Projects" />
+      <h2 class="text-3xl md:text-4xl font-semibold mb-4 text-center" style="color: var(--color-text-primary); letter-spacing: -0.02em;">
+        <span data-lang="en">{UI.sections.projects.en}</span>
+        <span data-lang="zh">{UI.sections.projects.zh}</span>
+      </h2>
+      <div class="mx-auto mb-12" style="width: 2rem; height: 2px; background: var(--color-accent); border-radius: 1px;" />
       <ProjectGrid client:visible projects={projects} />
     </div>
   </section>

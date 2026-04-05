@@ -24,31 +24,27 @@ export default function ProjectCard({
   links,
   index,
 }: ProjectCardProps) {
+  const isCompleted = status === "completed";
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 32 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
-      transition={{ duration: 0.5, delay: index * 0.12, ease: "easeOut" }}
+      transition={{ duration: 0.5, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
       className="glass glass-hover p-8 flex flex-col h-full"
-      style={{ border: "1px solid var(--color-border-subtle)" }}
     >
       {/* Status badge */}
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-5">
         <span
-          className="text-xs font-medium px-2 py-1 rounded-full"
+          className="glass-subtle text-xs font-medium px-2.5 py-1"
           style={{
-            backgroundColor:
-              status === "completed"
-                ? "oklch(0.45 0.15 145 / 0.2)"
-                : "oklch(0.55 0.15 60 / 0.2)",
-            color:
-              status === "completed"
-                ? "oklch(0.7 0.15 145)"
-                : "oklch(0.75 0.15 60)",
+            color: isCompleted
+              ? "oklch(0.7 0.15 145)"
+              : "oklch(0.75 0.15 60)",
           }}
         >
-          {status === "completed" ? "Completed" : "In Progress"}
+          {isCompleted ? "Completed" : "In Progress"}
         </span>
       </div>
 
@@ -59,20 +55,19 @@ export default function ProjectCard({
       >
         <a
           href={`/projects/${slug}`}
-          className="hover:underline"
           style={{ color: "inherit", textDecoration: "none" }}
         >
           {title}
         </a>
       </h3>
       <p
-        className="text-sm mb-3"
+        className="text-sm mb-3 font-medium"
         style={{ color: "var(--color-accent)" }}
       >
         {tagline}
       </p>
       <p
-        className="text-sm mb-6 flex-1"
+        className="text-sm mb-6 flex-1 leading-relaxed"
         style={{ color: "var(--color-text-secondary)" }}
       >
         {description}
@@ -83,11 +78,8 @@ export default function ProjectCard({
         {techStack.map((tech) => (
           <span
             key={tech}
-            className="text-xs px-2 py-1 rounded-md"
-            style={{
-              backgroundColor: "var(--color-surface-secondary)",
-              color: "var(--color-text-secondary)",
-            }}
+            className="glass-subtle text-xs px-2.5 py-1"
+            style={{ color: "var(--color-text-secondary)" }}
           >
             {tech}
           </span>
@@ -95,7 +87,7 @@ export default function ProjectCard({
       </div>
 
       {/* Links */}
-      <div className="flex items-center gap-4 mt-auto">
+      <div className="flex items-center gap-4 mt-auto pt-4" style={{ borderTop: "1px solid var(--color-border-glass)" }}>
         <a
           href={`/projects/${slug}`}
           className="text-sm font-medium transition-colors"
@@ -109,7 +101,7 @@ export default function ProjectCard({
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm transition-colors"
-            style={{ color: "var(--color-text-secondary)", textDecoration: "none" }}
+            style={{ color: "var(--color-text-tertiary)", textDecoration: "none" }}
           >
             GitHub
           </a>
@@ -120,7 +112,7 @@ export default function ProjectCard({
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm transition-colors"
-            style={{ color: "var(--color-text-secondary)", textDecoration: "none" }}
+            style={{ color: "var(--color-text-tertiary)", textDecoration: "none" }}
           >
             Live Demo
           </a>

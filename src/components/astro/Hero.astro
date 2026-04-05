@@ -1,58 +1,65 @@
 ---
 import { SITE, SOCIAL_LINKS } from "../../lib/constants";
+import { UI } from "../../lib/i18n";
 ---
 
 <section class="hero-section flex flex-col items-center justify-center text-center px-6">
-  <!-- Subtle gradient orb background effect -->
-  <div
-    class="absolute inset-0 overflow-hidden pointer-events-none"
-    aria-hidden="true"
-  >
-    <div
-      class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-20 blur-3xl"
-      style="width: 600px; height: 600px; background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);"
-    />
+  <!-- Ambient gradient orbs -->
+  <div class="hero-ambient" aria-hidden="true">
+    <div class="orb orb-1" />
+    <div class="orb orb-2" />
+    <div class="orb orb-3" />
   </div>
 
   <div class="relative z-10 w-full">
-    <!-- Profile photo with fade-to-background mask -->
-    <div class="profile-container mx-auto mb-10">
-      <img
-        src="/images/profile.jpg"
-        alt={`Photo of ${SITE.name}`}
-        width="280"
-        height="340"
-        class="profile-photo mx-auto"
-        loading="eager"
-      />
+    <!-- Profile photo with Liquid Glass frame -->
+    <div class="profile-frame mx-auto mb-12">
+      <div class="profile-container">
+        <img
+          src="/images/profile.jpg"
+          alt={`Photo of ${SITE.name}`}
+          width="280"
+          height="340"
+          class="profile-photo"
+          loading="eager"
+        />
+      </div>
+      <!-- Glass reflection overlay -->
+      <div class="profile-reflection" />
     </div>
 
-    <h1
-      class="font-semibold mb-6"
-      style="font-size: var(--text-display); line-height: var(--text-display--line-height); letter-spacing: var(--text-display--letter-spacing); color: var(--color-text-primary);"
-    >
+    <h1 class="hero-name font-semibold mb-4">
       {SITE.name}
     </h1>
 
-    <p
-      class="text-xl md:text-2xl mb-10 font-medium"
-      style="color: var(--color-text-secondary);"
-    >
-      {SITE.tagline}
+    <p class="hero-tagline text-xl md:text-2xl mb-12 font-medium">
+      <span data-lang="en">{UI.hero.tagline.en}</span>
+      <span data-lang="zh">{UI.hero.tagline.zh}</span>
     </p>
 
-    <div class="flex items-center justify-center gap-4 flex-wrap">
+    <div class="flex items-center justify-center gap-3 flex-wrap">
+      <!-- EN resume link (shown in EN mode) -->
       <a
-        href="/resume.pdf"
-        class="glass glass-hover inline-flex items-center gap-2 px-6 py-3 text-sm font-medium"
-        style="color: var(--color-text-primary); text-decoration: none;"
+        data-lang="en"
+        href="/resume-en.pdf"
+        class="glass glass-hover glow-accent inline-flex items-center gap-2 px-6 py-3 text-sm font-medium cta-primary"
       >
         <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
         </svg>
-        Resume
+        {UI.hero.resume.en}
       </a>
-
+      <!-- ZH resume link (shown in ZH mode) -->
+      <a
+        data-lang="zh"
+        href="/resume.pdf"
+        class="glass glass-hover glow-accent inline-flex items-center gap-2 px-6 py-3 text-sm font-medium cta-primary"
+      >
+        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+        </svg>
+        {UI.hero.resume.zh}
+      </a>
       {SOCIAL_LINKS.map((link) => (
         <a
           href={link.url}
@@ -66,6 +73,12 @@ import { SITE, SOCIAL_LINKS } from "../../lib/constants";
         </a>
       ))}
     </div>
+
+    <!-- Resume disclaimer -->
+    <p class="mt-6 text-xs" style="color: var(--color-text-tertiary);">
+      <span data-lang="en">Resume may not reflect the most recent updates. Last updated: Jun 2025.</span>
+      <span data-lang="zh">简历可能未及时更新，最近更新时间：2025 年 6 月。</span>
+    </p>
   </div>
 </section>
 
@@ -74,46 +87,147 @@ import { SITE, SOCIAL_LINKS } from "../../lib/constants";
     min-height: 100vh;
     padding-top: 6rem;
     padding-bottom: var(--spacing-section);
-  }
-
-  .profile-container {
-    width: 220px;
-    height: 280px;
     position: relative;
     overflow: hidden;
-    border-radius: 1.25rem;
   }
 
+  /* Animated ambient gradient orbs */
+  .hero-ambient {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    will-change: transform;
+  }
+  .orb-1 {
+    width: 600px;
+    height: 600px;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: radial-gradient(circle, oklch(0.35 0.15 265 / 0.3), transparent 70%);
+    animation: float-1 12s ease-in-out infinite;
+  }
+  .orb-2 {
+    width: 400px;
+    height: 400px;
+    top: 30%;
+    left: 15%;
+    background: radial-gradient(circle, oklch(0.3 0.12 300 / 0.2), transparent 70%);
+    animation: float-2 16s ease-in-out infinite;
+  }
+  .orb-3 {
+    width: 350px;
+    height: 350px;
+    bottom: 10%;
+    right: 10%;
+    background: radial-gradient(circle, oklch(0.25 0.1 230 / 0.15), transparent 70%);
+    animation: float-3 14s ease-in-out infinite;
+  }
+
+  @keyframes float-1 {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-30px); }
+  }
+  @keyframes float-2 {
+    0%, 100% { transform: translateY(0) translateX(0); }
+    33% { transform: translateY(-20px) translateX(15px); }
+    66% { transform: translateY(10px) translateX(-10px); }
+  }
+  @keyframes float-3 {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-25px); }
+  }
+
+  [data-theme="light"] .orb-1 {
+    background: radial-gradient(circle, oklch(0.8 0.08 265 / 0.25), transparent 70%);
+  }
+  [data-theme="light"] .orb-2 {
+    background: radial-gradient(circle, oklch(0.82 0.06 300 / 0.18), transparent 70%);
+  }
+  [data-theme="light"] .orb-3 {
+    background: radial-gradient(circle, oklch(0.78 0.05 230 / 0.12), transparent 70%);
+  }
+
+  /* Profile photo — Liquid Glass frame */
+  .profile-frame {
+    width: 200px;
+    height: 260px;
+    position: relative;
+  }
+  .profile-container {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    box-shadow:
+      0 0 0 1px var(--color-border-glass),
+      0 8px 32px oklch(0 0 0 / 0.2),
+      0 2px 8px oklch(0 0 0 / 0.1);
+  }
   .profile-photo {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: center top;
     display: block;
-    /* Fade bottom edge into the page background */
-    mask-image: linear-gradient(
-      to bottom,
-      black 0%,
-      black 55%,
+    mask-image: linear-gradient(to bottom, black 0%, black 60%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 0%, black 60%, transparent 100%);
+  }
+  .profile-reflection {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-xl);
+    background: linear-gradient(
+      165deg,
+      var(--color-specular-strong) 0%,
+      transparent 35%,
       transparent 100%
     );
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      black 0%,
-      black 55%,
-      transparent 100%
-    );
+    pointer-events: none;
+  }
+
+  /* Typography */
+  .hero-name {
+    font-size: var(--text-display);
+    line-height: var(--text-display--line-height);
+    letter-spacing: var(--text-display--letter-spacing);
+    color: var(--color-text-primary);
+  }
+  .hero-tagline {
+    color: var(--color-text-secondary);
+    letter-spacing: -0.01em;
+  }
+
+  /* CTA */
+  .cta-primary {
+    color: var(--color-text-primary);
+    text-decoration: none;
   }
 
   @media (max-width: 768px) {
-    h1 {
+    .hero-name {
       font-size: var(--text-display-mobile) !important;
       line-height: var(--text-display-mobile--line-height) !important;
       letter-spacing: var(--text-display-mobile--letter-spacing) !important;
     }
-    .profile-container {
-      width: 180px;
-      height: 230px;
+    .profile-frame {
+      width: 160px;
+      height: 210px;
     }
+    .orb-1 { width: 350px; height: 350px; }
+    .orb-2 { width: 250px; height: 250px; }
+    .orb-3 { width: 200px; height: 200px; }
+  }
+
+  /* Reduce motion for accessibility */
+  @media (prefers-reduced-motion: reduce) {
+    .orb { animation: none !important; }
   }
 </style>
