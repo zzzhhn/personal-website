@@ -7,41 +7,8 @@ import { UI } from "../../lib/i18n";
 <header class="fixed top-0 left-0 right-0 z-50 header-glass">
   <nav class="mx-auto flex items-center justify-between px-6 py-3" style="max-width: var(--max-width-content);">
     <a href="/" class="logo-mark" style="text-decoration: none;" aria-label="Home">
-      <svg class="logo-svg" viewBox="0 0 58 30" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <!-- Gold foil gradient (light mode default) -->
-          <linearGradient id="foil-grad" x1="0" y1="0" x2="58" y2="30" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#C9A84C" />
-            <stop offset="25%" stop-color="#F0D78C" />
-            <stop offset="50%" stop-color="#C9A84C" />
-            <stop offset="75%" stop-color="#F0D78C" />
-            <stop offset="100%" stop-color="#B8943F" />
-          </linearGradient>
-          <!-- Shimmer sweep -->
-          <linearGradient id="foil-shimmer" x1="-58" y1="0" x2="0" y2="30" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="transparent" />
-            <stop offset="45%" stop-color="transparent" />
-            <stop offset="50%" stop-color="rgba(255,255,255,0.6)" />
-            <stop offset="55%" stop-color="transparent" />
-            <stop offset="100%" stop-color="transparent" />
-          </linearGradient>
-        </defs>
-        <!-- Hollow serif letterforms -->
-        <text
-          x="29" y="24"
-          text-anchor="middle"
-          font-family="'Instrument Serif', Georgia, 'Noto Serif SC', serif"
-          font-size="28"
-          font-weight="400"
-          fill="none"
-          stroke="url(#foil-grad)"
-          stroke-width="0.7"
-          letter-spacing="2"
-          paint-order="stroke"
-        >HZ.</text>
-        <!-- Shimmer overlay -->
-        <rect class="logo-shimmer" x="0" y="0" width="58" height="30" fill="url(#foil-shimmer)" />
-      </svg>
+      <img src="/images/logo-gold.png" alt="HZ." class="logo-img logo-light" width="50" height="24" loading="eager" />
+      <img src="/images/logo-silver.png" alt="HZ." class="logo-img logo-dark" width="50" height="24" loading="eager" />
     </a>
 
     <!-- Desktop nav -->
@@ -108,31 +75,22 @@ import { UI } from "../../lib/i18n";
     display: flex;
     align-items: center;
   }
-  .logo-svg {
-    width: 50px;
-    height: 26px;
-  }
-
-  /* Shimmer sweep animation on hover */
-  .logo-shimmer {
-    opacity: 0;
+  .logo-img {
+    height: 24px;
+    width: auto;
+    object-fit: contain;
     transition: opacity 0.3s ease;
   }
-  .logo-mark:hover .logo-shimmer {
-    opacity: 1;
-    animation: foil-sweep 0.8s ease-out forwards;
-  }
-  @keyframes foil-sweep {
-    from { transform: translateX(-58px); }
-    to   { transform: translateX(58px); }
-  }
+  /* Default (dark theme): show silver, hide gold */
+  .logo-light { display: none; }
+  .logo-dark  { display: block; }
+  /* Light theme: show gold, hide silver */
+  :global([data-theme="light"]) .logo-light { display: block; }
+  :global([data-theme="light"]) .logo-dark  { display: none; }
 
-  /* Dark mode: gold → silver (CSS on SVG stops) */
-  :global([data-theme="dark"]) #foil-grad stop:nth-child(1) { stop-color: #9CA3AF; }
-  :global([data-theme="dark"]) #foil-grad stop:nth-child(2) { stop-color: #E5E7EB; }
-  :global([data-theme="dark"]) #foil-grad stop:nth-child(3) { stop-color: #9CA3AF; }
-  :global([data-theme="dark"]) #foil-grad stop:nth-child(4) { stop-color: #E5E7EB; }
-  :global([data-theme="dark"]) #foil-grad stop:nth-child(5) { stop-color: #6B7280; }
+  .logo-mark:hover .logo-img {
+    filter: brightness(1.15);
+  }
 
   .nav-pill {
     color: var(--color-text-secondary);
@@ -201,16 +159,5 @@ import { UI } from "../../lib/i18n";
       }, { rootMargin: "-20% 0px -70% 0px" });
       sections.forEach(function (s) { spyObs.observe(s); });
     }
-    // Logo foil: sync gradient to theme (JS fallback for SVG stop-color)
-    var gold = ["#C9A84C","#F0D78C","#C9A84C","#F0D78C","#B8943F"];
-    var silver = ["#9CA3AF","#E5E7EB","#9CA3AF","#E5E7EB","#6B7280"];
-    function syncLogoFoil() {
-      var isDark = document.documentElement.getAttribute("data-theme") === "dark";
-      var colors = isDark ? silver : gold;
-      var stops = document.querySelectorAll("#foil-grad stop");
-      stops.forEach(function (s, i) { if (colors[i]) s.setAttribute("stop-color", colors[i]); });
-    }
-    syncLogoFoil();
-    new MutationObserver(syncLogoFoil).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
   })();
 </script>
