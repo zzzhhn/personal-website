@@ -1,17 +1,14 @@
 ---
 import { UI } from "../../lib/i18n";
+import SectionHeading from "./SectionHeading.astro";
 ---
 
 <section class="section-glow px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
   <div class="mx-auto" style="max-width: var(--max-width-content);">
-    <h2 class="text-3xl md:text-4xl font-semibold mb-4 text-center" style="color: var(--color-text-primary); letter-spacing: -0.02em;">
-      <span data-lang="en">{UI.sections.education.en}</span>
-      <span data-lang="zh">{UI.sections.education.zh}</span>
-    </h2>
-    <div class="mx-auto mb-12" style="width: 2rem; height: 2px; background: var(--color-accent); border-radius: 1px;" />
+    <SectionHeading variant="editorial" number="02" titleEn={UI.sections.education.en} titleZh={UI.sections.education.zh} />
 
     <!-- Education card -->
-    <div class="glass p-8 mb-8 mx-auto" style="max-width: 48rem;">
+    <div class="card-outline p-8 mb-8 mx-auto" style="max-width: 48rem;">
       <div class="flex items-start justify-between gap-4 flex-wrap mb-4">
         <div>
           <h3 class="text-lg font-semibold" style="color: var(--color-text-primary);">
@@ -33,7 +30,7 @@ import { UI } from "../../lib/i18n";
     <!-- Awards EN -->
     <div data-lang="en" class="grid grid-cols-1 md:grid-cols-2 gap-3 mx-auto mb-8" style="max-width: 48rem;">
       {UI.education.awards.en.map((award) => (
-        <div class="glass glass-hover p-4 flex items-center gap-3">
+        <div class="card-outline p-4 flex items-center gap-3">
           <span class="flex-shrink-0" style="color: var(--color-accent);">
             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-4.5A3.75 3.75 0 0012.75 10.5h-1.5A3.75 3.75 0 007.5 14.25v4.5m6-6V6.75a3.75 3.75 0 10-7.5 0v1.5" />
@@ -46,7 +43,7 @@ import { UI } from "../../lib/i18n";
     <!-- Awards ZH -->
     <div data-lang="zh" class="grid grid-cols-1 md:grid-cols-2 gap-3 mx-auto mb-8" style="max-width: 48rem;">
       {UI.education.awards.zh.map((award) => (
-        <div class="glass glass-hover p-4 flex items-center gap-3">
+        <div class="card-outline p-4 flex items-center gap-3">
           <span class="flex-shrink-0" style="color: var(--color-accent);">
             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-4.5A3.75 3.75 0 0012.75 10.5h-1.5A3.75 3.75 0 007.5 14.25v4.5m6-6V6.75a3.75 3.75 0 10-7.5 0v1.5" />
@@ -58,7 +55,7 @@ import { UI } from "../../lib/i18n";
     </div>
 
     <!-- Certificates & Languages in a 2-column glass panel -->
-    <div class="glass p-8 mx-auto" style="max-width: 48rem;">
+    <div class="card-outline p-8 mx-auto" style="max-width: 48rem;">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
         <!-- Certificates -->
         <div>

@@ -194,6 +194,155 @@ personal-website/
 
 ---
 
+## Milestone 7: Design Language Evolution 🔲
+
+> Based on senior design review of `design-proposals.html` (7 proposals).
+> Status: **Awaiting user approval** before implementation.
+
+### Design Review Summary
+
+| # | Proposal | Verdict | Priority | Effort |
+|---|----------|---------|----------|--------|
+| 01 | Serif Display Typography | **ADOPT** | P0 | Medium |
+| 02 | Warm+Cool Dual Color System | **ADOPT** (with restraint) | P0 | Low |
+| 03 | Hero CTA Hierarchy | **ADOPT** (modified) | P0 | Medium |
+| 04 | Section Heading Variation | **ADOPT** | P1 | Medium |
+| 05 | Card Language Diversity | **ADOPT** | P1 | Medium |
+| 06 | Micro-interactions | **PARTIAL ADOPT** | P2 | High |
+| 07 | Timeline & Nav Redesign | **ADOPT** | P2 | High |
+
+### Detailed Review
+
+#### 01 — Serif Display Font: ADOPT
+
+**Diagnosis is correct.** Geist Sans alone cannot carry both the "finance authority" and "tech precision" signals your positioning requires. A serif display face for headings immediately elevates the site from "nice dev portfolio" to "branded personal identity."
+
+**Recommendation**: Instrument Serif (Google Fonts, self-host as woff2). Three-layer type system:
+- **Display (Serif)**: Hero name, section headings — `font-weight: 400`, `letter-spacing: -0.02em`
+- **Body (Sans)**: Geist Sans stays — paragraph text, card content, UI labels
+- **Data (Mono)**: JetBrains Mono or Geist Mono — dates, status badges, tech tags, metadata
+
+**Caveat**: Must self-host (not CDN) to maintain perf. Test Chinese character fallback — serif + 宋体 vs serif + 黑体 pairing needs manual verification. Consider `font-display: swap` for serif only since it's display-size and flash is acceptable.
+
+**Files to change**: `fonts.css` (add @font-face), `global.css` (typography tokens), `Hero.astro` (name), all `SectionHeading` usages, `TimelineCard.tsx` (if role title uses serif).
+
+#### 02 — Dual Color System: ADOPT with restraint
+
+**Diagnosis is correct.** Single accent blue across the entire site creates visual flatness. The semantic color mapping (blue=action, amber=in-progress, teal=completed) is the right framework.
+
+**Recommendation**: Add two oklch tokens:
+```css
+--color-accent-warm: oklch(0.75 0.14 55);   /* amber — "in progress", "dynamic" */
+--color-accent-teal: oklch(0.72 0.12 165);   /* teal — "completed", "verified" */
+```
+
+**Where to apply** (sparingly):
+- Status badges: "In Progress" = amber, "Completed" = teal (already partially there)
+- Timeline dots: colored by experience type (aligns with Proposal 07)
+- Section heading accent elements: alternate blue/teal/amber across sections
+- Hero particle mouse-glow in light mode could use warm amber instead of cool blue
+
+**Where NOT to apply**: Don't create gradient strips between sections, don't make every interactive element multicolored. The power of the dual system is in its selective deployment.
+
+#### 03 — Hero CTA Hierarchy: ADOPT (modified)
+
+**Diagnosis is correct.** 5 equal-weight stacked glass buttons is poor information architecture — no clear primary action.
+
+**My modification**: The proposal suggests "1 primary + 3 ghost buttons inline." I'd go further:
+
+- **1 primary CTA**: "Download Resume" — solid fill, accent color, pill shape
+- **3 icon-only buttons**: GitHub / LinkedIn / Email — small circular icon buttons, subtle border, horizontal row beneath the primary CTA
+- **Remove**: The detail text under each button (e.g., "github.com/zzzhhn") — this info exists in Contact section
+- **Layout**: Switch from vertical stack (300px+ height) to compact horizontal arrangement (~80px height), freeing vertical space for a 1-line bio summary or the tagline to breathe
+
+**Why not ghost buttons with text labels**: At hero scale, even ghost buttons with text compete with the primary CTA. Icon-only secondary actions are standard (see: stripe.com, linear.app personal landing pages).
+
+**Files to change**: `Hero.astro` (HTML + CSS restructure), remove glass-hover from CTAs.
+
+#### 04 — Section Heading Variation: ADOPT
+
+**Diagnosis is correct.** 6× identical centered-sans-heading-with-blue-bar creates visual fatigue on a long scroll.
+
+**Recommendation**: Define 3 heading variants:
+- **Editorial** (serif display + mono label): For narrative sections — About, Education
+- **Numbered + Line** (number + title + gradient line): For list sections — Experience, Projects
+- **Minimal centered** (current style): For short sections — Campus, Contact
+
+Add section numbering (`01 / 02 / 03 ...`) — creates editorial magazine quality and subtle wayfinding.
+
+**Implementation**: Create a `SectionHeading` variant system via props (`variant="editorial" | "numbered" | "minimal"`), or just hardcode per section since there are only 6.
+
+**Files to change**: `SectionHeading.astro` (or inline per section), `global.css` (heading variant styles).
+
+#### 05 — Card Language Diversity: ADOPT
+
+**Diagnosis is correct.** When every container uses `.glass`, glass becomes the default and loses its "premium" signal. This is the visual equivalent of "if everything is bold, nothing is bold."
+
+**Recommended card vocabulary**:
+| Card Type | Style | Used For |
+|-----------|-------|----------|
+| Glass | `backdrop-filter + border + specular` | Header, Hero CTA only |
+| Solid | `bg-card + border` | Project cards (main content deserves visual weight) |
+| Outline | `transparent bg + border` | Tech categories, awards, certificates |
+| Accent-border | `bg-card + left 3px accent border` | Timeline entries |
+
+**Principle**: Visual weight correlates with content importance. Glass = floating/ambient, Solid = grounded/important, Outline = lightweight/informational, Accent-border = sequential/guided.
+
+**Files to change**: `global.css` (new card utility classes), `Education.astro`, `About.astro`, `TimelineCard.tsx`, `ProjectCard.tsx`.
+
+#### 06 — Micro-interactions: PARTIAL ADOPT
+
+**Cherry-pick the high-impact items, skip the decorative ones.**
+
+| Sub-feature | Verdict | Why |
+|------------|---------|-----|
+| Cursor proximity glow (Raycast-style border) | **ADOPT** | High impact, ~30 lines of JS, works with existing glass system |
+| Staggered scroll reveals | **ADOPT** | Already have `--stagger-index` in CSS, just needs wiring |
+| Magnetic buttons | **SKIP** | Feels gimmicky on a professional portfolio; risks "overdesigned" perception |
+| Nav underline grow animation | **DEFER** | Nice-to-have but low priority |
+| Gradient overlay sweep on card hover | **DEFER** | Complex to implement well; diminishing returns |
+
+**Cursor proximity glow implementation**: Single `mousemove` listener on document, calculate distance to each `.glass` / `.card` element, set `--glow-opacity` CSS custom property. Border color transitions from `var(--color-border-subtle)` to `var(--color-accent-primary)` based on distance. ~30 lines, no library needed.
+
+#### 07 — Timeline & Nav: ADOPT
+
+**Timeline redesign**:
+- Date as independent left column (mono font, right-aligned) — 3-column layout: `date | dot | card`
+- Colored dots by experience type, using Proposal 02's color tokens
+- This requires changes to `ExperienceTimeline.tsx` + `TimelineCard.tsx`
+- Bilingual dates should stay numeric (`2026.02`) so no i18n change needed
+
+**Nav scroll spy**:
+- `IntersectionObserver` on each `<section>`, update active nav item
+- Add pill background to active nav link
+- Pure JS in `Header.astro` `<script is:inline>` (no React needed)
+- Logo "HZ" → "HZ." in mono weight for better small-size legibility (drop gradient clip)
+
+### Implementation Phases
+
+**Phase A (P0 — Foundation changes)**:
+1. Self-host Instrument Serif font (woff2) → `fonts.css` + `BaseLayout.astro` preload
+2. Add oklch color tokens for warm + teal accents → `global.css`
+3. Apply serif font to Hero name + section headings
+4. Restructure Hero CTA to 1 primary + 3 icon buttons
+5. `pnpm build` verification
+
+**Phase B (P1 — Visual vocabulary)**:
+1. Create 3 section heading variants + add numbering
+2. Implement card vocabulary (glass/solid/outline/accent-border)
+3. Reassign card styles per section (Education=outline, Projects=solid, Timeline=accent-border)
+4. `pnpm build` verification
+
+**Phase C (P2 — Interactions & layout)**:
+1. Add cursor proximity glow (document-level mousemove listener)
+2. Wire staggered scroll reveals with animation-delay
+3. Redesign timeline layout (date column + colored dots)
+4. Add nav scroll spy with IntersectionObserver
+5. Update logo "HZ" → "HZ." mono style
+6. `pnpm build` + visual regression check
+
+---
+
 ## Risks & Mitigations
 
 | Risk | Mitigation |

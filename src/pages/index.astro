@@ -8,6 +8,7 @@ import Contact from "../components/astro/Contact.astro";
 import ExperienceTimeline from "../components/react/ExperienceTimeline";
 import ProjectGrid from "../components/react/ProjectGrid";
 import { getCollection } from "astro:content";
+import SectionHeading from "../components/astro/SectionHeading.astro";
 import { SITE } from "../lib/constants";
 import { UI, EXPERIENCES } from "../lib/i18n";
 
@@ -58,11 +59,7 @@ const projects = rawProjects
 
   <section id="experience" class="section-glow px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
     <div class="mx-auto" style="max-width: var(--max-width-content);">
-      <h2 class="text-3xl md:text-4xl font-semibold mb-4 text-center" style="color: var(--color-text-primary); letter-spacing: -0.02em;">
-        <span data-lang="en">{UI.sections.experience.en}</span>
-        <span data-lang="zh">{UI.sections.experience.zh}</span>
-      </h2>
-      <div class="mx-auto mb-12" style="width: 2rem; height: 2px; background: var(--color-accent); border-radius: 1px;" />
+      <SectionHeading variant="numbered" number="03" titleEn={UI.sections.experience.en} titleZh={UI.sections.experience.zh} />
       <div class="mx-auto" style="max-width: 48rem;">
         <ExperienceTimeline client:visible experiences={bilingualExperiences} />
       </div>
@@ -71,11 +68,7 @@ const projects = rawProjects
 
   <section id="projects" class="section-glow px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
     <div class="mx-auto" style="max-width: var(--max-width-content);">
-      <h2 class="text-3xl md:text-4xl font-semibold mb-4 text-center" style="color: var(--color-text-primary); letter-spacing: -0.02em;">
-        <span data-lang="en">{UI.sections.projects.en}</span>
-        <span data-lang="zh">{UI.sections.projects.zh}</span>
-      </h2>
-      <div class="mx-auto mb-12" style="width: 2rem; height: 2px; background: var(--color-accent); border-radius: 1px;" />
+      <SectionHeading variant="numbered" number="04" titleEn={UI.sections.projects.en} titleZh={UI.sections.projects.zh} />
       <ProjectGrid client:visible projects={projects} />
     </div>
   </section>

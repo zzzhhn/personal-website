@@ -1,14 +1,11 @@
 ---
 import { UI } from "../../lib/i18n";
+import SectionHeading from "./SectionHeading.astro";
 ---
 
 <section id="about" class="section-glow px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
   <div class="mx-auto" style="max-width: var(--max-width-content);">
-    <h2 class="text-3xl md:text-4xl font-semibold mb-4 text-center" style="color: var(--color-text-primary); letter-spacing: -0.02em;">
-      <span data-lang="en">{UI.sections.about.en}</span>
-      <span data-lang="zh">{UI.sections.about.zh}</span>
-    </h2>
-    <div class="mx-auto mb-4" style="width: 2rem; height: 2px; background: var(--color-accent); border-radius: 1px;" />
+    <SectionHeading variant="editorial" number="01" titleEn={UI.sections.about.en} titleZh={UI.sections.about.zh} />
 
     <div class="mx-auto mb-16 text-lg leading-relaxed text-center" style="max-width: 40rem; color: var(--color-text-secondary);">
       <p data-lang="en">{UI.about.bio.en}</p>
@@ -17,8 +14,8 @@ import { UI } from "../../lib/i18n";
 
     <!-- EN tech categories -->
     <div data-lang="en" class="grid grid-cols-2 md:grid-cols-4 gap-5 mx-auto" style="max-width: 56rem;">
-      {UI.about.techCategories.en.map((cat) => (
-        <div class="glass glass-hover p-6">
+      {UI.about.techCategories.en.map((cat, i) => (
+        <div class="card-outline p-6 fade-up stagger-child" style={`--stagger-index: ${i};`}>
           <h3 class="text-xs font-semibold uppercase tracking-widest mb-4" style="color: var(--color-accent);">{cat.label}</h3>
           <ul class="space-y-2.5">
             {cat.items.map((item) => (
@@ -31,8 +28,8 @@ import { UI } from "../../lib/i18n";
 
     <!-- ZH tech categories -->
     <div data-lang="zh" class="grid grid-cols-2 md:grid-cols-4 gap-5 mx-auto" style="max-width: 56rem;">
-      {UI.about.techCategories.zh.map((cat) => (
-        <div class="glass glass-hover p-6">
+      {UI.about.techCategories.zh.map((cat, i) => (
+        <div class="card-outline p-6 fade-up stagger-child" style={`--stagger-index: ${i};`}>
           <h3 class="text-xs font-semibold uppercase tracking-widest mb-4" style="color: var(--color-accent);">{cat.label}</h3>
           <ul class="space-y-2.5">
             {cat.items.map((item) => (

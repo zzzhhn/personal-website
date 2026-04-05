@@ -1,6 +1,7 @@
 ---
 import { SITE, SOCIAL_LINKS } from "../../lib/constants";
 import { UI } from "../../lib/i18n";
+import SectionHeading from "./SectionHeading.astro";
 ---
 
 <section
@@ -9,11 +10,7 @@ import { UI } from "../../lib/i18n";
   style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}
 >
   <div class="mx-auto text-center" style="max-width: var(--max-width-content);">
-    <h2 class="text-3xl md:text-4xl font-semibold mb-4" style="color: var(--color-text-primary); letter-spacing: -0.02em;">
-      <span data-lang="en">{UI.sections.contact.en}</span>
-      <span data-lang="zh">{UI.sections.contact.zh}</span>
-    </h2>
-    <div class="mx-auto mb-12" style="width: 2rem; height: 2px; background: var(--color-accent); border-radius: 1px;" />
+    <SectionHeading variant="minimal" number="06" titleEn={UI.sections.contact.en} titleZh={UI.sections.contact.zh} />
 
     <p class="text-lg mb-10 mx-auto" style="color: var(--color-text-secondary); max-width: 32rem;">
       <span data-lang="en">{UI.contact.description.en}</span>

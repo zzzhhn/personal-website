@@ -1,16 +1,104 @@
 ---
 interface Props {
-  title: string;
+  titleEn: string;
+  titleZh: string;
+  number?: string;
+  variant?: "editorial" | "numbered" | "minimal";
   id?: string;
 }
 
-const { title, id } = Astro.props;
+const { titleEn, titleZh, number, variant = "minimal", id } = Astro.props;
 ---
 
-<h2
-  id={id}
-  class="text-3xl md:text-4xl font-semibold mb-12 text-center"
-  style="color: var(--color-text-primary); letter-spacing: -0.02em;"
->
-  {title}
-</h2>
+{variant === "editorial" && (
+  <div class="sh-editorial" id={id}>
+    {number && <div class="sh-label">{number} / <span data-lang="en">{titleEn}</span><span data-lang="zh">{titleZh}</span></div>}
+    <h2 class="sh-editorial-title">
+      <span data-lang="en">{titleEn}</span>
+      <span data-lang="zh">{titleZh}</span>
+    </h2>
+  </div>
+)}
+
+{variant === "numbered" && (
+  <div class="sh-numbered" id={id}>
+    {number && <span class="sh-num">{number}</span>}
+    <h2 class="sh-numbered-title">
+      <span data-lang="en">{titleEn}</span>
+      <span data-lang="zh">{titleZh}</span>
+    </h2>
+    <span class="sh-line" />
+  </div>
+)}
+
+{variant === "minimal" && (
+  <div class="sh-minimal" id={id}>
+    <h2 class="sh-minimal-title">
+      <span data-lang="en">{titleEn}</span>
+      <span data-lang="zh">{titleZh}</span>
+    </h2>
+  </div>
+)}
+
+<style>
+  /* ── Editorial variant: mono label + serif title ── */
+  .sh-editorial {
+    margin-bottom: 3rem;
+  }
+  .sh-label {
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    margin-bottom: 0.5rem;
+  }
+  .sh-editorial-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--color-text-primary);
+  }
+
+  /* ── Numbered + line variant ── */
+  .sh-numbered {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+  .sh-num {
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+    color: var(--color-accent);
+    flex-shrink: 0;
+  }
+  .sh-numbered-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    letter-spacing: -0.01em;
+    color: var(--color-text-primary);
+    flex-shrink: 0;
+  }
+  .sh-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, var(--color-border-subtle), transparent);
+    margin-top: 0.125rem;
+  }
+
+  /* ── Minimal centered variant ── */
+  .sh-minimal {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+  .sh-minimal-title {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    letter-spacing: -0.02em;
+    color: var(--color-text-primary);
+  }
+</style>

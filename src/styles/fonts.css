@@ -1,3 +1,21 @@
+/* ── Display Serif — headings, hero name ── */
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/InstrumentSerif-Regular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/InstrumentSerif-Italic.woff2") format("woff2");
+}
+
+/* ── Body Sans — all body text, UI ── */
 @font-face {
   font-family: "Geist Sans";
   font-style: normal;

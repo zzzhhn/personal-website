@@ -18,10 +18,17 @@ const { title, description, image } = Astro.props;
   <head>
     <SEO title={title} description={description} image={image} />
 
-    <!-- Preload primary font weight -->
+    <!-- Preload primary font weights -->
     <link
       rel="preload"
       href="/fonts/GeistSans-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/InstrumentSerif-Regular.woff2"
       as="font"
       type="font/woff2"
       crossorigin
@@ -60,5 +67,41 @@ const { title, description, image } = Astro.props;
       <slot />
     </main>
     <Footer />
+
+    <!-- Scroll reveal: fade-up elements become visible on scroll -->
+    <script is:inline>
+      (function () {
+        var obs = new IntersectionObserver(function (entries) {
+          for (var i = 0; i < entries.length; i++) {
+            if (entries[i].isIntersecting) {
+              entries[i].target.classList.add("visible");
+              obs.unobserve(entries[i].target);
+            }
+          }
+        }, { threshold: 0.15 });
+        document.querySelectorAll(".fade-up").forEach(function (el) { obs.observe(el); });
+      })();
+    </script>
+
+    <!-- Cursor proximity glow: cards glow as cursor approaches -->
+    <script is:inline>
+      (function () {
+        var maxDist = 200;
+        var sel = ".card-solid, .card-outline, .card-accent-border";
+        document.addEventListener("mousemove", function (e) {
+          var cards = document.querySelectorAll(sel);
+          for (var i = 0; i < cards.length; i++) {
+            var rect = cards[i].getBoundingClientRect();
+            var cx = Math.max(rect.left, Math.min(e.clientX, rect.right));
+            var cy = Math.max(rect.top, Math.min(e.clientY, rect.bottom));
+            var dx = e.clientX - cx;
+            var dy = e.clientY - cy;
+            var dist = Math.sqrt(dx * dx + dy * dy);
+            var glow = Math.max(0, 1 - dist / maxDist);
+            cards[i].style.setProperty("--glow", glow.toFixed(3));
+          }
+        });
+      })();
+    </script>
   </body>
 </html>

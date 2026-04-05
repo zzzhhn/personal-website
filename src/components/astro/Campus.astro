@@ -1,16 +1,13 @@
 ---
 import { UI } from "../../lib/i18n";
+import SectionHeading from "./SectionHeading.astro";
 ---
 
 <section class="section-glow px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
   <div class="mx-auto" style="max-width: var(--max-width-content);">
-    <h2 class="text-3xl md:text-4xl font-semibold mb-4 text-center" style="color: var(--color-text-primary); letter-spacing: -0.02em;">
-      <span data-lang="en">{UI.sections.campus.en}</span>
-      <span data-lang="zh">{UI.sections.campus.zh}</span>
-    </h2>
-    <div class="mx-auto mb-12" style="width: 2rem; height: 2px; background: var(--color-accent); border-radius: 1px;" />
+    <SectionHeading variant="minimal" number="05" titleEn={UI.sections.campus.en} titleZh={UI.sections.campus.zh} />
 
-    <div class="glass p-8 mx-auto" style="max-width: 48rem;">
+    <div class="card-outline p-8 mx-auto" style="max-width: 48rem;">
       <div class="flex items-start justify-between gap-4 flex-wrap mb-6">
         <div>
           <h3 class="text-lg font-semibold" style="color: var(--color-text-primary);">

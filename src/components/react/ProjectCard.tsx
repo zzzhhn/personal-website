@@ -32,7 +32,7 @@ export default function ProjectCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
-      className="glass glass-hover p-8 flex flex-col h-full"
+      className="card-solid p-8 flex flex-col h-full"
     >
       {/* Status badge */}
       <div className="flex items-center justify-between mb-5">
@@ -40,8 +40,8 @@ export default function ProjectCard({
           className="glass-subtle text-xs font-medium px-2.5 py-1"
           style={{
             color: isCompleted
-              ? "oklch(0.7 0.15 145)"
-              : "oklch(0.75 0.15 60)",
+              ? "var(--color-accent-teal)"
+              : "var(--color-accent-warm)",
           }}
         >
           {isCompleted ? "Completed" : "In Progress"}
