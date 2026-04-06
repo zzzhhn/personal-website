@@ -1,0 +1,38 @@
+---
+title: "Alpha Agent"
+slug: "alpha-agent"
+tagline: "LLM-powered multi-agent system for quantitative alpha factor research"
+description: "Multi-agent pipeline that generates, backtests, and iteratively refines alpha factors for A-share markets using Gemma 4 26B and a custom recursive descent parser."
+date: 2025-12-01
+status: "completed"
+featured: true
+techStack: ["Python", "Gemma 4 26B", "Streamlit", "Ollama", "pandas"]
+highlights:
+  - "4-agent pipeline: Hypothesis → Factor → Backtest → Eval with iterative refinement"
+  - "Custom recursive descent parser for Qlib-compatible factor DSL (20+ operators)"
+  - "End-to-end processing in 2-3 iterations; 168 tests, 87% coverage"
+links:
+  github: "https://github.com/zzzhhn/alpha-agent"
+  live: "https://alpha.bobbyzhong.com"
+order: 0
+---
+
+## Background
+
+Quantitative factor research traditionally requires deep domain expertise and tedious manual iteration. Inspired by the KDD '25 AlphaAgent paper, this project automates the full research loop: from natural language hypothesis generation to factor expression synthesis, backtesting, and evaluation — all orchestrated by a multi-agent LLM system.
+
+## Architecture
+
+Four specialized agents collaborate in a feedback loop:
+
+1. **HypothesisAgent** — generates financial hypotheses from natural language queries
+2. **FactorAgent** — synthesizes factor expressions in a Qlib-compatible DSL (recursive descent parser with operator precedence)
+3. **BacktestAgent** — evaluates factors via IC, ICIR, Sharpe ratio, alpha decay analysis on CSI300 data
+4. **EvalAgent** — judges results and provides structured feedback for iterative refinement
+
+## Key Results
+
+- End-to-end pipeline processes "find short-term reversal factors" in 2-3 iterations
+- Custom recursive descent parser supports infix math + 20 time-series/cross-section operators
+- 168 tests passing with 87% coverage on core modules
+- Zero external framework dependencies for agent orchestration (raw HTTP to Ollama)
