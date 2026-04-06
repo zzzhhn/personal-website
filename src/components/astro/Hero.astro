@@ -221,35 +221,59 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
   }
 
   .hero-name {
-    --mx: 50%;
-    --my: 50%;
     font-size: clamp(2.5rem, 5vw, 4.5rem);
     line-height: 1.05;
     margin-bottom: 0.75rem;
-    /* Mouse-proximity glow — dark mode: cold silver spotlight */
-    background: radial-gradient(
-      circle 120px at var(--mx) var(--my),
-      oklch(0.97 0.03 250) 0%,
-      oklch(0.72 0.02 260) 50%,
-      oklch(0.52 0.01 265) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    will-change: --mx, --my;
+    /* Default: solid text */
+    color: var(--color-text-primary);
+    transition: color 0.5s ease;
   }
 
-  /* Light mode: warm gold spotlight */
-  :global([data-theme="light"]) .hero-name {
-    background: radial-gradient(
-      circle 120px at var(--mx) var(--my),
-      oklch(0.62 0.18 65) 0%,
-      oklch(0.40 0.10 55) 50%,
-      oklch(0.28 0.06 50) 100%
+  /* Hover: rose-gold glass material via background-clip:text */
+  .hero-name:hover {
+    background: linear-gradient(
+      135deg,
+      oklch(0.82 0.06 350) 0%,
+      oklch(0.90 0.04 15) 25%,
+      oklch(0.78 0.08 345) 50%,
+      oklch(0.88 0.05 10) 75%,
+      oklch(0.80 0.07 350) 100%
     );
+    background-size: 200% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    animation: rosegold-shimmer 4s ease-in-out infinite;
+  }
+
+  /* Light mode: slightly deeper rose-gold for contrast */
+  :global([data-theme="light"]) .hero-name:hover {
+    background: linear-gradient(
+      135deg,
+      oklch(0.62 0.10 350) 0%,
+      oklch(0.72 0.08 15) 25%,
+      oklch(0.58 0.12 340) 50%,
+      oklch(0.70 0.09 10) 75%,
+      oklch(0.60 0.11 350) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: rosegold-shimmer 4s ease-in-out infinite;
+  }
+
+  @keyframes rosegold-shimmer {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* Reduced motion: no animation, just the color */
+  @media (prefers-reduced-motion: reduce) {
+    .hero-name:hover {
+      animation: none;
+      background-size: 100% 100%;
+    }
   }
   .hero-name-en {
     font-family: var(--font-sans);
@@ -408,31 +432,6 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     .orb { animation: none !important; }
   }
 </style>
-
-<script is:inline>
-// Hero name mouse-proximity glow (rAF-throttled for smooth 60fps)
-(function () {
-  var el = document.querySelector(".hero-name");
-  if (!el) return;
-  var pending = false;
-  var nx = 50, ny = 50;
-  function flush() {
-    el.style.setProperty("--mx", nx + "%");
-    el.style.setProperty("--my", ny + "%");
-    pending = false;
-  }
-  el.addEventListener("mousemove", function (e) {
-    var r = el.getBoundingClientRect();
-    nx = ((e.clientX - r.left) / r.width) * 100;
-    ny = ((e.clientY - r.top) / r.height) * 100;
-    if (!pending) { pending = true; requestAnimationFrame(flush); }
-  });
-  el.addEventListener("mouseleave", function () {
-    nx = 50; ny = 50;
-    if (!pending) { pending = true; requestAnimationFrame(flush); }
-  });
-})();
-</script>
 
 <script is:inline>
 (function () {
