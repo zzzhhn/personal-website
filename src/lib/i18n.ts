@@ -65,16 +65,16 @@ export const UI = {
     period: { en: "Sep 2023 – Present", zh: "2023.9 – 至今" },
     awards: {
       en: [
-        "2024 Shaw Spirit Award",
-        "2025 Shaw Service Award",
-        "2024-25 Dean's List (School of Data Science)",
-        "2024-25 Campus Culture Development Award",
+        { label: "2024 Shaw Spirit Award", image: "shaw-spirit-2024" },
+        { label: "2025 Shaw Service Award", image: "shaw-service-2025" },
+        { label: "2024-25 Dean's List (School of Data Science)", image: "deans-list-2024" },
+        { label: "2024-25 Campus Culture Development Award", image: "campus-culture-2024" },
       ],
       zh: [
-        '2024 逸夫书院 "逸夫精神奖"',
-        '2025 逸夫书院 "逸夫服务奖"',
-        "2024-25 Dean's List（数据科学学院）",
-        "2024-25 校园文化贡献奖",
+        { label: "2024 逸夫书院「逸夫精神奖」", image: "shaw-spirit-2024" },
+        { label: "2025 逸夫书院「逸夫服务奖」", image: "shaw-service-2025" },
+        { label: "2024-25 Dean's List（数据科学学院）", image: "deans-list-2024" },
+        { label: "2024-25 校园文化贡献奖", image: "campus-culture-2024" },
       ],
     },
     certificates: {
