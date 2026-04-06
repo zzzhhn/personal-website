@@ -103,6 +103,24 @@ export const UI = {
         { name: "西班牙语", level: "基础，CEFR: B1" },
       ],
     },
+    courses: {
+      en: [
+        "Stochastic Process",
+        "Fixed Income Securities Analysis",
+        "Futures and Options",
+        "Data Structure",
+        "Machine Learning",
+        "Investment Analysis and Portfolio Management",
+      ],
+      zh: [
+        "随机过程",
+        "固定收益证券分析",
+        "期货与期权",
+        "数据结构",
+        "机器学习",
+        "投资分析与投资组合管理",
+      ],
+    },
   },
 
   // ── Contact ──

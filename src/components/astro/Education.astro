@@ -7,11 +7,11 @@ import SectionHeading from "./SectionHeading.astro";
   <div class="mx-auto" style="max-width: var(--max-width-content);">
     <SectionHeading variant="editorial" number="02" titleEn={UI.sections.education.en} titleZh={UI.sections.education.zh} />
 
-    <!-- Education card -->
-    <div class="card-outline p-8 mb-8 mx-auto" style="max-width: 48rem;">
+    <!-- Education card — CUHK purple+gold theme -->
+    <div class="card-cuhk p-8 mb-8 mx-auto" style="max-width: 48rem;">
       <div class="flex items-start justify-between gap-4 flex-wrap mb-4">
         <div>
-          <h3 class="text-lg font-semibold" style="color: var(--color-text-primary);">
+          <h3 class="text-lg font-semibold" style="color: var(--color-uni-purple);">
             <span data-lang="en">{UI.education.school.en}</span>
             <span data-lang="zh">{UI.education.school.zh}</span>
           </h3>
@@ -20,10 +20,30 @@ import SectionHeading from "./SectionHeading.astro";
             <span data-lang="zh">{UI.education.degree.zh}</span>
           </p>
         </div>
-        <span class="glass-subtle px-3 py-1 text-xs font-medium" style="color: var(--color-text-secondary);">
+        <span class="glass-subtle px-3 py-1 text-xs font-medium" style="color: var(--color-uni-gold);">
           <span data-lang="en">{UI.education.period.en}</span>
           <span data-lang="zh">{UI.education.period.zh}</span>
         </span>
+      </div>
+
+      <!-- Course scrollbar -->
+      <div class="mt-5 pt-4" style="border-top: 1px solid var(--color-border-subtle);">
+        <h4 class="text-xs font-semibold uppercase tracking-widest mb-3" style="color: var(--color-uni-gold);">
+          <span data-lang="en">Key Courses</span>
+          <span data-lang="zh">核心课程</span>
+        </h4>
+        <div class="course-scroll">
+          <div data-lang="en" class="course-scroll-inner">
+            {UI.education.courses.en.map((c) => (
+              <span class="course-chip">{c}</span>
+            ))}
+          </div>
+          <div data-lang="zh" class="course-scroll-inner">
+            {UI.education.courses.zh.map((c) => (
+              <span class="course-chip">{c}</span>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
 
@@ -112,3 +132,42 @@ import SectionHeading from "./SectionHeading.astro";
     </div>
   </div>
 </section>
+
+<style>
+  .course-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-uni-purple) transparent;
+    padding-bottom: 0.5rem;
+  }
+  .course-scroll::-webkit-scrollbar {
+    height: 4px;
+  }
+  .course-scroll::-webkit-scrollbar-thumb {
+    background: var(--color-uni-purple);
+    border-radius: 4px;
+  }
+  .course-scroll-inner {
+    display: flex;
+    gap: 0.5rem;
+    width: max-content;
+  }
+  .course-chip {
+    white-space: nowrap;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.3rem 0.75rem;
+    border-radius: 100px;
+    background: var(--color-surface-glass);
+    border: 1px solid color-mix(in oklch, var(--color-uni-gold) 30%, var(--color-border-subtle));
+    color: var(--color-text-secondary);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .course-chip:hover {
+    border-color: var(--color-uni-gold);
+    color: var(--color-uni-gold);
+  }
+</style>

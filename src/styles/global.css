@@ -41,6 +41,14 @@
   --color-accent-teal-hover: oklch(0.78 0.14 165);
   --color-accent-teal-glow: oklch(0.72 0.12 165 / 0.2);
 
+  /* University accent — CUHK purple + gold */
+  --color-uni-purple: oklch(0.42 0.18 310);
+  --color-uni-purple-hover: oklch(0.48 0.2 310);
+  --color-uni-purple-glow: oklch(0.42 0.18 310 / 0.15);
+  --color-uni-gold: oklch(0.72 0.14 85);
+  --color-uni-gold-hover: oklch(0.78 0.16 85);
+  --color-uni-gold-glow: oklch(0.72 0.14 85 / 0.12);
+
   /* Specular & Light */
   --color-specular: oklch(1 0 0 / 0.06);
   --color-specular-strong: oklch(1 0 0 / 0.12);
@@ -91,6 +99,12 @@
     --color-accent-teal: oklch(0.52 0.14 165);
     --color-accent-teal-hover: oklch(0.46 0.16 165);
     --color-accent-teal-glow: oklch(0.52 0.14 165 / 0.12);
+    --color-uni-purple: oklch(0.38 0.2 310);
+    --color-uni-purple-hover: oklch(0.34 0.22 310);
+    --color-uni-purple-glow: oklch(0.38 0.2 310 / 0.1);
+    --color-uni-gold: oklch(0.58 0.16 85);
+    --color-uni-gold-hover: oklch(0.52 0.18 85);
+    --color-uni-gold-glow: oklch(0.58 0.16 85 / 0.1);
     --color-specular: oklch(1 0 0 / 0.65);
     --color-specular-strong: oklch(1 0 0 / 0.85);
     --color-glow-ambient: oklch(0.5 0.08 265 / 0.04);
@@ -243,6 +257,20 @@
   .card-outline:hover {
     --glow: 1;
   }
+  /* CUHK school card — purple/gold variant */
+  .card-cuhk {
+    --glow: 0;
+    position: relative;
+    background: transparent;
+    border: 1px solid color-mix(in oklch, var(--color-uni-purple) calc(var(--glow) * 50%), var(--color-border-subtle));
+    border-radius: var(--radius-md);
+    transition: --glow 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 0 calc(var(--glow) * 16px) var(--color-uni-purple-glow);
+  }
+  .card-cuhk:hover {
+    --glow: 1;
+  }
+
   /* Foil watermark ::before styles are in About.astro <style is:global> */
 
   .card-accent-border {
