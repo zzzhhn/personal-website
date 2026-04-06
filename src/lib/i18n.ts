@@ -122,31 +122,52 @@ export const UI = {
   },
 
   // ── Campus ──
-  campus: {
-    role: {
-      en: "Operation & Management",
-      zh: "组织者 & 运营",
+  campus: [
+    {
+      role: { en: "Operation & Management", zh: "组织者 & 运营" },
+      org: {
+        en: "AceSeed+ (Job-description online sharing community)",
+        zh: "求职信息分享社群 AceSeed+",
+      },
+      period: { en: "Sep 2025 – Present", zh: "2025.09 – 至今" },
+      items: {
+        en: [
+          { label: "Community Management", text: "Oversee a community of 3,000+ members; design and automate JD distribution processes to improve information dissemination and community engagement." },
+          { label: "Event Planning", text: "Organize 3-4 recruitment-related activities per month, focusing on professional skills, career development, and industry insights to drive community growth." },
+          { label: "Cross-team Collaboration", text: "Collaborate with CPDO, CDC, and other external teams to establish long-term partnerships." },
+          { label: "Achievements", text: "Successfully increased weekly user acquisition by 50+ new users, executed 10+ major events with 100+ attendees each, and established a highly efficient JD automation workflow." },
+        ],
+        zh: [
+          { label: "社群运营", text: "管理 3000+ 成员，设计并自动化 JD 转发流程，提升信息传递效率和社群活跃度" },
+          { label: "活动策划", text: "每月策划 3-4 场求职相关活动，涉及行业分享、求职技巧等多个主题，促进社群用户增长" },
+          { label: "跨组织合作", text: "与 CPDO、CDC 等校内外求职招聘组织建立长期合作关系，推动资源整合与信息共享" },
+          { label: "成果", text: "每周吸引 50+ 新成员，成功策划并组织 10+ 场主题活动，场均报名人数 100+；建立了高效的 JD 自动转发 workflow" },
+        ],
+      },
     },
-    org: {
-      en: "AceSeed+ (Job-description online sharing community)",
-      zh: "求职信息分享社群 AceSeed+",
+    {
+      role: { en: "Vice Chair & External Affairs Officer", zh: "副主席 & 外联部干事" },
+      org: {
+        en: "Shaw College Resident Student Association (SCRSA)",
+        zh: "逸夫书院宿生会",
+      },
+      period: { en: "Jan 2024 – Present", zh: "2024.01 – 至今" },
+      items: {
+        en: [
+          { label: "Event Planning", text: "Led the planning of a \"Chinese Traditional Culture Escape Room\" event, managing the entire workflow from event design and procurement to on-site execution." },
+          { label: "Team Management", text: "Authored a ~20,000-word event proposal and created standardized planning documentation to ensure sustainability of future events." },
+          { label: "Execution & Oversight", text: "Managed recruitment, task delegation, and on-site supervision to ensure smooth event operations and enhance participant experience." },
+          { label: "Achievements", text: "Attracted 400+ registrations; event WeChat article reached 4,000+ reads with ~20% engagement conversion; received 50+ positive feedback responses, setting a new school record for participation in similar events." },
+        ],
+        zh: [
+          { label: "组织策划", text: "主策划「国风主题密室探险」活动，负责活动流程设计、物资采购、现场执行等全流程" },
+          { label: "团队管理", text: "编写近 2 万字策划案，创建活动策划标准流程文档，确保后续活动可持续性" },
+          { label: "执行监督", text: "负责人员招募、分工、现场监督，确保活动顺利进行，提升参与者体验" },
+          { label: "成果", text: "活动报名人数 400+，公众号推文获 4000+ 阅读量，约转化 20% 为点赞+转发数据；活动后获 50+ 条正向反馈，打破校内同类活动参与人数记录" },
+        ],
+      },
     },
-    period: { en: "Sep 2025 – Present", zh: "2025.09 – 至今" },
-    items: {
-      en: [
-        { label: "Community Management", text: "Oversee a community of 3,000+ members; design and automate JD distribution processes to improve information dissemination and community engagement." },
-        { label: "Event Planning", text: "Organize 3-4 recruitment-related activities per month, focusing on professional skills, career development, and industry insights to drive community growth." },
-        { label: "Cross-team Collaboration", text: "Collaborate with CPDO, CDC, and other external teams to establish long-term partnerships." },
-        { label: "Achievements", text: "Successfully increased weekly user acquisition by 50+ new users, executed 10+ major events with 100+ attendees each, and established a highly efficient JD automation workflow." },
-      ],
-      zh: [
-        { label: "社群运营", text: "管理 3000+ 成员，设计并自动化 JD 转发流程，提升信息传递效率和社群活跃度" },
-        { label: "活动策划", text: "每月策划 3-4 场求职相关活动，涉及行业分享、求职技巧等多个主题，促进社群用户增长" },
-        { label: "跨组织合作", text: "与 CPDO、CDC 等校内外求职招聘组织建立长期合作关系，推动资源整合与信息共享" },
-        { label: "成果", text: "每周吸引 50+ 新成员，成功策划并组织 10+ 场主题活动，场均报名人数 100+；建立了高效的 JD 自动转发 workflow" },
-      ],
-    },
-  },
+  ],
 } as const;
 
 // ── Experiences (bilingual) ──
@@ -207,6 +228,20 @@ export const EXPERIENCES = {
       ],
       techStack: ["BRAIN Platform", "Alpha Factors", "Quantitative Research", "Python"],
     },
+    {
+      role: "Investment Banking Analyst",
+      organization: "SDIC Securities",
+      location: "Shenzhen, Guangdong",
+      startDate: "2025-05-01",
+      endDate: "2025-08-01",
+      type: "internship",
+      highlights: [
+        "Participated in the IPO project for a home hardware enterprise; updated 200+ key data points in the project initiation report, extracted industry benchmarks from 10+ peer companies via Wind and Choice, and collaborated with the project team to implement 2 optimization proposals",
+        "Managed classification and organization of confirmation letters spanning 3 years; built reply tracking spreadsheets using Excel (VLOOKUP, pivot tables) to streamline workflows, processing hundreds of thousands of records and producing 30+ business, financial, and legal working papers, reducing the analysis cycle by ~30%",
+        "Authored a valuation report for a GPU-sector technology company; applied P/E and P/S models to project 5-year forward valuations based on 10,000+ historical data points, and independently completed two chapters of financial projections in the project initiation report",
+      ],
+      techStack: ["Wind", "Choice", "Excel", "Valuation Modeling"],
+    },
   ],
   zh: [
     {
@@ -263,6 +298,20 @@ export const EXPERIENCES = {
         "针对回测中高 Turnover 导致的交易成本侵蚀问题，引入 ts_decay_linear 衰减平滑与 group_neutralize 行业中性化，提升因子回测通过率约 15%",
       ],
       techStack: ["BRAIN Platform", "Alpha因子", "量化研究", "Python"],
+    },
+    {
+      role: "投行部 – 股权承做",
+      organization: "国投证券",
+      location: "广东 – 深圳",
+      startDate: "2025-05-01",
+      endDate: "2025-08-01",
+      type: "internship",
+      highlights: [
+        "参与家居五金企业上市项目，更新立项报告关键数据 200+ 项，通过 Wind、Choice 等数据库提取 10+ 家同行业指标支撑行业分析，拆解 3 类核心业务模块并与项目组合作落地 2 项优化方案",
+        "负责近 3 年函证分类整理，用 Excel（VLOOKUP、数据透视图等）建立回函控制表并优化数据处理流程，共处理数十万条数据、制作 30+ 业务、财务、法律底稿表格，缩短分析周期近 30%",
+        "撰写某 GPU 领域科技企业估值报告，运用市盈率、市销率模型完成未来 5 年估值预测，基于 10000+ 条历史数据预判未来业务增长，独立完成立项报告中两章财务预测相关内容",
+      ],
+      techStack: ["Wind", "Choice", "Excel", "估值建模"],
     },
   ],
 } as const;

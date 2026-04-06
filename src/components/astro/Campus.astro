@@ -7,42 +7,46 @@ import SectionHeading from "./SectionHeading.astro";
   <div class="mx-auto" style="max-width: var(--max-width-content);">
     <SectionHeading variant="minimal" number="05" titleEn={UI.sections.campus.en} titleZh={UI.sections.campus.zh} />
 
-    <div class="card-outline p-8 mx-auto" style="max-width: 48rem;">
-      <div class="flex items-start justify-between gap-4 flex-wrap mb-6">
-        <div>
-          <h3 class="text-lg font-semibold" style="color: var(--color-text-primary);">
-            <span data-lang="en">{UI.campus.role.en}</span>
-            <span data-lang="zh">{UI.campus.role.zh}</span>
-          </h3>
-          <p class="text-sm mt-1" style="color: var(--color-text-secondary);">
-            <span data-lang="en">{UI.campus.org.en}</span>
-            <span data-lang="zh">{UI.campus.org.zh}</span>
-          </p>
-        </div>
-        <span class="glass-subtle px-3 py-1 text-xs font-medium" style="color: var(--color-text-secondary);">
-          <span data-lang="en">{UI.campus.period.en}</span>
-          <span data-lang="zh">{UI.campus.period.zh}</span>
-        </span>
-      </div>
+    <div class="space-y-6 mx-auto" style="max-width: 48rem;">
+      {UI.campus.map((entry) => (
+        <div class="card-outline p-8">
+          <div class="flex items-start justify-between gap-4 flex-wrap mb-6">
+            <div>
+              <h3 class="text-lg font-semibold" style="color: var(--color-text-primary);">
+                <span data-lang="en">{entry.role.en}</span>
+                <span data-lang="zh">{entry.role.zh}</span>
+              </h3>
+              <p class="text-sm mt-1" style="color: var(--color-text-secondary);">
+                <span data-lang="en">{entry.org.en}</span>
+                <span data-lang="zh">{entry.org.zh}</span>
+              </p>
+            </div>
+            <span class="glass-subtle px-3 py-1 text-xs font-medium" style="color: var(--color-text-secondary);">
+              <span data-lang="en">{entry.period.en}</span>
+              <span data-lang="zh">{entry.period.zh}</span>
+            </span>
+          </div>
 
-      <!-- EN items -->
-      <ul data-lang="en" class="space-y-3">
-        {UI.campus.items.en.map((item) => (
-          <li class="text-sm flex items-start gap-2.5" style="color: var(--color-text-secondary);">
-            <span class="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style="background: var(--color-accent);" />
-            <span><strong style="color: var(--color-text-primary);">{item.label}:</strong> {item.text}</span>
-          </li>
-        ))}
-      </ul>
-      <!-- ZH items -->
-      <ul data-lang="zh" class="space-y-3">
-        {UI.campus.items.zh.map((item) => (
-          <li class="text-sm flex items-start gap-2.5" style="color: var(--color-text-secondary);">
-            <span class="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style="background: var(--color-accent);" />
-            <span><strong style="color: var(--color-text-primary);">{item.label}：</strong>{item.text}</span>
-          </li>
-        ))}
-      </ul>
+          <!-- EN items -->
+          <ul data-lang="en" class="space-y-3">
+            {entry.items.en.map((item) => (
+              <li class="text-sm flex items-start gap-2.5" style="color: var(--color-text-secondary);">
+                <span class="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style="background: var(--color-accent);" />
+                <span><strong style="color: var(--color-text-primary);">{item.label}:</strong> {item.text}</span>
+              </li>
+            ))}
+          </ul>
+          <!-- ZH items -->
+          <ul data-lang="zh" class="space-y-3">
+            {entry.items.zh.map((item) => (
+              <li class="text-sm flex items-start gap-2.5" style="color: var(--color-text-secondary);">
+                <span class="mt-1.5 w-1 h-1 rounded-full flex-shrink-0" style="background: var(--color-accent);" />
+                <span><strong style="color: var(--color-text-primary);">{item.label}：</strong>{item.text}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
   </div>
 </section>
