@@ -89,13 +89,11 @@ import SectionHeading from "./SectionHeading.astro";
 .bio-ul-bar {
   position: absolute;
   height: 1.5px;
-  background: var(--color-accent);
+  /* Tapered: bright center, fades to transparent at tips */
+  background: radial-gradient(ellipse at center, var(--color-accent) 0%, transparent 100%);
   pointer-events: none;
-  border-radius: 1px;
   opacity: 0;
-  transition: left 0.28s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              width 0.32s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              opacity 0.22s ease-out;
+  transition: opacity 0.25s ease-out;
 }
 </style>
 
@@ -157,8 +155,16 @@ import SectionHeading from "./SectionHeading.astro";
   var mouseX = -9999;
   var mouseY = -9999;
   var isInside = false;
-  var SIGMA = 50; /* px — horizontal Gaussian radius */
+  var RADIUS = 70; /* px — visible underline half-width from cursor */
+  var SIGMA = 50;
   var SIG2 = 2 * SIGMA * SIGMA;
+
+  /* Smooth bar state — lerped each frame for fluid animation */
+  var barState = { left: 0, width: 0, top: 0, opacity: 0 };
+  var barTarget = { left: 0, width: 0, top: 0, opacity: 0 };
+  var LERP = 0.18; /* interpolation speed per frame */
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
 
   function update() {
     pending = false;
@@ -168,68 +174,64 @@ import SectionHeading from "./SectionHeading.astro";
     var spans = p.querySelectorAll(".bw");
     var cRect = container.getBoundingClientRect();
 
-    /* Reset all text-shadow first */
+    /* Reset all text-shadow */
     for (var i = 0; i < spans.length; i++) {
       spans[i].style.textShadow = "";
     }
 
     if (!isInside) {
-      bar.style.opacity = "0";
-      return;
-    }
-
-    /* Find which line the mouse is on (group words by line via rect.top) */
-    var lineWords = [];
-    var lineTop = -1;
-    var tolerance = 6; /* px — same-line threshold */
-    for (var i = 0; i < spans.length; i++) {
-      var r = spans[i].getBoundingClientRect();
-      if (r.width === 0) continue;
-      var rowY = r.top + r.height / 2;
-      if (Math.abs(mouseY - rowY) < r.height / 2 + tolerance) {
-        lineWords.push({ el: spans[i], rect: r });
-      }
-    }
-
-    if (lineWords.length === 0) {
-      bar.style.opacity = "0";
-      return;
-    }
-
-    /* Apply faux-bold + find underline bar extents on this line */
-    var barL = Infinity;
-    var barR = -Infinity;
-    var barBottom = 0;
-    var hasActive = false;
-
-    for (var i = 0; i < lineWords.length; i++) {
-      var w = lineWords[i];
-      var cx = w.rect.left + w.rect.width / 2;
-      var dx = mouseX - cx;
-      var t = Math.exp(-(dx * dx) / SIG2);
-
-      if (t > 0.1) {
-        /* Faux-bold via text-shadow */
-        var shadow = (t * 0.5).toFixed(2);
-        w.el.style.textShadow = "0 0 " + shadow + "px currentColor";
-
-        /* Extend bar to cover this word */
-        if (w.rect.left < barL) barL = w.rect.left;
-        if (w.rect.right > barR) barR = w.rect.right;
-        barBottom = w.rect.bottom;
-        hasActive = true;
-      }
-    }
-
-    if (hasActive) {
-      /* Add small padding to bar so it extends slightly beyond word edges */
-      var pad = 4;
-      bar.style.left = (barL - cRect.left - pad) + "px";
-      bar.style.width = (barR - barL + pad * 2) + "px";
-      bar.style.top = (barBottom - cRect.top + 2) + "px";
-      bar.style.opacity = "0.6";
+      barTarget.opacity = 0;
     } else {
-      bar.style.opacity = "0";
+      /* Find which line the mouse is on */
+      var lineBottom = 0;
+      var onLine = false;
+      var tolerance = 6;
+      for (var i = 0; i < spans.length; i++) {
+        var r = spans[i].getBoundingClientRect();
+        if (r.width === 0) continue;
+        var rowY = r.top + r.height / 2;
+        if (Math.abs(mouseY - rowY) < r.height / 2 + tolerance) {
+          onLine = true;
+          lineBottom = r.bottom;
+          /* Apply faux-bold based on horizontal distance */
+          var cx = r.left + r.width / 2;
+          var dx = mouseX - cx;
+          var t = Math.exp(-(dx * dx) / SIG2);
+          if (t > 0.1) {
+            spans[i].style.textShadow = "0 0 " + (t * 0.5).toFixed(2) + "px currentColor";
+          }
+        }
+      }
+
+      if (onLine) {
+        /* Bar extent driven directly by cursor ± RADIUS, not by word boundaries */
+        barTarget.left = mouseX - RADIUS - cRect.left;
+        barTarget.width = RADIUS * 2;
+        barTarget.top = lineBottom - cRect.top + 2;
+        barTarget.opacity = 0.55;
+      } else {
+        barTarget.opacity = 0;
+      }
+    }
+
+    /* Lerp bar state toward target for fluid motion */
+    barState.left = lerp(barState.left, barTarget.left, LERP);
+    barState.width = lerp(barState.width, barTarget.width, LERP);
+    barState.top = lerp(barState.top, barTarget.top, LERP);
+    barState.opacity = lerp(barState.opacity, barTarget.opacity, barTarget.opacity > barState.opacity ? LERP : 0.12);
+
+    bar.style.left = barState.left.toFixed(1) + "px";
+    bar.style.width = barState.width.toFixed(1) + "px";
+    bar.style.top = barState.top.toFixed(1) + "px";
+    bar.style.opacity = barState.opacity.toFixed(3);
+
+    /* Keep animating if not settled */
+    if (Math.abs(barState.opacity - barTarget.opacity) > 0.005 ||
+        Math.abs(barState.left - barTarget.left) > 0.5 ||
+        Math.abs(barState.width - barTarget.width) > 0.5 ||
+        Math.abs(barState.top - barTarget.top) > 0.5) {
+      pending = true;
+      requestAnimationFrame(update);
     }
   }
 
