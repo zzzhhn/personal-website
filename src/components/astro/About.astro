@@ -49,22 +49,22 @@ import SectionHeading from "./SectionHeading.astro";
 </section>
 
 <style is:global>
-/* ── Foil watermark: large-scale relief behind card ── */
+/* ── Foil watermark: floats behind card, extends beyond edges ── */
 [data-foil]::before {
   content: "";
   position: absolute;
-  /* Extend 50% beyond card in all directions → 200% card size.
-     overflow:hidden on .card-outline clips it, creating the effect
-     of a massive embossed pattern visible through the card. */
-  inset: -50%;
+  inset: -40%;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  opacity: calc(var(--glow) * 0.15);
+  opacity: calc(var(--glow) * 0.2);
   transform: scale(calc(0.95 + var(--glow) * 0.05));
   transition: opacity 0.4s ease, transform 0.4s ease;
   pointer-events: none;
   z-index: 0;
+  /* Soft radial fade so edges dissolve naturally */
+  -webkit-mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
+  mask-image: radial-gradient(ellipse at center, black 30%, transparent 70%);
 }
 [data-foil] > * { position: relative; z-index: 1; }
 

@@ -234,7 +234,6 @@
   .card-outline {
     --glow: 0;
     position: relative;
-    overflow: hidden;
     background: transparent;
     border: 1px solid color-mix(in oklch, var(--color-accent) calc(var(--glow) * 50%), var(--color-border-subtle));
     border-radius: var(--radius-md);
