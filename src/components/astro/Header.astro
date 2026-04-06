@@ -62,13 +62,13 @@ import { UI } from "../../lib/i18n";
 
 <style>
   .header-glass {
-    background: var(--color-surface-glass);
-    backdrop-filter: blur(60px) saturate(2);
-    -webkit-backdrop-filter: blur(60px) saturate(2);
+    background: var(--color-surface-elevated);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
     border-bottom: 1px solid var(--color-border-glass);
     box-shadow:
-      0 1px 0 0 var(--color-specular),
-      0 4px 24px oklch(0 0 0 / 0.08);
+      0 8px 32px var(--color-shadow-depth),
+      inset 0 1px 0 var(--color-inset-highlight);
   }
 
   .logo-mark {
