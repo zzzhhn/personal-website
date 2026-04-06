@@ -223,8 +223,40 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
   .hero-name {
     font-size: clamp(2.5rem, 5vw, 4.5rem);
     line-height: 1.05;
-    color: var(--color-text-primary);
     margin-bottom: 0.75rem;
+    /* Shimmer — dark mode: cold crystalline sweep matching constellation stars */
+    background: linear-gradient(
+      105deg,
+      oklch(0.72 0.02 250) 0%,
+      oklch(0.96 0.04 250) 38%,
+      oklch(0.82 0.03 265) 58%,
+      oklch(0.72 0.02 250) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 5s ease-in-out infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% center; }
+    100% { background-position: -200% center; }
+  }
+
+  /* Light mode: warm amber-gold-lavender sweep matching bokeh orbs */
+  :global([data-theme="light"]) .hero-name {
+    background: linear-gradient(
+      105deg,
+      oklch(0.35 0.08 55) 0%,
+      oklch(0.55 0.16 55) 35%,
+      oklch(0.48 0.1 310) 55%,
+      oklch(0.35 0.08 55) 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
   .hero-name-en {
     font-family: var(--font-sans);
@@ -381,6 +413,11 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
 
   @media (prefers-reduced-motion: reduce) {
     .orb { animation: none !important; }
+    .hero-name {
+      animation: none !important;
+      background: none;
+      color: var(--color-text-primary);
+    }
   }
 </style>
 
