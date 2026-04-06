@@ -194,10 +194,11 @@ personal-website/
 
 ---
 
-## Milestone 7: Design Language Evolution 🔲
+## Milestone 7: Design Language Evolution ✅ (Phase A-C) / 🔲 (7.1)
 
 > Based on senior design review of `design-proposals.html` (7 proposals).
-> Status: **Awaiting user approval** before implementation.
+> Phase A-C: **已完成并推送**。Phase 7.1（烫金浮水印）: **待实现**。
+> 详细计划见 `~/.claude/plans/robust-crunching-meadow.md` → Milestone 7.1
 
 ### Design Review Summary
 
