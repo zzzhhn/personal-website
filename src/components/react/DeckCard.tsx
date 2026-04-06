@@ -178,7 +178,7 @@ export default function DeckCard({
         }}
       >
         <a
-          href={`/projects/${project.slug}`}
+          href={project.links.live || `/projects/${project.slug}`}
           target="_blank"
           rel="noopener noreferrer"
           style={{ color: "var(--color-accent)", textDecoration: "none", fontWeight: 500 }}
@@ -195,17 +195,6 @@ export default function DeckCard({
             onClick={(e) => e.stopPropagation()}
           >
             GitHub
-          </a>
-        )}
-        {project.links.live && (
-          <a
-            href={project.links.live}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ color: "var(--color-text-tertiary)", textDecoration: "none" }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            Live
           </a>
         )}
       </div>

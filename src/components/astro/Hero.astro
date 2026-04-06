@@ -236,7 +236,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    transition: background 0.15s ease;
+    will-change: --mx, --my;
   }
 
   /* Light mode: warm gold spotlight */
@@ -410,20 +410,26 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
 </style>
 
 <script is:inline>
-// Hero name mouse-proximity glow
+// Hero name mouse-proximity glow (rAF-throttled for smooth 60fps)
 (function () {
-  var heroName = document.querySelector(".hero-name");
-  if (!heroName) return;
-  heroName.addEventListener("mousemove", function (e) {
-    var rect = heroName.getBoundingClientRect();
-    var x = ((e.clientX - rect.left) / rect.width) * 100;
-    var y = ((e.clientY - rect.top) / rect.height) * 100;
-    heroName.style.setProperty("--mx", x + "%");
-    heroName.style.setProperty("--my", y + "%");
+  var el = document.querySelector(".hero-name");
+  if (!el) return;
+  var pending = false;
+  var nx = 50, ny = 50;
+  function flush() {
+    el.style.setProperty("--mx", nx + "%");
+    el.style.setProperty("--my", ny + "%");
+    pending = false;
+  }
+  el.addEventListener("mousemove", function (e) {
+    var r = el.getBoundingClientRect();
+    nx = ((e.clientX - r.left) / r.width) * 100;
+    ny = ((e.clientY - r.top) / r.height) * 100;
+    if (!pending) { pending = true; requestAnimationFrame(flush); }
   });
-  heroName.addEventListener("mouseleave", function () {
-    heroName.style.setProperty("--mx", "50%");
-    heroName.style.setProperty("--my", "50%");
+  el.addEventListener("mouseleave", function () {
+    nx = 50; ny = 50;
+    if (!pending) { pending = true; requestAnimationFrame(flush); }
   });
 })();
 </script>
