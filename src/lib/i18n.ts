@@ -67,24 +67,24 @@ export const UI = {
       en: [
         "2024 Shaw Spirit Award",
         "2025 Shaw Service Award",
-        "WorldQuant BRAIN Challenge Top 0.05%",
         "2024-25 Dean's List (School of Data Science)",
         "2024-25 Campus Culture Development Award",
       ],
       zh: [
         '2024 逸夫书院 "逸夫精神奖"',
         '2025 逸夫书院 "逸夫服务奖"',
-        "WorldQuant BRAIN Challenge Top 0.05%",
         "2024-25 Dean's List（数据科学学院）",
         "2024-25 校园文化贡献奖",
       ],
     },
     certificates: {
       en: [
+        "WorldQuant BRAIN Challenge Top 0.05%",
         "J.P.Morgan Chase & Co. Quantitative Research Completion Certificate",
         "2025 Deloitte Digital Camp Certificate of Participation",
       ],
       zh: [
+        "WorldQuant BRAIN Challenge Top 0.05%",
         "JPMorgan Chase & Co. Quantitative Research Completion Certificate",
         "2025 德勤数字化精英挑战赛参赛证书",
       ],
