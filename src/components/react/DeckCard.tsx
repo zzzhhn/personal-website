@@ -14,9 +14,13 @@ export interface Project {
 interface DeckCardProps {
   project: Project;
   index: number;
-  total: number;
-  isDrawn: boolean;
+  mode: "deck" | "drawn";
+  deckSlot: number;
+  peekGap: number;
+  peekHeight: number;
   isHovered: boolean;
+  scatterPos: { x: number; y: number; rotate: number };
+  drawOrder: number;
   onDraw: () => void;
   onReturn: () => void;
   onHover: (h: boolean) => void;
@@ -24,76 +28,195 @@ interface DeckCardProps {
 
 export default function DeckCard({
   project,
-  index,
-  total,
-  isDrawn,
+  mode,
+  deckSlot,
+  peekGap,
+  peekHeight,
   isHovered,
+  scatterPos,
   onDraw,
   onReturn,
   onHover,
 }: DeckCardProps) {
   const isCompleted = project.status === "completed";
 
-  // Fan layout: distribute cards horizontally with slight rotation
-  const mid = (total - 1) / 2;
-  const offset = index - mid;
-  const fanRotate = offset * 4;           // ±4deg per card from center
-  const fanX = offset * 180;              // horizontal spread
-  const fanY = Math.abs(offset) * 12;     // slight arc (edges dip down)
-
-  // Hover: card lifts slightly
-  const hoverLift = isHovered && !isDrawn ? -12 : 0;
-
-  // Drawn: card lifts above the fan
-  const drawnY = -260;
-  const drawnRotate = 0;
-
   const handleClick = (e: React.MouseEvent) => {
     if ((e.target as HTMLElement).closest("a")) return;
-    if (isDrawn) {
+    if (mode === "drawn") {
       onReturn();
     } else {
       onDraw();
     }
   };
 
+  // ── Deck mode: peek strip ──
+  if (mode === "deck") {
+    const top = deckSlot * peekGap;
+    const hoverLift = isHovered ? -16 : 0;
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{
+          opacity: 1,
+          y: hoverLift,
+          scale: isHovered ? 1.02 : 1,
+        }}
+        exit={{ opacity: 0, y: -60, transition: { duration: 0.35 } }}
+        transition={{ type: "spring", stiffness: 260, damping: 24 }}
+        onClick={handleClick}
+        onMouseEnter={() => onHover(true)}
+        onMouseLeave={() => onHover(false)}
+        className="card-solid"
+        style={{
+          position: "absolute",
+          top,
+          left: 0,
+          right: 0,
+          height: peekHeight,
+          overflow: "hidden",
+          cursor: "pointer",
+          userSelect: "none",
+          padding: "0.75rem 1.25rem",
+          zIndex: isHovered ? 10 : deckSlot,
+          boxShadow: isHovered
+            ? "0 8px 24px rgba(0,0,0,0.18)"
+            : "0 2px 8px rgba(0,0,0,0.08)",
+        }}
+      >
+        {/* Peek content: title + status badge */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "0.75rem",
+          }}
+        >
+          <h3
+            style={{
+              fontSize: "0.95rem",
+              fontWeight: 600,
+              color: "var(--color-text-primary)",
+              margin: 0,
+              lineHeight: 1.3,
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {project.title}
+          </h3>
+
+          <span
+            className="glass-subtle"
+            style={{
+              fontSize: "0.6rem",
+              fontWeight: 500,
+              padding: "0.1rem 0.45rem",
+              flexShrink: 0,
+              color: isCompleted
+                ? "var(--color-accent-teal)"
+                : "var(--color-accent-warm)",
+            }}
+          >
+            {isCompleted ? "Completed" : "In Progress"}
+          </span>
+        </div>
+
+        {/* Tagline peek */}
+        <p
+          style={{
+            fontSize: "0.72rem",
+            color: "var(--color-text-tertiary)",
+            margin: "0.25rem 0 0",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {project.tagline}
+        </p>
+
+        {/* Bottom gradient mask — envelope edge illusion */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: "1.2rem",
+            background:
+              "linear-gradient(to bottom, transparent, var(--color-surface-secondary))",
+            pointerEvents: "none",
+          }}
+        />
+      </motion.div>
+    );
+  }
+
+  // ── Drawn mode: full card, scattered on desktop ──
   return (
     <motion.div
-      animate={
-        isDrawn
-          ? { x: fanX, y: drawnY, rotate: drawnRotate, scale: 1.05, zIndex: 30 }
-          : { x: fanX, y: fanY + hoverLift, rotate: fanRotate, scale: 1, zIndex: isHovered ? 20 : 10 - Math.abs(offset) }
-      }
-      transition={
-        isDrawn
-          ? { type: "spring", stiffness: 180, damping: 20, mass: 0.8 }
-          : { type: "spring", stiffness: 280, damping: 26 }
-      }
+      initial={{ opacity: 0, y: -40, scale: 0.92 }}
+      animate={{
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        rotate: scatterPos.rotate,
+      }}
+      exit={{ opacity: 0, y: -30, scale: 0.9, transition: { duration: 0.3 } }}
+      transition={{ type: "spring", stiffness: 180, damping: 20, mass: 0.8 }}
       onClick={handleClick}
       onMouseEnter={() => onHover(true)}
       onMouseLeave={() => onHover(false)}
       className="card-solid"
       style={{
-        position: "absolute",
-        width: "18rem",
+        position: "relative",
+        width: "100%",
+        maxWidth: "38rem",
         cursor: "pointer",
         userSelect: "none",
         padding: "1.25rem",
-        transformOrigin: "center bottom",
+        boxShadow: isHovered
+          ? "0 12px 32px rgba(0,0,0,0.22)"
+          : "0 4px 16px rgba(0,0,0,0.10)",
+        transition: "box-shadow 0.25s ease",
       }}
     >
       {/* Status badge */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "0.5rem",
+        }}
+      >
         <span
           className="glass-subtle"
           style={{
             fontSize: "0.625rem",
             fontWeight: 500,
             padding: "0.15rem 0.5rem",
-            color: isCompleted ? "var(--color-accent-teal)" : "var(--color-accent-warm)",
+            color: isCompleted
+              ? "var(--color-accent-teal)"
+              : "var(--color-accent-warm)",
           }}
         >
           {isCompleted ? "Completed" : "In Progress"}
+        </span>
+
+        {/* Return hint */}
+        <span
+          style={{
+            fontSize: "0.6rem",
+            color: "var(--color-text-tertiary)",
+            opacity: isHovered ? 0.8 : 0,
+            transition: "opacity 0.2s ease",
+          }}
+        >
+          Click to return
         </span>
       </div>
 
@@ -124,7 +247,14 @@ export default function DeckCard({
 
       {/* Highlights */}
       {project.highlights.length > 0 && (
-        <ul style={{ margin: 0, padding: 0, listStyle: "none", marginBottom: "0.6rem" }}>
+        <ul
+          style={{
+            margin: 0,
+            padding: 0,
+            listStyle: "none",
+            marginBottom: "0.6rem",
+          }}
+        >
           {project.highlights.map((h, i) => (
             <li
               key={i}
@@ -155,12 +285,23 @@ export default function DeckCard({
       )}
 
       {/* Tech stack */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.25rem", marginBottom: "0.6rem" }}>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "0.25rem",
+          marginBottom: "0.6rem",
+        }}
+      >
         {project.techStack.map((t) => (
           <span
             key={t}
             className="glass-subtle"
-            style={{ fontSize: "0.625rem", padding: "0.1rem 0.4rem", color: "var(--color-text-secondary)" }}
+            style={{
+              fontSize: "0.625rem",
+              padding: "0.1rem 0.4rem",
+              color: "var(--color-text-secondary)",
+            }}
           >
             {t}
           </span>
@@ -181,7 +322,11 @@ export default function DeckCard({
           href={project.links.live || `/projects/${project.slug}`}
           target="_blank"
           rel="noopener noreferrer"
-          style={{ color: "var(--color-accent)", textDecoration: "none", fontWeight: 500 }}
+          style={{
+            color: "var(--color-accent)",
+            textDecoration: "none",
+            fontWeight: 500,
+          }}
           onClick={(e) => e.stopPropagation()}
         >
           Details &rarr;
@@ -191,7 +336,10 @@ export default function DeckCard({
             href={project.links.github}
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: "var(--color-text-tertiary)", textDecoration: "none" }}
+            style={{
+              color: "var(--color-text-tertiary)",
+              textDecoration: "none",
+            }}
             onClick={(e) => e.stopPropagation()}
           >
             GitHub
