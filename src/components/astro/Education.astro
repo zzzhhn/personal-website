@@ -8,11 +8,11 @@ import AwardsGrid from "../react/AwardsGrid";
   <div class="mx-auto" style="max-width: var(--max-width-content);">
     <SectionHeading variant="editorial" number="02" titleEn={UI.sections.education.en} titleZh={UI.sections.education.zh} />
 
-    <!-- Education card — CUHK purple+gold theme -->
-    <div class="card-cuhk p-8 mb-8 mx-auto" style="max-width: 48rem;">
+    <!-- Education card — Approach A: solid + foil seal -->
+    <div class="card-cuhk p-8 mb-8 mx-auto" data-foil="cuhk" style="max-width: 48rem;">
       <div class="flex items-start justify-between gap-4 flex-wrap mb-4">
         <div>
-          <h3 class="text-lg font-semibold" style="color: var(--color-uni-purple);">
+          <h3 class="text-lg font-semibold" style="color: var(--color-text-primary);">
             <span data-lang="en">{UI.education.school.en}</span>
             <span data-lang="zh">{UI.education.school.zh}</span>
           </h3>
@@ -21,7 +21,7 @@ import AwardsGrid from "../react/AwardsGrid";
             <span data-lang="zh">{UI.education.degree.zh}</span>
           </p>
         </div>
-        <span class="glass-subtle px-3 py-1 text-xs font-medium" style="color: var(--color-uni-gold);">
+        <span class="glass-subtle px-3 py-1 text-xs font-medium" style="color: var(--color-text-secondary);">
           <span data-lang="en">{UI.education.period.en}</span>
           <span data-lang="zh">{UI.education.period.zh}</span>
         </span>
@@ -120,14 +120,14 @@ import AwardsGrid from "../react/AwardsGrid";
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
-    scrollbar-color: var(--color-uni-purple) transparent;
+    scrollbar-color: var(--color-border-subtle) transparent;
     padding-bottom: 0.5rem;
   }
   .course-scroll::-webkit-scrollbar {
     height: 4px;
   }
   .course-scroll::-webkit-scrollbar-thumb {
-    background: var(--color-uni-purple);
+    background: var(--color-border-subtle);
     border-radius: 4px;
   }
   .course-scroll-inner {
@@ -137,19 +137,47 @@ import AwardsGrid from "../react/AwardsGrid";
   }
   .course-chip {
     white-space: nowrap;
-    font-size: 0.75rem;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.7rem;
     font-weight: 500;
+    letter-spacing: 0.01em;
     padding: 0.3rem 0.75rem;
     border-radius: 100px;
-    background: var(--color-surface-glass);
-    border: 1px solid color-mix(in oklch, var(--color-uni-gold) 30%, var(--color-border-subtle));
+    background: transparent;
+    border: 1px solid var(--color-border-subtle);
     color: var(--color-text-secondary);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
     transition: border-color 0.2s ease, color 0.2s ease;
   }
   .course-chip:hover {
     border-color: var(--color-uni-gold);
     color: var(--color-uni-gold);
   }
+</style>
+
+<style is:global>
+/* ── CUHK foil seal watermark — academic crest motif ── */
+[data-foil="cuhk"]::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: calc(0.04 + var(--glow) * 0.06);
+  transform: scale(calc(0.96 + var(--glow) * 0.04));
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+  z-index: 0;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  mask-image: radial-gradient(ellipse at center, black 40%, transparent 80%);
+  /* Dark mode: purple→gold bimetallic foil */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none'%3E%3Cdefs%3E%3ClinearGradient id='pg' x1='0' y1='0' x2='200' y2='200' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0%25' stop-color='%239B8EC4'/%3E%3Cstop offset='40%25' stop-color='%23D4CDE8'/%3E%3Cstop offset='60%25' stop-color='%23E8D5A0'/%3E%3Cstop offset='100%25' stop-color='%23C4A960'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='100' cy='100' r='88' stroke='url(%23pg)' stroke-width='2'/%3E%3Ccircle cx='100' cy='100' r='82' stroke='url(%23pg)' stroke-width='0.8'/%3E%3Cpath d='M100 30 L120 70 H80 Z' stroke='url(%23pg)' stroke-width='1.5' fill='none'/%3E%3Cpath d='M70 65 Q100 20 130 65' stroke='url(%23pg)' stroke-width='1.2' fill='none'/%3E%3Cpath d='M65 80 Q100 55 135 80 Q100 105 65 80 Z' stroke='url(%23pg)' stroke-width='1' fill='url(%23pg)' fill-opacity='0.06'/%3E%3Cpath d='M80 78 Q100 60 120 78' stroke='url(%23pg)' stroke-width='0.8' fill='none'/%3E%3Cpath d='M85 72 L100 50 L115 72' stroke='url(%23pg)' stroke-width='0.8' fill='none'/%3E%3Crect x='78' y='105' width='44' height='50' rx='3' stroke='url(%23pg)' stroke-width='1.2' fill='none'/%3E%3Cline x1='78' y1='115' x2='122' y2='115' stroke='url(%23pg)' stroke-width='0.6'/%3E%3Cline x1='85' y1='122' x2='115' y2='122' stroke='url(%23pg)' stroke-width='0.4'/%3E%3Cline x1='85' y1='128' x2='115' y2='128' stroke='url(%23pg)' stroke-width='0.4'/%3E%3Cline x1='85' y1='134' x2='115' y2='134' stroke='url(%23pg)' stroke-width='0.4'/%3E%3Cline x1='85' y1='140' x2='115' y2='140' stroke='url(%23pg)' stroke-width='0.4'/%3E%3Ctext x='100' y='112' font-family='serif' font-size='7' fill='url(%23pg)' text-anchor='middle'%3ECUHK%3C/text%3E%3Cpath d='M55 165 Q70 155 78 160' stroke='url(%23pg)' stroke-width='0.8' fill='none'/%3E%3Cpath d='M145 165 Q130 155 122 160' stroke='url(%23pg)' stroke-width='0.8' fill='none'/%3E%3Cpath d='M50 170 Q65 158 78 165' stroke='url(%23pg)' stroke-width='0.6' fill='none'/%3E%3Cpath d='M150 170 Q135 158 122 165' stroke='url(%23pg)' stroke-width='0.6' fill='none'/%3E%3C/svg%3E");
+}
+[data-foil="cuhk"] > * { position: relative; z-index: 1; }
+
+/* Light mode: darker gold gradient for visibility */
+[data-theme="light"] [data-foil="cuhk"]::before {
+  opacity: calc(0.03 + var(--glow) * 0.05);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200' fill='none'%3E%3Cdefs%3E%3ClinearGradient id='pg' x1='0' y1='0' x2='200' y2='200' gradientUnits='userSpaceOnUse'%3E%3Cstop offset='0%25' stop-color='%23635088'/%3E%3Cstop offset='40%25' stop-color='%238B7AB0'/%3E%3Cstop offset='60%25' stop-color='%23A0893F'/%3E%3Cstop offset='100%25' stop-color='%23857030'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='100' cy='100' r='88' stroke='url(%23pg)' stroke-width='2'/%3E%3Ccircle cx='100' cy='100' r='82' stroke='url(%23pg)' stroke-width='0.8'/%3E%3Cpath d='M100 30 L120 70 H80 Z' stroke='url(%23pg)' stroke-width='1.5' fill='none'/%3E%3Cpath d='M70 65 Q100 20 130 65' stroke='url(%23pg)' stroke-width='1.2' fill='none'/%3E%3Cpath d='M65 80 Q100 55 135 80 Q100 105 65 80 Z' stroke='url(%23pg)' stroke-width='1' fill='url(%23pg)' fill-opacity='0.06'/%3E%3Cpath d='M80 78 Q100 60 120 78' stroke='url(%23pg)' stroke-width='0.8' fill='none'/%3E%3Cpath d='M85 72 L100 50 L115 72' stroke='url(%23pg)' stroke-width='0.8' fill='none'/%3E%3Crect x='78' y='105' width='44' height='50' rx='3' stroke='url(%23pg)' stroke-width='1.2' fill='none'/%3E%3Cline x1='78' y1='115' x2='122' y2='115' stroke='url(%23pg)' stroke-width='0.6'/%3E%3Cline x1='85' y1='122' x2='115' y2='122' stroke='url(%23pg)' stroke-width='0.4'/%3E%3Cline x1='85' y1='128' x2='115' y2='128' stroke='url(%23pg)' stroke-width='0.4'/%3E%3Cline x1='85' y1='134' x2='115' y2='134' stroke='url(%23pg)' stroke-width='0.4'/%3E%3Cline x1='85' y1='140' x2='115' y2='140' stroke='url(%23pg)' stroke-width='0.4'/%3E%3Ctext x='100' y='112' font-family='serif' font-size='7' fill='url(%23pg)' text-anchor='middle'%3ECUHK%3C/text%3E%3Cpath d='M55 165 Q70 155 78 160' stroke='url(%23pg)' stroke-width='0.8' fill='none'/%3E%3Cpath d='M145 165 Q130 155 122 160' stroke='url(%23pg)' stroke-width='0.8' fill='none'/%3E%3Cpath d='M50 170 Q65 158 78 165' stroke='url(%23pg)' stroke-width='0.6' fill='none'/%3E%3Cpath d='M150 170 Q135 158 122 165' stroke='url(%23pg)' stroke-width='0.6' fill='none'/%3E%3C/svg%3E");
+}
 </style>

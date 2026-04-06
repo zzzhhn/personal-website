@@ -41,13 +41,13 @@
   --color-accent-teal-hover: oklch(0.78 0.14 165);
   --color-accent-teal-glow: oklch(0.72 0.12 165 / 0.2);
 
-  /* University accent — CUHK purple + gold */
-  --color-uni-purple: oklch(0.42 0.18 310);
-  --color-uni-purple-hover: oklch(0.48 0.2 310);
-  --color-uni-purple-glow: oklch(0.42 0.18 310 / 0.15);
-  --color-uni-gold: oklch(0.72 0.14 85);
-  --color-uni-gold-hover: oklch(0.78 0.16 85);
-  --color-uni-gold-glow: oklch(0.72 0.14 85 / 0.12);
+  /* University accent — CUHK purple + gold (toned for Liquid Glass harmony) */
+  --color-uni-purple: oklch(0.52 0.10 285);
+  --color-uni-purple-hover: oklch(0.58 0.12 285);
+  --color-uni-purple-glow: oklch(0.52 0.10 285 / 0.12);
+  --color-uni-gold: oklch(0.76 0.08 75);
+  --color-uni-gold-hover: oklch(0.82 0.10 75);
+  --color-uni-gold-glow: oklch(0.76 0.08 75 / 0.10);
 
   /* Specular & Light — Liquid Glass material */
   --color-specular: oklch(1 0 0 / 0.10);
@@ -108,12 +108,12 @@
     --color-accent-teal: oklch(0.52 0.14 165);
     --color-accent-teal-hover: oklch(0.46 0.16 165);
     --color-accent-teal-glow: oklch(0.52 0.14 165 / 0.12);
-    --color-uni-purple: oklch(0.38 0.2 310);
-    --color-uni-purple-hover: oklch(0.34 0.22 310);
-    --color-uni-purple-glow: oklch(0.38 0.2 310 / 0.1);
-    --color-uni-gold: oklch(0.58 0.16 85);
-    --color-uni-gold-hover: oklch(0.52 0.18 85);
-    --color-uni-gold-glow: oklch(0.58 0.16 85 / 0.1);
+    --color-uni-purple: oklch(0.42 0.10 285);
+    --color-uni-purple-hover: oklch(0.38 0.12 285);
+    --color-uni-purple-glow: oklch(0.42 0.10 285 / 0.08);
+    --color-uni-gold: oklch(0.60 0.08 75);
+    --color-uni-gold-hover: oklch(0.54 0.10 75);
+    --color-uni-gold-glow: oklch(0.60 0.08 75 / 0.08);
     --color-specular: oklch(1 0 0 / 0.25);
     --color-specular-strong: oklch(1 0 0 / 0.35);
     --color-specular-mid: oklch(1 0 0 / 0.05);
@@ -322,30 +322,87 @@
     transition: transform 0.1s ease-out;
   }
 
-  /* CUHK school card — purple/gold variant */
+  /* CUHK school card — Approach A: solid + foil seal + bottom gradient line */
   .card-cuhk {
     --glow: 0;
     position: relative;
-    background: transparent;
-    border: 1px solid color-mix(in oklch, var(--color-uni-purple) calc(var(--glow) * 50%), var(--color-border-subtle));
+    overflow: visible;
+    background: var(--color-surface-secondary);
+    border: 1px solid var(--color-border-subtle);
     border-radius: var(--radius-md);
     transition:
       --glow 0.3s ease,
       transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-      box-shadow 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
-      border-color 0.3s ease;
+      box-shadow 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow:
-      0 0 calc(var(--glow) * 16px) var(--color-uni-purple-glow),
       0 4px 16px var(--color-shadow-depth),
       inset 0 1px 0 var(--color-inset-highlight);
+  }
+  /* Bottom gradient accent line */
+  .card-cuhk::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    border-radius: 1px;
+    background: linear-gradient(90deg, var(--color-uni-purple), var(--color-uni-gold), var(--color-uni-purple));
+    opacity: calc(0.4 + var(--glow) * 0.6);
+    transition: opacity 0.3s ease;
   }
   .card-cuhk:hover {
     --glow: 1;
     transform: translateY(-2px);
+    box-shadow:
+      0 8px 24px var(--color-shadow-depth-hover),
+      inset 0 1px 0 var(--color-inset-highlight-hover);
   }
   .card-cuhk:active {
     transform: scale(0.97);
     transition: transform 0.1s ease-out;
+  }
+
+  /* CUHK Approach B: tinted glass variant (swap card-cuhk → glass-tinted to try) */
+  .glass-tinted {
+    --glow: 0;
+    position: relative;
+    overflow: visible;
+    background: oklch(0.16 0.02 290 / 0.55);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--color-border-glass);
+    border-radius: var(--radius-md);
+    box-shadow:
+      0 8px 32px var(--color-shadow-depth),
+      inset 0 1px 0 var(--color-inset-highlight);
+    transition:
+      --glow 0.3s ease,
+      transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+      box-shadow 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  /* Left accent stripe via pseudo — avoids border-image + border-radius conflict */
+  .glass-tinted::after {
+    content: "";
+    position: absolute;
+    top: 15%;
+    bottom: 15%;
+    left: -1px;
+    width: 3px;
+    border-radius: 2px;
+    background: linear-gradient(180deg, var(--color-uni-purple), var(--color-uni-gold));
+    opacity: 0.7;
+  }
+  .glass-tinted:hover {
+    --glow: 1;
+    transform: translateY(-2px);
+  }
+  .glass-tinted:active {
+    transform: scale(0.97);
+    transition: transform 0.1s ease-out;
+  }
+  [data-theme="light"] .glass-tinted {
+    background: oklch(0.96 0.01 290 / 0.60);
   }
 
   /* Foil watermark ::before styles are in About.astro <style is:global> */
