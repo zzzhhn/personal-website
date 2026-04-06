@@ -221,39 +221,32 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
   }
 
   .hero-name {
+    --mx: 50%;
+    --my: 50%;
     font-size: clamp(2.5rem, 5vw, 4.5rem);
     line-height: 1.05;
     margin-bottom: 0.75rem;
-    /* Shimmer — dark mode: cold crystalline sweep matching constellation stars */
-    background: linear-gradient(
-      105deg,
-      oklch(0.72 0.02 250) 0%,
-      oklch(0.96 0.04 250) 38%,
-      oklch(0.82 0.03 265) 58%,
-      oklch(0.72 0.02 250) 100%
+    /* Mouse-proximity glow — dark mode: cold silver spotlight */
+    background: radial-gradient(
+      circle 120px at var(--mx) var(--my),
+      oklch(0.97 0.03 250) 0%,
+      oklch(0.72 0.02 260) 50%,
+      oklch(0.52 0.01 265) 100%
     );
-    background-size: 200% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    animation: shimmer 5s ease-in-out infinite;
+    transition: background 0.15s ease;
   }
 
-  @keyframes shimmer {
-    0% { background-position: 200% center; }
-    100% { background-position: -200% center; }
-  }
-
-  /* Light mode: warm amber-gold-lavender sweep matching bokeh orbs */
+  /* Light mode: warm gold spotlight */
   :global([data-theme="light"]) .hero-name {
-    background: linear-gradient(
-      105deg,
-      oklch(0.35 0.08 55) 0%,
-      oklch(0.55 0.16 55) 35%,
-      oklch(0.48 0.1 310) 55%,
-      oklch(0.35 0.08 55) 100%
+    background: radial-gradient(
+      circle 120px at var(--mx) var(--my),
+      oklch(0.62 0.18 65) 0%,
+      oklch(0.40 0.10 55) 50%,
+      oklch(0.28 0.06 50) 100%
     );
-    background-size: 200% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
@@ -413,13 +406,27 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
 
   @media (prefers-reduced-motion: reduce) {
     .orb { animation: none !important; }
-    .hero-name {
-      animation: none !important;
-      background: none;
-      color: var(--color-text-primary);
-    }
   }
 </style>
+
+<script is:inline>
+// Hero name mouse-proximity glow
+(function () {
+  var heroName = document.querySelector(".hero-name");
+  if (!heroName) return;
+  heroName.addEventListener("mousemove", function (e) {
+    var rect = heroName.getBoundingClientRect();
+    var x = ((e.clientX - rect.left) / rect.width) * 100;
+    var y = ((e.clientY - rect.top) / rect.height) * 100;
+    heroName.style.setProperty("--mx", x + "%");
+    heroName.style.setProperty("--my", y + "%");
+  });
+  heroName.addEventListener("mouseleave", function () {
+    heroName.style.setProperty("--mx", "50%");
+    heroName.style.setProperty("--my", "50%");
+  });
+})();
+</script>
 
 <script is:inline>
 (function () {

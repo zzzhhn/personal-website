@@ -164,7 +164,7 @@ export const UI = {
       },
     },
     {
-      role: { en: "Vice Chairman & External Affairs Officer", zh: "副主席 & 外联部干事" },
+      role: { en: "Vice Chairman & Member of Liaison Department", zh: "副主席 & 外联部干事" },
       org: {
         en: "Shaw College Resident Student Association (SCRSA)",
         zh: "逸夫书院宿生会",

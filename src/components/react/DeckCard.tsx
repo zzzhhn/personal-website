@@ -14,43 +14,41 @@ export interface Project {
 interface DeckCardProps {
   project: Project;
   index: number;
-  deckIndex: number;
+  total: number;
   isDrawn: boolean;
-  isTopCard: boolean;
-  deckHovered: boolean;
-  drawnPos: { x: number; y: number; rotate: number };
+  isHovered: boolean;
   onDraw: () => void;
   onReturn: () => void;
-  onHoverDeck: (h: boolean) => void;
+  onHover: (h: boolean) => void;
 }
 
 export default function DeckCard({
   project,
   index,
-  deckIndex,
+  total,
   isDrawn,
-  isTopCard,
-  deckHovered,
-  drawnPos,
+  isHovered,
   onDraw,
   onReturn,
-  onHoverDeck,
+  onHover,
 }: DeckCardProps) {
   const isCompleted = project.status === "completed";
 
-  // In-deck position: stacked with slight offset
-  const deckY = -deckIndex * 4;
-  const deckRotate = (deckIndex - 1) * 1.2;
-  const deckScale = 1 - deckIndex * 0.015;
+  // Fan layout: distribute cards horizontally with slight rotation
+  const mid = (total - 1) / 2;
+  const offset = index - mid;
+  const fanRotate = offset * 4;           // ±4deg per card from center
+  const fanX = offset * 180;              // horizontal spread
+  const fanY = Math.abs(offset) * 12;     // slight arc (edges dip down)
 
-  // Wavy hover offset for in-deck cards
-  const wavyX = deckHovered && !isDrawn
-    ? Math.sin(Date.now() / 600 + index * 1.2) * 3
-    : 0;
-  const liftY = deckHovered && isTopCard && !isDrawn ? -10 : 0;
+  // Hover: card lifts slightly
+  const hoverLift = isHovered && !isDrawn ? -12 : 0;
+
+  // Drawn: card lifts above the fan
+  const drawnY = -260;
+  const drawnRotate = 0;
 
   const handleClick = (e: React.MouseEvent) => {
-    // Don't trigger draw/return if clicking a link
     if ((e.target as HTMLElement).closest("a")) return;
     if (isDrawn) {
       onReturn();
@@ -61,51 +59,37 @@ export default function DeckCard({
 
   return (
     <motion.div
-      layout
       animate={
         isDrawn
-          ? {
-              x: drawnPos.x,
-              y: drawnPos.y,
-              rotate: drawnPos.rotate,
-              scale: 1,
-              zIndex: 20,
-            }
-          : {
-              x: wavyX,
-              y: deckY + liftY,
-              rotate: deckRotate,
-              scale: deckScale,
-              zIndex: 10 - deckIndex,
-            }
+          ? { x: fanX, y: drawnY, rotate: drawnRotate, scale: 1.05, zIndex: 30 }
+          : { x: fanX, y: fanY + hoverLift, rotate: fanRotate, scale: 1, zIndex: isHovered ? 20 : 10 - Math.abs(offset) }
       }
       transition={
         isDrawn
-          ? { type: "spring", stiffness: 200, damping: 22, mass: 0.8 }
-          : { type: "spring", stiffness: 300, damping: 28 }
+          ? { type: "spring", stiffness: 180, damping: 20, mass: 0.8 }
+          : { type: "spring", stiffness: 280, damping: 26 }
       }
       onClick={handleClick}
-      onMouseEnter={() => !isDrawn && onHoverDeck(true)}
-      onMouseLeave={() => !isDrawn && onHoverDeck(false)}
+      onMouseEnter={() => onHover(true)}
+      onMouseLeave={() => onHover(false)}
       className="card-solid"
       style={{
-        position: isDrawn ? "absolute" : "absolute",
-        width: "100%",
-        maxWidth: "22rem",
+        position: "absolute",
+        width: "18rem",
         cursor: "pointer",
-        perspective: "1000px",
         userSelect: "none",
-        padding: "1.5rem",
+        padding: "1.25rem",
+        transformOrigin: "center bottom",
       }}
     >
       {/* Status badge */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
         <span
           className="glass-subtle"
           style={{
-            fontSize: "0.6875rem",
+            fontSize: "0.625rem",
             fontWeight: 500,
-            padding: "0.2rem 0.6rem",
+            padding: "0.15rem 0.5rem",
             color: isCompleted ? "var(--color-accent-teal)" : "var(--color-accent-warm)",
           }}
         >
@@ -116,10 +100,10 @@ export default function DeckCard({
       {/* Title */}
       <h3
         style={{
-          fontSize: "1.125rem",
+          fontSize: "1rem",
           fontWeight: 600,
           color: "var(--color-text-primary)",
-          marginBottom: "0.25rem",
+          marginBottom: "0.2rem",
           lineHeight: 1.3,
         }}
       >
@@ -129,36 +113,36 @@ export default function DeckCard({
       {/* Tagline */}
       <p
         style={{
-          fontSize: "0.8125rem",
+          fontSize: "0.75rem",
           fontWeight: 500,
           color: "var(--color-accent)",
-          marginBottom: "0.75rem",
+          marginBottom: "0.6rem",
         }}
       >
         {project.tagline}
       </p>
 
-      {/* Highlights (bullet points) */}
+      {/* Highlights */}
       {project.highlights.length > 0 && (
-        <ul style={{ margin: 0, padding: 0, listStyle: "none", marginBottom: "0.75rem" }}>
+        <ul style={{ margin: 0, padding: 0, listStyle: "none", marginBottom: "0.6rem" }}>
           {project.highlights.map((h, i) => (
             <li
               key={i}
               style={{
-                fontSize: "0.8125rem",
+                fontSize: "0.75rem",
                 color: "var(--color-text-secondary)",
-                lineHeight: 1.5,
+                lineHeight: 1.45,
                 display: "flex",
                 alignItems: "flex-start",
-                gap: "0.5rem",
-                marginBottom: "0.35rem",
+                gap: "0.4rem",
+                marginBottom: "0.25rem",
               }}
             >
               <span
                 style={{
-                  marginTop: "0.45rem",
-                  width: "0.25rem",
-                  height: "0.25rem",
+                  marginTop: "0.4rem",
+                  width: "0.2rem",
+                  height: "0.2rem",
                   borderRadius: "50%",
                   background: "var(--color-accent)",
                   flexShrink: 0,
@@ -171,12 +155,12 @@ export default function DeckCard({
       )}
 
       {/* Tech stack */}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.35rem", marginBottom: "0.75rem" }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "0.25rem", marginBottom: "0.6rem" }}>
         {project.techStack.map((t) => (
           <span
             key={t}
             className="glass-subtle"
-            style={{ fontSize: "0.6875rem", padding: "0.15rem 0.5rem", color: "var(--color-text-secondary)" }}
+            style={{ fontSize: "0.625rem", padding: "0.1rem 0.4rem", color: "var(--color-text-secondary)" }}
           >
             {t}
           </span>
@@ -187,10 +171,10 @@ export default function DeckCard({
       <div
         style={{
           display: "flex",
-          gap: "0.75rem",
-          paddingTop: "0.5rem",
+          gap: "0.6rem",
+          paddingTop: "0.4rem",
           borderTop: "1px solid var(--color-border-glass)",
-          fontSize: "0.8125rem",
+          fontSize: "0.75rem",
         }}
       >
         <a
@@ -221,7 +205,7 @@ export default function DeckCard({
             style={{ color: "var(--color-text-tertiary)", textDecoration: "none" }}
             onClick={(e) => e.stopPropagation()}
           >
-            Live Demo
+            Live
           </a>
         )}
       </div>
