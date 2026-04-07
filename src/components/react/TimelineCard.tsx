@@ -61,7 +61,7 @@ function SkillBubbles({
             key={skill}
             data-skill={skill}
             data-exp-index={index}
-            className="tl-bubble glass-subtle"
+            className="tl-bubble"
             initial={{ opacity: 0, scale: 0.5, y: 6 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.5, y: 6 }}
@@ -78,7 +78,7 @@ function SkillBubbles({
             key={skill}
             data-skill={en.techStack[i]}
             data-exp-index={index}
-            className="tl-bubble glass-subtle"
+            className="tl-bubble"
             initial={{ opacity: 0, scale: 0.5, y: 6 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.5, y: 6 }}

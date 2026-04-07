@@ -34,6 +34,13 @@ export default function ExperienceTimeline({ experiences }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [lines, setLines] = useState<CurveLine[]>([]);
 
+  // Ref keeps the latest expandedSet accessible inside calculateLines
+  // without adding it as a dependency (which would recreate the callback)
+  const expandedRef = useRef<Set<number>>(expandedSet);
+  useEffect(() => {
+    expandedRef.current = expandedSet;
+  }, [expandedSet]);
+
   const toggleExpand = useCallback((index: number) => {
     setExpandedSet((prev) => {
       const next = new Set(prev);
@@ -43,11 +50,14 @@ export default function ExperienceTimeline({ experiences }: Props) {
     });
   }, []);
 
-  // Measure DOM positions and build curves between matching skill bubbles
+  // Measure DOM positions and build curves between matching skill bubbles.
+  // Uses expandedRef to filter out exiting bubbles still in DOM (AnimatePresence
+  // keeps them rendered during exit animation, but they're no longer "expanded").
   const calculateLines = useCallback(() => {
     const container = containerRef.current;
     if (!container) return;
 
+    const currentExpanded = expandedRef.current;
     const containerRect = container.getBoundingClientRect();
     const centerX = container.offsetWidth / 2;
     const bubbleEls = container.querySelectorAll<HTMLElement>("[data-skill]");
@@ -57,8 +67,9 @@ export default function ExperienceTimeline({ experiences }: Props) {
     bubbleEls.forEach((el) => {
       const rect = el.getBoundingClientRect();
       if (rect.width === 0) return; // hidden (wrong language)
-      const skill = el.getAttribute("data-skill") ?? "";
       const idx = Number(el.getAttribute("data-exp-index") ?? "0");
+      if (!currentExpanded.has(idx)) return; // skip exiting bubbles
+      const skill = el.getAttribute("data-skill") ?? "";
       const x = rect.left + rect.width / 2 - containerRect.left;
       const y = rect.top + rect.height / 2 - containerRect.top;
       if (!skillMap.has(skill)) skillMap.set(skill, []);
@@ -92,10 +103,10 @@ export default function ExperienceTimeline({ experiences }: Props) {
       prev.filter((l) => expandedSet.has(l.expA) && expandedSet.has(l.expB)),
     );
 
-    if (expandedSet.size < 2) return; // need ≥2 expanded for connections
+    if (expandedSet.size < 2) return;
 
-    // Recalculate accurate positions after bubble entrance animations finish
-    const timer = setTimeout(calculateLines, 400);
+    // Recalculate accurate positions after bubble entrance animations complete
+    const timer = setTimeout(calculateLines, 450);
     return () => clearTimeout(timer);
   }, [expandedSet, calculateLines]);
 
