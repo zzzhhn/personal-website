@@ -25,6 +25,8 @@ interface Props {
 interface CurveLine {
   key: string;
   d: string;
+  expA: number;
+  expB: number;
 }
 
 export default function ExperienceTimeline({ experiences }: Props) {
@@ -41,7 +43,7 @@ export default function ExperienceTimeline({ experiences }: Props) {
     });
   }, []);
 
-  // Calculate connecting lines between matching skill bubbles
+  // Measure DOM positions and build curves between matching skill bubbles
   const calculateLines = useCallback(() => {
     const container = containerRef.current;
     if (!container) return;
@@ -50,21 +52,19 @@ export default function ExperienceTimeline({ experiences }: Props) {
     const centerX = container.offsetWidth / 2;
     const bubbleEls = container.querySelectorAll<HTMLElement>("[data-skill]");
 
-    // Group visible bubbles by skill name
-    const skillMap = new Map<string, { x: number; y: number; idx: string }[]>();
+    const skillMap = new Map<string, { x: number; y: number; idx: number }[]>();
 
     bubbleEls.forEach((el) => {
       const rect = el.getBoundingClientRect();
       if (rect.width === 0) return; // hidden (wrong language)
       const skill = el.getAttribute("data-skill") ?? "";
-      const idx = el.getAttribute("data-exp-index") ?? "";
+      const idx = Number(el.getAttribute("data-exp-index") ?? "0");
       const x = rect.left + rect.width / 2 - containerRect.left;
       const y = rect.top + rect.height / 2 - containerRect.top;
       if (!skillMap.has(skill)) skillMap.set(skill, []);
       skillMap.get(skill)!.push({ x, y, idx });
     });
 
-    // Generate cubic Bézier curves between all pairs sharing a skill
     const newLines: CurveLine[] = [];
     skillMap.forEach((positions, skill) => {
       if (positions.length < 2) return;
@@ -72,11 +72,12 @@ export default function ExperienceTimeline({ experiences }: Props) {
         for (let j = i + 1; j < positions.length; j++) {
           const a = positions[i];
           const b = positions[j];
-          // S-curve through the timeline center axis
           const d = `M ${a.x} ${a.y} C ${centerX} ${a.y}, ${centerX} ${b.y}, ${b.x} ${b.y}`;
           newLines.push({
             key: `${skill}-${a.idx}-${b.idx}`,
             d,
+            expA: a.idx,
+            expB: b.idx,
           });
         }
       }
@@ -85,19 +86,22 @@ export default function ExperienceTimeline({ experiences }: Props) {
     setLines(newLines);
   }, []);
 
-  // Recalculate after bubbles animate in, or when expansion changes
   useEffect(() => {
-    if (expandedSet.size === 0) {
-      setLines([]);
-      return;
-    }
-    const timer = setTimeout(calculateLines, 380);
+    // Immediately prune lines whose endpoints are no longer expanded
+    setLines((prev) =>
+      prev.filter((l) => expandedSet.has(l.expA) && expandedSet.has(l.expB)),
+    );
+
+    if (expandedSet.size < 2) return; // need ≥2 expanded for connections
+
+    // Recalculate accurate positions after bubble entrance animations finish
+    const timer = setTimeout(calculateLines, 400);
     return () => clearTimeout(timer);
   }, [expandedSet, calculateLines]);
 
-  // Also recalculate on resize
+  // Recalculate on resize
   useEffect(() => {
-    if (expandedSet.size === 0) return;
+    if (expandedSet.size < 2) return;
     const onResize = () => calculateLines();
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
@@ -143,8 +147,11 @@ export default function ExperienceTimeline({ experiences }: Props) {
               strokeLinecap="round"
               initial={{ pathLength: 0, opacity: 0 }}
               animate={{ pathLength: 1, opacity: 1 }}
-              exit={{ pathLength: 0, opacity: 0 }}
-              transition={{ duration: 0.6, ease: "easeInOut" }}
+              exit={{ opacity: 0 }}
+              transition={{
+                pathLength: { duration: 0.6, ease: "easeInOut" },
+                opacity: { duration: 0.25 },
+              }}
             />
           ))}
         </AnimatePresence>

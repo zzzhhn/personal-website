@@ -65,14 +65,14 @@ const projects = rawProjects
   <section id="experience" class="section-glow px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
     <div class="mx-auto" style="max-width: var(--max-width-content);">
       <SectionHeading variant="numbered" number="03" titleEn={UI.sections.experience.en} titleZh={UI.sections.experience.zh} />
-      <ExperienceTimeline client:visible experiences={bilingualExperiences} />
+      <ExperienceTimeline client:idle experiences={bilingualExperiences} />
     </div>
   </section>
 
   <section id="projects" class="section-glow px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
     <div class="mx-auto" style="max-width: var(--max-width-content);">
       <SectionHeading variant="numbered" number="04" titleEn={UI.sections.projects.en} titleZh={UI.sections.projects.zh} />
-      <ProjectShowcase client:visible projects={projects} />
+      <ProjectShowcase client:idle projects={projects} />
     </div>
   </section>
 
