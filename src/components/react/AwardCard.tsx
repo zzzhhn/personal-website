@@ -57,19 +57,23 @@ export default function AwardCard({ label, imageSlug, index }: AwardCardProps) {
       const cardCenterY = rect.top + rect.height / 2;
       const previewW = 256;
       const previewH = 341;
-      // Find the grid container (parent of all cards) to get its right edge
-      const grid = cardRef.current.parentElement;
-      const gridRight = grid ? grid.getBoundingClientRect().right : rect.right;
-      // Place preview to the right of the ENTIRE grid, not individual card
-      let left = gridRight + 20;
-      // If no room on right, place to the left of the grid
-      if (left + previewW > window.innerWidth - 16) {
-        const gridLeft = grid ? grid.getBoundingClientRect().left : rect.left;
-        left = gridLeft - previewW - 20;
+      const vw = window.innerWidth;
+      // Awards grid is max-width:48rem (768px) centered.
+      // Calculate its right edge mathematically.
+      const contentW = 768;
+      const contentRight = (vw + contentW) / 2;
+      let left = contentRight + 20;
+      // If preview would overflow viewport, flip to left side
+      if (left + previewW > vw - 16) {
+        const contentLeft = (vw - contentW) / 2;
+        left = contentLeft - previewW - 20;
       }
-      // Clamp vertically to viewport
+      // If still no room (very narrow screen), don't show
+      if (left < 16) {
+        left = vw - previewW - 16;
+      }
       const top = Math.max(80, Math.min(cardCenterY, window.innerHeight - previewH / 2 - 16));
-      setPreviewPos({ top, left: Math.max(16, left) });
+      setPreviewPos({ top, left });
     }
     setIsHovered(true);
   }, []);
