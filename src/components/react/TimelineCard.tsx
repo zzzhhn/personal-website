@@ -1,27 +1,24 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
+interface ExperienceEntry {
+  role: string;
+  organization: string;
+  location: string;
+  type: string;
+  highlights: string[];
+  techStack: string[];
+}
 
 interface TimelineCardProps {
-  en: {
-    role: string;
-    organization: string;
-    location: string;
-    type: string;
-    highlights: string[];
-    techStack: string[];
-  };
-  zh: {
-    role: string;
-    organization: string;
-    location: string;
-    type: string;
-    highlights: string[];
-    techStack: string[];
-  };
+  en: ExperienceEntry;
+  zh: ExperienceEntry;
   startDate: string;
   endDate?: string;
   index: number;
   side: "left" | "right";
+  expanded: boolean;
+  onToggle: () => void;
 }
 
 function formatDateShort(dateStr: string): string {
@@ -40,6 +37,61 @@ function getDotColor(type: string): { bg: string; glow: string } {
   return { bg: "var(--color-accent)", glow: "var(--color-accent-glow)" };
 }
 
+function SkillBubbles({
+  en,
+  zh,
+  index,
+}: {
+  en: ExperienceEntry;
+  zh: ExperienceEntry;
+  index: number;
+}) {
+  return (
+    <motion.div
+      className="tl-bubbles"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
+      {/* EN bubbles */}
+      <div data-lang="en" className="tl-bubble-group">
+        {en.techStack.map((skill, i) => (
+          <motion.span
+            key={skill}
+            data-skill={skill}
+            data-exp-index={index}
+            className="tl-bubble glass-subtle"
+            initial={{ opacity: 0, scale: 0.5, y: 6 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.5, y: 6 }}
+            transition={{ delay: i * 0.08, duration: 0.28, ease: "easeOut" }}
+          >
+            {skill}
+          </motion.span>
+        ))}
+      </div>
+      {/* ZH bubbles — data-skill uses EN key for cross-experience matching */}
+      <div data-lang="zh" className="tl-bubble-group">
+        {zh.techStack.map((skill, i) => (
+          <motion.span
+            key={skill}
+            data-skill={en.techStack[i]}
+            data-exp-index={index}
+            className="tl-bubble glass-subtle"
+            initial={{ opacity: 0, scale: 0.5, y: 6 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.5, y: 6 }}
+            transition={{ delay: i * 0.08, duration: 0.28, ease: "easeOut" }}
+          >
+            {skill}
+          </motion.span>
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
 export default function TimelineCard({
   en,
   zh,
@@ -47,15 +99,23 @@ export default function TimelineCard({
   endDate,
   index,
   side,
+  expanded,
+  onToggle,
 }: TimelineCardProps) {
-  const [expanded, setExpanded] = useState(false);
   const dotColor = getDotColor(en.type);
-
   const dateStart = formatDateShort(startDate);
   const dateEnd = endDate ? formatDateShort(endDate) : "";
-
-  // Slide in from the card's side
   const slideX = side === "left" ? -30 : 30;
+
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        onToggle();
+      }
+    },
+    [onToggle],
+  );
 
   return (
     <motion.div
@@ -65,15 +125,21 @@ export default function TimelineCard({
       transition={{ duration: 0.5, delay: index * 0.12, ease: "easeOut" }}
       className={`tl-row tl-row--${side}`}
     >
-      {/* Date column */}
+      {/* Date column + skill bubbles */}
       <div className="tl-date">
         <span className="tl-date-start">{dateStart}</span>
         {dateEnd && <span className="tl-date-end">{dateEnd}</span>}
         {!dateEnd && <span className="tl-date-end" data-lang="en">Present</span>}
         {!dateEnd && <span className="tl-date-end" data-lang="zh">至今</span>}
+
+        <AnimatePresence>
+          {expanded && (
+            <SkillBubbles en={en} zh={zh} index={index} />
+          )}
+        </AnimatePresence>
       </div>
 
-      {/* Dot + line column */}
+      {/* Dot column */}
       <div className="tl-track">
         <div
           className="tl-dot"
@@ -86,7 +152,8 @@ export default function TimelineCard({
 
       {/* Card column */}
       <button
-        onClick={() => setExpanded((prev) => !prev)}
+        onClick={onToggle}
+        onKeyDown={handleKeyDown}
         className="tl-card card-accent-border"
         aria-expanded={expanded}
       >
@@ -121,21 +188,6 @@ export default function TimelineCard({
             ))}
           </ul>
         </div>
-
-        {expanded && (
-          <div className="tl-tech-stack">
-            <div data-lang="en" className="flex flex-wrap gap-2">
-              {en.techStack.map((tech) => (
-                <span key={tech} className="glass-subtle text-xs px-2.5 py-1" style={{ color: "var(--color-text-secondary)" }}>{tech}</span>
-              ))}
-            </div>
-            <div data-lang="zh" className="flex flex-wrap gap-2">
-              {zh.techStack.map((tech) => (
-                <span key={tech} className="glass-subtle text-xs px-2.5 py-1" style={{ color: "var(--color-text-secondary)" }}>{tech}</span>
-              ))}
-            </div>
-          </div>
-        )}
       </button>
     </motion.div>
   );

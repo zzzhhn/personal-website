@@ -206,7 +206,7 @@ export const EXPERIENCES = {
         "Led the development of core evaluation modules for text-to-video tasks, including data processing, metric decomposition, and result analysis, and promoted reusable, low-cost evaluation workflow engineering",
         "Rapidly tracked and adapted state-of-the-art evaluation methods from leading video-generation papers, bridging research paradigms with business-oriented model benchmarking and iteration infrastructure",
       ],
-      techStack: ["Python", "Video Evaluation", "SOTA Reproduction"],
+      techStack: ["Python", "Data Pipeline", "ML Evaluation"],
     },
     {
       role: "Product Manager",
@@ -220,7 +220,7 @@ export const EXPERIENCES = {
         "Independently designed a three-level intent taxonomy covering coding, knowledge, general-purpose, and 15+ fine-grained scenarios; continuously facilitated evaluation process by using Human-in-the-loop, harness engineering and other techniques",
         "Conducted falsification experiments on 8+ core cases for anomalies in open-ended QA scenarios and generated high-confidence attribution conclusions",
       ],
-      techStack: ["Python", "API", "Agent Evaluation", "Prompt Engineering"],
+      techStack: ["Python", "Data Analysis", "Prompt Engineering"],
     },
     {
       role: "Venture Capital Assistant",
@@ -234,7 +234,7 @@ export const EXPERIENCES = {
         "Researched the MCP managed services space and produced in-depth competitive analysis by extracting unstructured information from social media, company websites, and third-party reviews",
         "Designed and built an automated audio-processing workflow with multimodal LLMs for GP meetings and expert interviews, improving meeting-note generation efficiency by 50%+",
       ],
-      techStack: ["PitchBook", "LLM", "Venture Capital", "Competitive Analysis"],
+      techStack: ["LLM", "Research", "Competitive Analysis"],
     },
     {
       role: "Research Consultant",
@@ -247,7 +247,7 @@ export const EXPERIENCES = {
         "Relying on the BRAIN platform and focusing on the TOP 3000 Universe of US stocks, using price and volume data as inputs, along with timing and cross-sectional operators such as ts_rank, ts_decay_linear, and rank, 100+ Alphas covering short-term reversals, momentum, and fundamental value were constructed",
         "To address the issue of transaction cost erosion caused by high Turnover during backtesting, ts_decay_linear attenuation smoothing and group_neutralize industry neutralization were introduced, significantly enhancing the RankIC stability (ICIR) and reducing the turnover rate by approximately 15%",
       ],
-      techStack: ["BRAIN Platform", "Alpha Factors", "Quantitative Research", "Python"],
+      techStack: ["Python", "Quantitative Modeling", "Research"],
     },
     {
       role: "Investment Banking Analyst",
@@ -261,7 +261,7 @@ export const EXPERIENCES = {
         "Managed classification and organization of confirmation letters spanning 3 years; built reply tracking spreadsheets using Excel (VLOOKUP, pivot tables) to streamline workflows, processing hundreds of thousands of records and producing 30+ business, financial, and legal working papers, reducing the analysis cycle by ~30%",
         "Authored a valuation report for a GPU-sector technology company; applied P/E and P/S models to project 5-year forward valuations based on 10,000+ historical data points, and independently completed two chapters of financial projections in the project initiation report",
       ],
-      techStack: ["Wind", "Choice", "Excel", "Valuation Modeling"],
+      techStack: ["Excel", "Financial Modeling", "Data Analysis"],
     },
   ],
   zh: [
@@ -277,7 +277,7 @@ export const EXPERIENCES = {
         "针对文生视频任务的数据处理、指标拆解与结果分析需求，自主推进评测方案工程化，实现低成本、高可复用的评测流程工具化",
         "快速跟进视频生成领域和相关 SOTA 评测方法，对论文中的评测范式进行拆解、复现与适配，打通研究方法向业务评测链路的迁移路径",
       ],
-      techStack: ["Python", "视频评测", "SOTA复现"],
+      techStack: ["Python", "数据管线", "ML 评测"],
     },
     {
       role: "产品经理 – Agent 评测",
@@ -291,7 +291,7 @@ export const EXPERIENCES = {
         "独立设计 3 级意图分类树（涵盖代码、知识、通用等 15+ 细分场景），通过 Human-in-the-loop、few-shots 等机制持续优化提示词，将人机一致率从初始的 60% 提升至 90% 以上",
         "负责包含 AI 编程模式指标分析，通过复用 Aime 评测工作流，将报告产出周期缩短 40%",
       ],
-      techStack: ["Python", "API", "Agent评测", "Prompt Engineering"],
+      techStack: ["Python", "数据分析", "Prompt Engineering"],
     },
     {
       role: "风险投资",
@@ -305,7 +305,7 @@ export const EXPERIENCES = {
         "针对 MCP 管理服务赛道进行专项调研，通过多渠道信息提取产出深度竞对分析报告",
         "针对 GP 的会议与专家访谈场景，利用多模态大语言模型设计并搭建自动化录音处理工作流，将纪要产出效率提升 50% 以上",
       ],
-      techStack: ["PitchBook", "LLM", "风险投资", "竞对分析"],
+      techStack: ["LLM", "行业研究", "竞对分析"],
     },
     {
       role: "研究顾问",
@@ -318,7 +318,7 @@ export const EXPERIENCES = {
         "依托 BRAIN 平台，聚焦美股 TOP 3000 Universe，利用价量数据与基本面数据为输入，采用 ts_rank、ts_decay_linear、rank 等时序与截面算子，系统性构建了涵盖短期反转、动量及基本面价值等多类信号的 Alpha，最终产出 100+ 个通过平台检验的高质因子",
         "针对回测中高 Turnover 导致的交易成本侵蚀问题，引入 ts_decay_linear 衰减平滑与 group_neutralize 行业中性化，提升因子回测通过率约 15%",
       ],
-      techStack: ["BRAIN Platform", "Alpha因子", "量化研究", "Python"],
+      techStack: ["Python", "量化建模", "行业研究"],
     },
     {
       role: "投行部 – 股权承做",
@@ -332,7 +332,7 @@ export const EXPERIENCES = {
         "负责近 3 年函证分类整理，用 Excel（VLOOKUP、数据透视图等）建立回函控制表并优化数据处理流程，共处理数十万条数据、制作 30+ 业务、财务、法律底稿表格，缩短分析周期近 30%",
         "撰写某 GPU 领域科技企业估值报告，运用市盈率、市销率模型完成未来 5 年估值预测，基于 10000+ 条历史数据预判未来业务增长，独立完成立项报告中两章财务预测相关内容",
       ],
-      techStack: ["Wind", "Choice", "Excel", "估值建模"],
+      techStack: ["Excel", "财务建模", "数据分析"],
     },
   ],
 } as const;
