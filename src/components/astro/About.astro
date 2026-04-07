@@ -139,9 +139,12 @@ import SectionHeading from "./SectionHeading.astro";
 .bio-kinetic { position: relative; }
 .bw {
   display: inline-block;
-  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   transform-origin: center bottom;
   cursor: default;
+}
+.bw-space {
+  pointer-events: none;
 }
 </style>
 
@@ -173,17 +176,19 @@ import SectionHeading from "./SectionHeading.astro";
         p.appendChild(s);
       }
     } else {
-      var tokens = raw.split(/(\s+)/);
-      for (var j = 0; j < tokens.length; j++) {
-        var tok = tokens[j];
-        if (!tok) continue;
-        if (/^\s+$/.test(tok)) {
-          p.appendChild(document.createTextNode(tok));
+      /* Per-character split (like Hero) — spaces become non-interactive spans */
+      for (var j = 0; j < raw.length; j++) {
+        var ch = raw[j];
+        if (/\s/.test(ch)) {
+          var sp = document.createElement("span");
+          sp.className = "bw bw-space";
+          sp.textContent = ch;
+          p.appendChild(sp);
         } else {
-          var w = document.createElement("span");
-          w.className = "bw";
-          w.textContent = tok;
-          p.appendChild(w);
+          var c = document.createElement("span");
+          c.className = "bw";
+          c.textContent = ch;
+          p.appendChild(c);
         }
       }
     }
@@ -210,11 +215,11 @@ import SectionHeading from "./SectionHeading.astro";
       var cy = rect.top + rect.height / 2;
       var dy = Math.abs(mouseY - cy);
       if (dy > rect.height * 0.6) { el.style.transform = ""; continue; }
-      /* X distance — tight Gaussian: peak 1.15, sigma ~35px */
+      /* X distance — matches Hero: peak 1.28, sigma ~60px */
       var cx = rect.left + rect.width / 2;
       var dx = Math.abs(mouseX - cx);
-      var scale = 1 + 0.15 * Math.exp(-(dx * dx) / 2450);
-      el.style.transform = scale > 1.008 ? "scale(" + scale.toFixed(3) + ")" : "";
+      var scale = 1 + 0.28 * Math.exp(-(dx * dx) / 7200);
+      el.style.transform = scale > 1.01 ? "scale(" + scale.toFixed(3) + ")" : "";
     }
   }
 
