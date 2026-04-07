@@ -66,8 +66,8 @@ const projects = rawProjects
     <div class="mx-auto" style="max-width: var(--max-width-content);">
       <SectionHeading variant="numbered" number="03" titleEn={UI.sections.experience.en} titleZh={UI.sections.experience.zh} />
       <p class="tl-hint">
-        <span data-lang="en">Click on a card to reveal the workflow behind each role</span>
-        <span data-lang="zh">点击卡片，查看每段经历的工作流程</span>
+        <span data-lang="en">Click on a card to reveal the workflow template behind each role</span>
+        <span data-lang="zh">点击卡片查看每段经历的工作流程模板</span>
       </p>
       <ExperienceTimeline client:idle experiences={bilingualExperiences} workflows={WORKFLOWS} />
     </div>
