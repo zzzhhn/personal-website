@@ -12,9 +12,10 @@ export default function AwardCard({ label, imageSlug, index }: AwardCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [imageExists, setImageExists] = useState(true);
-  const [cardCenterY, setCardCenterY] = useState(0);
+  const [cardCenterY, setCardCenterY] = useState(300);
   const cardRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const blobUrlRef = useRef<string | null>(null);
 
   // Load image into canvas → blob URL (prevents right-click save)
   useEffect(() => {
@@ -29,36 +30,55 @@ export default function AwardCard({ label, imageSlug, index }: AwardCardProps) {
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
       ctx.drawImage(img, 0, 0);
-      canvas.toBlob((blob) => {
-        if (blob) setBlobUrl(URL.createObjectURL(blob));
-      }, "image/jpeg", 0.92);
+      try {
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const url = URL.createObjectURL(blob);
+            blobUrlRef.current = url;
+            setBlobUrl(url);
+          }
+        }, "image/jpeg", 0.92);
+      } catch {
+        // Canvas tainted by CORS — fall back to direct img src
+        setBlobUrl(`/images/awards/${imageSlug}.jpg`);
+      }
     };
 
     img.onerror = () => setImageExists(false);
 
     return () => {
-      if (blobUrl) URL.revokeObjectURL(blobUrl);
+      if (blobUrlRef.current) {
+        URL.revokeObjectURL(blobUrlRef.current);
+        blobUrlRef.current = null;
+      }
     };
-  }, [imageSlug]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [imageSlug]);
 
   const handleContextMenu = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
   }, []);
 
-  // Track card position for preview alignment
-  useEffect(() => {
-    if (!isHovered || !cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    setCardCenterY(rect.top + rect.height / 2);
-  }, [isHovered]);
+  // Compute card position synchronously BEFORE setting hover state
+  // so React batches both updates into one render with correct coords
+  const handleMouseEnter = useCallback(() => {
+    if (cardRef.current) {
+      const rect = cardRef.current.getBoundingClientRect();
+      setCardCenterY(rect.top + rect.height / 2);
+    }
+    setIsHovered(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsHovered(false);
+  }, []);
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
-  // Preview rendered via portal to escape framer-motion's transform containing block
   const preview = !isMobile && (
     <AnimatePresence>
       {isHovered && imageExists && (
         <motion.div
+          key={`award-preview-${imageSlug}`}
           initial={{ opacity: 0, x: 20, scale: 0.92 }}
           animate={{ opacity: 1, x: 0, scale: 1 }}
           exit={{ opacity: 0, x: 20, scale: 0.92 }}
@@ -67,13 +87,13 @@ export default function AwardCard({ label, imageSlug, index }: AwardCardProps) {
           style={{
             position: "fixed",
             right: "2rem",
-            top: `clamp(6rem, ${cardCenterY}px, calc(100vh - 22rem))`,
+            top: `clamp(6rem, ${cardCenterY}px, calc(100vh - 20rem))`,
             transform: "translateY(-50%)",
-            width: "20rem",
+            width: "18rem",
             aspectRatio: "3 / 4",
             borderRadius: "0.75rem",
             overflow: "hidden",
-            zIndex: 100,
+            zIndex: 9999,
             pointerEvents: "none",
             background: blobUrl
               ? `url(${blobUrl}) center / contain no-repeat var(--color-surface-secondary)`
@@ -115,8 +135,8 @@ export default function AwardCard({ label, imageSlug, index }: AwardCardProps) {
       viewport={{ once: true, margin: "-30px" }}
       transition={{ duration: 0.4, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
       className="card-outline p-4 flex items-center gap-3"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <span className="flex-shrink-0" style={{ color: "var(--color-accent)" }}>
         <svg className="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
