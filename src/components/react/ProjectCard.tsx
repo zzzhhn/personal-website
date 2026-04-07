@@ -83,10 +83,11 @@ export default function ProjectCard({
     // Theme-aware sheen: white highlight on dark, darker tint on light
     const isLight = document.documentElement.getAttribute("data-theme") === "light";
     if (isLight) {
-      // Light mode: layered white core + soft dark edge for visible glass refraction
+      // Light mode: iridescent colored shimmer — white-on-white is invisible,
+      // so use a subtle blue→teal→warm rainbow tint that shifts with cursor angle
+      const angle = Math.round((x + y) * 1.2) % 360;
       sheen.style.background =
-        `radial-gradient(circle 180px at ${x}% ${y}%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.15) 35%, transparent 65%), ` +
-        `radial-gradient(circle 260px at ${x}% ${y}%, rgba(0,0,0,0.04) 0%, transparent 70%)`;
+        `radial-gradient(circle 200px at ${x}% ${y}%, oklch(0.75 0.08 ${angle} / 0.18) 0%, oklch(0.80 0.05 ${angle + 60} / 0.08) 40%, transparent 70%)`;
     } else {
       sheen.style.background =
         `radial-gradient(circle 200px at ${x}% ${y}%, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.04) 40%, transparent 70%)`;
