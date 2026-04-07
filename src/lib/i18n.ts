@@ -336,3 +336,147 @@ export const EXPERIENCES = {
     },
   ],
 } as const;
+
+// ── Workflow types ──
+export type WFNodeType = "process" | "decision";
+
+export interface WFNode {
+  id: string;
+  label: { en: string; zh: string };
+  type: WFNodeType;
+  col: number;
+  row: number;
+}
+
+export interface WFEdge {
+  from: string;
+  to: string;
+  label?: { en: string; zh: string };
+  dashed?: boolean;
+}
+
+export interface WorkflowData {
+  nodes: WFNode[];
+  edges: WFEdge[];
+  cols: number;
+  rows: number;
+}
+
+// ── Workflow data — one per experience, matches EXPERIENCES order ──
+export const WORKFLOWS: WorkflowData[] = [
+  // ① Video Rebirth — 视频模型评测工程师 (3×6, fork+feedback)
+  {
+    cols: 3, rows: 6,
+    nodes: [
+      { id: "scope", label: { en: "Evaluation Scoping", zh: "评测目标调研" }, type: "process", col: 1, row: 0 },
+      { id: "framework", label: { en: "Framework Design", zh: "评测体系设计" }, type: "process", col: 1, row: 1 },
+      { id: "data", label: { en: "Data Pipeline", zh: "数据管线搭建" }, type: "process", col: 0, row: 2 },
+      { id: "metric", label: { en: "Metric Development", zh: "评测指标开发" }, type: "process", col: 2, row: 2 },
+      { id: "run", label: { en: "Evaluation Run", zh: "评测执行" }, type: "process", col: 1, row: 3 },
+      { id: "analysis", label: { en: "Analysis", zh: "结果分析" }, type: "process", col: 1, row: 4 },
+      { id: "report", label: { en: "Report", zh: "评测报告" }, type: "process", col: 1, row: 5 },
+    ],
+    edges: [
+      { from: "scope", to: "framework" },
+      { from: "framework", to: "data" },
+      { from: "framework", to: "metric" },
+      { from: "data", to: "run" },
+      { from: "metric", to: "run" },
+      { from: "run", to: "analysis" },
+      { from: "analysis", to: "report" },
+      { from: "analysis", to: "framework", dashed: true, label: { en: "Iterate", zh: "迭代" } },
+    ],
+  },
+  // ② ByteDance — Agent 评测 PM (3×7, fork+decision+feedback)
+  {
+    cols: 3, rows: 7,
+    nodes: [
+      { id: "req", label: { en: "Requirement Analysis", zh: "需求定义与拆解" }, type: "process", col: 1, row: 0 },
+      { id: "taxonomy", label: { en: "Intent Taxonomy", zh: "意图分类体系" }, type: "process", col: 1, row: 1 },
+      { id: "datapipe", label: { en: "Data Pipeline", zh: "数据管线搭建" }, type: "process", col: 0, row: 2 },
+      { id: "annospec", label: { en: "Annotation Standards", zh: "标注规范制定" }, type: "process", col: 2, row: 2 },
+      { id: "autolabel", label: { en: "Auto-labeling", zh: "自动打标" }, type: "process", col: 1, row: 3 },
+      { id: "humanqa", label: { en: "Human QA", zh: "人工校验" }, type: "process", col: 1, row: 4 },
+      { id: "qcheck", label: { en: "Quality Pass?", zh: "质量达标？" }, type: "decision", col: 1, row: 5 },
+      { id: "report", label: { en: "Attribution & Report", zh: "归因分析与报告" }, type: "process", col: 1, row: 6 },
+    ],
+    edges: [
+      { from: "req", to: "taxonomy" },
+      { from: "taxonomy", to: "datapipe" },
+      { from: "taxonomy", to: "annospec" },
+      { from: "datapipe", to: "autolabel" },
+      { from: "annospec", to: "autolabel" },
+      { from: "autolabel", to: "humanqa" },
+      { from: "humanqa", to: "qcheck" },
+      { from: "qcheck", to: "report", label: { en: "Pass", zh: "通过" } },
+      { from: "qcheck", to: "autolabel", dashed: true, label: { en: "Fail", zh: "不通过" } },
+    ],
+  },
+  // ③ MoE Capital — 风险投资 (3×6, 3-way fork)
+  {
+    cols: 3, rows: 6,
+    nodes: [
+      { id: "scan", label: { en: "Market Scanning", zh: "赛道扫描" }, type: "process", col: 1, row: 0 },
+      { id: "screen", label: { en: "Target Screening", zh: "标的筛选" }, type: "process", col: 1, row: 1 },
+      { id: "bizdd", label: { en: "Business DD", zh: "商业尽调" }, type: "process", col: 0, row: 2 },
+      { id: "findd", label: { en: "Financial DD", zh: "财务尽调" }, type: "process", col: 1, row: 2 },
+      { id: "techdd", label: { en: "Technical DD", zh: "技术尽调" }, type: "process", col: 2, row: 2 },
+      { id: "comp", label: { en: "Competitive Analysis", zh: "竞对分析" }, type: "process", col: 1, row: 3 },
+      { id: "memo", label: { en: "Investment Memo", zh: "投资备忘录" }, type: "process", col: 1, row: 4 },
+      { id: "ic", label: { en: "IC Presentation", zh: "投委会汇报" }, type: "process", col: 1, row: 5 },
+    ],
+    edges: [
+      { from: "scan", to: "screen" },
+      { from: "screen", to: "bizdd" },
+      { from: "screen", to: "findd" },
+      { from: "screen", to: "techdd" },
+      { from: "bizdd", to: "comp" },
+      { from: "findd", to: "comp" },
+      { from: "techdd", to: "comp" },
+      { from: "comp", to: "memo" },
+      { from: "memo", to: "ic" },
+    ],
+  },
+  // ④ WorldQuant — 量化因子研究 (3×7, decision+feedback loop)
+  {
+    cols: 3, rows: 7,
+    nodes: [
+      { id: "hypo", label: { en: "Factor Hypothesis", zh: "因子假设" }, type: "process", col: 1, row: 0 },
+      { id: "dataproc", label: { en: "Data Processing", zh: "数据清洗" }, type: "process", col: 1, row: 1 },
+      { id: "construct", label: { en: "Factor Construction", zh: "因子构建" }, type: "process", col: 1, row: 2 },
+      { id: "backtest", label: { en: "Backtesting", zh: "回测验证" }, type: "process", col: 1, row: 3 },
+      { id: "decision", label: { en: "Pass Threshold?", zh: "达标？" }, type: "decision", col: 1, row: 4 },
+      { id: "optimize", label: { en: "Optimization", zh: "优化调参" }, type: "process", col: 1, row: 5 },
+      { id: "registry", label: { en: "Registry", zh: "入库" }, type: "process", col: 1, row: 6 },
+    ],
+    edges: [
+      { from: "hypo", to: "dataproc" },
+      { from: "dataproc", to: "construct" },
+      { from: "construct", to: "backtest" },
+      { from: "backtest", to: "decision" },
+      { from: "decision", to: "optimize", label: { en: "Pass", zh: "通过" } },
+      { from: "decision", to: "hypo", dashed: true, label: { en: "Fail", zh: "迭代" } },
+      { from: "optimize", to: "registry" },
+    ],
+  },
+  // ⑤ SDIC Securities — 投行承做 (3×5, fork+join)
+  {
+    cols: 3, rows: 5,
+    nodes: [
+      { id: "init", label: { en: "Project Initiation", zh: "项目立项" }, type: "process", col: 1, row: 0 },
+      { id: "industry", label: { en: "Industry Analysis", zh: "行业分析" }, type: "process", col: 0, row: 1 },
+      { id: "financial", label: { en: "Financial Workpapers", zh: "财务底稿" }, type: "process", col: 2, row: 1 },
+      { id: "valuation", label: { en: "Valuation Modeling", zh: "估值建模" }, type: "process", col: 1, row: 2 },
+      { id: "report", label: { en: "Report Drafting", zh: "报告撰写" }, type: "process", col: 1, row: 3 },
+      { id: "review", label: { en: "Internal Review", zh: "内核审核" }, type: "process", col: 1, row: 4 },
+    ],
+    edges: [
+      { from: "init", to: "industry" },
+      { from: "init", to: "financial" },
+      { from: "industry", to: "valuation" },
+      { from: "financial", to: "valuation" },
+      { from: "valuation", to: "report" },
+      { from: "report", to: "review" },
+    ],
+  },
+];

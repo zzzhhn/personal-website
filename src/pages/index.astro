@@ -11,7 +11,7 @@ import ProjectShowcase from "../components/react/ProjectShowcase";
 import { getCollection } from "astro:content";
 import SectionHeading from "../components/astro/SectionHeading.astro";
 import { SITE } from "../lib/constants";
-import { UI, EXPERIENCES } from "../lib/i18n";
+import { UI, EXPERIENCES, WORKFLOWS } from "../lib/i18n";
 
 // Build bilingual experience array
 const bilingualExperiences = EXPERIENCES.en.map((enExp, i) => ({
@@ -65,7 +65,11 @@ const projects = rawProjects
   <section id="experience" class="section-glow px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
     <div class="mx-auto" style="max-width: var(--max-width-content);">
       <SectionHeading variant="numbered" number="03" titleEn={UI.sections.experience.en} titleZh={UI.sections.experience.zh} />
-      <ExperienceTimeline client:idle experiences={bilingualExperiences} />
+      <p class="tl-hint">
+        <span data-lang="en">Click on a card to reveal the workflow behind each role</span>
+        <span data-lang="zh">点击卡片，查看每段经历的工作流程</span>
+      </p>
+      <ExperienceTimeline client:idle experiences={bilingualExperiences} workflows={WORKFLOWS} />
     </div>
   </section>
 

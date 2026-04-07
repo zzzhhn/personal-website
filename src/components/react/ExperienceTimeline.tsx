@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect, useCallback } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { useState, useCallback } from "react";
 import TimelineCard from "./TimelineCard";
+import type { WorkflowData } from "../../lib/i18n";
 
 interface ExperienceEntry {
   role: string;
@@ -20,26 +20,11 @@ interface BilingualExperience {
 
 interface Props {
   experiences: BilingualExperience[];
+  workflows: WorkflowData[];
 }
 
-interface CurveLine {
-  key: string;
-  d: string;
-  expA: number;
-  expB: number;
-}
-
-export default function ExperienceTimeline({ experiences }: Props) {
+export default function ExperienceTimeline({ experiences, workflows }: Props) {
   const [expandedSet, setExpandedSet] = useState<Set<number>>(new Set());
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [lines, setLines] = useState<CurveLine[]>([]);
-
-  // Ref keeps the latest expandedSet accessible inside calculateLines
-  // without adding it as a dependency (which would recreate the callback)
-  const expandedRef = useRef<Set<number>>(expandedSet);
-  useEffect(() => {
-    expandedRef.current = expandedSet;
-  }, [expandedSet]);
 
   const toggleExpand = useCallback((index: number) => {
     setExpandedSet((prev) => {
@@ -50,76 +35,8 @@ export default function ExperienceTimeline({ experiences }: Props) {
     });
   }, []);
 
-  // Measure DOM positions and build curves between matching skill bubbles.
-  // Uses expandedRef to filter out exiting bubbles still in DOM (AnimatePresence
-  // keeps them rendered during exit animation, but they're no longer "expanded").
-  const calculateLines = useCallback(() => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const currentExpanded = expandedRef.current;
-    const containerRect = container.getBoundingClientRect();
-    const centerX = container.offsetWidth / 2;
-    const bubbleEls = container.querySelectorAll<HTMLElement>("[data-skill]");
-
-    const skillMap = new Map<string, { x: number; y: number; idx: number }[]>();
-
-    bubbleEls.forEach((el) => {
-      const rect = el.getBoundingClientRect();
-      if (rect.width === 0) return; // hidden (wrong language)
-      const idx = Number(el.getAttribute("data-exp-index") ?? "0");
-      if (!currentExpanded.has(idx)) return; // skip exiting bubbles
-      const skill = el.getAttribute("data-skill") ?? "";
-      const x = rect.left + rect.width / 2 - containerRect.left;
-      const y = rect.top + rect.height / 2 - containerRect.top;
-      if (!skillMap.has(skill)) skillMap.set(skill, []);
-      skillMap.get(skill)!.push({ x, y, idx });
-    });
-
-    const newLines: CurveLine[] = [];
-    skillMap.forEach((positions, skill) => {
-      if (positions.length < 2) return;
-      for (let i = 0; i < positions.length; i++) {
-        for (let j = i + 1; j < positions.length; j++) {
-          const a = positions[i];
-          const b = positions[j];
-          const d = `M ${a.x} ${a.y} C ${centerX} ${a.y}, ${centerX} ${b.y}, ${b.x} ${b.y}`;
-          newLines.push({
-            key: `${skill}-${a.idx}-${b.idx}`,
-            d,
-            expA: a.idx,
-            expB: b.idx,
-          });
-        }
-      }
-    });
-
-    setLines(newLines);
-  }, []);
-
-  useEffect(() => {
-    // Immediately prune lines whose endpoints are no longer expanded
-    setLines((prev) =>
-      prev.filter((l) => expandedSet.has(l.expA) && expandedSet.has(l.expB)),
-    );
-
-    if (expandedSet.size < 2) return;
-
-    // Recalculate accurate positions after bubble entrance animations complete
-    const timer = setTimeout(calculateLines, 450);
-    return () => clearTimeout(timer);
-  }, [expandedSet, calculateLines]);
-
-  // Recalculate on resize
-  useEffect(() => {
-    if (expandedSet.size < 2) return;
-    const onResize = () => calculateLines();
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, [expandedSet, calculateLines]);
-
   return (
-    <div ref={containerRef} className="tl-center">
+    <div className="tl-center">
       {experiences.map((exp, i) => (
         <TimelineCard
           key={`${exp.en.organization}-${exp.en.role}`}
@@ -131,42 +48,9 @@ export default function ExperienceTimeline({ experiences }: Props) {
           side={i % 2 === 0 ? "left" : "right"}
           expanded={expandedSet.has(i)}
           onToggle={() => toggleExpand(i)}
+          workflow={workflows[i]}
         />
       ))}
-
-      {/* SVG overlay for connecting curves */}
-      <svg
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          width: "100%",
-          height: "100%",
-          pointerEvents: "none",
-          overflow: "visible",
-        }}
-      >
-        <AnimatePresence>
-          {lines.map((line) => (
-            <motion.path
-              key={line.key}
-              d={line.d}
-              fill="none"
-              stroke="var(--color-accent)"
-              strokeWidth="1.5"
-              strokeOpacity="0.25"
-              strokeLinecap="round"
-              initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{
-                pathLength: { duration: 0.6, ease: "easeInOut" },
-                opacity: { duration: 0.25 },
-              }}
-            />
-          ))}
-        </AnimatePresence>
-      </svg>
     </div>
   );
 }

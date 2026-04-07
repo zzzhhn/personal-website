@@ -1,5 +1,7 @@
 import { useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import WorkflowDiagram from "./WorkflowDiagram";
+import type { WorkflowData } from "../../lib/i18n";
 
 interface ExperienceEntry {
   role: string;
@@ -19,6 +21,7 @@ interface TimelineCardProps {
   side: "left" | "right";
   expanded: boolean;
   onToggle: () => void;
+  workflow: WorkflowData;
 }
 
 function formatDateShort(dateStr: string): string {
@@ -37,61 +40,6 @@ function getDotColor(type: string): { bg: string; glow: string } {
   return { bg: "var(--color-accent)", glow: "var(--color-accent-glow)" };
 }
 
-function SkillBubbles({
-  en,
-  zh,
-  index,
-}: {
-  en: ExperienceEntry;
-  zh: ExperienceEntry;
-  index: number;
-}) {
-  return (
-    <motion.div
-      className="tl-bubbles"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
-    >
-      {/* EN bubbles */}
-      <div data-lang="en" className="tl-bubble-group">
-        {en.techStack.map((skill, i) => (
-          <motion.span
-            key={skill}
-            data-skill={skill}
-            data-exp-index={index}
-            className="tl-bubble"
-            initial={{ opacity: 0, scale: 0.5, y: 6 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.5, y: 6 }}
-            transition={{ delay: i * 0.08, duration: 0.28, ease: "easeOut" }}
-          >
-            {skill}
-          </motion.span>
-        ))}
-      </div>
-      {/* ZH bubbles — data-skill uses EN key for cross-experience matching */}
-      <div data-lang="zh" className="tl-bubble-group">
-        {zh.techStack.map((skill, i) => (
-          <motion.span
-            key={skill}
-            data-skill={en.techStack[i]}
-            data-exp-index={index}
-            className="tl-bubble"
-            initial={{ opacity: 0, scale: 0.5, y: 6 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.5, y: 6 }}
-            transition={{ delay: i * 0.08, duration: 0.28, ease: "easeOut" }}
-          >
-            {skill}
-          </motion.span>
-        ))}
-      </div>
-    </motion.div>
-  );
-}
-
 export default function TimelineCard({
   en,
   zh,
@@ -101,6 +49,7 @@ export default function TimelineCard({
   side,
   expanded,
   onToggle,
+  workflow,
 }: TimelineCardProps) {
   const dotColor = getDotColor(en.type);
   const dateStart = formatDateShort(startDate);
@@ -125,7 +74,7 @@ export default function TimelineCard({
       transition={{ duration: 0.5, delay: index * 0.12, ease: "easeOut" }}
       className={`tl-row tl-row--${side}`}
     >
-      {/* Date column + skill bubbles */}
+      {/* Date column + workflow diagram */}
       <div className="tl-date">
         <span className="tl-date-start">{dateStart}</span>
         {dateEnd && <span className="tl-date-end">{dateEnd}</span>}
@@ -134,7 +83,7 @@ export default function TimelineCard({
 
         <AnimatePresence>
           {expanded && (
-            <SkillBubbles en={en} zh={zh} index={index} />
+            <WorkflowDiagram workflow={workflow} index={index} />
           )}
         </AnimatePresence>
       </div>
