@@ -696,13 +696,15 @@
   display: flex;
   justify-content: center;
   align-items: stretch;
-  gap: 1.25rem;
   padding: 1.5rem 1rem 2.5rem;
 }
 .project-deck > * {
-  flex: 1 1 0;
-  min-width: 0;
-  max-width: 18rem;
+  flex: 0 0 auto;
+  width: min(280px, 70vw);
+  margin-left: -1rem;
+}
+.project-deck > *:first-child {
+  margin-left: 0;
 }
 
 /* Mobile: stack vertically */
