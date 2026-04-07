@@ -101,4 +101,11 @@ const { titleEn, titleZh, number, variant = "minimal", id } = Astro.props;
     letter-spacing: -0.02em;
     color: var(--color-text-primary);
   }
+
+  /* Chinese mode: Song Ti for all section titles */
+  [data-site-lang="zh"] .sh-editorial-title,
+  [data-site-lang="zh"] .sh-numbered-title,
+  [data-site-lang="zh"] .sh-minimal-title {
+    font-family: "Songti SC", "STSongti", "SimSun", "Noto Serif SC", serif;
+  }
 </style>

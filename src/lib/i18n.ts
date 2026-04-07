@@ -63,6 +63,7 @@ export const UI = {
       zh: "量化金融专业",
     },
     period: { en: "Sep 2023 – Present", zh: "2023.9 – 至今" },
+    expectedGrad: { en: "Expected: May 2027", zh: "预计毕业：2027年5月" },
     awards: {
       en: [
         { label: "2024 Shaw Spirit Award", image: "shaw-spirit-2024" },
