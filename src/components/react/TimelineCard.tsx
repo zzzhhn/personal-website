@@ -21,6 +21,7 @@ interface TimelineCardProps {
   startDate: string;
   endDate?: string;
   index: number;
+  side: "left" | "right";
 }
 
 function formatDateShort(dateStr: string): string {
@@ -45,6 +46,7 @@ export default function TimelineCard({
   startDate,
   endDate,
   index,
+  side,
 }: TimelineCardProps) {
   const [expanded, setExpanded] = useState(false);
   const dotColor = getDotColor(en.type);
@@ -52,13 +54,16 @@ export default function TimelineCard({
   const dateStart = formatDateShort(startDate);
   const dateEnd = endDate ? formatDateShort(endDate) : "";
 
+  // Slide in from the card's side
+  const slideX = side === "left" ? -30 : 30;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0, x: slideX }}
+      whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: true, margin: "-50px" }}
       transition={{ duration: 0.5, delay: index * 0.12, ease: "easeOut" }}
-      className="tl-row"
+      className={`tl-row tl-row--${side}`}
     >
       {/* Date column */}
       <div className="tl-date">
@@ -77,7 +82,6 @@ export default function TimelineCard({
             boxShadow: `0 0 8px ${dotColor.glow}, 0 0 2px ${dotColor.bg}`,
           }}
         />
-        <div className="tl-line" />
       </div>
 
       {/* Card column */}

@@ -22,7 +22,7 @@ interface Props {
 
 export default function ExperienceTimeline({ experiences }: Props) {
   return (
-    <div className="relative">
+    <div className="tl-center">
       {experiences.map((exp, i) => (
         <TimelineCard
           key={`${exp.en.organization}-${exp.en.role}`}
@@ -31,6 +31,7 @@ export default function ExperienceTimeline({ experiences }: Props) {
           startDate={exp.startDate}
           endDate={exp.endDate}
           index={i}
+          side={i % 2 === 0 ? "left" : "right"}
         />
       ))}
     </div>
