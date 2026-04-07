@@ -41,7 +41,19 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
       const t = el.offsetTop;
       const w = el.offsetWidth;
       const h = el.offsetHeight;
-      positions.set(id, { cx: l + w / 2, cy: t + h / 2, l, r: l + w, t, b: t + h });
+      const node = nodeMap.get(id);
+      // Decision diamonds are rotated 45°: visual tips extend beyond layout box
+      // by  s*(√2-1)/2 ≈ 0.207*s  on each side
+      const isDiamond = node?.type === "decision";
+      const ext = isDiamond ? w * 0.207 : 0;
+      positions.set(id, {
+        cx: l + w / 2,
+        cy: t + h / 2,
+        l: l - ext,
+        r: l + w + ext,
+        t: t - ext,
+        b: t + h + ext,
+      });
     });
 
     let maxRight = 0;
@@ -173,7 +185,7 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
           display: "grid",
           gridTemplateColumns: `repeat(${workflow.cols}, 1fr)`,
           gridTemplateRows: `repeat(${workflow.rows}, auto)`,
-          gap: isHorizontal ? "10px 24px" : "28px 10px",
+          gap: isHorizontal ? "10px 32px" : "28px 10px",
           justifyItems: "center",
           alignItems: "center",
         }}
@@ -229,7 +241,7 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
               id={`wf-a-${index}`}
               markerWidth="7"
               markerHeight="5"
-              refX="6"
+              refX="7"
               refY="2.5"
               orient="auto"
             >
@@ -239,7 +251,7 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
               id={`wf-ad-${index}`}
               markerWidth="7"
               markerHeight="5"
-              refX="6"
+              refX="7"
               refY="2.5"
               orient="auto"
             >

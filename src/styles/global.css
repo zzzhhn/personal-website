@@ -660,6 +660,17 @@
 .wf-container--horizontal {
   padding-bottom: 2.5rem; /* space for feedback-loop paths below */
 }
+/* Horizontal workflows need more width — 7 columns don't fit in the
+   default 5.5rem-offset container. Widen by reducing the date-text
+   clearance and extending the bleed. */
+.tl-row--left .wf-container.wf-container--horizontal {
+  left: 1rem;
+  right: -5rem;
+}
+.tl-row--right .wf-container.wf-container--horizontal {
+  left: -5rem;
+  right: 1rem;
+}
 .wf-node {
   display: flex;
   align-items: center;
