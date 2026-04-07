@@ -135,23 +135,13 @@ import SectionHeading from "./SectionHeading.astro";
   background: transparent;
 }
 
-/* ── Bio kinetic: faux-bold + sliding underline bar ── */
+/* ── Bio kinetic: Gaussian scale (matches Hero name effect) ── */
 .bio-kinetic { position: relative; }
 .bw {
-  display: inline;
-  transition: text-shadow 0.25s ease-out;
-}
-.bio-ul-bar {
-  position: absolute;
-  height: 1.5px;
-  /* Tapered: bright center, fades to transparent at tips */
-  background: radial-gradient(ellipse at center, var(--color-accent) 0%, transparent 100%);
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.25s ease-out;
-}
-[data-theme="light"] .bio-ul-bar {
-  background: radial-gradient(ellipse at center, var(--color-uni-gold) 0%, transparent 100%);
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  transform-origin: center bottom;
+  cursor: default;
 }
 </style>
 
@@ -160,11 +150,6 @@ import SectionHeading from "./SectionHeading.astro";
   var container = document.querySelector(".bio-kinetic");
   if (!container) return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  /* Underline bar — single element, animated via CSS transitions */
-  var bar = document.createElement("div");
-  bar.className = "bio-ul-bar";
-  container.appendChild(bar);
 
   function getVisibleBio() {
     var lang = document.documentElement.getAttribute("data-site-lang") || "en";
@@ -193,12 +178,7 @@ import SectionHeading from "./SectionHeading.astro";
         var tok = tokens[j];
         if (!tok) continue;
         if (/^\s+$/.test(tok)) {
-          var prev = p.lastElementChild;
-          if (prev && prev.classList.contains("bw")) {
-            prev.textContent += tok;
-          } else {
-            p.appendChild(document.createTextNode(tok));
-          }
+          p.appendChild(document.createTextNode(tok));
         } else {
           var w = document.createElement("span");
           w.className = "bw";
@@ -211,18 +191,7 @@ import SectionHeading from "./SectionHeading.astro";
 
   var pending = false;
   var mouseX = -9999;
-  var mouseY = -9999;
   var isInside = false;
-  var RADIUS = 70; /* px — visible underline half-width from cursor */
-  var SIGMA = 50;
-  var SIG2 = 2 * SIGMA * SIGMA;
-
-  /* Smooth bar state — lerped each frame for fluid animation */
-  var barState = { left: 0, width: 0, top: 0, opacity: 0 };
-  var barTarget = { left: 0, width: 0, top: 0, opacity: 0 };
-  var LERP = 0.18; /* interpolation speed per frame */
-
-  function lerp(a, b, t) { return a + (b - a) * t; }
 
   function update() {
     pending = false;
@@ -230,80 +199,22 @@ import SectionHeading from "./SectionHeading.astro";
     if (!p) return;
     splitBio(p);
     var spans = p.querySelectorAll(".bw");
-    var cRect = container.getBoundingClientRect();
 
-    /* Reset all text-shadow */
     for (var i = 0; i < spans.length; i++) {
-      spans[i].style.textShadow = "";
-    }
-
-    if (!isInside) {
-      barTarget.opacity = 0;
-    } else {
-      /* Find which line the mouse is on + collect line word boundaries */
-      var lineBottom = 0;
-      var onLine = false;
-      var lineLeft = Infinity;
-      var lineRight = -Infinity;
-      var tolerance = 6;
-      for (var i = 0; i < spans.length; i++) {
-        var r = spans[i].getBoundingClientRect();
-        if (r.width === 0) continue;
-        var rowY = r.top + r.height / 2;
-        if (Math.abs(mouseY - rowY) < r.height / 2 + tolerance) {
-          onLine = true;
-          lineBottom = r.bottom;
-          if (r.left < lineLeft) lineLeft = r.left;
-          if (r.right > lineRight) lineRight = r.right;
-          /* Apply faux-bold based on horizontal distance */
-          var cx = r.left + r.width / 2;
-          var dx = mouseX - cx;
-          var t = Math.exp(-(dx * dx) / SIG2);
-          if (t > 0.1) {
-            spans[i].style.textShadow = "0 0 " + (t * 0.5).toFixed(2) + "px currentColor";
-          }
-        }
-      }
-
-      if (onLine) {
-        /* Bar extent: cursor ± RADIUS, clamped to line text boundaries */
-        var rawL = mouseX - RADIUS;
-        var rawR = mouseX + RADIUS;
-        var clampL = Math.max(rawL, lineLeft);
-        var clampR = Math.min(rawR, lineRight);
-        barTarget.left = clampL - cRect.left;
-        barTarget.width = Math.max(0, clampR - clampL);
-        barTarget.top = lineBottom - cRect.top + 2;
-        barTarget.opacity = 0.55;
-      } else {
-        barTarget.opacity = 0;
-      }
-    }
-
-    /* Lerp bar state toward target for fluid motion */
-    barState.left = lerp(barState.left, barTarget.left, LERP);
-    barState.width = lerp(barState.width, barTarget.width, LERP);
-    barState.top = lerp(barState.top, barTarget.top, LERP);
-    barState.opacity = lerp(barState.opacity, barTarget.opacity, barTarget.opacity > barState.opacity ? LERP : 0.12);
-
-    bar.style.left = barState.left.toFixed(1) + "px";
-    bar.style.width = barState.width.toFixed(1) + "px";
-    bar.style.top = barState.top.toFixed(1) + "px";
-    bar.style.opacity = barState.opacity.toFixed(3);
-
-    /* Keep animating if not settled */
-    if (Math.abs(barState.opacity - barTarget.opacity) > 0.005 ||
-        Math.abs(barState.left - barTarget.left) > 0.5 ||
-        Math.abs(barState.width - barTarget.width) > 0.5 ||
-        Math.abs(barState.top - barTarget.top) > 0.5) {
-      pending = true;
-      requestAnimationFrame(update);
+      var el = spans[i];
+      if (!isInside) { el.style.transform = ""; continue; }
+      var rect = el.getBoundingClientRect();
+      if (rect.width === 0) continue;
+      var cx = rect.left + rect.width / 2;
+      var dist = Math.abs(mouseX - cx);
+      /* Gaussian falloff: peak 1.18 (18% scale), sigma ~55px */
+      var scale = 1 + 0.18 * Math.exp(-(dist * dist) / 6050);
+      el.style.transform = scale > 1.01 ? "scale(" + scale.toFixed(3) + ")" : "";
     }
   }
 
   container.addEventListener("mousemove", function (e) {
     mouseX = e.clientX;
-    mouseY = e.clientY;
     isInside = true;
     if (!pending) { pending = true; requestAnimationFrame(update); }
   });

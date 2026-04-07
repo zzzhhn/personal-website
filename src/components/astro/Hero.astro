@@ -44,9 +44,16 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       <!-- Name — kinetic typography: each char responds to hover -->
       <h1 class="hero-name">
         <span class="hero-name-en" data-lang="en">
-          {SITE.name.split('').map((ch, i) => (
-            <span class={`hc${ch === ' ' ? ' hc-space' : ''}`} style={`--ci:${i}`}>{ch === ' ' ? '\u00A0' : ch}</span>
-          ))}
+          <span class="hero-name-variant hero-name-variant--active" data-name="full">
+            {SITE.name.split('').map((ch, i) => (
+              <span class={`hc${ch === ' ' ? ' hc-space' : ''}`} style={`--ci:${i}`}>{ch === ' ' ? '\u00A0' : ch}</span>
+            ))}
+          </span>
+          <span class="hero-name-variant" data-name="nick">
+            {'Bobby'.split('').map((ch, i) => (
+              <span class="hc" style={`--ci:${i}`}>{ch}</span>
+            ))}
+          </span>
         </span>
         <span class="hero-name-zh" data-lang="zh">
           {'钟昊楠'.split('').map((ch, i) => (
@@ -268,6 +275,34 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     font-family: var(--font-sans);
     font-weight: 600;
     letter-spacing: -0.03em;
+    cursor: pointer;
+    position: relative;
+  }
+  /* Name toggle: staggered per-character slide */
+  .hero-name-variant {
+    display: inline-flex;
+  }
+  .hero-name-variant:not(.hero-name-variant--active) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    pointer-events: none;
+  }
+  .hero-name-variant:not(.hero-name-variant--active) .hc {
+    opacity: 0;
+    transform: translateX(-18px);
+  }
+  .hero-name-variant--exiting .hc {
+    opacity: 0 !important;
+    transform: translateX(-18px) !important;
+  }
+  .hero-name-variant--entering .hc {
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+  }
+  .hc {
+    transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                opacity 0.3s ease;
   }
   .hero-name-zh {
     font-family: "Noto Serif SC", "Source Han Serif SC", "SimSun", "STSong", serif;
@@ -458,6 +493,56 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     isInside = false;
     if (!pending) { pending = true; requestAnimationFrame(update); }
   });
+
+  /* ── Name toggle: click to swap "Haonan Zhong" ↔ "Bobby" ── */
+  var enWrap = document.querySelector(".hero-name-en");
+  if (enWrap) {
+    var variants = enWrap.querySelectorAll(".hero-name-variant");
+    var animating = false;
+
+    enWrap.addEventListener("click", function () {
+      if (animating || variants.length < 2) return;
+      animating = true;
+
+      var active = enWrap.querySelector(".hero-name-variant--active");
+      var next = active === variants[0] ? variants[1] : variants[0];
+      var STAGGER = 35; /* ms per character */
+
+      /* Phase 1: exit active — stagger from left */
+      active.classList.add("hero-name-variant--exiting");
+      var exitChars = active.querySelectorAll(".hc:not(.hc-space)");
+      for (var i = 0; i < exitChars.length; i++) {
+        exitChars[i].style.transitionDelay = (i * STAGGER) + "ms";
+      }
+
+      var exitDuration = exitChars.length * STAGGER + 300;
+
+      setTimeout(function () {
+        /* Swap active class */
+        active.classList.remove("hero-name-variant--active", "hero-name-variant--exiting");
+        /* Reset exit delays */
+        for (var i = 0; i < exitChars.length; i++) {
+          exitChars[i].style.transitionDelay = "";
+        }
+
+        /* Phase 2: enter next — stagger from left */
+        next.classList.add("hero-name-variant--active", "hero-name-variant--entering");
+        var enterChars = next.querySelectorAll(".hc:not(.hc-space)");
+        for (var j = 0; j < enterChars.length; j++) {
+          enterChars[j].style.transitionDelay = (j * STAGGER) + "ms";
+        }
+
+        var enterDuration = enterChars.length * STAGGER + 350;
+        setTimeout(function () {
+          next.classList.remove("hero-name-variant--entering");
+          for (var j = 0; j < enterChars.length; j++) {
+            enterChars[j].style.transitionDelay = "";
+          }
+          animating = false;
+        }, enterDuration);
+      }, exitDuration);
+    });
+  }
 })();
 </script>
 
