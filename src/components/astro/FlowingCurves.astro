@@ -1,0 +1,178 @@
+---
+/**
+ * Three flowing Bézier curves that progressively "draw" as the user scrolls
+ * down past the Hero section, and retract when scrolling back up.
+ *
+ * Placed as position:absolute inside a relative wrapper that contains all
+ * post-Hero sections. Uses stroke-dashoffset driven by scroll progress.
+ */
+---
+
+<div id="flowing-curves" aria-hidden="true">
+  <svg id="fc-svg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"></svg>
+</div>
+
+<style is:global>
+  #flowing-curves {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  #fc-svg {
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<script is:inline>
+(function () {
+  const svg = document.getElementById("fc-svg");
+  if (!svg) return;
+
+  /* ── curve config ─────────────────────────────────────────── */
+  // Each curve: opacity, strokeWidth, and x-positions (0-1) at evenly-spaced vertical anchors
+  const CURVES = [
+    { opacity: 0.22, width: 3.5, xs: [0.12, 0.62, 0.18, 0.68, 0.15, 0.58, 0.22] },
+    { opacity: 0.13, width: 2.5, xs: [0.52, 0.18, 0.58, 0.12, 0.55, 0.22, 0.48] },
+    { opacity: 0.07, width: 2,   xs: [0.85, 0.38, 0.78, 0.42, 0.82, 0.35, 0.80] },
+  ];
+
+  let paths = [];
+  let lengths = [];
+  let containerH = 0;
+
+  /* ── helpers ──────────────────────────────────────────────── */
+  function accentColor() {
+    return getComputedStyle(document.documentElement)
+      .getPropertyValue("--color-accent")
+      .trim() || "#64ffda";
+  }
+
+  /** Build a smooth cubic-Bézier "d" attribute from x-position anchors */
+  function buildPath(xs, w, h) {
+    const n = xs.length;
+    const segH = h / (n - 1);
+    let d = `M ${xs[0] * w} 0`;
+    for (let i = 1; i < n; i++) {
+      const x0 = xs[i - 1] * w;
+      const y0 = (i - 1) * segH;
+      const x1 = xs[i] * w;
+      const y1 = i * segH;
+      // Control points at 40%/60% of vertical span for smoother S-curves
+      const cy0 = y0 + segH * 0.4;
+      const cy1 = y0 + segH * 0.6;
+      d += ` C ${x0} ${cy0}, ${x1} ${cy1}, ${x1} ${y1}`;
+    }
+    return d;
+  }
+
+  /* ── setup ───────────────────────────────────────────────── */
+  function setup() {
+    const container = document.getElementById("flowing-curves");
+    if (!container) return;
+    containerH = container.parentElement?.scrollHeight ?? 0;
+    if (containerH <= 0) return;
+
+    const w = container.offsetWidth;
+    svg.setAttribute("viewBox", `0 0 ${w} ${containerH}`);
+    svg.innerHTML = "";
+
+    const color = accentColor();
+    paths = [];
+    lengths = [];
+
+    CURVES.forEach(function (cfg) {
+      const d = buildPath(cfg.xs, w, containerH);
+      const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      p.setAttribute("d", d);
+      p.setAttribute("stroke", color);
+      p.setAttribute("stroke-width", String(cfg.width));
+      p.setAttribute("fill", "none");
+      p.setAttribute("opacity", String(cfg.opacity));
+      p.setAttribute("stroke-linecap", "round");
+      p.setAttribute("stroke-linejoin", "round");
+      svg.appendChild(p);
+
+      var len = p.getTotalLength();
+      p.style.strokeDasharray = String(len);
+      p.style.strokeDashoffset = String(len); // fully hidden
+      paths.push(p);
+      lengths.push(len);
+    });
+
+    tick();
+  }
+
+  /* ── scroll-driven draw ─────────────────────────────────── */
+  function tick() {
+    var scrollY = window.scrollY;
+    var viewH = window.innerHeight;
+
+    // The flowing-curves container is inside the post-Hero wrapper.
+    // scrollStart = when the wrapper enters the viewport (Hero scrolls away)
+    var container = document.getElementById("flowing-curves");
+    if (!container || !container.parentElement) return;
+    var wrapTop = container.parentElement.getBoundingClientRect().top + scrollY;
+    var scrollStart = wrapTop - viewH * 0.8; // begin just before wrapper enters view
+    var scrollEnd = wrapTop + containerH - viewH; // fully drawn at last section
+
+    var range = scrollEnd - scrollStart;
+    if (range <= 0) return;
+
+    var progress = Math.max(0, Math.min(1, (scrollY - scrollStart) / range));
+
+    for (var i = 0; i < paths.length; i++) {
+      // Slight stagger: each successive curve trails behind
+      var stagger = i * 0.04;
+      var p = Math.max(0, Math.min(1, (progress - stagger) / (1 - stagger)));
+      paths[i].style.strokeDashoffset = String(lengths[i] * (1 - p));
+    }
+  }
+
+  /* ── event wiring ───────────────────────────────────────── */
+  var ticking = false;
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(function () {
+          tick();
+          ticking = false;
+        });
+      }
+    },
+    { passive: true }
+  );
+
+  var resizeTimer;
+  window.addEventListener(
+    "resize",
+    function () {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(setup, 200);
+    },
+    { passive: true }
+  );
+
+  // Re-color on theme toggle
+  new MutationObserver(function () {
+    var c = accentColor();
+    paths.forEach(function (p) {
+      p.setAttribute("stroke", c);
+    });
+  }).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
+
+  // Initial setup — wait for full layout
+  if (document.readyState === "complete") {
+    setup();
+  } else {
+    window.addEventListener("load", setup);
+  }
+})();
+</script>

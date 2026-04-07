@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Hero from "../components/astro/Hero.astro";
+import FlowingCurves from "../components/astro/FlowingCurves.astro";
 import About from "../components/astro/About.astro";
 import Education from "../components/astro/Education.astro";
 import Campus from "../components/astro/Campus.astro";
@@ -56,7 +57,9 @@ const projects = rawProjects
 
 <BaseLayout title={SITE.title} description={SITE.description}>
   <Hero />
-  <About />
+  <div style="position: relative;">
+    <FlowingCurves />
+    <About />
   <Education />
 
   <section id="experience" class="section-glow px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
@@ -77,4 +80,5 @@ const projects = rawProjects
 
   <Campus />
   <Contact />
+  </div>
 </BaseLayout>
