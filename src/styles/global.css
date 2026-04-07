@@ -529,6 +529,7 @@
 .tl-row--right .tl-card  { grid-column: 3; grid-row: 1; }
 
 .tl-date {
+  position: relative; /* anchor for absolutely-positioned workflow */
   display: flex;
   flex-direction: column;
   gap: 0.125rem;
@@ -621,10 +622,27 @@
 
 /* ── Workflow diagram ── */
 .wf-container {
-  position: relative;
-  margin-top: 1rem;
-  padding-right: 2.5rem; /* space for feedback-loop paths */
+  position: absolute;
+  top: 100%;           /* flush below the date text */
+  left: 0;
+  right: -2rem;        /* extend into padding for feedback-loop paths */
+  z-index: 10;         /* float above rows below */
+  margin-top: 0.5rem;
+  padding: 0.75rem;
+  padding-right: 2.5rem;
   overflow: visible;
+  /* Glass backdrop so it's readable over content behind */
+  background: oklch(0.97 0.003 240 / 0.6);
+  border: 1px solid oklch(0.9 0.02 220 / 0.15);
+  border-radius: 8px;
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: 0 4px 24px oklch(0 0 0 / 0.08);
+}
+[data-theme="dark"] .wf-container {
+  background: oklch(0.12 0.01 240 / 0.65);
+  border-color: oklch(0.4 0.02 220 / 0.2);
+  box-shadow: 0 4px 24px oklch(0 0 0 / 0.25);
 }
 .wf-node {
   display: flex;
