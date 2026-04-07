@@ -34,6 +34,8 @@ export default function ProjectShowcase({ projects }: Props) {
   const [selected, setSelected] = useState<Project | null>(null);
   const [originRect, setOriginRect] = useState<DOMRect | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const lastHoveredRef = useRef<number | null>(null);
+  const [lastHoveredIndex, setLastHoveredIndex] = useState<number | null>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const reducedMotion = usePrefersReducedMotion();
@@ -51,6 +53,11 @@ export default function ProjectShowcase({ projects }: Props) {
   }, []);
 
   const handleHover = useCallback((index: number | null) => {
+    if (index !== null) {
+      lastHoveredRef.current = index;
+    } else {
+      setLastHoveredIndex(lastHoveredRef.current);
+    }
     setHoveredIndex(index);
   }, []);
 
@@ -128,6 +135,7 @@ export default function ProjectShowcase({ projects }: Props) {
             project={project}
             index={i}
             hoveredIndex={hoveredIndex}
+            lastHoveredIndex={lastHoveredIndex}
             totalCards={projects.length}
             onClick={openModal}
             onHover={handleHover}
@@ -145,7 +153,8 @@ export default function ProjectShowcase({ projects }: Props) {
           opacity: 0.7,
         }}
       >
-        Click a card to view details
+        <span data-lang="en">Click a card to view details</span>
+        <span data-lang="zh">点击卡片查看详情</span>
       </p>
 
       {/* Modal — sibling to deck, NOT inside any card */}

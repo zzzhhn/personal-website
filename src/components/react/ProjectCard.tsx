@@ -17,6 +17,7 @@ interface ProjectCardProps {
   project: Project;
   index: number;
   hoveredIndex: number | null;
+  lastHoveredIndex: number | null;
   totalCards: number;
   onClick: (project: Project, rect: DOMRect, el: HTMLElement) => void;
   onHover: (index: number | null) => void;
@@ -25,9 +26,11 @@ interface ProjectCardProps {
 const MAX_TAGS = 4;
 
 /** Wave: hovered card lifts, neighbors shift proportionally. No rotation — flat parallel layout. */
-function getWaveStyle(index: number, hoveredIndex: number | null, total: number) {
+function getWaveStyle(index: number, hoveredIndex: number | null, lastHoveredIndex: number | null, total: number) {
   if (hoveredIndex === null) {
-    return { y: 0, scale: 1, zIndex: 1 };
+    // Idle: last-hovered card stays on top
+    const isLastHovered = lastHoveredIndex !== null && index === lastHoveredIndex;
+    return { y: 0, scale: 1, zIndex: isLastHovered ? 5 : 1 };
   }
   const dist = Math.abs(index - hoveredIndex);
   if (dist === 0) {
@@ -45,6 +48,7 @@ export default function ProjectCard({
   project,
   index,
   hoveredIndex,
+  lastHoveredIndex,
   totalCards,
   onClick,
   onHover,
@@ -76,8 +80,12 @@ export default function ProjectCard({
     const rect = card.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
+    // Theme-aware sheen: white highlight on dark, darker tint on light
+    const isLight = document.documentElement.getAttribute("data-theme") === "light";
+    const inner = isLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.13)";
+    const mid = isLight ? "rgba(0,0,0,0.03)" : "rgba(255,255,255,0.04)";
     sheen.style.background =
-      `radial-gradient(circle 200px at ${x}% ${y}%, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.04) 40%, transparent 70%)`;
+      `radial-gradient(circle 200px at ${x}% ${y}%, ${inner} 0%, ${mid} 40%, transparent 70%)`;
   }, []);
 
   const handleMouseEnter = useCallback(() => {
@@ -102,7 +110,7 @@ export default function ProjectCard({
 
   const visibleTags = project.techStack.slice(0, MAX_TAGS);
   const overflowCount = project.techStack.length - MAX_TAGS;
-  const wave = getWaveStyle(index, hoveredIndex, totalCards);
+  const wave = getWaveStyle(index, hoveredIndex, lastHoveredIndex, totalCards);
 
   return (
     <motion.article
