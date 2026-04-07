@@ -82,10 +82,15 @@ export default function ProjectCard({
     const y = ((e.clientY - rect.top) / rect.height) * 100;
     // Theme-aware sheen: white highlight on dark, darker tint on light
     const isLight = document.documentElement.getAttribute("data-theme") === "light";
-    const inner = isLight ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.13)";
-    const mid = isLight ? "rgba(0,0,0,0.03)" : "rgba(255,255,255,0.04)";
-    sheen.style.background =
-      `radial-gradient(circle 200px at ${x}% ${y}%, ${inner} 0%, ${mid} 40%, transparent 70%)`;
+    if (isLight) {
+      // Light mode: layered white core + soft dark edge for visible glass refraction
+      sheen.style.background =
+        `radial-gradient(circle 180px at ${x}% ${y}%, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.15) 35%, transparent 65%), ` +
+        `radial-gradient(circle 260px at ${x}% ${y}%, rgba(0,0,0,0.04) 0%, transparent 70%)`;
+    } else {
+      sheen.style.background =
+        `radial-gradient(circle 200px at ${x}% ${y}%, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.04) 40%, transparent 70%)`;
+    }
   }, []);
 
   const handleMouseEnter = useCallback(() => {
