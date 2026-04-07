@@ -102,10 +102,14 @@ const { titleEn, titleZh, number, variant = "minimal", id } = Astro.props;
     color: var(--color-text-primary);
   }
 
-  /* Chinese mode: Song Ti for all section titles */
+</style>
+
+<style is:global>
+  /* Chinese mode: Song Ti for all section titles.
+     Must be is:global because data-site-lang lives on <html>, outside this component's scope. */
   [data-site-lang="zh"] .sh-editorial-title,
   [data-site-lang="zh"] .sh-numbered-title,
   [data-site-lang="zh"] .sh-minimal-title {
-    font-family: "Songti SC", "STSongti", "SimSun", "Noto Serif SC", serif;
+    font-family: "Songti SC", "STSongti", "SimSun", "Noto Serif SC", serif !important;
   }
 </style>
