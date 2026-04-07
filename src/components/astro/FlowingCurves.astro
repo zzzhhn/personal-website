@@ -32,53 +32,38 @@
   if (!svg) return;
 
   /* ── per-curve config ────────────────────────────────────── */
-  // colorVar: CSS custom property name (different per curve for differentiation)
-  // dark/light opacity tuned separately so all 3 curves are clearly visible
+  // Fixed anchor paths (x-positions 0-1 at evenly-spaced vertical points)
+  // Dark: brighter, more saturated strokes on dark bg
+  // Light: deeper, richer strokes on light bg — NOT just lower opacity
   var CURVES = [
-    { colorVar: "--color-accent",      darkOp: 0.25, lightOp: 0.18, width: 3.5 },
-    { colorVar: "--color-accent-teal", darkOp: 0.20, lightOp: 0.16, width: 2.8 },
-    { colorVar: "--color-accent-warm", darkOp: 0.18, lightOp: 0.14, width: 2.2 },
+    {
+      xs: [0.12, 0.62, 0.18, 0.68, 0.15, 0.58, 0.22],
+      width: 3.5,
+      dark:  { color: "oklch(0.75 0.18 255 / 0.35)" },
+      light: { color: "oklch(0.45 0.22 255 / 0.22)" },
+    },
+    {
+      xs: [0.52, 0.18, 0.58, 0.12, 0.55, 0.22, 0.48],
+      width: 2.8,
+      dark:  { color: "oklch(0.78 0.14 165 / 0.28)" },
+      light: { color: "oklch(0.42 0.18 165 / 0.18)" },
+    },
+    {
+      xs: [0.85, 0.38, 0.78, 0.42, 0.82, 0.35, 0.80],
+      width: 2.2,
+      dark:  { color: "oklch(0.80 0.15 55 / 0.25)" },
+      light: { color: "oklch(0.50 0.20 55 / 0.16)" },
+    },
   ];
-
-  // Number of anchor points per curve (controls how many S-bends)
-  var ANCHORS = 7;
 
   var paths = [];
   var lengths = [];
   var containerH = 0;
 
   /* ── helpers ──────────────────────────────────────────────── */
-  function cssVar(name) {
-    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-  }
-
   function isLight() {
     return document.documentElement.getAttribute("data-theme") === "light";
   }
-
-  /** Seeded-ish random: generate a random x-position array for one curve.
-   *  band = [lo, hi] constrains where this curve wanders (0-1 range).
-   *  Each anchor is randomised within the band, ensuring smooth variety. */
-  function randomAnchors(band, n) {
-    var lo = band[0], hi = band[1];
-    var xs = [];
-    for (var i = 0; i < n; i++) {
-      // Alternate between left-leaning and right-leaning within band
-      var center = i % 2 === 0 ? lo + (hi - lo) * 0.25 : lo + (hi - lo) * 0.75;
-      var jitter = (hi - lo) * 0.25;
-      var x = center + (Math.random() * 2 - 1) * jitter;
-      // Clamp to band
-      xs.push(Math.max(lo, Math.min(hi, x)));
-    }
-    return xs;
-  }
-
-  // Each curve wanders within a horizontal band to avoid overlap
-  var BANDS = [
-    [0.05, 0.40],  // curve 1: left region
-    [0.30, 0.70],  // curve 2: center region (overlaps slightly for organic feel)
-    [0.60, 0.95],  // curve 3: right region
-  ];
 
   /** Build a smooth cubic-Bézier "d" attribute from x-position anchors */
   function buildPath(xs, w, h) {
@@ -90,7 +75,6 @@
       var y0 = (i - 1) * segH;
       var x1 = xs[i] * w;
       var y1 = i * segH;
-      // Control points at 35%/65% for a fluid S-curve
       var cy0 = y0 + segH * 0.35;
       var cy1 = y0 + segH * 0.65;
       d += " C " + x0 + " " + cy0 + ", " + x1 + " " + cy1 + ", " + x1 + " " + y1;
@@ -98,7 +82,17 @@
     return d;
   }
 
-  /* ── setup — called on load & resize ─────────────────────── */
+  function applyColors() {
+    var light = isLight();
+    CURVES.forEach(function (cfg, i) {
+      if (!paths[i]) return;
+      var scheme = light ? cfg.light : cfg.dark;
+      paths[i].setAttribute("stroke", scheme.color);
+      paths[i].setAttribute("opacity", "1");
+    });
+  }
+
+  /* ── setup ───────────────────────────────────────────────── */
   function setup() {
     var container = document.getElementById("flowing-curves");
     if (!container) return;
@@ -109,23 +103,15 @@
     svg.setAttribute("viewBox", "0 0 " + w + " " + containerH);
     svg.innerHTML = "";
 
-    var light = isLight();
     paths = [];
     lengths = [];
 
-    CURVES.forEach(function (cfg, i) {
-      // Random path each time setup is called (page load / resize)
-      var xs = randomAnchors(BANDS[i], ANCHORS);
-      var d = buildPath(xs, w, containerH);
-      var color = cssVar(cfg.colorVar) || "#64ffda";
-      var opacity = light ? cfg.lightOp : cfg.darkOp;
-
+    CURVES.forEach(function (cfg) {
+      var d = buildPath(cfg.xs, w, containerH);
       var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
       p.setAttribute("d", d);
-      p.setAttribute("stroke", color);
       p.setAttribute("stroke-width", String(cfg.width));
       p.setAttribute("fill", "none");
-      p.setAttribute("opacity", String(opacity));
       p.setAttribute("stroke-linecap", "round");
       p.setAttribute("stroke-linejoin", "round");
       svg.appendChild(p);
@@ -137,6 +123,7 @@
       lengths.push(len);
     });
 
+    applyColors();
     tick();
   }
 
@@ -177,14 +164,9 @@
     resizeTimer = setTimeout(setup, 200);
   }, { passive: true });
 
-  // Theme toggle → update colors AND opacities
+  // Theme toggle → swap to the other color scheme
   new MutationObserver(function () {
-    var light = isLight();
-    CURVES.forEach(function (cfg, i) {
-      if (!paths[i]) return;
-      paths[i].setAttribute("stroke", cssVar(cfg.colorVar) || "#64ffda");
-      paths[i].setAttribute("opacity", String(light ? cfg.lightOp : cfg.darkOp));
-    });
+    applyColors();
   }).observe(document.documentElement, {
     attributes: true,
     attributeFilter: ["data-theme"],
