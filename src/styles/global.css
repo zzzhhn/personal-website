@@ -581,6 +581,12 @@
   font-weight: 600;
   color: var(--color-text-primary);
 }
+/* Experience card role title: Kaiti (ZH), Times New Roman (EN) */
+[data-lang="en"] .tl-role { font-family: "Times New Roman", Times, serif; }
+[data-lang="zh"] .tl-role { font-family: "Kaiti SC", "STKaiti", "KaiTi", serif; }
+/* Experience card highlights: Heiti/sans (ZH), Calibri (EN) */
+[data-lang="en"] .tl-highlights { font-family: Calibri, "Gill Sans", sans-serif; }
+[data-lang="zh"] .tl-highlights { font-family: "Heiti SC", "STHeiti", "Microsoft YaHei", sans-serif; }
 .tl-org {
   font-size: 0.8125rem;
   color: var(--color-text-secondary);

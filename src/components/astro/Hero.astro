@@ -23,7 +23,15 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
         alt={`Photo of ${SITE.name}`}
         width="800"
         height="1000"
-        class="hero-photo"
+        class="hero-photo hero-photo--light"
+        loading="eager"
+      />
+      <img
+        src="/images/profile-dark.png"
+        alt={`Photo of ${SITE.name}`}
+        width="800"
+        height="1000"
+        class="hero-photo hero-photo--dark"
         loading="eager"
       />
     </div>
@@ -204,6 +212,10 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       linear-gradient(to bottom, black 0%, black 82%, transparent 100%);
     -webkit-mask-composite: source-in;
   }
+  /* Light/dark photo toggle */
+  .hero-photo--dark { display: none; }
+  :global([data-theme="dark"]) .hero-photo--light { display: none; }
+  :global([data-theme="dark"]) .hero-photo--dark { display: block; }
 
   /* Content side */
   .hero-content-side {

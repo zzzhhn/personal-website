@@ -11,7 +11,7 @@ export const UI = {
     contact: { en: "Contact", zh: "联系" },
   },
   sections: {
-    education: { en: "Education & Awards", zh: "教育背景与荣誉" },
+    education: { en: "Education & Awards", zh: "教育背景" },
     experience: { en: "Internship Experience", zh: "实习经历" },
     projects: { en: "Projects", zh: "项目经历" },
     campus: { en: "Campus Activities", zh: "校园经历" },
