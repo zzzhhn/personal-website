@@ -514,7 +514,7 @@
   grid-template-columns: 1fr auto 1fr;
   gap: 1.25rem;
   align-items: start;
-  padding-bottom: 3rem;
+  padding-bottom: 3.6rem;
 }
 .tl-row:last-child { padding-bottom: 0; }
 
@@ -623,17 +623,25 @@
 /* ── Workflow diagram ── */
 .wf-container {
   position: absolute;
-  top: 100%;           /* flush below the date text */
-  left: 0;
-  right: -2rem;        /* extend for feedback-loop paths */
+  top: 0;              /* same vertical start as date text */
   z-index: 10;
-  margin-top: 0.5rem;
   padding: 0.5rem;
   padding-right: 2.5rem;
   overflow: visible;
-  /* Transparent — "floating" conveyed by a faint top border accent */
   background: transparent;
-  border-top: 1.5px solid var(--color-accent-dim, oklch(0.7 0.06 230 / 0.25));
+  border-left: 1.5px solid var(--color-accent-dim, oklch(0.7 0.06 230 / 0.25));
+}
+/* Left cards: date in right column → workflow to the RIGHT of date text */
+.tl-row--left .wf-container {
+  left: 5.5rem;        /* clear past "2026.02 / Present" text */
+  right: -2rem;        /* extend for feedback-loop paths */
+}
+/* Right cards: date in left column → workflow to the LEFT of date text */
+.tl-row--right .wf-container {
+  left: -2rem;
+  right: 5.5rem;
+  border-left: none;
+  border-right: 1.5px solid var(--color-accent-dim, oklch(0.7 0.06 230 / 0.25));
 }
 .wf-node {
   display: flex;
