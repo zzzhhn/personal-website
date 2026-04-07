@@ -619,49 +619,58 @@
   border-top: 1px solid var(--color-border-subtle);
 }
 
-/* ── Skill bubbles — organic floating cluster ── */
+/* ── Skill bubbles — round floating circles ── */
 .tl-bubbles {
   margin-top: 0.875rem;
 }
 .tl-bubble-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 0.625rem;
 }
-/* Stagger bubbles for an organic scattered look */
-.tl-bubble-group > :nth-child(2) { align-self: center; }
-.tl-bubble-group > :nth-child(3) { align-self: flex-start; }
+/* Organic scatter: zigzag offset per child, mirrored per side */
 .tl-row--left .tl-bubble-group > :nth-child(1) { align-self: flex-start; }
-.tl-row--left .tl-bubble-group > :nth-child(3) { align-self: flex-end; }
+.tl-row--left .tl-bubble-group > :nth-child(2) { align-self: flex-end; }
+.tl-row--left .tl-bubble-group > :nth-child(3) { align-self: center; }
 .tl-row--right .tl-bubble-group > :nth-child(1) { align-self: flex-end; }
-.tl-row--right .tl-bubble-group > :nth-child(3) { align-self: flex-start; }
+.tl-row--right .tl-bubble-group > :nth-child(2) { align-self: flex-start; }
+.tl-row--right .tl-bubble-group > :nth-child(3) { align-self: center; }
 
 .tl-bubble {
+  /* Circular shape */
+  width: 4.8rem;
+  height: 4.8rem;
+  border-radius: 50%;
+  /* Center text inside the circle */
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.68rem;
+  text-align: center;
+  padding: 0.5rem;
+  /* Typography */
+  font-size: 0.56rem;
   font-weight: 500;
-  padding: 0.4rem 0.85rem;
-  border-radius: 999px;
+  line-height: 1.25;
   color: var(--color-text-secondary);
-  white-space: nowrap;
   letter-spacing: 0.01em;
+  overflow-wrap: break-word;
+  /* Depth — glass sphere feel */
   box-shadow:
-    0 2px 10px oklch(0 0 0 / 0.08),
-    0 0 0 1px oklch(1 0 0 / 0.04),
-    inset 0 1px 0 oklch(1 0 0 / 0.08);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+    0 4px 14px oklch(0 0 0 / 0.1),
+    0 0 0 1px oklch(1 0 0 / 0.05),
+    inset 0 1px 2px oklch(1 0 0 / 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
-/* Subtle float animation — staggered per child */
+/* Gentle floating — each child drifts at its own rhythm */
 @keyframes bubble-drift {
   0%, 100% { translate: 0 0; }
-  50% { translate: 0 -3px; }
+  50% { translate: 0 -4px; }
 }
 .tl-bubble:nth-child(1) { animation: bubble-drift 3.5s ease-in-out 0.5s infinite; }
-.tl-bubble:nth-child(2) { animation: bubble-drift 4s ease-in-out 1.2s infinite; }
-.tl-bubble:nth-child(3) { animation: bubble-drift 3.8s ease-in-out 2s infinite; }
+.tl-bubble:nth-child(2) { animation: bubble-drift 4.2s ease-in-out 1.4s infinite; }
+.tl-bubble:nth-child(3) { animation: bubble-drift 3.8s ease-in-out 2.2s infinite; }
 @media (prefers-reduced-motion: reduce) {
   .tl-bubble { animation: none !important; }
 }
