@@ -121,14 +121,12 @@ export default function ProjectCard({
     <motion.article
       ref={cardRef}
       initial={{ opacity: 0, y: 32 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-30px" }}
+      animate={{ opacity: 1, y: wave.y, scale: wave.scale }}
       transition={{
         opacity: { duration: 0.5, delay: index * 0.12 },
         y: { type: "spring", stiffness: 220, damping: 24 },
         scale: { type: "spring", stiffness: 260, damping: 24 },
       }}
-      animate={{ y: wave.y, scale: wave.scale }}
       className="glass"
       style={{
         padding: "1.5rem",
