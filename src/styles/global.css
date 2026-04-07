@@ -649,12 +649,12 @@
   text-align: center;
   padding: 0.6rem;
   /* Typography */
-  font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
+  font-family: Calibri, "Gill Sans", "Trebuchet MS", sans-serif;
   font-size: 0.65rem;
   font-weight: 500;
   line-height: 1.3;
   color: var(--color-text-primary);
-  letter-spacing: 0.01em;
+  letter-spacing: 0.04em;
   overflow-wrap: break-word;
   /* ── Soap bubble: iridescent thin-film + specular highlight ── */
   background:
@@ -703,7 +703,7 @@
 /* Gentle floating — each child drifts at its own rhythm */
 @keyframes bubble-drift {
   0%, 100% { translate: 0 0; }
-  50% { translate: 0 -4px; }
+  50% { translate: 0 -8px; }
 }
 .tl-bubble:nth-child(1) { animation: bubble-drift 3.5s ease-in-out 0.5s infinite; }
 .tl-bubble:nth-child(2) { animation: bubble-drift 4.2s ease-in-out 1.4s infinite; }
