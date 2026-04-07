@@ -95,6 +95,9 @@ import SectionHeading from "./SectionHeading.astro";
   opacity: 0;
   transition: opacity 0.25s ease-out;
 }
+[data-theme="light"] .bio-ul-bar {
+  background: radial-gradient(ellipse at center, var(--color-uni-gold) 0%, transparent 100%);
+}
 </style>
 
 <script is:inline>
@@ -182,9 +185,11 @@ import SectionHeading from "./SectionHeading.astro";
     if (!isInside) {
       barTarget.opacity = 0;
     } else {
-      /* Find which line the mouse is on */
+      /* Find which line the mouse is on + collect line word boundaries */
       var lineBottom = 0;
       var onLine = false;
+      var lineLeft = Infinity;
+      var lineRight = -Infinity;
       var tolerance = 6;
       for (var i = 0; i < spans.length; i++) {
         var r = spans[i].getBoundingClientRect();
@@ -193,6 +198,8 @@ import SectionHeading from "./SectionHeading.astro";
         if (Math.abs(mouseY - rowY) < r.height / 2 + tolerance) {
           onLine = true;
           lineBottom = r.bottom;
+          if (r.left < lineLeft) lineLeft = r.left;
+          if (r.right > lineRight) lineRight = r.right;
           /* Apply faux-bold based on horizontal distance */
           var cx = r.left + r.width / 2;
           var dx = mouseX - cx;
@@ -204,9 +211,13 @@ import SectionHeading from "./SectionHeading.astro";
       }
 
       if (onLine) {
-        /* Bar extent driven directly by cursor ± RADIUS, not by word boundaries */
-        barTarget.left = mouseX - RADIUS - cRect.left;
-        barTarget.width = RADIUS * 2;
+        /* Bar extent: cursor ± RADIUS, clamped to line text boundaries */
+        var rawL = mouseX - RADIUS;
+        var rawR = mouseX + RADIUS;
+        var clampL = Math.max(rawL, lineLeft);
+        var clampR = Math.min(rawR, lineRight);
+        barTarget.left = clampL - cRect.left;
+        barTarget.width = Math.max(0, clampR - clampL);
         barTarget.top = lineBottom - cRect.top + 2;
         barTarget.opacity = 0.55;
       } else {
