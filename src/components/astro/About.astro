@@ -143,9 +143,6 @@ import SectionHeading from "./SectionHeading.astro";
   transform-origin: center bottom;
   cursor: default;
 }
-.bw-space {
-  pointer-events: none;
-}
 </style>
 
 <script is:inline>
@@ -176,14 +173,11 @@ import SectionHeading from "./SectionHeading.astro";
         p.appendChild(s);
       }
     } else {
-      /* Per-character split (like Hero) — spaces become non-interactive spans */
+      /* Per-character split (like Hero) — spaces stay as text nodes */
       for (var j = 0; j < raw.length; j++) {
         var ch = raw[j];
         if (/\s/.test(ch)) {
-          var sp = document.createElement("span");
-          sp.className = "bw bw-space";
-          sp.textContent = ch;
-          p.appendChild(sp);
+          p.appendChild(document.createTextNode(ch));
         } else {
           var c = document.createElement("span");
           c.className = "bw";
