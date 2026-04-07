@@ -5,7 +5,7 @@ interface AwardCardProps {
   label: string;
   imageSlug: string;
   index: number;
-  onHover: (slug: string | null, cardCenterY: number) => void;
+  onHover: (slug: string | null, rect: DOMRect | null) => void;
 }
 
 export default function AwardCard({ label, imageSlug, index, onHover }: AwardCardProps) {
@@ -13,13 +13,12 @@ export default function AwardCard({ label, imageSlug, index, onHover }: AwardCar
 
   const handleMouseEnter = useCallback(() => {
     if (cardRef.current) {
-      const rect = cardRef.current.getBoundingClientRect();
-      onHover(imageSlug, rect.top + rect.height / 2);
+      onHover(imageSlug, cardRef.current.getBoundingClientRect());
     }
   }, [imageSlug, onHover]);
 
   const handleMouseLeave = useCallback(() => {
-    onHover(null, 0);
+    onHover(null, null);
   }, [onHover]);
 
   return (

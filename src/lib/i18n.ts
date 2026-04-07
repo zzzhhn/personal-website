@@ -38,16 +38,16 @@ export const UI = {
     },
     techCategories: {
       en: [
-        { label: "Programming", items: ["Python", "SQL", "STATA", "MATLAB", "LaTeX"] },
-        { label: "Data & ML", items: ["NumPy", "Pandas", "matplotlib", "Scikit-learn", "TensorFlow"] },
-        { label: "Finance", items: ["Wind", "Choice", "PitchBook"] },
-        { label: "Tools", items: ["Claude Code", "MSOffice/WPS", "Word", "Excel", "PowerPoint"] },
+        { label: "Programming", items: ["Python", "SQL", "JavaScript", "CSS", "STATA", "MATLAB", "LaTeX"] },
+        { label: "Data & ML", items: ["NumPy", "Pandas", "matplotlib", "Scikit-learn", "TensorFlow", "PyTorch"] },
+        { label: "Finance", items: ["Wind", "Choice", "iFind", "PitchBook"] },
+        { label: "Tools", items: ["Claude Code", "Microsoft Word", "Microsoft Excel", "Microsoft PowerPoint"] },
       ],
       zh: [
-        { label: "编程", items: ["Python", "SQL", "STATA", "MATLAB", "LaTeX"] },
-        { label: "数据 & 机器学习", items: ["NumPy", "Pandas", "matplotlib", "Scikit-learn", "TensorFlow"] },
-        { label: "金融", items: ["Wind", "Choice", "PitchBook"] },
-        { label: "工具", items: ["Claude Code", "MSOffice/WPS", "Word", "Excel", "PowerPoint"] },
+        { label: "编程", items: ["Python", "SQL", "JavaScript", "CSS", "STATA", "MATLAB", "LaTeX"] },
+        { label: "数据 & 机器学习", items: ["NumPy", "Pandas", "matplotlib", "Scikit-learn", "TensorFlow", "PyTorch"] },
+        { label: "金融", items: ["万得", "东方财富 Choice", "同花顺 iFind", "PitchBook"] },
+        { label: "工具", items: ["Claude Code", "Microsoft Word", "Microsoft Excel", "Microsoft PowerPoint"] },
       ],
     },
   },
@@ -197,7 +197,7 @@ export const EXPERIENCES = {
       organization: "Video Rebirth",
       location: "Hong Kong, China",
       startDate: "2026-02-01",
-      type: "full-time",
+      type: "internship",
       highlights: [
         "Reproduced and built evaluation pipelines for text-to-video generation models, focusing on key dimensions including generation quality, instruction following, and semantic consistency",
         "Independently completed the full workflow from methodology understanding and environment setup to experiment execution within the first two and a half weeks, delivering a complete evaluation output",
@@ -240,7 +240,7 @@ export const EXPERIENCES = {
       location: "Remote",
       startDate: "2025-08-01",
       endDate: "2025-11-01",
-      type: "research",
+      type: "internship",
       highlights: [
         "Relying on the BRAIN platform and focusing on the TOP 3000 Universe of US stocks, using price and volume data as inputs, along with timing and cross-sectional operators such as ts_rank, ts_decay_linear, and rank, 100+ Alphas covering short-term reversals, momentum, and fundamental value were constructed",
         "To address the issue of transaction cost erosion caused by high Turnover during backtesting, ts_decay_linear attenuation smoothing and group_neutralize industry neutralization were introduced, significantly enhancing the RankIC stability (ICIR) and reducing the turnover rate by approximately 15%",
@@ -268,7 +268,7 @@ export const EXPERIENCES = {
       organization: "Video Rebirth",
       location: "中国 – 香港",
       startDate: "2026-02-01",
-      type: "full-time",
+      type: "internship",
       highlights: [
         "聚焦文生视频模型评测方向，围绕生成质量、指令遵循、语义一致性等核心维度，独立复现并跑通业界前沿论文中的主流评测流程",
         "在入职两周半内完成从方案理解、环境配置到实验执行的全流程落地，形成完整评测产出",
@@ -311,7 +311,7 @@ export const EXPERIENCES = {
       location: "远程",
       startDate: "2025-07-01",
       endDate: "2025-10-01",
-      type: "research",
+      type: "internship",
       highlights: [
         "依托 BRAIN 平台，聚焦美股 TOP 3000 Universe，利用价量数据与基本面数据为输入，采用 ts_rank、ts_decay_linear、rank 等时序与截面算子，系统性构建了涵盖短期反转、动量及基本面价值等多类信号的 Alpha，最终产出 100+ 个通过平台检验的高质因子",
         "针对回测中高 Turnover 导致的交易成本侵蚀问题，引入 ts_decay_linear 衰减平滑与 group_neutralize 行业中性化，提升因子回测通过率约 15%",
