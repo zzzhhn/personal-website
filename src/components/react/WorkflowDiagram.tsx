@@ -18,6 +18,7 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
   const nodeRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [edgePaths, setEdgePaths] = useState<EdgePath[]>([]);
   const [svgH, setSvgH] = useState(0);
+  const isHorizontal = workflow.direction === "horizontal";
 
   const nodeMap = useMemo(() => {
     const m = new Map<string, WFNode>();
@@ -44,10 +45,13 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
     });
 
     let maxRight = 0;
+    let maxBottom = 0;
     positions.forEach((p) => {
       if (p.r > maxRight) maxRight = p.r;
+      if (p.b > maxBottom) maxBottom = p.b;
     });
 
+    const isHoriz = workflow.direction === "horizontal";
     const paths: EdgePath[] = [];
 
     for (const edge of workflow.edges) {
@@ -61,35 +65,71 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
       let d: string;
       let labelPos: { x: number; y: number } | undefined;
 
-      // Feedback loop — route along the right side
-      if (edge.dashed && toNode.row < fromNode.row) {
-        const loopX = maxRight + 24;
-        d = [
-          `M ${fp.r} ${fp.cy}`,
-          `L ${loopX} ${fp.cy}`,
-          `L ${loopX} ${tp.cy}`,
-          `L ${tp.r} ${tp.cy}`,
-        ].join(" ");
-        labelPos = { x: loopX + 5, y: (fp.cy + tp.cy) / 2 };
-      }
-      // Same column — straight vertical
-      else if (Math.abs(fp.cx - tp.cx) < 8) {
-        d = `M ${fp.cx} ${fp.b} L ${tp.cx} ${tp.t}`;
-        if (edge.label) {
-          labelPos = { x: fp.cx + 20, y: (fp.b + tp.t) / 2 };
+      if (isHoriz) {
+        // ── Horizontal layout ──
+        // Feedback loop — route along the bottom
+        if (edge.dashed && toNode.col < fromNode.col) {
+          const loopY = maxBottom + 20;
+          d = [
+            `M ${fp.cx} ${fp.b}`,
+            `L ${fp.cx} ${loopY}`,
+            `L ${tp.cx} ${loopY}`,
+            `L ${tp.cx} ${tp.b}`,
+          ].join(" ");
+          labelPos = { x: (fp.cx + tp.cx) / 2, y: loopY + 12 };
         }
-      }
-      // Different columns — step path (vertical → horizontal → vertical)
-      else {
-        const midY = (fp.b + tp.t) / 2;
-        d = [
-          `M ${fp.cx} ${fp.b}`,
-          `L ${fp.cx} ${midY}`,
-          `L ${tp.cx} ${midY}`,
-          `L ${tp.cx} ${tp.t}`,
-        ].join(" ");
-        if (edge.label) {
-          labelPos = { x: (fp.cx + tp.cx) / 2, y: midY - 8 };
+        // Same row — straight horizontal
+        else if (Math.abs(fp.cy - tp.cy) < 8) {
+          d = `M ${fp.r} ${fp.cy} L ${tp.l} ${tp.cy}`;
+          if (edge.label) {
+            labelPos = { x: (fp.r + tp.l) / 2, y: fp.cy - 10 };
+          }
+        }
+        // Different rows — step path (horizontal → vertical → horizontal)
+        else {
+          const midX = (fp.r + tp.l) / 2;
+          d = [
+            `M ${fp.r} ${fp.cy}`,
+            `L ${midX} ${fp.cy}`,
+            `L ${midX} ${tp.cy}`,
+            `L ${tp.l} ${tp.cy}`,
+          ].join(" ");
+          if (edge.label) {
+            labelPos = { x: midX, y: (fp.cy + tp.cy) / 2 - 8 };
+          }
+        }
+      } else {
+        // ── Vertical layout (default) ──
+        // Feedback loop — route along the right side
+        if (edge.dashed && toNode.row < fromNode.row) {
+          const loopX = maxRight + 24;
+          d = [
+            `M ${fp.r} ${fp.cy}`,
+            `L ${loopX} ${fp.cy}`,
+            `L ${loopX} ${tp.cy}`,
+            `L ${tp.r} ${tp.cy}`,
+          ].join(" ");
+          labelPos = { x: loopX + 5, y: (fp.cy + tp.cy) / 2 };
+        }
+        // Same column — straight vertical
+        else if (Math.abs(fp.cx - tp.cx) < 8) {
+          d = `M ${fp.cx} ${fp.b} L ${tp.cx} ${tp.t}`;
+          if (edge.label) {
+            labelPos = { x: fp.cx + 20, y: (fp.b + tp.t) / 2 };
+          }
+        }
+        // Different columns — step path (vertical → horizontal → vertical)
+        else {
+          const midY = (fp.b + tp.t) / 2;
+          d = [
+            `M ${fp.cx} ${fp.b}`,
+            `L ${fp.cx} ${midY}`,
+            `L ${tp.cx} ${midY}`,
+            `L ${tp.cx} ${tp.t}`,
+          ].join(" ");
+          if (edge.label) {
+            labelPos = { x: (fp.cx + tp.cx) / 2, y: midY - 8 };
+          }
         }
       }
 
@@ -120,7 +160,7 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
   return (
     <motion.div
       ref={containerRef}
-      className="wf-container"
+      className={`wf-container${isHorizontal ? " wf-container--horizontal" : ""}`}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
@@ -133,14 +173,16 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
           display: "grid",
           gridTemplateColumns: `repeat(${workflow.cols}, 1fr)`,
           gridTemplateRows: `repeat(${workflow.rows}, auto)`,
-          gap: "28px 10px",
+          gap: isHorizontal ? "10px 14px" : "28px 10px",
           justifyItems: "center",
           alignItems: "center",
         }}
       >
         {workflow.nodes.map((node) => {
           const isDecision = node.type === "decision";
-          const delay = node.row * 0.09 + node.col * 0.03;
+          const delay = isHorizontal
+            ? node.col * 0.09 + node.row * 0.03
+            : node.row * 0.09 + node.col * 0.03;
 
           return (
             <motion.div

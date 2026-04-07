@@ -643,6 +643,21 @@
   border-left: none;
   border-right: 1.5px solid var(--color-accent-dim, oklch(0.7 0.06 230 / 0.25));
 }
+/* Horizontal workflows: smaller text, allow wrapping */
+.wf-container--horizontal .wf-node {
+  font-size: 0.6rem;
+  white-space: normal;
+  padding: 0.3rem 0.5rem;
+  min-width: 0;
+}
+.wf-container--horizontal .wf-node--decision {
+  width: 44px;
+  height: 44px;
+  font-size: 0.5rem;
+}
+.wf-container--horizontal {
+  padding-bottom: 2rem; /* space for feedback-loop paths below */
+}
 .wf-node {
   display: flex;
   align-items: center;

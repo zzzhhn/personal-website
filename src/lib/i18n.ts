@@ -360,6 +360,7 @@ export interface WorkflowData {
   edges: WFEdge[];
   cols: number;
   rows: number;
+  direction?: "vertical" | "horizontal"; // default "vertical"
 }
 
 // ── Workflow data — one per experience, matches EXPERIENCES order ──
@@ -387,18 +388,18 @@ export const WORKFLOWS: WorkflowData[] = [
       { from: "analysis", to: "framework", dashed: true, label: { en: "Iterate", zh: "迭代" } },
     ],
   },
-  // ② ByteDance — Agent 评测 PM (3×7, fork+decision+feedback)
+  // ② ByteDance — Agent 评测 PM (7×3 horizontal, fork+decision+feedback)
   {
-    cols: 3, rows: 7,
+    cols: 7, rows: 3, direction: "horizontal",
     nodes: [
-      { id: "req", label: { en: "Requirement Analysis", zh: "需求定义与拆解" }, type: "process", col: 1, row: 0 },
-      { id: "taxonomy", label: { en: "Intent Taxonomy", zh: "意图分类体系" }, type: "process", col: 1, row: 1 },
-      { id: "datapipe", label: { en: "Data Pipeline", zh: "数据管线搭建" }, type: "process", col: 0, row: 2 },
-      { id: "annospec", label: { en: "Annotation Standards", zh: "标注规范制定" }, type: "process", col: 2, row: 2 },
-      { id: "autolabel", label: { en: "Auto-labeling", zh: "自动打标" }, type: "process", col: 1, row: 3 },
-      { id: "humanqa", label: { en: "Human QA", zh: "人工校验" }, type: "process", col: 1, row: 4 },
-      { id: "qcheck", label: { en: "Quality Pass?", zh: "质量达标？" }, type: "decision", col: 1, row: 5 },
-      { id: "report", label: { en: "Attribution & Report", zh: "归因分析与报告" }, type: "process", col: 1, row: 6 },
+      { id: "req", label: { en: "Requirement Analysis", zh: "需求拆解" }, type: "process", col: 0, row: 1 },
+      { id: "taxonomy", label: { en: "Intent Taxonomy", zh: "意图分类" }, type: "process", col: 1, row: 1 },
+      { id: "datapipe", label: { en: "Data Pipeline", zh: "数据管线" }, type: "process", col: 2, row: 0 },
+      { id: "annospec", label: { en: "Annotation Std", zh: "标注规范" }, type: "process", col: 2, row: 2 },
+      { id: "autolabel", label: { en: "Auto-labeling", zh: "自动打标" }, type: "process", col: 3, row: 1 },
+      { id: "humanqa", label: { en: "Human QA", zh: "人工校验" }, type: "process", col: 4, row: 1 },
+      { id: "qcheck", label: { en: "Pass?", zh: "达标？" }, type: "decision", col: 5, row: 1 },
+      { id: "report", label: { en: "Report", zh: "归因报告" }, type: "process", col: 6, row: 1 },
     ],
     edges: [
       { from: "req", to: "taxonomy" },
@@ -437,17 +438,17 @@ export const WORKFLOWS: WorkflowData[] = [
       { from: "memo", to: "ic" },
     ],
   },
-  // ④ WorldQuant — 量化因子研究 (3×7, decision+feedback loop)
+  // ④ WorldQuant — 量化因子研究 (7×1 horizontal, decision+feedback loop)
   {
-    cols: 3, rows: 7,
+    cols: 7, rows: 1, direction: "horizontal",
     nodes: [
-      { id: "hypo", label: { en: "Factor Hypothesis", zh: "因子假设" }, type: "process", col: 1, row: 0 },
-      { id: "dataproc", label: { en: "Data Processing", zh: "数据清洗" }, type: "process", col: 1, row: 1 },
-      { id: "construct", label: { en: "Factor Construction", zh: "因子构建" }, type: "process", col: 1, row: 2 },
-      { id: "backtest", label: { en: "Backtesting", zh: "回测验证" }, type: "process", col: 1, row: 3 },
-      { id: "decision", label: { en: "Pass Threshold?", zh: "达标？" }, type: "decision", col: 1, row: 4 },
-      { id: "optimize", label: { en: "Optimization", zh: "优化调参" }, type: "process", col: 1, row: 5 },
-      { id: "registry", label: { en: "Registry", zh: "入库" }, type: "process", col: 1, row: 6 },
+      { id: "hypo", label: { en: "Hypothesis", zh: "因子假设" }, type: "process", col: 0, row: 0 },
+      { id: "dataproc", label: { en: "Data Cleaning", zh: "数据清洗" }, type: "process", col: 1, row: 0 },
+      { id: "construct", label: { en: "Construction", zh: "因子构建" }, type: "process", col: 2, row: 0 },
+      { id: "backtest", label: { en: "Backtesting", zh: "回测验证" }, type: "process", col: 3, row: 0 },
+      { id: "decision", label: { en: "Pass?", zh: "达标？" }, type: "decision", col: 4, row: 0 },
+      { id: "optimize", label: { en: "Optimize", zh: "优化" }, type: "process", col: 5, row: 0 },
+      { id: "registry", label: { en: "Registry", zh: "入库" }, type: "process", col: 6, row: 0 },
     ],
     edges: [
       { from: "hypo", to: "dataproc" },
