@@ -691,20 +691,18 @@
   }
 }
 
-/* ── Project Deck: horizontal fanned layout ── */
+/* ── Project Deck: horizontal parallel layout ── */
 .project-deck {
   display: flex;
   justify-content: center;
-  align-items: flex-end;
-  gap: -1rem;
-  padding: 2rem 1rem 3rem;
-  perspective: 800px;
+  align-items: stretch;
+  gap: 1.25rem;
+  padding: 1.5rem 1rem 2.5rem;
 }
 .project-deck > * {
-  flex: 0 0 auto;
-  width: min(280px, 75vw);
-  margin: 0 -0.5rem;
-  transform-origin: bottom center;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 18rem;
 }
 
 /* Mobile: stack vertically */
@@ -714,12 +712,10 @@
     align-items: center;
     gap: 1rem;
     padding: 1rem 0 2rem;
-    perspective: none;
   }
   .project-deck > * {
     width: 100%;
     max-width: 24rem;
-    margin: 0;
   }
 }
 

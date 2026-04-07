@@ -1,4 +1,4 @@
-import { useRef, useCallback, useState } from "react";
+import { useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 
 export interface Project {
@@ -24,35 +24,20 @@ interface ProjectCardProps {
 
 const MAX_TAGS = 4;
 
-/** Compute wave offset: cards near the hovered card lift/tilt proportionally */
+/** Wave: hovered card lifts, neighbors shift proportionally. No rotation — flat parallel layout. */
 function getWaveStyle(index: number, hoveredIndex: number | null, total: number) {
   if (hoveredIndex === null) {
-    // Default fanned layout — slight rotation based on position
-    const center = (total - 1) / 2;
-    const offset = index - center;
-    return {
-      rotate: offset * 2.5,
-      y: Math.abs(offset) * 6,
-      scale: 1,
-      zIndex: total - Math.abs(offset),
-    };
+    return { y: 0, scale: 1, zIndex: 1 };
   }
-
   const dist = Math.abs(index - hoveredIndex);
-
   if (dist === 0) {
-    // Hovered card: lift up, no rotation, scale up
-    return { rotate: 0, y: -16, scale: 1.04, zIndex: 20 };
+    return { y: -14, scale: 1.03, zIndex: 10 };
   }
-
-  // Adjacent cards: wave ripple — slight lift and tilt away
-  const direction = index < hoveredIndex ? -1 : 1;
-  const falloff = Math.max(0, 1 - dist * 0.5); // decays with distance
+  const falloff = Math.max(0, 1 - dist * 0.45);
   return {
-    rotate: direction * 3 * falloff,
-    y: -6 * falloff + Math.abs(index - (total - 1) / 2) * 3,
-    scale: 1 - dist * 0.015,
-    zIndex: 10 - dist,
+    y: -6 * falloff,
+    scale: 1 - dist * 0.01,
+    zIndex: 5 - dist,
   };
 }
 
@@ -65,7 +50,7 @@ export default function ProjectCard({
   onHover,
 }: ProjectCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 0.5, y: 0.5 });
+  const sheenRef = useRef<HTMLDivElement>(null);
 
   const handleClick = useCallback(() => {
     if (cardRef.current) {
@@ -83,23 +68,31 @@ export default function ProjectCard({
     [handleClick],
   );
 
-  // Mouse-tracking specular highlight
+  // Sheen via direct DOM — zero React re-renders
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    setMousePos({
-      x: (e.clientX - rect.left) / rect.width,
-      y: (e.clientY - rect.top) / rect.height,
-    });
+    const card = cardRef.current;
+    const sheen = sheenRef.current;
+    if (!card || !sheen) return;
+    const rect = card.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+    sheen.style.background =
+      `radial-gradient(circle 200px at ${x}% ${y}%, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.04) 40%, transparent 70%)`;
   }, []);
 
   const handleMouseEnter = useCallback(() => {
     onHover(index);
+    if (sheenRef.current) {
+      sheenRef.current.style.opacity = "1";
+    }
   }, [index, onHover]);
 
   const handleMouseLeave = useCallback(() => {
     onHover(null);
-    setMousePos({ x: 0.5, y: 0.5 });
+    if (sheenRef.current) {
+      sheenRef.current.style.opacity = "0";
+      sheenRef.current.style.background = "none";
+    }
   }, [onHover]);
 
   const statusColor =
@@ -109,32 +102,20 @@ export default function ProjectCard({
 
   const visibleTags = project.techStack.slice(0, MAX_TAGS);
   const overflowCount = project.techStack.length - MAX_TAGS;
-
   const wave = getWaveStyle(index, hoveredIndex, totalCards);
-  const isHovered = hoveredIndex === index;
-
-  // Dynamic specular: radial gradient that follows cursor
-  const sheenGradient = isHovered
-    ? `radial-gradient(circle 180px at ${mousePos.x * 100}% ${mousePos.y * 100}%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 40%, transparent 70%)`
-    : "none";
 
   return (
     <motion.article
       ref={cardRef}
-      initial={{ opacity: 0, y: 40, rotate: 0 }}
-      whileInView={{ opacity: 1, y: wave.y, rotate: wave.rotate }}
+      initial={{ opacity: 0, y: 32 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-30px" }}
       transition={{
         opacity: { duration: 0.5, delay: index * 0.12 },
-        y: { type: "spring", stiffness: 200, damping: 22 },
-        rotate: { type: "spring", stiffness: 200, damping: 22 },
+        y: { type: "spring", stiffness: 220, damping: 24 },
         scale: { type: "spring", stiffness: 260, damping: 24 },
       }}
-      animate={{
-        y: wave.y,
-        rotate: wave.rotate,
-        scale: wave.scale,
-      }}
+      animate={{ y: wave.y, scale: wave.scale }}
       className="glass"
       style={{
         padding: "1.5rem",
@@ -154,23 +135,23 @@ export default function ProjectCard({
       tabIndex={0}
       aria-haspopup="dialog"
     >
-      {/* Dynamic specular sheen overlay */}
+      {/* Specular sheen — updated via DOM ref, not React state */}
       <div
+        ref={sheenRef}
         aria-hidden="true"
         style={{
           position: "absolute",
           inset: 0,
           borderRadius: "inherit",
-          background: sheenGradient,
           pointerEvents: "none",
-          transition: "background 0.15s ease",
+          opacity: 0,
+          transition: "opacity 0.25s ease",
           zIndex: 0,
         }}
       />
 
-      {/* Content — above sheen */}
+      {/* Content */}
       <div style={{ position: "relative", zIndex: 1 }}>
-        {/* Status + featured badges */}
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
           <span
             className="glass-subtle"
@@ -201,7 +182,6 @@ export default function ProjectCard({
           )}
         </div>
 
-        {/* Title */}
         <h3
           style={{
             fontSize: "1.05rem",
@@ -214,7 +194,6 @@ export default function ProjectCard({
           {project.title}
         </h3>
 
-        {/* Tagline */}
         <p
           style={{
             fontSize: "0.8rem",
@@ -226,7 +205,6 @@ export default function ProjectCard({
           {project.tagline}
         </p>
 
-        {/* Tech tags */}
         <div style={{ display: "flex", flexWrap: "wrap", gap: "0.375rem" }}>
           {visibleTags.map((tech) => (
             <span
