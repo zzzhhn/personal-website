@@ -121,54 +121,6 @@ import AwardsGrid from "../react/AwardsGrid";
   </div>
 </section>
 
-<script is:inline>
-// === AWARD PREVIEW DEBUG — remove after fixing ===
-(function() {
-  var cards = document.querySelectorAll('.card-outline');
-  console.log('[AWARD DEBUG] Found ' + cards.length + ' .card-outline elements');
-
-  cards.forEach(function(card, i) {
-    card.addEventListener('mouseenter', function() {
-      console.log('[AWARD DEBUG] mouseenter on card ' + i);
-      // Check if React hydrated this card (look for React internal props)
-      var reactKey = Object.keys(card).find(function(k) { return k.startsWith('__react'); });
-      console.log('[AWARD DEBUG] React hydrated:', !!reactKey);
-
-      // Check for any fixed-position children
-      setTimeout(function() {
-        var allFixed = document.querySelectorAll('[style*="position: fixed"]');
-        console.log('[AWARD DEBUG] Fixed elements in DOM:', allFixed.length);
-        allFixed.forEach(function(el) {
-          var r = el.getBoundingClientRect();
-          console.log('[AWARD DEBUG] Fixed el:', {
-            tag: el.tagName,
-            classes: el.className,
-            rect: { top: r.top, left: r.left, width: r.width, height: r.height },
-            opacity: el.style.opacity,
-            zIndex: el.style.zIndex,
-            display: getComputedStyle(el).display,
-            visibility: getComputedStyle(el).visibility,
-            parentDisplay: getComputedStyle(el.parentElement).display,
-            parentOverflow: getComputedStyle(el.parentElement).overflow,
-          });
-        });
-
-        // Check if card has children beyond icon + label + canvas
-        console.log('[AWARD DEBUG] Card childNodes:', card.childNodes.length, 'children:', card.children.length);
-        Array.from(card.children).forEach(function(ch, j) {
-          console.log('[AWARD DEBUG] child ' + j + ':', ch.tagName, ch.className || ch.style?.cssText?.substring(0, 80));
-        });
-      }, 100);
-    });
-  });
-
-  // Also check if images are reachable
-  fetch('/images/awards/shaw-spirit-2024.jpg', { method: 'HEAD' })
-    .then(function(r) { console.log('[AWARD DEBUG] Image fetch status:', r.status); })
-    .catch(function(e) { console.log('[AWARD DEBUG] Image fetch error:', e); });
-})();
-</script>
-
 <style>
   .course-scroll {
     overflow-x: auto;
