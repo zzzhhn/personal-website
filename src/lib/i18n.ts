@@ -39,17 +39,17 @@ export const UI = {
     techCategories: {
       en: [
         { label: "Programming", items: ["Python", "SQL", "JavaScript", "CSS", "STATA", "MATLAB", "LaTeX"] },
-        { label: "Data & ML", items: ["NumPy", "Pandas", "matplotlib", "Scikit-learn", "TensorFlow", "PyTorch"] },
-        { label: "Finance", items: ["Wind", "Choice", "iFind", "PitchBook"] },
         { label: "Office", items: ["Microsoft Word", "Microsoft Excel", "Microsoft PowerPoint", "Microsoft Outlook", "Google Workspace"] },
         { label: "AI & Agent", items: ["Claude Code", "Harness Engineering", "Continual Learning", "Auto-research", "OpenClaw"] },
+        { label: "Data & ML", items: ["NumPy", "Pandas", "matplotlib", "Scikit-learn", "TensorFlow", "PyTorch"] },
+        { label: "Finance", items: ["Wind", "Choice", "iFind", "PitchBook"] },
       ],
       zh: [
         { label: "编程", items: ["Python", "SQL", "JavaScript", "CSS", "STATA", "MATLAB", "LaTeX"] },
-        { label: "数据 & 机器学习", items: ["NumPy", "Pandas", "matplotlib", "Scikit-learn", "TensorFlow", "PyTorch"] },
-        { label: "金融", items: ["万得", "东方财富 Choice", "同花顺 iFind", "PitchBook"] },
         { label: "办公", items: ["Microsoft Word", "Microsoft Excel", "Microsoft PowerPoint", "Microsoft Outlook", "Google Workspace"] },
         { label: "AI & Agent", items: ["Claude Code", "Harness Engineering", "Continual Learning", "Auto-research", "OpenClaw"] },
+        { label: "数据 & 机器学习", items: ["NumPy", "Pandas", "matplotlib", "Scikit-learn", "TensorFlow", "PyTorch"] },
+        { label: "金融", items: ["万得", "东方财富 Choice", "同花顺 iFind", "PitchBook"] },
       ],
     },
   },
