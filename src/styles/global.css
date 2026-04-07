@@ -691,6 +691,38 @@
   }
 }
 
+/* ── Project Deck: horizontal fanned layout ── */
+.project-deck {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: -1rem;
+  padding: 2rem 1rem 3rem;
+  perspective: 800px;
+}
+.project-deck > * {
+  flex: 0 0 auto;
+  width: min(280px, 75vw);
+  margin: 0 -0.5rem;
+  transform-origin: bottom center;
+}
+
+/* Mobile: stack vertically */
+@media (max-width: 768px) {
+  .project-deck {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 0 2rem;
+    perspective: none;
+  }
+  .project-deck > * {
+    width: 100%;
+    max-width: 24rem;
+    margin: 0;
+  }
+}
+
 /* ── Project Modal ── */
 .modal-backdrop {
   position: fixed;

@@ -9,7 +9,6 @@ interface Props {
 }
 
 const SPRING = { type: "spring" as const, stiffness: 260, damping: 28, mass: 0.8 };
-const EXIT = { duration: 0.2, ease: [0.32, 0, 0.67, 0] as const };
 
 function getModalInitial(rect: DOMRect | null) {
   if (!rect) return { opacity: 0, scale: 0.9, y: 40 };
@@ -34,22 +33,25 @@ function usePrefersReducedMotion() {
 export default function ProjectShowcase({ projects }: Props) {
   const [selected, setSelected] = useState<Project | null>(null);
   const [originRect, setOriginRect] = useState<DOMRect | null>(null);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const reducedMotion = usePrefersReducedMotion();
 
-  // Open modal
   const openModal = useCallback((project: Project, rect: DOMRect, el: HTMLElement) => {
     triggerRef.current = el;
     setOriginRect(rect);
     setSelected(project);
   }, []);
 
-  // Close modal
   const closeModal = useCallback(() => {
     setSelected(null);
     setOriginRect(null);
     requestAnimationFrame(() => triggerRef.current?.focus());
+  }, []);
+
+  const handleHover = useCallback((index: number | null) => {
+    setHoveredIndex(index);
   }, []);
 
   // Scroll lock
@@ -111,41 +113,45 @@ export default function ProjectShowcase({ projects }: Props) {
     return () => modal.removeEventListener("keydown", handleTab);
   }, [selected]);
 
-  const initial = reducedMotion
-    ? { opacity: 0 }
-    : getModalInitial(originRect);
-  const animate = reducedMotion
-    ? { opacity: 1 }
-    : { opacity: 1, scale: 1, x: 0, y: 0 };
-  const exit = reducedMotion
-    ? { opacity: 0 }
-    : { opacity: 0, scale: 0.92, y: 30 };
-  const transition = reducedMotion
-    ? { duration: 0.15 }
-    : SPRING;
+  const initial = reducedMotion ? { opacity: 0 } : getModalInitial(originRect);
+  const animate = reducedMotion ? { opacity: 1 } : { opacity: 1, scale: 1, x: 0, y: 0 };
+  const exit = reducedMotion ? { opacity: 0 } : { opacity: 0, scale: 0.92, y: 30 };
+  const transition = reducedMotion ? { duration: 0.15 } : SPRING;
 
   return (
     <div>
-      {/* Grid of project cards */}
-      <div
-        className="grid grid-cols-1 md:grid-cols-2 gap-5 mx-auto"
-        style={{ maxWidth: "48rem" }}
-      >
+      {/* Horizontal deck — fanned cards with wave hover effect */}
+      <div className="project-deck mx-auto" style={{ maxWidth: "56rem" }}>
         {projects.map((project, i) => (
           <ProjectCard
             key={project.slug}
             project={project}
             index={i}
+            hoveredIndex={hoveredIndex}
+            totalCards={projects.length}
             onClick={openModal}
+            onHover={handleHover}
           />
         ))}
       </div>
 
-      {/* Modal — sibling to grid, NOT inside any card (avoids transform containing block) */}
+      {/* Hint */}
+      <p
+        className="text-center mt-4"
+        style={{
+          fontSize: "0.75rem",
+          color: "var(--color-text-tertiary)",
+          fontStyle: "italic",
+          opacity: 0.7,
+        }}
+      >
+        Click a card to view details
+      </p>
+
+      {/* Modal — sibling to deck, NOT inside any card */}
       <AnimatePresence mode="wait">
         {selected && (
           <>
-            {/* Backdrop */}
             <motion.div
               className="modal-backdrop"
               initial={{ opacity: 0 }}
@@ -155,8 +161,6 @@ export default function ProjectShowcase({ projects }: Props) {
               onClick={closeModal}
               aria-hidden="true"
             />
-
-            {/* Centering wrapper — no transform here, keeps position:fixed safe */}
             <div
               style={{
                 position: "fixed",
