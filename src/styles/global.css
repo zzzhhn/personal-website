@@ -89,10 +89,10 @@
 /* ── Light mode overrides ── */
 @layer base {
   [data-theme="light"] {
-    --color-surface-primary: oklch(0.975 0.002 265);
-    --color-surface-secondary: oklch(0.945 0.004 265);
-    --color-surface-glass: oklch(0.98 0.003 265 / 0.50);
-    --color-surface-elevated: oklch(0.99 0.002 265 / 0.55);
+    --color-surface-primary: oklch(0.95 0.008 75);
+    --color-surface-secondary: oklch(0.92 0.010 75);
+    --color-surface-glass: oklch(0.96 0.006 75 / 0.50);
+    --color-surface-elevated: oklch(0.97 0.005 75 / 0.55);
     --color-border-subtle: oklch(0.82 0.01 265 / 0.3);
     --color-border-glass: oklch(0.7 0.01 265 / 0.12);
     --color-border-highlight: oklch(1 0 0 / 0.5);
