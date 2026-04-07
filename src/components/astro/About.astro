@@ -191,6 +191,7 @@ import SectionHeading from "./SectionHeading.astro";
 
   var pending = false;
   var mouseX = -9999;
+  var mouseY = -9999;
   var isInside = false;
 
   function update() {
@@ -204,17 +205,22 @@ import SectionHeading from "./SectionHeading.astro";
       var el = spans[i];
       if (!isInside) { el.style.transform = ""; continue; }
       var rect = el.getBoundingClientRect();
-      if (rect.width === 0) continue;
+      if (rect.width === 0) { el.style.transform = ""; continue; }
+      /* Y check: only affect the line the cursor is on */
+      var cy = rect.top + rect.height / 2;
+      var dy = Math.abs(mouseY - cy);
+      if (dy > rect.height * 0.6) { el.style.transform = ""; continue; }
+      /* X distance — tight Gaussian: peak 1.15, sigma ~35px */
       var cx = rect.left + rect.width / 2;
-      var dist = Math.abs(mouseX - cx);
-      /* Gaussian falloff: peak 1.18 (18% scale), sigma ~55px */
-      var scale = 1 + 0.18 * Math.exp(-(dist * dist) / 6050);
-      el.style.transform = scale > 1.01 ? "scale(" + scale.toFixed(3) + ")" : "";
+      var dx = Math.abs(mouseX - cx);
+      var scale = 1 + 0.15 * Math.exp(-(dx * dx) / 2450);
+      el.style.transform = scale > 1.008 ? "scale(" + scale.toFixed(3) + ")" : "";
     }
   }
 
   container.addEventListener("mousemove", function (e) {
     mouseX = e.clientX;
+    mouseY = e.clientY;
     isInside = true;
     if (!pending) { pending = true; requestAnimationFrame(update); }
   });
