@@ -137,6 +137,11 @@ import SectionHeading from "./SectionHeading.astro";
 
 /* ── Bio kinetic: Gaussian scale (matches Hero name effect) ── */
 .bio-kinetic { position: relative; }
+/* Word wrapper — keeps characters together, prevents mid-word line breaks */
+.bw-word {
+  display: inline-flex;
+  white-space: nowrap;
+}
 .bw {
   display: inline-block;
   transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -173,16 +178,23 @@ import SectionHeading from "./SectionHeading.astro";
         p.appendChild(s);
       }
     } else {
-      /* Per-character split (like Hero) — spaces stay as text nodes */
-      for (var j = 0; j < raw.length; j++) {
-        var ch = raw[j];
-        if (/\s/.test(ch)) {
-          p.appendChild(document.createTextNode(ch));
+      /* Word-level containers (no mid-word line breaks) with per-char inner spans */
+      var words = raw.split(/(\s+)/);
+      for (var j = 0; j < words.length; j++) {
+        var word = words[j];
+        if (!word) continue;
+        if (/^\s+$/.test(word)) {
+          p.appendChild(document.createTextNode(word));
         } else {
-          var c = document.createElement("span");
-          c.className = "bw";
-          c.textContent = ch;
-          p.appendChild(c);
+          var wSpan = document.createElement("span");
+          wSpan.className = "bw-word";
+          for (var k = 0; k < word.length; k++) {
+            var c = document.createElement("span");
+            c.className = "bw";
+            c.textContent = word[k];
+            wSpan.appendChild(c);
+          }
+          p.appendChild(wSpan);
         }
       }
     }
