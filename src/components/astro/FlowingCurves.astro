@@ -28,76 +28,111 @@
 
 <script is:inline>
 (function () {
-  const svg = document.getElementById("fc-svg");
+  var svg = document.getElementById("fc-svg");
   if (!svg) return;
 
-  /* ── curve config ─────────────────────────────────────────── */
-  // Each curve: opacity, strokeWidth, and x-positions (0-1) at evenly-spaced vertical anchors
-  const CURVES = [
-    { opacity: 0.22, width: 3.5, xs: [0.12, 0.62, 0.18, 0.68, 0.15, 0.58, 0.22] },
-    { opacity: 0.13, width: 2.5, xs: [0.52, 0.18, 0.58, 0.12, 0.55, 0.22, 0.48] },
-    { opacity: 0.07, width: 2,   xs: [0.85, 0.38, 0.78, 0.42, 0.82, 0.35, 0.80] },
+  /* ── per-curve config ────────────────────────────────────── */
+  // colorVar: CSS custom property name (different per curve for differentiation)
+  // dark/light opacity tuned separately so all 3 curves are clearly visible
+  var CURVES = [
+    { colorVar: "--color-accent",      darkOp: 0.25, lightOp: 0.18, width: 3.5 },
+    { colorVar: "--color-accent-teal", darkOp: 0.20, lightOp: 0.16, width: 2.8 },
+    { colorVar: "--color-accent-warm", darkOp: 0.18, lightOp: 0.14, width: 2.2 },
   ];
 
-  let paths = [];
-  let lengths = [];
-  let containerH = 0;
+  // Number of anchor points per curve (controls how many S-bends)
+  var ANCHORS = 7;
+
+  var paths = [];
+  var lengths = [];
+  var containerH = 0;
 
   /* ── helpers ──────────────────────────────────────────────── */
-  function accentColor() {
-    return getComputedStyle(document.documentElement)
-      .getPropertyValue("--color-accent")
-      .trim() || "#64ffda";
+  function cssVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
   }
+
+  function isLight() {
+    return document.documentElement.getAttribute("data-theme") === "light";
+  }
+
+  /** Seeded-ish random: generate a random x-position array for one curve.
+   *  band = [lo, hi] constrains where this curve wanders (0-1 range).
+   *  Each anchor is randomised within the band, ensuring smooth variety. */
+  function randomAnchors(band, n) {
+    var lo = band[0], hi = band[1];
+    var xs = [];
+    for (var i = 0; i < n; i++) {
+      // Alternate between left-leaning and right-leaning within band
+      var center = i % 2 === 0 ? lo + (hi - lo) * 0.25 : lo + (hi - lo) * 0.75;
+      var jitter = (hi - lo) * 0.25;
+      var x = center + (Math.random() * 2 - 1) * jitter;
+      // Clamp to band
+      xs.push(Math.max(lo, Math.min(hi, x)));
+    }
+    return xs;
+  }
+
+  // Each curve wanders within a horizontal band to avoid overlap
+  var BANDS = [
+    [0.05, 0.40],  // curve 1: left region
+    [0.30, 0.70],  // curve 2: center region (overlaps slightly for organic feel)
+    [0.60, 0.95],  // curve 3: right region
+  ];
 
   /** Build a smooth cubic-Bézier "d" attribute from x-position anchors */
   function buildPath(xs, w, h) {
-    const n = xs.length;
-    const segH = h / (n - 1);
-    let d = `M ${xs[0] * w} 0`;
-    for (let i = 1; i < n; i++) {
-      const x0 = xs[i - 1] * w;
-      const y0 = (i - 1) * segH;
-      const x1 = xs[i] * w;
-      const y1 = i * segH;
-      // Control points at 40%/60% of vertical span for smoother S-curves
-      const cy0 = y0 + segH * 0.4;
-      const cy1 = y0 + segH * 0.6;
-      d += ` C ${x0} ${cy0}, ${x1} ${cy1}, ${x1} ${y1}`;
+    var n = xs.length;
+    var segH = h / (n - 1);
+    var d = "M " + (xs[0] * w) + " 0";
+    for (var i = 1; i < n; i++) {
+      var x0 = xs[i - 1] * w;
+      var y0 = (i - 1) * segH;
+      var x1 = xs[i] * w;
+      var y1 = i * segH;
+      // Control points at 35%/65% for a fluid S-curve
+      var cy0 = y0 + segH * 0.35;
+      var cy1 = y0 + segH * 0.65;
+      d += " C " + x0 + " " + cy0 + ", " + x1 + " " + cy1 + ", " + x1 + " " + y1;
     }
     return d;
   }
 
-  /* ── setup ───────────────────────────────────────────────── */
+  /* ── setup — called on load & resize ─────────────────────── */
   function setup() {
-    const container = document.getElementById("flowing-curves");
+    var container = document.getElementById("flowing-curves");
     if (!container) return;
-    containerH = container.parentElement?.scrollHeight ?? 0;
+    containerH = container.parentElement ? container.parentElement.scrollHeight : 0;
     if (containerH <= 0) return;
 
-    const w = container.offsetWidth;
-    svg.setAttribute("viewBox", `0 0 ${w} ${containerH}`);
+    var w = container.offsetWidth;
+    svg.setAttribute("viewBox", "0 0 " + w + " " + containerH);
     svg.innerHTML = "";
 
-    const color = accentColor();
+    var light = isLight();
     paths = [];
     lengths = [];
 
-    CURVES.forEach(function (cfg) {
-      const d = buildPath(cfg.xs, w, containerH);
-      const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    CURVES.forEach(function (cfg, i) {
+      // Random path each time setup is called (page load / resize)
+      var xs = randomAnchors(BANDS[i], ANCHORS);
+      var d = buildPath(xs, w, containerH);
+      var color = cssVar(cfg.colorVar) || "#64ffda";
+      var opacity = light ? cfg.lightOp : cfg.darkOp;
+
+      var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
       p.setAttribute("d", d);
       p.setAttribute("stroke", color);
       p.setAttribute("stroke-width", String(cfg.width));
       p.setAttribute("fill", "none");
-      p.setAttribute("opacity", String(cfg.opacity));
+      p.setAttribute("opacity", String(opacity));
       p.setAttribute("stroke-linecap", "round");
       p.setAttribute("stroke-linejoin", "round");
       svg.appendChild(p);
 
       var len = p.getTotalLength();
       p.style.strokeDasharray = String(len);
-      p.style.strokeDashoffset = String(len); // fully hidden
+      p.style.strokeDashoffset = String(len);
       paths.push(p);
       lengths.push(len);
     });
@@ -105,26 +140,22 @@
     tick();
   }
 
-  /* ── scroll-driven draw ─────────────────────────────────── */
+  /* ── scroll-driven progressive draw ─────────────────────── */
   function tick() {
     var scrollY = window.scrollY;
     var viewH = window.innerHeight;
 
-    // The flowing-curves container is inside the post-Hero wrapper.
-    // scrollStart = when the wrapper enters the viewport (Hero scrolls away)
     var container = document.getElementById("flowing-curves");
     if (!container || !container.parentElement) return;
     var wrapTop = container.parentElement.getBoundingClientRect().top + scrollY;
-    var scrollStart = wrapTop - viewH * 0.8; // begin just before wrapper enters view
-    var scrollEnd = wrapTop + containerH - viewH; // fully drawn at last section
-
+    var scrollStart = wrapTop - viewH * 0.8;
+    var scrollEnd = wrapTop + containerH - viewH;
     var range = scrollEnd - scrollStart;
     if (range <= 0) return;
 
     var progress = Math.max(0, Math.min(1, (scrollY - scrollStart) / range));
 
     for (var i = 0; i < paths.length; i++) {
-      // Slight stagger: each successive curve trails behind
       var stagger = i * 0.04;
       var p = Math.max(0, Math.min(1, (progress - stagger) / (1 - stagger)));
       paths[i].style.strokeDashoffset = String(lengths[i] * (1 - p));
@@ -133,42 +164,32 @@
 
   /* ── event wiring ───────────────────────────────────────── */
   var ticking = false;
-  window.addEventListener(
-    "scroll",
-    function () {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(function () {
-          tick();
-          ticking = false;
-        });
-      }
-    },
-    { passive: true }
-  );
+  window.addEventListener("scroll", function () {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(function () { tick(); ticking = false; });
+    }
+  }, { passive: true });
 
   var resizeTimer;
-  window.addEventListener(
-    "resize",
-    function () {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(setup, 200);
-    },
-    { passive: true }
-  );
+  window.addEventListener("resize", function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(setup, 200);
+  }, { passive: true });
 
-  // Re-color on theme toggle
+  // Theme toggle → update colors AND opacities
   new MutationObserver(function () {
-    var c = accentColor();
-    paths.forEach(function (p) {
-      p.setAttribute("stroke", c);
+    var light = isLight();
+    CURVES.forEach(function (cfg, i) {
+      if (!paths[i]) return;
+      paths[i].setAttribute("stroke", cssVar(cfg.colorVar) || "#64ffda");
+      paths[i].setAttribute("opacity", String(light ? cfg.lightOp : cfg.darkOp));
     });
   }).observe(document.documentElement, {
     attributes: true,
     attributeFilter: ["data-theme"],
   });
 
-  // Initial setup — wait for full layout
   if (document.readyState === "complete") {
     setup();
   } else {
