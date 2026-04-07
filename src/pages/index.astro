@@ -6,7 +6,7 @@ import Education from "../components/astro/Education.astro";
 import Campus from "../components/astro/Campus.astro";
 import Contact from "../components/astro/Contact.astro";
 import ExperienceTimeline from "../components/react/ExperienceTimeline";
-import ProjectDeck from "../components/react/ProjectDeck";
+import ProjectShowcase from "../components/react/ProjectShowcase";
 import { getCollection } from "astro:content";
 import SectionHeading from "../components/astro/SectionHeading.astro";
 import { SITE } from "../lib/constants";
@@ -47,6 +47,7 @@ const projects = rawProjects
     tagline: p.data.tagline,
     description: p.data.description,
     status: p.data.status,
+    featured: p.data.featured,
     techStack: p.data.techStack,
     highlights: p.data.highlights ?? [],
     links: p.data.links,
@@ -70,7 +71,7 @@ const projects = rawProjects
   <section id="projects" class="section-glow px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
     <div class="mx-auto" style="max-width: var(--max-width-content);">
       <SectionHeading variant="numbered" number="04" titleEn={UI.sections.projects.en} titleZh={UI.sections.projects.zh} />
-      <ProjectDeck client:visible projects={projects} />
+      <ProjectShowcase client:visible projects={projects} />
     </div>
   </section>
 

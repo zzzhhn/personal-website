@@ -1,0 +1,39 @@
+---
+title: "Interactive Learning Platforms"
+slug: "interactive-learning-platforms"
+tagline: "University courses, reimagined as interactive single-file web apps"
+description: "A suite of 4 HTML-based learning platforms covering finance, mathematics, and actuarial science — 55,000+ lines of zero-dependency interactive content with quizzes, knowledge graphs, and real-time visualizations."
+date: 2025-09-01
+status: "in-progress"
+featured: true
+techStack: ["JavaScript", "HTML/CSS", "MathJax", "Chart.js", "Plotly"]
+highlights:
+  - "4 courses × 55,000+ lines: FIN4210, FIN3080, MAT2002, ACT4253"
+  - "Zero-dependency single-file architecture — works offline, instant deploy"
+  - "Interactive features: slope field simulator, knowledge graph, mock exams, case studies"
+  - "Bilingual (EN/ZH) with dark/light theme support"
+links:
+  github: "https://github.com/zzzhhn/interactive-learning-platforms"
+  live: "https://zzzhhn.github.io/interactive-learning-platforms/FIN4210/"
+order: 2
+---
+
+## Background
+
+Traditional university course materials are static — dense textbooks and slide decks that don't encourage active learning. This project reimagines course content as interactive single-file web applications where students can test, visualize, and explore concepts in real time.
+
+## Platforms
+
+| Course | Subject | Key Features |
+|--------|---------|-------------|
+| **FIN4210** | Corporate Finance | Knowledge graph, tiered quizzes, mock exams, TVM/NPV calculators, case studies |
+| **FIN3080** | Investment Analysis | Story-driven learning, radar chart comparisons, company screener, decision trees |
+| **MAT2002** | Differential Equations | Slope field simulator, real-time function graphing, step-by-step ODE solver |
+| **ACT4253** | Business Ethics | Difficulty-tagged quizzes, star bookmarks, ethical framework reference |
+
+## Technical Highlights
+
+- **Single-file architecture**: Each platform is one self-contained HTML file (up to 22,000+ lines). No build step, no bundler — open in any browser.
+- **Zero runtime dependencies**: Libraries loaded via CDN with graceful fallback. Works offline after first load.
+- **Rich interactivity**: MathJax for LaTeX, Plotly/Chart.js for data visualization, custom quiz engines with progress tracking.
+- **Bilingual**: Full English/Chinese toggle across finance platforms.
