@@ -621,54 +621,65 @@
 
 /* ── Workflow diagram ── */
 .wf-container {
-  margin-top: 0.875rem;
-  padding-right: 2rem; /* space for feedback loop paths */
+  position: relative;
+  margin-top: 1rem;
+  padding-right: 2.5rem; /* space for feedback-loop paths */
+  overflow: visible;
 }
 .wf-node {
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 0.35rem 0.75rem;
-  border-radius: var(--radius-sm);
-  font-size: 0.68rem;
-  font-weight: 500;
+  padding: 0.45rem 0.9rem;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
   color: var(--color-text-primary);
   white-space: nowrap;
-  /* Glass-subtle material */
-  background: oklch(0.96 0.005 240 / 0.35);
-  border: 1px solid oklch(0.9 0.02 220 / 0.2);
+  /* Prominent glass — closer to the Mermaid "boxed" look */
+  background: oklch(0.97 0.003 240 / 0.45);
+  border: 1.5px solid var(--color-accent-dim, oklch(0.7 0.06 230 / 0.3));
   box-shadow:
-    0 2px 8px oklch(0 0 0 / 0.06),
-    inset 0 1px 0 0 oklch(1 0 0 / 0.08);
-  backdrop-filter: blur(10px) saturate(120%);
-  -webkit-backdrop-filter: blur(10px) saturate(120%);
+    0 1px 4px oklch(0 0 0 / 0.06),
+    inset 0 1px 0 oklch(1 0 0 / 0.1);
+  backdrop-filter: blur(12px) saturate(130%);
+  -webkit-backdrop-filter: blur(12px) saturate(130%);
 }
 [data-theme="dark"] .wf-node {
-  background: oklch(0.2 0.01 240 / 0.3);
-  border-color: oklch(0.5 0.02 220 / 0.15);
+  background: oklch(0.18 0.01 240 / 0.45);
+  border-color: var(--color-accent-dim, oklch(0.5 0.08 230 / 0.35));
   box-shadow:
-    0 2px 8px oklch(0 0 0 / 0.15),
-    inset 0 1px 0 0 oklch(1 0 0 / 0.04);
+    0 1px 6px oklch(0 0 0 / 0.2),
+    inset 0 1px 0 oklch(1 0 0 / 0.05);
 }
+/* Decision diamond */
 .wf-node--decision {
-  border-radius: 4px;
+  width: 56px;
+  height: 56px;
+  border-radius: 5px;
   transform: rotate(45deg);
   padding: 0;
-  font-size: 0.58rem;
+  font-size: 0.56rem;
+  font-weight: 700;
 }
 .wf-node--decision .wf-node-label {
   transform: rotate(-45deg);
   display: block;
-  line-height: 1.2;
+  line-height: 1.15;
 }
+/* Edge labels */
 .wf-edge-label {
-  font-size: 0.56rem;
+  font-size: 0.58rem;
+  font-weight: 500;
   fill: var(--color-text-tertiary);
   paint-order: stroke;
   stroke: var(--color-bg-primary);
-  stroke-width: 3px;
+  stroke-width: 4px;
+  stroke-linejoin: round;
 }
+/* Hint text above timeline */
 .tl-hint {
   text-align: center;
   font-size: 0.78rem;
@@ -677,7 +688,8 @@
   letter-spacing: 0.02em;
 }
 @media (prefers-reduced-motion: reduce) {
-  .wf-node { animation: none !important; }
+  .wf-node,
+  .wf-svg path { animation: none !important; transition: none !important; }
 }
 
 /* Mobile: single column, no alternating */

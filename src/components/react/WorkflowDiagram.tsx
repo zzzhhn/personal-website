@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useMemo } from "react";
+import { useRef, useState, useEffect, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 import type { WorkflowData, WFNode, WFEdge } from "../../lib/i18n";
 
@@ -7,107 +7,17 @@ interface Props {
   index: number;
 }
 
-const NODE_H = 32;
-const DECISION_SIZE = 48;
-const ROW_GAP = 20;
-const ROW_HEIGHT = NODE_H + ROW_GAP;
-const DECISION_ROW_HEIGHT = DECISION_SIZE + ROW_GAP;
-
-function getRowY(row: number, nodes: WFNode[]): number {
-  let y = 0;
-  for (let r = 0; r < row; r++) {
-    const hasDecision = nodes.some((n) => n.row === r && n.type === "decision");
-    y += hasDecision ? DECISION_ROW_HEIGHT : ROW_HEIGHT;
-  }
-  return y;
-}
-
-function getTotalHeight(rows: number, nodes: WFNode[]): number {
-  let h = 0;
-  for (let r = 0; r < rows; r++) {
-    const hasDecision = nodes.some((n) => n.row === r && n.type === "decision");
-    h += hasDecision ? DECISION_ROW_HEIGHT : ROW_HEIGHT;
-  }
-  return h - ROW_GAP + (nodes.some((n) => n.row === rows - 1 && n.type === "decision") ? DECISION_SIZE : NODE_H);
-}
-
-function nodeCenter(
-  node: WFNode,
-  cellW: number,
-  nodes: WFNode[],
-): { x: number; y: number } {
-  const x = node.col * cellW + cellW / 2;
-  const rowY = getRowY(node.row, nodes);
-  const h = node.type === "decision" ? DECISION_SIZE : NODE_H;
-  const y = rowY + h / 2;
-  return { x, y };
-}
-
-function buildEdgePath(
-  edge: WFEdge,
-  nodeMap: Map<string, WFNode>,
-  cellW: number,
-  totalW: number,
-  allNodes: WFNode[],
-): string {
-  const fromNode = nodeMap.get(edge.from)!;
-  const toNode = nodeMap.get(edge.to)!;
-  const from = nodeCenter(fromNode, cellW, allNodes);
-  const to = nodeCenter(toNode, cellW, allNodes);
-  const fromH = fromNode.type === "decision" ? DECISION_SIZE / 2 : NODE_H / 2;
-  const toH = toNode.type === "decision" ? DECISION_SIZE / 2 : NODE_H / 2;
-
-  // Feedback loop (going upward) — route along the right side
-  if (edge.dashed && toNode.row < fromNode.row) {
-    const offsetX = totalW + 12;
-    const startY = from.y;
-    const endY = to.y;
-    return `M ${from.x + 50} ${startY} L ${offsetX} ${startY} L ${offsetX} ${endY} L ${to.x + 50} ${endY}`;
-  }
-
-  // Same column — straight vertical line
-  if (fromNode.col === toNode.col) {
-    return `M ${from.x} ${from.y + fromH} L ${to.x} ${to.y - toH}`;
-  }
-
-  // Different columns — L-shaped step path
-  const midY = from.y + fromH + ROW_GAP / 2;
-  return `M ${from.x} ${from.y + fromH} L ${from.x} ${midY} L ${to.x} ${midY} L ${to.x} ${to.y - toH}`;
-}
-
-function edgeLabelPos(
-  edge: WFEdge,
-  nodeMap: Map<string, WFNode>,
-  cellW: number,
-  totalW: number,
-  allNodes: WFNode[],
-): { x: number; y: number } {
-  const fromNode = nodeMap.get(edge.from)!;
-  const toNode = nodeMap.get(edge.to)!;
-  const from = nodeCenter(fromNode, cellW, allNodes);
-  const to = nodeCenter(toNode, cellW, allNodes);
-
-  if (edge.dashed && toNode.row < fromNode.row) {
-    const offsetX = totalW + 12;
-    return { x: offsetX + 4, y: (from.y + to.y) / 2 };
-  }
-  return { x: (from.x + to.x) / 2, y: (from.y + to.y) / 2 };
+interface EdgePath {
+  d: string;
+  edge: WFEdge;
+  labelPos?: { x: number; y: number };
 }
 
 export default function WorkflowDiagram({ workflow, index }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [containerW, setContainerW] = useState(0);
-
-  useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver((entries) => {
-      const w = entries[0]?.contentRect.width ?? 0;
-      if (w > 0) setContainerW(w);
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, []);
+  const nodeRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const [edgePaths, setEdgePaths] = useState<EdgePath[]>([]);
+  const [svgH, setSvgH] = useState(0);
 
   const nodeMap = useMemo(() => {
     const m = new Map<string, WFNode>();
@@ -115,10 +25,97 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
     return m;
   }, [workflow]);
 
-  const cellW = containerW / workflow.cols;
-  const totalH = getTotalHeight(workflow.rows, workflow.nodes);
-  // Extra width for feedback loop paths routed along the right side
-  const svgW = containerW + 40;
+  const measureAndDraw = useCallback(() => {
+    const container = containerRef.current;
+    if (!container || nodeRefs.current.size < workflow.nodes.length) return;
+
+    // offsetLeft/offsetTop are layout-based — unaffected by Framer Motion transforms
+    const positions = new Map<
+      string,
+      { cx: number; cy: number; l: number; r: number; t: number; b: number }
+    >();
+
+    nodeRefs.current.forEach((el, id) => {
+      const l = el.offsetLeft;
+      const t = el.offsetTop;
+      const w = el.offsetWidth;
+      const h = el.offsetHeight;
+      positions.set(id, { cx: l + w / 2, cy: t + h / 2, l, r: l + w, t, b: t + h });
+    });
+
+    let maxRight = 0;
+    positions.forEach((p) => {
+      if (p.r > maxRight) maxRight = p.r;
+    });
+
+    const paths: EdgePath[] = [];
+
+    for (const edge of workflow.edges) {
+      const fp = positions.get(edge.from);
+      const tp = positions.get(edge.to);
+      if (!fp || !tp) continue;
+
+      const fromNode = nodeMap.get(edge.from)!;
+      const toNode = nodeMap.get(edge.to)!;
+
+      let d: string;
+      let labelPos: { x: number; y: number } | undefined;
+
+      // Feedback loop — route along the right side
+      if (edge.dashed && toNode.row < fromNode.row) {
+        const loopX = maxRight + 24;
+        d = [
+          `M ${fp.r} ${fp.cy}`,
+          `L ${loopX} ${fp.cy}`,
+          `L ${loopX} ${tp.cy}`,
+          `L ${tp.r} ${tp.cy}`,
+        ].join(" ");
+        labelPos = { x: loopX + 5, y: (fp.cy + tp.cy) / 2 };
+      }
+      // Same column — straight vertical
+      else if (Math.abs(fp.cx - tp.cx) < 8) {
+        d = `M ${fp.cx} ${fp.b} L ${tp.cx} ${tp.t}`;
+        if (edge.label) {
+          labelPos = { x: fp.cx + 20, y: (fp.b + tp.t) / 2 };
+        }
+      }
+      // Different columns — step path (vertical → horizontal → vertical)
+      else {
+        const midY = (fp.b + tp.t) / 2;
+        d = [
+          `M ${fp.cx} ${fp.b}`,
+          `L ${fp.cx} ${midY}`,
+          `L ${tp.cx} ${midY}`,
+          `L ${tp.cx} ${tp.t}`,
+        ].join(" ");
+        if (edge.label) {
+          labelPos = { x: (fp.cx + tp.cx) / 2, y: midY - 8 };
+        }
+      }
+
+      paths.push({ d, edge, labelPos });
+    }
+
+    setEdgePaths(paths);
+    setSvgH(container.scrollHeight);
+  }, [workflow, nodeMap]);
+
+  // Measure after grid layout settles + on resize
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    // rAF ensures grid layout is computed before measuring
+    const raf = requestAnimationFrame(() => measureAndDraw());
+
+    const ro = new ResizeObserver(() => measureAndDraw());
+    ro.observe(container);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+    };
+  }, [measureAndDraw]);
 
   return (
     <motion.div
@@ -127,37 +124,37 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
-      style={{ position: "relative", minHeight: totalH }}
+      transition={{ duration: 0.25 }}
     >
-      {/* Nodes */}
-      {containerW > 0 &&
-        workflow.nodes.map((node) => {
-          const cx = node.col * cellW + cellW / 2;
-          const ry = getRowY(node.row, workflow.nodes);
+      {/* CSS Grid places nodes; SVG overlay draws edges */}
+      <div
+        className="wf-grid"
+        style={{
+          display: "grid",
+          gridTemplateColumns: `repeat(${workflow.cols}, 1fr)`,
+          gridTemplateRows: `repeat(${workflow.rows}, auto)`,
+          gap: "28px 10px",
+          justifyItems: "center",
+          alignItems: "center",
+        }}
+      >
+        {workflow.nodes.map((node) => {
           const isDecision = node.type === "decision";
-          const w = isDecision ? DECISION_SIZE : undefined;
-          const h = isDecision ? DECISION_SIZE : NODE_H;
-          const delay = node.row * 0.12 + node.col * 0.04;
+          const delay = node.row * 0.09 + node.col * 0.03;
 
           return (
             <motion.div
               key={node.id}
-              className={`wf-node ${isDecision ? "wf-node--decision" : ""}`}
-              initial={{ opacity: 0, y: 8, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
+              ref={(el: HTMLDivElement | null) => {
+                if (el) nodeRefs.current.set(node.id, el);
+              }}
+              className={`wf-node${isDecision ? " wf-node--decision" : ""}`}
+              initial={{ opacity: 0, scale: 0.92 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ delay, duration: 0.3, ease: "easeOut" }}
               style={{
-                position: "absolute",
-                left: isDecision ? cx - DECISION_SIZE / 2 : undefined,
-                top: ry,
-                width: w,
-                height: h,
-                // For process nodes: center horizontally in cell, auto width
-                ...(!isDecision && {
-                  left: cx,
-                  transform: "translateX(-50%)",
-                }),
+                gridColumn: node.col + 1,
+                gridRow: node.row + 1,
               }}
             >
               <span data-lang="en" className="wf-node-label">
@@ -169,108 +166,83 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
             </motion.div>
           );
         })}
+      </div>
 
-      {/* SVG edges */}
-      {containerW > 0 && (
+      {/* SVG edge overlay */}
+      {edgePaths.length > 0 && (
         <svg
           aria-hidden="true"
+          className="wf-svg"
           style={{
             position: "absolute",
-            top: 0,
-            left: 0,
-            width: svgW,
-            height: totalH,
+            inset: 0,
+            width: "100%",
+            height: svgH || "100%",
             pointerEvents: "none",
             overflow: "visible",
           }}
         >
           <defs>
             <marker
-              id={`wf-arrow-${index}`}
-              markerWidth="6"
-              markerHeight="4"
-              refX="5"
-              refY="2"
+              id={`wf-a-${index}`}
+              markerWidth="7"
+              markerHeight="5"
+              refX="6"
+              refY="2.5"
               orient="auto"
             >
-              <path
-                d="M 0 0 L 6 2 L 0 4 Z"
-                fill="var(--color-accent)"
-                opacity="0.5"
-              />
+              <path d="M 0 0 L 7 2.5 L 0 5 Z" fill="var(--color-accent)" opacity="0.6" />
             </marker>
             <marker
-              id={`wf-arrow-dashed-${index}`}
-              markerWidth="6"
-              markerHeight="4"
-              refX="5"
-              refY="2"
+              id={`wf-ad-${index}`}
+              markerWidth="7"
+              markerHeight="5"
+              refX="6"
+              refY="2.5"
               orient="auto"
             >
-              <path
-                d="M 0 0 L 6 2 L 0 4 Z"
-                fill="var(--color-accent)"
-                opacity="0.3"
-              />
+              <path d="M 0 0 L 7 2.5 L 0 5 Z" fill="var(--color-accent)" opacity="0.35" />
             </marker>
           </defs>
-          {workflow.edges.map((edge) => {
-            const toNode = nodeMap.get(edge.to)!;
-            const delay = toNode.row * 0.12 + toNode.col * 0.04;
-            const d = buildEdgePath(
-              edge,
-              nodeMap,
-              cellW,
-              containerW,
-              workflow.nodes,
-            );
-            const markerId = edge.dashed
-              ? `wf-arrow-dashed-${index}`
-              : `wf-arrow-${index}`;
+          {edgePaths.map((ep) => {
+            const toNode = nodeMap.get(ep.edge.to)!;
+            const delay = toNode.row * 0.09 + toNode.col * 0.03;
+            const mid = ep.edge.dashed ? `wf-ad-${index}` : `wf-a-${index}`;
 
             return (
-              <g key={`${edge.from}-${edge.to}`}>
+              <g key={`${ep.edge.from}-${ep.edge.to}`}>
                 <motion.path
-                  d={d}
+                  d={ep.d}
                   fill="none"
                   stroke="var(--color-accent)"
                   strokeWidth="1.5"
-                  strokeOpacity={edge.dashed ? 0.25 : 0.35}
+                  strokeOpacity={ep.edge.dashed ? 0.22 : 0.42}
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeDasharray={edge.dashed ? "4 3" : undefined}
-                  markerEnd={`url(#${markerId})`}
+                  strokeDasharray={ep.edge.dashed ? "5 3" : undefined}
+                  markerEnd={`url(#${mid})`}
                   initial={{ pathLength: 0, opacity: 0 }}
                   animate={{ pathLength: 1, opacity: 1 }}
                   transition={{
-                    pathLength: { delay, duration: 0.4, ease: "easeInOut" },
+                    pathLength: { delay, duration: 0.45, ease: "easeInOut" },
                     opacity: { delay, duration: 0.15 },
                   }}
                 />
-                {edge.label && (() => {
-                  const pos = edgeLabelPos(
-                    edge,
-                    nodeMap,
-                    cellW,
-                    containerW,
-                    workflow.nodes,
-                  );
-                  return (
-                    <motion.text
-                      x={pos.x}
-                      y={pos.y}
-                      className="wf-edge-label"
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: delay + 0.2, duration: 0.2 }}
-                    >
-                      <tspan data-lang="en">{edge.label.en}</tspan>
-                      <tspan data-lang="zh">{edge.label.zh}</tspan>
-                    </motion.text>
-                  );
-                })()}
+                {ep.labelPos && ep.edge.label && (
+                  <motion.text
+                    x={ep.labelPos.x}
+                    y={ep.labelPos.y}
+                    className="wf-edge-label"
+                    textAnchor={ep.edge.dashed ? "start" : "middle"}
+                    dominantBaseline="middle"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: delay + 0.2, duration: 0.2 }}
+                  >
+                    <tspan data-lang="en">{ep.edge.label.en}</tspan>
+                    <tspan data-lang="zh">{ep.edge.label.zh}</tspan>
+                  </motion.text>
+                )}
               </g>
             );
           })}
