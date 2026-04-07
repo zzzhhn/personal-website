@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface AwardCardProps {
@@ -11,6 +11,7 @@ export default function AwardCard({ label, imageSlug, index }: AwardCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
   const [imageExists, setImageExists] = useState(true);
+  const cardRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Load image into canvas → blob URL (prevents right-click save)
@@ -47,17 +48,25 @@ export default function AwardCard({ label, imageSlug, index }: AwardCardProps) {
     e.preventDefault();
   }, []);
 
-  // Responsive: preview below on mobile, right on desktop
+  // Calculate vertical center of card for preview alignment
+  const [cardCenterY, setCardCenterY] = useState(0);
+  useEffect(() => {
+    if (!isHovered || !cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    setCardCenterY(rect.top + rect.height / 2);
+  }, [isHovered]);
+
+  // On mobile, don't show the fixed preview (no hover)
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   return (
     <motion.div
+      ref={cardRef}
       initial={{ opacity: 0, y: 16 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-30px" }}
       transition={{ duration: 0.4, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
       className="card-outline p-4 flex items-center gap-3"
-      style={{ position: "relative" }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -72,56 +81,59 @@ export default function AwardCard({ label, imageSlug, index }: AwardCardProps) {
       {/* Hidden canvas for image protection */}
       <canvas ref={canvasRef} style={{ display: "none" }} />
 
-      {/* Preview panel */}
-      <AnimatePresence>
-        {isHovered && imageExists && (
-          <motion.div
-            initial={{ opacity: 0, x: -12, scale: 0.95 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            exit={{ opacity: 0, x: -12, scale: 0.95 }}
-            transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-            className="award-preview"
-            onContextMenu={handleContextMenu}
-            style={{
-              position: "absolute",
-              ...(isMobile
-                ? { left: 0, top: "calc(100% + 0.5rem)", transform: "none" }
-                : { left: "calc(100% + 1rem)", top: "50%", transform: "translateY(-50%)" }),
-              width: isMobile ? "100%" : "16rem",
-              height: "11rem",
-              borderRadius: "var(--radius-md)",
-              overflow: "hidden",
-              zIndex: 50,
-              pointerEvents: "auto",
-              background: blobUrl
-                ? `url(${blobUrl}) center / cover no-repeat`
-                : "var(--color-surface-secondary)",
-              border: "1px solid var(--color-border-subtle)",
-              boxShadow: "0 8px 32px rgba(0,0,0,0.25)",
-            }}
-          >
-            {/* Placeholder when image not yet loaded or missing */}
-            {!blobUrl && (
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  height: "100%",
-                  gap: "0.5rem",
-                  color: "var(--color-text-tertiary)",
-                }}
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
-                </svg>
-                <span style={{ fontSize: "0.6875rem" }}>Certificate pending</span>
-              </div>
-            )}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Fixed preview panel — right side of viewport */}
+      {!isMobile && (
+        <AnimatePresence>
+          {isHovered && imageExists && (
+            <motion.div
+              initial={{ opacity: 0, x: 20, scale: 0.92 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: 20, scale: 0.92 }}
+              transition={{ duration: 0.3, ease: [0.175, 0.885, 0.32, 1.275] }}
+              onContextMenu={handleContextMenu}
+              style={{
+                position: "fixed",
+                right: "2rem",
+                top: `clamp(6rem, ${cardCenterY}px, calc(100vh - 22rem))`,
+                transform: "translateY(-50%)",
+                width: "20rem",
+                height: "auto",
+                aspectRatio: "4 / 3",
+                borderRadius: "0.75rem",
+                overflow: "hidden",
+                zIndex: 100,
+                pointerEvents: "none",
+                background: blobUrl
+                  ? `url(${blobUrl}) center / contain no-repeat var(--color-surface-secondary)`
+                  : "var(--color-surface-secondary)",
+                border: "1px solid var(--color-border-subtle)",
+                boxShadow: "0 12px 48px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.05)",
+                userSelect: "none",
+                WebkitUserSelect: "none",
+              }}
+            >
+              {!blobUrl && (
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    height: "100%",
+                    gap: "0.5rem",
+                    color: "var(--color-text-tertiary)",
+                  }}
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                  </svg>
+                  <span style={{ fontSize: "0.6875rem" }}>Loading...</span>
+                </div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      )}
     </motion.div>
   );
 }
