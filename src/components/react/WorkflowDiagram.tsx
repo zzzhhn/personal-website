@@ -173,7 +173,7 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
           display: "grid",
           gridTemplateColumns: `repeat(${workflow.cols}, 1fr)`,
           gridTemplateRows: `repeat(${workflow.rows}, auto)`,
-          gap: isHorizontal ? "10px 14px" : "28px 10px",
+          gap: isHorizontal ? "10px 24px" : "28px 10px",
           justifyItems: "center",
           alignItems: "center",
         }}
