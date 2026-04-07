@@ -89,16 +89,16 @@
 /* ── Light mode overrides ── */
 @layer base {
   [data-theme="light"] {
-    --color-surface-primary: oklch(0.95 0.008 75);
-    --color-surface-secondary: oklch(0.92 0.010 75);
-    --color-surface-glass: oklch(0.96 0.006 75 / 0.50);
-    --color-surface-elevated: oklch(0.97 0.005 75 / 0.55);
-    --color-border-subtle: oklch(0.82 0.01 265 / 0.3);
-    --color-border-glass: oklch(0.7 0.01 265 / 0.12);
-    --color-border-highlight: oklch(1 0 0 / 0.5);
-    --color-text-primary: oklch(0.12 0.01 265);
-    --color-text-secondary: oklch(0.42 0.01 265);
-    --color-text-tertiary: oklch(0.6 0.005 265);
+    --color-surface-primary: oklch(0.93 0.010 70);
+    --color-surface-secondary: oklch(0.89 0.012 70);
+    --color-surface-glass: oklch(0.94 0.008 70 / 0.55);
+    --color-surface-elevated: oklch(0.96 0.006 70 / 0.60);
+    --color-border-subtle: oklch(0.76 0.015 70 / 0.30);
+    --color-border-glass: oklch(0.65 0.012 70 / 0.14);
+    --color-border-highlight: oklch(1 0 0 / 0.35);
+    --color-text-primary: oklch(0.14 0.012 50);
+    --color-text-secondary: oklch(0.38 0.015 50);
+    --color-text-tertiary: oklch(0.54 0.008 50);
     --color-accent: oklch(0.48 0.2 255);
     --color-accent-hover: oklch(0.42 0.22 255);
     --color-accent-glow: oklch(0.48 0.2 255 / 0.12);
@@ -114,16 +114,16 @@
     --color-uni-gold: oklch(0.60 0.08 75);
     --color-uni-gold-hover: oklch(0.54 0.10 75);
     --color-uni-gold-glow: oklch(0.60 0.08 75 / 0.08);
-    --color-specular: oklch(1 0 0 / 0.25);
-    --color-specular-strong: oklch(1 0 0 / 0.35);
-    --color-specular-mid: oklch(1 0 0 / 0.05);
-    --color-specular-tail: oklch(1 0 0 / 0.06);
-    --color-glow-ambient: oklch(0.5 0.08 265 / 0.04);
-    --color-shadow-depth: oklch(0.30 0.05 265 / 0.15);
-    --color-shadow-depth-hover: oklch(0.30 0.05 265 / 0.25);
-    --color-inset-highlight: oklch(1 0 0 / 0.30);
-    --color-inset-highlight-hover: oklch(1 0 0 / 0.40);
-    --color-reflection-bottom: oklch(1 0 0 / 0.08);
+    --color-specular: oklch(1 0 0 / 0.18);
+    --color-specular-strong: oklch(1 0 0 / 0.25);
+    --color-specular-mid: oklch(1 0 0 / 0.04);
+    --color-specular-tail: oklch(1 0 0 / 0.04);
+    --color-glow-ambient: oklch(0.45 0.06 60 / 0.05);
+    --color-shadow-depth: oklch(0.25 0.04 50 / 0.20);
+    --color-shadow-depth-hover: oklch(0.25 0.04 50 / 0.32);
+    --color-inset-highlight: oklch(1 0 0 / 0.22);
+    --color-inset-highlight-hover: oklch(1 0 0 / 0.30);
+    --color-reflection-bottom: oklch(1 0 0 / 0.06);
   }
 
   html {
@@ -133,6 +133,29 @@
     scroll-behavior: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Light mode: subtle paper/linen noise texture for studio depth */
+  [data-theme="light"] body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 200px 200px;
+    mix-blend-mode: multiply;
+  }
+  /* Subtle radial vignette — darkens edges for studio depth */
+  [data-theme="light"] body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse at 50% 40%, transparent 50%, oklch(0.35 0.02 50 / 0.06) 100%);
   }
 
   ::selection {
