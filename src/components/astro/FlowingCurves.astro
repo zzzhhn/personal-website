@@ -164,6 +164,22 @@
     resizeTimer = setTimeout(setup, 200);
   }, { passive: true });
 
+  // Content height changes (e.g. expanding cards) → recalculate paths
+  var roTimer;
+  var lastParentH = 0;
+  function observeParentHeight() {
+    var container = document.getElementById("flowing-curves");
+    if (!container || !container.parentElement) return;
+    new ResizeObserver(function () {
+      var newH = container.parentElement.scrollHeight;
+      if (newH !== lastParentH) {
+        lastParentH = newH;
+        clearTimeout(roTimer);
+        roTimer = setTimeout(setup, 150);
+      }
+    }).observe(container.parentElement);
+  }
+
   // Theme toggle → swap to the other color scheme
   new MutationObserver(function () {
     applyColors();
@@ -174,8 +190,9 @@
 
   if (document.readyState === "complete") {
     setup();
+    observeParentHeight();
   } else {
-    window.addEventListener("load", setup);
+    window.addEventListener("load", function () { setup(); observeParentHeight(); });
   }
 })();
 </script>

@@ -536,14 +536,15 @@
   flex-shrink: 0;
 }
 .tl-date-start {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
   letter-spacing: 0.02em;
 }
 .tl-date-end {
-  font-size: 0.6875rem;
-  color: var(--color-text-tertiary);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
 }
 
 .tl-track {
