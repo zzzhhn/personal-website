@@ -21,7 +21,8 @@ order: 1
 
 import EvalVideoDashboard from "../../components/react/EvalVideoDashboard.tsx";
 import EvalAgentDashboard from "../../components/react/EvalAgentDashboard.tsx";
-import MermaidDiagram from "../../components/react/MermaidDiagram.tsx";
+import T2VPipelineChart from "../../components/react/T2VPipelineChart.tsx";
+import AgentPipelineChart from "../../components/react/AgentPipelineChart.tsx";
 
 Evaluating generative AI models is fragmented by default: T2V pipelines, agent test harnesses, and quality judges are built in isolation, making cross-model comparisons brittle and results hard to reproduce. EvalForge replaces that with a single config-driven pipeline that classifies prompts, orchestrates generation at scale, runs standardised metrics, and produces structured reports automatically — across both video generation and conversational agents.
 
@@ -57,38 +58,11 @@ Evaluating generative AI models is fragmented by default: T2V pipelines, agent t
 
 ### T2V Evaluation Track
 
-<MermaidDiagram client:visible chart={`flowchart LR
-    input([Prompt Dataset]):::io --> s1
-
-    s1["Stage 1: Classify\\nLLM taxonomy · hash cache\\n7 prompt categories"] --> s2
-    s2["Stage 2: Generate\\nasync · per-provider semaphore\\nN-run retry · checkpoint"] --> s3
-    s3["Stage 3: Evaluate\\nVBench 1.0 · 16 metrics\\n+ VBench++ I2V dims"] --> s4
-    s4["Stage 4: Analyze\\npercentile normalise\\ncross-model ranking"] --> s5
-    s5["Stage 5: Report\\nJSON · DOCX · HTML"]:::out --> output([Interactive Dashboard]):::io
-
-    providers([Model Providers\\nKling · Veo · Runway · Pika]):::ext --> s2
-    vbench([VBench Evaluator\\noptional GPU server]):::ext --> s3
-
-    classDef io fill:#6366f11a,stroke:#6366f1,color:#a5b4fc
-    classDef ext fill:#10b9811a,stroke:#10b981,color:#6ee7b7
-    classDef out fill:#f59e0b1a,stroke:#f59e0b,color:#fcd34d`} caption="EvalForge T2V track — text-to-video evaluation pipeline" />
+<T2VPipelineChart client:visible />
 
 ### Agent Evaluation Track
 
-<MermaidDiagram client:visible chart={`flowchart LR
-    input([Conversations\\n500 sessions · JSONL]):::io --> s1
-
-    s1["Stage 1: Classify Intent\\n7 categories\\nhybrid rules + LLM"] --> s3
-    s3["Stage 3: LLM Judge\\n5 dimensions\\n5-shot calibration"] --> s4
-    s4["Stage 4: Aggregate\\nturn → session\\n→ intent category"] --> s5
-    s5["Stage 5: Report\\nheatmaps · radar · JSON"]:::out --> output([Intent + Quality Profiles]):::io
-
-    llm([LLM Backend\\nGemma 4 local or\\nOpenAI-compat API]):::ext --> s1
-    llm --> s3
-
-    classDef io fill:#6366f11a,stroke:#6366f1,color:#a5b4fc
-    classDef ext fill:#10b9811a,stroke:#10b981,color:#6ee7b7
-    classDef out fill:#f59e0b1a,stroke:#f59e0b,color:#fcd34d`} caption="EvalForge Agent track — Stage 2 (Generation) is skipped when conversations are pre-collected" />
+<AgentPipelineChart client:visible />
 
 ## Engineering Highlights
 
