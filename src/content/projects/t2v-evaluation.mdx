@@ -11,7 +11,7 @@ techStack: ["Python", "asyncio", "VBench", "Pydantic", "Click", "Next.js"]
 highlights:
   - "Unified 5-stage pipeline: classification → generation → evaluation → analysis → reporting"
   - "Async batch orchestrator with N-run retry, crash recovery, and per-provider concurrency control"
-  - "12 automated video quality metrics via VBench; 4-dimension agent quality assessment via LLM judge"
+  - "12 VBench metrics for video quality; 5-dimension LLM judge for agent assessment"
   - "Config-driven plugin architecture with registries for providers, metrics, and report formats"
 links:
   github: "https://github.com/zzzhhn/evalforge"
@@ -22,43 +22,55 @@ order: 1
 import EvalVideoDashboard from "../../components/react/EvalVideoDashboard.tsx";
 import EvalAgentDashboard from "../../components/react/EvalAgentDashboard.tsx";
 
-## Pipeline Overview
+Evaluating generative AI models is fragmented by default: T2V pipelines, agent test harnesses, and quality judges are built in isolation, making cross-model comparisons brittle and results hard to reproduce. EvalForge replaces that with a single config-driven pipeline that classifies prompts, orchestrates generation at scale, runs standardised metrics, and produces structured reports automatically — across both video generation and conversational agents.
 
-EvalForge unifies generative video and agent evaluation into a single config-driven pipeline. Each stage is a composable plugin — swap providers, metrics, and report formats without touching core logic.
+## Pipeline
 
 <div className="eval-pipeline">
   <div className="eval-stage">
     <div className="eval-stage-num">Stage 1</div>
     <div className="eval-stage-name">Classify</div>
-    <div className="eval-stage-detail">LLM prompt / intent taxonomy</div>
+    <div className="eval-stage-detail">LLM prompt / intent taxonomy with content-hash cache</div>
   </div>
   <div className="eval-stage">
     <div className="eval-stage-num">Stage 2</div>
     <div className="eval-stage-name">Generate</div>
-    <div className="eval-stage-detail">Async batch with retry & checkpoint</div>
+    <div className="eval-stage-detail">Async batch · per-provider semaphore · N-run retry</div>
   </div>
   <div className="eval-stage">
     <div className="eval-stage-num">Stage 3</div>
     <div className="eval-stage-name">Evaluate</div>
-    <div className="eval-stage-detail">VBench metrics / LLM judge</div>
+    <div className="eval-stage-detail">VBench metrics (video) · LLM-as-judge (agent)</div>
   </div>
   <div className="eval-stage">
     <div className="eval-stage-num">Stage 4</div>
     <div className="eval-stage-name">Analyze</div>
-    <div className="eval-stage-detail">Stats, grading & comparison</div>
+    <div className="eval-stage-detail">Statistical grading · baseline comparison · cross-model ranking</div>
   </div>
   <div className="eval-stage">
     <div className="eval-stage-num">Stage 5</div>
     <div className="eval-stage-name">Report</div>
-    <div className="eval-stage-detail">JSON / DOCX / HTML output</div>
+    <div className="eval-stage-detail">JSON / DOCX / HTML with radar charts, heatmaps</div>
   </div>
 </div>
+
+## Engineering Highlights
+
+- **Plugin Registry** — Decorator-driven `Registry[T]` for providers, metrics, and reporters. New integrations register via `@PROVIDER_REGISTRY.register("name")` — no core changes required.
+- **Crash Recovery** — JSON checkpoint persistence with atomic writes (`tempfile` + `os.rename`). Interrupted pipelines resume from the last completed case without re-running prior generations.
+- **Async Orchestration** — `asyncio.Semaphore`-based per-provider concurrency prevents rate-limit cascade failures across parallel API calls. Configurable N-run averaging with exponential-backoff retry.
+- **Dual LLM Backend** — Local open-source models (Gemma 4 via OpenAI-compatible server) and cloud APIs, with automatic fallback. Configured via `base_url` + `api_key` — no code changes to switch backends.
+- **Professional CLI** — Click-based with 7 subcommands: `run`, `generate`, `evaluate`, `classify`, `report`, `validate`, `info`.
 
 <div className="eval-section-divider">
   <h2 className="eval-section-title">Video Evaluation Track</h2>
   <p className="eval-section-desc">
-    T2V and I2V models evaluated across 12 VBench metrics grouped into 7 aggregate dimensions.
-    Select models to compare their quality profiles. Click tabs to inspect per-metric breakdowns.
+    T2V models evaluated across 12 VBench dimensions (raw scores vary widely by metric type —
+    quality metrics like Subject Consistency cluster at 95–99%, while semantic metrics like
+    Spatial Relationship and Dynamic Degree spread broadly, which is expected and documented
+    in the VBench paper). EvalForge computes composite dimension scores by normalising each
+    metric to its observed model distribution, enabling fair cross-dimension comparison.
+    Select models to compare · click tabs to inspect raw per-metric VBench values.
   </p>
 </div>
 
@@ -67,20 +79,12 @@ EvalForge unifies generative video and agent evaluation into a single config-dri
 <div className="eval-section-divider">
   <h2 className="eval-section-title">Agent Evaluation Track</h2>
   <p className="eval-section-desc">
-    Conversational agent quality assessed through intent classification (7 categories) and
-    4-dimension quality scoring via LLM judge with chain-of-thought reasoning.
-    Click an intent slice to drill down.
+    500 conversations from an internal Gemma 4-based conversational assistant evaluated
+    through EvalForge's agent track: intent classification (7 categories) and 5-dimension
+    quality scoring via LLM-as-judge with 5-shot calibration — including a faithfulness
+    dimension to quantify hallucination rate. Click an intent slice to drill down into
+    per-category quality profiles.
   </p>
 </div>
 
 <EvalAgentDashboard client:visible />
-
-<div className="eval-section-divider">
-  <h2 className="eval-section-title">Engineering Highlights</h2>
-</div>
-
-- **Plugin Registry** — Decorator-driven `Registry[T]` pattern for providers, metrics, and reporters. Extend by registering new classes — zero core changes needed.
-- **Dual LLM Backend** — Supports local open-source models (Gemma 4 via OpenAI-compatible server) and cloud APIs, with automatic fallback when local inference is unavailable.
-- **Crash Recovery** — JSON checkpoint persistence with atomic writes (`tmp` + `rename`). Resume interrupted pipelines from the last completed case.
-- **Async Orchestration** — `asyncio.Semaphore`-based per-provider concurrency control, N-run retry with exponential backoff, and real-time progress tracking.
-- **Professional CLI** — Click-based with 7 subcommands: `run`, `generate`, `evaluate`, `classify`, `report`, `validate`, `info`.
