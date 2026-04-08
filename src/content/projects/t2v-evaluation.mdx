@@ -1,31 +1,86 @@
 ---
-title: "Text-to-Video Evaluation System"
-slug: "t2v-evaluation"
-tagline: "Systematic quality assessment for AI-generated video"
-description: "Built a multi-dimensional evaluation pipeline for text-to-video models using GPT-4V and human annotation alignment."
-date: 2025-11-01
+title: "EvalForge"
+slug: "evalforge"
+tagline: "Unified evaluation pipeline for generative video and agent systems"
+description: "Open-source Python framework for end-to-end evaluation of T2V/I2V models and conversational agents — async generation, VBench metrics, LLM classification, and automated reporting."
+date: 2025-10-01
+endDate: 2026-03-01
 status: "completed"
 featured: true
-techStack: ["Python", "GPT-4V", "Jupyter", "pandas"]
+techStack: ["Python", "asyncio", "VBench", "Pydantic", "Click", "Next.js"]
 highlights:
-  - "Multi-dimensional quality scoring: visual fidelity, temporal coherence, prompt alignment"
-  - "GPT-4V automated pipeline validated against human annotations (0.85+ correlation)"
-  - "Evaluated 500+ generated videos; identified model-specific failure patterns"
+  - "Unified 5-stage pipeline: classification → generation → evaluation → analysis → reporting"
+  - "Async batch orchestrator with N-run retry, crash recovery, and per-provider concurrency control"
+  - "12 automated video quality metrics via VBench; 4-dimension agent quality assessment via LLM judge"
+  - "Config-driven plugin architecture with registries for providers, metrics, and report formats"
 links:
-  github: "https://github.com/haonanzhong/t2v-eval"
+  github: "https://github.com/zzzhhn/evalforge"
+  live: "https://evaluation.bobbyzhong.com"
 order: 1
 ---
 
-## Background
+import EvalVideoDashboard from "../../components/react/EvalVideoDashboard.tsx";
+import EvalAgentDashboard from "../../components/react/EvalAgentDashboard.tsx";
 
-As text-to-video generation models rapidly improve, systematic evaluation frameworks are needed to measure quality across multiple dimensions — visual fidelity, temporal coherence, prompt alignment, and aesthetic appeal.
+## Pipeline Overview
 
-## Approach
+EvalForge unifies generative video and agent evaluation into a single config-driven pipeline. Each stage is a composable plugin — swap providers, metrics, and report formats without touching core logic.
 
-Built an automated evaluation pipeline that leverages GPT-4V for multi-dimensional scoring, then validates against human annotations to measure alignment reliability.
+<div className="eval-pipeline">
+  <div className="eval-stage">
+    <div className="eval-stage-num">Stage 1</div>
+    <div className="eval-stage-name">Classify</div>
+    <div className="eval-stage-detail">LLM prompt / intent taxonomy</div>
+  </div>
+  <div className="eval-stage">
+    <div className="eval-stage-num">Stage 2</div>
+    <div className="eval-stage-name">Generate</div>
+    <div className="eval-stage-detail">Async batch with retry & checkpoint</div>
+  </div>
+  <div className="eval-stage">
+    <div className="eval-stage-num">Stage 3</div>
+    <div className="eval-stage-name">Evaluate</div>
+    <div className="eval-stage-detail">VBench metrics / LLM judge</div>
+  </div>
+  <div className="eval-stage">
+    <div className="eval-stage-num">Stage 4</div>
+    <div className="eval-stage-name">Analyze</div>
+    <div className="eval-stage-detail">Stats, grading & comparison</div>
+  </div>
+  <div className="eval-stage">
+    <div className="eval-stage-num">Stage 5</div>
+    <div className="eval-stage-name">Report</div>
+    <div className="eval-stage-detail">JSON / DOCX / HTML output</div>
+  </div>
+</div>
 
-## Key Results
+<div className="eval-section-divider">
+  <h2 className="eval-section-title">Video Evaluation Track</h2>
+  <p className="eval-section-desc">
+    T2V and I2V models evaluated across 12 VBench metrics grouped into 7 aggregate dimensions.
+    Select models to compare their quality profiles. Click tabs to inspect per-metric breakdowns.
+  </p>
+</div>
 
-- Evaluated 500+ generated videos across 5 quality dimensions
-- Achieved 0.85+ correlation between LLM scores and human judgments
-- Identified systematic biases in model-specific failure modes
+<EvalVideoDashboard client:visible />
+
+<div className="eval-section-divider">
+  <h2 className="eval-section-title">Agent Evaluation Track</h2>
+  <p className="eval-section-desc">
+    Conversational agent quality assessed through intent classification (7 categories) and
+    4-dimension quality scoring via LLM judge with chain-of-thought reasoning.
+    Click an intent slice to drill down.
+  </p>
+</div>
+
+<EvalAgentDashboard client:visible />
+
+<div className="eval-section-divider">
+  <h2 className="eval-section-title">Engineering Highlights</h2>
+</div>
+
+- **Plugin Registry** — Decorator-driven `Registry[T]` pattern for providers, metrics, and reporters. Extend by registering new classes — zero core changes needed.
+- **Dual LLM Backend** — Supports local open-source models (Gemma 4 via OpenAI-compatible server) and cloud APIs, with automatic fallback when local inference is unavailable.
+- **Crash Recovery** — JSON checkpoint persistence with atomic writes (`tmp` + `rename`). Resume interrupted pipelines from the last completed case.
+- **Async Orchestration** — `asyncio.Semaphore`-based per-provider concurrency control, N-run retry with exponential backoff, and real-time progress tracking.
+- **Professional CLI** — Click-based with 7 subcommands: `run`, `generate`, `evaluate`, `classify`, `report`, `validate`, `info`.
