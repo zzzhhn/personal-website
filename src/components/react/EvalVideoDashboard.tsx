@@ -246,8 +246,39 @@ const I2V_MODELS: I2VResult[] = [
 
 const DIMENSIONS = Object.keys(T2V_MODELS[0].dimensions);
 
+const VBENCH_GUIDE = {
+  rationale:
+    "VBench separates Video Quality (8 dims) from Video-Condition Consistency (8 dims). " +
+    "The split is intentional: quality metrics are evaluated without any reference to the text prompt, " +
+    "so a model cannot hide weak semantic grounding behind strong visual polish. " +
+    "Quality metrics cluster at 95–99% across top-tier models — that ceiling effect is by design, " +
+    "signalling the field has largely solved temporal coherence. " +
+    "The more discriminative signal lives in the consistency dims, where scores spread 20–95%.",
+  vq: [
+    { name: "Subject Consistency",    desc: "DINO cosine similarity of subject-region features across frames. Measures whether the main subject deforms or drifts as the clip progresses." },
+    { name: "Background Consistency", desc: "Same DINO measurement for background regions. Detects background instability or hallucinated scene changes in long generations." },
+    { name: "Temporal Flickering",    desc: "Frame-to-frame pixel intensity variance. High score = temporally smooth. Low score = visible flickering or frame-level artifacts." },
+    { name: "Motion Smoothness",      desc: "Assesses physical plausibility of motion trajectories via optical flow. Penalises teleportation, jerky cuts, or unnatural speed bursts." },
+    { name: "Dynamic Degree",         desc: "Fraction of video area that moves (optical flow magnitude). High ≠ better — it measures motion intensity, not quality. Models generating near-static clips score low." },
+    { name: "Aesthetic Quality",      desc: "LAION aesthetic classifier. Scores visual composition, lighting harmony, and artistic quality independent of the text prompt." },
+    { name: "Imaging Quality",        desc: "MUSIQ no-reference IQA. Measures perceptual sharpness, noise level, and compression artifacts at the pixel level." },
+    { name: "Object Class",           desc: "VideoNet classifier checks whether recognisable object categories appear in the video. Prompt-independent — tests if the model can generate objects at all." },
+  ],
+  vcc: [
+    { name: "Multiple Objects",       desc: "Whether all prompted object instances co-appear. Requires compositional counting and spatial composition — the hardest semantic task for current models." },
+    { name: "Human Action",           desc: "Action-recognition classifier checks if the prompted human action is correctly performed (e.g., 'a person is surfing'). Tests motion-semantic alignment." },
+    { name: "Color",                  desc: "Whether prompted colour attributes are accurate. Tested via attribute classifier ('a red car') — straightforward but highly variable across models." },
+    { name: "Spatial Relationship",   desc: "Whether spatial relations in the prompt hold ('cat on the left of the dog'). Most discriminative metric for separating model tiers." },
+    { name: "Scene",                  desc: "Whether the overall scene category matches (indoor/outdoor/nature/sports…). Measured by a scene classifier cross-checked against the prompt." },
+    { name: "Appearance Style",       desc: "Whether the requested visual style is reproduced ('oil painting', 'watercolour'). Universally weak (18–30%); VBench paper documents this as a known limitation of current models." },
+    { name: "Temporal Style",         desc: "Whether a requested cinematic style (slow-motion, time-lapse) is maintained throughout. Requires style classifier operating on full-clip features." },
+    { name: "Overall Consistency",    desc: "CLIP-based holistic text–video alignment. A catch-all that complements per-attribute checks with global semantic coherence." },
+  ],
+};
+
 export default function EvalVideoDashboard() {
   const [activeTrack, setActiveTrack] = useState<"t2v" | "i2v">("t2v");
+  const [showGuide, setShowGuide] = useState(false);
   const [selectedModels, setSelectedModels] = useState<Set<string>>(
     new Set(["Kling 2.0", "Veo 2"])
   );
@@ -308,6 +339,39 @@ export default function EvalVideoDashboard() {
       {/* ── T2V Track ── */}
       {activeTrack === "t2v" && (
         <>
+          {/* VBench taxonomy guide */}
+          <button
+            className="eval-guide-toggle"
+            onClick={() => setShowGuide((v) => !v)}
+            aria-expanded={showGuide}
+          >
+            <span className={`eval-guide-toggle-icon ${showGuide ? "eval-guide-toggle-icon--open" : ""}`}>▶</span>
+            Understanding the VBench Taxonomy
+          </button>
+          {showGuide && (
+            <div className="eval-guide">
+              <p className="eval-guide-rationale">{VBENCH_GUIDE.rationale}</p>
+              <div className="eval-guide-section-label">Video Quality — 8 dimensions (prompt-independent)</div>
+              <div className="eval-guide-grid">
+                {VBENCH_GUIDE.vq.map((m) => (
+                  <div key={m.name} className="eval-guide-item">
+                    <div className="eval-guide-item-name">{m.name}</div>
+                    <div className="eval-guide-item-desc">{m.desc}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="eval-guide-section-label">Video-Condition Consistency — 8 dimensions (prompt-dependent)</div>
+              <div className="eval-guide-grid">
+                {VBENCH_GUIDE.vcc.map((m) => (
+                  <div key={m.name} className="eval-guide-item">
+                    <div className="eval-guide-item-name">{m.name}</div>
+                    <div className="eval-guide-item-desc">{m.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Model selector chips */}
           <div className="eval-model-selector">
             {T2V_MODELS.map((m) => (

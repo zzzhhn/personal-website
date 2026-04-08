@@ -160,9 +160,63 @@ const GRADE_COLORS: Record<string, string> = {
 
 const total = INTENTS.reduce((s, i) => s + i.count, 0);
 
+const AGENT_GUIDE = {
+  rationale:
+    "Standard LLM benchmarks (MMLU, HumanEval) measure isolated capability on clean, " +
+    "well-formed tasks. Production assistants fail differently — they give technically correct but " +
+    "non-actionable answers, hallucinate confidently, or address only part of a multi-faceted query. " +
+    "EvalForge's 5-dimension taxonomy isolates each failure mode independently, so a single " +
+    "weak dimension surfaces without being diluted by aggregate scores. " +
+    "Dimensions are scored 0–100 by an LLM judge (Gemma 4) using 5-shot calibration prompts " +
+    "to reduce inter-prompt variance.",
+  dims: [
+    {
+      name: "Coverage",
+      label: "coverage",
+      color: "#6366f1",
+      desc: "Does the response address all aspects and sub-questions in the prompt? " +
+            "Catches answers that are technically correct for one part of the query but silently ignore the rest.",
+      why: "Critical for complex queries (e.g., 'compare X and Y, then recommend one') where a model may answer only the comparison.",
+    },
+    {
+      name: "Relevance",
+      label: "relevance",
+      color: "#10b981",
+      desc: "Is the response on-topic and appropriately scoped — neither too broad nor off on tangents? " +
+            "Catches verbose outputs that bury the answer or pivot to adjacent topics unprompted.",
+      why: "Especially important for information-dense domains where padding degrades signal-to-noise ratio.",
+    },
+    {
+      name: "Executability",
+      label: "executability",
+      color: "#f59e0b",
+      desc: "Can the output be directly acted upon without additional interpretation? " +
+            "For code: is it syntactically correct and runnable? For instructions: are all steps concrete?",
+      why: "Many models produce directionally correct but incomplete outputs (e.g., pseudocode instead of working code, or 'use a cache' without specifying how).",
+    },
+    {
+      name: "Practicality",
+      label: "practicality",
+      color: "#ec4899",
+      desc: "Is the output grounded in real-world constraints (budget, team size, scale, existing ecosystem)? " +
+            "Catches theoretically correct advice that ignores practical limitations.",
+      why: "Distinguishes textbook answers from advice that works in context — critical for architecture, tooling, and process recommendations.",
+    },
+    {
+      name: "Faithfulness",
+      label: "faithfulness",
+      color: "#8b5cf6",
+      desc: "Are all factual claims in the response verifiable and accurate? " +
+            "Inversely measures hallucination rate — the single most critical safety dimension for deployed assistants.",
+      why: "A response can score highly on Coverage and Relevance while containing fabricated citations, wrong version numbers, or invented APIs.",
+    },
+  ],
+};
+
 export default function EvalAgentDashboard() {
   const [selectedIntent, setSelectedIntent] = useState<string | null>(null);
   const [sampleIdx, setSampleIdx] = useState(0);
+  const [showGuide, setShowGuide] = useState(false);
 
   const globalQuality = useMemo(() => {
     return QUALITY_DIMS.map((dim) => {
@@ -189,6 +243,33 @@ export default function EvalAgentDashboard() {
 
   return (
     <div className="eval-dashboard">
+      {/* EvalForge agent taxonomy guide */}
+      <button
+        className="eval-guide-toggle"
+        onClick={() => setShowGuide((v) => !v)}
+        aria-expanded={showGuide}
+      >
+        <span className={`eval-guide-toggle-icon ${showGuide ? "eval-guide-toggle-icon--open" : ""}`}>▶</span>
+        Understanding the EvalForge Evaluation Taxonomy
+      </button>
+      {showGuide && (
+        <div className="eval-guide">
+          <p className="eval-guide-rationale">{AGENT_GUIDE.rationale}</p>
+          <div className="eval-guide-section-label">5 Quality Dimensions</div>
+          <div className="eval-guide-grid">
+            {AGENT_GUIDE.dims.map((d) => (
+              <div key={d.name} className="eval-guide-item">
+                <div className="eval-guide-item-name" style={{ color: d.color }}>{d.name}</div>
+                <div className="eval-guide-item-desc">{d.desc}</div>
+                <div className="eval-guide-item-desc" style={{ marginTop: 4, fontStyle: "italic" }}>
+                  Why: {d.why}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Intent distribution + quality overview row */}
       <div className="eval-row">
         <div className="eval-card eval-card--half">
