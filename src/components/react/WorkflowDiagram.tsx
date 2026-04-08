@@ -41,18 +41,14 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
       const t = el.offsetTop;
       const w = el.offsetWidth;
       const h = el.offsetHeight;
-      const node = nodeMap.get(id);
-      // Decision diamonds are rotated 45°: visual tips extend beyond layout box
-      // by  s*(√2-1)/2 ≈ 0.207*s  on each side
-      const isDiamond = node?.type === "decision";
-      const ext = isDiamond ? w * 0.207 : 0;
+      // clip-path diamond: visual tips sit at layout box midpoints (no offset needed)
       positions.set(id, {
         cx: l + w / 2,
         cy: t + h / 2,
-        l: l - ext,
-        r: l + w + ext,
-        t: t - ext,
-        b: t + h + ext,
+        l,
+        r: l + w,
+        t,
+        b: t + h,
       });
     });
 
@@ -90,11 +86,16 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
           ].join(" ");
           labelPos = { x: (fp.cx + tp.cx) / 2, y: loopY + 12 };
         }
-        // Same row — straight horizontal
+        // Same row — straight horizontal (ensure left-to-right direction)
         else if (Math.abs(fp.cy - tp.cy) < 8) {
-          d = `M ${fp.r} ${fp.cy} L ${tp.l} ${tp.cy}`;
+          const x1 = Math.min(fp.r, fp.cx + 4);
+          const x2 = Math.max(tp.l, tp.cx - 4);
+          // Guarantee arrow goes left→right even if nodes nearly touch
+          const startX = fromNode.col < toNode.col ? fp.r : fp.l;
+          const endX = fromNode.col < toNode.col ? tp.l : tp.r;
+          d = `M ${startX} ${fp.cy} L ${endX} ${tp.cy}`;
           if (edge.label) {
-            labelPos = { x: (fp.r + tp.l) / 2, y: fp.cy - 10 };
+            labelPos = { x: (startX + endX) / 2, y: fp.cy - 10 };
           }
         }
         // Different rows — step path (horizontal → vertical → horizontal)
@@ -185,7 +186,9 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
           display: "grid",
           gridTemplateColumns: `repeat(${workflow.cols}, 1fr)`,
           gridTemplateRows: `repeat(${workflow.rows}, auto)`,
-          gap: isHorizontal ? "10px 32px" : "28px 10px",
+          gap: isHorizontal
+            ? `12px ${workflow.cols >= 7 ? 24 : 36}px`
+            : "32px 14px",
           justifyItems: "center",
           alignItems: "center",
         }}
@@ -239,23 +242,23 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
           <defs>
             <marker
               id={`wf-a-${index}`}
-              markerWidth="7"
-              markerHeight="5"
-              refX="7"
-              refY="2.5"
+              markerWidth="8"
+              markerHeight="6"
+              refX="8"
+              refY="3"
               orient="auto"
             >
-              <path d="M 0 0 L 7 2.5 L 0 5 Z" fill="var(--color-accent)" opacity="0.6" />
+              <path d="M 0 0 L 8 3 L 0 6 Z" className="wf-arrow-fill" />
             </marker>
             <marker
               id={`wf-ad-${index}`}
-              markerWidth="7"
-              markerHeight="5"
-              refX="7"
-              refY="2.5"
+              markerWidth="8"
+              markerHeight="6"
+              refX="8"
+              refY="3"
               orient="auto"
             >
-              <path d="M 0 0 L 7 2.5 L 0 5 Z" fill="var(--color-accent)" opacity="0.35" />
+              <path d="M 0 0 L 8 3 L 0 6 Z" className="wf-arrow-fill wf-arrow-fill--dashed" />
             </marker>
           </defs>
           {edgePaths.map((ep) => {
@@ -268,9 +271,8 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
                 <motion.path
                   d={ep.d}
                   fill="none"
-                  stroke="var(--color-accent)"
+                  className={ep.edge.dashed ? "wf-edge wf-edge--dashed" : "wf-edge"}
                   strokeWidth="1.5"
-                  strokeOpacity={ep.edge.dashed ? 0.22 : 0.42}
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeDasharray={ep.edge.dashed ? "5 3" : undefined}

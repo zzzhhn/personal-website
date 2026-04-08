@@ -444,8 +444,8 @@ export const WORKFLOWS: WorkflowData[] = [
     nodes: [
       { id: "hypo", label: { en: "Hypothesis", zh: "因子假设" }, type: "process", col: 0, row: 0 },
       { id: "dataproc", label: { en: "Data Cleaning", zh: "数据清洗" }, type: "process", col: 1, row: 0 },
-      { id: "construct", label: { en: "Construction", zh: "因子构建" }, type: "process", col: 2, row: 0 },
-      { id: "backtest", label: { en: "Backtesting", zh: "回测验证" }, type: "process", col: 3, row: 0 },
+      { id: "construct", label: { en: "Construct", zh: "因子构建" }, type: "process", col: 2, row: 0 },
+      { id: "backtest", label: { en: "Backtest", zh: "回测验证" }, type: "process", col: 3, row: 0 },
       { id: "decision", label: { en: "Pass?", zh: "达标？" }, type: "decision", col: 4, row: 0 },
       { id: "optimize", label: { en: "Optimize", zh: "优化" }, type: "process", col: 5, row: 0 },
       { id: "registry", label: { en: "Registry", zh: "入库" }, type: "process", col: 6, row: 0 },
