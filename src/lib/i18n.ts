@@ -195,7 +195,7 @@ export const UI = {
 export const EXPERIENCES = {
   en: [
     {
-      role: "Data Engineer",
+      role: "Data Engineer — VLM Evaluation",
       organization: "Video Rebirth",
       location: "Hong Kong, China",
       startDate: "2026-02-01",
@@ -209,7 +209,7 @@ export const EXPERIENCES = {
       techStack: ["Python", "Data Pipeline", "ML Evaluation"],
     },
     {
-      role: "Product Manager",
+      role: "Product Manager — Agent Evaluation",
       organization: "ByteDance",
       location: "Shenzhen, Guangdong",
       startDate: "2025-12-01",
@@ -266,7 +266,7 @@ export const EXPERIENCES = {
   ],
   zh: [
     {
-      role: "Data Engineer – 评测",
+      role: "Data Engineer – 视频模型评测",
       organization: "Video Rebirth",
       location: "中国 – 香港",
       startDate: "2026-02-01",
