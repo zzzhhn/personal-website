@@ -58,6 +58,11 @@ import { UI } from "../../lib/i18n";
       </a>
     ))}
   </div>
+
+  <!-- Scroll progress bar -->
+  <div class="scroll-progress-track">
+    <div id="scroll-progress" class="scroll-progress-bar"></div>
+  </div>
 </header>
 
 <style>
@@ -108,6 +113,34 @@ import { UI } from "../../lib/i18n";
     background: var(--color-glow-ambient) !important;
     color: var(--color-text-primary) !important;
   }
+
+  /* Scroll progress bar */
+  .scroll-progress-track {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: transparent;
+  }
+  .scroll-progress-bar {
+    height: 100%;
+    width: 0%;
+    border-radius: 0 1px 1px 0;
+    will-change: width;
+    transition: width 0.05s linear;
+  }
+  /* Light mode: warm gold gradient */
+  :global([data-theme="light"]) .scroll-progress-bar {
+    background: linear-gradient(90deg, oklch(0.65 0.12 55), oklch(0.55 0.10 45));
+  }
+  /* Dark mode: accent blue gradient */
+  .scroll-progress-bar {
+    background: linear-gradient(90deg, oklch(0.55 0.16 250), oklch(0.65 0.18 230));
+  }
+  :global([data-theme="light"]) .scroll-progress-bar {
+    background: linear-gradient(90deg, oklch(0.65 0.12 55), oklch(0.55 0.10 45));
+  }
 </style>
 
 <script is:inline>
@@ -138,6 +171,24 @@ import { UI } from "../../lib/i18n";
         }
       }
     });
+
+    // Scroll progress bar
+    var progressBar = document.getElementById("scroll-progress");
+    if (progressBar) {
+      var ticking = false;
+      window.addEventListener("scroll", function () {
+        if (!ticking) {
+          requestAnimationFrame(function () {
+            var scrollTop = window.scrollY || document.documentElement.scrollTop;
+            var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            var pct = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            progressBar.style.width = pct + "%";
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }, { passive: true });
+    }
 
     // Scroll spy: highlight active nav link based on visible section
     var sections = document.querySelectorAll("section[id]");
