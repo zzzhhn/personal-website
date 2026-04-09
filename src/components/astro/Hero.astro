@@ -656,8 +656,8 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
   }
 
   function drawLight(w, h, t) {
-    var magnetRadius = 160, ringRadius = 80, lerpSpeed = 0.08;
-    var visRadius = 40; // particles within this dist from ring are visible
+    var magnetRadius = 220, ringRadius = 110, lerpSpeed = 0.08;
+    var visRadius = 60; // particles within this dist from ring are visible
     var i, p, dx, dy, dist, tx, ty, angle, wave, rr, c;
 
     // --- Auto-animate: Lissajous virtual mouse when idle > 3s ---
@@ -723,7 +723,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
 
       // Pulse variation
       var pulse = 0.85 + Math.sin(p.t * 6) * 0.15;
-      var sz = scaleFactor * pulse * 4.5;
+      var sz = scaleFactor * pulse * 7;
 
       // Capsule orientation toward virtual mouse
       angle = Math.atan2(vy - p.ay, vx - p.ax);
