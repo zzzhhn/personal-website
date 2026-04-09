@@ -576,7 +576,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
 
   function initParticles(w, h) {
     // High density: ~300 on a 1440x900 screen
-    var count = Math.max(150, Math.min(Math.floor((w * h) / 4000), 400));
+    var count = Math.max(250, Math.min(Math.floor((w * h) / 3000), 500));
     particles = [];
     for (var i = 0; i < count; i++) {
       var col = bokehColors[Math.floor(Math.random() * bokehColors.length)];
@@ -656,18 +656,21 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
   }
 
   function drawLight(w, h, t) {
-    var magnetRadius = 220, ringRadius = 110, lerpSpeed = 0.08;
-    var visRadius = 60; // particles within this dist from ring are visible
+    // Match original: large magnet zone, wide ring, thick visible band
+    var magnetRadius = 350, ringRadius = 200, lerpSpeed = 0.12;
+    var visRadius = 130; // thick donut — particles visible ±130px from ring center
     var i, p, dx, dy, dist, tx, ty, angle, wave, rr, c;
 
-    // --- Auto-animate: Lissajous virtual mouse when idle > 3s ---
+    // --- Virtual mouse: responsive when active, smooth trail when idle ---
     var now = Date.now();
     var destX, destY;
-    if (mouse.x > 0) {
+    var mouseActive = mouse.x > 0;
+    var idle = now - lastMouseMoveTime > autoAnimateDelay;
+
+    if (mouseActive) {
       destX = mouse.x;
       destY = mouse.y;
-    } else if (now - lastMouseMoveTime > autoAnimateDelay) {
-      // Lissajous curve across canvas
+    } else if (idle) {
       var at = t * 0.001;
       destX = w / 2 + Math.sin(at * 0.5) * (w * 0.3);
       destY = h / 2 + Math.cos(at * 0.7) * (h * 0.25);
@@ -676,9 +679,10 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       destY = virtualMouse.y;
     }
 
-    // Smooth virtual mouse (trailing effect)
-    virtualMouse.x += (destX - virtualMouse.x) * 0.05;
-    virtualMouse.y += (destY - virtualMouse.y) * 0.05;
+    // Fast lerp when mouse active (0.25), slow trail for auto-animate (0.04)
+    var smoothF = mouseActive ? 0.25 : 0.04;
+    virtualMouse.x += (destX - virtualMouse.x) * smoothF;
+    virtualMouse.y += (destY - virtualMouse.y) * smoothF;
 
     var vx = virtualMouse.x, vy = virtualMouse.y;
 
@@ -693,12 +697,12 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
 
       if (dist < magnetRadius) {
         angle = Math.atan2(dy, dx);
-        wave = Math.sin(p.t * 8 + angle) * 4;
-        rr = ringRadius + wave + p.rOff;
+        wave = Math.sin(p.t * 8 + angle) * 6;
+        // Spread particles across the ring with per-particle offset
+        rr = ringRadius + wave + p.rOff * 3;
         tx = vx + rr * Math.cos(angle);
         ty = vy + rr * Math.sin(angle);
       } else {
-        // Subtle drift at home
         tx = p.hx + Math.sin(p.t * 0.5 + p.phase) * 2;
         ty = p.hy + Math.cos(p.t * 0.4 + p.phase * 1.3) * 2;
       }
@@ -707,7 +711,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       p.ay += (ty - p.ay) * lerpSpeed;
     }
 
-    // --- Draw: only visible near ring (scale-based, like original) ---
+    // --- Draw: visible within thick donut band around ring ---
     for (i = 0; i < particles.length; i++) {
       p = particles[i];
       c = p.col;
@@ -717,15 +721,12 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       dist = Math.sqrt(dx * dx + dy * dy);
       var ringDist = Math.abs(dist - ringRadius);
 
-      // Core visibility: 1.0 on ring, fading to 0 at ±visRadius
       var scaleFactor = Math.max(0, Math.min(1, 1 - ringDist / visRadius));
-      if (scaleFactor < 0.01) continue; // skip invisible — perf
+      if (scaleFactor < 0.01) continue;
 
-      // Pulse variation
       var pulse = 0.85 + Math.sin(p.t * 6) * 0.15;
-      var sz = scaleFactor * pulse * 7;
+      var sz = scaleFactor * pulse * 9;
 
-      // Capsule orientation toward virtual mouse
       angle = Math.atan2(vy - p.ay, vx - p.ax);
 
       ctx.save();
@@ -742,7 +743,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       ctx.arc(-capW / 2 + capR, 0, capR, Math.PI / 2, -Math.PI / 2);
       ctx.closePath();
 
-      var alpha = scaleFactor * 0.75;
+      var alpha = scaleFactor * 0.8;
       ctx.fillStyle = "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + alpha + ")";
       ctx.fill();
 
