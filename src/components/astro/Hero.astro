@@ -549,12 +549,9 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
 
   // Bokeh color palette for light mode (warm refractive tones)
   var bokehColors = [
-    [180, 160, 255],  // lavender
-    [130, 180, 255],  // sky blue
-    [255, 180, 130],  // warm amber
-    [255, 150, 180],  // rose
-    [160, 210, 180],  // mint
-    [200, 170, 240],  // soft violet
+    [190, 155, 60],   // warm gold (matches scroll progress bar)
+    [175, 140, 50],   // deeper gold
+    [200, 165, 75],   // lighter gold
   ];
 
   function resize() {
@@ -572,7 +569,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
   }
 
   function initParticles(w, h) {
-    var count = Math.max(50, Math.min(Math.floor((w * h) / 10000), 120));
+    var count = Math.max(80, Math.min(Math.floor((w * h) / 7000), 180));
     particles = [];
     for (var i = 0; i < count; i++) {
       var col = bokehColors[Math.floor(Math.random() * bokehColors.length)];
@@ -706,7 +703,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       ctx.arc(-capW / 2 + capR, 0, capR, Math.PI / 2, -Math.PI / 2);
       ctx.closePath();
 
-      var alpha = 0.12 + scaleFactor * 0.55;
+      var alpha = 0.25 + scaleFactor * 0.45;
       ctx.fillStyle = "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + alpha + ")";
       ctx.fill();
 
