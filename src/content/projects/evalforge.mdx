@@ -2,16 +2,17 @@
 title: "EvalForge"
 slug: "evalforge"
 tagline: "Unified evaluation pipeline for generative video and agent systems"
-description: "Open-source Python framework for end-to-end evaluation of T2V/I2V models and conversational agents — async generation, VBench metrics, LLM classification, and automated reporting."
+description: "Open-source Python framework for end-to-end evaluation of T2V models and conversational agents — async generation, VBench 2.0 metrics, LLM classification, and automated reporting."
 date: 2025-10-01
 endDate: 2026-03-01
 status: "completed"
 featured: true
-techStack: ["Python", "asyncio", "VBench", "Pydantic", "Click", "Next.js"]
+techStack: ["Python", "asyncio", "VBench 2.0", "Pydantic", "Click", "Next.js"]
 highlights:
   - "Unified 5-stage pipeline: classification → generation → evaluation → analysis → reporting"
   - "Async batch orchestrator with N-run retry, crash recovery, and per-provider concurrency control"
-  - "12 VBench metrics for video quality; 5-dimension LLM judge for agent assessment"
+  - "18 VBench 2.0 dimensions across 5 categories for video intrinsic faithfulness evaluation"
+  - "8-dimension LLM-as-judge for agent assessment with 5-shot calibration"
   - "Config-driven plugin architecture with registries for providers, metrics, and report formats"
 links:
   github: "https://github.com/zzzhhn/evalforge"
@@ -19,14 +20,9 @@ links:
 order: 1
 ---
 
-import EvalVideoDashboard from "../../components/react/EvalVideoDashboard.tsx";
-import EvalAgentDashboard from "../../components/react/EvalAgentDashboard.tsx";
-import T2VPipelineChart from "../../components/react/T2VPipelineChart.tsx";
-import AgentPipelineChart from "../../components/react/AgentPipelineChart.tsx";
-
 Evaluating generative AI models is fragmented by default: T2V pipelines, agent test harnesses, and quality judges are built in isolation, making cross-model comparisons brittle and results hard to reproduce. EvalForge replaces that with a single config-driven pipeline that classifies prompts, orchestrates generation at scale, runs standardised metrics, and produces structured reports automatically — across both video generation and conversational agents.
 
-## Pipeline
+## Pipeline Architecture
 
 <div className="eval-pipeline">
   <div className="eval-stage">
@@ -42,12 +38,12 @@ Evaluating generative AI models is fragmented by default: T2V pipelines, agent t
   <div className="eval-stage">
     <div className="eval-stage-num">Stage 3</div>
     <div className="eval-stage-name">Evaluate</div>
-    <div className="eval-stage-detail">VBench metrics (video) · LLM-as-judge (agent)</div>
+    <div className="eval-stage-detail">VBench 2.0 (video) · LLM-as-judge (agent)</div>
   </div>
   <div className="eval-stage">
     <div className="eval-stage-num">Stage 4</div>
     <div className="eval-stage-name">Analyze</div>
-    <div className="eval-stage-detail">Statistical grading · baseline comparison · cross-model ranking</div>
+    <div className="eval-stage-detail">Statistical grading · pairwise ranking · cross-model comparison</div>
   </div>
   <div className="eval-stage">
     <div className="eval-stage-num">Stage 5</div>
@@ -55,14 +51,6 @@ Evaluating generative AI models is fragmented by default: T2V pipelines, agent t
     <div className="eval-stage-detail">JSON / DOCX / HTML with radar charts, heatmaps</div>
   </div>
 </div>
-
-### T2V Evaluation Track
-
-<T2VPipelineChart client:visible />
-
-### Agent Evaluation Track
-
-<AgentPipelineChart client:visible />
 
 ## Engineering Highlights
 
@@ -72,29 +60,29 @@ Evaluating generative AI models is fragmented by default: T2V pipelines, agent t
 - **Dual LLM Backend** — Local open-source models (Gemma 4 via OpenAI-compatible server) and cloud APIs, with automatic fallback. Configured via `base_url` + `api_key` — no code changes to switch backends.
 - **Professional CLI** — Click-based with 7 subcommands: `run`, `generate`, `evaluate`, `classify`, `report`, `validate`, `info`.
 
-<div className="eval-section-divider">
-  <h2 className="eval-section-title">Video Evaluation Track</h2>
-  <p className="eval-section-desc">
-    T2V models evaluated across 12 VBench dimensions (raw scores vary widely by metric type —
-    quality metrics like Subject Consistency cluster at 95–99%, while semantic metrics like
-    Spatial Relationship and Dynamic Degree spread broadly, which is expected and documented
-    in the VBench paper). EvalForge computes composite dimension scores by normalising each
-    metric to its observed model distribution, enabling fair cross-dimension comparison.
-    Select models to compare · click tabs to inspect raw per-metric VBench values.
-  </p>
+## Video Evaluation Track
+
+Based on the **VBench 2.0** protocol (arXiv 2503.21755, Mar 2025), evaluating intrinsic faithfulness across 18 dimensions in 5 categories:
+
+- **Human Fidelity** (3 dims) — anatomy, identity, clothing consistency
+- **Creativity** (2 dims) — diversity, composition novelty
+- **Controllability** (7 dims) — spatial relationships, attributes, camera motion, plot, interaction
+- **Physics** (4 dims) — mechanics, thermotics, material, multi-view consistency
+- **Commonsense** (2 dims) — motion rationality, instance preservation
+
+Rankings use pairwise win-rate matrices — not a single aggregate score. All scores are from the published paper (Table 2), with 4 SOTA models evaluated: Sora-480p, Kling 1.6, HunyuanVideo, CogVideoX-1.5.
+
+## Agent Evaluation Track
+
+500 conversations from an internal Gemma 4-based assistant evaluated through intent classification (7 categories) and 8-dimension quality scoring via LLM-as-judge with 5-shot calibration — including faithfulness to quantify hallucination rate.
+
+<div style={{ marginTop: "2rem", textAlign: "center" }}>
+  <a
+    href="https://evaluation.bobbyzhong.com"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="eval-live-link"
+  >
+    View Interactive Dashboard →
+  </a>
 </div>
-
-<EvalVideoDashboard client:visible />
-
-<div className="eval-section-divider">
-  <h2 className="eval-section-title">Agent Evaluation Track</h2>
-  <p className="eval-section-desc">
-    500 conversations from an internal Gemma 4-based conversational assistant evaluated
-    through EvalForge's agent track: intent classification (7 categories) and 5-dimension
-    quality scoring via LLM-as-judge with 5-shot calibration — including a faithfulness
-    dimension to quantify hallucination rate. Click an intent slice to drill down into
-    per-category quality profiles.
-  </p>
-</div>
-
-<EvalAgentDashboard client:visible />

@@ -1522,6 +1522,23 @@
   line-height: 1.3;
 }
 
+/* ── Live dashboard link ── */
+.eval-live-link {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  background: oklch(0.55 0.15 260 / 0.15);
+  color: var(--color-accent-blue, #6366f1);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+}
+.eval-live-link:hover {
+  background: oklch(0.55 0.15 260 / 0.25);
+  transform: translateY(-1px);
+}
+
 /* ── Mermaid pipeline diagrams ── */
 .mermaid-figure {
   margin: 1.5rem 0;
