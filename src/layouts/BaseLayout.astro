@@ -83,6 +83,58 @@ const { title, description, image } = Astro.props;
       })();
     </script>
 
-    <!-- Card hover glow (pure CSS, no proximity JS) -->
+    <!-- Click spark effect -->
+    <canvas id="click-spark-canvas" style="position:fixed;inset:0;z-index:9999;pointer-events:none;width:100%;height:100%;" aria-hidden="true"></canvas>
+    <script is:inline>
+      (function () {
+        var canvas = document.getElementById("click-spark-canvas");
+        if (!canvas) return;
+        var ctx = canvas.getContext("2d");
+        var sparks = [];
+        var sparkSize = 10, sparkRadius = 15, sparkCount = 8, duration = 400;
+        var raf;
+
+        function resizeCanvas() {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+        }
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        function ease(t) { return t * (2 - t); }
+
+        function draw(ts) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          sparks = sparks.filter(function (s) {
+            var elapsed = ts - s.t;
+            if (elapsed >= duration) return false;
+            var p = ease(elapsed / duration);
+            var dist = p * sparkRadius;
+            var len = sparkSize * (1 - p);
+            var x1 = s.x + dist * Math.cos(s.a);
+            var y1 = s.y + dist * Math.sin(s.a);
+            var x2 = s.x + (dist + len) * Math.cos(s.a);
+            var y2 = s.y + (dist + len) * Math.sin(s.a);
+            var isDark = document.documentElement.getAttribute("data-theme") !== "light";
+            ctx.strokeStyle = isDark ? "rgba(255,255,255,0.9)" : "rgba(0,0,0,0.6)";
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            return true;
+          });
+          raf = requestAnimationFrame(draw);
+        }
+        raf = requestAnimationFrame(draw);
+
+        document.addEventListener("click", function (e) {
+          var now = performance.now();
+          for (var i = 0; i < sparkCount; i++) {
+            sparks.push({ x: e.clientX, y: e.clientY, a: (2 * Math.PI * i) / sparkCount, t: now });
+          }
+        });
+      })();
+    </script>
   </body>
 </html>

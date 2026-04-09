@@ -2,6 +2,7 @@
 import { UI } from "../../lib/i18n";
 import SectionHeading from "./SectionHeading.astro";
 import AwardsGrid from "../react/AwardsGrid";
+import LanguageRotator from "../react/LanguageRotator";
 ---
 
 <section class="section-glow px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
@@ -91,29 +92,15 @@ import AwardsGrid from "../react/AwardsGrid";
           </div>
         </div>
 
-        <!-- Languages -->
+        <!-- Languages (rotating text effect) -->
         <div>
           <div data-lang="en">
             <h3 class="text-xs font-semibold uppercase tracking-widest mb-4" style="color: var(--color-accent);">Languages</h3>
-            <div class="space-y-3">
-              {UI.education.languages.en.map((lang) => (
-                <div class="flex items-start gap-2">
-                  <span class="text-sm font-medium flex-shrink-0" style="color: var(--color-text-primary); min-width: 5rem;">{lang.name}</span>
-                  <span class="text-sm" style="color: var(--color-text-secondary);">{lang.level}</span>
-                </div>
-              ))}
-            </div>
+            <LanguageRotator lang="en" client:visible />
           </div>
           <div data-lang="zh">
             <h3 class="text-xs font-semibold uppercase tracking-widest mb-4" style="color: var(--color-accent);">语言能力</h3>
-            <div class="space-y-3">
-              {UI.education.languages.zh.map((lang) => (
-                <div class="flex items-start gap-2">
-                  <span class="text-sm font-medium flex-shrink-0" style="color: var(--color-text-primary); min-width: 4rem;">{lang.name}</span>
-                  <span class="text-sm" style="color: var(--color-text-secondary);">{lang.level}</span>
-                </div>
-              ))}
-            </div>
+            <LanguageRotator lang="zh" client:visible />
           </div>
         </div>
       </div>

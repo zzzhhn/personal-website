@@ -1,15 +1,15 @@
 ---
 import { UI } from "../../lib/i18n";
 import SectionHeading from "./SectionHeading.astro";
+import BioProximity from "../react/BioProximity";
 ---
 
 <section id="about" class="section-glow px-6" style={`padding-top: var(--spacing-section); padding-bottom: var(--spacing-section);`}>
   <div class="mx-auto" style="max-width: var(--max-width-content);">
     <SectionHeading variant="editorial" number="01" titleEn={UI.sections.about.en} titleZh={UI.sections.about.zh} />
 
-    <div class="bio-kinetic mx-auto mb-16 text-lg leading-relaxed text-center" style="max-width: 40rem; color: var(--color-text-secondary);">
-      <p data-lang="en" class="bio-text">{UI.about.bio.en}</p>
-      <p data-lang="zh" class="bio-text">{UI.about.bio.zh}</p>
+    <div class="mx-auto mb-16 text-lg leading-relaxed text-center" style="max-width: 40rem; color: var(--color-text-secondary);">
+      <BioProximity textEn={UI.about.bio.en} textZh={UI.about.bio.zh} client:visible />
     </div>
 
     <!-- EN tech categories -->
@@ -135,115 +135,4 @@ import SectionHeading from "./SectionHeading.astro";
   background: transparent;
 }
 
-/* ── Bio kinetic: Gaussian scale (matches Hero name effect) ── */
-.bio-kinetic { position: relative; }
-/* Word wrapper — keeps characters together, prevents mid-word line breaks */
-.bw-word {
-  display: inline-flex;
-  white-space: nowrap;
-}
-.bw {
-  display: inline-block;
-  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transform-origin: center bottom;
-  cursor: default;
-}
 </style>
-
-<script is:inline>
-(function () {
-  var container = document.querySelector(".bio-kinetic");
-  if (!container) return;
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-  function getVisibleBio() {
-    var lang = document.documentElement.getAttribute("data-site-lang") || "en";
-    var texts = container.querySelectorAll(".bio-text");
-    for (var i = 0; i < texts.length; i++) {
-      if (texts[i].getAttribute("data-lang") === lang) return texts[i];
-    }
-    return texts[0];
-  }
-
-  function splitBio(p) {
-    if (p.querySelector(".bw")) return;
-    var lang = p.getAttribute("data-lang");
-    var raw = p.textContent || "";
-    p.textContent = "";
-    if (lang === "zh") {
-      for (var i = 0; i < raw.length; i++) {
-        var s = document.createElement("span");
-        s.className = "bw";
-        s.textContent = raw[i];
-        p.appendChild(s);
-      }
-    } else {
-      /* Word-level containers (no mid-word line breaks) with per-char inner spans */
-      var words = raw.split(/(\s+)/);
-      for (var j = 0; j < words.length; j++) {
-        var word = words[j];
-        if (!word) continue;
-        if (/^\s+$/.test(word)) {
-          p.appendChild(document.createTextNode(word));
-        } else {
-          var wSpan = document.createElement("span");
-          wSpan.className = "bw-word";
-          for (var k = 0; k < word.length; k++) {
-            var c = document.createElement("span");
-            c.className = "bw";
-            c.textContent = word[k];
-            wSpan.appendChild(c);
-          }
-          p.appendChild(wSpan);
-        }
-      }
-    }
-  }
-
-  var pending = false;
-  var mouseX = -9999;
-  var mouseY = -9999;
-  var isInside = false;
-
-  function update() {
-    pending = false;
-    var p = getVisibleBio();
-    if (!p) return;
-    splitBio(p);
-    var spans = p.querySelectorAll(".bw");
-
-    for (var i = 0; i < spans.length; i++) {
-      var el = spans[i];
-      if (!isInside) { el.style.transform = ""; continue; }
-      var rect = el.getBoundingClientRect();
-      if (rect.width === 0) { el.style.transform = ""; continue; }
-      /* Y check: only affect the line the cursor is on */
-      var cy = rect.top + rect.height / 2;
-      var dy = Math.abs(mouseY - cy);
-      if (dy > rect.height * 0.6) { el.style.transform = ""; continue; }
-      /* X distance — matches Hero: peak 1.28, sigma ~60px */
-      var cx = rect.left + rect.width / 2;
-      var dx = Math.abs(mouseX - cx);
-      var scale = 1 + 0.28 * Math.exp(-(dx * dx) / 7200);
-      el.style.transform = scale > 1.01 ? "scale(" + scale.toFixed(3) + ")" : "";
-    }
-  }
-
-  container.addEventListener("mousemove", function (e) {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-    isInside = true;
-    if (!pending) { pending = true; requestAnimationFrame(update); }
-  });
-  container.addEventListener("mouseleave", function () {
-    isInside = false;
-    if (!pending) { pending = true; requestAnimationFrame(update); }
-  });
-
-  var obs = new MutationObserver(function () {
-    var p = getVisibleBio();
-    if (p && !p.querySelector(".bw")) splitBio(p);
-  });
-  obs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-site-lang"] });
-})();
-</script>
