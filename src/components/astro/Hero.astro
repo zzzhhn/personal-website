@@ -686,7 +686,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       dist = Math.sqrt(dx * dx + dy * dy);
       var ringDist = Math.abs(dist - ringRadius);
       var scaleFactor = (mouse.x > 0 && ringDist < 30) ? (1 - ringDist / 30) : 0;
-      sz = 2 + scaleFactor * 3;
+      sz = 3.5 + scaleFactor * 4;
 
       // Capsule orientation: point toward cursor when in ring
       angle = Math.atan2(mouse.y - p.ay, mouse.x - p.ax);
@@ -706,7 +706,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       ctx.arc(-capW / 2 + capR, 0, capR, Math.PI / 2, -Math.PI / 2);
       ctx.closePath();
 
-      var alpha = 0.3 + scaleFactor * 0.5;
+      var alpha = 0.12 + scaleFactor * 0.55;
       ctx.fillStyle = "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + alpha + ")";
       ctx.fill();
 

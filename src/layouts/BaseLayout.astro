@@ -91,7 +91,7 @@ const { title, description, image } = Astro.props;
         if (!canvas) return;
         var ctx = canvas.getContext("2d");
         var sparks = [];
-        var sparkSize = 10, sparkRadius = 15, sparkCount = 8, duration = 400;
+        var sparkSize = 16, sparkRadius = 25, sparkCount = 10, duration = 500;
         var raf;
 
         function resizeCanvas() {
@@ -116,8 +116,8 @@ const { title, description, image } = Astro.props;
             var x2 = s.x + (dist + len) * Math.cos(s.a);
             var y2 = s.y + (dist + len) * Math.sin(s.a);
             var isDark = document.documentElement.getAttribute("data-theme") !== "light";
-            ctx.strokeStyle = isDark ? "rgba(255,255,255,0.9)" : "rgba(0,0,0,0.6)";
-            ctx.lineWidth = 2;
+            ctx.strokeStyle = isDark ? "rgba(255,255,255,0.95)" : "rgba(60,60,60,0.8)";
+            ctx.lineWidth = 2.5;
             ctx.beginPath();
             ctx.moveTo(x1, y1);
             ctx.lineTo(x2, y2);
