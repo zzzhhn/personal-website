@@ -551,7 +551,14 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
   var lastMousePos = { x: 0, y: 0 };
   var lastMouseMoveTime = 0;
   var virtualMouse = { x: -1000, y: -1000 };
-  var autoAnimateDelay = 3000; // ms before auto-animate kicks in
+  var autoAnimateDelay = 3000;
+
+  // Auto-animate dynamics: variable speed with pauses
+  var autoTime = 0;              // decoupled time accumulator
+  var autoSpeed = 1.0;           // current speed multiplier
+  var autoTargetSpeed = 1.0;     // target speed to lerp toward
+  var autoNextChange = 0;        // timestamp for next speed change
+  var autoPaused = false;        // "急停" state
 
   // Bokeh color palette for light mode (warm gold, matches scroll bar)
   var bokehColors = [
@@ -670,10 +677,36 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     if (mouseActive) {
       destX = mouse.x;
       destY = mouse.y;
+      // Reset auto-animate dynamics when mouse takes over
+      autoTime = t * 0.001;
+      autoPaused = false;
+      autoSpeed = 1.0;
     } else if (idle) {
-      var at = t * 0.001;
-      destX = w / 2 + Math.sin(at * 0.5) * (w * 0.3);
-      destY = h / 2 + Math.cos(at * 0.7) * (h * 0.25);
+      // --- Variable speed + pause/resume dynamics ---
+      if (now > autoNextChange) {
+        var roll = Math.random();
+        if (autoPaused) {
+          // Resume: pick a new speed, wait 2-5s before next change
+          autoPaused = false;
+          autoTargetSpeed = 0.75 + Math.random() * 0.5; // 0.75–1.25
+          autoNextChange = now + 2000 + Math.random() * 3000;
+        } else if (roll < 0.15) {
+          // 15% chance: sudden stop ("急停")
+          autoPaused = true;
+          autoTargetSpeed = 0;
+          autoNextChange = now + 800 + Math.random() * 1500; // pause 0.8–2.3s
+        } else {
+          // Normal: shift to new speed
+          autoTargetSpeed = 0.75 + Math.random() * 0.5;
+          autoNextChange = now + 1500 + Math.random() * 3000;
+        }
+      }
+      // Smooth lerp toward target speed
+      autoSpeed += (autoTargetSpeed - autoSpeed) * 0.08;
+      autoTime += 0.001 * autoSpeed;
+
+      destX = w / 2 + Math.sin(autoTime * 0.5) * (w * 0.3);
+      destY = h / 2 + Math.cos(autoTime * 0.7) * (h * 0.25);
     } else {
       destX = virtualMouse.x;
       destY = virtualMouse.y;
