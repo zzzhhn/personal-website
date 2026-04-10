@@ -582,8 +582,11 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
   }
 
   function initParticles(w, h) {
-    // High density: ~300 on a 1440x900 screen
-    var count = Math.max(250, Math.min(Math.floor((w * h) / 3000), 500));
+    // Dark mode: sparse constellation; Light mode: dense antigravity field
+    var dark = isDark();
+    var count = dark
+      ? Math.max(60, Math.min(Math.floor((w * h) / 12000), 120))
+      : Math.max(250, Math.min(Math.floor((w * h) / 3000), 500));
     particles = [];
     for (var i = 0; i < count; i++) {
       var col = bokehColors[Math.floor(Math.random() * bokehColors.length)];
@@ -681,29 +684,32 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       autoTime = t * 0.001;
       autoPaused = false;
       autoSpeed = 1.0;
+      autoTargetSpeed = 1.0;
+      autoNextChange = now + 3000; // grace period before first change
     } else if (idle) {
       // --- Variable speed + pause/resume dynamics ---
       if (now > autoNextChange) {
         var roll = Math.random();
         if (autoPaused) {
-          // Resume: pick a new speed, wait 2-5s before next change
+          // Resume at full speed immediately, then vary later
           autoPaused = false;
-          autoTargetSpeed = 0.75 + Math.random() * 0.5; // 0.75–1.25
+          autoTargetSpeed = 1.0;
+          autoSpeed = 0.6; // kick-start from 0.6 so movement is visible instantly
           autoNextChange = now + 2000 + Math.random() * 3000;
-        } else if (roll < 0.15) {
-          // 15% chance: sudden stop ("急停")
+        } else if (roll < 0.12) {
+          // 12% chance: sudden stop ("急停")
           autoPaused = true;
           autoTargetSpeed = 0;
-          autoNextChange = now + 800 + Math.random() * 1500; // pause 0.8–2.3s
+          autoNextChange = now + 600 + Math.random() * 1200; // pause 0.6–1.8s
         } else {
-          // Normal: shift to new speed
+          // Normal: shift to new speed (75%–125%)
           autoTargetSpeed = 0.75 + Math.random() * 0.5;
           autoNextChange = now + 1500 + Math.random() * 3000;
         }
       }
-      // Smooth lerp toward target speed
-      autoSpeed += (autoTargetSpeed - autoSpeed) * 0.08;
-      autoTime += 0.001 * autoSpeed;
+      // Smooth lerp toward target speed (faster recovery from pause)
+      autoSpeed += (autoTargetSpeed - autoSpeed) * 0.12;
+      autoTime += 0.016 * autoSpeed; // ~1/60s per frame at speed 1.0
 
       destX = w / 2 + Math.sin(autoTime * 0.5) * (w * 0.3);
       destY = h / 2 + Math.cos(autoTime * 0.7) * (h * 0.25);
@@ -792,6 +798,12 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
 
     var dark = isDark();
     var i, p;
+
+    // Reinit particles if theme changed (different density per mode)
+    if (draw._lastDark !== undefined && draw._lastDark !== dark) {
+      initParticles(w, h);
+    }
+    draw._lastDark = dark;
 
     // Update positions (shared)
     for (i = 0; i < particles.length; i++) {
