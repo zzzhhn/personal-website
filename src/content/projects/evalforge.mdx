@@ -1,80 +1,83 @@
 ---
 title: "EvalForge"
 slug: "evalforge"
-tagline: "Unified evaluation pipeline for generative video and agent systems"
-description: "Open-source Python framework for end-to-end evaluation of T2V models and conversational agents — async generation, VBench 2.0 metrics, LLM classification, and automated reporting."
+tagline: "Structured human evaluation platform for video generation models"
+description: "Full-stack evaluation platform with multi-dimension scoring, anti-cheat enforcement, configurable admin settings, and real-time analytics — built for production annotation workflows."
 date: 2025-10-01
-endDate: 2026-03-01
+endDate: 2026-04-01
 status: "completed"
 featured: true
-techStack: ["Python", "asyncio", "VBench 2.0", "Pydantic", "Click", "Next.js"]
+techStack: ["Next.js 16", "React 19", "TypeScript", "Prisma 7", "Neon PostgreSQL", "Tailwind CSS 4", "Vercel"]
 highlights:
-  - "Unified 5-stage pipeline: classification → generation → evaluation → analysis → reporting"
-  - "Async batch orchestrator with N-run retry, crash recovery, and per-provider concurrency control"
-  - "18 VBench 2.0 dimensions across 5 categories for video intrinsic faithfulness evaluation"
-  - "8-dimension LLM-as-judge for agent assessment with 5-shot calibration"
-  - "Config-driven plugin architecture with registries for providers, metrics, and report formats"
+  - "Multi-dimension Likert scoring with failure tags, keyboard shortcuts, and session persistence"
+  - "Configurable anti-cheat system: watch ratio, dwell time, frequency caps, fixed-value and low-variance detection"
+  - "Admin dashboard with annotator analytics, XLSX export, sample browser, and real-time aggregation"
+  - "Role-based access (admin / internal / vendor) with model name visibility controls per account type"
+  - "OKLch color theme with dark/light mode and bilingual (zh/en) interface throughout"
 links:
   github: "https://github.com/zzzhhn/evalforge"
   live: "https://evaluation.bobbyzhong.com"
 order: 1
 ---
 
-Evaluating generative AI models is fragmented by default: T2V pipelines, agent test harnesses, and quality judges are built in isolation, making cross-model comparisons brittle and results hard to reproduce. EvalForge replaces that with a single config-driven pipeline that classifies prompts, orchestrates generation at scale, runs standardised metrics, and produces structured reports automatically — across both video generation and conversational agents.
+Human evaluation remains the gold standard for assessing video generation quality — automated metrics miss nuances in motion realism, aesthetic coherence, and creative intent. EvalForge is a production-grade platform that structures the entire annotation workflow: admins create evaluation packages, assign items to annotators, and monitor quality through real-time analytics and anti-cheat signals.
 
-## Pipeline Architecture
+## Platform Architecture
 
 <div className="eval-pipeline">
   <div className="eval-stage">
-    <div className="eval-stage-num">Stage 1</div>
-    <div className="eval-stage-name">Classify</div>
-    <div className="eval-stage-detail">LLM prompt / intent taxonomy with content-hash cache</div>
+    <div className="eval-stage-num">Layer 1</div>
+    <div className="eval-stage-name">Workstation</div>
+    <div className="eval-stage-detail">Video player · multi-dimension scoring · failure tags · keyboard navigation</div>
   </div>
   <div className="eval-stage">
-    <div className="eval-stage-num">Stage 2</div>
-    <div className="eval-stage-name">Generate</div>
-    <div className="eval-stage-detail">Async batch · per-provider semaphore · N-run retry</div>
+    <div className="eval-stage-num">Layer 2</div>
+    <div className="eval-stage-name">Anti-Cheat</div>
+    <div className="eval-stage-detail">Watch ratio · dwell time · frequency cap · pattern detection</div>
   </div>
   <div className="eval-stage">
-    <div className="eval-stage-num">Stage 3</div>
-    <div className="eval-stage-name">Evaluate</div>
-    <div className="eval-stage-detail">VBench 2.0 (video) · LLM-as-judge (agent)</div>
+    <div className="eval-stage-num">Layer 3</div>
+    <div className="eval-stage-name">Admin</div>
+    <div className="eval-stage-detail">Annotator management · sample browser · settings · XLSX export</div>
   </div>
   <div className="eval-stage">
-    <div className="eval-stage-num">Stage 4</div>
-    <div className="eval-stage-name">Analyze</div>
-    <div className="eval-stage-detail">Statistical grading · pairwise ranking · cross-model comparison</div>
-  </div>
-  <div className="eval-stage">
-    <div className="eval-stage-num">Stage 5</div>
-    <div className="eval-stage-name">Report</div>
-    <div className="eval-stage-detail">JSON / DOCX / HTML with radar charts, heatmaps</div>
+    <div className="eval-stage-num">Layer 4</div>
+    <div className="eval-stage-name">Analytics</div>
+    <div className="eval-stage-detail">Score aggregation · model comparison · dimension-level breakdown</div>
   </div>
 </div>
 
-## Engineering Highlights
+## Annotator Workstation
 
-- **Plugin Registry** — Decorator-driven `Registry[T]` for providers, metrics, and reporters. New integrations register via `@PROVIDER_REGISTRY.register("name")` — no core changes required.
-- **Crash Recovery** — JSON checkpoint persistence with atomic writes (`tempfile` + `os.rename`). Interrupted pipelines resume from the last completed case without re-running prior generations.
-- **Async Orchestration** — `asyncio.Semaphore`-based per-provider concurrency prevents rate-limit cascade failures across parallel API calls. Configurable N-run averaging with exponential-backoff retry.
-- **Dual LLM Backend** — Local open-source models (Gemma 4 via OpenAI-compatible server) and cloud APIs, with automatic fallback. Configured via `base_url` + `api_key` — no code changes to switch backends.
-- **Professional CLI** — Click-based with 7 subcommands: `run`, `generate`, `evaluate`, `classify`, `report`, `validate`, `info`.
+The scoring interface is designed for efficiency and data quality. Annotators watch a video, then rate it across multiple configurable dimensions on a 1–5 Likert scale. Scores of 1–2 require selecting at least one failure tag — providing structured reasons alongside the rating.
 
-## Video Evaluation Track
+- **Keyboard-driven** — Number keys (1–5) for scoring, Space for play/pause, Arrow keys for navigation, Enter to submit
+- **Session persistence** — Watch progress saved to sessionStorage so partially-watched videos survive page refreshes
+- **Watch ratio validation** — A progress bar shows how much of the video has been watched; submission is blocked until the configured threshold is met
+- **Resizable layout** — Draggable sidebar with dimension filters and item counts
 
-Based on the **VBench 2.0** protocol (arXiv 2503.21755, Mar 2025), evaluating intrinsic faithfulness across 18 dimensions in 5 categories:
+## Anti-Cheat System
 
-- **Human Fidelity** (3 dims) — anatomy, identity, clothing consistency
-- **Creativity** (2 dims) — diversity, composition novelty
-- **Controllability** (7 dims) — spatial relationships, attributes, camera motion, plot, interaction
-- **Physics** (4 dims) — mechanics, thermotics, material, multi-view consistency
-- **Commonsense** (2 dims) — motion rationality, instance preservation
+Every submission passes through a multi-layer integrity pipeline, all with admin-configurable thresholds:
 
-Rankings use pairwise win-rate matrices — not a single aggregate score. All scores are from the published paper (Table 2), with 4 SOTA models evaluated: Sora-480p, Kling 1.6, HunyuanVideo, CogVideoX-1.5.
+- **Minimum watch ratio** — Annotators must watch a configurable percentage of the video before submitting
+- **Minimum dwell time** — Floor + multiplier based on video duration prevents instant submissions
+- **Frequency cap** — Hourly submission limit blocks automated or careless bulk-scoring
+- **Fixed-value detection** — Flags annotators whose recent scores are dominated by a single value (e.g., all 3s)
+- **Low-variance detection** — Flags abnormally low standard deviation across a sliding window of recent scores
 
-## Agent Evaluation Track
+Suspicious scores are marked but still recorded — admins review flagged patterns rather than blocking annotators outright.
 
-500 conversations from an internal Gemma 4-based assistant evaluated through intent classification (7 categories) and 8-dimension quality scoring via LLM-as-judge with 5-shot calibration — including faithfulness to quantify hallucination rate.
+## Admin Dashboard
+
+- **Annotator detail** — Per-user score distributions, completion rates, anti-cheat events, and XLSX export with Chinese font support
+- **Sample browser** — Browse evaluation packages, view video assets with dimension hierarchy (parent › child)
+- **Settings panel** — Live-tunable anti-cheat thresholds via slider controls, plus display toggles (hide model names per account type)
+- **Analytics** — Item-level, dimension-level, and model-level score aggregation using only VALID scores
+
+## Technical Stack
+
+Built on **Next.js 16** App Router with React 19 Server Components. Data layer uses **Prisma 7** with the `@prisma/adapter-pg` driver adapter connecting to **Neon PostgreSQL** (serverless). The `proxy()` convention replaces deprecated middleware for auth routing. The design system uses **Tailwind CSS 4** with OKLch color space theming (warm Ivory light + Deep Indigo dark) and full bilingual (Chinese/English) support.
 
 <div style={{ marginTop: "2rem", textAlign: "center" }}>
   <a
@@ -83,6 +86,6 @@ Rankings use pairwise win-rate matrices — not a single aggregate score. All sc
     rel="noopener noreferrer"
     className="eval-live-link"
   >
-    View Interactive Dashboard →
+    View Live Platform →
   </a>
 </div>
