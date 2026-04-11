@@ -121,18 +121,26 @@ import BioProximity from "../react/BioProximity";
   overflow-y: auto;
   max-height: 10rem;
   scrollbar-width: thin;
-  scrollbar-color: var(--color-border-subtle) transparent;
+  scrollbar-color: var(--skill-scroll-thumb) var(--skill-scroll-track);
   padding-right: 0.25rem;
+
+  --skill-scroll-thumb: oklch(0.45 0.01 255 / 0.5);
+  --skill-scroll-track: oklch(0.3 0.008 255 / 0.2);
+}
+:global([data-theme="light"]) .skill-scroll {
+  --skill-scroll-thumb: oklch(0.55 0.015 60 / 0.45);
+  --skill-scroll-track: oklch(0.75 0.01 60 / 0.15);
 }
 .skill-scroll::-webkit-scrollbar {
-  width: 3px;
+  width: 4px;
 }
 .skill-scroll::-webkit-scrollbar-thumb {
-  background: var(--color-border-subtle);
-  border-radius: 3px;
+  background: var(--skill-scroll-thumb);
+  border-radius: 4px;
 }
 .skill-scroll::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--skill-scroll-track);
+  border-radius: 4px;
 }
 
 </style>
