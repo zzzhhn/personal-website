@@ -19,7 +19,20 @@ function RotatingName({ texts, interval }: { texts: string[]; interval: number }
   }, [texts.length, interval]);
 
   return (
-    <span style={{ display: 'inline-flex', overflow: 'hidden', verticalAlign: 'baseline', minHeight: '1.4em' }}>
+    <span
+      style={{
+        display: 'inline-flex',
+        overflow: 'hidden',
+        verticalAlign: 'baseline',
+        minHeight: '1.4em',
+        background: 'var(--color-surface-glass)',
+        border: '1px solid var(--color-border-glass)',
+        borderRadius: '999px',
+        padding: '0.15em 0.6em',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
+      }}
+    >
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
           key={index}
