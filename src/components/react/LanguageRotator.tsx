@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const LANGUAGES = [
@@ -10,8 +10,10 @@ const LANGUAGES = [
 
 const spring = { type: 'spring' as const, damping: 25, stiffness: 300 };
 
+// index 0 = English name (transparent pill), index 1 = native name (colored pill)
 function RotatingName({ texts, interval }: { texts: string[]; interval: number }) {
   const [index, setIndex] = useState(0);
+  const isNative = index === 1;
 
   useEffect(() => {
     const id = setInterval(() => setIndex((p) => (p + 1) % texts.length), interval);
@@ -19,18 +21,27 @@ function RotatingName({ texts, interval }: { texts: string[]; interval: number }
   }, [texts.length, interval]);
 
   return (
-    <span
+    <motion.span
+      animate={{
+        background: isNative
+          ? 'var(--lang-pill-bg)'
+          : 'transparent',
+        borderColor: isNative
+          ? 'var(--lang-pill-border)'
+          : 'transparent',
+      }}
+      transition={{ duration: 0.3 }}
       style={{
         display: 'inline-flex',
+        justifyContent: 'center',
         overflow: 'hidden',
         verticalAlign: 'baseline',
         minHeight: '1.4em',
-        background: 'var(--color-surface-glass)',
-        border: '1px solid var(--color-border-glass)',
+        width: '100%',
         borderRadius: '999px',
         padding: '0.15em 0.6em',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
+        borderWidth: '1px',
+        borderStyle: 'solid',
       }}
     >
       <AnimatePresence mode="wait" initial={false}>
@@ -45,7 +56,7 @@ function RotatingName({ texts, interval }: { texts: string[]; interval: number }
           {texts[index]}
         </motion.span>
       </AnimatePresence>
-    </span>
+    </motion.span>
   );
 }
 
@@ -59,7 +70,8 @@ export default function LanguageRotator({ lang = 'en' }: { lang?: 'en' | 'zh' })
               fontSize: '0.875rem',
               fontWeight: 500,
               flexShrink: 0,
-              minWidth: lang === 'en' ? '5rem' : '4rem',
+              width: lang === 'en' ? '6.5rem' : '5rem',
+              textAlign: 'center',
               color: 'var(--color-text-primary)',
             }}
           >
