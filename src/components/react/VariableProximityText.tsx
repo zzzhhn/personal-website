@@ -1,4 +1,4 @@
-import { useRef, useEffect, useMemo, useCallback } from 'react';
+import { useRef, useEffect, useCallback } from 'react';
 
 interface VariableProximityTextProps {
   label: string;
@@ -6,18 +6,6 @@ interface VariableProximityTextProps {
   falloff?: 'linear' | 'exponential' | 'gaussian';
   className?: string;
   style?: React.CSSProperties;
-}
-
-function useAnimationFrame(callback: () => void) {
-  useEffect(() => {
-    let frameId: number;
-    const loop = () => {
-      callback();
-      frameId = requestAnimationFrame(loop);
-    };
-    frameId = requestAnimationFrame(loop);
-    return () => cancelAnimationFrame(frameId);
-  }, [callback]);
 }
 
 export default function VariableProximityText({
@@ -29,76 +17,106 @@ export default function VariableProximityText({
 }: VariableProximityTextProps) {
   const containerRef = useRef<HTMLSpanElement>(null);
   const letterRefs = useRef<(HTMLSpanElement | null)[]>([]);
-  const mouseRef = useRef({ x: 0, y: 0 });
-  const lastPosRef = useRef({ x: -1, y: -1 });
+  const mouseRef = useRef({ x: -9999, y: -9999 });
+  const cachedPositions = useRef<{ cx: number; cy: number }[]>([]);
+  const rafId = useRef(0);
+  const needsUpdate = useRef(true);
 
+  // Cache letter positions — recalc on resize, not every frame
+  const cachePositions = useCallback(() => {
+    if (!containerRef.current) return;
+    const containerRect = containerRef.current.getBoundingClientRect();
+    cachedPositions.current = letterRefs.current.map((el) => {
+      if (!el) return { cx: 0, cy: 0 };
+      const rect = el.getBoundingClientRect();
+      return {
+        cx: rect.left + rect.width / 2 - containerRect.left,
+        cy: rect.top + rect.height / 2 - containerRect.top,
+      };
+    });
+  }, []);
+
+  // Mouse tracking
   useEffect(() => {
-    const updatePos = (x: number, y: number) => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        mouseRef.current = { x: x - rect.left, y: y - rect.top };
-      }
+    const onMove = (e: MouseEvent) => {
+      if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
+      mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
+      needsUpdate.current = true;
     };
-    const onMouse = (e: MouseEvent) => updatePos(e.clientX, e.clientY);
     const onTouch = (e: TouchEvent) => {
+      if (!containerRef.current) return;
       const t = e.touches[0];
-      updatePos(t.clientX, t.clientY);
+      const rect = containerRef.current.getBoundingClientRect();
+      mouseRef.current = { x: t.clientX - rect.left, y: t.clientY - rect.top };
+      needsUpdate.current = true;
     };
-    window.addEventListener('mousemove', onMouse);
-    window.addEventListener('touchmove', onTouch);
+    window.addEventListener('mousemove', onMove, { passive: true });
+    window.addEventListener('touchmove', onTouch, { passive: true });
     return () => {
-      window.removeEventListener('mousemove', onMouse);
+      window.removeEventListener('mousemove', onMove);
       window.removeEventListener('touchmove', onTouch);
     };
   }, []);
 
-  const calcFalloff = useCallback(
-    (distance: number) => {
-      const norm = Math.min(Math.max(1 - distance / radius, 0), 1);
-      switch (falloff) {
-        case 'exponential':
-          return norm ** 2;
-        case 'gaussian':
-          return Math.exp(-((distance / (radius / 2)) ** 2) / 2);
-        default:
-          return norm;
-      }
-    },
-    [radius, falloff]
-  );
+  // Cache positions on mount + resize
+  useEffect(() => {
+    cachePositions();
+    const onResize = () => {
+      cachePositions();
+      needsUpdate.current = true;
+    };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [cachePositions]);
 
-  useAnimationFrame(
-    useCallback(() => {
-      if (!containerRef.current) return;
+  // Animation loop — only does work when mouse has moved
+  useEffect(() => {
+    const r2 = radius * radius;
+    const halfR = radius / 2;
+
+    const loop = () => {
+      rafId.current = requestAnimationFrame(loop);
+      if (!needsUpdate.current) return;
+      needsUpdate.current = false;
+
       const { x, y } = mouseRef.current;
-      if (lastPosRef.current.x === x && lastPosRef.current.y === y) return;
-      lastPosRef.current = { x, y };
+      const positions = cachedPositions.current;
 
-      const containerRect = containerRef.current.getBoundingClientRect();
+      for (let i = 0; i < positions.length; i++) {
+        const el = letterRefs.current[i];
+        if (!el || !positions[i]) continue;
 
-      letterRefs.current.forEach((el) => {
-        if (!el) return;
-        const rect = el.getBoundingClientRect();
-        const cx = rect.left + rect.width / 2 - containerRect.left;
-        const cy = rect.top + rect.height / 2 - containerRect.top;
-        const dist = Math.sqrt((x - cx) ** 2 + (y - cy) ** 2);
+        const dx = x - positions[i].cx;
+        const dy = y - positions[i].cy;
+        const d2 = dx * dx + dy * dy;
 
-        if (dist >= radius) {
+        if (d2 >= r2) {
           el.style.fontWeight = '300';
           el.style.transform = 'scale(1)';
-          return;
+          continue;
         }
 
-        const f = calcFalloff(dist);
-        // Weight: 300 → 900
-        const weight = Math.round(300 + f * 600);
-        // Scale: 1 → 1.15
-        const scale = 1 + f * 0.15;
-        el.style.fontWeight = String(weight);
-        el.style.transform = `scale(${scale})`;
-      });
-    }, [calcFalloff, radius])
-  );
+        const dist = Math.sqrt(d2);
+        let f: number;
+        if (falloff === 'exponential') {
+          const norm = 1 - dist / radius;
+          f = norm * norm;
+        } else if (falloff === 'gaussian') {
+          const ratio = dist / halfR;
+          f = Math.exp(-(ratio * ratio) / 2);
+        } else {
+          f = 1 - dist / radius;
+        }
+
+        el.style.fontWeight = String(Math.round(300 + f * 600));
+        el.style.transform = `scale(${1 + f * 0.15})`;
+      }
+    };
+
+    rafId.current = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(rafId.current);
+  }, [radius, falloff]);
 
   const words = label.split(' ');
   let letterIndex = 0;
@@ -120,7 +138,7 @@ export default function VariableProximityText({
                 style={{
                   display: 'inline-block',
                   fontWeight: '300',
-                  transition: 'font-weight 0.1s, transform 0.15s',
+                  transition: 'font-weight 0.05s, transform 0.08s',
                   willChange: 'font-weight, transform',
                 }}
               >
