@@ -10,27 +10,19 @@ const LANGUAGES = [
 
 const spring = { type: 'spring' as const, damping: 25, stiffness: 300 };
 
-// index 0 = English name (transparent pill), index 1 = native name (colored pill)
+// Each rotation swaps in the entire pill (background + text) as one unit
 function RotatingName({ texts, interval }: { texts: string[]; interval: number }) {
   const [index, setIndex] = useState(0);
-  const isNative = index === 1;
 
   useEffect(() => {
     const id = setInterval(() => setIndex((p) => (p + 1) % texts.length), interval);
     return () => clearInterval(id);
   }, [texts.length, interval]);
 
+  const isNative = index === 1;
+
   return (
-    <motion.span
-      animate={{
-        background: isNative
-          ? 'var(--lang-pill-bg)'
-          : 'transparent',
-        borderColor: isNative
-          ? 'var(--lang-pill-border)'
-          : 'transparent',
-      }}
-      transition={{ duration: 0.3 }}
+    <span
       style={{
         display: 'inline-flex',
         justifyContent: 'center',
@@ -38,10 +30,6 @@ function RotatingName({ texts, interval }: { texts: string[]; interval: number }
         verticalAlign: 'baseline',
         minHeight: '1.4em',
         width: '100%',
-        borderRadius: '999px',
-        padding: '0.15em 0.6em',
-        borderWidth: '1px',
-        borderStyle: 'solid',
       }}
     >
       <AnimatePresence mode="wait" initial={false}>
@@ -51,12 +39,22 @@ function RotatingName({ texts, interval }: { texts: string[]; interval: number }
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: '-120%', opacity: 0 }}
           transition={spring}
-          style={{ display: 'inline-block', whiteSpace: 'nowrap' }}
+          style={{
+            display: 'inline-block',
+            whiteSpace: 'nowrap',
+            borderRadius: '999px',
+            padding: '0.15em 0.6em',
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            background: isNative ? 'var(--lang-pill-bg)' : 'transparent',
+            borderColor: isNative ? 'var(--lang-pill-border)' : 'transparent',
+            transition: 'background 0.3s, border-color 0.3s',
+          }}
         >
           {texts[index]}
         </motion.span>
       </AnimatePresence>
-    </motion.span>
+    </span>
   );
 }
 
