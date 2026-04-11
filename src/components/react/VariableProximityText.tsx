@@ -186,7 +186,11 @@ export default function VariableProximityText({
                     fontWeight: '300',
                     transition: 'font-weight 0.05s, transform 0.08s',
                     willChange: 'font-weight, transform',
-                    ...(tok.highlight ? { color: 'var(--color-accent)' } : {}),
+                    ...(tok.highlight ? {
+                      color: 'var(--color-text-primary)',
+                      fontSize: '1.05em',
+                      textShadow: '0 0 0.5px currentColor',
+                    } : {}),
                   }}
                 >
                   {ch}

@@ -24,8 +24,8 @@ export const UI = {
   // ── Hero ──
   hero: {
     tagline: {
-      en: "Agents, alphas, and albums I won't shut up about.",
-      zh: "和 Claude Code 同居中。",
+      en: "Quantitative Finance × AI",
+      zh: "量化金融 × 人工智能",
     },
     resume: { en: "Resume", zh: "简历" },
   },
@@ -33,8 +33,8 @@ export const UI = {
   // ── About ──
   about: {
     bio: {
-      en: "Hey there, I'm Bobby\u{1F44B} An undergraduate studying **Quantitative Finance** at the Chinese University of Hong Kong, Shenzhen. I love building things with the help of **LLMs**, and keeping track of popular **agents'** updates.\nIn my free time, I genuinely enjoy **singing** and sharing my discoveries with friends. Meantime, I go to gym from time to time, but those muscles literally do not grow.\nI try my best to get along well with my **Claude Code**, albeit not smooth-going, still I'm working on being better at that.\nWelcome to my personal website! Scroll down for more info.",
-      zh: "Hey\u{1F44B} 我是 Bobby，**港中深量化金融**在读。喜欢借助**大模型**搞开发，也会追各种 **Agent** 的最新动态。\n课余时间真的很爱**唱歌**，也喜欢跟朋友分享新发现的好东西。偶尔去健身，但肌肉是真的不长。\n日常努力和我的 **Claude Code** 和平共处——虽然磕磕绊绊，但一直在变好。\n欢迎来到我的个人网站！往下滑看更多。",
+      en: "Hey there, I'm Bobby — An undergraduate studying **Quantitative Finance** at the Chinese University of Hong Kong, Shenzhen. I love building things with the help of **LLMs**, and keeping track of popular **agents'** updates.\nIn my free time, I genuinely enjoy **singing** and sharing my discoveries with friends. Meantime, I go to gym from time to time, but those muscles literally do not grow.\nI try my best to get along well with my **Claude Code**, albeit not smooth-going, still I'm working on being better at that.\nWelcome to my personal website! Scroll down for more info.",
+      zh: "Hey, 我是 Bobby——**港中深量化金融**在读。喜欢借助**大模型**搞开发，也会追各种 **Agent** 的最新动态。\n课余时间真的很爱**唱歌**，也喜欢跟朋友分享新发现的好东西。偶尔去健身，但肌肉是真的不长。\n日常努力和我的 **Claude Code** 和平共处——虽然磕磕绊绊，但一直在变好。\n欢迎来到我的个人网站！往下滑看更多。",
     },
     techCategories: {
       en: [
