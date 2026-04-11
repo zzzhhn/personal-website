@@ -135,7 +135,33 @@ export default function VariableProximityText({
     return () => cancelAnimationFrame(rafId.current);
   }, [radius, falloff]);
 
-  const words = label.split(' ');
+  // Parse **keyword** markers and \n line breaks into typed segments
+  const segments: { text: string; highlight: boolean; lineBreak?: boolean }[] = [];
+  const re = /\*\*(.+?)\*\*/g;
+  let cursor = 0;
+  let match: RegExpExecArray | null;
+  while ((match = re.exec(label)) !== null) {
+    if (match.index > cursor) segments.push({ text: label.slice(cursor, match.index), highlight: false });
+    segments.push({ text: match[1], highlight: true });
+    cursor = match.index + match[0].length;
+  }
+  if (cursor < label.length) segments.push({ text: label.slice(cursor), highlight: false });
+
+  // Flatten into renderable tokens: words, spaces, line breaks (with highlight flag)
+  type Token = { type: 'word'; chars: string; highlight: boolean } | { type: 'space' } | { type: 'br' };
+  const tokens: Token[] = [];
+  for (const seg of segments) {
+    const parts = seg.text.split('\n');
+    parts.forEach((part, pi) => {
+      if (pi > 0) tokens.push({ type: 'br' });
+      const words = part.split(' ');
+      words.forEach((w, wi) => {
+        if (wi > 0) tokens.push({ type: 'space' });
+        if (w) tokens.push({ type: 'word', chars: w, highlight: seg.highlight });
+      });
+    });
+  }
+
   let letterIndex = 0;
 
   return (
@@ -144,28 +170,32 @@ export default function VariableProximityText({
       className={className}
       style={{ display: 'inline', ...style }}
     >
-      {words.map((word, wi) => (
-        <span key={wi} style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
-          {word.split('').map((ch) => {
-            const idx = letterIndex++;
-            return (
-              <span
-                key={idx}
-                ref={(el) => { letterRefs.current[idx] = el; }}
-                style={{
-                  display: 'inline-block',
-                  fontWeight: '300',
-                  transition: 'font-weight 0.05s, transform 0.08s',
-                  willChange: 'font-weight, transform',
-                }}
-              >
-                {ch}
-              </span>
-            );
-          })}
-          {wi < words.length - 1 && <span style={{ display: 'inline-block' }}>&nbsp;</span>}
-        </span>
-      ))}
+      {tokens.map((tok, ti) => {
+        if (tok.type === 'br') return <br key={`br-${ti}`} />;
+        if (tok.type === 'space') return <span key={`sp-${ti}`} style={{ display: 'inline-block' }}>&nbsp;</span>;
+        return (
+          <span key={ti} style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
+            {tok.chars.split('').map((ch) => {
+              const idx = letterIndex++;
+              return (
+                <span
+                  key={idx}
+                  ref={(el) => { letterRefs.current[idx] = el; }}
+                  style={{
+                    display: 'inline-block',
+                    fontWeight: '300',
+                    transition: 'font-weight 0.05s, transform 0.08s',
+                    willChange: 'font-weight, transform',
+                    ...(tok.highlight ? { color: 'var(--color-accent)' } : {}),
+                  }}
+                >
+                  {ch}
+                </span>
+              );
+            })}
+          </span>
+        );
+      })}
     </span>
   );
 }
