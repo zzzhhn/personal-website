@@ -59,7 +59,7 @@ export default function VariableProximityText({
     };
   }, []);
 
-  // Cache positions on mount + resize
+  // Cache positions on mount, resize, and lang/theme toggle
   useEffect(() => {
     cachePositions();
     const onResize = () => {
@@ -67,7 +67,24 @@ export default function VariableProximityText({
       needsUpdate.current = true;
     };
     window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+
+    // Re-cache when language or theme toggles (display:none → block changes layout)
+    const observer = new MutationObserver(() => {
+      // Defer to next frame so display:none has resolved
+      requestAnimationFrame(() => {
+        cachePositions();
+        needsUpdate.current = true;
+      });
+    });
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-site-lang', 'data-theme'],
+    });
+
+    return () => {
+      window.removeEventListener('resize', onResize);
+      observer.disconnect();
+    };
   }, [cachePositions]);
 
   // Animation loop — only does work when mouse has moved

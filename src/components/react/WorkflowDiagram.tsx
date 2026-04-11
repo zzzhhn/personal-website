@@ -164,9 +164,19 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
     const ro = new ResizeObserver(() => measureAndDraw());
     ro.observe(container);
 
+    // Re-measure when language or theme toggles (text width changes)
+    const mo = new MutationObserver(() => {
+      requestAnimationFrame(() => measureAndDraw());
+    });
+    mo.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-site-lang', 'data-theme'],
+    });
+
     return () => {
       cancelAnimationFrame(raf);
       ro.disconnect();
+      mo.disconnect();
     };
   }, [measureAndDraw]);
 
