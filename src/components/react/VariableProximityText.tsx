@@ -148,6 +148,8 @@ export default function VariableProximityText({
   if (cursor < label.length) segments.push({ text: label.slice(cursor), highlight: false });
 
   // Flatten into renderable tokens: words, spaces, line breaks (with highlight flag)
+  // CJK characters are emitted individually so the browser can wrap at any character boundary
+  const CJK_RE = /[\u4e00-\u9fff\u3000-\u303f\uff00-\uffef]/;
   type Token = { type: 'word'; chars: string; highlight: boolean } | { type: 'space' } | { type: 'br' };
   const tokens: Token[] = [];
   for (const seg of segments) {
@@ -157,7 +159,22 @@ export default function VariableProximityText({
       const words = part.split(' ');
       words.forEach((w, wi) => {
         if (wi > 0) tokens.push({ type: 'space' });
-        if (w) tokens.push({ type: 'word', chars: w, highlight: seg.highlight });
+        if (!w) return;
+        // Split CJK: each CJK char becomes its own token, consecutive non-CJK stays grouped
+        if (CJK_RE.test(w)) {
+          let buf = '';
+          for (const ch of w) {
+            if (CJK_RE.test(ch)) {
+              if (buf) { tokens.push({ type: 'word', chars: buf, highlight: seg.highlight }); buf = ''; }
+              tokens.push({ type: 'word', chars: ch, highlight: seg.highlight });
+            } else {
+              buf += ch;
+            }
+          }
+          if (buf) tokens.push({ type: 'word', chars: buf, highlight: seg.highlight });
+        } else {
+          tokens.push({ type: 'word', chars: w, highlight: seg.highlight });
+        }
       });
     });
   }

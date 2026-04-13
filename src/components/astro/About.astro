@@ -58,6 +58,11 @@ import BioProximity from "../react/BioProximity";
   font-size: 1.0625rem;   /* 17px — slightly above 16px for comfort */
   text-align: left;
 }
+/* CJK text: allow break anywhere so Chinese doesn't overflow container */
+[data-lang="zh"].bio-text {
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
 .bio-container .bio-text br {
   display: block;
   content: "";
