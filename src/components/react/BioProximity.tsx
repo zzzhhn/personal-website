@@ -8,20 +8,20 @@ interface BioProximityProps {
 export default function BioProximity({ textEn, textZh }: BioProximityProps) {
   return (
     <>
-      <p data-lang="en" className="bio-text" style={{ lineHeight: 1.8 }}>
+      <div data-lang="en" className="bio-text" style={{ lineHeight: 1.65 }}>
         <VariableProximityText
           label={textEn}
           radius={55}
           falloff="gaussian"
         />
-      </p>
-      <p data-lang="zh" className="bio-text" style={{ lineHeight: 1.8 }}>
+      </div>
+      <div data-lang="zh" className="bio-text" style={{ lineHeight: 1.65 }}>
         <VariableProximityText
           label={textZh}
           radius={40}
           falloff="gaussian"
         />
-      </p>
+      </div>
     </>
   );
 }

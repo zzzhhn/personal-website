@@ -33,8 +33,8 @@ export const UI = {
   // ── About ──
   about: {
     bio: {
-      en: "Hey there, I'm Bobby — An undergraduate studying **Quantitative Finance** at the Chinese University of Hong Kong, Shenzhen. I love building things with the help of **LLMs**, and keeping track of popular **agents'** updates.\nIn my free time, I genuinely enjoy **singing** and sharing my discoveries with friends. Meantime, I go to gym from time to time, but those muscles literally do not grow.\nI try my best to get along well with my **Claude Code**, albeit not smooth-going, still I'm working on being better at that.\nWelcome to my personal website! Scroll down for more info.",
-      zh: "Hey, 我是 Bobby——**港中深量化金融**在读。喜欢借助**大模型**搞开发，也会追各种 **Agent** 的最新动态。\n课余时间真的很爱**唱歌**，也喜欢跟朋友分享新发现的好东西。偶尔去健身，但肌肉是真的不长。\n日常努力和我的 **Claude Code** 和平共处——虽然磕磕绊绊，但一直在变好。\n欢迎来到我的个人网站！往下滑看更多。",
+      en: "Hey there, I'm Bobby\u{1F44B} An undergraduate studying **Quantitative Finance** at the Chinese University of Hong Kong, Shenzhen. I love building things with the help of **LLMs**, and keeping track of popular **agents'** updates.\nIn my free time, I genuinely enjoy **singing** and sharing my discoveries with friends. Meantime, I go to gym from time to time, but those muscles literally do not grow.\nI try my best to get along well with my **Claude Code**, albeit not smooth-going, still I'm working on being better at that.\nWelcome to my personal website! Scroll down for more info.",
+      zh: "余，港中深**量化金融**之学子也。平生好造物，尤喜借**大模型**之力，筑器于代码之间；又常追**智能体**之动向，乐此不疲。\n余幼时即好**歌**，每有所得，亦好与友人共赏，不亦乐乎。间或入健身房，欲效古人「天行健，君子以自强不息」之志——然肌肉之事，非余所能左右也，练之数月，纹丝不动，徒增笑耳。\n今与 **Claude Code** 为伴，日夕相对，磨合之路，坎坷颇多。譬如驭马，马性未驯，骑者亦生，然余不敢懈怠，日有精进之心。\n此余之小站也，愿君徐徐下览，或有可观者。",
     },
     techCategories: {
       en: [
