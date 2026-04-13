@@ -12,6 +12,31 @@ import BioProximity from "../react/BioProximity";
       <BioProximity textEn={UI.about.bio.en} textZh={UI.about.bio.zh} client:visible />
     </div>
 
+    <!-- TEMP: Font preview — delete after choosing -->
+    <div class="mx-auto mb-16" style="max-width: 38rem; color: var(--color-text-secondary); display: flex; flex-direction: column; gap: 1.25rem;">
+      <p style="font-family: 'Geist Sans', sans-serif; font-size: 0.9375rem; font-weight: 350; line-height: 1.7; letter-spacing: 0.01em;">
+        <strong style="color: var(--color-text-primary);">① Geist Sans</strong> — Agents, alphas, and albums I won't shut up about. The quick brown fox jumps over the lazy dog.
+      </p>
+      <p style="font-family: 'Instrument Serif', Georgia, serif; font-size: 1.0625rem; font-weight: 400; line-height: 1.6; letter-spacing: -0.01em;">
+        <strong style="color: var(--color-text-primary);">② Instrument Serif</strong> — Agents, alphas, and albums I won't shut up about. The quick brown fox jumps over the lazy dog.
+      </p>
+      <p style="font-family: Georgia, 'Times New Roman', serif; font-size: 1rem; font-weight: 400; line-height: 1.65;">
+        <strong style="color: var(--color-text-primary);">③ Georgia</strong> — Agents, alphas, and albums I won't shut up about. The quick brown fox jumps over the lazy dog.
+      </p>
+      <p style="font-family: Palatino, 'Palatino Linotype', 'Book Antiqua', serif; font-size: 1rem; font-weight: 400; line-height: 1.6;">
+        <strong style="color: var(--color-text-primary);">④ Palatino</strong> — Agents, alphas, and albums I won't shut up about. The quick brown fox jumps over the lazy dog.
+      </p>
+      <p style="font-family: Avenir, 'Avenir Next', Montserrat, sans-serif; font-size: 0.9375rem; font-weight: 400; line-height: 1.7; letter-spacing: 0.02em;">
+        <strong style="color: var(--color-text-primary);">⑤ Avenir</strong> — Agents, alphas, and albums I won't shut up about. The quick brown fox jumps over the lazy dog.
+      </p>
+      <p style="font-family: 'Gill Sans', 'Gill Sans MT', Calibri, sans-serif; font-size: 0.9375rem; font-weight: 400; line-height: 1.7; letter-spacing: 0.01em;">
+        <strong style="color: var(--color-text-primary);">⑥ Gill Sans</strong> — Agents, alphas, and albums I won't shut up about. The quick brown fox jumps over the lazy dog.
+      </p>
+      <p style="font-family: Futura, 'Trebuchet MS', sans-serif; font-size: 0.9375rem; font-weight: 400; line-height: 1.7; letter-spacing: 0.03em;">
+        <strong style="color: var(--color-text-primary);">⑦ Futura</strong> — Agents, alphas, and albums I won't shut up about. The quick brown fox jumps over the lazy dog.
+      </p>
+    </div>
+
     <!-- EN tech categories -->
     <div data-lang="en" class="skill-grid mx-auto" style="max-width: 56rem;">
       {UI.about.techCategories.en.map((cat, i) => {
