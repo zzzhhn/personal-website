@@ -34,6 +34,11 @@ const { title, description, image } = Astro.props;
       crossorigin
     />
 
+    <!-- TEMP: Font preview CDN — delete after choosing -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Noto+Sans+SC:wght@300;400&family=ZCOOL+XiaoWei&family=Ma+Shan+Zheng&family=Liu+Jian+Mao+Cao&family=Long+Cang&family=LXGW+WenKai+TC:wght@400&display=swap" rel="stylesheet" />
+
     <!-- Theme & language init: runs synchronously before first paint to prevent FOUC -->
     <script is:inline>
       (function () {
