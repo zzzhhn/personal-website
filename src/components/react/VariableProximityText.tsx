@@ -192,7 +192,7 @@ export default function VariableProximityText({
         if (tok.type === 'space') return <span key={`sp-${ti}`} style={{ display: 'inline-block' }}>&nbsp;</span>;
         return (
           <span key={ti} style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
-            {tok.chars.split('').map((ch) => {
+            {[...tok.chars].map((ch) => {
               const idx = letterIndex++;
               return (
                 <span
