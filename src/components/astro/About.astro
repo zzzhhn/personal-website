@@ -55,16 +55,18 @@ import BioProximity from "../react/BioProximity";
 <style is:global>
 /* ── Bio container typography — Magazine Editorial (Scheme C) ── */
 .bio-container {
+  max-width: 38rem;
+  margin-left: auto;
+  margin-right: auto;
   text-align: left;
 }
-/* EN: Instrument Serif body, 19px, tight line-height for editorial feel */
+/* EN: Geist Sans body, 15px, generous line-height for precision feel */
 [data-lang="en"].bio-text {
-  font-family: "Instrument Serif", Georgia, serif;
-  font-size: 1.1875rem;
-  font-weight: 400;
-  line-height: 1.55;
-  letter-spacing: -0.015em;
-  max-width: 38rem;
+  font-family: "Geist Sans", ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.9375rem;
+  font-weight: 350;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
 }
 /* ZH: Songti body — classical book feel matching 文言文 content */
 [data-lang="zh"].bio-text {
