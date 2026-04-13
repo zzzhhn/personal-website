@@ -129,8 +129,8 @@ import BioParagraph from "../react/BioParagraph";
   overflow-wrap: break-word;
   color: var(--color-text-secondary);
 }
-/* English text within Chinese bio should use Fraunces */
-[data-lang="zh"].bio-text span[style*="inline-block"]:not([style*="fontSize"]) {
+/* Latin characters within Chinese bio use Fraunces */
+[data-lang="zh"].bio-text [data-latin] {
   font-family: "Fraunces", serif;
 }
 

@@ -194,10 +194,12 @@ export default function VariableProximityText({
           <span key={ti} style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>
             {[...tok.chars].map((ch) => {
               const idx = letterIndex++;
+              const isLatin = !CJK_RE.test(ch);
               return (
                 <span
                   key={idx}
                   ref={(el) => { letterRefs.current[idx] = el; }}
+                  {...(isLatin ? { 'data-latin': '' } : {})}
                   style={{
                     display: 'inline-block',
                     fontWeight: '300',
