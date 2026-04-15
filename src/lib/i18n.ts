@@ -39,7 +39,7 @@ export const UI = {
       },
       {
         en: "In my free time, I genuinely enjoy **singing** and sharing my discoveries with friends.\n\nMeantime, I go to gym from time to time, but those muscles literally do not grow.",
-        zh: "余幼时即好歌，每有所得，亦好与友人共赏，不亦乐乎。\n间或入健身房，欲练筋骨以壮其身；\n然肌肉之事，非余所能左右也，练之数月，纹丝不动，徒增笑耳。",
+        zh: "余幼时即好**歌**，每有所得，亦好与友人共赏，不亦乐乎。\n间或入健身房，欲练筋骨以壮其身；\n然肌肉之事，非余所能左右也，练之数月，纹丝不动，徒增笑耳。",
       },
       {
         en: "I try my best to get along well with my **Claude Code**, albeit not smooth-going, still I'm working on being better at that.\n\nWelcome to my personal website! Scroll down for more info.",
