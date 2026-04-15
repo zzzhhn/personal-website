@@ -109,17 +109,29 @@ import BioParagraph from "../react/BioParagraph";
 
 <style is:global>
 /* ── Bio typography ── */
-/* EN + ZH: Ma Shan Zheng — 毛笔楷书, classical calligraphy */
-[data-lang="en"].bio-text,
+/* EN: Fraunces — soft serif with personality */
+[data-lang="en"].bio-text {
+  font-family: "Fraunces", serif;
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  color: var(--color-text-secondary);
+}
+/* ZH: Ma Shan Zheng — 毛笔楷书, classical calligraphy */
 [data-lang="zh"].bio-text {
   font-family: "Ma Shan Zheng", cursive;
-  font-size: 1.125rem;
+  font-size: 1.1875rem;
   font-weight: 400;
   line-height: 1.75;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.03em;
   word-break: break-all;
   overflow-wrap: break-word;
   color: var(--color-text-secondary);
+}
+/* Latin characters within Chinese bio use Fraunces */
+[data-lang="zh"].bio-text [data-latin] {
+  font-family: "Fraunces", serif;
 }
 
 /* ── Interleaved layout — 3 rows ── */
