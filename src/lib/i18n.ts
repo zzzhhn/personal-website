@@ -35,7 +35,7 @@ export const UI = {
     bio: [
       {
         en: "Hey there, I'm Bobby👋 An undergraduate studying **Quantitative Finance** at the Chinese University of Hong Kong, Shenzhen.\nI love building things with the help of **LLMs**, and keeping track of popular **agents'** updates.",
-        zh: "余，港中深**量化金融**之学子也。\n平生好造物，尤喜借**大模型**之力，筑器于代码之间；\n又常追**智能体**之动向，乐此不疲。",
+        zh: "君安。\n余，港中深**量化金融**之学子也。\n平生好造物，尤喜借**大模型**之力，筑器于代码之间；\n又常追**智能体**之动向，乐此不疲。",
       },
       {
         en: "In my free time, I genuinely enjoy **singing** and sharing my discoveries with friends.\n\nMeantime, I go to gym from time to time, but those muscles literally do not grow.",

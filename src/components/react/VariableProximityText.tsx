@@ -108,8 +108,10 @@ export default function VariableProximityText({
         const dy = y - positions[i].cy;
         const d2 = dx * dx + dy * dy;
 
+        const isHighlight = el.hasAttribute('data-highlight');
+
         if (d2 >= r2) {
-          el.style.fontWeight = '300';
+          el.style.fontWeight = isHighlight ? '700' : '300';
           el.style.transform = 'scale(1)';
           continue;
         }
@@ -126,7 +128,7 @@ export default function VariableProximityText({
           f = 1 - dist / radius;
         }
 
-        el.style.fontWeight = String(Math.round(300 + f * 600));
+        el.style.fontWeight = String(Math.round((isHighlight ? 700 : 300) + f * 200));
         el.style.transform = `scale(${1 + f * 0.15})`;
       }
     };
@@ -200,15 +202,17 @@ export default function VariableProximityText({
                   key={idx}
                   ref={(el) => { letterRefs.current[idx] = el; }}
                   {...(isLatin ? { 'data-latin': '' } : {})}
+                  {...(tok.highlight ? { 'data-highlight': '' } : {})}
                   style={{
                     display: 'inline-block',
-                    fontWeight: '300',
+                    fontWeight: tok.highlight ? '700' : '300',
                     transition: 'font-weight 0.05s, transform 0.08s',
                     willChange: 'font-weight, transform',
                     ...(tok.highlight ? {
                       color: 'var(--color-text-primary)',
-                      fontSize: '1.05em',
-                      textShadow: '0 0 0.5px currentColor',
+                      fontSize: '1.1em',
+                      textDecoration: 'underline',
+                      textUnderlineOffset: '3px',
                     } : {}),
                   }}
                 >
