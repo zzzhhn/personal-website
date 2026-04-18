@@ -1,38 +1,56 @@
 ---
 title: "Alpha Agent"
 slug: "alpha-agent"
-tagline: "LLM-powered multi-agent system for quantitative alpha factor research"
-description: "Multi-agent pipeline that generates, backtests, and iteratively refines alpha factors for A-share markets using Gemma 4 26B and a custom recursive descent parser."
-date: 2025-12-01
+tagline: "Interactive quant research workstation where a grammar-constrained LLM sits inside the loop"
+description: "FastAPI + Next.js workstation that turns a one-sentence alpha hypothesis into a Pydantic FactorSpec, runs a synthetic-panel Spearman-IC smoke check in milliseconds, and serves nine interactive research dashboards over a typed LLM gateway."
+date: 2026-04-01
 status: "completed"
 featured: true
-techStack: ["Python", "Gemma 4 26B", "Streamlit", "Ollama", "pandas"]
+techStack: ["FastAPI", "Next.js 16", "TypeScript", "Kimi LLM", "numpy", "Vercel", "AutoDL GPU"]
 highlights:
-  - "4-agent pipeline: Hypothesis → Factor → Backtest → Eval with iterative refinement"
-  - "Custom recursive descent parser for Qlib-compatible factor DSL (20+ operators)"
-  - "End-to-end processing in 2-3 iterations; 168 tests, 87% coverage"
+  - "Grammar-constrained LLM pipeline — natural language → Pydantic FactorSpec → AST-validated expression against a 15-op whitelist (no eval/exec, no attribute access)"
+  - "10-day cross-sectional Spearman-IC smoke test on a 20-ticker synthetic panel catches broken operators in under 5ms, before any real OHLCV"
+  - "Nine interactive dashboards (data / alpha / backtest / factors / gates / stress / signal / activity / report) with per-router /healthz/routers liveness and distinct 502/422/500 error codes"
 links:
   github: "https://github.com/zzzhhn/alpha-agent"
-  live: "https://alpha.bobbyzhong.com"
+  live: "https://alpha.bobbyzhong.com/data"
 order: 0
 ---
 
 ## Background
 
-Quantitative factor research traditionally requires deep domain expertise and tedious manual iteration. Inspired by the KDD '25 AlphaAgent paper, this project automates the full research loop: from natural language hypothesis generation to factor expression synthesis, backtesting, and evaluation — all orchestrated by a multi-agent LLM system.
+The first pass was a "television": 27 GET endpoints, zero user actions. The refactor (REFACTOR_PLAN W1 / W2) turned it into a research workstation where the LLM is a controlled tool inside the loop, not a black box around it.
 
 ## Architecture
 
-Four specialized agents collaborate in a feedback loop:
+Two halves connected by HTTP:
 
-1. **HypothesisAgent** — generates financial hypotheses from natural language queries
-2. **FactorAgent** — synthesizes factor expressions in a Qlib-compatible DSL (recursive descent parser with operator precedence)
-3. **BacktestAgent** — evaluates factors via IC, ICIR, Sharpe ratio, alpha decay analysis on CSI300 data
-4. **EvalAgent** — judges results and provides structured feedback for iterative refinement
+1. **Backend** — FastAPI on an AutoDL RTX 5090 node, tunnelled via Cloudflare. Pydantic schemas, AST-based safe evaluation, a numpy-only vectorized operator layer, per-router `/healthz/routers` endpoint. Kimi For Coding serves the LLM over an Anthropic-compatible `/messages` API.
+2. **Frontend** — Next.js 16 App Router on Vercel. Interactive dashboards for data, alpha signals, backtests, factors, gate editing, stress tests. zh / en toggle, dark / light theme, accent-color semantics for IC magnitude.
+
+## Hypothesis Translator (T1)
+
+One sentence in, an executable FactorSpec out:
+
+- System prompt enumerates the 15-op whitelist, operand set, and one worked example
+- LLM output parsed as Pydantic `FactorSpec` (name, hypothesis, expression, operators_used, lookback, universe, justification)
+- AST walker over `ast.parse(mode="eval")` rejects attribute access, imports, lambdas, non-numeric constants, keyword args; enforces `declared_ops == used_ops` equality so the LLM cannot silently drop or sneak in operators
+- 20-ticker geometric-Brownian-motion panel of (lookback + 11 days) is generated on the fly; per-day cross-sectional Spearman IC over the last 10 days, averaged
+
+End-to-end: ~3 s per hypothesis via Kimi (667 tokens average), smoke in 2–5 ms.
+
+## Vectorized Scan Layer
+
+Fifteen pure-numpy operators on a `(T, N)` panel:
+
+- Time-series (axis=0): `ts_mean`, `ts_std`, `ts_zscore`, `ts_rank`, `ts_corr`
+- Cross-section (axis=1): `rank` (percentile), `scale` (demean + L1 norm), `winsorize`
+- Elementwise: `log`, `sign`, `add`, `sub`, `mul`, `div` (NaN on zero divide), `pow_`
+
+All NaN-safe, all pure, dispatched by an AST walker — not `eval`.
 
 ## Key Results
 
-- End-to-end pipeline processes "find short-term reversal factors" in 2-3 iterations
-- Custom recursive descent parser supports infix math + 20 time-series/cross-section operators
-- 168 tests passing with 87% coverage on core modules
-- Zero external framework dependencies for agent orchestration (raw HTTP to Ollama)
+- Every factor that reaches the real backtest engine is already proven to be numerically executable on a synthetic panel
+- Distinct HTTP codes (503 no LLM, 502 LLM error, 422 schema / AST fail, 500 smoke crash) so the UI surfaces precise failures instead of a blanket "Network error"
+- `/healthz/routers` exposes which FastAPI routers loaded at startup, catching missing-dependency 404s that would otherwise hide behind a 200-OK homepage
