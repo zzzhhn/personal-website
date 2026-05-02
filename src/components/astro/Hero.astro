@@ -76,12 +76,16 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
         />
       </div>
 
-      <!-- Bio summary -->
-      <p class="hero-bio" data-lang="en">
-        Agents, alphas, and albums I won't shut up about.
+      <!-- Bio summary — both EN and ZH use char-by-char typewriter -->
+      <p class="hero-bio bio-anim" data-lang="en" id="bio-en">
+        {"Agents, alphas, and albums I won't shut up about.".split('').map((ch, i) => (
+          <span class="bio-char" style={`--bi:${i}`}>{ch === ' ' ? ' ' : ch}</span>
+        ))}
       </p>
-      <p class="hero-bio" data-lang="zh">
-        和 Claude Code 同居中。
+      <p class="hero-bio bio-anim" data-lang="zh" id="bio-zh">
+        {"和 Claude Code 同居中。".split('').map((ch, i) => (
+          <span class="bio-char" style={`--bi:${i}`}>{ch === ' ' ? ' ' : ch}</span>
+        ))}
       </p>
 
       <!-- Keyword chips -->
@@ -311,6 +315,30 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     margin-top: 0.25rem;
     max-width: 28rem;
   }
+
+  /* ── Bio typewriter chars (EN + ZH share the same effect) ── */
+  .bio-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(2px);
+    white-space: pre;
+  }
+  .bio-anim.bio-running .bio-char {
+    animation: bio-typewriter-in 0.18s ease-out forwards;
+    animation-delay: calc(var(--bi) * 32ms);
+  }
+  @keyframes bio-typewriter-in {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bio-char {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+
 
   /* Keyword chips */
   .hero-chips {
@@ -616,23 +644,82 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     return document.documentElement.getAttribute("data-theme") !== "light";
   }
 
+  /* ── Dark-mode physics: mouse repulsion + spring return + damping ── */
+  function updateDarkPhysics(w, h) {
+    var REPEL_R = 140;
+    var REPEL_R2 = REPEL_R * REPEL_R;
+    var REPEL_FORCE = 1.8;
+    var SPRING_K = 0.014;
+    var DAMPING = 0.88;
+    var DRIFT_AMP = 0.22;
+    var DRIFT_FREQ_X = 1.4;
+    var DRIFT_FREQ_Y = 1.2;
+    var i, p, dx, dy, d2, d, falloff, fx, fy;
+    var hasMouse = mouse.x > -500;
+
+    for (i = 0; i < particles.length; i++) {
+      p = particles[i];
+
+      fx = (p.hx - p.x) * SPRING_K;
+      fy = (p.hy - p.y) * SPRING_K;
+
+      if (hasMouse) {
+        dx = p.x - mouse.x;
+        dy = p.y - mouse.y;
+        d2 = dx * dx + dy * dy;
+        if (d2 < REPEL_R2 && d2 > 1) {
+          d = Math.sqrt(d2);
+          falloff = (1 - d / REPEL_R);
+          falloff = falloff * falloff;
+          fx += (dx / d) * falloff * REPEL_FORCE;
+          fy += (dy / d) * falloff * REPEL_FORCE;
+        }
+      }
+
+      p.t += p.speed;
+      fx += Math.sin(p.t * DRIFT_FREQ_X + p.phase) * DRIFT_AMP;
+      fy += Math.cos(p.t * DRIFT_FREQ_Y + p.phase * 1.2) * DRIFT_AMP;
+
+      p.vx = (p.vx + fx) * DAMPING;
+      p.vy = (p.vy + fy) * DAMPING;
+      p.x += p.vx;
+      p.y += p.vy;
+
+      if (p.x < 0) p.vx += -p.x * 0.05;
+      if (p.x > w) p.vx -= (p.x - w) * 0.05;
+      if (p.y < 0) p.vy += -p.y * 0.05;
+      if (p.y > h) p.vy -= (p.y - h) * 0.05;
+    }
+  }
+
   function drawDark(w, h, t) {
     var connectDist = 120;
-    var i, j, p, dx, dy, dist, alpha;
+    var i, j, p, p2, dx, dy, dist, alpha, tension;
 
-    // Lines between stars
+    // Lines between stars — tension increases when stretched by repulsion
     ctx.lineWidth = 0.5;
     for (i = 0; i < particles.length; i++) {
+      p = particles[i];
       for (j = i + 1; j < particles.length; j++) {
-        dx = particles[i].x - particles[j].x;
-        dy = particles[i].y - particles[j].y;
+        p2 = particles[j];
+        dx = p.x - p2.x;
+        dy = p.y - p2.y;
         dist = Math.sqrt(dx * dx + dy * dy);
         if (dist < connectDist) {
-          alpha = (1 - dist / connectDist) * 0.35;
-          ctx.strokeStyle = "rgba(180,195,210," + alpha + ")";
+          var rdx = p.hx - p2.hx;
+          var rdy = p.hy - p2.hy;
+          var restDist = Math.sqrt(rdx * rdx + rdy * rdy);
+          tension = restDist > 0 ? Math.min(1.5, dist / restDist) : 1;
+          alpha = (1 - dist / connectDist) * 0.35 * tension;
+          var stretched = Math.min(1, Math.max(0, (tension - 1) * 2));
+          var r = 180 + stretched * (130 - 180);
+          var g = 195 + stretched * (155 - 195);
+          var b = 210 + stretched * (255 - 210);
+          ctx.strokeStyle = "rgba(" + r.toFixed(0) + "," + g.toFixed(0) + "," + b.toFixed(0) + "," + alpha + ")";
+          ctx.lineWidth = 0.5 + stretched * 0.6;
           ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p2.x, p2.y);
           ctx.stroke();
         }
       }
@@ -655,12 +742,14 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       }
     }
 
-    // Star dots
+    // Star dots — slight brightness boost when displaced from home
     for (i = 0; i < particles.length; i++) {
       p = particles[i];
+      var displaced = Math.min(1, Math.hypot(p.x - p.hx, p.y - p.hy) / 60);
+      var glowO = (p.o * 0.85) + displaced * 0.25;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, 6.283);
-      ctx.fillStyle = "rgba(200,210,225," + (p.o * 0.85) + ")";
+      ctx.arc(p.x, p.y, p.r + displaced * 0.6, 0, 6.283);
+      ctx.fillStyle = "rgba(200,210,225," + Math.min(1, glowO) + ")";
       ctx.fill();
     }
   }
@@ -805,16 +894,8 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     }
     draw._lastDark = dark;
 
-    // Update positions (shared)
-    for (i = 0; i < particles.length; i++) {
-      p = particles[i];
-      p.x += p.vx;
-      p.y += p.vy;
-      if (p.x < 0 || p.x > w) p.vx *= -1;
-      if (p.y < 0 || p.y > h) p.vy *= -1;
-    }
-
     if (dark) {
+      updateDarkPhysics(w, h);
       drawDark(w, h, t);
     } else {
       drawLight(w, h, t);
@@ -846,3 +927,55 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
   raf = requestAnimationFrame(draw);
 })();
 </script>
+
+<script is:inline>
+/* ── Bio typewriter: EN + ZH same effect, replay on hover/lang-switch ── */
+(function () {
+  var bios = document.querySelectorAll(".bio-anim");
+  if (!bios.length) return;
+
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    bios.forEach(function (p) { p.classList.add("bio-running"); });
+    return;
+  }
+
+  function play(el) {
+    el.classList.remove("bio-running");
+    void el.offsetWidth;
+    el.classList.add("bio-running");
+  }
+
+  var triggered = false;
+  var bioEN = document.getElementById("bio-en");
+  var bioZH = document.getElementById("bio-zh");
+
+  function playForActiveLang() {
+    var lang = document.documentElement.getAttribute("data-site-lang") || "en";
+    var target = lang === "zh" ? bioZH : bioEN;
+    if (target) play(target);
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    if (triggered) return;
+    for (var i = 0; i < entries.length; i++) {
+      if (entries[i].isIntersecting) {
+        triggered = true;
+        io.disconnect();
+        setTimeout(playForActiveLang, 200);
+        break;
+      }
+    }
+  }, { threshold: 0.3 });
+  if (bioEN) io.observe(bioEN);
+
+  if (bioEN) bioEN.addEventListener("mouseenter", function () { play(bioEN); });
+  if (bioZH) bioZH.addEventListener("mouseenter", function () { play(bioZH); });
+
+  var langObs = new MutationObserver(function () {
+    if (!triggered) return;
+    setTimeout(playForActiveLang, 50);
+  });
+  langObs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-site-lang"] });
+})();
+</script>
+
