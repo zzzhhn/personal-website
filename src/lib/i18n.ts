@@ -6,6 +6,7 @@ export const UI = {
   // ── Nav & Global ──
   nav: {
     about: { en: "About", zh: "关于" },
+    education: { en: "Education", zh: "教育" },
     experience: { en: "Experience", zh: "实习经历" },
     projects: { en: "Projects", zh: "项目" },
     contact: { en: "Contact", zh: "联系" },
