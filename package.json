@@ -21,6 +21,9 @@
     "recharts": "^3.8.1",
     "tailwindcss": "^4.2.2"
   },
+  "overrides": {
+    "vite": "^7"
+  },
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild",
