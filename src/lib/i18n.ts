@@ -36,15 +36,15 @@ export const UI = {
     bio: [
       {
         en: "Hey there, I'm Bobby👋 An undergraduate studying **Quantitative Finance** at the Chinese University of Hong Kong, Shenzhen.\nI love building things with the help of **LLMs**, and keeping track of popular **agents'** updates.",
-        zh: "你好👋我叫钟昊楠，你可以叫我 Bobby。\n我是 2023 级香港中文大学（深圳）本科生，就读量化金融专业。\n我喜欢多元化的背景，与 Agent 协作是我生活的驱动力之一。",
+        zh: "你好👋我叫钟昊楠，你可以叫我 Bobby。\n我是 2023 级香港中文大学（深圳）本科生，就读**量化金融**专业。\n我喜欢**多元化**的背景，与 Agent 协作是我生活的驱动力之一。",
       },
       {
         en: "In my free time, I genuinely enjoy **singing** and sharing my discoveries with friends.\n\nMeantime, I go to gym from time to time, but those muscles literally do not grow.",
-        zh: "我有过一段时间的职业探索，过往经历包括投行、Quant Research、VC、产品经理；\n目前发现自己对大模型评测相关领域很感兴趣，知识库和方法论沉淀中……\n同时也在高强度和 Claude Code 一同搭建个人项目，尝试将想法落地为实践。",
+        zh: "我有过一段时间的**职业探索**，过往经历包括投行、Quant Research、VC、产品经理；\n目前发现自己对**大模型评测**相关领域很感兴趣，知识库和方法论沉淀中……\n同时也在高强度和 Claude Code 一同搭建个人项目，尝试将想法落地为实践。",
       },
       {
         en: "I try my best to get along well with my **Claude Code**, albeit not smooth-going, still I'm working on being better at that.\n\nWelcome to my personal website! Scroll down for more info.",
-        zh: "我相信万卷书和万里路同等重要，\n空闲时间喜欢唱歌、健身、主持、烹饪、旅行。\n欢迎来到我的个人网站！愿君徐徐下览，或有可观者。",
+        zh: "我相信**万卷书**和**万里路**同等重要，\n空闲时间喜欢唱歌、健身、主持、烹饪、旅行。\n欢迎来到我的个人网站！愿君徐徐下览，或有可观者。",
       },
     ],
     techCategories: {

@@ -211,8 +211,6 @@ export default function VariableProximityText({
                     ...(tok.highlight ? {
                       color: 'var(--color-text-primary)',
                       fontSize: '1.1em',
-                      textDecoration: 'underline',
-                      textUnderlineOffset: '3px',
                     } : {}),
                   }}
                 >
