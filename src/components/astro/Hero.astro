@@ -385,14 +385,14 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     gap: 1rem;
     flex-wrap: wrap;
   }
-  /* Location button: hover-reveal bilingual tooltip via attr() + [data-site-lang] */
+  /* Location button: hover-reveal bilingual tooltip on the right side */
   .hero-location-btn { position: relative; cursor: default; }
   .hero-location-btn::after {
     content: attr(data-tooltip-en);
     position: absolute;
-    bottom: calc(100% + 0.55rem);
-    left: 50%;
-    transform: translateX(-50%) translateY(4px);
+    left: calc(100% + 0.6rem);
+    top: 50%;
+    transform: translateY(-50%) translateX(-4px);
     white-space: nowrap;
     padding: 0.4rem 0.75rem;
     border-radius: 8px;
@@ -417,7 +417,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
   .hero-location-btn:hover::after,
   .hero-location-btn:focus-visible::after {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(-50%) translateX(0);
   }
 
   .hero-primary-cta {
