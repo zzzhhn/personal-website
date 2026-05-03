@@ -112,6 +112,19 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
           <a href={`mailto:${SITE.email}`} class="hero-icon-btn" aria-label="Email">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
           </a>
+          <!-- Base location: hover-reveal tooltip with bilingual city names -->
+          <button
+            type="button"
+            class="hero-icon-btn hero-location-btn"
+            data-tooltip-en="Based in Shenzhen · Hong Kong"
+            data-tooltip-zh="深圳 · 香港"
+            aria-label="Based in Shenzhen and Hong Kong"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+            </svg>
+          </button>
         </div>
       </div>
 
@@ -371,6 +384,40 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     align-items: center;
     gap: 1rem;
     flex-wrap: wrap;
+  }
+  /* Location button: hover-reveal bilingual tooltip via attr() + [data-site-lang] */
+  .hero-location-btn { position: relative; cursor: default; }
+  .hero-location-btn::after {
+    content: attr(data-tooltip-en);
+    position: absolute;
+    bottom: calc(100% + 0.55rem);
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+    white-space: nowrap;
+    padding: 0.4rem 0.75rem;
+    border-radius: 8px;
+    background: var(--color-surface-elevated);
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+    border: 1px solid var(--color-border-glass);
+    color: var(--color-text-primary);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    box-shadow: 0 4px 16px var(--color-shadow-depth);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.22s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  :global([data-site-lang="zh"]) .hero-location-btn::after {
+    content: attr(data-tooltip-zh);
+    font-family: "STKaiti", "Kaiti SC", "KaiTi", "楷体", "AR PL UKai", serif;
+    letter-spacing: 0.05em;
+  }
+  .hero-location-btn:hover::after,
+  .hero-location-btn:focus-visible::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
   }
 
   .hero-primary-cta {
