@@ -36,29 +36,29 @@ export const UI = {
     bio: [
       {
         en: "Hey there, I'm Bobby👋 An undergraduate studying **Quantitative Finance** at the Chinese University of Hong Kong, Shenzhen.\nI love building things with the help of **LLMs**, and keeping track of popular **agents'** updates.",
-        zh: "君安。\n余，港中深**量化金融**之学子也。\n平生好造物，尤喜借**大模型**之力，筑器于代码之间；\n又常追**智能体**之动向，乐此不疲。",
+        zh: "你好👋我叫钟昊楠，你可以叫我 Bobby。\n我是 2023 级香港中文大学（深圳）本科生，就读量化金融专业。\n我喜欢多元化的背景，与 Agent 协作是我生活的驱动力之一。",
       },
       {
         en: "In my free time, I genuinely enjoy **singing** and sharing my discoveries with friends.\n\nMeantime, I go to gym from time to time, but those muscles literally do not grow.",
-        zh: "余幼时即好**歌**，每有所得，亦好与友人共赏，不亦乐乎。\n间或入健身房，欲练筋骨以壮其身；\n然肌肉之事，非余所能左右也，练之数月，纹丝不动，徒增笑耳。",
+        zh: "我有过一段时间的职业探索，过往经历包括投行、Quant Research、VC、产品经理；\n目前发现自己对大模型评测相关领域很感兴趣，知识库和方法论沉淀中……\n同时也在高强度和 Claude Code 一同搭建个人项目，尝试将想法落地为实践。",
       },
       {
         en: "I try my best to get along well with my **Claude Code**, albeit not smooth-going, still I'm working on being better at that.\n\nWelcome to my personal website! Scroll down for more info.",
-        zh: "今与 **Claude Code** 为伴，日夕相对，磨合之路，坎坷颇多。\n譬如驭马，马性未驯，骑者亦生，然余不敢懈怠，日有精进之心。\n此余之小站也，愿君徐徐下览，或有可观者。",
+        zh: "我相信万卷书和万里路同等重要，\n空闲时间喜欢唱歌、健身、主持、烹饪、旅行。\n欢迎来到我的个人网站！愿君徐徐下览，或有可观者。",
       },
     ],
     techCategories: {
       en: [
-        { label: "Programming", items: ["Python", "SQL", "JavaScript", "CSS", "STATA", "MATLAB", "LaTeX"] },
-        { label: "Office", items: ["Microsoft Word", "Microsoft Excel", "Microsoft PowerPoint", "Microsoft Outlook", "Google Workspace"] },
-        { label: "AI & Agent", items: ["Claude Code", "Harness Engineering", "Continual Learning", "Auto-research", "OpenClaw"] },
+        { label: "Programming", items: ["Python", "SQL", "JavaScript", "CSS", "STATA", "MATLAB"] },
+        { label: "Office", items: ["Microsoft Word", "Microsoft Excel", "Microsoft PowerPoint", "Microsoft Outlook", "Google Workspace", "WPS"] },
+        { label: "AI & Agent", items: ["Claude Code", "Harness Engineering", "Continual Learning", "Evaluation", "OpenClaw"] },
         { label: "Data & ML", items: ["NumPy", "Pandas", "matplotlib", "Scikit-learn", "TensorFlow", "PyTorch"] },
         { label: "Finance", items: ["Wind", "Choice", "iFind", "PitchBook"] },
       ],
       zh: [
-        { label: "编程", items: ["Python", "SQL", "JavaScript", "CSS", "STATA", "MATLAB", "LaTeX"] },
-        { label: "办公", items: ["Microsoft Word", "Microsoft Excel", "Microsoft PowerPoint", "Microsoft Outlook", "Google Workspace"] },
-        { label: "AI & Agent", items: ["Claude Code", "Harness Engineering", "Continual Learning", "Auto-research", "OpenClaw"] },
+        { label: "编程", items: ["Python", "SQL", "JavaScript", "CSS", "STATA", "MATLAB"] },
+        { label: "办公", items: ["Microsoft Word", "Microsoft Excel", "Microsoft PowerPoint", "Microsoft Outlook", "Google Workspace", "WPS"] },
+        { label: "AI & Agent", items: ["Claude Code", "Harness Engineering", "Continual Learning", "Evaluation", "OpenClaw"] },
         { label: "数据 & 机器学习", items: ["NumPy", "Pandas", "matplotlib", "Scikit-learn", "TensorFlow", "PyTorch"] },
         { label: "金融", items: ["万得", "东方财富 Choice", "同花顺 iFind", "PitchBook"] },
       ],

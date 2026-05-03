@@ -11,7 +11,7 @@ export default function BioParagraph({
   textEn,
   textZh,
   radiusEn = 55,
-  radiusZh = 40,
+  radiusZh = 75,
 }: BioParagraphProps) {
   return (
     <>

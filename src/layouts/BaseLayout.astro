@@ -34,10 +34,24 @@ const { title, description, image } = Astro.props;
       crossorigin
     />
 
-    <!-- Bio fonts: Fraunces (EN) + Ma Shan Zheng (ZH) via Google Fonts -->
+    <!-- EN body font: Fraunces via Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&family=Ma+Shan+Zheng&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&display=swap" rel="stylesheet" />
+
+    <!-- ZH body font fallback for Safari (which blocks system STKaiti / Kaiti SC):
+         AR PL UKai — Arphic open-source classic 楷体 (Adobe Kaiti / 教科书楷体 feel).
+         Chrome on Mac and any browser on Windows hit system Kaiti first via the CSS
+         cascade and never trigger this download. Safari Mac falls through to AR PL UKai
+         (4.6MB TTF, 1y CDN cache). font-display: swap → no FOIT. -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <style>
+      @font-face {
+        font-family: 'AR PL UKai';
+        font-display: swap;
+        src: url('https://cdn.jsdelivr.net/npm/@fontpkg/ar-pl-kaiti-m-gb@2.11.0/gkai00mp.ttf') format('truetype');
+      }
+    </style>
 
     <!-- Theme & language init: runs synchronously before first paint to prevent FOUC -->
     <script is:inline>

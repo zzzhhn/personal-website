@@ -118,20 +118,27 @@ import BioParagraph from "../react/BioParagraph";
   letter-spacing: -0.01em;
   color: var(--color-text-secondary);
 }
-/* ZH: Ma Shan Zheng — 毛笔楷书, classical calligraphy */
+/* ZH font cascade — feature-detection via CSS, no UA sniffing needed:
+     1. System Kaiti names — Chrome/Edge/Firefox on Mac get STKaiti/Kaiti SC instantly;
+        any browser on Windows gets KaiTi/楷体 instantly. Zero load time.
+     2. AR PL UKai (web font, see BaseLayout @font-face) — Safari on Mac silently blocks
+        the system Kaiti names above (supplemental font allowlist) and falls through here.
+        4.6MB one-time load, then cached.
+     3. serif — last-resort generic if all of the above fail. */
 [data-lang="zh"].bio-text {
-  font-family: "Ma Shan Zheng", cursive;
+  font-family: "STKaiti", "Kaiti SC", "KaiTi", "楷体", "DFKai-SB", "BiauKai", "AR PL UKai", serif;
   font-size: 1.3125rem;
   font-weight: 400;
   line-height: 1.75;
-  letter-spacing: 0.03em;
-  word-break: break-all;
+  letter-spacing: 0;
+  word-break: normal;
   overflow-wrap: break-word;
   color: var(--color-text-secondary);
 }
-/* Latin characters within Chinese bio use Fraunces */
+/* Latin chars in ZH bio: keep Fraunces but tighten so they don't widen the line */
 [data-lang="zh"].bio-text [data-latin] {
   font-family: "Fraunces", serif;
+  letter-spacing: -0.005em;
 }
 
 /* ── Interleaved layout — 3 rows ── */
