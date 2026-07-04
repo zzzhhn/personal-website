@@ -1,0 +1,32 @@
+---
+title: "合拍 Hepai"
+slug: "hepai"
+tagline: "The song-selection brain that seamless auto-DJ mixing has been missing"
+description: "Tencent Music AI Hackathon entry: audio analysis (BPM, Camelot key, energy) ranks mix-compatible songs, then a beat-aligned engine chains them into a seamless auto-DJ stream — designed as a QQ Music add-on."
+date: 2026-06-01
+status: "completed"
+featured: false
+techStack: ["Python", "FastAPI", "librosa", "JavaScript", "Web Audio"]
+highlights:
+  - "Audio feature analysis with librosa: BPM detection, Camelot-wheel key compatibility, and energy profiling per track"
+  - "Top-5 mix-compatible recommendations for any seed song, scored by harmonic and tempo distance"
+  - "Beat-aligned crossfade engine that chains recommendations into a continuous auto-DJ stream, with 4 listening modes"
+  - "MVP shipped for the 2026 'Build for Music+' hackathon (Track B, QQ Music add-on) with 53 passing tests"
+links: {}
+order: 4
+---
+
+## Background
+
+Entry for the Tencent Music AI Hackathon 2026 ("Build for Music+", Track B). QQ Music's Automix can crossfade between songs, but it has no opinion about *which* song should come next — 合拍 is the song-selection brain: it analyzes what makes two tracks mixable and picks the next song the way a DJ would.
+
+## How It Works
+
+1. **Analysis** — librosa extracts BPM, musical key (mapped onto the Camelot wheel), and an energy profile for every track in the library
+2. **Matching** — given a seed song, candidates are scored by harmonic compatibility (adjacent Camelot positions), tempo distance, and energy continuity; the Top-5 are surfaced as mix candidates
+3. **Mixing** — a beat-aligned crossfade engine schedules the transition on beat boundaries, so consecutive tracks blend like a live DJ set rather than a hard fade
+4. **Modes** — four listening modes trade off energy arc and variety (steady groove vs. build-up sets)
+
+## Engineering
+
+Python + FastAPI backend for analysis and recommendation, vanilla JS front end driving playback through the Web Audio API. 53 tests cover feature extraction, Camelot compatibility scoring, and the transition scheduler. AI-generated cover art and an audio-quality iteration loop rounded out the MVP.

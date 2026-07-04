@@ -156,6 +156,24 @@ export const UI = {
   // ── Campus ──
   campus: [
     {
+      role: { en: "Volunteer Teacher", zh: "志愿教师" },
+      org: {
+        en: "Shaw College Bali Service-Learning Program",
+        zh: "逸夫书院巴厘岛支教项目",
+      },
+      period: { en: "Jun 2026", zh: "2026.06" },
+      items: {
+        en: [
+          { label: "Teaching", text: "Taught Chinese and English classes to local primary-school students in Bali during a week-long service-learning program (Jun 22–26, 2026)." },
+          { label: "Cross-cultural Communication", text: "Designed lessons for students with no shared first language, adapting pacing and materials on the spot to keep classes engaging across the language barrier." },
+        ],
+        zh: [
+          { label: "支教教学", text: "参与逸夫书院组织的巴厘岛支教项目（2026.6.22–6.26），为当地小学生讲授中文与英文课程" },
+          { label: "跨文化沟通", text: "面向无共同母语的学生设计课程，现场调整节奏与教学材料，让课堂跨越语言障碍保持吸引力" },
+        ],
+      },
+    },
+    {
       role: { en: "Operation & Management", zh: "组织者 & 运营" },
       org: {
         en: "AceSeed+ (Job-description online sharing community)",
@@ -212,12 +230,13 @@ export const EXPERIENCES = {
       startDate: "2026-02-01",
       type: "internship",
       highlights: [
-        "Reproduced and built evaluation pipelines for text-to-video generation models, focusing on key dimensions including generation quality, instruction following, and semantic consistency",
-        "Independently completed the full workflow from methodology understanding and environment setup to experiment execution within the first two and a half weeks, delivering a complete evaluation output",
-        "Led the development of core evaluation modules for text-to-video tasks, including data processing, metric decomposition, and result analysis, and promoted reusable, low-cost evaluation workflow engineering",
-        "Rapidly tracked and adapted state-of-the-art evaluation methods from leading video-generation papers, bridging research paradigms with business-oriented model benchmarking and iteration infrastructure",
+        "Designed and delivered the company's video evaluation platform end-to-end (Next.js + PostgreSQL + Prisma): annotator task assignment, Arena head-to-head model voting, self-service package creation from XLSX prompt suites, and an RBAC system separating role membership from permissions",
+        "Established a local → staging → production release discipline and migrated staging onto an Alibaba Cloud Kubernetes (ACK) cluster; production serves 35+ users across 24+ evaluation packages and 21,000+ evaluation items with zero P0 incidents",
+        "Built the automated video collection pipeline covering 8+ model families (Kling, Vidu, Seedance, Runway, LTX, Pixverse and more): prompt distribution, async generation monitoring, validation, and OSS batch ingestion — 5,600+ evaluation videos produced",
+        "Led evaluation data governance: zero-loss restructuring of 7,700+ OSS objects (~34GB), credential-vault security hardening (AES-256-GCM audit + reveal rate limiting), and structured auto-archiving for every new dataset",
+        "Authored evaluation methodology assets: an 8-sub-dimension scoring system adapted from VQA benchmarks, a 120-prompt first/last-frame evaluation suite across 3 new dimensions, and a competitive knowledge base covering 7 World Model companies",
       ],
-      techStack: ["Python", "Data Pipeline", "ML Evaluation"],
+      techStack: ["Next.js", "PostgreSQL", "Kubernetes", "Python", "ML Evaluation"],
     },
     {
       role: "Product Manager — Agent Evaluation",
@@ -238,12 +257,12 @@ export const EXPERIENCES = {
       organization: "MoE Capital",
       location: "Silicon Valley, California (Remote)",
       startDate: "2025-11-01",
-      endDate: "2026-03-01",
       type: "internship",
       highlights: [
         "Conducted primary-market screening via PitchBook and independently wrote the historical financing section of investment memos by integrating data on funding rounds, investor structure, and valuation trends",
         "Researched the MCP managed services space and produced in-depth competitive analysis by extracting unstructured information from social media, company websites, and third-party reviews",
         "Designed and built an automated audio-processing workflow with multimodal LLMs for GP meetings and expert interviews, improving meeting-note generation efficiency by 50%+",
+        "Since the fund's official launch in Jun 2026, own public-sentiment monitoring and produce standardized Investor Catchup meeting Q&A deliverables through a self-built LLM transcript-consolidation workflow",
       ],
       techStack: ["LLM", "Research", "Competitive Analysis"],
     },
@@ -283,12 +302,13 @@ export const EXPERIENCES = {
       startDate: "2026-02-01",
       type: "internship",
       highlights: [
-        "聚焦文生视频模型评测方向，围绕生成质量、指令遵循、语义一致性等核心维度，独立复现并跑通业界前沿论文中的主流评测流程",
-        "在入职两周半内完成从方案理解、环境配置到实验执行的全流程落地，形成完整评测产出",
-        "针对文生视频任务的数据处理、指标拆解与结果分析需求，自主推进评测方案工程化，实现低成本、高可复用的评测流程工具化",
-        "快速跟进视频生成领域和相关 SOTA 评测方法，对论文中的评测范式进行拆解、复现与适配，打通研究方法向业务评测链路的迁移路径",
+        "端到端设计并交付公司视频评测平台（Next.js + PostgreSQL + Prisma）：标注任务分配、Arena 双模型对战投票、XLSX prompt suite 自助建包，以及区分角色成员与权限的 RBAC 体系",
+        "建立 local → stg 回归 → prod 三环境发布纪律，并将 stg 迁移至阿里云 ACK Kubernetes 集群；生产环境支撑 35+ 用户、24+ 评测包、21,000+ 评测条目，零 P0 事故",
+        "搭建自动化视频采集 pipeline，覆盖 Kling、Vidu、Seedance、Runway、LTX、Pixverse 等 8+ 模型家族，实现 prompt 分发、异步生成监控、结果校验、OSS 批量入库全流程自动化，累计产出 5,600+ 评测视频",
+        "主导评测数据治理：7,700+ OSS 对象（约 34GB）零丢失结构化迁移、凭证保险库安全加固（AES-256-GCM 审计 + 泄露限流）、新建数据集自动结构化归档",
+        "沉淀评测方法论资产：基于 VQA benchmark 的 8 子维度评分体系、120 条首尾帧评测 prompt 套件（3 个新维度）、覆盖 7 家 World Model 公司的竞品知识库",
       ],
-      techStack: ["Python", "数据管线", "ML 评测"],
+      techStack: ["Next.js", "PostgreSQL", "Kubernetes", "Python", "ML 评测"],
     },
     {
       role: "产品经理 – Agent 评测",
@@ -308,13 +328,13 @@ export const EXPERIENCES = {
       role: "风险投资",
       organization: "MoE Capital",
       location: "加利福尼亚 – 硅谷（远程）",
-      startDate: "2025-10-01",
-      endDate: "2025-12-01",
+      startDate: "2025-11-01",
       type: "internship",
       highlights: [
         "熟练运用 PitchBook 平台进行一级市场扫描，深度检索并整合目标公司的融资轮次、投资者构成及估值走向，独立完成投资备忘录中往期融资历史模块的撰写",
         "针对 MCP 管理服务赛道进行专项调研，通过多渠道信息提取产出深度竞对分析报告",
         "针对 GP 的会议与专家访谈场景，利用多模态大语言模型设计并搭建自动化录音处理工作流，将纪要产出效率提升 50% 以上",
+        "自 2026 年 6 月基金正式启动起，负责舆情监控，并基于自建 LLM 转录整理工作流交付标准化的 Investor Catchup 会议 Q&A 纪要",
       ],
       techStack: ["LLM", "行业研究", "竞对分析"],
     },

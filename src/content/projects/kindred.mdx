@@ -1,0 +1,45 @@
+---
+title: "知遇 Kindred"
+slug: "kindred"
+tagline: "AI career-growth companion that turns conversations into a living knowledge graph"
+description: "Full-stack AI companion for university students: persona-driven chat, an LLM-extracted growth knowledge graph with community detection, resume parsing into the profile, and a 3D mascot — built for the Tencent AI-HR bootcamp."
+date: 2026-06-01
+status: "in-progress"
+featured: true
+techStack: ["Next.js 16", "TypeScript", "Prisma", "Neon PostgreSQL", "AI SDK v6", "Auth.js", "force-graph"]
+highlights:
+  - "Growth knowledge graph L1–L4: LLM entity extraction → dedup merge → Louvain community clustering → force-graph visualization, with insights derived from graph structure instead of LLM causal speculation"
+  - "Resume parsing (PDF / docx) that feeds the same profile graph, so uploaded history and chat-discovered facts merge into one picture"
+  - "3D mascot pipeline: gpt-image-2 multi-view generation → Tripo image-to-3D → Blender cleanup → 1.79MB GLB with blink & breath animations in model-viewer"
+  - "Production-grade foundation: real auth (password / Google / email verification), BYOK multi-provider LLM support, zh/en i18n, multi-session chat with edit & regenerate, 140+ tests"
+links:
+  live: "https://friend.bobbyzhong.com"
+thumbnail: "/projects/kindred.png"
+order: 1
+---
+
+## Background
+
+Built as assignment 2 for the Tencent AI-HR bootcamp: an AI companion that helps university students track and reflect on their career growth. The core bet is that a companion is only useful if it *accumulates* — so every conversation feeds a persistent knowledge graph instead of evaporating when the chat ends.
+
+## Growth Knowledge Graph
+
+The signature feature is a four-layer pipeline that turns unstructured conversation into structure:
+
+1. **Extraction** — an LLM pass pulls entities (skills, experiences, goals, people) from each conversation
+2. **Merge** — new entities are deduplicated against the existing graph rather than appended blindly
+3. **Clustering** — Louvain community detection groups related nodes into themes
+4. **Insight** — observations are derived from graph structure (centrality, cluster growth, orphan nodes), deliberately avoiding LLM-fabricated causal claims
+
+Resume upload (PDF / docx) parses into the same graph, so a student's documented history and their chat-discovered interests live in one connected picture, rendered as an interactive force-directed graph.
+
+## Companion Experience
+
+- Persona-driven chat with multi-session management, message edit / regenerate, and session sharing
+- 3D mascot 锅宝 rendered via model-viewer, with idle blink and breathing animations
+- BYOK (bring-your-own-key) multi-provider LLM support through AI SDK v6
+- Full bilingual interface (zh / en) and real authentication with email verification
+
+## Engineering
+
+Next.js 16 App Router + Prisma on Neon PostgreSQL, deployed on Vercel at friend.bobbyzhong.com. 140+ tests across the extraction pipeline, graph merge logic, and auth flows.
