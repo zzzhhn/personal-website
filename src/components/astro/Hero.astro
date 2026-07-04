@@ -622,6 +622,11 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
   var mouse = { x: -1000, y: -1000 };
   var raf = 0;
 
+  // Meteors (dark mode): occasional shooting star across the constellation
+  var meteors = [];
+  var nextMeteorAt = 2500;
+  var prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   // Antigravity state (light mode)
   var lastMousePos = { x: 0, y: 0 };
   var lastMouseMoveTime = 0;
@@ -926,6 +931,61 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     }
   }
 
+  function spawnMeteor(w, h) {
+    var fromLeft = Math.random() < 0.5;
+    var speed = 4.5 + Math.random() * 2.5;
+    var angle = (25 + Math.random() * 20) * Math.PI / 180;
+    return {
+      x: fromLeft ? Math.random() * w * 0.4 : w * 0.5 + Math.random() * w * 0.5,
+      y: Math.random() * h * 0.35,
+      vx: Math.cos(angle) * speed * (fromLeft ? 1 : -1),
+      vy: Math.sin(angle) * speed,
+      life: 0,
+      maxLife: 70 + Math.random() * 30,
+      len: 100 + Math.random() * 70
+    };
+  }
+
+  function updateDrawMeteors(w, h, t) {
+    if (prefersReduced) return;
+    if (t > nextMeteorAt) {
+      if (meteors.length < 2) meteors.push(spawnMeteor(w, h));
+      nextMeteorAt = t + 6000 + Math.random() * 6000;
+    }
+    for (var i = meteors.length - 1; i >= 0; i--) {
+      var m = meteors[i];
+      m.x += m.vx;
+      m.y += m.vy;
+      m.life++;
+      var k = m.life / m.maxLife;
+      if (k >= 1 || m.x < -m.len || m.x > w + m.len || m.y > h + m.len) {
+        meteors.splice(i, 1);
+        continue;
+      }
+      // Ease in fast, fade out slow
+      var fade = k < 0.15 ? k / 0.15 : (1 - k) / 0.85;
+      var a = fade * 0.85;
+      var mv = Math.hypot(m.vx, m.vy);
+      var tailX = m.x - (m.vx / mv) * m.len;
+      var tailY = m.y - (m.vy / mv) * m.len;
+      var grad = ctx.createLinearGradient(m.x, m.y, tailX, tailY);
+      grad.addColorStop(0, "rgba(200,215,255," + a + ")");
+      grad.addColorStop(0.35, "rgba(130,150,255," + a * 0.5 + ")");
+      grad.addColorStop(1, "rgba(130,150,255,0)");
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = 1.8;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(m.x, m.y);
+      ctx.lineTo(tailX, tailY);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(m.x, m.y, 2.1, 0, 6.283);
+      ctx.fillStyle = "rgba(225,235,255," + Math.min(1, a * 1.3) + ")";
+      ctx.fill();
+    }
+  }
+
   function draw(t) {
     var w = canvas.clientWidth;
     var h = canvas.clientHeight;
@@ -944,6 +1004,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     if (dark) {
       updateDarkPhysics(w, h);
       drawDark(w, h, t);
+      updateDrawMeteors(w, h, t);
     } else {
       drawLight(w, h, t);
     }
