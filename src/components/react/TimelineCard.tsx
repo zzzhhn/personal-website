@@ -22,6 +22,8 @@ interface TimelineCardProps {
   expanded: boolean;
   onToggle: () => void;
   workflow: WorkflowData;
+  /** Pulse the workflow toggle until the visitor expands any card */
+  nudge?: boolean;
 }
 
 function formatDateShort(dateStr: string): string {
@@ -50,6 +52,7 @@ export default function TimelineCard({
   expanded,
   onToggle,
   workflow,
+  nudge = false,
 }: TimelineCardProps) {
   const dotColor = getDotColor(en.type);
   const dateStart = formatDateShort(startDate);
@@ -137,6 +140,30 @@ export default function TimelineCard({
             ))}
           </ul>
         </div>
+
+        {/* Workflow affordance — inside the button, so it shares the toggle */}
+        <span className={`tl-wf-toggle${nudge ? " tl-wf-toggle--nudge" : ""}`} aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="3" width="6" height="6" rx="1" />
+            <rect x="15" y="15" width="6" height="6" rx="1" />
+            <path d="M6 9v3a3 3 0 0 0 3 3h3" />
+          </svg>
+          <span data-lang="en">{expanded ? "Hide workflow" : "View workflow"}</span>
+          <span data-lang="zh">{expanded ? "收起工作流" : "查看工作流"}</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="tl-wf-chevron"
+            style={{ transform: expanded ? "rotate(180deg)" : "none" }}
+          >
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </span>
       </button>
     </motion.div>
   );

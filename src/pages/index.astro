@@ -67,8 +67,17 @@ const projects = rawProjects
     <div class="mx-auto" style="max-width: var(--max-width-content);">
       <SectionHeading variant="numbered" number="03" titleEn={UI.sections.experience.en} titleZh={UI.sections.experience.zh} />
       <p class="tl-hint">
-        <span data-lang="en">Click on a card to reveal the workflow template behind each role</span>
-        <span data-lang="zh">点击卡片查看每段经历的工作流程模板</span>
+        <span class="tl-hint-chip">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m9 9 5 12 1.8-5.2L21 14Z" />
+            <path d="M7.2 2.2 8 5.1" />
+            <path d="m5.1 8-2.9-.8" />
+            <path d="M14 4.1 12 6" />
+            <path d="m6 12-1.9 2" />
+          </svg>
+          <span data-lang="en">Click any card to unfold the workflow behind the role</span>
+          <span data-lang="zh">点击任意卡片，展开这段经历背后的工作流</span>
+        </span>
       </p>
       <ExperienceTimeline client:idle experiences={bilingualExperiences} workflows={WORKFLOWS} />
     </div>

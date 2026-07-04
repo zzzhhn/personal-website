@@ -909,18 +909,128 @@
   stroke-width: 4px;
   stroke-linejoin: round;
 }
-/* Hint text above timeline */
+/* Hint chip above timeline */
 .tl-hint {
   text-align: center;
-  font-size: 0.78rem;
-  color: var(--color-text-tertiary);
   margin-bottom: 2rem;
-  letter-spacing: 0.02em;
 }
+.tl-hint-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border-glass);
+  background: var(--color-surface-glass);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  color: var(--color-text-secondary);
+  animation: tl-hint-glow 3.2s ease-in-out 3;
+}
+.tl-hint-chip svg {
+  width: 15px;
+  height: 15px;
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+@keyframes tl-hint-glow {
+  0%, 100% { border-color: var(--color-border-glass); box-shadow: 0 0 0 0 transparent; }
+  50% { border-color: var(--color-accent); box-shadow: 0 0 16px var(--color-accent-glow); }
+}
+
+/* Workflow toggle affordance at card bottom */
+.tl-wf-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.9rem;
+  padding: 0.28rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border-glass);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  color: var(--color-text-tertiary);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.tl-card:hover .tl-wf-toggle {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+.tl-wf-toggle svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+.tl-wf-chevron {
+  transition: transform 0.25s ease;
+}
+.tl-wf-toggle--nudge {
+  animation: tl-nudge 2.4s ease-in-out infinite;
+}
+@keyframes tl-nudge {
+  0%, 100% { color: var(--color-text-tertiary); border-color: var(--color-border-glass); box-shadow: 0 0 0 0 transparent; }
+  50% { color: var(--color-accent); border-color: var(--color-accent); box-shadow: 0 0 10px var(--color-accent-glow); }
+}
+
+/* Blueprint panel behind workflow diagrams */
+.wf-container::before {
+  content: "";
+  position: absolute;
+  inset: -0.35rem;
+  z-index: -1;
+  border-radius: 12px;
+  background:
+    radial-gradient(oklch(0.7 0.06 230 / 0.13) 1px, transparent 1px) 0 0 / 16px 16px,
+    linear-gradient(oklch(0.55 0.06 240 / 0.06), transparent 65%);
+  mask-image: linear-gradient(180deg, black 0%, black 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, black 0%, black 80%, transparent 100%);
+  pointer-events: none;
+}
+.wf-container::after {
+  content: "";
+  position: absolute;
+  inset: -0.35rem;
+  z-index: -1;
+  border-radius: 12px;
+  pointer-events: none;
+  opacity: 0.55;
+  background:
+    linear-gradient(var(--color-accent) 0 0) top left / 14px 1.5px,
+    linear-gradient(var(--color-accent) 0 0) top left / 1.5px 14px,
+    linear-gradient(var(--color-accent) 0 0) bottom right / 14px 1.5px,
+    linear-gradient(var(--color-accent) 0 0) bottom right / 1.5px 14px;
+  background-repeat: no-repeat;
+}
+
+/* Traveling signal dots on solid workflow edges */
+.wf-edge-flow {
+  stroke: var(--color-accent);
+  stroke-width: 2.4;
+  stroke-dasharray: 3 27;
+  animation:
+    wf-flow 2.8s linear 1s infinite,
+    wf-flow-in 0.5s ease 1s backwards;
+}
+@keyframes wf-flow {
+  to { stroke-dashoffset: -30; }
+}
+@keyframes wf-flow-in {
+  from { opacity: 0; }
+  to { opacity: 0.6; }
+}
+.wf-edge-flow {
+  opacity: 0.6;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .wf-node,
   .wf-svg path { animation: none !important; transition: none !important; }
   .tl-particle { animation: none !important; }
+  .wf-edge-flow { display: none; }
+  .tl-hint-chip, .tl-wf-toggle--nudge { animation: none !important; }
 }
 
 /* Mobile: single column, no alternating */
@@ -934,6 +1044,9 @@
   }
   .tl-date { display: none; }
   .tl-track { display: none; }
+  /* Workflow lives in the hidden date column on mobile — hide its affordances too */
+  .tl-hint,
+  .tl-wf-toggle { display: none; }
 }
 
 /* ── Typewriter cursor animation ── */
@@ -1653,6 +1766,8 @@
   border: 1px solid var(--color-border-glass);
   aspect-ratio: 16 / 10;
   background: var(--color-surface-secondary);
+  isolation: isolate;
+  contain: layout paint;
 }
 .project-thumb img {
   width: 100%;
@@ -1661,9 +1776,11 @@
   object-position: top center;
   display: block;
   transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 article:hover .project-thumb img {
-  transform: scale(1.045);
+  transform: translateZ(0) scale(1.045);
 }
 .live-badge {
   position: absolute;

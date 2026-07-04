@@ -15,7 +15,7 @@ export const UI = {
     education: { en: "Education & Awards", zh: "教育背景" },
     experience: { en: "Internship Experience", zh: "实习经历" },
     projects: { en: "Projects", zh: "项目经历" },
-    campus: { en: "Campus Activities", zh: "校园经历" },
+    campus: { en: "Activities", zh: "活动经历" },
     contact: { en: "Get in Touch", zh: "联系方式" },
     about: { en: "About Me", zh: "关于我" },
     certificates: { en: "Certificates", zh: "证书" },
@@ -164,11 +164,11 @@ export const UI = {
       period: { en: "Jun 2026", zh: "2026.06" },
       items: {
         en: [
-          { label: "Teaching", text: "Taught Chinese and English classes to local primary-school students in Bali during a week-long service-learning program (Jun 22–26, 2026)." },
+          { label: "Teaching", text: "Taught Chinese and English classes to local primary-school students in Bali during a week-long service-learning program (Jun 21–26, 2026)." },
           { label: "Cross-cultural Communication", text: "Designed lessons for students with no shared first language, adapting pacing and materials on the spot to keep classes engaging across the language barrier." },
         ],
         zh: [
-          { label: "支教教学", text: "参与逸夫书院组织的巴厘岛支教项目（2026.6.22–6.26），为当地小学生讲授中文与英文课程" },
+          { label: "支教教学", text: "参与逸夫书院组织的巴厘岛支教项目（2026.6.21–6.26），为当地小学生讲授中文与英文课程" },
           { label: "跨文化沟通", text: "面向无共同母语的学生设计课程，现场调整节奏与教学材料，让课堂跨越语言障碍保持吸引力" },
         ],
       },

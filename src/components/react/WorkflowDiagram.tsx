@@ -184,10 +184,10 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
     <motion.div
       ref={containerRef}
       className={`wf-container${isHorizontal ? " wf-container--horizontal" : ""}`}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.25 }}
+      initial={{ opacity: 0, y: 10, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: 6, scale: 0.99 }}
+      transition={{ type: "spring", stiffness: 260, damping: 26, mass: 0.7 }}
     >
       {/* CSS Grid places nodes; SVG overlay draws edges */}
       <div
@@ -294,6 +294,10 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
                     opacity: { delay, duration: 0.15 },
                   }}
                 />
+                {/* Traveling signal dots along solid edges — direction cue */}
+                {!ep.edge.dashed && (
+                  <path d={ep.d} fill="none" className="wf-edge-flow" strokeLinecap="round" />
+                )}
                 {ep.labelPos && ep.edge.label && (
                   <motion.text
                     x={ep.labelPos.x}

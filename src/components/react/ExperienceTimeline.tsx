@@ -95,6 +95,7 @@ export default function ExperienceTimeline({ experiences, workflows }: Props) {
           expanded={expandedSet.has(i)}
           onToggle={() => toggleExpand(i)}
           workflow={workflows[i]}
+          nudge={i === 0 && expandedSet.size === 0}
         />
       ))}
     </div>

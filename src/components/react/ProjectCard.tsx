@@ -170,6 +170,8 @@ export default function ProjectCard({
             <img
               src={project.thumbnail}
               alt={`${project.title} — live screenshot`}
+              width={640}
+              height={400}
               loading="lazy"
               decoding="async"
             />
