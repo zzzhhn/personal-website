@@ -10,9 +10,11 @@ techStack: ["Python", "FastAPI", "librosa", "JavaScript", "Web Audio"]
 highlights:
   - "Audio feature analysis with librosa: BPM detection, Camelot-wheel key compatibility, and energy profiling per track"
   - "Top-5 mix-compatible recommendations for any seed song, scored by harmonic and tempo distance"
-  - "Beat-aligned crossfade engine that chains recommendations into a continuous auto-DJ stream, with 4 listening modes"
-  - "MVP shipped for the 2026 'Build for Music+' hackathon (Track B, QQ Music add-on) with 53 passing tests"
-links: {}
+  - "Crossfade engine that chains recommendations into a continuous auto-DJ stream, with 4 listening modes and a bass-swap DJ mode"
+  - "Live demo runs fully in the browser: the pairing engine ported to JS (41 golden cases byte-identical with the Python original) and a dual-deck Web Audio crossfade replacing server-side rendering"
+links:
+  live: "https://hepai.bobbyzhong.com"
+thumbnail: "/projects/hepai.webp"
 order: 4
 ---
 
@@ -29,4 +31,8 @@ Entry for the Tencent Music AI Hackathon 2026 ("Build for Music+", Track B). QQ 
 
 ## Engineering
 
-Python + FastAPI backend for analysis and recommendation, vanilla JS front end driving playback through the Web Audio API. 53 tests cover feature extraction, Camelot compatibility scoring, and the transition scheduler. AI-generated cover art and an audio-quality iteration loop rounded out the MVP.
+Python + FastAPI backend for analysis and recommendation, vanilla JS front end. 53 Python tests cover feature extraction, Camelot compatibility scoring, and the transition scheduler. AI-generated cover art and an audio-quality iteration loop rounded out the MVP.
+
+## Live Demo
+
+The public demo is a fully static build: the pairing and sequencing math is ported 1:1 to JavaScript (verified against the Python implementation with 41 golden test cases producing byte-identical output), and the mix itself plays through a dual-deck Web Audio pipeline — equal-power crossfades at precomputed cue points, plus a BiquadFilter bass-swap for DJ mode — instead of waiting on server-side rendering. The demo library uses Kevin MacLeod's CC-BY 4.0 catalog so the whole thing can live on the open web.
