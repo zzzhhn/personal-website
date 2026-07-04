@@ -11,6 +11,7 @@ export interface Project {
   techStack: string[];
   highlights: string[];
   links: { live?: string; github?: string };
+  thumbnail?: string;
 }
 
 interface ProjectCardProps {
@@ -164,6 +165,22 @@ export default function ProjectCard({
 
       {/* Content */}
       <div style={{ position: "relative", zIndex: 1 }}>
+        {project.thumbnail && (
+          <div className="project-thumb" style={{ position: "relative", marginBottom: "1rem" }}>
+            <img
+              src={project.thumbnail}
+              alt={`${project.title} — live screenshot`}
+              loading="lazy"
+              decoding="async"
+            />
+            {project.links.live && (
+              <span className="live-badge" aria-label="Live site">
+                <span className="live-dot" aria-hidden="true" />
+                Live
+              </span>
+            )}
+          </div>
+        )}
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
           <span
             className="glass-subtle"
