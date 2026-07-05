@@ -8,9 +8,19 @@ const LANGUAGES = [
   { names: ['Spanish', 'Español'], level: { en: 'Basic, CEFR: B1', zh: '基础，CEFR: B1' } },
 ];
 
-const spring = { type: 'spring' as const, damping: 25, stiffness: 300 };
+const spring = { type: 'spring' as const, damping: 30, stiffness: 400 };
+const STAGGER = 0.03; // per-character delay
 
-// Each rotation swaps in the entire pill (background + text) as one unit
+// Grapheme-safe split so CJK (普通话 / 日本語) staggers per character
+function splitChars(text: string): string[] {
+  if (typeof Intl !== 'undefined' && 'Segmenter' in Intl) {
+    const seg = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
+    return Array.from(seg.segment(text), (s) => s.segment);
+  }
+  return Array.from(text);
+}
+
+// Each rotation animates character-by-character, staggered from the last glyph
 function RotatingName({ texts, interval }: { texts: string[]; interval: number }) {
   const [index, setIndex] = useState(0);
 
@@ -20,13 +30,13 @@ function RotatingName({ texts, interval }: { texts: string[]; interval: number }
   }, [texts.length, interval]);
 
   const isNative = index === 1;
+  const chars = splitChars(texts[index]);
 
   return (
     <span
       style={{
         display: 'inline-flex',
         justifyContent: 'center',
-        overflow: 'hidden',
         verticalAlign: 'baseline',
         minHeight: '1.4em',
         width: '100%',
@@ -35,12 +45,11 @@ function RotatingName({ texts, interval }: { texts: string[]; interval: number }
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
           key={index}
-          initial={{ y: '100%', opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          exit={{ y: '-120%', opacity: 0 }}
+          layout
           transition={spring}
           style={{
-            display: 'inline-block',
+            display: 'inline-flex',
+            overflow: 'hidden',
             whiteSpace: 'nowrap',
             borderRadius: '999px',
             padding: '0.15em 0.6em',
@@ -51,7 +60,18 @@ function RotatingName({ texts, interval }: { texts: string[]; interval: number }
             transition: 'background 0.3s, border-color 0.3s',
           }}
         >
-          {texts[index]}
+          {chars.map((ch, i) => (
+            <motion.span
+              key={i}
+              initial={{ y: '100%', opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: '-120%', opacity: 0 }}
+              transition={{ ...spring, delay: (chars.length - 1 - i) * STAGGER }}
+              style={{ display: 'inline-block', whiteSpace: 'pre' }}
+            >
+              {ch === ' ' ? ' ' : ch}
+            </motion.span>
+          ))}
         </motion.span>
       </AnimatePresence>
     </span>
