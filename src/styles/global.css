@@ -1180,6 +1180,28 @@
 :root[data-theme="light"] .project-card {
   background: oklch(0.985 0.005 90 / 0.94);
 }
+/* Strip backdrop-filter from every small glass element inside the cards too.
+   Each card holds ~6 (status/FEATURED badges, tech tags, LIVE badge) → ~30
+   across the deck, and Safari re-blurs each one per frame as its card
+   transforms on hover (Chrome coalesces them, hence Chrome stayed smooth).
+   Over an opaque card, solid fills are visually identical. */
+.project-card .glass-subtle,
+.project-card .live-badge {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.project-card .glass-subtle {
+  background: oklch(0.24 0.014 255 / 0.9);
+}
+:root[data-theme="light"] .project-card .glass-subtle {
+  background: oklch(0.93 0.008 80 / 0.92);
+}
+.project-card .live-badge {
+  background: oklch(0.22 0.01 255 / 0.95);
+}
+:root[data-theme="light"] .project-card .live-badge {
+  background: oklch(0.96 0.005 90 / 0.95);
+}
 @keyframes project-card-in {
   from { opacity: 0; translate: 0 32px; }
 }
