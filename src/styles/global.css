@@ -1168,7 +1168,9 @@
     translate 0.28s cubic-bezier(0.22, 1, 0.36, 1),
     scale 0.28s cubic-bezier(0.22, 1, 0.36, 1);
   animation: project-card-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
-  will-change: translate, scale;
+  /* No permanent will-change: leaving it on holds a GPU texture per card at
+     all times (5 cards × retina), which starves Safari under memory pressure.
+     The browser auto-promotes during the transform transition anyway. */
   /* Opaque surface instead of a live backdrop-filter. The cards overlap and
      lift on hover; on Safari, re-rasterising blur(20px) on a moving element at
      retina scale is the dominant hover cost. An opaque card removes it
@@ -1277,6 +1279,16 @@
   padding: 2rem;
   scrollbar-width: thin;
   scrollbar-color: var(--color-border-subtle) transparent;
+  /* Opaque panel: the .modal-backdrop already blurs+dims the page behind, so
+     the panel needs no backdrop-filter of its own. At 42% (surface-elevated)
+     the blurred cards bled through and washed out the body text. Solid fixes
+     contrast and drops one more Safari blur pass. */
+  background: oklch(0.15 0.014 265 / 0.975);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+:root[data-theme="light"] .project-modal {
+  background: oklch(0.99 0.005 90 / 0.98);
 }
 .project-modal::-webkit-scrollbar { width: 4px; }
 .project-modal::-webkit-scrollbar-thumb {
@@ -1869,12 +1881,6 @@
   object-fit: cover;
   object-position: top center;
   display: block;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-article:hover .project-thumb img {
-  transform: translateZ(0) scale(1.045);
 }
 .live-badge {
   position: absolute;
