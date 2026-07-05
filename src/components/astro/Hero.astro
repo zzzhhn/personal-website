@@ -1018,7 +1018,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       drawLight(w, h, t);
     }
 
-    raf = requestAnimationFrame(draw);
+    raf = canvasVisible ? requestAnimationFrame(draw) : 0;
   }
 
   canvas.addEventListener("mousemove", function (e) {
@@ -1041,6 +1041,24 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
   canvas.style.pointerEvents = "auto";
   window.addEventListener("resize", resize);
   resize();
+
+  // Pause the whole draw loop while the hero is scrolled out of view — a large
+  // retina canvas redrawing 60x/s off-screen is wasted GPU/main-thread budget
+  // that competes with the rest of the page (e.g. Projects hover).
+  var canvasVisible = true;
+  if ("IntersectionObserver" in window) {
+    var vio = new IntersectionObserver(function (entries) {
+      var vis = entries[0].isIntersecting;
+      if (vis && !canvasVisible) {
+        canvasVisible = true;
+        if (!raf) raf = requestAnimationFrame(draw);
+      } else if (!vis) {
+        canvasVisible = false;
+      }
+    }, { threshold: 0 });
+    vio.observe(canvas);
+  }
+
   raf = requestAnimationFrame(draw);
 })();
 </script>
