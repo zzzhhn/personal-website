@@ -687,7 +687,8 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
         // Antigravity fields (light mode)
         hx: px, hy: py,                         // home position
         ax: px, ay: py,                         // animated position
-        rOff: (Math.random() - 0.5) * 8         // ring radius jitter
+        rOff: (Math.random() - 0.5) * 8,        // ring radius jitter
+        pz: Math.random() * 2 - 1               // depth -1(back)..+1(front) for 3D volume
       });
     }
   }
@@ -878,8 +879,10 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       if (dist < magnetRadius) {
         angle = Math.atan2(dy, dx);
         wave = Math.sin(p.t * 8 + angle) * 6;
-        // Spread particles across the ring with per-particle offset
-        rr = ringRadius + wave + p.rOff * 3;
+        // Depth parallax: front particles (pz>0) sit on a slightly larger
+        // apparent ring, back particles on a tighter one — gives the ring volume
+        var depthRing = ringRadius * (1 + p.pz * 0.12);
+        rr = depthRing + wave + p.rOff * 3;
         tx = vx + rr * Math.cos(angle);
         ty = vy + rr * Math.sin(angle);
       } else {
@@ -904,8 +907,13 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       var scaleFactor = Math.max(0, Math.min(1, 1 - ringDist / visRadius));
       if (scaleFactor < 0.01) continue;
 
-      var pulse = 0.85 + Math.sin(p.t * 6) * 0.15;
-      var sz = scaleFactor * pulse * 9;
+      // Depth breathing: pz oscillates over time so the ring pulses in Z.
+      // Front particles render larger and brighter → 3D volume, matching the
+      // perspective-projected reference.
+      var pzt = p.pz + Math.sin(p.t + p.phase) * 0.15;
+      var depthScale = 1 + pzt * 0.5;                 // ~0.5 (far) .. ~1.5 (near)
+      var pulse = 0.8 + Math.sin(p.t * 3) * 0.2;       // reference pulseSpeed/variance
+      var sz = scaleFactor * pulse * 9 * depthScale;
 
       angle = Math.atan2(vy - p.ay, vx - p.ax);
 
@@ -923,7 +931,8 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       ctx.arc(-capW / 2 + capR, 0, capR, Math.PI / 2, -Math.PI / 2);
       ctx.closePath();
 
-      var alpha = scaleFactor * 0.8;
+      // Near particles brighter, far ones dimmer — reinforces depth
+      var alpha = scaleFactor * 0.8 * (0.65 + Math.max(0, Math.min(1, depthScale - 0.5)) * 0.45);
       ctx.fillStyle = "rgba(" + c[0] + "," + c[1] + "," + c[2] + "," + alpha + ")";
       ctx.fill();
 
