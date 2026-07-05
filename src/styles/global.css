@@ -590,6 +590,11 @@
   inset: 0;
   pointer-events: none;
   z-index: 1;
+  /* Skip rendering (and pause the 22 particle animations) while the timeline
+     is scrolled off-screen — frees the main thread when other sections are
+     in view. Safe here: the layer is absolutely positioned + decorative. */
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 500px;
 }
 .tl-particle {
   position: absolute;
@@ -1145,6 +1150,63 @@
 }
 .project-deck > *:first-child {
   margin-left: 0;
+}
+
+/* Card entrance + fan-lift hover — pure CSS (compositor thread), no React
+   re-render or per-frame JS restyle. translate/scale are independent of the
+   `transform` property so the entrance keyframe and hover transition coexist. */
+.project-card {
+  position: relative;
+  cursor: pointer;
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  overflow: hidden;
+  z-index: 1;
+  translate: 0 0;
+  scale: 1;
+  transition:
+    translate 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: project-card-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  will-change: translate, scale;
+}
+@keyframes project-card-in {
+  from { opacity: 0; translate: 0 32px; }
+}
+.project-card:hover,
+.project-card:focus-visible {
+  translate: 0 -14px;
+  scale: 1.03;
+  z-index: 10;
+}
+/* Immediate neighbors ride the wave (right via sibling, left via :has) */
+.project-card:hover + .project-card,
+.project-card:focus-visible + .project-card,
+.project-card:has(+ .project-card:hover),
+.project-card:has(+ .project-card:focus-visible) {
+  translate: 0 -4px;
+  scale: 0.995;
+  z-index: 4;
+}
+.project-card-sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 0;
+  transition: opacity 0.25s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .project-card {
+    animation: none;
+    transition: none;
+  }
+  .project-card:hover,
+  .project-card:focus-visible {
+    translate: 0;
+    scale: 1;
+  }
 }
 
 /* Mobile: stack vertically */
@@ -1805,19 +1867,29 @@ article:hover .project-thumb img {
   background: oklch(0.98 0.005 90 / 0.8);
 }
 .live-dot {
+  position: relative;
   width: 6px;
   height: 6px;
   border-radius: 50%;
   background: var(--color-accent-teal);
-  box-shadow: 0 0 0 0 var(--color-accent-teal-glow);
+}
+/* Pulse ring uses transform+opacity (compositor) instead of an animated
+   box-shadow (which repaints the card every frame — 5 of these run while the
+   projects are on screen). */
+.live-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--color-accent-teal);
   animation: live-pulse 2.2s ease-out infinite;
+  will-change: transform, opacity;
 }
 @keyframes live-pulse {
-  0% { box-shadow: 0 0 0 0 var(--color-accent-teal-glow); }
-  60% { box-shadow: 0 0 0 6px transparent; }
-  100% { box-shadow: 0 0 0 0 transparent; }
+  0% { transform: scale(1); opacity: 0.5; }
+  70%, 100% { transform: scale(2.8); opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .live-dot { animation: none; }
+  .live-dot::after { animation: none; opacity: 0; }
   .project-thumb img { transition: none; }
 }

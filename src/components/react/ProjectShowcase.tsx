@@ -33,9 +33,6 @@ function usePrefersReducedMotion() {
 export default function ProjectShowcase({ projects }: Props) {
   const [selected, setSelected] = useState<Project | null>(null);
   const [originRect, setOriginRect] = useState<DOMRect | null>(null);
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const lastHoveredRef = useRef<number | null>(null);
-  const [lastHoveredIndex, setLastHoveredIndex] = useState<number | null>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const reducedMotion = usePrefersReducedMotion();
@@ -50,15 +47,6 @@ export default function ProjectShowcase({ projects }: Props) {
     setSelected(null);
     setOriginRect(null);
     requestAnimationFrame(() => triggerRef.current?.focus());
-  }, []);
-
-  const handleHover = useCallback((index: number | null) => {
-    if (index !== null) {
-      lastHoveredRef.current = index;
-    } else {
-      setLastHoveredIndex(lastHoveredRef.current);
-    }
-    setHoveredIndex(index);
   }, []);
 
   // Scroll lock
@@ -134,11 +122,7 @@ export default function ProjectShowcase({ projects }: Props) {
             key={project.slug}
             project={project}
             index={i}
-            hoveredIndex={hoveredIndex}
-            lastHoveredIndex={lastHoveredIndex}
-            totalCards={projects.length}
             onClick={openModal}
-            onHover={handleHover}
           />
         ))}
       </div>

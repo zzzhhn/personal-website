@@ -1,5 +1,4 @@
 import { useRef, useCallback } from "react";
-import { motion } from "framer-motion";
 
 export interface Project {
   title: string;
@@ -17,45 +16,16 @@ export interface Project {
 interface ProjectCardProps {
   project: Project;
   index: number;
-  hoveredIndex: number | null;
-  lastHoveredIndex: number | null;
-  totalCards: number;
   onClick: (project: Project, rect: DOMRect, el: HTMLElement) => void;
-  onHover: (index: number | null) => void;
 }
 
 const MAX_TAGS = 4;
 
-/** Wave: hovered card lifts, neighbors shift proportionally. No rotation — flat parallel layout. */
-function getWaveStyle(index: number, hoveredIndex: number | null, lastHoveredIndex: number | null, total: number) {
-  if (hoveredIndex === null) {
-    // Idle: last-hovered card stays on top
-    const isLastHovered = lastHoveredIndex !== null && index === lastHoveredIndex;
-    return { y: 0, scale: 1, zIndex: isLastHovered ? 5 : 1 };
-  }
-  const dist = Math.abs(index - hoveredIndex);
-  if (dist === 0) {
-    return { y: -14, scale: 1.03, zIndex: 10 };
-  }
-  const falloff = Math.max(0, 1 - dist * 0.45);
-  return {
-    y: -6 * falloff,
-    scale: 1 - dist * 0.01,
-    zIndex: 5 - dist,
-  };
-}
-
-export default function ProjectCard({
-  project,
-  index,
-  hoveredIndex,
-  lastHoveredIndex,
-  totalCards,
-  onClick,
-  onHover,
-}: ProjectCardProps) {
-  const cardRef = useRef<HTMLDivElement>(null);
+export default function ProjectCard({ project, index, onClick }: ProjectCardProps) {
+  const cardRef = useRef<HTMLElement>(null);
   const sheenRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number>(0);
+  const posRef = useRef({ x: 50, y: 50 });
 
   const handleClick = useCallback(() => {
     if (cardRef.current) {
@@ -73,19 +43,17 @@ export default function ProjectCard({
     [handleClick],
   );
 
-  // Sheen via direct DOM — zero React re-renders
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    const card = cardRef.current;
+  // Sheen follows the cursor via direct DOM writes — no React re-render.
+  // Paint is rAF-throttled so bursts of mousemove events coalesce into at most
+  // one gradient repaint per frame (the raw event rate can far exceed 60/s and
+  // each repaint covers the whole card — expensive on retina).
+  const paintSheen = useCallback(() => {
+    rafRef.current = 0;
     const sheen = sheenRef.current;
-    if (!card || !sheen) return;
-    const rect = card.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    // Theme-aware sheen: white highlight on dark, darker tint on light
+    if (!sheen) return;
+    const { x, y } = posRef.current;
     const isLight = document.documentElement.getAttribute("data-theme") === "light";
     if (isLight) {
-      // Light mode: iridescent colored shimmer — white-on-white is invisible,
-      // so use a subtle blue→teal→warm rainbow tint that shifts with cursor angle
       const angle = Math.round((x + y) * 1.2) % 360;
       sheen.style.background =
         `radial-gradient(circle 200px at ${x}% ${y}%, oklch(0.75 0.08 ${angle} / 0.18) 0%, oklch(0.80 0.05 ${angle + 60} / 0.08) 40%, transparent 70%)`;
@@ -95,20 +63,31 @@ export default function ProjectCard({
     }
   }, []);
 
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    const card = cardRef.current;
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    posRef.current = {
+      x: ((e.clientX - rect.left) / rect.width) * 100,
+      y: ((e.clientY - rect.top) / rect.height) * 100,
+    };
+    if (!rafRef.current) rafRef.current = requestAnimationFrame(paintSheen);
+  }, [paintSheen]);
+
   const handleMouseEnter = useCallback(() => {
-    onHover(index);
-    if (sheenRef.current) {
-      sheenRef.current.style.opacity = "1";
-    }
-  }, [index, onHover]);
+    if (sheenRef.current) sheenRef.current.style.opacity = "1";
+  }, []);
 
   const handleMouseLeave = useCallback(() => {
-    onHover(null);
+    if (rafRef.current) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = 0;
+    }
     if (sheenRef.current) {
       sheenRef.current.style.opacity = "0";
       sheenRef.current.style.background = "none";
     }
-  }, [onHover]);
+  }, []);
 
   const statusColor =
     project.status === "completed"
@@ -117,28 +96,12 @@ export default function ProjectCard({
 
   const visibleTags = project.techStack.slice(0, MAX_TAGS);
   const overflowCount = project.techStack.length - MAX_TAGS;
-  const wave = getWaveStyle(index, hoveredIndex, lastHoveredIndex, totalCards);
 
   return (
-    <motion.article
+    <article
       ref={cardRef}
-      initial={{ opacity: 0, y: 32 }}
-      animate={{ opacity: 1, y: wave.y, scale: wave.scale }}
-      transition={{
-        opacity: { duration: 0.5, delay: index * 0.12 },
-        y: { type: "spring", stiffness: 220, damping: 24 },
-        scale: { type: "spring", stiffness: 260, damping: 24 },
-      }}
-      className="glass"
-      style={{
-        padding: "1.5rem",
-        cursor: "pointer",
-        borderRadius: "var(--radius-lg)",
-        position: "relative",
-        zIndex: wave.zIndex,
-        overflow: "hidden",
-        willChange: "transform",
-      }}
+      className="glass project-card"
+      style={{ animationDelay: `${index * 0.09}s` } as React.CSSProperties}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       onMouseMove={handleMouseMove}
@@ -149,19 +112,7 @@ export default function ProjectCard({
       aria-haspopup="dialog"
     >
       {/* Specular sheen — updated via DOM ref, not React state */}
-      <div
-        ref={sheenRef}
-        aria-hidden="true"
-        style={{
-          position: "absolute",
-          inset: 0,
-          borderRadius: "inherit",
-          pointerEvents: "none",
-          opacity: 0,
-          transition: "opacity 0.25s ease",
-          zIndex: 0,
-        }}
-      />
+      <div ref={sheenRef} aria-hidden="true" className="project-card-sheen" />
 
       {/* Content */}
       <div style={{ position: "relative", zIndex: 1 }}>
@@ -263,6 +214,6 @@ export default function ProjectCard({
           )}
         </div>
       </div>
-    </motion.article>
+    </article>
   );
 }
