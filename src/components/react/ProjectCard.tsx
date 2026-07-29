@@ -23,9 +23,6 @@ const MAX_TAGS = 4;
 
 export default function ProjectCard({ project, index, onClick }: ProjectCardProps) {
   const cardRef = useRef<HTMLElement>(null);
-  const sheenRef = useRef<HTMLDivElement>(null);
-  const rafRef = useRef<number>(0);
-  const posRef = useRef({ x: 50, y: 50 });
 
   const handleClick = useCallback(() => {
     if (cardRef.current) {
@@ -43,52 +40,6 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
     [handleClick],
   );
 
-  // Sheen follows the cursor via direct DOM writes — no React re-render.
-  // Paint is rAF-throttled so bursts of mousemove events coalesce into at most
-  // one gradient repaint per frame (the raw event rate can far exceed 60/s and
-  // each repaint covers the whole card — expensive on retina).
-  const paintSheen = useCallback(() => {
-    rafRef.current = 0;
-    const sheen = sheenRef.current;
-    if (!sheen) return;
-    const { x, y } = posRef.current;
-    const isLight = document.documentElement.getAttribute("data-theme") === "light";
-    if (isLight) {
-      const angle = Math.round((x + y) * 1.2) % 360;
-      sheen.style.background =
-        `radial-gradient(circle 200px at ${x}% ${y}%, oklch(0.75 0.08 ${angle} / 0.18) 0%, oklch(0.80 0.05 ${angle + 60} / 0.08) 40%, transparent 70%)`;
-    } else {
-      sheen.style.background =
-        `radial-gradient(circle 200px at ${x}% ${y}%, rgba(255,255,255,0.13) 0%, rgba(255,255,255,0.04) 40%, transparent 70%)`;
-    }
-  }, []);
-
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
-    const card = cardRef.current;
-    if (!card) return;
-    const rect = card.getBoundingClientRect();
-    posRef.current = {
-      x: ((e.clientX - rect.left) / rect.width) * 100,
-      y: ((e.clientY - rect.top) / rect.height) * 100,
-    };
-    if (!rafRef.current) rafRef.current = requestAnimationFrame(paintSheen);
-  }, [paintSheen]);
-
-  const handleMouseEnter = useCallback(() => {
-    if (sheenRef.current) sheenRef.current.style.opacity = "1";
-  }, []);
-
-  const handleMouseLeave = useCallback(() => {
-    if (rafRef.current) {
-      cancelAnimationFrame(rafRef.current);
-      rafRef.current = 0;
-    }
-    if (sheenRef.current) {
-      sheenRef.current.style.opacity = "0";
-      sheenRef.current.style.background = "none";
-    }
-  }, []);
-
   const statusColor =
     project.status === "completed"
       ? "var(--color-accent-teal)"
@@ -104,16 +55,10 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
       style={{ animationDelay: `${index * 0.09}s` } as React.CSSProperties}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       role="button"
       tabIndex={0}
       aria-haspopup="dialog"
     >
-      {/* Specular sheen — updated via DOM ref, not React state */}
-      <div ref={sheenRef} aria-hidden="true" className="project-card-sheen" />
-
       {/* Content */}
       <div style={{ position: "relative", zIndex: 1 }}>
         {project.thumbnail && (

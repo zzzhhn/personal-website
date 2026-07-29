@@ -1152,7 +1152,7 @@
   margin-left: 0;
 }
 
-/* Card entrance + fan-lift hover — pure CSS (compositor thread), no React
+/* Card entrance + single-card lift — pure CSS (compositor thread), no React
    re-render or per-frame JS restyle. translate/scale are independent of the
    `transform` property so the entrance keyframe and hover transition coexist. */
 .project-card {
@@ -1212,24 +1212,6 @@
   translate: 0 -14px;
   scale: 1.03;
   z-index: 10;
-}
-/* Immediate neighbors ride the wave (right via sibling, left via :has) */
-.project-card:hover + .project-card,
-.project-card:focus-visible + .project-card,
-.project-card:has(+ .project-card:hover),
-.project-card:has(+ .project-card:focus-visible) {
-  translate: 0 -4px;
-  scale: 0.995;
-  z-index: 4;
-}
-.project-card-sheen {
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: 0;
-  z-index: 0;
-  transition: opacity 0.25s ease;
 }
 @media (prefers-reduced-motion: reduce) {
   .project-card {
