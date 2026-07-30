@@ -2,7 +2,7 @@ import RotatingText from "./RotatingText";
 
 const LANGUAGES = [
   { names: ["Putonghua", "普通话"], level: { en: "Native", zh: "母语" } },
-  { names: ["English"], level: { en: "Proficient; TOEFL 106, CET4 660, English courses all A range", zh: "熟练；托福 106，大学英语四级 660 分，英语相关课程均 A range" } },
+  { names: ["English", "英语"], level: { en: "Proficient; TOEFL 106, CET4 660, English courses all A range", zh: "熟练；托福 106，大学英语四级 660 分，英语相关课程均 A range" } },
   { names: ["Japanese", "日本語"], level: { en: "Basic", zh: "基础" } },
   { names: ["Spanish", "Español"], level: { en: "Basic, CEFR: B1", zh: "基础，CEFR: B1" } },
 ];

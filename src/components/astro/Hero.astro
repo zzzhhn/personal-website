@@ -83,7 +83,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
         ))}
       </p>
       <p class="hero-bio bio-anim" data-lang="zh" id="bio-zh">
-        {"和 Claude Code 同居中。".split('').map((ch, i) => (
+        {"和 Claude Code & Codex 同居中。".split('').map((ch, i) => (
           <span class="bio-char" style={`--bi:${i}`}>{ch === ' ' ? ' ' : ch}</span>
         ))}
       </p>
@@ -1063,6 +1063,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
 })();
 </script>
 
+
 <script is:inline>
 /* ── Bio typewriter: EN + ZH same effect, replay on hover/lang-switch ── */
 (function () {
@@ -1113,4 +1114,3 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
   langObs.observe(document.documentElement, { attributes: true, attributeFilter: ["data-site-lang"] });
 })();
 </script>
-
