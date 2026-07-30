@@ -647,6 +647,7 @@
 
 .tl-date {
   position: relative; /* anchor for absolutely-positioned workflow */
+  align-self: stretch; /* give the workflow the full card-height anchor */
   display: flex;
   flex-direction: column;
   gap: 0.125rem;
@@ -757,7 +758,8 @@
 /* ── Workflow diagram ── */
 .wf-container {
   position: absolute;
-  top: 0;              /* same vertical start as date text */
+  top: 50%;
+  translate: 0 -50%;   /* align every workflow with its card's vertical center */
   z-index: 10;
   padding: 0.5rem;
   padding-right: 2.5rem;
@@ -813,23 +815,23 @@
    One native SVG signal travels the loop; every surface is opaque so Safari
    does not recomposite a field of backdrop filters beside the timeline card. */
 .wf-container--alpha-loop {
-  height: 17rem;
+  height: 20rem;
   padding: 0;
   border: 0;
 }
 .tl-row--left .wf-container--alpha-loop {
-  left: 5.5rem;
-  right: -2rem;
+  left: 3.75rem;
+  right: -4rem;
 }
 .tl-row--right .wf-container--alpha-loop {
-  left: -2rem;
-  right: 5.5rem;
+  left: -4rem;
+  right: 3.75rem;
 }
 .alpha-loop-stage {
   position: relative;
   width: 100%;
   height: 100%;
-  min-width: 23rem;
+  min-width: 28rem;
   overflow: visible;
   isolation: isolate;
 }
@@ -873,14 +875,14 @@
   position: absolute;
   left: 50%;
   top: 45%;
-  width: min(42%, 11.5rem);
-  min-width: 9.25rem;
+  width: min(45%, 13rem);
+  min-width: 11rem;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.24rem;
-  padding: 0.72rem 0.8rem 0.65rem;
+  padding: 0.86rem 0.95rem 0.78rem;
   border: 1px solid oklch(0.52 0.1 230 / 0.34);
   border-radius: 1rem;
   background: oklch(0.965 0.01 80 / 0.98);
@@ -892,19 +894,19 @@
 .alpha-loop-kicker {
   color: var(--color-text-tertiary);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.48rem;
+  font-size: 0.52rem;
   letter-spacing: 0.08em;
   white-space: nowrap;
 }
 .alpha-loop-core strong {
   color: var(--color-text-primary);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.76rem;
+  font-size: 0.84rem;
   letter-spacing: 0.055em;
 }
 .alpha-loop-core small {
   color: var(--color-text-secondary);
-  font-size: 0.56rem;
+  font-size: 0.64rem;
   letter-spacing: 0.02em;
 }
 .alpha-loop-outcomes {
@@ -917,7 +919,7 @@
   border: 1px solid currentColor;
   border-radius: 999px;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.48rem;
+  font-size: 0.52rem;
   font-weight: 700;
   letter-spacing: 0.04em;
 }
@@ -928,20 +930,20 @@
   position: absolute;
   left: var(--alpha-x);
   top: var(--alpha-y);
-  width: clamp(5.2rem, 23%, 7rem);
-  min-height: 2.3rem;
+  width: clamp(6.4rem, 24%, 8.5rem);
+  min-height: 2.8rem;
   transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.44rem 0.5rem 0.4rem;
+  padding: 0.58rem 0.62rem 0.52rem;
   border: 1px solid oklch(0.5 0.07 55 / 0.28);
   border-radius: 0.66rem;
   background: oklch(0.975 0.007 80 / 0.98);
   box-shadow: 0 6px 18px -15px oklch(0.28 0.05 55 / 0.46);
   color: var(--color-text-primary);
   text-align: center;
-  font-size: 0.58rem;
+  font-size: 0.68rem;
   font-weight: 650;
   line-height: 1.18;
 }
@@ -955,7 +957,7 @@
   top: 0.28rem;
   color: var(--color-text-tertiary);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.42rem;
+  font-size: 0.46rem;
   font-weight: 500;
   letter-spacing: 0.04em;
 }
