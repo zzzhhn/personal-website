@@ -120,11 +120,14 @@ export default function ProjectShowcase({ projects }: Props) {
     <div>
       <ScrollStack className="project-deck mx-auto">
         {projects.map((project, i) => {
+          const centerOffset = i - (projects.length - 1) / 2;
           const distance = activeIndex === null ? 0 : i - activeIndex;
           const ripple = distance === 0
             ? 0
-            : Math.sign(distance) * Math.max(0, 28 - Math.abs(distance) * 5);
-          const lift = activeIndex === i ? -12 : activeIndex !== null && Math.abs(distance) === 1 ? -4 : 0;
+            : Math.sign(distance) * Math.max(0, 12 - Math.abs(distance) * 3);
+          const lift = activeIndex === i ? -28 : activeIndex !== null && Math.abs(distance) === 1 ? -4 : 0;
+          const fanRotation = activeIndex === i ? 0 : centerOffset * 3.2;
+          const fanY = Math.pow(Math.abs(centerOffset), 1.7) * 5;
           const zIndex = activeIndex === i ? 50 : i + 1;
 
           return (
@@ -137,7 +140,13 @@ export default function ProjectShowcase({ projects }: Props) {
               style={{
                 "--deck-ripple-x": `${ripple}px`,
                 "--deck-lift": `${lift}px`,
+                "--deck-fan-rotate": `${fanRotation}deg`,
+                "--deck-fan-y": `${fanY}px`,
+                "--deck-scale": activeIndex === i ? 1.035 : 1,
                 "--deck-z": zIndex,
+                "--stack-top": `${72 + i * 13}px`,
+                "--stack-scale": 0.91 + i * 0.018,
+                "--stack-rotate": `${i === projects.length - 1 ? 0 : i % 2 === 0 ? -0.6 : 0.6}deg`,
               } as CSSProperties}
             >
               <ProjectCard

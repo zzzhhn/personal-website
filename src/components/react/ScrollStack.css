@@ -10,12 +10,9 @@
 
 .scroll-stack-card {
   position: relative;
-  transform-origin: top center;
   backface-visibility: hidden;
-  transform-style: preserve-3d;
-  transition:
-    translate 360ms cubic-bezier(0.22, 1, 0.36, 1),
-    filter 240ms ease;
+  transform-origin: 50% 112%;
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .scroll-stack-end {
@@ -23,17 +20,21 @@
   height: 1px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .scroll-stack-inner {
-    padding: 7vh 0 48vh;
-    min-height: 100vh;
+    padding: 3rem 0 24vh;
   }
 
   .scroll-stack-card {
-    width: 100%;
-    margin-top: 0;
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
+    position: sticky;
+    top: var(--stack-top, 5rem);
+    transform: scale(var(--stack-scale, 1)) rotate(var(--stack-rotate, 0deg));
+    transform-origin: top center;
+    margin-bottom: 5rem;
+  }
+
+  .scroll-stack-end {
+    height: 18vh;
   }
 }
 
@@ -42,13 +43,16 @@
     transition: none;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 900px) {
     .scroll-stack-inner {
       padding: 1rem 0 2rem;
     }
 
-    .scroll-stack-card + .scroll-stack-card {
-      margin-top: 1rem;
+    .scroll-stack-card {
+      position: relative;
+      top: auto;
+      transform: none;
+      margin-bottom: 1rem;
     }
   }
 }

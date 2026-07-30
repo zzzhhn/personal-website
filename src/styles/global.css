@@ -1164,10 +1164,10 @@
   }
 }
 
-/* ── Project Deck: overlapping, trajectory-responsive cards ── */
+/* ── Project Deck: 25% overlap with a bottom-pivot fan ── */
 .project-deck {
-  max-width: 56rem;
-  padding: 1.5rem 1rem 2.5rem;
+  max-width: 74rem;
+  padding: 1.75rem 1rem 3.75rem;
 }
 .project-deck .scroll-stack-inner {
   display: flex;
@@ -1177,9 +1177,18 @@
 .project-card-slot {
   flex: 0 0 auto;
   display: flex;
-  width: clamp(15rem, 22vw, 19rem);
-  margin-left: clamp(-11.75rem, -17.5vw, -8.75rem);
-  translate: var(--deck-ripple-x, 0) var(--deck-lift, 0);
+  width: clamp(11.25rem, 16.667vw, 15rem);
+  /* The negative margin is exactly one quarter of the responsive card width. */
+  margin-left: clamp(-3.75rem, -4.16675vw, -2.8125rem);
+  transform:
+    translate3d(
+      var(--deck-ripple-x, 0),
+      calc(var(--deck-fan-y, 0) + var(--deck-lift, 0)),
+      0
+    )
+    rotate(var(--deck-fan-rotate, 0deg))
+    scale(var(--deck-scale, 1));
+  transform-origin: 50% 112%;
   z-index: var(--deck-z, 1);
 }
 .project-card-slot:first-child {
@@ -1323,22 +1332,13 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-  .project-card:hover {
-    translate: 0 -14px;
-    scale: 1.03;
-    z-index: 10;
-  }
   .project-card:active {
-    translate: 0 -6px;
-    scale: 0.99;
+    scale: 0.985;
     transition-duration: 0.1s;
   }
 }
 
 .project-card:focus-visible {
-  translate: 0 -14px;
-  scale: 1.03;
-  z-index: 10;
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
 }
@@ -1370,8 +1370,8 @@
   }
 }
 
-/* Mobile: stack vertically */
-@media (max-width: 768px) {
+/* Mobile and narrow tablets: native sticky stack, with no scroll runtime. */
+@media (max-width: 900px) {
   .project-deck {
     max-width: 24rem;
     padding: 0;
@@ -1384,7 +1384,7 @@
     max-width: 24rem;
     margin-left: auto;
     margin-right: auto;
-    translate: 0 0;
+    transform: scale(var(--stack-scale, 1)) rotate(var(--stack-rotate, 0deg));
   }
 }
 

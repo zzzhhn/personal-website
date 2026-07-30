@@ -1,4 +1,4 @@
-import { useRef, useCallback } from "react";
+import { memo, useRef, useCallback } from "react";
 
 export interface Project {
   title: string;
@@ -27,7 +27,7 @@ interface ProjectCardProps {
 
 const MAX_TAGS = 4;
 
-export default function ProjectCard({ project, index, onClick }: ProjectCardProps) {
+function ProjectCard({ project, index, onClick }: ProjectCardProps) {
   const cardRef = useRef<HTMLElement>(null);
 
   const handleClick = useCallback(() => {
@@ -175,3 +175,5 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
     </article>
   );
 }
+
+export default memo(ProjectCard);
