@@ -1,8 +1,11 @@
 ---
 title: "DJC Web Controller"
+titleZh: "DJC 网页 DJ 控制器"
 slug: "djc"
 tagline: "A browser-native dual-deck DJ controller with hardware-inspired controls and Safari-aware Web Audio"
+taglineZh: "融合硬件操控逻辑与 Safari 兼容音频链路的浏览器原生双 Deck DJ 控制器"
 description: "A high-fidelity RX3/FLX4-style web DJ controller with dual decks, jog and pad interaction, keyboard performance controls, tempo processing, recording fallbacks, realistic backspin physics, controller skins, and optional in-browser Demucs stem separation."
+descriptionZh: "高拟真 RX3／FLX4 风格网页 DJ 控制器，涵盖双 Deck、Jog 与 Pad 交互、键盘演奏控制、Tempo 处理、录音降级策略、自然 Backspin 动力学、多套控制器皮肤，以及可选的浏览器内 Demucs 音轨分离。"
 date: 2026-07-01
 status: "in-progress"
 featured: true
@@ -13,11 +16,19 @@ highlights:
   - "Tempo processing uses complementary crossfades and depth smoothing; BPM analysis runs in a Web Worker while dirty-checked render loops avoid unnecessary canvas and LED redraws"
   - "Safari-aware recording selects a supported WebM or MP4/AAC container at runtime, while output, vibration, and sink APIs are capability-guarded"
   - "Backspin physics use smoothed throw velocity, stale-input decay, a calibrated inertia curve, sensitivity controls, and seamless handback to normal playback"
+highlightsZh:
+  - "双 Deck 控制器集成交互式 Jog Wheel、Performance Pad、Mixer、Beat FX、Waveform、Stem EQ、RX3／FLX4 布局与四套可持久化材质皮肤"
+  - "实体键位控制采用 KeyboardEvent.code，并处理 IME、按住调节 Fader／Trim、SHIFT 锁存、页面快捷键提示条及双语 Guidebook"
+  - "Tempo 处理采用互补 Crossfade 与 Depth 平滑；BPM 分析迁移至 Web Worker，渲染循环通过 dirty check 避免无效 Canvas 与 LED 重绘"
+  - "Safari 录音链路运行时选择受支持的 WebM 或 MP4／AAC 容器，并对 output、vibration、sink 等浏览器能力实施显式守卫"
+  - "Backspin 采用平滑抛掷速度、陈旧输入衰减、经校准的惯性曲线与灵敏度控制，实现自然减速并无缝回归正常播放"
 links:
   live: "https://djc.bobbyzhong.com"
 thumbnail: "/projects/djc.webp"
 order: 4
 ---
+
+<section data-lang="en">
 
 ## Background
 
@@ -41,3 +52,32 @@ Recording selects the first supported container at runtime instead of assuming W
 The backspin model uses smoothed release velocity, stale-input decay, a minimum throw threshold, bounded velocity, and a calibrated exponential slowdown. This produces a natural ramp into reverse motion and a smooth handback to normal playback instead of an instant reverse kick.
 
 Physical keyboard mapping is based on `KeyboardEvent.code`, so shortcuts follow key position across Shift and input methods. Composition events are ignored, full-width punctuation edge cases are covered, and continuous controls remain usable without requiring MIDI hardware.
+
+</section>
+
+<section data-lang="zh">
+
+## 项目背景
+
+DJC 是在浏览器中对现代双 Deck DJ 控制器真实工作流的重构。它并非一张静态硬件仿制图：Jog Wheel、Mixer、Performance Pad、Waveform、效果器、录音链路、键盘控制层与曲库操作均连接至实际运行的 Web Audio Engine。
+
+## 控制器体验
+
+- 可切换 RX3 与 FLX4 布局，并提供可交互 Jog Wheel、Transport、Cue／Loop、Performance Pad、Mixer Channel、Beat FX 与实时 Waveform 反馈
+- 内置 Carbon、Silver、Noir 与 Midnight 四套可持久化材质皮肤，在保持控制语义一致的同时重塑面板与印刷标识
+- 支持双 Deck 键盘演奏映射、连续 Fader／Trim 调节、SHIFT 第二功能、按键重映射、冲突检测与随时可打开的快捷键图
+- 可选 Demucs Web HQ Stem Separation，并为两个 Deck 提供独立 Stem EQ 控制
+
+## 音频与性能
+
+音频链路从浏览器约束出发，而非假设存在原生 DJ 软件 API。Tempo 变化采用带重叠窗口的互补 Crossfade，并对 Depth 变化进行平滑处理，以降低调制伪影。BPM 分析迁移至 Web Worker；手势边界采用缓存，Canvas 与 LED 渲染通过 dirty check 减少主线程无效工作。
+
+录音时不再固定假设 WebM／Opus，而是在运行时选择浏览器支持的第一个容器，因此 Safari 与 Chromium 均可正常导出。`outputLatency`、`navigator.vibrate` 与输出设备选择等浏览器专属能力均在调用前进行显式检查。
+
+## 交互拟真度
+
+Backspin 模型综合平滑后的释放速度、陈旧输入衰减、最小抛掷阈值、速度上限与经校准的指数减速曲线，使反向运动自然建立，并平顺交还给正常播放，而不是瞬间触发突兀的反转。
+
+实体键盘映射基于 `KeyboardEvent.code`，让快捷键在 Shift 状态与不同输入法下仍遵循物理键位。系统会忽略输入法组合事件，并覆盖全角标点等边界情况；无需 MIDI 硬件，也能连续操控关键参数。
+
+</section>

@@ -32,7 +32,7 @@ const bilingualExperiences = EXPERIENCES.en.map((enExp, i) => ({
     techStack: [...EXPERIENCES.zh[i].techStack],
   },
   startDate: enExp.startDate,
-  endDate: enExp.endDate,
+  endDate: "endDate" in enExp ? enExp.endDate : undefined,
 }));
 
 // Fetch and sort projects (featured first, then by order)
@@ -44,13 +44,17 @@ const projects = rawProjects
   })
   .map((p) => ({
     title: p.data.title,
+    titleZh: p.data.titleZh,
     slug: p.data.slug,
     tagline: p.data.tagline,
+    taglineZh: p.data.taglineZh,
     description: p.data.description,
+    descriptionZh: p.data.descriptionZh,
     status: p.data.status,
     featured: p.data.featured,
     techStack: p.data.techStack,
     highlights: p.data.highlights ?? [],
+    highlightsZh: p.data.highlightsZh ?? [],
     links: p.data.links,
     thumbnail: p.data.thumbnail,
     thumbnailLight: p.data.thumbnailLight,

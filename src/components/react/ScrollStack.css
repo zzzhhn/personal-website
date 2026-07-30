@@ -1,0 +1,54 @@
+.scroll-stack-scroller {
+  position: relative;
+  width: 100%;
+  overflow: visible;
+}
+
+.scroll-stack-inner {
+  position: relative;
+}
+
+.scroll-stack-card {
+  position: relative;
+  transform-origin: top center;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  transition:
+    translate 360ms cubic-bezier(0.22, 1, 0.36, 1),
+    filter 240ms ease;
+}
+
+.scroll-stack-end {
+  width: 100%;
+  height: 1px;
+}
+
+@media (max-width: 768px) {
+  .scroll-stack-inner {
+    padding: 7vh 0 48vh;
+    min-height: 100vh;
+  }
+
+  .scroll-stack-card {
+    width: 100%;
+    margin-top: 0;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-stack-card {
+    transition: none;
+  }
+
+  @media (max-width: 768px) {
+    .scroll-stack-inner {
+      padding: 1rem 0 2rem;
+    }
+
+    .scroll-stack-card + .scroll-stack-card {
+      margin-top: 1rem;
+    }
+  }
+}

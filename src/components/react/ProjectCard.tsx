@@ -2,13 +2,17 @@ import { useRef, useCallback } from "react";
 
 export interface Project {
   title: string;
+  titleZh: string;
   slug: string;
   tagline: string;
+  taglineZh: string;
   description: string;
+  descriptionZh: string;
   status: string;
   featured?: boolean;
   techStack: string[];
   highlights: string[];
+  highlightsZh: string[];
   links: { live?: string; github?: string };
   thumbnail?: string;
   thumbnailLight?: string;
@@ -72,7 +76,7 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
             <img
               className={hasThemePair ? "project-thumb-image project-thumb-image--dark" : "project-thumb-image"}
               src={thumbnailDark}
-              alt={`${project.title} — live screenshot`}
+                alt={`${project.title} / ${project.titleZh} live screenshot`}
               width={640}
               height={400}
               loading="lazy"
@@ -93,7 +97,8 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
             {project.links.live && (
               <span className="live-badge" aria-label="Live site">
                 <span className="live-dot" aria-hidden="true" />
-                Live
+                <span data-lang="en">Live</span>
+                <span data-lang="zh">在线</span>
               </span>
             )}
           </div>
@@ -110,7 +115,8 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
               color: statusColor,
             }}
           >
-            {project.status}
+            <span data-lang="en">{project.status === "completed" ? "Completed" : "In progress"}</span>
+            <span data-lang="zh">{project.status === "completed" ? "已完成" : "持续迭代"}</span>
           </span>
         </div>
 
@@ -123,7 +129,8 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
             lineHeight: 1.3,
           }}
         >
-          {project.title}
+          <span data-lang="en">{project.title}</span>
+          <span data-lang="zh">{project.titleZh}</span>
         </h3>
 
         <p
@@ -134,7 +141,8 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
             lineHeight: 1.4,
           }}
         >
-          {project.tagline}
+          <span data-lang="en">{project.tagline}</span>
+          <span data-lang="zh">{project.taglineZh}</span>
         </p>
 
         <div style={{ display: "flex", flexWrap: "wrap", gap: "0.375rem" }}>

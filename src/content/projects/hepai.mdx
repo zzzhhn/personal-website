@@ -1,8 +1,11 @@
 ---
 title: "合拍 Hepai"
+titleZh: "合拍 Hepai"
 slug: "hepai"
 tagline: "The song-selection brain that seamless auto-DJ mixing has been missing"
+taglineZh: "为无缝 Auto-DJ 补上真正懂衔接的选曲大脑"
 description: "Tencent Music AI Hackathon entry: audio analysis (BPM, Camelot key, energy) ranks mix-compatible songs, then a beat-aligned engine chains them into a seamless auto-DJ stream — designed as a QQ Music add-on."
+descriptionZh: "腾讯音乐 AI Hackathon 参赛作品：基于 BPM、Camelot 调性与能量分析为候选曲目评估混音兼容度，再由节拍对齐引擎串联为无缝 Auto-DJ 播放流，产品形态面向 QQ 音乐插件场景。"
 date: 2026-06-01
 status: "completed"
 featured: false
@@ -12,11 +15,18 @@ highlights:
   - "Top-5 mix-compatible recommendations for any seed song, scored by harmonic and tempo distance"
   - "Crossfade engine that chains recommendations into a continuous auto-DJ stream, with 4 listening modes and a bass-swap DJ mode"
   - "Live demo runs fully in the browser: the pairing engine ported to JS (41 golden cases byte-identical with the Python original) and a dual-deck Web Audio crossfade replacing server-side rendering"
+highlightsZh:
+  - "使用 librosa 提取每首曲目的 BPM、Camelot Wheel 调性与能量轮廓"
+  - "围绕种子曲目输出 Top 5 混音兼容推荐，并综合和声关系与 Tempo 距离评分"
+  - "Crossfade 引擎将推荐结果串联为连续 Auto-DJ 播放流，提供四种聆听模式与 Bass Swap DJ 模式"
+  - "在线 Demo 完全运行于浏览器：选曲引擎移植至 JavaScript，并以 41 个 Golden Case 验证与 Python 原实现逐字节一致；双 Deck Web Audio Crossfade 取代服务端渲染"
 links:
   live: "https://hepai.bobbyzhong.com"
 thumbnail: "/projects/hepai.webp"
 order: 4
 ---
+
+<section data-lang="en">
 
 ## Background
 
@@ -36,3 +46,28 @@ Python + FastAPI backend for analysis and recommendation, vanilla JS front end. 
 ## Live Demo
 
 The public demo is a fully static build: the pairing and sequencing math is ported 1:1 to JavaScript (verified against the Python implementation with 41 golden test cases producing byte-identical output), and the mix itself plays through a dual-deck Web Audio pipeline — equal-power crossfades at precomputed cue points, plus a BiquadFilter bass-swap for DJ mode — instead of waiting on server-side rendering. The demo library uses Kevin MacLeod's CC-BY 4.0 catalog so the whole thing can live on the open web.
+
+</section>
+
+<section data-lang="zh">
+
+## 项目背景
+
+本项目是腾讯音乐 AI Hackathon 2026“Build for Music+”赛道 B 的参赛作品。QQ 音乐 Automix 能在曲目之间完成 Crossfade，却不会判断下一首应该选什么。合拍正是这一环节的“选曲大脑”：它分析两首歌能否自然衔接，并像 DJ 一样选择下一首曲目。
+
+## 工作原理
+
+1. **音频分析**：使用 librosa 从曲库中每首歌提取 BPM、映射至 Camelot Wheel 的 Musical Key，以及能量轮廓
+2. **兼容匹配**：给定一首种子曲目后，依据和声兼容度、Tempo 距离与能量连续性为候选曲目评分，并输出 Top 5 混音候选
+3. **自动混音**：节拍对齐的 Crossfade Engine 在 Beat Boundary 调度转场，让连续曲目像现场 DJ Set 一样融合，而不是简单硬切或线性淡出
+4. **聆听模式**：四种模式在能量曲线与曲目多样性之间提供不同取舍，例如稳定 Groove 或逐步 Build-up
+
+## 工程实现
+
+分析与推荐由 Python + FastAPI 后端完成，前端采用 Vanilla JavaScript。53 个 Python Test 覆盖音频特征提取、Camelot 兼容度评分与转场调度器；AI 生成封面与多轮音质迭代共同构成完整 MVP。
+
+## 在线体验
+
+公开 Demo 是完全静态的构建。选曲与编排算法以 1:1 方式移植至 JavaScript，并通过 41 个 Golden Case 与 Python 原实现逐字节对齐。混音本身直接运行在双 Deck Web Audio Pipeline 中，在预计算 Cue Point 执行 Equal-power Crossfade，并以 BiquadFilter 实现 DJ 模式下的 Bass Swap，无需等待服务端渲染。Demo 曲库采用 Kevin MacLeod 的 CC BY 4.0 音乐，使完整体验能够公开运行于 Web。
+
+</section>

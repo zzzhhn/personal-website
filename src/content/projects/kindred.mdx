@@ -1,8 +1,11 @@
 ---
 title: "知遇 Kindred"
+titleZh: "知遇 Kindred"
 slug: "kindred"
 tagline: "AI career-growth companion that turns conversations into a living knowledge graph"
+taglineZh: "让每次对话沉淀为持续生长知识图谱的 AI 生涯伙伴"
 description: "Full-stack AI companion for university students: persona-driven chat, an LLM-extracted growth knowledge graph with community detection, resume parsing into the profile, and a 3D mascot — built for the Tencent AI-HR bootcamp."
+descriptionZh: "面向大学生的全栈 AI 成长伙伴：以人格化对话连接 LLM 抽取的成长知识图谱、社区发现与简历画像融合，并配有 3D 吉祥物；项目源自腾讯 AI-HR 训练营。"
 date: 2026-06-01
 status: "in-progress"
 featured: true
@@ -12,6 +15,11 @@ highlights:
   - "Resume parsing (PDF / docx) that feeds the same profile graph, so uploaded history and chat-discovered facts merge into one picture"
   - "3D mascot pipeline: gpt-image-2 multi-view generation → Tripo image-to-3D → Blender cleanup → 1.79MB GLB with blink & breath animations in model-viewer"
   - "Production-grade foundation: real auth (password / Google / email verification), BYOK multi-provider LLM support, zh/en i18n, multi-session chat with edit & regenerate, 140+ tests"
+highlightsZh:
+  - "四层成长知识图谱：LLM 实体抽取 → 去重合并 → Louvain 社区聚类 → Force Graph 可视化；洞察基于图结构生成，避免 LLM 臆测因果"
+  - "支持 PDF／DOCX 简历解析并写入同一 Profile Graph，使上传履历与对话中发现的事实汇聚为统一画像"
+  - "3D 吉祥物 pipeline：gpt-image-2 多视图生成 → Tripo Image-to-3D → Blender 清理 → 1.79MB GLB，并在 model-viewer 中呈现眨眼与呼吸动画"
+  - "生产级基础能力涵盖密码、Google 与邮箱验证登录，BYOK 多模型支持，中英文 i18n，多会话聊天、编辑与重新生成，以及 140+ 自动化测试"
 links:
   live: "https://friend.bobbyzhong.com"
 thumbnail: "/projects/kindred.webp"
@@ -19,6 +27,8 @@ thumbnailDark: "/projects/kindred-dark.webp"
 thumbnailLight: "/projects/kindred.webp"
 order: 1
 ---
+
+<section data-lang="en">
 
 ## Background
 
@@ -45,3 +55,35 @@ Resume upload (PDF / docx) parses into the same graph, so a student's documented
 ## Engineering
 
 Next.js 16 App Router + Prisma on Neon PostgreSQL, deployed on Vercel at friend.bobbyzhong.com. 140+ tests across the extraction pipeline, graph merge logic, and auth flows.
+
+</section>
+
+<section data-lang="zh">
+
+## 项目背景
+
+知遇源自腾讯 AI-HR 训练营 Assignment 2，是一位帮助大学生记录并反思生涯成长的 AI 伙伴。项目的核心判断是：真正有价值的 Companion 必须能够持续积累。因此，每次对话都会沉淀至持久化知识图谱，而不是随着 Chat Session 结束而消失。
+
+## 成长知识图谱
+
+标志性能力是一套将非结构化对话转化为结构化认知的四层 Pipeline：
+
+1. **实体抽取**：每轮对话后，由 LLM 提取技能、经历、目标与人物等实体
+2. **去重合并**：新实体先与既有图谱比对并合并，而非直接追加造成信息碎片
+3. **社区聚类**：使用 Louvain Community Detection 将相关节点组织为主题群落
+4. **结构洞察**：基于中心性、Cluster Growth 与 Orphan Node 等图结构信号形成观察，明确避免由 LLM 编造因果关系
+
+PDF／DOCX 简历上传后也会解析进入同一张图谱，使学生的正式履历与对话中逐步发现的兴趣、能力共同构成连贯画像，并以交互式 Force-directed Graph 呈现。
+
+## Companion 体验
+
+- 人格化多会话对话，支持消息编辑、重新生成与 Session 分享
+- 3D 吉祥物“锅宝”通过 model-viewer 渲染，并具备待机眨眼与呼吸动画
+- 基于 AI SDK v6 提供 BYOK 多模型服务商支持
+- 完整中英文界面，并提供邮箱验证等真实认证能力
+
+## 工程实现
+
+前端采用 Next.js 16 App Router，数据层由 Prisma 与 Neon PostgreSQL 提供，部署于 Vercel 的 friend.bobbyzhong.com。实体抽取 Pipeline、图谱合并逻辑与认证流程共覆盖 140+ 自动化测试。
+
+</section>

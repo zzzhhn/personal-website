@@ -1,8 +1,11 @@
 ---
 title: "EvalForge"
+titleZh: "EvalForge 视频模型评测平台"
 slug: "evalforge"
 tagline: "Structured human evaluation platform for video generation models"
+taglineZh: "面向视频生成模型的结构化人工评测平台"
 description: "Full-stack evaluation platform with multi-dimension scoring, anti-cheat enforcement, configurable admin settings, and real-time analytics — built for production annotation workflows."
+descriptionZh: "服务生产级标注工作流的全栈评测平台，提供多维度评分、反作弊约束、可配置管理策略与实时分析能力。"
 date: 2025-10-01
 endDate: 2026-04-01
 status: "in-progress"
@@ -14,6 +17,12 @@ highlights:
   - "Admin dashboard with annotator analytics, XLSX export, sample browser, and real-time aggregation"
   - "Role-based access (admin / internal / vendor) with model name visibility controls per account type"
   - "OKLch color theme with dark/light mode and bilingual (zh/en) interface throughout"
+highlightsZh:
+  - "多维度 Likert 评分体系，配套失败标签、键盘快捷键与会话进度持久化"
+  - "可配置反作弊系统覆盖观看比例、停留时长、提交频率上限、固定值与低方差检测"
+  - "管理后台集成标注员分析、XLSX 导出、样本浏览与实时聚合"
+  - "基于角色的访问控制覆盖 admin、internal 与 vendor，并可按账号类型控制模型名称可见性"
+  - "采用 OKLch 色彩体系，完整支持深浅色模式与中英文界面"
 links:
   github: "https://github.com/zzzhhn/evalforge"
   live: "https://evaluation.bobbyzhong.com"
@@ -22,6 +31,8 @@ thumbnailDark: "/projects/evalforge.webp"
 thumbnailLight: "/projects/evalforge-light.webp"
 order: 2
 ---
+
+<section data-lang="en">
 
 Human evaluation remains the gold standard for assessing video generation quality — automated metrics miss nuances in motion realism, aesthetic coherence, and creative intent. EvalForge is a production-grade platform that structures the entire annotation workflow: admins create evaluation packages, assign items to annotators, and monitor quality through real-time analytics and anti-cheat signals.
 
@@ -49,6 +60,84 @@ Human evaluation remains the gold standard for assessing video generation qualit
     <div className="eval-stage-detail">Score aggregation · model comparison · dimension-level breakdown</div>
   </div>
 </div>
+
+</section>
+
+<section data-lang="zh">
+
+人工评测仍是判断视频生成质量的黄金标准。自动化指标往往无法捕捉运动真实性、审美一致性与创作意图等细微差异。EvalForge 以生产级平台重构完整标注工作流：管理员创建评测包、分配待评条目，并通过实时分析与反作弊信号持续监控数据质量。
+
+## 平台架构
+
+<div className="eval-pipeline">
+  <div className="eval-stage">
+    <div className="eval-stage-num">第一层</div>
+    <div className="eval-stage-name">标注工作台</div>
+    <div className="eval-stage-detail">视频播放器 · 多维度评分 · 失败标签 · 键盘导航</div>
+  </div>
+  <div className="eval-stage">
+    <div className="eval-stage-num">第二层</div>
+    <div className="eval-stage-name">反作弊</div>
+    <div className="eval-stage-detail">观看比例 · 停留时长 · 频率上限 · 模式检测</div>
+  </div>
+  <div className="eval-stage">
+    <div className="eval-stage-num">第三层</div>
+    <div className="eval-stage-name">管理后台</div>
+    <div className="eval-stage-detail">标注员管理 · 样本浏览 · 系统设置 · XLSX 导出</div>
+  </div>
+  <div className="eval-stage">
+    <div className="eval-stage-num">第四层</div>
+    <div className="eval-stage-name">数据分析</div>
+    <div className="eval-stage-detail">分数聚合 · 模型对比 · 维度级拆解</div>
+  </div>
+</div>
+
+## 标注员工作台
+
+评分界面同时服务操作效率与数据质量。标注员观看视频后，在多个可配置维度上使用 1 至 5 分 Likert Scale 评分。若给出 1 至 2 分，系统要求至少选择一个失败标签，使低分同时具备结构化原因。
+
+- **键盘优先**：数字键 1 至 5 评分，Space 控制播放／暂停，方向键导航，Enter 提交
+- **会话持久化**：观看进度保存至 sessionStorage，刷新页面后仍可延续未完成的视频
+- **观看比例校验**：进度条实时显示已观看比例，未达到配置阈值时禁止提交
+- **可调整布局**：侧边栏支持拖拽宽度，并集中展示维度筛选与条目数量
+
+## 反作弊系统
+
+每次提交都会经过多层完整性检查，且所有阈值均可由管理员配置：
+
+- **最低观看比例**：提交前必须观看达到配置比例的视频内容
+- **最短停留时长**：以固定下限叠加视频时长乘数，阻止瞬时提交
+- **频率上限**：限制每小时提交数量，拦截自动化或敷衍式批量评分
+- **固定值检测**：识别近期评分被单一数值高度主导的标注员，例如连续给出 3 分
+- **低方差检测**：在近期滑动窗口中识别异常偏低的评分标准差
+
+可疑分数会被标记但仍然保留，由管理员复核整体行为模式，而非直接阻断标注员。
+
+## 管理后台
+
+- **标注员详情**：查看用户级评分分布、完成率与反作弊事件，并导出支持中文字体的 XLSX
+- **样本浏览器**：按评测包浏览视频素材，并以父维度 › 子维度层级查看评分结构
+- **设置面板**：通过 Slider 实时调整反作弊阈值，并按账号类型控制模型名称可见性
+- **分析面板**：仅使用 VALID 分数，完成条目级、维度级与模型级聚合
+
+## 技术栈
+
+平台基于 **Next.js 16** App Router 与 React 19 Server Components 构建。数据层使用 **Prisma 7**，通过 `@prisma/adapter-pg` Driver Adapter 连接 **Neon PostgreSQL** Serverless 数据库；认证路由采用新的 `proxy()` 约定替代已弃用的 middleware。设计系统使用 **Tailwind CSS 4** 与 OKLch 色彩空间，在 Warm Ivory 浅色主题和 Deep Indigo 深色主题之间切换，并完整支持中英文。
+
+<div style={{ marginTop: "2rem", textAlign: "center" }}>
+  <a
+    href="https://evaluation.bobbyzhong.com"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="eval-live-link"
+  >
+    在线体验平台 →
+  </a>
+</div>
+
+</section>
+
+<section data-lang="en">
 
 ## Annotator Workstation
 
@@ -92,3 +181,5 @@ Built on **Next.js 16** App Router with React 19 Server Components. Data layer u
     View Live Platform →
   </a>
 </div>
+
+</section>

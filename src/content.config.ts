@@ -6,9 +6,12 @@ const projects = defineCollection({
   loader: glob({ pattern: "**/*.mdx", base: "./src/content/projects" }),
   schema: z.object({
     title: z.string(),
+    titleZh: z.string(),
     slug: z.string(),
     tagline: z.string().max(120),
+    taglineZh: z.string().max(120),
     description: z.string().max(300),
+    descriptionZh: z.string().max(300),
     date: z.coerce.date(),
     endDate: z.coerce.date().optional(),
     status: z.enum(["completed", "in-progress", "archived"]),
@@ -22,6 +25,7 @@ const projects = defineCollection({
     thumbnailLight: z.string().optional(),
     thumbnailDark: z.string().optional(),
     highlights: z.array(z.string()).optional(),
+    highlightsZh: z.array(z.string()).optional(),
     order: z.number().int().default(0),
   }),
 });

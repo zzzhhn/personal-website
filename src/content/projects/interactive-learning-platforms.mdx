@@ -1,8 +1,11 @@
 ---
 title: "Interactive Learning Platforms"
+titleZh: "交互式课程学习平台"
 slug: "interactive-learning-platforms"
 tagline: "University courses, reimagined as interactive single-file web apps"
+taglineZh: "把大学课程重构为可探索、可练习的单文件 Web App"
 description: "A suite of 4 HTML-based learning platforms covering finance, mathematics, and actuarial science — 55,000+ lines of zero-dependency interactive content with quizzes, knowledge graphs, and real-time visualizations."
+descriptionZh: "四套基于 HTML 的课程学习平台，覆盖金融、数学与精算科学；以超过 55,000 行零依赖交互内容，整合测验、知识图谱与实时可视化。"
 date: 2025-09-01
 status: "in-progress"
 featured: true
@@ -12,6 +15,11 @@ highlights:
   - "Zero-dependency single-file architecture — works offline, instant deploy"
   - "Interactive features: slope field simulator, knowledge graph, mock exams, case studies"
   - "Bilingual (EN/ZH) with dark/light theme support"
+highlightsZh:
+  - "四门课程、超过 55,000 行内容：FIN4210、FIN3080、MAT2002、ACT4253"
+  - "零依赖单文件架构，可离线使用并即时部署"
+  - "交互模块涵盖方向场模拟器、知识图谱、模拟考试与案例研究"
+  - "支持中英文切换与深浅色主题"
 links:
   github: "https://github.com/zzzhhn/interactive-learning-platforms"
   live: "https://zzzhhn.github.io/interactive-learning-platforms/FIN4210/"
@@ -20,6 +28,8 @@ thumbnailDark: "/projects/interactive-learning-platforms-dark.webp"
 thumbnailLight: "/projects/interactive-learning-platforms.webp"
 order: 3
 ---
+
+<section data-lang="en">
 
 ## Background
 
@@ -40,3 +50,29 @@ Traditional university course materials are static — dense textbooks and slide
 - **Zero runtime dependencies**: Libraries loaded via CDN with graceful fallback. Works offline after first load.
 - **Rich interactivity**: MathJax for LaTeX, Plotly/Chart.js for data visualization, custom quiz engines with progress tracking.
 - **Bilingual**: Full English/Chinese toggle across finance platforms.
+
+</section>
+
+<section data-lang="zh">
+
+## 项目背景
+
+传统大学课程材料往往停留在静态形态，教材与课件信息密度高，却难以引导主动学习。本项目将课程内容重构为交互式单文件 Web App，让学生能够即时练习、观察可视化结果，并主动探索概念之间的联系。
+
+## 课程平台
+
+| 课程 | 学科 | 核心功能 |
+|------|------|----------|
+| **FIN4210** | 公司金融 | 知识图谱、分层测验、模拟考试、TVM／NPV 计算器、案例研究 |
+| **FIN3080** | 投资分析 | 故事化学习、雷达图对比、公司筛选器、决策树 |
+| **MAT2002** | 微分方程 | 方向场模拟器、实时函数绘图、逐步 ODE 求解器 |
+| **ACT4253** | 商业伦理 | 难度标签测验、星标收藏、伦理框架速查 |
+
+## 技术亮点
+
+- **单文件架构**：每套平台均由一个自包含 HTML 文件构成，单文件最高超过 22,000 行。无需 Build Step 或 Bundler，在任意浏览器中即可打开
+- **零运行时依赖**：第三方 Library 通过 CDN 加载，并提供 Graceful Fallback；首次加载后可离线使用
+- **丰富交互能力**：使用 MathJax 渲染 LaTeX，借助 Plotly／Chart.js 完成数据可视化，并内置带进度追踪的自研 Quiz Engine
+- **完整双语**：金融课程平台全面支持中英文切换
+
+</section>

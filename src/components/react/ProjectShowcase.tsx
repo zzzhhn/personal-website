@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef, useCallback } from "react";
+import type { CSSProperties } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ProjectCard from "./ProjectCard";
 import ProjectModalContent from "./ProjectModalContent";
+import ScrollStack, { ScrollStackItem } from "./ScrollStack";
 import type { Project } from "./ProjectCard";
 
 interface Props {
@@ -33,6 +35,7 @@ function usePrefersReducedMotion() {
 export default function ProjectShowcase({ projects }: Props) {
   const [selected, setSelected] = useState<Project | null>(null);
   const [originRect, setOriginRect] = useState<DOMRect | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const reducedMotion = usePrefersReducedMotion();
@@ -115,17 +118,37 @@ export default function ProjectShowcase({ projects }: Props) {
 
   return (
     <div>
-      {/* Horizontal deck — fanned cards with a single-card lift */}
-      <div className="project-deck mx-auto" style={{ maxWidth: "56rem" }}>
-        {projects.map((project, i) => (
-          <ProjectCard
-            key={project.slug}
-            project={project}
-            index={i}
-            onClick={openModal}
-          />
-        ))}
-      </div>
+      <ScrollStack className="project-deck mx-auto">
+        {projects.map((project, i) => {
+          const distance = activeIndex === null ? 0 : i - activeIndex;
+          const ripple = distance === 0
+            ? 0
+            : Math.sign(distance) * Math.max(0, 28 - Math.abs(distance) * 5);
+          const lift = activeIndex === i ? -12 : activeIndex !== null && Math.abs(distance) === 1 ? -4 : 0;
+          const zIndex = activeIndex === i ? 50 : i + 1;
+
+          return (
+            <ScrollStackItem
+              key={project.slug}
+              itemClassName="project-card-slot"
+              data-active={activeIndex === i ? "true" : "false"}
+              onPointerEnter={() => setActiveIndex(i)}
+              onFocusCapture={() => setActiveIndex(i)}
+              style={{
+                "--deck-ripple-x": `${ripple}px`,
+                "--deck-lift": `${lift}px`,
+                "--deck-z": zIndex,
+              } as CSSProperties}
+            >
+              <ProjectCard
+                project={project}
+                index={i}
+                onClick={openModal}
+              />
+            </ScrollStackItem>
+          );
+        })}
+      </ScrollStack>
 
       {/* Hint */}
       <p

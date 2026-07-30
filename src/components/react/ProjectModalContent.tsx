@@ -17,7 +17,7 @@ export default function ProjectModalContent({ project, onClose }: Props) {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
         <button
           onClick={onClose}
-          aria-label="Close project details"
+          aria-label="Close project details / 关闭项目详情"
           style={{
             background: "none",
             border: "none",
@@ -44,7 +44,8 @@ export default function ProjectModalContent({ project, onClose }: Props) {
             color: statusColor,
           }}
         >
-          {project.status}
+          <span data-lang="en">{project.status === "completed" ? "Completed" : "In progress"}</span>
+          <span data-lang="zh">{project.status === "completed" ? "已完成" : "持续迭代"}</span>
         </span>
       </div>
 
@@ -59,12 +60,14 @@ export default function ProjectModalContent({ project, onClose }: Props) {
           lineHeight: 1.25,
         }}
       >
-        {project.title}
+        <span data-lang="en">{project.title}</span>
+        <span data-lang="zh">{project.titleZh}</span>
       </h2>
 
       {/* Tagline */}
       <p style={{ fontSize: "0.85rem", color: "var(--color-accent)", marginBottom: "1rem" }}>
-        {project.tagline}
+        <span data-lang="en">{project.tagline}</span>
+        <span data-lang="zh">{project.taglineZh}</span>
       </p>
 
       {/* Description */}
@@ -76,7 +79,8 @@ export default function ProjectModalContent({ project, onClose }: Props) {
           marginBottom: "1.5rem",
         }}
       >
-        {project.description}
+        <span data-lang="en">{project.description}</span>
+        <span data-lang="zh">{project.descriptionZh}</span>
       </p>
 
       {/* Highlights */}
@@ -92,7 +96,8 @@ export default function ProjectModalContent({ project, onClose }: Props) {
               marginBottom: "0.75rem",
             }}
           >
-            Highlights
+            <span data-lang="en">Highlights</span>
+            <span data-lang="zh">项目亮点</span>
           </h3>
           <ul style={{ listStyle: "none", padding: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             {project.highlights.map((h, i) => (
@@ -117,7 +122,8 @@ export default function ProjectModalContent({ project, onClose }: Props) {
                     flexShrink: 0,
                   }}
                 />
-                {h}
+                <span data-lang="en">{h}</span>
+                <span data-lang="zh">{project.highlightsZh[i] ?? h}</span>
               </li>
             ))}
           </ul>
@@ -136,7 +142,8 @@ export default function ProjectModalContent({ project, onClose }: Props) {
             marginBottom: "0.75rem",
           }}
         >
-          Tech Stack
+          <span data-lang="en">Tech Stack</span>
+          <span data-lang="zh">技术栈</span>
         </h3>
         <div style={{ display: "flex", flexWrap: "wrap", gap: "0.375rem" }}>
           {project.techStack.map((tech) => (
@@ -179,7 +186,8 @@ export default function ProjectModalContent({ project, onClose }: Props) {
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            Live Demo →
+            <span data-lang="en">Live Demo →</span>
+            <span data-lang="zh">在线体验 →</span>
           </a>
         )}
         {project.links.github && (
@@ -206,7 +214,8 @@ export default function ProjectModalContent({ project, onClose }: Props) {
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          Details →
+          <span data-lang="en">Details →</span>
+          <span data-lang="zh">完整详情 →</span>
         </a>
       </div>
     </>

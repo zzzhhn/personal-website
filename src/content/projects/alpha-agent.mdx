@@ -1,8 +1,11 @@
 ---
 title: "Alpha Agent"
+titleZh: "Alpha Agent 量化研究智能体"
 slug: "alpha-agent"
 tagline: "Interactive quant research workstation where a grammar-constrained LLM sits inside the loop"
+taglineZh: "将受语法约束的 LLM 嵌入研究闭环的交互式量化工作台"
 description: "FastAPI + Next.js workstation that turns a one-sentence alpha hypothesis into a Pydantic FactorSpec, runs a synthetic-panel Spearman-IC smoke check in milliseconds, and serves nine interactive research dashboards over a typed LLM gateway."
+descriptionZh: "基于 FastAPI 与 Next.js 的量化研究工作台：将一句 Alpha 假设转换为 Pydantic FactorSpec，在毫秒级完成合成面板 Spearman IC 冒烟检验，并通过强类型 LLM 网关驱动九个交互式研究面板。"
 date: 2026-04-01
 status: "in-progress"
 featured: true
@@ -11,6 +14,10 @@ highlights:
   - "Grammar-constrained LLM pipeline — natural language → Pydantic FactorSpec → AST-validated expression against a 15-op whitelist (no eval/exec, no attribute access)"
   - "10-day cross-sectional Spearman-IC smoke test on a 20-ticker synthetic panel catches broken operators in under 5ms, before any real OHLCV"
   - "Nine interactive dashboards (data / alpha / backtest / factors / gates / stress / signal / activity / report) with per-router /healthz/routers liveness and distinct 502/422/500 error codes"
+highlightsZh:
+  - "受语法约束的 LLM pipeline：自然语言 → Pydantic FactorSpec → AST 安全校验，并限定在 15 个算子白名单内，禁用 eval、exec 与属性访问"
+  - "在 20 只标的的合成面板上运行 10 日横截面 Spearman IC 冒烟检验，5ms 内即可在接入真实 OHLCV 前识别失效算子"
+  - "覆盖数据、Alpha、回测、因子、门控、压力测试、信号、活动与报告的九个交互式面板，并提供逐路由健康检查及明确区分的 502、422、500 错误语义"
 links:
   github: "https://github.com/zzzhhn/alpha-agent"
   live: "https://alpha.bobbyzhong.com/data"
@@ -19,6 +26,8 @@ thumbnailDark: "/projects/alpha-agent.webp"
 thumbnailLight: "/projects/alpha-agent-light.webp"
 order: 0
 ---
+
+<section data-lang="en">
 
 ## Background
 
@@ -57,3 +66,47 @@ All NaN-safe, all pure, dispatched by an AST walker — not `eval`.
 - Every factor that reaches the real backtest engine is already proven to be numerically executable on a synthetic panel
 - Distinct HTTP codes (503 no LLM, 502 LLM error, 422 schema / AST fail, 500 smoke crash) so the UI surfaces precise failures instead of a blanket "Network error"
 - `/healthz/routers` exposes which FastAPI routers loaded at startup, catching missing-dependency 404s that would otherwise hide behind a 200-OK homepage
+
+</section>
+
+<section data-lang="zh">
+
+## 项目背景
+
+最初版本更像一台只能观看的“电视”：提供 27 个 GET endpoint，却没有任何用户可执行的操作。经过 REFACTOR_PLAN W1／W2 重构后，它成为一套真正的研究工作台。LLM 是研究闭环内受约束的工具，而不是包裹整个流程的黑箱。
+
+## 系统架构
+
+系统由通过 HTTP 连接的两部分组成：
+
+1. **后端**：运行于 AutoDL RTX 5090 节点的 FastAPI 服务，通过 Cloudflare Tunnel 对外连接。核心包括 Pydantic Schema、基于 AST 的安全执行、仅依赖 numpy 的向量化算子层，以及逐路由 `/healthz/routers` 健康检查。Kimi For Coding 通过兼容 Anthropic `/messages` 的 API 提供 LLM 能力。
+2. **前端**：部署于 Vercel 的 Next.js 16 App Router 应用。交互式面板覆盖数据、Alpha 信号、回测、因子、Gate 编辑与压力测试，并支持中英文、深浅色主题，以及表达 IC 强弱的 Accent Color 语义。
+
+## 假设翻译器（T1）
+
+输入一句自然语言假设，即可得到可执行的 FactorSpec：
+
+- System Prompt 明确列出 15 个允许使用的算子、Operand 集合与一个完整示例
+- 将 LLM 输出解析为 Pydantic `FactorSpec`，字段包括 name、hypothesis、expression、operators_used、lookback、universe 与 justification
+- 使用 `ast.parse(mode="eval")` 构建 AST Walker，拒绝属性访问、import、lambda、非数值常量与 keyword argument，并强制 `declared_ops == used_ops`，防止 LLM 暗中遗漏或注入算子
+- 即时生成包含 20 只标的、长度为 lookback + 11 日的几何布朗运动面板，计算最近 10 日逐日横截面 Spearman IC 并取均值
+
+经 Kimi 处理后，每条假设端到端耗时约 3 秒，平均使用 667 tokens；冒烟检验耗时约 2 至 5ms。
+
+## 向量化扫描层
+
+系统在 `(T, N)` 面板上提供 15 个纯 numpy 算子：
+
+- 时间序列算子（axis=0）：`ts_mean`、`ts_std`、`ts_zscore`、`ts_rank`、`ts_corr`
+- 横截面算子（axis=1）：`rank`（百分位）、`scale`（去均值并进行 L1 归一化）、`winsorize`
+- Elementwise 算子：`log`、`sign`、`add`、`sub`、`mul`、`div`（除零返回 NaN）、`pow_`
+
+所有算子均具备 NaN Safety，由 AST Walker 分发执行，全程不使用 `eval`。
+
+## 关键成果
+
+- 任何进入真实 Backtest Engine 的因子，均已先在合成面板上证明数值可执行
+- 通过不同 HTTP 状态码精确区分故障：503 表示无可用 LLM，502 表示 LLM 错误，422 表示 Schema／AST 校验失败，500 表示冒烟检验异常，避免前端把所有问题笼统显示为“Network error”
+- `/healthz/routers` 明确展示 FastAPI 启动时成功加载的 Router，可发现原本会隐藏在 200 OK 首页之后的依赖缺失型 404
+
+</section>

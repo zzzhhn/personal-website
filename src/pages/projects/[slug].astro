@@ -13,10 +13,10 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const { Content } = await render(project);
 
-const { title, tagline, description, date, endDate, status, techStack, links } = project.data;
+const { title, titleZh, tagline, taglineZh, description, date, endDate, status, techStack, links } = project.data;
 
-function formatDate(d: Date): string {
-  return d.toLocaleDateString("en-US", { year: "numeric", month: "long" });
+function formatDate(d: Date, locale: "en-US" | "zh-CN"): string {
+  return d.toLocaleDateString(locale, { year: "numeric", month: "long" });
 }
 ---
 
@@ -28,10 +28,12 @@ function formatDate(d: Date): string {
         class="text-xs font-medium px-2 py-1 rounded-full"
         style={`background-color: ${status === "completed" ? "oklch(0.45 0.15 145 / 0.2)" : "oklch(0.55 0.15 60 / 0.2)"}; color: ${status === "completed" ? "oklch(0.7 0.15 145)" : "oklch(0.75 0.15 60)"};`}
       >
-        {status === "completed" ? "Completed" : "In Progress"}
+        <span data-lang="en">{status === "completed" ? "Completed" : "In Progress"}</span>
+        <span data-lang="zh">{status === "completed" ? "已完成" : "持续迭代"}</span>
       </span>
       <span class="text-sm" style="color: var(--color-text-secondary);">
-        {formatDate(date)}{endDate ? ` — ${formatDate(endDate)}` : ""}
+        <span data-lang="en">{formatDate(date, "en-US")}{endDate ? ` — ${formatDate(endDate, "en-US")}` : ""}</span>
+        <span data-lang="zh">{formatDate(date, "zh-CN")}{endDate ? `至${formatDate(endDate, "zh-CN")}` : ""}</span>
       </span>
     </div>
 
@@ -39,11 +41,13 @@ function formatDate(d: Date): string {
       class="text-3xl md:text-4xl font-semibold mb-4"
       style="color: var(--color-text-primary); letter-spacing: -0.02em;"
     >
-      {title}
+      <span data-lang="en">{title}</span>
+      <span data-lang="zh">{titleZh}</span>
     </h1>
 
     <p class="text-lg mb-6" style="color: var(--color-accent);">
-      {tagline}
+      <span data-lang="en">{tagline}</span>
+      <span data-lang="zh">{taglineZh}</span>
     </p>
 
     <!-- Tech stack -->
@@ -79,7 +83,8 @@ function formatDate(d: Date): string {
           class="glass glass-hover inline-flex items-center gap-2 px-4 py-2 text-sm font-medium"
           style="color: var(--color-text-primary); text-decoration: none;"
         >
-          Live Demo
+          <span data-lang="en">Live Demo</span>
+          <span data-lang="zh">在线体验</span>
         </a>
       )}
     </div>

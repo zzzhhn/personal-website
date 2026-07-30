@@ -7,7 +7,7 @@ interface Award {
 }
 
 interface Props {
-  awards: Award[];
+  awards: readonly Award[];
 }
 
 interface HoverState {
