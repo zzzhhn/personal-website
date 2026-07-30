@@ -76,7 +76,7 @@ function ProjectCard({ project, index, onClick }: ProjectCardProps) {
             <img
               className={hasThemePair ? "project-thumb-image project-thumb-image--dark" : "project-thumb-image"}
               src={thumbnailDark}
-                alt={`${project.title} / ${project.titleZh} live screenshot`}
+                alt={`${project.title} / ${project.titleZh} site snapshot`}
               width={640}
               height={400}
               loading="lazy"
@@ -95,11 +95,11 @@ function ProjectCard({ project, index, onClick }: ProjectCardProps) {
               />
             )}
             {project.links.live && (
-              <span className="live-badge" aria-label="Live site">
-                <span className="live-dot" aria-hidden="true" />
+              <span className="snapshot-badge" aria-label="Static snapshot of the live site">
+                <span className="snapshot-mark" aria-hidden="true" />
                 <span className="project-i18n-stable">
-                  <span data-lang="en">Live</span>
-                  <span data-lang="zh">在线</span>
+                  <span data-lang="en">Site snapshot</span>
+                  <span data-lang="zh">站点快照</span>
                 </span>
               </span>
             )}

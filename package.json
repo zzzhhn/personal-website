@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "astro check",
+    "capture:evalforge": "bash scripts/capture-evalforge-previews.sh"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.3",
