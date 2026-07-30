@@ -2,6 +2,7 @@ import { useRef, useState, useEffect, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 import type { WorkflowData, WFNode, WFEdge } from "../../lib/i18n";
 import AlphaLoopWorkflow from "./AlphaLoopWorkflow";
+import NarrativeWorkflow from "./NarrativeWorkflow";
 
 interface Props {
   workflow: WorkflowData;
@@ -183,6 +184,10 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
 
   if (workflow.variant === "alpha-loop") {
     return <AlphaLoopWorkflow workflow={workflow} />;
+  }
+
+  if (workflow.variant && workflow.variant !== "diagram") {
+    return <NarrativeWorkflow workflow={workflow} />;
   }
 
   return (

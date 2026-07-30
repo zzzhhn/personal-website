@@ -396,7 +396,13 @@ export interface WorkflowData {
   cols: number;
   rows: number;
   direction?: "vertical" | "horizontal"; // default "vertical"
-  variant?: "diagram" | "alpha-loop";
+  variant?:
+    | "diagram"
+    | "alpha-loop"
+    | "evaluation-lab"
+    | "evaluation-router"
+    | "deal-room"
+    | "underwriting-ledger";
   center?: {
     label: { en: string; zh: string };
     meta: { en: string; zh: string };
@@ -411,7 +417,11 @@ export interface WorkflowData {
 export const WORKFLOWS: WorkflowData[] = [
   // ① Video Rebirth — 视频模型评测工程师 (3×6, fork+feedback)
   {
-    cols: 3, rows: 6,
+    cols: 3, rows: 6, variant: "evaluation-lab",
+    center: {
+      label: { en: "EVALUATION LAB", zh: "视频评测实验室" },
+      meta: { en: "Model × Data × Metric", zh: "模型 × 数据 × 指标" },
+    },
     nodes: [
       { id: "scope", label: { en: "Evaluation Scoping", zh: "评测目标调研" }, type: "process", col: 1, row: 0 },
       { id: "framework", label: { en: "Framework Design", zh: "评测体系设计" }, type: "process", col: 1, row: 1 },
@@ -434,7 +444,11 @@ export const WORKFLOWS: WorkflowData[] = [
   },
   // ② ByteDance — Agent 评测 PM (7×3 horizontal, fork+decision+feedback)
   {
-    cols: 7, rows: 3, direction: "horizontal",
+    cols: 7, rows: 3, direction: "horizontal", variant: "evaluation-router",
+    center: {
+      label: { en: "AIME EVALUATION ROUTER", zh: "AIME 评测路由器" },
+      meta: { en: "Auto-label × Human QA", zh: "自动打标 × 人工校验" },
+    },
     nodes: [
       { id: "req", label: { en: "Requirement Analysis", zh: "需求拆解" }, type: "process", col: 0, row: 1 },
       { id: "taxonomy", label: { en: "Intent Taxonomy", zh: "意图分类" }, type: "process", col: 1, row: 1 },
@@ -459,7 +473,11 @@ export const WORKFLOWS: WorkflowData[] = [
   },
   // ③ MoE Capital — 风险投资 (3×6, 3-way fork)
   {
-    cols: 3, rows: 6,
+    cols: 3, rows: 6, variant: "deal-room",
+    center: {
+      label: { en: "DEAL ROOM", zh: "投资决策室" },
+      meta: { en: "Three-track diligence", zh: "三线并行尽调" },
+    },
     nodes: [
       { id: "scan", label: { en: "Market Scanning", zh: "赛道扫描" }, type: "process", col: 1, row: 0 },
       { id: "screen", label: { en: "Target Screening", zh: "标的筛选" }, type: "process", col: 1, row: 1 },
@@ -513,7 +531,11 @@ export const WORKFLOWS: WorkflowData[] = [
   },
   // ⑤ SDIC Securities — 投行承做 (3×5, fork+join)
   {
-    cols: 3, rows: 5,
+    cols: 3, rows: 5, variant: "underwriting-ledger",
+    center: {
+      label: { en: "UNDERWRITING LEDGER", zh: "股权承做台账" },
+      meta: { en: "Traceable review path", zh: "可追溯审核路径" },
+    },
     nodes: [
       { id: "init", label: { en: "Project Initiation", zh: "项目立项" }, type: "process", col: 1, row: 0 },
       { id: "industry", label: { en: "Industry Analysis", zh: "行业分析" }, type: "process", col: 0, row: 1 },

@@ -976,6 +976,447 @@
 [data-theme="dark"] .alpha-loop-node--gate {
   border-color: oklch(0.68 0.15 230 / 0.64);
 }
+
+/* Bespoke experience stories share one material language and one motion cue. */
+.wf-container--story {
+  padding: 0;
+  border: 0;
+}
+.tl-row--left .wf-container--story {
+  left: 3.75rem;
+  right: -4rem;
+}
+.tl-row--right .wf-container--story {
+  left: -4rem;
+  right: 3.75rem;
+}
+.wf-story-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-width: 30rem;
+  box-sizing: border-box;
+  color: var(--color-text-primary);
+  isolation: isolate;
+}
+.wf-story-header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 0.15rem 0.8rem;
+  padding-bottom: 0.48rem;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.wf-story-eyebrow {
+  grid-column: 1 / -1;
+  color: var(--color-text-tertiary);
+  font: 0.5rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.1em;
+}
+.wf-story-header strong {
+  font: 700 0.8rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.055em;
+}
+.wf-story-header small {
+  color: var(--color-text-secondary);
+  font-size: 0.58rem;
+  letter-spacing: 0.025em;
+}
+.wf-story-panel,
+.wf-story-step {
+  border: 1px solid oklch(0.5 0.07 55 / 0.28);
+  background: oklch(0.975 0.007 80 / 0.98);
+  box-shadow: 0 6px 18px -15px oklch(0.28 0.05 55 / 0.46);
+}
+.wf-story-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2rem;
+  padding: 0.35rem 0.64rem;
+  border-radius: 0.58rem;
+  font-size: 0.64rem;
+  font-weight: 650;
+  text-align: center;
+}
+.wf-story-step--active {
+  border-color: oklch(0.58 0.15 230 / 0.5);
+  color: var(--color-accent);
+}
+.wf-story-arrow {
+  color: var(--color-text-tertiary);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.wf-story-index {
+  color: var(--color-text-tertiary);
+  font: 0.46rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.05em;
+}
+
+/* Video Rebirth: paired data and metric rails feeding an evaluation chamber. */
+.wf-container--evaluation-lab { height: 24rem; }
+.evaluation-lab {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 0.7rem;
+}
+.lab-control {
+  display: grid;
+  grid-template-columns: auto 1fr 2.5rem auto 1fr;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: 0.72rem;
+  font-size: 0.65rem;
+}
+.lab-control i {
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-border-subtle), var(--color-accent));
+}
+.lab-bench {
+  display: grid;
+  grid-template-columns: 1fr 0.82fr 1fr;
+  align-items: center;
+  gap: 0.7rem;
+}
+.lab-channel,
+.lab-chamber {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 6.6rem;
+  padding: 0.72rem;
+  border-radius: 0.82rem;
+  overflow: hidden;
+}
+.lab-channel b,
+.lab-chamber b { font-size: 0.7rem; }
+.lab-chamber {
+  min-height: 9rem;
+  justify-content: center;
+  align-items: center;
+  border-color: oklch(0.58 0.15 230 / 0.48);
+  text-align: center;
+}
+.lab-meter {
+  height: 1.35rem;
+  background: repeating-linear-gradient(90deg, oklch(0.56 0.12 225 / 0.5) 0 3px, transparent 3px 7px);
+  mask-image: linear-gradient(90deg, black, transparent 88%);
+}
+.lab-meter--metric { transform: scaleY(0.72); }
+.lab-scan {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  height: 1px;
+  background: var(--color-accent);
+  box-shadow: 0 0 8px var(--color-accent-glow);
+  animation: lab-scan 3.8s ease-in-out infinite alternate;
+}
+@keyframes lab-scan { from { top: 25%; } to { top: 76%; } }
+.lab-output {
+  display: flex;
+  align-items: center;
+  gap: 0.48rem;
+}
+.lab-iterate {
+  margin-left: auto;
+  color: var(--color-text-tertiary);
+  font: 0.48rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.05em;
+}
+
+/* ByteDance AIME: a routing console with dual calibration lanes. */
+.wf-container--evaluation-router { height: 18rem; }
+.tl-row--left .wf-container--evaluation-router { right: -7rem; }
+.tl-row--right .wf-container--evaluation-router { left: -7rem; }
+.evaluation-router {
+  min-width: 38rem;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto;
+  gap: 0.45rem;
+}
+.router-intake {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.router-lanes {
+  width: 48%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem;
+}
+.router-lane {
+  padding: 0.45rem 0.62rem;
+  border-radius: 0.62rem;
+  text-align: center;
+}
+.router-lane small,
+.router-station small {
+  display: block;
+  color: var(--color-text-tertiary);
+  font: 0.44rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.08em;
+}
+.router-lane b { font-size: 0.61rem; }
+.router-bus {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: center;
+  gap: 0.62rem;
+  padding-top: 0.8rem;
+}
+.router-bus::before {
+  content: "";
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  top: 0.34rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+}
+.router-station {
+  min-height: 3rem;
+  padding: 0.48rem 0.45rem;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 0.66rem;
+  background: oklch(0.975 0.007 80 / 0.96);
+  text-align: center;
+}
+.router-station b { font-size: 0.61rem; }
+.router-station--gate {
+  border-color: oklch(0.58 0.15 230 / 0.52);
+  color: var(--color-accent);
+}
+.router-packet {
+  position: absolute;
+  top: 0.09rem;
+  left: 7%;
+  width: 0.48rem;
+  height: 0.48rem;
+  border: 1px solid oklch(0.98 0.01 230);
+  border-radius: 2px;
+  background: var(--color-accent);
+  box-shadow: 0 0 7px var(--color-accent-glow);
+  animation: router-packet 4.6s ease-in-out infinite;
+}
+@keyframes router-packet { 0%, 8% { left: 7%; } 92%, 100% { left: 91%; } }
+.router-feedback {
+  color: var(--color-text-tertiary);
+  font: 0.48rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.05em;
+  text-align: center;
+}
+
+/* MoE Capital: three diligence dossiers converging on an IC decision. */
+.wf-container--deal-room { height: 23rem; }
+.deal-room {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 0.65rem;
+}
+.deal-intake {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.48rem 0.72rem;
+  border-radius: 0.7rem;
+}
+.deal-intake span:not(.wf-story-arrow) {
+  display: flex;
+  align-items: center;
+  gap: 0.42rem;
+}
+.deal-intake small {
+  color: var(--color-text-tertiary);
+  font: 0.46rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.deal-intake b { font-size: 0.65rem; }
+.deal-dossiers {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: stretch;
+  gap: 0.7rem;
+  overflow: hidden;
+}
+.deal-dossier {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  min-height: 7.8rem;
+  padding: 1.1rem 0.72rem 0.65rem;
+  border: 1px solid oklch(0.5 0.07 55 / 0.28);
+  border-radius: 0.18rem 0.72rem 0.72rem 0.72rem;
+  background: oklch(0.975 0.007 80 / 0.98);
+  box-shadow: 0 9px 20px -18px oklch(0.25 0.05 55 / 0.5);
+  overflow: hidden;
+}
+.deal-dossier b { font-size: 0.68rem; }
+.deal-tab {
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding: 0.18rem 0.55rem;
+  border-radius: 0 0 0.42rem 0;
+  color: oklch(0.98 0 0);
+  font: 0.44rem/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.08em;
+}
+.deal-dossier--warm .deal-tab { background: oklch(0.58 0.1 55); }
+.deal-dossier--blue .deal-tab { background: oklch(0.55 0.15 245); }
+.deal-dossier--teal .deal-tab { background: oklch(0.53 0.1 175); }
+.deal-line {
+  height: 1px;
+  background: var(--color-border-subtle);
+}
+.deal-line--short { width: 68%; }
+.deal-check {
+  margin-top: auto;
+  color: oklch(0.52 0.12 155);
+  font-size: 0.8rem;
+  text-align: right;
+}
+.deal-scan {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  background: linear-gradient(transparent, var(--color-accent), transparent);
+  box-shadow: 0 0 7px var(--color-accent-glow);
+  animation: deal-scan 5.2s ease-in-out infinite;
+}
+@keyframes deal-scan { 0%, 8% { left: 0; opacity: 0; } 20%, 80% { opacity: 0.8; } 92%, 100% { left: 100%; opacity: 0; } }
+.deal-decision {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.42rem;
+}
+.deal-ic {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  min-height: 2.1rem;
+  padding: 0.3rem 0.6rem 0.3rem 0.38rem;
+  border: 1px solid oklch(0.58 0.15 230 / 0.5);
+  border-radius: 999px;
+  color: var(--color-accent);
+}
+.deal-ic small {
+  display: grid;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
+  border-radius: 50%;
+  background: oklch(0.58 0.15 230 / 0.12);
+  font: 0.45rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.deal-ic b { font-size: 0.6rem; }
+
+/* SDIC Securities: a traceable project ledger ending in internal review. */
+.wf-container--underwriting-ledger { height: 20rem; }
+.underwriting-ledger { padding: 0 6%; }
+.ledger-sheet {
+  position: relative;
+  height: 100%;
+  padding: 0.85rem 1rem 0.8rem 1.4rem;
+  border: 1px solid oklch(0.5 0.07 55 / 0.3);
+  border-radius: 0.35rem 1rem 1rem 0.35rem;
+  background: oklch(0.98 0.006 80 / 0.985);
+  box-shadow: 0 15px 30px -24px oklch(0.25 0.05 55 / 0.58);
+  overflow: hidden;
+}
+.ledger-sheet::before {
+  content: "";
+  position: absolute;
+  left: 0.72rem;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: oklch(0.62 0.12 30 / 0.32);
+}
+.ledger-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.34rem 0.48rem;
+  margin-top: 0.55rem;
+}
+.ledger-entry {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2rem 1fr auto;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.3rem 0.46rem;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+.ledger-entry:nth-child(1),
+.ledger-entry:nth-child(n+4) { grid-column: 1 / -1; }
+.ledger-no {
+  color: var(--color-text-tertiary);
+  font: 0.47rem/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.06em;
+}
+.ledger-entry b { font-size: 0.64rem; }
+.ledger-state {
+  display: grid;
+  place-items: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 1px solid oklch(0.52 0.12 155 / 0.5);
+  border-radius: 50%;
+  color: oklch(0.5 0.12 155);
+  font-size: 0.52rem;
+}
+.ledger-entry--review { padding-right: 4rem; }
+.ledger-seal {
+  position: absolute;
+  right: 1rem;
+  bottom: 0.72rem;
+  display: grid;
+  place-items: center;
+  width: 3.1rem;
+  height: 3.1rem;
+  border: 1px solid oklch(0.58 0.14 30 / 0.6);
+  border-radius: 50%;
+  color: oklch(0.52 0.14 30 / 0.75);
+  font: 0.46rem/1.15 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.05em;
+  text-align: center;
+  transform: rotate(-8deg);
+}
+.ledger-scan {
+  position: absolute;
+  left: 1.4rem;
+  right: 1rem;
+  top: 3.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-accent), transparent);
+  opacity: 0.7;
+  animation: ledger-scan 5s ease-in-out infinite;
+}
+@keyframes ledger-scan { 0%, 10% { top: 3.5rem; opacity: 0; } 22%, 82% { opacity: 0.65; } 90%, 100% { top: calc(100% - 1rem); opacity: 0; } }
+
+[data-theme="dark"] .wf-story-panel,
+[data-theme="dark"] .wf-story-step,
+[data-theme="dark"] .router-station,
+[data-theme="dark"] .deal-dossier,
+[data-theme="dark"] .ledger-sheet {
+  background: oklch(0.18 0.015 255 / 0.98);
+  border-color: oklch(0.61 0.12 230 / 0.3);
+  box-shadow: 0 12px 30px -22px oklch(0 0 0 / 0.78), inset 0 1px 0 oklch(1 0 0 / 0.04);
+}
+[data-theme="dark"] .ledger-sheet::before { background: oklch(0.66 0.12 30 / 0.35); }
+[data-theme="dark"] .router-station--gate { border-color: oklch(0.68 0.15 230 / 0.62); }
 .wf-node {
   display: flex;
   align-items: center;
@@ -1279,6 +1720,10 @@
   .tl-particle { animation: none !important; }
   .wf-edge-flow { display: none; }
   .alpha-loop-signal { display: none; }
+  .lab-scan,
+  .router-packet,
+  .deal-scan,
+  .ledger-scan { display: none; }
   .tl-hint-chip, .tl-wf-toggle--nudge { animation: none !important; }
 }
 
