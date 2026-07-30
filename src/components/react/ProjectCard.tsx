@@ -51,7 +51,8 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
   return (
     <article
       ref={cardRef}
-      className="glass project-card"
+      className="project-card"
+      data-status={project.status}
       style={{ animationDelay: `${index * 0.09}s` } as React.CSSProperties}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
@@ -93,20 +94,6 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
           >
             {project.status}
           </span>
-          {project.featured && (
-            <span
-              style={{
-                fontSize: "0.6rem",
-                fontWeight: 500,
-                letterSpacing: "0.04em",
-                textTransform: "uppercase",
-                color: "var(--color-accent)",
-                opacity: 0.7,
-              }}
-            >
-              Featured
-            </span>
-          )}
         </div>
 
         <h3

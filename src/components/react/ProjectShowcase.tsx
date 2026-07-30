@@ -115,7 +115,7 @@ export default function ProjectShowcase({ projects }: Props) {
 
   return (
     <div>
-      {/* Horizontal deck — fanned cards with wave hover effect */}
+      {/* Horizontal deck — fanned cards with a single-card lift */}
       <div className="project-deck mx-auto" style={{ maxWidth: "56rem" }}>
         {projects.map((project, i) => (
           <ProjectCard
