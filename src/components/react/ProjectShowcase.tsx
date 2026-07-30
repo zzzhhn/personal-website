@@ -136,7 +136,13 @@ export default function ProjectShowcase({ projects }: Props) {
               itemClassName="project-card-slot"
               data-active={activeIndex === i ? "true" : "false"}
               onPointerEnter={() => setActiveIndex(i)}
+              onPointerLeave={() => setActiveIndex(null)}
               onFocusCapture={() => setActiveIndex(i)}
+              onBlurCapture={(event) => {
+                if (!event.currentTarget.contains(event.relatedTarget as Node | null)) {
+                  setActiveIndex(null);
+                }
+              }}
               style={{
                 "--deck-ripple-x": `${ripple}px`,
                 "--deck-lift": `${lift}px`,
@@ -159,18 +165,29 @@ export default function ProjectShowcase({ projects }: Props) {
         })}
       </ScrollStack>
 
-      {/* Hint */}
-      <p
-        className="text-center mt-4"
-        style={{
-          fontSize: "0.75rem",
-          color: "var(--color-text-tertiary)",
-          fontStyle: "italic",
-          opacity: 0.7,
-        }}
-      >
-        <span data-lang="en">Click a card to view details</span>
-        <span data-lang="zh">点击卡片查看详情</span>
+      <p className="project-deck-hint">
+        <span className="project-deck-hint-chip">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="m9 9 5 12 1.8-5.2L21 14Z" />
+            <path d="M7.2 2.2 8 5.1" />
+            <path d="m5.1 8-2.9-.8" />
+            <path d="M14 4.1 12 6" />
+            <path d="m6 12-1.9 2" />
+          </svg>
+          <span className="project-i18n-stable project-deck-hint-copy">
+            <span data-lang="en">Select a card to explore the project</span>
+            <span data-lang="zh">点击任意卡片，查看项目详情</span>
+          </span>
+        </span>
       </p>
 
       {/* Modal — sibling to deck, NOT inside any card */}

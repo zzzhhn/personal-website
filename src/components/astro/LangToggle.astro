@@ -29,10 +29,32 @@
     document.addEventListener("click", function (e) {
       var btn = e.target.closest(".lang-toggle");
       if (!btn) return;
+      var anchorTarget = document.elementFromPoint(
+        window.innerWidth / 2,
+        Math.min(window.innerHeight * 0.38, 380)
+      );
+      var anchor = anchorTarget
+        ? anchorTarget.closest(".project-card-slot, .tl-row, section[id], main")
+        : null;
+      var anchorTop = anchor ? anchor.getBoundingClientRect().top : 0;
       var current = document.documentElement.getAttribute("data-site-lang") || "en";
       var next = current === "en" ? "zh" : "en";
       document.documentElement.setAttribute("data-site-lang", next);
+      document.documentElement.setAttribute("lang", next === "zh" ? "zh-CN" : "en");
       localStorage.setItem("lang", next);
+
+      function restoreReadingPosition() {
+        if (!anchor || !anchor.isConnected) return;
+        var delta = anchor.getBoundingClientRect().top - anchorTop;
+        if (Math.abs(delta) > 0.5) window.scrollBy(0, delta);
+      }
+
+      requestAnimationFrame(function () {
+        requestAnimationFrame(restoreReadingPosition);
+      });
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(restoreReadingPosition);
+      }
     });
   })();
 </script>

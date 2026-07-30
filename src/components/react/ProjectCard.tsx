@@ -97,15 +97,17 @@ function ProjectCard({ project, index, onClick }: ProjectCardProps) {
             {project.links.live && (
               <span className="live-badge" aria-label="Live site">
                 <span className="live-dot" aria-hidden="true" />
-                <span data-lang="en">Live</span>
-                <span data-lang="zh">在线</span>
+                <span className="project-i18n-stable">
+                  <span data-lang="en">Live</span>
+                  <span data-lang="zh">在线</span>
+                </span>
               </span>
             )}
           </div>
         )}
         <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
           <span
-            className="glass-subtle"
+            className="glass-subtle project-i18n-stable"
             style={{
               fontSize: "0.625rem",
               fontWeight: 600,
@@ -121,6 +123,7 @@ function ProjectCard({ project, index, onClick }: ProjectCardProps) {
         </div>
 
         <h3
+          className="project-i18n-stable"
           style={{
             fontSize: "1.05rem",
             fontWeight: 600,
@@ -134,6 +137,7 @@ function ProjectCard({ project, index, onClick }: ProjectCardProps) {
         </h3>
 
         <p
+          className="project-i18n-stable"
           style={{
             fontSize: "0.8rem",
             color: "var(--color-accent)",
