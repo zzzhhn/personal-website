@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect, useMemo, useCallback } from "react";
 import { motion } from "framer-motion";
 import type { WorkflowData, WFNode, WFEdge } from "../../lib/i18n";
+import AlphaLoopWorkflow from "./AlphaLoopWorkflow";
 
 interface Props {
   workflow: WorkflowData;
@@ -179,6 +180,10 @@ export default function WorkflowDiagram({ workflow, index }: Props) {
       mo.disconnect();
     };
   }, [measureAndDraw]);
+
+  if (workflow.variant === "alpha-loop") {
+    return <AlphaLoopWorkflow workflow={workflow} />;
+  }
 
   return (
     <motion.div

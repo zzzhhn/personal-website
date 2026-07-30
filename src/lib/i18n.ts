@@ -275,10 +275,11 @@ export const EXPERIENCES = {
       endDate: "2025-11-01",
       type: "internship",
       highlights: [
-        "Developed and validated 100+ Alphas for the U.S. TOP 3000 universe on BRAIN, combining price, volume, and fundamental inputs with time-series and cross-sectional operators across reversal, momentum, and value signals",
-        "Addressed turnover-driven cost erosion through decay smoothing and industry neutralization, improving backtest pass rates by approximately 15% while strengthening signal robustness",
+        "Built and validated 100+ BRAIN Alphas for the U.S. TOP 3000 universe, translating reversal, momentum, and fundamental-value hypotheses into executable FASTEXPR signals across price-volume and accounting data; ranked in the global top 0.05%",
+        "Established a robustness-oriented evaluation discipline spanning Rank IC, ICIR, turnover, and self-correlation; combined decay smoothing, industry neutralization, and targeted parameter tuning to reduce cost-sensitive churn and lift backtest pass rates by approximately 15%",
+        "Productized the research process inside Alpha Agent as a scheduled, human-governed factor-mining engine: seed from proven Alphas and live BRAIN fields, generate parser-valid candidates, apply LLM financial-logic screening and targeted retries, run BRAIN simulations, gate on official/local self-correlation, portfolio marginal contribution, and factor-family saturation, then persist every outcome for review and one-click submission",
       ],
-      techStack: ["Python", "Quantitative Modeling", "Research"],
+      techStack: ["Python", "WorldQuant BRAIN", "FASTEXPR", "Agentic Research"],
     },
     {
       role: "Investment Banking Analyst",
@@ -344,14 +345,15 @@ export const EXPERIENCES = {
       role: "研究顾问",
       organization: "WorldQuant 世坤",
       location: "远程",
-      startDate: "2025-07-01",
-      endDate: "2025-10-01",
+      startDate: "2025-08-01",
+      endDate: "2025-11-01",
       type: "internship",
       highlights: [
-        "依托 BRAIN 平台面向美股 TOP 3000 Universe 研发并验证 100+ 个 Alpha，融合价量与基本面数据，系统覆盖反转、动量及价值类信号",
-        "针对高 Turnover 引发的交易成本侵蚀，引入衰减平滑与行业中性化处理，在增强信号稳健性的同时将回测通过率提升约 15%",
+        "依托 BRAIN 平台面向美股 TOP 3000 Universe 研发并验证 100+ 个 Alpha，将反转、动量与基本面价值假设转化为融合价量及财务数据的可执行 FASTEXPR 信号，个人排名进入全球前 0.05%",
+        "建立覆盖 Rank IC、ICIR、Turnover 与自相关的稳健性评估框架，结合衰减平滑、行业中性化及定向参数调优，降低交易成本敏感型换手并将回测通过率提升约 15%",
+        "将研究方法工程化并并入 Alpha Agent，构建定时运行且由人工决策的自动挖因子引擎：以既有有效 Alpha 与真实 BRAIN 字段为种子，贯通候选生成、LLM 金融逻辑筛选、定向重试、BRAIN 仿真、官方与本地双重自相关、组合边际贡献及因子族拥挤度门控，完整沉淀各类结果供复核与一键提交",
       ],
-      techStack: ["Python", "量化建模", "行业研究"],
+      techStack: ["Python", "WorldQuant BRAIN", "FASTEXPR", "Agentic Research"],
     },
     {
       role: "投行部 – 股权承做",
@@ -394,6 +396,15 @@ export interface WorkflowData {
   cols: number;
   rows: number;
   direction?: "vertical" | "horizontal"; // default "vertical"
+  variant?: "diagram" | "alpha-loop";
+  center?: {
+    label: { en: string; zh: string };
+    meta: { en: string; zh: string };
+  };
+  outcomes?: Array<{
+    label: { en: string; zh: string };
+    tone: "pass" | "flag" | "out";
+  }>;
 }
 
 // ── Workflow data — one per experience, matches EXPERIENCES order ──
@@ -471,26 +482,33 @@ export const WORKFLOWS: WorkflowData[] = [
       { from: "memo", to: "ic" },
     ],
   },
-  // ④ WorldQuant — 量化因子研究 (7×1 horizontal, decision+feedback loop)
+  // ④ WorldQuant — Alpha Foundry orbital loop
   {
-    cols: 7, rows: 1, direction: "horizontal",
+    cols: 3, rows: 2, variant: "alpha-loop",
+    center: {
+      label: { en: "ALPHA FOUNDRY", zh: "自动挖因子引擎" },
+      meta: { en: "Scheduled · Human-governed", zh: "定时运行 · 人工决策" },
+    },
+    outcomes: [
+      { label: { en: "PASS", zh: "通过" }, tone: "pass" },
+      { label: { en: "FLAG", zh: "存疑" }, tone: "flag" },
+      { label: { en: "OUT", zh: "淘汰" }, tone: "out" },
+    ],
     nodes: [
-      { id: "hypo", label: { en: "Hypothesis", zh: "因子假设" }, type: "process", col: 0, row: 0 },
-      { id: "dataproc", label: { en: "Data Cleaning", zh: "数据清洗" }, type: "process", col: 1, row: 0 },
-      { id: "construct", label: { en: "Construct", zh: "因子构建" }, type: "process", col: 2, row: 0 },
-      { id: "backtest", label: { en: "Backtest", zh: "回测验证" }, type: "process", col: 3, row: 0 },
-      { id: "decision", label: { en: "Pass?", zh: "达标？" }, type: "decision", col: 4, row: 0 },
-      { id: "optimize", label: { en: "Optimize", zh: "优化" }, type: "process", col: 5, row: 0 },
-      { id: "registry", label: { en: "Registry", zh: "入库" }, type: "process", col: 6, row: 0 },
+      { id: "seed", label: { en: "Proven Alphas + Fields", zh: "有效 Alpha + 字段" }, type: "process", col: 0, row: 0 },
+      { id: "forge", label: { en: "Candidate Forge", zh: "候选生成" }, type: "process", col: 1, row: 0 },
+      { id: "logic", label: { en: "Logic Screen", zh: "金融逻辑筛选" }, type: "process", col: 2, row: 0 },
+      { id: "simulate", label: { en: "BRAIN Simulation", zh: "BRAIN 仿真" }, type: "process", col: 2, row: 1 },
+      { id: "gates", label: { en: "Diversity Gates", zh: "多重稳健性门控" }, type: "decision", col: 1, row: 1 },
+      { id: "review", label: { en: "Review + Registry", zh: "复核 + 结果沉淀" }, type: "process", col: 0, row: 1 },
     ],
     edges: [
-      { from: "hypo", to: "dataproc" },
-      { from: "dataproc", to: "construct" },
-      { from: "construct", to: "backtest" },
-      { from: "backtest", to: "decision" },
-      { from: "decision", to: "optimize", label: { en: "Pass", zh: "通过" } },
-      { from: "decision", to: "hypo", dashed: true, label: { en: "Fail", zh: "迭代" } },
-      { from: "optimize", to: "registry" },
+      { from: "seed", to: "forge" },
+      { from: "forge", to: "logic" },
+      { from: "logic", to: "simulate" },
+      { from: "simulate", to: "gates" },
+      { from: "gates", to: "review" },
+      { from: "review", to: "seed", dashed: true, label: { en: "Evolve", zh: "自进化" } },
     ],
   },
   // ⑤ SDIC Securities — 投行承做 (3×5, fork+join)
