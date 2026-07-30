@@ -1,102 +1,31 @@
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import RotatingText from "./RotatingText";
 
 const LANGUAGES = [
-  { names: ['Putonghua', '普通话'], level: { en: 'Native', zh: '母语' } },
-  { names: ['English', 'English'], level: { en: 'Proficient; TOEFL 106, CET4 660, English courses all A range', zh: '熟练；托福 106，大学英语四级 660 分，英语相关课程均 A range' } },
-  { names: ['Japanese', '日本語'], level: { en: 'Basic', zh: '基础' } },
-  { names: ['Spanish', 'Español'], level: { en: 'Basic, CEFR: B1', zh: '基础，CEFR: B1' } },
+  { names: ["Putonghua", "普通话"], level: { en: "Native", zh: "母语" } },
+  { names: ["English"], level: { en: "Proficient; TOEFL 106, CET4 660, English courses all A range", zh: "熟练；托福 106，大学英语四级 660 分，英语相关课程均 A range" } },
+  { names: ["Japanese", "日本語"], level: { en: "Basic", zh: "基础" } },
+  { names: ["Spanish", "Español"], level: { en: "Basic, CEFR: B1", zh: "基础，CEFR: B1" } },
 ];
 
-const spring = { type: 'spring' as const, damping: 30, stiffness: 400 };
-const STAGGER = 0.03; // per-character delay
-
-// Grapheme-safe split so CJK (普通话 / 日本語) staggers per character
-function splitChars(text: string): string[] {
-  if (typeof Intl !== 'undefined' && 'Segmenter' in Intl) {
-    const seg = new Intl.Segmenter(undefined, { granularity: 'grapheme' });
-    return Array.from(seg.segment(text), (s) => s.segment);
-  }
-  return Array.from(text);
-}
-
-// Each rotation animates character-by-character, staggered from the last glyph
-function RotatingName({ texts, interval }: { texts: string[]; interval: number }) {
-  const [index, setIndex] = useState(0);
-
-  useEffect(() => {
-    const id = setInterval(() => setIndex((p) => (p + 1) % texts.length), interval);
-    return () => clearInterval(id);
-  }, [texts.length, interval]);
-
-  const isNative = index === 1;
-  const chars = splitChars(texts[index]);
-
+export default function LanguageRotator({ lang = "en" }: { lang?: "en" | "zh" }) {
   return (
-    <span
-      style={{
-        display: 'inline-flex',
-        justifyContent: 'center',
-        verticalAlign: 'baseline',
-        minHeight: '1.4em',
-        width: '100%',
-      }}
-    >
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.span
-          key={index}
-          layout
-          transition={spring}
-          style={{
-            display: 'inline-flex',
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
-            borderRadius: '999px',
-            padding: '0.15em 0.6em',
-            borderWidth: '1px',
-            borderStyle: 'solid',
-            background: isNative ? 'var(--lang-pill-bg)' : 'transparent',
-            borderColor: isNative ? 'var(--lang-pill-border)' : 'transparent',
-            transition: 'background 0.3s, border-color 0.3s',
-          }}
-        >
-          {chars.map((ch, i) => (
-            <motion.span
-              key={i}
-              initial={{ y: '100%', opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: '-120%', opacity: 0 }}
-              transition={{ ...spring, delay: (chars.length - 1 - i) * STAGGER }}
-              style={{ display: 'inline-block', whiteSpace: 'pre' }}
-            >
-              {ch === ' ' ? ' ' : ch}
-            </motion.span>
-          ))}
-        </motion.span>
-      </AnimatePresence>
-    </span>
-  );
-}
-
-export default function LanguageRotator({ lang = 'en' }: { lang?: 'en' | 'zh' }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-      {LANGUAGES.map((l, i) => (
-        <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.5rem' }}>
-          <span
-            style={{
-              fontSize: '0.875rem',
-              fontWeight: 500,
-              flexShrink: 0,
-              width: lang === 'en' ? '6.5rem' : '5rem',
-              textAlign: 'center',
-              color: 'var(--color-text-primary)',
-            }}
-          >
-            <RotatingName texts={l.names} interval={3000} />
-          </span>
-          <span style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)' }}>
-            {lang === 'en' ? l.level.en : l.level.zh}
+    <div className="language-list">
+      {LANGUAGES.map((language) => (
+        <div className="language-row" key={language.names[0]}>
+          <RotatingText
+            texts={language.names}
+            mainClassName="language-name-pill"
+            staggerFrom="last"
+            initial={{ y: "100%", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: "-120%", opacity: 0 }}
+            staggerDuration={0.025}
+            splitLevelClassName="language-name-word"
+            transition={{ type: "spring", damping: 30, stiffness: 400 }}
+            rotationInterval={3000}
+          />
+          <span className="language-level">
+            {lang === "en" ? language.level.en : language.level.zh}
           </span>
         </div>
       ))}

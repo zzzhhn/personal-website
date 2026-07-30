@@ -686,6 +686,14 @@
   cursor: pointer;
   width: 100%;
 }
+.tl-card-copy,
+.tl-card-copy * {
+  user-select: text;
+  -webkit-user-select: text;
+}
+.tl-card-copy {
+  cursor: text;
+}
 .tl-card-header {
   display: flex;
   align-items: flex-start;
@@ -947,6 +955,9 @@
 
 /* Workflow toggle affordance at card bottom */
 .tl-wf-toggle {
+  appearance: none;
+  font: inherit;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
@@ -990,15 +1001,51 @@
   .tl-row--left .tl-wf-chevron {
     transform: rotate(-90deg);
   }
-  .tl-row--left .tl-card[aria-expanded="true"] .tl-wf-chevron {
+  .tl-row--left .tl-wf-toggle[aria-expanded="true"] .tl-wf-chevron {
     transform: rotate(90deg);
   }
   .tl-row--right .tl-wf-chevron {
     transform: rotate(90deg);
   }
-  .tl-row--right .tl-card[aria-expanded="true"] .tl-wf-chevron {
+  .tl-row--right .tl-wf-toggle[aria-expanded="true"] .tl-wf-chevron {
     transform: rotate(-90deg);
   }
+}
+
+/* Language rows share one intrinsic label column. RotatingText reserves the
+   widest localized name, so long pills never clip or nudge the level copy. */
+.language-list {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  column-gap: 0.75rem;
+  row-gap: 0.75rem;
+  align-items: center;
+}
+.language-row {
+  display: contents;
+}
+.language-name-pill {
+  min-height: 1.9rem;
+  padding: 0.2rem 0.75rem;
+  overflow: hidden;
+  border: 1px solid var(--lang-pill-border);
+  border-radius: 999px;
+  background: var(--lang-pill-bg);
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.25;
+  box-shadow: inset 0 1px 0 var(--color-inset-highlight);
+}
+.language-name-word {
+  overflow: hidden;
+  padding-block: 0.08rem;
+}
+.language-level {
+  min-width: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.45;
 }
 .tl-wf-toggle--nudge {
   animation: tl-nudge 2.4s ease-in-out infinite;

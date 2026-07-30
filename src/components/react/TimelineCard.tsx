@@ -59,15 +59,11 @@ export default function TimelineCard({
   const dateEnd = endDate ? formatDateShort(endDate) : "";
   const slideX = side === "left" ? -30 : 30;
 
-  const handleKeyDown = useCallback(
-    (e: React.KeyboardEvent) => {
-      if (e.key === "Enter" || e.key === " ") {
-        e.preventDefault();
-        onToggle();
-      }
-    },
-    [onToggle],
-  );
+  const handleCardClick = useCallback(() => {
+    const selection = window.getSelection();
+    if (selection && !selection.isCollapsed && selection.toString().trim()) return;
+    onToggle();
+  }, [onToggle]);
 
   return (
     <motion.div
@@ -103,46 +99,53 @@ export default function TimelineCard({
       </div>
 
       {/* Card column */}
-      <button
-        onClick={onToggle}
-        onKeyDown={handleKeyDown}
+      <article
+        onClick={handleCardClick}
         className="tl-card card-accent-border"
-        aria-expanded={expanded}
       >
-        {/* EN */}
-        <div data-lang="en">
-          <div className="tl-card-header">
-            <div>
-              <h3 className="tl-role">{en.role}</h3>
-              <p className="tl-org">{en.organization} · {en.location}</p>
+        <div className="tl-card-copy">
+          {/* EN */}
+          <div data-lang="en">
+            <div className="tl-card-header">
+              <div>
+                <h3 className="tl-role">{en.role}</h3>
+                <p className="tl-org">{en.organization} · {en.location}</p>
+              </div>
+              <span className="tl-type-badge" style={{ color: dotColor.bg }}>{en.type}</span>
             </div>
-            <span className="tl-type-badge" style={{ color: dotColor.bg }}>{en.type}</span>
+            <ul className="tl-highlights">
+              {en.highlights.map((h, i) => (
+                <li key={i}><span className="tl-bullet" style={{ background: dotColor.bg }} />{h}</li>
+              ))}
+            </ul>
           </div>
-          <ul className="tl-highlights">
-            {en.highlights.map((h, i) => (
-              <li key={i}><span className="tl-bullet" style={{ background: dotColor.bg }} />{h}</li>
-            ))}
-          </ul>
+
+          {/* ZH */}
+          <div data-lang="zh">
+            <div className="tl-card-header">
+              <div>
+                <h3 className="tl-role">{zh.role}</h3>
+                <p className="tl-org">{zh.organization} · {zh.location}</p>
+              </div>
+              <span className="tl-type-badge" style={{ color: dotColor.bg }}>{zh.type}</span>
+            </div>
+            <ul className="tl-highlights">
+              {zh.highlights.map((h, i) => (
+                <li key={i}><span className="tl-bullet" style={{ background: dotColor.bg }} />{h}</li>
+              ))}
+            </ul>
+          </div>
         </div>
 
-        {/* ZH */}
-        <div data-lang="zh">
-          <div className="tl-card-header">
-            <div>
-              <h3 className="tl-role">{zh.role}</h3>
-              <p className="tl-org">{zh.organization} · {zh.location}</p>
-            </div>
-            <span className="tl-type-badge" style={{ color: dotColor.bg }}>{zh.type}</span>
-          </div>
-          <ul className="tl-highlights">
-            {zh.highlights.map((h, i) => (
-              <li key={i}><span className="tl-bullet" style={{ background: dotColor.bg }} />{h}</li>
-            ))}
-          </ul>
-        </div>
-
-        {/* Workflow affordance — inside the button, so it shares the toggle */}
-        <span className={`tl-wf-toggle${nudge ? " tl-wf-toggle--nudge" : ""}`} aria-hidden="true">
+        <button
+          type="button"
+          className={`tl-wf-toggle${nudge ? " tl-wf-toggle--nudge" : ""}`}
+          aria-expanded={expanded}
+          onClick={(event) => {
+            event.stopPropagation();
+            onToggle();
+          }}
+        >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="3" y="3" width="6" height="6" rx="1" />
             <rect x="15" y="15" width="6" height="6" rx="1" />
@@ -163,8 +166,8 @@ export default function TimelineCard({
             <path className="tl-wf-chevron-down" d="m6 9 6 6 6-6" />
             <path className="tl-wf-chevron-up" d="m6 15 6-6 6 6" />
           </svg>
-        </span>
-      </button>
+        </button>
+      </article>
     </motion.div>
   );
 }
