@@ -158,10 +158,10 @@ export default function TimelineCard({
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="tl-wf-chevron"
-            style={{ transform: expanded ? "rotate(180deg)" : "none" }}
+            className={`tl-wf-chevron${expanded ? " tl-wf-chevron--expanded" : ""}`}
           >
-            <path d="m6 9 6 6 6-6" />
+            <path className="tl-wf-chevron-down" d="m6 9 6 6 6-6" />
+            <path className="tl-wf-chevron-up" d="m6 15 6-6 6 6" />
           </svg>
         </span>
       </button>

@@ -11,6 +11,8 @@ export interface Project {
   highlights: string[];
   links: { live?: string; github?: string };
   thumbnail?: string;
+  thumbnailLight?: string;
+  thumbnailDark?: string;
 }
 
 interface ProjectCardProps {
@@ -47,6 +49,9 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
 
   const visibleTags = project.techStack.slice(0, MAX_TAGS);
   const overflowCount = project.techStack.length - MAX_TAGS;
+  const thumbnailDark = project.thumbnailDark ?? project.thumbnailLight ?? project.thumbnail;
+  const thumbnailLight = project.thumbnailLight ?? project.thumbnailDark ?? project.thumbnail;
+  const hasThemePair = Boolean(thumbnailDark && thumbnailLight && thumbnailDark !== thumbnailLight);
 
   return (
     <article
@@ -62,16 +67,29 @@ export default function ProjectCard({ project, index, onClick }: ProjectCardProp
     >
       {/* Content */}
       <div style={{ position: "relative", zIndex: 1 }}>
-        {project.thumbnail && (
+        {thumbnailDark && (
           <div className="project-thumb" style={{ position: "relative", marginBottom: "1rem" }}>
             <img
-              src={project.thumbnail}
+              className={hasThemePair ? "project-thumb-image project-thumb-image--dark" : "project-thumb-image"}
+              src={thumbnailDark}
               alt={`${project.title} — live screenshot`}
               width={640}
               height={400}
               loading="lazy"
               decoding="async"
             />
+            {hasThemePair && (
+              <img
+                className="project-thumb-image project-thumb-image--light"
+                src={thumbnailLight}
+                alt=""
+                width={640}
+                height={400}
+                loading="lazy"
+                decoding="async"
+                aria-hidden="true"
+              />
+            )}
             {project.links.live && (
               <span className="live-badge" aria-label="Live site">
                 <span className="live-dot" aria-hidden="true" />

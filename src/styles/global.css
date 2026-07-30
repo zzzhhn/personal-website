@@ -970,7 +970,35 @@
   flex-shrink: 0;
 }
 .tl-wf-chevron {
+  transform: none;
   transition: transform 0.25s ease;
+}
+.tl-wf-chevron-up,
+.tl-wf-chevron--expanded .tl-wf-chevron-down {
+  display: none;
+}
+.tl-wf-chevron--expanded .tl-wf-chevron-up {
+  display: block;
+}
+@media (min-width: 769px) {
+  .tl-wf-chevron .tl-wf-chevron-down {
+    display: block;
+  }
+  .tl-wf-chevron .tl-wf-chevron-up {
+    display: none;
+  }
+  .tl-row--left .tl-wf-chevron {
+    transform: rotate(-90deg);
+  }
+  .tl-row--left .tl-card[aria-expanded="true"] .tl-wf-chevron {
+    transform: rotate(90deg);
+  }
+  .tl-row--right .tl-wf-chevron {
+    transform: rotate(90deg);
+  }
+  .tl-row--right .tl-card[aria-expanded="true"] .tl-wf-chevron {
+    transform: rotate(-90deg);
+  }
 }
 .tl-wf-toggle--nudge {
   animation: tl-nudge 2.4s ease-in-out infinite;
@@ -1145,7 +1173,7 @@
 }
 .project-deck > * {
   flex: 0 0 auto;
-  width: min(280px, 70vw);
+  width: clamp(220px, 16vw, 280px);
   margin-left: -1rem;
 }
 .project-deck > *:first-child {
@@ -1975,6 +2003,15 @@
   height: 100%;
   object-fit: cover;
   object-position: top center;
+  display: block;
+}
+.project-thumb .project-thumb-image--light {
+  display: none;
+}
+:root[data-theme="light"] .project-thumb-image--dark {
+  display: none;
+}
+:root[data-theme="light"] .project-thumb-image--light {
   display: block;
 }
 .live-badge {

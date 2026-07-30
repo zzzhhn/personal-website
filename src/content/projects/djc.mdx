@@ -1,0 +1,43 @@
+---
+title: "DJC Web Controller"
+slug: "djc"
+tagline: "A browser-native dual-deck DJ controller with hardware-inspired controls and Safari-aware Web Audio"
+description: "A high-fidelity RX3/FLX4-style web DJ controller with dual decks, jog and pad interaction, keyboard performance controls, tempo processing, recording fallbacks, realistic backspin physics, controller skins, and optional in-browser Demucs stem separation."
+date: 2026-07-01
+status: "in-progress"
+featured: true
+techStack: ["TypeScript", "Web Audio", "Web Workers", "Vite", "Vitest", "WebKit"]
+highlights:
+  - "Dual-deck controller with interactive jog wheels, performance pads, mixer, Beat FX, waveforms, stem EQ, RX3/FLX4 layouts, and four persisted material skins"
+  - "Physical-key controls use KeyboardEvent.code with IME guards, held-key fader/trim operation, SHIFT latch behavior, an on-page shortcut strip, and a bilingual guidebook"
+  - "Tempo processing uses complementary crossfades and depth smoothing; BPM analysis runs in a Web Worker while dirty-checked render loops avoid unnecessary canvas and LED redraws"
+  - "Safari-aware recording selects a supported WebM or MP4/AAC container at runtime, while output, vibration, and sink APIs are capability-guarded"
+  - "Backspin physics use smoothed throw velocity, stale-input decay, a calibrated inertia curve, sensitivity controls, and seamless handback to normal playback"
+links:
+  live: "https://djc.bobbyzhong.com"
+thumbnail: "/projects/djc.webp"
+order: 4
+---
+
+## Background
+
+DJC is a browser-native reconstruction of the physical workflow of a modern dual-deck DJ controller. The goal is not to draw a static replica: the jog wheels, mixer, pads, waveforms, effects, recording path, keyboard layer, and library controls are connected to an actual Web Audio engine.
+
+## Controller Experience
+
+- Switchable RX3 and FLX4 layouts with interactive jog wheels, transport, cue/loop controls, performance pads, mixer channels, Beat FX, and live waveform feedback
+- Four persisted material skins — Carbon, Silver, Noir, and Midnight — that recolor the plate and legends while preserving control semantics
+- Keyboard performance mapping for both decks, continuous fader and trim movement, SHIFT secondary functions, remapping, conflict detection, and an always-available shortcut overlay
+- Optional HQ stem separation through Demucs Web, plus independent stem EQ controls for both decks
+
+## Audio and Performance
+
+The audio path is designed around browser constraints rather than assuming native DJ software APIs. Tempo changes use a complementary crossfade window with overlap and smoothed depth changes to reduce modulation artifacts. BPM analysis is moved to a Web Worker, while gesture bounds are cached and canvas/LED rendering is dirty-checked to reduce main-thread work.
+
+Recording selects the first supported container at runtime instead of assuming WebM/Opus, which keeps export functional across Safari and Chromium. Browser-specific APIs such as output latency, vibration, and output-device selection are guarded before use.
+
+## Interaction Fidelity
+
+The backspin model uses smoothed release velocity, stale-input decay, a minimum throw threshold, bounded velocity, and a calibrated exponential slowdown. This produces a natural ramp into reverse motion and a smooth handback to normal playback instead of an instant reverse kick.
+
+Physical keyboard mapping is based on `KeyboardEvent.code`, so shortcuts follow key position across Shift and input methods. Composition events are ignored, full-width punctuation edge cases are covered, and continuous controls remain usable without requiring MIDI hardware.
