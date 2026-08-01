@@ -13,3 +13,11 @@ NODE_VERSION = "22"
 
 [env.production.vars]
 NODE_VERSION = "22"
+
+[[env.production.analytics_engine_datasets]]
+binding = "PORTFOLIO_ANALYTICS"
+dataset = "personal_website_events"
+
+[[env.preview.analytics_engine_datasets]]
+binding = "PORTFOLIO_ANALYTICS"
+dataset = "personal_website_events_preview"

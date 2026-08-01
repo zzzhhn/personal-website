@@ -43,6 +43,8 @@ Ship the approved Hero positioning, reduce mobile-only decorative work, disclose
 | Privacy | Event names and property values are server allowlisted; browser privacy signals are honored. |
 | Deployment | Wrangler configuration is downloaded from the live Pages project before adding the Analytics Engine binding. |
 
+Pages treats Analytics Engine bindings as non-inheritable. The binding is therefore declared at the top level for local development and repeated explicitly for `env.production` and `env.preview`.
+
 ## Acceptance
 
 - Resume PDFs and original heavy profile images are absent from `dist`.
