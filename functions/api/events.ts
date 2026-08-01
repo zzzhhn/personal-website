@@ -1,13 +1,14 @@
-interface AnalyticsDataset {
-  writeDataPoint(data: {
-    blobs: string[];
-    doubles: number[];
-    indexes: string[];
-  }): void;
+interface D1PreparedStatement {
+  bind(...values: unknown[]): D1PreparedStatement;
+  run(): Promise<unknown>;
+}
+
+interface D1Database {
+  prepare(query: string): D1PreparedStatement;
 }
 
 interface Env {
-  PORTFOLIO_ANALYTICS: AnalyticsDataset;
+  PORTFOLIO_ANALYTICS: D1Database;
 }
 
 interface EventPayload {
@@ -80,11 +81,20 @@ export async function onRequestPost(context: PagesContext): Promise<Response> {
     return new Response("Invalid event", { status: 400 });
   }
 
-  env.PORTFOLIO_ANALYTICS.writeDataPoint({
-    blobs: [payload.event, payload.target, payload.lang, payload.theme, payload.viewport],
-    doubles: [1],
-    indexes: [payload.event],
-  });
+  const day = new Date().toISOString().slice(0, 10);
+  await env.PORTFOLIO_ANALYTICS.prepare(`
+    INSERT INTO event_counts (day, event, target, lang, theme, viewport, count, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, 1, CURRENT_TIMESTAMP)
+    ON CONFLICT (day, event, target, lang, theme, viewport)
+    DO UPDATE SET count = count + 1, updated_at = CURRENT_TIMESTAMP
+  `).bind(
+    day,
+    payload.event,
+    payload.target,
+    payload.lang,
+    payload.theme,
+    payload.viewport,
+  ).run();
 
   return noContent();
 }

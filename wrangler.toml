@@ -4,9 +4,10 @@ pages_build_output_dir = "dist"
 compatibility_date = "2026-04-05"
 send_metrics = false
 
-[[analytics_engine_datasets]]
+[[d1_databases]]
 binding = "PORTFOLIO_ANALYTICS"
-dataset = "personal_website_events"
+database_name = "personal-website-analytics"
+database_id = "d8dd29e4-fa73-4d5c-b32c-2f88072afd60"
 
 [vars]
 NODE_VERSION = "22"
@@ -14,10 +15,15 @@ NODE_VERSION = "22"
 [env.production.vars]
 NODE_VERSION = "22"
 
-[[env.production.analytics_engine_datasets]]
-binding = "PORTFOLIO_ANALYTICS"
-dataset = "personal_website_events"
+[env.preview.vars]
+NODE_VERSION = "22"
 
-[[env.preview.analytics_engine_datasets]]
+[[env.production.d1_databases]]
 binding = "PORTFOLIO_ANALYTICS"
-dataset = "personal_website_events_preview"
+database_name = "personal-website-analytics"
+database_id = "d8dd29e4-fa73-4d5c-b32c-2f88072afd60"
+
+[[env.preview.d1_databases]]
+binding = "PORTFOLIO_ANALYTICS"
+database_name = "personal-website-analytics-preview"
+database_id = "6b32c2b3-c32b-4535-a446-ac4c01cb55a2"

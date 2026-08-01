@@ -12,7 +12,7 @@ Ship the approved Hero positioning, reduce mobile-only decorative work, disclose
 - Project cards expose two facts: delivery maturity and current maintenance. A reachable live URL is not treated as proof of active maintenance.
 - Modal controls share a 44px minimum target, visible keyboard focus, consistent hover and pressed feedback, and the same radius and border vocabulary.
 - Only six semantic event types are accepted by the server. Do Not Track and Global Privacy Control disable client collection.
-- Analytics records event, project or section slug, language, theme, and coarse viewport class. It does not record IP addresses, user agents, URLs, free text, cookies, or persistent identifiers.
+- Analytics stores daily aggregate counters by event, project or section slug, language, theme, and coarse viewport class. It does not retain individual click rows, IP addresses, user agents, URLs, free text, cookies, or persistent identifiers.
 
 ## Principles re-check
 
@@ -28,7 +28,7 @@ Ship the approved Hero positioning, reduce mobile-only decorative work, disclose
 | Respect time | Initial Hero loads one compressed theme image; the alternate warms during idle time. |
 | Honesty | Accompany is a functional prototype and archived, not described as completed. |
 | One primary action | The modal keeps Live visually primary while Details and GitHub remain secondary. |
-| Traceability | Anonymous semantic events make interest measurable without profiling visitors. |
+| Traceability | Anonymous daily counters make interest measurable without retaining visitor-level records. |
 
 ## Cross-cutting conventions audit
 
@@ -43,7 +43,7 @@ Ship the approved Hero positioning, reduce mobile-only decorative work, disclose
 | Privacy | Event names and property values are server allowlisted; browser privacy signals are honored. |
 | Deployment | Wrangler configuration is downloaded from the live Pages project before adding the Analytics Engine binding. |
 
-Pages treats Analytics Engine bindings as non-inheritable. The binding is therefore declared at the top level for local development and repeated explicitly for `env.production` and `env.preview`.
+Pages treats D1 bindings as non-inheritable. The production and Preview environments therefore receive explicit, separate databases so testing cannot pollute production counters.
 
 ## Acceptance
 
