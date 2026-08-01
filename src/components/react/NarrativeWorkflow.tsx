@@ -89,9 +89,15 @@ function EvaluationLab({ workflow }: Props) {
           </div>
         </div>
         <div className="lab-output">
-          <span className="wf-story-step"><NodeLabel workflow={workflow} id="analysis" /></span>
+          <span className="wf-story-step">
+            <span className="wf-story-index">05</span>
+            <NodeLabel workflow={workflow} id="analysis" />
+          </span>
           <span className="wf-story-arrow" aria-hidden="true">→</span>
-          <span className="wf-story-step"><NodeLabel workflow={workflow} id="report" /></span>
+          <span className="wf-story-step">
+            <span className="wf-story-index">06</span>
+            <NodeLabel workflow={workflow} id="report" />
+          </span>
           <span className="lab-iterate">
             <span data-lang="en">↺ FEEDBACK TO FRAMEWORK</span>
             <span data-lang="zh">↺ 反馈至评测体系</span>
@@ -138,19 +144,19 @@ function EvaluationRouter({ workflow }: Props) {
 
 function DealRoom({ workflow }: Props) {
   const dossiers = [
-    { id: "bizdd", code: "BIZ", tone: "warm" },
-    { id: "findd", code: "FIN", tone: "blue" },
-    { id: "techdd", code: "TECH", tone: "teal" },
+    { id: "market", code: "01A · MKT", tone: "warm" },
+    { id: "thematic", code: "01B · THM", tone: "blue" },
+    { id: "interviews", code: "01C · GP", tone: "teal" },
+    { id: "sentiment", code: "01D · SIG", tone: "violet" },
   ];
 
   return (
     <StoryShell variant="deal-room" label="Venture capital deal room workflow / 风险投资决策室工作流">
       <div className="wf-story-stage deal-room">
         <StoryHeader workflow={workflow} eyebrow="MOE CAPITAL · DEAL DESK" />
-        <div className="deal-intake wf-story-panel">
-          <span><small>01</small><b><NodeLabel workflow={workflow} id="scan" /></b></span>
-          <span className="wf-story-arrow" aria-hidden="true">→</span>
-          <span><small>02</small><b><NodeLabel workflow={workflow} id="screen" /></b></span>
+        <div className="deal-phase-label">
+          <span data-lang="en">01 · EVIDENCE CHANNELS</span>
+          <span data-lang="zh">01 · 研究信息源</span>
         </div>
         <div className="deal-dossiers">
           {dossiers.map((dossier) => (
@@ -165,12 +171,18 @@ function DealRoom({ workflow }: Props) {
           <span className="deal-scan" aria-hidden="true" />
         </div>
         <div className="deal-decision">
-          <span className="wf-story-step"><NodeLabel workflow={workflow} id="comp" /></span>
+          <span className="wf-story-step">
+            <span className="wf-story-index">02A</span>
+            <NodeLabel workflow={workflow} id="synthesis" />
+          </span>
+          <span className="wf-story-arrow" aria-hidden="true">＋</span>
+          <span className="wf-story-step">
+            <span className="wf-story-index">02B</span>
+            <NodeLabel workflow={workflow} id="landscape" />
+          </span>
           <span className="wf-story-arrow" aria-hidden="true">→</span>
-          <span className="wf-story-step"><NodeLabel workflow={workflow} id="memo" /></span>
-          <span className="wf-story-arrow" aria-hidden="true">→</span>
-          <span className="deal-ic">
-            <small>IC</small><b><NodeLabel workflow={workflow} id="ic" /></b>
+          <span className="deal-memo">
+            <small>03</small><b><NodeLabel workflow={workflow} id="memo" /></b>
           </span>
         </div>
       </div>

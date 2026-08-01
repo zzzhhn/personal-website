@@ -8,7 +8,7 @@
 | --- | --- | --- |
 | Video Rebirth | Evaluation Lab | 数据与指标双通道汇入评测舱，再输出分析和报告 |
 | ByteDance AIME | Evaluation Router | 需求与意图进入双校准通道，再经过自动、人工和质量闸门 |
-| MoE Capital | Deal Room | 商业、财务和技术三份 dossier 汇入投资备忘录与 IC |
+| MoE Capital | Research Deal Room | 一级市场、赛道研究、访谈和舆情四条真实信息流汇入研究综合与投资备忘录 |
 | WorldQuant | Alpha Foundry | 候选生成、仿真、门控、复核形成持续迭代闭环 |
 | SDIC Securities | Underwriting Ledger | 立项、底稿、估值、报告和内核形成可追溯台账 |
 
@@ -18,13 +18,13 @@
 | --- | --- |
 | Intent alignment | `TimelineCard.tsx` 保留卡片与 View workflow 单一展开入口，用户无需先选择图表类型 |
 | Cognitive load | `NarrativeWorkflow.tsx` 每个画面只有一条主叙事和最多四个同层状态 |
-| Status visibility | 各布局以 RUN、GATE、IC、审核勾选等贴近任务的状态呈现进度 |
+| Status visibility | 各布局以 RUN、GATE、阶段编号、输出节点和审核勾选等贴近任务的状态呈现进度 |
 | Forgiveness | 展开和收起完全可逆，不写入状态，也没有破坏性动作 |
 | Affordance | 所有 workflow 仍使用相同按钮和 chevron，视觉节点不伪装成可编辑控件 |
 | Good design disappears | 专业隐喻服务于经历理解，不新增教学层或操作说明 |
 | No manual required | 五个标题、阶段编号和连接关系在首次展开时即可理解 |
 | Respect time | 无新依赖，不做持续指针跟踪，每个 workflow 只有一个 CSS 或 SVG 动态线索 |
-| Truthfulness | 节点全部来自 `WORKFLOWS` 的既有真实步骤，不新增无法由经历证据支持的结果 |
+| Truthfulness | 节点逐条映射当前经历正文；MoE 不再展示正文未支持的技术尽调与 IC 节点 |
 | One primary action | 每张经历卡片仍只有 View workflow 一个主操作 |
 | Traceability | 阶段编号、分支和回路保留从输入到输出的可追溯关系 |
 
@@ -45,5 +45,6 @@
 
 - 1440px 桌面视口下，五组 workflow 与对应卡片的垂直中线误差不超过 2px。
 - 英文浅色与中文深色下，workflow 节点不得出现 `scrollWidth` 或 `scrollHeight` 溢出。
+- 深色模式下，阶段编号和辅助标签必须保持可辨识对比度。
 - Astro check 为零错误，静态构建成功。
 - Cloudflare Pages 成功后，正式域名样式资产必须包含四个新增 variant selector。
