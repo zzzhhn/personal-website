@@ -1,4 +1,7 @@
 import { memo, useRef, useCallback } from "react";
+import { trackPortfolioEvent } from "../../lib/analytics";
+import type { ProjectMaintenance, ProjectMaturity } from "../../lib/projectStatus";
+import ProjectStatusBadges from "./ProjectStatusBadges";
 
 export interface Project {
   title: string;
@@ -8,7 +11,8 @@ export interface Project {
   taglineZh: string;
   description: string;
   descriptionZh: string;
-  status: string;
+  maturity: ProjectMaturity;
+  maintenance: ProjectMaintenance;
   featured?: boolean;
   techStack: string[];
   highlights: string[];
@@ -32,6 +36,7 @@ function ProjectCard({ project, index, onClick }: ProjectCardProps) {
 
   const handleClick = useCallback(() => {
     if (cardRef.current) {
+      trackPortfolioEvent("project_card_open", project.slug);
       onClick(project, cardRef.current.getBoundingClientRect(), cardRef.current);
     }
   }, [project, onClick]);
@@ -46,11 +51,6 @@ function ProjectCard({ project, index, onClick }: ProjectCardProps) {
     [handleClick],
   );
 
-  const statusColor =
-    project.status === "completed"
-      ? "var(--color-accent-teal)"
-      : "var(--color-accent-warm)";
-
   const visibleTags = project.techStack.slice(0, MAX_TAGS);
   const overflowCount = project.techStack.length - MAX_TAGS;
   const thumbnailDark = project.thumbnailDark ?? project.thumbnailLight ?? project.thumbnail;
@@ -61,7 +61,8 @@ function ProjectCard({ project, index, onClick }: ProjectCardProps) {
     <article
       ref={cardRef}
       className="project-card"
-      data-status={project.status}
+      data-maturity={project.maturity}
+      data-maintenance={project.maintenance}
       style={{ animationDelay: `${index * 0.09}s` } as React.CSSProperties}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
@@ -105,22 +106,7 @@ function ProjectCard({ project, index, onClick }: ProjectCardProps) {
             )}
           </div>
         )}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
-          <span
-            className="glass-subtle project-i18n-stable"
-            style={{
-              fontSize: "0.625rem",
-              fontWeight: 600,
-              letterSpacing: "0.05em",
-              textTransform: "uppercase",
-              padding: "0.2rem 0.6rem",
-              color: statusColor,
-            }}
-          >
-            <span data-lang="en">{project.status === "completed" ? "Completed" : "In progress"}</span>
-            <span data-lang="zh">{project.status === "completed" ? "已完成" : "持续迭代"}</span>
-          </span>
-        </div>
+        <ProjectStatusBadges maturity={project.maturity} maintenance={project.maintenance} />
 
         <h3
           className="project-i18n-stable"

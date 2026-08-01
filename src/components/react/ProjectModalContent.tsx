@@ -1,4 +1,5 @@
 import type { Project } from "./ProjectCard";
+import ProjectStatusBadges from "./ProjectStatusBadges";
 
 interface Props {
   project: Project;
@@ -6,11 +7,6 @@ interface Props {
 }
 
 export default function ProjectModalContent({ project, onClose }: Props) {
-  const statusColor =
-    project.status === "completed"
-      ? "var(--color-accent-teal)"
-      : "var(--color-accent-warm)";
-
   return (
     <>
       {/* Header row: close + status */}
@@ -18,35 +14,13 @@ export default function ProjectModalContent({ project, onClose }: Props) {
         <button
           onClick={onClose}
           aria-label="Close project details / 关闭项目详情"
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            color: "var(--color-text-tertiary)",
-            fontSize: "1.25rem",
-            lineHeight: 1,
-            padding: "0.25rem",
-            transition: "color 0.15s ease",
-          }}
-          onMouseEnter={(e) => { (e.target as HTMLElement).style.color = "var(--color-text-primary)"; }}
-          onMouseLeave={(e) => { (e.target as HTMLElement).style.color = "var(--color-text-tertiary)"; }}
+          className="project-icon-button"
         >
-          ✕
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+            <path d="m6 6 12 12M18 6 6 18" />
+          </svg>
         </button>
-        <span
-          className="glass-subtle"
-          style={{
-            fontSize: "0.625rem",
-            fontWeight: 600,
-            letterSpacing: "0.05em",
-            textTransform: "uppercase",
-            padding: "0.2rem 0.6rem",
-            color: statusColor,
-          }}
-        >
-          <span data-lang="en">{project.status === "completed" ? "Completed" : "In progress"}</span>
-          <span data-lang="zh">{project.status === "completed" ? "已完成" : "持续迭代"}</span>
-        </span>
+        <ProjectStatusBadges maturity={project.maturity} maintenance={project.maintenance} />
       </div>
 
       {/* Title */}
@@ -178,13 +152,9 @@ export default function ProjectModalContent({ project, onClose }: Props) {
             href={project.links.live}
             target="_blank"
             rel="noopener noreferrer"
-            style={{
-              fontSize: "0.8rem",
-              fontWeight: 500,
-              color: "var(--color-accent)",
-              textDecoration: "none",
-            }}
-            onClick={(e) => e.stopPropagation()}
+            className="project-action-link project-action-link--primary"
+            data-analytics-event="project_live_click"
+            data-analytics-target={project.slug}
           >
             <span data-lang="en">Live Demo →</span>
             <span data-lang="zh">在线体验 →</span>
@@ -195,24 +165,16 @@ export default function ProjectModalContent({ project, onClose }: Props) {
             href={project.links.github}
             target="_blank"
             rel="noopener noreferrer"
-            style={{
-              fontSize: "0.8rem",
-              color: "var(--color-text-tertiary)",
-              textDecoration: "none",
-            }}
-            onClick={(e) => e.stopPropagation()}
+            className="project-action-link"
           >
             GitHub
           </a>
         )}
         <a
           href={`/projects/${project.slug}`}
-          style={{
-            fontSize: "0.8rem",
-            color: "var(--color-text-tertiary)",
-            textDecoration: "none",
-          }}
-          onClick={(e) => e.stopPropagation()}
+          className="project-action-link"
+          data-analytics-event="project_details_click"
+          data-analytics-target={project.slug}
         >
           <span data-lang="en">Details →</span>
           <span data-lang="zh">完整详情 →</span>

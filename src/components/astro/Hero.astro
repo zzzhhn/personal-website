@@ -19,21 +19,30 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     <!-- LEFT: Photo -->
     <div class="hero-photo-side">
       <img
-        src="/images/profile.jpg"
+        id="hero-profile-photo"
+        src="data:image/gif;base64,R0lGODlhAQABAAAAACw="
+        data-light-src="/images/profile-light-960.webp"
+        data-light-srcset="/images/profile-light-640.webp 640w, /images/profile-light-960.webp 960w"
+        data-dark-src="/images/profile-dark-960.webp"
+        data-dark-srcset="/images/profile-dark-640.webp 640w, /images/profile-dark-960.webp 960w"
         alt={`Photo of ${SITE.name}`}
-        width="800"
-        height="1000"
-        class="hero-photo hero-photo--light"
+        width="960"
+        height="1092"
+        sizes="(max-width: 768px) 100vw, 40vw"
+        class="hero-photo"
         loading="eager"
+        decoding="async"
+        fetchpriority="high"
       />
-      <img
-        src="/images/profile-dark.png"
-        alt={`Photo of ${SITE.name}`}
-        width="800"
-        height="1000"
-        class="hero-photo hero-photo--dark"
-        loading="eager"
-      />
+      <noscript>
+        <img
+          src="/images/profile-light-960.webp"
+          alt={`Photo of ${SITE.name}`}
+          width="960"
+          height="1092"
+          class="hero-photo"
+        />
+      </noscript>
     </div>
 
     <!-- RIGHT: Content (60%) -->
@@ -115,7 +124,13 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
           <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" class="hero-icon-btn" aria-label="LinkedIn">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
           </a>
-          <a href={`mailto:${SITE.email}`} class="hero-icon-btn" aria-label="Email">
+          <a
+            href={`mailto:${SITE.email}`}
+            class="hero-icon-btn"
+            aria-label="Email"
+            data-analytics-event="contact_email_click"
+            data-analytics-target="hero"
+          >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" /></svg>
           </a>
           <!-- Base location: hover-reveal tooltip with bilingual city names -->
@@ -217,6 +232,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     object-fit: cover;
     object-position: center 20%;
     display: block;
+    transition: opacity 0.18s ease;
     mask-image:
       linear-gradient(to right, black 0%, black 65%, transparent 95%),
       linear-gradient(to bottom, black 0%, black 82%, transparent 100%);
@@ -226,10 +242,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       linear-gradient(to bottom, black 0%, black 82%, transparent 100%);
     -webkit-mask-composite: source-in;
   }
-  /* Light/dark photo toggle */
-  .hero-photo--dark { display: none; }
-  :global([data-theme="dark"]) .hero-photo--light { display: none; }
-  :global([data-theme="dark"]) .hero-photo--dark { display: block; }
+  .hero-photo.profile-swapping { opacity: 0.35; }
 
   /* Content side */
   .hero-content-side {
@@ -548,6 +561,65 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     .orb { animation: none !important; }
   }
 </style>
+
+<script is:inline>
+(function () {
+  var photo = document.getElementById("hero-profile-photo");
+  if (!photo) return;
+  var activeTheme = "";
+  var sizes = "(max-width: 768px) 100vw, 40vw";
+
+  function sourceFor(theme) {
+    var isLight = theme === "light";
+    return {
+      src: photo.getAttribute(isLight ? "data-light-src" : "data-dark-src"),
+      srcset: photo.getAttribute(isLight ? "data-light-srcset" : "data-dark-srcset")
+    };
+  }
+
+  function commit(theme, source) {
+    if (theme !== document.documentElement.getAttribute("data-theme")) return;
+    photo.srcset = source.srcset;
+    photo.sizes = sizes;
+    photo.src = source.src;
+    activeTheme = theme;
+    requestAnimationFrame(function () { photo.classList.remove("profile-swapping"); });
+  }
+
+  function applyTheme(theme, immediate) {
+    if (theme === activeTheme) return;
+    var source = sourceFor(theme);
+    if (immediate) {
+      commit(theme, source);
+      return;
+    }
+    photo.classList.add("profile-swapping");
+    var preload = new Image();
+    preload.srcset = source.srcset;
+    preload.sizes = sizes;
+    preload.src = source.src;
+    var ready = preload.decode ? preload.decode() : Promise.resolve();
+    ready.catch(function () {}).then(function () { commit(theme, source); });
+  }
+
+  applyTheme(document.documentElement.getAttribute("data-theme") || "dark", true);
+  new MutationObserver(function () {
+    applyTheme(document.documentElement.getAttribute("data-theme") || "dark", false);
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  window.addEventListener("load", function () {
+    var warmAlternate = function () {
+      var alternate = sourceFor(activeTheme === "light" ? "dark" : "light");
+      var preload = new Image();
+      preload.srcset = alternate.srcset;
+      preload.sizes = sizes;
+      preload.src = alternate.src;
+    };
+    if (window.requestIdleCallback) window.requestIdleCallback(warmAlternate, { timeout: 2500 });
+    else window.setTimeout(warmAlternate, 1200);
+  }, { once: true });
+})();
+</script>
 
 <script is:inline>
 // Kinetic typography — smooth Gaussian wave via mousemove

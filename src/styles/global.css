@@ -2031,11 +2031,15 @@
      all times (5 cards × retina), which starves Safari under memory pressure.
      The browser auto-promotes during the transform transition anyway. */
 }
-.project-card[data-status="in-progress"] {
+.project-card[data-maintenance="actively-maintained"] {
   --project-card-accent-glow: var(--color-accent-warm-glow);
 }
-.project-card[data-status="completed"] {
+.project-card[data-maturity="stable-release"],
+.project-card[data-maintenance="completed"] {
   --project-card-accent-glow: var(--color-accent-teal-glow);
+}
+.project-card[data-maintenance="archived"] {
+  --project-card-accent-glow: var(--color-glow-ambient);
 }
 :root[data-theme="light"] .project-card {
   background:
@@ -2117,6 +2121,44 @@
 .project-card:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 3px;
+}
+
+.project-status-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.project-card .project-status-group { margin-bottom: 0.75rem; }
+.project-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-height: 1.55rem;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 999px;
+  color: var(--color-text-secondary);
+  background: var(--color-surface-secondary);
+  font-size: 0.58rem;
+  font-weight: 650;
+  letter-spacing: 0.035em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.project-status-badge--stable-release,
+.project-status-badge--completed { color: var(--color-accent-teal); }
+.project-status-badge--functional-prototype,
+.project-status-badge--research-preview { color: var(--color-accent-warm); }
+.project-status-badge--archived { color: var(--color-text-tertiary); }
+.project-status-dot {
+  width: 0.38rem;
+  height: 0.38rem;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0.5rem currentColor;
 }
 @media (prefers-reduced-motion: reduce) {
   .project-card {
@@ -2204,6 +2246,57 @@
 .project-modal::-webkit-scrollbar-thumb {
   background: var(--color-border-subtle);
   border-radius: 4px;
+}
+
+.project-icon-button,
+.project-action-link {
+  display: inline-flex;
+  min-width: 2.75rem;
+  min-height: 2.75rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: 0.85rem;
+  color: var(--color-text-secondary);
+  background: var(--color-surface-secondary);
+  text-decoration: none;
+  touch-action: manipulation;
+  transition:
+    color 0.18s ease,
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    translate 0.18s ease;
+}
+.project-icon-button {
+  padding: 0;
+  cursor: pointer;
+}
+.project-icon-button svg { width: 1.15rem; height: 1.15rem; }
+.project-action-link {
+  padding: 0.65rem 0.9rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+.project-action-link--primary {
+  border-color: color-mix(in oklch, var(--color-accent) 48%, transparent);
+  color: var(--color-accent);
+  background: var(--color-accent-glow);
+}
+@media (hover: hover) and (pointer: fine) {
+  .project-icon-button:hover,
+  .project-action-link:hover {
+    color: var(--color-text-primary);
+    border-color: var(--color-border-highlight);
+    background: var(--color-glow-ambient);
+    translate: 0 -1px;
+  }
+}
+.project-icon-button:active,
+.project-action-link:active { translate: 0 1px; }
+.project-icon-button:focus-visible,
+.project-action-link:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 @media (max-width: 640px) {

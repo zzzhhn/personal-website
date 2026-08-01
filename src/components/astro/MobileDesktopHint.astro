@@ -1,0 +1,114 @@
+<aside id="desktop-experience-hint" class="desktop-experience-hint" hidden aria-live="polite">
+  <div class="desktop-experience-hint__icon" aria-hidden="true">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+      <rect x="3" y="4" width="18" height="12" rx="2" />
+      <path d="M8 20h8M12 16v4" />
+    </svg>
+  </div>
+  <div class="desktop-experience-hint__copy">
+    <strong data-lang="en">Richer on desktop</strong>
+    <strong data-lang="zh">桌面端体验更完整</strong>
+    <span data-lang="en">Explore the full workflows and richer interactions on a larger screen.</span>
+    <span data-lang="zh">使用更大屏幕，可体验完整工作流与更丰富的交互动效。</span>
+  </div>
+  <button
+    id="desktop-experience-hint-dismiss"
+    type="button"
+    data-analytics-event="mobile_desktop_hint_dismiss"
+    data-analytics-target="mobile-hint"
+  >
+    <span data-lang="en">Got it</span>
+    <span data-lang="zh">知道了</span>
+  </button>
+</aside>
+
+<style>
+  .desktop-experience-hint { display: none; }
+
+  @media (max-width: 768px) {
+    .desktop-experience-hint:not([hidden]) {
+      position: fixed;
+      z-index: 80;
+      left: 1rem;
+      right: 1rem;
+      bottom: calc(1rem + env(safe-area-inset-bottom));
+      display: grid;
+      grid-template-columns: 2.5rem minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      border: 1px solid var(--color-border-highlight);
+      border-radius: var(--radius-lg);
+      color: var(--color-text-primary);
+      background: oklch(0.15 0.014 265 / 0.96);
+      box-shadow: 0 18px 48px oklch(0 0 0 / 0.35);
+      backdrop-filter: blur(18px) saturate(150%);
+      -webkit-backdrop-filter: blur(18px) saturate(150%);
+    }
+    :global([data-theme="light"]) .desktop-experience-hint:not([hidden]) {
+      background: oklch(0.98 0.006 90 / 0.96);
+      box-shadow: 0 18px 48px oklch(0.3 0.02 265 / 0.16);
+    }
+    .desktop-experience-hint__icon {
+      display: grid;
+      width: 2.5rem;
+      height: 2.5rem;
+      place-items: center;
+      border-radius: 0.8rem;
+      color: var(--color-accent);
+      background: var(--color-accent-glow);
+    }
+    .desktop-experience-hint__icon svg { width: 1.25rem; height: 1.25rem; }
+    .desktop-experience-hint__copy { min-width: 0; }
+    .desktop-experience-hint__copy strong,
+    .desktop-experience-hint__copy span { display: block; }
+    .desktop-experience-hint__copy strong { font-size: 0.78rem; line-height: 1.3; }
+    .desktop-experience-hint__copy span {
+      margin-top: 0.15rem;
+      color: var(--color-text-secondary);
+      font-size: 0.68rem;
+      line-height: 1.4;
+    }
+    #desktop-experience-hint-dismiss {
+      min-width: 3.25rem;
+      min-height: 44px;
+      padding: 0.5rem 0.65rem;
+      border: 1px solid var(--color-border-highlight);
+      border-radius: 0.8rem;
+      color: var(--color-text-primary);
+      background: var(--color-glow-ambient);
+      font-size: 0.7rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    #desktop-experience-hint-dismiss:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+  }
+
+  @media (max-width: 390px) {
+    .desktop-experience-hint:not([hidden]) {
+      grid-template-columns: 2.25rem minmax(0, 1fr);
+    }
+    #desktop-experience-hint-dismiss {
+      grid-column: 2;
+      justify-self: start;
+    }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    var hint = document.getElementById("desktop-experience-hint");
+    var dismiss = document.getElementById("desktop-experience-hint-dismiss");
+    if (!hint || !dismiss || !window.matchMedia("(max-width: 768px)").matches) return;
+    if (localStorage.getItem("desktop-experience-hint-dismissed-v1") !== "true") {
+      window.setTimeout(function () { hint.hidden = false; }, 900);
+    }
+    dismiss.addEventListener("click", function () {
+      hint.hidden = true;
+      localStorage.setItem("desktop-experience-hint-dismissed-v1", "true");
+    });
+  })();
+</script>

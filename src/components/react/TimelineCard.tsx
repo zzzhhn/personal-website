@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import WorkflowDiagram from "./WorkflowDiagram";
 import type { WorkflowData } from "../../lib/i18n";
+import { trackPortfolioEvent } from "../../lib/analytics";
 
 interface ExperienceEntry {
   role: string;
@@ -58,12 +59,18 @@ export default function TimelineCard({
   const dateStart = formatDateShort(startDate);
   const dateEnd = endDate ? formatDateShort(endDate) : "";
   const slideX = side === "left" ? -30 : 30;
+  const analyticsTarget = en.organization
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 64);
 
   const handleCardClick = useCallback(() => {
     const selection = window.getSelection();
     if (selection && !selection.isCollapsed && selection.toString().trim()) return;
+    if (!expanded) trackPortfolioEvent("experience_workflow_open", analyticsTarget);
     onToggle();
-  }, [onToggle]);
+  }, [analyticsTarget, expanded, onToggle]);
 
   return (
     <motion.div
@@ -143,6 +150,7 @@ export default function TimelineCard({
           aria-expanded={expanded}
           onClick={(event) => {
             event.stopPropagation();
+            if (!expanded) trackPortfolioEvent("experience_workflow_open", analyticsTarget);
             onToggle();
           }}
         >

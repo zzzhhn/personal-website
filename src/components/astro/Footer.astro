@@ -13,9 +13,15 @@ import { UI } from "../../lib/i18n";
         href={`mailto:${SITE.email}`}
         class="underline transition-colors"
         style="color: var(--color-accent);"
+        data-analytics-event="contact_email_click"
+        data-analytics-target="footer"
       >
         {SITE.email}
       </a>.
+    </p>
+    <p class="text-xs mb-2" style="color: var(--color-text-tertiary);">
+      <span data-lang="en">{UI.footer.privacy.en}</span>
+      <span data-lang="zh">{UI.footer.privacy.zh}</span>
     </p>
     <p class="text-sm" style="color: var(--color-text-tertiary);">
       &copy; {new Date().getFullYear()} {SITE.name}

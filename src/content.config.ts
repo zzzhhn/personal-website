@@ -14,7 +14,13 @@ const projects = defineCollection({
     descriptionZh: z.string().max(300),
     date: z.coerce.date(),
     endDate: z.coerce.date().optional(),
-    status: z.enum(["completed", "in-progress", "archived"]),
+    maturity: z.enum([
+      "stable-release",
+      "functional-prototype",
+      "research-preview",
+      "completed-case-study",
+    ]),
+    maintenance: z.enum(["actively-maintained", "completed", "archived"]),
     featured: z.boolean().default(false),
     techStack: z.array(z.string()),
     links: z.object({

@@ -155,6 +155,10 @@ export const UI = {
       en: "Information on this site may not reflect the most recent updates. For the latest details, please contact me at",
       zh: "本站信息可能未及时更新。如需最新信息，请通过以下邮箱联系我：",
     },
+    privacy: {
+      en: "Privacy: anonymous interaction metrics only. No cookies or persistent identifiers; DNT and GPC are respected.",
+      zh: "隐私说明：仅采集匿名交互指标，不使用 Cookie 或持久化标识符，并遵循 DNT 与 GPC 设置。",
+    },
   },
 
   // ── Campus ──

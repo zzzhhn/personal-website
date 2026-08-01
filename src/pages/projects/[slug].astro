@@ -1,6 +1,10 @@
 ---
 import { getCollection, render } from "astro:content";
 import ProjectLayout from "../../layouts/ProjectLayout.astro";
+import {
+  PROJECT_MAINTENANCE_LABELS,
+  PROJECT_MATURITY_LABELS,
+} from "../../lib/projectStatus";
 
 export async function getStaticPaths() {
   const projects = await getCollection("projects");
@@ -13,7 +17,21 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const { Content } = await render(project);
 
-const { title, titleZh, tagline, taglineZh, description, date, endDate, status, techStack, links } = project.data;
+const {
+  title,
+  titleZh,
+  tagline,
+  taglineZh,
+  description,
+  date,
+  endDate,
+  maturity,
+  maintenance,
+  techStack,
+  links,
+} = project.data;
+const maturityLabel = PROJECT_MATURITY_LABELS[maturity];
+const maintenanceLabel = PROJECT_MAINTENANCE_LABELS[maintenance];
 
 function formatDate(d: Date, locale: "en-US" | "zh-CN"): string {
   return d.toLocaleDateString(locale, { year: "numeric", month: "long" });
@@ -24,13 +42,17 @@ function formatDate(d: Date, locale: "en-US" | "zh-CN"): string {
   <!-- Project header -->
   <header class="mb-12">
     <div class="flex items-center gap-3 mb-4">
-      <span
-        class="text-xs font-medium px-2 py-1 rounded-full"
-        style={`background-color: ${status === "completed" ? "oklch(0.45 0.15 145 / 0.2)" : "oklch(0.55 0.15 60 / 0.2)"}; color: ${status === "completed" ? "oklch(0.7 0.15 145)" : "oklch(0.75 0.15 60)"};`}
-      >
-        <span data-lang="en">{status === "completed" ? "Completed" : "In Progress"}</span>
-        <span data-lang="zh">{status === "completed" ? "已完成" : "持续迭代"}</span>
-      </span>
+      <div class="project-status-group">
+        <span class={`project-status-badge project-status-badge--${maturity}`}>
+          <span data-lang="en">{maturityLabel.en}</span>
+          <span data-lang="zh">{maturityLabel.zh}</span>
+        </span>
+        <span class={`project-status-badge project-status-badge--${maintenance}`}>
+          <span class="project-status-dot" aria-hidden="true"></span>
+          <span data-lang="en">{maintenanceLabel.en}</span>
+          <span data-lang="zh">{maintenanceLabel.zh}</span>
+        </span>
+      </div>
       <span class="text-sm" style="color: var(--color-text-secondary);">
         <span data-lang="en">{formatDate(date, "en-US")}{endDate ? ` — ${formatDate(endDate, "en-US")}` : ""}</span>
         <span data-lang="zh">{formatDate(date, "zh-CN")}{endDate ? `至${formatDate(endDate, "zh-CN")}` : ""}</span>
@@ -69,7 +91,7 @@ function formatDate(d: Date, locale: "en-US" | "zh-CN"): string {
           href={links.github}
           target="_blank"
           rel="noopener noreferrer"
-          class="glass glass-hover inline-flex items-center gap-2 px-4 py-2 text-sm font-medium"
+          class="project-action-link"
           style="color: var(--color-text-primary); text-decoration: none;"
         >
           GitHub
@@ -80,7 +102,9 @@ function formatDate(d: Date, locale: "en-US" | "zh-CN"): string {
           href={links.live}
           target="_blank"
           rel="noopener noreferrer"
-          class="glass glass-hover inline-flex items-center gap-2 px-4 py-2 text-sm font-medium"
+          class="project-action-link project-action-link--primary"
+          data-analytics-event="project_live_click"
+          data-analytics-target={project.data.slug}
           style="color: var(--color-text-primary); text-decoration: none;"
         >
           <span data-lang="en">Live Demo</span>
