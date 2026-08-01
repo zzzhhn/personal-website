@@ -29,13 +29,36 @@
     document.addEventListener("click", function (e) {
       var btn = e.target.closest(".lang-toggle");
       if (!btn) return;
-      var anchorTarget = document.elementFromPoint(
-        window.innerWidth / 2,
-        Math.min(window.innerHeight * 0.38, 380)
-      );
-      var anchor = anchorTarget
-        ? anchorTarget.closest(".project-card-slot, .tl-row, section[id], main")
-        : null;
+      if (window.__langAnchorCleanup) window.__langAnchorCleanup();
+
+      var readingY = Math.min(window.innerHeight * 0.38, 380);
+      var visibleWorkflows = Array.from(document.querySelectorAll(".tl-row .wf-container"))
+        .filter(function (workflow) {
+          var rect = workflow.getBoundingClientRect();
+          var visibleHeight = Math.min(rect.bottom, window.innerHeight) - Math.max(rect.top, 0);
+          return visibleHeight >= Math.min(80, rect.height * 0.25);
+        })
+        .sort(function (a, b) {
+          var aRect = a.getBoundingClientRect();
+          var bRect = b.getBoundingClientRect();
+          var aDistance = Math.abs((aRect.top + aRect.bottom) / 2 - readingY);
+          var bDistance = Math.abs((bRect.top + bRect.bottom) / 2 - readingY);
+          return aDistance - bDistance;
+        });
+
+      // The timeline axis occupies the viewport centre, so probing only at 50%
+      // always collapses to .tl-row. Prefer the visible expanded workflow itself;
+      // otherwise probe both reading columns before falling back to the section.
+      var anchor = visibleWorkflows[0] || null;
+      if (!anchor) {
+        var probeXs = [window.innerWidth * 0.25, window.innerWidth * 0.75, window.innerWidth * 0.5];
+        for (var i = 0; i < probeXs.length && !anchor; i++) {
+          var anchorTarget = document.elementFromPoint(probeXs[i], readingY);
+          anchor = anchorTarget
+            ? anchorTarget.closest(".wf-container, .tl-card, .project-card-slot, section[id], main")
+            : null;
+        }
+      }
       var anchorTop = anchor ? anchor.getBoundingClientRect().top : 0;
       var current = document.documentElement.getAttribute("data-site-lang") || "en";
       var next = current === "en" ? "zh" : "en";
@@ -49,12 +72,41 @@
         if (Math.abs(delta) > 0.5) window.scrollBy(0, delta);
       }
 
-      requestAnimationFrame(function () {
-        requestAnimationFrame(restoreReadingPosition);
-      });
-      if (document.fonts && document.fonts.ready) {
-        document.fonts.ready.then(restoreReadingPosition);
+      var resizeObserver = null;
+      var cleanupTimer = null;
+      if (anchor && window.ResizeObserver) {
+        resizeObserver = new ResizeObserver(restoreReadingPosition);
+        resizeObserver.observe(anchor);
+        var anchorRow = anchor.closest(".tl-row");
+        if (anchorRow && anchorRow !== anchor) resizeObserver.observe(anchorRow);
       }
+
+      window.__langAnchorCleanup = function () {
+        if (resizeObserver) resizeObserver.disconnect();
+        if (cleanupTimer) window.clearTimeout(cleanupTimer);
+        window.__langAnchorCleanup = null;
+      };
+
+      function settleFrames(remaining) {
+        if (remaining <= 0) return;
+        requestAnimationFrame(function () {
+          restoreReadingPosition();
+          settleFrames(remaining - 1);
+        });
+      }
+
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          restoreReadingPosition();
+          settleFrames(10);
+          // Read fonts.ready only after the new language has been painted, so a
+          // newly-used CJK fallback font is included in the pending font set.
+          if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(function () { settleFrames(4); });
+          }
+        });
+      });
+      cleanupTimer = window.setTimeout(window.__langAnchorCleanup, 1200);
     });
   })();
 </script>
