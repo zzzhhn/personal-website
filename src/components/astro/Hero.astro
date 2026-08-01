@@ -62,6 +62,12 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
         </span>
       </h1>
 
+      <!-- Stable professional thesis; animated taglines remain supporting signals. -->
+      <p class="hero-positioning">
+        <span data-lang="en">{UI.hero.positioning.en}</span>
+        <span data-lang="zh">{UI.hero.positioning.zh}</span>
+      </p>
+
       <!-- Typewriter tagline -->
       <div class="hero-tagline" data-lang="en">
         <TypewriterText
@@ -311,13 +317,25 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
     letter-spacing: 0.05em;
   }
 
+  .hero-positioning {
+    max-width: 38rem;
+    margin: 0 0 1rem;
+    padding-left: 1rem;
+    border-left: 2px solid var(--color-accent);
+    color: var(--color-text-primary);
+    font-size: clamp(1rem, 1.35vw, 1.15rem);
+    font-weight: 450;
+    line-height: 1.55;
+    text-wrap: balance;
+  }
+
   .hero-tagline {
-    font-size: clamp(1.1rem, 2vw, 1.5rem);
-    color: var(--color-text-secondary);
-    margin-bottom: 1rem;
-    min-height: 2em;
+    font-size: clamp(0.9rem, 1.3vw, 1.05rem);
+    color: var(--color-accent);
+    margin-bottom: 0.85rem;
+    min-height: 1.75em;
     font-weight: 500;
-    letter-spacing: -0.01em;
+    letter-spacing: 0.01em;
   }
 
   /* Bio summary */
@@ -502,6 +520,15 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
       align-items: center;
       text-align: center;
     }
+    .hero-positioning {
+      max-width: 32rem;
+      padding: 0.75rem 0 0;
+      border-left: 0;
+      border-top: 1px solid var(--color-accent-dim);
+    }
+    .hero-particles {
+      display: none;
+    }
     .hero-bio {
       text-align: center;
       max-width: 100%;
@@ -527,7 +554,7 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
 (function () {
   var name = document.querySelector(".hero-name");
   if (!name) return;
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (window.matchMedia("(max-width: 768px), (pointer: coarse), (prefers-reduced-motion: reduce)").matches) return;
 
   var pending = false;
   var mouseX = -9999;
@@ -615,6 +642,10 @@ const linkedinUrl = SOCIAL_LINKS.find((l) => l.icon === "linkedin")!.url;
 (function () {
   var canvas = document.getElementById("particle-canvas");
   if (!canvas) return;
+  if (window.matchMedia("(max-width: 768px), (pointer: coarse), (prefers-reduced-motion: reduce)").matches) {
+    canvas.remove();
+    return;
+  }
   var ctx = canvas.getContext("2d");
   if (!ctx) return;
 

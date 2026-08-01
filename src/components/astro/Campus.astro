@@ -115,7 +115,7 @@ import SectionHeading from "./SectionHeading.astro";
 <script is:inline>
 /* ── Campus card 3D parallax tilt ── */
 (function () {
-  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (window.matchMedia("(max-width: 768px), (pointer: coarse), (prefers-reduced-motion: reduce)").matches) return;
   var cards = document.querySelectorAll(".tilt-card");
   if (!cards.length) return;
 

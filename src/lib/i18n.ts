@@ -28,6 +28,10 @@ export const UI = {
       en: "Quantitative Finance × AI",
       zh: "量化金融 × 人工智能",
     },
+    positioning: {
+      en: "Quantitative finance student building evaluation systems, agent workflows, and research infrastructure.",
+      zh: "量化金融本科生，专注构建模型评测系统、Agent 工作流与研究基础设施。",
+    },
     resume: { en: "Resume", zh: "简历" },
   },
 

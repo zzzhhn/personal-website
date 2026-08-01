@@ -108,6 +108,10 @@ const { title, description, image } = Astro.props;
       (function () {
         var canvas = document.getElementById("click-spark-canvas");
         if (!canvas) return;
+        if (window.matchMedia("(max-width: 768px), (pointer: coarse), (prefers-reduced-motion: reduce)").matches) {
+          canvas.remove();
+          return;
+        }
         var ctx = canvas.getContext("2d");
         var sparks = [];
         var sparkSize = 16, sparkRadius = 25, sparkCount = 10, duration = 500;

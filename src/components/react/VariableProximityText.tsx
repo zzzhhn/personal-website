@@ -38,6 +38,7 @@ export default function VariableProximityText({
 
   // Mouse tracking
   useEffect(() => {
+    if (window.matchMedia('(max-width: 768px), (pointer: coarse), (prefers-reduced-motion: reduce)').matches) return;
     const onMove = (e: MouseEvent) => {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
@@ -61,6 +62,7 @@ export default function VariableProximityText({
 
   // Cache positions on mount, resize, and lang/theme toggle
   useEffect(() => {
+    if (window.matchMedia('(max-width: 768px), (pointer: coarse), (prefers-reduced-motion: reduce)').matches) return;
     cachePositions();
     const onResize = () => {
       cachePositions();
@@ -89,6 +91,7 @@ export default function VariableProximityText({
 
   // Animation loop — only does work when mouse has moved
   useEffect(() => {
+    if (window.matchMedia('(max-width: 768px), (pointer: coarse), (prefers-reduced-motion: reduce)').matches) return;
     const r2 = radius * radius;
     const halfR = radius / 2;
 
@@ -186,7 +189,7 @@ export default function VariableProximityText({
   return (
     <span
       ref={containerRef}
-      className={className}
+      className={`variable-proximity-text ${className}`.trim()}
       style={{ display: 'inline', ...style }}
     >
       {tokens.map((tok, ti) => {

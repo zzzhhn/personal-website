@@ -1836,6 +1836,19 @@
   }
 }
 
+@media (max-width: 768px), (pointer: coarse) {
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  .variable-proximity-text span {
+    transition: none !important;
+    transform: none !important;
+    will-change: auto !important;
+  }
+}
+
 @media (prefers-reduced-transparency) {
   .glass, .glass-elevated {
     background: oklch(0.16 0.015 265 / 0.85);
