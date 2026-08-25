@@ -13,7 +13,7 @@ Add a bilingual Motion section between Projects and Activities. The section open
 - The generated WUJI frame begins dissolving as soon as it reaches full viewport, then hands off directly to the work list.
 - The section subtitle is `多种不同的影像实践；持续更新中` and its aligned English translation.
 - No autoplay, nested scroller, wheel interception, forced scroll position, or artificial input delay.
-- The prior document-height SVG curves are replaced by a fixed, non-interactive Strands layer with glow `1.15`. It is disabled on mobile, coarse pointers, and reduced-motion devices.
+- The original three blue, green, and amber scroll-linked trajectories remain the background composition. Their line treatment is upgraded to a multi-filament Strands material with glow `1.15`; they still draw from top to bottom as page progress advances and retract when scrolling upward. Rendering is disabled on mobile, coarse pointers, and reduced-motion devices.
 - Blob URLs discourage casual direct reuse but are not a security boundary. Full media remains retrievable by a determined visitor.
 
 ## Interaction architecture
@@ -23,7 +23,7 @@ Add a bilingual Motion section between Projects and Activities. The section open
 3. Coarse-pointer or narrow viewports use a visible 44px tap control. Reduced-motion users receive a static editorial frame with no animated expansion.
 4. `MotionPortfolio.tsx` hydrates on page load so a visible poster is always actionable. It owns the single active player; selecting a different work aborts and releases the prior Blob URL.
 5. Fetch progress, failure, close, and replay states remain visible in the poster area. On desktop, the active player grows subtly toward the upper-right and reveals its external close control on hover or focus. Touch devices keep the close control visible.
-6. `StrandsBackground.astro` mounts one fixed WebGL layer independently of document height. Its renderer caps DPR at `1.5`, pauses while the page is hidden, and is never initialized on mobile or reduced-motion devices.
+6. `StrandsBackground.astro` mounts one viewport-sized WebGL renderer, but the shader maps every fragment into document coordinates owned by the post-Hero wrapper. It preserves the original seven anchors for each of the three trajectories, the original scroll start/end range, and the 4 percent per-strand stagger. The renderer caps DPR at `1.35`, renders at 60 fps only while scrolling and 30 fps while idle, pauses while the page is hidden, and is never initialized on mobile or reduced-motion devices.
 
 ```mermaid
 flowchart LR
@@ -63,10 +63,10 @@ flowchart LR
 | Typography | Existing Geist, display serif, and site text tokens are reused. |
 | Layout | The section uses the existing 72rem content wrapper and responsive section spacing. |
 | Navigation | `motion` and `campus` keys match server-rendered section IDs. |
-| Theme | Surfaces and text use global tokens; the generated frame is shared because it is photographic content. |
+| Theme | Surfaces and text use global tokens; each strand swaps to a darker light-theme palette while preserving the same path geometry. The generated frame is shared because it is photographic content. |
 | Input | Pointer, touch, keyboard, reduced motion, and native video controls are supported. |
 | Privacy | The new event name is allowlisted on both client and server; no visitor identifier is added. |
-| Performance | Scroll writes only clip-path, transform, and opacity in requestAnimationFrame; media is click-loaded; Strands is desktop-only, DPR-capped, and independent of page height. |
+| Performance | Scroll writes only clip-path, transform, and opacity in requestAnimationFrame; media is click-loaded; Strands uses one viewport-sized canvas, a `1.35` DPR cap, scroll-aware frame pacing, and no document-sized render target. |
 
 ## Acceptance
 
@@ -75,7 +75,7 @@ flowchart LR
 - Mobile tap reveals the full frame and reduced motion disables the animated sequence.
 - Switching language or theme does not reset an active film or change section geometry materially.
 - The Bali poster uses the unobstructed closing group photograph and the Chinese title remains one line.
-- Strands replaces the SVG curves, remains stable after Motion, and uses glow `1.15`.
+- Exactly three distinct blue, green, and amber Strands follow the former ribbon trajectories. They progressively draw from top to bottom, retract in reverse, remain spatially stable after Motion, and use glow `1.15`; no fixed centered horizontal band appears.
 - A second film selection aborts and revokes the first Blob URL; close and unmount also release it.
 - Both web derivatives are complete-duration, below 25 MiB, and absent from initial network requests.
 - Astro check, production build, keyboard pass, desktop Safari-class viewport, and 390px visual checks pass.

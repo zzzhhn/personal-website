@@ -71,7 +71,7 @@ export const UI = {
     works: [
       {
         id: "bali",
-        title: { en: "A Week in Bali", zh: "巴厘岛七日纪" },
+        title: { en: "A Week in Bali", zh: "巴厘岛周记" },
         kind: { en: "Documentary short", zh: "纪实短片" },
         role: {
           en: "AI-assisted editing · Narrative design",

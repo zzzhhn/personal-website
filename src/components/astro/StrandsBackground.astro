@@ -5,19 +5,12 @@ import Strands from "../react/Strands";
 <div class="site-strands" aria-hidden="true">
   <Strands
     client:idle
-    colors={["#4f8dff", "#35c99a", "#e4a65a"]}
-    count={3}
-    speed={0.18}
-    amplitude={1.05}
-    waviness={0.72}
-    thickness={0.55}
+    colors={["#74a8ff", "#71e0b2", "#efb06a"]}
+    lightColors={["#1f57c8", "#197f62", "#a96714"]}
+    speed={0.22}
+    amplitude={1}
+    thickness={1}
     glow={1.15}
-    taper={3}
-    spread={1.15}
-    intensity={0.42}
-    saturation={1.15}
-    opacity={0.8}
-    scale={1.35}
   />
 </div>
 
@@ -27,12 +20,12 @@ import Strands from "../react/Strands";
     z-index: -1;
     inset: 64px 0 0;
     overflow: hidden;
-    opacity: 0.35;
+    opacity: 0.3;
     pointer-events: none;
   }
 
   :global([data-theme="dark"]) .site-strands {
-    opacity: 0.5;
+    opacity: 0.44;
   }
 
   @media (max-width: 768px), (pointer: coarse), (prefers-reduced-motion: reduce) {
