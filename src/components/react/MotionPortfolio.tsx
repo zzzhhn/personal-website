@@ -121,65 +121,67 @@ export default function MotionPortfolio({ works, labels }: MotionPortfolioProps)
         const active = activeId === work.id;
         return (
           <article className={`motion-work${index % 2 ? " is-reversed" : ""}`} key={work.id}>
-            <div className="motion-work-media">
-              {active && state === "ready" && blobUrl ? (
-                <video
-                  src={blobUrl}
-                  poster={work.poster}
-                  controls
-                  playsInline
-                  preload="metadata"
-                  controlsList="nodownload noremoteplayback"
-                  aria-label={`${work.title.en} / ${work.title.zh}`}
-                />
-              ) : (
-                <img src={work.poster} alt="" width="1280" height="720" loading="lazy" />
-              )}
+            <div className={`motion-work-visual${active ? " is-active" : ""}`}>
+              <div className="motion-work-media">
+                {active && state === "ready" && blobUrl ? (
+                  <video
+                    src={blobUrl}
+                    poster={work.poster}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    controlsList="nodownload noremoteplayback"
+                    aria-label={`${work.title.en} / ${work.title.zh}`}
+                  />
+                ) : (
+                  <img src={work.poster} alt="" width="1280" height="720" loading="lazy" />
+                )}
 
-              {!active && (
-                <button
-                  type="button"
-                  className="motion-play"
-                  onClick={() => void loadWork(work)}
-                  data-analytics-event="motion_video_load"
-                  data-analytics-target={work.id}
-                >
-                  <span className="motion-play-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24"><path d="m9 7 8 5-8 5Z" /></svg>
-                  </span>
-                  <span>
-                    <span data-lang="en">{labels.play.en}</span>
-                    <span data-lang="zh">{labels.play.zh}</span>
-                  </span>
-                </button>
-              )}
-
-              {active && state === "loading" && (
-                <div className="motion-player-state" role="status" aria-live="polite">
-                  <span className="motion-loading-ring" aria-hidden="true" />
-                  <strong>
-                    <span data-lang="en">{labels.loading.en}</span>
-                    <span data-lang="zh">{labels.loading.zh}</span>
-                  </strong>
-                  <span>{progress === null ? "…" : `${progress}%`}</span>
-                  <div className="motion-loading-track" aria-hidden="true">
-                    <span style={{ width: `${progress ?? 18}%` }} />
-                  </div>
-                </div>
-              )}
-
-              {active && state === "error" && (
-                <div className="motion-player-state is-error" role="alert">
-                  <p>
-                    <span data-lang="en">{labels.error.en}</span>
-                    <span data-lang="zh">{labels.error.zh}</span>
-                  </p>
-                  <button type="button" onClick={() => void loadWork(work)}>
-                    <span data-lang="en">{labels.retry.en}</span>
-                    <span data-lang="zh">{labels.retry.zh}</span>
+                {!active && (
+                  <button
+                    type="button"
+                    className="motion-play"
+                    onClick={() => void loadWork(work)}
+                    data-analytics-event="motion_video_load"
+                    data-analytics-target={work.id}
+                  >
+                    <span className="motion-play-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="m9 7 8 5-8 5Z" /></svg>
+                    </span>
+                    <span>
+                      <span data-lang="en">{labels.play.en}</span>
+                      <span data-lang="zh">{labels.play.zh}</span>
+                    </span>
                   </button>
-                </div>
-              )}
+                )}
+
+                {active && state === "loading" && (
+                  <div className="motion-player-state" role="status" aria-live="polite">
+                    <span className="motion-loading-ring" aria-hidden="true" />
+                    <strong>
+                      <span data-lang="en">{labels.loading.en}</span>
+                      <span data-lang="zh">{labels.loading.zh}</span>
+                    </strong>
+                    <span>{progress === null ? "…" : `${progress}%`}</span>
+                    <div className="motion-loading-track" aria-hidden="true">
+                      <span style={{ width: `${progress ?? 18}%` }} />
+                    </div>
+                  </div>
+                )}
+
+                {active && state === "error" && (
+                  <div className="motion-player-state is-error" role="alert">
+                    <p>
+                      <span data-lang="en">{labels.error.en}</span>
+                      <span data-lang="zh">{labels.error.zh}</span>
+                    </p>
+                    <button type="button" onClick={() => void loadWork(work)}>
+                      <span data-lang="en">{labels.retry.en}</span>
+                      <span data-lang="zh">{labels.retry.zh}</span>
+                    </button>
+                  </div>
+                )}
+              </div>
 
               {active && (
                 <button type="button" className="motion-close" onClick={closePlayer}>

@@ -10,19 +10,20 @@ Add a bilingual Motion section between Projects and Activities. The section open
 
 - Navigation order is Projects, Motion, Activities, Contact.
 - The fixed global header remains available throughout the section.
-- The generated WUJI frame expands toward full viewport, holds briefly, then dissolves into the site's normal themed background.
+- The generated WUJI frame begins dissolving as soon as it reaches full viewport, then hands off directly to the work list.
 - The section subtitle is `多种不同的影像实践；持续更新中` and its aligned English translation.
 - No autoplay, nested scroller, wheel interception, forced scroll position, or artificial input delay.
-- The exit uses a shallow masked blur veil and additional spatial runway. It suggests resistance without changing scroll physics.
+- The prior document-height SVG curves are replaced by a fixed, non-interactive Strands layer with glow `1.15`. It is disabled on mobile, coarse pointers, and reduced-motion devices.
 - Blob URLs discourage casual direct reuse but are not a security boundary. Full media remains retrievable by a determined visitor.
 
 ## Interaction architecture
 
 1. `Motion.astro` server-renders `section#motion`, so the existing navigation scroll spy can discover it before React hydration.
-2. `ScrollExpand.tsx` reads page scroll in a single passive listener and one requestAnimationFrame per paint. Expansion runs from 0 to 55 percent, hold from 55 to 75 percent, and dissolve from 75 to 95 percent.
+2. `ScrollExpand.tsx` reads page scroll in a single passive listener and one requestAnimationFrame per paint. Expansion runs from 0 to 52 percent and dissolve begins immediately, from 50 to 68 percent. The desktop track is `165dvh`, with no second minimum-height constraint.
 3. Coarse-pointer or narrow viewports use a visible 44px tap control. Reduced-motion users receive a static editorial frame with no animated expansion.
 4. `MotionPortfolio.tsx` hydrates on page load so a visible poster is always actionable. It owns the single active player; selecting a different work aborts and releases the prior Blob URL.
-5. Fetch progress, failure, close, and replay states remain visible in the poster area. Native video controls preserve keyboard and platform behavior.
+5. Fetch progress, failure, close, and replay states remain visible in the poster area. On desktop, the active player grows subtly toward the upper-right and reveals its external close control on hover or focus. Touch devices keep the close control visible.
+6. `StrandsBackground.astro` mounts one fixed WebGL layer independently of document height. Its renderer caps DPR at `1.5`, pauses while the page is hidden, and is never initialized on mobile or reduced-motion devices.
 
 ```mermaid
 flowchart LR
@@ -35,8 +36,7 @@ flowchart LR
   Fetch --> Blob[Create one Blob URL]
   Blob --> Player[Inline native video player]
   Player -->|close, switch, unmount| Release[Abort and revoke]
-  Works --> Exit[Masked blur exit runway]
-  Exit --> Activities[Activities section]
+  Works --> Activities[Activities section]
 ```
 
 ## Principles re-check
@@ -48,7 +48,7 @@ flowchart LR
 | Status visibility | `MotionPortfolio.tsx` shows loading percentage, ready playback, and actionable errors in place. |
 | Forgiveness | A visible close control releases the active media; selecting another work is reversible. |
 | Affordance | Posters use a real button overlay, 44px controls, hover, pressed, and focus-visible states. |
-| Good design disappears | Native scroll and native video controls carry the interaction without a tutorial. |
+| Good design disappears | Native scroll and native video controls carry the interaction; the bottom hint explains direction without becoming a title. |
 | No manual required | Desktop uses scroll; mobile exposes a plainly labelled tap action. |
 | Respect time | Posters load initially; complete films are fetched only after intent and can be aborted. |
 | Honesty | The site does not label Blob delivery as download protection or DRM. |
@@ -66,14 +66,16 @@ flowchart LR
 | Theme | Surfaces and text use global tokens; the generated frame is shared because it is photographic content. |
 | Input | Pointer, touch, keyboard, reduced motion, and native video controls are supported. |
 | Privacy | The new event name is allowlisted on both client and server; no visitor identifier is added. |
-| Performance | Scroll writes only transform, clip-path, and opacity in requestAnimationFrame; media is click-loaded. |
+| Performance | Scroll writes only clip-path, transform, and opacity in requestAnimationFrame; media is click-loaded; Strands is desktop-only, DPR-capped, and independent of page height. |
 
 ## Acceptance
 
 - Header links reach Motion and Activities in both desktop and mobile navigation.
-- Desktop expansion, hold, and dissolve are smooth without changing native scroll position.
+- Desktop expansion begins dissolving at full frame without a blank hold or artificial exit runway.
 - Mobile tap reveals the full frame and reduced motion disables the animated sequence.
 - Switching language or theme does not reset an active film or change section geometry materially.
+- The Bali poster uses the unobstructed closing group photograph and the Chinese title remains one line.
+- Strands replaces the SVG curves, remains stable after Motion, and uses glow `1.15`.
 - A second film selection aborts and revokes the first Blob URL; close and unmount also release it.
 - Both web derivatives are complete-duration, below 25 MiB, and absent from initial network requests.
 - Astro check, production build, keyboard pass, desktop Safari-class viewport, and 390px visual checks pass.

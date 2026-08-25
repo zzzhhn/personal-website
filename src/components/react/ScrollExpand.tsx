@@ -6,6 +6,8 @@ interface ScrollExpandProps {
   imageAlt: string;
   labelEn: string;
   labelZh: string;
+  hintEn: string;
+  hintZh: string;
   tapLabelEn: string;
   tapLabelZh: string;
   replayLabelEn: string;
@@ -21,6 +23,8 @@ export default function ScrollExpand({
   imageAlt,
   labelEn,
   labelZh,
+  hintEn,
+  hintZh,
   tapLabelEn,
   tapLabelZh,
   replayLabelEn,
@@ -36,9 +40,11 @@ export default function ScrollExpand({
   const writeProgress = useCallback((value: number) => {
     const track = trackRef.current;
     if (!track) return;
-    const expand = segment(value, 0, 0.55);
-    const dissolve = segment(value, 0.75, 0.95);
-    const copy = 1 - segment(value, 0.12, 0.5);
+    const expand = segment(value, 0, 0.52);
+    const dissolve = segment(value, 0.5, 0.68);
+    const copy = 1 - segment(value, 0.08, 0.36);
+    const hint = 1 - segment(value, 0.18, 0.4);
+    const editorial = segment(value, 0.48, 0.7);
     track.style.setProperty("--motion-x-inset", `${22 * (1 - expand)}%`);
     track.style.setProperty("--motion-y-inset", `${19 * (1 - expand)}%`);
     track.style.setProperty("--motion-radius", `${30 * (1 - expand) + 2}px`);
@@ -46,6 +52,10 @@ export default function ScrollExpand({
     track.style.setProperty("--motion-media-opacity", `${1 - dissolve}`);
     track.style.setProperty("--motion-copy-opacity", `${copy}`);
     track.style.setProperty("--motion-copy-y", `${(1 - copy) * 16}px`);
+    track.style.setProperty("--motion-hint-opacity", `${hint}`);
+    const section = track.closest<HTMLElement>(".motion-section");
+    section?.style.setProperty("--motion-editorial-opacity", `${editorial}`);
+    section?.style.setProperty("--motion-editorial-y", `${(1 - editorial) * 28}px`);
   }, []);
 
   useEffect(() => {
@@ -66,7 +76,7 @@ export default function ScrollExpand({
 
   useEffect(() => {
     if (mobile || reducedMotion) {
-      if (reducedMotion) setProgress(0.72);
+      if (reducedMotion) setProgress(0.48);
       return;
     }
 
@@ -97,13 +107,13 @@ export default function ScrollExpand({
 
   const animateMobile = useCallback(() => {
     if (reducedMotion) {
-      setProgress(0.72);
+      setProgress(0.48);
       setMobileRevealed(true);
       return;
     }
     cancelAnimationFrame(animationRef.current);
     const startValue = mobileRevealed ? 0 : progress;
-    const targetValue = 0.93;
+    const targetValue = 0.5;
     const startedAt = performance.now();
     const duration = 950;
     setProgress(startValue);
@@ -120,13 +130,14 @@ export default function ScrollExpand({
 
   useEffect(() => () => cancelAnimationFrame(animationRef.current), []);
 
-  const expandProgress = segment(progress, 0, 0.55);
-  const dissolveProgress = segment(progress, 0.75, 0.95);
+  const expandProgress = segment(progress, 0, 0.52);
+  const dissolveProgress = segment(progress, 0.5, 0.68);
   const horizontalInset = 22 * (1 - expandProgress);
   const verticalInset = 19 * (1 - expandProgress);
   const radius = 30 * (1 - expandProgress) + 2;
   const imageScale = 1.12 - expandProgress * 0.12;
-  const copyOpacity = 1 - segment(progress, 0.12, 0.5);
+  const copyOpacity = 1 - segment(progress, 0.08, 0.36);
+  const hintOpacity = 1 - segment(progress, 0.18, 0.4);
 
   return (
     <div
@@ -140,6 +151,7 @@ export default function ScrollExpand({
         "--motion-media-opacity": 1 - dissolveProgress,
         "--motion-copy-opacity": copyOpacity,
         "--motion-copy-y": `${(1 - copyOpacity) * 16}px`,
+        "--motion-hint-opacity": hintOpacity,
       } as React.CSSProperties}
     >
       <div className="motion-expand-stage">
@@ -156,6 +168,16 @@ export default function ScrollExpand({
           </p>
           <span className="motion-expand-line" aria-hidden="true" />
         </div>
+
+        {!mobile && (
+          <div className="motion-scroll-hint" aria-hidden={hintOpacity < 0.1}>
+            <span data-lang="en">{hintEn}</span>
+            <span data-lang="zh">{hintZh}</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 5v14m0 0 5-5m-5 5-5-5" />
+            </svg>
+          </div>
+        )}
 
         {mobile && (
           <button type="button" className="motion-expand-button" onClick={animateMobile}>

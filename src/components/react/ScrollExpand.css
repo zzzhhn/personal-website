@@ -1,17 +1,18 @@
 .motion-expand-track {
   position: relative;
-  height: 285vh;
-  min-height: 120rem;
+  height: 165dvh;
 }
 
 .motion-expand-stage {
   position: sticky;
+  z-index: 2;
   top: 64px;
   width: 100%;
   height: calc(100dvh - 64px);
   min-height: 34rem;
   overflow: hidden;
   isolation: isolate;
+  pointer-events: none;
 }
 
 .motion-expand-media {
@@ -50,8 +51,8 @@
 .motion-expand-copy {
   position: absolute;
   z-index: 2;
-  left: clamp(2rem, 7vw, 7.5rem);
-  bottom: clamp(3rem, 10vh, 7rem);
+  left: calc(var(--motion-x-inset) + clamp(1.5rem, 3vw, 3rem));
+  top: calc(var(--motion-y-inset) + clamp(1.5rem, 3vw, 3rem));
   display: grid;
   gap: 0.7rem;
   max-width: 28rem;
@@ -60,6 +61,49 @@
   transform: translate3d(0, var(--motion-copy-y), 0);
   will-change: opacity, transform;
   text-shadow: 0 2px 20px oklch(0 0 0 / 0.38);
+}
+
+.motion-scroll-hint {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: clamp(1.5rem, 4vh, 2.75rem);
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.7rem 1rem 0.7rem 1.15rem;
+  border: 1px solid oklch(1 0 0 / 0.3);
+  border-radius: 999px;
+  background: oklch(0.1 0.015 255 / 0.64);
+  color: white;
+  font-size: 0.76rem;
+  font-weight: 640;
+  letter-spacing: 0.015em;
+  opacity: var(--motion-hint-opacity);
+  transform: translateX(-50%);
+  backdrop-filter: blur(14px) saturate(135%);
+  -webkit-backdrop-filter: blur(14px) saturate(135%);
+  box-shadow: 0 10px 36px oklch(0 0 0 / 0.24);
+  pointer-events: none;
+  white-space: nowrap;
+  will-change: opacity;
+}
+
+.motion-scroll-hint svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+  animation: motion-hint-drift 1.6s ease-in-out infinite;
+}
+
+@keyframes motion-hint-drift {
+  0%, 100% { transform: translateY(-1px); }
+  50% { transform: translateY(3px); }
 }
 
 .motion-expand-index {
@@ -109,6 +153,7 @@
   -webkit-backdrop-filter: blur(14px) saturate(140%);
   cursor: pointer;
   white-space: nowrap;
+  pointer-events: auto;
 }
 
 .motion-expand-button svg {
@@ -140,9 +185,9 @@
 }
 
 .motion-expand-track.is-mobile .motion-expand-copy {
-  left: 2rem;
-  right: 2rem;
-  bottom: 5.5rem;
+  left: calc(var(--motion-x-inset) + 1.25rem);
+  right: auto;
+  top: calc(var(--motion-y-inset) + 1.25rem);
 }
 
 .motion-expand-track.is-mobile .motion-expand-copy p {
@@ -181,7 +226,12 @@
   .motion-expand-media,
   .motion-expand-media img,
   .motion-expand-copy,
-  .motion-expand-button {
+  .motion-expand-button,
+  .motion-scroll-hint {
     transition: none !important;
+  }
+
+  .motion-scroll-hint svg {
+    animation: none;
   }
 }

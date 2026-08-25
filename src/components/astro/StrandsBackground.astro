@@ -1,0 +1,43 @@
+---
+import Strands from "../react/Strands";
+---
+
+<div class="site-strands" aria-hidden="true">
+  <Strands
+    client:idle
+    colors={["#4f8dff", "#35c99a", "#e4a65a"]}
+    count={3}
+    speed={0.18}
+    amplitude={1.05}
+    waviness={0.72}
+    thickness={0.55}
+    glow={1.15}
+    taper={3}
+    spread={1.15}
+    intensity={0.42}
+    saturation={1.15}
+    opacity={0.8}
+    scale={1.35}
+  />
+</div>
+
+<style>
+  .site-strands {
+    position: fixed;
+    z-index: -1;
+    inset: 64px 0 0;
+    overflow: hidden;
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  :global([data-theme="dark"]) .site-strands {
+    opacity: 0.5;
+  }
+
+  @media (max-width: 768px), (pointer: coarse), (prefers-reduced-motion: reduce) {
+    .site-strands {
+      display: none;
+    }
+  }
+</style>

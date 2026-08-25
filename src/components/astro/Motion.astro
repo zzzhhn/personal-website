@@ -20,6 +20,8 @@ const labels = {
     imageAlt="WUJI supercar cutting through fog on a wet mountain road"
     labelEn={UI.motion.expand.en}
     labelZh={UI.motion.expand.zh}
+    hintEn={UI.motion.scrollHint.en}
+    hintZh={UI.motion.scrollHint.zh}
     tapLabelEn={UI.motion.tapExpand.en}
     tapLabelZh={UI.motion.tapExpand.zh}
     replayLabelEn={UI.motion.tapReplay.en}
@@ -42,9 +44,6 @@ const labels = {
     </div>
   </div>
 
-  <div class="motion-exit" aria-hidden="true">
-    <div class="motion-exit-veil"></div>
-  </div>
 </section>
 
 <style>
@@ -55,8 +54,12 @@ const labels = {
 
   .motion-editorial {
     position: relative;
-    padding-top: var(--spacing-section);
+    z-index: 1;
+    margin-top: calc(-100dvh + 64px);
+    padding-top: clamp(4.5rem, 9vw, 7rem);
     padding-bottom: clamp(3rem, 7vw, 6rem);
+    opacity: var(--motion-editorial-opacity, 1);
+    transform: translate3d(0, var(--motion-editorial-y, 0), 0);
   }
 
   .motion-intro {
@@ -70,26 +73,12 @@ const labels = {
     text-wrap: balance;
   }
 
-  .motion-exit {
-    position: relative;
-    height: clamp(14rem, 34vh, 26rem);
-  }
-
-  .motion-exit-veil {
-    position: sticky;
-    top: calc(100dvh - clamp(8rem, 18vh, 12rem));
-    height: clamp(8rem, 18vh, 12rem);
-    background: linear-gradient(180deg, transparent, var(--color-surface-primary) 88%);
-    -webkit-backdrop-filter: blur(5px);
-    backdrop-filter: blur(5px);
-    -webkit-mask-image: linear-gradient(180deg, transparent, black 68%);
-    mask-image: linear-gradient(180deg, transparent, black 68%);
-    pointer-events: none;
-  }
-
   @media (max-width: 768px) {
     .motion-editorial {
+      margin-top: 0;
       padding-top: var(--spacing-section-mobile);
+      opacity: 1;
+      transform: none;
     }
 
     .motion-intro {
@@ -98,19 +87,5 @@ const labels = {
       font-size: clamp(1.4rem, 7vw, 2rem);
     }
 
-    .motion-exit {
-      height: 11rem;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .motion-exit {
-      height: 8rem;
-    }
-
-    .motion-exit-veil {
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
-    }
   }
 </style>

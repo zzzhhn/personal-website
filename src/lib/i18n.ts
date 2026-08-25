@@ -45,8 +45,12 @@ export const UI = {
       zh: "多种不同的影像实践；持续更新中",
     },
     expand: {
-      en: "Scroll to enter the frame",
-      zh: "向下滚动，进入画面",
+      en: "Video Portfolio",
+      zh: "视频作品集",
+    },
+    scrollHint: {
+      en: "Scroll to reveal the films",
+      zh: "向下滚动，观看完整作品",
     },
     tapExpand: {
       en: "Tap to enter the frame",
@@ -67,7 +71,7 @@ export const UI = {
     works: [
       {
         id: "bali",
-        title: { en: "A Week in Bali", zh: "巴厘岛一周" },
+        title: { en: "A Week in Bali", zh: "巴厘岛七日纪" },
         kind: { en: "Documentary short", zh: "纪实短片" },
         role: {
           en: "AI-assisted editing · Narrative design",
