@@ -1,0 +1,187 @@
+.motion-expand-track {
+  position: relative;
+  height: 285vh;
+  min-height: 120rem;
+}
+
+.motion-expand-stage {
+  position: sticky;
+  top: 64px;
+  width: 100%;
+  height: calc(100dvh - 64px);
+  min-height: 34rem;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.motion-expand-media {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(
+    var(--motion-y-inset)
+    var(--motion-x-inset)
+    var(--motion-y-inset)
+    var(--motion-x-inset)
+    round var(--motion-radius)
+  );
+  opacity: var(--motion-media-opacity);
+  box-shadow: 0 24px 80px var(--color-shadow-depth);
+  will-change: clip-path, opacity;
+}
+
+.motion-expand-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 53%;
+  transform: scale(var(--motion-image-scale));
+  will-change: transform;
+}
+
+.motion-expand-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, oklch(0.05 0.02 255 / 0.42), transparent 32%),
+    linear-gradient(0deg, oklch(0.04 0.02 255 / 0.55), transparent 44%);
+  pointer-events: none;
+}
+
+.motion-expand-copy {
+  position: absolute;
+  z-index: 2;
+  left: clamp(2rem, 7vw, 7.5rem);
+  bottom: clamp(3rem, 10vh, 7rem);
+  display: grid;
+  gap: 0.7rem;
+  max-width: 28rem;
+  color: white;
+  opacity: var(--motion-copy-opacity);
+  transform: translate3d(0, var(--motion-copy-y), 0);
+  will-change: opacity, transform;
+  text-shadow: 0 2px 20px oklch(0 0 0 / 0.38);
+}
+
+.motion-expand-index {
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0.78;
+}
+
+.motion-expand-copy p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 4.25rem);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+}
+
+.motion-expand-line {
+  display: block;
+  width: 5rem;
+  height: 1px;
+  margin-top: 0.3rem;
+  background: currentColor;
+  opacity: 0.65;
+}
+
+.motion-expand-button {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  bottom: 1.5rem;
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1rem;
+  border: 1px solid oklch(1 0 0 / 0.3);
+  border-radius: 999px;
+  background: oklch(0.12 0.02 255 / 0.62);
+  color: white;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 620;
+  transform: translateX(-50%);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.motion-expand-button svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.8;
+}
+
+.motion-expand-button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 3px;
+}
+
+.motion-expand-track.is-mobile {
+  height: min(78dvh, 44rem);
+  min-height: 32rem;
+  padding: 0 1rem;
+}
+
+.motion-expand-track.is-mobile .motion-expand-stage {
+  position: relative;
+  top: 0;
+  height: 100%;
+  min-height: 32rem;
+}
+
+.motion-expand-track.is-mobile .motion-expand-copy {
+  left: 2rem;
+  right: 2rem;
+  bottom: 5.5rem;
+}
+
+.motion-expand-track.is-mobile .motion-expand-copy p {
+  font-size: clamp(1.65rem, 8vw, 2.6rem);
+}
+
+.motion-expand-track.is-reduced {
+  height: min(86dvh, 50rem);
+  min-height: 34rem;
+  padding: 0 clamp(1rem, 4vw, 3rem);
+}
+
+.motion-expand-track.is-reduced .motion-expand-stage {
+  position: relative;
+  top: 0;
+  height: 100%;
+}
+
+.motion-expand-track.is-reduced .motion-expand-media,
+.motion-expand-track.is-reduced .motion-expand-media img,
+.motion-expand-track.is-reduced .motion-expand-copy {
+  will-change: auto;
+}
+
+@media (max-width: 768px) {
+  .motion-expand-media {
+    box-shadow: 0 16px 44px var(--color-shadow-depth);
+  }
+
+  .motion-expand-media img {
+    object-position: 57% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-expand-media,
+  .motion-expand-media img,
+  .motion-expand-copy,
+  .motion-expand-button {
+    transition: none !important;
+  }
+}

@@ -55,7 +55,7 @@
         for (var i = 0; i < probeXs.length && !anchor; i++) {
           var anchorTarget = document.elementFromPoint(probeXs[i], readingY);
           anchor = anchorTarget
-            ? anchorTarget.closest(".wf-container, .tl-card, .project-card-slot, section[id], main")
+            ? anchorTarget.closest(".wf-container, .tl-card, .project-card-slot, .motion-work, section[id], main")
             : null;
         }
       }

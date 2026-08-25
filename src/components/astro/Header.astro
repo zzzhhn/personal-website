@@ -12,7 +12,7 @@ import { UI } from "../../lib/i18n";
     </a>
 
     <!-- Desktop nav -->
-    <div class="hidden sm:flex items-center gap-1">
+    <div class="hidden lg:flex items-center gap-1">
       {Object.entries(UI.nav).map(([_key, val]) => (
         <a
           href={`#${_key}`}
@@ -29,7 +29,7 @@ import { UI } from "../../lib/i18n";
     </div>
 
     <!-- Mobile controls -->
-    <div class="flex sm:hidden items-center gap-1.5">
+    <div class="flex lg:hidden items-center gap-1.5">
       <LangToggle />
       <ThemeToggle />
       <button
@@ -46,7 +46,7 @@ import { UI } from "../../lib/i18n";
   </nav>
 
   <!-- Mobile dropdown -->
-  <div id="mobile-menu" class="hidden sm:hidden px-6 pb-4">
+  <div id="mobile-menu" class="hidden lg:hidden px-6 pb-4">
     {Object.entries(UI.nav).map(([_key, val]) => (
       <a
         href={`#${_key}`}

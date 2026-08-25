@@ -1,0 +1,116 @@
+---
+import { UI } from "../../lib/i18n";
+import MotionPortfolio from "../react/MotionPortfolio";
+import ScrollExpand from "../react/ScrollExpand";
+import SectionHeading from "./SectionHeading.astro";
+
+const labels = {
+  play: UI.motion.play,
+  close: UI.motion.close,
+  loading: UI.motion.loading,
+  error: UI.motion.error,
+  retry: UI.motion.retry,
+};
+---
+
+<section id="motion" class="motion-section section-glow">
+  <ScrollExpand
+    client:visible
+    imageSrc="/images/motion/wuji-scroll-expand.webp"
+    imageAlt="WUJI supercar cutting through fog on a wet mountain road"
+    labelEn={UI.motion.expand.en}
+    labelZh={UI.motion.expand.zh}
+    tapLabelEn={UI.motion.tapExpand.en}
+    tapLabelZh={UI.motion.tapExpand.zh}
+    replayLabelEn={UI.motion.tapReplay.en}
+    replayLabelZh={UI.motion.tapReplay.zh}
+  />
+
+  <div class="motion-editorial px-6">
+    <div class="mx-auto" style="max-width: var(--max-width-content);">
+      <SectionHeading
+        variant="numbered"
+        number="05"
+        titleEn={UI.sections.motion.en}
+        titleZh={UI.sections.motion.zh}
+      />
+      <p class="motion-intro">
+        <span data-lang="en">{UI.motion.intro.en}</span>
+        <span data-lang="zh">{UI.motion.intro.zh}</span>
+      </p>
+      <MotionPortfolio client:visible works={UI.motion.works} labels={labels} />
+    </div>
+  </div>
+
+  <div class="motion-exit" aria-hidden="true">
+    <div class="motion-exit-veil"></div>
+  </div>
+</section>
+
+<style>
+  .motion-section {
+    position: relative;
+    scroll-margin-top: 64px;
+  }
+
+  .motion-editorial {
+    position: relative;
+    padding-top: var(--spacing-section);
+    padding-bottom: clamp(3rem, 7vw, 6rem);
+  }
+
+  .motion-intro {
+    max-width: 42rem;
+    margin: -1.5rem 0 clamp(4.5rem, 9vw, 8rem);
+    color: var(--color-text-secondary);
+    font-family: var(--font-display);
+    font-size: clamp(1.45rem, 3vw, 2.35rem);
+    line-height: 1.35;
+    letter-spacing: -0.018em;
+    text-wrap: balance;
+  }
+
+  .motion-exit {
+    position: relative;
+    height: clamp(14rem, 34vh, 26rem);
+  }
+
+  .motion-exit-veil {
+    position: sticky;
+    top: calc(100dvh - clamp(8rem, 18vh, 12rem));
+    height: clamp(8rem, 18vh, 12rem);
+    background: linear-gradient(180deg, transparent, var(--color-surface-primary) 88%);
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
+    -webkit-mask-image: linear-gradient(180deg, transparent, black 68%);
+    mask-image: linear-gradient(180deg, transparent, black 68%);
+    pointer-events: none;
+  }
+
+  @media (max-width: 768px) {
+    .motion-editorial {
+      padding-top: var(--spacing-section-mobile);
+    }
+
+    .motion-intro {
+      margin-top: -0.75rem;
+      margin-bottom: 4rem;
+      font-size: clamp(1.4rem, 7vw, 2rem);
+    }
+
+    .motion-exit {
+      height: 11rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .motion-exit {
+      height: 8rem;
+    }
+
+    .motion-exit-veil {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+</style>

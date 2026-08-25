@@ -9,12 +9,15 @@ export const UI = {
     education: { en: "Education", zh: "教育" },
     experience: { en: "Experience", zh: "实习经历" },
     projects: { en: "Projects", zh: "项目" },
+    motion: { en: "Motion", zh: "影视" },
+    campus: { en: "Activities", zh: "活动" },
     contact: { en: "Contact", zh: "联系" },
   },
   sections: {
     education: { en: "Education & Awards", zh: "教育背景" },
     experience: { en: "Internship Experience", zh: "实习经历" },
     projects: { en: "Projects", zh: "项目经历" },
+    motion: { en: "Motion Works", zh: "影像作品" },
     campus: { en: "Activities", zh: "活动经历" },
     contact: { en: "Get in Touch", zh: "联系方式" },
     about: { en: "About Me", zh: "关于我" },
@@ -33,6 +36,68 @@ export const UI = {
       zh: "量化金融本科生，专注构建模型评测系统、Agent 工作流与研究基础设施。",
     },
     resume: { en: "Resume", zh: "简历" },
+  },
+
+  // ── Motion ──
+  motion: {
+    intro: {
+      en: "Moving-image practices across different forms; an evolving collection.",
+      zh: "多种不同的影像实践；持续更新中",
+    },
+    expand: {
+      en: "Scroll to enter the frame",
+      zh: "向下滚动，进入画面",
+    },
+    tapExpand: {
+      en: "Tap to enter the frame",
+      zh: "点击进入画面",
+    },
+    tapReplay: {
+      en: "Replay the reveal",
+      zh: "重看展开动效",
+    },
+    play: { en: "Play full film", zh: "播放完整影片" },
+    close: { en: "Close player", zh: "关闭播放器" },
+    loading: { en: "Preparing film", zh: "正在准备影片" },
+    error: {
+      en: "The film could not be loaded. Please try again.",
+      zh: "影片暂时无法加载，请重试。",
+    },
+    retry: { en: "Try again", zh: "重试" },
+    works: [
+      {
+        id: "bali",
+        title: { en: "A Week in Bali", zh: "巴厘岛一周" },
+        kind: { en: "Documentary short", zh: "纪实短片" },
+        role: {
+          en: "AI-assisted editing · Narrative design",
+          zh: "AI 辅助剪辑 · 叙事设计",
+        },
+        description: {
+          en: "A service-learning story shaped from classroom encounters, cultural exchange, and the small moments between them. Featured by the official channels of Shaw College and CUHK-Shenzhen.",
+          zh: "以课堂相遇、文化交流与其间细微瞬间为线索，重构一段支教旅程。作品获香港中文大学（深圳）逸夫书院及学校官方公众号发布。",
+        },
+        duration: "03:30",
+        poster: "/images/motion/bali-poster.webp",
+        source: "/media/motion/bali-full-720p.mp4",
+      },
+      {
+        id: "wuji",
+        title: { en: "WUJI", zh: "無極" },
+        kind: { en: "AI-native automotive TVC", zh: "AI 原生汽车 TVC" },
+        role: {
+          en: "Creative direction · AI production",
+          zh: "创意指导 · AI 生成制作",
+        },
+        description: {
+          en: "A commercial film prototype for a fictional supercar marque, translating speed, restraint, and mechanical force into a cinematic brand world.",
+          zh: "为虚构超跑品牌打造的商业广告样片，将速度、克制与机械力量转译为完整的电影化品牌世界。",
+        },
+        duration: "00:30",
+        poster: "/images/motion/wuji-poster.webp",
+        source: "/media/motion/wuji-full-946p.mp4",
+      },
+    ],
   },
 
   // ── About ──

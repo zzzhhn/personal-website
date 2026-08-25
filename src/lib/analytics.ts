@@ -3,6 +3,7 @@ export type PortfolioEvent =
   | "project_live_click"
   | "project_details_click"
   | "experience_workflow_open"
+  | "motion_video_load"
   | "contact_email_click"
   | "mobile_desktop_hint_dismiss";
 
