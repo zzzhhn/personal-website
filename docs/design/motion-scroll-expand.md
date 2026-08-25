@@ -21,7 +21,7 @@ Add a bilingual Motion section between Projects and Activities. The section open
 1. `Motion.astro` server-renders `section#motion`, so the existing navigation scroll spy can discover it before React hydration.
 2. `ScrollExpand.tsx` reads page scroll in a single passive listener and one requestAnimationFrame per paint. Expansion runs from 0 to 55 percent, hold from 55 to 75 percent, and dissolve from 75 to 95 percent.
 3. Coarse-pointer or narrow viewports use a visible 44px tap control. Reduced-motion users receive a static editorial frame with no animated expansion.
-4. `MotionPortfolio.tsx` owns the single active player. Selecting a different work aborts and releases the prior Blob URL.
+4. `MotionPortfolio.tsx` hydrates on page load so a visible poster is always actionable. It owns the single active player; selecting a different work aborts and releases the prior Blob URL.
 5. Fetch progress, failure, close, and replay states remain visible in the poster area. Native video controls preserve keyboard and platform behavior.
 
 ```mermaid
