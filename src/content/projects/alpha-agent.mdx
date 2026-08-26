@@ -2,23 +2,25 @@
 title: "Alpha Agent"
 titleZh: "Alpha Agent 量化研究智能体"
 slug: "alpha-agent"
-tagline: "Interactive quant research workstation where a grammar-constrained LLM sits inside the loop"
-taglineZh: "将受语法约束的 LLM 嵌入研究闭环的交互式量化工作台"
-description: "FastAPI + Next.js workstation that turns a one-sentence alpha hypothesis into a Pydantic FactorSpec, runs a synthetic-panel Spearman-IC smoke check in milliseconds, and serves nine interactive research dashboards over a typed LLM gateway."
-descriptionZh: "基于 FastAPI 与 Next.js 的量化研究工作台：将一句 Alpha 假设转换为 Pydantic FactorSpec，在毫秒级完成合成面板 Spearman IC 冒烟检验，并通过强类型 LLM 网关驱动九个交互式研究面板。"
+tagline: "From investment hypothesis to auditable factor test, with the LLM constrained inside the research loop"
+taglineZh: "让投资假设进入可审计的因子验证闭环，并将 LLM 约束在研究流程之内"
+description: "An interactive quantitative research workstation that translates natural-language hypotheses into typed FactorSpecs, validates expressions inside a 66-operator AST sandbox, runs synthetic diagnostics, and gates real-OHLCV backtests through explicit failure contracts."
+descriptionZh: "一套交互式量化研究工作台：将自然语言假设转化为强类型 FactorSpec，在覆盖 66 个静态算子的 AST 沙箱中校验表达式，经合成面板诊断后再进入真实 OHLCV 回测，并以明确的错误契约控制研究风险。"
 date: 2026-04-01
 maturity: "research-preview"
 maintenance: "actively-maintained"
 featured: true
-techStack: ["FastAPI", "Next.js 16", "TypeScript", "Kimi LLM", "numpy", "Vercel", "AutoDL GPU"]
+techStack: ["FastAPI", "Next.js 14", "TypeScript", "Pydantic", "NumPy", "AST Validation", "PostgreSQL"]
 highlights:
-  - "Grammar-constrained LLM pipeline — natural language → Pydantic FactorSpec → AST-validated expression against a 15-op whitelist (no eval/exec, no attribute access)"
-  - "10-day cross-sectional Spearman-IC smoke test on a 20-ticker synthetic panel catches broken operators in under 5ms, before any real OHLCV"
-  - "Nine interactive dashboards (data / alpha / backtest / factors / gates / stress / signal / activity / report) with per-router /healthz/routers liveness and distinct 502/422/500 error codes"
+  - "Reframed an LLM demo into a research workstation that shortens hypothesis-to-evidence cycles without outsourcing investment judgment"
+  - "Built a typed natural-language → FactorSpec → AST validation boundary across 66 static operators, rejecting undeclared calls, unsafe syntax, and hidden operator drift without eval/exec"
+  - "Added a 20-ticker synthetic gate that evaluates 10-day cross-sectional Spearman IC alongside degeneracy, turnover, perturbation robustness, and rank-stability diagnostics"
+  - "Designed explicit 422/429/502/500 failure semantics, bounded backtest concurrency, and router-level health visibility so research failures remain diagnosable"
 highlightsZh:
-  - "受语法约束的 LLM pipeline：自然语言 → Pydantic FactorSpec → AST 安全校验，并限定在 15 个算子白名单内，禁用 eval、exec 与属性访问"
-  - "在 20 只标的的合成面板上运行 10 日横截面 Spearman IC 冒烟检验，5ms 内即可在接入真实 OHLCV 前识别失效算子"
-  - "覆盖数据、Alpha、回测、因子、门控、压力测试、信号、活动与报告的九个交互式面板，并提供逐路由健康检查及明确区分的 502、422、500 错误语义"
+  - "将 LLM Demo 重构为研究工作台，在不替代投资判断的前提下压缩从假设提出到证据反馈的周期"
+  - "构建自然语言 → FactorSpec → AST 校验的强类型边界，覆盖 66 个静态算子，并在不使用 eval／exec 的前提下拒绝未声明调用、不安全语法与算子漂移"
+  - "设计 20 只标的的合成面板门控，同时检验 10 日横截面 Spearman IC、因子退化、换手率、扰动鲁棒性与排序稳定性"
+  - "以 422／429／502／500 错误语义、回测并发上限与逐路由健康检查，让研究链路中的失败可定位、可解释"
 links:
   github: "https://github.com/zzzhhn/alpha-agent"
   live: "https://alpha.bobbyzhong.com/data"
@@ -30,84 +32,58 @@ order: 0
 
 <section data-lang="en">
 
-## Background
+## Product thesis
 
-The first pass was a "television": 27 GET endpoints, zero user actions. The refactor (REFACTOR_PLAN W1 / W2) turned it into a research workstation where the LLM is a controlled tool inside the loop, not a black box around it.
+The hard part of AI-assisted quant research is not generating more factor expressions. It is converting an ambiguous investment idea into a testable object while keeping research judgment, data lineage, and failure modes visible. Alpha Agent is my attempt to build that controlled path: the LLM proposes within a grammar, deterministic code validates the proposal, and only numerically executable factors advance to backtesting.
 
-## Architecture
+## What I owned
 
-Two halves connected by HTTP:
+- **Research workflow design:** turned a read-heavy prototype into an interactive workstation spanning hypothesis translation, diagnostics, backtesting, factor review, stress testing, gates, signals, and research history.
+- **Typed AI boundary:** defined `FactorSpec` as the contract between language-model output and quantitative infrastructure, with explicit hypothesis, expression, operator, lookback, universe, and justification fields.
+- **Safe execution layer:** built an AST walker that blocks attribute access, imports, lambdas, keyword arguments, unknown operands, and undeclared operators. Expressions are dispatched through controlled numerical functions rather than `eval` or `exec`.
+- **Research quality gates:** placed low-cost synthetic diagnostics before real-data backtests so malformed, constant, unstable, or excessively high-turnover proposals can be rejected early.
 
-1. **Backend** — FastAPI on an AutoDL RTX 5090 node, tunnelled via Cloudflare. Pydantic schemas, AST-based safe evaluation, a numpy-only vectorized operator layer, per-router `/healthz/routers` endpoint. Kimi For Coding serves the LLM over an Anthropic-compatible `/messages` API.
-2. **Frontend** — Next.js 16 App Router on Vercel. Interactive dashboards for data, alpha signals, backtests, factors, gate editing, stress tests. zh / en toggle, dark / light theme, accent-color semantics for IC magnitude.
+## From hypothesis to evidence
 
-## Hypothesis Translator (T1)
+The current static grammar contains 66 allowed operators across arithmetic, logical, time-series, cross-sectional, and group transformations. After schema and AST validation, each proposal runs on a generated 20-ticker panel. The gate measures the latest 10 days of cross-sectional Spearman information coefficient and supplements it with factor variance, turnover, input-perturbation robustness, and day-to-day rank stability.
 
-One sentence in, an executable FactorSpec out:
+Factors that pass can move into a real-OHLCV backtest path with a cached 37-ticker US panel and top/bottom portfolio construction. This does not claim that a synthetic check proves alpha. Its job is narrower and operationally valuable: prevent invalid research artifacts from consuming more expensive data and compute.
 
-- System prompt enumerates the 15-op whitelist, operand set, and one worked example
-- LLM output parsed as Pydantic `FactorSpec` (name, hypothesis, expression, operators_used, lookback, universe, justification)
-- AST walker over `ast.parse(mode="eval")` rejects attribute access, imports, lambdas, non-numeric constants, keyword args; enforces `declared_ops == used_ops` equality so the LLM cannot silently drop or sneak in operators
-- 20-ticker geometric-Brownian-motion panel of (lookback + 11 days) is generated on the fly; per-day cross-sectional Spearman IC over the last 10 days, averaged
+## Reliability as a product feature
 
-End-to-end: ~3 s per hypothesis via Kimi (667 tokens average), smoke in 2–5 ms.
+The API distinguishes malformed specifications, provider failures, backtest capacity limits, and internal diagnostic failures instead of collapsing them into a generic network error. Router-level health visibility catches partially loaded services, while the frontend preserves hypothesis history and blocks degenerate factors before launching the next stage. Together, these mechanisms make the research process auditable and recoverable rather than merely impressive in a demo.
 
-## Vectorized Scan Layer
+## Current scope
 
-Fifteen pure-numpy operators on a `(T, N)` panel:
-
-- Time-series (axis=0): `ts_mean`, `ts_std`, `ts_zscore`, `ts_rank`, `ts_corr`
-- Cross-section (axis=1): `rank` (percentile), `scale` (demean + L1 norm), `winsorize`
-- Elementwise: `log`, `sign`, `add`, `sub`, `mul`, `div` (NaN on zero divide), `pow_`
-
-All NaN-safe, all pure, dispatched by an AST walker — not `eval`.
-
-## Key Results
-
-- Every factor that reaches the real backtest engine is already proven to be numerically executable on a synthetic panel
-- Distinct HTTP codes (503 no LLM, 502 LLM error, 422 schema / AST fail, 500 smoke crash) so the UI surfaces precise failures instead of a blanket "Network error"
-- `/healthz/routers` exposes which FastAPI routers loaded at startup, catching missing-dependency 404s that would otherwise hide behind a 200-OK homepage
+Alpha Agent is an actively maintained research preview, not an autonomous trading system. It demonstrates a disciplined human-in-the-loop workflow for factor research; it does not present model output as investment advice or claim live trading performance.
 
 </section>
 
 <section data-lang="zh">
 
-## 项目背景
+## 产品命题
 
-最初版本更像一台只能观看的“电视”：提供 27 个 GET endpoint，却没有任何用户可执行的操作。经过 REFACTOR_PLAN W1／W2 重构后，它成为一套真正的研究工作台。LLM 是研究闭环内受约束的工具，而不是包裹整个流程的黑箱。
+AI 辅助量化研究真正困难的，并不是生成更多因子表达式，而是把含混的投资想法转化为可检验对象，同时保留研究判断、数据链路与失败原因。Alpha Agent 因此选择了一条受控路径：LLM 只能在既定语法内提出候选，确定性代码负责校验，只有数值上可执行的因子才能进入回测。
 
-## 系统架构
+## 我的核心职责
 
-系统由通过 HTTP 连接的两部分组成：
+- **研究流程设计：** 将以信息展示为主的原型重构为交互式工作台，贯通假设翻译、诊断、回测、因子复核、压力测试、研究门控、信号与历史记录。
+- **强类型 AI 边界：** 以 `FactorSpec` 连接语言模型与量化基础设施，显式约束假设、表达式、算子、回看窗口、股票池与研究依据。
+- **安全执行层：** 构建 AST Walker，拦截属性访问、import、lambda、关键字参数、未知 Operand 与未声明算子，并通过受控数值函数完成分发，全程不依赖 `eval` 或 `exec`。
+- **研究质量门控：** 在真实数据回测之前加入低成本合成诊断，提前识别语法失效、因子退化、排序不稳定与过高换手等问题。
 
-1. **后端**：运行于 AutoDL RTX 5090 节点的 FastAPI 服务，通过 Cloudflare Tunnel 对外连接。核心包括 Pydantic Schema、基于 AST 的安全执行、仅依赖 numpy 的向量化算子层，以及逐路由 `/healthz/routers` 健康检查。Kimi For Coding 通过兼容 Anthropic `/messages` 的 API 提供 LLM 能力。
-2. **前端**：部署于 Vercel 的 Next.js 16 App Router 应用。交互式面板覆盖数据、Alpha 信号、回测、因子、Gate 编辑与压力测试，并支持中英文、深浅色主题，以及表达 IC 强弱的 Accent Color 语义。
+## 从投资假设到研究证据
 
-## 假设翻译器（T1）
+当前静态语法覆盖 66 个算子，横跨算术、逻辑、时间序列、横截面与分组变换。候选表达式通过 Schema 与 AST 校验后，会进入 20 只标的的合成面板，计算最近 10 日的横截面 Spearman IC，并同时检查因子方差、换手率、输入扰动鲁棒性与逐日排序稳定性。
 
-输入一句自然语言假设，即可得到可执行的 FactorSpec：
+通过门控的因子可继续进入真实 OHLCV 回测路径，使用缓存的 37 只美股面板构建多空组合。合成检查并不等于证明 Alpha 有效，它承担的是更克制也更重要的职责：在投入真实数据与计算资源之前，阻止无效研究对象继续流转。
 
-- System Prompt 明确列出 15 个允许使用的算子、Operand 集合与一个完整示例
-- 将 LLM 输出解析为 Pydantic `FactorSpec`，字段包括 name、hypothesis、expression、operators_used、lookback、universe 与 justification
-- 使用 `ast.parse(mode="eval")` 构建 AST Walker，拒绝属性访问、import、lambda、非数值常量与 keyword argument，并强制 `declared_ops == used_ops`，防止 LLM 暗中遗漏或注入算子
-- 即时生成包含 20 只标的、长度为 lookback + 11 日的几何布朗运动面板，计算最近 10 日逐日横截面 Spearman IC 并取均值
+## 把可靠性做成产品能力
 
-经 Kimi 处理后，每条假设端到端耗时约 3 秒，平均使用 667 tokens；冒烟检验耗时约 2 至 5ms。
+API 会区分规格错误、模型服务异常、回测容量不足与诊断内部失败，而不是统一呈现为“网络错误”。逐路由健康检查用于发现服务仅部分加载的问题，前端则保留假设历史，并在发起下一阶段前拦截退化因子。这些机制让研究过程可审计、可恢复，而不只是停留在 Demo 层面的视觉冲击。
 
-## 向量化扫描层
+## 当前边界
 
-系统在 `(T, N)` 面板上提供 15 个纯 numpy 算子：
-
-- 时间序列算子（axis=0）：`ts_mean`、`ts_std`、`ts_zscore`、`ts_rank`、`ts_corr`
-- 横截面算子（axis=1）：`rank`（百分位）、`scale`（去均值并进行 L1 归一化）、`winsorize`
-- Elementwise 算子：`log`、`sign`、`add`、`sub`、`mul`、`div`（除零返回 NaN）、`pow_`
-
-所有算子均具备 NaN Safety，由 AST Walker 分发执行，全程不使用 `eval`。
-
-## 关键成果
-
-- 任何进入真实 Backtest Engine 的因子，均已先在合成面板上证明数值可执行
-- 通过不同 HTTP 状态码精确区分故障：503 表示无可用 LLM，502 表示 LLM 错误，422 表示 Schema／AST 校验失败，500 表示冒烟检验异常，避免前端把所有问题笼统显示为“Network error”
-- `/healthz/routers` 明确展示 FastAPI 启动时成功加载的 Router，可发现原本会隐藏在 200 OK 首页之后的依赖缺失型 404
+Alpha Agent 是持续维护中的研究预览，而非自动交易系统。它展示的是一套严谨的 Human-in-the-loop 因子研究流程，不将模型输出包装为投资建议，也不宣称具备实盘收益。
 
 </section>

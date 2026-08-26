@@ -2,25 +2,27 @@
 title: "Interactive Learning Platforms"
 titleZh: "交互式课程学习平台"
 slug: "interactive-learning-platforms"
-tagline: "University courses, reimagined as interactive single-file web apps"
-taglineZh: "把大学课程重构为可探索、可练习的单文件 Web App"
-description: "A suite of 4 HTML-based learning platforms covering finance, mathematics, and actuarial science — 55,000+ lines of zero-dependency interactive content with quizzes, knowledge graphs, and real-time visualizations."
-descriptionZh: "四套基于 HTML 的课程学习平台，覆盖金融、数学与精算科学；以超过 55,000 行零依赖交互内容，整合测验、知识图谱与实时可视化。"
+tagline: "Turning dense university coursework into active-learning systems for practice, feedback, and mastery"
+taglineZh: "把高密度大学课程重构为可练习、有反馈、能追踪掌握度的主动学习系统"
+description: "Four browser-based learning systems across finance, differential equations, and business ethics, combining guided learning paths, exam simulation, wrong-answer remediation, financial and ODE laboratories, knowledge maps, and progress dashboards."
+descriptionZh: "四套覆盖金融、微分方程与商业伦理的浏览器学习系统，将学习路径、考试模拟、错题修复、金融与 ODE 实验室、知识地图及进度 Dashboard 组织为完整主动学习体验。"
 date: 2025-09-01
 maturity: "stable-release"
 maintenance: "completed"
 featured: true
-techStack: ["JavaScript", "HTML/CSS", "MathJax", "Chart.js", "Plotly"]
+techStack: ["Vanilla JavaScript", "HTML/CSS", "MathJax", "Plotly", "Chart.js", "Local Storage"]
 highlights:
-  - "4 courses × 55,000+ lines: FIN4210, FIN3080, MAT2002, ACT4253"
-  - "Zero-dependency single-file architecture — works offline, instant deploy"
-  - "Interactive features: slope field simulator, knowledge graph, mock exams, case studies"
-  - "Bilingual (EN/ZH) with dark/light theme support"
+  - "Converted four content-heavy courses into task-oriented learning products rather than digital replicas of textbooks and slide decks"
+  - "Designed active-learning loops with guided paths, tiered quizzes, exam simulation, mastery tracking, wrong-answer vaults, bookmarks, and targeted revision"
+  - "Made abstract models operable through financial calculators, valuation and portfolio labs, ODE slope fields, phase portraits, and step-by-step problem exploration"
+  - "Used self-contained single-file delivery to remove build and installation friction, while loading specialist visualization libraries only where required"
+  - "Adapted the interaction model by discipline: quantitative experimentation for finance and mathematics, case analysis and debate for business ethics"
 highlightsZh:
-  - "四门课程、超过 55,000 行内容：FIN4210、FIN3080、MAT2002、ACT4253"
-  - "零依赖单文件架构，可离线使用并即时部署"
-  - "交互模块涵盖方向场模拟器、知识图谱、模拟考试与案例研究"
-  - "支持中英文切换与深浅色主题"
+  - "将四门高信息密度课程转化为面向任务的学习产品，而不是教材与课件的数字复刻"
+  - "设计学习路径、分层测验、考试模拟、掌握度追踪、错题库、收藏与定向复习组成的主动学习闭环"
+  - "以金融计算器、估值与组合实验室、ODE 方向场、相图和逐步解题，让抽象模型成为可操作对象"
+  - "采用自包含单文件交付，消除 Build 与安装门槛，并仅在需要时加载专业可视化 Library"
+  - "按学科重塑交互逻辑：金融与数学强调定量实验，商业伦理强调案例分析、框架比较与辩论"
 links:
   github: "https://github.com/zzzhhn/interactive-learning-platforms"
   live: "https://zzzhhn.github.io/interactive-learning-platforms/FIN4210/"
@@ -32,48 +34,72 @@ order: 3
 
 <section data-lang="en">
 
-## Background
+## Product thesis
 
-Traditional university course materials are static — dense textbooks and slide decks that don't encourage active learning. This project reimagines course content as interactive single-file web applications where students can test, visualize, and explore concepts in real time.
+Traditional courseware is optimized for presenting information. Students, however, need to decide what to study next, test whether they understand it, diagnose mistakes, and connect formulas to decisions. I built this portfolio of learning systems to close that gap: each course becomes an interactive environment for practice, feedback, visualization, and revision.
 
-## Platforms
+The four products share a lightweight browser-first philosophy, but they do not force every discipline into the same template. Finance uses calculators and decision models, differential equations uses dynamic visual laboratories, and business ethics uses frameworks, cases, and debate prompts.
 
-| Course | Subject | Key Features |
-|--------|---------|-------------|
-| **FIN4210** | Corporate Finance | Knowledge graph, tiered quizzes, mock exams, TVM/NPV calculators, case studies |
-| **FIN3080** | Investment Analysis | Story-driven learning, radar chart comparisons, company screener, decision trees |
-| **MAT2002** | Differential Equations | Slope field simulator, real-time function graphing, step-by-step ODE solver |
-| **ACT4253** | Business Ethics | Difficulty-tagged quizzes, star bookmarks, ethical framework reference |
+## What I owned
 
-## Technical Highlights
+- **Learning-product design:** translated syllabi, lecture material, and exam requirements into navigable learning paths and explicit student tasks.
+- **Active-learning systems:** built quizzes, exam simulators, mastery dashboards, wrong-answer remediation, bookmarks, formula references, and targeted revision flows.
+- **Interactive modelling:** implemented finance and valuation tools, portfolio diagnostics, ODE visualizations, knowledge maps, and scenario-based case work.
+- **Distribution architecture:** packaged each platform as a self-contained HTML application that opens directly in a browser without a build step or installation.
 
-- **Single-file architecture**: Each platform is one self-contained HTML file (up to 22,000+ lines). No build step, no bundler — open in any browser.
-- **Zero runtime dependencies**: Libraries loaded via CDN with graceful fallback. Works offline after first load.
-- **Rich interactivity**: MathJax for LaTeX, Plotly/Chart.js for data visualization, custom quiz engines with progress tracking.
-- **Bilingual**: Full English/Chinese toggle across finance platforms.
+## Four disciplines, four learning models
+
+| Course | Learning problem | Product response |
+|---|---|---|
+| **FIN4210 · Corporate Finance** | Connect formulas, risk, and capital-allocation decisions | Guided learning packs, formula lab, knowledge map, quizzes, cases, mock exams, and progress tracking |
+| **FIN3080 · Investment Analysis** | Compare valuation and portfolio frameworks under exam pressure | Ten-chapter quick pass, DDM/CAPM/DuPont/MPT labs, company screening, exam modes, variant drills, and wrong-answer vault |
+| **MAT2002 · Differential Equations** | Build intuition for dynamic systems beyond symbolic steps | Unified ODE lab, slope fields, phase portraits, worked examples, exam navigation, mastery and weakness dashboards |
+| **ACT4253 · Business Ethics** | Apply competing ethical frameworks to ambiguous situations | Chapter practice, knowledge map, short answers, case analysis, debate prompts, and framework reference |
+
+## Engineering for low-friction learning
+
+The products use semantic HTML, CSS, and vanilla JavaScript for direct delivery. MathJax, Plotly, Chart.js, or math.js are loaded where specialised rendering is required; progress, filters, bookmarks, and practice state are handled in the browser. This architecture avoids a deployment pipeline and keeps each course portable, while remaining honest that CDN-backed libraries are external dependencies rather than claiming a fully offline runtime.
+
+The central engineering challenge was not file size. It was keeping large bodies of content navigable and stateful without a backend: definitions must precede interactions, cross-references must stay aligned, mathematical rendering must survive string escaping, and every learning mode must return the student to a meaningful next action.
+
+## Current scope
+
+FIN4210, FIN3080, and MAT2002 are the most developed systems. ACT4253 demonstrates the same product approach with a representative question set rather than a fully migrated bank. Bilingual support also varies by course. The portfolio is presented as completed coursework infrastructure, not as a validated commercial EdTech product or a claim of improved grades.
 
 </section>
 
 <section data-lang="zh">
 
-## 项目背景
+## 产品命题
 
-传统大学课程材料往往停留在静态形态，教材与课件信息密度高，却难以引导主动学习。本项目将课程内容重构为交互式单文件 Web App，让学生能够即时练习、观察可视化结果，并主动探索概念之间的联系。
+传统课程材料擅长呈现信息，但学生真正需要解决的是：下一步学什么、是否已经理解、错误出在哪里，以及公式如何连接现实决策。我构建这组学习系统，正是为了补上这一缺口，让每门课程都成为可练习、有反馈、能可视化并支持复习的交互环境。
 
-## 课程平台
+四套产品共享轻量、浏览器优先的理念，但不会强迫所有学科套用同一模板。金融课程使用计算器与决策模型，微分方程强调动态可视化实验，商业伦理则围绕分析框架、案例与辩论展开。
 
-| 课程 | 学科 | 核心功能 |
-|------|------|----------|
-| **FIN4210** | 公司金融 | 知识图谱、分层测验、模拟考试、TVM／NPV 计算器、案例研究 |
-| **FIN3080** | 投资分析 | 故事化学习、雷达图对比、公司筛选器、决策树 |
-| **MAT2002** | 微分方程 | 方向场模拟器、实时函数绘图、逐步 ODE 求解器 |
-| **ACT4253** | 商业伦理 | 难度标签测验、星标收藏、伦理框架速查 |
+## 我的核心职责
 
-## 技术亮点
+- **学习产品设计：** 将教学大纲、课程材料与考试要求转化为可导航的学习路径和明确的学生任务。
+- **主动学习系统：** 构建测验、考试模拟、掌握度 Dashboard、错题修复、收藏、公式速查与定向复习流程。
+- **交互式建模：** 实现公司金融与估值工具、投资组合诊断、ODE 可视化、知识地图与情境化案例练习。
+- **分发架构：** 将每套平台封装为自包含 HTML App，无需 Build Step 或安装即可直接在浏览器中打开。
 
-- **单文件架构**：每套平台均由一个自包含 HTML 文件构成，单文件最高超过 22,000 行。无需 Build Step 或 Bundler，在任意浏览器中即可打开
-- **零运行时依赖**：第三方 Library 通过 CDN 加载，并提供 Graceful Fallback；首次加载后可离线使用
-- **丰富交互能力**：使用 MathJax 渲染 LaTeX，借助 Plotly／Chart.js 完成数据可视化，并内置带进度追踪的自研 Quiz Engine
-- **完整双语**：金融课程平台全面支持中英文切换
+## 四门课程，四种学习模型
+
+| 课程 | 核心学习难点 | 产品回应 |
+|---|---|---|
+| **FIN4210 · 公司金融** | 将公式、风险与资本配置决策连接起来 | Learning Pack、公式实验室、知识地图、测验、案例、模拟考试与进度追踪 |
+| **FIN3080 · 投资分析** | 在考试压力下比较估值与投资组合框架 | 十章 Quick Pass、DDM／CAPM／DuPont／MPT Lab、公司筛选、考试模式、变式训练与错题库 |
+| **MAT2002 · 微分方程** | 超越符号步骤，建立对动态系统的直觉 | Unified ODE Lab、方向场、相图、逐步示例、考试导航、掌握度与弱项 Dashboard |
+| **ACT4253 · 商业伦理** | 在模糊情境中运用并比较伦理框架 | 章节练习、知识地图、简答、案例分析、辩论题与框架速查 |
+
+## 为低门槛学习而设计工程架构
+
+产品以 Semantic HTML、CSS 与 Vanilla JavaScript 直接交付，并在需要专业渲染时加载 MathJax、Plotly、Chart.js 或 math.js；学习进度、筛选、收藏与练习状态均在浏览器内管理。该架构省去部署 Pipeline，使课程便于携带，同时也明确承认 CDN Library 属于外部依赖，而不是将其包装为完全离线运行。
+
+真正的工程难题从来不是文件行数，而是如何在没有后端的前提下，让大规模课程内容仍然可导航、有状态。定义必须先于交互，跨章节引用必须保持一致，数学公式需要正确处理字符串转义，每种学习模式也必须把学生带回一个有意义的下一步动作。
+
+## 当前边界
+
+FIN4210、FIN3080 与 MAT2002 是目前完成度最高的系统；ACT4253 延续同一产品方法，但题库仍以代表性样本为主，并未完成全部迁移。各课程的双语覆盖也有所差异。这组作品体现的是已经完成的课程学习基础设施，而不是经过商业验证的 EdTech 产品，也不宣称已经直接提升成绩。
 
 </section>

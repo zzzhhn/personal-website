@@ -2,25 +2,27 @@
 title: "Accompany"
 titleZh: "比邻"
 slug: "kindred"
-tagline: "AI career-growth companion that turns conversations into a living knowledge graph"
-taglineZh: "让每次对话沉淀为持续生长知识图谱的 AI 生涯伙伴"
-description: "Full-stack AI companion for university students: persona-driven chat, an LLM-extracted growth knowledge graph with community detection, resume parsing into the profile, and a 3D mascot — built for the Tencent AI-HR bootcamp."
-descriptionZh: "面向大学生的全栈 AI 成长伙伴：以人格化对话连接 LLM 抽取的成长知识图谱、社区发现与简历画像融合，并配有 3D 吉祥物；项目源自腾讯 AI-HR 训练营。"
+tagline: "A career companion that turns conversations and resumes into an evidence-backed growth map"
+taglineZh: "把对话与简历沉淀为有证据、可演进的个人成长图谱"
+description: "A full-stack AI career companion for university students, combining persona-driven chat, resume ingestion, traceable LLM extraction, deduplicated knowledge graphs, structural insights, and privacy-conscious bring-your-own-key infrastructure."
+descriptionZh: "面向大学生的全栈 AI 生涯伙伴，将人格化对话、简历导入、可追溯 LLM 抽取、知识图谱去重、结构洞察与注重隐私的 BYOK 基础设施整合为持续成长体验。"
 date: 2026-06-01
 maturity: "functional-prototype"
 maintenance: "archived"
 featured: true
-techStack: ["Next.js 16", "TypeScript", "Prisma", "Neon PostgreSQL", "AI SDK v6", "Auth.js", "force-graph"]
+techStack: ["Next.js 16", "TypeScript", "AI SDK v6", "Prisma", "PostgreSQL", "Louvain", "Auth.js"]
 highlights:
-  - "Growth knowledge graph L1–L4: LLM entity extraction → dedup merge → Louvain community clustering → force-graph visualization, with insights derived from graph structure instead of LLM causal speculation"
-  - "Resume parsing (PDF / docx) that feeds the same profile graph, so uploaded history and chat-discovered facts merge into one picture"
-  - "3D mascot pipeline: gpt-image-2 multi-view generation → Tripo image-to-3D → Blender cleanup → 1.79MB GLB with blink & breath animations in model-viewer"
-  - "Production-grade foundation: real auth (password / Google / email verification), BYOK multi-provider LLM support, zh/en i18n, multi-session chat with edit & regenerate, 140+ tests"
+  - "Defined a persistence-first career companion: every conversation can become reusable evidence instead of disappearing at the end of a chat session"
+  - "Built an explicit-only LLM extraction pipeline with confidence thresholds, source quotes, deduplication, mention counts, Louvain clustering, and user-editable provenance"
+  - "Unified PDF/DOCX/TXT resume ingestion and conversation-derived signals inside the same profile graph, with streamed progress and background reconciliation"
+  - "Derived growth observations from graph structure such as bridges, clusters, and gaps instead of presenting speculative LLM causality as fact"
+  - "Implemented auth-scoped actions, encrypted BYOK storage, soft deletion, idempotent graph recomputation, multi-session chat, and privacy-safe public sharing"
 highlightsZh:
-  - "四层成长知识图谱：LLM 实体抽取 → 去重合并 → Louvain 社区聚类 → Force Graph 可视化；洞察基于图结构生成，避免 LLM 臆测因果"
-  - "支持 PDF／DOCX 简历解析并写入同一 Profile Graph，使上传履历与对话中发现的事实汇聚为统一画像"
-  - "3D 吉祥物 pipeline：gpt-image-2 多视图生成 → Tripo Image-to-3D → Blender 清理 → 1.79MB GLB，并在 model-viewer 中呈现眨眼与呼吸动画"
-  - "生产级基础能力涵盖密码、Google 与邮箱验证登录，BYOK 多模型支持，中英文 i18n，多会话聊天、编辑与重新生成，以及 140+ 自动化测试"
+  - "提出“持续积累优先”的生涯伙伴设计：每次对话都可沉淀为可复用证据，而不是随 Chat Session 结束而消失"
+  - "构建显式信息优先的 LLM 抽取链路，包含置信度阈值、原文引用、实体去重、提及次数、Louvain 聚类与可由用户修订的来源记录"
+  - "将 PDF／DOCX／TXT 简历导入与对话信号统一写入同一张 Profile Graph，并提供流式进度与后台校准"
+  - "基于桥接节点、主题群落与信息缺口等图结构形成成长观察，避免将 LLM 推测包装为事实因果"
+  - "实现鉴权作用域、加密 BYOK、软删除、图谱幂等重算、多会话对话与隐私安全的公开分享"
 links:
   live: "https://friend.bobbyzhong.com"
 thumbnail: "/projects/kindred.webp"
@@ -31,60 +33,70 @@ order: 1
 
 <section data-lang="en">
 
-## Background
+## Product thesis
 
-Accompany was built as assignment 2 for the Tencent AI-HR bootcamp: an AI companion that helps university students track and reflect on their career growth. The core bet is that a companion is only useful if it *accumulates* — so every conversation feeds a persistent knowledge graph instead of evaporating when the chat ends.
+Most AI career tools optimize a single moment: answer a question, rewrite a résumé, or recommend a role. Accompany started from a different premise. A useful long-term companion should accumulate context, show where its conclusions came from, and help a student see how scattered experiences connect over time.
 
-## Growth Knowledge Graph
+The product therefore treats conversation as an input to a living growth dossier rather than the final output. Chat, uploaded résumés, and user corrections converge into one evidence-backed profile graph that can support reflection and future action.
 
-The signature feature is a four-layer pipeline that turns unstructured conversation into structure:
+## What I owned
 
-1. **Extraction** — an LLM pass pulls entities (skills, experiences, goals, people) from each conversation
-2. **Merge** — new entities are deduplicated against the existing graph rather than appended blindly
-3. **Clustering** — Louvain community detection groups related nodes into themes
-4. **Insight** — observations are derived from graph structure (centrality, cluster growth, orphan nodes), deliberately avoiding LLM-fabricated causal claims
+- **Product strategy:** defined the persistence-first experience for university students, connecting reflective conversation with a growth map instead of building another stateless chatbot.
+- **Knowledge architecture:** designed the schema for skills, experiences, goals, people, relationships, confidence, source quotes, supersession, and manual edits.
+- **AI pipeline:** built structured extraction, confidence filtering, deduplication, graph merging, community detection, and bounded insight generation.
+- **Full-stack delivery:** implemented multi-session chat, resume ingestion, authentication, Bring Your Own Key (BYOK), bilingual UX, graph visualization, and shareable conversations.
 
-Resume upload (PDF / docx) parses into the same graph, so a student's documented history and their chat-discovered interests live in one connected picture, rendered as an interactive force-directed graph.
+## An evidence-backed growth graph
 
-## Companion Experience
+After a conversation is persisted, the extraction layer accepts only explicit evidence, applies a confidence floor, removes weak orphan signals, and validates structured output before it reaches the graph. New entities are compared with existing nodes rather than appended blindly. Mentions and confidence accumulate, while source messages remain traceable.
 
-- Persona-driven chat with multi-session management, message edit / regenerate, and session sharing
-- 3D mascot 锅宝 rendered via model-viewer, with idle blink and breathing animations
-- BYOK (bring-your-own-key) multi-provider LLM support through AI SDK v6
-- Full bilingual interface (zh / en) and real authentication with email verification
+Weighted Louvain community detection groups related experiences and capabilities into themes. Insights are then bounded to structural observations such as bridge nodes, growing clusters, or missing connections. The system deliberately avoids claiming that the LLM has discovered a causal truth about the user.
 
-## Engineering
+Resume uploads in PDF, DOCX, or TXT enter the same pipeline through a dedicated résumé conversation. This allows documented history and newly articulated interests to coexist in one model, with streamed progress and background graph or memory reconciliation.
 
-Next.js 16 App Router + Prisma on Neon PostgreSQL, deployed on Vercel at friend.bobbyzhong.com. 140+ tests across the extraction pipeline, graph merge logic, and auth flows.
+## Trust and privacy decisions
+
+Accompany separates private session ownership from public sharing; shared views omit account identifiers. BYOK credentials are scoped to authenticated actions, stored with AES-256-GCM encryption, and shown only through masked metadata. Memory updates use soft deletion, graph stages are idempotent, and recomputation is transactionally anchored so user corrections can be preserved.
+
+These choices matter because a career companion handles unusually personal context. The product should be able to explain what it knows, where it learned it, and how the user can correct it.
+
+## Current scope
+
+Accompany was developed through the Tencent AI-HR bootcamp and is now an archived functional prototype. The repository demonstrates a production-oriented foundation and a complete product thesis, but this portfolio does not claim validated user outcomes or ongoing maintenance. Historical internal identifiers remain in storage and migration code even though the user-facing brand is Accompany / 比邻.
 
 </section>
 
 <section data-lang="zh">
 
-## 项目背景
+## 产品命题
 
-比邻源自腾讯 AI-HR 训练营 Assignment 2，是一位帮助大学生记录并反思生涯成长的 AI 伙伴。项目的核心判断是：真正有价值的 Companion 必须能够持续积累。因此，每次对话都会沉淀至持久化知识图谱，而不是随着 Chat Session 结束而消失。
+多数 AI 生涯工具只优化某个瞬间：回答一个问题、改写一份简历，或推荐一个岗位。比邻从另一个前提出发：真正长期有用的 Companion 应当持续积累上下文，说明结论从何而来，并帮助学生看见零散经历如何随时间形成联系。
 
-## 成长知识图谱
+因此，产品不把对话视为终点，而把它当作持续生长的个人档案入口。聊天、上传简历与用户修订最终汇入同一张有证据支持的成长图谱，为反思与后续行动提供上下文。
 
-标志性能力是一套将非结构化对话转化为结构化认知的四层 Pipeline：
+## 我的核心职责
 
-1. **实体抽取**：每轮对话后，由 LLM 提取技能、经历、目标与人物等实体
-2. **去重合并**：新实体先与既有图谱比对并合并，而非直接追加造成信息碎片
-3. **社区聚类**：使用 Louvain Community Detection 将相关节点组织为主题群落
-4. **结构洞察**：基于中心性、Cluster Growth 与 Orphan Node 等图结构信号形成观察，明确避免由 LLM 编造因果关系
+- **产品策略：** 为大学生设计“持续积累优先”的体验，将反思式对话与成长地图连接起来，而不是再做一个无记忆 Chatbot。
+- **知识架构：** 定义技能、经历、目标、人物、关系、置信度、原文引用、版本替代与人工修订的数据模型。
+- **AI Pipeline：** 构建结构化抽取、置信度过滤、实体去重、图谱合并、社区发现与有边界的洞察生成。
+- **全栈交付：** 实现多会话对话、简历导入、身份认证、Bring Your Own Key（BYOK）、双语界面、图谱可视化与会话分享。
 
-PDF／DOCX 简历上传后也会解析进入同一张图谱，使学生的正式履历与对话中逐步发现的兴趣、能力共同构成连贯画像，并以交互式 Force-directed Graph 呈现。
+## 有证据支持的成长图谱
 
-## Companion 体验
+对话持久化后，抽取层只接受明确出现的信息，执行置信度门槛与弱孤立信号过滤，并在写入图谱前校验结构化输出。新实体不会被盲目追加，而是先与既有节点比对；提及次数与置信度可以累积，来源消息则始终可追溯。
 
-- 人格化多会话对话，支持消息编辑、重新生成与 Session 分享
-- 3D 吉祥物“锅宝”通过 model-viewer 渲染，并具备待机眨眼与呼吸动画
-- 基于 AI SDK v6 提供 BYOK 多模型服务商支持
-- 完整中英文界面，并提供邮箱验证等真实认证能力
+加权 Louvain Community Detection 将相关经历与能力组织为主题群落。系统随后仅基于桥接节点、成长中的 Cluster 或缺失连接等图结构形成观察，明确避免把 LLM 的推测包装为对用户的因果判断。
 
-## 工程实现
+PDF、DOCX 与 TXT 简历会通过独立的“我的简历”会话进入同一套 Pipeline，使正式履历与逐步表达出的兴趣共同存在于一张图中，并通过流式进度和后台图谱／记忆校准完成处理。
 
-前端采用 Next.js 16 App Router，数据层由 Prisma 与 Neon PostgreSQL 提供，部署于 Vercel 的 friend.bobbyzhong.com。实体抽取 Pipeline、图谱合并逻辑与认证流程共覆盖 140+ 自动化测试。
+## 信任与隐私设计
+
+比邻将私有会话所有权与公开分享分离，分享视图不会暴露账号标识。BYOK 凭证限定在鉴权后的操作中，使用 AES-256-GCM 加密存储，界面仅显示掩码信息。记忆更新采用软删除，图谱阶段具备幂等性，重算由事务锚定，以保留用户修订。
+
+这些选择格外重要，因为生涯伙伴天然涉及高度个人化的上下文。产品必须能够回答：它知道什么、从哪里得知，以及用户如何纠正。
+
+## 当前边界
+
+比邻源自腾讯 AI-HR 实战营，目前是停止维护的功能原型。仓库呈现了面向生产的基础能力与完整产品命题，但本页面不宣称已经验证用户结果或仍在持续维护。用户侧品牌已经统一为 Accompany／比邻，历史内部标识则仍保留在存储与迁移代码中。
 
 </section>

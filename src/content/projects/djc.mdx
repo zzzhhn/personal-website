@@ -2,27 +2,27 @@
 title: "DJC Web Controller"
 titleZh: "DJC 网页 DJ 控制器"
 slug: "djc"
-tagline: "A browser-native dual-deck DJ controller with hardware-inspired controls and Safari-aware Web Audio"
-taglineZh: "融合硬件操控逻辑与 Safari 兼容音频链路的浏览器原生双 Deck DJ 控制器"
-description: "A high-fidelity RX3/FLX4-style web DJ controller with dual decks, jog and pad interaction, keyboard performance controls, tempo processing, recording fallbacks, realistic backspin physics, controller skins, and optional in-browser Demucs stem separation."
-descriptionZh: "高拟真 RX3／FLX4 风格网页 DJ 控制器，涵盖双 Deck、Jog 与 Pad 交互、键盘演奏控制、Tempo 处理、录音降级策略、自然 Backspin 动力学、多套控制器皮肤，以及可选的浏览器内 Demucs 音轨分离。"
+tagline: "A browser-native DJ workstation engineered around real audio, performance, and input constraints"
+taglineZh: "围绕真实音频、性能与输入约束打造的浏览器原生 DJ 工作台"
+description: "An end-to-end dual-deck DJ workstation built on the Web Audio API, combining hardware-inspired control, local library analysis, beat-aware synchronization, key lock, backspin physics, recording fallbacks, persistent customization, and optional in-browser stem separation."
+descriptionZh: "基于 Web Audio API 的端到端双 Deck DJ 工作台，融合硬件式操控、本地曲库分析、Beat-aware 同步、Key Lock、Backspin 动力学、录音降级、持久化定制与可选浏览器内音轨分离。"
 date: 2026-07-01
 maturity: "stable-release"
 maintenance: "actively-maintained"
 featured: true
-techStack: ["TypeScript", "Web Audio", "Web Workers", "Vite", "Vitest", "WebKit"]
+techStack: ["TypeScript", "Web Audio API", "Web Workers", "AudioWorklet", "IndexedDB", "Vite", "Vitest"]
 highlights:
-  - "Dual-deck controller with interactive jog wheels, performance pads, mixer, Beat FX, waveforms, stem EQ, RX3/FLX4 layouts, and four persisted material skins"
-  - "Physical-key controls use KeyboardEvent.code with IME guards, held-key fader/trim operation, SHIFT latch behavior, an on-page shortcut strip, and a bilingual guidebook"
-  - "Tempo processing uses complementary crossfades and depth smoothing; BPM analysis runs in a Web Worker while dirty-checked render loops avoid unnecessary canvas and LED redraws"
-  - "Safari-aware recording selects a supported WebM or MP4/AAC container at runtime, while output, vibration, and sink APIs are capability-guarded"
-  - "Backspin physics use smoothed throw velocity, stale-input decay, a calibrated inertia curve, sensitivity controls, and seamless handback to normal playback"
+  - "Built the complete browser workflow rather than a visual replica: dual decks, jog wheels, mixer, pads, Beat FX, waveforms, local library, recording, and persisted controller layouts"
+  - "Implemented BPM, key, energy, phrase, peak, and beat-grid analysis in a Worker, then used first-beat offsets and phase nudging for beat-aware synchronization"
+  - "Recreated hardware-style input through positional keyboard mapping, IME guards, held-key controls, SHIFT layers, remapping, macros, conflict detection, and blur-safe cleanup"
+  - "Engineered key lock, backspin inertia, waveform rendering, capability-aware recording, and output routing around browser and WebKit constraints"
+  - "Protected main-thread performance with cached geometry, transferable analysis buffers, dirty-checked drawing, idle-aware render loops, and opt-in Demucs WebGPU/WASM stems"
 highlightsZh:
-  - "双 Deck 控制器集成交互式 Jog Wheel、Performance Pad、Mixer、Beat FX、Waveform、Stem EQ、RX3／FLX4 布局与四套可持久化材质皮肤"
-  - "实体键位控制采用 KeyboardEvent.code，并处理 IME、按住调节 Fader／Trim、SHIFT 锁存、页面快捷键提示条及双语 Guidebook"
-  - "Tempo 处理采用互补 Crossfade 与 Depth 平滑；BPM 分析迁移至 Web Worker，渲染循环通过 dirty check 避免无效 Canvas 与 LED 重绘"
-  - "Safari 录音链路运行时选择受支持的 WebM 或 MP4／AAC 容器，并对 output、vibration、sink 等浏览器能力实施显式守卫"
-  - "Backspin 采用平滑抛掷速度、陈旧输入衰减、经校准的惯性曲线与灵敏度控制，实现自然减速并无缝回归正常播放"
+  - "交付完整浏览器工作流而非视觉仿制：双 Deck、Jog Wheel、Mixer、Performance Pad、Beat FX、Waveform、本地曲库、录音与可持久化控制器布局"
+  - "在 Worker 中完成 BPM、调性、能量、Phrase、Peak 与 Beat Grid 分析，并以 First-beat Offset 和 Phase Nudge 实现 Beat-aware 同步"
+  - "通过物理键位映射、IME 守卫、按住连续控制、SHIFT Layer、重映射、Macro、冲突检测与 Blur 清理重构硬件式输入体验"
+  - "围绕浏览器与 WebKit 约束实现 Key Lock、Backspin 惯性、Waveform Rendering、能力感知录音与输出路由"
+  - "以几何缓存、可转移分析 Buffer、Dirty-check 绘制、Idle-aware Render Loop 与按需加载的 Demucs WebGPU／WASM Stems 控制主线程成本"
 links:
   live: "https://djc.bobbyzhong.com"
 thumbnail: "/projects/djc.webp"
@@ -31,54 +31,74 @@ order: 4
 
 <section data-lang="en">
 
-## Background
+## Product thesis
 
-DJC is a browser-native reconstruction of the physical workflow of a modern dual-deck DJ controller. The goal is not to draw a static replica: the jog wheels, mixer, pads, waveforms, effects, recording path, keyboard layer, and library controls are connected to an actual Web Audio engine.
+A convincing web DJ product cannot stop at recreating the faceplate of a controller. The controls must drive a real audio graph, imported tracks must survive a later session, keyboard input must feel performable, and the system must degrade honestly when browser capabilities differ from native DJ software.
 
-## Controller Experience
+DJC is my end-to-end exploration of that product problem. It brings the dual-deck workflow into the browser while treating audio timing, interaction fidelity, storage, performance, and WebKit compatibility as first-class constraints.
 
-- Switchable RX3 and FLX4 layouts with interactive jog wheels, transport, cue/loop controls, performance pads, mixer channels, Beat FX, and live waveform feedback
-- Four persisted material skins — Carbon, Silver, Noir, and Midnight — that recolor the plate and legends while preserving control semantics
-- Keyboard performance mapping for both decks, continuous fader and trim movement, SHIFT secondary functions, remapping, conflict detection, and an always-available shortcut overlay
-- Optional HQ stem separation through Demucs Web, plus independent stem EQ controls for both decks
+## What I owned
 
-## Audio and Performance
+- **Controller product:** built switchable RX3- and FLX4-inspired layouts with decks, jogs, transport, cue/loop, performance pads, mixer channels, crossfader, Beat FX, waveforms, and persisted material skins.
+- **Audio engine:** implemented deck playback, tempo control, beat synchronization, key lock, effects, master/phones buses, recording, backspin, and optional stem processing on the Web Audio API.
+- **Library workflow:** added local import, IndexedDB persistence, BPM/key/energy/beat-grid analysis, demo banks, and explainable Mix Order suggestions.
+- **Performance input:** designed positional keyboard controls, continuous fader/trim operation, SHIFT layers, remapping, macros, conflict detection, and a bilingual guidebook.
 
-The audio path is designed around browser constraints rather than assuming native DJ software APIs. Tempo changes use a complementary crossfade window with overlap and smoothed depth changes to reduce modulation artifacts. BPM analysis is moved to a Web Worker, while gesture bounds are cached and canvas/LED rendering is dirty-checked to reduce main-thread work.
+## Audio intelligence and performance fidelity
 
-Recording selects the first supported container at runtime instead of assuming WebM/Opus, which keeps export functional across Safari and Chromium. Browser-specific APIs such as output latency, vibration, and output-device selection are guarded before use.
+A Web Worker analyses peaks, frequency bands, BPM, musical key, energy, phrases, and beat grids without blocking the main interaction loop. Synchronization accounts for first-beat offset and supports phase correction rather than relying only on matching displayed BPM values.
 
-## Interaction Fidelity
+Key Lock uses an AudioWorklet path with a granular fallback. Backspin models release velocity, stale-input decay, throw thresholds, bounded speed, and exponential slowdown before handing control back to normal playback. These details make the interface behave like an instrument rather than a collection of buttons.
 
-The backspin model uses smoothed release velocity, stale-input decay, a minimum throw threshold, bounded velocity, and a calibrated exponential slowdown. This produces a natural ramp into reverse motion and a smooth handback to normal playback instead of an instant reverse kick.
+## Engineering around browser constraints
 
-Physical keyboard mapping is based on `KeyboardEvent.code`, so shortcuts follow key position across Shift and input methods. Composition events are ignored, full-width punctuation edge cases are covered, and continuous controls remain usable without requiring MIDI hardware.
+Recording does not assume one universal codec. The master recorder queries `MediaRecorder.isTypeSupported` and selects an available WebM or MP4/AAC path at runtime. Output-device selection, latency hints, vibration, autoplay, and other browser-specific APIs are capability-guarded instead of treated as guaranteed.
+
+The rendering system caches interaction geometry, transfers analysis buffers out of the main thread, redraws waveform and LED surfaces only when state changes, stops animation work while idle, and suspends audio activity when the document is hidden. Optional HQ stem separation is explicit opt-in because the Demucs model is large; it uses WebGPU or WASM with Cache Storage rather than hiding the download cost.
+
+## Product decisions beyond the deck
+
+Imported music is user data, so tracks and analysis metadata are persisted rather than silently reset during iteration. Mix Order recommendations explain transitions using BPM, key, and energy. Controller skins and keyboard maps preserve semantic controls while allowing personalization. Each of these decisions extends DJC from an interaction demo into a reusable creative workflow.
+
+## Current scope
+
+DJC is an actively maintained stable release backed by automated tests, but it remains browser software. Feature availability depends on runtime capabilities, and this portfolio does not claim native-driver latency, universal device support, or professional-club certification.
 
 </section>
 
 <section data-lang="zh">
 
-## 项目背景
+## 产品命题
 
-DJC 是在浏览器中对现代双 Deck DJ 控制器真实工作流的重构。它并非一张静态硬件仿制图：Jog Wheel、Mixer、Performance Pad、Waveform、效果器、录音链路、键盘控制层与曲库操作均连接至实际运行的 Web Audio Engine。
+一个可信的网页 DJ 产品不能止步于复刻控制器面板。控件必须驱动真实 Audio Graph，导入曲目需要跨会话保留，键盘输入必须具备演奏感，而当浏览器能力不同于原生 DJ 软件时，系统也应当诚实降级。
 
-## 控制器体验
+DJC 是我对这一产品问题的端到端探索。它把双 Deck 工作流带入浏览器，并将音频时序、交互拟真、数据存储、性能与 WebKit 兼容性视为一等约束。
 
-- 可切换 RX3 与 FLX4 布局，并提供可交互 Jog Wheel、Transport、Cue／Loop、Performance Pad、Mixer Channel、Beat FX 与实时 Waveform 反馈
-- 内置 Carbon、Silver、Noir 与 Midnight 四套可持久化材质皮肤，在保持控制语义一致的同时重塑面板与印刷标识
-- 支持双 Deck 键盘演奏映射、连续 Fader／Trim 调节、SHIFT 第二功能、按键重映射、冲突检测与随时可打开的快捷键图
-- 可选 Demucs Web HQ Stem Separation，并为两个 Deck 提供独立 Stem EQ 控制
+## 我的核心职责
 
-## 音频与性能
+- **控制器产品：** 构建可切换的 RX3／FLX4 风格布局，覆盖 Deck、Jog、Transport、Cue／Loop、Performance Pad、Mixer Channel、Crossfader、Beat FX、Waveform 与可持久化材质皮肤。
+- **音频引擎：** 基于 Web Audio API 实现 Deck Playback、Tempo、Beat Sync、Key Lock、效果器、Master／Phones Bus、录音、Backspin 与可选 Stem Processing。
+- **曲库工作流：** 加入本地导入、IndexedDB 持久化、BPM／Key／Energy／Beat Grid 分析、Demo Bank 与可解释的 Mix Order 建议。
+- **演奏输入：** 设计物理键位控制、连续 Fader／Trim、SHIFT Layer、按键重映射、Macro、冲突检测与双语 Guidebook。
 
-音频链路从浏览器约束出发，而非假设存在原生 DJ 软件 API。Tempo 变化采用带重叠窗口的互补 Crossfade，并对 Depth 变化进行平滑处理，以降低调制伪影。BPM 分析迁移至 Web Worker；手势边界采用缓存，Canvas 与 LED 渲染通过 dirty check 减少主线程无效工作。
+## 音频智能与演奏拟真
 
-录音时不再固定假设 WebM／Opus，而是在运行时选择浏览器支持的第一个容器，因此 Safari 与 Chromium 均可正常导出。`outputLatency`、`navigator.vibrate` 与输出设备选择等浏览器专属能力均在调用前进行显式检查。
+Web Worker 在不阻塞主交互线程的前提下分析 Peak、频段、BPM、Musical Key、Energy、Phrase 与 Beat Grid。同步逻辑会考虑 First-beat Offset 并支持 Phase Correction，而不是仅让界面上的 BPM 数字相同。
 
-## 交互拟真度
+Key Lock 提供 AudioWorklet 路径与 Granular Fallback。Backspin 综合释放速度、陈旧输入衰减、抛掷阈值、速度上限和指数减速，最后平顺交还正常播放。这些细节让界面更接近一件乐器，而不是一组按钮。
 
-Backspin 模型综合平滑后的释放速度、陈旧输入衰减、最小抛掷阈值、速度上限与经校准的指数减速曲线，使反向运动自然建立，并平顺交还给正常播放，而不是瞬间触发突兀的反转。
+## 围绕浏览器约束做工程
 
-实体键盘映射基于 `KeyboardEvent.code`，让快捷键在 Shift 状态与不同输入法下仍遵循物理键位。系统会忽略输入法组合事件，并覆盖全角标点等边界情况；无需 MIDI 硬件，也能连续操控关键参数。
+录音链路不会假设所有浏览器都支持同一种 Codec。Master Recorder 通过 `MediaRecorder.isTypeSupported` 在运行时选择可用的 WebM 或 MP4／AAC 路径。输出设备、延迟提示、震动、Autoplay 等浏览器专属 API 均经过 Capability Guard，而非被视作必然存在。
+
+渲染系统缓存交互几何，将分析 Buffer 转移出主线程，仅在状态变化时重绘 Waveform 与 LED，并在空闲时停止动画、页面隐藏时暂停音频活动。HQ Stem Separation 采用显式按需加载，因为 Demucs Model 体积较大；它通过 WebGPU 或 WASM 运行并使用 Cache Storage，不掩盖实际下载成本。
+
+## Deck 之外的产品决策
+
+导入音乐属于用户数据，因此曲目与分析元数据会持久化，而不是在版本迭代中被静默清空。Mix Order 会用 BPM、调性与能量解释转场建议。控制器皮肤与键盘映射允许个性化，同时保持控制语义不变。这些决策共同让 DJC 从交互 Demo 成为可重复使用的创作工作流。
+
+## 当前边界
+
+DJC 是持续维护、具备自动化测试支撑的稳定版本，但仍然属于浏览器软件。功能可用性取决于运行时能力，本页面不宣称具备原生驱动延迟、覆盖所有设备或达到专业 Club Certification。
 
 </section>

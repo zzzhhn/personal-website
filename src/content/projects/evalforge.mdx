@@ -2,30 +2,30 @@
 title: "EvalForge"
 titleZh: "EvalForge 视频模型评测平台"
 slug: "evalforge"
-tagline: "Structured human evaluation platform for video generation models"
-taglineZh: "面向视频生成模型的结构化人工评测平台"
-description: "Full-stack evaluation platform with multi-dimension scoring, anti-cheat enforcement, configurable admin settings, and real-time analytics — built for production annotation workflows."
-descriptionZh: "服务生产级标注工作流的全栈评测平台，提供多维度评分、反作弊约束、可配置管理策略与实时分析能力。"
+tagline: "An operational layer for trustworthy human evaluation of generative video"
+taglineZh: "把主观视频判断转化为可信、可复核、可运营的评测流程"
+description: "A self-hosted human-evaluation platform for generative video, connecting annotation workstations, configurable integrity controls, role-based access control, Arena ratings, audit trails, and decision-ready reports in one reviewable workflow."
+descriptionZh: "面向生成式视频的自托管人工评测平台，将标注工作台、可配置数据质量控制、基于角色的访问控制、Arena 评级、审计链路与决策报告整合为一套可复核流程。"
 date: 2025-10-01
 endDate: 2026-04-01
 maturity: "functional-prototype"
 maintenance: "actively-maintained"
 featured: true
-techStack: ["Next.js 16", "React 19", "TypeScript", "Prisma 7", "Neon PostgreSQL", "Tailwind CSS 4", "Vercel"]
+techStack: ["Next.js 16", "React 19", "TypeScript", "Prisma 7", "PostgreSQL", "RBAC", "Glicko-2"]
 highlights:
-  - "Multi-dimension Likert scoring with failure tags, keyboard shortcuts, and session persistence"
-  - "Configurable anti-cheat system: watch ratio, dwell time, frequency caps, fixed-value and low-variance detection"
-  - "Admin dashboard with annotator analytics, XLSX export, sample browser, and real-time aggregation"
-  - "Role-based access (admin / internal / vendor) with model name visibility controls per account type"
-  - "OKLch color theme with dark/light mode and bilingual (zh/en) interface throughout"
+  - "Designed the end-to-end operating model for video evaluation: package setup, assignment, keyboard-first scoring, integrity review, aggregation, comparison, and export"
+  - "Combined watch-ratio and dwell-time gates with fixed-value, low-variance, and frequency signals; suspicious scores remain reviewable instead of being silently discarded"
+  - "Built model- and dataset-level Arena evaluation with snapshot-consistent Glicko-2 updates, plus VALID-only aggregation and editable XLSX/DOCX reporting"
+  - "Implemented multi-role RBAC, JWT httpOnly authentication, idempotent recomputation, transactional updates, audit events, and request-context correlation"
+  - "Separated the public, provider-neutral product from confidential generation infrastructure and private taxonomies"
 highlightsZh:
-  - "多维度 Likert 评分体系，配套失败标签、键盘快捷键与会话进度持久化"
-  - "可配置反作弊系统覆盖观看比例、停留时长、提交频率上限、固定值与低方差检测"
-  - "管理后台集成标注员分析、XLSX 导出、样本浏览与实时聚合"
-  - "基于角色的访问控制覆盖 admin、internal 与 vendor，并可按账号类型控制模型名称可见性"
-  - "采用 OKLch 色彩体系，完整支持深浅色模式与中英文界面"
+  - "设计视频评测的端到端运营模型，贯通评测包配置、任务分配、键盘优先评分、完整性复核、数据聚合、模型对比与结果导出"
+  - "将观看比例与停留时长门控，同固定值、低方差和提交频率信号结合；可疑分数保留进入复核，而非被静默丢弃"
+  - "构建模型级与数据集级 Arena 评测，采用快照一致的 Glicko-2 更新，并提供仅基于 VALID 数据的聚合及可编辑 XLSX／DOCX 报告"
+  - "实现多角色 RBAC、JWT httpOnly 认证、幂等重算、事务更新、审计事件与请求上下文关联"
+  - "将公开、服务商中立的产品能力，与机密生成基础设施及私有评测体系明确隔离"
 links:
-  github: "https://github.com/zzzhhn/evalforge"
+  github: "https://github.com/zzzhhn/evalforge-dashboard"
   live: "https://evaluation.bobbyzhong.com"
 thumbnail: "/projects/evalforge.webp"
 thumbnailDark: "/projects/evalforge.webp"
@@ -35,152 +35,66 @@ order: 2
 
 <section data-lang="en">
 
-Human evaluation remains the gold standard for assessing video generation quality — automated metrics miss nuances in motion realism, aesthetic coherence, and creative intent. EvalForge is a production-grade platform that structures the entire annotation workflow: admins create evaluation packages, assign items to annotators, and monitor quality through real-time analytics and anti-cheat signals.
+## Product thesis
 
-## Platform Architecture
+Automated metrics can assist video-model evaluation, but they do not replace human judgment on motion realism, visual coherence, instruction fidelity, or creative intent. The product challenge is therefore operational: how do you scale subjective review without losing data integrity, reviewer accountability, or the evidence behind a model decision?
 
-<div className="eval-pipeline">
-  <div className="eval-stage">
-    <div className="eval-stage-num">Layer 1</div>
-    <div className="eval-stage-name">Workstation</div>
-    <div className="eval-stage-detail">Video player · multi-dimension scoring · failure tags · keyboard navigation</div>
-  </div>
-  <div className="eval-stage">
-    <div className="eval-stage-num">Layer 2</div>
-    <div className="eval-stage-name">Anti-Cheat</div>
-    <div className="eval-stage-detail">Watch ratio · dwell time · frequency cap · pattern detection</div>
-  </div>
-  <div className="eval-stage">
-    <div className="eval-stage-num">Layer 3</div>
-    <div className="eval-stage-name">Admin</div>
-    <div className="eval-stage-detail">Annotator management · sample browser · settings · XLSX export</div>
-  </div>
-  <div className="eval-stage">
-    <div className="eval-stage-num">Layer 4</div>
-    <div className="eval-stage-name">Analytics</div>
-    <div className="eval-stage-detail">Score aggregation · model comparison · dimension-level breakdown</div>
-  </div>
-</div>
+EvalForge turns that challenge into a controlled workflow. It is a self-hosted, provider-neutral platform where evaluation setup, annotation, integrity review, model comparison, and reporting share one data model rather than living across spreadsheets and disconnected scripts.
+
+## What I owned
+
+- **Evaluation operations:** designed the flow from packages and assignments to workstation scoring, quality review, analytics, Arena comparison, and export.
+- **Annotation experience:** built keyboard-driven multi-dimensional Likert scoring, structured failure tags, prompt snapshots, repeat sampling, session continuity, and configurable watch-progress requirements.
+- **Data-integrity policy:** translated reviewer behavior into explicit, tunable rules while preserving suspicious records for human review and maintaining a recoverable audit trail.
+- **Platform governance:** implemented multi-role Role-Based Access Control (RBAC), permission overrides, JWT httpOnly authentication, audit events, and request-context correlation.
+
+## Trustworthy data, not just faster labeling
+
+Scores of 1 or 2 require a structured failure reason before persistence. Watch ratio, duration-adjusted dwell time, hourly frequency, dominant-value patterns, and low variance provide complementary integrity signals. The live submission path and the recomputation path share the same classification logic, and administrator-confirmed invalid records are not overwritten by a later batch run.
+
+This design separates three outcomes that are often conflated: a submission can be blocked for missing mandatory evidence, recorded as suspicious for review, or retained as valid. That distinction protects both throughput and explainability.
+
+## Decision layer
+
+EvalForge supports standard score aggregation as well as Arena evaluation between models or datasets. Ratings are updated in bounded, snapshot-consistent Glicko-2 batches, while reporting uses valid scores and preserved prompt or contestant context. Administrators can move from item-level evidence to dimension-level comparison, then export editable XLSX or DOCX outputs for further review.
+
+The system also includes sample browsing, evaluation taxonomy management, storage integration, and bilingual administrative workflows. These are not isolated features; together they form an operating layer for running and auditing evaluation programs.
+
+## Current scope and public-product boundary
+
+The public repository deliberately excludes private generation workers, provider-specific orchestration, internal deployment history, credentials, and confidential scoring taxonomies. EvalForge remains an actively maintained functional prototype: its architecture is production-oriented, but this portfolio does not claim external adoption, live annotation volume, or independently audited security.
 
 </section>
 
 <section data-lang="zh">
 
-人工评测仍是判断视频生成质量的黄金标准。自动化指标往往无法捕捉运动真实性、审美一致性与创作意图等细微差异。EvalForge 以生产级平台重构完整标注工作流：管理员创建评测包、分配待评条目，并通过实时分析与反作弊信号持续监控数据质量。
+## 产品命题
 
-## 平台架构
+自动化指标可以辅助视频模型评测，却无法替代人类对运动真实性、画面一致性、指令遵循与创作意图的判断。真正的产品难题因此不是“能否打分”，而是如何在扩大主观评审规模时，仍然保留数据质量、评审责任与模型决策背后的证据。
 
-<div className="eval-pipeline">
-  <div className="eval-stage">
-    <div className="eval-stage-num">第一层</div>
-    <div className="eval-stage-name">标注工作台</div>
-    <div className="eval-stage-detail">视频播放器 · 多维度评分 · 失败标签 · 键盘导航</div>
-  </div>
-  <div className="eval-stage">
-    <div className="eval-stage-num">第二层</div>
-    <div className="eval-stage-name">反作弊</div>
-    <div className="eval-stage-detail">观看比例 · 停留时长 · 频率上限 · 模式检测</div>
-  </div>
-  <div className="eval-stage">
-    <div className="eval-stage-num">第三层</div>
-    <div className="eval-stage-name">管理后台</div>
-    <div className="eval-stage-detail">标注员管理 · 样本浏览 · 系统设置 · XLSX 导出</div>
-  </div>
-  <div className="eval-stage">
-    <div className="eval-stage-num">第四层</div>
-    <div className="eval-stage-name">数据分析</div>
-    <div className="eval-stage-detail">分数聚合 · 模型对比 · 维度级拆解</div>
-  </div>
-</div>
+EvalForge 将这一难题转化为受控工作流。它是一套自托管、服务商中立的平台，让评测配置、人工标注、完整性复核、模型对比与报告共享同一套数据模型，不再散落于表格和彼此割裂的脚本之中。
 
-## 标注员工作台
+## 我的核心职责
 
-评分界面同时服务操作效率与数据质量。标注员观看视频后，在多个可配置维度上使用 1 至 5 分 Likert Scale 评分。若给出 1 至 2 分，系统要求至少选择一个失败标签，使低分同时具备结构化原因。
+- **评测运营体系：** 设计从评测包、任务分配到工作台评分、质量复核、分析、Arena 对比与导出的完整流程。
+- **标注员体验：** 构建键盘优先的多维 Likert 评分、结构化失败标签、Prompt Snapshot、重复抽样、会话连续性与可配置观看进度要求。
+- **数据质量策略：** 将标注行为转化为明确、可调的规则，同时保留可疑记录供人工复核，并维持可恢复的审计链路。
+- **平台治理：** 实现多角色 Role-Based Access Control（RBAC）、权限覆盖、JWT httpOnly 认证、审计事件与请求上下文关联。
 
-- **键盘优先**：数字键 1 至 5 评分，Space 控制播放／暂停，方向键导航，Enter 提交
-- **会话持久化**：观看进度保存至 sessionStorage，刷新页面后仍可延续未完成的视频
-- **观看比例校验**：进度条实时显示已观看比例，未达到配置阈值时禁止提交
-- **可调整布局**：侧边栏支持拖拽宽度，并集中展示维度筛选与条目数量
+## 追求可信数据，而不只是更快标注
 
-## 反作弊系统
+当评分为 1 或 2 时，系统要求先提交结构化失败原因。观看比例、按视频时长调整的停留时间、小时级频率、单一分值主导与低方差模式共同构成完整性信号。在线提交与批量重算复用同一套分类逻辑，管理员已经确认的无效记录也不会被后续任务意外覆盖。
 
-每次提交都会经过多层完整性检查，且所有阈值均可由管理员配置：
+这一设计明确区分了三类结果：缺少必要证据时阻止提交，行为异常时保留并标记为可疑，满足规则时记录为有效。由此兼顾标注效率与结果可解释性。
 
-- **最低观看比例**：提交前必须观看达到配置比例的视频内容
-- **最短停留时长**：以固定下限叠加视频时长乘数，阻止瞬时提交
-- **频率上限**：限制每小时提交数量，拦截自动化或敷衍式批量评分
-- **固定值检测**：识别近期评分被单一数值高度主导的标注员，例如连续给出 3 分
-- **低方差检测**：在近期滑动窗口中识别异常偏低的评分标准差
+## 决策支持层
 
-可疑分数会被标记但仍然保留，由管理员复核整体行为模式，而非直接阻断标注员。
+EvalForge 同时支持常规分数聚合，以及模型或数据集之间的 Arena 评测。Rating 通过有迭代上限、快照一致的 Glicko-2 Batch 更新；报告仅使用有效评分，并保留 Prompt 与 Contestant 上下文。管理者可以从单条证据下钻至维度级对比，再导出可继续编辑的 XLSX 或 DOCX 报告。
 
-## 管理后台
+样本浏览、评测维度管理、存储接入与双语后台并非孤立功能，而是共同组成一套用于运行和审计评测项目的运营基础设施。
 
-- **标注员详情**：查看用户级评分分布、完成率与反作弊事件，并导出支持中文字体的 XLSX
-- **样本浏览器**：按评测包浏览视频素材，并以父维度 › 子维度层级查看评分结构
-- **设置面板**：通过 Slider 实时调整反作弊阈值，并按账号类型控制模型名称可见性
-- **分析面板**：仅使用 VALID 分数，完成条目级、维度级与模型级聚合
+## 当前边界与公开产品范围
 
-## 技术栈
-
-平台基于 **Next.js 16** App Router 与 React 19 Server Components 构建。数据层使用 **Prisma 7**，通过 `@prisma/adapter-pg` Driver Adapter 连接 **Neon PostgreSQL** Serverless 数据库；认证路由采用新的 `proxy()` 约定替代已弃用的 middleware。设计系统使用 **Tailwind CSS 4** 与 OKLch 色彩空间，在 Warm Ivory 浅色主题和 Deep Indigo 深色主题之间切换，并完整支持中英文。
-
-<div style={{ marginTop: "2rem", textAlign: "center" }}>
-  <a
-    href="https://evaluation.bobbyzhong.com"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="eval-live-link"
-  >
-    在线体验平台 →
-  </a>
-</div>
-
-</section>
-
-<section data-lang="en">
-
-## Annotator Workstation
-
-The scoring interface is designed for efficiency and data quality. Annotators watch a video, then rate it across multiple configurable dimensions on a 1–5 Likert scale. Scores of 1–2 require selecting at least one failure tag — providing structured reasons alongside the rating.
-
-- **Keyboard-driven** — Number keys (1–5) for scoring, Space for play/pause, Arrow keys for navigation, Enter to submit
-- **Session persistence** — Watch progress saved to sessionStorage so partially-watched videos survive page refreshes
-- **Watch ratio validation** — A progress bar shows how much of the video has been watched; submission is blocked until the configured threshold is met
-- **Resizable layout** — Draggable sidebar with dimension filters and item counts
-
-## Anti-Cheat System
-
-Every submission passes through a multi-layer integrity pipeline, all with admin-configurable thresholds:
-
-- **Minimum watch ratio** — Annotators must watch a configurable percentage of the video before submitting
-- **Minimum dwell time** — Floor + multiplier based on video duration prevents instant submissions
-- **Frequency cap** — Hourly submission limit blocks automated or careless bulk-scoring
-- **Fixed-value detection** — Flags annotators whose recent scores are dominated by a single value (e.g., all 3s)
-- **Low-variance detection** — Flags abnormally low standard deviation across a sliding window of recent scores
-
-Suspicious scores are marked but still recorded — admins review flagged patterns rather than blocking annotators outright.
-
-## Admin Dashboard
-
-- **Annotator detail** — Per-user score distributions, completion rates, anti-cheat events, and XLSX export with Chinese font support
-- **Sample browser** — Browse evaluation packages, view video assets with dimension hierarchy (parent › child)
-- **Settings panel** — Live-tunable anti-cheat thresholds via slider controls, plus display toggles (hide model names per account type)
-- **Analytics** — Item-level, dimension-level, and model-level score aggregation using only VALID scores
-
-## Technical Stack
-
-Built on **Next.js 16** App Router with React 19 Server Components. Data layer uses **Prisma 7** with the `@prisma/adapter-pg` driver adapter connecting to **Neon PostgreSQL** (serverless). The `proxy()` convention replaces deprecated middleware for auth routing. The design system uses **Tailwind CSS 4** with OKLch color space theming (warm Ivory light + Deep Indigo dark) and full bilingual (Chinese/English) support.
-
-<div style={{ marginTop: "2rem", textAlign: "center" }}>
-  <a
-    href="https://evaluation.bobbyzhong.com"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="eval-live-link"
-  >
-    View Live Platform →
-  </a>
-</div>
+公开仓库明确排除了私有生成 Worker、服务商专属编排、内部部署历史、凭证与机密评分体系。EvalForge 目前仍是持续维护中的功能原型，其架构具备面向生产的设计取向，但本页面不宣称外部采用规模、实时标注量或经过独立审计的安全性。
 
 </section>

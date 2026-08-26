@@ -70,8 +70,8 @@ export default function ProjectModalContent({ project, onClose }: Props) {
               marginBottom: "0.75rem",
             }}
           >
-            <span data-lang="en">Highlights</span>
-            <span data-lang="zh">项目亮点</span>
+            <span data-lang="en">Product &amp; engineering highlights</span>
+            <span data-lang="zh">产品与工程亮点</span>
           </h3>
           <ul style={{ listStyle: "none", padding: 0, display: "flex", flexDirection: "column", gap: "0.5rem" }}>
             {project.highlights.map((h, i) => (

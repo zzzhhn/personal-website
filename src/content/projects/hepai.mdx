@@ -2,25 +2,27 @@
 title: "合拍 Hepai"
 titleZh: "合拍 Hepai"
 slug: "hepai"
-tagline: "The song-selection brain that seamless auto-DJ mixing has been missing"
-taglineZh: "为无缝 Auto-DJ 补上真正懂衔接的选曲大脑"
-description: "Tencent Music AI Hackathon entry: audio analysis (BPM, Camelot key, energy) ranks mix-compatible songs, then a beat-aligned engine chains them into a seamless auto-DJ stream — designed as a QQ Music add-on."
-descriptionZh: "腾讯音乐 AI Hackathon 参赛作品：基于 BPM、Camelot 调性与能量分析为候选曲目评估混音兼容度，再由节拍对齐引擎串联为无缝 Auto-DJ 播放流，产品形态面向 QQ 音乐插件场景。"
+tagline: "Explainable music recommendation that selects and sequences tracks for mix-ready continuity"
+taglineZh: "以可解释的音乐推荐完成选曲与编排，让连续播放真正具备可混音性"
+description: "A Tencent Music AI Hackathon case study that bridges recommendation and Automix: music-information-retrieval features score harmonic, tempo, energy, and style compatibility, while a browser-native dual-deck engine performs cue-aware transitions."
+descriptionZh: "腾讯音乐 AI Hackathon 产品案例，连接“推荐什么”与“如何衔接”：以音乐信息检索特征评估和声、速度、能量与风格兼容性，再由浏览器原生双 Deck 引擎执行 Cue-aware 转场。"
 date: 2026-06-01
 maturity: "completed-case-study"
 maintenance: "completed"
 featured: false
-techStack: ["Python", "FastAPI", "librosa", "JavaScript", "Web Audio"]
+techStack: ["Python", "FastAPI", "librosa", "Music Information Retrieval", "JavaScript", "Web Audio API"]
 highlights:
-  - "Audio feature analysis with librosa: BPM detection, Camelot-wheel key compatibility, and energy profiling per track"
-  - "Top-5 mix-compatible recommendations for any seed song, scored by harmonic and tempo distance"
-  - "Crossfade engine that chains recommendations into a continuous auto-DJ stream, with 4 listening modes and a bass-swap DJ mode"
-  - "Live demo runs fully in the browser: the pairing engine ported to JS (41 golden cases byte-identical with the Python original) and a dual-deck Web Audio crossfade replacing server-side rendering"
+  - "Identified the product gap between song recommendation and Automix: a transition engine still needs an explainable decision about what should play next"
+  - "Built a music-information-retrieval pipeline for BPM, Camelot key, energy, spectral/style features, structural cues, and weighted mix-compatibility scoring"
+  - "Designed seed recommendations and playlist sequencing with harmonic/tempo continuity, style gates, energy modes, greedy next-track selection, and artist-run penalties"
+  - "Moved the public experience into a static browser runtime with dual-deck equal-power crossfades, cue-aware scheduling, and BiquadFilter bass-swap mode"
+  - "Protected cross-language consistency with 42 Python-to-JavaScript golden cases and shipped a licensing-conscious demo using 10 CC BY 4.0 tracks"
 highlightsZh:
-  - "使用 librosa 提取每首曲目的 BPM、Camelot Wheel 调性与能量轮廓"
-  - "围绕种子曲目输出 Top 5 混音兼容推荐，并综合和声关系与 Tempo 距离评分"
-  - "Crossfade 引擎将推荐结果串联为连续 Auto-DJ 播放流，提供四种聆听模式与 Bass Swap DJ 模式"
-  - "在线 Demo 完全运行于浏览器：选曲引擎移植至 JavaScript，并以 41 个 Golden Case 验证与 Python 原实现逐字节一致；双 Deck Web Audio Crossfade 取代服务端渲染"
+  - "识别传统歌曲推荐与 Automix 之间的产品缺口：转场引擎仍然需要回答“下一首为什么应该是它”"
+  - "构建音乐信息检索 Pipeline，覆盖 BPM、Camelot 调性、能量、频谱／风格特征、结构 Cue 与加权混音兼容度"
+  - "围绕和声与速度连续性、风格门控、能量模式、贪心选曲与连续歌手惩罚，设计种子推荐及 Playlist Sequencing"
+  - "将公开体验迁移至静态浏览器 Runtime，以双 Deck Equal-power Crossfade、Cue-aware 调度与 BiquadFilter Bass Swap 完成转场"
+  - "以 42 个 Python-to-JavaScript Golden Case 保护跨语言一致性，并使用 10 首 CC BY 4.0 曲目交付版权边界清晰的 Demo"
 links:
   live: "https://hepai.bobbyzhong.com"
 thumbnail: "/projects/hepai.webp"
@@ -29,46 +31,66 @@ order: 4
 
 <section data-lang="en">
 
-## Background
+## Product thesis
 
-Entry for the Tencent Music AI Hackathon 2026 ("Build for Music+", Track B). QQ Music's Automix can crossfade between songs, but it has no opinion about *which* song should come next — 合拍 is the song-selection brain: it analyzes what makes two tracks mixable and picks the next song the way a DJ would.
+Recommendation systems decide what a listener may like. Automix systems decide how two already-chosen tracks should overlap. The missing product layer is the decision between them: which next track is musically compatible enough to mix, and how can that recommendation be explained?
 
-## How It Works
+Hepai was built for the Tencent Music AI Hackathon around that gap. It treats mixability as a ranking and sequencing problem, then connects the result to a browser-native transition engine. The concept is relevant to a QQ Music-style listening experience, but the current product is an independent case study rather than an implemented QQ Music integration.
 
-1. **Analysis** — librosa extracts BPM, musical key (mapped onto the Camelot wheel), and an energy profile for every track in the library
-2. **Matching** — given a seed song, candidates are scored by harmonic compatibility (adjacent Camelot positions), tempo distance, and energy continuity; the Top-5 are surfaced as mix candidates
-3. **Mixing** — a beat-aligned crossfade engine schedules the transition on beat boundaries, so consecutive tracks blend like a live DJ set rather than a hard fade
-4. **Modes** — four listening modes trade off energy arc and variety (steady groove vs. build-up sets)
+## What I owned
 
-## Engineering
+- **Product framing:** defined the value proposition around mix-ready continuity, not another generic similarity recommender.
+- **Music intelligence:** built feature extraction and scoring across tempo, harmonic key, energy, style, spectral character, and structural cues.
+- **Playlist strategy:** designed explainable seed recommendations and multi-track sequencing with mode-specific weights, compatibility gates, and repetition controls.
+- **Listening experience:** delivered a static Web Audio demo with dual decks, cue-aware transitions, equal-power crossfades, and a DJ-style bass-swap mode.
 
-Python + FastAPI backend for analysis and recommendation, vanilla JS front end. 53 Python tests cover feature extraction, Camelot compatibility scoring, and the transition scheduler. AI-generated cover art and an audio-quality iteration loop rounded out the MVP.
+## From audio analysis to next-track decision
 
-## Live Demo
+The Python pipeline uses `librosa` to estimate BPM, musical key mapped to the Camelot wheel, energy, onset and spectral features, and candidate transition points. Compatibility is not represented by one opaque similarity score. Harmonic distance, tempo distance, energy continuity, and style signals are weighted by listening mode, making the recommendation traceable to musical attributes.
 
-The public demo is a fully static build: the pairing and sequencing math is ported 1:1 to JavaScript (verified against the Python implementation with 41 golden test cases producing byte-identical output), and the mix itself plays through a dual-deck Web Audio pipeline — equal-power crossfades at precomputed cue points, plus a BiquadFilter bass-swap for DJ mode — instead of waiting on server-side rendering. The demo library uses Kevin MacLeod's CC-BY 4.0 catalog so the whole thing can live on the open web.
+For a seed track, Hepai ranks the strongest candidates. For a longer set, a greedy sequencer chooses the next compatible track while applying style gates and an artist-run penalty. Different modes alter the energy arc and tolerance for variety, allowing the same catalogue to support steady listening, running, driving, or a more expressive DJ sequence.
+
+## Browser-native delivery
+
+The public demo ports recommendation, sequencing, and mix-plan logic from Python to JavaScript. A cross-language golden harness currently covers 42 cases so the browser does not silently diverge from the reference implementation. Playback uses two Web Audio decks with equal-power fades at precomputed cues; DJ mode adds a BiquadFilter bass exchange without requiring server-side rendering.
+
+The static bundle includes 10 Kevin MacLeod tracks under CC BY 4.0 and explicitly excludes private or QQ Music audio assets. That licensing boundary is part of the product design, not an afterthought.
+
+## Current scope
+
+Hepai is a completed hackathon case study. It demonstrates music recommendation, playlist optimization, Music Information Retrieval (MIR), and browser audio delivery, but does not claim access to QQ Music APIs, a production catalogue, or measured listener retention.
 
 </section>
 
 <section data-lang="zh">
 
-## 项目背景
+## 产品命题
 
-本项目是腾讯音乐 AI Hackathon 2026“Build for Music+”赛道 B 的参赛作品。QQ 音乐 Automix 能在曲目之间完成 Crossfade，却不会判断下一首应该选什么。合拍正是这一环节的“选曲大脑”：它分析两首歌能否自然衔接，并像 DJ 一样选择下一首曲目。
+推荐系统回答“用户可能喜欢什么”，Automix 回答“已经选好的两首歌如何重叠”。两者之间仍缺少关键一层：下一首究竟应该选谁，它为什么具备可混音性？
 
-## 工作原理
+合拍围绕这一缺口参加腾讯音乐 AI Hackathon。它先把可混音性建模为排序与编排问题，再把结果连接到浏览器原生转场引擎。该概念可以嵌入 QQ 音乐式的连续收听体验，但当前交付是独立产品案例，并非已经完成的 QQ 音乐接口集成。
 
-1. **音频分析**：使用 librosa 从曲库中每首歌提取 BPM、映射至 Camelot Wheel 的 Musical Key，以及能量轮廓
-2. **兼容匹配**：给定一首种子曲目后，依据和声兼容度、Tempo 距离与能量连续性为候选曲目评分，并输出 Top 5 混音候选
-3. **自动混音**：节拍对齐的 Crossfade Engine 在 Beat Boundary 调度转场，让连续曲目像现场 DJ Set 一样融合，而不是简单硬切或线性淡出
-4. **聆听模式**：四种模式在能量曲线与曲目多样性之间提供不同取舍，例如稳定 Groove 或逐步 Build-up
+## 我的核心职责
 
-## 工程实现
+- **产品定义：** 将价值主张锚定在“可混音的连续性”，而不是再做一套泛化相似度推荐。
+- **音乐智能：** 构建覆盖 Tempo、和声调性、能量、风格、频谱特征与结构 Cue 的提取和评分体系。
+- **播放列表策略：** 设计可解释的种子推荐与多曲编排，引入模式化权重、兼容门控与重复控制。
+- **收听体验：** 交付静态 Web Audio Demo，以双 Deck、Cue-aware 转场、Equal-power Crossfade 与 DJ 风格 Bass Swap 完成播放。
 
-分析与推荐由 Python + FastAPI 后端完成，前端采用 Vanilla JavaScript。53 个 Python Test 覆盖音频特征提取、Camelot 兼容度评分与转场调度器；AI 生成封面与多轮音质迭代共同构成完整 MVP。
+## 从音频分析到下一首决策
 
-## 在线体验
+Python Pipeline 使用 `librosa` 估计 BPM、映射至 Camelot Wheel 的 Musical Key、能量、Onset、频谱特征与候选转场点。系统不会把全部判断压缩成无法解释的相似度分数，而是按聆听模式组合和声距离、速度距离、能量连续性与风格信号，让每次推荐都能回到具体音乐属性。
 
-公开 Demo 是完全静态的构建。选曲与编排算法以 1:1 方式移植至 JavaScript，并通过 41 个 Golden Case 与 Python 原实现逐字节对齐。混音本身直接运行在双 Deck Web Audio Pipeline 中，在预计算 Cue Point 执行 Equal-power Crossfade，并以 BiquadFilter 实现 DJ 模式下的 Bass Swap，无需等待服务端渲染。Demo 曲库采用 Kevin MacLeod 的 CC BY 4.0 音乐，使完整体验能够公开运行于 Web。
+面对种子曲目，合拍会对最具兼容性的候选进行排序；面对更长的播放序列，贪心 Sequencer 会在风格门控与连续歌手惩罚下选择下一首。不同模式调整能量走向与多样性容忍度，使同一曲库可以适配稳定收听、跑步、驾驶或更具张力的 DJ Sequence。
+
+## 浏览器原生交付
+
+公开 Demo 将推荐、编排与 Mix Plan 从 Python 移植到 JavaScript，并通过当前 42 个跨语言 Golden Case 防止浏览器实现与参考算法静默偏离。播放链路由两个 Web Audio Deck 构成，在预计算 Cue Point 执行 Equal-power Fade；DJ 模式则借助 BiquadFilter 完成低频交换，无需服务端渲染。
+
+静态包只包含 10 首采用 CC BY 4.0 授权的 Kevin MacLeod 曲目，并显式排除私有或 QQ 音乐音频资产。版权边界在这里属于产品设计的一部分，而不是上线前的补救措施。
+
+## 当前边界
+
+合拍是已经完成的 Hackathon 产品案例，呈现音乐推荐、Playlist Optimization、Music Information Retrieval（MIR）与浏览器音频交付能力；它不宣称已经接入 QQ 音乐 API、拥有生产曲库或取得经过验证的留存数据。
 
 </section>
