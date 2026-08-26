@@ -62,16 +62,42 @@ void main() {
     float reveal = 1.0 - smoothstep(head - 0.014, head + 0.003, normalizedY);
 
     float phase = float(strand) * 2.1;
-    float wave = sin(localY * 0.0045 + uTime * uSpeed * (1.0 + float(strand) * 0.16) + phase);
-    wave += 0.42 * sin(localY * 0.009 - uTime * uSpeed * 0.63 + phase * 1.7);
-    float center = curveX(strand, normalizedY) + wave * 0.0065 * uAmplitude;
+    float flowTime = uTime * uSpeed;
+    float wave = sin(localY * 0.0045 + flowTime * (0.82 + float(strand) * 0.12) + phase);
+    wave += 0.42 * sin(localY * 0.009 - flowTime * 0.58 + phase * 1.7);
+    float center = curveX(strand, normalizedY) + wave * 0.0055 * uAmplitude;
     float distancePx = abs(x - center) * uResolution.x;
 
     float coreWidth = (1.15 + float(2 - strand) * 0.28) * uDpr * uThickness;
     float core = 1.0 - smoothstep(coreWidth * 0.35, coreWidth * 1.55, distancePx);
-    float filament = 1.0 - smoothstep(0.25 * uDpr, 0.9 * uDpr, abs(distancePx - coreWidth * 1.8));
-    float halo = exp(-distancePx / (8.5 * uDpr)) * 0.48;
-    float energy = (core + filament * 0.42 + halo) * reveal;
+
+    // A downward-moving phase travels inside the existing curve. The path stays
+    // anchored while the core, outer filaments, and halo carry visible motion.
+    float currentPhase = normalizedY * 38.0 - flowTime * (3.4 + float(strand) * 0.34) + phase;
+    float current = pow(0.5 + 0.5 * sin(currentPhase), 5.0);
+    float filamentPhase = normalizedY * 25.0 - flowTime * (2.3 + float(strand) * 0.2) + phase * 1.4;
+    float filamentOffsetA = coreWidth * (1.78 + sin(filamentPhase) * 0.22);
+    float filamentOffsetB = coreWidth * (2.75 + sin(filamentPhase * 1.37 + 1.2) * 0.3);
+    float filamentA = 1.0 - smoothstep(
+      0.24 * uDpr,
+      0.88 * uDpr,
+      abs(distancePx - filamentOffsetA)
+    );
+    float filamentB = 1.0 - smoothstep(
+      0.18 * uDpr,
+      0.72 * uDpr,
+      abs(distancePx - filamentOffsetB)
+    );
+    float haloFlow = 0.76 + 0.24 * (0.5 + 0.5 * sin(
+      normalizedY * 17.0 - flowTime * 1.55 + phase * 0.8
+    ));
+    float halo = exp(-distancePx / (8.5 * uDpr)) * 0.48 * haloFlow;
+    float energy = (
+      core * (0.88 + current * 0.26)
+      + filamentA * (0.3 + current * 0.18)
+      + filamentB * 0.2
+      + halo
+    ) * reveal;
 
     color += uColors[strand] * energy;
     alpha = max(alpha, clamp(energy, 0.0, 1.0));

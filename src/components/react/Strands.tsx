@@ -21,7 +21,7 @@ const rgb = (value: string) => {
 export default function Strands({
   colors = ["#4f8dff", "#35c99a", "#e4a65a"],
   lightColors = ["#1f57c8", "#197f62", "#a96714"],
-  speed = 0.22,
+  speed = 0.5,
   amplitude = 1,
   thickness = 1,
   glow = 1.15,
