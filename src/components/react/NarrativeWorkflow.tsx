@@ -9,6 +9,7 @@ interface Props {
 type StoryVariant =
   | "evaluation-lab"
   | "evaluation-router"
+  | "benchmark-review"
   | "deal-room"
   | "underwriting-ledger";
 
@@ -56,6 +57,41 @@ function StoryShell({ variant, label, children }: {
     >
       {children}
     </motion.div>
+  );
+}
+
+function BenchmarkReview({ workflow }: Props) {
+  const workstreams = [
+    ["knowledge", "benchmark"],
+    ["tasks", "comparison"],
+    ["agent", "review"],
+  ];
+
+  return (
+    <StoryShell variant="benchmark-review" label="Hunyuan evaluation workstreams / 混元评测工作流">
+      <div className="wf-story-stage benchmark-review">
+        <StoryHeader workflow={workflow} eyebrow="TENCENT · HUNYUAN" />
+        <div className="benchmark-workstreams">
+          {workstreams.map(([task, method], index) => (
+            <div className="benchmark-workstream wf-story-panel" key={task}>
+              <span className="wf-story-index">0{index + 1}</span>
+              <div className="benchmark-workstream-copy">
+                <strong><NodeLabel workflow={workflow} id={task} /></strong>
+                <span className="benchmark-method">
+                  <span aria-hidden="true">→</span>
+                  <NodeLabel workflow={workflow} id={method} />
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="benchmark-synthesis">
+          <span className="benchmark-join" aria-hidden="true">↓</span>
+          <strong><NodeLabel workflow={workflow} id="findings" /></strong>
+          <span><NodeLabel workflow={workflow} id="iteration" /></span>
+        </div>
+      </div>
+    </StoryShell>
   );
 }
 
@@ -227,6 +263,8 @@ function UnderwritingLedger({ workflow }: Props) {
 
 export default function NarrativeWorkflow({ workflow }: Props) {
   switch (workflow.variant) {
+    case "benchmark-review":
+      return <BenchmarkReview workflow={workflow} />;
     case "evaluation-lab":
       return <EvaluationLab workflow={workflow} />;
     case "evaluation-router":

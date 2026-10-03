@@ -1061,6 +1061,59 @@
   letter-spacing: 0.06em;
 }
 
+/* Hunyuan: parallel evaluation workstreams converge into findings. */
+.wf-container--benchmark-review { height: auto; }
+.tl-row--left .wf-container--benchmark-review { right: 0; }
+.tl-row--right .wf-container--benchmark-review { left: 0; }
+.benchmark-review {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.benchmark-review .wf-story-header { grid-template-columns: 1fr; gap: 0.4rem; }
+.benchmark-review .wf-story-header strong { font: 650 1rem/1.4 var(--font-sans); letter-spacing: 0; }
+.benchmark-review .wf-story-header small { font-size: 0.75rem; }
+.benchmark-workstreams {
+  display: grid;
+  gap: 0.5rem;
+}
+.benchmark-workstream {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0.875rem;
+  border-radius: var(--radius-sm);
+}
+.benchmark-workstream .wf-story-index {
+  flex: 0 0 auto;
+  font-size: 1.125rem;
+  color: var(--color-accent);
+}
+.benchmark-workstream-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+  font-size: 0.8125rem;
+}
+.benchmark-method {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  color: var(--color-text-secondary);
+}
+.benchmark-synthesis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  text-align: center;
+  font-size: 0.875rem;
+}
+.benchmark-join { color: var(--color-accent); }
+.benchmark-synthesis > span:last-child { color: var(--color-text-secondary); }
+
 /* Video Rebirth: paired data and metric rails feeding an evaluation chamber. */
 .wf-container--evaluation-lab { height: 20rem; }
 .evaluation-lab {

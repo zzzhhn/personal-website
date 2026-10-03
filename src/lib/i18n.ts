@@ -301,6 +301,19 @@ export const UI = {
 export const EXPERIENCES = {
   en: [
     {
+      role: "Product Evaluation Intern",
+      organization: "Tencent · Hunyuan Foundation Models",
+      location: "Shenzhen, Guangdong",
+      startDate: "2026-09-24",
+      type: "internship",
+      highlights: [
+        "Designed targeted benchmarks for long-tail knowledge and multi-turn memory, curating 50+ test samples to examine knowledge coverage and context retention and provide data references for model evaluation and training",
+        "Translated real user tasks into 20+ evaluation cases across computer use (CUA), AI game creation, and visual understanding (VLM); compared in-house models with five frontier models and documented capability gaps and representative failure cases for model iteration",
+        "Evaluated a personal agent product through 30+ everyday Q&A and light office tasks, using multidimensional human review to identify 10+ experience issues and deliver three evaluation reports for product improvements",
+      ],
+      techStack: ["Benchmark Design", "CUA", "VLM", "Human Evaluation", "Agent UX"],
+    },
+    {
       role: "Data Engineer — VLM Evaluation",
       organization: "Video Rebirth",
       location: "Hong Kong, China",
@@ -374,6 +387,19 @@ export const EXPERIENCES = {
     },
   ],
   zh: [
+    {
+      role: "产品评测实习生",
+      organization: "腾讯 · 混元基础模型",
+      location: "广东 · 深圳",
+      startDate: "2026-09-24",
+      type: "internship",
+      highlights: [
+        "围绕长尾知识问答与多轮记忆设计专项 Benchmark，构建 50+ 条测试样本，检验模型的知识覆盖与上下文记忆边界，为模型评测和训练提供数据参考",
+        "从真实用户任务中提炼 CUA、AI 游戏制作与视觉理解（VLM）评测场景，构建 20+ 道评测题，对照自研模型与 5 款前沿模型的表现，梳理能力差距与典型失效案例，为模型迭代提供具体参照",
+        "参与个人 Agent 产品体验评测，设计并执行 30+ 项日常问答与轻办公任务，通过多维度人评记录 10+ 项体验问题，形成 3 份评测报告，支持产品团队定位问题并改进体验",
+      ],
+      techStack: ["Benchmark 设计", "CUA", "VLM", "人工评测", "Agent 体验"],
+    },
     {
       role: "Data Engineer – 视频模型评测",
       organization: "Video Rebirth",
@@ -478,6 +504,7 @@ export interface WorkflowData {
     | "alpha-loop"
     | "evaluation-lab"
     | "evaluation-router"
+    | "benchmark-review"
     | "deal-room"
     | "underwriting-ledger";
   center?: {
@@ -492,6 +519,32 @@ export interface WorkflowData {
 
 // ── Workflow data — one per experience, matches EXPERIENCES order ──
 export const WORKFLOWS: WorkflowData[] = [
+  {
+    cols: 2, rows: 4, variant: "benchmark-review",
+    center: {
+      label: { en: "From tasks to findings", zh: "从真实任务到评测发现" },
+      meta: { en: "Hunyuan · Three evaluation workstreams", zh: "混元 · 三条评测工作线" },
+    },
+    nodes: [
+      { id: "knowledge", label: { en: "Knowledge & memory", zh: "知识与多轮记忆" }, type: "process", col: 0, row: 0 },
+      { id: "benchmark", label: { en: "Targeted benchmarks", zh: "专项评测集构建" }, type: "process", col: 1, row: 0 },
+      { id: "tasks", label: { en: "CUA · Games · VLM", zh: "CUA · 游戏 · VLM" }, type: "process", col: 0, row: 1 },
+      { id: "comparison", label: { en: "Cross-model comparison", zh: "跨模型能力对照" }, type: "process", col: 1, row: 1 },
+      { id: "agent", label: { en: "Everyday agent tasks", zh: "Agent 真实使用场景" }, type: "process", col: 0, row: 2 },
+      { id: "review", label: { en: "Human experience review", zh: "多维体验人评" }, type: "process", col: 1, row: 2 },
+      { id: "findings", label: { en: "Capability gaps & issue reports", zh: "能力差距与问题报告" }, type: "process", col: 0, row: 3 },
+      { id: "iteration", label: { en: "Inputs for model & product iteration", zh: "模型与产品迭代参考" }, type: "process", col: 1, row: 3 },
+    ],
+    edges: [
+      { from: "knowledge", to: "benchmark" },
+      { from: "tasks", to: "comparison" },
+      { from: "agent", to: "review" },
+      { from: "benchmark", to: "findings" },
+      { from: "comparison", to: "findings" },
+      { from: "review", to: "findings" },
+      { from: "findings", to: "iteration" },
+    ],
+  },
   // ① Video Rebirth — 视频模型评测工程师 (3×6, fork+feedback)
   {
     cols: 3, rows: 6, variant: "evaluation-lab",
