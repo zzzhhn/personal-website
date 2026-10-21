@@ -1189,7 +1189,7 @@
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明",
       "验证非负归一化权重/每点最多四影响、关节弯折、接触、明确命名动作与代表性子帧；最终GLB全新回读逐段回放"
     ],
-    "acceptanceStatus": "73aa0bb6 原生与Draco分件几何已检查；动作混合/收脚候选仅QA启用，运行穿插与Fable视觉验收进行中；Bobby未接受",
+    "acceptanceStatus": "73aa0bb6 原生与Draco分件几何、2134个实际混合姿态检查通过；收脚候选仅QA启用，Fable行为与视觉验收未完成；Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "G24-placeholder-replacement",

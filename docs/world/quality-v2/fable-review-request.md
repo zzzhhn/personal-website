@@ -2,7 +2,7 @@
 
 当前状态：73aa0bb6角色与QA动作候选已形成统一证据；尚未取得A–D通过。旧17:00设计通过仍作废。此前d3缺陷纠错已通过CUA实际收发；本更新验收包尚未送达，最近系统再次锁屏。不要把文件存在当作Fable已读。
 
-此前已核实预览：https://61db2021.personal-website-aew.pages.dev/world/ （75d2f9c，仍含失败d3）。当前73aa为新候选，发布状态另见verification.json；新动作入口需附`?qa=1&qaPhase=1&qaStop=1`。
+已核实新预览：https://2150a1ce.personal-website-aew.pages.dev/world/ （e1e546f，资产73aa）。17个发布GLB哈希一致、0页面/HTTP错误。动作审阅入口：https://2150a1ce.personal-website-aew.pages.dev/world/?qa=1&qaPhase=1&qaStop=1 。已实测普通入口两项候选开关为false、审阅入口为true。旧75d2f9c/d3仅作失败历史。
 
 仓库 `/Users/bobby/WorkBuddy/personal-website/personal-website`，分支 `codex/world-greybox`，PR #1。先看 `docs/world/quality-v2/review.html`（可用本地文件浏览器打开），再按下列证据逐项判定。冻结文档仍由 Fable 维护；主线程不改 PRD/Art Lock/制作管线。
 

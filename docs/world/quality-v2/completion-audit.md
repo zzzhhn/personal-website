@@ -29,7 +29,7 @@
 | D4 自行运行 | playtest/README.md | 命令、依赖、改路线和范围已记录 |
 | 四技能注册 | 本地4技能与Downloads附件25文件hash一致（前轮核对） | 已注册；不等于每项模型检查自动通过 |
 | 全世界同类问题 | general-audit、非营地展示台/建设牌碰撞修正、已有connection三条通过一次 | 已作系统审查；其余区域正式资产与高速驾驶不在本轮通过结论内 |
-| 分支/PR/预览 | codex/world-greybox、PR1 draft、75d2f9c自动CF成功+17hash | 已更新；角色修复后仍需新提交/预览，不手动部署 |
+| 分支/PR/预览 | codex/world-greybox、PR1 draft、e1e546f自动CF成功+17hash | 73aa已发布，浏览器0错误；普通/QA候选开关分别false/true，不手动部署 |
 | Fable最终A–D | 解锁后已直接同步纠错，Fable新增A6；最终包待修好统一提交 | 未完成，不能用未送达文档代替验收 |
 | Bobby接受 | 无 | 未取得，不代签 |
 

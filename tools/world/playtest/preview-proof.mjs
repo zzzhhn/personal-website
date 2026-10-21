@@ -16,4 +16,10 @@ try{
  report.runtime=await page.evaluate(()=>({actor:__worldDebug.actor(),render:__worldDebug.renderInfo(),campShapes:__worldDebug.campColliders().length,snapshot:__worldDebug.snapshot()}));
  await page.screenshot({path:out+'/published-default.png'});
  report.passed=report.pageStatus===200&&report.assets.every(a=>a.status===200&&a.matches)&&report.runtime.actor.loaded&&!report.errors.length&&!report.httpErrors.length;
+ if(process.env.WORLD_CANDIDATE==='1'){
+  await page.goto(base+'/world/?qa=1&qaPhase=1&qaStop=1',{waitUntil:'networkidle'});
+  await page.waitForFunction(()=>window.__worldDebug?.actor().loaded);await page.waitForTimeout(500);
+  report.candidate=await page.evaluate(()=>{const a=__worldDebug.actor();return {loaded:a.loaded,phasePrototype:a.phasePrototype,stopPrototype:a.stopPrototype}});
+  report.passed&&=report.runtime.actor.phasePrototype===false&&report.runtime.actor.stopPrototype===false&&report.candidate.phasePrototype===true&&report.candidate.stopPrototype===true&&!report.errors.length&&!report.httpErrors.length;
+ }
 }catch(e){report.errors.push(e.stack||String(e));report.passed=false}finally{await writeFile(out+'/report.json',JSON.stringify(report,null,2)+'\n');await browser.close();console.log(JSON.stringify({base,passed:report.passed,assetCount:report.assets.length,errors:report.errors,httpErrors:report.httpErrors},null,2));if(!report.passed)process.exitCode=1;}

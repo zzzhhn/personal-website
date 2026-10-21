@@ -25,21 +25,10 @@
     "runtimeChecks": 14,
     "noFullSuite": true
   },
-  "character": {
-    "report": "playtest/motion-r4/report.json",
-    "passed": false,
-    "finalAssetSha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357",
-    "note": "motion-r4 passed four basic runtime checks only; those did not test transition sliding or body self-intersection. Grounded sampled sole penetration0, max visual correction0.015249m.",
-    "runtimeChecksPassed": true,
-    "geometryStatus": "failed: confirmed body surface intersections in published d3; repair in progress",
-    "intersectionReport": "guide-intersections/README.md",
-    "motionStatus": "failed: stop sliding, near Run-Walk and near steady Run exceed thresholds in transitions-sole-entry-d3",
-    "transitionReport": "playtest/transitions-sole-entry-d3/report.json"
-  },
   "review": {
-    "Fable": "A d3 failed; A6 clarified in frozen acceptance document; final A-D pending",
+    "Fable": "Final 73aa package and behavior exception not accepted; earlier d3 failed",
     "Bobby": "not accepted",
-    "transport": "Earlier CUA corrections delivered and answered; new stop-behavior request prepared in fable-stop-request.md but input transport has not delivered it."
+    "transport": "Earlier defect corrections delivered. Current final package not delivered: macOS and CUA report locked. Unlock request pending."
   },
   "constraints": {
     "Hy3DCalls": 0,
@@ -52,12 +41,21 @@
     "passed": true
   },
   "preview": {
-    "url": "https://5baceb96.personal-website-aew.pages.dev/world/",
-    "commit": "ac5eb16cda5cb4b3baaab6e8a6c83cd244fc2301",
+    "url": "https://2150a1ce.personal-website-aew.pages.dev/world/",
+    "candidateUrl": "https://2150a1ce.personal-website-aew.pages.dev/world/?qa=1&qaPhase=1&qaStop=1",
+    "commit": "e1e546f11c5007dc606748321aba18123fe032ca",
     "cloudflareCheck": "success",
-    "proof": "playtest/preview-ac5/report.json",
+    "proof": "playtest/preview-e1e546f/report.json",
     "publishedAssetsMatched": 17,
-    "errors": 0
+    "errors": 0,
+    "defaultCandidateFlags": [
+      false,
+      false
+    ],
+    "qaCandidateFlags": [
+      true,
+      true
+    ]
   },
   "staticAssemblyAudit": {
     "report": "static-assembly/report.json",
@@ -70,7 +68,7 @@
     "warnings": 0,
     "hints": 105,
     "log": "/Users/bobby/Desktop/3D-personal-world/astro-check-73aa-stopturn.txt",
-    "scope": "73aa GLB and phase/stop yaw-follow QA candidates; built locally, not yet pushed"
+    "scope": "73aa and phase/stop yaw-follow candidate implementation 27c95c5; published by e1e546f (evidence-only successor)"
   },
   "candidate": {
     "assetSha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7",
@@ -108,6 +106,44 @@
       "seconds": 5,
       "over33ms": 0,
       "note": "rAF cadence only; same local M5 Pro machine; no skin collection during timing; not M1/GPU certification"
-    }
+    },
+    "published": true,
+    "defaultMeshEnabled": true
+  },
+  "previousCharacter": {
+    "report": "playtest/motion-r4/report.json",
+    "passed": false,
+    "finalAssetSha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357",
+    "note": "motion-r4 passed four basic runtime checks only; those did not test transition sliding or body self-intersection. Grounded sampled sole penetration0, max visual correction0.015249m.",
+    "runtimeChecksPassed": true,
+    "geometryStatus": "failed: confirmed body surface intersections in published d3; repair in progress",
+    "intersectionReport": "guide-intersections/README.md",
+    "motionStatus": "failed: stop sliding, near Run-Walk and near steady Run exceed thresholds in transitions-sole-entry-d3",
+    "transitionReport": "playtest/transitions-sole-entry-d3/report.json"
+  },
+  "character": {
+    "assetSha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7",
+    "triangles": 1978,
+    "rig": "custom-L1",
+    "nativeAndGlbSamplesEach": 522,
+    "runtimeSamples": 2134,
+    "sampledGeometryPassed": true,
+    "candidateMotionChecksPassed": 33,
+    "passed": false,
+    "reason": "Fable behavior exception, A2 appearance and final A-D visual acceptance pending; QA phase/stop candidate remains off at ordinary entry",
+    "nativeGeometry": "guide/final/a6/",
+    "runtimeGeometry": [
+      "playtest/transitions-73aa-prototype/runtime-relations-audit.json",
+      "playtest/interruptions-73aa-prototype/runtime-relations-audit.json",
+      "playtest/integration-73aa-prototype/runtime-relations-audit.json"
+    ]
+  },
+  "previousPreview": {
+    "url": "https://5baceb96.personal-website-aew.pages.dev/world/",
+    "commit": "ac5eb16cda5cb4b3baaab6e8a6c83cd244fc2301",
+    "cloudflareCheck": "success",
+    "proof": "playtest/preview-ac5/report.json",
+    "publishedAssetsMatched": 17,
+    "errors": 0
   }
 }
