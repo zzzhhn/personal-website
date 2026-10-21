@@ -12,6 +12,7 @@ import type { WorldContent } from './types';
 import { useWindClock, windUniforms } from './WorldWind';
 import { campColliderRecords } from './WorldCampPhysics';
 import { useWorldResolution, visualInventory, objectIdentity, colliderBounds, renderSize } from './WorldQuality';
+import { guideSkinEvidence } from './WorldGuideEvidence';
 
 function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
   useWindClock();
@@ -33,6 +34,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
     if (new URLSearchParams(window.location.search).get('qa') !== '1') return;
     const debug = {
       ...worldActorDebug,
+      actorSkin: (topology = false) => guideSkinEvidence(scene, topology),
       state: () => useWorldStore.getState(),
       set: (value: Partial<ReturnType<typeof useWorldStore.getState>>) => useWorldStore.setState(value),
       campColliders: campColliderRecords,

@@ -55,9 +55,18 @@ def material(key):
 ANKLE_Z = 0.095
 HIP_Z = 0.67
 HIP_Y = 0.10
-SH_Y, SH_Z = 0.185, 1.075
+# r4 (intersection fix): shoulder joints 2.5 cm wider. At 0.185 the A-pose upper-arm root folded
+# into the chest skin under each armpit: 16 nonadjacent triangle intersections even at rest.
+SH_Y, SH_Z = 0.21, 1.075
 ARM_DOWN = math.radians(55)          # A-pose: upper arm 55 deg below horizontal
 UA, FA, HA = 0.225, 0.205, 0.085     # upper arm, forearm, hand lengths
+DIAGONAL_RULE = 'short'
+BOOT_TOP = 0.232  # r4: boot shaft top (flat rim); trouser end must stay inside
+BOOT_R = 0.095   # r5: octagon circumradius (inradius 0.0878); trouser end stays inside
+TOE_C, TOE_S, TOE_BEVEL = (0.07, 0, 0.037), (0.15, 0.16, 0.094), 0.024   # r5: toe box (y set per side)
+SOLE_H = 0.018
+HEM_Z = 0.66   # r5: jacket hem height; level cut line just above the crotch (lock: hem at the hip line)
+HEM_SNAP = 0.008
 HELMET_C, HELMET_R = 1.425, 0.295   # r2: lower + slightly larger, closes the r1 neck gap
 
 
@@ -183,7 +192,7 @@ def build_body():
         add(w + (w - e).normalized() * 0.01, 0.06, a1)
         hip, knee, ankle, _ = leg_points(side)
         l0 = add(hip + Vector((0, side * 0.005, -0.02)), 0.11, p0)
-        l1 = add(knee, 0.092, l0)
+        l1 = add(knee, 0.085, l0)   # r4: slimmer knee node, less skin to fold at 105 deg flex
         add(ankle + Vector((0, 0, 0.045)), 0.083, l1)   # trouser end sits inside the boot shaft
     o = skin_object('G24_body', V, E, R, root=p0, subsurf=1)
     me = o.data
@@ -201,13 +210,70 @@ def build_body():
             p.x *= 0.74
             if p.z > 0.9:
                 p.x += 0.012
-            if 0.64 < p.z < 0.74:                # jacket hem flare
+            if 0.64 < p.z < 0.74:                # jacket hem flare (kept: removing it re-opened a Run hip fold)
                 k = 1.0 + 0.05 * (1 - abs(p.z - 0.69) / 0.05)
                 p.x *= k
                 p.y *= k
         elif n == 'neck':
             p.x *= 0.92
     me.update()
+    # r5 (A2): straight hem. A horizontal cut at HEM_Z through the torso/hip band, so the jacket/pants
+    # material edge is a level line (r4 followed the existing edges: a zigzag reading as a V). Vertices
+    # within HEM_SNAP of the plane count as on it (no sliver triangles); weights are computed per vertex
+    # later, so the new loop is skinned like its neighbours.
+    bm = bmesh.new()
+    bm.from_mesh(me)
+    band = [f for f in bm.faces if abs(f.calc_center_median().z - HEM_Z) < 0.07
+            and nearest_bone(f.calc_center_median())[1] in ('pelvis', 'spine', 'thigh.R', 'thigh.L')]
+    bmesh.ops.bisect_plane(bm, geom=list({v for f in band for v in f.verts}) + list({e for f in band for e in f.edges}) + band,
+                           plane_co=(0, 0, HEM_Z), plane_no=(0, 0, 1), dist=HEM_SNAP)
+    bm.to_mesh(me)
+    bm.free()
+    me.update()
+    # r4 (A6): fix the body triangulation in the source and make it exactly left/right symmetric.
+    # glTF stores the triangles chosen at export while Blender re-splits quads by their deformed
+    # shape, so native and GLB folded differently; and FIXED/ALTERNATE splits were not mirror
+    # symmetric (372 of 1242 edges unmirrored) so the two hips folded differently. Each quad is cut
+    # on the diagonal that matches its mirror twin; the -Y twin decides by DIAGONAL_RULE.
+    me.update()
+    idx = {(round(v.co.x, 5), round(v.co.y, 5), round(v.co.z, 5)): v.index for v in me.vertices}
+    mirror_of = lambda i: idx.get((round(me.vertices[i].co.x, 5), round(-me.vertices[i].co.y, 5), round(me.vertices[i].co.z, 5)))
+    bm = bmesh.new()
+    bm.from_mesh(me)
+    bm.verts.ensure_lookup_table()
+
+    def diag_ok(f):
+        """True if f should be cut v0-v2 (else v1-v3)."""
+        v = [x.index for x in f.verts]
+        d02, d13 = (f.verts[0].co - f.verts[2].co).length, (f.verts[1].co - f.verts[3].co).length
+        return d02 <= d13 if DIAGONAL_RULE == 'short' else d02 > d13
+
+    quads = [f for f in bm.faces if len(f.verts) == 4]
+    choice = {}
+    for f in quads:
+        c = f.calc_center_median()
+        key = frozenset(x.index for x in f.verts)
+        if c.y < -1e-6 or abs(c.y) <= 1e-6:
+            choice[key] = (f.verts[0].index, f.verts[2].index) if diag_ok(f) else (f.verts[1].index, f.verts[3].index)
+    for f in quads:
+        key = frozenset(x.index for x in f.verts)
+        if key in choice:
+            continue
+        twin = frozenset(mirror_of(i) for i in key)
+        if twin in choice and None not in twin:
+            a, b = choice[twin]
+            choice[key] = (mirror_of(a), mirror_of(b))
+        else:
+            choice[key] = (f.verts[0].index, f.verts[2].index) if diag_ok(f) else (f.verts[1].index, f.verts[3].index)
+    for f in quads:
+        a, b = choice[frozenset(x.index for x in f.verts)]
+        bmesh.ops.connect_verts(bm, verts=[bm.verts[a], bm.verts[b]])
+    bmesh.ops.triangulate(bm, faces=[f for f in bm.faces if len(f.verts) > 3], quad_method='BEAUTY', ngon_method='BEAUTY')
+    bm.to_mesh(me)
+    bm.free()
+    # r4 (A2): the hem is a horizontal material line at HEM_Z (r3 split by nearest bone, which drew a V).
+    # A geometric hem lip and an extra hem edge loop were both tried and dropped: each changed the hip
+    # triangulation and folded into the thigh at Run/Jump hip flexion (A6 self-intersection).
     # materials by nearest bone at face centre
     keys = ['jacket', 'sleeve', 'pants', 'glove']
     for k in keys:
@@ -224,29 +290,49 @@ def build_body():
         elif n == 'neck' or c.z > 1.115:
             k = 'pants'                          # dark collar / neck under the helmet
         else:
-            k = 'jacket' if c.z > 0.675 else 'pants'
+            k = 'jacket' if c.z > HEM_Z else 'pants'
+        if k == 'pants' and n.startswith('thigh') and c.z > HEM_Z:
+            k = 'jacket'                         # r4: hem runs straight across the outer hip, not a V
         f.material_index = keys.index(k)
     return o
 
 
 # ------------------------------------------------------------------ rigid parts
 def build_boot(side):
-    hip, knee, ankle, _ = leg_points(side)
     y = side * HIP_Y
-    V = [Vector((0.0, y, 0.215)), Vector((0.0, y, 0.085)), Vector((0.075, y, 0.06)), Vector((0.135, y, 0.055))]
-    E = [(0, 1), (1, 2), (2, 3)]
-    R = [0.094, 0.098, 0.088, 0.072]
-    o = skin_object(f'G24_boot.{"R" if side < 0 else "L"}', V, E, R, root=0, subsurf=1, sym=False)
+    # r5 (A2): low-poly boot as in the lock (round3 guide-ortho): an octagonal shaft with a flat rim and
+    # a lower, chamfered toe box, boolean-unioned (EXACT) into ONE closed shell; flat sole; dark sole band.
+    # The r4 skin-modifier boot read as a rounded lump.
+    bm = bmesh.new()
+    bmesh.ops.create_cone(bm, cap_ends=True, cap_tris=False, segments=8, radius1=BOOT_R, radius2=BOOT_R,
+                          depth=BOOT_TOP + 0.03)
+    bmesh.ops.rotate(bm, verts=bm.verts, cent=(0, 0, 0), matrix=Matrix.Rotation(math.pi / 8, 3, 'Z'))
+    bmesh.ops.translate(bm, verts=bm.verts, vec=(-0.008, y, (BOOT_TOP + 0.03) / 2 - 0.01))
+    me = bpy.data.meshes.new(f'G24_boot.{"R" if side < 0 else "L"}')
+    bm.to_mesh(me)
+    bm.free()
+    o = new_obj(me.name, me)
+    toe = rounded_box('G24_boot_toe_tmp', TOE_C, TOE_S, TOE_BEVEL, 'glove')
+    toe.location.y = y
+    mod = o.modifiers.new('union', 'BOOLEAN')
+    mod.operation, mod.solver, mod.object = 'UNION', 'EXACT', toe
+    apply_mods(o)
+    bpy.data.objects.remove(toe)
     bm = bmesh.new()
     bm.from_mesh(o.data)
-    res = bmesh.ops.bisect_plane(bm, geom=bm.verts[:] + bm.edges[:] + bm.faces[:], plane_co=(0, 0, 0),
-                                 plane_no=(0, 0, 1), clear_inner=True)
-    edges = [e for e in bm.edges if e.is_boundary]
-    bmesh.ops.holes_fill(bm, edges=edges, sides=0)
-    # flatten the boot top slightly (shaft opening reads as a rim)
+    for co, nrm in (((0, 0, 0), (0, 0, 1)), ((0, 0, BOOT_TOP), (0, 0, -1))):
+        bmesh.ops.bisect_plane(bm, geom=bm.verts[:] + bm.edges[:] + bm.faces[:], plane_co=co,
+                               plane_no=nrm, clear_inner=True)
+        bmesh.ops.holes_fill(bm, edges=[e for e in bm.edges if e.is_boundary], sides=0)
+    bmesh.ops.bisect_plane(bm, geom=bm.verts[:] + bm.edges[:] + bm.faces[:], plane_co=(0, 0, SOLE_H), plane_no=(0, 0, 1))
+    bmesh.ops.recalc_face_normals(bm, faces=bm.faces[:])
     bm.to_mesh(o.data)
     bm.free()
+    o.data.materials.clear()
     o.data.materials.append(material('glove'))
+    o.data.materials.append(material('pants'))
+    for f in o.data.polygons:                # dark sole band (existing palette colour, same shell)
+        f.material_index = 1 if f.center.z < SOLE_H else 0
     return o
 
 
@@ -359,7 +445,10 @@ def build_parts():
     yaw = math.atan2(nrm.y, nrm.x) - math.atan2(RIGHT, 0)
     c = nrm * 0.205 + Vector((0, 0, 0.765))   # r3: on the jacket hem, above the thigh's swing (r2 clipped it)
     parts['bag'] = rounded_box('G24_bag', c, (0.14, 0.075, 0.115), 0.018, 'bag', yaw)
-    parts['bagflap'] = rounded_box('G24_bagflap', c + nrm * 0.006 + Vector((0, 0, 0.036)), (0.148, 0.08, 0.048), 0.012, 'bag', yaw)
+    # r4 (A6 relation table): the flap back sat 3.5 mm proud of the bag back and only grazed the jacket
+    # (triangle crossings with ~0 mm interpenetration). Its back now sits 4 mm deeper than the bag's,
+    # front face unchanged (c + 0.046 along nrm).
+    parts['bagflap'] = rounded_box('G24_bagflap', c + nrm * 0.00225 + Vector((0, 0, 0.036)), (0.148, 0.0875, 0.048), 0.012, 'bag', yaw)
     # r2: zip sits on the measured chest surface (r1 floated in front of it)
     body = parts['body'].data.vertices
     front = max(v.co.x for v in body if 0.82 < v.co.z < 1.0 and abs(v.co.y) < 0.03)
@@ -371,7 +460,7 @@ RIGID = {'mitten.R': 'hand.R', 'mitten.L': 'hand.L', 'helmet': 'head', 'visor': 
          'bag': 'pelvis', 'bagflap': 'pelvis', 'zip': 'chest'}
 # r3: wider elbow/knee blends; r2 folded skin inside the elbow and behind the knee at deep run flex
 BLEND_W = {'pelvis': 0.07, 'spine': 0.07, 'chest': 0.07, 'neck': 0.035,
-           'upperarm': 0.065, 'forearm': 0.07, 'hand': 0.03, 'thigh': 0.07, 'shin': 0.085}
+           'upperarm': 0.065, 'forearm': 0.07, 'hand': 0.03, 'thigh': 0.12, 'shin': 0.12}  # r4: wider hip/knee blends (Run hip crease + knee-pit folds)
 
 
 def smooth(x):
@@ -382,6 +471,20 @@ def smooth(x):
 def body_weights(p):
     """Nearest deform bone with smooth blending only across that bone's own joints."""
     d, n, t = nearest_bone(p)
+    if n.startswith('upperarm') and p.z < 0.95 and abs(p.y) < 0.185:
+        # r4: flank skin below the armpit was nearest the A-pose upper arm and swung into the chest
+        # during the Run back-swing (A6); it now follows the torso.
+        d, n, t = nearest_bone(p, [x for x in DEFORM_BODY if not x.startswith(('upperarm', 'forearm', 'hand'))])
+    if n.startswith(('thigh', 'pelvis')) and abs(p.y) < 0.05 and 0.50 < p.z < 0.62:
+        # r4: crotch midline. These vertices had full thigh weight and swept through the opposite
+        # side of the crotch at Run/Jump hip flexion (A6 self-intersection); the pelvis now carries
+        # most of the midline strip, fading to the thigh at |y| = 5 cm.
+        tag = 'L' if p.y > 0 else 'R'
+        k = 0.6 * (1 - smooth(abs(p.y) / 0.05))
+        w = {'pelvis': k, f'thigh.{tag}': 1 - k} if n.startswith('thigh') else {'pelvis': 1.0}
+        w = {kk: v for kk, v in w.items() if v > 1e-3}
+        tot = sum(w.values())
+        return {kk: v / tot for kk, v in w.items()}
     a, b, parent, _ = BONES[n]
     L = (b - a).length
     w = {n: 1.0}
@@ -399,6 +502,12 @@ def body_weights(p):
             if (BONES[kid][0] - p).length < hw2 * 2.5:
                 k = 0.5 * (1 - smooth((L - s) / hw2))
                 w = {n: 1 - k, kid: k}
+    if n.startswith('thigh') and p.z > 0.64:
+        # r4 (A6): front/side hip skin above the crotch moves mostly with the pelvis (the jacket) and
+        # only 20% with the swinging thigh; full thigh weight folded the crease at Run hip flexion.
+        k = smooth((p.z - 0.64) / 0.06)
+        th = 0.2 + 0.8 * (1 - k)
+        w = {n: w.get(n, 0) * th, 'pelvis': w.get('pelvis', 0) * th + (1 - th)}
     tot = sum(w.values())
     w = {k: v / tot for k, v in w.items() if v / tot > 1e-3}
     tot = sum(w.values())
@@ -666,9 +775,12 @@ WALK = dict(T=0.6, v=1.5, duty=0.56, x0=0.03, heel_frac=0.14, toe_frac=0.22, hee
             arm=math.radians(22), arm_lag=0.04, elbow=math.radians(14), elbow_amp=math.radians(14),
             adduct=math.radians(9), arm_bias=math.radians(-2))   # r3: arm clears the hip bag on the back-swing
 RUN = dict(T=0.4, v=4.2, duty=0.33, x0=0.06, heel_frac=0.0, toe_frac=0.35, heel_pitch=0.0,
-           toe_pitch=math.radians(30), clear=0.16, swing_toe_up=math.radians(10), track=-0.01,
-           pelvis_z=0.625, bob=0.03, bob_phase=0.0, yaw=math.radians(7), sway=0.012, roll=0.0,
-           lean=math.radians(8), lean_spine=math.radians(4), head_pitch=math.radians(-9),
+           # r4 (A6): 3 cm less swing clearance, pelvis 1.5 cm higher, forward lean moved from the pelvis
+           # to the spine. Same speed, cadence, stride and arm swing; reduces peak hip flexion, which
+           # folded the front-thigh crease into itself.
+           toe_pitch=math.radians(30), clear=0.13, swing_toe_up=math.radians(10), track=-0.01,
+           pelvis_z=0.65, bob=0.02, bob_phase=0.0, yaw=math.radians(7), sway=0.012, roll=0.0,
+           lean=math.radians(0), lean_spine=math.radians(12), head_pitch=math.radians(-9),
            arm=math.radians(42), arm_lag=0.03, elbow=math.radians(72), elbow_amp=math.radians(14),
            adduct=math.radians(7), arm_bias=math.radians(4))   # r3: run back-swing forearm clears the hip bag
 
@@ -722,7 +834,9 @@ R_ = math.radians
 # Jump: physics launches on the key press, so the clip opens already extending (no wind-up),
 # reaches a tucked air pose and holds its last frame while airborne.
 J0 = key_pose(0.60, R_(10), stand_feet(), arms_sym(R_(-25), R_(4), R_(30)), R_(-4), R_(4), R_(2))  # r3: less adduction so the back-swing clears the bag
-J1 = key_pose(0.69, R_(3), {t: (Vector((0.0, s * (HIP_Y + 0.01), ANKLE_Z + 0.05)), foot_q(0, R_(-28)))
+# r5: toe-off ankle 1 cm higher. The flat r5 toe box kept two sole vertices planted 4 frames longer,
+# raising the take-off local slip from 35 to 75 mm; +1 cm returns it to the r4 level (still executed_fail).
+J1 = key_pose(0.69, R_(3), {t: (Vector((0.0, s * (HIP_Y + 0.01), ANKLE_Z + 0.06)), foot_q(0, R_(-28)))
                             for t, s in (('R', -1), ('L', 1))}, arms_sym(R_(22), R_(12), R_(62)), R_(-6))   # r3: elbows lead, hands lower
 J2 = key_pose(0.69, R_(4), {'R': (Vector((0.10, -HIP_Y - 0.02, 0.27)), foot_q(0, R_(-8))),
                             'L': (Vector((-0.06, HIP_Y + 0.02, 0.22)), foot_q(0, R_(-18)))},

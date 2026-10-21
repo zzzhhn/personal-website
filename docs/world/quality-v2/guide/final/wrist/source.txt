@@ -1,1 +1,1 @@
-source=fresh import G24.glb sha256=d3ccc5919af10f66
+source=fresh import G24.glb sha256=73aa0bb63b2e7ba5

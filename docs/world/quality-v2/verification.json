@@ -1,7 +1,8 @@
 {
   "build": {
     "status": "passed",
-    "log": "/Users/bobby/Desktop/3D-personal-world/quality-v2-build-delivery.log"
+    "log": "/Users/bobby/Desktop/3D-personal-world/quality-v2-build-delivery.log",
+    "testedImplementationCommit": "ac5eb16cda5cb4b3baaab6e8a6c83cd244fc2301"
   },
   "astroCheck": {
     "status": "passed",
@@ -9,7 +10,8 @@
     "errors": 0,
     "warnings": 0,
     "hints": 105,
-    "log": "/Users/bobby/Desktop/3D-personal-world/quality-v2-astro-check-final.log"
+    "log": "/Users/bobby/Desktop/3D-personal-world/quality-v2-astro-check-final.log",
+    "testedImplementationCommit": "ac5eb16cda5cb4b3baaab6e8a6c83cd244fc2301"
   },
   "connectionRegression": {
     "runs": 1,
@@ -25,14 +27,19 @@
   },
   "character": {
     "report": "playtest/motion-r4/report.json",
-    "passed": true,
+    "passed": false,
     "finalAssetSha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357",
-    "note": "4/4; grounded sampled sole penetration0, actual max visual correction0.015249m; >10sec keyboard video"
+    "note": "motion-r4 passed four basic runtime checks only; those did not test transition sliding or body self-intersection. Grounded sampled sole penetration0, max visual correction0.015249m.",
+    "runtimeChecksPassed": true,
+    "geometryStatus": "failed: confirmed body surface intersections in published d3; repair in progress",
+    "intersectionReport": "guide-intersections/README.md",
+    "motionStatus": "failed: stop sliding, near Run-Walk and near steady Run exceed thresholds in transitions-sole-entry-d3",
+    "transitionReport": "playtest/transitions-sole-entry-d3/report.json"
   },
   "review": {
-    "Fable": "pending final A-D",
+    "Fable": "A d3 failed; A6 clarified in frozen acceptance document; final A-D pending",
     "Bobby": "not accepted",
-    "transport": "CUA blocked by macOS lock; user notified"
+    "transport": "Earlier CUA corrections delivered and answered; new stop-behavior request prepared in fable-stop-request.md but input transport has not delivered it."
   },
   "constraints": {
     "Hy3DCalls": 0,
@@ -55,5 +62,52 @@
   "staticAssemblyAudit": {
     "report": "static-assembly/report.json",
     "note": "all centroids, two offsets, temporary cutaways inspected; diagnostic candidates retained, no exhaustive self-intersection pass"
+  },
+  "workingCopyCheck": {
+    "status": "passed",
+    "files": 94,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 105,
+    "log": "/Users/bobby/Desktop/3D-personal-world/astro-check-73aa-stopturn.txt",
+    "scope": "73aa GLB and phase/stop yaw-follow QA candidates; built locally, not yet pushed"
+  },
+  "candidate": {
+    "assetSha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7",
+    "defaultEnabled": false,
+    "query": "?qa=1&qaPhase=1&qaStop=1",
+    "transitionReport": "playtest/transitions-73aa-prototype/report.json",
+    "transitionChecks": {
+      "passed": 20,
+      "failed": 0
+    },
+    "interruptionReport": "playtest/interruptions-73aa-prototype/report.json",
+    "interruptionChecks": {
+      "passed": 10,
+      "failed": 0
+    },
+    "geometryRuntime": {
+      "passed": true,
+      "samples": 2134,
+      "reports": [
+        "playtest/transitions-73aa-prototype/runtime-relations-audit.json",
+        "playtest/interruptions-73aa-prototype/runtime-relations-audit.json",
+        "playtest/integration-73aa-prototype/runtime-relations-audit.json"
+      ],
+      "scope": "sampled post-mixer/post-IK poses; finite float CPU reconstruction, not continuous-time proof"
+    },
+    "Fable": "not delivered / not accepted",
+    "vehicleIntegration": {
+      "checks": 3,
+      "passed": true,
+      "report": "playtest/integration-73aa-prototype/report.json"
+    },
+    "frameTiming": {
+      "fps": 60.4,
+      "p95_ms": 16.7,
+      "seconds": 5,
+      "over33ms": 0,
+      "note": "rAF cadence only; same local M5 Pro machine; no skin collection during timing; not M1/GPU certification"
+    }
   }
 }

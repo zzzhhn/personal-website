@@ -1152,7 +1152,7 @@
     "name": "向导B及骨骼",
     "source": "L1 自制骨架候选 → L2（L1不通过时）",
     "count": 1,
-    "triangles": "实测 2006/件；技能逐件定额，非硬上限",
+    "triangles": "实测 1978/件；技能逐件定额，非硬上限",
     "materialRole": "paint / canvas / accent / glass / metal / light",
     "physics": "动态胶囊",
     "reference": "guide",
@@ -1167,11 +1167,11 @@
     "legacyTriangleEstimate": "4–6k",
     "triangleBudget": {
       "status": "原生与最终 Draco GLB 回读实测",
-      "basis": "先声明3–5k艺术预算，最终2006面已提供头盔剪影、连续身体与关节变形；预算不是填满指标，视觉门另判",
+      "basis": "按技能以轮廓、部件、变形和多视图判质量；声明3–5k艺术预算，最终1978面，不为填预算堆面；视觉门未通过",
       "hardCap": false,
-      "evaluatedTriangles": 2006,
-      "glbReimportTriangles": 2006,
-      "baselineMultiplier": 5.764,
+      "evaluatedTriangles": 1978,
+      "glbReimportTriangles": 1978,
+      "baselineMultiplier": 5.684,
       "baselineBasis": "c507506 旧运行时 capsule+sphere+3 boxes，用同版 Three 几何重建实测348三角；不是旧GLB",
       "declaredUpper": 5000
     },
@@ -1189,7 +1189,7 @@
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明",
       "验证非负归一化权重/每点最多四影响、关节弯折、接触、明确命名动作与代表性子帧；最终GLB全新回读逐段回放"
     ],
-    "acceptanceStatus": "最终候选 motion-r4 4/4；原生腕部连接修复，等待 Fable A–D 观感验收；Bobby未接受",
+    "acceptanceStatus": "73aa0bb6 原生与Draco分件几何已检查；动作混合/收脚候选仅QA启用，运行穿插与Fable视觉验收进行中；Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "G24-placeholder-replacement",
@@ -1204,13 +1204,13 @@
       "sourceManifest": "docs/world/quality-v2/guide/manifest.json",
       "glb": "public/assets/world/guide/G24.glb",
       "blend": "tools/world/guide/blend/G24.blend",
-      "sha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357",
-      "bytes": 299288,
+      "sha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7",
+      "bytes": 311684,
       "compression": "KHR_draco_mesh_compression",
       "boundsXYZ_m": [
         0.6059882342815399,
         1.7081999816000462,
-        0.9568162560462952
+        1.0068161487579346
       ],
       "boundsPose": "rest",
       "bones": 18,
@@ -1223,7 +1223,7 @@
         "Land": 0.4
       },
       "colorSixViews": "docs/world/quality-v2/guide/final/G24_sixview_final.png",
-      "runtimeEvidence": "docs/world/quality-v2/playtest/motion-r4/report.json",
+      "runtimeEvidence": "docs/world/quality-v2/motion-transitions.md",
       "userAccepted": false
     }
   },

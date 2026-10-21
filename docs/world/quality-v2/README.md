@@ -1,6 +1,6 @@
 # World 质量返工 v2
 
-状态：Bobby 已否定 c507506 营地样片的可玩性和观感；本轮实现与运行证据已完成，角色腕部连接已修复并完成专项复测，Fable A–D 最终验收尚未通过。旧版的 Fable 设计通过不代表本轮通过；旧截图、视频、检查结果仅作基线。
+状态：Bobby 已否定 c507506 营地样片。73aa角色已修复此前d3的身体自交、夹克下摆和靴轮廓；QA动作候选的两档过渡与打断检查通过，2,134个实际混合姿态的分件/连接检查通过。**仍未取得Fable行为与视觉验收，普通入口未开启新的收脚候选。** 几何见`guide/final/a6/`与`runtime-relations-method.md`，动作见`motion-transitions.md`，逐项状态见`completion-audit.md`。旧失败报告保留，不用机器通过代替观感。
 
 ## 范围和验收
 
@@ -55,6 +55,6 @@
 
 `playtest/acceptance-r3/report.json` 记录 64/64 复合碰撞案例、14/14 运行检查、11 路点连续按键路线无恢复、0 JS/console/HTTP 错误。桌上 C08 与可跨 G23 的口径分别由 Fable C1-a/b 明确，隔离查询不计入步行。已有三条 connection 路线通过，仅运行一次。
 
-最终 G24 的动作另有绑定 hash 的专项报告，不用早期完整碰撞批次替代最终模型验收。`review.html` 汇总真实游戏画面、正常速度视频、原生与最终 GLB 六视图，旧版与返工版两档对照。原始失败报告保留，标明不算最终通过。
+G24专项绑定73aa0bb6；`playtest/transitions-73aa-prototype/`与`interruptions-73aa-prototype/`有正常速度录像、完整停步/打断结果、全帧运行关系报告及无损压缩原始矩阵。`review.html`汇总真实游戏画面与最终GLB回读图。不能用早期碰撞批次或旧motion-r4四项基础检查替代本次角色专项。
 
-实测机器 M5 Pro / 48GB，Chrome155 Metal；1080p、1440p 实际 drawing buffer。没有 M1 Air/GPU 余量认证，没有全实例/全驾驶场景认证。Astro check 88 文件 0 errors / 0 warnings；build 成功。其余未验证项见 `general-audit.md`。
+实测机器 M5 Pro / 48GB，Chrome155 Metal；1080p、1440p实际drawing buffer。没有M1 Air/GPU余量认证，没有全实例/全驾驶场景认证。新候选Astro check 94文件，0 errors / 0 warnings；本地build成功。其余未验证项见`general-audit.md`。

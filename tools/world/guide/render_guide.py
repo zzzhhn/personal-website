@@ -1,6 +1,7 @@
 """Renders from a FRESH import of a G24 GLB (never the .blend).
 Run: Blender -b --factory-startup --python-exit-code 1 -P render_guide.py -- GLB OUTDIR MODE
-MODE: sixview | poses | video   (video = 10 s normal-speed playback, 1920x1080, H.264 mp4)
+MODE: sixview | poses | wrist | extremes | video   (video = 10 s normal-speed playback, 1920x1080, H.264 mp4)
+extremes = A6 close-ups (armpit, knee pit, hip/crotch) at the measured peak-flex frames of Run/Jump/Land.
 """
 import bpy, hashlib, json, math, os, sys
 from mathutils import Vector
@@ -90,6 +91,50 @@ elif mode == 'wrist':
             aim(d, c, 0.32, 3)
             sc.render.filepath = os.path.join(out, f'wrist_R_{clip}_{int(t*1000):04d}_{vn}.png')
             bpy.ops.render.render(write_still=True)
+elif mode == 'extremes':
+    sc.render.resolution_x, sc.render.resolution_y = 800, 800
+    W = lambda n: (arm.matrix_world @ arm.pose.bones[n].head, arm.matrix_world @ arm.pose.bones[n].tail)
+
+    def ang(a, b):
+        (h1, t1), (h2, t2) = W(a), W(b)
+        return math.degrees((t1 - h1).angle(t2 - h2))
+    picks = {}
+    for clip in ('Run', 'Jump', 'Land'):
+        a = ACTS[clip]
+        for f2 in range(2 * int(a.frame_range[0]), 2 * int(a.frame_range[1]) + 1):
+            t = (f2 / 2 - a.frame_range[0]) / 60
+            use(clip, t)
+            for s in 'RL':
+                m = dict(knee=ang(f'thigh.{s}', f'shin.{s}'), hip=ang('pelvis', f'thigh.{s}'),
+                         armpit=ang('chest', f'upperarm.{s}'))
+                for k, v in m.items():
+                    key = (k, s, clip)
+                    # knee: thigh/shin angle, max = deepest flex. hip: pelvis axis points UP and the thigh
+                    # DOWN, so hip flexion lowers the angle: min = deepest flex. armpit: chest axis up, arm
+                    # down; max = upper arm closest to the flank = tightest armpit.
+                    if key not in picks or (v < picks[key][2] if k == 'hip' else v > picks[key][2]):
+                        picks[key] = (clip, t, v)
+    shots = []
+    for (k, s, clip), (c_, t, v) in sorted(picks.items()):
+        if clip != 'Run' and not (k == 'knee' and clip in ('Jump', 'Land')):
+            continue
+        shots.append((k, s, clip, t, v))
+    log = []
+    for k, s, clip, t, v in shots:
+        use(clip, t)
+        side = -1 if s == 'R' else 1
+        if k == 'knee':
+            c = W(f'shin.{s}')[0]; views = (('outside', (0.15, side, 0.1)), ('behind', (-1, side * 0.35, 0.15)))
+        elif k == 'hip':
+            c = W(f'thigh.{s}')[0]; views = (('front_low', (1, side * 0.4, -0.05)), ('outside', (0.1, side, 0.05)))
+        else:
+            c = W(f'upperarm.{s}')[0] + Vector((0, 0, -0.08)); views = (('back', (-1, side * 0.5, 0.2)), ('outside', (0.2, side, 0.05)))
+        for vn, d in views:
+            aim(d, c, 0.42, 3)
+            fn = f'x_{k}_{s}_{clip}_{int(round(t * 1000)):04d}_{vn}.png'
+            sc.render.filepath = os.path.join(out, fn); bpy.ops.render.render(write_still=True)
+            log.append(dict(file=fn, joint=k, side=s, clip=clip, t_s=round(t, 4), angle_deg=round(v, 1)))
+    json.dump(log, open(os.path.join(out, 'extremes.json'), 'w'), indent=1)
 elif mode == 'video':
     # Normal speed: each clip is played at 30 fps in real time, concatenated via NLA strips.
     seq = [('Idle', 2.4), ('Walk', 2.4), ('Run', 2.4), ('Jump', 0.5), ('Jump_hold', 0.4), ('Land', 0.4), ('Idle', 1.5)]

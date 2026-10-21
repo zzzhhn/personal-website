@@ -1,0 +1,5606 @@
+{
+  "source": "/Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/guide/blend/G24.blend",
+  "source_sha256": "70fdcd4843388436404bdc4863768cd35e845e4ad6a5417a25c3c712212a3997",
+  "associated_glb_sha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7",
+  "blender": "4.2.23 LTS",
+  "method": "triangulated evaluated largest connected body shell; BVHTree triangle intersection followed by clipped edge/ray-triangle witnesses",
+  "source_reference": "https://raw.githubusercontent.com/blender/blender/v4.2.23/source/blender/python/mathutils/mathutils_bvhtree.cc#L485-L513",
+  "scope": "native all closed shells individually; cross-shell attachment relations excluded; integer and half keyframes at 60 fps",
+  "limits": "BVH and ray witnesses use floating point; exact rational predicate only resolves no-witness single-shared-vertex contacts; shared-edge pairs excluded; coplanar cases not exhaustive; remaining hits stay unresolved errors",
+  "shared_vertex_policy": "exclude only contact at the shared vertex",
+  "unresolved_shared_vertex_policy": "no float ray witness: exact rational plane-line cone classification; coplanar/degenerate stays unresolved; resolved examples retained",
+  "epsilon_m": 1e-06,
+  "imported_seam_merge_m": null,
+  "raw_vertices": 1011,
+  "adjacency_vertices": 1011,
+  "body_vertices": 426,
+  "component_sizes": [
+    426,
+    201,
+    78,
+    58,
+    58,
+    50,
+    50,
+    24,
+    24,
+    24,
+    18
+  ],
+  "clips": {
+    "Idle": {
+      "samples": 289,
+      "rows": [
+        {
+          "time_s": 0.0,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.008333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.016666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.025,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.03333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.041666666666666664,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.05,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.058333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.06666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.075,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.08333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.09166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.1,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.10833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.11666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.125,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 2,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.13333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.14166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.15,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.15833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.16666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.175,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.18333333333333332,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.19166666666666668,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.2,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.20833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.21666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.225,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 2,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.23333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.24166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.25,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.25833333333333336,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.26666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.275,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.2833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.2916666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.3,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.30833333333333335,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.31666666666666665,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.325,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.3333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.3416666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.35,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.35833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.36666666666666664,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.375,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.38333333333333336,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.39166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.4,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.4083333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.4166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.425,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.43333333333333335,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.44166666666666665,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.45,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.4583333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.4666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.475,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 2,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.48333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.49166666666666664,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5083333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.525,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 2,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5416666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.55,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5583333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.575,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5916666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.6,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.6083333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.6166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.625,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.6333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.6416666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.65,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.6583333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.6666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.675,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.6833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.6916666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.7,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.7083333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.7166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.725,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.7333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.7416666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.75,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.7583333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.7666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.775,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.7833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.7916666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.8,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.8083333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.8166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.825,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.8333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.8416666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.85,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.8583333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.8666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.875,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.8833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.8916666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.9,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.9083333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.9166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.925,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.9333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.9416666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.95,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.9583333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.9666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.975,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.9833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.9916666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.0,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.0083333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.0166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.025,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.0333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.0416666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.05,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.0583333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.0666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.075,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.0833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.0916666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.1,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.1083333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.1166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.125,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.1333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.1416666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.15,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.1583333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.1666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.175,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.1833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.1916666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.2,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.2083333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.2166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.225,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.2333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.2416666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.25,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.2583333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.2666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.275,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.2833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.2916666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.3,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.3083333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.3166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.325,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.3333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.3416666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.35,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.3583333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.3666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.375,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.3833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.3916666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.4,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.4083333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.4166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.425,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.4333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.4416666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.45,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.4583333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.4666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.475,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.4833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.4916666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.5,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.5083333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.5166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.525,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.5333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.5416666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.55,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.5583333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.5666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.575,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.5833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 2,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.5916666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.6,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.6083333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.6166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.625,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.6333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.6416666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.65,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.6583333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.6666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.675,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.6833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.6916666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.7,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.7083333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.7166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.725,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.7333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.7416666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.75,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.7583333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.7666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.775,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.7833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.7916666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.8,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.8083333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.8166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.825,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.8333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.8416666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.85,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.8583333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.8666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.875,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.8833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.8916666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.9,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.9083333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.9166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.925,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.9333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.9416666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.95,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.9583333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.9666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.975,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.9833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 1.9916666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.0,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.0083333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.0166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.025,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.033333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.0416666666666665,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.05,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.058333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.066666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.075,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.0833333333333335,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.091666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.1,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.1083333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.1166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.125,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.1333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.1416666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.15,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.158333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.1666666666666665,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.175,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.183333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.191666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.2,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.2083333333333335,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.216666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.225,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.2333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.2416666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.25,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.2583333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.2666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.275,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.283333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.2916666666666665,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.3,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.308333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.316666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.325,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.3333333333333335,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.341666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.35,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.3583333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.3666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.375,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.3833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.3916666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 2.4,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        }
+      ],
+      "worst": {
+        "time_s": 0.0,
+        "cases": []
+      },
+      "resolved_vertex_contact_examples": [
+        {
+          "time_s": 0.10833333333333334,
+          "cases": [
+            {
+              "triangles": [
+                1453,
+                1485
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.05112353339791298,
+                    -0.18799996376037598,
+                    0.01799977943301201
+                  ],
+                  [
+                    0.13600006699562073,
+                    -0.1879999339580536,
+                    0.05999980494379997
+                  ],
+                  [
+                    0.05112352967262268,
+                    -0.18799996376037598,
+                    0.05999979004263878
+                  ]
+                ],
+                [
+                  [
+                    0.05112353339791298,
+                    -0.18799996376037598,
+                    0.01399978343397379
+                  ],
+                  [
+                    0.13600008189678192,
+                    -0.1879999339580536,
+                    0.017999792471528053
+                  ],
+                  [
+                    0.05112353339791298,
+                    -0.18799996376037598,
+                    0.01799977943301201
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.11666666666666667,
+          "cases": [
+            {
+              "triangles": [
+                1447,
+                1494
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.04335504770278931,
+                    -0.1957685351371765,
+                    -3.964692396607461e-08
+                  ],
+                  [
+                    -0.02935481071472168,
+                    -0.1957685649394989,
+                    0.01799994334578514
+                  ],
+                  [
+                    -0.02935480698943138,
+                    -0.1957685649394989,
+                    -5.6982301543939684e-08
+                  ]
+                ],
+                [
+                  [
+                    0.04335504770278931,
+                    -0.1957685351371765,
+                    0.017999961972236633
+                  ],
+                  [
+                    -0.029354862868785858,
+                    -0.1957685649394989,
+                    0.2319999784231186
+                  ],
+                  [
+                    -0.02935481071472168,
+                    -0.1957685649394989,
+                    0.01799994334578514
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.125,
+          "cases": [
+            {
+              "triangles": [
+                1535,
+                1551
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.16000013053417206,
+                    0.16400007903575897,
+                    0.014000041410326958
+                  ],
+                  [
+                    0.16000011563301086,
+                    0.052000079303979874,
+                    0.01800001785159111
+                  ],
+                  [
+                    0.16000011563301086,
+                    0.052000079303979874,
+                    0.014000020921230316
+                  ]
+                ],
+                [
+                  [
+                    0.16000013053417206,
+                    0.16400007903575897,
+                    0.0180000402033329
+                  ],
+                  [
+                    0.16000010073184967,
+                    0.05200007185339928,
+                    0.06000002473592758
+                  ],
+                  [
+                    0.16000011563301086,
+                    0.052000079303979874,
+                    0.01800001785159111
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            },
+            {
+              "triangles": [
+                1547,
+                1594
+              ],
+              "coordinates": [
+                [
+                  [
+                    -0.029354829341173172,
+                    0.020231541246175766,
+                    -3.239722801140488e-08
+                  ],
+                  [
+                    -0.08076845109462738,
+                    0.07164517790079117,
+                    0.017999963834881783
+                  ],
+                  [
+                    -0.08076844364404678,
+                    0.07164517790079117,
+                    -3.4599828779846575e-08
+                  ]
+                ],
+                [
+                  [
+                    -0.02935483306646347,
+                    0.020231537520885468,
+                    0.01799996756017208
+                  ],
+                  [
+                    -0.08076849579811096,
+                    0.07164513319730759,
+                    0.2319999486207962
+                  ],
+                  [
+                    -0.08076845109462738,
+                    0.07164517790079117,
+                    0.017999963834881783
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.15833333333333333,
+          "cases": [
+            {
+              "triangles": [
+                1545,
+                1588
+              ],
+              "coordinates": [
+                [
+                  [
+                    -0.08076855540275574,
+                    0.1443549394607544,
+                    -1.247127983106111e-07
+                  ],
+                  [
+                    -0.029354915022850037,
+                    0.1957685649394989,
+                    0.017999878153204918
+                  ],
+                  [
+                    -0.029354915022850037,
+                    0.1957685649394989,
+                    -1.2327632248343434e-07
+                  ]
+                ],
+                [
+                  [
+                    -0.08076855540275574,
+                    0.1443549394607544,
+                    0.01799987629055977
+                  ],
+                  [
+                    -0.02935490757226944,
+                    0.1957685649394989,
+                    0.23199988901615143
+                  ],
+                  [
+                    -0.029354915022850037,
+                    0.1957685649394989,
+                    0.017999878153204918
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.20833333333333334,
+          "cases": [
+            {
+              "triangles": [
+                1447,
+                1494
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.04335483908653259,
+                    -0.19576846063137054,
+                    -1.9393992545246874e-07
+                  ],
+                  [
+                    -0.029355015605688095,
+                    -0.19576846063137054,
+                    0.017999812960624695
+                  ],
+                  [
+                    -0.029355015605688095,
+                    -0.19576846063137054,
+                    -1.8743915575214487e-07
+                  ]
+                ],
+                [
+                  [
+                    0.04335484281182289,
+                    -0.19576846063137054,
+                    0.017999807372689247
+                  ],
+                  [
+                    -0.029354993253946304,
+                    -0.19576847553253174,
+                    0.23199982941150665
+                  ],
+                  [
+                    -0.029355015605688095,
+                    -0.19576846063137054,
+                    0.017999812960624695
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.225,
+          "cases": [
+            {
+              "triangles": [
+                1582,
+                1586
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.05112345889210701,
+                    0.18799999356269836,
+                    0.017999835312366486
+                  ],
+                  [
+                    0.04335491731762886,
+                    0.1957685351371765,
+                    0.017999835312366486
+                  ],
+                  [
+                    0.04335491731762886,
+                    0.1957685351371765,
+                    0.23199988901615143
+                  ]
+                ],
+                [
+                  [
+                    0.04335491731762886,
+                    0.1957685351371765,
+                    0.23199988901615143
+                  ],
+                  [
+                    0.07512347400188446,
+                    0.16399997472763062,
+                    0.08399984985589981
+                  ],
+                  [
+                    0.05112345889210701,
+                    0.18799999356269836,
+                    0.059999845921993256
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            },
+            {
+              "triangles": [
+                1447,
+                1494
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.043354861438274384,
+                    -0.19576849043369293,
+                    -1.9897392178336304e-07
+                  ],
+                  [
+                    -0.02935498207807541,
+                    -0.19576849043369293,
+                    0.017999811097979546
+                  ],
+                  [
+                    -0.029354985803365707,
+                    -0.19576849043369293,
+                    -1.903062241126463e-07
+                  ]
+                ],
+                [
+                  [
+                    0.043354861438274384,
+                    -0.19576849043369293,
+                    0.0179998017847538
+                  ],
+                  [
+                    -0.02935495227575302,
+                    -0.19576850533485413,
+                    0.23199984431266785
+                  ],
+                  [
+                    -0.02935498207807541,
+                    -0.19576849043369293,
+                    0.017999811097979546
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        }
+      ]
+    },
+    "Walk": {
+      "samples": 73,
+      "rows": [
+        {
+          "time_s": 0.0,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.008333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.016666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.025,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.03333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.041666666666666664,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.05,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.058333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.06666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.075,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.08333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.09166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.1,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.10833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.11666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.125,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.13333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.14166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.15,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.15833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.16666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.175,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.18333333333333332,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.19166666666666668,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.2,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.20833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.21666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.225,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.23333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.24166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.25,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.25833333333333336,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.26666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.275,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.2833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.2916666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.3,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.30833333333333335,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.31666666666666665,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.325,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.3333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.3416666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.35,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.35833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.36666666666666664,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.375,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.38333333333333336,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.39166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.4,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.4083333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.4166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.425,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.43333333333333335,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.44166666666666665,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.45,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 2,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.4583333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.4666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.475,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.48333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.49166666666666664,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5083333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.525,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5416666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.55,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5583333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.575,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5916666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.6,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        }
+      ],
+      "worst": {
+        "time_s": 0.0,
+        "cases": []
+      },
+      "resolved_vertex_contact_examples": [
+        {
+          "time_s": 0.0,
+          "cases": [
+            {
+              "triangles": [
+                1549,
+                1581
+              ],
+              "coordinates": [
+                [
+                  [
+                    -0.1250486969947815,
+                    0.02000003308057785,
+                    0.03966088220477104
+                  ],
+                  [
+                    -0.03271026909351349,
+                    0.020000053569674492,
+                    0.06067613884806633
+                  ],
+                  [
+                    -0.1152394488453865,
+                    0.02000003308057785,
+                    0.08049933612346649
+                  ]
+                ],
+                [
+                  [
+                    -0.12598291039466858,
+                    0.02000003308057785,
+                    0.03577151149511337
+                  ],
+                  [
+                    -0.042519524693489075,
+                    0.020000053569674492,
+                    0.01983768306672573
+                  ],
+                  [
+                    -0.1250486969947815,
+                    0.02000003308057785,
+                    0.03966088220477104
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.03333333333333333,
+          "cases": [
+            {
+              "triangles": [
+                1537,
+                1557
+              ],
+              "coordinates": [
+                [
+                  [
+                    -0.14613750576972961,
+                    0.17999997735023499,
+                    0.09541671723127365
+                  ],
+                  [
+                    -0.08813311159610748,
+                    0.17999999225139618,
+                    0.02056010812520981
+                  ],
+                  [
+                    -0.16448384523391724,
+                    0.17999997735023499,
+                    0.0576355904340744
+                  ]
+                ],
+                [
+                  [
+                    -0.16448384523391724,
+                    0.17999997735023499,
+                    0.0576355904340744
+                  ],
+                  [
+                    -0.08988039195537567,
+                    0.17999999225139618,
+                    0.01696190983057022
+                  ],
+                  [
+                    -0.16623111069202423,
+                    0.17999997735023499,
+                    0.054037392139434814
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.125,
+          "cases": [
+            {
+              "triangles": [
+                1431,
+                1435
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.1228218525648117,
+                    -0.01229196134954691,
+                    0.23179234564304352
+                  ],
+                  [
+                    0.050112005323171616,
+                    -0.012289370410144329,
+                    0.23179276287555695
+                  ],
+                  [
+                    -0.0013034716248512268,
+                    -0.06370115280151367,
+                    0.23179969191551208
+                  ]
+                ],
+                [
+                  [
+                    -0.0013034716248512268,
+                    -0.06370115280151367,
+                    0.23179969191551208
+                  ],
+                  [
+                    0.050105731934309006,
+                    -0.18782645463943481,
+                    0.2318154126405716
+                  ],
+                  [
+                    0.17423105239868164,
+                    -0.13641726970672607,
+                    0.23180806636810303
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.16666666666666666,
+          "cases": [
+            {
+              "triangles": [
+                1537,
+                1557
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.07761973887681961,
+                    0.1799999475479126,
+                    0.1672278642654419
+                  ],
+                  [
+                    0.16152971982955933,
+                    0.17999997735023499,
+                    0.12332861870527267
+                  ],
+                  [
+                    0.07667466998100281,
+                    0.1799999475479126,
+                    0.12523849308490753
+                  ]
+                ],
+                [
+                  [
+                    0.07667466998100281,
+                    0.1799999475479126,
+                    0.12523849308490753
+                  ],
+                  [
+                    0.1614397168159485,
+                    0.17999997735023499,
+                    0.11932963132858276
+                  ],
+                  [
+                    0.07658465951681137,
+                    0.1799999475479126,
+                    0.12123951315879822
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.18333333333333332,
+          "cases": [
+            {
+              "triangles": [
+                1535,
+                1551
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.24279800057411194,
+                    0.15600013732910156,
+                    0.12211734056472778
+                  ],
+                  [
+                    0.2426515817642212,
+                    0.04400013014674187,
+                    0.1261146366596222
+                  ],
+                  [
+                    0.24279803037643433,
+                    0.04400013014674187,
+                    0.1221173107624054
+                  ]
+                ],
+                [
+                  [
+                    0.2426515519618988,
+                    0.15600013732910156,
+                    0.1261146515607834
+                  ],
+                  [
+                    0.24111388623714447,
+                    0.04400012269616127,
+                    0.16808649897575378
+                  ],
+                  [
+                    0.2426515817642212,
+                    0.04400013014674187,
+                    0.1261146366596222
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.35,
+          "cases": [
+            {
+              "triangles": [
+                1445,
+                1505
+              ],
+              "coordinates": [
+                [
+                  [
+                    -0.3087548315525055,
+                    -0.1363549530506134,
+                    0.1001715362071991
+                  ],
+                  [
+                    -0.300998330116272,
+                    -0.06364510953426361,
+                    0.11641458421945572
+                  ],
+                  [
+                    -0.3087548315525055,
+                    -0.06364510953426361,
+                    0.1001715287566185
+                  ]
+                ],
+                [
+                  [
+                    -0.300998330116272,
+                    -0.1363549530506134,
+                    0.11641459167003632
+                  ],
+                  [
+                    -0.2087821364402771,
+                    -0.06364509463310242,
+                    0.3095264732837677
+                  ],
+                  [
+                    -0.300998330116272,
+                    -0.06364510953426361,
+                    0.11641458421945572
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        }
+      ]
+    },
+    "Run": {
+      "samples": 49,
+      "rows": [
+        {
+          "time_s": 0.0,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.008333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.016666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.025,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.03333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.041666666666666664,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.05,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 3,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.058333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.06666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.075,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.08333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.09166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.1,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.10833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.11666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.125,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.13333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.14166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.15,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.15833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.16666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.175,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.18333333333333332,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.19166666666666668,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.2,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.20833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.21666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.225,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.23333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.24166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.25,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.25833333333333336,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.26666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.275,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.2833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.2916666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.3,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.30833333333333335,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.31666666666666665,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.325,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.3333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.3416666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.35,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.35833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.36666666666666664,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.375,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.38333333333333336,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.39166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.4,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        }
+      ],
+      "worst": {
+        "time_s": 0.0,
+        "cases": []
+      },
+      "resolved_vertex_contact_examples": [
+        {
+          "time_s": 0.0,
+          "cases": [
+            {
+              "triangles": [
+                1537,
+                1557
+              ],
+              "coordinates": [
+                [
+                  [
+                    -0.15668098628520966,
+                    0.16999998688697815,
+                    0.16055744886398315
+                  ],
+                  [
+                    -0.09137021005153656,
+                    0.17000001668930054,
+                    0.09198249131441116
+                  ],
+                  [
+                    -0.1710931658744812,
+                    0.16999998688697815,
+                    0.12110760062932968
+                  ]
+                ],
+                [
+                  [
+                    -0.1710931658744812,
+                    0.16999998688697815,
+                    0.12110760062932968
+                  ],
+                  [
+                    -0.09274278581142426,
+                    0.17000001668930054,
+                    0.0882253646850586
+                  ],
+                  [
+                    -0.1724657565355301,
+                    0.16999998688697815,
+                    0.11735047399997711
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.016666666666666666,
+          "cases": [
+            {
+              "triangles": [
+                1447,
+                1494
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.2955550253391266,
+                    -0.1777685284614563,
+                    -9.435568415483431e-08
+                  ],
+                  [
+                    0.2228451520204544,
+                    -0.1777685582637787,
+                    0.0179999191313982
+                  ],
+                  [
+                    0.2228451520204544,
+                    -0.1777685582637787,
+                    -8.352106561915207e-08
+                  ]
+                ],
+                [
+                  [
+                    0.2955550253391266,
+                    -0.1777685284614563,
+                    0.017999907955527306
+                  ],
+                  [
+                    0.22284521162509918,
+                    -0.1777685582637787,
+                    0.2319999635219574
+                  ],
+                  [
+                    0.2228451520204544,
+                    -0.1777685582637787,
+                    0.0179999191313982
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.05,
+          "cases": [
+            {
+              "triangles": [
+                1537,
+                1557
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.04667637124657631,
+                    0.17000003159046173,
+                    0.2118714451789856
+                  ],
+                  [
+                    0.12486162781715393,
+                    0.17000004649162292,
+                    0.15843838453292847
+                  ],
+                  [
+                    0.04081552475690842,
+                    0.17000003159046173,
+                    0.17028236389160156
+                  ]
+                ],
+                [
+                  [
+                    0.04081552475690842,
+                    0.17000003159046173,
+                    0.17028236389160156
+                  ],
+                  [
+                    0.12430346012115479,
+                    0.17000004649162292,
+                    0.15447750687599182
+                  ],
+                  [
+                    0.040257349610328674,
+                    0.17000003159046173,
+                    0.1663215160369873
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            },
+            {
+              "triangles": [
+                1487,
+                1490
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.15555506944656372,
+                    -0.0022314442321658134,
+                    0.23200002312660217
+                  ],
+                  [
+                    0.20696869492530823,
+                    -0.053645066916942596,
+                    0.23200002312660217
+                  ],
+                  [
+                    0.20696869492530823,
+                    -0.053645044565200806,
+                    0.08400001376867294
+                  ]
+                ],
+                [
+                  [
+                    0.15555506944656372,
+                    -0.0022314442321658134,
+                    0.23200002312660217
+                  ],
+                  [
+                    0.18732362985610962,
+                    -0.0339999757707119,
+                    0.08400001376867294
+                  ],
+                  [
+                    0.16332364082336426,
+                    -0.009999977424740791,
+                    0.06000000983476639
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            },
+            {
+              "triangles": [
+                1533,
+                1565
+              ],
+              "coordinates": [
+                [
+                  [
+                    -0.04138726368546486,
+                    0.1777685582637787,
+                    0.1636887490749359
+                  ],
+                  [
+                    0.03312298655509949,
+                    0.17776858806610107,
+                    0.17136642336845398
+                  ],
+                  [
+                    0.030611196532845497,
+                    0.17776858806610107,
+                    0.15354253351688385
+                  ]
+                ],
+                [
+                  [
+                    -0.03887547180056572,
+                    0.1777685582637787,
+                    0.18151265382766724
+                  ],
+                  [
+                    0.06298540532588959,
+                    0.17776858806610107,
+                    0.3832726776599884
+                  ],
+                  [
+                    0.03312298655509949,
+                    0.17776858806610107,
+                    0.17136642336845398
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.13333333333333333,
+          "cases": [
+            {
+              "triangles": [
+                1547,
+                1594
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.32328903675079346,
+                    0.0022315187379717827,
+                    0.07242132723331451
+                  ],
+                  [
+                    0.27177709341049194,
+                    0.053645141422748566,
+                    0.09013812243938446
+                  ],
+                  [
+                    0.27187615633010864,
+                    0.05364514887332916,
+                    0.07213839143514633
+                  ]
+                ],
+                [
+                  [
+                    0.32318997383117676,
+                    0.0022315112873911858,
+                    0.09042105823755264
+                  ],
+                  [
+                    0.270599365234375,
+                    0.0536450520157814,
+                    0.30413490533828735
+                  ],
+                  [
+                    0.27177709341049194,
+                    0.053645141422748566,
+                    0.09013812243938446
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.16666666666666666,
+          "cases": [
+            {
+              "triangles": [
+                1452,
+                1484
+              ],
+              "coordinates": [
+                [
+                  [
+                    -0.22653719782829285,
+                    -0.16999997198581696,
+                    0.080659881234169
+                  ],
+                  [
+                    -0.1509530395269394,
+                    -0.16999998688697815,
+                    0.042045652866363525
+                  ],
+                  [
+                    -0.13184528052806854,
+                    -0.16999998688697815,
+                    0.07944746315479279
+                  ]
+                ],
+                [
+                  [
+                    -0.2283569872379303,
+                    -0.16999997198581696,
+                    0.0770978033542633
+                  ],
+                  [
+                    -0.15277279913425446,
+                    -0.16999998688697815,
+                    0.03848358243703842
+                  ],
+                  [
+                    -0.1509530395269394,
+                    -0.16999998688697815,
+                    0.042045652866363525
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.18333333333333332,
+          "cases": [
+            {
+              "triangles": [
+                1452,
+                1484
+              ],
+              "coordinates": [
+                [
+                  [
+                    -0.2108897566795349,
+                    -0.17000001668930054,
+                    0.09933128952980042
+                  ],
+                  [
+                    -0.13330011069774628,
+                    -0.16999998688697815,
+                    0.0649237334728241
+                  ],
+                  [
+                    -0.11627398431301117,
+                    -0.16999998688697815,
+                    0.10331790894269943
+                  ]
+                ],
+                [
+                  [
+                    -0.21251127123832703,
+                    -0.17000001668930054,
+                    0.09567469358444214
+                  ],
+                  [
+                    -0.13492165505886078,
+                    -0.16999998688697815,
+                    0.061267148703336716
+                  ],
+                  [
+                    -0.13330011069774628,
+                    -0.16999998688697815,
+                    0.0649237334728241
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        }
+      ]
+    },
+    "Jump": {
+      "samples": 61,
+      "rows": [
+        {
+          "time_s": 0.0,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.008333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.016666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.025,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 2,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.03333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.041666666666666664,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 2,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.05,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.058333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 2,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.06666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.075,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.08333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.09166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.1,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.10833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.11666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.125,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.13333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.14166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.15,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.15833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.16666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.175,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.18333333333333332,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.19166666666666668,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.2,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.20833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.21666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.225,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.23333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.24166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.25,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.25833333333333336,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.26666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 2,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.275,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.2833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.2916666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.3,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.30833333333333335,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.31666666666666665,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.325,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.3333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.3416666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.35,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.35833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.36666666666666664,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.375,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.38333333333333336,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.39166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.4,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.4083333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.4166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.425,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.43333333333333335,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.44166666666666665,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.45,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.4583333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.4666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.475,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.48333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.49166666666666664,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.5,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        }
+      ],
+      "worst": {
+        "time_s": 0.0,
+        "cases": []
+      },
+      "resolved_vertex_contact_examples": [
+        {
+          "time_s": 0.025,
+          "cases": [
+            {
+              "triangles": [
+                1241,
+                1245
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.05228205397725105,
+                    -0.17934700846672058,
+                    1.1331161260604858
+                  ],
+                  [
+                    -0.04175199568271637,
+                    -0.11084256321191788,
+                    1.1261965036392212
+                  ],
+                  [
+                    -0.07766981422901154,
+                    -2.0302923786630345e-08,
+                    1.1235533952713013
+                  ]
+                ],
+                [
+                  [
+                    0.2625485360622406,
+                    -0.11084252595901489,
+                    1.148589015007019
+                  ],
+                  [
+                    -0.07766981422901154,
+                    -2.0302923786630345e-08,
+                    1.1235533952713013
+                  ],
+                  [
+                    0.05228200554847717,
+                    0.17934700846672058,
+                    1.1331161260604858
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            },
+            {
+              "triangles": [
+                1241,
+                1242
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.05228205397725105,
+                    -0.17934700846672058,
+                    1.1331161260604858
+                  ],
+                  [
+                    -0.04175199568271637,
+                    -0.11084256321191788,
+                    1.1261965036392212
+                  ],
+                  [
+                    -0.07766981422901154,
+                    -2.0302923786630345e-08,
+                    1.1235533952713013
+                  ]
+                ],
+                [
+                  [
+                    -0.07766981422901154,
+                    -2.0302923786630345e-08,
+                    1.1235533952713013
+                  ],
+                  [
+                    -0.04175202548503876,
+                    0.11084252595901489,
+                    1.1261965036392212
+                  ],
+                  [
+                    0.05228200554847717,
+                    0.17934700846672058,
+                    1.1331161260604858
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.03333333333333333,
+          "cases": [
+            {
+              "triangles": [
+                1236,
+                1245
+              ],
+              "coordinates": [
+                [
+                  [
+                    -0.08348169922828674,
+                    -2.209283422871522e-09,
+                    1.1296982765197754
+                  ],
+                  [
+                    -0.07427841424942017,
+                    0.058273375034332275,
+                    1.130394697189331
+                  ],
+                  [
+                    -0.047569453716278076,
+                    0.11084254831075668,
+                    1.132415533065796
+                  ]
+                ],
+                [
+                  [
+                    0.25668418407440186,
+                    -0.1108425185084343,
+                    1.1554369926452637
+                  ],
+                  [
+                    -0.08348169922828674,
+                    -2.209283422871522e-09,
+                    1.1296982765197754
+                  ],
+                  [
+                    0.046450093388557434,
+                    0.17934702336788177,
+                    1.1395295858383179
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.041666666666666664,
+          "cases": [
+            {
+              "triangles": [
+                1547,
+                1594
+              ],
+              "coordinates": [
+                [
+                  [
+                    -0.04415767639875412,
+                    0.02072523906826973,
+                    0.020977739244699478
+                  ],
+                  [
+                    -0.09303247183561325,
+                    0.07213903218507767,
+                    0.045031849294900894
+                  ],
+                  [
+                    -0.09519781917333603,
+                    0.07213900983333588,
+                    0.027162566781044006
+                  ]
+                ],
+                [
+                  [
+                    -0.04199232906103134,
+                    0.02072526142001152,
+                    0.038847021758556366
+                  ],
+                  [
+                    -0.06728890538215637,
+                    0.07213930785655975,
+                    0.2574777901172638
+                  ],
+                  [
+                    -0.09303247183561325,
+                    0.07213903218507767,
+                    0.045031849294900894
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            },
+            {
+              "triangles": [
+                1437,
+                1469
+              ],
+              "coordinates": [
+                [
+                  [
+                    -0.044157687574625015,
+                    -0.020725218579173088,
+                    0.020977746695280075
+                  ],
+                  [
+                    0.030189499258995056,
+                    -0.020725039765238762,
+                    0.03010024130344391
+                  ],
+                  [
+                    0.028024151921272278,
+                    -0.02072501741349697,
+                    0.012230957858264446
+                  ]
+                ],
+                [
+                  [
+                    -0.04199234023690224,
+                    -0.02072524093091488,
+                    0.03884702920913696
+                  ],
+                  [
+                    0.055933088064193726,
+                    -0.020725304260849953,
+                    0.2425461709499359
+                  ],
+                  [
+                    0.030189499258995056,
+                    -0.020725039765238762,
+                    0.03010024130344391
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.058333333333333334,
+          "cases": [
+            {
+              "triangles": [
+                1537,
+                1557
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.036774735897779465,
+                    0.188849538564682,
+                    0.07875379174947739
+                  ],
+                  [
+                    0.11117776483297348,
+                    0.18884918093681335,
+                    0.02016865275800228
+                  ],
+                  [
+                    0.02812197059392929,
+                    0.18884947896003723,
+                    0.03765476495027542
+                  ]
+                ],
+                [
+                  [
+                    0.02812197059392929,
+                    0.18884947896003723,
+                    0.03765476495027542
+                  ],
+                  [
+                    0.11035369336605072,
+                    0.18884918093681335,
+                    0.01625446230173111
+                  ],
+                  [
+                    0.02729789912700653,
+                    0.18884947896003723,
+                    0.0337405763566494
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            },
+            {
+              "triangles": [
+                1235,
+                1244
+              ],
+              "coordinates": [
+                [
+                  [
+                    -0.07336544990539551,
+                    -0.11084257811307907,
+                    1.159065842628479
+                  ],
+                  [
+                    -0.10005491971969604,
+                    -0.05827341228723526,
+                    1.1568015813827515
+                  ],
+                  [
+                    -0.10925149917602539,
+                    -4.1752890922452934e-08,
+                    1.1560213565826416
+                  ]
+                ],
+                [
+                  [
+                    0.2306656539440155,
+                    -0.11084252595901489,
+                    1.1848591566085815
+                  ],
+                  [
+                    0.020585346966981888,
+                    -0.17934702336788177,
+                    1.1670364141464233
+                  ],
+                  [
+                    -0.10925149917602539,
+                    -4.1752890922452934e-08,
+                    1.1560213565826416
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.075,
+          "cases": [
+            {
+              "triangles": [
+                1441,
+                1461
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.030011309310793877,
+                    -0.029225507751107216,
+                    0.08762302994728088
+                  ],
+                  [
+                    0.09872666746377945,
+                    -0.029225144535303116,
+                    0.022459978237748146
+                  ],
+                  [
+                    0.017625050619244576,
+                    -0.02922545187175274,
+                    0.04749097675085068
+                  ]
+                ],
+                [
+                  [
+                    0.017625050619244576,
+                    -0.02922545187175274,
+                    0.04749097675085068
+                  ],
+                  [
+                    0.0975470244884491,
+                    -0.029225138947367668,
+                    0.01863788068294525
+                  ],
+                  [
+                    0.016445407643914223,
+                    -0.02922544628381729,
+                    0.04366888105869293
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.09166666666666666,
+          "cases": [
+            {
+              "triangles": [
+                1441,
+                1461
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.02361232414841652,
+                    -0.029571110382676125,
+                    0.09611385315656662
+                  ],
+                  [
+                    0.08658678829669952,
+                    -0.029570836573839188,
+                    0.025387365370988846
+                  ],
+                  [
+                    0.007885336875915527,
+                    -0.029571065679192543,
+                    0.05716950073838234
+                  ]
+                ],
+                [
+                  [
+                    0.007885336875915527,
+                    -0.029571065679192543,
+                    0.05716950073838234
+                  ],
+                  [
+                    0.08508898317813873,
+                    -0.02957083284854889,
+                    0.0216783806681633
+                  ],
+                  [
+                    0.006387528032064438,
+                    -0.029571061953902245,
+                    0.05346051603555679
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        }
+      ]
+    },
+    "Land": {
+      "samples": 49,
+      "rows": [
+        {
+          "time_s": 0.0,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.008333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 2,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.016666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.025,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.03333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.041666666666666664,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.05,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.058333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.06666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.075,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.08333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.09166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.1,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 2,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.10833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.11666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.125,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.13333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.14166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.15,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.15833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.16666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.175,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.18333333333333332,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.19166666666666668,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.2,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.20833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.21666666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.225,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.23333333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.24166666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.25,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.25833333333333336,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.26666666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 2,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.275,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.2833333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.2916666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.3,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.30833333333333335,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.31666666666666665,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.325,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.3333333333333333,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.3416666666666667,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.35,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.35833333333333334,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.36666666666666664,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.375,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.38333333333333336,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 1,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.39166666666666666,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        },
+        {
+          "time_s": 0.4,
+          "raw_pairs": 0,
+          "exact_shared_vertex_contacts": 0,
+          "segment_confirmed": 0,
+          "max_segment_m": 0.0
+        }
+      ],
+      "worst": {
+        "time_s": 0.0,
+        "cases": []
+      },
+      "resolved_vertex_contact_examples": [
+        {
+          "time_s": 0.008333333333333333,
+          "cases": [
+            {
+              "triangles": [
+                1537,
+                1557
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.051134299486875534,
+                    0.18801423907279968,
+                    0.059371888637542725
+                  ],
+                  [
+                    0.13601085543632507,
+                    0.18801438808441162,
+                    0.017371872439980507
+                  ],
+                  [
+                    0.05113430321216583,
+                    0.18801486492156982,
+                    0.017371874302625656
+                  ]
+                ],
+                [
+                  [
+                    0.05113430321216583,
+                    0.18801486492156982,
+                    0.017371874302625656
+                  ],
+                  [
+                    0.13601085543632507,
+                    0.1880144476890564,
+                    0.013371875509619713
+                  ],
+                  [
+                    0.05113430693745613,
+                    0.1880149245262146,
+                    0.013371877372264862
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            },
+            {
+              "triangles": [
+                1453,
+                1485
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.05113425478339195,
+                    -0.18801476061344147,
+                    0.01737186312675476
+                  ],
+                  [
+                    0.1360108107328415,
+                    -0.18801367282867432,
+                    0.059371862560510635
+                  ],
+                  [
+                    0.05113425478339195,
+                    -0.18801413476467133,
+                    0.05937187373638153
+                  ]
+                ],
+                [
+                  [
+                    0.05113425478339195,
+                    -0.18801482021808624,
+                    0.013371866196393967
+                  ],
+                  [
+                    0.1360108107328415,
+                    -0.18801429867744446,
+                    0.017371850088238716
+                  ],
+                  [
+                    0.05113425478339195,
+                    -0.18801476061344147,
+                    0.01737186312675476
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.016666666666666666,
+          "cases": [
+            {
+              "triangles": [
+                1549,
+                1581
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.05112350359559059,
+                    0.02800002507865429,
+                    0.017999902367591858
+                  ],
+                  [
+                    0.13600003719329834,
+                    0.028000028803944588,
+                    0.059999898076057434
+                  ],
+                  [
+                    0.05112349987030029,
+                    0.02800002507865429,
+                    0.059999898076057434
+                  ]
+                ],
+                [
+                  [
+                    0.05112350732088089,
+                    0.02800002507865429,
+                    0.01399990450590849
+                  ],
+                  [
+                    0.13600003719329834,
+                    0.028000028803944588,
+                    0.01799989677965641
+                  ],
+                  [
+                    0.05112350359559059,
+                    0.02800002507865429,
+                    0.017999902367591858
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.025,
+          "cases": [
+            {
+              "triangles": [
+                1235,
+                1245
+              ],
+              "coordinates": [
+                [
+                  [
+                    -0.09780178964138031,
+                    -0.11084256321191788,
+                    1.1682368516921997
+                  ],
+                  [
+                    -0.12450817227363586,
+                    -0.058273397386074066,
+                    1.1661818027496338
+                  ],
+                  [
+                    -0.1337105631828308,
+                    -2.8243954730555743e-08,
+                    1.1654736995697021
+                  ]
+                ],
+                [
+                  [
+                    0.20642220973968506,
+                    -0.11084252595901489,
+                    1.1916459798812866
+                  ],
+                  [
+                    -0.1337105631828308,
+                    -2.8243954730555743e-08,
+                    1.1654736995697021
+                  ],
+                  [
+                    -0.003791436553001404,
+                    0.17934700846672058,
+                    1.1754705905914307
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.1,
+          "cases": [
+            {
+              "triangles": [
+                1537,
+                1557
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.05112358555197716,
+                    0.18800008296966553,
+                    0.059999980032444
+                  ],
+                  [
+                    0.1360001564025879,
+                    0.18800011277198792,
+                    0.01799996756017208
+                  ],
+                  [
+                    0.05112360045313835,
+                    0.18800008296966553,
+                    0.017999975010752678
+                  ]
+                ],
+                [
+                  [
+                    0.05112360045313835,
+                    0.18800008296966553,
+                    0.017999975010752678
+                  ],
+                  [
+                    0.1360001564025879,
+                    0.18800011277198792,
+                    0.013999971561133862
+                  ],
+                  [
+                    0.05112360417842865,
+                    0.18800008296966553,
+                    0.013999979011714458
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            },
+            {
+              "triangles": [
+                1535,
+                1551
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.16000017523765564,
+                    0.16400009393692017,
+                    0.013999962247908115
+                  ],
+                  [
+                    0.16000019013881683,
+                    0.05200009047985077,
+                    0.017999939620494843
+                  ],
+                  [
+                    0.16000019013881683,
+                    0.05200009047985077,
+                    0.013999941758811474
+                  ]
+                ],
+                [
+                  [
+                    0.16000017523765564,
+                    0.16400009393692017,
+                    0.017999961972236633
+                  ],
+                  [
+                    0.16000017523765564,
+                    0.05200008302927017,
+                    0.05999995023012161
+                  ],
+                  [
+                    0.16000019013881683,
+                    0.05200009047985077,
+                    0.017999939620494843
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.21666666666666667,
+          "cases": [
+            {
+              "triangles": [
+                1228,
+                1245
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.03262701630592346,
+                    0.17934700846672058,
+                    1.1197164058685303
+                  ],
+                  [
+                    0.09077136963605881,
+                    0.1885766237974167,
+                    1.1235920190811157
+                  ],
+                  [
+                    0.14891572296619415,
+                    0.1793469339609146,
+                    1.1274676322937012
+                  ]
+                ],
+                [
+                  [
+                    0.2429952472448349,
+                    -0.11084252595901489,
+                    1.1337385177612305
+                  ],
+                  [
+                    -0.09738767147064209,
+                    -3.033249029726903e-08,
+                    1.1110502481460571
+                  ],
+                  [
+                    0.03262701630592346,
+                    0.17934700846672058,
+                    1.1197164058685303
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        },
+        {
+          "time_s": 0.26666666666666666,
+          "cases": [
+            {
+              "triangles": [
+                1549,
+                1581
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.051123566925525665,
+                    0.028000028803944588,
+                    0.017999941483139992
+                  ],
+                  [
+                    0.13600009679794312,
+                    0.028000034391880035,
+                    0.05999995023012161
+                  ],
+                  [
+                    0.05112356320023537,
+                    0.028000028803944588,
+                    0.059999942779541016
+                  ]
+                ],
+                [
+                  [
+                    0.051123566925525665,
+                    0.028000028803944588,
+                    0.013999943621456623
+                  ],
+                  [
+                    0.1360001116991043,
+                    0.028000034391880035,
+                    0.01799994893372059
+                  ],
+                  [
+                    0.051123566925525665,
+                    0.028000028803944588,
+                    0.017999941483139992
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            },
+            {
+              "triangles": [
+                1447,
+                1494
+              ],
+              "coordinates": [
+                [
+                  [
+                    0.04335503280162811,
+                    -0.1957685351371765,
+                    -5.7639621076077674e-08
+                  ],
+                  [
+                    -0.029354829341173172,
+                    -0.1957685649394989,
+                    0.017999930307269096
+                  ],
+                  [
+                    -0.029354825615882874,
+                    -0.1957685649394989,
+                    -7.064115692401174e-08
+                  ]
+                ],
+                [
+                  [
+                    0.04335503280162811,
+                    -0.1957685351371765,
+                    0.01799994334578514
+                  ],
+                  [
+                    -0.02935488149523735,
+                    -0.1957685500383377,
+                    0.2319999486207962
+                  ],
+                  [
+                    -0.029354829341173172,
+                    -0.1957685649394989,
+                    0.017999930307269096
+                  ]
+                ]
+              ],
+              "classification": "exact_shared_vertex_only"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "rest": [],
+  "rest_resolved_vertex_contacts": []
+}

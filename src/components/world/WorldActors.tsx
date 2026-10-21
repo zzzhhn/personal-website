@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
+import { useEffect, useMemo, useRef, type RefObject } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { CapsuleCollider, CuboidCollider, RigidBody, useBeforePhysicsStep, useRapier, type RapierRigidBody } from '@react-three/rapier';
 import { Euler, Group, Material, Mesh, PerspectiveCamera, Quaternion, Raycaster, Vector3 } from 'three';
@@ -108,25 +108,21 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
   </RigidBody>;
 }
 
-/** Keep animation prop updates local to the visual. Ground transitions publish immediately;
- * velocity samples at 20 Hz while the mixer itself runs at the display frame rate. */
-function GuideVisual({ body, grounded, yaw, visible }: { body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; visible: boolean }) {
-  const elapsed = useRef(0);
-  const [motion, setMotion] = useState({ speedMps: 0, grounded: true, facing: 0 });
-  useFrame((_, dt) => {
-    elapsed.current += dt;
-    if (elapsed.current < .05 && motion.grounded === grounded.current) return;
-    elapsed.current = 0;
+/** Read the current body state at mixer time; React batching must not delay gait
+ * acceleration, braking, or contact transitions by several rendered frames. */
+function GuideVisual({ body, grounded, yaw, targetSpeed, visible }: { body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; targetSpeed: RefObject<number>; visible: boolean }) {
+  const readMotion = () => {
     const v = body.current?.linvel();
-    const next = { speedMps: v ? Math.hypot(v.x, v.z) : 0, grounded: grounded.current, facing: yaw.current };
-    if (Math.abs(next.speedMps - motion.speedMps) > .005 || next.grounded !== motion.grounded || next.facing !== motion.facing) setMotion(next);
-  });
-  return <WorldGuide {...motion} visible={visible} />;
+    return { speedMps: v ? Math.hypot(v.x, v.z) : 0, grounded: grounded.current, facing: yaw.current, targetSpeedMps:targetSpeed.current };
+  };
+  return <WorldGuide speedMps={0} grounded facing={0} visible={visible} readMotion={readMotion} />;
 }
 
 export default function WorldActors() {
   const player = useRef<RapierRigidBody>(null);
   const guideYaw = useRef(0);
+  const guideTargetSpeed = useRef(0);
+  const turnBeforeMove = useRef(false);
   const cars = useRef(new Map<VehicleId,Car>());
   const keys = useRef(new Set<string>());
   const actions = useRef({interact:false,jump:false,recover:false});
@@ -332,13 +328,26 @@ export default function WorldActors() {
       const z=Number(keys.current.has('KeyW'))-Number(keys.current.has('KeyS'));
       const magnitude=Math.hypot(x,z),speed=keys.current.has('ShiftLeft')||keys.current.has('ShiftRight')?4.2:1.8;
       // Movement follows the fixed camera's ground axes.
-      const vx=magnitude?(.8*x-.6*z)/magnitude*speed:0;
-      const vz=magnitude?(-.6*x-.8*z)/magnitude*speed:0;
+      let vx=magnitude?(.8*x-.6*z)/magnitude*speed:0;
+      let vz=magnitude?(-.6*x-.8*z)/magnitude*speed:0;
+      if (magnitude) {
+        const desiredYaw=Math.atan2(-vz,vx);
+        const difference=Math.atan2(Math.sin(desiredYaw-guideYaw.current),Math.cos(desiredYaw-guideYaw.current));
+        if (grounded.current && Math.hypot(velocity.x,velocity.z)<.5 && Math.abs(difference)>Math.PI/3)
+          turnBeforeMove.current=true;
+        if (!grounded.current) turnBeforeMove.current=false;
+        const yawStep=clamp(difference,-dt*(turnBeforeMove.current?24:12),dt*(turnBeforeMove.current?24:12));
+        guideYaw.current+=yawStep;
+        // Fable A3: low-speed large turns finish before movement accelerates.
+        // The same heading drives the visual model, so no second smoothing clock lags it.
+        if (Math.abs(difference-yawStep)<Math.PI/9) turnBeforeMove.current=false;
+        if (turnBeforeMove.current) { vx=0; vz=0; }
+      } else turnBeforeMove.current=false;
+      guideTargetSpeed.current=Math.hypot(vx,vz);
       const response=grounded.current?12:3;
       const factor=1-Math.exp(-response*dt),mass=player.current.mass();
       player.current.applyImpulse({x:(vx-velocity.x)*mass*factor,y:0,z:(vz-velocity.z)*mass*factor},true);
       if(actions.current.jump && grounded.current){player.current.setLinvel({x:velocity.x,y:5.7,z:velocity.z},true);grounded.current=false;}
-      if(magnitude)guideYaw.current=Math.atan2(-vz,vx);
       wetPlayer.current=advanceTimer(wetPlayer.current,p.y<WATER_Y,dt);
       if(wetPlayer.current>=RECOVERY_SECONDS || p.y< -80){const road=nearestRoadPoint(asTuple(p));resetBody(player.current,[road[0],road[1]+PLAYER_CENTER_HEIGHT,road[2]]);wetPlayer.current=0;}
     }
@@ -398,7 +407,7 @@ export default function WorldActors() {
           Horizontal impulse control handles braking; 10 cm soft CCD predicts landing contact. */}
       <CapsuleCollider name="player-capsule" args={[PLAYER_HALF_HEIGHT,PLAYER_RADIUS]} mass={72} friction={0} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={0}/>
       <group position={[0,-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),0]}>
-        <GuideVisual body={player} grounded={grounded} yaw={guideYaw} visible={!activeVehicle} />
+        <GuideVisual body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} visible={!activeVehicle} />
       </group>
     </RigidBody>
   </>;

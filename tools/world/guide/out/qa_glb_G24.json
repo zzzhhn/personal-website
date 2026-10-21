@@ -1,6 +1,6 @@
 {
  "glb": "../../../public/assets/world/guide/G24.glb",
- "sha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357",
+ "sha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7",
  "blender": "4.2.23 LTS",
  "objects": [
   [
@@ -23,7 +23,7 @@
   "Run_G24",
   "Walk_G24"
  ],
- "triangles": 2006,
+ "triangles": 1978,
  "triangles_equal_native": true,
  "bones": 18,
  "materials": {
@@ -155,77 +155,77 @@
   ]
  },
  "joint_parity_keyframes_max_m": 7.237325892396274e-07,
- "joint_parity_halfframes_max_m": 1.751231352333839e-05,
- "deformed_bounds_parity_max_m": 1.4126300811767578e-05,
+ "joint_parity_halfframes_max_m": 1.879908314426172e-05,
+ "deformed_bounds_parity_max_m": 1.4007091522216797e-05,
  "deformed_vertex_cloud_parity": {
   "Idle@0.0000": {
-   "native_to_glb_max_m": 3.4232803045597393e-06,
-   "glb_to_native_max_m": 3.4232803045597393e-06,
-   "native_vertices": 1025,
-   "glb_vertices": 4020
+   "native_to_glb_max_m": 9.963890761355287e-07,
+   "glb_to_native_max_m": 9.963890761355287e-07,
+   "native_vertices": 1011,
+   "glb_vertices": 4720
   },
   "Walk@0.0000": {
-   "native_to_glb_max_m": 3.25405812873214e-06,
-   "glb_to_native_max_m": 3.25405812873214e-06,
-   "native_vertices": 1025,
-   "glb_vertices": 4020
+   "native_to_glb_max_m": 1.0466425237609656e-06,
+   "glb_to_native_max_m": 1.0466425237609656e-06,
+   "native_vertices": 1011,
+   "glb_vertices": 4720
   },
   "Walk@0.1500": {
-   "native_to_glb_max_m": 3.2533710054849507e-06,
-   "glb_to_native_max_m": 3.2533710054849507e-06,
-   "native_vertices": 1025,
-   "glb_vertices": 4020
+   "native_to_glb_max_m": 1.0751577974588145e-06,
+   "glb_to_native_max_m": 1.0751577974588145e-06,
+   "native_vertices": 1011,
+   "glb_vertices": 4720
   },
   "Walk@0.3000": {
-   "native_to_glb_max_m": 3.4253553167218342e-06,
-   "glb_to_native_max_m": 3.4253553167218342e-06,
-   "native_vertices": 1025,
-   "glb_vertices": 4020
+   "native_to_glb_max_m": 1.1231363714614417e-06,
+   "glb_to_native_max_m": 1.158828808911494e-06,
+   "native_vertices": 1011,
+   "glb_vertices": 4720
   },
   "Walk@0.2583": {
-   "native_to_glb_max_m": 3.4328988931520144e-06,
-   "glb_to_native_max_m": 3.4328988931520144e-06,
-   "native_vertices": 1025,
-   "glb_vertices": 4020
+   "native_to_glb_max_m": 1.012061034089129e-06,
+   "glb_to_native_max_m": 1.012061034089129e-06,
+   "native_vertices": 1011,
+   "glb_vertices": 4720
   },
   "Run@0.0000": {
-   "native_to_glb_max_m": 3.336446297907969e-06,
-   "glb_to_native_max_m": 3.336446297907969e-06,
-   "native_vertices": 1025,
-   "glb_vertices": 4020
+   "native_to_glb_max_m": 1.0958181064779637e-06,
+   "glb_to_native_max_m": 1.0958181064779637e-06,
+   "native_vertices": 1011,
+   "glb_vertices": 4720
   },
   "Run@0.1000": {
-   "native_to_glb_max_m": 3.230666607123567e-06,
-   "glb_to_native_max_m": 3.230666607123567e-06,
-   "native_vertices": 1025,
-   "glb_vertices": 4020
+   "native_to_glb_max_m": 1.3380587233768892e-06,
+   "glb_to_native_max_m": 1.3380587233768892e-06,
+   "native_vertices": 1011,
+   "glb_vertices": 4720
   },
   "Run@0.2083": {
-   "native_to_glb_max_m": 3.42480416293256e-06,
-   "glb_to_native_max_m": 3.42480416293256e-06,
-   "native_vertices": 1025,
-   "glb_vertices": 4020
+   "native_to_glb_max_m": 1.091351123250206e-06,
+   "glb_to_native_max_m": 1.091351123250206e-06,
+   "native_vertices": 1011,
+   "glb_vertices": 4720
   },
   "Jump@0.2500": {
-   "native_to_glb_max_m": 3.2744942473073024e-06,
-   "glb_to_native_max_m": 3.2744942473073024e-06,
-   "native_vertices": 1025,
-   "glb_vertices": 4020
+   "native_to_glb_max_m": 1.1334252576489234e-06,
+   "glb_to_native_max_m": 1.1334252576489234e-06,
+   "native_vertices": 1011,
+   "glb_vertices": 4720
   },
   "Jump@0.5000": {
-   "native_to_glb_max_m": 3.2269185794575606e-06,
-   "glb_to_native_max_m": 3.2269185794575606e-06,
-   "native_vertices": 1025,
-   "glb_vertices": 4020
+   "native_to_glb_max_m": 1.1278712008788716e-06,
+   "glb_to_native_max_m": 1.1278712008788716e-06,
+   "native_vertices": 1011,
+   "glb_vertices": 4720
   },
   "Land@0.1000": {
-   "native_to_glb_max_m": 3.2372322493756656e-06,
-   "glb_to_native_max_m": 3.2372322493756656e-06,
-   "native_vertices": 1025,
-   "glb_vertices": 4020
+   "native_to_glb_max_m": 1.2585589956870535e-06,
+   "glb_to_native_max_m": 1.2585589956870535e-06,
+   "native_vertices": 1011,
+   "glb_vertices": 4720
   }
  },
- "deformed_vertex_cloud_parity_max_m": 3.4328988931520144e-06,
+ "deformed_vertex_cloud_parity_max_m": 1.3380587233768892e-06,
  "non_asset_import_objects": [
   "Icosphere"
  ]

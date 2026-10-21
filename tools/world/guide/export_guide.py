@@ -25,13 +25,18 @@ base = dict(export_format='GLB', use_selection=True, export_yup=True, export_app
             export_force_sampling=True, export_frame_step=1, export_anim_slide_to_zero=True,
             export_optimize_animation_size=False, export_morph=False, export_texcoords=False)
 res = {}
-for tag, path, draco in (('uncompressed', f'{OUT}/G24_uncompressed.glb', False), ('draco', f'{PUB}/G24.glb', True)):
+import sys
+# '-- candidate' writes both files under tools/world/guide/out only; public is replaced after QA.
+cand = '--' in sys.argv and 'candidate' in sys.argv[sys.argv.index('--') + 1:]
+targets = ((('uncompressed', f'{OUT}/G24_candidate_uncompressed.glb', False), ('draco', f'{OUT}/G24_candidate.glb', True)) if cand else
+           (('uncompressed', f'{OUT}/G24_uncompressed.glb', False), ('draco', f'{PUB}/G24.glb', True)))
+for tag, path, draco in targets:
     kw = dict(base, filepath=path)
     if draco:
         kw.update(export_draco_mesh_compression_enable=True, export_draco_mesh_compression_level=6,
-                  export_draco_position_quantization=18, export_draco_normal_quantization=10,
+                  export_draco_position_quantization=20, export_draco_normal_quantization=10,
                   export_draco_generic_quantization=16)
     bpy.ops.export_scene.gltf(**kw)
     res[tag] = dict(path=path, bytes=os.path.getsize(path), sha256=hashlib.sha256(open(path, 'rb').read()).hexdigest())
-json.dump(res, open(f'{OUT}/export_hashes.json', 'w'), indent=1)
+json.dump(res, open(f'{OUT}/export_hashes{"_candidate" if cand else ""}.json', 'w'), indent=1)
 print('EXPORT', json.dumps(res))

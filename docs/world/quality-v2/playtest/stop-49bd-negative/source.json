@@ -1,0 +1,5 @@
+{
+  "assetSha256": "49bd64ff",
+  "uncompressedSha256": "1912340101001001666a430a3d41c2438c25df91ad3aadf627d7aa9c8121ee57",
+  "status": "known failed stop-turn pose; preserved to verify the checker does not silently whitelist it"
+}

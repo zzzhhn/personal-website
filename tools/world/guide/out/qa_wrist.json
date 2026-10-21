@@ -1,29 +1,29 @@
 {
  "glb": "../../../public/assets/world/guide/G24.glb",
- "sha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357",
+ "sha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7",
  "samples": {
   "rest": {
    "R": {
     "mitten_vertices": 224,
     "inside_sleeve": 23,
-    "deepest_inside_m": 0.025739584118127823,
-    "outside_max_m": 0.0710994303226471,
-    "overlap_span_along_hand_m": 0.017964591139830455
+    "deepest_inside_m": 0.025740446522831917,
+    "outside_max_m": 0.07109881192445755,
+    "overlap_span_along_hand_m": 0.017962668890094402
    },
    "L": {
     "mitten_vertices": 224,
     "inside_sleeve": 23,
-    "deepest_inside_m": 0.025172414258122444,
-    "outside_max_m": 0.07109946012496948,
-    "overlap_span_along_hand_m": 0.017964572440751614
+    "deepest_inside_m": 0.025740373879671097,
+    "outside_max_m": 0.07109889388084412,
+    "overlap_span_along_hand_m": 0.01796264982696144
    }
   }
  },
  "worst_over_all_clip_frames": {
   "min_inside": 23,
-  "min_overlap": 0.017964455531910062,
+  "min_overlap": 0.017962570651434362,
   "min_inside_at": "Idle_G24@0.R",
-  "min_overlap_at": "Jump_G24@3.L"
+  "min_overlap_at": "Walk_G24@12.R"
  },
  "method": "Mitten vertices classified against the evaluated body shell by closest-face normal sign. A mitten with zero vertices inside the sleeve would be floating; >0 with a nonzero overlap span means the glove root is buried in the cuff. Hand bones carry identity rotation relative to the forearm in every clip, so the wrist does not bend."
 }

@@ -146,12 +146,13 @@ export const ensureDir = async d => { await mkdir(d, { recursive: true }); retur
 
 /** Canvas-only recording via in-page MediaRecorder (no Playwright ffmpeg dependency). */
 export async function startCanvasRecording(page, fps = 30) {
-  await page.evaluate(fps => {
+  return await page.evaluate(fps => {
     const c = document.querySelector('canvas'); const stream = c.captureStream(fps);
     const mime = MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : 'video/webm';
     const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 6e6 }); const chunks = [];
     rec.ondataavailable = e => e.data.size && chunks.push(e.data); rec.start(500);
     window.__pt_rec = { rec, chunks, mime };
+    return Date.now();
   }, fps);
 }
 export async function stopCanvasRecording(page, file) {

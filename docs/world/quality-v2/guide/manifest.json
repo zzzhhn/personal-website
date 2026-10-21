@@ -7,13 +7,13 @@
  "files": {
   "final_draco": {
    "path": "public/assets/world/guide/G24.glb",
-   "bytes": 299288,
-   "sha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357"
+   "bytes": 311684,
+   "sha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7"
   },
   "uncompressed_proof": {
    "path": "tools/world/guide/out/G24_uncompressed.glb",
-   "bytes": 455572,
-   "sha256": "0205f6258a031ef4b2d1849087393bbea3728c604f57296a37cda2dcb5bfa22f"
+   "bytes": 486056,
+   "sha256": "2f2823e9efeac2b6728e2d6848c8277dd4c77c37f39dbf9bd552a8f79e201853"
   },
   "native": "tools/world/guide/blend/G24.blend"
  },
@@ -32,46 +32,46 @@
   "rest_A_pose_glb_xyz": [
    0.6059882342815399,
    1.7081999816000462,
-   0.9568162560462952
+   1.0068161487579346
   ],
   "idle_envelope": {
    "blender_min": [
     -0.299176961183548,
-    -0.3499806523323059,
-    -2.515655523893656e-07
+    -0.3749803900718689,
+    -2.706803456931084e-07
    ],
    "blender_max": [
     0.31509920954704285,
-    0.3679380416870117,
+    0.3929368257522583,
     1.6970607042312622
    ],
    "glb_xyz": [
     0.6142761707305908,
-    1.6970609557968146,
-    0.7179186940193176
+    1.697060974911608,
+    0.7679172158241272
    ]
   },
   "target_height_m": 1.72,
   "note": "Actual height 1.708 m (helmet top)."
  },
  "triangles": {
-  "native": 2006,
-  "uncompressed_glb": 2006,
-  "draco_glb_reimport": 2006,
+  "native": 1978,
+  "uncompressed_glb": 1978,
+  "draco_glb_reimport": 1978,
   "declared_budget": "3000-5000 (plan)",
   "baseline": {
    "triangles": 348,
-   "ratio": 5.764,
+   "ratio": 5.684,
    "source": "c507506 WorldActors runtime placeholder (capsule + sphere + 3 boxes), rebuilt with the same three version and counted by the main thread; not an earlier GLB"
   },
-  "note": "Final is 2,006, below the declared budget; no geometry was added to reach it."
+  "note": "Final is 1,978 (r3 was 2,006): r5 boots are 8-sided shaft + toe box (fewer faces than the r4 skin boot); the hem cut adds a loop. Below the declared budget; no geometry was added to reach it."
  },
  "rig": {
   "type": "custom-L1",
   "bones": 18,
   "deform_bones": 17,
   "weights": {
-   "vertices": 1025,
+   "vertices": 1011,
    "unweighted": 0,
    "negative": 0,
    "max_influences": 2,
@@ -79,7 +79,7 @@
    "non_deform_groups_used": 0,
    "left_right_mixed_vertices": 0
   },
-  "rest_identity_max_m": 1.2287812309317775e-07
+  "rest_identity_max_m": 1.4901161193847672e-07
  },
  "topology": {
   "native": {
@@ -133,19 +133,22 @@
     "frames": 144,
     "duration_s": 2.4,
     "design_speed_mps": 0.0,
-    "min_skin_z_m": -2.515655523893656e-07,
-    "penetration_m": 2.515655523893656e-07,
+    "min_skin_z_m": -2.706803456931084e-07,
+    "penetration_m": 2.706803456931084e-07,
     "stance_frames": 290,
-    "sole_centroid_drift_virtual_world_m": 2.682209014892578e-07,
-    "stance_lowest_sole_height_dev_m": 1.434191005955654e-07,
-    "contact_vertex_slip_per_frame_max_m": 2.893282151065409e-07,
-    "contact_vertex_slip_cumulative_max_m": 2.980232238769531e-07,
-    "body_shell_self_crossing_pairs_max": 10,
-    "body_shell_rest_crossing_pairs": 10,
-    "part_pairs_exceeding_rest": {},
+    "sole_centroid_drift_virtual_world_m": 2.644956111907959e-07,
+    "stance_lowest_sole_height_dev_m": 1.592076159795397e-07,
+    "contact_vertex_slip_per_frame_max_m": 2.9839552036674004e-07,
+    "contact_vertex_slip_cumulative_max_m": 3.0321666218526114e-07,
+    "body_shell_self_crossing_pairs_max": 0,
+    "body_shell_rest_crossing_pairs": 0,
+    "part_pairs_exceeding_rest": {
+     "body|part:foot.L": 28,
+     "body|part:foot.R": 30
+    },
     "loop_position_error_m": 0.0,
     "loop_velocity_jump_mps": 0.047748553604789155,
-    "interior_velocity_change_max_mps": 0.0033658076607435737,
+    "interior_velocity_change_max_mps": 0.0033677379369710493,
     "status": {
      "penetration": "executed_pass",
      "contact_slip_cumulative": "executed_pass",
@@ -156,23 +159,23 @@
     "frames": 36,
     "duration_s": 0.6,
     "design_speed_mps": 1.5,
-    "min_skin_z_m": -0.0005693691782653332,
-    "penetration_m": 0.0005693691782653332,
+    "min_skin_z_m": -0.0005641346797347069,
+    "penetration_m": 0.0005641346797347069,
     "stance_frames": 44,
-    "sole_centroid_drift_virtual_world_m": 0.004581823945045471,
-    "stance_lowest_sole_height_dev_m": 1.3464425308029604e-07,
-    "contact_vertex_slip_per_frame_max_m": 0.007829317450555276,
-    "contact_vertex_slip_cumulative_max_m": 0.007829141616824832,
-    "body_shell_self_crossing_pairs_max": 10,
-    "body_shell_rest_crossing_pairs": 10,
+    "sole_centroid_drift_virtual_world_m": 0.012757450342178345,
+    "stance_lowest_sole_height_dev_m": 1.550614854295418e-07,
+    "contact_vertex_slip_per_frame_max_m": 0.007879549266049144,
+    "contact_vertex_slip_cumulative_max_m": 0.00787926912376782,
+    "body_shell_self_crossing_pairs_max": 0,
+    "body_shell_rest_crossing_pairs": 0,
     "part_pairs_exceeding_rest": {
-     "body|part:foot.L": 26,
-     "body|part:pelvis": 24,
-     "body|part:foot.R": 26
+     "body|part:foot.L": 32,
+     "body|part:foot.R": 32,
+     "body|part:pelvis": 30
     },
     "loop_position_error_m": 0.0,
-    "loop_velocity_jump_mps": 0.5364408905021536,
-    "interior_velocity_change_max_mps": 1.813144685643693,
+    "loop_velocity_jump_mps": 0.3218340416881901,
+    "interior_velocity_change_max_mps": 2.2480159385119483,
     "status": {
      "penetration": "executed_pass",
      "contact_slip_cumulative": "executed_pass",
@@ -183,24 +186,24 @@
     "frames": 24,
     "duration_s": 0.4,
     "design_speed_mps": 4.2,
-    "min_skin_z_m": -0.0032156656961888075,
-    "penetration_m": 0.0032156656961888075,
+    "min_skin_z_m": -0.002625763416290283,
+    "penetration_m": 0.002625763416290283,
     "stance_frames": 17,
-    "sole_centroid_drift_virtual_world_m": 0.0026578360795975198,
-    "stance_lowest_sole_height_dev_m": 1.1386818954406408e-07,
-    "contact_vertex_slip_per_frame_max_m": 0.0001307499417213739,
-    "contact_vertex_slip_cumulative_max_m": 0.00013026359275241872,
-    "body_shell_self_crossing_pairs_max": 20,
-    "body_shell_rest_crossing_pairs": 10,
+    "sole_centroid_drift_virtual_world_m": 0.007411090433597556,
+    "stance_lowest_sole_height_dev_m": 1.0669231187421246e-07,
+    "contact_vertex_slip_per_frame_max_m": 0.0001316440113871824,
+    "contact_vertex_slip_cumulative_max_m": 0.00013109807963386765,
+    "body_shell_self_crossing_pairs_max": 0,
+    "body_shell_rest_crossing_pairs": 0,
     "part_pairs_exceeding_rest": {
-     "body|part:pelvis": 26,
-     "body|part:foot.L": 31,
-     "body|part:head": 10,
-     "body|part:foot.R": 31
+     "body|part:foot.L": 28,
+     "body|part:foot.R": 28,
+     "body|part:head": 18,
+     "body|part:pelvis": 30
     },
     "loop_position_error_m": 0.0,
-    "loop_velocity_jump_mps": 1.1896298800938647,
-    "interior_velocity_change_max_mps": 3.7966744766256655,
+    "loop_velocity_jump_mps": 1.126796709568817,
+    "interior_velocity_change_max_mps": 3.0886046344548848,
     "status": {
      "penetration": "executed_pass",
      "contact_slip_cumulative": "executed_pass",
@@ -211,20 +214,20 @@
     "frames": 30,
     "duration_s": 0.5,
     "design_speed_mps": 0.0,
-    "min_skin_z_m": -2.4543143808841705e-05,
-    "penetration_m": 2.4543143808841705e-05,
+    "min_skin_z_m": -0.00011719204485416412,
+    "penetration_m": 0.00011719204485416412,
     "stance_frames": 2,
     "sole_centroid_drift_virtual_world_m": 0.0,
-    "stance_lowest_sole_height_dev_m": 1.0693866414612785e-07,
-    "contact_vertex_slip_per_frame_max_m": 0.013442448865216415,
-    "contact_vertex_slip_cumulative_max_m": 0.0350224564098922,
-    "body_shell_self_crossing_pairs_max": 12,
-    "body_shell_rest_crossing_pairs": 10,
+    "stance_lowest_sole_height_dev_m": 1.1854805137545554e-07,
+    "contact_vertex_slip_per_frame_max_m": 0.013932259039830933,
+    "contact_vertex_slip_cumulative_max_m": 0.035845831120376044,
+    "body_shell_self_crossing_pairs_max": 0,
+    "body_shell_rest_crossing_pairs": 0,
     "part_pairs_exceeding_rest": {
-     "body|part:foot.L": 24,
-     "body|part:foot.R": 24,
-     "body|part:head": 10,
-     "body|part:pelvis": 24
+     "body|part:foot.L": 32,
+     "body|part:foot.R": 30,
+     "body|part:head": 18,
+     "body|part:pelvis": 30
     },
     "status": {
      "penetration": "executed_pass",
@@ -236,20 +239,21 @@
     "frames": 24,
     "duration_s": 0.4,
     "design_speed_mps": 0.0,
-    "min_skin_z_m": -0.0013769046636298299,
-    "penetration_m": 0.0013769046636298299,
+    "min_skin_z_m": -0.001378890359774232,
+    "penetration_m": 0.001378890359774232,
     "stance_frames": 50,
-    "sole_centroid_drift_virtual_world_m": 3.0547380447387695e-07,
-    "stance_lowest_sole_height_dev_m": 1.378758298642424e-07,
-    "contact_vertex_slip_per_frame_max_m": 3.604110068812318e-07,
-    "contact_vertex_slip_cumulative_max_m": 3.434547952299151e-07,
-    "body_shell_self_crossing_pairs_max": 10,
-    "body_shell_rest_crossing_pairs": 10,
+    "sole_centroid_drift_virtual_world_m": 3.0919909477233887e-07,
+    "stance_lowest_sole_height_dev_m": 1.424497071411679e-07,
+    "contact_vertex_slip_per_frame_max_m": 3.7726726833498965e-07,
+    "contact_vertex_slip_cumulative_max_m": 3.6863436927953305e-07,
+    "body_shell_self_crossing_pairs_max": 0,
+    "body_shell_rest_crossing_pairs": 0,
     "part_pairs_exceeding_rest": {
-     "body|part:foot.L": 26,
-     "body|part:foot.R": 26,
-     "body|part:pelvis": 23,
-     "body|part:head": 12
+     "body|part:foot.L": 30,
+     "body|part:foot.R": 30,
+     "body|part:head": 18,
+     "body|part:chest": 41,
+     "body|part:pelvis": 30
     },
     "status": {
      "penetration": "executed_pass",
@@ -268,13 +272,13 @@
  },
  "export_parity": {
   "uncompressed": {
-   "sha256": "0205f6258a031ef4b2d1849087393bbea3728c604f57296a37cda2dcb5bfa22f",
+   "sha256": "2f2823e9efeac2b6728e2d6848c8277dd4c77c37f39dbf9bd552a8f79e201853",
    "triangles_equal_native": true,
    "material_mismatch": [],
    "joint_parity_keyframes_max_m": 7.237325892396274e-07,
-   "joint_parity_halfframes_max_m": 1.751231352333839e-05,
-   "deformed_bounds_parity_max_m": 1.3649463653564453e-05,
-   "deformed_vertex_cloud_parity_max_m": 6.271335450946935e-07,
+   "joint_parity_halfframes_max_m": 1.879908314426172e-05,
+   "deformed_bounds_parity_max_m": 1.3768672943115234e-05,
+   "deformed_vertex_cloud_parity_max_m": 7.997496140887961e-07,
    "imported_clips": {
     "Idle": [
      "Idle_G24",
@@ -317,13 +321,13 @@
    ]
   },
   "draco": {
-   "sha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357",
+   "sha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7",
    "triangles_equal_native": true,
    "material_mismatch": [],
    "joint_parity_keyframes_max_m": 7.237325892396274e-07,
-   "joint_parity_halfframes_max_m": 1.751231352333839e-05,
-   "deformed_bounds_parity_max_m": 1.4126300811767578e-05,
-   "deformed_vertex_cloud_parity_max_m": 3.4328988931520144e-06,
+   "joint_parity_halfframes_max_m": 1.879908314426172e-05,
+   "deformed_bounds_parity_max_m": 1.4007091522216797e-05,
+   "deformed_vertex_cloud_parity_max_m": 1.3380587233768892e-06,
    "imported_clips": {
     "Idle": [
      "Idle_G24",
@@ -422,30 +426,714 @@
   "runtime": "Main thread motion-r4: all 20 real Jump samples were airborne, lowest sole 25.8 cm above real ground, so this is not observed as foot sliding in play. See main-thread jump-contact-interpretation.json."
  },
  "wrist": {
-  "sha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357",
+  "sha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7",
   "rest": {
    "R": {
     "mitten_vertices": 224,
     "inside_sleeve": 23,
-    "deepest_inside_m": 0.025739584118127823,
-    "outside_max_m": 0.0710994303226471,
-    "overlap_span_along_hand_m": 0.017964591139830455
+    "deepest_inside_m": 0.025740446522831917,
+    "outside_max_m": 0.07109881192445755,
+    "overlap_span_along_hand_m": 0.017962668890094402
    },
    "L": {
     "mitten_vertices": 224,
     "inside_sleeve": 23,
-    "deepest_inside_m": 0.025172414258122444,
-    "outside_max_m": 0.07109946012496948,
-    "overlap_span_along_hand_m": 0.017964572440751614
+    "deepest_inside_m": 0.025740373879671097,
+    "outside_max_m": 0.07109889388084412,
+    "overlap_span_along_hand_m": 0.01796264982696144
    }
   },
   "worst_over_all_clip_frames": {
    "min_inside": 23,
-   "min_overlap": 0.017964455531910062,
+   "min_overlap": 0.017962570651434362,
    "min_inside_at": "Idle_G24@0.R",
-   "min_overlap_at": "Jump_G24@3.L"
+   "min_overlap_at": "Walk_G24@12.R"
   },
   "method": "Mitten vertices classified against the evaluated body shell by closest-face normal sign. A mitten with zero vertices inside the sleeve would be floating; >0 with a nonzero overlap span means the glove root is buried in the cuff. Hand bones carry identity rotation relative to the forearm in every clip, so the wrist does not bend."
+ },
+ "a6": {
+  "spec": "Fable 验收-营地返工-20261021.md, A6 object scope (fixed-continuous / embedded-distinct / articulated + unintended=0)",
+  "fixed_continuous": {
+   "checker": "tools/world/guide/qa_selfx.py + selfx_core.py (strict adjacency + exact shared-vertex test)",
+   "native": {
+    "source": {
+     "blend": "/Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/guide/blend/G24.blend"
+    },
+    "samples": 522,
+    "samples_with_strict_crossings": 0,
+    "worst_per_clip": {
+     "rest": 0,
+     "Idle": 0,
+     "Walk": 0,
+     "Run": 0,
+     "Jump": 0,
+     "Land": 0
+    },
+    "legacy_nonadjacent_max": 0,
+    "resolved_and_failing_pair_totals": {
+     "guide_glove_boot_accent:vertex_contact_exact": 58,
+     "guide_pants_accent:vertex_contact_exact": 62,
+     "guide_helmet_metal:vertex_contact_exact": 9
+    }
+   },
+   "glb_uncompressed": {
+    "source": {
+     "glb": "out/G24_uncompressed.glb",
+     "sha256": "2f2823e9efeac2b6728e2d6848c8277dd4c77c37f39dbf9bd552a8f79e201853"
+    },
+    "samples": 522,
+    "samples_with_strict_crossings": 0,
+    "worst_per_clip": {
+     "rest": 0,
+     "Idle": 0,
+     "Walk": 0,
+     "Run": 0,
+     "Jump": 0,
+     "Land": 0
+    },
+    "legacy_nonadjacent_max": 0,
+    "resolved_and_failing_pair_totals": {
+     "guide_pants_accent:vertex_contact_exact": 210,
+     "guide_glove_boot_accent:vertex_contact_exact": 6,
+     "guide_helmet_metal:vertex_contact_exact": 9
+    }
+   },
+   "glb_draco": {
+    "source": {
+     "glb": "../../../public/assets/world/guide/G24.glb",
+     "sha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7"
+    },
+    "samples": 522,
+    "samples_with_strict_crossings": 0,
+    "worst_per_clip": {
+     "rest": 0,
+     "Idle": 0,
+     "Walk": 0,
+     "Run": 0,
+     "Jump": 0,
+     "Land": 0
+    },
+    "legacy_nonadjacent_max": 0,
+    "resolved_and_failing_pair_totals": {
+     "guide_pants_accent:vertex_contact_exact": 3,
+     "body:vertex_contact_exact": 21,
+     "guide_helmet_metal:vertex_contact_exact": 3
+    }
+   },
+   "mainthread_checker": {
+    "native": {
+     "source_sha256": "70fdcd4843388436404bdc4863768cd35e845e4ad6a5417a25c3c712212a3997",
+     "rest": 0,
+     "clips": {
+      "Idle": {
+       "samples": 289,
+       "unresolved_or_confirmed_max": 0,
+       "exact_shared_vertex_contacts_max": 2
+      },
+      "Walk": {
+       "samples": 73,
+       "unresolved_or_confirmed_max": 0,
+       "exact_shared_vertex_contacts_max": 2
+      },
+      "Run": {
+       "samples": 49,
+       "unresolved_or_confirmed_max": 0,
+       "exact_shared_vertex_contacts_max": 3
+      },
+      "Jump": {
+       "samples": 61,
+       "unresolved_or_confirmed_max": 0,
+       "exact_shared_vertex_contacts_max": 2
+      },
+      "Land": {
+       "samples": 49,
+       "unresolved_or_confirmed_max": 0,
+       "exact_shared_vertex_contacts_max": 2
+      }
+     }
+    },
+    "uncompressed": {
+     "source_sha256": "2f2823e9efeac2b6728e2d6848c8277dd4c77c37f39dbf9bd552a8f79e201853",
+     "rest": 0,
+     "clips": {
+      "Idle": {
+       "samples": 289,
+       "unresolved_or_confirmed_max": 0,
+       "exact_shared_vertex_contacts_max": 3
+      },
+      "Walk": {
+       "samples": 73,
+       "unresolved_or_confirmed_max": 0,
+       "exact_shared_vertex_contacts_max": 2
+      },
+      "Run": {
+       "samples": 49,
+       "unresolved_or_confirmed_max": 0,
+       "exact_shared_vertex_contacts_max": 1
+      },
+      "Jump": {
+       "samples": 61,
+       "unresolved_or_confirmed_max": 0,
+       "exact_shared_vertex_contacts_max": 2
+      },
+      "Land": {
+       "samples": 49,
+       "unresolved_or_confirmed_max": 0,
+       "exact_shared_vertex_contacts_max": 1
+      }
+     }
+    },
+    "draco": {
+     "source_sha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7",
+     "rest": 0,
+     "clips": {
+      "Idle": {
+       "samples": 289,
+       "unresolved_or_confirmed_max": 0,
+       "exact_shared_vertex_contacts_max": 1
+      },
+      "Walk": {
+       "samples": 73,
+       "unresolved_or_confirmed_max": 0,
+       "exact_shared_vertex_contacts_max": 0
+      },
+      "Run": {
+       "samples": 49,
+       "unresolved_or_confirmed_max": 0,
+       "exact_shared_vertex_contacts_max": 2
+      },
+      "Jump": {
+       "samples": 61,
+       "unresolved_or_confirmed_max": 0,
+       "exact_shared_vertex_contacts_max": 1
+      },
+      "Land": {
+       "samples": 49,
+       "unresolved_or_confirmed_max": 0,
+       "exact_shared_vertex_contacts_max": 1
+      }
+     }
+    }
+   }
+  },
+  "relation_table": [
+   {
+    "id": "helmet/collar",
+    "guest": "body",
+    "guest_regions": [
+     "neck"
+    ],
+    "host": "helmet",
+    "host_regions": null,
+    "min_burial_m": 0.01,
+    "min_exposed_m": 0.01,
+    "note": "collar top tucked inside the helmet opening"
+   },
+   {
+    "id": "boot.R/trouser",
+    "guest": "body",
+    "guest_regions": [
+     "shin.R"
+    ],
+    "host": "boot.R",
+    "host_regions": null,
+    "min_burial_m": 0.01,
+    "min_exposed_m": 0.05,
+    "note": "trouser end inside the boot shaft"
+   },
+   {
+    "id": "boot.L/trouser",
+    "guest": "body",
+    "guest_regions": [
+     "shin.L"
+    ],
+    "host": "boot.L",
+    "host_regions": null,
+    "min_burial_m": 0.01,
+    "min_exposed_m": 0.05,
+    "note": "trouser end inside the boot shaft"
+   },
+   {
+    "id": "mitten.R/sleeve",
+    "guest": "mitten.R",
+    "guest_regions": null,
+    "host": "body",
+    "host_regions": [
+     "forearm.R",
+     "hand.R"
+    ],
+    "min_burial_m": 0.01,
+    "min_exposed_m": 0.05,
+    "note": "glove root inside the cuff"
+   },
+   {
+    "id": "mitten.L/sleeve",
+    "guest": "mitten.L",
+    "guest_regions": null,
+    "host": "body",
+    "host_regions": [
+     "forearm.L",
+     "hand.L"
+    ],
+    "min_burial_m": 0.01,
+    "min_exposed_m": 0.05,
+    "note": "glove root inside the cuff"
+   },
+   {
+    "id": "bag/jacket",
+    "guest": "bag",
+    "guest_regions": null,
+    "host": "body",
+    "host_regions": [
+     "pelvis",
+     "spine"
+    ],
+    "min_burial_m": 0.003,
+    "min_exposed_m": 0.03,
+    "note": "bag back pressed into the jacket at the belt line"
+   },
+   {
+    "id": "bagflap/jacket",
+    "guest": "bagflap",
+    "guest_regions": null,
+    "host": "body",
+    "host_regions": [
+     "pelvis",
+     "spine"
+    ],
+    "min_burial_m": 0.002,
+    "min_exposed_m": 0.03,
+    "note": "flap back pressed into the jacket"
+   },
+   {
+    "id": "bagflap/bag",
+    "guest": "bagflap",
+    "guest_regions": null,
+    "host": "bag",
+    "host_regions": null,
+    "min_burial_m": 0.002,
+    "min_exposed_m": 0.003,
+    "note": "flap overlaps the bag top"
+   },
+   {
+    "id": "zip/chest",
+    "guest": "zip",
+    "guest_regions": null,
+    "host": "body",
+    "host_regions": [
+     "pelvis",
+     "spine",
+     "chest"
+    ],
+    "min_burial_m": 0.002,
+    "min_exposed_m": 0.003,
+    "note": "zip strip set into the jacket front"
+   },
+   {
+    "id": "visor/helmet",
+    "guest": "visor",
+    "guest_regions": null,
+    "host": "helmet",
+    "host_regions": null,
+    "min_burial_m": 0.005,
+    "min_exposed_m": 0.005,
+    "note": "visor plate set into the helmet shell"
+   },
+   {
+    "id": "dot/helmet",
+    "guest": "dot",
+    "guest_regions": null,
+    "host": "helmet",
+    "host_regions": null,
+    "min_burial_m": 0.005,
+    "min_exposed_m": 0.01,
+    "note": "cyan dot set into the helmet, right side"
+   }
+  ],
+  "relations": {
+   "native": {
+    "source": {
+     "blend": "/Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/guide/blend/G24.blend"
+    },
+    "passed": true,
+    "samples": 522,
+    "summary": {
+     "helmet/collar": {
+      "min_burial_m": 0.02229,
+      "at": "Land@11",
+      "min_exposed_m": 0.08827,
+      "exposed_at": "rest",
+      "declared_min_burial_m": 0.01,
+      "declared_min_exposed_m": 0.01,
+      "max_crossing_pairs": 22,
+      "passed": true
+     },
+     "boot.R/trouser": {
+      "min_burial_m": 0.05392,
+      "at": "Run@12",
+      "min_exposed_m": 0.12511,
+      "exposed_at": "Run@22",
+      "declared_min_burial_m": 0.01,
+      "declared_min_exposed_m": 0.05,
+      "max_crossing_pairs": 39,
+      "passed": true
+     },
+     "boot.L/trouser": {
+      "min_burial_m": 0.05392,
+      "at": "Run@0",
+      "min_exposed_m": 0.12511,
+      "exposed_at": "Run@10",
+      "declared_min_burial_m": 0.01,
+      "declared_min_exposed_m": 0.05,
+      "max_crossing_pairs": 39,
+      "passed": true
+     },
+     "mitten.R/sleeve": {
+      "min_burial_m": 0.02574,
+      "at": "rest",
+      "min_exposed_m": 0.0711,
+      "exposed_at": "rest",
+      "declared_min_burial_m": 0.01,
+      "declared_min_exposed_m": 0.05,
+      "max_crossing_pairs": 27,
+      "passed": true
+     },
+     "mitten.L/sleeve": {
+      "min_burial_m": 0.02574,
+      "at": "rest",
+      "min_exposed_m": 0.0711,
+      "exposed_at": "rest",
+      "declared_min_burial_m": 0.01,
+      "declared_min_exposed_m": 0.05,
+      "max_crossing_pairs": 27,
+      "passed": true
+     },
+     "bag/jacket": {
+      "min_burial_m": 0.01235,
+      "at": "rest",
+      "min_exposed_m": 0.07554,
+      "exposed_at": "Walk@29",
+      "declared_min_burial_m": 0.003,
+      "declared_min_exposed_m": 0.03,
+      "max_crossing_pairs": 19,
+      "passed": true
+     },
+     "bagflap/jacket": {
+      "min_burial_m": 0.00693,
+      "at": "Run@11",
+      "min_exposed_m": 0.08644,
+      "exposed_at": "Walk@1.5",
+      "declared_min_burial_m": 0.002,
+      "declared_min_exposed_m": 0.03,
+      "max_crossing_pairs": 20,
+      "passed": true
+     },
+     "bagflap/bag": {
+      "min_burial_m": 0.03525,
+      "at": "rest",
+      "min_exposed_m": 0.0156,
+      "exposed_at": "rest",
+      "declared_min_burial_m": 0.002,
+      "declared_min_exposed_m": 0.003,
+      "max_crossing_pairs": 34,
+      "passed": true
+     },
+     "zip/chest": {
+      "min_burial_m": 0.01479,
+      "at": "Land@5",
+      "min_exposed_m": 0.02191,
+      "exposed_at": "Land@6",
+      "declared_min_burial_m": 0.002,
+      "declared_min_exposed_m": 0.003,
+      "max_crossing_pairs": 53,
+      "passed": true
+     },
+     "visor/helmet": {
+      "min_burial_m": 0.02076,
+      "at": "rest",
+      "min_exposed_m": 0.02049,
+      "exposed_at": "rest",
+      "declared_min_burial_m": 0.005,
+      "declared_min_exposed_m": 0.005,
+      "max_crossing_pairs": 96,
+      "passed": true
+     },
+     "dot/helmet": {
+      "min_burial_m": 0.00786,
+      "at": "rest",
+      "min_exposed_m": 0.0357,
+      "exposed_at": "rest",
+      "declared_min_burial_m": 0.005,
+      "declared_min_exposed_m": 0.01,
+      "max_crossing_pairs": 22,
+      "passed": true
+     }
+    },
+    "unintended_max_per_pair": {},
+    "samples_with_unintended": [],
+    "cross_shell_no_witness_samples": [
+     "Idle@94"
+    ]
+   },
+   "glb_uncompressed": {
+    "source": {
+     "glb": "out/G24_uncompressed.glb",
+     "sha256": "2f2823e9efeac2b6728e2d6848c8277dd4c77c37f39dbf9bd552a8f79e201853"
+    },
+    "passed": true,
+    "samples": 522,
+    "summary": {
+     "helmet/collar": {
+      "min_burial_m": 0.02229,
+      "at": "Land@11",
+      "min_exposed_m": 0.08827,
+      "exposed_at": "rest",
+      "declared_min_burial_m": 0.01,
+      "declared_min_exposed_m": 0.01,
+      "max_crossing_pairs": 22,
+      "passed": true
+     },
+     "boot.R/trouser": {
+      "min_burial_m": 0.05392,
+      "at": "Run@12",
+      "min_exposed_m": 0.12511,
+      "exposed_at": "Run@22",
+      "declared_min_burial_m": 0.01,
+      "declared_min_exposed_m": 0.05,
+      "max_crossing_pairs": 39,
+      "passed": true
+     },
+     "boot.L/trouser": {
+      "min_burial_m": 0.05392,
+      "at": "Run@0",
+      "min_exposed_m": 0.12511,
+      "exposed_at": "Run@10",
+      "declared_min_burial_m": 0.01,
+      "declared_min_exposed_m": 0.05,
+      "max_crossing_pairs": 39,
+      "passed": true
+     },
+     "mitten.R/sleeve": {
+      "min_burial_m": 0.02574,
+      "at": "rest",
+      "min_exposed_m": 0.0711,
+      "exposed_at": "rest",
+      "declared_min_burial_m": 0.01,
+      "declared_min_exposed_m": 0.05,
+      "max_crossing_pairs": 27,
+      "passed": true
+     },
+     "mitten.L/sleeve": {
+      "min_burial_m": 0.02574,
+      "at": "rest",
+      "min_exposed_m": 0.0711,
+      "exposed_at": "rest",
+      "declared_min_burial_m": 0.01,
+      "declared_min_exposed_m": 0.05,
+      "max_crossing_pairs": 27,
+      "passed": true
+     },
+     "bag/jacket": {
+      "min_burial_m": 0.01235,
+      "at": "rest",
+      "min_exposed_m": 0.07554,
+      "exposed_at": "Walk@29",
+      "declared_min_burial_m": 0.003,
+      "declared_min_exposed_m": 0.03,
+      "max_crossing_pairs": 19,
+      "passed": true
+     },
+     "bagflap/jacket": {
+      "min_burial_m": 0.00693,
+      "at": "Run@11",
+      "min_exposed_m": 0.08644,
+      "exposed_at": "Walk@1.5",
+      "declared_min_burial_m": 0.002,
+      "declared_min_exposed_m": 0.03,
+      "max_crossing_pairs": 20,
+      "passed": true
+     },
+     "bagflap/bag": {
+      "min_burial_m": 0.03525,
+      "at": "rest",
+      "min_exposed_m": 0.0156,
+      "exposed_at": "rest",
+      "declared_min_burial_m": 0.002,
+      "declared_min_exposed_m": 0.003,
+      "max_crossing_pairs": 34,
+      "passed": true
+     },
+     "zip/chest": {
+      "min_burial_m": 0.01479,
+      "at": "Land@5",
+      "min_exposed_m": 0.02191,
+      "exposed_at": "Land@6",
+      "declared_min_burial_m": 0.002,
+      "declared_min_exposed_m": 0.003,
+      "max_crossing_pairs": 53,
+      "passed": true
+     },
+     "visor/helmet": {
+      "min_burial_m": 0.02076,
+      "at": "rest",
+      "min_exposed_m": 0.02049,
+      "exposed_at": "rest",
+      "declared_min_burial_m": 0.005,
+      "declared_min_exposed_m": 0.005,
+      "max_crossing_pairs": 96,
+      "passed": true
+     },
+     "dot/helmet": {
+      "min_burial_m": 0.00786,
+      "at": "rest",
+      "min_exposed_m": 0.0357,
+      "exposed_at": "rest",
+      "declared_min_burial_m": 0.005,
+      "declared_min_exposed_m": 0.01,
+      "max_crossing_pairs": 22,
+      "passed": true
+     }
+    },
+    "unintended_max_per_pair": {},
+    "samples_with_unintended": [],
+    "cross_shell_no_witness_samples": [
+     "Idle@22.5"
+    ]
+   },
+   "glb_draco": {
+    "source": {
+     "glb": "../../../public/assets/world/guide/G24.glb",
+     "sha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7"
+    },
+    "passed": true,
+    "samples": 522,
+    "summary": {
+     "helmet/collar": {
+      "min_burial_m": 0.02229,
+      "at": "Land@11",
+      "min_exposed_m": 0.08827,
+      "exposed_at": "rest",
+      "declared_min_burial_m": 0.01,
+      "declared_min_exposed_m": 0.01,
+      "max_crossing_pairs": 22,
+      "passed": true
+     },
+     "boot.R/trouser": {
+      "min_burial_m": 0.05392,
+      "at": "Run@12",
+      "min_exposed_m": 0.12511,
+      "exposed_at": "Run@22",
+      "declared_min_burial_m": 0.01,
+      "declared_min_exposed_m": 0.05,
+      "max_crossing_pairs": 39,
+      "passed": true
+     },
+     "boot.L/trouser": {
+      "min_burial_m": 0.05392,
+      "at": "Run@0",
+      "min_exposed_m": 0.12511,
+      "exposed_at": "Run@10",
+      "declared_min_burial_m": 0.01,
+      "declared_min_exposed_m": 0.05,
+      "max_crossing_pairs": 39,
+      "passed": true
+     },
+     "mitten.R/sleeve": {
+      "min_burial_m": 0.02574,
+      "at": "rest",
+      "min_exposed_m": 0.0711,
+      "exposed_at": "rest",
+      "declared_min_burial_m": 0.01,
+      "declared_min_exposed_m": 0.05,
+      "max_crossing_pairs": 27,
+      "passed": true
+     },
+     "mitten.L/sleeve": {
+      "min_burial_m": 0.02574,
+      "at": "rest",
+      "min_exposed_m": 0.0711,
+      "exposed_at": "rest",
+      "declared_min_burial_m": 0.01,
+      "declared_min_exposed_m": 0.05,
+      "max_crossing_pairs": 27,
+      "passed": true
+     },
+     "bag/jacket": {
+      "min_burial_m": 0.01235,
+      "at": "rest",
+      "min_exposed_m": 0.07554,
+      "exposed_at": "Walk@29",
+      "declared_min_burial_m": 0.003,
+      "declared_min_exposed_m": 0.03,
+      "max_crossing_pairs": 19,
+      "passed": true
+     },
+     "bagflap/jacket": {
+      "min_burial_m": 0.00693,
+      "at": "Run@11",
+      "min_exposed_m": 0.08644,
+      "exposed_at": "Walk@1.5",
+      "declared_min_burial_m": 0.002,
+      "declared_min_exposed_m": 0.03,
+      "max_crossing_pairs": 20,
+      "passed": true
+     },
+     "bagflap/bag": {
+      "min_burial_m": 0.03525,
+      "at": "rest",
+      "min_exposed_m": 0.0156,
+      "exposed_at": "rest",
+      "declared_min_burial_m": 0.002,
+      "declared_min_exposed_m": 0.003,
+      "max_crossing_pairs": 34,
+      "passed": true
+     },
+     "zip/chest": {
+      "min_burial_m": 0.01479,
+      "at": "Land@5",
+      "min_exposed_m": 0.02191,
+      "exposed_at": "Land@6",
+      "declared_min_burial_m": 0.002,
+      "declared_min_exposed_m": 0.003,
+      "max_crossing_pairs": 53,
+      "passed": true
+     },
+     "visor/helmet": {
+      "min_burial_m": 0.02076,
+      "at": "rest",
+      "min_exposed_m": 0.02049,
+      "exposed_at": "rest",
+      "declared_min_burial_m": 0.005,
+      "declared_min_exposed_m": 0.005,
+      "max_crossing_pairs": 96,
+      "passed": true
+     },
+     "dot/helmet": {
+      "min_burial_m": 0.00786,
+      "at": "rest",
+      "min_exposed_m": 0.0357,
+      "exposed_at": "rest",
+      "declared_min_burial_m": 0.005,
+      "declared_min_exposed_m": 0.01,
+      "max_crossing_pairs": 22,
+      "passed": true
+     }
+    },
+    "unintended_max_per_pair": {},
+    "samples_with_unintended": [],
+    "cross_shell_no_witness_samples": []
+   }
+  },
+  "unintended_classes": [
+   "arm_vs_bag",
+   "boot_vs_not_own_trouser",
+   "hand_vs_bag",
+   "hand_vs_torso",
+   "helmet_vs_shoulder",
+   "leg_vs_bag"
+  ],
+  "limits": "float32 evaluated coordinates; integer + half frames only (no continuous collision); burial/exposure by closest-face normal sign on sampled surface points; mixed runtime blends not tested here",
+  "reports": "docs/world/quality-v2/guide/final/a6/"
  },
  "materials": {
   "guide_jacket_paint": {
@@ -549,9 +1237,15 @@
   "sixview": "docs/world/quality-v2/guide/final/G24_sixview_final.png",
   "poses": "docs/world/quality-v2/guide/final/G24_poses_final.png",
   "wrist_closeups": "docs/world/quality-v2/guide/final/G24_wrist_closeups_final.png",
+  "a6_extreme_closeups": "docs/world/quality-v2/guide/final/G24_a6_extremes_final.png",
+  "a2_vs_lock": "docs/world/quality-v2/guide/final/G24_A2_vs_lock.png",
   "video": "docs/world/quality-v2/guide/final/video/G24_10s_normal_speed.mp4",
   "video_contact": "docs/world/quality-v2/guide/final/video/frames/contact_2fps.png",
   "all_rendered_from": "fresh import of the final Draco GLB (hash in each source.txt)"
+ },
+ "previous_finals": {
+  "d3ccc591": "r3 final, replaced (A6 fail: 16-48 strict crossings per clip); backup tools/world/guide/out/G24_d3ccc591_final_backup.glb",
+  "49bd64ff": "r4 A6 milestone, replaced for A2 (V hem, round boot); backup tools/world/guide/out/G24_49bd64ff_final_backup.glb"
  },
  "acceptance": {
   "machine": "see per-check status in README",

@@ -1,18 +1,22 @@
 # Fable 最终复核交接
 
-当前状态：返工实现与运行证据已整理，尚未取得 A–D 通过。旧 17:00 设计通过仍作废。Mac 锁屏时 CUA 不能发送，不把本地文件存在当成已送达。
+当前状态：73aa0bb6角色与QA动作候选已形成统一证据；尚未取得A–D通过。旧17:00设计通过仍作废。此前d3缺陷纠错已通过CUA实际收发；本更新验收包尚未送达，最近系统再次锁屏。不要把文件存在当作Fable已读。
 
-已核实预览：https://5baceb96.personal-website-aew.pages.dev/world/ （ac5eb16，17个发布资产hash一致，0页面/HTTP错误）。
+此前已核实预览：https://61db2021.personal-website-aew.pages.dev/world/ （75d2f9c，仍含失败d3）。当前73aa为新候选，发布状态另见verification.json；新动作入口需附`?qa=1&qaPhase=1&qaStop=1`。
 
 仓库 `/Users/bobby/WorkBuddy/personal-website/personal-website`，分支 `codex/world-greybox`，PR #1。先看 `docs/world/quality-v2/review.html`（可用本地文件浏览器打开），再按下列证据逐项判定。冻结文档仍由 Fable 维护；主线程不改 PRD/Art Lock/制作管线。
 
 ## A 角色
 
 - `guide/manifest.json`、`guide/README.md`、`guide/final/G24_sixview_final.png`、`G24_poses_final.png`、最终 Draco 回读视频。
-- `playtest/motion-r4/` 为 d3ccc5919af1 最终候选的真实按键专项：Idle/Walk/Run/Jump/Land、实际位置/变形后鞋底、1080/1440 buffer，4/4，无错误，接地采样下沉0。腕部修复后的模型与这份专项hash一致，正常速度按键录像超过10秒。
-- 自制 L1 骨架，不是 Mixamo。Walk/Run 实际速度1.8/4.2m/s。走跑混合短暂鞋底下沉用上限2.5cm视觉补偿，最终专项实测最大1.53cm，不改变刚体轨迹，也不是坡地IK。
+- `playtest/transitions-73aa-prototype/`：两档20项过渡数值通过，完整2秒松键窗口收脚归off，0相位超时、0错误。稳定走/跑≤0.98cm，停步≤1.09cm，走跑切换≤1.02cm。脚弧长按20:45决定仍记录。
+- `playtest/interruptions-73aa-prototype/`：收脚中真实反向180°、重新起步、Space跳落、Esc暂停恢复，10项操作通过。另`integration-73aa-prototype/`实测收脚中E上下车3项通过。三组共2,134个实际混合/IK后的采样姿态，同壳与非预期跨壳交叉0，未归类0，11条连接全部达到声明值。原始矩阵已无损归档；有限采样/浮点/最近法线局限见`runtime-relations-method.md`。
+- `guide/final/a6/`：native、未压缩、Draco各522个姿态的闭壳与跨部件专项；最终GLB SHA-256为73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7。
+- 自制L1、18骨、5 clips，不是Mixamo。A2并排图仍显示夹克宽度、面罩厚度和肩部细节差异，请直接判读；不以几何通过替代形象对齐。
 
-补充必须判读：guide manifest 保留原生 Jump 的局部地面接触滑移诊断 failed（3.50cm），以及 body BVH 自交候选计数（非零、未穷尽判定）。主线程没有将它们抹成通过。`motion-r4/jump-contact-interpretation.json` 说明这次真实物理跳跃的20个Jump采样全部离地、最低靴底高于地面25.8cm，因此原地clip局部地面诊断不等于运行时真实滑脚；但不替代你对全部A项的判断。
+需要先明确一个行为例外：纯速度/相位修正仍不能消除跨步姿态回Idle造成的脚位差。已做成可审阅QA候选：接触相距离时钟，最多0.4s等待安全混合；短时两骨IK配合抬脚收步，骨盆降低最多5cm、腿不拉长，物理刹停不变；快速转身时脚目标随根同转。普通入口尚未启用。请结合两档正常速度视频，决定是否接受此前“不做Stop/IK”的最小例外。详见`fable-stop-request.md`，不用转问Bobby技术细节。
+
+保留失败与限制：原生Jump局部接触滑移35.85mm仍为failed；73aa运行Jump/Land已采集且关系通过，但需分别看真实离地轨迹与原地片段，不能拿d3旧20帧解释当新证据。斜坡收脚、Run中跳跃等未测范围保持标明。
 
 ## B 自然资产
 
