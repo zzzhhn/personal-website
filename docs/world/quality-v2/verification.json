@@ -1,0 +1,47 @@
+{
+  "build": {
+    "status": "passed",
+    "log": "/Users/bobby/Desktop/3D-personal-world/quality-v2-build-delivery.log"
+  },
+  "astroCheck": {
+    "status": "passed",
+    "files": 88,
+    "errors": 0,
+    "warnings": 0,
+    "hints": 105,
+    "log": "/Users/bobby/Desktop/3D-personal-world/quality-v2-astro-check-final.log"
+  },
+  "connectionRegression": {
+    "runs": 1,
+    "passed": true,
+    "report": "playtest/connections/connection-regression.json"
+  },
+  "collisionAndRuntime": {
+    "passed": true,
+    "report": "playtest/acceptance-r3/report.json",
+    "compositeCases": 64,
+    "runtimeChecks": 14,
+    "noFullSuite": true
+  },
+  "character": {
+    "report": "playtest/motion-r4/report.json",
+    "passed": true,
+    "finalAssetSha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357",
+    "note": "4/4; grounded sampled sole penetration0, actual max visual correction0.015249m; >10sec keyboard video"
+  },
+  "review": {
+    "Fable": "pending final A-D",
+    "Bobby": "not accepted",
+    "transport": "CUA blocked by macOS lock; user notified"
+  },
+  "constraints": {
+    "Hy3DCalls": 0,
+    "mainPushed": false,
+    "merged": false,
+    "manualDeploy": false
+  },
+  "inventory": {
+    "report": "inventory-check.json",
+    "passed": true
+  }
+}

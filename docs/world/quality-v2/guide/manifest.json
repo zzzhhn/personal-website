@@ -1,0 +1,552 @@
+{
+ "id": "G24",
+ "name": "guide B (helmet + visor), L1 script-built candidate",
+ "date": "2026-10-21",
+ "blender": "4.2.23 LTS",
+ "source": "Script-authored mesh, 18-bone rig, procedural weights and clips (not Mixamo, not Hy3D).",
+ "files": {
+  "final_draco": {
+   "path": "public/assets/world/guide/G24.glb",
+   "bytes": 299288,
+   "sha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357"
+  },
+  "uncompressed_proof": {
+   "path": "tools/world/guide/out/G24_uncompressed.glb",
+   "bytes": 455572,
+   "sha256": "0205f6258a031ef4b2d1849087393bbea3728c604f57296a37cda2dcb5bfa22f"
+  },
+  "native": "tools/world/guide/blend/G24.blend"
+ },
+ "contract": {
+  "units": "m",
+  "up": "+Y",
+  "front": "+X",
+  "right": "+Z (bag and cyan dot, per text lock)",
+  "sole": "local y=0",
+  "root": "origin under the feet",
+  "runtime_offset": "-(PLAYER_RADIUS + PLAYER_HALF_HEIGHT) = -0.82 m",
+  "clips_in_place": true,
+  "fps": 60
+ },
+ "dimensions": {
+  "rest_A_pose_glb_xyz": [
+   0.6059882342815399,
+   1.7081999816000462,
+   0.9568162560462952
+  ],
+  "idle_envelope": {
+   "blender_min": [
+    -0.299176961183548,
+    -0.3499806523323059,
+    -2.515655523893656e-07
+   ],
+   "blender_max": [
+    0.31509920954704285,
+    0.3679380416870117,
+    1.6970607042312622
+   ],
+   "glb_xyz": [
+    0.6142761707305908,
+    1.6970609557968146,
+    0.7179186940193176
+   ]
+  },
+  "target_height_m": 1.72,
+  "note": "Actual height 1.708 m (helmet top)."
+ },
+ "triangles": {
+  "native": 2006,
+  "uncompressed_glb": 2006,
+  "draco_glb_reimport": 2006,
+  "declared_budget": "3000-5000 (plan)",
+  "note": "Final is 2,006, below the declared budget; no geometry was added to reach it. No prior formal asset exists as a baseline."
+ },
+ "rig": {
+  "bones": 18,
+  "deform_bones": 17,
+  "weights": {
+   "vertices": 1025,
+   "unweighted": 0,
+   "negative": 0,
+   "max_influences": 2,
+   "max_sum_error": 2.9802322387695312e-08,
+   "non_deform_groups_used": 0,
+   "left_right_mixed_vertices": 0
+  },
+  "rest_identity_max_m": 1.2287812309317775e-07
+ },
+ "topology": {
+  "native": {
+   "boundary_edges": 0,
+   "nonmanifold_edges": 0,
+   "zero_area_faces": 0,
+   "components": 11
+  },
+  "shells": "1 continuous body skin + 10 rigid one-hot parts (helmet, visor, dot, 2 boots, 2 mittens, bag, bag flap, zip)"
+ },
+ "clips": {
+  "build": {
+   "Idle": {
+    "frames": 144,
+    "duration_s": 2.4,
+    "loop": true,
+    "designSpeedMps": 0.0,
+    "ik_overstretch_max_m": 0.0
+   },
+   "Walk": {
+    "frames": 36,
+    "duration_s": 0.6,
+    "loop": true,
+    "designSpeedMps": 1.5,
+    "ik_overstretch_max_m": 0.0
+   },
+   "Run": {
+    "frames": 24,
+    "duration_s": 0.4,
+    "loop": true,
+    "designSpeedMps": 4.2,
+    "ik_overstretch_max_m": 0.0
+   },
+   "Jump": {
+    "frames": 30,
+    "duration_s": 0.5,
+    "loop": false,
+    "designSpeedMps": 0.0,
+    "ik_overstretch_max_m": 0.0
+   },
+   "Land": {
+    "frames": 24,
+    "duration_s": 0.4,
+    "loop": false,
+    "designSpeedMps": 0.0,
+    "ik_overstretch_max_m": 0.0
+   }
+  },
+  "measured": {
+   "Idle": {
+    "frames": 144,
+    "duration_s": 2.4,
+    "design_speed_mps": 0.0,
+    "min_skin_z_m": -2.515655523893656e-07,
+    "penetration_m": 2.515655523893656e-07,
+    "stance_frames": 290,
+    "sole_centroid_drift_virtual_world_m": 2.682209014892578e-07,
+    "stance_lowest_sole_height_dev_m": 1.434191005955654e-07,
+    "contact_vertex_slip_per_frame_max_m": 2.893282151065409e-07,
+    "contact_vertex_slip_cumulative_max_m": 2.980232238769531e-07,
+    "body_shell_self_crossing_pairs_max": 10,
+    "body_shell_rest_crossing_pairs": 10,
+    "part_pairs_exceeding_rest": {},
+    "loop_position_error_m": 0.0,
+    "loop_velocity_jump_mps": 0.047748553604789155,
+    "interior_velocity_change_max_mps": 0.0033658076607435737,
+    "status": {
+     "penetration": "executed_pass",
+     "contact_slip_cumulative": "executed_pass",
+     "sole_centroid_drift": "executed_pass"
+    }
+   },
+   "Walk": {
+    "frames": 36,
+    "duration_s": 0.6,
+    "design_speed_mps": 1.5,
+    "min_skin_z_m": -0.0005693691782653332,
+    "penetration_m": 0.0005693691782653332,
+    "stance_frames": 44,
+    "sole_centroid_drift_virtual_world_m": 0.004581823945045471,
+    "stance_lowest_sole_height_dev_m": 1.3464425308029604e-07,
+    "contact_vertex_slip_per_frame_max_m": 0.007829317450555276,
+    "contact_vertex_slip_cumulative_max_m": 0.007829141616824832,
+    "body_shell_self_crossing_pairs_max": 10,
+    "body_shell_rest_crossing_pairs": 10,
+    "part_pairs_exceeding_rest": {
+     "body|part:foot.L": 26,
+     "body|part:pelvis": 24,
+     "body|part:foot.R": 26
+    },
+    "loop_position_error_m": 0.0,
+    "loop_velocity_jump_mps": 0.5364408905021536,
+    "interior_velocity_change_max_mps": 1.813144685643693,
+    "status": {
+     "penetration": "executed_pass",
+     "contact_slip_cumulative": "executed_pass",
+     "sole_centroid_drift": "executed_pass"
+    }
+   },
+   "Run": {
+    "frames": 24,
+    "duration_s": 0.4,
+    "design_speed_mps": 4.2,
+    "min_skin_z_m": -0.0032156656961888075,
+    "penetration_m": 0.0032156656961888075,
+    "stance_frames": 17,
+    "sole_centroid_drift_virtual_world_m": 0.0026578360795975198,
+    "stance_lowest_sole_height_dev_m": 1.1386818954406408e-07,
+    "contact_vertex_slip_per_frame_max_m": 0.0001307499417213739,
+    "contact_vertex_slip_cumulative_max_m": 0.00013026359275241872,
+    "body_shell_self_crossing_pairs_max": 20,
+    "body_shell_rest_crossing_pairs": 10,
+    "part_pairs_exceeding_rest": {
+     "body|part:pelvis": 26,
+     "body|part:foot.L": 31,
+     "body|part:head": 10,
+     "body|part:foot.R": 31
+    },
+    "loop_position_error_m": 0.0,
+    "loop_velocity_jump_mps": 1.1896298800938647,
+    "interior_velocity_change_max_mps": 3.7966744766256655,
+    "status": {
+     "penetration": "executed_pass",
+     "contact_slip_cumulative": "executed_pass",
+     "sole_centroid_drift": "executed_pass"
+    }
+   },
+   "Jump": {
+    "frames": 30,
+    "duration_s": 0.5,
+    "design_speed_mps": 0.0,
+    "min_skin_z_m": -2.4543143808841705e-05,
+    "penetration_m": 2.4543143808841705e-05,
+    "stance_frames": 2,
+    "sole_centroid_drift_virtual_world_m": 0.0,
+    "stance_lowest_sole_height_dev_m": 1.0693866414612785e-07,
+    "contact_vertex_slip_per_frame_max_m": 0.013442448865216415,
+    "contact_vertex_slip_cumulative_max_m": 0.0350224564098922,
+    "body_shell_self_crossing_pairs_max": 12,
+    "body_shell_rest_crossing_pairs": 10,
+    "part_pairs_exceeding_rest": {
+     "body|part:foot.L": 24,
+     "body|part:foot.R": 24,
+     "body|part:head": 10,
+     "body|part:pelvis": 24
+    },
+    "status": {
+     "penetration": "executed_pass",
+     "contact_slip_cumulative": "executed_fail",
+     "sole_centroid_drift": "executed_pass"
+    }
+   },
+   "Land": {
+    "frames": 24,
+    "duration_s": 0.4,
+    "design_speed_mps": 0.0,
+    "min_skin_z_m": -0.0013769046636298299,
+    "penetration_m": 0.0013769046636298299,
+    "stance_frames": 50,
+    "sole_centroid_drift_virtual_world_m": 3.0547380447387695e-07,
+    "stance_lowest_sole_height_dev_m": 1.378758298642424e-07,
+    "contact_vertex_slip_per_frame_max_m": 3.604110068812318e-07,
+    "contact_vertex_slip_cumulative_max_m": 3.434547952299151e-07,
+    "body_shell_self_crossing_pairs_max": 10,
+    "body_shell_rest_crossing_pairs": 10,
+    "part_pairs_exceeding_rest": {
+     "body|part:foot.L": 26,
+     "body|part:foot.R": 26,
+     "body|part:pelvis": 23,
+     "body|part:head": 12
+    },
+    "status": {
+     "penetration": "executed_pass",
+     "contact_slip_cumulative": "executed_pass",
+     "sole_centroid_drift": "executed_pass"
+    }
+   }
+  },
+  "thresholds": {
+   "stance_drift_m": 0.0172,
+   "stance_height_dev_m": 0.0086,
+   "penetration_m": 0.0043,
+   "parity_m": 0.0001
+  },
+  "threshold_source": "rig skill proposed smoke gates (1% height drift, 0.5% height sole deviation, 0.25% height penetration); not official limits"
+ },
+ "export_parity": {
+  "uncompressed": {
+   "sha256": "0205f6258a031ef4b2d1849087393bbea3728c604f57296a37cda2dcb5bfa22f",
+   "triangles_equal_native": true,
+   "material_mismatch": [],
+   "joint_parity_keyframes_max_m": 7.237325892396274e-07,
+   "joint_parity_halfframes_max_m": 1.751231352333839e-05,
+   "deformed_bounds_parity_max_m": 1.3649463653564453e-05,
+   "deformed_vertex_cloud_parity_max_m": 6.271335450946935e-07,
+   "imported_clips": {
+    "Idle": [
+     "Idle_G24",
+     [
+      0.0,
+      144.0
+     ]
+    ],
+    "Walk": [
+     "Walk_G24",
+     [
+      0.0,
+      36.0
+     ]
+    ],
+    "Run": [
+     "Run_G24",
+     [
+      0.0,
+      24.0
+     ]
+    ],
+    "Jump": [
+     "Jump_G24",
+     [
+      0.0,
+      30.0
+     ]
+    ],
+    "Land": [
+     "Land_G24",
+     [
+      0.0,
+      24.0
+     ]
+    ]
+   },
+   "non_asset_import_objects": [
+    "Icosphere"
+   ]
+  },
+  "draco": {
+   "sha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357",
+   "triangles_equal_native": true,
+   "material_mismatch": [],
+   "joint_parity_keyframes_max_m": 7.237325892396274e-07,
+   "joint_parity_halfframes_max_m": 1.751231352333839e-05,
+   "deformed_bounds_parity_max_m": 1.4126300811767578e-05,
+   "deformed_vertex_cloud_parity_max_m": 3.4328988931520144e-06,
+   "imported_clips": {
+    "Idle": [
+     "Idle_G24",
+     [
+      0.0,
+      144.0
+     ]
+    ],
+    "Walk": [
+     "Walk_G24",
+     [
+      0.0,
+      36.0
+     ]
+    ],
+    "Run": [
+     "Run_G24",
+     [
+      0.0,
+      24.0
+     ]
+    ],
+    "Jump": [
+     "Jump_G24",
+     [
+      0.0,
+      30.0
+     ]
+    ],
+    "Land": [
+     "Land_G24",
+     [
+      0.0,
+      24.0
+     ]
+    ]
+   },
+   "non_asset_import_objects": [
+    "Icosphere"
+   ]
+  },
+  "skill_inspector_uncompressed": {
+   "passed": true,
+   "errors": [],
+   "warnings": [],
+   "clips": [
+    {
+     "name": "Idle",
+     "channels": 54,
+     "varying_channels": 14,
+     "start_seconds": 0.0,
+     "end_seconds": 2.4000000953674316
+    },
+    {
+     "name": "Jump",
+     "channels": 54,
+     "varying_channels": 16,
+     "start_seconds": 0.0,
+     "end_seconds": 0.5
+    },
+    {
+     "name": "Land",
+     "channels": 54,
+     "varying_channels": 16,
+     "start_seconds": 0.0,
+     "end_seconds": 0.4000000059604645
+    },
+    {
+     "name": "Run",
+     "channels": 54,
+     "varying_channels": 16,
+     "start_seconds": 0.0,
+     "end_seconds": 0.4000000059604645
+    },
+    {
+     "name": "Walk",
+     "channels": 54,
+     "varying_channels": 16,
+     "start_seconds": 0.0,
+     "end_seconds": 0.6000000238418579
+    }
+   ],
+   "max_influences": 2,
+   "max_weight_sum_error": 2.9802322387695312e-08
+  },
+  "skill_inspector_draco": {
+   "passed": false,
+   "errors": [
+    "Draco compression unsupported"
+   ],
+   "note": "Inspector does not decode Draco; final Draco file is verified by fresh Blender import parity instead."
+  }
+ },
+ "wrist": {
+  "sha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357",
+  "rest": {
+   "R": {
+    "mitten_vertices": 224,
+    "inside_sleeve": 23,
+    "deepest_inside_m": 0.025739584118127823,
+    "outside_max_m": 0.0710994303226471,
+    "overlap_span_along_hand_m": 0.017964591139830455
+   },
+   "L": {
+    "mitten_vertices": 224,
+    "inside_sleeve": 23,
+    "deepest_inside_m": 0.025172414258122444,
+    "outside_max_m": 0.07109946012496948,
+    "overlap_span_along_hand_m": 0.017964572440751614
+   }
+  },
+  "worst_over_all_clip_frames": {
+   "min_inside": 23,
+   "min_overlap": 0.017964455531910062,
+   "min_inside_at": "Idle_G24@0.R",
+   "min_overlap_at": "Jump_G24@3.L"
+  },
+  "method": "Mitten vertices classified against the evaluated body shell by closest-face normal sign. A mitten with zero vertices inside the sleeve would be floating; >0 with a nonzero overlap span means the glove root is buried in the cuff. Hand bones carry identity rotation relative to the forearm in every clip, so the wrist does not bend."
+ },
+ "materials": {
+  "guide_jacket_paint": {
+   "role": "paint",
+   "hex": "#4E647D",
+   "base": [
+    0.07619,
+    0.12744,
+    0.20508,
+    1.0
+   ],
+   "rough": 0.85,
+   "metal": 0.0
+  },
+  "guide_sleeve_cream": {
+   "role": "canvas",
+   "hex": "#E6DCCB",
+   "base": [
+    0.7913,
+    0.71569,
+    0.5972,
+    1.0
+   ],
+   "rough": 0.9,
+   "metal": 0.0
+  },
+  "guide_pants_accent": {
+   "role": "accent",
+   "hex": "#3A3F47",
+   "base": [
+    0.04231,
+    0.04971,
+    0.06301,
+    1.0
+   ],
+   "rough": 0.92,
+   "metal": 0.0
+  },
+  "guide_glove_boot_accent": {
+   "role": "accent",
+   "hex": "#4E647D",
+   "base": [
+    0.07619,
+    0.12744,
+    0.20508,
+    1.0
+   ],
+   "rough": 0.8,
+   "metal": 0.0
+  },
+  "guide_helmet_metal": {
+   "role": "metal",
+   "hex": "#E6DCCB",
+   "base": [
+    0.7913,
+    0.71569,
+    0.5972,
+    1.0
+   ],
+   "rough": 0.55,
+   "metal": 0.0
+  },
+  "guide_visor_glass": {
+   "role": "glass",
+   "hex": "#4E647D",
+   "base": [
+    0.07619,
+    0.12744,
+    0.20508,
+    1.0
+   ],
+   "rough": 0.35,
+   "metal": 0.0
+  },
+  "guide_dot_light": {
+   "role": "light",
+   "hex": "#4FD1C5",
+   "base": [
+    0.07819,
+    0.6376,
+    0.55834,
+    1.0
+   ],
+   "rough": 0.5,
+   "metal": 0.0
+  },
+  "guide_hipbag_accent": {
+   "role": "accent",
+   "hex": "#E8803A",
+   "base": [
+    0.80695,
+    0.21586,
+    0.04231,
+    1.0
+   ],
+   "rough": 0.85,
+   "metal": 0.0
+  }
+ },
+ "evidence": {
+  "sixview": "docs/world/quality-v2/guide/final/G24_sixview_final.png",
+  "poses": "docs/world/quality-v2/guide/final/G24_poses_final.png",
+  "wrist_closeups": "docs/world/quality-v2/guide/final/G24_wrist_closeups_final.png",
+  "video": "docs/world/quality-v2/guide/final/video/G24_10s_normal_speed.mp4",
+  "video_contact": "docs/world/quality-v2/guide/final/video/frames/contact_2fps.png",
+  "all_rendered_from": "fresh import of the final Draco GLB (hash in each source.txt)"
+ },
+ "acceptance": {
+  "machine": "see per-check status in README",
+  "reviewer_visual": "Codex self-review only",
+  "fable": "pending",
+  "user": "pending"
+ }
+}

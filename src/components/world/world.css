@@ -37,6 +37,7 @@ kbd { font: inherit; font-size: 11px; margin-left: 14px; border: 1px solid #ffff
 .world-dialog h2 { font-size: 27px; font-weight: 500; margin: 7px 0 0; letter-spacing: -.03em; }
 .world-dialog fieldset { display: flex; gap: 8px; border: 0; padding: 0; margin: 18px 0; }
 .world-dialog legend { font-size: 12px; color: #a9bdc1; margin-bottom: 8px; }
+.world-setting-hint { color: #a9bdc1; font-size: 12px; line-height: 1.5; margin: -8px 0 18px; }
 .world-dialog button { padding: 10px 16px; background: #29454f; border: 1px solid transparent; border-radius: 6px; }
 .world-dialog button[aria-pressed="true"] { border-color: #4fd1c5; background: #36565e; }
 .world-dialog .world-primary { width: 100%; background: #e6dccb; color: #20333b; margin: 10px 0; }

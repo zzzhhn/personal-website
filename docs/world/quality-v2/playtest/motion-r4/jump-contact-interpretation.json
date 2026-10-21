@@ -1,0 +1,17 @@
+{
+  "source": "report.json",
+  "sourceSha256": "2692de6d200048cc25382f24477a08a49696db8e08d8e1983c0334cac7bc79de",
+  "glbSha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357",
+  "nativeDiagnostic": {
+    "jumpLocalFloorContactSlip_m": 0.0350224564098922,
+    "status": "executed_fail; preserved in guide manifest",
+    "note": "Offline in-place clip tests local floor; actual jump uses rising rigid body."
+  },
+  "runtimeSamples": {
+    "JumpSamples": 20,
+    "groundedJumpSamples": 0,
+    "lowestWorldSole_m": 5.058267777896903,
+    "floor_m": 4.8
+  },
+  "interpretation": "All recorded runtime Jump samples are airborne and at least 0.258m above ground. This supports non-contact interpretation in this recorded physical jump only; it does not turn the native diagnostic into pass or prove every transition frame."
+}

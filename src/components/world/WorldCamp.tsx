@@ -1,4 +1,4 @@
-import { Component, Suspense, useEffect, useLayoutEffect, useMemo, useRef, type ReactNode } from 'react';
+import { memo, Component, Suspense, useEffect, useLayoutEffect, useMemo, useRef, type ReactNode } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import {
   Box3, BoxGeometry, BufferGeometry, Color, ConeGeometry, Euler, Float32BufferAttribute, InstancedMesh, Matrix4, Mesh,
@@ -6,13 +6,17 @@ import {
 } from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { TessellateModifier } from 'three/examples/jsm/modifiers/TessellateModifier.js';
+import { CampColliders, BlockColliders, campShapes } from './WorldCampPhysics';
+import { CampGround } from './WorldTerrain';
+import { attachNatureWind } from './WorldNatureMotion';
+import { applyTentWind, markTentCloth, windUniforms, isWorldRunning } from './WorldWind';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import { CAMP_CENTER } from './layout';
 import { useWorldStore } from './store';
 import type { Vec3 } from './types';
 
-/** Camp art slice (C01-C10, G01/G02 camp segment, G16-G23). Physics stays in
- * WorldEnvironment with the original greybox collider shapes; this file is visual only. */
+/** Camp visuals and fitted physics share the same GLB and placement matrices. */
 export type CampBlock = { position: Vec3; size: Vec3; color: string; rotation?: Vec3 };
 export interface CampLayout { pads: CampBlock[]; padObjects: CampBlock[]; tents: CampBlock[]; benches: CampBlock[]; trees: CampBlock[]; lampHeads: CampBlock[] }
 /** tilt rotates about the asset's local X before yaw (re-grounded by bounds); sink buries it. */
@@ -24,7 +28,7 @@ const PAD_TOP = 4.9;
 /** Ring index (layout order, angle = i*45deg, +Z south) for pad1..pad8. Fable r3 swap: desk
  * west-south-west (pad1, index 3), trophy shelf north-west (pad2, index 5), flags west (pad3,
  * index 4, the only pad whose full flag set fits the default follow frame). The remaining
- * five pads carry the C11-C15 stand-ins. Old pad-object colliders are unchanged. */
+ * five pads carry the C11-C15 stand-ins. Each visible object owns its fitted collision shape. */
 const PAD_ORDER = [3, 5, 4, 6, 7, 0, 1, 2];
 const PLACEHOLDER_IDS = ['C11', 'C12', 'C13', 'C14', 'C15'];
 /** Only the four camp-surface trees are replaced; town/island trees stay greybox. */
@@ -57,7 +61,7 @@ class AssetGuard extends Component<{ id: string; fallback: ReactNode; children: 
   }
 }
 
-function Boxes({ items, geometry = BOX, shadow = true, name }: { items: CampBlock[]; geometry?: BufferGeometry; shadow?: boolean; name?: string }) {
+function Boxes({ items, geometry = BOX, shadow = true, name, collisionId }: { items: CampBlock[]; geometry?: BufferGeometry; shadow?: boolean; name?: string; collisionId?: string }) {
   const ref = useRef<InstancedMesh>(null);
   useLayoutEffect(() => {
     const mesh = ref.current;
@@ -77,12 +81,12 @@ function Boxes({ items, geometry = BOX, shadow = true, name }: { items: CampBloc
     mesh.computeBoundingSphere();
   }, [items]);
   if (!items.length) return null;
-  return <instancedMesh name={name} ref={ref} args={[geometry, undefined, items.length]} castShadow={shadow} receiveShadow>
+  return <>{collisionId && <BlockColliders id={collisionId} blocks={items} />}<instancedMesh name={name} ref={ref} args={[geometry, undefined, items.length]} castShadow={shadow} receiveShadow>
     <meshStandardMaterial roughness={1} />
-  </instancedMesh>;
+  </instancedMesh></>;
 }
 
-type Part = { geometry: BufferGeometry; material: Material | Material[]; matrix: Matrix4 };
+type Part = { geometry: BufferGeometry; material: Material | Material[]; matrix: Matrix4; name: string; depth?: Material; ownedGeometry?: boolean };
 type MaterialMap = (material: Material) => Material;
 /** Maps each distinct source material once; returns only newly created runtime copies. */
 function mapper(map?: MaterialMap) {
@@ -95,12 +99,30 @@ function mapper(map?: MaterialMap) {
   };
   return { apply: (m: Material | Material[]) => Array.isArray(m) ? m.map(one) : one(m), copies };
 }
-function collectParts(gltf: GLTF, map?: MaterialMap) {
+function collectParts(gltf: GLTF, id: string, map?: MaterialMap) {
   gltf.scene.updateMatrixWorld(true);
   const parts: Part[] = [], materials = mapper(map);
   gltf.scene.traverse(object => {
     const mesh = object as Mesh;
-    if (mesh.isMesh) parts.push({ geometry: mesh.geometry, material: materials.apply(mesh.material), matrix: mesh.matrixWorld.clone() });
+    if (!mesh.isMesh) return;
+    let geometry = mesh.geometry;
+    let material = materials.apply(mesh.material);
+    let depth: Material | undefined;
+    let ownedGeometry = false;
+    // Additional vertices serve cloth bending; no smoothing of hard props or budget padding.
+    if ((id === 'C03' || id === 'C04') && !Array.isArray(material) && material.name === 'camp_canvas_orange') {
+      const data = gltf.scene.getObjectByName(id)?.userData;
+      const params = typeof data?.tentParams === 'string' ? JSON.parse(data.tentParams) : data?.tentParams;
+      if (params) {
+        geometry = new TessellateModifier(.42, 8).modify(mesh.geometry);
+        markTentCloth(geometry, params);
+        geometry.computeBoundingBox(); geometry.boundingBox?.expandByScalar(.04);
+        geometry.computeBoundingSphere(); if (geometry.boundingSphere) geometry.boundingSphere.radius += .04;
+        ownedGeometry = true;
+        depth = applyTentWind(material as MeshStandardMaterial, id, params);
+      }
+    }
+    parts.push({ geometry, material, matrix: mesh.matrixWorld.clone(), name: mesh.name, depth, ownedGeometry });
   });
   return { parts, copies: materials.copies };
 }
@@ -122,31 +144,37 @@ function toMatrix(p: Placement, bounds: Box3) {
   return new Matrix4().compose(position, rotation, new Vector3().setScalar(scale));
 }
 
-function InstancedPart({ part, matrices }: { part: Part; matrices: Matrix4[] }) {
+function InstancedPart({ part, matrices, id }: { part: Part; matrices: Matrix4[]; id: string }) {
   const ref = useRef<InstancedMesh>(null);
   useLayoutEffect(() => {
     const mesh = ref.current;
     if (!mesh) return;
+    const detach = attachNatureWind(mesh);
     const m = new Matrix4();
     matrices.forEach((placement, i) => mesh.setMatrixAt(i, m.multiplyMatrices(placement, part.matrix)));
     mesh.instanceMatrix.needsUpdate = true;
     mesh.computeBoundingSphere();
+    return detach;
   }, [part, matrices]);
-  return <instancedMesh ref={ref} args={[part.geometry, part.material, matrices.length]} castShadow receiveShadow />;
+  return <instancedMesh name={`camp-mesh-${id}-${part.name}`} userData={{ assetId: id, solid: true, semantic: part.name }} ref={ref} args={[part.geometry, part.material, matrices.length]} customDepthMaterial={part.depth} castShadow receiveShadow />;
 }
 
 /** Repeated static assets: one instanced draw per GLB primitive, shared materials. */
-function InstancedAsset({ id, placements, materialMap }: { id: string; placements: Placement[]; materialMap?: MaterialMap }) {
+function InstancedAsset({ id, placements, materialMap, label = "instances" }: { id: string; placements: Placement[]; materialMap?: MaterialMap; label?: string }) {
   const gltf = useCampGltf(id);
-  const { parts, copies } = useMemo(() => collectParts(gltf, materialMap), [gltf, materialMap]);
+  const { parts, copies } = useMemo(() => collectParts(gltf, id, materialMap), [gltf, id, materialMap]);
   useRegisteredCopies(copies);
   const matrices = useMemo(() => {
     const bounds = new Box3();
     parts.forEach(part => { part.geometry.computeBoundingBox(); bounds.union(part.geometry.boundingBox!.clone().applyMatrix4(part.matrix)); });
     return placements.map(p => toMatrix(p, bounds));
   }, [parts, placements]);
-  return <group name={`camp-asset-${id}-x${placements.length}`}>
-    {parts.map((part, i) => <InstancedPart key={i} part={part} matrices={matrices} />)}
+  const shapes = useMemo(() => campShapes(id, gltf), [id, gltf]);
+  useEffect(() => () => parts.forEach(p => { if (p.ownedGeometry) p.geometry.dispose(); p.depth?.dispose(); }), [parts]);
+  if (!shapes) throw new Error(`Missing fitted collision recipe for ${id}`);
+  return <group name={`camp-asset-${id}-${label}`}>
+    {parts.map((part, i) => <InstancedPart key={i} part={part} matrices={matrices} id={id} />)}
+    <CampColliders id={id} label={label} shapes={shapes} matrices={matrices} />
   </group>;
 }
 
@@ -166,18 +194,18 @@ function useCampScene(id: string, materialMap?: MaterialMap) {
   return scene;
 }
 
-function SingleAsset({ id, label, placement, materialMap, children }: { id: string; label: string; placement: Placement; materialMap?: MaterialMap; children?: ReactNode }) {
-  const scene = useCampScene(id, materialMap);
-  return <group name={`camp-asset-${id}-${label}`} position={placement.position} rotation={[0, placement.yaw, 0]}>
-    <primitive object={scene} />{children}
-  </group>;
+function SingleAsset({ id, label, placement, materialMap }: { id: string; label: string; placement: Placement; materialMap?: MaterialMap }) {
+  const placements = useMemo(() => [placement], [placement]);
+  return <InstancedAsset id={id} label={label} placements={placements} materialMap={materialMap} />;
 }
-
-const isRunning = () => { const s = useWorldStore.getState(); return !s.paused && !s.shot; };
+const isRunning = isWorldRunning;
 
 /** C10: pole fixed; flag_01..04 sway about their own hoist pivots (local +Y). */
 function FlagPole({ label, placement }: { label: string; placement: Placement }) {
   const scene = useCampScene('C10');
+  const gltf = useCampGltf('C10');
+  const shapes = useMemo(() => campShapes('C10', gltf), [gltf]);
+  const matrices = useMemo(() => [toMatrix(placement, new Box3().setFromObject(scene))], [placement, scene]);
   useEffect(() => {
     const flag = scene.getObjectByName('flag_03') as Mesh | undefined;
     if (!flag?.isMesh || Array.isArray(flag.material)) return;
@@ -189,14 +217,15 @@ function FlagPole({ label, placement }: { label: string; placement: Placement })
   const flags = useMemo(() => ['flag_01', 'flag_02', 'flag_03', 'flag_04']
     .map(name => scene.getObjectByName(name)).filter((f): f is Object3D => !!f)
     .map(object => ({ object, base: object.rotation.y })), [scene]);
-  const time = useRef(0);
   useFrame((_, delta) => {
     if (!isRunning()) return;
-    time.current += delta;
-    const t = time.current;
-    flags.forEach(({ object, base }, i) => { object.rotation.y = base + Math.sin(t * 1.5 + i * 0.9) * 0.1 + Math.sin(t * 3.1 + i) * 0.03; });
+    const t = windUniforms.uWindTime.value;
+    flags.forEach(({ object, base }, i) => { object.rotation.y = base + (Math.sin(t * 1.8 + i * 0.9) * 0.1 + Math.sin(t * 3.1 + i) * 0.03) * windUniforms.uWindStrength.value; });
   });
-  return <group name={`camp-asset-C10-${label}`} position={placement.position} rotation={[0, placement.yaw, 0]}><primitive object={scene} /></group>;
+  return <group name={`camp-asset-C10-${label}`}>
+    <group position={placement.position} rotation={[0, placement.yaw, 0]} userData={{ assetId: 'C10', solid: true }}><primitive object={scene} /></group>
+    {shapes && <CampColliders id="C10" label={label} shapes={shapes} matrices={matrices} />}
+  </group>;
 }
 
 /** A handful of faceted runtime flame cones in C05's open centre; no particles. */
@@ -212,20 +241,19 @@ function CampFire({ position }: { position: Vec3 }) {
   const core = useMemo(() => new MeshStandardMaterial({ color: '#FFC978', emissive: '#FFC978', emissiveIntensity: 1.6, roughness: 1, flatShading: true }), []);
   useEffect(() => () => { outer.dispose(); core.dispose(); }, [outer, core]);
   const refs = useRef<(Mesh | null)[]>([]);
-  const time = useRef(0);
   useFrame((_, delta) => {
     const night = useWorldStore.getState().light === 'night';
     outer.emissiveIntensity += ((night ? 2.2 : 1.3) - outer.emissiveIntensity) * Math.min(1, delta * 2);
     core.emissiveIntensity = outer.emissiveIntensity * 1.25;
     if (!isRunning()) return;
-    time.current += delta;
-    const t = time.current;
+    const t = windUniforms.uWindTime.value;
     FLAMES.forEach((f, i) => {
       const mesh = refs.current[i];
       if (!mesh) return;
-      const pulse = 1 + Math.sin(t * 7 + f.phase) * 0.13 + Math.sin(t * 12.7 + f.phase * 2) * 0.05;
+      const motion = windUniforms.uWindStrength.value;
+      const pulse = 1 + (Math.sin(t * 7 + f.phase) * 0.13 + Math.sin(t * 12.7 + f.phase * 2) * 0.05) * motion;
       mesh.scale.set(f.r * (1.04 - pulse * 0.04), f.h * pulse, f.r * (1.04 - pulse * 0.04));
-      mesh.rotation.set(Math.sin(t * 2.3 + f.phase) * 0.06, f.phase + t * 0.4, Math.cos(t * 2.1 + f.phase) * 0.06);
+      mesh.rotation.set(Math.sin(t * 2.3 + f.phase) * 0.06 * motion, f.phase + Math.sin(t * .4) * .25 * motion, Math.cos(t * 2.1 + f.phase) * 0.06 * motion);
     });
   });
   return <group name="camp-runtime-flame" position={position}>
@@ -236,59 +264,6 @@ function CampFire({ position }: { position: Vec3 }) {
 
 /** Deterministic hash in [-1, 1] for low-poly edge variation (not per-face shading). */
 const hash = (k: number, seed: number) => { const s = Math.sin(k * 12.9898 + seed * 78.233) * 43758.5453; return (s - Math.floor(s)) * 2 - 1; };
-
-/** C01 (Fable P1-01): warm sand plaza inside the benches, a lighter sand band carrying the
- * path and the eight pads, two-tone low-frequency grass outside, sandy rim at the cliff.
- * One flat cap exactly at the unchanged camp collider top. */
-const GROUND_RINGS = [0, 1.6, 3.0, 4.2, 6, 8, 9.8, 10.4, 13, 15, 17.2, 18.4, 19.6, 20.8, 22, 22.9, CAMP_RADIUS];
-const SAND = { pit: new Color('#A58D6A'), trodden: new Color('#B89A6A'), plaza: new Color('#C9A978'), lip: new Color('#BC9C6C'), band: new Color('#D2B98A'), rim: new Color('#B99A6C') };
-const GRASS = [new Color('#7E8C3E'), new Color('#8A963F')];
-function sandColor(r: number, out: Color) {
-  if (r <= 1.6) return out.copy(SAND.pit);
-  if (r <= 3.0) return out.copy(SAND.pit).lerp(SAND.trodden, (r - 1.6) / 1.4);
-  if (r <= 4.2) return out.copy(SAND.trodden).lerp(SAND.plaza, (r - 3.0) / 1.2);
-  if (r < 9.8) return out.copy(SAND.plaza);
-  return out.copy(SAND.plaza).lerp(SAND.lip, Math.min(1, (r - 9.8) / 0.6));
-}
-function createGround(): BufferGeometry {
-  const N = 96, [cx, , cz] = CAMP_CENTER;
-  const radiusAt = (ring: number, k: number) => {
-    const r = GROUND_RINGS[ring];
-    return r === 0 || r === CAMP_RADIUS ? r : r + hash(k % N, ring + 11) * Math.min(0.22, r * 0.05);
-  };
-  const positions: number[] = [], colors: number[] = [];
-  const c = new Color(), face = new Color();
-  const drift = (x: number, z: number) => 1 + 0.035 * Math.sin(x * 0.31 + z * 0.17) + 0.025 * Math.sin(z * 0.43 - x * 0.12);
-  for (let ring = 0; ring < GROUND_RINGS.length - 1; ring++) {
-    const zone = GROUND_RINGS[ring] < 10.4 ? 'plaza' : GROUND_RINGS[ring] < 17.2 ? 'band' : GROUND_RINGS[ring] < 22.9 ? 'grass' : 'rim';
-    for (let k = 0; k < N; k++) {
-      const vertex = (rIndex: number, kk: number) => {
-        const a = (kk % N) / N * Math.PI * 2, r = radiusAt(rIndex, kk);
-        return [cx + Math.cos(a) * r, CAMP_TOP, cz + Math.sin(a) * r, GROUND_RINGS[rIndex]] as const;
-      };
-      const quad = [vertex(ring, k), vertex(ring, k + 1), vertex(ring + 1, k), vertex(ring, k + 1), vertex(ring + 1, k + 1), vertex(ring + 1, k)];
-      const tris = ring === 0 ? [quad[0], quad[4], quad[2]] : quad;
-      if (zone === 'grass') {
-        // Two-step patchwork from low-frequency world noise, decided per face.
-        const fx = (tris[0][0] + tris[1][0] + tris[2][0]) / 3, fz = (tris[0][2] + tris[1][2] + tris[2][2]) / 3;
-        const n = Math.sin(fx * 0.21 + fz * 0.13) + 0.8 * Math.sin(fz * 0.27 - fx * 0.17 + 1.3) + 0.35 * Math.sin((fx + fz) * 0.41);
-        face.copy(GRASS[n > 0.15 ? 1 : 0]);
-      }
-      for (const [x, y, z, nominal] of tris) {
-        if (zone === 'grass') c.copy(face);
-        else if (zone === 'plaza') sandColor(nominal, c).multiplyScalar(drift(x, z));
-        else c.copy(zone === 'band' ? SAND.band : SAND.rim).multiplyScalar(drift(x, z));
-        positions.push(x, y, z); colors.push(c.r, c.g, c.b);
-      }
-    }
-  }
-  const geometry = new BufferGeometry();
-  geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
-  geometry.setAttribute('normal', new Float32BufferAttribute(positions.map((_, i) => (i % 3 === 1 ? 1 : 0)), 3));
-  geometry.setAttribute('color', new Float32BufferAttribute(colors, 3));
-  geometry.computeBoundingSphere();
-  return geometry;
-}
 
 /** G01 camp segment: layered, faceted stone bands replacing the smooth sand cylinder side.
  * Stays within the old 24 -> 24.7 m flare so nothing new intrudes on the ramp or lower ground. */
@@ -331,15 +306,14 @@ function CampNightFill() {
  * and the nearest pads (15 m); the existing fire point light stays the hot core. */
 function CampFireSpill() {
   const ref = useRef<PointLight>(null);
-  const level = useRef(0), time = useRef(0);
+  const level = useRef(0);
   useFrame((_, delta) => {
     const light = ref.current;
     if (!light) return;
     level.current += ((useWorldStore.getState().light === 'night' ? 1 : 0) - level.current) * Math.min(1, delta * 1.5);
-    if (isRunning()) time.current += delta;
     // decay 1 over 24 m; Fable r2 cut 30% from 11 so the pit, benches and pads read as three
     // brightness steps. The inverse-square fire light in WorldEnvironment stays the hot core.
-    light.intensity = level.current * 7.7 * (1 + Math.sin(time.current * 5.3) * 0.05);
+    light.intensity = level.current * 7.7 * (1 + Math.sin(windUniforms.uWindTime.value * 5.3) * 0.05 * windUniforms.uWindStrength.value);
   });
   return <pointLight name="camp-fire-spill" ref={ref} position={[CAMP_CENTER[0], CAMP_TOP + 1.6, CAMP_CENTER[2]]} color="#FF9A4A" intensity={0} distance={24} decay={1} castShadow={false} />;
 }
@@ -357,9 +331,9 @@ function canvasGlowCopy(material: Material): Material {
 }
 function useRegisteredCopies(copies: Material[]) {
   useEffect(() => {
-    const glow = copies.filter((m): m is MeshStandardMaterial => (m as MeshStandardMaterial).isMeshStandardMaterial);
+    const glow = copies.filter((m): m is MeshStandardMaterial => (m as MeshStandardMaterial).isMeshStandardMaterial && m.name === 'camp_canvas_orange');
     glow.forEach(m => nightGlow.add(m));
-    return () => glow.forEach(m => { nightGlow.delete(m); m.dispose(); });
+    return () => { glow.forEach(m => nightGlow.delete(m)); copies.forEach(m => m.dispose()); };
   }, [copies]);
 }
 function CampNightMaterials() {
@@ -391,11 +365,10 @@ function CampLamps({ heads }: { heads: CampBlock[] }) {
 }
 
 function CampTerrain() {
-  const ground = useMemo(createGround, []);
   const cliff = useMemo(createCliff, []);
-  useEffect(() => () => { ground.dispose(); cliff.dispose(); }, [ground, cliff]);
+  useEffect(() => () => cliff.dispose(), [cliff]);
   return <group name="camp-terrain-C01-G01">
-    <mesh geometry={ground} receiveShadow><meshStandardMaterial vertexColors roughness={1} /></mesh>
+    <CampGround radius={CAMP_RADIUS} y={CAMP_TOP} />
     <mesh geometry={cliff} receiveShadow><meshStandardMaterial vertexColors roughness={1} flatShading /></mesh>
   </group>;
 }
@@ -425,7 +398,7 @@ function padTiles(pads: CampBlock[]): CampBlock[] {
   return items;
 }
 
-export default function WorldCamp({ layout }: { layout: CampLayout }) {
+export default memo(function WorldCamp({ layout }: { layout: CampLayout }) {
   const data = useMemo(() => {
     const yawToCentre = (pad: CampBlock) => Math.PI + (pad.rotation?.[1] ?? 0);
     const padAt = (n: number) => layout.pads[PAD_ORDER[n]];
@@ -437,8 +410,16 @@ export default function WorldCamp({ layout }: { layout: CampLayout }) {
     // ... and its +X front is turned to face the fire.
     const benches = layout.benches.map(b => ({ position: base(b), yaw: (b.rotation?.[1] ?? 0) - Math.PI / 2 }));
     const trees = layout.trees.map((t, i) => ({ id: TREE_IDS[i], placement: { position: base(t), yaw: TREE_YAWS[i] } }));
-    const placeholders = PAD_ORDER.slice(3).map(index => layout.padObjects[index]);
-    return { onPad, tents, benches, trees, placeholders, tiles: padTiles(layout.pads) };
+    const placeholders = PAD_ORDER.slice(3).map(index => {
+      const b = layout.padObjects[index];
+      // The north pad lies in front of C03's real door. Keep this unfinished bundle
+      // on its side of the pad, with the same visual/collider dimensions and a clear aisle.
+      return index === 6 ? { ...b, position: [b.position[0] + .85, b.position[1], b.position[2]] as Vec3,
+        size: [.7, b.size[1], b.size[2]] as Vec3 } : b;
+    });
+    const desk = onPad(0), offset = rotateY(-.34, .5, desk.yaw);
+    const bookStack: Placement = { position: [desk.position[0] + offset[0], PAD_TOP + .85, desk.position[2] + offset[1]], yaw: desk.yaw + .16 };
+    return { onPad, tents, benches, trees, placeholders, bookStack, tiles: padTiles(layout.pads) };
   }, [layout]);
   const nature = useMemo(createNature, []);
   const treeGroups = useMemo(() => ['G16', 'G17', 'G18'].map(id => ({ id, placements: data.trees.filter(t => t.id === id).map(t => t.placement) })), [data]);
@@ -455,48 +436,47 @@ export default function WorldCamp({ layout }: { layout: CampLayout }) {
     <Boxes name="camp-C02-flagstones" items={data.tiles} shadow={false} />
     {/* Pads 4-8 keep their old collider: low canvas bundles mark C11-C15 as not yet made. */}
     <group name={`camp-placeholder-${PLACEHOLDER_IDS.join('-')}`}>
+      <BlockColliders id="C11-C15" blocks={data.placeholders} />
       <Boxes items={data.placeholders.map(b => ({ ...b, color: '#CDB894', rotation: [0, b.rotation?.[1] ?? 0, 0] }))} geometry={BUNDLE} />
       <Boxes items={data.placeholders.flatMap(b => [-0.25, 0.25].map(o => ({ position: [b.position[0] + o, b.position[1], b.position[2]] as Vec3, size: [0.09, b.size[1] + 0.02, b.size[2] + 0.02] as Vec3, color: '#6E5A44' })))} />
     </group>
-    <AssetGuard id="C03" fallback={<Boxes items={[layout.tents[1]]} />}>
+    <AssetGuard id="C03" fallback={<Boxes collisionId="C03" items={[layout.tents[1]]} />}>
       <SingleAsset id="C03" label="large-tent" placement={data.tents[1]} materialMap={canvasGlowCopy} />
     </AssetGuard>
-    <AssetGuard id="C04" fallback={<Boxes items={[layout.tents[0], layout.tents[2]]} />}>
+    <AssetGuard id="C04" fallback={<Boxes collisionId="C04" items={[layout.tents[0], layout.tents[2]]} />}>
       <InstancedAsset id="C04" placements={[data.tents[0], data.tents[2]]} materialMap={canvasGlowCopy} />
     </AssetGuard>
-    <AssetGuard id="C05" fallback={<Boxes items={[{ position: [firePosition[0], 4.95, firePosition[2]], size: [3.2, 0.3, 3.2], color: '#8C8276' }]} />}>
+    <AssetGuard id="C05" fallback={<Boxes collisionId="C05" items={[{ position: [firePosition[0], 4.95, firePosition[2]], size: [3.2, 0.3, 3.2], color: '#8C8276' }]} />}>
       <SingleAsset id="C05" label="fire-pit" placement={{ position: firePosition, yaw: 0 }} />
     </AssetGuard>
     <CampFire position={[firePosition[0], CAMP_TOP + 0.06, firePosition[2]]} />
-    <AssetGuard id="C06" fallback={<Boxes items={layout.benches} />}>
+    <AssetGuard id="C06" fallback={<Boxes collisionId="C06" items={layout.benches} />}>
       <InstancedAsset id="C06" placements={data.benches} />
     </AssetGuard>
-    <AssetGuard id="C07" fallback={<Boxes items={padObject(0)} />}>
-      <SingleAsset id="C07" label="pad1" placement={data.onPad(0)}>
-        {/* Inside C07's top rectangle x[-0.618,0.122] z[-0.97,0.97], away from the stool side. */}
-        <AssetGuard id="C08" fallback={null}>
-          <SingleAsset id="C08" label="pad1" placement={{ position: [-0.34, 0.85, 0.5], yaw: 0.16 }} />
-        </AssetGuard>
-      </SingleAsset>
+    <AssetGuard id="C07" fallback={<Boxes collisionId="C07" items={padObject(0)} />}>
+      <SingleAsset id="C07" label="pad1" placement={data.onPad(0)} />
     </AssetGuard>
-    <AssetGuard id="C09" fallback={<Boxes items={padObject(1)} />}>
+    <AssetGuard id="C08" fallback={null}>
+      <SingleAsset id="C08" label="pad1" placement={data.bookStack} />
+    </AssetGuard>
+    <AssetGuard id="C09" fallback={<Boxes collisionId="C09" items={padObject(1)} />}>
       <SingleAsset id="C09" label="pad2" placement={data.onPad(1)} />
     </AssetGuard>
-    <AssetGuard id="C10" fallback={<Boxes items={padObject(2)} />}>
+    <AssetGuard id="C10" fallback={<Boxes collisionId="C10" items={padObject(2)} />}>
       {/* West pad, centred: yaw 2.6 turns the cloth plane (local X normal) to the default follow camera. */}
       <FlagPole label="pad3" placement={{ ...data.onPad(2), yaw: 2.6 }} />
     </AssetGuard>
-    {treeGroups.map(({ id, placements }) => <AssetGuard key={id} id={id} fallback={<Boxes items={fallbackTree(id)} />}>
+    {treeGroups.map(({ id, placements }) => <AssetGuard key={id} id={id} fallback={<Boxes collisionId={id} items={fallbackTree(id)} />}>
       <InstancedAsset id={id} placements={placements} />
     </AssetGuard>)}
     {nature.map(({ id, placements }) => <AssetGuard key={id} id={id} fallback={null}>
       <InstancedAsset id={id} placements={placements} />
     </AssetGuard>)}
   </group>;
-}
+});
 
-/** G19-G23: visual-only clusters on the outer meadow (r 20-22.5), clear of the
- * pads, tents, east exit/road, lamp posts and parking bay. No colliders. */
+/** G19-G23: fitted solid clusters on the outer meadow (r 20-22.5), clear of the
+ * pads, tents, east exit/road, lamp posts and parking bay. Placement matrices also drive collision. */
 function createNature() {
   const [cx, , cz] = CAMP_CENTER;
   const groups: { deg: number; r: number; items: [string, number, number, number, number?][] }[] = [

@@ -592,9 +592,9 @@
     "name": "阔叶团簇树",
     "source": "L1 coding",
     "count": "实例复用",
-    "triangles": "实测 532/件；技能逐件定额，非硬上限",
+    "triangles": "实测 4288/件；技能逐件定额，非硬上限",
     "materialRole": "foliage / wood",
-    "physics": "静态树干",
+    "physics": "同源静态树干网格",
     "reference": "camp",
     "crop": [
       0.3,
@@ -602,17 +602,18 @@
       0.18,
       0.26
     ],
-    "note": "树冠3–5团；三阶橄榄色，按可见剪影逐件定额并记录实测",
-    "status": "营地 L1 已制作；最终压缩 GLB 机器检查通过；Fable资产与样片设计通过",
+    "note": "圆冠三叉，391 片折面叶；三阶橄榄色",
+    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
     "legacyTriangleEstimate": "≤900/件",
     "triangleBudget": {
-      "status": "已制作并完成最终压缩 GLB 回读实测",
+      "status": "quality-v2 原生与最终 Draco GLB 回读实测",
       "basis": "保留 Art Lock 团簇/石块风格；技能无本类统一数值，参考造型密度不是面数硬上限",
       "hardCap": false,
-      "evaluatedTriangles": 532,
-      "glbReimportTriangles": 532,
-      "baselineMultiplier": 0.5911,
-      "baselineBasis": "相对 legacyTriangleEstimate 的历史计划值，不是相对旧模型；不作验收上限"
+      "evaluatedTriangles": 4288,
+      "glbReimportTriangles": 4288,
+      "baselineMultiplier": 8.06,
+      "baselineBasis": "相对 c507506 实际 532 三角模型，不是旧估算",
+      "declaredUpper": 7000
     },
     "skillGuidance": [
       "blender-low-poly-pipeline",
@@ -626,7 +627,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "导出实测、Fable最终GLB资产审阅与营地运行样片设计通过；Bobby未验收；碰撞代理尚未精细匹配",
+    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -637,22 +638,22 @@
     "production": {
       "method": "L1 coding",
       "scope": "camp-slice-only",
-      "sourceManifest": "docs/world/camp-slice/nature/manifest.json",
+      "sourceManifest": "docs/world/quality-v2/nature/manifest.json",
       "glb": "public/assets/world/camp/G16.glb",
       "blend": "tools/world/camp/nature/blend/G16.blend",
-      "sha256": "adb2f94a21b1da0af1fea743c417cdb693a7efca7a146dd9717efa2e83215f1d",
-      "bytes": 16476,
+      "sha256": "951d6c001a5536437bf795967d74750de0eacc4757f48ac9c3c0cae727b19472",
+      "bytes": 125788,
       "boundsXYZ_m": [
-        3.8,
-        5.4,
-        3.4028
+        3.554738998413086,
+        5.406573295593262,
+        3.6416754722595215
       ],
       "compression": "KHR_draco_mesh_compression",
-      "colorSixViews": "docs/world/camp-slice/nature/views/G16_sheet.png",
-      "artReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md",
-      "runtimeReview": "docs/world/camp-slice/reviews/审阅-营地样片运行图-20261021.md",
-      "runtimeReviewStatus": "r4 样片设计通过；r3 实走通过；Bobby未验收",
-      "userAccepted": false
+      "colorSixViews": "docs/world/quality-v2/nature/views/G16_sheet.png",
+      "runtimeReviewStatus": "acceptance-r3：16类首实例四方向复合案例通过；不是全部实例/全部驾驶情境认证",
+      "userAccepted": false,
+      "runtimeEvidence": "docs/world/quality-v2/playtest/acceptance-r3/report.json",
+      "historicalReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md"
     }
   },
   {
@@ -661,9 +662,9 @@
     "name": "矮团簇树",
     "source": "L1 coding",
     "count": "实例复用",
-    "triangles": "实测 416/件；技能逐件定额，非硬上限",
+    "triangles": "实测 3190/件；技能逐件定额，非硬上限",
     "materialRole": "foliage / wood",
-    "physics": "静态树干",
+    "physics": "同源静态树干网格",
     "reference": "camp",
     "crop": [
       0.12,
@@ -671,17 +672,18 @@
       0.16,
       0.3
     ],
-    "note": "树冠3–5团；三阶橄榄色，按可见剪影逐件定额并记录实测",
-    "status": "营地 L1 已制作；最终压缩 GLB 机器检查通过；Fable资产与样片设计通过",
+    "note": "横向展冠，275 片折面叶；与圆冠、上叉树分形",
+    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
     "legacyTriangleEstimate": "≤900/件",
     "triangleBudget": {
-      "status": "已制作并完成最终压缩 GLB 回读实测",
+      "status": "quality-v2 原生与最终 Draco GLB 回读实测",
       "basis": "保留 Art Lock 团簇/石块风格；技能无本类统一数值，参考造型密度不是面数硬上限",
       "hardCap": false,
-      "evaluatedTriangles": 416,
-      "glbReimportTriangles": 416,
-      "baselineMultiplier": 0.4622,
-      "baselineBasis": "相对 legacyTriangleEstimate 的历史计划值，不是相对旧模型；不作验收上限"
+      "evaluatedTriangles": 3190,
+      "glbReimportTriangles": 3190,
+      "baselineMultiplier": 7.668,
+      "baselineBasis": "相对 c507506 实际 416 三角模型，不是旧估算",
+      "declaredUpper": 7000
     },
     "skillGuidance": [
       "blender-low-poly-pipeline",
@@ -695,7 +697,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "导出实测、Fable最终GLB资产审阅与营地运行样片设计通过；Bobby未验收；碰撞代理尚未精细匹配",
+    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -706,22 +708,22 @@
     "production": {
       "method": "L1 coding",
       "scope": "camp-slice-only",
-      "sourceManifest": "docs/world/camp-slice/nature/manifest.json",
+      "sourceManifest": "docs/world/quality-v2/nature/manifest.json",
       "glb": "public/assets/world/camp/G17.glb",
       "blend": "tools/world/camp/nature/blend/G17.blend",
-      "sha256": "1bcc77d2693c7a5fe46f2c44b35b4427d78236fe256c1fc553eed08ad36ac03e",
-      "bytes": 13800,
+      "sha256": "b03f9dc88f253eb7011b64f607e50785f4410131d2e17079c704c2bb6b1ed116",
+      "bytes": 96116,
       "boundsXYZ_m": [
-        2.9528,
-        4.8,
-        4.4
+        2.2661595344543457,
+        4.8933610916137695,
+        4.412363529205322
       ],
       "compression": "KHR_draco_mesh_compression",
-      "colorSixViews": "docs/world/camp-slice/nature/views/G17_sheet.png",
-      "artReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md",
-      "runtimeReview": "docs/world/camp-slice/reviews/审阅-营地样片运行图-20261021.md",
-      "runtimeReviewStatus": "r4 样片设计通过；r3 实走通过；Bobby未验收",
-      "userAccepted": false
+      "colorSixViews": "docs/world/quality-v2/nature/views/G17_sheet.png",
+      "runtimeReviewStatus": "acceptance-r3：16类首实例四方向复合案例通过；不是全部实例/全部驾驶情境认证",
+      "userAccepted": false,
+      "runtimeEvidence": "docs/world/quality-v2/playtest/acceptance-r3/report.json",
+      "historicalReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md"
     }
   },
   {
@@ -730,9 +732,9 @@
     "name": "高团簇树",
     "source": "L1 coding",
     "count": "实例复用",
-    "triangles": "实测 684/件；技能逐件定额，非硬上限",
+    "triangles": "实测 3860/件；技能逐件定额，非硬上限",
     "materialRole": "foliage / wood",
-    "physics": "静态树干",
+    "physics": "同源静态树干网格",
     "reference": "camp",
     "crop": [
       0.59,
@@ -740,17 +742,18 @@
       0.15,
       0.26
     ],
-    "note": "树冠3–5团；三阶橄榄色，按可见剪影逐件定额并记录实测",
-    "status": "营地 L1 已制作；最终压缩 GLB 机器检查通过；Fable资产与样片设计通过",
+    "note": "向上分叉五簇，235 片折面叶",
+    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
     "legacyTriangleEstimate": "≤900/件",
     "triangleBudget": {
-      "status": "已制作并完成最终压缩 GLB 回读实测",
+      "status": "quality-v2 原生与最终 Draco GLB 回读实测",
       "basis": "保留 Art Lock 团簇/石块风格；技能无本类统一数值，参考造型密度不是面数硬上限",
       "hardCap": false,
-      "evaluatedTriangles": 684,
-      "glbReimportTriangles": 684,
-      "baselineMultiplier": 0.76,
-      "baselineBasis": "相对 legacyTriangleEstimate 的历史计划值，不是相对旧模型；不作验收上限"
+      "evaluatedTriangles": 3860,
+      "glbReimportTriangles": 3860,
+      "baselineMultiplier": 5.643,
+      "baselineBasis": "相对 c507506 实际 684 三角模型，不是旧估算",
+      "declaredUpper": 7000
     },
     "skillGuidance": [
       "blender-low-poly-pipeline",
@@ -764,7 +767,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "导出实测、Fable最终GLB资产审阅与营地运行样片设计通过；Bobby未验收；碰撞代理尚未精细匹配",
+    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -775,22 +778,22 @@
     "production": {
       "method": "L1 coding",
       "scope": "camp-slice-only",
-      "sourceManifest": "docs/world/camp-slice/nature/manifest.json",
+      "sourceManifest": "docs/world/quality-v2/nature/manifest.json",
       "glb": "public/assets/world/camp/G18.glb",
       "blend": "tools/world/camp/nature/blend/G18.blend",
-      "sha256": "cf740f2186cb72b6dbb470c088ccdf74b0a4ce5f03569d15a57568cbafe3eca3",
-      "bytes": 19392,
+      "sha256": "2a3e6555426c51dcfd9baeff8d35791fe3658e9c6fcd3915b2a8a5a6e0ece385",
+      "bytes": 110956,
       "boundsXYZ_m": [
-        2.8493,
-        6.3,
-        3.0
+        2.8946032524108887,
+        6.237880706787109,
+        2.643810272216797
       ],
       "compression": "KHR_draco_mesh_compression",
-      "colorSixViews": "docs/world/camp-slice/nature/views/G18_sheet.png",
-      "artReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md",
-      "runtimeReview": "docs/world/camp-slice/reviews/审阅-营地样片运行图-20261021.md",
-      "runtimeReviewStatus": "r4 样片设计通过；r3 实走通过；Bobby未验收",
-      "userAccepted": false
+      "colorSixViews": "docs/world/quality-v2/nature/views/G18_sheet.png",
+      "runtimeReviewStatus": "acceptance-r3：16类首实例四方向复合案例通过；不是全部实例/全部驾驶情境认证",
+      "userAccepted": false,
+      "runtimeEvidence": "docs/world/quality-v2/playtest/acceptance-r3/report.json",
+      "historicalReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md"
     }
   },
   {
@@ -799,9 +802,9 @@
     "name": "单团灌木",
     "source": "L1 coding",
     "count": "实例复用",
-    "triangles": "实测 96/件；技能逐件定额，非硬上限",
+    "triangles": "实测 990/件；技能逐件定额，非硬上限",
     "materialRole": "foliage",
-    "physics": "无碰撞",
+    "physics": "分簇实体凸包，叶片不碰撞",
     "reference": "camp",
     "crop": [
       0.18,
@@ -809,17 +812,18 @@
       0.06,
       0.1
     ],
-    "note": "",
-    "status": "营地 L1 已制作；最终压缩 GLB 机器检查通过；Fable资产与样片设计通过",
+    "note": "单丛多层叶；实体叶核，叶尖风动",
+    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
     "legacyTriangleEstimate": "≤300/件",
     "triangleBudget": {
-      "status": "已制作并完成最终压缩 GLB 回读实测",
+      "status": "quality-v2 原生与最终 Draco GLB 回读实测",
       "basis": "保留 Art Lock 团簇/石块风格；技能无本类统一数值，参考造型密度不是面数硬上限",
       "hardCap": false,
-      "evaluatedTriangles": 96,
-      "glbReimportTriangles": 96,
-      "baselineMultiplier": 0.32,
-      "baselineBasis": "相对 legacyTriangleEstimate 的历史计划值，不是相对旧模型；不作验收上限"
+      "evaluatedTriangles": 990,
+      "glbReimportTriangles": 990,
+      "baselineMultiplier": 10.312,
+      "baselineBasis": "相对 c507506 实际 96 三角模型，不是旧估算",
+      "declaredUpper": 2500
     },
     "skillGuidance": [
       "blender-low-poly-pipeline",
@@ -833,7 +837,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "导出实测、Fable最终GLB资产审阅与营地运行样片设计通过；Bobby未验收；碰撞代理尚未精细匹配",
+    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -844,22 +848,22 @@
     "production": {
       "method": "L1 coding",
       "scope": "camp-slice-only",
-      "sourceManifest": "docs/world/camp-slice/nature/manifest.json",
+      "sourceManifest": "docs/world/quality-v2/nature/manifest.json",
       "glb": "public/assets/world/camp/G19.glb",
       "blend": "tools/world/camp/nature/blend/G19.blend",
-      "sha256": "15dd0b94ccfdeb78977741796cc382efd5190b6e21896376d7b922f3f4061762",
-      "bytes": 3480,
+      "sha256": "a5ecd893344a0188cce3df1915cfe7360dba507e2156adb9b63533157c15ec22",
+      "bytes": 36768,
       "boundsXYZ_m": [
-        1.4151,
-        1.0045,
-        1.2957
+        1.4404280185699463,
+        0.972529947757721,
+        1.4391648769378662
       ],
       "compression": "KHR_draco_mesh_compression",
-      "colorSixViews": "docs/world/camp-slice/nature/views/G19_sheet.png",
-      "artReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md",
-      "runtimeReview": "docs/world/camp-slice/reviews/审阅-营地样片运行图-20261021.md",
-      "runtimeReviewStatus": "r4 样片设计通过；r3 实走通过；Bobby未验收",
-      "userAccepted": false
+      "colorSixViews": "docs/world/quality-v2/nature/views/G19_sheet.png",
+      "runtimeReviewStatus": "acceptance-r3：16类首实例四方向复合案例通过；不是全部实例/全部驾驶情境认证",
+      "userAccepted": false,
+      "runtimeEvidence": "docs/world/quality-v2/playtest/acceptance-r3/report.json",
+      "historicalReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md"
     }
   },
   {
@@ -868,9 +872,9 @@
     "name": "双团灌木",
     "source": "L1 coding",
     "count": "实例复用",
-    "triangles": "实测 170/件；技能逐件定额，非硬上限",
+    "triangles": "实测 1744/件；技能逐件定额，非硬上限",
     "materialRole": "foliage",
-    "physics": "无碰撞",
+    "physics": "分簇实体凸包，叶片不碰撞",
     "reference": "camp",
     "crop": [
       0.76,
@@ -878,17 +882,18 @@
       0.1,
       0.1
     ],
-    "note": "",
-    "status": "营地 L1 已制作；最终压缩 GLB 机器检查通过；Fable资产与样片设计通过",
+    "note": "两丛高低层次；实体叶核，叶尖风动",
+    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
     "legacyTriangleEstimate": "≤300/件",
     "triangleBudget": {
-      "status": "已制作并完成最终压缩 GLB 回读实测",
+      "status": "quality-v2 原生与最终 Draco GLB 回读实测",
       "basis": "保留 Art Lock 团簇/石块风格；技能无本类统一数值，参考造型密度不是面数硬上限",
       "hardCap": false,
-      "evaluatedTriangles": 170,
-      "glbReimportTriangles": 170,
-      "baselineMultiplier": 0.5667,
-      "baselineBasis": "相对 legacyTriangleEstimate 的历史计划值，不是相对旧模型；不作验收上限"
+      "evaluatedTriangles": 1744,
+      "glbReimportTriangles": 1744,
+      "baselineMultiplier": 10.259,
+      "baselineBasis": "相对 c507506 实际 170 三角模型，不是旧估算",
+      "declaredUpper": 3500
     },
     "skillGuidance": [
       "blender-low-poly-pipeline",
@@ -902,7 +907,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "导出实测、Fable最终GLB资产审阅与营地运行样片设计通过；Bobby未验收；碰撞代理尚未精细匹配",
+    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -913,22 +918,22 @@
     "production": {
       "method": "L1 coding",
       "scope": "camp-slice-only",
-      "sourceManifest": "docs/world/camp-slice/nature/manifest.json",
+      "sourceManifest": "docs/world/quality-v2/nature/manifest.json",
       "glb": "public/assets/world/camp/G20.glb",
       "blend": "tools/world/camp/nature/blend/G20.blend",
-      "sha256": "51db25751ac8dc52b7c188075babc00d8d232ecc856353eaf6af30a9b7de8721",
-      "bytes": 6220,
+      "sha256": "9e4421962be721a7a5edd6491936c64f9827a6ab640c7d8ab87002650ff0b921",
+      "bytes": 59840,
       "boundsXYZ_m": [
-        1.4212,
-        1.0386,
-        1.9963
+        1.4731636047363281,
+        1.0228803157806396,
+        2.08420991897583
       ],
       "compression": "KHR_draco_mesh_compression",
-      "colorSixViews": "docs/world/camp-slice/nature/views/G20_sheet.png",
-      "artReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md",
-      "runtimeReview": "docs/world/camp-slice/reviews/审阅-营地样片运行图-20261021.md",
-      "runtimeReviewStatus": "r4 样片设计通过；r3 实走通过；Bobby未验收",
-      "userAccepted": false
+      "colorSixViews": "docs/world/quality-v2/nature/views/G20_sheet.png",
+      "runtimeReviewStatus": "acceptance-r3：16类首实例四方向复合案例通过；不是全部实例/全部驾驶情境认证",
+      "userAccepted": false,
+      "runtimeEvidence": "docs/world/quality-v2/playtest/acceptance-r3/report.json",
+      "historicalReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md"
     }
   },
   {
@@ -937,9 +942,9 @@
     "name": "大岩石",
     "source": "L1 coding",
     "count": "实例复用",
-    "triangles": "实测 44/件；技能逐件定额，非硬上限",
+    "triangles": "实测 244/件；技能逐件定额，非硬上限",
     "materialRole": "stone",
-    "physics": "大件静态，其余无碰撞",
+    "physics": "同源静态三角网格；solid",
     "reference": "camp",
     "crop": [
       0.65,
@@ -947,17 +952,18 @@
       0.08,
       0.1
     ],
-    "note": "低多多面体，底大顶小，三块成组；不以旧面片密度作为硬上限",
-    "status": "营地 L1 已制作；最终压缩 GLB 机器检查通过；Fable资产与样片设计通过",
+    "note": "大断面与台阶凹槽；局部单段倒角",
+    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
     "legacyTriangleEstimate": "≤100/件",
     "triangleBudget": {
-      "status": "已制作并完成最终压缩 GLB 回读实测",
+      "status": "quality-v2 原生与最终 Draco GLB 回读实测",
       "basis": "保留 Art Lock 团簇/石块风格；技能无本类统一数值，参考造型密度不是面数硬上限",
       "hardCap": false,
-      "evaluatedTriangles": 44,
-      "glbReimportTriangles": 44,
-      "baselineMultiplier": 0.44,
-      "baselineBasis": "相对 legacyTriangleEstimate 的历史计划值，不是相对旧模型；不作验收上限"
+      "evaluatedTriangles": 244,
+      "glbReimportTriangles": 244,
+      "baselineMultiplier": 5.545,
+      "baselineBasis": "相对 c507506 实际 44 三角模型，不是旧估算",
+      "declaredUpper": 800
     },
     "skillGuidance": [
       "blender-low-poly-pipeline",
@@ -971,7 +977,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "导出实测、Fable最终GLB资产审阅与营地运行样片设计通过；Bobby未验收；碰撞代理尚未精细匹配",
+    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -982,22 +988,22 @@
     "production": {
       "method": "L1 coding",
       "scope": "camp-slice-only",
-      "sourceManifest": "docs/world/camp-slice/nature/manifest.json",
+      "sourceManifest": "docs/world/quality-v2/nature/manifest.json",
       "glb": "public/assets/world/camp/G21.glb",
       "blend": "tools/world/camp/nature/blend/G21.blend",
-      "sha256": "c936ffb2547fc5c86e64a416eaf27c58c6a42a2ec628572207c0b61888075479",
-      "bytes": 3308,
+      "sha256": "98a0a74799d15b11ca4b2dac2518dab8f2be6ce63e834c09d8ca606d325200ed",
+      "bytes": 7508,
       "boundsXYZ_m": [
-        2.2,
+        2.1999988555908203,
         1.5,
-        2.8
+        2.799999952316284
       ],
       "compression": "KHR_draco_mesh_compression",
-      "colorSixViews": "docs/world/camp-slice/nature/views/G21_sheet.png",
-      "artReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md",
-      "runtimeReview": "docs/world/camp-slice/reviews/审阅-营地样片运行图-20261021.md",
-      "runtimeReviewStatus": "r4 样片设计通过；r3 实走通过；Bobby未验收",
-      "userAccepted": false
+      "colorSixViews": "docs/world/quality-v2/nature/views/G21_sheet.png",
+      "runtimeReviewStatus": "acceptance-r3：16类首实例四方向复合案例通过；不是全部实例/全部驾驶情境认证",
+      "userAccepted": false,
+      "runtimeEvidence": "docs/world/quality-v2/playtest/acceptance-r3/report.json",
+      "historicalReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md"
     }
   },
   {
@@ -1006,9 +1012,9 @@
     "name": "中岩石",
     "source": "L1 coding",
     "count": "实例复用",
-    "triangles": "实测 46/件；技能逐件定额，非硬上限",
+    "triangles": "实测 222/件；技能逐件定额，非硬上限",
     "materialRole": "stone",
-    "physics": "大件静态，其余无碰撞",
+    "physics": "同源静态三角网格；solid",
     "reference": "camp",
     "crop": [
       0.61,
@@ -1016,17 +1022,18 @@
       0.07,
       0.09
     ],
-    "note": "低多多面体，底大顶小，三块成组；不以旧面片密度作为硬上限",
-    "status": "营地 L1 已制作；最终压缩 GLB 机器检查通过；Fable资产与样片设计通过",
+    "note": "中块切面与缺口，实体",
+    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
     "legacyTriangleEstimate": "≤100/件",
     "triangleBudget": {
-      "status": "已制作并完成最终压缩 GLB 回读实测",
+      "status": "quality-v2 原生与最终 Draco GLB 回读实测",
       "basis": "保留 Art Lock 团簇/石块风格；技能无本类统一数值，参考造型密度不是面数硬上限",
       "hardCap": false,
-      "evaluatedTriangles": 46,
-      "glbReimportTriangles": 46,
-      "baselineMultiplier": 0.46,
-      "baselineBasis": "相对 legacyTriangleEstimate 的历史计划值，不是相对旧模型；不作验收上限"
+      "evaluatedTriangles": 222,
+      "glbReimportTriangles": 222,
+      "baselineMultiplier": 4.826,
+      "baselineBasis": "相对 c507506 实际 46 三角模型，不是旧估算",
+      "declaredUpper": 600
     },
     "skillGuidance": [
       "blender-low-poly-pipeline",
@@ -1040,7 +1047,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "导出实测、Fable最终GLB资产审阅与营地运行样片设计通过；Bobby未验收；碰撞代理尚未精细匹配",
+    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -1051,22 +1058,22 @@
     "production": {
       "method": "L1 coding",
       "scope": "camp-slice-only",
-      "sourceManifest": "docs/world/camp-slice/nature/manifest.json",
+      "sourceManifest": "docs/world/quality-v2/nature/manifest.json",
       "glb": "public/assets/world/camp/G22.glb",
       "blend": "tools/world/camp/nature/blend/G22.blend",
-      "sha256": "eef7f598cc74e2e609b2cf31bd63bd5485565a311f47ca2a619cb04d0a68c163",
-      "bytes": 3348,
+      "sha256": "40f7e4121004bbb06c994e12f841951c25f153b3d3d29ec52c948d4a580f7c73",
+      "bytes": 6944,
       "boundsXYZ_m": [
-        1.3,
-        0.85,
-        1.6
+        1.299999713897705,
+        0.8499998450279236,
+        1.600000023841858
       ],
       "compression": "KHR_draco_mesh_compression",
-      "colorSixViews": "docs/world/camp-slice/nature/views/G22_sheet.png",
-      "artReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md",
-      "runtimeReview": "docs/world/camp-slice/reviews/审阅-营地样片运行图-20261021.md",
-      "runtimeReviewStatus": "r4 样片设计通过；r3 实走通过；Bobby未验收",
-      "userAccepted": false
+      "colorSixViews": "docs/world/quality-v2/nature/views/G22_sheet.png",
+      "runtimeReviewStatus": "acceptance-r3：16类首实例四方向复合案例通过；不是全部实例/全部驾驶情境认证",
+      "userAccepted": false,
+      "runtimeEvidence": "docs/world/quality-v2/playtest/acceptance-r3/report.json",
+      "historicalReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md"
     }
   },
   {
@@ -1075,9 +1082,9 @@
     "name": "小岩石",
     "source": "L1 coding",
     "count": "实例复用",
-    "triangles": "实测 42/件；技能逐件定额，非硬上限",
+    "triangles": "实测 162/件；技能逐件定额，非硬上限",
     "materialRole": "stone",
-    "physics": "大件静态，其余无碰撞",
+    "physics": "同源静态三角网格；solid",
     "reference": "camp",
     "crop": [
       0.69,
@@ -1085,17 +1092,18 @@
       0.07,
       0.1
     ],
-    "note": "低多多面体，底大顶小，三块成组；不以旧面片密度作为硬上限",
-    "status": "营地 L1 已制作；最终压缩 GLB 机器检查通过；Fable资产与样片设计通过",
+    "note": "矮石切面；可跨越仍有真实接触，不是 trigger-only",
+    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
     "legacyTriangleEstimate": "≤100/件",
     "triangleBudget": {
-      "status": "已制作并完成最终压缩 GLB 回读实测",
+      "status": "quality-v2 原生与最终 Draco GLB 回读实测",
       "basis": "保留 Art Lock 团簇/石块风格；技能无本类统一数值，参考造型密度不是面数硬上限",
       "hardCap": false,
-      "evaluatedTriangles": 42,
-      "glbReimportTriangles": 42,
-      "baselineMultiplier": 0.42,
-      "baselineBasis": "相对 legacyTriangleEstimate 的历史计划值，不是相对旧模型；不作验收上限"
+      "evaluatedTriangles": 162,
+      "glbReimportTriangles": 162,
+      "baselineMultiplier": 3.857,
+      "baselineBasis": "相对 c507506 实际 42 三角模型，不是旧估算",
+      "declaredUpper": 400
     },
     "skillGuidance": [
       "blender-low-poly-pipeline",
@@ -1109,7 +1117,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "导出实测、Fable最终GLB资产审阅与营地运行样片设计通过；Bobby未验收；碰撞代理尚未精细匹配",
+    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -1120,32 +1128,32 @@
     "production": {
       "method": "L1 coding",
       "scope": "camp-slice-only",
-      "sourceManifest": "docs/world/camp-slice/nature/manifest.json",
+      "sourceManifest": "docs/world/quality-v2/nature/manifest.json",
       "glb": "public/assets/world/camp/G23.glb",
       "blend": "tools/world/camp/nature/blend/G23.blend",
-      "sha256": "9f71a4188ce1a9bf1b8b0d5921752f6b9ac19923df7f3562cf1257977f95fe54",
-      "bytes": 3308,
+      "sha256": "2c8055759722362e0b37f71bfaeb13e98d57646ea6c2b0940f186fea11125e55",
+      "bytes": 6196,
       "boundsXYZ_m": [
-        0.65,
-        0.4,
-        0.8
+        0.6499998569488525,
+        0.39999979734420776,
+        0.800000011920929
       ],
       "compression": "KHR_draco_mesh_compression",
-      "colorSixViews": "docs/world/camp-slice/nature/views/G23_sheet.png",
-      "artReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md",
-      "runtimeReview": "docs/world/camp-slice/reviews/审阅-营地样片运行图-20261021.md",
-      "runtimeReviewStatus": "r4 样片设计通过；r3 实走通过；Bobby未验收",
-      "userAccepted": false
+      "colorSixViews": "docs/world/quality-v2/nature/views/G23_sheet.png",
+      "runtimeReviewStatus": "acceptance-r3：16类首实例四方向复合案例通过；不是全部实例/全部驾驶情境认证",
+      "userAccepted": false,
+      "runtimeEvidence": "docs/world/quality-v2/playtest/acceptance-r3/report.json",
+      "historicalReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md"
     }
   },
   {
     "id": "G24",
     "zone": "全局",
     "name": "向导B及骨骼",
-    "source": "直接 L2 Hy3D",
+    "source": "L1 自制骨架候选 → L2（L1不通过时）",
     "count": 1,
-    "triangles": "按剪影、变形与关节需求逐件定额，记录实测",
-    "materialRole": "paint / accent / glass / metal / light",
+    "triangles": "实测 2006/件；技能逐件定额，非硬上限",
+    "materialRole": "paint / canvas / accent / glass / metal / light",
     "physics": "动态胶囊",
     "reference": "guide",
     "crop": [
@@ -1154,16 +1162,18 @@
       1,
       1
     ],
-    "note": "直接 L2，不做 L1；Mixamo 待机／走／跑／跳／坐起／上下车，先测绑骨；右头盔青点按 v3.1 特例",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "note": "按 Art Lock v3.2 做头盔向导 L1 候选；自制 Idle/Walk/Run/Jump/Land，不冒称 Mixamo；右髋橙包与右头盔青点；不开 Hy3D",
+    "status": "quality-v2 L1 候选及动作证据已生成；Fable 最终验收待完成",
     "legacyTriangleEstimate": "4–6k",
     "triangleBudget": {
-      "status": "待逐件定额",
-      "basis": "四项技能未规定向导统一三角数；按头盔剪影、皮肤连续性、关节变形与动作需求定额",
+      "status": "原生与最终 Draco GLB 回读实测",
+      "basis": "先声明3–5k艺术预算，最终2006面已提供头盔剪影、连续身体与关节变形；预算不是填满指标，视觉门另判",
       "hardCap": false,
-      "evaluatedTriangles": null,
-      "glbReimportTriangles": null,
-      "baselineMultiplier": null
+      "evaluatedTriangles": 2006,
+      "glbReimportTriangles": 2006,
+      "baselineMultiplier": 5.764,
+      "baselineBasis": "c507506 旧运行时 capsule+sphere+3 boxes，用同版 Three 几何重建实测348三角；不是旧GLB",
+      "declaredUpper": 5000
     },
     "skillGuidance": [
       "blender-low-poly-pipeline",
@@ -1179,7 +1189,43 @@
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明",
       "验证非负归一化权重/每点最多四影响、关节弯折、接触、明确命名动作与代表性子帧；最终GLB全新回读逐段回放"
     ],
-    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
+    "acceptanceStatus": "最终候选 motion-r4 4/4；原生腕部连接修复，等待 Fable A–D 观感验收；Bobby未接受",
+    "productionAuthorization": {
+      "date": "2026-10-21",
+      "scope": "G24-placeholder-replacement",
+      "method": "L1 custom rig",
+      "hy3d": false,
+      "basis": "Bobby 六项试玩反馈及 Fable 验收-营地返工-20261021.md"
+    },
+    "production": {
+      "method": "L1 coding",
+      "rig": "custom-L1",
+      "scope": "G24-placeholder-replacement",
+      "sourceManifest": "docs/world/quality-v2/guide/manifest.json",
+      "glb": "public/assets/world/guide/G24.glb",
+      "blend": "tools/world/guide/blend/G24.blend",
+      "sha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357",
+      "bytes": 299288,
+      "compression": "KHR_draco_mesh_compression",
+      "boundsXYZ_m": [
+        0.6059882342815399,
+        1.7081999816000462,
+        0.9568162560462952
+      ],
+      "boundsPose": "rest",
+      "bones": 18,
+      "deformBones": 17,
+      "clips": {
+        "Idle": 2.4,
+        "Walk": 0.6,
+        "Run": 0.4,
+        "Jump": 0.5,
+        "Land": 0.4
+      },
+      "colorSixViews": "docs/world/quality-v2/guide/final/G24_sixview_final.png",
+      "runtimeEvidence": "docs/world/quality-v2/playtest/motion-r4/report.json",
+      "userAccepted": false
+    }
   },
   {
     "id": "G25",
@@ -1522,9 +1568,9 @@
     "name": "大帐篷",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "实测 792/件；技能逐件定额，非硬上限",
+    "triangles": "实测 1020/件；技能逐件定额，非硬上限",
     "materialRole": "canvas / wood",
-    "physics": "静态",
+    "physics": "同源静态帆布墙壳；真实门洞",
     "reference": "camp",
     "crop": [
       0.44,
@@ -1532,17 +1578,17 @@
       0.13,
       0.21
     ],
-    "note": "北侧中央；身份内容入口",
-    "status": "营地 L1 已制作；最终压缩 GLB 机器检查通过；Fable资产与样片设计通过",
+    "note": "北侧中央；身份内容入口；v2 门洞留直立净空、双侧门柱，GLB 附实际墙壳碰撞数据",
+    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
     "legacyTriangleEstimate": "≤1k",
     "triangleBudget": {
-      "status": "已制作并完成最终压缩 GLB 回读实测",
+      "status": "quality-v2 原生与最终 GLB 回读实测",
       "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
       "hardCap": false,
-      "evaluatedTriangles": 792,
-      "glbReimportTriangles": 792,
-      "baselineMultiplier": 0.792,
-      "baselineBasis": "相对 legacyTriangleEstimate 的历史计划值，不是相对旧模型；不作验收上限"
+      "evaluatedTriangles": 1020,
+      "glbReimportTriangles": 1020,
+      "baselineMultiplier": 1.2878787878787878,
+      "baselineBasis": "相对 c507506 的实际 792 三角模型，不是旧估算"
     },
     "skillGuidance": [
       "blender-low-poly-pipeline",
@@ -1556,7 +1602,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "导出实测、Fable最终GLB资产审阅与营地运行样片设计通过；Bobby未验收；碰撞代理尚未精细匹配",
+    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -1567,22 +1613,22 @@
     "production": {
       "method": "L1 coding",
       "scope": "camp-slice-only",
-      "sourceManifest": "docs/world/camp-slice/shelters/manifest.json",
+      "sourceManifest": "docs/world/quality-v2/shelters/manifest.json",
       "glb": "public/assets/world/camp/C03.glb",
-      "blend": "tools/world/camp/shelters/blend/C03.blend",
-      "sha256": "f3b02912eda746844c09d319979158c32b6609350cc6a3ba7073f60004ac02e2",
-      "bytes": 14360,
+      "blend": "tools/world/camp/shelters-v2/blend/C03.blend",
+      "sha256": "4c6274a202639c407ad68f1e30cf1fadacf3f2bf0ff2c7cd1ac72a506c93acde",
+      "bytes": 53660,
       "boundsXYZ_m": [
-        4.1126,
-        3.3,
-        5.4192
+        4.112610340118408,
+        3.299999952316284,
+        5.419186592102051
       ],
       "compression": "KHR_draco_mesh_compression",
-      "colorSixViews": "docs/world/camp-slice/shelters/views/r3/C03_sheet.png",
-      "artReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md",
-      "runtimeReview": "docs/world/camp-slice/reviews/审阅-营地样片运行图-20261021.md",
-      "runtimeReviewStatus": "r4 样片设计通过；r3 实走通过；Bobby未验收",
-      "userAccepted": false
+      "colorSixViews": "docs/world/quality-v2/shelters/views/r1/C03_sheet.png",
+      "runtimeReviewStatus": "acceptance-r3：16类首实例四方向复合案例通过；不是全部实例/全部驾驶情境认证",
+      "userAccepted": false,
+      "runtimeEvidence": "docs/world/quality-v2/playtest/acceptance-r3/report.json",
+      "historicalReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md"
     }
   },
   {
@@ -1591,9 +1637,9 @@
     "name": "小帐篷",
     "source": "L1 coding",
     "count": 2,
-    "triangles": "实测 792/件；技能逐件定额，非硬上限",
+    "triangles": "实测 1020/件；技能逐件定额，非硬上限",
     "materialRole": "canvas / wood",
-    "physics": "静态",
+    "physics": "同源静态帆布墙壳；真实门洞",
     "reference": "camp",
     "crop": [
       0.28,
@@ -1601,17 +1647,17 @@
       0.15,
       0.22
     ],
-    "note": "同资产左右复用，三顶总数",
-    "status": "营地 L1 已制作；最终压缩 GLB 机器检查通过；Fable资产与样片设计通过",
+    "note": "同资产左右复用，三顶总数；v2 门洞留直立净空、双侧门柱，GLB 附实际墙壳碰撞数据",
+    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
     "legacyTriangleEstimate": "≤1k/件",
     "triangleBudget": {
-      "status": "已制作并完成最终压缩 GLB 回读实测",
+      "status": "quality-v2 原生与最终 GLB 回读实测",
       "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
       "hardCap": false,
-      "evaluatedTriangles": 792,
-      "glbReimportTriangles": 792,
-      "baselineMultiplier": 0.792,
-      "baselineBasis": "相对 legacyTriangleEstimate 的历史计划值，不是相对旧模型；不作验收上限"
+      "evaluatedTriangles": 1020,
+      "glbReimportTriangles": 1020,
+      "baselineMultiplier": 1.2878787878787878,
+      "baselineBasis": "相对 c507506 的实际 792 三角模型，不是旧估算"
     },
     "skillGuidance": [
       "blender-low-poly-pipeline",
@@ -1625,7 +1671,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "导出实测、Fable最终GLB资产审阅与营地运行样片设计通过；Bobby未验收；碰撞代理尚未精细匹配",
+    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -1636,22 +1682,22 @@
     "production": {
       "method": "L1 coding",
       "scope": "camp-slice-only",
-      "sourceManifest": "docs/world/camp-slice/shelters/manifest.json",
+      "sourceManifest": "docs/world/quality-v2/shelters/manifest.json",
       "glb": "public/assets/world/camp/C04.glb",
-      "blend": "tools/world/camp/shelters/blend/C04.blend",
-      "sha256": "e0ef58a6a981e86f23d17a01959c05a27327e28ef5b11118897fe6ba3fe0473f",
-      "bytes": 14380,
+      "blend": "tools/world/camp/shelters-v2/blend/C04.blend",
+      "sha256": "0d4b22d1836247b54393ec67e1c01e6c516296a14061e3c00abb76b3553f3f94",
+      "bytes": 54184,
       "boundsXYZ_m": [
-        3.313,
+        3.312953472137451,
         2.5,
-        4.3189
+        4.318930149078369
       ],
       "compression": "KHR_draco_mesh_compression",
-      "colorSixViews": "docs/world/camp-slice/shelters/views/r3/C04_sheet.png",
-      "artReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md",
-      "runtimeReview": "docs/world/camp-slice/reviews/审阅-营地样片运行图-20261021.md",
-      "runtimeReviewStatus": "r4 样片设计通过；r3 实走通过；Bobby未验收",
-      "userAccepted": false
+      "colorSixViews": "docs/world/quality-v2/shelters/views/r1/C04_sheet.png",
+      "runtimeReviewStatus": "acceptance-r3：16类首实例四方向复合案例通过；不是全部实例/全部驾驶情境认证",
+      "userAccepted": false,
+      "runtimeEvidence": "docs/world/quality-v2/playtest/acceptance-r3/report.json",
+      "historicalReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md"
     }
   },
   {
@@ -1662,7 +1708,7 @@
     "count": 1,
     "triangles": "实测 576/件；技能逐件定额，非硬上限",
     "materialRole": "stone / wood",
-    "physics": "静态",
+    "physics": "同源静态三角网格；solid",
     "reference": "camp",
     "crop": [
       0.46,
@@ -1671,7 +1717,7 @@
       0.09
     ],
     "note": "火焰独立运行时动效，不靠密集粒子",
-    "status": "营地 L1 已制作；最终压缩 GLB 机器检查通过；Fable资产与样片设计通过",
+    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
     "legacyTriangleEstimate": "≤1k",
     "triangleBudget": {
       "status": "已制作并完成最终压缩 GLB 回读实测",
@@ -1694,7 +1740,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "导出实测、Fable最终GLB资产审阅与营地运行样片设计通过；Bobby未验收；碰撞代理尚未精细匹配",
+    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -1717,10 +1763,10 @@
       ],
       "compression": "KHR_draco_mesh_compression",
       "colorSixViews": "docs/world/camp-slice/shelters/views/r3/C05_sheet.png",
-      "artReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md",
-      "runtimeReview": "docs/world/camp-slice/reviews/审阅-营地样片运行图-20261021.md",
-      "runtimeReviewStatus": "r4 样片设计通过；r3 实走通过；Bobby未验收",
-      "userAccepted": false
+      "runtimeReviewStatus": "acceptance-r3：16类首实例四方向复合案例通过；不是全部实例/全部驾驶情境认证",
+      "userAccepted": false,
+      "runtimeEvidence": "docs/world/quality-v2/playtest/acceptance-r3/report.json",
+      "historicalReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md"
     }
   },
   {
@@ -1731,7 +1777,7 @@
     "count": 4,
     "triangles": "实测 240/件；技能逐件定额，非硬上限",
     "materialRole": "wood",
-    "physics": "静态",
+    "physics": "同源静态三角网格；solid",
     "reference": "camp",
     "crop": [
       0.42,
@@ -1740,7 +1786,7 @@
       0.09
     ],
     "note": "",
-    "status": "营地 L1 已制作；最终压缩 GLB 机器检查通过；Fable资产与样片设计通过",
+    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
     "legacyTriangleEstimate": "≤500/件",
     "triangleBudget": {
       "status": "已制作并完成最终压缩 GLB 回读实测",
@@ -1764,7 +1810,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "导出实测、Fable最终GLB资产审阅与营地运行样片设计通过；Bobby未验收；碰撞代理尚未精细匹配",
+    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -1787,10 +1833,10 @@
       ],
       "compression": "KHR_draco_mesh_compression",
       "colorSixViews": "docs/world/camp-slice/shelters/views/r3/C06_sheet.png",
-      "artReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md",
-      "runtimeReview": "docs/world/camp-slice/reviews/审阅-营地样片运行图-20261021.md",
-      "runtimeReviewStatus": "r4 样片设计通过；r3 实走通过；Bobby未验收",
-      "userAccepted": false
+      "runtimeReviewStatus": "acceptance-r3：16类首实例四方向复合案例通过；不是全部实例/全部驾驶情境认证",
+      "userAccepted": false,
+      "runtimeEvidence": "docs/world/quality-v2/playtest/acceptance-r3/report.json",
+      "historicalReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md"
     }
   },
   {
@@ -1801,7 +1847,7 @@
     "count": 1,
     "triangles": "实测 828/件；技能逐件定额，非硬上限",
     "materialRole": "wood",
-    "physics": "静态",
+    "physics": "同源静态三角网格；solid",
     "reference": "camp",
     "crop": [
       0.25,
@@ -1810,7 +1856,7 @@
       0.1
     ],
     "note": "石板1",
-    "status": "营地 L1 已制作；最终压缩 GLB 机器检查通过；Fable资产与样片设计通过",
+    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
     "legacyTriangleEstimate": "≤850",
     "triangleBudget": {
       "status": "已制作并完成最终压缩 GLB 回读实测",
@@ -1834,7 +1880,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "导出实测、Fable最终GLB资产审阅与营地运行样片设计通过；Bobby未验收；碰撞代理尚未精细匹配",
+    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -1857,11 +1903,11 @@
       ],
       "compression": "KHR_draco_mesh_compression",
       "colorSixViews": "docs/world/camp-slice/props/r3/C07_sixview_r3.png",
-      "artReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md",
-      "runtimeReview": "docs/world/camp-slice/reviews/审阅-营地样片运行图-20261021.md",
-      "runtimeReviewStatus": "r4 样片设计通过；r3 实走通过；Bobby未验收",
+      "runtimeReviewStatus": "acceptance-r3：16类首实例四方向复合案例通过；不是全部实例/全部驾驶情境认证",
       "userAccepted": false,
-      "firstIterationTriangles": 828
+      "firstIterationTriangles": 828,
+      "runtimeEvidence": "docs/world/quality-v2/playtest/acceptance-r3/report.json",
+      "historicalReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md"
     }
   },
   {
@@ -1872,7 +1918,7 @@
     "count": 1,
     "triangles": "实测 364/件；技能逐件定额，非硬上限",
     "materialRole": "paper / accent",
-    "physics": "无碰撞",
+    "physics": "同源静态三角网格；solid",
     "reference": "camp",
     "crop": [
       0.26,
@@ -1880,8 +1926,8 @@
       0.04,
       0.08
     ],
-    "note": "石板1，书脊文字独立生成双语",
-    "status": "营地 L1 已制作；最终压缩 GLB 机器检查通过；Fable资产与样片设计通过",
+    "note": "石板1书堆；位于C07桌面上；高处隔离查询与地面步行分列",
+    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
     "legacyTriangleEstimate": "≤500",
     "triangleBudget": {
       "status": "已制作并完成最终压缩 GLB 回读实测",
@@ -1904,7 +1950,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "导出实测、Fable最终GLB资产审阅与营地运行样片设计通过；Bobby未验收；碰撞代理尚未精细匹配",
+    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -1927,11 +1973,11 @@
       ],
       "compression": "KHR_draco_mesh_compression",
       "colorSixViews": "docs/world/camp-slice/props/r3/C08_sixview_r3.png",
-      "artReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md",
-      "runtimeReview": "docs/world/camp-slice/reviews/审阅-营地样片运行图-20261021.md",
-      "runtimeReviewStatus": "r4 样片设计通过；r3 实走通过；Bobby未验收",
+      "runtimeReviewStatus": "acceptance-r3：16类首实例四方向复合案例通过；不是全部实例/全部驾驶情境认证",
       "userAccepted": false,
-      "firstIterationTriangles": 364
+      "firstIterationTriangles": 364,
+      "runtimeEvidence": "docs/world/quality-v2/playtest/acceptance-r3/report.json",
+      "historicalReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md"
     }
   },
   {
@@ -1942,7 +1988,7 @@
     "count": 1,
     "triangles": "实测 1832/件；技能逐件定额，非硬上限",
     "materialRole": "wood / metal",
-    "physics": "静态",
+    "physics": "同源静态三角网格；solid",
     "reference": "camp",
     "crop": [
       0.25,
@@ -1951,7 +1997,7 @@
       0.12
     ],
     "note": "石板2，奖杯简化无高反金属",
-    "status": "营地 L1 已制作；最终压缩 GLB 机器检查通过；Fable资产与样片设计通过",
+    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
     "legacyTriangleEstimate": "≤900",
     "triangleBudget": {
       "status": "已制作并完成最终压缩 GLB 回读实测",
@@ -1975,7 +2021,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "导出实测、Fable最终GLB资产审阅与营地运行样片设计通过；Bobby未验收；碰撞代理尚未精细匹配",
+    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -1998,11 +2044,11 @@
       ],
       "compression": "KHR_draco_mesh_compression",
       "colorSixViews": "docs/world/camp-slice/props/r3/C09_sixview_r3.png",
-      "artReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md",
-      "runtimeReview": "docs/world/camp-slice/reviews/审阅-营地样片运行图-20261021.md",
-      "runtimeReviewStatus": "r4 样片设计通过；r3 实走通过；Bobby未验收",
+      "runtimeReviewStatus": "acceptance-r3：16类首实例四方向复合案例通过；不是全部实例/全部驾驶情境认证",
       "userAccepted": false,
-      "firstIterationTriangles": 1784
+      "firstIterationTriangles": 1784,
+      "runtimeEvidence": "docs/world/quality-v2/playtest/acceptance-r3/report.json",
+      "historicalReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md"
     }
   },
   {
@@ -2013,7 +2059,7 @@
     "count": 1,
     "triangles": "实测 1236/件；技能逐件定额，非硬上限",
     "materialRole": "wood / canvas",
-    "physics": "静态杆",
+    "physics": "同源杆/底座网格；旗面不碰撞",
     "reference": "camp",
     "crop": [
       0.34,
@@ -2022,7 +2068,7 @@
       0.24
     ],
     "note": "石板3，旗子运行时风动",
-    "status": "营地 L1 已制作；最终压缩 GLB 机器检查通过；Fable资产与样片设计通过",
+    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
     "legacyTriangleEstimate": "≤900",
     "triangleBudget": {
       "status": "已制作并完成最终压缩 GLB 回读实测",
@@ -2045,7 +2091,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "导出实测、Fable最终GLB资产审阅与营地运行样片设计通过；Bobby未验收；碰撞代理尚未精细匹配",
+    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -2068,11 +2114,11 @@
       ],
       "compression": "KHR_draco_mesh_compression",
       "colorSixViews": "docs/world/camp-slice/props/r3/C10_sixview_r3.png",
-      "artReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md",
-      "runtimeReview": "docs/world/camp-slice/reviews/审阅-营地样片运行图-20261021.md",
-      "runtimeReviewStatus": "r4 样片设计通过；r3 实走通过；Bobby未验收",
+      "runtimeReviewStatus": "acceptance-r3：16类首实例四方向复合案例通过；不是全部实例/全部驾驶情境认证",
       "userAccepted": false,
-      "firstIterationTriangles": 1204
+      "firstIterationTriangles": 1204,
+      "runtimeEvidence": "docs/world/quality-v2/playtest/acceptance-r3/report.json",
+      "historicalReview": "docs/world/camp-slice/reviews/审阅-营地样片资产-20261021.md"
     }
   },
   {

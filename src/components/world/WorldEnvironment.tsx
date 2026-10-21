@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
+import { memo, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { CuboidCollider, CylinderCollider, RigidBody } from '@react-three/rapier';
 import {
@@ -13,13 +13,16 @@ import { useWorldStore } from './store';
 import type { Vec3, WorldContent } from './types';
 import WorldYears from './WorldYears';
 import WorldCamp, { type CampLayout } from './WorldCamp';
+import { createIslandGroundMaterial } from './WorldTerrain';
+import { createWorldWaterMaterial } from './WorldWater';
+import { windUniforms } from './WorldWind';
 
 type Block = { position: Vec3; size: Vec3; color: string; rotation?: Vec3 };
 const V = (x: number, y: number, z: number): Vec3 => [x, y, z];
 const block = (position: Vec3, size: Vec3, color: string, rotation?: Vec3): Block => ({ position, size, color, rotation });
 
 /** All repeated greybox furniture shares a single geometry and draw call. */
-function Blocks({ items, material, shadow = false, openTop = false }: { items: Block[]; material?: MeshStandardMaterial; shadow?: boolean; openTop?: boolean }) {
+function Blocks({ items, material, shadow = false, openTop = false, name, solid = false }: { items: Block[]; material?: MeshStandardMaterial; shadow?: boolean; openTop?: boolean; name?: string; solid?: boolean }) {
   const geometry = useMemo(() => {
     const box = new BoxGeometry(1, 1, 1);
     // Surface caps are rendered once by SurfaceTops, never by overlapping slabs.
@@ -45,7 +48,7 @@ function Blocks({ items, material, shadow = false, openTop = false }: { items: B
     if (ref.current.instanceColor) ref.current.instanceColor.needsUpdate = true;
     ref.current.computeBoundingSphere();
   }, [items]);
-  return <instancedMesh ref={ref} args={[undefined, undefined, items.length]} castShadow={shadow} receiveShadow material={material} geometry={geometry}>
+  return <instancedMesh name={name} userData={{ solid }} ref={ref} args={[undefined, undefined, items.length]} castShadow={shadow} receiveShadow material={material} geometry={geometry}>
     {!material && <meshStandardMaterial roughness={1} />}
   </instancedMesh>;
 }
@@ -133,13 +136,13 @@ function SurfaceTops({ items }: { items: Block[] }) {
 }
 
 /** visual=false keeps the identical colliders while WorldCamp owns the camp visuals. */
-function StaticBlocks({ items, surface = false, visual = true }: { items: Block[]; surface?: boolean; visual?: boolean }) {
-  return <RigidBody type="fixed" colliders={false} userData={surface ? { surface: true } : { solid: true }}>
-    {items.map((item, i) => <CuboidCollider key={i} position={item.position} rotation={item.rotation}
+function StaticBlocks({ items, surface = false, visual = true, name }: { items: Block[]; surface?: boolean; visual?: boolean; name: string }) {
+  return <RigidBody name={name} type="fixed" colliders={false} userData={surface ? { surface: true } : { solid: true }}>
+    {items.map((item, i) => <CuboidCollider key={i} name={`${name}-${i}`} position={item.position} rotation={item.rotation}
       args={[item.size[0] / 2, item.size[1] / 2, item.size[2] / 2]}
       friction={surface ? 0.95 : 0.65} restitution={surface ? 0 : 0.15}
       />)}
-    {visual && <Blocks items={items} shadow={!surface} openTop={surface} />}
+    {visual && <Blocks name={`${name}-visuals`} solid={!surface} items={items} shadow={!surface} openTop={surface} />}
     {visual && surface && <SurfaceTops items={items} />}
   </RigidBody>;
 }
@@ -168,11 +171,12 @@ function Island() {
     shape.closePath();
     return new ExtrudeGeometry(shape, { depth: 3, bevelEnabled: false, steps: 1 });
   }, []);
-  useEffect(() => () => geometry.dispose(), [geometry]);
+  const groundMaterial = useMemo(createIslandGroundMaterial, []);
+  useEffect(() => () => { geometry.dispose(); groundMaterial.dispose(); }, [geometry, groundMaterial]);
   return <>
-    <RigidBody type="fixed" colliders="trimesh" userData={{ surface: true }}>
+    <RigidBody name="island-ground-surface" type="fixed" colliders="trimesh" userData={{ surface: true }}>
       <mesh geometry={geometry} rotation={[-Math.PI / 2, 0, 0]} position={[0, -2, 0]} receiveShadow>
-        <meshStandardMaterial color={PALETTE.grass} roughness={1} />
+        <primitive attach="material" object={groundMaterial} />
       </mesh>
     </RigidBody>
     {/* Low shelves make the island edge visibly layered, rather than a floating plane. */}
@@ -196,10 +200,10 @@ function Island() {
     </mesh>
     <RigidBody type="fixed" position={[-42, 2.9, 30]} colliders={false} userData={{ surface: true }}>
       {/* Camp plateau collider unchanged; its top and layered cliff are drawn by WorldCamp. */}
-      <CylinderCollider args={[1.9, 24]} />
+      <CylinderCollider name="camp-ground-surface" args={[1.9, 24]} />
     </RigidBody>
     <RigidBody type="fixed" position={[45, -0.1, -45]} colliders={false} userData={{ surface: true }}>
-      <CuboidCollider args={[9, 1.1, 9]} />
+      <CuboidCollider name="park-plaza-surface" args={[9, 1.1, 9]} />
       <mesh receiveShadow><boxGeometry args={[18, 2.2, 18]} /><meshStandardMaterial color={PALETTE.sand} roughness={1} /></mesh>
     </RigidBody>
   </>;
@@ -276,7 +280,7 @@ function createLayout() {
     solids.push(block([p[0], 3.05, p[2] - 1.6], [5.6, 3.8, 2.6], PALETTE.slate));
     cyan.push(block([p[0], 4.8, p[2] - 0.27], [5.4, 0.03, 0.035], '#FFFFFF'));
     warm.push(block([p[0], 2.65, p[2] - 0.28], [3.7, 1.9, 0.035], '#FFFFFF'));
-    decor.push(block([p[0], 1.7, p[2] + 1], [1.5, 1.1, 1], i % 2 ? PALETTE.cream : PALETTE.orange));
+    solids.push(block([p[0], 1.7, p[2] + 1], [1.5, 1.1, 1], i % 2 ? PALETTE.cream : PALETTE.orange));
     decor.push(block([p[0] - 2.6, -0.05, p[2] + 2.6], [0.38, 2.4, 0.38], PALETTE.wood));
     decor.push(block([p[0] + 2.6, -0.05, p[2] + 2.6], [0.38, 2.4, 0.38], PALETTE.wood));
   });
@@ -317,12 +321,12 @@ function createLayout() {
   });
   FOUNDATIONS.forEach(({ position: p, size }) => {
     surfaces.push(block(p, size, '#A39B89'));
-    decor.push(block([p[0], 2.1, p[2]], [2.8, 1.2, 0.18], PALETTE.orange));
+    solids.push(block([p[0], 2.1, p[2]], [2.8, 1.2, 0.18], PALETTE.orange));
   });
   // Lightweight placeholder vegetation uses boxes: no formal tree asset work.
   const trees: Vec3[] = [[-61, 1, -4], [-51, 1, -26], [-36, 1, -32], [-28, 1, -8], [-26, 1, 7], [-52, 4.8, 45], [-59, 4.8, 34], [-40, 4.8, 9], [-29, 4.8, 17], [-30, 1, 52], [2, 1, 40], [-44, 1, -43]];
   trees.forEach(([x, y, z], i) => {
-    // The four camp-plateau trees keep this trunk collider; WorldCamp draws G16-G18.
+    // Camp trunk positions are passed to WorldCamp, which fits each GLB collider.
     if (y === CAMP_CENTER[1]) { camp.trees.push(block([x, y + 1.4, z], [0.7, 2.8, 0.7], '#5A4634')); return; }
     solids.push(block([x, y + 1.4, z], [0.7, 2.8, 0.7], '#5A4634'));
     decor.push(block([x, y + 3.6, z], [3.8, 3.6, 3.8], i % 2 ? '#6F8A3A' : '#8AA24A'));
@@ -334,7 +338,24 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
   const light = useWorldStore((s) => s.light);
   const { scene } = useThree();
   const hemisphere = useRef<HemisphereLight>(null), sun = useRef<DirectionalLight>(null), fire = useRef<PointLight>(null);
-  const sea = useRef<MeshStandardMaterial>(null);
+  const sea = useMemo(() => createWorldWaterMaterial(PALETTE.sea), []);
+  const quality = useWorldStore(s => s.quality);
+  const shot = useWorldStore(s => s.shot);
+  const shadowSize = quality === 'high' ? 4096 : 2048;
+  const shadowTarget = useMemo(() => new Object3D(), []);
+  const shadowVectors = useMemo(() => {
+    const offset = new Vector3(-90, 40, 65), right = new Vector3(65, 0, 90).normalize();
+    return { offset, right, up: new Vector3().crossVectors(offset.clone().normalize(), right).normalize(), focus: new Vector3() };
+  }, []);
+  useEffect(() => { scene.add(shadowTarget); return () => { scene.remove(shadowTarget); }; }, [scene, shadowTarget]);
+  useEffect(() => () => sea.dispose(), [sea]);
+  useEffect(() => {
+    const light = sun.current;
+    if (!light) return;
+    // Three does not resize an already allocated shadow render target automatically.
+    light.shadow.map?.dispose(); light.shadow.map = null;
+    light.shadow.needsUpdate = true;
+  }, [shadowSize]);
   const parkFill = useRef<(PointLight | null)[]>([]);
   const parkFillPositions = useMemo<Vec3[]>(() => [[56, 5.4, -43], [69, 5.4, -29], [59, 5.4, -13]], []);
   const state = useRef({ value: 0, start: 0, target: 0, elapsed: 2 });
@@ -346,33 +367,50 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
     scene.fog = new Fog('#C49C83', 140, 360);
     return () => { scene.fog = oldFog; };
   }, [scene]);
-  useFrame((clock, delta) => {
+  useFrame((_, delta) => {
     const s = state.current;
     s.elapsed = Math.min(2, s.elapsed + delta);
     const t = s.elapsed / 2;
     s.value = s.start + (s.target - s.start) * (t * t * (3 - 2 * t));
     const n = s.value;
-    if (sun.current) sun.current.intensity = 3.4 - n * 3.08;
+    if (sun.current) {
+      const lamp = sun.current;
+      lamp.intensity = 3.4 - n * 3.08;
+      const extent = shot ? 105 : 42;
+      const point = shot ? [0, 0, 0] : useWorldStore.getState().position;
+      // A moving, tighter shadow camera gives the camp actual contact definition. Snap the
+      // focus to shadow texels in light space so following the walker does not shimmer.
+      const { right, up, focus, offset } = shadowVectors;
+      focus.set(point[0], point[1], point[2]);
+      const texel = extent * 2 / shadowSize;
+      focus.addScaledVector(right, Math.round(focus.dot(right) / texel) * texel - focus.dot(right));
+      focus.addScaledVector(up, Math.round(focus.dot(up) / texel) * texel - focus.dot(up));
+      shadowTarget.position.copy(focus);
+      lamp.position.copy(focus).add(offset);
+      lamp.target = shadowTarget;
+      const c = lamp.shadow.camera;
+      if (c.right !== extent) { c.left = c.bottom = -extent; c.right = c.top = extent; c.updateProjectionMatrix(); }
+    }
     if (hemisphere.current) hemisphere.current.intensity = 1.5 - n * 0.85;
-    if (fire.current) fire.current.intensity = (13 + n * 18) * (1 + Math.sin(clock.clock.elapsedTime * 5) * 0.065);
+    if (fire.current) fire.current.intensity = (13 + n * 18) * (1 + Math.sin(windUniforms.uWindTime.value * 5) * windUniforms.uWindStrength.value * 0.065);
     warm.emissiveIntensity = 0.05 + n * 1.5;
     cyan.emissiveIntensity = 0.15 + n * 1.25;
     parkFill.current.forEach(lamp => { if (lamp) lamp.intensity = n * 26; });
     skyUniforms.top.value.copy(colors.duskTop).lerp(colors.nightTop, n);
     skyUniforms.horizon.value.copy(colors.duskHorizon).lerp(colors.nightHorizon, n);
-    if (sea.current) {
-      sea.current.color.copy(colors.duskSea).lerp(colors.nightSea, n);
+    {
+      sea.color.copy(colors.duskSea).lerp(colors.nightSea, n);
       // A low teal floor preserves the water silhouette; local warm park lights
       // supply the nearby illumination rather than widening cyan emissive strips.
-      sea.current.emissiveIntensity = n * 0.22;
+      sea.emissiveIntensity = n * 0.22;
     }
     if (scene.fog) scene.fog.color.copy(skyUniforms.horizon.value);
   });
   return <>
     <hemisphereLight ref={hemisphere} args={['#8FA6C4', '#695444', 1.5]} />
     <directionalLight ref={sun} position={[-90, 40, 65]} color="#FFD9A8" intensity={3.4} castShadow
-      shadow-mapSize={[2048, 2048]} shadow-camera-left={-105} shadow-camera-right={105}
-      shadow-camera-top={100} shadow-camera-bottom={-100} shadow-camera-near={1} shadow-camera-far={260} shadow-bias={-0.0008} />
+      shadow-mapSize={[shadowSize, shadowSize]} shadow-camera-left={-105} shadow-camera-right={105}
+      shadow-camera-top={100} shadow-camera-bottom={-100} shadow-camera-near={1} shadow-camera-far={260} shadow-bias={-0.00015} shadow-normalBias={0.025} />
     <pointLight ref={fire} position={[-42, 6.5, 30]} color="#FF8A3A" intensity={9} distance={26} decay={2} />
     {parkFillPositions.map((position, i) => <pointLight key={i} ref={lamp => { parkFill.current[i] = lamp; }}
       position={position} color="#FFD08A" intensity={0} distance={25} decay={2} castShadow={false} />)}
@@ -383,12 +421,12 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
         fragmentShader={'uniform vec3 top; uniform vec3 horizon; varying vec3 vDirection; void main(){float t=smoothstep(-0.08,0.7,vDirection.y);gl_FragColor=vec4(mix(horizon,top,t),1.0);\n #include <tonemapping_fragment>\n #include <colorspace_fragment>\n}'} />
     </mesh>
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, WATER_Y, 0]} receiveShadow>
-      <planeGeometry args={[560, 560]} /><meshStandardMaterial ref={sea} color={PALETTE.sea} emissive="#17424A" emissiveIntensity={0} roughness={0.82} metalness={0} />
+      <planeGeometry args={[560, 560]} /><primitive attach="material" object={sea} />
     </mesh>
   </>;
 }
 
-export default function WorldEnvironment({ experiences }: { experiences: WorldContent['experiences'] }) {
+export default memo(function WorldEnvironment({ experiences }: { experiences: WorldContent['experiences'] }) {
   const items = useMemo(createLayout, []);
   const warm = useMemo(() => new MeshStandardMaterial({ color: '#FFC978', emissive: '#FFC978', emissiveIntensity: 0.05, roughness: 1 }), []);
   const cyan = useMemo(() => new MeshStandardMaterial({ color: PALETTE.cyan, emissive: PALETTE.cyan, emissiveIntensity: 0.15, roughness: 1 }), []);
@@ -397,22 +435,21 @@ export default function WorldEnvironment({ experiences }: { experiences: WorldCo
     <Lighting warm={warm} cyan={cyan} />
     <Island />
     <WorldYears experiences={experiences.en} />
-    <StaticBlocks items={items.surfaces} surface />
-    <StaticBlocks items={items.solids} />
-    <StaticBlocks items={items.camp.pads} surface visual={false} />
-    <StaticBlocks items={[...items.camp.padObjects, ...items.camp.tents, ...items.camp.benches, ...items.camp.trees]} visual={false} />
+    <StaticBlocks name="world-surface" items={items.surfaces} surface />
+    <StaticBlocks name="world-solid" items={items.solids} />
+    <StaticBlocks name="camp-pad-surface" items={items.camp.pads} surface visual={false} />
     <WorldCamp layout={items.camp} />
     <Blocks items={items.decor} shadow />
     <Blocks items={items.warm} material={warm} />
     <Blocks items={items.cyan} material={cyan} />
     {BUILDINGS.map(({ id, position: [x, y, z], size: [w, h, d], color }) => <RigidBody key={id} type="fixed" colliders={false} userData={{ solid: true }}>
-      <CuboidCollider args={[w / 2, h / 2, d / 2]} position={[x, y + h / 2, z]} restitution={0.15} />
-      <mesh name={`greybox-building-${id}`} position={[x, y + h / 2, z]} castShadow receiveShadow userData={{ occluder: true }}>
-        <boxGeometry args={[w, h, d]} /><meshStandardMaterial color={color} roughness={1} transparent />
+      <CuboidCollider name={`building-${id}`} args={[w / 2, h / 2, d / 2]} position={[x, y + h / 2, z]} restitution={0.15} />
+      <mesh name={`greybox-building-${id}`} position={[x, y + h / 2, z]} castShadow receiveShadow userData={{ occluder: true, solid: true }}>
+        <boxGeometry args={[w, h, d]} /><meshStandardMaterial color={color} roughness={1} />
       </mesh>
     </RigidBody>)}
     <mesh position={[11, 16.13, -43]} rotation={[-Math.PI / 2, 0, 0]}>
       <ringGeometry args={[2.5, 2.54, 32]} /><primitive object={cyan} attach="material" />
     </mesh>
   </group>;
-}
+});

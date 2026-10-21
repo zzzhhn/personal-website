@@ -1,10 +1,11 @@
-import { useEffect, useMemo, useRef, type RefObject } from 'react';
+import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { CapsuleCollider, CuboidCollider, RigidBody, useBeforePhysicsStep, useRapier, type RapierRigidBody } from '@react-three/rapier';
 import { Euler, Group, Material, Mesh, PerspectiveCamera, Quaternion, Raycaster, Vector3 } from 'three';
 import { CAMP_SPAWN, VEHICLES, WATER_Y, nearestRoadPoint } from './layout';
 import { useWorldStore } from './store';
 import type { Vec3, VehicleId } from './types';
+import WorldGuide, { worldGuideDebug } from './WorldGuide';
 import { PHYSICS_STEP, PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS, RECOVERY_SECONDS, advanceTimer, cameraDistance, configureRaycastVehicle, heading, isUpsideDown, rotateVector, wheelGeometry, yawRotation } from './actor-physics';
 
 type VehicleSpec = (typeof VEHICLES)[number];
@@ -13,10 +14,19 @@ type DriveInput = { throttle: number; steer: number; brake?: boolean };
 type Car = { body: RapierRigidBody; controller: Controller; spec: VehicleSpec; flipped: number; wet: number; steering: number };
 type ActorSnapshot = {
   player: Vec3 | null; activeVehicle: VehicleId | null; canRecover: boolean; grounded: boolean;
+  playerVelocity: Vec3 | null; playerCollider: { radius: number; halfHeight: number; centerHeight: number };
+  playerYaw: number; physicsStep: number;
   vehicles: { id: VehicleId; position: Vec3; velocity: Vec3; mass: number; wheelContacts: boolean[]; upsideDownSeconds: number; waterSeconds: number }[];
 };
+type ContactMeta = { colliderHandle: number; name: string | null; assetId: string | null; kind: 'surface' | 'solid' | 'vehicle' | 'obstacle' | 'unknown' };
+type ActorContact = { self: 'player' | VehicleId; other: ContactMeta; normal: Vec3; distance: number; points: Vec3[] };
+const playerColliderDimensions = { radius: PLAYER_RADIUS, halfHeight: PLAYER_HALF_HEIGHT, centerHeight: PLAYER_RADIUS + PLAYER_HALF_HEIGHT };
 export interface WorldActorDebug {
   snapshot(): ActorSnapshot;
+  actor(): ReturnType<typeof worldGuideDebug>;
+  contacts(): ActorContact[];
+  inputState(): string[];
+  castPlayer(from: Vec3, to: Vec3): { hit: boolean; toi: number; other: ContactMeta | null; normal: Vec3 | null };
   teleportPlayer(position: Vec3): boolean;
   teleportVehicle(id: VehicleId, position: Vec3, yaw?: number): boolean;
   enter(id: VehicleId): boolean;
@@ -30,7 +40,12 @@ export interface WorldActorDebug {
 let debugTarget: WorldActorDebug | null = null;
 /** Runtime attaches this only behind its explicit debug query parameter. */
 export const worldActorDebug: WorldActorDebug = {
-  snapshot: () => debugTarget?.snapshot() ?? { player: null, vehicles: [], activeVehicle: null, canRecover: false, grounded: false },
+  snapshot: () => debugTarget?.snapshot() ?? { player: null, vehicles: [], activeVehicle: null, canRecover: false, grounded: false,
+    playerVelocity: null, playerCollider: playerColliderDimensions, playerYaw: 0, physicsStep: 0 },
+  actor: worldGuideDebug,
+  contacts: () => debugTarget?.contacts() ?? [],
+  inputState: () => debugTarget?.inputState() ?? [],
+  castPlayer: (from,to) => debugTarget?.castPlayer(from,to) ?? {hit:false,toi:1,other:null,normal:null},
   teleportPlayer: (p) => debugTarget?.teleportPlayer(p) ?? false,
   teleportVehicle: (id,p,yaw) => debugTarget?.teleportVehicle(id,p,yaw) ?? false,
   enter: (id) => debugTarget?.enter(id) ?? false,
@@ -80,8 +95,8 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
         const v = body.current.linvel(); impact.current = Math.min(.35, Math.hypot(v.x, v.z) * .025);
       }
     }}>
-    <CuboidCollider args={[length/2,height*.29,width/2]} mass={spec.mass*.78} friction={0.65} restitution={0.18} />
-    <CuboidCollider args={[length*.25,height*.2,width*.43]} position={[-length*.08,height*.42,0]} mass={spec.mass*.22} friction={0.6} restitution={0.12}/>
+    <CuboidCollider name={`vehicle-${spec.id}-chassis`} args={[length/2,height*.29,width/2]} mass={spec.mass*.78} friction={0.65} restitution={0.18} />
+    <CuboidCollider name={`vehicle-${spec.id}-cabin`} args={[length*.25,height*.2,width*.43]} position={[-length*.08,height*.42,0]} mass={spec.mass*.22} friction={0.6} restitution={0.12}/>
     <mesh castShadow receiveShadow><boxGeometry args={[length,height*.58,width]}/><meshStandardMaterial color={spec.color} roughness={0.92}/></mesh>
     <mesh position={[-length*.08,height*.42,0]} castShadow><boxGeometry args={[length*.5,height*.4,width*.86]}/><meshStandardMaterial color={spec.id==='offroad'?'#E8803A':'#4E647D'} roughness={0.96}/></mesh>
     <mesh position={[length/2+.015,0,0]}><boxGeometry args={[.05,.17,width*.7]}/><meshStandardMaterial color="#E6DCCB"/></mesh>
@@ -93,19 +108,36 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
   </RigidBody>;
 }
 
+/** Keep animation prop updates local to the visual. Ground transitions publish immediately;
+ * velocity samples at 20 Hz while the mixer itself runs at the display frame rate. */
+function GuideVisual({ body, grounded, yaw, visible }: { body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; visible: boolean }) {
+  const elapsed = useRef(0);
+  const [motion, setMotion] = useState({ speedMps: 0, grounded: true, facing: 0 });
+  useFrame((_, dt) => {
+    elapsed.current += dt;
+    if (elapsed.current < .05 && motion.grounded === grounded.current) return;
+    elapsed.current = 0;
+    const v = body.current?.linvel();
+    const next = { speedMps: v ? Math.hypot(v.x, v.z) : 0, grounded: grounded.current, facing: yaw.current };
+    if (Math.abs(next.speedMps - motion.speedMps) > .005 || next.grounded !== motion.grounded || next.facing !== motion.facing) setMotion(next);
+  });
+  return <WorldGuide {...motion} visible={visible} />;
+}
+
 export default function WorldActors() {
   const player = useRef<RapierRigidBody>(null);
-  const guide = useRef<Group>(null);
+  const guideYaw = useRef(0);
   const cars = useRef(new Map<VehicleId,Car>());
   const keys = useRef(new Set<string>());
   const actions = useRef({interact:false,jump:false,recover:false});
   const debugDrive = useRef<{input:DriveInput;remaining:number}|null>(null);
   const grounded = useRef(false);
+  const physicsSteps = useRef(0);
   const wetPlayer = useRef(0);
   const lastRecover = useRef(useWorldStore.getState().recoverRequest);
   const publishedTime = useRef(0);
   const activeVehicle = useWorldStore(s=>s.activeVehicle);
-  const { world, rapier } = useRapier();
+  const { world, rapier, colliderStates } = useRapier();
   const { camera, scene, gl } = useThree();
   const target = useRef(new Vector3(...CAMP_SPAWN));
   const cameraReady = useRef(false);
@@ -186,11 +218,61 @@ export default function WorldActors() {
     window.addEventListener('keydown',down); window.addEventListener('keyup',up); window.addEventListener('blur',clearInput);
     document.addEventListener('visibilitychange',hidden); gl.domElement.addEventListener('wheel',wheel,{passive:false});
     const unsubscribe=useWorldStore.subscribe((state,previous)=>{if(state.paused!==previous.paused || state.shot!==previous.shot) clearInput();});
+    function identifyCollider(other: ReturnType<typeof world.getCollider>): ContactMeta {
+      const bodyData=other.parent()?.userData;
+      const data:Record<string,unknown>=bodyData && typeof bodyData==='object'?{...bodyData}:{};
+      let node=colliderStates.get(other.handle)?.object ?? null;
+      let name:string|null=null,assetId:string|null=null;
+      while(node){
+        if(!name && node.name) name=node.name;
+        if(!assetId && typeof node.userData.assetId==='string') assetId=node.userData.assetId;
+        Object.assign(data,node.userData);node=node.parent;
+      }
+      if(!assetId && typeof data.assetId==='string') assetId=data.assetId;
+      const kind:ContactMeta['kind']=data.surface?'surface':data.vehicle?'vehicle':data.obstacle?'obstacle':data.solid?'solid':'unknown';
+      return {colliderHandle:other.handle,name,assetId,kind};
+    }
     const api:WorldActorDebug={
+      actor:worldGuideDebug,
       snapshot:()=>({player:player.current?asTuple(player.current.translation()):null,activeVehicle:useWorldStore.getState().activeVehicle,
         canRecover:useWorldStore.getState().canRecover,grounded:grounded.current,
+        playerVelocity:player.current?asTuple(player.current.linvel()):null,playerCollider:playerColliderDimensions,
+        playerYaw:guideYaw.current,physicsStep:physicsSteps.current,
         vehicles:[...cars.current.values()].map(car=>({id:car.spec.id,position:asTuple(car.body.translation()),velocity:asTuple(car.body.linvel()),
           mass:car.body.mass(),wheelContacts:[0,1,2,3].map(i=>car.controller.wheelIsInContact(i)),upsideDownSeconds:car.flipped,waterSeconds:car.wet}))}),
+      contacts:()=>{
+        const active=useWorldStore.getState().activeVehicle;
+        const body=active?cars.current.get(active)?.body:player.current;
+        const result:ActorContact[]=[];
+        if(!body) return result;
+        for(let i=0;i<body.numColliders();i++){
+          const self=body.collider(i);
+          world.contactPairsWith(self,other=>{
+            if(other.isSensor()) return;
+            const meta=identifyCollider(other);
+            world.contactPair(self,other,(manifold,flipped)=>{
+              if(!manifold.numContacts() || !manifold.numSolverContacts()) return;
+              const normal=manifold.normal(),sign=flipped?1:-1;
+              const points:Vec3[]=[];
+              let distance=Infinity;
+              for(let j=0;j<manifold.numContacts();j++) distance=Math.min(distance,manifold.contactDist(j));
+              for(let j=0;j<Math.min(4,manifold.numSolverContacts());j++) points.push(asTuple(manifold.solverContactPoint(j)));
+              result.push({self:active??'player',other:meta,
+                normal:[normal.x*sign,normal.y*sign,normal.z*sign],distance,points});
+            });
+          });
+        }
+        return result;
+      },
+      inputState:()=>[...keys.current],
+      castPlayer:(from,to)=>{
+        const hit=world.castShape(asVector(from),{x:0,y:0,z:0,w:1},
+          {x:to[0]-from[0],y:to[1]-from[1],z:to[2]-from[2]},new rapier.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),
+          .002,1,false,undefined,undefined,undefined,player.current??undefined,c=>!c.isSensor());
+        // Shape-cast normals use shape-local frames. Contacts() supplies verified world normals;
+        // this fixture API intentionally exposes no guessed normal.
+        return {hit:!!hit,toi:hit?.time_of_impact??1,other:hit?identifyCollider(hit.collider):null,normal:null};
+      },
       teleportPlayer:(p)=>{if(!player.current)return false;if(useWorldStore.getState().activeVehicle)useWorldStore.setState({activeVehicle:null,canRecover:false});player.current.setEnabled(true);resetBody(player.current,p);wetPlayer.current=0;clearInput();return true;},
       teleportVehicle:(id,p,yaw=0)=>{const car=cars.current.get(id);if(!car)return false;resetBody(car.body,p,yaw);car.wet=0;car.flipped=0;return true;},
       enter,exit,clearInput,recover,
@@ -205,10 +287,11 @@ export default function WorldActors() {
       if(debugTarget===api)debugTarget=null;
       faded.current.forEach((original,material)=>{Object.assign(material,original);material.needsUpdate=true;});faded.current.clear();
     };
-  },[world,rapier,gl]);
+  },[world,rapier,gl,colliderStates]);
 
   useBeforePhysicsStep(()=>{
     const state=useWorldStore.getState(); if(state.paused || state.shot || !player.current) return;
+    physicsSteps.current++;
     const dt=world.timestep || PHYSICS_STEP;
     let active=state.activeVehicle?cars.current.get(state.activeVehicle):undefined;
     // Evaluate proximity at physics frequency; UI publication is throttled separately.
@@ -247,7 +330,7 @@ export default function WorldActors() {
       grounded.current=!!ground && ground.normal.y>.55 && velocity.y<1;
       const x=Number(keys.current.has('KeyD'))-Number(keys.current.has('KeyA'));
       const z=Number(keys.current.has('KeyW'))-Number(keys.current.has('KeyS'));
-      const magnitude=Math.hypot(x,z),speed=keys.current.has('ShiftLeft')||keys.current.has('ShiftRight')?6.7:3.5;
+      const magnitude=Math.hypot(x,z),speed=keys.current.has('ShiftLeft')||keys.current.has('ShiftRight')?4.2:1.8;
       // Movement follows the fixed camera's ground axes.
       const vx=magnitude?(.8*x-.6*z)/magnitude*speed:0;
       const vz=magnitude?(-.6*x-.8*z)/magnitude*speed:0;
@@ -255,7 +338,7 @@ export default function WorldActors() {
       const factor=1-Math.exp(-response*dt),mass=player.current.mass();
       player.current.applyImpulse({x:(vx-velocity.x)*mass*factor,y:0,z:(vz-velocity.z)*mass*factor},true);
       if(actions.current.jump && grounded.current){player.current.setLinvel({x:velocity.x,y:5.7,z:velocity.z},true);grounded.current=false;}
-      if(magnitude && guide.current)guide.current.rotation.y=Math.atan2(-vz,vx);
+      if(magnitude)guideYaw.current=Math.atan2(-vz,vx);
       wetPlayer.current=advanceTimer(wetPlayer.current,p.y<WATER_Y,dt);
       if(wetPlayer.current>=RECOVERY_SECONDS || p.y< -80){const road=nearestRoadPoint(asTuple(p));resetBody(player.current,[road[0],road[1]+PLAYER_CENTER_HEIGHT,road[2]]);wetPlayer.current=0;}
     }
@@ -310,14 +393,12 @@ export default function WorldActors() {
 
   return <>
     {VEHICLES.map(spec=><Vehicle key={spec.id} spec={spec} cars={cars} impact={impact}/>)}
-    <RigidBody ref={player} colliders={false} position={CAMP_SPAWN} enabledRotations={[false,false,false]} linearDamping={.2} ccd canSleep={false}>
-      <CapsuleCollider args={[PLAYER_HALF_HEIGHT,PLAYER_RADIUS]} mass={72} friction={.15} restitution={0}/>
-      <group ref={guide} visible={!activeVehicle}>
-        <mesh castShadow><capsuleGeometry args={[.3,.65,4,8]}/><meshStandardMaterial color="#4E647D" roughness={1}/></mesh>
-        <mesh position={[0,.67,0]} castShadow><sphereGeometry args={[.36,12,8]}/><meshStandardMaterial color="#E6DCCB" roughness={.95}/></mesh>
-        <mesh position={[.29,.69,0]}><boxGeometry args={[.19,.16,.47]}/><meshStandardMaterial color="#4E647D" roughness={1}/></mesh>
-        <mesh position={[0,-.53,.19]} castShadow><boxGeometry args={[.38,.35,.23]}/><meshStandardMaterial color="#3A3F47" roughness={1}/></mesh>
-        <mesh position={[0,-.53,-.19]} castShadow><boxGeometry args={[.38,.35,.23]}/><meshStandardMaterial color="#3A3F47" roughness={1}/></mesh>
+    <RigidBody ref={player} colliders={false} position={CAMP_SPAWN} enabledRotations={[false,false,false]} linearDamping={.2} ccd softCcdPrediction={.1} canSleep={false}>
+      {/* Zero/min friction prevents low curbs and walls from pinning the round foot.
+          Horizontal impulse control handles braking; 10 cm soft CCD predicts landing contact. */}
+      <CapsuleCollider name="player-capsule" args={[PLAYER_HALF_HEIGHT,PLAYER_RADIUS]} mass={72} friction={0} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={0}/>
+      <group position={[0,-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),0]}>
+        <GuideVisual body={player} grounded={grounded} yaw={guideYaw} visible={!activeVehicle} />
       </group>
     </RigidBody>
   </>;

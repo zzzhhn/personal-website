@@ -1,0 +1,55 @@
+{
+ "clips": {
+  "Idle": {
+   "frames": 144,
+   "duration_s": 2.4,
+   "loop": true,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.0
+  },
+  "Walk": {
+   "frames": 36,
+   "duration_s": 0.6,
+   "loop": true,
+   "designSpeedMps": 1.5,
+   "ik_overstretch_max_m": 0.0
+  },
+  "Run": {
+   "frames": 24,
+   "duration_s": 0.4,
+   "loop": true,
+   "designSpeedMps": 4.2,
+   "ik_overstretch_max_m": 0.0
+  },
+  "Jump": {
+   "frames": 30,
+   "duration_s": 0.5,
+   "loop": false,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.0
+  },
+  "Land": {
+   "frames": 24,
+   "duration_s": 0.4,
+   "loop": false,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.0
+  }
+ },
+ "boot": {
+  "heel_pivot": [
+   0.023647097870707512,
+   -0.0949999988079071
+  ],
+  "toe_pivot": [
+   0.10527941584587097,
+   -0.0949999988079071
+  ],
+  "sole_x_range": [
+   -0.0730934888124466,
+   0.13018523156642914
+  ]
+ },
+ "bones": 18,
+ "deform_bones": 17
+}

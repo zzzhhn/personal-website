@@ -1,0 +1,232 @@
+{
+ "glb": "out/G24_uncompressed.glb",
+ "sha256": "0205f6258a031ef4b2d1849087393bbea3728c604f57296a37cda2dcb5bfa22f",
+ "blender": "4.2.23 LTS",
+ "objects": [
+  [
+   "G24",
+   "ARMATURE"
+  ],
+  [
+   "G24_mesh",
+   "MESH"
+  ],
+  [
+   "Icosphere",
+   "MESH"
+  ]
+ ],
+ "actions": [
+  "Idle_G24",
+  "Jump_G24",
+  "Land_G24",
+  "Run_G24",
+  "Walk_G24"
+ ],
+ "triangles": 2006,
+ "triangles_equal_native": true,
+ "bones": 18,
+ "materials": {
+  "guide_jacket_paint": {
+   "base": [
+    0.07619,
+    0.12744,
+    0.20508,
+    1.0
+   ],
+   "rough": 0.85,
+   "metal": 0.0,
+   "role": "paint"
+  },
+  "guide_sleeve_cream": {
+   "base": [
+    0.7913,
+    0.71569,
+    0.5972,
+    1.0
+   ],
+   "rough": 0.9,
+   "metal": 0.0,
+   "role": "canvas"
+  },
+  "guide_pants_accent": {
+   "base": [
+    0.04231,
+    0.04971,
+    0.06301,
+    1.0
+   ],
+   "rough": 0.92,
+   "metal": 0.0,
+   "role": "accent"
+  },
+  "guide_glove_boot_accent": {
+   "base": [
+    0.07619,
+    0.12744,
+    0.20508,
+    1.0
+   ],
+   "rough": 0.8,
+   "metal": 0.0,
+   "role": "accent"
+  },
+  "guide_helmet_metal": {
+   "base": [
+    0.7913,
+    0.71569,
+    0.5972,
+    1.0
+   ],
+   "rough": 0.55,
+   "metal": 0.0,
+   "role": "metal"
+  },
+  "guide_visor_glass": {
+   "base": [
+    0.07619,
+    0.12744,
+    0.20508,
+    1.0
+   ],
+   "rough": 0.35,
+   "metal": 0.0,
+   "role": "glass"
+  },
+  "guide_dot_light": {
+   "base": [
+    0.07819,
+    0.6376,
+    0.55834,
+    1.0
+   ],
+   "rough": 0.5,
+   "metal": 0.0,
+   "role": "light"
+  },
+  "guide_hipbag_accent": {
+   "base": [
+    0.80695,
+    0.21586,
+    0.04231,
+    1.0
+   ],
+   "rough": 0.85,
+   "metal": 0.0,
+   "role": "accent"
+  }
+ },
+ "material_mismatch": [],
+ "imported_clips": {
+  "Idle": [
+   "Idle_G24",
+   [
+    0.0,
+    144.0
+   ]
+  ],
+  "Walk": [
+   "Walk_G24",
+   [
+    0.0,
+    36.0
+   ]
+  ],
+  "Run": [
+   "Run_G24",
+   [
+    0.0,
+    24.0
+   ]
+  ],
+  "Jump": [
+   "Jump_G24",
+   [
+    0.0,
+    30.0
+   ]
+  ],
+  "Land": [
+   "Land_G24",
+   [
+    0.0,
+    24.0
+   ]
+  ]
+ },
+ "joint_parity_keyframes_max_m": 7.237325892396274e-07,
+ "joint_parity_halfframes_max_m": 1.751231352333839e-05,
+ "deformed_bounds_parity_max_m": 1.3649463653564453e-05,
+ "deformed_vertex_cloud_parity": {
+  "Idle@0.0000": {
+   "native_to_glb_max_m": 2.9847652172065864e-07,
+   "glb_to_native_max_m": 2.9847652172065864e-07,
+   "native_vertices": 1025,
+   "glb_vertices": 4020
+  },
+  "Walk@0.0000": {
+   "native_to_glb_max_m": 3.6164107086733566e-07,
+   "glb_to_native_max_m": 3.6164107086733566e-07,
+   "native_vertices": 1025,
+   "glb_vertices": 4020
+  },
+  "Walk@0.1500": {
+   "native_to_glb_max_m": 5.263216849016317e-07,
+   "glb_to_native_max_m": 5.263216849016317e-07,
+   "native_vertices": 1025,
+   "glb_vertices": 4020
+  },
+  "Walk@0.3000": {
+   "native_to_glb_max_m": 5.179091431273264e-07,
+   "glb_to_native_max_m": 5.179091431273264e-07,
+   "native_vertices": 1025,
+   "glb_vertices": 4020
+  },
+  "Walk@0.2583": {
+   "native_to_glb_max_m": 4.971274165654904e-07,
+   "glb_to_native_max_m": 4.971274165654904e-07,
+   "native_vertices": 1025,
+   "glb_vertices": 4020
+  },
+  "Run@0.0000": {
+   "native_to_glb_max_m": 5.693725597666344e-07,
+   "glb_to_native_max_m": 5.693725597666344e-07,
+   "native_vertices": 1025,
+   "glb_vertices": 4020
+  },
+  "Run@0.1000": {
+   "native_to_glb_max_m": 6.271335450946935e-07,
+   "glb_to_native_max_m": 6.271335450946935e-07,
+   "native_vertices": 1025,
+   "glb_vertices": 4020
+  },
+  "Run@0.2083": {
+   "native_to_glb_max_m": 5.56753320779535e-07,
+   "glb_to_native_max_m": 5.56753320779535e-07,
+   "native_vertices": 1025,
+   "glb_vertices": 4020
+  },
+  "Jump@0.2500": {
+   "native_to_glb_max_m": 5.80380628889543e-07,
+   "glb_to_native_max_m": 5.80380628889543e-07,
+   "native_vertices": 1025,
+   "glb_vertices": 4020
+  },
+  "Jump@0.5000": {
+   "native_to_glb_max_m": 4.4304337620815204e-07,
+   "glb_to_native_max_m": 4.4304337620815204e-07,
+   "native_vertices": 1025,
+   "glb_vertices": 4020
+  },
+  "Land@0.1000": {
+   "native_to_glb_max_m": 5.345831937120238e-07,
+   "glb_to_native_max_m": 5.345831937120238e-07,
+   "native_vertices": 1025,
+   "glb_vertices": 4020
+  }
+ },
+ "deformed_vertex_cloud_parity_max_m": 6.271335450946935e-07,
+ "non_asset_import_objects": [
+  "Icosphere"
+ ]
+}

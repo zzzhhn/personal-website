@@ -1,0 +1,32 @@
+{
+  "source": "acceptance-r3/report.json",
+  "sourceSha256": "6fac8d8155a49cadde58c51373b87a3ad83cf078e52183d2a8bbc05d4ca7d76c",
+  "rule": "Fable C1-b: real contact and rise at least half visible height",
+  "visibleHeight_m": 0.23999996185302752,
+  "cases": [
+    {
+      "direction": "east",
+      "rise_m": 0.21406918334960956,
+      "realContact": true,
+      "passed": true
+    },
+    {
+      "direction": "west",
+      "rise_m": 0.2200691833496098,
+      "realContact": true,
+      "passed": true
+    },
+    {
+      "direction": "south",
+      "rise_m": 0.21406918334960956,
+      "realContact": true,
+      "passed": true
+    },
+    {
+      "direction": "north",
+      "rise_m": 0.12292838287353547,
+      "realContact": true,
+      "passed": true
+    }
+  ]
+}

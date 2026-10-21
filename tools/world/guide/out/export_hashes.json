@@ -1,0 +1,12 @@
+{
+ "uncompressed": {
+  "path": "/Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/guide/out/G24_uncompressed.glb",
+  "bytes": 455572,
+  "sha256": "0205f6258a031ef4b2d1849087393bbea3728c604f57296a37cda2dcb5bfa22f"
+ },
+ "draco": {
+  "path": "/Users/bobby/WorkBuddy/personal-website/personal-website/public/assets/world/guide/G24.glb",
+  "bytes": 299288,
+  "sha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357"
+ }
+}

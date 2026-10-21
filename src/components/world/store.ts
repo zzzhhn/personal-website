@@ -13,10 +13,11 @@ interface WorldState {
   position: Vec3;
   ready: boolean;
   zoom: 0 | 1 | 2;
+  quality: 'balanced' | 'high';
   shot: string | null;
 }
 export const useWorldStore = create<WorldState>(() => ({
   lang: 'en', light: 'dusk', paused: false, activeVehicle: null, nearbyVehicle: null,
   canRecover: false, recoverRequest: 0, speed: 0, zone: 'camp', position: [-42, 5, 30],
-  ready: false, zoom: 1, shot: null,
+  ready: false, zoom: 1, quality: 'high', shot: null,
 }));
