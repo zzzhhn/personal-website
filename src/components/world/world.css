@@ -44,3 +44,11 @@ kbd { font: inherit; font-size: 11px; margin-left: 14px; border: 1px solid #ffff
 .world-shot .world-top, .world-shot .world-bottom, .world-shot .world-location, .world-shot .world-interaction { display: none; }
 @media (prefers-reduced-motion: reduce) { .world-progress { animation: none; } }
 @media (max-height: 760px) { .world-dialog .world-map-large { max-height: 190px; margin: 12px 0; } .world-dialog { padding: 20px; } }
+
+.world-experience { position: absolute; z-index: 2; bottom: 174px; left: 50%; transform: translateX(-50%); width: min(560px, 62vw); pointer-events: none; text-align: center; }
+.world-experience > div { padding: 12px 18px; background: #142f3de8; border: 1px solid #ffffff28; border-radius: 7px; animation: world-experience-in .2s ease-out; }
+.world-experience span { font-size: 11px; color: #b9cacd; }
+.world-experience p { margin: 5px 0 0; font-size: 14px; line-height: 1.45; }
+@keyframes world-experience-in { from { opacity: 0; } to { opacity: 1; } }
+.world-shot .world-experience { display: none; }
+@media (prefers-reduced-motion: reduce) { .world-experience > div { animation: none; } }

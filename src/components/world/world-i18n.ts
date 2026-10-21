@@ -20,3 +20,6 @@ export const worldText = {
     future: '建设中', map: '城岛地图', privacy: '不记录移动轨迹。',
   },
 } as const;
+
+/** Display the source ISO date as a language-neutral year/month. */
+export const experienceMonth = (startDate: string) => startDate.slice(0, 7).replace('-', '.');

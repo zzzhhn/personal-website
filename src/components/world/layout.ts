@@ -39,12 +39,12 @@ export const ISLAND_OUTLINE: [number, number][] = [
   [31, -30], [28, -10], [23, 10], [12, 32], [-4, 52], [-35, 59], [-57, 49],
 ];
 export const BUILDINGS = [
-  { id: 'sdic', position: [0, 1, 15] as Vec3, size: [9, 8, 8] as Vec3, color: PALETTE.cream, year: '2025.05' },
-  { id: 'worldquant', position: [2, 1, 5] as Vec3, size: [9, 12, 8] as Vec3, color: PALETTE.slate, year: '2025.08' },
-  { id: 'moe', position: [6, 1, -7] as Vec3, size: [10, 5, 8] as Vec3, color: PALETTE.brick, year: '2025.11' },
-  { id: 'aime', position: [9, 1, -19] as Vec3, size: [9, 10, 8] as Vec3, color: PALETTE.cream, year: '2025.12' },
-  { id: 'video-rebirth', position: [11, 1, -31] as Vec3, size: [8, 11, 8] as Vec3, color: PALETTE.brick, year: '2026.02' },
-  { id: 'hunyuan', position: [11, 1, -43] as Vec3, size: [10, 15, 8] as Vec3, color: PALETTE.slate, year: '2026.09' },
+  { id: 'sdic', position: [0, 1, 15] as Vec3, size: [9, 8, 8] as Vec3, color: PALETTE.cream },
+  { id: 'worldquant', position: [2, 1, 5] as Vec3, size: [9, 12, 8] as Vec3, color: PALETTE.slate },
+  { id: 'moe', position: [6, 1, -7] as Vec3, size: [10, 5, 8] as Vec3, color: PALETTE.brick },
+  { id: 'aime', position: [9, 1, -19] as Vec3, size: [9, 10, 8] as Vec3, color: PALETTE.cream },
+  { id: 'video-rebirth', position: [11, 1, -31] as Vec3, size: [8, 11, 8] as Vec3, color: PALETTE.brick },
+  { id: 'hunyuan', position: [11, 1, -43] as Vec3, size: [10, 15, 8] as Vec3, color: PALETTE.slate },
 ];
 export const BOOTHS = [
   { id: 'alpha-agent', position: [59, 1.14, -49] as Vec3 },

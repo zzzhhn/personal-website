@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, type RefObject } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { CapsuleCollider, CuboidCollider, RigidBody, useBeforePhysicsStep, useRapier, type RapierRigidBody } from '@react-three/rapier';
-import { Euler, Group, Material, Mesh, Quaternion, Raycaster, Vector3 } from 'three';
+import { Euler, Group, Material, Mesh, PerspectiveCamera, Quaternion, Raycaster, Vector3 } from 'three';
 import { CAMP_SPAWN, VEHICLES, WATER_Y, nearestRoadPoint } from './layout';
 import { useWorldStore } from './store';
 import type { Vec3, VehicleId } from './types';
@@ -266,7 +266,21 @@ export default function WorldActors() {
   });
 
   useFrame((_,delta)=>{
-    const state=useWorldStore.getState();if(state.shot || state.paused)return;
+    const state=useWorldStore.getState();
+    if (state.shot) {
+      // Fixed evidence cameras retain their original projection.
+      if (camera instanceof PerspectiveCamera && camera.fov !== 50) {
+        camera.fov = 50; camera.updateProjectionMatrix();
+      }
+      return;
+    }
+    if (state.paused) return;
+    if (camera instanceof PerspectiveCamera) {
+      const targetFov = [40, 50, 60][state.zoom];
+      // Reach roughly 95% of the optical zoom target in 0.3 seconds.
+      const nextFov = Math.abs(targetFov-camera.fov) < .01 ? targetFov : camera.fov+(targetFov-camera.fov)*(1-Math.exp(-delta*10));
+      if (nextFov !== camera.fov) { camera.fov = nextFov; camera.updateProjectionMatrix(); }
+    }
     const body=state.activeVehicle?cars.current.get(state.activeVehicle)?.body:player.current;if(!body)return;
     const p=body.translation(),velocity=body.linvel();
     const desiredTarget=new Vector3(p.x,p.y+.65,p.z);

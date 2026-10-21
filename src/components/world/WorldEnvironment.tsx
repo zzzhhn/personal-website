@@ -10,7 +10,8 @@ import {
   FOUNDATIONS, ISLAND_OUTLINE, PALETTE, ROAD_POINTS, ROAD_WIDTH, WATER_Y,
 } from './layout';
 import { useWorldStore } from './store';
-import type { Vec3 } from './types';
+import type { Vec3, WorldContent } from './types';
+import WorldYears from './WorldYears';
 
 type Block = { position: Vec3; size: Vec3; color: string; rotation?: Vec3 };
 const V = (x: number, y: number, z: number): Vec3 => [x, y, z];
@@ -192,6 +193,7 @@ function Island() {
 
 function createLayout() {
   const surfaces: Block[] = [], solids: Block[] = [], decor: Block[] = [], warm: Block[] = [], cyan: Block[] = [];
+  // Touchable greybox poles and signs use the same visible block and fixed collider.
   ROAD_POINTS.slice(1).forEach((b, i) => {
     const a = ROAD_POINTS[i];
     surfaces.push(segment(a, b, ROAD_WIDTH, PALETTE.road));
@@ -210,7 +212,7 @@ function createLayout() {
       const [c, d] = offsetSegment(a, b, 5.25, 0.52);
       solids.push(segment(c, d, 0.22, PALETTE.cream, 1));
       const p = V((c[0] + d[0]) / 2, 1.14, (c[2] + d[2]) / 2);
-      decor.push(block(V(p[0], p[1] + 2, p[2]), V(0.18, 4, 0.18), PALETTE.slate));
+      solids.push(block(V(p[0], p[1] + 2, p[2]), V(0.18, 4, 0.18), PALETTE.slate));
       warm.push(block(V(p[0], p[1] + 4, p[2]), V(0.5, 0.35, 0.5), '#FFFFFF'));
     }
   });
@@ -226,7 +228,7 @@ function createLayout() {
       const d: Vec3 = [a[0] + (b[0] - a[0]) * 0.35, 1.14, a[2] + (b[2] - a[2]) * 0.35];
       const [start, end] = offsetSegment(c, d, side * 2.85, 0.62);
       solids.push(segment(start, end, 0.16, PALETTE.wood, 0.95));
-      decor.push(block([start[0], 2.3, start[2]], [0.2, 2.3, 0.2], PALETTE.wood));
+      solids.push(block([start[0], 2.3, start[2]], [0.2, 2.3, 0.2], PALETTE.wood));
       warm.push(block([start[0], 3.5, start[2]], [0.35, 0.2, 0.35], '#FFFFFF'));
     }
     // Plank seams are a single instanced batch; no per-plank collider seams.
@@ -276,17 +278,17 @@ function createLayout() {
     solids.push(block([-42 + Math.cos(angle) * 6, 5.1, 30 + Math.sin(angle) * 6], [4.8, 0.6, 0.8], PALETTE.wood, [0, -angle - Math.PI / 2, 0]));
   }
   for (let i = 0; i < 2; i++) {
-    decor.push(block([-30, 6, 31 + i * 6], [0.25, 2.4, 0.25], PALETTE.slate));
+    solids.push(block([-30, 6, 31 + i * 6], [0.25, 2.4, 0.25], PALETTE.slate));
     cyan.push(block([-30, 6.9, 31 + i * 6], [0.15, 0.6, 0.15], '#FFFFFF'));
   }
   BUILDINGS.forEach((building) => {
     const [x, y, z] = building.position, [w, h, d] = building.size;
     surfaces.push(block([x + w / 2 + 2.7, y + 0.035, z], [5.4, 0.07, d + 1], PALETTE.edge));
     const roadX = x + w / 2 + 5;
-    decor.push(block([roadX, 2.1, z], [0.5, 2.2, 0.5], PALETTE.slate));
+    solids.push(block([roadX, 2.1, z], [0.5, 2.2, 0.5], PALETTE.slate));
     cyan.push(block([roadX + 0.26, 2.4, z], [0.035, 1.2, 0.3], '#FFFFFF'));
     // Blank exhibit plaque: content lives in the shared UI, not duplicated here.
-    decor.push(block([roadX - 2, 2, z + 2.7], [0.18, 1.6, 1.5], PALETTE.cream));
+    solids.push(block([roadX - 2, 2, z + 2.7], [0.18, 1.6, 1.5], PALETTE.cream));
     // About sixty percent of the window cells illuminate at night.
     for (let row = 0; row < Math.floor(h / 2.7); row++) for (let col = 0; col < 3; col++) {
       if ((row * 3 + col) % 5 >= 3) continue;
@@ -368,7 +370,7 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
   </>;
 }
 
-export default function WorldEnvironment() {
+export default function WorldEnvironment({ experiences }: { experiences: WorldContent['experiences'] }) {
   const items = useMemo(createLayout, []);
   const warm = useMemo(() => new MeshStandardMaterial({ color: '#FFC978', emissive: '#FFC978', emissiveIntensity: 0.05, roughness: 1 }), []);
   const cyan = useMemo(() => new MeshStandardMaterial({ color: PALETTE.cyan, emissive: PALETTE.cyan, emissiveIntensity: 0.15, roughness: 1 }), []);
@@ -376,6 +378,7 @@ export default function WorldEnvironment() {
   return <group name="world-greybox-environment">
     <Lighting warm={warm} cyan={cyan} />
     <Island />
+    <WorldYears experiences={experiences.en} />
     <StaticBlocks items={items.surfaces} surface />
     <StaticBlocks items={items.solids} />
     <Blocks items={items.decor} shadow />

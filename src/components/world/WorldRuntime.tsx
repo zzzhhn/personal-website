@@ -37,7 +37,7 @@ function SceneLifecycle() {
   return null;
 }
 
-export default memo(function WorldRuntime({ content: _content }: { content: WorldContent }) {
+export default memo(function WorldRuntime({ content }: { content: WorldContent }) {
   const paused = useWorldStore(s => s.paused);
   const shot = useWorldStore(s => s.shot);
   useEffect(() => {
@@ -51,6 +51,6 @@ export default memo(function WorldRuntime({ content: _content }: { content: Worl
     return unsubscribe;
   }, []);
   return <Canvas shadows dpr={[1, 1.5]} camera={{ position: [CAMP_SPAWN[0] + 10, CAMP_SPAWN[1] + 13, CAMP_SPAWN[2] + 10], fov: 50, near: .1, far: 600 }} gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}>
-    <Suspense fallback={null}><Physics gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={paused || !!shot} colliders={false}><WorldEnvironment /><WorldObstacles /><WorldActors /><SceneLifecycle /></Physics></Suspense>
+    <Suspense fallback={null}><Physics gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={paused || !!shot} colliders={false}><WorldEnvironment experiences={content.experiences} /><WorldObstacles /><WorldActors /><SceneLifecycle /></Physics></Suspense>
   </Canvas>;
 });

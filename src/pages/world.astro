@@ -1,9 +1,23 @@
 ---
 import { getCollection } from 'astro:content';
 import WorldApp from '../components/world/WorldApp';
-const experiences = (await getCollection('experiences')).map(({ id, data }) => ({
-  id, organization: data.organization, role: data.role, startDate: data.startDate.toISOString().slice(0, 10),
-}));
+import { EXPERIENCES } from '../lib/i18n';
+import { BUILDINGS } from '../components/world/layout';
+import type { WorldContent, WorldExperience } from '../components/world/types';
+// The homepage's bilingual timeline is the sole source for the six buildings.
+const chronological = (entries: readonly WorldExperience[]) => [...entries]
+  .sort((a, b) => a.startDate.localeCompare(b.startDate))
+  .map(({ organization, role, startDate }) => ({ organization, role, startDate }));
+const experiences: WorldContent['experiences'] = {
+  en: chronological(EXPERIENCES.en),
+  zh: chronological(EXPERIENCES.zh),
+};
+if (experiences.en.length !== BUILDINGS.length || experiences.zh.length !== BUILDINGS.length ||
+  experiences.en.some((entry, i) => !entry.organization || !entry.role || !entry.startDate ||
+    entry.startDate !== experiences.zh[i].startDate) ||
+  experiences.zh.some(entry => !entry.organization || !entry.role || !entry.startDate)) {
+  throw new Error('The world requires six complete, date-aligned bilingual experience slots.');
+}
 const projects = (await getCollection('projects')).map(({ data }) => ({
   slug: data.slug, title: data.title, titleZh: data.titleZh,
   tagline: data.tagline, taglineZh: data.taglineZh, maintenance: data.maintenance,
