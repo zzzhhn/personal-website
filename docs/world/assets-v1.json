@@ -1,0 +1,1522 @@
+[
+  {
+    "id": "G01",
+    "zone": "全局",
+    "name": "岛体分层崖壁",
+    "source": "程序化",
+    "count": 1,
+    "triangles": "≤12k",
+    "materialRole": "stone / ground",
+    "physics": "静态",
+    "reference": "layout",
+    "crop": [
+      0.04,
+      0.05,
+      0.64,
+      0.89
+    ],
+    "note": "程序化连通陆地；不是三座孤岛",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G02",
+    "zone": "全局",
+    "name": "沙滩与浅滩",
+    "source": "程序化",
+    "count": 1,
+    "triangles": "≤3k",
+    "materialRole": "sand",
+    "physics": "静态",
+    "reference": "layout",
+    "crop": [
+      0.04,
+      0.6,
+      0.56,
+      0.35
+    ],
+    "note": "",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G03",
+    "zone": "全局",
+    "name": "海面及浅水层",
+    "source": "程序化",
+    "count": 1,
+    "triangles": "≤4k",
+    "materialRole": "water",
+    "physics": "无碰撞，水域检测",
+    "reference": "park",
+    "crop": [
+      0.32,
+      0.55,
+      0.63,
+      0.43
+    ],
+    "note": "",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G04",
+    "zone": "全局",
+    "name": "主路和营地下降坡",
+    "source": "程序化",
+    "count": 1,
+    "triangles": "≤5k",
+    "materialRole": "road / edge",
+    "physics": "静态",
+    "reference": "layout",
+    "crop": [
+      0.35,
+      0.25,
+      0.44,
+      0.51
+    ],
+    "note": "时间轴由西南至东北",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G05",
+    "zone": "全局",
+    "name": "内陆支路",
+    "source": "程序化",
+    "count": 1,
+    "triangles": "≤2k",
+    "materialRole": "ground",
+    "physics": "静态",
+    "reference": "layout",
+    "crop": [
+      0.15,
+      0.19,
+      0.51,
+      0.23
+    ],
+    "note": "",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G06",
+    "zone": "全局",
+    "name": "连接桥",
+    "source": "程序化",
+    "count": 1,
+    "triangles": "≤2k",
+    "materialRole": "stone",
+    "physics": "静态",
+    "reference": "layout",
+    "crop": [
+      0.61,
+      0.19,
+      0.11,
+      0.12
+    ],
+    "note": "恰好一座，连接城区与入口广场",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G07",
+    "zone": "全局",
+    "name": "路缘石模块",
+    "source": "程序化",
+    "count": "按路长",
+    "triangles": "≤120/段",
+    "materialRole": "stone",
+    "physics": "静态",
+    "reference": "town",
+    "crop": [
+      0.03,
+      0.57,
+      0.72,
+      0.38
+    ],
+    "note": "",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G08",
+    "zone": "全局",
+    "name": "海堤与步道",
+    "source": "程序化",
+    "count": 1,
+    "triangles": "≤6k",
+    "materialRole": "stone",
+    "physics": "静态",
+    "reference": "town",
+    "crop": [
+      0.49,
+      0.46,
+      0.51,
+      0.54
+    ],
+    "note": "",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G09",
+    "zone": "全局",
+    "name": "海堤护栏模块",
+    "source": "程序化",
+    "count": "按路长",
+    "triangles": "≤240/段",
+    "materialRole": "stone / metal",
+    "physics": "动态，30s复位",
+    "reference": "town",
+    "crop": [
+      0.51,
+      0.59,
+      0.49,
+      0.41
+    ],
+    "note": "海堤基础固定，栏杆可撞倒；外侧水域兜底",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G10",
+    "zone": "全局",
+    "name": "路灯",
+    "source": "L1 coding",
+    "count": "约18",
+    "triangles": "≤700/件",
+    "materialRole": "metal / light_front",
+    "physics": "动态，30s复位",
+    "reference": "town",
+    "crop": [
+      0.68,
+      0.69,
+      0.09,
+      0.2
+    ],
+    "note": "轻科技仅灯头；自然暖白路灯光",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G11",
+    "zone": "全局",
+    "name": "年份灯柱",
+    "source": "L1 coding",
+    "count": 6,
+    "triangles": "≤500/件",
+    "materialRole": "metal / light",
+    "physics": "动态，30s复位",
+    "reference": "town",
+    "crop": [
+      0.13,
+      0.67,
+      0.04,
+      0.14
+    ],
+    "note": "经过触发青色微亮与年份；年份文字运行时生成",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G12",
+    "zone": "全局",
+    "name": "路障",
+    "source": "L1 coding",
+    "count": "约6",
+    "triangles": "≤500/件",
+    "materialRole": "paint / accent",
+    "physics": "动态，30s复位",
+    "reference": "town",
+    "crop": [
+      0.43,
+      0.54,
+      0.15,
+      0.16
+    ],
+    "note": "参考图未独立展示，待补正侧细节图",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G13",
+    "zone": "全局",
+    "name": "垃圾桶",
+    "source": "L1 coding",
+    "count": "约4",
+    "triangles": "≤600/件",
+    "materialRole": "metal / paint",
+    "physics": "动态，30s复位",
+    "reference": "town",
+    "crop": [
+      0.43,
+      0.54,
+      0.15,
+      0.16
+    ],
+    "note": "参考图未独立展示，待补图",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G14",
+    "zone": "全局",
+    "name": "街边长椅",
+    "source": "L1 coding",
+    "count": "约4",
+    "triangles": "≤800/件",
+    "materialRole": "wood / metal",
+    "physics": "静态",
+    "reference": "town",
+    "crop": [
+      0.72,
+      0.39,
+      0.18,
+      0.2
+    ],
+    "note": "参考图未独立展示，待补图",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G15",
+    "zone": "全局",
+    "name": "广告牌",
+    "source": "L1 coding",
+    "count": "约3",
+    "triangles": "≤700/件",
+    "materialRole": "wood / paint",
+    "physics": "动态，30s复位",
+    "reference": "town",
+    "crop": [
+      0.57,
+      0.43,
+      0.05,
+      0.07
+    ],
+    "note": "复用自然材质牌架；不做发光广告面",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G16",
+    "zone": "全局",
+    "name": "阔叶团簇树",
+    "source": "L1 coding",
+    "count": "实例复用",
+    "triangles": "≤900/件",
+    "materialRole": "foliage / wood",
+    "physics": "静态树干",
+    "reference": "camp",
+    "crop": [
+      0.3,
+      0,
+      0.18,
+      0.26
+    ],
+    "note": "树冠3–5团，每团60–120三角；三阶橄榄色",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G17",
+    "zone": "全局",
+    "name": "矮团簇树",
+    "source": "L1 coding",
+    "count": "实例复用",
+    "triangles": "≤900/件",
+    "materialRole": "foliage / wood",
+    "physics": "静态树干",
+    "reference": "camp",
+    "crop": [
+      0.12,
+      0.13,
+      0.16,
+      0.3
+    ],
+    "note": "树冠3–5团，每团60–120三角；三阶橄榄色",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G18",
+    "zone": "全局",
+    "name": "高团簇树",
+    "source": "L1 coding",
+    "count": "实例复用",
+    "triangles": "≤900/件",
+    "materialRole": "foliage / wood",
+    "physics": "静态树干",
+    "reference": "camp",
+    "crop": [
+      0.59,
+      0,
+      0.15,
+      0.26
+    ],
+    "note": "树冠3–5团，每团60–120三角；三阶橄榄色",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G19",
+    "zone": "全局",
+    "name": "单团灌木",
+    "source": "L1 coding",
+    "count": "实例复用",
+    "triangles": "≤300/件",
+    "materialRole": "foliage",
+    "physics": "无碰撞",
+    "reference": "camp",
+    "crop": [
+      0.18,
+      0.48,
+      0.06,
+      0.1
+    ],
+    "note": "",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G20",
+    "zone": "全局",
+    "name": "双团灌木",
+    "source": "L1 coding",
+    "count": "实例复用",
+    "triangles": "≤300/件",
+    "materialRole": "foliage",
+    "physics": "无碰撞",
+    "reference": "camp",
+    "crop": [
+      0.76,
+      0.57,
+      0.1,
+      0.1
+    ],
+    "note": "",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G21",
+    "zone": "全局",
+    "name": "大岩石",
+    "source": "L1 coding",
+    "count": "实例复用",
+    "triangles": "≤100/件",
+    "materialRole": "stone",
+    "physics": "大件静态，其余无碰撞",
+    "reference": "camp",
+    "crop": [
+      0.65,
+      0.69,
+      0.08,
+      0.1
+    ],
+    "note": "8–14面多面体，底大顶小，三块成组",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G22",
+    "zone": "全局",
+    "name": "中岩石",
+    "source": "L1 coding",
+    "count": "实例复用",
+    "triangles": "≤100/件",
+    "materialRole": "stone",
+    "physics": "大件静态，其余无碰撞",
+    "reference": "camp",
+    "crop": [
+      0.61,
+      0.75,
+      0.07,
+      0.09
+    ],
+    "note": "8–14面多面体，底大顶小，三块成组",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G23",
+    "zone": "全局",
+    "name": "小岩石",
+    "source": "L1 coding",
+    "count": "实例复用",
+    "triangles": "≤100/件",
+    "materialRole": "stone",
+    "physics": "大件静态，其余无碰撞",
+    "reference": "camp",
+    "crop": [
+      0.69,
+      0.76,
+      0.07,
+      0.1
+    ],
+    "note": "8–14面多面体，底大顶小，三块成组",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G24",
+    "zone": "全局",
+    "name": "向导B及骨骼",
+    "source": "L1 能力测试 → L2 Hy3D（预判）",
+    "count": 1,
+    "triangles": "4–6k",
+    "materialRole": "paint / accent / glass / metal / light",
+    "physics": "动态胶囊",
+    "reference": "guide",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "note": "Mixamo待机/走/跑/跳/坐起/上下车；先测绑骨；右头盔青点按v3特例",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G25",
+    "zone": "全局",
+    "name": "方正4×4",
+    "source": "L1 能力测试 → L2 Hy3D（预判）",
+    "count": 1,
+    "triangles": "6–8k",
+    "materialRole": "paint / accent / rubber / glass / metal / light_front / light_brake",
+    "physics": "动态底盘＋四射线轮",
+    "reference": "offroad",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "note": "先做一辆L1能力测试，最多三轮；营地出口",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G26",
+    "zone": "全局",
+    "name": "Fastback轿跑",
+    "source": "L1 能力测试 → L2 Hy3D（预判）",
+    "count": 1,
+    "triangles": "7–10k",
+    "materialRole": "paint / accent / rubber / glass / metal / light_front / light_brake",
+    "physics": "动态底盘＋四射线轮",
+    "reference": "coupe",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "note": "海岸路边；尾灯宽青条",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G27",
+    "zone": "全局",
+    "name": "方盒厢式小货车",
+    "source": "L1 能力测试 → L2 Hy3D（预判）",
+    "count": 1,
+    "triangles": "6–8k",
+    "materialRole": "paint / accent / rubber / glass / metal / light_front / light_brake",
+    "physics": "动态底盘＋四射线轮",
+    "reference": "van",
+    "crop": [
+      0,
+      0,
+      1,
+      1
+    ],
+    "note": "栈道入口硬地广场，非栈道深处",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G28",
+    "zone": "全局",
+    "name": "传送门入口",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤1k",
+    "materialRole": "stone / light",
+    "physics": "无碰撞，入口触发",
+    "reference": "layout",
+    "crop": [
+      0.19,
+      0.41,
+      0.23,
+      0.32
+    ],
+    "note": "无单体锁定参考，待补图；上线阶段实现",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "G29",
+    "zone": "全局",
+    "name": "远景风车或天线",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤1k",
+    "materialRole": "wood / metal",
+    "physics": "静态底座",
+    "reference": "town",
+    "crop": [
+      0.54,
+      0.14,
+      0.11,
+      0.11
+    ],
+    "note": "只选其一，参考局部不足；待补图，不擅自加科技",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "C01",
+    "zone": "营地",
+    "name": "篝火环形广场与土路",
+    "source": "程序化",
+    "count": 1,
+    "triangles": "≤2k",
+    "materialRole": "ground / stone",
+    "physics": "静态",
+    "reference": "camp",
+    "crop": [
+      0.3,
+      0.35,
+      0.4,
+      0.3
+    ],
+    "note": "",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "C02",
+    "zone": "营地",
+    "name": "八块物件石板",
+    "source": "程序化",
+    "count": 8,
+    "triangles": "≤120/块",
+    "materialRole": "stone",
+    "physics": "静态",
+    "reference": "camp",
+    "crop": [
+      0.24,
+      0.41,
+      0.55,
+      0.34
+    ],
+    "note": "",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "C03",
+    "zone": "营地",
+    "name": "大帐篷",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤1k",
+    "materialRole": "canvas / wood",
+    "physics": "静态",
+    "reference": "camp",
+    "crop": [
+      0.44,
+      0.14,
+      0.13,
+      0.21
+    ],
+    "note": "北侧中央；身份内容入口",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "C04",
+    "zone": "营地",
+    "name": "小帐篷",
+    "source": "L1 coding",
+    "count": 2,
+    "triangles": "≤1k/件",
+    "materialRole": "canvas / wood",
+    "physics": "静态",
+    "reference": "camp",
+    "crop": [
+      0.28,
+      0.2,
+      0.15,
+      0.22
+    ],
+    "note": "同资产左右复用，三顶总数",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "C05",
+    "zone": "营地",
+    "name": "石砌篝火坑及柴",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤1k",
+    "materialRole": "stone / wood",
+    "physics": "静态",
+    "reference": "camp",
+    "crop": [
+      0.46,
+      0.46,
+      0.1,
+      0.09
+    ],
+    "note": "火焰独立运行时动效，不靠密集粒子",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "C06",
+    "zone": "营地",
+    "name": "原木长凳",
+    "source": "L1 coding",
+    "count": 4,
+    "triangles": "≤500/件",
+    "materialRole": "wood",
+    "physics": "静态",
+    "reference": "camp",
+    "crop": [
+      0.42,
+      0.41,
+      0.09,
+      0.09
+    ],
+    "note": "",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "C07",
+    "zone": "营地",
+    "name": "书桌",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤850",
+    "materialRole": "wood",
+    "physics": "静态",
+    "reference": "camp",
+    "crop": [
+      0.25,
+      0.43,
+      0.06,
+      0.1
+    ],
+    "note": "石板1",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "C08",
+    "zone": "营地",
+    "name": "书堆",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤500",
+    "materialRole": "paper / accent",
+    "physics": "无碰撞",
+    "reference": "camp",
+    "crop": [
+      0.26,
+      0.41,
+      0.04,
+      0.08
+    ],
+    "note": "石板1，书脊文字独立生成双语",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "C09",
+    "zone": "营地",
+    "name": "奖杯架",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤900",
+    "materialRole": "wood / metal",
+    "physics": "静态",
+    "reference": "camp",
+    "crop": [
+      0.25,
+      0.31,
+      0.05,
+      0.12
+    ],
+    "note": "石板2，奖杯简化无高反金属",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "C10",
+    "zone": "营地",
+    "name": "旗杆及四面旗",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤900",
+    "materialRole": "wood / canvas",
+    "physics": "静态杆",
+    "reference": "camp",
+    "crop": [
+      0.34,
+      0.42,
+      0.05,
+      0.24
+    ],
+    "note": "石板3，旗子运行时风动",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "C11",
+    "zone": "营地",
+    "name": "工具墙",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤1k",
+    "materialRole": "wood / metal",
+    "physics": "静态",
+    "reference": "camp",
+    "crop": [
+      0.73,
+      0.32,
+      0.06,
+      0.21
+    ],
+    "note": "石板4，五类技能映射在内容层，不复制事实",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "C12",
+    "zone": "营地",
+    "name": "吉他",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤1k",
+    "materialRole": "wood / accent",
+    "physics": "无碰撞",
+    "reference": "camp",
+    "crop": [
+      0.69,
+      0.38,
+      0.04,
+      0.09
+    ],
+    "note": "石板5",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "C13",
+    "zone": "营地",
+    "name": "哑铃",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤600",
+    "materialRole": "metal / rubber",
+    "physics": "无碰撞",
+    "reference": "camp",
+    "crop": [
+      0.41,
+      0.66,
+      0.1,
+      0.06
+    ],
+    "note": "石板6",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "C14",
+    "zone": "营地",
+    "name": "炒锅及炉",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤1k",
+    "materialRole": "metal / stone",
+    "physics": "静态",
+    "reference": "camp",
+    "crop": [
+      0.56,
+      0.62,
+      0.08,
+      0.11
+    ],
+    "note": "石板7",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "C15",
+    "zone": "营地",
+    "name": "行李箱",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤800",
+    "materialRole": "canvas / metal",
+    "physics": "无碰撞",
+    "reference": "camp",
+    "crop": [
+      0.71,
+      0.56,
+      0.05,
+      0.06
+    ],
+    "note": "石板8",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "C16",
+    "zone": "营地",
+    "name": "桌上小灯",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤500",
+    "materialRole": "metal / glass",
+    "physics": "无碰撞",
+    "reference": "camp",
+    "crop": [
+      0.25,
+      0.43,
+      0.06,
+      0.1
+    ],
+    "note": "夜档明确要求；自然暖光灯，不做科技条",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "T01",
+    "zone": "城区",
+    "name": "国投证券楼",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "4–6k",
+    "materialRole": "stone / glass / metal",
+    "physics": "静态",
+    "reference": "town",
+    "crop": [
+      0.015,
+      0.405,
+      0.22,
+      0.33
+    ],
+    "note": "方柱与旋转门；抽象文字，不用logo",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "T02",
+    "zone": "城区",
+    "name": "WorldQuant楼",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "3–5k",
+    "materialRole": "paint / glass",
+    "physics": "静态",
+    "reference": "town",
+    "crop": [
+      0.176,
+      0.295,
+      0.18,
+      0.34
+    ],
+    "note": "玻璃盒子，玻璃不透明；屏幕墙空白",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "T03",
+    "zone": "城区",
+    "name": "MoE Capital楼",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "2–4k",
+    "materialRole": "stone / glass",
+    "physics": "静态",
+    "reference": "town",
+    "crop": [
+      0.344,
+      0.369,
+      0.15,
+      0.21
+    ],
+    "note": "两层加州平顶",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "T04",
+    "zone": "城区",
+    "name": "ByteDance楼",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "3–5k",
+    "materialRole": "paint / glass",
+    "physics": "静态",
+    "reference": "town",
+    "crop": [
+      0.434,
+      0.204,
+      0.14,
+      0.28
+    ],
+    "note": "蓝白体块，留空招牌板",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "T05",
+    "zone": "城区",
+    "name": "Video Rebirth楼",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "4–6k",
+    "materialRole": "stone / glass / metal",
+    "physics": "静态",
+    "reference": "town",
+    "crop": [
+      0.533,
+      0.156,
+      0.14,
+      0.29
+    ],
+    "note": "窄阳台、招牌框不亮",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "T06",
+    "zone": "城区",
+    "name": "腾讯混元楼",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "4–6k",
+    "materialRole": "paint / glass / light",
+    "physics": "静态",
+    "reference": "town",
+    "crop": [
+      0.617,
+      0.041,
+      0.129,
+      0.36
+    ],
+    "note": "楼顶环只微亮，禁止大片霓虹",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "T07",
+    "zone": "城区",
+    "name": "内陆第二排矮楼",
+    "source": "L1 coding",
+    "count": "3–4",
+    "triangles": "2–3k/件",
+    "materialRole": "paint / stone / glass",
+    "physics": "静态",
+    "reference": "layout",
+    "crop": [
+      0.22,
+      0.19,
+      0.33,
+      0.2
+    ],
+    "note": "仅背景无内容；布局锁明确要求，但缺单体图，待补图",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "T08",
+    "zone": "城区",
+    "name": "楼前广场铺装",
+    "source": "程序化",
+    "count": 6,
+    "triangles": "≤240/处",
+    "materialRole": "stone",
+    "physics": "静态",
+    "reference": "town",
+    "crop": [
+      0.12,
+      0.48,
+      0.52,
+      0.3
+    ],
+    "note": "",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "T09",
+    "zone": "城区",
+    "name": "楼前展板",
+    "source": "L1 coding",
+    "count": 6,
+    "triangles": "≤600/件",
+    "materialRole": "wood / paint",
+    "physics": "静态",
+    "reference": "town",
+    "crop": [
+      0.24,
+      0.65,
+      0.024,
+      0.065
+    ],
+    "note": "与广告牌区分；文字读取现站数据",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "T10",
+    "zone": "城区",
+    "name": "楼顶或立面招牌板",
+    "source": "L1 coding",
+    "count": 6,
+    "triangles": "≤400/件",
+    "materialRole": "paint / metal",
+    "physics": "附着建筑",
+    "reference": "town",
+    "crop": [
+      0.5,
+      0.36,
+      0.05,
+      0.07
+    ],
+    "note": "动态文字与经过提示，不新增科技发光位置",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "T11",
+    "zone": "城区",
+    "name": "混元楼顶发光环",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤600",
+    "materialRole": "metal / light",
+    "physics": "附着建筑",
+    "reference": "town",
+    "crop": [
+      0.649,
+      0.046,
+      0.068,
+      0.04
+    ],
+    "note": "单独材质槽，两档亮度受控",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "T12",
+    "zone": "城区",
+    "name": "棕榈树",
+    "source": "L1 coding",
+    "count": 2,
+    "triangles": "≤1k/件",
+    "materialRole": "foliage / wood",
+    "physics": "静态树干",
+    "reference": "town",
+    "crop": [
+      0.341,
+      0.27,
+      0.092,
+      0.126
+    ],
+    "note": "MoE局部专用，不能把全部团簇树换成棕榈",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P01",
+    "zone": "园区",
+    "name": "桥头硬地入口广场",
+    "source": "程序化",
+    "count": 1,
+    "triangles": "≤1k",
+    "materialRole": "stone",
+    "physics": "静态",
+    "reference": "park",
+    "crop": [
+      0.04,
+      0.16,
+      0.2,
+      0.17
+    ],
+    "note": "",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P02",
+    "zone": "园区",
+    "name": "之字栈道面与支柱",
+    "source": "程序化",
+    "count": 1,
+    "triangles": "≤8k",
+    "materialRole": "wood",
+    "physics": "静态",
+    "reference": "park",
+    "crop": [
+      0.1,
+      0.4,
+      0.82,
+      0.41
+    ],
+    "note": "六屋各有连通入口，不允许跨水跳跃才能到",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P03",
+    "zone": "园区",
+    "name": "栈道矮栏",
+    "source": "程序化",
+    "count": "按路径",
+    "triangles": "≤240/段",
+    "materialRole": "wood",
+    "physics": "动态，30s复位",
+    "reference": "park",
+    "crop": [
+      0,
+      0.065,
+      0.13,
+      0.13
+    ],
+    "note": "参照桥栏自然材质；六屋开口不能挡住",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P04",
+    "zone": "园区",
+    "name": "栈道暖光灯柱",
+    "source": "L1 coding",
+    "count": "约10",
+    "triangles": "≤500/件",
+    "materialRole": "wood / light_front",
+    "physics": "动态，30s复位",
+    "reference": "park",
+    "crop": [
+      0,
+      0.065,
+      0.13,
+      0.13
+    ],
+    "note": "夜档详见night-and-ground；此局部仅形制参照，待细节",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P05",
+    "zone": "园区",
+    "name": "园区总牌",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤700",
+    "materialRole": "wood / paint",
+    "physics": "静态",
+    "reference": "park",
+    "crop": [
+      0.04,
+      0.16,
+      0.2,
+      0.17
+    ],
+    "note": "参考未独立展示，待补图",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P06",
+    "zone": "园区",
+    "name": "Alpha Agent展位小屋",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "2–3k",
+    "materialRole": "paint / wood / light",
+    "physics": "静态",
+    "reference": "park",
+    "crop": [
+      0.11,
+      0.31,
+      0.15,
+      0.29
+    ],
+    "note": "一面朝栈道开口；檐下青条≤3cm等效，共用结构允许宽度变体",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P07",
+    "zone": "园区",
+    "name": "EvalForge展位小屋",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "2–3k",
+    "materialRole": "paint / wood / light",
+    "physics": "静态",
+    "reference": "park",
+    "crop": [
+      0.24,
+      0.22,
+      0.155,
+      0.278
+    ],
+    "note": "一面朝栈道开口；檐下青条≤3cm等效，共用结构允许宽度变体",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P08",
+    "zone": "园区",
+    "name": "DJC展位小屋",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "2–3k",
+    "materialRole": "paint / wood / light",
+    "physics": "静态",
+    "reference": "park",
+    "crop": [
+      0.42,
+      0.217,
+      0.12,
+      0.249
+    ],
+    "note": "一面朝栈道开口；檐下青条≤3cm等效，共用结构允许宽度变体",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P09",
+    "zone": "园区",
+    "name": "Hepai展位小屋",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "2–3k",
+    "materialRole": "paint / wood / light",
+    "physics": "静态",
+    "reference": "park",
+    "crop": [
+      0.51,
+      0.27,
+      0.15,
+      0.29
+    ],
+    "note": "一面朝栈道开口；檐下青条≤3cm等效，共用结构允许宽度变体",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P10",
+    "zone": "园区",
+    "name": "Accompany展位小屋",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "2–3k",
+    "materialRole": "paint / wood / light",
+    "physics": "静态",
+    "reference": "park",
+    "crop": [
+      0.637,
+      0.334,
+      0.15,
+      0.297
+    ],
+    "note": "一面朝栈道开口；檐下青条≤3cm等效，共用结构允许宽度变体",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P11",
+    "zone": "园区",
+    "name": "Interactive Learning展位小屋",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "2–3k",
+    "materialRole": "paint / wood / light",
+    "physics": "静态",
+    "reference": "park",
+    "crop": [
+      0.766,
+      0.407,
+      0.18,
+      0.31
+    ],
+    "note": "一面朝栈道开口；檐下青条≤3cm等效，共用结构允许宽度变体",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P12",
+    "zone": "园区",
+    "name": "研究台：竖屏＋实体拨杆",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤1k",
+    "materialRole": "wood / glass / metal",
+    "physics": "主体静态，小件动态30s复位",
+    "reference": "park",
+    "crop": [
+      0.166,
+      0.379,
+      0.082,
+      0.164
+    ],
+    "note": "E：拨杆、回测曲线、通过/拒绝章，≤10秒",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P13",
+    "zone": "园区",
+    "name": "评审亭：双屏＋大按钮",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤1k",
+    "materialRole": "wood / glass / paint",
+    "physics": "主体静态，小件动态30s复位",
+    "reference": "park",
+    "crop": [
+      0.3,
+      0.326,
+      0.065,
+      0.109
+    ],
+    "note": "E：两段3秒抽象片，切票，票数柱变化",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P14",
+    "zone": "园区",
+    "name": "DJ台：双唱盘＋横推子",
+    "source": "L1 coding → L2 Hy3D（复杂件预判）",
+    "count": 1,
+    "triangles": "≤1k",
+    "materialRole": "wood / metal / rubber",
+    "physics": "主体静态，小件动态30s复位",
+    "reference": "park",
+    "crop": [
+      0.438,
+      0.34,
+      0.07,
+      0.092
+    ],
+    "note": "E：推子一档，两音轨交叉淡入淡出；音频许可单独核对",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P15",
+    "zone": "园区",
+    "name": "九格唱片墙",
+    "source": "L1 coding → L2 Hy3D（复杂件预判）",
+    "count": 1,
+    "triangles": "≤1k",
+    "materialRole": "wood / accent",
+    "physics": "主体静态，小件动态30s复位",
+    "reference": "park",
+    "crop": [
+      0.559,
+      0.326,
+      0.063,
+      0.146
+    ],
+    "note": "E：换位和连线粗细；连线不使用全息科技效果",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P16",
+    "zone": "园区",
+    "name": "两张露营椅",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤900/椅",
+    "materialRole": "wood / canvas",
+    "physics": "主体静态，小件动态30s复位",
+    "reference": "park",
+    "crop": [
+      0.653,
+      0.467,
+      0.094,
+      0.132
+    ],
+    "note": "E：坐下、三句气泡、灯亮；再按起身",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P17",
+    "zone": "园区",
+    "name": "椅间小灯及桌",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤600",
+    "materialRole": "wood / metal / glass",
+    "physics": "主体静态，小件动态30s复位",
+    "reference": "park",
+    "crop": [
+      0.69,
+      0.487,
+      0.03,
+      0.073
+    ],
+    "note": "自然暖光，不扩大轻科技范围",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P18",
+    "zone": "园区",
+    "name": "黑板及讲台",
+    "source": "L1 coding",
+    "count": 1,
+    "triangles": "≤1k",
+    "materialRole": "wood / paint",
+    "physics": "主体静态，小件动态30s复位",
+    "reference": "park",
+    "crop": [
+      0.792,
+      0.491,
+      0.095,
+      0.191
+    ],
+    "note": "E：翻页、课程缩略图、粉笔划线；课程数量按内容源核对",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "P19",
+    "zone": "园区",
+    "name": "项目小牌",
+    "source": "L1 coding",
+    "count": 6,
+    "triangles": "≤400/件",
+    "materialRole": "wood / paint",
+    "physics": "静态",
+    "reference": "park",
+    "crop": [
+      0.766,
+      0.407,
+      0.18,
+      0.31
+    ],
+    "note": "无独立局部图，待补图；名称/定位/状态从projects读取",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "F01",
+    "zone": "二期",
+    "name": "影像地基（北）",
+    "source": "程序化",
+    "count": 1,
+    "triangles": "≤300",
+    "materialRole": "stone",
+    "physics": "静态",
+    "reference": "layout",
+    "crop": [
+      0.415,
+      0.117,
+      0.116,
+      0.125
+    ],
+    "note": "仅地基不扩建",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "F02",
+    "zone": "二期",
+    "name": "社团地基（西）",
+    "source": "程序化",
+    "count": 1,
+    "triangles": "≤300",
+    "materialRole": "stone",
+    "physics": "静态",
+    "reference": "layout",
+    "crop": [
+      0.191,
+      0.227,
+      0.104,
+      0.14
+    ],
+    "note": "仅地基不扩建",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "F03",
+    "zone": "二期",
+    "name": "联系地基（南）",
+    "source": "程序化",
+    "count": 1,
+    "triangles": "≤300",
+    "materialRole": "stone",
+    "physics": "静态",
+    "reference": "layout",
+    "crop": [
+      0.388,
+      0.74,
+      0.099,
+      0.114
+    ],
+    "note": "仅地基不扩建",
+    "status": "待 Fable 审；未建模"
+  },
+  {
+    "id": "F04",
+    "zone": "二期",
+    "name": "建设中牌",
+    "source": "L1 coding",
+    "count": 3,
+    "triangles": "≤400/件",
+    "materialRole": "wood / paint",
+    "physics": "静态",
+    "reference": "layout",
+    "crop": [
+      0.388,
+      0.74,
+      0.099,
+      0.114
+    ],
+    "note": "共用一个资产＋双语运行时文字，形制细节待补",
+    "status": "待 Fable 审；未建模"
+  }
+]

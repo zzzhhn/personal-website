@@ -1,0 +1,36 @@
+Actor physics targeted regression evidence
+Date: 2026-10-21 (Asia/Shanghai)
+Working directory: /Users/bobby/WorkBuddy/personal-website/personal-website
+Command: node --experimental-strip-types --test src/components/world/actor-physics.test.mjs
+Exit code: 0
+Runs: 1; this evidence transcribes the completed tool output and does not rerun the test.
+
+Scope:
+- Headless Rapier 0.19.2 simulation of all three chassis: intended mass, four suspension ray contacts, spring support, positive engine force driving along +X, braking, and collision with a fixed obstruction.
+- Pure logic: heading and upside-down detection; timer accumulation, zero-delta pause, and reset; three walking/driving camera distances and speed extension; nearest-road recovery preserving ramp elevation.
+- These tests do not replace real browser gameplay. Keyboard/blur/pause integration, safe entry/exit, actual two-second flip/water recovery, camera following/occlusion, scene traversal, and perceived handling still require browser verification.
+
+Original stdout:
+TAP version 13
+# using deprecated parameters for the initialization function; pass a single object instead
+# Subtest: vehicle contract and recovery timers preserve orientation, pause and road elevation
+ok 1 - vehicle contract and recovery timers preserve orientation, pause and road elevation
+  ---
+  duration_ms: 0.382666
+  type: 'test'
+  ...
+# Subtest: three Rapier chassis settle on four suspension rays, drive +X, brake and collide
+ok 2 - three Rapier chassis settle on four suspension rays, drive +X, brake and collide
+  ---
+  duration_ms: 17.891958
+  type: 'test'
+  ...
+1..2
+# tests 2
+# suites 0
+# pass 2
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 178.249208

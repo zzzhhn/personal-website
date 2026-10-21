@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+import WorldApp from '../components/world/WorldApp';
+const experiences = (await getCollection('experiences')).map(({ id, data }) => ({
+  id, organization: data.organization, role: data.role, startDate: data.startDate.toISOString().slice(0, 10),
+}));
+const projects = (await getCollection('projects')).map(({ data }) => ({
+  slug: data.slug, title: data.title, titleZh: data.titleZh,
+  tagline: data.tagline, taglineZh: data.taglineZh, maintenance: data.maintenance,
+}));
+---
+<!doctype html>
+<html lang="en" data-site-lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <meta name="description" content="Explore Bobby’s island. A desktop greybox playtest." />
+    <title>Bobby’s island · World playtest</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <style is:global>@font-face{font-family:Geist;src:url('/fonts/GeistSans-Regular.woff2') format('woff2');font-display:swap}html,body{margin:0;background:#1c353e}</style>
+    <script is:inline>try{var lang=localStorage.getItem('lang')==='zh'?'zh':'en';document.documentElement.dataset.siteLang=lang;document.documentElement.lang=lang==='zh'?'zh-CN':'en'}catch{}</script>
+  </head>
+  <body>
+    <WorldApp client:only="react" content={{ experiences, projects }} />
+    <noscript><p style="color:#fff;padding:2rem">Enable JavaScript on desktop to enter the island. <a href="/" style="color:#4fd1c5">Back to portfolio</a></p></noscript>
+  </body>
+</html>

@@ -1,0 +1,50 @@
+{
+  "parser": "Existing bundled Playwright Babel parser",
+  "scope": "Syntax only. No dependency installation, typechecking, runtime, or build.",
+  "report": [
+    {
+      "file": "src/components/world/WorldActors.tsx",
+      "result": "syntax parsed"
+    },
+    {
+      "file": "src/components/world/WorldApp.tsx",
+      "result": "syntax parsed"
+    },
+    {
+      "file": "src/components/world/WorldEnvironment.tsx",
+      "result": "syntax parsed"
+    },
+    {
+      "file": "src/components/world/WorldObstacles.tsx",
+      "result": "syntax parsed"
+    },
+    {
+      "file": "src/components/world/WorldRuntime.tsx",
+      "result": "syntax parsed"
+    },
+    {
+      "file": "src/components/world/actor-physics.ts",
+      "result": "syntax parsed"
+    },
+    {
+      "file": "src/components/world/layout.ts",
+      "result": "syntax parsed"
+    },
+    {
+      "file": "src/components/world/store.ts",
+      "result": "syntax parsed"
+    },
+    {
+      "file": "src/components/world/types.ts",
+      "result": "syntax parsed"
+    },
+    {
+      "file": "src/components/world/world-i18n.ts",
+      "result": "syntax parsed"
+    },
+    {
+      "file": "src/pages/world.astro",
+      "result": "frontmatter syntax parsed; Astro template not compiled"
+    }
+  ]
+}
