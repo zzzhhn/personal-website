@@ -180,6 +180,18 @@ function Island() {
     <mesh geometry={geometry} rotation={[-Math.PI / 2, 0, 0]} position={[0, -2.4, 0]} scale={[1.018, 1.018, 0.65]}>
       <meshStandardMaterial color="#8C8276" roughness={1} />
     </mesh>
+    {/* Closed greybox seabed and submerged bases join at y=-18. These are
+        visual geometry only: existing ground contacts and water recovery stay intact. */}
+    <mesh name="greybox-submerged-island" geometry={geometry} rotation={[-Math.PI / 2, 0, 0]}
+      position={[0, -18, 0]} scale={[1.035, 1.035, 5.5]}>
+      <meshStandardMaterial color="#8C8276" roughness={1} />
+    </mesh>
+    <mesh name="greybox-submerged-plaza" position={[45, -9.5, -45]}>
+      <boxGeometry args={[18, 17, 18]} /><meshStandardMaterial color="#8C8276" roughness={1} />
+    </mesh>
+    <mesh name="greybox-seabed" position={[0, -19, 0]}>
+      <boxGeometry args={[560, 2, 560]} /><meshStandardMaterial color="#8C8276" roughness={1} />
+    </mesh>
     <RigidBody type="fixed" position={[-42, 2.9, 30]} colliders={false} userData={{ surface: true }}>
       <CylinderCollider args={[1.9, 24]} />
       <mesh receiveShadow><cylinderGeometry args={[24, 24.7, 3.8, 32]} /><meshStandardMaterial color={PALETTE.sand} roughness={1} /></mesh>

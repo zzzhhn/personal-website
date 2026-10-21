@@ -283,7 +283,9 @@ export default function WorldActors() {
     }
     const body=state.activeVehicle?cars.current.get(state.activeVehicle)?.body:player.current;if(!body)return;
     const p=body.translation(),velocity=body.linvel();
-    const desiredTarget=new Vector3(p.x,p.y+.65,p.z);
+    // Keep the fixed-angle follow view above water while the body completes
+    // its existing two-second recovery timer below the surface.
+    const desiredTarget=new Vector3(p.x,Math.max(p.y,WATER_Y)+.65,p.z);
     const distance=cameraDistance(!!state.activeVehicle,state.zoom,Math.hypot(velocity.x,velocity.z));
     if(!cameraReady.current){target.current.copy(desiredTarget);cameraReady.current=true;}
     target.current.lerp(desiredTarget,1-Math.exp(-delta*7));

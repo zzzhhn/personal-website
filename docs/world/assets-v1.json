@@ -5,7 +5,7 @@
     "name": "岛体分层崖壁",
     "source": "程序化",
     "count": 1,
-    "triangles": "≤12k",
+    "triangles": "灰盒估算约12k（非建模硬上限）",
     "materialRole": "stone / ground",
     "physics": "静态",
     "reference": "layout",
@@ -16,7 +16,26 @@
       0.89
     ],
     "note": "程序化连通陆地；不是三座孤岛",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤12k",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G02",
@@ -24,7 +43,7 @@
     "name": "沙滩与浅滩",
     "source": "程序化",
     "count": 1,
-    "triangles": "≤3k",
+    "triangles": "灰盒估算约3k（非建模硬上限）",
     "materialRole": "sand",
     "physics": "静态",
     "reference": "layout",
@@ -35,7 +54,26 @@
       0.35
     ],
     "note": "",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤3k",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G03",
@@ -43,7 +81,7 @@
     "name": "海面及浅水层",
     "source": "程序化",
     "count": 1,
-    "triangles": "≤4k",
+    "triangles": "灰盒估算约4k（非建模硬上限）",
     "materialRole": "water",
     "physics": "无碰撞，水域检测",
     "reference": "park",
@@ -54,7 +92,26 @@
       0.43
     ],
     "note": "掉水 2 s 后传回最近岸边／路面",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤4k",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G04",
@@ -62,7 +119,7 @@
     "name": "主路和营地下降坡",
     "source": "程序化",
     "count": 1,
-    "triangles": "≤5k",
+    "triangles": "灰盒估算约5k（非建模硬上限）",
     "materialRole": "road / edge",
     "physics": "静态",
     "reference": "layout",
@@ -73,7 +130,26 @@
       0.51
     ],
     "note": "时间轴由西南至东北",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤5k",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G05",
@@ -81,7 +157,7 @@
     "name": "内陆支路",
     "source": "程序化",
     "count": 1,
-    "triangles": "≤2k",
+    "triangles": "灰盒估算约2k（非建模硬上限）",
     "materialRole": "ground",
     "physics": "静态",
     "reference": "layout",
@@ -92,7 +168,26 @@
       0.23
     ],
     "note": "",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤2k",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G06",
@@ -100,7 +195,7 @@
     "name": "连接桥",
     "source": "程序化",
     "count": 1,
-    "triangles": "≤2k",
+    "triangles": "灰盒估算约2k（非建模硬上限）",
     "materialRole": "stone",
     "physics": "静态",
     "reference": "layout",
@@ -111,7 +206,26 @@
       0.12
     ],
     "note": "恰好一座，连接城区与入口广场",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤2k",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G07",
@@ -119,7 +233,7 @@
     "name": "路缘石模块",
     "source": "程序化",
     "count": "按路长",
-    "triangles": "≤120/段",
+    "triangles": "灰盒估算约120/段（非建模硬上限）",
     "materialRole": "stone",
     "physics": "静态",
     "reference": "town",
@@ -130,7 +244,26 @@
       0.38
     ],
     "note": "",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤120/段",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G08",
@@ -138,7 +271,7 @@
     "name": "海堤与步道",
     "source": "程序化",
     "count": 1,
-    "triangles": "≤6k",
+    "triangles": "灰盒估算约6k（非建模硬上限）",
     "materialRole": "stone",
     "physics": "静态",
     "reference": "town",
@@ -149,7 +282,26 @@
       0.54
     ],
     "note": "",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤6k",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G09",
@@ -157,7 +309,7 @@
     "name": "海堤护栏模块",
     "source": "程序化",
     "count": "按路长",
-    "triangles": "≤240/段",
+    "triangles": "灰盒估算约240/段（非建模硬上限）",
     "materialRole": "stone / metal",
     "physics": "动态，30s复位",
     "reference": "town",
@@ -168,7 +320,26 @@
       0.41
     ],
     "note": "海堤基础固定，栏杆可撞倒；外侧水域兜底",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤240/段",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G10",
@@ -176,7 +347,7 @@
     "name": "路灯",
     "source": "程序化",
     "count": "约18",
-    "triangles": "≤700/件",
+    "triangles": "灰盒估算约700/件（非建模硬上限）",
     "materialRole": "metal / light",
     "physics": "动态，30s复位",
     "reference": "town",
@@ -189,7 +360,26 @@
     "note": "共用 light-post 运行时生成器，按参数生成杆与灯头并实例化，不出 GLB；轻科技仅灯头，自然暖白路灯光",
     "status": "清单门通过；灰盒门未签字；未制作正式资产",
     "generator": "light-post",
-    "variant": "路灯"
+    "variant": "路灯",
+    "legacyTriangleEstimate": "≤700/件",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G11",
@@ -197,7 +387,7 @@
     "name": "年份灯柱",
     "source": "程序化",
     "count": 6,
-    "triangles": "≤500/件",
+    "triangles": "灰盒估算约500/件（非建模硬上限）",
     "materialRole": "metal / light",
     "physics": "动态，30s复位",
     "reference": "town",
@@ -210,7 +400,26 @@
     "note": "共用 light-post 运行时生成器，按参数生成杆与灯头并实例化，不出 GLB；年份从 EXPERIENCES.startDate 取年月，经过时微亮",
     "status": "清单门通过；灰盒门未签字；未制作正式资产",
     "generator": "light-post",
-    "variant": "年份灯柱"
+    "variant": "年份灯柱",
+    "legacyTriangleEstimate": "≤500/件",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G12",
@@ -218,7 +427,7 @@
     "name": "路障",
     "source": "L1 coding",
     "count": "约6",
-    "triangles": "≤500/件",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "paint / accent",
     "physics": "动态，30s复位",
     "reference": "town",
@@ -229,7 +438,29 @@
       0.16
     ],
     "note": "按规则制作：营地橙 #E8803A 与奶白 #E6DCCB 的斜条矮柱或 A 字牌，哑光漆；无需补图",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤500/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G13",
@@ -237,7 +468,7 @@
     "name": "垃圾桶",
     "source": "L1 coding",
     "count": "约4",
-    "triangles": "≤600/件",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "metal / paint",
     "physics": "动态，30s复位",
     "reference": "town",
@@ -248,7 +479,29 @@
       0.16
     ],
     "note": "按规则制作：石板蓝 #4E647D 圆桶配奶白 #E6DCCB 盖，哑光表面；无需补图",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤600/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G14",
@@ -256,7 +509,7 @@
     "name": "街边长椅",
     "source": "L1 coding",
     "count": "约4",
-    "triangles": "≤800/件",
+    "triangles": "按长凳跨度、条板与支撑逐件定额，记录实测",
     "materialRole": "wood / metal",
     "physics": "静态",
     "reference": "town",
@@ -267,7 +520,30 @@
       0.2
     ],
     "note": "按规则制作：浅木条板与石板蓝 #4E647D 金属腿，金属不高反；无需补图",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤800/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "家具技能先定义米制尺寸、板腿比例、支撑与负空间；设计指南没有长凳统一数值",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "low-poly-furniture-design",
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G15",
@@ -275,7 +551,7 @@
     "name": "广告牌",
     "source": "L1 coding",
     "count": "约3",
-    "triangles": "≤700/件",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "wood / paint",
     "physics": "动态，30s复位",
     "reference": "town",
@@ -286,7 +562,29 @@
       0.07
     ],
     "note": "按规则制作：浅木框与哑光板面，运行时生成双语文字，不发光；无需补图",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤700/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G16",
@@ -294,7 +592,7 @@
     "name": "阔叶团簇树",
     "source": "L1 coding",
     "count": "实例复用",
-    "triangles": "≤900/件",
+    "triangles": "按自然剪影与可见形体逐件定额，记录实测",
     "materialRole": "foliage / wood",
     "physics": "静态树干",
     "reference": "camp",
@@ -304,8 +602,30 @@
       0.18,
       0.26
     ],
-    "note": "树冠3–5团，每团60–120三角；三阶橄榄色",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "note": "树冠3–5团；三阶橄榄色，按可见剪影逐件定额并记录实测",
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤900/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "保留 Art Lock 团簇/石块风格；技能无本类统一数值，参考造型密度不是面数硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G17",
@@ -313,7 +633,7 @@
     "name": "矮团簇树",
     "source": "L1 coding",
     "count": "实例复用",
-    "triangles": "≤900/件",
+    "triangles": "按自然剪影与可见形体逐件定额，记录实测",
     "materialRole": "foliage / wood",
     "physics": "静态树干",
     "reference": "camp",
@@ -323,8 +643,30 @@
       0.16,
       0.3
     ],
-    "note": "树冠3–5团，每团60–120三角；三阶橄榄色",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "note": "树冠3–5团；三阶橄榄色，按可见剪影逐件定额并记录实测",
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤900/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "保留 Art Lock 团簇/石块风格；技能无本类统一数值，参考造型密度不是面数硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G18",
@@ -332,7 +674,7 @@
     "name": "高团簇树",
     "source": "L1 coding",
     "count": "实例复用",
-    "triangles": "≤900/件",
+    "triangles": "按自然剪影与可见形体逐件定额，记录实测",
     "materialRole": "foliage / wood",
     "physics": "静态树干",
     "reference": "camp",
@@ -342,8 +684,30 @@
       0.15,
       0.26
     ],
-    "note": "树冠3–5团，每团60–120三角；三阶橄榄色",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "note": "树冠3–5团；三阶橄榄色，按可见剪影逐件定额并记录实测",
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤900/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "保留 Art Lock 团簇/石块风格；技能无本类统一数值，参考造型密度不是面数硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G19",
@@ -351,7 +715,7 @@
     "name": "单团灌木",
     "source": "L1 coding",
     "count": "实例复用",
-    "triangles": "≤300/件",
+    "triangles": "按自然剪影与可见形体逐件定额，记录实测",
     "materialRole": "foliage",
     "physics": "无碰撞",
     "reference": "camp",
@@ -362,7 +726,29 @@
       0.1
     ],
     "note": "",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤300/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "保留 Art Lock 团簇/石块风格；技能无本类统一数值，参考造型密度不是面数硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G20",
@@ -370,7 +756,7 @@
     "name": "双团灌木",
     "source": "L1 coding",
     "count": "实例复用",
-    "triangles": "≤300/件",
+    "triangles": "按自然剪影与可见形体逐件定额，记录实测",
     "materialRole": "foliage",
     "physics": "无碰撞",
     "reference": "camp",
@@ -381,7 +767,29 @@
       0.1
     ],
     "note": "",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤300/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "保留 Art Lock 团簇/石块风格；技能无本类统一数值，参考造型密度不是面数硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G21",
@@ -389,7 +797,7 @@
     "name": "大岩石",
     "source": "L1 coding",
     "count": "实例复用",
-    "triangles": "≤100/件",
+    "triangles": "按自然剪影与可见形体逐件定额，记录实测",
     "materialRole": "stone",
     "physics": "大件静态，其余无碰撞",
     "reference": "camp",
@@ -399,8 +807,30 @@
       0.08,
       0.1
     ],
-    "note": "8–14面多面体，底大顶小，三块成组",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "note": "低多多面体，底大顶小，三块成组；不以旧面片密度作为硬上限",
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤100/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "保留 Art Lock 团簇/石块风格；技能无本类统一数值，参考造型密度不是面数硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G22",
@@ -408,7 +838,7 @@
     "name": "中岩石",
     "source": "L1 coding",
     "count": "实例复用",
-    "triangles": "≤100/件",
+    "triangles": "按自然剪影与可见形体逐件定额，记录实测",
     "materialRole": "stone",
     "physics": "大件静态，其余无碰撞",
     "reference": "camp",
@@ -418,8 +848,30 @@
       0.07,
       0.09
     ],
-    "note": "8–14面多面体，底大顶小，三块成组",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "note": "低多多面体，底大顶小，三块成组；不以旧面片密度作为硬上限",
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤100/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "保留 Art Lock 团簇/石块风格；技能无本类统一数值，参考造型密度不是面数硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G23",
@@ -427,7 +879,7 @@
     "name": "小岩石",
     "source": "L1 coding",
     "count": "实例复用",
-    "triangles": "≤100/件",
+    "triangles": "按自然剪影与可见形体逐件定额，记录实测",
     "materialRole": "stone",
     "physics": "大件静态，其余无碰撞",
     "reference": "camp",
@@ -437,8 +889,30 @@
       0.07,
       0.1
     ],
-    "note": "8–14面多面体，底大顶小，三块成组",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "note": "低多多面体，底大顶小，三块成组；不以旧面片密度作为硬上限",
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤100/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "保留 Art Lock 团簇/石块风格；技能无本类统一数值，参考造型密度不是面数硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G24",
@@ -446,7 +920,7 @@
     "name": "向导B及骨骼",
     "source": "直接 L2 Hy3D",
     "count": 1,
-    "triangles": "4–6k",
+    "triangles": "按剪影、变形与关节需求逐件定额，记录实测",
     "materialRole": "paint / accent / glass / metal / light",
     "physics": "动态胶囊",
     "reference": "guide",
@@ -457,7 +931,31 @@
       1
     ],
     "note": "直接 L2，不做 L1；Mixamo 待机／走／跑／跳／坐起／上下车，先测绑骨；右头盔青点按 v3.1 特例",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "4–6k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定向导统一三角数；按头盔剪影、皮肤连续性、关节变形与动作需求定额",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement",
+      "blender-rig-animation-smoke"
+    ],
+    "acceptanceProfile": "skinned-character",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明",
+      "验证非负归一化权重/每点最多四影响、关节弯折、接触、明确命名动作与代表性子帧；最终GLB全新回读逐段回放"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G25",
@@ -465,7 +963,7 @@
     "name": "方正4×4",
     "source": "L1 能力测试 → L2 Hy3D（不通过时）",
     "count": 1,
-    "triangles": "6–8k",
+    "triangles": "按车型剪影、分件与轮轴关节逐件定额，记录实测",
     "materialRole": "paint / accent / rubber / glass / metal / light_front / light_brake",
     "physics": "动态底盘＋四射线轮",
     "reference": "offroad",
@@ -477,7 +975,31 @@
     ],
     "note": "唯一车辆 L1 能力测试，最多三轮，不通过即转 L2；营地出口",
     "status": "清单门通过；灰盒门未签字；未制作正式资产",
-    "exportContract": "原点在四轮触地平面中心，轮胎最低点 y = 0，轮心 y = +轮径，底盘网格全部在 y > 0；悬挂只在运行时移动视觉轮节点与刚体"
+    "exportContract": "原点在四轮触地平面中心，轮胎最低点 y = 0，轮心 y = +轮径，底盘网格全部在 y > 0；悬挂只在运行时移动视觉轮节点与刚体",
+    "legacyTriangleEstimate": "6–8k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定车辆统一三角数；保留轮节点与运动间隙，不能套用果实2–6k或8k上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement",
+      "blender-rig-animation-smoke"
+    ],
+    "acceptanceProfile": "articulated-mechanism",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明",
+      "按实际可动部件验证枢轴、运动间隙、接触与刚性；若导出骨骼/动画，逐片段全新GLB回读回放；未测动作不得声称通过"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G26",
@@ -485,7 +1007,7 @@
     "name": "Fastback轿跑",
     "source": "直接 L2 Hy3D",
     "count": 1,
-    "triangles": "7–10k",
+    "triangles": "按车型剪影、分件与轮轴关节逐件定额，记录实测",
     "materialRole": "paint / accent / rubber / glass / metal / light_front / light_brake",
     "physics": "动态底盘＋四射线轮",
     "reference": "coupe",
@@ -497,7 +1019,31 @@
     ],
     "note": "直接 L2，不做 L1；海岸路边，尾灯宽青条",
     "status": "清单门通过；灰盒门未签字；未制作正式资产",
-    "exportContract": "原点在四轮触地平面中心，轮胎最低点 y = 0，轮心 y = +轮径，底盘网格全部在 y > 0；悬挂只在运行时移动视觉轮节点与刚体"
+    "exportContract": "原点在四轮触地平面中心，轮胎最低点 y = 0，轮心 y = +轮径，底盘网格全部在 y > 0；悬挂只在运行时移动视觉轮节点与刚体",
+    "legacyTriangleEstimate": "7–10k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定车辆统一三角数；保留轮节点与运动间隙，不能套用果实2–6k或8k上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement",
+      "blender-rig-animation-smoke"
+    ],
+    "acceptanceProfile": "articulated-mechanism",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明",
+      "按实际可动部件验证枢轴、运动间隙、接触与刚性；若导出骨骼/动画，逐片段全新GLB回读回放；未测动作不得声称通过"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G27",
@@ -505,7 +1051,7 @@
     "name": "方盒厢式小货车",
     "source": "直接 L2 Hy3D",
     "count": 1,
-    "triangles": "6–8k",
+    "triangles": "按车型剪影、分件与轮轴关节逐件定额，记录实测",
     "materialRole": "paint / accent / rubber / glass / metal / light_front / light_brake",
     "physics": "动态底盘＋四射线轮",
     "reference": "van",
@@ -517,7 +1063,31 @@
     ],
     "note": "直接 L2，不做 L1；栈道入口硬地广场，非栈道深处",
     "status": "清单门通过；灰盒门未签字；未制作正式资产",
-    "exportContract": "原点在四轮触地平面中心，轮胎最低点 y = 0，轮心 y = +轮径，底盘网格全部在 y > 0；悬挂只在运行时移动视觉轮节点与刚体"
+    "exportContract": "原点在四轮触地平面中心，轮胎最低点 y = 0，轮心 y = +轮径，底盘网格全部在 y > 0；悬挂只在运行时移动视觉轮节点与刚体",
+    "legacyTriangleEstimate": "6–8k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定车辆统一三角数；保留轮节点与运动间隙，不能套用果实2–6k或8k上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement",
+      "blender-rig-animation-smoke"
+    ],
+    "acceptanceProfile": "articulated-mechanism",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明",
+      "按实际可动部件验证枢轴、运动间隙、接触与刚性；若导出骨骼/动画，逐片段全新GLB回读回放；未测动作不得声称通过"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "G28",
@@ -525,7 +1095,7 @@
     "name": "传送门入口",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤1k",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "stone / light",
     "physics": "无碰撞，入口触发",
     "reference": "layout",
@@ -535,8 +1105,52 @@
       0.23,
       0.32
     ],
-    "note": "待 Fable 补图；石环加青色细边与双石柱加顶部青线两候选交 Bobby 选，图到位前不开模；上线阶段实现",
-    "status": "清单门通过；待 Fable 补图；图到位前不开模"
+    "note": "Codex原生生图 v2 候选已生成；Fable已审方向；两候选方向合格，待Bobby选择A或B；石环加青色细边与双石柱加顶部青线两候选交 Bobby 选，候选确认且灰盒门通过后再开模；上线阶段实现；见原生参考候选索引",
+    "status": "清单门通过；两候选方向合格，待Bobby选择A或B；灰盒门未签字，未建模",
+    "legacyTriangleEstimate": "≤1k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过",
+    "referenceGeneration": {
+      "provider": "Codex原生image_gen",
+      "status": "两候选方向合格，待Bobby选择A或B",
+      "directionReview": "Fable",
+      "selectionGate": "Bobby",
+      "candidateCount": 2,
+      "files": [
+        "references/codex-native-v2/g28-portal-ring-v2.png",
+        "references/codex-native-v2/g28-portal-pillars-v2.png"
+      ],
+      "promptManifest": "references/codex-native-v2/prompts.json",
+      "review": {
+        "reviewer": "Fable",
+        "date": "2026-10-21",
+        "result": "两候选方向合格，待Bobby选择A或B",
+        "conditions": [
+          "A建议10–14块主石，左右底座各不超过3块，青线宽不超过环截面1/5",
+          "若选B，将横梁青线移到上沿以便俯视可读"
+        ],
+        "modelingApproved": false
+      }
+    }
   },
   {
     "id": "G29",
@@ -544,7 +1158,7 @@
     "name": "远景风车",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤1k",
+    "triangles": "按风车剪影、支撑与转轴需求逐件定额，记录实测",
     "materialRole": "wood / metal",
     "physics": "静态底座",
     "reference": "town",
@@ -554,8 +1168,53 @@
       0.11,
       0.11
     ],
-    "note": "待 Fable 补图；已定为低多风车，不做天线，图到位前不开模",
-    "status": "清单门通过；待 Fable 补图；图到位前不开模"
+    "note": "Codex原生生图 v2 候选已生成；Fable已审方向；方向通过，按简化要求作为参考；已定为低多风车，不做天线，候选确认且灰盒门通过后再开模；见原生参考候选索引",
+    "status": "清单门通过；方向通过，按简化要求作为参考；灰盒门未签字，未建模",
+    "legacyTriangleEstimate": "≤1k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "保留可动叶片与固定底座；技能无风车统一数值",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement",
+      "blender-rig-animation-smoke"
+    ],
+    "acceptanceProfile": "articulated-mechanism",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明",
+      "按实际可动部件验证枢轴、运动间隙、接触与刚性；若导出骨骼/动画，逐片段全新GLB回读回放；未测动作不得声称通过"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过",
+    "referenceGeneration": {
+      "provider": "Codex原生image_gen",
+      "status": "方向通过，按简化要求作为参考",
+      "directionReview": "Fable",
+      "selectionGate": "Bobby",
+      "candidateCount": 1,
+      "files": [
+        "references/codex-native-v2/g29-windmill-v2.png"
+      ],
+      "promptManifest": "references/codex-native-v2/prompts.json",
+      "review": {
+        "reviewer": "Fable",
+        "date": "2026-10-21",
+        "result": "方向通过，按简化要求作为参考",
+        "conditions": [
+          "四叶为独立可转节点",
+          "每叶格栅简化为2–3根横档，远景可省塔身门窗"
+        ],
+        "modelingApproved": false
+      }
+    }
   },
   {
     "id": "C01",
@@ -563,7 +1222,7 @@
     "name": "篝火环形广场与土路",
     "source": "程序化",
     "count": 1,
-    "triangles": "≤2k",
+    "triangles": "灰盒估算约2k（非建模硬上限）",
     "materialRole": "ground / stone",
     "physics": "静态",
     "reference": "camp",
@@ -574,7 +1233,26 @@
       0.3
     ],
     "note": "",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤2k",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "C02",
@@ -582,7 +1260,7 @@
     "name": "八块物件石板",
     "source": "程序化",
     "count": 8,
-    "triangles": "≤120/块",
+    "triangles": "灰盒估算约120/块（非建模硬上限）",
     "materialRole": "stone",
     "physics": "静态",
     "reference": "camp",
@@ -593,7 +1271,26 @@
       0.34
     ],
     "note": "",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤120/块",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "C03",
@@ -601,7 +1298,7 @@
     "name": "大帐篷",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤1k",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "canvas / wood",
     "physics": "静态",
     "reference": "camp",
@@ -612,7 +1309,29 @@
       0.21
     ],
     "note": "北侧中央；身份内容入口",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤1k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "C04",
@@ -620,7 +1339,7 @@
     "name": "小帐篷",
     "source": "L1 coding",
     "count": 2,
-    "triangles": "≤1k/件",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "canvas / wood",
     "physics": "静态",
     "reference": "camp",
@@ -631,7 +1350,29 @@
       0.22
     ],
     "note": "同资产左右复用，三顶总数",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤1k/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "C05",
@@ -639,7 +1380,7 @@
     "name": "石砌篝火坑及柴",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤1k",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "stone / wood",
     "physics": "静态",
     "reference": "camp",
@@ -650,7 +1391,29 @@
       0.09
     ],
     "note": "火焰独立运行时动效，不靠密集粒子",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤1k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "C06",
@@ -658,7 +1421,7 @@
     "name": "原木长凳",
     "source": "L1 coding",
     "count": 4,
-    "triangles": "≤500/件",
+    "triangles": "按长凳跨度、条板与支撑逐件定额，记录实测",
     "materialRole": "wood",
     "physics": "静态",
     "reference": "camp",
@@ -669,7 +1432,30 @@
       0.09
     ],
     "note": "",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤500/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "家具技能先定义米制尺寸、板腿比例、支撑与负空间；设计指南没有长凳统一数值",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "low-poly-furniture-design",
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "C07",
@@ -677,7 +1463,7 @@
     "name": "书桌",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤850",
+    "triangles": "450–900 起点/书桌；实测后逐件定额",
     "materialRole": "wood",
     "physics": "静态",
     "reference": "camp",
@@ -688,7 +1474,30 @@
       0.1
     ],
     "note": "石板1",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤850",
+    "triangleBudget": {
+      "status": "技能起点，建模前逐件定额",
+      "basis": "low-poly-furniture-design design-guide：Desk，起点不是硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "low-poly-furniture-design",
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "C08",
@@ -696,7 +1505,7 @@
     "name": "书堆",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤500",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "paper / accent",
     "physics": "无碰撞",
     "reference": "camp",
@@ -707,7 +1516,29 @@
       0.08
     ],
     "note": "石板1，书脊文字独立生成双语",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤500",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "C09",
@@ -715,7 +1546,7 @@
     "name": "奖杯架",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤900",
+    "triangles": "架体450–900起点；奖杯另逐件定额",
     "materialRole": "wood / metal",
     "physics": "静态",
     "reference": "camp",
@@ -726,7 +1557,30 @@
       0.12
     ],
     "note": "石板2，奖杯简化无高反金属",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤900",
+    "triangleBudget": {
+      "status": "技能起点，建模前逐件定额",
+      "basis": "参考 Bookcase 起点适配奖杯架；附加奖杯不混入架体预算",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "low-poly-furniture-design",
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "C10",
@@ -734,7 +1588,7 @@
     "name": "旗杆及四面旗",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤900",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "wood / canvas",
     "physics": "静态杆",
     "reference": "camp",
@@ -745,7 +1599,29 @@
       0.24
     ],
     "note": "石板3，旗子运行时风动",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤900",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "C11",
@@ -753,7 +1629,7 @@
     "name": "工具墙",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤1k",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "wood / metal",
     "physics": "静态",
     "reference": "camp",
@@ -764,7 +1640,30 @@
       0.21
     ],
     "note": "石板4，五类技能映射在内容层，不复制事实",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤1k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "low-poly-furniture-design",
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "C12",
@@ -772,7 +1671,7 @@
     "name": "吉他",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤1k",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "wood / accent",
     "physics": "无碰撞",
     "reference": "camp",
@@ -783,7 +1682,29 @@
       0.09
     ],
     "note": "石板5",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤1k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "C13",
@@ -791,7 +1712,7 @@
     "name": "哑铃",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤600",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "metal / rubber",
     "physics": "无碰撞",
     "reference": "camp",
@@ -802,7 +1723,29 @@
       0.06
     ],
     "note": "石板6",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤600",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "C14",
@@ -810,7 +1753,7 @@
     "name": "炒锅及炉",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤1k",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "metal / stone",
     "physics": "静态",
     "reference": "camp",
@@ -821,7 +1764,29 @@
       0.11
     ],
     "note": "石板7",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤1k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "C15",
@@ -829,7 +1794,7 @@
     "name": "行李箱",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤800",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "canvas / metal",
     "physics": "无碰撞",
     "reference": "camp",
@@ -840,7 +1805,29 @@
       0.06
     ],
     "note": "石板8",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤800",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "C16",
@@ -848,7 +1835,7 @@
     "name": "桌上小灯",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤500",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "metal / glass",
     "physics": "无碰撞",
     "reference": "camp",
@@ -859,7 +1846,29 @@
       0.1
     ],
     "note": "夜档明确要求；自然暖光灯，不做科技条",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤500",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "T01",
@@ -867,7 +1876,7 @@
     "name": "国投证券楼",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "4–6k",
+    "triangles": "按建筑剪影、开口与结构逐件定额，记录实测",
     "materialRole": "stone / glass / metal",
     "physics": "静态",
     "reference": "town",
@@ -878,7 +1887,29 @@
       0.33
     ],
     "note": "方柱与旋转门；抽象文字，不用logo",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "4–6k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定楼宇统一三角数；按可见轮廓、空间开口、结构及最近机位需求定额",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "T02",
@@ -886,7 +1917,7 @@
     "name": "WorldQuant楼",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "3–5k",
+    "triangles": "按建筑剪影、开口与结构逐件定额，记录实测",
     "materialRole": "paint / glass",
     "physics": "静态",
     "reference": "town",
@@ -897,7 +1928,29 @@
       0.34
     ],
     "note": "玻璃盒子，玻璃不透明；屏幕墙空白",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "3–5k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定楼宇统一三角数；按可见轮廓、空间开口、结构及最近机位需求定额",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "T03",
@@ -905,7 +1958,7 @@
     "name": "MoE Capital楼",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "2–4k",
+    "triangles": "按建筑剪影、开口与结构逐件定额，记录实测",
     "materialRole": "stone / glass",
     "physics": "静态",
     "reference": "town",
@@ -916,7 +1969,29 @@
       0.21
     ],
     "note": "两层加州平顶",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "2–4k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定楼宇统一三角数；按可见轮廓、空间开口、结构及最近机位需求定额",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "T04",
@@ -924,7 +1999,7 @@
     "name": "ByteDance楼",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "3–5k",
+    "triangles": "按建筑剪影、开口与结构逐件定额，记录实测",
     "materialRole": "paint / glass",
     "physics": "静态",
     "reference": "town",
@@ -935,7 +2010,29 @@
       0.28
     ],
     "note": "蓝白体块，留空招牌板",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "3–5k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定楼宇统一三角数；按可见轮廓、空间开口、结构及最近机位需求定额",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "T05",
@@ -943,7 +2040,7 @@
     "name": "Video Rebirth楼",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "4–6k",
+    "triangles": "按建筑剪影、开口与结构逐件定额，记录实测",
     "materialRole": "stone / glass / metal",
     "physics": "静态",
     "reference": "town",
@@ -954,7 +2051,29 @@
       0.29
     ],
     "note": "窄阳台、招牌框不亮",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "4–6k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定楼宇统一三角数；按可见轮廓、空间开口、结构及最近机位需求定额",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "T06",
@@ -962,7 +2081,7 @@
     "name": "腾讯混元楼",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "4–6k",
+    "triangles": "按建筑剪影、开口与结构逐件定额，记录实测",
     "materialRole": "paint / glass / light",
     "physics": "静态",
     "reference": "town",
@@ -973,7 +2092,29 @@
       0.36
     ],
     "note": "楼顶环只微亮，禁止大片霓虹",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "4–6k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定楼宇统一三角数；按可见轮廓、空间开口、结构及最近机位需求定额",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "T07",
@@ -981,7 +2122,7 @@
     "name": "内陆第二排矮楼",
     "source": "L1 coding",
     "count": "3–4",
-    "triangles": "2–3k/件",
+    "triangles": "按建筑剪影、开口与结构逐件定额，记录实测",
     "materialRole": "paint / stone / glass",
     "physics": "静态",
     "reference": "layout",
@@ -991,8 +2132,51 @@
       0.33,
       0.2
     ],
-    "note": "待 Fable 补图；城区内陆第二排 3–4 栋两至三层矮楼，以奶白与砖褐为主，不用石板蓝，无内容无交互；图到位前不开模",
-    "status": "清单门通过；待 Fable 补图；图到位前不开模"
+    "note": "Codex原生生图 v2 候选已生成；Fable已审方向；按删减条件方向通过；城区内陆第二排 3–4 栋两至三层矮楼，以奶白与砖褐为主，不用石板蓝，无内容无交互；候选确认且灰盒门通过后再开模；见原生参考候选索引",
+    "status": "清单门通过；按删减条件方向通过；灰盒门未签字，未建模",
+    "legacyTriangleEstimate": "2–3k/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定楼宇统一三角数；按可见轮廓、空间开口、结构及最近机位需求定额",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过",
+    "referenceGeneration": {
+      "provider": "Codex原生image_gen",
+      "status": "按删减条件方向通过",
+      "directionReview": "Fable",
+      "selectionGate": "Bobby",
+      "candidateCount": 1,
+      "files": [
+        "references/codex-native-v2/t07-background-buildings-v2.png"
+      ],
+      "promptManifest": "references/codex-native-v2/prompts.json",
+      "review": {
+        "reviewer": "Fable",
+        "date": "2026-10-21",
+        "result": "按删减条件方向通过",
+        "conditions": [
+          "同四栋的两组视图，最终场景按3–4栋",
+          "删外梯、藤架、拱门和密集阳台栏杆，保留平顶女儿墙与规则窗格"
+        ],
+        "modelingApproved": false
+      }
+    }
   },
   {
     "id": "T08",
@@ -1000,7 +2184,7 @@
     "name": "楼前广场铺装",
     "source": "程序化",
     "count": 6,
-    "triangles": "≤240/处",
+    "triangles": "灰盒估算约240/处（非建模硬上限）",
     "materialRole": "stone",
     "physics": "静态",
     "reference": "town",
@@ -1011,7 +2195,26 @@
       0.3
     ],
     "note": "",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤240/处",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "T09",
@@ -1019,7 +2222,7 @@
     "name": "楼前展板",
     "source": "L1 coding",
     "count": 6,
-    "triangles": "≤600/件",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "wood / paint",
     "physics": "静态",
     "reference": "town",
@@ -1030,7 +2233,29 @@
       0.065
     ],
     "note": "与广告牌区分；文字读取现站数据",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤600/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "T10",
@@ -1038,7 +2263,7 @@
     "name": "楼顶或立面招牌板",
     "source": "L1 coding",
     "count": 6,
-    "triangles": "≤400/件",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "paint / metal",
     "physics": "附着建筑",
     "reference": "town",
@@ -1049,7 +2274,29 @@
       0.07
     ],
     "note": "动态文字与经过提示，不新增科技发光位置",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤400/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "T11",
@@ -1057,7 +2304,7 @@
     "name": "混元楼顶发光环",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤600",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "metal / light",
     "physics": "附着建筑",
     "reference": "town",
@@ -1068,7 +2315,29 @@
       0.04
     ],
     "note": "单独材质槽，两档亮度受控",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤600",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "T12",
@@ -1076,7 +2345,7 @@
     "name": "棕榈树",
     "source": "L1 coding",
     "count": 2,
-    "triangles": "≤1k/件",
+    "triangles": "按自然剪影与可见形体逐件定额，记录实测",
     "materialRole": "foliage / wood",
     "physics": "静态树干",
     "reference": "town",
@@ -1087,7 +2356,29 @@
       0.126
     ],
     "note": "MoE局部专用，不能把全部团簇树换成棕榈",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤1k/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "保留 Art Lock 团簇/石块风格；技能无本类统一数值，参考造型密度不是面数硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P01",
@@ -1095,7 +2386,7 @@
     "name": "桥头硬地入口广场",
     "source": "程序化",
     "count": 1,
-    "triangles": "≤1k",
+    "triangles": "灰盒估算约1k（非建模硬上限）",
     "materialRole": "stone",
     "physics": "静态",
     "reference": "park",
@@ -1106,7 +2397,26 @@
       0.17
     ],
     "note": "",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤1k",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P02",
@@ -1114,7 +2424,7 @@
     "name": "之字栈道面与支柱",
     "source": "程序化",
     "count": 1,
-    "triangles": "≤8k",
+    "triangles": "灰盒估算约8k（非建模硬上限）",
     "materialRole": "wood",
     "physics": "静态",
     "reference": "park",
@@ -1125,7 +2435,26 @@
       0.41
     ],
     "note": "六屋各有连通入口，不允许跨水跳跃才能到",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤8k",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P03",
@@ -1133,7 +2462,7 @@
     "name": "栈道矮栏",
     "source": "程序化",
     "count": "按路径",
-    "triangles": "≤240/段",
+    "triangles": "灰盒估算约240/段（非建模硬上限）",
     "materialRole": "wood",
     "physics": "动态，30s复位",
     "reference": "park",
@@ -1144,7 +2473,26 @@
       0.13
     ],
     "note": "参照桥栏自然材质；六屋开口不能挡住",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤240/段",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P04",
@@ -1152,7 +2500,7 @@
     "name": "栈道暖光灯柱",
     "source": "程序化",
     "count": "约10",
-    "triangles": "≤500/件",
+    "triangles": "灰盒估算约500/件（非建模硬上限）",
     "materialRole": "wood / light",
     "physics": "动态，30s复位",
     "reference": "park",
@@ -1165,7 +2513,26 @@
     "note": "共用 light-post 运行时生成器，按参数生成杆与灯头并实例化，不出 GLB；木杆与自然暖光灯头，夜档按已锁定参考",
     "status": "清单门通过；灰盒门未签字；未制作正式资产",
     "generator": "light-post",
-    "variant": "栈道灯柱"
+    "variant": "栈道灯柱",
+    "legacyTriangleEstimate": "≤500/件",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P05",
@@ -1173,7 +2540,7 @@
     "name": "园区总牌",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤700",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "wood / paint",
     "physics": "静态",
     "reference": "park",
@@ -1186,7 +2553,29 @@
     "note": "共用 light-wood-standing-sign 浅木立牌资产族，大尺寸；浅木框＋哑光板面，文字运行时生成，不发光；无需补图",
     "status": "清单门通过；灰盒门未签字；未制作正式资产",
     "assetFamily": "light-wood-standing-sign",
-    "variant": "大"
+    "variant": "大",
+    "legacyTriangleEstimate": "≤700",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P06",
@@ -1194,7 +2583,7 @@
     "name": "Alpha Agent展位小屋",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "2–3k",
+    "triangles": "按建筑剪影、开口与结构逐件定额，记录实测",
     "materialRole": "paint / wood / light",
     "physics": "静态",
     "reference": "park",
@@ -1205,7 +2594,29 @@
       0.29
     ],
     "note": "一面朝栈道开口；檐下青条≤3cm等效，共用结构允许宽度变体",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "2–3k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定楼宇统一三角数；按可见轮廓、空间开口、结构及最近机位需求定额",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P07",
@@ -1213,7 +2624,7 @@
     "name": "EvalForge展位小屋",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "2–3k",
+    "triangles": "按建筑剪影、开口与结构逐件定额，记录实测",
     "materialRole": "paint / wood / light",
     "physics": "静态",
     "reference": "park",
@@ -1224,7 +2635,29 @@
       0.278
     ],
     "note": "一面朝栈道开口；檐下青条≤3cm等效，共用结构允许宽度变体",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "2–3k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定楼宇统一三角数；按可见轮廓、空间开口、结构及最近机位需求定额",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P08",
@@ -1232,7 +2665,7 @@
     "name": "DJC展位小屋",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "2–3k",
+    "triangles": "按建筑剪影、开口与结构逐件定额，记录实测",
     "materialRole": "paint / wood / light",
     "physics": "静态",
     "reference": "park",
@@ -1243,7 +2676,29 @@
       0.249
     ],
     "note": "一面朝栈道开口；檐下青条≤3cm等效，共用结构允许宽度变体",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "2–3k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定楼宇统一三角数；按可见轮廓、空间开口、结构及最近机位需求定额",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P09",
@@ -1251,7 +2706,7 @@
     "name": "Hepai展位小屋",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "2–3k",
+    "triangles": "按建筑剪影、开口与结构逐件定额，记录实测",
     "materialRole": "paint / wood / light",
     "physics": "静态",
     "reference": "park",
@@ -1262,7 +2717,29 @@
       0.29
     ],
     "note": "一面朝栈道开口；檐下青条≤3cm等效，共用结构允许宽度变体",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "2–3k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定楼宇统一三角数；按可见轮廓、空间开口、结构及最近机位需求定额",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P10",
@@ -1270,7 +2747,7 @@
     "name": "Accompany展位小屋",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "2–3k",
+    "triangles": "按建筑剪影、开口与结构逐件定额，记录实测",
     "materialRole": "paint / wood / light",
     "physics": "静态",
     "reference": "park",
@@ -1281,7 +2758,29 @@
       0.297
     ],
     "note": "一面朝栈道开口；檐下青条≤3cm等效，共用结构允许宽度变体",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "2–3k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定楼宇统一三角数；按可见轮廓、空间开口、结构及最近机位需求定额",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P11",
@@ -1289,7 +2788,7 @@
     "name": "Interactive Learning展位小屋",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "2–3k",
+    "triangles": "按建筑剪影、开口与结构逐件定额，记录实测",
     "materialRole": "paint / wood / light",
     "physics": "静态",
     "reference": "park",
@@ -1301,7 +2800,29 @@
     ],
     "note": "一面朝栈道开口；檐下青条≤3cm等效；四门课程 FIN4210、FIN3080、MAT2002、ACT4253；黑板按 E 循环翻页，页数从 projects 内容源读，不写死",
     "status": "清单门通过；灰盒门未签字；未制作正式资产",
-    "contentSource": "projects:interactive-learning-platforms"
+    "contentSource": "projects:interactive-learning-platforms",
+    "legacyTriangleEstimate": "2–3k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定楼宇统一三角数；按可见轮廓、空间开口、结构及最近机位需求定额",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P12",
@@ -1309,7 +2830,7 @@
     "name": "研究台：竖屏＋实体拨杆",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤1k",
+    "triangles": "台体450–900起点；屏与拨杆另逐件定额",
     "materialRole": "wood / glass / metal",
     "physics": "主体静态，小件动态30s复位",
     "reference": "park",
@@ -1320,7 +2841,32 @@
       0.164
     ],
     "note": "E：拨杆、回测曲线、通过/拒绝章，≤10秒",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤1k",
+    "triangleBudget": {
+      "status": "技能起点，建模前逐件定额",
+      "basis": "参考 Desk 起点适配研究台；机构另计",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "low-poly-furniture-design",
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement",
+      "blender-rig-animation-smoke"
+    ],
+    "acceptanceProfile": "articulated-mechanism",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明",
+      "按实际可动部件验证枢轴、运动间隙、接触与刚性；若导出骨骼/动画，逐片段全新GLB回读回放；未测动作不得声称通过"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P13",
@@ -1328,7 +2874,7 @@
     "name": "评审亭：双屏＋大按钮",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤1k",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "wood / glass / paint",
     "physics": "主体静态，小件动态30s复位",
     "reference": "park",
@@ -1339,7 +2885,31 @@
       0.109
     ],
     "note": "E：两段3秒抽象片，切票，票数柱变化",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤1k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement",
+      "blender-rig-animation-smoke"
+    ],
+    "acceptanceProfile": "articulated-mechanism",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明",
+      "按实际可动部件验证枢轴、运动间隙、接触与刚性；若导出骨骼/动画，逐片段全新GLB回读回放；未测动作不得声称通过"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P14",
@@ -1347,7 +2917,7 @@
     "name": "DJ台：双唱盘＋横推子",
     "source": "L1 coding → L2 Hy3D（复杂件预判）",
     "count": 1,
-    "triangles": "≤1k",
+    "triangles": "台体450–900起点；唱盘与推子另逐件定额",
     "materialRole": "wood / metal / rubber",
     "physics": "主体静态，小件动态30s复位",
     "reference": "park",
@@ -1358,7 +2928,32 @@
       0.092
     ],
     "note": "先做 L1，最多三轮，不通过转 L2；E：推子一档，两音轨交叉淡入淡出；音频许可单独核对",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤1k",
+    "triangleBudget": {
+      "status": "技能起点，建模前逐件定额",
+      "basis": "参考 Desk 起点适配 DJ 台；机构另计",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "low-poly-furniture-design",
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement",
+      "blender-rig-animation-smoke"
+    ],
+    "acceptanceProfile": "articulated-mechanism",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明",
+      "按实际可动部件验证枢轴、运动间隙、接触与刚性；若导出骨骼/动画，逐片段全新GLB回读回放；未测动作不得声称通过"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P15",
@@ -1366,7 +2961,7 @@
     "name": "九格唱片墙",
     "source": "L1 coding → L2 Hy3D（复杂件预判）",
     "count": 1,
-    "triangles": "≤1k",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "wood / accent",
     "physics": "主体静态，小件动态30s复位",
     "reference": "park",
@@ -1377,7 +2972,32 @@
       0.146
     ],
     "note": "先做 L1，最多三轮，不通过转 L2；E：换位和连线粗细；连线不使用全息科技效果",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤1k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "low-poly-furniture-design",
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement",
+      "blender-rig-animation-smoke"
+    ],
+    "acceptanceProfile": "articulated-mechanism",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明",
+      "按实际可动部件验证枢轴、运动间隙、接触与刚性；若导出骨骼/动画，逐片段全新GLB回读回放；未测动作不得声称通过"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P16",
@@ -1385,7 +3005,7 @@
     "name": "两张露营椅",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤900/椅",
+    "triangles": "300–650 起点/椅；露营结构适配后定额",
     "materialRole": "wood / canvas",
     "physics": "主体静态，小件动态30s复位",
     "reference": "park",
@@ -1396,7 +3016,32 @@
       0.132
     ],
     "note": "E：坐下、三句气泡、灯亮；再按起身",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤900/椅",
+    "triangleBudget": {
+      "status": "技能起点，建模前逐件定额",
+      "basis": "参考 Dining chair 起点适配露营椅；按支撑、帆布接触与坐姿需求调整",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "low-poly-furniture-design",
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement",
+      "blender-rig-animation-smoke"
+    ],
+    "acceptanceProfile": "articulated-mechanism",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明",
+      "按实际可动部件验证枢轴、运动间隙、接触与刚性；若导出骨骼/动画，逐片段全新GLB回读回放；未测动作不得声称通过"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P17",
@@ -1404,7 +3049,7 @@
     "name": "椅间小灯及桌",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤600",
+    "triangles": "桌体180–400起点；小灯另逐件定额",
     "materialRole": "wood / metal / glass",
     "physics": "主体静态，小件动态30s复位",
     "reference": "park",
@@ -1415,7 +3060,30 @@
       0.073
     ],
     "note": "自然暖光，不扩大轻科技范围",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤600",
+    "triangleBudget": {
+      "status": "技能起点，建模前逐件定额",
+      "basis": "参考 Coffee table 起点适配椅间桌；灯具另计",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "low-poly-furniture-design",
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P18",
@@ -1423,7 +3091,7 @@
     "name": "黑板及讲台",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "≤1k",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "wood / paint",
     "physics": "主体静态，小件动态30s复位",
     "reference": "park",
@@ -1435,7 +3103,32 @@
     ],
     "note": "四门课程 FIN4210、FIN3080、MAT2002、ACT4253；黑板按 E 循环翻页，页数从 projects 内容源读，不写死；每页课程缩略图与课程代号、粉笔划线动画",
     "status": "清单门通过；灰盒门未签字；未制作正式资产",
-    "contentSource": "projects:interactive-learning-platforms"
+    "contentSource": "projects:interactive-learning-platforms",
+    "legacyTriangleEstimate": "≤1k",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "low-poly-furniture-design",
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement",
+      "blender-rig-animation-smoke"
+    ],
+    "acceptanceProfile": "articulated-mechanism",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明",
+      "按实际可动部件验证枢轴、运动间隙、接触与刚性；若导出骨骼/动画，逐片段全新GLB回读回放；未测动作不得声称通过"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "P19",
@@ -1443,7 +3136,7 @@
     "name": "项目小牌",
     "source": "L1 coding",
     "count": 6,
-    "triangles": "≤400/件",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "wood / paint",
     "physics": "静态",
     "reference": "park",
@@ -1456,7 +3149,29 @@
     "note": "共用 light-wood-standing-sign 浅木立牌资产族，中尺寸；浅木框＋哑光板面，文字运行时生成，不发光；无需补图；名称／定位／状态从 projects 读取",
     "status": "清单门通过；灰盒门未签字；未制作正式资产",
     "assetFamily": "light-wood-standing-sign",
-    "variant": "中"
+    "variant": "中",
+    "legacyTriangleEstimate": "≤400/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "F01",
@@ -1464,7 +3179,7 @@
     "name": "影像地基（北）",
     "source": "程序化",
     "count": 1,
-    "triangles": "≤300",
+    "triangles": "灰盒估算约300（非建模硬上限）",
     "materialRole": "stone",
     "physics": "静态",
     "reference": "layout",
@@ -1475,7 +3190,26 @@
       0.125
     ],
     "note": "仅地基不扩建",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤300",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "F02",
@@ -1483,7 +3217,7 @@
     "name": "社团地基（西）",
     "source": "程序化",
     "count": 1,
-    "triangles": "≤300",
+    "triangles": "灰盒估算约300（非建模硬上限）",
     "materialRole": "stone",
     "physics": "静态",
     "reference": "layout",
@@ -1494,7 +3228,26 @@
       0.14
     ],
     "note": "仅地基不扩建",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤300",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "F03",
@@ -1502,7 +3255,7 @@
     "name": "联系地基（南）",
     "source": "程序化",
     "count": 1,
-    "triangles": "≤300",
+    "triangles": "灰盒估算约300（非建模硬上限）",
     "materialRole": "stone",
     "physics": "静态",
     "reference": "layout",
@@ -1513,7 +3266,26 @@
       0.114
     ],
     "note": "仅地基不扩建",
-    "status": "清单门通过；灰盒门未签字；未制作正式资产"
+    "status": "清单门通过；灰盒门未签字；未制作正式资产",
+    "legacyTriangleEstimate": "≤300",
+    "triangleBudget": {
+      "status": "灰盒工程估算，待运行时实测",
+      "basis": "保留运行时生成几何的灰盒工程估算；不是正式建模预算或验收硬上限",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline"
+    ],
+    "acceptanceProfile": "runtime-procedural",
+    "acceptancePlan": [
+      "运行时生成后统计实际三角数与实例开销，GLB回读不适用",
+      "米制尺寸、朝向、接面/接触与适用碰撞检查",
+      "材质语义、PBR与两档光照单独验收"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   },
   {
     "id": "F04",
@@ -1521,7 +3293,7 @@
     "name": "建设中牌",
     "source": "L1 coding",
     "count": 3,
-    "triangles": "≤400/件",
+    "triangles": "按剪影、结构及适用关节逐件定额，记录实测",
     "materialRole": "wood / paint",
     "physics": "静态",
     "reference": "layout",
@@ -1534,6 +3306,28 @@
     "note": "共用 light-wood-standing-sign 浅木立牌资产族，小尺寸；浅木框＋哑光板面，文字运行时生成，不发光；无需补图",
     "status": "清单门通过；灰盒门未签字；未制作正式资产",
     "assetFamily": "light-wood-standing-sign",
-    "variant": "小"
+    "variant": "小",
+    "legacyTriangleEstimate": "≤400/件",
+    "triangleBudget": {
+      "status": "待逐件定额",
+      "basis": "四项技能未规定本类统一三角数；复杂度须由可见设计与结构需求解释，不能靠加面冒充质量",
+      "hardCap": false,
+      "evaluatedTriangles": null,
+      "glbReimportTriangles": null,
+      "baselineMultiplier": null
+    },
+    "skillGuidance": [
+      "blender-low-poly-pipeline",
+      "blender-connected-refinement"
+    ],
+    "acceptanceProfile": "static-asset",
+    "acceptancePlan": [
+      "修饰器评估后三角数与最终GLB全新场景回读三角数均记录；记录相对基线倍率",
+      "重开BLEND并回读GLB，对比米制尺寸/包围盒/原点/朝向，排除展示对象",
+      "几何退化、法线、连接与支撑按部件角色检查；Join不等于焊接，不强融可动关节",
+      "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
+      "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
+    ],
+    "acceptanceStatus": "未制作正式资产；上述均为后续计划，非实测或验收通过"
   }
 ]
