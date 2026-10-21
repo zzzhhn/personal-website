@@ -13,6 +13,7 @@ $B -b --factory-startup -P tools/world/camp/quality-audit/runtime_guide_intersec
 
 - **输入**：`transitions.mjs` 在 `WORLD_CAPTURE_SKIN=1` 下输出的 report。每个 view 含 `skinTopology`，每个样本含 `skin`。也接受单帧的 actor+skin 校准快照。
 - **仓库归档**：主线程已转存到 `playtest/transitions-73aa-prototype/` 与 `playtest/interruptions-73aa-prototype/`。用各目录的 `skin-poses.json.gz` 作为输入；脚本直接支持gzip，`inputSha256`仍计算解压后的原始内容，`inputFileSha256`记录实际文件。两目录的runtime-relations-audit.json是本次已执行的全帧结果，压缩前后内容哈希核对一致，无需为归档重复扫描。
+- **阅读层与原始层**：较大的report/audit现在保留简表JSON，长samples/rows数组在同名`-full.json.gz`；每个简表的fullReport给出原始内容哈希。skin-poses.json.gz仍是完整骨矩阵复现输入。压缩不改数值、帧数、失败或判定；读逐帧数据时先解压，不把简表当成未记录采样。
 - **`--every N`**：只抽每第 N 帧，用于快速试跑。此时报告写 `notFullCoverage`，`passed` 恒为 false。
 - **`--no-relations`**：只做旧的同壳自交检查，`passed` 恒为 false。
 - **退出码**：只有全帧、同壳为 0、跨壳全部归类且所有关系达到声明最小值时返回 0，否则返回 1。
