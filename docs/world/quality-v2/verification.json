@@ -43,5 +43,17 @@
   "inventory": {
     "report": "inventory-check.json",
     "passed": true
+  },
+  "preview": {
+    "url": "https://5baceb96.personal-website-aew.pages.dev/world/",
+    "commit": "ac5eb16cda5cb4b3baaab6e8a6c83cd244fc2301",
+    "cloudflareCheck": "success",
+    "proof": "playtest/preview-ac5/report.json",
+    "publishedAssetsMatched": 17,
+    "errors": 0
+  },
+  "staticAssemblyAudit": {
+    "report": "static-assembly/report.json",
+    "note": "all centroids, two offsets, temporary cutaways inspected; diagnostic candidates retained, no exhaustive self-intersection pass"
   }
 }

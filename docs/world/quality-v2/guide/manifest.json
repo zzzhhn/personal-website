@@ -59,9 +59,15 @@
   "uncompressed_glb": 2006,
   "draco_glb_reimport": 2006,
   "declared_budget": "3000-5000 (plan)",
-  "note": "Final is 2,006, below the declared budget; no geometry was added to reach it. No prior formal asset exists as a baseline."
+  "baseline": {
+   "triangles": 348,
+   "ratio": 5.764,
+   "source": "c507506 WorldActors runtime placeholder (capsule + sphere + 3 boxes), rebuilt with the same three version and counted by the main thread; not an earlier GLB"
+  },
+  "note": "Final is 2,006, below the declared budget; no geometry was added to reach it."
  },
  "rig": {
+  "type": "custom-L1",
   "bones": 18,
   "deform_bones": 17,
   "weights": {
@@ -410,6 +416,10 @@
    ],
    "note": "Inspector does not decode Draco; final Draco file is verified by fresh Blender import parity instead."
   }
+ },
+ "jump_contact_interpretation": {
+  "offline": "Jump cumulative contact-vertex slip 35.0 mm at take-off exceeds the 17.2 mm smoke gate: executed_fail (kept).",
+  "runtime": "Main thread motion-r4: all 20 real Jump samples were airborne, lowest sole 25.8 cm above real ground, so this is not observed as foot sliding in play. See main-thread jump-contact-interpretation.json."
  },
  "wrist": {
   "sha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357",

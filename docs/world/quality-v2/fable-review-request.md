@@ -2,6 +2,8 @@
 
 当前状态：返工实现与运行证据已整理，尚未取得 A–D 通过。旧 17:00 设计通过仍作废。Mac 锁屏时 CUA 不能发送，不把本地文件存在当成已送达。
 
+已核实预览：https://5baceb96.personal-website-aew.pages.dev/world/ （ac5eb16，17个发布资产hash一致，0页面/HTTP错误）。
+
 仓库 `/Users/bobby/WorkBuddy/personal-website/personal-website`，分支 `codex/world-greybox`，PR #1。先看 `docs/world/quality-v2/review.html`（可用本地文件浏览器打开），再按下列证据逐项判定。冻结文档仍由 Fable 维护；主线程不改 PRD/Art Lock/制作管线。
 
 ## A 角色
@@ -17,6 +19,8 @@
 - `nature/README.md`、`manifest.json`、`qa_report.json`，8件最终GLB回读六视图、灰模/风动/游戏机位。
 - G16/G17/G18 三种树形，4288/3190/3860 triangles，391/275/235片可辨折面叶；最大基干径/冠宽0.124/0.133/0.127。G19/G20多层灌木990/1744，G21–23切面岩244/222/162。预算按skills角色定额，未套旧900/100上限。
 - 树枝为连续闭合硬结构；叶片根部嵌入核。几何QA保留未穷尽自交的限制，不把最近距离诊断当完整自交证明。
+
+另补 `static-assembly/README.md`、report和两份剖面拼图：C03–C10最终GLB全部三角重心内部表面诊断，两档epsilon，不是精确自交证明。旧家具预算前置声明缺失作为历史流程缺口保留，未补写成当时做过。
 
 ## C/D 运行与bot
 
