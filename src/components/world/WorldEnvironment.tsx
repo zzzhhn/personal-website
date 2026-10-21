@@ -12,6 +12,7 @@ import {
 import { useWorldStore } from './store';
 import type { Vec3, WorldContent } from './types';
 import WorldYears from './WorldYears';
+import WorldCamp, { type CampLayout } from './WorldCamp';
 
 type Block = { position: Vec3; size: Vec3; color: string; rotation?: Vec3 };
 const V = (x: number, y: number, z: number): Vec3 => [x, y, z];
@@ -131,14 +132,15 @@ function SurfaceTops({ items }: { items: Block[] }) {
   return <mesh geometry={geometry} receiveShadow><meshStandardMaterial vertexColors roughness={1} /></mesh>;
 }
 
-function StaticBlocks({ items, surface = false }: { items: Block[]; surface?: boolean }) {
+/** visual=false keeps the identical colliders while WorldCamp owns the camp visuals. */
+function StaticBlocks({ items, surface = false, visual = true }: { items: Block[]; surface?: boolean; visual?: boolean }) {
   return <RigidBody type="fixed" colliders={false} userData={surface ? { surface: true } : { solid: true }}>
     {items.map((item, i) => <CuboidCollider key={i} position={item.position} rotation={item.rotation}
       args={[item.size[0] / 2, item.size[1] / 2, item.size[2] / 2]}
       friction={surface ? 0.95 : 0.65} restitution={surface ? 0 : 0.15}
       />)}
-    <Blocks items={items} shadow={!surface} openTop={surface} />
-    {surface && <SurfaceTops items={items} />}
+    {visual && <Blocks items={items} shadow={!surface} openTop={surface} />}
+    {visual && surface && <SurfaceTops items={items} />}
   </RigidBody>;
 }
 
@@ -193,8 +195,8 @@ function Island() {
       <boxGeometry args={[560, 2, 560]} /><meshStandardMaterial color="#8C8276" roughness={1} />
     </mesh>
     <RigidBody type="fixed" position={[-42, 2.9, 30]} colliders={false} userData={{ surface: true }}>
+      {/* Camp plateau collider unchanged; its top and layered cliff are drawn by WorldCamp. */}
       <CylinderCollider args={[1.9, 24]} />
-      <mesh receiveShadow><cylinderGeometry args={[24, 24.7, 3.8, 32]} /><meshStandardMaterial color={PALETTE.sand} roughness={1} /></mesh>
     </RigidBody>
     <RigidBody type="fixed" position={[45, -0.1, -45]} colliders={false} userData={{ surface: true }}>
       <CuboidCollider args={[9, 1.1, 9]} />
@@ -205,6 +207,7 @@ function Island() {
 
 function createLayout() {
   const surfaces: Block[] = [], solids: Block[] = [], decor: Block[] = [], warm: Block[] = [], cyan: Block[] = [];
+  const camp: CampLayout = { pads: [], padObjects: [], tents: [], benches: [], trees: [], lampHeads: [] };
   // Touchable greybox poles and signs use the same visible block and fixed collider.
   ROAD_POINTS.slice(1).forEach((b, i) => {
     const a = ROAD_POINTS[i];
@@ -281,17 +284,18 @@ function createLayout() {
   for (let i = 0; i < 8; i++) {
     const angle = i * Math.PI / 4;
     const x = CAMP_CENTER[0] + Math.cos(angle) * 15, z = CAMP_CENTER[2] + Math.sin(angle) * 15;
-    surfaces.push(block([x, 4.85, z], [3.1, 0.1, 2.5], PALETTE.edge, [0, -angle, 0]));
-    solids.push(block([x, 5.35, z], [1.05, 0.9, 0.9], i === 2 ? PALETTE.orange : PALETTE.cream));
+    camp.pads.push(block([x, 4.85, z], [3.1, 0.1, 2.5], PALETTE.edge, [0, -angle, 0]));
+    camp.padObjects.push(block([x, 5.35, z], [1.05, 0.9, 0.9], i === 2 ? PALETTE.orange : PALETTE.cream));
   }
-  [-51, -42, -33].forEach((x) => solids.push(block([x, 6.25, 12.5], [5.5, 2.9, 4.2], PALETTE.orange)));
+  [-51, -42, -33].forEach((x) => camp.tents.push(block([x, 6.25, 12.5], [5.5, 2.9, 4.2], PALETTE.orange)));
   for (let i = 0; i < 4; i++) {
     const angle = Math.PI / 4 + i * Math.PI / 2;
-    solids.push(block([-42 + Math.cos(angle) * 6, 5.1, 30 + Math.sin(angle) * 6], [4.8, 0.6, 0.8], PALETTE.wood, [0, -angle - Math.PI / 2, 0]));
+    camp.benches.push(block([-42 + Math.cos(angle) * 6, 5.1, 30 + Math.sin(angle) * 6], [4.8, 0.6, 0.8], PALETTE.wood, [0, -angle - Math.PI / 2, 0]));
   }
   for (let i = 0; i < 2; i++) {
     solids.push(block([-30, 6, 31 + i * 6], [0.25, 2.4, 0.25], PALETTE.slate));
-    cyan.push(block([-30, 6.9, 31 + i * 6], [0.15, 0.6, 0.15], '#FFFFFF'));
+    // Camp exit lamp heads use a camp-owned material (WorldCamp); global cyan is unchanged.
+    camp.lampHeads.push(block([-30, 6.9, 31 + i * 6], [0.15, 0.6, 0.15], '#FFFFFF'));
   }
   BUILDINGS.forEach((building) => {
     const [x, y, z] = building.position, [w, h, d] = building.size;
@@ -318,10 +322,12 @@ function createLayout() {
   // Lightweight placeholder vegetation uses boxes: no formal tree asset work.
   const trees: Vec3[] = [[-61, 1, -4], [-51, 1, -26], [-36, 1, -32], [-28, 1, -8], [-26, 1, 7], [-52, 4.8, 45], [-59, 4.8, 34], [-40, 4.8, 9], [-29, 4.8, 17], [-30, 1, 52], [2, 1, 40], [-44, 1, -43]];
   trees.forEach(([x, y, z], i) => {
+    // The four camp-plateau trees keep this trunk collider; WorldCamp draws G16-G18.
+    if (y === CAMP_CENTER[1]) { camp.trees.push(block([x, y + 1.4, z], [0.7, 2.8, 0.7], '#5A4634')); return; }
     solids.push(block([x, y + 1.4, z], [0.7, 2.8, 0.7], '#5A4634'));
     decor.push(block([x, y + 3.6, z], [3.8, 3.6, 3.8], i % 2 ? '#6F8A3A' : '#8AA24A'));
   });
-  return { surfaces, solids, decor, warm, cyan };
+  return { surfaces, solids, decor, warm, cyan, camp };
 }
 
 function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStandardMaterial }) {
@@ -348,7 +354,7 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
     const n = s.value;
     if (sun.current) sun.current.intensity = 3.4 - n * 3.08;
     if (hemisphere.current) hemisphere.current.intensity = 1.5 - n * 0.85;
-    if (fire.current) fire.current.intensity = (9 + n * 22) * (1 + Math.sin(clock.clock.elapsedTime * 5) * 0.065);
+    if (fire.current) fire.current.intensity = (13 + n * 18) * (1 + Math.sin(clock.clock.elapsedTime * 5) * 0.065);
     warm.emissiveIntensity = 0.05 + n * 1.5;
     cyan.emissiveIntensity = 0.15 + n * 1.25;
     parkFill.current.forEach(lamp => { if (lamp) lamp.intensity = n * 26; });
@@ -393,6 +399,9 @@ export default function WorldEnvironment({ experiences }: { experiences: WorldCo
     <WorldYears experiences={experiences.en} />
     <StaticBlocks items={items.surfaces} surface />
     <StaticBlocks items={items.solids} />
+    <StaticBlocks items={items.camp.pads} surface visual={false} />
+    <StaticBlocks items={[...items.camp.padObjects, ...items.camp.tents, ...items.camp.benches, ...items.camp.trees]} visual={false} />
+    <WorldCamp layout={items.camp} />
     <Blocks items={items.decor} shadow />
     <Blocks items={items.warm} material={warm} />
     <Blocks items={items.cyan} material={cyan} />
@@ -402,14 +411,6 @@ export default function WorldEnvironment({ experiences }: { experiences: WorldCo
         <boxGeometry args={[w, h, d]} /><meshStandardMaterial color={color} roughness={1} transparent />
       </mesh>
     </RigidBody>)}
-    {/* One primitive ring and one block identify the camp fire, never a formal asset. */}
-    <mesh position={[-42, 4.95, 30]} rotation={[-Math.PI / 2, 0, 0]}>
-      <ringGeometry args={[1.15, 1.6, 12]} /><meshStandardMaterial color="#8C8276" roughness={1} />
-    </mesh>
-    <mesh position={[-42, 5.3, 30]}><boxGeometry args={[0.65, 0.9, 0.65]} /><meshStandardMaterial color={PALETTE.orange} emissive="#FF8A3A" emissiveIntensity={1.5} /></mesh>
-    <mesh position={[-42, 4.815, 30]} rotation={[-Math.PI / 2, 0, 0]}>
-      <ringGeometry args={[10.4, 12.4, 48]} /><meshStandardMaterial color="#AA875D" roughness={1} />
-    </mesh>
     <mesh position={[11, 16.13, -43]} rotation={[-Math.PI / 2, 0, 0]}>
       <ringGeometry args={[2.5, 2.54, 32]} /><primitive object={cyan} attach="material" />
     </mesh>

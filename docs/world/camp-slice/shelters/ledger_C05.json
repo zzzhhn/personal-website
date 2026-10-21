@@ -1,0 +1,35 @@
+{
+  "asset": "C05",
+  "name": "石砌篝火坑与柴",
+  "recentre_shift": [
+    -0.0,
+    -0.0,
+    -0.0
+  ],
+  "parts": [
+    {
+      "part": "stone ring blocks with chamfered tops, small gaps",
+      "material": "camp_stone_light",
+      "relation": "separate stones resting on ground",
+      "count": 12
+    },
+    {
+      "part": "ash bed disc",
+      "material": "camp_ash_charcoal",
+      "relation": "resting on ground, edge under stones",
+      "count": 1
+    },
+    {
+      "part": "radial firewood logs in a teepee, bark sides and light cut ends",
+      "material": "camp_wood_bark",
+      "relation": "feet on ash bed, tips open around flame core",
+      "count": 5
+    },
+    {
+      "part": "kindling sticks",
+      "material": "camp_wood_light",
+      "relation": "resting on ash bed",
+      "count": 2
+    }
+  ]
+}

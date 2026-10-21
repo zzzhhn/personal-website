@@ -1,0 +1,441 @@
+{
+  "group": "shelters",
+  "date": "2026-10-21",
+  "blender": "4.2.23 LTS",
+  "round": "r3 (final of max 3)",
+  "build": "Blender -b --factory-startup -P tools/world/camp/shelters/build_shelters.py",
+  "qa": "Blender -b --factory-startup -P tools/world/camp/shelters/qa_shelters.py -- docs/world/camp-slice/shelters/qa_report.json",
+  "views": "Color six-view sheets views/r3/<ID>_sheet.png are rendered from a fresh import of the final Draco GLB (hash in each asset.views); clay sheets are native .blend; overview_from_glb.png is from final GLBs.",
+  "status": "Machine checks and Fable asset visual review passed; integrated runtime and Bobby acceptance are separate.",
+  "totals": {
+    "unique_triangles": 2400,
+    "on_screen_triangles_with_instances": 3912
+  },
+  "assets": [
+    {
+      "id": "C03",
+      "name": "大帐篷",
+      "instances": 1,
+      "glb": "public/assets/world/camp/C03.glb",
+      "glb_bytes": 14360,
+      "glb_sha256": "f3b02912eda746844c09d319979158c32b6609350cc6a3ba7073f60004ac02e2",
+      "blend": "tools/world/camp/shelters/blend/C03.blend",
+      "contract": "metres, +Y up, +X front, ground y=0, root at horizontal bounds centre",
+      "target_dims_xyz": [
+        4.2,
+        3.3,
+        5.5
+      ],
+      "final_dims_xyz": [
+        4.1126,
+        3.3,
+        5.4192
+      ],
+      "glb_reimport_dims_xyz": [
+        4.1126,
+        3.3,
+        5.4192
+      ],
+      "bounds_delta_max_m": 2.384185791015625e-06,
+      "triangles_evaluated": 792,
+      "triangles_glb_reimport": 792,
+      "legacy_triangle_estimate": 1000,
+      "ratio_vs_legacy_estimate": 0.79,
+      "draco": {
+        "primitives": 5,
+        "compressed": 5,
+        "position_bits": 20,
+        "normal_bits": 10,
+        "level": 6
+      },
+      "materials": [
+        {
+          "name": "camp_canvas_orange",
+          "materialRole": "canvas",
+          "baseColorFactor_linear": [
+            0.80695,
+            0.21586,
+            0.04231,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0
+        },
+        {
+          "name": "camp_canvas_binding",
+          "materialRole": "canvas",
+          "baseColorFactor_linear": [
+            0.48515,
+            0.11697,
+            0.02315,
+            1
+          ],
+          "roughness": 0.9,
+          "metallic": 0
+        },
+        {
+          "name": "camp_canvas_cream",
+          "materialRole": "canvas",
+          "baseColorFactor_linear": [
+            0.7913,
+            0.71569,
+            0.5972,
+            1
+          ],
+          "roughness": 0.9,
+          "metallic": 0
+        },
+        {
+          "name": "camp_groundsheet",
+          "materialRole": "canvas",
+          "baseColorFactor_linear": [
+            0.10224,
+            0.06125,
+            0.03434,
+            1
+          ],
+          "roughness": 0.95,
+          "metallic": 0
+        },
+        {
+          "name": "camp_wood_light",
+          "materialRole": "wood",
+          "baseColorFactor_linear": [
+            0.48515,
+            0.29614,
+            0.14126,
+            1
+          ],
+          "roughness": 0.85,
+          "metallic": 0
+        }
+      ],
+      "mesh_shells": 53,
+      "machine_pass": true,
+      "machine_failures": [],
+      "notes": "Ridge wall tent: sagging chevron fly with thickness, bound edges, ridge cap and panel seams, gable walls, open door flaps with tie-backs, ridge + two upright poles, 4 staked guy lines inside footprint, rear vent patch, groundsheet.",
+      "views": {
+        "color_sheet": "docs/world/camp-slice/shelters/views/r3/C03_sheet.png",
+        "color_source": {
+          "source": "final Draco GLB fresh import",
+          "glb": "/Users/bobby/WorkBuddy/personal-website/personal-website/public/assets/world/camp/C03.glb",
+          "sha256": "f3b02912eda746844c09d319979158c32b6609350cc6a3ba7073f60004ac02e2"
+        },
+        "color_source_matches_glb": true,
+        "clay_sheet": "docs/world/camp-slice/shelters/views/r3/C03_clay_sheet.png",
+        "clay_source": "native .blend with clay override (not GLB)"
+      }
+    },
+    {
+      "id": "C04",
+      "name": "小帐篷",
+      "instances": 2,
+      "glb": "public/assets/world/camp/C04.glb",
+      "glb_bytes": 14380,
+      "glb_sha256": "e0ef58a6a981e86f23d17a01959c05a27327e28ef5b11118897fe6ba3fe0473f",
+      "blend": "tools/world/camp/shelters/blend/C04.blend",
+      "contract": "metres, +Y up, +X front, ground y=0, root at horizontal bounds centre",
+      "target_dims_xyz": [
+        3.4,
+        2.5,
+        4.4
+      ],
+      "final_dims_xyz": [
+        3.313,
+        2.5,
+        4.3189
+      ],
+      "glb_reimport_dims_xyz": [
+        3.313,
+        2.5,
+        4.3189
+      ],
+      "bounds_delta_max_m": 1.9073486328125e-06,
+      "triangles_evaluated": 792,
+      "triangles_glb_reimport": 792,
+      "legacy_triangle_estimate": 1000,
+      "ratio_vs_legacy_estimate": 0.79,
+      "draco": {
+        "primitives": 5,
+        "compressed": 5,
+        "position_bits": 20,
+        "normal_bits": 10,
+        "level": 6
+      },
+      "materials": [
+        {
+          "name": "camp_canvas_orange",
+          "materialRole": "canvas",
+          "baseColorFactor_linear": [
+            0.80695,
+            0.21586,
+            0.04231,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0
+        },
+        {
+          "name": "camp_canvas_binding",
+          "materialRole": "canvas",
+          "baseColorFactor_linear": [
+            0.48515,
+            0.11697,
+            0.02315,
+            1
+          ],
+          "roughness": 0.9,
+          "metallic": 0
+        },
+        {
+          "name": "camp_canvas_cream",
+          "materialRole": "canvas",
+          "baseColorFactor_linear": [
+            0.7913,
+            0.71569,
+            0.5972,
+            1
+          ],
+          "roughness": 0.9,
+          "metallic": 0
+        },
+        {
+          "name": "camp_groundsheet",
+          "materialRole": "canvas",
+          "baseColorFactor_linear": [
+            0.10224,
+            0.06125,
+            0.03434,
+            1
+          ],
+          "roughness": 0.95,
+          "metallic": 0
+        },
+        {
+          "name": "camp_wood_light",
+          "materialRole": "wood",
+          "baseColorFactor_linear": [
+            0.48515,
+            0.29614,
+            0.14126,
+            1
+          ],
+          "roughness": 0.85,
+          "metallic": 0
+        }
+      ],
+      "mesh_shells": 53,
+      "machine_pass": true,
+      "machine_failures": [],
+      "notes": "Same construction as C03 scaled to the Fable-revised smaller footprint; one asset for both instances.",
+      "views": {
+        "color_sheet": "docs/world/camp-slice/shelters/views/r3/C04_sheet.png",
+        "color_source": {
+          "source": "final Draco GLB fresh import",
+          "glb": "/Users/bobby/WorkBuddy/personal-website/personal-website/public/assets/world/camp/C04.glb",
+          "sha256": "e0ef58a6a981e86f23d17a01959c05a27327e28ef5b11118897fe6ba3fe0473f"
+        },
+        "color_source_matches_glb": true,
+        "clay_sheet": "docs/world/camp-slice/shelters/views/r3/C04_clay_sheet.png",
+        "clay_source": "native .blend with clay override (not GLB)"
+      }
+    },
+    {
+      "id": "C05",
+      "name": "石砌篝火坑与柴",
+      "instances": 1,
+      "glb": "public/assets/world/camp/C05.glb",
+      "glb_bytes": 11536,
+      "glb_sha256": "54790864187123a55c4fd00590186a1e958990ca735a9861c00304332a316692",
+      "blend": "tools/world/camp/shelters/blend/C05.blend",
+      "contract": "metres, +Y up, +X front, ground y=0, root at horizontal bounds centre",
+      "target_dims_xyz": [
+        3.2,
+        0.6,
+        3.2
+      ],
+      "final_dims_xyz": [
+        3.1988,
+        0.5705,
+        3.1988
+      ],
+      "glb_reimport_dims_xyz": [
+        3.1988,
+        0.5705,
+        3.1988
+      ],
+      "bounds_delta_max_m": 4.76837158203125e-07,
+      "triangles_evaluated": 576,
+      "triangles_glb_reimport": 576,
+      "legacy_triangle_estimate": 1000,
+      "ratio_vs_legacy_estimate": 0.58,
+      "draco": {
+        "primitives": 5,
+        "compressed": 5,
+        "position_bits": 20,
+        "normal_bits": 10,
+        "level": 6
+      },
+      "materials": [
+        {
+          "name": "camp_stone_light",
+          "materialRole": "stone",
+          "baseColorFactor_linear": [
+            0.45641,
+            0.39157,
+            0.30499,
+            1
+          ],
+          "roughness": 0.92,
+          "metallic": 0
+        },
+        {
+          "name": "camp_stone_dark",
+          "materialRole": "stone",
+          "baseColorFactor_linear": [
+            0.26225,
+            0.22323,
+            0.18116,
+            1
+          ],
+          "roughness": 0.95,
+          "metallic": 0
+        },
+        {
+          "name": "camp_ash_charcoal",
+          "materialRole": "stone",
+          "baseColorFactor_linear": [
+            0.10462,
+            0.09306,
+            0.08022,
+            1
+          ],
+          "roughness": 0.97,
+          "metallic": 0
+        },
+        {
+          "name": "camp_wood_bark",
+          "materialRole": "wood",
+          "baseColorFactor_linear": [
+            0.10224,
+            0.06125,
+            0.03434,
+            1
+          ],
+          "roughness": 0.92,
+          "metallic": 0
+        },
+        {
+          "name": "camp_wood_light",
+          "materialRole": "wood",
+          "baseColorFactor_linear": [
+            0.48515,
+            0.29614,
+            0.14126,
+            1
+          ],
+          "roughness": 0.85,
+          "metallic": 0
+        }
+      ],
+      "mesh_shells": 20,
+      "machine_pass": true,
+      "machine_failures": [],
+      "notes": "12 chamfered stones (two greys), charcoal ash bed, 5-log teepee + 2 kindling sticks; centre r<0.15 m left open for runtime flame (log tips top out at y~0.59).",
+      "views": {
+        "color_sheet": "docs/world/camp-slice/shelters/views/r3/C05_sheet.png",
+        "color_source": {
+          "source": "final Draco GLB fresh import",
+          "glb": "/Users/bobby/WorkBuddy/personal-website/personal-website/public/assets/world/camp/C05.glb",
+          "sha256": "54790864187123a55c4fd00590186a1e958990ca735a9861c00304332a316692"
+        },
+        "color_source_matches_glb": true,
+        "clay_sheet": "docs/world/camp-slice/shelters/views/r3/C05_clay_sheet.png",
+        "clay_source": "native .blend with clay override (not GLB)"
+      }
+    },
+    {
+      "id": "C06",
+      "name": "原木长凳",
+      "instances": 4,
+      "glb": "public/assets/world/camp/C06.glb",
+      "glb_bytes": 4804,
+      "glb_sha256": "401862b7b8ea1cea4cfafbccb26f38760025f34f006ba47463f6072ae5c8a556",
+      "blend": "tools/world/camp/shelters/blend/C06.blend",
+      "contract": "metres, +Y up, +X front, ground y=0, root at horizontal bounds centre",
+      "target_dims_xyz": [
+        0.8,
+        0.6,
+        4.8
+      ],
+      "final_dims_xyz": [
+        0.76,
+        0.6,
+        4.8
+      ],
+      "glb_reimport_dims_xyz": [
+        0.76,
+        0.6,
+        4.8
+      ],
+      "bounds_delta_max_m": 1.6689300537109375e-06,
+      "triangles_evaluated": 240,
+      "triangles_glb_reimport": 240,
+      "legacy_triangle_estimate": 500,
+      "ratio_vs_legacy_estimate": 0.48,
+      "draco": {
+        "primitives": 2,
+        "compressed": 2,
+        "position_bits": 20,
+        "normal_bits": 10,
+        "level": 6
+      },
+      "materials": [
+        {
+          "name": "camp_wood_bark",
+          "materialRole": "wood",
+          "baseColorFactor_linear": [
+            0.10224,
+            0.06125,
+            0.03434,
+            1
+          ],
+          "roughness": 0.92,
+          "metallic": 0
+        },
+        {
+          "name": "camp_wood_light",
+          "materialRole": "wood",
+          "baseColorFactor_linear": [
+            0.48515,
+            0.29614,
+            0.14126,
+            1
+          ],
+          "roughness": 0.85,
+          "metallic": 0
+        }
+      ],
+      "mesh_shells": 4,
+      "machine_pass": true,
+      "machine_failures": [],
+      "notes": "Split log seat (flat light top at y=0.6, bark sides, light end grain with bark ring), branch stub, two half-log saddles bedded under it.",
+      "views": {
+        "color_sheet": "docs/world/camp-slice/shelters/views/r3/C06_sheet.png",
+        "color_source": {
+          "source": "final Draco GLB fresh import",
+          "glb": "/Users/bobby/WorkBuddy/personal-website/personal-website/public/assets/world/camp/C06.glb",
+          "sha256": "401862b7b8ea1cea4cfafbccb26f38760025f34f006ba47463f6072ae5c8a556"
+        },
+        "color_source_matches_glb": true,
+        "clay_sheet": "docs/world/camp-slice/shelters/views/r3/C06_clay_sheet.png",
+        "clay_source": "native .blend with clay override (not GLB)"
+      }
+    }
+  ],
+  "integrationReview": {
+    "assetStatus": "Fable passed final GLB colour views, 2026-10-21",
+    "runtimeStatus": "Fable camp sample design passed on r4 stills and r3 walk; see ../README.md",
+    "userAccepted": false
+  }
+}

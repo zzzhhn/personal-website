@@ -1,0 +1,29 @@
+{
+  "asset": "C06",
+  "name": "原木长凳",
+  "recentre_shift": [
+    -0.0,
+    -0.0,
+    -0.0
+  ],
+  "parts": [
+    {
+      "part": "split-log seat, flat light top, bark sides, light end faces with bark ring",
+      "material": "camp_wood_bark",
+      "relation": "main member",
+      "count": 1
+    },
+    {
+      "part": "branch stub",
+      "material": "camp_wood_bark",
+      "relation": "embedded in log",
+      "count": 1
+    },
+    {
+      "part": "half-log saddles (flat bottom on ground) supporting seat, seat bedded ~0.1 m into them",
+      "material": "camp_wood_bark",
+      "relation": "embedded support",
+      "count": 2
+    }
+  ]
+}
