@@ -1,6 +1,6 @@
 # Fable 最终复核交接
 
-当前状态：73aa0bb6角色与QA动作候选已形成统一证据；尚未取得A–D通过。旧17:00设计通过仍作废。此前d3缺陷纠错已通过CUA实际收发；本更新验收包尚未送达，最近系统再次锁屏。不要把文件存在当作Fable已读。
+当前状态：73aa0bb6角色与QA动作候选已形成统一证据；尚未取得A–D通过。旧17:00设计通过仍作废。2026-10-22 11:11（Asia/Shanghai）通过CUA向WorkBuddy的00-website-main发送本包，已核实新消息进入聊天记录、Fable开始处理。送达不等于验收通过。
 
 已核实新预览：https://2150a1ce.personal-website-aew.pages.dev/world/ （e1e546f，资产73aa）。17个发布GLB哈希一致、0页面/HTTP错误。动作审阅入口：https://2150a1ce.personal-website-aew.pages.dev/world/?qa=1&qaPhase=1&qaStop=1 。已实测普通入口两项候选开关为false、审阅入口为true。旧75d2f9c/d3仅作失败历史。
 
