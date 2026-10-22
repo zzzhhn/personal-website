@@ -1,7 +1,7 @@
 /** Post-push verification: published bytes + one real browser load, no repeated route suite. */
 import {readFile,mkdir,writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
-import {loadPlaywright,CHROME} from './lib.mjs';
+import {loadPlaywright,CHROME,Bot,canvasFacts,startCanvasRecording,stopCanvasRecording} from './lib.mjs';
 const base=process.env.WORLD_BASE_URL;
 if(!base)throw new Error('WORLD_BASE_URL is required');
 const out=process.env.WORLD_PLAYTEST_DIR||'docs/world/quality-v2/playtest/preview';await mkdir(out,{recursive:true});
@@ -20,6 +20,21 @@ try{
   await page.goto(base+'/world/?qa=1&qaPhase=1&qaStop=1',{waitUntil:'networkidle'});
   await page.waitForFunction(()=>window.__worldDebug?.actor().loaded);await page.waitForTimeout(500);
   report.candidate=await page.evaluate(()=>{const a=__worldDebug.actor();return {loaded:a.loaded,phasePrototype:a.phasePrototype,stopPrototype:a.stopPrototype}});
-  report.passed&&=report.runtime.actor.phasePrototype===false&&report.runtime.actor.stopPrototype===false&&report.candidate.phasePrototype===true&&report.candidate.stopPrototype===true&&!report.errors.length&&!report.httpErrors.length;
+  // The former candidate URL remains compatible after normal-entry acceptance.
+  report.passed&&=report.runtime.actor.phasePrototype===true&&report.runtime.actor.stopPrototype===true&&report.candidate.phasePrototype===true&&report.candidate.stopPrototype===true&&!report.errors.length&&!report.httpErrors.length;
+ }
+ if(process.env.WORLD_DEFAULT_MOTION==='1'){
+  // Record the real public entry without the QA API or any motion feature flags.
+  report.passed&&=report.runtime.actor.phasePrototype===true&&report.runtime.actor.stopPrototype===true;
+  const response=await page.goto(base+'/world/',{waitUntil:'networkidle'});
+  await page.locator('canvas').first().waitFor({state:'visible'});await page.waitForTimeout(1500);
+  const motion=report.defaultMotion={url:page.url(),pageStatus:response.status(),qaApiAbsent:await page.evaluate(()=>!window.__worldDebug),render:await canvasFacts(page),phases:[],video:'default-entry-stop.webm',fixtureCalls:[]};
+  const bot=new Bot(page);const started=await startCanvasRecording(page,60);
+  for(const [label,keys,ms] of [['idle',[],1000],['walk',['KeyA'],2000],['run',['KeyA','ShiftLeft'],1300],['walk-return',['KeyA'],1200],['stop',[],2000],['turn180',['KeyD'],1000],['stop180',[],2000]]){
+   await bot.hold(keys);motion.phases.push({label,keys,videoTime_s:(Date.now()-started)/1000,duration_ms:ms});await page.waitForTimeout(ms);
+  }
+  await bot.release();motion.fixtureCalls=bot.fixtureCalls;await stopCanvasRecording(page,out+'/'+motion.video);await page.screenshot({path:out+'/default-entry-stop.png'});
+  motion.passed=motion.pageStatus===200&&new URL(motion.url).search===''&&motion.qaApiAbsent&&motion.render.drawingBuffer[0]>=1920&&motion.render.drawingBuffer[1]>=1080;
+  report.passed&&=motion.passed&&!report.errors.length&&!report.httpErrors.length;
  }
 }catch(e){report.errors.push(e.stack||String(e));report.passed=false}finally{await writeFile(out+'/report.json',JSON.stringify(report,null,2)+'\n');await browser.close();console.log(JSON.stringify({base,passed:report.passed,assetCount:report.assets.length,errors:report.errors,httpErrors:report.httpErrors},null,2));if(!report.passed)process.exitCode=1;}

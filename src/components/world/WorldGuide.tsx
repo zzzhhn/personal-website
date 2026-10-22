@@ -101,9 +101,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       }
     }
     probeMixer.stopAllAction(); probeMixer.uncacheRoot(probe);
-    const query = new URLSearchParams(window.location.search);
-    const phase = query.get('qa') === '1' && query.get('qaPhase') === '1'
-      ? GuidePhaseModel.fromGLTF(gltf, { authoredSpeed:{ Walk:1.5, Run:4.2 } }) : null;
+    const phase = GuidePhaseModel.fromGLTF(gltf, { authoredSpeed:{ Walk:1.5, Run:4.2 } });
     return { scene, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4),
       solePoint:new Vector3(), rootPoint:new Vector3(), motionPoint:new Vector3(), previousMotionPoint:new Vector3(), hasMotionSample:false };
   }, [gltf]);
@@ -111,8 +109,8 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     pending: '', pendingTime: 0, phaseGateTimeouts: 0 });
   useEffect(() => () => { rig.mixer.stopAllAction(); rig.mixer.uncacheRoot(rig.scene); }, [rig]);
   useEffect(() => {
-    const query = new URLSearchParams(window.location.search);
-    if (query.get('qa') !== '1' || query.get('qaStop') !== '1' || !group.current) return;
+    // Fable's 2026-10-22 acceptance permits this visual stop step in normal play.
+    if (!group.current) return;
     const candidate = new GuideStopStep(rig.scene, gltf, { anchor: group.current });
     stop.current = candidate;
     return () => { candidate.dispose(); if (stop.current === candidate) stop.current = null; };
