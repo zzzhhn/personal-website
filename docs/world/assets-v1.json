@@ -603,7 +603,7 @@
       0.26
     ],
     "note": "圆冠三叉，391 片折面叶；三阶橄榄色",
-    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
+    "status": "2026-10-22 Fable A–D逐项通过；Opus 5.5确认普通入口补证；Bobby未接受",
     "legacyTriangleEstimate": "≤900/件",
     "triangleBudget": {
       "status": "quality-v2 原生与最终 Draco GLB 回读实测",
@@ -627,7 +627,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
+    "acceptanceStatus": "Fable已按quality-v2整组证据判过；范围与已知限制见quality-v2/fable-verdict-20261022.md；Opus 5.5已确认普通入口启用补证，Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -673,7 +673,7 @@
       0.3
     ],
     "note": "横向展冠，275 片折面叶；与圆冠、上叉树分形",
-    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
+    "status": "2026-10-22 Fable A–D逐项通过；Opus 5.5确认普通入口补证；Bobby未接受",
     "legacyTriangleEstimate": "≤900/件",
     "triangleBudget": {
       "status": "quality-v2 原生与最终 Draco GLB 回读实测",
@@ -697,7 +697,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
+    "acceptanceStatus": "Fable已按quality-v2整组证据判过；范围与已知限制见quality-v2/fable-verdict-20261022.md；Opus 5.5已确认普通入口启用补证，Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -743,7 +743,7 @@
       0.26
     ],
     "note": "向上分叉五簇，235 片折面叶",
-    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
+    "status": "2026-10-22 Fable A–D逐项通过；Opus 5.5确认普通入口补证；Bobby未接受",
     "legacyTriangleEstimate": "≤900/件",
     "triangleBudget": {
       "status": "quality-v2 原生与最终 Draco GLB 回读实测",
@@ -767,7 +767,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
+    "acceptanceStatus": "Fable已按quality-v2整组证据判过；范围与已知限制见quality-v2/fable-verdict-20261022.md；Opus 5.5已确认普通入口启用补证，Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -813,7 +813,7 @@
       0.1
     ],
     "note": "单丛多层叶；实体叶核，叶尖风动",
-    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
+    "status": "2026-10-22 Fable A–D逐项通过；Opus 5.5确认普通入口补证；Bobby未接受",
     "legacyTriangleEstimate": "≤300/件",
     "triangleBudget": {
       "status": "quality-v2 原生与最终 Draco GLB 回读实测",
@@ -837,7 +837,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
+    "acceptanceStatus": "Fable已按quality-v2整组证据判过；范围与已知限制见quality-v2/fable-verdict-20261022.md；Opus 5.5已确认普通入口启用补证，Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -883,7 +883,7 @@
       0.1
     ],
     "note": "两丛高低层次；实体叶核，叶尖风动",
-    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
+    "status": "2026-10-22 Fable A–D逐项通过；Opus 5.5确认普通入口补证；Bobby未接受",
     "legacyTriangleEstimate": "≤300/件",
     "triangleBudget": {
       "status": "quality-v2 原生与最终 Draco GLB 回读实测",
@@ -907,7 +907,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
+    "acceptanceStatus": "Fable已按quality-v2整组证据判过；范围与已知限制见quality-v2/fable-verdict-20261022.md；Opus 5.5已确认普通入口启用补证，Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -953,7 +953,7 @@
       0.1
     ],
     "note": "大断面与台阶凹槽；局部单段倒角",
-    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
+    "status": "2026-10-22 Fable A–D逐项通过；Opus 5.5确认普通入口补证；Bobby未接受",
     "legacyTriangleEstimate": "≤100/件",
     "triangleBudget": {
       "status": "quality-v2 原生与最终 Draco GLB 回读实测",
@@ -977,7 +977,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
+    "acceptanceStatus": "Fable已按quality-v2整组证据判过；范围与已知限制见quality-v2/fable-verdict-20261022.md；Opus 5.5已确认普通入口启用补证，Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -1023,7 +1023,7 @@
       0.09
     ],
     "note": "中块切面与缺口，实体",
-    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
+    "status": "2026-10-22 Fable A–D逐项通过；Opus 5.5确认普通入口补证；Bobby未接受",
     "legacyTriangleEstimate": "≤100/件",
     "triangleBudget": {
       "status": "quality-v2 原生与最终 Draco GLB 回读实测",
@@ -1047,7 +1047,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
+    "acceptanceStatus": "Fable已按quality-v2整组证据判过；范围与已知限制见quality-v2/fable-verdict-20261022.md；Opus 5.5已确认普通入口启用补证，Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -1093,7 +1093,7 @@
       0.1
     ],
     "note": "矮石切面；可跨越仍有真实接触，不是 trigger-only",
-    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
+    "status": "2026-10-22 Fable A–D逐项通过；Opus 5.5确认普通入口补证；Bobby未接受",
     "legacyTriangleEstimate": "≤100/件",
     "triangleBudget": {
       "status": "quality-v2 原生与最终 Draco GLB 回读实测",
@@ -1117,7 +1117,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
+    "acceptanceStatus": "Fable已按quality-v2整组证据判过；范围与已知限制见quality-v2/fable-verdict-20261022.md；Opus 5.5已确认普通入口启用补证，Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -1150,7 +1150,7 @@
     "id": "G24",
     "zone": "全局",
     "name": "向导B及骨骼",
-    "source": "L1 自制骨架候选 → L2（L1不通过时）",
+    "source": "L1 自制骨架",
     "count": 1,
     "triangles": "实测 1978/件；技能逐件定额，非硬上限",
     "materialRole": "paint / canvas / accent / glass / metal / light",
@@ -1162,12 +1162,12 @@
       1,
       1
     ],
-    "note": "按 Art Lock v3.2 做头盔向导 L1 候选；自制 Idle/Walk/Run/Jump/Land，不冒称 Mixamo；右髋橙包与右头盔青点；不开 Hy3D",
-    "status": "quality-v2 L1 候选及动作证据已生成；Fable 最终验收待完成",
+    "note": "Art Lock v3.3 已接受73aa为头盔向导形象基线；自制 Idle/Walk/Run/Jump/Land，不冒称 Mixamo；右髋橙包与右头盔青点；不开 Hy3D",
+    "status": "2026-10-22 Fable A–D逐项通过；Opus 5.5确认普通入口补证；Bobby未接受",
     "legacyTriangleEstimate": "4–6k",
     "triangleBudget": {
       "status": "原生与最终 Draco GLB 回读实测",
-      "basis": "按技能以轮廓、部件、变形和多视图判质量；声明3–5k艺术预算，最终1978面，不为填预算堆面；视觉门未通过",
+      "basis": "按技能以轮廓、部件、变形和多视图判质量；声明3–5k艺术预算，最终1978面，不为填预算堆面；Fable视觉门于2026-10-22通过",
       "hardCap": false,
       "evaluatedTriangles": 1978,
       "glbReimportTriangles": 1978,
@@ -1189,7 +1189,7 @@
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明",
       "验证非负归一化权重/每点最多四影响、关节弯折、接触、明确命名动作与代表性子帧；最终GLB全新回读逐段回放"
     ],
-    "acceptanceStatus": "73aa0bb6 原生与Draco分件几何、2134个实际混合姿态检查通过；收脚候选仅QA启用，Fable行为与视觉验收未完成；Bobby未接受",
+    "acceptanceStatus": "Fable已按quality-v2整组证据判过；范围与已知限制见quality-v2/fable-verdict-20261022.md；Opus 5.5已确认普通入口启用补证，Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "G24-placeholder-replacement",
@@ -1579,7 +1579,7 @@
       0.21
     ],
     "note": "北侧中央；身份内容入口；v2 门洞留直立净空、双侧门柱，GLB 附实际墙壳碰撞数据",
-    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
+    "status": "2026-10-22 Fable A–D逐项通过；Opus 5.5确认普通入口补证；Bobby未接受",
     "legacyTriangleEstimate": "≤1k",
     "triangleBudget": {
       "status": "quality-v2 原生与最终 GLB 回读实测",
@@ -1602,7 +1602,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
+    "acceptanceStatus": "Fable已按quality-v2整组证据判过；范围与已知限制见quality-v2/fable-verdict-20261022.md；Opus 5.5已确认普通入口启用补证，Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -1648,7 +1648,7 @@
       0.22
     ],
     "note": "同资产左右复用，三顶总数；v2 门洞留直立净空、双侧门柱，GLB 附实际墙壳碰撞数据",
-    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
+    "status": "2026-10-22 Fable A–D逐项通过；Opus 5.5确认普通入口补证；Bobby未接受",
     "legacyTriangleEstimate": "≤1k/件",
     "triangleBudget": {
       "status": "quality-v2 原生与最终 GLB 回读实测",
@@ -1671,7 +1671,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
+    "acceptanceStatus": "Fable已按quality-v2整组证据判过；范围与已知限制见quality-v2/fable-verdict-20261022.md；Opus 5.5已确认普通入口启用补证，Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -1717,7 +1717,7 @@
       0.09
     ],
     "note": "火焰独立运行时动效，不靠密集粒子",
-    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
+    "status": "2026-10-22 Fable A–D逐项通过；Opus 5.5确认普通入口补证；Bobby未接受",
     "legacyTriangleEstimate": "≤1k",
     "triangleBudget": {
       "status": "已制作并完成最终压缩 GLB 回读实测",
@@ -1740,7 +1740,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
+    "acceptanceStatus": "Fable已按quality-v2整组证据判过；范围与已知限制见quality-v2/fable-verdict-20261022.md；Opus 5.5已确认普通入口启用补证，Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -1786,7 +1786,7 @@
       0.09
     ],
     "note": "",
-    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
+    "status": "2026-10-22 Fable A–D逐项通过；Opus 5.5确认普通入口补证；Bobby未接受",
     "legacyTriangleEstimate": "≤500/件",
     "triangleBudget": {
       "status": "已制作并完成最终压缩 GLB 回读实测",
@@ -1810,7 +1810,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
+    "acceptanceStatus": "Fable已按quality-v2整组证据判过；范围与已知限制见quality-v2/fable-verdict-20261022.md；Opus 5.5已确认普通入口启用补证，Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -1856,7 +1856,7 @@
       0.1
     ],
     "note": "石板1",
-    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
+    "status": "2026-10-22 Fable A–D逐项通过；Opus 5.5确认普通入口补证；Bobby未接受",
     "legacyTriangleEstimate": "≤850",
     "triangleBudget": {
       "status": "已制作并完成最终压缩 GLB 回读实测",
@@ -1880,7 +1880,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
+    "acceptanceStatus": "Fable已按quality-v2整组证据判过；范围与已知限制见quality-v2/fable-verdict-20261022.md；Opus 5.5已确认普通入口启用补证，Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -1927,7 +1927,7 @@
       0.08
     ],
     "note": "石板1书堆；位于C07桌面上；高处隔离查询与地面步行分列",
-    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
+    "status": "2026-10-22 Fable A–D逐项通过；Opus 5.5确认普通入口补证；Bobby未接受",
     "legacyTriangleEstimate": "≤500",
     "triangleBudget": {
       "status": "已制作并完成最终压缩 GLB 回读实测",
@@ -1950,7 +1950,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
+    "acceptanceStatus": "Fable已按quality-v2整组证据判过；范围与已知限制见quality-v2/fable-verdict-20261022.md；Opus 5.5已确认普通入口启用补证，Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -1997,7 +1997,7 @@
       0.12
     ],
     "note": "石板2，奖杯简化无高反金属",
-    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
+    "status": "2026-10-22 Fable A–D逐项通过；Opus 5.5确认普通入口补证；Bobby未接受",
     "legacyTriangleEstimate": "≤900",
     "triangleBudget": {
       "status": "已制作并完成最终压缩 GLB 回读实测",
@@ -2021,7 +2021,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
+    "acceptanceStatus": "Fable已按quality-v2整组证据判过；范围与已知限制见quality-v2/fable-verdict-20261022.md；Opus 5.5已确认普通入口启用补证，Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",
@@ -2068,7 +2068,7 @@
       0.24
     ],
     "note": "石板3，旗子运行时风动",
-    "status": "Bobby 拒绝 c507506 样片；quality-v2 返工中",
+    "status": "2026-10-22 Fable A–D逐项通过；Opus 5.5确认普通入口补证；Bobby未接受",
     "legacyTriangleEstimate": "≤900",
     "triangleBudget": {
       "status": "已制作并完成最终压缩 GLB 回读实测",
@@ -2091,7 +2091,7 @@
       "材质语义、持久化PBR参数、材质清单及同机位渲染单独验收",
       "查看实际多视图和黄昏/夜档图；增加面数本身不构成质量证明"
     ],
-    "acceptanceStatus": "quality-v2 运行碰撞与几何检查有证据；等待 Fable 整组观感复核，Bobby 未接受",
+    "acceptanceStatus": "Fable已按quality-v2整组证据判过；范围与已知限制见quality-v2/fable-verdict-20261022.md；Opus 5.5已确认普通入口启用补证，Bobby未接受",
     "productionAuthorization": {
       "date": "2026-10-21",
       "scope": "camp-slice-only",

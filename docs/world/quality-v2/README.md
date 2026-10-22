@@ -1,6 +1,6 @@
 # World 质量返工 v2
 
-状态：Bobby 已否定 c507506 营地样片。73aa角色已修复此前d3的身体自交、夹克下摆和靴轮廓；QA动作候选的两档过渡与打断检查通过，2,134个实际混合姿态的分件/连接检查通过。**仍未取得Fable行为与视觉验收，普通入口未开启新的收脚候选。** 几何见`guide/final/a6/`与`runtime-relations-method.md`，动作见`motion-transitions.md`，逐项状态见`completion-audit.md`。旧失败报告保留，不用机器通过代替观感。
+状态：2026-10-22 11:25，Fable 已按 A–D 逐项通过并接受停步 IK 最小例外；73aa 为形象基线。普通入口已在 1e0965f 启用并完成真实 Cloudflare 录像补证；当前 Opus 5.5 审阅会话已核验录像并解除附加条件。Bobby 尚未接受，灰盒手感门未签字。 判定原文见 `fable-verdict-20261022.md`；普通入口证据见 `default-entry-handoff.md`。旧 c507506 与 d3 失败记录保留，不以机器数字代替用户接受。
 
 ## 范围和验收
 

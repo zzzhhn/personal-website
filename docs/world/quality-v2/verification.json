@@ -26,9 +26,11 @@
     "noFullSuite": true
   },
   "review": {
-    "Fable": "Final 73aa package and behavior exception not accepted; earlier d3 failed",
+    "Fable": "A-D passed at 2026-10-22 11:25; stop IK exception and A2 accepted.",
     "Bobby": "not accepted",
-    "transport": "Final 73aa review request delivered via CUA to WorkBuddy 00-website-main at 2026-10-22 11:11 Asia/Shanghai; new message and Fable processing state verified. Acceptance pending."
+    "transport": "Final package delivered via CUA at 11:11; verdict received at 11:26. Default-entry supplement delivered to Claude-Opus-5.5 at 11:34. Supplement acknowledged; signed source appendix copied in fable-verdict-20261022.md.",
+    "verdict": "fable-verdict-20261022.md",
+    "defaultEntryReviewer": "Claude-Opus-5.5: completed; normal-entry stop and post-turn stop footage checked, activation condition removed."
   },
   "constraints": {
     "Hy3DCalls": 0,
@@ -41,21 +43,15 @@
     "passed": true
   },
   "preview": {
-    "url": "https://2150a1ce.personal-website-aew.pages.dev/world/",
-    "candidateUrl": "https://2150a1ce.personal-website-aew.pages.dev/world/?qa=1&qaPhase=1&qaStop=1",
-    "commit": "e1e546f11c5007dc606748321aba18123fe032ca",
+    "url": "https://34f5f80b.personal-website-aew.pages.dev/world/",
+    "commit": "1e0965f",
     "cloudflareCheck": "success",
-    "proof": "playtest/preview-e1e546f/report.json",
+    "proof": "playtest/default-entry-73aa/report.json",
     "publishedAssetsMatched": 17,
     "errors": 0,
-    "defaultCandidateFlags": [
-      false,
-      false
-    ],
-    "qaCandidateFlags": [
-      true,
-      true
-    ]
+    "normalEntryQuery": "",
+    "normalEntryQaApiAbsent": true,
+    "defaultMotionEnabled": true
   },
   "staticAssemblyAudit": {
     "report": "static-assembly/report.json",
@@ -72,8 +68,8 @@
   },
   "candidate": {
     "assetSha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7",
-    "defaultEnabled": false,
-    "query": "?qa=1&qaPhase=1&qaStop=1",
+    "defaultEnabled": true,
+    "query": "No query required; old QA URL remains compatible.",
     "transitionReport": "playtest/transitions-73aa-prototype/report.json",
     "transitionChecks": {
       "passed": 20,
@@ -94,7 +90,7 @@
       ],
       "scope": "sampled post-mixer/post-IK poses; finite float CPU reconstruction, not continuous-time proof"
     },
-    "Fable": "not delivered / not accepted",
+    "Fable": "Accepted 2026-10-22 11:25; scope limited to visual stop settling.",
     "vehicleIntegration": {
       "checks": 3,
       "passed": true,
@@ -108,7 +104,8 @@
       "note": "rAF cadence only; same local M5 Pro machine; no skin collection during timing; not M1/GPU certification"
     },
     "published": true,
-    "defaultMeshEnabled": true
+    "defaultMeshEnabled": true,
+    "defaultEntryProof": "playtest/default-entry-73aa/report.json"
   },
   "previousCharacter": {
     "report": "playtest/motion-r4/report.json",
@@ -129,8 +126,8 @@
     "runtimeSamples": 2134,
     "sampledGeometryPassed": true,
     "candidateMotionChecksPassed": 33,
-    "passed": false,
-    "reason": "Fable behavior exception, A2 appearance and final A-D visual acceptance pending; QA phase/stop candidate remains off at ordinary entry",
+    "passed": true,
+    "reason": "Fable A1-A6 accepted; Opus 5.5 confirmed normal-entry activation. Native Jump local 35.85mm failure retained; Bobby acceptance pending.",
     "nativeGeometry": "guide/final/a6/",
     "runtimeGeometry": [
       "playtest/transitions-73aa-prototype/runtime-relations-audit.json",
@@ -145,5 +142,15 @@
     "proof": "playtest/preview-ac5/report.json",
     "publishedAssetsMatched": 17,
     "errors": 0
+  },
+  "defaultEntryBuild": {
+    "status": "passed",
+    "log": "/Users/bobby/Desktop/3D-personal-world/build-default-stop.log",
+    "implementation": "1e0965f"
+  },
+  "defaultEntryNegative": {
+    "report": "/Users/bobby/Desktop/3D-personal-world/default-entry-local-static-20261022/report.json",
+    "passed": false,
+    "reason": "Local static server has no /api/events function; HTTP404 retained. Cloudflare run succeeded."
   }
 }
