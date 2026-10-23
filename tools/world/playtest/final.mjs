@@ -45,6 +45,51 @@ try {
   for(const [direction,dx,dz] of directions){
    const edge=dx?(box.max[0]-box.min[0])/2:(box.max[2]-box.min[2])/2;
    const start=[center[0]+dx*(edge+.82),5.68,center[1]+dz*(edge+.82)];
+   // nature-v4 / quality-v3 spec 11.3: G19/G20 are pass-through drag zones, no longer solid. These 8
+   // cases REPLACE the old hard-block expectation (old reports keep their own verdicts). Same start and
+   // real-key input; expect: enters and exits the far side, no solid contact on the bush, horizontal
+   // speed inside drops vs the run-up, drag gone after exit, no launch, and the sensor never supports.
+   if(id==='G19'||id==='G20'){
+    await bot.fixtureTeleport(start,`${id}/${direction}: isolated approach start only (soft bush)`);
+    const far=[center[0]-dx*(edge+1.6),center[1]-dz*(edge+1.6)];
+    const rows=[];
+    const result=await bot.walk([far],{timeout:8,arrive:.35,maxRecoveries:0,stopOnBlocked:true,onTick:async(fb,row)=>{
+     const extra=await page.evaluate(()=>({inside:window.__worldSoftBush?.state().lastInside??null,v:__worldDebug.snapshot().playerVelocity}));
+     rows.push({t:row.t,p:fb.player,g:fb.grounded,v:extra.v,inside:extra.inside,solid:(fb.extra.contacts||[]).filter(c=>c.other.kind==='solid').map(c=>c.other.assetId)});
+    }});
+    const h=v=>Math.hypot(v[0],v[2]),med=a=>{const q=[...a].sort((x,y)=>x-y);return q.length?q[Math.floor(q.length/2)]:null;};
+    const firstIn=rows.findIndex(r=>r.inside?.length),lastIn=rows.findLastIndex(r=>r.inside?.length);
+    const before=med(rows.slice(Math.max(0,firstIn-6),Math.max(0,firstIn)).filter(r=>h(r.v)>1).map(r=>h(r.v)));
+    // Run-out samples stop at the first solid contact (G19 instance 0 has a G21 boulder 1-2 m beyond
+    // its east/north faces); speed after a hard block is not a drag-release measurement.
+    const blockAt=rows.findIndex((r,i)=>i>lastIn&&r.solid.length);
+    const inside=med(rows.slice(firstIn,lastIn+1).map(r=>h(r.v))),after=med(rows.slice(lastIn+2,blockAt>lastIn?Math.min(blockAt,lastIn+8):lastIn+8).filter(r=>h(r.v)>1).map(r=>h(r.v)));
+    // Free reference = the faster of run-up / run-out on the same pass (the run-up is only 0.82 m, so
+    // it can still be accelerating). Passing through = a sample beyond the far hull face after the last
+    // in-zone sample; the far waypoint itself can sit on a neighbouring rock (that block is logged).
+    const ref=Math.max(before??0,after??0)||null;
+    const beyond=v=>-(dx*(v[0]-center[0])+dz*(v[2]-center[1]))>edge+.05;
+    const exitedFar=lastIn>=0&&rows.slice(lastIn+1).some(r=>beyond(r.p));
+    const reached=exitedFar,bushSolid=rows.some(r=>r.solid.includes(id));
+    const otherBlock=!result.legs.every(l=>l.reached)?[...new Set(rows.flatMap(r=>r.solid))]:[];
+    const maxVy=Math.max(0,...rows.slice(Math.max(0,firstIn),lastIn+1).map(r=>Math.abs(r.v[1])));
+    const groundedShare=firstIn<0?null:rows.slice(firstIn,lastIn+1).filter(r=>r.g).length/(lastIn-firstIn+1);
+    const lift=Math.max(...rows.map(r=>r.p[1]))-Math.min(...rows.map(r=>r.p[1]));
+    // Drag release: run-out speed recovers; or, when a neighbouring solid stops the body within a few
+    // samples of exiting (no run-out to measure), the zone reports the body outside on every later sample.
+    const outsideAfter=lastIn>=0&&rows.slice(lastIn+1).length>0&&rows.slice(lastIn+1).every(r=>!r.inside?.length);
+    const released=after!=null?after>1.15*inside:(otherBlock.length>0&&outsideAfter);
+    const passed=reached&&firstIn>=0&&!bushSolid&&inside!=null&&ref!=null&&inside<.85*ref&&released&&maxVy<=1&&groundedShare>=.9&&lift<.25;
+    const status=passed?'soft-pass-through-with-drag':!reached?'soft-blocked':firstIn<0?'soft-no-zone-entry':'soft-drag-out-of-range';
+    const row={id,direction,passed,status,softBush:true,expectation:'quality-v3 spec 11.3 pass-through drag (replaces solid block)',start,far,reached,exitedFarFace:exitedFar,farWaypointReached:result.legs.every(l=>l.reached),blockedAfterExitBy:otherBlock,bushSolidContact:bushSolid,
+     dragReleased:released,releaseEvidence:after!=null?'run-out speed':'zone reports outside after exit (run-out blocked by neighbouring solid)',
+     speedReference_mps:ref,speedBefore_mps:before,speedInside_mps:inside,speedAfter_mps:after,maxAbsVyInside:maxVy,groundedShareInside:groundedShare,playerLift_m:lift,samplesInside:firstIn<0?0:lastIn-firstIn+1,result,
+     visualBoundaryWithin15cm:null};
+    report.collisions.push(row);
+    if(direction==='east'||!passed)row.screenshot=await shot(`${id}-${direction}-${status}`);
+    console.log(JSON.stringify({id,direction,passed,status,before,inside,after}));
+    continue;
+   }
    await bot.fixtureTeleport(start,`${id}/${direction}: isolated approach start only`);
    const contacts=[];const before=await snap();
    const result=await bot.walk([center],{timeout:7,arrive:.18,stopOnBlocked:true,onTick:async(fb,row)=>{
@@ -92,7 +137,8 @@ try {
   await bot.release();await page.waitForTimeout(500);const jumpStart=await snap();await bot.press('Space');
   for(let i=0;i<15;i++){await page.waitForTimeout(90);report.animations.push({label:'jump-and-land',...await snap()});}
   const clips=[...new Set(report.animations.map(x=>x.a.animation))];
-  check('Actual Idle Walk Run Jump clips', ['Idle','Walk','Run','Jump'].every(c=>clips.includes(c)),clips);
+  // v3: WASD defaults to Run, Shift is Sprint, and the jump is split into start/air/land clips.
+  check('Actual Idle Run Sprint Jump/Land clips', ['Idle','Run','Sprint','Land'].every(c=>clips.includes(c))&&clips.some(c=>/^(Run)?JumpStart$/.test(c))&&clips.some(c=>/^(Run)?JumpAir$/.test(c)),clips);
   const flight=report.animations.filter(x=>x.label==='jump-and-land');
   check('Jump physically rises then lands',Math.max(...flight.map(x=>x.s.player[1]))-jumpStart.s.player[1]>.6&&flight.some(x=>!x.s.grounded)&&flight.at(-1).s.grounded,{start:jumpStart.s.player,peak:Math.max(...flight.map(x=>x.s.player[1])),land:flight.at(-1).s.player});
   await bot.fixtureTeleport([-26,5.68,36.2],'E enter/exit interaction start beside offroad');

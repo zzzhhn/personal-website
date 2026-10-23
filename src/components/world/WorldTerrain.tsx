@@ -1,11 +1,20 @@
-import { useEffect, useMemo } from 'react';
-import { CircleGeometry, Color, MeshStandardMaterial, Vector2 } from 'three';
-import { CAMP_CENTER, ISLAND_OUTLINE } from './layout';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { useFrame, useThree } from '@react-three/fiber';
+import { RigidBody, TrimeshCollider } from '@react-three/rapier';
+import {
+  BufferGeometry, Color, Float32BufferAttribute, IcosahedronGeometry, InstancedMesh, MeshStandardMaterial, Object3D, RepeatWrapping,
+  SRGBColorSpace, TextureLoader, type Material, type Texture,
+} from 'three';
+import { BUILDINGS, FOUNDATIONS, GROUND_Y } from './layout';
+import { buildTerrain, createTerrainGeometry, grassCandidateJob, scatterCandidates, SHORE_GLSL, shoreUniforms, terrainColours, type ScatterBlocker } from './WorldLandform';
+import { useWorldStore } from './store';
+import { windUniforms } from './WorldWind';
+import WorldGrass, { ActorTracker, actorState, grassDebug } from './WorldGrass';
+import { seaSpotDebug } from './WorldSea';
 
-/** Ground surfaces shaded from continuous world-space fields (no vertex colours, no per-face
- * tones): warped sand/grass transitions, 6-10 m grass patches, low-contrast 1.6 m and 0.45 m
- * detail, and a normal-only micro relief. Geometry stays exactly on the walkable collider
- * planes, so feet never float or sink; high-frequency terms fade out with screen derivatives. */
+/** quality-v3 island ground: one 0.5 m faceted terrain (WorldLandform) rendered with vertex
+ * colours plus world-space detail and swash-driven wet sand, and the same triangles as the
+ * Rapier ground (walk/drive tops `surface`, faces steeper than 25 deg `solid`). */
 
 const NOISE = /* glsl */`
 float tHash(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
@@ -13,108 +22,239 @@ float tNoise(vec2 p) {
   vec2 i = floor(p), f = fract(p), u = f * f * (3.0 - 2.0 * f);
   return mix(mix(tHash(i), tHash(i + vec2(1.0, 0.0)), u.x), mix(tHash(i + vec2(0.0, 1.0)), tHash(i + vec2(1.0, 1.0)), u.x), u.y);
 }
-float tRelief(vec2 p, float fine) { return 0.5 * tNoise(p / 2.2) + 0.25 * tNoise(p / 0.9) + fine * 0.12 * tNoise(p / 0.37); }
 `;
 
-const COMMON_FRAGMENT = /* glsl */`
-varying vec3 vTerrainWorld;
-varying float vTerrainUp;
-uniform vec3 uGrassA; uniform vec3 uGrassB;
-${NOISE}
-vec3 terrainGrass(vec2 p) {
-  float patches = smoothstep(0.38, 0.66, 0.7 * tNoise(p / 7.5) + 0.3 * tNoise(p / 3.1 + 11.0));
-  return mix(uGrassA, uGrassB, patches);
+/** Ground look, quality-v4 (Astra ruling, spec §13: PBR detail is the default, procedural v4 is
+ * the fallback). Both keep the Art Lock palette and matte intent: per-vertex mottling
+ * (WorldLandform), world-space patch noise in hue and value, slope/height material mixing, worn
+ * paths, roughness 0.86-1.0 with weakened dielectric specular (F0 0.016, F90 0.4).
+ * Default: CC0 ambientCG grass/sand/dirt detail on world-xz UVs, colour-preserving (texture /
+ * its mean multiplies the vertex colour, so hue stays Art Lock), normal + roughness channels,
+ * two-sample rotated tiling to break repetition, blended by per-vertex material weights. The
+ * faceted micro relief is off here (Bobby: origami look up close); the normal map carries detail.
+ * Fallback `?groundPbr=0`: no textures; 0.45 m triangular micro facets (<= 5 deg) instead. */
+export const GROUND_PBR = typeof window === 'undefined' || new URLSearchParams(window.location.search).get('groundPbr') !== '0';
+const PBR_SETS = ['grass', 'sand', 'dirt'] as const;
+/** Mean sRGB albedo of each downsized texture (public/assets/world/terrain/SOURCES.json). */
+const PBR_MEAN: Record<(typeof PBR_SETS)[number], [number, number, number]> = { grass: [96.4, 108.6, 48.4], sand: [155.7, 138.7, 109.6], dirt: [152.4, 146.8, 87.5] };
+const srgbToLinear = (c: number) => { c /= 255; return c <= .04045 ? c / 12.92 : ((c + .055) / 1.055) ** 2.4; };
+
+function loadPbr() {
+  const loader = new TextureLoader(), tex: Texture[] = [];
+  for (const k of PBR_SETS) for (const kind of ['albedo.jpg', 'nr.png']) {
+    const t = loader.load(`/assets/world/terrain/${k}_${kind}`);
+    t.wrapS = t.wrapT = RepeatWrapping; t.anisotropy = 4;
+    if (kind === 'albedo.jpg') t.colorSpace = SRGBColorSpace;
+    tex.push(t);
+  }
+  return tex;
 }
-`;
 
-/** Shared material factory: `field` writes vec3 tc and float tRough (relief strength) from vec2 tp. */
-function terrainMaterial(name: string, uniforms: Record<string, { value: unknown }>, declarations: string, field: string) {
-  const material = new MeshStandardMaterial({ roughness: 1, metalness: 0 });
-  material.name = name;
+function createGroundMaterial(pbr: Texture[] | null) {
+  const material = new MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 1, metalness: 0 });
+  material.name = pbr ? 'island-terrain-v4-pbr' : 'island-terrain-v4';
   material.onBeforeCompile = shader => {
-    Object.assign(shader.uniforms, uniforms);
-    shader.vertexShader = 'varying vec3 vTerrainWorld;\nvarying float vTerrainUp;\n' + shader.vertexShader.replace('#include <project_vertex>', `#include <project_vertex>
+    Object.assign(shader.uniforms, shoreUniforms(), { uSeaTime: windUniforms.uWindTime, uSeaMotion: windUniforms.uWindStrength });
+    if (pbr) {
+      PBR_SETS.forEach((k, i) => {
+        shader.uniforms[`uAlb${i}`] = { value: pbr[i * 2] }; shader.uniforms[`uNr${i}`] = { value: pbr[i * 2 + 1] };
+        shader.uniforms[`uMean${i}`] = { value: PBR_MEAN[k].map(srgbToLinear) };
+      });
+    }
+    shader.vertexShader = 'attribute vec4 groundMix;\nvarying vec4 vGroundMix;\nvarying vec3 vTerrainWorld;\n' + shader.vertexShader.replace('#include <project_vertex>', `#include <project_vertex>
       vTerrainWorld = (modelMatrix * vec4(transformed, 1.0)).xyz;
-      vTerrainUp = normalize(mat3(modelMatrix) * objectNormal).y;`);
-    shader.fragmentShader = COMMON_FRAGMENT + declarations + shader.fragmentShader
+      vGroundMix = groundMix;`);
+    const pbrHead = pbr ? `
+uniform sampler2D uAlb0; uniform sampler2D uAlb1; uniform sampler2D uAlb2;
+uniform sampler2D uNr0; uniform sampler2D uNr1; uniform sampler2D uNr2;
+uniform vec3 uMean0; uniform vec3 uMean1; uniform vec3 uMean2;
+// Anti-tiling: three samples per texture (base, 37 deg rotated + offset at 1.13x, 71 deg
+// rotated + offset at 0.87x) with noise weights that change over ~4-9 m, so the repeat
+// never forms a visible grid (no square paving read on large plazas).
+vec2 rotA(vec2 uv) { return mat2(0.7986, -0.6018, 0.6018, 0.7986) * uv * 1.13 + vec2(0.37, 0.71); }
+vec2 rotB(vec2 uv) { return mat2(0.3256, 0.9455, -0.9455, 0.3256) * uv * 0.87 + vec2(0.61, 0.19); }
+vec4 tileMix(sampler2D t, vec2 uv, vec3 w) { return texture2D(t, uv) * w.x + texture2D(t, rotA(uv)) * w.y + texture2D(t, rotB(uv)) * w.z; }
+` : '';
+    shader.fragmentShader = `varying vec3 vTerrainWorld;\nvarying vec4 vGroundMix;\nuniform float uSeaTime; uniform float uSeaMotion;\n${NOISE}${SHORE_GLSL}${pbrHead}` + shader.fragmentShader
       .replace('#include <color_fragment>', `#include <color_fragment>
       vec2 tp = vTerrainWorld.xz;
-      // Fade sub-metre terms once a texel covers more than ~25 cm of ground.
+      // Fade sub-metre terms once a pixel covers more than ~25 cm of ground.
       float tFine = 1.0 - smoothstep(0.08, 0.25, length(fwidth(tp)));
-      vec3 tc = vec3(1.0); float tRough = 0.0;
-      ${field}
-      float tDetail = (tNoise(tp / 1.6) - 0.5) * 0.07 + (tNoise(tp / 0.45) - 0.5) * 0.05 * tFine;
-      diffuseColor.rgb = tc * (1.0 + tDetail);`)
+      float tWalk = clamp(vGroundMix.x + vGroundMix.y + vGroundMix.z, 0.0, 1.0);
+      // Patch noise: value +-6 % at 1.6 m, +-5 % at 0.45 m, and a 9 m warm/cool hue drift.
+      float hue = (tNoise(tp / 9.0 + 3.7) - 0.5) * 0.08;
+      diffuseColor.rgb *= (1.0 + (tNoise(tp / 1.6) - 0.5) * 0.12 + (tNoise(tp / 0.45) - 0.5) * 0.1 * tFine) * vec3(1.0 + hue, 1.0, 1.0 - hue);
+      // Grass reads cooler and darker in its low hollows, drier on crests (height mixing).
+      diffuseColor.rgb *= mix(1.0, 0.92 + 0.12 * smoothstep(0.2, 0.8, tNoise(tp / 4.3 + 9.1)), vGroundMix.x);
+      ${pbr ? `
+      vec2 puv = tp / 2.5;
+      vec3 pm = vec3(tNoise(tp / 4.3 + 21.0), tNoise(tp / 6.1 - 13.0), tNoise(tp / 8.7 + 5.0));
+      pm = pm * pm * pm; pm /= pm.x + pm.y + pm.z;
+      vec3 gw = vGroundMix.xyz / max(vGroundMix.x + vGroundMix.y + vGroundMix.z, 1e-3);
+      // Dirt (Ground037) carries moss: use its luminance only so trodden ground stays Art Lock earth.
+      vec3 dirt = tileMix(uAlb2, puv * 1.2, pm).rgb / uMean2;
+      dirt = vec3(dot(dirt, vec3(0.299, 0.587, 0.114)));
+      vec3 ratio = gw.x * tileMix(uAlb0, puv, pm).rgb / uMean0 + gw.y * tileMix(uAlb1, puv * 1.6, pm).rgb / uMean1 + gw.z * dirt;
+      // Colour-preserving detail: the texture modulates the Art Lock vertex colour, faded far away.
+      diffuseColor.rgb *= mix(vec3(1.0), clamp(ratio, 0.45, 1.6), tWalk * (0.35 + 0.65 * tFine));
+      vec4 nrS = gw.x * tileMix(uNr0, puv, pm) + gw.y * tileMix(uNr1, puv * 1.6, pm) + gw.z * tileMix(uNr2, puv * 1.2, pm);` : ''}
+      // Wet sand follows the swash (0-1.5 m), lagging the foam by 0.8 s; not on the seawall.
+      vec4 sh = shoreSample(tp);
+      float landD = -shoreSigned(sh);
+      float tWet = 0.0;
+      if (landD > -0.6 && vTerrainWorld.y < ${(GROUND_Y - .02).toFixed(2)}) {
+        float reach = 1.5 * shoreSwash(tp, (uSeaTime - 0.8) * step(0.001, uSeaMotion)) + 0.15;
+        tWet = (1.0 - smoothstep(reach - 0.35, reach + 0.15, landD)) * (1.0 - sh.b);
+        diffuseColor.rgb *= mix(1.0, 0.8, tWet);
+      }`)
+      .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>
+      // Matte with variation: 0.86-1.0 (wet sand 0.72) instead of one uniform sheen.
+      roughnessFactor = mix(0.86, 1.0, tNoise(tp / 1.1 + 5.3)) ${pbr ? '* mix(1.0, 0.75 + 0.25 * nrS.b, tWalk)' : ''};
+      roughnessFactor = mix(roughnessFactor, 0.72, tWet);`)
       .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
-      if (vTerrainUp > 0.9 && tRough > 0.0) {
-        float e = 0.12, h0 = tRelief(tp, tFine);
-        float k = tRough * (0.35 + 0.65 * tFine);
-        vec3 nW = normalize(vec3(-(tRelief(tp + vec2(e, 0.0), tFine) - h0) / e * k, 1.0, -(tRelief(tp + vec2(0.0, e), tFine) - h0) / e * k));
-        normal = normalize((viewMatrix * vec4(nW, 0.0)).xyz);
-      }`);
+      {
+        // Fallback only: faceted micro relief on walkable ground (skewed triangular 0.45 m lattice,
+        // <= 5 deg hash tilt, calmed by 3 m noise). With PBR its weight is 0 and the texture normal
+        // (0.55, faded with distance) gives the near-field relief instead.
+        vec3 nW = normalize((vec4(normal, 0.0) * viewMatrix).xyz);
+        if (nW.y > 0.82 && tWalk > 0.01) {
+          vec2 q = mat2(1.0, 0.0, 0.57735, 1.1547) * (tp / 0.45);
+          vec2 cell = floor(q), f = fract(q);
+          float upper = step(f.y, f.x);
+          vec2 id = cell * 2.0 + vec2(upper, 0.0);
+          vec2 tilt = vec2(tHash(id + 17.0), tHash(id + 43.0)) - 0.5;
+          float calm = 0.45 + 0.55 * tNoise(tp / 3.0 + 2.0);
+          vec3 pert = vec3(tilt.x, 0.0, tilt.y) * ${pbr ? '0.0' : '0.17'} * calm * tFine * tWalk;
+          ${pbr ? 'pert += vec3(nrS.r * 2.0 - 1.0, 0.0, -(nrS.g * 2.0 - 1.0)) * 0.55 * tWalk * (0.4 + 0.6 * tFine);' : ''}
+          normal = normalize((viewMatrix * vec4(normalize(nW + pert), 0.0)).xyz);
+        }
+      }`)
+      .replace('#include <lights_physical_fragment>', `#include <lights_physical_fragment>
+      // Weaker dielectric specular for soil/grass: removes the plastic grazing sheen.
+      material.specularColor = vec3(0.016); material.specularColorBlended = vec3(0.016); material.specularF90 = 0.4;`);
   };
-  material.customProgramCacheKey = () => name;
+  material.customProgramCacheKey = () => pbr ? 'island-terrain-v4-pbr' : 'island-terrain-v4';
   return material;
 }
 
-const color = (hex: string) => ({ value: new Color(hex) });
+/** Footprints where ground detail must not appear (buildings, forecourts, foundations, blocks). */
+const SCATTER_BLOCKERS: ScatterBlocker[] = [
+  ...BUILDINGS.flatMap(({ position: [x, , z], size: [w, , d] }) => [
+    { minX: x - w / 2 - .6, maxX: x + w / 2 + .6, minZ: z - d / 2 - .6, maxZ: z + d / 2 + .6 },
+    { minX: x + w / 2, maxX: x + w / 2 + 5.6, minZ: z - d / 2 - 1, maxZ: z + d / 2 + 3.6 },
+  ]),
+  ...FOUNDATIONS.map(({ position: [x, , z], size: [w, , d] }) => ({ minX: x - w / 2 - .4, maxX: x + w / 2 + .4, minZ: z - d / 2 - .4, maxZ: z + d / 2 + .4 })),
+  ...[[-18, 8], [-13, -8], [-12, -24], [-4, -45]].map(([x, z]) => ({ minX: x - 4.4, maxX: x + 4.4, minZ: z - 3.9, maxZ: z + 3.9 })),
+  { minX: 16, maxX: 24, minZ: 8, maxZ: 16 }, // coastal parking bay
+  { minX: -45, maxX: -39, minZ: 27, maxZ: 33 }, // fire pit
+  { minX: -31, maxX: -29, minZ: 30, maxZ: 38 }, // camp exit lamps
+];
 
-/** C01: pit ash -> trodden sand -> warm plaza sand -> light sand band carrying path and pads ->
- * patchy olive grass -> sandy rim, with every boundary warped by noise and blended over 1-2 m. */
-export function createCampGroundMaterial() {
-  return terrainMaterial('camp-ground-terrain', {
-    uGrassA: color('#7E8C3E'), uGrassB: color('#8A963F'),
-    uCampCenter: { value: new Vector2(CAMP_CENTER[0], CAMP_CENTER[2]) },
-    uPit: color('#A58D6A'), uTrodden: color('#B89A6A'), uPlaza: color('#C9A978'),
-    uLip: color('#B39265'), uBand: color('#D2B98A'), uRim: color('#B99A6C'),
-  }, 'uniform vec2 uCampCenter; uniform vec3 uPit; uniform vec3 uTrodden; uniform vec3 uPlaza; uniform vec3 uLip; uniform vec3 uBand; uniform vec3 uRim;\n', `
-      float r = length(tp - uCampCenter);
-      float warp = (tNoise(tp / 4.0) - 0.5) * 1.6 + (tNoise(tp / 1.7 + 7.0) - 0.5) * 0.5;
-      float rw = r + warp;
-      vec3 inner = mix(mix(uPit, uTrodden, smoothstep(1.4, 3.0, r + warp * 0.3)), uPlaza, smoothstep(2.8, 4.6, rw));
-      tc = mix(inner, uBand, smoothstep(10.0, 11.0, rw));
-      tc = mix(tc, uLip, 0.35 * smoothstep(9.6, 10.3, rw) * (1.0 - smoothstep(10.5, 11.3, rw)));
-      float grassMask = smoothstep(16.6, 18.6, rw);
-      tc = mix(tc, terrainGrass(tp), grassMask);
-      float rimMask = smoothstep(22.4, 23.6, r + warp * 0.4);
-      tc = mix(tc, uRim, rimMask);
-      tRough = mix(mix(0.025, 0.055, smoothstep(3.0, 5.0, rw)), 0.11, grassMask * (1.0 - rimMask));`);
+function pebbleGeometry() {
+  const g = new IcosahedronGeometry(.11, 0); // 20 triangles
+  g.scale(1, .45, .8); g.translate(0, .02, 0);
+  return g;
+}
+const SCATTER_RADIUS = 40;
+/** One instanced draw per class; instances are refilled from fixed candidates within 40 m of
+ * the camera focus whenever the focus moves more than 2 m (no per-frame matrix uploads). */
+function Scatter({ name, data, geometry, material, tint }: { name: string; data: Float32Array; geometry: BufferGeometry; material: Material; tint: (i: number) => Color }) {
+  const ref = useRef<InstancedMesh>(null);
+  const count = data.length / 5;
+  const last = useRef<[number, number]>([1e9, 1e9]);
+  const refill = (fx: number, fz: number) => {
+    const mesh = ref.current; if (!mesh) return;
+    const dummy = new Object3D(); let n = 0;
+    for (let i = 0; i < count; i++) {
+      const x = data[i * 5], z = data[i * 5 + 2];
+      if ((x - fx) ** 2 + (z - fz) ** 2 > SCATTER_RADIUS * SCATTER_RADIUS) continue;
+      const s = .55 + data[i * 5 + 4] * 1.0;
+      dummy.position.set(x, data[i * 5 + 1] - .015, z); dummy.rotation.set(0, data[i * 5 + 3], 0); dummy.scale.setScalar(s); dummy.updateMatrix();
+      mesh.setMatrixAt(n, dummy.matrix); mesh.setColorAt(n, tint(i)); n++;
+    }
+    mesh.count = n;
+    mesh.instanceMatrix.needsUpdate = true;
+    if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+    mesh.computeBoundingSphere();
+  };
+  useLayoutEffect(() => { const p = useWorldStore.getState().position; last.current = [p[0], p[2]]; refill(p[0], p[2]); });
+  useFrame(({ camera }) => {
+    const shot = useWorldStore.getState().shot, p = useWorldStore.getState().position;
+    // QA shots look at the whole island: centre on the camera's ground target instead.
+    const fx = shot ? camera.position.x - camera.position.y * .6 : p[0], fz = shot ? camera.position.z - camera.position.y * .6 : p[2];
+    if (Math.hypot(fx - last.current[0], fz - last.current[1]) < 2) return;
+    last.current = [fx, fz]; refill(fx, fz);
+  });
+  return <instancedMesh ref={ref} name={name} args={[geometry, material, Math.max(1, count)]} receiveShadow frustumCulled={false} />;
 }
 
-/** Island top (the existing extruded walk surface, unchanged collider): patchy grass that turns
- * to beach sand within a few metres of the coast; the slab sides read as earth/stone banding. */
-export function createIslandGroundMaterial() {
-  const outline = ISLAND_OUTLINE.map(([x, z]) => new Vector2(x, z));
-  return terrainMaterial('island-ground-terrain', {
-    uGrassA: color('#7E8C3E'), uGrassB: color('#8A963F'),
-    uBeach: color('#D8C59E'), uSide: color('#8C8276'), uSideTop: color('#9A8466'),
-    uOutline: { value: outline },
-  }, `uniform vec3 uBeach; uniform vec3 uSide; uniform vec3 uSideTop; uniform vec2 uOutline[${outline.length}];
-float coastDistance(vec2 p) {
-  float d = 1e5;
-  for (int i = 0; i < ${outline.length}; i++) {
-    vec2 a = uOutline[i], b = uOutline[(i + 1) % ${outline.length}], ab = b - a;
-    float t = clamp(dot(p - a, ab) / dot(ab, ab), 0.0, 1.0);
-    d = min(d, length(p - a - ab * t));
-  }
-  return d;
-}
-`, `
-      if (vTerrainUp > 0.5) {
-        float coast = coastDistance(tp) + (tNoise(tp / 3.5) - 0.5) * 2.0;
-        float grassMask = smoothstep(1.2, 4.5, coast);
-        tc = mix(uBeach, terrainGrass(tp), grassMask);
-        tRough = mix(0.05, 0.11, grassMask);
-      } else {
-        float band = smoothstep(-0.2, 0.8, vTerrainWorld.y) + (tNoise(vec2(tp.x + tp.y, vTerrainWorld.y * 3.0)) - 0.5) * 0.3;
-        tc = mix(uSide, uSideTop, clamp(band, 0.0, 1.0));
-      }`);
+/** Wall-clock span of the sliced grass build (QA). */
+const grassBuild = { ms: 0 };
+/** Triangles per pebble (IcosahedronGeometry detail 0). */
+const PEBBLE_TRIANGLES = 20;
+
+/** QA entry only: expose ground/grass/sea-spot state (read-only) on window.__worldEnv. */
+function EnvDebug() {
+  const { scene } = useThree();
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('qa') !== '1') return;
+    const w = window as unknown as { __worldEnv?: unknown };
+    w.__worldEnv = { grass: () => ({ ...grassDebug, trampleAt: undefined }), trampleAt: (x: number, z: number) => grassDebug.trampleAt(x, z), sea: () => seaSpotDebug.spots, actors: () => actorState.actors.map(a => ({ ...a })), groundPbr: GROUND_PBR,
+      // A/B cost probe only: hide/show the grass draw.
+      setGrassVisible: (on: boolean) => { const g = scene.getObjectByName('ground-grass-blades'); if (g) g.visible = on; return !!g; },
+      // Ground-detail budget (spec §3: grass + pebbles + other scatter <= 60k visible triangles).
+      groundDetail: () => {
+        const pebbles = (scene.getObjectByName('ground-pebbles') as InstancedMesh | undefined)?.count ?? 0;
+        return { grassTufts: grassDebug.instances, grassTriangles: grassDebug.triangles, pebbles, pebbleTriangles: pebbles * PEBBLE_TRIANGLES,
+          totalTriangles: grassDebug.triangles + pebbles * PEBBLE_TRIANGLES, budget: 60000, grassBuildMs: grassBuild.ms };
+      } };
+    return () => { delete w.__worldEnv; };
+  }, [scene]);
+  return null;
 }
 
-/** Camp plateau cap: a smooth 128-sided disc exactly at the cylinder collider top. */
-export function CampGround({ radius, y }: { radius: number; y: number }) {
-  const geometry = useMemo(() => new CircleGeometry(radius, 128).rotateX(-Math.PI / 2), [radius]);
-  const material = useMemo(createCampGroundMaterial, []);
-  useEffect(() => () => { geometry.dispose(); material.dispose(); }, [geometry, material]);
-  return <mesh name="camp-ground-C01" geometry={geometry} material={material} position={[CAMP_CENTER[0], y, CAMP_CENTER[2]]} receiveShadow />;
+export function IslandTerrain() {
+  const terrain = useMemo(buildTerrain, []);
+  const geometry = useMemo(() => {
+    const g = createTerrainGeometry();
+    const { colours, groundMix } = terrainColours(g.getAttribute('normal').array);
+    g.setAttribute('color', new Float32BufferAttribute(colours, 3));
+    g.setAttribute('groundMix', new Float32BufferAttribute(groundMix, 4));
+    return g;
+  }, []);
+  const pbr = useMemo(() => GROUND_PBR ? loadPbr() : null, []);
+  const material = useMemo(() => createGroundMaterial(pbr), [pbr]);
+  const scatter = useMemo(() => scatterCandidates(SCATTER_BLOCKERS), []);
+  // Grass candidates (~1 s of CPU in one go) are built in <= 6 ms slices on idle callbacks, so the
+  // first frames are not blocked; the grass fades in once the build completes.
+  const [blades, setBlades] = useState(() => new Float32Array(0));
+  useEffect(() => {
+    const job = grassCandidateJob(SCATTER_BLOCKERS), w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number; cancelIdleCallback?: (id: number) => void };
+    let handle = 0, done = false; const t0 = performance.now();
+    const tick = () => {
+      if (done) return;
+      if (job.step(6)) { done = true; grassBuild.ms = Math.round(performance.now() - t0); setBlades(job.result()); return; }
+      handle = w.requestIdleCallback ? w.requestIdleCallback(tick, { timeout: 50 }) : window.setTimeout(tick, 0);
+    };
+    tick();
+    return () => { done = true; if (w.cancelIdleCallback) w.cancelIdleCallback(handle); else window.clearTimeout(handle); };
+  }, []);
+  const pebble = useMemo(pebbleGeometry, []);
+  const pebbleMat = useMemo(() => new MeshStandardMaterial({ vertexColors: false, roughness: 1, flatShading: true }), []);
+  const pebbleTint = useMemo(() => { const a = new Color('#8C8276'), b = new Color('#B4A896'), c = new Color(); return (i: number) => c.copy(a).lerp(b, scatter.pebbles[i * 5 + 4]); }, [scatter]);
+  useEffect(() => () => { geometry.dispose(); material.dispose(); pebble.dispose(); pebbleMat.dispose(); pbr?.forEach(t => t.dispose()); }, [geometry, material, pebble, pebbleMat, pbr]);
+  return <group name="island-terrain-v4">
+    {/* Same triangles as the mesh: tops are support-only `surface`, steep faces `solid`. */}
+    <RigidBody name="island-terrain-surface" type="fixed" colliders={false} userData={{ surface: true }}>
+      <TrimeshCollider name="island-terrain-surface-top" args={[terrain.positions, terrain.surface]} friction={.95} restitution={0} />
+    </RigidBody>
+    <RigidBody name="island-terrain-solid" type="fixed" colliders={false} userData={{ solid: true }}>
+      <TrimeshCollider name="island-terrain-solid-faces" args={[terrain.positions, terrain.solid]} friction={.65} restitution={.05} />
+    </RigidBody>
+    <mesh name="island-terrain-v3-mesh" geometry={geometry} material={material} receiveShadow />
+    <ActorTracker />
+    <EnvDebug />
+    <WorldGrass data={blades} />
+    <Scatter name="ground-pebbles" data={scatter.pebbles} geometry={pebble} material={pebbleMat} tint={pebbleTint} />
+  </group>;
 }

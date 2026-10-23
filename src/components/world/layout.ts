@@ -1,4 +1,9 @@
 import type { Vec3, VehicleId } from './types';
+import { LAYOUT_V4, BUILDINGS_V4, FOUNDATIONS_V4, OUTLINE_V4, TREES_V4, VEHICLE_POSITIONS_V4, WORLD_SHOTS_V4 } from './layout-v4-flag.ts';
+import { NETWORK_WALK_V4 } from './layout-v4.ts';
+
+/** Layout v4 (spec §12) is opt-in via `?layout=v4`; every v4 branch below is a data swap only. */
+export { LAYOUT_V4 };
 
 /** World convention: +X east / vehicle forward, +Y up, -Z north. Metres. */
 export const PALETTE = {
@@ -18,27 +23,34 @@ export interface VehiclePlacement {
 }
 /** Positions are road surface heights. Actors add chassis/clearance offset.
  * Suspension is spring force coefficient in N/m; grip is dimensionless. */
-export const VEHICLES: VehiclePlacement[] = [
+const VEHICLES_V3: VehiclePlacement[] = [
   { id: 'offroad', position: [-26, 4.84, 34], yaw: 0, size: [3.9, 1.35, 2], color: PALETTE.slate, mass: 1400, engineForce: 9200, grip: 1.35, suspension: 26000 },
   { id: 'coupe', position: [19.8, 1.14, 12], yaw: Math.PI / 2, size: [4.3, 1.05, 1.9], color: PALETTE.cream, mass: 1100, engineForce: 12000, grip: 0.88, suspension: 42000 },
   { id: 'van', position: [46, 1.14, -45], yaw: 0, size: [4.5, 1.9, 2.2], color: PALETTE.cream, mass: 2100, engineForce: 10500, grip: 1.1, suspension: 34000 },
 ];
+/** v4 moves only the coupe (lay-by); vehicle specs are unchanged. */
+export const VEHICLES: VehiclePlacement[] = LAYOUT_V4 ? VEHICLES_V3.map(v => ({ ...v, ...VEHICLE_POSITIONS_V4[v.id] })) : VEHICLES_V3;
 
 /** Continuous camp exit, descent, coastal road, bridge, then entry plaza. */
-export const ROAD_POINTS: Vec3[] = [
+const ROAD_POINTS_V3: Vec3[] = [
   [-30, 4.84, 34], [-18, 4.84, 34], [-5, 1.14, 29], [6, 1.14, 24],
   [16, 1.14, 9], [22, 1.14, -10], [26, 1.14, -30], [26, 1.14, -42], [43, 1.14, -44], [49, 1.14, -46],
 ];
+/** v4: the whole drivable network as one continuous polyline (segments 0-1 = the frozen ramp), so
+ * terrain road caps / grass exclusion / nearestRoadPoint cover every v4 road. Rendering of v4 roads is
+ * WorldDistricts (from layout-v4.ts), never these points. */
+export const ROAD_POINTS: Vec3[] = LAYOUT_V4 ? NETWORK_WALK_V4 : ROAD_POINTS_V3;
 export const ROAD_WIDTH = 8;
 export const BOARDWALK_POINTS: Vec3[] = [[49, 1.14, -46], [64, 1.14, -40], [69, 1.14, -22], [56, 1.14, -7]];
 export const BOARDWALK_WIDTH = 5.5;
 export const BRIDGE_START: Vec3 = [26, 1.14, -42];
 export const BRIDGE_END: Vec3 = [43, 1.14, -44];
-export const ISLAND_OUTLINE: [number, number][] = [
+const ISLAND_OUTLINE_V3: [number, number][] = [
   [-70, 20], [-65, -20], [-48, -47], [-15, -57], [16, -55], [29, -46],
   [31, -30], [28, -10], [23, 10], [12, 32], [-4, 52], [-35, 59], [-57, 49],
 ];
-export const BUILDINGS = [
+export const ISLAND_OUTLINE: [number, number][] = LAYOUT_V4 ? OUTLINE_V4 : ISLAND_OUTLINE_V3;
+const BUILDINGS_V3 = [
   { id: 'sdic', position: [0, 1, 15] as Vec3, size: [9, 8, 8] as Vec3, color: PALETTE.cream },
   { id: 'worldquant', position: [2, 1, 5] as Vec3, size: [9, 12, 8] as Vec3, color: PALETTE.slate },
   { id: 'moe', position: [6, 1, -7] as Vec3, size: [10, 5, 8] as Vec3, color: PALETTE.brick },
@@ -46,6 +58,7 @@ export const BUILDINGS = [
   { id: 'video-rebirth', position: [11, 1, -31] as Vec3, size: [8, 11, 8] as Vec3, color: PALETTE.brick },
   { id: 'hunyuan', position: [11, 1, -43] as Vec3, size: [10, 15, 8] as Vec3, color: PALETTE.slate },
 ];
+export const BUILDINGS = LAYOUT_V4 ? BUILDINGS_V4 : BUILDINGS_V3;
 export const BOOTHS = [
   { id: 'alpha-agent', position: [59, 1.14, -49] as Vec3 },
   { id: 'evalforge', position: [72, 1.14, -40] as Vec3 },
@@ -54,12 +67,15 @@ export const BOOTHS = [
   { id: 'accompany', position: [61, 1.14, -20] as Vec3 },
   { id: 'interactive-learning', position: [50, 1.14, -12] as Vec3 },
 ];
-export const FOUNDATIONS = [
+const FOUNDATIONS_V3 = [
   { id: 'film', position: [-17, 1.05, -42] as Vec3, size: [15, 0.2, 12] as Vec3 },
   { id: 'community', position: [-54, 1.05, -13] as Vec3, size: [14, 0.2, 12] as Vec3 },
   { id: 'contact', position: [-10, 1.05, 43] as Vec3, size: [13, 0.2, 10] as Vec3 },
 ];
-export const WORLD_SHOTS = [
+export const FOUNDATIONS = LAYOUT_V4 ? FOUNDATIONS_V4 : FOUNDATIONS_V3;
+/** Ground greybox trees (WorldEnvironment); v4 relocates two off the west road. */
+export const GROUND_TREES: Vec3[] = LAYOUT_V4 ? TREES_V4 : [[-61, 1, -4], [-51, 1, -26], [-36, 1, -32], [-28, 1, -8], [-26, 1, 7], [-52, 4.8, 45], [-59, 4.8, 34], [-40, 4.8, 9], [-29, 4.8, 17], [-30, 1, 52], [2, 1, 40], [-44, 1, -43]];
+const WORLD_SHOTS_V3 = [
   { id: 'overview', position: [115, 132, 140] as Vec3, target: [0, 0, 0] as Vec3 },
   { id: 'camp', position: [-11, 33, 67] as Vec3, target: [-42, 4.8, 30] as Vec3 },
   { id: 'camp-night', position: [-16, 24, 62] as Vec3, target: [-42, 4.8, 30] as Vec3 },
@@ -69,6 +85,7 @@ export const WORLD_SHOTS = [
   { id: 'park', position: [98, 40, 13] as Vec3, target: [62, 1, -28] as Vec3 },
   { id: 'park-night', position: [89, 25, 0] as Vec3, target: [62, 1, -29] as Vec3 },
 ];
+export const WORLD_SHOTS = LAYOUT_V4 ? WORLD_SHOTS_V4 : WORLD_SHOTS_V3;
 
 /** Projects onto every driveable centreline segment (including the ramp),
  * preserving surface Y so water recovery never returns an object underwater. */

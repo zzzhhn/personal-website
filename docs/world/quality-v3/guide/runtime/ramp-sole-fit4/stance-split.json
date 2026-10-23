@@ -1,0 +1,18 @@
+{
+ "stance_samples": 18,
+ "stance_min": -0.025735080242156982,
+ "stance_max": 0.031391263008117676,
+ "swing_samples": 150,
+ "swing_min": -0.03339231014251709,
+ "page_errors_excluding_vite_hmr": [],
+ "ramp_checks": [
+  [
+   "road ramp traversed both directions",
+   true
+  ],
+  [
+   "road ramp soles no penetration beyond 3 cm",
+   false
+  ]
+ ]
+}

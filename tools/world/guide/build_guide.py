@@ -13,6 +13,7 @@ REPO = '/Users/bobby/WorkBuddy/personal-website/personal-website'
 TOOLS = f'{REPO}/tools/world/guide'
 PUBLIC = f'{REPO}/public/assets/world/guide'
 DOCS = f'{REPO}/docs/world/quality-v2/guide'
+USE_MOCAP = os.environ.get('G24_MOCAP', '1') != '0'   # v3: Walk/Run/Sprint retargeted from CMU mocap
 FPS = 60  # r2: 60 keys/s; at 30 the fast Run foot dipped 1 cm below ground between keys (linear/slerp)
 RIGHT = -1.0  # Blender -Y is the character's right (glTF +Z). Bag + cyan dot go here (text lock).
 
@@ -55,6 +56,7 @@ def material(key):
 ANKLE_Z = 0.095
 HIP_Z = 0.67
 HIP_Y = 0.10
+LEG_LEN = 0.29 + 0.285   # thigh (0.67->0.38) + shin (0.38->0.095) lengths, hip-to-ankle (measured on the rig)
 # r4 (intersection fix): shoulder joints 2.5 cm wider. At 0.185 the A-pose upper-arm root folded
 # into the chest skin under each armpit: 16 nonadjacent triangle intersections even at rest.
 SH_Y, SH_Z = 0.21, 1.075
@@ -68,6 +70,7 @@ SOLE_H = 0.018
 HEM_Z = 0.66   # r5: jacket hem height; level cut line just above the crotch (lock: hem at the hip line)
 HEM_SNAP = 0.008
 HELMET_C, HELMET_R = 1.425, 0.295   # r2: lower + slightly larger, closes the r1 neck gap
+HELMET_SEG, HELMET_RINGS = 32, 20   # v3: smooth round helmet (was 20 x 12, flat)
 
 
 def arm_points(side):
@@ -358,7 +361,9 @@ def build_mitten(side):
 
 def build_helmet():
     bm = bmesh.new()
-    bmesh.ops.create_uvsphere(bm, u_segments=20, v_segments=12, radius=HELMET_R)
+    # v3 (spec 5): 32 segments round the equator, 20 rings pole-to-pole (>= 12 above the equator
+    # band after the neck cut); the shell is smooth-shaded in bind(), its cut rim stays a hard edge.
+    bmesh.ops.create_uvsphere(bm, u_segments=HELMET_SEG, v_segments=HELMET_RINGS, radius=HELMET_R)
     for v in bm.verts:
         v.co.z *= 0.96
         v.co.x *= 1.0
@@ -429,7 +434,7 @@ def build_parts():
     parts['helmet'] = build_helmet()
     c = Vector((0, 0, HELMET_C))
     parts['visor'] = shell_patch('G24_visor', math.radians(-74), math.radians(74), math.radians(-14), math.radians(13),
-                                 HELMET_R - 0.02, HELMET_R + 0.016, 12, 2, 'visor', c)
+                                 HELMET_R - 0.02, HELMET_R + 0.016, 32, 4, 'visor', c)   # v3: 32 x 4 segments, outer/inner faces smooth-shaded in bind()
     az = math.radians(-82) if RIGHT < 0 else math.radians(82)
     parts['dot'] = shell_patch('G24_dot', az - math.radians(5), az + math.radians(5), math.radians(-5), math.radians(5),
                                HELMET_R - 0.01, HELMET_R + 0.03, 2, 2, 'dot', c)
@@ -562,6 +567,24 @@ def bind(parts, ao):
     body.data.name = 'G24_mesh'
     for p in body.data.polygons:
         p.use_smooth = False
+    # v3 (spec 5): smooth shading on the helmet shell only; the visor band, cyan dot and the cut rim
+    # (neck opening cap) keep hard edges. Everything else stays flat low-poly.
+    hel = [i for i, m in enumerate(body.data.materials) if m and m.name.startswith('guide_helmet')]
+    vis = [i for i, m in enumerate(body.data.materials) if m and m.name.startswith('guide_visor')]
+    hc = Vector((0, 0, HELMET_C))
+    bm = bmesh.new(); bm.from_mesh(body.data)
+    for f in bm.faces:
+        if f.material_index in hel:
+            f.smooth = abs(f.normal.z + 1.0) > 1e-3 or f.calc_center_median().z > HELMET_C - HELMET_R * 0.5
+        elif f.material_index in vis:
+            # v3: the visor's curved outer and inner surfaces are smooth; its top/bottom rims and end caps
+            # (normals not radial) stay flat, so the band keeps crisp upper/lower edges
+            radial = (f.calc_center_median() - hc).normalized()
+            f.smooth = abs(f.normal.dot(radial)) > 0.9
+    for e in bm.edges:
+        fs = e.link_faces
+        e.smooth = len(fs) == 2 and all(f.smooth for f in fs)
+    bm.to_mesh(body.data); bm.free()
     body.parent = ao
     mod = body.modifiers.new('Armature', 'ARMATURE')
     mod.object = ao
@@ -874,13 +897,58 @@ CLIPS = {
 }
 
 
+def solve_pose_world(P):
+    """v3 mocap retarget: P has WORLD rotations for pelvis/spine/chest/head, arms{tag:(upper q, fore q)},
+    feet{tag:(ankle target, foot q, knee pole)} and 'hip' = target hip-midpoint position."""
+    D = {'root': Quaternion(), 'pelvis': P['pelvis'], 'spine': P['spine'], 'chest': P['chest'], 'head': P['head']}
+    D['neck'] = D['chest'].slerp(D['head'], 0.5)
+    hip_rest = Vector((0, 0, HIP_Z))
+    pel_head = P['hip'] - D['pelvis'] @ (hip_rest - REST['pelvis']['head'])
+    pelvis_off = pel_head - REST['pelvis']['head']
+    HEADS = {'pelvis': pel_head}
+    stretch = {}
+    for tag in ('R', 'L'):
+        D[f'upperarm.{tag}'], D[f'forearm.{tag}'] = P['arms'][tag]
+        D[f'hand.{tag}'] = D[f'forearm.{tag}']
+        hip = pel_head + D['pelvis'] @ (REST[f'thigh.{tag}']['head'] - REST['pelvis']['head'])
+        ankle_t, footq, pole = P['feet'][tag]
+        l1 = (REST[f'thigh.{tag}']['tail'] - REST[f'thigh.{tag}']['head']).length
+        l2 = (REST[f'shin.{tag}']['tail'] - REST[f'shin.{tag}']['head']).length
+        knee, ankle, over = two_bone(hip, ankle_t, l1, l2, pole)
+        stretch[tag] = over
+        r_th = (REST[f'thigh.{tag}']['tail'] - REST[f'thigh.{tag}']['head']).normalized()
+        q_th = r_th.rotation_difference((knee - hip).normalized())
+        D[f'thigh.{tag}'] = q_th
+        r_sh = (REST[f'shin.{tag}']['tail'] - REST[f'shin.{tag}']['head']).normalized()
+        D[f'shin.{tag}'] = (q_th @ r_sh).rotation_difference((ankle - knee).normalized()) @ q_th
+        D[f'foot.{tag}'] = footq
+    out = {}
+    for n, r in REST.items():
+        Rb = r['R']
+        Dp = D[r['parent']] if r['parent'] else Quaternion()
+        B = Rb.inverted() @ Dp.inverted() @ D[n] @ Rb
+        loc = Rb.inverted() @ pelvis_off if n == 'pelvis' else Vector((0, 0, 0))
+        out[n] = (B, loc)
+    return out, stretch
+
+
+MOCAP = {}   # name -> (frames [(local, contact)], report), filled in main() before baking
+
+
 def bake_clips(ao):
     ao.animation_data_create()
     pbs = ao.pose.bones
     for pb in pbs:
         pb.rotation_mode = 'QUATERNION'
     report = {}
-    for name, C in CLIPS.items():
+    clips = dict(CLIPS)
+    if MOCAP:
+        clips.pop('Jump', None); clips.pop('Land', None)   # v3: replaced by measured one-shots
+    for name, (frames, mrep) in MOCAP.items():
+        loop = 'kind' not in mrep
+        n_ = len(frames) if loop else len(frames) - 1
+        clips[name] = dict(dur=n_ / FPS, loop=loop, frames=frames, speed=mrep['design_speed_mps'])
+    for name, C in clips.items():
         act = bpy.data.actions.new(name)
         act.use_fake_user = True
         ao.animation_data.action = act
@@ -891,8 +959,12 @@ def bake_clips(ao):
             t = f / FPS
             if C['loop']:
                 t = t % C['dur'] if f < n else 0.0   # last key equals first: seamless loop
-            P, contact = C['f'](t)
-            local, stretch = solve_pose(P)
+            if 'frames' in C:
+                local, contact = C['frames'][f % len(C['frames'])]
+                stretch = {'R': 0.0, 'L': 0.0}
+            else:
+                P, contact = C['f'](t)
+                local, stretch = solve_pose(P)
             max_stretch = max(max_stretch, *stretch.values())
             for k in mask:
                 mask[k].append(1 if contact[k] else 0)
@@ -914,6 +986,9 @@ def bake_clips(ao):
         act.frame_range = (0, n)
         report[name] = dict(frames=n, duration_s=n / FPS, loop=C['loop'], designSpeedMps=C['speed'],
                             ik_overstretch_max_m=max_stretch)
+        if name in MOCAP:
+            report[name]['mocap'] = MOCAP[name][1]
+            report[name]['ik_overstretch_max_m'] = MOCAP[name][1]['ik_overstretch_max_m']
         ao.animation_data.action = None
         tr = ao.animation_data.nla_tracks.new()
         tr.name = name
@@ -944,6 +1019,16 @@ def main():
     ao = build_rig()
     body = bind(parts, ao)
     cache_rest(ao)
+    if USE_MOCAP:
+        sys.path.insert(0, TOOLS)
+        import mocap_retarget as MR
+        data = MR.load()
+        consts = dict(LEG=LEG_LEN, ANKLE_Z=ANKLE_Z, HIP_Y=HIP_Y, HIP_Z=HIP_Z)
+        for nm in ('Walk', 'Run', 'Sprint'):
+            MOCAP[nm] = MR.make_loop_clip(nm, data, REST, BOOT, consts, solve_pose_world, FPS)
+        idle_local = solve_pose(idle(0.0))[0]
+        for nm, val in MR.make_oneshot_clips(data, REST, BOOT, consts, solve_pose_world, idle_local, FPS).items():
+            MOCAP[nm] = val
     rep = bake_clips(ao)
     sc.frame_start, sc.frame_end = 0, 72
     ao['assetId'] = 'G24'

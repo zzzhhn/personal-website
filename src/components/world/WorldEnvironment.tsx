@@ -1,21 +1,24 @@
 import { memo, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { CuboidCollider, CylinderCollider, RigidBody } from '@react-three/rapier';
+import { CuboidCollider, RigidBody } from '@react-three/rapier';
 import {
-  BackSide, BoxGeometry, BufferGeometry, Color, ExtrudeGeometry, Float32BufferAttribute, Fog, InstancedMesh, MeshStandardMaterial,
-  Object3D, Shape, Vector3, type DirectionalLight, type HemisphereLight, type PointLight,
+  BackSide, Box3, BoxGeometry, BufferGeometry, Color, Float32BufferAttribute, Fog, InstancedMesh, MeshStandardMaterial,
+  Object3D, Vector3, type DirectionalLight, type HemisphereLight, type PointLight,
 } from 'three';
 import {
   BOARDWALK_POINTS, BOARDWALK_WIDTH, BOOTHS, BUILDINGS, CAMP_CENTER,
-  FOUNDATIONS, ISLAND_OUTLINE, PALETTE, ROAD_POINTS, ROAD_WIDTH, WATER_Y,
+  FOUNDATIONS, GROUND_TREES, GROUND_Y, LAYOUT_V4, PALETTE, ROAD_POINTS, ROAD_WIDTH, WATER_Y,
 } from './layout';
 import { useWorldStore } from './store';
 import type { Vec3, WorldContent } from './types';
 import WorldYears from './WorldYears';
 import WorldCamp, { type CampLayout } from './WorldCamp';
-import { createIslandGroundMaterial } from './WorldTerrain';
+import { IslandTerrain } from './WorldTerrain';
+import WorldSea from './WorldSea';
 import { createWorldWaterMaterial } from './WorldWater';
 import { windUniforms } from './WorldWind';
+import { SUN_OFFSET, fitSunShadow } from './WorldShadows';
+import WorldSurfaceColliders from './WorldSurfaceColliders';
 
 type Block = { position: Vec3; size: Vec3; color: string; rotation?: Vec3 };
 const V = (x: number, y: number, z: number): Vec3 => [x, y, z];
@@ -137,14 +140,16 @@ function SurfaceTops({ items }: { items: Block[] }) {
 
 /** visual=false keeps the identical colliders while WorldCamp owns the camp visuals. */
 function StaticBlocks({ items, surface = false, visual = true, name }: { items: Block[]; surface?: boolean; visual?: boolean; name: string }) {
-  return <RigidBody name={name} type="fixed" colliders={false} userData={surface ? { surface: true } : { solid: true }}>
+  return <>
+    {surface?<WorldSurfaceColliders items={items} name={name}/>:<RigidBody name={name} type="fixed" colliders={false} userData={{solid:true}}>
     {items.map((item, i) => <CuboidCollider key={i} name={`${name}-${i}`} position={item.position} rotation={item.rotation}
       args={[item.size[0] / 2, item.size[1] / 2, item.size[2] / 2]}
-      friction={surface ? 0.95 : 0.65} restitution={surface ? 0 : 0.15}
+      friction={0.65} restitution={0.15}
       />)}
+    </RigidBody>}
     {visual && <Blocks name={`${name}-visuals`} solid={!surface} items={items} shadow={!surface} openTop={surface} />}
     {visual && surface && <SurfaceTops items={items} />}
-  </RigidBody>;
+  </>;
 }
 
 function segment(a: Vec3, b: Vec3, width: number, color: string, height = 0.18): Block {
@@ -164,48 +169,25 @@ function offsetSegment(a: Vec3, b: Vec3, offset: number, y = 0): [Vec3, Vec3] {
   return [V(a[0] + x, a[1] + y, a[2] + z), V(b[0] + x, b[1] + y, b[2] + z)];
 }
 
+/** Island ground is the quality-v3 terrain (WorldTerrain/WorldLandform): visual and collider
+ * share triangles; walk/drive tops are `surface`, faces over 25 deg `solid`. The old extruded
+ * slab, its visible shelves, the submerged copy and the r=24 camp cylinder are replaced. */
+const PARK_PLAZA: { position: Vec3; size: Vec3 }[] = [{ position: [45, -0.1, -45], size: [18, 2.2, 18] }];
 function Island() {
-  const geometry = useMemo(() => {
-    const shape = new Shape();
-    ISLAND_OUTLINE.forEach(([x, z], i) => i ? shape.lineTo(x, -z) : shape.moveTo(x, -z));
-    shape.closePath();
-    return new ExtrudeGeometry(shape, { depth: 3, bevelEnabled: false, steps: 1 });
-  }, []);
-  const groundMaterial = useMemo(createIslandGroundMaterial, []);
-  useEffect(() => () => { geometry.dispose(); groundMaterial.dispose(); }, [geometry, groundMaterial]);
   return <>
-    <RigidBody name="island-ground-surface" type="fixed" colliders="trimesh" userData={{ surface: true }}>
-      <mesh geometry={geometry} rotation={[-Math.PI / 2, 0, 0]} position={[0, -2, 0]} receiveShadow>
-        <primitive attach="material" object={groundMaterial} />
-      </mesh>
-    </RigidBody>
-    {/* Low shelves make the island edge visibly layered, rather than a floating plane. */}
-    <mesh geometry={geometry} rotation={[-Math.PI / 2, 0, 0]} position={[0, -3.5, 0]} scale={[1.035, 1.035, 1]}>
-      <meshStandardMaterial color={PALETTE.beach} roughness={1} />
-    </mesh>
-    <mesh geometry={geometry} rotation={[-Math.PI / 2, 0, 0]} position={[0, -2.4, 0]} scale={[1.018, 1.018, 0.65]}>
-      <meshStandardMaterial color="#8C8276" roughness={1} />
-    </mesh>
-    {/* Closed greybox seabed and submerged bases join at y=-18. These are
-        visual geometry only: existing ground contacts and water recovery stay intact. */}
-    <mesh name="greybox-submerged-island" geometry={geometry} rotation={[-Math.PI / 2, 0, 0]}
-      position={[0, -18, 0]} scale={[1.035, 1.035, 5.5]}>
-      <meshStandardMaterial color="#8C8276" roughness={1} />
-    </mesh>
+    <IslandTerrain />
+    {/* Closed greybox seabed and the park block's submerged base: visual only, under opaque water. */}
     <mesh name="greybox-submerged-plaza" position={[45, -9.5, -45]}>
       <boxGeometry args={[18, 17, 18]} /><meshStandardMaterial color="#8C8276" roughness={1} />
     </mesh>
     <mesh name="greybox-seabed" position={[0, -19, 0]}>
       <boxGeometry args={[560, 2, 560]} /><meshStandardMaterial color="#8C8276" roughness={1} />
     </mesh>
-    <RigidBody type="fixed" position={[-42, 2.9, 30]} colliders={false} userData={{ surface: true }}>
-      {/* Camp plateau collider unchanged; its top and layered cliff are drawn by WorldCamp. */}
-      <CylinderCollider name="camp-ground-surface" args={[1.9, 24]} />
-    </RigidBody>
-    <RigidBody type="fixed" position={[45, -0.1, -45]} colliders={false} userData={{ surface: true }}>
-      <CuboidCollider name="park-plaza-surface" args={[9, 1.1, 9]} />
-      <mesh receiveShadow><boxGeometry args={[18, 2.2, 18]} /><meshStandardMaterial color={PALETTE.sand} roughness={1} /></mesh>
-    </RigidBody>
+    {/* Park plaza block: support-only top (surface) and solid sides; same box visual and coordinates. */}
+    <WorldSurfaceColliders name="park-plaza-surface" items={PARK_PLAZA} />
+    <mesh name="park-plaza-block" position={PARK_PLAZA[0].position} receiveShadow>
+      <boxGeometry args={PARK_PLAZA[0].size} /><meshStandardMaterial color={PALETTE.sand} roughness={1} />
+    </mesh>
   </>;
 }
 
@@ -213,7 +195,8 @@ function createLayout() {
   const surfaces: Block[] = [], solids: Block[] = [], decor: Block[] = [], warm: Block[] = [], cyan: Block[] = [];
   const camp: CampLayout = { pads: [], padObjects: [], tents: [], benches: [], trees: [], lampHeads: [] };
   // Touchable greybox poles and signs use the same visible block and fixed collider.
-  ROAD_POINTS.slice(1).forEach((b, i) => {
+  // Layout v4: roads, rails, the old parking bay and inland blocks come from WorldDistricts instead.
+  if (!LAYOUT_V4) ROAD_POINTS.slice(1).forEach((b, i) => {
     const a = ROAD_POINTS[i];
     surfaces.push(segment(a, b, ROAD_WIDTH, PALETTE.road));
     // Outer edge is a drivable stone promenade; inland edge is a shallow curb.
@@ -223,20 +206,35 @@ function createLayout() {
     }
     // Bridge has continuous low barriers on both sides, with openings at each end.
     if (i === 7) for (const side of [-1, 1]) {
-      const [c, d] = offsetSegment(a, b, side * 5.2, 0.68);
+      const length=Math.hypot(b[0]-a[0],b[2]-a[2]);
+      // The west end joins a northbound road at a right angle. A full-length
+      // south rail crossed that road and trapped every car before the bridge.
+      const start=V(a[0]+(b[0]-a[0])*6/length,a[1],a[2]+(b[2]-a[2])*6/length);
+      const end=V(b[0]-(b[0]-a[0])*2.8/length,b[1],b[2]-(b[2]-a[2])*2.8/length);
+      const [c, d] = offsetSegment(start, end, side * 5.2, 0.68);
       solids.push(segment(c, d, 0.22, PALETTE.cream, 1.25));
+      for (const p of [c,d]) solids.push(block([p[0],p[1]-.53,p[2]],[.36,1.5,.36],PALETTE.cream));
+      // Close the outside of the west turning pocket without crossing either
+      // road centreline. Short angled curbs lead to the north bridge rail.
+      if(side===-1){
+        const bend:Vec3[]=[[20.75,1.54,-41.5],[22,1.54,-46.4],[26,1.54,-47.25],[c[0],1.54,c[2]]];
+        for(let j=1;j<bend.length;j++)solids.push(segment(bend[j-1],bend[j],.3,PALETTE.cream,.4));
+      }
     }
     if (i >= 3 && i <= 6) {
       // Seaward low guardrail, leaving the inland building forecourts open.
       const [c, d] = offsetSegment(a, b, 5.25, 0.52);
-      solids.push(segment(c, d, 0.22, PALETTE.cream, 1));
+      // Leave the matching east-turn opening in the coastal guardrail.
+      const end=i===6?V(d[0],d[1],d[2]+6):d;
+      solids.push(segment(c, end, 0.22, PALETTE.cream, 1));
+      if(i===6)solids.push(block([end[0],end[1]-.42,end[2]],[.36,1.2,.36],PALETTE.cream));
       const p = V((c[0] + d[0]) / 2, 1.14, (c[2] + d[2]) / 2);
       solids.push(block(V(p[0], p[1] + 2, p[2]), V(0.18, 4, 0.18), PALETTE.slate));
       warm.push(block(V(p[0], p[1] + 4, p[2]), V(0.5, 0.35, 0.5), '#FFFFFF'));
     }
   });
   // Coastal parking bay connects without a raised curb.
-  surfaces.push(block([20, 1.045, 12], [7, 0.19, 7], PALETTE.road));
+  if (!LAYOUT_V4) surfaces.push(block([20, 1.045, 12], [7, 0.19, 7], PALETTE.road));
   surfaces.push(block([45, 1.045, -45], [17, 0.19, 17], PALETTE.edge));
   BOARDWALK_POINTS.slice(1).forEach((b, i) => {
     const a = BOARDWALK_POINTS[i];
@@ -316,7 +314,7 @@ function createLayout() {
     }
   });
   // Four low, unoccupied blocks give the inland side a second row.
-  [[-18, 4.4, 8], [-13, 3.6, -8], [-12, 4.8, -24], [-4, 3.2, -45]].forEach(([x, h, z]) => {
+  if (!LAYOUT_V4) [[-18, 4.4, 8], [-13, 3.6, -8], [-12, 4.8, -24], [-4, 3.2, -45]].forEach(([x, h, z]) => {
     solids.push(block([x, 1 + h / 2, z], [8, h, 7], '#A29A85'));
   });
   FOUNDATIONS.forEach(({ position: p, size }) => {
@@ -324,8 +322,7 @@ function createLayout() {
     solids.push(block([p[0], 2.1, p[2]], [2.8, 1.2, 0.18], PALETTE.orange));
   });
   // Lightweight placeholder vegetation uses boxes: no formal tree asset work.
-  const trees: Vec3[] = [[-61, 1, -4], [-51, 1, -26], [-36, 1, -32], [-28, 1, -8], [-26, 1, 7], [-52, 4.8, 45], [-59, 4.8, 34], [-40, 4.8, 9], [-29, 4.8, 17], [-30, 1, 52], [2, 1, 40], [-44, 1, -43]];
-  trees.forEach(([x, y, z], i) => {
+  GROUND_TREES.forEach(([x, y, z], i) => {
     // Camp trunk positions are passed to WorldCamp, which fits each GLB collider.
     if (y === CAMP_CENTER[1]) { camp.trees.push(block([x, y + 1.4, z], [0.7, 2.8, 0.7], '#5A4634')); return; }
     solids.push(block([x, y + 1.4, z], [0.7, 2.8, 0.7], '#5A4634'));
@@ -334,19 +331,24 @@ function createLayout() {
   return { surfaces, solids, decor, warm, cyan, camp };
 }
 
+/** Low shadow receivers: from sea level (the lowest visible receiving surface; the seabed is under
+ * opaque water) up to 7 m above the focus (ground, pads, furniture, trees, huts, poles). Town
+ * buildings exceed that band and are passed separately as tall receivers (WorldShadows). */
+// The focus can sit below sea level for up to 2 s while a body sinks before shore recovery;
+// clamp so the band never inverts.
+const receiverBand = (focus: readonly number[]): [number, number] => [WATER_Y, Math.max(focus[1], GROUND_Y) + 7];
+const TALL_RECEIVERS = BUILDINGS.map(({ position: [x, y, z], size: [w, h, d] }) =>
+  new Box3(new Vector3(x - w / 2, y, z - d / 2), new Vector3(x + w / 2, y + h, z + d / 2)));
+
 function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStandardMaterial }) {
   const light = useWorldStore((s) => s.light);
-  const { scene } = useThree();
+  const { scene, camera } = useThree();
   const hemisphere = useRef<HemisphereLight>(null), sun = useRef<DirectionalLight>(null), fire = useRef<PointLight>(null);
   const sea = useMemo(() => createWorldWaterMaterial(PALETTE.sea), []);
   const quality = useWorldStore(s => s.quality);
   const shot = useWorldStore(s => s.shot);
   const shadowSize = quality === 'high' ? 4096 : 2048;
   const shadowTarget = useMemo(() => new Object3D(), []);
-  const shadowVectors = useMemo(() => {
-    const offset = new Vector3(-90, 40, 65), right = new Vector3(65, 0, 90).normalize();
-    return { offset, right, up: new Vector3().crossVectors(offset.clone().normalize(), right).normalize(), focus: new Vector3() };
-  }, []);
   useEffect(() => { scene.add(shadowTarget); return () => { scene.remove(shadowTarget); }; }, [scene, shadowTarget]);
   useEffect(() => () => sea.dispose(), [sea]);
   useEffect(() => {
@@ -376,20 +378,10 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
     if (sun.current) {
       const lamp = sun.current;
       lamp.intensity = 3.4 - n * 3.08;
-      const extent = shot ? 105 : 42;
-      const point = shot ? [0, 0, 0] : useWorldStore.getState().position;
-      // A moving, tighter shadow camera gives the camp actual contact definition. Snap the
-      // focus to shadow texels in light space so following the walker does not shimmer.
-      const { right, up, focus, offset } = shadowVectors;
-      focus.set(point[0], point[1], point[2]);
-      const texel = extent * 2 / shadowSize;
-      focus.addScaledVector(right, Math.round(focus.dot(right) / texel) * texel - focus.dot(right));
-      focus.addScaledVector(up, Math.round(focus.dot(up) / texel) * texel - focus.dot(up));
-      shadowTarget.position.copy(focus);
-      lamp.position.copy(focus).add(offset);
-      lamp.target = shadowTarget;
-      const c = lamp.shadow.camera;
-      if (c.right !== extent) { c.left = c.bottom = -extent; c.right = c.top = extent; c.updateProjectionMatrix(); }
+      // Fixed sun direction; the orthographic window is fitted to the follow camera's visible
+      // ground and texel-snapped (WorldShadows), so shadows track casters without crawling.
+      const focus = useWorldStore.getState().position;
+      fitSunShadow(lamp, shadowTarget, camera, { mapSize: shadowSize, wide: !!shot, focus, receivers: receiverBand(focus), tallReceivers: TALL_RECEIVERS });
     }
     if (hemisphere.current) hemisphere.current.intensity = 1.5 - n * 0.85;
     if (fire.current) fire.current.intensity = (13 + n * 18) * (1 + Math.sin(windUniforms.uWindTime.value * 5) * windUniforms.uWindStrength.value * 0.065);
@@ -408,10 +400,10 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
   });
   return <>
     <hemisphereLight ref={hemisphere} args={['#8FA6C4', '#695444', 1.5]} />
-    <directionalLight ref={sun} position={[-90, 40, 65]} color="#FFD9A8" intensity={3.4} castShadow
+    <directionalLight ref={sun} position={SUN_OFFSET.toArray()} color="#FFD9A8" intensity={3.4} castShadow
       shadow-mapSize={[shadowSize, shadowSize]} shadow-camera-left={-105} shadow-camera-right={105}
       shadow-camera-top={100} shadow-camera-bottom={-100} shadow-camera-near={1} shadow-camera-far={260} shadow-bias={-0.00015} shadow-normalBias={0.025} />
-    <pointLight ref={fire} position={[-42, 6.5, 30]} color="#FF8A3A" intensity={9} distance={26} decay={2} />
+    <pointLight ref={fire} name="camp-fire-key" position={[-42, 6.5, 30]} color="#FF8A3A" intensity={9} distance={26} decay={2} />
     {parkFillPositions.map((position, i) => <pointLight key={i} ref={lamp => { parkFill.current[i] = lamp; }}
       position={position} color="#FFD08A" intensity={0} distance={25} decay={2} castShadow={false} />)}
     <mesh position={[0, 0, 0]} renderOrder={-10}>
@@ -420,11 +412,12 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
         vertexShader={'varying vec3 vDirection; void main(){vDirection=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}'}
         fragmentShader={'uniform vec3 top; uniform vec3 horizon; varying vec3 vDirection; void main(){float t=smoothstep(-0.08,0.7,vDirection.y);gl_FragColor=vec4(mix(horizon,top,t),1.0);\n #include <tonemapping_fragment>\n #include <colorspace_fragment>\n}'} />
     </mesh>
-    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, WATER_Y, 0]} receiveShadow>
-      <planeGeometry args={[560, 560]} /><primitive attach="material" object={sea} />
-    </mesh>
+    <WorldSea material={sea} />
   </>;
 }
+
+/** Roof glow ring follows the Hunyuan block (v3: [11, 16.13, -43]). */
+const HUNYUAN_RING: Vec3 = (({ position: [x, y, z], size: [, h] }) => [x, y + h + .13, z] as Vec3)(BUILDINGS.find(b => b.id === 'hunyuan')!);
 
 export default memo(function WorldEnvironment({ experiences }: { experiences: WorldContent['experiences'] }) {
   const items = useMemo(createLayout, []);
@@ -448,7 +441,7 @@ export default memo(function WorldEnvironment({ experiences }: { experiences: Wo
         <boxGeometry args={[w, h, d]} /><meshStandardMaterial color={color} roughness={1} />
       </mesh>
     </RigidBody>)}
-    <mesh position={[11, 16.13, -43]} rotation={[-Math.PI / 2, 0, 0]}>
+    <mesh position={HUNYUAN_RING} rotation={[-Math.PI / 2, 0, 0]}>
       <ringGeometry args={[2.5, 2.54, 32]} /><primitive object={cyan} attach="material" />
     </mesh>
   </group>;

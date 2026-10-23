@@ -1,0 +1,396 @@
+{
+ "glb": "../../../public/assets/world/guide/G24.glb",
+ "sha256": "a75db2da8010c2b5771d7c3111bd09ab9e8fe534ea56bd935e7941440e885ccb",
+ "blender": "4.2.23 LTS",
+ "objects": [
+  [
+   "G24",
+   "ARMATURE"
+  ],
+  [
+   "G24_mesh",
+   "MESH"
+  ],
+  [
+   "Icosphere",
+   "MESH"
+  ]
+ ],
+ "actions": [
+  "Idle_G24",
+  "JumpAir_G24",
+  "JumpStart_G24",
+  "Land_G24",
+  "RunJumpAir_G24",
+  "RunJumpStart_G24",
+  "Run_G24",
+  "Sprint_G24",
+  "Walk_G24"
+ ],
+ "triangles": 2842,
+ "triangles_equal_native": true,
+ "bones": 18,
+ "materials": {
+  "guide_jacket_paint": {
+   "base": [
+    0.07619,
+    0.12744,
+    0.20508,
+    1.0
+   ],
+   "rough": 0.85,
+   "metal": 0.0,
+   "role": "paint"
+  },
+  "guide_sleeve_cream": {
+   "base": [
+    0.7913,
+    0.71569,
+    0.5972,
+    1.0
+   ],
+   "rough": 0.9,
+   "metal": 0.0,
+   "role": "canvas"
+  },
+  "guide_pants_accent": {
+   "base": [
+    0.04231,
+    0.04971,
+    0.06301,
+    1.0
+   ],
+   "rough": 0.92,
+   "metal": 0.0,
+   "role": "accent"
+  },
+  "guide_glove_boot_accent": {
+   "base": [
+    0.07619,
+    0.12744,
+    0.20508,
+    1.0
+   ],
+   "rough": 0.8,
+   "metal": 0.0,
+   "role": "accent"
+  },
+  "guide_helmet_metal": {
+   "base": [
+    0.7913,
+    0.71569,
+    0.5972,
+    1.0
+   ],
+   "rough": 0.55,
+   "metal": 0.0,
+   "role": "metal"
+  },
+  "guide_visor_glass": {
+   "base": [
+    0.07619,
+    0.12744,
+    0.20508,
+    1.0
+   ],
+   "rough": 0.35,
+   "metal": 0.0,
+   "role": "glass"
+  },
+  "guide_dot_light": {
+   "base": [
+    0.07819,
+    0.6376,
+    0.55834,
+    1.0
+   ],
+   "rough": 0.5,
+   "metal": 0.0,
+   "role": "light"
+  },
+  "guide_hipbag_accent": {
+   "base": [
+    0.80695,
+    0.21586,
+    0.04231,
+    1.0
+   ],
+   "rough": 0.85,
+   "metal": 0.0,
+   "role": "accent"
+  }
+ },
+ "material_mismatch": [],
+ "imported_clips": {
+  "Idle": [
+   "Idle_G24",
+   [
+    0.0,
+    144.0
+   ]
+  ],
+  "Walk": [
+   "Walk_G24",
+   [
+    0.0,
+    46.0
+   ]
+  ],
+  "Run": [
+   "Run_G24",
+   [
+    0.0,
+    33.0
+   ]
+  ],
+  "Sprint": [
+   "Sprint_G24",
+   [
+    0.0,
+    17.0
+   ]
+  ],
+  "Land": [
+   "Land_G24",
+   [
+    0.0,
+    24.0
+   ]
+  ],
+  "JumpStart": [
+   "JumpStart_G24",
+   [
+    0.0,
+    6.0
+   ]
+  ],
+  "JumpAir": [
+   "JumpAir_G24",
+   [
+    0.0,
+    24.0
+   ]
+  ],
+  "RunJumpStart": [
+   "RunJumpStart_G24",
+   [
+    0.0,
+    5.0
+   ]
+  ],
+  "RunJumpAir": [
+   "RunJumpAir_G24",
+   [
+    0.0,
+    24.0
+   ]
+  ]
+ },
+ "joint_parity_keyframes_max_m": 7.237325892396274e-07,
+ "joint_parity_halfframes_max_m": 2.5552807576975428e-05,
+ "deformed_bounds_parity_max_m": 2.2172927856445312e-05,
+ "deformed_vertex_cloud_parity": {
+  "Idle@0.0000": {
+   "native_to_glb_max_m": 9.963890761355287e-07,
+   "glb_to_native_max_m": 9.963890761355287e-07,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Walk@0.0000": {
+   "native_to_glb_max_m": 1.0199406688116142e-06,
+   "glb_to_native_max_m": 1.0199406688116142e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Walk@0.1500": {
+   "native_to_glb_max_m": 1.0042836038337555e-06,
+   "glb_to_native_max_m": 1.0042836038337555e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Walk@0.3000": {
+   "native_to_glb_max_m": 1.1769853927035001e-06,
+   "glb_to_native_max_m": 1.2150615020800615e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Walk@0.2583": {
+   "native_to_glb_max_m": 1.106931676986278e-06,
+   "glb_to_native_max_m": 1.106931676986278e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Run@0.0000": {
+   "native_to_glb_max_m": 1.1170965308338054e-06,
+   "glb_to_native_max_m": 1.1170965308338054e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Run@0.1000": {
+   "native_to_glb_max_m": 1.1699310107360361e-06,
+   "glb_to_native_max_m": 1.1699310107360361e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Run@0.2083": {
+   "native_to_glb_max_m": 1.0189213526246022e-06,
+   "glb_to_native_max_m": 1.0189213526246022e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Land@0.1000": {
+   "native_to_glb_max_m": 1.0710776905398234e-06,
+   "glb_to_native_max_m": 1.102649775930331e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Idle@0.8880": {
+   "native_to_glb_max_m": 1.0291042826793273e-06,
+   "glb_to_native_max_m": 1.0291042826793273e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Idle@1.7040": {
+   "native_to_glb_max_m": 1.018341095004871e-06,
+   "glb_to_native_max_m": 1.018341095004871e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Walk@0.2837": {
+   "native_to_glb_max_m": 1.088855924535892e-06,
+   "glb_to_native_max_m": 1.1070319487771485e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Walk@0.5443": {
+   "native_to_glb_max_m": 9.840408665695577e-07,
+   "glb_to_native_max_m": 9.840408665695577e-07,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Run@0.2035": {
+   "native_to_glb_max_m": 1.0466143294252106e-06,
+   "glb_to_native_max_m": 1.0466143294252106e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Run@0.3905": {
+   "native_to_glb_max_m": 1.032846398629772e-06,
+   "glb_to_native_max_m": 1.0421495062473696e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Sprint@0.0000": {
+   "native_to_glb_max_m": 1.313417101300729e-06,
+   "glb_to_native_max_m": 1.313417101300729e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Sprint@0.1048": {
+   "native_to_glb_max_m": 1.0418299325465341e-06,
+   "glb_to_native_max_m": 1.0418299325465341e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Sprint@0.2012": {
+   "native_to_glb_max_m": 1.2711049066638225e-06,
+   "glb_to_native_max_m": 1.2711049066638225e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Land@0.0000": {
+   "native_to_glb_max_m": 1.000606289380812e-06,
+   "glb_to_native_max_m": 1.1031892199753202e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Land@0.1480": {
+   "native_to_glb_max_m": 1.0817540214702603e-06,
+   "glb_to_native_max_m": 1.1506806458783103e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "Land@0.2840": {
+   "native_to_glb_max_m": 1.0480520131750382e-06,
+   "glb_to_native_max_m": 1.0480520131750382e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "JumpStart@0.0000": {
+   "native_to_glb_max_m": 1.0820511988640646e-06,
+   "glb_to_native_max_m": 1.0820511988640646e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "JumpStart@0.0370": {
+   "native_to_glb_max_m": 1.1593076578719774e-06,
+   "glb_to_native_max_m": 1.2137874136897153e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "JumpStart@0.0710": {
+   "native_to_glb_max_m": 9.453726761421422e-07,
+   "glb_to_native_max_m": 9.453726761421422e-07,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "JumpAir@0.0000": {
+   "native_to_glb_max_m": 9.578560593581642e-07,
+   "glb_to_native_max_m": 9.578560593581642e-07,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "JumpAir@0.1480": {
+   "native_to_glb_max_m": 1.0770277185656596e-06,
+   "glb_to_native_max_m": 1.0770277185656596e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "JumpAir@0.2840": {
+   "native_to_glb_max_m": 1.0684246944947517e-06,
+   "glb_to_native_max_m": 1.0684246944947517e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "RunJumpStart@0.0000": {
+   "native_to_glb_max_m": 1.074977035386837e-06,
+   "glb_to_native_max_m": 1.1184326922375476e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "RunJumpStart@0.0308": {
+   "native_to_glb_max_m": 1.143803615377692e-06,
+   "glb_to_native_max_m": 1.143803615377692e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "RunJumpStart@0.0592": {
+   "native_to_glb_max_m": 1.0278831723553594e-06,
+   "glb_to_native_max_m": 1.0278831723553594e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "RunJumpAir@0.0000": {
+   "native_to_glb_max_m": 1.0280991773470305e-06,
+   "glb_to_native_max_m": 1.0280991773470305e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "RunJumpAir@0.1480": {
+   "native_to_glb_max_m": 1.0659279041647096e-06,
+   "glb_to_native_max_m": 1.0659279041647096e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  },
+  "RunJumpAir@0.2840": {
+   "native_to_glb_max_m": 1.1230375775994617e-06,
+   "glb_to_native_max_m": 1.1230375775994617e-06,
+   "native_vertices": 1443,
+   "glb_vertices": 4945
+  }
+ },
+ "deformed_vertex_cloud_parity_max_m": 1.313417101300729e-06,
+ "non_asset_import_objects": [
+  "Icosphere"
+ ]
+}

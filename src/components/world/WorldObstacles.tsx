@@ -2,8 +2,10 @@ import { useRef } from 'react';
 import { CuboidCollider, RigidBody, useBeforePhysicsStep, type RapierRigidBody } from '@react-three/rapier';
 import type { MeshStandardMaterial } from 'three';
 import type { Vec3 } from './types';
+import { LAYOUT_V4, OBSTACLES_V4 } from './layout-v4-flag.ts';
 const BODY_DATA = { obstacle: true };
-const LOCATIONS: Vec3[] = [[-3, 1.64, 28], [10, 1.64, 20], [24, 1.64, -18], [45, 1.64, -39]];
+/** v4 moves only the (10, 20) roadblock, which falls inside the new SDIC footprint. */
+const LOCATIONS: Vec3[] = LAYOUT_V4 ? OBSTACLES_V4 : [[-3, 1.64, 28], [10, 1.64, 20], [24, 1.64, -18], [45, 1.64, -39]];
 
 function Obstacle({ position }: { position: Vec3 }) {
   const body = useRef<RapierRigidBody>(null);

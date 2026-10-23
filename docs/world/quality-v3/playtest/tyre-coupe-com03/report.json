@@ -1,0 +1,266 @@
+{
+  "base": "http://127.0.0.1:4322",
+  "startedAt": "2026-10-22T05:04:44.494Z",
+  "errors": [],
+  "limits": [
+    "Synthetic isolated obstacle shapes, not map-instance coverage.",
+    "Finite browser-frame sampling; not every physics microstep.",
+    "M5 Pro; no M1 hardware claim."
+  ],
+  "finishedAt": "2026-10-22T05:05:39.285Z",
+  "fixtures": [
+    {
+      "t": 1.393,
+      "to": [
+        112,
+        6,
+        117.8
+      ],
+      "reason": "QA lane coupe/post/2 m/s; car placed at x=112"
+    },
+    {
+      "t": 7.749,
+      "to": [
+        106,
+        6,
+        117.8
+      ],
+      "reason": "QA lane coupe/post/5 m/s; car placed at x=106"
+    },
+    {
+      "t": 13.711,
+      "to": [
+        96,
+        6,
+        117.8
+      ],
+      "reason": "QA lane coupe/post/10 m/s; car placed at x=96"
+    },
+    {
+      "t": 19.742,
+      "to": [
+        112,
+        6,
+        117.8
+      ],
+      "reason": "QA lane coupe/trunk/2 m/s; car placed at x=112"
+    },
+    {
+      "t": 26.097,
+      "to": [
+        106,
+        6,
+        117.8
+      ],
+      "reason": "QA lane coupe/trunk/5 m/s; car placed at x=106"
+    },
+    {
+      "t": 32.03,
+      "to": [
+        96,
+        6,
+        117.8
+      ],
+      "reason": "QA lane coupe/trunk/10 m/s; car placed at x=96"
+    },
+    {
+      "t": 38.042,
+      "to": [
+        112,
+        6,
+        117.8
+      ],
+      "reason": "QA lane coupe/wall/2 m/s; car placed at x=112"
+    },
+    {
+      "t": 43.474,
+      "to": [
+        106,
+        6,
+        117.8
+      ],
+      "reason": "QA lane coupe/wall/5 m/s; car placed at x=106"
+    },
+    {
+      "t": 49.026,
+      "to": [
+        96,
+        6,
+        117.8
+      ],
+      "reason": "QA lane coupe/wall/10 m/s; car placed at x=96"
+    }
+  ],
+  "summary": {
+    "total": 9,
+    "passed": 9,
+    "failed": [],
+    "errors": []
+  },
+  "fullEvidence": "report-full.json.gz",
+  "cases": [
+    {
+      "name": "coupe-post-2",
+      "targetSpeed": 2,
+      "fixture": {
+        "kind": "post",
+        "lateral": 1.0419999999999998,
+        "startX": 112
+      },
+      "entered": true,
+      "closest": 0.014913794584572315,
+      "maxPenetration": 0,
+      "contactSpeed": 2.048586130142212,
+      "approachSpeed": 2.171087980270388,
+      "maxRise": 0.006541728973388672,
+      "maxVerticalSpeed": 0.14944276213645935,
+      "passed": true,
+      "sampleCount": 236
+    },
+    {
+      "name": "coupe-post-5",
+      "targetSpeed": 5,
+      "fixture": {
+        "kind": "post",
+        "lateral": 1.0419999999999998,
+        "startX": 106
+      },
+      "entered": true,
+      "closest": 0.014945482835173607,
+      "maxPenetration": 0,
+      "contactSpeed": 4.866224765777588,
+      "approachSpeed": 5.057109355926514,
+      "maxRise": 0.02394723892211914,
+      "maxVerticalSpeed": 0.30114540457725525,
+      "passed": true,
+      "sampleCount": 217
+    },
+    {
+      "name": "coupe-post-10",
+      "targetSpeed": 10,
+      "fixture": {
+        "kind": "post",
+        "lateral": 1.0419999999999998,
+        "startX": 96
+      },
+      "entered": true,
+      "closest": 0.014327110722661018,
+      "maxPenetration": 0,
+      "contactSpeed": 10.109599113464355,
+      "approachSpeed": 10.188414573669435,
+      "maxRise": 0.12204408645629883,
+      "maxVerticalSpeed": 1.0181708335876465,
+      "passed": true,
+      "sampleCount": 221
+    },
+    {
+      "name": "coupe-trunk-2",
+      "targetSpeed": 2,
+      "fixture": {
+        "kind": "trunk",
+        "lateral": 1.2019999999999997,
+        "startX": 112
+      },
+      "entered": true,
+      "closest": 0.01397585216909647,
+      "maxPenetration": 0,
+      "contactSpeed": 1.982464075088501,
+      "approachSpeed": 2.042551040649414,
+      "maxRise": 0.006949424743652344,
+      "maxVerticalSpeed": 0.15570220351219177,
+      "passed": true,
+      "sampleCount": 238
+    },
+    {
+      "name": "coupe-trunk-5",
+      "targetSpeed": 5,
+      "fixture": {
+        "kind": "trunk",
+        "lateral": 1.2019999999999997,
+        "startX": 106
+      },
+      "entered": true,
+      "closest": 0.014595506712794304,
+      "maxPenetration": 0,
+      "contactSpeed": 5.048851490020752,
+      "approachSpeed": 5.19489860534668,
+      "maxRise": 0.03502225875854492,
+      "maxVerticalSpeed": 0.4772098958492279,
+      "passed": true,
+      "sampleCount": 219
+    },
+    {
+      "name": "coupe-trunk-10",
+      "targetSpeed": 10,
+      "fixture": {
+        "kind": "trunk",
+        "lateral": 1.2019999999999997,
+        "startX": 96
+      },
+      "entered": true,
+      "closest": 0.014000320807099342,
+      "maxPenetration": 0,
+      "contactSpeed": 9.895233154296875,
+      "approachSpeed": 10.024704933166513,
+      "maxRise": 0.11595392227172852,
+      "maxVerticalSpeed": 1.1424779891967773,
+      "passed": true,
+      "sampleCount": 221
+    },
+    {
+      "name": "coupe-wall-2",
+      "targetSpeed": 2,
+      "fixture": {
+        "kind": "wall",
+        "lateral": 1.0819999999999999,
+        "startX": 112
+      },
+      "entered": true,
+      "closest": 0.014344338327646255,
+      "maxPenetration": 0,
+      "contactSpeed": 1.9641765356063843,
+      "approachSpeed": 2.0542473793029785,
+      "maxRise": 0.005329132080078125,
+      "maxVerticalSpeed": 0.16980864107608795,
+      "passed": true,
+      "sampleCount": 193
+    },
+    {
+      "name": "coupe-wall-5",
+      "targetSpeed": 5,
+      "fixture": {
+        "kind": "wall",
+        "lateral": 1.0819999999999999,
+        "startX": 106
+      },
+      "entered": true,
+      "closest": 0.01492052897810936,
+      "maxPenetration": 0,
+      "contactSpeed": 5.032001972198486,
+      "approachSpeed": 5.034916400909424,
+      "maxRise": 0.021342754364013672,
+      "maxVerticalSpeed": 0.2972778081893921,
+      "passed": true,
+      "sampleCount": 200
+    },
+    {
+      "name": "coupe-wall-10",
+      "targetSpeed": 10,
+      "fixture": {
+        "kind": "wall",
+        "lateral": 1.0819999999999999,
+        "startX": 96
+      },
+      "entered": true,
+      "closest": 0.013877639546990395,
+      "maxPenetration": 0,
+      "contactSpeed": 10.017642974853516,
+      "approachSpeed": 10.036925315856934,
+      "maxRise": 0.072235107421875,
+      "maxVerticalSpeed": 0.7745935916900635,
+      "passed": true,
+      "sampleCount": 215
+    }
+  ],
+  "checks": []
+}

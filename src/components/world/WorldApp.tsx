@@ -1,12 +1,30 @@
 import { Component, lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
 import { useWorldStore } from './store';
 import { worldText } from './world-i18n';
-import { ISLAND_OUTLINE, ROAD_POINTS, BOARDWALK_POINTS, BUILDINGS, BOOTHS, WORLD_SHOTS } from './layout';
+import { ISLAND_OUTLINE, LAYOUT_V4, ROAD_POINTS, BOARDWALK_POINTS, BUILDINGS, BOOTHS, WORLD_SHOTS } from './layout';
 import type { WorldContent } from './types';
 import WorldExperienceSummary from './WorldExperienceSummary';
 import './world.css';
 
 const Runtime = lazy(() => import('./WorldRuntime'));
+type MapRoad = {pts:number[][];width:number;color:string;dash?:string};
+type MapGeometry = {shore:number[][];camp:number[][];viewBox:string;roads?:MapRoad[]};
+let mapGeometryPromise:Promise<MapGeometry>|null=null;
+function loadMapGeometry(){
+  // Share the terrain's waterline, loaded with the runtime rather than adding
+  // Three/terrain generation to the initial loading UI bundle.
+  // Layout v4: road hierarchy from the same layout data (lazy chunk, flag only).
+  const v4Roads:Promise<MapRoad[]|undefined>=LAYOUT_V4?import('./layout-v4').then(({ROADS_V4,CONNECTORS_V4,paveHalf})=>[...ROADS_V4,...CONNECTORS_V4]
+    .map(r=>({pts:r.pts,width:r.cls==='foot'?2:r.cls==='dirt'?3:paveHalf(r.cls)*.9,color:r.cls==='dirt'?'#B08A5E':r.cls==='foot'?'#C9A978':r.cls==='avenue'?'#F3EBDD':'#D9D2C2',dash:r.cls==='dirt'?'3 2':undefined}))
+    .sort((a,b)=>b.width-a.width)):Promise.resolve(undefined);
+  return mapGeometryPromise??=Promise.all([import('./WorldLandform'),v4Roads]).then(([{islandShoreline,campRadius},roads])=>{
+    const shore=islandShoreline().filter((_,i)=>i%2===0);
+    const camp=Array.from({length:72},(_,i)=>{const a=i/72*Math.PI*2,r=campRadius(a)*.7;return[-42+Math.cos(a)*r,30+Math.sin(a)*r];});
+    const xs=[-77,85,...shore.map(p=>p[0])],zs=[-62,62,...shore.map(p=>p[1])];
+    const x=Math.min(...xs)-7,z=Math.min(...zs)-7;
+    return{shore,camp,roads,viewBox:`${x} ${z} ${Math.max(...xs)-x+7} ${Math.max(...zs)-z+7}`};
+  });
+}
 
 class WorldErrorBoundary extends Component<{ children: ReactNode; message: string; retry: string }, { failed: boolean }> {
   state = { failed: false };
@@ -18,15 +36,18 @@ class WorldErrorBoundary extends Component<{ children: ReactNode; message: strin
 }
 
 function IslandMap({ large = false }: { large?: boolean }) {
+  const [geometry,setGeometry]=useState<MapGeometry|null>(null);
+  useEffect(()=>{let live=true;loadMapGeometry().then(g=>{if(live)setGeometry(g);}).catch(()=>{});return()=>{live=false;};},[]);
   const position = useWorldStore(s => s.position);
   const lang = useWorldStore(s => s.lang);
   const t = worldText[lang];
   const path = (points: number[][]) => points.map(p => `${p[0]},${p.length === 3 ? p[2] : p[1]}`).join(' ');
-  return <svg className={large ? 'world-map world-map-large' : 'world-map'} viewBox="-85 -70 180 145" role="img" aria-label={t.map}>
-    <polygon points={path(ISLAND_OUTLINE)} fill="#7E8C3E" stroke="#C9A978" strokeWidth="4" />
-    <polyline points={path(ROAD_POINTS)} fill="none" stroke="#D9D2C2" strokeWidth="4" strokeLinejoin="round" />
+  return <svg className={large ? 'world-map world-map-large' : 'world-map'} viewBox={geometry?.viewBox??'-85 -70 180 145'} role="img" aria-label={t.map}>
+    <polygon points={path(geometry?.shore??ISLAND_OUTLINE)} fill="#7E8C3E" stroke="#C9A978" strokeWidth="4" />
+    {geometry?.roads ? geometry.roads.map((r,i)=><polyline key={i} points={path(r.pts)} fill="none" stroke={r.color} strokeWidth={r.width} strokeDasharray={r.dash} strokeLinejoin="round" strokeLinecap="round" />)
+      : !LAYOUT_V4 && <polyline points={path(ROAD_POINTS)} fill="none" stroke="#D9D2C2" strokeWidth="4" strokeLinejoin="round" />}
     <polyline points={path(BOARDWALK_POINTS)} fill="none" stroke="#C9A978" strokeWidth="3" />
-    <circle cx="-42" cy="30" r="15" fill="#C9A978" stroke="#E8803A" strokeWidth="2" />
+    {geometry?<polygon points={path(geometry.camp)} fill="#C9A978" stroke="#E8803A" strokeWidth="2"/>:<circle cx="-42" cy="30" r="15" fill="#C9A978" stroke="#E8803A" strokeWidth="2" />}
     {BUILDINGS.map(b => <rect key={b.id} x={b.position[0] - 4} y={b.position[2] - 4} width="8" height="8" fill="#E6DCCB" />)}
     {BOOTHS.map(b => <rect key={b.id} x={b.position[0] - 3} y={b.position[2] - 3} width="6" height="6" fill="#4E647D" stroke="#4FD1C5" strokeWidth=".5" />)}
     <circle cx={position[0]} cy={position[2]} r="2.6" fill="#fff" stroke="#23343d" strokeWidth="1" />
@@ -89,7 +110,8 @@ export default function WorldApp({ content }: { content: WorldContent }) {
       <fieldset aria-describedby="world-quality-hint"><legend>{t.quality}</legend>{(['balanced', 'high'] as const).map(quality => <button key={quality} aria-pressed={s.quality === quality} onClick={() => useWorldStore.setState({ quality })}>{t[quality]}</button>)}</fieldset>
       <p id="world-quality-hint" className="world-setting-hint">{t.qualityHint}</p>
       <fieldset><legend>{t.language}</legend><button aria-pressed={s.lang === 'en'} onClick={() => useWorldStore.setState({ lang: 'en' })}>English</button><button aria-pressed={s.lang === 'zh'} onClick={() => useWorldStore.setState({ lang: 'zh' })}>中文</button></fieldset>
-      <button className="world-primary" onClick={() => useWorldStore.setState({ paused: false })}>{t.resume}</button><a href={`/#${s.zone === 'camp' ? 'about' : s.zone === 'town' ? 'experience' : 'projects'}`}>← {t.back}</a>
+      <details className="world-credits"><summary>{t.credits}</summary><p>{t.motionCredit}</p><p><a href="https://mocap.cs.cmu.edu/" target="_blank" rel="noreferrer">CMU Graphics Lab Motion Capture Database</a></p><p>This data was obtained from mocap.cs.cmu.edu. The database was created with funding from NSF EIA-0196217.</p></details>
+      <button className="world-primary" onClick={() => useWorldStore.setState({ paused: false })}>{t.resume}</button><a href={`/#${s.zone === 'camp' ? 'about' : s.zone === 'town' ? 'experience' : s.zone === 'park' ? 'projects' : 'about'}`}>← {t.back}</a>
     </dialog>
   </main>;
 }

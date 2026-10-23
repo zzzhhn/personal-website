@@ -65,3 +65,38 @@ export function configureRaycastVehicle(controller: {
   });
   return geometry;
 }
+
+/* ---- Free camera and analogue controls (v3 controls round) ---- */
+/** Third-person orbit distances for the V presets near / mid / far (index 3 is first person). */
+export const CAMERA_PRESETS = [5, 12, 20] as const;
+export const CAMERA_MIN_DISTANCE = 2.5;
+export const CAMERA_MAX_DISTANCE = 30;
+/** Default orbit = the previous fixed camera: ground azimuth (+X .6, +Z .8), 45 deg elevation. */
+export const CAMERA_DEFAULT_YAW = Math.atan2(0.8, 0.6);
+export const CAMERA_DEFAULT_PITCH = Math.PI / 4;
+export const CAMERA_PITCH_LIMITS = { third: [-0.2, 1.3], first: [-1.25, 1.25] } as const;
+/** Unit vector from the orbit pivot to the camera (camera looks along its negative). */
+export function orbitDirection(yaw: number, pitch: number): Vec3 {
+  return [Math.cos(pitch) * Math.cos(yaw), Math.sin(pitch), Math.cos(pitch) * Math.sin(yaw)];
+}
+/** Camera-relative ground movement: input x = right, z = forward, mapped to world x/z.
+ * At CAMERA_DEFAULT_YAW this equals the old fixed mapping vx=.8x-.6z, vz=-.6x-.8z. */
+export function cameraRelative(x: number, z: number, yaw: number): [number, number] {
+  const fx = -Math.cos(yaw), fz = -Math.sin(yaw), rx = Math.sin(yaw), rz = -Math.cos(yaw);
+  return [x * rx + z * fx, x * rz + z * fz];
+}
+/** Shortest signed angle from a to b. */
+export function angleDelta(a: number, b: number): number { return Math.atan2(Math.sin(b - a), Math.cos(b - a)); }
+/** Radial dead zone for a 2-axis stick, rescaled so the output starts at 0 just outside the zone. */
+export function radialDeadzone(x: number, y: number, zone = 0.18): [number, number] {
+  const m = Math.hypot(x, y);
+  if (m <= zone) return [0, 0];
+  const k = Math.min(1, (m - zone) / (1 - zone)) / m;
+  return [x * k, y * k];
+}
+/** Keyboard axis ramp: grows toward a held target at `rise`/s, returns or reverses at `fall`/s. */
+export function rampAxis(current: number, target: number, dt: number, rise: number, fall: number): number {
+  const growing = target !== 0 && (current === 0 || Math.sign(target) === Math.sign(current)) && Math.abs(target) > Math.abs(current);
+  const step = (growing ? rise : fall) * dt;
+  return current + Math.min(step, Math.max(-step, target - current));
+}

@@ -9,10 +9,12 @@ interface WorldState {
   canRecover: boolean;
   recoverRequest: number;
   speed: number;
-  zone: 'camp' | 'town' | 'park';
+  /** v4 adds the north ridge and the open shore (west / south beach). */
+  zone: 'camp' | 'town' | 'park' | 'ridge' | 'shore';
   position: Vec3;
   ready: boolean;
-  zoom: 0 | 1 | 2;
+  /** Camera preset: 0 near, 1 mid, 2 far (third person), 3 first person; scroll zoom is continuous. */
+  zoom: 0 | 1 | 2 | 3;
   quality: 'balanced' | 'high';
   shot: string | null;
 }

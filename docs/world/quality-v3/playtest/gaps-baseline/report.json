@@ -1,0 +1,676 @@
+{
+  "base": "http://127.0.0.1:4322",
+  "scope": "motion,slope,vehicle,occlusion",
+  "startedAt": "2026-10-22T04:08:26.225Z",
+  "errors": [],
+  "limits": [
+    "Isolated fixture starts are not a continuous all-island traversal.",
+    "M5 Pro browser; no M1 Air hardware certification.",
+    "Sampled cases, not every instance or every collision angle."
+  ],
+  "canvas": {
+    "cssSize": [
+      1920,
+      1080
+    ],
+    "canvasAttr": [
+      1920,
+      1080
+    ],
+    "drawingBuffer": [
+      1920,
+      1080
+    ],
+    "viewport": [
+      0,
+      0,
+      1920,
+      1080
+    ],
+    "devicePixelRatio": 1,
+    "effectiveRenderScale": 1,
+    "windowInner": [
+      1920,
+      1080
+    ],
+    "antialias": true,
+    "preserveDrawingBuffer": false,
+    "maxSamples": 8,
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)"
+  },
+  "treeFixture": {
+    "id": "G16",
+    "key": "camp-collider-G16-instances-0-trunk-0",
+    "instance": 0,
+    "label": "instances",
+    "part": "trunk",
+    "kind": "trimesh",
+    "aabb": {
+      "min": [
+        -59.36943817138672,
+        4.800000190734863,
+        33.34025573730469
+      ],
+      "max": [
+        -57.88301467895508,
+        8.794986724853516,
+        35.09921646118164
+      ]
+    }
+  },
+  "fixtures": [
+    {
+      "t": 1.872,
+      "to": [
+        -42,
+        5.68,
+        39
+      ],
+      "reason": "walk jump approach start"
+    },
+    {
+      "t": 6.119,
+      "to": [
+        -42,
+        5.68,
+        39
+      ],
+      "reason": "run jump approach start"
+    },
+    {
+      "t": 10.406,
+      "to": [
+        -17,
+        5.5,
+        34
+      ],
+      "reason": "road ramp upper approach"
+    },
+    {
+      "t": 25.785,
+      "to": [
+        24,
+        3,
+        -10
+      ],
+      "reason": "offroad high-speed road start; car placed separately"
+    },
+    {
+      "t": 33.06,
+      "to": [
+        -65.6262264251709,
+        5.976,
+        30.30025573730469
+      ],
+      "reason": "offroad glancing tree / outer tyre approach; car placed separately"
+    },
+    {
+      "t": 37.48,
+      "to": [
+        24,
+        3,
+        -10
+      ],
+      "reason": "coupe high-speed road start; car placed separately"
+    },
+    {
+      "t": 44.784,
+      "to": [
+        -65.6262264251709,
+        5.854,
+        30.34825573730469
+      ],
+      "reason": "coupe glancing tree / outer tyre approach; car placed separately"
+    },
+    {
+      "t": 49.154,
+      "to": [
+        24,
+        3,
+        -10
+      ],
+      "reason": "van high-speed road start; car placed separately"
+    },
+    {
+      "t": 56.546,
+      "to": [
+        -65.6262264251709,
+        6.252,
+        30.204255737304692
+      ],
+      "reason": "van glancing tree / outer tyre approach; car placed separately"
+    },
+    {
+      "t": 61.008,
+      "to": [
+        0,
+        1.9,
+        8
+      ],
+      "reason": "building near-camera visibility start"
+    },
+    {
+      "t": 65.737,
+      "to": [
+        -51,
+        5.68,
+        22
+      ],
+      "reason": "tree near-camera visibility start"
+    }
+  ],
+  "events": [
+    {
+      "t": 3.63,
+      "press": "Space"
+    },
+    {
+      "t": 7.918,
+      "press": "Space"
+    },
+    {
+      "t": 26.938,
+      "press": "KeyE"
+    },
+    {
+      "t": 33.912,
+      "press": "KeyE"
+    },
+    {
+      "t": 38.632,
+      "press": "KeyE"
+    },
+    {
+      "t": 45.637,
+      "press": "KeyE"
+    },
+    {
+      "t": 50.308,
+      "press": "KeyE"
+    },
+    {
+      "t": 57.398,
+      "press": "KeyE"
+    }
+  ],
+  "finishedAt": "2026-10-22T04:09:37.270Z",
+  "summary": {
+    "passed": 7,
+    "total": 10,
+    "failed": [
+      {
+        "name": "road ramp soles no penetration beyond 3 cm",
+        "evidence": {
+          "maxBelow": 0.05029141902923584,
+          "note": "Includes active swing soles; finite frame sampling, not all slopes"
+        }
+      },
+      {
+        "name": "coupe-wheel-side-tree no >3cm visual tyre penetration",
+        "evidence": {
+          "entered": false,
+          "maxWheelPenetration": 0.35126885771751404
+        }
+      },
+      {
+        "name": "van-wheel-side-tree no >3cm visual tyre penetration",
+        "evidence": {
+          "entered": true,
+          "maxWheelPenetration": 0.6708686351776123
+        }
+      }
+    ],
+    "errors": []
+  },
+  "fullEvidence": "report-full.json.gz",
+  "cases": [
+    {
+      "name": "walk-jump",
+      "airSamples": 24,
+      "clips": [
+        "Idle",
+        "Walk",
+        "Jump"
+      ],
+      "maxRise": 1.5317378044128418,
+      "airHorizontalTravel": 1.7389343261825863,
+      "sampleCount": 73
+    },
+    {
+      "name": "run-jump",
+      "airSamples": 24,
+      "clips": [
+        "Idle",
+        "Walk",
+        "Run",
+        "Jump"
+      ],
+      "maxRise": 1.5325746536254883,
+      "airHorizontalTravel": 2.866706147093759,
+      "sampleCount": 75
+    },
+    {
+      "name": "ramp-walk-down-up",
+      "down": {
+        "legs": [
+          {
+            "target": [
+              -14,
+              32.46
+            ],
+            "reached": true,
+            "recoveries": 0,
+            "blockedAt": null,
+            "start": [
+              -16.843372344970703,
+              5.378087043762207,
+              33.939693450927734
+            ],
+            "end": [
+              -14.278938293457031,
+              4.614028453826904,
+              32.59492874145508
+            ],
+            "seconds": 1.63,
+            "minDist": 0.338
+          },
+          {
+            "target": [
+              -10,
+              30.92
+            ],
+            "reached": true,
+            "recoveries": 0,
+            "blockedAt": null,
+            "start": [
+              -14.278938293457031,
+              4.614028453826904,
+              32.59492874145508
+            ],
+            "end": [
+              -10.304193496704102,
+              3.480339288711548,
+              31.040813446044922
+            ],
+            "seconds": 2.29,
+            "minDist": 0.327
+          },
+          {
+            "target": [
+              -6,
+              29.38
+            ],
+            "reached": true,
+            "recoveries": 0,
+            "blockedAt": null,
+            "start": [
+              -10.304193496704102,
+              3.480339288711548,
+              31.040813446044922
+            ],
+            "end": [
+              -6.314723491668701,
+              2.3365962505340576,
+              29.419607162475586
+            ],
+            "seconds": 2.3,
+            "minDist": 0.317
+          }
+        ],
+        "realKeyboardOnly": true
+      },
+      "up": {
+        "legs": [
+          {
+            "target": [
+              -10,
+              30.92
+            ],
+            "reached": true,
+            "recoveries": 0,
+            "blockedAt": null,
+            "start": [
+              -6.314723491668701,
+              2.3365962505340576,
+              29.419607162475586
+            ],
+            "end": [
+              -9.686522483825684,
+              3.307177782058716,
+              30.830974578857422
+            ],
+            "seconds": 2.83,
+            "minDist": 0.35
+          },
+          {
+            "target": [
+              -14,
+              32.46
+            ],
+            "reached": true,
+            "recoveries": 0,
+            "blockedAt": null,
+            "start": [
+              -9.686522483825684,
+              3.307177782058716,
+              30.830974578857422
+            ],
+            "end": [
+              -13.686250686645508,
+              4.443967819213867,
+              32.35258483886719
+            ],
+            "seconds": 3,
+            "minDist": 0.355
+          },
+          {
+            "target": [
+              -17,
+              34
+            ],
+            "reached": true,
+            "recoveries": 0,
+            "blockedAt": null,
+            "start": [
+              -13.686250686645508,
+              4.443967819213867,
+              32.35258483886719
+            ],
+            "end": [
+              -16.684228897094727,
+              5.341808319091797,
+              33.97304916381836
+            ],
+            "seconds": 2.32,
+            "minDist": 0.361
+          }
+        ],
+        "realKeyboardOnly": true
+      },
+      "maxSoleBelowSurface": 0.05029141902923584,
+      "sampleCount": 155
+    },
+    {
+      "name": "offroad-high-speed",
+      "maxSpeed": 17.596694524163407,
+      "entered": true,
+      "minY": 2.165513038635254,
+      "sampleCount": 127,
+      "solidContactCount": 0
+    },
+    {
+      "name": "offroad-wheel-side-tree",
+      "maxWheelPenetration": 0,
+      "entered": true,
+      "sampleCount": 69
+    },
+    {
+      "name": "coupe-high-speed",
+      "maxSpeed": 19.76038870349962,
+      "entered": true,
+      "minY": 2.1135594844818115,
+      "sampleCount": 127,
+      "solidContactCount": 7
+    },
+    {
+      "name": "coupe-wheel-side-tree",
+      "maxWheelPenetration": 0.35126885771751404,
+      "entered": false,
+      "sampleCount": 71
+    },
+    {
+      "name": "van-high-speed",
+      "maxSpeed": 15.087273705621493,
+      "entered": true,
+      "minY": 2.4504857063293457,
+      "sampleCount": 129,
+      "solidContactCount": 1
+    },
+    {
+      "name": "van-wheel-side-tree",
+      "maxWheelPenetration": 0.6708686351776123,
+      "entered": true,
+      "sampleCount": 69
+    },
+    {
+      "name": "occlusion-building",
+      "fadedMaterials": [
+        ""
+      ],
+      "sampleCount": 64
+    },
+    {
+      "name": "occlusion-tree",
+      "fadedMaterials": [],
+      "sampleCount": 64
+    }
+  ],
+  "checks": [
+    {
+      "name": "walk-jump: takeoff and landing",
+      "passed": true,
+      "evidence": {
+        "name": "walk-jump",
+        "airSamples": 24,
+        "clips": [
+          "Idle",
+          "Walk",
+          "Jump"
+        ],
+        "maxRise": 1.5317378044128418,
+        "airHorizontalTravel": 1.7389343261825863
+      }
+    },
+    {
+      "name": "run-jump: takeoff and landing",
+      "passed": true,
+      "evidence": {
+        "name": "run-jump",
+        "airSamples": 24,
+        "clips": [
+          "Idle",
+          "Walk",
+          "Run",
+          "Jump"
+        ],
+        "maxRise": 1.5325746536254883,
+        "airHorizontalTravel": 2.866706147093759
+      }
+    },
+    {
+      "name": "road ramp traversed both directions",
+      "passed": true,
+      "evidence": {
+        "down": [
+          {
+            "target": [
+              -14,
+              32.46
+            ],
+            "reached": true,
+            "recoveries": 0,
+            "blockedAt": null,
+            "start": [
+              -16.843372344970703,
+              5.378087043762207,
+              33.939693450927734
+            ],
+            "end": [
+              -14.278938293457031,
+              4.614028453826904,
+              32.59492874145508
+            ],
+            "seconds": 1.63,
+            "minDist": 0.338
+          },
+          {
+            "target": [
+              -10,
+              30.92
+            ],
+            "reached": true,
+            "recoveries": 0,
+            "blockedAt": null,
+            "start": [
+              -14.278938293457031,
+              4.614028453826904,
+              32.59492874145508
+            ],
+            "end": [
+              -10.304193496704102,
+              3.480339288711548,
+              31.040813446044922
+            ],
+            "seconds": 2.29,
+            "minDist": 0.327
+          },
+          {
+            "target": [
+              -6,
+              29.38
+            ],
+            "reached": true,
+            "recoveries": 0,
+            "blockedAt": null,
+            "start": [
+              -10.304193496704102,
+              3.480339288711548,
+              31.040813446044922
+            ],
+            "end": [
+              -6.314723491668701,
+              2.3365962505340576,
+              29.419607162475586
+            ],
+            "seconds": 2.3,
+            "minDist": 0.317
+          }
+        ],
+        "up": [
+          {
+            "target": [
+              -10,
+              30.92
+            ],
+            "reached": true,
+            "recoveries": 0,
+            "blockedAt": null,
+            "start": [
+              -6.314723491668701,
+              2.3365962505340576,
+              29.419607162475586
+            ],
+            "end": [
+              -9.686522483825684,
+              3.307177782058716,
+              30.830974578857422
+            ],
+            "seconds": 2.83,
+            "minDist": 0.35
+          },
+          {
+            "target": [
+              -14,
+              32.46
+            ],
+            "reached": true,
+            "recoveries": 0,
+            "blockedAt": null,
+            "start": [
+              -9.686522483825684,
+              3.307177782058716,
+              30.830974578857422
+            ],
+            "end": [
+              -13.686250686645508,
+              4.443967819213867,
+              32.35258483886719
+            ],
+            "seconds": 3,
+            "minDist": 0.355
+          },
+          {
+            "target": [
+              -17,
+              34
+            ],
+            "reached": true,
+            "recoveries": 0,
+            "blockedAt": null,
+            "start": [
+              -13.686250686645508,
+              4.443967819213867,
+              32.35258483886719
+            ],
+            "end": [
+              -16.684228897094727,
+              5.341808319091797,
+              33.97304916381836
+            ],
+            "seconds": 2.32,
+            "minDist": 0.361
+          }
+        ]
+      }
+    },
+    {
+      "name": "road ramp soles no penetration beyond 3 cm",
+      "passed": false,
+      "evidence": {
+        "maxBelow": 0.05029141902923584,
+        "note": "Includes active swing soles; finite frame sampling, not all slopes"
+      }
+    },
+    {
+      "name": "offroad-high-speed real acceleration/brake",
+      "passed": true,
+      "evidence": {
+        "entered": true,
+        "maxSpeed": 17.596694524163407,
+        "minY": 2.165513038635254
+      }
+    },
+    {
+      "name": "offroad-wheel-side-tree no >3cm visual tyre penetration",
+      "passed": true,
+      "evidence": {
+        "entered": true,
+        "maxWheelPenetration": 0
+      }
+    },
+    {
+      "name": "coupe-high-speed real acceleration/brake",
+      "passed": true,
+      "evidence": {
+        "entered": true,
+        "maxSpeed": 19.76038870349962,
+        "minY": 2.1135594844818115
+      }
+    },
+    {
+      "name": "coupe-wheel-side-tree no >3cm visual tyre penetration",
+      "passed": false,
+      "evidence": {
+        "entered": false,
+        "maxWheelPenetration": 0.35126885771751404
+      }
+    },
+    {
+      "name": "van-high-speed real acceleration/brake",
+      "passed": true,
+      "evidence": {
+        "entered": true,
+        "maxSpeed": 15.087273705621493,
+        "minY": 2.4504857063293457
+      }
+    },
+    {
+      "name": "van-wheel-side-tree no >3cm visual tyre penetration",
+      "passed": false,
+      "evidence": {
+        "entered": true,
+        "maxWheelPenetration": 0.6708686351776123
+      }
+    }
+  ]
+}

@@ -5,7 +5,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 button { font: inherit; color: inherit; cursor: pointer; }
 button:focus-visible, a:focus-visible { outline: 3px solid #4fd1c5; outline-offset: 4px; }
 .world-app { width: 100%; height: 100dvh; overflow: hidden; position: relative; color: #f4ecdb; background: #1e5a5e; }
-.world-app canvas { display: block; touch-action: none; }
+.world-app canvas { display: block; touch-action: none; cursor: grab; }
+.world-app canvas:active { cursor: grabbing; }
 .world-top, .world-bottom { position: absolute; z-index: 2; left: 32px; right: 32px; display: flex; align-items: center; justify-content: space-between; pointer-events: none; }
 .world-top { top: 24px; }
 .world-eyebrow { display: block; font-size: 11px; letter-spacing: .14em; opacity: .7; text-transform: uppercase; }
@@ -42,6 +43,9 @@ kbd { font: inherit; font-size: 11px; margin-left: 14px; border: 1px solid #ffff
 .world-dialog button[aria-pressed="true"] { border-color: #4fd1c5; background: #36565e; }
 .world-dialog .world-primary { width: 100%; background: #e6dccb; color: #20333b; margin: 10px 0; }
 .world-dialog a { display: block; text-align: center; font-size: 13px; }
+.world-credits { margin: 16px 0; color: #b9cacd; font-size: 12px; line-height: 1.5; }
+.world-credits summary { cursor: pointer; color: #f4ecdb; }
+.world-credits a { padding: 4px 0; text-align: left; overflow-wrap: anywhere; }
 .world-shot .world-top, .world-shot .world-bottom, .world-shot .world-location, .world-shot .world-interaction { display: none; }
 @media (prefers-reduced-motion: reduce) { .world-progress { animation: none; } }
 @media (max-height: 760px) { .world-dialog .world-map-large { max-height: 190px; margin: 12px 0; } .world-dialog { padding: 20px; } }

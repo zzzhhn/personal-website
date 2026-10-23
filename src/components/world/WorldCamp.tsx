@@ -1,14 +1,14 @@
 import { memo, Component, Suspense, useEffect, useLayoutEffect, useMemo, useRef, type ReactNode } from 'react';
-import { useFrame, useLoader } from '@react-three/fiber';
+import { useFrame, useLoader, useThree } from '@react-three/fiber';
 import {
-  Box3, BoxGeometry, BufferGeometry, Color, ConeGeometry, Euler, Float32BufferAttribute, InstancedMesh, Matrix4, Mesh,
-  MeshStandardMaterial, Object3D, Quaternion, Vector3, type Material, type PointLight,
+  AdditiveBlending, Box3, BoxGeometry, BufferGeometry, Color, DoubleSide, Euler, Float32BufferAttribute, InstancedMesh, Matrix4, Mesh,
+  MeshStandardMaterial, Object3D, Quaternion, ShaderMaterial, Sphere, UniformsLib, UniformsUtils, Vector3, type Material, type PointLight,
 } from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { TessellateModifier } from 'three/examples/jsm/modifiers/TessellateModifier.js';
-import { CampColliders, BlockColliders, campShapes } from './WorldCampPhysics';
-import { CampGround } from './WorldTerrain';
+import { CampColliders, BlockColliders, SoftBushDrag, campShapes } from './WorldCampPhysics';
+import { rockPlacements } from './WorldLandform';
 import { attachNatureWind } from './WorldNatureMotion';
 import { applyTentWind, markTentCloth, windUniforms, isWorldRunning } from './WorldWind';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
@@ -22,7 +22,6 @@ export interface CampLayout { pads: CampBlock[]; padObjects: CampBlock[]; tents:
 /** tilt rotates about the asset's local X before yaw (re-grounded by bounds); sink buries it. */
 type Placement = { position: Vec3; yaw: number; scale?: number; tilt?: number; sink?: number };
 
-const CAMP_RADIUS = 24;
 const CAMP_TOP = CAMP_CENTER[1];
 const PAD_TOP = 4.9;
 /** Ring index (layout order, angle = i*45deg, +Z south) for pad1..pad8. Fable r3 swap: desk
@@ -45,7 +44,6 @@ const useCampGltf = (id: string) => useLoader(GLTFLoader, `/assets/world/camp/${
 
 const BOX = new BoxGeometry(1, 1, 1);
 const BUNDLE = new RoundedBoxGeometry(1, 1, 1, 2, 0.16);
-const FLAME = new ConeGeometry(1, 1, 6, 1).translate(0, 0.5, 0);
 
 /** Per-asset error isolation: a missing GLB shows its old greybox look under a
  * camp-fallback-* name so QA can never mistake it for a loaded asset. */
@@ -149,14 +147,15 @@ function InstancedPart({ part, matrices, id }: { part: Part; matrices: Matrix4[]
   useLayoutEffect(() => {
     const mesh = ref.current;
     if (!mesh) return;
-    const detach = attachNatureWind(mesh);
+    const detach = attachNatureWind(mesh, id === 'G19' || id === 'G20');
     const m = new Matrix4();
     matrices.forEach((placement, i) => mesh.setMatrixAt(i, m.multiplyMatrices(placement, part.matrix)));
     mesh.instanceMatrix.needsUpdate = true;
     mesh.computeBoundingSphere();
     return detach;
   }, [part, matrices]);
-  return <instancedMesh name={`camp-mesh-${id}-${part.name}`} userData={{ assetId: id, solid: true, semantic: part.name }} ref={ref} args={[part.geometry, part.material, matrices.length]} customDepthMaterial={part.depth} castShadow receiveShadow />;
+  const soft = id === 'G19' || id === 'G20';
+  return <instancedMesh name={`camp-mesh-${id}-${part.name}`} userData={soft ? { assetId: id, softBush: true, semantic: part.name } : { assetId: id, solid: true, semantic: part.name }} ref={ref} args={[part.geometry, part.material, matrices.length]} customDepthMaterial={part.depth} castShadow receiveShadow />;
 }
 
 /** Repeated static assets: one instanced draw per GLB primitive, shared materials. */
@@ -228,65 +227,139 @@ function FlagPole({ label, placement }: { label: string; placement: Placement })
   </group>;
 }
 
-/** A handful of faceted runtime flame cones in C05's open centre; no particles. */
-const FLAMES = [
-  { p: [0, 0, 0], r: 0.4, h: 1.4, phase: 0, core: false },
-  { p: [0.22, 0, 0.12], r: 0.22, h: 0.75, phase: 1.7, core: false },
-  { p: [-0.2, 0, 0.15], r: 0.2, h: 0.68, phase: 3.1, core: false },
-  { p: [0.03, 0, -0.23], r: 0.21, h: 0.8, phase: 4.4, core: false },
-  { p: [0, 0, 0], r: 0.2, h: 0.8, phase: 2.3, core: true },
+/** nature-v4 camp fire (quality-v3 spec 11.2). Old: 5 faceted cones = 60 triangles, opaque.
+ * New: 5 layered tongues (outer ring + inner core, 2 bands + tip fan, 5 sides = 25 tris each,
+ * 125 total) in ONE opaque draw whose shader scrolls a flame field upward: it bends the tongues,
+ * quantises the colour in low-poly bands and cuts ragged, rising tips by discard, so the fire
+ * reads as many licking tongues without transparent overdraw. Plus 28 additive ember points (one
+ * transparent draw, ~4-9 px each). All motion uses the shared wind clock, so Esc / evidence shots
+ * freeze it and reduced motion stills it. Not shadow casting, as before. */
+const TONGUES = [
+  { p: [0.02, -0.01], r: 0.3, h: 1.55, lean: [0.04, -0.03], seed: 0.1, core: 0 },
+  { p: [0.3, 0.12], r: 0.17, h: 1.0, lean: [0.14, 0.06], seed: 1.7, core: 0 },
+  { p: [-0.28, 0.16], r: 0.16, h: 0.9, lean: [-0.13, 0.08], seed: 3.1, core: 0 },
+  { p: [0.03, -0.31], r: 0.17, h: 1.08, lean: [0.0, -0.14], seed: 4.4, core: 0 },
+  { p: [0.0, 0.03], r: 0.13, h: 1.15, lean: [0.0, 0.0], seed: 2.3, core: 1 },
 ] as const;
+export const FIRE_STATS = { baselineTriangles: 60, tongues: TONGUES.length, sides: 5, triangles: 0, embers: 28, drawCalls: 2, transparentDraws: 1 };
+function fireGeometry() {
+  const pos: number[] = [], t: number[] = [], seed: number[] = [], core: number[] = [];
+  const S = 5, rings = [[0, 1], [0.4, 0.78], [0.72, 0.42]] as const;
+  for (const g of TONGUES) {
+    const ring = (k: number) => Array.from({ length: S }, (_, i) => {
+      const [ty, rs] = rings[k], a = (i / S) * Math.PI * 2 + g.seed + k * .45;
+      return [g.p[0] + g.lean[0] * ty + Math.cos(a) * g.r * rs, ty * g.h, g.p[1] + g.lean[1] * ty + Math.sin(a) * g.r * rs, ty];
+    });
+    const R = [ring(0), ring(1), ring(2)], tip = [g.p[0] + g.lean[0] * 1.25, g.h, g.p[1] + g.lean[1] * 1.25, 1];
+    const tri = (...v: number[][]) => v.forEach(q => { pos.push(q[0], q[1], q[2]); t.push(q[3]); seed.push(g.seed); core.push(g.core); });
+    for (let k = 0; k < 2; k++) for (let i = 0; i < S; i++) {
+      const a = R[k][i], b = R[k][(i + 1) % S], c = R[k + 1][(i + 1) % S], d = R[k + 1][i];
+      tri(a, b, c); tri(a, c, d);
+    }
+    for (let i = 0; i < S; i++) tri(R[2][i], R[2][(i + 1) % S], tip);
+  }
+  const geometry = new BufferGeometry();
+  geometry.setAttribute('position', new Float32BufferAttribute(pos, 3));
+  geometry.setAttribute('aT', new Float32BufferAttribute(t, 1));
+  geometry.setAttribute('aSeed', new Float32BufferAttribute(seed, 1));
+  geometry.setAttribute('aCore', new Float32BufferAttribute(core, 1));
+  geometry.computeBoundingSphere(); if (geometry.boundingSphere) geometry.boundingSphere.radius += .3;
+  FIRE_STATS.triangles = pos.length / 9;
+  return geometry;
+}
+const FIRE_VERT = /* glsl */`
+attribute float aT; attribute float aSeed; attribute float aCore;
+uniform float uWindTime; uniform float uWindStrength;
+varying float vT; varying float vSeed; varying float vCore; varying vec3 vLocal;
+#include <fog_pars_vertex>
+void main() {
+  float t = uWindTime, m = uWindStrength;
+  vec3 p = position;
+  // Licks travel up the tongue: phase rises with height, amplitude grows toward the tip.
+  float w = aT * aT;
+  p.x += m * w * (0.07 * sin(t * 6.3 - aT * 5.0 + aSeed * 2.1) + 0.03 * sin(t * 11.0 + aSeed));
+  p.z += m * w * (0.07 * cos(t * 5.7 - aT * 4.6 + aSeed * 1.3) + 0.03 * cos(t * 9.4 + aSeed * 2.0));
+  p.y *= 1.0 + m * aT * (0.12 * sin(t * 7.0 + aSeed * 3.0) + 0.05 * sin(t * 13.1 + aSeed));
+  vT = aT; vSeed = aSeed; vCore = aCore; vLocal = p;
+  vec4 mvPosition = modelViewMatrix * vec4(p, 1.0);
+  gl_Position = projectionMatrix * mvPosition;
+  #include <fog_vertex>
+}`;
+const FIRE_FRAG = /* glsl */`
+uniform float uWindTime; uniform float uWindStrength; uniform float uGlow;
+varying float vT; varying float vSeed; varying float vCore; varying vec3 vLocal;
+#include <fog_pars_fragment>
+void main() {
+  float t = uWindTime * mix(0.25, 1.0, uWindStrength);
+  // Upward-scrolling flame field (two octaves) -> ragged tips that detach and rise.
+  float n = 0.5 * sin(vLocal.y * 9.0 - t * 8.0 + vSeed * 3.0 + vLocal.x * 7.0)
+          + 0.5 * sin(vLocal.y * 15.0 - t * 12.5 + vLocal.z * 11.0 + vSeed);
+  float edge = 0.8 + 0.16 * n - 0.06 * vCore;
+  if (vT > 0.5 && vT > edge) discard;
+  // Low-poly colour bands: ember base -> camp orange -> warm gold -> pale core tip.
+  float band = floor(clamp(vT + 0.12 * n, 0.0, 0.999) * 4.0) / 3.0;
+  // Display-referred camp orange family (#E8803A / #FF8A3A / #FFC978 neighbours); toneMapped off.
+  vec3 c0 = vec3(0.80, 0.24, 0.06), c1 = vec3(0.95, 0.43, 0.12), c2 = vec3(1.0, 0.64, 0.24), c3 = vec3(1.0, 0.84, 0.50);
+  vec3 col = band < 0.34 ? mix(c0, c1, band * 3.0) : band < 0.67 ? mix(c1, c2, band * 3.0 - 1.0) : mix(c2, c3, band * 3.0 - 2.0);
+  col = mix(col, c3, vCore * 0.35 * vT);
+  gl_FragColor = vec4(min(col * uGlow, vec3(1.0)), 1.0);
+  #include <fog_fragment>
+}`;
+const EMBER_VERT = /* glsl */`
+attribute float aSeed;
+uniform float uWindTime; uniform float uWindStrength; uniform float uPixel;
+varying float vLife;
+void main() {
+  float life = fract(uWindTime * (0.38 + 0.2 * fract(aSeed * 7.3)) + aSeed);
+  float a = aSeed * 40.0 + life * 3.5;
+  float r = 0.12 + life * (0.25 + 0.2 * fract(aSeed * 3.1));
+  vec3 p = vec3(cos(a) * r, 0.25 + life * (1.9 + 0.9 * fract(aSeed * 5.7)), sin(a) * r);
+  vLife = uWindStrength < 0.02 ? 1.0 : life;
+  vec4 mv = modelViewMatrix * vec4(p, 1.0);
+  gl_Position = projectionMatrix * mv;
+  gl_PointSize = uPixel * (1.0 - life * 0.6) * (0.06 / max(0.5, -mv.z)) * 140.0;
+}`;
+const EMBER_FRAG = /* glsl */`
+varying float vLife;
+void main() {
+  vec2 d = gl_PointCoord - 0.5;
+  if (dot(d, d) > 0.25 || vLife > 0.97) discard;
+  vec3 col = mix(vec3(1.0, 0.8, 0.45), vec3(0.95, 0.38, 0.1), vLife);
+  gl_FragColor = vec4(col, (1.0 - vLife) * 0.9);
+}`;
 function CampFire({ position }: { position: Vec3 }) {
-  const outer = useMemo(() => new MeshStandardMaterial({ color: '#E8803A', emissive: '#FF8A3A', emissiveIntensity: 1.3, roughness: 1, flatShading: true }), []);
-  const core = useMemo(() => new MeshStandardMaterial({ color: '#FFC978', emissive: '#FFC978', emissiveIntensity: 1.6, roughness: 1, flatShading: true }), []);
-  useEffect(() => () => { outer.dispose(); core.dispose(); }, [outer, core]);
-  const refs = useRef<(Mesh | null)[]>([]);
+  const gl = useThree(s => s.gl);
+  const { flame, embers, flameMat, emberMat } = useMemo(() => {
+    const flame = fireGeometry();
+    const embers = new BufferGeometry();
+    embers.setAttribute('position', new Float32BufferAttribute(new Float32Array(FIRE_STATS.embers * 3), 3));
+    embers.setAttribute('aSeed', new Float32BufferAttribute(Array.from({ length: FIRE_STATS.embers }, (_, i) => (i * 0.618034) % 1), 1));
+    embers.boundingSphere = new Sphere(new Vector3(0, 1.4, 0), 2);
+    // Colours are authored display-referred: no tone mapping / colour-space conversion, so the
+    // ACES curve cannot wash the bands to white.
+    const flameMat = new ShaderMaterial({ vertexShader: FIRE_VERT, fragmentShader: FIRE_FRAG, fog: true, side: DoubleSide, toneMapped: false,
+      uniforms: UniformsUtils.merge([UniformsLib.fog, { uGlow: { value: 1 } }]) });
+    flameMat.uniforms.uWindTime = windUniforms.uWindTime; flameMat.uniforms.uWindStrength = windUniforms.uWindStrength;
+    const emberMat = new ShaderMaterial({ vertexShader: EMBER_VERT, fragmentShader: EMBER_FRAG, transparent: true, depthWrite: false, blending: AdditiveBlending, toneMapped: false,
+      uniforms: { uPixel: { value: 1 } } });
+    emberMat.uniforms.uWindTime = windUniforms.uWindTime; emberMat.uniforms.uWindStrength = windUniforms.uWindStrength;
+    return { flame, embers, flameMat, emberMat };
+  }, []);
+  useEffect(() => () => { flame.dispose(); embers.dispose(); flameMat.dispose(); emberMat.dispose(); }, [flame, embers, flameMat, emberMat]);
   useFrame((_, delta) => {
     const night = useWorldStore.getState().light === 'night';
-    outer.emissiveIntensity += ((night ? 2.2 : 1.3) - outer.emissiveIntensity) * Math.min(1, delta * 2);
-    core.emissiveIntensity = outer.emissiveIntensity * 1.25;
-    if (!isRunning()) return;
-    const t = windUniforms.uWindTime.value;
-    FLAMES.forEach((f, i) => {
-      const mesh = refs.current[i];
-      if (!mesh) return;
-      const motion = windUniforms.uWindStrength.value;
-      const pulse = 1 + (Math.sin(t * 7 + f.phase) * 0.13 + Math.sin(t * 12.7 + f.phase * 2) * 0.05) * motion;
-      mesh.scale.set(f.r * (1.04 - pulse * 0.04), f.h * pulse, f.r * (1.04 - pulse * 0.04));
-      mesh.rotation.set(Math.sin(t * 2.3 + f.phase) * 0.06 * motion, f.phase + Math.sin(t * .4) * .25 * motion, Math.cos(t * 2.1 + f.phase) * 0.06 * motion);
-    });
+    const glow = flameMat.uniforms.uGlow;
+    glow.value += ((night ? 1.08 : 0.96) - glow.value) * Math.min(1, delta * 2);
+    emberMat.uniforms.uPixel.value = gl.getPixelRatio() * gl.domElement.height / 1080;
   });
-  return <group name="camp-runtime-flame" position={position}>
-    {FLAMES.map((f, i) => <mesh key={i} ref={m => { refs.current[i] = m; }} geometry={FLAME} material={f.core ? core : outer}
-      position={[f.p[0], f.p[1], f.p[2]]} scale={[f.r, f.h, f.r]} rotation={[0, f.phase, 0]} />)}
+  return <group name="camp-runtime-flame" position={position} userData={{ fireStats: FIRE_STATS }}>
+    <mesh name="camp-fire-tongues" geometry={flame} material={flameMat} />
+    <points name="camp-fire-embers" geometry={embers} material={emberMat} frustumCulled={false} renderOrder={2} />
   </group>;
 }
 
 /** Deterministic hash in [-1, 1] for low-poly edge variation (not per-face shading). */
 const hash = (k: number, seed: number) => { const s = Math.sin(k * 12.9898 + seed * 78.233) * 43758.5453; return (s - Math.floor(s)) * 2 - 1; };
-
-/** G01 camp segment: layered, faceted stone bands replacing the smooth sand cylinder side.
- * Stays within the old 24 -> 24.7 m flare so nothing new intrudes on the ramp or lower ground. */
-function createCliff(): BufferGeometry {
-  const N = 72, [cx, , cz] = CAMP_CENTER;
-  const levels = [CAMP_TOP, 4.35, 3.45, 2.35, 0.9];
-  const base = [CAMP_RADIUS, 24.1, 24.3, 24.45, 24.7];
-  const bandColors = ['#A7835A', '#B4A896', '#9A8F82', '#8C8276'].map(c => new Color(c));
-  const radius = (level: number, k: number) => level === 0 ? base[0] : base[level] + hash(k, level + 7) * 0.2 - 0.1;
-  const point = (level: number, k: number) => { const a = (k % N) / N * Math.PI * 2, r = radius(level, k % N); return [cx + Math.cos(a) * r, levels[level], cz + Math.sin(a) * r]; };
-  const positions: number[] = [], colors: number[] = [];
-  for (let level = 0; level < levels.length - 1; level++) for (let k = 0; k < N; k++) {
-    const t0 = point(level, k), t1 = point(level, k + 1), b0 = point(level + 1, k), b1 = point(level + 1, k + 1);
-    const c = bandColors[level];
-    for (const v of [t0, t1, b0, t1, b1, b0]) { positions.push(...v); colors.push(c.r, c.g, c.b); }
-  }
-  const geometry = new BufferGeometry();
-  geometry.setAttribute('position', new Float32BufferAttribute(positions, 3));
-  geometry.setAttribute('color', new Float32BufferAttribute(colors, 3));
-  geometry.computeVertexNormals();
-  geometry.computeBoundingSphere();
-  return geometry;
-}
 
 /** Night-only cool fill bounded to the camp plateau (distance cutoff, no decay, no shadows), so
  * unlit ground reads blue-grey like the locked night reference while the fire stays the key light. */
@@ -364,16 +437,31 @@ function CampLamps({ heads }: { heads: CampBlock[] }) {
   </group>;
 }
 
-function CampTerrain() {
-  const cliff = useMemo(createCliff, []);
-  useEffect(() => () => cliff.dispose(), [cliff]);
-  return <group name="camp-terrain-C01-G01">
-    <CampGround radius={CAMP_RADIUS} y={CAMP_TOP} />
-    <mesh geometry={cliff} receiveShadow><meshStandardMaterial vertexColors roughness={1} flatShading /></mesh>
-  </group>;
-}
-
 const rotateY = (x: number, z: number, yaw: number): [number, number] => [x * Math.cos(yaw) + z * Math.sin(yaw), -x * Math.sin(yaw) + z * Math.cos(yaw)];
+
+/** QA-only (?qa=1) close evidence camera for nature/fire before-after stills. It uses a
+ * dedicated shot id, so the normal follow camera, physics and motion clocks freeze exactly as
+ * in the existing evidence shots; the follow camera forces fov 50 in shot mode. */
+const QA_CLOSE_SHOT = 'camp-qa-close';
+function CampQACamera() {
+  const camera = useThree(s => s.camera);
+  const view = useRef<{ p: Vec3; t: Vec3 } | null>(null);
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('qa') !== '1') return;
+    const api = {
+      close: (p: Vec3, t: Vec3) => { view.current = { p, t }; useWorldStore.setState({ shot: QA_CLOSE_SHOT }); },
+      release: () => { view.current = null; useWorldStore.setState({ shot: null }); },
+    };
+    Object.assign(window, { __worldCampQA: api });
+    return () => { delete (window as unknown as Record<string, unknown>).__worldCampQA; };
+  }, []);
+  useFrame(() => {
+    const v = view.current;
+    if (!v || useWorldStore.getState().shot !== QA_CLOSE_SHOT) return;
+    camera.position.set(...v.p); camera.up.set(0, 1, 0); camera.lookAt(...v.t);
+  });
+  return null;
+}
 
 /** C02: grout slab plus six flagstones whose tops sit exactly on the unchanged pad collider top. */
 function padTiles(pads: CampBlock[]): CampBlock[] {
@@ -428,7 +516,9 @@ export default memo(function WorldCamp({ layout }: { layout: CampLayout }) {
   const firePosition: Vec3 = [CAMP_CENTER[0], CAMP_TOP, CAMP_CENTER[2]];
 
   return <group name="world-camp-slice">
-    <CampTerrain />
+    {/* Plateau ground, flanks and rock terraces are the island terrain (WorldTerrain). */}
+    <CampQACamera />
+    <SoftBushDrag />
     <CampNightFill />
     <CampFireSpill />
     <CampNightMaterials />
@@ -500,6 +590,13 @@ function createNature() {
       list.push({ position: [gx + dx, CAMP_TOP, gz + dz], yaw, scale: scale ?? 1, tilt, sink });
       byId.set(id, list);
     }
+  }
+  // quality-v3: scaled G21-G23 groups dress the steep plateau terraces and seawall ends;
+  // each is seated on the terrain (WorldLandform) and keeps its fitted collider.
+  for (const r of rockPlacements()) {
+    const list = byId.get(r.id) ?? [];
+    list.push({ position: r.position, yaw: r.yaw, scale: r.scale, tilt: r.tilt, sink: r.sink });
+    byId.set(r.id, list);
   }
   return ['G19', 'G20', 'G21', 'G22', 'G23'].map(id => ({ id, placements: byId.get(id) ?? [] }));
 }

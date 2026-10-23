@@ -1,0 +1,105 @@
+{
+  "base": "http://127.0.0.1:4322",
+  "startedAt": "2026-10-22T04:37:14.953Z",
+  "errors": [],
+  "limits": [
+    "Synthetic isolated obstacle shapes, not map-instance coverage.",
+    "Finite browser-frame sampling; not every physics microstep.",
+    "M5 Pro; no M1 hardware claim."
+  ],
+  "finishedAt": "2026-10-22T04:37:51.715Z",
+  "fixtures": [
+    {
+      "t": 1.303,
+      "to": [
+        96,
+        6,
+        117.8
+      ],
+      "reason": "QA lane offroad/post/10 m/s; car placed at x=96"
+    },
+    {
+      "t": 15.074,
+      "to": [
+        96,
+        6,
+        117.8
+      ],
+      "reason": "QA lane coupe/post/10 m/s; car placed at x=96"
+    },
+    {
+      "t": 23.003,
+      "to": [
+        96,
+        6,
+        117.8
+      ],
+      "reason": "QA lane van/post/10 m/s; car placed at x=96"
+    }
+  ],
+  "summary": {
+    "total": 3,
+    "passed": 0,
+    "failed": [
+      "offroad-post-10",
+      "coupe-post-10",
+      "van-post-10"
+    ],
+    "errors": []
+  },
+  "fullEvidence": "report-full.json.gz",
+  "cases": [
+    {
+      "name": "offroad-post-10",
+      "targetSpeed": 10,
+      "fixture": {
+        "kind": "post",
+        "lateral": 1.0899999999999999,
+        "startX": 96
+      },
+      "entered": true,
+      "closest": 0.013301665894687176,
+      "maxPenetration": 0,
+      "contactSpeed": 9.904919624328613,
+      "maxRise": 0.3253912925720215,
+      "maxVerticalSpeed": 25.920413970947266,
+      "passed": false,
+      "sampleCount": 618
+    },
+    {
+      "name": "coupe-post-10",
+      "targetSpeed": 10,
+      "fixture": {
+        "kind": "post",
+        "lateral": 1.0419999999999998,
+        "startX": 96
+      },
+      "entered": true,
+      "closest": 0.01211576722562313,
+      "maxPenetration": 0,
+      "contactSpeed": 9.903302192687988,
+      "maxRise": 0.29662227630615234,
+      "maxVerticalSpeed": 7.61625337600708,
+      "passed": false,
+      "sampleCount": 319
+    },
+    {
+      "name": "van-post-10",
+      "targetSpeed": 10,
+      "fixture": {
+        "kind": "post",
+        "lateral": 1.186,
+        "startX": 96
+      },
+      "entered": true,
+      "closest": 0.012447314336895943,
+      "maxPenetration": 0,
+      "contactSpeed": 9.912378311157227,
+      "maxRise": 0.3560953140258789,
+      "maxVerticalSpeed": 25.914573669433594,
+      "passed": false,
+      "sampleCount": 618
+    }
+  ],
+  "checks": []
+}

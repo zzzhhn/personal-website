@@ -1,15 +1,40 @@
 import { Component, Suspense, useEffect, useMemo, useRef, type ReactNode } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
-import { AnimationMixer, LoopOnce, LoopRepeat, Mesh, SkinnedMesh, Vector3, type AnimationAction, type Bone, type Group, type Object3D } from 'three';
+import { AnimationMixer, LoopOnce, LoopRepeat, Mesh, Quaternion, SkinnedMesh, Vector3, type AnimationAction, type Bone, type Group, type Object3D } from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js';
 import { useWorldStore } from './store';
-import { GuideStopStep } from './WorldGuideStop';
+import { GuideSlopeFit, GuideStopStep, skinnedWorldPoint, type SlopeProbe } from './WorldGuideStop';
 import { GuidePhaseModel, PhaseGate } from './WorldGuidePhase';
 
-export interface WorldGuideMotion { speedMps: number; grounded: boolean; facing: number; targetSpeedMps?: number }
+export interface WorldGuideMotion {
+  speedMps: number; grounded: boolean; facing: number; targetSpeedMps?: number;
+  /** Movement intent from input (WorldActors): no keys / WASD / WASD+Shift. */
+  intent?: 'idle' | 'walk' | 'run';
+  /** Rigid-body vertical speed (m/s); drives the air pose (rise -> apex -> fall). */
+  verticalSpeedMps?: number;
+  /** Increments on every real take-off (the frame the jump velocity is set). */
+  jumpSeq?: number;
+  /** Static walkable ground under (x, z), cast down from fromY; used by the stance slope fit. */
+  probeGround?: SlopeProbe;
+}
 export interface WorldGuideProps extends WorldGuideMotion { visible: boolean; readMotion?: () => WorldGuideMotion; fallback?: ReactNode }
+/** v3 clip set (CMU-retargeted Walk/Run/Sprint, one-shot jump phases); see docs/world/quality-v3/guide. */
+const GAITS = ['Walk', 'Run', 'Sprint'];
+const LOOPS = new Set(['Idle', ...GAITS]);
+const REQUIRED = ['Idle', ...GAITS, 'JumpStart', 'JumpAir', 'RunJumpStart', 'RunJumpAir', 'Land'];
+/** Horizontal speed at take-off from which the running jump is used (spec 1.4). */
+const RUNJUMP_SPEED = 2.5;
+/** Standing landing length and the time after which movement may interrupt it (spec 1.4). */
+const LAND_DURATION = .3, LAND_LOCK = .12;
+/** Moving landing: additive spine compression length and peak pitch (rad) at 5 m/s impact. */
+const LAND_ADD = .15, LAND_PITCH = .14;
+/** A walk-off / terrain lip shorter than this keeps the gait (no air pose for a one-frame hop). */
+const FALL_GRACE = .15;
+/** Out-of-band playback (spec 1.2: 0.85-1.2) switches gait at once instead of waiting for a phase match. */
+const RATE_LO = .7, RATE_HI = 1.25;
+const _landQ = new Quaternion();
 let decoder: DRACOLoader | null = null;
 const withDecoder = (loader: GLTFLoader) => {
   decoder ??= new DRACOLoader().setDecoderPath('/assets/world/draco/');
@@ -41,28 +66,38 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
   const rig = useMemo(() => {
     const scene = clone(gltf.scene);
     scene.traverse(o => { if (o instanceof Mesh) { o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; } });
-    const soles: { mesh: SkinnedMesh; indices: number[] }[] = [];
+    const soles: { mesh: SkinnedMesh; indices: number[]; sides: ('left' | 'right')[] }[] = [];
     scene.traverse(o => {
       if (!(o instanceof SkinnedMesh)) return;
       const joints=o.geometry.getAttribute('skinIndex'), weights=o.geometry.getAttribute('skinWeight');
       if(!joints||!weights)return;
-      const indices:number[]=[];
+      const indices:number[]=[], sides:('left'|'right')[]=[];
       for(let i=0;i<joints.count;i++) {
         const ids=[joints.getX(i),joints.getY(i),joints.getZ(i),joints.getW(i)];
         const ws=[weights.getX(i),weights.getY(i),weights.getZ(i),weights.getW(i)];
-        if(ids.reduce((sum,id,k)=>sum+(/^foot[._]?[LR]$/.test(o.skeleton.bones[id]?.name??'')?ws[k]:0),0)>.98)indices.push(i);
+        for (const [side, re] of [['left', /^foot[._]?L$/], ['right', /^foot[._]?R$/]] as const)
+          if(ids.reduce((sum,id,k)=>sum+(re.test(o.skeleton.bones[id]?.name??'')?ws[k]:0),0)>.98){indices.push(i);sides.push(side);}
       }
-      if(indices.length)soles.push({mesh:o,indices});
+      if(indices.length)soles.push({mesh:o,indices,sides});
     });
     const mixer = new AnimationMixer(scene);
     const actions = Object.fromEntries(gltf.animations.map(clip => {
       const action = mixer.clipAction(clip);
-      const once = clip.name === 'Jump' || clip.name === 'Land';
+      const once = !LOOPS.has(clip.name);
       action.setLoop(once ? LoopOnce : LoopRepeat, once ? 1 : Infinity);
       action.clampWhenFinished = once;
       return [clip.name, action];
     })) as Record<string, AnimationAction>;
-    for (const name of ['Idle', 'Walk', 'Run', 'Jump', 'Land']) if (!actions[name]) throw new Error(`G24 missing ${name} animation`);
+    for (const name of REQUIRED) if (!actions[name]) throw new Error(`G24 missing ${name} animation`);
+    // Design speeds come from the asset (armature extras clipDesignSpeedMps), not constants here.
+    let design: Record<string, number> = { Walk: 1.5, Run: 3.6, Sprint: 6.2 };
+    gltf.scene.traverse(o => { const raw = (o.userData as { clipDesignSpeedMps?: string }).clipDesignSpeedMps; if (raw) design = { ...design, ...JSON.parse(raw) }; });
+    // Contact masks (frame-wise 0/1 per foot) for the slope fit's stance weight.
+    const contact: Record<string, { L: number[]; R: number[]; frames: number }> = {};
+    for (const clip of gltf.animations) {
+      const u = clip.userData as { contactL?: number[]; contactR?: number[]; frames?: number };
+      if (u.contactL && u.contactR) contact[clip.name] = { L: u.contactL, R: u.contactR, frames: u.frames ?? u.contactL.length - 1 };
+    }
     actions.Idle.play();
     const feet = guideFeet(scene);
     const probe = clone(gltf.scene), probeFeet = guideFeet(probe), probeMixer = new AnimationMixer(probe);
@@ -81,7 +116,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     const phaseSamples: Record<string, { time: number; left: Vector3; right: Vector3; soleMin:Record<'left'|'right',number> }[]> = {};
     const durations: Record<string, number> = {};
     const soleProbe=new Vector3();
-    for (const name of ['Walk', 'Run']) {
+    for (const name of GAITS) {
       const clip = gltf.animations.find(c => c.name === name)!;
       durations[name] = clip.duration;
       probeMixer.stopAllAction(); probeMixer.clipAction(clip).reset().play();
@@ -101,12 +136,23 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       }
     }
     probeMixer.stopAllAction(); probeMixer.uncacheRoot(probe);
-    const phase = GuidePhaseModel.fromGLTF(gltf, { authoredSpeed:{ Walk:1.5, Run:4.2 } });
-    return { scene, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4),
+    const phase = GuidePhaseModel.fromGLTF(gltf, { authoredSpeed:{ Walk:design.Walk, Run:design.Run, Sprint:design.Sprint }, clips:['Idle', ...GAITS] });
+    // Bones for the moving-landing compression: pitch about each bone's local axis that maps to the
+    // body's lateral axis in the bind pose (no local axis convention assumed).
+    const spineBones: Bone[] = [];
+    scene.updateMatrixWorld(true);
+    const lateral = new Vector3(0, 0, 1);     // glTF +Z = character right; rotation about it pitches forward/back
+    for (const re of [/^spine$/, /^chest$/]) scene.traverse(o => { if ((o as Bone).isBone && re.test(o.name)) {
+      const b = o as Bone; const inv = b.getWorldQuaternion(new Quaternion()).invert();
+      b.userData.landAxis = lateral.clone().applyQuaternion(scene.getWorldQuaternion(new Quaternion())).applyQuaternion(inv).normalize();
+      spineBones.push(b);
+    } });
+    return { scene, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4), design, contact, slope:new GuideSlopeFit(scene), spineBones,
       solePoint:new Vector3(), rootPoint:new Vector3(), motionPoint:new Vector3(), previousMotionPoint:new Vector3(), hasMotionSample:false };
   }, [gltf]);
   const state = useRef({ current: 'Idle', speed: 0, grounded: initialGrounded, visible, airSeconds: 0, landing: 0, time: 0,
-    pending: '', pendingTime: 0, phaseGateTimeouts: 0 });
+    pending: '', pendingTime: 0, phaseGateTimeouts: 0, jumpSeq: -1, jumpKind: '' as '' | 'Jump' | 'RunJump', takeoffSpeed: 0,
+    vy: 0, vyPeak: 0, airPhase: 0, lastLand: '', landSpeed: 0, landT: 0, rateOut: 0, slopeOn: false });
   useEffect(() => () => { rig.mixer.stopAllAction(); rig.mixer.uncacheRoot(rig.scene); }, [rig]);
   useEffect(() => {
     // Fable's 2026-10-22 acceptance permits this visual stop step in normal play.
@@ -150,7 +196,9 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
             contactVertices[side].push({ id: `${o.uuid}:${i}`, position: v.toArray() });
         }
       });
-      return { loaded: true, moving: s.speed > .12, running: s.current === 'Run', airborne: !s.grounded,
+      return { loaded: true, moving: s.speed > .12, running: s.current === 'Run' || s.current === 'Sprint', airborne: !s.grounded,
+        jumpKind: s.jumpKind, airPhase: +s.airPhase.toFixed(3), lastLanding: s.lastLand, playbackRate: +s.rateOut.toFixed(3),
+        designSpeedMps: rig.design, slope: rig.slope.debug(), slopeOn: s.slopeOn,
         animation: s.current, animationTime: rig.actions[s.current].time, animationTimeScale: rig.actions[s.current].getEffectiveTimeScale(),
         mixerTime: rig.mixer.time, speedMps: s.speed, visible: s.visible, phaseGateTimeouts:s.phaseGateTimeouts,
         pendingAnimation:s.pending, pendingSeconds:s.pendingTime, stopPrototype:!!stop.current, stop:stop.current?.debug()??null,
@@ -167,7 +215,8 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     if (!visible) stop.current?.cancel('hidden');
     if (world.paused || world.shot || !visible) return;
     const dt = Math.max(1e-6, Math.min(delta, .08));
-    const { speedMps, grounded, facing, targetSpeedMps } = readMotion?.() ?? { speedMps: initialSpeed, grounded: initialGrounded, facing: initialFacing, targetSpeedMps:undefined };
+    const motion = readMotion?.() ?? { speedMps: initialSpeed, grounded: initialGrounded, facing: initialFacing } as WorldGuideMotion;
+    const { speedMps, grounded, facing, targetSpeedMps } = motion;
     group.current?.updateWorldMatrix(true, false);
     group.current?.getWorldPosition(rig.motionPoint);
     const moved = Math.hypot(rig.motionPoint.x-rig.previousMotionPoint.x, rig.motionPoint.z-rig.previousMotionPoint.z);
@@ -175,60 +224,77 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     rig.previousMotionPoint.copy(rig.motionPoint); rig.hasMotionSample = true;
     // Use measured velocity directly. A wall contact must stop the stride, even with W held.
     s.speed = speedMps;
+    const vy = motion.verticalSpeedMps ?? 0;
+    const D = rig.design;
+    // Intent from input (WorldActors); fall back to the target speed when an older caller omits it.
+    const intent = motion.intent ?? (targetSpeedMps === undefined ? (speedMps > .12 ? 'walk' : 'idle')
+      : targetSpeedMps > (D.Run + D.Sprint) / 2 ? 'run' : targetSpeedMps > .1 ? 'walk' : 'idle');
+    // ---- jump: a real take-off (jumpSeq++) starts JumpStart / RunJumpStart
+    const seq = motion.jumpSeq;
+    let takeoff = false;
+    if (seq !== undefined) { if (s.jumpSeq < 0) s.jumpSeq = seq; else if (seq !== s.jumpSeq) { s.jumpSeq = seq; takeoff = true; } }
+    else if (s.grounded && !grounded && vy > 1) takeoff = true;     // legacy callers without jumpSeq
+    if (takeoff) {
+      s.jumpKind = speedMps >= RUNJUMP_SPEED ? 'RunJump' : 'Jump';
+      s.takeoffSpeed = speedMps; s.vyPeak = Math.max(vy, 3); s.airPhase = 0;
+    }
     const justLanded = grounded && !s.grounded;
-    if (!grounded) s.airSeconds += dt;
-    else if (justLanded) { s.landing = s.airSeconds > .12 && speedMps < .3 ? .4 : 0; s.airSeconds = 0; }
+    if (!grounded) { s.airSeconds += dt; s.vyPeak = Math.max(s.vyPeak, vy); }
+    else if (justLanded) {
+      // Moving input at >= 2.5 m/s lands straight into the gait (+ a short additive compression);
+      // otherwise a standing landing (Land) that movement can interrupt after LAND_LOCK.
+      s.landSpeed = -s.vy;
+      const moving = intent !== 'idle' && speedMps >= RUNJUMP_SPEED;
+      s.landing = s.airSeconds > .12 && !moving ? LAND_DURATION : 0;
+      s.lastLand = s.airSeconds > .12 ? (moving ? 'moving' : 'stand') : '';
+      s.airSeconds = 0; s.jumpKind = '';
+    }
+    s.vy = vy;
     s.grounded = grounded;
     s.landing = Math.max(0, s.landing - dt);
-    const desired = !grounded ? 'Jump' : s.landing > 0 ? 'Land' : speedMps > 2.4 ? 'Run' : speedMps > .12 ? 'Walk' : 'Idle';
-    const locomotionSwitch = desired !== s.current && !!rig.phaseSamples[desired] && !!rig.phaseSamples[s.current] && grounded;
+    if (s.landing > 0 && s.landing < LAND_DURATION - LAND_LOCK && intent !== 'idle') s.landing = 0;
+    const gaitFor = () => {
+      if (intent === 'idle') return speedMps > D.Run * .55 ? 'Run' : speedMps > .12 ? 'Walk' : 'Idle';
+      if (intent === 'run') return speedMps > (D.Run + D.Sprint) / 2 ? 'Sprint' : speedMps > D.Walk * 1.35 ? 'Run' : 'Walk';
+      return speedMps > D.Walk * 1.35 ? 'Run' : 'Walk';
+    };
+    let desired = s.current;
+    if (!grounded && !s.jumpKind && s.airSeconds < FALL_GRACE) desired = s.current.endsWith('Air') || s.current.endsWith('Start') ? gaitFor() : s.current;
+    else if (!grounded) {
+      const kind = s.jumpKind || 'Jump';
+      const start = rig.actions[`${kind}Start`];
+      const startDone = s.current === `${kind}Start` && start.time >= start.getClip().duration - 1e-4;
+      desired = s.jumpKind && (s.current !== `${kind}Start` || !startDone) && s.current !== `${kind}Air` ? `${kind}Start` : `${kind}Air`;
+      // Air pose phase from vertical speed: 0 = take-off speed (rising), .5 = apex, 1 = falling as fast
+      // as it rose. Not clip time: any flight length shows a valid pose, nothing freezes.
+      s.airPhase = Math.min(1, Math.max(0, .5 - .5 * vy / s.vyPeak));
+    } else desired = s.landing > 0 ? 'Land' : gaitFor();
+    const isGait = (n: string) => GAITS.includes(n);
+    const locomotionSwitch = desired !== s.current && isGait(desired) && isGait(s.current) && grounded;
     if (!locomotionSwitch) rig.gate.clear();
     if (desired !== s.current) {
       const from = rig.actions[s.current], to = rig.actions[desired];
       let entry: number | null = null, canSwitch = true;
       if (rig.phase && locomotionSwitch) {
-        const sources = ['Walk','Run'].filter(name => rig.actions[name].isRunning() && rig.actions[name].getEffectiveWeight()>1e-4)
+        const sources = GAITS.filter(name => rig.actions[name].isRunning() && rig.actions[name].getEffectiveWeight()>1e-4)
           .map(name => ({clip:name,time:rig.actions[name].time,weight:rig.actions[name].getEffectiveWeight()}));
-        const target = targetSpeedMps ?? (desired === 'Run' ? 4.2 : 1.8);
+        const target = targetSpeedMps ?? D[desired] ?? speedMps;
         const speedEnd = target+(speedMps-target)*Math.exp(-12*.1);
         const result = rig.gate.request(desired,dt,()=>rig.phase!.findEntry({sources,target:desired,speed:speedMps,speedEnd,fade:.1,timing:'contact'}));
         canSwitch=result.switchNow;entry=result.entry;
+        // Accelerating/decelerating out of the clip's band: switch now at the best predicted entry
+        // (counted as a timeout in QA) rather than over-speeding the current clip while waiting.
+        const rate = isGait(s.current) ? speedMps / D[s.current] : 1;
+        if (!canSwitch && (rate > RATE_HI || rate < RATE_LO) && rig.gate.last) { canSwitch = true; entry = rig.gate.last.time; rig.gate.timeouts++; rig.gate.clear(); s.phaseGateTimeouts = rig.gate.timeouts; }
         s.pending=rig.gate.pending??'';s.pendingTime=rig.gate.pendingSeconds;s.phaseGateTimeouts=rig.gate.timeouts;
-      } else if (rig.phaseSamples[desired] && s.grounded) {
+      } else if (rig.phaseSamples[desired] && grounded) {
+        // From Idle / Land / a landing: start the gait at the sample nearest to the displayed ankles,
+        // so a moving landing lands on the matching foot instead of resetting the cycle.
         rig.scene.updateWorldMatrix(true, true);
         const left = rig.scene.worldToLocal(rig.feet.get('left')!.getWorldPosition(new Vector3()));
         const right = rig.scene.worldToLocal(rig.feet.get('right')!.getWorldPosition(new Vector3()));
-        if (rig.phaseSamples[s.current]) {
-          const sourceIndex=Math.floor((from.time%rig.durations[s.current])/rig.durations[s.current]*72)%72;
-          const sourceSample=rig.phaseSamples[s.current][sourceIndex];
-          const side=sourceSample.soleMin.left<=sourceSample.soleMin.right?'left':'right',foot=side==='left'?left:right;
-          const stanceAt = (name: string, time: number) => {
-            const samples = rig.phaseSamples[name], duration = rig.durations[name];
-            const index = ((time % duration + duration) % duration) / duration * samples.length;
-            const i = Math.floor(index), alpha = index-i;
-            // Heel/toe roll raises the ankle while the sole remains planted.
-            // Ankle height alone incorrectly rejects every fast Walk support window.
-            return samples[i].soleMin[side]*(1-alpha)+samples[(i+1)%samples.length].soleMin[side]*alpha <= .006;
-          };
-          const sourceScale=travel/(dt*(s.current==='Walk'?1.5:4.2));
-          const targetScale=travel/(dt*(desired==='Walk'?1.5:4.2));
-          // An equal-distance swing pose is not a planted-foot match. Both clips
-          // must retain the same support foot through the entire 0.1 s blend.
-          const holdsStance=(name:string,time:number,scale:number)=>[0,.025,.05,.075,.1].every(t=>stanceAt(name,time+t*scale));
-          let bestDistance=.012;
-          if(holdsStance(s.current,from.time,sourceScale))
-            for(const sample of rig.phaseSamples[desired]) {
-              if(!holdsStance(desired,sample.time,targetScale))continue;
-              const distance=Math.hypot(sample[side].x-foot.x,sample[side].z-foot.z);
-              if(distance<=bestDistance){bestDistance=distance;entry=sample.time;}
-            }
-          if(s.pending!==desired){s.pending=desired;s.pendingTime=0;}
-          if(entry===null){s.pendingTime+=dt;canSwitch=s.pendingTime>=.2;if(canSwitch)s.phaseGateTimeouts++;}
-        }
-        // Start from Idle (or bounded timeout): preserve the nearest two-ankle pose.
-        // Timeouts are exposed in QA, never hidden as a successful planted match.
         let best = Infinity;
-        if(entry===null && canSwitch)for (const sample of rig.phaseSamples[desired]) {
+        for (const sample of rig.phaseSamples[desired]) {
           const score = sample.left.distanceToSquared(left) + sample.right.distanceToSquared(right);
           if (score < best) { best = score; entry = sample.time; }
         }
@@ -236,20 +302,59 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       if(canSwitch){
         to.reset().setEffectiveWeight(1).setEffectiveTimeScale(1).play();
         if(entry!==null)to.time=entry;
-        from.crossFadeTo(to, desired === 'Jump' ? .055 : .10, false);
+        if (desired.endsWith('Air')) { to.paused = true; to.time = s.airPhase * to.getClip().duration; }
+        if (desired === 'Land') to.setEffectiveTimeScale(to.getClip().duration / LAND_DURATION);
+        const fade = desired.endsWith('Start') ? .05 : desired.endsWith('Air') ? .06 : desired === 'Land' ? .05
+          : s.lastLand === 'moving' && !isGait(s.current) ? .08 : .10;
+        from.crossFadeTo(to, fade, false);
+        if (!desired.endsWith('Air')) for (const n of ['JumpAir', 'RunJumpAir']) if (n !== desired) rig.actions[n].paused = false;
         s.current = desired;s.pending='';s.pendingTime=0;
+        if (isGait(desired)) s.lastLand = s.lastLand === 'moving' ? 'moving-entered' : '';
       }
     } else {s.pending='';s.pendingTime=0;}
+    if (s.current.endsWith('Air')) { const a = rig.actions[s.current]; a.paused = true; a.time = s.airPhase * a.getClip().duration; }
     // Match stride distance to the displayed body displacement, including fixed-step
     // physics interpolation. Velocity × display dt is a different clock during hitches.
     // The fading source action must follow that clock too: its feet still contribute
     // to the displayed pose for the entire crossfade, including deceleration.
-    rig.actions.Walk.setEffectiveTimeScale(rig.phase ? rig.phase.timeScale('Walk',rig.actions.Walk.time,travel,dt,'contact') : travel / (dt * 1.5));
-    rig.actions.Run.setEffectiveTimeScale(rig.phase ? rig.phase.timeScale('Run',rig.actions.Run.time,travel,dt,'contact') : travel / (dt * 4.2));
+    for (const g of GAITS) rig.actions[g].setEffectiveTimeScale(rig.phase ? rig.phase.timeScale(g,rig.actions[g].time,travel,dt,'contact') : travel / (dt * D[g]));
+    // Playback rate of the shown gait relative to its authored speed (spec 1.2: 0.85-1.2 in steady motion).
+    s.rateOut = isGait(s.current) ? speedMps / D[s.current] : 0;
     stop.current?.preUpdate({ animation:s.current, grounded, speedMps, facing, visible });
     rig.mixer.update(dt); s.time += dt;
     if (group.current) {
       group.current.rotation.y = facing;
+      group.current.updateWorldMatrix(true, true);
+      const baseY = group.current.getWorldPosition(rig.rootPoint).y - group.current.position.y;
+      // Moving landing: short additive spine/chest compression (<= 0.15 s, spec 1.4), no foot change.
+      if (s.lastLand === 'moving-entered' || s.lastLand === 'moving') {
+        s.landT = (s.landT ?? 0) + dt;
+        const k = Math.min(1, s.landSpeed / 5) * Math.sin(Math.PI * Math.min(1, s.landT / LAND_ADD));
+        if (s.landT >= LAND_ADD) { s.lastLand = ''; s.landT = 0; }
+        else for (const b of rig.spineBones) b.quaternion.multiply(_landQ.setFromAxisAngle(b.userData.landAxis, LAND_PITCH * k));
+      } else s.landT = 0;
+      // Stance slope fit (spec 10.1) before the stop step; both share the 5 cm pelvis budget.
+      const contact = { left: 0, right: 0 }, ahead = { left: 0, right: 0 };
+      let wsum = 0;
+      for (const [name, act] of Object.entries(rig.actions)) {
+        const w = act.isRunning() ? act.getEffectiveWeight() : 0, m = rig.contact[name];
+        if (w < 1e-3 || !m) continue;
+        const fr = act.time / act.getClip().duration * m.frames, f = Math.min(m.frames, Math.max(0, Math.round(fr)));
+        contact.left += w * (m.L[f] ?? 0); contact.right += w * (m.R[f] ?? 0); wsum += w;
+        // stance within the next fade time (clip time advances at the effective time scale)
+        const look = Math.ceil(rig.slope.tuning.fade * Math.max(0, act.getEffectiveTimeScale()) * m.frames / act.getClip().duration);
+        const loop = LOOPS.has(name);
+        let aL = 0, aR = 0;
+        for (let k = 0; k <= look; k++) { const g = loop ? (f + k) % m.frames : Math.min(m.frames, f + k); aL = Math.max(aL, m.L[g] ?? 0); aR = Math.max(aR, m.R[g] ?? 0); }
+        ahead.left += w * aL; ahead.right += w * aR;
+      }
+      if (wsum > 0) { contact.left /= wsum; contact.right /= wsum; ahead.left /= wsum; ahead.right /= wsum; }
+      s.slopeOn = grounded && !s.current.endsWith('Air') && !s.current.endsWith('Start');
+      rig.slope.solve(dt, s.slopeOn, motion.probeGround, baseY, contact, stop.current?.pelvisDrop ?? 0, ahead, group.current.position.y);
+      if (stop.current) {
+        stop.current.externalDrop = rig.slope.drop;
+        stop.current.groundOffset = motion.probeGround ? (x, z) => rig.slope.offsetAt(motion.probeGround, baseY, x, z) : null;
+      }
       stop.current?.solve(dt);
       // Blending two valid leg poses can shorten the planted leg. Correct only that small
       // visual blend dip using actual deformed soles; physics and airborne motion stay intact.
@@ -257,13 +362,23 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       group.current.updateWorldMatrix(true,true);
       const rootY=group.current.getWorldPosition(rig.rootPoint).y;
       let minSole=Infinity;
-      for(const {mesh,indices} of rig.soles) {
+      for(const {mesh,indices,sides} of rig.soles) {
         mesh.skeleton.update();
-        const positions=mesh.geometry.getAttribute('position');
-        for(const i of indices) {
-          rig.solePoint.fromBufferAttribute(positions,i);mesh.applyBoneTransform(i,rig.solePoint);
-          rig.solePoint.applyMatrix4(mesh.matrixWorld);minSole=Math.min(minSole,rig.solePoint.y-rootY);
-        }
+        indices.forEach((i,k) => {
+          const leg = rig.slope.legs[sides[k]];
+          // On sloped ground (a probed plane exists) every foot is measured against its own ground, and only
+          // planted feet may raise the body: a swing foot that is below the root plane only because the
+          // ground falls away must not lift the whole guide (that lift floated the planted foot by 2.5 cm).
+          const onSlope = leg.plane !== null;
+          if (onSlope && leg.contact < .5) return;
+          // world-space skinning from the bone matrices: the mesh's bindMatrixInverse is stale until the
+          // next updateMatrixWorld, which offset applyBoneTransform by this frame's root move (vertical on a ramp)
+          skinnedWorldPoint(mesh,i,rig.solePoint);
+          // both branches measure the sole WITHOUT last frame's correction (rootY contains it; on a slope
+          // it is subtracted explicitly), so the new correction replaces the old one instead of adding to it
+          const ground = onSlope ? rig.slope.groundAt(sides[k], rig.solePoint.x, rig.solePoint.z) : null;
+          minSole=Math.min(minSole,ground===null?rig.solePoint.y-rootY:rig.solePoint.y-group.current!.position.y-ground);
+        });
       }
       group.current.position.y=grounded&&Number.isFinite(minSole)?Math.min(.025,Math.max(0,.0015-minSole)):0;
     }

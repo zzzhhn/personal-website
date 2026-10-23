@@ -75,3 +75,13 @@ export function colliderBounds(shape: { vertices?: Float32Array; indices?: Uint3
   return aabb(box);
 }
 export const renderSize = new Vector2();
+
+/** Shadow texel budget per quality tier (shadows v4.1, spec v3 §14.3: total sun texels capped at v4's
+ * 2 x 3072^2 / 2 x 1536^2). The sun uses a 3-cascade atlas row of fixed-size windows:
+ * high 3 x 2508^2 (18.87 M texels, ~75 MB depth), balanced 3 x 1254^2 (4.72 M, ~19 MB).
+ * The campfire cube (6 faces, whitelist casters only) is 1024 high / 512 balanced. */
+export const SHADOW_BUDGET = {
+  high: { sunCascade: 2508, fireCube: 1024 },
+  balanced: { sunCascade: 1254, fireCube: 512 },
+} as const;
+export type ShadowTier = keyof typeof SHADOW_BUDGET;

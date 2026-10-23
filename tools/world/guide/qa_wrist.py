@@ -30,7 +30,13 @@ for e in me.edges:
     parent[find(a)] = find(b)
 root_of = [find(key(v.co)) for v in me.vertices]
 from collections import Counter
-body_root = Counter(root_of).most_common(1)[0][0]
+# v3: the body skin is the shell whose vertices carry the most distinct deform bones (the round
+# helmet now has more vertices than the skin, so 'largest shell' no longer identifies it)
+_gn = {g.index: g.name for g in mesh.vertex_groups}
+_bones = {}
+for _v in mesh.data.vertices:
+    _bones.setdefault(root_of[_v.index], set()).update(_gn[g.group] for g in _v.groups if g.weight > 1e-3)
+body_root = max(_bones, key=lambda r: (len(_bones[r]), Counter(root_of)[r]))
 dom = lambda v: jn[max(v.groups, key=lambda g: g.weight).group]
 mitten = {tag: [v.index for v in me.vertices if root_of[v.index] != body_root and dom(v) == f'hand.{tag}'] for tag in ('R', 'L')}
 body_faces = [p.index for p in me.polygons if root_of[p.vertices[0]] == body_root]

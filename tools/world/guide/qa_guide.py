@@ -8,8 +8,20 @@ from mathutils import Vector
 from mathutils.bvhtree import BVHTree
 argv = sys.argv[sys.argv.index('--') + 1:]
 mode = argv[0]
+# v3: clip list and design speeds come from the asset (armature custom property clipDesignSpeedMps
+# in native; action names in a GLB). The constants below are only the fallback for old files.
 CLIPS = ['Idle', 'Walk', 'Run', 'Jump', 'Land']
 DESIGN_V = {'Idle': 0.0, 'Walk': 1.5, 'Run': 4.2, 'Jump': 0.0, 'Land': 0.0}
+
+
+def asset_clips():
+    import json as _j
+    arm = next((o for o in bpy.context.scene.objects if o.type == 'ARMATURE'), None)
+    sp = {}
+    if arm is not None and 'clipDesignSpeedMps' in arm:
+        sp = _j.loads(arm['clipDesignSpeedMps'])
+    names = sorted({a.name.split('_')[0] for a in bpy.data.actions}, key=lambda n: (['Idle', 'Walk', 'Run', 'Sprint', 'Jump', 'RunJump', 'Land'] + [n]).index(n))
+    return names, sp
 FPS = 60
 H = 1.72
 THR = dict(stance_drift_m=0.01 * H, stance_height_dev_m=0.005 * H, penetration_m=0.0025 * H, parity_m=1e-4)
@@ -71,6 +83,10 @@ def sole_samples(arm, mesh_data):
 
 if mode == 'native':
     out = argv[1]
+    _names, _sp = asset_clips()
+    if _sp:
+        CLIPS = [n for n in _names if n in _sp]
+        DESIGN_V = {n: float(_sp[n]) for n in CLIPS}
     arm, meshes = arm_and_mesh()
     body = meshes[0]
     me = body.data
@@ -151,7 +167,11 @@ if mode == 'native':
         ncomp += 1
     bm2.free()
     sizes = [comp.count(c) for c in range(ncomp)]
-    body_comp = max(range(ncomp), key=lambda c: sizes[c])
+    # v3: the skin is the component with the most distinct deform bones (the helmet now has more vertices)
+    nb = [set() for _ in range(ncomp)]
+    for v in me.vertices:
+        nb[comp[v.index]].update(gname[g.group] for g in v.groups if g.weight > 1e-3)
+    body_comp = max(range(ncomp), key=lambda c: (len(nb[c]), sizes[c]))
     label = []
     for p in me.polygons:
         c = comp[p.vertices[0]]
@@ -267,7 +287,12 @@ if mode == 'native':
     R['samples'] = samples
     # deformed vertex clouds at representative poses for a bidirectional surface comparison with the GLB
     R['clouds'] = {}
-    for clip, t in PROBE:
+    # probe poses: the listed ones that exist, plus 3 fractions of every clip (v3 clip set)
+    probes = [(c, t) for c, t in PROBE if c in CLIPS]
+    for c in CLIPS:
+        d = (action_for(c).frame_range[1] - action_for(c).frame_range[0]) / FPS
+        probes += [(c, round(d * f, 4)) for f in (0.0, 0.37, 0.71)]
+    for clip, t in dict.fromkeys(probes):
         set_time(arm, clip, t)
         R['clouds'][f'{clip}@{t:.4f}'] = [list(p) for p in evaluated([body])[0][0]]
     json.dump(R, open(out, 'w'), indent=1)
@@ -276,6 +301,7 @@ if mode == 'native':
 else:
     glb, native_json, out = argv[1], argv[2], argv[3]
     N = json.load(open(native_json))
+    CLIPS = list(N['clips'].keys())
     bpy.ops.wm.read_factory_settings(use_empty=True)
     sc = bpy.context.scene          # factory reset replaces the scene object
     sc.render.fps = FPS

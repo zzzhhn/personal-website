@@ -1,18 +1,21 @@
 import { Raycaster, Vector3 } from 'three';
-import { memo, Suspense, useEffect, useRef, useState } from 'react';
+import { lazy, memo, Suspense, useEffect, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Physics, useRapier } from '@react-three/rapier';
 import WorldEnvironment from './WorldEnvironment';
 import WorldObstacles from './WorldObstacles';
 import WorldActors, { worldActorDebug } from './WorldActors';
 import { useWorldStore } from './store';
-import { CAMP_SPAWN, WORLD_SHOTS } from './layout';
+import { CAMP_SPAWN, LAYOUT_V4, ROAD_POINTS, VEHICLES, WORLD_SHOTS } from './layout';
 import { trackPortfolioEvent } from '../../lib/analytics';
 import type { WorldContent } from './types';
 import { useWindClock, windUniforms } from './WorldWind';
 import { campColliderRecords } from './WorldCampPhysics';
 import { useWorldResolution, visualInventory, objectIdentity, colliderBounds, renderSize } from './WorldQuality';
 import { guideSkinEvidence } from './WorldGuideEvidence';
+
+// Layout v4 greybox (?layout=v4) loads as its own chunk; the default entry never fetches it.
+const WorldDistricts = LAYOUT_V4 ? lazy(() => import('./WorldDistricts')) : null;
 
 function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
   useWindClock();
@@ -36,6 +39,9 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
       ...worldActorDebug,
       actorSkin: (topology = false) => guideSkinEvidence(scene, topology),
       state: () => useWorldStore.getState(),
+      // Bots read routes / spots from the running layout instead of hand-copied coordinates.
+      layout: () => (window as unknown as { __worldDistricts?: { layout: () => unknown } }).__worldDistricts?.layout()
+        ?? { version: LAYOUT_V4 ? 'v4-loading' : 'v3', timeline: ROAD_POINTS, vehicles: Object.fromEntries(VEHICLES.map(v => [v.id, { position: v.position, yaw: v.yaw }])) },
       set: (value: Partial<ReturnType<typeof useWorldStore.getState>>) => useWorldStore.setState(value),
       campColliders: campColliderRecords,
       motionInventory: () => {
@@ -118,6 +124,6 @@ export default memo(function WorldRuntime({ content }: { content: WorldContent }
     return unsubscribe;
   }, []);
   return <Canvas shadows="percentage" dpr={[1, 2]} camera={{ position: [CAMP_SPAWN[0] + 10, CAMP_SPAWN[1] + 13, CAMP_SPAWN[2] + 10], fov: 50, near: .1, far: 600 }} gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}>
-    <Suspense fallback={null}><Physics debug={overlay} gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={paused || !!shot} colliders={false}><WorldEnvironment experiences={content.experiences} /><WorldObstacles /><WorldActors /><SceneLifecycle setOverlay={setOverlay} /></Physics></Suspense>
+    <Suspense fallback={null}><Physics debug={overlay} gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={paused || !!shot} colliders={false}><WorldEnvironment experiences={content.experiences} />{WorldDistricts && <WorldDistricts />}<WorldObstacles /><WorldActors /><SceneLifecycle setOverlay={setOverlay} /></Physics></Suspense>
   </Canvas>;
 });

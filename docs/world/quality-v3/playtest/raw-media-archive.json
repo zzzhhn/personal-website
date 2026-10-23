@@ -1,0 +1,131 @@
+{
+  "purpose": "Intermediate raw video retained locally; failed verdicts and numeric reports remain in repo. Final proof clips will be retained separately.",
+  "files": [
+    {
+      "case": "drive-guards",
+      "file": "gaps.webm",
+      "bytes": 11590679,
+      "sha256": "99ba0169d1ba484ae65bbd1e20496cd2a6d7e6b2180a3c1afec6cfc5d39fcfe7",
+      "localArchive": "/Users/bobby/Desktop/3D-personal-world/quality-v3-raw-evidence/drive-guards/gaps.webm"
+    },
+    {
+      "case": "drive-route-bridge-fix",
+      "file": "drive.webm",
+      "bytes": 40974179,
+      "sha256": "f2bd67243d51113ceac0d549837d4c6b0b9b2237c28c55d1c527749400c4fe60",
+      "localArchive": "/Users/bobby/Desktop/3D-personal-world/quality-v3-raw-evidence/drive-route-bridge-fix/drive.webm"
+    },
+    {
+      "case": "drive-route-candidate",
+      "file": "drive.webm",
+      "bytes": 109650953,
+      "sha256": "b9b4abebaf0aaf7f2a6758c4bdfcf10a987ed3d94914961e17e44bb9f9bdefc0",
+      "localArchive": "/Users/bobby/Desktop/3D-personal-world/quality-v3-raw-evidence/drive-route-candidate/drive.webm"
+    },
+    {
+      "case": "drive-route-van-lookahead",
+      "file": "drive.webm",
+      "bytes": 27907253,
+      "sha256": "791aa0a50fff3e9af79335ea3a88c9030d7d089861f01ca2a27e62439e843696",
+      "localArchive": "/Users/bobby/Desktop/3D-personal-world/quality-v3-raw-evidence/drive-route-van-lookahead/drive.webm"
+    },
+    {
+      "case": "gaps-baseline",
+      "file": "gaps.webm",
+      "bytes": 36771264,
+      "sha256": "06011d6020a9df0ae9d4d5d142fd27ff5be65ce8dba7b13cf9f3f93b295c0dc8",
+      "localArchive": "/Users/bobby/Desktop/3D-personal-world/quality-v3-raw-evidence/gaps-baseline/gaps.webm"
+    },
+    {
+      "case": "occlusion-body-proof",
+      "file": "gaps.webm",
+      "bytes": 4912517,
+      "sha256": "98663f4744a0836e2704310e6dd7e087410b19a2950161db7d6228ba3a60ed02",
+      "localArchive": "/Users/bobby/Desktop/3D-personal-world/quality-v3-raw-evidence/occlusion-body-proof/gaps.webm"
+    },
+    {
+      "case": "occlusion-proof",
+      "file": "gaps.webm",
+      "bytes": 5042974,
+      "sha256": "57846d0be27883f9061e96877e1bc5a252e7fdd08f5026903cb016791dbc2748",
+      "localArchive": "/Users/bobby/Desktop/3D-personal-world/quality-v3-raw-evidence/occlusion-proof/gaps.webm"
+    },
+    {
+      "case": "tyre-matrix-box",
+      "file": "tyre-matrix.webm",
+      "bytes": 11685016,
+      "sha256": "0f2f36b0b09e8d40ee94559cff2530ddbbb85aa71244297d2325ca06c8acae9a",
+      "localArchive": "/Users/bobby/Desktop/3D-personal-world/quality-v3-raw-evidence/tyre-matrix-box/tyre-matrix.webm"
+    },
+    {
+      "case": "tyre-matrix-lowcom",
+      "file": "tyre-matrix.webm",
+      "bytes": 7374346,
+      "sha256": "fd195b5835e64ab42746786ff382e647e79f2546c667488a195c02e82a8e7104",
+      "localArchive": "/Users/bobby/Desktop/3D-personal-world/quality-v3-raw-evidence/tyre-matrix-lowcom/tyre-matrix.webm"
+    },
+    {
+      "case": "tyre-matrix-smoke",
+      "file": "tyre-matrix.webm",
+      "bytes": 16612356,
+      "sha256": "2e8b77d913b464fe324e407099149c13d307389e3c898c4f34f3924dea053b61",
+      "localArchive": "/Users/bobby/Desktop/3D-personal-world/quality-v3-raw-evidence/tyre-matrix-smoke/tyre-matrix.webm"
+    },
+    {
+      "case": "tyre-matrix-support",
+      "file": "tyre-matrix.webm",
+      "bytes": 16726442,
+      "sha256": "241e946137e5dca4585d53f8e46035740f1445b3af0cee402acd87ae59637a8e",
+      "localArchive": "/Users/bobby/Desktop/3D-personal-world/quality-v3-raw-evidence/tyre-matrix-support/tyre-matrix.webm"
+    },
+    {
+      "case": "tyre-post-baseline",
+      "file": "gaps.webm",
+      "bytes": 6654294,
+      "sha256": "fd817eac3022fec65c9520ad6ac88e3c0259c627b853af60d55bbdd68e3efe59",
+      "localArchive": "/Users/bobby/Desktop/3D-personal-world/quality-v3-raw-evidence/tyre-post-baseline/gaps.webm"
+    },
+    {
+      "case": "tyre-post-ccd",
+      "file": "gaps.webm",
+      "bytes": 6522149,
+      "sha256": "b715e046df328c8284f9d4eb725c752b27aceded4c1da3871f2a6b684ef0d6ac",
+      "localArchive": "/Users/bobby/Desktop/3D-personal-world/quality-v3-raw-evidence/tyre-post-ccd/gaps.webm"
+    },
+    {
+      "case": "tyre-post-guards",
+      "file": "gaps.webm",
+      "bytes": 6521924,
+      "sha256": "295f0a6aca1199dde4fb47a1c48336745841b96bab85a499f6344ae08fd91400",
+      "localArchive": "/Users/bobby/Desktop/3D-personal-world/quality-v3-raw-evidence/tyre-post-guards/gaps.webm"
+    },
+    {
+      "case": "vehicle-fixture-repair",
+      "file": "gaps.webm",
+      "bytes": 24861684,
+      "sha256": "140c1ef0cb8e71fa1759ed5c1568e3df95e8bf839095923f6ccdab4d894c9516",
+      "localArchive": "/Users/bobby/Desktop/3D-personal-world/quality-v3-raw-evidence/vehicle-fixture-repair/gaps.webm"
+    },
+    {
+      "case": "wheel-clear-approach",
+      "file": "gaps.webm",
+      "bytes": 5343563,
+      "sha256": "f146d0e8f6356a58ef708ce539d5444781dacc2e46db49c1ac18dc5b4ff5a811",
+      "localArchive": "/Users/bobby/Desktop/3D-personal-world/quality-v3-raw-evidence/wheel-clear-approach/gaps.webm"
+    },
+    {
+      "case": "wheel-isolated",
+      "file": "gaps.webm",
+      "bytes": 5513804,
+      "sha256": "074432172367e59da808d6ef9b947d693fdb51b1e11d73e0d8061c4ddf4de28c",
+      "localArchive": "/Users/bobby/Desktop/3D-personal-world/quality-v3-raw-evidence/wheel-isolated/gaps.webm"
+    },
+    {
+      "case": "wheel-low-rock",
+      "file": "gaps.webm",
+      "bytes": 5354318,
+      "sha256": "c94e4c985b17700ec4473cb00d23fa6816f965060d8f525b9e0b0ec8ee6c828c",
+      "localArchive": "/Users/bobby/Desktop/3D-personal-world/quality-v3-raw-evidence/wheel-low-rock/gaps.webm"
+    }
+  ]
+}

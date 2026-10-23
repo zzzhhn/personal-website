@@ -1,0 +1,77 @@
+{
+  "metric": "syncWallFrameIntervalMs (rAF interval with gl.finish(), vsync off; not pure GPU time)",
+  "query": "&groundPbr=0",
+  "groundPbr": false,
+  "high": {
+    "groundDetail": {
+      "grassTufts": 2921,
+      "grassTriangles": 43815,
+      "pebbles": 137,
+      "pebbleTriangles": 2740,
+      "totalTriangles": 46555,
+      "budget": 60000,
+      "grassBuildMs": 514
+    },
+    "stats": {
+      "calls": 71,
+      "triangles": 356188,
+      "geometries": 148,
+      "textures": 20,
+      "camera": [
+        -44.90914367957857,
+        10.953739184635275,
+        -17.212191572139247
+      ]
+    },
+    "withGrass": {
+      "frames": 220,
+      "p50": 1.6,
+      "p90": 2.7,
+      "p99": 3.1,
+      "mean": 1.61
+    },
+    "noGrass": {
+      "frames": 220,
+      "p50": 1.1,
+      "p90": 2.6,
+      "p99": 3,
+      "mean": 1.46
+    }
+  },
+  "balanced": {
+    "groundDetail": {
+      "grassTufts": 1151,
+      "grassTriangles": 17265,
+      "pebbles": 137,
+      "pebbleTriangles": 2740,
+      "totalTriangles": 20005,
+      "budget": 60000,
+      "grassBuildMs": 514
+    },
+    "stats": {
+      "calls": 71,
+      "triangles": 329638,
+      "geometries": 148,
+      "textures": 20,
+      "camera": [
+        -44.90883117565916,
+        10.954260302386547,
+        -17.211774900878943
+      ]
+    },
+    "withGrass": {
+      "frames": 220,
+      "p50": 1.2,
+      "p90": 2.7,
+      "p99": 3.2,
+      "mean": 1.53
+    },
+    "noGrass": {
+      "frames": 220,
+      "p50": 1.4,
+      "p90": 2.6,
+      "p99": 2.8,
+      "mean": 1.46
+    }
+  }
+}

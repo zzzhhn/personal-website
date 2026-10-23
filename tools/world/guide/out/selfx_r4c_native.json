@@ -1,0 +1,6057 @@
+{
+ "source": {
+  "blend": "/Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/guide/blend/G24.blend"
+ },
+ "blender": "4.2.23 LTS",
+ "method": "Triangle-level self-intersection on the continuous body shell (and rigid parts vs body).\nRun on native:  Blender -b blend/G24.blend --python-exit-code 1 -P qa_selfx.py -- native OUT.json\nRun on a GLB:   Blender -b --factory-startup --python-exit-code 1 -P qa_selfx.py -- glb GLB OUT.json\n\nMethod: evaluate the deformed mesh, triangulate (loop triangles), build mathutils BVHTree with\nall_triangles=True and call tree.overlap(tree). In Blender 4.2.23 the overlap callback\n(py_bvhtree_overlap_cb, mathutils_bvhtree.cc) runs isect_tri_tri_v3 on every candidate pair,\nskips pairs that share >=2 vertex pointers, and for 1 shared vertex keeps the pair only if the\nintersection segment is longer than epsilon. We further drop every pair that shares ANY vertex\n(\"nonadjacent\"), so a reported pair is two triangles with no common vertex that the exact\nfloat tri-tri test says intersect. Limits: float32 coordinates, no exact predicates; coplanar\ntouching and near-degenerate triangles can be reported or missed; only sampled frames are\ntested (no continuous collision between frames). A count of 0 is evidence, not proof.",
+ "triangles": null,
+ "samples": [
+  {
+   "label": "rest",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 21,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@0",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@1",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@2",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@3",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@4",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@5",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 5,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@6",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@7",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@8",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@9",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@10",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@11",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@12",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 15,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@13",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 15,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@14",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 15,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@15",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 15,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@16",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 15,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@17",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 15,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@18",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 15,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@19",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 15,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@20",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 15,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@21",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@22",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@23",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@24",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@25",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@26",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@27",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@28",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@29",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@30",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@31",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@32",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@33",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@34",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@35",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@36",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@37",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@38",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@39",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@40",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@41",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@42",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@43",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@44",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@45",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@46",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@47",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@48",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@49",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@50",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@51",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@52",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@53",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@54",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@55",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@56",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@57",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@58",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@59",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@60",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@61",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@62",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@63",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@64",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@65",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@66",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@67",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 5,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@68",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 18,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@69",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 18,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@70",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@71",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@72",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@73",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@74",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@75",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@76",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@77",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@78",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@79",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@80",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@81",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@82",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@83",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@84",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@85",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@86",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@87",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@88",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@89",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@90",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@91",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@92",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@93",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@94",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@95",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@96",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@97",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@98",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@99",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@100",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@101",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@102",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@103",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 11,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@104",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 11,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@105",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 11,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@106",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 11,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@107",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 11,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@108",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 11,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@109",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 11,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@110",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 11,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@111",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 11,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@112",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@113",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@114",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@115",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@116",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@117",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@118",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@119",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@120",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@121",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@122",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@123",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@124",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@125",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@126",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@127",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@128",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@129",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@130",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@131",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@132",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@133",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@134",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@135",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@136",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@137",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@138",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@139",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@140",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@141",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@142",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@143",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Idle@144",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@0",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 40,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 34,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|chest": 18,
+    "guide_hipbag_accent|upperarm.R": 14,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@1",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 38,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 34,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|chest": 18,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 13
+   }
+  },
+  {
+   "label": "Walk@2",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 37,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 30,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 17,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 13
+   }
+  },
+  {
+   "label": "Walk@3",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 37,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 30,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 17,
+    "guide_hipbag_accent|upperarm.R": 13,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@4",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 37,
+    "guide_pants_accent|spine": 3,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 32,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|chest": 17,
+    "guide_hipbag_accent|upperarm.R": 13,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@5",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 40,
+    "guide_pants_accent|spine": 3,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 34,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|chest": 17,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 13
+   }
+  },
+  {
+   "label": "Walk@6",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 42,
+    "guide_pants_accent|spine": 3,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|chest": 17,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 11
+   }
+  },
+  {
+   "label": "Walk@7",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 46,
+    "guide_pants_accent|spine": 3,
+    "guide_hipbag_accent|thigh.R": 15,
+    "guide_glove_boot_accent|shin.R": 31,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|chest": 17,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 12
+   }
+  },
+  {
+   "label": "Walk@8",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 44,
+    "guide_pants_accent|spine": 3,
+    "guide_hipbag_accent|thigh.R": 15,
+    "guide_glove_boot_accent|shin.R": 35,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|chest": 17,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 12
+   }
+  },
+  {
+   "label": "Walk@9",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 42,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 11
+   }
+  },
+  {
+   "label": "Walk@10",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 40,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_pants_accent|spine": 4,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 8
+   }
+  },
+  {
+   "label": "Walk@11",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 38,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 35,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|spine": 3,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 8
+   }
+  },
+  {
+   "label": "Walk@12",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_pants_accent|spine": 3,
+    "guide_glove_boot_accent|shin.R": 38,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@13",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_pants_accent|spine": 3,
+    "guide_glove_boot_accent|shin.R": 38,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@14",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 36,
+    "guide_pants_accent|spine": 3,
+    "guide_hipbag_accent|thigh.R": 15,
+    "guide_glove_boot_accent|shin.R": 38,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@15",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 32,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 40,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@16",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 32,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 42,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@17",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 32,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 42,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|spine": 2,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@18",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 34,
+    "guide_pants_accent|spine": 2,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 40,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@19",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_pants_accent|spine": 2,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 35,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@20",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 30,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|shin.R": 35,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 12,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@21",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 30,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 12,
+    "guide_glove_boot_accent|shin.R": 37,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 12,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@22",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 32,
+    "guide_pants_accent|spine": 5,
+    "guide_hipbag_accent|thigh.R": 12,
+    "guide_glove_boot_accent|shin.R": 37,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@23",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 38,
+    "guide_pants_accent|spine": 3,
+    "guide_hipbag_accent|thigh.R": 14,
+    "guide_glove_boot_accent|shin.R": 39,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@24",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_pants_accent|spine": 3,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 42,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@25",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 31,
+    "guide_pants_accent|spine": 3,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 44,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@26",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 42,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@27",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 42,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@28",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 37,
+    "guide_pants_accent|spine": 3,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 42,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|chest": 17,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@29",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 39,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 40,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 3,
+    "guide_pants_accent|chest": 17,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 10
+   }
+  },
+  {
+   "label": "Walk@30",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 41,
+    "guide_pants_accent|spine": 3,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 39,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|chest": 17,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 10
+   }
+  },
+  {
+   "label": "Walk@31",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 40,
+    "guide_pants_accent|spine": 3,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|chest": 17,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 12
+   }
+  },
+  {
+   "label": "Walk@32",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 40,
+    "guide_pants_accent|spine": 3,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|chest": 17,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 12
+   }
+  },
+  {
+   "label": "Walk@33",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 40,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 34,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 17,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 11
+   }
+  },
+  {
+   "label": "Walk@34",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 42,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 34,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 17,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 12
+   }
+  },
+  {
+   "label": "Walk@35",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 42,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 34,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|chest": 18,
+    "guide_hipbag_accent|upperarm.R": 12,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Walk@36",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 40,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 34,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|chest": 18,
+    "guide_hipbag_accent|upperarm.R": 14,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Run@0",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|spine": 22,
+    "guide_hipbag_accent|upperarm.R": 7,
+    "guide_hipbag_accent|thigh.R": 18,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 51,
+    "guide_glove_boot_accent|shin.R": 28,
+    "guide_pants_accent|upperarm.L": 11,
+    "guide_helmet_metal|neck": 21
+   }
+  },
+  {
+   "label": "Run@1",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|spine": 23,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 45,
+    "guide_glove_boot_accent|shin.R": 30,
+    "guide_pants_accent|upperarm.L": 11,
+    "guide_helmet_metal|neck": 21
+   }
+  },
+  {
+   "label": "Run@2",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|spine": 16,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 43,
+    "guide_glove_boot_accent|shin.R": 34,
+    "guide_pants_accent|upperarm.L": 11,
+    "guide_helmet_metal|neck": 21
+   }
+  },
+  {
+   "label": "Run@3",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|chest": 19,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|spine": 16,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 47,
+    "guide_glove_boot_accent|shin.R": 31,
+    "guide_pants_accent|upperarm.L": 11,
+    "guide_helmet_metal|neck": 21
+   }
+  },
+  {
+   "label": "Run@4",
+   "body_shell_nonadjacent_tri_pairs": 3,
+   "body_zones": {
+    "pelvis": 2,
+    "pelvis+thigh.L": 1
+   },
+   "body_examples": [
+    {
+     "center": [
+      0.0561,
+      0.03,
+      0.5998
+     ],
+     "bones": [
+      "pelvis"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    },
+    {
+     "center": [
+      0.0705,
+      0.0377,
+      0.5883
+     ],
+     "bones": [
+      "pelvis",
+      "thigh.L"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    },
+    {
+     "center": [
+      0.0558,
+      0.0345,
+      0.5933
+     ],
+     "bones": [
+      "pelvis"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    }
+   ],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 3,
+    "guide_pants_accent|chest": 17,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 16,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 42,
+    "guide_glove_boot_accent|shin.R": 38,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 21
+   }
+  },
+  {
+   "label": "Run@5",
+   "body_shell_nonadjacent_tri_pairs": 4,
+   "body_zones": {
+    "pelvis": 2,
+    "pelvis+thigh.L": 2
+   },
+   "body_examples": [
+    {
+     "center": [
+      0.0625,
+      0.0083,
+      0.5868
+     ],
+     "bones": [
+      "pelvis"
+     ],
+     "mats": [
+      "guide_jacket_paint",
+      "guide_pants_accent"
+     ]
+    },
+    {
+     "center": [
+      0.0534,
+      0.027,
+      0.5915
+     ],
+     "bones": [
+      "pelvis"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    },
+    {
+     "center": [
+      0.0689,
+      0.0298,
+      0.5885
+     ],
+     "bones": [
+      "pelvis",
+      "thigh.L"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    },
+    {
+     "center": [
+      0.069,
+      0.0344,
+      0.5826
+     ],
+     "bones": [
+      "pelvis",
+      "thigh.L"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    }
+   ],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 3,
+    "guide_pants_accent|chest": 17,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 12,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 39,
+    "guide_glove_boot_accent|shin.R": 40,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 21
+   }
+  },
+  {
+   "label": "Run@6",
+   "body_shell_nonadjacent_tri_pairs": 4,
+   "body_zones": {
+    "pelvis": 2,
+    "pelvis+thigh.L": 2
+   },
+   "body_examples": [
+    {
+     "center": [
+      0.063,
+      0.006,
+      0.5829
+     ],
+     "bones": [
+      "pelvis"
+     ],
+     "mats": [
+      "guide_jacket_paint",
+      "guide_pants_accent"
+     ]
+    },
+    {
+     "center": [
+      0.07,
+      0.0272,
+      0.5847
+     ],
+     "bones": [
+      "pelvis",
+      "thigh.L"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    },
+    {
+     "center": [
+      0.0544,
+      0.0248,
+      0.5876
+     ],
+     "bones": [
+      "pelvis"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    },
+    {
+     "center": [
+      0.0703,
+      0.0317,
+      0.5789
+     ],
+     "bones": [
+      "pelvis",
+      "thigh.L"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    }
+   ],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|upperarm.R": 13,
+    "guide_hipbag_accent|spine": 8,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_hipbag_accent|thigh.R": 15,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 31,
+    "guide_glove_boot_accent|shin.R": 44,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|chest": 16
+   }
+  },
+  {
+   "label": "Run@7",
+   "body_shell_nonadjacent_tri_pairs": 3,
+   "body_zones": {
+    "pelvis": 2,
+    "pelvis+thigh.L": 1
+   },
+   "body_examples": [
+    {
+     "center": [
+      0.059,
+      0.0233,
+      0.5892
+     ],
+     "bones": [
+      "pelvis"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    },
+    {
+     "center": [
+      0.0743,
+      0.0299,
+      0.5782
+     ],
+     "bones": [
+      "pelvis",
+      "thigh.L"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    },
+    {
+     "center": [
+      0.0591,
+      0.0279,
+      0.5829
+     ],
+     "bones": [
+      "pelvis"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    }
+   ],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 3,
+    "guide_hipbag_accent|upperarm.R": 11,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_hipbag_accent|thigh.R": 15,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 32,
+    "guide_glove_boot_accent|shin.R": 38,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|spine": 8
+   }
+  },
+  {
+   "label": "Run@8",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_pants_accent|spine": 3,
+    "guide_hipbag_accent|spine": 8,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 28,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 16
+   }
+  },
+  {
+   "label": "Run@9",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 28,
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 2,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_hipbag_accent|spine": 7,
+    "guide_glove_boot_accent|shin.R": 42,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 17
+   }
+  },
+  {
+   "label": "Run@10",
+   "body_shell_nonadjacent_tri_pairs": 1,
+   "body_zones": {
+    "upperarm.R": 1
+   },
+   "body_examples": [
+    {
+     "center": [
+      0.0826,
+      -0.1514,
+      0.7523
+     ],
+     "bones": [
+      "upperarm.R"
+     ],
+     "mats": [
+      "guide_jacket_paint",
+      "guide_sleeve_cream"
+     ]
+    }
+   ],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 28,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 17,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_hipbag_accent|spine": 7,
+    "guide_glove_boot_accent|shin.R": 46,
+    "guide_helmet_metal|neck": 21
+   }
+  },
+  {
+   "label": "Run@11",
+   "body_shell_nonadjacent_tri_pairs": 2,
+   "body_zones": {
+    "upperarm.R": 2
+   },
+   "body_examples": [
+    {
+     "center": [
+      0.0909,
+      -0.1536,
+      0.741
+     ],
+     "bones": [
+      "upperarm.R"
+     ],
+     "mats": [
+      "guide_jacket_paint",
+      "guide_sleeve_cream"
+     ]
+    },
+    {
+     "center": [
+      0.0873,
+      -0.1481,
+      0.7564
+     ],
+     "bones": [
+      "upperarm.R"
+     ],
+     "mats": [
+      "guide_jacket_paint",
+      "guide_sleeve_cream"
+     ]
+    }
+   ],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.L": 28,
+    "guide_glove_boot_accent|shin.R": 50,
+    "guide_helmet_metal|neck": 21
+   }
+  },
+  {
+   "label": "Run@12",
+   "body_shell_nonadjacent_tri_pairs": 3,
+   "body_zones": {
+    "upperarm.L": 1,
+    "upperarm.R": 2
+   },
+   "body_examples": [
+    {
+     "center": [
+      0.0009,
+      0.1385,
+      0.8225
+     ],
+     "bones": [
+      "upperarm.L"
+     ],
+     "mats": [
+      "guide_jacket_paint",
+      "guide_sleeve_cream"
+     ]
+    },
+    {
+     "center": [
+      0.0916,
+      -0.1502,
+      0.7784
+     ],
+     "bones": [
+      "upperarm.R"
+     ],
+     "mats": [
+      "guide_jacket_paint",
+      "guide_sleeve_cream"
+     ]
+    },
+    {
+     "center": [
+      0.0892,
+      -0.1449,
+      0.7942
+     ],
+     "bones": [
+      "upperarm.R"
+     ],
+     "mats": [
+      "guide_jacket_paint",
+      "guide_sleeve_cream"
+     ]
+    }
+   ],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 50,
+    "guide_glove_boot_accent|shin.L": 28,
+    "guide_helmet_metal|neck": 21
+   }
+  },
+  {
+   "label": "Run@13",
+   "body_shell_nonadjacent_tri_pairs": 3,
+   "body_zones": {
+    "upperarm.L": 1,
+    "upperarm.R": 2
+   },
+   "body_examples": [
+    {
+     "center": [
+      0.0029,
+      0.1419,
+      0.8663
+     ],
+     "bones": [
+      "upperarm.L"
+     ],
+     "mats": [
+      "guide_jacket_paint",
+      "guide_sleeve_cream"
+     ]
+    },
+    {
+     "center": [
+      0.09,
+      -0.1472,
+      0.8197
+     ],
+     "bones": [
+      "upperarm.R"
+     ],
+     "mats": [
+      "guide_jacket_paint",
+      "guide_sleeve_cream"
+     ]
+    },
+    {
+     "center": [
+      0.089,
+      -0.1418,
+      0.8363
+     ],
+     "bones": [
+      "upperarm.R"
+     ],
+     "mats": [
+      "guide_jacket_paint",
+      "guide_sleeve_cream"
+     ]
+    }
+   ],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_pants_accent|upperarm.L": 17,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 46,
+    "guide_glove_boot_accent|shin.L": 30,
+    "guide_helmet_metal|neck": 21
+   }
+  },
+  {
+   "label": "Run@14",
+   "body_shell_nonadjacent_tri_pairs": 1,
+   "body_zones": {
+    "upperarm.R": 1
+   },
+   "body_examples": [
+    {
+     "center": [
+      0.1024,
+      -0.1488,
+      0.87
+     ],
+     "bones": [
+      "upperarm.R"
+     ],
+     "mats": [
+      "guide_jacket_paint",
+      "guide_sleeve_cream"
+     ]
+    }
+   ],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_pants_accent|upperarm.L": 16,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|spine": 14,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 46,
+    "guide_glove_boot_accent|shin.L": 34,
+    "guide_helmet_metal|neck": 21
+   }
+  },
+  {
+   "label": "Run@15",
+   "body_shell_nonadjacent_tri_pairs": 1,
+   "body_zones": {
+    "upperarm.R": 1
+   },
+   "body_examples": [
+    {
+     "center": [
+      0.0968,
+      -0.1462,
+      0.8559
+     ],
+     "bones": [
+      "upperarm.R"
+     ],
+     "mats": [
+      "guide_jacket_paint",
+      "guide_sleeve_cream"
+     ]
+    }
+   ],
+   "rigid_part_vs_body_pairs": {
+    "guide_pants_accent|upperarm.L": 18,
+    "guide_pants_accent|spine": 2,
+    "guide_pants_accent|chest": 17,
+    "guide_hipbag_accent|upperarm.R": 7,
+    "guide_hipbag_accent|spine": 15,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_hipbag_accent|thigh.R": 11,
+    "guide_glove_boot_accent|shin.R": 47,
+    "guide_glove_boot_accent|shin.L": 31,
+    "guide_helmet_metal|neck": 21
+   }
+  },
+  {
+   "label": "Run@16",
+   "body_shell_nonadjacent_tri_pairs": 2,
+   "body_zones": {
+    "pelvis+thigh.R": 1,
+    "thigh.R": 1
+   },
+   "body_examples": [
+    {
+     "center": [
+      0.0859,
+      -0.0422,
+      0.605
+     ],
+     "bones": [
+      "pelvis",
+      "thigh.R"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    },
+    {
+     "center": [
+      0.093,
+      -0.0393,
+      0.6025
+     ],
+     "bones": [
+      "thigh.R"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    }
+   ],
+   "rigid_part_vs_body_pairs": {
+    "guide_pants_accent|upperarm.L": 12,
+    "guide_pants_accent|spine": 3,
+    "guide_pants_accent|chest": 18,
+    "guide_hipbag_accent|upperarm.R": 6,
+    "guide_hipbag_accent|spine": 11,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_hipbag_accent|thigh.R": 6,
+    "guide_glove_boot_accent|shin.R": 40,
+    "guide_glove_boot_accent|shin.L": 41,
+    "guide_helmet_metal|neck": 21
+   }
+  },
+  {
+   "label": "Run@17",
+   "body_shell_nonadjacent_tri_pairs": 3,
+   "body_zones": {
+    "thigh.R": 1,
+    "pelvis+thigh.R": 2
+   },
+   "body_examples": [
+    {
+     "center": [
+      0.0906,
+      -0.0353,
+      0.6013
+     ],
+     "bones": [
+      "thigh.R"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    },
+    {
+     "center": [
+      0.0836,
+      -0.0338,
+      0.6071
+     ],
+     "bones": [
+      "pelvis",
+      "thigh.R"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    },
+    {
+     "center": [
+      0.0837,
+      -0.0384,
+      0.6012
+     ],
+     "bones": [
+      "pelvis",
+      "thigh.R"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    }
+   ],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|spine": 3,
+    "guide_pants_accent|chest": 18,
+    "guide_hipbag_accent|spine": 10,
+    "guide_hipbag_accent|upperarm.R": 6,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_hipbag_accent|thigh.R": 5,
+    "guide_glove_boot_accent|shin.R": 35,
+    "guide_glove_boot_accent|shin.L": 40,
+    "guide_helmet_metal|neck": 21
+   }
+  },
+  {
+   "label": "Run@18",
+   "body_shell_nonadjacent_tri_pairs": 3,
+   "body_zones": {
+    "thigh.R": 1,
+    "pelvis+thigh.R": 2
+   },
+   "body_examples": [
+    {
+     "center": [
+      0.0918,
+      -0.032,
+      0.5977
+     ],
+     "bones": [
+      "thigh.R"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    },
+    {
+     "center": [
+      0.0847,
+      -0.0308,
+      0.6034
+     ],
+     "bones": [
+      "pelvis",
+      "thigh.R"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    },
+    {
+     "center": [
+      0.085,
+      -0.0353,
+      0.5976
+     ],
+     "bones": [
+      "pelvis",
+      "thigh.R"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    }
+   ],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|spine": 5,
+    "guide_hipbag_accent|upperarm.R": 6,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_hipbag_accent|thigh.R": 5,
+    "guide_glove_boot_accent|shin.R": 31,
+    "guide_glove_boot_accent|shin.L": 44,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|chest": 16
+   }
+  },
+  {
+   "label": "Run@19",
+   "body_shell_nonadjacent_tri_pairs": 2,
+   "body_zones": {
+    "pelvis+thigh.R": 1,
+    "thigh.R": 1
+   },
+   "body_examples": [
+    {
+     "center": [
+      0.0899,
+      -0.0329,
+      0.5953
+     ],
+     "bones": [
+      "pelvis",
+      "thigh.R"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    },
+    {
+     "center": [
+      0.0967,
+      -0.0295,
+      0.5933
+     ],
+     "bones": [
+      "thigh.R"
+     ],
+     "mats": [
+      "guide_pants_accent"
+     ]
+    }
+   ],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_pants_accent|spine": 3,
+    "guide_hipbag_accent|spine": 6,
+    "guide_hipbag_accent|upperarm.R": 8,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_hipbag_accent|thigh.R": 6,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.R": 37,
+    "guide_glove_boot_accent|shin.L": 37,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|chest": 19
+   }
+  },
+  {
+   "label": "Run@20",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 3,
+    "guide_hipbag_accent|spine": 11,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_hipbag_accent|thigh.R": 11,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.R": 28,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|chest": 17
+   }
+  },
+  {
+   "label": "Run@21",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.R": 28,
+    "guide_pants_accent|spine": 2,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_hipbag_accent|spine": 18,
+    "guide_hipbag_accent|upperarm.R": 13,
+    "guide_hipbag_accent|thigh.R": 11,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 44,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|chest": 18
+   }
+  },
+  {
+   "label": "Run@22",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.R": 28,
+    "guide_pants_accent|chest": 21,
+    "guide_hipbag_accent|spine": 24,
+    "guide_hipbag_accent|thigh.R": 10,
+    "guide_hipbag_accent|upperarm.R": 7,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 43,
+    "guide_pants_accent|upperarm.L": 11,
+    "guide_helmet_metal|neck": 21
+   }
+  },
+  {
+   "label": "Run@23",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|spine": 25,
+    "guide_hipbag_accent|upperarm.R": 7,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_hipbag_accent|thigh.R": 11,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.R": 28,
+    "guide_glove_boot_accent|shin.L": 51,
+    "guide_pants_accent|upperarm.L": 11,
+    "guide_helmet_metal|neck": 21
+   }
+  },
+  {
+   "label": "Run@24",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|chest": 19,
+    "guide_hipbag_accent|spine": 22,
+    "guide_hipbag_accent|upperarm.R": 7,
+    "guide_hipbag_accent|thigh.R": 18,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 51,
+    "guide_glove_boot_accent|shin.R": 28,
+    "guide_pants_accent|upperarm.L": 11,
+    "guide_helmet_metal|neck": 21
+   }
+  },
+  {
+   "label": "Jump@0",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 42,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 42,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|upperarm.L": 12,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|upperarm.R": 18
+   }
+  },
+  {
+   "label": "Jump@1",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 38,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 42,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|upperarm.L": 10,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 16
+   }
+  },
+  {
+   "label": "Jump@2",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 39,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 37,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 14
+   }
+  },
+  {
+   "label": "Jump@3",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 37,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 15,
+    "guide_glove_boot_accent|shin.R": 37,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 12
+   }
+  },
+  {
+   "label": "Jump@4",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 9
+   }
+  },
+  {
+   "label": "Jump@5",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Jump@6",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|spine": 7,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 38,
+    "guide_glove_boot_accent|shin.R": 35,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9
+   }
+  },
+  {
+   "label": "Jump@7",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 4,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 32,
+    "guide_glove_boot_accent|shin.R": 34,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 18
+   }
+  },
+  {
+   "label": "Jump@8",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 4,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 32,
+    "guide_glove_boot_accent|shin.R": 32,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 18
+   }
+  },
+  {
+   "label": "Jump@9",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 4,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 32,
+    "guide_glove_boot_accent|shin.R": 34,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 18
+   }
+  },
+  {
+   "label": "Jump@10",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 4,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 32,
+    "guide_glove_boot_accent|shin.R": 37,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 18
+   }
+  },
+  {
+   "label": "Jump@11",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 4,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 36,
+    "guide_glove_boot_accent|shin.R": 37,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 18
+   }
+  },
+  {
+   "label": "Jump@12",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 4,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 38,
+    "guide_glove_boot_accent|shin.R": 35,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 18
+   }
+  },
+  {
+   "label": "Jump@13",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 4,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 36,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 18
+   }
+  },
+  {
+   "label": "Jump@14",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 4,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 18
+   }
+  },
+  {
+   "label": "Jump@15",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 4,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 31,
+    "guide_glove_boot_accent|shin.R": 31,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 18
+   }
+  },
+  {
+   "label": "Jump@16",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_pants_accent|spine": 4,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_glove_boot_accent|shin.R": 31,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 18
+   }
+  },
+  {
+   "label": "Jump@17",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 18
+   }
+  },
+  {
+   "label": "Jump@18",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 18
+   }
+  },
+  {
+   "label": "Jump@19",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 33,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_glove_boot_accent|shin.R": 35,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 18
+   }
+  },
+  {
+   "label": "Jump@20",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_glove_boot_accent|shin.R": 35,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 18
+   }
+  },
+  {
+   "label": "Jump@21",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_glove_boot_accent|shin.R": 37,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 17
+   }
+  },
+  {
+   "label": "Jump@22",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|spine": 9,
+    "guide_hipbag_accent|thigh.R": 18,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_glove_boot_accent|shin.R": 37,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 17
+   }
+  },
+  {
+   "label": "Jump@23",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 37,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|spine": 12,
+    "guide_hipbag_accent|thigh.R": 15,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_glove_boot_accent|shin.R": 39,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 17
+   }
+  },
+  {
+   "label": "Jump@24",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 38,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|spine": 13,
+    "guide_hipbag_accent|thigh.R": 15,
+    "guide_hipbag_accent|upperarm.R": 12,
+    "guide_glove_boot_accent|shin.R": 39,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 17
+   }
+  },
+  {
+   "label": "Jump@25",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 38,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|spine": 13,
+    "guide_hipbag_accent|thigh.R": 13,
+    "guide_hipbag_accent|upperarm.R": 12,
+    "guide_glove_boot_accent|shin.R": 39,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 17
+   }
+  },
+  {
+   "label": "Jump@26",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 38,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|spine": 13,
+    "guide_hipbag_accent|thigh.R": 13,
+    "guide_hipbag_accent|upperarm.R": 12,
+    "guide_glove_boot_accent|shin.R": 39,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 17
+   }
+  },
+  {
+   "label": "Jump@27",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 38,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|spine": 13,
+    "guide_hipbag_accent|thigh.R": 13,
+    "guide_hipbag_accent|upperarm.R": 12,
+    "guide_glove_boot_accent|shin.R": 39,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 17
+   }
+  },
+  {
+   "label": "Jump@28",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 38,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|spine": 13,
+    "guide_hipbag_accent|thigh.R": 13,
+    "guide_hipbag_accent|upperarm.R": 12,
+    "guide_glove_boot_accent|shin.R": 39,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 17
+   }
+  },
+  {
+   "label": "Jump@29",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 38,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|spine": 13,
+    "guide_hipbag_accent|thigh.R": 13,
+    "guide_hipbag_accent|upperarm.R": 12,
+    "guide_glove_boot_accent|shin.R": 39,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 17
+   }
+  },
+  {
+   "label": "Jump@30",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 38,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|spine": 13,
+    "guide_hipbag_accent|thigh.R": 13,
+    "guide_hipbag_accent|upperarm.R": 12,
+    "guide_glove_boot_accent|shin.R": 39,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 17
+   }
+  },
+  {
+   "label": "Land@0",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 31,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|thigh.R": 15,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_glove_boot_accent|shin.R": 31,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 18
+   }
+  },
+  {
+   "label": "Land@1",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 18
+   }
+  },
+  {
+   "label": "Land@2",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 37,
+    "guide_pants_accent|spine": 4,
+    "guide_hipbag_accent|spine": 7,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_glove_boot_accent|shin.R": 39,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|chest": 18
+   }
+  },
+  {
+   "label": "Land@3",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 42,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_glove_boot_accent|shin.R": 42,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@4",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 46,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_glove_boot_accent|shin.R": 44,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 23,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@5",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 42,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|thigh.L": 2,
+    "guide_pants_accent|thigh.R": 2,
+    "guide_pants_accent|pelvis": 2,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_glove_boot_accent|shin.R": 42,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@6",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 42,
+    "guide_pants_accent|spine": 7,
+    "guide_pants_accent|thigh.L": 2,
+    "guide_pants_accent|thigh.R": 2,
+    "guide_pants_accent|pelvis": 2,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_glove_boot_accent|shin.R": 42,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@7",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 42,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|thigh.L": 2,
+    "guide_pants_accent|thigh.R": 2,
+    "guide_pants_accent|pelvis": 2,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 42,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@8",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 44,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 44,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@9",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 46,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_glove_boot_accent|shin.R": 44,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 23,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@10",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 46,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 44,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@11",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 42,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 42,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@12",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 42,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 40,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 21,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@13",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 42,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 40,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@14",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 42,
+    "guide_pants_accent|spine": 6,
+    "guide_hipbag_accent|thigh.R": 17,
+    "guide_glove_boot_accent|shin.R": 42,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|upperarm.R": 10,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@15",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 38,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 40,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 14,
+    "guide_pants_accent|spine": 6,
+    "guide_pants_accent|chest": 15,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@16",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|shin.L": 40,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|shin.R": 40,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@17",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 39,
+    "guide_glove_boot_accent|shin.R": 37,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@18",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 39,
+    "guide_glove_boot_accent|shin.R": 39,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@19",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 37,
+    "guide_glove_boot_accent|shin.R": 37,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@20",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 37,
+    "guide_glove_boot_accent|shin.R": 37,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@21",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 35,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 15,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@22",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@23",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  },
+  {
+   "label": "Land@24",
+   "body_shell_nonadjacent_tri_pairs": 0,
+   "body_zones": {},
+   "body_examples": [],
+   "rigid_part_vs_body_pairs": {
+    "guide_glove_boot_accent|forearm.L": 22,
+    "guide_hipbag_accent|thigh.R": 16,
+    "guide_glove_boot_accent|forearm.R": 23,
+    "guide_glove_boot_accent|hand.L": 5,
+    "guide_glove_boot_accent|hand.R": 4,
+    "guide_glove_boot_accent|shin.L": 35,
+    "guide_glove_boot_accent|shin.R": 33,
+    "guide_helmet_metal|neck": 20,
+    "guide_pants_accent|upperarm.L": 13,
+    "guide_pants_accent|spine": 4,
+    "guide_pants_accent|chest": 16,
+    "guide_hipbag_accent|upperarm.R": 9,
+    "guide_hipbag_accent|spine": 7
+   }
+  }
+ ],
+ "worst_body_shell_per_clip": {
+  "rest": {
+   "n": 0,
+   "at": "rest",
+   "zones": {}
+  },
+  "Idle": {
+   "n": 0,
+   "at": "Idle@144",
+   "zones": {}
+  },
+  "Walk": {
+   "n": 0,
+   "at": "Walk@36",
+   "zones": {}
+  },
+  "Run": {
+   "n": 4,
+   "at": "Run@6",
+   "zones": {
+    "pelvis": 2,
+    "pelvis+thigh.L": 2
+   }
+  },
+  "Jump": {
+   "n": 0,
+   "at": "Jump@30",
+   "zones": {}
+  },
+  "Land": {
+   "n": 0,
+   "at": "Land@24",
+   "zones": {}
+  }
+ },
+ "total_samples": 264,
+ "samples_with_body_shell_pairs": 14
+}

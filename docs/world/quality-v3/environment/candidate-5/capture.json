@@ -1,0 +1,316 @@
+{
+  "startedAt": "2026-10-22T05:32:47.746Z",
+  "base": "http://127.0.0.1:4322",
+  "normalEntry": {
+    "url": "http://127.0.0.1:4322/world",
+    "input": {
+      "keys": [
+        "KeyA"
+      ],
+      "ms": 7000
+    },
+    "spawnSamples": [
+      {
+        "seaPixels": 58,
+        "meanDiff": 0.76,
+        "changedOver8": 0
+      }
+    ],
+    "samples": [
+      {
+        "seaPixels": 9874,
+        "meanDiff": 2.61,
+        "changedOver8": 0.036
+      },
+      {
+        "seaPixels": 10049,
+        "meanDiff": 2.47,
+        "changedOver8": 0.03
+      },
+      {
+        "seaPixels": 10155,
+        "meanDiff": 2.34,
+        "changedOver8": 0.025
+      }
+    ],
+    "errors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ],
+    "pass": false,
+    "threshold": "sea pixels > 5000 (of 480 px wide frame), mean >= 3/255 and >= 10% of sea pixels > 8/255 over 0.5 s"
+  },
+  "fixtures": [
+    {
+      "name": "coast-west",
+      "light": "dusk",
+      "teleport": [
+        -66,
+        2.371493085058513,
+        4
+      ],
+      "terrainGround": 1.4414930850585135,
+      "after": {
+        "player": [
+          -66.26569366455078,
+          2.0940465927124023,
+          3.5180065631866455
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "name": "coast-north",
+      "light": "dusk",
+      "teleport": [
+        -20,
+        3.0834439637097244,
+        54
+      ],
+      "terrainGround": 2.1534439637097247,
+      "after": {
+        "player": [
+          -19.63897132873535,
+          2.8086581230163574,
+          54.397979736328125
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "name": "camp-edge",
+      "light": "dusk",
+      "teleport": [
+        -42,
+        5.751752187916192,
+        52
+      ],
+      "terrainGround": 4.821752187916192,
+      "after": {
+        "player": [
+          -42.02419662475586,
+          5.63999080657959,
+          51.977874755859375
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "name": "camp-terrace-se",
+      "light": "dusk",
+      "teleport": [
+        -24,
+        5.757718097996084,
+        18
+      ],
+      "terrainGround": 4.827718097996084,
+      "after": {
+        "player": [
+          -23.968059539794922,
+          5.647004127502441,
+          18.115766525268555
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "name": "coast-east-seawall",
+      "light": "dusk",
+      "teleport": [
+        24,
+        1.93,
+        -4
+      ],
+      "terrainGround": 1,
+      "after": {
+        "player": [
+          24,
+          1.9588232040405273,
+          -4
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "name": "coast-west",
+      "light": "night",
+      "teleport": [
+        -66,
+        2.371493085058513,
+        4
+      ],
+      "terrainGround": 1.4414930850585135,
+      "after": {
+        "player": [
+          -66.26569366455078,
+          2.0940465927124023,
+          3.5180065631866455
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "name": "coast-north",
+      "light": "night",
+      "teleport": [
+        -20,
+        3.0834439637097244,
+        54
+      ],
+      "terrainGround": 2.1534439637097247,
+      "after": {
+        "player": [
+          -19.63897132873535,
+          2.8086581230163574,
+          54.397979736328125
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "name": "camp-edge",
+      "light": "night",
+      "teleport": [
+        -42,
+        5.751752187916192,
+        52
+      ],
+      "terrainGround": 4.821752187916192,
+      "after": {
+        "player": [
+          -42.02389907836914,
+          5.639998435974121,
+          51.97799301147461
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "name": "camp-terrace-se",
+      "light": "night",
+      "teleport": [
+        -24,
+        5.757718097996084,
+        18
+      ],
+      "terrainGround": 4.827718097996084,
+      "after": {
+        "player": [
+          -23.96810531616211,
+          5.6470046043396,
+          18.115781784057617
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "name": "coast-east-seawall",
+      "light": "night",
+      "teleport": [
+        24,
+        1.93,
+        -4
+      ],
+      "terrainGround": 1,
+      "after": {
+        "player": [
+          24,
+          1.9588232040405273,
+          -4
+        ],
+        "grounded": true
+      }
+    }
+  ],
+  "shots": [
+    {
+      "name": "shot-overview-dusk",
+      "note": "fixed QA camera (wind clock paused in shot mode)"
+    },
+    {
+      "name": "shot-camp-dusk",
+      "note": "fixed QA camera (wind clock paused in shot mode)"
+    },
+    {
+      "name": "shot-bridge-dusk",
+      "note": "fixed QA camera (wind clock paused in shot mode)"
+    },
+    {
+      "name": "coast-west-dusk",
+      "note": "player camera after fixture teleport onto terrain height"
+    },
+    {
+      "name": "coast-north-dusk",
+      "note": "player camera after fixture teleport onto terrain height"
+    },
+    {
+      "name": "camp-edge-dusk",
+      "note": "player camera after fixture teleport onto terrain height"
+    },
+    {
+      "name": "camp-terrace-se-dusk",
+      "note": "player camera after fixture teleport onto terrain height"
+    },
+    {
+      "name": "coast-east-seawall-dusk",
+      "note": "player camera after fixture teleport onto terrain height"
+    },
+    {
+      "name": "shot-overview-night",
+      "note": "fixed QA camera (wind clock paused in shot mode)"
+    },
+    {
+      "name": "shot-camp-night",
+      "note": "fixed QA camera (wind clock paused in shot mode)"
+    },
+    {
+      "name": "shot-bridge-night",
+      "note": "fixed QA camera (wind clock paused in shot mode)"
+    },
+    {
+      "name": "coast-west-night",
+      "note": "player camera after fixture teleport onto terrain height"
+    },
+    {
+      "name": "coast-north-night",
+      "note": "player camera after fixture teleport onto terrain height"
+    },
+    {
+      "name": "camp-edge-night",
+      "note": "player camera after fixture teleport onto terrain height"
+    },
+    {
+      "name": "camp-terrace-se-night",
+      "note": "player camera after fixture teleport onto terrain height"
+    },
+    {
+      "name": "coast-east-seawall-night",
+      "note": "player camera after fixture teleport onto terrain height"
+    }
+  ],
+  "timing": {
+    "coastWest": {
+      "frames": 301,
+      "seconds": 5,
+      "fps": 60.2,
+      "p50": 16.7,
+      "p90": 16.7,
+      "p95": 16.7,
+      "p99": 16.8,
+      "max": 16.8,
+      "over33ms": 0
+    }
+  },
+  "errors": [],
+  "readyMs": 2802,
+  "stats": {
+    "calls": 50,
+    "triangles": 310816,
+    "geometries": 145,
+    "textures": 18,
+    "camera": [
+      -60.86117508241837,
+      12.125461873873844,
+      10.541428583581926
+    ]
+  }
+}

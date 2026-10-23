@@ -1,0 +1,83 @@
+import { Material, Mesh, Raycaster, Vector3, type Camera, type Object3D } from 'three';
+
+type Fade = { mesh: Mesh; source: Material | Material[]; copies: Material[]; amount: { value: number }; active: boolean };
+/** Fade only a narrow view corridor through the obstructing object. World-space masking
+ * keeps other instances sharing a draw call opaque; wind/cloth shader hooks are chained. */
+export class WorldOcclusion {
+  private ray = new Raycaster();
+  private meshes: Mesh[] = [];
+  private elapsed = 1;
+  private fades = new Map<Mesh, Fade>();
+  private start = { value: new Vector3() };
+  private end = { value: new Vector3() };
+  private blockers: string[] = [];
+  update(scene: Object3D, camera: Camera, target: Vector3, dt: number) {
+    this.start.value.copy(camera.position); this.end.value.copy(target);
+    this.elapsed += dt;
+    if (this.elapsed > .5 || !this.meshes.length) {
+      this.elapsed = 0; this.meshes = [];
+      scene.traverse(o => {
+        if (!(o instanceof Mesh)) return;
+        for (let parent: Object3D | null = o; parent; parent = parent.parent) {
+          if (parent.userData.occluder || /^(G16|G17|G18|C03|C04)$/.test(parent.userData.assetId ?? '')) {
+            this.meshes.push(o); break;
+          }
+        }
+      });
+    }
+    const hitMeshes = new Set<Mesh>();
+    // Cover the whole upright body, not just the follow target near its head.
+    for(const y of [0,.45,-.65,-1.25]){
+      const aim=target.clone().add(new Vector3(0,y,0));
+      this.ray.set(camera.position,aim.clone().sub(camera.position).normalize());
+      this.ray.far=camera.position.distanceTo(aim)-.35;
+      this.ray.intersectObjects(this.meshes,false).forEach(h=>hitMeshes.add(h.object as Mesh));
+    }
+    this.blockers = [...hitMeshes].map(m => m.name);
+    for (const fade of this.fades.values()) fade.active = false;
+    for (const mesh of hitMeshes) {
+      let fade = this.fades.get(mesh);
+      if (!fade) {
+        const source = mesh.material, amount = { value: 0 };
+        const copies = (Array.isArray(source) ? source : [source]).map(original => {
+          const copy = original.clone();
+          const originalKey = original.customProgramCacheKey();
+          copy.transparent = true; copy.depthWrite = false;
+          copy.onBeforeCompile = (shader, renderer) => {
+            original.onBeforeCompile.call(copy, shader, renderer);
+            shader.uniforms.uViewFadeStart = this.start; shader.uniforms.uViewFadeEnd = this.end;
+            shader.uniforms.uViewFade = amount;
+            shader.vertexShader = 'varying vec3 vViewFadeWorld;\n' + shader.vertexShader.replace('#include <project_vertex>', `#include <project_vertex>
+              vec4 fadePosition = vec4(transformed, 1.0);
+              #ifdef USE_INSTANCING
+                fadePosition = instanceMatrix * fadePosition;
+              #endif
+              vViewFadeWorld = (modelMatrix * fadePosition).xyz;`);
+            shader.fragmentShader = 'varying vec3 vViewFadeWorld;\nuniform vec3 uViewFadeStart;\nuniform vec3 uViewFadeEnd;\nuniform float uViewFade;\n' + shader.fragmentShader.replace('#include <alphatest_fragment>', `
+              vec3 fadeRay = uViewFadeEnd - uViewFadeStart;
+              float fadeT = dot(vViewFadeWorld-uViewFadeStart, fadeRay) / max(dot(fadeRay, fadeRay), 0.001);
+              float fadeDistance = length(vViewFadeWorld-(uViewFadeStart+clamp(fadeT,0.0,1.0)*fadeRay));
+              float fadeMask = (1.0-smoothstep(1.10,1.60,fadeDistance)) * step(0.0,fadeT) * step(fadeT,0.98);
+              // Leaf layers accumulate opacity; a 14% floor still hides the player
+              // behind a dense crown. Leave only a 1% hint at the corridor centre.
+              diffuseColor.a *= 1.0 - 0.99 * uViewFade * fadeMask;
+              #include <alphatest_fragment>`);
+          };
+          copy.customProgramCacheKey = () => originalKey + '-view-corridor-v1';
+          return copy;
+        });
+        mesh.material = Array.isArray(source) ? copies : copies[0];
+        fade = {mesh,source,copies,amount,active:true}; this.fades.set(mesh,fade);
+      }
+      fade.active = true;
+    }
+    for (const [mesh, fade] of this.fades) {
+      fade.amount.value += ((fade.active ? 1 : 0) - fade.amount.value) * (1-Math.exp(-dt*12));
+      if (!fade.active && fade.amount.value < .01) {
+        mesh.material = fade.source; fade.copies.forEach(m=>m.dispose()); this.fades.delete(mesh);
+      }
+    }
+  }
+  debug() { return {blockers:this.blockers, fades:[...this.fades.values()].map(f=>({name:f.mesh.name,amount:f.amount.value,scope:'view corridor only'}))}; }
+  dispose() { for (const f of this.fades.values()) {f.mesh.material=f.source;f.copies.forEach(m=>m.dispose());} this.fades.clear(); }
+}

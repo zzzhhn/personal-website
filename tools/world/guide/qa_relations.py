@@ -105,7 +105,13 @@ def find(a):
 for e in me.edges:
     par[find(weld[e.vertices[0]])] = find(weld[e.vertices[1]])
 root = [find(weld[v.index]) for v in me.vertices]
-body_root = Counter(root).most_common(1)[0][0]
+# v3: the body skin is the shell whose vertices carry the most distinct deform bones (the round
+# helmet now has more vertices than the skin, so 'largest shell' no longer identifies it)
+_gn = {g.index: g.name for g in body.vertex_groups}
+_bones = {}
+for _v in body.data.vertices:
+    _bones.setdefault(root[_v.index], set()).update(_gn[g.group] for g in _v.groups if g.weight > 1e-3)
+body_root = max(_bones, key=lambda r: (len(_bones[r]), Counter(root)[r]))
 dom = [gn[max(v.groups, key=lambda g: g.weight).group] if v.groups else '?' for v in me.vertices]
 wts = [{gn[g.group]: g.weight for g in v.groups} for v in me.vertices]
 matof = lambda p: me.materials[me.polygons[p].material_index].name
@@ -269,7 +275,7 @@ for pb in arm.pose.bones:
     pb.rotation_quaternion = (1, 0, 0, 0); pb.location = (0, 0, 0)
 sc.frame_set(0)
 Rep['samples'].append(test('rest'))
-for clip in ('Idle', 'Walk', 'Run', 'Jump', 'Land'):
+for clip in sorted({x.name.split('_')[0] for x in bpy.data.actions}):   # every clip in the asset
     a = action(clip)
     ad.action = a
     for f2 in range(2 * int(a.frame_range[0]), 2 * int(a.frame_range[1]) + 1):
