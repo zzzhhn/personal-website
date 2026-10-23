@@ -1,11 +1,23 @@
 import { create } from 'zustand';
 import type { Lang, Vec3, VehicleId } from './types';
+/** Content card opened by an interactable (rendered by WorldCards). `id` selects the content source. */
+export interface WorldCard { kind: 'project' | 'experience' | 'about' | 'note'; id: string; page?: number }
+/** Interactable currently in reach (prompt shown by the HUD). */
+export interface NearbyInteract { id: string; label: { en: string; zh: string }; kind: string }
 interface WorldState {
   lang: Lang;
   light: 'dusk' | 'night';
   paused: boolean;
   activeVehicle: VehicleId | null;
   nearbyVehicle: VehicleId | null;
+  /** Nearest interactable in reach when walking (null while driving). */
+  nearbyInteract: NearbyInteract | null;
+  /** Open content card (Esc / E / walking away closes it). */
+  card: WorldCard | null;
+  /** Seated pose: the guide sits at `position` facing `yaw`; any movement key stands up. */
+  seat: { id: string; position: Vec3; yaw: number } | null;
+  /** Short bilingual notice (place names, hints); `at` is performance.now() ms when shown. */
+  toast: { en: string; zh: string; at: number } | null;
   canRecover: boolean;
   recoverRequest: number;
   speed: number;
@@ -19,7 +31,7 @@ interface WorldState {
   shot: string | null;
 }
 export const useWorldStore = create<WorldState>(() => ({
-  lang: 'en', light: 'dusk', paused: false, activeVehicle: null, nearbyVehicle: null,
+  lang: 'en', light: 'dusk', paused: false, activeVehicle: null, nearbyVehicle: null, nearbyInteract: null, card: null, seat: null, toast: null,
   canRecover: false, recoverRequest: 0, speed: 0, zone: 'camp', position: [-42, 5, 30],
   ready: false, zoom: 1, quality: 'high', shot: null,
 }));

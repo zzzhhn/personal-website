@@ -4,6 +4,7 @@ import { worldText } from './world-i18n';
 import { ISLAND_OUTLINE, LAYOUT_V4, ROAD_POINTS, BOARDWALK_POINTS, BUILDINGS, BOOTHS, WORLD_SHOTS } from './layout';
 import type { WorldContent } from './types';
 import WorldExperienceSummary from './WorldExperienceSummary';
+import WorldCards from './WorldCards';
 import './world.css';
 
 const Runtime = lazy(() => import('./WorldRuntime'));
@@ -102,8 +103,9 @@ export default function WorldApp({ content }: { content: WorldContent }) {
     <header className="world-top"><div><span className="world-eyebrow">{t.stage}</span><h1>{t.title}</h1></div><button ref={trigger} onClick={() => useWorldStore.setState({ paused: true })} aria-haspopup="dialog">{t.menu}<kbd>Esc</kbd></button></header>
     <aside className="world-location"><IslandMap /><span>{t[s.zone]}</span></aside>
     <WorldExperienceSummary experiences={content.experiences} />
+    <WorldCards content={content} />
     <div className="world-bottom"><div><p>{s.activeVehicle ? t.driving : t.controls}</p><span>{t.zoom}</span></div>{s.activeVehicle && <div className="world-speed"><strong>{Math.round(s.speed)}</strong><span>km/h · {t[s.activeVehicle]}</span></div>}</div>
-    <div className="world-interaction" aria-live="polite">{s.canRecover ? <button className="world-recover" onClick={() => useWorldStore.setState(v => ({ recoverRequest: v.recoverRequest + 1 }))}>{t.recover}</button> : s.activeVehicle ? <span>{t.leave}</span> : s.nearbyVehicle ? <span>{t.enter} · {t[s.nearbyVehicle]}</span> : null}</div>
+    <div className="world-interaction" aria-live="polite">{s.canRecover ? <button className="world-recover" onClick={() => useWorldStore.setState(v => ({ recoverRequest: v.recoverRequest + 1 }))}>{t.recover}</button> : s.activeVehicle ? <span>{t.leave}</span> : s.nearbyInteract ? null : s.nearbyVehicle ? <span>{t.enter} · {t[s.nearbyVehicle]}</span> : null}</div>
     <dialog className="world-dialog" ref={dialog} aria-label={t.menu} onCancel={e => { e.preventDefault(); useWorldStore.setState({ paused: false }); }}>
       <span className="world-eyebrow">{t.title}</span><h2>{t.menu}</h2><IslandMap large />
       <fieldset><legend>{t.light}</legend>{(['dusk', 'night'] as const).map(light => <button key={light} aria-pressed={s.light === light} onClick={() => useWorldStore.setState({ light })}>{t[light]}</button>)}</fieldset>

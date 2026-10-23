@@ -3,6 +3,7 @@ import { CuboidCollider, RigidBody, useBeforePhysicsStep, type RapierRigidBody }
 import type { MeshStandardMaterial } from 'three';
 import type { Vec3 } from './types';
 import { LAYOUT_V4, OBSTACLES_V4 } from './layout-v4-flag.ts';
+import { isClaimed } from './WorldVisualClaims';
 const BODY_DATA = { obstacle: true };
 /** v4 moves only the (10, 20) roadblock, which falls inside the new SDIC footprint. */
 const LOCATIONS: Vec3[] = LAYOUT_V4 ? OBSTACLES_V4 : [[-3, 1.64, 28], [10, 1.64, 20], [24, 1.64, -18], [45, 1.64, -39]];
@@ -31,4 +32,4 @@ function Obstacle({ position }: { position: Vec3 }) {
     <mesh castShadow><boxGeometry args={[1.3, 1, .7]} /><meshStandardMaterial ref={material} color="#E8803A" roughness={1} transparent /></mesh>
   </RigidBody>;
 }
-export default function WorldObstacles() { return <>{LOCATIONS.map((position, i) => <Obstacle key={i} position={position} />)}</>; }
+export default function WorldObstacles() { return isClaimed('roadblock') ? null : <>{LOCATIONS.map((position, i) => <Obstacle key={i} position={position} />)}</>; }

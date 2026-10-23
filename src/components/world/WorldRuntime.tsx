@@ -13,6 +13,14 @@ import { useWindClock, windUniforms } from './WorldWind';
 import { campColliderRecords } from './WorldCampPhysics';
 import { useWorldResolution, visualInventory, objectIdentity, colliderBounds, renderSize } from './WorldQuality';
 import { guideSkinEvidence } from './WorldGuideEvidence';
+import { NightClock } from './WorldNight';
+import { claimedKeys } from './WorldVisualClaims';
+// District mount points are imported statically so their greybox claims (WorldVisualClaims) are
+// registered before the greybox layout is first built. Heavy GLBs still load lazily inside them.
+import WorldTown from './WorldTown';
+import WorldPark from './WorldPark';
+import WorldStreet from './WorldStreet';
+import WorldCampContent from './WorldCampContent';
 
 // Layout v4 greybox (?layout=v4) loads as its own chunk; the default entry never fetches it.
 const WorldDistricts = LAYOUT_V4 ? lazy(() => import('./WorldDistricts')) : null;
@@ -102,6 +110,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
       },
       stats: () => ({ calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, camera: camera.position.toArray() }),
       sceneObjects: () => { const result: string[] = []; scene.traverse(o => { if (o.name) result.push(o.name); }); return result; },
+      claimedGreybox: () => claimedKeys(),
     };
     Object.assign(window, { __worldDebug: debug });
     return () => { delete (window as Window & { __worldDebug?: unknown }).__worldDebug; };
@@ -124,6 +133,15 @@ export default memo(function WorldRuntime({ content }: { content: WorldContent }
     return unsubscribe;
   }, []);
   return <Canvas shadows="percentage" dpr={[1, 2]} camera={{ position: [CAMP_SPAWN[0] + 10, CAMP_SPAWN[1] + 13, CAMP_SPAWN[2] + 10], fov: 50, near: .1, far: 600 }} gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}>
-    <Suspense fallback={null}><Physics debug={overlay} gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={paused || !!shot} colliders={false}><WorldEnvironment experiences={content.experiences} />{WorldDistricts && <WorldDistricts />}<WorldObstacles /><WorldActors /><SceneLifecycle setOverlay={setOverlay} /></Physics></Suspense>
+    <Suspense fallback={null}><Physics debug={overlay} gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={paused || !!shot} colliders={false}>
+      <NightClock />
+      <WorldEnvironment experiences={content.experiences} />{WorldDistricts && <WorldDistricts />}<WorldObstacles /><WorldActors />
+      {/* Each district suspends on its own GLBs without holding back the island or the player. */}
+      <Suspense fallback={null}><WorldTown experiences={content.experiences} /></Suspense>
+      <Suspense fallback={null}><WorldPark projects={content.projects} /></Suspense>
+      <Suspense fallback={null}><WorldStreet /></Suspense>
+      <Suspense fallback={null}><WorldCampContent /></Suspense>
+      <SceneLifecycle setOverlay={setOverlay} />
+    </Physics></Suspense>
   </Canvas>;
 });

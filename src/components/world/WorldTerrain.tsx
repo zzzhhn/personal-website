@@ -2,10 +2,11 @@ import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import {
-  BufferGeometry, Color, Float32BufferAttribute, IcosahedronGeometry, InstancedMesh, MeshStandardMaterial, Object3D, RepeatWrapping,
+  BufferGeometry, Color, Float32BufferAttribute, IcosahedronGeometry, InstancedMesh, MeshStandardMaterial, Object3D, RepeatWrapping, Sphere, Uint32BufferAttribute, Vector3,
   SRGBColorSpace, TextureLoader, type Material, type Texture,
 } from 'three';
 import { BUILDINGS, FOUNDATIONS, GROUND_Y } from './layout';
+import { LAYOUT_V4, keepOutV4 } from './layout-v4';
 import { buildTerrain, createTerrainGeometry, grassCandidateJob, scatterCandidates, SHORE_GLSL, shoreUniforms, terrainColours, type ScatterBlocker } from './WorldLandform';
 import { useWorldStore } from './store';
 import { windUniforms } from './WorldWind';
@@ -144,8 +145,10 @@ const SCATTER_BLOCKERS: ScatterBlocker[] = [
     { minX: x + w / 2, maxX: x + w / 2 + 5.6, minZ: z - d / 2 - 1, maxZ: z + d / 2 + 3.6 },
   ]),
   ...FOUNDATIONS.map(({ position: [x, , z], size: [w, , d] }) => ({ minX: x - w / 2 - .4, maxX: x + w / 2 + .4, minZ: z - d / 2 - .4, maxZ: z + d / 2 + .4 })),
-  ...[[-18, 8], [-13, -8], [-12, -24], [-4, -45]].map(([x, z]) => ({ minX: x - 4.4, maxX: x + 4.4, minZ: z - 3.9, maxZ: z + 3.9 })),
-  { minX: 16, maxX: 24, minZ: 8, maxZ: 16 }, // coastal parking bay
+  ...(LAYOUT_V4 ? keepOutV4().map(([minX, minZ, maxX, maxZ]) => ({ minX: minX - .4, maxX: maxX + .4, minZ: minZ - .4, maxZ: maxZ + .4 })) : [
+    ...[[-18, 8], [-13, -8], [-12, -24], [-4, -45]].map(([x, z]) => ({ minX: x - 4.4, maxX: x + 4.4, minZ: z - 3.9, maxZ: z + 3.9 })),
+    { minX: 16, maxX: 24, minZ: 8, maxZ: 16 }, // coastal parking bay
+  ]),
   { minX: -45, maxX: -39, minZ: 27, maxZ: 33 }, // fire pit
   { minX: -31, maxX: -29, minZ: 30, maxZ: 38 }, // camp exit lamps
 ];
@@ -213,6 +216,28 @@ function EnvDebug() {
   return null;
 }
 
+/** Layout v4 (spec §12.4): the visual terrain is split into four spatial chunks sharing one vertex
+ * buffer, each with its own index buffer and culling sphere, so the view and every shadow pass skip
+ * off-screen quarters. Colliders stay one trimesh pair (physics broad-phase already culls). */
+function terrainChunks(g: BufferGeometry) {
+  const pos = g.getAttribute('position'), idx = g.getIndex()!.array, parts: number[][] = [[], [], [], []];
+  for (let t = 0; t < idx.length; t += 3) {
+    const a = idx[t], b = idx[t + 1], c = idx[t + 2];
+    const cx = (pos.getX(a) + pos.getX(b) + pos.getX(c)) / 3, cz = (pos.getZ(a) + pos.getZ(b) + pos.getZ(c)) / 3;
+    parts[(cx < -30 ? 0 : 1) + (cz < -20 ? 0 : 2)].push(a, b, c);
+  }
+  return parts.filter(p => p.length).map(p => {
+    const sub = new BufferGeometry();
+    for (const name of Object.keys(g.attributes)) sub.setAttribute(name, g.getAttribute(name));
+    sub.setIndex(new Uint32BufferAttribute(new Uint32Array(p), 1));
+    const min = new Vector3(Infinity, Infinity, Infinity), max = new Vector3(-Infinity, -Infinity, -Infinity), v = new Vector3();
+    for (const i of p) { v.fromBufferAttribute(pos, i); min.min(v); max.max(v); }
+    const centre = min.clone().add(max).multiplyScalar(.5);
+    sub.boundingSphere = new Sphere(centre, centre.distanceTo(max));
+    return sub;
+  });
+}
+
 export function IslandTerrain() {
   const terrain = useMemo(buildTerrain, []);
   const geometry = useMemo(() => {
@@ -222,6 +247,7 @@ export function IslandTerrain() {
     g.setAttribute('groundMix', new Float32BufferAttribute(groundMix, 4));
     return g;
   }, []);
+  const chunks = useMemo(() => LAYOUT_V4 ? terrainChunks(geometry) : null, [geometry]);
   const pbr = useMemo(() => GROUND_PBR ? loadPbr() : null, []);
   const material = useMemo(() => createGroundMaterial(pbr), [pbr]);
   const scatter = useMemo(() => scatterCandidates(SCATTER_BLOCKERS), []);
@@ -251,7 +277,8 @@ export function IslandTerrain() {
     <RigidBody name="island-terrain-solid" type="fixed" colliders={false} userData={{ solid: true }}>
       <TrimeshCollider name="island-terrain-solid-faces" args={[terrain.positions, terrain.solid]} friction={.65} restitution={.05} />
     </RigidBody>
-    <mesh name="island-terrain-v3-mesh" geometry={geometry} material={material} receiveShadow />
+    {chunks ? chunks.map((g, i) => <mesh key={i} name={`island-terrain-v4-chunk-${i}`} geometry={g} material={material} receiveShadow />)
+      : <mesh name="island-terrain-v3-mesh" geometry={geometry} material={material} receiveShadow />}
     <ActorTracker />
     <EnvDebug />
     <WorldGrass data={blades} />

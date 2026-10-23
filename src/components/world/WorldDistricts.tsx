@@ -19,6 +19,7 @@ import { nearestDryPoint } from './WorldLandform';
 import { WATER_Y } from './layout';
 import { useWorldStore } from './store';
 import { windUniforms } from './WorldWind';
+import { isClaimed, type GreyboxKey } from './WorldVisualClaims';
 import type { Vec3 } from './types';
 
 /** Until WorldLandform evaluates ridgeHeightV4 itself (docs/world/quality-v3/map-v4/integration/), the
@@ -122,8 +123,14 @@ function BoxChunk({ items, name, shadow, solid }: { items: (SolidBox | DecorBox)
   return <instancedMesh ref={ref} name={name} args={[geometry, material, items.length]} castShadow={shadow} receiveShadow userData={{ solid: !!solid }} />;
 }
 
+/** Greybox claim key per v4 solid kind (formal district modules take over visual + collider). */
+const SOLID_CLAIM: Record<SolidBox['kind'], GreyboxKey> = {
+  massing: 'massing', kiosk: 'massing', tower: 'massing', windmill: 'windmill', rail: 'rail', post: 'rail', wall: 'rail',
+  bollard: 'street-fixed', bench: 'street-fixed', shelter: 'street-fixed', trunk: 'tree',
+};
 function Solids() {
-  const items = useMemo(solidsV4, []);
+  const items = useMemo(() => solidsV4().filter(s => !isClaimed(SOLID_CLAIM[s.kind])), []);
+  if (!items.length) return null;
   return <>
     <RigidBody name="v4-solids" type="fixed" colliders={false} userData={{ solid: true }}>
       {items.map((s, i) => <CuboidCollider key={i} name={`v4-${s.kind}-${i}`} position={s.position} rotation={[0, s.yaw, 0]}
@@ -136,7 +143,11 @@ function Solids() {
 function Decor() {
   const { flat, raised } = useMemo(() => {
     const all = decorV4();
-    return { flat: all.filter(d => d.size[1] < .05), raised: all.filter(d => d.size[1] >= .05) };
+    // Flat decor = road markings (owned with the paving); raised = beach-walk stilts (paving) and the
+    // pocket-park canopy (tree).
+    const raisedAll = all.filter(d => d.size[1] >= .05);
+    return { flat: isClaimed('paved') ? [] : all.filter(d => d.size[1] < .05),
+      raised: raisedAll.filter(d => d.color === '#8AA24A' ? !isClaimed('tree') : !isClaimed('paved')) };
   }, []);
   return <>
     <Boxes name="v4-markings" items={flat} shadow={false} />
@@ -393,12 +404,12 @@ function DistrictsDebug() {
 
 export default memo(function WorldDistricts() {
   return <group name="world-districts-v4">
-    <Paved />
+    {!isClaimed('paved') && <Paved />}
     <Solids />
     <Decor />
-    <Windmill />
+    {!isClaimed('windmill') && <Windmill />}
     {RIDGE_PATCH && <RidgePatch />}
-    <Knockables />
+    {!isClaimed('knockable') && <Knockables />}
     <DistrictsDebug />
   </group>;
 });

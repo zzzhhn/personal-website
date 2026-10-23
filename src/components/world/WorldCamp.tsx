@@ -13,6 +13,7 @@ import { attachNatureWind } from './WorldNatureMotion';
 import { applyTentWind, markTentCloth, windUniforms, isWorldRunning } from './WorldWind';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import { CAMP_CENTER } from './layout';
+import { isClaimed } from './WorldVisualClaims';
 import { useWorldStore } from './store';
 import type { Vec3 } from './types';
 
@@ -522,14 +523,14 @@ export default memo(function WorldCamp({ layout }: { layout: CampLayout }) {
     <CampNightFill />
     <CampFireSpill />
     <CampNightMaterials />
-    <CampLamps heads={layout.lampHeads} />
+    {!isClaimed('camp-lamps') && <CampLamps heads={layout.lampHeads} />}
     <Boxes name="camp-C02-flagstones" items={data.tiles} shadow={false} />
     {/* Pads 4-8 keep their old collider: low canvas bundles mark C11-C15 as not yet made. */}
-    <group name={`camp-placeholder-${PLACEHOLDER_IDS.join('-')}`}>
+    {!isClaimed('camp-placeholder') && <group name={`camp-placeholder-${PLACEHOLDER_IDS.join('-')}`}>
       <BlockColliders id="C11-C15" blocks={data.placeholders} />
       <Boxes items={data.placeholders.map(b => ({ ...b, color: '#CDB894', rotation: [0, b.rotation?.[1] ?? 0, 0] }))} geometry={BUNDLE} />
       <Boxes items={data.placeholders.flatMap(b => [-0.25, 0.25].map(o => ({ position: [b.position[0] + o, b.position[1], b.position[2]] as Vec3, size: [0.09, b.size[1] + 0.02, b.size[2] + 0.02] as Vec3, color: '#6E5A44' })))} />
-    </group>
+    </group>}
     <AssetGuard id="C03" fallback={<Boxes collisionId="C03" items={[layout.tents[1]]} />}>
       <SingleAsset id="C03" label="large-tent" placement={data.tents[1]} materialMap={canvasGlowCopy} />
     </AssetGuard>

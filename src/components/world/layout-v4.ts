@@ -742,7 +742,7 @@ export const LANDMARKS_V4 = [
 export const TERRAIN_GRID_V4 = { minX: -136, minZ: -144, nx: 440, nz: 528 };
 /** Set to true by the WorldLandform integration patch (it evaluates ridgeHeightV4 itself); until then
  * WorldDistricts draws the ridge as a local terrain patch. Keeping one owner avoids a doubled surface. */
-export const LANDFORM_HAS_RIDGE = false;
+export const LANDFORM_HAS_RIDGE = true;
 /** Ridge blocks must stay fine (never the coarse flat-top shortcut). */
 export const nearRidgeV4 = (x: number, z: number) => Math.hypot(x - RIDGE_V4.center[0], z - RIDGE_V4.center[1]) < RIDGE_V4.footR + 4;
 /** Seawall along the avenue's sea side (replaces the v3 townFactor box). */

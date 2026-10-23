@@ -5,7 +5,7 @@
  */
 import type { Vec3, VehicleId } from './types';
 
-const DEFAULT_V4 = false;
+const DEFAULT_V4 = true;
 const query = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('layout') : null;
 export const LAYOUT_V4 = query === 'v4' || (DEFAULT_V4 && query !== 'v3');
 

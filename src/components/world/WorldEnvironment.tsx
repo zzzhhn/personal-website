@@ -19,6 +19,7 @@ import { createWorldWaterMaterial } from './WorldWater';
 import { windUniforms } from './WorldWind';
 import { SUN_OFFSET, fitSunShadow } from './WorldShadows';
 import WorldSurfaceColliders from './WorldSurfaceColliders';
+import { isClaimed } from './WorldVisualClaims';
 
 type Block = { position: Vec3; size: Vec3; color: string; rotation?: Vec3 };
 const V = (x: number, y: number, z: number): Vec3 => [x, y, z];
@@ -177,17 +178,19 @@ function Island() {
   return <>
     <IslandTerrain />
     {/* Closed greybox seabed and the park block's submerged base: visual only, under opaque water. */}
-    <mesh name="greybox-submerged-plaza" position={[45, -9.5, -45]}>
+    {!isClaimed('park-plaza') && <mesh name="greybox-submerged-plaza" position={[45, -9.5, -45]}>
       <boxGeometry args={[18, 17, 18]} /><meshStandardMaterial color="#8C8276" roughness={1} />
-    </mesh>
+    </mesh>}
     <mesh name="greybox-seabed" position={[0, -19, 0]}>
       <boxGeometry args={[560, 2, 560]} /><meshStandardMaterial color="#8C8276" roughness={1} />
     </mesh>
     {/* Park plaza block: support-only top (surface) and solid sides; same box visual and coordinates. */}
-    <WorldSurfaceColliders name="park-plaza-surface" items={PARK_PLAZA} />
-    <mesh name="park-plaza-block" position={PARK_PLAZA[0].position} receiveShadow>
-      <boxGeometry args={PARK_PLAZA[0].size} /><meshStandardMaterial color={PALETTE.sand} roughness={1} />
-    </mesh>
+    {!isClaimed('park-plaza') && <>
+      <WorldSurfaceColliders name="park-plaza-surface" items={PARK_PLAZA} />
+      <mesh name="park-plaza-block" position={PARK_PLAZA[0].position} receiveShadow>
+        <boxGeometry args={PARK_PLAZA[0].size} /><meshStandardMaterial color={PALETTE.sand} roughness={1} />
+      </mesh>
+    </>}
   </>;
 }
 
@@ -205,7 +208,7 @@ function createLayout() {
       surfaces.push(segment(c, d, 1.5, PALETTE.edge));
     }
     // Bridge has continuous low barriers on both sides, with openings at each end.
-    if (i === 7) for (const side of [-1, 1]) {
+    if (i === 7 && !isClaimed('roadside')) for (const side of [-1, 1]) {
       const length=Math.hypot(b[0]-a[0],b[2]-a[2]);
       // The west end joins a northbound road at a right angle. A full-length
       // south rail crossed that road and trapped every car before the bridge.
@@ -221,7 +224,7 @@ function createLayout() {
         for(let j=1;j<bend.length;j++)solids.push(segment(bend[j-1],bend[j],.3,PALETTE.cream,.4));
       }
     }
-    if (i >= 3 && i <= 6) {
+    if (i >= 3 && i <= 6 && !isClaimed('roadside')) {
       // Seaward low guardrail, leaving the inland building forecourts open.
       const [c, d] = offsetSegment(a, b, 5.25, 0.52);
       // Leave the matching east-turn opening in the coastal guardrail.
@@ -235,8 +238,8 @@ function createLayout() {
   });
   // Coastal parking bay connects without a raised curb.
   if (!LAYOUT_V4) surfaces.push(block([20, 1.045, 12], [7, 0.19, 7], PALETTE.road));
-  surfaces.push(block([45, 1.045, -45], [17, 0.19, 17], PALETTE.edge));
-  BOARDWALK_POINTS.slice(1).forEach((b, i) => {
+  if (!isClaimed('park-plaza')) surfaces.push(block([45, 1.045, -45], [17, 0.19, 17], PALETTE.edge));
+  if (!isClaimed('boardwalk')) BOARDWALK_POINTS.slice(1).forEach((b, i) => {
     const a = BOARDWALK_POINTS[i];
     surfaces.push(segment(a, b, BOARDWALK_WIDTH, PALETTE.wood, 0.3));
     // Short low rail runs leave broad side openings for the six landings.
@@ -263,7 +266,7 @@ function createLayout() {
     }
   });
   // Every hut gets a continuous landing spur from the nearest boardwalk segment.
-  BOOTHS.forEach(({ position: p }, i) => {
+  if (!isClaimed('booth')) BOOTHS.forEach(({ position: p }, i) => {
     let best = Infinity, nearest: Vec3 = [49, 1.14, -46];
     BOARDWALK_POINTS.slice(1).forEach((b, n) => {
       const a = BOARDWALK_POINTS[n], dx = b[0] - a[0], dz = b[2] - a[2];
@@ -294,12 +297,12 @@ function createLayout() {
     const angle = Math.PI / 4 + i * Math.PI / 2;
     camp.benches.push(block([-42 + Math.cos(angle) * 6, 5.1, 30 + Math.sin(angle) * 6], [4.8, 0.6, 0.8], PALETTE.wood, [0, -angle - Math.PI / 2, 0]));
   }
-  for (let i = 0; i < 2; i++) {
+  if (!isClaimed('camp-lamps')) for (let i = 0; i < 2; i++) {
     solids.push(block([-30, 6, 31 + i * 6], [0.25, 2.4, 0.25], PALETTE.slate));
     // Camp exit lamp heads use a camp-owned material (WorldCamp); global cyan is unchanged.
     camp.lampHeads.push(block([-30, 6.9, 31 + i * 6], [0.15, 0.6, 0.15], '#FFFFFF'));
   }
-  BUILDINGS.forEach((building) => {
+  if (!isClaimed('building-forecourt')) BUILDINGS.forEach((building) => {
     const [x, y, z] = building.position, [w, h, d] = building.size;
     surfaces.push(block([x + w / 2 + 2.7, y + 0.035, z], [5.4, 0.07, d + 1], PALETTE.edge));
     const roadX = x + w / 2 + 5;
@@ -314,10 +317,10 @@ function createLayout() {
     }
   });
   // Four low, unoccupied blocks give the inland side a second row.
-  if (!LAYOUT_V4) [[-18, 4.4, 8], [-13, 3.6, -8], [-12, 4.8, -24], [-4, 3.2, -45]].forEach(([x, h, z]) => {
+  if (!LAYOUT_V4 && !isClaimed('massing')) [[-18, 4.4, 8], [-13, 3.6, -8], [-12, 4.8, -24], [-4, 3.2, -45]].forEach(([x, h, z]) => {
     solids.push(block([x, 1 + h / 2, z], [8, h, 7], '#A29A85'));
   });
-  FOUNDATIONS.forEach(({ position: p, size }) => {
+  if (!isClaimed('foundation')) FOUNDATIONS.forEach(({ position: p, size }) => {
     surfaces.push(block(p, size, '#A39B89'));
     solids.push(block([p[0], 2.1, p[2]], [2.8, 1.2, 0.18], PALETTE.orange));
   });
@@ -325,6 +328,7 @@ function createLayout() {
   GROUND_TREES.forEach(([x, y, z], i) => {
     // Camp trunk positions are passed to WorldCamp, which fits each GLB collider.
     if (y === CAMP_CENTER[1]) { camp.trees.push(block([x, y + 1.4, z], [0.7, 2.8, 0.7], '#5A4634')); return; }
+    if (isClaimed('tree')) return;
     solids.push(block([x, y + 1.4, z], [0.7, 2.8, 0.7], '#5A4634'));
     decor.push(block([x, y + 3.6, z], [3.8, 3.6, 3.8], i % 2 ? '#6F8A3A' : '#8AA24A'));
   });
@@ -427,7 +431,7 @@ export default memo(function WorldEnvironment({ experiences }: { experiences: Wo
   return <group name="world-greybox-environment">
     <Lighting warm={warm} cyan={cyan} />
     <Island />
-    <WorldYears experiences={experiences.en} />
+    {!isClaimed('building-forecourt') && <WorldYears experiences={experiences.en} />}
     <StaticBlocks name="world-surface" items={items.surfaces} surface />
     <StaticBlocks name="world-solid" items={items.solids} />
     <StaticBlocks name="camp-pad-surface" items={items.camp.pads} surface visual={false} />
@@ -435,14 +439,14 @@ export default memo(function WorldEnvironment({ experiences }: { experiences: Wo
     <Blocks items={items.decor} shadow />
     <Blocks items={items.warm} material={warm} />
     <Blocks items={items.cyan} material={cyan} />
-    {BUILDINGS.map(({ id, position: [x, y, z], size: [w, h, d], color }) => <RigidBody key={id} type="fixed" colliders={false} userData={{ solid: true }}>
+    {!isClaimed('building') && BUILDINGS.map(({ id, position: [x, y, z], size: [w, h, d], color }) => <RigidBody key={id} type="fixed" colliders={false} userData={{ solid: true }}>
       <CuboidCollider name={`building-${id}`} args={[w / 2, h / 2, d / 2]} position={[x, y + h / 2, z]} restitution={0.15} />
       <mesh name={`greybox-building-${id}`} position={[x, y + h / 2, z]} castShadow receiveShadow userData={{ occluder: true, solid: true }}>
         <boxGeometry args={[w, h, d]} /><meshStandardMaterial color={color} roughness={1} />
       </mesh>
     </RigidBody>)}
-    <mesh position={HUNYUAN_RING} rotation={[-Math.PI / 2, 0, 0]}>
+    {!isClaimed('building') && <mesh position={HUNYUAN_RING} rotation={[-Math.PI / 2, 0, 0]}>
       <ringGeometry args={[2.5, 2.54, 32]} /><primitive object={cyan} attach="material" />
-    </mesh>
+    </mesh>}
   </group>;
 });

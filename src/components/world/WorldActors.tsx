@@ -6,9 +6,11 @@ import { BoxGeometry, Euler, Group, Mesh, MeshStandardMaterial, PerspectiveCamer
 import { CAMP_SPAWN, VEHICLES, WATER_Y, nearestRoadPoint } from './layout';
 import { nearestDryPoint } from './WorldLandform';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag.ts';
-import { useWorldStore } from './store';
+import { useWorldStore, type NearbyInteract } from './store';
+import { nearestInteractable, type Interactable } from './WorldInteract';
 import type { Vec3, VehicleId } from './types';
 import WorldGuide, { worldGuideDebug } from './WorldGuide';
+import WorldVehicleVisual from './WorldVehicleVisual';
 import { WorldOcclusion } from './WorldOcclusion';
 import { CAMERA_DEFAULT_PITCH, CAMERA_DEFAULT_YAW, CAMERA_MAX_DISTANCE, CAMERA_MIN_DISTANCE, CAMERA_PITCH_LIMITS, CAMERA_PRESETS, PHYSICS_STEP, PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS, RECOVERY_SECONDS, advanceTimer, angleDelta, cameraRelative, configureRaycastVehicle, heading, isUpsideDown, orbitDirection, radialDeadzone, rampAxis, rotateVector, wheelGeometry, yawRotation } from './actor-physics';
 
@@ -16,6 +18,7 @@ type VehicleSpec = (typeof VEHICLES)[number];
 type Controller = ReturnType<ReturnType<typeof useRapier>['world']['createVehicleController']>;
 type DriveInput = { throttle: number; steer: number; brake?: boolean };
 type Car = { body: RapierRigidBody; controller: Controller; spec: VehicleSpec; flipped: number; wet: number; steering: number; guards:(RapierCollider|null)[]; lowCom:boolean;
+  lights: { brake: boolean; reverse: boolean };
   /** Continuous driver inputs after the keyboard ramp (-1..1); QA drive() bypasses the ramp. */
   steerInput: number; throttleInput: number };
 /** Free orbit / first-person camera state (yaw, pitch in radians; distances in metres). */
@@ -110,6 +113,8 @@ function readPad(previous: PadState): PadState {
 function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Map<VehicleId,Car>>; impact: RefObject<number> }) {
   const body = useRef<RapierRigidBody>(null);
   const wheels = useRef<(Group | null)[]>([]);
+  /** Brake / reverse state for tail-lamp visuals (WorldVehicleVisual). */
+  const lights = useRef({ brake: false, reverse: false });
   const guards = useRef<(RapierCollider|null)[]>([]);
   const { world,rapier,colliderStates } = useRapier();
   // Isolated architecture candidate until reviewer decision; normal entry stays unchanged.
@@ -131,7 +136,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
     if (!body.current) return;
     const controller = world.createVehicleController(body.current);
     configureRaycastVehicle(controller,spec.size,spec.mass,spec.grip,spec.suspension / spec.mass);
-    const car: Car = {body:body.current,controller,spec,flipped:0,wet:0,steering:0,guards:guards.current,lowCom,steerInput:0,throttleInput:0};
+    const car: Car = {body:body.current,controller,spec,flipped:0,wet:0,steering:0,guards:guards.current,lowCom,steerInput:0,throttleInput:0,lights:lights.current};
     cars.current.set(spec.id,car);
     return () => { cars.current.delete(spec.id); world.removeVehicleController(controller); };
   },[world,spec,cars,lowCom]);
@@ -165,14 +170,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
       ref={c=>{guards.current[i]=c;if(c)c.setActiveHooks(rapier.ActiveHooks.FILTER_CONTACT_PAIRS);}}
       args={[.15,geometry.radius]} position={[p[0],p[1]-geometry.rest,p[2]]} rotation={[Math.PI/2,0,0]}
       mass={0} friction={0} restitution={0} contactSkin={.015} />)}
-    <mesh castShadow receiveShadow><boxGeometry args={[length,height*.58,width]}/><meshStandardMaterial color={spec.color} roughness={0.92}/></mesh>
-    <mesh position={[-length*.08,height*.42,0]} castShadow><boxGeometry args={[length*.5,height*.4,width*.86]}/><meshStandardMaterial color={spec.id==='offroad'?'#E8803A':'#4E647D'} roughness={0.96}/></mesh>
-    <mesh position={[length/2+.015,0,0]}><boxGeometry args={[.05,.17,width*.7]}/><meshStandardMaterial color="#E6DCCB"/></mesh>
-    <mesh position={[-length/2-.015,.05,0]}><boxGeometry args={[.04,.12,width*.75]}/><meshStandardMaterial color="#63BEB3" emissive="#63BEB3" emissiveIntensity={0.4}/></mesh>
-    {geometry.points.map((point,i) => <group key={i} ref={(node)=>{wheels.current[i]=node;}} position={[point[0],point[1]-geometry.rest,point[2]]}>
-      <group><mesh rotation={[Math.PI/2,0,0]} castShadow><cylinderGeometry args={[geometry.radius,geometry.radius,.3,10]}/><meshStandardMaterial color="#33383C" roughness={1}/></mesh>
-        <mesh position={[0,0,i%2===0?.17:-.17]} rotation={[Math.PI/2,0,0]}><cylinderGeometry args={[geometry.radius*.46,geometry.radius*.46,.025,6]}/><meshStandardMaterial color="#E6DCCB" roughness={.9}/></mesh></group>
-    </group>)}
+    <WorldVehicleVisual id={spec.id} size={spec.size} color={spec.color} wheelRadius={geometry.radius} wheelPoints={geometry.points} wheelRest={geometry.rest} wheels={wheels} lights={lights} />
   </RigidBody>;
 }
 
@@ -199,6 +197,10 @@ export default function WorldActors() {
   const guideTargetSpeed = useRef(0);
   const turnBeforeMove = useRef(false);
   const cars = useRef(new Map<VehicleId,Car>());
+  /** Interactable in reach this physics step (set before E handling). */
+  const nearbyItem = useRef<Interactable|null>(null);
+  /** Seat id the body was last snapped to (store.seat). */
+  const seatHeld = useRef<string|null>(null);
   const keys = useRef(new Set<string>());
   const actions = useRef({interact:false,jump:false,recover:false});
   const debugDrive = useRef<{input:DriveInput;remaining:number}|null>(null);
@@ -513,14 +515,21 @@ export default function WorldActors() {
     let nearby:VehicleId|null=null,nearest=3.8;
     const playerPosition=player.current.translation();
     if(!active)cars.current.forEach(car=>{const p=car.body.translation();const d=Math.hypot(p.x-playerPosition.x,p.y-playerPosition.y,p.z-playerPosition.z);if(d<nearest){nearest=d;nearby=car.spec.id;}});
-    if(actions.current.interact){if(active)exit();else if(nearby)enter(nearby);actions.current.interact=false;active=useWorldStore.getState().activeVehicle?cars.current.get(useWorldStore.getState().activeVehicle!):undefined;}
+    // World interactables (booths, signs, seats, boards): a vehicle wins only when it is closer.
+    const reach=active?null:nearestInteractable(playerPosition.x,playerPosition.y,playerPosition.z);
+    if(reach&&nearby&&nearest<reach.distance)nearbyItem.current=null;else{nearbyItem.current=reach?.item??null;if(reach)nearby=null;}
+    const interactNow=(item:Interactable|null)=>{
+      if(active)exit();else if(item){item.onInteract();}else if(nearby)enter(nearby);
+      active=useWorldStore.getState().activeVehicle?cars.current.get(useWorldStore.getState().activeVehicle!):undefined;
+    };
+    if(actions.current.interact){interactNow(nearbyItem.current);actions.current.interact=false;}
     if(actions.current.recover || state.recoverRequest!==lastRecover.current){recover();lastRecover.current=state.recoverRequest;actions.current.recover=false;}
     // Gamepad (standard mapping): buttons as edges. A jump, Y enter/leave, B flip back, Back camera, Start pause.
     const before=pad.current.buttons,gp=readPad(pad.current);pad.current=gp;
     const edge=(i:number)=>!!gp.buttons[i]&&!before[i];
     if(gp.connected){
       if(edge(0))actions.current.jump=true;
-      if(edge(3)){if(active)exit();else if(nearby)enter(nearby);active=useWorldStore.getState().activeVehicle?cars.current.get(useWorldStore.getState().activeVehicle!):undefined;}
+      if(edge(3))interactNow(nearbyItem.current);
       if(edge(1))actions.current.recover=true;
       if(edge(8))cycleCamera();
       if(edge(9))useWorldStore.setState({paused:true});
@@ -551,6 +560,7 @@ export default function WorldActors() {
       // overshot the coast-road corner). QA drive() inputs and the undriven return keep the old filter.
       if(driven&&!debug)car.steering=desired;
       else car.steering+=(desired-car.steering)*Math.min(1,dt*(car.spec.id==='van'?3.5:6));
+      car.lights.brake=!!braking&&driven;car.lights.reverse=driven&&throttle<-.05&&speed<.5;
       for(let i=0;i<4;i++){
         car.controller.setWheelSteering(i,i<2?car.steering:0);
         const force=driven && !braking && Math.abs(speed)<(throttle<0?9:car.spec.id==='coupe'?29:car.spec.id==='van'?18:22)?throttle*car.spec.engineForce/4:0;
@@ -601,7 +611,17 @@ export default function WorldActors() {
         }
       }
       const magnitude=Math.min(1,Math.hypot(mv[0],mv[1])),running=keys.current.has('ShiftLeft')||keys.current.has('ShiftRight')||gp.sprint;
-      const speed=(running?6.2:3.6)*magnitude;
+      // Seated (store.seat): hold the seat pose; any movement input or a jump stands up.
+      const seat=useWorldStore.getState().seat;
+      if(seat&&(magnitude>.05||actions.current.jump)){useWorldStore.setState({seat:null});actions.current.jump=false;}
+      else if(seat){
+        const s=seatHeld.current;
+        if(s!==seat.id){resetBody(player.current,[seat.position[0],seat.position[1]+PLAYER_CENTER_HEIGHT,seat.position[2]]);guideYaw.current=seat.yaw;seatHeld.current=seat.id;}
+        player.current.setLinvel({x:0,y:Math.min(0,velocity.y),z:0},true);
+        moveIntent.current='idle';guideTargetSpeed.current=0;actions.current.jump=false;
+      }
+      if(!seat)seatHeld.current=null;
+      const speed=(seat?0:running?6.2:3.6)*magnitude;
       moveIntent.current=magnitude>.05?(running?'run':'walk'):'idle';
       // Movement is relative to the camera's current ground heading (GTA style), any angle.
       const [wx,wz]=magnitude>.05?cameraRelative(mv[0]/magnitude,mv[1]/magnitude,cam.current.yaw):[0,0];
@@ -632,7 +652,12 @@ export default function WorldActors() {
     actions.current.jump=false;
     const body=active?.body ?? player.current,p=body.translation(),v=body.linvel();
     publishedTime.current+=dt;
-    if(publishedTime.current>.09){publishedTime.current=0;useWorldStore.setState({position:asTuple(p),speed:active?Math.hypot(v.x,v.z)*3.6:0,nearbyVehicle:active?null:nearby,canRecover:!!active && active.flipped>=RECOVERY_SECONDS,zone:LAYOUT_V4?zoneAtV4(p.x,p.z):p.x>35?'park':p.x< -15?'camp':'town'});}
+    if(publishedTime.current>.09){
+      publishedTime.current=0;
+      const item=nearbyItem.current,prev=useWorldStore.getState().nearbyInteract;
+      const nearbyInteract:NearbyInteract|null=item&&!active?(prev?.id===item.id?prev:{id:item.id,label:item.label,kind:item.kind}):null;
+      useWorldStore.setState({position:asTuple(p),speed:active?Math.hypot(v.x,v.z)*3.6:0,nearbyVehicle:active?null:nearby,nearbyInteract,canRecover:!!active && active.flipped>=RECOVERY_SECONDS,zone:LAYOUT_V4?zoneAtV4(p.x,p.z):p.x>35?'park':p.x< -15?'camp':'town'});
+    }
   });
 
   useFrame((_,delta)=>{

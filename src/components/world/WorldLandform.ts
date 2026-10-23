@@ -1,5 +1,6 @@
 import { BufferGeometry, ClampToEdgeWrapping, DataTexture, Float32BufferAttribute, LinearFilter, RGBAFormat, Uint32BufferAttribute, UnsignedByteType } from 'three';
 import { BUILDINGS, CAMP_CENTER, FOUNDATIONS, GROUND_Y, ISLAND_OUTLINE, ROAD_POINTS, WATER_Y } from './layout';
+import { LAYOUT_V4, keepOutV4, nearRidgeV4, ridgeHeightV4, roadDistanceV4, TERRAIN_GRID_V4, townFactorV4 } from './layout-v4';
 
 /** quality-v3 landform (spec 2026-10-22 §3, §10.1/10.2). One deterministic height function
  * h(x, z) describes the whole island: flat town top (y=1), irregular sand beaches, the camp
@@ -81,7 +82,7 @@ export const topPush = (s: number) => clamp(1.6 + periodic(s, L, [[1.1, 7, .4], 
 export const beachWidth = (s: number) => clamp(8.5 + periodic(s, L, [[3.4, 8, 1.3], [1.1, 19, .2]]), 5, 12);
 const shelfLength = (s: number) => clamp(15 + periodic(s, L, [[3, 5, 2.7]]), 12, 18);
 /** East town coast: road promenade and bridge stand on a stone seawall, not on sand. */
-export const townFactor = (x: number, z: number) => smoothstep(9, 15, x) * smoothstep(-58, -50, z) * (1 - smoothstep(14, 22, z));
+export const townFactor = LAYOUT_V4 ? townFactorV4 : (x: number, z: number) => smoothstep(9, 15, x) * smoothstep(-58, -50, z) * (1 - smoothstep(14, 22, z));
 
 /** Shore profile below the top (y=1) as a function of distance u from the top edge. */
 function shoreProfile(u: number, w: number, shelf: number) {
@@ -241,7 +242,11 @@ function roadCap(x: number, z: number) {
  * footprint (+0.2 m) the terrain never rises above y=1; outside it may rise with an 84 deg
  * retaining face. Mirrors createLayout() in WorldEnvironment (foundations, inland blocks,
  * ground greybox trees, buildings with forecourts). */
-const KEEP_OUT: [number, number, number, number][] = [
+const KEEP_OUT: [number, number, number, number][] = LAYOUT_V4 ? [
+  ...FOUNDATIONS.map(({ position: [x, , z], size: [w, , d] }) => [x - w / 2, z - d / 2, x + w / 2, z + d / 2] as [number, number, number, number]),
+  ...keepOutV4(),
+  ...BUILDINGS.map(({ position: [x, , z], size: [w, , d] }) => [x - w / 2, z - d / 2, x + w / 2 + 5.4, z + d / 2 + .5] as [number, number, number, number]),
+] : [
   ...FOUNDATIONS.map(({ position: [x, , z], size: [w, , d] }) => [x - w / 2, z - d / 2, x + w / 2, z + d / 2] as [number, number, number, number]),
   ...[[-18, 8], [-13, -8], [-12, -24], [-4, -45]].map(([x, z]) => [x - 4, z - 3.5, x + 4, z + 3.5] as [number, number, number, number]),
   ...[[-61, -4], [-51, -26], [-36, -32], [-28, -8], [-26, 7], [-30, 52], [2, 40], [-44, -43]].map(([x, z]) => [x - .6, z - .6, x + .6, z + .6] as [number, number, number, number]),
@@ -266,6 +271,7 @@ function underSlab(x: number, z: number) {
 
 const TENTS = [-51, -42, -33].map(x => [x - 3.6, 12.5 - 3, x + 3.6, 12.5 + 3]);
 function roadDistance(x: number, z: number) {
+  if (LAYOUT_V4) return roadDistanceV4(x, z);
   let best = Infinity;
   for (let i = 0; i < ROAD_POINTS.length - 1; i++) {
     const a = ROAD_POINTS[i], b = ROAD_POINTS[i + 1], dx = b[0] - a[0], dz = b[2] - a[2];
@@ -290,7 +296,7 @@ function reliefAmplitude(x: number, z: number, base: number, coast: number, camp
 export function terrainBaseHeight(x: number, z: number) {
   const coast = coastHeight(x, z), camp = campHillHeight(x, z);
   const ground = campFlankTan(Math.atan2(z - CAMP_CENTER[2], x - CAMP_CENTER[0])) > 1 ? Math.max(coast, camp) : smax(coast, camp, .4);
-  const h = Math.min(roadCap(x, z), Math.max(ground, rampHeight(x, z)));
+  const h = Math.min(roadCap(x, z), Math.max(ground, rampHeight(x, z), LAYOUT_V4 ? ridgeHeightV4(x, z) ?? -Infinity : -Infinity));
   return underSlab(x, z) ? h : Math.min(h, keepOutCap(x, z));
 }
 export function terrainHeight(x: number, z: number) {
@@ -298,7 +304,7 @@ export function terrainHeight(x: number, z: number) {
   // Round the hill foot onto flat ground (<= 10 cm rise within ~1 m of the foot, grass slopes
   // only; rock terraces and the road embankment keep a crisp foot).
   const ground = campFlankTan(Math.atan2(z - CAMP_CENTER[2], x - CAMP_CENTER[0])) > 1 ? Math.max(coast, camp) : smax(coast, camp, .4);
-  let base = Math.min(cap, Math.max(ground, rampHeight(x, z)));
+  let base = Math.min(cap, Math.max(ground, rampHeight(x, z), LAYOUT_V4 ? ridgeHeightV4(x, z) ?? -Infinity : -Infinity));
   if (!underSlab(x, z)) base = Math.min(base, keepOutCap(x, z));
   if (cap < Infinity) return base;
   const amp = reliefAmplitude(x, z, base, coast, camp);
@@ -309,7 +315,7 @@ export function terrainHeight(x: number, z: number) {
 
 export const CELL = .5;
 const BLOCK = 4; // cells per 2 m block
-export const GRID = { minX: -120, minZ: -104, nx: 400, nz: 416 }; // lattice cells
+export const GRID = LAYOUT_V4 ? TERRAIN_GRID_V4 : { minX: -120, minZ: -104, nx: 400, nz: 416 }; // lattice cells
 const NODES_X = GRID.nx + 1, NODES_Z = GRID.nz + 1;
 const nodeX = (i: number) => GRID.minX + i * CELL, nodeZ = (j: number) => GRID.minZ + j * CELL;
 
@@ -341,7 +347,7 @@ export function buildTerrain(): Terrain {
     const { d, s } = coastFrame(cx, cz);
     const camp = Math.hypot(cx - CAMP_CENTER[0], cz - CAMP_CENTER[2]);
     let k = 2;
-    if (d < topPush(s) - 4.5 && camp > 40 && rampHeight(cx, cz) < -30) k = 3;
+    if (d < topPush(s) - 4.5 && camp > 40 && rampHeight(cx, cz) < -30 && !(LAYOUT_V4 && nearRidgeV4(cx, cz))) k = 3;
     else {
       let maxH = -Infinity;
       for (let j = j0; j <= j0 + BLOCK; j++) for (let i = i0; i <= i0 + BLOCK; i++) maxH = Math.max(maxH, terrainHeight(nodeX(i), nodeZ(j)));
