@@ -98,7 +98,7 @@ interface Leg {
   ik: { thigh: Quaternion; shin: Quaternion; foot: Quaternion };
 }
 
-const MOVING = new Set(['Walk', 'Run', 'Sprint']);
+const MOVING = new Set(['Walk', 'Run', 'Sprint', 'TurnL', 'TurnR']);
 const minJerk = (t: number) => t * t * t * (10 - 15 * t + 6 * t * t);
 const wrap = (a: number) => Math.atan2(Math.sin(a), Math.cos(a));
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
@@ -332,7 +332,7 @@ export class GuideStopStep {
     if (state === 'exiting') this.exitReason = reason;
     // Moving again: a locked (not stepping) foot keeps its world lock until the new gait lifts
     // it, so the stance foot is not dragged; the stepping foot blends out at once.
-    const steppingOff = state === 'exiting' && (reason === 'moving' || reason.startsWith('animation:Walk') || reason.startsWith('animation:Run') || reason.startsWith('animation:Sprint'));
+    const steppingOff = state === 'exiting' && (reason === 'moving' || reason.startsWith('animation:Walk') || reason.startsWith('animation:Run') || reason.startsWith('animation:Sprint') || reason.startsWith('animation:SitDown'));
     for (const leg of Object.values(this.legs)) { leg.hold = steppingOff && !leg.step; leg.wFrom = leg.w; leg.wTime = 0; }
     this.log(`${state}: ${reason}${steppingOff ? ` (hold ${Object.values(this.legs).filter(l => l.hold).map(l => l.side).join('+') || 'none'})` : ''}`);
   }

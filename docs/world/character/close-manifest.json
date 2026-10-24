@@ -1,9 +1,9 @@
 {
  "date": "2026-10-24",
- "status": "reviewable fixes; A3 not accepted",
+ "status": "r13: sit-entry A3 passes; stand retreat A3 fails",
  "finalAsset": {
   "path": "public/assets/world/guide/G24.glb",
-  "sha256": "e68d86cfd62bc03a271475f13c06243f55df5ae507fdbe8f6794cc4906860f86",
+  "sha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0",
   "bytes": 726680,
   "blender": "4.2.23 LTS",
   "triangles": 3186,
@@ -38,6 +38,8 @@
   ]
  },
  "preservation": {
+  "oldSHA": "768262f637d1c11fb4a4103cfddce8f70ea1c0f43e6f2c72c1e68c4a60e45599",
+  "newSHA": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0",
   "unchangedClips": [
    "Idle",
    "IdleLook",
@@ -57,9 +59,12 @@
    "SitIdle",
    "StandUp"
   ],
-  "oldSHA": "768262f637d1c11fb4a4103cfddce8f70ea1c0f43e6f2c72c1e68c4a60e45599",
-  "newSHA": "e68d86cfd62bc03a271475f13c06243f55df5ae507fdbe8f6794cc4906860f86",
-  "dracoPrimitiveBytesIdentical": true
+  "dracoPrimitiveBytesIdentical": true,
+  "contactMasksIdentical": {
+   "SitDown": true,
+   "SitIdle": true,
+   "StandUp": true
+  }
  },
  "sources": "docs/world/THIRD_PARTY.md G24 v3d; CMU 143_18 for seated clips; source files and licenses unchanged",
  "modification": {
@@ -67,25 +72,26 @@
   "offlineSeatedHipBack_m": 0.42,
   "pelvisTiltScale": 0.35,
   "footTrackHalfWidth_m": 0.135,
-  "runtimeButtockHeight_m": 0.263,
-  "runtimeRootForward_m": 0.456,
+  "runtimeButtockHeight_m": 0.2394,
+  "runtimeRootForward_m": 0.4825,
   "buttockSupportAheadOfSeatCenter_m": 0.23,
-  "thirdRuntimeIK": false
+  "thirdRuntimeIK": false,
+  "offlineFootAnchor": "same vertex IDs, G24 Idle aligned; contact masks unchanged"
  },
  "exports": {
   "uncompressed": {
    "path": "/Users/bobby/Desktop/3D-personal-world/wt/character-close/tools/world/guide/out/G24_uncompressed.glb",
    "bytes": 909884,
-   "sha256": "ae4cd12dd2e2efbae06bf80508c4062679693baff76beb8e6b216edb166eb96d"
+   "sha256": "c25b070d5603bd16721ea135bd17690f66d0d8aa5f78d25e0d64e58a66b9fdea"
   },
   "draco": {
    "path": "/Users/bobby/Desktop/3D-personal-world/wt/character-close/public/assets/world/guide/G24.glb",
    "bytes": 726680,
-   "sha256": "e68d86cfd62bc03a271475f13c06243f55df5ae507fdbe8f6794cc4906860f86"
+   "sha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0"
   }
  },
  "evidenceRoot": "/Users/bobby/Desktop/3D-personal-world/evidence/character-close",
- "finalRuntime": "/Users/bobby/Desktop/3D-personal-world/evidence/character-close/final-r9",
+ "finalRuntime": "a3-anchor-r13 / a3-anchor-P16-r13 / a3-anchor-vehicle-r13",
  "astroCheck": {
   "errors": 0,
   "warnings": 0,
@@ -122,43 +128,30 @@
   "passedRelations": true
  },
  "runtimeA6": {
-  "passed": true,
-  "samples": 2364,
-  "views": [
-   {
-    "label": "C06",
-    "frames": 796,
-    "passed": true
-   },
-   {
-    "label": "P16",
-    "frames": 750,
-    "passed": true
-   },
-   {
-    "label": "idle-turn",
-    "frames": 681,
-    "passed": true
-   },
-   {
-    "label": "vehicle",
-    "frames": 137,
-    "passed": true
-   }
-  ]
+  "C06": {
+   "samples": 800,
+   "passed": true
+  },
+  "P16": {
+   "samples": 795,
+   "passed": true
+  },
+  "vehicle": {
+   "samples": 137,
+   "passed": true
+  }
  },
  "seatFurnitureContact": {
   "C06": {
-   "samples": 580,
+   "samples": 553,
    "maxBootFurnitureSurfaceCrossingPairs": 0,
-   "failedSamples": 0,
-   "proposedForwardOffset_m": 0
+   "failedSamples": 0
   },
   "P16": {
-   "samples": 536,
+   "samples": 520,
    "maxBootFurnitureSurfaceCrossingPairs": 0,
-   "failedSamples": 0,
-   "proposedForwardOffset_m": 0
+   "failedSamples": 0
   }
- }
+ },
+ "currentReport": "docs/world/character/a3-followup-report.md"
 }

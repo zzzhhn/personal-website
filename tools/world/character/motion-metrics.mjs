@@ -15,8 +15,11 @@ export function slipIntervals(frames, band = 0.006) {
   for (const f of frames) {
     // Turn-in-place frames (body yaw rate > 1 rad/s at < 0.5 m/s) are reported separately (turnSlip):
     // there the whole body, feet included, is rotated about the root by design (ART-LOCK v3.3).
-    const yawRate = prevF ? Math.abs(Math.atan2(Math.sin(f.facing - prevF.facing), Math.cos(f.facing - prevF.facing))) / Math.max(1e-3, f.t - prevF.t) : 0;
-    const turning = yawRate > 1 && f.speed < .5;
+    const yaw = f.shownYaw ?? f.facing, previousYaw = prevF?.shownYaw ?? prevF?.facing;
+    const elapsed = prevF ? Math.max(1e-3, f.t - prevF.t) : 1;
+    const yawRate = prevF ? Math.abs(Math.atan2(Math.sin(yaw - previousYaw), Math.cos(yaw - previousYaw))) / elapsed : 0;
+    const displaySpeed = prevF?.root && f.root ? Math.hypot(f.root[0]-prevF.root[0], f.root[2]-prevF.root[2])/elapsed : f.speed;
+    const turning = yawRate > 1 && Math.max(f.speed, displaySpeed) < .5;
     prevF = f;
     if (f.cut || !f.grounded || /Air|Start/.test(f.anim) || f.t - prevT > 0.05 || turning !== prevTurn) { for (const v of active.values()) out.push(v); active.clear(); }
     prevT = f.t; prevTurn = turning;
