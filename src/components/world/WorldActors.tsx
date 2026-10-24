@@ -603,7 +603,11 @@ export default function WorldActors() {
           .multiply(new Quaternion().setFromAxisAngle(new Vector3(1,0,0),Math.PI/2)));
       });
       car.flipped=advanceTimer(car.flipped,isUpsideDown(car.body.rotation()),dt);
-      const p=car.body.translation();car.wet=advanceTimer(car.wet,p.y<WATER_Y,dt);
+      // In water once the chassis floor is submerged (wheels fully under, >5 cm into the hull), not only
+      // when the body centre sinks: v4 beaches shelve gently, and a car parked in ~1 m of sea must still
+      // be returned to dry land after RECOVERY_SECONDS. Driving through shallow surf stays possible.
+      const p=car.body.translation(),floor=p.y+rotateVector([0,-car.spec.size[1]*.29,0],car.body.rotation())[1];
+      car.wet=advanceTimer(car.wet,p.y<WATER_Y||floor<WATER_Y-.05,dt);
       if(car.wet>=RECOVERY_SECONDS || p.y< -80){const dry=nearestDryPoint(p.x,p.z),road=dry??nearestRoadPoint(asTuple(p));resetBody(car.body,[road[0],road[1]+wheelGeometry(car.spec.size).height+.2,road[2]],heading(car.body.rotation()));car.wet=0;car.flipped=0;}
     });
     if(!active){

@@ -1,8 +1,8 @@
-import { Box3, BufferAttribute, BufferGeometry, Frustum, InstancedMesh, Matrix4, Mesh, MeshBasicMaterial, Object3D, OrthographicCamera, ShaderChunk, Sphere, Vector3, Vector4, type Camera, type DirectionalLight, type Material, type PerspectiveCamera, type WebGLRenderer } from 'three';
+import { Box3, BufferAttribute, BufferGeometry, DynamicDrawUsage, Frustum, InstancedMesh, Matrix4, Mesh, MeshBasicMaterial, Object3D, OrthographicCamera, ShaderChunk, Sphere, Vector3, Vector4, type Camera, type DirectionalLight, type Material, type PerspectiveCamera, type WebGLRenderer } from 'three';
 import { SunLight } from 'three/examples/jsm/lights/SunLight.js';
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import type { SunLightShadow } from 'three/examples/jsm/lights/SunLightShadow.js';
-import { SHADOW_BUDGET, type ShadowTier } from './WorldQuality';
+import { SHADOW_BUDGET, budgetZoneOf, type ShadowTier } from './WorldQuality';
 import { setQaRenderer, worldLightsFrame } from './WorldLights';
 
 /**
@@ -152,6 +152,7 @@ export interface ShadowTelemetry {
   bias_m: number;
   updates: number;
   passes: Record<string, { casters: number; proxies: number; instances: number }>;
+  groups?: unknown; groupErrors?: string[]; chunks?: unknown;
   applied?: unknown;
 }
 
@@ -197,8 +198,14 @@ type Caster = {
   proxies: InstancedMesh[];
   /** Fire whitelist kind (null = not a fire caster). */
   fire: 'guide' | 'vehicle' | 'static' | null;
-  /** Rigid instanced caster drawn through the merged sun chunks instead of its own proxies. */
+  /** Rigid caster drawn through the merged sun chunks instead of its own proxies. */
   merged: boolean;
+  /** Wind-animated instanced part drawn through its asset's merged part group (one proxy per cascade per asset). */
+  grouped: boolean;
+  /** Moves at runtime (Rapier instanced bodies, moved meshes, userData.shadowDynamic): never baked into chunks. */
+  dynamic: boolean;
+  /** World-matrix checksum at the last scan and how many consecutive scans it stayed the same. */
+  sum: number; stable: number;
 };
 const casters = new Map<Mesh, Caster>();
 const proxyGroup = new Object3D();
@@ -210,16 +217,18 @@ let scanFrame = -1e9, frameNo = 0, inShadowRender = false;
 const passStats: Record<string, { casters: number; proxies: number; instances: number }> = {};
 const sphere = new Sphere(), m4 = new Matrix4(), sv = new Vector3();
 
-function assetOf(o: Object3D | null): { assetId: string | null; vehicle: boolean; guide: boolean; proxy: boolean } {
-  let assetId: string | null = null, vehicle = false, guide = false, proxy = false;
+function assetOf(o: Object3D | null): { assetId: string | null; vehicle: boolean; guide: boolean; proxy: boolean; movable: boolean } {
+  let assetId: string | null = null, vehicle = false, guide = false, proxy = false, movable = false;
   for (let p: Object3D | null = o; p; p = p.parent) {
     const u = p.userData;
     if (u.shadowProxy) proxy = true;
+    // Pushable / knockable bodies and anything that opts in: shadows must follow them, so never baked.
+    if (u.obstacle || u.knockable || u.pushable || u.shadowDynamic) movable = true;
     if (u.vehicle || u.vehicleId) vehicle = true;
     if (p.name === 'world-guide-G24' || u.assetId === 'G24') guide = true;
     if (!assetId && typeof u.assetId === 'string') assetId = u.assetId;
   }
-  return { assetId, vehicle, guide, proxy };
+  return { assetId, vehicle, guide, proxy, movable };
 }
 const guideRoot = (o: Object3D) => { for (let p: Object3D | null = o; p; p = p.parent) if (p.name === 'world-guide-G24') return p; return o; };
 const FIRE_STATIC = new Set(['C05', 'C06']);
@@ -275,6 +284,18 @@ function disposeCaster(c: Caster) {
   for (const p of c.proxies) { proxyGroup.remove(p); p.dispose(); }
 }
 
+const STABLE_SCANS = 2;
+const tri = (g: BufferGeometry) => (g.index ? g.index.count : g.getAttribute('position').count) / 3;
+/** Cheap transform checksum (world matrix, plus every instance matrix for instanced meshes). */
+function matrixSum(mesh: Mesh) {
+  let s = 0;
+  const e = mesh.matrixWorld.elements;
+  for (let i = 0; i < 16; i++) s += e[i] * (i + 1);
+  const im = mesh as InstancedMesh;
+  if (im.isInstancedMesh) { const a = im.instanceMatrix.array as Float32Array, n = im.count * 16; for (let i = 0; i < n; i++) s += a[i] * ((i % 16) + 1) * (1 + (i >> 4) * 1e-3); s += im.count * 7919; }
+  return s;
+}
+
 /** Rescan shadow casters (outside rendering, so castShadow flags are the scene's own). */
 function rescan(scene: Object3D) {
   const seen = new Set<Mesh>();
@@ -289,7 +310,7 @@ function rescan(scene: Object3D) {
     let c = casters.get(mesh);
     const instanced = !!(mesh as InstancedMesh).isInstancedMesh;
     if (!c) {
-      c = { mesh, instanced, spheres: new Float32Array(0), root: meta.guide ? guideRoot(mesh) : null, animated, cast: true, proxies: [], fire: null, merged: false };
+      c = { mesh, instanced, spheres: new Float32Array(0), root: meta.guide ? guideRoot(mesh) : null, animated, cast: true, proxies: [], fire: null, merged: false, grouped: false, dynamic: false, sum: NaN, stable: 0 };
       c.fire = meta.guide ? 'guide' : meta.vehicle ? 'vehicle' : meta.assetId && FIRE_STATIC.has(meta.assetId) ? 'static' : null;
       casters.set(mesh, c);
       if (instanced) {
@@ -299,11 +320,16 @@ function rescan(scene: Object3D) {
           const p = new InstancedMesh(k === 2 ? farHull(g) ?? g : g, mesh.material as Material, cap);
           p.name = `${mesh.name || mesh.parent?.name || 'caster'}#sun${k}`;
           p.frustumCulled = false; p.matrixAutoUpdate = false; p.matrixWorldAutoUpdate = false;
-          p.castShadow = false; p.receiveShadow = false; p.userData.shadowProxy = true; p.count = 0;
+          p.castShadow = false; p.receiveShadow = false; p.userData.shadowProxy = true; p.userData.budgetSource = mesh; p.count = 0;
           proxyGroup.add(p); c.proxies.push(p);
         }
       }
     }
+    // Static detection: a caster is baked only after its transforms stayed identical for STABLE_SCANS scans (~1 s);
+    // anything that ever moves (or is a Rapier instanced body, DynamicDrawUsage) stays dynamic for the session.
+    const sum = matrixSum(mesh);
+    if (sum === c.sum) c.stable++; else { if (c.stable >= STABLE_SCANS) c.dynamic = true; c.stable = 0; c.sum = sum; }
+    if (meta.movable || meta.vehicle || (instanced && (mesh as InstancedMesh).instanceMatrix.usage === DynamicDrawUsage) || (mesh as unknown as { isSkinnedMesh?: boolean }).isSkinnedMesh) c.dynamic = true;
     if (instanced) {
       const src = mesh as InstancedMesh;
       c.spheres = instanceSpheres(src, animated);
@@ -315,6 +341,7 @@ function rescan(scene: Object3D) {
   });
   for (const [mesh, c] of casters) if (!seen.has(mesh) || !mesh.parent) { disposeCaster(c); casters.delete(mesh); }
   rebuildFireStatic();
+  rebuildGroups();
   rebuildChunks();
   if (proxyGroup.parent !== scene) scene.add(proxyGroup);
 }
@@ -325,7 +352,7 @@ function rescan(scene: Object3D) {
 const fireStatic = new Mesh();
 fireStatic.name = 'world-fire-static-casters';
 fireStatic.matrixAutoUpdate = false; fireStatic.matrixWorldAutoUpdate = false; fireStatic.frustumCulled = false;
-fireStatic.castShadow = false; fireStatic.receiveShadow = false; fireStatic.userData.shadowProxy = true;
+fireStatic.castShadow = false; fireStatic.receiveShadow = false; fireStatic.userData.shadowProxy = true; fireStatic.userData.budgetZone = 'camp';
 proxyGroup.add(fireStatic);
 let fireStaticKey = '';
 function rebuildFireStatic() {
@@ -355,17 +382,161 @@ function rebuildFireStatic() {
   fireStatic.matrixWorld.identity();
 }
 
+/** Asset part groups. A camp tree is 3-4 wind-animated InstancedMeshes (crown shells + trunk) that share one set of
+ * instance matrices and the same wind depth program; per cascade they become ONE proxy with the parts' geometry
+ * concatenated (position + _wind, local frame unchanged), so the depth shader, phase, push and sway are bit-identical.
+ * Parts are grouped by asset group, material side and depth program. Cascade geometry:
+ *   c0 / c1 leaf-cluster hulls (clusterHull, GROUP_CLUSTER_M bins; meshoptimizer was tested and removes < 7 % of these
+ *   disconnected leaf cards within a 1-5 cm cap); c2 per-part convex hulls. */
+type Group = { key: string; members: Caster[]; proxies: InstancedMesh[]; spheres: Float32Array; full: BufferGeometry; lods: BufferGeometry[]; far: BufferGeometry };
+let groups: Group[] = [];
+let groupKey = '';
+const MID_RATIO = .45;
+function concatParts(parts: BufferGeometry[]) {
+  let nv = 0, ni = 0;
+  for (const g of parts) { nv += g.getAttribute('position').count; ni += g.index ? g.index.count : g.getAttribute('position').count; }
+  const pos = new Float32Array(nv * 3), wind = new Float32Array(nv * 4), idx = new Uint32Array(ni);
+  let v = 0, i = 0;
+  for (const g of parts) {
+    const p = g.getAttribute('position'), w = g.getAttribute('_wind'), x = g.index;
+    for (let j = 0; j < p.count; j++) { pos.set([p.getX(j), p.getY(j), p.getZ(j)], (v + j) * 3); if (w) wind.set([w.getX(j), w.getY(j), w.getZ(j), w.getW(j)], (v + j) * 4); }
+    if (x) for (let j = 0; j < x.count; j++) idx[i++] = v + x.getX(j); else for (let j = 0; j < p.count; j++) idx[i++] = v + j;
+    v += p.count;
+  }
+  const out = new BufferGeometry();
+  out.setAttribute('position', new BufferAttribute(pos, 3));
+  out.setAttribute('_wind', new BufferAttribute(wind, 4));
+  out.setIndex(new BufferAttribute(idx, 1));
+  out.computeBoundingSphere();
+  if (out.boundingSphere) out.boundingSphere.radius += ANIMATED_MARGIN;
+  return out;
+}
+const groupErrors: string[] = [];
+/** Shadow-only leaf-cluster proxy for wind-animated foliage: leaf cards are binned by their centroid into `cell`-metre
+ * cubes (part-local), and each bin becomes the convex hull of its cards. Gaps wider than a bin survive (dappled light),
+ * gaps inside a bin fill. Hull vertices are a subset of the source vertices, so each keeps its exact _wind weights and
+ * sways with the same depth material. Cards are connected components of the welded mesh. */
+const clusters = new Map<string, BufferGeometry>();
+export const GROUP_CLUSTER_M = [0, .6] as const;
+function clusterHull(g: BufferGeometry, cell: number): BufferGeometry {
+  const id = `${g.uuid}:${cell}`, cached = clusters.get(id);
+  if (cached) return cached;
+  const pos = g.getAttribute('position'), wind = g.getAttribute('_wind'), idx = g.index;
+  const key = new Map<string, number>(), weld = new Int32Array(pos.count);
+  for (let i = 0; i < pos.count; i++) { const k = `${pos.getX(i).toFixed(4)},${pos.getY(i).toFixed(4)},${pos.getZ(i).toFixed(4)}`; let w = key.get(k); if (w === undefined) { w = i; key.set(k, i); } weld[i] = w; }
+  const parent = Int32Array.from({ length: pos.count }, (_, i) => i);
+  const find = (x: number): number => { while (parent[x] !== x) { parent[x] = parent[parent[x]]; x = parent[x]; } return x; };
+  const n = idx ? idx.count : pos.count, at = (j: number) => weld[idx ? idx.getX(j) : j];
+  for (let j = 0; j < n; j += 3) { const a = find(at(j)), b = find(at(j + 1)), c = find(at(j + 2)); parent[b] = a; parent[find(c)] = a; }
+  // Component centroids -> bins.
+  const comp = new Map<number, { sx: number; sy: number; sz: number; n: number; verts: Set<number> }>();
+  for (let i = 0; i < pos.count; i++) {
+    if (weld[i] !== i) continue;
+    const r = find(i); let c = comp.get(r);
+    if (!c) { c = { sx: 0, sy: 0, sz: 0, n: 0, verts: new Set() }; comp.set(r, c); }
+    c.sx += pos.getX(i); c.sy += pos.getY(i); c.sz += pos.getZ(i); c.n++; c.verts.add(i);
+  }
+  const bins = new Map<string, number[]>();
+  for (const c of comp.values()) {
+    const k = `${Math.floor(c.sx / c.n / cell)},${Math.floor(c.sy / c.n / cell)},${Math.floor(c.sz / c.n / cell)}`;
+    const list = bins.get(k) ?? []; for (const v of c.verts) list.push(v); bins.set(k, list);
+  }
+  const P: number[] = [], W: number[] = [], I: number[] = [];
+  for (const verts of bins.values()) {
+    const pts = verts.map(i => new Vector3(pos.getX(i), pos.getY(i), pos.getZ(i)));
+    let hp: BufferAttribute | null = null;
+    if (verts.length >= 4) { try { const h = new ConvexGeometry(pts); hp = h.getAttribute('position') as BufferAttribute; } catch { hp = null; } }
+    const base = P.length / 3;
+    if (hp && hp.count >= 4) {
+      for (let i = 0; i < hp.count; i++) {
+        P.push(hp.getX(i), hp.getY(i), hp.getZ(i));
+        const src = key.get(`${hp.getX(i).toFixed(4)},${hp.getY(i).toFixed(4)},${hp.getZ(i).toFixed(4)}`) ?? verts[0];
+        if (wind) W.push(wind.getX(src), wind.getY(src), wind.getZ(src), wind.getW(src));
+        I.push(base + i);
+      }
+    } else {
+      // Degenerate (single flat card): keep its own triangles.
+      const set = new Set(verts), map = new Map<number, number>();
+      for (let j = 0; j < n; j += 3) {
+        const tri = [at(j), at(j + 1), at(j + 2)];
+        if (!tri.every(v => set.has(v))) continue;
+        for (const v of tri) { let m = map.get(v); if (m === undefined) { m = P.length / 3; map.set(v, m); P.push(pos.getX(v), pos.getY(v), pos.getZ(v)); if (wind) W.push(wind.getX(v), wind.getY(v), wind.getZ(v), wind.getW(v)); } I.push(m); }
+      }
+    }
+  }
+  const out = new BufferGeometry();
+  out.setAttribute('position', new BufferAttribute(new Float32Array(P), 3));
+  if (wind) out.setAttribute('_wind', new BufferAttribute(new Float32Array(W), 4));
+  out.setIndex(I);
+  out.boundingSphere = g.boundingSphere ?? (g.computeBoundingSphere(), g.boundingSphere);
+  // Keep whichever is cheaper (a part that is already a few big cards gains nothing).
+  const result = I.length < n ? out : g;
+  clusters.set(id, result);
+  return result;
+}
+function rebuildGroups() {
+  const byKey = new Map<string, Caster[]>();
+  for (const c of casters.values()) {
+    c.grouped = false;
+    const m = c.mesh as InstancedMesh;
+    if (!c.instanced || c.dynamic || c.fire || !m.geometry.getAttribute('_wind') || m.geometry.getAttribute('_cloth') || !m.customDepthMaterial || Array.isArray(m.material)) continue;
+    const prog = (m.customDepthMaterial as Material & { customProgramCacheKey: () => string }).customProgramCacheKey();
+    // Sides may mix (two-sided crowns + one-sided trunk): the group draws two-sided, harmless for closed trunks.
+    const k = `${m.parent?.uuid}|${prog}|${m.count}`;
+    // Identical instance layout required (same asset placements): compare against the first member.
+    const list = byKey.get(k) ?? [];
+    if (list.length && !sameInstances(list[0].mesh as InstancedMesh, m)) continue;
+    list.push(c); byKey.set(k, list);
+  }
+  const live = [...byKey.entries()].filter(([, l]) => l.length > 1);
+  const key = live.map(([k, l]) => k + ':' + l.map(c => c.mesh.uuid).join(',')).join('|');
+  for (const [, l] of live) for (const c of l) c.grouped = true;
+  if (key === groupKey) return;
+  groupKey = key;
+  for (const gr of groups) for (const p of gr.proxies) { proxyGroup.remove(p); p.dispose(); }
+  for (const gr of groups) { gr.full.dispose(); gr.far.dispose(); gr.lods.forEach(l => { if (l !== gr.full) l.dispose(); }); }
+  groups = live.map(([k, members]) => {
+    members.sort((a, b) => ((b.mesh.material as Material).side === 2 ? 1 : 0) - ((a.mesh.material as Material).side === 2 ? 1 : 0));
+    const lead = members[0].mesh as InstancedMesh, parts = members.map(c => c.mesh.geometry);
+    const full = concatParts(parts), far = concatParts(parts.map(g => farHull(g) ?? g));
+    // c0 keeps the full parts (0.7 cm texels resolve every leaf notch); c1 bins at 0.6 m (finer bins save nothing: the hull
+    // of a few flat cards has more triangles than the cards), so gaps wider than ~0.6 m survive as dappled light.
+    const lods = GROUP_CLUSTER_M.map(cell => cell > 0 ? concatParts(parts.map(g => g.getAttribute('_wind') && (g.index ? g.index.count : g.getAttribute('position').count) / 3 >= 200 ? clusterHull(g, cell) : g)) : full);
+    const gr: Group = { key: k, members, proxies: [], spheres: new Float32Array(0), full, lods, far };
+    // Instance spheres from the concatenated bounds (already padded for sway).
+    const n = lead.count, local = full.boundingSphere!, sp = new Float32Array(n * 4);
+    for (let i = 0; i < n; i++) { lead.getMatrixAt(i, m4); m4.premultiply(lead.matrixWorld); sphere.copy(local).applyMatrix4(m4); sp.set([sphere.center.x, sphere.center.y, sphere.center.z, sphere.radius], i * 4); }
+    gr.spheres = sp;
+    for (let c = 0; c < CASCADES; c++) {
+      const p = new InstancedMesh(c === 2 ? far : lods[c], lead.material as Material, lead.instanceMatrix.count);
+      p.name = `${lead.parent?.name || lead.name}#group-sun${c}`;
+      p.frustumCulled = false; p.matrixAutoUpdate = false; p.matrixWorldAutoUpdate = false;
+      p.castShadow = false; p.receiveShadow = false; p.count = 0;
+      p.customDepthMaterial = lead.customDepthMaterial;
+      p.userData.shadowProxy = true; p.userData.budgetSource = lead;
+      proxyGroup.add(p); gr.proxies.push(p);
+    }
+    return gr;
+  });
+}
+function sameInstances(a: InstancedMesh, b: InstancedMesh) {
+  if (a.count !== b.count || !a.matrixWorld.equals(b.matrixWorld)) return false;
+  const x = a.instanceMatrix.array, y = b.instanceMatrix.array;
+  for (let i = 0; i < a.count * 16; i++) if (Math.abs(x[i] - y[i]) > 1e-5) return false;
+  return true;
+}
+
 /** Rigid instanced casters (rocks, props, benches, fire ring, tent frames, greybox blocks: no wind, no cloth,
  * no custom depth material) are merged per 8 m ground cell and material side into shadow-only world-space
  * meshes, in two variants: full geometry for c0/c1 and a far variant (instances >= FAR_MIN_RADIUS, convex
  * hulls where available) for c2. One draw per cell instead of one per part, which is what bounds the
  * shadow pass draw calls; each cascade only draws the cells whose light-space footprint it needs. */
-type Chunk = { full: Mesh | null; far: Mesh | null; sphere: Sphere; farSphere: Sphere };
+type Chunk = { mesh: Mesh; cascade: 0 | 1 | 2; sphere: Sphere };
 let chunks: Chunk[] = [];
 let chunkKey = '';
-/** Merge cell sizes (m): c0/c1 cells stay small so culling still bites near the body; c2 cells are large
- * (the far window spans ~100 m), which is what bounds its draw calls. */
-const CHUNK = 8, FAR_CHUNK = 32;
+/** Merge cell size per cascade (m): c0 16 (its window is 18 x 13 m), c1 32 (37 x 25 m), c2 48 with the far variant
+ * (instances >= FAR_MIN_RADIUS, convex hulls). Rigid casters are cheap in triangles; draw calls are what binds. */
+const CHUNK_CELL = [16, 40, 72] as const;
 const sideMaterials = new Map<number, Material>();
 const sideMaterial = (side: number) => { let m = sideMaterials.get(side); if (!m) { m = new MeshBasicMaterial({ side: side as 0 | 1 | 2 }); sideMaterials.set(side, m); } return m; };
 function makeChunkMesh(positions: number[], indices: number[], side: number, name: string) {
@@ -381,39 +552,60 @@ function makeChunkMesh(positions: number[], indices: number[], side: number, nam
   return m;
 }
 function rebuildChunks() {
-  const rigid = [...casters.values()].filter(c => c.instanced && !c.animated && !c.fire?.match(/guide|vehicle/) && !Array.isArray(c.mesh.material) && !c.mesh.customDepthMaterial);
-  const key = rigid.map(c => `${c.mesh.uuid}:${(c.mesh as InstancedMesh).count}`).join('|');
+  // Static, rigid, default-depth casters only: never animated, skinned, dynamic, guide/vehicle, or custom depth.
+  // Multi-material meshes merge by their first material's side (GLB buildings: all opaque, same side in practice).
+  const plainDepth = (c: Caster) => {
+    const g = c.mesh.geometry, mats = Array.isArray(c.mesh.material) ? c.mesh.material : [c.mesh.material];
+    // Anything the default depth material would render differently stays on its own draw: alpha cutouts, displacement,
+    // clipping, morph targets, and multi-material meshes whose groups disagree on the side.
+    return !g.morphAttributes.position && mats.every(m => { const x = m as Material & { alphaTest?: number; map?: unknown; alphaMap?: unknown; displacementMap?: unknown; clippingPlanes?: unknown[] | null };
+      return !(x.alphaTest && (x.map || x.alphaMap)) && !x.displacementMap && !x.clippingPlanes?.length && x.side === mats[0].side && x.visible; });
+  };
+  const rigid = [...casters.values()].filter(c => c.cast && !c.animated && !c.dynamic && c.stable >= STABLE_SCANS && !c.fire?.match(/guide|vehicle/) && !c.mesh.customDepthMaterial && !c.root && plainDepth(c));
+  const key = rigid.map(c => `${c.mesh.uuid}:${c.sum}`).join('|');
   for (const c of casters.values()) c.merged = false;
   for (const c of rigid) c.merged = true;
   if (key === chunkKey) return;
   chunkKey = key;
-  for (const ch of chunks) for (const m of [ch.full, ch.far]) if (m) { proxyGroup.remove(m); m.geometry.dispose(); }
-  const buckets = new Map<string, { side: number; full: [number[], number[]] }>(), farBuckets = new Map<string, { side: number; far: [number[], number[]] }>();
+  for (const ch of chunks) { proxyGroup.remove(ch.mesh); ch.mesh.geometry.dispose(); }
+  type Bucket = { side: number; cascade: 0 | 1 | 2; data: [number[], number[]]; zones: Map<string, number> };
+  const buckets = new Map<string, Bucket>();
+  // Budget attribution (QA): each merged chunk reports the zone that contributes most of its triangles.
+  const tally = (zones: Map<string, number>, zone: string, g: BufferGeometry) => zones.set(zone, (zones.get(zone) ?? 0) + (g.index ? g.index.count : g.getAttribute('position').count));
+  const top = (zones: Map<string, number>) => [...zones.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? 'other';
   const v = new Vector3();
   const push = (dst: [number[], number[]], g: BufferGeometry, matrix: Matrix4) => {
     const pos = g.getAttribute('position'), idx = g.index, base = dst[0].length / 3;
     for (let j = 0; j < pos.count; j++) { v.fromBufferAttribute(pos, j).applyMatrix4(matrix); dst[0].push(v.x, v.y, v.z); }
     if (idx) for (let j = 0; j < idx.count; j++) dst[1].push(base + idx.getX(j)); else for (let j = 0; j < pos.count; j++) dst[1].push(base + j);
   };
+  const one = new Float32Array(4);
   for (const c of rigid) {
-    const src = c.mesh as InstancedMesh, g = src.geometry, hull = farHull(g), side = (src.material as Material).side, s = c.spheres;
-    for (let i = 0; i < src.count; i++) {
-      const k = `${Math.floor(s[i * 4] / CHUNK)},${Math.floor(s[i * 4 + 2] / CHUNK)},${side}`;
-      let b = buckets.get(k);
-      if (!b) { b = { side, full: [[], []] }; buckets.set(k, b); }
-      src.getMatrixAt(i, m4); m4.premultiply(src.matrixWorld);
-      push(b.full, g, m4);
-      if (s[i * 4 + 3] < FAR_MIN_RADIUS) continue;
-      const fk = `${Math.floor(s[i * 4] / FAR_CHUNK)},${Math.floor(s[i * 4 + 2] / FAR_CHUNK)},${side}`;
-      let fb = farBuckets.get(fk);
-      if (!fb) { fb = { side, far: [[], []] }; farBuckets.set(fk, fb); }
-      push(fb.far, hull ?? g, m4);
+    const src = c.mesh as InstancedMesh, mat = Array.isArray(src.material) ? src.material[0] : src.material;
+    // userData.shadowGeometry: an asset-supplied simplified shadow proxy (same local frame as the mesh).
+    const g = (src.userData.shadowGeometry as BufferGeometry | undefined) ?? src.geometry, hull = farHull(g), side = mat.side, zone = budgetZoneOf(src);
+    let s = c.spheres;
+    if (!c.instanced) { meshSphere(c, sphere); one.set([sphere.center.x, sphere.center.y, sphere.center.z, sphere.radius]); s = one; }
+    const count = c.instanced ? src.count : 1;
+    for (let i = 0; i < count; i++) {
+      if (c.instanced) { src.getMatrixAt(i, m4); m4.premultiply(src.matrixWorld); } else m4.copy(src.matrixWorld);
+      for (const k of [0, 1, 2] as const) {
+        if (k === 2 && s[i * 4 + 3] < FAR_MIN_RADIUS) continue;
+        const cell = CHUNK_CELL[k], key = `${k}:${Math.floor(s[i * 4] / cell)},${Math.floor(s[i * 4 + 2] / cell)},${side}`;
+        let b = buckets.get(key);
+        if (!b) { b = { side, cascade: k, data: [[], []], zones: new Map() }; buckets.set(key, b); }
+        const geo = k === 2 ? hull ?? g : g;
+        push(b.data, geo, m4); tally(b.zones, zone, geo);
+      }
     }
   }
-  chunks = [
-    ...[...buckets.entries()].map(([k, b]) => { const full = makeChunkMesh(b.full[0], b.full[1], b.side, `sun-chunk-${k}`); return { full, far: null, sphere: full?.geometry.boundingSphere?.clone() ?? new Sphere(), farSphere: new Sphere() }; }),
-    ...[...farBuckets.entries()].map(([k, b]) => { const far = makeChunkMesh(b.far[0], b.far[1], b.side, `sun-chunk-far-${k}`); return { full: null, far, sphere: new Sphere(), farSphere: far?.geometry.boundingSphere?.clone() ?? new Sphere() }; }),
-  ];
+  chunks = [];
+  for (const [key, b] of buckets) {
+    const mesh = makeChunkMesh(b.data[0], b.data[1], b.side, `sun-chunk-${key}`);
+    if (!mesh) continue;
+    mesh.userData.budgetZone = top(b.zones);
+    chunks.push({ mesh, cascade: b.cascade, sphere: mesh.geometry.boundingSphere!.clone() });
+  }
 }
 
 /** World sphere of a non-instanced caster (guide: fixed body sphere around its root). */
@@ -427,6 +619,8 @@ function meshSphere(c: Caster, out: Sphere) {
 /** View frustum of the frame being shadowed (set in updateCascades). */
 const viewFrustum = new Frustum(), viewMatrix = new Matrix4();
 let viewValid = false;
+/** Fixed QA shots fit every cascade to the whole island: only c0 draws (c1/c2 lie inside it), so it uses the coarse cells. */
+let wideMode = false;
 const sweepSphere = new Sphere();
 /** Can any shadow of this caster be on screen? Its shadow lies along -sun from the caster down to sea
  * level (a receiver is always lower than the caster on the light ray), so the swept sphere from the
@@ -461,14 +655,30 @@ function applySunPass(k: number) {
   let nCasters = 0, nProxies = 0, nInstances = 0;
   fireStatic.castShadow = false;
   for (const ch of chunks) {
-    if (ch.full) ch.full.castShadow = k < 2 && inCascade(k, ch.sphere.center.x, ch.sphere.center.y, ch.sphere.center.z, ch.sphere.radius, true);
-    if (ch.far) ch.far.castShadow = k === 2 && inCascade(k, ch.farSphere.center.x, ch.farSphere.center.y, ch.farSphere.center.z, ch.farSphere.radius, true);
-    if (ch.full?.castShadow || ch.far?.castShadow) nProxies++;
+    ch.mesh.castShadow = ch.cascade === (wideMode && k === 0 ? 2 : k) && inCascade(k, ch.sphere.center.x, ch.sphere.center.y, ch.sphere.center.z, ch.sphere.radius, true);
+    if (ch.mesh.castShadow) nProxies++;
+  }
+  for (const gr of groups) {
+    gr.proxies.forEach((p, j) => { if (j !== k) p.castShadow = false; });
+    const p = gr.proxies[k], lead = gr.members[0].mesh as InstancedMesh;
+    if (!gr.members.every(m => m.cast)) { p.castShadow = false; continue; }
+    const src = lead.instanceMatrix.array as Float32Array, dst = p.instanceMatrix.array as Float32Array, s = gr.spheres;
+    p.matrixWorld.copy(lead.matrixWorld);
+    let n = 0;
+    for (let i = 0; i * 4 < s.length; i++) {
+      if (!inCascade(k, s[i * 4], s[i * 4 + 1], s[i * 4 + 2], s[i * 4 + 3])) continue;
+      dst.set(src.subarray(i * 16, i * 16 + 16), n * 16); n++;
+    }
+    if (n !== p.count || n) { p.count = n; p.instanceMatrix.needsUpdate = true; }
+    p.castShadow = n > 0;
+    if (n) { nProxies++; nInstances += n; }
   }
   for (const c of casters.values()) {
-    if (!c.cast || c.merged) { c.mesh.castShadow = false; for (const p of c.proxies) p.castShadow = false; continue; }
+    if (!c.cast || c.merged || c.grouped) { c.mesh.castShadow = false; for (const p of c.proxies) p.castShadow = false; continue; }
     if (c.instanced) {
       c.mesh.castShadow = false;
+      // Moving instances (knocked props): culling spheres follow them every frame, not every 30 frames.
+      if (k === 0 && c.dynamic) c.spheres = instanceSpheres(c.mesh as InstancedMesh, c.animated);
       const src = (c.mesh as InstancedMesh).instanceMatrix.array as Float32Array, s = c.spheres;
       c.proxies.forEach((p, j) => { if (j !== k) p.castShadow = false; });
       const p = c.proxies[k], dst = p.instanceMatrix.array as Float32Array;
@@ -503,7 +713,8 @@ export function applyFirePass(face: number, frustum: Frustum, spec: FirePassSpec
     c.mesh.castShadow = rangeOk(sphere.center.x, sphere.center.z) && frustum.intersectsSphere(sphere);
     if (c.mesh.castShadow) n++;
   }
-  for (const ch of chunks) { if (ch.full) ch.full.castShadow = false; if (ch.far) ch.far.castShadow = false; }
+  for (const ch of chunks) ch.mesh.castShadow = false;
+  for (const gr of groups) for (const p of gr.proxies) p.castShadow = false;
   const gs = fireStatic.geometry.boundingSphere;
   fireStatic.castShadow = !!gs && frustum.intersectsSphere(gs);
   if (fireStatic.castShadow) n++;
@@ -524,7 +735,8 @@ function endShadowRender() {
     for (const p of c.proxies) p.castShadow = false;
   }
   fireStatic.castShadow = false;
-  for (const ch of chunks) { if (ch.full) ch.full.castShadow = false; if (ch.far) ch.far.castShadow = false; }
+  for (const ch of chunks) ch.mesh.castShadow = false;
+  for (const gr of groups) for (const p of gr.proxies) p.castShadow = false;
 }
 const wrapped = new WeakSet<object>();
 function wrapShadowRender(renderer: WebGLRenderer) {
@@ -567,7 +779,7 @@ function updateCascades(shadow: CascadeShadow, viewCamera: Camera | undefined) {
   viewCamera.updateMatrixWorld();
   viewMatrix.multiplyMatrices(viewCamera.projectionMatrix, viewCamera.matrixWorldInverse);
   viewFrustum.setFromProjectionMatrix(viewMatrix);
-  viewValid = !wide;
+  viewValid = !wide; wideMode = wide;
   // Ground look direction (unit, horizontal) and the visible ground span along it, measured from the camera:
   // bottom-centre and top-centre view rays against the focus height (top capped at 110 m, fog starts at 140 m).
   let gx = 0, gz = 0, nearG = 0, farG = 110;
@@ -626,6 +838,9 @@ function updateCascades(shadow: CascadeShadow, viewCamera: Camera | undefined) {
     centre: shadow._cameras[0].position.toArray(), halfExtent_m: near.halfExtent_m, lightTexel_m: near.lightTexel_m, groundTexel_m: near.groundTexel_m, cascades,
     sunElevation_deg: Math.asin(SIN_ELEVATION) * 180 / Math.PI, pcfRadiusTexels: radius, normalBias_m: shadow.normalBias, bias: shadow.bias, bias_m: biasM, updates,
     passes: passStats,
+    groups: groups.map(gr => ({ key: gr.members[0].mesh.parent?.name ?? gr.key, parts: gr.members.map(c => c.mesh.name), instances: (gr.members[0].mesh as InstancedMesh).count,
+      tris: { full: tri(gr.full), c0: tri(gr.lods[0]), c1: tri(gr.lods[1]), far: tri(gr.far) } })), groupErrors,
+    chunks: { perCascade: [0, 1, 2].map(k => chunks.filter(c => c.cascade === k).length), merged: [...casters.values()].filter(c => c.merged).length, dynamic: [...casters.values()].filter(c => c.dynamic).map(c => c.mesh.name || c.mesh.parent?.name) },
     applied: { cameras: shadow._cameras.map(c => [c.left, c.right, c.bottom, c.top, c.near, c.far]), cascadeData: shadow._cascadeData.map(v => v.toArray()),
       mapAllocated: shadow.map ? [shadow.map.width, shadow.map.height] : null, sunIntensity: sun?.intensity ?? null, sunInScene: !!sun?.parent, casters: casters.size } };
 }
