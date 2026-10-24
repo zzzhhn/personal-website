@@ -34,7 +34,7 @@ type ActorSnapshot = {
   player: Vec3 | null; activeVehicle: VehicleId | null; canRecover: boolean; grounded: boolean;
   playerVelocity: Vec3 | null; playerCollider: { radius: number; halfHeight: number; centerHeight: number };
   playerYaw: number; physicsStep: number;
-  vehicles: { id: VehicleId; position: Vec3; velocity: Vec3; mass: number; wheelContacts: boolean[]; upsideDownSeconds: number; waterSeconds: number; steering: number; steerInput: number; throttleInput: number }[];
+  vehicles: { id: VehicleId; position: Vec3; velocity: Vec3; mass: number; com: Vec3; inertia: Vec3; inertiaFrame: number[]; wheelContacts: boolean[]; upsideDownSeconds: number; waterSeconds: number; steering: number; steerInput: number; throttleInput: number }[];
 };
 export type CameraDebug = { yaw: number; pitch: number; distance: number; desiredDistance: number; driveManualZoom: boolean; actualDistance: number; firstPerson: boolean; preset: number; collided: boolean; hitDistance: number|null;
   fov: number; mode: 'walk'|'drive'; recentering: boolean; position: Vec3; target: Vec3; forwardGround: [number,number]; groundBelowCamera: number|null; clearanceAboveGround: number|null; gamepad: boolean;
@@ -114,7 +114,7 @@ function readPad(previous: PadState): PadState {
 }
 
 /** L1 COM drop per car in metres (docs/world/vehicles/DESIGN.md 6; gated by the handling A/B). */
-const COM_DROP: Record<VehicleId, number> = { offroad: .5, coupe: 0, van: 0 };
+const COM_DROP: Record<VehicleId, number> = { offroad: .5, coupe: .2, van: 0 };
 function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Map<VehicleId,Car>>; impact: RefObject<number> }) {
   const body = useRef<RapierRigidBody>(null);
   const wheels = useRef<(Group | null)[]>([]);
@@ -134,8 +134,9 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
   // Centre of mass drop with L1 hulls (spec 10.3 mechanism: a low body contact far below a 1.1-1.2 m high COM
   // tips the car over a post). Mass, inertia tensor, engine, springs, grip and steering limits are unchanged.
   const hullComDrop = Number(qaParams?.get('qaComDrop') ?? COM_DROP[spec.id]);
-  const hullSoftCcd = Number(qaParams?.get('qaHullSoftCcd') ?? 0), hullIterations = Number(qaParams?.get('qaHullIter') ?? 0);
-  const hullFriction = Number(qaParams?.get('qaHullFriction') ?? .1), hullRestitution = Number(qaParams?.get('qaHullRestitution') ?? .1);
+  // Low friction / restitution (Min combine) on the body hulls: a grazed post or trunk slides along the flank
+  // instead of gripping it and climbing the car up (measured: 0.65 friction lifted the 4x4 33 cm at 10 m/s).
+  const hullFriction = .1, hullRestitution = .1;
   const hullShapes = useMemo(() => hullEntry?.hulls.map(h => ({ part: h.part, points: new Float32Array(h.points) })) ?? null, [hullEntry]);
   useFilterContactPair((a,b)=>{
     const own=guards.current.some(c=>c?.handle===a)?a:guards.current.some(c=>c?.handle===b)?b:null;
@@ -173,7 +174,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
   const massProps=(mass:number,x:number,y:number,z:number)=>comDrop>0?{massProperties:{mass,centerOfMass:{x:0,y:-comDrop,z:0},principalAngularInertia:{x:mass*(y*y+z*z)/12,y:mass*(x*x+z*z)/12,z:mass*(x*x+y*y)/12},angularInertiaLocalFrame:{x:0,y:0,z:0,w:1}}}:{mass};
   return <RigidBody ref={body} position={[spec.position[0],spec.position[1]+geometry.height,spec.position[2]]}
     rotation={[0,spec.yaw,0]} colliders={false} linearDamping={0.12} angularDamping={0.65}
-    canSleep={false} ccd softCcdPrediction={wheelGuards?.25:hullShapes?hullSoftCcd:0} additionalSolverIterations={wheelGuards?4:hullShapes?hullIterations:0} userData={bodyData} onCollisionEnter={({ other }) => {
+    canSleep={false} ccd softCcdPrediction={wheelGuards?.25:0} additionalSolverIterations={wheelGuards?4:0} userData={bodyData} onCollisionEnter={({ other }) => {
       if (useWorldStore.getState().activeVehicle === spec.id && other.rigidBodyObject?.userData.solid && body.current) {
         const v = body.current.linvel(); impact.current = Math.min(.35, Math.hypot(v.x, v.z) * .025);
       }
@@ -474,7 +475,7 @@ export default function WorldActors() {
         playerVelocity:player.current?asTuple(player.current.linvel()):null,playerCollider:playerColliderDimensions,
         playerYaw:guideYaw.current,physicsStep:physicsSteps.current,
         vehicles:[...cars.current.values()].map(car=>({id:car.spec.id,position:asTuple(car.body.translation()),velocity:asTuple(car.body.linvel()),
-          mass:car.body.mass(),wheelContacts:[0,1,2,3].map(i=>car.controller.wheelIsInContact(i)),upsideDownSeconds:car.flipped,waterSeconds:car.wet,
+          mass:car.body.mass(),com:asTuple(car.body.localCom()),inertia:asTuple(car.body.principalInertia()),inertiaFrame:(()=>{const q=car.body.principalInertiaLocalFrame();return [q.x,q.y,q.z,q.w];})(),wheelContacts:[0,1,2,3].map(i=>car.controller.wheelIsInContact(i)),upsideDownSeconds:car.flipped,waterSeconds:car.wet,
           steering:car.controller.wheelSteering(0)??0,steerInput:car.steerInput,throttleInput:car.throttleInput}))}),
       contacts:()=>{
         const active=useWorldStore.getState().activeVehicle;

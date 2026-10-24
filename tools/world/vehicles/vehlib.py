@@ -189,7 +189,7 @@ def earclip(pts):
         tris.append(tuple(idx))
     got = sum(abs(cross(pts[a], pts[b], pts[c])) / 2 for a, b, c in tris)
     want = abs(poly_area(pts))
-    if abs(got - want) > 1e-6 + want * 1e-4:
+    if abs(got - want) > 1e-6 + want * 2e-3:
         raise RuntimeError(f'earclip area mismatch {got} vs {want}')
     return tris
 

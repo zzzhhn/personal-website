@@ -18,6 +18,10 @@ try{for(const candidate of [false,true]){
   for(let i=0;i<specs.length;i++)await page.evaluate(({id,i})=>__worldDebug.teleportVehicle(id,[75+i*8,7,155],0),{id:specs[i].id,i});
   await page.evaluate(({id,h})=>__worldDebug.teleportVehicle(id,[100,5+h,120],0),spec);await bot.fixtureTeleport([100,6,117.5],'handling A/B start');await page.waitForTimeout(700);await bot.press('KeyE');await page.waitForTimeout(150);
   const c={name:spec.id,candidate,entered:(await read(spec.id)).active===spec.id,samples:[]};
+  // Launch from rest after one short steer tap (60 ms A+W): a perfectly symmetric standing start lets
+  // Rapier's raycast controller sit in one of two solver states that differ ~25% in launch force depending
+  // on unrelated collider counts (docs/world/vehicles/DESIGN.md 7); the tap makes the launch repeatable.
+  await bot.hold(['KeyW','KeyA']);await page.waitForTimeout(60);
   c.approach=await cruise(spec.id,10,2800);
   {const r0=c.approach[0],hit=c.approach.find(r=>Math.hypot(r.velocity[0],r.velocity[2])>=8);c.accelTo8Steps=hit?hit.step-r0.step:null;}c.brakeStart=await read(spec.id);await bot.hold(['Space']);const started=Date.now();
   while(Date.now()-started<5000){const r=await read(spec.id);c.samples.push(r);if(Math.hypot(r.velocity[0],r.velocity[2])<.1)break;await page.waitForTimeout(20);}
