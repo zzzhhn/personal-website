@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type MouseEvent } from 'react';
+import { useEffect, useId, useRef, useState, type MouseEvent } from 'react';
 import { useWorldStore } from './store';
 import { worldText } from './world-i18n';
 import { ISLAND_OUTLINE, LAYOUT_V4, ROAD_POINTS, BOARDWALK_POINTS, BUILDINGS, BOOTHS, FOUNDATIONS, CAMP_CENTER } from './layout';
@@ -41,7 +41,7 @@ function useHeading(x: number, z: number) {
 
 /** Minimap (follows the player, north up, a GTA-style radar window) and the full map used by the Esc menu and
  * the loading cover. The full map sets / clears the waypoint on click when `interactive`. */
-export default function WorldMap({ mode = 'mini', interactive = false }: { mode?: 'mini' | 'full'; interactive?: boolean }) {
+export default function WorldMap({ mode = 'mini', interactive = false, showPlayer = true }: { mode?: 'mini' | 'full'; interactive?: boolean; showPlayer?: boolean }) {
   const geometry = useMapGeometry();
   const position = useWorldStore(s => s.position);
   const lang = useWorldStore(s => s.lang);
@@ -70,7 +70,7 @@ export default function WorldMap({ mode = 'mini', interactive = false }: { mode?
   }
   const k = full ? 1.1 : 1;
   const landmarkName: Record<string, string> = { windmill: t.ridge, lifeguard: t.shore };
-  const seaId = `world-sea-${mode}`;
+  const seaId = `world-sea-${useId().replace(/:/g, '')}`;
   return <svg ref={svg} className={`world-map world-map-${mode}${interactive ? ' world-map-interactive' : ''}`} viewBox={vb.join(' ')} role='img'
     aria-label={interactive ? `${t.map}. ${t.waypointSet}` : `${t.map} · ${t[zone]}`} onClick={click}>
     <defs>
@@ -106,10 +106,10 @@ export default function WorldMap({ mode = 'mini', interactive = false }: { mode?
     </g>}
     {/* Player: travel-direction arrow, white with a dark rim so it reads on grass, sand and road. */}
     {/* Invisible r=2.6 anchor kept for the normal-entry bots, which steer by `aside.world-location svg circle[r="2.6"]`. */}
-    <circle className='world-map-anchor' cx={px} cy={pz} r='2.6' fill='none' stroke='none' />
+    {showPlayer && <><circle className='world-map-anchor' cx={px} cy={pz} r='2.6' fill='none' stroke='none' />
     <g className='world-map-player' transform={`translate(${px} ${pz}) rotate(${heading * 180 / Math.PI + 90})`}>
       <circle r={4.6 * k} fill='#F4ECDB' opacity='.25' />
       <path d={`M0 ${-3.8 * k} L${2.7 * k} ${2.7 * k} L0 ${1.3 * k} L${-2.7 * k} ${2.7 * k} Z`} fill='#fff' stroke='#23343d' strokeWidth='.8' strokeLinejoin='round' />
-    </g>
+    </g></>}
   </svg>;
 }

@@ -32,6 +32,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
   const { camera, gl, scene } = useThree();
   const shot = useWorldStore(s => s.shot);
   const frames = useRef(0);
+  useEffect(() => { useWorldStore.setState(s => ({ loading: { ...s.loading, phase: 'scene' } })); }, []);
   useEffect(() => {
     if (!shot) return;
     const view = WORLD_SHOTS.find(v => v.id === shot);
@@ -39,7 +40,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
   }, [shot, camera]);
   useFrame(() => {
     frames.current++;
-    if (frames.current === 3) useWorldStore.setState({ ready: true });
+    if (frames.current === 3) useWorldStore.setState(s => ({ ready: true, loading: { ...s.loading, phase: 'ready' } }));
   });
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get('qa') !== '1') return;
