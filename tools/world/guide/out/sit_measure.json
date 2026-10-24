@@ -1,0 +1,38 @@
+{
+ "SitIdle": {
+  "buttock_z": 0.3159,
+  "buttock_x_range": [
+   -0.022,
+   0.12
+  ],
+  "sole_z": -0.0,
+  "foot_x": [
+   0.022,
+   0.338
+  ]
+ },
+ "SitDown": {
+  "buttock_z": 0.3146,
+  "buttock_x_range": [
+   -0.044,
+   0.136
+  ],
+  "sole_z": -0.0,
+  "foot_x": [
+   0.016,
+   0.342
+  ]
+ },
+ "StandUp": {
+  "buttock_z": 0.312,
+  "buttock_x_range": [
+   -0.046,
+   0.126
+  ],
+  "sole_z": -0.0,
+  "foot_x": [
+   0.017,
+   0.333
+  ]
+ }
+}
