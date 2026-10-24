@@ -21,6 +21,7 @@ import WorldTown from './WorldTown';
 import WorldPark from './WorldPark';
 import WorldStreet from './WorldStreet';
 import WorldCampContent from './WorldCampContent';
+import WorldEntry from './WorldEntry';
 
 // Layout v4 greybox (?layout=v4) loads as its own chunk; the default entry never fetches it.
 const WorldDistricts = LAYOUT_V4 ? lazy(() => import('./WorldDistricts')) : null;
@@ -142,6 +143,7 @@ export default memo(function WorldRuntime({ content }: { content: WorldContent }
       <Suspense fallback={null}><WorldPark projects={content.projects} /></Suspense>
       <Suspense fallback={null}><WorldStreet experiences={content.experiences} /></Suspense>
       <Suspense fallback={null}><WorldCampContent /></Suspense>
+      <Suspense fallback={null}><WorldEntry /></Suspense>
       <SceneLifecycle setOverlay={setOverlay} />
     </Physics></Suspense>
   </Canvas>;
