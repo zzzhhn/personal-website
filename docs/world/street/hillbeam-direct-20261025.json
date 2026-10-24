@@ -1,0 +1,1379 @@
+{
+  "sourceCommit": "3a6d7c2",
+  "scope": "one existing missing hill rail target, person and offroad; logged QA setup then real keys; no runtime edits",
+  "rawReport": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/hillbeam-direct-20261025/impact.json",
+  "rawSha256": "b257c9e8f00187b68952caac8d2821c228325dab2b011731d43f0081f9416f2e",
+  "sourceTool": "tools/world/street/impact.mjs unchanged",
+  "vehicleFixtureLoggingLimit": "vehicle teleport is defined by case from/home+H+.05/yaw and initial measured state; existing tool fixtureCalls logs player setup and reset departure only",
+  "cases": [
+    {
+      "name": "offroad-hillbeam-direct",
+      "actor": "offroad",
+      "target": "rail-beam-12",
+      "home": [
+        -11.818705327830848,
+        3.514,
+        -84.89031912295562
+      ],
+      "from": [
+        -17.111,
+        -84.631
+      ],
+      "initial": {
+        "t": 8596.300000071526,
+        "active": "offroad",
+        "actor": [
+          -16.831493377685547,
+          4.057309627532959,
+          -84.58180236816406
+        ],
+        "v": [
+          0.7493705749511719,
+          -0.1751810908317566,
+          0.05048907920718193
+        ],
+        "prop": {
+          "p": [
+            -11.818705558776855,
+            3.5139999389648438,
+            -84.89031982421875
+          ],
+          "sleeping": true,
+          "knocked": false,
+          "phase": "home",
+          "q": [
+            0.021971097216010094,
+            -0.5717431306838989,
+            -0.031493254005908966,
+            0.8195335865020752
+          ]
+        },
+        "contacts": [
+          {
+            "kind": "surface",
+            "name": "island-terrain-surface-top"
+          },
+          {
+            "kind": "surface",
+            "name": "island-terrain-surface-top"
+          }
+        ]
+      },
+      "firstContact": {
+        "t": 9539.700000047684,
+        "actorSpeed": 5.033868010029316
+      },
+      "approachSpeed": 5.37520224134973,
+      "maxActorRise": 0,
+      "maxPropRise": 0.23173826789855978,
+      "maxPropSpeed": 6.72,
+      "closestActorToHome": 0.053,
+      "propDisplaced": 5.254353270775225,
+      "propKnocked": true,
+      "fixtures": [
+        {
+          "t": 1.209,
+          "to": [
+            -17.218669445177497,
+            4.7139999999999995,
+            -86.82836371376592
+          ],
+          "reason": "offroad-hillbeam-direct driver start next to car"
+        },
+        {
+          "t": 7.473,
+          "to": [
+            -34,
+            5.8,
+            32
+          ],
+          "reason": "leave reset home unoccupied"
+        }
+      ],
+      "errors": [],
+      "exactTargetContactSamples": [
+        {
+          "t": 9605.600000023842,
+          "actor": [
+            -13.63145637512207,
+            3.8920979499816895,
+            -84.69804382324219
+          ],
+          "v": [
+            4.939555644989014,
+            -0.20266428589820862,
+            -0.2448343187570572
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            }
+          ]
+        },
+        {
+          "t": 9705.100000023842,
+          "actor": [
+            -13.139906883239746,
+            3.8795053958892822,
+            -84.72348022460938
+          ],
+          "v": [
+            4.855733394622803,
+            -0.1972915232181549,
+            -0.27825748920440674
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            }
+          ]
+        },
+        {
+          "t": 9805.100000023842,
+          "actor": [
+            -12.653706550598145,
+            3.857715606689453,
+            -84.76382446289062
+          ],
+          "v": [
+            4.774430751800537,
+            -0.3451592028141022,
+            -0.4040199816226959
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            }
+          ]
+        },
+        {
+          "t": 9905.700000047684,
+          "actor": [
+            -12.167436599731445,
+            3.81770396232605,
+            -84.81742095947266
+          ],
+          "v": [
+            4.775500297546387,
+            -0.5902087092399597,
+            -0.38167715072631836
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            }
+          ]
+        },
+        {
+          "t": 10605.400000095367,
+          "actor": [
+            -9.209114074707031,
+            2.8060545921325684,
+            -85.06871032714844
+          ],
+          "v": [
+            3.2315940856933594,
+            -1.8957297801971436,
+            -0.17279554903507233
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            }
+          ]
+        },
+        {
+          "t": 10705.800000071526,
+          "actor": [
+            -8.985969543457031,
+            2.6949715614318848,
+            -85.0582046508789
+          ],
+          "v": [
+            2.6914219856262207,
+            -0.5985031723976135,
+            0.20336633920669556
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 10805,
+          "actor": [
+            -8.753901481628418,
+            2.6496312618255615,
+            -85.06905364990234
+          ],
+          "v": [
+            2.283430576324463,
+            -0.7701987624168396,
+            -0.21124976873397827
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            }
+          ]
+        },
+        {
+          "t": 12104.700000047684,
+          "actor": [
+            -8.207595825195312,
+            2.4528608322143555,
+            -85.1555404663086
+          ],
+          "v": [
+            0.041047628968954086,
+            -0.07351309806108475,
+            -0.005053110886365175
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            }
+          ]
+        },
+        {
+          "t": 12204.900000095367,
+          "actor": [
+            -8.203813552856445,
+            2.4519004821777344,
+            -85.15582275390625
+          ],
+          "v": [
+            0.04387740418314934,
+            -0.07382068783044815,
+            -0.005674592684954405
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            }
+          ]
+        }
+      ],
+      "reset": {
+        "elapsed": 27.17,
+        "state": {
+          "p": [
+            -11.818705558776855,
+            3.5139999389648438,
+            -84.89031982421875
+          ],
+          "sleeping": true,
+          "knocked": false,
+          "phase": "home",
+          "q": [
+            0.021971097216010094,
+            -0.5717431306838989,
+            -0.031493254005908966,
+            0.8195335865020752
+          ]
+        },
+        "passed": true
+      }
+    },
+    {
+      "name": "person-hillbeam-direct",
+      "actor": "person",
+      "target": "rail-beam-12",
+      "home": [
+        -11.818705327830848,
+        3.514,
+        -84.89031912295562
+      ],
+      "from": [
+        -16.014,
+        -84.685
+      ],
+      "initial": {
+        "t": 7836.700000047684,
+        "active": null,
+        "actor": [
+          -15.987590789794922,
+          3.73687744140625,
+          -84.62896728515625
+        ],
+        "v": [
+          0.04611065983772278,
+          -0.009917588904500008,
+          0.09814585000276566
+        ],
+        "prop": {
+          "p": [
+            -11.818705558776855,
+            3.5139999389648438,
+            -84.89031982421875
+          ],
+          "sleeping": true,
+          "knocked": false,
+          "phase": "home",
+          "q": [
+            0.021971097216010094,
+            -0.5717431306838989,
+            -0.031493254005908966,
+            0.8195335865020752
+          ]
+        },
+        "contacts": [
+          {
+            "kind": "surface",
+            "name": "island-terrain-surface-top"
+          }
+        ]
+      },
+      "firstContact": {
+        "t": 8592.700000047684,
+        "actorSpeed": 0.44835427569156855
+      },
+      "approachSpeed": 5.937262870489979,
+      "maxActorRise": 0.03662848472595215,
+      "maxPropRise": 0,
+      "maxPropSpeed": 0,
+      "closestActorToHome": 0.422,
+      "propDisplaced": 7.383129687363185e-07,
+      "propKnocked": false,
+      "fixtures": [
+        {
+          "t": 1.209,
+          "to": [
+            -16.014,
+            4.7139999999999995,
+            -84.685
+          ],
+          "reason": "person-hillbeam-direct start"
+        }
+      ],
+      "errors": [],
+      "exactTargetContactSamples": [
+        {
+          "t": 8660.100000023842,
+          "actor": [
+            -12.267618179321289,
+            3.769224166870117,
+            -84.88680267333984
+          ],
+          "v": [
+            0.4974808394908905,
+            0.1557624787092209,
+            1.3523081541061401
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            }
+          ]
+        },
+        {
+          "t": 8761.5,
+          "actor": [
+            -12.196935653686523,
+            3.7199697494506836,
+            -84.69517517089844
+          ],
+          "v": [
+            0.6978005170822144,
+            -1.0828619003295898,
+            1.896842360496521
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            }
+          ]
+        },
+        {
+          "t": 8861.300000071526,
+          "actor": [
+            -12.1752290725708,
+            3.611027717590332,
+            -84.63644409179688
+          ],
+          "v": [
+            -0.09409676492214203,
+            0.016530653461813927,
+            -0.2557845115661621
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 8961.200000047684,
+          "actor": [
+            -12.208105087280273,
+            3.6164443492889404,
+            -84.72583770751953
+          ],
+          "v": [
+            -0.4355270266532898,
+            0.07610050588846207,
+            -1.1838985681533813
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 9061.899999976158,
+          "actor": [
+            -12.254732131958008,
+            3.6255977153778076,
+            -84.85266876220703
+          ],
+          "v": [
+            -0.37232667207717896,
+            0.0719015970826149,
+            -1.0121017694473267
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 9160.800000071526,
+          "actor": [
+            -12.237735748291016,
+            3.622101306915283,
+            -84.80615997314453
+          ],
+          "v": [
+            0.5287138819694519,
+            -0.10163897275924683,
+            1.4372100830078125
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 9261.5,
+          "actor": [
+            -12.17767333984375,
+            3.6115148067474365,
+            -84.64309692382812
+          ],
+          "v": [
+            0.41136229038238525,
+            -0.07165661454200745,
+            1.1182115077972412
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 9361,
+          "actor": [
+            -12.1832275390625,
+            3.612163782119751,
+            -84.65821075439453
+          ],
+          "v": [
+            -0.2808063328266144,
+            0.049106523394584656,
+            -0.763319730758667
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 9460.200000047684,
+          "actor": [
+            -12.225699424743652,
+            3.6204962730407715,
+            -84.77367401123047
+          ],
+          "v": [
+            -0.48424291610717773,
+            0.09314171969890594,
+            -1.3163251876831055
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 9560.5,
+          "actor": [
+            -12.262309074401855,
+            3.626978874206543,
+            -84.87325286865234
+          ],
+          "v": [
+            -0.07520563900470734,
+            0.01467959489673376,
+            -0.2044326215982437
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 9661.200000047684,
+          "actor": [
+            -12.218441009521484,
+            3.6200063228607178,
+            -84.75363159179688
+          ],
+          "v": [
+            0.6789475083351135,
+            0.000965448678471148,
+            1.8600937128067017
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 9760.5,
+          "actor": [
+            -12.174694061279297,
+            3.610915422439575,
+            -84.63501739501953
+          ],
+          "v": [
+            0.09105132520198822,
+            -0.015771443024277687,
+            0.24750593304634094
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 9861.5,
+          "actor": [
+            -12.197874069213867,
+            3.614647150039673,
+            -84.69803619384766
+          ],
+          "v": [
+            -0.3806006610393524,
+            0.06651779264211655,
+            -1.0345919132232666
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 9960.700000047684,
+          "actor": [
+            -12.245305061340332,
+            3.623832941055298,
+            -84.82696533203125
+          ],
+          "v": [
+            -0.5147168636322021,
+            0.0993204265832901,
+            -1.3991619348526
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 10060.899999976158,
+          "actor": [
+            -12.258344650268555,
+            3.6261210441589355,
+            -84.8623046875
+          ],
+          "v": [
+            0.28061237931251526,
+            -0.05385284870862961,
+            0.7627923488616943
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 10161.300000071526,
+          "actor": [
+            -12.198545455932617,
+            3.615281105041504,
+            -84.69967651367188
+          ],
+          "v": [
+            0.6443006992340088,
+            -0.11230164021253586,
+            1.7514125108718872
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 10261,
+          "actor": [
+            -12.179771423339844,
+            3.6116983890533447,
+            -84.6488265991211
+          ],
+          "v": [
+            -0.13183683156967163,
+            0.02311605215072632,
+            -0.3583739399909973
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 10361,
+          "actor": [
+            -12.214579582214355,
+            3.61800479888916,
+            -84.74346160888672
+          ],
+          "v": [
+            -0.4363176226615906,
+            0.20278404653072357,
+            -1.1860473155975342
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 10461,
+          "actor": [
+            -12.24874496459961,
+            3.624422788619995,
+            -84.83639526367188
+          ],
+          "v": [
+            -0.061319515109062195,
+            0.012005927972495556,
+            -0.16668565571308136
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 10559.800000071526,
+          "actor": [
+            -12.207613945007324,
+            3.6168622970581055,
+            -84.72437286376953
+          ],
+          "v": [
+            0.5392963290214539,
+            -0.0939800888299942,
+            1.4659767150878906
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 10660.800000071526,
+          "actor": [
+            -12.194348335266113,
+            3.6142470836639404,
+            -84.6884536743164
+          ],
+          "v": [
+            -0.16298778355121613,
+            0.028550870716571808,
+            -0.44305214285850525
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 10761.200000047684,
+          "actor": [
+            -12.230619430541992,
+            3.6210711002349854,
+            -84.78704833984375
+          ],
+          "v": [
+            -0.4504469633102417,
+            0.08694317936897278,
+            -1.224456548690796
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 10860.399999976158,
+          "actor": [
+            -12.2402925491333,
+            3.622718334197998,
+            -84.813232421875
+          ],
+          "v": [
+            0.2996983826160431,
+            -0.057528797537088394,
+            0.8146746158599854
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 10960.300000071526,
+          "actor": [
+            -12.192032814025879,
+            3.6140549182891846,
+            -84.68215942382812
+          ],
+          "v": [
+            0.3441101908683777,
+            -0.05992254987359047,
+            0.9354009628295898
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 11060,
+          "actor": [
+            -12.201115608215332,
+            3.6153225898742676,
+            -84.70684814453125
+          ],
+          "v": [
+            -0.30075719952583313,
+            0.05258754640817642,
+            -0.8175527453422546
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 11161.300000071526,
+          "actor": [
+            -12.23987865447998,
+            3.6226603984832764,
+            -84.81023406982422
+          ],
+          "v": [
+            -0.2912726104259491,
+            0.05620763078331947,
+            -0.7917705178260803
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 11261.300000071526,
+          "actor": [
+            -12.254810333251953,
+            3.6251204013824463,
+            -84.84860229492188
+          ],
+          "v": [
+            -0.06828827410936356,
+            0.013173545710742474,
+            -0.18562909960746765
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 11360,
+          "actor": [
+            -12.257475852966309,
+            3.625319242477417,
+            -84.85541534423828
+          ],
+          "v": [
+            -0.002067647874355316,
+            0.0004026251845061779,
+            -0.005620512180030346
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 11460.200000047684,
+          "actor": [
+            -12.25655746459961,
+            3.624845266342163,
+            -84.85282897949219
+          ],
+          "v": [
+            0.017598114907741547,
+            -0.003388409037142992,
+            0.04783717542886734
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 11560.899999976158,
+          "actor": [
+            -12.254582405090332,
+            3.624281167984009,
+            -84.84744262695312
+          ],
+          "v": [
+            0.02343829534947872,
+            -0.004513770807534456,
+            0.06371264904737473
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 11660.800000071526,
+          "actor": [
+            -12.252291679382324,
+            3.6238040924072266,
+            -84.84121704101562
+          ],
+          "v": [
+            0.02517266944050789,
+            -0.004847818054258823,
+            0.06842721253633499
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 11760.200000047684,
+          "actor": [
+            -12.249911308288574,
+            3.6233389377593994,
+            -84.83474731445312
+          ],
+          "v": [
+            0.02568773180246353,
+            -0.004946989472955465,
+            0.06982730329036713
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 11859.5,
+          "actor": [
+            -12.247502326965332,
+            3.6228747367858887,
+            -84.82820129394531
+          ],
+          "v": [
+            0.02584068849682808,
+            -0.004976350348442793,
+            0.07024311274290085
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 11959.800000071526,
+          "actor": [
+            -12.245084762573242,
+            3.6224076747894287,
+            -84.82160949707031
+          ],
+          "v": [
+            0.025886086747050285,
+            -0.0049855709075927734,
+            0.07036659121513367
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 12060.5,
+          "actor": [
+            -12.242664337158203,
+            3.621940851211548,
+            -84.81501770019531
+          ],
+          "v": [
+            0.02589959092438221,
+            -0.004988169763237238,
+            0.07040322571992874
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 12159.899999976158,
+          "actor": [
+            -12.240239143371582,
+            3.621473550796509,
+            -84.80842590332031
+          ],
+          "v": [
+            0.025903593748807907,
+            -0.00498894602060318,
+            0.07041414827108383
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 12259.800000071526,
+          "actor": [
+            -12.237812995910645,
+            3.6210062503814697,
+            -84.80183410644531
+          ],
+          "v": [
+            0.025904767215251923,
+            -0.004989168606698513,
+            0.0704173818230629
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 12361.100000023842,
+          "actor": [
+            -12.235386848449707,
+            3.6205391883850098,
+            -84.79524230957031
+          ],
+          "v": [
+            0.025905145332217216,
+            -0.004989237990230322,
+            0.0704183503985405
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 12460.5,
+          "actor": [
+            -12.23296070098877,
+            3.620072364807129,
+            -84.78865051269531
+          ],
+          "v": [
+            0.02590525895357132,
+            -0.004989262670278549,
+            0.07041864842176437
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 12559.800000071526,
+          "actor": [
+            -12.23151683807373,
+            3.619818925857544,
+            -84.78328704833984
+          ],
+          "v": [
+            -0.0029472443275153637,
+            -0.00020963831047993153,
+            0.0358235165476799
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        },
+        {
+          "t": 12660,
+          "actor": [
+            -12.232155799865723,
+            3.6195788383483887,
+            -84.78048706054688
+          ],
+          "v": [
+            -0.0036103667225688696,
+            -0.00021372007904574275,
+            0.032051242887973785
+          ],
+          "contacts": [
+            {
+              "kind": "obstacle",
+              "name": "street-knock-rail-beam-12"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            },
+            {
+              "kind": "surface",
+              "name": "island-terrain-surface-top"
+            }
+          ]
+        }
+      ],
+      "reset": null
+    }
+  ],
+  "errors": [],
+  "notClaimed": [
+    "all rail instances/all vehicles/all speeds",
+    "zero overlap at every subframe",
+    "ordinary-entry proof",
+    "new animation or slope approval"
+  ]
+}

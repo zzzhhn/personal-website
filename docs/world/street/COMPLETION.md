@@ -2,6 +2,8 @@
 
 分支 `codex/world-street-integration`；端口 4344。继承 G1/G2/G3 与 dirty rails 的检查点 `c0c75bf` 已保存，随后合入 codex/world-integ；新增资产里程碑 `290cdc7`。未推送、未合到主制作分支、未部署。
 
+本文件保留初交历史。后续G11/G15见 [G11-G15.md](G11-G15.md)，全岛当前结果见 `docs/world/integration/FINAL.md`；山路目标接触缺口由 [2026-10-25定向补测](hillbeam-direct-20261025.md)关闭，原始未到目标记录不改记成功。
+
 ## 本批完成
 
 - 保留原街灯／信号杆／标识／垃圾桶、路障、长凳、护柱、候车亭、海堤／环路／山路／桥栏制作与批处理。退役 inherited 自制 debris solver，删去运行时与离线实验文件；倒地件继续由 Rapier dynamic+CCD 碰撞处理，不关碰撞、不切 kinematic。保留质量／重心／转动惯量与原人车语义，摩擦 .45、恢复 .02。
