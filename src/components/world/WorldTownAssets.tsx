@@ -35,7 +35,10 @@ function withDraco(loader: GLTFLoader) {
   loader.setDRACOLoader(draco);
 }
 
-type Region = 'town' | 'west' | 'beach';
+type Region = 'town-south' | 'town-north' | 'west' | 'beach';
+const REGIONS: Region[] = ['town-south', 'town-north', 'west', 'beach'];
+// Spatial batches let distant northern blocks simplify while the southern frontage stays detailed.
+const townRegion = (z: number): Region => z < -12 ? 'town-north' : 'town-south';
 interface Placement { asset: AssetId; part?: string; matrix: Matrix4; region: Region; body: string; slot?: number; lodColor: string }
 const Y_AXIS = new Vector3(0, 1, 0);
 const place = (x: number, y: number, z: number, yaw = 0, pre?: Matrix4) => {
@@ -50,23 +53,23 @@ function placements(): Placement[] {
   const out: Placement[] = [];
   BUILDINGS.forEach(({ id, position: [x, y, z], size: [w] }, slot) => {
     const asset = BUILDING_ASSET[id];
-    out.push({ asset, matrix: place(x, y, z), region: 'town', body: `building-${id}`, slot, lodColor: LOD_COLOR[asset] });
-    out.push({ asset: 'T09', matrix: place(x + w / 2 + 3, y + .13, z + 2.7), region: 'town', body: `board-${id}`, slot, lodColor: LOD_COLOR.T09 });
+    out.push({ asset, matrix: place(x, y, z), region: townRegion(z), body: `building-${id}`, slot, lodColor: LOD_COLOR[asset] });
+    out.push({ asset: 'T09', matrix: place(x + w / 2 + 3, y + .13, z + 2.7), region: townRegion(z), body: `board-${id}`, slot, lodColor: LOD_COLOR.T09 });
   });
   // Two palms on the MoE forecourt corners (clear of the bollards at x 14.8 and the plaque at z + 2.7).
   const moe = BUILDINGS.find(b => b.id === 'moe');
   if (moe) {
     const [x, , z] = moe.position, fx = x + moe.size[0] / 2;
-    out.push({ asset: 'T12', part: 'a', matrix: place(fx + 1.9, 1.15, z + 4.0, .3), region: 'town', body: 'palm-a', lodColor: LOD_COLOR.T12 });
+    out.push({ asset: 'T12', part: 'a', matrix: place(fx + 1.9, 1.15, z + 4.0, .3), region: townRegion(z), body: 'palm-a', lodColor: LOD_COLOR.T12 });
     // variant b is authored 4 m along glTF +Z; it leans toward the building, so turn it to lean over the avenue.
-    out.push({ asset: 'T12', part: 'b', matrix: place(fx + 2.1, 1.15, z - 4.0, Math.PI, new Matrix4().makeTranslation(0, 0, -4)), region: 'town', body: 'palm-b', lodColor: LOD_COLOR.T12 });
+    out.push({ asset: 'T12', part: 'b', matrix: place(fx + 2.1, 1.15, z - 4.0, Math.PI, new Matrix4().makeTranslation(0, 0, -4)), region: townRegion(z), body: 'palm-b', lodColor: LOD_COLOR.T12 });
   }
   if (LAYOUT_V4) {
     const solids = solidsV4();
     solids.filter(s => s.kind === 'massing').forEach((s, i) => {
       // T07 child i is authored for the i-th massing box (same order, same size; checked against extras below).
       out.push({ asset: 'T07', part: String(i), matrix: place(s.position[0], s.position[1] - s.size[1] / 2, s.position[2], s.position[0] < -40 ? Math.PI : 0),
-        region: s.position[0] < -40 ? 'west' : 'town', body: `lowrise-${i}`, lodColor: LOD_COLOR.T07 });
+        region: s.position[0] < -40 ? 'west' : townRegion(s.position[2]), body: `lowrise-${i}`, lodColor: LOD_COLOR.T07 });
     });
     // Beach kiosks and the lifeguard tower face the sea (+Z): glTF +X front turned by -90 deg.
     solids.filter(s => s.kind === 'kiosk').forEach((s, i) => out.push({ asset: 'T10', part: i === 0 ? 'a' : 'b',
@@ -116,8 +119,8 @@ function glowMaterial(m: MeshStandardMaterial, uniform: { value: number }, key: 
 function build(gltfs: GLTF[]): Built {
   const byId = new Map(IDS.map((id, i) => [id, gltfs[i]] as const));
   const list = placements();
-  const geoms: Record<Region, Map<string, BufferGeometry[]>> = { town: new Map(), west: new Map(), beach: new Map() };
-  const lodBoxes: Record<Region, BufferGeometry[]> = { town: [], west: [], beach: [] };
+  const geoms = Object.fromEntries(REGIONS.map(r => [r, new Map<string, BufferGeometry[]>()])) as Record<Region, Map<string, BufferGeometry[]>>;
+  const lodBoxes = Object.fromEntries(REGIONS.map(r => [r, []])) as Record<Region, BufferGeometry[]>;
   const palmGeoms = new Map<string, BufferGeometry[]>();
   const stripGeoms: BufferGeometry[] = [];
   const shadowGeoms: BufferGeometry[] = [];
@@ -125,7 +128,7 @@ function build(gltfs: GLTF[]): Built {
   const bodies: Built['bodies'] = [];
   const anchors: Built['anchors'] = [];
   const v = new Vector3(), m4 = new Matrix4(), nm = new Matrix4();
-  const bounds: Record<Region, { min: Vector3; max: Vector3 }> = { town: { min: new Vector3(1e9, 1e9, 1e9), max: new Vector3(-1e9, -1e9, -1e9) }, west: { min: new Vector3(1e9, 1e9, 1e9), max: new Vector3(-1e9, -1e9, -1e9) }, beach: { min: new Vector3(1e9, 1e9, 1e9), max: new Vector3(-1e9, -1e9, -1e9) } };
+  const bounds = Object.fromEntries(REGIONS.map(r => [r, { min: new Vector3(1e9, 1e9, 1e9), max: new Vector3(-1e9, -1e9, -1e9) }])) as Record<Region, { min: Vector3; max: Vector3 }>;
   const t07spec = (byId.get('T07')!.scene.getObjectByName('T07')?.userData.spec ?? []) as number[][];
   for (const p of list) {
     const gltf = byId.get(p.asset)!;
@@ -171,6 +174,7 @@ function build(gltfs: GLTF[]): Built {
           const c = new Color(p.lodColor), col = new Float32Array(lg.getAttribute('position').count * 3);
           for (let i = 0; i < col.length; i += 3) col.set([c.r, c.g, c.b], i);
           lg.setAttribute('color', new BufferAttribute(col, 3));
+          lg.setAttribute('lodEmission', new BufferAttribute(new Float32Array(col.length), 3));
           lodBoxes[p.region].push(lg);
         }
         return;
@@ -185,6 +189,20 @@ function build(gltfs: GLTF[]): Built {
       g.applyMatrix4(m4);
       g.computeBoundingBox();
       if (p.asset === 'T12') { const l = palmGeoms.get(name) ?? []; l.push(g); palmGeoms.set(name, l); return; }
+      // A distant house still needs windows and a roof to read as a house. The collision hull alone
+      // erased those cues and looked like an unfinished box at 60 m. Keep the inexpensive window
+      // panes / roof cap in the same single LOD draw, with their original colours and night emission.
+      if (name === 'town_glass_dark' || name === 'town_glass_lit' || name === 'town_screen' || name === 'town_roof') {
+        const lg = g.clone(), n = lg.getAttribute('position').count;
+        const col = new Float32Array(n * 3), emit = new Float32Array(n * 3);
+        for (let i = 0; i < n; i++) {
+          col.set([mat.color.r, mat.color.g, mat.color.b], i * 3);
+          if (name === 'town_glass_lit') emit.set([mat.emissive.r, mat.emissive.g, mat.emissive.b], i * 3);
+        }
+        lg.setAttribute('color', new BufferAttribute(col, 3));
+        lg.setAttribute('lodEmission', new BufferAttribute(emit, 3));
+        lodBoxes[p.region].push(lg);
+      }
       if (part.name === 'T08_strip') {
         g.setAttribute('slot', new BufferAttribute(new Float32Array(g.getAttribute('position').count).fill(p.slot ?? 0), 1));
         stripGeoms.push(g); return;
@@ -204,7 +222,7 @@ function build(gltfs: GLTF[]): Built {
   const tris = (g: BufferGeometry) => (g.index ? g.index.count : g.getAttribute('position').count) / 3;
   const merged = (list: BufferGeometry[]) => { const g = mergeGeometries(list, false)!; list.forEach(x => x.dispose()); g.computeBoundingSphere(); return g; };
   const regions = {} as Built['regions'];
-  for (const r of ['town', 'west', 'beach'] as Region[]) {
+  for (const r of REGIONS) {
     const meshes: Mesh[] = [];
     for (const [name, list] of geoms[r]) {
       const mesh = new Mesh(merged(list), materials.get(name)!);
@@ -215,7 +233,14 @@ function build(gltfs: GLTF[]): Built {
     }
     let lod: Mesh | null = null;
     if (lodBoxes[r].length) {
-      lod = new Mesh(merged(lodBoxes[r]), new MeshStandardMaterial({ vertexColors: true, roughness: .92 }));
+      const material = new MeshStandardMaterial({ vertexColors: true, roughness: .92 });
+      material.onBeforeCompile = shader => {
+        shader.uniforms.uTownLodGlow = glow.glass;
+        shader.vertexShader = 'attribute vec3 lodEmission;\nvarying vec3 vLodEmission;\n' + shader.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n vLodEmission = lodEmission;');
+        shader.fragmentShader = 'uniform float uTownLodGlow;\nvarying vec3 vLodEmission;\n' + shader.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n totalEmissiveRadiance += vLodEmission * uTownLodGlow;');
+      };
+      material.customProgramCacheKey = () => 'town-lod-windows-v1';
+      lod = new Mesh(merged(lodBoxes[r]), material);
       lod.name = `town-${r}-lod1`; lod.visible = false; lod.receiveShadow = true;
       lodTris += tris(lod.geometry);
     }

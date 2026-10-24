@@ -1,6 +1,6 @@
 export const worldText = {
   en: {
-    title: 'Bobby’s island', stage: 'Camp art slice · greybox playtest', loading: 'Preparing the island', loadingHint: 'Terrain, light, then a place to begin.',
+    title: 'Bobby’s island', stage: 'Experiences · Projects · Explore', loading: 'Preparing the island', loadingHint: 'Terrain, light, then a place to begin.',
     controls: 'WASD move (relative to camera) · Shift sprint · Space jump · E enter a vehicle', driving: 'W/S throttle · A/D steer · Space brake · E leave vehicle',
     credits: 'Credits', motionCredit: 'Character motion adapted from the CMU Graphics Lab Motion Capture Database.',
     styleCredit: 'Idle motion retargeted and edited from The 100STYLE Dataset - Ian Mason (CC BY 4.0).',
@@ -26,7 +26,7 @@ export const worldText = {
     thanksTitle: 'Also used', groundCredit: 'Ground detail textures: ambientCG (CC0).',
   },
   zh: {
-    title: 'Bobby 的城岛', stage: '营地样片 · 灰盒试玩', loading: '正在准备城岛', loadingHint: '铺好地面，点亮灯光，准备出发。',
+    title: 'Bobby 的城岛', stage: '经历 · 项目 · 漫游', loading: '正在准备城岛', loadingHint: '铺好地面，点亮灯光，准备出发。',
     controls: 'WASD 移动（相对镜头） · Shift 冲刺 · 空格跳 · E 上车', driving: 'W/S 油门 · A/D 转向 · 空格刹车 · E 下车',
     credits: '致谢', motionCredit: '角色动作改编自 CMU Graphics Lab Motion Capture Database。',
     styleCredit: '待机动作重定向并编辑自 The 100STYLE Dataset - Ian Mason（CC BY 4.0）。',

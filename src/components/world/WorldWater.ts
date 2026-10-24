@@ -13,7 +13,7 @@ import { WATER_Y } from './layout';
  *
  * Geometry (render session, 2026-10-24): CDLOD (Strugar 2009, technique only). One instanced 8 x 8-cell
  * quadrant patch; a per-frame quadtree around the CAMERA picks quadrants whose cell size doubles with each
- * distance ring (0.5 m within SEA_LOD.r0, 1 m to 2 r0, ...), skips quadrants entirely on land or outside the
+ * distance ring (0.35 m within SEA_LOD.r0, 1 m to 2 r0, ...), skips quadrants entirely on land or outside the
  * view, and geomorphs odd vertices onto the coarser grid near each ring edge, so neighbouring rings share
  * vertices exactly (no cracks, no popping). Projected facet size stays roughly constant on screen. Waves fade
  * per wavelength by the local (distance-continuous) cell size, so no wave is undersampled; their shading is
@@ -28,10 +28,10 @@ export const SEA_WAVES = [
 export const SEA_STEEPNESS = .6;
 export const SEA_SPEED_SCALE = 1;
 const WIND_ANGLE = Math.atan2(.6, .8);
-/** CDLOD: base cell 0.5 m, quadrant = 8 x 8 cells, ring k ends at r0 * 2^k (3D distance from the camera to the
+/** CDLOD: base cell 0.35 m, quadrant = 8 x 8 cells, ring k ends at r0 * 2^k (3D distance from the camera to the
  * undisplaced surface), 7 levels (64 m cells beyond ~1.4 km), nothing drawn past maxDistance (camera far 600 m;
  * fog is opaque from 360 m). */
-export const SEA_LOD = { cell: .5, quad: 8, r0: 22, levels: 7, maxDistance: 620 } as const;
+export const SEA_LOD = { cell: .35, quad: 8, r0: 22, levels: 7, maxDistance: 620 } as const;
 export const SEA_CELL = SEA_LOD.cell;
 /** Surf: shore-normal swell (wavelength 6 m, period ~5.5 s in step with the swash) rolling in over the last 14 m. */
 export const SEA_SURF = { lengthM: 6, amplitude: .07 } as const;
