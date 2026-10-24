@@ -550,5 +550,59 @@
       ]
     ],
     "minY": 0
+  },
+  "yearPillar": {
+    "L0": 1030,
+    "L1": 170,
+    "ratio": 0.165,
+    "budget": [
+      1100,
+      300
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 32,
+    "nonManifold": 24,
+    "hulls": 5,
+    "bounds": [
+      [
+        -0.29,
+        0,
+        -0.236
+      ],
+      [
+        0.29,
+        2.49,
+        0.236
+      ]
+    ],
+    "minY": 0
+  },
+  "billboard": {
+    "L0": 676,
+    "L1": 132,
+    "ratio": 0.195,
+    "budget": [
+      1000,
+      300
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 4,
+    "hulls": 12,
+    "bounds": [
+      [
+        -1.32,
+        0,
+        -0.34
+      ],
+      [
+        1.32,
+        2.4,
+        0.34
+      ]
+    ],
+    "minY": 0
   }
 }

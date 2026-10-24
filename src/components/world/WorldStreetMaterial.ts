@@ -66,6 +66,7 @@ const fragmentEmissive = /* glsl */`#include <emissivemap_fragment>
     }
     else if (g == 6.0) totalEmissiveRadiance += diffuseColor.rgb * uNight * .22;
     // 7: backlit poster / board (warm white panel light, low at dusk).
+    else if (g == 8.0) totalEmissiveRadiance += diffuseColor.rgb * (.18 + uNight * .35 + max(vColor.r - 1.0, 0.0) * .7);
     else if (g == 7.0) totalEmissiveRadiance += diffuseColor.rgb * vec3(1.0, .93, .82) * (.32 + uNight * .38);
   }
 `;

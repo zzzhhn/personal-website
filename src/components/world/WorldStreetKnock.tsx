@@ -31,12 +31,14 @@ import { chevronCell, directionCellFor, stopCell, streetAtlas } from './WorldStr
 import type { Builder } from './WorldStreetGeometry';
 import type { Vec3 } from './types';
 
-type KnockKind = LayoutKind | 'roadblock' | 'beam' | 'guard';
+type KnockKind = LayoutKind | 'roadblock' | 'beam' | 'guard' | 'year' | 'billboard';
 /** pitch / len: hill timber beams (tilted logs of individual length). */
-export type Item = Omit<Knockable, 'kind'> & { kind: KnockKind; pitch?: number; len?: number };
+export type Item = Omit<Knockable, 'kind'> & { kind: KnockKind; pitch?: number; len?: number; cell?: [number, number, number, number]; label?: string; sourceId?: string; sourceDate?: string };
 const KNOCK_RESET_S = 30, FADE_S = .6;
 /** Mass (kg), centre of mass height (m), locked against people, visual far distance (m). */
 const SPEC: Record<KnockKind, { mass: number; com: number; h: number; heavy: boolean; far: number; lod: number }> = {
+  year: { h: 2.5, mass: 42, com: .42, heavy: true, far: 135, lod: 28 },
+  billboard: { h: 2.4, mass: 36, com: .5, heavy: false, far: 130, lod: 32 },
   lamp: { h: 4.8, mass: 140, com: .55, heavy: true, far: 150, lod: 30 },
   signal: { h: 5.5, mass: 180, com: .6, heavy: true, far: 150, lod: 32 },
   stop: { h: 2.4, mass: 22, com: .45, heavy: true, far: 95, lod: 22 },
@@ -53,7 +55,7 @@ const SPEC: Record<KnockKind, { mass: number; com: number; h: number; heavy: boo
 };
 
 type Phase = 'home' | 'knocked' | 'fadeOut' | 'fadeIn';
-interface KState { item: Item; batchId: number; body: RapierRigidBody | null; phase: Phase; t: number; locked: boolean; heavy: boolean; }
+interface KState { item: Item; batchId: number; body: RapierRigidBody | null; phase: Phase; t: number; locked: boolean; heavy: boolean; highlight?: number; visual?: () => number[]; }
 export const streetKnockRegistry: KState[] = [];
 
 function buildersFor(kind: KnockKind, directionIndex: number): { L0: Builder; L1: Builder } {
@@ -62,7 +64,7 @@ function buildersFor(kind: KnockKind, directionIndex: number): { L0: Builder; L1
     case 'signal': return A.signal();
     case 'bin': return A.bin();
     case 'roadblock': return A.roadblock();
-    case 'beam': case 'guard': throw new Error('rail builders are per item');
+    case 'year': case 'billboard': case 'beam': case 'guard': throw new Error('rail builders are per item');
     case 'delineator': return A.delineator();
     case 'stop': return { L0: A.stopGeometry(0, stopCell()), L1: A.stopGeometry(1, stopCell()) };
     case 'chevron': return { L0: A.chevronGeometry(0, chevronCell()), L1: A.chevronGeometry(1, chevronCell()) };
@@ -112,30 +114,30 @@ function poolTexture() {
 /** Roadblocks G12 from OBSTACLES_V4 (greybox centre y -> ground contact y). */
 const roadblockItems = (): Item[] => OBSTACLES_V4.map((p, i) => ({ id: `roadblock-${i}`, kind: 'roadblock', position: [p[0], +(p[1] - .5).toFixed(3), p[2]] as Vec3, yaw: 0, road: 'roadblock' }));
 
-export default function StreetKnockables({ set, beams }: { set: 'knock' | 'roadblock' | 'rail'; beams?: Item[] }) {
-  const items = useMemo((): Item[] => (set === 'knock' ? knockablesV4() : set === 'roadblock' ? roadblockItems() : beams ?? []), [set, beams]);
+export default function StreetKnockables({ set, beams, customItems, customAtlas }: { set: 'knock' | 'roadblock' | 'rail' | 'year' | 'billboard'; beams?: Item[]; customItems?: Item[]; customAtlas?: CanvasTexture | null }) {
+  const items = useMemo((): Item[] => (customItems ?? (set === 'knock' ? knockablesV4() : set === 'roadblock' ? roadblockItems() : beams ?? [])), [set, beams, customItems]);
   // Beams are part of the rails group, which claims 'rail' once all its parts mounted.
   const claim: GreyboxKey | null = set === 'knock' ? 'knockable' : set === 'roadblock' ? 'roadblock' : null;
   const lastTris = useMemo(() => ({ l0: 0, l1: 0 }), []);
-  const { world } = useRapier();
+  const { world, rapier } = useRapier();
   const built = useMemo(() => {
     const dirRoads = items.filter(i => i.kind === 'direction').map(i => i.road);
-    const atlas = streetAtlas(dirRoads);
+    const atlas = customAtlas ?? streetAtlas(dirRoads);
     const material = createStreetMaterial(atlas, 'street-knock-v1'), depth = createStreetDepthMaterial();
     // One batch kind per kind, except direction boards (one per instance: each has its own atlas cell).
     const kinds: BatchKind[] = [], kindOf = new Map<string, number>(), hulls = new Map<string, Float32Array[]>(), counts: number[] = [];
     let dirIndex = 0;
     const states: KState[] = [];
-    const keyFor = (it: Item) => (it.kind === 'direction' ? `direction-${dirIndex++}` : it.kind === 'beam' || it.kind === 'guard' ? `${it.kind}-${it.len!.toFixed(2)}` : it.kind);
+    const keyFor = (it: Item) => (it.kind === 'year' || it.kind === 'billboard' ? it.id : it.kind === 'direction' ? `direction-${dirIndex++}` : it.kind === 'beam' || it.kind === 'guard' ? `${it.kind}-${it.len!.toFixed(2)}` : it.kind);
     const keys = items.map(keyFor);
     dirIndex = 0;
     items.forEach((it, n) => {
       const key = keys[n];
       if (!kindOf.has(key)) {
-        const b = it.kind === 'beam' ? { L0: A.timberBeam(0, it.len!), L1: A.timberBeam(1, it.len!) } : it.kind === 'guard' ? { L0: A.guardPanel(0, it.len!), L1: A.guardPanel(1, it.len!) } : buildersFor(it.kind, it.kind === 'direction' ? dirIndex++ : 0);
+        const b = it.kind === 'year' ? { L0: A.yearPillar(0, it.cell!), L1: A.yearPillar(1, it.cell!) } : it.kind === 'billboard' ? { L0: A.billboard(0, it.cell!), L1: A.billboard(1, it.cell!) } : it.kind === 'beam' ? { L0: A.timberBeam(0, it.len!), L1: A.timberBeam(1, it.len!) } : it.kind === 'guard' ? { L0: A.guardPanel(0, it.len!), L1: A.guardPanel(1, it.len!) } : buildersFor(it.kind, it.kind === 'direction' ? dirIndex++ : 0);
         kindOf.set(key, kinds.length); counts.push(0);
         kinds.push({ id: key, L0: b.L0.build(), L1: b.L1.build(), lodNear: SPEC[it.kind].lod, far: SPEC[it.kind].far });
-        hulls.set(key, b.L0.hulls().map((h, i) => (i === 0 && it.kind !== 'beam' && it.kind !== 'guard' ? verticalPrism(h) : h)));
+        hulls.set(key, b.L0.hulls().map((h, i) => (i === 0 && it.kind !== 'beam' && it.kind !== 'guard' && it.kind !== 'billboard' ? verticalPrism(h) : h)));
       }
       counts[kindOf.get(key)!]++;
     });
@@ -143,7 +145,7 @@ export default function StreetKnockables({ set, beams }: { set: 'knock' | 'roadb
     items.forEach((it, n) => {
       const id = batch.add(kindOf.get(keys[n])!, homeMatrix(it));
       const k = SPEC[it.kind];
-      states.push({ item: it, batchId: id, body: null, phase: 'home', t: 0, locked: k.heavy, heavy: k.heavy });
+      states.push({ item: it, batchId: id, body: null, phase: 'home', t: 0, locked: k.heavy, heavy: k.heavy, visual: it.kind === 'year' || it.kind === 'billboard' ? () => { const m = new Matrix4(); batch.mesh.getMatrixAt(id, m); return m.toArray(); } : undefined });
     });
     batch.finish(5);
     batch.mesh.castShadow = true; batch.mesh.receiveShadow = true;
@@ -153,7 +155,7 @@ export default function StreetKnockables({ set, beams }: { set: 'knock' | 'roadb
     batch.mesh.userData.streetKinds = kinds.map(k => k.id);
     batch.mesh.userData.streetStats = () => ({ tris: lastTris.l0 + lastTris.l1, ...lastTris, instances: batch.count });
     return { batch, states, hulls: keys.map(k => hulls.get(k)!), material, depth };
-  }, [items, set, lastTris]);
+  }, [items, set, lastTris, customAtlas]);
   useEffect(() => {
     streetKnockRegistry.push(...built.states);
     return () => { for (const s of built.states) streetKnockRegistry.splice(streetKnockRegistry.indexOf(s), 1); built.batch.dispose(); built.material.dispose(); built.depth.dispose(); };
@@ -257,6 +259,11 @@ export default function StreetKnockables({ set, beams }: { set: 'knock' | 'roadb
     if (poolsDirty) placePools();
     if (pools.current) { pools.current.visible = night.value > .01; poolMat.opacity = .5 * night.value; }
     Object.assign(lastTris, b.update(camera));
+    if (set === 'year') {
+      const player = tv; let found = false;
+      world.forEachRigidBody(r => { if (!found && r.isDynamic() && r.numColliders() === 1 && r.collider(0).shape.type === rapier.ShapeType.Capsule && !(r.userData as { vehicle?: string; obstacle?: boolean } | undefined)?.vehicle && !(r.userData as { obstacle?: boolean } | undefined)?.obstacle) { const p = r.translation(); player.set(p.x, p.y, p.z); found = true; } });
+      for (const s of built.states) { const p = s.body?.translation(); const near = found && p && Math.hypot(player.x - p.x, player.z - p.z) < 8; s.highlight = near ? 1.42 : 1; b.setTint(s.batchId, s.highlight); }
+    }
   });
 
   return <group name={`street-${set}-group`}>
@@ -269,7 +276,7 @@ export default function StreetKnockables({ set, beams }: { set: 'knock' | 'roadb
 
 export const knockQa = () => streetKnockRegistry.map(k => {
   const b = k.body, p = b?.translation(), home = k.item.position as Vec3;
-  return { id: k.item.id, kind: k.item.kind, road: k.item.road, home, position: p ? [p.x, p.y, p.z] : null, sleeping: b?.isSleeping() ?? null,
+  return { id: k.item.id, kind: k.item.kind, road: k.item.road, label: k.item.label, visualMatrix: k.visual?.(), highlight: k.highlight, sourceId: k.item.sourceId, sourceDate: k.item.sourceDate, rotation: b ? [b.rotation().x, b.rotation().y, b.rotation().z, b.rotation().w] : null, home, position: p ? [p.x, p.y, p.z] : null, sleeping: b?.isSleeping() ?? null,
     knocked: k.phase !== 'home', phase: k.phase, lockedForPeople: k.locked, displacement: p ? Math.hypot(p.x - home[0], p.z - home[2]) : null };
 });
 export const awakeKnockQa = () => streetKnockRegistry.filter(k => k.body && !k.body.isSleeping()).length;

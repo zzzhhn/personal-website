@@ -13,11 +13,10 @@ its visual AND colliders mounted. v3 entry (`?layout=v3`): WorldStreet renders n
 | street-fixed | `street-fixed` | benches 13, bollards 12, bus shelter 1 |
 | rails | `rail` (+ `roadside`, a v4 no-op) | seawall + 4 ring chords (cream, knockable panels between fixed end pillars), hill timber rails (knockable beams, fixed posts), 2 bridge parapets (fixed, structural) |
 | trees | `tree` | TREES_V4 with y < 2 (8) + pocket-park trunk; canopy decor is dropped by WorldDistricts under `tree` |
-| windmill | `windmill` | G29 tower (fixed trimesh) + rotor (wind clock) |
+| windmill | `windmill` | G29 tower (fixed compound hull) + rotor (wind clock) |
 | foundations | `foundation` | FOUNDATIONS_V4 (3 slabs, walkable top + solid sides) + F04 sign each (fixed) |
 
-Not mine: kiosks and lifeguard tower are town's `massing` (MAIN-THREAD-NOTES for town). Billboards G15
-have no layout data: reported as a gap; the shelter carries an island-map poster panel instead.
+G11 now has six procedural year pillars driven by WorldContent.experiences; G15 has three independent dynamic wood billboards at validated road-derived shoulder positions. These groups introduce no additional greybox claims. Kiosks and lifeguard tower remain town-owned massing; G28 remains outside this brief.
 
 ## Sources
 - Runtime procedural (TS, zero download): every prop, lamp generator G10 (exported for G11/P04 reuse),
@@ -69,3 +68,7 @@ G29 uses a tapered smooth matte cream tower (12m), plinth, service-door frame, n
 F01-F03 are the three layout-sized 20cm concrete slabs, with chamfered edge and scored top strips. F04 is a timber two-post sign with separate cap, panel planks and cross brace, canvas bilingual FUTURE SITE / 二期预留. Foundation surface and all sign geometry are fixed. No second-phase buildings, new lights, or external factual content. Budget slab <=450, sign <=700. G15 has no layout placement; report gap, shelter map remains the poster.
 
 Completion evidence: `COMPLETION.md`, `runtime-summary.json`. Tree near instances now also use per-instance frustum spheres (4.5m canopy envelope), preserving all physical trunks. Old `WorldStreetDebris.ts` and its offline debris-sim experiment are removed from the final source; c0c75bf preserves inherited work for archaeology. G15 / G28 remain explicit gaps, not claimed complete. Forecourt seat bot must re-read the current prompt after standing because a nearby town board can legitimately be closer; real-key re-approach validates the same seat without changing the shared E priority.
+
+## G11 / G15 completion batch (2026-10-24, root authorized)
+G11 consumes WorldContent.experiences prop (already ascending / mapped by server); no direct i18n import. Six posts at BUILDINGS-derived x+w/2+5,z, foot at ROAD_Y+.01. Shared lampGeometry height2.3 / arm0 base, shaft and lamp head; framed 0.5m portrait date plate and cyan head ring. Date canvas and glow geometry are inside the same dynamic batch instance as the post; no stationary label or light pool. Proximity adds a restrained per-instance tint/emission only. Budget near <=1100tris, L1<=30%. Mass42kg, low COM .42m, people block / car wakes, standard30s fade/reset.
+G15: three separate shallow light-wood framed campaign billboards (2.4m panel, capped posts, spread feet and braces), matte bilingual Canvas, no emissive/no lights/logos. Derived safe roadside positions: camp-road preferred65% on south side, then safe fallback fractions, ring-north55% island side, ring-west45% island side; outside pavement+2m, away from turn endpoints. Ground from current terrain mesh/height. Sleeping dynamic36kg, movable for people/cars,30s reset. L0<=1000tris, L1<=30%. Same light wood palette/join vocabulary as park family, F04 family reconciliation remains root-owned. Only new assets retested.

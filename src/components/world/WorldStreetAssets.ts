@@ -480,3 +480,40 @@ export function foundationSign(lod: 0 | 1) {
 }
 const _extra2 = extraAssets2;
 export const extraAssets3 = () => ({ ..._extra2(), windmillTower: { L0: windmillTower(0), L1: windmillTower(1) }, windmillRotor: { L0: windmillRotor(0), L1: windmillRotor(1) }, foundationSlab: { L0: foundationSlab(0, 15, 12), L1: foundationSlab(1, 15, 12) }, foundationSign: { L0: foundationSign(0), L1: foundationSign(1) } });
+
+/* G11: shared G10/P04 lamp generator with a portrait date placard; plate and light move with the post. */
+export function yearPillar(lod: 0 | 1, cell: Cell) {
+  const B = lampGeometry({ height: 2.3, arm: 0, cyanRing: true, lod }), hi = lod === 0;
+  B.part('date-frame');
+  box(B, [-.29, 1.02, .035], [.29, 2.15, .145], S.slate, hi ? .025 : 0);
+  if (hi) {
+    B.part('date-rim', false);
+    for (const x of [-.257, .257]) box(B, [x - .014, 1.06, .146], [x + .014, 2.11, .16], S.stoneCream, .004);
+    for (const y of [1.065, 2.105]) box(B, [-.26, y - .012, .146], [.26, y + .012, .16], S.stoneCream, .004);
+  }
+  B.part('date-face', false); B.cell = cell;
+  B.tr([0, 1.585, .153], [0, 0, 0], () => plate(B, rectPoly(.49, 1.01), .003, S.slate, { color: '#FFFFFF', rough: .9, metal: 0, sign: true, glow: 8 }, S.slate));
+  return B;
+}
+/** G15: shallow light-wood campaign billboard. Two spread feet, braces, pegged frame and drip cap. */
+export function billboard(lod: 0 | 1, cell: Cell) {
+  const B = new Builder(), hi = lod === 0, w = 2.4, y0 = 1.02, h = 1.24;
+  for (const x of [-1.12, 1.12]) {
+    B.part('foot'); box(B, [x - .1, 0, -.34], [x + .1, .08, .34], S.woodMid, hi ? .018 : 0);
+    B.part('post'); box(B, [x - .055, .04, -.06], [x + .055, 2.39, .06], S.woodLight, hi ? .012 : 0);
+    if (hi) {
+      B.part('braces'); for (const z of [-.27, .27]) bar(B, [x, .08, z], [x, .58, 0], .024, S.woodMid, 6);
+      B.part('pegs', false); for (const y of [y0 + .1, y0 + h - .1]) B.tr([x, y, .08], [Math.PI / 2, 0, 0], () => cyl(B, .014, .014, -.01, .01, S.woodDark, 10));
+    }
+  }
+  B.part('panel'); box(B, [-w / 2, y0, -.035], [w / 2, y0 + h, .035], S.cream, hi ? .012 : 0);
+  for (const y of [y0 - .035, y0 + h + .035]) { B.part('rail'); box(B, [-w / 2 - .07, y - .035, -.06], [w / 2 + .07, y + .035, .065], S.woodLight, hi ? .012 : 0); }
+  for (const x of [-w / 2 - .035, w / 2 + .035]) { B.part('stile'); box(B, [x - .035, y0, -.06], [x + .035, y0 + h, .065], S.woodLight, hi ? .012 : 0); }
+  B.part('cap'); box(B, [-w / 2 - .12, 2.33, -.105], [w / 2 + .12, 2.4, .105], S.woodMid, hi ? .018 : 0);
+  B.part('campaign-face', false); B.cell = cell;
+  B.tr([0, y0 + h / 2, .039], [0, 0, 0], () => plate(B, rectPoly(w - .07, h - .07), .003, S.cream, { color: '#FFFFFF', rough: .95, metal: 0, sign: true }, S.cream));
+  return B;
+}
+const _extra3 = extraAssets3;
+export const extraAssets4 = () => ({ ..._extra3(), yearPillar: { L0: yearPillar(0, [0, 0, 1, 1]), L1: yearPillar(1, [0, 0, 1, 1]) }, billboard: { L0: billboard(0, [0, 0, 1, 1]), L1: billboard(1, [0, 0, 1, 1]) } });
+Object.assign(BUDGET, { yearPillar: [1100, 300], billboard: [1000, 300] });

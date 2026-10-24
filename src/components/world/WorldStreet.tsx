@@ -6,6 +6,9 @@ import StreetKnockables, { awakeKnockQa, knockQa } from './WorldStreetKnock';
 import StreetFixed from './WorldStreetFixed';
 import StreetRails from './WorldStreetRails';
 import StreetTrees from './WorldStreetTrees';
+import StreetYears from './WorldStreetYears';
+import StreetBillboards from './WorldStreetBillboards';
+import type { WorldContent } from './types';
 import { StreetFoundations, StreetWindmill } from './WorldStreetLandmarks';
 
 /**
@@ -51,7 +54,7 @@ function StreetQa() {
   return null;
 }
 
-export default memo(function WorldStreet() {
+export default memo(function WorldStreet({ experiences }: { experiences: WorldContent['experiences'] }) {
   if (!LAYOUT_V4) return <group name="world-street" />;
   return <group name="world-street">
     {group('street-knockables', <StreetKnockables set="knock" />)}
@@ -61,6 +64,8 @@ export default memo(function WorldStreet() {
     {group('street-trees', <StreetTrees />)}
     {group('street-foundations', <StreetFoundations />)}
     {group('street-windmill', <StreetWindmill />)}
+    {group('street-years', <StreetYears experiences={experiences} />)}
+    {group('street-billboards', <StreetBillboards />)}
     <StreetQa />
   </group>;
 });

@@ -57,6 +57,8 @@ export class StreetBatch {
     this.mesh.frustumCulled = true;
   }
   setMatrix(id: number, m: Matrix4) { this.matrices[id].copy(m); this.mesh.setMatrixAt(id, m); }
+  /** Add proximity tint while retaining the current reset/distance fade. */
+  setTint(id: number, tint: number) { this.mesh.getColorAt(id, c4); c4.set(tint, tint, tint, c4.w); this.mesh.setColorAt(id, c4); }
   /** Visual fade 0..1 (dither) and logical hide (reset in progress). */
   setFade(id: number, fade: number) { this.inst[id].fade = fade; }
   setHidden(id: number, hidden: boolean) { this.inst[id].hidden = hidden; }

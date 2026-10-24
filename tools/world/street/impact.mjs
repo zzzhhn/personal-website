@@ -64,6 +64,10 @@ for (const c of cases) {
     // Approach from the road side (or the case's from point): 11 m back along the given direction.
     const dir = c.dir ?? await page.evaluate(h => { const q = window.__worldDistricts.layout?.() ?? null; return null; }, home);
     let from = c.from;
+    if (c.normalApproach && tgt.rotation) {
+      const q = tgt.rotation, nx = 2 * (q[0] * q[2] + q[3] * q[1]), nz = 1 - 2 * (q[0] * q[0] + q[1] * q[1]);
+      from = [home[0] + nx * 8, home[2] + nz * 8];
+    }
     if (!from) {
       // Start in the nearest drivable lane centre, 11 m back along the road; the actor heads straight at the
       // prop, so it crosses the curb at a shallow angle like a real run-off.
@@ -84,7 +88,7 @@ for (const c of cases) {
     const read = () => page.evaluate(({ id, actor }) => {
       const s = window.__worldDebug.snapshot(), car = s.vehicles.find(v => v.id === actor), k = id === 'fixed' ? null : window.__worldDistricts.knockables().find(q => q.id === id);
       return { t: performance.now(), active: s.activeVehicle, actor: actor === 'person' ? s.player : car.position, v: actor === 'person' ? s.playerVelocity : car.velocity,
-        prop: k ? { p: k.position, sleeping: k.sleeping, knocked: k.knocked, phase: k.phase } : null, contacts: window.__worldDebug.contacts().map(x => ({ kind: x.other.kind, name: x.other.name })) };
+        prop: k ? { p: k.position, sleeping: k.sleeping, knocked: k.knocked, phase: k.phase, q: k.rotation, visualMatrix: k.visualMatrix, highlight: k.highlight } : null, contacts: window.__worldDebug.contacts().map(x => ({ kind: x.other.kind, name: x.other.name })) };
     }, { id: tgt.id, actor: c.actor });
     const r0 = await read(); row.initial = r0;
     let first = null, closest = Infinity; const t0 = Date.now();
@@ -123,11 +127,12 @@ for (const c of cases) {
     row.final = last;
     row.propDisplaced = last.prop ? Math.hypot(last.prop.p[0] - home[0], last.prop.p[2] - home[2]) : null;
     row.propKnocked = last.prop?.knocked ?? null;
-    if (process.env.STREET_RESET && last.prop?.knocked) {
+    await page.screenshot({ path: path.join(out, c.name + '-contact.png') });
+    if (process.env.STREET_RESET && last.prop?.knocked && (!process.env.STREET_RESET_CARS || c.actor !== 'person')) {
       if (c.actor !== 'person') await page.evaluate(id => window.__worldDebug.teleportVehicle(id, [-26, 6.1, 34], 0), c.actor);
       await bot.fixtureTeleport([-34, 5.8, 32], 'leave reset home unoccupied');
       const resetStart = Date.now(); let reset;
-      do { await page.waitForTimeout(500); reset = await read(); } while (Date.now() - resetStart < 43000 && reset.prop?.phase !== 'home');
+      do { await page.waitForTimeout(500); reset = await read(); } while (Date.now() - resetStart < 43000 && !(reset.prop?.phase === 'home' && reset.prop?.sleeping));
       row.reset = { elapsed: (Date.now() - resetStart) / 1000, state: reset.prop, passed: reset.prop?.phase === 'home' && reset.prop?.sleeping && Math.hypot(reset.prop.p[0]-home[0],reset.prop.p[2]-home[2]) < .02 };
       console.log('reset', JSON.stringify(row.reset));
     }
