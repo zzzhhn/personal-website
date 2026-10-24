@@ -250,7 +250,7 @@ class Face:
 def wall(A, F, u0, u1, z0, z1, mat, depth=0.2):
     A.box(*F.box(-depth, 0, u0, u1, z0, z1), mat)
 
-def window(A, F, a, b, lo, hi, key, depth=0.2, recess=0.14, frame='town_trim', sill='town_trim', mullion=True, sill_out=0.06, glass=None):
+def window(A, F, a, b, lo, hi, key, depth=0.2, recess=0.14, frame='town_trim', sill='town_trim', mullion=True, sill_out=0.06, glass=None, sill_bevel=0.012):
     """Glazing inside an opening (a..b along u, lo..hi in z) whose reveals are already built."""
     g = glass or ('town_glass_lit' if lit(key) else 'town_glass_dark')
     A.box(*F.box(-depth - 0.03, -recess, a, b, lo, hi), g)
@@ -266,10 +266,10 @@ def window(A, F, a, b, lo, hi, key, depth=0.2, recess=0.14, frame='town_trim', s
         tz = lo + (hi - lo) * 0.72
         A.box(*F.box(fn0, fn1 - 0.01, a + t, b - t, tz - 0.025, tz + 0.025), frame)
     if sill:
-        A.box(*F.box(-recess, sill_out, a - 0.07, b + 0.07, lo - 0.08, lo), sill, bevel=0.012)
+        A.box(*F.box(-recess, sill_out, a - 0.07, b + 0.07, lo - 0.08, lo), sill, bevel=sill_bevel)
 
 def facade(A, F, u0, u1, z0, z1, cols, rows, ww, wh, mat, key, depth=0.2, recess=0.14, skip=(), sill=True,
-           frame='town_trim', sill_mat='town_trim', mullion=True, wz=0.5, col=False, glass=None):
+           frame='town_trim', sill_mat='town_trim', mullion=True, wz=0.5, col=False, glass=None, sill_bevel=0.012):
     """Wall slab u0..u1 x z0..z1 with a regular grid of real recessed openings.
     Returns the list of opening rects (c, r, a, b, lo, hi)."""
     pitch, fh = (u1 - u0) / cols, (z1 - z0) / rows
@@ -292,7 +292,7 @@ def facade(A, F, u0, u1, z0, z1, cols, rows, ww, wh, mat, key, depth=0.2, recess
             if s1 - s0 > 1e-4:
                 A.box(*F.box(-depth, 0, a, b, s0, s1), mat)
     for c, r, a, b, lo, hi in out:
-        window(A, F, a, b, lo, hi, f'{key}:{c}:{r}', depth, recess, frame, sill_mat if sill else None, mullion, glass=glass)
+        window(A, F, a, b, lo, hi, f'{key}:{c}:{r}', depth, recess, frame, sill_mat if sill else None, mullion, glass=glass, sill_bevel=sill_bevel)
     if col:
         A.col_box(*F.box(-depth, 0, u0, u1, z0, z1))
     return out

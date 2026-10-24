@@ -690,6 +690,88 @@ def build_T06():
     louvre_box(A, -4.3, -3.3, -2.4, 2.4, H - 0.1, H + 0.9)
     return A
 
+# ============================================================== T07 background low-rise (seven, sized to the v4 massing boxes)
+# (world x, world z, w(x), d(z), h, facing) - mirrors solidsV4() massing entries; runtime verifies sizes.
+T07_SPEC = [(-13.5, -42, 8, 8, 6, 1), (-30.5, -42, 7, 8, 4, 1), (-14, -33, 9, 7, 4.5, 1), (-13, -2, 7, 7, 4, 1),
+            (-68, -15, 6, 6, 3, -1), (-76, -14, 5, 5, 2.6, -1), (-74, -5, 6, 5, 3.4, -1)]
+
+def lowrise(A, i, w, d, h, facing):
+    """Mediterranean low-rise reduced per the codex-native-v2 review: flat roof + parapet + tank/chimney,
+    framed windows with sills, framed door with a step stone, brick plinth, sand quoin bands.
+    Built facing +X then mirrored for facing = -1. Height h includes the parapet."""
+    A.use(f'T07_{i}')
+    X0, X1, Y = -w / 2, w / 2, d / 2
+    floors = 2 if h >= 4 else 1
+    PH = 0.45                         # parapet height
+    top = h - PH
+    fh = top / floors
+    wall_main = 'town_cream' if i % 2 == 0 else 'town_sand'
+    A.box((X0 - 0.06, -Y - 0.06, 0), (X1 + 0.06, Y + 0.06, 0.55), 'town_brick')       # plinth
+    front, back, sp, sn = Face('x', 1, X1), Face('x', -1, X0), Face('y', 1, Y), Face('y', -1, -Y)
+    for F, u0, u1, k in ((front, -Y, Y, 'f'), (back, -Y, Y, 'b'), (sp, X0, X1, 'p'), (sn, X0, X1, 'n')):
+        cols = max(1, int((u1 - u0) / 2.2))
+        skip = ()
+        if k == 'f':
+            skip = ((cols // 2, 0),)
+        facade(A, F, u0, u1, 0.55, top, cols, floors, 0.9, min(1.25, fh * 0.5), wall_main, f'T07{i}{k}', wz=0.55,
+               frame='town_wood', sill_mat='town_trim', mullion=(k == 'f'), sill_bevel=0.0)
+        if k == 'f':
+            pitch = (u1 - u0) / cols
+            c = u0 + (cols // 2 + 0.5) * pitch
+            # door bay: real recessed wood door, stone frame, step stone, small canopy
+            A.box(*F.box(-0.2, 0, c - pitch / 2 + 0.01, c - 0.55, 0.55, 0.55 + fh - 0.01), wall_main) if pitch / 2 > 0.6 else None
+            A.box(*F.box(-0.2, 0, c + 0.55, c + pitch / 2 - 0.01, 0.55, 0.55 + fh - 0.01), wall_main) if pitch / 2 > 0.6 else None
+            A.box(*F.box(-0.2, 0, c - 0.55, c + 0.55, 2.55, 0.55 + fh - 0.01), wall_main) if fh + 0.55 > 2.6 else None
+            A.box(*F.box(-0.24, -0.12, c - 0.45, c + 0.45, 0.0, 2.45), 'town_wood')
+            for kk in range(2):
+                A.box(*F.box(-0.12, -0.09, c - 0.36 + kk * 0.38, c - 0.02 + kk * 0.38, 0.4, 2.1), 'town_wood')
+            A.box(*F.box(-0.12, 0.05, c - 0.55, c - 0.45, 0.0, 2.55), 'town_trim')
+            A.box(*F.box(-0.12, 0.05, c + 0.45, c + 0.55, 0.0, 2.55), 'town_trim')
+            A.box(*F.box(-0.12, 0.05, c - 0.55, c + 0.55, 2.45, 2.55), 'town_trim')
+            A.box(*F.box(0.0, 0.4, c - 0.6, c + 0.6, 0.0, 0.14), 'town_stone_dark', 0.02)
+            A.box(*F.box(0.0, 0.5, c - 0.75, c + 0.75, 2.7, 2.8), 'town_trim', 0.02)
+    # quoin bands on the four vertical corners (sand / cream alternating, proud 3 cm)
+    qm = 'town_sand' if wall_main == 'town_cream' else 'town_cream'
+    nq = int((top - 0.55) / 0.5)
+    for (x, y) in ((X1, Y), (X1, -Y)):
+        sx, sy = (1 if x > 0 else -1), (1 if y > 0 else -1)
+        for k in range(nq):
+            z = 0.6 + k * 0.5
+            L = 0.35 if k % 2 == 0 else 0.22
+            xs = sorted((x + sx * 0.03, x - sx * L)); ys = sorted((y + sy * 0.03, y - sy * 0.22))
+            A.box((xs[0], ys[0], z), (xs[1], ys[1], z + 0.44), qm)
+            xs = sorted((x + sx * 0.03, x - sx * 0.22)); ys = sorted((y + sy * 0.03, y - sy * L))
+            A.box((xs[0], ys[0], z), (xs[1], ys[1], z + 0.44), qm)
+    if floors > 1:
+        A.box((X0 - 0.05, -Y - 0.05, 0.55 + fh - 0.06), (X1 + 0.05, Y + 0.05, 0.55 + fh + 0.04), 'town_trim', 0.01)
+    A.box((X0 + 0.15, -Y + 0.15, top - 0.15), (X1 - 0.15, Y - 0.15, top), 'town_roof')
+    parapet(A, X0, X1, -Y, Y, top, PH - 0.08, wall_main, t=0.2)
+    # roof object: water tank (taller blocks) or chimney + vent (small)
+    if i % 3 == 0:
+        A.box((X0 + 0.8, -0.6, top), (X0 + 2.0, 0.6, top + 0.9), 'town_trim', 0.03)
+        A.box((X0 + 0.75, -0.65, top + 0.9), (X0 + 2.05, 0.65, top + 0.98), 'town_sand', 0.02)
+    elif i % 3 == 1:
+        A.add(cyl((X0 + 1.2, Y - 1.2), 0.5, top + 0.2, top + 1.0, 14), 'town_metal', smooth=True)
+        for kk in range(4):
+            a = kk * math.pi / 2 + math.pi / 4
+            A.box((X0 + 1.2 + 0.4 * math.cos(a) - 0.04, Y - 1.2 + 0.4 * math.sin(a) - 0.04, top), (X0 + 1.2 + 0.4 * math.cos(a) + 0.04, Y - 1.2 + 0.4 * math.sin(a) + 0.04, top + 0.2), 'town_metal')
+    else:
+        A.box((X0 + 0.6, -Y + 0.6, top), (X0 + 1.1, -Y + 1.1, top + 1.1), wall_main, 0.02)
+        A.box((X0 + 0.52, -Y + 0.52, top + 1.1), (X0 + 1.18, -Y + 1.18, top + 1.2), 'town_trim', 0.02)
+    A.add(cyl((X1 - 1.0, 0.5), 0.1, top, top + 0.6, 8), 'town_metal', smooth=True)
+    A.col_box((X0, -Y, 0), (X1, Y, h), f'col_T07_{i}')
+
+def build_T07():
+    A = Asset('T07')
+    A.extras.update(kind='background-lowrise', spec=[list(x) for x in T07_SPEC], note='Blender X = world X; Blender Y = -world Z; each part T07_i authored at its own origin facing +X (facing -1 parts are rotated 180 deg at runtime)')
+    for i, (x, z, w, d, h, facing) in enumerate(T07_SPEC):
+        # author in local space; world placement happens at runtime (keeps one GLB, seven child meshes)
+        n0 = len(A.cols)
+        lowrise(A, i, w, d, h, facing)
+        A.part_extras[f'T07_{i}'] = {'worldX': x, 'worldZ': z, 'facing': facing, 'size': [w, h, d]}
+        A.cols[n0] = (f'col_T07_{i}', A.cols[n0][1])
+    return A
+
 BUILDERS = {k[6:]: v for k, v in globals().items() if k.startswith('build_T')}
 
 def main():

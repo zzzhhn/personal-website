@@ -15,6 +15,12 @@ def readback(aid):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     path = os.path.join(REPO, 'public/assets/world/town', f'{aid}.glb')
     bpy.ops.import_scene.gltf(filepath=path)
+    import re
+    for o in list(bpy.context.scene.objects):   # T07: lay the seven locally authored blocks out in a row for review
+        m = re.match(r'^(?:col_)?T07_(\d)$', o.name)
+        if m:
+            o.location.y += int(m.group(1)) * 10.0
+    bpy.context.view_layer.update()
     dg = bpy.context.evaluated_depsgraph_get()
     vis, cols, anchors = [], [], []
     for o in bpy.context.scene.objects:
