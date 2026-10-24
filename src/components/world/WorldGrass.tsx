@@ -167,8 +167,10 @@ varying float vBend;
 /* ------------------------------------------------------------------ component */
 
 export const GRASS_PROFILE = {
-  high: { near: 16, far: 36, farKeep: .3, cap: 4000 },
-  balanced: { near: 10, far: 26, farKeep: .25, cap: 2200 },
+  // Caps from the terrain-session budget (SESSION-RULES §5: grass + pebbles <= 2 calls / 40k triangles):
+  // 2450 tufts x 15 = 36.75k, pebbles <= 160 x 20 = 3.2k. Nearest tufts are kept first.
+  high: { near: 14, far: 34, farKeep: .3, cap: 2450 },
+  balanced: { near: 10, far: 26, farKeep: .25, cap: 1800 },
 } as const;
 /** Exposed for QA: live counts and the trample state. */
 export const grassDebug = { instances: 0, triangles: 0, disturbers: 0, trampleActive: 0, maxTrample: 0, profile: 'high' as keyof typeof GRASS_PROFILE,

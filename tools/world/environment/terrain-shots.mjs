@@ -21,6 +21,10 @@ const ALL = [
   { name: 'close-curb', at: [15.6, -20], look: [.9, -.45], pitch: .3, zoom: 0 },
   { name: 'close-grass', at: [-70, -10], look: [.3, -1], pitch: .28, zoom: 0 },
   { name: 'close-sand', at: [-60, 79], look: [.1, 1], pitch: .3, zoom: 0 },
+  { name: 'ramp-foot', at: [-1, 26], look: [-.8, .6], pitch: .5, zoom: 1 },
+  { name: 'bridgehead', at: [22, -38], look: [.6, -.8], pitch: .55, zoom: 1 },
+  { name: 'carpark', at: [-4, 9], look: [-.6, .8], pitch: .55, zoom: 1 },
+  { name: 'hill-joint', at: [-26, -58], look: [-.4, -1], pitch: .5, zoom: 1 },
 ];
 const pick = (process.env.SHOTS || '').split(',').filter(Boolean);
 const shots = pick.length ? ALL.filter(s => pick.includes(s.name)) : ALL;

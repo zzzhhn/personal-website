@@ -9,6 +9,9 @@ import { BUILDINGS, FOUNDATIONS, GROUND_Y } from './layout';
 import { LAYOUT_V4, keepOutV4 } from './layout-v4';
 import { buildTerrain, createTerrainGeometry, grassCandidateJob, scatterCandidates, SHORE_GLSL, shoreUniforms, terrainColours, type ScatterBlocker } from './WorldLandform';
 import { useWorldStore } from './store';
+import { buildLodTiles, lodIndices } from './WorldTerrainLod';
+import { chunkKey, paveClearance } from './WorldTerrainPaving';
+import { useIsClaimed } from './WorldVisualClaims';
 import { windUniforms } from './WorldWind';
 import WorldGrass, { ActorTracker, actorState, grassDebug } from './WorldGrass';
 import { seaSpotDebug } from './WorldSea';
@@ -161,16 +164,19 @@ function pebbleGeometry() {
 const SCATTER_RADIUS = 40;
 /** One instanced draw per class; instances are refilled from fixed candidates within 40 m of
  * the camera focus whenever the focus moves more than 2 m (no per-frame matrix uploads). */
-function Scatter({ name, data, geometry, material, tint }: { name: string; data: Float32Array; geometry: BufferGeometry; material: Material; tint: (i: number) => Color }) {
+function Scatter({ name, data, geometry, material, tint, cap }: { name: string; data: Float32Array; geometry: BufferGeometry; material: Material; tint: (i: number) => Color; cap: number }) {
   const ref = useRef<InstancedMesh>(null);
   const count = data.length / 5;
   const last = useRef<[number, number]>([1e9, 1e9]);
   const refill = (fx: number, fz: number) => {
     const mesh = ref.current; if (!mesh) return;
     const dummy = new Object3D(); let n = 0;
-    for (let i = 0; i < count; i++) {
+    // Nearest first, capped (grass + pebbles budget); candidates beyond the cap are dropped.
+    const near: [number, number][] = [];
+    for (let i = 0; i < count; i++) { const d2 = (data[i * 5] - fx) ** 2 + (data[i * 5 + 2] - fz) ** 2; if (d2 <= SCATTER_RADIUS * SCATTER_RADIUS) near.push([d2, i]); }
+    if (near.length > cap) { near.sort((a, b) => a[0] - b[0]); near.length = cap; }
+    for (const [, i] of near) {
       const x = data[i * 5], z = data[i * 5 + 2];
-      if ((x - fx) ** 2 + (z - fz) ** 2 > SCATTER_RADIUS * SCATTER_RADIUS) continue;
       const s = .55 + data[i * 5 + 4] * 1.0;
       dummy.position.set(x, data[i * 5 + 1] - .015, z); dummy.rotation.set(0, data[i * 5 + 3], 0); dummy.scale.setScalar(s); dummy.updateMatrix();
       mesh.setMatrixAt(n, dummy.matrix); mesh.setColorAt(n, tint(i)); n++;
@@ -202,41 +208,69 @@ function EnvDebug() {
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get('qa') !== '1') return;
     const w = window as unknown as { __worldEnv?: unknown };
-    w.__worldEnv = { grass: () => ({ ...grassDebug, trampleAt: undefined }), trampleAt: (x: number, z: number) => grassDebug.trampleAt(x, z), sea: () => seaSpotDebug.spots, actors: () => actorState.actors.map(a => ({ ...a })), groundPbr: GROUND_PBR,
+    const hidden: { visible: boolean }[] = [];
+    w.__worldEnv = { terrainLod: () => ({ ...terrainLodDebug }), grass: () => ({ ...grassDebug, trampleAt: undefined }), trampleAt: (x: number, z: number) => grassDebug.trampleAt(x, z), sea: () => seaSpotDebug.spots, actors: () => actorState.actors.map(a => ({ ...a })), groundPbr: GROUND_PBR,
       // A/B cost probe only: hide/show the grass draw.
       setGrassVisible: (on: boolean) => { const g = scene.getObjectByName('ground-grass-blades'); if (g) g.visible = on; return !!g; },
+      // A/B cost probe only: hide every object whose name matches the RegExp source; restore() undoes it.
+      hideByName: (pattern: string) => { const re = new RegExp(pattern), hit: { visible: boolean }[] = []; scene.traverse(o => { if (o.name && re.test(o.name) && o.visible) { o.visible = false; hit.push(o); } }); hidden.push(...hit); return hit.length; },
+      restore: () => { for (const o of hidden.splice(0)) o.visible = true; },
       // Ground-detail budget (spec §3: grass + pebbles + other scatter <= 60k visible triangles).
       groundDetail: () => {
         const pebbles = (scene.getObjectByName('ground-pebbles') as InstancedMesh | undefined)?.count ?? 0;
         return { grassTufts: grassDebug.instances, grassTriangles: grassDebug.triangles, pebbles, pebbleTriangles: pebbles * PEBBLE_TRIANGLES,
-          totalTriangles: grassDebug.triangles + pebbles * PEBBLE_TRIANGLES, budget: 60000, grassBuildMs: grassBuild.ms };
+          totalTriangles: grassDebug.triangles + pebbles * PEBBLE_TRIANGLES, budget: 40000, grassBuildMs: grassBuild.ms };
       } };
     return () => { delete w.__worldEnv; };
   }, [scene]);
   return null;
 }
 
-/** Layout v4 (spec §12.4): the visual terrain is split into four spatial chunks sharing one vertex
- * buffer, each with its own index buffer and culling sphere, so the view and every shadow pass skip
- * off-screen quarters. Colliders stay one trimesh pair (physics broad-phase already culls). */
-function terrainChunks(g: BufferGeometry) {
-  const pos = g.getAttribute('position'), idx = g.getIndex()!.array, parts: number[][] = [[], [], [], []];
-  for (let t = 0; t < idx.length; t += 3) {
-    const a = idx[t], b = idx[t + 1], c = idx[t + 2];
-    const cx = (pos.getX(a) + pos.getX(b) + pos.getX(c)) / 3, cz = (pos.getZ(a) + pos.getZ(b) + pos.getZ(c)) / 3;
-    parts[(cx < -30 ? 0 : 1) + (cz < -20 ? 0 : 2)].push(a, b, c);
-  }
-  return parts.filter(p => p.length).map(p => {
-    const sub = new BufferGeometry();
-    for (const name of Object.keys(g.attributes)) sub.setAttribute(name, g.getAttribute(name));
-    sub.setIndex(new Uint32BufferAttribute(new Uint32Array(p), 1));
-    const min = new Vector3(Infinity, Infinity, Infinity), max = new Vector3(-Infinity, -Infinity, -Infinity), v = new Vector3();
-    for (const i of p) { v.fromBufferAttribute(pos, i); min.min(v); max.max(v); }
-    const centre = min.clone().add(max).multiplyScalar(.5);
-    sub.boundingSphere = new Sphere(centre, centre.distanceTo(max));
-    return sub;
+/** Layout v4 (spec §12.4): the visual terrain is four spatial chunks sharing one vertex buffer, each
+ * with its own index buffer and culling sphere, and a crack-free render LOD (WorldTerrainLod): 16 m
+ * tiles within 28 m of the focus keep the 0.5 m mesh, farther tiles draw 2 m fans stitched to their
+ * fine neighbours. Indices are rebuilt only when the focus moves > 6 m. Colliders stay the full
+ * 0.5 m trimesh pair (physics is unaffected). */
+function TerrainLodChunks({ geometry, material }: { geometry: BufferGeometry; material: Material }) {
+  // Blocks fully under opaque field paving (>= 0.6 m inside its outer edge) are skipped while `paved` is
+  // claimed, i.e. while WorldTerrainRoads is actually mounted; otherwise the full ground is drawn.
+  const tiles = useMemo(() => buildLodTiles(chunkKey, (x, z) => paveClearance(x, z) < -.6), []);
+  const open = useIsClaimed('paved');
+  const subs = useMemo(() => {
+    const pos = geometry.getAttribute('position'), out: BufferGeometry[] = [];
+    for (let c = 0; c < 4; c++) {
+      const sub = new BufferGeometry();
+      for (const name of Object.keys(geometry.attributes)) sub.setAttribute(name, geometry.getAttribute(name));
+      // Culling sphere from the chunk's full-resolution tiles (LOD never leaves this box).
+      const min = new Vector3(Infinity, Infinity, Infinity), max = new Vector3(-Infinity, -Infinity, -Infinity), v = new Vector3();
+      for (const T of tiles) if (T.chunk === c) for (const i of T.fine) { v.fromBufferAttribute(pos, i); min.min(v); max.max(v); }
+      const centre = min.clone().add(max).multiplyScalar(.5);
+      sub.boundingSphere = new Sphere(centre, Number.isFinite(centre.x) ? centre.distanceTo(max) : 0);
+      out.push(sub);
+    }
+    return out;
+  }, [geometry, tiles]);
+  const last = useRef<[number, number] | null>(null), openRef = useRef(open);
+  openRef.current = open;
+  const apply = (x: number, z: number) => {
+    const L = lodIndices(tiles, x, z, undefined, openRef.current);
+    subs.forEach((g, c) => { const idx = L.chunks.get(c) ?? new Uint32Array(0); g.setIndex(new Uint32BufferAttribute(idx, 1)); g.setDrawRange(0, idx.length); });
+    terrainLodDebug.triangles = L.triangles; terrainLodDebug.fineTiles = L.fineTiles; terrainLodDebug.updates++;
+    last.current = [x, z];
+  };
+  useLayoutEffect(() => { const p = useWorldStore.getState().position; apply(p[0], p[2]); }, [subs, open]);
+  useFrame(({ camera }) => {
+    const st = useWorldStore.getState(), p = st.position;
+    // QA shots look at the whole island from far away: centre on the camera's ground target.
+    const fx = st.shot ? camera.position.x - camera.position.y * .6 : p[0], fz = st.shot ? camera.position.z - camera.position.y * .6 : p[2];
+    if (last.current && Math.hypot(fx - last.current[0], fz - last.current[1]) < 6) return;
+    apply(fx, fz);
   });
+  useEffect(() => () => subs.forEach(g => g.dispose()), [subs]);
+  return <>{subs.map((g, i) => <mesh key={i} name={`island-terrain-v4-chunk-${i}`} geometry={g} material={material} receiveShadow />)}</>;
 }
+/** QA: current render LOD state. */
+export const terrainLodDebug = { triangles: 0, fineTiles: 0, updates: 0 };
 
 export function IslandTerrain() {
   const terrain = useMemo(buildTerrain, []);
@@ -247,7 +281,6 @@ export function IslandTerrain() {
     g.setAttribute('groundMix', new Float32BufferAttribute(groundMix, 4));
     return g;
   }, []);
-  const chunks = useMemo(() => LAYOUT_V4 ? terrainChunks(geometry) : null, [geometry]);
   const pbr = useMemo(() => GROUND_PBR ? loadPbr() : null, []);
   const material = useMemo(() => createGroundMaterial(pbr), [pbr]);
   const scatter = useMemo(() => scatterCandidates(SCATTER_BLOCKERS), []);
@@ -277,11 +310,11 @@ export function IslandTerrain() {
     <RigidBody name="island-terrain-solid" type="fixed" colliders={false} userData={{ solid: true }}>
       <TrimeshCollider name="island-terrain-solid-faces" args={[terrain.positions, terrain.solid]} friction={.65} restitution={.05} />
     </RigidBody>
-    {chunks ? chunks.map((g, i) => <mesh key={i} name={`island-terrain-v4-chunk-${i}`} geometry={g} material={material} receiveShadow />)
+    {LAYOUT_V4 ? <TerrainLodChunks geometry={geometry} material={material} />
       : <mesh name="island-terrain-v3-mesh" geometry={geometry} material={material} receiveShadow />}
     <ActorTracker />
     <EnvDebug />
     <WorldGrass data={blades} />
-    <Scatter name="ground-pebbles" data={scatter.pebbles} geometry={pebble} material={pebbleMat} tint={pebbleTint} />
+    <Scatter name="ground-pebbles" data={scatter.pebbles} geometry={pebble} material={pebbleMat} tint={pebbleTint} cap={160} />
   </group>;
 }

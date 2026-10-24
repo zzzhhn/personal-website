@@ -79,8 +79,12 @@ const L = OUTLINE_PERIMETER;
 /** Top-edge push beyond the old outline (0.3-3.4 m), beach width 5-12 m, shelf 12-18 m. */
 const window1 = (s: number, a: number, b: number, soft: number) => smoothstep(a - soft, a, s) * (1 - smoothstep(b, b + soft, s));
 export const topPush = (s: number) => clamp(1.6 + periodic(s, L, [[1.1, 7, .4], [.5, 17, 2.2], [.18, 37, 4.1]]), .3, 3.4)
-  // The existing coastal parking bay (x 16.5-23.5, z 8.5-15.5) overhangs the old outline by 2.9 m.
-  + 2.6 * window1(s, 206, 224, 5);
+  // v3 only: the old coastal parking bay (x 16.5-23.5, z 8.5-15.5) overhangs the old outline by 2.9 m.
+  // v4 has no such bay (the window would push a meaningless 2.6 m cape out of the new north-east shore).
+  + (LAYOUT_V4 ? 0 : 2.6 * window1(s, 206, 224, 5))
+  // v4 south shore (x -5..-25, z ~90): the one stretch where the 527 m perimeter's harmonics leave a
+  // 51 m run without a feature; a small 2.2 m cape at its middle restores the 30-50 m rhythm (§12.1 A7).
+  + (LAYOUT_V4 ? 2.2 * window1(s, 414, 420, 5) : 0);
 export const beachWidth = (s: number) => clamp(8.5 + periodic(s, L, [[3.4, 8, 1.3], [1.1, 19, .2]]), 5, 12);
 const shelfLength = (s: number) => clamp(15 + periodic(s, L, [[3, 5, 2.7]]), 12, 18);
 /** East town coast: road promenade and bridge stand on a stone seawall, not on sand. */
@@ -338,6 +342,9 @@ export interface Terrain {
   /** Vertex index per lattice node (-1 = unused). */
   vertexOf: Int32Array;
   seawall: { start: [number, number]; end: [number, number] };
+  /** Render LOD: per 2 m block (row-major NB x MB) its kind (0 skip, 1/3 coarse, 2 fine), and for fine
+   * blocks the start / count of its triangles in `indices` plus its four corner vertex indices. */
+  blocks: { NB: number; MB: number; kind: Uint8Array; start: Int32Array; count: Int32Array; corners: Int32Array };
   stats: { triangles: number; fineBlocks: number; coarseBlocks: number; surfaceTriangles: number; solidTriangles: number; maxWalkableDeg: number; buildMs: number };
 }
 
@@ -401,11 +408,14 @@ export function buildTerrain(): Terrain {
     for (let j = j0; j < j0 + BLOCK; j++) cellDiag.fill(3, j * GRID.nx + i0, j * GRID.nx + i0 + BLOCK);
   };
   let fineBlocks = 0, coarseBlocks = 0;
+  const bStart = new Int32Array(NB * MB), bCount = new Int32Array(NB * MB), bCorners = new Int32Array(NB * MB * 4).fill(-1);
   for (let bj = 0; bj < MB; bj++) for (let bi = 0; bi < NB; bi++) {
-    const i0 = bi * BLOCK, j0 = bj * BLOCK, k = kind[bj * NB + bi];
+    const i0 = bi * BLOCK, j0 = bj * BLOCK, k = kind[bj * NB + bi], b = bj * NB + bi;
     if (k === 0) continue;
+    bStart[b] = idx.length;
     if (k === 3) for (const [i, j] of [[i0, j0], [i0 + BLOCK, j0], [i0, j0 + BLOCK], [i0 + BLOCK, j0 + BLOCK]]) nodeHeight[j * NODES_X + i] = GROUND_Y;
-    if (k !== 2) { coarse(i0, j0); coarseBlocks++; continue; }
+    bCorners.set([vertex(i0, j0), vertex(i0 + BLOCK, j0), vertex(i0, j0 + BLOCK), vertex(i0 + BLOCK, j0 + BLOCK)], b * 4);
+    if (k !== 2) { coarse(i0, j0); coarseBlocks++; bCount[b] = idx.length - bStart[b]; continue; }
     fineBlocks++;
     for (let j = j0; j < j0 + BLOCK; j++) for (let i = i0; i < i0 + BLOCK; i++) {
       // Split along the flatter diagonal so creases follow contours (no sawtooth on steep faces).
@@ -414,6 +424,7 @@ export function buildTerrain(): Terrain {
       cellDiag[j * GRID.nx + i] = flip ? 2 : 1;
       quad(vertex(i, j), vertex(i + 1, j), vertex(i, j + 1), vertex(i + 1, j + 1), flip);
     }
+    bCount[b] = idx.length - bStart[b];
   }
   // Unfold pass: where crease snapping pulled neighbouring nodes past each other (triangle
   // reversed in plan), return those nodes to their lattice point and re-evaluate height.
@@ -450,6 +461,7 @@ export function buildTerrain(): Terrain {
   terrainCache = {
     positions: new Float32Array(pos), indices: new Uint32Array(idx), surface: new Uint32Array(surface), solid: new Uint32Array(solid), nodeHeight, cellDiag, vertexOf,
     seawall,
+    blocks: { NB, MB, kind, start: bStart, count: bCount, corners: bCorners },
     stats: { triangles: idx.length / 3, fineBlocks, coarseBlocks, surfaceTriangles: surface.length / 3, solidTriangles: solid.length / 3, maxWalkableDeg, buildMs: Math.round(t1 - t0) },
   };
   return terrainCache;
