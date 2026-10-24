@@ -31,7 +31,10 @@ import { AnimationMixer, Matrix4, Quaternion, Vector3, Vector4, type AnimationCl
 import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js';
 
 export type StopSide = 'left' | 'right';
-export interface StopFrameInput { animation: string; grounded: boolean; speedMps: number; facing: number; visible: boolean }
+export interface StopFrameInput { animation: string; grounded: boolean; speedMps: number; facing: number; visible: boolean;
+  /** Movement input held (WorldActors intent). When given, 'moving' exits on input, not on the residual
+   * braking speed: the gait now hands over to Idle at ~0.6 m/s, and the body is still gliding to rest. */
+  wantsMove?: boolean }
 export interface StopTuning {
   /** Feet closer than this to their Idle target are not stepped; they settle during release. */
   stepThreshold: number;
@@ -288,7 +291,7 @@ export class GuideStopStep {
     let reason: string | null = null, blend = t.exitBlend;
     if (!input.grounded) { reason = 'jump'; blend = t.jumpExitBlend; }
     else if (input.animation !== 'Idle') reason = `animation:${input.animation}`;
-    else if (input.speedMps > t.moveExit) reason = 'moving';
+    else if (input.wantsMove ?? input.speedMps > t.moveExit) reason = 'moving';
     else if (Math.abs(wrap(input.facing - this.facing0)) > t.turnExit) reason = 'turn';
     else if (this.elapsed > t.maxSettle) reason = 'timeout';
     if (reason) this.startBlendOut('exiting', blend, reason);
