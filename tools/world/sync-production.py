@@ -242,6 +242,14 @@ def build():
     a['production']['geometryReviewStatus'] = '当前SHA/索引/skin/clip元数据已实读；旧v3c回读数不作为新动作全量复验'
     a['production']['releaseIdentityDocumented'] = rec['sha256'] in source('docs/world/THIRD_PARTY.md')
     a['production']['knownLimits'] += ['当前v3d新增六段动作，旧release-v3c只覆盖其当时哈希；过渡滑移/坡地浮空等既有结果不得全追认', 'Bobby未接受人物外形、动作或全情境手感']
+    close = read_json('docs/world/character/close-manifest.json')
+    if close and close['finalAsset']['sha256'] == rec['sha256']:
+        n = close['finalAsset']['triangles']
+        proof(a, n, n, 'docs/world/character/close-manifest.json', sha=rec['sha256'])
+        a['production']['evidence'] += ['docs/world/character/close-manifest.json', 'docs/world/character/a3-followup-report.md', 'docs/world/character/safe-seat-report.md', 'docs/world/character/FINAL-HANDOFF.md']
+        a['production']['geometryReviewStatus'] = '当前SHA绑定native/freshDraco坐姿194半帧与局部最终运行A6；未改十二段沿用原版本，不外推所有动作通过'
+        a['production']['runtimeReviewStatus'] = 'r14坐/起固定窗口局部数值通过；主线方向优先落脚与候选radius优先不同；旧快跑/坡地失败未关，见FINAL-HANDOFF'
+        a['triangles'] = f'当前fresh-GLB报告 {n}；实际运行主pass 3106/4calls；15 clips，几何压缩primitive未改'
     vehicles = read_json('docs/world/vehicles/fresh-import.json')['assets']
     for aid in ['G25', 'G26', 'G27']:
         q = next(v for v in vehicles if v['asset'] == aid)

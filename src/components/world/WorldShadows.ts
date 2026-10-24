@@ -208,6 +208,13 @@ type Caster = {
   sum: number; stable: number;
 };
 const casters = new Map<Mesh, Caster>();
+// Vehicles keep exact near shadows; the two coarser sun cascades reuse their authored LOD1.
+// Geometry is borrowed only within a depth pass and restored before fire/main rendering.
+const geometryBeforeShadow = new Map<Mesh, BufferGeometry>();
+function restoreShadowGeometry() {
+  for (const [mesh, geometry] of geometryBeforeShadow) mesh.geometry = geometry;
+  geometryBeforeShadow.clear();
+}
 const proxyGroup = new Object3D();
 proxyGroup.name = 'world-shadow-proxies';
 proxyGroup.visible = false;
@@ -706,6 +713,7 @@ function chunkInCascade(k: number, chunk: Chunk) {
 }
 
 function applySunPass(k: number) {
+  restoreShadowGeometry();
   let nCasters = 0, nProxies = 0, nInstances = 0;
   fireStatic.castShadow = false;
   for (const ch of chunks) {
@@ -738,7 +746,8 @@ function applySunPass(k: number) {
       const p = c.proxies[k], dst = p.instanceMatrix.array as Float32Array;
       // Dynamic wheel batches can swap LOD geometry without replacing their InstancedMesh.
       // Refresh shadow geometry as well, so distant wheels do not keep submitting the near mesh.
-      p.geometry = k === 2 ? farHull(c.mesh.geometry) ?? c.mesh.geometry : c.mesh.geometry;
+      const shadowLod = c.mesh.userData.shadowLodGeometry as BufferGeometry | undefined;
+      p.geometry = k > 0 && shadowLod ? shadowLod : k === 2 ? farHull(c.mesh.geometry) ?? c.mesh.geometry : c.mesh.geometry;
       p.matrixWorld.copy(c.mesh.matrixWorld);
       let n = 0;
       for (let i = 0; i * 4 < s.length; i++) {
@@ -751,6 +760,11 @@ function applySunPass(k: number) {
     } else {
       meshSphere(c, sphere);
       c.mesh.castShadow = inCascade(k, sphere.center.x, sphere.center.y, sphere.center.z, sphere.radius);
+      const shadowLod = c.mesh.userData.shadowLodGeometry as BufferGeometry | undefined;
+      if (k > 0 && c.mesh.castShadow && shadowLod) {
+        geometryBeforeShadow.set(c.mesh, c.mesh.geometry);
+        c.mesh.geometry = shadowLod;
+      }
       if (c.mesh.castShadow) nCasters++;
     }
   }
@@ -761,6 +775,7 @@ export interface FirePassSpec { position: Vector3; range: number; }
 /** One point-light face: only the fire whitelist within `range` that intersects this face frustum. */
 export function applyFirePass(face: number, frustum: Frustum, spec: FirePassSpec) {
   if (!inShadowRender) return;
+  restoreShadowGeometry();
   let n = 0;
   const rangeOk = (x: number, z: number) => Math.hypot(x - spec.position.x, z - spec.position.z) <= spec.range;
   for (const c of casters.values()) {
@@ -785,6 +800,7 @@ function beginShadowRender() {
   for (const c of casters.values()) c.cast = c.mesh.castShadow;
 }
 function endShadowRender() {
+  restoreShadowGeometry();
   inShadowRender = false;
   proxyGroup.visible = false;
   for (const c of casters.values()) {

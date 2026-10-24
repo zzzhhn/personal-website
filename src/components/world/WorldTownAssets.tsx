@@ -35,8 +35,9 @@ function withDraco(loader: GLTFLoader) {
   loader.setDRACOLoader(draco);
 }
 
-type Region = 'town-south' | 'town-north' | 'west' | 'beach';
-const REGIONS: Region[] = ['town-south', 'town-north', 'west', 'beach'];
+type Region = 'town-south' | 'town-north' | 'west' | 'beach' | `building-${number}`;
+const REGIONS: Region[] = ['town-south', 'town-north', 'west', 'beach', ...BUILDINGS.map((_, i) => `building-${i}` as const)];
+const regionRecord = <T,>(make: () => T): Record<Region, T> => Object.fromEntries(REGIONS.map(r => [r, make()])) as Record<Region, T>;
 // Spatial batches let distant northern blocks simplify while the southern frontage stays detailed.
 const townRegion = (z: number): Region => z < -12 ? 'town-north' : 'town-south';
 interface Placement { asset: AssetId; part?: string; matrix: Matrix4; region: Region; body: string; slot?: number; lodColor: string }
@@ -53,8 +54,9 @@ function placements(): Placement[] {
   const out: Placement[] = [];
   BUILDINGS.forEach(({ id, position: [x, y, z], size: [w] }, slot) => {
     const asset = BUILDING_ASSET[id];
-    out.push({ asset, matrix: place(x, y, z), region: townRegion(z), body: `building-${id}`, slot, lodColor: LOD_COLOR[asset] });
-    out.push({ asset: 'T09', matrix: place(x + w / 2 + 3, y + .13, z + 2.7), region: townRegion(z), body: `board-${id}`, slot, lodColor: LOD_COLOR.T09 });
+    const region: Region = `building-${slot}`;
+    out.push({ asset, matrix: place(x, y, z), region, body: `building-${id}`, slot, lodColor: LOD_COLOR[asset] });
+    out.push({ asset: 'T09', matrix: place(x + w / 2 + 3, y + .13, z + 2.7), region, body: `board-${id}`, slot, lodColor: LOD_COLOR.T09 });
   });
   // Two palms on the MoE forecourt corners (clear of the bollards at x 14.8 and the plaque at z + 2.7).
   const moe = BUILDINGS.find(b => b.id === 'moe');
@@ -119,8 +121,8 @@ function glowMaterial(m: MeshStandardMaterial, uniform: { value: number }, key: 
 function build(gltfs: GLTF[]): Built {
   const byId = new Map(IDS.map((id, i) => [id, gltfs[i]] as const));
   const list = placements();
-  const geoms = Object.fromEntries(REGIONS.map(r => [r, new Map<string, BufferGeometry[]>()])) as Record<Region, Map<string, BufferGeometry[]>>;
-  const lodBoxes = Object.fromEntries(REGIONS.map(r => [r, []])) as Record<Region, BufferGeometry[]>;
+  const geoms = regionRecord(() => new Map<string, BufferGeometry[]>());
+  const lodBoxes = regionRecord<BufferGeometry[]>(() => []);
   const palmGeoms = new Map<string, BufferGeometry[]>();
   const stripGeoms: BufferGeometry[] = [];
   const shadowGeoms: BufferGeometry[] = [];
@@ -128,7 +130,7 @@ function build(gltfs: GLTF[]): Built {
   const bodies: Built['bodies'] = [];
   const anchors: Built['anchors'] = [];
   const v = new Vector3(), m4 = new Matrix4(), nm = new Matrix4();
-  const bounds = Object.fromEntries(REGIONS.map(r => [r, { min: new Vector3(1e9, 1e9, 1e9), max: new Vector3(-1e9, -1e9, -1e9) }])) as Record<Region, { min: Vector3; max: Vector3 }>;
+  const bounds = regionRecord(() => ({ min: new Vector3(1e9, 1e9, 1e9), max: new Vector3(-1e9, -1e9, -1e9) }));
   const t07spec = (byId.get('T07')!.scene.getObjectByName('T07')?.userData.spec ?? []) as number[][];
   for (const p of list) {
     const gltf = byId.get(p.asset)!;

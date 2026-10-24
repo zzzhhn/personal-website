@@ -91,6 +91,7 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
     });
     const material = vehicleMaterial();
     const instanced = new InstancedMesh(geometries[0].wheel, material, 4);
+    instanced.userData.shadowLodGeometry = geometries[1].wheel;
     instanced.castShadow = true; instanced.receiveShadow = true; instanced.name = `vehicle-${id}-wheels`;
     for (let i = 0; i < 4; i++) { const p = wheelPoints[i]; _m.makeTranslation(p[0], p[1] - wheelRest, p[2]); if (p[2] > 0) _m.multiply(_flip); instanced.setMatrixAt(i, _m); }
     instanced.boundingSphere = new Sphere(new Vector3(), Math.hypot(wheelPoints[0][0], wheelPoints[0][2]) + hull.wheelRadius + .4);
@@ -157,7 +158,7 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
   });
   return <group ref={visual} name={`vehicle-${id}-visual`} userData={{ vehicle: id, assetId: asset }}>
     <WheelAnchors wheelPoints={wheelPoints} wheelRest={wheelRest} wheels={wheels} />
-    <mesh ref={bodyMesh} name={`vehicle-${id}-body`} geometry={built.geometries[0].body} material={built.material} position={[0, hull.bodyY, 0]} castShadow receiveShadow />
+    <mesh ref={bodyMesh} name={`vehicle-${id}-body`} geometry={built.geometries[0].body} material={built.material} position={[0, hull.bodyY, 0]} userData={{ shadowLodGeometry: built.geometries[1].body }} castShadow receiveShadow />
     <primitive object={built.instanced} />
     <primitive object={built.pool} position={[length / 2 + 4.2, hull.bodyY + .03, 0]} />
   </group>;
