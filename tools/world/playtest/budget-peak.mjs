@@ -112,6 +112,28 @@ try {
       console.log(`${quality.padEnd(8)} ${view.id.padEnd(16)} ${f ? `${f.total.calls} calls / ${(f.total.triangles / 1000).toFixed(1)}k tris (shadow ${f.shadow.calls} / ${(f.shadow.triangles / 1000).toFixed(1)}k)` : row.error}`);
     }
   }
+  if (process.env.BUDGET_TRANSITIONS === '1') {
+    report.transitions = [];
+    if (await page.evaluate(() => __worldDebug.snapshot().activeVehicle)) await bot.press('KeyE');
+    await page.evaluate(() => __worldDebug.set({ shot: null, light: 'dusk', quality: 'high', card: null, seat: null }));
+    await bot.fixtureTeleport([-42, 5.9, 37], 'camp transition budget start');
+    report.fixtures.push(...bot.fixtureCalls.slice(-1));
+    await aim(page, { yaw: look(0, -1), pitch: .45, distance: 30 });
+    await page.waitForTimeout(2100);
+    for (const [label, action] of [
+      ['dusk-to-night', () => page.evaluate(() => __worldDebug.set({ light: 'night' }))],
+      ['high-to-balanced', () => page.evaluate(() => __worldDebug.set({ quality: 'balanced' }))],
+      ['zoom-through-LOD', async () => { await bot.wheel(-1800); await page.waitForTimeout(650); await bot.wheel(1800); }],
+      ['balanced-to-high', () => page.evaluate(() => __worldDebug.set({ quality: 'high' }))],
+      ['night-to-dusk', () => page.evaluate(() => __worldDebug.set({ light: 'dusk' }))],
+    ]) {
+      const capture = page.evaluate(() => __worldDebug.budget.series(150));
+      await action();
+      const series = await capture;
+      report.transitions.push({ label, series });
+      console.log(`transition ${label}: ${series.calls.max} calls / ${series.triangles.max} triangles`);
+    }
+  }
   await page.evaluate(() => __worldDebug.set({ shot: null, light: 'dusk', quality: 'high' }));
   report.errors.push(...errors);
 } catch (e) { report.errors.push(String(e.stack || e)); }
@@ -135,6 +157,7 @@ for (const z of zones) {
 zonePeak.shadow = { calls: Math.max(0, ...game.map(r => r.frame.shadow.calls)), triangles: Math.max(0, ...game.map(r => r.frame.shadow.triangles)),
   worstView: [...game].sort((a, b) => b.frame.shadow.triangles - a.frame.shadow.triangles)[0]?.view ?? null, limit: L.shadow };
 report.summary = { gameplayPeak: peak(game), shotPeak: peak(ok.filter(r => r.view.startsWith('shot-'))), zonePeak,
+  transitionPeak: report.transitions?.length ? { calls: Math.max(...report.transitions.map(r => r.series.calls.max)), triangles: Math.max(...report.transitions.map(r => r.series.triangles.max)) } : null,
   pointLightsMax: Math.max(0, ...ok.map(r => r.lights?.point ?? 0)), infoMismatch: ok.filter(r => r.frame.total.calls !== r.frame.info.calls).map(r => r.view), errors: report.errors.length };
 await writeFile(path.join(out, 'budget-report.json'), JSON.stringify(report, null, 1));
 
