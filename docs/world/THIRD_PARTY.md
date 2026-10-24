@@ -93,3 +93,7 @@ procedural fallback, which loads no textures. Output-file hashes and per-asset m
 
 License evidence: the ambientCG license page (https://docs.ambientcg.com/license/) reads "CC0 1.0 Universal License",
 checked 2026-10-22. No credit line or in-world Credits entry is needed.
+
+### G24 seated-contact follow-up (2026-10-24)
+
+Current delivered GLB SHA-256 `5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0`, 726,680 bytes. The three CMU 143_18 seated clips were edited offline to align hip support and sole anchors with this G24 rig; their original contact masks are unchanged. Geometry Draco primitive bytes, skeleton, materials and the other twelve clips are preserved. See `character/close-manifest.json`, `character/a3-followup-report.md` and `character/safe-seat-report.md` for native/fresh-Draco and runtime evidence and unresolved gait/slope limitations. Sources, licenses and the CMU/100STYLE credits above remain unchanged.
