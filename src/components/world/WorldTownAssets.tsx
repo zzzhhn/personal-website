@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame, useLoader, useThree } from '@react-three/fiber';
 import { ConvexHullCollider, CuboidCollider, RigidBody } from '@react-three/rapier';
-import { BufferAttribute, BufferGeometry, Color, DoubleSide, Matrix4, Mesh, MeshBasicMaterial, MeshStandardMaterial, Object3D, Quaternion, Vector3, type Material } from 'three';
+import { Box3, BufferAttribute, BufferGeometry, Color, DoubleSide, Matrix4, Mesh, MeshBasicMaterial, MeshStandardMaterial, Object3D, Quaternion, Vector3, type Material } from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
@@ -94,7 +94,7 @@ function wantPart(p: Placement, name: string) {
 }
 
 interface Built {
-  regions: Record<Region, { meshes: Mesh[]; lod: Mesh | null; center: Vector3; radius: number }>;
+  regions: Record<Region, { meshes: Mesh[]; lod: Mesh | null; center: Vector3; radius: number; bounds: Box3 }>;
   palms: Mesh[];
   strips: Mesh | null;
   bodies: { name: string; asset: AssetId; interactable?: string; hulls: Float32Array[] }[];
@@ -245,7 +245,7 @@ function build(gltfs: GLTF[]): Built {
       lodTris += tris(lod.geometry);
     }
     const b = bounds[r], center = b.min.clone().add(b.max).multiplyScalar(.5);
-    regions[r] = { meshes, lod, center, radius: meshes.length ? b.max.distanceTo(center) : 0 };
+    regions[r] = { meshes, lod, center, radius: meshes.length ? b.max.distanceTo(center) : 0, bounds: new Box3(b.min, b.max) };
   }
   const palms: Mesh[] = [];
   for (const [name, list] of palmGeoms) {
@@ -358,7 +358,7 @@ export default function WorldTownAssets({ experiences }: { experiences: WorldCon
     // region LOD: beyond 60 m from a region's bounds, its merged detail swaps to the hull LOD1
     for (const r of Object.values(built.regions)) {
       if (!r.lod) continue;
-      const far = camera.position.distanceTo(r.center) - r.radius > 60;
+      const far = r.bounds.distanceToPoint(camera.position) > 60;
       r.lod.visible = far; r.meshes.forEach(m => { m.visible = !far; });
     }
   });
