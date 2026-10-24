@@ -1,6 +1,6 @@
 {
  "date": "2026-10-24",
- "status": "r13: sit-entry A3 passes; stand retreat A3 fails",
+ "status": "r14: local C06/P16 sit and stand A3 passes; P16 fallback air displacement visual failure",
  "finalAsset": {
   "path": "public/assets/world/guide/G24.glb",
   "sha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0",
@@ -91,7 +91,7 @@
   }
  },
  "evidenceRoot": "/Users/bobby/Desktop/3D-personal-world/evidence/character-close",
- "finalRuntime": "a3-anchor-r13 / a3-anchor-P16-r13 / a3-anchor-vehicle-r13",
+ "finalRuntime": "safe-seat-C06-r14 / safe-seat-P16-r14",
  "astroCheck": {
   "errors": 0,
   "warnings": 0,
@@ -99,8 +99,8 @@
   "log": "/Users/bobby/Desktop/3D-personal-world/evidence/character-close/astro-final.log"
  },
  "knownFailures": [
-  "A3 contact drift during seat approach/stand retreat exceeds fixed 40mm switch window; see final-r9/a3-windows.json",
-  "P16 close camera collides with hut and crops legs; actual screenshot kept, not replaced by studio render"
+  "P16 r14 rejects front candidates and falls back to a far point; airborne display blend is visually too long. Side candidate patch requested next.",
+  "Historical slope-v3d floats/sinks and transition-ab Run210.3mm remain unclosed; see safe-seat-report.md"
  ],
  "notTested": [
   "No unchanged gait regression package",
@@ -129,11 +129,11 @@
  },
  "runtimeA6": {
   "C06": {
-   "samples": 800,
+   "samples": 795,
    "passed": true
   },
   "P16": {
-   "samples": 795,
+   "samples": 793,
    "passed": true
   },
   "vehicle": {
@@ -153,5 +153,217 @@
    "failedSamples": 0
   }
  },
- "currentReport": "docs/world/character/a3-followup-report.md"
+ "currentReport": "docs/world/character/safe-seat-report.md",
+ "safeStand": {
+  "C06": {
+   "label": "C06",
+   "floorY": 4.798829250335693,
+   "frames": 795,
+   "rootStepMax_mm": 77.56120164102364,
+   "stood": true,
+   "switches": [
+    {
+     "t": 4.4793,
+     "from": "Idle",
+     "to": "Walk",
+     "window": [
+      4.2793,
+      4.7793
+     ],
+     "contactIntervals": 72,
+     "maxContactDriftIncludingTurnArc_mm": 0,
+     "turnIntervals": 0,
+     "maxContactDrift_mm": 0,
+     "threshold_mm": 80,
+     "passed": true
+    },
+    {
+     "t": 4.6013,
+     "from": "Walk",
+     "to": "Idle",
+     "window": [
+      4.4013,
+      4.9013
+     ],
+     "contactIntervals": 0,
+     "maxContactDriftIncludingTurnArc_mm": 0,
+     "turnIntervals": 0,
+     "maxContactDrift_mm": 0,
+     "threshold_mm": 80,
+     "passed": null
+    },
+    {
+     "t": 5.468,
+     "from": "Idle",
+     "to": "SitDown",
+     "window": [
+      5.268,
+      5.768
+     ],
+     "contactIntervals": 72,
+     "maxContactDriftIncludingTurnArc_mm": 21.37,
+     "turnIntervals": 0,
+     "maxContactDrift_mm": 21.37,
+     "threshold_mm": 40,
+     "passed": true
+    },
+    {
+     "t": 6.0513,
+     "from": "SitDown",
+     "to": "SitIdle",
+     "window": [
+      5.8513,
+      6.3513
+     ],
+     "contactIntervals": 0,
+     "maxContactDriftIncludingTurnArc_mm": 0,
+     "turnIntervals": 0,
+     "maxContactDrift_mm": 0,
+     "threshold_mm": 40,
+     "passed": null
+    },
+    {
+     "t": 15.1853,
+     "from": "SitIdle",
+     "to": "StandUp",
+     "window": [
+      14.9853,
+      15.4853
+     ],
+     "contactIntervals": 0,
+     "maxContactDriftIncludingTurnArc_mm": 0,
+     "turnIntervals": 0,
+     "maxContactDrift_mm": 0,
+     "threshold_mm": 40,
+     "passed": null
+    },
+    {
+     "t": 15.6518,
+     "from": "StandUp",
+     "to": "Idle",
+     "window": [
+      15.4518,
+      15.9518
+     ],
+     "contactIntervals": 72,
+     "maxContactDriftIncludingTurnArc_mm": 26.27,
+     "turnIntervals": 0,
+     "maxContactDrift_mm": 26.27,
+     "threshold_mm": 40,
+     "passed": true
+    }
+   ],
+   "turns": [],
+   "seated": {
+    "frames": 547,
+    "groundContactIntervals": 0,
+    "note": "No ground contacts means dangling, not a ground-slip pass."
+   }
+  },
+  "P16": {
+   "label": "P16",
+   "floorY": 1.1388248729705812,
+   "frames": 793,
+   "rootStepMax_mm": 296.9117882469482,
+   "stood": true,
+   "switches": [
+    {
+     "t": 4.4921,
+     "from": "Idle",
+     "to": "Walk",
+     "window": [
+      4.2921,
+      4.7921
+     ],
+     "contactIntervals": 72,
+     "maxContactDriftIncludingTurnArc_mm": 0,
+     "turnIntervals": 0,
+     "maxContactDrift_mm": 0,
+     "threshold_mm": 80,
+     "passed": true
+    },
+    {
+     "t": 5.2123,
+     "from": "Walk",
+     "to": "Idle",
+     "window": [
+      5.0123,
+      5.5123
+     ],
+     "contactIntervals": 28,
+     "maxContactDriftIncludingTurnArc_mm": 0,
+     "turnIntervals": 0,
+     "maxContactDrift_mm": 0,
+     "threshold_mm": 80,
+     "passed": true
+    },
+    {
+     "t": 5.9456,
+     "from": "Idle",
+     "to": "SitDown",
+     "window": [
+      5.7456,
+      6.2456
+     ],
+     "contactIntervals": 72,
+     "maxContactDriftIncludingTurnArc_mm": 21.42,
+     "turnIntervals": 0,
+     "maxContactDrift_mm": 21.42,
+     "threshold_mm": 40,
+     "passed": true
+    },
+    {
+     "t": 6.5289,
+     "from": "SitDown",
+     "to": "SitIdle",
+     "window": [
+      6.3289,
+      6.8289
+     ],
+     "contactIntervals": 0,
+     "maxContactDriftIncludingTurnArc_mm": 0,
+     "turnIntervals": 0,
+     "maxContactDrift_mm": 0,
+     "threshold_mm": 40,
+     "passed": null
+    },
+    {
+     "t": 15.1628,
+     "from": "SitIdle",
+     "to": "StandUp",
+     "window": [
+      14.962800000000001,
+      15.462800000000001
+     ],
+     "contactIntervals": 6,
+     "maxContactDriftIncludingTurnArc_mm": 2.55,
+     "turnIntervals": 0,
+     "maxContactDrift_mm": 2.55,
+     "threshold_mm": 40,
+     "passed": true
+    },
+    {
+     "t": 15.6295,
+     "from": "StandUp",
+     "to": "Idle",
+     "window": [
+      15.4295,
+      15.9295
+     ],
+     "contactIntervals": 72,
+     "maxContactDriftIncludingTurnArc_mm": 24.48,
+     "turnIntervals": 0,
+     "maxContactDrift_mm": 24.48,
+     "threshold_mm": 40,
+     "passed": true
+    }
+   ],
+   "turns": [],
+   "seated": {
+    "frames": 517,
+    "groundContactIntervals": 0,
+    "note": "No ground contacts means dangling, not a ground-slip pass."
+   }
+  }
+ }
 }
