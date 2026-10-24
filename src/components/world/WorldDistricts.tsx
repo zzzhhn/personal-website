@@ -19,7 +19,7 @@ import { nearestDryPoint } from './WorldLandform';
 import { WATER_Y } from './layout';
 import { useWorldStore } from './store';
 import { windUniforms } from './WorldWind';
-import { isClaimed, type GreyboxKey } from './WorldVisualClaims';
+import { useClaimStore, useIsClaimed, type GreyboxKey } from './WorldVisualClaims';
 import type { Vec3 } from './types';
 
 /** Until WorldLandform evaluates ridgeHeightV4 itself (docs/world/quality-v3/map-v4/integration/), the
@@ -129,7 +129,8 @@ const SOLID_CLAIM: Record<SolidBox['kind'], GreyboxKey> = {
   bollard: 'street-fixed', bench: 'street-fixed', shelter: 'street-fixed', trunk: 'tree',
 };
 function Solids() {
-  const items = useMemo(() => solidsV4().filter(s => !isClaimed(SOLID_CLAIM[s.kind])), []);
+  const claims = useClaimStore(s => s.claims);
+  const items = useMemo(() => solidsV4().filter(s => !claims[SOLID_CLAIM[s.kind]]), [claims]);
   if (!items.length) return null;
   return <>
     <RigidBody name="v4-solids" type="fixed" colliders={false} userData={{ solid: true }}>
@@ -141,14 +142,15 @@ function Solids() {
 }
 
 function Decor() {
+  const paved = useIsClaimed('paved'), tree = useIsClaimed('tree');
   const { flat, raised } = useMemo(() => {
     const all = decorV4();
     // Flat decor = road markings (owned with the paving); raised = beach-walk stilts (paving) and the
     // pocket-park canopy (tree).
     const raisedAll = all.filter(d => d.size[1] >= .05);
-    return { flat: isClaimed('paved') ? [] : all.filter(d => d.size[1] < .05),
-      raised: raisedAll.filter(d => d.color === '#8AA24A' ? !isClaimed('tree') : !isClaimed('paved')) };
-  }, []);
+    return { flat: paved ? [] : all.filter(d => d.size[1] < .05),
+      raised: raisedAll.filter(d => d.color === '#8AA24A' ? !tree : !paved) };
+  }, [paved, tree]);
   return <>
     <Boxes name="v4-markings" items={flat} shadow={false} />
     <Boxes name="v4-decor" items={raised} shadow />
@@ -403,13 +405,14 @@ function DistrictsDebug() {
 }
 
 export default memo(function WorldDistricts() {
+  const paved = useIsClaimed('paved'), windmill = useIsClaimed('windmill'), knockable = useIsClaimed('knockable');
   return <group name="world-districts-v4">
-    {!isClaimed('paved') && <Paved />}
+    {!paved && <Paved />}
     <Solids />
     <Decor />
-    {!isClaimed('windmill') && <Windmill />}
+    {!windmill && <Windmill />}
     {RIDGE_PATCH && <RidgePatch />}
-    {!isClaimed('knockable') && <Knockables />}
+    {!knockable && <Knockables />}
     <DistrictsDebug />
   </group>;
 });

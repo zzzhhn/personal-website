@@ -199,8 +199,10 @@ export default function WorldActors() {
   const cars = useRef(new Map<VehicleId,Car>());
   /** Interactable in reach this physics step (set before E handling). */
   const nearbyItem = useRef<Interactable|null>(null);
-  /** Seat id the body was last snapped to (store.seat). */
+  /** Seat id the body was last snapped to (store.seat), where it sat down from, and the seated body point. */
   const seatHeld = useRef<string|null>(null);
+  const seatFrom = useRef<Vec3|null>(null);
+  const seatBody = useRef<Vec3|null>(null);
   const keys = useRef(new Set<string>());
   const actions = useRef({interact:false,jump:false,recover:false});
   const debugDrive = useRef<{input:DriveInput;remaining:number}|null>(null);
@@ -515,10 +517,27 @@ export default function WorldActors() {
     let nearby:VehicleId|null=null,nearest=3.8;
     const playerPosition=player.current.translation();
     if(!active)cars.current.forEach(car=>{const p=car.body.translation();const d=Math.hypot(p.x-playerPosition.x,p.y-playerPosition.y,p.z-playerPosition.z);if(d<nearest){nearest=d;nearby=car.spec.id;}});
-    // World interactables (booths, signs, seats, boards): a vehicle wins only when it is closer.
-    const reach=active?null:nearestInteractable(playerPosition.x,playerPosition.y,playerPosition.z);
+    // World interactables (spec §15.3). Only reachable anchors count: within reach and with a clear line
+    // of sight from the chest (no wall / floor between), so nothing triggers through a wall or a storey.
+    // Anchor distances are compared on the same horizontal metric as the car's (vehicle wins only when
+    // its anchor is closer). While seated, a card is open or driving, E belongs to that state.
+    const seated=!!state.seat,carded=!!state.card;
+    const sight=(item:Interactable)=>{
+      const [ix,iy,iz]=item.position,ox=playerPosition.x,oy=playerPosition.y+.45,oz=playerPosition.z;
+      const dx=ix-ox,dy=iy+.2-oy,dz=iz-oz,len=Math.hypot(dx,dy,dz);
+      if(len<.35)return true;
+      const hit=world.castRay(new rapier.Ray({x:ox,y:oy,z:oz},{x:dx/len,y:dy/len,z:dz/len}),len-.3,true,undefined,undefined,undefined,player.current??undefined,
+        c=>!c.isSensor()&&!(c.parent()?.userData as {interactable?:string}|undefined)?.interactable&&!(c.parent()?.userData as {vehicle?:string}|undefined)?.vehicle);
+      return !hit;
+    };
+    const reach=active||seated||carded?null:nearestInteractable(playerPosition.x,playerPosition.y,playerPosition.z,sight);
+    if(!active)nearest=nearby?Math.hypot(cars.current.get(nearby)!.body.translation().x-playerPosition.x,cars.current.get(nearby)!.body.translation().z-playerPosition.z):Infinity;
     if(reach&&nearby&&nearest<reach.distance)nearbyItem.current=null;else{nearbyItem.current=reach?.item??null;if(reach)nearby=null;}
+    if(seated||carded)nearby=null;
     const interactNow=(item:Interactable|null)=>{
+      const now=useWorldStore.getState();
+      if(now.seat){useWorldStore.setState({seat:null});return;}
+      if(now.card){useWorldStore.setState({card:null});return;}
       if(active)exit();else if(item){item.onInteract();}else if(nearby)enter(nearby);
       active=useWorldStore.getState().activeVehicle?cars.current.get(useWorldStore.getState().activeVehicle!):undefined;
     };
@@ -611,16 +630,30 @@ export default function WorldActors() {
         }
       }
       const magnitude=Math.min(1,Math.hypot(mv[0],mv[1])),running=keys.current.has('ShiftLeft')||keys.current.has('ShiftRight')||gp.sprint;
-      // Seated (store.seat): hold the seat pose; any movement input or a jump stands up.
+      // Seated (store.seat, spec §15.3): the capsule is disabled while seated so the seat keeps its own
+      // collider (benches stay solid); the visual sits at the seat point. Any movement input, a jump or E
+      // stands up: the body returns to where it sat down from (a free spot it reached on foot), or, if that
+      // spot is now blocked, to the first clear spot around the seat.
       const seat=useWorldStore.getState().seat;
       if(seat&&(magnitude>.05||actions.current.jump)){useWorldStore.setState({seat:null});actions.current.jump=false;}
-      else if(seat){
-        const s=seatHeld.current;
-        if(s!==seat.id){resetBody(player.current,[seat.position[0],seat.position[1]+PLAYER_CENTER_HEIGHT,seat.position[2]]);guideYaw.current=seat.yaw;seatHeld.current=seat.id;}
-        player.current.setLinvel({x:0,y:Math.min(0,velocity.y),z:0},true);
-        moveIntent.current='idle';guideTargetSpeed.current=0;actions.current.jump=false;
+      else if(seat&&seatHeld.current!==seat.id){
+        seatFrom.current=[p.x,p.y,p.z];seatHeld.current=seat.id;guideYaw.current=seat.yaw;
+        seatBody.current=[seat.position[0],seat.position[1]+PLAYER_CENTER_HEIGHT,seat.position[2]];
+        // A disabled body takes no part in collision, so it can rest at the seat point (inside the
+        // bench's collider) without being pushed out; the visual follows the body as usual.
+        player.current.setEnabled(false);resetBody(player.current,seatBody.current);
       }
-      if(!seat)seatHeld.current=null;
+      if(seat){moveIntent.current='idle';guideTargetSpeed.current=0;actions.current.jump=false;}
+      if(!seat&&seatHeld.current){
+        seatHeld.current=null;seatBody.current=null;
+        const from=seatFrom.current;seatFrom.current=null;
+        const free=(q:Vec3)=>{let blocked=false;world.intersectionsWithShape({x:q[0],y:q[1],z:q[2]},{x:0,y:0,z:0,w:1},new rapier.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),
+          ()=>{blocked=true;return false;},undefined,undefined,undefined,player.current??undefined,c=>!c.isSensor());return !blocked;};
+        let spot=from&&free(from)?from:null;
+        if(!spot&&from)for(let k=0;k<8&&!spot;k++){const a=k*Math.PI/4,q:Vec3=[from[0]+Math.cos(a)*.9,from[1]+.05,from[2]+Math.sin(a)*.9];if(free(q))spot=q;}
+        if(spot)resetBody(player.current,spot);
+        player.current.setEnabled(true);
+      }
       const speed=(seat?0:running?6.2:3.6)*magnitude;
       moveIntent.current=magnitude>.05?(running?'run':'walk'):'idle';
       // Movement is relative to the camera's current ground heading (GTA style), any angle.

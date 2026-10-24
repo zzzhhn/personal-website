@@ -25,17 +25,27 @@ const registry = new Map<string, Interactable>();
 export const interactables = () => registry.values();
 export function registerInteractable(item: Interactable) { registry.set(item.id, item); return () => { if (registry.get(item.id) === item) registry.delete(item.id); }; }
 
-/** Nearest enabled interactable within reach of (x, y, z); horizontal distance with a 2.5 m height gate. */
-export function nearestInteractable(x: number, y: number, z: number): { item: Interactable; distance: number } | null {
-  let best: { item: Interactable; distance: number } | null = null;
+/** QA-only listing (?qa=1): ids, kinds, positions and labels of every registered interactable. */
+if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1') {
+  (window as unknown as { __worldInteract?: unknown }).__worldInteract = {
+    list: () => [...registry.values()].map(i => ({ id: i.id, kind: i.kind, position: i.position, radius: i.radius ?? 2.2, label: i.label, enabled: i.enabled ? i.enabled() : true })),
+  };
+}
+
+/** Nearest enabled interactable within reach of (x, y, z): horizontal distance, a 2.5 m height gate,
+ * and an optional reachability test (WorldActors passes a line-of-sight ray). */
+export function nearestInteractable(x: number, y: number, z: number, reachable?: (item: Interactable) => boolean): { item: Interactable; distance: number } | null {
+  const inRange: { item: Interactable; distance: number }[] = [];
   for (const item of registry.values()) {
     if (item.enabled && !item.enabled()) continue;
     const [px, py, pz] = item.position;
     if (Math.abs(py - y) > 2.5) continue;
     const d = Math.hypot(px - x, pz - z);
-    if (d <= (item.radius ?? 2.2) && (!best || d < best.distance)) best = { item, distance: d };
+    if (d <= (item.radius ?? 2.2)) inRange.push({ item, distance: d });
   }
-  return best;
+  inRange.sort((a, b) => a.distance - b.distance);
+  for (const c of inRange) if (!reachable || reachable(c.item)) return c;
+  return null;
 }
 
 /** React registration; the latest onInteract / enabled closures are always used. */

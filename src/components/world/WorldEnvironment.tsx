@@ -19,9 +19,10 @@ import { createWorldWaterMaterial } from './WorldWater';
 import { windUniforms } from './WorldWind';
 import { SUN_OFFSET, fitSunShadow } from './WorldShadows';
 import WorldSurfaceColliders from './WorldSurfaceColliders';
-import { isClaimed } from './WorldVisualClaims';
+import { useClaimStore, useIsClaimed, type GreyboxKey } from './WorldVisualClaims';
 
-type Block = { position: Vec3; size: Vec3; color: string; rotation?: Vec3 };
+/** `claim`: greybox key whose formal replacement takes this block over (WorldVisualClaims). */
+type Block = { position: Vec3; size: Vec3; color: string; rotation?: Vec3; claim?: GreyboxKey };
 const V = (x: number, y: number, z: number): Vec3 => [x, y, z];
 const block = (position: Vec3, size: Vec3, color: string, rotation?: Vec3): Block => ({ position, size, color, rotation });
 
@@ -175,17 +176,18 @@ function offsetSegment(a: Vec3, b: Vec3, offset: number, y = 0): [Vec3, Vec3] {
  * slab, its visible shelves, the submerged copy and the r=24 camp cylinder are replaced. */
 const PARK_PLAZA: { position: Vec3; size: Vec3 }[] = [{ position: [45, -0.1, -45], size: [18, 2.2, 18] }];
 function Island() {
+  const plazaClaimed = useIsClaimed('park-plaza');
   return <>
     <IslandTerrain />
     {/* Closed greybox seabed and the park block's submerged base: visual only, under opaque water. */}
-    {!isClaimed('park-plaza') && <mesh name="greybox-submerged-plaza" position={[45, -9.5, -45]}>
+    {!plazaClaimed && <mesh name="greybox-submerged-plaza" position={[45, -9.5, -45]}>
       <boxGeometry args={[18, 17, 18]} /><meshStandardMaterial color="#8C8276" roughness={1} />
     </mesh>}
     <mesh name="greybox-seabed" position={[0, -19, 0]}>
       <boxGeometry args={[560, 2, 560]} /><meshStandardMaterial color="#8C8276" roughness={1} />
     </mesh>
     {/* Park plaza block: support-only top (surface) and solid sides; same box visual and coordinates. */}
-    {!isClaimed('park-plaza') && <>
+    {!plazaClaimed && <>
       <WorldSurfaceColliders name="park-plaza-surface" items={PARK_PLAZA} />
       <mesh name="park-plaza-block" position={PARK_PLAZA[0].position} receiveShadow>
         <boxGeometry args={PARK_PLAZA[0].size} /><meshStandardMaterial color={PALETTE.sand} roughness={1} />
@@ -197,6 +199,12 @@ function Island() {
 function createLayout() {
   const surfaces: Block[] = [], solids: Block[] = [], decor: Block[] = [], warm: Block[] = [], cyan: Block[] = [];
   const camp: CampLayout = { pads: [], padObjects: [], tents: [], benches: [], trees: [], lampHeads: [] };
+  /** Tag every block a section adds with the greybox key whose replacement owns it. */
+  const mark = (key: GreyboxKey, section: () => void) => {
+    const lists = [surfaces, solids, decor, warm, cyan], start = lists.map(l => l.length);
+    section();
+    lists.forEach((l, n) => { for (let i = start[n]; i < l.length; i++) l[i].claim = key; });
+  };
   // Touchable greybox poles and signs use the same visible block and fixed collider.
   // Layout v4: roads, rails, the old parking bay and inland blocks come from WorldDistricts instead.
   if (!LAYOUT_V4) ROAD_POINTS.slice(1).forEach((b, i) => {
@@ -208,7 +216,7 @@ function createLayout() {
       surfaces.push(segment(c, d, 1.5, PALETTE.edge));
     }
     // Bridge has continuous low barriers on both sides, with openings at each end.
-    if (i === 7 && !isClaimed('roadside')) for (const side of [-1, 1]) {
+    if (i === 7) mark('roadside', () => { for (const side of [-1, 1]) {
       const length=Math.hypot(b[0]-a[0],b[2]-a[2]);
       // The west end joins a northbound road at a right angle. A full-length
       // south rail crossed that road and trapped every car before the bridge.
@@ -223,8 +231,8 @@ function createLayout() {
         const bend:Vec3[]=[[20.75,1.54,-41.5],[22,1.54,-46.4],[26,1.54,-47.25],[c[0],1.54,c[2]]];
         for(let j=1;j<bend.length;j++)solids.push(segment(bend[j-1],bend[j],.3,PALETTE.cream,.4));
       }
-    }
-    if (i >= 3 && i <= 6 && !isClaimed('roadside')) {
+    } });
+    if (i >= 3 && i <= 6) mark('roadside', () => {
       // Seaward low guardrail, leaving the inland building forecourts open.
       const [c, d] = offsetSegment(a, b, 5.25, 0.52);
       // Leave the matching east-turn opening in the coastal guardrail.
@@ -234,12 +242,12 @@ function createLayout() {
       const p = V((c[0] + d[0]) / 2, 1.14, (c[2] + d[2]) / 2);
       solids.push(block(V(p[0], p[1] + 2, p[2]), V(0.18, 4, 0.18), PALETTE.slate));
       warm.push(block(V(p[0], p[1] + 4, p[2]), V(0.5, 0.35, 0.5), '#FFFFFF'));
-    }
+    });
   });
   // Coastal parking bay connects without a raised curb.
   if (!LAYOUT_V4) surfaces.push(block([20, 1.045, 12], [7, 0.19, 7], PALETTE.road));
-  if (!isClaimed('park-plaza')) surfaces.push(block([45, 1.045, -45], [17, 0.19, 17], PALETTE.edge));
-  if (!isClaimed('boardwalk')) BOARDWALK_POINTS.slice(1).forEach((b, i) => {
+  mark('park-plaza', () => surfaces.push(block([45, 1.045, -45], [17, 0.19, 17], PALETTE.edge)));
+  mark('boardwalk', () => BOARDWALK_POINTS.slice(1).forEach((b, i) => {
     const a = BOARDWALK_POINTS[i];
     surfaces.push(segment(a, b, BOARDWALK_WIDTH, PALETTE.wood, 0.3));
     // Short low rail runs leave broad side openings for the six landings.
@@ -264,9 +272,9 @@ function createLayout() {
       const x = a[0] + (b[0] - a[0]) * t, z = a[2] + (b[2] - a[2]) * t;
       decor.push(block([x, -0.1, z], [0.45, 2.5, 0.45], PALETTE.wood));
     }
-  });
+  }));
   // Every hut gets a continuous landing spur from the nearest boardwalk segment.
-  if (!isClaimed('booth')) BOOTHS.forEach(({ position: p }, i) => {
+  mark('booth', () => BOOTHS.forEach(({ position: p }, i) => {
     let best = Infinity, nearest: Vec3 = [49, 1.14, -46];
     BOARDWALK_POINTS.slice(1).forEach((b, n) => {
       const a = BOARDWALK_POINTS[n], dx = b[0] - a[0], dz = b[2] - a[2];
@@ -284,7 +292,7 @@ function createLayout() {
     solids.push(block([p[0], 1.7, p[2] + 1], [1.5, 1.1, 1], i % 2 ? PALETTE.cream : PALETTE.orange));
     decor.push(block([p[0] - 2.6, -0.05, p[2] + 2.6], [0.38, 2.4, 0.38], PALETTE.wood));
     decor.push(block([p[0] + 2.6, -0.05, p[2] + 2.6], [0.38, 2.4, 0.38], PALETTE.wood));
-  });
+  }));
   // Camp is an unmistakable ring with 3 tent blocks, 8 object pads and 4 benches.
   for (let i = 0; i < 8; i++) {
     const angle = i * Math.PI / 4;
@@ -297,12 +305,12 @@ function createLayout() {
     const angle = Math.PI / 4 + i * Math.PI / 2;
     camp.benches.push(block([-42 + Math.cos(angle) * 6, 5.1, 30 + Math.sin(angle) * 6], [4.8, 0.6, 0.8], PALETTE.wood, [0, -angle - Math.PI / 2, 0]));
   }
-  if (!isClaimed('camp-lamps')) for (let i = 0; i < 2; i++) {
+  mark('camp-lamps', () => { for (let i = 0; i < 2; i++) {
     solids.push(block([-30, 6, 31 + i * 6], [0.25, 2.4, 0.25], PALETTE.slate));
     // Camp exit lamp heads use a camp-owned material (WorldCamp); global cyan is unchanged.
     camp.lampHeads.push(block([-30, 6.9, 31 + i * 6], [0.15, 0.6, 0.15], '#FFFFFF'));
-  }
-  if (!isClaimed('building-forecourt')) BUILDINGS.forEach((building) => {
+  } });
+  mark('building-forecourt', () => BUILDINGS.forEach((building) => {
     const [x, y, z] = building.position, [w, h, d] = building.size;
     surfaces.push(block([x + w / 2 + 2.7, y + 0.035, z], [5.4, 0.07, d + 1], PALETTE.edge));
     const roadX = x + w / 2 + 5;
@@ -315,22 +323,23 @@ function createLayout() {
       if ((row * 3 + col) % 5 >= 3) continue;
       warm.push(block([x + w / 2 + 0.025, y + 1.9 + row * 2.7, z - 2.6 + col * 2.6], [0.045, 1.35, 1.3], '#FFFFFF'));
     }
-  });
+  }));
   // Four low, unoccupied blocks give the inland side a second row.
-  if (!LAYOUT_V4 && !isClaimed('massing')) [[-18, 4.4, 8], [-13, 3.6, -8], [-12, 4.8, -24], [-4, 3.2, -45]].forEach(([x, h, z]) => {
+  if (!LAYOUT_V4) mark('massing', () => [[-18, 4.4, 8], [-13, 3.6, -8], [-12, 4.8, -24], [-4, 3.2, -45]].forEach(([x, h, z]) => {
     solids.push(block([x, 1 + h / 2, z], [8, h, 7], '#A29A85'));
-  });
-  if (!isClaimed('foundation')) FOUNDATIONS.forEach(({ position: p, size }) => {
+  }));
+  mark('foundation', () => FOUNDATIONS.forEach(({ position: p, size }) => {
     surfaces.push(block(p, size, '#A39B89'));
     solids.push(block([p[0], 2.1, p[2]], [2.8, 1.2, 0.18], PALETTE.orange));
-  });
+  }));
   // Lightweight placeholder vegetation uses boxes: no formal tree asset work.
   GROUND_TREES.forEach(([x, y, z], i) => {
     // Camp trunk positions are passed to WorldCamp, which fits each GLB collider.
     if (y === CAMP_CENTER[1]) { camp.trees.push(block([x, y + 1.4, z], [0.7, 2.8, 0.7], '#5A4634')); return; }
-    if (isClaimed('tree')) return;
-    solids.push(block([x, y + 1.4, z], [0.7, 2.8, 0.7], '#5A4634'));
-    decor.push(block([x, y + 3.6, z], [3.8, 3.6, 3.8], i % 2 ? '#6F8A3A' : '#8AA24A'));
+    mark('tree', () => {
+      solids.push(block([x, y + 1.4, z], [0.7, 2.8, 0.7], '#5A4634'));
+      decor.push(block([x, y + 3.6, z], [3.8, 3.6, 3.8], i % 2 ? '#6F8A3A' : '#8AA24A'));
+    });
   });
   return { surfaces, solids, decor, warm, cyan, camp };
 }
@@ -424,14 +433,22 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
 const HUNYUAN_RING: Vec3 = (({ position: [x, y, z], size: [, h] }) => [x, y + h + .13, z] as Vec3)(BUILDINGS.find(b => b.id === 'hunyuan')!);
 
 export default memo(function WorldEnvironment({ experiences }: { experiences: WorldContent['experiences'] }) {
-  const items = useMemo(createLayout, []);
+  const all = useMemo(createLayout, []);
+  // Formal replacements claim greybox keys once their visual + collider mounted (WorldVisualClaims);
+  // claimed blocks drop out of both the instanced visuals and the fixed colliders.
+  const claims = useClaimStore(s => s.claims);
+  const items = useMemo(() => {
+    const keep = (list: Block[]) => list.some(b => b.claim && claims[b.claim]) ? list.filter(b => !b.claim || !claims[b.claim]) : list;
+    return { surfaces: keep(all.surfaces), solids: keep(all.solids), decor: keep(all.decor), warm: keep(all.warm), cyan: keep(all.cyan), camp: all.camp };
+  }, [all, claims]);
+  const buildingClaimed = useIsClaimed('building'), forecourtClaimed = useIsClaimed('building-forecourt');
   const warm = useMemo(() => new MeshStandardMaterial({ color: '#FFC978', emissive: '#FFC978', emissiveIntensity: 0.05, roughness: 1 }), []);
   const cyan = useMemo(() => new MeshStandardMaterial({ color: PALETTE.cyan, emissive: PALETTE.cyan, emissiveIntensity: 0.15, roughness: 1 }), []);
   useEffect(() => () => { warm.dispose(); cyan.dispose(); }, [warm, cyan]);
   return <group name="world-greybox-environment">
     <Lighting warm={warm} cyan={cyan} />
     <Island />
-    {!isClaimed('building-forecourt') && <WorldYears experiences={experiences.en} />}
+    {!forecourtClaimed && <WorldYears experiences={experiences.en} />}
     <StaticBlocks name="world-surface" items={items.surfaces} surface />
     <StaticBlocks name="world-solid" items={items.solids} />
     <StaticBlocks name="camp-pad-surface" items={items.camp.pads} surface visual={false} />
@@ -439,13 +456,13 @@ export default memo(function WorldEnvironment({ experiences }: { experiences: Wo
     <Blocks items={items.decor} shadow />
     <Blocks items={items.warm} material={warm} />
     <Blocks items={items.cyan} material={cyan} />
-    {!isClaimed('building') && BUILDINGS.map(({ id, position: [x, y, z], size: [w, h, d], color }) => <RigidBody key={id} type="fixed" colliders={false} userData={{ solid: true }}>
+    {!buildingClaimed && BUILDINGS.map(({ id, position: [x, y, z], size: [w, h, d], color }) => <RigidBody key={id} type="fixed" colliders={false} userData={{ solid: true }}>
       <CuboidCollider name={`building-${id}`} args={[w / 2, h / 2, d / 2]} position={[x, y + h / 2, z]} restitution={0.15} />
       <mesh name={`greybox-building-${id}`} position={[x, y + h / 2, z]} castShadow receiveShadow userData={{ occluder: true, solid: true }}>
         <boxGeometry args={[w, h, d]} /><meshStandardMaterial color={color} roughness={1} />
       </mesh>
     </RigidBody>)}
-    {!isClaimed('building') && <mesh position={HUNYUAN_RING} rotation={[-Math.PI / 2, 0, 0]}>
+    {!buildingClaimed && <mesh position={HUNYUAN_RING} rotation={[-Math.PI / 2, 0, 0]}>
       <ringGeometry args={[2.5, 2.54, 32]} /><primitive object={cyan} attach="material" />
     </mesh>}
   </group>;

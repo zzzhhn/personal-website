@@ -13,7 +13,7 @@ import { attachNatureWind } from './WorldNatureMotion';
 import { applyTentWind, markTentCloth, windUniforms, isWorldRunning } from './WorldWind';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import { CAMP_CENTER } from './layout';
-import { isClaimed } from './WorldVisualClaims';
+import { useIsClaimed } from './WorldVisualClaims';
 import { useWorldStore } from './store';
 import type { Vec3 } from './types';
 
@@ -515,6 +515,7 @@ export default memo(function WorldCamp({ layout }: { layout: CampLayout }) {
   const fallbackTree = (id: string) => data.trees.flatMap((t, i) => t.id !== id ? [] : [layout.trees[i], { ...layout.trees[i], position: [layout.trees[i].position[0], CAMP_TOP + 3.6, layout.trees[i].position[2]] as Vec3, size: [3.8, 3.6, 3.8] as Vec3, color: '#6F8A3A' }]);
   const padObject = (n: number) => [layout.padObjects[PAD_ORDER[n]]];
   const firePosition: Vec3 = [CAMP_CENTER[0], CAMP_TOP, CAMP_CENTER[2]];
+  const lampsClaimed = useIsClaimed('camp-lamps'), placeholderClaimed = useIsClaimed('camp-placeholder');
 
   return <group name="world-camp-slice">
     {/* Plateau ground, flanks and rock terraces are the island terrain (WorldTerrain). */}
@@ -523,10 +524,10 @@ export default memo(function WorldCamp({ layout }: { layout: CampLayout }) {
     <CampNightFill />
     <CampFireSpill />
     <CampNightMaterials />
-    {!isClaimed('camp-lamps') && <CampLamps heads={layout.lampHeads} />}
+    {!lampsClaimed && <CampLamps heads={layout.lampHeads} />}
     <Boxes name="camp-C02-flagstones" items={data.tiles} shadow={false} />
     {/* Pads 4-8 keep their old collider: low canvas bundles mark C11-C15 as not yet made. */}
-    {!isClaimed('camp-placeholder') && <group name={`camp-placeholder-${PLACEHOLDER_IDS.join('-')}`}>
+    {!placeholderClaimed && <group name={`camp-placeholder-${PLACEHOLDER_IDS.join('-')}`}>
       <BlockColliders id="C11-C15" blocks={data.placeholders} />
       <Boxes items={data.placeholders.map(b => ({ ...b, color: '#CDB894', rotation: [0, b.rotation?.[1] ?? 0, 0] }))} geometry={BUNDLE} />
       <Boxes items={data.placeholders.flatMap(b => [-0.25, 0.25].map(o => ({ position: [b.position[0] + o, b.position[1], b.position[2]] as Vec3, size: [0.09, b.size[1] + 0.02, b.size[2] + 0.02] as Vec3, color: '#6E5A44' })))} />
