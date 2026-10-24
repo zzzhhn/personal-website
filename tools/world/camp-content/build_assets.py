@@ -187,7 +187,132 @@ def build_C11():
     export('C11', root, objs)
 
 
-BUILDERS = {'C11': build_C11}
+# ------------------------------------------------------------------ C12 guitar on an A-frame stand
+def outline_slab(outline, t, edge, x0=0.0):
+    """Closed slab of a CCW (y, z) outline, thickness t along X centred on x0, with a one-step
+    rounded rim (outer rings inset by `edge`), so the body edge reads soft under smooth shading."""
+    n = len(outline)
+    def inset(d):
+        out = []
+        for i in range(n):
+            (ya, za), (yb, zb), (yc, zc) = outline[i - 1], outline[i], outline[(i + 1) % n]
+            ny, nz = (zc - za), -(yc - ya)          # outward normal of a CCW loop
+            L = math.hypot(ny, nz) or 1
+            out.append((yb - ny / L * d, zb - nz / L * d))
+        return out
+    bm = bmesh.new()
+    rings = []
+    for x, d in ((x0 - t / 2, edge), (x0 - t / 2 + edge, 0.0), (x0 + t / 2 - edge, 0.0), (x0 + t / 2, edge)):
+        rings.append([bm.verts.new((x, y, z)) for y, z in inset(d)])
+    for a, b in zip(rings, rings[1:]):
+        for i in range(n):
+            j = (i + 1) % n
+            bm.faces.new((a[i], a[j], b[j], b[i]))
+    # caps fanned from a centre vertex (the outline is concave at the waist)
+    for ring, sgn in ((rings[0], -1), (rings[-1], 1)):
+        cy = sum(v.co.y for v in ring) / n
+        cz = sum(v.co.z for v in ring) / n
+        c = bm.verts.new((ring[0].co.x, cy, cz))
+        for i in range(n):
+            j = (i + 1) % n
+            bm.faces.new((ring[i], ring[j], c) if sgn > 0 else (ring[j], ring[i], c))
+    return bm
+
+
+def guitar_outline(samples=22):
+    """Acoustic body half-width w(z) as a smooth union of lower / upper bouts; returns CCW loop."""
+    lower, upper = (0.19, 0.19), (0.145, 0.465)    # (radius, centre z)
+    z0, z1 = lower[1] - lower[0], upper[1] + upper[0]
+    def w(z):
+        a = math.sqrt(max(0.0, lower[0] ** 2 - (z - lower[1]) ** 2))
+        b = math.sqrt(max(0.0, upper[0] ** 2 - (z - upper[1]) ** 2))
+        return (a ** 4 + b ** 4) ** 0.25  # p-norm union -> rounded waist
+    zs = [z0 + (z1 - z0) * (0.5 - 0.5 * math.cos(math.pi * i / samples)) for i in range(samples + 1)]
+    right = [(max(w(z), 0.012), z) for z in zs[1:-1]]
+    return [(0.0, z0)] + right + [(0.0, z1)] + [(-y, z) for y, z in reversed(right)]
+
+
+def build_C12():
+    gtr, strings, stand = Part('C12_guitar'), Part('C12_strings'), Part('C12_stand')
+    T = 0.10
+    outline = guitar_outline()
+    gtr.add(outline_slab(outline, T, 0.012), 'wood_mid', orient=True)
+    # spruce top: a thin proud skin just in front of the body face (not coplanar)
+    top = [(y * 0.985, 0.19 + (z - 0.19) * 0.99) for y, z in outline]
+    gtr.add(outline_slab(top, 0.006, 0.002, x0=T / 2 + 0.002), 'wood_light')
+    FX = T / 2 + 0.005  # front face of the top
+    gtr.add(strut((FX - 0.002, 0, 0.40), (FX + 0.002, 0, 0.40), 0.047, 0.047, 20), 'rubber')          # sound hole
+    gtr.add(xform(torus((0, 0, 0), 0.056, 0.005, 20, 4, axis='X'), loc=(FX, 0, 0.40)), 'wood_dark')  # rosette
+    pg = [(0.045, 0.3), (0.12, 0.27), (0.13, 0.33), (0.09, 0.37), (0.05, 0.36)]
+    pgm = bmesh.new()
+    b = [pgm.verts.new((FX - 0.001, y, z)) for y, z in pg]
+    f = [pgm.verts.new((FX + 0.002, y, z)) for y, z in pg]
+    pgm.faces.new(list(reversed(b))); pgm.faces.new(f)
+    for i in range(len(pg)):
+        j = (i + 1) % len(pg); pgm.faces.new((b[i], b[j], f[j], f[i]))
+    gtr.add(pgm, 'canvas_orange')
+    gtr.add(box((FX - 0.002, -0.07, 0.155), (FX + 0.012, 0.07, 0.185), bevel=0.004), 'wood_dark')      # bridge
+    gtr.add(box((FX + 0.006, -0.045, 0.176), (FX + 0.014, 0.045, 0.181)), 'paper')                     # saddle
+    # neck, fretboard, frets, headstock, pegs
+    NZ0, NZ1 = 0.60, 0.97
+    gtr.add(box((T / 2 - 0.045, -0.026, NZ0 - 0.02), (T / 2 - 0.005, 0.026, NZ1), bevel=0.008, top_scale=0.9), 'wood_mid')
+    gtr.add(box((T / 2 - 0.005, -0.027, NZ0 - 0.12), (FX + 0.006, 0.027, NZ1), bevel=0.002, top_scale=0.88), 'wood_dark')
+    for k in range(7):
+        z = NZ0 - 0.1 + (NZ1 - NZ0 + 0.1) * (1 - 0.82 ** (k + 1)) / (1 - 0.82 ** 7)
+        w = 0.027 - 0.003 * (z - NZ0 + 0.12) / (NZ1 - NZ0 + 0.12)
+        gtr.add(box((FX + 0.006, -w, z - 0.0015), (FX + 0.009, w, z + 0.0015)), 'steel')
+    gtr.add(box((FX + 0.005, -0.026, NZ1 - 0.006), (FX + 0.012, 0.026, NZ1)), 'paper')                 # nut
+    head = box((-0.012, -0.036, 0.0), (0.012, 0.036, 0.19), bevel=0.006, top_scale=1.0)
+    xform(head, rot=('Y', math.radians(-13)), loc=(T / 2 - 0.012, 0, NZ1 - 0.005))
+    gtr.add(head, 'wood_dark')
+    for k in range(3):
+        z = NZ1 + 0.045 + k * 0.05
+        x = T / 2 - 0.012 - (z - NZ1) * math.tan(math.radians(13))
+        for s in (-1, 1):
+            gtr.add(strut((x, s * 0.03, z), (x, s * 0.062, z), 0.006, 0.006, 8), 'steel')
+            gtr.add(box((x - 0.006, s * 0.06 - 0.004, z - 0.011), (x + 0.006, s * 0.06 + 0.012 * s * 0 + 0.004, z + 0.011), bevel=0.003), 'brass')
+    gtr.add(strut((0, 0, 0.0), (-0.0, 0, -0.012), 0.008, 0.006, 8), 'brass')                            # end pin
+    for i in range(6):  # strings: one node (vibration feedback)
+        y0 = -0.025 + i * 0.01
+        y1 = -0.019 + i * 0.0076
+        r = 0.0012 + 0.00035 * (5 - i)
+        strings.add(strut((FX + 0.0135, y0 * 1.6, 0.178), (FX + 0.0125, y1, NZ1 - 0.003), r, r, 6), 'steel')
+    # lean the guitar back 15 deg (top toward -X) and lift it onto the cradle
+    LEAN, LIFT = math.radians(-15), 0.12
+    for p in (gtr, strings):
+        bmesh.ops.rotate(p.bm, verts=p.bm.verts, cent=(0, 0, 0), matrix=Matrix.Rotation(LEAN, 3, 'Y'))
+        bmesh.ops.translate(p.bm, verts=p.bm.verts, vec=(0.0, 0, LIFT))
+    # stand: cradle (rubber-padded U), two splayed front legs, a mast parallel to the guitar back with a
+    # padded neck yoke (built in the guitar's pre-lean frame, then leaned with it), and a rear leg.
+    CZ = LIFT - 0.012
+    stand.add(strut((0.07, -0.15, CZ), (0.07, 0.15, CZ), 0.012, 0.012, 10), 'iron_dark')
+    for s_ in (-1, 1):
+        stand.add(strut((0.07, s_ * 0.15, CZ), (0.07, s_ * 0.15, CZ + 0.06), 0.012, 0.012, 10), 'iron_dark')
+        stand.add(strut((0.07, s_ * 0.15, CZ + 0.055), (0.07, s_ * 0.15, CZ + 0.085), 0.017, 0.017, 10), 'rubber')
+        stand.add(strut((0.07, s_ * 0.1, CZ), (0.17, s_ * 0.23, 0.0), 0.011, 0.011, 10), 'iron_dark')
+        stand.add(sphere((0.17, s_ * 0.23, 0.012), 0.016, 10, 6), 'rubber')
+    mast = Part('tmp')
+    MX, MZ = -T / 2 - 0.03, 0.74                      # pre-lean frame
+    mast.add(strut((MX, 0, -0.02), (MX, 0, MZ), 0.013, 0.012, 10), 'iron_dark')
+    for s_ in (-1, 1):
+        mast.add(strut((MX, 0, MZ), (MX + 0.02, s_ * 0.045, MZ + 0.012), 0.009, 0.009, 8), 'iron_dark')
+        mast.add(strut((MX + 0.02, s_ * 0.045, MZ + 0.012), (T / 2 - 0.02, s_ * 0.045, MZ + 0.012), 0.012, 0.012, 10), 'rubber')
+    rot = Matrix.Rotation(LEAN, 3, 'Y')
+    bmesh.ops.rotate(mast.bm, verts=mast.bm.verts, cent=(0, 0, 0), matrix=rot)
+    bmesh.ops.translate(mast.bm, verts=mast.bm.verts, vec=(0.0, 0, LIFT))
+    low = rot @ Vector((MX, 0, -0.02)) + Vector((0, 0, LIFT))
+    stand.merge(mast)
+    stand.add(strut((0.07, 0, CZ), (low.x, 0, low.z), 0.011, 0.011, 10), 'iron_dark')
+    stand.add(strut((low.x, 0, low.z), (-0.36, 0, 0.0), 0.011, 0.011, 10), 'iron_dark')
+    stand.add(sphere((-0.36, 0, 0.012), 0.016, 10, 6), 'rubber')
+    root, objs, shift = finalize('C12', [gtr, strings, stand],
+        part_extras={'C12_strings': {'role': 'feedback-vibrate', 'pivot': 'asset origin; scale local X about the string plane'}},
+        root_extras={'collision': 'pushable: one dynamic convex hull of the whole asset (guitar falls with its stand)', 'massKg': 4.0,
+                     'text': 'none'})
+    export('C12', root, objs)
+
+
+BUILDERS = {'C11': build_C11, 'C12': build_C12}
 
 if __name__ == '__main__':
     run(BUILDERS)

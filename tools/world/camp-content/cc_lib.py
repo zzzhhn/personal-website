@@ -92,6 +92,15 @@ class Part:
         src.free()
         return self
 
+    def merge(self, other):
+        """Move every face of another Part (keeping its palette keys) into this one."""
+        vmap = {v: self.bm.verts.new(v.co) for v in other.bm.verts}
+        for f in other.bm.faces:
+            nf = self.bm.faces.new([vmap[v] for v in f.verts])
+            nf[self.layer] = self.key_index(other.keys[f[other.layer]])
+        other.bm.free()
+        return self
+
 
 def xform(bm, rot=None, loc=(0, 0, 0), scale=None):
     """rot: Matrix (3x3) or (axis, angle)."""
