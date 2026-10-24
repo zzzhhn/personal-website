@@ -22,6 +22,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { Bot, CHROME, loadPlaywright, openWorld } from './lib.mjs';
+import { aim as aimView, cam, look } from './budget-lib.mjs';
 
 const base = process.env.WORLD_BASE_URL || 'http://127.0.0.1:4338';
 const out = path.resolve(process.env.WORLD_PLAYTEST_DIR || '/tmp/world-budget');
@@ -33,7 +34,6 @@ await mkdir(out, { recursive: true });
 
 // Orbit camera: camera = target + (cos p cos y, sin p, cos p sin y) * d, so looking along ground dir (dx, dz)
 // needs yaw = atan2(-dz, -dx).
-const look = (dx, dz) => Math.atan2(-dz, -dx);
 const Y = 1.25; // standing on road level (ROAD_Y 1.14)
 /** Worst-case gameplay views per district (v4 layout; the player stands where a visitor would). */
 const GAME_VIEWS = [
@@ -44,6 +44,7 @@ const GAME_VIEWS = [
   { id: 'ring-west', note: '环岛西段：向东望全岛', player: [-88, Y, 10], cam: { yaw: look(1, 0), pitch: .45, distance: 26 } },
   { id: 'north-hill', note: '北丘顶：向东南俯瞰城区与营地', player: [-30, 5.3, -76], cam: { yaw: look(.45, 1), pitch: .75, distance: 30 } },
   { id: 'south-beach', note: '南滩栏道：向北望营地山', player: [-26, 1.6, 84], cam: { yaw: look(0, -1), pitch: .3, distance: 18 } },
+  { id: 'shore-sea', note: '南滩向外海：低仰角海岸近景（海的最坏视角）', player: [-26, 1.6, 84], cam: { yaw: look(0, 1), pitch: .12, distance: 9 } },
   { id: 'park', note: '园区：桥头望园区', player: [49, Y, -46], cam: { yaw: look(13, 18), pitch: .5, distance: 22 } },
   { id: 'town-overview', note: '城区俯瞰：J6 向东，最高仰角最远距离', player: [-4, Y, -12], cam: { yaw: look(1, 0), pitch: 1.2, distance: 30 } },
   { id: 'drive', note: '驾驶追尾镜头：轿跑沿大道向北', drive: { car: 'coupe', at: [26.2, Y, 2] } },
@@ -52,37 +53,7 @@ const GAME_VIEWS = [
 const SHOT_VIEWS = ['camp', 'town', 'bridge', 'park', 'ridge', 'overview'].map(id => ({ id: `shot-${id}`, note: `QA 固定机位 ${id}（非游戏镜头）`, shot: id }));
 const VIEWS = [...GAME_VIEWS, ...(process.env.BUDGET_SHOTS === '0' ? [] : SHOT_VIEWS)].filter(v => !only || only.has(v.id));
 
-const wrap = a => Math.atan2(Math.sin(a), Math.cos(a));
-const cam = page => page.evaluate(() => __worldDebug.camera());
-async function drag(page, dx, dy) {
-  const cx = W / 2, cy = H / 2;
-  await page.mouse.move(cx, cy); await page.mouse.down();
-  await page.mouse.move(cx + dx, cy + dy, { steps: 10 }); await page.mouse.up(); await page.waitForTimeout(120);
-}
-/** Closed-loop aim with real drags (gain measured from the previous step) and wheel for distance. */
-async function aim(page, target) {
-  let gy = null, gp = null;
-  for (let i = 0; i < 8; i++) {
-    const c = await cam(page);
-    const ey = wrap(target.yaw - c.yaw), ep = target.pitch - c.pitch;
-    if (Math.abs(ey) < .03 && Math.abs(ep) < .03) break;
-    const px = gy ? ey / gy : Math.sign(ey) * Math.min(300, Math.abs(ey) * 200), py = gp ? ep / gp : Math.sign(ep) * Math.min(200, Math.abs(ep) * 200);
-    const clamp = v => Math.max(-700, Math.min(700, v));
-    await drag(page, clamp(px), clamp(py));
-    const d = await cam(page);
-    const dy = wrap(d.yaw - c.yaw), dp = d.pitch - c.pitch;
-    if (Math.abs(px) > 5 && Math.abs(dy) > 1e-3) gy = dy / clamp(px);
-    if (Math.abs(py) > 5 && Math.abs(dp) > 1e-3) gp = dp / clamp(py);
-  }
-  await page.mouse.move(W / 2, H / 2);
-  for (let i = 0; i < 40; i++) {
-    const c = await cam(page), e = target.distance - c.desiredDistance;
-    if (Math.abs(e) < .6) break;
-    await page.mouse.wheel(0, e > 0 ? 120 : -120); await page.waitForTimeout(60);
-  }
-  await page.waitForTimeout(900);
-  return cam(page);
-}
+const aim = (page, target) => aimView(page, target, W, H);
 
 const browser = await loadPlaywright().chromium.launch({ executablePath: CHROME, headless: true, args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'] });
 const report = { tool: 'budget-peak', base, startedAt: new Date().toISOString(), viewport: [W, H], qualities, hideDiff: hide, fixtures: [], errors: [], runs: [] };

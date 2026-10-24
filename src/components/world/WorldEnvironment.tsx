@@ -15,7 +15,7 @@ import WorldYears from './WorldYears';
 import WorldCamp, { type CampLayout } from './WorldCamp';
 import { IslandTerrain } from './WorldTerrain';
 import WorldSea from './WorldSea';
-import { createWorldWaterMaterial } from './WorldWater';
+import { createWorldWaterMaterial, seaGlintUniforms } from './WorldWater';
 import { windUniforms } from './WorldWind';
 import { SUN_OFFSET, fitSunShadow } from './WorldShadows';
 import WorldSurfaceColliders from './WorldSurfaceColliders';
@@ -375,7 +375,7 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
   const parkFillPositions = useMemo<Vec3[]>(() => [[56, 5.4, -43], [69, 5.4, -29], [59, 5.4, -13]], []);
   const state = useRef({ value: 0, start: 0, target: 0, elapsed: 2 });
   const skyUniforms = useMemo(() => ({ top: { value: new Color('#6F86A8') }, horizon: { value: new Color('#F2B98A') } }), []);
-  const colors = useMemo(() => ({ duskSea: new Color('#1E5A5E'), nightSea: new Color('#0E2A33'), duskTop: new Color('#6F86A8'), nightTop: new Color('#121A33'), duskHorizon: new Color('#F2B98A'), nightHorizon: new Color('#4A3A3A') }), []);
+  const colors = useMemo(() => ({ duskSea: new Color('#1E5A5E'), nightSea: new Color('#0E2A33'), duskTop: new Color('#6F86A8'), nightTop: new Color('#121A33'), duskHorizon: new Color('#F2B98A'), nightHorizon: new Color('#4A3A3A'), glint: new Color('#FFD9A8').multiplyScalar(1.6) }), []);
   useEffect(() => { state.current.start = state.current.value; state.current.target = light === 'night' ? 1 : 0; state.current.elapsed = 0; }, [light]);
   useEffect(() => {
     const oldFog = scene.fog;
@@ -408,6 +408,8 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
       // A low teal floor preserves the water silhouette; local warm park lights
       // supply the nearby illumination rather than widening cyan emissive strips.
       sea.emissiveIntensity = n * 0.22;
+      // Sun glitter follows the key light (warm at dusk, gone at night).
+      seaGlintUniforms.uGlint.value.copy(colors.glint).multiplyScalar(1 - n);
     }
     if (scene.fog) scene.fog.color.copy(skyUniforms.horizon.value);
   });

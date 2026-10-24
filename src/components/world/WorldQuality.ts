@@ -134,7 +134,7 @@ export function budgetZoneOf(object: Object3D | null | undefined): BudgetZone {
 }
 
 type Cost = { calls: number; triangles: number };
-type DrawGeometry = { index: { count: number } | null; attributes: { position?: { count: number } }; drawRange: { start: number; count: number } };
+type DrawGeometry = { index: { count: number } | null; attributes: { position?: { count: number } }; drawRange: { start: number; count: number }; isInstancedBufferGeometry?: boolean; instanceCount?: number };
 type DrawObject = Object3D & { count?: number; isInstancedMesh?: boolean; isMesh?: boolean; isPoints?: boolean; isLine?: boolean; isSprite?: boolean };
 type ProbeRenderer = {
   render: (...a: unknown[]) => void; renderBufferDirect: (...a: unknown[]) => void;
@@ -164,7 +164,8 @@ export function createBudgetProbe(scene: Object3D, renderer: () => unknown) {
         const vertices = geometry.index ? geometry.index.count : geometry.attributes.position?.count ?? 0;
         let n = Math.max(0, Math.min(vertices - (geometry.drawRange.start ?? 0), geometry.drawRange.count));
         if (group) n = Math.min(n, group.count);
-        const triangles = object.isMesh ? Math.floor(n / 3) * (object.isInstancedMesh ? object.count ?? 1 : 1) : 0;
+        const instances = object.isInstancedMesh ? object.count ?? 1 : geometry.isInstancedBufferGeometry ? geometry.instanceCount ?? 1 : 1;
+        const triangles = object.isMesh ? Math.floor(n / 3) * instances : 0;
         const who = pass === 'main' ? 'main' : cam.isOrthographicCamera ? 'sun' : 'fire';
         let zone = zoneCache.get(object);
         if (!zone) { zone = budgetZoneOf(object); zoneCache.set(object, zone); }
