@@ -30,7 +30,8 @@ try{
   const startX=target===2?112:target===5?106:96;
   await page.evaluate(({id,h,x})=>__worldDebug.teleportVehicle(id,[x,5+h,120],0),{id:spec.id,h,x:startX});
   await bot.fixtureTeleport([startX,6,117.8],`QA lane ${spec.id}/${kind}/${target} m/s; car placed at x=${startX}`);
-  await page.waitForTimeout(600);await bot.press('KeyE');await page.waitForTimeout(150);
+  await page.waitForTimeout(600);await bot.press('KeyE');
+  await page.waitForFunction(id=>__worldDebug.snapshot().activeVehicle===id,spec.id,{timeout:4000});
   const c={name:`${spec.id}-${kind}-${target}`,targetSpeed:target,fixture:{kind,lateral,startX},samples:[],entered:(await read()).s.activeVehicle===spec.id};
   let started=Date.now(),baseY=null,firstContact=null;
   while(c.entered&&Date.now()-started<12000){

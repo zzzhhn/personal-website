@@ -114,7 +114,7 @@ function readPad(previous: PadState): PadState {
 }
 
 /** L1 COM drop per car in metres (docs/world/vehicles/DESIGN.md 6; gated by the handling A/B). */
-const COM_DROP: Record<VehicleId, number> = { offroad: .5, coupe: .2, van: 0 };
+const COM_DROP: Record<VehicleId, number> = { offroad: .5, coupe: .2, van: .5 };
 function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Map<VehicleId,Car>>; impact: RefObject<number> }) {
   const body = useRef<RapierRigidBody>(null);
   const wheels = useRef<(Group | null)[]>([]);

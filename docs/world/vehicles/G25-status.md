@@ -1,7 +1,7 @@
 # G25 方正越野 4×4 · L1 r1（2026-10-24）
 
 - 生成：`tools/blender-run.sh vehicles tools/world/vehicles/build_vehicle.py G25 [--render]`（Blender 4.2.23）。产物 `public/assets/world/vehicles/G25.glb`（Draco，84 KB）、`tools/world/vehicles/blend/G25.blend`、`G25-report.json`、`src/components/world/WorldVehicleHulls.json` 的 G25 条目。
-- 三角：车身 7,748 + 轮 1,552×4 = 13,956（修改器后 = Draco 全新场景回读，包围盒一致 [-2.04,-1.185,0]–[2.06,1.185,2.267]）。退化面 0、非流形边 0、有限坐标、正体积。规划是 ≤ 11.7k，超 2.3k；三车合计预算 30k 在 G26/G27 里收回。
+- 三角：车身 7,748 + 轮 1,552×4 = 13,956（修改器后 = Draco 全新场景回读，包围盒一致 [-2.04,-1.185,0]–[2.06,1.185,2.267]）。退化面 0、非流形边 0、有限坐标、正体积。规划是 ≤ 11.7k，超 2.3k；最终三车近档合计 38,074，未收回到 30k，实测视角与 LOD 建议见 `FINAL-STATUS.md`。
 - 运行时：车身 1 draw call（烘成顶点色＋角色属性，共享着色器）＋四轮 1 InstancedMesh；夜间驾驶 +1 地面光斑。阴影 pass 另计。
 - 碰撞：11 个凸包（tub、cabin、四个轮拱块、两侧门槛、前后杠、行李架），质量 0；原两个盒子保留为不碰撞的质量载体，质心下移 0.5 m（规格 §10.3 的机制）。
 

@@ -1,0 +1,554 @@
+{
+  "lamp": {
+    "L0": 1110,
+    "L1": 192,
+    "ratio": 0.173,
+    "budget": [
+      1400,
+      420
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 32,
+    "nonManifold": 24,
+    "hulls": 5,
+    "bounds": [
+      [
+        -0.316,
+        0,
+        -1.666
+      ],
+      [
+        0.316,
+        4.87,
+        0.19
+      ]
+    ],
+    "minY": 0
+  },
+  "signal": {
+    "L0": 1406,
+    "L1": 214,
+    "ratio": 0.152,
+    "budget": [
+      1900,
+      560
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 25,
+    "hulls": 5,
+    "bounds": [
+      [
+        -0.415,
+        0,
+        -3.33
+      ],
+      [
+        0.24,
+        5.57,
+        0.28
+      ]
+    ],
+    "minY": 0
+  },
+  "bin": {
+    "L0": 874,
+    "L1": 118,
+    "ratio": 0.135,
+    "budget": [
+      900,
+      270
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 40,
+    "nonManifold": 0,
+    "hulls": 2,
+    "bounds": [
+      [
+        -0.3,
+        0,
+        -0.3
+      ],
+      [
+        0.3,
+        1,
+        0.3
+      ]
+    ],
+    "minY": 0
+  },
+  "delineator": {
+    "L0": 174,
+    "L1": 34,
+    "ratio": 0.195,
+    "budget": [
+      260,
+      78
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 1,
+    "bounds": [
+      [
+        -0.13,
+        0,
+        -0.124
+      ],
+      [
+        0.13,
+        1,
+        0.124
+      ]
+    ],
+    "minY": 0
+  },
+  "stop": {
+    "L0": 322,
+    "L1": 88,
+    "ratio": 0.273,
+    "budget": [
+      420,
+      126
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 2,
+    "bounds": [
+      [
+        -0.11,
+        0,
+        -0.314
+      ],
+      [
+        0.11,
+        2.38,
+        0.314
+      ]
+    ],
+    "minY": 0
+  },
+  "direction": {
+    "L0": 290,
+    "L1": 72,
+    "ratio": 0.248,
+    "budget": [
+      420,
+      126
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 2,
+    "bounds": [
+      [
+        -0.11,
+        0,
+        -0.75
+      ],
+      [
+        0.11,
+        2.63,
+        0.75
+      ]
+    ],
+    "minY": 0
+  },
+  "chevron": {
+    "L0": 290,
+    "L1": 72,
+    "ratio": 0.248,
+    "budget": [
+      420,
+      126
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 2,
+    "bounds": [
+      [
+        -0.11,
+        0,
+        -0.475
+      ],
+      [
+        0.11,
+        1.53,
+        0.475
+      ]
+    ],
+    "minY": 0
+  },
+  "roadblock": {
+    "L0": 856,
+    "L1": 192,
+    "ratio": 0.224,
+    "budget": [
+      900,
+      270
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 80,
+    "nonManifold": 0,
+    "hulls": 1,
+    "bounds": [
+      [
+        -0.65,
+        0,
+        -0.36
+      ],
+      [
+        0.65,
+        1,
+        0.36
+      ]
+    ],
+    "minY": 0
+  },
+  "bench": {
+    "L0": 1392,
+    "L1": 132,
+    "ratio": 0.095,
+    "budget": [
+      1700,
+      400
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 4,
+    "bounds": [
+      [
+        -0.9,
+        0,
+        -0.3
+      ],
+      [
+        0.9,
+        0.865,
+        0.33
+      ]
+    ],
+    "minY": 0
+  },
+  "bollard": {
+    "L0": 350,
+    "L1": 46,
+    "ratio": 0.131,
+    "budget": [
+      380,
+      110
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 32,
+    "nonManifold": 0,
+    "hulls": 1,
+    "bounds": [
+      [
+        -0.15,
+        0,
+        -0.15
+      ],
+      [
+        0.15,
+        0.9,
+        0.15
+      ]
+    ],
+    "minY": 0
+  },
+  "shelter": {
+    "L0": 720,
+    "L1": 180,
+    "ratio": 0.25,
+    "budget": [
+      1100,
+      400
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 9,
+    "bounds": [
+      [
+        -0.99,
+        0,
+        -1.72
+      ],
+      [
+        0.8,
+        2.48,
+        1.72
+      ]
+    ],
+    "minY": 0
+  },
+  "seawallBay": {
+    "L0": 256,
+    "L1": 40,
+    "ratio": 0.156,
+    "budget": [
+      420,
+      130
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 1,
+    "bounds": [
+      [
+        -0.08,
+        -0.5,
+        -0.08
+      ],
+      [
+        2,
+        1.034,
+        0.08
+      ]
+    ],
+    "minY": -0.5
+  },
+  "guardPost": {
+    "L0": 88,
+    "L1": 24,
+    "ratio": 0.273,
+    "budget": [
+      80,
+      24
+    ],
+    "overBudget": true,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 1,
+    "bounds": [
+      [
+        -0.05,
+        -0.5,
+        -0.19
+      ],
+      [
+        0.05,
+        0.78,
+        0.04
+      ]
+    ],
+    "minY": -0.5
+  },
+  "guardPanel": {
+    "L0": 192,
+    "L1": 24,
+    "ratio": 0.125,
+    "budget": [
+      260,
+      80
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 1,
+    "bounds": [
+      [
+        -2.335,
+        0.42,
+        -0.261
+      ],
+      [
+        2.335,
+        0.78,
+        -0.182
+      ]
+    ],
+    "minY": 0.42
+  },
+  "timberPost": {
+    "L0": 78,
+    "L1": 18,
+    "ratio": 0.231,
+    "budget": [
+      90,
+      30
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 1,
+    "bounds": [
+      [
+        -0.1,
+        -0.45,
+        -0.095
+      ],
+      [
+        0.1,
+        0.57,
+        0.095
+      ]
+    ],
+    "minY": -0.45
+  },
+  "timberBeam": {
+    "L0": 316,
+    "L1": 36,
+    "ratio": 0.114,
+    "budget": [
+      520,
+      160
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 1,
+    "bounds": [
+      [
+        -2.1,
+        -0.004,
+        -0.085
+      ],
+      [
+        2.1,
+        0.174,
+        0.085
+      ]
+    ],
+    "minY": -0.0043
+  },
+  "parapet": {
+    "L0": 968,
+    "L1": 24,
+    "ratio": 0.025,
+    "budget": null,
+    "overBudget": null,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 2,
+    "bounds": [
+      [
+        -0.14,
+        0,
+        -0.16
+      ],
+      [
+        11.44,
+        1.25,
+        0.16
+      ]
+    ],
+    "minY": 0
+  },
+  "windmillTower": {
+    "L0": 1492,
+    "L1": 84,
+    "ratio": 0.056,
+    "budget": null,
+    "overBudget": null,
+    "degenerate": 0,
+    "openEdges": 144,
+    "nonManifold": 0,
+    "hulls": 5,
+    "bounds": [
+      [
+        -1.15,
+        -0.12,
+        -1.1
+      ],
+      [
+        1.25,
+        12.25,
+        1.1
+      ]
+    ],
+    "minY": -0.12
+  },
+  "windmillRotor": {
+    "L0": 538,
+    "L1": 82,
+    "ratio": 0.152,
+    "budget": null,
+    "overBudget": null,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 7,
+    "bounds": [
+      [
+        -0.2,
+        -2.481,
+        -4.117
+      ],
+      [
+        0.43,
+        4.7,
+        4.05
+      ]
+    ],
+    "minY": -2.4809
+  },
+  "foundationSlab": {
+    "L0": 240,
+    "L1": 12,
+    "ratio": 0.05,
+    "budget": null,
+    "overBudget": null,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 1,
+    "bounds": [
+      [
+        -7.5,
+        0,
+        -6
+      ],
+      [
+        7.5,
+        0.21,
+        6
+      ]
+    ],
+    "minY": 0
+  },
+  "foundationSign": {
+    "L0": 232,
+    "L1": 48,
+    "ratio": 0.207,
+    "budget": null,
+    "overBudget": null,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 5,
+    "bounds": [
+      [
+        -1.3,
+        0,
+        -0.115
+      ],
+      [
+        1.3,
+        1.78,
+        0.12
+      ]
+    ],
+    "minY": 0
+  }
+}

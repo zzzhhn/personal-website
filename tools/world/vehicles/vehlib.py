@@ -158,7 +158,10 @@ def earclip(pts):
     def cross(o, a, b):
         return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0])
     def inside(p, a, b, c):
-        return sgn * cross(a, b, p) >= -1e-12 and sgn * cross(b, c, p) >= -1e-12 and sgn * cross(c, a, p) >= -1e-12
+        e1, e2, e3 = sgn * cross(a, b, p), sgn * cross(b, c, p), sgn * cross(c, a, p)
+        if e1 < -1e-12 or e2 < -1e-12 or e3 < -1e-12:
+            return False
+        return not (abs(e1) <= 1e-12 or abs(e2) <= 1e-12)
     tris, guard = [], 0
     while len(idx) > 3 and guard < 10 * n * n:
         guard += 1
@@ -182,7 +185,7 @@ def earclip(pts):
                 if abs(cross(a, b, c)) <= 1e-12:
                     idx.pop(k); break
             else:
-                raise RuntimeError('earclip: non-simple polygon')
+                raise RuntimeError('earclip: non-simple polygon ' + repr([tuple(round(c, 4) for c in pts[i]) for i in idx]))
             continue
         tris.append(best[2]); idx.pop(best[1])
     if len(idx) == 3 and sgn * cross(pts[idx[0]], pts[idx[1]], pts[idx[2]]) > 1e-12:

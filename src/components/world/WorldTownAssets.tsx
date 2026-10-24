@@ -12,7 +12,7 @@ import { useInteractable } from './WorldInteract';
 import { night } from './WorldNight';
 import { attachNatureWind } from './WorldNatureMotion';
 import { useWorldStore } from './store';
-import { boardAtlas, signAtlas, yearAtlas, type Atlas } from './WorldTownCanvas';
+import { boardAtlas, signAtlas, type Atlas } from './WorldTownCanvas';
 import type { Vec3, WorldContent, WorldExperience } from './types';
 
 /**
@@ -24,7 +24,9 @@ import type { Vec3, WorldContent, WorldExperience } from './types';
  * built from the same hulls (roof tops lowered to the deck, openings left open).
  */
 
-const IDS = ['T01', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T08', 'T09', 'T10', 'T11', 'T12'] as const;
+// G11 year posts are procedural dynamic street furniture. T08 in the inventory is paving;
+// the former private T08.glb post must not leave a second fixed pillar or floating date label here.
+const IDS = ['T01', 'T02', 'T03', 'T04', 'T05', 'T06', 'T07', 'T09', 'T10', 'T11', 'T12'] as const;
 type AssetId = typeof IDS[number];
 const URLS = IDS.map(id => `/assets/world/town/${id}.glb`);
 let draco: DRACOLoader | null = null;
@@ -49,7 +51,6 @@ function placements(): Placement[] {
   BUILDINGS.forEach(({ id, position: [x, y, z], size: [w] }, slot) => {
     const asset = BUILDING_ASSET[id];
     out.push({ asset, matrix: place(x, y, z), region: 'town', body: `building-${id}`, slot, lodColor: LOD_COLOR[asset] });
-    out.push({ asset: 'T08', matrix: place(x + w / 2 + 5, y, z), region: 'town', body: `pillar-${id}`, slot, lodColor: LOD_COLOR.T08 });
     out.push({ asset: 'T09', matrix: place(x + w / 2 + 3, y + .13, z + 2.7), region: 'town', body: `board-${id}`, slot, lodColor: LOD_COLOR.T09 });
   });
   // Two palms on the MoE forecourt corners (clear of the bollards at x 14.8 and the plaque at z + 2.7).
@@ -289,18 +290,16 @@ export default function WorldTownAssets({ experiences }: { experiences: WorldCon
   const ids = useMemo(() => BUILDINGS.map(b => b.id), []);
   const canvases = useMemo(() => {
     const signs = built.anchors.filter(a => a.name === 'anchor_sign' && a.slot !== undefined && a.asset < 'T07').sort((a, b) => a.slot! - b.slot!);
-    const years = built.anchors.filter(a => a.name.startsWith('anchor_year'));
     const boards = built.anchors.filter(a => a.name === 'anchor_board');
     const sAtlas: Atlas = signAtlas(signs.map(s => ids[s.slot!]), signs.map(s => s.w / s.h), en, zh);
-    const yAtlas = yearAtlas(en), bAtlas = boardAtlas(ids, en, zh);
+    const bAtlas = boardAtlas(ids, en, zh);
     const sMesh = new Mesh(quads(signs.map((s, i) => ({ ...s, row: sAtlas.rows[i] }))), new MeshBasicMaterial({ map: sAtlas.texture, vertexColors: true, toneMapped: false }));
-    const yMesh = new Mesh(quads(years.map(s => ({ ...s, row: yAtlas.rows[s.slot!] }))), new MeshBasicMaterial({ map: yAtlas.texture, vertexColors: true, toneMapped: false }));
     const bMesh = new Mesh(quads(boards.map(s => ({ ...s, row: bAtlas.rows[s.slot!] })), .006), new MeshStandardMaterial({ map: bAtlas.texture, roughness: .9 }));
-    sMesh.name = 'town-signs'; yMesh.name = 'town-year-plates'; bMesh.name = 'town-boards';
-    for (const m of [sMesh, yMesh, bMesh]) { m.receiveShadow = m === bMesh; m.userData.noOcclusionFade = true; }
-    return { sMesh, yMesh, bMesh, signSlots: signs.map(s => s.slot!), yearSlots: years.map(s => s.slot!),
+    sMesh.name = 'town-signs'; bMesh.name = 'town-boards';
+    for (const m of [sMesh, bMesh]) { m.receiveShadow = m === bMesh; m.userData.noOcclusionFade = true; }
+    return { sMesh, bMesh, signSlots: signs.map(s => s.slot!),
       boardPos: boards.map(b => ({ slot: b.slot!, position: b.position.toArray() as Vec3 })),
-      dispose: () => { for (const m of [sMesh, yMesh, bMesh]) { m.geometry.dispose(); (m.material as MeshBasicMaterial).map?.dispose(); (m.material as Material).dispose(); } } };
+      dispose: () => { for (const m of [sMesh, bMesh]) { m.geometry.dispose(); (m.material as MeshBasicMaterial).map?.dispose(); (m.material as Material).dispose(); } } };
   }, [built, en, zh, ids]);
   useEffect(() => canvases.dispose, [canvases]);
   // palm wind (paused / screenshot mode freezes through the shared wind uniforms)
@@ -331,7 +330,6 @@ export default function WorldTownAssets({ experiences }: { experiences: WorldCon
       col.needsUpdate = true;
     };
     tint(canvases.sMesh, canvases.signSlots, .62 - .3 * n, 1);
-    tint(canvases.yMesh, canvases.yearSlots, .55 - .1 * n, 1);
     // region LOD: beyond 60 m from a region's bounds, its merged detail swaps to the hull LOD1
     for (const r of Object.values(built.regions)) {
       if (!r.lod) continue;
@@ -341,7 +339,7 @@ export default function WorldTownAssets({ experiences }: { experiences: WorldCon
   });
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get('qa') !== '1') return;
-    Object.assign(window, { __worldTown: { stats: () => ({ ...built.stats, signs: canvases.signSlots.length, years: canvases.yearSlots.length, boards: canvases.boardPos.length }),
+    Object.assign(window, { __worldTown: { stats: () => ({ ...built.stats, signs: canvases.signSlots.length, years: 0, boards: canvases.boardPos.length }),
       levels: () => [...level.current], setVisible: (on: boolean) => { if (group.current) group.current.visible = on; return on; }, bodies: () => built.bodies.map(b => ({ name: b.name, hulls: b.hulls.length })),
       lod: () => Object.fromEntries(Object.entries(built.regions).map(([k, r]) => [k, { far: !!r.lod?.visible, center: r.center.toArray(), radius: r.radius }])) } });
     return () => { delete (window as unknown as Record<string, unknown>).__worldTown; };
@@ -355,7 +353,6 @@ export default function WorldTownAssets({ experiences }: { experiences: WorldCon
     {built.strips && <primitive object={built.strips} />}
     <primitive object={built.shadow} />
     <primitive object={canvases.sMesh} />
-    <primitive object={canvases.yMesh} />
     <primitive object={canvases.bMesh} />
     {built.bodies.map(b => <RigidBody key={b.name} name={`town-body-${b.name}`} type="fixed" colliders={false}
       userData={{ solid: true, assetId: b.asset, ...(b.interactable ? { interactable: b.interactable } : {}) }}>

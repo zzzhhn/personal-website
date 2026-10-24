@@ -66,7 +66,10 @@ async function follow(spec,route,{name,timeout=110000,cruise=6,slow=3.5,minProgr
 async function enterAt(spec,p,yaw,walkTo){
  await bot.release();await page.evaluate(()=>__worldDebug.exit());
  for(let i=0;i<specs.length;i++)await reset(specs[i].id,[90+i*8,7,125],0);
- await reset(spec.id,[p[0],p[1]+heightOf(spec),p[2]],yaw);await bot.fixtureTeleport(walkTo,`${spec.id} start`);await page.waitForTimeout(600);await bot.press('KeyE');await page.waitForTimeout(150);
+ await reset(spec.id,[p[0],p[1]+heightOf(spec),p[2]],yaw);await bot.fixtureTeleport(walkTo,`${spec.id} start`);await page.waitForTimeout(600);await bot.press('KeyE');
+ // Concurrent Chrome/Blender work can delay the physics step that consumes the E edge.
+ // Wait for the actual entry, and record a failed entry instead of calling it a driving failure.
+ await page.waitForFunction(id=>__worldDebug.snapshot().activeVehicle===id,spec.id,{timeout:4000});
 }
 const yawAlong=(r,i=0)=>Math.atan2(-(r[i+1][2]-r[i][2]),r[i+1][0]-r[i][0]);
 /** Player standing point 2.5 m to the car's left (+Z side when heading +X). */
