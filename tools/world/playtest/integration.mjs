@@ -41,12 +41,13 @@ try {
     await bot.fixtureTeleport(start, `approach ${item.id}`);
     // Seat anchors sit beside a solid log. Approach within the advertised reach radius, rather than
     // asking the capsule to walk through the seat to a stricter centre-point tolerance.
-    const walked = await bot.walk([[x, z]], { arrive: Math.min(1.4, (item.radius ?? 2.2) * .9), timeout: 8, maxRecoveries: 2 });
-    const before = await page.evaluate(() => { const s = __worldDebug.state(); return { card: s.card, seat: s.seat, toast: s.toast, nearby: s.nearbyInteract }; });
+    const walked = await bot.walk([[x, z]], { arrive: Math.min(1.4, item.radius ?? 2.2), timeout: 8, maxRecoveries: 2 });
+    const before = await page.evaluate(() => { const s = __worldDebug.state(); return { card: s.card, seat: s.seat, toast: s.toast, nearby: s.nearbyInteract, position: s.position }; });
     await bot.press('KeyE');
     await page.waitForTimeout(900);
     const after = await page.evaluate(() => { const s = __worldDebug.state(); return { card: s.card, seat: s.seat, toast: s.toast, nearby: s.nearbyInteract, active: s.activeVehicle }; });
     const row = { id: item.id, kind: item.kind, reached: walked.legs?.[0]?.reached ?? null, nearbyBefore: before.nearby?.id ?? null,
+      approachPosition: before.position, approachDistance: Math.hypot(before.position[0] - x, before.position[2] - z), radius: item.radius,
       opened: JSON.stringify(after.card) !== JSON.stringify(before.card) || JSON.stringify(after.seat) !== JSON.stringify(before.seat) || (after.toast?.at ?? 0) !== (before.toast?.at ?? 0),
       card: after.card, seat: after.seat, enteredVehicle: after.active };
     row.cardVisible = after.card ? await page.locator('.world-card').isVisible() : null;

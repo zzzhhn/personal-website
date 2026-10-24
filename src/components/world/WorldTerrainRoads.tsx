@@ -1,7 +1,7 @@
 /**
  * Layout v4 road paving, formal replacement of the `paved` greybox (terrain session, DESIGN.md §2-§3).
  * Geometry from WorldTerrainPaving (closed carriageway field with gutter, rolled kerb, sidewalk pavers;
- * frozen ramp / bridge decks; boardwalk; windmill pad; forecourts while town has not claimed them).
+ * frozen ramp / bridge decks; boardwalk; windmill pad; the v4 building forecourt surfaces).
  * One draw per spatial chunk (paving and paint merged); nothing casts shadows. The
  * very same triangles feed Rapier: walkable tops (incl. the rolled kerb face) are `surface`, the outer
  * skirts and prism walls are `solid`. Claims `paved` once mounted (visual and colliders ready).
@@ -10,7 +10,7 @@ import { memo, useEffect, useMemo } from 'react';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { BufferGeometry, Float32BufferAttribute, MeshStandardMaterial } from 'three';
 import { PAVE_STRIDE, pavingMesh, type PaveChunk } from './WorldTerrainPaving';
-import { useGreyboxClaim, useIsClaimed } from './WorldVisualClaims';
+import { useGreyboxClaim } from './WorldVisualClaims';
 
 const NOISE = /* glsl */`
 float pHash(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
@@ -189,25 +189,24 @@ function ChunkColliders({ name, pos, top, walls }: { name: string; pos: Float32A
   </>;
 }
 
-function Chunk({ c, material, forecourts }: { c: PaveChunk; material: MeshStandardMaterial; forecourts: boolean }) {
-  // One draw per chunk: forecourt triangles are appended while town has not claimed them.
-  const main = useMemo(() => geometryOf(forecourts ? [...c.v, ...c.fv] : c.v), [c, forecourts]);
+function Chunk({ c, material }: { c: PaveChunk; material: MeshStandardMaterial }) {
+  // Town replaces pillars and boards; v4 paving owns their walkable forecourt throughout handover.
+  const main = useMemo(() => geometryOf([...c.v, ...c.fv]), [c]);
   const fore = useMemo(() => c.fv.length ? geometryOf(c.fv) : null, [c]);
   useEffect(() => () => { main.g.dispose(); fore?.g.dispose(); }, [main, fore]);
   return <group name={`paving-v4-${c.key}`}>
     <mesh name={`paving-v4-chunk-${c.key}`} geometry={main.g} material={material} receiveShadow userData={{ surface: true }} />
     <ChunkColliders name={`paving-v4-${c.key}`} pos={main.pos} top={c.top} walls={c.walls} />
-    {forecourts && fore && <ChunkColliders name={`paving-v4-forecourts-${c.key}`} pos={fore.pos} top={c.ftop} walls={c.fwalls} />}
+    {fore && <ChunkColliders name={`paving-v4-forecourts-${c.key}`} pos={fore.pos} top={c.ftop} walls={c.fwalls} />}
   </group>;
 }
 
 export default memo(function WorldTerrainRoads() {
   const mesh = useMemo(pavingMesh, []);
   const material = useMemo(pavingMaterial, []);
-  const forecourtClaimed = useIsClaimed('building-forecourt');
   useEffect(() => () => material.dispose(), [material]);
   useGreyboxClaim('paved');
   return <group name="world-paving-v4">
-    {mesh.chunks.map(c => <Chunk key={c.key} c={c} material={material} forecourts={!forecourtClaimed} />)}
+    {mesh.chunks.map(c => <Chunk key={c.key} c={c} material={material} />)}
   </group>;
 });
