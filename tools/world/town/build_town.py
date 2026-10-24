@@ -116,6 +116,113 @@ def build_T01():
         A.box(*front.box(0.12, 0.2, u - 0.06, u + 0.06, 2.45, 2.7), 'town_glass_lit')
     return A
 
+
+# ============================================================== shared bits for the curtain-wall towers
+def curtain(A, F, u0, u1, z0, z1, pitch_u, floor_h, key, fin='town_slate', band='town_slate', fin_out=0.14,
+            glass_set=0.12, lit_share=0.6, skip=None):
+    """Curtain wall on plane F: glass panes set back, vertical fins every pitch_u, spandrel band per floor."""
+    nu = max(1, round((u1 - u0) / pitch_u)); pu = (u1 - u0) / nu
+    nf = max(1, round((z1 - z0) / floor_h)); fh = (z1 - z0) / nf
+    A.box(*F.box(-0.35, -glass_set - 0.02, u0, u1, z0, z1), 'town_dark')       # backing slab (never seen through)
+    for f in range(nf):
+        zb = z0 + f * fh
+        A.box(*F.box(-glass_set - 0.02, 0.02, u0, u1, zb, zb + 0.55), band)    # spandrel band
+        for c in range(nu):
+            if skip and skip(c, f):
+                continue
+            a, b = u0 + c * pu, u0 + (c + 1) * pu
+            g = 'town_glass_lit' if lit(f'{key}:{c}:{f}', lit_share) else 'town_glass_dark'
+            A.box(*F.box(-glass_set - 0.02, -glass_set, a + 0.03, b - 0.03, zb + 0.55, zb + fh), g)
+            A.box(*F.box(-glass_set, -glass_set + 0.03, a + 0.03, b - 0.03, zb + fh * 0.62, zb + fh * 0.62 + 0.04), 'town_metal')
+    for c in range(nu + 1):
+        u = u0 + c * pu
+        A.box(*F.box(-glass_set - 0.02, fin_out, u - 0.05, u + 0.05, z0, z1), fin)
+    return nu, nf
+
+def parapet(A, x0, x1, y0, y1, z0, h, mat, t=0.25, coping='town_trim'):
+    for mn, mx in (((x0, y0, z0), (x0 + t, y1, z0 + h)), ((x1 - t, y0, z0), (x1, y1, z0 + h)),
+                   ((x0 + t, y0, z0), (x1 - t, y0 + t, z0 + h)), ((x0 + t, y1 - t, z0), (x1 - t, y1, z0 + h))):
+        A.box(mn, mx, mat)
+    A.box((x0 - 0.03, y0 - 0.03, z0 + h), (x1 + 0.03, y1 + 0.03, z0 + h + 0.08), coping, 0.015)
+
+def louvre_box(A, x0, x1, y0, y1, z0, z1, mat='town_metal'):
+    A.box((x0, y0, z0), (x1, y1, z1), 'town_roof', 0.02)
+    n = int((y1 - y0) / 0.22)
+    for k in range(n):
+        y = y0 + 0.11 + k * (y1 - y0 - 0.22) / max(1, n - 1)
+        A.box((x1, y - 0.06, z0 + 0.15), (x1 + 0.04, y + 0.06, z1 - 0.12), mat)
+        A.box((x0 - 0.04, y - 0.06, z0 + 0.15), (x0, y + 0.06, z1 - 0.12), mat)
+    A.box((x0 - 0.05, y0 - 0.05, z1), (x1 + 0.05, y1 + 0.05, z1 + 0.08), 'town_trim', 0.015)
+
+# ============================================================== T02 WorldQuant: glass box, blank screen wall, glazed lobby
+def build_T02():
+    A = Asset('T02')
+    X0, X1, Y, H = -4.5, 4.5, 4.0, 12.0
+    A.extras.update(building='worldquant', footprint=[9, 12, 8])
+    L = 1.2          # lobby setback on the front and both sides
+    LZ = 3.4         # lobby height (upper floors cantilever over it)
+    # plinth / plaza-level floor
+    A.box((X0, -Y, 0), (X1, Y, PLAZA), 'town_stone_dark', 0.01)
+    A.col_box((X0, -Y, -0.2), (X1, Y, PLAZA), 'col_floor')
+    # glazed lobby box set back; corner columns hold the upper block
+    lx0, lx1, ly = X0 + 0.3, X1 - L, Y - L
+    A.box((lx0, -ly, PLAZA), (lx1 - 0.1, ly, LZ), 'town_dark')
+    for F, u0, u1 in ((Face('x', 1, lx1), -ly, ly), (Face('y', 1, ly), lx0, lx1), (Face('y', -1, -ly), lx0, lx1)):
+        n = int(round((u1 - u0) / 1.3))
+        for k in range(n):
+            a, b = u0 + k * (u1 - u0) / n, u0 + (k + 1) * (u1 - u0) / n
+            A.box(*F.box(-0.1, -0.04, a + 0.03, b - 0.03, PLAZA + 0.05, LZ - 0.2), 'town_glass_lit' if lit(f'T02lob{u0}{k}', 0.8) else 'town_glass_dark')
+            A.box(*F.box(-0.04, 0.02, a - 0.03, a + 0.03, PLAZA, LZ - 0.15), 'town_metal')
+        A.box(*F.box(-0.04, 0.02, u1 - 0.03, u1 + 0.03, PLAZA, LZ - 0.15), 'town_metal')
+        A.box(*F.box(-0.04, 0.03, u0, u1, LZ - 0.2, LZ - 0.12), 'town_metal')
+    # double door in the middle of the lobby front (frame proud of the glass)
+    fr = Face('x', 1, lx1)
+    A.box(*fr.box(0.02, 0.08, -1.0, 1.0, PLAZA, 2.5), 'town_metal')
+    A.box(*fr.box(0.03, 0.06, -0.95, 0.95, PLAZA + 0.02, 2.42), 'town_glass_dark')
+    for u in (-0.08, 0.08):
+        A.box(*fr.box(0.06, 0.1, u - 0.02, u + 0.02, 0.9, 1.5), 'town_metal')
+    A.col_box((lx0, -ly, PLAZA), (lx1 + 0.08, ly, LZ), 'col_lobby')
+    A.col_box((X0, -Y, PLAZA), (lx0, Y, LZ), 'col_lobby_back')
+    for (x, y) in ((X1 - 0.35, Y - 0.35), (X1 - 0.35, -Y + 0.35)):
+        A.add(cyl((x, y), 0.3, PLAZA, LZ, 16), 'town_slate', smooth=True)
+        A.add(cyl((x, y), 0.36, PLAZA, PLAZA + 0.08, 16), 'town_metal', smooth=True)
+        A.col_bm(cyl((x, y), 0.3, PLAZA, LZ, 12), f'col_pilotis_{y:+.0f}')
+    # lobby soffit (underside of the cantilever) with recessed downlights
+    A.box((lx1 - 0.1, -Y, LZ - 0.1), (X1, Y, LZ), 'town_trim')
+    A.box((X0 + 0.3, Y - L, LZ - 0.1), (lx1, Y, LZ), 'town_trim')
+    A.box((X0 + 0.3, -Y, LZ - 0.1), (lx1, -Y + L, LZ), 'town_trim')
+    for y in (-3.0, -1.5, 0.0, 1.5, 3.0):
+        A.add(cyl((X1 - 0.6, y), 0.09, LZ - 0.115, LZ - 0.1, 10), 'town_glass_lit')
+    # upper block: transfer slab, curtain walls on four faces
+    A.box((X0, -Y, LZ), (X1, Y, LZ + 0.45), 'town_slate', 0.02)
+    UZ0, UZ1 = LZ + 0.45, H - 0.9
+    front = Face('x', 1, X1)
+    def screen_skip(c, f):  # leave a 3-bay x 2-floor zone for the screen wall
+        return 3 <= c <= 5 and f in (1, 2)
+    nu, nf = curtain(A, front, -Y, Y, UZ0, UZ1, 1.0, (UZ1 - UZ0) / 3, 'T02f', skip=screen_skip)
+    curtain(A, Face('y', 1, Y), X0, X1, UZ0, UZ1, 1.0, (UZ1 - UZ0) / 3, 'T02s')
+    curtain(A, Face('y', -1, -Y), X0, X1, UZ0, UZ1, 1.0, (UZ1 - UZ0) / 3, 'T02n')
+    curtain(A, Face('x', -1, X0), -Y, Y, UZ0, UZ1, 1.0, (UZ1 - UZ0) / 3, 'T02b', fin='town_dark', band='town_dark')
+    A.col_box((X0, -Y, LZ), (X1, Y, H), 'col_upper')
+    # blank screen wall: dark panel in a proud slate frame, mounting rails behind (front face, floors 2-3)
+    fh = (UZ1 - UZ0) / 3
+    sz0, sz1 = UZ0 + fh + 0.15, UZ0 + 3 * fh - 0.15
+    su0, su1 = -1.0, 2.0
+    A.box(*front.box(0.0, 0.18, su0 - 0.15, su1 + 0.15, sz0 - 0.15, sz1 + 0.15), 'town_slate', 0.02)
+    A.box(*front.box(0.18, 0.24, su0, su1, sz0, sz1), 'town_screen')
+    A.box(*front.box(0.18, 0.26, su0 - 0.15, su1 + 0.15, sz0 - 0.15, sz0 - 0.05), 'town_dark')
+    A.anchor('anchor_screen', front.point(0.245, (su0 + su1) / 2, (sz0 + sz1) / 2), w=su1 - su0, h=sz1 - sz0, normal='+X')
+    # crown: slate cornice band, parapet, roof, plant room with louvres
+    A.box((X0 - 0.05, -Y - 0.05, UZ1), (X1 + 0.05, Y + 0.05, UZ1 + 0.35), 'town_slate', 0.02)
+    A.box((X0 + 0.2, -Y + 0.2, UZ1 + 0.2), (X1 - 0.2, Y - 0.2, UZ1 + 0.35), 'town_roof')
+    parapet(A, X0, X1, -Y, Y, UZ1 + 0.35, 0.55, 'town_slate')
+    A.box(*front.box(0.0, 0.04, -2.6, 2.6, UZ1 + 0.4, UZ1 + 0.85), 'town_dark')   # sign band on the parapet
+    A.anchor('anchor_sign', front.point(0.045, 0, UZ1 + 0.625), w=5.2, h=0.45, normal='+X')
+    louvre_box(A, -3.4, -0.8, -2.2, 1.6, UZ1 + 0.35, UZ1 + 1.75)
+    A.add(cyl((1.6, 2.2), 0.35, UZ1 + 0.35, UZ1 + 1.2, 14), 'town_metal', smooth=True)
+    A.add(cyl((1.6, 2.2), 0.4, UZ1 + 1.2, UZ1 + 1.28, 14), 'town_metal', smooth=True)
+    return A
+
 BUILDERS = {k[6:]: v for k, v in globals().items() if k.startswith('build_T')}
 
 def main():
