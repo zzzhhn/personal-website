@@ -169,6 +169,12 @@ export class ParkGeo {
     const local = new Matrix4().compose(A, q, new Vector3(1, 1, 1));
     this.push(g, o.frame ? new Matrix4().multiplyMatrices(o.frame, local) : local, color, o.emit, o.jitter ?? 0, o.seed ?? 0);
   }
+  /** Raw world-space triangle list (flat normals). */
+  raw(pos: number[], color: string, emit?: Emit, jitter = 0, seed = 0) {
+    if (!pos.length) return;
+    const g = new BufferGeometry(); g.setAttribute('position', new BufferAttribute(new Float32Array(pos), 3)); g.computeVertexNormals();
+    this.push(g, new Matrix4(), color, emit, jitter, seed);
+  }
   build() { return mergeBatch(this.pieces); }
 }
 
@@ -191,4 +197,59 @@ export function plankDeck(geo: ParkGeo, a: Vec3, b: Vec3, width: number, seed: n
   }
   if (o.stringers !== false) for (const x of [-width / 2 + 0.16, width / 2 - 0.16]) geo.box([x, -0.16, L / 2], [0.12, 0.2, L], '#6E563F', { frame });
   return frame;
+}
+
+/* ------------------------------------------------------------------ 2D convex polygon decks */
+export type P2 = [number, number];
+/** Sutherland-Hodgman clip of a convex polygon by the half-plane n.p >= c. */
+export function clipHalf(poly: P2[], n: P2, c: number): P2[] {
+  const out: P2[] = [];
+  for (let i = 0; i < poly.length; i++) {
+    const a = poly[i], b = poly[(i + 1) % poly.length];
+    const da = n[0] * a[0] + n[1] * a[1] - c, db = n[0] * b[0] + n[1] * b[1] - c;
+    if (da >= 0) out.push(a);
+    if ((da >= 0) !== (db >= 0)) { const t = da / (da - db); out.push([a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t]); }
+  }
+  return out;
+}
+const area2 = (p: P2[]) => { let s = 0; for (let i = 0; i < p.length; i++) { const a = p[i], b = p[(i + 1) % p.length]; s += a[0] * b[1] - b[0] * a[1]; } return s / 2; };
+
+export interface SlabOptions { inset?: number; jitter?: number; seed?: number; emit?: Emit; bottom?: boolean }
+/** Extruded convex polygon (XZ) between yBot and yTop; top optionally inset toward the centroid. */
+export function slab(geo: ParkGeo, poly: P2[], yTop: number, yBot: number, color: string, o: SlabOptions = {}) {
+  if (poly.length < 3 || Math.abs(area2(poly)) < 1e-4) return;
+  // Make the polygon clockwise in (x, z) so its top fan faces +Y.
+  const p = area2(poly) > 0 ? [...poly].reverse() : poly;
+  const cx = p.reduce((s, q) => s + q[0], 0) / p.length, cz = p.reduce((s, q) => s + q[1], 0) / p.length;
+  const ins = o.inset ?? 0;
+  const top = p.map(([x, z]) => { const dx = cx - x, dz = cz - z, l = Math.hypot(dx, dz) || 1, k = Math.min(ins, l * 0.4); return [x + dx / l * k, yTop, z + dz / l * k]; });
+  const bot = p.map(([x, z]) => [x, yBot, z]);
+  const side = p.map(([x, z]) => [x, yTop - ins, z]);
+  const pos: number[] = [];
+  for (let i = 1; i < p.length - 1; i++) { pos.push(...top[0], ...top[i], ...top[i + 1]); if (o.bottom) pos.push(...bot[0], ...bot[i + 1], ...bot[i]); }
+  for (let i = 0; i < p.length; i++) {
+    const j = (i + 1) % p.length;
+    pos.push(...bot[i], ...side[i], ...side[j], ...bot[i], ...side[j], ...bot[j]);
+    if (ins) pos.push(...side[i], ...top[i], ...top[j], ...side[i], ...top[j], ...side[j]);
+  }
+  geo.raw(pos, color, o.emit, o.jitter ?? 0, o.seed ?? 0);
+}
+/**
+ * Plank deck filling a convex polygon: strips of `pitch` (gap 1.5 cm) perpendicular to `across`'s
+ * normal, i.e. planks run along `across`. Five wood tones, +-6 mm top jitter, chamfered tops.
+ */
+export function plankPoly(geo: ParkGeo, poly: P2[], across: P2, yTop: number, seed: number, pitch = 0.28, thick = 0.06) {
+  const v: P2 = [-across[1], across[0]];
+  const proj = poly.map(q => q[0] * v[0] + q[1] * v[1]);
+  const lo = Math.min(...proj), hi = Math.max(...proj);
+  let n = 0;
+  for (let s = Math.floor(lo / pitch) * pitch; s < hi; s += pitch, n++) {
+    let q = clipHalf(poly, v, s + 0.0075);
+    q = clipHalf(q, [-v[0], -v[1]], -(s + pitch - 0.0075));
+    const key = Math.round(s / pitch) + seed * 1000;
+    const tone = DECK_TONES[Math.floor(hash(key * 7.3) * DECK_TONES.length)];
+    const y = yTop - hash(key * 3.1) * 0.006;
+    slab(geo, q, y, y - thick, tone, { inset: 0.008, jitter: 0.05, seed: key });
+  }
+  return n;
 }

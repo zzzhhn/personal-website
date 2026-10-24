@@ -10,6 +10,7 @@ import { useGreyboxClaim } from './WorldVisualClaims';
 import { night } from './WorldNight';
 import { gltfPieces, gltfTrimesh, mergeBatch, parkMaterial, parkNight, parkUrl, plankDeck, ParkGeo, withDraco, type GLTF } from './WorldParkKit';
 import { DECK_Y, HUTS, HUT_BACK_Z, HUT_FRONT_Z } from './WorldParkLayout';
+import { buildWalk, Knockables, LampPools, LAMP, RAIL, parkKnockables } from './WorldParkWalk';
 
 /**
  * Park district (owner: park session). Every static park part is batched into two draws per group:
@@ -72,6 +73,23 @@ function ParkHuts() {
   </group>;
 }
 
+/** P01-P04: plaza, boardwalk, rails, lamps (runtime procedural, no GLB). */
+function ParkWalk() {
+  const walk = useMemo(buildWalk, []);
+  useGreyboxClaim('boardwalk', 'park-plaza');
+  useEffect(() => { if (new URLSearchParams(window.location.search).get('qa') === '1') Object.assign(window, { __parkKnock: parkKnockables, __parkWalk: { deckTris: walk.deckTris, solidTris: walk.solidTris, rails: walk.rails.length, lamps: walk.lamps.length, railTris: RAIL.triangles, lampTris: LAMP.triangles,
+    railList: walk.rails, lampList: walk.lamps,
+    huts: HUTS.map(h => ({ id: h.id, slug: h.slug, yaw: h.yaw, front: h.front, opening: h.local(0, 0, HUT_FRONT_Z), inside: h.local(0, 0, -1.6), backOutside: h.local(0, 0, HUT_BACK_Z - 0.6), spurEnd: h.spur?.to ?? h.local(0, 0, HUT_FRONT_Z + 1) })) } }); }, [walk]);
+  return <group name="park-walk">
+    <Batch name="park-walk-deck" geometry={walk.deck} deck />
+    <Batch name="park-walk-solid" geometry={walk.solid} />
+    <WorldSurfaceColliders name="park-walk-surface" items={walk.surfaces} />
+    <Knockables name="rail" items={walk.rails} source={RAIL.geometry} spec={RAIL.spec} />
+    <Knockables name="lamp" items={walk.lamps} source={LAMP.geometry} spec={LAMP.spec} />
+    <LampPools lamps={walk.lamps} />
+  </group>;
+}
+
 /** Shared dusk/night level for the park batch material. */
 function ParkClock() {
   useFrame(() => { parkNight.value = night.value; });
@@ -82,5 +100,6 @@ export default memo(function WorldPark(_props: { projects: WorldContent['project
   return <group name="world-park">
     <ParkClock />
     <ParkGuard id="huts"><ParkHuts /></ParkGuard>
+    <ParkGuard id="walk"><ParkWalk /></ParkGuard>
   </group>;
 });
