@@ -146,7 +146,7 @@ const nextFrame = () => new Promise(r => requestAnimationFrame(() => r(null)));
 
 /** QA-only budget probe, installed as __worldDebug.budget (WorldLights). All reads are of the real render
  * path: renderBufferDirect is wrapped for exactly one renderer.render call, so totals equal gl.info. */
-export function createBudgetProbe(scene: Object3D, renderer: () => unknown) {
+export function createBudgetProbe(scene: Object3D, renderer: () => unknown, sunCameras: () => readonly unknown[] = () => []) {
   const gl = () => renderer() as ProbeRenderer | null;
   /** One frame, every draw: pass (main / sun-cN / fire), zone, object. */
   const frame = (top = 25) => new Promise(resolve => {
@@ -166,7 +166,8 @@ export function createBudgetProbe(scene: Object3D, renderer: () => unknown) {
         if (group) n = Math.min(n, group.count);
         const instances = object.isInstancedMesh ? object.count ?? 1 : geometry.isInstancedBufferGeometry ? geometry.instanceCount ?? 1 : 1;
         const triangles = object.isMesh ? Math.floor(n / 3) * instances : 0;
-        const who = pass === 'main' ? 'main' : cam.isOrthographicCamera ? 'sun' : 'fire';
+        const sunIdx = pass === 'main' ? -1 : sunCameras().indexOf(cam);
+        const who = pass === 'main' ? 'main' : sunIdx >= 0 ? `sun${sunIdx}` : cam.isOrthographicCamera ? 'sun' : 'fire';
         let zone = zoneCache.get(object);
         if (!zone) { zone = budgetZoneOf(object); zoneCache.set(object, zone); }
         add(byPass[who] ??= { calls: 0, triangles: 0 }, 1, triangles);
@@ -184,7 +185,10 @@ export function createBudgetProbe(scene: Object3D, renderer: () => unknown) {
         capture = false;
         r.render = origRender; r.renderBufferDirect = origDraw; r.shadowMap.render = origShadow;
         const total = Object.values(byPass).reduce((s, c) => ({ calls: s.calls + c.calls, triangles: s.triangles + c.triangles }), { calls: 0, triangles: 0 });
-        const shadow = { calls: (byPass.sun?.calls ?? 0) + (byPass.fire?.calls ?? 0), triangles: (byPass.sun?.triangles ?? 0) + (byPass.fire?.triangles ?? 0) };
+        const sh = Object.entries(byPass).filter(([k]) => k !== 'main').map(([, v]) => v);
+        const shadow = { calls: sh.reduce((a, v) => a + v.calls, 0), triangles: sh.reduce((a, v) => a + v.triangles, 0) };
+        byPass.sun = { calls: 0, triangles: 0 };
+        for (const [k, v] of Object.entries(byPass)) if (/^sun\d$/.test(k)) add(byPass.sun, v.calls, v.triangles);
         resolve({ total, info: { calls: r.info.render.calls, triangles: r.info.render.triangles }, byPass, shadow, byZone,
           top: [...objects.values()].sort((p, q) => q.triangles - p.triangles || q.calls - p.calls).slice(0, top),
           topCalls: [...objects.values()].sort((p, q) => q.calls - p.calls).slice(0, top) });
