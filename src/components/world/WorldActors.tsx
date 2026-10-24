@@ -705,9 +705,12 @@ export default function WorldActors() {
         const free=(q:Vec3)=>{let blocked=false;world.intersectionsWithShape({x:q[0],y:q[1],z:q[2]},{x:0,y:0,z:0,w:1},new rapier.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),
           ()=>{blocked=true;return false;},undefined,undefined,undefined,player.current??undefined,c=>!c.isSensor());return !blocked;};
         let spot:Vec3|null=null;
-        if(seatedAt&&from)for(const d of [.65,.70,.80,.90]){
-          const q:Vec3=[seatedAt[0]+Math.cos(seatFacing)*d,from[1]+.025,seatedAt[2]-Math.sin(seatFacing)*d];
-          if(free(q)){spot=q;break;}
+        if(seatedAt&&from)for(const offset of [0,Math.PI/2,-Math.PI/2,Math.PI/4,-Math.PI/4,Math.PI*.75,-Math.PI*.75,Math.PI]){
+          for(const d of [.65,.70,.80,.90]){
+            const a=seatFacing+offset,q:Vec3=[seatedAt[0]+Math.cos(a)*d,from[1]+.025,seatedAt[2]-Math.sin(a)*d];
+            if(free(q)){spot=q;break;}
+          }
+          if(spot)break;
         }
         if(!spot&&from&&free(from))spot=from;
         if(!spot&&from)for(let k=0;k<8&&!spot;k++){const a=k*Math.PI/4,q:Vec3=[from[0]+Math.cos(a)*.9,from[1]+.05,from[2]+Math.sin(a)*.9];if(free(q))spot=q;}
