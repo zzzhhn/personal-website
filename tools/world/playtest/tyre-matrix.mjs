@@ -13,10 +13,10 @@ await page.routeWebSocket('**/*',ws=>ws.close());
 const report={base,startedAt:new Date().toISOString(),cases:[],errors:[],limits:['Synthetic isolated obstacle shapes, not map-instance coverage.','Finite browser-frame sampling; not every physics microstep.','M5 Pro; no M1 hardware claim.']};
 page.on('pageerror',e=>report.errors.push(e.message));
 const specs=[{id:'offroad',size:[3.9,1.35,2]},{id:'coupe',size:[4.3,1.05,1.9]},{id:'van',size:[4.5,1.9,2.2]}];
-const read=()=>page.evaluate(()=>({t:performance.now(),s:__worldDebug.snapshot(),p:__worldDebug.motionProbe()}));
+const read=()=>page.evaluate(k=>({t:performance.now(),s:__worldDebug.snapshot(),p:__worldDebug.motionProbe(),k:k?__worldDebug.contacts().filter(c=>c.other.kind!=='surface').map(c=>({self:c.self,part:c.selfPart,other:c.other.name??c.other.assetId,n:c.normal.map(v=>+v.toFixed(3)),d:+c.distance.toFixed(3),pts:c.points.slice(0,2)})):undefined}),process.env.WORLD_CONTACTS==='1');
 try{
- await page.goto(base+'/world/?qa=1&qaWheelGuards='+(process.env.WORLD_GUARD_SHAPE||'1')+(process.env.WORLD_LOW_COM==='1'?'&qaLowCom=1':''),{waitUntil:'networkidle'});
- await page.waitForFunction(()=>typeof __worldDebug?.collisionLane==='function'&&__worldDebug.actor().loaded);
+ await page.goto(base+'/world/'+(process.env.WORLD_QUERY||('?qa=1&qaWheelGuards='+(process.env.WORLD_GUARD_SHAPE||'1')+(process.env.WORLD_LOW_COM==='1'?'&qaLowCom=1':''))),{waitUntil:'networkidle'});
+ await page.waitForFunction(()=>typeof window.__worldDebug?.collisionLane==='function'&&window.__worldDebug.actor().loaded,undefined,{timeout:90000});
  await startCanvasRecording(page,30);
  for(const spec of specs.filter(s=>!process.env.WORLD_VEHICLES||process.env.WORLD_VEHICLES.split(',').includes(s.id)))for(const kind of (process.env.WORLD_OBSTACLES||'post,trunk,wall').split(','))for(const target of (process.env.WORLD_SPEEDS||'2,5,10').split(',').map(Number)){
   await bot.release();await page.evaluate(()=>__worldDebug.exit());
@@ -30,7 +30,8 @@ try{
   const startX=target===2?112:target===5?106:96;
   await page.evaluate(({id,h,x})=>__worldDebug.teleportVehicle(id,[x,5+h,120],0),{id:spec.id,h,x:startX});
   await bot.fixtureTeleport([startX,6,117.8],`QA lane ${spec.id}/${kind}/${target} m/s; car placed at x=${startX}`);
-  await page.waitForTimeout(600);await bot.press('KeyE');await page.waitForTimeout(150);
+  await page.waitForTimeout(600);await bot.press('KeyE');
+  await page.waitForFunction(id=>__worldDebug.snapshot().activeVehicle===id,spec.id,{timeout:4000});
   const c={name:`${spec.id}-${kind}-${target}`,targetSpeed:target,fixture:{kind,lateral,startX},samples:[],entered:(await read()).s.activeVehicle===spec.id};
   let started=Date.now(),baseY=null,firstContact=null;
   while(c.entered&&Date.now()-started<12000){
@@ -39,7 +40,7 @@ try{
    const contacts=wheels.flatMap(w=>w.nearby.filter(n=>n.other.assetId===`QA-lane-${kind}`).map(n=>({wheel:w.index,distance:n.distance})));
    if(contacts.some(c=>c.distance<.05)&&firstContact===null)firstContact=Date.now();
    if(baseY===null&&v.position[0]>startX+.5)baseY=v.position[1];
-   c.samples.push({t:r.t,position:v.position,velocity:v.velocity,speed,contacts,upsideDownSeconds:v.upsideDownSeconds});
+   c.samples.push({t:r.t,position:v.position,velocity:v.velocity,speed,contacts,upsideDownSeconds:v.upsideDownSeconds,...(r.k?{bodyContacts:r.k}:{})});
    if(v.position[0]>126||(firstContact!==null&&Date.now()-firstContact>1500))break;
    await bot.hold(speed<target-.12?['KeyW']:speed>target+.3?['Space']:[]);
    await page.waitForTimeout(16);

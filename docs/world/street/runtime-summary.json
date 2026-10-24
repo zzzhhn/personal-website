@@ -1,0 +1,295 @@
+{
+  "rawEvidence": "/Users/bobby/Desktop/3D-personal-world/evidence/street-integration",
+  "shotsPeak": {
+    "calls": 191,
+    "triangles": 432827
+  },
+  "props": [
+    {
+      "name": "offroad-lamp",
+      "firstContact": {
+        "t": 30802.299999952316,
+        "actorSpeed": 7.874007079566608
+      },
+      "approachSpeed": 9.089226415237853,
+      "maxActorRise": 0,
+      "maxPropRise": 0,
+      "maxPropSpeed": 8.13,
+      "propDisplaced": 6.074088334585667,
+      "propKnocked": true,
+      "reset": {
+        "elapsed": 28.74,
+        "state": {
+          "p": [
+            -86.80500030517578,
+            1.1449999809265137,
+            57.09700012207031
+          ],
+          "sleeping": true,
+          "knocked": false,
+          "phase": "home"
+        },
+        "passed": true
+      }
+    },
+    {
+      "name": "coupe-signal",
+      "firstContact": {
+        "t": 16831.599999964237,
+        "actorSpeed": 5.721918829793358
+      },
+      "approachSpeed": 6.831956299096827,
+      "maxActorRise": 0.01730632781982422,
+      "maxPropRise": 0.021889662742614835,
+      "maxPropSpeed": 6.86,
+      "propDisplaced": 3.7228526225834835,
+      "propKnocked": true,
+      "reset": {
+        "elapsed": 26.974,
+        "state": {
+          "p": [
+            29.799999237060547,
+            1.149999976158142,
+            -1.899999976158142
+          ],
+          "sleeping": true,
+          "knocked": false,
+          "phase": "home"
+        },
+        "passed": true
+      }
+    },
+    {
+      "name": "van-bin",
+      "firstContact": {
+        "t": 15622.699999988079,
+        "actorSpeed": 5.6371375701357955
+      },
+      "approachSpeed": 6.1785068390682705,
+      "maxActorRise": 0.010795831680297852,
+      "maxPropRise": 0.033644890785217374,
+      "maxPropSpeed": 5.73,
+      "propDisplaced": 2.0537473308811984,
+      "propKnocked": true,
+      "reset": {
+        "elapsed": 34.323,
+        "state": {
+          "p": [
+            29.7999324798584,
+            0.9993994235992432,
+            18.599918365478516
+          ],
+          "sleeping": true,
+          "knocked": false,
+          "phase": "home"
+        },
+        "passed": true
+      }
+    }
+  ],
+  "landmarks": [
+    {
+      "name": "person-tree-ST1",
+      "firstContact": {
+        "t": 25218.5,
+        "actorSpeed": 3.3173581898790756
+      },
+      "approachSpeed": 5.790186657348435,
+      "maxActorRise": 0.1648573875427246,
+      "closestActorToHome": 0.594
+    },
+    {
+      "name": "coupe-tree-ST2",
+      "firstContact": {
+        "t": 23024.19999998808,
+        "actorSpeed": 0.04714259744036626
+      },
+      "approachSpeed": 3.7347583770751953,
+      "maxActorRise": 0,
+      "closestActorToHome": 2.366
+    },
+    {
+      "name": "person-windmill",
+      "firstContact": {
+        "t": 15492.800000011921,
+        "actorSpeed": 3.879449568557885
+      },
+      "approachSpeed": 6.087160027288825,
+      "maxActorRise": 0.30503320693969727,
+      "closestActorToHome": 1.038
+    },
+    {
+      "name": "offroad-windmill",
+      "firstContact": {
+        "t": 13392.399999976158,
+        "actorSpeed": 0.329004084073311
+      },
+      "approachSpeed": 3.962849459426046,
+      "maxActorRise": 0.01172494888305664,
+      "closestActorToHome": 2.716
+    },
+    {
+      "name": "person-wood-sign",
+      "firstContact": {
+        "t": 12612,
+        "actorSpeed": 3.2336877361715763
+      },
+      "approachSpeed": 5.7204740910069924,
+      "maxActorRise": 0.2126249074935913,
+      "closestActorToHome": 0.42
+    },
+    {
+      "name": "van-wood-sign",
+      "firstContact": {
+        "t": 15712,
+        "actorSpeed": 0.525050072213901
+      },
+      "approachSpeed": 3.8890082859919435,
+      "maxActorRise": 0.008946418762207031,
+      "closestActorToHome": 2.382
+    }
+  ],
+  "rails": [
+    {
+      "name": "person-seawall",
+      "firstContact": {
+        "t": 10612.5,
+        "actorSpeed": 0.860895597219468
+      },
+      "approachSpeed": 5.961160060168583,
+      "maxActorRise": 0.010522603988647461,
+      "closestActorToHome": 0.386,
+      "propDisplaced": null,
+      "propKnocked": null
+    },
+    {
+      "name": "offroad-guard",
+      "firstContact": {
+        "t": 10535.600000023842,
+        "actorSpeed": 6.757599034159863
+      },
+      "approachSpeed": 6.803592215787614,
+      "maxActorRise": 0.011582374572753906,
+      "closestActorToHome": 3.221,
+      "propDisplaced": 1.1528147922251215,
+      "propKnocked": true
+    },
+    {
+      "name": "offroad-hillbeam",
+      "firstContact": {
+        "t": 8959.199999988079,
+        "actorSpeed": 0.3121550542266297
+      },
+      "approachSpeed": 1.2101039264902256,
+      "maxActorRise": 0,
+      "closestActorToHome": 11.317,
+      "propDisplaced": 7.383129687363185e-07,
+      "propKnocked": false
+    },
+    {
+      "name": "coupe-parapet",
+      "firstContact": {
+        "t": 9281.699999988079,
+        "actorSpeed": 3.898827518961984
+      },
+      "approachSpeed": 5.163971020281912,
+      "maxActorRise": 0.00020933151245117188,
+      "closestActorToHome": 1.328,
+      "propDisplaced": null,
+      "propKnocked": null
+    }
+  ],
+  "motion": {
+    "runningAdvance": 0.5007999999523154,
+    "pausedAdvance": 0,
+    "shotAdvance": 0
+  },
+  "streetVisibilityDifference": [
+    {
+      "name": "trees",
+      "calls": 5,
+      "triangles": 6640
+    },
+    {
+      "name": "park",
+      "calls": 5,
+      "triangles": 12756
+    },
+    {
+      "name": "avenue",
+      "calls": 3,
+      "triangles": 1608
+    },
+    {
+      "name": "ridge",
+      "calls": 5,
+      "triangles": 1144
+    },
+    {
+      "name": "foundation",
+      "calls": 8,
+      "triangles": 7710
+    }
+  ],
+  "seats": [
+    {
+      "id": "street-bench-30",
+      "passed": true,
+      "afterStandPrompt": null
+    },
+    {
+      "id": "street-bench-33",
+      "passed": true,
+      "afterStandPrompt": null
+    },
+    {
+      "id": "street-bench-34",
+      "passed": true,
+      "afterStandPrompt": null
+    },
+    {
+      "id": "street-shelter-seat",
+      "passed": true,
+      "afterStandPrompt": null
+    },
+    {
+      "id": "street-bench-25",
+      "passed": true,
+      "afterStandPrompt": {
+        "id": "town-board-1",
+        "label": {
+          "en": "WorldQuant · Research Consultant",
+          "zh": "WorldQuant 世坤 · 研究顾问"
+        },
+        "kind": "exhibit"
+      }
+    }
+  ],
+  "ordinary": {
+    "url": "http://127.0.0.1:4344/world/",
+    "viewport": {
+      "width": 1920,
+      "height": 1080
+    },
+    "debug": false,
+    "errors": [
+      "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    ],
+    "realInputs": [
+      "wheel -650",
+      "D 4.8s",
+      "W 3.8s",
+      "Esc menu Night Esc"
+    ]
+  },
+  "files": {
+    "ST1.glb": {
+      "bytes": 154668,
+      "sha256": "09991641dbd71284ac77f1a1baab02838ebc293f559b0ca66de7f54392fb53a9"
+    },
+    "ST2.glb": {
+      "bytes": 149308,
+      "sha256": "1a33b3150475ddc3a637f4b9b21bffd20e30efbe1d8b3a281a8c723b2ded9cab"
+    }
+  }
+}

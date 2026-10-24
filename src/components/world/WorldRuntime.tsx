@@ -139,7 +139,7 @@ export default memo(function WorldRuntime({ content }: { content: WorldContent }
       {/* Each district suspends on its own GLBs without holding back the island or the player. */}
       <Suspense fallback={null}><WorldTown experiences={content.experiences} /></Suspense>
       <Suspense fallback={null}><WorldPark projects={content.projects} /></Suspense>
-      <Suspense fallback={null}><WorldStreet /></Suspense>
+      <Suspense fallback={null}><WorldStreet experiences={content.experiences} /></Suspense>
       <Suspense fallback={null}><WorldCampContent /></Suspense>
       <SceneLifecycle setOverlay={setOverlay} />
     </Physics></Suspense>

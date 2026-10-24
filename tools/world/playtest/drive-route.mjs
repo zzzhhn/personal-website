@@ -66,7 +66,10 @@ async function follow(spec,route,{name,timeout=110000,cruise=6,slow=3.5,minProgr
 async function enterAt(spec,p,yaw,walkTo){
  await bot.release();await page.evaluate(()=>__worldDebug.exit());
  for(let i=0;i<specs.length;i++)await reset(specs[i].id,[90+i*8,7,125],0);
- await reset(spec.id,[p[0],p[1]+heightOf(spec),p[2]],yaw);await bot.fixtureTeleport(walkTo,`${spec.id} start`);await page.waitForTimeout(600);await bot.press('KeyE');await page.waitForTimeout(150);
+ await reset(spec.id,[p[0],p[1]+heightOf(spec),p[2]],yaw);await bot.fixtureTeleport(walkTo,`${spec.id} start`);await page.waitForTimeout(600);await bot.press('KeyE');
+ // Concurrent Chrome/Blender work can delay the physics step that consumes the E edge.
+ // Wait for the actual entry, and record a failed entry instead of calling it a driving failure.
+ await page.waitForFunction(id=>__worldDebug.snapshot().activeVehicle===id,spec.id,{timeout:4000});
 }
 const yawAlong=(r,i=0)=>Math.atan2(-(r[i+1][2]-r[i][2]),r[i+1][0]-r[i][0]);
 /** Player standing point 2.5 m to the car's left (+Z side when heading +X). */
@@ -127,13 +130,19 @@ try{
     report.fixtures.push({t:bot.now(),type:'shore-splash',who,at:s.p});
     if(who==='player')await page.evaluate(([x,z])=>__worldDebug.teleportPlayer([x,1.2,z]),s.p);
     else await reset('van',[s.p[0],1.2,s.p[1]],0);
-    await page.waitForTimeout(4200);
-    const snap=await page.evaluate(()=>__worldDebug.snapshot());
-    const at=who==='player'?snap.player:snap.vehicles.find(v=>v.id==='van').position;
+    // Sample the body every 100 ms. Recovery is the one-sample jump of > 3 m; the sample before it is
+    // where the body was when recovery ran (a zero-friction capsule slides on the seabed for those 2 s),
+    // so both branches are probed from that point, not from the splash point.
+    const track=[];const t0=Date.now();
+    while(Date.now()-t0<4200){const n=await page.evaluate(()=>__worldDebug.snapshot());track.push(who==='player'?n.player:n.vehicles.find(v=>v.id==='van').position);await page.waitForTimeout(100);}
+    const jump=track.findIndex((q,i)=>i>0&&Math.hypot(q[0]-track[i-1][0],q[2]-track[i-1][2])>3);
+    const before=jump>0?track[jump-1]:null;
+    const atRecovery=before?await page.evaluate(([x,z])=>__worldDistricts.recoveryProbe(x,z),[before[0],before[2]]):probe;
+    const at=track.at(-1);
     const support=await page.evaluate(([x,z,y])=>__worldDistricts.supportAt(x,z,y+3),[at[0],at[2],at[1]]);
     const d=(q)=>q?Math.hypot(q[0]-at[0],q[2]-at[2]):Infinity;
-    const branch=probe.dry&&d(probe.dry)<1.5?'dry-land':d(probe.road)<2.5?'road-fallback':'unclassified';
-    const c={name:`shore-${s.id}-${who}`,splash:s.p,landing:at,probe,branch,support,
+    const branch=atRecovery.dry&&d(atRecovery.dry)<1.5?'dry-land':d(atRecovery.road)<2.5?'road-fallback':'unclassified';
+    const c={name:`shore-${s.id}-${who}`,splash:s.p,landing:at,probe,atRecovery,positionAtRecovery:before,recovered:jump>0,branch,support,
      passed:!!support&&support.kind==='surface'&&!support.overWater&&at[1]>-.1&&branch!=='unclassified'};
     report.cases.push(c);console.log(JSON.stringify({name:c.name,branch,landing:at.map(v=>+v.toFixed(2)),support}));
    }
