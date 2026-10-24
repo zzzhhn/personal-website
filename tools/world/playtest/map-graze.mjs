@@ -32,7 +32,7 @@ const read=()=>page.evaluate(()=>({t:performance.now(),s:__worldDebug.snapshot()
 const speeds=(process.env.WORLD_SPEEDS||'2,5,10').split(',').map(Number);
 try{
  await page.goto(base+'/world/'+query,{waitUntil:'networkidle'});
- await page.waitForFunction(()=>__worldDebug?.actor().loaded&&typeof __worldDebug.motionProbe==='function',undefined,{timeout:60000});
+ await page.waitForFunction(()=>window.__worldDebug?.actor().loaded&&typeof window.__worldDebug.motionProbe==='function',undefined,{timeout:90000});
  await page.waitForTimeout(800);
  await layoutParks(page,specs,'park');
  const recs=await page.evaluate(()=>__worldDebug.campColliders());
@@ -61,7 +61,7 @@ try{
   report.targets.push(T);
  }
  await writeFile(path.join(out,'report.json'),JSON.stringify(report,null,2));
- for(const T of targets)for(const spec of specs)for(const target of speeds){
+ for(const T of targets)for(const spec of specs.filter(s=>!process.env.WORLD_VEHICLES||process.env.WORLD_VEHICLES.split(',').includes(s.id)))for(const target of speeds){
   await bot.release();await page.evaluate(()=>__worldDebug.exit());
   await page.evaluate(specs=>{for(const s of specs)__worldDebug.teleportVehicle(s.id,s.park,0)},specs);
   const b=T.boundary[spec.id].value;
