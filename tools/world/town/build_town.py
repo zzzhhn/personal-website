@@ -415,6 +415,72 @@ def build_T12():
     A.part_extras = {f'T12_{v}_{p}': {'variant': v, 'variantOriginGLB': [0, 0, 0] if v == 'a' else [0, 0, 4.0]} for v in 'ab' for p in ('trunk', 'leaves')}
     return A
 
+# ============================================================== T04 ByteDance: cream + slate colour blocks, big sign board
+def build_T04():
+    A = Asset('T04')
+    X0, X1, Y, H = -4.5, 4.5, 4.0, 10.0
+    A.extras.update(building='aime', footprint=[9, 10, 8])
+    NX, NY = 3.0, 3.2            # entrance notch carved out of the south-east (Blender -Y) ground corner
+    FZ = 3.3                     # ground floor height; upper floors 3 x 2.1 m
+    A.box((X0, -Y, 0), (X1, Y, PLAZA), 'town_stone_dark', 0.01)
+    A.col_box((X0, -Y, -0.2), (X1, Y, PLAZA), 'col_floor')
+    front, sp, sn, bk = Face('x', 1, X1), Face('y', 1, Y), Face('y', -1, -Y), Face('x', -1, X0)
+    # ---- ground floor (cream) with the notch
+    facade(A, front, -Y + NY, Y, PLAZA, FZ, 2, 1, 1.7, 2.1, 'town_cream', 'T04g', wz=0.4)
+    facade(A, sp, X0, X1, PLAZA, FZ, 3, 1, 1.4, 1.6, 'town_cream', 'T04gs', wz=0.5)
+    facade(A, bk, -Y, Y, PLAZA, FZ, 3, 1, 1.4, 1.6, 'town_cream', 'T04gb', wz=0.5)
+    facade(A, sn, X0, X1 - NX, PLAZA, FZ, 2, 1, 1.4, 1.6, 'town_cream', 'T04gn', wz=0.5)
+    nf = Face('x', 1, X1 - NX)   # notch inner faces: glass door wall (facing avenue) and glass side (facing south)
+    ns = Face('y', -1, -Y + NY)
+    A.box(*nf.box(-0.2, 0, -Y, -Y + NY, FZ - 0.5, FZ), 'town_cream')
+    A.box(*ns.box(-0.2, 0, X1 - NX, X1, FZ - 0.5, FZ), 'town_cream')
+    A.box(*nf.box(-0.2, -0.1, -Y + 0.05, -Y + NY - 0.2, PLAZA, FZ - 0.5), 'town_glass_lit')
+    A.box(*ns.box(-0.2, -0.1, X1 - NX + 0.05, X1 - 0.05, PLAZA, FZ - 0.5), 'town_glass_lit')
+    for u in (-Y + 0.05, -Y + 1.0, -Y + 1.9, -Y + NY - 0.25):
+        A.box(*nf.box(-0.1, 0.0, u, u + 0.05, PLAZA, FZ - 0.5), 'town_metal')
+    for u in (X1 - NX + 0.05, X1 - 1.5, X1 - 0.1):
+        A.box(*ns.box(-0.1, 0.0, u, u + 0.05, PLAZA, FZ - 0.5), 'town_metal')
+    A.box(*nf.box(-0.1, 0.02, -Y + 0.95, -Y + 2.0, PLAZA, 2.45), 'town_slate')
+    A.box(*nf.box(0.0, 0.03, -Y + 1.02, -Y + 1.93, PLAZA, 2.38), 'town_glass_dark')
+    A.box(*nf.box(0.03, 0.08, -Y + 1.44, -Y + 1.51, 0.8, 1.7), 'town_metal')
+    A.add(cyl((X1 - 0.25, -Y + 0.25), 0.18, PLAZA, FZ, 14), 'town_slate', smooth=True)     # corner column
+    A.col_bm(cyl((X1 - 0.25, -Y + 0.25), 0.18, PLAZA, FZ, 10), 'col_corner')
+    A.col_box((X0, -Y + NY, PLAZA), (X1, Y, FZ), 'col_ground_main')
+    A.col_box((X0, -Y, PLAZA), (X1 - NX, -Y + NY, FZ), 'col_ground_side')
+    # canopy over the notch (slate blade on two steel tie rods)
+    A.box((X1 - NX, -Y - 0.4, FZ - 0.55), (X1 + 0.6, -Y + NY, FZ - 0.4), 'town_slate', 0.02)
+    # ---- floor slab band
+    A.box((X0 - 0.06, -Y - 0.06, FZ), (X1 + 0.06, Y + 0.06, FZ + 0.25), 'town_trim', 0.02)
+    UZ0, UZ1 = FZ + 0.25, H - 0.6
+    # ---- upper floors: cream body with ribbon windows; slate block wraps the south-east corner
+    SB = 3.6                     # slate block width along the front (south part)
+    facade(A, front, -Y + SB, Y, UZ0, UZ1, 2, 3, 1.5, 1.25, 'town_cream', 'T04uf', wz=0.5)
+    facade(A, sp, X0, X1, UZ0, UZ1, 3, 3, 1.4, 1.25, 'town_cream', 'T04us', wz=0.5)
+    facade(A, bk, -Y, Y, UZ0, UZ1, 3, 3, 1.4, 1.25, 'town_cream', 'T04ub', wz=0.5)
+    facade(A, sn, X0, X1 - SB, UZ0, UZ1, 2, 3, 1.3, 1.25, 'town_cream', 'T04un', wz=0.5)
+    # slate block: 0.35 m proud box with horizontal ribbon windows on both faces
+    sfF, sfS = Face('x', 1, X1 + 0.35), Face('y', -1, -Y - 0.35)
+    facade(A, sfF, -Y - 0.35, -Y + SB, UZ0, UZ1, 1, 3, SB - 0.9, 1.15, 'town_slate', 'T04bf', depth=0.55, wz=0.5, frame='town_dark', sill_mat='town_dark')
+    facade(A, sfS, X1 - SB, X1 + 0.35, UZ0, UZ1, 1, 3, SB - 0.9, 1.15, 'town_slate', 'T04bs', depth=0.55, wz=0.5, frame='town_dark', sill_mat='town_dark')
+    A.box((X1 - SB, -Y - 0.35, UZ0 - 0.06), (X1 + 0.35, -Y + SB, UZ0), 'town_slate')
+    A.box((X1 - SB, -Y - 0.35, UZ1), (X1 + 0.35, -Y + SB, UZ1 + 0.9), 'town_slate', 0.02)
+    A.col_box((X0, -Y, FZ), (X1, Y, H), 'col_upper')
+    # vertical slate strip on the cream front (between ribbon bays)
+    A.box(*front.box(0, 0.12, 0.45, 0.85, UZ0, UZ1 + 0.3), 'town_slate')
+    # ---- crown: parapet + big sign board frame on the front (runtime abstract symbol + name)
+    A.box((X0 + 0.15, -Y + 0.15, UZ1 - 0.05), (X1 - 0.15, Y - 0.15, UZ1 + 0.1), 'town_roof')
+    parapet(A, X0, X1 - SB, -Y, Y, UZ1, 0.6, 'town_cream')
+    A.box(*front.box(0.1, 0.35, -Y + SB + 0.2, Y - 0.2, UZ1 + 0.25, UZ1 + 1.75), 'town_trim', 0.02)
+    A.box(*front.box(0.35, 0.4, -Y + SB + 0.32, Y - 0.32, UZ1 + 0.37, UZ1 + 1.63), 'town_dark')
+    for u in (-Y + SB + 0.6, Y - 0.6):
+        A.box(*front.box(-0.3, 0.12, u - 0.05, u + 0.05, UZ1 - 0.05, UZ1 + 1.6), 'town_metal')
+    A.anchor('anchor_sign', front.point(0.405, (-Y + SB + Y) / 2, UZ1 + 1.0), w=2 * Y - SB - 0.64, h=1.26, normal='+X')
+    louvre_box(A, -3.6, -1.6, -1.0, 2.2, UZ1 + 0.1, UZ1 + 1.2)
+    for k in range(3):     # small rooftop vent stacks
+        A.add(cyl((-0.6 + k * 0.6, 3.0), 0.12, UZ1 + 0.1, UZ1 + 0.7, 10), 'town_metal', smooth=True)
+        A.add(cyl((-0.6 + k * 0.6, 3.0), 0.16, UZ1 + 0.7, UZ1 + 0.76, 10), 'town_metal', smooth=True)
+    return A
+
 BUILDERS = {k[6:]: v for k, v in globals().items() if k.startswith('build_T')}
 
 def main():
