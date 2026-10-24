@@ -342,6 +342,9 @@ export interface Terrain {
   /** Vertex index per lattice node (-1 = unused). */
   vertexOf: Int32Array;
   seawall: { start: [number, number]; end: [number, number] };
+  /** Render LOD: per 2 m block (row-major NB x MB) its kind (0 skip, 1/3 coarse, 2 fine), and for fine
+   * blocks the start / count of its triangles in `indices` plus its four corner vertex indices. */
+  blocks: { NB: number; MB: number; kind: Uint8Array; start: Int32Array; count: Int32Array; corners: Int32Array };
   stats: { triangles: number; fineBlocks: number; coarseBlocks: number; surfaceTriangles: number; solidTriangles: number; maxWalkableDeg: number; buildMs: number };
 }
 
@@ -405,11 +408,14 @@ export function buildTerrain(): Terrain {
     for (let j = j0; j < j0 + BLOCK; j++) cellDiag.fill(3, j * GRID.nx + i0, j * GRID.nx + i0 + BLOCK);
   };
   let fineBlocks = 0, coarseBlocks = 0;
+  const bStart = new Int32Array(NB * MB), bCount = new Int32Array(NB * MB), bCorners = new Int32Array(NB * MB * 4).fill(-1);
   for (let bj = 0; bj < MB; bj++) for (let bi = 0; bi < NB; bi++) {
-    const i0 = bi * BLOCK, j0 = bj * BLOCK, k = kind[bj * NB + bi];
+    const i0 = bi * BLOCK, j0 = bj * BLOCK, k = kind[bj * NB + bi], b = bj * NB + bi;
     if (k === 0) continue;
+    bStart[b] = idx.length;
     if (k === 3) for (const [i, j] of [[i0, j0], [i0 + BLOCK, j0], [i0, j0 + BLOCK], [i0 + BLOCK, j0 + BLOCK]]) nodeHeight[j * NODES_X + i] = GROUND_Y;
-    if (k !== 2) { coarse(i0, j0); coarseBlocks++; continue; }
+    bCorners.set([vertex(i0, j0), vertex(i0 + BLOCK, j0), vertex(i0, j0 + BLOCK), vertex(i0 + BLOCK, j0 + BLOCK)], b * 4);
+    if (k !== 2) { coarse(i0, j0); coarseBlocks++; bCount[b] = idx.length - bStart[b]; continue; }
     fineBlocks++;
     for (let j = j0; j < j0 + BLOCK; j++) for (let i = i0; i < i0 + BLOCK; i++) {
       // Split along the flatter diagonal so creases follow contours (no sawtooth on steep faces).
@@ -418,6 +424,7 @@ export function buildTerrain(): Terrain {
       cellDiag[j * GRID.nx + i] = flip ? 2 : 1;
       quad(vertex(i, j), vertex(i + 1, j), vertex(i, j + 1), vertex(i + 1, j + 1), flip);
     }
+    bCount[b] = idx.length - bStart[b];
   }
   // Unfold pass: where crease snapping pulled neighbouring nodes past each other (triangle
   // reversed in plan), return those nodes to their lattice point and re-evaluate height.
@@ -454,6 +461,7 @@ export function buildTerrain(): Terrain {
   terrainCache = {
     positions: new Float32Array(pos), indices: new Uint32Array(idx), surface: new Uint32Array(surface), solid: new Uint32Array(solid), nodeHeight, cellDiag, vertexOf,
     seawall,
+    blocks: { NB, MB, kind, start: bStart, count: bCount, corners: bCorners },
     stats: { triangles: idx.length / 3, fineBlocks, coarseBlocks, surfaceTriangles: surface.length / 3, solidTriangles: solid.length / 3, maxWalkableDeg, buildMs: Math.round(t1 - t0) },
   };
   return terrainCache;

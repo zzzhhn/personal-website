@@ -482,9 +482,9 @@ export const pavingMesh = lazy(() => {
     const za = F.minZ + j * F.cell, zb = za + MESH_CELL;
     const flush = (iEnd: number) => {
       if (runStart < 0) return;
-      // Long runs keep 2 m vertex spacing so lateral wear attributes still interpolate.
-      for (let i0 = runStart; i0 < iEnd; i0 += step * 4) {
-        const i1 = Math.min(iEnd, i0 + step * 4), xa = F.minX + i0 * F.cell, xb = F.minX + i1 * F.cell, c = chunk((xa + xb) / 2, (za + zb) / 2);
+      // Long runs keep 4 m vertex spacing so lateral wear attributes still interpolate.
+      for (let i0 = runStart; i0 < iEnd; i0 += step * 8) {
+        const i1 = Math.min(iEnd, i0 + step * 8), xa = F.minX + i0 * F.cell, xb = F.minX + i1 * F.cell, c = chunk((xa + xb) / 2, (za + zb) / 2);
         const A = fieldV(xa, za), B = fieldV(xa, zb), C = fieldV(xb, zb), D = fieldV(xb, za);
         pushTri(c, A, B, C, M.asphalt, 'top'); pushTri(c, A, C, D, M.asphalt, 'top'); cellTris += 2;
       }
@@ -510,7 +510,7 @@ export const pavingMesh = lazy(() => {
   let stripTris = 0;
   const Dat = (x: number, z: number) => sampleField(F.D, x, z);
   for (const ch of gutterContours(F)) {
-    const pts = simplify(ch.pts, .015, ch.closed), n = pts.length;
+    const pts = simplify(ch.pts, .02, ch.closed), n = pts.length;
     if (n < 2) continue;
     const segN: P2[] = [];
     for (let i = 0; i < n - 1; i++) { const d = unit([pts[i + 1][0] - pts[i][0], pts[i + 1][1] - pts[i][1]]); segN.push([-d[1], d[0]]); }

@@ -190,16 +190,14 @@ function ChunkColliders({ name, pos, top, walls }: { name: string; pos: Float32A
 }
 
 function Chunk({ c, material, forecourts }: { c: PaveChunk; material: MeshStandardMaterial; forecourts: boolean }) {
-  const main = useMemo(() => geometryOf(c.v), [c]);
+  // One draw per chunk: forecourt triangles are appended while town has not claimed them.
+  const main = useMemo(() => geometryOf(forecourts ? [...c.v, ...c.fv] : c.v), [c, forecourts]);
   const fore = useMemo(() => c.fv.length ? geometryOf(c.fv) : null, [c]);
   useEffect(() => () => { main.g.dispose(); fore?.g.dispose(); }, [main, fore]);
   return <group name={`paving-v4-${c.key}`}>
     <mesh name={`paving-v4-chunk-${c.key}`} geometry={main.g} material={material} receiveShadow userData={{ surface: true }} />
     <ChunkColliders name={`paving-v4-${c.key}`} pos={main.pos} top={c.top} walls={c.walls} />
-    {forecourts && fore && <>
-      <mesh name={`paving-v4-forecourts-${c.key}`} geometry={fore.g} material={material} receiveShadow userData={{ surface: true }} />
-      <ChunkColliders name={`paving-v4-forecourts-${c.key}`} pos={fore.pos} top={c.ftop} walls={c.fwalls} />
-    </>}
+    {forecourts && fore && <ChunkColliders name={`paving-v4-forecourts-${c.key}`} pos={fore.pos} top={c.ftop} walls={c.fwalls} />}
   </group>;
 }
 
