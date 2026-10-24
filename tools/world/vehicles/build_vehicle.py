@@ -463,7 +463,188 @@ def build_G26():
                 wheel=dict(width=0.26, rim_r=0.245, spokes=5, rim='veh_metal', hub='veh_accent_dark', segs=36,
                            tread=None, spoke_w=0.026))
 
-BUILDERS = {'G25': build_G25, 'G26': build_G26}
+# =============================================================================================
+#  G27 box van (cab-forward). cream body, slate skirt + bumpers, roller rear door, ladder rack, orange beacon.
+# =============================================================================================
+def build_G27():
+    R, TRACK, WB = 0.5, 1.056, 3.06
+    AX = WB / 2
+    BODY_Y = -1.315
+    CLIP = 0.38
+    FLARE_CLIP = 0.32
+    body = V.Part('G27_body', smooth_angle=36)
+    H = V.Hulls()
+    HW = 1.10
+    AHW, AH, SILL = 0.60, 0.60, 0.42
+    SKIRT = 0.74   # top of the slate skirt band
+    def arch(cx, flat=False):
+        pts = V.squircle_arch(cx, SILL, AHW, AH, n=13, p=2.8)
+        return [(x, SILL) for x, _ in pts] if flat else pts
+    # chassis/skirt loft: full length, slate band + cream above to the beltline z=1.10 (cab) / 0.92 (box base)
+    def lower(t):
+        flat = t < 0.80
+        p = [(2.22, SILL), (2.25, 0.75), (2.24, 1.06), (2.15, 1.12), (-2.25, 1.12), (-2.26, SILL)]
+        p = p + arch(-AX, flat) + arch(AX, flat)
+        return V.offset_poly(p, 0.022) if t > 0.99 else p
+    def lmat(i, to, c):
+        x, y, z = c
+        in_arch = any(abs(x - s * AX) < AHW + 0.01 for s in (1, -1))
+        if z < SILL + 0.004:
+            return 'veh_accent_dark'
+        if in_arch and z < SILL + AH + 0.02 and abs(y) < 1.06:
+            return 'veh_accent_dark'
+        return 'veh_accent_slate' if z < SKIRT and abs(y) > 1.0 else 'veh_paint_cream'
+    bm, fm = V.loft_y(lower, [0, 0.795, 0.81, 0.98, 1.0], HW, lmat, 'veh_paint_cream')
+    H.take('lower', bm, zclip=CLIP)
+    body.add(bm, face_mats=fm)
+    # cab: short nose, raked windscreen, roof; tumblehome above the beltline
+    def cab(t):
+        p = [(0.90, 1.08), (2.18, 1.08), (2.06, 1.18), (1.62, 1.96), (1.52, 2.03), (0.90, 2.03)]
+        return V.offset_poly(p, 0.03) if t > 0.99 else p
+    cab_y = lambda t, x, z: t * (HW - 0.008 - max(0.0, z - 1.12) * 0.06)
+    bm, fm = V.loft_y(cab, [0, 0.965, 1.0], 1.0, lambda i, to, c: 'veh_paint_cream', 'veh_paint_cream', yfn=cab_y)
+    H.take('cab', bm)
+    body.add(bm, face_mats=fm)
+    # cargo box: separate rounded box (seam to the cab is a real 2 cm gap filled by a dark gasket)
+    def box_p(t):
+        p = V.rrect(-2.26, 0.90, 0.86, 2.45, 0.05, 2)
+        return V.offset_poly(p, 0.03) if t > 0.99 else p
+    bm, fm = V.loft_y(box_p, [0, 0.972, 1.0], 1.105, lambda i, to, c: 'veh_paint_cream', 'veh_paint_cream')
+    H.take('box', bm)
+    body.add(bm, face_mats=fm)
+    body.add(V.box((0.84, -1.07, 1.10), (0.93, 1.07, 2.02)), 'veh_accent_dark')
+    # box panel seams (two vertical ribs per side) and a roof drip rail
+    for s in (1, -1):
+        for xx in (-1.20, -0.15):
+            bm, _ = V.stepped_plate(V.rrect(xx - 0.02, 0.98, xx + 0.02, 2.38, 0.01, 1), side_map(s, lambda z: 1.105), -0.004, 0.010, 0.004)
+            body.add(bm, 'veh_paint_cream')
+    # glass
+    m, L = slope_map((2.06, 1.18), (1.62, 1.96))
+    bm, _ = V.prism(V.rrect(-0.98, 0.05, 0.98, L - 0.06, 0.05, 3), m, -0.012, 0.006)
+    body.add(bm, 'veh_glass')
+    bm, _ = V.prism(V.rrect(-0.03, 0.04, 0.03, L - 0.03, 0.01, 1), m, -0.01, 0.012)
+    body.add(bm, 'veh_accent_dark')
+    for yy in (-0.45, 0.45):
+        bm, _ = V.prism([(yy - 0.36, 0.09), (yy + 0.02, 0.09), (yy + 0.02, 0.108), (yy - 0.36, 0.112)], m, 0.004, 0.016)
+        body.add(bm, 'veh_accent_dark')
+    for s in (1, -1):
+        plane = lambda z: HW - 0.008 - max(0.0, z - 1.12) * 0.06
+        afx = lambda z: 2.06 + (1.62 - 2.06) * (z - 1.18) / (1.96 - 1.18) - 0.08
+        bm, _ = V.prism([(1.10, 1.24), (afx(1.24), 1.24), (afx(1.90), 1.90), (1.10, 1.90)], side_map(s, plane), -0.01, 0.006)
+        body.add(bm, 'veh_glass')
+        # cab door skin (real seam), handle, step
+        flat = lambda z: HW
+        bm, _ = V.stepped_plate(V.rrect(1.00, SKIRT + 0.01, 1.98, 1.09, 0.025, 2), side_map(s, flat), -0.004, 0.006, 0.003)
+        body.add(bm, 'veh_paint_cream')
+        bm, _ = V.stepped_plate(V.rrect(1.10, 0.98, 1.28, 1.02, 0.012, 2), side_map(s, flat), 0.0, 0.024, 0.006)
+        body.add(bm, 'veh_accent_dark')
+        # amber side marker near the front
+        bm, _ = V.stepped_plate(V.rrect(2.02, 0.80, 2.12, 0.85, 0.015, 2), side_map(s, flat), 0.0, 0.014, 0.004)
+        body.add(bm, 'veh_accent_amber')
+        # rear vertical side lamp (tail cluster wraps around the corner)
+        bm, _ = V.stepped_plate(V.rrect(-2.22, 1.25, -2.17, 1.60, 0.015, 2), side_map(s, lambda z: 1.105), 0.0, 0.012, 0.004)
+        body.add(bm, 'veh_light_brake')
+        # big van mirror on a two-tube arm
+        body.add(V.cylinder((1.86, s * 1.08, 1.30), (1.80, s * 1.27, 1.40), 0.014, 8), 'veh_accent_dark')
+        body.add(V.cylinder((1.86, s * 1.08, 1.70), (1.80, s * 1.27, 1.62), 0.014, 8), 'veh_accent_dark')
+        bm = V.box((1.74, s * 1.24 if s > 0 else -1.33, 1.34), (1.84, 1.33 if s > 0 else -1.24, 1.70), 0.02)
+        body.add(bm, 'veh_accent_dark')
+        bm, _ = V.prism(V.rrect(-0.035, 1.36, 0.035, 1.68, 0.012, 1), lambda u, v, d, s=s: (1.74 - d, s * (1.285 + u), v), -0.004, 0.004)
+        body.add(bm, 'veh_glass')
+        # arch lips (slate) carried out past the tyre
+        for cx in (AX, -AX):
+            inner = V.squircle_arch(cx, SILL, AHW, AH, n=13, p=2.8)
+            outer = V.squircle_arch(cx, SILL - 0.01, AHW + 0.06, AH + 0.06, n=13, p=2.8, forward=False)
+            band = inner + outer
+            bm, _ = V.stepped_plate(band, lambda u, v, d, s=s: (u, s * d, v), 1.06, 1.195, 0.014)
+            body.add(bm, 'veh_accent_slate')
+            xs = [x for x, z in band]
+            fl = 'flare' + ('F' if cx > 0 else 'R') + ('L' if s > 0 else 'R')
+            H.boxpts(fl, (min(xs), min(s * 1.0, s * 1.195), FLARE_CLIP), (max(xs), max(s * 1.0, s * 1.195), SILL + AH + 0.06))
+        # slate skirt panels with a straight top edge at SKIRT, cut around the arches (real plates, 8 mm proud)
+        def arch_x(cx, z, side):
+            u = max(0.0, min(1.0, (z - SILL) / AH))
+            return cx + side * AHW * (1 - u ** 2.8) ** (1 / 2.8)
+        zs = [SILL + (SKIRT - SILL) * k / 4 for k in range(5)]
+        pieces = [
+            [(arch_x(AX, z, 1), z) for z in zs] + [(2.235, SKIRT), (2.235, SILL)],
+            [(arch_x(-AX, z, 1), z) for z in zs[::-1]] + [(arch_x(AX, z, -1), z) for z in zs],
+            [(-2.25, SILL), (-2.25, SKIRT)] + [(arch_x(-AX, z, -1), z) for z in zs[::-1]],
+        ]
+        for poly in pieces:
+            if V.poly_area(poly) < 0:
+                poly = poly[::-1]
+            bm, _ = V.stepped_plate(poly, side_map(s, lambda z: HW), -0.004, 0.008, 0.004)
+            body.add(bm, 'veh_accent_slate')
+        # sill block between arches (vertical faces down to 0.32)
+        y0, y1 = (1.00, 1.11) if s > 0 else (-1.11, -1.00)
+        bm = V.box((-0.86, y0, 0.32), (0.86, y1, SILL + 0.02), 0.012)
+        H.take('sill' + ('L' if s > 0 else 'R'), bm)
+        body.add(bm, 'veh_accent_dark')
+    # front: round headlights in cream bezels, grille slots, amber indicators, slate bumper + plate recess
+    fm_ = face_map_x(2.25)
+    for s in (1, -1):
+        lamp_x(body, H, 2.255, s * 0.72, 0.93, 0.095, 1, 'veh_light_front', 'veh_metal', segs=20)
+        bm, _ = V.stepped_plate(V.rrect(s * 0.93 - 0.04, 0.90, s * 0.93 + 0.04, 0.96, 0.012, 1), face_map_x(2.25), 0.0, 0.016, 0.004)
+        body.add(bm, 'veh_accent_amber')
+    bm, _ = V.stepped_plate(V.rrect(-0.50, 0.84, 0.50, 1.02, 0.03, 2), face_map_x(2.245), -0.01, 0.010, 0.005)
+    body.add(bm, 'veh_accent_dark')
+    for zz in (0.88, 0.93, 0.98):
+        bm, _ = V.prism(V.rrect(-0.44, zz - 0.009, 0.44, zz + 0.009, 0.006, 1), face_map_x(2.25), 0.0, 0.016)
+        body.add(bm, 'veh_metal_dark')
+    bm = V.box((2.16, -1.12, 0.30), (2.42, 1.12, 0.66), 0.035)
+    H.take('bumperF', bm)
+    body.add(bm, 'veh_accent_slate')
+    bm, _ = V.stepped_plate(V.rrect(-0.26, 0.40, 0.26, 0.54, 0.015, 2), face_map_x(2.42), -0.006, 0.006, 0.003)
+    body.add(bm, 'veh_accent_dark')
+    # rear: roller shutter (real slats in a frame), handle, tail lamps, slate bumper with step
+    rx = -2.26
+    rm = face_map_x(rx, -1)
+    bm, _ = V.stepped_plate(V.rrect(-0.92, 0.98, 0.92, 2.36, 0.02, 1), rm, -0.006, 0.012, 0.004)
+    body.add(bm, 'veh_accent_dark')
+    n_sl = 14
+    for k in range(n_sl):
+        z0 = 1.01 + k * (1.32 / n_sl)
+        # each slat: flat base strip + a narrower rounded crown -> reads as a corrugated roller door
+        h = 1.32 / n_sl - 0.012
+        bm, _ = V.prism([(-0.86, z0), (0.86, z0), (0.86, z0 + h), (-0.86, z0 + h)], rm, 0.0, 0.016)
+        body.add(bm, 'veh_metal')
+        bm, _ = V.prism([(-0.86, z0 + h * 0.25), (0.86, z0 + h * 0.25), (0.86, z0 + h * 0.75), (-0.86, z0 + h * 0.75)], rm, 0.014, 0.026)
+        body.add(bm, 'veh_metal')
+    bm, _ = V.stepped_plate(V.rrect(-0.12, 1.06, 0.12, 1.10, 0.012, 1), rm, 0.02, 0.05, 0.008)
+    body.add(bm, 'veh_accent_dark')
+    for s in (1, -1):
+        bm, _ = V.stepped_plate(V.rrect(s * 1.00 - 0.035, 1.05, s * 1.00 + 0.035, 1.62, 0.015, 2), rm, -0.004, 0.016, 0.005)
+        body.add(bm, 'veh_light_brake')
+        bm, _ = V.stepped_plate(V.rrect(s * 1.00 - 0.035, 0.96, s * 1.00 + 0.035, 1.02, 0.012, 1), rm, -0.004, 0.014, 0.004)
+        body.add(bm, 'veh_light_reverse')
+    bm = V.box((-2.44, -1.12, 0.30), (-2.18, 1.12, 0.66), 0.035)
+    H.take('bumperR', bm)
+    body.add(bm, 'veh_accent_slate')
+    bm = V.box((-2.52, -0.42, 0.40), (-2.40, 0.42, 0.46), 0.012)
+    body.add(bm, 'veh_metal_dark')
+    # underbody: rails
+    for s in (1, -1):
+        body.add(V.box((-2.0, s * 0.45 - 0.06, 0.38), (2.0, s * 0.45 + 0.06, 0.44)), 'veh_accent_dark')
+    # ladder rack on the box roof (two rails, rungs, 3 feet per side) + orange beacon on the cab roof
+    rz = 2.58
+    for s in (1, -1):
+        for b in V.tube_path([(-2.05, s * 0.86, rz), (0.70, s * 0.86, rz)], 0.022, 8):
+            H.take('rack', b)
+            body.add(b, 'veh_metal')
+        for xx in (-1.95, -0.65, 0.60):
+            body.add(V.cylinder((xx, s * 0.86, 2.44), (xx, s * 0.86, rz), 0.02, 8), 'veh_metal')
+    for k in range(7):
+        xx = -1.85 + k * 0.40
+        body.add(V.cylinder((xx, -0.86, rz), (xx, 0.86, rz), 0.016, 8), 'veh_metal')
+    body.add(V.cylinder((1.25, 0, 2.02), (1.25, 0, 2.07), 0.10, 16), 'veh_accent_dark')
+    bm, _ = V.lathe([(0, 2.07)] + [(0.085 * math.cos(a), 2.07 + 0.06 * math.sin(a)) for a in (0.0, 0.35)] + [(0.08, 2.15), (0.06, 2.19), (0, 2.205)], 16, closed=False)
+    body.add(V.xform(bm, Matrix.Translation((1.25, 0, 0)) @ Matrix.Rotation(math.pi / 2, 4, 'X')), 'veh_light_beacon')
+    return dict(body=body, hulls=H, R=R, TRACK=TRACK, AX=AX, BODY_Y=BODY_Y, CLIP=CLIP,
+                wheel=dict(width=0.24, rim_r=0.30, spokes=8, rim='veh_metal', hub='veh_metal', segs=28,
+                           tread=None, steel=True))
+
+BUILDERS = {'G25': build_G25, 'G26': build_G26, 'G27': build_G27}
 
 def main():
     V.reset_scene()
@@ -512,7 +693,7 @@ def main():
               'sourceTris': src_tris, 'bodyTris': src_tris[body_name], 'wheelTris': src_tris[wheel_name],
               'totalTris': sum(src_tris.values()), 'checks': checks, 'reimport': back,
               'hulls': [{'part': h['part'], 'faces': h['faces'], 'points': len(h['points']) // 3} for h in hulls],
-              'render': render}
+              'render': os.path.relpath(render) if render else None}
     os.makedirs(V.DOC_DIR, exist_ok=True)
     with open(os.path.join(V.DOC_DIR, f'{ASSET}-report.json'), 'w') as f:
         json.dump(report, f, indent=1)

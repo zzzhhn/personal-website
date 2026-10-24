@@ -16,7 +16,7 @@ try{for(const candidate of [false,true]){
  for(const spec of specs.filter(s=>!process.env.WORLD_VEHICLES||process.env.WORLD_VEHICLES.split(',').includes(s.id))){
   await bot.release();await page.evaluate(()=>__worldDebug.exit());
   for(let i=0;i<specs.length;i++)await page.evaluate(({id,i})=>__worldDebug.teleportVehicle(id,[75+i*8,7,155],0),{id:specs[i].id,i});
-  await page.evaluate(({id,h})=>__worldDebug.teleportVehicle(id,[100,5+h,120],0),spec);await bot.fixtureTeleport([100,6,117.5],'handling A/B start');await page.waitForTimeout(700);await bot.press('KeyE');await page.waitForTimeout(150);
+  await page.evaluate(({id,h})=>__worldDebug.teleportVehicle(id,[100,5+h,120],0),spec);await bot.fixtureTeleport([100,6,117.5],'handling A/B start');await page.waitForTimeout(700);await bot.press('KeyE');await page.waitForFunction(id=>__worldDebug.snapshot().activeVehicle===id,spec.id,{timeout:4000});
   const c={name:spec.id,candidate,entered:(await read(spec.id)).active===spec.id,samples:[]};
   // Launch from rest after one short steer tap (60 ms A+W): a perfectly symmetric standing start lets
   // Rapier's raycast controller sit in one of two solver states that differ ~25% in launch force depending
