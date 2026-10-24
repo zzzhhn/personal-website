@@ -102,6 +102,7 @@ try {
         row.series = await page.evaluate(() => __worldDebug.budget.series(8));
         row.lights = await page.evaluate(() => __worldDebug.budget.lights());
         row.fire = await page.evaluate(() => __worldDebug.fireShadowInfo?.() ?? null);
+        row.shadowInfo = await page.evaluate(() => { const t = __worldDebug.shadowInfo?.(); return t ? { groups: t.groups, chunks: t.chunks, passes: t.passes, groundTexel: t.cascades?.map(c => c.groundTexel_m) } : null; });
         if (hide) row.hideDiff = await page.evaluate(() => __worldDebug.budget.hideDiff());
         await page.screenshot({ path: path.join(out, `view-${view.id}-${quality}.jpg`), type: 'jpeg', quality: 72 });
         if (view.drive) { await bot.press('KeyE'); await page.waitForTimeout(800); }
@@ -139,9 +140,9 @@ await writeFile(path.join(out, 'budget-report.json'), JSON.stringify(report, nul
 
 const md = [`# budget-peak ${report.startedAt}`, '', `base ${base} · viewport ${W}x${H} · layout ${report.layout} · claimed: ${(report.claimed || []).join(', ') || 'none'}`, '',
   `Hard line per frame: ${L.total.calls} calls / ${k(L.total.triangles)} triangles (main + all shadow passes).`, '',
-  '| quality | view | light | calls | triangles | main calls | main tris | shadow calls | shadow tris | gl.info check |', '| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |',
+  '| quality | view | light | calls | triangles | main calls | main tris | shadow calls | shadow tris | c0 / c1 / c2 / fire calls | gl.info check |', '| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- | --- |',
   ...ok.map(r => { const f = r.frame, m = f.byPass.main ?? { calls: 0, triangles: 0 };
-    return `| ${r.quality} | ${r.view} | ${r.light} | ${f.total.calls}${flag(f.total.calls, L.total.calls)} | ${k(f.total.triangles)}${flag(f.total.triangles, L.total.triangles)} | ${m.calls} | ${k(m.triangles)} | ${f.shadow.calls}${flag(f.shadow.calls, L.shadow.calls)} | ${k(f.shadow.triangles)}${flag(f.shadow.triangles, L.shadow.triangles)} | ${f.info.calls === f.total.calls ? 'ok' : `info ${f.info.calls}`} |`; }),
+    return `| ${r.quality} | ${r.view} | ${r.light} | ${f.total.calls}${flag(f.total.calls, L.total.calls)} | ${k(f.total.triangles)}${flag(f.total.triangles, L.total.triangles)} | ${m.calls} | ${k(m.triangles)} | ${f.shadow.calls}${flag(f.shadow.calls, L.shadow.calls)} | ${k(f.shadow.triangles)}${flag(f.shadow.triangles, L.shadow.triangles)} | ${['sun0', 'sun1', 'sun2', 'fire'].map(p => f.byPass[p]?.calls ?? 0).join(' / ')} | ${f.info.calls === f.total.calls ? 'ok' : `info ${f.info.calls}`} |`; }),
   '', '## Per-zone main pass (gameplay views; ✖ = over its limit)', '',
   `| view | ${zones.join(' | ')} | shadow |`, `| --- | ${zones.map(() => '---:').join(' | ')} | ---: |`,
   `| limit | ${zones.map(z => `${L.zones[z].calls} / ${k(L.zones[z].triangles)}`).join(' | ')} | ${L.shadow.calls} / ${k(L.shadow.triangles)} |`,

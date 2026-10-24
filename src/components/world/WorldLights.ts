@@ -96,7 +96,7 @@ export function worldLightsFrame(scene: Object3D, camera: Camera, tier: ShadowTi
   const debug = (window as unknown as { __worldDebug?: Record<string, unknown> }).__worldDebug;
   if (debug) {
     // Budget probe (tools/world/playtest/budget-peak.mjs): per-pass / per-zone draws of one real frame.
-    debug.budget ??= createBudgetProbe(scene, () => qa.renderer);
+    debug.budget ??= createBudgetProbe(scene, () => qa.renderer, () => (qa.sun?.shadow as unknown as { _cameras?: unknown[] })?._cameras ?? []);
     debug.fireShadowInfo ??= () => ({ ...info, light: useWorldStore.getState().light, position: fire?.getWorldPosition(new Vector3()).toArray() ?? null });
     // QA-only A/B switches for evidence (never reachable on the normal entry).
     debug.shadowQa ??= {
