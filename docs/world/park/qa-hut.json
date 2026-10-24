@@ -1,0 +1,167 @@
+{
+ "asset": "hut (P06-P11)",
+ "variants": {
+  "A": 5.2,
+  "B": 6.0
+ },
+ "evaluated": {
+  "A": {
+   "triangles": 2996,
+   "bounds_min": [
+    -2.89,
+    -1.195,
+    -3.0
+   ],
+   "bounds_max": [
+    2.89,
+    3.51,
+    3.3532
+   ],
+   "problems": [],
+   "objects": [
+    [
+     "shell_A",
+     1888,
+     104
+    ],
+    [
+     "piles_A",
+     580,
+     23
+    ],
+    [
+     "floor_A",
+     192,
+     16
+    ],
+    [
+     "lamp_A",
+     324,
+     3
+    ],
+    [
+     "glow_A",
+     12,
+     1
+    ]
+   ]
+  },
+  "B": {
+   "triangles": 3068,
+   "bounds_min": [
+    -3.29,
+    -1.195,
+    -3.0
+   ],
+   "bounds_max": [
+    3.29,
+    3.51,
+    3.3532
+   ],
+   "problems": [],
+   "objects": [
+    [
+     "shell_B",
+     1960,
+     110
+    ],
+    [
+     "piles_B",
+     580,
+     23
+    ],
+    [
+     "floor_B",
+     192,
+     16
+    ],
+    [
+     "lamp_B",
+     324,
+     3
+    ],
+    [
+     "glow_B",
+     12,
+     1
+    ]
+   ]
+  }
+ },
+ "glbReadback": {
+  "triangles": 6064,
+  "nodes": [
+   "floor_A",
+   "floor_B",
+   "glow_A",
+   "glow_B",
+   "hut_A",
+   "hut_B",
+   "lamp_A",
+   "lamp_B",
+   "piles_A",
+   "piles_B",
+   "shell_A",
+   "shell_B"
+  ],
+  "materials": [
+   "park_brass_matte",
+   "park_bulb_warm",
+   "park_cream_paint",
+   "park_cyan_glow",
+   "park_glass_frosted",
+   "park_iron_matte",
+   "park_roof_slate",
+   "park_slate_paint",
+   "park_wood_dark",
+   "park_wood_deck",
+   "park_wood_light",
+   "park_wood_mid"
+  ],
+  "problems": [
+   {
+    "name": "shell_A",
+    "triangles": 1888,
+    "shells": 83,
+    "negative_shells": 0,
+    "degenerate_faces": 0,
+    "nonmanifold_edges": 61,
+    "materials": [
+     "park_wood_light",
+     "park_slate_paint",
+     "park_cream_paint",
+     "park_glass_frosted",
+     "park_wood_dark",
+     "park_roof_slate"
+    ]
+   },
+   {
+    "name": "shell_B",
+    "triangles": 1960,
+    "shells": 89,
+    "negative_shells": 0,
+    "degenerate_faces": 0,
+    "nonmanifold_edges": 61,
+    "materials": [
+     "park_wood_light",
+     "park_slate_paint",
+     "park_cream_paint",
+     "park_glass_frosted",
+     "park_wood_dark",
+     "park_roof_slate"
+    ]
+   }
+  ],
+  "bounds_min": [
+   -3.29,
+   -1.195,
+   -3.0
+  ],
+  "bounds_max": [
+   3.29,
+   3.51,
+   3.3532
+  ]
+ },
+ "glbBytes": 95104
+}
