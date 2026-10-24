@@ -712,6 +712,9 @@ function applySunPass(k: number) {
       const src = (c.mesh as InstancedMesh).instanceMatrix.array as Float32Array, s = c.spheres;
       c.proxies.forEach((p, j) => { if (j !== k) p.castShadow = false; });
       const p = c.proxies[k], dst = p.instanceMatrix.array as Float32Array;
+      // Dynamic wheel batches can swap LOD geometry without replacing their InstancedMesh.
+      // Refresh shadow geometry as well, so distant wheels do not keep submitting the near mesh.
+      p.geometry = k === 2 ? farHull(c.mesh.geometry) ?? c.mesh.geometry : c.mesh.geometry;
       p.matrixWorld.copy(c.mesh.matrixWorld);
       let n = 0;
       for (let i = 0; i * 4 < s.length; i++) {
