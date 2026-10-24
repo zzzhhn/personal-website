@@ -24,12 +24,20 @@ if (experiences.en.length !== BUILDINGS.length || experiences.zh.length !== BUIL
   throw new Error('The world requires six complete, date-aligned bilingual experience slots.');
 }
 const isoDay = (d?: Date) => (d ? d.toISOString().slice(0, 10) : undefined);
-const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order).map(({ data }) => ({
+// Course pages come from the project's own bilingual MDX table (`| **CODE · Name** | problem | response |`),
+// so the blackboard page count follows the content source instead of a hard-coded list.
+const courseRows = (body: string | undefined, lang: 'en' | 'zh') => {
+  const section = body?.split(`<section data-lang="${lang}">`)[1]?.split('</section>')[0] ?? '';
+  return [...section.matchAll(/^\|\s*\*\*([A-Z]{2,4}\d{4})\s*·\s*([^*]+)\*\*\s*\|([^|]+)\|([^|]+)\|/gm)]
+    .map(m => ({ code: m[1], name: m[2].trim(), problem: m[3].trim(), response: m[4].trim() }));
+};
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order).map(({ data, body }) => ({
   slug: data.slug, title: data.title, titleZh: data.titleZh,
   tagline: data.tagline, taglineZh: data.taglineZh, maintenance: data.maintenance,
   description: data.description, descriptionZh: data.descriptionZh,
   highlights: data.highlights, highlightsZh: data.highlightsZh, techStack: data.techStack,
   maturity: data.maturity, date: isoDay(data.date), endDate: isoDay(data.endDate), links: data.links,
+  ...(courseRows(body, 'en').length ? { courses: { en: courseRows(body, 'en'), zh: courseRows(body, 'zh') } } : {}),
 }));
 // About-camp cards read the same UI fields as the homepage About / Education sections.
 const about: WorldAbout = {
@@ -42,6 +50,8 @@ const about: WorldAbout = {
     languages: { en: UI.education.languages.en.map(l => ({ ...l })), zh: UI.education.languages.zh.map(l => ({ ...l })) },
     courses: { en: [...UI.education.courses.en], zh: [...UI.education.courses.zh] },
   },
+  // EN keeps singing / gym in paragraph 2, ZH lists 唱歌、健身、主持、烹饪、旅行 in paragraph 3 (UI.about.bio).
+  interestsParagraph: { en: 1, zh: 2 },
   sections: { about: UI.sections.about, education: UI.sections.education, experience: UI.sections.experience, projects: UI.sections.projects, certificates: UI.sections.certificates, languages: UI.sections.languages },
 };
 ---
@@ -54,7 +64,7 @@ const about: WorldAbout = {
     <meta name="description" content="Explore Bobby’s island. A playable camp art sample with the rest of the island in greybox." />
     <title>Bobby’s island · World playtest</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <style is:global>@font-face{font-family:Geist;src:url('/fonts/GeistSans-Regular.woff2') format('woff2');font-display:swap}html,body{margin:0;background:#1c353e}</style>
+    <style is:global>@font-face{font-family:Geist;src:url('/fonts/GeistSans-Regular.woff2') format('woff2');font-display:swap}@font-face{font-family:Geist;font-weight:500;src:url('/fonts/GeistSans-Medium.woff2') format('woff2');font-display:swap}@font-face{font-family:Geist;font-weight:600;src:url('/fonts/GeistSans-SemiBold.woff2') format('woff2');font-display:swap}@font-face{font-family:'Instrument Serif';src:url('/fonts/InstrumentSerif-Regular.woff2') format('woff2');font-display:swap}@font-face{font-family:'Instrument Serif';font-style:italic;src:url('/fonts/InstrumentSerif-Italic.woff2') format('woff2');font-display:swap}html,body{margin:0;background:#1c353e}</style>
     <script is:inline>try{var lang=localStorage.getItem('lang')==='zh'?'zh':'en';document.documentElement.dataset.siteLang=lang;document.documentElement.lang=lang==='zh'?'zh-CN':'en'}catch{}</script>
   </head>
   <body>

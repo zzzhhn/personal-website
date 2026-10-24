@@ -23,6 +23,8 @@ export interface WorldProject {
   maturity?: string;
   date?: string; endDate?: string;
   links?: { live?: string; github?: string };
+  /** Course pages (Interactive Learning blackboard): rows of the project's own MDX course table, per language. */
+  courses?: Record<Lang, { code: string; name: string; problem: string; response: string }[]>;
 }
 /** About-camp card sources, copied from `UI` in src/lib/i18n.ts (hero, about, education, sections). */
 export interface WorldAbout {
@@ -37,6 +39,8 @@ export interface WorldAbout {
     languages: Record<Lang, { name: string; level: string }[]>;
     courses: Record<Lang, string[]>;
   };
+  /** Index of the `bio` paragraph that talks about free time, per language (the site keeps hobbies inside the bio). */
+  interestsParagraph: Record<Lang, number>;
   sections: Record<'about' | 'education' | 'experience' | 'projects' | 'certificates' | 'languages', Bi>;
 }
 export interface WorldContent {

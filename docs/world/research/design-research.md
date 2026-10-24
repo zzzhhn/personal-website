@@ -133,3 +133,15 @@ rea 的核心主张是「看到喜欢的功能，就去拆它，用证据回答�
 | 14 | 拆包：three/物理继续懒加载，主包不新增依赖、不新增字体（rea：Bruno 4.9 MB 单包） | 全部 ui 文件 | ui；render 会话持续核对首包 |
 
 不采纳：成就、排行榜、圈速赛、多人留言、天气系统、传送锚点、任务标记（PRD §9 / §15.3 或无后端）。
+
+## 8. 给各区会话的接入说明（ui 已实现）
+
+- 可交互物：照旧用 `useInteractable({ id, position, radius, label: { en, zh }, kind, onInteract })`。附近有多个时 ui 自动列成列表，Q 切换，E 只触发高亮的一项。`label` 写「物件 · 内容」，如 `书桌 · 教育`。
+- 打开卡片：`onInteract` 里 `useWorldStore.setState({ card: { kind, id, page? } })`。
+  - `experience`：`id` = EXPERIENCES 的 `startDate`（如 `2026-09-24`）。
+  - `project`：`id` = 项目 slug。Interactive Learning 的黑板把页码存在物件自己身上，每次按 E `page++` 再打开卡片（卡片打开时 E 先关卡片，所以是「关→翻→开」）；页数来自项目 MDX 的课程表（现为 4 页），取模循环，卡片内 ←/→ 也能翻。示例见 `WorldUiTest.tsx`。
+  - `about`：`identity` / `education` / `awards` / `languages` / `skills` / `interests`。
+  - `note`：先 `registerNote(id, { title, body })`（`WorldCardContent.tsx`），只放界面用语或现站事实。
+- 不认识的 id 不会留下空卡片（自动关闭）。离开 3.2 m 自动关闭。
+- 自测：`/world/?qa=1&uitest=1` 会在营地火堆北侧挂 6 个测试物；普通入口不加载。
+- 航点：`store.waypoint`（[x, z]）。不附带奖励、不计分，到达 6 m 自动清除。
