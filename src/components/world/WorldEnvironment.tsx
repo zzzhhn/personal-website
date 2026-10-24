@@ -419,7 +419,7 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
     <pointLight ref={fire} name="camp-fire-key" position={[-42, 6.5, 30]} color="#FF8A3A" intensity={9} distance={26} decay={2} />
     {parkFillPositions.map((position, i) => <pointLight key={i} ref={lamp => { parkFill.current[i] = lamp; }}
       position={position} color="#FFD08A" intensity={0} distance={25} decay={2} castShadow={false} />)}
-    <mesh position={[0, 0, 0]} renderOrder={-10}>
+    <mesh name="world-sky" position={[0, 0, 0]} renderOrder={-10}>
       <sphereGeometry args={[290, 24, 16]} />
       <shaderMaterial side={BackSide} depthWrite={false} uniforms={skyUniforms}
         vertexShader={'varying vec3 vDirection; void main(){vDirection=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}'}
