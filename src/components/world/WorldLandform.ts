@@ -79,8 +79,12 @@ const L = OUTLINE_PERIMETER;
 /** Top-edge push beyond the old outline (0.3-3.4 m), beach width 5-12 m, shelf 12-18 m. */
 const window1 = (s: number, a: number, b: number, soft: number) => smoothstep(a - soft, a, s) * (1 - smoothstep(b, b + soft, s));
 export const topPush = (s: number) => clamp(1.6 + periodic(s, L, [[1.1, 7, .4], [.5, 17, 2.2], [.18, 37, 4.1]]), .3, 3.4)
-  // The existing coastal parking bay (x 16.5-23.5, z 8.5-15.5) overhangs the old outline by 2.9 m.
-  + 2.6 * window1(s, 206, 224, 5);
+  // v3 only: the old coastal parking bay (x 16.5-23.5, z 8.5-15.5) overhangs the old outline by 2.9 m.
+  // v4 has no such bay (the window would push a meaningless 2.6 m cape out of the new north-east shore).
+  + (LAYOUT_V4 ? 0 : 2.6 * window1(s, 206, 224, 5))
+  // v4 south shore (x -5..-25, z ~90): the one stretch where the 527 m perimeter's harmonics leave a
+  // 51 m run without a feature; a small 2.2 m cape at its middle restores the 30-50 m rhythm (§12.1 A7).
+  + (LAYOUT_V4 ? 2.2 * window1(s, 414, 420, 5) : 0);
 export const beachWidth = (s: number) => clamp(8.5 + periodic(s, L, [[3.4, 8, 1.3], [1.1, 19, .2]]), 5, 12);
 const shelfLength = (s: number) => clamp(15 + periodic(s, L, [[3, 5, 2.7]]), 12, 18);
 /** East town coast: road promenade and bridge stand on a stone seawall, not on sand. */

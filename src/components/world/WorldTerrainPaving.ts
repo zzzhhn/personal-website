@@ -49,8 +49,8 @@ const RAMP_FOOT = xz(ramp.pts[2]), RAMP_DIR = unit([ramp.pts[2][0] - ramp.pts[1]
 const BRIDGE_START = xz(bridge.pts[0]), BRIDGE_DIR = unit([bridge.pts[1][0] - bridge.pts[0][0], bridge.pts[1][2] - bridge.pts[0][2]]);
 /** Frozen prisms join the field along these lines; the field is not meshed beyond them. */
 export const PAVE_CLIPS = [
-  { p: RAMP_FOOT, n: RAMP_DIR, keep: 1, reach: 12 },       // keep dot(p - foot, dir) >= 0 (camp-road side)
-  { p: BRIDGE_START, n: BRIDGE_DIR, keep: -1, reach: 12 }, // keep dot(p - start, dir) <= 0 (town side)
+  { p: RAMP_FOOT, n: RAMP_DIR, keep: 1, reach: 6.5 },       // keep dot(p - foot, dir) >= 0 (camp-road side)
+  { p: BRIDGE_START, n: BRIDGE_DIR, keep: -1, reach: 6.5 }, // keep dot(p - start, dir) <= 0 (town side)
 ];
 const clipDist = (x: number, z: number) => {
   // > 0 = kept side (signed distance to the nearest clip line within its lateral reach), Infinity elsewhere.
@@ -259,7 +259,11 @@ export const pavingField = lazy((): PavingField => {
   // Promenade: the avenue's sea-side sidewalk widens to the seawall walk edge.
   for (let n = 0; n < N; n++) {
     const x = minX + (n % NX) * CELL, z = minZ + Math.floor(n / NX) * CELL;
-    if (x > 24.4 && x < PROMENADE.x1 + 1 && z < PROMENADE.z0 && z > PROMENADE.z1 && D[n] > -1) SW[n] = Math.max(SW[n], PROMENADE.x1 - (x - D[n]));
+    if (x > 24.4 && x < PROMENADE.x1 + 1 && z < PROMENADE.z0 + 3 && z > PROMENADE.z1 - 3 && D[n] > -1) {
+      // Tapered over 3 m at both promenade ends, so the widened walk's edge never steps.
+      const taper = smooth(PROMENADE.z1 - 3, PROMENADE.z1, z) * (1 - smooth(PROMENADE.z0, PROMENADE.z0 + 3, z));
+      SW[n] = Math.max(SW[n], SW[n] + (PROMENADE.x1 - (x - D[n]) - SW[n]) * taper);
+    }
   }
   const t1 = typeof performance !== 'undefined' ? performance.now() : Date.now();
   return { minX, minZ, nx, nz, cell: CELL, D, K, SW, LAT, W, buildMs: Math.round(t1 - t0) };
@@ -348,7 +352,8 @@ export function edgeFootY(_x: number, _z: number) { return EDGE_GROUND; }
  * ground-detail exclusion. */
 export function paveClearance(x: number, z: number) {
   for (const p of pavingPrisms()) if (p.kind === 'forecourt' && insidePolygon([x, z], p.pts)) return -1;
-  if (pavingClipped(x, z)) return 99;
+  // The frozen-joint clip only limits meshing; the ground under the clipped stub (below the frozen
+  // deck's lower end) is still capped / filled, so the clipped chamfer never hangs in the air.
   const F = pavingField(), D = sampleField(F.D, x, z, 99);
   return D - sampleField(F.SW, x, z, 1);
 }
