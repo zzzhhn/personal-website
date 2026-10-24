@@ -426,3 +426,57 @@ Object.assign(BUDGET, { seawallBay: [420, 130], guardPost: [80, 24], guardPanel:
 const _extra = extraAssets;
 export const extraAssets2 = () => ({ ..._extra(), seawallBay: { L0: seawallBay(0), L1: seawallBay(1) }, guardPost: { L0: guardPost(0), L1: guardPost(1) }, guardPanel: { L0: guardPanel(0, 4.67), L1: guardPanel(1, 4.67) },
   timberPost: { L0: timberPost(0), L1: timberPost(1) }, timberBeam: { L0: timberBeam(0, 4.2), L1: timberBeam(1, 4.2) }, parapet: { L0: parapet(0, 11.3), L1: parapet(1, 11.3) } });
+
+/* G29: modern ridge windmill, no additional light sources. */
+export function windmillTower(lod: 0 | 1) {
+  const B = new Builder(), hi = lod === 0;
+  B.part('plinth'); lathe(B, [[1.1, -.12], [1.1, .13], [.96, .2]], S.stoneCream, { sides: hi ? 24 : 8, smooth: 40 });
+  B.part('tower'); lathe(B, hi ? [[.72, .18], [.7, .32], [.68, 1.2], [.55, 6], [.38, 11.5], [.4, 11.65]] : [[.7, .18], [.38, 11.65]], S.creamPaint, { sides: hi ? 24 : 8, smooth: 40 });
+  B.part('nacelle'); box(B, [-1.15, 11.2, -.55], [1.25, 12.22, .55], S.creamPaint, hi ? .14 : 0);
+  if (hi) {
+    B.part('door'); box(B, [-.29, .2, .652], [.29, 1.87, .73], S.slate, .03); box(B, [-.245, .28, .73], [.245, 1.8, .752], S.slateDark, .015);
+    box(B, [.13, .92, .75], [.2, .96, .78], S.iron, .008);
+    B.part('seams', false);
+    for (const y of [1.9, 6, 10.7]) lathe(B, [[.72 - y * .029, y], [.72 - y * .029, y + .035]], S.stoneLight, { sides: 24, caps: false, smooth: 40 });
+    for (const z of [-.555, .555]) for (let i = 0; i < 8; i++) box(B, [.25 + i * .08, 11.5, z - .014], [.29 + i * .08, 11.92, z + .014], S.slateDark, .008);
+    B.part('inspection'); box(B, [-.2, 12.22, -.3], [.6, 12.25, .3], S.stoneLight, .02);
+  }
+  return B;
+}
+/** Rotor local origin is the spindle; local +X is axis. Blades are swept, tapering closed shells. */
+export function windmillRotor(lod: 0 | 1) {
+  const B = new Builder(), hi = lod === 0;
+  B.part('hub'); B.tr([0, 0, 0], [0, 0, -Math.PI / 2], () => lathe(B, [[.24, -.2], [.32, -.08], [.32, .15], [.18, .34], [0, .43]], S.creamPaint, { sides: hi ? 24 : 6, smooth: 50 }));
+  for (let k = 0; k < 3; k++) B.tr([0, 0, 0], [k * Math.PI * 2 / 3, 0, 0], () => {
+    B.part('blade'); B.tr([0, 0, 0], [0, Math.PI / 2, 0], () => plate(B,
+      hi ? [[-.1, .2], [.28, .7], [.4, 1.35], [.12, 3.9], [-.04, 4.7], [-.18, 4.65], [-.27, 1.2]] : [[-.12, .2], [.35, 1.1], [0, 4.7], [-.2, 1.1]], hi ? .065 : .045, S.creamPaint, S.creamPaint, S.stoneCream));
+    if (hi) { B.part('blade-root'); B.tr([0, .42, 0], [0, 0, 0], () => lathe(B, [[.13, -.2], [.16, 0], [.12, .32]], S.stoneLight, { sides: 16, smooth: 50 })); }
+  });
+  return B;
+}
+
+export function foundationSlab(lod: 0 | 1, w: number, d: number) {
+  const B = new Builder(), hi = lod === 0;
+  B.part('slab'); box(B, [-w / 2, 0, -d / 2], [w / 2, .2, d / 2], S.slab, hi ? .035 : 0);
+  if (hi) {
+    B.part('scoring', false);
+    for (let x = -w / 2 + 2.5; x < w / 2; x += 2.5) box(B, [x - .008, .201, -d / 2 + .1], [x + .008, .204, d / 2 - .1], S.stoneDark, 0);
+    for (let z = -d / 2 + 2.5; z < d / 2; z += 2.5) box(B, [-w / 2 + .1, .201, z - .008], [w / 2 - .1, .204, z + .008], S.stoneDark, 0);
+    for (const x of [-w / 2 + .12, w / 2 - .12]) box(B, [x - .03, .201, -d / 2 + .12], [x + .03, .21, d / 2 - .12], S.stoneLight, .006);
+  }
+  return B;
+}
+export function foundationSign(lod: 0 | 1) {
+  const B = new Builder(), hi = lod === 0;
+  for (const x of [-1.02, 1.02]) { B.part('post'); box(B, [x - .065, 0, -.07], [x + .065, 1.78, .07], S.woodMid, hi ? .018 : 0); }
+  B.part('panel'); box(B, [-1.25, .8, -.06], [1.25, 1.68, .08], S.woodLight, hi ? .02 : 0);
+  if (hi) {
+    B.part('top-cap'); box(B, [-1.3, 1.68, -.1], [1.3, 1.75, .12], S.woodDark, .015);
+    B.part('brace'); bar(B, [-1.02, .35, -.08], [1.02, 1.5, -.08], .04, S.woodMid, 6);
+    B.part('plank-joints', false); for (const y of [1.08, 1.38]) box(B, [-1.22, y, .081], [1.22, y + .009, .084], S.woodMid, 0);
+  }
+  B.part('lettering', false); B.cell = [0, 0, 1, 1]; B.tr([0, 1.23, .087], [0, 0, 0], () => plate(B, rectPoly(2.18, .64), .002, S.woodLight, { ...S.cream, sign: true }, S.woodLight));
+  return B;
+}
+const _extra2 = extraAssets2;
+export const extraAssets3 = () => ({ ..._extra2(), windmillTower: { L0: windmillTower(0), L1: windmillTower(1) }, windmillRotor: { L0: windmillRotor(0), L1: windmillRotor(1) }, foundationSlab: { L0: foundationSlab(0, 15, 12), L1: foundationSlab(1, 15, 12) }, foundationSign: { L0: foundationSign(0), L1: foundationSign(1) } });

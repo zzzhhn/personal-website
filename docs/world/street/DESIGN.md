@@ -58,3 +58,12 @@ have no layout data: reported as a gap; the shelter carries an island-map poster
   are near and unlocked before any vehicle is within 6.5 m (no static first response for cars, spec 12.5); bins
   and delineators stay free for people. Base collider is a vertical-walled prism so a running capsule cannot
   ride up a flared footing. Batch is excluded from the corridor fade (thin poles never hide the player).
+
+## 2026-10-24 integration completion
+Worktree street-integration, branch codex/world-street-integration, port 4344. Inherited WIP checkpoint c0c75bf then merged current integration. The custom collider-off debris experiment is retired: props remain Rapier sleeping dynamic bodies with CCD, explicit mass/inertia, friction .45 / restitution .02. Current vehicle wheel support filters accept fixed geometry only. Collision is never disabled to hide lift.
+
+Tree ST1 broad coastal spreading crown (G17 nature-v4 hierarchy), ST2 tall forked crown (G18 hierarchy). Geometry targets 4.4k / 4.7k near, L1 <=25%, actual authored leaves, exact L0 trunk trimesh; 8 lowland positions from TREES_V4 plus pocket-park trunk. Colour, yaw and uniform size vary per instance. Four instanced leaf/wood merged vertex-colour draws, shared wind shader and clock. Camp trees remain camp-owned.
+
+G29 uses a tapered smooth matte cream tower (12m), plinth, service-door frame, nacelle panels, vents and spindle. Three tapered blades pivot around +X on the shared pausable wind clock. Tower is fixed; rotor is above reach and visual only, same as existing contract. Main budget tower <=1600, rotor <=1100; L1 <=30%.
+
+F01-F03 are the three layout-sized 20cm concrete slabs, with chamfered edge and scored top strips. F04 is a timber two-post sign with separate cap, panel planks and cross brace, canvas bilingual FUTURE SITE / 二期预留. Foundation surface and all sign geometry are fixed. No second-phase buildings, new lights, or external factual content. Budget slab <=450, sign <=700. G15 has no layout placement; report gap, shelter map remains the poster.

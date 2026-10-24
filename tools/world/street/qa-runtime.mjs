@@ -10,7 +10,7 @@ const assets = {
   stop: { L0: A.stopGeometry(0, cell), L1: A.stopGeometry(1, cell) },
   direction: { L0: A.directionGeometry(0, cell), L1: A.directionGeometry(1, cell) },
   chevron: { L0: A.chevronGeometry(0, cell), L1: A.chevronGeometry(1, cell) },
-  ...(A.extraAssets2 ? A.extraAssets2() : A.extraAssets ? A.extraAssets() : {}),
+  ...A.extraAssets3(),
 };
 const rows = {};
 for (const [id, { L0, L1 }] of Object.entries(assets)) {

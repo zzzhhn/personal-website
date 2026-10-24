@@ -4,6 +4,8 @@ import { LAYOUT_V4 } from './layout-v4-flag.ts';
 import StreetKnockables, { awakeKnockQa, knockQa } from './WorldStreetKnock';
 import StreetFixed from './WorldStreetFixed';
 import StreetRails from './WorldStreetRails';
+import StreetTrees from './WorldStreetTrees';
+import { StreetFoundations, StreetWindmill } from './WorldStreetLandmarks';
 
 /**
  * Street and global props mount point (owner: street session). Design: docs/world/street/DESIGN.md.
@@ -54,6 +56,9 @@ export default memo(function WorldStreet() {
     {group('street-roadblocks', <StreetKnockables set="roadblock" />)}
     {group('street-fixed', <StreetFixed />)}
     {group('street-rails', <StreetRails />)}
+    {group('street-trees', <StreetTrees />)}
+    {group('street-foundations', <StreetFoundations />)}
+    {group('street-windmill', <StreetWindmill />)}
     <StreetQa />
   </group>;
 });

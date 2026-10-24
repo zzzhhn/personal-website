@@ -123,6 +123,14 @@ for (const c of cases) {
     row.final = last;
     row.propDisplaced = last.prop ? Math.hypot(last.prop.p[0] - home[0], last.prop.p[2] - home[2]) : null;
     row.propKnocked = last.prop?.knocked ?? null;
+    if (process.env.STREET_RESET && last.prop?.knocked) {
+      if (c.actor !== 'person') await page.evaluate(id => window.__worldDebug.teleportVehicle(id, [-26, 6.1, 34], 0), c.actor);
+      await bot.fixtureTeleport([-34, 5.8, 32], 'leave reset home unoccupied');
+      const resetStart = Date.now(); let reset;
+      do { await page.waitForTimeout(500); reset = await read(); } while (Date.now() - resetStart < 43000 && reset.prop?.phase !== 'home');
+      row.reset = { elapsed: (Date.now() - resetStart) / 1000, state: reset.prop, passed: reset.prop?.phase === 'home' && reset.prop?.sleeping && Math.hypot(reset.prop.p[0]-home[0],reset.prop.p[2]-home[2]) < .02 };
+      console.log('reset', JSON.stringify(row.reset));
+    }
     row.fixtures = bot.fixtureCalls;
     row.errors = errors.slice();
     await page.screenshot({ path: path.join(out, c.name + '.png') });

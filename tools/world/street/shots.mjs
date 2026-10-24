@@ -8,6 +8,12 @@ const out = await ensureDir(process.env.WORLD_PLAYTEST_DIR || '/tmp/street-shots
 const base = process.env.WORLD_BASE_URL || 'http://127.0.0.1:4334';
 // yaw: orbit yaw (camera sits at player + orbitDirection(yaw, pitch) * distance); pitch radians up.
 export const VIEWS = {
+  trees: { p: [-26.5, 1.2, -5], yaw: -.5, pitch: .22, d: 9 },
+  'tree-near': { p: [-27, 1.2, -8], yaw: -.9, pitch: .02, d: 4 },
+  'tree-park': { p: [-20, 1.2, -39], yaw: 1.2, pitch: .15, d: 8 },
+  windmill: { p: [-26, 4.9, -80], yaw: 1.2, pitch: .25, d: 20 },
+  foundation: { p: [8, 1.4, -61.5], yaw: .3, pitch: .15, d: 8 },
+  'foundation-near': { p: [8, 1.4, -60.5], yaw: .3, pitch: .08, d: 4 },
   avenue: { p: [19, 1.2, 8], yaw: 2.6, pitch: .32, d: 14 },
   'avenue-near': { p: [17.2, 1.2, 2.2], yaw: 2.2, pitch: .12, d: 5 },
   lamp: { p: [17.5, 1.2, 14.5], yaw: 1.2, pitch: .15, d: 4.5 },
@@ -32,7 +38,7 @@ const report = { base, views: [], errors: [] };
 const want = (process.env.STREET_VIEWS || 'all').split(',');
 const lights = (process.env.STREET_LIGHTS || 'dusk,night').split(',');
 try {
-  const { page, errors, context } = await openWorld(browser, base + '/world/?qa=1', { width: 1920, height: 1080, preserve: true });
+  const { page, errors, context } = await openWorld(browser, base + '/world/' + (process.env.STREET_ORDINARY ? '' : '?qa=1'), { width: 1920, height: 1080, preserve: true });
   const bot = new Bot(page);
   await page.waitForTimeout(2500);
   const box = await page.locator('canvas').first().boundingBox();

@@ -77,6 +77,9 @@ export default function StreetStatic({ name, claims, kinds, placements, atlas, s
     {built.tris.filter(t => !t.surface).length > 0 && <RigidBody type="fixed" colliders={false} userData={ud} name={`${name}-solid`}>
       {built.tris.filter(t => !t.surface).map(t => <TrimeshCollider key={t.key} args={[t.pos, t.idx]} friction={.65} restitution={.05} />)}
     </RigidBody>}
+    {built.tris.filter(t => t.surface).length > 0 && <RigidBody type="fixed" colliders={false} userData={{ surface: true, solid: true, assetId }} name={`${name}-surface`}>
+      {built.tris.filter(t => t.surface).map(t => <TrimeshCollider key={t.key} args={[t.pos, t.idx]} friction={.7} restitution={.02} />)}
+    </RigidBody>}
     {seats.map(s => <SeatPoint key={s.id} seat={s} />)}
     {claims.length > 0 && <StreetClaim keys={claims} />}
   </group>;
