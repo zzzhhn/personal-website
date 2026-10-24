@@ -85,7 +85,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldLandform.ts",
@@ -196,7 +196,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldLandform.ts",
@@ -307,7 +307,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldSea.tsx",
@@ -416,7 +416,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldLandform.ts",
@@ -527,7 +527,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldLandform.ts",
@@ -638,7 +638,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldLandform.ts",
@@ -749,7 +749,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldLandform.ts",
@@ -860,7 +860,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldLandform.ts",
@@ -971,7 +971,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldStreet.tsx",
@@ -1095,7 +1095,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldStreet.tsx",
@@ -1240,7 +1240,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldStreet.tsx",
@@ -1367,7 +1367,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldStreet.tsx",
@@ -1491,7 +1491,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldStreet.tsx",
@@ -1617,7 +1617,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldStreet.tsx",
@@ -1741,7 +1741,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldStreet.tsx",
@@ -1836,7 +1836,7 @@
       "glb": "public/assets/world/camp/G16.glb",
       "sha256": "c1129f71a59b46bbce88693d194ed40b5a09237e0d6f1e0298cfadb08028554b",
       "bytes": 246400,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCamp.tsx",
@@ -2009,7 +2009,7 @@
       "glb": "public/assets/world/camp/G17.glb",
       "sha256": "9281efdf0b37757afb66aa725d7ddf85d4c411fb5e6b4e46bd29bc7684726c0f",
       "bytes": 184956,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCamp.tsx",
@@ -2206,7 +2206,7 @@
       "glb": "public/assets/world/camp/G18.glb",
       "sha256": "8932431bfae7ee71a4f3bcb2bbdbf7973e1285b8dc217a134ee15d03b21eda63",
       "bytes": 219100,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCamp.tsx",
@@ -2403,7 +2403,7 @@
       "glb": "public/assets/world/camp/G19.glb",
       "sha256": "08f6e076edc5b6e24798936ca6be8564126c97f49c0c18a4da2a1398d3d4f820",
       "bytes": 70320,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCamp.tsx",
@@ -2575,7 +2575,7 @@
       "glb": "public/assets/world/camp/G20.glb",
       "sha256": "c1ae7bffd9c7e00d701c54c2209f76c2b3777444aa38faae1e83caeac3629faf",
       "bytes": 112556,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCamp.tsx",
@@ -2747,7 +2747,7 @@
       "glb": "public/assets/world/camp/G21.glb",
       "sha256": "dbfcdc52a9cf5b07f10a9f7ab7a3990392bb05ce407fdc6c3f08438234477230",
       "bytes": 17188,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCamp.tsx",
@@ -2919,7 +2919,7 @@
       "glb": "public/assets/world/camp/G22.glb",
       "sha256": "fd617ce9a5cd59e22f942fd9a3a314abe358eeb8fe4adbe1814afdc010a1d2b0",
       "bytes": 14748,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCamp.tsx",
@@ -3091,7 +3091,7 @@
       "glb": "public/assets/world/camp/G23.glb",
       "sha256": "5631e18ab802be8fa882425bf7ba73c3965c2d22252ed6677af7e941a7e76c1d",
       "bytes": 12184,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCamp.tsx",
@@ -3211,7 +3211,7 @@
     "name": "向导B及骨骼",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "当前GLB索引实读 3106；15 clips（非本次回读）",
+    "triangles": "当前fresh-GLB报告 3186；实际运行主pass 3106/4calls；15 clips，几何压缩primitive未改",
     "materialRole": "paint / canvas / accent / glass / metal / light",
     "physics": "动态角色胶囊；蒙皮/自制18骨视觉；停步与坡地IK/惯性化为已有许可范围",
     "reference": "guide",
@@ -3227,8 +3227,8 @@
     "triangleBudget": {
       "hardCap": false,
       "status": "实测/文件元数据/未验证分开记账",
-      "evaluatedTriangles": null,
-      "glbReimportTriangles": null,
+      "evaluatedTriangles": 3186,
+      "glbReimportTriangles": 3186,
       "baselineMultiplier": null,
       "basis": "不存在的GLB不填写回读；当前GLB索引元数据不等同新场景回读"
     },
@@ -3260,9 +3260,9 @@
       "scope": "all-island-existing-inventory",
       "implementationStatus": "integrated-candidate",
       "glb": "public/assets/world/guide/G24.glb",
-      "sha256": "c72a74abcf4c65b2e2e465bf1822e69b74834d8959c6f9decd2f1f0c6367a983",
-      "bytes": 726872,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "sha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0",
+      "bytes": 726680,
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldGuide.tsx",
@@ -3279,23 +3279,27 @@
         "tools/world/guide/out/build_report.json",
         "docs/world/character/transition-ab.json",
         "docs/world/character/slope-v3d.json",
-        "docs/world/quality-v3/guide/RELEASE-v3c.md"
+        "docs/world/quality-v3/guide/RELEASE-v3c.md",
+        "docs/world/character/close-manifest.json",
+        "docs/world/character/a3-followup-report.md",
+        "docs/world/character/safe-seat-report.md",
+        "docs/world/character/FINAL-HANDOFF.md"
       ],
       "knownLimits": [
         "当前v3d新增六段动作，旧release-v3c只覆盖其当时哈希；过渡滑移/坡地浮空等既有结果不得全追认",
         "Bobby未接受人物外形、动作或全情境手感"
       ],
       "userAccepted": false,
-      "geometryReviewStatus": "当前SHA/索引/skin/clip元数据已实读；旧v3c回读数不作为新动作全量复验",
-      "runtimeReviewStatus": "未验证到全实例/全情境；存在实现不等于体验通过",
+      "geometryReviewStatus": "当前SHA绑定native/freshDraco坐姿194半帧与局部最终运行A6；未改十二段沿用原版本，不外推所有动作通过",
+      "runtimeReviewStatus": "r14坐/起固定窗口局部数值通过；主线方向优先落脚与候选radius优先不同；旧快跑/坡地失败未关，见FINAL-HANDOFF",
       "visualReviewStatus": "制作线程局部看图可引用；不等于Bobby审美验收",
       "finalAcceptance": "not-accepted",
       "physicalMapping": "动态角色胶囊；蒙皮/自制18骨视觉；停步与坡地IK/惯性化为已有许可范围",
       "files": [
         {
           "path": "public/assets/world/guide/G24.glb",
-          "sha256": "c72a74abcf4c65b2e2e465bf1822e69b74834d8959c6f9decd2f1f0c6367a983",
-          "bytes": 726872,
+          "sha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0",
+          "bytes": 726680,
           "serializedUniqueMeshTriangles": 3106,
           "serializedNodeExpandedTriangles": 3106,
           "nodeTriangles": {
@@ -3350,7 +3354,7 @@
       "auxiliaryFiles": [
         {
           "path": "tools/world/guide/out/G24_uncompressed.glb",
-          "sha256": "265825dba74af1c293658c476c24f953d04ef36b50912f5f044ca32f3a9206b9",
+          "sha256": "c25b070d5603bd16721ea135bd17690f66d0d8aa5f78d25e0d64e58a66b9fdea",
           "bytes": 909884,
           "serializedUniqueMeshTriangles": 3106,
           "serializedNodeExpandedTriangles": 3106,
@@ -3381,7 +3385,12 @@
           "measurement": "current GLB bytes/SHA256/accessor counts read; not Blender reimport"
         }
       ],
-      "releaseIdentityDocumented": true
+      "releaseIdentityDocumented": true,
+      "measurementEvidence": {
+        "path": "docs/world/character/close-manifest.json",
+        "fileIdentityBinding": "sha256-match",
+        "note": "Existing report read; no tests rerun in this archival task"
+      }
     },
     "historicalInventory": {
       "label": "2026-10-22 inventory; PRD1.6/camp-only authority is superseded",
@@ -3557,7 +3566,7 @@
       "glb": "public/assets/world/vehicles/G25.glb",
       "sha256": "226a272ace74e723cc7347fbc8b00fb97381bfba04a235f491753c45b7d2734d",
       "bytes": 84400,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldVehicleVisual.tsx",
@@ -3751,7 +3760,7 @@
       "glb": "public/assets/world/vehicles/G26.glb",
       "sha256": "6668d80bd54ee1a7336cd12a224fe7ef2068ff498da1a127c833b9637ece1134",
       "bytes": 50568,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldVehicleVisual.tsx",
@@ -3945,7 +3954,7 @@
       "glb": "public/assets/world/vehicles/G27.glb",
       "sha256": "51045ff92be23c9826cc76ac4038b579d463e9abeb7075e788d1ccff89553041",
       "bytes": 61244,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldVehicleVisual.tsx",
@@ -4046,9 +4055,9 @@
     "name": "传送门入口",
     "source": "L1 coding",
     "count": 1,
-    "triangles": "未制作；无当前GLB/实测",
+    "triangles": "原生/重开BLEND/全新Draco回读4392；运行时3材质合批；60m远档360",
     "materialRole": "stone / light",
-    "physics": "未制作实体/碰撞/传送逻辑",
+    "physics": "原清单无阻挡入口触发例外；保留步行门洞；E仅打开现有地图/设置，无自动传送/外链",
     "reference": "layout",
     "crop": [
       0.19,
@@ -4056,14 +4065,14 @@
       0.23,
       0.32
     ],
-    "note": "未制作、未接入；待语义裁决；仅历史参考方向；当前无GLB/实体/接入；WorkBuddy审阅全球额度耗尽未给本次语义裁决，不能标完成",
-    "status": "未制作、未接入；待语义裁决",
+    "note": "已制作并接入候选；证据按项记录，非整体验收；G28-A已制作并局部挂载；独立规格解读按PRD v1.13/规格15授权，不冒称WorkBuddy新审批；8项局部人行/单一输入检查通过，最终整合另验",
+    "status": "已制作并接入候选；证据按项记录，非整体验收",
     "legacyTriangleEstimate": "≤1k",
     "triangleBudget": {
       "hardCap": false,
       "status": "实测/文件元数据/未验证分开记账",
-      "evaluatedTriangles": null,
-      "glbReimportTriangles": null,
+      "evaluatedTriangles": 4392,
+      "glbReimportTriangles": 4392,
       "baselineMultiplier": null,
       "basis": "不存在的GLB不填写回读；当前GLB索引元数据不等同新场景回读"
     },
@@ -4168,26 +4177,92 @@
       "userAcceptance": "Bobby未验收；开工授权不追认几何、运行时、审美或预算全过"
     },
     "production": {
-      "method": "planned-L1-no-asset",
+      "method": "L1-scripted-GLB",
       "scope": "all-island-existing-inventory",
-      "implementationStatus": "not-produced",
-      "glb": null,
-      "sha256": null,
-      "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "implementationStatus": "integrated-candidate",
+      "glb": "public/assets/world/entry/G28.glb",
+      "sha256": "1dd81e576c14ca84057d6cd8bd54aac07f1429acc629f67e8403dd25e2324141",
+      "bytes": 50812,
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
-      "runtimeFiles": [],
-      "sourceFiles": [],
-      "evidence": [
-        "docs/world/references/codex-native-v2/README.md"
+      "runtimeFiles": [
+        "src/components/world/WorldEntry.tsx",
+        "src/components/world/WorldRuntime.tsx"
       ],
-      "knownLimits": [],
+      "sourceFiles": [
+        "tools/world/entry/build_portal.py",
+        "tools/world/entry/build_portal.blend"
+      ],
+      "evidence": [
+        "docs/world/entry/G28.md",
+        "docs/world/entry/qa-G28.json",
+        "docs/world/entry/runtime/README.md",
+        "docs/world/entry/runtime/interaction.json"
+      ],
+      "knownLimits": [
+        "石环沿用无阻挡触发语义，不当作真实硬石碰撞通过",
+        "WorkBuddy本轮额度耗尽；此次是独立规格解读与实现，不是冻结文件更新"
+      ],
       "userAccepted": false,
       "geometryReviewStatus": "未验证；按下列报告及其版本绑定说明读取",
-      "runtimeReviewStatus": "未验证到全实例/全情境；存在实现不等于体验通过",
-      "visualReviewStatus": "历史候选参考方向不等于实体美术/运行时验收",
+      "runtimeReviewStatus": "entry/runtime记录8项局部通过、近远剔除与普通1080两档；车辆通行/全局预算/Bobby未验收",
+      "visualReviewStatus": "制作线程局部看图可引用；不等于Bobby审美验收",
       "finalAcceptance": "not-accepted",
-      "physicalMapping": "未制作实体/碰撞/传送逻辑"
+      "physicalMapping": "原清单无阻挡入口触发例外；保留步行门洞；E仅打开现有地图/设置，无自动传送/外链",
+      "files": [
+        {
+          "path": "public/assets/world/entry/G28.glb",
+          "sha256": "1dd81e576c14ca84057d6cd8bd54aac07f1429acc629f67e8403dd25e2324141",
+          "bytes": 50812,
+          "serializedUniqueMeshTriangles": 4392,
+          "serializedNodeExpandedTriangles": 4392,
+          "nodeTriangles": {
+            "G28_base_L_foot": 108,
+            "G28_base_L_outer": 108,
+            "G28_base_L_toe": 108,
+            "G28_base_R_foot": 108,
+            "G28_base_R_outer": 108,
+            "G28_base_R_toe": 108,
+            "G28_light_01": 60,
+            "G28_light_02": 60,
+            "G28_light_03": 60,
+            "G28_light_04": 60,
+            "G28_light_05": 60,
+            "G28_light_06": 60,
+            "G28_light_07": 60,
+            "G28_light_08": 60,
+            "G28_light_09": 60,
+            "G28_light_10": 60,
+            "G28_light_11": 60,
+            "G28_light_12": 60,
+            "G28_stone_01": 252,
+            "G28_stone_02": 252,
+            "G28_stone_03": 252,
+            "G28_stone_04": 252,
+            "G28_stone_05": 252,
+            "G28_stone_06": 252,
+            "G28_stone_07": 252,
+            "G28_stone_08": 252,
+            "G28_stone_09": 252,
+            "G28_stone_10": 252,
+            "G28_stone_11": 252,
+            "G28_stone_12": 252
+          },
+          "extensions": [
+            "KHR_draco_mesh_compression"
+          ],
+          "animationClips": [],
+          "skinJointCounts": [],
+          "measurement": "current GLB bytes/SHA256/accessor counts read; not Blender reimport"
+        }
+      ],
+      "compression": "KHR_draco_mesh_compression",
+      "serializedTriangles": 4392,
+      "measurementEvidence": {
+        "path": "docs/world/entry/qa-G28.json",
+        "fileIdentityBinding": "sha256-match",
+        "note": "Existing report read; no tests rerun in this archival task"
+      }
     }
   },
   {
@@ -4325,7 +4400,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldStreetLandmarks.tsx"
@@ -4432,7 +4507,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldLandform.ts",
@@ -4544,7 +4619,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldLandform.ts",
@@ -4626,7 +4701,7 @@
       "glb": "public/assets/world/camp/C03.glb",
       "sha256": "4c6274a202639c407ad68f1e30cf1fadacf3f2bf0ff2c7cd1ac72a506c93acde",
       "bytes": 53660,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCamp.tsx",
@@ -4793,7 +4868,7 @@
       "glb": "public/assets/world/camp/C04.glb",
       "sha256": "0d4b22d1836247b54393ec67e1c01e6c516296a14061e3c00abb76b3553f3f94",
       "bytes": 54184,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCamp.tsx",
@@ -4960,7 +5035,7 @@
       "glb": "public/assets/world/camp/C05.glb",
       "sha256": "54790864187123a55c4fd00590186a1e958990ca735a9861c00304332a316692",
       "bytes": 11536,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCamp.tsx",
@@ -5128,7 +5203,7 @@
       "glb": "public/assets/world/camp/C06.glb",
       "sha256": "401862b7b8ea1cea4cfafbccb26f38760025f34f006ba47463f6072ae5c8a556",
       "bytes": 4804,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCamp.tsx",
@@ -5297,7 +5372,7 @@
       "glb": "public/assets/world/camp/C07.glb",
       "sha256": "ea34c4389d8504410746a43ba5b228aba1d46cf525eca3659abcbf34cebc6873",
       "bytes": 15912,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCamp.tsx",
@@ -5467,7 +5542,7 @@
       "glb": "public/assets/world/camp/C08.glb",
       "sha256": "4e37c8ef5f4f4476b8f2f4a16efd1374d63c5c7667cfc8ce4101cf4816e85208",
       "bytes": 10584,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCamp.tsx",
@@ -5636,7 +5711,7 @@
       "glb": "public/assets/world/camp/C09.glb",
       "sha256": "c69ff479cdc85e4dacd6acee8dac97a0405c1f8d3896f709d17773f44e74b525",
       "bytes": 32404,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCamp.tsx",
@@ -5807,7 +5882,7 @@
       "glb": "public/assets/world/camp/C10.glb",
       "sha256": "abc8d47e2e3525412f495f0b1285c2cb70b9a6002c9405f72e10e175a79c6f32",
       "bytes": 23844,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCamp.tsx",
@@ -6015,7 +6090,7 @@
       "glb": "public/assets/world/camp/C11.glb",
       "sha256": "2b249212e902147bac53bdb8183546871df2f36ccc987c3d5ace270c3c18973e",
       "bytes": 38972,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCampContent.tsx",
@@ -6176,7 +6251,7 @@
       "glb": "public/assets/world/camp/C12.glb",
       "sha256": "6447bb09b27ae63e4518e06c373a9cdb0dba0b3ed1692cd4ce145bc088e04429",
       "bytes": 26888,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCampContent.tsx",
@@ -6338,7 +6413,7 @@
       "glb": "public/assets/world/camp/C13.glb",
       "sha256": "3d725e051f99cb214afa9da1991917169641834ff0b3394c314fe2a950366ac8",
       "bytes": 7384,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCampContent.tsx",
@@ -6498,7 +6573,7 @@
       "glb": "public/assets/world/camp/C14.glb",
       "sha256": "c45760c5875e665654079cf1cceee9ee9da72cf6f00b19365f20b085a63c44b7",
       "bytes": 28112,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCampContent.tsx",
@@ -6659,7 +6734,7 @@
       "glb": "public/assets/world/camp/C15.glb",
       "sha256": "19784c0ff5c7e7cadf7b1e62c3b9befb0e6c63c0ce4ae3a022e395cfa12efdab",
       "bytes": 19700,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCampContent.tsx",
@@ -6820,7 +6895,7 @@
       "glb": "public/assets/world/camp/C16.glb",
       "sha256": "f64d0543150c866377296dbd4f1a66435de5cc81f5255f4f6faddc67810c3691",
       "bytes": 12988,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldCampContent.tsx",
@@ -6981,7 +7056,7 @@
       "glb": "public/assets/world/town/T01.glb",
       "sha256": "c788512bbaaf1aedfe81a1ec261ddd9022792c1f89edfba8c54bde1b49b07e95",
       "bytes": 51788,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldTown.tsx",
@@ -7124,7 +7199,7 @@
       "glb": "public/assets/world/town/T02.glb",
       "sha256": "837f9ef5e0beb589faca72c24805b874597467759067e3cae5e9dad1cf1c00ef",
       "bytes": 36100,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldTown.tsx",
@@ -7265,7 +7340,7 @@
       "glb": "public/assets/world/town/T03.glb",
       "sha256": "6151f7e3d5ca10b53f183377166c20a9899c1b28207d359f9b84b5dce3ca112c",
       "bytes": 45828,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldTown.tsx",
@@ -7409,7 +7484,7 @@
       "glb": "public/assets/world/town/T04.glb",
       "sha256": "9671a4cf4d22c621bea9e5361435e2640ca7124d7518b35ca8eb47b934e8f383",
       "bytes": 49136,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldTown.tsx",
@@ -7549,7 +7624,7 @@
       "glb": "public/assets/world/town/T05.glb",
       "sha256": "a5e45f7aa7e7c3209d97319ef60df78f18a49a4a6be6c39ecbb2c95ac7cdbdf2",
       "bytes": 65020,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldTown.tsx",
@@ -7691,7 +7766,7 @@
       "glb": "public/assets/world/town/T06.glb",
       "sha256": "28b528d11074e7a20e77eb9844a57ee24ec2f2cadf75ab7f665bce918324b5b0",
       "bytes": 42024,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldTown.tsx",
@@ -7874,7 +7949,7 @@
       "glb": "public/assets/world/town/T07.glb",
       "sha256": "f05b92b5a4475bed7a872a362be3f613e66807caf31ada5e58759c82f0b35aa3",
       "bytes": 145444,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldTown.tsx",
@@ -8061,7 +8136,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldLandform.ts",
@@ -8198,7 +8273,7 @@
       "glb": "public/assets/world/town/T09.glb",
       "sha256": "e19275c9252fecc56d613acec2f3a21c09cc56119e3ce50855676bb4d4f352bc",
       "bytes": 11360,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldTown.tsx",
@@ -8334,7 +8409,7 @@
       "glb": "public/assets/world/town/T01.glb",
       "sha256": "c788512bbaaf1aedfe81a1ec261ddd9022792c1f89edfba8c54bde1b49b07e95",
       "bytes": 51788,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldTownAssets.tsx",
@@ -8587,7 +8662,7 @@
       "glb": "public/assets/world/town/T06.glb",
       "sha256": "28b528d11074e7a20e77eb9844a57ee24ec2f2cadf75ab7f665bce918324b5b0",
       "bytes": 42024,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldTownAssets.tsx"
@@ -8727,7 +8802,7 @@
       "glb": "public/assets/world/town/T12.glb",
       "sha256": "43cd84b11487a75c9def03e437fcaeb48dfe257aaa5219bd20ce40624559ae3a",
       "bytes": 79940,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldTown.tsx",
@@ -8863,7 +8938,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldParkWalk.tsx",
@@ -8975,7 +9050,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldParkWalk.tsx",
@@ -9087,7 +9162,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldParkWalk.tsx",
@@ -9203,7 +9278,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldParkWalk.tsx",
@@ -9336,7 +9411,7 @@
       "glb": "public/assets/world/park/signs.glb",
       "sha256": "2cede25941d7804135387c15c1f32b4a6d035df9f9429fc645028b7ff983ae30",
       "bytes": 37420,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldParkSigns.tsx"
@@ -9482,7 +9557,7 @@
       "glb": "public/assets/world/park/hut.glb",
       "sha256": "78f2e502af31e845b29768349772f6410b9816115df8a7509044ada5ae43ccda",
       "bytes": 95064,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldPark.tsx",
@@ -9640,7 +9715,7 @@
       "glb": "public/assets/world/park/hut.glb",
       "sha256": "78f2e502af31e845b29768349772f6410b9816115df8a7509044ada5ae43ccda",
       "bytes": 95064,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldPark.tsx",
@@ -9798,7 +9873,7 @@
       "glb": "public/assets/world/park/hut.glb",
       "sha256": "78f2e502af31e845b29768349772f6410b9816115df8a7509044ada5ae43ccda",
       "bytes": 95064,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldPark.tsx",
@@ -9956,7 +10031,7 @@
       "glb": "public/assets/world/park/hut.glb",
       "sha256": "78f2e502af31e845b29768349772f6410b9816115df8a7509044ada5ae43ccda",
       "bytes": 95064,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldPark.tsx",
@@ -10114,7 +10189,7 @@
       "glb": "public/assets/world/park/hut.glb",
       "sha256": "78f2e502af31e845b29768349772f6410b9816115df8a7509044ada5ae43ccda",
       "bytes": 95064,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldPark.tsx",
@@ -10279,7 +10354,7 @@
       "glb": "public/assets/world/park/hut.glb",
       "sha256": "78f2e502af31e845b29768349772f6410b9816115df8a7509044ada5ae43ccda",
       "bytes": 95064,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldPark.tsx",
@@ -10442,7 +10517,7 @@
       "glb": "public/assets/world/park/P12.glb",
       "sha256": "71b854e5cffd68c93627d747fbcd5495fa8e81f178c1e1d8d939578a2837b235",
       "bytes": 52268,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldParkExhibits.tsx",
@@ -10596,7 +10671,7 @@
       "glb": "public/assets/world/park/P13.glb",
       "sha256": "01a7e555f94693b3b45092ecba5a8bda19dbd0d00ca9741df605c4e41ead57c5",
       "bytes": 28092,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldParkExhibits.tsx",
@@ -10750,7 +10825,7 @@
       "glb": "public/assets/world/park/P14.glb",
       "sha256": "4267c54a636fb1e2be9bac40f36517890b1f656afeb7164a43069c242d571c74",
       "bytes": 55800,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldParkExhibits.tsx",
@@ -10921,7 +10996,7 @@
       "glb": "public/assets/world/park/P15.glb",
       "sha256": "b9b846f17f60f6d6f55e1fbf48c47a82f6e9589f66f5009fa2e29b4851141fed",
       "bytes": 75788,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldParkExhibits.tsx",
@@ -11108,7 +11183,7 @@
       "glb": "public/assets/world/park/P16.glb",
       "sha256": "881b6a383b3de096a83c9326fcb8f8eaa778e086ddf96cc919d4ae257c3635d9",
       "bytes": 18436,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldParkExhibits.tsx",
@@ -11253,7 +11328,7 @@
       "glb": "public/assets/world/park/P17.glb",
       "sha256": "269dddf0d8e3feb2700e31b056ae3dd86ebfeb580e286696f206a011cd2b6ae1",
       "bytes": 20044,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldParkExhibits.tsx",
@@ -11410,7 +11485,7 @@
       "glb": "public/assets/world/park/P18.glb",
       "sha256": "ab80160ed6f53173af0fb7a1eafc052a79e8379d8a4eca743cd09aefc6f4a479",
       "bytes": 20068,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldParkExhibits.tsx",
@@ -11575,7 +11650,7 @@
       "glb": "public/assets/world/park/signs.glb",
       "sha256": "2cede25941d7804135387c15c1f32b4a6d035df9f9429fc645028b7ff983ae30",
       "bytes": 37420,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldParkSigns.tsx"
@@ -11717,7 +11792,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldStreet.tsx",
@@ -11837,7 +11912,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldStreet.tsx",
@@ -11957,7 +12032,7 @@
       "glb": null,
       "sha256": null,
       "bytes": null,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldStreet.tsx",
@@ -12085,7 +12160,7 @@
       "glb": "public/assets/world/park/signs.glb",
       "sha256": "2cede25941d7804135387c15c1f32b4a6d035df9f9429fc645028b7ff983ae30",
       "bytes": 37420,
-      "snapshotGitCommit": "313685ccaa1f08c73829b08d125113d548192605",
+      "snapshotGitCommit": "faec9baa2d4ed2eb0d9a5465677f12b98096f5a7",
       "readDate": "2026-10-24",
       "runtimeFiles": [
         "src/components/world/WorldStreetLandmarks.tsx",

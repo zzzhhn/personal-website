@@ -117,6 +117,8 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
     const read = () => ({ level: built.level, distance: built.distance, thresholds: { outward: 60, inward: 58 },
       l0Triangles: triangles(built.geometries[0]), l1Triangles: triangles(built.geometries[1]),
       bodyGeometry: bodyMesh.current?.geometry.uuid, wheelGeometry: built.instanced.geometry.uuid,
+      bodyNearGeometry: built.geometries[0].body.uuid, bodyLodGeometry: built.geometries[1].body.uuid,
+      shadowLodWheelGeometry: built.geometries[1].wheel.uuid,
       bodyUuid: bodyMesh.current?.uuid, wheelUuid: built.instanced.uuid, center: visual.current?.getWorldPosition(new Vector3()).toArray(),
       wheelMatrices: Array.from(built.instanced.instanceMatrix.array), wheelWorldMatrix: [...built.instanced.matrixWorld.elements], shadowProxies: proxies(),
       materialUuid: built.material.uuid, roles: built.geometries.map(g => [...new Set(Array.from(g.body.attributes.aRole.array))].sort()),

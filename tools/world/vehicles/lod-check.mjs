@@ -13,7 +13,7 @@ const read=id=>page.evaluate(id=>window.__vehicleLOD()[id],id);
 const selected=(process.env.WORLD_LOD_VEHICLES||'offroad,coupe,van').split(',');
 const same=(a,b)=>a.length===b.length&&a.every((v,i)=>Math.abs(v-b[i])<1e-5);
 const shadowsFollow=r=>r.shadowProxies?.length===3&&r.shadowProxies.every(p=>
- same(p.worldMatrix,r.wheelWorldMatrix)&&(!/#sun[01]$/.test(p.name)||p.geometry===r.wheelGeometry)&&
+ same(p.worldMatrix,r.wheelWorldMatrix)&&(p.geometry===(/#sun0$/.test(p.name)?r.wheelGeometry:r.shadowLodWheelGeometry))&&
  Array.from({length:p.count},(_,i)=>p.matrices.slice(i*16,i*16+16)).every(m=>[0,1,2,3].some(i=>same(m,r.wheelMatrices.slice(i*16,i*16+16)))));
 try{
  await page.routeWebSocket('**/*',ws=>ws.close());await page.goto(process.env.WORLD_BASE_URL+'/world/?qa=1',{waitUntil:'networkidle'});
@@ -38,7 +38,8 @@ try{
     const r=await read(id);if(Math.abs(r.distance-target)<.12)break;x+=target-r.distance;
    }
    const r=await read(id),frame=await page.evaluate(()=>__worldDebug.budget.frame(1000));
-   const row={target,expected,...r,shadowsFollow:shadowsFollow(r),passed:r.level===expected&&Math.abs(r.distance-target)<.2&&r.l1Triangles/r.l0Triangles<=.30&&shadowsFollow(r)&&JSON.stringify(r.roles[0])===JSON.stringify(r.roles[1]),frame:{total:frame.total,info:frame.info,vehicles:frame.byZone.vehicles,draws:frame.top.filter(x=>x.name.startsWith(`vehicle-${id}-`))}};
+   const bodyRestored=r.bodyGeometry===(r.level?r.bodyLodGeometry:r.bodyNearGeometry);
+   const row={target,expected,...r,bodyRestored,shadowsFollow:shadowsFollow(r),passed:bodyRestored&&r.level===expected&&Math.abs(r.distance-target)<.2&&r.l1Triangles/r.l0Triangles<=.30&&shadowsFollow(r)&&JSON.stringify(r.roles[0])===JSON.stringify(r.roles[1]),frame:{total:frame.total,info:frame.info,vehicles:frame.byZone.vehicles,draws:frame.top.filter(x=>x.name.startsWith(`vehicle-${id}-`))}};
    c.samples.push(row);console.log(JSON.stringify({id,target,distance:r.distance,level:r.level,expected,passed:row.passed,triangles:expected?r.l1Triangles:r.l0Triangles}));
    if(target===80||target===18||target===60.5)await page.screenshot({path:path.join(out,`${id}-${target}m.jpg`),type:'jpeg',quality:80});
   }
