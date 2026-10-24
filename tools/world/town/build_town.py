@@ -772,6 +772,190 @@ def build_T07():
         A.cols[n0] = (f'col_T07_{i}', A.cols[n0][1])
     return A
 
+# ============================================================== T08 year pillar (instanced x6): stone base, slate shaft, cyan strip, year plates
+def build_T08():
+    A = Asset('T08')
+    A.extras.update(kind='year-pillar', note='origin at base; place at y = 1.0 (base buried 0.15 in the sidewalk)')
+    A.box((-0.34, -0.34, 0), (0.34, 0.34, 0.32), 'town_stone_dark', 0.03)
+    A.box((-0.3, -0.3, 0.32), (0.3, 0.3, 0.4), 'town_stone', 0.02)
+    A.box((-0.2, -0.2, 0.4), (0.2, 0.2, 2.75), 'town_slate', 0.025)
+    for z in (0.9, 1.6):  # shallow shadow grooves (proud collars, no coplanar overlay)
+        A.box((-0.21, -0.21, z), (0.21, 0.21, z + 0.03), 'town_dark')
+    A.use('T08_strip')
+    A.box((0.2, -0.05, 0.6), (0.235, 0.05, 2.15), 'town_cyan', 0.008)        # avenue-facing light strip (+X)
+    A.box((-0.235, -0.05, 0.6), (-0.2, 0.05, 2.15), 'town_cyan', 0.008)      # back strip (seen from the building)
+    A.use('T08_body')
+    A.box((-0.24, -0.24, 2.75), (0.24, 0.24, 2.83), 'town_metal', 0.015)
+    A.box((-0.18, -0.36, 2.83), (0.18, 0.36, 3.33), 'town_dark', 0.02)        # year plate housing (spans Y)
+    A.box((-0.26, -0.26, 3.33), (0.26, 0.26, 3.42), 'town_stone', 0.02)
+    A.add(lathe([(0.12, 0), (0.06, 0.12), (0, 0.16)], 12, (0, 0, 3.42)), 'town_metal', smooth=True)
+    A.anchor('anchor_year_px', (0.181, 0, 3.08), w=0.66, h=0.4, normal='+X')
+    A.anchor('anchor_year_nx', (-0.181, 0, 3.08), w=0.66, h=0.4, normal='-X')
+    pts = bmesh.new()
+    for x in (-0.34, 0.34):
+        for y in (-0.36, 0.36):
+            for z in (0.0, 3.42):
+                pts.verts.new((x, y, z))
+    bmesh.ops.convex_hull(pts, input=pts.verts)
+    A.col_bm(pts, 'col_pillar')
+    return A
+
+# ============================================================== T09 exhibit plaque (instanced x6): stone foot, two posts, tilted framed board
+def build_T09():
+    A = Asset('T09')
+    A.extras.update(kind='exhibit-plaque', note='front +X faces the avenue; board face anchor gets the runtime canvas')
+    A.box((-0.3, -0.85, 0), (0.3, 0.85, 0.22), 'town_stone_dark', 0.03)
+    A.box((-0.26, -0.81, 0.22), (0.26, 0.81, 0.28), 'town_stone', 0.015)
+    for y in (-0.62, 0.62):
+        A.add(cyl((0, y), 0.045, 0.28, 1.75, 10), 'town_metal', smooth=True)
+        A.add(cyl((0, y), 0.07, 0.28, 0.34, 10), 'town_metal', smooth=True)
+    # board tilted back 10 deg about Y around its centre
+    tilt = Matrix.Translation((0.06, 0, 1.25)) @ Matrix.Rotation(math.radians(-10), 4, 'Y') @ Matrix.Translation((-0.06, 0, -1.25))
+    for mn, mx, m in (((0.0, -0.78, 0.68), (0.1, 0.78, 1.82), 'town_slate'),
+                      ((0.1, -0.7, 0.76), (0.12, 0.7, 1.74), 'town_trim'),
+                      ((0.1, -0.78, 1.74), (0.16, 0.78, 1.82), 'town_slate'),
+                      ((0.1, -0.78, 0.68), (0.16, 0.78, 0.76), 'town_slate'),
+                      ((0.1, -0.78, 0.76), (0.16, -0.7, 1.74), 'town_slate'),
+                      ((0.1, 0.7, 0.76), (0.16, 0.78, 1.74), 'town_slate'),
+                      ((-0.04, -0.82, 1.82), (0.2, 0.82, 1.88), 'town_metal')):
+        A.add(xform(box(mn, mx, 0.008), tilt), m)
+    c = tilt @ Vector((0.121, 0, 1.25))
+    A.anchor('anchor_board', tuple(c), w=1.4, h=0.98, normal='+X', tiltDeg=10)
+    A.col_box((-0.3, -0.85, 0), (0.3, 0.85, 1.9), 'col_plaque')
+    return A
+
+# ============================================================== T10 beach kiosks (two variants, 2.6 m cube footprint)
+def kiosk(A, tag, canvas):
+    A.use(f'T10_{tag}')
+    S = 1.3
+    A.box((-S, -S, 0), (S, S, 0.25), 'town_stone_dark', 0.02)
+    # timber frame: corner posts, back + side boards, open front counter
+    for (x, y) in ((S - 0.08, S - 0.08), (S - 0.08, -S + 0.08), (-S + 0.08, S - 0.08), (-S + 0.08, -S + 0.08)):
+        A.box((x - 0.07, y - 0.07, 0.25), (x + 0.07, y + 0.07, 2.35), 'town_wood', 0.012)
+    for k in range(8):  # horizontal board cladding on back and sides (real boards, 1 cm overlap step)
+        z = 0.25 + k * 0.26
+        A.box((-S + 0.02, -S + 0.15, z), (-S + 0.1, S - 0.15, z + 0.24), 'town_cream' if canvas == 'town_canvas' else 'town_slate', 0.006)
+        A.box((-S + 0.15, S - 0.1, z), (S - 0.15, S - 0.02, z + 0.24), 'town_cream' if canvas == 'town_canvas' else 'town_slate', 0.006)
+        A.box((-S + 0.15, -S + 0.02, z), (S - 0.15, -S + 0.1, z + 0.24), 'town_cream' if canvas == 'town_canvas' else 'town_slate', 0.006)
+    for k in range(4):  # lower front panel below the counter
+        z = 0.25 + k * 0.22
+        A.box((S - 0.1, -S + 0.15, z), (S - 0.02, S - 0.15, z + 0.2), 'town_cream' if canvas == 'town_canvas' else 'town_slate', 0.006)
+    A.box((S - 0.5, -S + 0.1, 1.13), (S + 0.15, S - 0.1, 1.2), 'town_wood', 0.012)     # counter top
+    A.box((-S + 0.1, -S + 0.1, 0.25), (S - 0.1, S - 0.1, 0.28), 'town_wood')
+    # interior back shelf + a few jars (read through the open front)
+    A.box((-S + 0.1, -0.9, 1.5), (-S + 0.45, 0.9, 1.54), 'town_wood')
+    for k in range(5):
+        A.add(cyl((-S + 0.28, -0.7 + k * 0.35), 0.08, 1.54, 1.75, 10), 'town_glass_lit' if k % 2 else 'town_trim', smooth=True)
+    # flat roof with overhang + striped canvas awning folding down over the front
+    A.box((-S - 0.15, -S - 0.15, 2.35), (S + 0.15, S + 0.15, 2.5), 'town_wood', 0.02)
+    A.box((-S - 0.2, -S - 0.2, 2.5), (S + 0.2, S + 0.2, 2.56), 'town_trim', 0.01)
+    for k in range(6):
+        y0 = -S - 0.1 + k * (2 * S + 0.2) / 6
+        y1 = y0 + (2 * S + 0.2) / 6
+        m = canvas if k % 2 == 0 else 'town_canvas_cream'
+        pts = [(S + 0.15, y0, 2.34), (S + 0.15, y1, 2.34), (S + 0.85, y1, 1.92), (S + 0.85, y0, 1.92)]
+        bm = bmesh.new()
+        lo = [bm.verts.new(p) for p in pts]
+        hi = [bm.verts.new((p[0], p[1], p[2] + 0.03)) for p in pts]
+        bm.faces.new(lo[::-1]); bm.faces.new(hi)
+        for i in range(4):
+            j = (i + 1) % 4
+            bm.faces.new((lo[i], lo[j], hi[j], hi[i]))
+        A.add(bm, m)
+        A.box((S + 0.84, y0 + 0.005, 1.74), (S + 0.88, y1 - 0.005, 1.95), m)   # valance
+    for y in (-S + 0.02, S - 0.02):
+        A.add(cyl((S + 0.82, y), 0.025, 1.2, 1.94, 8), 'town_metal', smooth=True)
+    A.col_box((-S, -S, 0), (S, S, 2.56), f'col_{tag}_body')
+    A.part_extras[f'T10_{tag}'] = {'variant': tag}
+
+def build_T10():
+    A = Asset('T10')
+    A.extras.update(kind='beach-kiosk', note='two variants authored at the same origin; place part T10_a / T10_b separately, front +X')
+    kiosk(A, 'a', 'town_canvas')
+    kiosk(A, 'b', 'town_slate')
+    return A
+
+# ============================================================== T11 lifeguard tower (2.2 x 5.8 x 2.2 footprint, base buried 1 m)
+def build_T11():
+    A = Asset('T11')
+    A.extras.update(kind='lifeguard-tower', note='origin at base; place at y = -1 like the greybox (lower ~1 m of the piles is buried)')
+    B = 1.0                    # buried depth
+    S = 1.05
+    PZ = B + 2.0               # platform deck height (2 m above nominal sand)
+    for (x, y) in ((S, S), (S, -S), (-S, S), (-S, -S)):
+        A.add(cyl((x, y), 0.09, 0, PZ, 10, r1=0.08), 'town_wood', smooth=True)
+        A.col_bm(cyl((x, y), 0.1, 0, PZ, 8), None)
+    for a, b in (((S, S), (S, -S)), ((-S, S), (-S, -S)), ((S, S), (-S, S)), ((S, -S), (-S, -S))):
+        # X braces between piles
+        for z0, z1 in ((B + 0.2, PZ - 0.2), (PZ - 0.2, B + 0.2)):
+            p0, p1 = Vector((a[0], a[1], z0)), Vector((b[0], b[1], z1))
+            d = p1 - p0
+            bm = lathe([(0.035, 0), (0.035, d.length)], 6)
+            q = Vector((0, 0, 1)).rotation_difference(d.normalized())
+            xform(bm, Matrix.Translation(p0) @ q.to_matrix().to_4x4())
+            A.add(bm, 'town_wood', smooth=True)
+    A.box((-S - 0.25, -S - 0.25, PZ), (S + 0.25, S + 0.25, PZ + 0.12), 'town_wood', 0.015)
+    for k in range(9):
+        x = -S - 0.2 + k * (2 * S + 0.4) / 8
+        A.box((x - 0.012, -S - 0.25, PZ + 0.12), (x + 0.012, S + 0.25, PZ + 0.124), 'town_wood')
+    # railing on the front (+X) and sides of the deck (deck wider than the hut by 0.25 front)
+    for y in (-S - 0.2, S + 0.2):
+        A.box((-S - 0.2, y - 0.03, PZ + 0.12), (S + 0.2, y + 0.03, PZ + 0.18), 'town_trim')
+        A.box((-S - 0.2, y - 0.03, PZ + 0.95), (S + 0.2, y + 0.03, PZ + 1.0), 'town_trim')
+    A.box((S + 0.17, -S - 0.2, PZ + 0.95), (S + 0.23, S + 0.2, PZ + 1.0), 'town_trim')
+    for k in range(7):
+        y = -S - 0.2 + k * (2 * S + 0.4) / 6
+        A.box((S + 0.17, y - 0.025, PZ + 0.12), (S + 0.23, y + 0.025, PZ + 0.95), 'town_trim')
+    for y in (-S - 0.2, S + 0.2):
+        for k in range(6):
+            x = -S - 0.2 + k * (2 * S + 0.4) / 5
+            A.box((x - 0.025, y - 0.025, PZ + 0.12), (x + 0.025, y + 0.025, PZ + 0.95), 'town_trim')
+    # hut: cream boards, front window opening, orange door on the back, hipped roof
+    hx0, hx1, hy = -S + 0.05, S - 0.45, S - 0.1
+    HZ = PZ + 0.12
+    facade(A, Face('x', 1, hx1), -hy, hy, HZ, HZ + 1.75, 1, 1, 1.2, 0.8, 'town_cream', 'T11f', depth=0.08, recess=0.05, wz=0.7, sill_mat='town_wood')
+    for F, u0, u1 in ((Face('y', 1, hy), hx0, hx1), (Face('y', -1, -hy), hx0, hx1), (Face('x', -1, hx0), -hy, hy)):
+        A.box(*F.box(-0.08, 0, u0, u1, HZ, HZ + 1.75), 'town_cream')
+        for k in range(6):
+            A.box(*F.box(0, 0.015, u0, u1, HZ + 0.27 * k + 0.25, HZ + 0.27 * k + 0.27), 'town_trim')
+    A.box(*Face('x', -1, hx0).box(0, 0.04, -0.35, 0.35, HZ, HZ + 1.55), 'town_canvas')
+    # pyramid roof
+    bm = bmesh.new()
+    rz = HZ + 1.75
+    cx = (hx0 + hx1) / 2
+    base = [bm.verts.new(p) for p in ((hx0 - 0.3, -hy - 0.3, rz), (hx1 + 0.3, -hy - 0.3, rz), (hx1 + 0.3, hy + 0.3, rz), (hx0 - 0.3, hy + 0.3, rz))]
+    apex = bm.verts.new((cx, 0, rz + 0.7))
+    bm.faces.new(base[::-1])
+    for i in range(4):
+        bm.faces.new((base[i], base[(i + 1) % 4], apex))
+    A.add(bm, 'town_canvas')
+    A.box((hx0 - 0.3, -hy - 0.3, rz - 0.08), (hx1 + 0.3, hy + 0.3, rz), 'town_trim')
+    # flag pole + orange pennant
+    A.add(cyl((cx, 0), 0.025, rz + 0.6, rz + 1.6, 8), 'town_metal', smooth=True)
+    pts = [(cx, 0.02, rz + 1.55), (cx, 0.02, rz + 1.15), (cx, 0.62, rz + 1.35)]
+    bm = bmesh.new()
+    a = [bm.verts.new((p[0] - 0.01, p[1], p[2])) for p in pts]; b = [bm.verts.new((p[0] + 0.01, p[1], p[2])) for p in pts]
+    bm.faces.new(a); bm.faces.new(b[::-1])
+    for i in range(3):
+        j = (i + 1) % 3
+        bm.faces.new((a[i], b[i], b[j], a[j]))
+    A.add(bm, 'town_canvas')
+    # ladder down the back to the sand (rails + rungs)
+    for y in (-0.32, 0.32):
+        p0, p1 = Vector((-S - 1.3, y, B)), Vector((-S - 0.25, y, PZ + 0.1))
+        d = p1 - p0
+        bm = lathe([(0.04, 0), (0.04, d.length)], 6)
+        xform(bm, Matrix.Translation(p0) @ Vector((0, 0, 1)).rotation_difference(d.normalized()).to_matrix().to_4x4())
+        A.add(bm, 'town_wood', smooth=True)
+    for k in range(1, 8):
+        t = k / 8
+        x, z = -S - 1.3 + t * 1.05, B + t * (PZ + 0.1 - B)
+        A.box((x - 0.04, -0.32, z - 0.02), (x + 0.04, 0.32, z + 0.02), 'town_wood')
+    A.col_box((-S - 0.25, -S - 0.25, PZ), (S + 0.25, S + 0.25, rz + 0.7), 'col_hut')
+    A.col_box((-S - 0.1, -S - 0.1, 0), (S + 0.1, S + 0.1, PZ), 'col_piles')
+    A.cols = [c for c in A.cols if c[0] in ('col_hut', 'col_piles')]
+    return A
+
 BUILDERS = {k[6:]: v for k, v in globals().items() if k.startswith('build_T')}
 
 def main():
