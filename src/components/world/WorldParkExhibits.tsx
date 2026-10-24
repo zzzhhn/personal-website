@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import { BufferAttribute, BufferGeometry, CanvasTexture, Group, Matrix4, Mesh, MeshStandardMaterial, Object3D, SRGBColorSpace, Vector3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { PartBatch, gltfTrimesh, meshPiece, meshesUnder, mergeBatch, parkUrl, withDraco, hash, type GLTF } from './WorldParkKit';
+import { PartBatch, gltfTrimesh, meshPiece, meshesUnder, mergeBatch, parkMaterial, parkUrl, withDraco, hash, type GLTF } from './WorldParkKit';
 import { EXHIBITS, EXHIBIT_ANCHOR, HUTS, exhibitMatrix, type HutPlacement } from './WorldParkLayout';
 import { Knockables } from './WorldParkWalk';
 import { useInteractable } from './WorldInteract';
@@ -10,6 +10,7 @@ import { useWorldStore } from './store';
 import { isWorldRunning } from './WorldWind';
 import { trackPortfolioEvent } from '../../lib/analytics';
 import { parkAudio } from './WorldParkAudio';
+import { ParkLOD } from './WorldParkLOD';
 import type { Vec3, WorldProject, Lang } from './types';
 
 /**
@@ -25,12 +26,12 @@ export function useExhibitGltfs() {
 }
 
 type Movers = Record<string, Object3D>;
-type Placed = { hut: HutPlacement; id: string; matrix: Matrix4; root: Object3D; movers: Movers; dynamic: { name: string; geometry: BufferGeometry; position: Vec3; yaw: number; hull: Float32Array }[] };
+type Placed = { body: BufferGeometry; hut: HutPlacement; id: string; matrix: Matrix4; root: Object3D; movers: Movers; dynamic: { name: string; geometry: BufferGeometry; position: Vec3; yaw: number; hull: Float32Array }[] };
 const DYNAMIC = new Set(['stool', 'crate']);
 
 /** Static batch pieces + per-exhibit moving node clones + colliders. */
 export function placeExhibits(gltfs: Record<string, GLTF>) {
-  const pieces: BufferGeometry[] = [], placed: Placed[] = [], fixed: { vertices: Float32Array; indices: Uint32Array }[] = [];
+  const placed: Placed[] = [], fixed: { vertices: Float32Array; indices: Uint32Array }[] = [];
   for (const hut of HUTS) for (const ex of EXHIBITS[hut.id] ?? []) {
     const src = gltfs[ex.id].scene.getObjectByName(ex.id)!;
     const root = src.clone(true);
@@ -39,7 +40,7 @@ export function placeExhibits(gltfs: Record<string, GLTF>) {
     const movers: Movers = {}, stop = new Set<Object3D>();
     for (const c of root.children) if (c.name !== 'body') { stop.add(c); if (!DYNAMIC.has(c.name)) movers[c.name] = c; }
     const body = root.getObjectByName('body')!;
-    for (const m of meshesUnder(body, new Set())) pieces.push(meshPiece(m, new Matrix4().multiplyMatrices(matrix, m.matrixWorld)));
+    const bodyGeometry = mergeBatch(meshesUnder(body, new Set()).map(m => meshPiece(m, new Matrix4().multiplyMatrices(matrix, m.matrixWorld))));
     fixed.push(gltfTrimesh(root, matrix, n => n === 'body'));
     const dynamic: Placed['dynamic'] = [];
     for (const name of DYNAMIC) {
@@ -56,9 +57,9 @@ export function placeExhibits(gltfs: Record<string, GLTF>) {
       const wp = new Vector3().setFromMatrixPosition(new Matrix4().multiplyMatrices(matrix, node.matrixWorld));
       dynamic.push({ name, geometry: mergeBatch(parts), position: [wp.x, wp.y, wp.z], yaw: hut.yaw + ex.yaw, hull: new Float32Array(pts) });
     }
-    placed.push({ hut, id: ex.id, matrix, root, movers, dynamic });
+    placed.push({ body: bodyGeometry, hut, id: ex.id, matrix, root, movers, dynamic });
   }
-  return { pieces, placed, fixed };
+  return { placed, fixed };
 }
 
 /** Read-only QA evidence. The bot still triggers every action through real E key events. */
@@ -430,7 +431,7 @@ function Blackboard({ p, project }: { p: Placed; project?: WorldProject }) {
 }
 
 /* ------------------------------------------------------------------ assembly */
-export function ParkExhibits({ placed, projects }: { placed: Placed[]; projects: WorldProject[] }) {
+function ExhibitSet({ placed, projects }: { placed: Placed[]; projects: WorldProject[] }) {
   const project = (slug: string) => projects.find(x => x.slug === slug);
   const parts = useMemo(() => {
     const batch = new PartBatch(), I = new Matrix4();
@@ -440,7 +441,8 @@ export function ParkExhibits({ placed, projects }: { placed: Placed[]; projects:
     }
     return batch.build();
   }, [placed]);
-  useEffect(() => { exhibitParts.batch = parts; return () => { exhibitParts.batch = null; parts.geometry?.dispose(); parts.material?.dispose(); parts.texture?.dispose(); }; }, [parts]);
+  useEffect(() => { exhibitParts.add(parts); return () => { exhibitParts.delete(parts); parts.geometry?.dispose(); parts.material?.dispose(); parts.texture?.dispose(); }; }, [parts]);
+  useEffect(() => () => placed.forEach(p => p.body.dispose()), [placed]);
   const holder = useRef<Group>(null);
   useFrame(() => { holder.current?.updateMatrixWorld(true); parts.sync(); });
   const lampFor = (hut: string) => placed.find(x => x.hut.id === hut && x.id === 'P17');
@@ -452,7 +454,8 @@ export function ParkExhibits({ placed, projects }: { placed: Placed[]; projects:
     }
     return [...by.entries()];
   }, [placed]);
-  return <group name="park-exhibits">
+  return <group name={`park-exhibit-set-${placed[0]?.hut.id}`}>
+    {placed.map(p => <mesh key={`body-${p.id}`} name={`park-exhibit-body-${p.id}`} geometry={p.body} material={parkMaterial()} castShadow receiveShadow userData={{ solid: true, occluder: true, assetId: p.id }} />)}
     <group ref={holder} name="park-exhibit-nodes">
       {placed.map(p => <group key={`${p.hut.id}-${p.id}`} name={`park-exhibit-${p.id}`} matrixAutoUpdate={false} matrix={p.matrix}>
         <primitive object={p.root} />
@@ -482,9 +485,26 @@ function moversOnly(p: Placed) {
   p.root.traverse(o => { const m = o as Mesh; if (m.isMesh) { m.castShadow = false; m.receiveShadow = true; } });
   return p.root;
 }
-/** Shared handle so exhibits can set a moving part's extra warm emission (lantern). */
-const exhibitParts: { batch: PartBatch | null } = { batch: null };
+/** One independent moving-part batch per hut; lantern lookup keeps the matching batch. */
+const exhibitParts = new Set<PartBatch>();
 const setPartEmit = (node: Object3D | undefined, v: number) => {
-  const b = exhibitParts.batch; if (!b || !node) return;
-  node.traverse(o => { const i = b.nodes.indexOf(o); if (i >= 0) b.emit[i] = v; });
+  if (!node) return;
+  for (const b of exhibitParts) node.traverse(o => { const i = b.nodes.indexOf(o); if (i >= 0) b.emit[i] = v; });
 };
+
+export function ParkExhibits({ placed, projects }: { placed: Placed[]; projects: WorldProject[] }) {
+  const groups = useMemo(() => HUTS.map(hut => {
+    const list = placed.filter(p => p.hut.id === hut.id); let triangles = 0;
+    list.forEach(p => {
+      triangles += p.body.getAttribute('position').count / 3;
+      p.root.traverse(o => { const m = o as Mesh; if (!m.isMesh) return;
+        let top = o; while (top.parent && top.parent !== p.root) top = top.parent;
+        if (top.name === 'body' || DYNAMIC.has(top.name)) return;
+        triangles += (m.geometry.index?.count ?? m.geometry.getAttribute('position').count) / 3;
+      });
+    });
+    return { hut, list, triangles };
+  }), [placed]);
+  return <group name="park-exhibits">{groups.map(g => <ParkLOD key={g.hut.id} id={`exhibits-${g.hut.id}`} center={g.hut.local(0, 1, -1.5)} nearTriangles={g.triangles}
+    near={<ExhibitSet placed={g.list} projects={projects} />} />)}</group>;
+}

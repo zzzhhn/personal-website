@@ -1,5 +1,7 @@
 # 园区交付候选（park-integration，2026-10-24）
 
+本文件保留c159f4f初交证据；后续LOD、五处拓扑诊断及F04收口见[DELIVERY-LOD.md](DELIVERY-LOD.md)。
+
 此批沿用接管的 P01–P18，补齐 P05/P19，修复并实测六种交互。只在 `codex/world-park-integration` 提交，不推送、不合并到发布分支、不部署。原始证据都在 `/Users/bobby/Desktop/3D-personal-world/evidence/park-integration/`，仓库仅留压缩 JPEG 和小 JSON。
 
 ## 实测通过

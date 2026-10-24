@@ -1,6 +1,6 @@
 {
- "asset": "P05+P19",
- "evaluatedTriangles": 1440,
+ "asset": "P05+P19+F04",
+ "evaluatedTriangles": 2160,
  "bounds": [
   [
    -1.3,
@@ -42,9 +42,23 @@
     "park_wood_mid",
     "park_wood_dark"
    ]
+  },
+  {
+   "name": "body_F04",
+   "triangles": 720,
+   "shells": 19,
+   "negative_shells": 0,
+   "degenerate_faces": 0,
+   "nonmanifold_edges": 0,
+   "materials": [
+    "park_cream_paint",
+    "park_wood_light",
+    "park_wood_mid",
+    "park_wood_dark"
+   ]
   }
  ],
- "glbReadbackTriangles": 1440,
+ "glbReadbackTriangles": 2160,
  "readbackBounds": [
   [
    -1.3,
@@ -58,6 +72,68 @@
   ]
  ],
  "readbackProblems": [],
- "glbBytes": 25228,
- "qaNote": "GLB raw normal/material seams retained. Topology diagnostic welds a disposable imported copy at 1e-5m, as in parklib."
+ "glbBytes": 37420,
+ "qaNote": "GLB raw normal/material seams retained. Topology diagnostic welds a disposable imported copy at 1e-5m, as in parklib.",
+ "variants": {
+  "P05": {
+   "root": "P05",
+   "body": "body_P05",
+   "panel": [
+    2.4,
+    1.3,
+    1.0
+   ],
+   "frontFaceGLB": [
+    0,
+    1.65,
+    0.0325
+   ],
+   "textFaceGLB": [
+    0,
+    1.65,
+    0.034
+   ],
+   "panelInset": 0.015
+  },
+  "P19": {
+   "root": "P19",
+   "body": "body_P19",
+   "panel": [
+    1.1,
+    0.72,
+    0.7
+   ],
+   "frontFaceGLB": [
+    0,
+    1.06,
+    0.0325
+   ],
+   "textFaceGLB": [
+    0,
+    1.06,
+    0.034
+   ],
+   "panelInset": 0.015
+  },
+  "F04": {
+   "root": "F04",
+   "body": "body_F04",
+   "panel": [
+    0.78,
+    0.46,
+    0.55
+   ],
+   "frontFaceGLB": [
+    0,
+    0.78,
+    0.0325
+   ],
+   "textFaceGLB": [
+    0,
+    0.78,
+    0.034
+   ],
+   "panelInset": 0.015
+  }
+ }
 }

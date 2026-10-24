@@ -85,5 +85,7 @@
   "reached": true,
   "seated": "park-seat-accompany",
   "stood": true
- }
+ },
+ "snapshotCommit": "c159f4f",
+ "followUp": "qa-lod.json and DELIVERY-LOD.md supersede the initial missing-LOD status"
 }
