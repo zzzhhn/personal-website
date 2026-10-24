@@ -789,7 +789,11 @@ export default function WorldActors() {
     if (camera instanceof PerspectiveCamera && Math.abs(camera.fov-c.fov)>.01) { camera.fov=c.fov; camera.updateProjectionMatrix(); }
     // Pivot: head height on foot, roof height in a car; first person sits at eye height.
     const eye=car?car.spec.size[1]*.38:.3;   // above the body centre: driver's eye / helmet visor height
-    const desiredTarget=new Vector3(p.x,Math.max(p.y,WATER_Y)+(c.firstPerson?eye:car?car.spec.size[1]*.6:.65),p.z);
+    const cameraSeat=!car?useWorldStore.getState().seat:null;
+    // The disabled seated capsule stays a standing body-height above the seat. Aim at the actual
+    // seated helmet instead: fresh GLB runtime bounds put its centre 0.884-0.956 m above the seat.
+    const targetY=cameraSeat?cameraSeat.position[1]+.92:Math.max(p.y,WATER_Y)+(c.firstPerson?eye:car?car.spec.size[1]*.6:.65);
+    const desiredTarget=new Vector3(p.x,targetY,p.z);
     if(!cameraReady.current){target.current.copy(desiredTarget);cameraReady.current=true;}
     target.current.lerp(desiredTarget,c.firstPerson?1:1-Math.exp(-delta*10));
     const dir=orbitDirection(c.yaw,c.pitch);

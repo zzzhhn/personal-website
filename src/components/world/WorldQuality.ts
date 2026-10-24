@@ -112,7 +112,7 @@ export type BudgetZone = keyof typeof BUDGET_ZONES;
  * their mount group, so new GLBs need no tagging. Shadow proxies point back with userData.budgetSource. */
 const ZONE_RULES: [RegExp, BudgetZone][] = [
   [/^(world-sea|world-sky|world-seabed|greybox-seabed)/, 'sky-sea'],
-  [/^(island-terrain|v4-paved|v4-ridge)/, 'terrain'],
+  [/^(island-terrain|paving-v4|world-paving-v4|v4-paved|v4-ridge)/, 'terrain'],
   [/^(ground-grass|ground-pebbles)/, 'grass'],
   [/^world-guide/, 'character'],
   [/^(world-vehicle|vehicle-)/, 'vehicles'],
