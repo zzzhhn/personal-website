@@ -47,13 +47,21 @@ function waveGlsl() {
   }).join('\n');
 }
 
+/** Surf phase shared by the vertex swell and the fragment foam: crests roll toward the beach with the swash period;
+ * a smooth along-shore offset (two incommensurate sines, up to ~0.4 wavelength) bends and spaces them unevenly. */
+const SURF_GLSL = /* glsl */`
+float surfPhase(vec2 p, float shoreD, float t) {
+  float off = 1.5 * sin(dot(p, vec2(0.043, 0.067))) + 0.9 * sin(dot(p, vec2(-0.081, 0.029)) + 1.3);
+  return shoreD * ${(2 * Math.PI / SEA_SURF.lengthM).toFixed(5)} + t * 1.1424 + off;
+}
+`;
 const VERTEX_HEAD = /* glsl */`
 uniform float uSeaTime; uniform float uSeaMotion;
 attribute vec4 seaPatch;
 varying vec3 vSeaWorld;
 varying float vSeaCrest;
-varying float vSeaSurf;
 ${SHORE_GLSL}
+${SURF_GLSL}
 void seaWave(vec2 d, float k, float a, float q, float w, vec2 p, float t, float amp, inout vec3 disp) {
   float ph = k * dot(d, p) - w * t, c = cos(ph), s = sin(ph);
   disp += vec3(q * a * d.x * c, a * s, q * a * d.y * c) * amp;
@@ -115,19 +123,19 @@ export function createWorldWaterMaterial(color: string) {
 ${waveGlsl()}
         }
         // Surf: crests rolling toward the beach (phase falls with shore distance over time), peaked, gone at the waterline.
-        float surfPhase = shoreD * ${(2 * Math.PI / SEA_SURF.lengthM).toFixed(5)} + t * 1.1424 * step(0.001, uSeaMotion);
-        float surf = pow(0.5 + 0.5 * sin(surfPhase), 3.0) * smoothstep(0.3, 2.0, shoreD) * (1.0 - smoothstep(8.0, 14.0, shoreD));
+        float surf = pow(0.5 + 0.5 * sin(surfPhase(p, shoreD, t * step(0.001, uSeaMotion))), 3.0) * smoothstep(0.3, 2.0, shoreD) * (1.0 - smoothstep(8.0, 14.0, shoreD));
         surf *= 1.0 - smoothstep(${(SEA_SURF.lengthM / 3.4).toFixed(3)}, ${(SEA_SURF.lengthM / 2.4).toFixed(3)}, cellEff);
         disp.y += ${SEA_SURF.amplitude.toFixed(3)} * surf * uSeaMotion;
-        vSeaSurf = surf * step(0.001, uSeaMotion);
         transformed += disp;
         vSeaCrest = disp.y / ${SEA_WAVES.reduce((a, w) => a + w.amplitude, 0).toFixed(3)};
       }`).replace('#include <project_vertex>', `#include <project_vertex>
       vSeaWorld = (modelMatrix * vec4(transformed, 1.0)).xyz;`);
-    shader.fragmentShader = `varying vec3 vSeaWorld;\nvarying float vSeaCrest;\nvarying float vSeaSurf;\nuniform vec3 uSunDir; uniform vec3 uGlint;\nfloat seaFootprint = 0.0;\nuniform float uSeaTime; uniform float uSeaMotion; uniform vec3 uNearTint; uniform vec3 uFoam; uniform float uDeepLuma; uniform vec4 uSeaSpot[${SEA_SPOTS}];\n${SHORE_GLSL}
+    shader.fragmentShader = `varying vec3 vSeaWorld;\nvarying float vSeaCrest;\nuniform vec3 uSunDir; uniform vec3 uGlint;\nfloat seaFootprint = 0.0;\nuniform float uSeaTime; uniform float uSeaMotion; uniform vec3 uNearTint; uniform vec3 uFoam; uniform float uDeepLuma; uniform vec4 uSeaSpot[${SEA_SPOTS}];\n${SHORE_GLSL}\n${SURF_GLSL}
 float sHash(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
 float sNoise(vec2 p) { vec2 i = floor(p), f = fract(p), u = f * f * (3.0 - 2.0 * f);
   return mix(mix(sHash(i), sHash(i + vec2(1.0, 0.0)), u.x), mix(sHash(i + vec2(0.0, 1.0)), sHash(i + vec2(1.0, 1.0)), u.x), u.y); }
+// Three rotated octaves: no axis-aligned cell edges survive the threshold.
+float sFbm(vec2 p) { return 0.5 * sNoise(p) + 0.3 * sNoise(mat2(0.8, -0.6, 0.6, 0.8) * p * 2.03 + 17.1) + 0.2 * sNoise(mat2(0.28, 0.96, -0.96, 0.28) * p * 4.11 - 5.3); }
 ` + shader.fragmentShader
       .replace('#include <color_fragment>', `#include <color_fragment>
       vec2 sp = vSeaWorld.xz;
@@ -144,13 +152,21 @@ float sNoise(vec2 p) { vec2 i = floor(p), f = fract(p), u = f * f * (3.0 - 2.0 *
       float edge = shoreD + 0.3 - 0.55 * sw;
       float band = (1.0 - smoothstep(width - 0.25, width + 0.1, edge)) * smoothstep(-0.6, -0.2, edge);
       float breakup = smoothstep(0.28, 0.62, sNoise(sp * 0.9 + vec2(tt * 0.12, -tt * 0.07)) * 0.75 + sNoise(sp * 2.6) * 0.25);
-      float outer = smoothstep(0.25, 0.0, abs(shoreD - 1.8 - 1.1 * (1.0 - sw))) * 0.45 * smoothstep(0.45, 0.75, sNoise(sp * 0.7 - tt * 0.05));
-      // Rolling surf crests carry broken white caps on their fronts before they reach the swash band.
-      // Two rotated octaves (no axis-aligned value-noise cells), thin crest band, drifting slowly.
-      vec2 q1 = mat2(0.80, -0.60, 0.60, 0.80) * sp, q2 = mat2(0.28, 0.96, -0.96, 0.28) * sp;
-      float capNoise = 0.6 * sNoise(q1 * 1.3 + vec2(tt * 0.15, 0.0)) + 0.4 * sNoise(q2 * 3.4 - vec2(0.0, tt * 0.1));
-      float caps = smoothstep(0.78, 0.97, vSeaSurf) * smoothstep(0.42, 0.72, capNoise);
-      float foam = clamp(band * mix(0.55, 1.0, breakup) + outer + 0.55 * caps, 0.0, 1.0) * (1.0 - smoothstep(10.0, 14.0, shoreD));
+      // Near-shore breaker line: its distance (1.3-2.9 m) and width (0.12-0.4 m) wander along the shore.
+      float lineD = 1.3 + 1.6 * sFbm(sp * 0.09 + 4.2) + 1.1 * (1.0 - sw), lineW = 0.12 + 0.28 * sFbm(sp * 0.21 - 2.7);
+      float outer = (1.0 - smoothstep(lineW * 0.4, lineW, abs(shoreD - lineD))) * 0.5 * smoothstep(0.42, 0.68, sFbm(sp * vec2(0.55, 0.9) - tt * 0.05));
+      // Surf foam, per pixel (no interpolated varying, so no facet-shaped patches): broken, soft-edged patches on
+      // the front of each rolling crest. Each patch is born as the crest steepens and dies as it passes (the
+      // threshold follows the crest phase); patches get rarer and smaller further out.
+      float sph = surfPhase(sp, shoreD, tt);
+      float crest = 0.5 + 0.5 * sin(sph + 0.55);                      // slightly ahead of the height crest: the face
+      float life = 0.5 + 0.5 * sin(sph * 0.5 + sFbm(sp * 0.05) * 6.2832); // every other crest breaks harder, varying along shore
+      float zone = smoothstep(0.6, 2.2, shoreD) * (1.0 - smoothstep(4.0, 13.0, shoreD));
+      float density = mix(0.62, 0.86, smoothstep(2.0, 12.0, shoreD)) - 0.12 * life;  // higher threshold = sparser
+      float capN = sFbm(sp * vec2(0.9, 1.4) + vec2(tt * 0.12, -tt * 0.05));
+      float soft = 0.08 + 0.1 * smoothstep(0.0, 0.6, length(fwidth(sp)));
+      float caps = smoothstep(density - soft, density + soft, capN * (0.55 + 0.6 * pow(crest, 3.0))) * zone;
+      float foam = clamp(band * mix(0.55, 1.0, breakup) + outer + 0.7 * caps, 0.0, 1.0) * (1.0 - smoothstep(10.0, 14.0, shoreD));
       // Foam brightness follows the lighting's sea colour (1 at dusk, ~0.4 at night).
       float seaLight = clamp(dot(diffuse, vec3(0.2126, 0.7152, 0.0722)) / uDeepLuma, 0.0, 1.0);
       diffuseColor.rgb = mix(diffuseColor.rgb, uFoam * mix(0.45, 1.0, seaLight), 0.85 * foam);

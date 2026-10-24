@@ -98,7 +98,7 @@ try {
           row.player = (await page.evaluate(() => __worldDebug.snapshot().player))?.map(v => +v.toFixed(2));
         }
         await page.waitForTimeout(500);
-        row.frame = await page.evaluate(() => __worldDebug.budget.frame(30));
+        row.frame = await page.evaluate(t => __worldDebug.budget.frame(t), +(process.env.BUDGET_TOP || 30));
         row.series = await page.evaluate(() => __worldDebug.budget.series(8));
         row.lights = await page.evaluate(() => __worldDebug.budget.lights());
         row.fire = await page.evaluate(() => __worldDebug.fireShadowInfo?.() ?? null);
