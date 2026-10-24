@@ -275,7 +275,7 @@ def build():
         note='G28-A已制作并局部挂载；独立规格解读按PRD v1.13/规格15授权，不冒称WorkBuddy新审批；8项局部人行/单一输入检查通过，最终整合另验')
     q = read_json('docs/world/entry/qa-G28.json')
     attach(a, ['public/assets/world/entry/G28.glb'])
-    proof(a, 4392, 4392, 'docs/world/entry/qa-G28.json', sha=q['sha256'])
+    proof(a, q['native']['triangles'], q['glbReadback']['triangles'], 'docs/world/entry/qa-G28.json', sha=q['sha256'])
     a['triangles'] = '原生/重开BLEND/全新Draco回读4392；运行时3材质合批；60m远档360'
     a['production']['runtimeReviewStatus'] = 'entry/runtime记录8项局部通过、近远剔除与普通1080两档；车辆通行/全局预算/Bobby未验收'
     a['production']['knownLimits'] = ['石环沿用无阻挡触发语义，不当作真实硬石碰撞通过', 'WorkBuddy本轮额度耗尽；此次是独立规格解读与实现，不是冻结文件更新']
@@ -490,7 +490,7 @@ def markdown(rows):
         '全岛L1已授权；旧“灰盒未签字不得开模／三轮失败自动L2”失效。Hy3D仍关闭，只有当前明确受影响证据可关闭相应失败。Bobby未接受全岛审美、动作、物理或手感，本清单不是全岛通过证书。', '',
         '## 同步与最终核对', '',
         '`python tools/world/sync-production.py`只读取并打印快照；加`--write`仅同步本Markdown与assets-v1.json，不修改运行时/GLB/冻结文档，也不运行一致性或验收脚本。最终GLB/F04/P04合入后主线程可再同步，并按其既定安排仅运行一次`tools/world/check-inventory.py`。',
-        'G28默认保持未制作；主线程后续明确在该JSON行登记真实GLB和制作/验收状态后，同步脚本会保留该人工归档并重读其文件哈希，不靠扫描到文件自动判完成。',
+        'G28按主线程已明确合入的GLB与WorldEntry映射归档，并重读文件哈希；entry/runtime仅是局部验证，不把文件存在或开工授权当整体验收。',
         '若当前文件SHA与既有报告不匹配，脚本不沿用其回读数作当前通过证据；没有报告SHA则明确记未绑定。纯runtime的glb/sha256/glbReimportTriangles为空，不伪造GLB回读。', '']
     return '\n'.join(text)
 
