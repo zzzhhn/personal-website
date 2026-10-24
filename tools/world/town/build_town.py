@@ -608,6 +608,88 @@ def build_T05():
     A.box((2.8, -2.2, UZ1 + 0.1), (2.84, -1.4, UZ1 + 2.0), 'town_wood')
     return A
 
+# ============================================================== T06 Tencent Hunyuan: dark glass tower, roof glow ring
+def build_T06():
+    A = Asset('T06')
+    X0, X1, Y, H = -5.0, 5.0, 4.0, 15.0
+    A.extras.update(building='hunyuan', footprint=[10, 15, 8])
+    LD = 2.0                     # lobby recess under the tower front
+    LZ = 4.2                     # double-height lobby
+    A.box((X0, -Y, 0), (X1, Y, PLAZA), 'town_stone_dark', 0.01)
+    for i in range(1, 10):
+        y = -Y + i * 0.8
+        A.box((X1 - LD, y - 0.012, PLAZA), (X1 - 0.05, y + 0.012, PLAZA + 0.004), 'town_stone')
+    A.col_box((X0, -Y, -0.2), (X1, Y, PLAZA), 'col_floor')
+    # lobby glass wall with a central door, dark frame; two round columns at the front edge
+    lf = Face('x', 1, X1 - LD)
+    A.box(*lf.box(-0.3, -0.15, -Y + 0.2, Y - 0.2, PLAZA, LZ), 'town_dark')
+    n = 6
+    for k in range(n):
+        a, b = -Y + 0.2 + k * (2 * Y - 0.4) / n, -Y + 0.2 + (k + 1) * (2 * Y - 0.4) / n
+        A.box(*lf.box(-0.15, -0.1, a + 0.03, b - 0.03, PLAZA + 0.05, LZ - 0.1), 'town_glass_lit' if lit(f'T06l{k}', 0.85) else 'town_glass_dark')
+        A.box(*lf.box(-0.1, 0.0, a - 0.04, a + 0.04, PLAZA, LZ), 'town_dark')
+    A.box(*lf.box(-0.1, 0.0, Y - 0.24, Y - 0.16, PLAZA, LZ), 'town_dark')
+    A.box(*lf.box(-0.1, 0.02, -Y + 0.2, Y - 0.2, 2.7, 2.78), 'town_dark')
+    A.box(*lf.box(0.0, 0.08, -1.1, 1.1, PLAZA, 2.7), 'town_dark')
+    A.box(*lf.box(0.02, 0.06, -1.05, -0.03, PLAZA + 0.02, 2.62), 'town_glass_dark')
+    A.box(*lf.box(0.02, 0.06, 0.03, 1.05, PLAZA + 0.02, 2.62), 'town_glass_dark')
+    for u in (-0.15, 0.15):
+        A.box(*lf.box(0.06, 0.1, u - 0.02, u + 0.02, 0.8, 1.9), 'town_metal')
+    for F, side in ((Face('y', 1, Y), 'p'), (Face('y', -1, -Y), 'n')):   # solid stone side walls of the lobby
+        A.box(*F.box(-0.3, 0, X0, X1 - LD, PLAZA, LZ), 'town_stone_dark')
+    A.box(*Face('x', -1, X0).box(-0.3, 0, -Y, Y, PLAZA, LZ), 'town_stone_dark')
+    A.col_box((X0, -Y, PLAZA), (X1 - LD, Y, LZ), 'col_lobby')
+    for y in (-2.0, 2.0):
+        A.add(cyl((X1 - 0.4, y), 0.32, PLAZA, LZ, 20), 'town_dark', smooth=True)
+        A.add(cyl((X1 - 0.4, y), 0.38, PLAZA, PLAZA + 0.1, 20), 'town_metal', smooth=True)
+        A.col_bm(cyl((X1 - 0.4, y), 0.32, PLAZA, LZ, 12), f'col_column_{y:+.0f}')
+    A.box((X1 - LD, -Y, LZ - 0.1), (X1, Y, LZ), 'town_dark')   # soffit
+    for y in (-3.0, -1.0, 1.0, 3.0):
+        A.box((X1 - 1.2, y - 0.5, LZ - 0.12), (X1 - 0.8, y + 0.5, LZ - 0.1), 'town_glass_lit')
+    # tower: transfer band, four curtain walls with dark fins, one recessed floor band near the top
+    A.box((X0 - 0.05, -Y - 0.05, LZ), (X1 + 0.05, Y + 0.05, LZ + 0.4), 'town_dark', 0.02)
+    TZ0, TZ1 = LZ + 0.4, H - 0.8
+    for F, u0, u1, key in ((Face('x', 1, X1), -Y, Y, 'f'), (Face('x', -1, X0), -Y, Y, 'b'),
+                            (Face('y', 1, Y), X0, X1, 's'), (Face('y', -1, -Y), X0, X1, 'n')):
+        curtain(A, F, u0, u1, TZ0, TZ1, 1.0, (TZ1 - TZ0) / 3, 'T06' + key, fin='town_dark', band='town_dark', fin_out=0.22, glass_set=0.14)
+    A.col_box((X0, -Y, LZ), (X1, Y, H), 'col_tower')
+    # crown band (0.8 m) with a recessed reveal, sign band on the front
+    A.box((X0 - 0.08, -Y - 0.08, TZ1), (X1 + 0.08, Y + 0.08, TZ1 + 0.12), 'town_metal', 0.02)
+    A.box((X0 + 0.05, -Y + 0.05, TZ1 + 0.12), (X1 - 0.05, Y - 0.05, TZ1 + 0.24), 'town_dark')
+    A.box((X0 - 0.08, -Y - 0.08, TZ1 + 0.24), (X1 + 0.08, Y + 0.08, H), 'town_dark', 0.02)
+    A.box((X0 + 0.2, -Y + 0.2, H - 0.25), (X1 - 0.2, Y - 0.2, H - 0.1), 'town_roof')
+    front = Face('x', 1, X1 + 0.08)
+    A.box(*front.box(0.0, 0.03, -2.8, 2.8, TZ1 + 0.3, H - 0.08), 'town_screen')
+    A.anchor('anchor_sign', front.point(0.035, 0, (TZ1 + 0.3 + H - 0.08) / 2), w=5.6, h=H - 0.08 - TZ1 - 0.3, normal='+X')
+    # roof: plinth deck, four short posts carrying the glow ring (torus-like ring of 32 segments)
+    A.box((-3.0, -3.0, H - 0.1), (3.0, 3.0, H + 0.12), 'town_metal', 0.03)
+    RZ = H + 0.6
+    A.use('T06_ring')
+    bm = bmesh.new()
+    seg, mi = 40, 10
+    grid = []
+    for i in range(seg):
+        a = 2 * math.pi * i / seg
+        row = []
+        for j in range(mi):
+            b = 2 * math.pi * j / mi
+            rr = 2.5 + 0.07 * math.cos(b)
+            row.append(bm.verts.new((rr * math.cos(a), rr * math.sin(a), RZ + 0.07 * math.sin(b))))
+        grid.append(row)
+    for i in range(seg):
+        for j in range(mi):
+            bm.faces.new((grid[i][j], grid[(i + 1) % seg][j], grid[(i + 1) % seg][(j + 1) % mi], grid[i][(j + 1) % mi]))
+    A.add(bm, 'town_cyan', smooth=True)
+    A.use('T06_body')
+    for k in range(4):
+        a = math.pi / 4 + k * math.pi / 2
+        c = (2.5 * math.cos(a), 2.5 * math.sin(a))
+        A.add(cyl(c, 0.06, H + 0.12, RZ - 0.04, 10), 'town_metal', smooth=True)
+        A.add(cyl(c, 0.1, H + 0.12, H + 0.2, 10), 'town_metal', smooth=True)
+    A.anchor('anchor_ring', (0, 0, RZ), r=2.5)
+    louvre_box(A, -4.3, -3.3, -2.4, 2.4, H - 0.1, H + 0.9)
+    return A
+
 BUILDERS = {k[6:]: v for k, v in globals().items() if k.startswith('build_T')}
 
 def main():
