@@ -31,6 +31,9 @@ try {
     await bot.press('KeyE'); await page.waitForTimeout(700);
     const stood = await page.evaluate(() => ({ seat: window.__worldDebug.state().seat, player: window.__worldDebug.snapshot().player, grounded: window.__worldDebug.snapshot().grounded, contacts: window.__worldDebug.contacts().map(c => c.other.kind + ':' + (c.other.name ?? '')) }));
     row.stoodE = stood;
+    // Re-approach this seat if E currently belongs to a nearby exhibition board.
+    row.afterStandPrompt = await page.evaluate(() => window.__worldDebug.state().nearbyInteract);
+    if (row.afterStandPrompt?.id !== id) row.reapproach = await bot.walk([[s.position[0], s.position[2]]], { arrive: .35, timeout: 7, maxRecoveries: 1 });
     // Sit again, stand by walking (W).
     await bot.press('KeyE'); await page.waitForTimeout(700);
     const again = await page.evaluate(() => !!window.__worldDebug.state().seat);

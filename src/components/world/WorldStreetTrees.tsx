@@ -2,7 +2,7 @@
 import { useEffect, useMemo } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
-import { Color, DoubleSide, Float32BufferAttribute, InstancedMesh, Matrix4, Mesh, MeshStandardMaterial, Quaternion, Vector3, type BufferGeometry } from 'three';
+import { Color, DoubleSide, Float32BufferAttribute, Frustum, Sphere, InstancedMesh, Matrix4, Mesh, MeshStandardMaterial, Quaternion, Vector3, type BufferGeometry } from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
@@ -60,11 +60,13 @@ export default function StreetTrees() {
     return { placements, meshes, clean, colliders };
   }, [files]);
   useEffect(() => () => built.clean.forEach(c => c()), [built]);
+  const frustum = useMemo(() => new Frustum(), []), view = useMemo(() => new Matrix4(), []), sphere = useMemo(() => new Sphere(), []);
   useFrame(({ camera }) => {
+    frustum.setFromProjectionMatrix(view.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse));
     for (let k = 0; k < 2; k++) {
       const near = built.meshes[k * 2], far = built.meshes[k * 2 + 1]; near.count = 0; far.count = 0;
       for (const p of built.placements) {
-        if (p.kind !== k) continue; const d = p.p.distanceTo(camera.position); if (d > 140) continue;
+        if (p.kind !== k) continue; sphere.center.copy(p.p); sphere.center.y += 3; sphere.radius = 4.5; if (!frustum.intersectsSphere(sphere)) continue; const d = p.p.distanceTo(camera.position); if (d > 140) continue;
         const m = d < 34 ? near : far; m.setMatrixAt(m.count, p.matrix); m.setColorAt(m.count, p.tint); m.count++;
       }
       for (const m of [near, far]) { m.visible = m.count > 0; m.instanceMatrix.needsUpdate = true; if (m.instanceColor) m.instanceColor.needsUpdate = true; }

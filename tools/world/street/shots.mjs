@@ -11,7 +11,7 @@ export const VIEWS = {
   trees: { p: [-26.5, 1.2, -5], yaw: -.5, pitch: .22, d: 9 },
   'tree-near': { p: [-27, 1.2, -8], yaw: -.9, pitch: .02, d: 4 },
   'tree-park': { p: [-20, 1.2, -39], yaw: 1.2, pitch: .15, d: 8 },
-  windmill: { p: [-26, 4.9, -80], yaw: 1.2, pitch: .25, d: 20 },
+  windmill: { p: [-24, 1.2, -56], yaw: 1.6, pitch: .08, d: 22 },
   foundation: { p: [8, 1.4, -61.5], yaw: .3, pitch: .15, d: 8 },
   'foundation-near': { p: [8, 1.4, -60.5], yaw: .3, pitch: .08, d: 4 },
   avenue: { p: [19, 1.2, 8], yaw: 2.6, pitch: .32, d: 14 },

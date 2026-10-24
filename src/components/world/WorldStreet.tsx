@@ -1,5 +1,6 @@
 import { Component, memo, Suspense, useEffect, type ReactNode } from 'react';
 import { useThree } from '@react-three/fiber';
+import { windUniforms } from './WorldWind';
 import { LAYOUT_V4 } from './layout-v4-flag.ts';
 import StreetKnockables, { awakeKnockQa, knockQa } from './WorldStreetKnock';
 import StreetFixed from './WorldStreetFixed';
@@ -33,6 +34,7 @@ function StreetQa() {
     merge();
     const timer = window.setInterval(merge, 500);
     w.__worldStreet = {
+      motion: () => ({ windTime: windUniforms.uWindTime.value, strength: windUniforms.uWindStrength.value }),
       kinds: () => { const out: Record<string, unknown> = {}; scene.getObjectByName('world-street')?.traverse(o => { if (o.userData.streetKinds) out[o.name] = o.userData.streetKinds; }); return out; },
       stats: () => {
         let tris = 0, draws = 0; const per: Record<string, unknown> = {};
