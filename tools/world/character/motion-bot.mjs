@@ -8,13 +8,14 @@ import { Bot, loadPlaywright, CHROME, comboFor } from '../playtest/lib.mjs';
 import { summarize } from './motion-metrics.mjs';
 const out = process.env.WORLD_PLAYTEST_DIR || '/tmp/g24-motion'; await mkdir(out, { recursive: true });
 const base = process.env.WORLD_BASE_URL || 'http://127.0.0.1:4336';
+const startupOnly = process.env.G24_STARTUP_ONLY === '1', captureSkin = process.env.G24_SKIN === '1';
 const shots = process.env.G24_SHOTS === '1', tag = process.env.G24_TAG || 'run';
 const browser = await loadPlaywright().chromium.launch({ executablePath: CHROME, headless: true, args: ['--use-angle=metal'] });
 const report = { base, tag, startedAt: new Date().toISOString(), errors: [], phases: [] };
 try {
   const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
   page.on('pageerror', e => report.errors.push(e.message));
-  await page.goto(base + '/world/?qa=1' + (process.env.G24_XFADE === '1' ? '&guideXfade=1' : ''), { waitUntil: 'networkidle' });
+  await page.goto(base + '/world/?qa=1' + (process.env.G24_XFADE === '1' ? '&guideXfade=1' : '') + (process.env.G24_ENTRY_LEGACY === '1' ? '&guideEntryLegacy=1' : ''), { waitUntil: 'networkidle' });
   await page.waitForFunction(() => window.__worldDebug?.actor().loaded, undefined, { timeout: 90000 });
   const bot = new Bot(page);
   const asset = await page.request.get(base + '/assets/world/guide/G24.glb');
@@ -26,7 +27,17 @@ try {
   await page.waitForTimeout(1500);
   const N = comboFor(0, -1).keys, S = comboFor(0, 1).keys, E = comboFor(1, 0).keys, W_ = comboFor(-1, 0).keys;
   report.keyMap = { north: N, south: S, east: E, west: W_ };
-  await page.evaluate(() => __worldDebug.actor('record:start', 20000));
+  if (process.env.G24_ALIGN_STARTUP === '1') {
+    // Supplemental direct Idle->Run coverage: establish heading with real keys, then reset position only.
+    await bot.hold(N); await page.waitForTimeout(600); await bot.release(); await page.waitForTimeout(1300);
+    await bot.fixtureTeleport([-88.6, 1.14 + .88, 24], 'supplemental aligned-heading start; position reset after real-key alignment');
+    await page.waitForTimeout(1500); report.alignedStartup = true;
+  }
+  report.fixtures = bot.fixtureCalls;
+  report.entryMode = process.env.G24_ENTRY_LEGACY === '1' ? 'legacy' : 'support';
+  report.scope = startupOnly ? 'original idle 800 ms + start-run 1400 ms only' : 'full';
+  const skinTopology = captureSkin ? await page.evaluate(() => __worldDebug.actor('skin:topology')) : null;
+  await page.evaluate(skin => __worldDebug.actor(skin ? 'record:skin' : 'record:start', 20000), captureSkin);
   let n = 0;
   const phase = async (label, keys, ms, press) => {
     await bot.hold(keys); if (press) await bot.press(press);
@@ -36,6 +47,7 @@ try {
   };
   await phase('idle', [], 800);
   await phase('start-run', N, 1400);
+  if (!startupOnly) {
   await phase('sprint', [...N, 'ShiftLeft'], 1500);
   await phase('sprint-stop', [], 1200);
   await phase('run', N, 1000);
@@ -54,10 +66,19 @@ try {
   await phase('sprint-jump', [...N, 'ShiftLeft'], 1200, 'Space');
   await phase('jump-land-stand', [], 1400, 'Space');
   await phase('end', [], 600);
+  }
   await bot.release();
   await page.evaluate(() => __worldDebug.actor('record:stop'));
   const frames = await page.evaluate(() => __worldDebug.actor('record:take'));
   report.recorded = frames.length;
+  if (captureSkin) {
+    // Predeclared narrow A6 window: every captured frame from one frame before first Run through 250 ms after.
+    const start = frames.findIndex(f => f.anim === 'Run');
+    const samples = start < 0 ? [] : frames.slice(Math.max(0, start - 1)).filter(f => f.t <= frames[start].t + .25).map(f => ({ ...f, label: 'startup-first-250ms' }));
+    if (!samples.length) throw new Error('No startup skin samples captured');
+    await writeFile(`${out}/runtime-skin-${tag}.json`, JSON.stringify({ views: [{ label: 'startup-first-250ms', assetSha256: report.glbSha256, skinTopology, samples }] }));
+    report.a6CapturedSamples = samples.length;
+  }
   report.metrics = summarize(frames);
   report.actor = await page.evaluate(() => { const a = __worldDebug.actor(); return { inert: a.inert, stop: a.stop?.events ?? null }; });
   await writeFile(`${out}/frames-${tag}.json`, JSON.stringify(frames));

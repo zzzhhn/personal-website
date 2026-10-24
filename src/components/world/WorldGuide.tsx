@@ -59,7 +59,9 @@ const RATE_LO = .7, RATE_HI = 1.25;
 /** Below this measured speed a decelerating gait hands over to Idle (stop step places the feet). */
 const STOP_SPEED = .6;
 const _landQ = new Quaternion();
-/** QA A/B only (?qa=1&guideXfade=1): the old crossfade switch, to measure what inertialization changed. */
+/** QA only: compare the former entry selector and pre-advance planted flags on the same recorder. */
+const ENTRY_LEGACY_AB = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && new URLSearchParams(window.location.search).get('guideEntryLegacy') === '1';
+/** QA A/B only (?qa=1&guideXfade=1): the old crossfade switch. */
 const CROSSFADE_AB = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && new URLSearchParams(window.location.search).get('guideXfade') === '1';
 /** Inertialization half-lives (s) per switch kind: legs decay faster than the upper body so a new
  * clip's foot contacts take over within ~2 frames of 60 Hz while the torso settles over ~0.2 s. */
@@ -545,16 +547,42 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         if (!canSwitch && (rate > RATE_HI || rate < RATE_LO) && rig.gate.last) { canSwitch = true; entry = rig.gate.last.time; rig.gate.timeouts++; rig.gate.clear(); s.phaseGateTimeouts = rig.gate.timeouts; }
         s.pending=rig.gate.pending??'';s.pendingTime=rig.gate.pendingSeconds;s.phaseGateTimeouts=rig.gate.timeouts;
       } else if (rig.phaseSamples[desired] && grounded) {
-        // From Idle / Land / a landing: start the gait at the sample nearest to the displayed ankles,
-        // so a moving landing lands on the matching foot instead of resetting the cycle.
+        // Match the displayed pose, retaining its lowest supporting sole on Idle/Land entry.
+        // Use the authored contacts and the existing 6 mm sole band; never manufacture a mask.
         rig.scene.updateWorldMatrix(true, true);
         const left = rig.scene.worldToLocal(rig.feet.get('left')!.getWorldPosition(new Vector3()));
         const right = rig.scene.worldToLocal(rig.feet.get('right')!.getWorldPosition(new Vector3()));
-        let best = Infinity;
-        for (const sample of rig.phaseSamples[desired]) {
+        const samples = rig.phaseSamples[desired], duration = to.getClip().duration;
+        const supportEntry = !ENTRY_LEGACY_AB && ['Idle', 'IdleLook', 'Land'].includes(s.current);
+        const heights = { left: Infinity, right: Infinity };
+        if (supportEntry && group.current) {
+          const rootY = group.current.getWorldPosition(rig.rootPoint).y - group.current.position.y;
+          rig.soles.forEach(({ mesh, indices, sides }) => indices.forEach((i, k) => {
+            skinnedWorldPoint(mesh, i, rig.solePoint);
+            const side = sides[k], ground = rig.slope.legs[side].plane
+              ? rig.slope.groundAt(side, rig.solePoint.x, rig.solePoint.z) : rootY;
+            heights[side] = Math.min(heights[side], rig.solePoint.y - (ground ?? rootY));
+          }));
+        }
+        const support = heights.left <= heights.right ? 'left' : 'right';
+        const mask = rig.contact[desired];
+        let best = Infinity, fallback = Infinity, fallbackEntry = 0;
+        for (const sample of samples) {
           const score = sample.left.distanceToSquared(left) + sample.right.distanceToSquared(right);
+          if (score < fallback) { fallback = score; fallbackEntry = sample.time; }
+          if (supportEntry && heights[support] <= .006 && mask) {
+            const next = rig.phase ? rig.phase.advance(desired, sample.time, travel, dt, 'contact') : sample.time + travel / D[desired];
+            const u = ((next % duration) + duration) % duration;
+            const frame = Math.min(mask.frames, Math.round(u / duration * mask.frames));
+            const x = u / duration * samples.length, i = Math.floor(x), w = x - i;
+            const sole = samples[i % samples.length].soleMin[support] * (1 - w)
+              + samples[(i + 1) % samples.length].soleMin[support] * w;
+            if ((support === 'left' ? mask.L[frame] : mask.R[frame]) <= .5 || sole > .006) continue;
+          }
           if (score < best) { best = score; entry = sample.time; }
         }
+        // No compatible authored sample: retain the nearest-pose fallback, not a synthetic contact.
+        if (entry === null) entry = fallbackEntry;
       }
       if(canSwitch){
         to.reset().setEffectiveWeight(1).setEffectiveTimeScale(1).play();
@@ -565,8 +593,12 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         // difference is stored and decays (WorldGuidePhase GuideInertializer). No crossfade.
         if (CROSSFADE_AB) { from.crossFadeTo(to, desired.endsWith('Start') || desired === 'Land' ? .05 : desired.endsWith('Air') ? .06 : .1, false); } else {
         from.stop();
-        // contact of the destination clip at its entry frame (clip contact curves, as authored)
-        const m = rig.contact[desired], fr = m ? Math.min(m.frames, Math.max(0, Math.round(to.time / to.getClip().duration * m.frames))) : 0;
+        // The mixer advances this frame before inertialization captures its destination pose.
+        const duration = to.getClip().duration;
+        const advanced = !ENTRY_LEGACY_AB && isGait(desired)
+          ? (rig.phase ? rig.phase.advance(desired, to.time, travel, dt, 'contact') : to.time + travel / D[desired]) : to.time;
+        const contactTime = isGait(desired) ? ((advanced % duration) + duration) % duration : advanced;
+        const m = rig.contact[desired], fr = m ? Math.min(m.frames, Math.max(0, Math.round(contactTime / duration * m.frames))) : 0;
         const interaction = EXTRAS.includes(desired) || EXTRAS.includes(s.current);
         rig.inert.begin(INERT[interaction ? 'interaction' : desired.endsWith('Start') ? 'start' : desired.endsWith('Air') ? 'air' : desired === 'Land' ? 'land' : isGait(desired) ? 'gait' : 'idle'],
           { L: !!m && (m.L[fr] ?? 0) > .5, R: !!m && (m.R[fr] ?? 0) > .5 }); }
@@ -726,7 +758,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
           skinnedWorldPoint(mesh, i, rig.solePoint);
           const g = rig.slope.legs[sides[k]].plane ? rig.slope.groundAt(sides[k], rig.solePoint.x, rig.solePoint.z) : null;
           const h = g === null ? rig.solePoint.y - (rootW.y - group.current!.position.y) : rig.solePoint.y - g;
-          if (h < .1) soles.push([(sides[k] === 'left' ? 0 : 1000000) + mi * 10000 + i, +rig.solePoint.x.toFixed(4), +rig.solePoint.z.toFixed(4), +h.toFixed(4)]);
+          soles.push([(sides[k] === 'left' ? 0 : 1000000) + mi * 10000 + i, +rig.solePoint.x.toFixed(4), +rig.solePoint.z.toFixed(4), +h.toFixed(4)]);
         }));
         const res = rig.inert.residual();
         recorder.frames.push({ t: +s.time.toFixed(4), wallTime: performance.now()/1000, cut: resumed, dt: +dt.toFixed(4), anim: s.current, at: +rig.actions[s.current].time.toFixed(4), ts: +rig.actions[s.current].getEffectiveTimeScale().toFixed(3), grounded, speed: +speedMps.toFixed(3), facing: +facing.toFixed(4),
