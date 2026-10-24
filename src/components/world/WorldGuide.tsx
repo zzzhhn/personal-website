@@ -614,8 +614,12 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         if (seat) { rig.rootOff.x = tx * (1 - sitW); rig.rootOff.z = tz * (1 - sitW); }
         else if (group.current.parent) {
           const body = group.current.parent.getWorldPosition(rig.baseWorld);
-          rig.rootOff.x = st.position[0] - body.x + tx * (1 - sitW);
-          rig.rootOff.z = st.position[2] - body.z + tz * (1 - sitW);
+          // Reach the selected safe body point during the first 35% of StandUp, while the high
+          // seat still leaves both boots airborne (vertical seat weight reaches ground only at 60%).
+          // This is a finite display-root blend, with no foot target or contact constraint.
+          const k = sstep(frac('StandUp') / .35);
+          rig.rootOff.x = (st.position[0] + tx - body.x) * (1 - k) - tx * sitW;
+          rig.rootOff.z = (st.position[2] + tz - body.z) * (1 - k) - tz * sitW;
         }
       }
       // The helpers solve in world space. Apply this frame's display-root path before solving, so a
