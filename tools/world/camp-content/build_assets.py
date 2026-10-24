@@ -412,7 +412,117 @@ def build_C16():
     export('C16', root, objs)
 
 
-BUILDERS = {'C11': build_C11, 'C12': build_C12, 'C13': build_C13, 'C15': build_C15, 'C16': build_C16}
+# ------------------------------------------------------------------ C14 wok on a stacked-stone stove
+def rock(cx, cy, cz, sx, sy, sz, seed, yaw=0.0):
+    """Irregular low-poly stone: a 10-sided, 4-ring blob with deterministic jitter, flat bottom."""
+    def h(k):
+        v = math.sin(k * 12.9898 + seed * 78.233) * 43758.5453
+        return (v - math.floor(v)) * 2 - 1
+    prof = [(0.0, 0.0), (0.92, 0.0), (1.0, 0.35), (0.86, 0.72), (0.5, 0.97), (0.0, 1.0)]
+    bm = bmesh.new()
+    S = 10
+    rings = []
+    for r_i, (r, z) in enumerate(prof):
+        if r == 0:
+            rings.append([bm.verts.new((cx, cy, cz + z * sz))])
+            continue
+        ring = []
+        for i in range(S):
+            a = 2 * math.pi * i / S + yaw
+            j = 1 + 0.12 * h(r_i * 31 + i)
+            zz = z * sz * (1 + (0.06 * h(r_i * 7 + i * 3) if 0 < z < 1 else 0))
+            ring.append(bm.verts.new((cx + math.cos(a) * r * sx * j, cy + math.sin(a) * r * sy * j, cz + zz)))
+        rings.append(ring)
+    for a, b in zip(rings, rings[1:]):
+        for i in range(S):
+            k = (i + 1) % S
+            if len(a) == 1:
+                bm.faces.new((a[0], b[k], b[i]))
+            elif len(b) == 1:
+                bm.faces.new((a[i], a[k], b[0]))
+            else:
+                bm.faces.new((a[i], a[k], b[k], b[i]))
+    return bm
+
+
+def build_C14():
+    stove, wok = Part('C14_stove'), Part('C14_wok')
+    # horseshoe of stacked stones (opening to +X, toward the fire / viewer) around an ash bed
+    R = 0.33
+    k = 0
+    for layer, (zb, sz, n, off) in enumerate(((0.0, 0.17, 9, 0.0), (0.155, 0.15, 8, 0.5))):
+        for i in range(n):
+            a = math.radians(40 + (360 - 80) * (i + off) / (n - 1 + off * 0)) if n > 1 else 0
+            if layer == 1 and i == n - 1:
+                continue
+            sx = 0.13 - layer * 0.015
+            stove.add(rock(R * math.cos(a), R * math.sin(a), zb, sx, 0.11, sz, seed=k + 3, yaw=a), 'stone' if k % 3 else 'stone_top')
+            k += 1
+    stove.add(prism([(math.cos(t) * 0.24, math.sin(t) * 0.24) for t in [2 * math.pi * i / 14 for i in range(14)]], 0.0, 0.025), 'stone_dark')
+    # split logs and embers inside the ring
+    for (x0, y0, x1, y1) in ((-0.18, -0.06, 0.16, 0.05), (-0.15, 0.09, 0.14, -0.08)):
+        stove.add(strut((x0, y0, 0.06), (x1, y1, 0.07), 0.04, 0.036, 7, bevel=0.006), 'wood_dark')
+    for i, (x, y) in enumerate(((-0.05, 0.02), (0.04, -0.03), (0.0, 0.07), (0.07, 0.05))):
+        stove.add(sphere((x, y, 0.03), 0.025, 6, 4), 'canvas_edge')
+    # iron grate across the top layer
+    GZ = 0.31
+    for y in (-0.14, -0.07, 0.0, 0.07, 0.14):
+        stove.add(strut((-0.38, y, GZ), (0.38, y, GZ), 0.009, 0.009, 8), 'iron_dark')
+    for x in (-0.3, 0.3):
+        stove.add(strut((x, -0.2, GZ - 0.012), (x, 0.2, GZ - 0.012), 0.011, 0.011, 8), 'iron_dark')
+    # wok: lathed iron bowl with a real cavity and rolled rim, wooden long handle and steel helper loop
+    WZ = GZ + 0.008
+    prof = [(0.0, 0.0), (0.09, 0.006), (0.17, 0.03), (0.23, 0.075), (0.255, 0.115), (0.262, 0.125),
+            (0.25, 0.125), (0.24, 0.112), (0.215, 0.078), (0.16, 0.04), (0.085, 0.018), (0.0, 0.013)]
+    wok.add(lathe(prof, 24, center=(0, 0, WZ)), 'iron')
+    # handle along -Y (side), socket + wooden grip
+    wok.add(strut((0, -0.245, WZ + 0.1), (0, -0.33, WZ + 0.13), 0.016, 0.014, 8), 'iron')
+    wok.add(strut((0, -0.32, WZ + 0.127), (0, -0.56, WZ + 0.2), 0.02, 0.018, 10, bevel=0.004), 'wood_mid')
+    wok.add(strut((0, -0.555, WZ + 0.198), (0, -0.57, WZ + 0.203), 0.02, 0.016, 10), 'iron')
+    n = 8
+    for i in range(n):  # helper loop on +Y
+        t0, t1 = math.pi * i / n, math.pi * (i + 1) / n
+        p0 = (0.04 * math.cos(t0), 0.255 + 0.045 * math.sin(t0), WZ + 0.118)
+        p1 = (0.04 * math.cos(t1), 0.255 + 0.045 * math.sin(t1), WZ + 0.118)
+        wok.add(strut(p0, p1, 0.006, 0.006, 6), 'steel')
+    # spatula resting in the wok (feedback node shares the wok)
+    wok.add(box((0.02, -0.05, WZ + 0.03), (0.1, 0.03, WZ + 0.036), bevel=0.003), 'steel')
+    wok.add(strut((0.1, -0.01, WZ + 0.035), (0.33, 0.05, WZ + 0.16), 0.008, 0.008, 8), 'wood_mid')
+    root, objs, shift = finalize('C14', [stove, wok], pivots={'C14_wok': Vector((0, 0, WZ))},
+        part_extras={'C14_wok': {'role': 'feedback-toss', 'pivot': 'node origin at the wok bottom on the grate'}},
+        root_extras={'collision': 'hard: fixed trimesh of stove + wok', 'text': 'none'})
+    export('C14', root, objs)
+
+
+# ------------------------------------------------------------------ L01 camp exit lamp post (runtime places two)
+def build_L01():
+    post, lens = Part('L01_post'), Part('L01_lens')
+    # square timber post on a stone footing, iron cap with a cyan lens slot (the only light-tech part)
+    post.add(rock(0, 0, -0.06, 0.24, 0.24, 0.24, seed=11), 'stone')
+    post.add(box((-0.09, -0.09, 0.0), (0.09, 0.09, 2.15), bevel=0.012, top_scale=0.88), 'wood_mid')
+    for z in (0.35, 1.7):
+        post.add(box((-0.096, -0.096, z), (0.096, 0.096, z + 0.04), bevel=0.006), 'iron_dark')  # iron straps
+        for s in (-1, 1):
+            post.add(strut((s * 0.096, 0, z + 0.02), (s * 0.106, 0, z + 0.02), 0.009, 0.008, 8), 'iron')
+    # lamp head: iron box with a hood; four narrow cyan lens bars (glow strip, 'line not plane')
+    HZ = 2.15
+    post.add(box((-0.1, -0.1, HZ - 0.02), (0.1, 0.1, HZ + 0.04), bevel=0.008), 'iron_dark')
+    for sx, sy in ((1, 1), (1, -1), (-1, 1), (-1, -1)):
+        post.add(box((sx * 0.07 - 0.012, sy * 0.07 - 0.012, HZ + 0.04), (sx * 0.07 + 0.012, sy * 0.07 + 0.012, HZ + 0.36)), 'iron_dark')
+    post.add(box((-0.11, -0.11, HZ + 0.36), (0.11, 0.11, HZ + 0.4), bevel=0.008), 'iron_dark')
+    post.add(prism([(-0.13, -0.13), (0.13, -0.13), (0.13, 0.13), (-0.13, 0.13)], HZ + 0.4, HZ + 0.42), 'iron_dark')
+    cap = lathe([(0.0, 0), (0.16, 0), (0.0, 0.11)], 4, center=(0, 0, HZ + 0.42), rot=math.pi / 4)
+    post.add(cap, 'iron_dark')
+    post.add(sphere((0, 0, HZ + 0.545), 0.022, 8, 5), 'iron')
+    # inner lens column (cyan light strip), visible through the four open sides
+    lens.add(box((-0.045, -0.045, HZ + 0.06), (0.045, 0.045, HZ + 0.34), bevel=0.01), 'lens_cyan')
+    root, objs, shift = finalize('L01', [post, lens], root_extras={
+        'collision': 'hard: fixed trimesh of L01_post (gate posts at the camp exit)', 'lightCentreGLB_y': round(HZ + 0.2 + 0.06, 3),
+        'text': 'none'})
+    export('L01', root, objs)
+
+
+BUILDERS = {'C11': build_C11, 'C12': build_C12, 'C13': build_C13, 'C14': build_C14, 'C15': build_C15, 'C16': build_C16, 'L01': build_L01}
 
 if __name__ == '__main__':
     run(BUILDERS)
