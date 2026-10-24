@@ -1,6 +1,7 @@
 """Collect final G24 evidence into docs/world/quality-v2/guide/manifest.json (plain python3)."""
 import hashlib, json, os
-REPO = '/Users/bobby/WorkBuddy/personal-website/personal-website'
+# Repo root derived from this file; G24_REPO overrides. Never a hard-coded checkout (worktrees).
+REPO = os.environ.get('G24_REPO') or os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..'))
 T = f'{REPO}/tools/world/guide/out'
 D = f'{REPO}/docs/world/quality-v2/guide'
 sha = lambda p: hashlib.sha256(open(p, 'rb').read()).hexdigest()

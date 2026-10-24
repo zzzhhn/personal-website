@@ -31,7 +31,10 @@ import { AnimationMixer, Matrix4, Quaternion, Vector3, Vector4, type AnimationCl
 import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js';
 
 export type StopSide = 'left' | 'right';
-export interface StopFrameInput { animation: string; grounded: boolean; speedMps: number; facing: number; visible: boolean }
+export interface StopFrameInput { animation: string; grounded: boolean; speedMps: number; facing: number; visible: boolean;
+  /** Movement input held (WorldActors intent). When given, 'moving' exits on input, not on the residual
+   * braking speed: the gait now hands over to Idle at ~0.6 m/s, and the body is still gliding to rest. */
+  wantsMove?: boolean }
 export interface StopTuning {
   /** Feet closer than this to their Idle target are not stepped; they settle during release. */
   stepThreshold: number;
@@ -267,6 +270,9 @@ export class GuideStopStep {
   }
 
   /** Vertical change of the sole-correction anchor since the stop began. */
+  /** Root height change since the stop began, followed by locked targets on flat ground (physics settling).
+   * With a ground probe the targets are already absolute (captured world points, or Idle targets placed on
+   * the probed ground), so following the root would sink a planted foot while the body glides downhill. */
   private shift() { return this.anchor ? this.anchor.position.y - this.anchorY0 : 0; }
   /** Target actually solved this frame (stored target + anchor shift). */
   private effective(leg: Leg) { return this.eff.copy(leg.target).setY(leg.target.y + this.shift()); }
@@ -288,7 +294,11 @@ export class GuideStopStep {
     let reason: string | null = null, blend = t.exitBlend;
     if (!input.grounded) { reason = 'jump'; blend = t.jumpExitBlend; }
     else if (input.animation !== 'Idle') reason = `animation:${input.animation}`;
-    else if (input.speedMps > t.moveExit) reason = 'moving';
+    // Input exits at once. Without input the body may still move: braking (< ~0.4 s on flat ground) is
+    // absorbed by the steps; a sustained glide (the zero-friction capsule creeps ~0.3 m/s down a 15 deg
+    // ramp, WorldActors physics) hands the feet back to the Idle clip so the locked legs are not stretched.
+    else if (input.wantsMove ?? input.speedMps > t.moveExit) reason = 'moving';
+    else if (input.wantsMove !== undefined && input.speedMps > t.moveExit && this.elapsed > .45) reason = 'glide';
     else if (Math.abs(wrap(input.facing - this.facing0)) > t.turnExit) reason = 'turn';
     else if (this.elapsed > t.maxSettle) reason = 'timeout';
     if (reason) this.startBlendOut('exiting', blend, reason);
@@ -417,6 +427,17 @@ export class GuideStopStep {
 
   private advanceSteps(dt: number) {
     const t = this.tuning;
+    // A foot captured in the air (a running stop catches both feet off the ground) that is still waiting
+    // for its turn would hang at its captured height for a whole step (~0.35 s; the 70-96 mm slope float).
+    // It first lands where it is: its ankle descends to the Idle ankle height over the ground at its own
+    // x/z (exponential, tau 25 ms, <= 2.4 m/s: a normal footfall speed), then it steps to the stance in its turn.
+    for (const leg of Object.values(this.legs)) {
+      if (leg.step || !leg.queued) continue;
+      this.idleTarget(leg, _t, _q);
+      const groundAnkle = _t.y - (this.groundOffset ? this.groundOffset(_t.x, _t.z) - this.groundOffset(leg.target.x, leg.target.z) : 0);
+      const gap = leg.target.y - groundAnkle;
+      if (gap > 1e-4) leg.target.y -= Math.min(gap * (1 - Math.exp(-dt / .025)), 2.4 * dt);
+    }
     const active = Object.values(this.legs).find(l => l.step);
     if (active) {
       const s = active.step!;

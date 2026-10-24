@@ -422,3 +422,144 @@ export class PhaseGate {
   }
   clear() { this.pending = null; this.pendingSeconds = 0; }
 }
+
+/**
+ * Inertialization (Bollo, GDC 2018) with critically damped spring decay (Holden, "Spring-It-On",
+ * MIT reference code): on a clip switch the new clip plays at full weight from its first frame, and
+ * the difference between the pose that was on screen and the new clip's pose is stored per bone as an
+ * offset that decays to zero. No two poses are averaged (a crossfade averages two leg phases, which is
+ * what made planted boots slide and legs scissor). Visual only: no rigid-body, root-motion, contact
+ * curve or threshold changes (ART-LOCK v3.6 / spec 15.4). The source pose is the last pre-IK
+ * displayed pose extrapolated by one frame (dead-blending style), so the approved IK layers that run
+ * afterwards are never counted twice.
+ *
+ * Per frame: mixer.update(dt) -> inert.apply(dt) -> IK layers. On a switch: inert.begin(halflives)
+ * is called between the clip change and mixer.update (it only arms; offsets are measured in apply).
+ */
+export interface InertialHalflives { legs: number; body: number; pelvisPos: number;
+  /** Half-life for a leg whose foot is planted in the destination clip at entry: the new clip's support
+   * foot takes over almost at once (a slow decay would drag it over the ground). */
+  planted?: number }
+const LN2 = Math.log(2);
+const _qa = new Quaternion(), _qb = new Quaternion(), _qc = new Quaternion(), _va = new Vector3();
+function quatLog(q: Quaternion, out: Vector3) {
+  const w = Math.max(-1, Math.min(1, q.w)), s = Math.sqrt(Math.max(0, 1 - w * w));
+  const k = s < 1e-6 ? 2 : 2 * Math.acos(w) / s;
+  return out.set(q.x * k, q.y * k, q.z * k);
+}
+function quatExp(v: Vector3, out: Quaternion) {
+  const a = v.length();
+  if (a < 1e-9) return out.set(0, 0, 0, 1);
+  const s = Math.sin(a / 2) / a;
+  return out.set(v.x * s, v.y * s, v.z * s, Math.cos(a / 2));
+}
+/** Critically damped spring towards 0 (implicit, exact for constant dt). */
+function decay(x: number, v: number, halflife: number, dt: number): [number, number] {
+  const y = 2 * LN2 / Math.max(1e-4, halflife), j1 = v + x * y, e = Math.exp(-y * dt);
+  return [e * (x + j1 * dt), e * (v - j1 * y * dt)];
+}
+export class GuideInertializer {
+  readonly bones: Bone[];
+  private readonly legBone: boolean[];
+  private readonly legSide: ('' | 'L' | 'R')[];
+  private plantedNow = { L: false, R: false };
+  private armedPlanted = { L: false, R: false };
+  private readonly pelvis: number;
+  /** Offsets (scaled angle-axis, parent space) and their velocities, 3 per bone; pelvis position offset. */
+  private off: Float64Array; private vel: Float64Array;
+  private pOff = new Vector3(); private pVel = new Vector3();
+  /** Last two pre-IK displayed local poses. */
+  private snap1: Quaternion[]; private snap2: Quaternion[];
+  private pos1 = new Vector3(); private pos2 = new Vector3();
+  private snaps = 0;
+  /** three.js PropertyMixer only writes a bone when the clip value changed since its own last write, so
+   * a paused or held clip leaves last frame's DISPLAYED (offset + IK) value in place. pre = displayed
+   * value before mixer.update; clip = last value the mixer actually wrote. */
+  private pre: Quaternion[]; private clip: Quaternion[]; private prePos = new Vector3(); private clipPos = new Vector3();
+  private armed: InertialHalflives | null = null;
+  private hl: InertialHalflives = { legs: .07, body: .1, pelvisPos: .08 };
+  /** Diagnostics: largest offset angle (rad) / pelvis offset (m) at the last switch, and now. */
+  lastJump = { angle: 0, pelvis: 0, bone: '' };
+  switches = 0;
+  constructor(root: Object3D) {
+    const bones: Bone[] = [];
+    root.traverse(o => { if ((o as Bone).isBone && !bones.includes(o as Bone)) bones.push(o as Bone); });
+    this.bones = bones;
+    this.legBone = bones.map(b => /^(thigh|shin|foot)/.test(b.name));
+    this.legSide = bones.map(b => /^(thigh|shin|foot)[._]?L$/.test(b.name) ? 'L' : /^(thigh|shin|foot)[._]?R$/.test(b.name) ? 'R' : '');
+    this.pelvis = bones.findIndex(b => b.name === 'pelvis');
+    this.off = new Float64Array(bones.length * 3); this.vel = new Float64Array(bones.length * 3);
+    this.snap1 = bones.map(() => new Quaternion()); this.snap2 = bones.map(() => new Quaternion());
+    this.pre = bones.map(b => b.quaternion.clone()); this.clip = bones.map(b => b.quaternion.clone());
+    if (this.pelvis >= 0) { this.prePos.copy(bones[this.pelvis].position); this.clipPos.copy(this.prePos); }
+  }
+  /** Call right BEFORE mixer.update(dt). */
+  capture() {
+    for (let i = 0; i < this.bones.length; i++) this.pre[i].copy(this.bones[i].quaternion);
+    if (this.pelvis >= 0) this.prePos.copy(this.bones[this.pelvis].position);
+  }
+  /** After mixer.update: restore the clip value on bones the mixer did not rewrite (see `pre`). */
+  private restoreClip() {
+    for (let i = 0; i < this.bones.length; i++) {
+      const q = this.bones[i].quaternion;
+      if (q.equals(this.pre[i])) q.copy(this.clip[i]); else this.clip[i].copy(q);
+    }
+    if (this.pelvis >= 0) {
+      const p = this.bones[this.pelvis].position;
+      if (p.equals(this.prePos)) p.copy(this.clipPos); else this.clipPos.copy(p);
+    }
+  }
+  /** Arm a transition: the next apply() measures source (displayed) minus destination (new clip). */
+  begin(halflives: InertialHalflives, planted = { L: false, R: false }) { this.armed = halflives; this.armedPlanted = { ...planted }; }
+  reset() { this.off.fill(0); this.vel.fill(0); this.pOff.set(0, 0, 0); this.pVel.set(0, 0, 0); this.snaps = 0; this.armed = null; }
+  /** Current largest remaining offset (rad, m). */
+  residual() {
+    let a = 0;
+    for (let i = 0; i < this.bones.length; i++) a = Math.max(a, Math.hypot(this.off[3 * i], this.off[3 * i + 1], this.off[3 * i + 2]));
+    return { angle: a, pelvis: this.pOff.length() };
+  }
+  /** Call right after mixer.update(dt): bone transforms hold the clip pose. */
+  apply(dt: number) {
+    const n = this.bones.length;
+    this.restoreClip();
+    if (this.armed && this.snaps >= 1) {
+      this.hl = this.armed; this.plantedNow = this.armedPlanted; this.switches++;
+      let worst = 0, worstBone = '';
+      for (let i = 0; i < n; i++) {
+        const b = this.bones[i];
+        // source = snap1 advanced by its last one-frame change (snap1 * snap2^-1), when known
+        const src = _qa.copy(this.snap1[i]);
+        if (this.snaps >= 2) { _qb.copy(this.snap2[i]).invert(); _qc.multiplyQuaternions(this.snap1[i], _qb); if (_qc.w < 0) _qc.set(-_qc.x, -_qc.y, -_qc.z, -_qc.w); src.premultiply(_qc); }
+        // offset (parent space): displayed = exp(off) * clip
+        _qb.copy(b.quaternion).invert(); _qc.multiplyQuaternions(src, _qb);
+        if (_qc.w < 0) _qc.set(-_qc.x, -_qc.y, -_qc.z, -_qc.w);
+        quatLog(_qc, _va);
+        this.off[3 * i] = _va.x; this.off[3 * i + 1] = _va.y; this.off[3 * i + 2] = _va.z;
+        this.vel[3 * i] = this.vel[3 * i + 1] = this.vel[3 * i + 2] = 0;
+        const ang = _va.length(); if (ang > worst) { worst = ang; worstBone = b.name; }
+      }
+      if (this.pelvis >= 0) {
+        const p = this.bones[this.pelvis].position;
+        const src = _va.copy(this.pos1); if (this.snaps >= 2) src.add(this.pos1).sub(this.pos2);
+        this.pOff.copy(src).sub(p); this.pVel.set(0, 0, 0);
+      }
+      this.lastJump = { angle: worst, pelvis: this.pOff.length(), bone: worstBone };
+    }
+    this.armed = null;
+    for (let i = 0; i < n; i++) {
+      const side = this.legSide[i];
+      const h = side && this.plantedNow[side] && this.hl.planted !== undefined ? this.hl.planted : this.legBone[i] ? this.hl.legs : this.hl.body;
+      for (let k = 0; k < 3; k++) { const j = 3 * i + k; [this.off[j], this.vel[j]] = decay(this.off[j], this.vel[j], h, dt); }
+      _va.set(this.off[3 * i], this.off[3 * i + 1], this.off[3 * i + 2]);
+      if (_va.lengthSq() > 1e-12) this.bones[i].quaternion.premultiply(quatExp(_va, _qa));
+    }
+    if (this.pelvis >= 0) {
+      for (const ax of ['x', 'y', 'z'] as const) { const [x, v] = decay(this.pOff[ax], this.pVel[ax], this.hl.pelvisPos, dt); this.pOff[ax] = x; this.pVel[ax] = v; }
+      this.bones[this.pelvis].position.add(this.pOff);
+    }
+    // snapshot of the displayed pre-IK pose
+    for (let i = 0; i < n; i++) { this.snap2[i].copy(this.snap1[i]); this.snap1[i].copy(this.bones[i].quaternion); }
+    if (this.pelvis >= 0) { this.pos2.copy(this.pos1); this.pos1.copy(this.bones[this.pelvis].position); }
+    this.snaps = Math.min(2, this.snaps + 1);
+  }
+}

@@ -9,10 +9,12 @@ they are NOT Mixamo and not an animator-facing control rig.
 import bpy, bmesh, json, math, os, sys, hashlib
 from mathutils import Vector, Matrix, Quaternion
 
-REPO = '/Users/bobby/WorkBuddy/personal-website/personal-website'
+# Repo root derived from this file (tools/world/guide/build_guide.py), so a worktree build never writes into
+# another checkout. G24_REPO overrides it explicitly.
+REPO = os.environ.get('G24_REPO') or os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..'))
 TOOLS = f'{REPO}/tools/world/guide'
 PUBLIC = f'{REPO}/public/assets/world/guide'
-DOCS = f'{REPO}/docs/world/quality-v2/guide'
+DOCS = f'{REPO}/docs/world/character'
 USE_MOCAP = os.environ.get('G24_MOCAP', '1') != '0'   # v3: Walk/Run/Sprint retargeted from CMU mocap
 FPS = 60  # r2: 60 keys/s; at 30 the fast Run foot dipped 1 cm below ground between keys (linear/slerp)
 RIGHT = -1.0  # Blender -Y is the character's right (glTF +Z). Bag + cyan dot go here (text lock).

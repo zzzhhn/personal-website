@@ -2,7 +2,7 @@ import { PointLight, Raycaster, Vector2, Vector3, type Camera, type Frustum, typ
 import { applyFirePass, shadowBiasQa } from './WorldShadows';
 import type { SunLight } from 'three/examples/jsm/lights/SunLight.js';
 import { CAMP_CENTER } from './layout';
-import { SHADOW_BUDGET, type ShadowTier } from './WorldQuality';
+import { SHADOW_BUDGET, createBudgetProbe, type ShadowTier } from './WorldQuality';
 import { useWorldStore } from './store';
 import { occlusionQa } from './WorldOcclusion';
 
@@ -95,6 +95,8 @@ export function worldLightsFrame(scene: Object3D, camera: Camera, tier: ShadowTi
     near_m: fire.shadow.camera.near, far_m: fire.distance, bias: fire.shadow.bias, normalBias: fire.shadow.normalBias, intensity: fire.intensity, renderedThisFrame: render });
   const debug = (window as unknown as { __worldDebug?: Record<string, unknown> }).__worldDebug;
   if (debug) {
+    // Budget probe (tools/world/playtest/budget-peak.mjs): per-pass / per-zone draws of one real frame.
+    debug.budget ??= createBudgetProbe(scene, () => qa.renderer, () => (qa.sun?.shadow as unknown as { _cameras?: unknown[] })?._cameras ?? []);
     debug.fireShadowInfo ??= () => ({ ...info, light: useWorldStore.getState().light, position: fire?.getWorldPosition(new Vector3()).toArray() ?? null });
     // QA-only A/B switches for evidence (never reachable on the normal entry).
     debug.shadowQa ??= {
