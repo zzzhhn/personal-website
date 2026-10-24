@@ -9,7 +9,7 @@ import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag.ts';
 import { useWorldStore, type NearbyInteract } from './store';
 import { nearestInteractable, type Interactable } from './WorldInteract';
 import type { Vec3, VehicleId } from './types';
-import WorldGuide, { worldGuideDebug } from './WorldGuide';
+import WorldGuide, { VEHICLE_TRANSITION_S, worldGuideDebug } from './WorldGuide';
 import WorldVehicleVisual from './WorldVehicleVisual';
 import { WorldOcclusion } from './WorldOcclusion';
 import { CAMERA_DEFAULT_PITCH, CAMERA_DEFAULT_YAW, CAMERA_MAX_DISTANCE, CAMERA_MIN_DISTANCE, CAMERA_PITCH_LIMITS, CAMERA_PRESETS, PHYSICS_STEP, PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS, RECOVERY_SECONDS, advanceTimer, angleDelta, cameraRelative, configureRaycastVehicle, heading, isUpsideDown, orbitDirection, radialDeadzone, rampAxis, rotateVector, wheelGeometry, yawRotation } from './actor-physics';
@@ -176,7 +176,10 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
 
 /** Read the current body state at mixer time; React batching must not delay gait
  * acceleration, braking, or contact transitions by several rendered frames. */
-function GuideVisual({ body, grounded, yaw, targetSpeed, intent, jumpSeq, visible }: { body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; targetSpeed: RefObject<number>; intent: RefObject<'idle'|'walk'|'run'>; jumpSeq: RefObject<number>; visible: boolean }) {
+/** Guide-only vehicle transition (character session): set by enter()/exit(), read by the guide. 'start' is
+ * performance.now() seconds; 'door' is the car's door anchor at that moment (car body + side offset). */
+type GuideVehicleTransition = { phase: 'enter'|'exit'; start: number; door: [number,number,number] } | null;
+function GuideVisual({ body, grounded, yaw, targetSpeed, intent, jumpSeq, visible, transition }: { body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; targetSpeed: RefObject<number>; intent: RefObject<'idle'|'walk'|'run'>; jumpSeq: RefObject<number>; visible: boolean; transition: RefObject<GuideVehicleTransition> }) {
   const {world,rapier}=useRapier();
   const probeGround=(x:number,z:number,fromY:number)=>{
     const hit=world.castRayAndGetNormal(new rapier.Ray({x,y:fromY,z},{x:0,y:-1,z:0}),3,true,
@@ -186,7 +189,15 @@ function GuideVisual({ body, grounded, yaw, targetSpeed, intent, jumpSeq, visibl
   const readMotion = () => {
     const v = body.current?.linvel();
     return { speedMps: v ? Math.hypot(v.x, v.z) : 0, grounded: grounded.current, facing: yaw.current, targetSpeedMps:targetSpeed.current,
-      intent:intent.current,verticalSpeedMps:v?.y??0,jumpSeq:jumpSeq.current,probeGround };
+      intent:intent.current,verticalSpeedMps:v?.y??0,jumpSeq:jumpSeq.current,probeGround,...guideStates() };
+  };
+  // Seat (store.seat) and vehicle step-in/out timing for the guide's sit / enter / exit clips. Driving hides
+  // the guide only after the enter transition; during exit it fades in from the door.
+  const guideStates=()=>{
+    const st=useWorldStore.getState(),tr=transition.current;
+    let vehicle:null|{phase:'enter'|'exit';t:number;door:[number,number,number]}=null;
+    if(tr){const t=(performance.now()/1000-tr.start)/VEHICLE_TRANSITION_S;if(t<1)vehicle={phase:tr.phase,t:Math.max(0,t),door:tr.door};else transition.current=null;}
+    return {seat:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:!!st.activeVehicle&&!vehicle};
   };
   return <WorldGuide speedMps={0} grounded facing={0} visible={visible} readMotion={readMotion} />;
 }
@@ -209,6 +220,7 @@ export default function WorldActors() {
   const grounded = useRef(false);
   const moveIntent=useRef<'idle'|'walk'|'run'>('idle');
   const jumpSeq=useRef(0);
+  const guideTransition=useRef<GuideVehicleTransition>(null);
   const physicsSteps = useRef(0);
   const wetPlayer = useRef(0);
   const lastRecover = useRef(useWorldStore.getState().recoverRequest);
@@ -245,6 +257,13 @@ export default function WorldActors() {
   function enter(id: VehicleId) {
     const car = cars.current.get(id);
     if (!car || !player.current || useWorldStore.getState().activeVehicle) return false;
+    {
+      // guide step-in: door anchor = the car side nearer the player, 0.6 m out from the body centre line
+      const c=car.body.translation(),r=car.body.rotation(),p=player.current.translation();
+      const side=rotateVector([0,0,car.spec.size[2]/2+.25],r),toP=[p.x-c.x,p.z-c.z];
+      const sg=side[0]*toP[0]+side[2]*toP[1]>=0?1:-1;
+      guideTransition.current={phase:'enter',start:performance.now()/1000,door:[c.x+sg*side[0],p.y,c.z+sg*side[2]]};
+    }
     clearInput(); player.current.setEnabled(false);
     useWorldStore.setState({activeVehicle:id,nearbyVehicle:null,canRecover:false});
     return true;
@@ -270,6 +289,9 @@ export default function WorldActors() {
       world.intersectionsWithShape(candidate,{x:0,y:0,z:0,w:1},new rapier.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),
         ()=>{blocked=true;return false;},undefined,undefined,undefined,player.current,collider=>!collider.isSensor());
       if (blocked) continue;
+      // guide step-out starts at the door edge (car centre + side offset toward the exit spot) and walks to the spot
+      {const toC=[center.x-candidate.x,center.z-candidate.z],d=Math.hypot(toC[0],toC[1])||1,k=Math.max(0,d-car.spec.size[2]/2-.25)/d;
+        guideTransition.current={phase:'exit',start:performance.now()/1000,door:[candidate.x+toC[0]*k,candidate.y-PLAYER_CENTER_HEIGHT,candidate.z+toC[1]*k]};}
       resetBody(player.current,asTuple(candidate)); player.current.setEnabled(true);
       clearInput(); wetPlayer.current=0;
       useWorldStore.setState({activeVehicle:null,canRecover:false,speed:0}); return true;
@@ -814,7 +836,7 @@ export default function WorldActors() {
           Horizontal impulse control handles braking; 10 cm soft CCD predicts landing contact. */}
       <CapsuleCollider name="player-capsule" args={[PLAYER_HALF_HEIGHT,PLAYER_RADIUS]} mass={72} friction={0} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={0}/>
       <group position={[0,-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),0]}>
-        <GuideVisual body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} intent={moveIntent} jumpSeq={jumpSeq} visible={!activeVehicle && !firstPerson} />
+        <GuideVisual body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} intent={moveIntent} jumpSeq={jumpSeq} visible={!firstPerson} transition={guideTransition} />
       </group>
     </RigidBody>
   </>;

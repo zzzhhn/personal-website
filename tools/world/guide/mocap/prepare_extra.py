@@ -65,8 +65,19 @@ if __name__ == '__main__':
         for k in SEGS:
             D['pos'][k] = D['pos'][k] @ Hz.T; D['rot'][k] = np.einsum('ij,njk->nik', Hz, D['rot'][k])
         D['hipmid'] = D['hipmid'] @ Hz.T
+        # Yaw stripped per frame (about the vertical through the hip midpoint): the clip keeps the stepping, leg
+        # and torso motion in a heading-fixed frame; the measured yaw curve is exported so the runtime turns the
+        # body by the player's actual turn angle along the same timing (the source turns 89-99 deg).
+        lat = D['pos']['lhipjoint'] - D['pos']['rhipjoint']; yw = np.unwrap(np.arctan2(-lat[:, 0], lat[:, 1]))
+        yw = np.convolve(np.pad(yw, 6, mode='edge'), np.ones(13) / 13, mode='valid')
+        for i in range(D['n']):
+            c, s_ = np.cos(-(yw[i] - yw[a])), np.sin(-(yw[i] - yw[a])); Ri = np.array([[c, -s_, 0], [s_, c, 0], [0, 0, 1.0]])
+            m = D['hipmid'][i] * np.array([1, 1, 0])
+            for k in SEGS:
+                D['pos'][k][i] = (D['pos'][k][i] - m) @ Ri.T + m; D['rot'][k][i] = Ri @ D['rot'][k][i]
         ev = dict(turn0=ta, turn1=tb)
         R['oneshots'][name] = pack(D, a, b, ev, cmu_rest(os.path.join(C2, '69.asf')))
+        R['oneshots'][name]['yaw'] = np.round(yw[a:b] - yw[a], 5).tolist()
         R['oneshots'][name]['yaw_deg'] = float(np.degrees(yaw[b - 1] - yaw[a]))
         print(name, amc, 'frames', a, b, 'yaw', round(np.degrees(yaw[b - 1] - yaw[a]), 1), 'dur', round((b - a) / 120, 3))
     # ---- idle look-around: 100STYLE Neutral_ID 9.6-12.6 s (measured head yaw -67 -> -82 -> -68 deg vs pelvis
