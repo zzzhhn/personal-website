@@ -1,0 +1,1100 @@
+{
+  "started": "2026-10-24T13:54:10.680Z",
+  "checks": {
+    "walkThrough": true,
+    "eOpensMenu": true,
+    "staysInWorld": true,
+    "repeatedEDoesNotClose": true,
+    "escapeCloses": true,
+    "cardWins": true,
+    "seatWins": true,
+    "noCollider": true
+  },
+  "ordinaryCanvas": {
+    "cssSize": [
+      1920,
+      1080
+    ],
+    "canvasAttr": [
+      1920,
+      1080
+    ],
+    "drawingBuffer": [
+      1920,
+      1080
+    ],
+    "viewport": [
+      0,
+      0,
+      1920,
+      1080
+    ],
+    "devicePixelRatio": 1,
+    "effectiveRenderScale": 1,
+    "windowInner": [
+      1920,
+      1080
+    ],
+    "antialias": true,
+    "preserveDrawingBuffer": false,
+    "maxSamples": 8,
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)"
+  },
+  "entry": {
+    "position": [
+      -33.5,
+      4.8,
+      34
+    ],
+    "highTriangles": 4392,
+    "lowTriangles": 360,
+    "materials": 3,
+    "nearVisible": true,
+    "farVisible": false,
+    "colliderCount": 0,
+    "shadowCasters": 2
+  },
+  "crossing": {
+    "legs": [
+      {
+        "target": [
+          -30.8,
+          34
+        ],
+        "reached": true,
+        "recoveries": 0,
+        "blockedAt": null,
+        "start": [
+          -36.20000076293945,
+          5.619847297668457,
+          34.00033950805664
+        ],
+        "end": [
+          -30.939983367919922,
+          5.623922824859619,
+          33.849613189697266
+        ],
+        "seconds": 1.68,
+        "minDist": 0.205
+      }
+    ],
+    "trace": [
+      {
+        "t": 0.29,
+        "p": [
+          -36.2,
+          5.62,
+          34
+        ],
+        "g": true,
+        "dist": 5.4,
+        "keys": [],
+        "contacts": [
+          {
+            "self": "player",
+            "selfPart": "player-capsule",
+            "other": {
+              "colliderHandle": 0,
+              "name": "island-terrain-surface-top",
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              -0.00003747241498786025,
+              0.9999964833259583,
+              0.002642644802108407
+            ],
+            "distance": -0.00011718055611709133,
+            "points": [
+              [
+                -36.19998550415039,
+                4.800136089324951,
+                33.999393463134766
+              ],
+              [
+                -36.199989318847656,
+                4.800136089324951,
+                33.999393463134766
+              ],
+              [
+                -36.199989318847656,
+                4.799941539764404,
+                33.999393463134766
+              ]
+            ]
+          },
+          {
+            "self": "player",
+            "selfPart": "player-capsule",
+            "other": {
+              "colliderHandle": 0,
+              "name": "island-terrain-surface-top",
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              0,
+              1,
+              -6.848053235586349e-10
+            ],
+            "distance": -0.00011873245239257812,
+            "points": [
+              [
+                -36.20000076293945,
+                4.799941062927246,
+                34.00029373168945
+              ],
+              [
+                -36.20000457763672,
+                4.799941062927246,
+                34.00029373168945
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "t": 0.4,
+        "p": [
+          -35.988,
+          5.623,
+          34.03
+        ],
+        "g": true,
+        "dist": 5.188,
+        "keys": [
+          "KeyS",
+          "KeyD"
+        ],
+        "contacts": [
+          {
+            "self": "player",
+            "selfPart": "player-capsule",
+            "other": {
+              "colliderHandle": 0,
+              "name": "island-terrain-surface-top",
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              -0.0009462568559683859,
+              0.9977710247039795,
+              0.06672389805316925
+            ],
+            "distance": 0.0017518401145935059,
+            "points": [
+              [
+                -36.031639099121094,
+                4.80087423324585,
+                34.00159454345703
+              ],
+              [
+                -36.031639099121094,
+                4.80087423324585,
+                34.00159454345703
+              ]
+            ]
+          },
+          {
+            "self": "player",
+            "selfPart": "player-capsule",
+            "other": {
+              "colliderHandle": 0,
+              "name": "island-terrain-surface-top",
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              -1.6387385670668664e-8,
+              1,
+              5.974567507394113e-9
+            ],
+            "distance": 0.0009895861148834229,
+            "points": [
+              [
+                -36.031959533691406,
+                4.800495147705078,
+                34.02434158325195
+              ],
+              [
+                -36.031959533691406,
+                4.800495147705078,
+                34.02434158325195
+              ]
+            ]
+          },
+          {
+            "self": "player",
+            "selfPart": "player-capsule",
+            "other": {
+              "colliderHandle": 0,
+              "name": "island-terrain-surface-top",
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              -0.0321408286690712,
+              0.9987947940826416,
+              -0.03709397092461586
+            ],
+            "distance": 0.0014016032218933105,
+            "points": [
+              [
+                -36.02101135253906,
+                4.800719261169434,
+                34.03697967529297
+              ],
+              [
+                -36.02101135253906,
+                4.800719261169434,
+                34.03697967529297
+              ],
+              [
+                -36.0210075378418,
+                4.8007001876831055,
+                34.03697967529297
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "t": 0.5,
+        "p": [
+          -35.682,
+          5.62,
+          34.072
+        ],
+        "g": true,
+        "dist": 4.883,
+        "keys": [
+          "KeyS",
+          "KeyD"
+        ],
+        "contacts": [
+          {
+            "self": "player",
+            "selfPart": "player-capsule",
+            "other": {
+              "colliderHandle": 0,
+              "name": "island-terrain-surface-top",
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              -0.00975553784519434,
+              0.9984285235404968,
+              0.055184051394462585
+            ],
+            "distance": 0.0003815293312072754,
+            "points": [
+              [
+                -35.733272552490234,
+                4.800192832946777,
+                34.046043395996094
+              ],
+              [
+                -35.733272552490234,
+                4.800192832946777,
+                34.046043395996094
+              ],
+              [
+                -35.73326873779297,
+                4.8001909255981445,
+                34.046043395996094
+              ]
+            ]
+          },
+          {
+            "self": "player",
+            "selfPart": "player-capsule",
+            "other": {
+              "colliderHandle": 0,
+              "name": "island-terrain-surface-top",
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              3.939354442650256e-8,
+              1,
+              0
+            ],
+            "distance": -0.0001538693904876709,
+            "points": [
+              [
+                -35.73659133911133,
+                4.799923419952393,
+                34.064815521240234
+              ],
+              [
+                -35.73659133911133,
+                4.799923896789551,
+                34.0648193359375
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "t": 0.6,
+        "p": [
+          -35.408,
+          5.639,
+          34.112
+        ],
+        "g": true,
+        "dist": 4.609,
+        "keys": [
+          "KeyS",
+          "KeyD"
+        ],
+        "contacts": []
+      },
+      {
+        "t": 0.69,
+        "p": [
+          -35.067,
+          5.627,
+          34.16
+        ],
+        "g": true,
+        "dist": 4.27,
+        "keys": [
+          "KeyS",
+          "KeyD"
+        ],
+        "contacts": []
+      },
+      {
+        "t": 0.79,
+        "p": [
+          -34.723,
+          5.62,
+          34.21
+        ],
+        "g": true,
+        "dist": 3.929,
+        "keys": [
+          "KeyS",
+          "KeyD"
+        ],
+        "contacts": [
+          {
+            "self": "player",
+            "selfPart": "player-capsule",
+            "other": {
+              "colliderHandle": 0,
+              "name": "island-terrain-surface-top",
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              -6.985288791838684e-8,
+              1,
+              4.382926022117317e-8
+            ],
+            "distance": -0.000017970800399780273,
+            "points": [
+              [
+                -34.78070068359375,
+                4.799991130828857,
+                34.201866149902344
+              ],
+              [
+                -34.78070068359375,
+                4.799991130828857,
+                34.201866149902344
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "t": 0.88,
+        "p": [
+          -34.44,
+          5.643,
+          34.253
+        ],
+        "g": true,
+        "dist": 3.648,
+        "keys": [
+          "KeyS",
+          "KeyD"
+        ],
+        "contacts": []
+      },
+      {
+        "t": 0.97,
+        "p": [
+          -34.097,
+          5.62,
+          34.303
+        ],
+        "g": true,
+        "dist": 3.311,
+        "keys": [
+          "KeyS",
+          "KeyD"
+        ],
+        "contacts": [
+          {
+            "self": "player",
+            "selfPart": "player-capsule",
+            "other": {
+              "colliderHandle": 0,
+              "name": "island-terrain-surface-top",
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              0,
+              1,
+              -2.3886469691092316e-8
+            ],
+            "distance": 0.010905414819717407,
+            "points": [
+              [
+                -34.15510940551758,
+                4.805453300476074,
+                34.294437408447266
+              ],
+              [
+                -34.15510940551758,
+                4.805452823638916,
+                34.294437408447266
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "t": 1.07,
+        "p": [
+          -33.757,
+          5.622,
+          34.354
+        ],
+        "g": true,
+        "dist": 2.978,
+        "keys": [
+          "KeyS",
+          "KeyD"
+        ],
+        "contacts": [
+          {
+            "self": "player",
+            "selfPart": "player-capsule",
+            "other": {
+              "colliderHandle": 0,
+              "name": "island-terrain-surface-top",
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              -0.07544530183076859,
+              0.9947089552879333,
+              0.0697283074259758
+            ],
+            "distance": 0.009756505489349365,
+            "points": [
+              [
+                -33.788265228271484,
+                4.80486536026001,
+                34.321800231933594
+              ],
+              [
+                -33.78826904296875,
+                4.80486536026001,
+                34.321800231933594
+              ],
+              [
+                -33.78826904296875,
+                4.804852485656738,
+                34.321800231933594
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "t": 1.17,
+        "p": [
+          -33.418,
+          5.644,
+          34.405
+        ],
+        "g": true,
+        "dist": 2.649,
+        "keys": [
+          "KeyS",
+          "KeyD"
+        ],
+        "contacts": []
+      },
+      {
+        "t": 1.27,
+        "p": [
+          -33.074,
+          5.621,
+          34.455
+        ],
+        "g": true,
+        "dist": 2.319,
+        "keys": [
+          "KeyS",
+          "KeyD"
+        ],
+        "contacts": [
+          {
+            "self": "player",
+            "selfPart": "player-capsule",
+            "other": {
+              "colliderHandle": 0,
+              "name": "island-terrain-surface-top",
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              -4.3840206132017556e-8,
+              1,
+              1.0960051533004389e-8
+            ],
+            "distance": -0.00010284781455993652,
+            "points": [
+              [
+                -33.1312255859375,
+                4.799948692321777,
+                34.44627380371094
+              ],
+              [
+                -33.1312255859375,
+                4.799948692321777,
+                34.44627380371094
+              ]
+            ]
+          },
+          {
+            "self": "player",
+            "selfPart": "player-capsule",
+            "other": {
+              "colliderHandle": 0,
+              "name": "island-terrain-surface-top",
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              -0.3063138723373413,
+              0.9510518908500671,
+              -0.04089115187525749
+            ],
+            "distance": 0.01739087700843811,
+            "points": [
+              [
+                -33.024417877197266,
+                4.808270454406738,
+                34.460533142089844
+              ],
+              [
+                -33.0244140625,
+                4.808270454406738,
+                34.460533142089844
+              ],
+              [
+                -33.0244140625,
+                4.80826997756958,
+                34.460533142089844
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "t": 1.36,
+        "p": [
+          -32.79,
+          5.629,
+          34.495
+        ],
+        "g": true,
+        "dist": 2.051,
+        "keys": [
+          "KeyS",
+          "KeyD"
+        ],
+        "contacts": []
+      },
+      {
+        "t": 1.46,
+        "p": [
+          -32.446,
+          5.627,
+          34.547
+        ],
+        "g": true,
+        "dist": 1.735,
+        "keys": [
+          "KeyS",
+          "KeyD"
+        ],
+        "contacts": []
+      },
+      {
+        "t": 1.56,
+        "p": [
+          -32.108,
+          5.62,
+          34.529
+        ],
+        "g": true,
+        "dist": 1.41,
+        "keys": [
+          "KeyD"
+        ],
+        "contacts": [
+          {
+            "self": "player",
+            "selfPart": "player-capsule",
+            "other": {
+              "colliderHandle": 0,
+              "name": "island-terrain-surface-top",
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              2.261367093581157e-8,
+              1,
+              0
+            ],
+            "distance": -0.00023159384727478027,
+            "points": [
+              [
+                -32.16124725341797,
+                4.79988431930542,
+                34.54340362548828
+              ],
+              [
+                -32.16124725341797,
+                4.79988431930542,
+                34.54340362548828
+              ]
+            ]
+          },
+          {
+            "self": "player",
+            "selfPart": "player-capsule",
+            "other": {
+              "colliderHandle": 0,
+              "name": "island-terrain-surface-top",
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              -0.3132859170436859,
+              0.9496473073959351,
+              0.004690621513873339
+            ],
+            "distance": 0.017783373594284058,
+            "points": [
+              [
+                -32.051944732666016,
+                4.808444023132324,
+                34.54176712036133
+              ],
+              [
+                -32.051944732666016,
+                4.808444023132324,
+                34.54176712036133
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "t": 1.66,
+        "p": [
+          -31.809,
+          5.622,
+          34.381
+        ],
+        "g": true,
+        "dist": 1.079,
+        "keys": [
+          "KeyD"
+        ],
+        "contacts": []
+      },
+      {
+        "t": 1.75,
+        "p": [
+          -31.529,
+          5.633,
+          34.194
+        ],
+        "g": true,
+        "dist": 0.754,
+        "keys": [
+          "KeyD"
+        ],
+        "contacts": []
+      },
+      {
+        "t": 1.85,
+        "p": [
+          -31.246,
+          5.622,
+          33.989
+        ],
+        "g": true,
+        "dist": 0.446,
+        "keys": [
+          "KeyD"
+        ],
+        "contacts": [
+          {
+            "self": "player",
+            "selfPart": "player-capsule",
+            "other": {
+              "colliderHandle": 0,
+              "name": "island-terrain-surface-top",
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              -0.0018759670201689005,
+              0.9939310550689697,
+              0.10998944193124771
+            ],
+            "distance": 0.0018271803855895996,
+            "points": [
+              [
+                -31.292631149291992,
+                4.800908088684082,
+                33.98601531982422
+              ],
+              [
+                -31.292631149291992,
+                4.800908088684082,
+                33.98601531982422
+              ]
+            ]
+          },
+          {
+            "self": "player",
+            "selfPart": "player-capsule",
+            "other": {
+              "colliderHandle": 0,
+              "name": "island-terrain-surface-top",
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              -3.289413541551767e-8,
+              1,
+              0
+            ],
+            "distance": -0.0002473294734954834,
+            "points": [
+              [
+                -31.293270111083984,
+                4.7998762130737305,
+                34.02350997924805
+              ],
+              [
+                -31.293270111083984,
+                4.7998762130737305,
+                34.02350997924805
+              ]
+            ]
+          }
+        ]
+      },
+      {
+        "t": 1.96,
+        "p": [
+          -30.94,
+          5.624,
+          33.85
+        ],
+        "g": true,
+        "dist": 0.205,
+        "keys": [
+          "KeyD",
+          "KeyS"
+        ],
+        "contacts": [
+          {
+            "self": "player",
+            "selfPart": "player-capsule",
+            "other": {
+              "colliderHandle": 0,
+              "name": "island-terrain-surface-top",
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              -0.18274052441120148,
+              0.9831252694129944,
+              0.008405421860516071
+            ],
+            "distance": 0.010192692279815674,
+            "points": [
+              [
+                -30.930240631103516,
+                4.8050127029418945,
+                33.858463287353516
+              ],
+              [
+                -30.930240631103516,
+                4.8050127029418945,
+                33.858463287353516
+              ],
+              [
+                -30.930240631103516,
+                4.8050103187561035,
+                33.858463287353516
+              ]
+            ]
+          }
+        ]
+      }
+    ],
+    "realKeyboardOnly": true
+  },
+  "prompt": {
+    "id": "G28-menu",
+    "label": {
+      "en": "Open map & settings",
+      "zh": "打开地图与设置"
+    },
+    "kind": "portal"
+  },
+  "visible": [
+    {
+      "calls": 172,
+      "triangles": 461164,
+      "geometries": 221,
+      "textures": 53,
+      "camera": [
+        -28.331849647418682,
+        14.766640261287037,
+        40.78822509938995
+      ]
+    },
+    {
+      "calls": 172,
+      "triangles": 461164,
+      "geometries": 221,
+      "textures": 53,
+      "camera": [
+        -28.331849647418682,
+        14.766640261287037,
+        40.78822509938995
+      ]
+    },
+    {
+      "calls": 172,
+      "triangles": 461164,
+      "geometries": 221,
+      "textures": 53,
+      "camera": [
+        -28.331849647418682,
+        14.766640261287037,
+        40.78822509938995
+      ]
+    },
+    {
+      "calls": 172,
+      "triangles": 461164,
+      "geometries": 221,
+      "textures": 53,
+      "camera": [
+        -28.331849647418682,
+        14.766640261287037,
+        40.78822509938995
+      ]
+    },
+    {
+      "calls": 168,
+      "triangles": 461468,
+      "geometries": 221,
+      "textures": 53,
+      "camera": [
+        -28.331849647418682,
+        14.766640261287037,
+        40.78822509938995
+      ]
+    },
+    {
+      "calls": 168,
+      "triangles": 461468,
+      "geometries": 221,
+      "textures": 53,
+      "camera": [
+        -28.331849647418682,
+        14.766640261287037,
+        40.78822509938995
+      ]
+    },
+    {
+      "calls": 168,
+      "triangles": 461468,
+      "geometries": 221,
+      "textures": 53,
+      "camera": [
+        -28.331849647418682,
+        14.766640261287037,
+        40.78822509938995
+      ]
+    },
+    {
+      "calls": 168,
+      "triangles": 461468,
+      "geometries": 221,
+      "textures": 53,
+      "camera": [
+        -28.331849647418682,
+        14.766640261287037,
+        40.78822509938995
+      ]
+    }
+  ],
+  "hidden": [
+    {
+      "calls": 165,
+      "triangles": 457076,
+      "geometries": 221,
+      "textures": 53,
+      "camera": [
+        -28.331849647418682,
+        14.766640261287037,
+        40.78822509938995
+      ]
+    },
+    {
+      "calls": 165,
+      "triangles": 457076,
+      "geometries": 221,
+      "textures": 53,
+      "camera": [
+        -28.331849647418682,
+        14.766640261287037,
+        40.78822509938995
+      ]
+    },
+    {
+      "calls": 165,
+      "triangles": 457076,
+      "geometries": 221,
+      "textures": 53,
+      "camera": [
+        -28.331849647418682,
+        14.766640261287037,
+        40.78822509938995
+      ]
+    },
+    {
+      "calls": 165,
+      "triangles": 457076,
+      "geometries": 221,
+      "textures": 53,
+      "camera": [
+        -28.331849647418682,
+        14.766640261287037,
+        40.78822509938995
+      ]
+    },
+    {
+      "calls": 165,
+      "triangles": 457076,
+      "geometries": 221,
+      "textures": 53,
+      "camera": [
+        -28.331849647418682,
+        14.766640261287037,
+        40.78822509938995
+      ]
+    },
+    {
+      "calls": 165,
+      "triangles": 457076,
+      "geometries": 221,
+      "textures": 53,
+      "camera": [
+        -28.331849647418682,
+        14.766640261287037,
+        40.78822509938995
+      ]
+    },
+    {
+      "calls": 165,
+      "triangles": 457076,
+      "geometries": 221,
+      "textures": 53,
+      "camera": [
+        -28.331849647418682,
+        14.766640261287037,
+        40.78822509938995
+      ]
+    },
+    {
+      "calls": 165,
+      "triangles": 457076,
+      "geometries": 221,
+      "textures": 53,
+      "camera": [
+        -28.331849647418682,
+        14.766640261287037,
+        40.78822509938995
+      ]
+    }
+  ],
+  "delta": {
+    "calls": 3,
+    "triangles": 4392
+  },
+  "physics": [],
+  "errors": [],
+  "fixtures": [
+    {
+      "t": 0.003,
+      "to": [
+        -36.2,
+        5.85,
+        34
+      ],
+      "reason": "G28 corridor west start; this is not ordinary-spawn travel"
+    },
+    {
+      "t": 1.957,
+      "to": [
+        -34.3,
+        5.85,
+        34
+      ],
+      "reason": "G28 E interaction reach fixture"
+    }
+  ],
+  "events": [
+    {
+      "t": 2.712,
+      "press": "KeyE"
+    },
+    {
+      "t": 3.072,
+      "press": "KeyE"
+    },
+    {
+      "t": 3.074,
+      "press": "Escape"
+    },
+    {
+      "t": 3.645,
+      "press": "KeyE"
+    },
+    {
+      "t": 4.31,
+      "press": "KeyE"
+    }
+  ]
+}
