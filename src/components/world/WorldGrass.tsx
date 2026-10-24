@@ -3,11 +3,12 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { useRapier } from '@react-three/rapier';
 import {
   BufferGeometry, Color, DataTexture, DoubleSide, Float32BufferAttribute, InstancedMesh, LinearFilter, MeshStandardMaterial, Object3D,
-  Quaternion, RepeatWrapping, RGBAFormat, UnsignedByteType, Vector3, Vector4,
+  ClampToEdgeWrapping, Quaternion, RGBAFormat, UnsignedByteType, Vector3, Vector4,
 } from 'three';
 import { VEHICLES } from './layout';
 import { useWorldStore } from './store';
 import { windUniforms } from './WorldWind';
+import { GRID, meshHeight } from './WorldLandform';
 import type { VehicleId } from './types';
 
 /** quality-v4 ground grass (spec §3 ground detail, Bobby 2026-10-22 "grass bends under people and
@@ -56,20 +57,21 @@ export function ActorTracker() {
 
 /* ------------------------------------------------------------------ trample map */
 
-/** World-anchored toroidal map: 256 x 256 texels at 0.25 m (64 m period, RepeatWrapping). It is
- * only read within 30 m of the focus, so the period never aliases visible grass.
+/** Bounded world map, 0.5 m per texel over the entire terrain grid. A footprint must never wrap to
+ * another meadow 64 m away when the focus moves across the larger v4 island.
  * R = bend amount, G/B = bend direction (x, z) encoded 0..1. Decays ~4.7 s from full; the
  * eased mapping keeps blades mostly down for ~1.5 s, then they rise. */
-const TRAMPLE_RES = 256, TRAMPLE_CELL = .25, TRAMPLE_DECAY = .2;
+const TRAMPLE_CELL = .5, TRAMPLE_DECAY = .2;
+const TRAMPLE_NX = GRID.nx + 1, TRAMPLE_NZ = GRID.nz + 1;
 const MAX_DISTURBERS = 8;
 function createTrample() {
-  const data = new Uint8Array(TRAMPLE_RES * TRAMPLE_RES * 4);
+  const data = new Uint8Array(TRAMPLE_NX * TRAMPLE_NZ * 4);
   for (let i = 0; i < data.length; i += 4) { data[i + 1] = 128; data[i + 2] = 128; }
-  const texture = new DataTexture(data, TRAMPLE_RES, TRAMPLE_RES, RGBAFormat, UnsignedByteType);
-  texture.wrapS = texture.wrapT = RepeatWrapping;
+  const texture = new DataTexture(data, TRAMPLE_NX, TRAMPLE_NZ, RGBAFormat, UnsignedByteType);
+  texture.wrapS = texture.wrapT = ClampToEdgeWrapping;
   texture.magFilter = texture.minFilter = LinearFilter;
   texture.needsUpdate = true;
-  return { data, texture, amount: new Float32Array(TRAMPLE_RES * TRAMPLE_RES), active: new Set<number>() };
+  return { data, texture, amount: new Float32Array(TRAMPLE_NX * TRAMPLE_NZ), active: new Set<number>() };
 }
 
 /* ------------------------------------------------------------------ geometry + material */
@@ -88,17 +90,17 @@ export function grassTuftGeometry() {
     const m0 = [bx - tx * .7 + dx * .35, h * .55, bz - tz * .7 + dz * .35], m1 = [bx + tx * .7 + dx * .35, h * .55, bz + tz * .7 + dz * .35];
     const tip = [bx + dx, h, bz + dz];
     const tris = [p0, p1, m1, p0, m1, m0, m0, m1, tip];
-    tris.forEach(v => {
+    tris.forEach((v, i) => {
       pos.push(...v);
       const f = v[1] / h;
-      blade.push(v[1] / BLADE_H, k / 5);
+      blade.push(v[1] / BLADE_H, k / 5, [0, 1, 1, 0, 1, 0, 0, 1, .5][i]);
       col.push(.62 + .5 * f, .66 + .48 * f, .58 + .42 * f);
     });
   }
   const g = new BufferGeometry();
   g.setAttribute('position', new Float32BufferAttribute(pos, 3));
   g.setAttribute('color', new Float32BufferAttribute(col, 3));
-  g.setAttribute('aBlade', new Float32BufferAttribute(blade, 2));
+  g.setAttribute('aBlade', new Float32BufferAttribute(blade, 3));
   // Up-facing normals: blades light like the ground they grow from (no dark back faces).
   g.setAttribute('normal', new Float32BufferAttribute(Array.from({ length: pos.length / 3 }, () => [0, 1, 0]).flat(), 3));
   g.computeBoundingSphere();
@@ -111,16 +113,18 @@ function grassMaterial(uniforms: Record<string, { value: unknown }>) {
   m.name = 'ground-grass-blades';
   m.onBeforeCompile = shader => {
     Object.assign(shader.uniforms, uniforms);
-    shader.vertexShader = `attribute vec2 aBlade;
+    shader.vertexShader = `attribute vec3 aBlade;
 uniform float uWindTime; uniform float uWindStrength;
 uniform vec4 uPush[${MAX_DISTURBERS}];
 uniform sampler2D uTrample; uniform vec3 uFocus; uniform vec2 uFade;
 varying float vBend;
+varying vec2 vBladeDetail;
 ` + shader.vertexShader.replace('#include <begin_vertex>', `#include <begin_vertex>
       {
         vec3 base = instanceMatrix[3].xyz;
         float s2 = dot(instanceMatrix[0].xyz, instanceMatrix[0].xyz);
         float f = aBlade.x;
+        vBladeDetail = vec2(aBlade.z, aBlade.x);
         // Distance fade: blades shrink into the ground before they are culled (no popping).
         float fade = 1.0 - smoothstep(uFade.x, uFade.y, distance(base.xz, uFocus.xz));
         // Live disturbers: push away from each centre, strongest inside the radius.
@@ -133,7 +137,8 @@ varying float vBend;
           if (k > bend) { bend = k; dir = l > 1e-3 ? o / l : vec2(1.0, 0.0); }
         }
         // Trample memory (decays on the CPU) keeps grass down after the body leaves.
-        vec4 tr = texture2D(uTrample, base.xz / ${(TRAMPLE_RES * TRAMPLE_CELL).toFixed(1)});
+        vec2 trUv = (base.xz - vec2(${GRID.minX.toFixed(1)}, ${GRID.minZ.toFixed(1)}) + vec2(0.25)) / vec2(${(TRAMPLE_NX * TRAMPLE_CELL).toFixed(1)}, ${(TRAMPLE_NZ * TRAMPLE_CELL).toFixed(1)});
+        vec4 tr = texture2D(uTrample, trUv);
         float near = 1.0 - smoothstep(26.0, 30.0, distance(base.xz, uFocus.xz));
         float tb = tr.r * near;
         if (tb > bend) { bend = tb; dir = normalize(tr.gb * 2.0 - 1.0 + vec2(1e-4)); }
@@ -153,14 +158,18 @@ varying float vBend;
       }`);
     // Both faces use the ground-up normal (DoubleSide would flip back faces dark), and pressed
     // blades read a touch lighter/drier, so a trodden trail shows from the follow camera.
-    shader.fragmentShader = 'varying float vBend;\n' + shader.fragmentShader
+    shader.fragmentShader = 'varying float vBend;\nvarying vec2 vBladeDetail;\n' + shader.fragmentShader
       .replace('#include <normal_fragment_begin>', `#include <normal_fragment_begin>
       normal = normalize((viewMatrix * vec4(0.0, 1.0, 0.0, 0.0)).xyz);
       nonPerturbedNormal = normal;`)
       .replace('#include <color_fragment>', `#include <color_fragment>
-      diffuseColor.rgb *= mix(vec3(1.0), vec3(1.22, 1.18, 1.0), vBend);`);
+      // A subdued midrib and dark margins give each blade a readable face at close range.
+      float rib = 1.0 - smoothstep(0.025, 0.12, abs(vBladeDetail.x - 0.5));
+      float margin = smoothstep(0.3, 0.5, abs(vBladeDetail.x - 0.5));
+      diffuseColor.rgb *= 1.0 + 0.08 * rib - 0.10 * margin;
+      diffuseColor.rgb *= mix(vec3(1.0), vec3(1.16, 1.12, 1.0), vBend);`);
   };
-  m.customProgramCacheKey = () => 'ground-grass-blades-v2';
+  m.customProgramCacheKey = () => 'ground-grass-blades-v3-bounded';
   return m;
 }
 
@@ -174,6 +183,7 @@ export const GRASS_PROFILE = {
 } as const;
 /** Exposed for QA: live counts and the trample state. */
 export const grassDebug = { instances: 0, triangles: 0, disturbers: 0, trampleActive: 0, maxTrample: 0, profile: 'high' as keyof typeof GRASS_PROFILE,
+  trampleBytes: TRAMPLE_NX * TRAMPLE_NZ * 4,
   /** Trample amount 0..1 at a world point (max over a 0.5 m neighbourhood). */
   trampleAt: (x: number, z: number) => { void x; void z; return 0; } };
 
@@ -193,13 +203,14 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
   const state = useRef({ fx: 1e9, fz: 1e9, quality: '', lastTime: -1 });
   // Candidates arrive asynchronously (built over idle frames): force a refill when they do.
   useEffect(() => { state.current.fx = 1e9; }, [data]);
-  const tint = useMemo(() => ({ a: new Color('#76863A'), b: new Color('#9DAA4E'), c: new Color() }), []);
+  const tint = useMemo(() => ({ a: new Color('#697B36'), b: new Color('#939F4D'), c: new Color() }), []);
   useEffect(() => {
     grassDebug.trampleAt = (x, z) => {
-      let m = 0; const cx = Math.floor(x / TRAMPLE_CELL), cz = Math.floor(z / TRAMPLE_CELL);
-      for (let j = -2; j <= 2; j++) for (let i = -2; i <= 2; i++) {
-        const ti = (((cz + j) % TRAMPLE_RES) + TRAMPLE_RES) % TRAMPLE_RES, tj = (((cx + i) % TRAMPLE_RES) + TRAMPLE_RES) % TRAMPLE_RES;
-        m = Math.max(m, trample.amount[ti * TRAMPLE_RES + tj]);
+      let m = 0; const cx = Math.round((x - GRID.minX) / TRAMPLE_CELL), cz = Math.round((z - GRID.minZ) / TRAMPLE_CELL);
+      for (let j = -1; j <= 1; j++) for (let i = -1; i <= 1; i++) {
+        const ti = cz + j, tj = cx + i;
+        if (ti < 0 || ti >= TRAMPLE_NZ || tj < 0 || tj >= TRAMPLE_NX) continue;
+        m = Math.max(m, trample.amount[ti * TRAMPLE_NX + tj]);
       }
       return +m.toFixed(3);
     };
@@ -219,7 +230,7 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
     const dummy = new Object3D();
     pick.forEach(([, i], n) => {
       const s = .7 + data[i * 6 + 4] * .75;
-      dummy.position.set(data[i * 6], data[i * 6 + 1] - .02, data[i * 6 + 2]); dummy.rotation.set(0, data[i * 6 + 3], 0); dummy.scale.setScalar(s); dummy.updateMatrix();
+      dummy.position.set(data[i * 6], data[i * 6 + 1] - .02, data[i * 6 + 2]); dummy.rotation.set(0, data[i * 6 + 3], 0); dummy.scale.setScalar(s * (.82 + .3 * Math.abs(Math.sin(data[i * 6] * 5.7 + data[i * 6 + 2] * 3.9)))); dummy.updateMatrix();
       mesh.setMatrixAt(n, dummy.matrix); mesh.setColorAt(n, tint.c.copy(tint.a).lerp(tint.b, data[i * 6 + 4]));
     });
     mesh.count = pick.length;
@@ -230,13 +241,14 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
   };
 
   const stamp = (x: number, z: number, radius: number, strength: number) => {
-    const r = Math.ceil(radius / TRAMPLE_CELL), cx = Math.floor(x / TRAMPLE_CELL), cz = Math.floor(z / TRAMPLE_CELL);
+    const r = Math.ceil(radius / TRAMPLE_CELL), cx = Math.round((x - GRID.minX) / TRAMPLE_CELL), cz = Math.round((z - GRID.minZ) / TRAMPLE_CELL);
     for (let j = -r; j <= r; j++) for (let i = -r; i <= r; i++) {
-      const wx = (cx + i + .5) * TRAMPLE_CELL - x, wz = (cz + j + .5) * TRAMPLE_CELL - z, l = Math.hypot(wx, wz);
+      const wx = GRID.minX + (cx + i) * TRAMPLE_CELL - x, wz = GRID.minZ + (cz + j) * TRAMPLE_CELL - z, l = Math.hypot(wx, wz);
       if (l > radius) continue;
       const k = strength * Math.min(1, 1.6 * (1 - l / radius));
-      const ti = (((cz + j) % TRAMPLE_RES) + TRAMPLE_RES) % TRAMPLE_RES, tj = (((cx + i) % TRAMPLE_RES) + TRAMPLE_RES) % TRAMPLE_RES;
-      const idx = ti * TRAMPLE_RES + tj;
+      const ti = cz + j, tj = cx + i;
+      if (ti < 0 || ti >= TRAMPLE_NZ || tj < 0 || tj >= TRAMPLE_NX) continue;
+      const idx = ti * TRAMPLE_NX + tj;
       if (k <= trample.amount[idx]) continue;
       trample.amount[idx] = k;
       const o = idx * 4;
@@ -260,6 +272,11 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
     const push = uniforms.uPush.value; let n = 0;
     for (const a of actorState.actors) {
       if (Math.hypot(a.x - fx, a.z - fz) > 40) continue;
+      // Only bodies touching this ground bend its grass (no imprint below a bridge or a jump).
+      const ground = meshHeight(a.x, a.z);
+      const size = a.kind === 'vehicle' ? VEHICLE_SIZE.get(a.id as VehicleId) : null;
+      const foot = size ? a.y - (size[1] * .28 + .42 + Math.min(.5, Math.max(.34, size[1] * .28))) : a.bottom;
+      if (ground === null || Math.abs(foot - ground) > .55) continue;
       if (a.kind === 'player' && n < MAX_DISTURBERS) {
         push[n++].set(a.x, a.z, .6, 1);
       } else if (a.kind === 'vehicle') {
@@ -284,7 +301,7 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
         trample.data[idx * 4] = Math.round(Math.min(1, v * 1.25) ** .7 * 255);
       }
       grassDebug.trampleActive = trample.active.size; grassDebug.maxTrample = +max.toFixed(3);
-      // Upload only while something is bent or recovering (256 KB RGBA8).
+      // Upload only while something is bent or recovering (full-island RGBA8 map).
       if (dirty) trample.texture.needsUpdate = true;
     }
   });

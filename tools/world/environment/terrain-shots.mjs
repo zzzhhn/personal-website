@@ -24,6 +24,8 @@ const ALL = [
   { name: 'ramp-foot', at: [-1, 26], look: [-.8, .6], pitch: .5, zoom: 1 },
   { name: 'bridgehead', at: [22, -38], look: [.6, -.8], pitch: .55, zoom: 1 },
   { name: 'carpark', at: [-4, 9], look: [-.6, .8], pitch: .55, zoom: 1 },
+  { name: 'rock-strata', at: [-19, 6], look: [-.7, .7], pitch: .28, zoom: 0 },
+  { name: 'wet-sand', at: [-108, 22], look: [-.9, -.3], pitch: .38, zoom: 0 },
   { name: 'hill-joint', at: [-26, -58], look: [-.4, -1], pitch: .5, zoom: 1 },
 ];
 const pick = (process.env.SHOTS || '').split(',').filter(Boolean);
