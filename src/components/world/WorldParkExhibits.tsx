@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import { BufferAttribute, BufferGeometry, CanvasTexture, Group, Matrix4, Mesh, MeshStandardMaterial, Object3D, SRGBColorSpace, Vector3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { PartBatch, gltfTrimesh, meshPiece, meshesUnder, mergeBatch, parkNight, parkUrl, withDraco, hash, type GLTF } from './WorldParkKit';
+import { PartBatch, gltfTrimesh, meshPiece, meshesUnder, mergeBatch, parkUrl, withDraco, hash, type GLTF } from './WorldParkKit';
 import { EXHIBITS, EXHIBIT_ANCHOR, HUTS, exhibitMatrix, type HutPlacement } from './WorldParkLayout';
 import { Knockables } from './WorldParkWalk';
 import { useInteractable } from './WorldInteract';
@@ -61,6 +61,18 @@ export function placeExhibits(gltfs: Record<string, GLTF>) {
   return { pieces, placed, fixed };
 }
 
+/** Read-only QA evidence. The bot still triggers every action through real E key events. */
+const probes = new Map<string, () => unknown>();
+function useExhibitProbe(id: string, get: () => unknown) {
+  const latest = useRef(get); latest.current = get;
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('qa') !== '1') return;
+    const probe = () => latest.current(); probes.set(id, probe);
+    Object.assign(window, { __parkExhibits: () => Object.fromEntries([...probes].map(([key, read]) => [key, read()])) });
+    return () => { if (probes.get(id) === probe) probes.delete(id); };
+  }, [id]);
+}
+
 /* ------------------------------------------------------------------ canvas displays */
 
 /** A canvas-textured face replacing a GLB screen slab (UVs from its local box extents). */
@@ -100,7 +112,7 @@ function useOneShot(dur: number) {
 function useExhibitE(p: Placed, kind: 'exhibit' | 'seat', label: { en: string; zh: string }, onPress: () => void, radius = 1.6) {
   const a = EXHIBIT_ANCHOR[p.hut.id];
   const position = useMemo(() => p.hut.local(a[0], 0.9, a[1]), [p.hut, a]);
-  useInteractable({ id: `park-${p.id}-${p.hut.id}`, position, radius, label, kind, onInteract: () => { trackPortfolioEvent('world_booth_open', p.hut.slug); onPress(); } });
+  useInteractable({ id: `park-${p.id}-${p.hut.id}`, position, radius, label, kind, onInteract: () => { if (!new URLSearchParams(location.search).has('qa')) trackPortfolioEvent('world_booth_open', p.hut.slug); onPress(); } });
 }
 
 /* ------------------------------------------------------------------ P12 research desk */
@@ -110,6 +122,7 @@ function ResearchDesk({ p }: { p: Placed }) {
   const shot = useOneShot(7.5);
   const levers = useRef([1, 1, 1, 1, 1]);   // detent 0..2 (centre = 1)
   const anim = useRef({ lever: 0, from: 1, curve: [] as number[], pass: true, seed: 0 });
+  useExhibitProbe(p.id, () => ({ runs: shot.state.current.n, time: shot.state.current.t, levers: levers.current.slice(), curvePoints: anim.current.curve.length, pass: anim.current.pass }));
   const draw = (t: number) => {
     const { ctx, canvas, tex } = disp, W = canvas.width, H = canvas.height, a = anim.current;
     ctx.fillStyle = PAPER; ctx.fillRect(0, 0, W, H);
@@ -142,7 +155,7 @@ function ResearchDesk({ p }: { p: Placed }) {
     }
     tex.needsUpdate = true;
   };
-  useEffect(() => draw(-1), [lang]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => draw(shot.state.current.n ? 7.4 : -1), [lang]); // eslint-disable-line react-hooks/exhaustive-deps
   useExhibitE(p, 'exhibit', { en: 'Flip a hypothesis lever', zh: '拨一根假设拨杆' }, () => {
     if (!shot.start()) return;
     const a = anim.current, i = Math.floor(Math.random() * 5), l = levers.current[i];
@@ -175,7 +188,9 @@ function ReviewBooth({ p }: { p: Placed }) {
   const lang = useLang();
   const L = useDisplay(p.movers.display_clip0, 0.54, 0.38, 192), R = useDisplay(p.movers.display_clip1, 0.54, 0.38, 192);
   const shot = useOneShot(4.2);
+  const voted = useRef(0);
   const votes = useRef<[number, number]>([3, 3]), side = useRef(0), shown = useRef<[number, number]>([3, 3]);
+  useExhibitProbe(p.id, () => ({ runs: shot.state.current.n, time: shot.state.current.t, votes: votes.current.slice(), side: side.current }));
   const clip = (d: ReturnType<typeof useDisplay>, which: number, t: number, chosen: boolean) => {
     const { ctx, canvas: c, tex } = d, W = c.width, H = c.height;
     ctx.fillStyle = which ? '#1E2A36' : '#2A2421'; ctx.fillRect(0, 0, W, H);
@@ -186,6 +201,7 @@ function ReviewBooth({ p }: { p: Placed }) {
     ctx.fillStyle = 'rgba(0,0,0,0.35)'; ctx.fillRect(0, H - H * 0.08, W, H * 0.08);
     ctx.fillStyle = INK; ctx.fillRect(0, H - H * 0.08, W * (t >= 0 ? Math.min(1, t / 3) : 0), H * 0.03);
     ctx.font = `600 ${H * 0.1}px Geist, sans-serif`; ctx.fillText(which ? 'B' : 'A', W * 0.04, H * 0.14);
+    ctx.font = `500 ${H * 0.075}px Geist, sans-serif`; ctx.fillText(`${lang === 'zh' ? '本地票数' : 'Local votes'}: ${votes.current[which]}`, W * .04, H * .91);
     if (chosen) { ctx.strokeStyle = '#E6DCCB'; ctx.lineWidth = H * 0.04; ctx.strokeRect(H * 0.02, H * 0.02, W - H * 0.04, H - H * 0.04); }
     demoTag(ctx, lang, W * 0.55, H * 0.14, H * 0.07);
     tex.needsUpdate = true;
@@ -201,7 +217,7 @@ function ReviewBooth({ p }: { p: Placed }) {
     const t = shot.advance(dt);
     if (t >= 0) {
       clip(L, 0, t, t > 3 && side.current === 0); clip(R, 1, t, t > 3 && side.current === 1);
-      if (t > 3 && votes.current[0] + votes.current[1] === shown.current[0] + shown.current[1]) votes.current[side.current]++;
+      if (t > 3 && voted.current !== shot.state.current.n) { votes.current[side.current]++; voted.current = shot.state.current.n; }
     }
     if (btn) btn.position.y += ((t >= 0 && t < 0.25 ? -0.02 : 0) + (btn.userData.y0 ??= btn.position.y) - btn.position.y) * Math.min(1, dt * 20);
     if (sel) sel.rotation.y += ((side.current ? -1 : 1) * Math.PI / 2 - sel.rotation.y) * Math.min(1, dt * 10);
@@ -225,10 +241,11 @@ function DjTable({ p }: { p: Placed }) {
     pos.current += dir.current;
     parkAudio.setCrossfade(pos.current / 4);
   });
+  useExhibitProbe(p.id, () => ({ runs: shot.state.current.n, notch: pos.current, crossfade: parkAudio.crossfade, audioState: parkAudio.ctx?.state }));
   const fader = p.movers.crossfader, x0 = useMemo(() => fader?.position.x ?? 0, [fader]);
   useFrame((_, dt) => {
-    shot.advance(dt);
     if (!isWorldRunning()) return;
+    shot.advance(dt);
     if (fader) fader.position.x += (x0 + NOTCHES[pos.current] - fader.position.x) * Math.min(1, dt * 12);
     const [a, b] = parkAudio.started ? parkAudio.gains() : [0, 0];
     // 33 1/3 rpm scaled by each deck's gain; idle decks stand still.
@@ -255,6 +272,7 @@ function RecordWall({ p }: { p: Placed }) {
   const width = useRef(SLOT_LINKS.map(() => 1));
   const target = () => SLOT_LINKS.map(([s, t]) => 0.35 + 2.3 * continuity(FEATURES[order.current[s]], FEATURES[order.current[t]]) ** 2);
   const goal = useRef(target());
+  useExhibitProbe(p.id, () => ({ runs: shot.state.current.n, order: order.current.slice(), cordWidths: width.current.slice() }));
   useExhibitE(p, 'exhibit', { en: 'Reshuffle one record', zh: '换一张唱片的位置' }, () => {
     if (!shot.start()) return;
     const a = Math.floor(Math.random() * 9); let b = Math.floor(Math.random() * 8); if (b >= a) b++;
@@ -292,7 +310,7 @@ function CampChairs({ p, lamp }: { p: Placed; lamp?: Placed }) {
   const seatId = `park-seat-${p.hut.id}`;
   const seated = useWorldStore(s => s.seat?.id === seatId);
   const level = useRef(0);
-  // Chair A seat point (hut frame): P16 placed with yaw 90 deg, seat A at its local (0, 0.43, +0.75).
+  // Chair A is near the opening; both chairs share the hut axis so the empty chair stays in view.
   const seatPoint = useMemo(() => new Vector3(0, 0.43, 0.75).applyMatrix4(p.matrix), [p.matrix]);
   const empty = useMemo(() => new Vector3(0, 0.43, -0.75).applyMatrix4(p.matrix), [p.matrix]);
   const seatYaw = useMemo(() => { const f = new Vector3(0, 0, -1).transformDirection(p.matrix); return Math.atan2(-f.z, f.x); }, [p.matrix]);
@@ -301,7 +319,8 @@ function CampChairs({ p, lamp }: { p: Placed; lamp?: Placed }) {
   }, 1.8);
   const [shown, setShown] = useState(0);
   const since = useRef(0);
-  useEffect(() => { since.current = 0; setShown(0); }, [seated]);
+  useExhibitProbe(p.id, () => ({ seated: useWorldStore.getState().seat?.id === seatId, bubbles: shown, lantern: level.current, seat: [seatPoint.x, seatPoint.y, seatPoint.z], yaw: seatYaw }));
+  useEffect(() => { if (seated) { since.current = 0; setShown(0); } }, [seated]);
   useFrame((_, dt) => {
     if (!isWorldRunning()) return;
     if (seated) { since.current += dt; const n = Math.min(3, Math.floor((since.current - 0.6) / 1.6) + 1); if (n !== shown && n >= 0) setShown(Math.max(0, n)); }
@@ -310,25 +329,31 @@ function CampChairs({ p, lamp }: { p: Placed; lamp?: Placed }) {
     setPartEmit(lamp?.movers.lamp_flame, (0.4 + level.current * 1.8) * flick);
     setPartEmit(lamp?.movers.lamp_glass, level.current * 0.55 * flick);
   });
-  return <Bubbles lines={LINES[lang].slice(0, shown)} at={[empty.x, empty.y + 0.95, empty.z]} />;
+  return <Bubbles active={seated} lines={LINES[lang].slice(0, shown)} at={[empty.x, empty.y + 0.65, empty.z]} />;
 }
 /** Three bilingual speech bubbles above the empty chair: canvas sprites stacked upward. */
-function Bubbles({ lines, at }: { lines: string[]; at: Vec3 }) {
+function Bubbles({ lines, at, active }: { lines: string[]; at: Vec3; active: boolean }) {
+  const alpha = useRef(0);
   const group = useRef<Group>(null);
   const sprites = useMemo(() => lines.map(text => {
     const c = document.createElement('canvas'), x = c.getContext('2d')!;
-    x.font = '500 40px Geist, "PingFang SC", sans-serif';
-    const w = Math.min(900, x.measureText(text).width + 60); c.width = w; c.height = 96;
-    x.font = '500 40px Geist, "PingFang SC", sans-serif';
-    x.fillStyle = 'rgba(244,236,219,0.96)'; x.beginPath(); x.roundRect(4, 4, w - 8, 70, 22); x.fill();
-    x.beginPath(); x.moveTo(40, 72); x.lineTo(62, 72); x.lineTo(38, 92); x.fill();
-    x.fillStyle = '#2A2421'; x.textBaseline = 'middle'; x.fillText(text, 30, 40);
+    x.font = '500 32px Geist, "PingFang SC", sans-serif';
+    const words = /[\u3400-\u9fff]/.test(text) ? [...text] : text.split(/\s+/).map(w => w + ' ');
+    const rows: string[] = []; let row = '';
+    words.forEach(word => { if (x.measureText(row + word).width > 590 && row) { rows.push(row.trim()); row = word; } else row += word; }); rows.push(row.trim());
+    const w = Math.min(650, Math.max(...rows.map(t => x.measureText(t).width)) + 48), h = rows.length * 40 + 38;
+    c.width = w; c.height = h;
+    x.font = '500 32px Geist, "PingFang SC", sans-serif';
+    x.fillStyle = 'rgba(244,236,219,0.96)'; x.beginPath(); x.roundRect(3, 3, w - 6, h - 20, 15); x.fill();
+    x.beginPath(); x.moveTo(32, h - 18); x.lineTo(50, h - 18); x.lineTo(30, h - 2); x.fill();
+    x.fillStyle = '#2A2421'; x.textBaseline = 'middle'; rows.forEach((t, i) => x.fillText(t, 24, 27 + i * 40));
     const tex = new CanvasTexture(c); tex.colorSpace = SRGBColorSpace;
-    return { tex, aspect: w / 96 };
+    return { tex, width: w * .0023, height: h * .0023 };
   }), [lines]);
   useEffect(() => () => sprites.forEach(s => s.tex.dispose()), [sprites]);
+  useFrame((_, dt) => { if (!isWorldRunning()) return; alpha.current += ((active ? 1 : 0) - alpha.current) * Math.min(1, dt * 5); group.current?.children.forEach(s => { const material = (s as unknown as { material: { opacity: number } }).material; if (material) material.opacity = alpha.current; }); });
   return <group ref={group} name="park-kindred-bubbles" position={at}>
-    {sprites.map((s, i) => <sprite key={i} position={[0, (sprites.length - 1 - i) * 0.23, 0]} scale={[0.19 * s.aspect, 0.19, 1]} renderOrder={5}>
+    {sprites.map((s, i) => <sprite key={i} position={[0, (sprites.length - 1 - i) * 0.32, 0]} scale={[s.width, s.height, 1]} renderOrder={5}>
       <spriteMaterial map={s.tex} depthWrite={false} toneMapped={false} />
     </sprite>)}
   </group>;
@@ -341,9 +366,10 @@ function Blackboard({ p, project }: { p: Placed; project?: WorldProject }) {
   const back = useDisplay(p.movers.display_back ?? p.root.getObjectByName('display_back'), 2.0, 1.1, 384);
   const courses = project?.courses?.[lang] ?? [];
   const page = useRef(0), shot = useOneShot(3.2);
+  useExhibitProbe(p.id, () => ({ runs: shot.state.current.n, page: page.current % Math.max(1, courses.length), courses: courses.map(c => c.code), angle: p.movers.board?.rotation.x }));
   const draw = (d: ReturnType<typeof useDisplay>, idx: number, k: number, mirror: boolean) => {
     const { ctx, canvas: c, tex } = d, W = c.width, H = c.height;
-    ctx.setTransform(mirror ? -1 : 1, 0, 0, 1, mirror ? W : 0, 0);
+    ctx.setTransform(1, 0, 0, mirror ? -1 : 1, 0, mirror ? H : 0);
     ctx.fillStyle = '#2F3D38'; ctx.fillRect(0, 0, W, H);
     // faint erased-chalk smudges
     for (let i = 0; i < 6; i++) { ctx.fillStyle = 'rgba(230,235,225,0.05)'; ctx.beginPath(); ctx.ellipse(W * hash(i * 3.3 + idx), H * hash(i * 1.7 + idx), W * 0.12, H * 0.06, 0.3, 0, 7); ctx.fill(); }

@@ -38,8 +38,8 @@ class ParkAudio {
     const d = this.noise.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
     this.next = ctx.currentTime + 0.1; this.started = true;
     this.timer = window.setInterval(() => this.schedule(), 25);
-    useWorldStore.subscribe(s => { if (s.paused) void ctx.suspend(); else if (!document.hidden) void ctx.resume(); });
-    document.addEventListener('visibilitychange', () => { if (document.hidden) void ctx.suspend(); else if (!useWorldStore.getState().paused) void ctx.resume(); });
+    useWorldStore.subscribe(s => { if (s.paused || s.shot) void ctx.suspend(); else if (!document.hidden) void ctx.resume(); });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) void ctx.suspend(); else if (!useWorldStore.getState().paused && !useWorldStore.getState().shot) void ctx.resume(); });
   }
   setCrossfade(x: number) { this.x = Math.max(0, Math.min(1, x)); this.applyFade(false); }
   setMuted(m: boolean) { this.muted = m; if (this.ctx) this.master.gain.setTargetAtTime(m ? 0 : 0.16, this.ctx.currentTime, 0.1); }

@@ -1,0 +1,63 @@
+{
+ "asset": "P05+P19",
+ "evaluatedTriangles": 1440,
+ "bounds": [
+  [
+   -1.3,
+   -0.29,
+   0.0
+  ],
+  [
+   1.3,
+   0.29,
+   2.4185
+  ]
+ ],
+ "problems": [],
+ "parts": [
+  {
+   "name": "body_P05",
+   "triangles": 720,
+   "shells": 19,
+   "negative_shells": 0,
+   "degenerate_faces": 0,
+   "nonmanifold_edges": 0,
+   "materials": [
+    "park_cream_paint",
+    "park_wood_light",
+    "park_wood_mid",
+    "park_wood_dark"
+   ]
+  },
+  {
+   "name": "body_P19",
+   "triangles": 720,
+   "shells": 19,
+   "negative_shells": 0,
+   "degenerate_faces": 0,
+   "nonmanifold_edges": 0,
+   "materials": [
+    "park_cream_paint",
+    "park_wood_light",
+    "park_wood_mid",
+    "park_wood_dark"
+   ]
+  }
+ ],
+ "glbReadbackTriangles": 1440,
+ "readbackBounds": [
+  [
+   -1.3,
+   -0.29,
+   0.0
+  ],
+  [
+   1.3,
+   0.29,
+   2.4185
+  ]
+ ],
+ "readbackProblems": [],
+ "glbBytes": 25228,
+ "qaNote": "GLB raw normal/material seams retained. Topology diagnostic welds a disposable imported copy at 1e-5m, as in parklib."
+}

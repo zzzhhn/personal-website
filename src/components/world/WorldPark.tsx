@@ -10,6 +10,7 @@ import { useGreyboxClaim } from './WorldVisualClaims';
 import { night } from './WorldNight';
 import { gltfPieces, gltfTrimesh, mergeBatch, parkMaterial, parkNight, parkUrl, plankDeck, ParkGeo, withDraco, type GLTF } from './WorldParkKit';
 import { DECK_Y, EXHIBIT_ANCHOR, HUTS, HUT_BACK_Z, HUT_FRONT_Z } from './WorldParkLayout';
+import WorldParkSigns from './WorldParkSigns';
 import { ParkExhibits, placeExhibits, useExhibitGltfs } from './WorldParkExhibits';
 import { buildWalk, Knockables, LampPools, LAMP, RAIL, parkKnockables } from './WorldParkWalk';
 
@@ -105,5 +106,6 @@ export default memo(function WorldPark({ projects }: { projects: WorldContent['p
     <ParkClock />
     <ParkGuard id="huts"><ParkHuts projects={projects} /></ParkGuard>
     <ParkGuard id="walk"><ParkWalk /></ParkGuard>
+    <ParkGuard id="signs"><WorldParkSigns projects={projects} /></ParkGuard>
   </group>;
 });
