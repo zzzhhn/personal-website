@@ -1,0 +1,191 @@
+{
+  "lamp": {
+    "L0": 1110,
+    "L1": 192,
+    "ratio": 0.173,
+    "budget": [
+      1400,
+      420
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 32,
+    "nonManifold": 24,
+    "hulls": 5,
+    "bounds": [
+      [
+        -0.316,
+        0,
+        -1.666
+      ],
+      [
+        0.316,
+        4.87,
+        0.19
+      ]
+    ],
+    "minY": 0
+  },
+  "signal": {
+    "L0": 1406,
+    "L1": 214,
+    "ratio": 0.152,
+    "budget": [
+      1900,
+      560
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 25,
+    "hulls": 5,
+    "bounds": [
+      [
+        -0.415,
+        0,
+        -3.33
+      ],
+      [
+        0.24,
+        3.62,
+        0.28
+      ]
+    ],
+    "minY": 0
+  },
+  "bin": {
+    "L0": 874,
+    "L1": 118,
+    "ratio": 0.135,
+    "budget": [
+      900,
+      270
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 40,
+    "nonManifold": 0,
+    "hulls": 2,
+    "bounds": [
+      [
+        -0.3,
+        0,
+        -0.3
+      ],
+      [
+        0.3,
+        1,
+        0.3
+      ]
+    ],
+    "minY": 0
+  },
+  "delineator": {
+    "L0": 174,
+    "L1": 34,
+    "ratio": 0.195,
+    "budget": [
+      260,
+      78
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 1,
+    "bounds": [
+      [
+        -0.13,
+        0,
+        -0.124
+      ],
+      [
+        0.13,
+        1,
+        0.124
+      ]
+    ],
+    "minY": 0
+  },
+  "stop": {
+    "L0": 322,
+    "L1": 88,
+    "ratio": 0.273,
+    "budget": [
+      420,
+      126
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 2,
+    "bounds": [
+      [
+        -0.11,
+        0,
+        -0.314
+      ],
+      [
+        0.11,
+        2.38,
+        0.314
+      ]
+    ],
+    "minY": 0
+  },
+  "direction": {
+    "L0": 290,
+    "L1": 72,
+    "ratio": 0.248,
+    "budget": [
+      420,
+      126
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 2,
+    "bounds": [
+      [
+        -0.11,
+        0,
+        -0.75
+      ],
+      [
+        0.11,
+        2.63,
+        0.75
+      ]
+    ],
+    "minY": 0
+  },
+  "chevron": {
+    "L0": 290,
+    "L1": 72,
+    "ratio": 0.248,
+    "budget": [
+      420,
+      126
+    ],
+    "overBudget": false,
+    "degenerate": 0,
+    "openEdges": 0,
+    "nonManifold": 0,
+    "hulls": 2,
+    "bounds": [
+      [
+        -0.11,
+        0,
+        -0.475
+      ],
+      [
+        0.11,
+        1.53,
+        0.475
+      ]
+    ],
+    "minY": 0
+  }
+}
