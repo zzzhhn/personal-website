@@ -223,6 +223,198 @@ def build_T02():
     A.add(cyl((1.6, 2.2), 0.4, UZ1 + 1.2, UZ1 + 1.28, 14), 'town_metal', smooth=True)
     return A
 
+
+# ============================================================== T03 MoE Capital: two-storey California flat roof
+def build_T03():
+    A = Asset('T03')
+    X0, X1, Y, H = -5.0, 5.0, 4.0, 5.0
+    A.extras.update(building='moe', footprint=[10, 5, 8])
+    P = 1.8                       # ground-floor porch depth under the upper floor
+    CX = X1 - P                   # ground-floor shopfront plane
+    Z1 = 2.55                     # first floor level
+    A.box((X0, -Y, 0), (X1, Y, PLAZA), 'town_stone_dark', 0.01)
+    for i in range(1, 10):        # terracotta-ish porch paving joints
+        x = CX + i * P / 10
+        A.box((x - 0.012, -Y + 0.05, PLAZA), (x + 0.012, Y - 0.05, PLAZA + 0.004), 'town_stone')
+    A.col_box((X0, -Y, -0.2), (X1, Y, PLAZA), 'col_floor')
+    # ground floor: brick base walls (sides/back with windows), glazed shopfront with double door
+    sp, sn, bk = Face('y', 1, Y), Face('y', -1, -Y), Face('x', -1, X0)
+    for F, k in ((sp, 'gs'), (sn, 'gn')):
+        facade(A, F, X0, CX, PLAZA, Z1, 3, 1, 1.2, 1.2, 'town_brick', 'T03' + k, wz=0.62, sill_mat='town_stone')
+    facade(A, bk, -Y + 0.2, Y - 0.2, PLAZA, Z1, 3, 1, 1.2, 1.2, 'town_brick', 'T03gb', wz=0.62, sill_mat='town_stone')
+    A.col_box((X0, -Y, PLAZA), (CX, Y, Z1), 'col_ground')
+    sf = Face('x', 1, CX)
+    A.box(*sf.box(-0.2, 0, -3.8, 3.8, PLAZA, PLAZA + 0.45), 'town_brick')          # stall riser
+    for k, (a, b) in enumerate(((-3.8, -1.0), (1.0, 3.8))):
+        n = 3
+        for j in range(n):
+            u0, u1 = a + j * (b - a) / n, a + (j + 1) * (b - a) / n
+            A.box(*sf.box(-0.12, -0.06, u0 + 0.03, u1 - 0.03, PLAZA + 0.45, Z1 - 0.35), 'town_glass_lit' if lit(f'T03sf{k}{j}', 0.75) else 'town_glass_dark')
+            A.box(*sf.box(-0.06, 0.0, u0 - 0.03, u0 + 0.03, PLAZA + 0.45, Z1 - 0.3), 'town_wood')
+        A.box(*sf.box(-0.06, 0.0, b - 0.03, b + 0.03, PLAZA + 0.45, Z1 - 0.3), 'town_wood')
+        A.box(*sf.box(-0.06, 0.02, a, b, PLAZA + 0.42, PLAZA + 0.48), 'town_wood')
+    A.box(*sf.box(-0.2, 0, -3.8, 3.8, Z1 - 0.35, Z1), 'town_cream')               # transom band
+    A.box(*sf.box(-0.2, 0, -Y, -3.8, PLAZA, Z1), 'town_brick')
+    A.box(*sf.box(-0.2, 0, 3.8, Y, PLAZA, Z1), 'town_brick')
+    for u0, u1 in ((-1.0, -0.04), (0.04, 1.0)):                                          # double door, wood frame
+        A.box(*sf.box(-0.14, -0.08, u0, u1, PLAZA, Z1 - 0.4), 'town_glass_dark')
+        for a in (u0, u1 - 0.07):
+            A.box(*sf.box(-0.08, -0.02, a, a + 0.07, PLAZA, Z1 - 0.4), 'town_wood')
+        A.box(*sf.box(-0.08, -0.02, u0, u1, Z1 - 0.47, Z1 - 0.4), 'town_wood')
+        A.box(*sf.box(-0.08, -0.02, u0, u1, PLAZA, PLAZA + 0.12), 'town_wood')
+        A.box(*sf.box(-0.02, 0.06, (u0 + u1) / 2 - 0.015 + (0.3 if u0 < 0 else -0.3), (u0 + u1) / 2 + 0.015 + (0.3 if u0 < 0 else -0.3), 0.9, 1.5), 'town_metal')
+    A.box(*sf.box(-0.2, 0, -1.0, 1.0, Z1 - 0.4, Z1 - 0.35), 'town_wood')
+    # porch posts (slender steel) at the porch edge, side return walls
+    for y in (-3.75, 3.75):
+        A.box((X1 - 0.22, y - 0.1, PLAZA), (X1 - 0.02, y + 0.1, Z1), 'town_cream', 0.02)
+        A.col_box((X1 - 0.22, y - 0.1, PLAZA), (X1 - 0.02, y + 0.1, Z1), f'col_post_{y:+.0f}')
+    for y in (-1.3, 1.3):
+        A.add(cyl((X1 - 0.12, y), 0.07, PLAZA, Z1, 10), 'town_metal', smooth=True)
+        A.col_bm(cyl((X1 - 0.12, y), 0.08, PLAZA, Z1, 8), f'col_steel_{y:+.0f}')
+    # first floor slab (porch ceiling), upper floor cream walls with ribbon windows
+    A.box((X0, -Y, Z1), (X1, Y, Z1 + 0.3), 'town_cream', 0.02)
+    A.box((CX, -Y + 0.12, Z1 - 0.02), (X1 - 0.02, Y - 0.12, Z1), 'town_wood')               # wood porch soffit
+    for k in range(9):
+        x = CX + 0.1 + k * 0.2
+        A.box((x - 0.02, -Y + 0.12, Z1 - 0.05), (x + 0.02, Y - 0.12, Z1 - 0.02), 'town_wood')
+    UZ0, UZ1 = Z1 + 0.3, H - 0.25
+    up = Face('x', 1, X1)
+    # ribbon window: long strip broken by thin mullions, wood louvres on the south half
+    A.box(*up.box(-0.2, 0, -Y, Y, UZ0, UZ0 + 0.55), 'town_cream')
+    A.box(*up.box(-0.2, 0, -Y, Y, UZ1 - 0.3, UZ1), 'town_cream')
+    A.box(*up.box(-0.2, 0, -Y, -Y + 0.4, UZ0 + 0.55, UZ1 - 0.3), 'town_cream')
+    A.box(*up.box(-0.2, 0, Y - 0.4, Y, UZ0 + 0.55, UZ1 - 0.3), 'town_cream')
+    n = 8
+    for j in range(n):
+        u0, u1 = -Y + 0.4 + j * (2 * Y - 0.8) / n, -Y + 0.4 + (j + 1) * (2 * Y - 0.8) / n
+        A.box(*up.box(-0.2, -0.12, u0, u1, UZ0 + 0.55, UZ1 - 0.3), 'town_glass_lit' if lit(f'T03up{j}') else 'town_glass_dark')
+        A.box(*up.box(-0.12, -0.06, u0 - 0.025, u0 + 0.025, UZ0 + 0.55, UZ1 - 0.3), 'town_trim')
+    A.box(*up.box(-0.12, 0.08, -Y + 0.35, Y - 0.35, UZ0 + 0.5, UZ0 + 0.56), 'town_trim', 0.01)  # continuous sill
+    for k in range(16):                                    # vertical cedar slats screening the south half
+        u = 0.3 + k * 0.22
+        A.box(*up.box(0.1, 0.18, u - 0.035, u + 0.035, UZ0 + 0.5, UZ1 - 0.25), 'town_wood')
+    A.box(*up.box(0.02, 0.18, 0.2, 3.8, UZ1 - 0.3, UZ1 - 0.22), 'town_wood')
+    A.box(*up.box(0.02, 0.18, 0.2, 3.8, UZ0 + 0.44, UZ0 + 0.5), 'town_wood')
+    for u in (0.25, 3.75):
+        A.box(*up.box(0.0, 0.18, u - 0.04, u + 0.04, UZ0 + 0.44, UZ1 - 0.22), 'town_wood')
+    for F, k in ((sp, 'us'), (sn, 'un')):
+        facade(A, F, X0, X1, UZ0, UZ1, 4, 1, 1.5, 1.05, 'town_cream', 'T03' + k, wz=0.55)
+    facade(A, bk, -Y + 0.2, Y - 0.2, UZ0, UZ1, 3, 1, 1.4, 1.05, 'town_cream', 'T03ub', wz=0.55)
+    A.col_box((X0, -Y, Z1), (X1, Y, H), 'col_upper')
+    # thin flat roof plate with deep overhang (0.6 m) and fascia; roof deck, AC unit, skylight
+    A.box((X0 - 0.6, -Y - 0.6, UZ1), (X1 + 0.6, Y + 0.6, UZ1 + 0.18), 'town_trim', 0.02)
+    A.box((X0 - 0.62, -Y - 0.62, UZ1 + 0.18), (X1 + 0.62, Y + 0.62, UZ1 + 0.26), 'town_cream', 0.02)
+    A.box((X0 + 0.1, -Y + 0.1, UZ1 + 0.26), (X1 - 0.1, Y - 0.1, UZ1 + 0.3), 'town_roof')
+    A.box((-3.2, -2.6, UZ1 + 0.3), (-1.8, -1.4, UZ1 + 0.95), 'town_trim', 0.03)
+    A.add(cyl((-2.5, -2.0), 0.42, UZ1 + 0.95, UZ1 + 0.99, 16), 'town_metal', smooth=True)
+    A.box((0.5, 0.8, UZ1 + 0.3), (2.3, 2.6, UZ1 + 0.5), 'town_metal', 0.02)
+    A.box((0.58, 0.88, UZ1 + 0.5), (2.22, 2.52, UZ1 + 0.53), 'town_glass_dark')
+    # sign: wood letters board on the porch fascia (runtime face)
+    A.box(*up.box(0.0, 0.05, -2.4, 2.4, Z1 + 0.04, Z1 + 0.28), 'town_wood')
+    A.anchor('anchor_sign', up.point(0.055, 0, Z1 + 0.16), w=4.6, h=0.22, normal='+X')
+    # planter boxes either side of the door (succulent mounds)
+    for y in (-2.3, 2.3):
+        A.box((CX + 0.15, y - 0.55, PLAZA), (CX + 0.75, y + 0.55, PLAZA + 0.45), 'town_cream', 0.03)
+        A.box((CX + 0.2, y - 0.5, PLAZA + 0.38), (CX + 0.7, y + 0.5, PLAZA + 0.43), 'town_brick')
+        for k in range(3):
+            A.add(lathe([(0, 0), (0.14, 0.03), (0.17, 0.12), (0.1, 0.24), (0, 0.27)], 8, (CX + 0.45, y - 0.3 + k * 0.3, PLAZA + 0.42), k), 'palm_leaf', smooth=True)
+        A.col_box((CX + 0.15, y - 0.55, PLAZA), (CX + 0.75, y + 0.55, PLAZA + 0.7), f'col_planter_{y:+.0f}')
+    return A
+
+
+
+# ============================================================== T12 palms (two variants as child parts; leaves carry _WIND)
+def palm(A, tag, height, lean, lean_dir, n_fronds, seed, origin=(0, 0, 0)):
+    import random
+    rnd = random.Random(seed)
+    A.use(f'T12_{tag}_trunk')
+    # curved trunk: stacked tapering rings (one ring per ~0.32 m), each ring a slightly flared frustum
+    segs = int(height / 0.32)
+    d = Vector((math.cos(lean_dir), math.sin(lean_dir), 0))
+    def axis(t):  # quadratic lean
+        return Vector(origin) + d * (lean * t * t) + Vector((0, 0, height * t))
+    sides = 9
+    for i in range(segs):
+        t0, t1 = i / segs, (i + 1) / segs
+        p0, p1 = axis(t0), axis(t1)
+        r0 = 0.2 - 0.07 * t0 + (0.05 if i == 0 else 0)
+        r1 = 0.2 - 0.07 * t1
+        prof = [(r0 * 0.9, 0.0), (r0, 0.06), (r1 * 1.08, (p1 - p0).length * 0.92), (r1 * 0.92, (p1 - p0).length)]
+        bm = lathe(prof, sides, (0, 0, 0), rot=i * 0.35)
+        q = Vector((0, 0, 1)).rotation_difference((p1 - p0).normalized())
+        xform(bm, Matrix.Translation(p0) @ q.to_matrix().to_4x4())
+        A.add(bm, 'palm_trunk', smooth=True,
+              wind=lambda co, h=height: (min(1.0, (co.z / h) ** 2), 0.0, 0.0, 0.0))
+    top = axis(1.0)
+    # crown shaft + boot and coconut cluster
+    A.add(lathe([(0.0, -0.05), (0.15, 0.0), (0.2, 0.18), (0.17, 0.42), (0.08, 0.55), (0.0, 0.6)], 10, tuple(top)), 'palm_trunk', smooth=True,
+          wind=lambda co, h=height: (min(1.0, (co.z / h) ** 2), 0.0, 0.0, 0.0))
+    for k in range(5):
+        a = k * 2 * math.pi / 5 + rnd.random() * 0.4
+        c = top + Vector((math.cos(a) * 0.17, math.sin(a) * 0.17, 0.05 + 0.05 * (k % 2)))
+        bm = bmesh.new(); bmesh.ops.create_icosphere(bm, subdivisions=1, radius=0.1)
+        xform(bm, Matrix.Translation(c))
+        A.add(bm, 'palm_trunk', smooth=True, wind=lambda co, h=height: (min(1.0, (co.z / h) ** 2), 0.0, 0.0, 0.0))
+    A.use(f'T12_{tag}_leaves')
+    for f in range(n_fronds):
+        az = f * 2 * math.pi / n_fronds + rnd.uniform(-0.15, 0.15)
+        L = rnd.uniform(2.3, 2.9)
+        rise = rnd.uniform(0.35, 0.75) if f % 3 else rnd.uniform(0.1, 0.3)
+        droop = rnd.uniform(1.3, 1.9)
+        dirv = Vector((math.cos(az), math.sin(az), 0))
+        side = Vector((-math.sin(az), math.cos(az), 0))
+        n = 9
+        def rachis(t):
+            return top + Vector((0, 0, 0.45)) + dirv * (L * t) + Vector((0, 0, rise * t * 2.2 - droop * t * t))
+        bm = bmesh.new()
+        # midrib: thin quad strip (two-sided card) + pinnae as folded V blades either side
+        prev = None
+        for i in range(n + 1):
+            t = i / n
+            c = rachis(t)
+            w = 0.035 * (1 - t) + 0.008
+            a_ = bm.verts.new(c - side * w); b_ = bm.verts.new(c + side * w)
+            if prev:
+                bm.faces.new((prev[0], prev[1], b_, a_))
+            prev = (a_, b_)
+        for i in range(1, n):
+            t = i / n
+            c = rachis(t)
+            tang = (rachis(min(1, t + 0.05)) - rachis(max(0, t - 0.05))).normalized()
+            span = 0.62 * math.sin(math.pi * min(1, t * 1.05)) + 0.1
+            for sgn in (-1, 1):
+                tip = c + side * sgn * span + tang * 0.18 - Vector((0, 0, 0.16 + 0.25 * t))
+                fold = Vector((0, 0, 0.045))
+                r0 = c + tang * -0.07
+                r1 = c + tang * 0.07
+                mid = (c + tip) / 2 + fold + tang * 0.06
+                v = [bm.verts.new(x) for x in (r0, r1, mid, tip)]
+                bm.faces.new((v[0], v[2], v[3])); bm.faces.new((v[2], v[1], v[3]))
+                bm.faces.new((v[0], v[1], v[2]))
+        grp = (f % 8 + 0.5) / 8
+        def w(co, base=top, Ln=L, g=grp, h=height):
+            r = min(1.0, (co - base).length / Ln)
+            return (1.0, r, r * r, g)
+        A.add(bm, 'palm_leaf' if f % 2 else 'palm_leaf_dark', smooth=False, closed=False, wind=w)
+    # trunk collider: slim hull along the lower 3 m (leaves have none)
+    pts = [axis(t) for t in (0.0, min(1.0, 3.0 / height))]
+    bm = bmesh.new()
+    for p, r in ((pts[0], 0.24), (pts[1], 0.2)):
+        for k in range(8):
+            a = k * math.pi / 4
+            bm.verts.new((p.x + r * math.cos(a), p.y + r * math.sin(a), p.z))
+    bmesh.ops.convex_hull(bm, input=bm.verts)
+    A.col_bm(bm, f'col_{tag}_trunk')
+
+def build_T12():
+    A = Asset('T12')
+    A.extras.update(kind='palm', variants=['a', 'b'], windAttribute='_WIND xyzw=bend,branch,leaf,phaseGroup')
+    palm(A, 'a', 6.4, 0.7, 0.4, 11, 7)
+    palm(A, 'b', 5.3, 1.0, 2.6, 10, 19, origin=(0, -4.0, 0))
+    # variant b is authored 4 m along Blender -Y (glTF +Z); runtime subtracts variantOrigin
+    A.part_extras = {f'T12_{v}_{p}': {'variant': v, 'variantOriginGLB': [0, 0, 0] if v == 'a' else [0, 0, 4.0]} for v in 'ab' for p in ('trunk', 'leaves')}
+    return A
+
 BUILDERS = {k[6:]: v for k, v in globals().items() if k.startswith('build_T')}
 
 def main():

@@ -192,19 +192,26 @@ class Asset:
         self.anchors = []         # (name, location, extras)
         self.extras = {}
         self.part_extras = {}
+        self.winds = {}
 
     def use(self, name):
         self.part = name
         return self
 
-    def add(self, src, mat, smooth=False):
-        orient_outward(src)
+    def add(self, src, mat, smooth=False, closed=True, wind=None):
+        """wind: callable(co) -> (bend, branch, leaf, phase) stored as the _WIND point attribute."""
+        if closed:
+            orient_outward(src)
         src.normal_update()
         bm, slots = self.parts.setdefault(self.part, [bmesh.new(), []])
         if mat not in slots:
             slots.append(mat)
         mi = slots.index(mat)
         vmap = {v: bm.verts.new(v.co) for v in src.verts}
+        if wind is not None:
+            wl = self.winds.setdefault(self.part, {})
+            for v, nv in vmap.items():
+                wl[nv] = wind(v.co)
         for f in src.faces:
             nf = bm.faces.new([vmap[v] for v in f.verts])
             nf.material_index = mi
@@ -302,7 +309,16 @@ def finalize(A):
     lo, hi = Vector((1e9,) * 3), Vector((-1e9,) * 3)
     for name, (bm, slots) in A.parts.items():
         me = bpy.data.meshes.new(name)
+        wl = A.winds.get(name)
+        vals = None
+        if wl is not None:
+            bm.verts.index_update()
+            vals = [wl.get(v, (0.0, 0.0, 0.0, 0.0)) for v in bm.verts]
         bm.to_mesh(me); bm.free()
+        if vals is not None:
+            at = me.attributes.new('_WIND', 'FLOAT_COLOR', 'POINT')
+            for i, c in enumerate(vals):
+                at.data[i].color = c
         for m in slots:
             me.materials.append(get_mat(m))
         ob = bpy.data.objects.new(name, me)
