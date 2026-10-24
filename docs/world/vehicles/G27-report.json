@@ -1,0 +1,150 @@
+{
+ "asset": "G27",
+ "generator": "vehicles-r1",
+ "blender": "4.2.23 LTS",
+ "sourceBounds": [
+  [
+   -2.52,
+   -1.33,
+   0.0
+  ],
+  [
+   2.426,
+   1.33,
+   2.602
+  ]
+ ],
+ "sourceTris": {
+  "G27_body": 5188,
+  "wheel-front-right": 1920,
+  "wheel-front-left": 1920,
+  "wheel-rear-right": 1920,
+  "wheel-rear-left": 1920
+ },
+ "bodyTris": 5188,
+ "wheelTris": 1920,
+ "totalTris": 12868,
+ "checks": {
+  "G27_body": {
+   "tris": 5188,
+   "degenerate": 0,
+   "nonManifoldEdges": 0,
+   "finite": true,
+   "signedVolume": 19.9165
+  },
+  "wheel-front-right": {
+   "tris": 1920,
+   "degenerate": 0,
+   "nonManifoldEdges": 0,
+   "finite": true,
+   "signedVolume": 0.13073
+  }
+ },
+ "reimport": {
+  "objects": [
+   "G27",
+   "G27_body",
+   "wheel-front-left",
+   "wheel-front-right",
+   "wheel-rear-left",
+   "wheel-rear-right"
+  ],
+  "tris": {
+   "G27_body": 5188,
+   "wheel-front-left": 1920,
+   "wheel-front-right": 1920,
+   "wheel-rear-left": 1920,
+   "wheel-rear-right": 1920
+  },
+  "materials": [
+   "veh_accent_amber",
+   "veh_accent_dark",
+   "veh_accent_slate",
+   "veh_glass",
+   "veh_light_beacon",
+   "veh_light_brake",
+   "veh_light_front",
+   "veh_light_reverse",
+   "veh_metal",
+   "veh_metal_dark",
+   "veh_paint_cream",
+   "veh_rubber"
+  ],
+  "bounds": [
+   [
+    -2.52,
+    -1.33,
+    0.0
+   ],
+   [
+    2.426,
+    1.33,
+    2.602
+   ]
+  ],
+  "bytes": 61244
+ },
+ "hulls": [
+  {
+   "part": "lower",
+   "faces": 44,
+   "points": 24
+  },
+  {
+   "part": "cab",
+   "faces": 40,
+   "points": 22
+  },
+  {
+   "part": "box",
+   "faces": 92,
+   "points": 48
+  },
+  {
+   "part": "flareFL",
+   "faces": 12,
+   "points": 8
+  },
+  {
+   "part": "flareRL",
+   "faces": 12,
+   "points": 8
+  },
+  {
+   "part": "sillL",
+   "faces": 44,
+   "points": 24
+  },
+  {
+   "part": "flareFR",
+   "faces": 12,
+   "points": 8
+  },
+  {
+   "part": "flareRR",
+   "faces": 12,
+   "points": 8
+  },
+  {
+   "part": "sillR",
+   "faces": 44,
+   "points": 24
+  },
+  {
+   "part": "bumperF",
+   "faces": 44,
+   "points": 24
+  },
+  {
+   "part": "bumperR",
+   "faces": 44,
+   "points": 24
+  },
+  {
+   "part": "rack",
+   "faces": 36,
+   "points": 20
+  }
+ ],
+ "render": "/Users/bobby/Desktop/3D-personal-world/wt/vehicles/docs/world/vehicles/preview/G27-ortho.jpg"
+}

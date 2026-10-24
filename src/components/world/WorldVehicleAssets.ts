@@ -6,7 +6,7 @@ import HULLS from './WorldVehicleHulls.json';
 
 /** L1 vehicle assets (DESIGN docs/world/vehicles). An id appears here only once its GLB and hull
  * entry exist; others keep the greybox look and legacy colliders. */
-export const VEHICLE_ASSETS: Partial<Record<VehicleId, string>> = { offroad: 'G25', coupe: 'G26' };
+export const VEHICLE_ASSETS: Partial<Record<VehicleId, string>> = { offroad: 'G25', coupe: 'G26', van: 'G27' };
 export type HullPart = { part: string; faces: number; points: number[] };
 export type VehicleHullEntry = { bodyY: number; clip: number; wheelRadius: number; wheelWidth: number; hulls: HullPart[] };
 export function vehicleHulls(id: VehicleId): VehicleHullEntry | null {
