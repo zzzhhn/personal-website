@@ -202,7 +202,9 @@ export function ridgeHeightV4(x: number, z: number): number | null {
     const a = TRAIL_V4[i - 1], b = TRAIL_V4[i], s = segmentDistance([x, z], xz(a), xz(b));
     if (s.distance < best) { best = s.distance; slab = a[1] + (b[1] - a[1]) * s.t; }
   }
-  const bench = Math.max(RIDGE_V4.footY, slab - .1);
+  // Terrain session: the hill road is part of the terrain (no prism): the bench IS the road top across
+  // the trail width, so the dirt road, the ring joint and the grass shoulders share one surface.
+  const bench = Math.max(RIDGE_V4.footY, slab - TRAIL_RAISE);
   // 0.6 m flat bench beyond the slab edge: 0.5 m lattice triangles (jitter 0.1 m) never lift above it.
   if (best <= TRAIL_HALF + .6) return bench;
   const over = best - TRAIL_HALF - .6;
@@ -451,7 +453,8 @@ function extras(out: PavedPoly[]) {
 
 export const pavedV4 = /*#__PURE__*/ lazy((): PavedPoly[] => {
   const out: PavedPoly[] = [];
-  for (const r of ROADS_V4) strips(r, out);
+  // The hill road is part of the terrain height field (terrain session), not a prism.
+  for (const r of ROADS_V4) if (r.id !== 'hill-road') strips(r, out);
   for (const r of CONNECTORS_V4) strips(r, out);
   aprons(out);
   joints(out);

@@ -16,6 +16,7 @@ import {
   type DecorBox, type Knockable, type KnockKind, type PavedPoly, type SolidBox,
 } from './layout-v4';
 import { nearestDryPoint } from './WorldLandform';
+import WorldTerrainRoads from './WorldTerrainRoads';
 import { WATER_Y } from './layout';
 import { useWorldStore } from './store';
 import { windUniforms } from './WorldWind';
@@ -408,6 +409,7 @@ export default memo(function WorldDistricts() {
   const paved = useIsClaimed('paved'), windmill = useIsClaimed('windmill'), knockable = useIsClaimed('knockable');
   return <group name="world-districts-v4">
     {!paved && <Paved />}
+    <WorldTerrainRoads />
     <Solids />
     <Decor />
     {!windmill && <Windmill />}
