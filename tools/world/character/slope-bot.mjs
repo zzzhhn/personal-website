@@ -14,6 +14,32 @@ try {
   const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1,
     ...(process.env.G24_VIDEO === '1' ? { recordVideo: { dir: `${out}/video`, size: { width: 1920, height: 1080 } } } : {}) });
   page.on('pageerror', e => report.errors.push(e.message));
+  if (process.env.G24_NORMAL_MEDIA_ONLY === '1') {
+    report.scope = 'ordinary-entry real-key canvas MediaRecorder; no QA API or fixture';
+    await page.goto(base + '/world/', { waitUntil: 'networkidle' });
+    await page.waitForSelector('canvas'); await page.waitForTimeout(3500);
+    await page.mouse.move(960, 540); await page.mouse.wheel(0, -400); await page.waitForTimeout(800);
+    await page.evaluate(() => {
+      const canvas = document.querySelector('canvas');
+      const chunks = []; const stream = canvas.captureStream(30);
+      const recorder = new MediaRecorder(stream, { mimeType: MediaRecorder.isTypeSupported('video/webm;codecs=vp9') ? 'video/webm;codecs=vp9' : 'video/webm', videoBitsPerSecond: 6000000 });
+      recorder.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
+      window.__slopeMedia = { recorder, chunks, stream }; recorder.start(1000);
+    });
+    const bot = new Bot(page), down = comboFor(13, -5).keys, up = comboFor(-13, 5).keys;
+    report.normalPhases = [];
+    for (const [label, keys, ms] of [['approach-east-from-spawn', comboFor(1,0).keys, 6300], ['approach-north', comboFor(0,-1).keys, 1100], ['run-down', down, 1700], ['sprint-down', [...down, 'ShiftLeft'], 1500], ['stop', [], 900], ['run-up', up, 2200], ['stop2', [], 900]]) {
+      await bot.hold(keys); report.normalPhases.push({ label, keys, ms }); await page.waitForTimeout(ms);
+    }
+    await bot.release();
+    const bytes = await page.evaluate(() => new Promise(resolve => {
+      const m = window.__slopeMedia;
+      m.recorder.onstop = async () => { const b = new Blob(m.chunks, {type:m.recorder.mimeType}); m.stream.getTracks().forEach(t=>t.stop()); resolve(Array.from(new Uint8Array(await b.arrayBuffer()))); };
+      m.recorder.stop();
+    }));
+    await writeFile(`${out}/ordinary-ramp-${tag}.webm`, Buffer.from(bytes));
+    await page.screenshot({path:`${out}/ordinary-ramp-end-${tag}.jpg`,type:'jpeg',quality:85});
+  } else {
   if (process.env.G24_SHOTS === '1') {
     await page.goto(base + '/world/', { waitUntil: 'networkidle' });
     await page.waitForSelector('canvas'); await page.waitForTimeout(3500);
@@ -25,7 +51,7 @@ try {
     await page.keyboard.press('Escape'); await page.waitForTimeout(2500);
     await page.screenshot({ path: `${out}/normal-night-near.jpg`, type: 'jpeg', quality: 85 });
   }
-  await page.goto(base + '/world/?qa=1', { waitUntil: 'networkidle' });
+  await page.goto(base + '/world/?qa=1' + (process.env.G24_SUPPORT === '1' ? '&qaPhysicsSupport=1' : ''), { waitUntil: 'networkidle' });
   await page.waitForFunction(() => window.__worldDebug?.actor().loaded, undefined, { timeout: 90000 });
   const bot = new Bot(page);
   await page.evaluate(() => __worldDebug.set({ zoom: 0 }));
@@ -55,5 +81,6 @@ try {
   };
   report.probeFallback = frames.flatMap(f => ['left', 'right'].filter(s => f.slope?.[s]?.probeKind === 'sole').map(side => ({ t: f.t, side, contact: f.slope[side].contact, plane: f.slope[side].plane })));
   report.probeMisses = frames.flatMap(f => ['left', 'right'].filter(s => !f.slope?.[s]?.hit).map(side => ({ t: f.t, side, grounded: f.grounded, anim: f.anim, contact: f.slope?.[side]?.contact })));
+  }
 } catch (e) { report.errors.push(String(e?.stack || e)); }
 finally { await browser.close(); await writeFile(`${out}/report-${tag}.json`, JSON.stringify(report, null, 1)); console.log(JSON.stringify({ a: report.byClipCurve, b: report.excludingStopStepSwing, f: report.floatsByAnim, w: report.stance?.worst }), report.errors); }

@@ -2,6 +2,8 @@
 
 基线 `b052396`，分支 `codex/world-slope-followup`。**原路线下陷已消除，浮空仍是明确失败；不是坡地整项通过。** 不改物理、GLB、接触曲线、阈值或求解器数量。
 
+后续同步观测已更新根高度解释：`.88` 是 spawn clearance，`.82` 正确对应胶囊底部，不能将二者60mm差视作视觉偏移bug。实际大浮空来自胶囊离地而旧远射线仍标grounded，详见 `slope-support-diagnostic.md`。以下历史推导数值保留，物理含义以同步诊断为准。
+
 ## 修复
 
 - `WorldGuideStop.ts`：Stop 的 Idle 落点、queued 等待脚和已落地脚目标复用 Slope 当前帧的静态支持面、既定 pitch/roll 夹限及真实蒙皮 sole 点，旋转 sole 后反算 ankle Y。XZ 锁、步序、摆动弧和原 2.4 m/s 捕获摆动脚落地速度保留。Stop 仍是 Slope 后的最终两骨 IK 写入者；两者共用 5 cm 骨盆预算、腿到达 ≤99.5%。清理过时的 QA-only/flat-only 注释。

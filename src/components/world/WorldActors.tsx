@@ -200,8 +200,9 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
 /** Guide-only vehicle transition (character session): set by enter()/exit(), read by the guide. 'start' is
  * performance.now() seconds; 'door' is the car's door anchor at that moment (car body + side offset). */
 type GuideVehicleTransition = { phase: 'enter'|'exit'; start: number; door: [number,number,number] } | null;
-function GuideVisual({ body, grounded, yaw, targetSpeed, intent, jumpSeq, visible, transition }: { body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; targetSpeed: RefObject<number>; intent: RefObject<'idle'|'walk'|'run'>; jumpSeq: RefObject<number>; visible: boolean; transition: RefObject<GuideVehicleTransition> }) {
+function GuideVisual({ body, grounded, yaw, targetSpeed, intent, jumpSeq, visible, transition, supportDecision }: { body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; targetSpeed: RefObject<number>; intent: RefObject<'idle'|'walk'|'run'>; jumpSeq: RefObject<number>; visible: boolean; transition: RefObject<GuideVehicleTransition>; supportDecision: RefObject<Record<string, unknown> | null> }) {
   const {world,rapier}=useRapier();
+  const supportQA = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && new URLSearchParams(window.location.search).get('qaPhysicsSupport') === '1';
   const probeGround=(x:number,z:number,fromY:number)=>{
     const hit=world.castRayAndGetNormal(new rapier.Ray({x,y:fromY,z},{x:0,y:-1,z:0}),3,true,
       undefined,undefined,undefined,body.current??undefined,c=>!c.isSensor()&&(!c.parent()||c.parent()!.isFixed()));
@@ -210,7 +211,32 @@ function GuideVisual({ body, grounded, yaw, targetSpeed, intent, jumpSeq, visibl
   const readMotion = () => {
     const v = body.current?.linvel();
     return { speedMps: v ? Math.hypot(v.x, v.z) : 0, grounded: grounded.current, facing: yaw.current, targetSpeedMps:targetSpeed.current,
-      intent:intent.current,verticalSpeedMps:v?.y??0,jumpSeq:jumpSeq.current,probeGround,...guideStates() };
+      intent:intent.current,verticalSpeedMps:v?.y??0,jumpSeq:jumpSeq.current,probeGround,
+      ...(supportQA ? { physicsSupportQA: (root: number[], soles: number[][]) => {
+        const b = body.current; if (!b) return null;
+        const p = b.translation(), q = b.rotation(), velocity = b.linvel();
+        const staticTop = (c: RapierCollider) => !c.isSensor() && (!c.parent() || c.parent()!.isFixed());
+        const capsule = new rapier.Capsule(PLAYER_HALF_HEIGHT, PLAYER_RADIUS);
+        const cast = world.castShape(p, q, {x:0,y:-1,z:0}, capsule, 0, .30, true, undefined, undefined, undefined, b, staticTop);
+        const contact = cast?.collider.contactShape(capsule, p, q, .35);
+        const freshRay = world.castRayAndGetNormal(new rapier.Ray(p,{x:0,y:-1,z:0}),PLAYER_CENTER_HEIGHT+.12,true,undefined,undefined,undefined,b,c=>!c.isSensor());
+        const contacts: unknown[] = [];
+        if (b.numColliders()) world.contactPairsWith(b.collider(0), c => {
+          if (!staticTop(c)) return;
+          world.contactPair(b.collider(0), c, (m, flipped) => contacts.push({handle:c.handle,flipped,normal:asTuple(m.normal()),
+            distances:Array.from({length:m.numContacts()},(_,i)=>m.contactDist(i)),
+            impulses:Array.from({length:m.numContacts()},(_,i)=>m.contactImpulse(i)),
+            solverDistances:Array.from({length:m.numSolverContacts()},(_,i)=>m.solverContactDist(i))}));
+        });
+        return { body:asTuple(p), velocity:asTuple(velocity), rotation:[q.x,q.y,q.z,q.w],
+          capsule:{halfHeight:PLAYER_HALF_HEIGHT,radius:PLAYER_RADIUS,bottomY:p.y-PLAYER_HALF_HEIGHT-PLAYER_RADIUS,spawnClearanceHeight:PLAYER_CENTER_HEIGHT},
+          gameplayGrounded:grounded.current,jumpSeq:jumpSeq.current,lastPhysicsDecision:supportDecision.current,
+          freshGameplayRay:freshRay?{distance:freshRay.timeOfImpact,normal:asTuple(freshRay.normal),wouldGround:freshRay.normal.y>.55&&velocity.y<1}:null,
+          bodyGround:probeGround(p.x,p.z,p.y),renderRoot:root,rootGround:probeGround(root[0],root[2],p.y),
+          soleGround:soles.map(s=>({xz:s,hit:probeGround(s[0],s[1],p.y)})),
+          capsuleDownCast:cast?{distance:cast.time_of_impact,collider:cast.collider.handle,contact:contact?{distance:contact.distance,normal:asTuple(contact.normal1),surfacePoint:asTuple(contact.point1),capsulePoint:asTuple(contact.point2)}:null}:null,
+          staticContactManifolds:contacts };
+      } } : {}),...guideStates() };
   };
   // Seat (store.seat) and vehicle step-in/out timing for the guide's sit / enter / exit clips. Driving hides
   // the guide only after the enter transition; during exit it fades in from the door.
@@ -239,6 +265,7 @@ export default function WorldActors() {
   const actions = useRef({interact:false,jump:false,recover:false});
   const debugDrive = useRef<{input:DriveInput;remaining:number}|null>(null);
   const grounded = useRef(false);
+  const supportDecision = useRef<Record<string, unknown> | null>(null);
   const moveIntent=useRef<'idle'|'walk'|'run'>('idle');
   const jumpSeq=useRef(0);
   const guideTransition=useRef<GuideVehicleTransition>(null);
@@ -664,6 +691,9 @@ export default function WorldActors() {
       const p=player.current.translation(),velocity=player.current.linvel();
       const ground=world.castRayAndGetNormal(new rapier.Ray(p,{x:0,y:-1,z:0}),PLAYER_CENTER_HEIGHT+.12,true,undefined,undefined,undefined,player.current,c=>!c.isSensor());
       grounded.current=!!ground && ground.normal.y>.55 && velocity.y<1;
+      if (new URLSearchParams(window.location.search).get('qaPhysicsSupport') === '1') supportDecision.current={
+        step:physicsSteps.current,body:asTuple(p),velocity:asTuple(velocity),grounded:grounded.current,jumpRequested:actions.current.jump,
+        ray:ground?{distance:ground.timeOfImpact,normal:asTuple(ground.normal),groundY:p.y-ground.timeOfImpact}:null};
       // Raw input in camera space (x right, z forward): keys plus the left stick (analogue magnitude).
       let rx=Number(keys.current.has('KeyD'))-Number(keys.current.has('KeyA'));
       let rz=Number(keys.current.has('KeyW'))-Number(keys.current.has('KeyS'));
@@ -886,7 +916,7 @@ export default function WorldActors() {
           Horizontal impulse control handles braking; 10 cm soft CCD predicts landing contact. */}
       <CapsuleCollider name="player-capsule" args={[PLAYER_HALF_HEIGHT,PLAYER_RADIUS]} mass={72} friction={0} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={0}/>
       <group position={[0,-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),0]}>
-        <GuideVisual body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} intent={moveIntent} jumpSeq={jumpSeq} visible={!firstPerson} transition={guideTransition} />
+        <GuideVisual body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} intent={moveIntent} jumpSeq={jumpSeq} visible={!firstPerson} transition={guideTransition} supportDecision={supportDecision} />
       </group>
     </RigidBody>
   </>;

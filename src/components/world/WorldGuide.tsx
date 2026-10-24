@@ -20,6 +20,8 @@ export interface WorldGuideMotion {
   jumpSeq?: number;
   /** Static walkable ground under (x, z), cast down from fromY; used by the stance slope fit. */
   probeGround?: SlopeProbe;
+  /** Read-only, QA-query-gated physics snapshot at the exact final-sole recorder sample. */
+  physicsSupportQA?: (root: number[], soleXZ: number[][]) => unknown;
 }
 export interface WorldGuideMotion {
   /** Seat from store.seat; the body (group) is already at seat.position (WorldActors). */
@@ -770,6 +772,9 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         const res = rig.inert.residual();
         recorder.frames.push({ t: +s.time.toFixed(4), wallTime: performance.now()/1000, cut: resumed, dt: +dt.toFixed(4), anim: s.current, at: +rig.actions[s.current].time.toFixed(4), ts: +rig.actions[s.current].getEffectiveTimeScale().toFixed(3), grounded, speed: +speedMps.toFixed(3), facing: +facing.toFixed(4),
           ...(recorder.skin ? { skin: guideSkinEvidence(group.current), actor: { animation: s.current, animationTime: rig.actions[s.current].time } } : {}),
+          ...(motion.physicsSupportQA ? {physicsSupport:motion.physicsSupportQA(rootW.toArray(), [0,1].map(side=>{
+            const p=soles.filter(p=>(p[0]>=1000000)===!!side).sort((a,b)=>a[3]-b[3])[0];return p?[p[1],p[2]]:[];
+          }))}:{}),
           root: rootW.toArray().map(v => +v.toFixed(4)), joints, soles, inert: [+res.angle.toFixed(4), +res.pelvis.toFixed(4)], switches: rig.inert.switches,
           contact: rig.slope.legs.left && [+rig.slope.legs.left.contact.toFixed(2), +rig.slope.legs.right.contact.toFixed(2)], lift: +group.current.position.y.toFixed(4), veh: motion.vehicle ? [motion.vehicle.phase, +motion.vehicle.t.toFixed(3)] : null, fade: +s.faded.toFixed(3), sitDrop: +s.sitDrop.toFixed(4), off: [+rig.rootOff.x.toFixed(3), +rig.rootOff.z.toFixed(3)], shownYaw: +shownYaw.toFixed(3), slope: rig.slope.debug(), stepping: stop.current ? (() => { const d = stop.current!.debug(); return [d.left.stepping ? 1 : 0, d.right.stepping ? 1 : 0, d.state]; })() : null });
       }
