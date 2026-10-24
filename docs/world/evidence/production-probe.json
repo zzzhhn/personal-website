@@ -1,0 +1,174 @@
+{
+  "base": "http://127.0.0.1:4322",
+  "capturedAt": "2026-10-21T03:15:34.084Z",
+  "hardware": "Apple M5 Pro",
+  "browser": "155.0.8059.40",
+  "viewport": "1920×1080, DPR 1",
+  "errors": [],
+  "home": {
+    "resources": [
+      "http://127.0.0.1:4322/fonts/GeistSans-Regular.woff2",
+      "http://127.0.0.1:4322/fonts/InstrumentSerif-Regular.woff2",
+      "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400&display=swap",
+      "http://127.0.0.1:4322/_astro/index@_@astro.DuNa-iW8.css",
+      "http://127.0.0.1:4322/_astro/projectStatus.1Zp0Ahic.css",
+      "http://127.0.0.1:4322/_astro/BaseLayout.astro_astro_type_script_index_0_lang.CmrUZ3VW.js",
+      "http://127.0.0.1:4322/images/logo-gold.png",
+      "http://127.0.0.1:4322/images/logo-silver.png",
+      "http://127.0.0.1:4322/_astro/TypewriterText.DNpYniWD.js",
+      "http://127.0.0.1:4322/_astro/client.DnoVFiX8.js",
+      "http://127.0.0.1:4322/images/profile-light-960.webp",
+      "http://127.0.0.1:4322/fonts/GeistSans-Medium.woff2",
+      "http://127.0.0.1:4322/fonts/GeistSans-SemiBold.woff2",
+      "http://127.0.0.1:4322/_astro/MotionPortfolio.CEOKIuMr.js",
+      "http://127.0.0.1:4322/_astro/analytics.CZcLqhSq.js",
+      "http://127.0.0.1:4322/_astro/jsx-runtime.u17CrQMm.js",
+      "http://127.0.0.1:4322/_astro/index.DP38BoPS.js",
+      "http://127.0.0.1:4322/_astro/Strands.DVBGmts1.js",
+      "http://127.0.0.1:4322/_astro/ExperienceTimeline.BzMuRL-H.js",
+      "http://127.0.0.1:4322/_astro/ProjectShowcase.BgjHx8g4.js",
+      "http://127.0.0.1:4322/_astro/index.BzumvINc.js",
+      "http://127.0.0.1:4322/_astro/proxy.fmCGwqvs.js",
+      "http://127.0.0.1:4322/favicon.svg",
+      "http://127.0.0.1:4322/images/profile-dark-960.webp"
+    ],
+    "canvasCount": 3,
+    "worldRuntimeRequests": []
+  },
+  "coldLoad": {
+    "readyMs": 897.1000000238419,
+    "transferBytes": 1222784,
+    "encodedBodyBytes": 1219784,
+    "resources": [
+      {
+        "name": "http://127.0.0.1:4322/world?qa=1",
+        "transferSize": 5512,
+        "encodedBodySize": 5212
+      },
+      {
+        "name": "http://127.0.0.1:4322/_astro/WorldApp.Bw09ANQi.js",
+        "transferSize": 427,
+        "encodedBodySize": 127
+      },
+      {
+        "name": "http://127.0.0.1:4322/_astro/client.DnoVFiX8.js",
+        "transferSize": 58739,
+        "encodedBodySize": 58439
+      },
+      {
+        "name": "http://127.0.0.1:4322/favicon.svg",
+        "transferSize": 560,
+        "encodedBodySize": 260
+      },
+      {
+        "name": "http://127.0.0.1:4322/_astro/jsx-runtime.u17CrQMm.js",
+        "transferSize": 779,
+        "encodedBodySize": 479
+      },
+      {
+        "name": "http://127.0.0.1:4322/_astro/index.DP38BoPS.js",
+        "transferSize": 3271,
+        "encodedBodySize": 2971
+      },
+      {
+        "name": "http://127.0.0.1:4322/_astro/WorldApp.CfQWuRIM.js",
+        "transferSize": 5803,
+        "encodedBodySize": 5503
+      },
+      {
+        "name": "http://127.0.0.1:4322/_astro/WorldRuntime.BDc1Smll.js",
+        "transferSize": 1101080,
+        "encodedBodySize": 1100780
+      },
+      {
+        "name": "http://127.0.0.1:4322/_astro/analytics.CZcLqhSq.js",
+        "transferSize": 1141,
+        "encodedBodySize": 841
+      },
+      {
+        "name": "http://127.0.0.1:4322/fonts/GeistSans-Regular.woff2",
+        "transferSize": 45472,
+        "encodedBodySize": 45172
+      }
+    ],
+    "profile": "Cold browser cache; 100 Mbps down / 20 Mbps up; 30 ms simulated latency; local Astro production preview"
+  },
+  "frames": [
+    {
+      "zone": "camp",
+      "elapsedMs": 5016.5,
+      "frames": 301,
+      "meanFps": 60.00199342170836,
+      "p95FrameMs": 16.700000000000728,
+      "stats": {
+        "calls": 53,
+        "triangles": 7283,
+        "geometries": 45,
+        "textures": 3,
+        "camera": [
+          -34.27243507238903,
+          15.814800360257905,
+          45.63675323681465
+        ]
+      }
+    },
+    {
+      "zone": "town",
+      "elapsedMs": 5016.499999999999,
+      "frames": 301,
+      "meanFps": 60.00199342170837,
+      "p95FrameMs": 16.799999999999272,
+      "stats": {
+        "calls": 54,
+        "triangles": 7719,
+        "geometries": 66,
+        "textures": 3,
+        "camera": [
+          27.72756492761067,
+          12.15487168079167,
+          -2.3632467631850074
+        ]
+      }
+    },
+    {
+      "zone": "park",
+      "elapsedMs": 5016.500000000002,
+      "frames": 301,
+      "meanFps": 60.00199342170834,
+      "p95FrameMs": 16.799999999999272,
+      "stats": {
+        "calls": 64,
+        "triangles": 7999,
+        "geometries": 66,
+        "textures": 3,
+        "camera": [
+          69.72756492761079,
+          12.154894807393827,
+          -32.36324676318509
+        ]
+      }
+    }
+  ],
+  "framesNote": "One 5-second stationary follow-camera sample in each zone, live physics. Headless Chrome RAF timing on M5 Pro, not an M1 Air certification or subjective driving review.",
+  "mobile": {
+    "text": "CampCoastal townBoardwalk parkN ↑Bobby’s islandOpen on desktop to enter the island.The island is being playtested. Use a keyboard to walk and drive.← Back to portfolio",
+    "canvasCount": 0,
+    "resources": [
+      "http://127.0.0.1:4322/_astro/WorldApp.Bw09ANQi.js",
+      "http://127.0.0.1:4322/_astro/client.DnoVFiX8.js",
+      "http://127.0.0.1:4322/favicon.svg",
+      "http://127.0.0.1:4322/_astro/WorldApp.CfQWuRIM.js",
+      "http://127.0.0.1:4322/_astro/jsx-runtime.u17CrQMm.js",
+      "http://127.0.0.1:4322/_astro/index.DP38BoPS.js",
+      "http://127.0.0.1:4322/fonts/GeistSans-Regular.woff2"
+    ],
+    "worldRuntimeRequests": []
+  },
+  "checks": {
+    "localReadyWithin8Seconds": true,
+    "localInitialEncodedBodyWithin15MB": true,
+    "homeDoesNotRequestWorldRuntime": true,
+    "mobileDoesNotLoad3D": true,
+    "noPageErrors": true
+  }
+}

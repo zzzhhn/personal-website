@@ -5,7 +5,10 @@ export type PortfolioEvent =
   | "experience_workflow_open"
   | "motion_video_load"
   | "contact_email_click"
-  | "mobile_desktop_hint_dismiss";
+  | "mobile_desktop_hint_dismiss"
+  | "world_enter"
+  | "world_vehicle_enter"
+  | "world_booth_open";
 
 interface NavigatorWithPrivacy extends Navigator {
   globalPrivacyControl?: boolean;

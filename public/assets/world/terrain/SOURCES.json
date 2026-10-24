@@ -1,0 +1,62 @@
+{
+ "grass": {
+  "assetId": "Grass004",
+  "source": "https://ambientcg.com/view?id=Grass004",
+  "download": "https://ambientcg.com/get?file=Grass004_1K-JPG.zip",
+  "zip_sha256": "4b63495f459db8481f4d5144e4e9069345c81cf898cc71f2216f5dd3bb344469",
+  "originals_sha256": {
+   "Color": "9e1c60da44b34a9738b1256ba827541f097dc583521b1d281e61b5f4b4217bc5",
+   "NormalGL": "8014a81d896a5c589b60612a769bc39eb1213e48d96f6146f485ea36e9e9610f",
+   "Roughness": "706580983860f942e141acdd68c4128dd683be50fcc5d85b7c67a9a3a8c7bac0"
+  },
+  "outputs": {
+   "grass_albedo.jpg": "b8596d21e5c7e0bcd74a5ecde5c767a750c00641c4e75ede5dd7e8a7dad200eb",
+   "grass_nr.png": "3505572c98287093ca9face00b7180d85a51d4d1d2dd8f06b3a56b1080744e14"
+  },
+  "mean_albedo": [
+   96.4,
+   108.6,
+   48.4
+  ]
+ },
+ "sand": {
+  "assetId": "Ground054",
+  "source": "https://ambientcg.com/view?id=Ground054",
+  "download": "https://ambientcg.com/get?file=Ground054_1K-JPG.zip",
+  "zip_sha256": "b325ec2f167dce95a0fabc61a2104641288cf20915419578c3efdb46200c563e",
+  "originals_sha256": {
+   "Color": "77c0b5ac13eead1420887c608b2c28209a1ae5ba70761bf29953aa23cf3dc31b",
+   "NormalGL": "473474b0e0570cfa757e35c13f073e7ee49389fb3e35dad4d5f06e5ce9a59234",
+   "Roughness": "e19b6c7d4ee3d8a6b6ea4ecc525a1a4e32681be969af134a2ee5c6071b9dcec9"
+  },
+  "outputs": {
+   "sand_albedo.jpg": "c0ebad11a4281bd5d1138c8b17d6e98ef598d2595bec34042b1a99b3a4a8e149",
+   "sand_nr.png": "e58a59c41c3487f29b528cef88f9386580e91e84a7d34255815138195f5b4985"
+  },
+  "mean_albedo": [
+   155.7,
+   138.7,
+   109.6
+  ]
+ },
+ "dirt": {
+  "assetId": "Ground037",
+  "source": "https://ambientcg.com/view?id=Ground037",
+  "download": "https://ambientcg.com/get?file=Ground037_1K-JPG.zip",
+  "zip_sha256": "4e69db2b7251b1736fa70fe6fe4ab80d64bd220117dd5dd4c7caaead51c2574e",
+  "originals_sha256": {
+   "Color": "d92bec8a35b9cb16ec79b421ca0f572a7400286eae109beafa266629ef49a6cf",
+   "NormalGL": "ea59dbdcfa5bf2f28bdd4aa896d4e5f96c4cce5939100dcc6db4bbbcdebfe38d",
+   "Roughness": "3786b088e981aae562f06b6477972d379cffd09a5cc542ab42f9ffd94f9bcb0e"
+  },
+  "outputs": {
+   "dirt_albedo.jpg": "8ac46a7ddf27f068bf0b6fc696aa3e3bacd49801ccf2e6c9c48aca65e406d889",
+   "dirt_nr.png": "5e947542dece3d82cb93779445c79e8b09d71ee40896369985105450b6c2499a"
+  },
+  "mean_albedo": [
+   152.4,
+   146.8,
+   87.5
+  ]
+ }
+}

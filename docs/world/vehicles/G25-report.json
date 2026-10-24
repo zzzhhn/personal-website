@@ -1,0 +1,145 @@
+{
+ "asset": "G25",
+ "generator": "vehicles-r1",
+ "blender": "4.2.23 LTS",
+ "sourceBounds": [
+  [
+   -2.04,
+   -1.185,
+   0.0
+  ],
+  [
+   2.06,
+   1.185,
+   2.267
+  ]
+ ],
+ "sourceTris": {
+  "G25_body": 7748,
+  "wheel-front-right": 1552,
+  "wheel-front-left": 1552,
+  "wheel-rear-right": 1552,
+  "wheel-rear-left": 1552
+ },
+ "bodyTris": 7748,
+ "wheelTris": 1552,
+ "totalTris": 13956,
+ "checks": {
+  "G25_body": {
+   "tris": 7748,
+   "degenerate": 0,
+   "nonManifoldEdges": 0,
+   "finite": true,
+   "signedVolume": 8.58719
+  },
+  "wheel-front-right": {
+   "tris": 1552,
+   "degenerate": 0,
+   "nonManifoldEdges": 0,
+   "finite": true,
+   "signedVolume": 0.08343
+  }
+ },
+ "reimport": {
+  "objects": [
+   "G25",
+   "G25_body",
+   "wheel-front-left",
+   "wheel-front-right",
+   "wheel-rear-left",
+   "wheel-rear-right"
+  ],
+  "tris": {
+   "G25_body": 7748,
+   "wheel-front-left": 1552,
+   "wheel-front-right": 1552,
+   "wheel-rear-left": 1552,
+   "wheel-rear-right": 1552
+  },
+  "materials": [
+   "veh_accent_amber",
+   "veh_accent_cream",
+   "veh_accent_dark",
+   "veh_glass",
+   "veh_light_brake",
+   "veh_light_front",
+   "veh_light_reverse",
+   "veh_metal",
+   "veh_metal_dark",
+   "veh_paint_orange",
+   "veh_paint_slate",
+   "veh_rubber"
+  ],
+  "bounds": [
+   [
+    -2.04,
+    -1.185,
+    0.0
+   ],
+   [
+    2.06,
+    1.185,
+    2.267
+   ]
+  ],
+  "bytes": 84400
+ },
+ "hulls": [
+  {
+   "part": "tub",
+   "faces": 60,
+   "points": 32
+  },
+  {
+   "part": "cabin",
+   "faces": 72,
+   "points": 38
+  },
+  {
+   "part": "sillL",
+   "faces": 44,
+   "points": 24
+  },
+  {
+   "part": "flareFL",
+   "faces": 12,
+   "points": 8
+  },
+  {
+   "part": "flareRL",
+   "faces": 12,
+   "points": 8
+  },
+  {
+   "part": "sillR",
+   "faces": 44,
+   "points": 24
+  },
+  {
+   "part": "flareFR",
+   "faces": 12,
+   "points": 8
+  },
+  {
+   "part": "flareRR",
+   "faces": 12,
+   "points": 8
+  },
+  {
+   "part": "bumperF",
+   "faces": 108,
+   "points": 56
+  },
+  {
+   "part": "bumperR",
+   "faces": 60,
+   "points": 32
+  },
+  {
+   "part": "rack",
+   "faces": 168,
+   "points": 86
+  }
+ ],
+ "render": "docs/world/vehicles/preview/G25-ortho.jpg"
+}

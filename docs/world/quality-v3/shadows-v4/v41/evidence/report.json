@@ -1,0 +1,6139 @@
+{
+ "base": "http://127.0.0.1:4322",
+ "startedAt": "2026-10-22T19:43:54.079Z",
+ "machine": "Apple M5 Pro, headless Chrome, ANGLE Metal (no M1 claim)",
+ "viewport": [
+  1920,
+  1080
+ ],
+ "sunShadowGroundDeg": -35.83765295427829,
+ "sections": {
+  "body": {
+   "note": "dusk sun shadow of the guide only (fire shadow intensity 0 during capture)",
+   "cases": [
+    {
+     "label": "face-forward",
+     "player": [
+      -36.236305236816406,
+      5.618827819824219,
+      40.73276901245117
+     ],
+     "facingRad": 2.214297435588181,
+     "grounded": true,
+     "pixels": 30382,
+     "silhouettePixels": 14247,
+     "centroid": [
+      -34.07333250846341,
+      39.141078340223075
+     ],
+     "dirDeg": -36.348647880099136,
+     "contactGap_m": 0.0111523592659001,
+     "length_m": 4.76658168574984,
+     "widthStd_m": 0.1425654531712496,
+     "alongStd_m": 1.3423588825324533,
+     "screenDirDeg": 0.41667775962226994,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/body-face-forward-mask.png",
+     "expectedDirDeg": -35.83765295427829,
+     "dirErrorDeg": -0.5109949258207962
+    },
+    {
+     "label": "face-right",
+     "player": [
+      -35.955360412597656,
+      5.6188273429870605,
+      40.52134704589844
+     ],
+     "facingRad": 0.6435011087932844,
+     "grounded": true,
+     "pixels": 39098,
+     "silhouettePixels": 12679,
+     "centroid": [
+      -33.86011974065253,
+      39.00834749329949
+     ],
+     "dirDeg": -35.8335224770636,
+     "contactGap_m": 0.1108554458400567,
+     "length_m": 4.7692636442004925,
+     "widthStd_m": 0.16406991781665667,
+     "alongStd_m": 1.2355845747691014,
+     "screenDirDeg": 0.8285240001617753,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/body-face-right-mask.png",
+     "expectedDirDeg": -35.83765295427829,
+     "dirErrorDeg": 0.004130477214630446
+    },
+    {
+     "label": "face-back",
+     "player": [
+      -35.709007263183594,
+      5.618827819824219,
+      40.84914016723633
+     ],
+     "facingRad": -0.9272952180016123,
+     "grounded": true,
+     "pixels": 29054,
+     "silhouettePixels": 16266,
+     "centroid": [
+      -33.45041339030587,
+      39.23768440942646
+     ],
+     "dirDeg": -35.50700059140701,
+     "contactGap_m": 0.003979962846671789,
+     "length_m": 4.783220489910702,
+     "widthStd_m": 0.13463058012075696,
+     "alongStd_m": 1.330512246225547,
+     "screenDirDeg": 1.089672029230038,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/body-face-back-mask.png",
+     "expectedDirDeg": -35.83765295427829,
+     "dirErrorDeg": 0.3306523628713194
+    },
+    {
+     "label": "face-left",
+     "player": [
+      -36.034156799316406,
+      5.618827819824219,
+      41.09126663208008
+     ],
+     "facingRad": -2.498091544796509,
+     "grounded": true,
+     "pixels": 40824,
+     "silhouettePixels": 12347,
+     "centroid": [
+      -33.98528875533519,
+      39.62684640608623
+     ],
+     "dirDeg": -35.555136574978306,
+     "contactGap_m": 0.011479091952822162,
+     "length_m": 4.780681334914157,
+     "widthStd_m": 0.16677645464354132,
+     "alongStd_m": 1.2745337988856833,
+     "screenDirDeg": 1.0511048145717963,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/body-face-left-mask.png",
+     "expectedDirDeg": -35.83765295427829,
+     "dirErrorDeg": 0.2825163792999774
+    },
+    {
+     "label": "walk+180ms",
+     "player": [
+      -35.933189392089844,
+      5.621805667877197,
+      41.01445007324219
+     ],
+     "facingRad": 0.6435011087932844,
+     "pixels": 39796,
+     "silhouettePixels": 13818,
+     "centroid": [
+      -33.82051638205636,
+      39.49404733926687
+     ],
+     "dirDeg": -35.74099254989381,
+     "contactGap_m": 0.003525667060191971,
+     "length_m": 4.867020318703152,
+     "widthStd_m": 0.16642415038199762,
+     "alongStd_m": 1.3056390116475234,
+     "screenDirDeg": 0.9021878372364625,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/body-walk-180-mask.png",
+     "dirErrorDeg": 0.09666040438446544
+    },
+    {
+     "label": "walk+420ms",
+     "player": [
+      -35.34933853149414,
+      5.629317760467529,
+      40.56939697265625
+     ],
+     "facingRad": 0.6435011087932844,
+     "pixels": 39634,
+     "silhouettePixels": 14177,
+     "centroid": [
+      -33.119085195441585,
+      38.98989812793796
+     ],
+     "dirDeg": -35.30669804186405,
+     "contactGap_m": 0.0719245445898682,
+     "length_m": 4.981845868721079,
+     "widthStd_m": 0.16680891209389226,
+     "alongStd_m": 1.2914669091899278,
+     "screenDirDeg": 1.248216482854837,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/body-walk-420-mask.png",
+     "dirErrorDeg": 0.530954912414245
+    },
+    {
+     "label": "walk+660ms",
+     "player": [
+      -34.71195983886719,
+      5.636382579803467,
+      40.07451629638672
+     ],
+     "facingRad": 0.6435011087932844,
+     "pixels": 40344,
+     "silhouettePixels": 13607,
+     "centroid": [
+      -32.5555587389135,
+      38.54467394273376
+     ],
+     "dirDeg": -35.35350524016509,
+     "contactGap_m": 0.04161501749964124,
+     "length_m": 4.940265369713753,
+     "widthStd_m": 0.16625657458709897,
+     "alongStd_m": 1.3334042543050237,
+     "screenDirDeg": 1.210506976870491,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/body-walk-660-mask.png",
+     "dirErrorDeg": 0.4841477141131918
+    },
+    {
+     "label": "jump-ref",
+     "player": [
+      -36.08363342285156,
+      5.618875026702881,
+      41.10483169555664
+     ],
+     "facingRad": -2.498091544796509,
+     "grounded": true,
+     "pixels": 40624,
+     "silhouettePixels": 12872,
+     "centroid": [
+      -34.04001111757268,
+      39.640919469504134
+     ],
+     "dirDeg": -35.615240115621575,
+     "contactGap_m": 0.005295470269519051,
+     "length_m": 4.767555189542355,
+     "widthStd_m": 0.1662626363394787,
+     "alongStd_m": 1.2614609665574699,
+     "screenDirDeg": 1.0030775174861026,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/body-jump-ref-mask.png",
+     "expectedDirDeg": -35.83765295427829,
+     "dirErrorDeg": 0.22241283865673722
+    },
+    {
+     "label": "jump+140ms",
+     "player": [
+      -36.08404541015625,
+      6.164173126220703,
+      41.10513687133789
+     ],
+     "grounded": false,
+     "heightAboveTakeoff_m": 0.5452980995178223,
+     "centroidShiftFromGround_m": 1.4447606595611382,
+     "expectedShift_m": 1.5134478360038859,
+     "pixels": 40112,
+     "silhouettePixels": 13689,
+     "centroid": [
+      -32.87606289550873,
+      38.78502350633472
+     ],
+     "dirDeg": -35.87554681746587,
+     "contactGap_m": 1.403839037554788,
+     "length_m": 6.208489289227161,
+     "widthStd_m": 0.18796412609942073,
+     "alongStd_m": 1.2821634915353468,
+     "screenDirDeg": 0.8096153485002522,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/body-jump-140-mask.png"
+    },
+    {
+     "label": "jump+300ms",
+     "player": [
+      -36.08404541015625,
+      6.533681869506836,
+      41.10513687133789
+     ],
+     "grounded": false,
+     "heightAboveTakeoff_m": 0.9148068428039551,
+     "centroidShiftFromGround_m": 2.418970376270356,
+     "expectedShift_m": 2.539001030495875,
+     "pixels": 36474,
+     "silhouettePixels": 13561,
+     "centroid": [
+      -32.08855483179234,
+      38.211501390017965
+     ],
+     "dirDeg": -35.9129439327438,
+     "contactGap_m": 1.7763840072970842,
+     "length_m": 7.063328727653232,
+     "widthStd_m": 0.20079148932007274,
+     "alongStd_m": 1.2268488445018337,
+     "screenDirDeg": 0.8015236209245951,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/body-jump-300-mask.png"
+    }
+   ]
+  },
+  "orbit": {
+   "note": "standing still; camera orbited by mouse drag; sun fixed",
+   "cases": [
+    {
+     "cameraYawRad": 0.9272952180016123,
+     "cameraPitchRad": 0.7853981633974483,
+     "cameraDistance_m": 6.923397724565839,
+     "worldDirDeg": -35.4075713480534,
+     "screenDirDeg": 1.1690905847609414,
+     "contactGap_m": 0.08662602851059818,
+     "pixels": 40628,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/orbit-0-mask.png"
+    },
+    {
+     "cameraYawRad": 1.9722952180016113,
+     "cameraPitchRad": 0.7853981633974483,
+     "cameraDistance_m": 6.923397724565839,
+     "worldDirDeg": -35.53093206296961,
+     "screenDirDeg": -52.565530586797,
+     "contactGap_m": 0.011806091275916161,
+     "pixels": 21950,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/orbit-1-mask.png"
+    },
+    {
+     "cameraYawRad": 3.017295218001613,
+     "cameraPitchRad": 0.7853981633974483,
+     "cameraDistance_m": 6.923397724565839,
+     "worldDirDeg": -35.81420233965395,
+     "screenDirDeg": -124.39735233301494,
+     "contactGap_m": 0.017681500470603236,
+     "pixels": 21464,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/orbit-2-mask.png"
+    },
+    {
+     "cameraYawRad": 4.062295218001615,
+     "cameraPitchRad": 1.1153981633974484,
+     "cameraDistance_m": 6.923397724565839,
+     "worldDirDeg": -35.94618611111008,
+     "screenDirDeg": -178.78627256449232,
+     "contactGap_m": 0.08329951113296623,
+     "pixels": 42770,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/orbit-3-mask.png"
+    },
+    {
+     "cameraYawRad": 5.1072952180016165,
+     "cameraPitchRad": 1.1153981633974484,
+     "cameraDistance_m": 6.923397724565839,
+     "worldDirDeg": -35.455449007940125,
+     "screenDirDeg": 123.73950363456069,
+     "contactGap_m": 0.018525829236309386,
+     "pixels": 40572,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/orbit-4-mask.png"
+    },
+    {
+     "cameraYawRad": 6.152295218001618,
+     "cameraPitchRad": 1.1153981633974484,
+     "cameraDistance_m": 6.923397724565839,
+     "worldDirDeg": -35.873501854074576,
+     "screenDirDeg": 59.92231720911767,
+     "contactGap_m": 0.01470664663745086,
+     "pixels": 39282,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/orbit-5-mask.png"
+    }
+   ],
+   "screenDirectionTravelDeg": 301.24677337564333,
+   "worldDirectionMaxDevDeg": 0.43008160622491687
+  },
+  "fire": {
+   "note": "night via settings dialog; fire key light shadow only (sun shadow intensity 0 during capture)",
+   "cases": [
+    {
+     "station": 0,
+     "walk": {
+      "target": [
+       -41.53330952441688,
+       33.26683332908185
+      ],
+      "at": [
+       -41.3661003112793,
+       5.619187831878662,
+       33.41838836669922
+      ],
+      "reached": true,
+      "seconds": 2.502
+     },
+     "player": [
+      -41.366085052490234,
+      5.619140148162842,
+      33.41820526123047
+     ],
+     "fireToPlayerDeg": 79.49371168212596,
+     "shadowDirDeg": 80.02220236260072,
+     "errorDeg": 0.5284906804747607,
+     "pixels": 4330,
+     "contactGap_m": 0.10246776813722198,
+     "length_m": 2.6284651858000703,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/fire-0-mask.png"
+    },
+    {
+     "station": 1,
+     "walk": {
+      "target": [
+       -43.2292508569817,
+       33.062505890706134
+      ],
+      "at": [
+       -43.09781265258789,
+       5.622859477996826,
+       33.189422607421875
+      ],
+      "reached": true,
+      "seconds": 1.014
+     },
+     "player": [
+      -43.09804153442383,
+      5.622811794281006,
+      33.189327239990234
+     ],
+     "fireToPlayerDeg": 108.99788153647262,
+     "shadowDirDeg": 110.52890567752854,
+     "errorDeg": 1.5310241410559229,
+     "pixels": 3634,
+     "contactGap_m": 0.006907270390435018,
+     "length_m": 2.6786210752881017,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/fire-1-mask.png"
+    },
+    {
+     "station": 2,
+     "walk": {
+      "target": [
+       -44.59581541512301,
+       32.03758247210015
+      ],
+      "at": [
+       -44.42673110961914,
+       5.628320693969727,
+       32.25775146484375
+      ],
+      "reached": true,
+      "seconds": 0.971
+     },
+     "player": [
+      -44.42673110961914,
+      5.628320693969727,
+      32.25775146484375
+     ],
+     "fireToPlayerDeg": 137.06588972172784,
+     "shadowDirDeg": 140.83894657983265,
+     "errorDeg": 3.7730568581048374,
+     "pixels": 4178,
+     "contactGap_m": 0.006495664593862106,
+     "length_m": 2.552012319214046,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/fire-2-mask.png"
+    },
+    {
+     "station": 3,
+     "walk": {
+      "target": [
+       -45.26683332908185,
+       30.46669047558312
+      ],
+      "at": [
+       -45.1672248840332,
+       5.629128932952881,
+       30.612621307373047
+      ],
+      "reached": true,
+      "seconds": 1.003
+     },
+     "player": [
+      -45.1672248840332,
+      5.629128932952881,
+      30.612621307373047
+     ],
+     "fireToPlayerDeg": 169.0527372571041,
+     "shadowDirDeg": 168.4157408926547,
+     "errorDeg": -0.6369963644493737,
+     "pixels": 4006,
+     "contactGap_m": 0.15710298736884892,
+     "length_m": 2.6150851656303615,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/fire-3-mask.png"
+    },
+    {
+     "station": 4,
+     "walk": {
+      "target": [
+       -45.062505890706134,
+       28.7707491430183
+      ],
+      "at": [
+       -44.95369338989258,
+       5.62781286239624,
+       29.007719039916992
+      ],
+      "reached": true,
+      "seconds": 0.935
+     },
+     "player": [
+      -44.95364761352539,
+      5.627788066864014,
+      29.007543563842773
+     ],
+     "fireToPlayerDeg": -161.42711396989418,
+     "shadowDirDeg": -160.90243779502777,
+     "errorDeg": 0.5246761748663857,
+     "pixels": 3068,
+     "contactGap_m": 0.10335841634683932,
+     "length_m": 2.6773735870224873,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/fire-4-mask.png"
+    },
+    {
+     "station": 5,
+     "walk": {
+      "target": [
+       -44.03758247210015,
+       27.40418458487699
+      ],
+      "at": [
+       -44.15972137451172,
+       5.628114700317383,
+       27.551729202270508
+      ],
+      "reached": true,
+      "seconds": 0.963
+     },
+     "player": [
+      -44.15972137451172,
+      5.628114700317383,
+      27.551729202270508
+     ],
+     "fireToPlayerDeg": -131.41685466911716,
+     "shadowDirDeg": -131.7101690049944,
+     "errorDeg": -0.29331433587731226,
+     "pixels": 1992,
+     "contactGap_m": 0.18463842187073265,
+     "length_m": 2.870283612610133,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/fire-5-mask.png"
+    },
+    {
+     "station": 6,
+     "walk": {
+      "target": [
+       -42.46669047558312,
+       26.733166670918152
+      ],
+      "at": [
+       -42.61996078491211,
+       5.630529403686523,
+       26.79424285888672
+      ],
+      "reached": true,
+      "seconds": 0.961
+     },
+     "player": [
+      -42.61996078491211,
+      5.630529403686523,
+      26.79424285888672
+     ],
+     "fireToPlayerDeg": -100.94530501190022,
+     "shadowDirDeg": -98.2827751999987,
+     "errorDeg": 2.6625298119015497,
+     "pixels": 2198,
+     "contactGap_m": 0.2661648560291606,
+     "length_m": 2.324292501178842,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/fire-6-mask.png"
+    },
+    {
+     "station": 7,
+     "walk": {
+      "target": [
+       -40.7707491430183,
+       26.93749410929387
+      ],
+      "at": [
+       -41.00941848754883,
+       5.632343292236328,
+       27.01296615600586
+      ],
+      "reached": true,
+      "seconds": 0.928
+     },
+     "player": [
+      -41.00941848754883,
+      5.632343292236328,
+      27.01296615600586
+     ],
+     "fireToPlayerDeg": -71.6530776997312,
+     "shadowDirDeg": -69.70946306244558,
+     "errorDeg": 1.9436146372855774,
+     "pixels": 2898,
+     "contactGap_m": 0.14291229313269915,
+     "length_m": 2.4823169199141986,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/fire-7-mask.png"
+    },
+    {
+     "station": 8,
+     "walk": {
+      "target": [
+       -39.404184584876994,
+       27.96241752789985
+      ],
+      "at": [
+       -39.60586929321289,
+       5.618901252746582,
+       27.869184494018555
+      ],
+      "reached": true,
+      "seconds": 0.969
+     },
+     "player": [
+      -39.60586929321289,
+      5.618901252746582,
+      27.869184494018555
+     ],
+     "fireToPlayerDeg": -41.66960578556933,
+     "shadowDirDeg": -42.00483998247171,
+     "errorDeg": -0.33523419690232004,
+     "pixels": 3414,
+     "contactGap_m": 0.06286728046171608,
+     "length_m": 2.6879122952746606,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/fire-8-mask.png"
+    },
+    {
+     "station": 9,
+     "walk": {
+      "target": [
+       -38.73316667091815,
+       29.53330952441688
+      ],
+      "at": [
+       -38.752357482910156,
+       5.618901252746582,
+       29.31277847290039
+      ],
+      "reached": true,
+      "seconds": 0.965
+     },
+     "player": [
+      -38.752357482910156,
+      5.618901252746582,
+      29.31277847290039
+     ],
+     "fireToPlayerDeg": -11.94789599945497,
+     "shadowDirDeg": -11.924993261065275,
+     "errorDeg": 0.022902738389689148,
+     "pixels": 3942,
+     "contactGap_m": 0.14015951933211154,
+     "length_m": 2.554375407779883,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/fire-9-mask.png"
+    },
+    {
+     "station": 10,
+     "walk": {
+      "target": [
+       -38.937494109293866,
+       31.2292508569817
+      ],
+      "at": [
+       -38.99674987792969,
+       5.6192097663879395,
+       31.082298278808594
+      ],
+      "reached": true,
+      "seconds": 0.978
+     },
+     "player": [
+      -38.99674987792969,
+      5.6192097663879395,
+      31.082298278808594
+     ],
+     "fireToPlayerDeg": 19.817928941462227,
+     "shadowDirDeg": 19.666986886011102,
+     "errorDeg": -0.15094205545108252,
+     "pixels": 4252,
+     "contactGap_m": 0.07933521890960982,
+     "length_m": 2.839742252913727,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/fire-10-mask.png"
+    },
+    {
+     "station": 11,
+     "walk": {
+      "target": [
+       -39.96241752789985,
+       32.595815415123006
+      ],
+      "at": [
+       -39.86106872558594,
+       5.6194682121276855,
+       32.4822883605957
+      ],
+      "reached": true,
+      "seconds": 0.964
+     },
+     "player": [
+      -39.86106872558594,
+      5.6194682121276855,
+      32.4822883605957
+     ],
+     "fireToPlayerDeg": 49.24927430955528,
+     "shadowDirDeg": 49.292841779941796,
+     "errorDeg": 0.0435674703865061,
+     "pixels": 3732,
+     "contactGap_m": 0.05146061621714232,
+     "length_m": 3.115288838608054,
+     "mask": "docs/world/quality-v3/shadows-v4/v41/evidence/fire-11-mask.png"
+    }
+   ],
+   "fireInfo": {
+    "found": true,
+    "name": "camp-fire-key",
+    "mapSize": 1024,
+    "distanceToFocus_m": 12.582630235377724,
+    "mode": "every-frame",
+    "dynamicInRange": true,
+    "renders": 2765,
+    "near_m": 0.3,
+    "far_m": 26,
+    "bias": -0.004,
+    "normalBias": 0.03,
+    "intensity": 29.188909930697033,
+    "renderedThisFrame": true,
+    "light": "night",
+    "position": [
+     -42,
+     6.5,
+     30
+    ]
+   },
+   "shadowDirectionSweepDeg": 329.27063941734093,
+   "maxAbsErrorDeg": 3.7730568581048374
+  },
+  "occlusion": {
+   "cases": [
+    {
+     "label": "tree-G17",
+     "occluder": "G17 crown at (-51.9, 8.6, 45)",
+     "route": [
+      [
+       -53.95,
+       42.45
+      ]
+     ],
+     "walk": [
+      {
+       "target": [
+        -53.95,
+        42.45
+       ],
+       "at": [
+        -53.97228240966797,
+        5.640926837921143,
+        42.47169876098633
+       ],
+       "reached": true,
+       "seconds": 3.985
+      }
+     ],
+     "off": {
+      "blockers": [],
+      "fades": [],
+      "visiblePixels": 1231,
+      "shot": "docs/world/quality-v3/shadows-v4/v41/evidence/occ-tree-G17-nofade.png",
+      "camera": {
+       "yaw": 7.19729521800162,
+       "pitch": 1.1153981633974484,
+       "distance": 11.999999999999996,
+       "desiredDistance": 11.999999999999996,
+       "driveManualZoom": false,
+       "actualDistance": 11.999999999999996,
+       "firstPerson": false,
+       "preset": 1,
+       "collided": false,
+       "hitDistance": null,
+       "fov": 50,
+       "mode": "walk",
+       "recentering": false,
+       "position": [
+        -50.74802793438319,
+        17.066124466373022,
+        46.58997858957588
+       ],
+       "target": [
+        -53.97012652289233,
+        6.289092716299762,
+        42.409826996171624
+       ],
+       "forwardGround": [
+        -0.6104957851647962,
+        -0.792019504997206
+       ],
+       "groundBelowCamera": 4.825714111328125,
+       "clearanceAboveGround": 12.240410355044897,
+       "gamepad": false,
+       "nearPlaneOverlaps": []
+      },
+      "player": [
+       -53.96989440917969,
+       5.639045238494873,
+       42.40769577026367
+      ],
+      "occlusionStats": {
+       "candidates": 87,
+       "tested": 0,
+       "rays": 0,
+       "ms": 0
+      }
+     },
+     "on": {
+      "blockers": [
+       "camp-mesh-G17-crown_3",
+       "camp-mesh-G17-crown_2",
+       "camp-mesh-G17-crown_1",
+       "camp-mesh-G17-trunk"
+      ],
+      "fades": [
+       {
+        "name": "camp-mesh-G17-crown_3",
+        "amount": 0.9997751326758211,
+        "scope": "view corridor only"
+       },
+       {
+        "name": "camp-mesh-G17-crown_2",
+        "amount": 0.9997751326758211,
+        "scope": "view corridor only"
+       },
+       {
+        "name": "camp-mesh-G17-crown_1",
+        "amount": 0.9997751326758211,
+        "scope": "view corridor only"
+       },
+       {
+        "name": "camp-mesh-G17-trunk",
+        "amount": 0.9997751326758211,
+        "scope": "view corridor only"
+       }
+      ],
+      "visiblePixels": 3744,
+      "shot": "docs/world/quality-v3/shadows-v4/v41/evidence/occ-tree-G17-fade.png",
+      "camera": {
+       "yaw": 7.19729521800162,
+       "pitch": 1.1153981633974484,
+       "distance": 11.999999999999996,
+       "desiredDistance": 11.999999999999996,
+       "driveManualZoom": false,
+       "actualDistance": 11.999999999999996,
+       "firstPerson": false,
+       "preset": 1,
+       "collided": false,
+       "hitDistance": null,
+       "fov": 50,
+       "mode": "walk",
+       "recentering": false,
+       "position": [
+        -50.74559367432468,
+        17.06562654954284,
+        46.56762765631037
+       ],
+       "target": [
+        -53.96769226283382,
+        6.288594799469582,
+        42.38747606290612
+       ],
+       "forwardGround": [
+        -0.6104957851647962,
+        -0.792019504997206
+       ],
+       "groundBelowCamera": 4.8255615234375,
+       "clearanceAboveGround": 12.240065026105341,
+       "gamepad": false,
+       "nearPlaneOverlaps": []
+      },
+      "player": [
+       -53.96746063232422,
+       5.638547420501709,
+       42.38534927368164
+      ],
+      "occlusionStats": {
+       "candidates": 87,
+       "tested": 33,
+       "rays": 4,
+       "ms": 1.5
+      }
+     }
+    },
+    {
+     "label": "tree-G16",
+     "occluder": "G16 crown at (-29, 8.9, 17)",
+     "route": [
+      [
+       -31,
+       14.4
+      ]
+     ],
+     "walk": [
+      {
+       "target": [
+        -31,
+        14.4
+       ],
+       "at": [
+        -30.95567512512207,
+        5.6190900802612305,
+        14.51276969909668
+       ],
+       "reached": true,
+       "seconds": 10.235
+      }
+     ],
+     "off": {
+      "blockers": [],
+      "fades": [],
+      "visiblePixels": 1293,
+      "shot": "docs/world/quality-v3/shadows-v4/v41/evidence/occ-tree-G16-nofade.png",
+      "camera": {
+       "yaw": 7.19729521800162,
+       "pitch": 1.1153981633974484,
+       "distance": 11.999999999999996,
+       "desiredDistance": 11.999999999999996,
+       "driveManualZoom": false,
+       "actualDistance": 11.999999999999996,
+       "firstPerson": false,
+       "preset": 1,
+       "collided": false,
+       "hitDistance": null,
+       "fov": 50,
+       "mode": "walk",
+       "recentering": false,
+       "position": [
+        -27.73306536717942,
+        17.045859569897495,
+        18.692127835469826
+       ],
+       "target": [
+        -30.955163955688565,
+        6.2688278198242315,
+        14.511976242065572
+       ],
+       "forwardGround": [
+        -0.610495785164797,
+        -0.7920195049972054
+       ],
+       "groundBelowCamera": 4.8278350830078125,
+       "clearanceAboveGround": 12.218024486889682,
+       "gamepad": false,
+       "nearPlaneOverlaps": []
+      },
+      "player": [
+       -30.955163955688477,
+       5.618827819824219,
+       14.51197624206543
+      ],
+      "occlusionStats": {
+       "candidates": 87,
+       "tested": 0,
+       "rays": 0,
+       "ms": 0
+      }
+     },
+     "on": {
+      "blockers": [
+       "camp-mesh-G16-crown_3",
+       "camp-mesh-G16-crown_2",
+       "camp-mesh-G16-crown_1",
+       "camp-mesh-G16-trunk"
+      ],
+      "fades": [
+       {
+        "name": "camp-mesh-G16-crown_3",
+        "amount": 0.9997756717102669,
+        "scope": "view corridor only"
+       },
+       {
+        "name": "camp-mesh-G16-crown_2",
+        "amount": 0.9997756717102669,
+        "scope": "view corridor only"
+       },
+       {
+        "name": "camp-mesh-G16-crown_1",
+        "amount": 0.9997756717102669,
+        "scope": "view corridor only"
+       },
+       {
+        "name": "camp-mesh-G16-trunk",
+        "amount": 0.9997756717102669,
+        "scope": "view corridor only"
+       }
+      ],
+      "visiblePixels": 3471,
+      "shot": "docs/world/quality-v3/shadows-v4/v41/evidence/occ-tree-G16-fade.png",
+      "camera": {
+       "yaw": 7.19729521800162,
+       "pitch": 1.1153981633974484,
+       "distance": 11.999999999999996,
+       "desiredDistance": 11.999999999999996,
+       "driveManualZoom": false,
+       "actualDistance": 11.999999999999996,
+       "firstPerson": false,
+       "preset": 1,
+       "collided": false,
+       "hitDistance": null,
+       "fov": 50,
+       "mode": "walk",
+       "recentering": false,
+       "position": [
+        -27.73306536717934,
+        17.04585956989748,
+        18.69212783546969
+       ],
+       "target": [
+        -30.955163955688484,
+        6.268827819824221,
+        14.511976242065435
+       ],
+       "forwardGround": [
+        -0.6104957851647966,
+        -0.7920195049972055
+       ],
+       "groundBelowCamera": 4.8278350830078125,
+       "clearanceAboveGround": 12.218024486889668,
+       "gamepad": false,
+       "nearPlaneOverlaps": []
+      },
+      "player": [
+       -30.955163955688477,
+       5.618827819824219,
+       14.51197624206543
+      ],
+      "occlusionStats": {
+       "candidates": 87,
+       "tested": 28,
+       "rays": 4,
+       "ms": 2.300000011920929
+      }
+     }
+    },
+    {
+     "label": "tent-C04",
+     "occluder": "C04 shell at (-51, 6.0, 12.5), ridge 7.2 m",
+     "route": [
+      [
+       -46.3,
+       17
+      ],
+      [
+       -46.3,
+       10.4
+      ],
+      [
+       -51,
+       10.4
+      ]
+     ],
+     "walk": [
+      {
+       "target": [
+        -46.3,
+        17
+       ],
+       "at": [
+        -46.25617218017578,
+        5.634053707122803,
+        17.09831428527832
+       ],
+       "reached": true,
+       "seconds": 3.918
+      },
+      {
+       "target": [
+        -46.3,
+        10.4
+       ],
+       "at": [
+        -46.181888580322266,
+        5.633735179901123,
+        10.425265312194824
+       ],
+       "reached": true,
+       "seconds": 2.148
+      },
+      {
+       "target": [
+        -51,
+        10.4
+       ],
+       "at": [
+        -50.96757125854492,
+        5.618852615356445,
+        10.311928749084473
+       ],
+       "reached": true,
+       "seconds": 1.751
+      }
+     ],
+     "off": {
+      "blockers": [],
+      "fades": [],
+      "visiblePixels": 1104,
+      "shot": "docs/world/quality-v3/shadows-v4/v41/evidence/occ-tent-C04-nofade.png",
+      "camera": {
+       "yaw": 7.85398192454459,
+       "pitch": 1.0999999090029169,
+       "distance": 18.632486622136025,
+       "desiredDistance": 18.632486622136025,
+       "driveManualZoom": false,
+       "actualDistance": 18.632486526439333,
+       "firstPerson": false,
+       "preset": 1,
+       "collided": false,
+       "hitDistance": null,
+       "fov": 50,
+       "mode": "walk",
+       "recentering": false,
+       "position": [
+        -50.96836717136577,
+        22.87423617935932,
+        18.76355388103508
+       ],
+       "target": [
+        -50.96836471557615,
+        6.268827819824222,
+        10.311928749084467
+       ],
+       "forwardGround": [
+        2.9057010708813357e-7,
+        -0.9999999999999578
+       ],
+       "groundBelowCamera": 4.8113250732421875,
+       "clearanceAboveGround": 18.06291110611713,
+       "gamepad": false,
+       "nearPlaneOverlaps": []
+      },
+      "player": [
+       -50.96836471557617,
+       5.618827819824219,
+       10.311928749084473
+      ],
+      "occlusionStats": {
+       "candidates": 87,
+       "tested": 0,
+       "rays": 0,
+       "ms": 0
+      }
+     },
+     "on": {
+      "blockers": [
+       "camp-mesh-C04-C04_mesh_1",
+       "camp-mesh-C04-C04_mesh",
+       "camp-mesh-C04-C04_mesh_4",
+       "camp-mesh-C04-C04_mesh_2",
+       "camp-mesh-C04-C04_mesh_3"
+      ],
+      "fades": [
+       {
+        "name": "camp-mesh-C04-C04_mesh_1",
+        "amount": 0.9997751326758211,
+        "scope": "view corridor only"
+       },
+       {
+        "name": "camp-mesh-C04-C04_mesh",
+        "amount": 0.9997751326758211,
+        "scope": "view corridor only"
+       },
+       {
+        "name": "camp-mesh-C04-C04_mesh_4",
+        "amount": 0.9997751326758211,
+        "scope": "view corridor only"
+       },
+       {
+        "name": "camp-mesh-C04-C04_mesh_2",
+        "amount": 0.9997751326758211,
+        "scope": "view corridor only"
+       },
+       {
+        "name": "camp-mesh-C04-C04_mesh_3",
+        "amount": 0.9997751326758211,
+        "scope": "view corridor only"
+       }
+      ],
+      "visiblePixels": 1507,
+      "shot": "docs/world/quality-v3/shadows-v4/v41/evidence/occ-tent-C04-fade.png",
+      "camera": {
+       "yaw": 7.85398192454459,
+       "pitch": 1.0999999090029169,
+       "distance": 18.632486622136025,
+       "desiredDistance": 18.632486622136025,
+       "driveManualZoom": false,
+       "actualDistance": 18.63248662013435,
+       "firstPerson": false,
+       "preset": 1,
+       "collided": false,
+       "hitDistance": null,
+       "fov": 50,
+       "mode": "walk",
+       "recentering": false,
+       "position": [
+        -50.96836717136579,
+        22.874236262861004,
+        18.763553923534786
+       ],
+       "target": [
+        -50.96836471557616,
+        6.268827819824221,
+        10.311928749084469
+       ],
+       "forwardGround": [
+        2.9057010730841195e-7,
+        -0.9999999999999578
+       ],
+       "groundBelowCamera": 4.8113250732421875,
+       "clearanceAboveGround": 18.062911189618816,
+       "gamepad": false,
+       "nearPlaneOverlaps": []
+      },
+      "player": [
+       -50.96836471557617,
+       5.618827819824219,
+       10.311928749084473
+      ],
+      "occlusionStats": {
+       "candidates": 87,
+       "tested": 26,
+       "rays": 4,
+       "ms": 0.3999999761581421
+      }
+     }
+    },
+    {
+     "label": "tent-C03",
+     "occluder": "C03 shell at (-42, 6.4, 12.5), ridge 7.9 m",
+     "route": [
+      [
+       -46.3,
+       17
+      ],
+      [
+       -46.3,
+       10
+      ],
+      [
+       -42,
+       10
+      ]
+     ],
+     "walk": [
+      {
+       "target": [
+        -46.3,
+        17
+       ],
+       "at": [
+        -46.20352554321289,
+        5.6335649490356445,
+        16.923587799072266
+       ],
+       "reached": true,
+       "seconds": 2.658
+      },
+      {
+       "target": [
+        -46.3,
+        10
+       ],
+       "at": [
+        -46.227577209472656,
+        5.636675834655762,
+        10.062837600708008
+       ],
+       "reached": true,
+       "seconds": 2.1
+      },
+      {
+       "target": [
+        -42,
+        10
+       ],
+       "at": [
+        -42.004783630371094,
+        5.619078159332275,
+        10.048735618591309
+       ],
+       "reached": true,
+       "seconds": 1.662
+      }
+     ],
+     "off": {
+      "blockers": [],
+      "fades": [],
+      "visiblePixels": 160183,
+      "shot": "docs/world/quality-v3/shadows-v4/v41/evidence/occ-tent-C03-nofade.png",
+      "camera": {
+       "yaw": 7.853981588851231,
+       "pitch": 1.1999999395204943,
+       "distance": 18.632486622136025,
+       "desiredDistance": 18.632486622136025,
+       "driveManualZoom": false,
+       "actualDistance": 1.5311587632166066,
+       "firstPerson": false,
+       "preset": 1,
+       "collided": true,
+       "hitDistance": 1.5811723470687866,
+       "fov": 50,
+       "mode": "walk",
+       "recentering": false,
+       "position": [
+        -42.003974889515185,
+        7.695927600407655,
+        10.60355532669352
+       ],
+       "target": [
+        -42.003974914550795,
+        6.268827819824221,
+        10.048727989196781
+       ],
+       "forwardGround": [
+        -4.512324686571338e-8,
+        -0.9999999999999991
+       ],
+       "groundBelowCamera": 4.8000030517578125,
+       "clearanceAboveGround": 2.895924548649843,
+       "gamepad": false,
+       "nearPlaneOverlaps": []
+      },
+      "player": [
+       -42.00397491455078,
+       5.618827819824219,
+       10.048727989196777
+      ],
+      "occlusionStats": {
+       "candidates": 87,
+       "tested": 0,
+       "rays": 0,
+       "ms": 0
+      }
+     },
+     "on": {
+      "blockers": [],
+      "fades": [],
+      "visiblePixels": 159896,
+      "shot": "docs/world/quality-v3/shadows-v4/v41/evidence/occ-tent-C03-fade.png",
+      "camera": {
+       "yaw": 7.853981588851231,
+       "pitch": 1.1999999395204943,
+       "distance": 18.632486622136025,
+       "desiredDistance": 18.632486622136025,
+       "driveManualZoom": false,
+       "actualDistance": 1.531172079804762,
+       "firstPerson": false,
+       "preset": 1,
+       "collided": true,
+       "hitDistance": 1.5811723470687866,
+       "fov": 50,
+       "mode": "walk",
+       "recentering": false,
+       "position": [
+        -42.003974889514964,
+        7.695940011988016,
+        10.603560152063253
+       ],
+       "target": [
+        -42.003974914550795,
+        6.268827819824221,
+        10.048727989196781
+       ],
+       "forwardGround": [
+        -4.5123251429072597e-8,
+        -0.9999999999999991
+       ],
+       "groundBelowCamera": 4.8000030517578125,
+       "clearanceAboveGround": 2.8959369602302036,
+       "gamepad": false,
+       "nearPlaneOverlaps": []
+      },
+      "player": [
+       -42.00397491455078,
+       5.618827819824219,
+       10.048727989196777
+      ],
+      "occlusionStats": {
+       "candidates": 87,
+       "tested": 37,
+       "rays": 4,
+       "ms": 0.5
+      }
+     }
+    }
+   ]
+  },
+  "drive": {
+   "fixtures": [
+    {
+     "teleportVehicle": [
+      "offroad",
+      [
+       -29,
+       6.02,
+       21.6
+      ],
+      -1.5707963267948966
+     ]
+    },
+    {
+     "teleportPlayer": [
+      -27.2,
+      5.8,
+      21.6
+     ]
+    }
+   ],
+   "frames": [
+    {
+     "label": "parked-after-entry",
+     "off": {
+      "visiblePixels": 163673,
+      "shot": "docs/world/quality-v3/shadows-v4/v41/evidence/drive-parked-after-entry-nofade.png",
+      "occ": {
+       "blockers": [],
+       "fades": [],
+       "corridor_m": [
+        1.9,
+        2.5
+       ],
+       "candidates": 87,
+       "tested": 0,
+       "rays": 0,
+       "ms": 0
+      },
+      "camera": {
+       "yaw": 10.97007648632186,
+       "pitch": 0.3071157788823232,
+       "distance": 18.632486622136025,
+       "desiredDistance": 18.63261070232935,
+       "driveManualZoom": false,
+       "actualDistance": 4.670961753883264,
+       "firstPerson": false,
+       "preset": 1,
+       "collided": true,
+       "hitDistance": 4.721076965332031,
+       "fov": 54.99803704965638,
+       "mode": "drive",
+       "recentering": false,
+       "position": [
+        -29.11359558491008,
+        8.089586908656331,
+        17.15442723620371
+       ],
+       "target": [
+        -29.000081349351564,
+        6.677505514356196,
+        21.605384926458377
+       ],
+       "forwardGround": [
+        0.02549503848453622,
+        0.9996749486771547
+       ],
+       "groundBelowCamera": 4.8254547119140625,
+       "clearanceAboveGround": 3.2641321967422687,
+       "gamepad": false,
+       "nearPlaneOverlaps": []
+      },
+      "car": {
+       "active": "offroad",
+       "v": {
+        "id": "offroad",
+        "position": [
+         -29.00016212463379,
+         5.867504119873047,
+         21.605426788330078
+        ],
+        "velocity": [
+         -0.0007479205378331244,
+         -0.061200112104415894,
+         0.00035337917506694794
+        ],
+        "mass": 1400,
+        "wheelContacts": [
+         true,
+         true,
+         true,
+         true
+        ],
+        "upsideDownSeconds": 0,
+        "waterSeconds": 0,
+        "steering": 0,
+        "steerInput": 0,
+        "throttleInput": 0
+       }
+      }
+     },
+     "on": {
+      "visiblePixels": 464491,
+      "shot": "docs/world/quality-v3/shadows-v4/v41/evidence/drive-parked-after-entry-fade.png",
+      "occ": {
+       "blockers": [
+        "camp-mesh-G16-crown_1",
+        "camp-mesh-G16-crown_2",
+        "camp-mesh-G16-crown_3",
+        "camp-mesh-G16-trunk"
+       ],
+       "fades": [
+        {
+         "name": "camp-mesh-G16-crown_1",
+         "amount": 0.9975212478233336,
+         "scope": "view corridor only"
+        },
+        {
+         "name": "camp-mesh-G16-crown_2",
+         "amount": 0.9975212478233336,
+         "scope": "view corridor only"
+        },
+        {
+         "name": "camp-mesh-G16-crown_3",
+         "amount": 0.9975212478233336,
+         "scope": "view corridor only"
+        },
+        {
+         "name": "camp-mesh-G16-trunk",
+         "amount": 0.9975212478233336,
+         "scope": "view corridor only"
+        }
+       ],
+       "corridor_m": [
+        1.9,
+        2.5
+       ],
+       "candidates": 87,
+       "tested": 26,
+       "rays": 4,
+       "ms": 2.099999964237213
+      },
+      "camera": {
+       "yaw": 10.97007648632186,
+       "pitch": 0.3071157788823232,
+       "distance": 18.632486622136025,
+       "desiredDistance": 18.632610755401448,
+       "driveManualZoom": false,
+       "actualDistance": 4.671316302268685,
+       "firstPerson": false,
+       "preset": 1,
+       "collided": true,
+       "hitDistance": 4.721429824829102,
+       "fov": 54.99803704965638,
+       "mode": "drive",
+       "recentering": false,
+       "position": [
+        -29.1142876527291,
+        8.08968455408205,
+        17.15444023835572
+       ],
+       "target": [
+        -29.00076480089602,
+        6.677495976035865,
+        21.60573577763288
+       ],
+       "forwardGround": [
+        0.02549503848453651,
+        0.9996749486771547
+       ],
+       "groundBelowCamera": 4.825469970703125,
+       "clearanceAboveGround": 3.2642145833789247,
+       "gamepad": false,
+       "nearPlaneOverlaps": []
+      },
+      "car": {
+       "active": "offroad",
+       "v": {
+        "id": "offroad",
+        "position": [
+         -29.00084686279297,
+         5.867495059967041,
+         21.605777740478516
+        ],
+        "velocity": [
+         -0.0007485270616598427,
+         -0.06119978427886963,
+         0.00035292305983603
+        ],
+        "mass": 1400,
+        "wheelContacts": [
+         true,
+         true,
+         true,
+         true
+        ],
+        "upsideDownSeconds": 0,
+        "waterSeconds": 0,
+        "steering": 0,
+        "steerInput": 0,
+        "throttleInput": 0
+       }
+      }
+     }
+    },
+    {
+     "label": "after-creep",
+     "off": {
+      "visiblePixels": 0,
+      "shot": "docs/world/quality-v3/shadows-v4/v41/evidence/drive-after-creep-nofade.png",
+      "occ": {
+       "blockers": [],
+       "fades": [],
+       "corridor_m": [
+        1.9,
+        2.5
+       ],
+       "candidates": 87,
+       "tested": 0,
+       "rays": 0,
+       "ms": 0
+      },
+      "camera": {
+       "yaw": 10.985799651657235,
+       "pitch": 0.3021447750946334,
+       "distance": 18.632486622136025,
+       "desiredDistance": 18.633233884018168,
+       "driveManualZoom": false,
+       "actualDistance": 6.708543136904139,
+       "firstPerson": false,
+       "preset": 1,
+       "collided": true,
+       "hitDistance": 6.767099857330322,
+       "fov": 55.01083180525452,
+       "mode": "drive",
+       "recentering": false,
+       "position": [
+        -29.060219716465895,
+        8.662299506557826,
+        17.11584736322686
+       ],
+       "target": [
+        -28.997617598602535,
+        6.666048339190555,
+        23.520190676270552
+       ],
+       "forwardGround": [
+        0.00977448025728555,
+        0.9999522286267979
+       ],
+       "groundBelowCamera": 4.8251190185546875,
+       "clearanceAboveGround": 3.8371804880031384,
+       "gamepad": false,
+       "nearPlaneOverlaps": []
+      },
+      "car": {
+       "active": "offroad",
+       "v": {
+        "id": "offroad",
+        "position": [
+         -28.997623443603516,
+         5.85629415512085,
+         23.518978118896484
+        ],
+        "velocity": [
+         -0.00009876892727334052,
+         -0.059835635125637054,
+         -0.0049807666800916195
+        ],
+        "mass": 1400,
+        "wheelContacts": [
+         true,
+         true,
+         true,
+         true
+        ],
+        "upsideDownSeconds": 0,
+        "waterSeconds": 0,
+        "steering": 0,
+        "steerInput": 0,
+        "throttleInput": 0
+       }
+      }
+     },
+     "on": {
+      "visiblePixels": 369765,
+      "shot": "docs/world/quality-v3/shadows-v4/v41/evidence/drive-after-creep-fade.png",
+      "occ": {
+       "blockers": [
+        "camp-mesh-G16-crown_3",
+        "camp-mesh-G16-crown_2",
+        "camp-mesh-G16-crown_1",
+        "camp-mesh-G16-trunk"
+       ],
+       "fades": [
+        {
+         "name": "camp-mesh-G16-crown_3",
+         "amount": 0.9975093212108485,
+         "scope": "view corridor only"
+        },
+        {
+         "name": "camp-mesh-G16-crown_2",
+         "amount": 0.9975093212108485,
+         "scope": "view corridor only"
+        },
+        {
+         "name": "camp-mesh-G16-crown_1",
+         "amount": 0.9975093212108485,
+         "scope": "view corridor only"
+        },
+        {
+         "name": "camp-mesh-G16-trunk",
+         "amount": 0.9975093212108485,
+         "scope": "view corridor only"
+        }
+       ],
+       "corridor_m": [
+        1.9,
+        2.5
+       ],
+       "candidates": 87,
+       "tested": 25,
+       "rays": 4,
+       "ms": 2.400000035762787
+      },
+      "camera": {
+       "yaw": 10.985799651657235,
+       "pitch": 0.3021447750946334,
+       "distance": 18.632486622136025,
+       "desiredDistance": 18.632500272571004,
+       "driveManualZoom": false,
+       "actualDistance": 6.715519815140677,
+       "firstPerson": false,
+       "preset": 1,
+       "collided": true,
+       "hitDistance": 6.765916347503662,
+       "fov": 55.00082932185203,
+       "mode": "drive",
+       "recentering": false,
+       "position": [
+        -29.06029066293365,
+        8.664873491963744,
+        17.108045950885597
+       ],
+       "target": [
+        -28.99762344079588,
+        6.666546284867755,
+        23.51904958371849
+       ],
+       "forwardGround": [
+        0.00977448025728579,
+        0.9999522286267979
+       ],
+       "groundBelowCamera": 4.8251953125,
+       "clearanceAboveGround": 3.8396781794637445,
+       "gamepad": false,
+       "nearPlaneOverlaps": []
+      },
+      "car": {
+       "active": "offroad",
+       "v": {
+        "id": "offroad",
+        "position": [
+         -28.997623443603516,
+         5.85654878616333,
+         23.519062042236328
+        ],
+        "velocity": [
+         -0.0000014656892517450615,
+         -0.06118621304631233,
+         0.00009099109593080357
+        ],
+        "mass": 1400,
+        "wheelContacts": [
+         true,
+         true,
+         true,
+         true
+        ],
+        "upsideDownSeconds": 0,
+        "waterSeconds": 0,
+        "steering": 0,
+        "steerInput": 0,
+        "throttleInput": 0
+       }
+      }
+     }
+    }
+   ],
+   "track": [
+    {
+     "t": 0,
+     "p": [
+      -29.0010929107666,
+      5.867471218109131,
+      21.621158599853516
+     ],
+     "active": "offroad",
+     "blockers": [
+      "camp-mesh-G16-crown_1",
+      "camp-mesh-G16-crown_2",
+      "camp-mesh-G16-crown_3",
+      "camp-mesh-G16-trunk"
+     ],
+     "corridor": [
+      1.9,
+      2.5
+     ]
+    },
+    {
+     "t": 1,
+     "p": [
+      -29.001113891601562,
+      5.867325305938721,
+      21.651533126831055
+     ],
+     "active": "offroad",
+     "blockers": [
+      "camp-mesh-G16-crown_1",
+      "camp-mesh-G16-crown_2",
+      "camp-mesh-G16-crown_3",
+      "camp-mesh-G16-trunk"
+     ],
+     "corridor": [
+      1.9,
+      2.5
+     ]
+    },
+    {
+     "t": 2,
+     "p": [
+      -29.001094818115234,
+      5.867306709289551,
+      21.703950881958008
+     ],
+     "active": "offroad",
+     "blockers": [
+      "camp-mesh-G16-crown_2",
+      "camp-mesh-G16-crown_1",
+      "camp-mesh-G16-crown_3",
+      "camp-mesh-G16-trunk"
+     ],
+     "corridor": [
+      1.9,
+      2.5
+     ]
+    },
+    {
+     "t": 3,
+     "p": [
+      -29.00102424621582,
+      5.867183685302734,
+      21.76732635498047
+     ],
+     "active": "offroad",
+     "blockers": [
+      "camp-mesh-G16-crown_2",
+      "camp-mesh-G16-crown_1",
+      "camp-mesh-G16-crown_3",
+      "camp-mesh-G16-trunk"
+     ],
+     "corridor": [
+      1.9,
+      2.5
+     ]
+    },
+    {
+     "t": 4,
+     "p": [
+      -29.00060272216797,
+      5.866860389709473,
+      21.856477737426758
+     ],
+     "active": "offroad",
+     "blockers": [
+      "camp-mesh-G16-crown_2",
+      "camp-mesh-G16-crown_1",
+      "camp-mesh-G16-crown_3",
+      "camp-mesh-G16-trunk"
+     ],
+     "corridor": [
+      1.9,
+      2.5
+     ]
+    },
+    {
+     "t": 5,
+     "p": [
+      -29.000123977661133,
+      5.866387844085693,
+      21.953054428100586
+     ],
+     "active": "offroad",
+     "blockers": [
+      "camp-mesh-G16-crown_2",
+      "camp-mesh-G16-crown_1",
+      "camp-mesh-G16-crown_3",
+      "camp-mesh-G16-trunk"
+     ],
+     "corridor": [
+      1.9,
+      2.5
+     ]
+    },
+    {
+     "t": 6,
+     "p": [
+      -28.99941635131836,
+      5.865898132324219,
+      22.078580856323242
+     ],
+     "active": "offroad",
+     "blockers": [
+      "camp-mesh-G16-crown_2",
+      "camp-mesh-G16-crown_1",
+      "camp-mesh-G16-crown_3",
+      "camp-mesh-G16-trunk"
+     ],
+     "corridor": [
+      1.9,
+      2.5
+     ]
+    },
+    {
+     "t": 7,
+     "p": [
+      -28.998680114746094,
+      5.865322589874268,
+      22.207275390625
+     ],
+     "active": "offroad",
+     "blockers": [
+      "camp-mesh-G16-crown_2",
+      "camp-mesh-G16-crown_1",
+      "camp-mesh-G16-crown_3",
+      "camp-mesh-G16-trunk"
+     ],
+     "corridor": [
+      1.9,
+      2.5
+     ]
+    },
+    {
+     "t": 8,
+     "p": [
+      -28.998798370361328,
+      5.865132808685303,
+      22.367210388183594
+     ],
+     "active": "offroad",
+     "blockers": [
+      "camp-mesh-G16-crown_2",
+      "camp-mesh-G16-crown_1",
+      "camp-mesh-G16-crown_3",
+      "camp-mesh-G16-trunk"
+     ],
+     "corridor": [
+      1.9,
+      2.5
+     ]
+    },
+    {
+     "t": 9,
+     "p": [
+      -28.998977661132812,
+      5.865073204040527,
+      22.528100967407227
+     ],
+     "active": "offroad",
+     "blockers": [
+      "camp-mesh-G16-crown_2",
+      "camp-mesh-G16-crown_1",
+      "camp-mesh-G16-crown_3",
+      "camp-mesh-G16-trunk"
+     ],
+     "corridor": [
+      1.9,
+      2.5
+     ]
+    },
+    {
+     "t": 10,
+     "p": [
+      -28.9990291595459,
+      5.864838123321533,
+      22.72216033935547
+     ],
+     "active": "offroad",
+     "blockers": [
+      "camp-mesh-G16-crown_2",
+      "camp-mesh-G16-crown_1",
+      "camp-mesh-G16-crown_3",
+      "camp-mesh-G16-trunk"
+     ],
+     "corridor": [
+      1.9,
+      2.5
+     ]
+    },
+    {
+     "t": 11,
+     "p": [
+      -28.998851776123047,
+      5.863933563232422,
+      22.911869049072266
+     ],
+     "active": "offroad",
+     "blockers": [
+      "camp-mesh-G16-crown_2",
+      "camp-mesh-G16-crown_1",
+      "camp-mesh-G16-crown_3",
+      "camp-mesh-G16-trunk"
+     ],
+     "corridor": [
+      1.9,
+      2.5
+     ]
+    },
+    {
+     "t": 12,
+     "p": [
+      -28.998380661010742,
+      5.859318256378174,
+      23.142030715942383
+     ],
+     "active": "offroad",
+     "blockers": [
+      "camp-mesh-G16-crown_2",
+      "camp-mesh-G16-crown_3",
+      "camp-mesh-G16-crown_1",
+      "camp-mesh-G16-trunk"
+     ],
+     "corridor": [
+      1.9,
+      2.5
+     ]
+    },
+    {
+     "t": 13,
+     "p": [
+      -28.99718475341797,
+      5.855600357055664,
+      23.392240524291992
+     ],
+     "active": "offroad",
+     "blockers": [
+      "camp-mesh-G16-crown_2",
+      "camp-mesh-G16-crown_3",
+      "camp-mesh-G16-crown_1",
+      "camp-mesh-G16-trunk"
+     ],
+     "corridor": [
+      1.9,
+      2.5
+     ]
+    }
+   ],
+   "exitedVehicle": true
+  },
+  "crawl": {
+   "points": [
+    [
+     -42,
+     4.85,
+     30
+    ],
+    [
+     -37.76,
+     5.1,
+     34.24
+    ],
+    [
+     -58.97,
+     4.9,
+     34.01
+    ]
+   ],
+   "samples": [
+    {
+     "tag": "walk",
+     "t": 139345.40000003576,
+     "texels": [
+      [
+       [
+        626.4385290841387,
+        430.9869291668325
+       ],
+       [
+        3014.726851986878,
+        982.7132031667526
+       ],
+       [
+        5347.957224203275,
+        1404.7467322917078
+       ]
+      ],
+      [
+       [
+        1449.2851519476042,
+        538.543791441675
+       ],
+       [
+        3415.0306144609963,
+        1038.6427715496707
+       ],
+       [
+        5502.240965990175,
+        1431.6359478604184
+       ]
+      ],
+      [
+       [
+        -302.7696589227392,
+        -610.6343458606983
+       ],
+       [
+        2562.6796253889374,
+        441.07014015243703
+       ],
+       [
+        5173.730688951985,
+        1144.3414135348253
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8204
+    },
+    {
+     "tag": "walk",
+     "t": 139407.90000003576,
+     "texels": [
+      [
+       [
+        619.438529084137,
+        432.9869291668337
+       ],
+       [
+        3011.726851986877,
+        983.7132031667527
+       ],
+       [
+        5346.9572242032755,
+        1404.7467322917084
+       ]
+      ],
+      [
+       [
+        1442.2851519476026,
+        540.5437914416761
+       ],
+       [
+        3412.0306144609954,
+        1039.6427715496707
+       ],
+       [
+        5501.240965990175,
+        1431.635947860419
+       ]
+      ],
+      [
+       [
+        -309.769658922741,
+        -608.6343458606971
+       ],
+       [
+        2559.6796253889365,
+        442.07014015243703
+       ],
+       [
+        5172.730688951986,
+        1144.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8208
+    },
+    {
+     "tag": "walk",
+     "t": 139471.80000001192,
+     "texels": [
+      [
+       [
+        619.438529084137,
+        432.9869291668337
+       ],
+       [
+        3011.726851986877,
+        983.7132031667527
+       ],
+       [
+        5344.957224203275,
+        1405.7467322917084
+       ]
+      ],
+      [
+       [
+        1442.2851519476026,
+        540.5437914416761
+       ],
+       [
+        3412.0306144609954,
+        1039.6427715496707
+       ],
+       [
+        5499.240965990175,
+        1432.635947860419
+       ]
+      ],
+      [
+       [
+        -309.769658922741,
+        -608.6343458606971
+       ],
+       [
+        2559.6796253889365,
+        442.07014015243703
+       ],
+       [
+        5170.730688951985,
+        1145.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8212
+    },
+    {
+     "tag": "walk",
+     "t": 139535.60000002384,
+     "texels": [
+      [
+       [
+        590.4385290841383,
+        442.98692916683285
+       ],
+       [
+        2997.7268519868776,
+        988.7132031667522
+       ],
+       [
+        5340.9572242032755,
+        1406.7467322917084
+       ]
+      ],
+      [
+       [
+        1413.2851519476037,
+        550.5437914416754
+       ],
+       [
+        3398.030614460996,
+        1044.6427715496702
+       ],
+       [
+        5495.240965990175,
+        1433.635947860419
+       ]
+      ],
+      [
+       [
+        -338.7696589227397,
+        -598.634345860698
+       ],
+       [
+        2545.6796253889365,
+        447.07014015243664
+       ],
+       [
+        5166.730688951986,
+        1146.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8216
+    },
+    {
+     "tag": "walk",
+     "t": 139599.5,
+     "texels": [
+      [
+       [
+        554.4385290841371,
+        452.98692916683314
+       ],
+       [
+        2979.7268519868776,
+        994.7132031667529
+       ],
+       [
+        5338.9572242032755,
+        1407.7467322917084
+       ]
+      ],
+      [
+       [
+        1377.2851519476026,
+        560.5437914416756
+       ],
+       [
+        3380.030614460996,
+        1050.6427715496711
+       ],
+       [
+        5493.240965990175,
+        1434.635947860419
+       ]
+      ],
+      [
+       [
+        -374.76965892274086,
+        -588.6343458606976
+       ],
+       [
+        2527.679625388937,
+        453.0701401524374
+       ],
+       [
+        5164.730688951986,
+        1147.3414135348257
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8219
+    },
+    {
+     "tag": "walk",
+     "t": 139662.40000003576,
+     "texels": [
+      [
+       [
+        554.4385290841371,
+        452.98692916683314
+       ],
+       [
+        2979.7268519868776,
+        994.7132031667529
+       ],
+       [
+        5333.9572242032755,
+        1409.746732291708
+       ]
+      ],
+      [
+       [
+        1377.2851519476026,
+        560.5437914416756
+       ],
+       [
+        3380.030614460996,
+        1050.6427715496711
+       ],
+       [
+        5488.240965990174,
+        1436.6359478604186
+       ]
+      ],
+      [
+       [
+        -374.76965892274086,
+        -588.6343458606976
+       ],
+       [
+        2527.679625388937,
+        453.0701401524374
+       ],
+       [
+        5159.730688951985,
+        1149.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8223
+    },
+    {
+     "tag": "walk",
+     "t": 139726,
+     "texels": [
+      [
+       [
+        516.4385290841365,
+        467.98692916683245
+       ],
+       [
+        2961.726851986877,
+        1001.7132031667526
+       ],
+       [
+        5329.9572242032755,
+        1412.746732291708
+       ]
+      ],
+      [
+       [
+        1339.285151947602,
+        575.5437914416749
+       ],
+       [
+        3362.0306144609954,
+        1057.6427715496707
+       ],
+       [
+        5484.240965990174,
+        1439.6359478604186
+       ]
+      ],
+      [
+       [
+        -412.7696589227415,
+        -573.6343458606983
+       ],
+       [
+        2509.6796253889365,
+        460.070140152437
+       ],
+       [
+        5155.730688951985,
+        1152.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8227
+    },
+    {
+     "tag": "walk",
+     "t": 139789.20000004768,
+     "texels": [
+      [
+       [
+        477.4385290841384,
+        477.98692916683274
+       ],
+       [
+        2942.7268519868776,
+        1007.7132031667528
+       ],
+       [
+        5324.957224203275,
+        1413.746732291708
+       ]
+      ],
+      [
+       [
+        1300.285151947604,
+        585.5437914416752
+       ],
+       [
+        3343.030614460996,
+        1063.642771549671
+       ],
+       [
+        5479.240965990174,
+        1440.6359478604188
+       ]
+      ],
+      [
+       [
+        -451.7696589227396,
+        -563.6343458606981
+       ],
+       [
+        2490.679625388937,
+        466.07014015243715
+       ],
+       [
+        5150.730688951985,
+        1153.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8231
+    },
+    {
+     "tag": "walk",
+     "t": 139853.30000001192,
+     "texels": [
+      [
+       [
+        477.4385290841384,
+        477.98692916683274
+       ],
+       [
+        2942.7268519868776,
+        1007.7132031667528
+       ],
+       [
+        5319.957224203275,
+        1415.7467322917082
+       ]
+      ],
+      [
+       [
+        1300.285151947604,
+        585.5437914416752
+       ],
+       [
+        3343.030614460996,
+        1063.642771549671
+       ],
+       [
+        5474.240965990174,
+        1442.6359478604188
+       ]
+      ],
+      [
+       [
+        -451.7696589227396,
+        -563.6343458606981
+       ],
+       [
+        2490.679625388937,
+        466.07014015243715
+       ],
+       [
+        5145.730688951985,
+        1155.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8235
+    },
+    {
+     "tag": "walk",
+     "t": 139919.60000002384,
+     "texels": [
+      [
+       [
+        438.43852908413635,
+        491.98692916683314
+       ],
+       [
+        2923.726851986877,
+        1014.7132031667527
+       ],
+       [
+        5315.9572242032755,
+        1418.7467322917082
+       ]
+      ],
+      [
+       [
+        1261.2851519476017,
+        599.5437914416756
+       ],
+       [
+        3324.0306144609954,
+        1070.6427715496707
+       ],
+       [
+        5470.240965990176,
+        1445.6359478604188
+       ]
+      ],
+      [
+       [
+        -490.76965892274166,
+        -549.6343458606976
+       ],
+       [
+        2471.6796253889365,
+        473.0701401524371
+       ],
+       [
+        5141.730688951986,
+        1158.3414135348257
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8239
+    },
+    {
+     "tag": "walk",
+     "t": 139989.90000003576,
+     "texels": [
+      [
+       [
+        399.4385290841387,
+        503.9869291668329
+       ],
+       [
+        2904.726851986877,
+        1020.7132031667526
+       ],
+       [
+        5310.9572242032755,
+        1420.7467322917082
+       ]
+      ],
+      [
+       [
+        1222.2851519476042,
+        611.5437914416755
+       ],
+       [
+        3305.0306144609954,
+        1076.6427715496707
+       ],
+       [
+        5465.240965990176,
+        1447.6359478604188
+       ]
+      ],
+      [
+       [
+        -529.7696589227393,
+        -537.6343458606979
+       ],
+       [
+        2452.6796253889365,
+        479.070140152437
+       ],
+       [
+        5136.730688951986,
+        1160.3414135348257
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8243
+    },
+    {
+     "tag": "walk",
+     "t": 140054.80000001192,
+     "texels": [
+      [
+       [
+        399.4385290841387,
+        503.9869291668329
+       ],
+       [
+        2904.726851986877,
+        1020.7132031667526
+       ],
+       [
+        5305.9572242032755,
+        1422.7467322917084
+       ]
+      ],
+      [
+       [
+        1222.2851519476042,
+        611.5437914416755
+       ],
+       [
+        3305.0306144609954,
+        1076.6427715496707
+       ],
+       [
+        5460.240965990175,
+        1449.635947860419
+       ]
+      ],
+      [
+       [
+        -529.7696589227393,
+        -537.6343458606979
+       ],
+       [
+        2452.6796253889365,
+        479.070140152437
+       ],
+       [
+        5131.730688951985,
+        1162.3414135348257
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8247
+    },
+    {
+     "tag": "walk",
+     "t": 140120.10000002384,
+     "texels": [
+      [
+       [
+        360.43852908413663,
+        518.9869291668323
+       ],
+       [
+        2885.726851986877,
+        1028.7132031667525
+       ],
+       [
+        5300.9572242032755,
+        1425.7467322917084
+       ]
+      ],
+      [
+       [
+        1183.2851519476021,
+        626.5437914416747
+       ],
+       [
+        3286.030614460996,
+        1084.6427715496707
+       ],
+       [
+        5455.240965990175,
+        1452.635947860419
+       ]
+      ],
+      [
+       [
+        -568.7696589227413,
+        -522.6343458606985
+       ],
+       [
+        2433.6796253889365,
+        487.07014015243664
+       ],
+       [
+        5126.730688951985,
+        1165.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8251
+    },
+    {
+     "tag": "walk",
+     "t": 140188.10000002384,
+     "texels": [
+      [
+       [
+        320.43852908413686,
+        531.9869291668332
+       ],
+       [
+        2866.726851986877,
+        1035.713203166753
+       ],
+       [
+        5295.957224203275,
+        1427.7467322917084
+       ]
+      ],
+      [
+       [
+        1143.2851519476023,
+        639.5437914416757
+       ],
+       [
+        3267.0306144609954,
+        1091.6427715496711
+       ],
+       [
+        5450.240965990175,
+        1454.635947860419
+       ]
+      ],
+      [
+       [
+        -608.7696589227411,
+        -509.63434586069764
+       ],
+       [
+        2414.679625388936,
+        494.0701401524374
+       ],
+       [
+        5121.730688951985,
+        1167.341413534826
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8255
+    },
+    {
+     "tag": "walk",
+     "t": 140252.60000002384,
+     "texels": [
+      [
+       [
+        320.43852908413686,
+        531.9869291668332
+       ],
+       [
+        2866.726851986877,
+        1035.713203166753
+       ],
+       [
+        5290.9572242032755,
+        1429.746732291708
+       ]
+      ],
+      [
+       [
+        1143.2851519476023,
+        639.5437914416757
+       ],
+       [
+        3267.0306144609954,
+        1091.6427715496711
+       ],
+       [
+        5445.240965990175,
+        1456.6359478604186
+       ]
+      ],
+      [
+       [
+        -608.7696589227411,
+        -509.63434586069764
+       ],
+       [
+        2414.679625388936,
+        494.0701401524374
+       ],
+       [
+        5116.730688951986,
+        1169.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8259
+    },
+    {
+     "tag": "walk",
+     "t": 140316.40000003576,
+     "texels": [
+      [
+       [
+        281.4385290841383,
+        544.9869291668335
+       ],
+       [
+        2846.7268519868776,
+        1041.713203166752
+       ],
+       [
+        5286.9572242032755,
+        1430.746732291708
+       ]
+      ],
+      [
+       [
+        1104.2851519476037,
+        652.543791441676
+       ],
+       [
+        3247.0306144609954,
+        1097.6427715496702
+       ],
+       [
+        5441.240965990175,
+        1457.6359478604186
+       ]
+      ],
+      [
+       [
+        -647.7696589227397,
+        -496.63434586069724
+       ],
+       [
+        2394.6796253889365,
+        500.07014015243647
+       ],
+       [
+        5112.730688951986,
+        1170.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8262
+    },
+    {
+     "tag": "walk",
+     "t": 140380.30000001192,
+     "texels": [
+      [
+       [
+        281.4385290841383,
+        544.9869291668335
+       ],
+       [
+        2846.7268519868776,
+        1041.713203166752
+       ],
+       [
+        5281.9572242032755,
+        1433.746732291708
+       ]
+      ],
+      [
+       [
+        1104.2851519476037,
+        652.543791441676
+       ],
+       [
+        3247.0306144609954,
+        1097.6427715496702
+       ],
+       [
+        5436.240965990175,
+        1460.6359478604188
+       ]
+      ],
+      [
+       [
+        -647.7696589227397,
+        -496.63434586069724
+       ],
+       [
+        2394.6796253889365,
+        500.07014015243647
+       ],
+       [
+        5107.730688951986,
+        1173.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8266
+    },
+    {
+     "tag": "walk",
+     "t": 140444,
+     "texels": [
+      [
+       [
+        241.43852908413785,
+        557.9869291668333
+       ],
+       [
+        2827.7268519868776,
+        1048.7132031667525
+       ],
+       [
+        5276.9572242032755,
+        1435.7467322917082
+       ]
+      ],
+      [
+       [
+        1064.2851519476033,
+        665.5437914416758
+       ],
+       [
+        3228.030614460996,
+        1104.6427715496707
+       ],
+       [
+        5431.240965990175,
+        1462.6359478604188
+       ]
+      ],
+      [
+       [
+        -687.7696589227402,
+        -483.63434586069747
+       ],
+       [
+        2375.6796253889365,
+        507.0701401524369
+       ],
+       [
+        5102.730688951985,
+        1175.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8270
+    },
+    {
+     "tag": "walk",
+     "t": 140506.40000003576,
+     "texels": [
+      [
+       [
+        202.43852908413757,
+        571.9869291668326
+       ],
+       [
+        2808.726851986877,
+        1056.7132031667525
+       ],
+       [
+        5271.9572242032755,
+        1437.7467322917082
+       ]
+      ],
+      [
+       [
+        1025.285151947603,
+        679.5437914416751
+       ],
+       [
+        3209.0306144609954,
+        1112.6427715496707
+       ],
+       [
+        5426.240965990174,
+        1464.6359478604188
+       ]
+      ],
+      [
+       [
+        -726.7696589227404,
+        -469.63434586069815
+       ],
+       [
+        2356.679625388936,
+        515.0701401524369
+       ],
+       [
+        5097.730688951985,
+        1177.3414135348257
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8274
+    },
+    {
+     "tag": "walk",
+     "t": 140571.30000001192,
+     "texels": [
+      [
+       [
+        202.43852908413757,
+        571.9869291668326
+       ],
+       [
+        2808.726851986877,
+        1056.7132031667525
+       ],
+       [
+        5266.957224203275,
+        1439.7467322917082
+       ]
+      ],
+      [
+       [
+        1025.285151947603,
+        679.5437914416751
+       ],
+       [
+        3209.0306144609954,
+        1112.6427715496707
+       ],
+       [
+        5421.240965990174,
+        1466.6359478604188
+       ]
+      ],
+      [
+       [
+        -726.7696589227404,
+        -469.63434586069815
+       ],
+       [
+        2356.679625388936,
+        515.0701401524369
+       ],
+       [
+        5092.730688951985,
+        1179.3414135348257
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8278
+    },
+    {
+     "tag": "walk",
+     "t": 140636,
+     "texels": [
+      [
+       [
+        163.4385290841377,
+        582.986929166833
+       ],
+       [
+        2789.7268519868776,
+        1061.7132031667527
+       ],
+       [
+        5262.9572242032755,
+        1441.7467322917078
+       ]
+      ],
+      [
+       [
+        986.2851519476031,
+        690.5437914416755
+       ],
+       [
+        3190.0306144609954,
+        1117.6427715496707
+       ],
+       [
+        5417.240965990176,
+        1468.6359478604184
+       ]
+      ],
+      [
+       [
+        -765.7696589227403,
+        -458.63434586069786
+       ],
+       [
+        2337.6796253889365,
+        520.070140152437
+       ],
+       [
+        5088.730688951986,
+        1181.3414135348253
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8282
+    },
+    {
+     "tag": "walk",
+     "t": 140702.10000002384,
+     "texels": [
+      [
+       [
+        123.43852908413618,
+        596.9869291668327
+       ],
+       [
+        2770.7268519868767,
+        1068.713203166753
+       ],
+       [
+        5257.9572242032755,
+        1443.7467322917084
+       ]
+      ],
+      [
+       [
+        946.2851519476015,
+        704.5437914416752
+       ],
+       [
+        3171.030614460995,
+        1124.642771549671
+       ],
+       [
+        5412.240965990176,
+        1470.635947860419
+       ]
+      ],
+      [
+       [
+        -805.7696589227418,
+        -444.63434586069803
+       ],
+       [
+        2318.679625388936,
+        527.0701401524373
+       ],
+       [
+        5083.730688951986,
+        1183.3414135348257
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8286
+    },
+    {
+     "tag": "walk",
+     "t": 140767.90000003576,
+     "texels": [
+      [
+       [
+        123.43852908413618,
+        596.9869291668327
+       ],
+       [
+        2770.7268519868767,
+        1068.713203166753
+       ],
+       [
+        5252.9572242032755,
+        1445.7467322917078
+       ]
+      ],
+      [
+       [
+        946.2851519476015,
+        704.5437914416752
+       ],
+       [
+        3171.030614460995,
+        1124.642771549671
+       ],
+       [
+        5407.240965990176,
+        1472.6359478604186
+       ]
+      ],
+      [
+       [
+        -805.7696589227418,
+        -444.63434586069803
+       ],
+       [
+        2318.679625388936,
+        527.0701401524373
+       ],
+       [
+        5078.730688951986,
+        1185.3414135348253
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8290
+    },
+    {
+     "tag": "walk",
+     "t": 140831.5,
+     "texels": [
+      [
+       [
+        85.43852908413676,
+        610.9869291668332
+       ],
+       [
+        2751.726851986878,
+        1076.7132031667527
+       ],
+       [
+        5248.9572242032755,
+        1448.7467322917084
+       ]
+      ],
+      [
+       [
+        908.2851519476021,
+        718.5437914416757
+       ],
+       [
+        3152.0306144609963,
+        1132.642771549671
+       ],
+       [
+        5403.240965990176,
+        1475.635947860419
+       ]
+      ],
+      [
+       [
+        -843.7696589227412,
+        -430.63434586069764
+       ],
+       [
+        2299.679625388937,
+        535.0701401524371
+       ],
+       [
+        5074.730688951985,
+        1188.3414135348257
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8293
+    },
+    {
+     "tag": "walk",
+     "t": 140895.60000002384,
+     "texels": [
+      [
+       [
+        46.43852908413774,
+        623.9869291668324
+       ],
+       [
+        2732.726851986877,
+        1082.7132031667525
+       ],
+       [
+        5243.957224203276,
+        1450.746732291708
+       ]
+      ],
+      [
+       [
+        869.2851519476031,
+        731.5437914416749
+       ],
+       [
+        3133.030614460996,
+        1138.6427715496704
+       ],
+       [
+        5398.240965990175,
+        1477.6359478604186
+       ]
+      ],
+      [
+       [
+        -882.7696589227403,
+        -417.6343458606984
+       ],
+       [
+        2280.6796253889365,
+        541.0701401524365
+       ],
+       [
+        5069.730688951986,
+        1190.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8297
+    },
+    {
+     "tag": "orbit",
+     "t": 140921.80000001192,
+     "texels": [
+      [
+       [
+        105.43852908413629,
+        656.9869291668329
+       ],
+       [
+        2818.7268519868767,
+        1134.7132031667531
+       ],
+       [
+        5355.957224203275,
+        1538.7467322917082
+       ]
+      ],
+      [
+       [
+        928.2851519476017,
+        764.5437914416754
+       ],
+       [
+        3219.030614460995,
+        1190.6427715496711
+       ],
+       [
+        5510.240965990175,
+        1565.6359478604188
+       ]
+      ],
+      [
+       [
+        -823.7696589227417,
+        -384.634345860698
+       ],
+       [
+        2366.679625388936,
+        593.0701401524374
+       ],
+       [
+        5181.730688951985,
+        1278.3414135348257
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8299
+    },
+    {
+     "tag": "orbit",
+     "t": 140955.20000004768,
+     "texels": [
+      [
+       [
+        174.43852908413658,
+        684.9869291668319
+       ],
+       [
+        2920.726851986877,
+        1177.7132031667527
+       ],
+       [
+        5490.9572242032755,
+        1612.7467322917082
+       ]
+      ],
+      [
+       [
+        997.285151947602,
+        792.5437914416741
+       ],
+       [
+        3321.030614460995,
+        1233.6427715496707
+       ],
+       [
+        5645.240965990176,
+        1639.6359478604188
+       ]
+      ],
+      [
+       [
+        -754.7696589227414,
+        -356.63434586069775
+       ],
+       [
+        2468.6796253889365,
+        636.070140152437
+       ],
+       [
+        5316.730688951986,
+        1352.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8301
+    },
+    {
+     "tag": "orbit",
+     "t": 140990.10000002384,
+     "texels": [
+      [
+       [
+        228.43852908413666,
+        715.9869291668323
+       ],
+       [
+        3022.726851986877,
+        1217.7132031667527
+       ],
+       [
+        5642.957224203275,
+        1671.7467322917082
+       ]
+      ],
+      [
+       [
+        1051.2851519476021,
+        823.5437914416748
+       ],
+       [
+        3423.0306144609954,
+        1273.6427715496707
+       ],
+       [
+        5797.240965990175,
+        1698.6359478604188
+       ]
+      ],
+      [
+       [
+        -700.7696589227413,
+        -325.63434586069855
+       ],
+       [
+        2570.679625388936,
+        676.070140152437
+       ],
+       [
+        5468.730688951985,
+        1411.3414135348253
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8303
+    },
+    {
+     "tag": "orbit",
+     "t": 141021.20000004768,
+     "texels": [
+      [
+       [
+        313.4385290841374,
+        731.9869291668333
+       ],
+       [
+        3146.7268519868776,
+        1241.7132031667527
+       ],
+       [
+        5808.9572242032755,
+        1713.7467322917082
+       ]
+      ],
+      [
+       [
+        1136.2851519476028,
+        839.5437914416758
+       ],
+       [
+        3547.030614460996,
+        1297.642771549671
+       ],
+       [
+        5963.240965990175,
+        1740.6359478604188
+       ]
+      ],
+      [
+       [
+        -615.7696589227406,
+        -309.6343458606975
+       ],
+       [
+        2694.679625388937,
+        700.0701401524371
+       ],
+       [
+        5634.730688951986,
+        1453.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8305
+    },
+    {
+     "tag": "orbit",
+     "t": 141054.30000001192,
+     "texels": [
+      [
+       [
+        402.4385290841372,
+        740.9869291668324
+       ],
+       [
+        3277.726851986878,
+        1255.7132031667531
+       ],
+       [
+        5983.9572242032755,
+        1737.7467322917084
+       ]
+      ],
+      [
+       [
+        1225.2851519476026,
+        848.5437914416749
+       ],
+       [
+        3678.0306144609963,
+        1311.6427715496711
+       ],
+       [
+        6138.240965990175,
+        1764.6359478604188
+       ]
+      ],
+      [
+       [
+        -526.7696589227407,
+        -300.6343458606984
+       ],
+       [
+        2825.679625388937,
+        714.0701401524375
+       ],
+       [
+        5809.730688951985,
+        1477.3414135348257
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8307
+    },
+    {
+     "tag": "orbit",
+     "t": 141090.60000002384,
+     "texels": [
+      [
+       [
+        487.4385290841369,
+        744.9869291668336
+       ],
+       [
+        3407.7268519868776,
+        1260.7132031667534
+       ],
+       [
+        6162.9572242032755,
+        1744.7467322917087
+       ]
+      ],
+      [
+       [
+        1310.2851519476023,
+        852.5437914416761
+       ],
+       [
+        3808.030614460996,
+        1316.6427715496714
+       ],
+       [
+        6317.240965990175,
+        1771.6359478604193
+       ]
+      ],
+      [
+       [
+        -441.7696589227411,
+        -296.6343458606971
+       ],
+       [
+        2955.6796253889365,
+        719.0701401524377
+       ],
+       [
+        5988.730688951986,
+        1484.3414135348257
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8309
+    },
+    {
+     "tag": "orbit",
+     "t": 141121.70000004768,
+     "texels": [
+      [
+       [
+        578.4385290841367,
+        739.986929166833
+       ],
+       [
+        3540.726851986877,
+        1252.713203166752
+       ],
+       [
+        6340.9572242032755,
+        1731.7467322917082
+       ]
+      ],
+      [
+       [
+        1401.2851519476021,
+        847.5437914416755
+       ],
+       [
+        3941.0306144609954,
+        1308.64277154967
+       ],
+       [
+        6495.240965990175,
+        1758.6359478604188
+       ]
+      ],
+      [
+       [
+        -350.7696589227413,
+        -301.63434586069786
+       ],
+       [
+        3088.6796253889365,
+        711.0701401524364
+       ],
+       [
+        6166.730688951986,
+        1471.3414135348257
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8311
+    },
+    {
+     "tag": "orbit",
+     "t": 141155.20000004768,
+     "texels": [
+      [
+       [
+        666.438529084138,
+        727.9869291668332
+       ],
+       [
+        3668.726851986878,
+        1233.7132031667525
+       ],
+       [
+        6513.9572242032755,
+        1700.7467322917084
+       ]
+      ],
+      [
+       [
+        1489.2851519476035,
+        835.5437914416757
+       ],
+       [
+        4069.0306144609963,
+        1289.6427715496707
+       ],
+       [
+        6668.240965990175,
+        1727.6359478604188
+       ]
+      ],
+      [
+       [
+        -262.76965892273995,
+        -313.63434586069764
+       ],
+       [
+        3216.679625388937,
+        692.0701401524369
+       ],
+       [
+        6339.730688951985,
+        1440.341413534826
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8313
+    },
+    {
+     "tag": "orbit",
+     "t": 141189.5,
+     "texels": [
+      [
+       [
+        746.438529084136,
+        709.9869291668315
+       ],
+       [
+        3788.7268519868776,
+        1205.713203166753
+       ],
+       [
+        6675.957224203275,
+        1652.7467322917082
+       ]
+      ],
+      [
+       [
+        1569.2851519476014,
+        817.543791441674
+       ],
+       [
+        4189.030614460996,
+        1261.642771549671
+       ],
+       [
+        6830.240965990174,
+        1679.6359478604188
+       ]
+      ],
+      [
+       [
+        -182.76965892274197,
+        -331.6343458606992
+       ],
+       [
+        3336.6796253889365,
+        664.0701401524373
+       ],
+       [
+        6501.730688951985,
+        1392.3414135348257
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8315
+    },
+    {
+     "tag": "orbit",
+     "t": 141223.90000003576,
+     "texels": [
+      [
+       [
+        821.4385290841362,
+        685.9869291668331
+       ],
+       [
+        3897.726851986877,
+        1166.7132031667522
+       ],
+       [
+        6823.957224203275,
+        1587.746732291708
+       ]
+      ],
+      [
+       [
+        1644.2851519476017,
+        793.5437914416756
+       ],
+       [
+        4298.030614460995,
+        1222.6427715496704
+       ],
+       [
+        6978.240965990175,
+        1614.6359478604186
+       ]
+      ],
+      [
+       [
+        -107.76965892274171,
+        -355.6343458606977
+       ],
+       [
+        3445.6796253889365,
+        625.0701401524367
+       ],
+       [
+        6649.730688951985,
+        1327.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8317
+    },
+    {
+     "tag": "orbit",
+     "t": 141254.30000001192,
+     "texels": [
+      [
+       [
+        886.4385290841373,
+        655.9869291668339
+       ],
+       [
+        3993.7268519868767,
+        1119.7132031667527
+       ],
+       [
+        6952.9572242032755,
+        1508.7467322917084
+       ]
+      ],
+      [
+       [
+        1709.2851519476026,
+        763.5437914416764
+       ],
+       [
+        4394.030614460995,
+        1175.6427715496707
+       ],
+       [
+        7107.240965990175,
+        1535.6359478604193
+       ]
+      ],
+      [
+       [
+        -42.7696589227407,
+        -385.6343458606969
+       ],
+       [
+        3541.679625388936,
+        578.070140152437
+       ],
+       [
+        6778.730688951985,
+        1248.3414135348257
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8319
+    },
+    {
+     "tag": "orbit",
+     "t": 141288.70000004768,
+     "texels": [
+      [
+       [
+        940.4385290841362,
+        620.9869291668313
+       ],
+       [
+        4071.726851986878,
+        1065.7132031667534
+       ],
+       [
+        7058.9572242032755,
+        1417.7467322917082
+       ]
+      ],
+      [
+       [
+        1763.2851519476017,
+        728.5437914416738
+       ],
+       [
+        4472.030614460996,
+        1121.6427715496714
+       ],
+       [
+        7213.240965990175,
+        1444.6359478604188
+       ]
+      ],
+      [
+       [
+        11.230341077258224,
+        -420.63434586069957
+       ],
+       [
+        3619.6796253889374,
+        524.0701401524377
+       ],
+       [
+        6884.730688951986,
+        1157.3414135348257
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8321
+    },
+    {
+     "tag": "orbit",
+     "t": 141320.80000001192,
+     "texels": [
+      [
+       [
+        981.4385290841384,
+        582.986929166833
+       ],
+       [
+        4131.726851986877,
+        1005.713203166753
+       ],
+       [
+        7139.9572242032755,
+        1316.7467322917087
+       ]
+      ],
+      [
+       [
+        1804.285151947604,
+        690.5437914416755
+       ],
+       [
+        4532.030614460995,
+        1061.6427715496711
+       ],
+       [
+        7294.240965990176,
+        1343.6359478604193
+       ]
+      ],
+      [
+       [
+        52.230341077260434,
+        -458.63434586069786
+       ],
+       [
+        3679.6796253889365,
+        464.0701401524374
+       ],
+       [
+        6965.730688951986,
+        1056.3414135348257
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8323
+    },
+    {
+     "tag": "orbit",
+     "t": 141353.10000002384,
+     "texels": [
+      [
+       [
+        1007.4385290841373,
+        540.9869291668311
+       ],
+       [
+        4170.726851986878,
+        941.7132031667531
+       ],
+       [
+        7192.9572242032755,
+        1208.746732291708
+       ]
+      ],
+      [
+       [
+        1830.2851519476026,
+        648.5437914416736
+       ],
+       [
+        4571.030614460996,
+        997.6427715496712
+       ],
+       [
+        7347.240965990176,
+        1235.6359478604186
+       ]
+      ],
+      [
+       [
+        78.2303410772593,
+        -500.6343458606996
+       ],
+       [
+        3718.6796253889365,
+        400.0701401524375
+       ],
+       [
+        7018.730688951986,
+        948.3414135348253
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8325
+    },
+    {
+     "tag": "orbit",
+     "t": 141388.70000004768,
+     "texels": [
+      [
+       [
+        1019.4385290841378,
+        498.9869291668333
+       ],
+       [
+        4188.726851986878,
+        874.7132031667535
+       ],
+       [
+        7216.9572242032755,
+        1096.7467322917084
+       ]
+      ],
+      [
+       [
+        1842.2851519476033,
+        606.5437914416758
+       ],
+       [
+        4589.030614460996,
+        930.6427715496716
+       ],
+       [
+        7371.240965990175,
+        1123.635947860419
+       ]
+      ],
+      [
+       [
+        90.23034107725984,
+        -542.6343458606974
+       ],
+       [
+        3736.6796253889374,
+        333.07014015243783
+       ],
+       [
+        7042.730688951985,
+        836.3414135348257
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8327
+    },
+    {
+     "tag": "orbit",
+     "t": 141421.40000003576,
+     "texels": [
+      [
+       [
+        1017.4385290841379,
+        455.98692916683325
+       ],
+       [
+        4183.726851986878,
+        807.7132031667529
+       ],
+       [
+        7270.9572242032755,
+        979.7467322917087
+       ]
+      ],
+      [
+       [
+        1840.2851519476035,
+        563.5437914416757
+       ],
+       [
+        4584.030614460996,
+        863.642771549671
+       ],
+       [
+        7425.240965990174,
+        1006.6359478604193
+       ]
+      ],
+      [
+       [
+        88.23034107726,
+        -585.6343458606975
+       ],
+       [
+        3731.679625388937,
+        266.0701401524373
+       ],
+       [
+        7096.730688951985,
+        719.341413534826
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8329
+    },
+    {
+     "tag": "orbit",
+     "t": 141454.10000002384,
+     "texels": [
+      [
+       [
+        999.4385290841383,
+        413.98692916683314
+       ],
+       [
+        4157.726851986877,
+        742.7132031667525
+       ],
+       [
+        7235.957224203275,
+        861.7467322917084
+       ]
+      ],
+      [
+       [
+        1822.2851519476037,
+        521.5437914416757
+       ],
+       [
+        4558.030614460995,
+        798.6427715496706
+       ],
+       [
+        7390.240965990175,
+        888.635947860419
+       ]
+      ],
+      [
+       [
+        70.23034107726032,
+        -627.6343458606976
+       ],
+       [
+        3705.6796253889365,
+        201.07014015243686
+       ],
+       [
+        7061.730688951985,
+        601.3414135348257
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8331
+    },
+    {
+     "tag": "orbit",
+     "t": 141488.90000003576,
+     "texels": [
+      [
+       [
+        966.4385290841374,
+        373.986929166832
+       ],
+       [
+        4110.726851986878,
+        679.7132031667524
+       ],
+       [
+        7164.9572242032755,
+        751.7467322917083
+       ]
+      ],
+      [
+       [
+        1789.2851519476028,
+        481.5437914416745
+       ],
+       [
+        4511.030614460996,
+        735.6427715496704
+       ],
+       [
+        7319.240965990175,
+        778.6359478604189
+       ]
+      ],
+      [
+       [
+        37.23034107725938,
+        -667.6343458606988
+       ],
+       [
+        3658.6796253889365,
+        138.07014015243675
+       ],
+       [
+        6990.730688951986,
+        491.3414135348256
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8333
+    },
+    {
+     "tag": "orbit",
+     "t": 141519.20000004768,
+     "texels": [
+      [
+       [
+        920.4385290841367,
+        335.98692916683206
+       ],
+       [
+        4043.726851986877,
+        621.7132031667529
+       ],
+       [
+        7063.9572242032755,
+        650.7467322917082
+       ]
+      ],
+      [
+       [
+        1743.2851519476021,
+        443.54379144167456
+       ],
+       [
+        4444.030614460995,
+        677.642771549671
+       ],
+       [
+        7218.240965990175,
+        677.6359478604189
+       ]
+      ],
+      [
+       [
+        -8.7696589227413,
+        -705.6343458606988
+       ],
+       [
+        3591.6796253889365,
+        80.07014015243733
+       ],
+       [
+        6889.730688951985,
+        390.34141353482556
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8335
+    },
+    {
+     "tag": "orbit",
+     "t": 141555,
+     "texels": [
+      [
+       [
+        862.4385290841386,
+        302.9869291668328
+       ],
+       [
+        3957.726851986877,
+        569.7132031667534
+       ],
+       [
+        6937.957224203275,
+        562.7467322917081
+       ]
+      ],
+      [
+       [
+        1685.285151947604,
+        410.5437914416753
+       ],
+       [
+        4358.030614460996,
+        625.6427715496715
+       ],
+       [
+        7092.240965990175,
+        589.6359478604187
+       ]
+      ],
+      [
+       [
+        -66.7696589227394,
+        -738.634345860698
+       ],
+       [
+        3505.6796253889365,
+        28.0701401524378
+       ],
+       [
+        6763.730688951985,
+        302.3414135348254
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8337
+    },
+    {
+     "tag": "zoom",
+     "t": 141643.60000002384,
+     "texels": [
+      [
+       [
+        862.4385290841386,
+        302.9869291668328
+       ],
+       [
+        3957.726851986877,
+        569.7132031667534
+       ],
+       [
+        6927.9572242032755,
+        568.7467322917081
+       ]
+      ],
+      [
+       [
+        1685.285151947604,
+        410.5437914416753
+       ],
+       [
+        4358.030614460996,
+        625.6427715496715
+       ],
+       [
+        7082.240965990175,
+        595.6359478604188
+       ]
+      ],
+      [
+       [
+        -66.7696589227394,
+        -738.634345860698
+       ],
+       [
+        3505.6796253889365,
+        28.0701401524378
+       ],
+       [
+        6753.730688951986,
+        308.34141353482545
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8342
+    },
+    {
+     "tag": "zoom",
+     "t": 141726.10000002384,
+     "texels": [
+      [
+       [
+        862.4385290841386,
+        302.9869291668328
+       ],
+       [
+        3957.726851986877,
+        569.7132031667534
+       ],
+       [
+        6916.9572242032755,
+        575.7467322917084
+       ]
+      ],
+      [
+       [
+        1685.285151947604,
+        410.5437914416753
+       ],
+       [
+        4358.030614460996,
+        625.6427715496715
+       ],
+       [
+        7071.240965990174,
+        602.6359478604192
+       ]
+      ],
+      [
+       [
+        -66.7696589227394,
+        -738.634345860698
+       ],
+       [
+        3505.6796253889365,
+        28.0701401524378
+       ],
+       [
+        6742.730688951985,
+        315.3414135348258
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8347
+    },
+    {
+     "tag": "zoom",
+     "t": 141809.10000002384,
+     "texels": [
+      [
+       [
+        862.4385290841386,
+        302.9869291668328
+       ],
+       [
+        3957.726851986877,
+        569.7132031667534
+       ],
+       [
+        6906.9572242032755,
+        581.7467322917081
+       ]
+      ],
+      [
+       [
+        1685.285151947604,
+        410.5437914416753
+       ],
+       [
+        4358.030614460996,
+        625.6427715496715
+       ],
+       [
+        7061.240965990176,
+        608.6359478604187
+       ]
+      ],
+      [
+       [
+        -66.7696589227394,
+        -738.634345860698
+       ],
+       [
+        3505.6796253889365,
+        28.0701401524378
+       ],
+       [
+        6732.730688951986,
+        321.3414135348254
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8352
+    },
+    {
+     "tag": "zoom",
+     "t": 141893.60000002384,
+     "texels": [
+      [
+       [
+        862.4385290841386,
+        302.9869291668328
+       ],
+       [
+        3957.726851986877,
+        569.7132031667534
+       ],
+       [
+        6895.9572242032755,
+        588.7467322917081
+       ]
+      ],
+      [
+       [
+        1685.285151947604,
+        410.5437914416753
+       ],
+       [
+        4358.030614460996,
+        625.6427715496715
+       ],
+       [
+        7050.240965990176,
+        615.6359478604188
+       ]
+      ],
+      [
+       [
+        -66.7696589227394,
+        -738.634345860698
+       ],
+       [
+        3505.6796253889365,
+        28.0701401524378
+       ],
+       [
+        6721.730688951985,
+        328.34141353482545
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8357
+    },
+    {
+     "tag": "zoom",
+     "t": 141976.40000003576,
+     "texels": [
+      [
+       [
+        862.4385290841386,
+        302.9869291668328
+       ],
+       [
+        3957.726851986877,
+        569.7132031667534
+       ],
+       [
+        6882.957224203275,
+        595.7467322917082
+       ]
+      ],
+      [
+       [
+        1685.285151947604,
+        410.5437914416753
+       ],
+       [
+        4358.030614460996,
+        625.6427715496715
+       ],
+       [
+        7037.240965990175,
+        622.6359478604188
+       ]
+      ],
+      [
+       [
+        -66.7696589227394,
+        -738.634345860698
+       ],
+       [
+        3505.6796253889365,
+        28.0701401524378
+       ],
+       [
+        6708.730688951985,
+        335.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8362
+    },
+    {
+     "tag": "zoom",
+     "t": 142057.60000002384,
+     "texels": [
+      [
+       [
+        862.4385290841386,
+        302.9869291668328
+       ],
+       [
+        3957.726851986877,
+        569.7132031667534
+       ],
+       [
+        6869.9572242032755,
+        603.7467322917084
+       ]
+      ],
+      [
+       [
+        1685.285151947604,
+        410.5437914416753
+       ],
+       [
+        4358.030614460996,
+        625.6427715496715
+       ],
+       [
+        7024.240965990175,
+        630.635947860419
+       ]
+      ],
+      [
+       [
+        -66.7696589227394,
+        -738.634345860698
+       ],
+       [
+        3505.6796253889365,
+        28.0701401524378
+       ],
+       [
+        6695.730688951986,
+        343.34141353482573
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8367
+    },
+    {
+     "tag": "zoom",
+     "t": 142143.5,
+     "texels": [
+      [
+       [
+        862.4385290841386,
+        302.9869291668328
+       ],
+       [
+        3957.726851986877,
+        569.7132031667534
+       ],
+       [
+        6854.957224203275,
+        613.7467322917082
+       ]
+      ],
+      [
+       [
+        1685.285151947604,
+        410.5437914416753
+       ],
+       [
+        4358.030614460996,
+        625.6427715496715
+       ],
+       [
+        7009.240965990174,
+        640.6359478604188
+       ]
+      ],
+      [
+       [
+        -66.7696589227394,
+        -738.634345860698
+       ],
+       [
+        3505.6796253889365,
+        28.0701401524378
+       ],
+       [
+        6680.730688951985,
+        353.34141353482545
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8372
+    },
+    {
+     "tag": "zoom",
+     "t": 142227.10000002384,
+     "texels": [
+      [
+       [
+        862.4385290841386,
+        302.9869291668328
+       ],
+       [
+        3957.726851986877,
+        569.7132031667534
+       ],
+       [
+        6837.9572242032755,
+        623.7467322917083
+       ]
+      ],
+      [
+       [
+        1685.285151947604,
+        410.5437914416753
+       ],
+       [
+        4358.030614460996,
+        625.6427715496715
+       ],
+       [
+        6992.240965990176,
+        650.6359478604189
+       ]
+      ],
+      [
+       [
+        -66.7696589227394,
+        -738.634345860698
+       ],
+       [
+        3505.6796253889365,
+        28.0701401524378
+       ],
+       [
+        6663.730688951986,
+        363.3414135348256
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8377
+    },
+    {
+     "tag": "zoom",
+     "t": 142309.5,
+     "texels": [
+      [
+       [
+        862.4385290841386,
+        302.9869291668328
+       ],
+       [
+        3957.726851986877,
+        569.7132031667534
+       ],
+       [
+        6818.957224203275,
+        635.7467322917081
+       ]
+      ],
+      [
+       [
+        1685.285151947604,
+        410.5437914416753
+       ],
+       [
+        4358.030614460996,
+        625.6427715496715
+       ],
+       [
+        6973.240965990175,
+        662.6359478604187
+       ]
+      ],
+      [
+       [
+        -66.7696589227394,
+        -738.634345860698
+       ],
+       [
+        3505.6796253889365,
+        28.0701401524378
+       ],
+       [
+        6644.730688951985,
+        375.3414135348254
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8382
+    },
+    {
+     "tag": "zoom",
+     "t": 142393.70000004768,
+     "texels": [
+      [
+       [
+        862.4385290841386,
+        302.9869291668328
+       ],
+       [
+        3957.726851986877,
+        569.7132031667534
+       ],
+       [
+        6796.957224203275,
+        648.7467322917082
+       ]
+      ],
+      [
+       [
+        1685.285151947604,
+        410.5437914416753
+       ],
+       [
+        4358.030614460996,
+        625.6427715496715
+       ],
+       [
+        6951.240965990174,
+        675.6359478604188
+       ]
+      ],
+      [
+       [
+        -66.7696589227394,
+        -738.634345860698
+       ],
+       [
+        3505.6796253889365,
+        28.0701401524378
+       ],
+       [
+        6622.730688951985,
+        388.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8387
+    },
+    {
+     "tag": "zoom",
+     "t": 142477.40000003576,
+     "texels": [
+      [
+       [
+        862.4385290841386,
+        302.9869291668328
+       ],
+       [
+        3957.726851986877,
+        569.7132031667534
+       ],
+       [
+        6772.9572242032755,
+        663.7467322917083
+       ]
+      ],
+      [
+       [
+        1685.285151947604,
+        410.5437914416753
+       ],
+       [
+        4358.030614460996,
+        625.6427715496715
+       ],
+       [
+        6927.240965990175,
+        690.6359478604189
+       ]
+      ],
+      [
+       [
+        -66.7696589227394,
+        -738.634345860698
+       ],
+       [
+        3505.6796253889365,
+        28.0701401524378
+       ],
+       [
+        6598.730688951985,
+        403.3414135348256
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8392
+    },
+    {
+     "tag": "zoom",
+     "t": 142560,
+     "texels": [
+      [
+       [
+        862.4385290841386,
+        302.9869291668328
+       ],
+       [
+        3957.726851986877,
+        569.7132031667534
+       ],
+       [
+        6744.9572242032755,
+        680.7467322917082
+       ]
+      ],
+      [
+       [
+        1685.285151947604,
+        410.5437914416753
+       ],
+       [
+        4358.030614460996,
+        625.6427715496715
+       ],
+       [
+        6899.240965990174,
+        707.6359478604189
+       ]
+      ],
+      [
+       [
+        -66.7696589227394,
+        -738.634345860698
+       ],
+       [
+        3505.6796253889365,
+        28.0701401524378
+       ],
+       [
+        6570.730688951985,
+        420.34141353482556
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8397
+    },
+    {
+     "tag": "zoom",
+     "t": 142644.10000002384,
+     "texels": [
+      [
+       [
+        862.4385290841386,
+        302.9869291668328
+       ],
+       [
+        3957.726851986877,
+        569.7132031667534
+       ],
+       [
+        6720.9572242032755,
+        694.7467322917081
+       ]
+      ],
+      [
+       [
+        1685.285151947604,
+        410.5437914416753
+       ],
+       [
+        4358.030614460996,
+        625.6427715496715
+       ],
+       [
+        6875.240965990176,
+        721.6359478604187
+       ]
+      ],
+      [
+       [
+        -66.7696589227394,
+        -738.634345860698
+       ],
+       [
+        3505.6796253889365,
+        28.0701401524378
+       ],
+       [
+        6546.730688951986,
+        434.3414135348254
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8402
+    },
+    {
+     "tag": "zoom",
+     "t": 142726.90000003576,
+     "texels": [
+      [
+       [
+        862.4385290841386,
+        302.9869291668328
+       ],
+       [
+        3957.726851986877,
+        569.7132031667534
+       ],
+       [
+        6703.957224203275,
+        705.7467322917081
+       ]
+      ],
+      [
+       [
+        1685.285151947604,
+        410.5437914416753
+       ],
+       [
+        4358.030614460996,
+        625.6427715496715
+       ],
+       [
+        6858.240965990175,
+        732.6359478604188
+       ]
+      ],
+      [
+       [
+        -66.7696589227394,
+        -738.634345860698
+       ],
+       [
+        3505.6796253889365,
+        28.0701401524378
+       ],
+       [
+        6529.730688951985,
+        445.34141353482545
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8407
+    },
+    {
+     "tag": "zoom",
+     "t": 142810.5,
+     "texels": [
+      [
+       [
+        862.4385290841386,
+        302.9869291668328
+       ],
+       [
+        3957.726851986877,
+        569.7132031667534
+       ],
+       [
+        6691.9572242032755,
+        712.7467322917081
+       ]
+      ],
+      [
+       [
+        1685.285151947604,
+        410.5437914416753
+       ],
+       [
+        4358.030614460996,
+        625.6427715496715
+       ],
+       [
+        6846.240965990175,
+        739.6359478604187
+       ]
+      ],
+      [
+       [
+        -66.7696589227394,
+        -738.634345860698
+       ],
+       [
+        3505.6796253889365,
+        28.0701401524378
+       ],
+       [
+        6517.730688951986,
+        452.3414135348254
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8412
+    },
+    {
+     "tag": "zoom",
+     "t": 142893.20000004768,
+     "texels": [
+      [
+       [
+        862.4385290841386,
+        302.9869291668328
+       ],
+       [
+        3957.726851986877,
+        569.7132031667534
+       ],
+       [
+        6683.9572242032755,
+        718.7467322917082
+       ]
+      ],
+      [
+       [
+        1685.285151947604,
+        410.5437914416753
+       ],
+       [
+        4358.030614460996,
+        625.6427715496715
+       ],
+       [
+        6838.240965990174,
+        745.6359478604188
+       ]
+      ],
+      [
+       [
+        -66.7696589227394,
+        -738.634345860698
+       ],
+       [
+        3505.6796253889365,
+        28.0701401524378
+       ],
+       [
+        6509.730688951985,
+        458.3414135348255
+       ]
+      ]
+     ],
+     "half": [
+      [
+       9,
+       6.5
+      ],
+      [
+       18.5,
+       12.5
+      ],
+      [
+       48,
+       26
+      ]
+     ],
+     "updates": 8417
+    }
+   ],
+   "byPhase": {
+    "walk": {
+     "frames": 24,
+     "extentChanges": 0
+    },
+    "orbit": {
+     "frames": 20,
+     "extentChanges": 0
+    },
+    "zoom": {
+     "frames": 16,
+     "extentChanges": 0
+    }
+   },
+   "summary": {
+    "pairs": 180,
+    "extentChanges_resample": 0,
+    "crawlingCoordinates": 0,
+    "worstFractionalDrift_texel": 2.6716406864579767e-12
+   }
+  },
+  "perf": {
+   "budget": {
+    "calls": 300,
+    "triangles": 500000
+   },
+   "cases": {
+    "dusk-spawn-10m": {
+     "frames": 90,
+     "fireFrames": 90,
+     "calls": {
+      "max": 252,
+      "p50": 252,
+      "min": 252
+     },
+     "triangles": {
+      "max": 506257,
+      "p50": 506257,
+      "min": 506257
+     },
+     "timing": {
+      "frames": 181,
+      "seconds": 3,
+      "fps": 60.3,
+      "p50": 16.7,
+      "p90": 16.7,
+      "p95": 16.7,
+      "p99": 16.8,
+      "max": 16.8,
+      "over33ms": 0
+     },
+     "fire": {
+      "mode": "every-frame",
+      "distance_m": 11.191176415337829,
+      "mapSize": 1024
+     }
+    },
+    "dusk-spawn-30m": {
+     "frames": 90,
+     "fireFrames": 90,
+     "calls": {
+      "max": 284,
+      "p50": 284,
+      "min": 283
+     },
+     "triangles": {
+      "max": 517514,
+      "p50": 517514,
+      "min": 517502
+     },
+     "timing": {
+      "frames": 181,
+      "seconds": 3,
+      "fps": 60.3,
+      "p50": 16.7,
+      "p90": 16.7,
+      "p95": 16.7,
+      "p99": 16.8,
+      "max": 16.8,
+      "over33ms": 0
+     },
+     "fire": {
+      "mode": "every-frame",
+      "distance_m": 11.191176415337829,
+      "mapSize": 1024
+     }
+    },
+    "night-near-fire-10m-fireShadowOn": {
+     "frames": 90,
+     "fireFrames": 90,
+     "calls": {
+      "max": 262,
+      "p50": 262,
+      "min": 262
+     },
+     "triangles": {
+      "max": 529755,
+      "p50": 529755,
+      "min": 529755
+     },
+     "timing": {
+      "frames": 181,
+      "seconds": 3,
+      "fps": 60.3,
+      "p50": 16.7,
+      "p90": 16.7,
+      "p95": 16.8,
+      "p99": 16.8,
+      "max": 16.8,
+      "over33ms": 0
+     },
+     "fire": {
+      "mode": "every-frame",
+      "distance_m": 3.3795052328589383,
+      "mapSize": 1024
+     }
+    },
+    "night-walking-by-fire-fireShadowOn": {
+     "frames": 120,
+     "fireFrames": 120,
+     "calls": {
+      "max": 276,
+      "p50": 262,
+      "min": 253
+     },
+     "triangles": {
+      "max": 534007,
+      "p50": 529515,
+      "min": 515314
+     }
+    },
+    "night-near-fire-30m-fireShadowOn": {
+     "frames": 90,
+     "fireFrames": 90,
+     "calls": {
+      "max": 297,
+      "p50": 297,
+      "min": 297
+     },
+     "triangles": {
+      "max": 535154,
+      "p50": 535154,
+      "min": 535154
+     },
+     "timing": {
+      "frames": 181,
+      "seconds": 3,
+      "fps": 60.3,
+      "p50": 16.7,
+      "p90": 16.7,
+      "p95": 16.7,
+      "p99": 16.8,
+      "max": 16.8,
+      "over33ms": 0
+     },
+     "fire": {
+      "mode": "every-frame",
+      "distance_m": 5.967133419392109,
+      "mapSize": 1024
+     }
+    },
+    "night-near-fire-10m-fireShadowOff": {
+     "frames": 90,
+     "fireFrames": 90,
+     "calls": {
+      "max": 238,
+      "p50": 238,
+      "min": 238
+     },
+     "triangles": {
+      "max": 502992,
+      "p50": 502992,
+      "min": 502992
+     },
+     "timing": {
+      "frames": 181,
+      "seconds": 3,
+      "fps": 60.3,
+      "p50": 16.7,
+      "p90": 16.7,
+      "p95": 16.7,
+      "p99": 16.8,
+      "max": 16.8,
+      "over33ms": 0
+     },
+     "fire": {
+      "mode": "every-frame",
+      "distance_m": 5.96611803514288,
+      "mapSize": 1024
+     }
+    },
+    "balanced-night-near-fire-10m-fireShadowOn": {
+     "frames": 90,
+     "fireFrames": 90,
+     "calls": {
+      "max": 253,
+      "p50": 253,
+      "min": 253
+     },
+     "triangles": {
+      "max": 493064,
+      "p50": 493064,
+      "min": 493064
+     },
+     "timing": {
+      "frames": 181,
+      "seconds": 3,
+      "fps": 60.3,
+      "p50": 16.7,
+      "p90": 16.7,
+      "p95": 16.7,
+      "p99": 16.8,
+      "max": 16.8,
+      "over33ms": 0
+     },
+     "fire": {
+      "mode": "every-frame",
+      "distance_m": 5.965119178697664,
+      "mapSize": 512
+     }
+    }
+   },
+   "walk": [
+    {
+     "target": [
+      -46.3,
+      17
+     ],
+     "at": [
+      -46.19404220581055,
+      5.633573055267334,
+      16.922893524169922
+     ],
+     "reached": true,
+     "seconds": 4.527
+    },
+    {
+     "target": [
+      -48,
+      30
+     ],
+     "at": [
+      -47.9508171081543,
+      5.630331516265869,
+      29.896921157836914
+     ],
+     "reached": true,
+     "seconds": 3.4
+    },
+    {
+     "target": [
+      -42,
+      33.4
+     ],
+     "at": [
+      -42.121421813964844,
+      5.621283054351807,
+      33.387306213378906
+     ],
+     "reached": true,
+     "seconds": 2.101
+    }
+   ],
+   "note": "headless rAF timing on M5 Pro; draw calls include shadow passes (gl.info resets per render)."
+  }
+ },
+ "errors": [],
+ "entryUrl": "http://127.0.0.1:4322/world/?qa=1",
+ "pageErrors": [],
+ "finishedAt": "2026-10-22T19:47:13.595Z"
+}

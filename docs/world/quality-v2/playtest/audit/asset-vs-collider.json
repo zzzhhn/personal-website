@@ -1,0 +1,641 @@
+{
+ "source": "c507506 WorldEnvironment.createLayout + WorldCamp placements",
+ "items": {
+  "tent0_C04": {
+   "visualBoundsWorld": {
+    "x": [
+     -53.159,
+     -48.841
+    ],
+    "y": [
+     4.8,
+     7.3
+    ],
+    "z": [
+     10.844,
+     14.156
+    ]
+   },
+   "colliderBox": {
+    "x": [
+     -53.75,
+     -48.25
+    ],
+    "y": [
+     4.8,
+     7.7
+    ],
+    "z": [
+     10.4,
+     14.6
+    ]
+   },
+   "fractionOfColliderFootprintWhereCanvasIsMoreThan0.25mBelowBoxTop": 1.0,
+   "gapFromColliderFaceToCanvas_m(None=no canvas within 6m)": {
+    "south(+Z,entrance)": {
+     "h0.3": [
+      null,
+      0.462,
+      null,
+      0.9,
+      0.793,
+      0.965,
+      0.793,
+      0.9,
+      null,
+      0.462,
+      null
+     ],
+     "h1.0": [
+      null,
+      null,
+      null,
+      null,
+      0.9,
+      0.965,
+      0.9,
+      null,
+      null,
+      null,
+      null
+     ],
+     "h1.6": [
+      null,
+      null,
+      null,
+      null,
+      0.726,
+      0.859,
+      0.726,
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "east(+X)": {
+     "h0.3": [
+      null,
+      null,
+      1.47,
+      1.47,
+      1.47,
+      1.47,
+      1.47,
+      1.47,
+      1.47,
+      null,
+      null
+     ],
+     "h1.0": [
+      null,
+      null,
+      1.815,
+      1.815,
+      1.815,
+      1.815,
+      1.815,
+      1.815,
+      1.815,
+      null,
+      null
+     ],
+     "h1.6": [
+      null,
+      null,
+      2.248,
+      2.248,
+      2.248,
+      2.248,
+      2.248,
+      2.248,
+      2.248,
+      null,
+      null
+     ]
+    },
+    "north(-Z)": {
+     "h0.3": [
+      null,
+      0.462,
+      null,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      null,
+      0.462,
+      null
+     ],
+     "h1.0": [
+      null,
+      null,
+      null,
+      null,
+      0.9,
+      0.9,
+      0.9,
+      null,
+      null,
+      null,
+      null
+     ],
+     "h1.6": [
+      null,
+      null,
+      null,
+      null,
+      0.726,
+      0.9,
+      0.726,
+      null,
+      null,
+      null,
+      null
+     ]
+    }
+   }
+  },
+  "tent1_C03": {
+   "visualBoundsWorld": {
+    "x": [
+     -44.71,
+     -39.29
+    ],
+    "y": [
+     4.8,
+     8.1
+    ],
+    "z": [
+     10.444,
+     14.556
+    ]
+   },
+   "colliderBox": {
+    "x": [
+     -44.75,
+     -39.25
+    ],
+    "y": [
+     4.8,
+     7.7
+    ],
+    "z": [
+     10.4,
+     14.6
+    ]
+   },
+   "fractionOfColliderFootprintWhereCanvasIsMoreThan0.25mBelowBoxTop": 0.899,
+   "gapFromColliderFaceToCanvas_m(None=no canvas within 6m)": {
+    "south(+Z,entrance)": {
+     "h0.3": [
+      null,
+      null,
+      0.6,
+      0.273,
+      0.559,
+      0.665,
+      0.559,
+      0.273,
+      0.6,
+      null,
+      null
+     ],
+     "h1.0": [
+      null,
+      null,
+      null,
+      0.6,
+      0.45,
+      0.665,
+      0.45,
+      0.6,
+      null,
+      null,
+      null
+     ],
+     "h1.6": [
+      null,
+      null,
+      null,
+      null,
+      0.6,
+      0.665,
+      0.6,
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "east(+X)": {
+     "h0.3": [
+      0.333,
+      null,
+      1.15,
+      1.15,
+      1.15,
+      1.15,
+      1.15,
+      1.15,
+      1.15,
+      2.171,
+      0.333
+     ],
+     "h1.0": [
+      null,
+      1.383,
+      1.383,
+      1.383,
+      1.383,
+      1.383,
+      1.383,
+      1.383,
+      1.383,
+      1.383,
+      null
+     ],
+     "h1.6": [
+      null,
+      1.798,
+      1.798,
+      1.798,
+      1.798,
+      1.798,
+      1.798,
+      1.798,
+      1.798,
+      1.798,
+      null
+     ]
+    },
+    "north(-Z)": {
+     "h0.3": [
+      null,
+      null,
+      0.6,
+      0.6,
+      0.6,
+      0.6,
+      0.6,
+      0.6,
+      0.6,
+      null,
+      null
+     ],
+     "h1.0": [
+      null,
+      null,
+      null,
+      0.6,
+      0.6,
+      0.6,
+      0.6,
+      0.6,
+      null,
+      null,
+      null
+     ],
+     "h1.6": [
+      null,
+      null,
+      null,
+      null,
+      0.6,
+      0.582,
+      0.6,
+      null,
+      null,
+      null,
+      null
+     ]
+    }
+   }
+  },
+  "tent2_C04": {
+   "visualBoundsWorld": {
+    "x": [
+     -35.159,
+     -30.841
+    ],
+    "y": [
+     4.8,
+     7.3
+    ],
+    "z": [
+     10.844,
+     14.156
+    ]
+   },
+   "colliderBox": {
+    "x": [
+     -35.75,
+     -30.25
+    ],
+    "y": [
+     4.8,
+     7.7
+    ],
+    "z": [
+     10.4,
+     14.6
+    ]
+   },
+   "fractionOfColliderFootprintWhereCanvasIsMoreThan0.25mBelowBoxTop": 1.0,
+   "gapFromColliderFaceToCanvas_m(None=no canvas within 6m)": {
+    "south(+Z,entrance)": {
+     "h0.3": [
+      null,
+      0.462,
+      null,
+      0.9,
+      0.793,
+      0.965,
+      0.793,
+      0.9,
+      null,
+      0.462,
+      null
+     ],
+     "h1.0": [
+      null,
+      null,
+      null,
+      null,
+      0.9,
+      0.965,
+      0.9,
+      null,
+      null,
+      null,
+      null
+     ],
+     "h1.6": [
+      null,
+      null,
+      null,
+      null,
+      0.726,
+      0.859,
+      0.726,
+      null,
+      null,
+      null,
+      null
+     ]
+    },
+    "east(+X)": {
+     "h0.3": [
+      null,
+      null,
+      1.47,
+      1.47,
+      1.47,
+      1.47,
+      1.47,
+      1.47,
+      1.47,
+      null,
+      null
+     ],
+     "h1.0": [
+      null,
+      null,
+      1.815,
+      1.815,
+      1.815,
+      1.815,
+      1.815,
+      1.815,
+      1.815,
+      null,
+      null
+     ],
+     "h1.6": [
+      null,
+      null,
+      2.248,
+      2.248,
+      2.248,
+      2.248,
+      2.248,
+      2.248,
+      2.248,
+      null,
+      null
+     ]
+    },
+    "north(-Z)": {
+     "h0.3": [
+      null,
+      0.462,
+      null,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      0.9,
+      null,
+      0.462,
+      null
+     ],
+     "h1.0": [
+      null,
+      null,
+      null,
+      null,
+      0.9,
+      0.9,
+      0.9,
+      null,
+      null,
+      null,
+      null
+     ],
+     "h1.6": [
+      null,
+      null,
+      null,
+      null,
+      0.726,
+      0.9,
+      0.726,
+      null,
+      null,
+      null,
+      null
+     ]
+    }
+   }
+  },
+  "C07": {
+   "visualAABBWorld": {
+    "x": [
+     -53.761,
+     -51.803
+    ],
+    "y": [
+     4.9,
+     5.752
+    ],
+    "z": [
+     39.803,
+     41.761
+    ]
+   },
+   "colliderBox": {
+    "x": [
+     -53.13160171779821,
+     -52.081601717798215
+    ],
+    "y": [
+     4.9,
+     5.8
+    ],
+    "z": [
+     40.15660171779821,
+     41.056601717798216
+    ]
+   },
+   "verticesBelowHeadHeightOutsideColliderXZ": 1537,
+   "totalVertices": 1740
+  },
+  "C09": {
+   "visualAABBWorld": {
+    "x": [
+     -53.434,
+     -51.78
+    ],
+    "y": [
+     4.9,
+     6.582
+    ],
+    "z": [
+     18.566,
+     20.22
+    ]
+   },
+   "colliderBox": {
+    "x": [
+     -53.13160171779821,
+     -52.081601717798215
+    ],
+    "y": [
+     4.9,
+     5.8
+    ],
+    "z": [
+     18.943398282201787,
+     19.843398282201786
+    ]
+   },
+   "verticesBelowHeadHeightOutsideColliderXZ": 872,
+   "totalVertices": 3572
+  },
+  "C10": {
+   "visualAABBWorld": {
+    "x": [
+     -57.418,
+     -56.423
+    ],
+    "y": [
+     4.9,
+     8.105
+    ],
+    "z": [
+     29.338,
+     30.63
+    ]
+   },
+   "colliderBox": {
+    "x": [
+     -57.525,
+     -56.475
+    ],
+    "y": [
+     4.9,
+     5.8
+    ],
+    "z": [
+     29.550000000000004,
+     30.450000000000003
+    ]
+   },
+   "verticesBelowHeadHeightOutsideColliderXZ": 157,
+   "totalVertices": 2112
+  },
+  "G16": {
+   "sizeGLB": [
+    3.8,
+    5.4,
+    3.403
+   ],
+   "lowestOverhangOutside0.45mOfAxis_m": 2.653,
+   "runtimeCollider": "trunk box 0.7x2.8x0.7"
+  },
+  "G17": {
+   "sizeGLB": [
+    2.953,
+    4.8,
+    4.4
+   ],
+   "lowestOverhangOutside0.45mOfAxis_m": 2.341,
+   "runtimeCollider": "trunk box 0.7x2.8x0.7"
+  },
+  "G18": {
+   "sizeGLB": [
+    2.849,
+    6.3,
+    3.0
+   ],
+   "lowestOverhangOutside0.45mOfAxis_m": 2.7,
+   "runtimeCollider": "trunk box 0.7x2.8x0.7"
+  },
+  "G19": {
+   "sizeGLB": [
+    1.415,
+    1.004,
+    1.296
+   ],
+   "lowestOverhangOutside0.45mOfAxis_m": 0.043,
+   "runtimeCollider": "NONE (createNature: visual-only)"
+  },
+  "G20": {
+   "sizeGLB": [
+    1.421,
+    1.039,
+    1.996
+   ],
+   "lowestOverhangOutside0.45mOfAxis_m": -0.0,
+   "runtimeCollider": "NONE (createNature: visual-only)"
+  },
+  "G21": {
+   "sizeGLB": [
+    2.2,
+    1.5,
+    2.8
+   ],
+   "lowestOverhangOutside0.45mOfAxis_m": -0.0,
+   "runtimeCollider": "NONE (createNature: visual-only)"
+  },
+  "G22": {
+   "sizeGLB": [
+    1.3,
+    0.85,
+    1.6
+   ],
+   "lowestOverhangOutside0.45mOfAxis_m": -0.0,
+   "runtimeCollider": "NONE (createNature: visual-only)"
+  },
+  "G23": {
+   "sizeGLB": [
+    0.65,
+    0.4,
+    0.8
+   ],
+   "lowestOverhangOutside0.45mOfAxis_m": null,
+   "runtimeCollider": "NONE (createNature: visual-only)"
+  }
+ }
+}

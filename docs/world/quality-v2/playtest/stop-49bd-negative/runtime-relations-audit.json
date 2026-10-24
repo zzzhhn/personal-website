@@ -1,0 +1,5286 @@
+{
+  "input": "/Users/bobby/Desktop/3D-personal-world/stop-49bd-prototype/report.json",
+  "inputSha256": "1912340101001001666a430a3d41c2438c25df91ad3aadf627d7aa9c8121ee57",
+  "blender": "4.2.23 LTS",
+  "relationsSource": {
+    "path": "/Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/guide/qa_relations.py",
+    "sha256": "6d9574f6b78880a57fc3595d8121472445ed07429fc458f0d37100b6906b1ea1"
+  },
+  "relationsDeclared": [
+    {
+      "id": "helmet/collar",
+      "guest": "body",
+      "guest_regions": [
+        "neck"
+      ],
+      "host": "helmet",
+      "host_regions": null,
+      "min_burial_m": 0.01,
+      "min_exposed_m": 0.01,
+      "note": "collar top tucked inside the helmet opening"
+    },
+    {
+      "id": "boot.R/trouser",
+      "guest": "body",
+      "guest_regions": [
+        "shin.R"
+      ],
+      "host": "boot.R",
+      "host_regions": null,
+      "min_burial_m": 0.01,
+      "min_exposed_m": 0.05,
+      "note": "trouser end inside the boot shaft"
+    },
+    {
+      "id": "boot.L/trouser",
+      "guest": "body",
+      "guest_regions": [
+        "shin.L"
+      ],
+      "host": "boot.L",
+      "host_regions": null,
+      "min_burial_m": 0.01,
+      "min_exposed_m": 0.05,
+      "note": "trouser end inside the boot shaft"
+    },
+    {
+      "id": "mitten.R/sleeve",
+      "guest": "mitten.R",
+      "guest_regions": null,
+      "host": "body",
+      "host_regions": [
+        "forearm.R",
+        "hand.R"
+      ],
+      "min_burial_m": 0.01,
+      "min_exposed_m": 0.05,
+      "note": "glove root inside the cuff"
+    },
+    {
+      "id": "mitten.L/sleeve",
+      "guest": "mitten.L",
+      "guest_regions": null,
+      "host": "body",
+      "host_regions": [
+        "forearm.L",
+        "hand.L"
+      ],
+      "min_burial_m": 0.01,
+      "min_exposed_m": 0.05,
+      "note": "glove root inside the cuff"
+    },
+    {
+      "id": "bag/jacket",
+      "guest": "bag",
+      "guest_regions": null,
+      "host": "body",
+      "host_regions": [
+        "pelvis",
+        "spine"
+      ],
+      "min_burial_m": 0.003,
+      "min_exposed_m": 0.03,
+      "note": "bag back pressed into the jacket at the belt line"
+    },
+    {
+      "id": "bagflap/jacket",
+      "guest": "bagflap",
+      "guest_regions": null,
+      "host": "body",
+      "host_regions": [
+        "pelvis",
+        "spine"
+      ],
+      "min_burial_m": 0.002,
+      "min_exposed_m": 0.03,
+      "note": "flap back pressed into the jacket"
+    },
+    {
+      "id": "bagflap/bag",
+      "guest": "bagflap",
+      "guest_regions": null,
+      "host": "bag",
+      "host_regions": null,
+      "min_burial_m": 0.002,
+      "min_exposed_m": 0.003,
+      "note": "flap overlaps the bag top"
+    },
+    {
+      "id": "zip/chest",
+      "guest": "zip",
+      "guest_regions": null,
+      "host": "body",
+      "host_regions": [
+        "pelvis",
+        "spine",
+        "chest"
+      ],
+      "min_burial_m": 0.002,
+      "min_exposed_m": 0.003,
+      "note": "zip strip set into the jacket front"
+    },
+    {
+      "id": "visor/helmet",
+      "guest": "visor",
+      "guest_regions": null,
+      "host": "helmet",
+      "host_regions": null,
+      "min_burial_m": 0.005,
+      "min_exposed_m": 0.005,
+      "note": "visor plate set into the helmet shell"
+    },
+    {
+      "id": "dot/helmet",
+      "guest": "dot",
+      "guest_regions": null,
+      "host": "helmet",
+      "host_regions": null,
+      "min_burial_m": 0.005,
+      "min_exposed_m": 0.01,
+      "note": "cyan dot set into the helmet, right side"
+    }
+  ],
+  "sampleStride": 1,
+  "relationsAudited": true,
+  "scope": "captured CPU skin poses; all closed shells individually; cross-shell crossings vs A6 relation table; finite sampling",
+  "limits": "10um disposable rest seam weld with averaged deformed copies; float BVH/rays; exact single-vertex fallback; cross-shell: witness required (no-witness pairs fail as unclassified), body region from rest weights at the crossing, closest-face normal sign for burial/exposure (can misjudge near sharp concave host edges); no GPU identity or continuous-time claim; only captured frames are tested",
+  "views": [
+    {
+      "zoom": 1,
+      "assetSha256": "49bd64ffbaaec808bd1483bb1c5bf3fc7a32eb3906130a339cfcd30807820626",
+      "meshCount": 8,
+      "triangles": 2098,
+      "shellSizes": [
+        416,
+        201,
+        85,
+        85,
+        78,
+        58,
+        58,
+        24,
+        24,
+        24,
+        18
+      ],
+      "parts": {
+        "zip": {
+          "bone": "chest",
+          "vertices": 24,
+          "centroid": [
+            0.1344,
+            0.88,
+            -0.0
+          ],
+          "size": [
+            0.022,
+            0.34,
+            0.02
+          ]
+        },
+        "boot.L": {
+          "bone": "foot.L",
+          "vertices": 85,
+          "centroid": [
+            0.0355,
+            0.1105,
+            -0.1
+          ],
+          "size": [
+            0.2219,
+            0.232,
+            0.1736
+          ]
+        },
+        "boot.R": {
+          "bone": "foot.R",
+          "vertices": 85,
+          "centroid": [
+            0.0355,
+            0.1105,
+            0.1
+          ],
+          "size": [
+            0.2219,
+            0.232,
+            0.1736
+          ]
+        },
+        "mitten.L": {
+          "bone": "hand.L",
+          "vertices": 58,
+          "centroid": [
+            0.0323,
+            0.7034,
+            -0.4696
+          ],
+          "size": [
+            0.0941,
+            0.0879,
+            0.0702
+          ]
+        },
+        "mitten.R": {
+          "bone": "hand.R",
+          "vertices": 58,
+          "centroid": [
+            0.0323,
+            0.7034,
+            0.4696
+          ],
+          "size": [
+            0.0941,
+            0.0879,
+            0.0702
+          ]
+        },
+        "helmet": {
+          "bone": "head",
+          "vertices": 201,
+          "centroid": [
+            -0.0,
+            1.4566,
+            0.0
+          ],
+          "size": [
+            0.59,
+            0.4982,
+            0.59
+          ]
+        },
+        "visor": {
+          "bone": "head",
+          "vertices": 78,
+          "centroid": [
+            0.2029,
+            1.4226,
+            0.0
+          ],
+          "size": [
+            0.2374,
+            0.1394,
+            0.5979
+          ]
+        },
+        "dot": {
+          "bone": "head",
+          "vertices": 18,
+          "centroid": [
+            0.0422,
+            1.425,
+            0.3005
+          ],
+          "size": [
+            0.0583,
+            0.0544,
+            0.0479
+          ]
+        },
+        "bagflap": {
+          "bone": "pelvis",
+          "vertices": 24,
+          "centroid": [
+            -0.1276,
+            0.801,
+            0.1633
+          ],
+          "size": [
+            0.1557,
+            0.048,
+            0.1453
+          ]
+        },
+        "bag": {
+          "bone": "pelvis",
+          "vertices": 24,
+          "centroid": [
+            -0.1262,
+            0.765,
+            0.1615
+          ],
+          "size": [
+            0.1343,
+            0.115,
+            0.1231
+          ]
+        }
+      },
+      "maxSeamCorrection_m": 7.835838747520122e-07,
+      "samples": 375,
+      "phases": {
+        "idle": {
+          "samples": 44,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.0228,
+            "boot.R/trouser": 0.04875,
+            "boot.L/trouser": 0.04971,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01298,
+            "bagflap/jacket": 0.01106,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01505,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08836,
+            "boot.R/trouser": 0.14982,
+            "boot.L/trouser": 0.13981,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07751,
+            "bagflap/jacket": 0.0868,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.02993,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "walk": {
+          "samples": 90,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.04994,
+            "boot.L/trouser": 0.04065,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01246,
+            "bagflap/jacket": 0.00945,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08828,
+            "boot.R/trouser": 0.14801,
+            "boot.L/trouser": 0.14806,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07554,
+            "bagflap/jacket": 0.08644,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03224,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "run": {
+          "samples": 59,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02257,
+            "boot.R/trouser": 0.04088,
+            "boot.L/trouser": 0.04027,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01277,
+            "bagflap/jacket": 0.00691,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01503,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.09441,
+            "boot.R/trouser": 0.14485,
+            "boot.L/trouser": 0.1448,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07559,
+            "bagflap/jacket": 0.08706,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.02713,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "walk-return": {
+          "samples": 55,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02258,
+            "boot.R/trouser": 0.04768,
+            "boot.L/trouser": 0.04131,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01246,
+            "bagflap/jacket": 0.00741,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01503,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.09441,
+            "boot.R/trouser": 0.14484,
+            "boot.L/trouser": 0.148,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07554,
+            "bagflap/jacket": 0.08644,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.02711,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "stop": {
+          "samples": 46,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.05103,
+            "boot.L/trouser": 0.05942,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.0129,
+            "bagflap/jacket": 0.01055,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08838,
+            "boot.R/trouser": 0.14842,
+            "boot.L/trouser": 0.14927,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07554,
+            "bagflap/jacket": 0.08651,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03227,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "turn180": {
+          "samples": 45,
+          "sameShellFailures": 2,
+          "relationFailures": 3,
+          "unintendedMax": {
+            "body|shin.R|boot.L": 32,
+            "body|shin.L|boot.R": 29,
+            "boot.L|boot.R": 90
+          },
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.05829,
+            "boot.L/trouser": 0.04066,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01245,
+            "bagflap/jacket": 0.00945,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08857,
+            "boot.R/trouser": 0.14813,
+            "boot.L/trouser": 0.14589,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07559,
+            "bagflap/jacket": 0.08644,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03223,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": [
+            {
+              "t": 8.798,
+              "animation": "Idle",
+              "animationTime": 0.850099999964237,
+              "sameShellParts": {
+                "body": 34
+              },
+              "unintended": {
+                "body|shin.R|boot.L": 7
+              },
+              "unclassified": {},
+              "failedRelations": []
+            },
+            {
+              "t": 8.822,
+              "animation": "Idle",
+              "animationTime": 0.8833999999761579,
+              "sameShellParts": {
+                "body": 50
+              },
+              "unintended": {
+                "body|shin.R|boot.L": 32,
+                "body|shin.L|boot.R": 29,
+                "boot.L|boot.R": 90
+              },
+              "unclassified": {},
+              "failedRelations": []
+            },
+            {
+              "t": 8.845,
+              "animation": "Idle",
+              "animationTime": 0.8999999999999998,
+              "sameShellParts": {},
+              "unintended": {
+                "boot.L|boot.R": 54
+              },
+              "unclassified": {},
+              "failedRelations": []
+            }
+          ]
+        },
+        "stop180": {
+          "samples": 36,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.05634,
+            "boot.L/trouser": 0.0572,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01286,
+            "bagflap/jacket": 0.01007,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08838,
+            "boot.R/trouser": 0.14987,
+            "boot.L/trouser": 0.14083,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07769,
+            "bagflap/jacket": 0.0867,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03223,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        }
+      },
+      "relationSummary": {
+        "helmet/collar": {
+          "min_burial_m": 0.02257,
+          "at": [
+            "run",
+            6.023,
+            "Run"
+          ],
+          "min_exposed_m": 0.08828,
+          "exposed_at": [
+            "walk",
+            3.249,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.01,
+          "max_crossing_pairs": 22,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "boot.R/trouser": {
+          "min_burial_m": 0.04088,
+          "at": [
+            "run",
+            6.068,
+            "Run"
+          ],
+          "min_exposed_m": 0.14484,
+          "exposed_at": [
+            "walk-return",
+            6.749,
+            "Run"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.05,
+          "max_crossing_pairs": 57,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "boot.L/trouser": {
+          "min_burial_m": 0.04027,
+          "at": [
+            "run",
+            5.489,
+            "Run"
+          ],
+          "min_exposed_m": 0.13981,
+          "exposed_at": [
+            "idle",
+            2.309,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.05,
+          "max_crossing_pairs": 59,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "mitten.R/sleeve": {
+          "min_burial_m": 0.02574,
+          "at": [
+            "idle",
+            2.141,
+            "Idle"
+          ],
+          "min_exposed_m": 0.0711,
+          "exposed_at": [
+            "idle",
+            2.141,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.05,
+          "max_crossing_pairs": 27,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "mitten.L/sleeve": {
+          "min_burial_m": 0.02574,
+          "at": [
+            "idle",
+            2.141,
+            "Idle"
+          ],
+          "min_exposed_m": 0.0711,
+          "exposed_at": [
+            "idle",
+            2.141,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.05,
+          "max_crossing_pairs": 27,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "bag/jacket": {
+          "min_burial_m": 0.01245,
+          "at": [
+            "turn180",
+            8.776,
+            "Idle"
+          ],
+          "min_exposed_m": 0.07554,
+          "exposed_at": [
+            "walk",
+            4.388,
+            "Walk"
+          ],
+          "declared_min_burial_m": 0.003,
+          "declared_min_exposed_m": 0.03,
+          "max_crossing_pairs": 19,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "bagflap/jacket": {
+          "min_burial_m": 0.00691,
+          "at": [
+            "run",
+            6.425,
+            "Run"
+          ],
+          "min_exposed_m": 0.08644,
+          "exposed_at": [
+            "walk",
+            3.475,
+            "Walk"
+          ],
+          "declared_min_burial_m": 0.002,
+          "declared_min_exposed_m": 0.03,
+          "max_crossing_pairs": 20,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "bagflap/bag": {
+          "min_burial_m": 0.03525,
+          "at": [
+            "idle",
+            2.141,
+            "Idle"
+          ],
+          "min_exposed_m": 0.0156,
+          "exposed_at": [
+            "idle",
+            2.141,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.002,
+          "declared_min_exposed_m": 0.003,
+          "max_crossing_pairs": 34,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "zip/chest": {
+          "min_burial_m": 0.01503,
+          "at": [
+            "run",
+            5.623,
+            "Run"
+          ],
+          "min_exposed_m": 0.02711,
+          "exposed_at": [
+            "walk-return",
+            6.772,
+            "Run"
+          ],
+          "declared_min_burial_m": 0.002,
+          "declared_min_exposed_m": 0.003,
+          "max_crossing_pairs": 37,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "visor/helmet": {
+          "min_burial_m": 0.02076,
+          "at": [
+            "idle",
+            2.141,
+            "Idle"
+          ],
+          "min_exposed_m": 0.02049,
+          "exposed_at": [
+            "idle",
+            2.141,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.005,
+          "declared_min_exposed_m": 0.005,
+          "max_crossing_pairs": 96,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "dot/helmet": {
+          "min_burial_m": 0.00786,
+          "at": [
+            "idle",
+            2.141,
+            "Idle"
+          ],
+          "min_exposed_m": 0.0357,
+          "exposed_at": [
+            "idle",
+            2.141,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.005,
+          "declared_min_exposed_m": 0.01,
+          "max_crossing_pairs": 22,
+          "unmeasuredSamples": 0,
+          "passed": true
+        }
+      },
+      "examples": [
+        {
+          "t": 8.798,
+          "phase": "turn180",
+          "cases": [
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                601,
+                833
+              ],
+              "segment_m": 0.0023637278099074956,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.060714442282915115,
+                    0.4479108452796936,
+                    0.007241967599838972
+                  ],
+                  [
+                    0.12083128094673157,
+                    0.45750680565834045,
+                    -0.014871841296553612
+                  ],
+                  [
+                    0.02326306328177452,
+                    0.49620336294174194,
+                    -0.010997324250638485
+                  ]
+                ],
+                [
+                  [
+                    0.08609266579151154,
+                    0.4196150600910187,
+                    0.06223383918404579
+                  ],
+                  [
+                    0.06095585599541664,
+                    0.4276139736175537,
+                    0.0034146225079894066
+                  ],
+                  [
+                    0.06358963996171951,
+                    0.494204580783844,
+                    0.009769229218363762
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                601,
+                664
+              ],
+              "segment_m": 0.008442441974685837,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.060714442282915115,
+                    0.4479108452796936,
+                    0.007241967599838972
+                  ],
+                  [
+                    0.12083128094673157,
+                    0.45750680565834045,
+                    -0.014871841296553612
+                  ],
+                  [
+                    0.02326306328177452,
+                    0.49620336294174194,
+                    -0.010997324250638485
+                  ]
+                ],
+                [
+                  [
+                    0.06358963996171951,
+                    0.494204580783844,
+                    0.009769229218363762
+                  ],
+                  [
+                    0.06095585599541664,
+                    0.4276139736175537,
+                    0.0034146225079894066
+                  ],
+                  [
+                    -0.00011721983173629269,
+                    0.49084270000457764,
+                    -0.004629642702639103
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                664,
+                780
+              ],
+              "segment_m": 0.015343255355186998,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.06358963996171951,
+                    0.494204580783844,
+                    0.009769229218363762
+                  ],
+                  [
+                    0.06095585599541664,
+                    0.4276139736175537,
+                    0.0034146225079894066
+                  ],
+                  [
+                    -0.00011721983173629269,
+                    0.49084270000457764,
+                    -0.004629642702639103
+                  ]
+                ],
+                [
+                  [
+                    0.0025281815323978662,
+                    0.4307098090648651,
+                    -0.01524075586348772
+                  ],
+                  [
+                    0.060714442282915115,
+                    0.4479108452796936,
+                    0.007241967599838972
+                  ],
+                  [
+                    0.02326306328177452,
+                    0.49620336294174194,
+                    -0.010997324250638485
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                780,
+                844
+              ],
+              "segment_m": 0.04424318549306494,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.0025281815323978662,
+                    0.4307098090648651,
+                    -0.01524075586348772
+                  ],
+                  [
+                    0.060714442282915115,
+                    0.4479108452796936,
+                    0.007241967599838972
+                  ],
+                  [
+                    0.02326306328177452,
+                    0.49620336294174194,
+                    -0.010997324250638485
+                  ]
+                ],
+                [
+                  [
+                    0.06095585599541664,
+                    0.4276139736175537,
+                    0.0034146225079894066
+                  ],
+                  [
+                    -0.0004076669574715197,
+                    0.43392691016197205,
+                    -0.016082938760519028
+                  ],
+                  [
+                    -0.00011721983173629269,
+                    0.49084270000457764,
+                    -0.004629642702639103
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                780,
+                847
+              ],
+              "segment_m": 0.004059205025187926,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.0025281815323978662,
+                    0.4307098090648651,
+                    -0.01524075586348772
+                  ],
+                  [
+                    0.060714442282915115,
+                    0.4479108452796936,
+                    0.007241967599838972
+                  ],
+                  [
+                    0.02326306328177452,
+                    0.49620336294174194,
+                    -0.010997324250638485
+                  ]
+                ],
+                [
+                  [
+                    -0.004553675185889006,
+                    0.37277185916900635,
+                    -0.01931716687977314
+                  ],
+                  [
+                    -0.0004076669574715197,
+                    0.43392691016197205,
+                    -0.016082938760519028
+                  ],
+                  [
+                    0.06095585599541664,
+                    0.4276139736175537,
+                    0.0034146225079894066
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                600,
+                847
+              ],
+              "segment_m": 2.0410277914594393e-06,
+              "classification": "unresolved",
+              "coordinates": [
+                [
+                  [
+                    -0.02308632619678974,
+                    0.4870060086250305,
+                    -0.02368568815290928
+                  ],
+                  [
+                    0.0025281815323978662,
+                    0.4307098090648651,
+                    -0.01524075586348772
+                  ],
+                  [
+                    0.02326306328177452,
+                    0.49620336294174194,
+                    -0.010997324250638485
+                  ]
+                ],
+                [
+                  [
+                    -0.004553675185889006,
+                    0.37277185916900635,
+                    -0.01931716687977314
+                  ],
+                  [
+                    -0.0004076669574715197,
+                    0.43392691016197205,
+                    -0.016082938760519028
+                  ],
+                  [
+                    0.06095585599541664,
+                    0.4276139736175537,
+                    0.0034146225079894066
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                602,
+                833
+              ],
+              "segment_m": 0.011381496710746484,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.060714442282915115,
+                    0.4479108452796936,
+                    0.007241967599838972
+                  ],
+                  [
+                    0.07402170449495316,
+                    0.38828322291374207,
+                    0.014573770575225353
+                  ],
+                  [
+                    0.12083128094673157,
+                    0.45750680565834045,
+                    -0.014871841296553612
+                  ]
+                ],
+                [
+                  [
+                    0.08609266579151154,
+                    0.4196150600910187,
+                    0.06223383918404579
+                  ],
+                  [
+                    0.06095585599541664,
+                    0.4276139736175537,
+                    0.0034146225079894066
+                  ],
+                  [
+                    0.06358963996171951,
+                    0.494204580783844,
+                    0.009769229218363762
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                654,
+                783
+              ],
+              "segment_m": 0.007374665076127783,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.08609266579151154,
+                    0.4196150600910187,
+                    0.06223383918404579
+                  ],
+                  [
+                    0.07685782015323639,
+                    0.3522948622703552,
+                    0.05496382713317871
+                  ],
+                  [
+                    0.06095585599541664,
+                    0.4276139736175537,
+                    0.0034146225079894066
+                  ]
+                ],
+                [
+                  [
+                    0.018056049942970276,
+                    0.3754752576351166,
+                    -0.007644458208233118
+                  ],
+                  [
+                    0.07402170449495316,
+                    0.38828322291374207,
+                    0.014573770575225353
+                  ],
+                  [
+                    0.060714442282915115,
+                    0.4479108452796936,
+                    0.007241967599838972
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                764,
+                834
+              ],
+              "segment_m": 0.025125336313454958,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.07962999492883682,
+                    0.32833850383758545,
+                    0.023438649252057076
+                  ],
+                  [
+                    0.07402170449495316,
+                    0.38828322291374207,
+                    0.014573770575225353
+                  ],
+                  [
+                    0.018056049942970276,
+                    0.3754752576351166,
+                    -0.007644458208233118
+                  ]
+                ],
+                [
+                  [
+                    0.07685782015323639,
+                    0.3522948622703552,
+                    0.05496382713317871
+                  ],
+                  [
+                    0.05314812809228897,
+                    0.3620966374874115,
+                    -0.0011587326880544424
+                  ],
+                  [
+                    0.06095585599541664,
+                    0.4276139736175537,
+                    0.0034146225079894066
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                584,
+                637
+              ],
+              "segment_m": 0.0035463506636011096,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.02440130151808262,
+                    0.31950169801712036,
+                    0.0010908656986430287
+                  ],
+                  [
+                    0.07962999492883682,
+                    0.32833850383758545,
+                    0.023438649252057076
+                  ],
+                  [
+                    0.018056049942970276,
+                    0.3754752576351166,
+                    -0.007644458208233118
+                  ]
+                ],
+                [
+                  [
+                    0.07685782015323639,
+                    0.3522948622703552,
+                    0.05496382713317871
+                  ],
+                  [
+                    0.060820627957582474,
+                    0.28806939721107483,
+                    0.048200346529483795
+                  ],
+                  [
+                    0.05314812809228897,
+                    0.3620966374874115,
+                    -0.0011587326880544424
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                584,
+                817
+              ],
+              "segment_m": 0.019643636461234546,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.02440130151808262,
+                    0.31950169801712036,
+                    0.0010908656986430287
+                  ],
+                  [
+                    0.07962999492883682,
+                    0.32833850383758545,
+                    0.023438649252057076
+                  ],
+                  [
+                    0.018056049942970276,
+                    0.3754752576351166,
+                    -0.007644458208233118
+                  ]
+                ],
+                [
+                  [
+                    0.060820627957582474,
+                    0.28806939721107483,
+                    0.048200346529483795
+                  ],
+                  [
+                    0.037919655442237854,
+                    0.29910242557525635,
+                    -0.006458387244492769
+                  ],
+                  [
+                    0.05314812809228897,
+                    0.3620966374874115,
+                    -0.0011587326880544424
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                637,
+                764
+              ],
+              "segment_m": 0.013609100253277308,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.07685782015323639,
+                    0.3522948622703552,
+                    0.05496382713317871
+                  ],
+                  [
+                    0.060820627957582474,
+                    0.28806939721107483,
+                    0.048200346529483795
+                  ],
+                  [
+                    0.05314812809228897,
+                    0.3620966374874115,
+                    -0.0011587326880544424
+                  ]
+                ],
+                [
+                  [
+                    0.07962999492883682,
+                    0.32833850383758545,
+                    0.023438649252057076
+                  ],
+                  [
+                    0.07402170449495316,
+                    0.38828322291374207,
+                    0.014573770575225353
+                  ],
+                  [
+                    0.018056049942970276,
+                    0.3754752576351166,
+                    -0.007644458208233118
+                  ]
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "t": 8.822,
+          "phase": "turn180",
+          "cases": [
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                601,
+                844
+              ],
+              "segment_m": 0.030976631671053138,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.05179798975586891,
+                    0.43864724040031433,
+                    0.0014871667372062802
+                  ],
+                  [
+                    0.11252753436565399,
+                    0.4448259472846985,
+                    -0.019694942981004715
+                  ],
+                  [
+                    0.019378935918211937,
+                    0.49019595980644226,
+                    -0.0132443867623806
+                  ]
+                ],
+                [
+                  [
+                    0.09487001597881317,
+                    0.43344855308532715,
+                    0.005716919898986816
+                  ],
+                  [
+                    0.03360021859407425,
+                    0.43192440271377563,
+                    -0.014391890726983547
+                  ],
+                  [
+                    0.012202455662190914,
+                    0.4876309335231781,
+                    -0.004137509968131781
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                780,
+                844
+              ],
+              "segment_m": 0.0159080313090184,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    -0.006950107403099537,
+                    0.425961434841156,
+                    -0.022098617628216743
+                  ],
+                  [
+                    0.05179798975586891,
+                    0.43864724040031433,
+                    0.0014871667372062802
+                  ],
+                  [
+                    0.019378935918211937,
+                    0.49019595980644226,
+                    -0.0132443867623806
+                  ]
+                ],
+                [
+                  [
+                    0.09487001597881317,
+                    0.43344855308532715,
+                    0.005716919898986816
+                  ],
+                  [
+                    0.03360021859407425,
+                    0.43192440271377563,
+                    -0.014391890726983547
+                  ],
+                  [
+                    0.012202455662190914,
+                    0.4876309335231781,
+                    -0.004137509968131781
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                665,
+                780
+              ],
+              "segment_m": 0.022881404559087624,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.03360021859407425,
+                    0.43192440271377563,
+                    -0.014391890726983547
+                  ],
+                  [
+                    -0.02555355802178383,
+                    0.42590516805648804,
+                    0.010507693514227867
+                  ],
+                  [
+                    0.012202455662190914,
+                    0.4876309335231781,
+                    -0.004137509968131781
+                  ]
+                ],
+                [
+                  [
+                    -0.006950107403099537,
+                    0.425961434841156,
+                    -0.022098617628216743
+                  ],
+                  [
+                    0.05179798975586891,
+                    0.43864724040031433,
+                    0.0014871667372062802
+                  ],
+                  [
+                    0.019378935918211937,
+                    0.49019595980644226,
+                    -0.0132443867623806
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                585,
+                817
+              ],
+              "segment_m": 0.026867563919232226,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.05975300818681717,
+                    0.318315714597702,
+                    0.014220936223864555
+                  ],
+                  [
+                    0.11678191274404526,
+                    0.3141138255596161,
+                    -0.004101800732314587
+                  ],
+                  [
+                    0.061072710901498795,
+                    0.378408819437027,
+                    0.007139001972973347
+                  ]
+                ],
+                [
+                  [
+                    0.10855158418416977,
+                    0.29288554191589355,
+                    0.05153622105717659
+                  ],
+                  [
+                    0.08523464947938919,
+                    0.30155351758003235,
+                    -0.0033327783457934856
+                  ],
+                  [
+                    0.095233254134655,
+                    0.3664848506450653,
+                    0.0015645230887457728
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                602,
+                844
+              ],
+              "segment_m": 0.008560948251943616,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.05179798975586891,
+                    0.43864724040031433,
+                    0.0014871667372062802
+                  ],
+                  [
+                    0.061072710901498795,
+                    0.378408819437027,
+                    0.007139001972973347
+                  ],
+                  [
+                    0.11252753436565399,
+                    0.4448259472846985,
+                    -0.019694942981004715
+                  ]
+                ],
+                [
+                  [
+                    0.09487001597881317,
+                    0.43344855308532715,
+                    0.005716919898986816
+                  ],
+                  [
+                    0.03360021859407425,
+                    0.43192440271377563,
+                    -0.014391890726983547
+                  ],
+                  [
+                    0.012202455662190914,
+                    0.4876309335231781,
+                    -0.004137509968131781
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                602,
+                847
+              ],
+              "segment_m": 0.02217592011534574,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.05179798975586891,
+                    0.43864724040031433,
+                    0.0014871667372062802
+                  ],
+                  [
+                    0.061072710901498795,
+                    0.378408819437027,
+                    0.007139001972973347
+                  ],
+                  [
+                    0.11252753436565399,
+                    0.4448259472846985,
+                    -0.019694942981004715
+                  ]
+                ],
+                [
+                  [
+                    0.03721160814166069,
+                    0.3710576295852661,
+                    -0.017090976238250732
+                  ],
+                  [
+                    0.03360021859407425,
+                    0.43192440271377563,
+                    -0.014391890726983547
+                  ],
+                  [
+                    0.09487001597881317,
+                    0.43344855308532715,
+                    0.005716919898986816
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                602,
+                667
+              ],
+              "segment_m": 0.011639292017168033,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.05179798975586891,
+                    0.43864724040031433,
+                    0.0014871667372062802
+                  ],
+                  [
+                    0.061072710901498795,
+                    0.378408819437027,
+                    0.007139001972973347
+                  ],
+                  [
+                    0.11252753436565399,
+                    0.4448259472846985,
+                    -0.019694942981004715
+                  ]
+                ],
+                [
+                  [
+                    0.095233254134655,
+                    0.3664848506450653,
+                    0.0015645230887457728
+                  ],
+                  [
+                    0.03721160814166069,
+                    0.3710576295852661,
+                    -0.017090976238250732
+                  ],
+                  [
+                    0.09487001597881317,
+                    0.43344855308532715,
+                    0.005716919898986816
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                666,
+                783
+              ],
+              "segment_m": 0.02222793825373227,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.03721160814166069,
+                    0.3710576295852661,
+                    -0.017090976238250732
+                  ],
+                  [
+                    -0.018840724602341652,
+                    0.37110596895217896,
+                    0.007342744152992964
+                  ],
+                  [
+                    0.03360021859407425,
+                    0.43192440271377563,
+                    -0.014391890726983547
+                  ]
+                ],
+                [
+                  [
+                    0.00482830498367548,
+                    0.3713562488555908,
+                    -0.016230780631303787
+                  ],
+                  [
+                    0.061072710901498795,
+                    0.378408819437027,
+                    0.007139001972973347
+                  ],
+                  [
+                    0.05179798975586891,
+                    0.43864724040031433,
+                    0.0014871667372062802
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                666,
+                764
+              ],
+              "segment_m": 0.0022769850869587887,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.03721160814166069,
+                    0.3710576295852661,
+                    -0.017090976238250732
+                  ],
+                  [
+                    -0.018840724602341652,
+                    0.37110596895217896,
+                    0.007342744152992964
+                  ],
+                  [
+                    0.03360021859407425,
+                    0.43192440271377563,
+                    -0.014391890726983547
+                  ]
+                ],
+                [
+                  [
+                    0.05975300818681717,
+                    0.318315714597702,
+                    0.014220936223864555
+                  ],
+                  [
+                    0.061072710901498795,
+                    0.378408819437027,
+                    0.007139001972973347
+                  ],
+                  [
+                    0.00482830498367548,
+                    0.3713562488555908,
+                    -0.016230780631303787
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                584,
+                649
+              ],
+              "segment_m": 0.025348511748729444,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.0045083994045853615,
+                    0.3164319097995758,
+                    -0.00933275930583477
+                  ],
+                  [
+                    0.05975300818681717,
+                    0.318315714597702,
+                    0.014220936223864555
+                  ],
+                  [
+                    0.00482830498367548,
+                    0.3713562488555908,
+                    -0.016230780631303787
+                  ]
+                ],
+                [
+                  [
+                    0.03721160814166069,
+                    0.3710576295852661,
+                    -0.017090976238250732
+                  ],
+                  [
+                    0.02883608639240265,
+                    0.3114338219165802,
+                    -0.02103954739868641
+                  ],
+                  [
+                    -0.018840724602341652,
+                    0.37110596895217896,
+                    0.007342744152992964
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                584,
+                829
+              ],
+              "segment_m": 0.017836186522172434,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.0045083994045853615,
+                    0.3164319097995758,
+                    -0.00933275930583477
+                  ],
+                  [
+                    0.05975300818681717,
+                    0.318315714597702,
+                    0.014220936223864555
+                  ],
+                  [
+                    0.00482830498367548,
+                    0.3713562488555908,
+                    -0.016230780631303787
+                  ]
+                ],
+                [
+                  [
+                    0.02883608639240265,
+                    0.3114338219165802,
+                    -0.02103954739868641
+                  ],
+                  [
+                    -0.025657914578914642,
+                    0.317169725894928,
+                    0.0033622290939092636
+                  ],
+                  [
+                    -0.018840724602341652,
+                    0.37110596895217896,
+                    0.007342744152992964
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                649,
+                764
+              ],
+              "segment_m": 0.011719727313373967,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.03721160814166069,
+                    0.3710576295852661,
+                    -0.017090976238250732
+                  ],
+                  [
+                    0.02883608639240265,
+                    0.3114338219165802,
+                    -0.02103954739868641
+                  ],
+                  [
+                    -0.018840724602341652,
+                    0.37110596895217896,
+                    0.007342744152992964
+                  ]
+                ],
+                [
+                  [
+                    0.05975300818681717,
+                    0.318315714597702,
+                    0.014220936223864555
+                  ],
+                  [
+                    0.061072710901498795,
+                    0.378408819437027,
+                    0.007139001972973347
+                  ],
+                  [
+                    0.00482830498367548,
+                    0.3713562488555908,
+                    -0.016230780631303787
+                  ]
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "relationFailures": [
+        {
+          "t": 8.798,
+          "phase": "turn180",
+          "animation": "Idle",
+          "animationTime": 0.850099999964237,
+          "unintended": {
+            "body|shin.R|boot.L": 7
+          },
+          "unclassified": {},
+          "failedRelations": {},
+          "examples": [
+            {
+              "kind": "unintended",
+              "pair": "body|shin.R|boot.L",
+              "triangles": [
+                801,
+                1187
+              ],
+              "witness": [
+                0.01254,
+                0.20939,
+                0.00161
+              ],
+              "segment_m": 0.000545,
+              "coordinates": [
+                [
+                  [
+                    -0.0036308555863797665,
+                    0.1852787584066391,
+                    -0.014609500765800476
+                  ],
+                  [
+                    0.015686064958572388,
+                    0.2385043501853943,
+                    -0.012070849537849426
+                  ],
+                  [
+                    0.038096435368061066,
+                    0.22613374888896942,
+                    0.04197699949145317
+                  ]
+                ],
+                [
+                  [
+                    0.012255373410880566,
+                    0.2094532996416092,
+                    0.0013678818941116333
+                  ],
+                  [
+                    0.04961433634161949,
+                    0.16369299590587616,
+                    0.052714958786964417
+                  ],
+                  [
+                    0.05126621574163437,
+                    0.23288656771183014,
+                    0.018101055175065994
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.R|boot.L",
+              "triangles": [
+                801,
+                1186
+              ],
+              "witness": [
+                0.01253,
+                0.20967,
+                0.0014
+              ],
+              "segment_m": 0.000236,
+              "coordinates": [
+                [
+                  [
+                    -0.0036308555863797665,
+                    0.1852787584066391,
+                    -0.014609500765800476
+                  ],
+                  [
+                    0.015686064958572388,
+                    0.2385043501853943,
+                    -0.012070849537849426
+                  ],
+                  [
+                    0.038096435368061066,
+                    0.22613374888896942,
+                    0.04197699949145317
+                  ]
+                ],
+                [
+                  [
+                    0.03481690213084221,
+                    0.23264694213867188,
+                    -0.006301437504589558
+                  ],
+                  [
+                    0.012255373410880566,
+                    0.2094532996416092,
+                    0.0013678818941116333
+                  ],
+                  [
+                    0.05126621574163437,
+                    0.23288656771183014,
+                    0.018101055175065994
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.R|boot.L",
+              "triangles": [
+                801,
+                1269
+              ],
+              "witness": [
+                0.01241,
+                0.20961,
+                0.0012
+              ],
+              "segment_m": 0.000264,
+              "coordinates": [
+                [
+                  [
+                    -0.0036308555863797665,
+                    0.1852787584066391,
+                    -0.014609500765800476
+                  ],
+                  [
+                    0.015686064958572388,
+                    0.2385043501853943,
+                    -0.012070849537849426
+                  ],
+                  [
+                    0.038096435368061066,
+                    0.22613374888896942,
+                    0.04197699949145317
+                  ]
+                ],
+                [
+                  [
+                    0.012255373410880566,
+                    0.2094532996416092,
+                    0.0013678818941116333
+                  ],
+                  [
+                    0.03481690213084221,
+                    0.23264694213867188,
+                    -0.006301437504589558
+                  ],
+                  [
+                    0.03272133693099022,
+                    0.22866922616958618,
+                    -0.05429073050618172
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.R|boot.L",
+              "triangles": [
+                801,
+                1268
+              ],
+              "witness": [
+                0.01231,
+                0.20949,
+                0.00108
+              ],
+              "segment_m": 0.000151,
+              "coordinates": [
+                [
+                  [
+                    -0.0036308555863797665,
+                    0.1852787584066391,
+                    -0.014609500765800476
+                  ],
+                  [
+                    0.015686064958572388,
+                    0.2385043501853943,
+                    -0.012070849537849426
+                  ],
+                  [
+                    0.038096435368061066,
+                    0.22613374888896942,
+                    0.04197699949145317
+                  ]
+                ],
+                [
+                  [
+                    0.015843814238905907,
+                    0.2051660567522049,
+                    -0.061659231781959534
+                  ],
+                  [
+                    0.012255373410880566,
+                    0.2094532996416092,
+                    0.0013678818941116333
+                  ],
+                  [
+                    0.03272133693099022,
+                    0.22866922616958618,
+                    -0.05429073050618172
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.R|boot.L",
+              "triangles": [
+                801,
+                1265
+              ],
+              "witness": [
+                0.01231,
+                0.20874,
+                0.00159
+              ],
+              "segment_m": 0.000934,
+              "coordinates": [
+                [
+                  [
+                    -0.0036308555863797665,
+                    0.1852787584066391,
+                    -0.014609500765800476
+                  ],
+                  [
+                    0.015686064958572388,
+                    0.2385043501853943,
+                    -0.012070849537849426
+                  ],
+                  [
+                    0.038096435368061066,
+                    0.22613374888896942,
+                    0.04197699949145317
+                  ]
+                ],
+                [
+                  [
+                    0.04961433634161949,
+                    0.16369299590587616,
+                    0.052714958786964417
+                  ],
+                  [
+                    0.012255373410880566,
+                    0.2094532996416092,
+                    0.0013678818941116333
+                  ],
+                  [
+                    0.007203930057585239,
+                    0.17105941474437714,
+                    0.004569647833704948
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.R|boot.L",
+              "triangles": [
+                801,
+                1266
+              ],
+              "witness": [
+                0.01218,
+                0.2088,
+                0.00129
+              ],
+              "segment_m": 0.000991,
+              "coordinates": [
+                [
+                  [
+                    -0.0036308555863797665,
+                    0.1852787584066391,
+                    -0.014609500765800476
+                  ],
+                  [
+                    0.015686064958572388,
+                    0.2385043501853943,
+                    -0.012070849537849426
+                  ],
+                  [
+                    0.038096435368061066,
+                    0.22613374888896942,
+                    0.04197699949145317
+                  ]
+                ],
+                [
+                  [
+                    0.007203930057585239,
+                    0.17105941474437714,
+                    0.004569647833704948
+                  ],
+                  [
+                    0.012255373410880566,
+                    0.2094532996416092,
+                    0.0013678818941116333
+                  ],
+                  [
+                    0.011202911846339703,
+                    0.16162174940109253,
+                    -0.06002429872751236
+                  ]
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "t": 8.822,
+          "phase": "turn180",
+          "animation": "Idle",
+          "animationTime": 0.8833999999761579,
+          "unintended": {
+            "body|shin.R|boot.L": 32,
+            "body|shin.L|boot.R": 29,
+            "boot.L|boot.R": 90
+          },
+          "unclassified": {},
+          "failedRelations": {},
+          "examples": [
+            {
+              "kind": "unintended",
+              "pair": "body|shin.R|boot.L",
+              "triangles": [
+                801,
+                1248
+              ],
+              "witness": [
+                0.05147,
+                0.18884,
+                -0.00867
+              ],
+              "segment_m": 0.004954,
+              "coordinates": [
+                [
+                  [
+                    0.049216531217098236,
+                    0.18420369923114777,
+                    -0.010682224296033382
+                  ],
+                  [
+                    0.06535213440656662,
+                    0.2384965419769287,
+                    -0.008565375581383705
+                  ],
+                  [
+                    0.08826957643032074,
+                    0.2279447317123413,
+                    0.045655250549316406
+                  ]
+                ],
+                [
+                  [
+                    0.09506522119045258,
+                    0.16416342556476593,
+                    -0.017495762556791306
+                  ],
+                  [
+                    -0.0002849218435585499,
+                    0.2290085405111313,
+                    -0.011675376445055008
+                  ],
+                  [
+                    0.0462072379887104,
+                    0.17201891541481018,
+                    0.016909033060073853
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.L|boot.R",
+              "triangles": [
+                568,
+                1391
+              ],
+              "witness": [
+                0.00525,
+                0.22877,
+                0.00681
+              ],
+              "segment_m": 0.003699,
+              "coordinates": [
+                [
+                  [
+                    -0.00546257896348834,
+                    0.26130837202072144,
+                    -0.0018879510462284088
+                  ],
+                  [
+                    -0.009108394384384155,
+                    0.2057870328426361,
+                    0.003464225446805358
+                  ],
+                  [
+                    0.04925491660833359,
+                    0.2588231861591339,
+                    0.022096170112490654
+                  ]
+                ],
+                [
+                  [
+                    0.006856296677142382,
+                    0.2291121631860733,
+                    0.007144079077988863
+                  ],
+                  [
+                    -0.054649148136377335,
+                    0.22424688935279846,
+                    -0.012963461689651012
+                  ],
+                  [
+                    0.018199166283011436,
+                    0.17255796492099762,
+                    0.06098981201648712
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.L|boot.R",
+              "triangles": [
+                568,
+                1390
+              ],
+              "witness": [
+                0.00696,
+                0.22889,
+                0.00753
+              ],
+              "segment_m": 0.000419,
+              "coordinates": [
+                [
+                  [
+                    -0.00546257896348834,
+                    0.26130837202072144,
+                    -0.0018879510462284088
+                  ],
+                  [
+                    -0.009108394384384155,
+                    0.2057870328426361,
+                    0.003464225446805358
+                  ],
+                  [
+                    0.04925491660833359,
+                    0.2588231861591339,
+                    0.022096170112490654
+                  ]
+                ],
+                [
+                  [
+                    0.016501037403941154,
+                    0.22825121879577637,
+                    0.034935370087623596
+                  ],
+                  [
+                    0.006856296677142382,
+                    0.2291121631860733,
+                    0.007144079077988863
+                  ],
+                  [
+                    0.018199166283011436,
+                    0.17255796492099762,
+                    0.06098981201648712
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.L|boot.R",
+              "triangles": [
+                568,
+                1402
+              ],
+              "witness": [
+                0.00707,
+                0.22875,
+                0.0076
+              ],
+              "segment_m": 0.000738,
+              "coordinates": [
+                [
+                  [
+                    -0.00546257896348834,
+                    0.26130837202072144,
+                    -0.0018879510462284088
+                  ],
+                  [
+                    -0.009108394384384155,
+                    0.2057870328426361,
+                    0.003464225446805358
+                  ],
+                  [
+                    0.04925491660833359,
+                    0.2588231861591339,
+                    0.022096170112490654
+                  ]
+                ],
+                [
+                  [
+                    0.006856296677142382,
+                    0.2291121631860733,
+                    0.007144079077988863
+                  ],
+                  [
+                    0.016501037403941154,
+                    0.22825121879577637,
+                    0.034935370087623596
+                  ],
+                  [
+                    0.029414614662528038,
+                    0.17338769137859344,
+                    0.04852202162146568
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.L|boot.R",
+              "triangles": [
+                568,
+                1401
+              ],
+              "witness": [
+                0.00859,
+                0.22579,
+                0.00863
+              ],
+              "segment_m": 0.006256,
+              "coordinates": [
+                [
+                  [
+                    -0.00546257896348834,
+                    0.26130837202072144,
+                    -0.0018879510462284088
+                  ],
+                  [
+                    -0.009108394384384155,
+                    0.2057870328426361,
+                    0.003464225446805358
+                  ],
+                  [
+                    0.04925491660833359,
+                    0.2588231861591339,
+                    0.022096170112490654
+                  ]
+                ],
+                [
+                  [
+                    0.02771645225584507,
+                    0.20780517160892487,
+                    -0.007575014606118202
+                  ],
+                  [
+                    0.006856296677142382,
+                    0.2291121631860733,
+                    0.007144079077988863
+                  ],
+                  [
+                    0.029414614662528038,
+                    0.17338769137859344,
+                    0.04852202162146568
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.L|boot.R",
+              "triangles": [
+                568,
+                1389
+              ],
+              "witness": [
+                -0.00204,
+                0.22844,
+                0.00369
+              ],
+              "segment_m": 0.012196,
+              "coordinates": [
+                [
+                  [
+                    -0.00546257896348834,
+                    0.26130837202072144,
+                    -0.0018879510462284088
+                  ],
+                  [
+                    -0.009108394384384155,
+                    0.2057870328426361,
+                    0.003464225446805358
+                  ],
+                  [
+                    0.04925491660833359,
+                    0.2588231861591339,
+                    0.022096170112490654
+                  ]
+                ],
+                [
+                  [
+                    -0.012356112711131573,
+                    0.22812771797180176,
+                    -0.00725890789180994
+                  ],
+                  [
+                    -0.054649148136377335,
+                    0.22424688935279846,
+                    -0.012963461689651012
+                  ],
+                  [
+                    0.006856296677142382,
+                    0.2291121631860733,
+                    0.007144079077988863
+                  ]
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "t": 8.845,
+          "phase": "turn180",
+          "animation": "Idle",
+          "animationTime": 0.8999999999999998,
+          "unintended": {
+            "boot.L|boot.R": 54
+          },
+          "unclassified": {},
+          "failedRelations": {},
+          "examples": [
+            {
+              "kind": "unintended",
+              "pair": "boot.L|boot.R",
+              "triangles": [
+                1187,
+                1398
+              ],
+              "witness": [
+                0.02802,
+                0.17935,
+                0.00107
+              ],
+              "segment_m": 0.013358,
+              "coordinates": [
+                [
+                  [
+                    -0.010438698343932629,
+                    0.20790702104568481,
+                    -0.0053725033067166805
+                  ],
+                  [
+                    0.049102481454610825,
+                    0.15858136117458344,
+                    0.00679493835195899
+                  ],
+                  [
+                    0.030709760263562202,
+                    0.22862102091312408,
+                    -0.020495237782597542
+                  ]
+                ],
+                [
+                  [
+                    0.02719471976161003,
+                    0.1692420095205307,
+                    -0.0031612692400813103
+                  ],
+                  [
+                    0.022243518382310867,
+                    0.207405224442482,
+                    0.002215850166976452
+                  ],
+                  [
+                    0.07107555121183395,
+                    0.1381520926952362,
+                    0.04476059228181839
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "boot.L|boot.R",
+              "triangles": [
+                1187,
+                1397
+              ],
+              "witness": [
+                0.01569,
+                0.18957,
+                -0.00145
+              ],
+              "segment_m": 0.021009,
+              "coordinates": [
+                [
+                  [
+                    -0.010438698343932629,
+                    0.20790702104568481,
+                    -0.0053725033067166805
+                  ],
+                  [
+                    0.049102481454610825,
+                    0.15858136117458344,
+                    0.00679493835195899
+                  ],
+                  [
+                    0.030709760263562202,
+                    0.22862102091312408,
+                    -0.020495237782597542
+                  ]
+                ],
+                [
+                  [
+                    -0.04016045108437538,
+                    0.20202241837978363,
+                    -0.006753538269549608
+                  ],
+                  [
+                    0.022243518382310867,
+                    0.207405224442482,
+                    0.002215850166976452
+                  ],
+                  [
+                    0.02719471976161003,
+                    0.1692420095205307,
+                    -0.0031612692400813103
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "boot.L|boot.R",
+              "triangles": [
+                1265,
+                1398
+              ],
+              "witness": [
+                0.03278,
+                0.16881,
+                0.00403
+              ],
+              "segment_m": 0.010585,
+              "coordinates": [
+                [
+                  [
+                    0.049102481454610825,
+                    0.15858136117458344,
+                    0.00679493835195899
+                  ],
+                  [
+                    -0.010438698343932629,
+                    0.20790702104568481,
+                    -0.0053725033067166805
+                  ],
+                  [
+                    -0.014241067692637444,
+                    0.1697693169116974,
+                    0.001024057506583631
+                  ]
+                ],
+                [
+                  [
+                    0.02719471976161003,
+                    0.1692420095205307,
+                    -0.0031612692400813103
+                  ],
+                  [
+                    0.022243518382310867,
+                    0.207405224442482,
+                    0.002215850166976452
+                  ],
+                  [
+                    0.07107555121183395,
+                    0.1381520926952362,
+                    0.04476059228181839
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "boot.L|boot.R",
+              "triangles": [
+                1265,
+                1397
+              ],
+              "witness": [
+                -0.00261,
+                0.19596,
+                -0.00282
+              ],
+              "segment_m": 0.018136,
+              "coordinates": [
+                [
+                  [
+                    0.049102481454610825,
+                    0.15858136117458344,
+                    0.00679493835195899
+                  ],
+                  [
+                    -0.010438698343932629,
+                    0.20790702104568481,
+                    -0.0053725033067166805
+                  ],
+                  [
+                    -0.014241067692637444,
+                    0.1697693169116974,
+                    0.001024057506583631
+                  ]
+                ],
+                [
+                  [
+                    -0.04016045108437538,
+                    0.20202241837978363,
+                    -0.006753538269549608
+                  ],
+                  [
+                    0.022243518382310867,
+                    0.207405224442482,
+                    0.002215850166976452
+                  ],
+                  [
+                    0.02719471976161003,
+                    0.1692420095205307,
+                    -0.0031612692400813103
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "boot.L|boot.R",
+              "triangles": [
+                1265,
+                1360
+              ],
+              "witness": [
+                0.0351,
+                0.16247,
+                0.00527
+              ],
+              "segment_m": 0.003157,
+              "coordinates": [
+                [
+                  [
+                    0.049102481454610825,
+                    0.15858136117458344,
+                    0.00679493835195899
+                  ],
+                  [
+                    -0.010438698343932629,
+                    0.20790702104568481,
+                    -0.0053725033067166805
+                  ],
+                  [
+                    -0.014241067692637444,
+                    0.1697693169116974,
+                    0.001024057506583631
+                  ]
+                ],
+                [
+                  [
+                    0.02719471976161003,
+                    0.1692420095205307,
+                    -0.0031612692400813103
+                  ],
+                  [
+                    0.07107555121183395,
+                    0.1381520926952362,
+                    0.04476059228181839
+                  ],
+                  [
+                    0.07234111428260803,
+                    0.11749392747879028,
+                    0.042850103229284286
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "boot.L|boot.R",
+              "triangles": [
+                1266,
+                1397
+              ],
+              "witness": [
+                -0.01311,
+                0.19374,
+                -0.00454
+              ],
+              "segment_m": 0.008971,
+              "coordinates": [
+                [
+                  [
+                    -0.014241067692637444,
+                    0.1697693169116974,
+                    0.001024057506583631
+                  ],
+                  [
+                    -0.010438698343932629,
+                    0.20790702104568481,
+                    -0.0053725033067166805
+                  ],
+                  [
+                    -0.05640843138098717,
+                    0.16213810443878174,
+                    -0.048383623361587524
+                  ]
+                ],
+                [
+                  [
+                    -0.04016045108437538,
+                    0.20202241837978363,
+                    -0.006753538269549608
+                  ],
+                  [
+                    0.022243518382310867,
+                    0.207405224442482,
+                    0.002215850166976452
+                  ],
+                  [
+                    0.02719471976161003,
+                    0.1692420095205307,
+                    -0.0031612692400813103
+                  ]
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "seamMergeBoundExceeded": false,
+      "sameShellPassed": false,
+      "crossShellPassed": false,
+      "passed": false,
+      "rowsCount": 375
+    },
+    {
+      "zoom": 0,
+      "assetSha256": "49bd64ffbaaec808bd1483bb1c5bf3fc7a32eb3906130a339cfcd30807820626",
+      "meshCount": 8,
+      "triangles": 2098,
+      "shellSizes": [
+        416,
+        201,
+        85,
+        85,
+        78,
+        58,
+        58,
+        24,
+        24,
+        24,
+        18
+      ],
+      "parts": {
+        "zip": {
+          "bone": "chest",
+          "vertices": 24,
+          "centroid": [
+            0.1344,
+            0.88,
+            -0.0
+          ],
+          "size": [
+            0.022,
+            0.34,
+            0.02
+          ]
+        },
+        "boot.L": {
+          "bone": "foot.L",
+          "vertices": 85,
+          "centroid": [
+            0.0355,
+            0.1105,
+            -0.1
+          ],
+          "size": [
+            0.2219,
+            0.232,
+            0.1736
+          ]
+        },
+        "boot.R": {
+          "bone": "foot.R",
+          "vertices": 85,
+          "centroid": [
+            0.0355,
+            0.1105,
+            0.1
+          ],
+          "size": [
+            0.2219,
+            0.232,
+            0.1736
+          ]
+        },
+        "mitten.L": {
+          "bone": "hand.L",
+          "vertices": 58,
+          "centroid": [
+            0.0323,
+            0.7034,
+            -0.4696
+          ],
+          "size": [
+            0.0941,
+            0.0879,
+            0.0702
+          ]
+        },
+        "mitten.R": {
+          "bone": "hand.R",
+          "vertices": 58,
+          "centroid": [
+            0.0323,
+            0.7034,
+            0.4696
+          ],
+          "size": [
+            0.0941,
+            0.0879,
+            0.0702
+          ]
+        },
+        "helmet": {
+          "bone": "head",
+          "vertices": 201,
+          "centroid": [
+            -0.0,
+            1.4566,
+            0.0
+          ],
+          "size": [
+            0.59,
+            0.4982,
+            0.59
+          ]
+        },
+        "visor": {
+          "bone": "head",
+          "vertices": 78,
+          "centroid": [
+            0.2029,
+            1.4226,
+            0.0
+          ],
+          "size": [
+            0.2374,
+            0.1394,
+            0.5979
+          ]
+        },
+        "dot": {
+          "bone": "head",
+          "vertices": 18,
+          "centroid": [
+            0.0422,
+            1.425,
+            0.3005
+          ],
+          "size": [
+            0.0583,
+            0.0544,
+            0.0479
+          ]
+        },
+        "bagflap": {
+          "bone": "pelvis",
+          "vertices": 24,
+          "centroid": [
+            -0.1276,
+            0.801,
+            0.1633
+          ],
+          "size": [
+            0.1557,
+            0.048,
+            0.1453
+          ]
+        },
+        "bag": {
+          "bone": "pelvis",
+          "vertices": 24,
+          "centroid": [
+            -0.1262,
+            0.765,
+            0.1615
+          ],
+          "size": [
+            0.1343,
+            0.115,
+            0.1231
+          ]
+        }
+      },
+      "maxSeamCorrection_m": 7.836060042718339e-07,
+      "samples": 372,
+      "phases": {
+        "idle": {
+          "samples": 44,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.0228,
+            "boot.R/trouser": 0.06215,
+            "boot.L/trouser": 0.04966,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01298,
+            "bagflap/jacket": 0.01107,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01505,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08838,
+            "boot.R/trouser": 0.1498,
+            "boot.L/trouser": 0.13974,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07751,
+            "bagflap/jacket": 0.0868,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.02993,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "walk": {
+          "samples": 89,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.05752,
+            "boot.L/trouser": 0.05547,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01246,
+            "bagflap/jacket": 0.00945,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08827,
+            "boot.R/trouser": 0.14802,
+            "boot.L/trouser": 0.148,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07554,
+            "bagflap/jacket": 0.08644,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03224,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "run": {
+          "samples": 59,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02257,
+            "boot.R/trouser": 0.04097,
+            "boot.L/trouser": 0.04111,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01254,
+            "bagflap/jacket": 0.00691,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01503,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.09442,
+            "boot.R/trouser": 0.14481,
+            "boot.L/trouser": 0.14482,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07559,
+            "bagflap/jacket": 0.08707,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.02716,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "walk-return": {
+          "samples": 54,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02248,
+            "boot.R/trouser": 0.04997,
+            "boot.L/trouser": 0.04163,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01249,
+            "bagflap/jacket": 0.00744,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01503,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.09441,
+            "boot.R/trouser": 0.14482,
+            "boot.L/trouser": 0.14803,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07554,
+            "bagflap/jacket": 0.08644,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.0272,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "stop": {
+          "samples": 45,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.05673,
+            "boot.L/trouser": 0.04067,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01285,
+            "bagflap/jacket": 0.01047,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08838,
+            "boot.R/trouser": 0.14839,
+            "boot.L/trouser": 0.14915,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07555,
+            "bagflap/jacket": 0.08651,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03245,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "turn180": {
+          "samples": 45,
+          "sameShellFailures": 2,
+          "relationFailures": 2,
+          "unintendedMax": {
+            "body|shin.R|boot.L": 30,
+            "boot.L|boot.R": 70,
+            "body|shin.L|boot.R": 21
+          },
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.06096,
+            "boot.L/trouser": 0.0403,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01244,
+            "bagflap/jacket": 0.00945,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08858,
+            "boot.R/trouser": 0.148,
+            "boot.L/trouser": 0.1402,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07554,
+            "bagflap/jacket": 0.08644,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03224,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": [
+            {
+              "t": 8.79,
+              "animation": "Idle",
+              "animationTime": 0.8665999999642371,
+              "sameShellParts": {
+                "body": 37
+              },
+              "unintended": {
+                "body|shin.R|boot.L": 21,
+                "boot.L|boot.R": 44
+              },
+              "unclassified": {},
+              "failedRelations": []
+            },
+            {
+              "t": 8.812,
+              "animation": "Idle",
+              "animationTime": 0.883399999976158,
+              "sameShellParts": {
+                "body": 40
+              },
+              "unintended": {
+                "body|shin.L|boot.R": 21,
+                "body|shin.R|boot.L": 30,
+                "boot.L|boot.R": 70
+              },
+              "unclassified": {},
+              "failedRelations": []
+            }
+          ]
+        },
+        "stop180": {
+          "samples": 36,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.04754,
+            "boot.L/trouser": 0.06066,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01278,
+            "bagflap/jacket": 0.00978,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08838,
+            "boot.R/trouser": 0.14987,
+            "boot.L/trouser": 0.13979,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07768,
+            "bagflap/jacket": 0.08671,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03223,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        }
+      },
+      "relationSummary": {
+        "helmet/collar": {
+          "min_burial_m": 0.02248,
+          "at": [
+            "walk-return",
+            6.82,
+            "Walk"
+          ],
+          "min_exposed_m": 0.08827,
+          "exposed_at": [
+            "walk",
+            3.24,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.01,
+          "max_crossing_pairs": 22,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "boot.R/trouser": {
+          "min_burial_m": 0.04097,
+          "at": [
+            "run",
+            6.083,
+            "Run"
+          ],
+          "min_exposed_m": 0.14481,
+          "exposed_at": [
+            "run",
+            5.436,
+            "Run"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.05,
+          "max_crossing_pairs": 52,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "boot.L/trouser": {
+          "min_burial_m": 0.0403,
+          "at": [
+            "turn180",
+            8.967,
+            "Walk"
+          ],
+          "min_exposed_m": 0.13974,
+          "exposed_at": [
+            "idle",
+            2.299,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.05,
+          "max_crossing_pairs": 56,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "mitten.R/sleeve": {
+          "min_burial_m": 0.02574,
+          "at": [
+            "idle",
+            2.161,
+            "Idle"
+          ],
+          "min_exposed_m": 0.0711,
+          "exposed_at": [
+            "idle",
+            2.161,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.05,
+          "max_crossing_pairs": 27,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "mitten.L/sleeve": {
+          "min_burial_m": 0.02574,
+          "at": [
+            "idle",
+            2.161,
+            "Idle"
+          ],
+          "min_exposed_m": 0.0711,
+          "exposed_at": [
+            "idle",
+            2.161,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.05,
+          "max_crossing_pairs": 27,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "bag/jacket": {
+          "min_burial_m": 0.01244,
+          "at": [
+            "turn180",
+            8.767,
+            "Idle"
+          ],
+          "min_exposed_m": 0.07554,
+          "exposed_at": [
+            "walk",
+            3.878,
+            "Walk"
+          ],
+          "declared_min_burial_m": 0.003,
+          "declared_min_exposed_m": 0.03,
+          "max_crossing_pairs": 19,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "bagflap/jacket": {
+          "min_burial_m": 0.00691,
+          "at": [
+            "run",
+            5.617,
+            "Run"
+          ],
+          "min_exposed_m": 0.08644,
+          "exposed_at": [
+            "walk",
+            3.469,
+            "Walk"
+          ],
+          "declared_min_burial_m": 0.002,
+          "declared_min_exposed_m": 0.03,
+          "max_crossing_pairs": 20,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "bagflap/bag": {
+          "min_burial_m": 0.03525,
+          "at": [
+            "idle",
+            2.161,
+            "Idle"
+          ],
+          "min_exposed_m": 0.0156,
+          "exposed_at": [
+            "idle",
+            2.161,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.002,
+          "declared_min_exposed_m": 0.003,
+          "max_crossing_pairs": 34,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "zip/chest": {
+          "min_burial_m": 0.01503,
+          "at": [
+            "run",
+            5.436,
+            "Run"
+          ],
+          "min_exposed_m": 0.02716,
+          "exposed_at": [
+            "run",
+            5.459,
+            "Run"
+          ],
+          "declared_min_burial_m": 0.002,
+          "declared_min_exposed_m": 0.003,
+          "max_crossing_pairs": 37,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "visor/helmet": {
+          "min_burial_m": 0.02076,
+          "at": [
+            "idle",
+            2.161,
+            "Idle"
+          ],
+          "min_exposed_m": 0.02049,
+          "exposed_at": [
+            "idle",
+            2.161,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.005,
+          "declared_min_exposed_m": 0.005,
+          "max_crossing_pairs": 96,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "dot/helmet": {
+          "min_burial_m": 0.00786,
+          "at": [
+            "idle",
+            2.161,
+            "Idle"
+          ],
+          "min_exposed_m": 0.0357,
+          "exposed_at": [
+            "idle",
+            2.161,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.005,
+          "declared_min_exposed_m": 0.01,
+          "max_crossing_pairs": 22,
+          "unmeasuredSamples": 0,
+          "passed": true
+        }
+      },
+      "examples": [
+        {
+          "t": 8.79,
+          "phase": "turn180",
+          "cases": [
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                602,
+                847
+              ],
+              "segment_m": 0.003926770830559857,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.05961080268025398,
+                    0.44301658868789673,
+                    0.0013683015713468194
+                  ],
+                  [
+                    0.07185352593660355,
+                    0.3831167221069336,
+                    0.007005272898823023
+                  ],
+                  [
+                    0.11986825615167618,
+                    0.45214715600013733,
+                    -0.020381484180688858
+                  ]
+                ],
+                [
+                  [
+                    0.01651216857135296,
+                    0.36991649866104126,
+                    -0.013395030051469803
+                  ],
+                  [
+                    0.017109448090195656,
+                    0.43099185824394226,
+                    -0.011491806246340275
+                  ],
+                  [
+                    0.07847537845373154,
+                    0.42857593297958374,
+                    0.008376113139092922
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                602,
+                667
+              ],
+              "segment_m": 0.03121030898699545,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.05961080268025398,
+                    0.44301658868789673,
+                    0.0013683015713468194
+                  ],
+                  [
+                    0.07185352593660355,
+                    0.3831167221069336,
+                    0.007005272898823023
+                  ],
+                  [
+                    0.11986825615167618,
+                    0.45214715600013733,
+                    -0.020381484180688858
+                  ]
+                ],
+                [
+                  [
+                    0.07426939904689789,
+                    0.361873984336853,
+                    0.005132594145834446
+                  ],
+                  [
+                    0.01651216857135296,
+                    0.36991649866104126,
+                    -0.013395030051469803
+                  ],
+                  [
+                    0.07847537845373154,
+                    0.42857593297958374,
+                    0.008376113139092922
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                765,
+                834
+              ],
+              "segment_m": 0.001629120087302676,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.1321435570716858,
+                    0.322913259267807,
+                    -0.0048892381601035595
+                  ],
+                  [
+                    0.1297679990530014,
+                    0.38727062940597534,
+                    -0.013115907087922096
+                  ],
+                  [
+                    0.07185352593660355,
+                    0.3831167221069336,
+                    0.007005272898823023
+                  ]
+                ],
+                [
+                  [
+                    0.09805405884981155,
+                    0.35421404242515564,
+                    0.061513107270002365
+                  ],
+                  [
+                    0.07426939904689789,
+                    0.361873984336853,
+                    0.005132594145834446
+                  ],
+                  [
+                    0.07847537845373154,
+                    0.42857593297958374,
+                    0.008376113139092922
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                585,
+                834
+              ],
+              "segment_m": 0.018235717627338773,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.07509224861860275,
+                    0.322910338640213,
+                    0.014164453372359276
+                  ],
+                  [
+                    0.1321435570716858,
+                    0.322913259267807,
+                    -0.0048892381601035595
+                  ],
+                  [
+                    0.07185352593660355,
+                    0.3831167221069336,
+                    0.007005272898823023
+                  ]
+                ],
+                [
+                  [
+                    0.09805405884981155,
+                    0.35421404242515564,
+                    0.061513107270002365
+                  ],
+                  [
+                    0.07426939904689789,
+                    0.361873984336853,
+                    0.005132594145834446
+                  ],
+                  [
+                    0.07847537845373154,
+                    0.42857593297958374,
+                    0.008376113139092922
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                585,
+                637
+              ],
+              "segment_m": 0.006294469122900539,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.07509224861860275,
+                    0.322910338640213,
+                    0.014164453372359276
+                  ],
+                  [
+                    0.1321435570716858,
+                    0.322913259267807,
+                    -0.0048892381601035595
+                  ],
+                  [
+                    0.07185352593660355,
+                    0.3831167221069336,
+                    0.007005272898823023
+                  ]
+                ],
+                [
+                  [
+                    0.09805405884981155,
+                    0.35421404242515564,
+                    0.061513107270002365
+                  ],
+                  [
+                    0.08335824310779572,
+                    0.28842800855636597,
+                    0.05604984983801842
+                  ],
+                  [
+                    0.07426939904689789,
+                    0.361873984336853,
+                    0.005132594145834446
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                585,
+                817
+              ],
+              "segment_m": 0.010813922321383599,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.07509224861860275,
+                    0.322910338640213,
+                    0.014164453372359276
+                  ],
+                  [
+                    0.1321435570716858,
+                    0.322913259267807,
+                    -0.0048892381601035595
+                  ],
+                  [
+                    0.07185352593660355,
+                    0.3831167221069336,
+                    0.007005272898823023
+                  ]
+                ],
+                [
+                  [
+                    0.08335824310779572,
+                    0.28842800855636597,
+                    0.05604984983801842
+                  ],
+                  [
+                    0.06038060411810875,
+                    0.2977637052536011,
+                    0.0011384199606254697
+                  ],
+                  [
+                    0.07426939904689789,
+                    0.361873984336853,
+                    0.005132594145834446
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                667,
+                782
+              ],
+              "segment_m": 0.003072456140230356,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.07426939904689789,
+                    0.361873984336853,
+                    0.005132594145834446
+                  ],
+                  [
+                    0.01651216857135296,
+                    0.36991649866104126,
+                    -0.013395030051469803
+                  ],
+                  [
+                    0.07847537845373154,
+                    0.42857593297958374,
+                    0.008376113139092922
+                  ]
+                ],
+                [
+                  [
+                    0.07185352593660355,
+                    0.3831167221069336,
+                    0.007005272898823023
+                  ],
+                  [
+                    0.1297679990530014,
+                    0.38727062940597534,
+                    -0.013115907087922096
+                  ],
+                  [
+                    0.11986825615167618,
+                    0.45214715600013733,
+                    -0.020381484180688858
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                667,
+                765
+              ],
+              "segment_m": 0.002326731967534532,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.07426939904689789,
+                    0.361873984336853,
+                    0.005132594145834446
+                  ],
+                  [
+                    0.01651216857135296,
+                    0.36991649866104126,
+                    -0.013395030051469803
+                  ],
+                  [
+                    0.07847537845373154,
+                    0.42857593297958374,
+                    0.008376113139092922
+                  ]
+                ],
+                [
+                  [
+                    0.1321435570716858,
+                    0.322913259267807,
+                    -0.0048892381601035595
+                  ],
+                  [
+                    0.1297679990530014,
+                    0.38727062940597534,
+                    -0.013115907087922096
+                  ],
+                  [
+                    0.07185352593660355,
+                    0.3831167221069336,
+                    0.007005272898823023
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                667,
+                764
+              ],
+              "segment_m": 0.016933992754568975,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.07426939904689789,
+                    0.361873984336853,
+                    0.005132594145834446
+                  ],
+                  [
+                    0.01651216857135296,
+                    0.36991649866104126,
+                    -0.013395030051469803
+                  ],
+                  [
+                    0.07847537845373154,
+                    0.42857593297958374,
+                    0.008376113139092922
+                  ]
+                ],
+                [
+                  [
+                    0.07509224861860275,
+                    0.322910338640213,
+                    0.014164453372359276
+                  ],
+                  [
+                    0.07185352593660355,
+                    0.3831167221069336,
+                    0.007005272898823023
+                  ],
+                  [
+                    0.01573597826063633,
+                    0.37255558371543884,
+                    -0.015731075778603554
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                667,
+                783
+              ],
+              "segment_m": 0.03738165813803341,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.07426939904689789,
+                    0.361873984336853,
+                    0.005132594145834446
+                  ],
+                  [
+                    0.01651216857135296,
+                    0.36991649866104126,
+                    -0.013395030051469803
+                  ],
+                  [
+                    0.07847537845373154,
+                    0.42857593297958374,
+                    0.008376113139092922
+                  ]
+                ],
+                [
+                  [
+                    0.01573597826063633,
+                    0.37255558371543884,
+                    -0.015731075778603554
+                  ],
+                  [
+                    0.07185352593660355,
+                    0.3831167221069336,
+                    0.007005272898823023
+                  ],
+                  [
+                    0.05961080268025398,
+                    0.44301658868789673,
+                    0.0013683015713468194
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                764,
+                817
+              ],
+              "segment_m": 0.01833039511346428,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.07509224861860275,
+                    0.322910338640213,
+                    0.014164453372359276
+                  ],
+                  [
+                    0.07185352593660355,
+                    0.3831167221069336,
+                    0.007005272898823023
+                  ],
+                  [
+                    0.01573597826063633,
+                    0.37255558371543884,
+                    -0.015731075778603554
+                  ]
+                ],
+                [
+                  [
+                    0.08335824310779572,
+                    0.28842800855636597,
+                    0.05604984983801842
+                  ],
+                  [
+                    0.06038060411810875,
+                    0.2977637052536011,
+                    0.0011384199606254697
+                  ],
+                  [
+                    0.07426939904689789,
+                    0.361873984336853,
+                    0.005132594145834446
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                584,
+                817
+              ],
+              "segment_m": 0.004317589898524639,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.01974649541079998,
+                    0.3168749511241913,
+                    -0.00866973027586937
+                  ],
+                  [
+                    0.07509224861860275,
+                    0.322910338640213,
+                    0.014164453372359276
+                  ],
+                  [
+                    0.01573597826063633,
+                    0.37255558371543884,
+                    -0.015731075778603554
+                  ]
+                ],
+                [
+                  [
+                    0.08335824310779572,
+                    0.28842800855636597,
+                    0.05604984983801842
+                  ],
+                  [
+                    0.06038060411810875,
+                    0.2977637052536011,
+                    0.0011384199606254697
+                  ],
+                  [
+                    0.07426939904689789,
+                    0.361873984336853,
+                    0.005132594145834446
+                  ]
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "t": 8.812,
+          "phase": "turn180",
+          "cases": [
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                585,
+                667
+              ],
+              "segment_m": 0.006632614564460159,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.0658193826675415,
+                    0.3192577362060547,
+                    0.008514003828167915
+                  ],
+                  [
+                    0.12283127754926682,
+                    0.31637153029441833,
+                    -0.010123894549906254
+                  ],
+                  [
+                    0.06604328751564026,
+                    0.37947940826416016,
+                    0.002423575147986412
+                  ]
+                ],
+                [
+                  [
+                    0.09136039018630981,
+                    0.3654051125049591,
+                    0.00742520485073328
+                  ],
+                  [
+                    0.033396635204553604,
+                    0.3703782260417938,
+                    -0.011305870488286018
+                  ],
+                  [
+                    0.0919094979763031,
+                    0.43244096636772156,
+                    0.010181739926338196
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                585,
+                648
+              ],
+              "segment_m": 0.04909045908154915,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.0658193826675415,
+                    0.3192577362060547,
+                    0.008514003828167915
+                  ],
+                  [
+                    0.12283127754926682,
+                    0.31637153029441833,
+                    -0.010123894549906254
+                  ],
+                  [
+                    0.06604328751564026,
+                    0.37947940826416016,
+                    0.002423575147986412
+                  ]
+                ],
+                [
+                  [
+                    0.09136039018630981,
+                    0.3654051125049591,
+                    0.00742520485073328
+                  ],
+                  [
+                    0.08047355711460114,
+                    0.3005271255970001,
+                    0.0038844491355121136
+                  ],
+                  [
+                    0.033396635204553604,
+                    0.3703782260417938,
+                    -0.011305870488286018
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                667,
+                782
+              ],
+              "segment_m": 0.004105777869152205,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.09136039018630981,
+                    0.3654051125049591,
+                    0.00742520485073328
+                  ],
+                  [
+                    0.033396635204553604,
+                    0.3703782260417938,
+                    -0.011305870488286018
+                  ],
+                  [
+                    0.0919094979763031,
+                    0.43244096636772156,
+                    0.010181739926338196
+                  ]
+                ],
+                [
+                  [
+                    0.06604328751564026,
+                    0.37947940826416016,
+                    0.002423575147986412
+                  ],
+                  [
+                    0.12405375391244888,
+                    0.3813832104206085,
+                    -0.017287664115428925
+                  ],
+                  [
+                    0.11624494940042496,
+                    0.44720396399497986,
+                    -0.023524519056081772
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                667,
+                765
+              ],
+              "segment_m": 0.006270361710518355,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.09136039018630981,
+                    0.3654051125049591,
+                    0.00742520485073328
+                  ],
+                  [
+                    0.033396635204553604,
+                    0.3703782260417938,
+                    -0.011305870488286018
+                  ],
+                  [
+                    0.0919094979763031,
+                    0.43244096636772156,
+                    0.010181739926338196
+                  ]
+                ],
+                [
+                  [
+                    0.12283127754926682,
+                    0.31637153029441833,
+                    -0.010123894549906254
+                  ],
+                  [
+                    0.12405375391244888,
+                    0.3813832104206085,
+                    -0.017287664115428925
+                  ],
+                  [
+                    0.06604328751564026,
+                    0.37947940826416016,
+                    0.002423575147986412
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                648,
+                766
+              ],
+              "segment_m": 0.012048432689364749,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.09136039018630981,
+                    0.3654051125049591,
+                    0.00742520485073328
+                  ],
+                  [
+                    0.08047355711460114,
+                    0.3005271255970001,
+                    0.0038844491355121136
+                  ],
+                  [
+                    0.033396635204553604,
+                    0.3703782260417938,
+                    -0.011305870488286018
+                  ]
+                ],
+                [
+                  [
+                    0.11302957683801651,
+                    0.2520952820777893,
+                    -0.0024566303472965956
+                  ],
+                  [
+                    0.12283127754926682,
+                    0.31637153029441833,
+                    -0.010123894549906254
+                  ],
+                  [
+                    0.0658193826675415,
+                    0.3192577362060547,
+                    0.008514003828167915
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                666,
+                764
+              ],
+              "segment_m": 0.004649491431051033,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.033396635204553604,
+                    0.3703782260417938,
+                    -0.011305870488286018
+                  ],
+                  [
+                    -0.022635748609900475,
+                    0.37169891595840454,
+                    0.013136650435626507
+                  ],
+                  [
+                    0.030613990500569344,
+                    0.43133091926574707,
+                    -0.009874586015939713
+                  ]
+                ],
+                [
+                  [
+                    0.0658193826675415,
+                    0.3192577362060547,
+                    0.008514003828167915
+                  ],
+                  [
+                    0.06604328751564026,
+                    0.37947940826416016,
+                    0.002423575147986412
+                  ],
+                  [
+                    0.009817690588533878,
+                    0.37183627486228943,
+                    -0.020817609503865242
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                666,
+                783
+              ],
+              "segment_m": 0.0008073630046077452,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.033396635204553604,
+                    0.3703782260417938,
+                    -0.011305870488286018
+                  ],
+                  [
+                    -0.022635748609900475,
+                    0.37169891595840454,
+                    0.013136650435626507
+                  ],
+                  [
+                    0.030613990500569344,
+                    0.43133091926574707,
+                    -0.009874586015939713
+                  ]
+                ],
+                [
+                  [
+                    0.009817690588533878,
+                    0.37183627486228943,
+                    -0.020817609503865242
+                  ],
+                  [
+                    0.06604328751564026,
+                    0.37947940826416016,
+                    0.002423575147986412
+                  ],
+                  [
+                    0.05572253838181496,
+                    0.4396421015262604,
+                    -0.0021893465891480446
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                584,
+                649
+              ],
+              "segment_m": 0.03816452624797888,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.010504858568310738,
+                    0.3167826533317566,
+                    -0.014827043749392033
+                  ],
+                  [
+                    0.0658193826675415,
+                    0.3192577362060547,
+                    0.008514003828167915
+                  ],
+                  [
+                    0.009817690588533878,
+                    0.37183627486228943,
+                    -0.020817609503865242
+                  ]
+                ],
+                [
+                  [
+                    0.033396635204553604,
+                    0.3703782260417938,
+                    -0.011305870488286018
+                  ],
+                  [
+                    0.024205585941672325,
+                    0.3108055591583252,
+                    -0.014008983969688416
+                  ],
+                  [
+                    -0.022635748609900475,
+                    0.37169891595840454,
+                    0.013136650435626507
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                584,
+                829
+              ],
+              "segment_m": 6.790407654770542e-05,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.010504858568310738,
+                    0.3167826533317566,
+                    -0.014827043749392033
+                  ],
+                  [
+                    0.0658193826675415,
+                    0.3192577362060547,
+                    0.008514003828167915
+                  ],
+                  [
+                    0.009817690588533878,
+                    0.37183627486228943,
+                    -0.020817609503865242
+                  ]
+                ],
+                [
+                  [
+                    0.024205585941672325,
+                    0.3108055591583252,
+                    -0.014008983969688416
+                  ],
+                  [
+                    -0.03019114024937153,
+                    0.31779202818870544,
+                    0.010282824747264385
+                  ],
+                  [
+                    -0.022635748609900475,
+                    0.37169891595840454,
+                    0.013136650435626507
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                649,
+                764
+              ],
+              "segment_m": 0.016636547501252794,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.033396635204553604,
+                    0.3703782260417938,
+                    -0.011305870488286018
+                  ],
+                  [
+                    0.024205585941672325,
+                    0.3108055591583252,
+                    -0.014008983969688416
+                  ],
+                  [
+                    -0.022635748609900475,
+                    0.37169891595840454,
+                    0.013136650435626507
+                  ]
+                ],
+                [
+                  [
+                    0.0658193826675415,
+                    0.3192577362060547,
+                    0.008514003828167915
+                  ],
+                  [
+                    0.06604328751564026,
+                    0.37947940826416016,
+                    0.002423575147986412
+                  ],
+                  [
+                    0.009817690588533878,
+                    0.37183627486228943,
+                    -0.020817609503865242
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                602,
+                667
+              ],
+              "segment_m": 0.019974038698682646,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.05572253838181496,
+                    0.4396421015262604,
+                    -0.0021893465891480446
+                  ],
+                  [
+                    0.06604328751564026,
+                    0.37947940826416016,
+                    0.002423575147986412
+                  ],
+                  [
+                    0.11624494940042496,
+                    0.44720396399497986,
+                    -0.023524519056081772
+                  ]
+                ],
+                [
+                  [
+                    0.09136039018630981,
+                    0.3654051125049591,
+                    0.00742520485073328
+                  ],
+                  [
+                    0.033396635204553604,
+                    0.3703782260417938,
+                    -0.011305870488286018
+                  ],
+                  [
+                    0.0919094979763031,
+                    0.43244096636772156,
+                    0.010181739926338196
+                  ]
+                ]
+              ]
+            },
+            {
+              "component": 0,
+              "part": "body",
+              "triangles": [
+                602,
+                847
+              ],
+              "segment_m": 0.02344368771498752,
+              "classification": "noncoplanar_segment",
+              "coordinates": [
+                [
+                  [
+                    0.05572253838181496,
+                    0.4396421015262604,
+                    -0.0021893465891480446
+                  ],
+                  [
+                    0.06604328751564026,
+                    0.37947940826416016,
+                    0.002423575147986412
+                  ],
+                  [
+                    0.11624494940042496,
+                    0.44720396399497986,
+                    -0.023524519056081772
+                  ]
+                ],
+                [
+                  [
+                    0.033396635204553604,
+                    0.3703782260417938,
+                    -0.011305870488286018
+                  ],
+                  [
+                    0.030613990500569344,
+                    0.43133091926574707,
+                    -0.009874586015939713
+                  ],
+                  [
+                    0.0919094979763031,
+                    0.43244096636772156,
+                    0.010181739926338196
+                  ]
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "relationFailures": [
+        {
+          "t": 8.79,
+          "phase": "turn180",
+          "animation": "Idle",
+          "animationTime": 0.8665999999642371,
+          "unintended": {
+            "body|shin.R|boot.L": 21,
+            "boot.L|boot.R": 44
+          },
+          "unclassified": {},
+          "failedRelations": {},
+          "examples": [
+            {
+              "kind": "unintended",
+              "pair": "body|shin.R|boot.L",
+              "triangles": [
+                632,
+                1249
+              ],
+              "witness": [
+                0.03325,
+                0.22823,
+                -0.00374
+              ],
+              "segment_m": 0.003075,
+              "coordinates": [
+                [
+                  [
+                    0.03726775199174881,
+                    0.23607805371284485,
+                    -0.0031948320101946592
+                  ],
+                  [
+                    0.018136022612452507,
+                    0.18274250626564026,
+                    -0.004554789513349533
+                  ],
+                  [
+                    -0.017195094376802444,
+                    0.2538556158542633,
+                    -0.02032722905278206
+                  ]
+                ],
+                [
+                  [
+                    0.026327962055802345,
+                    0.22957535088062286,
+                    -0.009197980165481567
+                  ],
+                  [
+                    0.048966631293296814,
+                    0.22947180271148682,
+                    0.009606251493096352
+                  ],
+                  [
+                    0.07543601095676422,
+                    0.17481307685375214,
+                    0.019365964457392693
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.R|boot.L",
+              "triangles": [
+                632,
+                1186
+              ],
+              "witness": [
+                0.02755,
+                0.22746,
+                -0.00533
+              ],
+              "segment_m": 0.011065,
+              "coordinates": [
+                [
+                  [
+                    0.03726775199174881,
+                    0.23607805371284485,
+                    -0.0031948320101946592
+                  ],
+                  [
+                    0.018136022612452507,
+                    0.18274250626564026,
+                    -0.004554789513349533
+                  ],
+                  [
+                    -0.017195094376802444,
+                    0.2538556158542633,
+                    -0.02032722905278206
+                  ]
+                ],
+                [
+                  [
+                    0.026327962055802345,
+                    0.22957535088062286,
+                    -0.009197980165481567
+                  ],
+                  [
+                    0.006272315979003906,
+                    0.20701035857200623,
+                    0.004743977915495634
+                  ],
+                  [
+                    0.048966631293296814,
+                    0.22947180271148682,
+                    0.009606251493096352
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.R|boot.L",
+              "triangles": [
+                632,
+                1269
+              ],
+              "witness": [
+                0.01498,
+                0.21847,
+                -0.00826
+              ],
+              "segment_m": 0.020805,
+              "coordinates": [
+                [
+                  [
+                    0.03726775199174881,
+                    0.23607805371284485,
+                    -0.0031948320101946592
+                  ],
+                  [
+                    0.018136022612452507,
+                    0.18274250626564026,
+                    -0.004554789513349533
+                  ],
+                  [
+                    -0.017195094376802444,
+                    0.2538556158542633,
+                    -0.02032722905278206
+                  ]
+                ],
+                [
+                  [
+                    0.006272315979003906,
+                    0.20701035857200623,
+                    0.004743977915495634
+                  ],
+                  [
+                    0.026327962055802345,
+                    0.22957535088062286,
+                    -0.009197980165481567
+                  ],
+                  [
+                    0.010750170797109604,
+                    0.2254791557788849,
+                    -0.05462638661265373
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.R|boot.L",
+              "triangles": [
+                632,
+                1268
+              ],
+              "witness": [
+                0.00626,
+                0.21023,
+                -0.01014
+              ],
+              "segment_m": 0.00352,
+              "coordinates": [
+                [
+                  [
+                    0.03726775199174881,
+                    0.23607805371284485,
+                    -0.0031948320101946592
+                  ],
+                  [
+                    0.018136022612452507,
+                    0.18274250626564026,
+                    -0.004554789513349533
+                  ],
+                  [
+                    -0.017195094376802444,
+                    0.2538556158542633,
+                    -0.02032722905278206
+                  ]
+                ],
+                [
+                  [
+                    -0.008080440573394299,
+                    0.20240066945552826,
+                    -0.05670863762497902
+                  ],
+                  [
+                    0.006272315979003906,
+                    0.20701035857200623,
+                    0.004743977915495634
+                  ],
+                  [
+                    0.010750170797109604,
+                    0.2254791557788849,
+                    -0.05462638661265373
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.R|boot.L",
+              "triangles": [
+                812,
+                1268
+              ],
+              "witness": [
+                0.00389,
+                0.20736,
+                -0.0106
+              ],
+              "segment_m": 0.003979,
+              "coordinates": [
+                [
+                  [
+                    0.018136022612452507,
+                    0.18274250626564026,
+                    -0.004554789513349533
+                  ],
+                  [
+                    -0.03381718322634697,
+                    0.19939421117305756,
+                    -0.02093547023832798
+                  ],
+                  [
+                    -0.017195094376802444,
+                    0.2538556158542633,
+                    -0.02032722905278206
+                  ]
+                ],
+                [
+                  [
+                    -0.008080440573394299,
+                    0.20240066945552826,
+                    -0.05670863762497902
+                  ],
+                  [
+                    0.006272315979003906,
+                    0.20701035857200623,
+                    0.004743977915495634
+                  ],
+                  [
+                    0.010750170797109604,
+                    0.2254791557788849,
+                    -0.05462638661265373
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.R|boot.L",
+              "triangles": [
+                812,
+                1266
+              ],
+              "witness": [
+                0.00078,
+                0.19148,
+                -0.01027
+              ],
+              "segment_m": 0.006135,
+              "coordinates": [
+                [
+                  [
+                    0.018136022612452507,
+                    0.18274250626564026,
+                    -0.004554789513349533
+                  ],
+                  [
+                    -0.03381718322634697,
+                    0.19939421117305756,
+                    -0.02093547023832798
+                  ],
+                  [
+                    -0.017195094376802444,
+                    0.2538556158542633,
+                    -0.02032722905278206
+                  ]
+                ],
+                [
+                  [
+                    0.0013957024784758687,
+                    0.1687743067741394,
+                    0.009651333093643188
+                  ],
+                  [
+                    0.006272315979003906,
+                    0.20701035857200623,
+                    0.004743977915495634
+                  ],
+                  [
+                    -0.013127530924975872,
+                    0.1589995175600052,
+                    -0.05336429551243782
+                  ]
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "t": 8.812,
+          "phase": "turn180",
+          "animation": "Idle",
+          "animationTime": 0.883399999976158,
+          "unintended": {
+            "body|shin.L|boot.R": 21,
+            "body|shin.R|boot.L": 30,
+            "boot.L|boot.R": 70
+          },
+          "unclassified": {},
+          "failedRelations": {},
+          "examples": [
+            {
+              "kind": "unintended",
+              "pair": "body|shin.L|boot.R",
+              "triangles": [
+                568,
+                1286
+              ],
+              "witness": [
+                0.00506,
+                0.21444,
+                -0.00207
+              ],
+              "segment_m": 0.006685,
+              "coordinates": [
+                [
+                  [
+                    0.0015880544669926167,
+                    0.26135602593421936,
+                    -0.008251854218542576
+                  ],
+                  [
+                    -0.0010318172862753272,
+                    0.2056969702243805,
+                    -0.0038062450475990772
+                  ],
+                  [
+                    0.0564534068107605,
+                    0.25946518778800964,
+                    0.01544701587408781
+                  ]
+                ],
+                [
+                  [
+                    -0.0020146809983998537,
+                    0.22907404601573944,
+                    0.011699802242219448
+                  ],
+                  [
+                    0.015980930998921394,
+                    0.2069692313671112,
+                    -0.005426820367574692
+                  ],
+                  [
+                    -0.02313048020005226,
+                    0.2283468246459961,
+                    0.00024877034593373537
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.L|boot.R",
+              "triangles": [
+                568,
+                1287
+              ],
+              "witness": [
+                0.00069,
+                0.21458,
+                -0.00396
+              ],
+              "segment_m": 0.002845,
+              "coordinates": [
+                [
+                  [
+                    0.0015880544669926167,
+                    0.26135602593421936,
+                    -0.008251854218542576
+                  ],
+                  [
+                    -0.0010318172862753272,
+                    0.2056969702243805,
+                    -0.0038062450475990772
+                  ],
+                  [
+                    0.0564534068107605,
+                    0.25946518778800964,
+                    0.01544701587408781
+                  ]
+                ],
+                [
+                  [
+                    0.015980930998921394,
+                    0.2069692313671112,
+                    -0.005426820367574692
+                  ],
+                  [
+                    -0.04098191484808922,
+                    0.20271553099155426,
+                    -0.03264483064413071
+                  ],
+                  [
+                    -0.02313048020005226,
+                    0.2283468246459961,
+                    0.00024877034593373537
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.L|boot.R",
+              "triangles": [
+                748,
+                1401
+              ],
+              "witness": [
+                0.01277,
+                0.20948,
+                0.00175
+              ],
+              "segment_m": 0.011203,
+              "coordinates": [
+                [
+                  [
+                    -0.0010318172862753272,
+                    0.2056969702243805,
+                    -0.0038062450475990772
+                  ],
+                  [
+                    0.05111437290906906,
+                    0.20287878811359406,
+                    0.01893754117190838
+                  ],
+                  [
+                    0.0564534068107605,
+                    0.25946518778800964,
+                    0.01544701587408781
+                  ]
+                ],
+                [
+                  [
+                    0.015980930998921394,
+                    0.2069692313671112,
+                    -0.005426820367574692
+                  ],
+                  [
+                    -0.0020146809983998537,
+                    0.22907404601573944,
+                    0.011699802242219448
+                  ],
+                  [
+                    0.024981863796710968,
+                    0.17350304126739502,
+                    0.05054926499724388
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.L|boot.R",
+              "triangles": [
+                748,
+                1286
+              ],
+              "witness": [
+                0.00913,
+                0.21421,
+                -0.0003
+              ],
+              "segment_m": 0.002195,
+              "coordinates": [
+                [
+                  [
+                    -0.0010318172862753272,
+                    0.2056969702243805,
+                    -0.0038062450475990772
+                  ],
+                  [
+                    0.05111437290906906,
+                    0.20287878811359406,
+                    0.01893754117190838
+                  ],
+                  [
+                    0.0564534068107605,
+                    0.25946518778800964,
+                    0.01544701587408781
+                  ]
+                ],
+                [
+                  [
+                    -0.0020146809983998537,
+                    0.22907404601573944,
+                    0.011699802242219448
+                  ],
+                  [
+                    0.015980930998921394,
+                    0.2069692313671112,
+                    -0.005426820367574692
+                  ],
+                  [
+                    -0.02313048020005226,
+                    0.2283468246459961,
+                    0.00024877034593373537
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.R|boot.L",
+              "triangles": [
+                632,
+                1248
+              ],
+              "witness": [
+                0.03678,
+                0.20084,
+                -0.00407
+              ],
+              "segment_m": 0.026058,
+              "coordinates": [
+                [
+                  [
+                    0.05972496047616005,
+                    0.23765091598033905,
+                    -2.7846655939356424e-05
+                  ],
+                  [
+                    0.04284703731536865,
+                    0.18355168402194977,
+                    -0.0010086428374052048
+                  ],
+                  [
+                    0.004602084401994944,
+                    0.2529987096786499,
+                    -0.017396660521626472
+                  ]
+                ],
+                [
+                  [
+                    0.10483105480670929,
+                    0.16659842431545258,
+                    -0.03409315273165703
+                  ],
+                  [
+                    0.01005083043128252,
+                    0.2290964275598526,
+                    -0.013090237975120544
+                  ],
+                  [
+                    0.061376817524433136,
+                    0.17270946502685547,
+                    0.007221308536827564
+                  ]
+                ]
+              ]
+            },
+            {
+              "kind": "unintended",
+              "pair": "body|shin.R|boot.L",
+              "triangles": [
+                812,
+                1248
+              ],
+              "witness": [
+                0.01997,
+                0.21905,
+                -0.01037
+              ],
+              "segment_m": 0.025089,
+              "coordinates": [
+                [
+                  [
+                    0.04284703731536865,
+                    0.18355168402194977,
+                    -0.0010086428374052048
+                  ],
+                  [
+                    -0.009722857736051083,
+                    0.19788555800914764,
+                    -0.017612464725971222
+                  ],
+                  [
+                    0.004602084401994944,
+                    0.2529987096786499,
+                    -0.017396660521626472
+                  ]
+                ],
+                [
+                  [
+                    0.10483105480670929,
+                    0.16659842431545258,
+                    -0.03409315273165703
+                  ],
+                  [
+                    0.01005083043128252,
+                    0.2290964275598526,
+                    -0.013090237975120544
+                  ],
+                  [
+                    0.061376817524433136,
+                    0.17270946502685547,
+                    0.007221308536827564
+                  ]
+                ]
+              ]
+            }
+          ]
+        }
+      ],
+      "seamMergeBoundExceeded": false,
+      "sameShellPassed": false,
+      "crossShellPassed": false,
+      "passed": false,
+      "rowsCount": 372
+    }
+  ],
+  "assetSha256": [
+    "49bd64ffbaaec808bd1483bb1c5bf3fc7a32eb3906130a339cfcd30807820626"
+  ],
+  "sameShellPassed": false,
+  "crossShellPassed": false,
+  "passed": false,
+  "fullReport": {
+    "path": "runtime-relations-audit-full.json.gz",
+    "uncompressedSha256": "9caeb353c26cacb44d9a6e9d96a5750867d28fd24bd74e07307d52ac828acca4",
+    "note": "Lossless original report. Compact JSON omits only long samples/rows arrays; counts, metrics, phases, failures and verdicts are retained. Expand the archive for frame-level evidence."
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "base": "http://127.0.0.1:4322",
+  "scope": "occlusion",
+  "startedAt": "2026-10-22T04:28:30.032Z",
+  "errors": [],
+  "limits": [
+    "Isolated fixture starts are not a continuous all-island traversal.",
+    "M5 Pro browser; no M1 Air hardware certification.",
+    "Sampled cases, not every instance or every collision angle."
+  ],
+  "canvas": {
+    "cssSize": [
+      1920,
+      1080
+    ],
+    "canvasAttr": [
+      1920,
+      1080
+    ],
+    "drawingBuffer": [
+      1920,
+      1080
+    ],
+    "viewport": [
+      0,
+      0,
+      1920,
+      1080
+    ],
+    "devicePixelRatio": 1,
+    "effectiveRenderScale": 1,
+    "windowInner": [
+      1920,
+      1080
+    ],
+    "antialias": true,
+    "preserveDrawingBuffer": false,
+    "maxSamples": 8,
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)"
+  },
+  "fixtures": [
+    {
+      "t": 1.764,
+      "to": [
+        0,
+        1.9,
+        8
+      ],
+      "reason": "building near-camera visibility start"
+    },
+    {
+      "t": 6.54,
+      "to": [
+        -60.5,
+        5.68,
+        31.8
+      ],
+      "reason": "tree near-camera visibility start"
+    }
+  ],
+  "events": [],
+  "finishedAt": "2026-10-22T04:28:41.531Z",
+  "summary": {
+    "passed": 2,
+    "total": 2,
+    "failed": [],
+    "errors": []
+  },
+  "fullEvidence": "report-full.json.gz",
+  "cases": [
+    {
+      "name": "occlusion-building",
+      "fadedMaterials": [
+        "greybox-building-sdic"
+      ],
+      "sampleCount": 64
+    },
+    {
+      "name": "occlusion-tree",
+      "fadedMaterials": [
+        "camp-mesh-G16-crown_2",
+        "camp-mesh-G16-crown_1",
+        "camp-mesh-G16-crown_3",
+        "camp-mesh-G16-trunk"
+      ],
+      "sampleCount": 64
+    }
+  ],
+  "checks": [
+    {
+      "name": "occlusion-building affected geometry fades locally",
+      "passed": true,
+      "evidence": {
+        "faded": [
+          "greybox-building-sdic"
+        ]
+      }
+    },
+    {
+      "name": "occlusion-tree affected geometry fades locally",
+      "passed": true,
+      "evidence": {
+        "faded": [
+          "camp-mesh-G16-crown_2",
+          "camp-mesh-G16-crown_1",
+          "camp-mesh-G16-crown_3",
+          "camp-mesh-G16-trunk"
+        ]
+      }
+    }
+  ]
+}

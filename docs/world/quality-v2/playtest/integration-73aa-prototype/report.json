@@ -1,0 +1,100 @@
+{
+  "base": "http://127.0.0.1:4321",
+  "startedAt": "2026-10-21T14:01:54.283Z",
+  "errors": [],
+  "checks": [
+    {
+      "name": "E interrupts active settle",
+      "passed": true,
+      "before": "settling"
+    },
+    {
+      "name": "E enters and clears visual lock",
+      "passed": true
+    },
+    {
+      "name": "E exits with visible idle and no lock",
+      "passed": true
+    }
+  ],
+  "views": [
+    {
+      "zoom": 1,
+      "assetSha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7",
+      "samplesCount": 84
+    }
+  ],
+  "canvas": {
+    "cssSize": [
+      1920,
+      1080
+    ],
+    "canvasAttr": [
+      1920,
+      1080
+    ],
+    "drawingBuffer": [
+      1920,
+      1080
+    ],
+    "viewport": [
+      0,
+      0,
+      1920,
+      1080
+    ],
+    "devicePixelRatio": 1,
+    "effectiveRenderScale": 1,
+    "windowInner": [
+      1920,
+      1080
+    ],
+    "antialias": true,
+    "preserveDrawingBuffer": false,
+    "maxSamples": 8,
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)"
+  },
+  "frameTiming": {
+    "frames": 302,
+    "seconds": 5,
+    "fps": 60.4,
+    "p50": 16.7,
+    "p90": 16.7,
+    "p95": 16.7,
+    "p99": 16.8,
+    "max": 16.8,
+    "over33ms": 0
+  },
+  "timingLimit": "rAF cadence on this machine, not GPU headroom or M1 Air certification",
+  "fixtures": [
+    {
+      "t": 6.676,
+      "to": [
+        -26,
+        5.68,
+        36.2
+      ],
+      "reason": "same known offroad-side interaction start as final.mjs; not continuous route"
+    }
+  ],
+  "events": [
+    {
+      "t": 8.26,
+      "press": "KeyE"
+    },
+    {
+      "t": 8.63,
+      "press": "KeyE"
+    }
+  ],
+  "finishedAt": "2026-10-21T14:02:03.806Z",
+  "fullCapture": {
+    "path": "skin-poses.json.gz",
+    "uncompressedSha256": "91943d31b4e9f7f41d16a8089160f213e75634d3e42269919c3cbc635413057f"
+  },
+  "fullReport": {
+    "path": "report-full.json.gz",
+    "uncompressedSha256": "fd18cc39b3740991467ecad829247e0cd93ec4b131a4c5cdab742dbb7c95e4e6",
+    "note": "Lossless original report. Compact JSON omits only long samples/rows arrays; counts, metrics, phases, failures and verdicts are retained. Expand the archive for frame-level evidence."
+  }
+}

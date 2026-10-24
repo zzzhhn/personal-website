@@ -1,0 +1,63 @@
+{
+ "measuredAt": "2026-10-22T16:51:02.223Z",
+ "method": "gl.info.render after two rAF; same page A/B by hiding the world-districts-v4 group; M5 Pro dev server 4322; not an M1 claim",
+ "rows": [
+  {
+   "entry": "v3",
+   "view": "default-follow",
+   "calls": 548,
+   "triangles": 941068,
+   "districtsHidden": null
+  },
+  {
+   "entry": "v3",
+   "view": "town",
+   "calls": 668,
+   "triangles": 934680,
+   "districtsHidden": null
+  },
+  {
+   "entry": "v3",
+   "view": "overview",
+   "calls": 681,
+   "triangles": 938806,
+   "districtsHidden": null
+  },
+  {
+   "entry": "v4",
+   "view": "default-follow",
+   "calls": 607,
+   "triangles": 1000141,
+   "districtsHidden": {
+    "calls": 554,
+    "triangles": 964202
+   }
+  },
+  {
+   "entry": "v4",
+   "view": "town",
+   "calls": 751,
+   "triangles": 1005676,
+   "districtsHidden": {
+    "calls": 682,
+    "triangles": 967913
+   }
+  },
+  {
+   "entry": "v4",
+   "view": "overview",
+   "calls": 753,
+   "triangles": 999190,
+   "districtsHidden": {
+    "calls": 682,
+    "triangles": 961043
+   }
+  },
+  {
+   "entry": "v4",
+   "note": "navigation duration ms (dev server, not the 8 s production gate)",
+   "loadMs": 18.399999976158142
+  }
+ ],
+ "errors": []
+}

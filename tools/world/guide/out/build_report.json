@@ -1,0 +1,871 @@
+{
+ "clips": {
+  "Idle": {
+   "frames": 144,
+   "duration_s": 2.4,
+   "loop": true,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.0
+  },
+  "Walk": {
+   "frames": 46,
+   "duration_s": 0.7666666666666667,
+   "loop": true,
+   "designSpeedMps": 1.544833807008197,
+   "ik_overstretch_max_m": 0.006649647969588668,
+   "mocap": {
+    "source": "walk",
+    "src_cycle_s": 1.1284722222222223,
+    "src_speed_mps": 1.2639889858095716,
+    "src_leg_m": 0.8656128088888889,
+    "scale_s": 0.6642692830967658,
+    "cycle_s": 0.7666666666666667,
+    "frames": 46,
+    "stride_m": 1.1843725853729512,
+    "design_speed_mps": 1.544833807008197,
+    "authored": {
+     "source": "walk",
+     "stride_scale": 1.25,
+     "cadence_scale": 1.2,
+     "arm_swing_scale": 2.2,
+     "arm_min_abd_deg": 30.0,
+     "elbow_min_deg": 18.0,
+     "elbow_max_deg": 45.0,
+     "head_follow": 0.6,
+     "surge_scale": 1.0,
+     "min_track": -0.005,
+     "swing_clear": 0.03,
+     "knee_max_deg": 100.0,
+     "flat_ref": true
+    },
+    "stance": {
+     "L": {
+      "start": 1,
+      "frames": 7,
+      "duty": 0.15217391304347827
+     },
+     "R": {
+      "start": 24,
+      "frames": 7,
+      "duty": 0.15217391304347827
+     }
+    },
+    "boot_separation_push_max_m": 0.021724092721939085,
+    "hip_height_m": 0.6619254722460518,
+    "stance_dz_residual_m": 5.32184328351702e-10,
+    "ik_overstretch_max_m": 0.006649647969588668
+   }
+  },
+  "Run": {
+   "frames": 33,
+   "duration_s": 0.55,
+   "loop": true,
+   "designSpeedMps": 3.5868927013465224,
+   "ik_overstretch_max_m": 0.03370654252611627,
+   "mocap": {
+    "source": "run",
+    "src_cycle_s": 0.75,
+    "src_speed_mps": 3.5184625845473754,
+    "src_leg_m": 0.8614280177777778,
+    "scale_s": 0.6674962830711323,
+    "cycle_s": 0.55,
+    "frames": 33,
+    "stride_m": 1.9727909857405874,
+    "design_speed_mps": 3.5868927013465224,
+    "authored": {
+     "source": "run",
+     "stride_scale": 1.12,
+     "cadence_scale": 1.115,
+     "arm_swing_scale": 1.0,
+     "arm_min_abd_deg": 30.0,
+     "elbow_min_deg": 50.0,
+     "elbow_max_deg": 85.0,
+     "arm_mean_scale": 0.6,
+     "head_follow": 0.55,
+     "surge_scale": 1.0,
+     "min_track": -0.005,
+     "swing_clear": 0.05,
+     "knee_max_deg": 100.0
+    },
+    "stance": {
+     "L": {
+      "start": 2,
+      "frames": 4,
+      "duty": 0.12121212121212122
+     },
+     "R": {
+      "start": 19,
+      "frames": 4,
+      "duty": 0.12121212121212122
+     }
+    },
+    "boot_separation_push_max_m": 0.06496256119012833,
+    "hip_height_m": 0.6782232629577456,
+    "stance_dz_residual_m": 1.862645149230957e-09,
+    "ik_overstretch_max_m": 0.03370654252611627
+   }
+  },
+  "Sprint": {
+   "frames": 17,
+   "duration_s": 0.2833333333333333,
+   "loop": true,
+   "designSpeedMps": 6.19907993969661,
+   "ik_overstretch_max_m": 0.01504011818352613,
+   "mocap": {
+    "source": "sprint",
+    "src_cycle_s": 0.35,
+    "src_speed_mps": 5.882514251430501,
+    "src_leg_m": 0.7414240244444444,
+    "scale_s": 0.7755346212726955,
+    "cycle_s": 0.2833333333333333,
+    "frames": 17,
+    "stride_m": 1.7564059829140393,
+    "design_speed_mps": 6.19907993969661,
+    "authored": {
+     "source": "sprint",
+     "stride_scale": 1.1,
+     "cadence_scale": 1.088,
+     "arm_swing_scale": 0.9,
+     "arm_min_abd_deg": 30.0,
+     "elbow_min_deg": 55.0,
+     "elbow_max_deg": 85.0,
+     "arm_mean_scale": 0.5,
+     "head_follow": 0.5,
+     "surge_scale": 0.6,
+     "min_track": -0.005,
+     "swing_clear": 0.05,
+     "knee_max_deg": 100.0
+    },
+    "stance": {
+     "L": {
+      "start": 2,
+      "frames": 2,
+      "duty": 0.11764705882352941
+     },
+     "R": {
+      "start": 10,
+      "frames": 2,
+      "duty": 0.11764705882352941
+     }
+    },
+    "boot_separation_push_max_m": 0.05776826566457748,
+    "hip_height_m": 0.6636367593787016,
+    "stance_dz_residual_m": 1.862645149230957e-09,
+    "ik_overstretch_max_m": 0.01504011818352613
+   }
+  },
+  "JumpStart": {
+   "frames": 6,
+   "duration_s": 0.1,
+   "loop": false,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.02465666014768675,
+   "mocap": {
+    "source": "jump",
+    "take": "16_01.amc",
+    "src_frames": [
+     35.96,
+     50.0
+    ],
+    "scale_s": 0.6875253341460807,
+    "frames": 6,
+    "kind": "start",
+    "authored": {
+     "arm_swing_scale": 0.85,
+     "arm_min_abd_deg": 30.0,
+     "elbow_max_deg": 80.0,
+     "arm_swing_max_deg": 70.0,
+     "head_follow": 0.6,
+     "knee_max_deg": 105.0,
+     "air_hip_follow": 0.35,
+     "air_frames_half": 12,
+     "land_to_idle": 0.45,
+     "idle_y_extra": 0.008
+    },
+    "spec": {
+     "source": "jump",
+     "a": [
+      "takeoff",
+      -0.117
+     ],
+     "b": [
+      "takeoff",
+      0.0
+     ],
+     "kind": "start",
+     "stance": "idle",
+     "speed": 0.0
+    },
+    "stance_dz_m": -0.0288136824965477,
+    "boot_separation_push_max_m": 0.0,
+    "ik_overstretch_max_m": 0.02465666014768675,
+    "design_speed_mps": 0.0
+   }
+  },
+  "JumpAir": {
+   "frames": 24,
+   "duration_s": 0.4,
+   "loop": false,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.0,
+   "mocap": {
+    "source": "jump",
+    "take": "16_01.amc",
+    "src_frames": [
+     50.0,
+     87.0
+    ],
+    "scale_s": 0.6875253341460807,
+    "frames": 24,
+    "kind": "air",
+    "authored": {
+     "arm_swing_scale": 0.85,
+     "arm_min_abd_deg": 30.0,
+     "elbow_max_deg": 80.0,
+     "arm_swing_max_deg": 70.0,
+     "head_follow": 0.6,
+     "knee_max_deg": 105.0,
+     "air_hip_follow": 0.35,
+     "air_frames_half": 12,
+     "land_to_idle": 0.45,
+     "idle_y_extra": 0.008
+    },
+    "spec": {
+     "source": "jump",
+     "a": [
+      "takeoff",
+      0.0
+     ],
+     "b": [
+      "touchdown",
+      0.0
+     ],
+     "kind": "air",
+     "stance": "idle",
+     "speed": 0.0
+    },
+    "hip_height_m": [
+     0.6754,
+     0.6995,
+     0.6653
+    ],
+    "boot_separation_push_max_m": 0.0,
+    "ik_overstretch_max_m": 0.0,
+    "design_speed_mps": 0.0
+   }
+  },
+  "RunJumpStart": {
+   "frames": 5,
+   "duration_s": 0.08333333333333333,
+   "loop": false,
+   "designSpeedMps": 3.6,
+   "ik_overstretch_max_m": 0.0,
+   "mocap": {
+    "source": "runjump",
+    "take": "75_03.amc",
+    "src_frames": [
+     13.0,
+     19.0
+    ],
+    "scale_s": 0.6842304629091054,
+    "frames": 5,
+    "kind": "start",
+    "authored": {
+     "arm_swing_scale": 0.85,
+     "arm_min_abd_deg": 30.0,
+     "elbow_max_deg": 80.0,
+     "arm_swing_max_deg": 70.0,
+     "head_follow": 0.6,
+     "knee_max_deg": 105.0,
+     "air_hip_follow": 0.35,
+     "air_frames_half": 12,
+     "land_to_idle": 0.45,
+     "idle_y_extra": 0.008
+    },
+    "spec": {
+     "source": "runjump",
+     "a": [
+      "takeoff",
+      -0.1
+     ],
+     "b": [
+      "takeoff",
+      0.0
+     ],
+     "kind": "start",
+     "stance": "source",
+     "speed": 3.6
+    },
+    "stance_dz_m": -0.0034543946385383606,
+    "boot_separation_push_max_m": 0.0022770119309425355,
+    "ik_overstretch_max_m": 0.0,
+    "design_speed_mps": 3.6
+   }
+  },
+  "RunJumpAir": {
+   "frames": 24,
+   "duration_s": 0.4,
+   "loop": false,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.0,
+   "mocap": {
+    "source": "runjump",
+    "take": "75_03.amc",
+    "src_frames": [
+     19.0,
+     49.0
+    ],
+    "scale_s": 0.6842304629091054,
+    "frames": 24,
+    "kind": "air",
+    "authored": {
+     "arm_swing_scale": 0.85,
+     "arm_min_abd_deg": 30.0,
+     "elbow_max_deg": 80.0,
+     "arm_swing_max_deg": 70.0,
+     "head_follow": 0.6,
+     "knee_max_deg": 105.0,
+     "air_hip_follow": 0.35,
+     "air_frames_half": 12,
+     "land_to_idle": 0.45,
+     "idle_y_extra": 0.008
+    },
+    "spec": {
+     "source": "runjump",
+     "a": [
+      "takeoff",
+      0.0
+     ],
+     "b": [
+      "touchdown",
+      0.0
+     ],
+     "kind": "air",
+     "stance": "source",
+     "speed": 0.0
+    },
+    "hip_height_m": [
+     0.6891,
+     0.7461,
+     0.6513
+    ],
+    "boot_separation_push_max_m": 0.08416318422555924,
+    "ik_overstretch_max_m": 0.0,
+    "design_speed_mps": 0.0
+   }
+  },
+  "Land": {
+   "frames": 24,
+   "duration_s": 0.4,
+   "loop": false,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.05100895325187793,
+   "mocap": {
+    "source": "jump",
+    "take": "16_01.amc",
+    "src_frames": [
+     87.0,
+     146.0
+    ],
+    "scale_s": 0.6875253341460807,
+    "frames": 24,
+    "kind": "land",
+    "authored": {
+     "arm_swing_scale": 0.85,
+     "arm_min_abd_deg": 30.0,
+     "elbow_max_deg": 80.0,
+     "arm_swing_max_deg": 70.0,
+     "head_follow": 0.6,
+     "knee_max_deg": 105.0,
+     "air_hip_follow": 0.35,
+     "air_frames_half": 12,
+     "land_to_idle": 0.45,
+     "idle_y_extra": 0.008
+    },
+    "spec": {
+     "source": "jump",
+     "a": [
+      "touchdown",
+      0.0
+     ],
+     "b": [
+      "absorb",
+      0.3
+     ],
+     "kind": "land",
+     "stance": "idle",
+     "speed": 0.0
+    },
+    "boot_separation_push_max_m": 0.0,
+    "ik_overstretch_max_m": 0.05100895325187793,
+    "design_speed_mps": 0.0
+   }
+  },
+  "SitDown": {
+   "frames": 35,
+   "duration_s": 0.5833333333333334,
+   "loop": false,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.0,
+   "mocap": {
+    "source": "sit",
+    "take": "143_18.amc",
+    "src_frames": [
+     0.0,
+     80.0
+    ],
+    "scale_s": 0.7775760190471054,
+    "frames": 35,
+    "kind": "free",
+    "authored": {
+     "arm_swing_scale": 0.85,
+     "arm_min_abd_deg": 30.0,
+     "elbow_max_deg": 80.0,
+     "arm_swing_max_deg": 70.0,
+     "head_follow": 0.6,
+     "knee_max_deg": 105.0,
+     "air_hip_follow": 0.35,
+     "air_frames_half": 12,
+     "land_to_idle": 0.45,
+     "idle_y_extra": 0.008
+    },
+    "spec": {
+     "source": "sit",
+     "a": [
+      "down0",
+      -0.1
+     ],
+     "b": [
+      "seat",
+      0.05
+     ],
+     "kind": "free",
+     "stance": "source",
+     "speed": 0.0,
+     "keep_hip": "seat",
+     "hip_z_min": 0.47,
+     "pelvis_tilt": 0.35,
+     "feet_apart": 0.135,
+     "foot_anchor_idle": true
+    },
+    "stance_dz_m": 0.011607027302185694,
+    "boot_separation_push_max_m": 0.0,
+    "ik_overstretch_max_m": 0.0,
+    "design_speed_mps": 0.0
+   }
+  },
+  "SitIdle": {
+   "frames": 32,
+   "duration_s": 0.5333333333333333,
+   "loop": false,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.010433483317880188,
+   "mocap": {
+    "source": "sit",
+    "take": "143_18.amc",
+    "src_frames": [
+     92.0,
+     164.0
+    ],
+    "scale_s": 0.7775760190471054,
+    "frames": 32,
+    "kind": "free",
+    "authored": {
+     "arm_swing_scale": 0.85,
+     "arm_min_abd_deg": 30.0,
+     "elbow_max_deg": 80.0,
+     "arm_swing_max_deg": 70.0,
+     "head_follow": 0.6,
+     "knee_max_deg": 105.0,
+     "air_hip_follow": 0.35,
+     "air_frames_half": 12,
+     "land_to_idle": 0.45,
+     "idle_y_extra": 0.008
+    },
+    "spec": {
+     "source": "sit",
+     "a": [
+      "seat",
+      0.15
+     ],
+     "b": [
+      "seat",
+      0.75
+     ],
+     "kind": "free",
+     "stance": "source",
+     "speed": 0.0,
+     "keep_hip": "seat",
+     "hip_z_min": 0.47,
+     "pelvis_tilt": 0.35,
+     "feet_apart": 0.135,
+     "foot_anchor_idle": true
+    },
+    "stance_dz_m": -0.04100210626016964,
+    "boot_separation_push_max_m": 0.0,
+    "ik_overstretch_max_m": 0.010433483317880188,
+    "design_speed_mps": 0.0
+   }
+  },
+  "StandUp": {
+   "frames": 28,
+   "duration_s": 0.4666666666666667,
+   "loop": false,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.002064853799929822,
+   "mocap": {
+    "source": "sit",
+    "take": "143_18.amc",
+    "src_frames": [
+     218.0,
+     281.0
+    ],
+    "scale_s": 0.7775760190471054,
+    "frames": 28,
+    "kind": "free",
+    "authored": {
+     "arm_swing_scale": 0.85,
+     "arm_min_abd_deg": 30.0,
+     "elbow_max_deg": 80.0,
+     "arm_swing_max_deg": 70.0,
+     "head_follow": 0.6,
+     "knee_max_deg": 105.0,
+     "air_hip_follow": 0.35,
+     "air_frames_half": 12,
+     "land_to_idle": 0.45,
+     "idle_y_extra": 0.008
+    },
+    "spec": {
+     "source": "sit",
+     "a": [
+      "up0",
+      -0.05
+     ],
+     "b": [
+      "stand",
+      0.2
+     ],
+     "kind": "free",
+     "stance": "source",
+     "speed": 0.0,
+     "keep_hip": "seat",
+     "hip_z_min": 0.47,
+     "pelvis_tilt": 0.35,
+     "feet_apart": 0.135,
+     "foot_anchor_idle": true
+    },
+    "stance_dz_m": 0.01064013034619134,
+    "boot_separation_push_max_m": 0.0,
+    "ik_overstretch_max_m": 0.002064853799929822,
+    "design_speed_mps": 0.0
+   }
+  },
+  "TurnL": {
+   "frames": 68,
+   "duration_s": 1.1333333333333333,
+   "loop": false,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.0,
+   "mocap": {
+    "source": "turnL",
+    "take": "69_16.amc",
+    "src_frames": [
+     6.0,
+     171.4
+    ],
+    "scale_s": 0.6750999112646067,
+    "frames": 68,
+    "kind": "free",
+    "authored": {
+     "arm_swing_scale": 0.85,
+     "arm_min_abd_deg": 30.0,
+     "elbow_max_deg": 80.0,
+     "arm_swing_max_deg": 70.0,
+     "head_follow": 0.6,
+     "knee_max_deg": 105.0,
+     "air_hip_follow": 0.35,
+     "air_frames_half": 12,
+     "land_to_idle": 0.45,
+     "idle_y_extra": 0.008
+    },
+    "spec": {
+     "source": "turnL",
+     "a": [
+      "turn0",
+      -0.1
+     ],
+     "b": [
+      "turn1",
+      0.12
+     ],
+     "kind": "free",
+     "stance": "source",
+     "speed": 0.0,
+     "pin": false
+    },
+    "boot_separation_push_max_m": 2.741813659792869e-09,
+    "ik_overstretch_max_m": 0.0,
+    "design_speed_mps": 0.0,
+    "yaw_curve": [
+     0.01598,
+     0.02412,
+     0.03362,
+     0.04398,
+     0.05556,
+     0.0663,
+     0.07717,
+     0.08996,
+     0.1039,
+     0.11877,
+     0.13647,
+     0.15733,
+     0.17928,
+     0.20245,
+     0.22801,
+     0.25375,
+     0.28193,
+     0.31172,
+     0.34297,
+     0.37495,
+     0.40888,
+     0.44433,
+     0.4795,
+     0.51526,
+     0.5509,
+     0.58581,
+     0.61956,
+     0.65277,
+     0.68281,
+     0.71089,
+     0.73963,
+     0.76893,
+     0.79831,
+     0.82758,
+     0.85961,
+     0.89044,
+     0.92068,
+     0.95012,
+     0.97941,
+     1.00816,
+     1.03605,
+     1.06249,
+     1.08692,
+     1.109,
+     1.13142,
+     1.1537,
+     1.17573,
+     1.19705,
+     1.21962,
+     1.2393,
+     1.2584,
+     1.2773,
+     1.29565,
+     1.31303,
+     1.33111,
+     1.3493,
+     1.36623,
+     1.38358,
+     1.40144,
+     1.41935,
+     1.43699,
+     1.45469,
+     1.47134,
+     1.48715,
+     1.50151,
+     1.51477,
+     1.52672,
+     1.53772,
+     1.548
+    ]
+   }
+  },
+  "TurnR": {
+   "frames": 73,
+   "duration_s": 1.2166666666666666,
+   "loop": false,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.0,
+   "mocap": {
+    "source": "turnR",
+    "take": "69_18.amc",
+    "src_frames": [
+     6.0,
+     184.4
+    ],
+    "scale_s": 0.6750999112646067,
+    "frames": 73,
+    "kind": "free",
+    "authored": {
+     "arm_swing_scale": 0.85,
+     "arm_min_abd_deg": 30.0,
+     "elbow_max_deg": 80.0,
+     "arm_swing_max_deg": 70.0,
+     "head_follow": 0.6,
+     "knee_max_deg": 105.0,
+     "air_hip_follow": 0.35,
+     "air_frames_half": 12,
+     "land_to_idle": 0.45,
+     "idle_y_extra": 0.008
+    },
+    "spec": {
+     "source": "turnR",
+     "a": [
+      "turn0",
+      -0.1
+     ],
+     "b": [
+      "turn1",
+      0.12
+     ],
+     "kind": "free",
+     "stance": "source",
+     "speed": 0.0,
+     "pin": false
+    },
+    "boot_separation_push_max_m": 2.741813659792869e-09,
+    "ik_overstretch_max_m": 0.0,
+    "design_speed_mps": 0.0,
+    "yaw_curve": [
+     -0.03566,
+     -0.04798,
+     -0.05796,
+     -0.06556,
+     -0.07283,
+     -0.08029,
+     -0.0893,
+     -0.10051,
+     -0.11408,
+     -0.12973,
+     -0.14728,
+     -0.16556,
+     -0.18401,
+     -0.20216,
+     -0.21966,
+     -0.23663,
+     -0.25246,
+     -0.2665,
+     -0.27884,
+     -0.28958,
+     -0.29806,
+     -0.30412,
+     -0.30812,
+     -0.31104,
+     -0.31281,
+     -0.31438,
+     -0.31688,
+     -0.32078,
+     -0.32649,
+     -0.33407,
+     -0.34358,
+     -0.35464,
+     -0.36669,
+     -0.37986,
+     -0.39397,
+     -0.4091,
+     -0.42528,
+     -0.44379,
+     -0.46465,
+     -0.48882,
+     -0.5164,
+     -0.54795,
+     -0.58396,
+     -0.62292,
+     -0.66445,
+     -0.70813,
+     -0.75337,
+     -0.79874,
+     -0.84325,
+     -0.88777,
+     -0.93316,
+     -0.97955,
+     -1.02605,
+     -1.07387,
+     -1.1237,
+     -1.17263,
+     -1.22022,
+     -1.26671,
+     -1.31051,
+     -1.35035,
+     -1.38739,
+     -1.42156,
+     -1.45119,
+     -1.47746,
+     -1.50162,
+     -1.52292,
+     -1.54252,
+     -1.56203,
+     -1.58234,
+     -1.60329,
+     -1.62615,
+     -1.65048,
+     -1.67623,
+     -1.70246
+    ]
+   }
+  },
+  "IdleLook": {
+   "frames": 90,
+   "duration_s": 1.5,
+   "loop": false,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.0,
+   "mocap": {
+    "source": "idlelook",
+    "take": "Neutral_ID.bvh",
+    "src_frames": [
+     27.0,
+     138.0
+    ],
+    "scale_s": 0.6612372989788315,
+    "frames": 90,
+    "kind": "free",
+    "authored": {
+     "arm_swing_scale": 0.85,
+     "arm_min_abd_deg": 30.0,
+     "elbow_max_deg": 80.0,
+     "arm_swing_max_deg": 70.0,
+     "head_follow": 0.6,
+     "knee_max_deg": 105.0,
+     "air_hip_follow": 0.35,
+     "air_frames_half": 12,
+     "land_to_idle": 0.45,
+     "idle_y_extra": 0.008
+    },
+    "spec": {
+     "source": "idlelook",
+     "a": [
+      "start",
+      0.45
+     ],
+     "b": [
+      "start",
+      2.3
+     ],
+     "kind": "free",
+     "stance": "idle",
+     "speed": 0.0
+    },
+    "stance_dz_m": -0.00020569775785718645,
+    "boot_separation_push_max_m": 0.0,
+    "ik_overstretch_max_m": 0.0,
+    "design_speed_mps": 0.0
+   }
+  }
+ },
+ "boot": {
+  "heel_pivot": [
+   -0.09576855599880219,
+   -0.0949999988079071
+  ],
+  "toe_pivot": [
+   0.13100001215934753,
+   -0.0949999988079071
+  ],
+  "sole_x_range": [
+   -0.09576855599880219,
+   0.14500001072883606
+  ]
+ },
+ "bones": 18,
+ "deform_bones": 17
+}

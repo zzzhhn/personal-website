@@ -1,0 +1,229 @@
+{
+  "asset": "G27",
+  "lod": 1,
+  "blender": "4.2.23 LTS",
+  "sourceSha256": "51045ff92be23c9826cc76ac4038b579d463e9abeb7075e788d1ccff89553041",
+  "sha256": "809a7e57b72e129fcae5e7017e682f16d4db8c183563b9bbd4e9639edd77d799",
+  "sourceTris": 12868,
+  "bodyTris": 1688,
+  "wheelTris": 392,
+  "totalTris": 3256,
+  "ratio": 0.2530307740130556,
+  "bounds": [
+    [
+      -2.5154,
+      -1.3217,
+      0.0
+    ],
+    [
+      2.4252,
+      1.3217,
+      2.6043
+    ]
+  ],
+  "sourceBounds": [
+    [
+      -2.52,
+      -1.33,
+      0.0
+    ],
+    [
+      2.426,
+      1.33,
+      2.602
+    ]
+  ],
+  "method": {
+    "collapsedRatio": 0.22,
+    "droppedShells": 10,
+    "dropped": [
+      {
+        "vertices": 36,
+        "faces": 44,
+        "size": [
+          0.09999990463256836,
+          0.01399993896484375,
+          0.050000011920928955
+        ],
+        "roles": [
+          "accent"
+        ]
+      },
+      {
+        "vertices": 36,
+        "faces": 44,
+        "size": [
+          0.09999990463256836,
+          0.01399993896484375,
+          0.050000011920928955
+        ],
+        "roles": [
+          "accent"
+        ]
+      },
+      {
+        "vertices": 24,
+        "faces": 28,
+        "size": [
+          0.016000032424926758,
+          0.08000004291534424,
+          0.06000000238418579
+        ],
+        "roles": [
+          "accent"
+        ]
+      },
+      {
+        "vertices": 24,
+        "faces": 28,
+        "size": [
+          0.016000032424926758,
+          0.08000004291534424,
+          0.06000000238418579
+        ],
+        "roles": [
+          "accent"
+        ]
+      },
+      {
+        "vertices": 18,
+        "faces": 24,
+        "size": [
+          0.039999961853027344,
+          0.039999961853027344,
+          0.1399998664855957
+        ],
+        "roles": [
+          "metal"
+        ]
+      },
+      {
+        "vertices": 18,
+        "faces": 24,
+        "size": [
+          0.039999961853027344,
+          0.039999961853027344,
+          0.1399998664855957
+        ],
+        "roles": [
+          "metal"
+        ]
+      },
+      {
+        "vertices": 18,
+        "faces": 24,
+        "size": [
+          0.039999961853027344,
+          0.039999961853027344,
+          0.1399998664855957
+        ],
+        "roles": [
+          "metal"
+        ]
+      },
+      {
+        "vertices": 18,
+        "faces": 24,
+        "size": [
+          0.039999961853027344,
+          0.039999961853027344,
+          0.1399998664855957
+        ],
+        "roles": [
+          "metal"
+        ]
+      },
+      {
+        "vertices": 18,
+        "faces": 24,
+        "size": [
+          0.039999961853027344,
+          0.039999961853027344,
+          0.1399998664855957
+        ],
+        "roles": [
+          "metal"
+        ]
+      },
+      {
+        "vertices": 18,
+        "faces": 24,
+        "size": [
+          0.039999961853027344,
+          0.039999961853027344,
+          0.1399998664855957
+        ],
+        "roles": [
+          "metal"
+        ]
+      }
+    ],
+    "collapsedFlatShells": 19,
+    "protectedRoles": [
+      "glass",
+      "light_front",
+      "light_brake",
+      "light_reverse",
+      "light_beacon"
+    ]
+  },
+  "checks": {
+    "G27_body": {
+      "tris": 1688,
+      "degenerate": 0,
+      "nonManifoldEdges": 0,
+      "finite": true,
+      "signedVolume": 19.3029
+    },
+    "wheel-front-right": {
+      "tris": 392,
+      "degenerate": 0,
+      "nonManifoldEdges": 0,
+      "finite": true,
+      "signedVolume": 0.11216
+    }
+  },
+  "reimport": {
+    "objects": [
+      "G27",
+      "G27_body",
+      "wheel-front-left",
+      "wheel-front-right",
+      "wheel-rear-left",
+      "wheel-rear-right"
+    ],
+    "tris": {
+      "G27_body": 1688,
+      "wheel-front-left": 392,
+      "wheel-front-right": 392,
+      "wheel-rear-left": 392,
+      "wheel-rear-right": 392
+    },
+    "materials": [
+      "veh_accent_dark",
+      "veh_accent_slate",
+      "veh_glass",
+      "veh_light_beacon",
+      "veh_light_brake",
+      "veh_light_front",
+      "veh_light_reverse",
+      "veh_metal",
+      "veh_metal_dark",
+      "veh_paint_cream",
+      "veh_rubber"
+    ],
+    "bounds": [
+      [
+        -2.5154,
+        -1.3217,
+        0.0
+      ],
+      [
+        2.4252,
+        1.3217,
+        2.6043
+      ]
+    ],
+    "bytes": 41252
+  }
+}

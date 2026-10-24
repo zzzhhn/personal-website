@@ -1,0 +1,32 @@
+{
+  "scope": "Local handler and in-memory D1 stub; no network or real database. Record name corrected from earlier summary.",
+  "results": [
+    {
+      "event": "world_enter",
+      "status": 204,
+      "expected": 204
+    },
+    {
+      "event": "world_vehicle_enter",
+      "status": 204,
+      "expected": 204
+    },
+    {
+      "event": "world_booth_open",
+      "status": 204,
+      "expected": 204
+    },
+    {
+      "event": "project_card_open",
+      "status": 204,
+      "expected": 204
+    },
+    {
+      "event": "unknown",
+      "status": 400,
+      "expected": 400
+    }
+  ],
+  "writeCount": 4,
+  "passed": true
+}

@@ -1,0 +1,3828 @@
+{
+ "base": "https://48c59fd5.personal-website-aew.pages.dev/world/?qa=1",
+ "commit": "c507506 (immutable Cloudflare deployment 48c59fd5)",
+ "startedAt": "2026-10-21T09:51:55.378Z",
+ "browser": {
+  "chrome": "155.0.8059.40",
+  "headless": true,
+  "args": [
+   "--use-angle=metal",
+   "--enable-gpu",
+   "--ignore-gpu-blocklist"
+  ]
+ },
+ "machine": "Apple M5 Pro, 48 GB (this machine, NOT M1 certification)",
+ "cases": {
+  "buffer-1920x1080@1": {
+   "facts": {
+    "cssSize": [
+     1920,
+     1080
+    ],
+    "canvasAttr": [
+     1920,
+     1080
+    ],
+    "drawingBuffer": [
+     1920,
+     1080
+    ],
+    "viewport": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "devicePixelRatio": 1,
+    "effectiveRenderScale": 1,
+    "windowInner": [
+     1920,
+     1080
+    ],
+    "antialias": true,
+    "preserveDrawingBuffer": true,
+    "maxSamples": 8,
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)"
+   },
+   "spawnBuffer": "frames/buffer-1920x1080@1-spawn.png",
+   "bufferPixels": [
+    1920,
+    1080
+   ],
+   "actionStrip": [
+    {
+     "phase": "walk",
+     "file": "frames/action-walk-0.png",
+     "player": [
+      -41.0414924621582,
+      5.618860244750977,
+      34.28110885620117
+     ]
+    },
+    {
+     "phase": "walk",
+     "file": "frames/action-walk-1.png",
+     "player": [
+      -40.618247985839844,
+      5.618861198425293,
+      33.96367263793945
+     ]
+    },
+    {
+     "phase": "walk",
+     "file": "frames/action-walk-2.png",
+     "player": [
+      -40.23680877685547,
+      5.618861198425293,
+      33.67759704589844
+     ]
+    },
+    {
+     "phase": "walk",
+     "file": "frames/action-walk-3.png",
+     "player": [
+      -39.855289459228516,
+      5.618861198425293,
+      33.39145278930664
+     ]
+    },
+    {
+     "phase": "walk",
+     "file": "frames/action-walk-4.png",
+     "player": [
+      -39.4737548828125,
+      5.618861198425293,
+      33.10529327392578
+     ]
+    },
+    {
+     "phase": "walk",
+     "file": "frames/action-walk-5.png",
+     "player": [
+      -39.049827575683594,
+      5.618861198425293,
+      32.78733825683594
+     ]
+    },
+    {
+     "phase": "run",
+     "file": "frames/action-run-0.png",
+     "player": [
+      -37.2063102722168,
+      5.618860721588135,
+      31.404701232910156
+     ]
+    },
+    {
+     "phase": "run",
+     "file": "frames/action-run-1.png",
+     "player": [
+      -36.44865036010742,
+      5.618860721588135,
+      30.836458206176758
+     ]
+    },
+    {
+     "phase": "run",
+     "file": "frames/action-run-2.png",
+     "player": [
+      -35.68915557861328,
+      5.618860721588135,
+      30.26683807373047
+     ]
+    },
+    {
+     "phase": "run",
+     "file": "frames/action-run-3.png",
+     "player": [
+      -34.92937088012695,
+      5.618860721588135,
+      29.696998596191406
+     ]
+    },
+    {
+     "phase": "run",
+     "file": "frames/action-run-4.png",
+     "player": [
+      -34.169532775878906,
+      5.618862628936768,
+      29.127119064331055
+     ]
+    },
+    {
+     "phase": "run",
+     "file": "frames/action-run-5.png",
+     "player": [
+      -33.409690856933594,
+      5.618860721588135,
+      28.55723762512207
+     ]
+    },
+    {
+     "phase": "jump",
+     "file": "frames/action-jump-0.png",
+     "player": [
+      -32.585044860839844,
+      5.889666557312012,
+      27.938756942749023
+     ]
+    },
+    {
+     "phase": "jump",
+     "file": "frames/action-jump-1.png",
+     "player": [
+      -32.585044860839844,
+      6.480041027069092,
+      27.938756942749023
+     ]
+    },
+    {
+     "phase": "jump",
+     "file": "frames/action-jump-2.png",
+     "player": [
+      -32.585044860839844,
+      6.882734775543213,
+      27.938756942749023
+     ]
+    },
+    {
+     "phase": "jump",
+     "file": "frames/action-jump-3.png",
+     "player": [
+      -32.585044860839844,
+      7.1026787757873535,
+      27.938756942749023
+     ]
+    },
+    {
+     "phase": "jump",
+     "file": "frames/action-jump-4.png",
+     "player": [
+      -32.585044860839844,
+      7.144673824310303,
+      27.938756942749023
+     ]
+    }
+   ],
+   "freeze": {
+    "pause": [
+     "frames/pause-a.png",
+     "frames/pause-b.png"
+    ],
+    "pausePlayerMoved_m": 0,
+    "shot": [
+     "frames/shot-a.png",
+     "frames/shot-b.png"
+    ],
+    "note": "Pixel diffs computed by analyze_baseline.py"
+   },
+   "readyMs": 8077,
+   "assetsLoaded": true,
+   "pageErrors": [],
+   "fixtureTeleports": [],
+   "keyEvents": 3,
+   "seconds": 17.414
+  },
+  "buffer-2560x1440@1": {
+   "facts": {
+    "cssSize": [
+     2560,
+     1440
+    ],
+    "canvasAttr": [
+     2560,
+     1440
+    ],
+    "drawingBuffer": [
+     2560,
+     1440
+    ],
+    "viewport": [
+     0,
+     0,
+     2560,
+     1440
+    ],
+    "devicePixelRatio": 1,
+    "effectiveRenderScale": 1,
+    "windowInner": [
+     2560,
+     1440
+    ],
+    "antialias": true,
+    "preserveDrawingBuffer": true,
+    "maxSamples": 8,
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)"
+   },
+   "spawnBuffer": "frames/buffer-2560x1440@1-spawn.png",
+   "bufferPixels": [
+    2560,
+    1440
+   ],
+   "readyMs": 5583,
+   "assetsLoaded": true,
+   "pageErrors": [],
+   "fixtureTeleports": [],
+   "keyEvents": 0,
+   "seconds": 5.878
+  },
+  "buffer-1440x900@1": {
+   "facts": {
+    "cssSize": [
+     1440,
+     900
+    ],
+    "canvasAttr": [
+     1440,
+     900
+    ],
+    "drawingBuffer": [
+     1440,
+     900
+    ],
+    "viewport": [
+     0,
+     0,
+     1440,
+     900
+    ],
+    "devicePixelRatio": 1,
+    "effectiveRenderScale": 1,
+    "windowInner": [
+     1440,
+     900
+    ],
+    "antialias": true,
+    "preserveDrawingBuffer": true,
+    "maxSamples": 8,
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)"
+   },
+   "spawnBuffer": "frames/buffer-1440x900@1-spawn.png",
+   "bufferPixels": [
+    1440,
+    900
+   ],
+   "readyMs": 7604,
+   "assetsLoaded": true,
+   "pageErrors": [],
+   "fixtureTeleports": [],
+   "keyEvents": 0,
+   "seconds": 7.814
+  },
+  "buffer-1440x900@2": {
+   "facts": {
+    "cssSize": [
+     1440,
+     900
+    ],
+    "canvasAttr": [
+     2160,
+     1350
+    ],
+    "drawingBuffer": [
+     2160,
+     1350
+    ],
+    "viewport": [
+     0,
+     0,
+     2160,
+     1350
+    ],
+    "devicePixelRatio": 2,
+    "effectiveRenderScale": 1.5,
+    "windowInner": [
+     1440,
+     900
+    ],
+    "antialias": true,
+    "preserveDrawingBuffer": true,
+    "maxSamples": 8,
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)"
+   },
+   "spawnBuffer": "frames/buffer-1440x900@2-spawn.png",
+   "bufferPixels": [
+    2160,
+    1350
+   ],
+   "readyMs": 7250,
+   "assetsLoaded": true,
+   "pageErrors": [],
+   "fixtureTeleports": [],
+   "keyEvents": 0,
+   "seconds": 7.466
+  },
+  "timing-1440x900": {
+   "idle": {
+    "frames": 301,
+    "seconds": 5,
+    "fps": 60.2,
+    "p50": 16.7,
+    "p90": 16.7,
+    "p95": 16.8,
+    "p99": 16.8,
+    "max": 16.8,
+    "over33ms": 0
+   },
+   "walking": {
+    "frames": 301,
+    "seconds": 5,
+    "fps": 60.2,
+    "p50": 16.7,
+    "p90": 16.7,
+    "p95": 16.8,
+    "p99": 16.8,
+    "max": 16.8,
+    "over33ms": 0
+   },
+   "stats": {
+    "calls": 161,
+    "triangles": 34559,
+    "geometries": 110,
+    "textures": 3,
+    "camera": [
+     -34.18195854969257,
+     15.8148036998621,
+     28.0004231550438
+    ]
+   },
+   "facts": {
+    "cssSize": [
+     1440,
+     900
+    ],
+    "canvasAttr": [
+     1440,
+     900
+    ],
+    "drawingBuffer": [
+     1440,
+     900
+    ],
+    "viewport": [
+     0,
+     0,
+     1440,
+     900
+    ],
+    "devicePixelRatio": 1,
+    "effectiveRenderScale": 1,
+    "windowInner": [
+     1440,
+     900
+    ],
+    "antialias": true,
+    "preserveDrawingBuffer": false,
+    "maxSamples": 8,
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)"
+   },
+   "readyMs": 8084,
+   "assetsLoaded": true,
+   "pageErrors": [],
+   "fixtureTeleports": [],
+   "keyEvents": 0,
+   "seconds": 19.784
+  },
+  "timing-1920x1080": {
+   "idle": {
+    "frames": 301,
+    "seconds": 5,
+    "fps": 60.2,
+    "p50": 16.7,
+    "p90": 16.7,
+    "p95": 16.7,
+    "p99": 16.8,
+    "max": 16.8,
+    "over33ms": 0
+   },
+   "walking": {
+    "frames": 301,
+    "seconds": 5,
+    "fps": 60.2,
+    "p50": 16.7,
+    "p90": 16.7,
+    "p95": 16.7,
+    "p99": 16.8,
+    "max": 16.8,
+    "over33ms": 0
+   },
+   "stats": {
+    "calls": 161,
+    "triangles": 34559,
+    "geometries": 110,
+    "textures": 3,
+    "camera": [
+     -34.18201914554951,
+     15.814803699725811,
+     28.000847434028884
+    ]
+   },
+   "facts": {
+    "cssSize": [
+     1920,
+     1080
+    ],
+    "canvasAttr": [
+     1920,
+     1080
+    ],
+    "drawingBuffer": [
+     1920,
+     1080
+    ],
+    "viewport": [
+     0,
+     0,
+     1920,
+     1080
+    ],
+    "devicePixelRatio": 1,
+    "effectiveRenderScale": 1,
+    "windowInner": [
+     1920,
+     1080
+    ],
+    "antialias": true,
+    "preserveDrawingBuffer": false,
+    "maxSamples": 8,
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)"
+   },
+   "readyMs": 12791,
+   "assetsLoaded": true,
+   "pageErrors": [],
+   "fixtureTeleports": [],
+   "keyEvents": 0,
+   "seconds": 24.504
+  },
+  "timing-2560x1440": {
+   "idle": {
+    "frames": 301,
+    "seconds": 5,
+    "fps": 60.2,
+    "p50": 16.7,
+    "p90": 16.7,
+    "p95": 16.8,
+    "p99": 16.8,
+    "max": 16.8,
+    "over33ms": 0
+   },
+   "walking": {
+    "frames": 301,
+    "seconds": 5,
+    "fps": 60.2,
+    "p50": 16.7,
+    "p90": 16.7,
+    "p95": 16.8,
+    "p99": 16.8,
+    "max": 16.8,
+    "over33ms": 0
+   },
+   "stats": {
+    "calls": 161,
+    "triangles": 34559,
+    "geometries": 110,
+    "textures": 3,
+    "camera": [
+     -34.18191420902723,
+     15.814803699595522,
+     28.000112691367914
+    ]
+   },
+   "facts": {
+    "cssSize": [
+     2560,
+     1440
+    ],
+    "canvasAttr": [
+     2560,
+     1440
+    ],
+    "drawingBuffer": [
+     2560,
+     1440
+    ],
+    "viewport": [
+     0,
+     0,
+     2560,
+     1440
+    ],
+    "devicePixelRatio": 1,
+    "effectiveRenderScale": 1,
+    "windowInner": [
+     2560,
+     1440
+    ],
+    "antialias": true,
+    "preserveDrawingBuffer": false,
+    "maxSamples": 8,
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)"
+   },
+   "readyMs": 8714,
+   "assetsLoaded": true,
+   "pageErrors": [],
+   "fixtureTeleports": [],
+   "keyEvents": 0,
+   "seconds": 20.416
+  },
+  "nature-passable": {
+   "spawn": [
+    -42,
+    5.618858814239502,
+    35
+   ],
+   "approachReached": [
+    true,
+    true
+   ],
+   "passes": [
+    {
+     "target": "G21-rock@150deg",
+     "centreXZ": [
+      -60.19,
+      40.5
+     ],
+     "chord": [
+      [
+       -58.94,
+       42.67
+      ],
+      [
+       -61.44,
+       38.33
+      ]
+     ],
+     "legs": [
+      {
+       "target": [
+        -58.93653347947321,
+        42.6650635094611
+       ],
+       "reached": true,
+       "recoveries": 0,
+       "blockedAt": null,
+       "start": [
+        -49.6508903503418,
+        5.618862152099609,
+        36.60560607910156
+       ],
+       "end": [
+        -58.60172653198242,
+        5.618741989135742,
+        42.487613677978516
+       ],
+       "seconds": 3.52,
+       "minDist": 0.379
+      },
+      {
+       "target": [
+        -61.43653347947321,
+        38.3349364905389
+       ],
+       "reached": true,
+       "recoveries": 0,
+       "blockedAt": null,
+       "start": [
+        -58.60172653198242,
+        5.618741989135742,
+        42.487613677978516
+       ],
+       "end": [
+        -61.3504524230957,
+        5.618740558624268,
+        38.68714141845703
+       ],
+       "seconds": 1.56,
+       "minDist": 0.363
+      }
+     ],
+     "closestApproachToCentre_m": 0.135,
+     "yAtClosest": 5.618727207183838,
+     "groundedAtClosest": true,
+     "passedThrough": true,
+     "screenshotInside": "frames/nature-G21_rock_150deg-inside.png",
+     "trace": [
+      {
+       "t": 3.64,
+       "p": [
+        -49.651,
+        5.619,
+        36.606
+       ],
+       "g": true,
+       "dist": 11.088,
+       "keys": []
+      },
+      {
+       "t": 3.73,
+       "p": [
+        -49.834,
+        5.619,
+        36.567
+       ],
+       "g": true,
+       "dist": 10.957,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 3.83,
+       "p": [
+        -50.074,
+        5.619,
+        36.685
+       ],
+       "g": true,
+       "dist": 10.692,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 3.92,
+       "p": [
+        -50.323,
+        5.619,
+        36.855
+       ],
+       "g": true,
+       "dist": 10.39,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 4.01,
+       "p": [
+        -50.534,
+        5.619,
+        37.009
+       ],
+       "g": true,
+       "dist": 10.129,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 4.11,
+       "p": [
+        -50.787,
+        5.619,
+        37.198
+       ],
+       "g": true,
+       "dist": 9.813,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 4.2,
+       "p": [
+        -50.999,
+        5.619,
+        37.356
+       ],
+       "g": true,
+       "dist": 9.549,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 4.29,
+       "p": [
+        -51.253,
+        5.619,
+        37.547
+       ],
+       "g": true,
+       "dist": 9.232,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 4.38,
+       "p": [
+        -51.508,
+        5.619,
+        37.738
+       ],
+       "g": true,
+       "dist": 8.915,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 4.48,
+       "p": [
+        -51.762,
+        5.619,
+        37.928
+       ],
+       "g": true,
+       "dist": 8.597,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 4.57,
+       "p": [
+        -51.974,
+        5.619,
+        38.087
+       ],
+       "g": true,
+       "dist": 8.333,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 4.66,
+       "p": [
+        -52.186,
+        5.619,
+        38.246
+       ],
+       "g": true,
+       "dist": 8.068,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 4.75,
+       "p": [
+        -52.428,
+        5.632,
+        38.415
+       ],
+       "g": true,
+       "dist": 7.773,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 4.85,
+       "p": [
+        -52.616,
+        5.651,
+        38.519
+       ],
+       "g": true,
+       "dist": 7.559,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 4.94,
+       "p": [
+        -52.867,
+        5.618,
+        38.693
+       ],
+       "g": true,
+       "dist": 7.253,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 5.03,
+       "p": [
+        -53.074,
+        5.619,
+        38.845
+       ],
+       "g": true,
+       "dist": 6.998,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 5.12,
+       "p": [
+        -53.326,
+        5.619,
+        39.032
+       ],
+       "g": true,
+       "dist": 6.684,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 5.21,
+       "p": [
+        -53.537,
+        5.619,
+        39.191
+       ],
+       "g": true,
+       "dist": 6.421,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 5.31,
+       "p": [
+        -53.791,
+        5.619,
+        39.381
+       ],
+       "g": true,
+       "dist": 6.104,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 5.4,
+       "p": [
+        -54.045,
+        5.619,
+        39.572
+       ],
+       "g": true,
+       "dist": 5.787,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 5.49,
+       "p": [
+        -54.257,
+        5.619,
+        39.731
+       ],
+       "g": true,
+       "dist": 5.523,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 5.59,
+       "p": [
+        -54.512,
+        5.619,
+        39.922
+       ],
+       "g": true,
+       "dist": 5.206,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 5.68,
+       "p": [
+        -54.724,
+        5.619,
+        40.08
+       ],
+       "g": true,
+       "dist": 4.943,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 5.77,
+       "p": [
+        -54.978,
+        5.619,
+        40.271
+       ],
+       "g": true,
+       "dist": 4.626,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 5.86,
+       "p": [
+        -55.19,
+        5.619,
+        40.43
+       ],
+       "g": true,
+       "dist": 4.363,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 5.96,
+       "p": [
+        -55.444,
+        5.619,
+        40.621
+       ],
+       "g": true,
+       "dist": 4.046,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 6.05,
+       "p": [
+        -55.656,
+        5.619,
+        40.78
+       ],
+       "g": true,
+       "dist": 3.783,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 6.14,
+       "p": [
+        -55.911,
+        5.619,
+        40.971
+       ],
+       "g": true,
+       "dist": 3.468,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 6.24,
+       "p": [
+        -56.165,
+        5.619,
+        41.162
+       ],
+       "g": true,
+       "dist": 3.153,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 6.33,
+       "p": [
+        -56.377,
+        5.619,
+        41.32
+       ],
+       "g": true,
+       "dist": 2.891,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 6.42,
+       "p": [
+        -56.631,
+        5.619,
+        41.511
+       ],
+       "g": true,
+       "dist": 2.578,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 6.51,
+       "p": [
+        -56.843,
+        5.619,
+        41.67
+       ],
+       "g": true,
+       "dist": 2.318,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 6.61,
+       "p": [
+        -57.098,
+        5.619,
+        41.861
+       ],
+       "g": true,
+       "dist": 2.007,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 6.7,
+       "p": [
+        -57.31,
+        5.619,
+        42.02
+       ],
+       "g": true,
+       "dist": 1.75,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 6.79,
+       "p": [
+        -57.564,
+        5.619,
+        42.211
+       ],
+       "g": true,
+       "dist": 1.446,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 6.88,
+       "p": [
+        -57.776,
+        5.619,
+        42.37
+       ],
+       "g": true,
+       "dist": 1.198,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 6.98,
+       "p": [
+        -58.06,
+        5.619,
+        42.442
+       ],
+       "g": true,
+       "dist": 0.905,
+       "keys": [
+        "KeyA",
+        "KeyW"
+       ]
+      },
+      {
+       "t": 7.07,
+       "p": [
+        -58.365,
+        5.619,
+        42.428
+       ],
+       "g": true,
+       "dist": 0.618,
+       "keys": [
+        "KeyA",
+        "KeyW"
+       ]
+      },
+      {
+       "t": 7.16,
+       "p": [
+        -58.602,
+        5.619,
+        42.488
+       ],
+       "g": true,
+       "dist": 0.379,
+       "keys": [
+        "KeyA"
+       ]
+      },
+      {
+       "t": 7.16,
+       "p": [
+        -58.602,
+        5.619,
+        42.488
+       ],
+       "g": true,
+       "dist": 5.028,
+       "keys": []
+      },
+      {
+       "t": 7.26,
+       "p": [
+        -58.83,
+        5.619,
+        42.418
+       ],
+       "g": true,
+       "dist": 4.844,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 7.35,
+       "p": [
+        -58.996,
+        5.619,
+        42.253
+       ],
+       "g": true,
+       "dist": 4.616,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 7.44,
+       "p": [
+        -59.189,
+        5.619,
+        42.016
+       ],
+       "g": true,
+       "dist": 4.313,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 7.54,
+       "p": [
+        -59.38,
+        5.619,
+        41.767
+       ],
+       "g": true,
+       "dist": 4.001,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 7.63,
+       "p": [
+        -59.539,
+        5.619,
+        41.556
+       ],
+       "g": true,
+       "dist": 3.738,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 7.72,
+       "p": [
+        -59.73,
+        5.619,
+        41.302
+       ],
+       "g": true,
+       "dist": 3.423,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 7.81,
+       "p": [
+        -59.889,
+        5.619,
+        41.09
+       ],
+       "g": true,
+       "dist": 3.16,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 7.91,
+       "p": [
+        -60.08,
+        5.619,
+        40.836
+       ],
+       "g": true,
+       "dist": 2.846,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 8,
+       "p": [
+        -60.239,
+        5.619,
+        40.624
+       ],
+       "g": true,
+       "dist": 2.584,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 8.16,
+       "p": [
+        -60.556,
+        5.619,
+        40.2
+       ],
+       "g": true,
+       "dist": 2.062,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 8.26,
+       "p": [
+        -60.747,
+        5.619,
+        39.946
+       ],
+       "g": true,
+       "dist": 1.752,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 8.35,
+       "p": [
+        -60.938,
+        5.619,
+        39.692
+       ],
+       "g": true,
+       "dist": 1.445,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 8.44,
+       "p": [
+        -61.097,
+        5.619,
+        39.48
+       ],
+       "g": true,
+       "dist": 1.194,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 8.54,
+       "p": [
+        -61.288,
+        5.619,
+        39.225
+       ],
+       "g": true,
+       "dist": 0.903,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 8.63,
+       "p": [
+        -61.357,
+        5.619,
+        38.991
+       ],
+       "g": true,
+       "dist": 0.661,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 8.72,
+       "p": [
+        -61.35,
+        5.619,
+        38.687
+       ],
+       "g": true,
+       "dist": 0.363,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      }
+     ]
+    },
+    {
+     "target": "G21-rock@175deg(s0.9)",
+     "centreXZ": [
+      -63.72,
+      31.9
+     ],
+     "chord": [
+      [
+       -63.5,
+       34.39
+      ],
+      [
+       -63.93,
+       29.41
+      ]
+     ],
+     "legs": [
+      {
+       "target": [
+        -63.49915506153091,
+        34.39048193712832
+       ],
+       "reached": true,
+       "recoveries": 0,
+       "blockedAt": null,
+       "start": [
+        -61.3504524230957,
+        5.618740558624268,
+        38.68714141845703
+       ],
+       "end": [
+        -63.43540573120117,
+        5.6187663078308105,
+        34.733699798583984
+       ],
+       "seconds": 1.48,
+       "minDist": 0.349
+      },
+      {
+       "target": [
+        -63.934933775269194,
+        29.409508446669594
+       ],
+       "reached": true,
+       "recoveries": 0,
+       "blockedAt": null,
+       "start": [
+        -63.43540573120117,
+        5.6187663078308105,
+        34.733699798583984
+       ],
+       "end": [
+        -63.760498046875,
+        5.61883020401001,
+        29.7781982421875
+       ],
+       "seconds": 1.67,
+       "minDist": 0.408
+      }
+     ],
+     "closestApproachToCentre_m": 0.413,
+     "yAtClosest": 5.6187968254089355,
+     "groundedAtClosest": true,
+     "passedThrough": false,
+     "screenshotInside": null,
+     "trace": [
+      {
+       "t": 8.73,
+       "p": [
+        -61.35,
+        5.619,
+        38.687
+       ],
+       "g": true,
+       "dist": 4.804,
+       "keys": []
+      },
+      {
+       "t": 8.82,
+       "p": [
+        -61.434,
+        5.619,
+        38.407
+       ],
+       "g": true,
+       "dist": 4.516,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 8.91,
+       "p": [
+        -61.567,
+        5.619,
+        38.189
+       ],
+       "g": true,
+       "dist": 4.262,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 9,
+       "p": [
+        -61.748,
+        5.619,
+        37.933
+       ],
+       "g": true,
+       "dist": 3.952,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 9.1,
+       "p": [
+        -61.904,
+        5.619,
+        37.721
+       ],
+       "g": true,
+       "dist": 3.692,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 9.19,
+       "p": [
+        -62.094,
+        5.619,
+        37.466
+       ],
+       "g": true,
+       "dist": 3.382,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 9.28,
+       "p": [
+        -62.253,
+        5.619,
+        37.254
+       ],
+       "g": true,
+       "dist": 3.123,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 9.37,
+       "p": [
+        -62.444,
+        5.619,
+        37
+       ],
+       "g": true,
+       "dist": 2.815,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 9.47,
+       "p": [
+        -62.603,
+        5.619,
+        36.788
+       ],
+       "g": true,
+       "dist": 2.56,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 9.56,
+       "p": [
+        -62.793,
+        5.619,
+        36.534
+       ],
+       "g": true,
+       "dist": 2.256,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 9.65,
+       "p": [
+        -62.984,
+        5.619,
+        36.279
+       ],
+       "g": true,
+       "dist": 1.958,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 9.74,
+       "p": [
+        -63.143,
+        5.619,
+        36.067
+       ],
+       "g": true,
+       "dist": 1.714,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 9.84,
+       "p": [
+        -63.215,
+        5.619,
+        35.783
+       ],
+       "g": true,
+       "dist": 1.422,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 9.93,
+       "p": [
+        -63.206,
+        5.619,
+        35.529
+       ],
+       "g": true,
+       "dist": 1.176,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 10.02,
+       "p": [
+        -63.29,
+        5.619,
+        35.249
+       ],
+       "g": true,
+       "dist": 0.884,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 10.11,
+       "p": [
+        -63.333,
+        5.619,
+        35.009
+       ],
+       "g": true,
+       "dist": 0.64,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 10.21,
+       "p": [
+        -63.435,
+        5.619,
+        34.734
+       ],
+       "g": true,
+       "dist": 0.349,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 10.21,
+       "p": [
+        -63.435,
+        5.619,
+        34.734
+       ],
+       "g": true,
+       "dist": 5.348,
+       "keys": []
+      },
+      {
+       "t": 10.3,
+       "p": [
+        -63.484,
+        5.619,
+        34.445
+       ],
+       "g": true,
+       "dist": 5.055,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 10.39,
+       "p": [
+        -63.469,
+        5.619,
+        34.189
+       ],
+       "g": true,
+       "dist": 4.802,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 10.49,
+       "p": [
+        -63.432,
+        5.619,
+        33.877
+       ],
+       "g": true,
+       "dist": 4.496,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 10.58,
+       "p": [
+        -63.397,
+        5.619,
+        33.616
+       ],
+       "g": true,
+       "dist": 4.241,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 10.67,
+       "p": [
+        -63.352,
+        5.619,
+        33.302
+       ],
+       "g": true,
+       "dist": 3.935,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 10.77,
+       "p": [
+        -63.315,
+        5.619,
+        33.039
+       ],
+       "g": true,
+       "dist": 3.682,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 10.86,
+       "p": [
+        -63.27,
+        5.619,
+        32.725
+       ],
+       "g": true,
+       "dist": 3.381,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 10.95,
+       "p": [
+        -63.225,
+        5.619,
+        32.41
+       ],
+       "g": true,
+       "dist": 3.083,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 11.04,
+       "p": [
+        -63.188,
+        5.619,
+        32.148
+       ],
+       "g": true,
+       "dist": 2.838,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 11.14,
+       "p": [
+        -63.261,
+        5.619,
+        31.864
+       ],
+       "g": true,
+       "dist": 2.545,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 11.23,
+       "p": [
+        -63.392,
+        5.619,
+        31.646
+       ],
+       "g": true,
+       "dist": 2.301,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 11.32,
+       "p": [
+        -63.453,
+        5.619,
+        31.36
+       ],
+       "g": true,
+       "dist": 2.009,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 11.42,
+       "p": [
+        -63.441,
+        5.619,
+        31.105
+       ],
+       "g": true,
+       "dist": 1.766,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 11.51,
+       "p": [
+        -63.495,
+        5.619,
+        30.817
+       ],
+       "g": true,
+       "dist": 1.474,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 11.6,
+       "p": [
+        -63.649,
+        5.619,
+        30.555
+       ],
+       "g": true,
+       "dist": 1.18,
+       "keys": [
+        "KeyW"
+       ]
+      },
+      {
+       "t": 11.7,
+       "p": [
+        -63.709,
+        5.619,
+        30.318
+       ],
+       "g": true,
+       "dist": 0.936,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 11.79,
+       "p": [
+        -63.7,
+        5.619,
+        30.014
+       ],
+       "g": true,
+       "dist": 0.649,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 11.88,
+       "p": [
+        -63.76,
+        5.619,
+        29.778
+       ],
+       "g": true,
+       "dist": 0.408,
+       "keys": [
+        "KeyW"
+       ]
+      }
+     ]
+    },
+    {
+     "target": "G20-shrub@197deg",
+     "centreXZ": [
+      -62.56,
+      23.71
+     ],
+     "chord": [
+      [
+       -63.29,
+       26.1
+      ],
+      [
+       -61.83,
+       21.32
+      ]
+     ],
+     "legs": [
+      {
+       "target": [
+        -63.29148151501211,
+        26.104770238368758
+       ],
+       "reached": true,
+       "recoveries": 0,
+       "blockedAt": null,
+       "start": [
+        -63.77626037597656,
+        5.618837833404541,
+        29.74205780029297
+       ],
+       "end": [
+        -63.413204193115234,
+        5.6187262535095215,
+        26.614606857299805
+       ],
+       "seconds": 1.02,
+       "minDist": 0.524
+      },
+      {
+       "target": [
+        -61.82962299139842,
+        21.323246458553577
+       ],
+       "reached": true,
+       "recoveries": 0,
+       "blockedAt": null,
+       "start": [
+        -63.413204193115234,
+        5.6187262535095215,
+        26.614606857299805
+       ],
+       "end": [
+        -62.02991485595703,
+        5.6187262535095215,
+        21.752044677734375
+       ],
+       "seconds": 1.67,
+       "minDist": 0.473
+      }
+     ],
+     "closestApproachToCentre_m": 0.441,
+     "yAtClosest": 5.618740081787109,
+     "groundedAtClosest": true,
+     "passedThrough": false,
+     "screenshotInside": null,
+     "trace": [
+      {
+       "t": 11.88,
+       "p": [
+        -63.776,
+        5.619,
+        29.742
+       ],
+       "g": true,
+       "dist": 3.669,
+       "keys": []
+      },
+      {
+       "t": 11.98,
+       "p": [
+        -63.801,
+        5.619,
+        29.526
+       ],
+       "g": true,
+       "dist": 3.459,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 12.07,
+       "p": [
+        -63.779,
+        5.619,
+        29.23
+       ],
+       "g": true,
+       "dist": 3.163,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 12.16,
+       "p": [
+        -63.748,
+        5.619,
+        28.972
+       ],
+       "g": true,
+       "dist": 2.904,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 12.26,
+       "p": [
+        -63.705,
+        5.619,
+        28.66
+       ],
+       "g": true,
+       "dist": 2.588,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 12.35,
+       "p": [
+        -63.668,
+        5.619,
+        28.398
+       ],
+       "g": true,
+       "dist": 2.324,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 12.44,
+       "p": [
+        -63.623,
+        5.619,
+        28.083
+       ],
+       "g": true,
+       "dist": 2.006,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 12.54,
+       "p": [
+        -63.578,
+        5.619,
+        27.769
+       ],
+       "g": true,
+       "dist": 1.688,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 12.63,
+       "p": [
+        -63.541,
+        5.619,
+        27.506
+       ],
+       "g": true,
+       "dist": 1.424,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 12.72,
+       "p": [
+        -63.496,
+        5.619,
+        27.192
+       ],
+       "g": true,
+       "dist": 1.106,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 12.81,
+       "p": [
+        -63.458,
+        5.619,
+        26.929
+       ],
+       "g": true,
+       "dist": 0.841,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 12.9,
+       "p": [
+        -63.413,
+        5.619,
+        26.615
+       ],
+       "g": true,
+       "dist": 0.524,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 12.91,
+       "p": [
+        -63.413,
+        5.619,
+        26.615
+       ],
+       "g": true,
+       "dist": 5.523,
+       "keys": []
+      },
+      {
+       "t": 13,
+       "p": [
+        -63.376,
+        5.619,
+        26.352
+       ],
+       "g": true,
+       "dist": 5.261,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 13.09,
+       "p": [
+        -63.331,
+        5.619,
+        26.038
+       ],
+       "g": true,
+       "dist": 4.948,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 13.19,
+       "p": [
+        -63.286,
+        5.619,
+        25.723
+       ],
+       "g": true,
+       "dist": 4.634,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 13.28,
+       "p": [
+        -63.248,
+        5.619,
+        25.461
+       ],
+       "g": true,
+       "dist": 4.374,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 13.37,
+       "p": [
+        -63.203,
+        5.619,
+        25.146
+       ],
+       "g": true,
+       "dist": 4.062,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 13.46,
+       "p": [
+        -63.166,
+        5.619,
+        24.884
+       ],
+       "g": true,
+       "dist": 3.803,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 13.55,
+       "p": [
+        -63.121,
+        5.619,
+        24.569
+       ],
+       "g": true,
+       "dist": 3.493,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 13.65,
+       "p": [
+        -63.084,
+        5.619,
+        24.306
+       ],
+       "g": true,
+       "dist": 3.236,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 13.74,
+       "p": [
+        -63.039,
+        5.619,
+        23.992
+       ],
+       "g": true,
+       "dist": 2.93,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 13.83,
+       "p": [
+        -63.001,
+        5.619,
+        23.729
+       ],
+       "g": true,
+       "dist": 2.676,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 13.92,
+       "p": [
+        -62.956,
+        5.619,
+        23.415
+       ],
+       "g": true,
+       "dist": 2.376,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 14.02,
+       "p": [
+        -62.911,
+        5.619,
+        23.1
+       ],
+       "g": true,
+       "dist": 2.08,
+       "keys": [
+        "KeyW",
+        "KeyD"
+       ]
+      },
+      {
+       "t": 14.11,
+       "p": [
+        -62.794,
+        5.619,
+        22.885
+       ],
+       "g": true,
+       "dist": 1.836,
+       "keys": [
+        "KeyD"
+       ]
+      },
+      {
+       "t": 14.2,
+       "p": [
+        -62.575,
+        5.619,
+        22.675
+       ],
+       "g": true,
+       "dist": 1.544,
+       "keys": [
+        "KeyD"
+       ]
+      },
+      {
+       "t": 14.3,
+       "p": [
+        -62.452,
+        5.619,
+        22.465
+       ],
+       "g": true,
+       "dist": 1.3,
+       "keys": [
+        "KeyD",
+        "KeyW"
+       ]
+      },
+      {
+       "t": 14.39,
+       "p": [
+        -62.376,
+        5.619,
+        22.17
+       ],
+       "g": true,
+       "dist": 1.008,
+       "keys": [
+        "KeyD",
+        "KeyW"
+       ]
+      },
+      {
+       "t": 14.48,
+       "p": [
+        -62.252,
+        5.619,
+        21.961
+       ],
+       "g": true,
+       "dist": 0.764,
+       "keys": [
+        "KeyD"
+       ]
+      },
+      {
+       "t": 14.57,
+       "p": [
+        -62.03,
+        5.619,
+        21.752
+       ],
+       "g": true,
+       "dist": 0.473,
+       "keys": [
+        "KeyD"
+       ]
+      }
+     ]
+    }
+   ],
+   "rule": "Pass = capsule centre came within 0.35 m of the instance centre after walking a straight chord with real keys and no block. Player radius 0.34; G21 footprint ~2.2 x 2.8 m, G20 ~1.4 x 2.0 m. Collider absence is also stated in source (WorldCamp.createNature: \"No colliders\").",
+   "video": "video/nature-passable.webm (canvas MediaRecorder, real runtime pixels)",
+   "readyMs": 6822,
+   "assetsLoaded": true,
+   "pageErrors": [],
+   "fixtureTeleports": [],
+   "keyEvents": 0,
+   "seconds": 21.746
+  },
+  "tent-airwall-and-firepit": {
+   "firePit": {
+    "closestToFireCentre_m": 0.178,
+    "yNearCentre": 5.619,
+    "screenshot": "frames/firepit-inside.png",
+    "walkedThrough": true,
+    "note": "C05 stone ring is 3.2 m wide x 0.6 m high (visual). No camp collider list entry exists for it in c507506."
+   },
+   "tentFront": {
+    "blockedAt": [
+     -41.035865783691406,
+     5.718864917755127,
+     14.938883781433105
+    ],
+    "reachedTarget": false,
+    "colliderFaceZ": 14.6,
+    "expectedBlockZ": 14.94,
+    "canvasGapAtBlock_m": "audit/asset-vs-collider.json tent1_C03 south(+Z): door centre 0.67 m at 0.3 m height, 0.45-0.67 m across the doorway"
+   },
+   "tentSide": {
+    "approachReached": [
+     true,
+     true,
+     true
+    ],
+    "blockedAt": [
+     -29.911088943481445,
+     5.6187262535095215,
+     12.587178230285645
+    ],
+    "reachedTarget": false,
+    "colliderFaceX": -30.25,
+    "expectedBlockX": -29.91,
+    "canvasGapAtBlock_m": "audit tent2_C04 east(+X): 1.47 m at 0.3 m, 1.82 m at 1.0 m, 2.25 m at 1.6 m height"
+   },
+   "traces": {
+    "toFire": [
+     {
+      "t": 0,
+      "p": [
+       -42,
+       5.619,
+       35
+      ],
+      "g": true,
+      "dist": 5,
+      "keys": []
+     },
+     {
+      "t": 0.1,
+      "p": [
+       -41.984,
+       5.619,
+       34.885
+      ],
+      "g": true,
+      "dist": 4.885,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 0.19,
+      "p": [
+       -41.947,
+       5.619,
+       34.629
+      ],
+      "g": true,
+      "dist": 4.63,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 0.28,
+      "p": [
+       -41.905,
+       5.619,
+       34.332
+      ],
+      "g": true,
+      "dist": 4.333,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 0.38,
+      "p": [
+       -41.868,
+       5.619,
+       34.075
+      ],
+      "g": true,
+      "dist": 4.077,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 0.47,
+      "p": [
+       -41.823,
+       5.619,
+       33.762
+      ],
+      "g": true,
+      "dist": 3.766,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 0.56,
+      "p": [
+       -41.778,
+       5.619,
+       33.447
+      ],
+      "g": true,
+      "dist": 3.455,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 0.66,
+      "p": [
+       -41.741,
+       5.619,
+       33.185
+      ],
+      "g": true,
+      "dist": 3.196,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 0.75,
+      "p": [
+       -41.703,
+       5.619,
+       32.923
+      ],
+      "g": true,
+      "dist": 2.938,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 0.84,
+      "p": [
+       -41.658,
+       5.619,
+       32.608
+      ],
+      "g": true,
+      "dist": 2.631,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 0.93,
+      "p": [
+       -41.613,
+       5.619,
+       32.294
+      ],
+      "g": true,
+      "dist": 2.326,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 1.02,
+      "p": [
+       -41.576,
+       5.619,
+       32.031
+      ],
+      "g": true,
+      "dist": 2.075,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 1.12,
+      "p": [
+       -41.531,
+       5.619,
+       31.717
+      ],
+      "g": true,
+      "dist": 1.78,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 1.21,
+      "p": [
+       -41.583,
+       5.619,
+       31.478
+      ],
+      "g": true,
+      "dist": 1.536,
+      "keys": [
+       "KeyW"
+      ]
+     },
+     {
+      "t": 1.3,
+      "p": [
+       -41.735,
+       5.619,
+       31.215
+      ],
+      "g": true,
+      "dist": 1.243,
+      "keys": [
+       "KeyW"
+      ]
+     },
+     {
+      "t": 1.4,
+      "p": [
+       -41.794,
+       5.619,
+       30.978
+      ],
+      "g": true,
+      "dist": 1,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 1.49,
+      "p": [
+       -41.784,
+       5.619,
+       30.674
+      ],
+      "g": true,
+      "dist": 0.708,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 1.58,
+      "p": [
+       -41.867,
+       5.619,
+       30.393
+      ],
+      "g": true,
+      "dist": 0.415,
+      "keys": [
+       "KeyW"
+      ]
+     },
+     {
+      "t": 1.58,
+      "p": [
+       -41.867,
+       5.619,
+       30.393
+      ],
+      "g": true,
+      "dist": 9.394,
+      "keys": []
+     },
+     {
+      "t": 1.68,
+      "p": [
+       -41.91,
+       5.619,
+       30.153
+      ],
+      "g": true,
+      "dist": 9.154,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 1.87,
+      "p": [
+       -41.857,
+       5.619,
+       29.535
+      ],
+      "g": true,
+      "dist": 8.536,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 1.96,
+      "p": [
+       -41.821,
+       5.619,
+       29.274
+      ],
+      "g": true,
+      "dist": 8.276,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 2.05,
+      "p": [
+       -41.777,
+       5.619,
+       28.959
+      ],
+      "g": true,
+      "dist": 7.962,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 2.14,
+      "p": [
+       -41.74,
+       5.619,
+       28.697
+      ],
+      "g": true,
+      "dist": 7.701,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 2.24,
+      "p": [
+       -41.695,
+       5.619,
+       28.382
+      ],
+      "g": true,
+      "dist": 7.389,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 2.34,
+      "p": [
+       -41.65,
+       5.619,
+       28.068
+      ],
+      "g": true,
+      "dist": 7.076,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 2.43,
+      "p": [
+       -41.612,
+       5.619,
+       27.805
+      ],
+      "g": true,
+      "dist": 6.816,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 2.52,
+      "p": [
+       -41.567,
+       5.619,
+       27.491
+      ],
+      "g": true,
+      "dist": 6.505,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 2.62,
+      "p": [
+       -41.523,
+       5.619,
+       27.176
+      ],
+      "g": true,
+      "dist": 6.194,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 2.71,
+      "p": [
+       -41.485,
+       5.619,
+       26.914
+      ],
+      "g": true,
+      "dist": 5.936,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 2.8,
+      "p": [
+       -41.44,
+       5.619,
+       26.599
+      ],
+      "g": true,
+      "dist": 5.627,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 2.89,
+      "p": [
+       -41.403,
+       5.619,
+       26.336
+      ],
+      "g": true,
+      "dist": 5.37,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 2.99,
+      "p": [
+       -41.358,
+       5.619,
+       26.022
+      ],
+      "g": true,
+      "dist": 5.063,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 3.08,
+      "p": [
+       -41.32,
+       5.619,
+       25.759
+      ],
+      "g": true,
+      "dist": 4.808,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 3.17,
+      "p": [
+       -41.275,
+       5.619,
+       25.445
+      ],
+      "g": true,
+      "dist": 4.503,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 3.26,
+      "p": [
+       -41.238,
+       5.619,
+       25.182
+      ],
+      "g": true,
+      "dist": 4.251,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 3.36,
+      "p": [
+       -41.193,
+       5.619,
+       24.868
+      ],
+      "g": true,
+      "dist": 3.951,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 3.45,
+      "p": [
+       -41.148,
+       5.619,
+       24.553
+      ],
+      "g": true,
+      "dist": 3.654,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 3.54,
+      "p": [
+       -41.11,
+       5.619,
+       24.291
+      ],
+      "g": true,
+      "dist": 3.409,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 3.63,
+      "p": [
+       -41.184,
+       5.619,
+       24.007
+      ],
+      "g": true,
+      "dist": 3.116,
+      "keys": [
+       "KeyW"
+      ]
+     },
+     {
+      "t": 3.73,
+      "p": [
+       -41.314,
+       5.619,
+       23.789
+      ],
+      "g": true,
+      "dist": 2.872,
+      "keys": [
+       "KeyW"
+      ]
+     },
+     {
+      "t": 3.82,
+      "p": [
+       -41.375,
+       5.619,
+       23.503
+      ],
+      "g": true,
+      "dist": 2.579,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 3.91,
+      "p": [
+       -41.364,
+       5.619,
+       23.248
+      ],
+      "g": true,
+      "dist": 2.336,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 4,
+      "p": [
+       -41.447,
+       5.619,
+       22.967
+      ],
+      "g": true,
+      "dist": 2.044,
+      "keys": [
+       "KeyW"
+      ]
+     },
+     {
+      "t": 4.1,
+      "p": [
+       -41.579,
+       5.619,
+       22.75
+      ],
+      "g": true,
+      "dist": 1.8,
+      "keys": [
+       "KeyW"
+      ]
+     },
+     {
+      "t": 4.19,
+      "p": [
+       -41.67,
+       5.619,
+       22.471
+      ],
+      "g": true,
+      "dist": 1.508,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 4.28,
+      "p": [
+       -41.661,
+       5.619,
+       22.167
+      ],
+      "g": true,
+      "dist": 1.215,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 4.38,
+      "p": [
+       -41.722,
+       5.619,
+       21.931
+      ],
+      "g": true,
+      "dist": 0.972,
+      "keys": [
+       "KeyW"
+      ]
+     },
+     {
+      "t": 4.47,
+      "p": [
+       -41.877,
+       5.619,
+       21.669
+      ],
+      "g": true,
+      "dist": 0.68,
+      "keys": [
+       "KeyW"
+      ]
+     },
+     {
+      "t": 4.56,
+      "p": [
+       -41.937,
+       5.619,
+       21.433
+      ],
+      "g": true,
+      "dist": 0.437,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     }
+    ],
+    "front": [
+     {
+      "t": 4.56,
+      "p": [
+       -41.937,
+       5.619,
+       21.433
+      ],
+      "g": true,
+      "dist": 10.433,
+      "keys": []
+     },
+     {
+      "t": 4.66,
+      "p": [
+       -41.927,
+       5.619,
+       21.129
+      ],
+      "g": true,
+      "dist": 10.129,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 4.75,
+      "p": [
+       -41.899,
+       5.619,
+       20.869
+      ],
+      "g": true,
+      "dist": 9.87,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 4.84,
+      "p": [
+       -41.857,
+       5.619,
+       20.556
+      ],
+      "g": true,
+      "dist": 9.557,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 4.93,
+      "p": [
+       -41.813,
+       5.619,
+       20.241
+      ],
+      "g": true,
+      "dist": 9.243,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 5.03,
+      "p": [
+       -41.776,
+       5.619,
+       19.979
+      ],
+      "g": true,
+      "dist": 8.982,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 5.12,
+      "p": [
+       -41.731,
+       5.619,
+       19.664
+      ],
+      "g": true,
+      "dist": 8.669,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 5.21,
+      "p": [
+       -41.693,
+       5.619,
+       19.402
+      ],
+      "g": true,
+      "dist": 8.408,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 5.3,
+      "p": [
+       -41.648,
+       5.619,
+       19.087
+      ],
+      "g": true,
+      "dist": 8.095,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 5.4,
+      "p": [
+       -41.611,
+       5.619,
+       18.825
+      ],
+      "g": true,
+      "dist": 7.835,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 5.49,
+      "p": [
+       -41.566,
+       5.619,
+       18.51
+      ],
+      "g": true,
+      "dist": 7.523,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 5.58,
+      "p": [
+       -41.521,
+       5.619,
+       18.196
+      ],
+      "g": true,
+      "dist": 7.212,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 5.67,
+      "p": [
+       -41.483,
+       5.619,
+       17.933
+      ],
+      "g": true,
+      "dist": 6.953,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 5.77,
+      "p": [
+       -41.438,
+       5.619,
+       17.619
+      ],
+      "g": true,
+      "dist": 6.642,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 5.86,
+      "p": [
+       -41.401,
+       5.619,
+       17.356
+      ],
+      "g": true,
+      "dist": 6.384,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 5.95,
+      "p": [
+       -41.356,
+       5.619,
+       17.042
+      ],
+      "g": true,
+      "dist": 6.076,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 6.04,
+      "p": [
+       -41.319,
+       5.619,
+       16.779
+      ],
+      "g": true,
+      "dist": 5.819,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 6.14,
+      "p": [
+       -41.296,
+       5.691,
+       16.687
+      ],
+      "g": true,
+      "dist": 5.731,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 6.23,
+      "p": [
+       -41.267,
+       5.728,
+       16.519
+      ],
+      "g": true,
+      "dist": 5.567,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 6.32,
+      "p": [
+       -41.225,
+       5.719,
+       16.24
+      ],
+      "g": true,
+      "dist": 5.297,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 6.42,
+      "p": [
+       -41.184,
+       5.719,
+       15.952
+      ],
+      "g": true,
+      "dist": 5.018,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 6.51,
+      "p": [
+       -41.149,
+       5.719,
+       15.707
+      ],
+      "g": true,
+      "dist": 4.783,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 6.6,
+      "p": [
+       -41.106,
+       5.719,
+       15.411
+      ],
+      "g": true,
+      "dist": 4.501,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 6.69,
+      "p": [
+       -41.071,
+       5.719,
+       15.165
+      ],
+      "g": true,
+      "dist": 4.267,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 6.78,
+      "p": [
+       -41.036,
+       5.719,
+       14.927
+      ],
+      "g": true,
+      "dist": 4.043,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 6.88,
+      "p": [
+       -41.036,
+       5.719,
+       14.936
+      ],
+      "g": true,
+      "dist": 4.052,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 6.97,
+      "p": [
+       -41.036,
+       5.719,
+       14.938
+      ],
+      "g": true,
+      "dist": 4.055,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 7.06,
+      "p": [
+       -41.036,
+       5.719,
+       14.939
+      ],
+      "g": true,
+      "dist": 4.055,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 7.16,
+      "p": [
+       -41.036,
+       5.719,
+       14.939
+      ],
+      "g": true,
+      "dist": 4.055,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 7.25,
+      "p": [
+       -41.036,
+       5.719,
+       14.939
+      ],
+      "g": true,
+      "dist": 4.055,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 7.34,
+      "p": [
+       -41.036,
+       5.719,
+       14.939
+      ],
+      "g": true,
+      "dist": 4.055,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     },
+     {
+      "t": 7.43,
+      "p": [
+       -41.036,
+       5.719,
+       14.939
+      ],
+      "g": true,
+      "dist": 4.055,
+      "keys": [
+       "KeyW",
+       "KeyD"
+      ]
+     }
+    ],
+    "side": [
+     {
+      "t": 12.69,
+      "p": [
+       -28.439,
+       5.619,
+       13.011
+      ],
+      "g": true,
+      "dist": 7.579,
+      "keys": []
+     },
+     {
+      "t": 12.78,
+      "p": [
+       -28.573,
+       5.619,
+       12.835
+      ],
+      "g": true,
+      "dist": 7.434,
+      "keys": [
+       "KeyW",
+       "KeyA"
+      ]
+     },
+     {
+      "t": 12.87,
+      "p": [
+       -28.789,
+       5.619,
+       12.767
+      ],
+      "g": true,
+      "dist": 7.215,
+      "keys": [
+       "KeyW",
+       "KeyA"
+      ]
+     },
+     {
+      "t": 12.97,
+      "p": [
+       -29.086,
+       5.619,
+       12.711
+      ],
+      "g": true,
+      "dist": 6.917,
+      "keys": [
+       "KeyW",
+       "KeyA"
+      ]
+     },
+     {
+      "t": 13.06,
+      "p": [
+       -29.343,
+       5.619,
+       12.671
+      ],
+      "g": true,
+      "dist": 6.659,
+      "keys": [
+       "KeyW",
+       "KeyA"
+      ]
+     },
+     {
+      "t": 13.15,
+      "p": [
+       -29.656,
+       5.619,
+       12.625
+      ],
+      "g": true,
+      "dist": 6.345,
+      "keys": [
+       "KeyW",
+       "KeyA"
+      ]
+     },
+     {
+      "t": 13.24,
+      "p": [
+       -29.918,
+       5.619,
+       12.587
+      ],
+      "g": true,
+      "dist": 6.083,
+      "keys": [
+       "KeyW",
+       "KeyA"
+      ]
+     },
+     {
+      "t": 13.34,
+      "p": [
+       -29.911,
+       5.619,
+       12.587
+      ],
+      "g": true,
+      "dist": 6.089,
+      "keys": [
+       "KeyW",
+       "KeyA"
+      ]
+     },
+     {
+      "t": 13.43,
+      "p": [
+       -29.911,
+       5.619,
+       12.587
+      ],
+      "g": true,
+      "dist": 6.089,
+      "keys": [
+       "KeyW",
+       "KeyA"
+      ]
+     },
+     {
+      "t": 13.52,
+      "p": [
+       -29.911,
+       5.619,
+       12.587
+      ],
+      "g": true,
+      "dist": 6.09,
+      "keys": [
+       "KeyW",
+       "KeyA"
+      ]
+     },
+     {
+      "t": 13.61,
+      "p": [
+       -29.911,
+       5.619,
+       12.587
+      ],
+      "g": true,
+      "dist": 6.09,
+      "keys": [
+       "KeyW",
+       "KeyA"
+      ]
+     },
+     {
+      "t": 13.71,
+      "p": [
+       -29.911,
+       5.619,
+       12.587
+      ],
+      "g": true,
+      "dist": 6.09,
+      "keys": [
+       "KeyW",
+       "KeyA"
+      ]
+     },
+     {
+      "t": 13.8,
+      "p": [
+       -29.911,
+       5.619,
+       12.587
+      ],
+      "g": true,
+      "dist": 6.09,
+      "keys": [
+       "KeyW",
+       "KeyA"
+      ]
+     },
+     {
+      "t": 13.89,
+      "p": [
+       -29.911,
+       5.619,
+       12.587
+      ],
+      "g": true,
+      "dist": 6.09,
+      "keys": [
+       "KeyW",
+       "KeyA"
+      ]
+     },
+     {
+      "t": 13.99,
+      "p": [
+       -29.911,
+       5.619,
+       12.587
+      ],
+      "g": true,
+      "dist": 6.09,
+      "keys": [
+       "KeyW",
+       "KeyA"
+      ]
+     }
+    ]
+   },
+   "inference": "Block positions are inferred from position stalling while real keys are held, compared with the source collider face. There is no contact API in c507506, so the touched collider identity is not proven.",
+   "video": "video/tent-airwall-and-firepit.webm (canvas MediaRecorder, real runtime pixels)",
+   "readyMs": 6013,
+   "assetsLoaded": true,
+   "pageErrors": [],
+   "fixtureTeleports": [],
+   "keyEvents": 0,
+   "seconds": 20.334
+  }
+ },
+ "toolFailures": [],
+ "toolFailuresEarlier": [
+  {
+   "case": "nature-passable",
+   "error": "browserContext.newPage: Executable doesn't exist at /Users/bobby/Library/Caches/ms-playwright/ffmpeg-1011/ffmpeg-mac\n╔═════════════════════════════════════════════════════════════════╗\n║ Video rendering requires ffmpeg binary.                         ║\n║ Downloading it will not affect any of the system-wide settings. ║\n║ Please run the following command:                               ║\n║                                                                 ║\n║     npx playwright install ffmpeg                               ║\n║                                                                 ║\n║ <3 Playwright Team                                              ║\n╚═════════════════════════════════════════════════════════════════╝\n    at openWorld (/Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/playtest/lib.mjs:135:30)\n    at async route (/Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/playtest/baseline.mjs:38:11)\n    at async file:///Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/playtest/baseline.mjs:56:1"
+  },
+  {
+   "case": "tent-airwall-and-firepit",
+   "error": "browserContext.newPage: Executable doesn't exist at /Users/bobby/Library/Caches/ms-playwright/ffmpeg-1011/ffmpeg-mac\n╔═════════════════════════════════════════════════════════════════╗\n║ Video rendering requires ffmpeg binary.                         ║\n║ Downloading it will not affect any of the system-wide settings. ║\n║ Please run the following command:                               ║\n║                                                                 ║\n║     npx playwright install ffmpeg                               ║\n║                                                                 ║\n║ <3 Playwright Team                                              ║\n╚═════════════════════════════════════════════════════════════════╝\n    at openWorld (/Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/playtest/lib.mjs:135:30)\n    at async route (/Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/playtest/baseline.mjs:38:11)\n    at async file:///Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/playtest/baseline.mjs:79:1"
+  }
+ ],
+ "startedAtEarlier": "2026-10-21T09:49:29.923Z",
+ "finishedAt": "2026-10-21T09:52:37.504Z"
+}

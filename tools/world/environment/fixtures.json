@@ -1,0 +1,40 @@
+{
+  "generatedBy": "tools/world/environment/fixtures.ts",
+  "views": [
+    {
+      "name": "coast-west",
+      "x": -66,
+      "z": 4,
+      "zoom": 2,
+      "ground": 1.4414930850585135
+    },
+    {
+      "name": "coast-north",
+      "x": -20,
+      "z": 54,
+      "zoom": 2,
+      "ground": 2.1534439637097247
+    },
+    {
+      "name": "camp-edge",
+      "x": -42,
+      "z": 52,
+      "zoom": 2,
+      "ground": 4.821752187916192
+    },
+    {
+      "name": "camp-terrace-se",
+      "x": -24,
+      "z": 18,
+      "zoom": 1,
+      "ground": 4.827718097996084
+    },
+    {
+      "name": "coast-east-seawall",
+      "x": 24,
+      "z": -4,
+      "zoom": 1,
+      "ground": 1
+    }
+  ]
+}

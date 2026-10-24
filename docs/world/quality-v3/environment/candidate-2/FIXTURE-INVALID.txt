@@ -1,0 +1,1 @@
+INVALID as character evidence: coast fixtures teleported to fixed y=1.9 below the new hill surface (player embedded). Terrain visuals valid only as candidate review.

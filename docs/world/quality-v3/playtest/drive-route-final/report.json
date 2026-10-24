@@ -1,0 +1,2276 @@
+{
+  "base": "http://127.0.0.1:4322",
+  "flags": "",
+  "errors": [],
+  "fixtures": [
+    {
+      "t": 2.529,
+      "type": "vehicle",
+      "id": "offroad",
+      "p": [
+        90,
+        7,
+        125
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 2.531,
+      "type": "vehicle",
+      "id": "coupe",
+      "p": [
+        98,
+        7,
+        125
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 2.533,
+      "type": "vehicle",
+      "id": "van",
+      "p": [
+        106,
+        7,
+        125
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 2.534,
+      "type": "vehicle",
+      "id": "offroad",
+      "p": [
+        -29,
+        6.016,
+        34
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 27.006,
+      "type": "vehicle",
+      "id": "offroad",
+      "p": [
+        70,
+        6.176,
+        120
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 34.868,
+      "type": "vehicle",
+      "id": "offroad",
+      "p": [
+        130,
+        6.176,
+        120
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 35.369,
+      "type": "flip",
+      "id": "offroad"
+    },
+    {
+      "t": 38.577,
+      "type": "water",
+      "id": "offroad"
+    },
+    {
+      "t": 41.796,
+      "type": "vehicle",
+      "id": "offroad",
+      "p": [
+        90,
+        7,
+        125
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 41.801,
+      "type": "vehicle",
+      "id": "coupe",
+      "p": [
+        98,
+        7,
+        125
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 41.801,
+      "type": "vehicle",
+      "id": "van",
+      "p": [
+        106,
+        7,
+        125
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 41.802,
+      "type": "vehicle",
+      "id": "coupe",
+      "p": [
+        -29,
+        5.894,
+        34
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 65.9,
+      "type": "vehicle",
+      "id": "coupe",
+      "p": [
+        70,
+        6.054,
+        120
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 72.9,
+      "type": "vehicle",
+      "id": "coupe",
+      "p": [
+        130,
+        6.054,
+        120
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 73.401,
+      "type": "flip",
+      "id": "coupe"
+    },
+    {
+      "t": 76.61,
+      "type": "water",
+      "id": "coupe"
+    },
+    {
+      "t": 79.833,
+      "type": "vehicle",
+      "id": "offroad",
+      "p": [
+        90,
+        7,
+        125
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 79.835,
+      "type": "vehicle",
+      "id": "coupe",
+      "p": [
+        98,
+        7,
+        125
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 79.835,
+      "type": "vehicle",
+      "id": "van",
+      "p": [
+        106,
+        7,
+        125
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 79.836,
+      "type": "vehicle",
+      "id": "van",
+      "p": [
+        -29,
+        6.292,
+        34
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 167.327,
+      "type": "vehicle",
+      "id": "van",
+      "p": [
+        70,
+        6.452,
+        120
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 176.329,
+      "type": "vehicle",
+      "id": "van",
+      "p": [
+        130,
+        6.452,
+        120
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 176.831,
+      "type": "flip",
+      "id": "van"
+    },
+    {
+      "t": 180.037,
+      "type": "water",
+      "id": "van"
+    }
+  ],
+  "limits": [
+    "Explicit fixture starts; no claim of starting the route from the normal spawn.",
+    "Maximum-speed straight uses an isolated visible QA lane.",
+    "M5 Pro only; frame timings during parallel work are not an idle-machine benchmark."
+  ],
+  "surfaceAudit": [
+    {
+      "colliderHandle": 0,
+      "name": "island-terrain-surface-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "normalCount": 103969,
+      "minNormalY": 0.9064079375971937,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1e-323,
+      "name": "park-plaza-surface-0-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        45,
+        -0.10000000149011612,
+        -45
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2e-323,
+      "name": "world-surface-0-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -24,
+        4.75,
+        34
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.5e-323,
+      "name": "world-surface-1-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -24,
+        4.75,
+        29.399999618530273
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 3e-323,
+      "name": "world-surface-2-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -24,
+        4.75,
+        38.599998474121094
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 3.5e-323,
+      "name": "world-surface-3-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -11.521566390991211,
+        2.9030168056488037,
+        31.5082950592041
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9664804361291652,
+      "maxNormalY": 0.9664804361291652,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 4e-323,
+      "name": "world-surface-4-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -13.172870635986328,
+        2.9030168056488037,
+        27.21490478515625
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9664804361291652,
+      "maxNormalY": 0.9664804361291652,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 4.4e-323,
+      "name": "world-surface-5-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -9.87026309967041,
+        2.9030168056488037,
+        35.80168533325195
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9664804361291652,
+      "maxNormalY": 0.9664804361291652,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 5e-323,
+      "name": "world-surface-6-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        0.5,
+        1.0499999523162842,
+        26.5
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 5.4e-323,
+      "name": "world-surface-7-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -1.4034935235977173,
+        1.0499999523162842,
+        22.312314987182617
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 6e-323,
+      "name": "world-surface-8-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        2.403493642807007,
+        1.0499999523162842,
+        30.687685012817383
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 6.4e-323,
+      "name": "world-surface-9-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        11,
+        1.0499999523162842,
+        16.5
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 7e-323,
+      "name": "world-surface-10-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        7.1725687980651855,
+        1.0499999523162842,
+        13.948379516601562
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 7.4e-323,
+      "name": "world-surface-11-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        14.827431678771973,
+        1.0499999523162842,
+        19.051620483398438
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 8e-323,
+      "name": "world-surface-12-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        19,
+        1.0499999523162842,
+        -0.5
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 8.4e-323,
+      "name": "world-surface-13-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        14.613519668579102,
+        1.0499999523162842,
+        -1.8852043151855469
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 9e-323,
+      "name": "world-surface-14-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        23.3864803314209,
+        1.0499999523162842,
+        0.8852043151855469
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 9.4e-323,
+      "name": "world-surface-15-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        24,
+        1.0499999523162842,
+        -20
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1e-322,
+      "name": "world-surface-16-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        19.489328384399414,
+        1.0499999523162842,
+        -20.90213394165039
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.04e-322,
+      "name": "world-surface-17-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        28.510671615600586,
+        1.0499999523162842,
+        -19.09786605834961
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.1e-322,
+      "name": "world-surface-18-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        26,
+        1.0499999523162842,
+        -36
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.14e-322,
+      "name": "world-surface-19-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        21.399999618530273,
+        1.0499999523162842,
+        -36
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.2e-322,
+      "name": "world-surface-20-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        30.600000381469727,
+        1.0499999523162842,
+        -36
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.24e-322,
+      "name": "world-surface-21-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        34.5,
+        1.0499999523162842,
+        -43
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.3e-322,
+      "name": "world-surface-22-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        33.96253204345703,
+        1.0499999523162842,
+        -47.5684928894043
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.33e-322,
+      "name": "world-surface-23-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        35.03746795654297,
+        1.0499999523162842,
+        -38.4315071105957
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.4e-322,
+      "name": "world-surface-24-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        46,
+        1.0499999523162842,
+        -45
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.43e-322,
+      "name": "world-surface-25-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        44.545352935791016,
+        1.0499999523162842,
+        -49.36394500732422
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.5e-322,
+      "name": "world-surface-26-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        47.454647064208984,
+        1.0499999523162842,
+        -40.63605499267578
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.53e-322,
+      "name": "world-surface-27-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        20,
+        1.0449999570846558,
+        12
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.6e-322,
+      "name": "world-surface-28-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        45,
+        1.0449999570846558,
+        -45
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.63e-322,
+      "name": "world-surface-29-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        56.5,
+        0.9900000095367432,
+        -43
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.7e-322,
+      "name": "world-surface-30-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        66.5,
+        0.9900000095367432,
+        -31
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.73e-322,
+      "name": "world-surface-31-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        62.5,
+        0.9900000095367432,
+        -14.5
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.8e-322,
+      "name": "world-surface-32-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        57.7931022644043,
+        0.9900000095367432,
+        -45.982757568359375
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.83e-322,
+      "name": "world-surface-33-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        59,
+        0.9800000190734863,
+        -49
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.9e-322,
+      "name": "world-surface-34-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        68.28652954101562,
+        0.9900000095367432,
+        -38.968482971191406
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.93e-322,
+      "name": "world-surface-35-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        72,
+        0.9800000190734863,
+        -40
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2e-322,
+      "name": "world-surface-36-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        72.51289367675781,
+        0.9900000095367432,
+        -26.753582000732422
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.03e-322,
+      "name": "world-surface-37-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        77,
+        0.9800000190734863,
+        -28
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.08e-322,
+      "name": "world-surface-38-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        70.37309265136719,
+        0.9900000095367432,
+        -18.276649475097656
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.1e-322,
+      "name": "world-surface-39-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        73,
+        0.9800000190734863,
+        -16
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.17e-322,
+      "name": "world-surface-40-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        62.78934097290039,
+        0.9900000095367432,
+        -18.449237823486328
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.2e-322,
+      "name": "world-surface-41-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        61,
+        0.9800000190734863,
+        -20
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.27e-322,
+      "name": "world-surface-42-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        53,
+        0.9900000095367432,
+        -9.5
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.3e-322,
+      "name": "world-surface-43-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        50,
+        0.9800000190734863,
+        -12
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.37e-322,
+      "name": "world-surface-44-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        7.199999809265137,
+        1.034999966621399,
+        15
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.4e-322,
+      "name": "world-surface-45-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        9.199999809265137,
+        1.034999966621399,
+        5
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.47e-322,
+      "name": "world-surface-46-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        13.699999809265137,
+        1.034999966621399,
+        -7
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.5e-322,
+      "name": "world-surface-47-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        16.200000762939453,
+        1.034999966621399,
+        -19
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.57e-322,
+      "name": "world-surface-48-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        17.700000762939453,
+        1.034999966621399,
+        -31
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.6e-322,
+      "name": "world-surface-49-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        18.700000762939453,
+        1.034999966621399,
+        -43
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.67e-322,
+      "name": "world-surface-50-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -17,
+        1.0499999523162842,
+        -42
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.7e-322,
+      "name": "world-surface-51-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -54,
+        1.0499999523162842,
+        -13
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.77e-322,
+      "name": "world-surface-52-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -10,
+        1.0499999523162842,
+        43
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 8.94e-322,
+      "name": "camp-pad-surface-0-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -27,
+        4.849999904632568,
+        30
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 9e-322,
+      "name": "camp-pad-surface-1-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -31.39339828491211,
+        4.849999904632568,
+        40.60660171508789
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 9.04e-322,
+      "name": "camp-pad-surface-2-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -42,
+        4.849999904632568,
+        45
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 9.1e-322,
+      "name": "camp-pad-surface-3-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -52.60660171508789,
+        4.849999904632568,
+        40.60660171508789
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 9.14e-322,
+      "name": "camp-pad-surface-4-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -57,
+        4.849999904632568,
+        30
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 9.2e-322,
+      "name": "camp-pad-surface-5-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -52.60660171508789,
+        4.849999904632568,
+        19.39339828491211
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 9.24e-322,
+      "name": "camp-pad-surface-6-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -42,
+        4.849999904632568,
+        15
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 9.3e-322,
+      "name": "camp-pad-surface-7-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -31.39339828491211,
+        4.849999904632568,
+        19.39339828491211
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    }
+  ],
+  "inputFixtures": [
+    {
+      "t": 2.534,
+      "to": [
+        -29,
+        5.8,
+        36.5
+      ],
+      "reason": "offroad road start"
+    },
+    {
+      "t": 41.802,
+      "to": [
+        -29,
+        5.8,
+        36.5
+      ],
+      "reason": "coupe road start"
+    },
+    {
+      "t": 79.836,
+      "to": [
+        -29,
+        5.8,
+        36.5
+      ],
+      "reason": "van road start"
+    }
+  ],
+  "summary": {
+    "total": 15,
+    "passed": 15,
+    "failed": [],
+    "errors": []
+  },
+  "fullEvidence": "report-full.json.gz",
+  "cases": [
+    {
+      "name": "offroad-coast-route",
+      "reached": true,
+      "maxCrossTrack": 1.1864420521866856,
+      "minY": 2.157752513885498,
+      "passed": true,
+      "sampleCount": 528
+    },
+    {
+      "name": "offroad-maximum-straight",
+      "maxSpeed": 22.077943801879883,
+      "passed": true,
+      "sampleCount": 148
+    },
+    {
+      "name": "offroad-flip-recovery",
+      "before": {
+        "t": 38070.40000003576,
+        "active": "offroad",
+        "player": [
+          -29,
+          5.658827304840088,
+          36.5
+        ],
+        "vehicle": {
+          "id": "offroad",
+          "position": [
+            129.9940185546875,
+            5.83574104309082,
+            120
+          ],
+          "velocity": [
+            -2.9832888230885146e-06,
+            3.3398030154785374e-06,
+            3.525992497088737e-06
+          ],
+          "mass": 1400,
+          "wheelContacts": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "upsideDownSeconds": 2.7000001408159733,
+          "waterSeconds": 0
+        },
+        "yaw": -3.3578112192354082e-06,
+        "camera": [
+          138.47930184888224,
+          20.627882216904837,
+          131.3137089246048
+        ],
+        "contacts": [
+          {
+            "self": "offroad",
+            "other": {
+              "colliderHandle": 4.03179201884e-313,
+              "name": null,
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              3.6194149288348854e-05,
+              1,
+              -1.6800187552235002e-07
+            ],
+            "distance": -0.0012829601764678955,
+            "points": [
+              [
+                130.65682983398438,
+                4.999358654022217,
+                119.13999938964844
+              ],
+              [
+                128.70681762695312,
+                4.999393939971924,
+                119.13999938964844
+              ],
+              [
+                128.70681762695312,
+                4.999393939971924,
+                120.86000061035156
+              ],
+              [
+                130.65682983398438,
+                4.999358654022217,
+                120.86000061035156
+              ]
+            ]
+          }
+        ],
+        "canRecover": true
+      },
+      "after": {
+        "t": 38573.90000003576,
+        "active": "offroad",
+        "player": [
+          -29,
+          5.658827304840088,
+          36.5
+        ],
+        "vehicle": {
+          "id": "offroad",
+          "position": [
+            129.9915313720703,
+            5.973809242248535,
+            120
+          ],
+          "velocity": [
+            -0.038025446236133575,
+            -0.14063163101673126,
+            4.738689085570513e-08
+          ],
+          "mass": 1400,
+          "wheelContacts": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "upsideDownSeconds": 0,
+          "waterSeconds": 0
+        },
+        "yaw": -3.357964771556742e-06,
+        "camera": [
+          138.48032808661375,
+          21.06089120972899,
+          131.31527744120945
+        ],
+        "contacts": [],
+        "canRecover": false
+      },
+      "passed": true,
+      "sampleCount": 0
+    },
+    {
+      "name": "offroad-water-recovery",
+      "after": {
+        "t": 41077.90000003576,
+        "active": "offroad",
+        "player": [
+          -29,
+          5.658827304840088,
+          36.5
+        ],
+        "vehicle": {
+          "id": "offroad",
+          "position": [
+            9.840794563293457,
+            2.1806867122650146,
+            18.230770111083984
+          ],
+          "velocity": [
+            -0.005180163308978081,
+            0.012198385782539845,
+            0
+          ],
+          "mass": 1400,
+          "wheelContacts": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "upsideDownSeconds": 0,
+          "waterSeconds": 0
+        },
+        "yaw": 0,
+        "camera": [
+          30.154803945801262,
+          16.704625853183032,
+          37.42861621654197
+        ],
+        "contacts": [],
+        "canRecover": false
+      },
+      "passed": true,
+      "sampleCount": 0
+    },
+    {
+      "name": "offroad-exit-enter",
+      "exit": {
+        "t": 41482.30000001192,
+        "active": null,
+        "player": [
+          9.840534210205078,
+          2.9561877250671387,
+          20.131080627441406
+        ],
+        "vehicle": {
+          "id": "offroad",
+          "position": [
+            9.84186840057373,
+            2.195798635482788,
+            18.230770111083984
+          ],
+          "velocity": [
+            0.0021966767963021994,
+            -0.05354658141732216,
+            0
+          ],
+          "mass": 1400,
+          "wheelContacts": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "upsideDownSeconds": 0,
+          "waterSeconds": 0
+        },
+        "yaw": 0,
+        "camera": [
+          17.22166537329184,
+          13.344010129210682,
+          28.54038340542913
+        ],
+        "contacts": [
+          {
+            "self": "player",
+            "other": {
+              "colliderHandle": 1.126e-321,
+              "name": "greybox-roadblock",
+              "assetId": null,
+              "kind": "obstacle"
+            },
+            "normal": [
+              -0.00017297768499702215,
+              0.9999998211860657,
+              0.0005731146084144711
+            ],
+            "distance": -0.0017098784446716309,
+            "points": [
+              [
+                9.840457916259766,
+                2.1370840072631836,
+                20.13128662109375
+              ],
+              [
+                9.840457916259766,
+                2.1370840072631836,
+                20.13128662109375
+              ]
+            ]
+          }
+        ],
+        "canRecover": false
+      },
+      "enter": {
+        "t": 41786,
+        "active": "offroad",
+        "player": [
+          9.840343475341797,
+          2.955955982208252,
+          20.131643295288086
+        ],
+        "vehicle": {
+          "id": "offroad",
+          "position": [
+            9.842069625854492,
+            2.196524143218994,
+            18.230770111083984
+          ],
+          "velocity": [
+            -1.8490069123799913e-05,
+            -0.06079300493001938,
+            0
+          ],
+          "mass": 1400,
+          "wheelContacts": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "upsideDownSeconds": 0,
+          "waterSeconds": 0
+        },
+        "yaw": 0,
+        "camera": [
+          18.180365257951316,
+          16.561112225271096,
+          29.83431776211507
+        ],
+        "contacts": [],
+        "canRecover": false
+      },
+      "passed": true,
+      "sampleCount": 0
+    },
+    {
+      "name": "coupe-coast-route",
+      "reached": true,
+      "maxCrossTrack": 1.1535472869873047,
+      "minY": 2.104017496109009,
+      "passed": true,
+      "sampleCount": 521
+    },
+    {
+      "name": "coupe-maximum-straight",
+      "maxSpeed": 29.125524520874038,
+      "passed": true,
+      "sampleCount": 128
+    },
+    {
+      "name": "coupe-flip-recovery",
+      "before": {
+        "t": 76101.30000001192,
+        "active": "coupe",
+        "player": [
+          -29,
+          5.658827304840088,
+          36.5
+        ],
+        "vehicle": {
+          "id": "coupe",
+          "position": [
+            129.99891662597656,
+            5.649731159210205,
+            119.99917602539062
+          ],
+          "velocity": [
+            7.738824479019968e-07,
+            -1.4103636658546748e-06,
+            -1.3304033927852288e-06
+          ],
+          "mass": 1100,
+          "wheelContacts": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "upsideDownSeconds": 2.7000001408159733,
+          "waterSeconds": 0
+        },
+        "yaw": -5.723020494344089e-06,
+        "camera": [
+          138.48419979479897,
+          20.441873787343702,
+          131.31288479942262
+        ],
+        "contacts": [
+          {
+            "self": "coupe",
+            "other": {
+              "colliderHandle": 4.03179201884e-313,
+              "name": null,
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              -0.00016523984959349036,
+              0.9999997615814209,
+              -0.0008227942162193358
+            ],
+            "distance": -0.0012937639839947224,
+            "points": [
+              [
+                130.72982788085938,
+                4.999352931976318,
+                119.18217468261719
+              ],
+              [
+                128.57981872558594,
+                4.9993896484375,
+                119.18215942382812
+              ],
+              [
+                128.57981872558594,
+                4.999390125274658,
+                120.81615447998047
+              ],
+              [
+                130.7298126220703,
+                4.999353408813477,
+                120.81616973876953
+              ]
+            ]
+          }
+        ],
+        "canRecover": true
+      },
+      "after": {
+        "t": 76606.30000001192,
+        "active": "coupe",
+        "player": [
+          -29,
+          5.658827304840088,
+          36.5
+        ],
+        "vehicle": {
+          "id": "coupe",
+          "position": [
+            129.99594116210938,
+            5.957951545715332,
+            119.99917602539062
+          ],
+          "velocity": [
+            0.0009240732761099935,
+            0.2639468014240265,
+            1.7980697464281548e-07
+          ],
+          "mass": 1100,
+          "wheelContacts": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "upsideDownSeconds": 0,
+          "waterSeconds": 0
+        },
+        "yaw": -5.723392960859477e-06,
+        "camera": [
+          138.48448391989228,
+          20.850995539578328,
+          131.3140167258232
+        ],
+        "contacts": [],
+        "canRecover": false
+      },
+      "passed": true,
+      "sampleCount": 0
+    },
+    {
+      "name": "coupe-water-recovery",
+      "after": {
+        "t": 79112,
+        "active": "coupe",
+        "player": [
+          -29,
+          5.658827304840088,
+          36.5
+        ],
+        "vehicle": {
+          "id": "coupe",
+          "position": [
+            9.822176933288574,
+            2.13291597366333,
+            18.231721878051758
+          ],
+          "velocity": [
+            -0.03139154985547066,
+            0.011806877329945564,
+            0.004476439207792282
+          ],
+          "mass": 1100,
+          "wheelContacts": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "upsideDownSeconds": 0,
+          "waterSeconds": 0
+        },
+        "yaw": 0.0002040094072833471,
+        "camera": [
+          31.622805343931333,
+          16.582981393221292,
+          38.41367669882317
+        ],
+        "contacts": [
+          {
+            "self": "coupe",
+            "other": {
+              "colliderHandle": 1.126e-321,
+              "name": "greybox-roadblock",
+              "assetId": null,
+              "kind": "obstacle"
+            },
+            "normal": [
+              -0.007046371698379517,
+              0.999975323677063,
+              -0.00047093629837036133
+            ],
+            "distance": -0.00010016829037340358,
+            "points": [
+              [
+                11.261720657348633,
+                1.8374907970428467,
+                18.381961822509766
+              ]
+            ]
+          }
+        ],
+        "canRecover": false
+      },
+      "passed": true,
+      "sampleCount": 0
+    },
+    {
+      "name": "coupe-exit-enter",
+      "exit": {
+        "t": 79515.30000001192,
+        "active": null,
+        "player": [
+          9.822549819946289,
+          1.9589866399765015,
+          20.081722259521484
+        ],
+        "vehicle": {
+          "id": "coupe",
+          "position": [
+            9.825997352600098,
+            2.136855363845825,
+            18.232118606567383
+          ],
+          "velocity": [
+            0.0009742655092850327,
+            -0.0609973706305027,
+            0.00016928809054661542
+          ],
+          "mass": 1100,
+          "wheelContacts": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "upsideDownSeconds": 0,
+          "waterSeconds": 0
+        },
+        "yaw": 0.00019980527434565375,
+        "camera": [
+          17.415461169615995,
+          12.580014282243011,
+          28.645966561121583
+        ],
+        "contacts": [
+          {
+            "self": "player",
+            "other": {
+              "colliderHandle": 6.4e-323,
+              "name": "world-surface-9-top",
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              5.835493652739387e-07,
+              1,
+              3.890329480782384e-07
+            ],
+            "distance": -0.0009651482105255127,
+            "points": [
+              [
+                9.822549819946289,
+                1.1395173072814941,
+                20.081722259521484
+              ],
+              [
+                9.822549819946289,
+                1.1395173072814941,
+                20.081722259521484
+              ]
+            ]
+          }
+        ],
+        "canRecover": false
+      },
+      "enter": {
+        "t": 79818.5,
+        "active": "coupe",
+        "player": [
+          9.822549819946289,
+          1.9589866399765015,
+          20.081722259521484
+        ],
+        "vehicle": {
+          "id": "coupe",
+          "position": [
+            9.826491355895996,
+            2.1366937160491943,
+            18.232166290283203
+          ],
+          "velocity": [
+            0.0024875986855477095,
+            -0.05921615660190582,
+            -6.889077485539019e-05
+          ],
+          "mass": 1100,
+          "wheelContacts": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "upsideDownSeconds": 0,
+          "waterSeconds": 0
+        },
+        "yaw": 0.00023491867318804017,
+        "camera": [
+          18.19808886122479,
+          16.169212185056274,
+          29.84223617255472
+        ],
+        "contacts": [
+          {
+            "self": "coupe",
+            "other": {
+              "colliderHandle": 1.126e-321,
+              "name": "greybox-roadblock",
+              "assetId": null,
+              "kind": "obstacle"
+            },
+            "normal": [
+              -0.0031588971614837646,
+              0.9999951124191284,
+              0.0001316070556640625
+            ],
+            "distance": -0.0009205196402035654,
+            "points": [
+              [
+                11.264272689819336,
+                1.8368024826049805,
+                18.38203239440918
+              ],
+              [
+                11.964141845703125,
+                1.8385121822357178,
+                17.667762756347656
+              ],
+              [
+                11.977518081665039,
+                1.8384172916412354,
+                19.080902099609375
+              ],
+              [
+                11.977191925048828,
+                1.8385417461395264,
+                17.68054962158203
+              ]
+            ]
+          }
+        ],
+        "canRecover": false
+      },
+      "passed": true,
+      "sampleCount": 0
+    },
+    {
+      "name": "van-coast-route",
+      "reached": true,
+      "maxCrossTrack": 2.694573940646248,
+      "minY": 2.414708137512207,
+      "passed": true,
+      "sampleCount": 2007
+    },
+    {
+      "name": "van-maximum-straight",
+      "maxSpeed": 18.059549332318092,
+      "passed": true,
+      "sampleCount": 175
+    },
+    {
+      "name": "van-flip-recovery",
+      "before": {
+        "t": 179532.10000002384,
+        "active": "van",
+        "player": [
+          -29,
+          5.658827304840088,
+          36.5
+        ],
+        "vehicle": {
+          "id": "van",
+          "position": [
+            129.9932861328125,
+            6.176760673522949,
+            119.99983978271484
+          ],
+          "velocity": [
+            -4.2922933971567545e-06,
+            1.4806394119659672e-06,
+            3.8039538594603073e-06
+          ],
+          "mass": 2100,
+          "wheelContacts": [
+            false,
+            false,
+            false,
+            false
+          ],
+          "upsideDownSeconds": 2.7000001408159733,
+          "waterSeconds": 0
+        },
+        "yaw": -1.478479589679331e-06,
+        "camera": [
+          138.47856933420013,
+          20.968901163888546,
+          131.3135487230484
+        ],
+        "contacts": [
+          {
+            "self": "van",
+            "other": {
+              "colliderHandle": 4.03179201884e-313,
+              "name": null,
+              "assetId": null,
+              "kind": "surface"
+            },
+            "normal": [
+              2.8225751520949416e-05,
+              1,
+              -1.3505623996934446e-07
+            ],
+            "distance": -0.0012613534927368164,
+            "points": [
+              [
+                130.758056640625,
+                4.9993696212768555,
+                119.05400085449219
+              ],
+              [
+                128.508056640625,
+                4.999401092529297,
+                119.05400085449219
+              ],
+              [
+                128.508056640625,
+                4.999401092529297,
+                120.94599914550781
+              ],
+              [
+                130.758056640625,
+                4.9993696212768555,
+                120.94599914550781
+              ]
+            ]
+          }
+        ],
+        "canRecover": true
+      },
+      "after": {
+        "t": 180034.30000001192,
+        "active": "van",
+        "player": [
+          -29,
+          5.658827304840088,
+          36.5
+        ],
+        "vehicle": {
+          "id": "van",
+          "position": [
+            129.99302673339844,
+            6.272109508514404,
+            119.99983978271484
+          ],
+          "velocity": [
+            -0.023880477994680405,
+            -1.4573687314987183,
+            -4.0525950595338145e-08
+          ],
+          "mass": 2100,
+          "wheelContacts": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "upsideDownSeconds": 0,
+          "waterSeconds": 0
+        },
+        "yaw": -1.4784495404384726e-06,
+        "camera": [
+          138.47896002059227,
+          21.557728088923458,
+          131.3140754306706
+        ],
+        "contacts": [],
+        "canRecover": false
+      },
+      "passed": true,
+      "sampleCount": 0
+    },
+    {
+      "name": "van-water-recovery",
+      "after": {
+        "t": 182537.40000003576,
+        "active": "van",
+        "player": [
+          -29,
+          5.658827304840088,
+          36.5
+        ],
+        "vehicle": {
+          "id": "van",
+          "position": [
+            9.841813087463379,
+            2.443974018096924,
+            18.230770111083984
+          ],
+          "velocity": [
+            0.0005054644425399601,
+            -0.026815516874194145,
+            3.993883979092061e-07
+          ],
+          "mass": 2100,
+          "wheelContacts": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "upsideDownSeconds": 0,
+          "waterSeconds": 0
+        },
+        "yaw": -9.232004538117854e-07,
+        "camera": [
+          32.7827717356711,
+          16.855716529856927,
+          39.18030715172227
+        ],
+        "contacts": [
+          {
+            "self": "van",
+            "other": {
+              "colliderHandle": 7.66e-322,
+              "name": "world-solid-45",
+              "assetId": null,
+              "kind": "solid"
+            },
+            "normal": [
+              0.9999879002571106,
+              0.004922057501971722,
+              3.83257372504886e-07
+            ],
+            "distance": -5.143689122633077e-06,
+            "points": [
+              [
+                7.589992523193359,
+                2.8009583950042725,
+                18.450000762939453
+              ],
+              [
+                7.589993476867676,
+                2.8009583950042725,
+                17.130767822265625
+              ]
+            ]
+          }
+        ],
+        "canRecover": false
+      },
+      "passed": true,
+      "sampleCount": 0
+    },
+    {
+      "name": "van-exit-enter",
+      "exit": {
+        "t": 182942.10000002384,
+        "active": null,
+        "player": [
+          9.8416166305542,
+          2.9558465480804443,
+          20.231342315673828
+        ],
+        "vehicle": {
+          "id": "van",
+          "position": [
+            9.841846466064453,
+            2.453951358795166,
+            18.230770111083984
+          ],
+          "velocity": [
+            0.000261519307969138,
+            -0.052972160279750824,
+            -8.991102049549227e-07
+          ],
+          "mass": 2100,
+          "wheelContacts": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "upsideDownSeconds": 0,
+          "waterSeconds": 0
+        },
+        "yaw": -8.182119036157914e-07,
+        "camera": [
+          17.42928566021473,
+          13.39991946692283,
+          28.754925071784555
+        ],
+        "contacts": [
+          {
+            "self": "player",
+            "other": {
+              "colliderHandle": 1.126e-321,
+              "name": "greybox-roadblock",
+              "assetId": null,
+              "kind": "obstacle"
+            },
+            "normal": [
+              -0.00019289438205305487,
+              0.9999994039535522,
+              0.001101019443012774
+            ],
+            "distance": -0.0018416643142700195,
+            "points": [
+              [
+                9.841567993164062,
+                2.136815071105957,
+                20.231525421142578
+              ],
+              [
+                9.841567993164062,
+                2.136815071105957,
+                20.231525421142578
+              ]
+            ]
+          }
+        ],
+        "canRecover": false
+      },
+      "enter": {
+        "t": 183245.40000003576,
+        "active": "van",
+        "player": [
+          9.841412544250488,
+          2.955571174621582,
+          20.232406616210938
+        ],
+        "vehicle": {
+          "id": "van",
+          "position": [
+            9.841866493225098,
+            2.454941987991333,
+            18.230770111083984
+          ],
+          "velocity": [
+            0.00032462022500112653,
+            -0.060069482773542404,
+            -9.278554671254824e-07
+          ],
+          "mass": 2100,
+          "wheelContacts": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "upsideDownSeconds": 0,
+          "waterSeconds": 0
+        },
+        "yaw": -4.5065457507568e-07,
+        "camera": [
+          18.213968370475456,
+          16.724450759992262,
+          29.89349409350288
+        ],
+        "contacts": [
+          {
+            "self": "van",
+            "other": {
+              "colliderHandle": 7.66e-322,
+              "name": "world-solid-45",
+              "assetId": null,
+              "kind": "solid"
+            },
+            "normal": [
+              0.9999858736991882,
+              0.005313308443874121,
+              2.82999536693751e-07
+            ],
+            "distance": -1.5805491102582891e-06,
+            "points": [
+              [
+                7.589999198913574,
+                2.799999952316284,
+                18.450000762939453
+              ],
+              [
+                7.589999198913574,
+                2.8000001907348633,
+                17.130769729614258
+              ]
+            ]
+          }
+        ],
+        "canRecover": false
+      },
+      "passed": true,
+      "sampleCount": 0
+    }
+  ],
+  "checks": []
+}

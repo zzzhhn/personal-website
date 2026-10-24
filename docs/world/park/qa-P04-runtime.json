@@ -1,0 +1,297 @@
+{
+ "pass": true,
+ "contract": {
+  "source": "WorldStreetAssets.lampGeometry",
+  "arm": 0,
+  "height": 2.6,
+  "nearTriangles": 766,
+  "farTriangles": 146,
+  "hullCount": 4,
+  "totalMass": 45
+ },
+ "massBefore": {
+  "id": "lamp-1-l-0",
+  "home": [
+   67.82409552577572,
+   1.14,
+   -34.93885453580495
+  ],
+  "position": [
+   67.8240966796875,
+   1.139695167541504,
+   -34.93885040283203
+  ],
+  "knocked": false,
+  "fade": 1,
+  "sleeping": true,
+  "mass": 45,
+  "knockedElapsed": null,
+  "resetPhaseDone": false
+ },
+ "boundary": [
+  {
+   "height": 0.03,
+   "probe": {
+    "radius": 0.025,
+    "toi": 0.6847746968269348,
+    "point": [
+     67.64082336425781,
+     1.1700217723846436,
+     -34.887939453125
+    ],
+    "normal": [
+     -0.9635503232053456,
+     -0.0001825673410458487,
+     0.26752708520828306
+    ],
+    "visualBoundaryGap": 2.1424863184682508e-06
+   }
+  },
+  {
+   "height": 1.4,
+   "probe": {
+    "radius": 0.025,
+    "toi": 0.7950158715248108,
+    "point": [
+     67.74726867675781,
+     2.540327548980713,
+     -34.91655731201172
+    ],
+    "normal": [
+     -0.9706859097045757,
+     -0.012870683473287339,
+     0.24000668784000742
+    ],
+    "visualBoundaryGap": 0.011271258608222867
+   }
+  },
+  {
+   "height": 2.66,
+   "probe": {
+    "radius": 0.025,
+    "toi": 0.6704544425010681,
+    "point": [
+     67.62564849853516,
+     3.7905876636505127,
+     -34.881927490234375
+    ],
+    "normal": [
+     -0.9083806359044169,
+     0.37650994318960956,
+     0.18189250395011958
+    ],
+    "visualBoundaryGap": 2.5739908392496957e-06
+   }
+  }
+ ],
+ "playerImpact": {
+  "id": "lamp-1-l-0",
+  "home": [
+   67.82409552577572,
+   1.14,
+   -34.93885453580495
+  ],
+  "position": [
+   73.45446014404297,
+   -4.9194159507751465,
+   -36.07248306274414
+  ],
+  "knocked": true,
+  "fade": 1,
+  "sleeping": false,
+  "mass": 45,
+  "knockedElapsed": 1.584499999999999,
+  "resetPhaseDone": false
+ },
+ "playerReset": {
+  "id": "lamp-1-l-0",
+  "home": [
+   67.82409552577572,
+   1.14,
+   -34.93885453580495
+  ],
+  "position": [
+   67.82405853271484,
+   1.1389344930648804,
+   -34.9388313293457
+  ],
+  "knocked": false,
+  "fade": 1,
+  "sleeping": true,
+  "mass": 45,
+  "knockedElapsed": null,
+  "resetPhaseDone": false
+ },
+ "entered": "van",
+ "car": {
+  "maxY": 2.4878780841827393,
+  "maxUpward": 0.053720373660326004
+ },
+ "carImpact": {
+  "id": "lamp-1-l-0",
+  "home": [
+   67.82409552577572,
+   1.14,
+   -34.93885453580495
+  ],
+  "position": [
+   69.2095947265625,
+   0.3324795961380005,
+   -35.297298431396484
+  ],
+  "knocked": true,
+  "fade": 1,
+  "sleeping": false,
+  "mass": 45,
+  "knockedElapsed": 0.39859999996423734,
+  "resetPhaseDone": false
+ },
+ "carReset": {
+  "id": "lamp-1-l-0",
+  "home": [
+   67.82409552577572,
+   1.14,
+   -34.93885453580495
+  ],
+  "position": [
+   67.82405853271484,
+   1.1389344930648804,
+   -34.9388313293457
+  ],
+  "knocked": false,
+  "fade": 1,
+  "sleeping": true,
+  "mass": 45,
+  "knockedElapsed": null,
+  "resetPhaseDone": false
+ },
+ "stages": [
+  {
+   "label": "player",
+   "seconds": 30.233,
+   "snapshot": {
+    "id": "lamp-1-l-0",
+    "home": [
+     67.82409552577572,
+     1.14,
+     -34.93885453580495
+    ],
+    "position": [
+     67.82405853271484,
+     1.1389344930648804,
+     -34.9388313293457
+    ],
+    "knocked": false,
+    "fade": 1,
+    "sleeping": true,
+    "mass": 45,
+    "knockedElapsed": null,
+    "resetPhaseDone": false
+   }
+  },
+  {
+   "label": "van",
+   "seconds": 31.493,
+   "snapshot": {
+    "id": "lamp-1-l-0",
+    "home": [
+     67.82409552577572,
+     1.14,
+     -34.93885453580495
+    ],
+    "position": [
+     67.82405853271484,
+     1.1389344930648804,
+     -34.9388313293457
+    ],
+    "knocked": false,
+    "fade": 1,
+    "sleeping": true,
+    "mass": 45,
+    "knockedElapsed": null,
+    "resetPhaseDone": false
+   }
+  }
+ ],
+ "instancedLod": {
+  "id": "lamp",
+  "nearCount": 9,
+  "farCount": 0,
+  "nearTrianglesEach": 766,
+  "farTrianglesEach": 146
+ },
+ "errors": [],
+ "fatal": null,
+ "rawEvidence": "/Users/bobby/Desktop/3D-personal-world/evidence/park-integration/P04-verified/P04-bot.json",
+ "hullColliderCount": 36,
+ "playerRealKeyAttempts": 1,
+ "fixtureLog": [
+  {
+   "type": "vehicle",
+   "id": "van",
+   "position": [
+    65.12624537881189,
+    2.4,
+    -34.18945171720389
+   ],
+   "yaw": 0.27094685033842053
+  },
+  {
+   "type": "vehicle",
+   "id": "van",
+   "position": [
+    45.992454528808594,
+    2.464979648590088,
+    -45
+   ],
+   "yaw": 0,
+   "reason": "clear P04 for reset"
+  },
+  {
+   "t": 0.005,
+   "to": [
+    65.82211942465572,
+    2.3,
+    -33.55245932139298
+   ],
+   "reason": "P04 close inspection"
+  },
+  {
+   "t": 7.756,
+   "to": [
+    66.2824680242796,
+    2.3,
+    -34.51062022077428
+   ],
+   "reason": "P04 player impact start 0"
+  },
+  {
+   "t": 10.05,
+   "to": [
+    65.60800433362685,
+    2.3,
+    -34.32327364909693
+   ],
+   "reason": "clear P04 for unassisted reset"
+  },
+  {
+   "t": 40.595,
+   "to": [
+    65.60800433362685,
+    2.3,
+    -32.45511947986999
+   ],
+   "reason": "stand beside van for P04 impact"
+  },
+  {
+   "t": 43.253,
+   "to": [
+    65.60800433362685,
+    2.3,
+    -34.32327364909693
+   ],
+   "reason": "clear P04 after van impact"
+  }
+ ],
+ "validationNote": "Real keyboard movement and E enter; fixtures wait for player ground contact. Both reset tests retain the real 30s timer and clear the contact area first."
+}

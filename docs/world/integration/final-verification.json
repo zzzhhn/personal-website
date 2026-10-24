@@ -1,0 +1,374 @@
+{
+  "date": "2026-10-24",
+  "runtimeRevision": "fb6c613ef6ab096391d9f73a5ec7039ba1958340",
+  "worldSourcesSha256": "ed8fc01e49676fad9c40ce7c231c014cf38ab7c67a19d2100bb887a08eca8e14",
+  "scope": "all 80 existing IDs, L1/procedural, playable candidate; not final art/motion/user acceptance",
+  "inventory": {
+    "assetCount": 80,
+    "markdownCount": 80,
+    "checkedHashes": [
+      "G16",
+      "G17",
+      "G18",
+      "G19",
+      "G20",
+      "G21",
+      "G22",
+      "G23",
+      "G24",
+      "G25",
+      "G26",
+      "G27",
+      "G28",
+      "C03",
+      "C04",
+      "C05",
+      "C06",
+      "C07",
+      "C08",
+      "C09",
+      "C10",
+      "C11",
+      "C12",
+      "C13",
+      "C14",
+      "C15",
+      "C16",
+      "T01",
+      "T02",
+      "T03",
+      "T04",
+      "T05",
+      "T06",
+      "T07",
+      "T09",
+      "T10",
+      "T11",
+      "T12",
+      "P05",
+      "P06",
+      "P07",
+      "P08",
+      "P09",
+      "P10",
+      "P11",
+      "P12",
+      "P13",
+      "P14",
+      "P15",
+      "P16",
+      "P17",
+      "P18",
+      "P19",
+      "F04"
+    ],
+    "failures": [],
+    "passed": true
+  },
+  "astro": {
+    "files": 253,
+    "errors": 0,
+    "warnings": 0,
+    "log": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/astro-publish.log"
+  },
+  "build": {
+    "passed": true,
+    "log": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/build-publish.log"
+  },
+  "routes": {
+    "cases": 21,
+    "passed": 21,
+    "errors": [],
+    "source": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-route/report.json",
+    "subsequentChanges": "visual LOD/culling and seam repair only; paving collider arrays retained verbatim, seam bridge walk 5/5"
+  },
+  "tour": {
+    "source": {
+      "head": "44a339e4dd6e9297b6dd03acdbe023a9e918f246",
+      "dirtyWorldSources": "",
+      "worldSourcesSha256": "c6623c7ef1aabba905fdb9cc695bf3e4802ba09e59ff49242941b5061164af25",
+      "files": 81
+    },
+    "summary": {
+      "normalEntry": true,
+      "routeReachedPark": true,
+      "allWalkingLegsReached": true,
+      "cardOpenedAndClosed": true,
+      "nightSelected": true,
+      "runJumpInputSent": true,
+      "legsReached": 136,
+      "legsTotal": 136,
+      "eightFrames": true,
+      "allFrameDestinationsReached": true,
+      "videoAtLeast3Minutes": true,
+      "sourceUnchanged": true,
+      "errorCounts": {
+        "page": 0,
+        "console": 1,
+        "http": 1,
+        "network": 0
+      },
+      "fatal": null
+    },
+    "video": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/final-tour.webm",
+    "encodedSeconds": 187.058,
+    "fixtures": 0,
+    "qa": false,
+    "note": "Captured at 44a339e; later visual refinements separately verified, not a second full tour"
+  },
+  "budget": {
+    "gameplayViews": 22,
+    "gameplayPeak": {
+      "calls": 235,
+      "triangles": 453093,
+      "callsAt": "spawn",
+      "trianglesAt": "spawn"
+    },
+    "transitions": [
+      {
+        "label": "dusk-to-night",
+        "series": {
+          "frames": 150,
+          "calls": {
+            "max": 232,
+            "p50": 232
+          },
+          "triangles": {
+            "max": 467614,
+            "p50": 467614
+          }
+        }
+      },
+      {
+        "label": "high-to-balanced",
+        "series": {
+          "frames": 150,
+          "calls": {
+            "max": 236,
+            "p50": 232
+          },
+          "triangles": {
+            "max": 482666,
+            "p50": 457834
+          }
+        }
+      },
+      {
+        "label": "zoom-through-LOD",
+        "series": {
+          "frames": 150,
+          "calls": {
+            "max": 240,
+            "p50": 232
+          },
+          "triangles": {
+            "max": 457982,
+            "p50": 456973
+          }
+        }
+      },
+      {
+        "label": "balanced-to-high",
+        "series": {
+          "frames": 150,
+          "calls": {
+            "max": 236,
+            "p50": 232
+          },
+          "triangles": {
+            "max": 492281,
+            "p50": 467464
+          }
+        }
+      },
+      {
+        "label": "night-to-dusk",
+        "series": {
+          "frames": 150,
+          "calls": {
+            "max": 232,
+            "p50": 232
+          },
+          "triangles": {
+            "max": 467464,
+            "p50": 467464
+          }
+        }
+      }
+    ],
+    "transitionPeak": {
+      "calls": 240,
+      "triangles": 492281
+    },
+    "hardLimit": {
+      "calls": 300,
+      "triangles": 500000
+    },
+    "allFramesMatchGlInfo": true,
+    "errors": [],
+    "pointLightsMax": 6,
+    "source": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/publish-budget/budget-report.json",
+    "zoneObservationPeaks": {
+      "sky-sea": {
+        "calls": 3,
+        "triangles": 42460,
+        "worstView": "shore-sea",
+        "limit": {
+          "calls": 3,
+          "triangles": 40000
+        }
+      },
+      "terrain": {
+        "calls": 8,
+        "triangles": 73896,
+        "worstView": "spawn",
+        "limit": {
+          "calls": 8,
+          "triangles": 80000
+        }
+      },
+      "grass": {
+        "calls": 2,
+        "triangles": 30440,
+        "worstView": "north-hill",
+        "limit": {
+          "calls": 2,
+          "triangles": 40000
+        }
+      },
+      "camp": {
+        "calls": 91,
+        "triangles": 104441,
+        "worstView": "camp",
+        "limit": {
+          "calls": 40,
+          "triangles": 60000
+        }
+      },
+      "town": {
+        "calls": 78,
+        "triangles": 61658,
+        "worstView": "town-overview",
+        "limit": {
+          "calls": 45,
+          "triangles": 80000
+        }
+      },
+      "park": {
+        "calls": 46,
+        "triangles": 62121,
+        "worstView": "park",
+        "limit": {
+          "calls": 40,
+          "triangles": 55000
+        }
+      },
+      "street": {
+        "calls": 14,
+        "triangles": 24296,
+        "worstView": "avenue",
+        "limit": {
+          "calls": 30,
+          "triangles": 30000
+        }
+      },
+      "vehicles": {
+        "calls": 6,
+        "triangles": 24118,
+        "worstView": "drive",
+        "limit": {
+          "calls": 18,
+          "triangles": 30000
+        }
+      },
+      "character": {
+        "calls": 4,
+        "triangles": 3106,
+        "worstView": "spawn",
+        "limit": {
+          "calls": 6,
+          "triangles": 12000
+        }
+      },
+      "greybox": {
+        "calls": 1,
+        "triangles": 0,
+        "worstView": "spawn",
+        "limit": {
+          "calls": 0,
+          "triangles": 0
+        }
+      },
+      "other": {
+        "calls": 0,
+        "triangles": 0,
+        "worstView": "spawn",
+        "limit": {
+          "calls": 0,
+          "triangles": 0
+        }
+      },
+      "shadow": {
+        "calls": 87,
+        "triangles": 194693,
+        "worstView": "camp",
+        "limit": {
+          "calls": 85,
+          "triangles": 68000
+        }
+      }
+    },
+    "zoneNote": "Legacy provisional targets remain in probe for history; these independent observation peaks are not additive allocations or extra acceptance gates."
+  },
+  "load": {
+    "conditions": {
+      "name": "100mbps",
+      "offline": false,
+      "latency": 0,
+      "downloadThroughput": 12500000,
+      "uploadThroughput": 12500000,
+      "connectionType": "ethernet"
+    },
+    "tReadyMs": 4156,
+    "firstObservedMovementMs": 5067,
+    "movementMetres": 2.882809743084472,
+    "wireAtReadyBytes": 10047896,
+    "wireAtSettleBytes": 10294472,
+    "drawingBuffer": {
+      "pixels": [
+        1920,
+        1080
+      ],
+      "cssPixels": [
+        1920,
+        1080
+      ],
+      "devicePixelRatio": 1,
+      "source": "WebGL2 drawingBufferWidth/Height"
+    },
+    "budgetPassed": true,
+    "httpErrors": [
+      {
+        "at": 4171.583984375,
+        "status": 404,
+        "url": "http://127.0.0.1:53967/api/events"
+      }
+    ],
+    "canceledNetworkRequests": 18,
+    "allNetworkErrorsCanceled": true,
+    "source": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-load/load-report.json",
+    "note": "Uncompressed local production build, 100 Mbps CDP. Static server has no /api/events. Cancellations are retained; do not claim zero network errors."
+  },
+  "vehicleShadowLOD": {
+    "cases": 3,
+    "passed": true,
+    "samples": 18,
+    "bodyRestored": true,
+    "source": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/vehicle-shadow-lod/lod-check.json"
+  },
+  "openItems": [
+    "Gait/start/stop and slope A3 remain failed in historical reports; seated local A3 is not overall motion acceptance. Motion follow-up 1310201 is isolated and not merged.",
+    "Some plaza plank/stone edges and dark town/bridge readability remain art polish items after blind review.",
+    "G27 ideal tyre diagnostic residual 2.11 cm; not an all-object/all-speed no-penetration guarantee. M1 Air/Safari/physical gamepad and Bobby acceptance unverified."
+  ]
+}

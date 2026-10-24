@@ -1,0 +1,151 @@
+{
+  "base": "http://localhost:4321",
+  "capturedAt": "2026-10-21T03:02:34.164Z",
+  "report": [
+    {
+      "shot": "overview",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "stats": {
+        "calls": 101,
+        "triangles": 8882,
+        "geometries": 65,
+        "textures": 3,
+        "camera": [
+          115,
+          132,
+          140
+        ]
+      }
+    },
+    {
+      "shot": "camp",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "stats": {
+        "calls": 65,
+        "triangles": 8078,
+        "geometries": 51,
+        "textures": 3,
+        "camera": [
+          -11,
+          33,
+          67
+        ]
+      }
+    },
+    {
+      "shot": "camp-night",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "stats": {
+        "calls": 64,
+        "triangles": 7430,
+        "geometries": 50,
+        "textures": 3,
+        "camera": [
+          -16,
+          24,
+          62
+        ]
+      }
+    },
+    {
+      "shot": "town",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "stats": {
+        "calls": 82,
+        "triangles": 8194,
+        "geometries": 56,
+        "textures": 3,
+        "camera": [
+          58,
+          39,
+          43
+        ]
+      }
+    },
+    {
+      "shot": "town-night",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "stats": {
+        "calls": 69,
+        "triangles": 7878,
+        "geometries": 50,
+        "textures": 3,
+        "camera": [
+          53,
+          29,
+          26
+        ]
+      }
+    },
+    {
+      "shot": "bridge",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "stats": {
+        "calls": 63,
+        "triangles": 7606,
+        "geometries": 48,
+        "textures": 3,
+        "camera": [
+          66,
+          31,
+          -6
+        ]
+      }
+    },
+    {
+      "shot": "park",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "stats": {
+        "calls": 65,
+        "triangles": 7630,
+        "geometries": 48,
+        "textures": 3,
+        "camera": [
+          98,
+          40,
+          13
+        ]
+      }
+    },
+    {
+      "shot": "park-night",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "stats": {
+        "calls": 64,
+        "triangles": 7618,
+        "geometries": 48,
+        "textures": 3,
+        "camera": [
+          89,
+          25,
+          0
+        ]
+      }
+    }
+  ],
+  "errors": []
+}

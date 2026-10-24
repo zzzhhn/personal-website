@@ -1,0 +1,36 @@
+# 新账号接手入口 · 2026-10-25
+
+这是当前交接入口。`handoff.md` 保留的是2026-10-21灰盒历史，不能据它重新开工或撤回已授权的整岛制作。
+
+## 从哪里继续
+
+- 应用仓库：https://github.com/zzzhhn/personal-website ，开发分支 **codex/world-greybox**，继续更新 [PR #1](https://github.com/zzzhhn/personal-website/pull/1)，不要从main继续。
+- 私有交接资料：https://github.com/zzzhhn/bobby-3d-world-handoff 。包含冻结规格只读快照、已锁参考、Bobby口味文件、四个建模skills和关键压缩调试证据；应用代码通过website子模块固定到交接提交，不另分叉一套网站。
+- 运行时代码基线e2db366，整岛发布及动作修复基线3a6d7c2；49a34f2只追加山路护栏验证。之后本轮交接改动也是文档，不改变运行时。
+- 本机：http://127.0.0.1:4322/world/ 。已知固定预览：https://da6eed14.personal-website-aew.pages.dev/world/ 。自动构建成功，线上实机/发布资源哈希/API未核验。
+
+## 先读这些
+
+1. 私有资料的README、CURRENT-STATE和TASTE-bobby，然后读冻结快照最新编号条款。原始总指令/旧会话说明只作为历史，不能用旧camp-only、固定镜头或直接L2限制覆盖当前授权。
+2. [整岛交接](integration/FINAL.md)、[动作追加](integration/motion-followup-20261024.md)、[独立视觉检查](integration/visual-review-20261024.md)。机器通过、看图判断、Bobby接受分别成立。
+3. [起步候选与可达冲突](character/start-run-review.md)、[同步支撑诊断](character/slope-support-diagnostic.md)、[连续地面支撑方案](character/slope-followup/review-request.md)。
+4. [设计调研与rea记录](research/design-research.md)、[动作资源与许可](character/research-motion.md)、[第三方登记](THIRD_PARTY.md)。
+
+## 已经有什么
+
+80个清单ID已实现接入；六楼映射现站EXPERIENCES，六展品、四课程翻页、About卡片、座位、三辆L1车、街物与两档光照均已接入。原整岛路线21/21、普通入口136/136段/约187秒录像、全帧峰值240calls/492281三角、100Mbps下首次真实移动5.067s，都是对应原测量版本的证据，不能冒称新版本全量重测。
+
+最新追加修复关闭了原坡路线超限下陷；202帧受影响最终A6通过。山路木梁的旧夹具未到目标，已用现有bot补齐明确目标人车接触和复位，见 [补测](street/hillbeam-direct-20261025.md)。所有生产GLB及原G24的15段Action未因这些追加试验而替换。
+
+## 实际未完成
+
+- 完整起步/其它过渡仍滑，坡地仍浮空。完整motion-bot1178帧无页面异常，但Idle→Run183.8mm、Land→Idle105.5mm，动作门没有通过。Run-only局部不能覆盖。
+- 严格CMU起步候选没有挂载；两个更小的贴坡速度方案无效并撤回。下一层时序/加速协调与连续地面支撑方案需要冻结文档所有者裁决，不能自行加第三IK、拉长腿、扩大5cm骨盆额度、改接触曲线或放宽指标。
+- 2026-10-25已在WorkBuddy的00-website-main切换备用Claude-Opus-5.5并实际发送两项审阅包。请求入会话后约11秒以“未知错误暂无响应”结束，**未收到裁决**。同界面仍提示全局额度用尽；不能断言服务端具体错误原因。此前仅凭额度提示和空输入框禁用推断“无法发送”的说法已纠正。
+- 视觉残留包括局部木/砖缝、城区暗部、水面反射形状及材质尺度。G27理想轮胎诊断仍有2.11cm残余，不能称所有速度零穿入。完整坡矩阵、M1 Air、Safari、实物手柄及Bobby接受未验证；当前机器是M5 Pro。
+
+## 接手边界与方法
+
+当前授权是整岛现有清单的L1/程序化制作、交互完善和动作升级。不开Hy3D，不推应用main、不合并PR、不手动部署、不改现站其它页面。技术问题直接与审阅方协作，不逐项问Bobby；只有新增授权或冻结决定变更才进入对应门。
+
+小改只查受影响内容，不重跑全量库存/全岛路线/预算。新动作须查最终惯性化+IK后姿态；保留所有失败样本。代码和模型已在应用仓库；大体积历史录像和完整实验目录仍在旧本机evidence/，私有包只携带关键复现证据并标原始哈希。换账号不等于数据集许可或原失败自动通过。

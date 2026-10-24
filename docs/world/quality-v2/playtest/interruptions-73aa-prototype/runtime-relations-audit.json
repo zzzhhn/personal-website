@@ -1,0 +1,1878 @@
+{
+  "input": "/Users/bobby/Desktop/3D-personal-world/motion-73aa-interruptions/report.json",
+  "inputSha256": "c06a2221df2812876a87c6bce97ecd120c7981fa57a8d1d5ecb4b70775edf1e2",
+  "blender": "4.2.23 LTS",
+  "relationsSource": {
+    "path": "/Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/guide/qa_relations.py",
+    "sha256": "6d9574f6b78880a57fc3595d8121472445ed07429fc458f0d37100b6906b1ea1"
+  },
+  "relationsDeclared": [
+    {
+      "id": "helmet/collar",
+      "guest": "body",
+      "guest_regions": [
+        "neck"
+      ],
+      "host": "helmet",
+      "host_regions": null,
+      "min_burial_m": 0.01,
+      "min_exposed_m": 0.01,
+      "note": "collar top tucked inside the helmet opening"
+    },
+    {
+      "id": "boot.R/trouser",
+      "guest": "body",
+      "guest_regions": [
+        "shin.R"
+      ],
+      "host": "boot.R",
+      "host_regions": null,
+      "min_burial_m": 0.01,
+      "min_exposed_m": 0.05,
+      "note": "trouser end inside the boot shaft"
+    },
+    {
+      "id": "boot.L/trouser",
+      "guest": "body",
+      "guest_regions": [
+        "shin.L"
+      ],
+      "host": "boot.L",
+      "host_regions": null,
+      "min_burial_m": 0.01,
+      "min_exposed_m": 0.05,
+      "note": "trouser end inside the boot shaft"
+    },
+    {
+      "id": "mitten.R/sleeve",
+      "guest": "mitten.R",
+      "guest_regions": null,
+      "host": "body",
+      "host_regions": [
+        "forearm.R",
+        "hand.R"
+      ],
+      "min_burial_m": 0.01,
+      "min_exposed_m": 0.05,
+      "note": "glove root inside the cuff"
+    },
+    {
+      "id": "mitten.L/sleeve",
+      "guest": "mitten.L",
+      "guest_regions": null,
+      "host": "body",
+      "host_regions": [
+        "forearm.L",
+        "hand.L"
+      ],
+      "min_burial_m": 0.01,
+      "min_exposed_m": 0.05,
+      "note": "glove root inside the cuff"
+    },
+    {
+      "id": "bag/jacket",
+      "guest": "bag",
+      "guest_regions": null,
+      "host": "body",
+      "host_regions": [
+        "pelvis",
+        "spine"
+      ],
+      "min_burial_m": 0.003,
+      "min_exposed_m": 0.03,
+      "note": "bag back pressed into the jacket at the belt line"
+    },
+    {
+      "id": "bagflap/jacket",
+      "guest": "bagflap",
+      "guest_regions": null,
+      "host": "body",
+      "host_regions": [
+        "pelvis",
+        "spine"
+      ],
+      "min_burial_m": 0.002,
+      "min_exposed_m": 0.03,
+      "note": "flap back pressed into the jacket"
+    },
+    {
+      "id": "bagflap/bag",
+      "guest": "bagflap",
+      "guest_regions": null,
+      "host": "bag",
+      "host_regions": null,
+      "min_burial_m": 0.002,
+      "min_exposed_m": 0.003,
+      "note": "flap overlaps the bag top"
+    },
+    {
+      "id": "zip/chest",
+      "guest": "zip",
+      "guest_regions": null,
+      "host": "body",
+      "host_regions": [
+        "pelvis",
+        "spine",
+        "chest"
+      ],
+      "min_burial_m": 0.002,
+      "min_exposed_m": 0.003,
+      "note": "zip strip set into the jacket front"
+    },
+    {
+      "id": "visor/helmet",
+      "guest": "visor",
+      "guest_regions": null,
+      "host": "helmet",
+      "host_regions": null,
+      "min_burial_m": 0.005,
+      "min_exposed_m": 0.005,
+      "note": "visor plate set into the helmet shell"
+    },
+    {
+      "id": "dot/helmet",
+      "guest": "dot",
+      "guest_regions": null,
+      "host": "helmet",
+      "host_regions": null,
+      "min_burial_m": 0.005,
+      "min_exposed_m": 0.01,
+      "note": "cyan dot set into the helmet, right side"
+    }
+  ],
+  "sampleStride": 1,
+  "relationsAudited": true,
+  "scope": "captured CPU skin poses; all closed shells individually; cross-shell crossings vs A6 relation table; finite sampling",
+  "limits": "10um disposable rest seam weld with averaged deformed copies; float BVH/rays; exact single-vertex fallback; cross-shell: witness required (no-witness pairs fail as unclassified), body region from rest weights at the crossing, closest-face normal sign for burial/exposure (can misjudge near sharp concave host edges); no GPU identity or continuous-time claim; only captured frames are tested",
+  "views": [
+    {
+      "zoom": 1,
+      "assetSha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7",
+      "meshCount": 8,
+      "triangles": 1978,
+      "shellSizes": [
+        426,
+        201,
+        78,
+        58,
+        58,
+        50,
+        50,
+        24,
+        24,
+        24,
+        18
+      ],
+      "parts": {
+        "zip": {
+          "bone": "chest",
+          "vertices": 24,
+          "centroid": [
+            0.1344,
+            0.88,
+            -0.0
+          ],
+          "size": [
+            0.022,
+            0.34,
+            0.02
+          ]
+        },
+        "boot.L": {
+          "bone": "foot.L",
+          "vertices": 50,
+          "centroid": [
+            0.0486,
+            0.0604,
+            -0.1
+          ],
+          "size": [
+            0.2408,
+            0.232,
+            0.1755
+          ]
+        },
+        "boot.R": {
+          "bone": "foot.R",
+          "vertices": 50,
+          "centroid": [
+            0.0486,
+            0.0604,
+            0.1
+          ],
+          "size": [
+            0.2408,
+            0.232,
+            0.1755
+          ]
+        },
+        "mitten.L": {
+          "bone": "hand.L",
+          "vertices": 58,
+          "centroid": [
+            0.0323,
+            0.7034,
+            -0.4696
+          ],
+          "size": [
+            0.0941,
+            0.0879,
+            0.0702
+          ]
+        },
+        "mitten.R": {
+          "bone": "hand.R",
+          "vertices": 58,
+          "centroid": [
+            0.0323,
+            0.7034,
+            0.4696
+          ],
+          "size": [
+            0.0941,
+            0.0879,
+            0.0702
+          ]
+        },
+        "helmet": {
+          "bone": "head",
+          "vertices": 201,
+          "centroid": [
+            -0.0,
+            1.4566,
+            0.0
+          ],
+          "size": [
+            0.59,
+            0.4982,
+            0.59
+          ]
+        },
+        "visor": {
+          "bone": "head",
+          "vertices": 78,
+          "centroid": [
+            0.2029,
+            1.4226,
+            0.0
+          ],
+          "size": [
+            0.2374,
+            0.1394,
+            0.5979
+          ]
+        },
+        "dot": {
+          "bone": "head",
+          "vertices": 18,
+          "centroid": [
+            0.0422,
+            1.425,
+            0.3005
+          ],
+          "size": [
+            0.0583,
+            0.0544,
+            0.0479
+          ]
+        },
+        "bagflap": {
+          "bone": "pelvis",
+          "vertices": 24,
+          "centroid": [
+            -0.1276,
+            0.801,
+            0.1633
+          ],
+          "size": [
+            0.1557,
+            0.048,
+            0.1453
+          ]
+        },
+        "bag": {
+          "bone": "pelvis",
+          "vertices": 24,
+          "centroid": [
+            -0.1262,
+            0.765,
+            0.1615
+          ],
+          "size": [
+            0.1343,
+            0.115,
+            0.1231
+          ]
+        }
+      },
+      "maxSeamCorrection_m": 1.0476725065121197e-06,
+      "samples": 554,
+      "phases": {
+        "idle": {
+          "samples": 22,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.0228,
+            "boot.R/trouser": 0.07722,
+            "boot.L/trouser": 0.07719,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01298,
+            "bagflap/jacket": 0.01104,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01505,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08835,
+            "boot.R/trouser": 0.14441,
+            "boot.L/trouser": 0.14198,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07752,
+            "bagflap/jacket": 0.08681,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.0299,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "walk": {
+          "samples": 56,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.06475,
+            "boot.L/trouser": 0.0655,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01255,
+            "bagflap/jacket": 0.00957,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01505,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08868,
+            "boot.R/trouser": 0.13427,
+            "boot.L/trouser": 0.13371,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07555,
+            "bagflap/jacket": 0.08644,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.02985,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "pre-turn": {
+          "samples": 20,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.06884,
+            "boot.L/trouser": 0.06972,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01326,
+            "bagflap/jacket": 0.0114,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01509,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08838,
+            "boot.R/trouser": 0.13415,
+            "boot.L/trouser": 0.13474,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07555,
+            "bagflap/jacket": 0.08654,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03235,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "turn180": {
+          "samples": 33,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.0644,
+            "boot.L/trouser": 0.06648,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01256,
+            "bagflap/jacket": 0.00957,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08849,
+            "boot.R/trouser": 0.13434,
+            "boot.L/trouser": 0.13363,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07557,
+            "bagflap/jacket": 0.08644,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03197,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "settled-turn": {
+          "samples": 78,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.06972,
+            "boot.L/trouser": 0.06486,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01285,
+            "bagflap/jacket": 0.01046,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08827,
+            "boot.R/trouser": 0.13379,
+            "boot.L/trouser": 0.13432,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07555,
+            "bagflap/jacket": 0.08653,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03122,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "walk-again": {
+          "samples": 42,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.06509,
+            "boot.L/trouser": 0.06608,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01255,
+            "bagflap/jacket": 0.00957,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01507,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08856,
+            "boot.R/trouser": 0.13448,
+            "boot.L/trouser": 0.13369,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07555,
+            "bagflap/jacket": 0.08644,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03037,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "pre-resume": {
+          "samples": 17,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.07082,
+            "boot.L/trouser": 0.06421,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01284,
+            "bagflap/jacket": 0.01068,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01514,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08841,
+            "boot.R/trouser": 0.13682,
+            "boot.L/trouser": 0.13363,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07608,
+            "bagflap/jacket": 0.08667,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.0347,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "resume": {
+          "samples": 30,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.06461,
+            "boot.L/trouser": 0.066,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01109,
+            "bagflap/jacket": 0.00751,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08843,
+            "boot.R/trouser": 0.13412,
+            "boot.L/trouser": 0.13356,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07555,
+            "bagflap/jacket": 0.08644,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03197,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "pre-jump": {
+          "samples": 18,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.06504,
+            "boot.L/trouser": 0.08003,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01257,
+            "bagflap/jacket": 0.00964,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08838,
+            "boot.R/trouser": 0.13438,
+            "boot.L/trouser": 0.13936,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.0777,
+            "bagflap/jacket": 0.08672,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03197,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "jump-land": {
+          "samples": 85,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02234,
+            "boot.R/trouser": 0.06502,
+            "boot.L/trouser": 0.06502,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01295,
+            "bagflap/jacket": 0.01056,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01479,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08828,
+            "boot.R/trouser": 0.13359,
+            "boot.L/trouser": 0.13374,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07619,
+            "bagflap/jacket": 0.08673,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.02191,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "walk-pause": {
+          "samples": 40,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.06612,
+            "boot.L/trouser": 0.06501,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01259,
+            "bagflap/jacket": 0.00958,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08859,
+            "boot.R/trouser": 0.135,
+            "boot.L/trouser": 0.13367,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07555,
+            "bagflap/jacket": 0.08644,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03198,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "pre-pause": {
+          "samples": 19,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.06427,
+            "boot.L/trouser": 0.07594,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01257,
+            "bagflap/jacket": 0.00957,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.0151,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08838,
+            "boot.R/trouser": 0.13427,
+            "boot.L/trouser": 0.13862,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07769,
+            "bagflap/jacket": 0.08694,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03292,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "paused": {
+          "samples": 17,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.11257,
+            "boot.R/trouser": 0.06992,
+            "boot.L/trouser": 0.07749,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01365,
+            "bagflap/jacket": 0.01172,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01529,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08848,
+            "boot.R/trouser": 0.13414,
+            "boot.L/trouser": 0.14478,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07984,
+            "bagflap/jacket": 0.08677,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03633,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "resumed-pause": {
+          "samples": 77,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.0228,
+            "boot.R/trouser": 0.06992,
+            "boot.L/trouser": 0.06973,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01285,
+            "bagflap/jacket": 0.01046,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01505,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08827,
+            "boot.R/trouser": 0.13414,
+            "boot.L/trouser": 0.13486,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07751,
+            "bagflap/jacket": 0.08677,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.02985,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        }
+      },
+      "relationSummary": {
+        "helmet/collar": {
+          "min_burial_m": 0.02234,
+          "at": [
+            "jump-land",
+            10.166,
+            "Land"
+          ],
+          "min_exposed_m": 0.08827,
+          "exposed_at": [
+            "settled-turn",
+            6.389,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.01,
+          "max_crossing_pairs": 22,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "boot.R/trouser": {
+          "min_burial_m": 0.06427,
+          "at": [
+            "pre-pause",
+            11.898,
+            "Walk"
+          ],
+          "min_exposed_m": 0.13359,
+          "exposed_at": [
+            "jump-land",
+            10.166,
+            "Land"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.05,
+          "max_crossing_pairs": 38,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "boot.L/trouser": {
+          "min_burial_m": 0.06421,
+          "at": [
+            "pre-resume",
+            7.654,
+            "Walk"
+          ],
+          "min_exposed_m": 0.13356,
+          "exposed_at": [
+            "resume",
+            8.021,
+            "Walk"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.05,
+          "max_crossing_pairs": 38,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "mitten.R/sleeve": {
+          "min_burial_m": 0.02574,
+          "at": [
+            "idle",
+            2.136,
+            "Idle"
+          ],
+          "min_exposed_m": 0.0711,
+          "exposed_at": [
+            "idle",
+            2.136,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.05,
+          "max_crossing_pairs": 27,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "mitten.L/sleeve": {
+          "min_burial_m": 0.02574,
+          "at": [
+            "idle",
+            2.136,
+            "Idle"
+          ],
+          "min_exposed_m": 0.0711,
+          "exposed_at": [
+            "idle",
+            2.136,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.05,
+          "max_crossing_pairs": 27,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "bag/jacket": {
+          "min_burial_m": 0.01109,
+          "at": [
+            "resume",
+            8.157,
+            "Walk"
+          ],
+          "min_exposed_m": 0.07555,
+          "exposed_at": [
+            "walk",
+            2.815,
+            "Walk"
+          ],
+          "declared_min_burial_m": 0.003,
+          "declared_min_exposed_m": 0.03,
+          "max_crossing_pairs": 18,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "bagflap/jacket": {
+          "min_burial_m": 0.00751,
+          "at": [
+            "resume",
+            8.157,
+            "Walk"
+          ],
+          "min_exposed_m": 0.08644,
+          "exposed_at": [
+            "walk",
+            2.964,
+            "Walk"
+          ],
+          "declared_min_burial_m": 0.002,
+          "declared_min_exposed_m": 0.03,
+          "max_crossing_pairs": 20,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "bagflap/bag": {
+          "min_burial_m": 0.03525,
+          "at": [
+            "idle",
+            2.136,
+            "Idle"
+          ],
+          "min_exposed_m": 0.0156,
+          "exposed_at": [
+            "idle",
+            2.136,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.002,
+          "declared_min_exposed_m": 0.003,
+          "max_crossing_pairs": 34,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "zip/chest": {
+          "min_burial_m": 0.01479,
+          "at": [
+            "jump-land",
+            10.207,
+            "Land"
+          ],
+          "min_exposed_m": 0.02191,
+          "exposed_at": [
+            "jump-land",
+            10.207,
+            "Land"
+          ],
+          "declared_min_burial_m": 0.002,
+          "declared_min_exposed_m": 0.003,
+          "max_crossing_pairs": 53,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "visor/helmet": {
+          "min_burial_m": 0.02076,
+          "at": [
+            "idle",
+            2.136,
+            "Idle"
+          ],
+          "min_exposed_m": 0.02049,
+          "exposed_at": [
+            "idle",
+            2.136,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.005,
+          "declared_min_exposed_m": 0.005,
+          "max_crossing_pairs": 96,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "dot/helmet": {
+          "min_burial_m": 0.00786,
+          "at": [
+            "idle",
+            2.136,
+            "Idle"
+          ],
+          "min_exposed_m": 0.0357,
+          "exposed_at": [
+            "idle",
+            2.136,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.005,
+          "declared_min_exposed_m": 0.01,
+          "max_crossing_pairs": 22,
+          "unmeasuredSamples": 0,
+          "passed": true
+        }
+      },
+      "examples": [],
+      "relationFailures": [],
+      "seamMergeBoundExceeded": false,
+      "sameShellPassed": true,
+      "crossShellPassed": true,
+      "passed": true,
+      "rowsCount": 554
+    },
+    {
+      "zoom": 0,
+      "assetSha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7",
+      "meshCount": 8,
+      "triangles": 1978,
+      "shellSizes": [
+        426,
+        201,
+        78,
+        58,
+        58,
+        50,
+        50,
+        24,
+        24,
+        24,
+        18
+      ],
+      "parts": {
+        "zip": {
+          "bone": "chest",
+          "vertices": 24,
+          "centroid": [
+            0.1344,
+            0.88,
+            -0.0
+          ],
+          "size": [
+            0.022,
+            0.34,
+            0.02
+          ]
+        },
+        "boot.L": {
+          "bone": "foot.L",
+          "vertices": 50,
+          "centroid": [
+            0.0486,
+            0.0604,
+            -0.1
+          ],
+          "size": [
+            0.2408,
+            0.232,
+            0.1755
+          ]
+        },
+        "boot.R": {
+          "bone": "foot.R",
+          "vertices": 50,
+          "centroid": [
+            0.0486,
+            0.0604,
+            0.1
+          ],
+          "size": [
+            0.2408,
+            0.232,
+            0.1755
+          ]
+        },
+        "mitten.L": {
+          "bone": "hand.L",
+          "vertices": 58,
+          "centroid": [
+            0.0323,
+            0.7034,
+            -0.4696
+          ],
+          "size": [
+            0.0941,
+            0.0879,
+            0.0702
+          ]
+        },
+        "mitten.R": {
+          "bone": "hand.R",
+          "vertices": 58,
+          "centroid": [
+            0.0323,
+            0.7034,
+            0.4696
+          ],
+          "size": [
+            0.0941,
+            0.0879,
+            0.0702
+          ]
+        },
+        "helmet": {
+          "bone": "head",
+          "vertices": 201,
+          "centroid": [
+            -0.0,
+            1.4566,
+            0.0
+          ],
+          "size": [
+            0.59,
+            0.4982,
+            0.59
+          ]
+        },
+        "visor": {
+          "bone": "head",
+          "vertices": 78,
+          "centroid": [
+            0.2029,
+            1.4226,
+            0.0
+          ],
+          "size": [
+            0.2374,
+            0.1394,
+            0.5979
+          ]
+        },
+        "dot": {
+          "bone": "head",
+          "vertices": 18,
+          "centroid": [
+            0.0422,
+            1.425,
+            0.3005
+          ],
+          "size": [
+            0.0583,
+            0.0544,
+            0.0479
+          ]
+        },
+        "bagflap": {
+          "bone": "pelvis",
+          "vertices": 24,
+          "centroid": [
+            -0.1276,
+            0.801,
+            0.1633
+          ],
+          "size": [
+            0.1557,
+            0.048,
+            0.1453
+          ]
+        },
+        "bag": {
+          "bone": "pelvis",
+          "vertices": 24,
+          "centroid": [
+            -0.1262,
+            0.765,
+            0.1615
+          ],
+          "size": [
+            0.1343,
+            0.115,
+            0.1231
+          ]
+        }
+      },
+      "maxSeamCorrection_m": 1.0476724982595024e-06,
+      "samples": 556,
+      "phases": {
+        "idle": {
+          "samples": 23,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.0228,
+            "boot.R/trouser": 0.07722,
+            "boot.L/trouser": 0.07719,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01298,
+            "bagflap/jacket": 0.01106,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01505,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08836,
+            "boot.R/trouser": 0.14434,
+            "boot.L/trouser": 0.14198,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07752,
+            "bagflap/jacket": 0.08681,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.02986,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "walk": {
+          "samples": 56,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.06406,
+            "boot.L/trouser": 0.06495,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01257,
+            "bagflap/jacket": 0.00957,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01505,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08867,
+            "boot.R/trouser": 0.13389,
+            "boot.L/trouser": 0.13368,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07555,
+            "bagflap/jacket": 0.08644,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.02985,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "pre-turn": {
+          "samples": 20,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.06972,
+            "boot.L/trouser": 0.06981,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01149,
+            "bagflap/jacket": 0.00898,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08838,
+            "boot.R/trouser": 0.13475,
+            "boot.L/trouser": 0.13426,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.08023,
+            "bagflap/jacket": 0.08905,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03233,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "turn180": {
+          "samples": 33,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.06549,
+            "boot.L/trouser": 0.06419,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01149,
+            "bagflap/jacket": 0.00896,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08849,
+            "boot.R/trouser": 0.13363,
+            "boot.L/trouser": 0.13384,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07554,
+            "bagflap/jacket": 0.08644,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03197,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "settled-turn": {
+          "samples": 79,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.06632,
+            "boot.L/trouser": 0.06976,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01201,
+            "bagflap/jacket": 0.00945,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08828,
+            "boot.R/trouser": 0.1339,
+            "boot.L/trouser": 0.13467,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07759,
+            "bagflap/jacket": 0.08681,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03123,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "walk-again": {
+          "samples": 42,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.06629,
+            "boot.L/trouser": 0.0661,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01256,
+            "bagflap/jacket": 0.00957,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01507,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08856,
+            "boot.R/trouser": 0.13368,
+            "boot.L/trouser": 0.13364,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07554,
+            "bagflap/jacket": 0.08644,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03046,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "pre-resume": {
+          "samples": 17,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.07069,
+            "boot.L/trouser": 0.06522,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01284,
+            "bagflap/jacket": 0.01067,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01514,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08838,
+            "boot.R/trouser": 0.13678,
+            "boot.L/trouser": 0.13363,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07608,
+            "bagflap/jacket": 0.08678,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03467,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "resume": {
+          "samples": 30,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.06463,
+            "boot.L/trouser": 0.06612,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01112,
+            "bagflap/jacket": 0.00757,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08843,
+            "boot.R/trouser": 0.13422,
+            "boot.L/trouser": 0.13349,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07555,
+            "bagflap/jacket": 0.08644,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03197,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "pre-jump": {
+          "samples": 19,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.06481,
+            "boot.L/trouser": 0.08258,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01251,
+            "bagflap/jacket": 0.00956,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08838,
+            "boot.R/trouser": 0.13433,
+            "boot.L/trouser": 0.14186,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07769,
+            "bagflap/jacket": 0.08671,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03197,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "jump-land": {
+          "samples": 84,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02238,
+            "boot.R/trouser": 0.06502,
+            "boot.L/trouser": 0.06502,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01287,
+            "bagflap/jacket": 0.01012,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01479,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08827,
+            "boot.R/trouser": 0.13359,
+            "boot.L/trouser": 0.13374,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07758,
+            "bagflap/jacket": 0.08672,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.02191,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "walk-pause": {
+          "samples": 40,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.06605,
+            "boot.L/trouser": 0.06596,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01257,
+            "bagflap/jacket": 0.00957,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01508,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08859,
+            "boot.R/trouser": 0.13366,
+            "boot.L/trouser": 0.13374,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07554,
+            "bagflap/jacket": 0.08644,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03197,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "pre-pause": {
+          "samples": 19,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.02276,
+            "boot.R/trouser": 0.06422,
+            "boot.L/trouser": 0.07572,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01273,
+            "bagflap/jacket": 0.00982,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01512,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08839,
+            "boot.R/trouser": 0.13405,
+            "boot.L/trouser": 0.13853,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07808,
+            "bagflap/jacket": 0.08685,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03375,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "paused": {
+          "samples": 17,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.11257,
+            "boot.R/trouser": 0.06991,
+            "boot.L/trouser": 0.07748,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01365,
+            "bagflap/jacket": 0.01173,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01529,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08848,
+            "boot.R/trouser": 0.13416,
+            "boot.L/trouser": 0.14474,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07984,
+            "bagflap/jacket": 0.08677,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.03634,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        },
+        "resumed-pause": {
+          "samples": 77,
+          "sameShellFailures": 0,
+          "relationFailures": 0,
+          "unintendedMax": {},
+          "unclassifiedMax": {},
+          "minBurial_m": {
+            "helmet/collar": 0.0228,
+            "boot.R/trouser": 0.06991,
+            "boot.L/trouser": 0.06973,
+            "mitten.R/sleeve": 0.02574,
+            "mitten.L/sleeve": 0.02574,
+            "bag/jacket": 0.01285,
+            "bagflap/jacket": 0.01047,
+            "bagflap/bag": 0.03525,
+            "zip/chest": 0.01505,
+            "visor/helmet": 0.02076,
+            "dot/helmet": 0.00786
+          },
+          "minExposed_m": {
+            "helmet/collar": 0.08827,
+            "boot.R/trouser": 0.13416,
+            "boot.L/trouser": 0.13486,
+            "mitten.R/sleeve": 0.0711,
+            "mitten.L/sleeve": 0.0711,
+            "bag/jacket": 0.07751,
+            "bagflap/jacket": 0.08676,
+            "bagflap/bag": 0.0156,
+            "zip/chest": 0.02985,
+            "visor/helmet": 0.02049,
+            "dot/helmet": 0.0357
+          },
+          "failedFrames": []
+        }
+      },
+      "relationSummary": {
+        "helmet/collar": {
+          "min_burial_m": 0.02238,
+          "at": [
+            "jump-land",
+            10.296,
+            "Land"
+          ],
+          "min_exposed_m": 0.08827,
+          "exposed_at": [
+            "jump-land",
+            10.499,
+            "Land"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.01,
+          "max_crossing_pairs": 22,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "boot.R/trouser": {
+          "min_burial_m": 0.06406,
+          "at": [
+            "walk",
+            3.538,
+            "Walk"
+          ],
+          "min_exposed_m": 0.13359,
+          "exposed_at": [
+            "jump-land",
+            10.164,
+            "Land"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.05,
+          "max_crossing_pairs": 39,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "boot.L/trouser": {
+          "min_burial_m": 0.06419,
+          "at": [
+            "turn180",
+            4.924,
+            "Walk"
+          ],
+          "min_exposed_m": 0.13349,
+          "exposed_at": [
+            "resume",
+            8.027,
+            "Walk"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.05,
+          "max_crossing_pairs": 41,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "mitten.R/sleeve": {
+          "min_burial_m": 0.02574,
+          "at": [
+            "idle",
+            2.096,
+            "Idle"
+          ],
+          "min_exposed_m": 0.0711,
+          "exposed_at": [
+            "idle",
+            2.096,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.05,
+          "max_crossing_pairs": 27,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "mitten.L/sleeve": {
+          "min_burial_m": 0.02574,
+          "at": [
+            "idle",
+            2.096,
+            "Idle"
+          ],
+          "min_exposed_m": 0.0711,
+          "exposed_at": [
+            "idle",
+            2.096,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.01,
+          "declared_min_exposed_m": 0.05,
+          "max_crossing_pairs": 27,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "bag/jacket": {
+          "min_burial_m": 0.01112,
+          "at": [
+            "resume",
+            8.135,
+            "Walk"
+          ],
+          "min_exposed_m": 0.07554,
+          "exposed_at": [
+            "turn180",
+            4.686,
+            "Walk"
+          ],
+          "declared_min_burial_m": 0.003,
+          "declared_min_exposed_m": 0.03,
+          "max_crossing_pairs": 18,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "bagflap/jacket": {
+          "min_burial_m": 0.00757,
+          "at": [
+            "resume",
+            8.135,
+            "Walk"
+          ],
+          "min_exposed_m": 0.08644,
+          "exposed_at": [
+            "walk",
+            3.195,
+            "Walk"
+          ],
+          "declared_min_burial_m": 0.002,
+          "declared_min_exposed_m": 0.03,
+          "max_crossing_pairs": 20,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "bagflap/bag": {
+          "min_burial_m": 0.03525,
+          "at": [
+            "idle",
+            2.096,
+            "Idle"
+          ],
+          "min_exposed_m": 0.0156,
+          "exposed_at": [
+            "idle",
+            2.096,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.002,
+          "declared_min_exposed_m": 0.003,
+          "max_crossing_pairs": 34,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "zip/chest": {
+          "min_burial_m": 0.01479,
+          "at": [
+            "jump-land",
+            10.206,
+            "Land"
+          ],
+          "min_exposed_m": 0.02191,
+          "exposed_at": [
+            "jump-land",
+            10.206,
+            "Land"
+          ],
+          "declared_min_burial_m": 0.002,
+          "declared_min_exposed_m": 0.003,
+          "max_crossing_pairs": 53,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "visor/helmet": {
+          "min_burial_m": 0.02076,
+          "at": [
+            "idle",
+            2.096,
+            "Idle"
+          ],
+          "min_exposed_m": 0.02049,
+          "exposed_at": [
+            "idle",
+            2.096,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.005,
+          "declared_min_exposed_m": 0.005,
+          "max_crossing_pairs": 96,
+          "unmeasuredSamples": 0,
+          "passed": true
+        },
+        "dot/helmet": {
+          "min_burial_m": 0.00786,
+          "at": [
+            "idle",
+            2.096,
+            "Idle"
+          ],
+          "min_exposed_m": 0.0357,
+          "exposed_at": [
+            "idle",
+            2.096,
+            "Idle"
+          ],
+          "declared_min_burial_m": 0.005,
+          "declared_min_exposed_m": 0.01,
+          "max_crossing_pairs": 22,
+          "unmeasuredSamples": 0,
+          "passed": true
+        }
+      },
+      "examples": [],
+      "relationFailures": [],
+      "seamMergeBoundExceeded": false,
+      "sameShellPassed": true,
+      "crossShellPassed": true,
+      "passed": true,
+      "rowsCount": 556
+    }
+  ],
+  "assetSha256": [
+    "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7"
+  ],
+  "sameShellPassed": true,
+  "crossShellPassed": true,
+  "passed": true,
+  "fullReport": {
+    "path": "runtime-relations-audit-full.json.gz",
+    "uncompressedSha256": "7156009ee9c4fb90da02328ce04d6a49cbee322605184d8520001047a87311b2",
+    "note": "Lossless original report. Compact JSON omits only long samples/rows arrays; counts, metrics, phases, failures and verdicts are retained. Expand the archive for frame-level evidence."
+  }
+}

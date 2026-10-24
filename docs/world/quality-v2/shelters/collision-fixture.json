@@ -1,0 +1,173 @@
+{
+  "type": "GLB shell shape-cast fixture; no locomotion evidence",
+  "results": [
+    {
+      "id": "C03",
+      "label": "physics-capsule",
+      "case": "entry-offset-0",
+      "pass": true,
+      "toi": null
+    },
+    {
+      "id": "C03",
+      "label": "physics-capsule",
+      "case": "entry-offset--0.15",
+      "pass": true,
+      "toi": null
+    },
+    {
+      "id": "C03",
+      "label": "physics-capsule",
+      "case": "entry-offset-0.15",
+      "pass": true,
+      "toi": null
+    },
+    {
+      "id": "C03",
+      "label": "physics-capsule",
+      "case": "back",
+      "pass": true,
+      "toi": 0.38666394352912903
+    },
+    {
+      "id": "C03",
+      "label": "physics-capsule",
+      "case": "left",
+      "pass": true,
+      "toi": 0.30999723076820374
+    },
+    {
+      "id": "C03",
+      "label": "physics-capsule",
+      "case": "right",
+      "pass": true,
+      "toi": 0.3100000321865082
+    },
+    {
+      "id": "C03",
+      "label": "visual-height-clearance",
+      "case": "entry-offset-0",
+      "pass": true,
+      "toi": null
+    },
+    {
+      "id": "C03",
+      "label": "visual-height-clearance",
+      "case": "entry-offset--0.15",
+      "pass": true,
+      "toi": null
+    },
+    {
+      "id": "C03",
+      "label": "visual-height-clearance",
+      "case": "entry-offset-0.15",
+      "pass": true,
+      "toi": null
+    },
+    {
+      "id": "C03",
+      "label": "visual-height-clearance",
+      "case": "back",
+      "pass": true,
+      "toi": 0.38666197657585144
+    },
+    {
+      "id": "C03",
+      "label": "visual-height-clearance",
+      "case": "left",
+      "pass": true,
+      "toi": 0.3099376857280731
+    },
+    {
+      "id": "C03",
+      "label": "visual-height-clearance",
+      "case": "right",
+      "pass": true,
+      "toi": 0.30993273854255676
+    },
+    {
+      "id": "C04",
+      "label": "physics-capsule",
+      "case": "entry-offset-0",
+      "pass": true,
+      "toi": null
+    },
+    {
+      "id": "C04",
+      "label": "physics-capsule",
+      "case": "entry-offset--0.15",
+      "pass": true,
+      "toi": null
+    },
+    {
+      "id": "C04",
+      "label": "physics-capsule",
+      "case": "entry-offset-0.15",
+      "pass": true,
+      "toi": null
+    },
+    {
+      "id": "C04",
+      "label": "physics-capsule",
+      "case": "back",
+      "pass": true,
+      "toi": 0.48665323853492737
+    },
+    {
+      "id": "C04",
+      "label": "physics-capsule",
+      "case": "left",
+      "pass": true,
+      "toi": 0.4232909679412842
+    },
+    {
+      "id": "C04",
+      "label": "physics-capsule",
+      "case": "right",
+      "pass": true,
+      "toi": 0.42331087589263916
+    },
+    {
+      "id": "C04",
+      "label": "visual-height-clearance",
+      "case": "entry-offset-0",
+      "pass": true,
+      "toi": null
+    },
+    {
+      "id": "C04",
+      "label": "visual-height-clearance",
+      "case": "entry-offset--0.15",
+      "pass": true,
+      "toi": null
+    },
+    {
+      "id": "C04",
+      "label": "visual-height-clearance",
+      "case": "entry-offset-0.15",
+      "pass": true,
+      "toi": null
+    },
+    {
+      "id": "C04",
+      "label": "visual-height-clearance",
+      "case": "back",
+      "pass": true,
+      "toi": 0.48665156960487366
+    },
+    {
+      "id": "C04",
+      "label": "visual-height-clearance",
+      "case": "left",
+      "pass": true,
+      "toi": 0.42330601811408997
+    },
+    {
+      "id": "C04",
+      "label": "visual-height-clearance",
+      "case": "right",
+      "pass": true,
+      "toi": 0.4232823848724365
+    }
+  ]
+}

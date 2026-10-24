@@ -1,0 +1,442 @@
+{
+  "generatedBy": "tools/world/camp/props/build_props.py",
+  "generator": "props-r3",
+  "date": "2026-10-21",
+  "blender": "4.2.23 LTS",
+  "axes": "GLB metres, +Y up, +X front/use side, ground contact y=0, root at XZ bounds centre",
+  "compression": {
+    "KHR_draco_mesh_compression": true,
+    "positionBits": 20,
+    "normalBits": 12,
+    "level": 6
+  },
+  "qaReport": "docs/world/camp-slice/props/qa_final.json",
+  "assets": {
+    "C07": {
+      "glb": "public/assets/world/camp/C07.glb",
+      "sha256": "ea34c4389d8504410746a43ba5b228aba1d46cf525eca3659abcbf34cebc6873",
+      "bytes": 15912,
+      "blend": "tools/world/camp/props/blend/C07.blend",
+      "contactSheet": "docs/world/camp-slice/props/r3/C07_sixview_r3.png",
+      "targetSizeGLB_xyz": [
+        1.3,
+        0.85,
+        2.0
+      ],
+      "actualSizeGLB_xyz": [
+        1.296,
+        0.852,
+        2.0
+      ],
+      "trianglesEvaluatedNative": 828,
+      "trianglesGLBReimport": 828,
+      "trianglesR1": 828,
+      "triangleBudgetDeclared": "450-900 (design-guide Desk start)",
+      "boundsMaxAbsDiffNativeVsDracoGLB_m": 6.5e-07,
+      "meshNodes": [
+        "C07_desk",
+        "C07_stool"
+      ],
+      "componentsPerNode": {
+        "C07_desk": 14,
+        "C07_stool": 7
+      },
+      "materials": {
+        "props_wood_light": {
+          "role": "wood",
+          "roughness": 0.72,
+          "metallic": 0.0
+        },
+        "props_wood_mid": {
+          "role": "wood",
+          "roughness": 0.76,
+          "metallic": 0.0
+        }
+      },
+      "rootExtras": {
+        "assetId": "C07",
+        "generator": "props-r3",
+        "units": "meters",
+        "front": "+X",
+        "up": "+Y (glTF)",
+        "designBoundsGLB_xyz": [
+          1.296,
+          0.852,
+          2.0
+        ],
+        "materialRoles": [
+          "wood"
+        ],
+        "deskTopHeight_m": 0.85,
+        "useSide": "+X",
+        "notes": "C07_stool is a separate node inside the declared 1.3 m depth; hide it at runtime if not wanted.",
+        "deskTopRectGLB": {
+          "y": 0.85,
+          "x": [
+            -0.618,
+            0.122
+          ],
+          "z": [
+            -0.97,
+            0.97
+          ]
+        }
+      },
+      "deskTopHeight_m": 0.85
+    },
+    "C08": {
+      "glb": "public/assets/world/camp/C08.glb",
+      "sha256": "4e37c8ef5f4f4476b8f2f4a16efd1374d63c5c7667cfc8ce4101cf4816e85208",
+      "bytes": 10584,
+      "blend": "tools/world/camp/props/blend/C08.blend",
+      "contactSheet": "docs/world/camp-slice/props/r3/C08_sixview_r3.png",
+      "targetSizeGLB_xyz": [
+        0.5,
+        0.35,
+        0.7
+      ],
+      "actualSizeGLB_xyz": [
+        0.4314,
+        0.321,
+        0.6874
+      ],
+      "trianglesEvaluatedNative": 364,
+      "trianglesGLBReimport": 364,
+      "trianglesR1": 364,
+      "triangleBudgetDeclared": "declared 300-500",
+      "boundsMaxAbsDiffNativeVsDracoGLB_m": 3e-08,
+      "meshNodes": [
+        "C08_books"
+      ],
+      "componentsPerNode": {
+        "C08_books": 7
+      },
+      "materials": {
+        "props_paper": {
+          "role": "paper",
+          "roughness": 0.9,
+          "metallic": 0.0
+        },
+        "props_cover_slate": {
+          "role": "accent",
+          "roughness": 0.8,
+          "metallic": 0.0
+        },
+        "props_cover_orange": {
+          "role": "accent",
+          "roughness": 0.8,
+          "metallic": 0.0
+        },
+        "props_cover_olive": {
+          "role": "accent",
+          "roughness": 0.82,
+          "metallic": 0.0
+        },
+        "props_cover_brick": {
+          "role": "accent",
+          "roughness": 0.82,
+          "metallic": 0.0
+        }
+      },
+      "rootExtras": {
+        "assetId": "C08",
+        "generator": "props-r3",
+        "units": "meters",
+        "front": "+X",
+        "up": "+Y (glTF)",
+        "designBoundsGLB_xyz": [
+          0.4314,
+          0.321,
+          0.6874
+        ],
+        "materialRoles": [
+          "accent",
+          "paper"
+        ],
+        "placement": "origin at stack bottom centre; drop onto C07 deskTopRectGLB",
+        "text": "none (spines and covers intentionally blank)"
+      }
+    },
+    "C09": {
+      "glb": "public/assets/world/camp/C09.glb",
+      "sha256": "c69ff479cdc85e4dacd6acee8dac97a0405c1f8d3896f709d17773f44e74b525",
+      "bytes": 32404,
+      "blend": "tools/world/camp/props/blend/C09.blend",
+      "contactSheet": "docs/world/camp-slice/props/r3/C09_sixview_r3.png",
+      "targetSizeGLB_xyz": [
+        0.65,
+        1.7,
+        1.8
+      ],
+      "actualSizeGLB_xyz": [
+        0.585,
+        1.6825,
+        1.77
+      ],
+      "trianglesEvaluatedNative": 1832,
+      "trianglesGLBReimport": 1832,
+      "trianglesR1": 1784,
+      "triangleBudgetDeclared": "carcass 450-900 (Bookcase start) + trophies declared <=1500",
+      "boundsMaxAbsDiffNativeVsDracoGLB_m": 6e-08,
+      "meshNodes": [
+        "C09_shelf",
+        "C09_trophies",
+        "C09_books"
+      ],
+      "componentsPerNode": {
+        "C09_shelf": 8,
+        "C09_trophies": 16,
+        "C09_books": 2
+      },
+      "materials": {
+        "props_paper": {
+          "role": "paper",
+          "roughness": 0.9,
+          "metallic": 0.0
+        },
+        "props_cover_slate": {
+          "role": "accent",
+          "roughness": 0.8,
+          "metallic": 0.0
+        },
+        "props_cover_orange": {
+          "role": "accent",
+          "roughness": 0.8,
+          "metallic": 0.0
+        },
+        "props_wood_mid": {
+          "role": "wood",
+          "roughness": 0.76,
+          "metallic": 0.0
+        },
+        "props_wood_light": {
+          "role": "wood",
+          "roughness": 0.72,
+          "metallic": 0.0
+        },
+        "props_wood_dark": {
+          "role": "wood",
+          "roughness": 0.8,
+          "metallic": 0.0
+        },
+        "props_brass_matte": {
+          "role": "metal",
+          "roughness": 0.55,
+          "metallic": 0.4
+        }
+      },
+      "rootExtras": {
+        "assetId": "C09",
+        "generator": "props-r3",
+        "units": "meters",
+        "front": "+X",
+        "up": "+Y (glTF)",
+        "designBoundsGLB_xyz": [
+          0.585,
+          1.6825,
+          1.77
+        ],
+        "materialRoles": [
+          "accent",
+          "metal",
+          "paper",
+          "wood"
+        ],
+        "text": "none (plaque intentionally blank)",
+        "metalNote": "matte brass, metallic 0.40 / roughness 0.55, not mirror gold"
+      }
+    },
+    "C10": {
+      "glb": "public/assets/world/camp/C10.glb",
+      "sha256": "abc8d47e2e3525412f495f0b1285c2cb70b9a6002c9405f72e10e175a79c6f32",
+      "bytes": 23844,
+      "blend": "tools/world/camp/props/blend/C10.blend",
+      "contactSheet": "docs/world/camp-slice/props/r3/C10_sixview_r3.png",
+      "targetSizeGLB_xyz": [
+        1.2,
+        3.2,
+        1.8
+      ],
+      "actualSizeGLB_xyz": [
+        1.0,
+        3.205,
+        1.498
+      ],
+      "trianglesEvaluatedNative": 1236,
+      "trianglesGLBReimport": 1236,
+      "trianglesR1": 1204,
+      "triangleBudgetDeclared": "declared pole <=1000 + flags <=100 each",
+      "boundsMaxAbsDiffNativeVsDracoGLB_m": 0.0,
+      "meshNodes": [
+        "C10_pole",
+        "flag_01",
+        "flag_02",
+        "flag_03",
+        "flag_04"
+      ],
+      "componentsPerNode": {
+        "C10_pole": 20,
+        "flag_01": 1,
+        "flag_02": 1,
+        "flag_03": 1,
+        "flag_04": 1
+      },
+      "materials": {
+        "props_wood_mid": {
+          "role": "wood",
+          "roughness": 0.76,
+          "metallic": 0.0
+        },
+        "props_brass_matte": {
+          "role": "metal",
+          "roughness": 0.55,
+          "metallic": 0.4
+        },
+        "props_wood_dark": {
+          "role": "wood",
+          "roughness": 0.8,
+          "metallic": 0.0
+        },
+        "props_iron_matte": {
+          "role": "metal",
+          "roughness": 0.7,
+          "metallic": 0.3
+        },
+        "props_canvas_orange": {
+          "role": "canvas",
+          "roughness": 0.9,
+          "metallic": 0.0
+        },
+        "props_canvas_cream": {
+          "role": "canvas",
+          "roughness": 0.9,
+          "metallic": 0.0
+        },
+        "props_canvas_slate": {
+          "role": "canvas",
+          "roughness": 0.9,
+          "metallic": 0.0
+        },
+        "props_canvas_olive": {
+          "role": "canvas",
+          "roughness": 0.9,
+          "metallic": 0.0
+        }
+      },
+      "rootExtras": {
+        "assetId": "C10",
+        "generator": "props-r3",
+        "units": "meters",
+        "front": "+X",
+        "up": "+Y (glTF)",
+        "designBoundsGLB_xyz": [
+          1.0,
+          3.205,
+          1.498
+        ],
+        "materialRoles": [
+          "canvas",
+          "metal",
+          "wood"
+        ],
+        "animatedNodes": [
+          "flag_01",
+          "flag_02",
+          "flag_03",
+          "flag_04"
+        ],
+        "staticNodes": [
+          "C10_pole"
+        ],
+        "text": "none (flags intentionally blank)",
+        "poleAxisGLB_xz": [
+          -0.0,
+          0.249
+        ]
+      },
+      "flags": [
+        {
+          "name": "flag_01",
+          "mesh": true,
+          "translation": [
+            0,
+            2.96,
+            0.249
+          ],
+          "extrasKeys": [
+            "flyDirectionGLB",
+            "hoistBottomLocalGLB",
+            "hoistHeightM",
+            "hoistTopLocalGLB",
+            "lengthM",
+            "pivot",
+            "role",
+            "shape"
+          ]
+        },
+        {
+          "name": "flag_02",
+          "mesh": true,
+          "translation": [
+            0,
+            2.51,
+            0.249
+          ],
+          "extrasKeys": [
+            "flyDirectionGLB",
+            "hoistBottomLocalGLB",
+            "hoistHeightM",
+            "hoistTopLocalGLB",
+            "lengthM",
+            "pivot",
+            "role",
+            "shape"
+          ]
+        },
+        {
+          "name": "flag_03",
+          "mesh": true,
+          "translation": [
+            0,
+            2.06,
+            0.249
+          ],
+          "extrasKeys": [
+            "flyDirectionGLB",
+            "hoistBottomLocalGLB",
+            "hoistHeightM",
+            "hoistTopLocalGLB",
+            "lengthM",
+            "pivot",
+            "role",
+            "shape"
+          ]
+        },
+        {
+          "name": "flag_04",
+          "mesh": true,
+          "translation": [
+            0,
+            1.61,
+            0.249
+          ],
+          "extrasKeys": [
+            "flyDirectionGLB",
+            "hoistBottomLocalGLB",
+            "hoistHeightM",
+            "hoistTopLocalGLB",
+            "lengthM",
+            "pivot",
+            "role",
+            "shape"
+          ]
+        }
+      ]
+    }
+  },
+  "integrationReview": {
+    "assetStatus": "Fable passed final GLB colour views, 2026-10-21",
+    "runtimeStatus": "Fable camp sample design passed on r4 stills and r3 walk; see ../README.md",
+    "userAccepted": false
+  }
+}
