@@ -375,8 +375,10 @@ export interface PaveChunk {
   v: number[]; top: number[]; walls: number[];
   /** Forecourt prisms (shown / collided while `building-forecourt` is unclaimed). */
   fv: number[]; ftop: number[]; fwalls: number[];
+  /** Visual handover only. Original vertices / collider indices remain intact. */
+  parkSpurTriangles: number[];
 }
-const newChunk = (key: number): PaveChunk => ({ key, v: [], top: [], walls: [], fv: [], ftop: [], fwalls: [] });
+const newChunk = (key: number): PaveChunk => ({ key, v: [], top: [], walls: [], fv: [], ftop: [], fwalls: [], parkSpurTriangles: [] });
 
 function clipPolygon(poly: number[][], keep: (p: number[]) => number) {
   // Sutherland-Hodgman against keep(p) >= 0 (linear along edges).
@@ -389,6 +391,19 @@ function clipPolygon(poly: number[][], keep: (p: number[]) => number) {
   return out;
 }
 const keepClip = (p: number[]) => { const c = clipDist(p[0], p[2]); return c === Infinity ? 1 : c; };
+
+/** The formal park plaza starts at WorldParkWalk's existing BRIDGE_X=43.6. Clip only the
+ * old park-spur visual there after the plaza claims readiness; never alter its collision soup. */
+export function parkPlazaPavingVisual(c: PaveChunk) {
+  const handover = new Set(c.parkSpurTriangles), out: number[] = [];
+  for (let i = 0; i < c.v.length; i += PAVE_STRIDE * 3) {
+    if (!handover.has(i / PAVE_STRIDE)) { out.push(...c.v.slice(i, i + PAVE_STRIDE * 3)); continue; }
+    const tri = [0, 1, 2].map(k => c.v.slice(i + k * PAVE_STRIDE, i + (k + 1) * PAVE_STRIDE));
+    const poly = clipPolygon(tri, p => 43.6 - p[0]);
+    for (let k = 1; k < poly.length - 1; k++) out.push(...poly[0], ...poly[k], ...poly[k + 1]);
+  }
+  return out;
+}
 
 /** Douglas-Peucker on an open/closed point chain (xz). */
 function simplify(pts: P2[], eps: number, closed: boolean): P2[] {
@@ -581,6 +596,7 @@ export const pavingMesh = lazy(() => {
     const T = order.map(i => [p.pts[i][0], p.ys[i], p.pts[i][1]]), B = T.map(v => [v[0], v[1] - p.thickness, v[2]]);
     const cx = T.reduce((s, v) => s + v[0], 0) / T.length, cz = T.reduce((s, v) => s + v[2], 0) / T.length, c = chunk(cx, cz);
     const tv = (v: number[], nrm: number[]): V => [...v, ...nrm, ...local(v[0], v[2])];
+    const startVertex = c.v.length / PAVE_STRIDE;
     for (let i = 1; i < T.length - 1; i++) pushTri(c, tv(T[0], UP), tv(T[i + 1], UP), tv(T[i], UP), mode, 'top', fore);
     for (let i = 0; i < T.length; i++) {
       const j = (i + 1) % T.length;
@@ -589,6 +605,7 @@ export const pavingMesh = lazy(() => {
       const ex = T[j][0] - T[i][0], ez = T[j][2] - T[i][2], el = Math.hypot(ex, ez) || 1, wn = [ez / el, 0, -ex / el];
       pushTri(c, tv(T[i], wn), tv(T[j], wn), tv(B[j], wn), mode, 'walls', fore); pushTri(c, tv(T[i], wn), tv(B[j], wn), tv(B[i], wn), mode, 'walls', fore);
     }
+    if (p.road === 'park-spur') for (let i = startVertex; i < c.v.length / PAVE_STRIDE; i += 3) c.parkSpurTriangles.push(i);
   }
   // 4) Boardwalk stilts (visual only, as the greybox decor): 8-sided posts.
   for (const d of decorV4().filter(q => q.color === '#6E5642')) {
