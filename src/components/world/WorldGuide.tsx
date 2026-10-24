@@ -1,12 +1,13 @@
 import { Component, Suspense, useEffect, useMemo, useRef, type ReactNode } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
-import { AnimationMixer, LoopOnce, LoopRepeat, Mesh, Quaternion, SkinnedMesh, Vector3, type AnimationAction, type Bone, type Group, type Object3D } from 'three';
+import { AnimationMixer, BufferAttribute, Color, LoopOnce, LoopRepeat, Matrix4, Mesh, MeshStandardMaterial, Quaternion, SkinnedMesh, Vector3, type AnimationAction, type Bone, type Group, type Object3D } from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { useWorldStore } from './store';
 import { GuideSlopeFit, GuideStopStep, skinnedWorldPoint, type SlopeProbe } from './WorldGuideStop';
-import { GuidePhaseModel, PhaseGate } from './WorldGuidePhase';
+import { GuideInertializer, GuidePhaseModel, PhaseGate, type InertialHalflives } from './WorldGuidePhase';
 
 export interface WorldGuideMotion {
   speedMps: number; grounded: boolean; facing: number; targetSpeedMps?: number;
@@ -34,20 +35,81 @@ const LAND_ADD = .15, LAND_PITCH = .14;
 const FALL_GRACE = .15;
 /** Out-of-band playback (spec 1.2: 0.85-1.2) switches gait at once instead of waiting for a phase match. */
 const RATE_LO = .7, RATE_HI = 1.25;
+/** Below this measured speed a decelerating gait hands over to Idle (stop step places the feet). */
+const STOP_SPEED = .6;
 const _landQ = new Quaternion();
+/** QA A/B only (?qa=1&guideXfade=1): the old crossfade switch, to measure what inertialization changed. */
+const CROSSFADE_AB = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && new URLSearchParams(window.location.search).get('guideXfade') === '1';
+/** Inertialization half-lives (s) per switch kind: legs decay faster than the upper body so a new
+ * clip's foot contacts take over within ~2 frames of 60 Hz while the torso settles over ~0.2 s. */
+const INERT: Record<string, InertialHalflives> = {
+  gait: { legs: .05, body: .09, pelvisPos: .06, planted: .012 },
+  start: { legs: .03, body: .06, pelvisPos: .04, planted: .012 },
+  air: { legs: .06, body: .08, pelvisPos: .06 },
+  land: { legs: .04, body: .08, pelvisPos: .05, planted: .012 },
+  idle: { legs: .06, body: .12, pelvisPos: .08, planted: .012 },
+};
 let decoder: DRACOLoader | null = null;
 const withDecoder = (loader: GLTFLoader) => {
   decoder ??= new DRACOLoader().setDecoderPath('/assets/world/draco/');
   loader.setDRACOLoader(decoder);
 };
 let readActor: (() => Record<string, unknown>) | null = null;
-export const worldGuideDebug = () => readActor?.() ?? { moving: false, running: false, airborne: false, animation: null, animationTime: null, loaded: false };
+
+/** QA frame recorder (worldGuideRecord): per rendered frame, model-space joint positions (for pose-jump
+ * metrics) and world-space rigid-sole vertices near the ground (for stance slip). Off unless started. */
+const recorder: { on: boolean; frames: unknown[]; max: number } = { on: false, frames: [], max: 4000 };
+export const worldGuideRecord = (cmd: 'start' | 'stop' | 'take', max = 4000) => {
+  if (cmd === 'start') { recorder.on = true; recorder.frames = []; recorder.max = max; return true; }
+  if (cmd === 'stop') { recorder.on = false; return recorder.frames.length; }
+  const out = recorder.frames; recorder.frames = []; return out;
+};
+/** QA read (behind the runtime's debug query). actor('record:start'|'record:stop'|'record:take') drives
+ * the per-frame recorder through the existing debug entry, without a new WorldActors field. */
+export const worldGuideDebug = (cmd?: string, max?: number): Record<string, unknown> | unknown[] | number | boolean => {
+  if (cmd === 'record:start') return worldGuideRecord('start', max);
+  if (cmd === 'record:stop') return worldGuideRecord('stop');
+  if (cmd === 'record:take') return worldGuideRecord('take') as unknown[];
+  return readActor?.() ?? { moving: false, running: false, airborne: false, animation: null, animationTime: null, loaded: false };
+};
 
 class GuideBoundary extends Component<{ children: ReactNode; fallback?: ReactNode }, { failed: boolean }> {
   state = { failed: false };
   static getDerivedStateFromError() { return { failed: true }; }
   componentDidCatch(error: unknown) { console.error('[world-guide] G24 could not load', error); }
   render() { return this.state.failed ? this.props.fallback ?? null : this.props.children; }
+}
+
+/**
+ * Draw-call budget (SESSION-RULES 5: character <= 6): the GLB keeps its 8 Art Lock materials (A6/QA
+ * gates identify parts by material). At load, primitives whose materials differ ONLY in base colour
+ * (same roughness 0.80-0.92 band, not metallic, no emission, opaque) are merged into one skinned mesh
+ * with per-vertex colour = that material's base colour, so the shading is unchanged: jacket, sleeve,
+ * pants, glove/boot and hip bag become 1 draw; helmet, visor and the cyan dot keep their own.
+ * 8 -> 4 draws (plus shadow pass).
+ */
+function mergeGuideMaterials(scene: Object3D) {
+  const skinned: SkinnedMesh[] = [];
+  scene.traverse(o => { if (o instanceof SkinnedMesh) skinned.push(o); });
+  const cloth = skinned.filter(m => {
+    const mat = m.material as MeshStandardMaterial;
+    return !Array.isArray(m.material) && mat.roughness >= .79 && mat.roughness <= .93 && mat.metalness === 0 && mat.emissive.getHex() === 0;
+  });
+  if (cloth.length < 2 || cloth.some(m => m.skeleton.bones[0] !== cloth[0].skeleton.bones[0] || m.parent !== cloth[0].parent)) return;
+  const geos = cloth.map(m => {
+    const g = m.geometry.clone(), c = (m.material as MeshStandardMaterial).color, n = g.getAttribute('position').count;
+    const col = new Float32Array(n * 3); for (let i = 0; i < n; i++) col.set([c.r, c.g, c.b], i * 3);
+    g.setAttribute('color', new BufferAttribute(col, 3));
+    return g;
+  });
+  const merged = mergeGeometries(geos, false);
+  if (!merged) return;
+  const base = cloth[0].material as MeshStandardMaterial;
+  const mat = base.clone(); mat.name = 'guide_cloth_merged'; mat.vertexColors = true; mat.color = new Color(1, 1, 1); mat.roughness = .86;
+  const mesh = new SkinnedMesh(merged, mat);
+  mesh.name = 'G24_cloth'; mesh.bind(cloth[0].skeleton, cloth[0].bindMatrix);
+  cloth[0].parent!.add(mesh);
+  for (const m of cloth) m.removeFromParent();
 }
 
 function guideFeet(scene: Object3D) {
@@ -65,6 +127,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
   const stop = useRef<GuideStopStep | null>(null);
   const rig = useMemo(() => {
     const scene = clone(gltf.scene);
+    mergeGuideMaterials(scene);
     scene.traverse(o => { if (o instanceof Mesh) { o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; } });
     const soles: { mesh: SkinnedMesh; indices: number[]; sides: ('left' | 'right')[] }[] = [];
     scene.traverse(o => {
@@ -147,12 +210,12 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       b.userData.landAxis = lateral.clone().applyQuaternion(scene.getWorldQuaternion(new Quaternion())).applyQuaternion(inv).normalize();
       spineBones.push(b);
     } });
-    return { scene, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4), design, contact, slope:new GuideSlopeFit(scene), spineBones,
-      solePoint:new Vector3(), rootPoint:new Vector3(), motionPoint:new Vector3(), previousMotionPoint:new Vector3(), hasMotionSample:false };
+    return { scene, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4), design, contact, slope:new GuideSlopeFit(scene), spineBones, inert:new GuideInertializer(scene),
+      solePoint:new Vector3(), rootPoint:new Vector3(), recPoint:new Vector3(), inverseRoot:new Matrix4(), motionPoint:new Vector3(), previousMotionPoint:new Vector3(), hasMotionSample:false };
   }, [gltf]);
   const state = useRef({ current: 'Idle', speed: 0, grounded: initialGrounded, visible, airSeconds: 0, landing: 0, time: 0,
     pending: '', pendingTime: 0, phaseGateTimeouts: 0, jumpSeq: -1, jumpKind: '' as '' | 'Jump' | 'RunJump', takeoffSpeed: 0,
-    vy: 0, vyPeak: 0, airPhase: 0, lastLand: '', landSpeed: 0, landT: 0, rateOut: 0, slopeOn: false });
+    vy: 0, vyPeak: 0, airPhase: 0, blocked: 0, lastLand: '', landSpeed: 0, landT: 0, rateOut: 0, slopeOn: false });
   useEffect(() => () => { rig.mixer.stopAllAction(); rig.mixer.uncacheRoot(rig.scene); }, [rig]);
   useEffect(() => {
     // Fable's 2026-10-22 acceptance permits this visual stop step in normal play.
@@ -202,7 +265,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         animation: s.current, animationTime: rig.actions[s.current].time, animationTimeScale: rig.actions[s.current].getEffectiveTimeScale(),
         mixerTime: rig.mixer.time, speedMps: s.speed, visible: s.visible, phaseGateTimeouts:s.phaseGateTimeouts,
         pendingAnimation:s.pending, pendingSeconds:s.pendingTime, stopPrototype:!!stop.current, stop:stop.current?.debug()??null,
-        phasePrototype:!!rig.phase, phasePrediction:rig.gate.last, phaseWaitLimit:rig.phase?rig.gate.maxWait:null,
+        budget:(()=>{let draws=0,tris=0;rig.scene.traverse(o=>{if(o instanceof Mesh&&o.visible){const g=o.geometry,m=o.material;draws+=Array.isArray(m)?m.length:1;tris+=(g.index?g.index.count:g.getAttribute('position').count)/3;}});return{draws,triangles:tris};})(),inert:{switches:rig.inert.switches,lastJump:rig.inert.lastJump,residual:rig.inert.residual()},phasePrototype:!!rig.phase, phasePrediction:rig.gate.last, phaseWaitLimit:rig.phase?rig.gate.maxWait:null,
         root: group.current?.getWorldPosition(v).toArray() ?? null, soleCorrection:group.current?.position.y??0, soles, contactVertices };
     };
     readActor = read;
@@ -212,7 +275,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     const world = useWorldStore.getState();
     const s = state.current;
     s.visible = visible;
-    if (!visible) stop.current?.cancel('hidden');
+    if (!visible) { stop.current?.cancel('hidden'); rig.inert.reset(); }
     if (world.paused || world.shot || !visible) return;
     const dt = Math.max(1e-6, Math.min(delta, .08));
     const motion = readMotion?.() ?? { speedMps: initialSpeed, grounded: initialGrounded, facing: initialFacing } as WorldGuideMotion;
@@ -253,11 +316,23 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     s.grounded = grounded;
     s.landing = Math.max(0, s.landing - dt);
     if (s.landing > 0 && s.landing < LAND_DURATION - LAND_LOCK && intent !== 'idle') s.landing = 0;
-    const gaitFor = () => {
+    const isGait = (n: string) => GAITS.includes(n);
+    const gaitFor = CROSSFADE_AB ? () => {
       if (intent === 'idle') return speedMps > D.Run * .55 ? 'Run' : speedMps > .12 ? 'Walk' : 'Idle';
       if (intent === 'run') return speedMps > (D.Run + D.Sprint) / 2 ? 'Sprint' : speedMps > D.Walk * 1.35 ? 'Run' : 'Walk';
       return speedMps > D.Walk * 1.35 ? 'Run' : 'Walk';
+    } : () => {
+      // Gait from the commanded speed (input), not the measured one: a 0.3 s start or stop no longer
+      // passes through two extra clip switches (Idle>Walk>Run, Run>Walk>Idle), each a leg pose change.
+      // The shown gait slows with the body (travel-driven clip time) and hands over to Idle below
+      // STOP_SPEED, where the stop step places the feet. Blocked by a wall (commanded but not moving) -> Idle.
+      const target = targetSpeedMps ?? 0;
+      if (intent === 'idle' || target < .1) return isGait(s.current) && speedMps > STOP_SPEED ? s.current : 'Idle';
+      if (speedMps < .25 && s.blocked > .25) return 'Idle';
+      if (intent === 'run') return target > (D.Run + D.Sprint) / 2 ? 'Sprint' : 'Run';
+      return target > D.Walk * 1.35 ? 'Run' : 'Walk';
     };
+    s.blocked = intent !== 'idle' && (targetSpeedMps ?? 0) > 1 && speedMps < .25 ? s.blocked + dt : 0;
     let desired = s.current;
     if (!grounded && !s.jumpKind && s.airSeconds < FALL_GRACE) desired = s.current.endsWith('Air') || s.current.endsWith('Start') ? gaitFor() : s.current;
     else if (!grounded) {
@@ -269,13 +344,12 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       // as it rose. Not clip time: any flight length shows a valid pose, nothing freezes.
       s.airPhase = Math.min(1, Math.max(0, .5 - .5 * vy / s.vyPeak));
     } else desired = s.landing > 0 ? 'Land' : gaitFor();
-    const isGait = (n: string) => GAITS.includes(n);
     const locomotionSwitch = desired !== s.current && isGait(desired) && isGait(s.current) && grounded;
     if (!locomotionSwitch) rig.gate.clear();
     if (desired !== s.current) {
       const from = rig.actions[s.current], to = rig.actions[desired];
       let entry: number | null = null, canSwitch = true;
-      if (rig.phase && locomotionSwitch) {
+      if (rig.phase && locomotionSwitch && CROSSFADE_AB) {
         const sources = GAITS.filter(name => rig.actions[name].isRunning() && rig.actions[name].getEffectiveWeight()>1e-4)
           .map(name => ({clip:name,time:rig.actions[name].time,weight:rig.actions[name].getEffectiveWeight()}));
         const target = targetSpeedMps ?? D[desired] ?? speedMps;
@@ -304,9 +378,14 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         if(entry!==null)to.time=entry;
         if (desired.endsWith('Air')) { to.paused = true; to.time = s.airPhase * to.getClip().duration; }
         if (desired === 'Land') to.setEffectiveTimeScale(to.getClip().duration / LAND_DURATION);
-        const fade = desired.endsWith('Start') ? .05 : desired.endsWith('Air') ? .06 : desired === 'Land' ? .05
-          : s.lastLand === 'moving' && !isGait(s.current) ? .08 : .10;
-        from.crossFadeTo(to, fade, false);
+        // Inertialized switch (spec 15.4): the new clip is at full weight at once; the on-screen pose
+        // difference is stored and decays (WorldGuidePhase GuideInertializer). No crossfade.
+        if (CROSSFADE_AB) { from.crossFadeTo(to, desired.endsWith('Start') || desired === 'Land' ? .05 : desired.endsWith('Air') ? .06 : .1, false); } else {
+        from.stop();
+        // contact of the destination clip at its entry frame (clip contact curves, as authored)
+        const m = rig.contact[desired], fr = m ? Math.min(m.frames, Math.max(0, Math.round(to.time / to.getClip().duration * m.frames))) : 0;
+        rig.inert.begin(INERT[desired.endsWith('Start') ? 'start' : desired.endsWith('Air') ? 'air' : desired === 'Land' ? 'land' : isGait(desired) ? 'gait' : 'idle'],
+          { L: !!m && (m.L[fr] ?? 0) > .5, R: !!m && (m.R[fr] ?? 0) > .5 }); }
         if (!desired.endsWith('Air')) for (const n of ['JumpAir', 'RunJumpAir']) if (n !== desired) rig.actions[n].paused = false;
         s.current = desired;s.pending='';s.pendingTime=0;
         if (isGait(desired)) s.lastLand = s.lastLand === 'moving' ? 'moving-entered' : '';
@@ -320,8 +399,10 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     for (const g of GAITS) rig.actions[g].setEffectiveTimeScale(rig.phase ? rig.phase.timeScale(g,rig.actions[g].time,travel,dt,'contact') : travel / (dt * D[g]));
     // Playback rate of the shown gait relative to its authored speed (spec 1.2: 0.85-1.2 in steady motion).
     s.rateOut = isGait(s.current) ? speedMps / D[s.current] : 0;
-    stop.current?.preUpdate({ animation:s.current, grounded, speedMps, facing, visible });
+    stop.current?.preUpdate({ animation:s.current, grounded, speedMps, facing, visible, wantsMove: CROSSFADE_AB ? undefined : intent !== 'idle' });
+    rig.inert.capture();
     rig.mixer.update(dt); s.time += dt;
+    rig.inert.apply(dt);
     if (group.current) {
       group.current.rotation.y = facing;
       group.current.updateWorldMatrix(true, true);
@@ -381,6 +462,24 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         });
       }
       group.current.position.y=grounded&&Number.isFinite(minSole)?Math.min(.025,Math.max(0,.0015-minSole)):0;
+      if (recorder.on && recorder.frames.length < recorder.max) {
+        group.current.updateWorldMatrix(true, true);
+        const inv = rig.inverseRoot.copy(group.current.matrixWorld).invert();
+        const joints: number[] = [];
+        for (const b of rig.inert.bones) { b.getWorldPosition(rig.recPoint).applyMatrix4(inv); joints.push(+rig.recPoint.x.toFixed(4), +rig.recPoint.y.toFixed(4), +rig.recPoint.z.toFixed(4)); }
+        const soles: number[][] = [];
+        const rootW = group.current.getWorldPosition(rig.rootPoint);
+        rig.soles.forEach(({ mesh, indices, sides }, mi) => indices.forEach((i, k) => {
+          skinnedWorldPoint(mesh, i, rig.solePoint);
+          const g = rig.slope.legs[sides[k]].plane ? rig.slope.groundAt(sides[k], rig.solePoint.x, rig.solePoint.z) : null;
+          const h = g === null ? rig.solePoint.y - (rootW.y - group.current!.position.y) : rig.solePoint.y - g;
+          if (h < .1) soles.push([(sides[k] === 'left' ? 0 : 1000000) + mi * 10000 + i, +rig.solePoint.x.toFixed(4), +rig.solePoint.z.toFixed(4), +h.toFixed(4)]);
+        }));
+        const res = rig.inert.residual();
+        recorder.frames.push({ t: +s.time.toFixed(4), dt: +dt.toFixed(4), anim: s.current, at: +rig.actions[s.current].time.toFixed(4), ts: +rig.actions[s.current].getEffectiveTimeScale().toFixed(3), grounded, speed: +speedMps.toFixed(3), facing: +facing.toFixed(4),
+          root: rootW.toArray().map(v => +v.toFixed(4)), joints, soles, inert: [+res.angle.toFixed(4), +res.pelvis.toFixed(4)], switches: rig.inert.switches,
+          contact: rig.slope.legs.left && [+rig.slope.legs.left.contact.toFixed(2), +rig.slope.legs.right.contact.toFixed(2)], lift: +group.current.position.y.toFixed(4) });
+      }
     }
   });
   return <group ref={group} name="world-guide-G24" visible={visible} userData={{ assetId: 'G24', rig: 'custom-L1' }}><primitive object={rig.scene} /></group>;
