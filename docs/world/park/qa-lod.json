@@ -1332,5 +1332,7 @@
    "sleeping": false
   },
   "errors": []
- }
+ },
+ "snapshotCommit": "6763657",
+ "followUp": "P04 now uses shared generator: 766/146 triangles (19.1 percent), see qa-P04-shared.json and qa-P04-runtime.json. Other LOD groups unchanged."
 }

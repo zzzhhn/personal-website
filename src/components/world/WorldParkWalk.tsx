@@ -6,6 +6,7 @@ import { BOARDWALK_POINTS, BOARDWALK_WIDTH } from './layout';
 import { ParkGeo, clipHalf, hash, parkMaterial, parkNight, plankPoly, slab, type P2 } from './WorldParkKit';
 import { DECK_Y, HUTS, HUT_FRONT_Z } from './WorldParkLayout';
 import { isWorldRunning } from './WorldWind';
+import { PARK_LAMP } from './WorldParkLamp';
 import type { Vec3 } from './types';
 
 /**
@@ -198,7 +199,7 @@ export function buildWalk(low = false) {
 /* ------------------------------------------------------------------ P03 / P04 knockables */
 
 const KNOCK_RESET_S = 30, FADE_S = 1.2;
-type KnockSpec = { half: Vec3; offset: Vec3; mass: number };
+type KnockSpec = { half?: Vec3; offset?: Vec3; mass: number };
 function railGeometry() {
   // 2.0 m section (scaled along z per instance): two posts, top handrail, mid rail, post caps.
   const g = new ParkGeo(), L = 2.0;
@@ -211,33 +212,14 @@ function railGeometry() {
   g.box([0, 0.2, 0], [0.04, 0.05, L - 0.1], '#9C7A58');
   return { geometry: g.build(), triangles: g.triangles };
 }
-function lampGeometry() {
-  // Wooden post on a cross foot, bracket, brass-capped frosted lantern (warm, no light source).
-  const g = new ParkGeo();
-  g.box([0, 0.05, 0], [0.36, 0.1, 0.1], '#5A4634', { inset: 0.015 });
-  g.box([0, 0.05, 0], [0.1, 0.1, 0.36], '#5A4634', { inset: 0.015 });
-  g.cyl([0, 0.12, 0], [0, 2.75, 0], 0.07, 0.055, 8, '#8E6E55', { smooth: true });
-  g.box([0, 2.62, 0.16], [0.05, 0.05, 0.36], '#5A4634');
-  g.cyl([0, 2.5, 0.0], [0, 2.62, 0.3], 0.018, 0.018, 6, '#5E5B57');
-  g.cyl([0, 2.78, 0], [0, 2.82, 0], 0.09, 0.09, 8, '#B8975A');
-  const hx = 0.32;
-  g.cyl([0, 2.63 - 0.05, hx], [0, 2.63, hx], 0.012, 0.012, 6, '#5E5B57');
-  g.cyl([0, 2.33, hx], [0, 2.36, hx], 0.1, 0.1, 8, '#B8975A');
-  g.cyl([0, 2.36, hx], [0, 2.56, hx], 0.085, 0.085, 8, '#FFE2B0', { emit: [0.35, 2.4], smooth: true });
-  g.cyl([0, 2.56, hx], [0, 2.6, hx], 0.11, 0.11, 8, '#B8975A');
-  g.cyl([0, 2.6, hx], [0, 2.68, hx], 0.11, 0.02, 8, '#B8975A', { smooth: true });
-  for (let k = 0; k < 4; k++) { const a = k * Math.PI / 2 + Math.PI / 4; g.box([Math.cos(a) * 0.085, 2.46, hx + Math.sin(a) * 0.085], [0.018, 0.22, 0.018], '#B8975A', { yaw: -a }); }
-  return { geometry: g.build(), triangles: g.triangles };
-}
-
-type KState = { pos: Vec3; yaw: number; knocked: number | null; fade: number };
+type KState = { pos: Vec3; yaw: number; knocked: number | null; fade: number; reset: boolean };
 /** QA listing of every park knockable (?qa=1 exposes it as window.__parkKnock()). */
 const knockQa = new Map<string, () => { id: string; home: Vec3; position: Vec3 | null; knocked: boolean; fade: number; sleeping: boolean | null }[]>();
 export const parkKnockables = () => [...knockQa.values()].flatMap(f => f());
 const lodInstanceQa = new Map<string, () => unknown>();
 /** Sleeping dynamic props (spec 15 / PRD 4.3): woken only by contact; 30 s after being knocked they
  * dither out, reset to their home pose asleep, and dither back in. One instanced draw per kind. */
-export function Knockables({ name, items, source, farSource, spec, hull, userData }: { name: string; items: { id: string; position: Vec3; yaw: number }[]; source: BufferGeometry; farSource?: BufferGeometry; spec: KnockSpec; hull?: Float32Array; userData?: Record<string, unknown> }) {
+export function Knockables({ name, items, source, farSource, spec, hull, hulls, userData }: { name: string; items: { id: string; position: Vec3; yaw: number }[]; source: BufferGeometry; farSource?: BufferGeometry; spec: KnockSpec; hull?: Float32Array; hulls?: Float32Array[]; userData?: Record<string, unknown> }) {
   const bodies = useRef<(RapierRigidBody | null)[]>(null);
   const mesh = useRef<InstancedMesh>(null), nearMesh = useRef<InstancedMesh>(null), farMesh = useRef<InstancedMesh>(null);
   const states = useRef<KState[]>([]);
@@ -265,10 +247,10 @@ export function Knockables({ name, items, source, farSource, spec, hull, userDat
   const instances = useMemo<InstancedRigidBodyProps[]>(() => items.map(it => ({
     key: it.id, position: it.position, rotation: [0, it.yaw, 0], userData: { obstacle: true, knockable: it.id, assetId: name, ...userData },
   })), [items, name, userData]);
-  useEffect(() => { states.current = items.map(it => ({ pos: it.position, yaw: it.yaw, knocked: null, fade: 1 })); }, [items]);
+  useEffect(() => { states.current = items.map(it => ({ pos: it.position, yaw: it.yaw, knocked: null, fade: 1, reset: false })); }, [items]);
   useEffect(() => {
     knockQa.set(name, () => items.map((it, i) => { const b = bodies.current?.[i], p = b?.translation(), s = states.current[i];
-      return { id: it.id, home: it.position, position: p ? [p.x, p.y, p.z] as Vec3 : null, knocked: s?.knocked !== null, fade: s?.fade ?? 1, sleeping: b?.isSleeping() ?? null }; }));
+      return { id: it.id, home: it.position, position: p ? [p.x, p.y, p.z] as Vec3 : null, knocked: s?.knocked !== null, fade: s?.fade ?? 1, sleeping: b?.isSleeping() ?? null, mass: b?.mass() ?? null, knockedElapsed: s?.knocked ?? null, resetPhaseDone: s?.reset ?? false }; }));
     return () => { knockQa.delete(name); };
   }, [items, name]);
   useEffect(() => {
@@ -310,19 +292,20 @@ export function Knockables({ name, items, source, farSource, spec, hull, userDat
         return;
       }
       const T = (s.knocked += delta);
-      if (T >= KNOCK_RESET_S && s.fade <= 0.001) {
+      if (T >= KNOCK_RESET_S && !s.reset) {
         const h = s.yaw / 2;
         b.setTranslation({ x: s.pos[0], y: s.pos[1], z: s.pos[2] }, false);
         b.setRotation({ x: 0, y: Math.sin(h), z: 0, w: Math.cos(h) }, false);
-        b.setLinvel({ x: 0, y: 0, z: 0 }, false); b.setAngvel({ x: 0, y: 0, z: 0 }, false); b.sleep();
+        b.setLinvel({ x: 0, y: 0, z: 0 }, false); b.setAngvel({ x: 0, y: 0, z: 0 }, false); b.sleep(); s.reset = true;
       }
       s.fade = T < KNOCK_RESET_S - FADE_S ? 1 : T < KNOCK_RESET_S ? Math.max(0, (KNOCK_RESET_S - T) / FADE_S) : Math.min(1, (T - KNOCK_RESET_S) / FADE_S);
-      if (T >= KNOCK_RESET_S + FADE_S) { s.knocked = null; s.fade = 1; }
+      if (T >= KNOCK_RESET_S + FADE_S) { s.knocked = null; s.fade = 1; s.reset = false; }
     });
     syncVisuals(camera);
   });
   return <group name={`park-${name}-lod-instances`}><InstancedRigidBodies ref={bodies} instances={instances} colliders={false} canSleep linearDamping={0.08} angularDamping={0.25}
-    colliderNodes={[hull ? <ConvexHullCollider key="h" args={[hull]} mass={spec.mass} friction={0.8} restitution={0.08} /> : <CuboidCollider key="c" args={spec.half} position={spec.offset} mass={spec.mass} friction={0.8} restitution={0.08} />]}>
+    colliderNodes={hulls?.length ? hulls.map((points, i) => <ConvexHullCollider key={`h-${i}`} args={[points]} mass={spec.mass / hulls.length} friction={0.8} restitution={0.08} />)
+      : [hull ? <ConvexHullCollider key="h" args={[hull]} mass={spec.mass} friction={0.8} restitution={0.08} /> : <CuboidCollider key="c" args={spec.half!} position={spec.offset} mass={spec.mass} friction={0.8} restitution={0.08} />]}>
     <instancedMesh ref={mesh} name={`park-${name}-physics-proxy`} args={[geometry, material, items.length]} visible={false} frustumCulled={false}
       userData={{ noOcclusionFade: true, assetId: name }} />
   </InstancedRigidBodies>
@@ -332,7 +315,7 @@ export function Knockables({ name, items, source, farSource, spec, hull, userDat
 }
 
 export const RAIL = { ...railGeometryCached(), far: farRail(), spec: { half: [0.06, 0.48, 1.0] as Vec3, offset: [0, 0.48, 0] as Vec3, mass: 40 } };
-export const LAMP = { ...lampGeometryCached(), far: farLamp(), spec: { half: [0.12, 1.4, 0.12] as Vec3, offset: [0, 1.4, 0.05] as Vec3, mass: 45 } };
+export const LAMP = PARK_LAMP;
 function farRail() {
   const g = new ParkGeo();
   const member = (center: Vec3, size: Vec3, axis: number, color: string) => {
@@ -348,9 +331,7 @@ function farRail() {
   member([0, .95, 0], [.12, .1, 2], 2, '#B99469');
   return g.build();
 }
-function farLamp() { const g = new ParkGeo(); g.cyl([0, 0, 0], [0, 2.63, 0], .07, .055, 6, '#8E6E55'); g.box([0, 2.5, .25], [.17, .22, .17], '#FFE2B0', { emit: [.35, 2.4] }); return g.build(); }
 function railGeometryCached() { return railGeometry(); }
-function lampGeometryCached() { return lampGeometry(); }
 
 /** Warm ground pools under every lamp: one additive draw of flat quads, intensity follows night. */
 export function LampPools({ lamps, extra = [] }: { lamps: LampPost[]; extra?: { position: Vec3; radius: number }[] }) {
@@ -362,7 +343,7 @@ export function LampPools({ lamps, extra = [] }: { lamps: LampPost[]; extra?: { 
     const tex = new CanvasTexture(c);
     const pos: number[] = [], uv: number[] = [], R = 1.7;
     for (const l of lamps) {
-      const cx = l.position[0] + Math.sin(l.yaw) * 0.32, cz = l.position[2] + Math.cos(l.yaw) * 0.32, y = DECK_Y + 0.012;
+      const cx = l.position[0], cz = l.position[2], y = DECK_Y + 0.012;
       const q = [[cx - R, cz - R, 0, 0], [cx + R, cz - R, 1, 0], [cx + R, cz + R, 1, 1], [cx - R, cz + R, 0, 1]];
       for (const k of [0, 2, 1, 0, 3, 2]) { pos.push(q[k][0], y, q[k][1]); uv.push(q[k][2], q[k][3]); }
     }

@@ -85,3 +85,7 @@
 - 可撞栏/灯的物理实例保持原顺序和原几何的碰撞；可见实例另行压紧到近/远两批，远批采用外形代理，保持远景三角≤近景30%。小凳/箱在60m外剔除视觉，刚体仍保留。
 - 定向诊断P14 crate、P15 body、P18 board，分别比较原生未焊接、原生同阈值焊接、Draco回读相同诊断；保留原警告和问题边坐标，不把独立接触壳诊断直接改成0。
 - 同一signs生成器增加F04小款：板面0.78×0.46m，下沿0.55m，其他结构沿用P05/P19；预估720三角。F04由主线程接入street，本会话不改street文件。
+
+## 10. P04共同灯具生成器收口（2026-10-24）
+
+P04直接调用`WorldStreetAssets.lampGeometry`，与G10/G11同源：`height=2.6, arm=0, pole=woodMid, base=woodDark, cyanRing=false`；近/远都传该生成器lod参数。转接仅保留position/normal/color，将aMat glow=1转为park aEmit暖光；不新增光源。碰撞采用同一LOD0 Builder.hulls()多部件，45kg总质量按壳均分，废弃原0.12半宽的大盒。仅补P04的结构、近/远比例、人车撞击和30秒淡出复位。
