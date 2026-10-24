@@ -1,13 +1,18 @@
 ---
 import { getCollection } from 'astro:content';
 import WorldApp from '../components/world/WorldApp';
-import { EXPERIENCES } from '../lib/i18n';
+import { EXPERIENCES, UI } from '../lib/i18n';
 import { BUILDINGS } from '../components/world/layout';
-import type { WorldContent, WorldExperience } from '../components/world/types';
+import type { WorldAbout, WorldContent } from '../components/world/types';
 // The homepage's bilingual timeline is the sole source for the six buildings.
-const chronological = (entries: readonly WorldExperience[]) => [...entries]
+// Card fields (location, highlights, ...) are copied through unchanged so world cards never retype facts.
+type SourceExperience = { organization: string; role: string; startDate: string; endDate?: string; location?: string; type?: string; highlights?: readonly string[]; techStack?: readonly string[] };
+const chronological = (entries: readonly SourceExperience[]) => [...entries]
   .sort((a, b) => a.startDate.localeCompare(b.startDate))
-  .map(({ organization, role, startDate }) => ({ organization, role, startDate }));
+  .map(({ organization, role, startDate, endDate, location, type, highlights, techStack }) => ({
+    organization, role, startDate, endDate, location, type,
+    highlights: highlights ? [...highlights] : undefined, techStack: techStack ? [...techStack] : undefined,
+  }));
 const experiences: WorldContent['experiences'] = {
   en: chronological(EXPERIENCES.en),
   zh: chronological(EXPERIENCES.zh),
@@ -18,10 +23,27 @@ if (experiences.en.length !== BUILDINGS.length || experiences.zh.length !== BUIL
   experiences.zh.some(entry => !entry.organization || !entry.role || !entry.startDate)) {
   throw new Error('The world requires six complete, date-aligned bilingual experience slots.');
 }
-const projects = (await getCollection('projects')).map(({ data }) => ({
+const isoDay = (d?: Date) => (d ? d.toISOString().slice(0, 10) : undefined);
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order).map(({ data }) => ({
   slug: data.slug, title: data.title, titleZh: data.titleZh,
   tagline: data.tagline, taglineZh: data.taglineZh, maintenance: data.maintenance,
+  description: data.description, descriptionZh: data.descriptionZh,
+  highlights: data.highlights, highlightsZh: data.highlightsZh, techStack: data.techStack,
+  maturity: data.maturity, date: isoDay(data.date), endDate: isoDay(data.endDate), links: data.links,
 }));
+// About-camp cards read the same UI fields as the homepage About / Education sections.
+const about: WorldAbout = {
+  tagline: UI.hero.tagline, positioning: UI.hero.positioning, bio: [...UI.about.bio],
+  techCategories: { en: UI.about.techCategories.en.map(c => ({ label: c.label, items: [...c.items] })), zh: UI.about.techCategories.zh.map(c => ({ label: c.label, items: [...c.items] })) },
+  education: {
+    school: UI.education.school, degree: UI.education.degree, period: UI.education.period, expectedGrad: UI.education.expectedGrad,
+    awards: { en: UI.education.awards.en.map(a => ({ label: a.label })), zh: UI.education.awards.zh.map(a => ({ label: a.label })) },
+    certificates: { en: [...UI.education.certificates.en], zh: [...UI.education.certificates.zh] },
+    languages: { en: UI.education.languages.en.map(l => ({ ...l })), zh: UI.education.languages.zh.map(l => ({ ...l })) },
+    courses: { en: [...UI.education.courses.en], zh: [...UI.education.courses.zh] },
+  },
+  sections: { about: UI.sections.about, education: UI.sections.education, experience: UI.sections.experience, projects: UI.sections.projects, certificates: UI.sections.certificates, languages: UI.sections.languages },
+};
 ---
 <!doctype html>
 <html lang="en" data-site-lang="en" data-theme="dark">
@@ -36,7 +58,7 @@ const projects = (await getCollection('projects')).map(({ data }) => ({
     <script is:inline>try{var lang=localStorage.getItem('lang')==='zh'?'zh':'en';document.documentElement.dataset.siteLang=lang;document.documentElement.lang=lang==='zh'?'zh-CN':'en'}catch{}</script>
   </head>
   <body>
-    <WorldApp client:only="react" content={{ experiences, projects }} />
+    <WorldApp client:only="react" content={{ experiences, projects, about }} />
     <noscript><p style="color:#fff;padding:2rem">Enable JavaScript on desktop to enter the island. <a href="/" style="color:#4fd1c5">Back to portfolio</a></p></noscript>
   </body>
 </html>
