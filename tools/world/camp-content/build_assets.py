@@ -219,7 +219,7 @@ def outline_slab(outline, t, edge, x0=0.0):
     return bm
 
 
-def guitar_outline(samples=22):
+def guitar_outline(samples=18):
     """Acoustic body half-width w(z) as a smooth union of lower / upper bouts; returns CCW loop."""
     lower, upper = (0.19, 0.19), (0.145, 0.465)    # (radius, centre z)
     z0, z1 = lower[1] - lower[0], upper[1] + upper[0]
@@ -285,25 +285,25 @@ def build_C12():
     # stand: cradle (rubber-padded U), two splayed front legs, a mast parallel to the guitar back with a
     # padded neck yoke (built in the guitar's pre-lean frame, then leaned with it), and a rear leg.
     CZ = LIFT - 0.012
-    stand.add(strut((0.07, -0.15, CZ), (0.07, 0.15, CZ), 0.012, 0.012, 10), 'iron_dark')
+    stand.add(strut((0.07, -0.15, CZ), (0.07, 0.15, CZ), 0.012, 0.012, 8), 'iron_dark')
     for s_ in (-1, 1):
-        stand.add(strut((0.07, s_ * 0.15, CZ), (0.07, s_ * 0.15, CZ + 0.06), 0.012, 0.012, 10), 'iron_dark')
-        stand.add(strut((0.07, s_ * 0.15, CZ + 0.055), (0.07, s_ * 0.15, CZ + 0.085), 0.017, 0.017, 10), 'rubber')
-        stand.add(strut((0.07, s_ * 0.1, CZ), (0.17, s_ * 0.23, 0.0), 0.011, 0.011, 10), 'iron_dark')
+        stand.add(strut((0.07, s_ * 0.15, CZ), (0.07, s_ * 0.15, CZ + 0.06), 0.012, 0.012, 8), 'iron_dark')
+        stand.add(strut((0.07, s_ * 0.15, CZ + 0.055), (0.07, s_ * 0.15, CZ + 0.085), 0.017, 0.017, 8), 'rubber')
+        stand.add(strut((0.07, s_ * 0.1, CZ), (0.17, s_ * 0.23, 0.0), 0.011, 0.011, 8), 'iron_dark')
         stand.add(sphere((0.17, s_ * 0.23, 0.012), 0.016, 10, 6), 'rubber')
     mast = Part('tmp')
     MX, MZ = -T / 2 - 0.03, 0.74                      # pre-lean frame
-    mast.add(strut((MX, 0, -0.02), (MX, 0, MZ), 0.013, 0.012, 10), 'iron_dark')
+    mast.add(strut((MX, 0, -0.02), (MX, 0, MZ), 0.013, 0.012, 8), 'iron_dark')
     for s_ in (-1, 1):
         mast.add(strut((MX, 0, MZ), (MX + 0.02, s_ * 0.045, MZ + 0.012), 0.009, 0.009, 8), 'iron_dark')
-        mast.add(strut((MX + 0.02, s_ * 0.045, MZ + 0.012), (T / 2 - 0.02, s_ * 0.045, MZ + 0.012), 0.012, 0.012, 10), 'rubber')
+        mast.add(strut((MX + 0.02, s_ * 0.045, MZ + 0.012), (T / 2 - 0.02, s_ * 0.045, MZ + 0.012), 0.012, 0.012, 8), 'rubber')
     rot = Matrix.Rotation(LEAN, 3, 'Y')
     bmesh.ops.rotate(mast.bm, verts=mast.bm.verts, cent=(0, 0, 0), matrix=rot)
     bmesh.ops.translate(mast.bm, verts=mast.bm.verts, vec=(0.0, 0, LIFT))
     low = rot @ Vector((MX, 0, -0.02)) + Vector((0, 0, LIFT))
     stand.merge(mast)
-    stand.add(strut((0.07, 0, CZ), (low.x, 0, low.z), 0.011, 0.011, 10), 'iron_dark')
-    stand.add(strut((low.x, 0, low.z), (-0.36, 0, 0.0), 0.011, 0.011, 10), 'iron_dark')
+    stand.add(strut((0.07, 0, CZ), (low.x, 0, low.z), 0.011, 0.011, 8), 'iron_dark')
+    stand.add(strut((low.x, 0, low.z), (-0.36, 0, 0.0), 0.011, 0.011, 8), 'iron_dark')
     stand.add(sphere((-0.36, 0, 0.012), 0.016, 10, 6), 'rubber')
     root, objs, shift = finalize('C12', [gtr, strings, stand],
         part_extras={'C12_strings': {'role': 'feedback-vibrate', 'pivot': 'asset origin; scale local X about the string plane'}},
@@ -322,12 +322,12 @@ def build_C13():
         bm = strut((0, y_in, a), (0, y_out, a), R, R, 6, bevel=0.007, rot=math.pi / 6)
         db.add(bm, 'rubber')
         # steel end cap and inner collar
-        db.add(strut((0, y_out, a), (0, y_out + s * 0.004, a), 0.03, 0.026, 16), 'steel')
-        db.add(strut((0, y_in - s * 0.012, a), (0, y_in + s * 0.002, a), 0.026, 0.026, 16, bevel=0.002), 'steel')
+        db.add(strut((0, y_out, a), (0, y_out + s * 0.004, a), 0.03, 0.026, 12), 'steel')
+        db.add(strut((0, y_in - s * 0.012, a), (0, y_in + s * 0.002, a), 0.026, 0.026, 12, bevel=0.002), 'steel')
     # knurled handle: core plus four shallow rings for grip
-    db.add(strut((0, -(HW - HL) + 0.010, a), (0, (HW - HL) - 0.010, a), 0.0165, 0.0165, 16), 'steel')
-    for k in range(-2, 3):
-        db.add(xform(torus((0, 0, 0), 0.0165, 0.0022, 16, 4, axis='Y'), loc=(0, k * 0.022, a)), 'iron')
+    db.add(strut((0, -(HW - HL) + 0.010, a), (0, (HW - HL) - 0.010, a), 0.0165, 0.0165, 12), 'steel')
+    for k in range(-1, 2):
+        db.add(xform(torus((0, 0, 0), 0.0165, 0.0024, 12, 4, axis='Y'), loc=(0, k * 0.03, a)), 'iron')
     root, objs, shift = finalize('C13', [db], root_extras={
         'collision': 'pushable: one dynamic convex hull per instance (two instances on the north pad)',
         'massKg': 10.0, 'text': 'none'})
@@ -384,25 +384,25 @@ def build_C15():
 def build_C16():
     frame, glass = Part('C16_frame'), Part('C16_glass')
     # base: fuel tank (lathe), burner collar; glass globe; vented top cap; wire guards; bail handle
-    frame.add(lathe([(0, 0), (0.075, 0), (0.082, 0.012), (0.082, 0.05), (0.07, 0.065), (0.045, 0.072), (0.045, 0.085), (0, 0.085)], 16), 'iron_dark')
-    frame.add(lathe([(0, 0.084), (0.05, 0.084), (0.052, 0.094), (0, 0.094)], 16), 'brass')
-    glass.add(lathe([(0, 0.094), (0.036, 0.094), (0.058, 0.13), (0.062, 0.165), (0.05, 0.205), (0.036, 0.225), (0, 0.225)], 16), 'glass_warm')
-    frame.add(lathe([(0, 0.222), (0.05, 0.222), (0.058, 0.232), (0.04, 0.255), (0.022, 0.262), (0.022, 0.275), (0.03, 0.28), (0, 0.29)], 16), 'iron_dark')
+    frame.add(lathe([(0, 0), (0.075, 0), (0.082, 0.012), (0.082, 0.05), (0.07, 0.065), (0.045, 0.072), (0.045, 0.085), (0, 0.085)], 12), 'iron_dark')
+    frame.add(lathe([(0, 0.084), (0.05, 0.084), (0.052, 0.094), (0, 0.094)], 12), 'brass')
+    glass.add(lathe([(0, 0.094), (0.036, 0.094), (0.058, 0.13), (0.062, 0.165), (0.05, 0.205), (0.036, 0.225), (0, 0.225)], 12), 'glass_warm')
+    frame.add(lathe([(0, 0.222), (0.05, 0.222), (0.058, 0.232), (0.04, 0.255), (0.022, 0.262), (0.022, 0.275), (0.03, 0.28), (0, 0.29)], 12), 'iron_dark')
     for k in range(4):  # four wire guards from collar to cap, bowed around the globe
         a = k * math.pi / 2 + math.pi / 4
         pts = [(0.054, 0.094), (0.072, 0.13), (0.075, 0.165), (0.063, 0.205), (0.05, 0.228)]
         for (r0, z0), (r1, z1) in zip(pts, pts[1:]):
-            frame.add(strut((r0 * math.cos(a), r0 * math.sin(a), z0), (r1 * math.cos(a), r1 * math.sin(a), z1), 0.003, 0.003, 6), 'iron')
-    frame.add(xform(torus((0, 0, 0), 0.074, 0.0035, 20, 4), loc=(0, 0, 0.16)), 'iron')
+            frame.add(strut((r0 * math.cos(a), r0 * math.sin(a), z0), (r1 * math.cos(a), r1 * math.sin(a), z1), 0.003, 0.003, 4), 'iron')
+    frame.add(xform(torus((0, 0, 0), 0.074, 0.0035, 16, 3), loc=(0, 0, 0.16)), 'iron')
     # bail handle: half ring over the top, pivots on side lugs
     for s in (-1, 1):
         frame.add(strut((0, s * 0.08, 0.04), (0, s * 0.09, 0.04), 0.008, 0.008, 8), 'iron_dark')
-    n = 12
+    n = 8
     for i in range(n):
         t0, t1 = math.pi * i / n, math.pi * (i + 1) / n
         p0 = (0, 0.09 * math.cos(t0), 0.04 + 0.27 * math.sin(t0))
         p1 = (0, 0.09 * math.cos(t1), 0.04 + 0.27 * math.sin(t1))
-        frame.add(strut(p0, p1, 0.003, 0.003, 6), 'iron')
+        frame.add(strut(p0, p1, 0.003, 0.003, 4), 'iron')
     # wick knob on the burner
     frame.add(strut((0.045, 0, 0.078), (0.07, 0, 0.078), 0.004, 0.004, 6), 'brass')
     frame.add(strut((0.07, 0, 0.078), (0.076, 0, 0.078), 0.011, 0.011, 10), 'brass')
