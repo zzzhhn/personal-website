@@ -88,7 +88,7 @@ function ParkHuts({ projects }: { projects: WorldProject[] }) {
 function ParkWalk() {
   const walk = useMemo(() => buildWalk(), []), low = useMemo(() => buildWalk(true), []);
   useGreyboxClaim('boardwalk', 'park-plaza');
-  useEffect(() => { if (new URLSearchParams(window.location.search).get('qa') === '1') Object.assign(window, { __parkKnock: parkKnockables, __parkWalk: { deckTris: walk.deckTris, solidTris: walk.solidTris, rails: walk.rails.length, lamps: walk.lamps.length, railTris: RAIL.triangles, lampTris: LAMP.triangles,
+  useEffect(() => { if (new URLSearchParams(window.location.search).get('qa') === '1') Object.assign(window, { __parkKnock: parkKnockables, __parkWalk: { deckTris: walk.deckTris, solidTris: walk.solidTris, rails: walk.rails.length, lamps: walk.lamps.length, railTris: RAIL.triangles, lampTris: LAMP.triangles, lampContract: { source: 'WorldStreetAssets.lampGeometry', arm: 0, height: 2.6, nearTriangles: LAMP.triangles, farTriangles: LAMP.farTriangles, hullCount: LAMP.hulls.length, totalMass: LAMP.spec.mass },
     railList: walk.rails, lampList: walk.lamps,
     huts: HUTS.map(h => ({ id: h.id, slug: h.slug, yaw: h.yaw, front: h.front, opening: h.local(0, 0, HUT_FRONT_Z), inside: h.local(0, 0, -1.6), anchor: h.local(EXHIBIT_ANCHOR[h.id][0], 0, EXHIBIT_ANCHOR[h.id][1]), backOutside: h.local(0, 0, HUT_BACK_Z - 0.6), spurEnd: h.spur?.to ?? h.local(0, 0, HUT_FRONT_Z + 1) })) } }); }, [walk]);
   return <group name="park-walk">
@@ -100,7 +100,7 @@ function ParkWalk() {
       far={<><Batch name={`park-${g.id}-far-deck`} geometry={low.groups[i].deck} deck /><Batch name={`park-${g.id}-far-solid`} geometry={low.groups[i].solid} /></>} />)}
     <WorldSurfaceColliders name="park-walk-surface" items={walk.surfaces} />
     <Knockables name="rail" items={walk.rails} source={RAIL.geometry} farSource={RAIL.far} spec={RAIL.spec} />
-    <Knockables name="lamp" items={walk.lamps} source={LAMP.geometry} farSource={LAMP.far} spec={LAMP.spec} />
+    <Knockables name="lamp" items={walk.lamps} source={LAMP.geometry} farSource={LAMP.far} spec={LAMP.spec} hulls={LAMP.hulls} />
     <ParkLOD id="lamp-pools" center={[64, 1.14, -28]} near={<LampPools lamps={walk.lamps} />} />
   </group>;
 }
