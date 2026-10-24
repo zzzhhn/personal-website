@@ -52,12 +52,28 @@ Allowed licences (spec quality-v3 section 7): CC0, CC BY 4.0, MIT, BSD, Apache-2
 | `7ec85e1fc37df2796413a6f288ecb7d5db87cbfcd7b2976984e74d8c3e6d39d9` | `75_02.amc` |
 | `ac07c21a668b6f888f31e8810b20ba05dfd47ea5a22386e2e8bf55f8f8d1386b` | `75_03.amc` |
 
+### G24 v3d additions (2026-10-24, character session)
+
+Released file `public/assets/world/guide/G24.glb` sha256 `c72a74abcf4c65b2e2e465bf1822e69b74834d8959c6f9decd2f1f0c6367a983` (726,872 bytes Draco; was 0fa1c34f, 410,640 bytes); uncompressed proof `tools/world/guide/out/G24_uncompressed.glb` sha256 `265825dba74af1c293658c476c24f953d04ef36b50912f5f044ca32f3a9206b9`. Mesh, rig and the nine v3c clips are unchanged; six clips are added. Raw files stay in `~/.cache/g24-cmu2` and `~/.cache/g24-100style` (not committed); intermediate `~/.cache/g24-extra/g24_extra_motion.json` from `tools/world/guide/mocap/prepare_extra.py`.
+
+| G24 clip | Source take (frames) | Licence | Changes |
+| --- | --- | --- | --- |
+| SitDown, SitIdle, StandUp | CMU 143_18 "Sit Down And Get Up" (hip-height events: down 0.758 s, seat 1.275 s, rise 2.525 s, stand 2.8 s) | CMU terms (above) | Same rest-offset retarget, Froude time scale and offline contact bake as the jump one-shots; pelvis travel kept relative to the seated frame; SitIdle = 0.6 s of the seated hold, played ping-pong. |
+| TurnL, TurnR | CMU 69_16 / 69_18 "turn in place" (one 89 deg / 99 deg turn each) | CMU terms | Per-frame yaw removed (smoothed 13 frames) and exported as `yawCurve`; the runtime turns the body by the actual angle along that curve. Measured stepping kept; boots only clamped to the floor (no pin). |
+| IdleLook | 100STYLE Neutral_ID.bvh, 10.05-11.9 s (a ~14 deg glance and back) | CC BY 4.0, credit "The 100STYLE Dataset - Ian Mason" (https://ianxmason.github.io/100style/, Zenodo 8127870) | BVH loaded by `bvh_motion.py`; retargeted like the CMU one-shots; feet at the Idle stance. |
+
+Original file hashes (SHA-256): 143_18.amc `569b08c314d08e0d32e0474e2a69fc73f4c340f6cf773b174c06361250e2e9c5`; 69.asf `c3019031ae5789b1d43d3bba424229ac544ccc68bb8c06e7d67bf75b1c41605f`; 69_16.amc `2d9848b05cb7b69e7abe65f5405ec25f4971cfd764707560a3cb8bddad2afe91`; 69_18.amc `ab26d17f420194b74a0434ad1a9ac400f364f839298bb3a10f37e15b98e81429`; 143.asf as above; Neutral_ID.bvh `71aead2e3246bdb47a5b839cb3e60e0574e9a1a046c071cc147e2922a35f259f` (fetched by HTTP range from the Zenodo zip, CRC checked, `fetch_100style.py`). Also downloaded and measured but not used in a clip: 143_02, 143_19, 69_17, 69_19 (CMU), Neutral_TR1 / FW / FR (100STYLE).
+
+Credits text to add (ui session, Esc menu): "Motion: CMU Graphics Lab Motion Capture Database (mocap.cs.cmu.edu, NSF EIA-0196217) and The 100STYLE Dataset - Ian Mason (CC BY 4.0)."
+
+Runtime transitions use inertialization (Bollo, GDC 2018) with critically damped spring decay after Holden's MIT-licensed reference code; the implementation is written here (`WorldGuidePhase.ts` GuideInertializer), no third-party code is copied.
+
 ### Considered, not used
 
 | Resource | Licence | Decision |
 | --- | --- | --- |
 | Quaternius Universal Animation Library (free) | CC0 1.0 | Inspected only; its Jump_Start / Loop / Land split informed the state structure. No data used. |
-| 100STYLE (Zenodo 8127870) | CC BY 4.0 | Allowed, not downloaded this round (1.5 GB); CMU covered every needed motion. |
+| 100STYLE (Zenodo 8127870) | CC BY 4.0 | v3d: Neutral_ID used (IdleLook, above). |
 | Ubisoft LAFAN1 | CC BY-NC-ND 4.0 | Excluded. |
 | Bandai Namco Research Motiondataset | CC BY-NC 4.0 | Excluded. |
 | Mixamo | Adobe terms, free but not open | Not used. |

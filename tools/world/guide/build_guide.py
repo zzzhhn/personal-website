@@ -985,6 +985,8 @@ def bake_clips(ao):
         act['designSpeedMps'] = C['speed']
         act['contactR'] = mask['R']
         act['contactL'] = mask['L']
+        if name in MOCAP and 'yaw_curve' in MOCAP[name][1]:
+            act['yawCurve'] = MOCAP[name][1]['yaw_curve']
         act.frame_range = (0, n)
         report[name] = dict(frames=n, duration_s=n / FPS, loop=C['loop'], designSpeedMps=C['speed'],
                             ik_overstretch_max_m=max_stretch)
@@ -1031,6 +1033,10 @@ def main():
         idle_local = solve_pose(idle(0.0))[0]
         for nm, val in MR.make_oneshot_clips(data, REST, BOOT, consts, solve_pose_world, idle_local, FPS).items():
             MOCAP[nm] = val
+        # v3d: measured extra one-shots (sit / turn in place / idle look), same retarget + contact bake
+        if os.path.exists(MR.EXTRA_SRC) and os.environ.get('G24_EXTRA', '1') != '0':
+            for nm, val in MR.make_oneshot_clips(MR.load_extra(), REST, BOOT, consts, solve_pose_world, idle_local, FPS, MR.EXTRA).items():
+                MOCAP[nm] = val
     rep = bake_clips(ao)
     sc.frame_start, sc.frame_end = 0, 72
     ao['assetId'] = 'G24'
