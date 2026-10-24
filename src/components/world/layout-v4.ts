@@ -843,12 +843,14 @@ export const NETWORK_WALK_V4: Vec3[] = (() => {
 
 /* ------------------------------------------------------------------ QA data for bots */
 
-/** Representative splash points off the new shores (north, west, south-west, south) plus one off
- * the protected east side, ~18 m beyond the control outline (past beach and shelf). */
+/** Representative splash points off the new shores (north, north-west, west, south-west, south), in
+ * deep water: 32 m beyond the control outline, past the widest beach (12 m) plus the longest shelf
+ * (18 m) of WorldLandform's shore profile. (At 18 m some points landed on the ~0.5 m deep shelf, where
+ * the player wades and a car fords, so no recovery is expected there.) */
 export const SHORE_SAMPLES_V4: { id: string; p: P2 }[] = (() => {
   const c: P2 = [-30, -10];
   return ([['north', [-26, -108]], ['north-west', [-72, -76]], ['west', [-99, 12]], ['south-west', [-85, 66]], ['south', [-38, 86]]] as [string, P2][])
-    .map(([id, v]) => ({ id, p: add(v, mul(unit(sub(v, c)), 18)) }));
+    .map(([id, v]) => ({ id, p: add(v, mul(unit(sub(v, c)), 32)) }));
 })();
 export const heading = (d: P2) => Math.atan2(-d[1], d[0]);
 /** Furniture contact fixtures (§12.6): per kind, the first pole whose 12 m straight approach, on the
