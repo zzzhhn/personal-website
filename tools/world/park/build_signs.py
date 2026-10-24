@@ -1,5 +1,5 @@
-"""P05/P19 light-wood-standing-sign family; Blender -Y front, bottom-centred, metres.
-Budget: 1k evaluated triangles for both sizes; pegged frame joints are embedded, not welded.
+"""P05/P19/F04 light-wood-standing-sign family; Blender -Y front, bottom-centred, metres.
+Budget: 2160 evaluated triangles for three sizes; pegged frame joints are embedded, not welded.
 """
 import os, sys
 sys.path.insert(0, os.path.join(os.getcwd(), 'tools/world/park'))
@@ -32,14 +32,18 @@ def sign(name, w, h, z0):
 
 reset_scene()
 roots=[]; objs=[]
-for args in [('P05',2.4,1.3,1.0),('P19',1.1,.72,.7)]:
+for args in [('P05',2.4,1.3,1.0),('P19',1.1,.72,.7),('F04',.78,.46,.55)]:
     root,obj=sign(*args); roots.append(root); objs.append(obj)
 ev=inspect(objs)
 blend,glb=export('signs',roots)
 rb=readback(glb)
-report={'asset':'P05+P19','evaluatedTriangles':ev['triangles'],'bounds':[ev['bounds_min'],ev['bounds_max']], 'problems':ev['problems'],'parts':ev['objects'],'glbReadbackTriangles':rb['triangles'],'readbackBounds':[rb['bounds_min'],rb['bounds_max']],'readbackProblems':rb['problems'],'glbBytes':os.path.getsize(glb),'qaNote':'GLB raw normal/material seams retained. Topology diagnostic welds a disposable imported copy at 1e-5m, as in parklib.'}
+report={'asset':'P05+P19+F04','evaluatedTriangles':ev['triangles'],'bounds':[ev['bounds_min'],ev['bounds_max']], 'problems':ev['problems'],'parts':ev['objects'],'glbReadbackTriangles':rb['triangles'],'readbackBounds':[rb['bounds_min'],rb['bounds_max']],'readbackProblems':rb['problems'],'glbBytes':os.path.getsize(glb),'qaNote':'GLB raw normal/material seams retained. Topology diagnostic welds a disposable imported copy at 1e-5m, as in parklib.'}
+write_json(os.path.join(REPO,'docs/world/park/qa-signs.json'),report)
+report['variants']={name:{'root':name,'body':'body_'+name,'panel':[w,h,z0],'frontFaceGLB':[0,z0+h/2,.0325],'textFaceGLB':[0,z0+h/2,.034],'panelInset':.015} for name,w,h,z0 in [('P05',2.4,1.3,1.0),('P19',1.1,.72,.7),('F04',.78,.46,.55)]}
 write_json(os.path.join(REPO,'docs/world/park/qa-signs.json'),report)
 print('signs',ev['triangles'],rb['triangles'],'problems',len(ev['problems']),len(rb['problems']))
 if '--render' in ARGS:
     os.makedirs(parklib.EVIDENCE+'/signs',exist_ok=True)
-    render_views([o for o in bpy.context.scene.objects if o.type=='MESH'],parklib.EVIDENCE+'/signs/P05-P19',views=('34_front','side'),res=900)
+    for ob in list(bpy.context.scene.objects):
+        if ob.type == 'MESH' and (not ob.parent or ob.parent.name != 'F04'): bpy.data.objects.remove(ob, do_unlink=True)
+    render_views([o for o in bpy.context.scene.objects if o.type=='MESH' and o.parent and o.parent.name=='F04'],parklib.EVIDENCE+'/signs/F04',views=('34_front','side'),res=900)

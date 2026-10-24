@@ -1,0 +1,2580 @@
+[
+ {
+  "asset": "P14",
+  "node": "crate",
+  "rawEvidence": "/Users/bobby/Desktop/3D-personal-world/evidence/park-integration/topology/native-vs-draco.json",
+  "maxNearestVertexDisplacementM": 2.439425221643582e-07,
+  "conclusion": {
+   "nativeUnweldedClosed": true,
+   "nativeSameToleranceReproducesWarning": true,
+   "nativeAndImportedDegenerates": [
+    0,
+    0
+   ],
+   "scope": "Whole-object diagnostic welding merges intentional touching independent structural shells; retain original warnings and raw authored shell topology.",
+   "maxMatchingProblemEdgeEndpointDifferenceM": 2.1900144899933143e-07,
+   "classification": "touching independent closed structural shells reproduced before export"
+  },
+  "native": {
+   "raw": {
+    "triangles": 296,
+    "bounds_min": [
+     -0.75,
+     -0.79,
+     0.0
+    ],
+    "bounds_max": [
+     -0.35,
+     -0.45,
+     0.32
+    ],
+    "objects": [
+     {
+      "name": "crate",
+      "triangles": 296,
+      "shells": 14,
+      "negative_shells": 0,
+      "degenerate_faces": 0,
+      "nonmanifold_edges": 0,
+      "materials": [
+       "park_wood_light",
+       "park_wood_mid",
+       "park_accent_orange",
+       "park_cream_paint",
+       "park_accent_slate",
+       "park_accent_olive"
+      ]
+     }
+    ],
+    "problems": []
+   },
+   "welds": [
+    {
+     "tolerance": 1e-07,
+     "nonmanifold": 24,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         0.2,
+         -0.166,
+         0.296
+        ],
+        [
+         0.2,
+         -0.166,
+         0.024
+        ]
+       ],
+       "faces": 3,
+       "length": 0.2720000147819519
+      },
+      {
+       "endpoints": [
+        [
+         0.196,
+         -0.166,
+         0.02
+        ],
+        [
+         0.2,
+         -0.166,
+         0.024
+        ]
+       ],
+       "faces": 3,
+       "length": 0.005656860303133726
+      },
+      {
+       "endpoints": [
+        [
+         -0.2,
+         0.166,
+         0.296
+        ],
+        [
+         -0.2,
+         0.166,
+         0.024
+        ]
+       ],
+       "faces": 3,
+       "length": 0.2720000147819519
+      },
+      {
+       "endpoints": [
+        [
+         -0.196,
+         0.17,
+         0.024
+        ],
+        [
+         -0.196,
+         0.166,
+         0.02
+        ]
+       ],
+       "faces": 3,
+       "length": 0.005656860303133726
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-06,
+     "nonmanifold": 24,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         0.2,
+         -0.166,
+         0.296
+        ],
+        [
+         0.2,
+         -0.166,
+         0.024
+        ]
+       ],
+       "faces": 3,
+       "length": 0.2720000147819519
+      },
+      {
+       "endpoints": [
+        [
+         0.196,
+         -0.166,
+         0.02
+        ],
+        [
+         0.2,
+         -0.166,
+         0.024
+        ]
+       ],
+       "faces": 3,
+       "length": 0.005656860303133726
+      },
+      {
+       "endpoints": [
+        [
+         -0.2,
+         0.166,
+         0.296
+        ],
+        [
+         -0.2,
+         0.166,
+         0.024
+        ]
+       ],
+       "faces": 3,
+       "length": 0.2720000147819519
+      },
+      {
+       "endpoints": [
+        [
+         -0.196,
+         0.17,
+         0.024
+        ],
+        [
+         -0.196,
+         0.166,
+         0.02
+        ]
+       ],
+       "faces": 3,
+       "length": 0.005656860303133726
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-05,
+     "nonmanifold": 24,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         0.2,
+         -0.166,
+         0.296
+        ],
+        [
+         0.2,
+         -0.166,
+         0.024
+        ]
+       ],
+       "faces": 3,
+       "length": 0.2720000147819519
+      },
+      {
+       "endpoints": [
+        [
+         0.196,
+         -0.166,
+         0.02
+        ],
+        [
+         0.2,
+         -0.166,
+         0.024
+        ]
+       ],
+       "faces": 3,
+       "length": 0.005656860303133726
+      },
+      {
+       "endpoints": [
+        [
+         -0.2,
+         0.166,
+         0.296
+        ],
+        [
+         -0.2,
+         0.166,
+         0.024
+        ]
+       ],
+       "faces": 3,
+       "length": 0.2720000147819519
+      },
+      {
+       "endpoints": [
+        [
+         -0.196,
+         0.17,
+         0.024
+        ],
+        [
+         -0.196,
+         0.166,
+         0.02
+        ]
+       ],
+       "faces": 3,
+       "length": 0.005656860303133726
+      }
+     ]
+    }
+   ]
+  },
+  "draco": {
+   "raw": {
+    "triangles": 296,
+    "bounds_min": [
+     -0.75,
+     -0.79,
+     0.0
+    ],
+    "bounds_max": [
+     -0.35,
+     -0.45,
+     0.32
+    ],
+    "objects": [
+     {
+      "name": "crate",
+      "triangles": 296,
+      "shells": 164,
+      "negative_shells": 163,
+      "degenerate_faces": 0,
+      "nonmanifold_edges": 624,
+      "materials": [
+       "park_wood_light",
+       "park_wood_mid",
+       "park_accent_orange",
+       "park_cream_paint",
+       "park_accent_slate",
+       "park_accent_olive"
+      ]
+     }
+    ],
+    "problems": [
+     {
+      "name": "crate",
+      "triangles": 296,
+      "shells": 164,
+      "negative_shells": 163,
+      "degenerate_faces": 0,
+      "nonmanifold_edges": 624,
+      "materials": [
+       "park_wood_light",
+       "park_wood_mid",
+       "park_accent_orange",
+       "park_cream_paint",
+       "park_accent_slate",
+       "park_accent_olive"
+      ]
+     }
+    ]
+   },
+   "welds": [
+    {
+     "tolerance": 1e-07,
+     "nonmanifold": 24,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         0.1959999,
+         -0.1700001,
+         0.2960001
+        ],
+        [
+         0.1959999,
+         -0.166,
+         0.3000002
+        ]
+       ],
+       "faces": 3,
+       "length": 0.005656992085278034
+      },
+      {
+       "endpoints": [
+        [
+         0.1959999,
+         -0.1700001,
+         0.0240001
+        ],
+        [
+         0.1959999,
+         -0.166,
+         0.02
+        ]
+       ],
+       "faces": 3,
+       "length": 0.005656990688294172
+      },
+      {
+       "endpoints": [
+        [
+         0.2,
+         -0.166,
+         0.2960001
+        ],
+        [
+         0.2,
+         -0.166,
+         0.0240001
+        ]
+       ],
+       "faces": 3,
+       "length": 0.2720000147819519
+      },
+      {
+       "endpoints": [
+        [
+         0.1959999,
+         -0.1700001,
+         0.2960001
+        ],
+        [
+         0.1959999,
+         -0.1700001,
+         0.0240001
+        ]
+       ],
+       "faces": 3,
+       "length": 0.2720000147819519
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-06,
+     "nonmanifold": 24,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         0.1959999,
+         -0.1700001,
+         0.2960001
+        ],
+        [
+         0.1959999,
+         -0.166,
+         0.3000002
+        ]
+       ],
+       "faces": 3,
+       "length": 0.005656992085278034
+      },
+      {
+       "endpoints": [
+        [
+         0.1959999,
+         -0.1700001,
+         0.0240001
+        ],
+        [
+         0.1959999,
+         -0.166,
+         0.02
+        ]
+       ],
+       "faces": 3,
+       "length": 0.005656990688294172
+      },
+      {
+       "endpoints": [
+        [
+         0.2,
+         -0.166,
+         0.2960001
+        ],
+        [
+         0.2,
+         -0.166,
+         0.0240001
+        ]
+       ],
+       "faces": 3,
+       "length": 0.2720000147819519
+      },
+      {
+       "endpoints": [
+        [
+         0.1959999,
+         -0.1700001,
+         0.2960001
+        ],
+        [
+         0.1959999,
+         -0.1700001,
+         0.0240001
+        ]
+       ],
+       "faces": 3,
+       "length": 0.2720000147819519
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-05,
+     "nonmanifold": 24,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         0.1959999,
+         -0.1700001,
+         0.2960001
+        ],
+        [
+         0.1959999,
+         -0.166,
+         0.3000002
+        ]
+       ],
+       "faces": 3,
+       "length": 0.005656992085278034
+      },
+      {
+       "endpoints": [
+        [
+         0.1959999,
+         -0.1700001,
+         0.0240001
+        ],
+        [
+         0.1959999,
+         -0.166,
+         0.02
+        ]
+       ],
+       "faces": 3,
+       "length": 0.005656990688294172
+      },
+      {
+       "endpoints": [
+        [
+         0.2,
+         -0.166,
+         0.2960001
+        ],
+        [
+         0.2,
+         -0.166,
+         0.0240001
+        ]
+       ],
+       "faces": 3,
+       "length": 0.2720000147819519
+      },
+      {
+       "endpoints": [
+        [
+         0.1959999,
+         -0.1700001,
+         0.2960001
+        ],
+        [
+         0.1959999,
+         -0.1700001,
+         0.0240001
+        ]
+       ],
+       "faces": 3,
+       "length": 0.2720000147819519
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "asset": "P15",
+  "node": "body",
+  "rawEvidence": "/Users/bobby/Desktop/3D-personal-world/evidence/park-integration/topology/native-vs-draco.json",
+  "maxNearestVertexDisplacementM": 2.1509382292399192e-06,
+  "conclusion": {
+   "nativeUnweldedClosed": true,
+   "nativeSameToleranceReproducesWarning": true,
+   "nativeAndImportedDegenerates": [
+    0,
+    0
+   ],
+   "scope": "Whole-object diagnostic welding merges intentional touching independent structural shells; retain original warnings and raw authored shell topology.",
+   "maxMatchingProblemEdgeEndpointDifferenceM": 1.0581988567489291e-06,
+   "classification": "touching independent closed structural shells reproduced before export"
+  },
+  "native": {
+   "raw": {
+    "triangles": 1396,
+    "bounds_min": [
+     -1.28,
+     -0.06,
+     0.5
+    ],
+    "bounds_max": [
+     1.28,
+     0.1,
+     2.5
+    ],
+    "objects": [
+     {
+      "name": "body",
+      "triangles": 1396,
+      "shells": 25,
+      "negative_shells": 0,
+      "degenerate_faces": 0,
+      "nonmanifold_edges": 0,
+      "materials": [
+       "park_wood_light",
+       "park_wood_dark",
+       "park_wood_mid",
+       "park_brass_matte"
+      ]
+     }
+    ],
+    "problems": []
+   },
+   "welds": [
+    {
+     "tolerance": 1e-07,
+     "nonmanifold": 4,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         -1.272,
+         0.032,
+         0.56
+        ],
+        [
+         -1.272,
+         -0.022,
+         0.56
+        ]
+       ],
+       "faces": 4,
+       "length": 0.053999997675418854
+      },
+      {
+       "endpoints": [
+        [
+         -1.272,
+         0.032,
+         2.4400001
+        ],
+        [
+         -1.272,
+         -0.022,
+         2.4400001
+        ]
+       ],
+       "faces": 4,
+       "length": 0.053999997675418854
+      },
+      {
+       "endpoints": [
+        [
+         1.272,
+         -0.022,
+         2.4400001
+        ],
+        [
+         1.272,
+         0.032,
+         2.4400001
+        ]
+       ],
+       "faces": 4,
+       "length": 0.053999997675418854
+      },
+      {
+       "endpoints": [
+        [
+         1.272,
+         -0.022,
+         0.56
+        ],
+        [
+         1.272,
+         0.032,
+         0.56
+        ]
+       ],
+       "faces": 4,
+       "length": 0.053999997675418854
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-06,
+     "nonmanifold": 4,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         -1.272,
+         0.032,
+         0.56
+        ],
+        [
+         -1.272,
+         -0.022,
+         0.56
+        ]
+       ],
+       "faces": 4,
+       "length": 0.053999997675418854
+      },
+      {
+       "endpoints": [
+        [
+         -1.272,
+         0.032,
+         2.4400001
+        ],
+        [
+         -1.272,
+         -0.022,
+         2.4400001
+        ]
+       ],
+       "faces": 4,
+       "length": 0.053999997675418854
+      },
+      {
+       "endpoints": [
+        [
+         1.272,
+         -0.022,
+         2.4400001
+        ],
+        [
+         1.272,
+         0.032,
+         2.4400001
+        ]
+       ],
+       "faces": 4,
+       "length": 0.053999997675418854
+      },
+      {
+       "endpoints": [
+        [
+         1.272,
+         -0.022,
+         0.56
+        ],
+        [
+         1.272,
+         0.032,
+         0.56
+        ]
+       ],
+       "faces": 4,
+       "length": 0.053999997675418854
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-05,
+     "nonmanifold": 4,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         -1.272,
+         0.032,
+         0.56
+        ],
+        [
+         -1.272,
+         -0.022,
+         0.56
+        ]
+       ],
+       "faces": 4,
+       "length": 0.053999997675418854
+      },
+      {
+       "endpoints": [
+        [
+         -1.272,
+         0.032,
+         2.4400001
+        ],
+        [
+         -1.272,
+         -0.022,
+         2.4400001
+        ]
+       ],
+       "faces": 4,
+       "length": 0.053999997675418854
+      },
+      {
+       "endpoints": [
+        [
+         1.272,
+         -0.022,
+         2.4400001
+        ],
+        [
+         1.272,
+         0.032,
+         2.4400001
+        ]
+       ],
+       "faces": 4,
+       "length": 0.053999997675418854
+      },
+      {
+       "endpoints": [
+        [
+         1.272,
+         -0.022,
+         0.56
+        ],
+        [
+         1.272,
+         0.032,
+         0.56
+        ]
+       ],
+       "faces": 4,
+       "length": 0.053999997675418854
+      }
+     ]
+    }
+   ]
+  },
+  "draco": {
+   "raw": {
+    "triangles": 1396,
+    "bounds_min": [
+     -1.28,
+     -0.06,
+     0.5
+    ],
+    "bounds_max": [
+     1.28,
+     0.1,
+     2.5
+    ],
+    "objects": [
+     {
+      "name": "body",
+      "triangles": 1396,
+      "shells": 772,
+      "negative_shells": 585,
+      "degenerate_faces": 0,
+      "nonmanifold_edges": 2940,
+      "materials": [
+       "park_wood_light",
+       "park_wood_dark",
+       "park_wood_mid",
+       "park_brass_matte"
+      ]
+     }
+    ],
+    "problems": [
+     {
+      "name": "body",
+      "triangles": 1396,
+      "shells": 772,
+      "negative_shells": 585,
+      "degenerate_faces": 0,
+      "nonmanifold_edges": 2940,
+      "materials": [
+       "park_wood_light",
+       "park_wood_dark",
+       "park_wood_mid",
+       "park_brass_matte"
+      ]
+     }
+    ]
+   },
+   "welds": [
+    {
+     "tolerance": 1e-07,
+     "nonmanifold": 747,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         1.2140012,
+         0.04,
+         2.4340003
+        ],
+        [
+         1.22,
+         0.0340011,
+         2.4340003
+        ]
+       ],
+       "faces": 1,
+       "length": 0.008483707904815674
+      },
+      {
+       "endpoints": [
+        [
+         -1.22,
+         0.0060007,
+         2.4340003
+        ],
+        [
+         -1.22,
+         0.0340011,
+         2.4340003
+        ]
+       ],
+       "faces": 1,
+       "length": 0.028000399470329285
+      },
+      {
+       "endpoints": [
+        [
+         -1.22,
+         0.0060007,
+         2.4340003
+        ],
+        [
+         -1.2140011,
+         0.0060007,
+         2.4400015
+        ]
+       ],
+       "faces": 1,
+       "length": 0.008485425263643265
+      },
+      {
+       "endpoints": [
+        [
+         -1.2140011,
+         0.0340011,
+         2.4400015
+        ],
+        [
+         -1.22,
+         0.0340011,
+         2.4340003
+        ]
+       ],
+       "faces": 1,
+       "length": 0.008485425263643265
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-06,
+     "nonmanifold": 4,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         1.2719994,
+         -0.0219996,
+         2.4399993
+        ],
+        [
+         1.2719994,
+         0.0319995,
+         2.4399993
+        ]
+       ],
+       "faces": 4,
+       "length": 0.05399907007813454
+      },
+      {
+       "endpoints": [
+        [
+         -1.2719995,
+         -0.0219996,
+         0.5600001
+        ],
+        [
+         -1.2719995,
+         0.0319995,
+         0.5600001
+        ]
+       ],
+       "faces": 4,
+       "length": 0.05399907007813454
+      },
+      {
+       "endpoints": [
+        [
+         -1.2719995,
+         -0.0219996,
+         2.4399993
+        ],
+        [
+         -1.2719995,
+         0.0319995,
+         2.4399993
+        ]
+       ],
+       "faces": 4,
+       "length": 0.05399907007813454
+      },
+      {
+       "endpoints": [
+        [
+         1.2719994,
+         0.0319995,
+         0.5600001
+        ],
+        [
+         1.2719994,
+         -0.0219996,
+         0.5600001
+        ]
+       ],
+       "faces": 4,
+       "length": 0.05399907007813454
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-05,
+     "nonmanifold": 4,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         1.2719994,
+         -0.0219996,
+         2.4399993
+        ],
+        [
+         1.2719994,
+         0.0319995,
+         2.4399993
+        ]
+       ],
+       "faces": 4,
+       "length": 0.05399907007813454
+      },
+      {
+       "endpoints": [
+        [
+         -1.2719995,
+         -0.0219996,
+         0.5600001
+        ],
+        [
+         -1.2719995,
+         0.0319995,
+         0.5600001
+        ]
+       ],
+       "faces": 4,
+       "length": 0.05399907007813454
+      },
+      {
+       "endpoints": [
+        [
+         -1.2719995,
+         -0.0219996,
+         2.4399993
+        ],
+        [
+         -1.2719995,
+         0.0319995,
+         2.4399993
+        ]
+       ],
+       "faces": 4,
+       "length": 0.05399907007813454
+      },
+      {
+       "endpoints": [
+        [
+         1.2719994,
+         0.0319995,
+         0.5600001
+        ],
+        [
+         1.2719994,
+         -0.0219996,
+         0.5600001
+        ]
+       ],
+       "faces": 4,
+       "length": 0.05399907007813454
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "asset": "P18",
+  "node": "board",
+  "rawEvidence": "/Users/bobby/Desktop/3D-personal-world/evidence/park-integration/topology/native-vs-draco.json",
+  "maxNearestVertexDisplacementM": 1.5634861865778251e-06,
+  "conclusion": {
+   "nativeUnweldedClosed": true,
+   "nativeSameToleranceReproducesWarning": true,
+   "nativeAndImportedDegenerates": [
+    0,
+    0
+   ],
+   "scope": "Whole-object diagnostic welding merges intentional touching independent structural shells; retain original warnings and raw authored shell topology.",
+   "maxMatchingProblemEdgeEndpointDifferenceM": 1.3164685208778967e-06,
+   "classification": "touching independent closed structural shells reproduced before export"
+  },
+  "native": {
+   "raw": {
+    "triangles": 188,
+    "bounds_min": [
+     -1.05,
+     -0.032,
+     0.9
+    ],
+    "bounds_max": [
+     1.05,
+     0.032,
+     2.1
+    ],
+    "objects": [
+     {
+      "name": "board",
+      "triangles": 188,
+      "shells": 5,
+      "negative_shells": 0,
+      "degenerate_faces": 0,
+      "nonmanifold_edges": 0,
+      "materials": [
+       "park_chalkboard",
+       "park_wood_mid"
+      ]
+     }
+    ],
+    "problems": []
+   },
+   "welds": [
+    {
+     "tolerance": 1e-07,
+     "nonmanifold": 4,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         -1.0419999,
+         0.024,
+         -0.55
+        ],
+        [
+         -1.0419999,
+         -0.024,
+         -0.55
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04800000041723251
+      },
+      {
+       "endpoints": [
+        [
+         1.0419999,
+         -0.024,
+         0.55
+        ],
+        [
+         1.0419999,
+         0.024,
+         0.55
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04800000041723251
+      },
+      {
+       "endpoints": [
+        [
+         -1.0419999,
+         0.024,
+         0.55
+        ],
+        [
+         -1.0419999,
+         -0.024,
+         0.55
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04800000041723251
+      },
+      {
+       "endpoints": [
+        [
+         1.0419999,
+         -0.024,
+         -0.55
+        ],
+        [
+         1.0419999,
+         0.024,
+         -0.55
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04800000041723251
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-06,
+     "nonmanifold": 4,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         -1.0419999,
+         0.024,
+         -0.55
+        ],
+        [
+         -1.0419999,
+         -0.024,
+         -0.55
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04800000041723251
+      },
+      {
+       "endpoints": [
+        [
+         1.0419999,
+         -0.024,
+         0.55
+        ],
+        [
+         1.0419999,
+         0.024,
+         0.55
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04800000041723251
+      },
+      {
+       "endpoints": [
+        [
+         -1.0419999,
+         0.024,
+         0.55
+        ],
+        [
+         -1.0419999,
+         -0.024,
+         0.55
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04800000041723251
+      },
+      {
+       "endpoints": [
+        [
+         1.0419999,
+         -0.024,
+         -0.55
+        ],
+        [
+         1.0419999,
+         0.024,
+         -0.55
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04800000041723251
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-05,
+     "nonmanifold": 4,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         -1.0419999,
+         0.024,
+         -0.55
+        ],
+        [
+         -1.0419999,
+         -0.024,
+         -0.55
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04800000041723251
+      },
+      {
+       "endpoints": [
+        [
+         1.0419999,
+         -0.024,
+         0.55
+        ],
+        [
+         1.0419999,
+         0.024,
+         0.55
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04800000041723251
+      },
+      {
+       "endpoints": [
+        [
+         -1.0419999,
+         0.024,
+         0.55
+        ],
+        [
+         -1.0419999,
+         -0.024,
+         0.55
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04800000041723251
+      },
+      {
+       "endpoints": [
+        [
+         1.0419999,
+         -0.024,
+         -0.55
+        ],
+        [
+         1.0419999,
+         0.024,
+         -0.55
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04800000041723251
+      }
+     ]
+    }
+   ]
+  },
+  "draco": {
+   "raw": {
+    "triangles": 188,
+    "bounds_min": [
+     -1.05,
+     -0.032,
+     0.9
+    ],
+    "bounds_max": [
+     1.05,
+     0.032,
+     2.1
+    ],
+    "objects": [
+     {
+      "name": "board",
+      "triangles": 188,
+      "shells": 110,
+      "negative_shells": 102,
+      "degenerate_faces": 0,
+      "nonmanifold_edges": 408,
+      "materials": [
+       "park_chalkboard",
+       "park_wood_mid"
+      ]
+     }
+    ],
+    "problems": [
+     {
+      "name": "board",
+      "triangles": 188,
+      "shells": 110,
+      "negative_shells": 102,
+      "degenerate_faces": 0,
+      "nonmanifold_edges": 408,
+      "materials": [
+       "park_chalkboard",
+       "park_wood_mid"
+      ]
+     }
+    ]
+   },
+   "welds": [
+    {
+     "tolerance": 1e-07,
+     "nonmanifold": 4,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         1.0419991,
+         -0.024,
+         -0.5500002
+        ],
+        [
+         1.0419991,
+         0.0239991,
+         -0.5500002
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04799913614988327
+      },
+      {
+       "endpoints": [
+        [
+         1.0419991,
+         0.0239991,
+         0.5500005
+        ],
+        [
+         1.0419991,
+         -0.024,
+         0.5500005
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04799913614988327
+      },
+      {
+       "endpoints": [
+        [
+         -1.0419991,
+         -0.024,
+         -0.5500002
+        ],
+        [
+         -1.0419991,
+         0.0239991,
+         -0.5500002
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04799913614988327
+      },
+      {
+       "endpoints": [
+        [
+         -1.0419991,
+         -0.024,
+         0.5500005
+        ],
+        [
+         -1.0419991,
+         0.0239991,
+         0.5500005
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04799913614988327
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-06,
+     "nonmanifold": 4,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         1.0419991,
+         -0.024,
+         -0.5500002
+        ],
+        [
+         1.0419991,
+         0.0239991,
+         -0.5500002
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04799913614988327
+      },
+      {
+       "endpoints": [
+        [
+         1.0419991,
+         0.0239991,
+         0.5500005
+        ],
+        [
+         1.0419991,
+         -0.024,
+         0.5500005
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04799913614988327
+      },
+      {
+       "endpoints": [
+        [
+         -1.0419991,
+         -0.024,
+         -0.5500002
+        ],
+        [
+         -1.0419991,
+         0.0239991,
+         -0.5500002
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04799913614988327
+      },
+      {
+       "endpoints": [
+        [
+         -1.0419991,
+         -0.024,
+         0.5500005
+        ],
+        [
+         -1.0419991,
+         0.0239991,
+         0.5500005
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04799913614988327
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-05,
+     "nonmanifold": 4,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         1.0419991,
+         -0.024,
+         -0.5500002
+        ],
+        [
+         1.0419991,
+         0.0239991,
+         -0.5500002
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04799913614988327
+      },
+      {
+       "endpoints": [
+        [
+         1.0419991,
+         0.0239991,
+         0.5500005
+        ],
+        [
+         1.0419991,
+         -0.024,
+         0.5500005
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04799913614988327
+      },
+      {
+       "endpoints": [
+        [
+         -1.0419991,
+         -0.024,
+         -0.5500002
+        ],
+        [
+         -1.0419991,
+         0.0239991,
+         -0.5500002
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04799913614988327
+      },
+      {
+       "endpoints": [
+        [
+         -1.0419991,
+         -0.024,
+         0.5500005
+        ],
+        [
+         -1.0419991,
+         0.0239991,
+         0.5500005
+        ]
+       ],
+       "faces": 4,
+       "length": 0.04799913614988327
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "asset": "hut",
+  "node": "shell_A",
+  "rawEvidence": "/Users/bobby/Desktop/3D-personal-world/evidence/park-integration/topology/native-vs-draco.json",
+  "maxNearestVertexDisplacementM": 4.487402492694547e-06,
+  "conclusion": {
+   "nativeUnweldedClosed": true,
+   "nativeSameToleranceReproducesWarning": true,
+   "nativeAndImportedDegenerates": [
+    0,
+    0
+   ],
+   "scope": "Whole-object diagnostic welding merges intentional touching independent structural shells; retain original warnings and raw authored shell topology.",
+   "maxMatchingProblemEdgeEndpointDifferenceM": 3.2186508178710938e-06,
+   "classification": "touching independent closed structural shells reproduced before export"
+  },
+  "native": {
+   "raw": {
+    "triangles": 1888,
+    "bounds_min": [
+     -2.89,
+     -1.195,
+     0.0
+    ],
+    "bounds_max": [
+     2.89,
+     3.51,
+     3.3532
+    ],
+    "objects": [
+     {
+      "name": "shell_A",
+      "triangles": 1888,
+      "shells": 104,
+      "negative_shells": 0,
+      "degenerate_faces": 0,
+      "nonmanifold_edges": 0,
+      "materials": [
+       "park_wood_light",
+       "park_slate_paint",
+       "park_cream_paint",
+       "park_glass_frosted",
+       "park_wood_dark",
+       "park_roof_slate"
+      ]
+     }
+    ],
+    "problems": []
+   },
+   "welds": [
+    {
+     "tolerance": 1e-07,
+     "nonmanifold": 2,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         -2.4960001,
+         0.72,
+         2.0139999
+        ],
+        [
+         -2.6289999,
+         0.72,
+         2.0139999
+        ]
+       ],
+       "faces": 4,
+       "length": 0.13299989700317383
+      },
+      {
+       "endpoints": [
+        [
+         -2.54,
+         -0.44,
+         3.1354547
+        ],
+        [
+         -2.54,
+         -0.44,
+         1.95
+        ]
+       ],
+       "faces": 4,
+       "length": 1.1854546070098877
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-06,
+     "nonmanifold": 61,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         -2.54,
+         3.0899999,
+         1.95
+        ],
+        [
+         -2.54,
+         3.0899999,
+         2.8145454
+        ]
+       ],
+       "faces": 3,
+       "length": 0.8645453453063965
+      },
+      {
+       "endpoints": [
+        [
+         -2.54,
+         3.0899999,
+         0.0
+        ],
+        [
+         -2.54,
+         -0.44,
+         0.0
+        ]
+       ],
+       "faces": 3,
+       "length": 3.5299999713897705
+      },
+      {
+       "endpoints": [
+        [
+         -2.54,
+         -0.44,
+         0.0
+        ],
+        [
+         -2.54,
+         -0.44,
+         1.05
+        ]
+       ],
+       "faces": 3,
+       "length": 1.0499999523162842
+      },
+      {
+       "endpoints": [
+        [
+         -2.54,
+         -0.44,
+         1.05
+        ],
+        [
+         -2.54,
+         3.0899999,
+         1.05
+        ]
+       ],
+       "faces": 3,
+       "length": 3.5299999713897705
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-05,
+     "nonmanifold": 61,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         -2.54,
+         3.0899999,
+         1.95
+        ],
+        [
+         -2.54,
+         3.0899999,
+         2.8145454
+        ]
+       ],
+       "faces": 3,
+       "length": 0.8645453453063965
+      },
+      {
+       "endpoints": [
+        [
+         -2.54,
+         3.0899999,
+         0.0
+        ],
+        [
+         -2.54,
+         -0.44,
+         0.0
+        ]
+       ],
+       "faces": 3,
+       "length": 3.5299999713897705
+      },
+      {
+       "endpoints": [
+        [
+         -2.54,
+         -0.44,
+         0.0
+        ],
+        [
+         -2.54,
+         -0.44,
+         1.05
+        ]
+       ],
+       "faces": 3,
+       "length": 1.0499999523162842
+      },
+      {
+       "endpoints": [
+        [
+         -2.54,
+         -0.44,
+         1.05
+        ],
+        [
+         -2.54,
+         3.0899999,
+         1.05
+        ]
+       ],
+       "faces": 3,
+       "length": 3.5299999713897705
+      }
+     ]
+    }
+   ]
+  },
+  "draco": {
+   "raw": {
+    "triangles": 1888,
+    "bounds_min": [
+     -2.89,
+     -1.195,
+     0.0
+    ],
+    "bounds_max": [
+     2.89,
+     3.51,
+     3.3532
+    ],
+    "objects": [
+     {
+      "name": "shell_A",
+      "triangles": 1888,
+      "shells": 1024,
+      "negative_shells": 990,
+      "degenerate_faces": 0,
+      "nonmanifold_edges": 3936,
+      "materials": [
+       "park_wood_light",
+       "park_slate_paint",
+       "park_cream_paint",
+       "park_glass_frosted",
+       "park_wood_dark",
+       "park_roof_slate"
+      ]
+     }
+    ],
+    "problems": [
+     {
+      "name": "shell_A",
+      "triangles": 1888,
+      "shells": 1024,
+      "negative_shells": 990,
+      "degenerate_faces": 0,
+      "nonmanifold_edges": 3936,
+      "materials": [
+       "park_wood_light",
+       "park_slate_paint",
+       "park_cream_paint",
+       "park_glass_frosted",
+       "park_wood_dark",
+       "park_roof_slate"
+      ]
+     }
+    ]
+   },
+   "welds": [
+    {
+     "tolerance": 1e-07,
+     "nonmanifold": 3832,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         2.3200014,
+         -1.0899999,
+         3.2045481
+        ],
+        [
+         2.3200014,
+         -1.0899999,
+         3.0645483
+        ]
+       ],
+       "faces": 1,
+       "length": 0.1399998664855957
+      },
+      {
+       "endpoints": [
+        [
+         2.3200014,
+         -1.0899999,
+         3.2045481
+        ],
+        [
+         2.2400019,
+         -1.0899999,
+         3.2045481
+        ]
+       ],
+       "faces": 1,
+       "length": 0.07999944686889648
+      },
+      {
+       "endpoints": [
+        [
+         2.3200014,
+         3.1300025,
+         2.680907
+        ],
+        [
+         2.3200014,
+         3.1300025,
+         2.8209071
+        ]
+       ],
+       "faces": 1,
+       "length": 0.1400001049041748
+      },
+      {
+       "endpoints": [
+        [
+         2.3200014,
+         3.1300025,
+         2.680907
+        ],
+        [
+         2.2400019,
+         3.1300025,
+         2.680907
+        ]
+       ],
+       "faces": 1,
+       "length": 0.07999944686889648
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-06,
+     "nonmanifold": 20,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         -2.5399997,
+         3.089999,
+         1.0500001
+        ],
+        [
+         -2.6000011,
+         3.089999,
+         1.0500001
+        ]
+       ],
+       "faces": 4,
+       "length": 0.060001373291015625
+      },
+      {
+       "endpoints": [
+        [
+         2.54,
+         -0.4399998,
+         1.9499991
+        ],
+        [
+         2.5000024,
+         -0.4399998,
+         1.9499991
+        ]
+       ],
+       "faces": 4,
+       "length": 0.03999757766723633
+      },
+      {
+       "endpoints": [
+        [
+         2.6000013,
+         3.089999,
+         1.0500001
+        ],
+        [
+         2.54,
+         3.089999,
+         1.0500001
+        ]
+       ],
+       "faces": 4,
+       "length": 0.060001373291015625
+      },
+      {
+       "endpoints": [
+        [
+         2.6000013,
+         -0.440002,
+         1.9500015
+        ],
+        [
+         2.54,
+         -0.440002,
+         1.9500015
+        ]
+       ],
+       "faces": 4,
+       "length": 0.060001373291015625
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-05,
+     "nonmanifold": 61,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         -2.440001,
+         -0.5199997,
+         3.1427279
+        ],
+        [
+         -2.440001,
+         -0.5199997,
+         2.839999
+        ]
+       ],
+       "faces": 4,
+       "length": 0.30272889137268066
+      },
+      {
+       "endpoints": [
+        [
+         2.4399991,
+         3.1899998,
+         0.0
+        ],
+        [
+         2.4399991,
+         3.1899998,
+         2.8000002
+        ]
+       ],
+       "faces": 4,
+       "length": 2.8000001907348633
+      },
+      {
+       "endpoints": [
+        [
+         -2.5399997,
+         3.089999,
+         1.0500001
+        ],
+        [
+         -2.6000011,
+         3.089999,
+         1.0500001
+        ]
+       ],
+       "faces": 4,
+       "length": 0.060001373291015625
+      },
+      {
+       "endpoints": [
+        [
+         2.54,
+         -0.4399998,
+         1.9499991
+        ],
+        [
+         2.5000024,
+         -0.4399998,
+         1.9499991
+        ]
+       ],
+       "faces": 4,
+       "length": 0.03999757766723633
+      }
+     ]
+    }
+   ]
+  }
+ },
+ {
+  "asset": "hut",
+  "node": "shell_B",
+  "rawEvidence": "/Users/bobby/Desktop/3D-personal-world/evidence/park-integration/topology/native-vs-draco.json",
+  "maxNearestVertexDisplacementM": 5.317940302567498e-06,
+  "conclusion": {
+   "nativeUnweldedClosed": true,
+   "nativeSameToleranceReproducesWarning": true,
+   "nativeAndImportedDegenerates": [
+    0,
+    0
+   ],
+   "scope": "Whole-object diagnostic welding merges intentional touching independent structural shells; retain original warnings and raw authored shell topology.",
+   "maxMatchingProblemEdgeEndpointDifferenceM": 4.018343398733896e-06,
+   "classification": "touching independent closed structural shells reproduced before export"
+  },
+  "native": {
+   "raw": {
+    "triangles": 1960,
+    "bounds_min": [
+     -3.29,
+     -1.195,
+     0.0
+    ],
+    "bounds_max": [
+     3.29,
+     3.51,
+     3.3532
+    ],
+    "objects": [
+     {
+      "name": "shell_B",
+      "triangles": 1960,
+      "shells": 110,
+      "negative_shells": 0,
+      "degenerate_faces": 0,
+      "nonmanifold_edges": 0,
+      "materials": [
+       "park_wood_light",
+       "park_slate_paint",
+       "park_cream_paint",
+       "park_glass_frosted",
+       "park_wood_dark",
+       "park_roof_slate"
+      ]
+     }
+    ],
+    "problems": []
+   },
+   "welds": [
+    {
+     "tolerance": 1e-07,
+     "nonmanifold": 2,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         -2.9400001,
+         0.72,
+         1.05
+        ],
+        [
+         -2.9400001,
+         0.72,
+         1.95
+        ]
+       ],
+       "faces": 4,
+       "length": 0.9000000953674316
+      },
+      {
+       "endpoints": [
+        [
+         2.9400001,
+         -0.44,
+         1.05
+        ],
+        [
+         2.9400001,
+         -0.44,
+         0.0
+        ]
+       ],
+       "faces": 4,
+       "length": 1.0499999523162842
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-06,
+     "nonmanifold": 61,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         -2.9400001,
+         -0.44,
+         1.95
+        ],
+        [
+         -3.0,
+         -0.44,
+         1.95
+        ]
+       ],
+       "faces": 4,
+       "length": 0.059999942779541016
+      },
+      {
+       "endpoints": [
+        [
+         -2.9400001,
+         -0.44,
+         1.05
+        ],
+        [
+         -2.9400001,
+         3.0899999,
+         1.05
+        ]
+       ],
+       "faces": 3,
+       "length": 3.5299999713897705
+      },
+      {
+       "endpoints": [
+        [
+         -2.9400001,
+         3.0899999,
+         1.05
+        ],
+        [
+         -2.9400001,
+         3.0899999,
+         0.0
+        ]
+       ],
+       "faces": 3,
+       "length": 1.0499999523162842
+      },
+      {
+       "endpoints": [
+        [
+         -2.9400001,
+         3.0899999,
+         1.05
+        ],
+        [
+         -2.9000001,
+         3.0899999,
+         1.05
+        ]
+       ],
+       "faces": 4,
+       "length": 0.039999961853027344
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-05,
+     "nonmanifold": 61,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         -2.9400001,
+         -0.44,
+         1.95
+        ],
+        [
+         -3.0,
+         -0.44,
+         1.95
+        ]
+       ],
+       "faces": 4,
+       "length": 0.059999942779541016
+      },
+      {
+       "endpoints": [
+        [
+         -2.9400001,
+         -0.44,
+         1.05
+        ],
+        [
+         -2.9400001,
+         3.0899999,
+         1.05
+        ]
+       ],
+       "faces": 3,
+       "length": 3.5299999713897705
+      },
+      {
+       "endpoints": [
+        [
+         -2.9400001,
+         3.0899999,
+         1.05
+        ],
+        [
+         -2.9400001,
+         3.0899999,
+         0.0
+        ]
+       ],
+       "faces": 3,
+       "length": 1.0499999523162842
+      },
+      {
+       "endpoints": [
+        [
+         -2.9400001,
+         3.0899999,
+         1.05
+        ],
+        [
+         -2.9000001,
+         3.0899999,
+         1.05
+        ]
+       ],
+       "faces": 4,
+       "length": 0.039999961853027344
+      }
+     ]
+    }
+   ]
+  },
+  "draco": {
+   "raw": {
+    "triangles": 1960,
+    "bounds_min": [
+     -3.29,
+     -1.195,
+     0.0
+    ],
+    "bounds_max": [
+     3.29,
+     3.51,
+     3.3532
+    ],
+    "objects": [
+     {
+      "name": "shell_B",
+      "triangles": 1960,
+      "shells": 1060,
+      "negative_shells": 1030,
+      "degenerate_faces": 0,
+      "nonmanifold_edges": 4080,
+      "materials": [
+       "park_wood_light",
+       "park_slate_paint",
+       "park_cream_paint",
+       "park_glass_frosted",
+       "park_wood_dark",
+       "park_roof_slate"
+      ]
+     }
+    ],
+    "problems": [
+     {
+      "name": "shell_B",
+      "triangles": 1960,
+      "shells": 1060,
+      "negative_shells": 1030,
+      "degenerate_faces": 0,
+      "nonmanifold_edges": 4080,
+      "materials": [
+       "park_wood_light",
+       "park_slate_paint",
+       "park_cream_paint",
+       "park_glass_frosted",
+       "park_wood_dark",
+       "park_roof_slate"
+      ]
+     }
+    ]
+   },
+   "welds": [
+    {
+     "tolerance": 1e-07,
+     "nonmanifold": 3926,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         2.7199998,
+         -1.0899975,
+         3.2045476
+        ],
+        [
+         2.7199998,
+         -1.0899975,
+         3.0645483
+        ]
+       ],
+       "faces": 1,
+       "length": 0.1399993896484375
+      },
+      {
+       "endpoints": [
+        [
+         2.7199998,
+         -1.0899975,
+         3.2045476
+        ],
+        [
+         2.6399975,
+         -1.0899975,
+         3.2045476
+        ]
+       ],
+       "faces": 1,
+       "length": 0.0800023078918457
+      },
+      {
+       "endpoints": [
+        [
+         2.7199998,
+         3.1300001,
+         2.6809087
+        ],
+        [
+         2.7199998,
+         3.1300001,
+         2.8209081
+        ]
+       ],
+       "faces": 1,
+       "length": 0.1399993896484375
+      },
+      {
+       "endpoints": [
+        [
+         2.7199998,
+         3.1300001,
+         2.6809087
+        ],
+        [
+         2.6399975,
+         3.1300001,
+         2.6809087
+        ]
+       ],
+       "faces": 1,
+       "length": 0.0800023078918457
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-06,
+     "nonmanifold": 21,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         3.0290027,
+         0.7199972,
+         2.0140011
+        ],
+        [
+         2.8959999,
+         0.7199972,
+         2.0140011
+        ]
+       ],
+       "faces": 4,
+       "length": 0.13300275802612305
+      },
+      {
+       "endpoints": [
+        [
+         -2.8960001,
+         1.9799975,
+         2.0140011
+        ],
+        [
+         -3.0290027,
+         1.9799975,
+         2.0140011
+        ]
+       ],
+       "faces": 4,
+       "length": 0.13300251960754395
+      },
+      {
+       "endpoints": [
+        [
+         -2.8399994,
+         3.1900001,
+         0.0
+        ],
+        [
+         2.8399992,
+         3.1900003,
+         0.0
+        ]
+       ],
+       "faces": 4,
+       "length": 5.679998397827148
+      },
+      {
+       "endpoints": [
+        [
+         3.0,
+         3.0899992,
+         1.0499995
+        ],
+        [
+         2.9400005,
+         3.0899992,
+         1.0499995
+        ]
+       ],
+       "faces": 4,
+       "length": 0.05999946594238281
+      }
+     ]
+    },
+    {
+     "tolerance": 1e-05,
+     "nonmanifold": 61,
+     "degenerate": 0,
+     "problemEdgeSample": [
+      {
+       "endpoints": [
+        [
+         2.9400001,
+         -0.4400024,
+         1.0500027
+        ],
+        [
+         2.9400001,
+         -0.4400024,
+         0.0
+        ]
+       ],
+       "faces": 4,
+       "length": 1.0500026941299438
+      },
+      {
+       "endpoints": [
+        [
+         -2.9400003,
+         3.0899992,
+         1.0499995
+        ],
+        [
+         -2.9400003,
+         1.9800004,
+         1.0499995
+        ]
+       ],
+       "faces": 4,
+       "length": 1.1099988222122192
+      },
+      {
+       "endpoints": [
+        [
+         -2.9400003,
+         3.0899992,
+         1.9499974
+        ],
+        [
+         -2.9400003,
+         1.9800004,
+         1.9499974
+        ]
+       ],
+       "faces": 4,
+       "length": 1.1099988222122192
+      },
+      {
+       "endpoints": [
+        [
+         -2.9400003,
+         -0.4399998,
+         0.0
+        ],
+        [
+         -2.9400003,
+         3.0899992,
+         0.0
+        ]
+       ],
+       "faces": 4,
+       "length": 3.529999017715454
+      }
+     ]
+    }
+   ]
+  }
+ }
+]

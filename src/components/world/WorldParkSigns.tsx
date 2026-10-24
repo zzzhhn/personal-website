@@ -4,6 +4,7 @@ import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { BufferAttribute, BufferGeometry, CanvasTexture, Matrix4, MeshStandardMaterial, PlaneGeometry, SRGBColorSpace } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { ParkLOD } from './WorldParkLOD';
 import { HUTS, HUT_FRONT_Z } from './WorldParkLayout';
 import { gltfPieces, gltfTrimesh, mergeBatch, parkMaterial, parkUrl, withDraco, yawMatrix, type GLTF } from './WorldParkKit';
 import { useInteractable } from './WorldInteract';
@@ -90,8 +91,9 @@ export default function WorldParkSigns({ projects }: { projects: WorldProject[] 
   useEffect(() => () => { built.body.dispose(); built.faces?.dispose(); }, [built]);
   useEffect(() => () => { atlas.tex.dispose(); atlas.mat.dispose(); }, [atlas]);
   return <group name="park-signs">
-    <mesh name="park-sign-frames" geometry={built.body} material={parkMaterial()} castShadow receiveShadow userData={{ solid: true, occluder: true }} />
+    <ParkLOD id="signs" center={[64, 1.14, -28]} nearTriangles={7 * 720 + 14} near={<><mesh name="park-sign-frames" geometry={built.body} material={parkMaterial()} castShadow receiveShadow userData={{ solid: true, occluder: true }} />
     <mesh name="park-sign-text" geometry={built.faces!} material={atlas.mat} receiveShadow />
+    </>} />
     {built.colliders.map((c, i) => <RigidBody key={built.signs[i].id} name={built.signs[i].id} type="fixed" colliders={false} userData={{ solid: true, interactable: built.signs[i].id }}>
       <TrimeshCollider args={[c.vertices, c.indices]} friction={.65} restitution={.03} />
     </RigidBody>)}

@@ -11,6 +11,7 @@ import { night } from './WorldNight';
 import { gltfPieces, gltfTrimesh, mergeBatch, parkMaterial, parkNight, parkUrl, plankDeck, ParkGeo, withDraco, type GLTF } from './WorldParkKit';
 import { DECK_Y, EXHIBIT_ANCHOR, HUTS, HUT_BACK_Z, HUT_FRONT_Z } from './WorldParkLayout';
 import WorldParkSigns from './WorldParkSigns';
+import { ParkLOD, hutLOD } from './WorldParkLOD';
 import { ParkExhibits, placeExhibits, useExhibitGltfs } from './WorldParkExhibits';
 import { buildWalk, Knockables, LampPools, LAMP, RAIL, parkKnockables } from './WorldParkWalk';
 
@@ -44,12 +45,13 @@ function ParkHuts({ projects }: { projects: WorldProject[] }) {
   const gltf = useLoader(GLTFLoader, parkUrl('hut'), withDraco) as GLTF;
   const exhibitGltfs = useExhibitGltfs();
   const built = useMemo(() => {
-    const solid: BufferGeometry[] = [], deckParts: BufferGeometry[] = [], spurs = new ParkGeo();
+    const visuals: { id: string; center: Vec3; solid: BufferGeometry; deck: BufferGeometry; low: ReturnType<typeof hutLOD>; triangles: number }[] = [];
     const shells: { vertices: Float32Array; indices: Uint32Array }[] = [];
     const surfaces: { position: Vec3; size: Vec3; rotation: Vec3 }[] = [];
     HUTS.forEach((h, i) => {
       const root = gltf.scene.getObjectByName(`hut_${h.variant}`);
       if (!root) throw new Error(`hut.glb lacks hut_${h.variant}`);
+      const spurs = new ParkGeo(), solid: BufferGeometry[] = [], deckParts: BufferGeometry[] = [];
       solid.push(...gltfPieces(root, h.matrix, n => !n.startsWith('floor')));
       deckParts.push(...gltfPieces(root, h.matrix, n => n.startsWith('floor')));
       shells.push(gltfTrimesh(root, h.matrix, n => n.startsWith('shell') || n.startsWith('piles')));
@@ -64,14 +66,18 @@ function ParkHuts({ projects }: { projects: WorldProject[] }) {
         }
         surfaces.push({ position: [(from[0] + to[0]) / 2, DECK_Y - 0.15, (from[2] + to[2]) / 2], size: [width, 0.3, L], rotation: [0, h.yaw, 0] });
       }
+      const solidGeo = mergeBatch(solid), deckGeo = mergeBatch([...deckParts, ...spurs.pieces]);
+      visuals.push({ id: h.id, center: h.local(0, 1, (HUT_FRONT_Z + HUT_BACK_Z) / 2), solid: solidGeo, deck: deckGeo,
+        low: hutLOD(h), triangles: (solidGeo.getAttribute('position').count + deckGeo.getAttribute('position').count) / 3 });
     });
     const ex = placeExhibits(exhibitGltfs);
-    return { solid: mergeBatch([...solid, ...ex.pieces]), deck: mergeBatch([...deckParts, ...spurs.pieces]), shells: [...shells, ...ex.fixed], surfaces, placed: ex.placed };
+    return { visuals, shells: [...shells, ...ex.fixed], surfaces, placed: ex.placed };
   }, [gltf, exhibitGltfs]);
   useGreyboxClaim('booth');
   return <group name="park-huts">
-    <Batch name="park-huts-solid" geometry={built.solid} />
-    <Batch name="park-huts-deck" geometry={built.deck} deck />
+    {built.visuals.map(v => <ParkLOD key={v.id} id={`hut-${v.id}`} center={v.center} nearTriangles={v.triangles} farTriangles={v.low.triangles}
+      near={<><Batch name={`park-hut-${v.id}-solid`} geometry={v.solid} /><Batch name={`park-hut-${v.id}-deck`} geometry={v.deck} deck /></>}
+      far={<><Batch name={`park-hut-${v.id}-far-solid`} geometry={v.low.solid} /><Batch name={`park-hut-${v.id}-far-deck`} geometry={v.low.deck} deck /></>} />)}
     {built.shells.map((m, i) => <FixedMesh key={i} name={i < HUTS.length ? `park-hut-${HUTS[i].id}` : `park-exhibit-body-${i - HUTS.length}`} mesh={m} />)}
     <ParkExhibits placed={built.placed} projects={projects} />
     <WorldSurfaceColliders name="park-hut-floors" items={built.surfaces} />
@@ -80,18 +86,22 @@ function ParkHuts({ projects }: { projects: WorldProject[] }) {
 
 /** P01-P04: plaza, boardwalk, rails, lamps (runtime procedural, no GLB). */
 function ParkWalk() {
-  const walk = useMemo(buildWalk, []);
+  const walk = useMemo(() => buildWalk(), []), low = useMemo(() => buildWalk(true), []);
   useGreyboxClaim('boardwalk', 'park-plaza');
   useEffect(() => { if (new URLSearchParams(window.location.search).get('qa') === '1') Object.assign(window, { __parkKnock: parkKnockables, __parkWalk: { deckTris: walk.deckTris, solidTris: walk.solidTris, rails: walk.rails.length, lamps: walk.lamps.length, railTris: RAIL.triangles, lampTris: LAMP.triangles,
     railList: walk.rails, lampList: walk.lamps,
     huts: HUTS.map(h => ({ id: h.id, slug: h.slug, yaw: h.yaw, front: h.front, opening: h.local(0, 0, HUT_FRONT_Z), inside: h.local(0, 0, -1.6), anchor: h.local(EXHIBIT_ANCHOR[h.id][0], 0, EXHIBIT_ANCHOR[h.id][1]), backOutside: h.local(0, 0, HUT_BACK_Z - 0.6), spurEnd: h.spur?.to ?? h.local(0, 0, HUT_FRONT_Z + 1) })) } }); }, [walk]);
   return <group name="park-walk">
-    <Batch name="park-walk-deck" geometry={walk.deck} deck />
-    <Batch name="park-walk-solid" geometry={walk.solid} />
+    <ParkLOD id="plaza" center={[45, 1.15, -45]} nearTriangles={walk.plazaTris} farTriangles={low.plazaTris}
+      near={<><Batch name="park-walk-deck" geometry={walk.deck} deck /><Batch name="park-walk-solid" geometry={walk.solid} /></>}
+      far={<><Batch name="park-plaza-far-deck" geometry={low.deck} deck /><Batch name="park-plaza-far-solid" geometry={low.solid} /></>} />
+    {walk.groups.map((g, i) => <ParkLOD key={g.id} id={g.id} center={g.center} nearTriangles={g.triangles} farTriangles={low.groups[i].triangles}
+      near={<><Batch name={`park-${g.id}-deck`} geometry={g.deck} deck /><Batch name={`park-${g.id}-solid`} geometry={g.solid} /></>}
+      far={<><Batch name={`park-${g.id}-far-deck`} geometry={low.groups[i].deck} deck /><Batch name={`park-${g.id}-far-solid`} geometry={low.groups[i].solid} /></>} />)}
     <WorldSurfaceColliders name="park-walk-surface" items={walk.surfaces} />
-    <Knockables name="rail" items={walk.rails} source={RAIL.geometry} spec={RAIL.spec} />
-    <Knockables name="lamp" items={walk.lamps} source={LAMP.geometry} spec={LAMP.spec} />
-    <LampPools lamps={walk.lamps} />
+    <Knockables name="rail" items={walk.rails} source={RAIL.geometry} farSource={RAIL.far} spec={RAIL.spec} />
+    <Knockables name="lamp" items={walk.lamps} source={LAMP.geometry} farSource={LAMP.far} spec={LAMP.spec} />
+    <ParkLOD id="lamp-pools" center={[64, 1.14, -28]} near={<LampPools lamps={walk.lamps} />} />
   </group>;
 }
 
