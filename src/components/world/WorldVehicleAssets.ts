@@ -91,6 +91,17 @@ export function headlightTexture(): CanvasTexture {
     grad.addColorStop(0, 'rgba(255,240,214,0.85)'); grad.addColorStop(.45, 'rgba(255,236,206,0.32)'); grad.addColorStop(1, 'rgba(255,236,206,0)');
     g.fillStyle = grad; g.fillRect(0, 0, 256, 128);
   }
+  // Fade the texture boundary too: clipping the radial gradients at the canvas edge otherwise
+  // leaves a visible rectangular headlight pool on dark road surfaces.
+  g.globalCompositeOperation = 'destination-in';
+  const along = g.createLinearGradient(0, 0, 256, 0);
+  along.addColorStop(0, 'rgba(0,0,0,0)'); along.addColorStop(.1, 'rgba(0,0,0,1)');
+  along.addColorStop(.55, 'rgba(0,0,0,1)'); along.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = along; g.fillRect(0, 0, 256, 128);
+  const across = g.createLinearGradient(0, 0, 0, 128);
+  across.addColorStop(0, 'rgba(0,0,0,0)'); across.addColorStop(.22, 'rgba(0,0,0,1)');
+  across.addColorStop(.78, 'rgba(0,0,0,1)'); across.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = across; g.fillRect(0, 0, 256, 128);
   spotTexture = new CanvasTexture(c);
   return spotTexture;
 }

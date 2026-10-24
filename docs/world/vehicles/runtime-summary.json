@@ -1,0 +1,1014 @@
+{
+  "entry": "http://127.0.0.1:4345/world/",
+  "geometry": {
+    "passed": true,
+    "assets": [
+      {
+        "asset": "G25",
+        "sha256": "226a272ace74e723cc7347fbc8b00fb97381bfba04a235f491753c45b7d2734d",
+        "bytes": 84400,
+        "totalTris": 13956,
+        "bounds": [
+          [
+            -2.04,
+            -1.185,
+            0.0
+          ],
+          [
+            2.06,
+            1.185,
+            2.267
+          ]
+        ],
+        "hullCount": 11,
+        "passed": true
+      },
+      {
+        "asset": "G26",
+        "sha256": "6668d80bd54ee1a7336cd12a224fe7ef2068ff498da1a127c833b9637ece1134",
+        "bytes": 50568,
+        "totalTris": 11250,
+        "bounds": [
+          [
+            -2.205,
+            -1.07,
+            0.0
+          ],
+          [
+            2.2,
+            1.07,
+            1.305
+          ]
+        ],
+        "hullCount": 10,
+        "passed": true
+      },
+      {
+        "asset": "G27",
+        "sha256": "51045ff92be23c9826cc76ac4038b579d463e9abeb7075e788d1ccff89553041",
+        "bytes": 61244,
+        "totalTris": 12868,
+        "bounds": [
+          [
+            -2.52,
+            -1.33,
+            0.0
+          ],
+          [
+            2.426,
+            1.33,
+            2.602
+          ]
+        ],
+        "hullCount": 12,
+        "passed": true
+      }
+    ]
+  },
+  "finalComDrop_m": {
+    "offroad": 0.5,
+    "coupe": 0.2,
+    "van": 0.5
+  },
+  "tyres": {
+    "method": "G25/G26 18 cases from tyres; G27 9 cases from van-final-tyres after final COM change; all real keys, explicit QA fixture starts",
+    "passed": true,
+    "total": 27,
+    "maxRise_m": 0.10172319412231445,
+    "maxPenetration_m": 0.0210733525454998,
+    "maxVerticalSpeed_mps": 0.9190843105316162,
+    "cases": [
+      {
+        "name": "offroad-post-2",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 1.90996253490448,
+        "maxPenetration": 0,
+        "maxRise": 0.0017676353454589844,
+        "maxVerticalSpeed": 0.0919603556394577
+      },
+      {
+        "name": "offroad-post-5",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 4.930889129638672,
+        "maxPenetration": 0,
+        "maxRise": 0.007260799407958984,
+        "maxVerticalSpeed": 0.12157540023326874
+      },
+      {
+        "name": "offroad-post-10",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 9.952726364135742,
+        "maxPenetration": 0,
+        "maxRise": 0.017757892608642578,
+        "maxVerticalSpeed": 0.28083327412605286
+      },
+      {
+        "name": "offroad-trunk-2",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 1.8899319171905526,
+        "maxPenetration": 0,
+        "maxRise": 0.0029578208923339844,
+        "maxVerticalSpeed": 0.08091210573911667
+      },
+      {
+        "name": "offroad-trunk-5",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 4.899720191955566,
+        "maxPenetration": 0,
+        "maxRise": 0.00672149658203125,
+        "maxVerticalSpeed": 0.09767770767211914
+      },
+      {
+        "name": "offroad-trunk-10",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 9.97309398651123,
+        "maxPenetration": 0,
+        "maxRise": 0.012580394744873047,
+        "maxVerticalSpeed": 0.11248607188463211
+      },
+      {
+        "name": "offroad-wall-2",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 1.9679707288742065,
+        "maxPenetration": 0,
+        "maxRise": 0.0015964508056640625,
+        "maxVerticalSpeed": 0.08632893860340118
+      },
+      {
+        "name": "offroad-wall-5",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 4.911740303039551,
+        "maxPenetration": 0,
+        "maxRise": 0.00151824951171875,
+        "maxVerticalSpeed": 0.09446756541728973
+      },
+      {
+        "name": "offroad-wall-10",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 9.926639556884766,
+        "maxPenetration": 0,
+        "maxRise": 0.0020656585693359375,
+        "maxVerticalSpeed": 0.12859110534191132
+      },
+      {
+        "name": "coupe-post-2",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 1.914259672164917,
+        "maxPenetration": 0,
+        "maxRise": 0.004217624664306641,
+        "maxVerticalSpeed": 0.11787799000740051
+      },
+      {
+        "name": "coupe-post-5",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 4.93045711517334,
+        "maxPenetration": 0,
+        "maxRise": 0.02227020263671875,
+        "maxVerticalSpeed": 0.267383337020874
+      },
+      {
+        "name": "coupe-post-10",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 9.983352661132814,
+        "maxPenetration": 0,
+        "maxRise": 0.1009821891784668,
+        "maxVerticalSpeed": 0.9190843105316162
+      },
+      {
+        "name": "coupe-trunk-2",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 1.915383219718933,
+        "maxPenetration": 0,
+        "maxRise": 0.004029273986816406,
+        "maxVerticalSpeed": 0.09311829507350922
+      },
+      {
+        "name": "coupe-trunk-5",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 4.916427612304689,
+        "maxPenetration": 0,
+        "maxRise": 0.025133132934570312,
+        "maxVerticalSpeed": 0.35207298398017883
+      },
+      {
+        "name": "coupe-trunk-10",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 9.94107437133789,
+        "maxPenetration": 0,
+        "maxRise": 0.031099796295166016,
+        "maxVerticalSpeed": 0.39331066608428955
+      },
+      {
+        "name": "coupe-wall-2",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 1.9127477407455444,
+        "maxPenetration": 0,
+        "maxRise": 0.003875732421875,
+        "maxVerticalSpeed": 0.0989043191075325
+      },
+      {
+        "name": "coupe-wall-5",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 4.904977321624756,
+        "maxPenetration": 0,
+        "maxRise": 0.019804954528808594,
+        "maxVerticalSpeed": 0.20622119307518005
+      },
+      {
+        "name": "coupe-wall-10",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 9.94032096862793,
+        "maxPenetration": 0,
+        "maxRise": 0.07339811325073242,
+        "maxVerticalSpeed": 0.6756071448326111
+      },
+      {
+        "name": "van-post-2",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 1.9163122177124061,
+        "maxPenetration": 0,
+        "maxRise": 0.006534099578857422,
+        "maxVerticalSpeed": 0.10040244460105896
+      },
+      {
+        "name": "van-post-5",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 4.914752960205078,
+        "maxPenetration": 0,
+        "maxRise": 0.024378299713134766,
+        "maxVerticalSpeed": 0.3016890585422516
+      },
+      {
+        "name": "van-post-10",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 9.965087890625,
+        "maxPenetration": 0,
+        "maxRise": 0.10172319412231445,
+        "maxVerticalSpeed": 0.763312816619873
+      },
+      {
+        "name": "van-trunk-2",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 1.917126536369327,
+        "maxPenetration": 0,
+        "maxRise": 0.0023674964904785156,
+        "maxVerticalSpeed": 0.07698900252580643
+      },
+      {
+        "name": "van-trunk-5",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 4.9118146896362305,
+        "maxPenetration": 0,
+        "maxRise": 0.0069751739501953125,
+        "maxVerticalSpeed": 0.09489705413579941
+      },
+      {
+        "name": "van-trunk-10",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 9.91102409362793,
+        "maxPenetration": 0,
+        "maxRise": 0.01834392547607422,
+        "maxVerticalSpeed": 0.16838684678077698
+      },
+      {
+        "name": "van-wall-2",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 1.8946449756622314,
+        "maxPenetration": 0,
+        "maxRise": 0.0046710968017578125,
+        "maxVerticalSpeed": 0.09151288866996765
+      },
+      {
+        "name": "van-wall-5",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 4.927000999450684,
+        "maxPenetration": 0,
+        "maxRise": 0.01296234130859375,
+        "maxVerticalSpeed": 0.12760482728481293
+      },
+      {
+        "name": "van-wall-10",
+        "passed": true,
+        "entered": true,
+        "approachSpeed": 9.910116195678711,
+        "maxPenetration": 0.0210733525454998,
+        "maxRise": 0.00222015380859375,
+        "maxVerticalSpeed": 0.07468206435441971
+      }
+    ]
+  },
+  "dynamicFrontal": {
+    "passed": true,
+    "cases": [
+      {
+        "name": "offroad",
+        "mode": null,
+        "passed": true,
+        "approachSpeed": 4.993963124235077,
+        "maxCarRise": 0.024136781692504883,
+        "maxObstacleRise": 0.4387263059616089
+      },
+      {
+        "name": "coupe",
+        "mode": null,
+        "passed": true,
+        "approachSpeed": 5.061316339513919,
+        "maxCarRise": 0.01891350746154785,
+        "maxObstacleRise": 0.14007234573364258
+      },
+      {
+        "name": "van",
+        "mode": "frontal",
+        "passed": true,
+        "approachSpeed": 4.9647063871290165,
+        "maxCarRise": 0.02499675750732422,
+        "maxObstacleRise": 0.1600048542022705
+      }
+    ]
+  },
+  "dynamicSide": {
+    "passed": true,
+    "cases": [
+      {
+        "name": "offroad",
+        "mode": "side-graze",
+        "passed": true,
+        "approachSpeed": 5.050400600513534,
+        "maxCarRise": 0,
+        "maxObstacleRise": 0.11048686504364014,
+        "maxTyrePenetration": 0,
+        "tyreSamples": 10
+      },
+      {
+        "name": "coupe",
+        "mode": "side-graze",
+        "passed": true,
+        "approachSpeed": 5.189371257012051,
+        "maxCarRise": 0,
+        "maxObstacleRise": 0.11256682872772217,
+        "maxTyrePenetration": 0,
+        "tyreSamples": 8
+      },
+      {
+        "name": "van",
+        "mode": "side-graze",
+        "passed": true,
+        "approachSpeed": 5.035124131821531,
+        "maxCarRise": 0,
+        "maxObstacleRise": 0.10687613487243652,
+        "maxTyrePenetration": 0,
+        "tyreSamples": 14
+      }
+    ]
+  },
+  "handlingVan": {
+    "source": "van-handling-com/report.json",
+    "comparisons": [
+      {
+        "id": "van",
+        "brakeDelta": 0.00453445732535851,
+        "brakeDistanceAt9": [
+          5.380201830289579,
+          5.404598125890843
+        ],
+        "radiusDelta": -0.0030594157226871976,
+        "responseDelta": -0.0011072545826643632,
+        "responseFixedMs": [
+          308.5866866957151,
+          308.2450026727221
+        ],
+        "accelDelta": 0,
+        "accelTo8Steps": [
+          114,
+          114
+        ],
+        "sideslipRatio": 0.9807080989493167,
+        "pitch": [
+          {
+            "accelerationMedian": 3.3774578217877353,
+            "brakingMedian": -3.329266971306002
+          },
+          {
+            "accelerationMedian": 2.2776681776337724,
+            "brakingMedian": -2.1647737647035874
+          }
+        ],
+        "brakeSpeeds": [
+          9.796203631841365,
+          9.859168532234298
+        ]
+      }
+    ],
+    "errors": [],
+    "passed": true
+  },
+  "vanTransitions": {
+    "passed": true,
+    "comparisons": [
+      {
+        "id": "van",
+        "speed": 5,
+        "profile": "curb",
+        "valid": true,
+        "reason": "measured",
+        "riseDelta": 9.775161743164062e-05,
+        "pitchRatio": 0.9214217868066896,
+        "baseline": {
+          "name": "curb",
+          "samples": 92,
+          "maxRise": 0.02338886260986328,
+          "maxPitch": 0.02785545526817376,
+          "minSpeed": 4.867956638336182,
+          "approachSpeed": 4.890655040740969
+        },
+        "candidate": {
+          "name": "curb",
+          "samples": 91,
+          "maxRise": 0.023486614227294922,
+          "maxPitch": 0.02566662336551448,
+          "minSpeed": 4.864890098571777,
+          "approachSpeed": 4.862119197845459
+        },
+        "passed": true
+      },
+      {
+        "id": "van",
+        "speed": 5,
+        "profile": "pad",
+        "valid": true,
+        "reason": "measured",
+        "riseDelta": -0.000118255615234375,
+        "pitchRatio": 0.9199741014597285,
+        "baseline": {
+          "name": "pad",
+          "samples": 93,
+          "maxRise": 0.047898292541503906,
+          "maxPitch": 0.043263695533728004,
+          "minSpeed": 4.864114284515381,
+          "approachSpeed": 4.908534049987793
+        },
+        "candidate": {
+          "name": "pad",
+          "samples": 93,
+          "maxRise": 0.04778003692626953,
+          "maxPitch": 0.03980147942446869,
+          "minSpeed": 4.8640031814575195,
+          "approachSpeed": 4.885409832000732
+        },
+        "passed": true
+      },
+      {
+        "id": "van",
+        "speed": 5,
+        "profile": "bridge-seam",
+        "valid": true,
+        "reason": "measured",
+        "riseDelta": 6.723403930664062e-05,
+        "pitchRatio": 0.7815967335310582,
+        "baseline": {
+          "name": "bridge-seam",
+          "samples": 102,
+          "maxRise": -0.00011110305786132812,
+          "maxPitch": 0.013592055738341678,
+          "minSpeed": 4.862811088562012,
+          "approachSpeed": 4.882730960845947
+        },
+        "candidate": {
+          "name": "bridge-seam",
+          "samples": 103,
+          "maxRise": -4.38690185546875e-05,
+          "maxPitch": 0.01062350636705993,
+          "minSpeed": 4.866164684295654,
+          "approachSpeed": 4.8993635177612305
+        },
+        "passed": true
+      },
+      {
+        "id": "van",
+        "speed": 5,
+        "profile": "stairs",
+        "valid": true,
+        "reason": "measured",
+        "riseDelta": -0.0051479339599609375,
+        "pitchRatio": 1.0068591987283038,
+        "baseline": {
+          "name": "stairs",
+          "samples": 123,
+          "maxRise": 0.24756145477294922,
+          "maxPitch": 0.09020292468090675,
+          "minSpeed": 4.861752986907959,
+          "approachSpeed": 4.880174160003662
+        },
+        "candidate": {
+          "name": "stairs",
+          "samples": 124,
+          "maxRise": 0.24241352081298828,
+          "maxPitch": 0.09082164446716731,
+          "minSpeed": 4.41986083984375,
+          "approachSpeed": 4.872236251831055
+        },
+        "passed": true
+      },
+      {
+        "id": "van",
+        "speed": 12,
+        "profile": "curb",
+        "valid": true,
+        "reason": "measured",
+        "riseDelta": -0.00041103363037109375,
+        "pitchRatio": 0.7197062766967217,
+        "baseline": {
+          "name": "curb",
+          "samples": 37,
+          "maxRise": 0.015128135681152344,
+          "maxPitch": 0.030686302345667327,
+          "minSpeed": 11.814637184143066,
+          "approachSpeed": 11.886979103088379
+        },
+        "candidate": {
+          "name": "curb",
+          "samples": 38,
+          "maxRise": 0.01471710205078125,
+          "maxPitch": 0.02208512440679011,
+          "minSpeed": 11.789186477661133,
+          "approachSpeed": 11.886469841003418
+        },
+        "passed": true
+      },
+      {
+        "id": "van",
+        "speed": 12,
+        "profile": "pad",
+        "valid": true,
+        "reason": "measured",
+        "riseDelta": -0.0009360313415527344,
+        "pitchRatio": 0.8707327770399829,
+        "baseline": {
+          "name": "pad",
+          "samples": 37,
+          "maxRise": 0.0375514030456543,
+          "maxPitch": 0.03984052199121527,
+          "minSpeed": 11.831164360046387,
+          "approachSpeed": 11.887113571166992
+        },
+        "candidate": {
+          "name": "pad",
+          "samples": 38,
+          "maxRise": 0.03661537170410156,
+          "maxPitch": 0.034690448352133384,
+          "minSpeed": 11.790060997009277,
+          "approachSpeed": 11.864439964294434
+        },
+        "passed": true
+      },
+      {
+        "id": "van",
+        "speed": 12,
+        "profile": "bridge-seam",
+        "valid": true,
+        "reason": "measured",
+        "riseDelta": 0.0010247230529785156,
+        "pitchRatio": 0.7072457213449804,
+        "baseline": {
+          "name": "bridge-seam",
+          "samples": 42,
+          "maxRise": -0.0020051002502441406,
+          "maxPitch": 0.02380741450202836,
+          "minSpeed": 11.806821823120117,
+          "approachSpeed": 11.808211326599121
+        },
+        "candidate": {
+          "name": "bridge-seam",
+          "samples": 41,
+          "maxRise": -0.000980377197265625,
+          "maxPitch": 0.016837692042845995,
+          "minSpeed": 11.82705020904541,
+          "approachSpeed": 11.90823745727539
+        },
+        "passed": true
+      },
+      {
+        "id": "van",
+        "speed": 12,
+        "profile": "stairs",
+        "valid": true,
+        "reason": "measured",
+        "riseDelta": -0.0037641525268554688,
+        "pitchRatio": 0.9207264646465637,
+        "baseline": {
+          "name": "stairs",
+          "samples": 50,
+          "maxRise": 0.1700429916381836,
+          "maxPitch": 0.06652283340149605,
+          "minSpeed": 11.827686309814453,
+          "approachSpeed": 11.861995697021484
+        },
+        "candidate": {
+          "name": "stairs",
+          "samples": 51,
+          "maxRise": 0.16627883911132812,
+          "maxPitch": 0.0612493332160318,
+          "minSpeed": 11.814539909362793,
+          "approachSpeed": 11.924302101135254
+        },
+        "passed": true
+      }
+    ]
+  },
+  "routes": {
+    "passed": true,
+    "cases": [
+      {
+        "name": "offroad-ring-loop",
+        "passed": true,
+        "reached": true,
+        "maxCrossTrack": 1.5007076986506052,
+        "minY": 2.193281650543213,
+        "maxY": 2.194838047027588,
+        "solidContacts": []
+      },
+      {
+        "name": "coupe-ring-loop",
+        "passed": true,
+        "reached": true,
+        "maxCrossTrack": 1.0303227446729386,
+        "minY": 2.123507261276245,
+        "maxY": 2.1812620162963867,
+        "solidContacts": []
+      },
+      {
+        "name": "offroad-hill-climb-return",
+        "passed": true,
+        "reached": true,
+        "maxCrossTrack": 1.26688615395439,
+        "minY": 2.043144464492798,
+        "maxY": 5.556777000427246,
+        "solidContacts": []
+      },
+      {
+        "name": "van-ring-loop",
+        "passed": true,
+        "reached": true,
+        "maxCrossTrack": 3.0383075844040794,
+        "minY": 2.43813157081604,
+        "maxY": 2.4544806480407715,
+        "solidContacts": []
+      }
+    ]
+  },
+  "walk": {
+    "passed": true,
+    "cases": [
+      {
+        "id": "offroad",
+        "passed": true,
+        "distance": 1.3578246806974565,
+        "carDisplacement": 0.03507614156485511,
+        "contactSamples": 11
+      },
+      {
+        "id": "coupe",
+        "passed": true,
+        "distance": 1.3324732261839627,
+        "carDisplacement": 0.06497218408523792,
+        "contactSamples": 8
+      },
+      {
+        "id": "van",
+        "passed": true,
+        "distance": 1.4655814297091432,
+        "carDisplacement": 0.024383545220271217,
+        "contactSamples": 24
+      }
+    ]
+  },
+  "budget": {
+    "source": "budget/budget-report.json",
+    "summary": {
+      "gameplayPeak": {
+        "calls": 229,
+        "triangles": 557387,
+        "callsAt": "camp",
+        "trianglesAt": "camp"
+      },
+      "shotPeak": null,
+      "zonePeak": {
+        "sky-sea": {
+          "calls": 3,
+          "triangles": 22876,
+          "worstView": "drive",
+          "limit": {
+            "calls": 3,
+            "triangles": 40000
+          }
+        },
+        "terrain": {
+          "calls": 4,
+          "triangles": 56807,
+          "worstView": "spawn",
+          "limit": {
+            "calls": 8,
+            "triangles": 80000
+          }
+        },
+        "grass": {
+          "calls": 2,
+          "triangles": 27235,
+          "worstView": "spawn",
+          "limit": {
+            "calls": 2,
+            "triangles": 40000
+          }
+        },
+        "camp": {
+          "calls": 88,
+          "triangles": 100049,
+          "worstView": "camp",
+          "limit": {
+            "calls": 40,
+            "triangles": 60000
+          }
+        },
+        "town": {
+          "calls": 24,
+          "triangles": 66320,
+          "worstView": "avenue",
+          "limit": {
+            "calls": 45,
+            "triangles": 80000
+          }
+        },
+        "park": {
+          "calls": 7,
+          "triangles": 39709,
+          "worstView": "avenue",
+          "limit": {
+            "calls": 40,
+            "triangles": 55000
+          }
+        },
+        "street": {
+          "calls": 10,
+          "triangles": 2040,
+          "worstView": "avenue",
+          "limit": {
+            "calls": 30,
+            "triangles": 30000
+          }
+        },
+        "vehicles": {
+          "calls": 4,
+          "triangles": 24118,
+          "worstView": "avenue",
+          "limit": {
+            "calls": 18,
+            "triangles": 30000
+          }
+        },
+        "character": {
+          "calls": 4,
+          "triangles": 3106,
+          "worstView": "spawn",
+          "limit": {
+            "calls": 6,
+            "triangles": 12000
+          }
+        },
+        "greybox": {
+          "calls": 13,
+          "triangles": 18192,
+          "worstView": "camp",
+          "limit": {
+            "calls": 0,
+            "triangles": 0
+          }
+        },
+        "other": {
+          "calls": 2,
+          "triangles": 24,
+          "worstView": "avenue",
+          "limit": {
+            "calls": 0,
+            "triangles": 0
+          }
+        },
+        "shadow": {
+          "calls": 80,
+          "triangles": 251289,
+          "worstView": "camp",
+          "limit": {
+            "calls": 85,
+            "triangles": 68000
+          }
+        }
+      },
+      "pointLightsMax": 6,
+      "infoMismatch": [
+        "camp",
+        "avenue"
+      ],
+      "errors": 0
+    },
+    "views": [
+      {
+        "view": "spawn",
+        "total": {
+          "calls": 170,
+          "triangles": 383522
+        },
+        "glInfo": {
+          "calls": 170,
+          "triangles": 383522
+        },
+        "vehicles": null
+      },
+      {
+        "view": "camp",
+        "total": {
+          "calls": 229,
+          "triangles": 557387
+        },
+        "glInfo": {
+          "calls": 227,
+          "triangles": 557387
+        },
+        "vehicles": {
+          "main": {
+            "calls": 2,
+            "triangles": 13956
+          },
+          "shadow": {
+            "calls": 4,
+            "triangles": 24808
+          }
+        }
+      },
+      {
+        "view": "avenue",
+        "total": {
+          "calls": 141,
+          "triangles": 380260
+        },
+        "glInfo": {
+          "calls": 139,
+          "triangles": 380260
+        },
+        "vehicles": {
+          "main": {
+            "calls": 4,
+            "triangles": 24118
+          },
+          "shadow": {
+            "calls": 3,
+            "triangles": 16438
+          }
+        }
+      },
+      {
+        "view": "park",
+        "total": {
+          "calls": 101,
+          "triangles": 261324
+        },
+        "glInfo": {
+          "calls": 101,
+          "triangles": 261324
+        },
+        "vehicles": {
+          "main": {
+            "calls": 2,
+            "triangles": 12868
+          },
+          "shadow": {
+            "calls": 4,
+            "triangles": 21674
+          }
+        }
+      },
+      {
+        "view": "drive",
+        "total": {
+          "calls": 98,
+          "triangles": 321113
+        },
+        "glInfo": {
+          "calls": 98,
+          "triangles": 321113
+        },
+        "vehicles": {
+          "main": {
+            "calls": 4,
+            "triangles": 24118
+          },
+          "shadow": {
+            "calls": 3,
+            "triangles": 16438
+          }
+        }
+      }
+    ],
+    "nearAll3Triangles": 38074,
+    "nearAll3Budget": 30000,
+    "lod1Implemented": false
+  },
+  "checks": {
+    "astroErrors": 0,
+    "astroWarnings": 0,
+    "astroHints": 127,
+    "diffCheck": true
+  },
+  "knownLimits": [
+    "G27 ideal-cylinder wheel probe 2.11cm overlap at high-speed wall; straight dynamic side cases remain zero.",
+    "All-three near geometry is 26.9% above the 30k allocation; 60m LOD1 is not implemented.",
+    "Camp full-frame 557387 triangles on this integration baseline; main render work continues separately.",
+    "Prior bot entry failures and overloaded-loop route failure are retained in raw evidence.",
+    "Existing street lamp can occlude coupe at some camera angles.",
+    "No Bobby art/handling acceptance, full-island matrix or M1 hardware claim."
+  ],
+  "rawEvidenceRoot": "/Users/bobby/Desktop/3D-personal-world/evidence/vehicles-integration",
+  "passedFunctionalSubset": true,
+  "sourceReports": [
+    {
+      "path": "/Users/bobby/Desktop/3D-personal-world/evidence/vehicles-integration/tyres/report.json",
+      "sha256": "2440b406d2c157a6fc9ae791a261181187fb36acb17dd4dda3350f2a95d96b06"
+    },
+    {
+      "path": "/Users/bobby/Desktop/3D-personal-world/evidence/vehicles-integration/van-final-tyres/report.json",
+      "sha256": "61b2e18d3eefcba4ecd583aa094e9271e3d350062bbc076b88f7b65a3ac42127"
+    },
+    {
+      "path": "/Users/bobby/Desktop/3D-personal-world/evidence/vehicles-integration/dynamic/report.json",
+      "sha256": "d25d099c676d1b41001a6dd801d1d62e480436787dbfb74a2b76d6252c3b9aa1"
+    },
+    {
+      "path": "/Users/bobby/Desktop/3D-personal-world/evidence/vehicles-integration/van-final-front/report.json",
+      "sha256": "f1b376fdaf5215cce56ea774631f74afd8e60d7afa26009e810ee78d8eecda83"
+    },
+    {
+      "path": "/Users/bobby/Desktop/3D-personal-world/evidence/vehicles-integration/dynamic-side-v2/report.json",
+      "sha256": "21384a42d46d1e94265830daaaf0d81e13ec551d9dbdaab7811f2e9a71773f3f"
+    },
+    {
+      "path": "/Users/bobby/Desktop/3D-personal-world/evidence/vehicles-integration/van-final-dynamic/report.json",
+      "sha256": "69fe5162ea8b0ca2c31d7f2207d575864433ca7a100b4b8f2534204d8b1f46e7"
+    },
+    {
+      "path": "/Users/bobby/Desktop/3D-personal-world/evidence/vehicles-integration/van-handling-com/report.json",
+      "sha256": "63a3a297994331c2ef80f1eed3735401ced2a3578cde419ed465036101590796"
+    },
+    {
+      "path": "/Users/bobby/Desktop/3D-personal-world/evidence/vehicles-integration/van-final-transitions/report.json",
+      "sha256": "0ba6a3c6c1dabf0337ab44bfe1307989ea82a2a61a6f967d691dc30e27239261"
+    },
+    {
+      "path": "/Users/bobby/Desktop/3D-personal-world/evidence/vehicles-integration/drive/report.json",
+      "sha256": "de4a85fd62db56dbdcc5067fea6bc7076fef050da22da822da927756c6b08690"
+    },
+    {
+      "path": "/Users/bobby/Desktop/3D-personal-world/evidence/vehicles-integration/van-final-ring/report.json",
+      "sha256": "032a81fe53f44cb35c39262c8b19eef6725d2aeab6604f71c017da506f5fd08f"
+    },
+    {
+      "path": "/Users/bobby/Desktop/3D-personal-world/evidence/vehicles-integration/walk/report.json",
+      "sha256": "371c40d05abc8cb028c062c0609b36550a51a79131baf1cfa855e35647fe765c"
+    }
+  ],
+  "normalEntry": {
+    "entry": "/world/",
+    "viewport": [
+      1920,
+      1080
+    ],
+    "shots": 22,
+    "normalAdapter": "test-only actor fixture adapter; no QA URL, no rendering/physics changes; budget unavailable",
+    "assetErrors": 0,
+    "analytics404": 4,
+    "javascriptErrors": 0
+  }
+}

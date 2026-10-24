@@ -693,7 +693,7 @@ def main():
               'sourceTris': src_tris, 'bodyTris': src_tris[body_name], 'wheelTris': src_tris[wheel_name],
               'totalTris': sum(src_tris.values()), 'checks': checks, 'reimport': back,
               'hulls': [{'part': h['part'], 'faces': h['faces'], 'points': len(h['points']) // 3} for h in hulls],
-              'render': render}
+              'render': os.path.relpath(render) if render else None}
     os.makedirs(V.DOC_DIR, exist_ok=True)
     with open(os.path.join(V.DOC_DIR, f'{ASSET}-report.json'), 'w') as f:
         json.dump(report, f, indent=1)
