@@ -1,9 +1,10 @@
 import { Component, Suspense, useEffect, useMemo, useRef, type ReactNode } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
-import { AnimationMixer, LoopOnce, LoopRepeat, Matrix4, Mesh, Quaternion, SkinnedMesh, Vector3, type AnimationAction, type Bone, type Group, type Object3D } from 'three';
+import { AnimationMixer, BufferAttribute, Color, LoopOnce, LoopRepeat, Matrix4, Mesh, MeshStandardMaterial, Quaternion, SkinnedMesh, Vector3, type AnimationAction, type Bone, type Group, type Object3D } from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js';
+import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { useWorldStore } from './store';
 import { GuideSlopeFit, GuideStopStep, skinnedWorldPoint, type SlopeProbe } from './WorldGuideStop';
 import { GuideInertializer, GuidePhaseModel, PhaseGate, type InertialHalflives } from './WorldGuidePhase';
@@ -79,6 +80,38 @@ class GuideBoundary extends Component<{ children: ReactNode; fallback?: ReactNod
   render() { return this.state.failed ? this.props.fallback ?? null : this.props.children; }
 }
 
+/**
+ * Draw-call budget (SESSION-RULES 5: character <= 6): the GLB keeps its 8 Art Lock materials (A6/QA
+ * gates identify parts by material). At load, primitives whose materials differ ONLY in base colour
+ * (same roughness 0.80-0.92 band, not metallic, no emission, opaque) are merged into one skinned mesh
+ * with per-vertex colour = that material's base colour, so the shading is unchanged: jacket, sleeve,
+ * pants, glove/boot and hip bag become 1 draw; helmet, visor and the cyan dot keep their own.
+ * 8 -> 4 draws (plus shadow pass).
+ */
+function mergeGuideMaterials(scene: Object3D) {
+  const skinned: SkinnedMesh[] = [];
+  scene.traverse(o => { if (o instanceof SkinnedMesh) skinned.push(o); });
+  const cloth = skinned.filter(m => {
+    const mat = m.material as MeshStandardMaterial;
+    return !Array.isArray(m.material) && mat.roughness >= .79 && mat.roughness <= .93 && mat.metalness === 0 && mat.emissive.getHex() === 0;
+  });
+  if (cloth.length < 2 || cloth.some(m => m.skeleton.bones[0] !== cloth[0].skeleton.bones[0] || m.parent !== cloth[0].parent)) return;
+  const geos = cloth.map(m => {
+    const g = m.geometry.clone(), c = (m.material as MeshStandardMaterial).color, n = g.getAttribute('position').count;
+    const col = new Float32Array(n * 3); for (let i = 0; i < n; i++) col.set([c.r, c.g, c.b], i * 3);
+    g.setAttribute('color', new BufferAttribute(col, 3));
+    return g;
+  });
+  const merged = mergeGeometries(geos, false);
+  if (!merged) return;
+  const base = cloth[0].material as MeshStandardMaterial;
+  const mat = base.clone(); mat.name = 'guide_cloth_merged'; mat.vertexColors = true; mat.color = new Color(1, 1, 1); mat.roughness = .86;
+  const mesh = new SkinnedMesh(merged, mat);
+  mesh.name = 'G24_cloth'; mesh.bind(cloth[0].skeleton, cloth[0].bindMatrix);
+  cloth[0].parent!.add(mesh);
+  for (const m of cloth) m.removeFromParent();
+}
+
 function guideFeet(scene: Object3D) {
   const feet = new Map<'left' | 'right', Bone>();
   scene.traverse(o => { if (o instanceof SkinnedMesh) for (const bone of o.skeleton.bones) {
@@ -94,6 +127,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
   const stop = useRef<GuideStopStep | null>(null);
   const rig = useMemo(() => {
     const scene = clone(gltf.scene);
+    mergeGuideMaterials(scene);
     scene.traverse(o => { if (o instanceof Mesh) { o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; } });
     const soles: { mesh: SkinnedMesh; indices: number[]; sides: ('left' | 'right')[] }[] = [];
     scene.traverse(o => {
@@ -231,7 +265,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         animation: s.current, animationTime: rig.actions[s.current].time, animationTimeScale: rig.actions[s.current].getEffectiveTimeScale(),
         mixerTime: rig.mixer.time, speedMps: s.speed, visible: s.visible, phaseGateTimeouts:s.phaseGateTimeouts,
         pendingAnimation:s.pending, pendingSeconds:s.pendingTime, stopPrototype:!!stop.current, stop:stop.current?.debug()??null,
-        inert:{switches:rig.inert.switches,lastJump:rig.inert.lastJump,residual:rig.inert.residual()},phasePrototype:!!rig.phase, phasePrediction:rig.gate.last, phaseWaitLimit:rig.phase?rig.gate.maxWait:null,
+        budget:(()=>{let draws=0,tris=0;rig.scene.traverse(o=>{if(o instanceof Mesh&&o.visible){const g=o.geometry,m=o.material;draws+=Array.isArray(m)?m.length:1;tris+=(g.index?g.index.count:g.getAttribute('position').count)/3;}});return{draws,triangles:tris};})(),inert:{switches:rig.inert.switches,lastJump:rig.inert.lastJump,residual:rig.inert.residual()},phasePrototype:!!rig.phase, phasePrediction:rig.gate.last, phaseWaitLimit:rig.phase?rig.gate.maxWait:null,
         root: group.current?.getWorldPosition(v).toArray() ?? null, soleCorrection:group.current?.position.y??0, soles, contactVertices };
     };
     readActor = read;
