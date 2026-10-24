@@ -3,13 +3,14 @@ import { useFrame, useLoader } from '@react-three/fiber';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import type { BufferGeometry } from 'three';
-import type { WorldContent } from './types';
+import type { WorldContent, WorldProject } from './types';
 import type { Vec3 } from './types';
 import WorldSurfaceColliders from './WorldSurfaceColliders';
 import { useGreyboxClaim } from './WorldVisualClaims';
 import { night } from './WorldNight';
 import { gltfPieces, gltfTrimesh, mergeBatch, parkMaterial, parkNight, parkUrl, plankDeck, ParkGeo, withDraco, type GLTF } from './WorldParkKit';
-import { DECK_Y, HUTS, HUT_BACK_Z, HUT_FRONT_Z } from './WorldParkLayout';
+import { DECK_Y, EXHIBIT_ANCHOR, HUTS, HUT_BACK_Z, HUT_FRONT_Z } from './WorldParkLayout';
+import { ParkExhibits, placeExhibits, useExhibitGltfs } from './WorldParkExhibits';
 import { buildWalk, Knockables, LampPools, LAMP, RAIL, parkKnockables } from './WorldParkWalk';
 
 /**
@@ -38,8 +39,9 @@ function FixedMesh({ name, mesh }: { name: string; mesh: { vertices: Float32Arra
 }
 
 /** P06-P11: six huts from hut.glb (variants A / B), their floors and spurs to the boardwalk. */
-function ParkHuts() {
+function ParkHuts({ projects }: { projects: WorldProject[] }) {
   const gltf = useLoader(GLTFLoader, parkUrl('hut'), withDraco) as GLTF;
+  const exhibitGltfs = useExhibitGltfs();
   const built = useMemo(() => {
     const solid: BufferGeometry[] = [], deckParts: BufferGeometry[] = [], spurs = new ParkGeo();
     const shells: { vertices: Float32Array; indices: Uint32Array }[] = [];
@@ -62,13 +64,15 @@ function ParkHuts() {
         surfaces.push({ position: [(from[0] + to[0]) / 2, DECK_Y - 0.15, (from[2] + to[2]) / 2], size: [width, 0.3, L], rotation: [0, h.yaw, 0] });
       }
     });
-    return { solid: mergeBatch(solid), deck: mergeBatch([...deckParts, ...spurs.pieces]), shells, surfaces };
-  }, [gltf]);
+    const ex = placeExhibits(exhibitGltfs);
+    return { solid: mergeBatch([...solid, ...ex.pieces]), deck: mergeBatch([...deckParts, ...spurs.pieces]), shells: [...shells, ...ex.fixed], surfaces, placed: ex.placed };
+  }, [gltf, exhibitGltfs]);
   useGreyboxClaim('booth');
   return <group name="park-huts">
     <Batch name="park-huts-solid" geometry={built.solid} />
     <Batch name="park-huts-deck" geometry={built.deck} deck />
-    {built.shells.map((m, i) => <FixedMesh key={i} name={`park-hut-${HUTS[i].id}`} mesh={m} />)}
+    {built.shells.map((m, i) => <FixedMesh key={i} name={i < HUTS.length ? `park-hut-${HUTS[i].id}` : `park-exhibit-body-${i - HUTS.length}`} mesh={m} />)}
+    <ParkExhibits placed={built.placed} projects={projects} />
     <WorldSurfaceColliders name="park-hut-floors" items={built.surfaces} />
   </group>;
 }
@@ -79,7 +83,7 @@ function ParkWalk() {
   useGreyboxClaim('boardwalk', 'park-plaza');
   useEffect(() => { if (new URLSearchParams(window.location.search).get('qa') === '1') Object.assign(window, { __parkKnock: parkKnockables, __parkWalk: { deckTris: walk.deckTris, solidTris: walk.solidTris, rails: walk.rails.length, lamps: walk.lamps.length, railTris: RAIL.triangles, lampTris: LAMP.triangles,
     railList: walk.rails, lampList: walk.lamps,
-    huts: HUTS.map(h => ({ id: h.id, slug: h.slug, yaw: h.yaw, front: h.front, opening: h.local(0, 0, HUT_FRONT_Z), inside: h.local(0, 0, -1.6), backOutside: h.local(0, 0, HUT_BACK_Z - 0.6), spurEnd: h.spur?.to ?? h.local(0, 0, HUT_FRONT_Z + 1) })) } }); }, [walk]);
+    huts: HUTS.map(h => ({ id: h.id, slug: h.slug, yaw: h.yaw, front: h.front, opening: h.local(0, 0, HUT_FRONT_Z), inside: h.local(0, 0, -1.6), anchor: h.local(EXHIBIT_ANCHOR[h.id][0], 0, EXHIBIT_ANCHOR[h.id][1]), backOutside: h.local(0, 0, HUT_BACK_Z - 0.6), spurEnd: h.spur?.to ?? h.local(0, 0, HUT_FRONT_Z + 1) })) } }); }, [walk]);
   return <group name="park-walk">
     <Batch name="park-walk-deck" geometry={walk.deck} deck />
     <Batch name="park-walk-solid" geometry={walk.solid} />
@@ -96,10 +100,10 @@ function ParkClock() {
   return null;
 }
 
-export default memo(function WorldPark(_props: { projects: WorldContent['projects'] }) {
+export default memo(function WorldPark({ projects }: { projects: WorldContent['projects'] }) {
   return <group name="world-park">
     <ParkClock />
-    <ParkGuard id="huts"><ParkHuts /></ParkGuard>
+    <ParkGuard id="huts"><ParkHuts projects={projects} /></ParkGuard>
     <ParkGuard id="walk"><ParkWalk /></ParkGuard>
   </group>;
 });

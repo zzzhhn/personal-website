@@ -137,14 +137,14 @@ def build(variant, W):
     # ---------------- pendant lamp over the exhibit zone (hangs from the centre rafter)
     ly = 1.25
     top = h(ly) - 0.13
-    lamp.add(strut((0, ly, 2.27), (0, ly, top + 0.01), 0.008, 0.008, 6), 'park_iron_matte', smooth=False)
-    lamp.add(lathe([(0, 0.24), (0.045, 0.24), (0.06, 0.2), (0.24, 0.0), (0.225, -0.005), (0.05, 0.18), (0, 0.19)], 16, center=(0, ly, 2.06)), 'park_brass_matte')
-    lamp.add(sphere((0, ly, 2.07), 0.065, 12, 7), 'park_bulb_warm')
+    lamp.add(strut((0, ly, 2.5), (0, ly, top + 0.01), 0.008, 0.008, 6), 'park_iron_matte', smooth=False)
+    lamp.add(lathe([(0, 0.17), (0.035, 0.17), (0.045, 0.14), (0.16, 0.0), (0.15, -0.004), (0.04, 0.13), (0, 0.135)], 16, center=(0, ly, 2.33)), 'park_brass_matte')
+    lamp.add(sphere((0, ly, 2.34), 0.05, 12, 7), 'park_bulb_warm')
     root = make_root(f'hut_{variant}', {
         'assetFamily': 'park-hut', 'variant': variant, 'widthM': W, 'front': '+Z (glTF)', 'up': '+Y (glTF)',
         'origin': 'floor top at x=0, 0.6 m behind the opening line',
         'openingZ': -Y0, 'backInnerZ': -(Y1 - 0.12), 'interiorHalfWidth': hw - 0.12,
-        'lampLocalGLB': [0, 2.06, -ly],
+        'lampLocalGLB': [0, 2.33, -ly],
         'surfaceBoxes': [[[-hw, -0.25, -Y1], [hw, 0.0, -Y0]]],
         'solidNodes': ['shell', 'piles'],
         'generator': 'park-huts-r1',
