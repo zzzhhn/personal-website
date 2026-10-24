@@ -1,6 +1,8 @@
 import { BufferGeometry, ClampToEdgeWrapping, DataTexture, Float32BufferAttribute, LinearFilter, RGBAFormat, Uint32BufferAttribute, UnsignedByteType } from 'three';
 import { BUILDINGS, CAMP_CENTER, FOUNDATIONS, GROUND_Y, ISLAND_OUTLINE, ROAD_POINTS, WATER_Y } from './layout';
-import { LAYOUT_V4, keepOutV4, nearRidgeV4, ridgeHeightV4, roadDistanceV4, TERRAIN_GRID_V4, townFactorV4 } from './layout-v4';
+import { LAYOUT_V4, keepOutV4, nearRidgeV4, ridgeHeightV4, TERRAIN_GRID_V4, townFactorV4 } from './layout-v4';
+import { groundRoadDistance, pavingGround, trailDistance } from './WorldTerrainPaving';
+import { TRAIL_HALF } from './layout-v4';
 
 /** quality-v3 landform (spec 2026-10-22 §3, §10.1/10.2). One deterministic height function
  * h(x, z) describes the whole island: flat town top (y=1), irregular sand beaches, the camp
@@ -77,8 +79,12 @@ const L = OUTLINE_PERIMETER;
 /** Top-edge push beyond the old outline (0.3-3.4 m), beach width 5-12 m, shelf 12-18 m. */
 const window1 = (s: number, a: number, b: number, soft: number) => smoothstep(a - soft, a, s) * (1 - smoothstep(b, b + soft, s));
 export const topPush = (s: number) => clamp(1.6 + periodic(s, L, [[1.1, 7, .4], [.5, 17, 2.2], [.18, 37, 4.1]]), .3, 3.4)
-  // The existing coastal parking bay (x 16.5-23.5, z 8.5-15.5) overhangs the old outline by 2.9 m.
-  + 2.6 * window1(s, 206, 224, 5);
+  // v3 only: the old coastal parking bay (x 16.5-23.5, z 8.5-15.5) overhangs the old outline by 2.9 m.
+  // v4 has no such bay (the window would push a meaningless 2.6 m cape out of the new north-east shore).
+  + (LAYOUT_V4 ? 0 : 2.6 * window1(s, 206, 224, 5))
+  // v4 south shore (x -5..-25, z ~90): the one stretch where the 527 m perimeter's harmonics leave a
+  // 51 m run without a feature; a small 2.2 m cape at its middle restores the 30-50 m rhythm (§12.1 A7).
+  + (LAYOUT_V4 ? 2.2 * window1(s, 414, 420, 5) : 0);
 export const beachWidth = (s: number) => clamp(8.5 + periodic(s, L, [[3.4, 8, 1.3], [1.1, 19, .2]]), 5, 12);
 const shelfLength = (s: number) => clamp(15 + periodic(s, L, [[3, 5, 2.7]]), 12, 18);
 /** East town coast: road promenade and bridge stand on a stone seawall, not on sand. */
@@ -227,8 +233,9 @@ function roadCap(x: number, z: number) {
   // Each segment caps its own slab band; at a joint the two adjacent bands overlap and the
   // lower one wins. The nearest segment also limits the cut face beyond its band.
   let near = { distance: Infinity, y: 0 }, ni = 0;
-  for (let i = 0; i < 7; i++) { const f = roadFrame(x, z, i); if (f.distance < near.distance) { near = f; ni = i; } }
-  for (let i = Math.max(0, ni - 1); i <= Math.min(6, ni + 1); i++) {
+  const last = LAYOUT_V4 ? 1 : 6;
+  for (let i = 0; i <= last; i++) { const f = roadFrame(x, z, i); if (f.distance < near.distance) { near = f; ni = i; } }
+  for (let i = Math.max(0, ni - 1); i <= Math.min(last, ni + 1); i++) {
     const f = roadFrame(x, z, i);
     // Neighbours only where the slab heights meet (the joint), not along the angled ramp.
     if (f.distance <= ROAD_HALF + .9 && Math.abs(f.y - near.y) < .3) cap = Math.min(cap, f.y - CAP_CLEAR);
@@ -263,7 +270,7 @@ function keepOutCap(x: number, z: number) {
 }
 /** Inside a road slab box in plan (segments 0-6). */
 function underSlab(x: number, z: number) {
-  for (let i = 0; i < 7; i++) { const f = roadFrame(x, z, i); if (f.beyond <= .14 && f.lateral <= 5.35) return true; }
+  for (let i = 0; i < (LAYOUT_V4 ? 2 : 7); i++) { const f = roadFrame(x, z, i); if (f.beyond <= .14 && f.lateral <= 5.35) return true; }
   return false;
 }
 
@@ -271,7 +278,7 @@ function underSlab(x: number, z: number) {
 
 const TENTS = [-51, -42, -33].map(x => [x - 3.6, 12.5 - 3, x + 3.6, 12.5 + 3]);
 function roadDistance(x: number, z: number) {
-  if (LAYOUT_V4) return roadDistanceV4(x, z);
+  if (LAYOUT_V4) return groundRoadDistance(x, z);
   let best = Infinity;
   for (let i = 0; i < ROAD_POINTS.length - 1; i++) {
     const a = ROAD_POINTS[i], b = ROAD_POINTS[i + 1], dx = b[0] - a[0], dz = b[2] - a[2];
@@ -296,8 +303,9 @@ function reliefAmplitude(x: number, z: number, base: number, coast: number, camp
 export function terrainBaseHeight(x: number, z: number) {
   const coast = coastHeight(x, z), camp = campHillHeight(x, z);
   const ground = campFlankTan(Math.atan2(z - CAMP_CENTER[2], x - CAMP_CENTER[0])) > 1 ? Math.max(coast, camp) : smax(coast, camp, .4);
-  const h = Math.min(roadCap(x, z), Math.max(ground, rampHeight(x, z), LAYOUT_V4 ? ridgeHeightV4(x, z) ?? -Infinity : -Infinity));
-  return underSlab(x, z) ? h : Math.min(h, keepOutCap(x, z));
+  let h = Math.min(roadCap(x, z), Math.max(ground, rampHeight(x, z), LAYOUT_V4 ? ridgeHeightV4(x, z) ?? -Infinity : -Infinity));
+  if (!underSlab(x, z)) h = Math.min(h, keepOutCap(x, z));
+  return LAYOUT_V4 ? pave(h, x, z) : h;
 }
 export function terrainHeight(x: number, z: number) {
   const coast = coastHeight(x, z), camp = campHillHeight(x, z), cap = roadCap(x, z);
@@ -306,9 +314,15 @@ export function terrainHeight(x: number, z: number) {
   const ground = campFlankTan(Math.atan2(z - CAMP_CENTER[2], x - CAMP_CENTER[0])) > 1 ? Math.max(coast, camp) : smax(coast, camp, .4);
   let base = Math.min(cap, Math.max(ground, rampHeight(x, z), LAYOUT_V4 ? ridgeHeightV4(x, z) ?? -Infinity : -Infinity));
   if (!underSlab(x, z)) base = Math.min(base, keepOutCap(x, z));
-  if (cap < Infinity) return base;
+  if (cap < Infinity) return LAYOUT_V4 ? pave(base, x, z) : base;
   const amp = reliefAmplitude(x, z, base, coast, camp);
-  return amp ? base + amp * (.6 * valueNoise(x / 2.4, z / 2.4, 3) + .4 * valueNoise(x / 1.05 + 7.3, z / 1.05 - 3.1, 9)) : base;
+  const h = amp ? base + amp * (.6 * valueNoise(x / 2.4, z / 2.4, 3) + .4 * valueNoise(x / 1.05 + 7.3, z / 1.05 - 3.1, 9)) : base;
+  return LAYOUT_V4 ? pave(h, x, z) : h;
+}
+/** v4: ground under / beside the field paving (cap under it, fill under its outer chamfer). */
+function pave(h: number, x: number, z: number) {
+  const [cap, floor] = pavingGround(x, z);
+  return cap === Infinity ? h : Math.max(Math.min(h, cap), Math.min(floor, cap));
 }
 
 /* ------------------------------------------------------------------ mesh */
@@ -328,6 +342,9 @@ export interface Terrain {
   /** Vertex index per lattice node (-1 = unused). */
   vertexOf: Int32Array;
   seawall: { start: [number, number]; end: [number, number] };
+  /** Render LOD: per 2 m block (row-major NB x MB) its kind (0 skip, 1/3 coarse, 2 fine), and for fine
+   * blocks the start / count of its triangles in `indices` plus its four corner vertex indices. */
+  blocks: { NB: number; MB: number; kind: Uint8Array; start: Int32Array; count: Int32Array; corners: Int32Array };
   stats: { triangles: number; fineBlocks: number; coarseBlocks: number; surfaceTriangles: number; solidTriangles: number; maxWalkableDeg: number; buildMs: number };
 }
 
@@ -391,11 +408,14 @@ export function buildTerrain(): Terrain {
     for (let j = j0; j < j0 + BLOCK; j++) cellDiag.fill(3, j * GRID.nx + i0, j * GRID.nx + i0 + BLOCK);
   };
   let fineBlocks = 0, coarseBlocks = 0;
+  const bStart = new Int32Array(NB * MB), bCount = new Int32Array(NB * MB), bCorners = new Int32Array(NB * MB * 4).fill(-1);
   for (let bj = 0; bj < MB; bj++) for (let bi = 0; bi < NB; bi++) {
-    const i0 = bi * BLOCK, j0 = bj * BLOCK, k = kind[bj * NB + bi];
+    const i0 = bi * BLOCK, j0 = bj * BLOCK, k = kind[bj * NB + bi], b = bj * NB + bi;
     if (k === 0) continue;
+    bStart[b] = idx.length;
     if (k === 3) for (const [i, j] of [[i0, j0], [i0 + BLOCK, j0], [i0, j0 + BLOCK], [i0 + BLOCK, j0 + BLOCK]]) nodeHeight[j * NODES_X + i] = GROUND_Y;
-    if (k !== 2) { coarse(i0, j0); coarseBlocks++; continue; }
+    bCorners.set([vertex(i0, j0), vertex(i0 + BLOCK, j0), vertex(i0, j0 + BLOCK), vertex(i0 + BLOCK, j0 + BLOCK)], b * 4);
+    if (k !== 2) { coarse(i0, j0); coarseBlocks++; bCount[b] = idx.length - bStart[b]; continue; }
     fineBlocks++;
     for (let j = j0; j < j0 + BLOCK; j++) for (let i = i0; i < i0 + BLOCK; i++) {
       // Split along the flatter diagonal so creases follow contours (no sawtooth on steep faces).
@@ -404,6 +424,7 @@ export function buildTerrain(): Terrain {
       cellDiag[j * GRID.nx + i] = flip ? 2 : 1;
       quad(vertex(i, j), vertex(i + 1, j), vertex(i, j + 1), vertex(i + 1, j + 1), flip);
     }
+    bCount[b] = idx.length - bStart[b];
   }
   // Unfold pass: where crease snapping pulled neighbouring nodes past each other (triangle
   // reversed in plan), return those nodes to their lattice point and re-evaluate height.
@@ -440,6 +461,7 @@ export function buildTerrain(): Terrain {
   terrainCache = {
     positions: new Float32Array(pos), indices: new Uint32Array(idx), surface: new Uint32Array(surface), solid: new Uint32Array(solid), nodeHeight, cellDiag, vertexOf,
     seawall,
+    blocks: { NB, MB, kind, start: bStart, count: bCount, corners: bCorners },
     stats: { triangles: idx.length / 3, fineBlocks, coarseBlocks, surfaceTriangles: surface.length / 3, solidTriangles: solid.length / 3, maxWalkableDeg, buildMs: Math.round(t1 - t0) },
   };
   return terrainCache;
@@ -724,6 +746,18 @@ export function groundSample(x: number, z: number, h = terrainHeight(x, z), slop
   return g;
 }
 function groundSampleBase(x: number, z: number, h = terrainHeight(x, z), slopeY = 1): { kind: GroundKind; colour: RGB; grass: number } {
+  if (LAYOUT_V4 && z < -54 && x < -4 && x > -56) {
+    // North hill dirt road (part of the height field): packed earth, two wheel ruts, grassy crown,
+    // ragged grass edges.
+    const t = trailDistance(x, z), edge = TRAIL_HALF + .25 + (valueNoise(x / 1.3, z / 1.3, 72) - .5) * .7;
+    if (t < edge + .6) {
+      const rut = Math.max(0, 1 - Math.abs(t - .95) / .35), crown = smoothstep(.4, 0, t) * .6;
+      const dirt = lerp3(C.earth, C.trodden, .35 + .3 * valueNoise(x / 2.1, z / 2.1, 73));
+      const c = lerp3(lerp3(dirt, C.pit, .45 * rut), grassColour(x, z), Math.max(crown * .5, smoothstep(edge - .3, edge + .6, t)));
+      const g = Math.max(crown * .4, smoothstep(edge, edge + .6, t));
+      return { kind: g > .5 ? 'grass' : 'path', colour: c, grass: g };
+    }
+  }
   const steep = slopeY < .8; // > ~37 deg: exposed rock
   if (h < WATER_Y - .25) return { kind: 'water', colour: lerp3(C.sandWet, C.seabed, smoothstep(WATER_Y - .25, WATER_Y - 2, h)), grass: 0 };
   const dxc = x - CAMP_CENTER[0], dzc = z - CAMP_CENTER[2], r = Math.hypot(dxc, dzc), R = campRadius(Math.atan2(dzc, dxc));

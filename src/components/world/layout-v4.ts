@@ -202,7 +202,9 @@ export function ridgeHeightV4(x: number, z: number): number | null {
     const a = TRAIL_V4[i - 1], b = TRAIL_V4[i], s = segmentDistance([x, z], xz(a), xz(b));
     if (s.distance < best) { best = s.distance; slab = a[1] + (b[1] - a[1]) * s.t; }
   }
-  const bench = Math.max(RIDGE_V4.footY, slab - .1);
+  // Terrain session: the hill road is part of the terrain (no prism): the bench IS the road top across
+  // the trail width, so the dirt road, the ring joint and the grass shoulders share one surface.
+  const bench = Math.max(RIDGE_V4.footY, slab - TRAIL_RAISE);
   // 0.6 m flat bench beyond the slab edge: 0.5 m lattice triangles (jitter 0.1 m) never lift above it.
   if (best <= TRAIL_HALF + .6) return bench;
   const over = best - TRAIL_HALF - .6;
@@ -451,7 +453,8 @@ function extras(out: PavedPoly[]) {
 
 export const pavedV4 = /*#__PURE__*/ lazy((): PavedPoly[] => {
   const out: PavedPoly[] = [];
-  for (const r of ROADS_V4) strips(r, out);
+  // The hill road is part of the terrain height field (terrain session), not a prism.
+  for (const r of ROADS_V4) if (r.id !== 'hill-road') strips(r, out);
   for (const r of CONNECTORS_V4) strips(r, out);
   aprons(out);
   joints(out);
@@ -843,12 +846,14 @@ export const NETWORK_WALK_V4: Vec3[] = (() => {
 
 /* ------------------------------------------------------------------ QA data for bots */
 
-/** Representative splash points off the new shores (north, west, south-west, south) plus one off
- * the protected east side, ~18 m beyond the control outline (past beach and shelf). */
+/** Representative splash points off the new shores (north, north-west, west, south-west, south), in
+ * deep water: 32 m beyond the control outline, past the widest beach (12 m) plus the longest shelf
+ * (18 m) of WorldLandform's shore profile. (At 18 m some points landed on the ~0.5 m deep shelf, where
+ * the player wades and a car fords, so no recovery is expected there.) */
 export const SHORE_SAMPLES_V4: { id: string; p: P2 }[] = (() => {
   const c: P2 = [-30, -10];
   return ([['north', [-26, -108]], ['north-west', [-72, -76]], ['west', [-99, 12]], ['south-west', [-85, 66]], ['south', [-38, 86]]] as [string, P2][])
-    .map(([id, v]) => ({ id, p: add(v, mul(unit(sub(v, c)), 18)) }));
+    .map(([id, v]) => ({ id, p: add(v, mul(unit(sub(v, c)), 32)) }));
 })();
 export const heading = (d: P2) => Math.atan2(-d[1], d[0]);
 /** Furniture contact fixtures (§12.6): per kind, the first pole whose 12 m straight approach, on the

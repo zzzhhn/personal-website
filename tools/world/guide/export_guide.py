@@ -1,7 +1,8 @@
 """Export G24: uncompressed proof GLB (tools/world/guide/out) and Draco runtime GLB (public).
 Run: Blender -b tools/world/guide/blend/G24.blend --python-exit-code 1 -P export_guide.py"""
 import bpy, hashlib, json, os
-REPO = '/Users/bobby/WorkBuddy/personal-website/personal-website'
+# Repo root derived from this file; G24_REPO overrides. Never a hard-coded checkout (worktrees).
+REPO = os.environ.get('G24_REPO') or os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..'))
 OUT = f'{REPO}/tools/world/guide/out'
 PUB = f'{REPO}/public/assets/world/guide'
 os.makedirs(OUT, exist_ok=True); os.makedirs(PUB, exist_ok=True)
