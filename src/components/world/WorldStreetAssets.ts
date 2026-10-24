@@ -197,3 +197,121 @@ export const delineator = (): Lod => ({ L0: delineatorGeometry(0), L1: delineato
 export const BUDGET: Record<string, [number, number]> = {
   lamp: [1400, 420], signal: [1900, 560], stop: [420, 126], direction: [420, 126], chevron: [420, 126], delineator: [260, 78], bin: [900, 270],
 };
+
+/* ------------------------------------------------------------------ G12 roadblock */
+
+/** G12 roadblock (contract: orange + cream diagonal-stripe low barrier). A-frame barricade: two splayed
+ * slate-steel trestles with rubber feet, two stacked boards whose diagonal stripes are real alternating
+ * strip geometry (no painted texture), reflector studs. Footprint 1.3 x 0.7 m, height 1.0 m (greybox). */
+export function roadblockGeometry(lod: 0 | 1) {
+  const B = new Builder(), hi = lod === 0;
+  const W = 1.3, legH = 1.0, spread = .3;
+  B.part('frame');
+  for (const x of [-.56, .56]) {
+    // Splayed legs (A-frame) joined by a top bracket and a low stretcher.
+    for (const z of [-1, 1]) bar(B, [x, .02, z * spread], [x, legH - .02, z * .05], .028, S.slateDark, hi ? 8 : 4);
+    box(B, [x - .04, legH - .06, -.08], [x + .04, legH, .08], S.slateDark, hi ? .01 : 0);
+    if (hi) bar(B, [x, .32, -spread * .7], [x, .32, spread * .7], .015, S.slateDark, 6);
+    for (const z of [-1, 1]) box(B, [x - .05, 0, z * spread - .06], [x + .05, .035, z * spread + .06], S.rubber, hi ? .008 : 0);
+  }
+  // Boards: front face (-Z) and back face (+Z) carry the stripes on the upper and middle boards.
+  const board = (y: number, h: number, side: number) => {
+    const z = side * (spread * (1 - (y + h / 2) / legH) + .045);
+    const tilt = Math.atan2(spread, legH) * side;
+    B.tr([0, y + h / 2, z], [tilt, 0, 0], () => {
+      box(B, [-W / 2, -h / 2, -.012], [W / 2, h / 2, .012], S.creamPaint, hi ? .006 : 0);
+      // Diagonal orange stripes as raised strips (parallelograms clipped to the board).
+      const n = hi ? 5 : 3, step = W / n;
+      for (let i = 0; i < n; i++) {
+        const x0 = -W / 2 + i * step, sw = step * .5;
+        const pts: [number, number][] = [[x0, -h / 2], [x0 + sw, -h / 2], [Math.min(W / 2, x0 + sw + h * .6), h / 2], [Math.min(W / 2, x0 + h * .6), h / 2]];
+        const q = pts.map(p => [Math.max(-W / 2, Math.min(W / 2, p[0])), p[1]] as [number, number]);
+        B.face(q.map(p => [p[0], p[1], side * .0135] as V3), S.orange, [0, 0, side]);
+      }
+      if (hi) for (const x of [-W / 2 + .08, W / 2 - .08]) B.tr([x, 0, side * .016], [Math.PI / 2, 0, 0], () => cyl(B, .028, .028, -.004, .006, S.reflectOrange, 8));
+    });
+  };
+  B.part('boards', false);
+  for (const side of [-1, 1]) { board(.66, .22, side); board(.38, .2, side); }
+  return B;
+}
+export const roadblock = (): Lod => ({ L0: roadblockGeometry(0), L1: roadblockGeometry(1) });
+
+/* ------------------------------------------------------------------ G14 bench, bollard, bus shelter */
+
+/** G14 bench (contract: light-wood slats + slate-blue metal legs). 1.8 m long (local X), seat 0.45 m,
+ * back toward +Z, seat front toward -Z. Cast slate legs with armrests, 5 seat slats + 3 back slats. */
+export const BENCH_SEAT_LOCAL: V3 = [0, .47, -.06];
+export function benchGeometry(lod: 0 | 1) {
+  const B = new Builder(), hi = lod === 0, L = 1.8;
+  for (const x of [-.78, .78]) {
+    B.part(`leg${x}`);
+    // Side frame: front leg, rear leg rising into the back support, armrest, foot plates.
+    bar(B, [x, .03, -.24], [x, .42, -.22], .03, S.slate, hi ? 8 : 4);
+    tube(B, hi ? bezier([x, .03, .2], [x, .45, .22], [x, .86, .3], 6) : [[x, .03, .2], [x, .86, .3]], .03, S.slate, hi ? 8 : 4);
+    box(B, [x - .025, .4, -.27], [x + .025, .44, .24], S.slate, hi ? .008 : 0);
+    if (hi) {
+      tube(B, bezier([x, .44, -.27], [x, .68, -.3], [x, .66, -.02], 6), .022, S.slate, 8);
+      box(B, [x - .04, .64, -.3], [x + .04, .68, 0], S.slate, .01);
+      for (const z of [-.24, .2]) box(B, [x - .05, 0, z - .05], [x + .05, .02, z + .05], S.slateDark, .005);
+    }
+  }
+  B.part('seat');
+  const ns = hi ? 5 : 3;
+  for (let i = 0; i < ns; i++) { const z = -.24 + i * .48 / (ns - 1); box(B, [-L / 2, .44, z - .035], [L / 2, .47, z + .035], S.woodLight, hi ? .008 : 0); }
+  B.part('back');
+  const nb = hi ? 3 : 2;
+  for (let i = 0; i < nb; i++) { const t = (i + .5) / nb, y = .55 + t * .3, z = .24 + t * .06; B.tr([0, y, z], [-.2, 0, 0], () => box(B, [-L / 2, -.04, -.015], [L / 2, .04, .015], S.woodLight, hi ? .008 : 0)); }
+  if (hi) { B.part('bolts', false); for (const x of [-.78, .78]) for (let i = 0; i < ns; i++) { const z = -.24 + i * .48 / (ns - 1); B.tr([x, 0, z], [0, 0, 0], () => cyl(B, .009, .009, .47, .476, S.iron, 6)); } }
+  return B;
+}
+export const bench = (): Lod => ({ L0: benchGeometry(0), L1: benchGeometry(1) });
+
+/** Forecourt bollard: slate cast post, rounded crown, cream reflective band. 0.9 m. */
+export function bollardGeometry(lod: 0 | 1) {
+  const B = new Builder(), hi = lod === 0, n = hi ? 16 : 6;
+  B.part('post');
+  lathe(B, hi
+    ? [[.15, 0], [.15, .04], [.12, .07], [.115, .7], [.125, .72], [.125, .76], [.115, .78], [.11, .84], [.08, .885], [.04, .9], [0, .9]]
+    : [[.14, 0], [.115, .07], [.115, .78], [.08, .885], [0, .9]], S.slate, { sides: n, smooth: 40 });
+  if (hi) { B.part('band', false); lathe(B, [[.117, .58], [.117, .64]], S.reflectCream, { sides: n, caps: false }); }
+  return B;
+}
+export const bollard = (): Lod => ({ L0: bollardGeometry(0), L1: bollardGeometry(1) });
+
+/** Bus shelter (footprint 1.4 x 3.2, h 2.5; open side toward local -X = the road). Slate posts, cantilever
+ * roof with a fascia, frosted rear glass in mullions, end panel carrying the island-map poster (atlas
+ * cell), perch bench. Seat point for the bench interaction. */
+export const SHELTER_SEAT_LOCAL: V3 = [-.05, .5, -.4];
+export function shelterGeometry(lod: 0 | 1, posterCell: Cell) {
+  const B = new Builder(), hi = lod === 0, D = 1.4, L = 3.2, H = 2.5;
+  B.part('slab');
+  box(B, [-D / 2 - .1, 0, -L / 2 - .1], [D / 2 + .1, .04, L / 2 + .1], S.stoneCream, hi ? .015 : 0);
+  for (const z of [-L / 2 + .06, L / 2 - .06]) for (const x of [-D / 2 + .08, D / 2 - .06]) { B.part('post'); box(B, [x - .04, .04, z - .04], [x + .04, H - .1, z + .04], S.slate, hi ? .01 : 0); }
+  B.part('roof');
+  box(B, [-D / 2 - .25, H - .12, -L / 2 - .12], [D / 2 + .08, H - .02, L / 2 + .12], S.slateDark, hi ? .02 : 0);
+  box(B, [-D / 2 - .28, H - .2, -L / 2 - .12], [-D / 2 - .22, H - .02, L / 2 + .12], S.slate, hi ? .01 : 0);
+  if (hi) box(B, [-D / 2 - .29, H - .17, -L / 2], [-D / 2 - .282, H - .15, L / 2], S.cyan, 0);
+  B.part('rear');
+  // Rear wall: frosted glass panes between mullions, kick rail.
+  const panes = hi ? 3 : 1;
+  for (let i = 0; i < panes; i++) {
+    const z0 = -L / 2 + .1 + i * (L - .2) / panes, z1 = z0 + (L - .2) / panes - .03;
+    box(B, [D / 2 - .08, .32, z0], [D / 2 - .05, H - .2, z1], S.glass, 0);
+  }
+  box(B, [D / 2 - .09, .2, -L / 2 + .06], [D / 2 - .04, .32, L / 2 - .06], S.slate, hi ? .008 : 0);
+  if (hi) for (let i = 1; i < panes; i++) { const z = -L / 2 + .1 + i * (L - .2) / panes - .015; box(B, [D / 2 - .09, .32, z - .02], [D / 2 - .04, H - .2, z + .02], S.slate, .006); }
+  B.part('end');
+  // End panel (+Z): poster in a frame, facing -X... the poster faces the waiting area (-Z side of the panel).
+  box(B, [-D / 2 + .12, .2, L / 2 - .1], [D / 2 - .08, H - .2, L / 2 - .03], S.slate, hi ? .01 : 0);
+  B.part('poster', false); B.cell = posterCell;
+  B.tr([0, 1.3, L / 2 - .105], [0, Math.PI, 0], () => plate(B, rectPoly(1.0, 1.4), .01, S.creamPaint, { ...S.cream, sign: true, glow: 7 }, S.creamPaint));
+  B.part('perch');
+  box(B, [D / 2 - .5, .46, -L / 2 + .3], [D / 2 - .1, .5, L / 2 - .3], S.woodLight, hi ? .01 : 0);
+  for (const z of [-L / 2 + .45, 0, L / 2 - .45]) box(B, [D / 2 - .14, .04, z - .03], [D / 2 - .1, .46, z + .03], S.slate, hi ? .006 : 0);
+  return B;
+}
+
+Object.assign(BUDGET, { roadblock: [900, 270], bench: [1700, 400], bollard: [380, 110], shelter: [1100, 400] });
+/** Extra QA-only assets for qa-runtime (cells are placeholders there). */
+export const extraAssets = () => ({ roadblock: roadblock(), bench: bench(), bollard: bollard(), shelter: { L0: shelterGeometry(0, [0, 0, .1, .1]), L1: shelterGeometry(1, [0, 0, .1, .1]) } });

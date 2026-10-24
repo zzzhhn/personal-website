@@ -19,7 +19,8 @@ import { ConvexHullCollider, RigidBody, useBeforePhysicsStep, useRapier, type Ra
 import {
   AdditiveBlending, CanvasTexture, CircleGeometry, Color, InstancedMesh, Matrix4, MeshBasicMaterial, Object3D, Quaternion, Vector3,
 } from 'three';
-import { knockablesV4, type Knockable, type KnockKind } from './layout-v4';
+import { knockablesV4, OBSTACLES_V4, type Knockable, type KnockKind as LayoutKind } from './layout-v4';
+import type { GreyboxKey } from './WorldVisualClaims';
 import { useWorldStore } from './store';
 import { night } from './WorldNight';
 import { useGreyboxClaim } from './WorldVisualClaims';
@@ -30,8 +31,9 @@ import { chevronCell, directionCellFor, stopCell, streetAtlas } from './WorldStr
 import type { Builder } from './WorldStreetGeometry';
 import type { Vec3 } from './types';
 
+type KnockKind = LayoutKind | 'roadblock';
+type Item = Omit<Knockable, 'kind'> & { kind: KnockKind };
 const KNOCK_RESET_S = 30, FADE_S = .6;
-const lastTris = { l0: 0, l1: 0 };
 /** Mass (kg), centre of mass height (m), locked against people, visual far distance (m). */
 const SPEC: Record<KnockKind, { mass: number; com: number; h: number; heavy: boolean; far: number; lod: number }> = {
   lamp: { h: 4.8, mass: 140, com: .55, heavy: true, far: 150, lod: 30 },
@@ -41,10 +43,12 @@ const SPEC: Record<KnockKind, { mass: number; com: number; h: number; heavy: boo
   chevron: { h: 1.5, mass: 18, com: .4, heavy: true, far: 95, lod: 22 },
   delineator: { h: 1, mass: 4, com: .15, heavy: false, far: 70, lod: 18 },
   bin: { h: 1, mass: 16, com: .3, heavy: false, far: 80, lod: 20 },
+  // G12: same mass as the greybox roadblock it replaces (28 kg), free for people and cars.
+  roadblock: { h: 1, mass: 28, com: .35, heavy: false, far: 100, lod: 22 },
 };
 
 type Phase = 'home' | 'knocked' | 'fadeOut' | 'fadeIn';
-interface KState { item: Knockable; batchId: number; body: RapierRigidBody | null; phase: Phase; t: number; locked: boolean; heavy: boolean }
+interface KState { item: Item; batchId: number; body: RapierRigidBody | null; phase: Phase; t: number; locked: boolean; heavy: boolean }
 export const streetKnockRegistry: KState[] = [];
 
 function buildersFor(kind: KnockKind, directionIndex: number): { L0: Builder; L1: Builder } {
@@ -52,13 +56,14 @@ function buildersFor(kind: KnockKind, directionIndex: number): { L0: Builder; L1
     case 'lamp': return A.lamp();
     case 'signal': return A.signal();
     case 'bin': return A.bin();
+    case 'roadblock': return A.roadblock();
     case 'delineator': return A.delineator();
     case 'stop': return { L0: A.stopGeometry(0, stopCell()), L1: A.stopGeometry(1, stopCell()) };
     case 'chevron': return { L0: A.chevronGeometry(0, chevronCell()), L1: A.chevronGeometry(1, chevronCell()) };
     case 'direction': return { L0: A.directionGeometry(0, directionCellFor(directionIndex)), L1: A.directionGeometry(1, directionCellFor(directionIndex)) };
   }
 }
-const homeMatrix = (it: Knockable) => new Matrix4().compose(new Vector3(...it.position), new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), it.yaw), new Vector3(1, 1, 1));
+const homeMatrix = (it: Item) => new Matrix4().compose(new Vector3(...it.position), new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), it.yaw), new Vector3(1, 1, 1));
 
 /** Base hull with vertical walls (same footprint radius, same height): a flared footing hull is a cone,
  * and a walking capsule pushed into a cone rides up it. 16-gon at the widest radius of the base part. */
@@ -96,8 +101,13 @@ function poolTexture() {
   return new CanvasTexture(c);
 }
 
-export default function StreetKnockables() {
-  const items = useMemo(() => knockablesV4(), []);
+/** Roadblocks G12 from OBSTACLES_V4 (greybox centre y -> ground contact y). */
+const roadblockItems = (): Item[] => OBSTACLES_V4.map((p, i) => ({ id: `roadblock-${i}`, kind: 'roadblock', position: [p[0], +(p[1] - .5).toFixed(3), p[2]] as Vec3, yaw: 0, road: 'roadblock' }));
+
+export default function StreetKnockables({ set }: { set: 'knock' | 'roadblock' }) {
+  const items = useMemo((): Item[] => (set === 'knock' ? knockablesV4() : roadblockItems()), [set]);
+  const claim: GreyboxKey = set === 'knock' ? 'knockable' : 'roadblock';
+  const lastTris = useMemo(() => ({ l0: 0, l1: 0 }), []);
   const { world } = useRapier();
   const built = useMemo(() => {
     const dirRoads = items.filter(i => i.kind === 'direction').map(i => i.road);
@@ -107,7 +117,7 @@ export default function StreetKnockables() {
     const kinds: BatchKind[] = [], kindOf = new Map<string, number>(), hulls = new Map<string, Float32Array[]>(), counts: number[] = [];
     let dirIndex = 0;
     const states: KState[] = [];
-    const keyFor = (it: Knockable) => (it.kind === 'direction' ? `direction-${dirIndex++}` : it.kind);
+    const keyFor = (it: Item) => (it.kind === 'direction' ? `direction-${dirIndex++}` : it.kind);
     const keys = items.map(keyFor);
     dirIndex = 0;
     items.forEach((it, n) => {
@@ -120,7 +130,7 @@ export default function StreetKnockables() {
       }
       counts[kindOf.get(key)!]++;
     });
-    const batch = new StreetBatch('street-knockables', kinds, counts, material);
+    const batch = new StreetBatch(`street-${set}`, kinds, counts, material);
     items.forEach((it, n) => {
       const id = batch.add(kindOf.get(keys[n])!, homeMatrix(it));
       states.push({ item: it, batchId: id, body: null, phase: 'home', t: 0, locked: SPEC[it.kind].heavy, heavy: SPEC[it.kind].heavy });
@@ -133,7 +143,7 @@ export default function StreetKnockables() {
     batch.mesh.userData.streetKinds = kinds.map(k => k.id);
     batch.mesh.userData.streetStats = () => ({ tris: lastTris.l0 + lastTris.l1, ...lastTris, instances: batch.count });
     return { batch, states, hulls: keys.map(k => hulls.get(k)!), material, depth };
-  }, [items]);
+  }, [items, set, lastTris]);
   useEffect(() => {
     streetKnockRegistry.push(...built.states);
     return () => { for (const s of built.states) streetKnockRegistry.splice(streetKnockRegistry.indexOf(s), 1); built.batch.dispose(); built.material.dispose(); built.depth.dispose(); };
@@ -160,7 +170,7 @@ export default function StreetKnockables() {
   };
   useLayoutEffect(placePools, [lamps]);
 
-  useGreyboxClaim('knockable');
+  useGreyboxClaim(claim);
 
   // Vehicle bodies (for the heavy-prop unlock); collected lazily.
   const vehicles = useRef<RapierRigidBody[]>([]);
@@ -232,10 +242,10 @@ export default function StreetKnockables() {
     Object.assign(lastTris, b.update(camera));
   });
 
-  return <group name="street-knockables-group">
+  return <group name={`street-${set}-group`}>
     <primitive object={built.batch.mesh} />
     {built.states.map((s, i) => <KnockBody key={s.item.id} state={s} hulls={built.hulls[i]} kind={s.item.kind} />)}
-    <instancedMesh ref={pools} name="street-lamp-pools" args={[poolGeo, poolMat, lamps.length]} frustumCulled renderOrder={2} userData={{ noOcclusionFade: true, surface: true }} />
+    {lamps.length > 0 && <instancedMesh ref={pools} name="street-lamp-pools" args={[poolGeo, poolMat, lamps.length]} frustumCulled renderOrder={2} userData={{ noOcclusionFade: true, surface: true }} />}
   </group>;
 }
 

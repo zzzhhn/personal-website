@@ -2,6 +2,7 @@ import { Component, memo, Suspense, useEffect, type ReactNode } from 'react';
 import { useThree } from '@react-three/fiber';
 import { LAYOUT_V4 } from './layout-v4-flag.ts';
 import StreetKnockables, { awakeKnockQa, knockQa } from './WorldStreetKnock';
+import StreetFixed from './WorldStreetFixed';
 
 /**
  * Street and global props mount point (owner: street session). Design: docs/world/street/DESIGN.md.
@@ -48,7 +49,9 @@ function StreetQa() {
 export default memo(function WorldStreet() {
   if (!LAYOUT_V4) return <group name="world-street" />;
   return <group name="world-street">
-    {group('street-knockables', <StreetKnockables />)}
+    {group('street-knockables', <StreetKnockables set="knock" />)}
+    {group('street-roadblocks', <StreetKnockables set="roadblock" />)}
+    {group('street-fixed', <StreetFixed />)}
     <StreetQa />
   </group>;
 });

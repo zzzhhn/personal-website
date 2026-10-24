@@ -22,7 +22,19 @@ const DEFAULT = [
   { name: 'coupe-delineator', actor: 'coupe', target: 'delineator-1', speed: 8 },
   { name: 'van-direction', actor: 'van', target: 'direction-3', speed: 6 },
 ];
-const cases = process.env.STREET_CASES ? JSON.parse(process.env.STREET_CASES) : DEFAULT;
+const SETS = {
+  g23: [
+    { name: 'person-roadblock', actor: 'person', target: 'roadblock-2' },
+    { name: 'coupe-roadblock', actor: 'coupe', target: 'roadblock-2', speed: 6 },
+    { name: 'van-roadblock', actor: 'van', target: 'roadblock-0', from: [9, 30.3], speed: 6 },
+    { name: 'person-bench', actor: 'person', target: { p: [12.4, 1.15, 9.9] }, from: [21, 9.9] },
+    { name: 'offroad-bench', actor: 'offroad', target: { p: [30.1, 1.15, 16] }, from: [23.5, 12], speed: 5 },
+    { name: 'person-bollard', actor: 'person', target: { p: [14.8, 1.15, 6.3] }, from: [21, 6.3] },
+    { name: 'coupe-bollard', actor: 'coupe', target: { p: [14.8, 1.15, -3.7] }, from: [19.5, -14], speed: 5 },
+    { name: 'van-shelter', actor: 'van', target: { p: [29.6, 1.15, -20] }, from: [23.5, -9], speed: 5 },
+  ],
+};
+const cases = process.env.STREET_SET ? SETS[process.env.STREET_SET] : process.env.STREET_CASES ? JSON.parse(process.env.STREET_CASES) : DEFAULT;
 const only = process.env.STREET_ONLY ? process.env.STREET_ONLY.split(',') : null;
 const browser = await loadPlaywright().chromium.launch({ executablePath: CHROME, headless: true, args: ['--use-angle=metal'] });
 const report = { base, cases: [], errors: [] };
@@ -70,7 +82,8 @@ for (const c of cases) {
     while (Date.now() - t0 < dur) {
       const r = await read(); row.samples.push(r);
       const hd = Math.hypot(r.actor[0] - home[0], r.actor[2] - home[2]); closest = Math.min(closest, hd);
-      const touching = r.contacts.some(k => k.kind === 'obstacle' || k.kind === 'solid');
+      // Only the street asset itself counts as the impact (curb walls are 'solid' too).
+      const touching = r.contacts.some(k => k.kind === 'obstacle' || String(k.name ?? '').startsWith('street-'));
       if (first === null && (touching || (r.prop && !r.prop.sleeping))) first = { t: r.t, actorSpeed: Math.hypot(r.v?.[0] ?? 0, r.v?.[2] ?? 0) };
       if (c.actor === 'person') {
         // Walk / run straight at the prop (camera-relative combo toward it), keep pushing 2.5 s after contact.

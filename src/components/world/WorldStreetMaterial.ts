@@ -6,7 +6,8 @@
  * alpha (BatchedMesh.setColorAt with a Vector4) as an ordered-dither discard, so a fading prop never
  * needs transparency sorting.
  * Glow codes: 1 warm lamp lens (#FFD08A, night), 2 cyan light-tech strip (dim at dusk, Art Lock 5),
- * 3/4/5 signal red/amber/green (one cycle on the shared, pausable wind clock), 6 retro reflector.
+ * 3/4/5 signal red/amber/green (one cycle on the shared, pausable wind clock), 6 retro reflector,
+ * 7 backlit poster (warm panel light).
  */
 import { CanvasTexture, LinearMipmapLinearFilter, MeshDepthMaterial, MeshStandardMaterial, RGBADepthPacking, SRGBColorSpace } from 'three';
 import { windUniforms } from './WorldWind';
@@ -64,6 +65,8 @@ const fragmentEmissive = /* glsl */`#include <emissivemap_fragment>
       totalEmissiveRadiance += c * (g == state ? .9 + uNight * 1.3 : .01);
     }
     else if (g == 6.0) totalEmissiveRadiance += diffuseColor.rgb * uNight * .22;
+    // 7: backlit poster / board (warm white panel light, low at dusk).
+    else if (g == 7.0) totalEmissiveRadiance += diffuseColor.rgb * vec3(1.0, .93, .82) * (.32 + uNight * .38);
   }
 `;
 
@@ -107,12 +110,12 @@ export type AtlasPainter = (g: CanvasRenderingContext2D, w: number, h: number) =
 export const FONT = '"PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Avenir Next", "Helvetica Neue", sans-serif';
 
 /** Paints cells (pixel rects on a 2048 canvas) and returns the texture; null outside the browser. */
-export function paintAtlas(cells: { rect: [number, number, number, number]; paint: AtlasPainter }[]) {
+export function paintAtlas(cells: { rect: [number, number, number, number]; paint: AtlasPainter }[], size = ATLAS_SIZE) {
   if (typeof document === 'undefined') return null;
   const canvas = document.createElement('canvas');
-  canvas.width = canvas.height = ATLAS_SIZE;
+  canvas.width = canvas.height = size;
   const g = canvas.getContext('2d')!;
-  g.fillStyle = '#E6DCCB'; g.fillRect(0, 0, ATLAS_SIZE, ATLAS_SIZE);
+  g.fillStyle = '#E6DCCB'; g.fillRect(0, 0, size, size);
   for (const c of cells) {
     g.save(); g.translate(c.rect[0], c.rect[1]);
     g.beginPath(); g.rect(0, 0, c.rect[2], c.rect[3]); g.clip();
@@ -124,4 +127,4 @@ export function paintAtlas(cells: { rect: [number, number, number, number]; pain
   return t;
 }
 /** Pixel rect -> Builder.cell (normalised, top-left origin). */
-export const cellOf = (r: [number, number, number, number]): [number, number, number, number] => [r[0] / ATLAS_SIZE, r[1] / ATLAS_SIZE, r[2] / ATLAS_SIZE, r[3] / ATLAS_SIZE];
+export const cellOf = (r: [number, number, number, number], size = ATLAS_SIZE): [number, number, number, number] => [r[0] / size, r[1] / size, r[2] / size, r[3] / size];

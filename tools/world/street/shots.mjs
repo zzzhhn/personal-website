@@ -16,6 +16,12 @@ export const VIEWS = {
   bin: { p: [16.4, 1.2, -23.2], yaw: 1.0, pitch: .3, d: 3.2 },
   ring: { p: [-62, 1.2, -56], yaw: -2.2, pitch: .35, d: 16 },
   delineator: { p: [-15, 1.2, -50], yaw: 1.4, pitch: .2, d: 4 },
+  roadblock: { p: [24, 1.2, -15.5], yaw: 1.9, pitch: .25, d: 4 },
+  bench: { p: [14.2, 1.2, 9.9], yaw: .3, pitch: .25, d: 3.6 },
+  bollards: { p: [16.5, 1.2, -1], yaw: 2.8, pitch: .3, d: 5 },
+  shelter: { p: [27.3, 1.2, -20], yaw: 2.9, pitch: .15, d: 4.2 },
+  'shelter-poster': { p: [29.4, 1.2, -19.2], yaw: -1.5, pitch: .08, d: 2.5 },
+  promenade: { p: [28.5, 1.2, 19], yaw: 2.5, pitch: .25, d: 7 },
 };
 const browser = await loadPlaywright().chromium.launch({ executablePath: CHROME, headless: true, args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'] });
 const report = { base, views: [], errors: [] };
