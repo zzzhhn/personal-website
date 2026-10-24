@@ -1,12 +1,12 @@
 {
  "uncompressed": {
-  "path": "/Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/guide/out/G24_candidate_uncompressed.glb",
-  "bytes": 593620,
-  "sha256": "20d0653f4243d69987027104883b629bec081b2d5fd281d6130f772152256126"
+  "path": "/Users/bobby/Desktop/3D-personal-world/wt/character/tools/world/guide/out/G24_candidate_uncompressed.glb",
+  "bytes": 909884,
+  "sha256": "265825dba74af1c293658c476c24f953d04ef36b50912f5f044ca32f3a9206b9"
  },
  "draco": {
-  "path": "/Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/guide/out/G24_candidate.glb",
-  "bytes": 410640,
-  "sha256": "0fa1c34f9942e6d5c5845e748b4195ce03970bac879fc151cae57985ca696c46"
+  "path": "/Users/bobby/Desktop/3D-personal-world/wt/character/tools/world/guide/out/G24_candidate.glb",
+  "bytes": 726872,
+  "sha256": "c72a74abcf4c65b2e2e465bf1822e69b74834d8959c6f9decd2f1f0c6367a983"
  }
 }

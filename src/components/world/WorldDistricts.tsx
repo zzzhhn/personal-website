@@ -135,7 +135,7 @@ function Solids() {
   if (!items.length) return null;
   return <>
     <RigidBody name="v4-solids" type="fixed" colliders={false} userData={{ solid: true }}>
-      {items.map((s, i) => <CuboidCollider key={i} name={`v4-${s.kind}-${i}`} position={s.position} rotation={[0, s.yaw, 0]}
+      {items.map((s, i) => <CuboidCollider key={`${s.kind}|${s.position}|${s.size}|${s.yaw}`} name={`v4-${s.kind}-${i}`} position={s.position} rotation={[0, s.yaw, 0]}
         args={[s.size[0] / 2, s.size[1] / 2, s.size[2] / 2]} friction={.65} restitution={.15} />)}
     </RigidBody>
     <Boxes name="v4-solid-visuals" items={items} shadow solid />

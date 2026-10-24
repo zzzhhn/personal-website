@@ -368,7 +368,25 @@ class Seq:
         return Vector(self.hip[i] * (1 - a) + self.hip[j] * a)
 
 
-def make_oneshot_clips(data, REST, BOOT, consts, solve_pose_world, idle_local, fps=60):
+# v3d extra one-shots (prepare_extra.py; CMU 143_18 sit, 69_16/69_18 turns, 100STYLE Neutral_ID). kind 'free':
+# every frame may be in contact (feet pinned by the same offline contact bake), pelvis travel kept
+# (keep_hip: hip x/y relative to the reference event, so sitting moves back onto the seat with the feet planted).
+EXTRA_SRC = os.path.expanduser('~/.cache/g24-extra/g24_extra_motion.json')
+EXTRA = {
+    'SitDown': dict(source='sit', a=('down0', -0.1), b=('seat', 0.05), kind='free', stance='source', speed=0.0, keep_hip='seat'),
+    'SitIdle': dict(source='sit', a=('seat', 0.15), b=('seat', 0.75), kind='free', stance='source', speed=0.0, keep_hip='seat'),
+    'StandUp': dict(source='sit', a=('up0', -0.05), b=('stand', 0.2), kind='free', stance='source', speed=0.0, keep_hip='seat'),
+    'TurnL': dict(source='turnL', a=('turn0', -0.1), b=('turn1', 0.12), kind='free', stance='source', speed=0.0, pin=False),
+    'TurnR': dict(source='turnR', a=('turn0', -0.1), b=('turn1', 0.12), kind='free', stance='source', speed=0.0, pin=False),
+    'IdleLook': dict(source='idlelook', a=('start', 0.45), b=('start', 2.3), kind='free', stance='idle', speed=0.0),
+}
+
+
+def load_extra():
+    return json.load(open(EXTRA_SRC))
+
+
+def make_oneshot_clips(data, REST, BOOT, consts, solve_pose_world, idle_local, fps=60, specs=None):
     """Returns {name: (frames [(local, contact)], report)} for ONESHOT."""
     Lg = consts['LEG']; ANKLE_Z, HIP_Y = consts['ANKLE_Z'], consts['HIP_Y']
     C = ONE_CFG
@@ -382,7 +400,7 @@ def make_oneshot_clips(data, REST, BOOT, consts, solve_pose_world, idle_local, f
         return [ank + q @ Vector((o.x * m.x, o.y * m.y, o.z * m.z)) for o in offs]
 
     out = {}
-    for name, spec in ONESHOT.items():
+    for name, spec in (specs or ONESHOT).items():
         sq = Seq(data['oneshots'][spec['source']])
         s = Lg / sq.leg
         ev = lambda e: sq.ev[e[0]] + e[1] * sq.fps
@@ -404,7 +422,8 @@ def make_oneshot_clips(data, REST, BOOT, consts, solve_pose_world, idle_local, f
             nfr = max(3, int(round(dur * fps)))
             xs = [xa + (xb - xa) * k / nfr for k in range(nfr + 1)]
         n = len(xs)
-        hip_td = sq.h(sq.ev['touchdown']).z
+        hip_td = sq.h(sq.ev.get('touchdown', 0)).z
+        hip_ref = sq.h(sq.ev[spec['keep_hip']]) if spec.get('keep_hip') else None
         dzh = [0.0]          # stance re-solve offset applied inside raw()
 
         def raw(x):
@@ -432,11 +451,14 @@ def make_oneshot_clips(data, REST, BOOT, consts, solve_pose_world, idle_local, f
                 hz = (hipz_src - hip_td) * C['air_hip_follow'] * Lg       # + c, solved below
             else:
                 hz = ANKLE_Z + (hipz_src - sq.ankle_stand) * Lg + dzh[0]  # dz re-solved from stance
-            D['hip'] = Vector((0.0, 0.0, hz))
+            hx = hy = 0.0
+            if hip_ref is not None:
+                hh = sq.h(x); hx = (hh.x - hip_ref.x) * Lg; hy = (hh.y - hip_ref.y) * Lg
+            D['hip'] = Vector((hx, hy, hz))
             feet = {}
             for side, tag, sg in (('l', 'L', 1), ('r', 'R', -1)):
                 a = sq.p(f'{side}tibia', x); hj = sq.p(f'{side}hipjoint', x); kn = sq.p(f'{side}femur', x)
-                ax_, ay = a.x * Lg, sg * HIP_Y + (a.y - hj.y) * Lg
+                ax_, ay = a.x * Lg + hx, sg * HIP_Y + (a.y - hj.y) * Lg + hy
                 az = hz + (a.z - hipz_src) * Lg
                 pole = (kn - hj) - ((a - hj).normalized() * (kn - hj).dot((a - hj).normalized()))
                 feet[tag] = [Vector((ax_, ay, az)), sq.q(f'{side}foot', x) @ off[f'foot.{tag}'],
@@ -510,11 +532,17 @@ def make_oneshot_clips(data, REST, BOOT, consts, solve_pose_world, idle_local, f
                     if kind == 'land':
                         contact[tag][k] = True
                     elif spec['stance'] == 'idle':
-                        contact[tag][k] = k < n - 1
+                        contact[tag][k] = k < n - 1 or kind == 'free'
                     else:
                         lo_src = min(sq.p(f'{side}tibia', x).z - sq.ankle_stand, sq.p(f'{side}toes', x).z - 0.0)
-                        contact[tag][k] = lo_src < 0.05 and k < n - 1
-            for it in range(2):
+                        contact[tag][k] = lo_src < 0.05 and (k < n - 1 or kind == 'free')
+            if not spec.get('pin', True):
+                # unpinned (turn in place): the measured stepping is kept; each boot only rests on / above y = 0
+                for P in poses:
+                    for tag in ('L', 'R'):
+                        lo = min(p.z for p in boot_pts(P['feet'][tag][0], P['feet'][tag][1], tag))
+                        P['feet'][tag][0].z -= lo if lo < 0.004 else 0.0
+            for it in (range(2) if spec.get('pin', True) else ()):
                 dzs = []
                 for tag in ('L', 'R'):
                     frames_c = [k for k in range(n) if contact[tag][k]]
@@ -599,5 +627,8 @@ def make_oneshot_clips(data, REST, BOOT, consts, solve_pose_world, idle_local, f
                 frames[k] = (loc, frames[k][1])
         rep['ik_overstretch_max_m'] = stretch_max
         rep['design_speed_mps'] = spec['speed']
+        if 'yaw' in sq.O:   # measured heading curve (rad, relative), one value per output frame
+            yw = sq.O['yaw']
+            rep['yaw_curve'] = [round(float(np.interp(x, range(len(yw)), yw)), 5) for x in xs]
         out[name] = (frames, rep)
     return out

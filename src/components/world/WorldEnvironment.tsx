@@ -145,7 +145,7 @@ function SurfaceTops({ items }: { items: Block[] }) {
 function StaticBlocks({ items, surface = false, visual = true, name }: { items: Block[]; surface?: boolean; visual?: boolean; name: string }) {
   return <>
     {surface?<WorldSurfaceColliders items={items} name={name}/>:<RigidBody name={name} type="fixed" colliders={false} userData={{solid:true}}>
-    {items.map((item, i) => <CuboidCollider key={i} name={`${name}-${i}`} position={item.position} rotation={item.rotation}
+    {items.map((item, i) => <CuboidCollider key={`${item.position}|${item.size}|${item.rotation ?? [0,0,0]}`} name={`${name}-${i}`} position={item.position} rotation={item.rotation ?? [0,0,0]}
       args={[item.size[0] / 2, item.size[1] / 2, item.size[2] / 2]}
       friction={0.65} restitution={0.15}
       />)}
