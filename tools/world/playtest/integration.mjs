@@ -39,7 +39,9 @@ try {
     const start = [x + 2.4, y + 1.2, z + 1.2];
     report.fixtures.push({ to: start, reason: `approach ${item.id}` });
     await bot.fixtureTeleport(start, `approach ${item.id}`);
-    const walked = await bot.walk([[x, z]], { arrive: Math.min(1.4, (item.radius ?? 2.2) * .6), timeout: 8, maxRecoveries: 2 });
+    // Seat anchors sit beside a solid log. Approach within the advertised reach radius, rather than
+    // asking the capsule to walk through the seat to a stricter centre-point tolerance.
+    const walked = await bot.walk([[x, z]], { arrive: Math.min(1.4, (item.radius ?? 2.2) * .9), timeout: 8, maxRecoveries: 2 });
     const before = await page.evaluate(() => { const s = __worldDebug.state(); return { card: s.card, seat: s.seat, toast: s.toast, nearby: s.nearbyInteract }; });
     await bot.press('KeyE');
     await page.waitForTimeout(900);
