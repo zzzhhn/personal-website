@@ -686,8 +686,8 @@ export default function WorldActors() {
       const magnitude=Math.min(1,Math.hypot(mv[0],mv[1])),running=keys.current.has('ShiftLeft')||keys.current.has('ShiftRight')||gp.sprint;
       // Seated (store.seat, spec §15.3): the capsule is disabled while seated so the seat keeps its own
       // collider (benches stay solid); the visual sits at the seat point. Any movement input, a jump or E
-      // stands up: the body returns to where it sat down from (a free spot it reached on foot), or, if that
-      // spot is now blocked, to the first clear spot around the seat.
+      // stands up: prefer the nearest clear point in front of the seat. The original approach point
+      // remains a fallback; returning there first could force a needless metre-long visual retreat.
       const seat=useWorldStore.getState().seat;
       if(seat&&(magnitude>.05||actions.current.jump)){useWorldStore.setState({seat:null});actions.current.jump=false;}
       else if(seat&&seatHeld.current!==seat.id){
@@ -699,11 +699,17 @@ export default function WorldActors() {
       }
       if(seat){moveIntent.current='idle';guideTargetSpeed.current=0;actions.current.jump=false;}
       if(!seat&&seatHeld.current){
+        const seatedAt=seatBody.current,seatFacing=guideYaw.current;
         seatHeld.current=null;seatBody.current=null;
         const from=seatFrom.current;seatFrom.current=null;
         const free=(q:Vec3)=>{let blocked=false;world.intersectionsWithShape({x:q[0],y:q[1],z:q[2]},{x:0,y:0,z:0,w:1},new rapier.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),
           ()=>{blocked=true;return false;},undefined,undefined,undefined,player.current??undefined,c=>!c.isSensor());return !blocked;};
-        let spot=from&&free(from)?from:null;
+        let spot:Vec3|null=null;
+        if(seatedAt&&from)for(const d of [.65,.70,.80,.90]){
+          const q:Vec3=[seatedAt[0]+Math.cos(seatFacing)*d,from[1]+.025,seatedAt[2]-Math.sin(seatFacing)*d];
+          if(free(q)){spot=q;break;}
+        }
+        if(!spot&&from&&free(from))spot=from;
         if(!spot&&from)for(let k=0;k<8&&!spot;k++){const a=k*Math.PI/4,q:Vec3=[from[0]+Math.cos(a)*.9,from[1]+.05,from[2]+Math.sin(a)*.9];if(free(q))spot=q;}
         if(spot)resetBody(player.current,spot);
         player.current.setEnabled(true);
