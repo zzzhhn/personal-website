@@ -8,7 +8,7 @@ SHA-256 is printed (record them in SOURCES.sha256).
 
 Run: python3 fetch_100style.py [OUT_DIR] [MEMBER ...]
      default members: Neutral TR1 / FW / FR / ID + Frame_Cuts.csv + Dataset_List.csv
-     (each style has exactly one transition take, TR1; there is no TR2-TR4)
+     (Neutral has TR1; some other styles also have TR2/TR3, per the author's dataset table)
 Uses curl (system) for the range requests.
 """
 import hashlib, json, os, struct, subprocess, sys, zlib
