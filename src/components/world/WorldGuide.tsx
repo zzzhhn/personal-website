@@ -37,9 +37,9 @@ const REQUIRED = ['Idle', ...GAITS, 'JumpStart', 'JumpAir', 'RunJumpStart', 'Run
 /** v3d measured extras (optional: an older GLB without them keeps the v3c behaviour). */
 const EXTRAS = ['SitDown', 'SitIdle', 'StandUp', 'TurnL', 'TurnR', 'IdleLook'];
 /** Seated buttock underside above the soles in SitIdle (tools/world/guide/out/sit_measure.json, fresh import). */
-const SIT_BUTTOCK = .263;
+const SIT_BUTTOCK = .2394;
 /** Seated buttock centre ahead of the root (+X) in SitIdle (same file); the root moves back by it. */
-const SIT_FORWARD = -.456; // measured rear hip -0.226 m, supported 0.23 m toward the seat's front edge
+const SIT_FORWARD = -.4825; // measured rear hip -0.2525 m, supported 0.23 m toward the seat's front edge
 /** A body yaw change of at least this much from a standstill plays a measured turn-in-place step. */
 const TURN_MIN = .8;
 /** Idle variation: a measured look-around after this many seconds standing (randomised within the range). */
@@ -248,7 +248,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
   }, [gltf]);
   const state = useRef({ current: 'Idle', speed: 0, grounded: initialGrounded, visible, airSeconds: 0, landing: 0, time: 0,
     pending: '', pendingTime: 0, phaseGateTimeouts: 0, jumpSeq: -1, jumpKind: '' as '' | 'Jump' | 'RunJump', takeoffSpeed: 0,
-    vy: 0, vyPeak: 0, airPhase: 0, blocked: 0, sat: false, turn: null as null | { clip: string; from: number; to: number; t: number }, idleT: 0, idleNext: IDLE_VARY[0] + Math.random() * (IDLE_VARY[1] - IDLE_VARY[0]), shownYaw: 0, yawInit: false, fade: 1, sitDrop: 0, groundY: NaN, prevSeated: false, seatChangeT: 9, lastSeat: null as null | { position: [number, number, number]; yaw: number }, hasLast: false, lean: 0, pitch: 0, prevFacing: 0, prevSpeed: 0, faded: 1, vehPhase: '', lastLand: '', landSpeed: 0, landT: 0, rateOut: 0, slopeOn: false });
+    vy: 0, vyPeak: 0, airPhase: 0, blocked: 0, sat: false, seatReady: false, seatWait: 0, turn: null as null | { clip: string; from: number; to: number; t: number }, idleT: 0, idleNext: IDLE_VARY[0] + Math.random() * (IDLE_VARY[1] - IDLE_VARY[0]), shownYaw: 0, sitFromYaw: 0, yawInit: false, fade: 1, sitDrop: 0, groundY: NaN, prevSeated: false, seatChangeT: 9, lastSeat: null as null | { position: [number, number, number]; yaw: number }, hasLast: false, lean: 0, pitch: 0, prevFacing: 0, prevSpeed: 0, faded: 1, vehPhase: '', lastLand: '', landSpeed: 0, landT: 0, rateOut: 0, slopeOn: false });
   useEffect(() => () => { rig.mixer.stopAllAction(); rig.mixer.uncacheRoot(rig.scene); }, [rig]);
   useEffect(() => {
     // Fable's 2026-10-22 acceptance permits this visual stop step in normal play.
@@ -402,7 +402,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       // only the seat snaps (sit: body -> seat point; stand: seat -> free spot) are walked; any other jump
       // (respawn, fixture, vehicle exit) is a cut and resets the offset
       const jump = Math.hypot(base.x - rig.lastWorld.x, base.z - rig.lastWorld.z);
-      if (!!seat !== s.prevSeated) s.seatChangeT = 0; else s.seatChangeT += dt;
+      if (!!seat !== s.prevSeated) { s.seatChangeT = 0; if (seat) { s.seatReady = false; s.seatWait = 0; } } else s.seatChangeT += dt;
       // the store flag and the physics snap can land on different rendered frames
       const seatSnap = s.seatChangeT < .3;
       if (s.hasLast && (jump > .3 || (seatSnap && jump > .001))) {
@@ -413,26 +413,45 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       rig.lastWorld.copy(base); s.hasLast = true;
       if (!seat && !/^Sit|^StandUp/.test(s.current) && grounded && !motion.vehicle) s.groundY = base.y;
     }
-    let approach = false;
+    let approach = false, pathTurnTarget: number | null = null;
     {
-      const len = Math.hypot(rig.rootOff.x, rig.rootOff.z);
+      // Walk to the final displayed root in front of the seat, rather than walking into the seat
+      // centre and then translating forward again during the sitting clip.
+      const targetX = seat && !s.seatReady ? -SIT_FORWARD * Math.cos(seat.yaw) : 0;
+      const targetZ = seat && !s.seatReady ? SIT_FORWARD * Math.sin(seat.yaw) : 0;
+      const ox = rig.rootOff.x - targetX, oz = rig.rootOff.z - targetZ;
+      const len = Math.hypot(ox, oz);
       const standing = s.current === 'StandUp' && rig.actions.StandUp && rig.actions.StandUp.time < rig.actions.StandUp.getClip().duration - 1e-3;
-      if (len > .02 && !standing && !CROSSFADE_AB) {
+      if (seat && s.seatReady) { /* seated clips keep their measured display root (below) */ }
+      else if (len > .02 && !standing && !CROSSFADE_AB) {
         if (intent !== 'idle' && !seat) { const k = Math.exp(-dt / .12); rig.rootOff.x *= k; rig.rootOff.z *= k; }
         else {
+          const pathYaw = Math.atan2(oz, -ox);
+          const yawGap = Math.atan2(Math.sin(pathYaw - s.shownYaw), Math.cos(pathYaw - s.shownYaw));
+          // Leaving the seat: finish the existing stationary turn before the visual retreat starts.
+          // The old path flipped the whole guide 180 degrees on a planted foot on StandUp -> Walk.
+          if (!seat && grounded && (s.turn || Math.abs(yawGap) > TURN_MIN)) pathTurnTarget = pathYaw;
+          else {
           const step = Math.min(len, 1.6 * dt);
-          shownYawOverride = Math.atan2(rig.rootOff.z, -rig.rootOff.x);   // facing the way the guide walks (toward the body)
-          rig.rootOff.x -= rig.rootOff.x / len * step; rig.rootOff.z -= rig.rootOff.z / len * step;
+          shownYawOverride = pathYaw;
+          rig.rootOff.x -= ox / len * step; rig.rootOff.z -= oz / len * step;
           travel = step; approach = true;
+          }
         }
-      } else if (len <= .02) rig.rootOff.set(0, 0, 0);
+      } else if (len <= .02) rig.rootOff.set(targetX, 0, targetZ);
     }
     if (rig.extras && !CROSSFADE_AB) {
       const act = (n: string) => rig.actions[n], done = (n: string) => s.current === n && act(n).time >= act(n).getClip().duration - 1e-3;
       if (seat) {
         // seated: SitDown (0.58 s) -> SitIdle (loop) while store.seat holds
-        desired = approach && s.current !== 'SitDown' && s.current !== 'SitIdle' ? 'Walk'
+        if (!s.seatReady && !approach && s.current === 'Idle') {
+          s.seatWait += dt;
+          const settle = stop.current?.debug().state;
+          if (s.seatWait > .15 && (!settle || settle === 'releasing' || settle === 'off')) s.seatReady = true;
+        }
+        desired = !s.seatReady ? approach ? 'Walk' : 'Idle'
           : s.current === 'SitDown' && !done('SitDown') ? 'SitDown' : s.current === 'SitDown' || s.current === 'SitIdle' ? 'SitIdle' : 'SitDown';
+        if (!s.seatReady && !approach) shownYaw = s.shownYaw;
         s.sat = true; s.turn = null;
       } else if (s.sat) {
         // standing up: StandUp plays out unless movement interrupts after half of it
@@ -445,12 +464,13 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       // The shown body follows the measured turn's own yaw curve, scaled to the actual angle, so the feet
       // step with the turn instead of the whole body spinning on planted boots.
       if (!s.yawInit) { s.shownYaw = facing; s.yawInit = true; }
-      const dYaw = Math.atan2(Math.sin(facing - s.shownYaw), Math.cos(facing - s.shownYaw));
+      const turnFacing = pathTurnTarget ?? facing;
+      const dYaw = Math.atan2(Math.sin(turnFacing - s.shownYaw), Math.cos(turnFacing - s.shownYaw));
       if (!seat && !s.sat && !approach && grounded && !s.turn && Math.abs(dYaw) > TURN_MIN && speedMps < .3 && (desired === 'Idle' || isGait(desired))) {
-        s.turn = { clip: dYaw > 0 ? 'TurnL' : 'TurnR', from: s.shownYaw, to: facing, t: 0 };
+        s.turn = { clip: dYaw > 0 ? 'TurnL' : 'TurnR', from: s.shownYaw, to: turnFacing, t: 0 };
       }
       if (s.turn) {
-        const tr = s.turn; tr.to = facing;
+        const tr = s.turn; tr.to = turnFacing;
         const curve = rig.yawCurve[tr.clip], n = curve?.length ?? 0, dur = act(tr.clip).getClip().duration;
         // play the turn at up to 2x so a quick key turn is not a slow ceremonial pivot (body stays <= 0.6 s behind)
         const total = Math.atan2(Math.sin(tr.to - tr.from), Math.cos(tr.to - tr.from));
@@ -462,7 +482,11 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         // leave the turn when it is finished or the player starts moving off (the gait takes the yaw at once)
         // The capsule only turns in place while it is held still (WorldActors turn-before-move); the moment it
         // moves off, the gait takes over at the real heading (inertialized), so no planted foot is dragged.
-        if (tr.t >= dur - 1e-3 || speedMps > .3 || !grounded || seat) { s.turn = null; shownYaw = facing; }
+        if (tr.t >= dur - 1e-3 || speedMps > .3 || !grounded || seat) {
+          s.turn = null; shownYaw = turnFacing;
+          // Do not insert a one-frame Idle/stop-step between the completed path turn and its walk.
+          if (pathTurnTarget !== null && grounded && !seat) desired = 'Walk';
+        }
         else desired = tr.clip;
       }
       // idle variation: after 5-9 s of standing still, one measured look-around (100STYLE), then back to Idle
@@ -493,8 +517,15 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     } else { s.faded = 1; s.vehPhase = ''; }
     if (approach && !seat && !s.sat && grounded && (desired === 'Idle' || desired === 'IdleLook')) desired = 'Walk';
     if (shownYawOverride !== null && (desired === 'Walk' || isGait(desired))) shownYaw = shownYawOverride;
-    // SitDown: the guide arrives facing away from the seat's front over the first 0.25 s (seat.yaw is the
-    // sitting heading, WorldActors already set facing to it)
+    // SitDown changes from the approach heading to the seat heading while the short legs are lifted.
+    // Keep the entering contact heading until hip descent has raised the feet; no planted 180° cut.
+    if (desired === 'SitDown' && s.current !== 'SitDown') s.sitFromYaw = s.shownYaw;
+    if (desired === 'SitDown' && seat) {
+      const u = s.current === 'SitDown' ? rig.actions.SitDown.time / rig.actions.SitDown.getClip().duration : 0;
+      const p = Math.min(1, Math.max(0, (u - .45) / .45)), k = p * p * (3 - 2 * p);
+      const angle = Math.atan2(Math.sin(seat.yaw - s.sitFromYaw), Math.cos(seat.yaw - s.sitFromYaw));
+      shownYaw = s.sitFromYaw + angle * k;
+    }
     s.shownYaw = shownYaw;
     const locomotionSwitch = desired !== s.current && isGait(desired) && isGait(s.current) && grounded;
     if (!locomotionSwitch) rig.gate.clear();
@@ -575,11 +606,23 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       const st = seat ?? s.lastSeat;
       s.sitDrop = 0;
       // walking to the seat (the body already sits at the seat point): feet stay on the ground they left
-      if (approach && seat && Number.isFinite(s.groundY) && group.current.parent) s.sitDrop = group.current.parent.getWorldPosition(rig.baseWorld).y - s.groundY;
+      if (seat && !sitting && Number.isFinite(s.groundY) && group.current.parent) s.sitDrop = group.current.parent.getWorldPosition(rig.baseWorld).y - s.groundY;
       if (sitting && st && Number.isFinite(s.groundY)) {
         const rootY = Math.max(s.groundY, s.groundY + (st.position[1] - SIT_BUTTOCK - s.groundY) * sitW);
         s.sitDrop = (group.current.parent ? group.current.parent.getWorldPosition(rig.baseWorld).y : rootY) - rootY;
+        const tx = -SIT_FORWARD * Math.cos(st.yaw), tz = SIT_FORWARD * Math.sin(st.yaw);
+        if (seat) { rig.rootOff.x = tx * (1 - sitW); rig.rootOff.z = tz * (1 - sitW); }
+        else if (group.current.parent) {
+          const body = group.current.parent.getWorldPosition(rig.baseWorld);
+          rig.rootOff.x = st.position[0] - body.x + tx * (1 - sitW);
+          rig.rootOff.z = st.position[2] - body.z + tz * (1 - sitW);
+        }
       }
+      // The helpers solve in world space. Apply this frame's display-root path before solving, so a
+      // held stop foot is not translated again by rootOff after IK (the physical parent is stationary).
+      const seatBack = SIT_FORWARD * sitW;
+      group.current.position.x = rig.vehOff.x + rig.rootOff.x - seatBack * Math.cos(shownYaw);
+      group.current.position.z = rig.vehOff.z + rig.rootOff.z + seatBack * Math.sin(shownYaw);
       group.current.updateWorldMatrix(true, true);
       const baseY = group.current.getWorldPosition(rig.rootPoint).y - group.current.position.y;
       // Moving landing: short additive spine/chest compression (<= 0.15 s, spec 1.4), no foot change.

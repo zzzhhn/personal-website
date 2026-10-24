@@ -378,9 +378,9 @@ SIT_HIP_MIN = float(os.environ.get('G24_SIT_HIP_MIN', '0.47'))
 SIT_TILT = float(os.environ.get('G24_SIT_TILT', '0.35'))
 EXTRA_SRC = os.path.expanduser('~/.cache/g24-extra/g24_extra_motion.json')
 EXTRA = {
-    'SitDown': dict(source='sit', a=('down0', -0.1), b=('seat', 0.05), kind='free', stance='source', speed=0.0, keep_hip='seat', hip_z_min=SIT_HIP_MIN, pelvis_tilt=SIT_TILT, feet_apart=0.135),
-    'SitIdle': dict(source='sit', a=('seat', 0.15), b=('seat', 0.75), kind='free', stance='source', speed=0.0, keep_hip='seat', hip_z_min=SIT_HIP_MIN, pelvis_tilt=SIT_TILT, feet_apart=0.135),
-    'StandUp': dict(source='sit', a=('up0', -0.05), b=('stand', 0.2), kind='free', stance='source', speed=0.0, keep_hip='seat', hip_z_min=SIT_HIP_MIN, pelvis_tilt=SIT_TILT, feet_apart=0.135),
+    'SitDown': dict(source='sit', a=('down0', -0.1), b=('seat', 0.05), kind='free', stance='source', speed=0.0, keep_hip='seat', hip_z_min=SIT_HIP_MIN, pelvis_tilt=SIT_TILT, feet_apart=0.135, foot_anchor_idle=True),
+    'SitIdle': dict(source='sit', a=('seat', 0.15), b=('seat', 0.75), kind='free', stance='source', speed=0.0, keep_hip='seat', hip_z_min=SIT_HIP_MIN, pelvis_tilt=SIT_TILT, feet_apart=0.135, foot_anchor_idle=True),
+    'StandUp': dict(source='sit', a=('up0', -0.05), b=('stand', 0.2), kind='free', stance='source', speed=0.0, keep_hip='seat', hip_z_min=SIT_HIP_MIN, pelvis_tilt=SIT_TILT, feet_apart=0.135, foot_anchor_idle=True),
     'TurnL': dict(source='turnL', a=('turn0', -0.1), b=('turn1', 0.12), kind='free', stance='source', speed=0.0, pin=False),
     'TurnR': dict(source='turnR', a=('turn0', -0.1), b=('turn1', 0.12), kind='free', stance='source', speed=0.0, pin=False),
     'IdleLook': dict(source='idlelook', a=('start', 0.45), b=('start', 2.3), kind='free', stance='idle', speed=0.0),
@@ -587,7 +587,14 @@ def make_oneshot_clips(data, REST, BOOT, consts, solve_pose_world, idle_local, f
                         if piv is None or P0[piv].z > zmin + 0.001:
                             cand = min(range(len(P0)), key=lambda i: P0[i].z)
                             if piv is None:
-                                anchor = Vector((ank.x + P0[cand].x + v * t, ank.y + P0[cand].y))
+                                if spec.get('foot_anchor_idle'):
+                                    # Same contact mask and pivot IDs, anchored in the entering Idle stance.
+                                    # The old CMU first-frame ankle was ~15 cm ahead of G24 Idle, so a valid
+                                    # native pin still slid through the runtime Idle -> SitDown blend.
+                                    idle_points = boot_pts(Vector((idle_xy[tag].x, idle_xy[tag].y, ANKLE_Z)), Quaternion(), tag)
+                                    anchor = Vector((idle_points[cand].x, idle_points[cand].y))
+                                else:
+                                    anchor = Vector((ank.x + P0[cand].x + v * t, ank.y + P0[cand].y))
                             else:
                                 anchor = Vector((prev.x + v * (t - 1 / fps) + Pprev[cand].x, prev.y + Pprev[cand].y))
                             piv = cand
