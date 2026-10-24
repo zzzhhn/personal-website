@@ -312,7 +312,107 @@ def build_C12():
     export('C12', root, objs)
 
 
-BUILDERS = {'C11': build_C11, 'C12': build_C12}
+# ------------------------------------------------------------------ C13 hex dumbbell (runtime places two)
+def build_C13():
+    db = Part('C13_dumbbell')
+    R, HW, HL = 0.068, 0.165, 0.075     # hex circumradius, half span to outer face, head length
+    a = R * math.cos(math.pi / 6)       # apothem = head rest height of the axis
+    for s in (-1, 1):
+        y_out, y_in = s * HW, s * (HW - HL)
+        bm = strut((0, y_in, a), (0, y_out, a), R, R, 6, bevel=0.007, rot=math.pi / 6)
+        db.add(bm, 'rubber')
+        # steel end cap and inner collar
+        db.add(strut((0, y_out, a), (0, y_out + s * 0.004, a), 0.03, 0.026, 16), 'steel')
+        db.add(strut((0, y_in - s * 0.012, a), (0, y_in + s * 0.002, a), 0.026, 0.026, 16, bevel=0.002), 'steel')
+    # knurled handle: core plus four shallow rings for grip
+    db.add(strut((0, -(HW - HL) + 0.010, a), (0, (HW - HL) - 0.010, a), 0.0165, 0.0165, 16), 'steel')
+    for k in range(-2, 3):
+        db.add(xform(torus((0, 0, 0), 0.0165, 0.0022, 16, 4, axis='Y'), loc=(0, k * 0.022, a)), 'iron')
+    root, objs, shift = finalize('C13', [db], root_extras={
+        'collision': 'pushable: one dynamic convex hull per instance (two instances on the north pad)',
+        'massKg': 10.0, 'text': 'none'})
+    export('C13', root, objs)
+
+
+# ------------------------------------------------------------------ C15 hard-shell suitcase standing on wheels
+def build_C15():
+    case, handle = Part('C15_case'), Part('C15_handle')
+    D, W, H = 0.26, 0.46, 0.62           # depth X, width Y, shell height
+    Z0 = 0.06                             # shell bottom (wheels below)
+    shell = box((-D / 2, -W / 2, Z0), (D / 2, W / 2, Z0 + H))
+    # moulded hard shell: 3-segment round over (smooth-shaded), not a faceted chamfer
+    bmesh.ops.bevel(shell, geom=list(shell.edges), offset=0.05, offset_type='OFFSET', profile_type='SUPERELLIPSE',
+                    segments=3, profile=0.5, affect='EDGES', clamp_overlap=True)
+    case.add(shell, 'canvas_orange')
+    # zip seam band around the middle (proud ring, darker canvas edge), front ribs
+    case.add(box((-0.008, -W / 2 - 0.004, Z0 + 0.02), (0.008, W / 2 + 0.004, Z0 + H - 0.02), bevel=0.006), 'canvas_edge')
+    for x in (-D / 2, D / 2):
+        sx = 1 if x > 0 else -1
+        for y in (-0.11, 0.0, 0.11):
+            case.add(box((x - sx * 0.01, y - 0.018, Z0 + 0.07), (x + sx * 0.006, y + 0.018, Z0 + H - 0.07), bevel=0.008), 'canvas_orange')
+    # corner guards (rubber) at the four bottom corners, 6 mm proud of the shell
+    for sx in (-1, 1):
+        for sy in (-1, 1):
+            xa, xb = sorted((sx * (D / 2 - 0.05), sx * (D / 2 + 0.006)))
+            ya, yb = sorted((sy * (W / 2 - 0.05), sy * (W / 2 + 0.006)))
+            case.add(box((xa, ya, Z0 - 0.006), (xb, yb, Z0 + 0.065), bevel=0.012), 'rubber')
+    # four spinner wheels in forks
+    for sx in (-1, 1):
+        for sy in (-1, 1):
+            x, y = sx * (D / 2 - 0.045), sy * (W / 2 - 0.05)
+            case.add(box((x - 0.02, y - 0.02, Z0 - 0.022), (x + 0.02, y + 0.02, Z0 + 0.002), bevel=0.004), 'iron_dark')
+            case.add(strut((x, y - 0.013, 0.029), (x, y + 0.013, 0.029), 0.029, 0.029, 14, bevel=0.004), 'rubber')
+            case.add(strut((x, y - 0.015, 0.029), (x, y + 0.015, 0.029), 0.009, 0.009, 8), 'steel')
+    # carry handle on the side (+Y) and telescoping handle housing on the back (-X)
+    case.add(box((-0.05, W / 2 - 0.004, Z0 + H * 0.55 - 0.012), (0.05, W / 2 + 0.008, Z0 + H * 0.55 + 0.012), bevel=0.004), 'iron_dark')
+    case.add(box((-0.04, W / 2 + 0.006, Z0 + H * 0.55 - 0.01), (0.04, W / 2 + 0.03, Z0 + H * 0.55 + 0.01), bevel=0.008), 'rubber')
+    for y in (-0.1, 0.1):
+        case.add(box((-D / 2 - 0.012, y - 0.016, Z0 + 0.06), (-D / 2 + 0.004, y + 0.016, Z0 + H - 0.02), bevel=0.005), 'iron_dark')
+    # telescoping handle (extended a little): two tubes + grip, separate node for the hop feedback
+    for y in (-0.1, 0.1):
+        handle.add(strut((-D / 2 - 0.004, y, Z0 + H - 0.03), (-D / 2 - 0.004, y, Z0 + H + 0.16), 0.008, 0.008, 10), 'steel')
+    handle.add(box((-D / 2 - 0.022, -0.12, Z0 + H + 0.15), (-D / 2 + 0.014, 0.12, Z0 + H + 0.185), bevel=0.012), 'rubber')
+    # luggage tag (cream card on a slate strap) hanging from the side handle
+    case.add(box((-0.004, W / 2 + 0.024, Z0 + H * 0.55 - 0.085), (0.004, W / 2 + 0.03, Z0 + H * 0.55 - 0.005)), 'canvas_slate')
+    case.add(box((-0.03, W / 2 + 0.03, Z0 + H * 0.55 - 0.14), (0.03, W / 2 + 0.036, Z0 + H * 0.55 - 0.08), bevel=0.004), 'paper')
+    root, objs, shift = finalize('C15', [case, handle], root_extras={
+        'collision': 'pushable: dynamic convex hull of C15_case (handle excluded)', 'massKg': 12.0, 'text': 'none (tag blank)'})
+    export('C15', root, objs)
+
+
+# ------------------------------------------------------------------ C16 hurricane lantern (sits on the C07 desk)
+def build_C16():
+    frame, glass = Part('C16_frame'), Part('C16_glass')
+    # base: fuel tank (lathe), burner collar; glass globe; vented top cap; wire guards; bail handle
+    frame.add(lathe([(0, 0), (0.075, 0), (0.082, 0.012), (0.082, 0.05), (0.07, 0.065), (0.045, 0.072), (0.045, 0.085), (0, 0.085)], 16), 'iron_dark')
+    frame.add(lathe([(0, 0.084), (0.05, 0.084), (0.052, 0.094), (0, 0.094)], 16), 'brass')
+    glass.add(lathe([(0, 0.094), (0.036, 0.094), (0.058, 0.13), (0.062, 0.165), (0.05, 0.205), (0.036, 0.225), (0, 0.225)], 16), 'glass_warm')
+    frame.add(lathe([(0, 0.222), (0.05, 0.222), (0.058, 0.232), (0.04, 0.255), (0.022, 0.262), (0.022, 0.275), (0.03, 0.28), (0, 0.29)], 16), 'iron_dark')
+    for k in range(4):  # four wire guards from collar to cap, bowed around the globe
+        a = k * math.pi / 2 + math.pi / 4
+        pts = [(0.054, 0.094), (0.072, 0.13), (0.075, 0.165), (0.063, 0.205), (0.05, 0.228)]
+        for (r0, z0), (r1, z1) in zip(pts, pts[1:]):
+            frame.add(strut((r0 * math.cos(a), r0 * math.sin(a), z0), (r1 * math.cos(a), r1 * math.sin(a), z1), 0.003, 0.003, 6), 'iron')
+    frame.add(xform(torus((0, 0, 0), 0.074, 0.0035, 20, 4), loc=(0, 0, 0.16)), 'iron')
+    # bail handle: half ring over the top, pivots on side lugs
+    for s in (-1, 1):
+        frame.add(strut((0, s * 0.08, 0.04), (0, s * 0.09, 0.04), 0.008, 0.008, 8), 'iron_dark')
+    n = 12
+    for i in range(n):
+        t0, t1 = math.pi * i / n, math.pi * (i + 1) / n
+        p0 = (0, 0.09 * math.cos(t0), 0.04 + 0.27 * math.sin(t0))
+        p1 = (0, 0.09 * math.cos(t1), 0.04 + 0.27 * math.sin(t1))
+        frame.add(strut(p0, p1, 0.003, 0.003, 6), 'iron')
+    # wick knob on the burner
+    frame.add(strut((0.045, 0, 0.078), (0.07, 0, 0.078), 0.004, 0.004, 6), 'brass')
+    frame.add(strut((0.07, 0, 0.078), (0.076, 0, 0.078), 0.011, 0.011, 10), 'brass')
+    root, objs, shift = finalize('C16', [frame, glass], root_extras={
+        'collision': 'none: sits on the C07 desk top inside the desk collider footprint', 'lightCentreGLB_y': 0.16,
+        'text': 'none'})
+    export('C16', root, objs)
+
+
+BUILDERS = {'C11': build_C11, 'C12': build_C12, 'C13': build_C13, 'C15': build_C15, 'C16': build_C16}
 
 if __name__ == '__main__':
     run(BUILDERS)
