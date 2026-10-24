@@ -1,5 +1,5 @@
 """Read-only Markdown/JSON inventory parity and produced-file hash verification."""
-import hashlib, json, re
+import hashlib, json, os, re
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 assets = json.loads((ROOT / 'docs/world/assets-v1.json').read_text())
@@ -27,7 +27,8 @@ for asset in assets:
         if digest != production['sha256']: failures.append({'id': asset['id'], 'hash': 'mismatch'})
         checked_hashes.append(asset['id'])
 report = {'assetCount': len(assets), 'markdownCount': len(rows), 'checkedHashes': checked_hashes, 'failures': failures, 'passed': not failures}
-output = ROOT / 'docs/world/quality-v2/inventory-check.json'
+output = ROOT / os.environ.get('WORLD_INVENTORY_REPORT', 'docs/world/quality-v2/inventory-check.json')
+output.parent.mkdir(parents=True, exist_ok=True)
 output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n')
 print(json.dumps(report, ensure_ascii=False))
 raise SystemExit(1 if failures else 0)
