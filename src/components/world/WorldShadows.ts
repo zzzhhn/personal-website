@@ -531,12 +531,12 @@ function sameInstances(a: InstancedMesh, b: InstancedMesh) {
  * meshes, in two variants: full geometry for c0/c1 and a far variant (instances >= FAR_MIN_RADIUS, convex
  * hulls where available) for c2. One draw per cell instead of one per part, which is what bounds the
  * shadow pass draw calls; each cascade only draws the cells whose light-space footprint it needs. */
-type Chunk = { mesh: Mesh; cascade: 0 | 1 | 2; sphere: Sphere };
+type Chunk = { mesh: Mesh; cascade: 0 | 1 | 2; sphere: Sphere; lightBounds: [number, number, number, number] };
 let chunks: Chunk[] = [];
 let chunkKey = '';
-/** Merge cell size per cascade (m): c0 16 (its window is 18 x 13 m), c1 32 (37 x 25 m), c2 48 with the far variant
- * (instances >= FAR_MIN_RADIUS, convex hulls). Rigid casters are cheap in triangles; draw calls are what binds. */
-const CHUNK_CELL = [16, 40, 72] as const;
+/** Light-space cells per cascade (m). Spatial batches keep district-wide merged decks/buildings from
+ * entering every nearby cascade; each chunk is culled by its actual light-space rectangle. */
+const CHUNK_CELL = [12, 20, 32] as const;
 const sideMaterials = new Map<number, Material>();
 const sideMaterial = (side: number) => { let m = sideMaterials.get(side); if (!m) { m = new MeshBasicMaterial({ side: side as 0 | 1 | 2 }); sideMaterials.set(side, m); } return m; };
 function makeChunkMesh(positions: number[], indices: number[], side: number, name: string) {
@@ -571,13 +571,27 @@ function rebuildChunks() {
   type Bucket = { side: number; cascade: 0 | 1 | 2; data: [number[], number[]]; zones: Map<string, number> };
   const buckets = new Map<string, Bucket>();
   // Budget attribution (QA): each merged chunk reports the zone that contributes most of its triangles.
-  const tally = (zones: Map<string, number>, zone: string, g: BufferGeometry) => zones.set(zone, (zones.get(zone) ?? 0) + (g.index ? g.index.count : g.getAttribute('position').count));
   const top = (zones: Map<string, number>) => [...zones.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? 'other';
   const v = new Vector3();
-  const push = (dst: [number[], number[]], g: BufferGeometry, matrix: Matrix4) => {
-    const pos = g.getAttribute('position'), idx = g.index, base = dst[0].length / 3;
-    for (let j = 0; j < pos.count; j++) { v.fromBufferAttribute(pos, j).applyMatrix4(matrix); dst[0].push(v.x, v.y, v.z); }
-    if (idx) for (let j = 0; j < idx.count; j++) dst[1].push(base + idx.getX(j)); else for (let j = 0; j < pos.count; j++) dst[1].push(base + j);
+  const push = (g: BufferGeometry, matrix: Matrix4, cascade: 0 | 1 | 2, side: number, zone: string) => {
+    const pos = g.getAttribute('position'), idx = g.index, world = new Float32Array(pos.count * 3);
+    for (let j = 0; j < pos.count; j++) {
+      v.fromBufferAttribute(pos, j).applyMatrix4(matrix); world.set([v.x, v.y, v.z], j * 3);
+    }
+    const cell = CHUNK_CELL[cascade], count = idx ? idx.count : pos.count;
+    // A batched district can span the island. Bin its triangles, rather than putting the entire
+    // mesh in its centre's cell: the latter makes every nearby cascade redraw distant buildings/decks.
+    for (let j = 0; j + 2 < count; j += 3) {
+      const a = (idx ? idx.getX(j) : j) * 3, b = (idx ? idx.getX(j + 1) : j + 1) * 3, c = (idx ? idx.getX(j + 2) : j + 2) * 3;
+      v.set((world[a] + world[b] + world[c]) / 3, (world[a + 1] + world[b + 1] + world[c + 1]) / 3, (world[a + 2] + world[b + 2] + world[c + 2]) / 3);
+      const key = `${cascade}:${Math.floor(v.dot(LIGHT_RIGHT) / cell)},${Math.floor(v.dot(LIGHT_UP) / cell)},${side}`;
+      let bucket = buckets.get(key);
+      if (!bucket) { bucket = { side, cascade, data: [[], []], zones: new Map() }; buckets.set(key, bucket); }
+      const [points, indices] = bucket.data, base = points.length / 3;
+      for (const n of [a, b, c]) points.push(world[n], world[n + 1], world[n + 2]);
+      indices.push(base, base + 1, base + 2);
+      bucket.zones.set(zone, (bucket.zones.get(zone) ?? 0) + 3);
+    }
   };
   const one = new Float32Array(4);
   for (const c of rigid) {
@@ -591,11 +605,8 @@ function rebuildChunks() {
       if (c.instanced) { src.getMatrixAt(i, m4); m4.premultiply(src.matrixWorld); } else m4.copy(src.matrixWorld);
       for (const k of [0, 1, 2] as const) {
         if (k === 2 && s[i * 4 + 3] < FAR_MIN_RADIUS) continue;
-        const cell = CHUNK_CELL[k], key = `${k}:${Math.floor(s[i * 4] / cell)},${Math.floor(s[i * 4 + 2] / cell)},${side}`;
-        let b = buckets.get(key);
-        if (!b) { b = { side, cascade: k, data: [[], []], zones: new Map() }; buckets.set(key, b); }
         const geo = k === 2 ? hull ?? g : g;
-        push(b.data, geo, m4); tally(b.zones, zone, geo);
+        push(geo, m4, k, side, zone);
       }
     }
   }
@@ -604,7 +615,15 @@ function rebuildChunks() {
     const mesh = makeChunkMesh(b.data[0], b.data[1], b.side, `sun-chunk-${key}`);
     if (!mesh) continue;
     mesh.userData.budgetZone = top(b.zones);
-    chunks.push({ mesh, cascade: b.cascade, sphere: mesh.geometry.boundingSphere!.clone() });
+    const lightBounds: Chunk['lightBounds'] = [Infinity, -Infinity, Infinity, -Infinity];
+    const pos = mesh.geometry.getAttribute('position');
+    for (let i = 0; i < pos.count; i++) {
+      v.fromBufferAttribute(pos, i);
+      const r = v.dot(LIGHT_RIGHT), u = v.dot(LIGHT_UP);
+      lightBounds[0] = Math.min(lightBounds[0], r); lightBounds[1] = Math.max(lightBounds[1], r);
+      lightBounds[2] = Math.min(lightBounds[2], u); lightBounds[3] = Math.max(lightBounds[3], u);
+    }
+    chunks.push({ mesh, cascade: b.cascade, sphere: mesh.geometry.boundingSphere!.clone(), lightBounds });
   }
 }
 
@@ -651,11 +670,22 @@ function inCascade(k: number, x: number, y: number, z: number, radius: number, c
   return shadowVisible(x, y, z, radius);
 }
 
+function chunkInCascade(k: number, chunk: Chunk) {
+  const [r0, r1, u0, u1] = chunk.lightBounds, w = windows[k], pad = .15;
+  if (r1 < w.r - w.hr - pad || r0 > w.r + w.hr + pad || u1 < w.u - w.hu - pad || u0 > w.u + w.hu + pad) return false;
+  for (let j = 0; j < k; j++) {
+    const f = windows[j];
+    if (r0 - pad > f.r - f.hr * INTERIOR && r1 + pad < f.r + f.hr * INTERIOR && u0 - pad > f.u - f.hu * INTERIOR && u1 + pad < f.u + f.hu * INTERIOR) return false;
+  }
+  const s = chunk.sphere;
+  return shadowVisible(s.center.x, s.center.y, s.center.z, s.radius);
+}
+
 function applySunPass(k: number) {
   let nCasters = 0, nProxies = 0, nInstances = 0;
   fireStatic.castShadow = false;
   for (const ch of chunks) {
-    ch.mesh.castShadow = ch.cascade === (wideMode && k === 0 ? 2 : k) && inCascade(k, ch.sphere.center.x, ch.sphere.center.y, ch.sphere.center.z, ch.sphere.radius, true);
+    ch.mesh.castShadow = ch.cascade === (wideMode && k === 0 ? 2 : k) && chunkInCascade(k, ch);
     if (ch.mesh.castShadow) nProxies++;
   }
   for (const gr of groups) {

@@ -97,8 +97,9 @@ export default function WorldApp({ content }: { content: WorldContent }) {
           <h3>{t.keysDriveTitle}</h3><dl>{t.driveRows.map(([k, v]) => <div key={k}><dt><kbd>{k}</kbd></dt><dd>{v}</dd></div>)}</dl>
         </details>
         <details className="world-credits"><summary>{t.credits}</summary>
-          {/* Required attributions only (docs/world/THIRD_PARTY.md). 100STYLE (CC BY 4.0) joins here once a take is actually used. */}
+          {/* Credits for the motion data actually used; take hashes and edits are in docs/world/THIRD_PARTY.md. */}
           <p>{t.motionCredit}</p><p><a href="https://mocap.cs.cmu.edu/" target="_blank" rel="noreferrer">CMU Graphics Lab Motion Capture Database</a></p><p>This data was obtained from mocap.cs.cmu.edu. The database was created with funding from NSF EIA-0196217.</p>
+          <p>{t.styleCredit}</p><p><a href="https://ianxmason.github.io/100style/" target="_blank" rel="noreferrer">The 100STYLE Dataset - Ian Mason</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a></p>
           <h3>{t.thanksTitle}</h3><p>{t.groundCredit}</p><p>three.js · React Three Fiber · Rapier</p>
         </details>
         <div className="world-dialog-actions"><button className="world-primary" onClick={() => useWorldStore.setState({ paused: false })}>{t.resume}</button><a href={`/#${s.zone === 'town' ? 'experience' : s.zone === 'park' ? 'projects' : 'about'}`}>← {t.back}</a></div>

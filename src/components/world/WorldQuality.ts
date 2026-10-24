@@ -134,7 +134,6 @@ export function budgetZoneOf(object: Object3D | null | undefined): BudgetZone {
 }
 
 type Cost = { calls: number; triangles: number };
-type DrawGeometry = { index: { count: number } | null; attributes: { position?: { count: number } }; drawRange: { start: number; count: number }; isInstancedBufferGeometry?: boolean; instanceCount?: number };
 type DrawObject = Object3D & { count?: number; isInstancedMesh?: boolean; isMesh?: boolean; isPoints?: boolean; isLine?: boolean; isSprite?: boolean };
 type ProbeRenderer = {
   render: (...a: unknown[]) => void; renderBufferDirect: (...a: unknown[]) => void;
@@ -159,25 +158,26 @@ export function createBudgetProbe(scene: Object3D, renderer: () => unknown, sunC
     const zoneCache = new Map<Object3D, BudgetZone>();
     r.shadowMap.render = function (this: unknown, ...a: unknown[]) { pass = 'shadow'; try { return origShadow.apply(this, a); } finally { pass = 'main'; } };
     r.renderBufferDirect = function (this: unknown, ...a: unknown[]) {
+      const beforeCalls = r.info.render.calls, beforeTriangles = r.info.render.triangles;
+      const result = origDraw.apply(this, a);
       if (capture) {
-        const cam = a[0] as { isOrthographicCamera?: boolean }, geometry = a[2] as DrawGeometry, object = a[4] as DrawObject, group = a[5] as { start: number; count: number } | null;
-        const vertices = geometry.index ? geometry.index.count : geometry.attributes.position?.count ?? 0;
-        let n = Math.max(0, Math.min(vertices - (geometry.drawRange.start ?? 0), geometry.drawRange.count));
-        if (group) n = Math.min(n, group.count);
-        const instances = object.isInstancedMesh ? object.count ?? 1 : geometry.isInstancedBufferGeometry ? geometry.instanceCount ?? 1 : 1;
-        const triangles = object.isMesh ? Math.floor(n / 3) * instances : 0;
+        // Count actual submissions. renderBufferDirect also receives zero-count instance groups and
+        // clipped draw ranges; estimating a call from entry alone overcounts those no-op draws.
+        const calls = r.info.render.calls - beforeCalls, triangles = r.info.render.triangles - beforeTriangles;
+        if (!calls) return result;
+        const cam = a[0] as { isOrthographicCamera?: boolean }, object = a[4] as DrawObject;
         const sunIdx = pass === 'main' ? -1 : sunCameras().indexOf(cam);
         const who = pass === 'main' ? 'main' : sunIdx >= 0 ? `sun${sunIdx}` : cam.isOrthographicCamera ? 'sun' : 'fire';
         let zone = zoneCache.get(object);
         if (!zone) { zone = budgetZoneOf(object); zoneCache.set(object, zone); }
-        add(byPass[who] ??= { calls: 0, triangles: 0 }, 1, triangles);
+        add(byPass[who] ??= { calls: 0, triangles: 0 }, calls, triangles);
         const z = byZone[zone] ??= { main: { calls: 0, triangles: 0 }, shadow: { calls: 0, triangles: 0 } };
-        add(who === 'main' ? z.main : z.shadow, 1, triangles);
+        add(who === 'main' ? z.main : z.shadow, calls, triangles);
         const name = object.name || object.parent?.name || '(unnamed)', key = `${who}|${zone}|${name}`;
         const row = objects.get(key) ?? { pass: who, zone, name, calls: 0, triangles: 0 };
-        add(row, 1, triangles); objects.set(key, row);
+        add(row, calls, triangles); objects.set(key, row);
       }
-      return origDraw.apply(this, a);
+      return result;
     };
     r.render = function (this: unknown, ...a: unknown[]) {
       capture = true;

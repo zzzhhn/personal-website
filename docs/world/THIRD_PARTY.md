@@ -64,7 +64,7 @@ Released file `public/assets/world/guide/G24.glb` sha256 `c72a74abcf4c65b2e2e465
 
 Original file hashes (SHA-256): 143_18.amc `569b08c314d08e0d32e0474e2a69fc73f4c340f6cf773b174c06361250e2e9c5`; 69.asf `c3019031ae5789b1d43d3bba424229ac544ccc68bb8c06e7d67bf75b1c41605f`; 69_16.amc `2d9848b05cb7b69e7abe65f5405ec25f4971cfd764707560a3cb8bddad2afe91`; 69_18.amc `ab26d17f420194b74a0434ad1a9ac400f364f839298bb3a10f37e15b98e81429`; 143.asf as above; Neutral_ID.bvh `71aead2e3246bdb47a5b839cb3e60e0574e9a1a046c071cc147e2922a35f259f` (fetched by HTTP range from the Zenodo zip, CRC checked, `fetch_100style.py`). Also downloaded and measured but not used in a clip: 143_02, 143_19, 69_17, 69_19 (CMU), Neutral_TR1 / FW / FR (100STYLE).
 
-Credits text to add (ui session, Esc menu): "Motion: CMU Graphics Lab Motion Capture Database (mocap.cs.cmu.edu, NSF EIA-0196217) and The 100STYLE Dataset - Ian Mason (CC BY 4.0)."
+The Esc menu credits CMU Graphics Lab Motion Capture Database (mocap.cs.cmu.edu, NSF EIA-0196217) and The 100STYLE Dataset - Ian Mason, with the CC BY 4.0 licence link and notice that the idle take was retargeted and edited.
 
 Runtime transitions use inertialization (Bollo, GDC 2018) with critically damped spring decay after Holden's MIT-licensed reference code; the implementation is written here (`WorldGuidePhase.ts` GuideInertializer), no third-party code is copied.
 
@@ -73,7 +73,6 @@ Runtime transitions use inertialization (Bollo, GDC 2018) with critically damped
 | Resource | Licence | Decision |
 | --- | --- | --- |
 | Quaternius Universal Animation Library (free) | CC0 1.0 | Inspected only; its Jump_Start / Loop / Land split informed the state structure. No data used. |
-| 100STYLE (Zenodo 8127870) | CC BY 4.0 | v3d: Neutral_ID used (IdleLook, above). |
 | Ubisoft LAFAN1 | CC BY-NC-ND 4.0 | Excluded. |
 | Bandai Namco Research Motiondataset | CC BY-NC 4.0 | Excluded. |
 | Mixamo | Adobe terms, free but not open | Not used. |

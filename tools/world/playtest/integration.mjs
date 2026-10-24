@@ -21,6 +21,14 @@ try {
   await page.waitForTimeout(4000);
   report.layout = await page.evaluate(() => __worldDebug.layout()?.version ?? null);
   report.claimed = await page.evaluate(() => __worldDebug.claimedGreybox?.() ?? []);
+  if (report.layout === 'v4' && report.claimed.includes('building-forecourt')) {
+    report.forecourts = await page.evaluate(() => __worldInteract.list().filter(i => i.id.startsWith('town-board-')).map(i => {
+      // Sample the clear approach beside each board, away from its legs and the building shell.
+      const x = i.position[0] - 1, z = i.position[2] - 1.2;
+      const support = __worldDistricts.supportAt(x, z, 3.5);
+      return { id: i.id, at: [x, z], support, passed: support?.kind === 'surface' && Math.abs(support.y - 1.15) < .015 };
+    }));
+  }
   // Fixed district views from the layout's QA shots (overview excluded): stats at each.
   for (const view of process.env.WORLD_INTEGRATION_VIEWS?.split(',') ?? ['camp', 'town', 'bridge', 'park', 'ridge', 'camp-night', 'town-night', 'park-night']) {
     await page.evaluate(v => __worldDebug.set({ shot: v, light: v.endsWith('-night') ? 'night' : 'dusk' }), view);
@@ -67,8 +75,9 @@ try {
 } catch (e) { report.errors.push(String(e.stack || e)); }
 report.summary = { views: report.views.length, maxCalls: Math.max(0, ...report.views.map(v => v.stats.calls)), maxTriangles: Math.max(0, ...report.views.map(v => v.stats.triangles)),
   interactables: report.interactables.length, interactPassed: report.interactables.filter(r => r.passed).length, interactOpened: report.interactables.filter(r => r.opened).length,
+  forecourts: report.forecourts?.length ?? 0, forecourtPassed: report.forecourts?.filter(r => r.passed).length ?? 0,
   errors: report.errors.length, httpErrors: report.httpErrors.length };
 await writeFile(path.join(out, 'report.json'), JSON.stringify(report, null, 2));
 await browser.close();
 console.log(JSON.stringify(report.summary));
-if (report.errors.length || report.httpErrors.length || report.interactables.some(r => !r.passed)) process.exitCode = 1;
+if (report.errors.length || report.httpErrors.length || report.interactables.some(r => !r.passed) || report.forecourts?.some(r => !r.passed)) process.exitCode = 1;
