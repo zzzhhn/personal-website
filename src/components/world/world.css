@@ -230,3 +230,5 @@ kbd { font: 600 11px/1 "Geist", sans-serif; display: inline-flex; align-items: c
   .world-zone { animation: world-zone-still 3.4s linear both !important; }
 }
 @keyframes world-zone-still { 0%, 90% { opacity: 1; } 100% { opacity: 0; } }
+.world-park-bubbles { display: grid; gap: 6px; width: min(18rem, calc(100vw - 3rem)); transform: translateY(-55%); color: #2a2421; font: 500 14px/1.5 Geist, "PingFang SC", sans-serif; }
+.world-park-bubbles p { margin: 0; padding: 9px 13px; border-radius: 12px 12px 12px 3px; background: rgba(244, 236, 219, .95); box-shadow: 0 3px 12px #0002; }

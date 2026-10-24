@@ -791,7 +791,8 @@ export default function WorldActors() {
     const eye=car?car.spec.size[1]*.38:.3;   // above the body centre: driver's eye / helmet visor height
     const cameraSeat=!car?useWorldStore.getState().seat:null;
     // The disabled seated capsule stays a standing body-height above the seat. Aim at the actual
-    // seated helmet instead: fresh GLB runtime bounds put its centre 0.884-0.956 m above the seat.
+    // seated body instead: fresh GLB runtime samples put the helmet centre at +0.884-0.956 m.
+    // Keep the sweep above the chair back; the orbit view frames the chest separately below.
     const targetY=cameraSeat?cameraSeat.position[1]+.92:Math.max(p.y,WATER_Y)+(c.firstPerson?eye:car?car.spec.size[1]*.6:.65);
     const desiredTarget=new Vector3(p.x,targetY,p.z);
     if(!cameraReady.current){target.current.copy(desiredTarget);cameraReady.current=true;}
@@ -800,9 +801,9 @@ export default function WorldActors() {
     const exclude=car?.body??player.current??undefined;
     // Sphere cast from `from` along unit `d` for `len` m against static ground and solid bodies (not the
     // player, the driven car, sensors or knockable props). Returns the free distance (len if clear).
-    const probe=(from:{x:number;y:number;z:number},d:{x:number;y:number;z:number},len:number,radius:number)=>{
+    const probe=(from:{x:number;y:number;z:number},d:{x:number;y:number;z:number},len:number,radius:number,stopAtPenetration=true)=>{
       if(len<1e-4)return {free:len,hit:null as number|null};
-      const h=world.castShape(from,{x:0,y:0,z:0,w:1},d,new rapier.Ball(radius),0,len,true,undefined,undefined,undefined,exclude,
+      const h=world.castShape(from,{x:0,y:0,z:0,w:1},d,new rapier.Ball(radius),0,len,stopAtPenetration,undefined,undefined,undefined,exclude,
         col=>{if(col.isSensor())return false;const b=col.parent();if(!b)return true;if(b.handle===player.current?.handle)return false;
           const ud=b.userData as {vehicle?:string;obstacle?:boolean}|undefined;return !ud?.obstacle&&!(ud?.vehicle&&b.handle===car?.body.handle);});
       return {free:h?Math.max(0,h.time_of_impact-CAMERA_HIT_MARGIN):len,hit:h?h.time_of_impact:null};
@@ -847,7 +848,11 @@ export default function WorldActors() {
       camera.position.copy(pos);
       impact.current *= Math.exp(-delta * 12);
       if (impact.current > .001) camera.position.y += Math.sin(performance.now() * .07) * impact.current;
-      camera.up.copy(UP);camera.lookAt(target.current);
+      camera.up.copy(UP);
+      // A tight indoor orbit needs the body centred, while its collision sweep starts safely at
+      // head height. This changes the framing without moving the camera into a chair or wall.
+      if(cameraSeat) camera.lookAt(target.current.x,cameraSeat.position[1]+.45,target.current.z);
+      else camera.lookAt(target.current);
     }
     occlusion.current.update(scene,camera,target.current,delta);
   });

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
+import { Html } from '@react-three/drei';
 import { BufferAttribute, BufferGeometry, CanvasTexture, Group, Matrix4, Mesh, MeshStandardMaterial, Object3D, SRGBColorSpace, Vector3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { PartBatch, gltfTrimesh, meshPiece, meshesUnder, mergeBatch, parkMaterial, parkUrl, withDraco, hash, type GLTF } from './WorldParkKit';
@@ -332,32 +333,26 @@ function CampChairs({ p, lamp }: { p: Placed; lamp?: Placed }) {
   });
   return <Bubbles active={seated} lines={LINES[lang].slice(0, shown)} at={[empty.x, empty.y + 0.65, empty.z]} />;
 }
-/** Three bilingual speech bubbles above the empty chair: canvas sprites stacked upward. */
+/** Screen-sized text anchored above the empty chair; close orbit must not magnify it over the player. */
 function Bubbles({ lines, at, active }: { lines: string[]; at: Vec3; active: boolean }) {
   const alpha = useRef(0);
-  const group = useRef<Group>(null);
-  const sprites = useMemo(() => lines.map(text => {
-    const c = document.createElement('canvas'), x = c.getContext('2d')!;
-    x.font = '500 32px Geist, "PingFang SC", sans-serif';
-    const words = /[\u3400-\u9fff]/.test(text) ? [...text] : text.split(/\s+/).map(w => w + ' ');
-    const rows: string[] = []; let row = '';
-    words.forEach(word => { if (x.measureText(row + word).width > 590 && row) { rows.push(row.trim()); row = word; } else row += word; }); rows.push(row.trim());
-    const w = Math.min(650, Math.max(...rows.map(t => x.measureText(t).width)) + 48), h = rows.length * 40 + 38;
-    c.width = w; c.height = h;
-    x.font = '500 32px Geist, "PingFang SC", sans-serif';
-    x.fillStyle = 'rgba(244,236,219,0.96)'; x.beginPath(); x.roundRect(3, 3, w - 6, h - 20, 15); x.fill();
-    x.beginPath(); x.moveTo(32, h - 18); x.lineTo(50, h - 18); x.lineTo(30, h - 2); x.fill();
-    x.fillStyle = '#2A2421'; x.textBaseline = 'middle'; rows.forEach((t, i) => x.fillText(t, 24, 27 + i * 40));
-    const tex = new CanvasTexture(c); tex.colorSpace = SRGBColorSpace;
-    return { tex, width: w * .0023, height: h * .0023 };
-  }), [lines]);
-  useEffect(() => () => sprites.forEach(s => s.tex.dispose()), [sprites]);
-  useFrame((_, dt) => { if (!isWorldRunning()) return; alpha.current += ((active ? 1 : 0) - alpha.current) * Math.min(1, dt * 5); group.current?.children.forEach(s => { const material = (s as unknown as { material: { opacity: number } }).material; if (material) material.opacity = alpha.current; }); });
-  return <group ref={group} name="park-kindred-bubbles" position={at}>
-    {sprites.map((s, i) => <sprite key={i} position={[0, (sprites.length - 1 - i) * 0.32, 0]} scale={[s.width, s.height, 1]} renderOrder={5}>
-      <spriteMaterial map={s.tex} depthWrite={false} toneMapped={false} />
-    </sprite>)}
-  </group>;
+  const body = useRef<HTMLDivElement>(null);
+  const projected = useMemo(() => new Vector3(), []);
+  useFrame((_, dt) => {
+    if (!isWorldRunning()) return;
+    alpha.current += ((active ? 1 : 0) - alpha.current) * Math.min(1, dt * 5);
+    if (body.current) body.current.style.opacity = String(alpha.current);
+  });
+  return <Html position={at} center zIndexRange={[4, 0]} style={{ pointerEvents: 'none' }} calculatePosition={(object, camera, size) => {
+    projected.setFromMatrixPosition(object.matrixWorld).project(camera);
+    const margin = Math.min(288, size.width - 48) / 2 + 16;
+    return [Math.max(margin, Math.min(size.width - margin, (projected.x + 1) * size.width / 2)),
+      Math.max(Math.min(220, size.height / 2), Math.min(size.height - 130, (1 - projected.y) * size.height / 2))];
+  }}>
+    <div ref={body} className="world-park-bubbles" style={{ opacity: 0 }}>
+      {lines.map((text, i) => <p key={i}>{text}</p>)}
+    </div>
+  </Html>;
 }
 
 /* ------------------------------------------------------------------ P18 blackboard */

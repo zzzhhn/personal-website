@@ -123,9 +123,6 @@ def attach(asset, paths, roots=None, visible=False):
 
 def build():
     rows = read_json('docs/world/assets-v1.json')
-    # Preserve a future G28 record only after main explicitly archives a real GLB;
-    # mere file discovery must never change its production/acceptance status.
-    prior_g28 = next((copy.deepcopy(a) for a in rows if a['id'] == 'G28' and a.get('production', {}).get('glb')), None)
     head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     for a in rows:
         if 'historicalInventory' not in a:
@@ -271,18 +268,17 @@ def build():
         a['production']['evidence'] += ['docs/world/vehicles/LOD-STATUS.md', 'docs/world/vehicles/lod-summary.json', f'docs/world/vehicles/{aid}-lod1-report.json']
         a['triangles'] += f"；LOD1 {q['totalTris']}（{q['ratio']:.2%}）"
         a['note'] += '；60m远档及原矩阵/轮组阴影18/18距离交接已有定向报告，L0 SHA不变；旧LOD未做描述已被LOD-STATUS覆盖'
-    a = setrow('G28', runtime=[], src=[], evidence=['docs/world/references/codex-native-v2/README.md'], physics='未制作实体/碰撞/传送逻辑',
-        note='仅历史参考方向；当前无GLB/实体/接入；WorkBuddy审阅全球额度耗尽未给本次语义裁决，不能标完成')
-    a['status'] = '未制作、未接入；待语义裁决'; a['triangles'] = '未制作；无当前GLB/实测'
-    a['production']['method'] = 'planned-L1-no-asset'; a['production']['implementationStatus'] = 'not-produced'
-    a['production']['visualReviewStatus'] = '历史候选参考方向不等于实体美术/运行时验收'
-
-    if prior_g28:
-        a.clear(); a.update(prior_g28)
-        a['productionAuthorization'] = copy.deepcopy(AUTH)
-        a['production'].update(snapshotGitCommit=head, readDate=DATE, userAccepted=False)
-        paths = [f['path'] for f in a['production'].get('files', [])] or [a['production']['glb']]
-        attach(a, paths)
+    a = setrow('G28', runtime=['src/components/world/WorldEntry.tsx', 'src/components/world/WorldRuntime.tsx'],
+        src=['tools/world/entry/build_portal.py', 'tools/world/entry/build_portal.blend'],
+        evidence=['docs/world/entry/G28.md', 'docs/world/entry/qa-G28.json', 'docs/world/entry/runtime/README.md', 'docs/world/entry/runtime/interaction.json'],
+        physics='原清单无阻挡入口触发例外；保留步行门洞；E仅打开现有地图/设置，无自动传送/外链',
+        note='G28-A已制作并局部挂载；独立规格解读按PRD v1.13/规格15授权，不冒称WorkBuddy新审批；8项局部人行/单一输入检查通过，最终整合另验')
+    q = read_json('docs/world/entry/qa-G28.json')
+    attach(a, ['public/assets/world/entry/G28.glb'])
+    proof(a, 4392, 4392, 'docs/world/entry/qa-G28.json', sha=q['sha256'])
+    a['triangles'] = '原生/重开BLEND/全新Draco回读4392；运行时3材质合批；60m远档360'
+    a['production']['runtimeReviewStatus'] = 'entry/runtime记录8项局部通过、近远剔除与普通1080两档；车辆通行/全局预算/Bobby未验收'
+    a['production']['knownLimits'] = ['石环沿用无阻挡触发语义，不当作真实硬石碰撞通过', 'WorkBuddy本轮额度耗尽；此次是独立规格解读与实现，不是冻结文件更新']
 
     shelter = {v['id']: v for v in read_json('docs/world/camp-slice/shelters/manifest.json')['assets']}
     tents = {v['id']: v for v in read_json('docs/world/quality-v2/shelters/manifest.json')['assets']}

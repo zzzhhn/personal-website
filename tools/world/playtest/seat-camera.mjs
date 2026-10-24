@@ -11,6 +11,7 @@ try {
   const { page, errors } = await openWorld(browser, `${process.env.WORLD_BASE_URL}/world/?qa=1`, { width: 1920, height: 1080 });
   const bot = new Bot(page);
   for (const [label, prefix] of [['C06', 'camp-bench-0-a'], ['P16', 'park-P16-']]) {
+    if (process.env.SEAT_CAMERA_ONLY && process.env.SEAT_CAMERA_ONLY !== label) continue;
     const anchor = await page.evaluate(prefix => __worldInteract.list().find(i => i.id.startsWith(prefix)), prefix);
     if (!anchor) throw Error(`No ${label} seat`);
     await bot.fixtureTeleport([anchor.position[0], anchor.position[1] + .3, anchor.position[2]], `real ${label} approach`);
@@ -23,9 +24,12 @@ try {
       await aim(page, { yaw, pitch, distance: 5 });
       await page.waitForTimeout(800);
       const camera = await page.evaluate(() => __worldDebug.camera());
+      const bubbles = await page.evaluate(() => [...document.querySelectorAll('.world-park-bubbles p')].map(p => {
+        const r = p.getBoundingClientRect(); return { width: r.width, height: r.height, contained: r.left >= 0 && r.right <= innerWidth && r.top >= 0 && r.bottom <= innerHeight };
+      }));
       row.views.push({ name, camera, targetAboveSeat: camera.target[1] - seat.position[1],
         targetCorrect: Math.abs(camera.target[1] - seat.position[1] - .92) < .02,
-        nearPlaneClear: camera.nearPlaneOverlaps.length === 0 });
+        nearPlaneClear: camera.nearPlaneOverlaps.length === 0, bubbles });
       await page.screenshot({ path: path.join(out, `${label}-${name}.jpg`), type: 'jpeg', quality: 82 });
     }
     await bot.press('KeyE'); await page.waitForTimeout(2200);
