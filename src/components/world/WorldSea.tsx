@@ -1,34 +1,35 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import type { Mesh, MeshStandardMaterial } from 'three';
+import type { Camera, InstancedBufferGeometry, Mesh, MeshStandardMaterial } from 'three';
 import { WATER_Y } from './layout';
-import { useWorldStore } from './store';
-import { createSeaGeometry, SEA_CELL, SEA_SPOTS, seaSpotUniform } from './WorldWater';
+import { createSeaGeometry, SEA_SPOTS, seaSpotUniform, selectSeaPatches, type SeaSelection } from './WorldWater';
 import { actorState } from './WorldGrass';
 
-/** Exposed for QA: current clear-spot state. */
-export const seaSpotDebug: { spots: { id: string; x: number; z: number; radius: number; strength: number }[] } = { spots: [] };
+/** Exposed for QA: current clear-spot state and the last CDLOD selection. */
+export const seaSpotDebug: { spots: { id: string; x: number; z: number; radius: number; strength: number }[]; lod: SeaSelection | null } = { spots: [], lod: null };
 
-/** The sea grid follows the view focus in whole 0.5 m cells (waves are evaluated in world
- * space, so snapping never makes the surface swim). Mean height stays exactly at WATER_Y.
- * Clear spots: any tracked body whose underside is below the surface (WATER_Y + 5 cm) opens a
- * soft see-through disc; it eases in over ~0.25 s and out over ~0.5 s after the body leaves. */
+/** The sea is one instanced draw: CDLOD quadrants selected per rendered camera (WorldWater.selectSeaPatches)
+ * in onBeforeRender, so the selection always matches the camera that draws it, including QA shots. The mesh
+ * stays at the origin at WATER_Y; waves are evaluated in world space. It does not cast; it only receives.
+ * Clear spots: any tracked body whose underside is below the surface (WATER_Y + 5 cm) opens a soft see-through
+ * disc; it eases in over ~0.25 s and out over ~0.5 s after the body leaves. */
 export default function WorldSea({ material }: { material: MeshStandardMaterial }) {
-  const geometry = useMemo(createSeaGeometry, []);
+  const geometry = useMemo(() => createSeaGeometry(), []);
   const ref = useRef<Mesh>(null);
   const strengths = useRef(new Map<string, number>());
   useEffect(() => () => geometry.dispose(), [geometry]);
-  useFrame(({ camera }, delta) => {
+  useEffect(() => {
     const mesh = ref.current; if (!mesh) return;
-    const { shot, position } = useWorldStore.getState();
-    let fx = position[0], fz = position[2];
-    if (shot) {
-      // Fixed QA cameras: centre on where the view ray meets the water plane.
-      const dir = camera.getWorldDirection(mesh.position.clone()), t = dir.y < -.05 ? (WATER_Y - camera.position.y) / dir.y : 0;
-      fx = camera.position.x + dir.x * t; fz = camera.position.z + dir.z * t;
-    }
-    mesh.position.set(Math.round(fx / SEA_CELL) * SEA_CELL, WATER_Y, Math.round(fz / SEA_CELL) * SEA_CELL);
-
+    let last: Camera | null = null, lastFrame = -1;
+    mesh.onBeforeRender = (renderer, _scene, camera) => {
+      // Main camera only; reselect once per frame per camera (shadow passes never draw the sea).
+      const frame = renderer.info.render.frame;
+      if (camera === last && frame === lastFrame) return;
+      last = camera; lastFrame = frame;
+      seaSpotDebug.lod = selectSeaPatches(geometry as InstancedBufferGeometry, camera);
+    };
+  }, [geometry]);
+  useFrame((_, delta) => {
     const dt = Math.min(delta, .1), spots: typeof seaSpotDebug.spots = [];
     for (const a of actorState.actors) {
       const wet = a.bottom < WATER_Y + .05;

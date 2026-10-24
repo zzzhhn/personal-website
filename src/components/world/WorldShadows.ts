@@ -2,7 +2,7 @@ import { Box3, BufferAttribute, BufferGeometry, Frustum, InstancedMesh, Matrix4,
 import { SunLight } from 'three/examples/jsm/lights/SunLight.js';
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import type { SunLightShadow } from 'three/examples/jsm/lights/SunLightShadow.js';
-import { SHADOW_BUDGET, type ShadowTier } from './WorldQuality';
+import { SHADOW_BUDGET, budgetZoneOf, type ShadowTier } from './WorldQuality';
 import { setQaRenderer, worldLightsFrame } from './WorldLights';
 
 /**
@@ -299,7 +299,7 @@ function rescan(scene: Object3D) {
           const p = new InstancedMesh(k === 2 ? farHull(g) ?? g : g, mesh.material as Material, cap);
           p.name = `${mesh.name || mesh.parent?.name || 'caster'}#sun${k}`;
           p.frustumCulled = false; p.matrixAutoUpdate = false; p.matrixWorldAutoUpdate = false;
-          p.castShadow = false; p.receiveShadow = false; p.userData.shadowProxy = true; p.count = 0;
+          p.castShadow = false; p.receiveShadow = false; p.userData.shadowProxy = true; p.userData.budgetSource = mesh; p.count = 0;
           proxyGroup.add(p); c.proxies.push(p);
         }
       }
@@ -325,7 +325,7 @@ function rescan(scene: Object3D) {
 const fireStatic = new Mesh();
 fireStatic.name = 'world-fire-static-casters';
 fireStatic.matrixAutoUpdate = false; fireStatic.matrixWorldAutoUpdate = false; fireStatic.frustumCulled = false;
-fireStatic.castShadow = false; fireStatic.receiveShadow = false; fireStatic.userData.shadowProxy = true;
+fireStatic.castShadow = false; fireStatic.receiveShadow = false; fireStatic.userData.shadowProxy = true; fireStatic.userData.budgetZone = 'camp';
 proxyGroup.add(fireStatic);
 let fireStaticKey = '';
 function rebuildFireStatic() {
@@ -388,7 +388,10 @@ function rebuildChunks() {
   if (key === chunkKey) return;
   chunkKey = key;
   for (const ch of chunks) for (const m of [ch.full, ch.far]) if (m) { proxyGroup.remove(m); m.geometry.dispose(); }
-  const buckets = new Map<string, { side: number; full: [number[], number[]] }>(), farBuckets = new Map<string, { side: number; far: [number[], number[]] }>();
+  const buckets = new Map<string, { side: number; full: [number[], number[]]; zones: Map<string, number> }>(), farBuckets = new Map<string, { side: number; far: [number[], number[]]; zones: Map<string, number> }>();
+  // Budget attribution (QA): each merged chunk reports the zone that contributes most of its triangles.
+  const tally = (zones: Map<string, number>, zone: string, g: BufferGeometry) => zones.set(zone, (zones.get(zone) ?? 0) + (g.index ? g.index.count : g.getAttribute('position').count));
+  const top = (zones: Map<string, number>) => [...zones.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? 'other';
   const v = new Vector3();
   const push = (dst: [number[], number[]], g: BufferGeometry, matrix: Matrix4) => {
     const pos = g.getAttribute('position'), idx = g.index, base = dst[0].length / 3;
@@ -396,23 +399,23 @@ function rebuildChunks() {
     if (idx) for (let j = 0; j < idx.count; j++) dst[1].push(base + idx.getX(j)); else for (let j = 0; j < pos.count; j++) dst[1].push(base + j);
   };
   for (const c of rigid) {
-    const src = c.mesh as InstancedMesh, g = src.geometry, hull = farHull(g), side = (src.material as Material).side, s = c.spheres;
+    const src = c.mesh as InstancedMesh, g = src.geometry, hull = farHull(g), side = (src.material as Material).side, s = c.spheres, zone = budgetZoneOf(src);
     for (let i = 0; i < src.count; i++) {
       const k = `${Math.floor(s[i * 4] / CHUNK)},${Math.floor(s[i * 4 + 2] / CHUNK)},${side}`;
       let b = buckets.get(k);
-      if (!b) { b = { side, full: [[], []] }; buckets.set(k, b); }
+      if (!b) { b = { side, full: [[], []], zones: new Map() }; buckets.set(k, b); }
       src.getMatrixAt(i, m4); m4.premultiply(src.matrixWorld);
-      push(b.full, g, m4);
+      push(b.full, g, m4); tally(b.zones, zone, g);
       if (s[i * 4 + 3] < FAR_MIN_RADIUS) continue;
       const fk = `${Math.floor(s[i * 4] / FAR_CHUNK)},${Math.floor(s[i * 4 + 2] / FAR_CHUNK)},${side}`;
       let fb = farBuckets.get(fk);
-      if (!fb) { fb = { side, far: [[], []] }; farBuckets.set(fk, fb); }
-      push(fb.far, hull ?? g, m4);
+      if (!fb) { fb = { side, far: [[], []], zones: new Map() }; farBuckets.set(fk, fb); }
+      push(fb.far, hull ?? g, m4); tally(fb.zones, zone, hull ?? g);
     }
   }
   chunks = [
-    ...[...buckets.entries()].map(([k, b]) => { const full = makeChunkMesh(b.full[0], b.full[1], b.side, `sun-chunk-${k}`); return { full, far: null, sphere: full?.geometry.boundingSphere?.clone() ?? new Sphere(), farSphere: new Sphere() }; }),
-    ...[...farBuckets.entries()].map(([k, b]) => { const far = makeChunkMesh(b.far[0], b.far[1], b.side, `sun-chunk-far-${k}`); return { full: null, far, sphere: new Sphere(), farSphere: far?.geometry.boundingSphere?.clone() ?? new Sphere() }; }),
+    ...[...buckets.entries()].map(([k, b]) => { const full = makeChunkMesh(b.full[0], b.full[1], b.side, `sun-chunk-${k}`); if (full) full.userData.budgetZone = top(b.zones); return { full, far: null, sphere: full?.geometry.boundingSphere?.clone() ?? new Sphere(), farSphere: new Sphere() }; }),
+    ...[...farBuckets.entries()].map(([k, b]) => { const far = makeChunkMesh(b.far[0], b.far[1], b.side, `sun-chunk-far-${k}`); if (far) far.userData.budgetZone = top(b.zones); return { full: null, far, sphere: new Sphere(), farSphere: far?.geometry.boundingSphere?.clone() ?? new Sphere() }; }),
   ];
 }
 
