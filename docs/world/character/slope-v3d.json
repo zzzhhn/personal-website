@@ -1,0 +1,150 @@
+{
+ "tag": "slope",
+ "errors": [],
+ "fixture": [
+  {
+   "t": 0.014,
+   "to": [
+    -19.5,
+    5.74,
+    34.3
+   ],
+   "reason": "camp road ramp top (15 deg) for slope stance metrics"
+  }
+ ],
+ "phases": [
+  {
+   "label": "run-down",
+   "t": 1.476
+  },
+  {
+   "label": "stop-on-ramp",
+   "t": 3.178
+  },
+  {
+   "label": "run-up",
+   "t": 4.08
+  },
+  {
+   "label": "stop2",
+   "t": 5.783
+  },
+  {
+   "label": "sprint-down",
+   "t": 6.685
+  },
+  {
+   "label": "stop3",
+   "t": 8.19
+  },
+  {
+   "label": "run-up2",
+   "t": 9.091
+  },
+  {
+   "label": "stop4",
+   "t": 11.293
+  }
+ ],
+ "byClipCurve": {
+  "n": 342,
+  "maxFloat_mm": 94.5,
+  "maxSink_mm": -16,
+  "floatOver20": 40,
+  "sinkOver15": 21
+ },
+ "excludingStopStepSwing": {
+  "n": 265,
+  "maxFloat_mm": 85.9,
+  "maxSink_mm": -16,
+  "floatOver20": 5,
+  "sinkOver15": 20
+ },
+ "floatsByAnim": {
+  "Idle": 3,
+  "Idle(stop-step swing)": 35,
+  "Sprint": 2
+ },
+ "stance": {
+  "samples": 456,
+  "rampSamples": 342,
+  "maxFloat_mm": 94.5,
+  "maxSink_mm": -16,
+  "floatOver20": 40,
+  "sinkOver15": 21,
+  "worst": [
+   {
+    "t": 7.214,
+    "side": 1,
+    "mm": 85.9,
+    "anim": "Sprint",
+    "drop": 0,
+    "shift": -0.0624,
+    "maxShift": 0.1
+   },
+   {
+    "t": 3.5142,
+    "side": 1,
+    "mm": 63,
+    "anim": "Idle",
+    "drop": 0,
+    "shift": -0.0064,
+    "maxShift": 0.1
+   },
+   {
+    "t": 7.7474,
+    "side": 1,
+    "mm": 51.9,
+    "anim": "Sprint",
+    "drop": 0.0379,
+    "shift": -0.1,
+    "maxShift": 0.1
+   },
+   {
+    "t": 8.5641,
+    "side": 0,
+    "mm": 28,
+    "anim": "Idle",
+    "drop": 0,
+    "shift": 0.0045,
+    "maxShift": 0.1
+   },
+   {
+    "t": 3.5309,
+    "side": 1,
+    "mm": 26.3,
+    "anim": "Idle",
+    "drop": 0,
+    "shift": -0.0067,
+    "maxShift": 0.1
+   },
+   {
+    "t": 7.4641,
+    "side": 1,
+    "mm": 19.5,
+    "anim": "Sprint",
+    "drop": 0.0114,
+    "shift": -0.0603,
+    "maxShift": 0.1
+   },
+   {
+    "t": 7.764,
+    "side": 1,
+    "mm": 17,
+    "anim": "Sprint",
+    "drop": 0.014,
+    "shift": -0.1,
+    "maxShift": 0.1
+   },
+   {
+    "t": 2.9476,
+    "side": 1,
+    "mm": 13,
+    "anim": "Run",
+    "drop": 0.014,
+    "shift": -0.0731,
+    "maxShift": 0.1
+   }
+  ]
+ }
+}

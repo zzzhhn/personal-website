@@ -478,7 +478,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         const res = rig.inert.residual();
         recorder.frames.push({ t: +s.time.toFixed(4), dt: +dt.toFixed(4), anim: s.current, at: +rig.actions[s.current].time.toFixed(4), ts: +rig.actions[s.current].getEffectiveTimeScale().toFixed(3), grounded, speed: +speedMps.toFixed(3), facing: +facing.toFixed(4),
           root: rootW.toArray().map(v => +v.toFixed(4)), joints, soles, inert: [+res.angle.toFixed(4), +res.pelvis.toFixed(4)], switches: rig.inert.switches,
-          contact: rig.slope.legs.left && [+rig.slope.legs.left.contact.toFixed(2), +rig.slope.legs.right.contact.toFixed(2)], lift: +group.current.position.y.toFixed(4) });
+          contact: rig.slope.legs.left && [+rig.slope.legs.left.contact.toFixed(2), +rig.slope.legs.right.contact.toFixed(2)], lift: +group.current.position.y.toFixed(4), slope: rig.slope.debug(), stepping: stop.current ? (() => { const d = stop.current!.debug(); return [d.left.stepping ? 1 : 0, d.right.stepping ? 1 : 0, d.state]; })() : null });
       }
     }
   });
