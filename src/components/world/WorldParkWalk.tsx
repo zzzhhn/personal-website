@@ -36,7 +36,9 @@ function segments() {
     quad = [add(quad[0], d, -6), add(quad[1], d, 6), add(quad[2], d, 6), add(quad[3], d, -6)];
     // Mitre planes at interior joints: bisector of the two directions.
     if (i > 0) { const dp = unit(sub(a, P[i - 1])), m = unit(add(dp, d)); quad = clipHalf(quad, m, dot(m, a)); }
-    else quad = clipHalf(quad, [1, 0], PLAZA.x1 - 0.02);
+    // Visual planks meet the existing flagstone edge (x1-.35); the original support boxes below
+    // remain unchanged. The old x1-.02 cut left a 33 cm exposed bedding / coping sawtooth.
+    else quad = clipHalf(quad, [1, 0], PLAZA.x1 - 0.35);
     if (i < P.length - 2) { const dn = unit(sub(P[i + 2], b)), m = unit(add(d, dn)); quad = clipHalf(quad, [-m[0], -m[1]], -dot(m, b)); }
     else quad = clipHalf(quad, [-d[0], -d[1]], -dot(d, b));
     out.push({ quad, dir: d, a, b, L: Math.hypot(b[0] - a[0], b[1] - a[1]) });

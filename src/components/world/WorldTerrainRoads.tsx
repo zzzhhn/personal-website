@@ -3,14 +3,15 @@
  * Geometry from WorldTerrainPaving (closed carriageway field with gutter, rolled kerb, sidewalk pavers;
  * frozen ramp / bridge decks; boardwalk; windmill pad; the v4 building forecourt surfaces).
  * One draw per spatial chunk (paving and paint merged); nothing casts shadows. The
- * very same triangles feed Rapier: walkable tops (incl. the rolled kerb face) are `surface`, the outer
- * skirts and prism walls are `solid`. Claims `paved` once mounted (visual and colliders ready).
+ * original triangles feed Rapier: walkable tops (incl. the rolled kerb face) are `surface`, the outer
+ * skirts and prism walls are `solid`. Formal park handover clips only the old spur VISUAL; its
+ * original collision arrays remain throughout. Claims `paved` once mounted (visual and colliders ready).
  */
 import { memo, useEffect, useMemo } from 'react';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { BufferGeometry, Float32BufferAttribute, MeshStandardMaterial } from 'three';
-import { PAVE_STRIDE, pavingMesh, type PaveChunk } from './WorldTerrainPaving';
-import { useGreyboxClaim } from './WorldVisualClaims';
+import { PAVE_STRIDE, pavingMesh, parkPlazaPavingVisual, type PaveChunk } from './WorldTerrainPaving';
+import { useGreyboxClaim, useIsClaimed } from './WorldVisualClaims';
 
 const NOISE = /* glsl */`
 float pHash(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
@@ -193,9 +194,11 @@ function Chunk({ c, material }: { c: PaveChunk; material: MeshStandardMaterial }
   // Town replaces pillars and boards; v4 paving owns their walkable forecourt throughout handover.
   const main = useMemo(() => geometryOf([...c.v, ...c.fv]), [c]);
   const fore = useMemo(() => c.fv.length ? geometryOf(c.fv) : null, [c]);
-  useEffect(() => () => { main.g.dispose(); fore?.g.dispose(); }, [main, fore]);
+  const parkReady = useMemo(() => c.parkSpurTriangles.length ? geometryOf([...parkPlazaPavingVisual(c), ...c.fv]) : null, [c]);
+  const plazaClaimed = useIsClaimed('park-plaza');
+  useEffect(() => () => { main.g.dispose(); fore?.g.dispose(); parkReady?.g.dispose(); }, [main, fore, parkReady]);
   return <group name={`paving-v4-${c.key}`}>
-    <mesh name={`paving-v4-chunk-${c.key}`} geometry={main.g} material={material} receiveShadow userData={{ surface: true }} />
+    <mesh name={`paving-v4-chunk-${c.key}`} geometry={plazaClaimed && parkReady ? parkReady.g : main.g} material={material} receiveShadow userData={{ surface: true }} />
     <ChunkColliders name={`paving-v4-${c.key}`} pos={main.pos} top={c.top} walls={c.walls} />
     {fore && <ChunkColliders name={`paving-v4-forecourts-${c.key}`} pos={fore.pos} top={c.ftop} walls={c.fwalls} />}
   </group>;
