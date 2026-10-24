@@ -1,5 +1,5 @@
 /**
- * Stop-step visual candidate for G24 (QA-only, not Fable-approved).
+ * G24's approved visual stop-step correction (Art Lock v3.6 / quality-v3 §10.1, §15.4).
  *
  * When the guide changes Walk/Run -> Idle on the ground, the displayed feet are captured in
  * world space. The support foot stays locked; the other foot lifts 6-8 cm and moves to the
@@ -9,13 +9,14 @@
  * lowered by at most `maxPelvisDrop`, and any remaining gap is reported as `reachError`
  * (the leg is not stretched to hide it).
  *
- * Visual only: no rigid body, braking or collider changes. Flat ground only: targets keep the
- * captured/Idle heights; there is no terrain probe, so slopes are NOT handled.
+ * Visual only: no rigid body, braking or collider changes. Slope runs first; Stop is the final
+ * bone writer and reuses Slope's measured static support, sole geometry and bounded foot tilt.
+ * Both analytic two-bone solvers share the 5 cm pelvis budget and never stretch the legs.
  *
  * Per-frame integration (see docs/world/quality-v2/stop-prototype.md):
  *   stop.preUpdate({ animation, grounded, speedMps, facing, visible })   // before mixer.update
  *   mixer.update(dt); group.rotation.y = facing;
- *   stop.solve(dt)                                                       // before sole correction
+ *   slope.solve(dt, ...); stop.solve(dt)                                  // before sole correction
  *   ...existing <=2.5 cm sole correction...
  * Call stop.cancel('hidden') when the guide is hidden (vehicle) and stop.dispose() on unmount.
  * No local bone axis is assumed: all directions come from world-space bone positions of the
@@ -184,6 +185,8 @@ export class GuideStopStep {
   /** Optional ground offset (m, relative to the physics root plane) at a world x/z: on a slope the
    * stepped-to Idle stance is placed on the probed ground instead of the root plane. */
   groundOffset: ((x: number, z: number) => number) | null = null;
+  /** Same measured sole/ground fit as Slope; target construction, not a third IK solve. */
+  groundTarget: ((side: StopSide, pos: Vector3, quat: Quaternion) => boolean) | null = null;
   private readonly eff = new Vector3();
 
   /**
@@ -248,9 +251,10 @@ export class GuideStopStep {
   /** Idle stance target for one foot in world space (uses the scene's current world matrix). */
   idleTarget(leg: Leg, pos: Vector3, quat: Quaternion) {
     pos.copy(leg.idlePos).applyMatrix4(this.scene.matrixWorld);
-    pos.y -= this.shift();
-    if (this.groundOffset) pos.y += this.groundOffset(pos.x, pos.z);
     quat.copy(this.scene.getWorldQuaternion(_sceneQ)).multiply(leg.idleQuat);
+    const fitted = this.groundTarget?.(leg.side, pos, quat);
+    pos.y -= this.shift();
+    if (!fitted && this.groundOffset) pos.y += this.groundOffset(pos.x, pos.z);
   }
 
   /** Rotate every held target about the root by the facing change since the last solve. */
@@ -275,7 +279,13 @@ export class GuideStopStep {
    * the probed ground), so following the root would sink a planted foot while the body glides downhill. */
   private shift() { return this.anchor ? this.anchor.position.y - this.anchorY0 : 0; }
   /** Target actually solved this frame (stored target + anchor shift). */
-  private effective(leg: Leg) { return this.eff.copy(leg.target).setY(leg.target.y + this.shift()); }
+  private effective(leg: Leg) {
+    this.eff.copy(leg.target).setY(leg.target.y + this.shift());
+    // A landed target is absolute ground contact while the capsule finishes braking downhill.
+    // Keep the authored XZ lock and swing arc; only the held foot's sole height/orientation is fitted.
+    if (!leg.step && !leg.queued) this.groundTarget?.(leg.side, this.eff, leg.targetQuat);
+    return this.eff;
+  }
 
   private log(event: string) { this.events.push({ t: +this.clock.toFixed(3), event }); if (this.events.length > 24) this.events.shift(); }
 
@@ -434,9 +444,18 @@ export class GuideStopStep {
     for (const leg of Object.values(this.legs)) {
       if (leg.step || !leg.queued) continue;
       this.idleTarget(leg, _t, _q);
-      const groundAnkle = _t.y - (this.groundOffset ? this.groundOffset(_t.x, _t.z) - this.groundOffset(leg.target.x, leg.target.z) : 0);
+      let groundAnkle = _t.y - (this.groundOffset ? this.groundOffset(_t.x, _t.z) - this.groundOffset(leg.target.x, leg.target.z) : 0);
+      const landing = leg.target.clone().setY(leg.target.y + this.shift()), landingQ = leg.targetQuat.clone();
+      const fitted = this.groundTarget?.(leg.side, landing, landingQ);
+      if (fitted) {
+        groundAnkle = landing.y - this.shift();
+        leg.targetQuat.slerp(landingQ, 1 - Math.exp(-dt / .025));
+      }
       const gap = leg.target.y - groundAnkle;
-      if (gap > 1e-4) leg.target.y -= Math.min(gap * (1 - Math.exp(-dt / .025)), 2.4 * dt);
+      // Preserve the existing captured-swing landing speed; an upward ground correction remains
+      // bounded by the slope target's 1 cm / 60 Hz limit.
+      if (fitted) leg.target.y -= clamp(gap * (1 - Math.exp(-dt / .025)), -SLOPE_DEFAULTS.maxStep * dt * 60, 2.4 * dt);
+      else if (gap > 1e-4) leg.target.y -= Math.min(gap * (1 - Math.exp(-dt / .025)), 2.4 * dt);
     }
     const active = Object.values(this.legs).find(l => l.step);
     if (active) {
@@ -570,7 +589,7 @@ export const SLOPE_DEFAULTS = { fade: 0.08, fadeOut: 0.2, minSlopeDeg: 1, fullSl
   maxPelvisDrop: 0.05, pelvisDropRate: 0.6, pelvisReleaseRate: 0.15, reachMargin: 0.995, probeUp: 0.6 };
 interface SlopeLeg {
   side: StopSide; thigh: Bone; shin: Bone; foot: Bone; upper: number; lower: number;
-  w: number; shift: number; target: number; slopeDeg: number; hit: boolean; reachError: number; kneeDot: number;
+  w: number; shift: number; target: number; slopeDeg: number; hit: boolean; probeKind: 'ankle' | 'sole' | null; reachError: number; kneeDot: number;
   tilt: Quaternion; maxShiftSeen: number;
   /** Boot sole points in the foot bone's frame (bind pose), used to put the lowest sole point on the ground plane. */
   sole: { mesh: SkinnedMesh; index: number }[]; contact: number; plane: { x: number; y: number; z: number; nx: number; ny: number; nz: number } | null;
@@ -589,6 +608,8 @@ export class GuideSlopeFit {
   readonly legs: Record<StopSide, SlopeLeg>;
   readonly pelvis: Object3D;
   drop = 0;
+  /** Diagnostic only, set by the final Stop writer after its solve. */
+  stopDrop = 0;
   private lift = 0;
   private frames = 0; private active = 0;
   constructor(scene: Object3D) {
@@ -625,7 +646,7 @@ export class GuideSlopeFit {
       const axis = Math.abs(far.x) > Math.abs(far.z) ? new Vector3(Math.sign(far.x), 0, 0) : new Vector3(0, 0, Math.sign(far.z));
       const soleFwd = axis.applyQuaternion(sq).applyQuaternion(fq.clone().invert()).normalize();
       return { side, thigh, shin, foot, upper: A.distanceTo(B), lower: B.distanceTo(C), w: 0, shift: 0, target: 0, slopeDeg: 0,
-        hit: false, reachError: 0, kneeDot: 1, tilt: new Quaternion(), maxShiftSeen: 0, sole, contact: 0, plane: null,
+        hit: false, probeKind: null, reachError: 0, kneeDot: 1, tilt: new Quaternion(), maxShiftSeen: 0, sole, contact: 0, plane: null,
         soleUp: new Vector3(0, 1, 0).applyQuaternion(scene.getWorldQuaternion(new Quaternion())).applyQuaternion(foot.getWorldQuaternion(new Quaternion()).invert()).normalize(),
         soleFwd, align: new Quaternion(), alignDeg: 0, pitchDeg: 0, rollDeg: 0, prevRootY: null, cw: 0, achieved: 0, lowPt: null, clear: 0, resid: 0 };
     };
@@ -637,6 +658,50 @@ export class GuideSlopeFit {
     const hit = probe?.(x, z, rootY + this.tuning.probeUp);
     if (!hit || hit.ny < Math.cos(this.tuning.maxSlopeDeg * Math.PI / 180) || hit.ny > Math.cos(this.tuning.minSlopeDeg * Math.PI / 180)) return 0;
     return clamp(hit.y - rootY, -this.tuning.maxShift, this.tuning.maxShift);
+  }
+  /** Static support sampled this frame only. At a seam the ankle ray can miss while the real sole
+   * still covers support. Retry only actual sole points, nearest the ankle first; never reuse a plane. */
+  private probeSole(probe: SlopeProbe, rootY: number, pos: Vector3, points: Vector3[]) {
+    const direct = probe(pos.x, pos.z, rootY + this.tuning.probeUp);
+    if (direct) return { hit: direct, x: pos.x, z: pos.z, kind: 'ankle' as const };
+    const nearest = [...points].sort((a, b) => Math.hypot(a.x - pos.x, a.z - pos.z) - Math.hypot(b.x - pos.x, b.z - pos.z));
+    for (const p of nearest) {
+      const hit = probe(p.x, p.z, rootY + this.tuning.probeUp);
+      if (hit) return { hit, x: p.x, z: p.z, kind: 'sole' as const };
+    }
+    return null;
+  }
+  /** Reuse the slope normal/tilt contract to construct a Stop target from its rotated rendered sole.
+   * Does not solve bones or move target XZ. Stop's existing solve remains the final two-bone solve. */
+  fitStopTarget(probe: SlopeProbe, rootY: number, side: StopSide, pos: Vector3, quat: Quaternion) {
+    const leg = this.legs[side], ankle = leg.foot.getWorldPosition(new Vector3());
+    const current = leg.foot.getWorldQuaternion(new Quaternion());
+    const local = leg.sole.map(p => this.solePoint(p, new Vector3()).sub(ankle).applyQuaternion(current.clone().invert()));
+    const points = local.map(p => p.clone().applyQuaternion(quat).add(pos));
+    const support = this.probeSole(probe, rootY, pos, points);
+    if (!support) return false;
+    const { hit, x, z } = support, deg = Math.acos(clamp(hit.ny, -1, 1)) * 180 / Math.PI;
+    if (deg < this.tuning.minSlopeDeg || deg > this.tuning.maxSlopeDeg) return false;
+    const normal = new Vector3(hit.nx, hit.ny, hit.nz).normalize();
+    const up = leg.soleUp.clone().applyQuaternion(quat).normalize();
+    const tilt = new Quaternion().setFromUnitVectors(up, normal);
+    const half = Math.acos(clamp(tilt.w, -1, 1)), sh = Math.sin(half);
+    const rv = new Vector3(tilt.x, tilt.y, tilt.z).multiplyScalar(sh > 1e-9 ? 2 * half / sh : 0);
+    const forward = leg.soleFwd.clone().applyQuaternion(quat).setY(0).normalize();
+    const lateral = new Vector3(0, 1, 0).cross(forward).normalize();
+    const bounded = forward.clone().multiplyScalar(clamp(rv.dot(forward), -this.tuning.maxTilt, this.tuning.maxTilt))
+      .addScaledVector(lateral, clamp(rv.dot(lateral), -this.tuning.maxTilt, this.tuning.maxTilt));
+    bounded.y += rv.y;
+    const angle = bounded.length();
+    if (angle > 1e-9) quat.premultiply(tilt.setFromAxisAngle(bounded.divideScalar(angle), angle));
+    let need = -Infinity;
+    for (const p of local) {
+      const v = p.clone().applyQuaternion(quat).add(pos);
+      const gy = hit.y + this.lift - (hit.nx * (v.x - x) + hit.nz * (v.z - z)) / Math.max(.2, hit.ny);
+      need = Math.max(need, gy - v.y);
+    }
+    pos.y += clamp(need, -this.tuning.maxShift, this.tuning.maxShift);
+    return true;
   }
   /** Call after mixer.update and the facing transform, BEFORE GuideStopStep.solve. */
   /** Probed ground height under (x, z) for a leg in contact on a slope (its plane), else null. */
@@ -665,10 +730,12 @@ export class GuideSlopeFit {
     const skels = new Set(Object.values(this.legs).flatMap(l => l.sole.map(p => p.mesh)));
     for (const m of skels) m.skeleton.update();
     for (const leg of Object.values(this.legs)) {
-      let want = 0, target = 0; leg.hit = false; leg.slopeDeg = 0;
+      let want = 0, target = 0; leg.hit = false; leg.probeKind = null; leg.slopeDeg = 0;
       if (on && probe) {
         leg.foot.getWorldPosition(_sa);
-        const hit = probe(_sa.x, _sa.z, rootY + t.probeUp);
+        const support = this.probeSole(probe, rootY, _sa, leg.sole.map(p => this.solePoint(p, new Vector3())));
+        const hit = support?.hit;
+        leg.probeKind = support?.kind ?? null;
         if (hit) {
           leg.hit = true;
           leg.slopeDeg = Math.acos(clamp(hit.ny, -1, 1)) * 180 / Math.PI;
@@ -676,7 +743,7 @@ export class GuideSlopeFit {
           const tiltIn = clamp((leg.slopeDeg - t.minSlopeDeg) / (t.fullSlopeDeg - t.minSlopeDeg), 0, 1);
           want = ok ? clamp(Math.max(contact[leg.side], ahead[leg.side]), 0, 1) * tiltIn * tiltIn * (3 - 2 * tiltIn) : 0;
           target = ok ? clamp(hit.y - rootY, -t.maxShift, t.maxShift) : 0;
-          leg.plane = ok ? { x: _sa.x, y: hit.y, z: _sa.z, nx: hit.nx, ny: hit.ny, nz: hit.nz } : null;
+          leg.plane = ok ? { x: support!.x, y: hit.y, z: support!.z, nx: hit.nx, ny: hit.ny, nz: hit.nz } : null;
           // Spec 10.1 "foot aligned to the ground normal, pitch and roll each <= 20 deg": rotate the ANIMATED
           // sole normal onto the ground normal (so the clip's own heel/toe pitch and edge roll are flattened
           // onto the slope in stance). The rotation vector is split in the foot's heading frame into pitch
@@ -826,7 +893,7 @@ export class GuideSlopeFit {
   }
   debug() {
     const l = (x: SlopeLeg) => ({ weight: +x.w.toFixed(3), contact: +x.contact.toFixed(3), shift: +x.shift.toFixed(4), target: +x.target.toFixed(4), slopeDeg: +x.slopeDeg.toFixed(1),
-      hit: x.hit, alignDeg: +x.alignDeg.toFixed(1), pitchDeg: +x.pitchDeg.toFixed(1), rollDeg: +x.rollDeg.toFixed(1), achieved: +x.achieved.toFixed(4), clear: +x.clear.toFixed(4), resid: +x.resid.toFixed(1), solePts: x.sole.length, plane: x.plane, lowPt: x.lowPt, reachError: +x.reachError.toFixed(4), kneeDot: +x.kneeDot.toFixed(3), maxShift: +x.maxShiftSeen.toFixed(4) });
-    return { pelvisDrop: +this.drop.toFixed(4), framesActive: this.active, frames: this.frames, left: l(this.legs.left), right: l(this.legs.right) };
+      hit: x.hit, probeKind: x.probeKind, alignDeg: +x.alignDeg.toFixed(1), pitchDeg: +x.pitchDeg.toFixed(1), rollDeg: +x.rollDeg.toFixed(1), achieved: +x.achieved.toFixed(4), clear: +x.clear.toFixed(4), resid: +x.resid.toFixed(1), solePts: x.sole.length, plane: x.plane, lowPt: x.lowPt, reachError: +x.reachError.toFixed(4), kneeDot: +x.kneeDot.toFixed(3), maxShift: +x.maxShiftSeen.toFixed(4) });
+    return { pelvisDrop: +this.drop.toFixed(4), stopPelvisDrop: +this.stopDrop.toFixed(4), sharedPelvisDrop: +(this.drop + this.stopDrop).toFixed(4), framesActive: this.active, frames: this.frames, left: l(this.legs.left), right: l(this.legs.right) };
   }
 }

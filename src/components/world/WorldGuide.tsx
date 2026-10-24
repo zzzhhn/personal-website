@@ -710,8 +710,10 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       if (stop.current) {
         stop.current.externalDrop = rig.slope.drop;
         stop.current.groundOffset = motion.probeGround ? (x, z) => rig.slope.offsetAt(motion.probeGround, baseY, x, z) : null;
+        stop.current.groundTarget = motion.probeGround && s.slopeOn ? (side, pos, quat) => rig.slope.fitStopTarget(motion.probeGround!, baseY, side, pos, quat) : null;
       }
       stop.current?.solve(dt);
+      rig.slope.stopDrop = stop.current?.pelvisDrop ?? 0;
       // Blending two valid leg poses can shorten the planted leg. Correct only that small
       // visual blend dip using actual deformed soles; physics and airborne motion stay intact.
       // The 2.5 cm bound prevents this from concealing an invalid rig or replacing slope IK.
