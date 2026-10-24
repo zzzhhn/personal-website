@@ -7,7 +7,7 @@ import { CAMP_SPAWN, VEHICLES, WATER_Y, nearestRoadPoint } from './layout';
 import { nearestDryPoint } from './WorldLandform';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag.ts';
 import { useWorldStore, type NearbyInteract } from './store';
-import { nearestInteractable, type Interactable } from './WorldInteract';
+import { cycleInteractPick, nearestInteractable, type Interactable } from './WorldInteract';
 import type { Vec3, VehicleId } from './types';
 import WorldGuide, { VEHICLE_TRANSITION_S, worldGuideDebug } from './WorldGuide';
 import WorldVehicleVisual from './WorldVehicleVisual';
@@ -574,7 +574,7 @@ export default function WorldActors() {
         c=>!c.isSensor()&&!(c.parent()?.userData as {interactable?:string}|undefined)?.interactable&&!(c.parent()?.userData as {vehicle?:string}|undefined)?.vehicle);
       return !hit;
     };
-    const reach=active||seated||carded?null:nearestInteractable(playerPosition.x,playerPosition.y,playerPosition.z,sight);
+    const reach=active||seated||carded?null:nearestInteractable(playerPosition.x,playerPosition.y,playerPosition.z,sight,state.interactPick);
     if(!active)nearest=nearby?Math.hypot(cars.current.get(nearby)!.body.translation().x-playerPosition.x,cars.current.get(nearby)!.body.translation().z-playerPosition.z):Infinity;
     if(reach&&nearby&&nearest<reach.distance)nearbyItem.current=null;else{nearbyItem.current=reach?.item??null;if(reach)nearby=null;}
     if(seated||carded)nearby=null;
@@ -591,6 +591,8 @@ export default function WorldActors() {
     const before=pad.current.buttons,gp=readPad(pad.current);pad.current=gp;
     const edge=(i:number)=>!!gp.buttons[i]&&!before[i];
     if(gp.connected){
+      if(edge(12))cycleInteractPick(-1);
+      if(edge(13))cycleInteractPick(1);
       if(edge(0))actions.current.jump=true;
       if(edge(3))interactNow(nearbyItem.current);
       if(edge(1))actions.current.recover=true;

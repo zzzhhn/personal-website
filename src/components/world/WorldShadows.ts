@@ -418,6 +418,24 @@ const groupErrors: string[] = [];
  * sways with the same depth material. Cards are connected components of the welded mesh. */
 const clusters = new Map<string, BufferGeometry>();
 export const GROUP_CLUSTER_M = [0, .6] as const;
+// Only the middle cascade uses these clusters. Keep the closest cascade's exact leaves.
+// Select original extreme vertices (including their exact wind weights), rather than creating
+// arbitrary vertices that would sway differently in the depth pass.
+const CLUSTER_AXES = [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 1, 0], [1, -1, 0], [1, 0, 1], [1, 0, -1], [0, 1, 1], [0, 1, -1]].map(a => new Vector3(...a).normalize());
+function clusterExtremes(points: Vector3[]) {
+  if (points.length <= 18) return points;
+  const selected = new Set<Vector3>();
+  for (const axis of CLUSTER_AXES) {
+    let lo = points[0], hi = points[0], min = Infinity, max = -Infinity;
+    for (const p of points) {
+      const d = p.dot(axis);
+      if (d < min) { min = d; lo = p; }
+      if (d > max) { max = d; hi = p; }
+    }
+    selected.add(lo); selected.add(hi);
+  }
+  return [...selected];
+}
 function clusterHull(g: BufferGeometry, cell: number): BufferGeometry {
   const id = `${g.uuid}:${cell}`, cached = clusters.get(id);
   if (cached) return cached;
@@ -445,7 +463,13 @@ function clusterHull(g: BufferGeometry, cell: number): BufferGeometry {
   for (const verts of bins.values()) {
     const pts = verts.map(i => new Vector3(pos.getX(i), pos.getY(i), pos.getZ(i)));
     let hp: BufferAttribute | null = null;
-    if (verts.length >= 4) { try { const h = new ConvexGeometry(pts); hp = h.getAttribute('position') as BufferAttribute; } catch { hp = null; } }
+    if (verts.length >= 4) { try { const h = new ConvexGeometry(clusterExtremes(pts)); hp = h.getAttribute('position') as BufferAttribute; h.dispose(); } catch { hp = null; } }
+    // A closed hull around a few flat leaves can cost more than the original leaves. Keep those
+    // leaves unchanged instead; apply this decision per cluster, not only after merging the asset.
+    const set = new Set(verts);
+    let binTriangles = 0;
+    for (let j = 0; j < n; j += 3) if (set.has(at(j)) && set.has(at(j + 1)) && set.has(at(j + 2))) binTriangles++;
+    if (hp && hp.count >= binTriangles * 3) hp = null;
     const base = P.length / 3;
     if (hp && hp.count >= 4) {
       for (let i = 0; i < hp.count; i++) {
@@ -456,7 +480,7 @@ function clusterHull(g: BufferGeometry, cell: number): BufferGeometry {
       }
     } else {
       // Degenerate (single flat card): keep its own triangles.
-      const set = new Set(verts), map = new Map<number, number>();
+      const map = new Map<number, number>();
       for (let j = 0; j < n; j += 3) {
         const tri = [at(j), at(j + 1), at(j + 2)];
         if (!tri.every(v => set.has(v))) continue;

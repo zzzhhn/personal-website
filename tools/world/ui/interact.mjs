@@ -41,15 +41,58 @@ try {
   const before = d.prompt.find(p => p.active)?.text;
   await bot.press('KeyQ'); await wait(300); d = await dom();
   const after = d.prompt.find(p => p.active)?.text;
+  const pickedId = d.store.pick;
   check('Q switches target', before && after && before !== after, { before, after, pick: d.store.pick });
   await shot('02-prompt-switched');
   // 3) E opens the chosen (not the nearest) target.
   await bot.press('KeyE'); await wait(700); d = await dom();
-  check('E opens chosen card', !!d.card && after && after.includes(d.card.title ? '' : '') && d.store.card, { card: d.store.card, title: d.card?.title, chosen: after });
+  const fixtureCards = { 'uitest-identity': ['about', 'identity'], 'uitest-education': ['about', 'education'], 'uitest-languages': ['about', 'languages'], 'uitest-hunyuan': ['experience', '2026-09-24'], 'uitest-board': ['project', 'interactive-learning-platforms'], 'uitest-note': ['note', 'uitest-note'] };
+  const expected = fixtureCards[pickedId];
+  check('E opens chosen card', !!d.card && !!expected && d.store.card?.kind === expected[0] && d.store.card?.id === expected[1], { card: d.store.card, title: d.card?.title, chosen: after, pickedId, expected });
   await shot('03-card-chosen');
   // 4) E closes (WorldActors priority), Esc closes, the close button closes.
   await bot.press('KeyE'); await wait(500); d = await dom();
   check('E closes card', !d.card && !d.store.card, d.store);
+  if (process.env.UI_ONLY === 'pick') {
+    // Standard-mapping input simulation exercises the real polling path; this is not physical-pad certification.
+    await page.evaluate(() => {
+      window.__uiOriginalPads = navigator.getGamepads.bind(navigator);
+      window.__uiPad = { id: 'QA standard pad', index: 0, connected: true, mapping: 'standard', axes: [0, 0, 0, 0], buttons: Array.from({ length: 17 }, () => ({ pressed: false, touched: false, value: 0 })) };
+      Object.defineProperty(navigator, 'getGamepads', { configurable: true, value: () => [window.__uiPad] });
+    });
+    const padPress = async index => {
+      await page.evaluate(i => { __uiPad.buttons[i] = { pressed: true, touched: true, value: 1 }; }, index); await wait(220);
+      await page.evaluate(i => { __uiPad.buttons[i] = { pressed: false, touched: false, value: 0 }; }, index); await wait(220);
+    };
+    R.fixtureCalls.push({ kind: 'simulated standard gamepad', reason: 'input polling parity, not physical hardware' });
+    await padPress(13); d = await dom();
+    const padPick = d.store.pick, padExpected = fixtureCards[padPick];
+    check('D-pad changes reachable target', !!padExpected, { padPick });
+    await padPress(3); d = await dom();
+    check('gamepad Y opens highlighted target', !!padExpected && d.store.card?.kind === padExpected[0] && d.store.card?.id === padExpected[1], { padPick, card: d.store.card });
+    await padPress(3); d = await dom();
+    check('gamepad Y closes card', !d.store.card && !d.card, d.store);
+    await page.evaluate(() => { Object.defineProperty(navigator, 'getGamepads', { configurable: true, value: window.__uiOriginalPads }); delete window.__uiPad; delete window.__uiOriginalPads; });
+    // Two logged interaction fixtures across T01's actual west wall. Both are in radius, only one has line of sight.
+    await page.evaluate(() => {
+      const registerInteractable = window.__worldInteract.register;
+      window.__uiLos = { visible: 0, blocked: 0 };
+      window.__uiLosOff = [
+        registerInteractable({ id: 'uitest-los-visible', kind: 'board', position: [1.5, 1.7, 19.4], radius: 3, label: { en: 'Visible wall fixture', zh: '可达测试点' }, onInteract: () => { __uiLos.visible++; } }),
+        registerInteractable({ id: 'uitest-los-blocked', kind: 'board', position: [3.3, 1.7, 18.5], radius: 3, label: { en: 'Behind actual wall', zh: '真实墙后测试点' }, onInteract: () => { __uiLos.blocked++; } }),
+      ];
+    });
+    await bot.fixtureTeleport([1.7, 2.2, 18.5], 'outside T01 west wall; one reachable and one wall-occluded QA anchor within radius');
+    await wait(900); d = await dom();
+    R.lineOfSightFixture = await page.evaluate(() => ({ player: __worldDebug.snapshot().player, anchors: __worldInteract.list().filter(i => i.id.startsWith('uitest-los-')) }));
+    check('wall-occluded candidate absent from prompt', d.prompt.some(p => /Visible wall/.test(p.text)) && !d.prompt.some(p => /Behind actual/.test(p.text)), d.prompt);
+    await bot.press('KeyQ'); await wait(250); await bot.press('KeyE'); await wait(300);
+    const los = await page.evaluate(() => window.__uiLos);
+    check('Q and E cannot activate through wall', los.visible === 1 && los.blocked === 0, los);
+    await shot('04-wall-line-of-sight');
+    await page.evaluate(() => { __uiLosOff.forEach(off => off()); delete window.__uiLosOff; delete window.__uiLos; });
+  }
+  if (process.env.UI_ONLY !== 'pick') {
   await bot.press('KeyE'); await wait(600); d = await dom();
   check('E reopens nearest', !!d.card, d.card);
   await shot('04-card-nearest');
@@ -104,7 +147,8 @@ try {
   await bot.press('KeyE'); await wait(700); d = await dom();
   check('narrow card opens', !!d.card, d.card); await shot('10-narrow-card');
   await bot.press('KeyE'); await wait(400);
-  R.fixtureCalls = bot.fixtureCalls;
+  }
+  R.fixtureCalls.push(...bot.fixtureCalls);
 } catch (e) { R.errors.push('bot: ' + e.message); console.log('ERROR', e.message); await shot('99-error').catch(() => {}); }
 await browser.close();
 R.summary = { pass: R.checks.filter(c => c.pass).length, fail: R.checks.filter(c => !c.pass).length };

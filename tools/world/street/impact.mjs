@@ -9,6 +9,7 @@ import { writeFile } from 'node:fs/promises';
 import { Bot, CHROME, loadPlaywright, openWorld, ensureDir } from '../playtest/lib.mjs';
 const out = await ensureDir(process.env.WORLD_PLAYTEST_DIR || '/tmp/street-impact');
 const base = process.env.WORLD_BASE_URL || 'http://127.0.0.1:4334';
+const [viewWidth, viewHeight] = (process.env.STREET_SIZE || '1280x720').split('x').map(Number);
 const H = { offroad: 1.176, coupe: 1.054, van: 1.452 };
 /** actor: person | offroad | coupe | van; target: knockable id or {p:[x,y,z], r} fixed; from: approach start
  * (xz, 9-14 m away on a clear line), speed target m/s for cars. */
@@ -51,7 +52,7 @@ const report = { base, cases: [], errors: [] };
 const headingYaw = (dx, dz) => Math.atan2(-dz, dx); // vehicle yaw so local +X points along (dx, dz)
 for (const c of cases) {
   if (only && !only.includes(c.name)) continue;
-  const { page, errors, context } = await openWorld(browser, base + '/world/?qa=1', { width: 1280, height: 720 });
+  const { page, errors, context } = await openWorld(browser, base + '/world/?qa=1', { width: viewWidth, height: viewHeight });
   const bot = new Bot(page);
   try {
     await page.waitForFunction(() => window.__worldDistricts?.knockables?.().length > 0 || window.__worldStreet, undefined, { timeout: 30000 });
@@ -97,7 +98,7 @@ for (const c of cases) {
       const r = await read(); row.samples.push(r);
       const hd = Math.hypot(r.actor[0] - home[0], r.actor[2] - home[2]); closest = Math.min(closest, hd);
       // Only the street asset itself counts as the impact (curb walls are 'solid' too).
-      const touching = r.contacts.some(k => k.kind === 'obstacle' || String(k.name ?? '').startsWith('street-'));
+      const touching = r.contacts.some(k => c.contactPrefix ? String(k.name ?? '').startsWith(c.contactPrefix) : k.kind === 'obstacle' || String(k.name ?? '').startsWith('street-'));
       if (first === null && (touching || (r.prop && !r.prop.sleeping))) first = { t: r.t, actorSpeed: Math.hypot(r.v?.[0] ?? 0, r.v?.[2] ?? 0) };
       if (c.actor === 'person') {
         // Walk / run straight at the prop (camera-relative combo toward it), keep pushing 2.5 s after contact.

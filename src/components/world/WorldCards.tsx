@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useWorldStore } from './store';
 import { worldText } from './world-i18n';
-import { interactables, type Interactable } from './WorldInteract';
+import { cycleInteractPick, reachableInteractables, type Interactable } from './WorldInteract';
 import { resolveCard } from './WorldCardContent';
 import { trackPortfolioEvent } from '../../lib/analytics';
 import type { WorldContent } from './types';
@@ -26,7 +26,7 @@ function useDevice() {
 function nearbyCandidates(position: [number, number, number], primary: string | undefined): Interactable[] {
   if (!primary) return [];
   const out: { item: Interactable; d: number }[] = [];
-  for (const item of interactables()) {
+  for (const item of reachableInteractables()) {
     if (item.enabled && !item.enabled()) continue;
     const [x, y, z] = item.position;
     if (Math.abs(y - position[1]) > 2.5) continue;
@@ -58,23 +58,13 @@ export default function WorldCards({ content }: { content: WorldContent }) {
   const candidates = card || driving || seat ? [] : nearbyCandidates(position, nearby?.id);
   const ids = candidates.map(c => c.id).join('|');
   const chosen = candidates.find(c => c.id === pick) ?? null;
-  const chosenRef = useRef<Interactable | null>(null); chosenRef.current = chosen && chosen.id !== nearby?.id ? chosen : null;
-  const idsRef = useRef<string[]>([]); idsRef.current = candidates.map(c => c.id);
   // A pick only lives while its object stays in the list.
   useEffect(() => { if (pick && !ids.split('|').includes(pick)) useWorldStore.setState({ interactPick: null }); }, [ids, pick]);
   useEffect(() => {
     const key = (e: KeyboardEvent) => {
       const s = useWorldStore.getState();
-      if (s.paused || e.metaKey || e.ctrlKey || e.altKey || e.repeat) return;
-      if (e.code === 'KeyQ' && !s.card && idsRef.current.length > 1) {
-        const list = idsRef.current, at = list.indexOf(s.interactPick ?? s.nearbyInteract?.id ?? list[0]);
-        useWorldStore.setState({ interactPick: list[(at + 1) % list.length] }); e.preventDefault(); return;
-      }
-      // E on a Q-chosen object that is not the nearest: act on the chosen one and keep WorldActors from also acting
-      // on the nearest (this capture listener runs before its window listener). One press, one action.
-      if (e.code === 'KeyE' && !s.card && !s.seat && !s.activeVehicle && chosenRef.current) {
-        e.stopImmediatePropagation(); e.preventDefault(); chosenRef.current.onInteract(); useWorldStore.setState({ interactPick: null });
-      }
+      if (e.code !== 'KeyQ' || s.paused || e.metaKey || e.ctrlKey || e.altKey || e.repeat) return;
+      e.preventDefault(); cycleInteractPick(1);
     };
     window.addEventListener('keydown', key, true);
     return () => window.removeEventListener('keydown', key, true);
@@ -87,7 +77,7 @@ export default function WorldCards({ content }: { content: WorldContent }) {
     const rows = candidates.length > 1 ? candidates.map(c => ({ id: c.id, label: c.label[lang] })) : [{ id: nearby.id, label: nearby.label[lang] }];
     return <div className='world-prompt' aria-live='polite'>
       <ul>{rows.map(r => <li key={r.id} className={r.id === active ? 'is-active' : ''}>{r.id === active ? <KeyCap device={device} k='E' /> : <span className='world-key-gap' />}<span>{r.label}</span></li>)}</ul>
-      {rows.length > 1 && device === 'kb' && <p><KeyCap device={device} k='Q' />{t.switchTarget}</p>}
+      {rows.length > 1 && <p><KeyCap device={device} k='Q' />{t.switchTarget}</p>}
     </div>;
   }
   if (nearbyVehicle) return <div className='world-prompt' aria-live='polite'><ul><li className='is-active'><KeyCap device={device} k='E' /><span>{t.enter.replace(/^E · /, '')} · {t[nearbyVehicle]}</span></li></ul></div>;

@@ -1,32 +1,24 @@
 /** Fixed foundations and animated ridge windmill, deriving collision from the visual builders. */
 import { useEffect, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { CanvasTexture, Matrix4, Quaternion, Vector3 } from 'three';
+import { Matrix4, Quaternion, Vector3 } from 'three';
 import { FOUNDATIONS_V4, RIDGE_V4 } from './layout-v4';
 import { windUniforms } from './WorldWind';
 import StreetStatic, { StreetClaim, type StaticKind, type StaticPlacement } from './WorldStreetStatic';
 import { StreetBatch } from './WorldStreetBatch';
 import { createStreetDepthMaterial, createStreetMaterial } from './WorldStreetMaterial';
 import * as A from './WorldStreetAssets';
+import StreetConstructionSigns from './WorldStreetConstructionSigns';
 const matrix = (x: number, y: number, z: number) => new Matrix4().makeTranslation(x, y, z);
-function signTexture() {
-  const c = document.createElement('canvas'); c.width = 1024; c.height = 320; const g = c.getContext('2d')!;
-  g.fillStyle = '#B99469'; g.fillRect(0, 0, c.width, c.height);
-  g.fillStyle = '#453B31'; g.textAlign = 'center'; g.font = '600 96px system-ui'; g.fillText('二期预留', 512, 132);
-  g.font = '600 49px system-ui'; g.fillText('FUTURE SITE', 512, 234);
-  return new CanvasTexture(c);
-}
 export function StreetFoundations() {
   const built = useMemo(() => {
     const kinds: StaticKind[] = FOUNDATIONS_V4.map(f => ({ id: f.id, L0: A.foundationSlab(0, f.size[0], f.size[2]), L1: A.foundationSlab(1, f.size[0], f.size[2]), lodNear: 45, far: 140, collide: 'trimesh' }));
     const placements: StaticPlacement[] = FOUNDATIONS_V4.map(f => ({ kind: f.id, matrix: matrix(f.position[0], f.position[1] - f.size[1] / 2, f.position[2]), surface: true }));
-    const signs: StaticPlacement[] = FOUNDATIONS_V4.map(f => ({ kind: 'sign', matrix: matrix(f.position[0], f.position[1] + f.size[1] / 2, f.position[2] + f.size[2] / 2 - .7) }));
-    return { kinds, placements, signs, signKinds: [{ id: 'sign', L0: A.foundationSign(0), L1: A.foundationSign(1), lodNear: 40, far: 125 }] as StaticKind[], atlas: signTexture() };
+    return { kinds, placements };
   }, []);
-  useEffect(() => () => built.atlas.dispose(), [built]);
   return <group name="street-foundations-group">
     <StreetStatic name="street-foundation-slabs" claims={[]} kinds={built.kinds} placements={built.placements} assetId="street-foundation" />
-    <StreetStatic name="street-foundation-signs" claims={[]} kinds={built.signKinds} placements={built.signs} atlas={built.atlas} assetId="street-construction-sign" />
+    <StreetConstructionSigns />
     <StreetClaim keys={['foundation']} />
   </group>;
 }
