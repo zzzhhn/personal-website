@@ -374,7 +374,7 @@ class Seq:
 # AUTHORED (A6): G24's short TABS thigh skin folds into the pelvis at a full 90 deg seated hip flexion, so the
 # sit is a perched one: the hip never goes lower than SIT_HIP_MIN above the soles and the measured backward
 # pelvis tilt is scaled by SIT_TILT. Recorded in the build report.
-SIT_HIP_MIN = float(os.environ.get('G24_SIT_HIP_MIN', '0.52'))
+SIT_HIP_MIN = float(os.environ.get('G24_SIT_HIP_MIN', '0.47'))
 SIT_TILT = float(os.environ.get('G24_SIT_TILT', '0.35'))
 EXTRA_SRC = os.path.expanduser('~/.cache/g24-extra/g24_extra_motion.json')
 EXTRA = {
@@ -480,6 +480,12 @@ def make_oneshot_clips(data, REST, BOOT, consts, solve_pose_world, idle_local, f
                 feet[tag] = [Vector((ax_, ay, az)), sq.q(f'{side}foot', x) @ off[f'foot.{tag}'],
                              pole.normalized() if pole.length > 1e-6 else Vector((1, 0, 0))]
             D['feet'] = feet
+            if spec.get('keep_hip') == 'seat':
+                # Seat furniture is ~0.5 m deep: the original retarget left the boots under its front
+                # edge. Move the seated hip back relative to the baked sole anchors, keeping the same
+                # hip height and pelvis tilt. Runtime then aligns this measured buttock to the seat.
+                seated = max(0.0, min(1.0, (consts['HIP_Z'] - hz) / max(.01, consts['HIP_Z'] - SIT_HIP_MIN)))
+                D['hip'].x -= .42 * seated * seated * (3 - 2 * seated)
             return D
 
         # AUTHORED: for Idle-stance clips the measured foot orientation is re-referenced so the boot is

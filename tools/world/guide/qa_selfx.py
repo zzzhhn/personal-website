@@ -133,7 +133,11 @@ R = dict(source=src, blender=bpy.app.version_string, method=__doc__.strip(), wel
          shells=len({find(w) for w in set(weld)}), samples=[])
 pose(None, 0)
 R['samples'].append(test('rest'))
-for clip in sorted({x.name.split('_')[0] for x in bpy.data.actions}):   # every clip in the asset
+requested = set(os.environ.get('G24_QA_CLIPS', '').split(',')) - {''}
+R['requested_clips'] = sorted(requested) if requested else 'all'
+available = {x.name.split('_')[0] for x in bpy.data.actions}
+assert not requested - available, f'Missing requested clips: {requested - available}'
+for clip in sorted(available & requested if requested else available):
     a = action(clip)
     for f2 in range(2 * int(a.frame_range[0]), 2 * int(a.frame_range[1]) + 1):
         f = f2 / 2

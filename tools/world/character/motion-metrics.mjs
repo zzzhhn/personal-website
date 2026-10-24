@@ -18,7 +18,7 @@ export function slipIntervals(frames, band = 0.006) {
     const yawRate = prevF ? Math.abs(Math.atan2(Math.sin(f.facing - prevF.facing), Math.cos(f.facing - prevF.facing))) / Math.max(1e-3, f.t - prevF.t) : 0;
     const turning = yawRate > 1 && f.speed < .5;
     prevF = f;
-    if (!f.grounded || /Air|Start/.test(f.anim) || f.t - prevT > 0.05 || turning !== prevTurn) { for (const v of active.values()) out.push(v); active.clear(); }
+    if (f.cut || !f.grounded || /Air|Start/.test(f.anim) || f.t - prevT > 0.05 || turning !== prevTurn) { for (const v of active.values()) out.push(v); active.clear(); }
     prevT = f.t; prevTurn = turning;
     const seen = new Set();
     for (const [id, x, z, h] of f.soles) {
@@ -38,7 +38,7 @@ export function poseJumps(frames) {
   const acc = [];
   for (let i = 2; i < frames.length; i++) {
     const a = frames[i - 2].joints, b = frames[i - 1].joints, c = frames[i].joints;
-    if (!a || !b || !c || frames[i].t - frames[i - 2].t > 0.06) { acc.push(null); continue; }
+    if (!a || !b || !c || frames[i].cut || frames[i-1].cut || frames[i].t - frames[i - 2].t > 0.06) { acc.push(null); continue; }
     let m = 0, bone = -1;
     for (let j = 0; j < c.length; j += 3) {
       const d = Math.hypot(c[j] - 2 * b[j] + a[j], c[j + 1] - 2 * b[j + 1] + a[j + 1], c[j + 2] - 2 * b[j + 2] + a[j + 2]);

@@ -8,6 +8,7 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
 import { useWorldStore } from './store';
 import { GuideSlopeFit, GuideStopStep, skinnedWorldPoint, type SlopeProbe } from './WorldGuideStop';
 import { GuideInertializer, GuidePhaseModel, PhaseGate, type InertialHalflives } from './WorldGuidePhase';
+import { guideSkinEvidence } from './WorldGuideEvidence';
 
 export interface WorldGuideMotion {
   speedMps: number; grounded: boolean; facing: number; targetSpeedMps?: number;
@@ -36,9 +37,9 @@ const REQUIRED = ['Idle', ...GAITS, 'JumpStart', 'JumpAir', 'RunJumpStart', 'Run
 /** v3d measured extras (optional: an older GLB without them keeps the v3c behaviour). */
 const EXTRAS = ['SitDown', 'SitIdle', 'StandUp', 'TurnL', 'TurnR', 'IdleLook'];
 /** Seated buttock underside above the soles in SitIdle (tools/world/guide/out/sit_measure.json, fresh import). */
-const SIT_BUTTOCK = .371;
+const SIT_BUTTOCK = .263;
 /** Seated buttock centre ahead of the root (+X) in SitIdle (same file); the root moves back by it. */
-const SIT_FORWARD = .154;
+const SIT_FORWARD = -.456; // measured rear hip -0.226 m, supported 0.23 m toward the seat's front edge
 /** A body yaw change of at least this much from a standstill plays a measured turn-in-place step. */
 const TURN_MIN = .8;
 /** Idle variation: a measured look-around after this many seconds standing (randomised within the range). */
@@ -68,6 +69,7 @@ const INERT: Record<string, InertialHalflives> = {
   air: { legs: .06, body: .08, pelvisPos: .06 },
   land: { legs: .04, body: .08, pelvisPos: .05, planted: .012 },
   idle: { legs: .06, body: .12, pelvisPos: .08, planted: .012 },
+  interaction: { legs: .075, body: .12, pelvisPos: .09 },
 };
 let decoder: DRACOLoader | null = null;
 const withDecoder = (loader: GLTFLoader) => {
@@ -75,12 +77,13 @@ const withDecoder = (loader: GLTFLoader) => {
   loader.setDRACOLoader(decoder);
 };
 let readActor: (() => Record<string, unknown>) | null = null;
+let readSkin: ((topology: boolean) => unknown) | null = null;
 
 /** QA frame recorder (worldGuideRecord): per rendered frame, model-space joint positions (for pose-jump
  * metrics) and world-space rigid-sole vertices near the ground (for stance slip). Off unless started. */
-const recorder: { on: boolean; frames: unknown[]; max: number } = { on: false, frames: [], max: 4000 };
+const recorder: { on: boolean; skin: boolean; frames: unknown[]; max: number } = { on: false, skin: false, frames: [], max: 4000 };
 export const worldGuideRecord = (cmd: 'start' | 'stop' | 'take', max = 4000) => {
-  if (cmd === 'start') { recorder.on = true; recorder.frames = []; recorder.max = max; return true; }
+  if (cmd === 'start') { recorder.on = true; recorder.skin = false; recorder.frames = []; recorder.max = max; return true; }
   if (cmd === 'stop') { recorder.on = false; return recorder.frames.length; }
   const out = recorder.frames; recorder.frames = []; return out;
 };
@@ -88,8 +91,10 @@ export const worldGuideRecord = (cmd: 'start' | 'stop' | 'take', max = 4000) => 
  * the per-frame recorder through the existing debug entry, without a new WorldActors field. */
 export const worldGuideDebug = (cmd?: string, max?: number): Record<string, unknown> | unknown[] | number | boolean => {
   if (cmd === 'record:start') return worldGuideRecord('start', max);
+  if (cmd === 'record:skin') { worldGuideRecord('start', max); recorder.skin = true; return true; }
   if (cmd === 'record:stop') return worldGuideRecord('stop');
   if (cmd === 'record:take') return worldGuideRecord('take') as unknown[];
+  if (cmd === 'skin:topology' || cmd === 'skin:pose') return readSkin?.(cmd === 'skin:topology') as Record<string, unknown>;
   return readActor?.() ?? { moving: false, running: false, airborne: false, animation: null, animationTime: null, loaded: false };
 };
 
@@ -256,6 +261,9 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     const v = new Vector3();
     const read = () => {
       const s = state.current;
+      const observedMotion = readMotion?.();
+      const seatSurface = observedMotion?.seat;
+      const bootSurface = { left: { vertices: 0, minClearance: Infinity }, right: { vertices: 0, minClearance: Infinity } };
       const soles: Record<string, { minY: number; position: number[] } | null> = { left: null, right: null };
       const contactVertices: Record<string, { id: string; position: number[] }[]> = { left: [], right: [] };
       const rootY = group.current?.getWorldPosition(v).y ?? Infinity;
@@ -279,6 +287,10 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
           const side = footWeights.right > footWeights.left ? 'right' : 'left';
           if (footWeights[side] < .98) continue;
           v.fromBufferAttribute(p, i); o.applyBoneTransform(i, v); v.applyMatrix4(o.matrixWorld);
+          if (seatSurface && observedMotion?.probeGround) {
+            const hit = observedMotion.probeGround(v.x, v.z, seatSurface.position[1] + .35);
+            if (hit) { bootSurface[side].vertices++; bootSurface[side].minClearance = Math.min(bootSurface[side].minClearance, v.y - hit.y); }
+          }
           if (!soles[side] || v.y < soles[side]!.minY) soles[side] = { minY: v.y, position: v.toArray() };
           // Keep stable vertex identities: the lowest corner can change during a toe
           // roll, so comparing only successive minimum points would invent foot slip.
@@ -294,16 +306,20 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         mixerTime: rig.mixer.time, speedMps: s.speed, visible: s.visible, phaseGateTimeouts:s.phaseGateTimeouts,
         pendingAnimation:s.pending, pendingSeconds:s.pendingTime, stopPrototype:!!stop.current, stop:stop.current?.debug()??null,
         budget:(()=>{let draws=0,tris=0;rig.scene.traverse(o=>{if(o instanceof Mesh&&o.visible){const g=o.geometry,m=o.material;draws+=Array.isArray(m)?m.length:1;tris+=(g.index?g.index.count:g.getAttribute('position').count)/3;}});return{draws,triangles:tris};})(),inert:{switches:rig.inert.switches,lastJump:rig.inert.lastJump,residual:rig.inert.residual()},phasePrototype:!!rig.phase, phasePrediction:rig.gate.last, phaseWaitLimit:rig.phase?rig.gate.maxWait:null,
-        root: group.current?.getWorldPosition(v).toArray() ?? null, soleCorrection:group.current?.position.y??0, soles, contactVertices };
+        root: group.current?.getWorldPosition(v).toArray() ?? null, soleCorrection:group.current?.position.y??0, soles, contactVertices,
+        bootSurface: seatSurface ? bootSurface : null };
     };
     readActor = read;
-    return () => { if (readActor === read) readActor = null; };
+    const skin = (topology: boolean) => group.current ? guideSkinEvidence(group.current, topology) : null;
+    readSkin = skin;
+    return () => { if (readActor === read) readActor = null; if (readSkin === skin) readSkin = null; };
   }, [rig]);
   useFrame((_, delta) => {
     const world = useWorldStore.getState();
     const s = state.current;
     const motion = readMotion?.() ?? { speedMps: initialSpeed, grounded: initialGrounded, facing: initialFacing } as WorldGuideMotion;
     const shown = visible && !motion.hidden;
+    const resumed = shown && !s.visible;
     if (group.current) group.current.visible = shown;
     if (!shown && s.visible) { stop.current?.cancel('hidden'); rig.inert.reset(); s.hasLast = false; }
     s.visible = shown;
@@ -389,7 +405,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       if (!!seat !== s.prevSeated) s.seatChangeT = 0; else s.seatChangeT += dt;
       // the store flag and the physics snap can land on different rendered frames
       const seatSnap = s.seatChangeT < .3;
-      if (s.hasLast && jump > .3) {
+      if (s.hasLast && (jump > .3 || (seatSnap && jump > .001))) {
         if (seatSnap && jump < 2.5 && !motion.vehicle) { rig.rootOff.x += rig.lastWorld.x - base.x; rig.rootOff.z += rig.lastWorld.z - base.z; }
         else rig.rootOff.set(0, 0, 0);
       }
@@ -459,6 +475,9 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     const vt = motion.vehicle ?? null;
     rig.vehOff.set(0, 0, 0);
     if (vt && group.current?.parent) {
+      // Enter and exit use different door frames, separated by a hidden driving state. An outgoing
+      // walk velocity is not a valid extrapolation for the next door's first pose (whose fade starts at 0).
+      if (s.vehPhase !== vt.phase) rig.inert.reset();
       const base = group.current.parent.getWorldPosition(rig.baseWorld);
       const dx = vt.door[0] - base.x, dz = vt.door[2] - base.z, dist = Math.hypot(dx, dz);
       const e = vt.t * vt.t * (3 - 2 * vt.t), k = vt.phase === 'enter' ? e : 1 - e;
@@ -517,7 +536,8 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         from.stop();
         // contact of the destination clip at its entry frame (clip contact curves, as authored)
         const m = rig.contact[desired], fr = m ? Math.min(m.frames, Math.max(0, Math.round(to.time / to.getClip().duration * m.frames))) : 0;
-        rig.inert.begin(INERT[desired.endsWith('Start') ? 'start' : desired.endsWith('Air') ? 'air' : desired === 'Land' ? 'land' : isGait(desired) ? 'gait' : 'idle'],
+        const interaction = EXTRAS.includes(desired) || EXTRAS.includes(s.current);
+        rig.inert.begin(INERT[interaction ? 'interaction' : desired.endsWith('Start') ? 'start' : desired.endsWith('Air') ? 'air' : desired === 'Land' ? 'land' : isGait(desired) ? 'gait' : 'idle'],
           { L: !!m && (m.L[fr] ?? 0) > .5, R: !!m && (m.R[fr] ?? 0) > .5 }); }
         if (!desired.endsWith('Air')) for (const n of ['JumpAir', 'RunJumpAir']) if (n !== desired) rig.actions[n].paused = false;
         s.current = desired;s.pending='';s.pendingTime=0;
@@ -532,7 +552,10 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     for (const g of GAITS) rig.actions[g].setEffectiveTimeScale(rig.phase ? rig.phase.timeScale(g,rig.actions[g].time,travel,dt,'contact') : travel / (dt * D[g]));
     // Playback rate of the shown gait relative to its authored speed (spec 1.2: 0.85-1.2 in steady motion).
     s.rateOut = isGait(s.current) ? speedMps / D[s.current] : 0;
-    stop.current?.preUpdate({ animation:s.current, grounded, speedMps, facing: shownYaw, visible: shown, wantsMove: CROSSFADE_AB ? undefined : intent !== 'idle' });
+    // Door-step animation has its own moving visual root; a world-space stop anchor from the previous
+    // door frame would cross the legs. Resume the ordinary stop helper after the door transition.
+    if (vt) stop.current?.cancel('vehicle-door-frame');
+    else stop.current?.preUpdate({ animation:s.current, grounded, speedMps, facing: shownYaw, visible: shown, wantsMove: CROSSFADE_AB ? undefined : intent !== 'idle' });
     rig.inert.capture();
     rig.mixer.update(dt); s.time += dt;
     rig.inert.apply(dt);
@@ -632,7 +655,9 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       group.current.position.y=grounded&&Number.isFinite(minSole)&&!s.sitDrop?Math.min(.025,Math.max(0,.0015-minSole)):0;
       // seat alignment (see SIT_BUTTOCK) and the vehicle step offset, in the parent (body) frame
       group.current.position.y -= s.sitDrop;
-      const back = s.sitDrop > .02 ? SIT_FORWARD * Math.min(1, s.sitDrop / Math.max(.05, s.sitDrop)) : 0;
+      // The buttock moves forward inside the baked sit; compensate continuously with the hip descent.
+      // Using sitDrop as a boolean also shifted the approach walk and popped 15.4 cm at its boundary.
+      const back = SIT_FORWARD * sitW;
       group.current.position.x = rig.vehOff.x + rig.rootOff.x - back * Math.cos(shownYaw);
       group.current.position.z = rig.vehOff.z + rig.rootOff.z + back * Math.sin(shownYaw);
       // the body rotation is fixed (enabledRotations off), so world offsets equal parent-frame offsets
@@ -657,7 +682,8 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
           if (h < .1) soles.push([(sides[k] === 'left' ? 0 : 1000000) + mi * 10000 + i, +rig.solePoint.x.toFixed(4), +rig.solePoint.z.toFixed(4), +h.toFixed(4)]);
         }));
         const res = rig.inert.residual();
-        recorder.frames.push({ t: +s.time.toFixed(4), dt: +dt.toFixed(4), anim: s.current, at: +rig.actions[s.current].time.toFixed(4), ts: +rig.actions[s.current].getEffectiveTimeScale().toFixed(3), grounded, speed: +speedMps.toFixed(3), facing: +facing.toFixed(4),
+        recorder.frames.push({ t: +s.time.toFixed(4), wallTime: performance.now()/1000, cut: resumed, dt: +dt.toFixed(4), anim: s.current, at: +rig.actions[s.current].time.toFixed(4), ts: +rig.actions[s.current].getEffectiveTimeScale().toFixed(3), grounded, speed: +speedMps.toFixed(3), facing: +facing.toFixed(4),
+          ...(recorder.skin ? { skin: guideSkinEvidence(group.current), actor: { animation: s.current, animationTime: rig.actions[s.current].time } } : {}),
           root: rootW.toArray().map(v => +v.toFixed(4)), joints, soles, inert: [+res.angle.toFixed(4), +res.pelvis.toFixed(4)], switches: rig.inert.switches,
           contact: rig.slope.legs.left && [+rig.slope.legs.left.contact.toFixed(2), +rig.slope.legs.right.contact.toFixed(2)], lift: +group.current.position.y.toFixed(4), veh: motion.vehicle ? [motion.vehicle.phase, +motion.vehicle.t.toFixed(3)] : null, fade: +s.faded.toFixed(3), sitDrop: +s.sitDrop.toFixed(4), off: [+rig.rootOff.x.toFixed(3), +rig.rootOff.z.toFixed(3)], shownYaw: +shownYaw.toFixed(3), slope: rig.slope.debug(), stepping: stop.current ? (() => { const d = stop.current!.debug(); return [d.left.stepping ? 1 : 0, d.right.stepping ? 1 : 0, d.state]; })() : null });
       }

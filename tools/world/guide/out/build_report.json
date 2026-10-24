@@ -406,7 +406,7 @@
    "duration_s": 0.5833333333333334,
    "loop": false,
    "designSpeedMps": 0.0,
-   "ik_overstretch_max_m": 0.0,
+   "ik_overstretch_max_m": 0.12283951633471968,
    "mocap": {
     "source": "sit",
     "take": "143_18.amc",
@@ -443,13 +443,13 @@
      "stance": "source",
      "speed": 0.0,
      "keep_hip": "seat",
-     "hip_z_min": 0.52,
+     "hip_z_min": 0.47,
      "pelvis_tilt": 0.35,
      "feet_apart": 0.135
     },
-    "stance_dz_m": -0.006873314579327901,
+    "stance_dz_m": 0.011607027302185694,
     "boot_separation_push_max_m": 0.0,
-    "ik_overstretch_max_m": 0.0,
+    "ik_overstretch_max_m": 0.12283951633471968,
     "design_speed_mps": 0.0
    }
   },
@@ -458,7 +458,7 @@
    "duration_s": 0.5333333333333333,
    "loop": false,
    "designSpeedMps": 0.0,
-   "ik_overstretch_max_m": 0.0,
+   "ik_overstretch_max_m": 0.136182389438114,
    "mocap": {
     "source": "sit",
     "take": "143_18.amc",
@@ -495,13 +495,13 @@
      "stance": "source",
      "speed": 0.0,
      "keep_hip": "seat",
-     "hip_z_min": 0.52,
+     "hip_z_min": 0.47,
      "pelvis_tilt": 0.35,
      "feet_apart": 0.135
     },
-    "stance_dz_m": -0.09100210598923943,
+    "stance_dz_m": -0.04100210626016964,
     "boot_separation_push_max_m": 0.0,
-    "ik_overstretch_max_m": 0.0,
+    "ik_overstretch_max_m": 0.136182389438114,
     "design_speed_mps": 0.0
    }
   },
@@ -510,7 +510,7 @@
    "duration_s": 0.4666666666666667,
    "loop": false,
    "designSpeedMps": 0.0,
-   "ik_overstretch_max_m": 0.0,
+   "ik_overstretch_max_m": 0.12390128696734959,
    "mocap": {
     "source": "sit",
     "take": "143_18.amc",
@@ -547,13 +547,13 @@
      "stance": "source",
      "speed": 0.0,
      "keep_hip": "seat",
-     "hip_z_min": 0.52,
+     "hip_z_min": 0.47,
      "pelvis_tilt": 0.35,
      "feet_apart": 0.135
     },
-    "stance_dz_m": -0.0025122124573280073,
+    "stance_dz_m": 0.01064013034619134,
     "boot_separation_push_max_m": 0.0,
-    "ik_overstretch_max_m": 0.0,
+    "ik_overstretch_max_m": 0.12390128696734959,
     "design_speed_mps": 0.0
    }
   },

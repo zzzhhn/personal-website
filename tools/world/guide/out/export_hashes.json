@@ -1,12 +1,12 @@
 {
  "uncompressed": {
-  "path": "/Users/bobby/Desktop/3D-personal-world/wt/character/tools/world/guide/out/G24_uncompressed.glb",
+  "path": "/Users/bobby/Desktop/3D-personal-world/wt/character-close/tools/world/guide/out/G24_uncompressed.glb",
   "bytes": 909884,
-  "sha256": "b626243d5a8bb242c14cbb3774b1bdb2810b10a8e4ded32ac3e8442dc4e6357e"
+  "sha256": "ae4cd12dd2e2efbae06bf80508c4062679693baff76beb8e6b216edb166eb96d"
  },
  "draco": {
-  "path": "/Users/bobby/Desktop/3D-personal-world/wt/character/public/assets/world/guide/G24.glb",
+  "path": "/Users/bobby/Desktop/3D-personal-world/wt/character-close/public/assets/world/guide/G24.glb",
   "bytes": 726680,
-  "sha256": "768262f637d1c11fb4a4103cfddce8f70ea1c0f43e6f2c72c1e68c4a60e45599"
+  "sha256": "e68d86cfd62bc03a271475f13c06243f55df5ae507fdbe8f6794cc4906860f86"
  }
 }
