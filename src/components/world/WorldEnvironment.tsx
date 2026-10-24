@@ -16,6 +16,7 @@ import WorldCamp, { type CampLayout } from './WorldCamp';
 import { IslandTerrain } from './WorldTerrain';
 import WorldSea from './WorldSea';
 import { createWorldWaterMaterial, seaGlintUniforms } from './WorldWater';
+import { GlowClock, GlowDemo } from './WorldGlow';
 import { windUniforms } from './WorldWind';
 import { SUN_OFFSET, fitSunShadow } from './WorldShadows';
 import WorldSurfaceColliders from './WorldSurfaceColliders';
@@ -414,6 +415,7 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
     if (scene.fog) scene.fog.color.copy(skyUniforms.horizon.value);
   });
   return <>
+    <GlowClock /><GlowDemo />
     <hemisphereLight ref={hemisphere} args={['#8FA6C4', '#695444', 1.5]} />
     <directionalLight ref={sun} position={SUN_OFFSET.toArray()} color="#FFD9A8" intensity={3.4} castShadow
       shadow-mapSize={[shadowSize, shadowSize]} shadow-camera-left={-105} shadow-camera-right={105}

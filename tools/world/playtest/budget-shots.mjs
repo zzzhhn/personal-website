@@ -2,7 +2,7 @@
  *  1. NORMAL ENTRY (/world/, no QA params): spawn default camera, then real-mouse orbit/zoom out to see the camp,
  *     the island and the sea; dusk only (the normal entry has no light switch without the menu).
  *  2. QA-positioned close-ups (?qa=1, fixture teleports logged): shore + surf, shadow close-up, overview, night.
- * Env: SHOTS_SIZES=1920x1080,2560x1440 (default both), SHOTS_ONLY=id,id. Output PNG -> converted by the caller. */
+ * Env: SHOTS_SIZES=1920x1080,2560x1440 (default both), SHOTS_ONLY=id,id, SHOTS_QUALITY=high|balanced (QA part). Output PNG -> converted by the caller. */
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { Bot, CHROME, loadPlaywright } from './lib.mjs';
@@ -11,6 +11,7 @@ const base = process.env.WORLD_BASE_URL || 'http://127.0.0.1:4338';
 const out = path.resolve(process.env.WORLD_PLAYTEST_DIR || '/tmp/world-shots');
 const sizes = (process.env.SHOTS_SIZES || '1920x1080,2560x1440').split(',').map(s => s.split('x').map(Number));
 const only = process.env.SHOTS_ONLY ? new Set(process.env.SHOTS_ONLY.split(',')) : null;
+const quality = process.env.SHOTS_QUALITY || 'high'; // QA part only; the normal entry always uses its own default
 await mkdir(out, { recursive: true });
 const QA = [
   { id: 'shore-close', light: 'dusk', player: [-26, 1.6, 84], cam: { yaw: look(.3, 1), pitch: .38, distance: 7 } },
@@ -45,8 +46,9 @@ try {
     if (!QA.length) continue;
     const ctx = await browser.newContext({ viewport: { width: W, height: H }, deviceScaleFactor: 1 }), page = await ctx.newPage();
     page.on('pageerror', e => report.errors.push(String(e.message)));
-    await page.goto(`${base}/world/?qa=1`, { waitUntil: 'domcontentloaded', timeout: 90000 });
+    await page.goto(`${base}/world/?qa=1${process.env.SHOTS_QUERY ?? ''}`, { waitUntil: 'domcontentloaded', timeout: 90000 });
     await page.waitForFunction(() => window.__worldDebug?.state().ready && window.__worldDebug.snapshot().player, undefined, { timeout: 90000 });
+    await page.evaluate(q => __worldDebug.set({ quality: q }), quality);
     await page.waitForTimeout(4000);
     const bot = new Bot(page);
     for (const v of QA) {
@@ -54,7 +56,7 @@ try {
       report.fixtures.push({ id: v.id, to: v.player });
       await bot.fixtureTeleport(v.player, `shot ${v.id}`); await page.waitForTimeout(800);
       const c = await aim(page, v.cam, W, H); await page.waitForTimeout(v.light === 'night' ? 2600 : 600);
-      await page.screenshot({ path: path.join(out, `${v.id}-${W}.png`) });
+      await page.screenshot({ path: path.join(out, `${v.id}-${W}${quality === 'high' ? '' : '-' + quality}.png`) });
       report.shots.push({ id: v.id, size: [W, H], camera: { yaw: c.yaw, pitch: c.pitch, d: c.actualDistance }, render: await page.evaluate(() => __worldDebug.renderInfo()) });
     }
     await ctx.close();
