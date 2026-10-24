@@ -55,7 +55,7 @@ function loadPbr() {
 }
 
 function createGroundMaterial(pbr: Texture[] | null) {
-  const material = new MeshStandardMaterial({ vertexColors: true, flatShading: true, roughness: 1, metalness: 0 });
+  const material = new MeshStandardMaterial({ vertexColors: true, flatShading: !pbr, roughness: 1, metalness: 0 });
   material.name = pbr ? 'island-terrain-v4-pbr' : 'island-terrain-v4';
   material.onBeforeCompile = shader => {
     Object.assign(shader.uniforms, shoreUniforms(), { uSeaTime: windUniforms.uWindTime, uSeaMotion: windUniforms.uWindStrength });
@@ -85,6 +85,12 @@ vec4 tileMix(sampler2D t, vec2 uv, vec3 w) { return texture2D(t, uv) * w.x + tex
       // Fade sub-metre terms once a pixel covers more than ~25 cm of ground.
       float tFine = 1.0 - smoothstep(0.08, 0.25, length(fwidth(tp)));
       float tWalk = clamp(vGroundMix.x + vGroundMix.y + vGroundMix.z, 0.0, 1.0);
+      float sandWeight = clamp(vGroundMix.y, 0.0, 1.0);
+      float rockWeight = clamp(vGroundMix.w, 0.0, 1.0);
+      float groundBump = 0.0;
+      // Millimetre detail is filtered before it becomes subpixel (avoids sparkling in motion).
+      float grainFade = 1.0 - smoothstep(0.003, 0.025, length(fwidth(tp)));
+      float detailFade = 1.0 - smoothstep(0.025, 0.11, length(fwidth(tp)));
       // Patch noise: value +-6 % at 1.6 m, +-5 % at 0.45 m, and a 9 m warm/cool hue drift.
       float hue = (tNoise(tp / 9.0 + 3.7) - 0.5) * 0.08;
       diffuseColor.rgb *= (1.0 + (tNoise(tp / 1.6) - 0.5) * 0.12 + (tNoise(tp / 0.45) - 0.5) * 0.1 * tFine) * vec3(1.0 + hue, 1.0, 1.0 - hue);
@@ -102,19 +108,53 @@ vec4 tileMix(sampler2D t, vec2 uv, vec3 w) { return texture2D(t, uv) * w.x + tex
       // Colour-preserving detail: the texture modulates the Art Lock vertex colour, faded far away.
       diffuseColor.rgb *= mix(vec3(1.0), clamp(ratio, 0.45, 1.6), tWalk * (0.35 + 0.65 * tFine));
       vec4 nrS = gw.x * tileMix(uNr0, puv, pm) + gw.y * tileMix(uNr1, puv * 1.6, pm) + gw.z * tileMix(uNr2, puv * 1.2, pm);` : ''}
-      // Wet sand follows the swash (0-1.5 m), lagging the foam by 0.8 s; not on the seawall.
+      // Natural surfaces: warped wind ripples on dry sand and a quieter compacted wash zone.
       vec4 sh = shoreSample(tp);
       float landD = -shoreSigned(sh);
+      float sandDry = smoothstep(0.8, 4.2, landD);
+      float ripplePhase = dot(tp, vec2(0.84, 0.54)) * 27.0
+        + 2.3 * tNoise(tp / 2.6) + 0.7 * sin(dot(tp, vec2(-0.36, 0.57)));
+      float ripple = sin(ripplePhase) * 0.5 + 0.5;
+      float rippleCrest = pow(ripple, 3.0);
+      float sandGrain = tNoise(tp * 160.0 + 19.0);
+      float mineral = smoothstep(0.72, 0.93, tNoise(tp / 0.13 + 7.0));
+      float dunePatch = tNoise(tp / 3.8 + vec2(17.0, 8.0));
+      diffuseColor.rgb *= 1.0 + sandWeight * ((rippleCrest - 0.32) * 0.16 * detailFade * sandDry
+        + (sandGrain - 0.5) * 0.10 * grainFade + (dunePatch - 0.5) * 0.10 - 0.09 * mineral * detailFade);
+      groundBump += sandWeight * (0.004 * rippleCrest * sandDry * detailFade
+        + 0.00035 * sandGrain * grainFade);
+      // Broad drying gradient persists between waves; the moving backwash only darkens its last 1.5 m.
       float tWet = 0.0;
       if (landD > -0.6 && vTerrainWorld.y < ${(GROUND_Y - .02).toFixed(2)}) {
+        float shoreMask = sandWeight * (1.0 - sh.b);
         float reach = 1.5 * shoreSwash(tp, (uSeaTime - 0.8) * step(0.001, uSeaMotion)) + 0.15;
-        tWet = (1.0 - smoothstep(reach - 0.35, reach + 0.15, landD)) * (1.0 - sh.b);
-        diffuseColor.rgb *= mix(1.0, 0.8, tWet);
-      }`)
+        float wash = 1.0 - smoothstep(reach - 0.25, reach + 0.25, landD);
+        float drying = 1.0 - smoothstep(0.45, 3.6, landD + (dunePatch - 0.5) * 0.6);
+        tWet = max(wash * 0.85, drying * 0.65) * shoreMask;
+        diffuseColor.rgb *= mix(vec3(1.0), vec3(0.66, 0.71, 0.75), tWet);
+        float washLine = exp(-pow((landD - reach) / 0.15, 2.0));
+        diffuseColor.rgb *= 1.0 - washLine * 0.07 * shoreMask;
+      }
+      // Stratified rock on existing exposed slopes: horizontal bedding bends slowly with the land,
+      // with dark seams, pale mineral grains and iron stains. No displacement / collider change.
+      float strataH = vTerrainWorld.y + 0.17 * sin(tp.x * 0.53 + tp.y * 0.16)
+        + 0.12 * sin(tp.y * 0.61) + 0.13 * tNoise(tp / 1.6);
+      float layer = fract(strataH / 0.32);
+      float seam = (1.0 - smoothstep(0.025, 0.13, min(layer, 1.0 - layer)))
+        * (0.35 + 0.65 * tNoise(tp / 0.8 + vTerrainWorld.y * 0.4));
+      float rockGrain = tNoise(tp * 22.0 + vTerrainWorld.y * vec2(31.0, -23.0));
+      float weather = tNoise(tp / 1.9 + vTerrainWorld.y * 0.3);
+      diffuseColor.rgb *= 1.0 + rockWeight * ((rockGrain - 0.5) * 0.18 * detailFade
+        + (weather - 0.5) * 0.20 - seam * 0.15 * detailFade);
+      diffuseColor.rgb *= mix(vec3(1.0), vec3(1.09, 0.99, 0.88), rockWeight * smoothstep(0.56, 0.76, weather) * 0.5);
+      groundBump += rockWeight * (-0.006 * seam + 0.0015 * rockGrain) * detailFade;
+      // Close grass soil is mottled in continuous patches, rather than per-triangle random brightness.
+      float grassDry = smoothstep(0.42, 0.76, tNoise(tp / 3.4 + 6.0));
+      diffuseColor.rgb *= mix(vec3(1.0), vec3(1.10, 1.025, 0.88), vGroundMix.x * grassDry * 0.6);`)
       .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>
       // Matte with variation: 0.86-1.0 (wet sand 0.72) instead of one uniform sheen.
       roughnessFactor = mix(0.86, 1.0, tNoise(tp / 1.1 + 5.3)) ${pbr ? '* mix(1.0, 0.75 + 0.25 * nrS.b, tWalk)' : ''};
-      roughnessFactor = mix(roughnessFactor, 0.72, tWet);`)
+      roughnessFactor = clamp(mix(roughnessFactor, 0.78, tWet), 0.78, 1.0);`)
       .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
       {
         // Fallback only: faceted micro relief on walkable ground (skewed triangular 0.45 m lattice,
@@ -133,11 +173,20 @@ vec4 tileMix(sampler2D t, vec2 uv, vec3 w) { return texture2D(t, uv) * w.x + tex
           normal = normalize((viewMatrix * vec4(normalize(nW + pert), 0.0)).xyz);
         }
       }`)
-      .replace('#include <lights_physical_fragment>', `#include <lights_physical_fragment>
+      .replace('#include <lights_physical_fragment>', `
+      // Derivative bump: filtered millimetre relief follows the final world-space surface.
+      {
+        vec3 dp = -vViewPosition, sx = dFdx(dp), sy = dFdy(dp);
+        vec3 rx = cross(sy, normal), ry = cross(normal, sx);
+        float det = dot(sx, rx);
+        vec3 grad = sign(det) * (dFdx(groundBump) * rx + dFdy(groundBump) * ry);
+        normal = normalize(abs(det) * normal - grad);
+      }
+      #include <lights_physical_fragment>
       // Weaker dielectric specular for soil/grass: removes the plastic grazing sheen.
       material.specularColor = vec3(0.016); material.specularColorBlended = vec3(0.016); material.specularF90 = 0.4;`);
   };
-  material.customProgramCacheKey = () => pbr ? 'island-terrain-v4-pbr' : 'island-terrain-v4';
+  material.customProgramCacheKey = () => pbr ? 'island-terrain-v5-pbr' : 'island-terrain-v5';
   return material;
 }
 

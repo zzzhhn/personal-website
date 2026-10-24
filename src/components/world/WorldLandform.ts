@@ -811,10 +811,9 @@ export function terrainColours(normals: ArrayLike<number>) {
   const t = buildTerrain(), out = new Float32Array(t.positions.length), mix4 = new Float32Array(t.positions.length / 3 * 4);
   for (let v = 0, k = 0; v < t.positions.length; v += 3, k += 4) {
     const x = t.positions[v], z = t.positions[v + 2], g = groundSample(x, z, t.positions[v + 1], normals[v + 1]), c = g.colour;
-    // Low-poly mottling: +-5 % value and a slight warm/cool hue shift per vertex, so neighbouring
-    // facets never share one flat tone (breaks the plastic read without textures).
-    const n = (hash2(Math.round(x * 2), Math.round(z * 2), 81) - .5), hue = (valueNoise(x / 3.3, z / 3.3, 82) - .5) * .06;
-    const v1 = 1 + n * .1;
+    // Continuous soil mottling (~2 % value) keeps coarse distant triangles from reading as patches.
+    const n = (valueNoise(x / .85, z / .85, 81) - .5), hue = (valueNoise(x / 3.3, z / 3.3, 82) - .5) * .06;
+    const v1 = 1 + n * .045;
     out[v] = c[0] * v1 * (1 + hue); out[v + 1] = c[1] * v1; out[v + 2] = c[2] * v1 * (1 - hue);
     // Material weights for the switchable PBR candidate: grass, sand, dirt, stone.
     const stone = g.kind === 'stone' ? 1 : 0, dirt = g.kind === 'plaza' || g.kind === 'path' || g.kind === 'paved' ? 1 - g.grass : 0;
