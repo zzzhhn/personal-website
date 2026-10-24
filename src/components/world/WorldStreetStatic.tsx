@@ -68,7 +68,6 @@ export default function StreetStatic({ name, claims, kinds, placements, atlas, s
   }, [name, kinds, placements, atlas, shadow, occluder, assetId]);
   useEffect(() => () => { built.batch.dispose(); built.material.dispose(); }, [built]);
   useFrame(({ camera }) => { Object.assign(built.last, built.batch.update(camera)); });
-  useGreyboxClaim(...claims);
   const ud = useMemo(() => ({ solid: true, assetId }), [assetId]);
   return <group name={`${name}-group`}>
     <primitive object={built.batch.mesh} />
@@ -79,8 +78,13 @@ export default function StreetStatic({ name, claims, kinds, placements, atlas, s
       {built.tris.filter(t => !t.surface).map(t => <TrimeshCollider key={t.key} args={[t.pos, t.idx]} friction={.65} restitution={.05} />)}
     </RigidBody>}
     {seats.map(s => <SeatPoint key={s.id} seat={s} />)}
+    {claims.length > 0 && <StreetClaim keys={claims} />}
   </group>;
 }
 
 /** Local point -> world under a placement matrix. */
 export const at = (m: Matrix4, p: V3): Vec3 => { v.set(p[0], p[1], p[2]).applyMatrix4(m); return [+v.x.toFixed(3), +v.y.toFixed(3), +v.z.toFixed(3)]; };
+
+/** Claims greybox keys; render it LAST inside a group so its layout effect runs after the group's
+ * visual and colliders mounted (sibling effects run in order). */
+export function StreetClaim({ keys }: { keys: GreyboxKey[] }) { useGreyboxClaim(...keys); return null; }

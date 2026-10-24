@@ -107,14 +107,15 @@ export function signalGeometry(lod: 0 | 1) {
   lathe(B, [[.24, 0], [.24, .07], [.2, .1]], S.stoneLight, { sides: hi ? 10 : 6, faceted: true });
   lathe(B, [[.17, .1], [.13, .6], [.095, .7]], S.slateDark, { sides, smooth: 50 });
   B.part('shaft');
-  lathe(B, [[.095, .7], [.085, 3.55], [0, 3.62]], S.slate, { sides, smooth: 50 });
+  // Overhead mast: head bottom >= 4.5 m so a van cabin (top ~3.2 m) passes under it.
+  lathe(B, [[.095, .7], [.08, 5.45], [0, 5.52]], S.slate, { sides, smooth: 50 });
   if (hi) { B.part('hatch', false); box(B, [-.06, .28, .12], [.06, .5, .15], S.slateDark, .01); lathe(B, [[.1, .7], [.11, .74], [.1, .78]], S.slateDark, { sides, smooth: 50 }); }
   B.part('mast');
-  const path = bezier([0, 3.3, 0], [0, 3.42, -.6], [0, 3.42, -3.2], hi ? 8 : 3);
+  const path = bezier([0, 5.2, 0], [0, 5.32, -.6], [0, 5.32, -3.2], hi ? 8 : 3);
   tube(B, path, path.map((_, i) => .07 - .025 * i / (path.length - 1)), S.slate, hi ? 10 : 5);
-  if (hi) tube(B, bezier([0, 2.8, 0], [0, 3.05, -.3], [0, 3.38, -1.4], 6), .028, S.slate, 6);
+  if (hi) tube(B, bezier([0, 4.7, 0], [0, 4.95, -.3], [0, 5.28, -1.4], 6), .028, S.slate, 6);
   B.part('head');
-  B.tr([0, 2.86, -3.05], [0, 0, 0], () => { bar(B, [0, .46, 0], [0, .56, 0], .03, S.slate, 6); signalHead(B, hi); });
+  B.tr([0, 4.98, -3.05], [0, 0, 0], () => { bar(B, [0, .46, 0], [0, .3, 0], .03, S.slate, 6); signalHead(B, hi); });
   if (hi) { B.part('near-head'); B.tr([-.16, 2.1, 0], [0, 0, 0], () => signalHead(B, hi)); }
   return B;
 }
@@ -315,3 +316,113 @@ export function shelterGeometry(lod: 0 | 1, posterCell: Cell) {
 Object.assign(BUDGET, { roadblock: [900, 270], bench: [1700, 400], bollard: [380, 110], shelter: [1100, 400] });
 /** Extra QA-only assets for qa-runtime (cells are placeholders there). */
 export const extraAssets = () => ({ roadblock: roadblock(), bench: bench(), bollard: bollard(), shelter: { L0: shelterGeometry(0, [0, 0, .1, .1]), L1: shelterGeometry(1, [0, 0, .1, .1]) } });
+
+/* ------------------------------------------------------------------ G09 rails */
+
+/** Seawall / promenade rail bay, local X along the rail (0 -> len), base at y = 0, sea side +Z irrelevant
+ * (symmetric). Cream painted square post at x = 0 with a cap, round handrail at 1.0 m, two lower rails,
+ * three balusters. The post sinks 0.5 m so it never floats over the final terrain. */
+export function seawallBay(lod: 0 | 1, len = 2) {
+  const B = new Builder(), hi = lod === 0, paint = S.creamPaint;
+  B.part('post');
+  box(B, [-.045, -.5, -.045], [.045, .96, .045], paint, hi ? .012 : 0);
+  if (hi) { box(B, [-.06, .96, -.06], [.06, 1.0, .06], paint, .012); lathe(B, [[.05, 0], [.05, .04], [.08, .07]], S.stoneCream, { sides: 8, faceted: true }); }
+  bar(B, [0, 1.0, 0], [len, 1.0, 0], .034, paint, hi ? 10 : 5);
+  bar(B, [0, .55, 0], [len, .55, 0], .02, paint, hi ? 6 : 4);
+  if (hi) {
+    bar(B, [0, .14, 0], [len, .14, 0], .02, paint, 6);
+    for (let i = 1; i <= 3; i++) bar(B, [len * i / 4, .14, 0], [len * i / 4, .98, 0], .012, paint, 5);
+  }
+  return B;
+}
+/** Collision solid of a rail run (same extent as the visual): one thin box per bay span. */
+export function railCollider(len: number, h: number, thick: number) {
+  const B = new Builder(); B.part('collider');
+  box(B, [0, 0, -thick / 2], [len, h, thick / 2], S.cream);
+  return B;
+}
+/** End post for a rail run (closes the last bay). */
+export function railEndPost(lod: 0 | 1, kind: 'seawall' | 'guard') {
+  const B = new Builder(), hi = lod === 0;
+  B.part('post');
+  if (kind === 'seawall') { box(B, [-.06, -.5, -.06], [.06, 1.04, .06], S.creamPaint, hi ? .015 : 0); if (hi) box(B, [-.075, 1.0, -.075], [.075, 1.06, .075], S.creamPaint, .015); }
+  else { box(B, [-.06, -.5, -.05], [.06, .78, .05], S.galv, hi ? .01 : 0); }
+  return B;
+}
+
+/** Ring guardrail post (galvanised I-post look, sunk 0.5 m), at panel joints. */
+export function guardPost(lod: 0 | 1) {
+  const B = new Builder(), hi = lod === 0;
+  B.part('post');
+  box(B, [-.05, -.5, -.04], [.05, .78, .04], S.galv, hi ? .008 : 0);
+  B.part('blockout', false); box(B, [-.04, .5, -.19], [.04, .72, -.04], S.galv, hi ? .006 : 0);
+  return B;
+}
+/** Ring guardrail W-beam panel (knockable): local X along the rail centred on 0, beam centre 0.6 m above
+ * the base, profile in the road-side plane z = -0.2. Origin at the base (y = 0) under the panel centre. */
+export function guardPanel(lod: 0 | 1, len: number) {
+  const B = new Builder(), hi = lod === 0;
+  B.part('beam');
+  const strips: [number, number, number][] = hi
+    ? [[.74, -.2, .3], [.67, -.24, -.4], [.6, -.215, 0], [.53, -.24, .4], [.46, -.2, -.3]]
+    : [[.67, -.22, 0], [.53, -.22, 0]];
+  for (const [y, z, tilt] of strips) B.tr([0, y, z], [tilt, 0, 0], () => box(B, [-len / 2, hi ? -.04 : -.075, -.006], [len / 2, hi ? .04 : .075, .006], S.galv, 0));
+  if (hi) {
+    B.part('reflectors', false);
+    for (let x = -len / 2 + .6; x < len / 2; x += 1.6) B.tr([x, .6, -.245], [0, 0, 0], () => box(B, [-.04, -.05, -.004], [.04, .05, .004], S.reflectCream, .002));
+  }
+  return B;
+}
+
+/** Hill timber rail post: round log with a domed top, base sunk 0.45 m. */
+export function timberPost(lod: 0 | 1) {
+  const B = new Builder(), hi = lod === 0, n = hi ? 10 : 5;
+  B.part('post');
+  lathe(B, hi ? [[.1, -.45], [.1, .4], [.096, .5], [.07, .55], [0, .57]] : [[.1, -.45], [.1, .5], [0, .57]], S.woodMid, { sides: n, smooth: 50 });
+  return B;
+}
+/** Hill timber rail beam (knockable): log along local X centred on 0, resting on the post domes.
+ * Origin at its bottom centre. Bark rings (low ridges) every 0.8 m on L0. */
+export function timberBeam(lod: 0 | 1, len: number) {
+  const B = new Builder(), hi = lod === 0, r = .085;
+  B.part('beam');
+  B.tr([-len / 2, r, 0], [0, 0, -Math.PI / 2], () => {
+    const prof: [number, number][] = [[r * .8, 0], [r, .02]];
+    if (hi) for (let x = .8; x < len - .4; x += .8) prof.push([r, x - .03], [r * 1.05, x], [r, x + .03]);
+    prof.push([r, len - .02], [r * .8, len]);
+    lathe(B, prof, S.woodMid, { sides: hi ? 10 : 5, smooth: 40, surfs: prof.slice(1).map((_, i) => (i === 0 || i === prof.length - 2 ? S.woodLight : S.woodMid)) });
+  });
+  return B;
+}
+
+/** Bridge parapet (structural, fixed): local X along the deck from 0 to len, deck level y = 0, height 1.25.
+ * Cream masonry wall with a projecting coping, pilasters every ~2.8 m, recessed panels, plinth. */
+export function parapet(lod: 0 | 1, len: number) {
+  const B = new Builder(), hi = lod === 0, t = .22, H = 1.25;
+  B.part('wall');
+  box(B, [0, 0, -t / 2], [len, H - .1, t / 2], S.stoneCream, hi ? .02 : 0);
+  B.part('coping');
+  box(B, [-.02, H - .1, -t / 2 - .04], [len + .02, H, t / 2 + .04], S.cream, hi ? .02 : 0);
+  if (hi) {
+    B.part('detail', false);
+    const n = Math.max(2, Math.round(len / 2.8));
+    for (let i = 0; i <= n; i++) { const x = len * i / n; for (const z of [-1, 1]) box(B, [x - .14, 0, z * t / 2 - .04], [x + .14, H - .1, z * t / 2 + .04], S.stoneLight, .015); }
+    for (let i = 0; i < n; i++) { const x0 = len * i / n + .22, x1 = len * (i + 1) / n - .22; for (const z of [-1, 1]) box(B, [x0, .2, z * (t / 2 + .012) - .012], [x1, .26, z * (t / 2 + .012) + .012], S.stoneLight, .006); }
+    for (const z of [-1, 1]) box(B, [0, 0, z * t / 2 - .05], [len, .14, z * t / 2 + .05], S.stone, .015);
+  }
+  return B;
+}
+/** Bridge end pillar: square cream pier from below the deck to above the coping, with a cap. */
+export function bridgePier(lod: 0 | 1, h: number) {
+  const B = new Builder(), hi = lod === 0;
+  B.part('pier');
+  box(B, [-.18, 0, -.18], [.18, h - .08, .18], S.stoneCream, hi ? .02 : 0);
+  box(B, [-.22, h - .08, -.22], [.22, h, .22], S.cream, hi ? .02 : 0);
+  if (hi) lathe(B, [[.12, h], [.1, h + .05], [0, h + .08]], S.cream, { sides: 8, faceted: true });
+  return B;
+}
+
+Object.assign(BUDGET, { seawallBay: [420, 130], guardPost: [80, 24], guardPanel: [260, 80], timberPost: [90, 30], timberBeam: [520, 160] });
+const _extra = extraAssets;
+export const extraAssets2 = () => ({ ..._extra(), seawallBay: { L0: seawallBay(0), L1: seawallBay(1) }, guardPost: { L0: guardPost(0), L1: guardPost(1) }, guardPanel: { L0: guardPanel(0, 4.67), L1: guardPanel(1, 4.67) },
+  timberPost: { L0: timberPost(0), L1: timberPost(1) }, timberBeam: { L0: timberBeam(0, 4.2), L1: timberBeam(1, 4.2) }, parapet: { L0: parapet(0, 11.3), L1: parapet(1, 11.3) } });

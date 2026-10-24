@@ -23,6 +23,16 @@ const DEFAULT = [
   { name: 'van-direction', actor: 'van', target: 'direction-3', speed: 6 },
 ];
 const SETS = {
+  g4: [
+    { name: 'person-seawall', actor: 'person', target: { p: [31, 1.15, 5] }, from: [25.5, 5] },
+    { name: 'coupe-seawall', actor: 'coupe', target: { p: [31, 1.15, -12] }, from: [24.5, -3], speed: 5 },
+    { name: 'offroad-guard', actor: 'offroad', target: 'rail-guard-2-1', speed: 7 },
+    { name: 'van-guard', actor: 'van', target: 'rail-guard-4-1', speed: 6 },
+    { name: 'person-guard', actor: 'person', target: 'rail-guard-1-1' },
+    { name: 'offroad-hillbeam', actor: 'offroad', target: 'rail-beam-12', speed: 5 },
+    { name: 'person-hillbeam', actor: 'person', target: 'rail-beam-7' },
+    { name: 'coupe-parapet', actor: 'coupe', target: { p: [36, 1.14, -38.2] }, from: [29.5, -41.6], speed: 5 },
+  ],
   g23: [
     { name: 'person-roadblock', actor: 'person', target: 'roadblock-2' },
     { name: 'coupe-roadblock', actor: 'coupe', target: 'roadblock-2', speed: 6 },

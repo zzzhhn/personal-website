@@ -22,6 +22,10 @@ export const VIEWS = {
   shelter: { p: [27.3, 1.2, -20], yaw: 2.9, pitch: .15, d: 4.2 },
   'shelter-poster': { p: [29.4, 1.2, -19.2], yaw: -1.5, pitch: .08, d: 2.5 },
   promenade: { p: [28.5, 1.2, 19], yaw: 2.5, pitch: .25, d: 7 },
+  seawall: { p: [29.5, 1.2, 4], yaw: 2.2, pitch: .2, d: 4.5 },
+  guardrail: { p: [-66, 1.2, -52], yaw: -1.0, pitch: .25, d: 6 },
+  hillrail: { p: [-12.5, 3.2, -86], yaw: 2.6, pitch: .25, d: 5 },
+  bridge: { p: [33, 1.2, -43], yaw: 2.2, pitch: .3, d: 9 },
 };
 const browser = await loadPlaywright().chromium.launch({ executablePath: CHROME, headless: true, args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'] });
 const report = { base, views: [], errors: [] };
