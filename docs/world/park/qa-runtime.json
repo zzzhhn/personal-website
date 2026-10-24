@@ -1,0 +1,89 @@
+{
+ "exhibits": {
+  "raw": "/Users/bobby/Desktop/3D-personal-world/evidence/park-integration/exhibits-v3/exhibit-bot.json",
+  "fatal": null,
+  "errors": [
+   "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ]
+ },
+ "alpha": {
+  "raw": "/Users/bobby/Desktop/3D-personal-world/evidence/park-integration/alpha-retest/exhibit-bot.json",
+  "fatal": null,
+  "errors": [
+   "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ]
+ },
+ "cards-pages-pause": {
+  "raw": "/Users/bobby/Desktop/3D-personal-world/evidence/park-integration/finish-final/finish-bot.json",
+  "fatal": null,
+  "errors": [
+   "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "console: Failed to load resource: the server responded with a status of 404 (Not Found)",
+   "console: Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ]
+ },
+ "ordinary": {
+  "raw": "/Users/bobby/Desktop/3D-personal-world/evidence/park-integration/ordinary-verified/ordinary-bot.json",
+  "fatal": null,
+  "errors": []
+ },
+ "walk-collision": {
+  "raw": "/Users/bobby/Desktop/3D-personal-world/evidence/park-integration/walk-final/walk-bot.json",
+  "fatal": null,
+  "errors": []
+ },
+ "sign-collision": {
+  "raw": "/Users/bobby/Desktop/3D-personal-world/evidence/park-integration/sign-collision/sign-collision.json",
+  "fatal": null,
+  "errors": []
+ },
+ "summary": {
+  "ordinaryRouteLegs": 12,
+  "ordinaryHutLegs": 3,
+  "ordinaryFixtureTeleports": 0,
+  "projectSignsOpenedAndClosed": 6,
+  "boardPages": [
+   "FIN4210",
+   "FIN3080",
+   "MAT2002",
+   "ACT4253"
+  ],
+  "walkBoardwalkLegs": 4,
+  "hutDoorAndWallCases": 6,
+  "parkMainCalls": 18,
+  "parkMainTriangles": 58125,
+  "totalFrameCalls": 127,
+  "totalFrameTriangles": 275983,
+  "parkShadowTrianglesApprox": 100400,
+  "parkTriangleLimit": 48000,
+  "LOD60mImplemented": false,
+  "note": "Generic 404s in older QA runs are dev POST /api/events analytics beacons (server log verified), not failed GLBs; final QA skips analytics like cards. Earlier fixture/routing failures are retained raw; successful targeted reruns supersede them.",
+  "astroCheck": {
+   "errors": 0,
+   "warnings": 0,
+   "hints": 128,
+   "raw": "/Users/bobby/Desktop/3D-personal-world/evidence/park-integration/astro-commit.log"
+  }
+ },
+ "final-seat": {
+  "raw": "/Users/bobby/Desktop/3D-personal-world/evidence/park-integration/seat-delivery/exhibit-bot.json",
+  "fatal": null,
+  "errors": [],
+  "reached": true,
+  "seated": "park-seat-accompany",
+  "stood": true
+ }
+}

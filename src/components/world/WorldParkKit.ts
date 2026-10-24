@@ -1,4 +1,4 @@
-import { BufferAttribute, BufferGeometry, Color, Euler, Matrix3, Matrix4, Mesh, MeshStandardMaterial, Quaternion, Vector3, type Object3D } from 'three';
+import { BufferAttribute, BufferGeometry, Color, DataTexture, Euler, FloatType, Matrix3, Matrix4, Mesh, MeshDepthMaterial, MeshStandardMaterial, Quaternion, RGBADepthPacking, RGBAFormat, Vector3, type Object3D } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
@@ -57,7 +57,7 @@ export function parkMaterial() {
 
 const tmpColor = new Color();
 /** Non-indexed geometry with the batch layout, baked into world space by `matrix`. */
-function toBatch(source: BufferGeometry, matrix: Matrix4, color: string, emit: Emit = [0, 0, 0], jitter = 0, seed = 0) {
+export function toBatch(source: BufferGeometry, matrix: Matrix4, color: string, emit: Emit = [0, 0, 0], jitter = 0, seed = 0) {
   const g = (source.index ? source.toNonIndexed() : source.clone());
   for (const name of Object.keys(g.attributes)) if (name !== 'position' && name !== 'normal') g.deleteAttribute(name);
   if (!g.getAttribute('normal')) g.computeVertexNormals();
@@ -72,6 +72,20 @@ function toBatch(source: BufferGeometry, matrix: Matrix4, color: string, emit: E
   return g;
 }
 export const hash = (n: number) => { const s = Math.sin(n * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
+
+/** One GLB mesh -> batch piece (material colour / emission from PARK_MATERIALS). */
+export function meshPiece(mesh: Mesh, matrix: Matrix4) {
+  const name = (Array.isArray(mesh.material) ? mesh.material[0] : mesh.material).name;
+  const spec = PARK_MATERIALS[name] ?? { color: '#FF00FF' };
+  return toBatch(mesh.geometry, matrix, spec.color, spec.emit);
+}
+/** Meshes under `node`, not descending into nodes listed in `stop`. */
+export function meshesUnder(node: Object3D, stop: Set<Object3D>) {
+  const out: Mesh[] = [];
+  const walk = (o: Object3D) => { if (o !== node && stop.has(o)) return; if ((o as Mesh).isMesh) out.push(o as Mesh); o.children.forEach(walk); };
+  walk(node);
+  return out;
+}
 
 /** Convert GLB meshes under `root` (optionally filtered by top node name) into batch pieces. */
 export function gltfPieces(root: Object3D, placement: Matrix4, keep: (node: string) => boolean = () => true) {
@@ -252,4 +266,63 @@ export function plankPoly(geo: ParkGeo, poly: P2[], across: P2, yTop: number, se
     slab(geo, q, y, y - thick, tone, { inset: 0.008, jitter: 0.05, seed: key });
   }
   return n;
+}
+
+/* ------------------------------------------------------------------ rigid part batch (moving exhibit parts) */
+/**
+ * All moving exhibit parts in ONE draw: each vertex carries aPart; a float texture row per part holds
+ * the part's world matrix (4 texels) and an emission level (5th texel). Parts are animated by updating
+ * their Object3D nodes; `sync()` copies node.matrixWorld into the texture each frame.
+ */
+export class PartBatch {
+  nodes: Object3D[] = [];
+  emit: number[] = [];
+  private pieces: BufferGeometry[] = [];
+  geometry: BufferGeometry | null = null;
+  texture: DataTexture | null = null;
+  material: MeshStandardMaterial | null = null;
+  depth: MeshDepthMaterial | null = null;
+  add(node: Object3D, meshes: { mesh: Mesh; local: Matrix4 }[]) {
+    const part = this.nodes.length;
+    this.nodes.push(node); this.emit.push(0);
+    for (const { mesh, local } of meshes) {
+      const g = meshPiece(mesh, local), n = g.getAttribute('position').count;
+      g.setAttribute('aPart', new BufferAttribute(new Float32Array(n).fill(part), 1));
+      this.pieces.push(g);
+    }
+  }
+  build() {
+    const rows = Math.max(1, this.nodes.length);
+    this.texture = new DataTexture(new Float32Array(5 * rows * 4), 5, rows, RGBAFormat, FloatType);
+    this.texture.needsUpdate = true;
+    this.geometry = mergeBatch(this.pieces); this.pieces = [];
+    const patch = (shader: { uniforms: Record<string, unknown>; vertexShader: string }) => {
+      shader.uniforms.uParts = { value: this.texture };
+      shader.vertexShader = 'attribute float aPart;\nuniform highp sampler2D uParts;\nvarying float vPartEmit;\nmat4 partMatrix(int i) { return mat4(texelFetch(uParts, ivec2(0, i), 0), texelFetch(uParts, ivec2(1, i), 0), texelFetch(uParts, ivec2(2, i), 0), texelFetch(uParts, ivec2(3, i), 0)); }\n'
+        + shader.vertexShader
+          .replace('#include <beginnormal_vertex>', '#include <beginnormal_vertex>\n  mat4 partM = partMatrix(int(aPart + 0.5));\n  objectNormal = normalize(mat3(partM) * objectNormal);\n  vPartEmit = texelFetch(uParts, ivec2(4, int(aPart + 0.5)), 0).x;')
+          .replace('#include <begin_vertex>', '#include <begin_vertex>\n  transformed = (partM * vec4(position, 1.0)).xyz;');
+    };
+    const m = parkMaterial().clone(), prev = m.onBeforeCompile;
+    m.onBeforeCompile = (shader, r) => {
+      prev.call(m, shader, r); patch(shader);
+      shader.fragmentShader = 'varying float vPartEmit;\n' + shader.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance += vec3(1.0, 0.79, 0.47) * vPartEmit;');
+    };
+    m.customProgramCacheKey = () => 'park-part-batch-v1';
+    this.material = m;
+    const d = new MeshDepthMaterial({ depthPacking: RGBADepthPacking });
+    d.onBeforeCompile = shader => {
+      patch(shader);
+      // depth shaders have no beginnormal chunk: compute the matrix in begin_vertex
+      shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>\n  transformed = (partM', '#include <begin_vertex>\n  mat4 partM = partMatrix(int(aPart + 0.5));\n  vPartEmit = 0.0;\n  transformed = (partM');
+    };
+    d.customProgramCacheKey = () => 'park-part-batch-depth-v1';
+    this.depth = d;
+    return this;
+  }
+  sync() {
+    const data = this.texture!.image.data as Float32Array;
+    this.nodes.forEach((n, i) => { n.matrixWorld.toArray(data, i * 20); data[i * 20 + 16] = this.emit[i]; });
+    this.texture!.needsUpdate = true;
+  }
 }

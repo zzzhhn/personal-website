@@ -54,3 +54,21 @@ export const HUTS: HutPlacement[] = BOOTHS.map(({ id, position: p }) => {
   const spur = gap > 0.05 ? { from: open, to: [open[0] + f[0] * (gap + 0.35), DECK_Y, open[2] + f[1] * (gap + 0.35)] as Vec3, width: 3.0 } : null;
   return { id, slug: BOOTH_SLUG[id] ?? id, variant, width: HUT_WIDTH[variant], origin, yaw, matrix: yawMatrix(origin, yaw), front: f, right: r, spur, local };
 });
+
+/** Exhibit GLBs per booth, placed in the hut frame: [x, z] on the hut floor and yaw (local +Z = the
+ * opening). `anchor` is the E point (hut frame, metres) in front of the exhibit. */
+export const EXHIBITS: Record<string, { id: string; at: [number, number]; yaw: number }[]> = {
+  'alpha-agent': [{ id: 'P12', at: [0, -2.35], yaw: 0 }],
+  evalforge: [{ id: 'P13', at: [0, -2.45], yaw: 0 }],
+  djc: [{ id: 'P14', at: [0, -2.3], yaw: 0 }],
+  hepai: [{ id: 'P15', at: [0, -3.03], yaw: 0 }],
+  accompany: [{ id: 'P16', at: [0, -1.65], yaw: 0 }, { id: 'P17', at: [0, -1.65], yaw: 0 }],
+  'interactive-learning': [{ id: 'P18', at: [0, -2.55], yaw: 0 }],
+};
+export const EXHIBIT_ANCHOR: Record<string, [number, number]> = {
+  'alpha-agent': [0, -1.25], evalforge: [0, -1.3], djc: [0, -1.45], hepai: [0, -2.1], accompany: [0, -0.2], 'interactive-learning': [0, -1.65],
+};
+/** World matrix of an exhibit inside a hut. */
+export function exhibitMatrix(h: HutPlacement, at: [number, number], yaw: number) {
+  return h.matrix.clone().multiply(new Matrix4().makeTranslation(at[0], 0, at[1])).multiply(new Matrix4().makeRotationY(yaw));
+}

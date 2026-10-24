@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { CuboidCollider, InstancedRigidBodies, type RapierRigidBody, type InstancedRigidBodyProps } from '@react-three/rapier';
+import { ConvexHullCollider, CuboidCollider, InstancedRigidBodies, type RapierRigidBody, type InstancedRigidBodyProps } from '@react-three/rapier';
 import { AdditiveBlending, BufferAttribute, BufferGeometry, CanvasTexture, Color, InstancedBufferAttribute, InstancedMesh, MeshBasicMaterial } from 'three';
 import { BOARDWALK_POINTS, BOARDWALK_WIDTH } from './layout';
 import { ParkGeo, clipHalf, hash, parkMaterial, parkNight, plankPoly, slab, type P2 } from './WorldParkKit';
@@ -228,7 +228,7 @@ const knockQa = new Map<string, () => { id: string; home: Vec3; position: Vec3 |
 export const parkKnockables = () => [...knockQa.values()].flatMap(f => f());
 /** Sleeping dynamic props (spec 15 / PRD 4.3): woken only by contact; 30 s after being knocked they
  * dither out, reset to their home pose asleep, and dither back in. One instanced draw per kind. */
-export function Knockables({ name, items, source, spec }: { name: string; items: { id: string; position: Vec3; yaw: number }[]; source: BufferGeometry; spec: KnockSpec }) {
+export function Knockables({ name, items, source, spec, hull, userData }: { name: string; items: { id: string; position: Vec3; yaw: number }[]; source: BufferGeometry; spec: KnockSpec; hull?: Float32Array; userData?: Record<string, unknown> }) {
   const bodies = useRef<(RapierRigidBody | null)[]>(null);
   const mesh = useRef<InstancedMesh>(null);
   const states = useRef<KState[]>([]);
@@ -253,8 +253,8 @@ export function Knockables({ name, items, source, spec }: { name: string; items:
   }, []);
   useEffect(() => () => { material.dispose(); geometry.dispose(); }, [material, geometry]);
   const instances = useMemo<InstancedRigidBodyProps[]>(() => items.map(it => ({
-    key: it.id, position: it.position, rotation: [0, it.yaw, 0], userData: { obstacle: true, knockable: it.id, assetId: name },
-  })), [items, name]);
+    key: it.id, position: it.position, rotation: [0, it.yaw, 0], userData: { obstacle: true, knockable: it.id, assetId: name, ...userData },
+  })), [items, name, userData]);
   useEffect(() => { states.current = items.map(it => ({ pos: it.position, yaw: it.yaw, knocked: null, fade: 1 })); }, [items]);
   useEffect(() => {
     knockQa.set(name, () => items.map((it, i) => { const b = bodies.current?.[i], p = b?.translation(), s = states.current[i];
@@ -292,7 +292,7 @@ export function Knockables({ name, items, source, spec }: { name: string; items:
     if (dirty) { const a = geometry.getAttribute('aInstFade') as InstancedBufferAttribute; states.current.forEach((s, i) => a.setX(i, s.fade)); a.needsUpdate = true; }
   });
   return <InstancedRigidBodies ref={bodies} instances={instances} colliders={false} canSleep linearDamping={0.08} angularDamping={0.25}
-    colliderNodes={[<CuboidCollider key="c" args={spec.half} position={spec.offset} mass={spec.mass} friction={0.8} restitution={0.08} />]}>
+    colliderNodes={[hull ? <ConvexHullCollider key="h" args={[hull]} mass={spec.mass} friction={0.8} restitution={0.08} /> : <CuboidCollider key="c" args={spec.half} position={spec.offset} mass={spec.mass} friction={0.8} restitution={0.08} />]}>
     <instancedMesh ref={mesh} name={`park-${name}`} args={[geometry, material, items.length]} castShadow receiveShadow frustumCulled={false}
       userData={{ noOcclusionFade: true, assetId: name }} />
   </InstancedRigidBodies>;
@@ -304,7 +304,7 @@ function railGeometryCached() { return railGeometry(); }
 function lampGeometryCached() { return lampGeometry(); }
 
 /** Warm ground pools under every lamp: one additive draw of flat quads, intensity follows night. */
-export function LampPools({ lamps }: { lamps: LampPost[] }) {
+export function LampPools({ lamps, extra = [] }: { lamps: LampPost[]; extra?: { position: Vec3; radius: number }[] }) {
   const { geometry, material } = useMemo(() => {
     const c = document.createElement('canvas'); c.width = c.height = 64;
     const x = c.getContext('2d')!, gr = x.createRadialGradient(32, 32, 0, 32, 32, 32);
@@ -317,12 +317,17 @@ export function LampPools({ lamps }: { lamps: LampPost[] }) {
       const q = [[cx - R, cz - R, 0, 0], [cx + R, cz - R, 1, 0], [cx + R, cz + R, 1, 1], [cx - R, cz + R, 0, 1]];
       for (const k of [0, 2, 1, 0, 3, 2]) { pos.push(q[k][0], y, q[k][1]); uv.push(q[k][2], q[k][3]); }
     }
+    for (const e of extra) {
+      const [cx, y, cz] = e.position, r = e.radius;
+      const q = [[cx - r, cz - r, 0, 0], [cx + r, cz - r, 1, 0], [cx + r, cz + r, 1, 1], [cx - r, cz + r, 0, 1]];
+      for (const k of [0, 2, 1, 0, 3, 2]) { pos.push(q[k][0], y + 0.012, q[k][1]); uv.push(q[k][2], q[k][3]); }
+    }
     const g = new BufferGeometry();
     g.setAttribute('position', new BufferAttribute(new Float32Array(pos), 3)); g.setAttribute('uv', new BufferAttribute(new Float32Array(uv), 2));
     g.computeBoundingSphere();
     const m = new MeshBasicMaterial({ map: tex, transparent: true, depthWrite: false, blending: AdditiveBlending, color: new Color(0, 0, 0), toneMapped: false, polygonOffset: true, polygonOffsetFactor: -2 });
     return { geometry: g, material: m };
-  }, [lamps]);
+  }, [lamps, extra]);
   useEffect(() => () => { geometry.dispose(); material.map?.dispose(); material.dispose(); }, [geometry, material]);
   useFrame(() => { const k = parkNight.value * 0.4; material.color.setRGB(k, k, k); });
   return <mesh name="park-lamp-pools" geometry={geometry} material={material} renderOrder={2} userData={{ noOcclusionFade: true }} />;
