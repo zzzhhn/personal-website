@@ -59,6 +59,8 @@ const RATE_LO = .7, RATE_HI = 1.25;
 /** Below this measured speed a decelerating gait hands over to Idle (stop step places the feet). */
 const STOP_SPEED = .6;
 const _landQ = new Quaternion();
+/** QA only: preserve b052396 turn-entry selection and interaction decay for direct A/B. */
+const TRANSITION_LEGACY_AB = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && new URLSearchParams(window.location.search).get('guideTransitionLegacy') === '1';
 /** QA only: compare the former entry selector and pre-advance planted flags on the same recorder. */
 const ENTRY_LEGACY_AB = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && new URLSearchParams(window.location.search).get('guideEntryLegacy') === '1';
 /** QA A/B only (?qa=1&guideXfade=1): the old crossfade switch. */
@@ -547,13 +549,13 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         if (!canSwitch && (rate > RATE_HI || rate < RATE_LO) && rig.gate.last) { canSwitch = true; entry = rig.gate.last.time; rig.gate.timeouts++; rig.gate.clear(); s.phaseGateTimeouts = rig.gate.timeouts; }
         s.pending=rig.gate.pending??'';s.pendingTime=rig.gate.pendingSeconds;s.phaseGateTimeouts=rig.gate.timeouts;
       } else if (rig.phaseSamples[desired] && grounded) {
-        // Match the displayed pose, retaining its lowest supporting sole on Idle/Land entry.
+        // Match the displayed pose, retaining its lowest supporting sole on Idle/Land/turn entry.
         // Use the authored contacts and the existing 6 mm sole band; never manufacture a mask.
         rig.scene.updateWorldMatrix(true, true);
         const left = rig.scene.worldToLocal(rig.feet.get('left')!.getWorldPosition(new Vector3()));
         const right = rig.scene.worldToLocal(rig.feet.get('right')!.getWorldPosition(new Vector3()));
         const samples = rig.phaseSamples[desired], duration = to.getClip().duration;
-        const supportEntry = !ENTRY_LEGACY_AB && ['Idle', 'IdleLook', 'Land'].includes(s.current);
+        const supportEntry = !ENTRY_LEGACY_AB && (TRANSITION_LEGACY_AB ? ['Idle', 'IdleLook', 'Land'] : ['Idle', 'IdleLook', 'Land', 'TurnL', 'TurnR']).includes(s.current);
         const heights = { left: Infinity, right: Infinity };
         if (supportEntry && group.current) {
           const rootY = group.current.getWorldPosition(rig.rootPoint).y - group.current.position.y;
@@ -599,7 +601,10 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
           ? (rig.phase ? rig.phase.advance(desired, to.time, travel, dt, 'contact') : to.time + travel / D[desired]) : to.time;
         const contactTime = isGait(desired) ? ((advanced % duration) + duration) % duration : advanced;
         const m = rig.contact[desired], fr = m ? Math.min(m.frames, Math.max(0, Math.round(contactTime / duration * m.frames))) : 0;
-        const interaction = EXTRAS.includes(desired) || EXTRAS.includes(s.current);
+        // A turn/look exit into locomotion needs gait decay and its planted-foot half-life.
+        // The interaction profile has no planted override; seated gesture transitions keep it.
+        const gaitExit = isGait(desired) && ['TurnL', 'TurnR', 'IdleLook'].includes(s.current);
+        const interaction = (TRANSITION_LEGACY_AB || !gaitExit) && (EXTRAS.includes(desired) || EXTRAS.includes(s.current));
         rig.inert.begin(INERT[interaction ? 'interaction' : desired.endsWith('Start') ? 'start' : desired.endsWith('Air') ? 'air' : desired === 'Land' ? 'land' : isGait(desired) ? 'gait' : 'idle'],
           { L: !!m && (m.L[fr] ?? 0) > .5, R: !!m && (m.R[fr] ?? 0) > .5 }); }
         if (!desired.endsWith('Air')) for (const n of ['JumpAir', 'RunJumpAir']) if (n !== desired) rig.actions[n].paused = false;

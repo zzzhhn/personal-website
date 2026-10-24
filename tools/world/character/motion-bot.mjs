@@ -15,7 +15,7 @@ const report = { base, tag, startedAt: new Date().toISOString(), errors: [], pha
 try {
   const page = await browser.newPage({ viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1 });
   page.on('pageerror', e => report.errors.push(e.message));
-  await page.goto(base + '/world/?qa=1' + (process.env.G24_XFADE === '1' ? '&guideXfade=1' : '') + (process.env.G24_ENTRY_LEGACY === '1' ? '&guideEntryLegacy=1' : ''), { waitUntil: 'networkidle' });
+  await page.goto(base + '/world/?qa=1' + (process.env.G24_XFADE === '1' ? '&guideXfade=1' : '') + (process.env.G24_ENTRY_LEGACY === '1' ? '&guideEntryLegacy=1' : '') + (process.env.G24_TRANSITION_LEGACY === '1' ? '&guideTransitionLegacy=1' : ''), { waitUntil: 'networkidle' });
   await page.waitForFunction(() => window.__worldDebug?.actor().loaded, undefined, { timeout: 90000 });
   const bot = new Bot(page);
   const asset = await page.request.get(base + '/assets/world/guide/G24.glb');
@@ -35,6 +35,7 @@ try {
   }
   report.fixtures = bot.fixtureCalls;
   report.entryMode = process.env.G24_ENTRY_LEGACY === '1' ? 'legacy' : 'support';
+  report.transitionMode = process.env.G24_TRANSITION_LEGACY === '1' ? 'legacy-b052396' : 'gait-turn-exit';
   report.scope = startupOnly ? 'original idle 800 ms + start-run 1400 ms only' : 'full';
   const skinTopology = captureSkin ? await page.evaluate(() => __worldDebug.actor('skin:topology')) : null;
   await page.evaluate(skin => __worldDebug.actor(skin ? 'record:skin' : 'record:start', 20000), captureSkin);
