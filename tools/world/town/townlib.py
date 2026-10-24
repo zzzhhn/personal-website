@@ -193,6 +193,7 @@ class Asset:
         self.extras = {}
         self.part_extras = {}
         self.winds = {}
+        self.shadow_tops = {}
 
     def use(self, name):
         self.part = name
@@ -223,8 +224,10 @@ class Asset:
         if col:
             self.col_box(mn, mx)
 
-    def col_box(self, mn, mx, name=None):
+    def col_box(self, mn, mx, name=None, shadow_top=None):
         self.col_bm(box(mn, mx), name)
+        if shadow_top is not None:
+            self.shadow_tops[self.cols[-1][0]] = shadow_top
 
     def col_bm(self, bm, name=None):
         self.cols.append((name or f'col_{len(self.cols):02d}', bm))
@@ -336,6 +339,8 @@ def finalize(A):
         bpy.context.scene.collection.objects.link(ob)
         ob.parent = root
         ob['collider'] = 'convex'
+        if name in A.shadow_tops:
+            ob['shadowTopBlenderZ'] = A.shadow_tops[name]
         objs.append(ob)
     for name, loc, extras in A.anchors:
         e = bpy.data.objects.new(name, None)

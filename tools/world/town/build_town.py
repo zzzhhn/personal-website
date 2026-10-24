@@ -26,7 +26,7 @@ def build_T01():
     for i in range(9):  # paving joints as shallow real slabs (2 mm proud, not coplanar)
         y = -Y + 0.45 + i * 0.89
         A.box((CX, y - 0.015, PLAZA), (X1 - 0.05, y + 0.015, PLAZA + 0.004), 'town_stone')
-    A.col_box((X0, -Y, 0), (CX, Y, 8.0), 'col_core')
+    A.col_box((X0, -Y, 0), (CX, Y, 8.0), 'col_core', shadow_top=7.1)
     A.col_box((CX - 0.2, -Y, -0.2), (X1, Y, PLAZA), 'col_portico_floor')
     # core walls with real openings
     Z0, Z1 = 0.6, 6.6
@@ -77,7 +77,7 @@ def build_T01():
         y = -Y + 0.2 + i * 0.3
         A.box((X1 - 0.12, y - 0.07, 6.9), (X1 - 0.02, y + 0.07, 7.0), 'town_stone_dark')
     A.box((CX, -Y, 7.0), (X1, Y, 7.2), 'town_stone_dark', 0.03)                          # cornice
-    A.col_box((CX - 0.2, -Y, 6.2), (X1, Y, 8.0), 'col_attic')
+    A.col_box((CX - 0.2, -Y, 6.2), (X1, Y, 8.0), 'col_attic', shadow_top=7.15)
     # roof, parapet (attic band with sign panel), coping, roof plant box
     A.box((X0 + 0.15, -Y + 0.15, 6.95), (CX, Y - 0.15, 7.15), 'town_roof')
     for mn, mx in (((X0, -Y, 7.2), (X0 + 0.25, Y, 7.9)), ((X1 - 0.25, -Y, 7.2), (X1, Y, 7.9)),
@@ -203,7 +203,7 @@ def build_T02():
     curtain(A, Face('y', 1, Y), X0, X1, UZ0, UZ1, 1.0, (UZ1 - UZ0) / 3, 'T02s')
     curtain(A, Face('y', -1, -Y), X0, X1, UZ0, UZ1, 1.0, (UZ1 - UZ0) / 3, 'T02n')
     curtain(A, Face('x', -1, X0), -Y, Y, UZ0, UZ1, 1.0, (UZ1 - UZ0) / 3, 'T02b', fin='town_dark', band='town_dark')
-    A.col_box((X0, -Y, LZ), (X1, Y, H), 'col_upper')
+    A.col_box((X0, -Y, LZ), (X1, Y, H), 'col_upper', shadow_top=UZ1 + 0.3)
     # blank screen wall: dark panel in a proud slate frame, mounting rails behind (front face, floors 2-3)
     fh = (UZ1 - UZ0) / 3
     sz0, sz1 = UZ0 + fh + 0.15, UZ0 + 3 * fh - 0.15
@@ -300,7 +300,7 @@ def build_T03():
     for F, k in ((sp, 'us'), (sn, 'un')):
         facade(A, F, X0, X1, UZ0, UZ1, 4, 1, 1.5, 1.05, 'town_cream', 'T03' + k, wz=0.55)
     facade(A, bk, -Y + 0.2, Y - 0.2, UZ0, UZ1, 3, 1, 1.4, 1.05, 'town_cream', 'T03ub', wz=0.55)
-    A.col_box((X0, -Y, Z1), (X1, Y, H), 'col_upper')
+    A.col_box((X0, -Y, Z1), (X1, Y, H), 'col_upper', shadow_top=UZ1 + 0.25)
     # thin flat roof plate with deep overhang (0.6 m) and fascia; roof deck, AC unit, skylight
     A.box((X0 - 0.6, -Y - 0.6, UZ1), (X1 + 0.6, Y + 0.6, UZ1 + 0.18), 'town_trim', 0.02)
     A.box((X0 - 0.62, -Y - 0.62, UZ1 + 0.18), (X1 + 0.62, Y + 0.62, UZ1 + 0.26), 'town_cream', 0.02)
@@ -464,7 +464,7 @@ def build_T04():
     facade(A, sfS, X1 - SB, X1 + 0.35, UZ0, UZ1, 1, 3, SB - 0.9, 1.15, 'town_slate', 'T04bs', depth=0.55, wz=0.5, frame='town_dark', sill_mat='town_dark')
     A.box((X1 - SB, -Y - 0.35, UZ0 - 0.06), (X1 + 0.35, -Y + SB, UZ0), 'town_slate')
     A.box((X1 - SB, -Y - 0.35, UZ1), (X1 + 0.35, -Y + SB, UZ1 + 0.9), 'town_slate', 0.02)
-    A.col_box((X0, -Y, FZ), (X1, Y, H), 'col_upper')
+    A.col_box((X0, -Y, FZ), (X1, Y, H), 'col_upper', shadow_top=UZ1 + 0.05)
     # vertical slate strip on the cream front (between ribbon bays)
     A.box(*front.box(0, 0.12, 0.45, 0.85, UZ0, UZ1 + 0.3), 'town_slate')
     # ---- crown: parapet + big sign board frame on the front (runtime abstract symbol + name)
@@ -586,7 +586,7 @@ def build_T05():
         ac_unit(A, sp, 1.2 - f * 1.9, z, f'acs{f}')
         ac_unit(A, sn, -1.6 + f * 1.4, z + 0.2, f'acn{f}')
     A.add(cyl((X0 + 0.25, Y + 0.08), 0.06, PLAZA, H - 0.4, 8), 'town_metal', smooth=True)
-    A.col_box((X0, -Y, AZ), (X1, Y, H), 'col_upper')
+    A.col_box((X0, -Y, AZ), (X1, Y, H), 'col_upper', shadow_top=UZ1 + 0.05)
     # vertical unlit sign frame cantilevered from the south corner (Art Lock: frame stays dark)
     A.box((X1 + 0.0, -Y + 0.15, AZ + 0.6), (X1 + 0.9, -Y + 0.25, AZ + 0.68), 'town_metal')
     A.box((X1 + 0.0, -Y + 0.15, UZ1 - 0.5), (X1 + 0.9, -Y + 0.25, UZ1 - 0.42), 'town_metal')
@@ -652,7 +652,7 @@ def build_T06():
     for F, u0, u1, key in ((Face('x', 1, X1), -Y, Y, 'f'), (Face('x', -1, X0), -Y, Y, 'b'),
                             (Face('y', 1, Y), X0, X1, 's'), (Face('y', -1, -Y), X0, X1, 'n')):
         curtain(A, F, u0, u1, TZ0, TZ1, 1.0, (TZ1 - TZ0) / 3, 'T06' + key, fin='town_dark', band='town_dark', fin_out=0.22, glass_set=0.14)
-    A.col_box((X0, -Y, LZ), (X1, Y, H), 'col_tower')
+    A.col_box((X0, -Y, LZ), (X1, Y, H), 'col_tower', shadow_top=H - 0.15)
     # crown band (0.8 m) with a recessed reveal, sign band on the front
     A.box((X0 - 0.08, -Y - 0.08, TZ1), (X1 + 0.08, Y + 0.08, TZ1 + 0.12), 'town_metal', 0.02)
     A.box((X0 + 0.05, -Y + 0.05, TZ1 + 0.12), (X1 - 0.05, Y - 0.05, TZ1 + 0.24), 'town_dark')
@@ -759,7 +759,7 @@ def lowrise(A, i, w, d, h, facing):
         A.box((X0 + 0.6, -Y + 0.6, top), (X0 + 1.1, -Y + 1.1, top + 1.1), wall_main, 0.02)
         A.box((X0 + 0.52, -Y + 0.52, top + 1.1), (X0 + 1.18, -Y + 1.18, top + 1.2), 'town_trim', 0.02)
     A.add(cyl((X1 - 1.0, 0.5), 0.1, top, top + 0.6, 8), 'town_metal', smooth=True)
-    A.col_box((X0, -Y, 0), (X1, Y, h), f'col_T07_{i}')
+    A.col_box((X0, -Y, 0), (X1, Y, h), f'col_T07_{i}', shadow_top=top - 0.05)
 
 def build_T07():
     A = Asset('T07')
