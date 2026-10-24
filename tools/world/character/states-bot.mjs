@@ -1,6 +1,6 @@
 /** G24 v3d states, real keys + logged fixtures. Sequence: idle (wait for the look-around), 90/180 turns at
- * rest, sit on a camp log bench (store.seat set as a logged fixture: no seat interactable exists in this
- * worktree yet), stand up with W, walk to the offroad and E (enter), drive off briefly, E (exit).
+ * rest, use an actual registered camp-bench anchor and real E to sit / stand, approach the live offroad
+ * and E (enter), drive off briefly, E (exit). Vehicle state is identified by veh/fade, not clip names.
  * Screenshots on the NORMAL entry are a separate pass (guide-look.mjs); this tab uses ?qa=1 for numbers. */
 import { mkdir, writeFile } from 'node:fs/promises';
 import { Bot, loadPlaywright, CHROME, comboFor } from '../playtest/lib.mjs';
@@ -28,13 +28,20 @@ try {
   const E = comboFor(1, 0).keys, W_ = comboFor(-1, 0).keys;
   await phase('turn90', E, 250); await phase('turn90-settle', [], 900, null, 250);
   await phase('turn180', W_, 300); await phase('turn180-settle', [], 1000, null, 300);
-  // seat: 1.6 m in front of the player, top 0.6 m (C06 log bench height), yaw = current facing + pi
-  const seat = await page.evaluate(() => { const p = __worldDebug.snapshot().player; const yaw = __worldDebug.snapshot().playerYaw ?? 0;
-    return { id: 'qa-seat', position: [p[0] + 1.2, p[1] - 0.94 + 0.45, p[2]], yaw: Math.PI }; });
-  report.fixtures.push({ t: bot.now(), kind: 'store.seat', seat, reason: 'no seat interactable in this worktree yet; WorldActors path is the same as a real seat' });
-  await page.evaluate(s => __worldDebug.set({ seat: s }), seat);
+  // The integrated camp now has real seat registrations: use their actual approach point and E.
+  const anchor = await page.evaluate(() => {
+    const p = __worldDebug.snapshot().player;
+    return __worldInteract.list().filter(i => i.id.startsWith('camp-bench-')).sort((a, b) => Math.hypot(a.position[0] - p[0], a.position[2] - p[2]) - Math.hypot(b.position[0] - p[0], b.position[2] - p[2]))[0];
+  });
+  if (!anchor) throw new Error('No real camp bench registered');
+  await bot.fixtureTeleport([anchor.position[0], anchor.position[1] + .9, anchor.position[2]], `approach real bench ${anchor.id}`);
+  await page.waitForTimeout(900); await bot.press('KeyE'); await page.waitForTimeout(250);
+  const seat = await page.evaluate(() => __worldDebug.state().seat);
+  if (!seat) throw new Error('E did not sit on the real camp bench');
+  report.seat = seat;
   await phase('sit', [], 2600, null, 2300);
-  await phase('stand-up', ['KeyW'], 120); await phase('stand-up-hold', [], 1600, null, 300);
+  for (let i = 0; i < 12; i++) { await bot.wheel(-240); await page.waitForTimeout(40); } await page.waitForTimeout(700); await snap('sit-near'); for (let i = 0; i < 12; i++) { await bot.wheel(240); await page.waitForTimeout(40); }
+  await phase('stand-up', [], 120, 'KeyE'); await phase('stand-up-hold', [], 1600, null, 300);
   // vehicle: fixture next to the offroad, then real E
   const car = await page.evaluate(() => __worldDebug.snapshot().vehicles.find(v => v.id === 'offroad').position);
   report.car = car;

@@ -1,0 +1,164 @@
+{
+ "date": "2026-10-24",
+ "status": "reviewable fixes; A3 not accepted",
+ "finalAsset": {
+  "path": "public/assets/world/guide/G24.glb",
+  "sha256": "e68d86cfd62bc03a271475f13c06243f55df5ae507fdbe8f6794cc4906860f86",
+  "bytes": 726680,
+  "blender": "4.2.23 LTS",
+  "triangles": 3186,
+  "meshes": 2,
+  "bones": 18,
+  "actions": [
+   "IdleLook_G24",
+   "Idle_G24",
+   "JumpAir_G24",
+   "JumpStart_G24",
+   "Land_G24",
+   "RunJumpAir_G24",
+   "RunJumpStart_G24",
+   "Run_G24",
+   "SitDown_G24",
+   "SitIdle_G24",
+   "Sprint_G24",
+   "StandUp_G24",
+   "TurnL_G24",
+   "TurnR_G24",
+   "Walk_G24"
+  ],
+  "materials": [
+   "guide_dot_light",
+   "guide_glove_boot_accent",
+   "guide_helmet_metal",
+   "guide_hipbag_accent",
+   "guide_jacket_paint",
+   "guide_pants_accent",
+   "guide_sleeve_cream",
+   "guide_visor_glass"
+  ]
+ },
+ "preservation": {
+  "unchangedClips": [
+   "Idle",
+   "IdleLook",
+   "JumpAir",
+   "JumpStart",
+   "Land",
+   "Run",
+   "RunJumpAir",
+   "RunJumpStart",
+   "Sprint",
+   "TurnL",
+   "TurnR",
+   "Walk"
+  ],
+  "changedClips": [
+   "SitDown",
+   "SitIdle",
+   "StandUp"
+  ],
+  "oldSHA": "768262f637d1c11fb4a4103cfddce8f70ea1c0f43e6f2c72c1e68c4a60e45599",
+  "newSHA": "e68d86cfd62bc03a271475f13c06243f55df5ae507fdbe8f6794cc4906860f86",
+  "dracoPrimitiveBytesIdentical": true
+ },
+ "sources": "docs/world/THIRD_PARTY.md G24 v3d; CMU 143_18 for seated clips; source files and licenses unchanged",
+ "modification": {
+  "offlineHipMinimum_m": 0.47,
+  "offlineSeatedHipBack_m": 0.42,
+  "pelvisTiltScale": 0.35,
+  "footTrackHalfWidth_m": 0.135,
+  "runtimeButtockHeight_m": 0.263,
+  "runtimeRootForward_m": 0.456,
+  "buttockSupportAheadOfSeatCenter_m": 0.23,
+  "thirdRuntimeIK": false
+ },
+ "exports": {
+  "uncompressed": {
+   "path": "/Users/bobby/Desktop/3D-personal-world/wt/character-close/tools/world/guide/out/G24_uncompressed.glb",
+   "bytes": 909884,
+   "sha256": "ae4cd12dd2e2efbae06bf80508c4062679693baff76beb8e6b216edb166eb96d"
+  },
+  "draco": {
+   "path": "/Users/bobby/Desktop/3D-personal-world/wt/character-close/public/assets/world/guide/G24.glb",
+   "bytes": 726680,
+   "sha256": "e68d86cfd62bc03a271475f13c06243f55df5ae507fdbe8f6794cc4906860f86"
+  }
+ },
+ "evidenceRoot": "/Users/bobby/Desktop/3D-personal-world/evidence/character-close",
+ "finalRuntime": "/Users/bobby/Desktop/3D-personal-world/evidence/character-close/final-r9",
+ "astroCheck": {
+  "errors": 0,
+  "warnings": 0,
+  "hints": 135,
+  "log": "/Users/bobby/Desktop/3D-personal-world/evidence/character-close/astro-final.log"
+ },
+ "knownFailures": [
+  "A3 contact drift during seat approach/stand retreat exceeds fixed 40mm switch window; see final-r9/a3-windows.json",
+  "P16 close camera collides with hut and crops legs; actual screenshot kept, not replaced by studio render"
+ ],
+ "notTested": [
+  "No unchanged gait regression package",
+  "No all-island budget/physics or user acceptance",
+  "Furniture triangle test only tests recorded stable SitIdle boots, not complete all-body seat-transition environment collision"
+ ],
+ "final-selfx-draco": {
+  "samples": 194,
+  "selfCrossingSamples": 0,
+  "passedRelations": null
+ },
+ "final-relations-draco": {
+  "samples": 194,
+  "selfCrossingSamples": null,
+  "passedRelations": true
+ },
+ "final-selfx-native": {
+  "samples": 194,
+  "selfCrossingSamples": 0,
+  "passedRelations": null
+ },
+ "final-relations-native": {
+  "samples": 194,
+  "selfCrossingSamples": null,
+  "passedRelations": true
+ },
+ "runtimeA6": {
+  "passed": true,
+  "samples": 2364,
+  "views": [
+   {
+    "label": "C06",
+    "frames": 796,
+    "passed": true
+   },
+   {
+    "label": "P16",
+    "frames": 750,
+    "passed": true
+   },
+   {
+    "label": "idle-turn",
+    "frames": 681,
+    "passed": true
+   },
+   {
+    "label": "vehicle",
+    "frames": 137,
+    "passed": true
+   }
+  ]
+ },
+ "seatFurnitureContact": {
+  "C06": {
+   "samples": 580,
+   "maxBootFurnitureSurfaceCrossingPairs": 0,
+   "failedSamples": 0,
+   "proposedForwardOffset_m": 0
+  },
+  "P16": {
+   "samples": 536,
+   "maxBootFurnitureSurfaceCrossingPairs": 0,
+   "failedSamples": 0,
+   "proposedForwardOffset_m": 0
+  }
+ }
+}

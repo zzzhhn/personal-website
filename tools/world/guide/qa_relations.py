@@ -275,7 +275,11 @@ for pb in arm.pose.bones:
     pb.rotation_quaternion = (1, 0, 0, 0); pb.location = (0, 0, 0)
 sc.frame_set(0)
 Rep['samples'].append(test('rest'))
-for clip in sorted({x.name.split('_')[0] for x in bpy.data.actions}):   # every clip in the asset
+requested = set(os.environ.get('G24_QA_CLIPS', '').split(',')) - {''}
+Rep['requested_clips'] = sorted(requested) if requested else 'all'
+available = {x.name.split('_')[0] for x in bpy.data.actions}
+assert not requested - available, f'Missing requested clips: {requested - available}'
+for clip in sorted(available & requested if requested else available):
     a = action(clip)
     ad.action = a
     for f2 in range(2 * int(a.frame_range[0]), 2 * int(a.frame_range[1]) + 1):

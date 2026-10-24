@@ -406,7 +406,7 @@
    "duration_s": 0.5833333333333334,
    "loop": false,
    "designSpeedMps": 0.0,
-   "ik_overstretch_max_m": 0.0,
+   "ik_overstretch_max_m": 0.12283951633471968,
    "mocap": {
     "source": "sit",
     "take": "143_18.amc",
@@ -442,11 +442,14 @@
      "kind": "free",
      "stance": "source",
      "speed": 0.0,
-     "keep_hip": "seat"
+     "keep_hip": "seat",
+     "hip_z_min": 0.47,
+     "pelvis_tilt": 0.35,
+     "feet_apart": 0.135
     },
-    "stance_dz_m": 0.021944242840011913,
-    "boot_separation_push_max_m": 0.02476096427440643,
-    "ik_overstretch_max_m": 0.0,
+    "stance_dz_m": 0.011607027302185694,
+    "boot_separation_push_max_m": 0.0,
+    "ik_overstretch_max_m": 0.12283951633471968,
     "design_speed_mps": 0.0
    }
   },
@@ -455,7 +458,7 @@
    "duration_s": 0.5333333333333333,
    "loop": false,
    "designSpeedMps": 0.0,
-   "ik_overstretch_max_m": 0.0,
+   "ik_overstretch_max_m": 0.136182389438114,
    "mocap": {
     "source": "sit",
     "take": "143_18.amc",
@@ -491,11 +494,14 @@
      "kind": "free",
      "stance": "source",
      "speed": 0.0,
-     "keep_hip": "seat"
+     "keep_hip": "seat",
+     "hip_z_min": 0.47,
+     "pelvis_tilt": 0.35,
+     "feet_apart": 0.135
     },
-    "stance_dz_m": 0.02152875946326689,
-    "boot_separation_push_max_m": 0.04159983521699905,
-    "ik_overstretch_max_m": 0.0,
+    "stance_dz_m": -0.04100210626016964,
+    "boot_separation_push_max_m": 0.0,
+    "ik_overstretch_max_m": 0.136182389438114,
     "design_speed_mps": 0.0
    }
   },
@@ -504,7 +510,7 @@
    "duration_s": 0.4666666666666667,
    "loop": false,
    "designSpeedMps": 0.0,
-   "ik_overstretch_max_m": 0.0,
+   "ik_overstretch_max_m": 0.12390128696734959,
    "mocap": {
     "source": "sit",
     "take": "143_18.amc",
@@ -540,11 +546,14 @@
      "kind": "free",
      "stance": "source",
      "speed": 0.0,
-     "keep_hip": "seat"
+     "keep_hip": "seat",
+     "hip_z_min": 0.47,
+     "pelvis_tilt": 0.35,
+     "feet_apart": 0.135
     },
-    "stance_dz_m": 0.0201098565654508,
-    "boot_separation_push_max_m": 0.049113619089126585,
-    "ik_overstretch_max_m": 0.0,
+    "stance_dz_m": 0.01064013034619134,
+    "boot_separation_push_max_m": 0.0,
+    "ik_overstretch_max_m": 0.12390128696734959,
     "design_speed_mps": 0.0
    }
   },
@@ -591,7 +600,7 @@
      "speed": 0.0,
      "pin": false
     },
-    "boot_separation_push_max_m": 0.08824062621593476,
+    "boot_separation_push_max_m": 2.741813659792869e-09,
     "ik_overstretch_max_m": 0.0,
     "design_speed_mps": 0.0,
     "yaw_curve": [
@@ -710,7 +719,7 @@
      "speed": 0.0,
      "pin": false
     },
-    "boot_separation_push_max_m": 0.1288315830230713,
+    "boot_separation_push_max_m": 2.741813659792869e-09,
     "ik_overstretch_max_m": 0.0,
     "design_speed_mps": 0.0,
     "yaw_curve": [
