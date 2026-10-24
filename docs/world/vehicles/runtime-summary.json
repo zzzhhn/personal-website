@@ -935,7 +935,7 @@
     ],
     "nearAll3Triangles": 38074,
     "nearAll3Budget": 30000,
-    "lod1Implemented": false
+    "lod1Implemented": true
   },
   "checks": {
     "astroErrors": 0,
@@ -1010,5 +1010,12 @@
     "assetErrors": 0,
     "analytics404": 4,
     "javascriptErrors": 0
+  },
+  "lodFollowUp": {
+    "report": "LOD-STATUS.md",
+    "summary": "lod-summary.json",
+    "l0Total": 38074,
+    "l1Total": 10290,
+    "passed": true
   }
 }
