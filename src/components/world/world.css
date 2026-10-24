@@ -201,8 +201,17 @@ kbd { font: 600 11px/1 "Geist", sans-serif; display: inline-flex; align-items: c
 .world-cover a, .world-cover button { color: var(--paper); }
 .world-cover a { text-underline-offset: 5px; padding: 12px; }
 .world-cover button { padding: 12px 20px; background: #324e58; border: 1px solid #ffffff40; border-radius: 8px; }
-.world-progress { width: 120px; height: 2px; margin-top: 20px; background: var(--sand); animation: world-pulse 1.2s ease-in-out infinite alternate; }
-@keyframes world-pulse { to { opacity: .25; transform: scaleX(.6); } }
+.world-loading { gap: 0; overflow: hidden; }
+.world-loading > .world-eyebrow { margin-bottom: 24px; color: var(--sand); }
+.world-loading-map { width: min(460px, 78vw); position: relative; border: 1px solid #f4ecdb26; border-radius: 16px; overflow: hidden; box-shadow: 0 22px 65px #0005; }
+.world-loading-map .world-map { display: block; width: 100%; max-width: none; border-radius: 0; box-shadow: none; }
+.world-loading-muted { filter: grayscale(1); opacity: .35; }
+.world-loading-reveal { position: absolute; inset: 0; transition: clip-path .28s ease-out; }
+.world-loading .world-loading-stage { margin: 14px 0 0; color: var(--paper-2); font-size: 14px; }
+.world-progress { display: block; width: 180px; height: 3px; margin-top: 22px; overflow: hidden; border-radius: 2px; background: #f4ecdb20; }
+.world-progress > span { display: block; width: 100%; height: 100%; background: var(--sand); transform-origin: left; transition: transform .28s ease-out; }
+.world-loading .world-loading-hint { margin: 17px 0 0; font-size: 12px; color: #a9babc; }
+@media (max-height: 700px) { .world-loading-map { width: min(340px, 64vw); } .world-loading > .world-eyebrow { margin-bottom: 14px; } }
 
 .world-shot .world-top, .world-shot .world-location, .world-shot .world-interaction, .world-shot .world-experience, .world-shot .world-prompt, .world-shot .world-zone,
 .world-shot .world-hints, .world-shot .world-speed, .world-shot .world-card-layer { display: none; }
@@ -216,6 +225,7 @@ kbd { font: 600 11px/1 "Geist", sans-serif; display: inline-flex; align-items: c
 }
 @media (max-height: 760px) { .world-radar { width: 132px; height: 132px; } .world-zone { top: 10vh; } .world-card { max-height: 90dvh; } }
 @media (prefers-reduced-motion: reduce) {
+  .world-loading-reveal, .world-progress > span { transition: none !important; }
   .world-progress, .world-zone, .world-hint, .world-prompt, .world-card, .world-card-layer, .world-card-list li, .world-card-board, .world-experience > div, .world-dialog[open], .world-map-waypoint { animation: none !important; }
   .world-zone { animation: world-zone-still 3.4s linear both !important; }
 }

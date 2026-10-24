@@ -1,15 +1,19 @@
 import { Component, lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
 import { useWorldStore } from './store';
 import { worldText } from './world-i18n';
-import { WORLD_SHOTS } from './layout';
+import { CAMP_CENTER, WORLD_SHOTS } from './layout';
 import type { WorldContent } from './types';
 import WorldExperienceSummary from './WorldExperienceSummary';
 import WorldCards from './WorldCards';
-import WorldMap from './WorldMap';
+import WorldMap, { loadMapGeometry } from './WorldMap';
 import { WorldFirstHints, WorldWaypointReadout, WorldZoneTitle } from './WorldHud';
 import './world.css';
 
-const Runtime = lazy(() => import('./WorldRuntime'));
+const Runtime = lazy(async () => {
+  const { attachLoadProgress } = await import('./WorldLoadProgress');
+  attachLoadProgress();
+  return import('./WorldRuntime');
+});
 // QA-only ui fixtures (?qa=1&uitest=1); the normal entry never loads this chunk.
 const uiTest = typeof window !== 'undefined' && /[?&]qa=1/.test(window.location.search) && /[?&]uitest=1/.test(window.location.search);
 const UiTest = uiTest ? lazy(() => import('./WorldUiTest')) : null;
@@ -25,7 +29,26 @@ class WorldErrorBoundary extends Component<{ children: ReactNode; message: strin
 
 function Loading() {
   const t = worldText[useWorldStore(s => s.lang)];
-  return <div className="world-cover world-loading" role="status"><WorldMap mode='full' /><h1>{t.loading}</h1><p>{t.loadingHint}</p><span className="world-progress" /></div>;
+  const loading = useWorldStore(s => s.loading);
+  const [viewBox, setViewBox] = useState<readonly number[]>([-85, -70, 180, 145]);
+  useEffect(() => { let live = true; loadMapGeometry().then(g => { if (live) setViewBox(g.viewBox); }).catch(() => {}); return () => { live = false; }; }, []);
+  const observed = loading.phase === 'ready' ? 1 : loading.phase === 'scene' ? .94 : loading.total ? .08 + .8 * loading.loaded / loading.total : .04;
+  // Keep earned colour when another dependency is discovered. This is a visual frontier, not a byte percentage.
+  const frontier = useRef(0);
+  const fraction = frontier.current = Math.max(frontier.current, observed);
+  const cx = (CAMP_CENTER[0] - viewBox[0]) / viewBox[2], cy = (CAMP_CENTER[2] - viewBox[1]) / viewBox[3];
+  const radius = Math.hypot(Math.max(cx, 1 - cx) * viewBox[2], Math.max(cy, 1 - cy) * viewBox[3]) / (Math.hypot(viewBox[2], viewBox[3]) / Math.SQRT2) * 100;
+  const stage = loading.phase === 'runtime' ? t.loadingArrival : loading.phase === 'assets' ? t.loadingPlaces : t.loadingStart;
+  return <div className="world-cover world-loading" role="status" aria-live="polite" aria-busy="true">
+    <span className="world-eyebrow">{t.title}</span>
+    <div className="world-loading-map" aria-hidden="true">
+      <div className="world-loading-muted"><WorldMap mode="full" showPlayer={false} /></div>
+      <div className="world-loading-reveal" style={{ clipPath: `circle(${radius * fraction}% at ${cx * 100}% ${cy * 100}%)` }}><WorldMap mode="full" showPlayer={false} /></div>
+    </div>
+    <h1>{t.loading}</h1><p className="world-loading-stage">{stage}</p>
+    <span className="world-progress" aria-hidden="true"><span style={{ transform: `scaleX(${fraction})` }} /></span>
+    <p className="world-loading-hint">{t.loadingHint}</p>
+  </div>;
 }
 
 export default function WorldApp({ content }: { content: WorldContent }) {
