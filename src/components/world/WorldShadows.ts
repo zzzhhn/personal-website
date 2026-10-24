@@ -619,6 +619,8 @@ function meshSphere(c: Caster, out: Sphere) {
 /** View frustum of the frame being shadowed (set in updateCascades). */
 const viewFrustum = new Frustum(), viewMatrix = new Matrix4();
 let viewValid = false;
+/** Fixed QA shots fit every cascade to the whole island: only c0 draws (c1/c2 lie inside it), so it uses the coarse cells. */
+let wideMode = false;
 const sweepSphere = new Sphere();
 /** Can any shadow of this caster be on screen? Its shadow lies along -sun from the caster down to sea
  * level (a receiver is always lower than the caster on the light ray), so the swept sphere from the
@@ -653,7 +655,7 @@ function applySunPass(k: number) {
   let nCasters = 0, nProxies = 0, nInstances = 0;
   fireStatic.castShadow = false;
   for (const ch of chunks) {
-    ch.mesh.castShadow = ch.cascade === k && inCascade(k, ch.sphere.center.x, ch.sphere.center.y, ch.sphere.center.z, ch.sphere.radius, true);
+    ch.mesh.castShadow = ch.cascade === (wideMode && k === 0 ? 2 : k) && inCascade(k, ch.sphere.center.x, ch.sphere.center.y, ch.sphere.center.z, ch.sphere.radius, true);
     if (ch.mesh.castShadow) nProxies++;
   }
   for (const gr of groups) {
@@ -777,7 +779,7 @@ function updateCascades(shadow: CascadeShadow, viewCamera: Camera | undefined) {
   viewCamera.updateMatrixWorld();
   viewMatrix.multiplyMatrices(viewCamera.projectionMatrix, viewCamera.matrixWorldInverse);
   viewFrustum.setFromProjectionMatrix(viewMatrix);
-  viewValid = !wide;
+  viewValid = !wide; wideMode = wide;
   // Ground look direction (unit, horizontal) and the visible ground span along it, measured from the camera:
   // bottom-centre and top-centre view rays against the focus height (top capped at 110 m, fog starts at 140 m).
   let gx = 0, gz = 0, nearG = 0, farG = 110;
