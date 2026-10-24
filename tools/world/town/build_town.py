@@ -481,6 +481,133 @@ def build_T04():
         A.add(cyl((-0.6 + k * 0.6, 3.0), 0.16, UZ1 + 0.7, UZ1 + 0.76, 10), 'town_metal', smooth=True)
     return A
 
+# ============================================================== T05 Video Rebirth: Hong Kong tong lau, arcade + narrow balconies
+def balcony(A, F, u0, u1, z, depth, key):
+    """Narrow cantilevered balcony on plane F at floor level z: slab, edge beam, square balusters, handrail."""
+    A.box(*F.box(-0.05, depth, u0, u1, z - 0.14, z), 'town_trim', 0.015)
+    A.box(*F.box(depth - 0.08, depth, u0, u1, z - 0.24, z - 0.14), 'town_trim')
+    n = int((u1 - u0) / 0.16)
+    for k in range(n + 1):
+        u = u0 + 0.05 + k * (u1 - u0 - 0.1) / n
+        A.box(*F.box(depth - 0.06, depth - 0.03, u - 0.015, u + 0.015, z, z + 0.95), 'town_metal')
+    for uu in (u0 + 0.02, u1 - 0.07):  # end returns
+        for k in range(1, int(depth / 0.16) + 1):
+            n_ = k * (depth - 0.06) / (int(depth / 0.16) + 1)
+            A.box(*F.box(n_ - 0.015, n_ + 0.015, uu, uu + 0.05, z, z + 0.95), 'town_metal')
+    A.box(*F.box(depth - 0.08, depth - 0.01, u0, u1, z + 0.95, z + 1.0), 'town_metal')
+    A.box(*F.box(0.0, depth - 0.01, u0, u0 + 0.05, z + 0.95, z + 1.0), 'town_metal')
+    A.box(*F.box(0.0, depth - 0.01, u1 - 0.05, u1, z + 0.95, z + 1.0), 'town_metal')
+    A.box(*F.box(depth - 0.08, depth - 0.01, u0, u1, z + 0.1, z + 0.14), 'town_metal')
+
+def ac_unit(A, F, u, z, key):
+    A.box(*F.box(0.0, 0.45, u - 0.4, u + 0.4, z, z + 0.55), 'town_trim', 0.02)
+    A.add(xform(cyl((0, 0), 0.19, 0, 0.02, 14), F_axis_matrix(F, 0.45, u - 0.08, z + 0.27)), 'town_metal', smooth=True)
+    for k in range(3):
+        A.box(*F.box(0.45, 0.47, u + 0.17, u + 0.33, z + 0.12 + k * 0.12, z + 0.17 + k * 0.12), 'town_metal')
+    A.box(*F.box(0.05, 0.4, u - 0.35, u - 0.3, z - 0.12, z), 'town_metal')
+    A.box(*F.box(0.05, 0.4, u + 0.3, u + 0.35, z - 0.12, z), 'town_metal')
+
+def F_axis_matrix(F, n, u, z):
+    """Matrix placing a +Z-axis disc onto plane F (disc normal = outward), centre at (n, u, z)."""
+    p = Vector(F.point(n, u, z))
+    if F.axis == 'x':
+        r = Matrix.Rotation(math.radians(90 * F.sign), 4, 'Y')
+    else:
+        r = Matrix.Rotation(math.radians(-90 * F.sign), 4, 'X')
+    return Matrix.Translation(p) @ r
+
+def build_T05():
+    A = Asset('T05')
+    X0, X1, Y, H = -4.0, 4.0, 4.0, 11.0
+    A.extras.update(building='video-rebirth', footprint=[8, 11, 8])
+    AD = 2.4                   # arcade depth (kerb side, through-walk)
+    AZ = 3.4                   # arcade height
+    SX = X1 - AD               # shopfront plane
+    A.box((X0, -Y, 0), (X1, Y, PLAZA), 'town_stone_dark', 0.01)
+    for i in range(1, 12):
+        y = -Y + i * 2 * Y / 12
+        A.box((SX, y - 0.012, PLAZA), (X1 - 0.05, y + 0.012, PLAZA + 0.004), 'town_stone')
+    A.col_box((X0, -Y, -0.2), (X1, Y, PLAZA), 'col_floor')
+    sp, sn, bk = Face('y', 1, Y), Face('y', -1, -Y), Face('x', -1, X0)
+    # ground floor behind the arcade: two shop bays with rolling-shutter boxes and a stair door
+    sf = Face('x', 1, SX)
+    A.box(*sf.box(-0.2, 0, -Y, Y, AZ - 0.55, AZ), 'town_brick')
+    bays = ((-3.8, -0.9, 'shop'), (-0.6, 0.6, 'door'), (0.9, 3.8, 'shop'))
+    edges = [-Y] + [x for a, b, _ in bays for x in (a, b)] + [Y]
+    for i in range(0, len(edges), 2):
+        A.box(*sf.box(-0.2, 0, edges[i], edges[i + 1], PLAZA, AZ - 0.55), 'town_brick')
+    for a, b, kind in bays:
+        if kind == 'shop':
+            A.box(*sf.box(-0.2, -0.12, a, b, PLAZA, AZ - 0.55), 'town_glass_lit' if lit(f'T05s{a}', 0.8) else 'town_glass_dark')
+            for k in range(4):
+                u = a + k * (b - a) / 3
+                A.box(*sf.box(-0.12, -0.06, u - 0.03, u + 0.03, PLAZA, AZ - 0.55), 'town_metal')
+            A.box(*sf.box(-0.12, 0.02, a, b, PLAZA + 0.9, PLAZA + 0.95), 'town_metal')
+            A.box(*sf.box(0.0, 0.22, a - 0.05, b + 0.05, AZ - 0.85, AZ - 0.55), 'town_metal', 0.02)   # shutter box
+            for k in range(5):  # half-raised shutter slats
+                A.box(*sf.box(-0.05, 0.02, a + 0.02, b - 0.02, AZ - 0.86 - k * 0.06, AZ - 0.82 - k * 0.06), 'town_metal')
+        else:
+            A.box(*sf.box(-0.2, -0.1, a, b, PLAZA, 2.3), 'town_wood')
+            for k in range(3):
+                A.box(*sf.box(-0.1, -0.08, a + 0.12, b - 0.12, PLAZA + 0.25 + k * 0.7, PLAZA + 0.75 + k * 0.7), 'town_wood')
+            A.box(*sf.box(-0.2, -0.1, a, b, 2.3, AZ - 0.55), 'town_glass_lit')
+            A.box(*sf.box(-0.1, -0.05, a + 0.1, a + 0.14, 1.0, 1.25), 'town_metal')
+    facade(A, sp, X0, SX, PLAZA, AZ, 2, 1, 1.0, 1.5, 'town_brick', 'T05gs', wz=0.55, sill_mat='town_stone')
+    facade(A, sn, X0, SX, PLAZA, AZ, 2, 1, 1.0, 1.5, 'town_brick', 'T05gn', wz=0.55, sill_mat='town_stone')
+    facade(A, bk, -Y, Y, PLAZA, AZ, 3, 1, 1.0, 1.5, 'town_brick', 'T05gb', wz=0.55, sill_mat='town_stone')
+    A.col_box((X0, -Y, PLAZA), (SX, Y, AZ), 'col_ground')
+    # arcade columns (square, plinth + capital) at the kerb, four across; arcade open on both ends
+    for y in (-3.7, -1.25, 1.25, 3.7):
+        x = X1 - 0.3
+        A.box((x - 0.3, y - 0.3, PLAZA), (x + 0.3, y + 0.3, PLAZA + 0.35), 'town_stone_dark', 0.02)
+        A.box((x - 0.24, y - 0.24, PLAZA + 0.35), (x + 0.24, y + 0.24, AZ - 0.25), 'town_brick', 0.02)
+        A.box((x - 0.3, y - 0.3, AZ - 0.25), (x + 0.3, y + 0.3, AZ), 'town_trim', 0.02)
+        A.col_box((x - 0.3, y - 0.3, PLAZA), (x + 0.3, y + 0.3, AZ), f'col_arcade_{y:+.1f}')
+    A.box((SX, -Y, AZ - 0.08), (X1, Y, AZ), 'town_trim')       # arcade ceiling
+    for y in (-2.5, 0.0, 2.5):  # ceiling lamps (warm)
+        A.add(cyl((SX + 1.2, y), 0.14, AZ - 0.14, AZ - 0.08, 12), 'town_glass_lit', smooth=True)
+    # upper floors: brick body, per-floor narrow balconies across the front, windows behind them
+    A.box((X0 - 0.05, -Y - 0.05, AZ), (X1 + 0.05, Y + 0.05, AZ + 0.3), 'town_trim', 0.02)
+    UZ0, UZ1 = AZ + 0.3, H - 0.7
+    front = Face('x', 1, X1)
+    nfl = 3
+    fh = (UZ1 - UZ0) / nfl
+    facade(A, front, -Y, Y, UZ0, UZ1, 3, nfl, 1.25, 1.6, 'town_brick', 'T05uf', wz=0.25)
+    facade(A, sp, X0, X1, UZ0, UZ1, 3, nfl, 0.9, 1.3, 'town_brick', 'T05us', wz=0.45)
+    facade(A, sn, X0, X1, UZ0, UZ1, 3, nfl, 0.9, 1.3, 'town_brick', 'T05un', wz=0.45)
+    facade(A, bk, -Y, Y, UZ0, UZ1, 3, nfl, 0.9, 1.3, 'town_brick', 'T05ub', wz=0.45)
+    for f in range(nfl):
+        z = UZ0 + f * fh + 0.12
+        balcony(A, front, -Y + 0.2, Y - 0.2, z, 0.75, f'T05b{f}')
+        A.box((X1 - 0.02, -Y - 0.03, UZ0 + f * fh - 0.05), (X1 + 0.06, Y + 0.03, UZ0 + f * fh + 0.02), 'town_trim')
+    # AC units on the side walls, drain pipe, floor bands
+    for f in range(nfl):
+        z = UZ0 + f * fh + 0.25
+        ac_unit(A, sp, 1.2 - f * 1.9, z, f'acs{f}')
+        ac_unit(A, sn, -1.6 + f * 1.4, z + 0.2, f'acn{f}')
+    A.add(cyl((X0 + 0.25, Y + 0.08), 0.06, PLAZA, H - 0.4, 8), 'town_metal', smooth=True)
+    A.col_box((X0, -Y, AZ), (X1, Y, H), 'col_upper')
+    # vertical unlit sign frame cantilevered from the south corner (Art Lock: frame stays dark)
+    A.box((X1 + 0.0, -Y + 0.15, AZ + 0.6), (X1 + 0.9, -Y + 0.25, AZ + 0.68), 'town_metal')
+    A.box((X1 + 0.0, -Y + 0.15, UZ1 - 0.5), (X1 + 0.9, -Y + 0.25, UZ1 - 0.42), 'town_metal')
+    A.box((X1 + 0.8, -Y + 0.05, AZ + 0.4), (X1 + 1.05, -Y + 0.35, UZ1 - 0.2), 'town_dark', 0.02)
+    A.box((X1 + 0.83, -Y + 0.03, AZ + 0.5), (X1 + 1.02, -Y + 0.37, UZ1 - 0.3), 'town_screen')
+    A.anchor('anchor_vsign', (X1 + 0.925, -Y + 0.37, (AZ + UZ1) / 2), w=0.19, h=UZ1 - AZ - 0.8, normal='-Y', lit=False)
+    # parapet with a front name band, roof water tank on four legs, stair hut
+    A.box((X0 + 0.15, -Y + 0.15, UZ1 - 0.05), (X1 - 0.15, Y - 0.15, UZ1 + 0.1), 'town_roof')
+    parapet(A, X0, X1, -Y, Y, UZ1, 0.6, 'town_brick', coping='town_trim')
+    A.box(*front.box(0.0, 0.05, -2.8, 2.8, UZ1 + 0.08, UZ1 + 0.55), 'town_trim')
+    A.anchor('anchor_sign', front.point(0.055, 0, UZ1 + 0.315), w=5.4, h=0.4, normal='+X')
+    for (x, y) in ((-2.8, 1.0), (-1.4, 1.0), (-2.8, 2.6), (-1.4, 2.6)):
+        A.box((x - 0.06, y - 0.06, UZ1 + 0.1), (x + 0.06, y + 0.06, UZ1 + 1.2), 'town_metal')
+    A.box((-3.0, 0.8, UZ1 + 1.2), (-1.2, 2.8, UZ1 + 1.3), 'town_metal')
+    A.add(cyl((-2.1, 1.8), 0.85, UZ1 + 1.3, UZ1 + 2.4, 16), 'town_cream', smooth=True)
+    A.add(lathe([(0.88, 0), (0.6, 0.18), (0.0, 0.26)], 16, (-2.1, 1.8, UZ1 + 2.4)), 'town_cream', smooth=True)
+    A.box((0.8, -2.8, UZ1 + 0.1), (2.8, -0.8, UZ1 + 2.2), 'town_brick', 0.02)
+    A.box((0.75, -2.85, UZ1 + 2.2), (2.85, -0.75, UZ1 + 2.32), 'town_trim', 0.02)
+    A.box((2.8, -2.2, UZ1 + 0.1), (2.84, -1.4, UZ1 + 2.0), 'town_wood')
+    return A
+
 BUILDERS = {k[6:]: v for k, v in globals().items() if k.startswith('build_T')}
 
 def main():
