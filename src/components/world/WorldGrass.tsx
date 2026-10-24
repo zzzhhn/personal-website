@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useRapier } from '@react-three/rapier';
 import {
-  BufferGeometry, Color, DataTexture, DoubleSide, Float32BufferAttribute, InstancedMesh, LinearFilter, MeshStandardMaterial, Object3D,
+  BufferGeometry, Color, DataTexture, DoubleSide, Float32BufferAttribute, Frustum, InstancedBufferAttribute, InstancedMesh, LinearFilter, Matrix4, MeshStandardMaterial, Object3D, Sphere,
   ClampToEdgeWrapping, Quaternion, RGBAFormat, UnsignedByteType, Vector3, Vector4,
 } from 'three';
 import { VEHICLES } from './layout';
@@ -182,7 +182,7 @@ export const GRASS_PROFILE = {
   balanced: { near: 10, far: 26, farKeep: .25, cap: 1800 },
 } as const;
 /** Exposed for QA: live counts and the trample state. */
-export const grassDebug = { instances: 0, triangles: 0, disturbers: 0, trampleActive: 0, maxTrample: 0, profile: 'high' as keyof typeof GRASS_PROFILE,
+export const grassDebug = { candidates: 0, culled: 0, uploads: 0, setCullingForQA: (_enabled: boolean) => {}, instances: 0, triangles: 0, disturbers: 0, trampleActive: 0, maxTrample: 0, profile: 'high' as keyof typeof GRASS_PROFILE,
   trampleBytes: TRAMPLE_NX * TRAMPLE_NZ * 4,
   /** Trample amount 0..1 at a world point (max over a 0.5 m neighbourhood). */
   trampleAt: (x: number, z: number) => { void x; void z; return 0; } };
@@ -190,6 +190,55 @@ export const grassDebug = { instances: 0, triangles: 0, disturbers: 0, trampleAc
 /** data stride 6: x, y, z, yaw, size 0..1, keep (lower = kept first). */
 export default function WorldGrass({ data }: { data: Float32Array }) {
   const ref = useRef<InstancedMesh>(null);
+  const { scene } = useThree();
+  const cull = useMemo(() => ({
+    matrices: new Float32Array(GRASS_PROFILE.high.cap * 16), colors: new Float32Array(GRASS_PROFILE.high.cap * 3),
+    count: 0, revision: 0, uploadedRevision: -1, enabled: true, uploadedEnabled: true,
+    frustum: new Frustum(), viewProjection: new Matrix4(), previousView: new Matrix4(), previousWorld: new Matrix4(), sphere: new Sphere(),
+  }), []);
+  useEffect(() => {
+    const mesh = ref.current; if (!mesh) return;
+    mesh.instanceColor ??= new InstancedBufferAttribute(new Float32Array(GRASS_PROFILE.high.cap * 3), 3);
+    const previous = scene.onBeforeRender;
+    let active = true;
+    const before: typeof previous = function (this: Object3D, renderer, renderScene, camera, geometry, material, group) {
+      previous.call(this, renderer, renderScene, camera, geometry, material, group);
+      if (!active) return;
+      // Renderer has updated the actual camera/world matrices; projectObject (and instance upload)
+      // follows this scene hook. A mesh hook would run after the upload, one frame too late.
+      cull.viewProjection.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+      if (cull.uploadedRevision === cull.revision && cull.uploadedEnabled === cull.enabled
+        && cull.previousView.equals(cull.viewProjection) && cull.previousWorld.equals(mesh.matrixWorld)) return;
+      cull.frustum.setFromProjectionMatrix(cull.viewProjection, camera.coordinateSystem);
+      cull.sphere.radius = mesh.matrixWorld.getMaxScaleOnAxis(); // conservative 1 m, including wind / pressed tips
+      const dst = mesh.instanceMatrix.array, colors = mesh.instanceColor!.array;
+      let visible = 0;
+      for (let i = 0; i < cull.count; i++) {
+        const m = i * 16;
+        cull.sphere.center.set(cull.matrices[m + 12], cull.matrices[m + 13], cull.matrices[m + 14]).applyMatrix4(mesh.matrixWorld);
+        if (cull.enabled && !cull.frustum.intersectsSphere(cull.sphere)) continue;
+        for (let k = 0; k < 16; k++) dst[visible * 16 + k] = cull.matrices[m + k];
+        for (let k = 0; k < 3; k++) colors[visible * 3 + k] = cull.colors[i * 3 + k];
+        visible++;
+      }
+      mesh.count = visible;
+      mesh.instanceMatrix.needsUpdate = true; mesh.instanceColor!.needsUpdate = true;
+      cull.previousView.copy(cull.viewProjection); cull.previousWorld.copy(mesh.matrixWorld);
+      cull.uploadedRevision = cull.revision; cull.uploadedEnabled = cull.enabled;
+      grassDebug.candidates = cull.count; grassDebug.culled = cull.count - visible;
+      grassDebug.instances = visible; grassDebug.triangles = visible * GRASS_TUFT_TRIANGLES; grassDebug.uploads++;
+    };
+    scene.onBeforeRender = before;
+    const qa = new URLSearchParams(window.location.search).get('qa') === '1';
+    const setCullingForQA = (enabled: boolean) => { if (qa) cull.enabled = enabled; };
+    grassDebug.setCullingForQA = setCullingForQA;
+    return () => {
+      // A later hook (e.g. shadows) may wrap ours: leave that chain intact, with ours inert.
+      active = false;
+      if (scene.onBeforeRender === before) scene.onBeforeRender = previous;
+      if (grassDebug.setCullingForQA === setCullingForQA) grassDebug.setCullingForQA = () => {};
+    };
+  }, [scene, cull]);
   const count = data.length / 6;
   const geometry = useMemo(grassTuftGeometry, []);
   const trample = useMemo(createTrample, []);
@@ -231,13 +280,12 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
     pick.forEach(([, i], n) => {
       const s = .7 + data[i * 6 + 4] * .75;
       dummy.position.set(data[i * 6], data[i * 6 + 1] - .02, data[i * 6 + 2]); dummy.rotation.set(0, data[i * 6 + 3], 0); dummy.scale.setScalar(s * (.82 + .3 * Math.abs(Math.sin(data[i * 6] * 5.7 + data[i * 6 + 2] * 3.9)))); dummy.updateMatrix();
-      mesh.setMatrixAt(n, dummy.matrix); mesh.setColorAt(n, tint.c.copy(tint.a).lerp(tint.b, data[i * 6 + 4]));
+      dummy.matrix.toArray(cull.matrices, n * 16);
+      tint.c.copy(tint.a).lerp(tint.b, data[i * 6 + 4]).toArray(cull.colors, n * 3);
     });
-    mesh.count = pick.length;
-    mesh.instanceMatrix.needsUpdate = true;
-    if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+    cull.count = pick.length; cull.revision++;
     uniforms.uFade.value = [p.far - 6, p.far];
-    grassDebug.instances = pick.length; grassDebug.triangles = pick.length * GRASS_TUFT_TRIANGLES; grassDebug.profile = q;
+    grassDebug.profile = q;
   };
 
   const stamp = (x: number, z: number, radius: number, strength: number) => {
