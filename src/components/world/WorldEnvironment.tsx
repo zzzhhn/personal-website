@@ -15,7 +15,8 @@ import WorldYears from './WorldYears';
 import WorldCamp, { type CampLayout } from './WorldCamp';
 import { IslandTerrain } from './WorldTerrain';
 import WorldSea from './WorldSea';
-import { createWorldWaterMaterial } from './WorldWater';
+import { createWorldWaterMaterial, seaGlintUniforms } from './WorldWater';
+import { GlowClock, GlowDemo } from './WorldGlow';
 import { windUniforms } from './WorldWind';
 import { SUN_OFFSET, fitSunShadow } from './WorldShadows';
 import WorldSurfaceColliders from './WorldSurfaceColliders';
@@ -144,7 +145,7 @@ function SurfaceTops({ items }: { items: Block[] }) {
 function StaticBlocks({ items, surface = false, visual = true, name }: { items: Block[]; surface?: boolean; visual?: boolean; name: string }) {
   return <>
     {surface?<WorldSurfaceColliders items={items} name={name}/>:<RigidBody name={name} type="fixed" colliders={false} userData={{solid:true}}>
-    {items.map((item, i) => <CuboidCollider key={i} name={`${name}-${i}`} position={item.position} rotation={item.rotation}
+    {items.map((item, i) => <CuboidCollider key={`${item.position}|${item.size}|${item.rotation ?? [0,0,0]}`} name={`${name}-${i}`} position={item.position} rotation={item.rotation ?? [0,0,0]}
       args={[item.size[0] / 2, item.size[1] / 2, item.size[2] / 2]}
       friction={0.65} restitution={0.15}
       />)}
@@ -375,7 +376,7 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
   const parkFillPositions = useMemo<Vec3[]>(() => [[56, 5.4, -43], [69, 5.4, -29], [59, 5.4, -13]], []);
   const state = useRef({ value: 0, start: 0, target: 0, elapsed: 2 });
   const skyUniforms = useMemo(() => ({ top: { value: new Color('#6F86A8') }, horizon: { value: new Color('#F2B98A') } }), []);
-  const colors = useMemo(() => ({ duskSea: new Color('#1E5A5E'), nightSea: new Color('#0E2A33'), duskTop: new Color('#6F86A8'), nightTop: new Color('#121A33'), duskHorizon: new Color('#F2B98A'), nightHorizon: new Color('#4A3A3A') }), []);
+  const colors = useMemo(() => ({ duskSea: new Color('#1E5A5E'), nightSea: new Color('#0E2A33'), duskTop: new Color('#6F86A8'), nightTop: new Color('#121A33'), duskHorizon: new Color('#F2B98A'), nightHorizon: new Color('#4A3A3A'), glint: new Color('#FFD9A8').multiplyScalar(1.6) }), []);
   useEffect(() => { state.current.start = state.current.value; state.current.target = light === 'night' ? 1 : 0; state.current.elapsed = 0; }, [light]);
   useEffect(() => {
     const oldFog = scene.fog;
@@ -408,10 +409,13 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
       // A low teal floor preserves the water silhouette; local warm park lights
       // supply the nearby illumination rather than widening cyan emissive strips.
       sea.emissiveIntensity = n * 0.22;
+      // Sun glitter follows the key light (warm at dusk, gone at night).
+      seaGlintUniforms.uGlint.value.copy(colors.glint).multiplyScalar(1 - n);
     }
     if (scene.fog) scene.fog.color.copy(skyUniforms.horizon.value);
   });
   return <>
+    <GlowClock /><GlowDemo />
     <hemisphereLight ref={hemisphere} args={['#8FA6C4', '#695444', 1.5]} />
     <directionalLight ref={sun} position={SUN_OFFSET.toArray()} color="#FFD9A8" intensity={3.4} castShadow
       shadow-mapSize={[shadowSize, shadowSize]} shadow-camera-left={-105} shadow-camera-right={105}
@@ -419,7 +423,7 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
     <pointLight ref={fire} name="camp-fire-key" position={[-42, 6.5, 30]} color="#FF8A3A" intensity={9} distance={26} decay={2} />
     {parkFillPositions.map((position, i) => <pointLight key={i} ref={lamp => { parkFill.current[i] = lamp; }}
       position={position} color="#FFD08A" intensity={0} distance={25} decay={2} castShadow={false} />)}
-    <mesh position={[0, 0, 0]} renderOrder={-10}>
+    <mesh name="world-sky" position={[0, 0, 0]} renderOrder={-10}>
       <sphereGeometry args={[290, 24, 16]} />
       <shaderMaterial side={BackSide} depthWrite={false} uniforms={skyUniforms}
         vertexShader={'varying vec3 vDirection; void main(){vDirection=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}'}

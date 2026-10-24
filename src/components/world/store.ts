@@ -29,9 +29,13 @@ interface WorldState {
   zoom: 0 | 1 | 2 | 3;
   quality: 'balanced' | 'high';
   shot: string | null;
+  /** UI only: map waypoint (x, z), set from the Esc map; cleared on arrival. Navigation, no reward. */
+  waypoint: [number, number] | null;
+  /** UI only: id of the interactable chosen with Q when several are in reach (null = nearest). */
+  interactPick: string | null;
 }
 export const useWorldStore = create<WorldState>(() => ({
   lang: 'en', light: 'dusk', paused: false, activeVehicle: null, nearbyVehicle: null, nearbyInteract: null, card: null, seat: null, toast: null,
   canRecover: false, recoverRequest: 0, speed: 0, zone: 'camp', position: [-42, 5, 30],
-  ready: false, zoom: 1, quality: 'high', shot: null,
+  ready: false, zoom: 1, quality: 'high', shot: null, waypoint: null, interactPick: null,
 }));

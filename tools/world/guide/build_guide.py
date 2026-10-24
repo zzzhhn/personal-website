@@ -9,10 +9,12 @@ they are NOT Mixamo and not an animator-facing control rig.
 import bpy, bmesh, json, math, os, sys, hashlib
 from mathutils import Vector, Matrix, Quaternion
 
-REPO = '/Users/bobby/WorkBuddy/personal-website/personal-website'
+# Repo root derived from this file (tools/world/guide/build_guide.py), so a worktree build never writes into
+# another checkout. G24_REPO overrides it explicitly.
+REPO = os.environ.get('G24_REPO') or os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..'))
 TOOLS = f'{REPO}/tools/world/guide'
 PUBLIC = f'{REPO}/public/assets/world/guide'
-DOCS = f'{REPO}/docs/world/quality-v2/guide'
+DOCS = f'{REPO}/docs/world/character'
 USE_MOCAP = os.environ.get('G24_MOCAP', '1') != '0'   # v3: Walk/Run/Sprint retargeted from CMU mocap
 FPS = 60  # r2: 60 keys/s; at 30 the fast Run foot dipped 1 cm below ground between keys (linear/slerp)
 RIGHT = -1.0  # Blender -Y is the character's right (glTF +Z). Bag + cyan dot go here (text lock).
@@ -983,6 +985,8 @@ def bake_clips(ao):
         act['designSpeedMps'] = C['speed']
         act['contactR'] = mask['R']
         act['contactL'] = mask['L']
+        if name in MOCAP and 'yaw_curve' in MOCAP[name][1]:
+            act['yawCurve'] = MOCAP[name][1]['yaw_curve']
         act.frame_range = (0, n)
         report[name] = dict(frames=n, duration_s=n / FPS, loop=C['loop'], designSpeedMps=C['speed'],
                             ik_overstretch_max_m=max_stretch)
@@ -1029,6 +1033,10 @@ def main():
         idle_local = solve_pose(idle(0.0))[0]
         for nm, val in MR.make_oneshot_clips(data, REST, BOOT, consts, solve_pose_world, idle_local, FPS).items():
             MOCAP[nm] = val
+        # v3d: measured extra one-shots (sit / turn in place / idle look), same retarget + contact bake
+        if os.path.exists(MR.EXTRA_SRC) and os.environ.get('G24_EXTRA', '1') != '0':
+            for nm, val in MR.make_oneshot_clips(MR.load_extra(), REST, BOOT, consts, solve_pose_world, idle_local, FPS, MR.EXTRA).items():
+                MOCAP[nm] = val
     rep = bake_clips(ao)
     sc.frame_start, sc.frame_end = 0, 72
     ao['assetId'] = 'G24'

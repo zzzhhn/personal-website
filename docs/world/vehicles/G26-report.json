@@ -1,0 +1,138 @@
+{
+ "asset": "G26",
+ "generator": "vehicles-r1",
+ "blender": "4.2.23 LTS",
+ "sourceBounds": [
+  [
+   -2.205,
+   -1.07,
+   0.0
+  ],
+  [
+   2.2,
+   1.07,
+   1.305
+  ]
+ ],
+ "sourceTris": {
+  "G26_body": 3618,
+  "wheel-front-right": 1908,
+  "wheel-front-left": 1908,
+  "wheel-rear-right": 1908,
+  "wheel-rear-left": 1908
+ },
+ "bodyTris": 3618,
+ "wheelTris": 1908,
+ "totalTris": 11250,
+ "checks": {
+  "G26_body": {
+   "tris": 3618,
+   "degenerate": 0,
+   "nonManifoldEdges": 0,
+   "finite": true,
+   "signedVolume": 5.61837
+  },
+  "wheel-front-right": {
+   "tris": 1908,
+   "degenerate": 0,
+   "nonManifoldEdges": 0,
+   "finite": true,
+   "signedVolume": 0.05192
+  }
+ },
+ "reimport": {
+  "objects": [
+   "G26",
+   "G26_body",
+   "wheel-front-left",
+   "wheel-front-right",
+   "wheel-rear-left",
+   "wheel-rear-right"
+  ],
+  "tris": {
+   "G26_body": 3618,
+   "wheel-front-left": 1908,
+   "wheel-front-right": 1908,
+   "wheel-rear-left": 1908,
+   "wheel-rear-right": 1908
+  },
+  "materials": [
+   "veh_accent_dark",
+   "veh_glass",
+   "veh_light_brake",
+   "veh_light_front",
+   "veh_light_reverse",
+   "veh_metal",
+   "veh_metal_dark",
+   "veh_paint_cream",
+   "veh_paint_slate",
+   "veh_rubber"
+  ],
+  "bounds": [
+   [
+    -2.205,
+    -1.07,
+    0.0
+   ],
+   [
+    2.2,
+    1.07,
+    1.305
+   ]
+  ],
+  "bytes": 50568
+ },
+ "hulls": [
+  {
+   "part": "tub",
+   "faces": 144,
+   "points": 74
+  },
+  {
+   "part": "cabin",
+   "faces": 52,
+   "points": 28
+  },
+  {
+   "part": "sillL",
+   "faces": 44,
+   "points": 24
+  },
+  {
+   "part": "flareFL",
+   "faces": 12,
+   "points": 8
+  },
+  {
+   "part": "flareRL",
+   "faces": 12,
+   "points": 8
+  },
+  {
+   "part": "sillR",
+   "faces": 44,
+   "points": 24
+  },
+  {
+   "part": "flareFR",
+   "faces": 12,
+   "points": 8
+  },
+  {
+   "part": "flareRR",
+   "faces": 12,
+   "points": 8
+  },
+  {
+   "part": "bumperF",
+   "faces": 44,
+   "points": 24
+  },
+  {
+   "part": "bumperR",
+   "faces": 12,
+   "points": 8
+  }
+ ],
+ "render": "/Users/bobby/Desktop/3D-personal-world/wt/vehicles/docs/world/vehicles/preview/G26-ortho.jpg"
+}

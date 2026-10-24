@@ -400,6 +400,444 @@
     "ik_overstretch_max_m": 0.05100895325187793,
     "design_speed_mps": 0.0
    }
+  },
+  "SitDown": {
+   "frames": 35,
+   "duration_s": 0.5833333333333334,
+   "loop": false,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.0,
+   "mocap": {
+    "source": "sit",
+    "take": "143_18.amc",
+    "src_frames": [
+     0.0,
+     80.0
+    ],
+    "scale_s": 0.7775760190471054,
+    "frames": 35,
+    "kind": "free",
+    "authored": {
+     "arm_swing_scale": 0.85,
+     "arm_min_abd_deg": 30.0,
+     "elbow_max_deg": 80.0,
+     "arm_swing_max_deg": 70.0,
+     "head_follow": 0.6,
+     "knee_max_deg": 105.0,
+     "air_hip_follow": 0.35,
+     "air_frames_half": 12,
+     "land_to_idle": 0.45,
+     "idle_y_extra": 0.008
+    },
+    "spec": {
+     "source": "sit",
+     "a": [
+      "down0",
+      -0.1
+     ],
+     "b": [
+      "seat",
+      0.05
+     ],
+     "kind": "free",
+     "stance": "source",
+     "speed": 0.0,
+     "keep_hip": "seat"
+    },
+    "stance_dz_m": 0.021944242840011913,
+    "boot_separation_push_max_m": 0.02476096427440643,
+    "ik_overstretch_max_m": 0.0,
+    "design_speed_mps": 0.0
+   }
+  },
+  "SitIdle": {
+   "frames": 32,
+   "duration_s": 0.5333333333333333,
+   "loop": false,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.0,
+   "mocap": {
+    "source": "sit",
+    "take": "143_18.amc",
+    "src_frames": [
+     92.0,
+     164.0
+    ],
+    "scale_s": 0.7775760190471054,
+    "frames": 32,
+    "kind": "free",
+    "authored": {
+     "arm_swing_scale": 0.85,
+     "arm_min_abd_deg": 30.0,
+     "elbow_max_deg": 80.0,
+     "arm_swing_max_deg": 70.0,
+     "head_follow": 0.6,
+     "knee_max_deg": 105.0,
+     "air_hip_follow": 0.35,
+     "air_frames_half": 12,
+     "land_to_idle": 0.45,
+     "idle_y_extra": 0.008
+    },
+    "spec": {
+     "source": "sit",
+     "a": [
+      "seat",
+      0.15
+     ],
+     "b": [
+      "seat",
+      0.75
+     ],
+     "kind": "free",
+     "stance": "source",
+     "speed": 0.0,
+     "keep_hip": "seat"
+    },
+    "stance_dz_m": 0.02152875946326689,
+    "boot_separation_push_max_m": 0.04159983521699905,
+    "ik_overstretch_max_m": 0.0,
+    "design_speed_mps": 0.0
+   }
+  },
+  "StandUp": {
+   "frames": 28,
+   "duration_s": 0.4666666666666667,
+   "loop": false,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.0,
+   "mocap": {
+    "source": "sit",
+    "take": "143_18.amc",
+    "src_frames": [
+     218.0,
+     281.0
+    ],
+    "scale_s": 0.7775760190471054,
+    "frames": 28,
+    "kind": "free",
+    "authored": {
+     "arm_swing_scale": 0.85,
+     "arm_min_abd_deg": 30.0,
+     "elbow_max_deg": 80.0,
+     "arm_swing_max_deg": 70.0,
+     "head_follow": 0.6,
+     "knee_max_deg": 105.0,
+     "air_hip_follow": 0.35,
+     "air_frames_half": 12,
+     "land_to_idle": 0.45,
+     "idle_y_extra": 0.008
+    },
+    "spec": {
+     "source": "sit",
+     "a": [
+      "up0",
+      -0.05
+     ],
+     "b": [
+      "stand",
+      0.2
+     ],
+     "kind": "free",
+     "stance": "source",
+     "speed": 0.0,
+     "keep_hip": "seat"
+    },
+    "stance_dz_m": 0.0201098565654508,
+    "boot_separation_push_max_m": 0.049113619089126585,
+    "ik_overstretch_max_m": 0.0,
+    "design_speed_mps": 0.0
+   }
+  },
+  "TurnL": {
+   "frames": 68,
+   "duration_s": 1.1333333333333333,
+   "loop": false,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.0,
+   "mocap": {
+    "source": "turnL",
+    "take": "69_16.amc",
+    "src_frames": [
+     6.0,
+     171.4
+    ],
+    "scale_s": 0.6750999112646067,
+    "frames": 68,
+    "kind": "free",
+    "authored": {
+     "arm_swing_scale": 0.85,
+     "arm_min_abd_deg": 30.0,
+     "elbow_max_deg": 80.0,
+     "arm_swing_max_deg": 70.0,
+     "head_follow": 0.6,
+     "knee_max_deg": 105.0,
+     "air_hip_follow": 0.35,
+     "air_frames_half": 12,
+     "land_to_idle": 0.45,
+     "idle_y_extra": 0.008
+    },
+    "spec": {
+     "source": "turnL",
+     "a": [
+      "turn0",
+      -0.1
+     ],
+     "b": [
+      "turn1",
+      0.12
+     ],
+     "kind": "free",
+     "stance": "source",
+     "speed": 0.0,
+     "pin": false
+    },
+    "boot_separation_push_max_m": 0.08824062621593476,
+    "ik_overstretch_max_m": 0.0,
+    "design_speed_mps": 0.0,
+    "yaw_curve": [
+     0.01598,
+     0.02412,
+     0.03362,
+     0.04398,
+     0.05556,
+     0.0663,
+     0.07717,
+     0.08996,
+     0.1039,
+     0.11877,
+     0.13647,
+     0.15733,
+     0.17928,
+     0.20245,
+     0.22801,
+     0.25375,
+     0.28193,
+     0.31172,
+     0.34297,
+     0.37495,
+     0.40888,
+     0.44433,
+     0.4795,
+     0.51526,
+     0.5509,
+     0.58581,
+     0.61956,
+     0.65277,
+     0.68281,
+     0.71089,
+     0.73963,
+     0.76893,
+     0.79831,
+     0.82758,
+     0.85961,
+     0.89044,
+     0.92068,
+     0.95012,
+     0.97941,
+     1.00816,
+     1.03605,
+     1.06249,
+     1.08692,
+     1.109,
+     1.13142,
+     1.1537,
+     1.17573,
+     1.19705,
+     1.21962,
+     1.2393,
+     1.2584,
+     1.2773,
+     1.29565,
+     1.31303,
+     1.33111,
+     1.3493,
+     1.36623,
+     1.38358,
+     1.40144,
+     1.41935,
+     1.43699,
+     1.45469,
+     1.47134,
+     1.48715,
+     1.50151,
+     1.51477,
+     1.52672,
+     1.53772,
+     1.548
+    ]
+   }
+  },
+  "TurnR": {
+   "frames": 73,
+   "duration_s": 1.2166666666666666,
+   "loop": false,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.0,
+   "mocap": {
+    "source": "turnR",
+    "take": "69_18.amc",
+    "src_frames": [
+     6.0,
+     184.4
+    ],
+    "scale_s": 0.6750999112646067,
+    "frames": 73,
+    "kind": "free",
+    "authored": {
+     "arm_swing_scale": 0.85,
+     "arm_min_abd_deg": 30.0,
+     "elbow_max_deg": 80.0,
+     "arm_swing_max_deg": 70.0,
+     "head_follow": 0.6,
+     "knee_max_deg": 105.0,
+     "air_hip_follow": 0.35,
+     "air_frames_half": 12,
+     "land_to_idle": 0.45,
+     "idle_y_extra": 0.008
+    },
+    "spec": {
+     "source": "turnR",
+     "a": [
+      "turn0",
+      -0.1
+     ],
+     "b": [
+      "turn1",
+      0.12
+     ],
+     "kind": "free",
+     "stance": "source",
+     "speed": 0.0,
+     "pin": false
+    },
+    "boot_separation_push_max_m": 0.1288315830230713,
+    "ik_overstretch_max_m": 0.0,
+    "design_speed_mps": 0.0,
+    "yaw_curve": [
+     -0.03566,
+     -0.04798,
+     -0.05796,
+     -0.06556,
+     -0.07283,
+     -0.08029,
+     -0.0893,
+     -0.10051,
+     -0.11408,
+     -0.12973,
+     -0.14728,
+     -0.16556,
+     -0.18401,
+     -0.20216,
+     -0.21966,
+     -0.23663,
+     -0.25246,
+     -0.2665,
+     -0.27884,
+     -0.28958,
+     -0.29806,
+     -0.30412,
+     -0.30812,
+     -0.31104,
+     -0.31281,
+     -0.31438,
+     -0.31688,
+     -0.32078,
+     -0.32649,
+     -0.33407,
+     -0.34358,
+     -0.35464,
+     -0.36669,
+     -0.37986,
+     -0.39397,
+     -0.4091,
+     -0.42528,
+     -0.44379,
+     -0.46465,
+     -0.48882,
+     -0.5164,
+     -0.54795,
+     -0.58396,
+     -0.62292,
+     -0.66445,
+     -0.70813,
+     -0.75337,
+     -0.79874,
+     -0.84325,
+     -0.88777,
+     -0.93316,
+     -0.97955,
+     -1.02605,
+     -1.07387,
+     -1.1237,
+     -1.17263,
+     -1.22022,
+     -1.26671,
+     -1.31051,
+     -1.35035,
+     -1.38739,
+     -1.42156,
+     -1.45119,
+     -1.47746,
+     -1.50162,
+     -1.52292,
+     -1.54252,
+     -1.56203,
+     -1.58234,
+     -1.60329,
+     -1.62615,
+     -1.65048,
+     -1.67623,
+     -1.70246
+    ]
+   }
+  },
+  "IdleLook": {
+   "frames": 90,
+   "duration_s": 1.5,
+   "loop": false,
+   "designSpeedMps": 0.0,
+   "ik_overstretch_max_m": 0.0,
+   "mocap": {
+    "source": "idlelook",
+    "take": "Neutral_ID.bvh",
+    "src_frames": [
+     27.0,
+     138.0
+    ],
+    "scale_s": 0.6612372989788315,
+    "frames": 90,
+    "kind": "free",
+    "authored": {
+     "arm_swing_scale": 0.85,
+     "arm_min_abd_deg": 30.0,
+     "elbow_max_deg": 80.0,
+     "arm_swing_max_deg": 70.0,
+     "head_follow": 0.6,
+     "knee_max_deg": 105.0,
+     "air_hip_follow": 0.35,
+     "air_frames_half": 12,
+     "land_to_idle": 0.45,
+     "idle_y_extra": 0.008
+    },
+    "spec": {
+     "source": "idlelook",
+     "a": [
+      "start",
+      0.45
+     ],
+     "b": [
+      "start",
+      2.3
+     ],
+     "kind": "free",
+     "stance": "idle",
+     "speed": 0.0
+    },
+    "stance_dz_m": -0.00020569775785718645,
+    "boot_separation_push_max_m": 0.0,
+    "ik_overstretch_max_m": 0.0,
+    "design_speed_mps": 0.0
+   }
   }
  },
  "boot": {

@@ -8,10 +8,10 @@ const out=process.env.WORLD_PLAYTEST_DIR||'docs/world/quality-v3/playtest/dynami
 await mkdir(out,{recursive:true});
 const browser=await loadPlaywright().chromium.launch({executablePath:CHROME,headless:true,args:['--use-angle=metal']});
 const report={base,cases:[],errors:[],limits:['Map roadblock at [24,1.64,-18], directed 5 m/s frontal impact; not every impact angle.','QA fixture starts only; real keyboard acceleration and braking.']};
-try{for(const spec of [{id:'offroad',h:1.176},{id:'coupe',h:1.054},{id:'van',h:1.452}]){
+try{for(const spec of [{id:'offroad',h:1.176},{id:'coupe',h:1.054},{id:'van',h:1.452}].filter(s=>!process.env.WORLD_VEHICLES||process.env.WORLD_VEHICLES.split(',').includes(s.id))){
  const page=await browser.newPage({viewport:{width:1920,height:1080}});await page.routeWebSocket('**/*',ws=>ws.close());
  page.on('pageerror',e=>report.errors.push(e.message));const bot=new Bot(page);
- await page.goto(base+'/world/?qa=1&qaWheelGuards=1&qaLowCom=1',{waitUntil:'networkidle'});await page.waitForFunction(()=>window.__worldDebug?.actor().loaded);
+ await page.goto(base+'/world/'+(process.env.WORLD_QUERY||'?qa=1&qaWheelGuards=1&qaLowCom=1'),{waitUntil:'networkidle'});await page.waitForFunction(()=>window.__worldDebug?.actor().loaded);
  await page.evaluate(({id,h})=>__worldDebug.teleportVehicle(id,[24,1.14+h,-7],Math.PI/2),spec);
  await bot.fixtureTeleport([26.5,2.05,-7],'Actual coastal road start for 5 m/s orange-roadblock impact');await page.waitForTimeout(700);await bot.press('KeyE');await page.waitForTimeout(150);
  const read=()=>page.evaluate(id=>{const s=__worldDebug.snapshot(),p=__worldDebug.motionProbe();return{t:performance.now(),step:s.physicsStep,active:s.activeVehicle,car:s.vehicles.find(v=>v.id===id),obstacles:p.obstacles,contacts:__worldDebug.contacts()};},spec.id);
