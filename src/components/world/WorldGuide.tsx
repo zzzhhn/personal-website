@@ -36,7 +36,9 @@ const REQUIRED = ['Idle', ...GAITS, 'JumpStart', 'JumpAir', 'RunJumpStart', 'Run
 /** v3d measured extras (optional: an older GLB without them keeps the v3c behaviour). */
 const EXTRAS = ['SitDown', 'SitIdle', 'StandUp', 'TurnL', 'TurnR', 'IdleLook'];
 /** Seated buttock underside above the soles in SitIdle (tools/world/guide/out/sit_measure.json, fresh import). */
-const SIT_BUTTOCK = .316;
+const SIT_BUTTOCK = .371;
+/** Seated buttock centre ahead of the root (+X) in SitIdle (same file); the root moves back by it. */
+const SIT_FORWARD = .154;
 /** A body yaw change of at least this much from a standstill plays a measured turn-in-place step. */
 const TURN_MIN = .8;
 /** Idle variation: a measured look-around after this many seconds standing (randomised within the range). */
@@ -630,7 +632,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       group.current.position.y=grounded&&Number.isFinite(minSole)&&!s.sitDrop?Math.min(.025,Math.max(0,.0015-minSole)):0;
       // seat alignment (see SIT_BUTTOCK) and the vehicle step offset, in the parent (body) frame
       group.current.position.y -= s.sitDrop;
-      const back = s.sitDrop ? .05 : 0;
+      const back = s.sitDrop > .02 ? SIT_FORWARD * Math.min(1, s.sitDrop / Math.max(.05, s.sitDrop)) : 0;
       group.current.position.x = rig.vehOff.x + rig.rootOff.x - back * Math.cos(shownYaw);
       group.current.position.z = rig.vehOff.z + rig.rootOff.z + back * Math.sin(shownYaw);
       // the body rotation is fixed (enabledRotations off), so world offsets equal parent-frame offsets

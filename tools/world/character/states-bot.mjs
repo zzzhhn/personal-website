@@ -29,11 +29,20 @@ try {
   await phase('turn90', E, 250); await phase('turn90-settle', [], 900, null, 250);
   await phase('turn180', W_, 300); await phase('turn180-settle', [], 1000, null, 300);
   // seat: 1.6 m in front of the player, top 0.6 m (C06 log bench height), yaw = current facing + pi
-  const seat = await page.evaluate(() => { const p = __worldDebug.snapshot().player; const yaw = __worldDebug.snapshot().playerYaw ?? 0;
-    return { id: 'qa-seat', position: [p[0] + 1.2, p[1] - 0.94 + 0.45, p[2]], yaw: Math.PI }; });
-  report.fixtures.push({ t: bot.now(), kind: 'store.seat', seat, reason: 'no seat interactable in this worktree yet; WorldActors path is the same as a real seat' });
+  // seat on the nearest real camp log bench C06: its collider top centre (physicsInventory aabb), facing the fire
+  const seat = await page.evaluate(() => {
+    const p = __worldDebug.snapshot().player;
+    const b = __worldDebug.physicsInventory().filter(c => c.assetId === 'C06').map(c => ({ c, d: Math.hypot((c.aabb[0][0] + c.aabb[1][0]) / 2 - p[0], (c.aabb[0][2] + c.aabb[1][2]) / 2 - p[2]) })).sort((a, b) => a.d - b.d)[0].c;
+    const cx = (b.aabb[0][0] + b.aabb[1][0]) / 2, cz = (b.aabb[0][2] + b.aabb[1][2]) / 2, top = b.aabb[1][1];
+    const fire = [-42, 35]; const yaw = Math.atan2(-(fire[1] - cz), fire[0] - cx);
+    return { id: 'qa-seat-C06', position: [cx, top, cz], yaw, aabb: b.aabb };
+  });
+  report.fixtures.push({ t: bot.now(), kind: 'store.seat', seat, reason: 'no seat interactable on C06 in this worktree yet (camp session); same WorldActors seat path' });
+  await bot.fixtureTeleport([seat.position[0] + Math.cos(seat.yaw) * 1.0, seat.position[1] + 0.6, seat.position[2] - Math.sin(seat.yaw) * 1.0], 'in front of the C06 bench, then seat');
+  delete seat.aabb;
   await page.evaluate(s => __worldDebug.set({ seat: s }), seat);
   await phase('sit', [], 2600, null, 2300);
+  for (let i = 0; i < 12; i++) { await bot.wheel(-240); await page.waitForTimeout(40); } await page.waitForTimeout(700); await snap('sit-near'); for (let i = 0; i < 12; i++) { await bot.wheel(240); await page.waitForTimeout(40); }
   await phase('stand-up', ['KeyW'], 120); await phase('stand-up-hold', [], 1600, null, 300);
   // vehicle: fixture next to the offroad, then real E
   const car = await page.evaluate(() => __worldDebug.snapshot().vehicles.find(v => v.id === 'offroad').position);

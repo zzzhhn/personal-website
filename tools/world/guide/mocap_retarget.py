@@ -371,11 +371,16 @@ class Seq:
 # v3d extra one-shots (prepare_extra.py; CMU 143_18 sit, 69_16/69_18 turns, 100STYLE Neutral_ID). kind 'free':
 # every frame may be in contact (feet pinned by the same offline contact bake), pelvis travel kept
 # (keep_hip: hip x/y relative to the reference event, so sitting moves back onto the seat with the feet planted).
+# AUTHORED (A6): G24's short TABS thigh skin folds into the pelvis at a full 90 deg seated hip flexion, so the
+# sit is a perched one: the hip never goes lower than SIT_HIP_MIN above the soles and the measured backward
+# pelvis tilt is scaled by SIT_TILT. Recorded in the build report.
+SIT_HIP_MIN = float(os.environ.get('G24_SIT_HIP_MIN', '0.52'))
+SIT_TILT = float(os.environ.get('G24_SIT_TILT', '0.35'))
 EXTRA_SRC = os.path.expanduser('~/.cache/g24-extra/g24_extra_motion.json')
 EXTRA = {
-    'SitDown': dict(source='sit', a=('down0', -0.1), b=('seat', 0.05), kind='free', stance='source', speed=0.0, keep_hip='seat'),
-    'SitIdle': dict(source='sit', a=('seat', 0.15), b=('seat', 0.75), kind='free', stance='source', speed=0.0, keep_hip='seat'),
-    'StandUp': dict(source='sit', a=('up0', -0.05), b=('stand', 0.2), kind='free', stance='source', speed=0.0, keep_hip='seat'),
+    'SitDown': dict(source='sit', a=('down0', -0.1), b=('seat', 0.05), kind='free', stance='source', speed=0.0, keep_hip='seat', hip_z_min=SIT_HIP_MIN, pelvis_tilt=SIT_TILT, feet_apart=0.135),
+    'SitIdle': dict(source='sit', a=('seat', 0.15), b=('seat', 0.75), kind='free', stance='source', speed=0.0, keep_hip='seat', hip_z_min=SIT_HIP_MIN, pelvis_tilt=SIT_TILT, feet_apart=0.135),
+    'StandUp': dict(source='sit', a=('up0', -0.05), b=('stand', 0.2), kind='free', stance='source', speed=0.0, keep_hip='seat', hip_z_min=SIT_HIP_MIN, pelvis_tilt=SIT_TILT, feet_apart=0.135),
     'TurnL': dict(source='turnL', a=('turn0', -0.1), b=('turn1', 0.12), kind='free', stance='source', speed=0.0, pin=False),
     'TurnR': dict(source='turnR', a=('turn0', -0.1), b=('turn1', 0.12), kind='free', stance='source', speed=0.0, pin=False),
     'IdleLook': dict(source='idlelook', a=('start', 0.45), b=('start', 2.3), kind='free', stance='idle', speed=0.0),
@@ -454,6 +459,16 @@ def make_oneshot_clips(data, REST, BOOT, consts, solve_pose_world, idle_local, f
             hx = hy = 0.0
             if hip_ref is not None:
                 hh = sq.h(x); hx = (hh.x - hip_ref.x) * Lg; hy = (hh.y - hip_ref.y) * Lg
+            if spec.get('hip_z_min') is not None:
+                hz = max(hz, spec['hip_z_min'])
+            if spec.get('feet_apart'):
+                # AUTHORED (A6): seated knees-together feet put the two 17 cm boots into each other; keep each
+                # foot track at least feet_apart from the midline (same rule as the standing Idle stance)
+                pass
+            if spec.get('pelvis_tilt') is not None:
+                D['pelvis'] = Quaternion().slerp(D['pelvis'], spec['pelvis_tilt'])
+                # spine follows the pelvis half-way toward the chest so the waist bends over two joints
+                D['spine'] = D['pelvis'].slerp(D['chest'], 0.5)
             D['hip'] = Vector((hx, hy, hz))
             feet = {}
             for side, tag, sg in (('l', 'L', 1), ('r', 'R', -1)):
@@ -461,6 +476,7 @@ def make_oneshot_clips(data, REST, BOOT, consts, solve_pose_world, idle_local, f
                 ax_, ay = a.x * Lg + hx, sg * HIP_Y + (a.y - hj.y) * Lg + hy
                 az = hz + (a.z - hipz_src) * Lg
                 pole = (kn - hj) - ((a - hj).normalized() * (kn - hj).dot((a - hj).normalized()))
+                if spec.get('feet_apart'): ay = sg * max(sg * ay, spec['feet_apart'])
                 feet[tag] = [Vector((ax_, ay, az)), sq.q(f'{side}foot', x) @ off[f'foot.{tag}'],
                              pole.normalized() if pole.length > 1e-6 else Vector((1, 0, 0))]
             D['feet'] = feet
@@ -540,8 +556,16 @@ def make_oneshot_clips(data, REST, BOOT, consts, solve_pose_world, idle_local, f
                 # unpinned (turn in place): the measured stepping is kept; each boot only rests on / above y = 0
                 for P in poses:
                     for tag in ('L', 'R'):
+                        a_ = P['feet'][tag][0]; sg_ = 1 if tag == 'L' else -1
+                        # AUTHORED (A6): the pivoting source feet cross the midline; G24's 17 cm boots then cut
+                        # each other. Each ankle stays at least HIP_Y + 1 cm on its own side of the pelvis.
+                        loc = P['pelvis'].inverted() @ (a_ - P['hip'])
+                        if sg_ * loc.y < HIP_Y + 0.01:
+                            loc.y = sg_ * (HIP_Y + 0.01); a_ = P['hip'] + P['pelvis'] @ loc
+                        P['feet'][tag][0] = a_
                         lo = min(p.z for p in boot_pts(P['feet'][tag][0], P['feet'][tag][1], tag))
                         P['feet'][tag][0].z -= lo if lo < 0.004 else 0.0
+                rep['boot_separation_push_max_m'] = separate_boots(poses, {'L': [False] * n, 'R': [False] * n}, boot_pts, periodic=False)
             for it in (range(2) if spec.get('pin', True) else ()):
                 dzs = []
                 for tag in ('L', 'R'):
