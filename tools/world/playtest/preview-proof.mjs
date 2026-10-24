@@ -11,7 +11,7 @@ const browser=await loadPlaywright().chromium.launch({executablePath:CHROME,head
 const page=await browser.newPage({viewport:{width:1920,height:1080}});
 page.on('pageerror',e=>report.errors.push(e.message));page.on('console',m=>{if(m.type()==='error')report.errors.push(m.text())});page.on('response',r=>{if(r.status()>=400)report.httpErrors.push({url:r.url(),status:r.status()})});
 try{
- const response=await page.goto(base+'/world/?qa=1',{waitUntil:'networkidle'});report.pageStatus=response.status();await page.waitForFunction(()=>window.__worldDebug?.actor().loaded);await page.waitForTimeout(1000);
+ const response=await page.goto(base+'/world/?qa=1',{waitUntil:'domcontentloaded',timeout:90000});report.pageStatus=response.status();await page.waitForFunction(()=>window.__worldDebug?.actor().loaded,undefined,{timeout:90000});await page.waitForTimeout(1000);
  report.assets=await Promise.all(inventory.filter(a=>a.production?.glb&&a.production?.sha256).map(async a=>{const url=base+'/'+a.production.glb.replace(/^public\//,'');const response=await page.request.get(url);const digest=createHash('sha256').update(await response.body()).digest('hex');return {id:a.id,status:response.status(),sha256:digest,matches:digest===a.production.sha256};}));
  report.runtime=await page.evaluate(()=>({actor:__worldDebug.actor(),render:__worldDebug.renderInfo(),campShapes:__worldDebug.campColliders().length,snapshot:__worldDebug.snapshot()}));
  await page.screenshot({path:out+'/published-default.png'});
@@ -26,8 +26,8 @@ try{
  if(process.env.WORLD_DEFAULT_MOTION==='1'){
   // Record the real public entry without the QA API or any motion feature flags.
   report.passed&&=report.runtime.actor.phasePrototype===true&&report.runtime.actor.stopPrototype===true;
-  const response=await page.goto(base+'/world/',{waitUntil:'networkidle'});
-  await page.locator('canvas').first().waitFor({state:'visible'});await page.waitForTimeout(1500);
+  const response=await page.goto(base+'/world/',{waitUntil:'domcontentloaded',timeout:90000});
+  await page.waitForFunction(()=>!!document.querySelector('main.world-app canvas')&&!document.querySelector('.world-loading'),undefined,{timeout:90000});await page.waitForTimeout(1500);
   const motion=report.defaultMotion={url:page.url(),pageStatus:response.status(),qaApiAbsent:await page.evaluate(()=>!window.__worldDebug),render:await canvasFacts(page),phases:[],video:'default-entry-stop.webm',fixtureCalls:[]};
   const bot=new Bot(page);const started=await startCanvasRecording(page,60);
   for(const [label,keys,ms] of [['idle',[],1000],['walk',['KeyA'],2000],['run',['KeyA','ShiftLeft'],1300],['walk-return',['KeyA'],1200],['stop',[],2000],['turn180',['KeyD'],1000],['stop180',[],2000]]){
