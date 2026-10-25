@@ -15,17 +15,20 @@ import { playerSupport, followPlayerGround } from './player-ground';
 import { findLowVault, playerVelocityChange } from './player-motion';
 import { vehicleHulls } from './WorldVehicleAssets';
 import { WorldOcclusion } from './WorldOcclusion';
+import { configureCoupeSuspension, createDrivingState, stepCoupeDrive, type DrivingInput, type DrivingState } from './vehicle-driving';
+import { publishDrivingTelemetry } from './vehicle-telemetry';
+import WorldDrivingFeedback from './WorldDrivingFeedback';
 import { CAMERA_DEFAULT_PITCH, CAMERA_DEFAULT_YAW, CAMERA_MAX_DISTANCE, CAMERA_MIN_DISTANCE, CAMERA_PITCH_LIMITS, CAMERA_PRESETS, PHYSICS_STEP, PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS, RECOVERY_SECONDS, advanceTimer, angleDelta, cameraRelative, configureRaycastVehicle, heading, isUpsideDown, orbitDirection, radialDeadzone, rampAxis, rotateVector, wheelGeometry, yawRotation } from './actor-physics';
 
 type VehicleSpec = (typeof VEHICLES)[number];
 type Controller = ReturnType<ReturnType<typeof useRapier>['world']['createVehicleController']>;
-type DriveInput = { throttle: number; steer: number; brake?: boolean };
+type DriveInput = DrivingInput;
 type Car = { body: RapierRigidBody; controller: Controller; spec: VehicleSpec; flipped: number; wet: number; steering: number; guards:(RapierCollider|null)[]; lowCom:boolean;
   /** L1 hull colliders active: suspension rays only rest on fixed bodies (DESIGN 6). */
   hulls: boolean;
   lights: { brake: boolean; reverse: boolean };
   /** Continuous driver inputs after the keyboard ramp (-1..1); QA drive() bypasses the ramp. */
-  steerInput: number; throttleInput: number };
+  steerInput: number; throttleInput: number; driving: DrivingState };
 /** Free orbit / first-person camera state (yaw, pitch in radians; distances in metres). */
 type CameraRig = { yaw: number; pitch: number; distance: number; actual: number; lastManual: number; firstPerson: boolean; collided: boolean; hitDistance: number|null; fov: number; mode: 'walk'|'drive'; recentering: boolean;
   /** Driving: true once the player scrolls in the car; then the 7 m comfort floor no longer applies. */
@@ -36,7 +39,7 @@ type ActorSnapshot = {
   player: Vec3 | null; activeVehicle: VehicleId | null; canRecover: boolean; grounded: boolean;
   playerVelocity: Vec3 | null; playerCollider: { radius: number; halfHeight: number; centerHeight: number };
   playerYaw: number; physicsStep: number;
-  vehicles: { id: VehicleId; position: Vec3; velocity: Vec3; mass: number; com: Vec3; inertia: Vec3; inertiaFrame: number[]; wheelContacts: boolean[]; upsideDownSeconds: number; waterSeconds: number; steering: number; steerInput: number; throttleInput: number }[];
+  vehicles: { id: VehicleId; position: Vec3; velocity: Vec3; yaw: number; entering: boolean; mass: number; com: Vec3; inertia: Vec3; inertiaFrame: number[]; wheelContacts: boolean[]; upsideDownSeconds: number; waterSeconds: number; steering: number; steerInput: number; throttleInput: number; driving: DrivingState|null }[];
 };
 export type CameraDebug = { yaw: number; pitch: number; distance: number; desiredDistance: number; driveManualZoom: boolean; actualDistance: number; firstPerson: boolean; preset: number; collided: boolean; hitDistance: number|null;
   fov: number; mode: 'walk'|'drive'; recentering: boolean; position: Vec3; target: Vec3; forwardGround: [number,number]; groundBelowCamera: number|null; clearanceAboveGround: number|null; gamepad: boolean;
@@ -155,9 +158,10 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
     if (!body.current) return;
     const controller = world.createVehicleController(body.current);
     configureRaycastVehicle(controller,spec.size,spec.mass,spec.grip,spec.suspension / spec.mass);
-    const car: Car = {body:body.current,controller,spec,flipped:0,wet:0,steering:0,guards:guards.current,lowCom,hulls:!!hullShapes,steerInput:0,throttleInput:0,lights:lights.current};
+    if(spec.id==='coupe')configureCoupeSuspension(controller);
+    const car: Car = {body:body.current,controller,spec,flipped:0,wet:0,steering:0,guards:guards.current,lowCom,hulls:!!hullShapes,steerInput:0,throttleInput:0,lights:lights.current,driving:createDrivingState()};
     cars.current.set(spec.id,car);
-    return () => { cars.current.delete(spec.id); world.removeVehicleController(controller); };
+    return () => { cars.current.delete(spec.id); world.removeVehicleController(controller); if(spec.id==='coupe')publishDrivingTelemetry(null); };
   },[world,spec,cars,lowCom,hullShapes]);
   useFrame(() => {
     const car = cars.current.get(spec.id);
@@ -175,7 +179,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
   const comDrop=lowCom?(spec.id==='coupe'?.3:.5):hullShapes?hullComDrop:0;
   const massProps=(mass:number,x:number,y:number,z:number)=>comDrop>0?{massProperties:{mass,centerOfMass:{x:0,y:-comDrop,z:0},principalAngularInertia:{x:mass*(y*y+z*z)/12,y:mass*(x*x+z*z)/12,z:mass*(x*x+y*y)/12},angularInertiaLocalFrame:{x:0,y:0,z:0,w:1}}}:{mass};
   return <RigidBody ref={body} position={[spec.position[0],spec.position[1]+geometry.height,spec.position[2]]}
-    rotation={[0,spec.yaw,0]} colliders={false} linearDamping={0.12} angularDamping={0.65}
+    rotation={[0,spec.yaw,0]} colliders={false} linearDamping={spec.id==='coupe'?.025:.12} angularDamping={0.65}
     canSleep={false} ccd softCcdPrediction={wheelGuards?.25:0} additionalSolverIterations={wheelGuards?4:0} userData={bodyData} onCollisionEnter={({ other }) => {
       if (useWorldStore.getState().activeVehicle === spec.id && other.rigidBodyObject?.userData.solid && body.current) {
         const v = body.current.linvel(); impact.current = Math.min(.35, Math.hypot(v.x, v.z) * .025);
@@ -302,7 +306,7 @@ export default function WorldActors() {
     fixture.mesh.geometry.dispose();(fixture.mesh.material as MeshStandardMaterial).dispose();wheelFixture.current=null;
   }
 
-  function clearInput() { keys.current.clear(); actions.current={interact:false,jump:false,recover:false}; debugDrive.current=null; moveIntent.current='idle'; guideTargetSpeed.current=0; moveInput.current=[0,0]; cars.current.forEach(c=>{c.steerInput=0;c.throttleInput=0;}); }
+  function clearInput() { keys.current.clear(); actions.current={interact:false,jump:false,recover:false}; debugDrive.current=null; moveIntent.current='idle'; guideTargetSpeed.current=0; moveInput.current=[0,0]; cars.current.forEach(c=>{c.steerInput=0;c.throttleInput=0;c.driving.power=0;c.driving.boosting=false;c.driving.handbrake=false;}); publishDrivingTelemetry(null); }
   function clearPlayerMotion(hardCut=false) {
     vault.current=null;guideMovementLock.current=false;turnBeforeMove.current=false;
     if(!hardCut)return;
@@ -334,7 +338,8 @@ export default function WorldActors() {
       const sg=side[0]*toP[0]+side[2]*toP[1]>=0?1:-1;
       guideTransition.current={phase:'enter',elapsed:0,door:[c.x+sg*side[0],p.y-PLAYER_CENTER_HEIGHT,c.z+sg*side[2]]};
     }
-    clearInput(); player.current.setEnabled(false);
+    const held=[...keys.current].filter(code=>['KeyW','KeyA','KeyS','KeyD','ShiftLeft','ShiftRight','KeyX','Space'].includes(code));
+    clearInput();held.forEach(code=>keys.current.add(code));player.current.setEnabled(false);
     useWorldStore.setState({activeVehicle:id,nearbyVehicle:null,canRecover:false});
     return true;
   }
@@ -397,7 +402,7 @@ export default function WorldActors() {
     const down=(event:KeyboardEvent) => {
       const state=useWorldStore.getState();
       if (event.metaKey || event.ctrlKey || event.altKey || state.paused || state.shot || /INPUT|TEXTAREA|SELECT/.test((event.target as HTMLElement)?.tagName ?? '')) return;
-      if (['KeyW','KeyA','KeyS','KeyD','ShiftLeft','ShiftRight','Space','KeyE','KeyR','KeyV'].includes(event.code)) event.preventDefault();
+      if (['KeyW','KeyA','KeyS','KeyD','ShiftLeft','ShiftRight','Space','KeyE','KeyR','KeyV'].includes(event.code)||(state.activeVehicle&&event.code==='KeyX')) event.preventDefault();
       keys.current.add(event.code);
       if (!event.repeat) {
         if (event.code==='KeyE') actions.current.interact=true;
@@ -548,9 +553,9 @@ export default function WorldActors() {
         canRecover:useWorldStore.getState().canRecover,grounded:grounded.current,
         playerVelocity:player.current?asTuple(player.current.linvel()):null,playerCollider:playerColliderDimensions,
         playerYaw:guideYaw.current,physicsStep:physicsSteps.current,
-        vehicles:[...cars.current.values()].map(car=>({id:car.spec.id,position:asTuple(car.body.translation()),velocity:asTuple(car.body.linvel()),
+        vehicles:[...cars.current.values()].map(car=>({id:car.spec.id,position:asTuple(car.body.translation()),velocity:asTuple(car.body.linvel()),yaw:heading(car.body.rotation()),entering:useWorldStore.getState().activeVehicle===car.spec.id&&guideTransition.current?.phase==='enter',
           mass:car.body.mass(),com:asTuple(car.body.localCom()),inertia:asTuple(car.body.principalInertia()),inertiaFrame:(()=>{const q=car.body.principalInertiaLocalFrame();return [q.x,q.y,q.z,q.w];})(),wheelContacts:[0,1,2,3].map(i=>car.controller.wheelIsInContact(i)),upsideDownSeconds:car.flipped,waterSeconds:car.wet,
-          steering:car.controller.wheelSteering(0)??0,steerInput:car.steerInput,throttleInput:car.throttleInput}))}),
+          steering:car.controller.wheelSteering(0)??0,steerInput:car.steerInput,throttleInput:car.throttleInput,driving:car.spec.id==='coupe'?{...car.driving,suspension:[...car.driving.suspension]}:null}))}),
       contacts:()=>{
         const active=useWorldStore.getState().activeVehicle;
         const body=active?cars.current.get(active)?.body:player.current;
@@ -585,7 +590,7 @@ export default function WorldActors() {
         return {hit:!!hit,toi:hit?.time_of_impact??1,other:hit?identifyCollider(hit.collider):null,normal:null};
       },
       teleportPlayer:(p)=>{if(!player.current)return false;if(useWorldStore.getState().activeVehicle)useWorldStore.setState({activeVehicle:null,canRecover:false});relocatePlayer(p);return true;},
-      teleportVehicle:(id,p,yaw=0)=>{const car=cars.current.get(id);if(!car)return false;if(useWorldStore.getState().activeVehicle===id)clearPlayerMotion(true);resetBody(car.body,p,yaw);car.wet=0;car.flipped=0;return true;},
+      teleportVehicle:(id,p,yaw=0)=>{const car=cars.current.get(id);if(!car)return false;if(useWorldStore.getState().activeVehicle===id)clearPlayerMotion(true);resetBody(car.body,p,yaw);car.wet=0;car.flipped=0;car.driving=createDrivingState();return true;},
       enter,exit,clearInput,recover,
       drive:(input,seconds=1)=>{debugDrive.current={input,remaining:seconds};},
       flip:(id=useWorldStore.getState().activeVehicle ?? 'offroad')=>{const car=cars.current.get(id);if(!car)return false;const q=new Quaternion().setFromEuler(new Euler(Math.PI,heading(car.body.rotation()),0,'YXZ'));car.body.setRotation(q,true);car.body.setTranslation({...car.body.translation(),y:car.body.translation().y+1},true);car.body.setLinvel({x:0,y:0,z:0},true);car.body.setAngvel({x:0,y:0,z:0},true);car.flipped=0;return true;},
@@ -660,9 +665,13 @@ export default function WorldActors() {
       if(edge(9))useWorldStore.setState({paused:true});
     }
     const debug=debugDrive.current;
+    // The shared actor transition owns the entry duration. Keep the car parked until seated,
+    // without freezing its rigid body or storing throttle that can fire after a cancelled entry.
+    const entering=!!active&&guideTransition.current?.phase==='enter';
     // Keyboard: W/S and A/D ramp toward +-1 (held = gradually full, released = back to 0). Gamepad: right
     // trigger throttle, left trigger brake/reverse, left stick steering, all analogue and used directly.
-    if(active&&!debug){
+    if(active&&entering){active.throttleInput=0;active.steerInput=0;active.driving.power=0;}
+    else if(active&&!debug){
       const keyThrottle=Number(keys.current.has('KeyW'))-Number(keys.current.has('KeyS'));
       const keySteer=Number(keys.current.has('KeyA'))-Number(keys.current.has('KeyD'));
       const padThrottle=gp.throttle-gp.brake,padSteer=-gp.move[0];
@@ -670,35 +679,47 @@ export default function WorldActors() {
       active.steerInput=keySteer!==0||padSteer===0?rampAxis(active.steerInput,keySteer,dt,STEER_RISE,STEER_FALL):padSteer;
     }
     cars.current.forEach(car=>{if(car!==active){car.steerInput=0;car.throttleInput=0;}});
-    const throttle=debug?clamp(debug.input.throttle,-1,1):active?.throttleInput??0;
-    const steer=debug?clamp(debug.input.steer,-1,1):active?.steerInput??0;
+    const throttle=entering?0:debug?clamp(debug.input.throttle,-1,1):active?.throttleInput??0;
+    const steer=entering?0:debug?clamp(debug.input.steer,-1,1):active?.steerInput??0;
     if(debug){debug.remaining-=dt;if(debug.remaining<=0)debugDrive.current=null;}
     cars.current.forEach(car=>{
       const driven=active===car,velocity=car.body.linvel();
       const front=rotateVector([1,0,0],car.body.rotation());
       const speed=velocity.x*front[0]+velocity.z*front[2];
-      const braking=driven && ((debug?.input.brake ?? (keys.current.has('Space')||!!gp.buttons[5])) || throttle*speed<-.8);
-      const maxSteer=car.spec.id==='van'?.38:car.spec.id==='coupe'?(car.lowCom?.60:.52):.47;
-      const desired=driven?steer*maxSteer/(1+Math.abs(speed)*.045):0;
-      // Ramped driver input (keyboard ramp / analogue stick) already limits the steering rate, so it drives the
-      // wheels directly; stacking the old per-vehicle exponential filter on top doubled the lag (the van
-      // overshot the coast-road corner). QA drive() inputs and the undriven return keep the old filter.
-      if(driven&&!debug)car.steering=desired;
-      else car.steering+=(desired-car.steering)*Math.min(1,dt*(car.spec.id==='van'?3.5:6));
-      car.lights.brake=!!braking&&driven;car.lights.reverse=driven&&throttle<-.05&&speed<.5;
-      for(let i=0;i<4;i++){
-        car.controller.setWheelSteering(i,i<2?car.steering:0);
-        const force=driven && !braking && Math.abs(speed)<(throttle<0?9:car.spec.id==='coupe'?29:car.spec.id==='van'?18:22)?throttle*car.spec.engineForce/4:0;
-        car.controller.setWheelEngineForce(i,force);
-        car.controller.setWheelBrake(i,braking?car.spec.mass*.028:!driven?car.spec.mass*.035:Math.abs(throttle)<.02?car.spec.mass*.0015:0);
-        car.controller.setWheelFrictionSlip(i,car.spec.grip*(car.spec.id==='coupe' && i>=2 && Math.abs(steer)>.45 && Math.abs(speed)>7?.68:1));
+      if(car.spec.id==='coupe'){
+        stepCoupeDrive(car.body,car.controller,car.driving,{throttle,steer,
+          brake:entering||(debug?.input.brake??(keys.current.has('Space')||!!gp.buttons[5])),
+          handbrake:!entering&&(debug?.input.handbrake??(keys.current.has('KeyX')||!!gp.buttons[2])),
+          boost:!entering&&(debug?.input.boost??(keys.current.has('ShiftLeft')||keys.current.has('ShiftRight')||!!gp.buttons[0]))},car.spec.mass,car.spec.size[0]*.68,dt,driven);
+        car.steering=car.driving.steering;
+        car.lights.brake=driven&&(car.driving.braking||car.driving.handbrake);
+        car.lights.reverse=driven&&throttle<-.05&&speed<.5;
+      } else {
+        const braking=driven && (entering||(debug?.input.brake ?? (keys.current.has('Space')||!!gp.buttons[5])) || throttle*speed<-.8);
+        const maxSteer=car.spec.id==='van'?.38:.47;
+        const desired=driven?steer*maxSteer/(1+Math.abs(speed)*.045):0;
+        // Keyboard / analogue input already limits the steering rate. Keep the existing offroad/van
+        // response; QA drive() inputs and the undriven return retain their old filter.
+        if(driven&&!debug)car.steering=desired;
+        else car.steering+=(desired-car.steering)*Math.min(1,dt*(car.spec.id==='van'?3.5:6));
+        car.lights.brake=!!braking&&driven;car.lights.reverse=driven&&throttle<-.05&&speed<.5;
+        for(let i=0;i<4;i++){
+          car.controller.setWheelSteering(i,i<2?car.steering:0);
+          const force=driven && !braking && Math.abs(speed)<(throttle<0?9:car.spec.id==='van'?18:22)?throttle*car.spec.engineForce/4:0;
+          car.controller.setWheelEngineForce(i,force);
+          car.controller.setWheelBrake(i,braking?car.spec.mass*.028:!driven?car.spec.mass*.035:Math.abs(throttle)<.02?car.spec.mass*.0015:0);
+          car.controller.setWheelFrictionSlip(i,car.spec.grip);
+        }
       }
-      car.controller.updateVehicle(dt,undefined,undefined,c=>{
-        if(c.isSensor() || c.parent()?.handle===car.body.handle || c.parent()?.handle===player.current?.handle)return false;
+      // Filter sensor/dynamic shapes in Rapier itself. Calling isSensor() from the ray predicate
+      // re-enters the borrowed collider set in this Rapier version and prevents safe world disposal.
+      const rayFlags=rapier.QueryFilterFlags.EXCLUDE_SENSORS|(car.hulls?rapier.QueryFilterFlags.EXCLUDE_DYNAMIC|rapier.QueryFilterFlags.EXCLUDE_KINEMATIC:0);
+      car.controller.updateVehicle(dt,rayFlags,undefined,c=>{
+        if(c.parent()?.handle===car.body.handle || c.parent()?.handle===player.current?.handle)return false;
         // L1: the suspension only rests on the static world. A knocked-over roadblock or another car under
         // a wheel used to become a road surface and jack the body up (spec 10.2 roadblock lift); the body
         // hulls handle those contacts instead.
-        if(car.hulls){const b=c.parent();return !b||b.isFixed();}
+        if(car.hulls)return true;
         if(!car.guards.some(Boolean))return true;
         // Wheel-side obstacles must not also become suspension supports: a ray
         // landing on a short post used to jack the chassis upward during a graze.
@@ -720,6 +741,7 @@ export default function WorldActors() {
       car.wet=advanceTimer(car.wet,p.y<WATER_Y||floor<WATER_Y-.05,dt);
       if(car.wet>=RECOVERY_SECONDS || p.y< -80){const dry=nearestDryPoint(p.x,p.z),road=dry??nearestRoadPoint(asTuple(p));if(useWorldStore.getState().activeVehicle===car.spec.id)clearPlayerMotion(true);resetBody(car.body,[road[0],road[1]+wheelGeometry(car.spec.size).height+.2,road[2]],heading(car.body.rotation()));car.wet=0;car.flipped=0;}
     });
+    publishDrivingTelemetry(active?.spec.id==='coupe'?active.driving:null);
     if(!active){
       const p=player.current.translation(),velocity=player.current.linvel();
       const ground=playerSupport(world,rapier,player.current);
@@ -876,7 +898,7 @@ export default function WorldActors() {
       }
     } else lastCarYaw.current=null;
     // FOV: 50 deg on foot, chase view widens with speed (<= +10 deg); first person 70 deg.
-    const targetFov=c.firstPerson?70:driving?55+Math.min(10,speed*.35):50;
+    const targetFov=c.firstPerson?70:driving?55+Math.min(10,speed*.35)+(car?.driving.boosting?4:0):50;
     c.fov+= (targetFov-c.fov)*(1-Math.exp(-delta*6));
     if (camera instanceof PerspectiveCamera && Math.abs(camera.fov-c.fov)>.01) { camera.fov=c.fov; camera.updateProjectionMatrix(); }
     // Pivot: head height on foot, roof height in a car; first person sits at eye height.
@@ -950,6 +972,7 @@ export default function WorldActors() {
   });
 
   return <>
+    <WorldDrivingFeedback />
     {/* Explicit QA fixture, outside the playable island. The platform uses the same
         surface metadata as roads so tyre guards cannot provide a second suspension. */}
     {lane && <>
