@@ -67,11 +67,14 @@ kbd { font: 600 11px/1 "Geist", sans-serif; display: inline-flex; align-items: c
 @keyframes world-rise { from { opacity: 0; transform: translateY(10px); } }
 
 /* ── Interaction prompt (right of centre, Genshin list) ── */
-.world-prompt { position: absolute; z-index: 3; left: calc(50% + 70px); top: 54%; pointer-events: none; animation: world-prompt-in .28s var(--ease-out); }
+.world-prompt { position: absolute; z-index: 3; left: calc(50% + 70px); top: 54%; max-width: calc(50vw - 94px); pointer-events: none; animation: world-prompt-in .28s var(--ease-out); }
 .world-prompt ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-.world-prompt li { display: flex; align-items: center; gap: 12px; padding: 6px 16px 6px 6px; border-radius: 9px; font-size: 14px; color: #f4ecdbb0; background: #142a33a6; border: 1px solid transparent; backdrop-filter: blur(8px);
+.world-prompt li { display: flex; align-items: center; gap: 12px; padding: 8px 16px 8px 8px; border-radius: 11px; font-size: 14px; line-height: 1.4; color: #e6dccb; background: #142a33ed; border: 1px solid #f4ecdb20;
   transition: background .18s, color .18s, transform .18s var(--ease-out); }
-.world-prompt li.is-active { color: #fff9ee; background: var(--glass); border-color: #f4ecdb30; transform: translateX(4px); box-shadow: inset 3px 0 0 var(--orange); }
+.world-prompt li.is-active { color: #fff9ee; background: #142a33f5; border-color: #f4ecdb66; transform: translateX(4px); box-shadow: 0 4px 16px #06121833; }
+.world-prompt-label { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.world-prompt-label small { font-size: 10.5px; letter-spacing: .05em; color: #a7dfd6; }
+.world-prompt li.is-active .world-key { background: #f4ecdb; flex: none; }
 .world-prompt p { display: flex; align-items: center; gap: 8px; margin: 9px 0 0 6px; font-size: 11.5px; color: #f4ecdbb0; text-shadow: 0 1px 6px #000a; }
 .world-key { width: 28px; height: 28px; font-size: 13px; border-radius: 7px; }
 .world-key-pad { border-radius: 50%; }
@@ -164,10 +167,10 @@ kbd { font: 600 11px/1 "Geist", sans-serif; display: inline-flex; align-items: c
 /* ── Esc menu: map first (GTA pause menu), settings beside it ── */
 .world-dialog { color: var(--paper); background: linear-gradient(160deg, #1b3540, #132831); border: 1px solid #f4ecdb22; border-radius: 18px; padding: 0; width: min(1080px, 94vw); max-height: 92dvh;
   box-shadow: 0 30px 100px #0007; overflow: hidden; }
-.world-dialog[open] { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(280px, 1fr); animation: world-dialog-in .32s var(--ease-out); }
+.world-dialog[open] { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(280px, 1fr); grid-template-rows: minmax(0, 1fr); animation: world-dialog-in .32s var(--ease-out); }
 .world-dialog::backdrop { background: #081a24a0; backdrop-filter: blur(8px) saturate(.8); }
 @keyframes world-dialog-in { from { opacity: 0; transform: translateY(10px) scale(.985); } }
-.world-dialog-map { padding: 26px 26px 20px; background: radial-gradient(80% 70% at 30% 20%, #2c5560, transparent 70%); border-right: 1px solid #f4ecdb18; overflow: auto; }
+.world-dialog-map { min-height: 0; min-width: 0; padding: 26px 26px 20px; background: radial-gradient(80% 70% at 30% 20%, #2c5560, transparent 70%); border-right: 1px solid #f4ecdb18; overflow: auto; }
 .world-dialog-head h2 { font: 400 34px/1 var(--serif); margin: 8px 0 16px; letter-spacing: -.01em; }
 .world-dialog .world-map-full { max-height: 58dvh; box-shadow: 0 0 0 1px #f4ecdb22, 0 14px 40px #0006; }
 .world-map-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 14px; font-size: 12px; color: #c4d3d4; align-items: center; }
@@ -180,7 +183,7 @@ kbd { font: 600 11px/1 "Geist", sans-serif; display: inline-flex; align-items: c
 .lg-wp { background: #f2b98a; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); box-shadow: 0 0 0 1.5px var(--ink); }
 .world-map-tip { color: #f9dcc0; }
 .world-link-button { background: none; border: 0; padding: 0; color: #f9dcc0; text-decoration: underline; text-underline-offset: 3px; }
-.world-dialog-side { padding: 26px 26px 22px; overflow: auto; display: flex; flex-direction: column; }
+.world-dialog-side { min-height: 0; min-width: 0; padding: 26px 26px 22px; overflow: auto; display: flex; flex-direction: column; }
 .world-dialog fieldset { display: flex; gap: 6px; border: 0; padding: 0; margin: 0 0 18px; }
 .world-dialog legend { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #a9bdc1; margin-bottom: 9px; }
 .world-dialog fieldset button { flex: 1; padding: 10px 12px; background: #ffffff0d; border: 1px solid #f4ecdb1f; border-radius: 9px; font-size: 13.5px; transition: background .15s, border-color .15s; }
@@ -226,7 +229,7 @@ kbd { font: 600 11px/1 "Geist", sans-serif; display: inline-flex; align-items: c
 .world-shot .world-hints, .world-shot .world-speed, .world-shot .world-card-layer { display: none; }
 
 @media (max-width: 1100px) {
-  .world-dialog[open] { grid-template-columns: 1fr; overflow: auto; }
+  .world-dialog[open] { grid-template-columns: 1fr; grid-template-rows: none; overflow: auto; }
   .world-dialog-map { border-right: 0; border-bottom: 1px solid #f4ecdb18; overflow: visible; }
   .world-dialog-side { overflow: visible; }
   .world-dialog .world-map-full { max-height: 46dvh; }
@@ -234,8 +237,8 @@ kbd { font: 600 11px/1 "Geist", sans-serif; display: inline-flex; align-items: c
 }
 @media (max-height: 760px) { .world-radar { width: 132px; height: 132px; } .world-zone { top: 10vh; } .world-card { max-height: 90dvh; } }
 @media (prefers-reduced-motion: reduce) {
-  .world-loading-reveal, .world-progress > span { transition: none !important; }
-  .world-progress, .world-zone, .world-hint, .world-prompt, .world-card, .world-card-layer, .world-card-list li, .world-card-board, .world-experience > div, .world-dialog[open], .world-map-waypoint { animation: none !important; }
+  .world-loading-reveal, .world-progress > span, .world-prompt li { transition: none !important; }
+  .world-progress, .world-zone, .world-hint, .world-prompt, .world-prompt .world-key, .world-card, .world-card-layer, .world-card-list li, .world-card-board, .world-experience > div, .world-dialog[open], .world-map-waypoint { animation: none !important; }
   .world-zone { animation: world-zone-still 3.4s linear both !important; }
 }
 @keyframes world-zone-still { 0%, 90% { opacity: 1; } 100% { opacity: 0; } }

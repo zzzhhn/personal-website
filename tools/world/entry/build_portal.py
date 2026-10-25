@@ -13,8 +13,10 @@ DOC = os.path.join(ROOT, 'docs/world/entry')
 RAW = '/Users/bobby/Desktop/3D-personal-world/evidence/entry-G28'
 ARGS = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
 MODE = ARGS[0] if ARGS else 'build'
-CY = 1.88
-RY, RZ, IY, IZ = 1.50, 1.88, 1.12, 1.47
+# Circular in the actual YZ modelling plane; never stretch an instance to offset perspective.
+CY = 1.65
+RY = RZ = 1.65
+IY = IZ = 1.25
 START, SPAN, N = math.radians(-58), math.radians(296), 12
 MATERIALS = {
  'G28_stone': ('#B4A896', 'stone', .92, 0),
@@ -188,7 +190,9 @@ def clearance(objects):
 
 def build():
  bpy.ops.wm.read_factory_settings(use_empty=True);sc=bpy.context.scene;sc.unit_settings.system='METRIC';sc.unit_settings.scale_length=1
- root=empty('G28');root['assetId']='G28';root['frontAxis']='+X';root['gltfUpAxis']='+Y';root['origin']='bottom centre';root['status']='asset only; entrance UI semantics unresolved'
+ root=empty('G28');root['assetId']='G28';root['frontAxis']='+X';root['gltfUpAxis']='+Y';root['origin']='bottom centre';root['status']='non-blocking map and settings entrance'
+ assert RY == RZ and IY == IZ, 'Portal concentric arcs must remain circular'
+ root['arcOuterRadiusM']=RY;root['arcInnerRadiusM']=IY;root['arcCentreHeightM']=CY
  stone=empty('G28_stones',root);base=empty('G28_bases',root);light=empty('G28_lights',root)
  weights=[.98,1.02,.96,1.04,.97,1.03,1.02,.97,1.04,.96,1.02,.99];total=sum(weights);theta=START
  for i,w in enumerate(weights):
@@ -211,6 +215,7 @@ def build():
  shift=Vector(((min(v.x for v in pts)+max(v.x for v in pts))/2,(min(v.y for v in pts)+max(v.y for v in pts))/2,min(v.z for v in pts)))
  for o in asset_objects():
   for v in o.data.vertices:v.co-=shift
+ root['arcCentreBlenderYZM']=json.dumps([-shift.y,CY-shift.z])
  bpy.context.view_layer.update()
  native=qa(asset_objects(),'evaluated native after bevel and weighted normals');native['assembly']=clearance(asset_objects())
  root['dimensionsMetres']=json.dumps(native['dimensionsBlenderXYZ']);root['lightMaterial']='G28_light_cyan';root['lightWidthM']=.025
@@ -229,6 +234,7 @@ def build():
  bpy.ops.wm.open_mainfile(filepath=SOURCE)
  reopened=qa(asset_objects(),'reopened native BLEND')
  report={'asset':'G28','blenderVersion':bpy.app.version_string,'source':'tools/world/entry/build_portal.blend',
+  'arcProportions':{'outerRadiiYZ':[RY,RZ],'innerRadiiYZ':[IY,IZ],'centreHeightM':CY,'outerAxisRatio':RY/RZ,'innerAxisRatio':IY/IZ,'instanceScale':[1,1,1]},
   'glb':'public/assets/world/entry/G28.glb','sha256':hashlib.sha256(open(GLB,'rb').read()).hexdigest(),'bytes':os.path.getsize(GLB),
   'exportOptions':opts,'native':native,'reopenedBlend':reopened,'geometryBaseline':'new L1 asset; image reference has no triangle baseline',
   'axes':'Blender +X front, YZ arch, Z up; glTF +X front, YZ arch, +Y up, exporter converts once',
@@ -241,6 +247,23 @@ def build():
 def fresh():
  bpy.ops.wm.read_factory_settings(use_empty=True);bpy.ops.import_scene.gltf(filepath=GLB)
  imported=qa(asset_objects(),'fresh-process Draco GLB import');imported['assembly']=clearance(asset_objects())
+ # Measure the delivered vertices, not only the generator parameters. The nearest
+ # inner-surface vertices of every stone should lie on the same circular radius.
+ cy,cz=json.loads(bpy.data.objects['G28']['arcCentreBlenderYZM']);dg=bpy.context.evaluated_depsgraph_get();radii=[]
+ for ob in asset_objects():
+  if not ob.name.startswith('G28_stone_'):continue
+  ev=ob.evaluated_get(dg);me=ev.to_mesh()
+  points=[ev.matrix_world@v.co for v in me.vertices]
+  radii.append({'name':ob.name,'innerRadiusM':min(math.hypot(p.y-cy,p.z-cz) for p in points)})
+  ev.to_mesh_clear()
+ values=[r['innerRadiusM'] for r in radii]
+ scale_error=max(abs(v-1) for ob in bpy.context.scene.objects for v in ob.scale)
+ circularity={'stones':radii,'minInnerRadiusM':min(values),'maxInnerRadiusM':max(values),
+  'radiusSpreadM':max(values)-min(values),'maxNodeScaleError':scale_error,
+  'method':'fresh GLB import in Blender Z-up; minimum radial distance per closed stone to exported authoring centre',
+  'toleranceM':.005}
+ circularity['pass']=len(radii)==12 and circularity['radiusSpreadM']<.005 and max(abs(v-IY) for v in values)<.005 and scale_error<1e-6
+ imported['circularity']=circularity
  with open(os.path.join(DOC,'qa-G28.json')) as f:r=json.load(f)
  r['glbReadback']=imported
  r['roundTrip']={'triangleMatch':r['native']['triangles']==imported['triangles'],
@@ -250,7 +273,7 @@ def fresh():
   'allNodes':sorted(o.name for o in bpy.context.scene.objects),
   'unwantedLights':sum(o.type=='LIGHT' for o in bpy.context.scene.objects),'unwantedCameras':sum(o.type=='CAMERA' for o in bpy.context.scene.objects)}
  put(os.path.join(DOC,'qa-G28.json'),r);print('G28_READBACK',r['roundTrip'],imported['problems'])
- if imported['problems'] or not r['roundTrip']['triangleMatch'] or r['roundTrip']['maxBoundsDeltaM']>1e-4:raise RuntimeError('GLB exchange failure')
+ if imported['problems'] or not r['roundTrip']['triangleMatch'] or r['roundTrip']['maxBoundsDeltaM']>1e-4 or not circularity['pass']:raise RuntimeError('GLB exchange failure')
 
 VIEWS={'front':(1,0,.02),'three-quarter':(1,-1.35,.65),'rear':(-1,.65,.2),'side':(.03,-1,.12),'top':(.08,-.03,1),
        'near':(1,-.5,.35),'night':(1,-1.35,.5),'clay':(1,-1.35,.65)}

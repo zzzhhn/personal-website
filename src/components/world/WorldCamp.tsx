@@ -15,6 +15,7 @@ import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeom
 import { CAMP_CENTER } from './layout';
 import { useIsClaimed } from './WorldVisualClaims';
 import { useWorldStore } from './store';
+import { campCraftMaterial } from './WorldCraftMaterials';
 import type { Vec3 } from './types';
 
 /** Camp visuals and fitted physics share the same GLB and placement matrices. */
@@ -447,16 +448,35 @@ const QA_CLOSE_SHOT = 'camp-qa-close';
 function CampQACamera() {
   const camera = useThree(s => s.camera);
   const view = useRef<{ p: Vec3; t: Vec3 } | null>(null);
+  const frameTimes = useRef<number[]>([]), probing = useRef(false);
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).get('qa') !== '1') return;
+    const query = new URLSearchParams(window.location.search);
+    if (query.get('qa') !== '1') return;
     const api = {
       close: (p: Vec3, t: Vec3) => { view.current = { p, t }; useWorldStore.setState({ shot: QA_CLOSE_SHOT }); },
       release: () => { view.current = null; useWorldStore.setState({ shot: null }); },
     };
     Object.assign(window, { __worldCampQA: api });
-    return () => { delete (window as unknown as Record<string, unknown>).__worldCampQA; };
+    // Repeatable in-engine art comparisons, without touching the normal follow camera.
+    const artViews: Record<string, { p: Vec3; t: Vec3 }> = {
+      'portal-front': { p: [-29.4, 6.68, 34], t: [-33.5, 6.68, 34] },
+      'portal-angle': { p: [-29, 9, 39], t: [-33.5, 6.4, 34] },
+      'camp-detail': { p: [-35, 8.8, 40], t: [-42, 5.3, 30] },
+    };
+    const artView = artViews[query.get('artview') ?? ''];
+    if (artView) api.close(artView.p, artView.t);
+    probing.current = !!artView || query.get('artview') === 'walk';
+    const probe = probing.current ? setInterval(() => {
+      const w = window as unknown as { __worldEntry?: { facts: () => unknown }; __worldDebug?: { stats: () => unknown } };
+      const s = useWorldStore.getState(), ms = [...frameTimes.current].sort((a, b) => a - b);
+      document.documentElement.dataset.artProbe = JSON.stringify({ entry: w.__worldEntry?.facts(), stats: w.__worldDebug?.stats(), loading: s.loading,
+        state: { position: s.position, nearby: s.nearbyInteract?.id, paused: s.paused, quality: s.quality, light: s.light, lang: s.lang },
+        frameMs: { samples: ms.length, p50: ms[ms.length >> 1], p95: ms[Math.floor(ms.length * .95)] } });
+    }, 1000) : undefined;
+    return () => { clearInterval(probe); delete document.documentElement.dataset.artProbe; delete (window as unknown as Record<string, unknown>).__worldCampQA; };
   }, []);
-  useFrame(() => {
+  useFrame((_, delta) => {
+    if (probing.current) { frameTimes.current.push(delta * 1000); if (frameTimes.current.length > 120) frameTimes.current.shift(); }
     const v = view.current;
     if (!v || useWorldStore.getState().shot !== QA_CLOSE_SHOT) return;
     camera.position.set(...v.p); camera.up.set(0, 1, 0); camera.lookAt(...v.t);
@@ -539,11 +559,11 @@ export default memo(function WorldCamp({ layout }: { layout: CampLayout }) {
       <InstancedAsset id="C04" placements={[data.tents[0], data.tents[2]]} materialMap={canvasGlowCopy} />
     </AssetGuard>
     <AssetGuard id="C05" fallback={<Boxes collisionId="C05" items={[{ position: [firePosition[0], 4.95, firePosition[2]], size: [3.2, 0.3, 3.2], color: '#8C8276' }]} />}>
-      <SingleAsset id="C05" label="fire-pit" placement={{ position: firePosition, yaw: 0 }} />
+      <SingleAsset id="C05" label="fire-pit" placement={{ position: firePosition, yaw: 0 }} materialMap={campCraftMaterial} />
     </AssetGuard>
     <CampFire position={[firePosition[0], CAMP_TOP + 0.06, firePosition[2]]} />
     <AssetGuard id="C06" fallback={<Boxes collisionId="C06" items={layout.benches} />}>
-      <InstancedAsset id="C06" placements={data.benches} />
+      <InstancedAsset id="C06" placements={data.benches} materialMap={campCraftMaterial} />
     </AssetGuard>
     <AssetGuard id="C07" fallback={<Boxes collisionId="C07" items={padObject(0)} />}>
       <SingleAsset id="C07" label="pad1" placement={data.onPad(0)} />

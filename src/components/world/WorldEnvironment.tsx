@@ -397,7 +397,7 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
       const focus = useWorldStore.getState().position;
       fitSunShadow(lamp, shadowTarget, camera, { mapSize: shadowSize, wide: !!shot, focus, receivers: receiverBand(focus), tallReceivers: TALL_RECEIVERS });
     }
-    if (hemisphere.current) hemisphere.current.intensity = 1.5 - n * 0.85;
+    if (hemisphere.current) hemisphere.current.intensity = 1.65 - n * 0.95;
     if (fire.current) fire.current.intensity = (13 + n * 18) * (1 + Math.sin(windUniforms.uWindTime.value * 5) * windUniforms.uWindStrength.value * 0.065);
     warm.emissiveIntensity = 0.05 + n * 1.5;
     cyan.emissiveIntensity = 0.15 + n * 1.25;
@@ -416,7 +416,7 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
   });
   return <>
     <GlowClock /><GlowDemo />
-    <hemisphereLight ref={hemisphere} args={['#8FA6C4', '#695444', 1.5]} />
+    <hemisphereLight ref={hemisphere} args={['#8FA6C4', '#82715F', 1.65]} />
     <directionalLight ref={sun} position={SUN_OFFSET.toArray()} color="#FFD9A8" intensity={3.4} castShadow
       shadow-mapSize={[shadowSize, shadowSize]} shadow-camera-left={-105} shadow-camera-right={105}
       shadow-camera-top={100} shadow-camera-bottom={-100} shadow-camera-near={1} shadow-camera-far={260} shadow-bias={-0.00015} shadow-normalBias={0.025} />

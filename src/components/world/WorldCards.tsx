@@ -76,7 +76,7 @@ export default function WorldCards({ content }: { content: WorldContent }) {
     const active = chosen?.id ?? nearby.id;
     const rows = candidates.length > 1 ? candidates.map(c => ({ id: c.id, label: c.label[lang] })) : [{ id: nearby.id, label: nearby.label[lang] }];
     return <div className='world-prompt' aria-live='polite'>
-      <ul>{rows.map(r => <li key={r.id} className={r.id === active ? 'is-active' : ''}>{r.id === active ? <KeyCap device={device} k='E' /> : <span className='world-key-gap' />}<span>{r.label}</span></li>)}</ul>
+      <ul>{rows.map(r => <li key={r.id} className={r.id === active ? 'is-active' : ''}>{r.id === active ? <KeyCap device={device} k='E' /> : <span className='world-key-gap' />}<span className='world-prompt-label'>{r.id === 'G28-menu' && <small>{t.entryLandmark}</small>}<span>{r.label}</span></span></li>)}</ul>
       {rows.length > 1 && <p><KeyCap device={device} k='Q' />{t.switchTarget}</p>}
     </div>;
   }

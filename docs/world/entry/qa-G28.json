@@ -1,10 +1,28 @@
 {
  "asset": "G28",
- "blenderVersion": "4.2.23 LTS",
+ "blenderVersion": "5.1.2",
  "source": "tools/world/entry/build_portal.blend",
+ "arcProportions": {
+  "outerRadiiYZ": [
+   1.65,
+   1.65
+  ],
+  "innerRadiiYZ": [
+   1.25,
+   1.25
+  ],
+  "centreHeightM": 1.65,
+  "outerAxisRatio": 1.0,
+  "innerAxisRatio": 1.0,
+  "instanceScale": [
+   1,
+   1,
+   1
+  ]
+ },
  "glb": "public/assets/world/entry/G28.glb",
- "sha256": "1dd81e576c14ca84057d6cd8bd54aac07f1429acc629f67e8403dd25e2324141",
- "bytes": 50812,
+ "sha256": "eaf94d2e83696cdd92309a433720216978b3f548a58f4293703ab99dc30dcfac",
+ "bytes": 51100,
  "exportOptions": {
   "export_format": "GLB",
   "use_selection": true,
@@ -29,18 +47,18 @@
   "meshCount": 30,
   "boundsMin": [
    -0.46500808000564575,
-   -1.6466405391693115,
+   -1.6552096605300903,
    0.0
   ],
   "boundsMax": [
    0.46500808000564575,
-   1.6466405391693115,
-   3.779161214828491
+   1.6552096605300903,
+   3.319319009780884
   ],
   "dimensionsBlenderXYZ": [
    0.9300161600112915,
-   3.293281078338623,
-   3.779161214828491
+   3.3104193210601807,
+   3.319319009780884
   ],
   "objects": [
    {
@@ -49,7 +67,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.714529131588388e-05,
+    "minTriangleArea": 9.06159017989657e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -58,7 +76,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.14309213479294844
+       "signedVolume": 0.14238120597193285
       }
      ],
      "negativeShells": 0
@@ -69,7 +87,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.14309213479294844
+       "signedVolume": 0.14238120597193285
       }
      ],
      "negativeShells": 0
@@ -92,7 +110,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999946737634092,
+    "minTriangleArea": 0.0001499996997836726,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -101,7 +119,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00015077855218533406
+       "signedVolume": 0.00014636854887215925
       }
      ],
      "negativeShells": 0
@@ -112,7 +130,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00015077855218533406
+       "signedVolume": 0.00014636854887215925
       }
      ],
      "negativeShells": 0
@@ -135,7 +153,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.76337910586103e-05,
+    "minTriangleArea": 9.09060797186871e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -144,7 +162,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.15734867503812722
+       "signedVolume": 0.14658291214868566
       }
      ],
      "negativeShells": 0
@@ -155,7 +173,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.15734867503812722
+       "signedVolume": 0.14658291214868566
       }
      ],
      "negativeShells": 0
@@ -178,7 +196,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999935635360315,
+    "minTriangleArea": 0.00014999968016969194,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -187,7 +205,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00017307554688983376
+       "signedVolume": 0.00015313906738019986
       }
      ],
      "negativeShells": 0
@@ -198,7 +216,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00017307554688983376
+       "signedVolume": 0.00015313906738019986
       }
      ],
      "negativeShells": 0
@@ -221,7 +239,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.934289035723085e-05,
+    "minTriangleArea": 9.091240514831572e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -230,7 +248,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1335087571175837
+       "signedVolume": 0.12128580809597253
       }
      ],
      "negativeShells": 0
@@ -241,7 +259,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1335087571175837
+       "signedVolume": 0.12128580809597253
       }
      ],
      "negativeShells": 0
@@ -273,7 +291,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.000166426864535533
+       "signedVolume": 0.00014298290181062134
       }
      ],
      "negativeShells": 0
@@ -284,7 +302,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.000166426864535533
+       "signedVolume": 0.00014298290181062134
       }
      ],
      "negativeShells": 0
@@ -307,7 +325,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.672569746673413e-05,
+    "minTriangleArea": 9.079769438499566e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -316,7 +334,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1510952494708667
+       "signedVolume": 0.14296258842786508
       }
      ],
      "negativeShells": 0
@@ -327,7 +345,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1510952494708667
+       "signedVolume": 0.14296258842786508
       }
      ],
      "negativeShells": 0
@@ -350,7 +368,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999999399307443,
+    "minTriangleArea": 0.00014999930713349645,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -359,7 +377,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00017335566228145655
+       "signedVolume": 0.00015652390181071968
       }
      ],
      "negativeShells": 0
@@ -370,7 +388,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00017335566228145655
+       "signedVolume": 0.00015652390181071968
       }
      ],
      "negativeShells": 0
@@ -393,7 +411,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.757594924674515e-05,
+    "minTriangleArea": 9.068416808821478e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -402,7 +420,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.14548134425301942
+       "signedVolume": 0.14719509094378203
       }
      ],
      "negativeShells": 0
@@ -413,7 +431,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.14548134425301942
+       "signedVolume": 0.14719509094378203
       }
      ],
      "negativeShells": 0
@@ -436,7 +454,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999955027326486,
+    "minTriangleArea": 0.00014999921424437888,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -445,7 +463,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00014467033993170728
+       "signedVolume": 0.00014467544974235597
       }
      ],
      "negativeShells": 0
@@ -456,7 +474,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00014467033993170728
+       "signedVolume": 0.00014467544974235597
       }
      ],
      "negativeShells": 0
@@ -479,7 +497,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.862497576209327e-05,
+    "minTriangleArea": 9.099731832748211e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -488,7 +506,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.12794998031465402
+       "signedVolume": 0.13756525474848516
       }
      ],
      "negativeShells": 0
@@ -499,7 +517,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.12794998031465402
+       "signedVolume": 0.13756525474848516
       }
      ],
      "negativeShells": 0
@@ -522,7 +540,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.0001499994806990639,
+    "minTriangleArea": 0.00014999955397401932,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -531,7 +549,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.0001419602701465313
+       "signedVolume": 0.00015483159159875487
       }
      ],
      "negativeShells": 0
@@ -542,7 +560,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.0001419602701465313
+       "signedVolume": 0.00015483159159875487
       }
      ],
      "negativeShells": 0
@@ -565,7 +583,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.903850188019308e-05,
+    "minTriangleArea": 9.054123527086899e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -574,7 +592,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1341997366644928
+       "signedVolume": 0.14239862227067127
       }
      ],
      "negativeShells": 0
@@ -585,7 +603,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1341997366644928
+       "signedVolume": 0.14239862227067127
       }
      ],
      "negativeShells": 0
@@ -608,7 +626,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999980380075553,
+    "minTriangleArea": 0.0001499984045152924,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -617,7 +635,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00014036208066829187
+       "signedVolume": 0.00015313860478801306
       }
      ],
      "negativeShells": 0
@@ -628,7 +646,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00014036208066829187
+       "signedVolume": 0.00015313860478801306
       }
      ],
      "negativeShells": 0
@@ -651,7 +669,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.749997538850229e-05,
+    "minTriangleArea": 9.104134121453074e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -660,7 +678,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.12803459774065018
+       "signedVolume": 0.12942674900895787
       }
      ],
      "negativeShells": 0
@@ -671,7 +689,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.12803459774065018
+       "signedVolume": 0.12942674900895787
       }
      ],
      "negativeShells": 0
@@ -703,7 +721,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00014451325722338498
+       "signedVolume": 0.00014467594444885398
       }
      ],
      "negativeShells": 0
@@ -714,7 +732,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00014451325722338498
+       "signedVolume": 0.00014467594444885398
       }
      ],
      "negativeShells": 0
@@ -737,7 +755,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.728196425648964e-05,
+    "minTriangleArea": 9.115870309347377e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -746,7 +764,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1528248668113091
+       "signedVolume": 0.14405954253362088
       }
      ],
      "negativeShells": 0
@@ -757,7 +775,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1528248668113091
+       "signedVolume": 0.14405954253362088
       }
      ],
      "negativeShells": 0
@@ -780,7 +798,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.0001499995476827367,
+    "minTriangleArea": 0.00014999921868529418,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -789,7 +807,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00017321027180254123
+       "signedVolume": 0.0001565239929419704
       }
      ],
      "negativeShells": 0
@@ -800,7 +818,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00017321027180254123
+       "signedVolume": 0.0001565239929419704
       }
      ],
      "negativeShells": 0
@@ -823,7 +841,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.861534608722793e-05,
+    "minTriangleArea": 9.050163575706511e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -832,7 +850,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1512292100860649
+       "signedVolume": 0.13878077470143999
       }
      ],
      "negativeShells": 0
@@ -843,7 +861,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1512292100860649
+       "signedVolume": 0.13878077470143999
       }
      ],
      "negativeShells": 0
@@ -866,7 +884,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999922312620935,
+    "minTriangleArea": 0.00014999992219863213,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -875,7 +893,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00016640811899885455
+       "signedVolume": 0.00014298260296404428
       }
      ],
      "negativeShells": 0
@@ -886,7 +904,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00016640811899885455
+       "signedVolume": 0.00014298260296404428
       }
      ],
      "negativeShells": 0
@@ -909,7 +927,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.702156586004302e-05,
+    "minTriangleArea": 9.074018857716448e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -918,7 +936,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.15268419935754726
+       "signedVolume": 0.14240891420376875
       }
      ],
      "negativeShells": 0
@@ -929,7 +947,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.15268419935754726
+       "signedVolume": 0.14240891420376875
       }
      ],
      "negativeShells": 0
@@ -952,7 +970,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999942592786174,
+    "minTriangleArea": 0.0001499999188679613,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -961,7 +979,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00017319145571725872
+       "signedVolume": 0.00015313892306748994
       }
      ],
      "negativeShells": 0
@@ -972,7 +990,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00017319145571725872
+       "signedVolume": 0.00015313892306748994
       }
      ],
      "negativeShells": 0
@@ -995,7 +1013,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.70063898267919e-05,
+    "minTriangleArea": 9.092599518163584e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -1004,7 +1022,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.13613827719123947
+       "signedVolume": 0.13441868536462506
       }
      ],
      "negativeShells": 0
@@ -1015,7 +1033,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.13613827719123947
+       "signedVolume": 0.13441868536462506
       }
      ],
      "negativeShells": 0
@@ -1038,7 +1056,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999950734450638,
+    "minTriangleArea": 0.00014999923644895406,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -1047,7 +1065,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00015260564342748728
+       "signedVolume": 0.0001480610408114795
       }
      ],
      "negativeShells": 0
@@ -1058,7 +1076,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00015260564342748728
+       "signedVolume": 0.0001480610408114795
       }
      ],
      "negativeShells": 0
@@ -1081,7 +1099,7 @@
     "vertices": 56,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00013925427096486635,
+    "minTriangleArea": 0.0001392532512615297,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -1090,7 +1108,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.2544659755104756
+       "signedVolume": 0.25446597655272607
       }
      ],
      "negativeShells": 0
@@ -1101,7 +1119,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.2544659755104756
+       "signedVolume": 0.25446597655272607
       }
      ],
      "negativeShells": 0
@@ -1124,7 +1142,7 @@
     "vertices": 56,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014636293997062513,
+    "minTriangleArea": 0.00014636392607070641,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -1133,7 +1151,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.18516142903302044
+       "signedVolume": 0.185161401920371
       }
      ],
      "negativeShells": 0
@@ -1144,7 +1162,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.18516142903302044
+       "signedVolume": 0.185161401920371
       }
      ],
      "negativeShells": 0
@@ -1176,7 +1194,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.18903696371061154
+       "signedVolume": 0.1890369807311401
       }
      ],
      "negativeShells": 0
@@ -1187,7 +1205,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.18903696371061154
+       "signedVolume": 0.1890369807311401
       }
      ],
      "negativeShells": 0
@@ -1210,7 +1228,7 @@
     "vertices": 56,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00013925468235205795,
+    "minTriangleArea": 0.00013925381333505086,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -1219,7 +1237,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.2545175466324763
+       "signedVolume": 0.2545175443651454
       }
      ],
      "negativeShells": 0
@@ -1230,7 +1248,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.2545175466324763
+       "signedVolume": 0.2545175443651454
       }
      ],
      "negativeShells": 0
@@ -1262,7 +1280,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.18514651523673084
+       "signedVolume": 0.1851464967890715
       }
      ],
      "negativeShells": 0
@@ -1273,7 +1291,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.18514651523673084
+       "signedVolume": 0.1851464967890715
       }
      ],
      "negativeShells": 0
@@ -1305,7 +1323,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.18904012466284834
+       "signedVolume": 0.18904012030043588
       }
      ],
      "negativeShells": 0
@@ -1316,7 +1334,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.18904012466284834
+       "signedVolume": 0.18904012030043588
       }
      ],
      "negativeShells": 0
@@ -1339,7 +1357,7 @@
     "role": "stone",
     "hex": "#B4A896",
     "faces": 1512,
-    "area": 19.56759413385589,
+    "area": 19.05578534382221,
     "baseColor": [
      0.4564110338687897,
      0.3915724754333496,
@@ -1365,7 +1383,7 @@
     "role": "light",
     "hex": "#4FD1C5",
     "faces": 360,
-    "area": 0.47680185752687976,
+    "area": 0.4506016377999913,
     "baseColor": [
      0.07818742096424103,
      0.637596845626831,
@@ -1391,7 +1409,7 @@
     "role": "stone",
     "hex": "#8C8276",
     "faces": 330,
-    "area": 13.026567595545202,
+    "area": 13.02656815230148,
     "baseColor": [
      0.2622506618499756,
      0.22322796285152435,
@@ -1423,594 +1441,594 @@
     {
      "x": -0.25,
      "height": 0.03,
-     "left": 0.6101233959197998,
-     "right": 0.6101232767105103,
+     "left": 0.6078956127166748,
+     "right": 0.6123510599136353,
      "clearWidth": 1.22024667263031
     },
     {
      "x": -0.25,
      "height": 0.093,
-     "left": 0.614857017993927,
-     "right": 0.6148569583892822,
-     "clearWidth": 1.2297139763832092
+     "left": 0.6126293540000916,
+     "right": 0.6170846819877625,
+     "clearWidth": 1.229714035987854
     },
     {
      "x": -0.25,
      "height": 0.156,
-     "left": 0.6261540651321411,
-     "right": 0.6261538863182068,
-     "clearWidth": 1.252307951450348
+     "left": 0.6239263415336609,
+     "right": 0.6283816695213318,
+     "clearWidth": 1.2523080110549927
     },
     {
      "x": -0.25,
      "height": 0.219,
-     "left": 0.6334609985351562,
-     "right": 0.6334608197212219,
-     "clearWidth": 1.2669218182563782
+     "left": 0.6312332153320312,
+     "right": 0.6356885433197021,
+     "clearWidth": 1.2669217586517334
     },
     {
      "x": -0.25,
      "height": 0.28200000000000003,
-     "left": 0.6387338638305664,
-     "right": 0.6387336254119873,
+     "left": 0.6365060806274414,
+     "right": 0.6409614086151123,
      "clearWidth": 1.2774674892425537
     },
     {
      "x": -0.25,
      "height": 0.345,
-     "left": 0.6440067291259766,
-     "right": 0.644006609916687,
+     "left": 0.6417790651321411,
+     "right": 0.6462342739105225,
      "clearWidth": 1.2880133390426636
     },
     {
      "x": -0.25,
      "height": 0.40800000000000003,
-     "left": 0.6492796540260315,
-     "right": 0.6492794752120972,
+     "left": 0.6470519304275513,
+     "right": 0.6515071988105774,
      "clearWidth": 1.2985591292381287
     },
     {
      "x": -0.25,
      "height": 0.471,
-     "left": 0.6545525193214417,
-     "right": 0.6545523405075073,
-     "clearWidth": 1.309104859828949
+     "left": 0.6523247361183167,
+     "right": 0.6567800641059875,
+     "clearWidth": 1.3091048002243042
     },
     {
      "x": -0.25,
      "height": 0.534,
-     "left": 0.6510477066040039,
-     "right": 0.6510590314865112,
-     "clearWidth": 1.3021067380905151
+     "left": 0.6575977206230164,
+     "right": 0.6620529294013977,
+     "clearWidth": 1.319650650024414
     },
     {
      "x": -0.25,
      "height": 0.597,
-     "left": 0.6145685911178589,
-     "right": 0.6145727038383484,
-     "clearWidth": 1.2291412949562073
+     "left": 0.6740676164627075,
+     "right": 0.6785283088684082,
+     "clearWidth": 1.3525959253311157
     },
     {
      "x": -0.25,
      "height": 0.66,
-     "left": 0.6238823533058167,
-     "right": 0.6239024996757507,
-     "clearWidth": 1.2477848529815674
+     "left": 0.7600153684616089,
+     "right": 0.7645028829574585,
+     "clearWidth": 1.5245182514190674
     },
     {
      "x": -0.25,
      "height": 0.7230000000000001,
-     "left": 0.6902284622192383,
-     "right": 0.6902711391448975,
-     "clearWidth": 1.3804996013641357
+     "left": 0.8360181450843811,
+     "right": 0.8405657410621643,
+     "clearWidth": 1.6765838861465454
     },
     {
      "x": -0.25,
      "height": 0.786,
-     "left": 0.7476623058319092,
-     "right": 0.7477343082427979,
-     "clearWidth": 1.495396614074707
+     "left": 0.9008404612541199,
+     "right": 0.9052007794380188,
+     "clearWidth": 1.8060412406921387
     },
     {
      "x": -0.25,
      "height": 0.849,
-     "left": 0.7979838252067566,
-     "right": 0.7980774641036987,
-     "clearWidth": 1.5960612893104553
+     "left": 0.9569272994995117,
+     "right": 0.9613069891929626,
+     "clearWidth": 1.9182342886924744
     },
     {
      "x": -0.25,
      "height": 0.912,
-     "left": 0.8424724340438843,
-     "right": 0.8425731062889099,
-     "clearWidth": 1.6850455403327942
+     "left": 1.0061239004135132,
+     "right": 1.0105119943618774,
+     "clearWidth": 2.0166358947753906
     },
     {
      "x": -0.25,
      "height": 0.9750000000000001,
-     "left": 0.8820644617080688,
-     "right": 0.8821538090705872,
-     "clearWidth": 1.764218270778656
+     "left": 1.0495938062667847,
+     "right": 1.0563474893569946,
+     "clearWidth": 2.1059412956237793
     },
     {
      "x": -0.25,
      "height": 1.038,
-     "left": 0.917461097240448,
-     "right": 0.9175195693969727,
-     "clearWidth": 1.8349806666374207
+     "left": 1.087282419204712,
+     "right": 1.0942009687423706,
+     "clearWidth": 2.1814833879470825
     },
     {
      "x": -0.25,
      "height": 1.101,
-     "left": 0.9491665959358215,
-     "right": 0.9516611099243164,
-     "clearWidth": 1.900827705860138
+     "left": 1.120528221130371,
+     "right": 1.1273363828659058,
+     "clearWidth": 2.247864603996277
     },
     {
      "x": -0.25,
      "height": 1.164,
-     "left": 0.9777169823646545,
-     "right": 0.9800816774368286,
-     "clearWidth": 1.9577986598014832
+     "left": 1.1493641138076782,
+     "right": 1.156191349029541,
+     "clearWidth": 2.3055554628372192
     },
     {
      "x": -0.25,
      "height": 1.227,
-     "left": 1.0034171342849731,
-     "right": 1.005661129951477,
-     "clearWidth": 2.00907826423645
+     "left": 1.1736705303192139,
+     "right": 1.1806864738464355,
+     "clearWidth": 2.3543570041656494
     },
     {
      "x": -0.25,
      "height": 1.29,
-     "left": 1.0253872871398926,
-     "right": 1.0278816223144531,
-     "clearWidth": 2.0532689094543457
+     "left": 1.194254994392395,
+     "right": 1.2011600732803345,
+     "clearWidth": 2.3954150676727295
     },
     {
      "x": -0.25,
      "height": 1.353,
-     "left": 1.0449618101119995,
-     "right": 1.0473291873931885,
-     "clearWidth": 2.092290997505188
+     "left": 1.2113438844680786,
+     "right": 1.218147873878479,
+     "clearWidth": 2.4294917583465576
     },
     {
      "x": -0.25,
      "height": 1.4160000000000001,
-     "left": 1.062341570854187,
-     "right": 1.064590573310852,
-     "clearWidth": 2.126932144165039
+     "left": 1.2251131534576416,
+     "right": 1.2318252325057983,
+     "clearWidth": 2.45693838596344
     },
     {
      "x": -0.25,
      "height": 1.479,
-     "left": 1.077389121055603,
-     "right": 1.0798088312149048,
-     "clearWidth": 2.157197952270508
+     "left": 1.238814353942871,
+     "right": 1.2410643100738525,
+     "clearWidth": 2.4798786640167236
     },
     {
      "x": -0.25,
      "height": 1.542,
-     "left": 1.0894713401794434,
-     "right": 1.0918282270431519,
-     "clearWidth": 2.181299567222595
+     "left": 1.2430473566055298,
+     "right": 1.247362494468689,
+     "clearWidth": 2.4904098510742188
     },
     {
      "x": -0.25,
      "height": 1.605,
-     "left": 1.0997227430343628,
-     "right": 1.1019681692123413,
-     "clearWidth": 2.201690912246704
+     "left": 1.2467302083969116,
+     "right": 1.2513177394866943,
+     "clearWidth": 2.498047947883606
     },
     {
      "x": -0.25,
      "height": 1.668,
-     "left": 1.1169897317886353,
-     "right": 1.1121504306793213,
-     "clearWidth": 2.2291401624679565
+     "left": 1.2472163438796997,
+     "right": 1.251757264137268,
+     "clearWidth": 2.4989736080169678
     },
     {
      "x": -0.25,
      "height": 1.731,
-     "left": 1.1138828992843628,
-     "right": 1.113970398902893,
-     "clearWidth": 2.227853298187256
+     "left": 1.244616150856018,
+     "right": 1.2491111755371094,
+     "clearWidth": 2.4937273263931274
     },
     {
      "x": 0,
      "height": 0.03,
-     "left": 0.6163109540939331,
-     "right": 0.6163108944892883,
-     "clearWidth": 1.2326218485832214
+     "left": 0.6140832304954529,
+     "right": 0.6185385584831238,
+     "clearWidth": 1.2326217889785767
     },
     {
      "x": 0,
      "height": 0.093,
-     "left": 0.6205756664276123,
-     "right": 0.6205756068229675,
+     "left": 0.6183479428291321,
+     "right": 0.6228033304214478,
      "clearWidth": 1.2411512732505798
     },
     {
      "x": 0,
      "height": 0.156,
-     "left": 0.624840259552002,
-     "right": 0.6248401999473572,
-     "clearWidth": 1.2496804594993591
+     "left": 0.6226125359535217,
+     "right": 0.6270678639411926,
+     "clearWidth": 1.2496803998947144
     },
     {
      "x": 0,
      "height": 0.219,
-     "left": 0.633701741695404,
-     "right": 0.6337016820907593,
-     "clearWidth": 1.2674034237861633
+     "left": 0.6314740180969238,
+     "right": 0.63592928647995,
+     "clearWidth": 1.2674033045768738
     },
     {
      "x": 0,
      "height": 0.28200000000000003,
-     "left": 0.6393209099769592,
-     "right": 0.6393208503723145,
-     "clearWidth": 1.2786417603492737
+     "left": 0.637093186378479,
+     "right": 0.6415485143661499,
+     "clearWidth": 1.278641700744629
     },
     {
      "x": 0,
      "height": 0.345,
-     "left": 0.6409964561462402,
-     "right": 0.6409962773323059,
-     "clearWidth": 1.2819927334785461
+     "left": 0.63876873254776,
+     "right": 0.6432240605354309,
+     "clearWidth": 1.281992793083191
     },
     {
      "x": 0,
      "height": 0.40800000000000003,
-     "left": 0.6454325914382935,
-     "right": 0.6454324722290039,
-     "clearWidth": 1.2908650636672974
+     "left": 0.6432048678398132,
+     "right": 0.6476601362228394,
+     "clearWidth": 1.2908650040626526
     },
     {
      "x": 0,
      "height": 0.471,
-     "left": 0.6507054567337036,
-     "right": 0.6507052779197693,
+     "left": 0.6484777331352234,
+     "right": 0.6529330015182495,
      "clearWidth": 1.301410734653473
     },
     {
      "x": 0,
      "height": 0.534,
-     "left": 0.6510477066040039,
-     "right": 0.6510590314865112,
-     "clearWidth": 1.3021067380905151
+     "left": 0.6537506580352783,
+     "right": 0.6582059860229492,
+     "clearWidth": 1.3119566440582275
     },
     {
      "x": 0,
      "height": 0.597,
-     "left": 0.6145686507225037,
-     "right": 0.6145727038383484,
-     "clearWidth": 1.229141354560852
+     "left": 0.6740679740905762,
+     "right": 0.6785282492637634,
+     "clearWidth": 1.3525962233543396
     },
     {
      "x": 0,
      "height": 0.66,
-     "left": 0.6238824129104614,
-     "right": 0.623902440071106,
-     "clearWidth": 1.2477848529815674
+     "left": 0.7600153088569641,
+     "right": 0.7645028829574585,
+     "clearWidth": 1.5245181918144226
     },
     {
      "x": 0,
      "height": 0.7230000000000001,
-     "left": 0.6902283430099487,
-     "right": 0.6902710795402527,
-     "clearWidth": 1.3804994225502014
+     "left": 0.8360180854797363,
+     "right": 0.8405657410621643,
+     "clearWidth": 1.6765838265419006
     },
     {
      "x": 0,
      "height": 0.786,
-     "left": 0.7476624250411987,
-     "right": 0.7477343678474426,
-     "clearWidth": 1.4953967928886414
+     "left": 0.9008404612541199,
+     "right": 0.905200719833374,
+     "clearWidth": 1.806041181087494
     },
     {
      "x": 0,
      "height": 0.849,
-     "left": 0.7979837656021118,
-     "right": 0.7980774641036987,
-     "clearWidth": 1.5960612297058105
+     "left": 0.9569272398948669,
+     "right": 0.9613069891929626,
+     "clearWidth": 1.9182342290878296
     },
     {
      "x": 0,
      "height": 0.912,
-     "left": 0.8424725532531738,
-     "right": 0.8425730466842651,
-     "clearWidth": 1.685045599937439
+     "left": 1.0061239004135132,
+     "right": 1.0105119943618774,
+     "clearWidth": 2.0166358947753906
     },
     {
      "x": 0,
      "height": 0.9750000000000001,
-     "left": 0.8820645213127136,
-     "right": 0.8821537494659424,
-     "clearWidth": 1.764218270778656
+     "left": 1.0495940446853638,
+     "right": 1.0536798238754272,
+     "clearWidth": 2.103273868560791
     },
     {
      "x": 0,
      "height": 1.038,
-     "left": 0.9174611568450928,
-     "right": 0.9175196290016174,
-     "clearWidth": 1.8349807858467102
+     "left": 1.087282419204712,
+     "right": 1.0916297435760498,
+     "clearWidth": 2.1789121627807617
     },
     {
      "x": 0,
      "height": 1.101,
-     "left": 0.9491665363311768,
-     "right": 0.9491552114486694,
-     "clearWidth": 1.8983217477798462
+     "left": 1.1205281019210815,
+     "right": 1.1248449087142944,
+     "clearWidth": 2.245373010635376
     },
     {
      "x": 0,
      "height": 1.164,
-     "left": 0.9777169823646545,
-     "right": 0.9776356816291809,
-     "clearWidth": 1.9553526639938354
+     "left": 1.1493642330169678,
+     "right": 1.1537655591964722,
+     "clearWidth": 2.30312979221344
     },
     {
      "x": 0,
      "height": 1.227,
-     "left": 1.0034170150756836,
-     "right": 1.0032634735107422,
-     "clearWidth": 2.006680488586426
+     "left": 1.1736705303192139,
+     "right": 1.1782606840133667,
+     "clearWidth": 2.3519312143325806
     },
     {
      "x": 0,
      "height": 1.29,
-     "left": 1.0253874063491821,
-     "right": 1.0254840850830078,
-     "clearWidth": 2.05087149143219
+     "left": 1.1942548751831055,
+     "right": 1.1987873315811157,
+     "clearWidth": 2.393042206764221
     },
     {
      "x": 0,
      "height": 1.353,
-     "left": 1.04496169090271,
-     "right": 1.044970989227295,
-     "clearWidth": 2.089932680130005
+     "left": 1.2113440036773682,
+     "right": 1.215816855430603,
+     "clearWidth": 2.427160859107971
     },
     {
      "x": 0,
      "height": 1.4160000000000001,
-     "left": 1.062341570854187,
-     "right": 1.0622639656066895,
-     "clearWidth": 2.1246055364608765
+     "left": 1.2251132726669312,
+     "right": 1.2295252084732056,
+     "clearWidth": 2.4546384811401367
     },
     {
      "x": 0,
      "height": 1.479,
-     "left": 1.0773890018463135,
-     "right": 1.0775068998336792,
-     "clearWidth": 2.1548959016799927
+     "left": 1.2388148307800293,
+     "right": 1.2410643100738525,
+     "clearWidth": 2.479879140853882
     },
     {
      "x": 0,
      "height": 1.542,
-     "left": 1.0894713401794434,
-     "right": 1.089526653289795,
-     "clearWidth": 2.1789979934692383
+     "left": 1.2430473566055298,
+     "right": 1.247362494468689,
+     "clearWidth": 2.4904098510742188
     },
     {
      "x": 0,
      "height": 1.605,
-     "left": 1.0997227430343628,
-     "right": 1.099684476852417,
-     "clearWidth": 2.19940721988678
+     "left": 1.2467304468154907,
+     "right": 1.2513177394866943,
+     "clearWidth": 2.498048186302185
     },
     {
      "x": 0,
      "height": 1.668,
-     "left": 1.116990327835083,
-     "right": 1.1121509075164795,
-     "clearWidth": 2.2291412353515625
+     "left": 1.2472163438796997,
+     "right": 1.251757264137268,
+     "clearWidth": 2.4989736080169678
     },
     {
      "x": 0,
      "height": 1.731,
-     "left": 1.1138827800750732,
-     "right": 1.1139702796936035,
-     "clearWidth": 2.2278530597686768
+     "left": 1.2446162700653076,
+     "right": 1.249111294746399,
+     "clearWidth": 2.4937275648117065
     },
     {
      "x": 0.25,
      "height": 0.03,
-     "left": 0.6224986910820007,
-     "right": 0.6224985718727112,
+     "left": 0.6202709674835205,
+     "right": 0.6247262954711914,
      "clearWidth": 1.244997262954712
     },
     {
      "x": 0.25,
      "height": 0.093,
-     "left": 0.6267634034156799,
-     "right": 0.6267632246017456,
-     "clearWidth": 1.2535266280174255
+     "left": 0.6245355606079102,
+     "right": 0.6289909482002258,
+     "clearWidth": 1.253526508808136
     },
     {
      "x": 0.25,
      "height": 0.156,
-     "left": 0.6310279369354248,
-     "right": 0.6310278177261353,
-     "clearWidth": 1.26205575466156
+     "left": 0.6288002133369446,
+     "right": 0.6332556009292603,
+     "clearWidth": 1.2620558142662048
     },
     {
      "x": 0.25,
      "height": 0.219,
-     "left": 0.6352925300598145,
-     "right": 0.6352924108505249,
-     "clearWidth": 1.2705849409103394
+     "left": 0.633064866065979,
+     "right": 0.6375201344490051,
+     "clearWidth": 1.2705850005149841
     },
     {
      "x": 0.25,
      "height": 0.28200000000000003,
-     "left": 0.6412494778633118,
-     "right": 0.6412493586540222,
-     "clearWidth": 1.282498836517334
+     "left": 0.6390218138694763,
+     "right": 0.6434770822525024,
+     "clearWidth": 1.2824988961219788
     },
     {
      "x": 0.25,
      "height": 0.345,
-     "left": 0.6498042345046997,
-     "right": 0.6498041152954102,
-     "clearWidth": 1.2996083498001099
+     "left": 0.6475765109062195,
+     "right": 0.6520317792892456,
+     "clearWidth": 1.299608290195465
     },
     {
      "x": 0.25,
      "height": 0.40800000000000003,
-     "left": 0.6514797210693359,
-     "right": 0.6514795422554016,
-     "clearWidth": 1.3029592633247375
+     "left": 0.6492519974708557,
+     "right": 0.6537073254585266,
+     "clearWidth": 1.3029593229293823
     },
     {
      "x": 0.25,
      "height": 0.471,
-     "left": 0.6531552672386169,
-     "right": 0.6531550884246826,
-     "clearWidth": 1.3063103556632996
+     "left": 0.6509276032447815,
+     "right": 0.6553828120231628,
+     "clearWidth": 1.3063104152679443
     },
     {
      "x": 0.25,
      "height": 0.534,
-     "left": 0.6534519195556641,
-     "right": 0.6510589122772217,
-     "clearWidth": 1.3045108318328857
+     "left": 0.652603030204773,
+     "right": 0.6570582985877991,
+     "clearWidth": 1.309661328792572
     },
     {
      "x": 0.25,
      "height": 0.597,
-     "left": 0.6164273619651794,
-     "right": 0.6145726442337036,
-     "clearWidth": 1.231000006198883
+     "left": 0.668712317943573,
+     "right": 0.6731676459312439,
+     "clearWidth": 1.341879963874817
     },
     {
      "x": 0.25,
      "height": 0.66,
-     "left": 0.6263124346733093,
-     "right": 0.6239024996757507,
-     "clearWidth": 1.25021493434906
+     "left": 0.7645152807235718,
+     "right": 0.764503002166748,
+     "clearWidth": 1.5290182828903198
     },
     {
      "x": 0.25,
      "height": 0.7230000000000001,
-     "left": 0.6933454871177673,
-     "right": 0.6902710199356079,
-     "clearWidth": 1.3836165070533752
+     "left": 0.8412624597549438,
+     "right": 0.8405658006668091,
+     "clearWidth": 1.681828260421753
     },
     {
      "x": 0.25,
      "height": 0.786,
-     "left": 0.75127774477005,
-     "right": 0.7477343678474426,
-     "clearWidth": 1.4990121126174927
+     "left": 0.9062477350234985,
+     "right": 0.9052008390426636,
+     "clearWidth": 1.811448574066162
     },
     {
      "x": 0.25,
      "height": 0.849,
-     "left": 0.8019711375236511,
-     "right": 0.7980774641036987,
-     "clearWidth": 1.6000486016273499
+     "left": 0.9626898169517517,
+     "right": 0.9613069891929626,
+     "clearWidth": 1.9239968061447144
     },
     {
      "x": 0.25,
      "height": 0.912,
-     "left": 0.8467442989349365,
-     "right": 0.8425730466842651,
-     "clearWidth": 1.6893173456192017
+     "left": 1.012141466140747,
+     "right": 1.0105119943618774,
+     "clearWidth": 2.0226534605026245
     },
     {
      "x": 0.25,
      "height": 0.9750000000000001,
-     "left": 0.8865578770637512,
-     "right": 0.8821536898612976,
-     "clearWidth": 1.7687115669250488
+     "left": 1.0495940446853638,
+     "right": 1.0536798238754272,
+     "clearWidth": 2.103273868560791
     },
     {
      "x": 0.25,
      "height": 1.038,
-     "left": 0.9221556186676025,
-     "right": 0.9175196290016174,
-     "clearWidth": 1.83967524766922
+     "left": 1.0872822999954224,
+     "right": 1.0916297435760498,
+     "clearWidth": 2.178912043571472
     },
     {
      "x": 0.25,
      "height": 1.101,
-     "left": 0.9491665959358215,
-     "right": 0.9491552114486694,
-     "clearWidth": 1.898321807384491
+     "left": 1.1205281019210815,
+     "right": 1.1248447895050049,
+     "clearWidth": 2.2453728914260864
     },
     {
      "x": 0.25,
      "height": 1.164,
-     "left": 0.9777169227600098,
-     "right": 0.9776356220245361,
-     "clearWidth": 1.955352544784546
+     "left": 1.1493642330169678,
+     "right": 1.1537655591964722,
+     "clearWidth": 2.30312979221344
     },
     {
      "x": 0.25,
      "height": 1.227,
-     "left": 1.0034170150756836,
-     "right": 1.0032633543014526,
-     "clearWidth": 2.0066803693771362
+     "left": 1.1736704111099243,
+     "right": 1.1782605648040771,
+     "clearWidth": 2.3519309759140015
     },
     {
      "x": 0.25,
      "height": 1.29,
-     "left": 1.0253874063491821,
-     "right": 1.0254839658737183,
-     "clearWidth": 2.0508713722229004
+     "left": 1.1942548751831055,
+     "right": 1.1987874507904053,
+     "clearWidth": 2.3930423259735107
     },
     {
      "x": 0.25,
      "height": 1.353,
-     "left": 1.0449618101119995,
-     "right": 1.0449708700180054,
-     "clearWidth": 2.089932680130005
+     "left": 1.2113438844680786,
+     "right": 1.2158169746398926,
+     "clearWidth": 2.427160859107971
     },
     {
      "x": 0.25,
      "height": 1.4160000000000001,
-     "left": 1.062341570854187,
-     "right": 1.0622639656066895,
-     "clearWidth": 2.1246055364608765
+     "left": 1.2251132726669312,
+     "right": 1.2295252084732056,
+     "clearWidth": 2.4546384811401367
     },
     {
      "x": 0.25,
      "height": 1.479,
-     "left": 1.077388882637024,
-     "right": 1.0775070190429688,
-     "clearWidth": 2.1548959016799927
+     "left": 1.2388148307800293,
+     "right": null,
+     "clearWidth": null
     },
     {
      "x": 0.25,
      "height": 1.542,
-     "left": 1.0894713401794434,
-     "right": 1.0895265340805054,
-     "clearWidth": 2.1789978742599487
+     "left": 1.2430473566055298,
+     "right": null,
+     "clearWidth": null
     },
     {
      "x": 0.25,
      "height": 1.605,
-     "left": 1.0997228622436523,
-     "right": 1.099684476852417,
-     "clearWidth": 2.1994073390960693
+     "left": 1.246730089187622,
+     "right": null,
+     "clearWidth": null
     },
     {
      "x": 0.25,
      "height": 1.668,
-     "left": 1.116991400718689,
+     "left": 1.2472163438796997,
      "right": null,
      "clearWidth": null
     },
     {
      "x": 0.25,
      "height": 1.731,
-     "left": 1.1138830184936523,
+     "left": 1.2446162700653076,
      "right": null,
      "clearWidth": null
     }
    ],
    "minBodyHeightClearWidth": 1.22024667263031,
-   "centreClearHeight": 3.343411931991577,
+   "centreClearHeight": 2.895289192199707,
    "stoneBaseContacts": [
     {
      "a": "G28_base_L_foot",
@@ -2027,7 +2045,7 @@
     {
      "a": "G28_base_L_foot",
      "b": "G28_stone_12",
-     "triangleOverlapPairs": 16,
+     "triangleOverlapPairs": 25,
      "relationship": "intentional embedded load-bearing assembly"
     },
     {
@@ -2039,19 +2057,19 @@
     {
      "a": "G28_base_L_outer",
      "b": "G28_stone_11",
-     "triangleOverlapPairs": 38,
+     "triangleOverlapPairs": 42,
      "relationship": "intentional embedded load-bearing assembly"
     },
     {
      "a": "G28_base_L_outer",
      "b": "G28_stone_12",
-     "triangleOverlapPairs": 57,
+     "triangleOverlapPairs": 67,
      "relationship": "intentional embedded load-bearing assembly"
     },
     {
      "a": "G28_base_L_toe",
      "b": "G28_stone_12",
-     "triangleOverlapPairs": 63,
+     "triangleOverlapPairs": 73,
      "relationship": "intentional embedded load-bearing assembly"
     },
     {
@@ -2069,7 +2087,7 @@
     {
      "a": "G28_base_R_foot",
      "b": "G28_stone_01",
-     "triangleOverlapPairs": 18,
+     "triangleOverlapPairs": 29,
      "relationship": "intentional embedded load-bearing assembly"
     },
     {
@@ -2081,19 +2099,19 @@
     {
      "a": "G28_base_R_outer",
      "b": "G28_stone_01",
-     "triangleOverlapPairs": 55,
+     "triangleOverlapPairs": 61,
      "relationship": "intentional embedded load-bearing assembly"
     },
     {
      "a": "G28_base_R_outer",
      "b": "G28_stone_02",
-     "triangleOverlapPairs": 41,
+     "triangleOverlapPairs": 55,
      "relationship": "intentional embedded load-bearing assembly"
     },
     {
      "a": "G28_base_R_toe",
      "b": "G28_stone_01",
-     "triangleOverlapPairs": 59,
+     "triangleOverlapPairs": 77,
      "relationship": "intentional embedded load-bearing assembly"
     }
    ],
@@ -2102,85 +2120,85 @@
      "light": "G28_light_01",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.0004999860004521906,
-     "maxFrontProudM": 0.0005000322173349559
+     "minFrontProudM": 0.0004999560817144811,
+     "maxFrontProudM": 0.0005000244757160544
     },
     {
      "light": "G28_light_02",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.000499972961936146,
-     "maxFrontProudM": 0.0005000229041092097
+     "minFrontProudM": 0.0004999577697366476,
+     "maxFrontProudM": 0.0005000160938128829
     },
     {
      "light": "G28_light_03",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.0004999958957545459,
-     "maxFrontProudM": 0.0005000292487442493
+     "minFrontProudM": 0.0004999981076456606,
+     "maxFrontProudM": 0.0005000237190164625
     },
     {
      "light": "G28_light_04",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.000499981052801013,
-     "maxFrontProudM": 0.0005000453722663223
+     "minFrontProudM": 0.0004999658606015145,
+     "maxFrontProudM": 0.000500021390710026
     },
     {
      "light": "G28_light_05",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.0004999818677082657,
-     "maxFrontProudM": 0.0005000290159136056
+     "minFrontProudM": 0.0004999686545692384,
+     "maxFrontProudM": 0.0005000541616231203
     },
     {
      "light": "G28_light_06",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.0004999838467687368,
-     "maxFrontProudM": 0.0005000279681757092
+     "minFrontProudM": 0.0004999817512929439,
+     "maxFrontProudM": 0.0005000362918712198
     },
     {
      "light": "G28_light_07",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.0004999825662001967,
-     "maxFrontProudM": 0.000500035535171628
+     "minFrontProudM": 0.0004999228451400995,
+     "maxFrontProudM": 0.0005000125431455671
     },
     {
      "light": "G28_light_08",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.00049995346236974,
-     "maxFrontProudM": 0.0005000226130709052
+     "minFrontProudM": 0.0004999640561640262,
+     "maxFrontProudM": 0.0005000197608955204
     },
     {
      "light": "G28_light_09",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.0004999560817144811,
-     "maxFrontProudM": 0.0005000207504257559
+     "minFrontProudM": 0.0004999606801196932,
+     "maxFrontProudM": 0.0005000045104883611
     },
     {
      "light": "G28_light_10",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.0004999549175612628,
-     "maxFrontProudM": 0.0005000021821819245
+     "minFrontProudM": 0.00049995346236974,
+     "maxFrontProudM": 0.0005000197026878595
     },
     {
      "light": "G28_light_11",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.0004999599234201014,
-     "maxFrontProudM": 0.0005000119028612971
+     "minFrontProudM": 0.000499968945607543,
+     "maxFrontProudM": 0.0005000336725264787
     },
     {
      "light": "G28_light_12",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.0004999677814543247,
-     "maxFrontProudM": 0.000500005907472223
+     "minFrontProudM": 0.0004999800632707774,
+     "maxFrontProudM": 0.0005000355933792889
     }
    ],
    "limit": "BVH surface-intersection and opening rays cover intended joints/opening; not an exhaustive global self-intersection certificate."
@@ -2192,18 +2210,18 @@
   "meshCount": 30,
   "boundsMin": [
    -0.46500808000564575,
-   -1.6466405391693115,
+   -1.6552096605300903,
    0.0
   ],
   "boundsMax": [
    0.46500808000564575,
-   1.6466405391693115,
-   3.779161214828491
+   1.6552096605300903,
+   3.319319009780884
   ],
   "dimensionsBlenderXYZ": [
    0.9300161600112915,
-   3.293281078338623,
-   3.779161214828491
+   3.3104193210601807,
+   3.319319009780884
   ],
   "objects": [
    {
@@ -2212,7 +2230,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.714529131588388e-05,
+    "minTriangleArea": 9.06159017989657e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -2221,7 +2239,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.14309213479294844
+       "signedVolume": 0.14238120597193285
       }
      ],
      "negativeShells": 0
@@ -2232,7 +2250,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.14309213479294844
+       "signedVolume": 0.14238120597193285
       }
      ],
      "negativeShells": 0
@@ -2255,7 +2273,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999946737634092,
+    "minTriangleArea": 0.0001499996997836726,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -2264,7 +2282,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00015077855218533406
+       "signedVolume": 0.00014636854887215925
       }
      ],
      "negativeShells": 0
@@ -2275,7 +2293,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00015077855218533406
+       "signedVolume": 0.00014636854887215925
       }
      ],
      "negativeShells": 0
@@ -2298,7 +2316,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.76337910586103e-05,
+    "minTriangleArea": 9.09060797186871e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -2307,7 +2325,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.15734867503812722
+       "signedVolume": 0.14658291214868566
       }
      ],
      "negativeShells": 0
@@ -2318,7 +2336,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.15734867503812722
+       "signedVolume": 0.14658291214868566
       }
      ],
      "negativeShells": 0
@@ -2341,7 +2359,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999935635360315,
+    "minTriangleArea": 0.00014999968016969194,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -2350,7 +2368,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00017307554688983376
+       "signedVolume": 0.00015313906738019986
       }
      ],
      "negativeShells": 0
@@ -2361,7 +2379,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00017307554688983376
+       "signedVolume": 0.00015313906738019986
       }
      ],
      "negativeShells": 0
@@ -2384,7 +2402,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.934289035723085e-05,
+    "minTriangleArea": 9.091240514831572e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -2393,7 +2411,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1335087571175837
+       "signedVolume": 0.12128580809597253
       }
      ],
      "negativeShells": 0
@@ -2404,7 +2422,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1335087571175837
+       "signedVolume": 0.12128580809597253
       }
      ],
      "negativeShells": 0
@@ -2436,7 +2454,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.000166426864535533
+       "signedVolume": 0.00014298290181062134
       }
      ],
      "negativeShells": 0
@@ -2447,7 +2465,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.000166426864535533
+       "signedVolume": 0.00014298290181062134
       }
      ],
      "negativeShells": 0
@@ -2470,7 +2488,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.672569746673413e-05,
+    "minTriangleArea": 9.079769438499566e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -2479,7 +2497,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1510952494708667
+       "signedVolume": 0.14296258842786508
       }
      ],
      "negativeShells": 0
@@ -2490,7 +2508,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1510952494708667
+       "signedVolume": 0.14296258842786508
       }
      ],
      "negativeShells": 0
@@ -2513,7 +2531,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999999399307443,
+    "minTriangleArea": 0.00014999930713349645,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -2522,7 +2540,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00017335566228145655
+       "signedVolume": 0.00015652390181071968
       }
      ],
      "negativeShells": 0
@@ -2533,7 +2551,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00017335566228145655
+       "signedVolume": 0.00015652390181071968
       }
      ],
      "negativeShells": 0
@@ -2556,7 +2574,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.757594924674515e-05,
+    "minTriangleArea": 9.068416808821478e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -2565,7 +2583,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.14548134425301942
+       "signedVolume": 0.14719509094378203
       }
      ],
      "negativeShells": 0
@@ -2576,7 +2594,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.14548134425301942
+       "signedVolume": 0.14719509094378203
       }
      ],
      "negativeShells": 0
@@ -2599,7 +2617,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999955027326486,
+    "minTriangleArea": 0.00014999921424437888,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -2608,7 +2626,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00014467033993170728
+       "signedVolume": 0.00014467544974235597
       }
      ],
      "negativeShells": 0
@@ -2619,7 +2637,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00014467033993170728
+       "signedVolume": 0.00014467544974235597
       }
      ],
      "negativeShells": 0
@@ -2642,7 +2660,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.862497576209327e-05,
+    "minTriangleArea": 9.099731832748211e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -2651,7 +2669,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.12794998031465402
+       "signedVolume": 0.13756525474848516
       }
      ],
      "negativeShells": 0
@@ -2662,7 +2680,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.12794998031465402
+       "signedVolume": 0.13756525474848516
       }
      ],
      "negativeShells": 0
@@ -2685,7 +2703,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.0001499994806990639,
+    "minTriangleArea": 0.00014999955397401932,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -2694,7 +2712,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.0001419602701465313
+       "signedVolume": 0.00015483159159875487
       }
      ],
      "negativeShells": 0
@@ -2705,7 +2723,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.0001419602701465313
+       "signedVolume": 0.00015483159159875487
       }
      ],
      "negativeShells": 0
@@ -2728,7 +2746,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.903850188019308e-05,
+    "minTriangleArea": 9.054123527086899e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -2737,7 +2755,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1341997366644928
+       "signedVolume": 0.14239862227067127
       }
      ],
      "negativeShells": 0
@@ -2748,7 +2766,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1341997366644928
+       "signedVolume": 0.14239862227067127
       }
      ],
      "negativeShells": 0
@@ -2771,7 +2789,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999980380075553,
+    "minTriangleArea": 0.0001499984045152924,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -2780,7 +2798,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00014036208066829187
+       "signedVolume": 0.00015313860478801306
       }
      ],
      "negativeShells": 0
@@ -2791,7 +2809,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00014036208066829187
+       "signedVolume": 0.00015313860478801306
       }
      ],
      "negativeShells": 0
@@ -2814,7 +2832,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.749997538850229e-05,
+    "minTriangleArea": 9.104134121453074e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -2823,7 +2841,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.12803459774065018
+       "signedVolume": 0.12942674900895787
       }
      ],
      "negativeShells": 0
@@ -2834,7 +2852,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.12803459774065018
+       "signedVolume": 0.12942674900895787
       }
      ],
      "negativeShells": 0
@@ -2866,7 +2884,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00014451325722338498
+       "signedVolume": 0.00014467594444885398
       }
      ],
      "negativeShells": 0
@@ -2877,7 +2895,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00014451325722338498
+       "signedVolume": 0.00014467594444885398
       }
      ],
      "negativeShells": 0
@@ -2900,7 +2918,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.728196425648964e-05,
+    "minTriangleArea": 9.115870309347377e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -2909,7 +2927,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1528248668113091
+       "signedVolume": 0.14405954253362088
       }
      ],
      "negativeShells": 0
@@ -2920,7 +2938,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1528248668113091
+       "signedVolume": 0.14405954253362088
       }
      ],
      "negativeShells": 0
@@ -2943,7 +2961,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.0001499995476827367,
+    "minTriangleArea": 0.00014999921868529418,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -2952,7 +2970,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00017321027180254123
+       "signedVolume": 0.0001565239929419704
       }
      ],
      "negativeShells": 0
@@ -2963,7 +2981,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00017321027180254123
+       "signedVolume": 0.0001565239929419704
       }
      ],
      "negativeShells": 0
@@ -2986,7 +3004,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.861534608722793e-05,
+    "minTriangleArea": 9.050163575706511e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -2995,7 +3013,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1512292100860649
+       "signedVolume": 0.13878077470143999
       }
      ],
      "negativeShells": 0
@@ -3006,7 +3024,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.1512292100860649
+       "signedVolume": 0.13878077470143999
       }
      ],
      "negativeShells": 0
@@ -3029,7 +3047,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999922312620935,
+    "minTriangleArea": 0.00014999992219863213,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -3038,7 +3056,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00016640811899885455
+       "signedVolume": 0.00014298260296404428
       }
      ],
      "negativeShells": 0
@@ -3049,7 +3067,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00016640811899885455
+       "signedVolume": 0.00014298260296404428
       }
      ],
      "negativeShells": 0
@@ -3072,7 +3090,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.702156586004302e-05,
+    "minTriangleArea": 9.074018857716448e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -3081,7 +3099,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.15268419935754726
+       "signedVolume": 0.14240891420376875
       }
      ],
      "negativeShells": 0
@@ -3092,7 +3110,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.15268419935754726
+       "signedVolume": 0.14240891420376875
       }
      ],
      "negativeShells": 0
@@ -3115,7 +3133,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999942592786174,
+    "minTriangleArea": 0.0001499999188679613,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -3124,7 +3142,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00017319145571725872
+       "signedVolume": 0.00015313892306748994
       }
      ],
      "negativeShells": 0
@@ -3135,7 +3153,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00017319145571725872
+       "signedVolume": 0.00015313892306748994
       }
      ],
      "negativeShells": 0
@@ -3158,7 +3176,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.70063898267919e-05,
+    "minTriangleArea": 9.092599518163584e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -3167,7 +3185,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.13613827719123947
+       "signedVolume": 0.13441868536462506
       }
      ],
      "negativeShells": 0
@@ -3178,7 +3196,7 @@
      "shells": [
       {
        "faces": 126,
-       "signedVolume": 0.13613827719123947
+       "signedVolume": 0.13441868536462506
       }
      ],
      "negativeShells": 0
@@ -3201,7 +3219,7 @@
     "vertices": 32,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999950734450638,
+    "minTriangleArea": 0.00014999923644895406,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -3210,7 +3228,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00015260564342748728
+       "signedVolume": 0.0001480610408114795
       }
      ],
      "negativeShells": 0
@@ -3221,7 +3239,7 @@
      "shells": [
       {
        "faces": 30,
-       "signedVolume": 0.00015260564342748728
+       "signedVolume": 0.0001480610408114795
       }
      ],
      "negativeShells": 0
@@ -3244,7 +3262,7 @@
     "vertices": 56,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00013925427096486635,
+    "minTriangleArea": 0.0001392532512615297,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -3253,7 +3271,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.2544659755104756
+       "signedVolume": 0.25446597655272607
       }
      ],
      "negativeShells": 0
@@ -3264,7 +3282,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.2544659755104756
+       "signedVolume": 0.25446597655272607
       }
      ],
      "negativeShells": 0
@@ -3287,7 +3305,7 @@
     "vertices": 56,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014636293997062513,
+    "minTriangleArea": 0.00014636392607070641,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -3296,7 +3314,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.18516142903302044
+       "signedVolume": 0.185161401920371
       }
      ],
      "negativeShells": 0
@@ -3307,7 +3325,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.18516142903302044
+       "signedVolume": 0.185161401920371
       }
      ],
      "negativeShells": 0
@@ -3339,7 +3357,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.18903696371061154
+       "signedVolume": 0.1890369807311401
       }
      ],
      "negativeShells": 0
@@ -3350,7 +3368,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.18903696371061154
+       "signedVolume": 0.1890369807311401
       }
      ],
      "negativeShells": 0
@@ -3373,7 +3391,7 @@
     "vertices": 56,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00013925468235205795,
+    "minTriangleArea": 0.00013925381333505086,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -3382,7 +3400,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.2545175466324763
+       "signedVolume": 0.2545175443651454
       }
      ],
      "negativeShells": 0
@@ -3393,7 +3411,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.2545175466324763
+       "signedVolume": 0.2545175443651454
       }
      ],
      "negativeShells": 0
@@ -3425,7 +3443,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.18514651523673084
+       "signedVolume": 0.1851464967890715
       }
      ],
      "negativeShells": 0
@@ -3436,7 +3454,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.18514651523673084
+       "signedVolume": 0.1851464967890715
       }
      ],
      "negativeShells": 0
@@ -3468,7 +3486,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.18904012466284834
+       "signedVolume": 0.18904012030043588
       }
      ],
      "negativeShells": 0
@@ -3479,7 +3497,7 @@
      "shells": [
       {
        "faces": 55,
-       "signedVolume": 0.18904012466284834
+       "signedVolume": 0.18904012030043588
       }
      ],
      "negativeShells": 0
@@ -3502,7 +3520,7 @@
     "role": "stone",
     "hex": "#B4A896",
     "faces": 1512,
-    "area": 19.56759413385589,
+    "area": 19.05578534382221,
     "baseColor": [
      0.4564110338687897,
      0.3915724754333496,
@@ -3528,7 +3546,7 @@
     "role": "light",
     "hex": "#4FD1C5",
     "faces": 360,
-    "area": 0.47680185752687976,
+    "area": 0.4506016377999913,
     "baseColor": [
      0.07818742096424103,
      0.637596845626831,
@@ -3554,7 +3572,7 @@
     "role": "stone",
     "hex": "#8C8276",
     "faces": 330,
-    "area": 13.026567595545202,
+    "area": 13.02656815230148,
     "baseColor": [
      0.2622506618499756,
      0.22322796285152435,
@@ -3597,18 +3615,18 @@
   "meshCount": 30,
   "boundsMin": [
    -0.46500808000564575,
-   -1.6466405391693115,
+   -1.655210018157959,
    0.0
   ],
   "boundsMax": [
    0.46500760316848755,
-   1.6466405391693115,
-   3.7791614532470703
+   1.6552096605300903,
+   3.319319248199463
   ],
   "dimensionsBlenderXYZ": [
    0.9300156831741333,
-   3.293281078338623,
-   3.7791614532470703
+   3.3104196786880493,
+   3.319319248199463
   ],
   "objects": [
    {
@@ -3617,7 +3635,7 @@
     "vertices": 56,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00013925324886972262,
+    "minTriangleArea": 0.00013925325365333671,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -3626,7 +3644,7 @@
      "shells": [
       {
        "faces": 108,
-       "signedVolume": 0.2544661314981018
+       "signedVolume": 0.25446613195367945
       }
      ],
      "negativeShells": 0
@@ -3637,7 +3655,7 @@
      "shells": [
       {
        "faces": 108,
-       "signedVolume": 0.2544661314981018
+       "signedVolume": 0.25446613195367945
       }
      ],
      "negativeShells": 0
@@ -3660,7 +3678,7 @@
     "vertices": 56,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.0001463639791682146,
+    "minTriangleArea": 0.00014636507107627266,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -3669,7 +3687,7 @@
      "shells": [
       {
        "faces": 108,
-       "signedVolume": 0.18516134336781603
+       "signedVolume": 0.18516139909240678
       }
      ],
      "negativeShells": 0
@@ -3680,7 +3698,7 @@
      "shells": [
       {
        "faces": 108,
-       "signedVolume": 0.18516134336781603
+       "signedVolume": 0.18516139909240678
       }
      ],
      "negativeShells": 0
@@ -3703,7 +3721,7 @@
     "vertices": 56,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014648081605852373,
+    "minTriangleArea": 0.00014647984287231584,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -3712,7 +3730,7 @@
      "shells": [
       {
        "faces": 108,
-       "signedVolume": 0.18903694634315274
+       "signedVolume": 0.18903694496871748
       }
      ],
      "negativeShells": 0
@@ -3723,7 +3741,7 @@
      "shells": [
       {
        "faces": 108,
-       "signedVolume": 0.18903694634315274
+       "signedVolume": 0.18903694496871748
       }
      ],
      "negativeShells": 0
@@ -3746,7 +3764,7 @@
     "vertices": 56,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00013925310296941394,
+    "minTriangleArea": 0.0001392530965912549,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -3755,7 +3773,7 @@
      "shells": [
       {
        "faces": 108,
-       "signedVolume": 0.25451770257883655
+       "signedVolume": 0.2545176893103563
       }
      ],
      "negativeShells": 0
@@ -3766,7 +3784,7 @@
      "shells": [
       {
        "faces": 108,
-       "signedVolume": 0.25451770257883655
+       "signedVolume": 0.2545176893103563
       }
      ],
      "negativeShells": 0
@@ -3798,7 +3816,7 @@
      "shells": [
       {
        "faces": 108,
-       "signedVolume": 0.18514644043909842
+       "signedVolume": 0.1851464351885091
       }
      ],
      "negativeShells": 0
@@ -3809,7 +3827,7 @@
      "shells": [
       {
        "faces": 108,
-       "signedVolume": 0.18514644043909842
+       "signedVolume": 0.1851464351885091
       }
      ],
      "negativeShells": 0
@@ -3841,7 +3859,7 @@
      "shells": [
       {
        "faces": 108,
-       "signedVolume": 0.18904010068570312
+       "signedVolume": 0.18904009511824782
       }
      ],
      "negativeShells": 0
@@ -3852,7 +3870,7 @@
      "shells": [
       {
        "faces": 108,
-       "signedVolume": 0.18904010068570312
+       "signedVolume": 0.18904009511824782
       }
      ],
      "negativeShells": 0
@@ -3875,7 +3893,7 @@
     "vertices": 96,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.0001499980640428903,
+    "minTriangleArea": 0.00014999686202109904,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -3904,18 +3922,6 @@
       },
       {
        "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 3.0316490059097606e-13
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
        "signedVolume": 3.0316490059097606e-13
       },
       {
@@ -3928,7 +3934,19 @@
       },
       {
        "faces": 2,
-       "signedVolume": 6.063298011819521e-13
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
       },
       {
        "faces": 2,
@@ -3936,15 +3954,7 @@
       },
       {
        "faces": 2,
-       "signedVolume": 3.0316490059097606e-13
-      },
-      {
-       "faces": 2,
-       "signedVolume": 3.0316490059097606e-13
-      },
-      {
-       "faces": 14,
-       "signedVolume": 4.7174626011115e-10
+       "signedVolume": 0.0
       },
       {
        "faces": 2,
@@ -3952,10 +3962,18 @@
       },
       {
        "faces": 14,
-       "signedVolume": 3.3889532326247807e-10
+       "signedVolume": -2.485040917256839e-10
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 14,
+       "signedVolume": -8.765201510209837e-10
       }
      ],
-     "negativeShells": 9
+     "negativeShells": 15
     },
     "weldedDiagnostic": {
      "nonmanifoldEdges": 0,
@@ -3963,7 +3981,7 @@
      "shells": [
       {
        "faces": 60,
-       "signedVolume": 0.00015077828561736725
+       "signedVolume": 0.000146367543065661
       }
      ],
      "negativeShells": 0
@@ -3986,7 +4004,7 @@
     "vertices": 96,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999254957762795,
+    "minTriangleArea": 0.000149996392756283,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -4003,7 +4021,31 @@
       },
       {
        "faces": 2,
-       "signedVolume": 1.5158245029548803e-13
+       "signedVolume": -1.5158245029548803e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
       },
       {
        "faces": 2,
@@ -4027,27 +4069,11 @@
       },
       {
        "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
        "signedVolume": 3.0316490059097606e-13
       },
       {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 3.0316490059097606e-13
+       "faces": 14,
+       "signedVolume": 3.798727258678507e-10
       },
       {
        "faces": 2,
@@ -4055,15 +4081,7 @@
       },
       {
        "faces": 14,
-       "signedVolume": 8.99009459468895e-10
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 14,
-       "signedVolume": -3.737881115739583e-10
+       "signedVolume": -9.715535043142156e-10
       }
      ],
      "negativeShells": 13
@@ -4074,7 +4092,7 @@
      "shells": [
       {
        "faces": 60,
-       "signedVolume": 0.00017307681327830934
+       "signedVolume": 0.0001531388876626257
       }
      ],
      "negativeShells": 0
@@ -4097,13 +4115,25 @@
     "vertices": 96,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.0001499965644748087,
+    "minTriangleArea": 0.0001500022262649819,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
      "nonmanifoldEdges": 96,
      "badWindingEdges": 0,
      "shells": [
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
       {
        "faces": 2,
        "signedVolume": 0.0
@@ -4134,19 +4164,7 @@
       },
       {
        "faces": 2,
-       "signedVolume": 7.579122514774402e-14
-      },
-      {
-       "faces": 2,
-       "signedVolume": -3.789561257387201e-14
-      },
-      {
-       "faces": 2,
-       "signedVolume": -3.789561257387201e-14
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
+       "signedVolume": -2.3684757858670005e-15
       },
       {
        "faces": 2,
@@ -4166,7 +4184,7 @@
       },
       {
        "faces": 14,
-       "signedVolume": -1.3883649785384478e-09
+       "signedVolume": 5.949137478940734e-10
       },
       {
        "faces": 2,
@@ -4174,10 +4192,10 @@
       },
       {
        "faces": 14,
-       "signedVolume": -2.0234267594787525e-09
+       "signedVolume": 9.168109234754714e-10
       }
      ],
-     "negativeShells": 16
+     "negativeShells": 15
     },
     "weldedDiagnostic": {
      "nonmanifoldEdges": 0,
@@ -4185,7 +4203,7 @@
      "shells": [
       {
        "faces": 60,
-       "signedVolume": 0.0001664269664871654
+       "signedVolume": 0.0001429826821208735
       }
      ],
      "negativeShells": 0
@@ -4208,7 +4226,7 @@
     "vertices": 96,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00015000101280431759,
+    "minTriangleArea": 0.0001499985066568623,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -4225,11 +4243,7 @@
       },
       {
        "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": -6.063298011819521e-13
+       "signedVolume": 6.063298011819521e-13
       },
       {
        "faces": 2,
@@ -4237,7 +4251,7 @@
       },
       {
        "faces": 2,
-       "signedVolume": 0.0
+       "signedVolume": 3.0316490059097606e-13
       },
       {
        "faces": 2,
@@ -4245,11 +4259,15 @@
       },
       {
        "faces": 2,
-       "signedVolume": 0.0
+       "signedVolume": 3.0316490059097606e-13
       },
       {
        "faces": 2,
        "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
       },
       {
        "faces": 2,
@@ -4277,7 +4295,7 @@
       },
       {
        "faces": 14,
-       "signedVolume": -2.934115173047758e-10
+       "signedVolume": 2.792480321052912e-10
       },
       {
        "faces": 2,
@@ -4285,10 +4303,10 @@
       },
       {
        "faces": 14,
-       "signedVolume": -2.114480442590622e-10
+       "signedVolume": 4.47802979882302e-10
       }
      ],
-     "negativeShells": 17
+     "negativeShells": 12
     },
     "weldedDiagnostic": {
      "nonmanifoldEdges": 0,
@@ -4296,7 +4314,7 @@
      "shells": [
       {
        "faces": 60,
-       "signedVolume": 0.00017335376786912587
+       "signedVolume": 0.0001565248718632025
       }
      ],
      "negativeShells": 0
@@ -4319,7 +4337,7 @@
     "vertices": 96,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999822391698406,
+    "minTriangleArea": 0.0001499997915622649,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -4344,6 +4362,30 @@
       },
       {
        "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
        "signedVolume": 3.0316490059097606e-13
       },
       {
@@ -4356,39 +4398,7 @@
       },
       {
        "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 3.0316490059097606e-13
-      },
-      {
-       "faces": 2,
-       "signedVolume": 3.0316490059097606e-13
-      },
-      {
-       "faces": 2,
        "signedVolume": -3.0316490059097606e-13
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": -3.0316490059097606e-13
-      },
-      {
-       "faces": 2,
-       "signedVolume": -3.0316490059097606e-13
-      },
-      {
-       "faces": 14,
-       "signedVolume": 3.849081053886038e-10
       },
       {
        "faces": 2,
@@ -4396,10 +4406,18 @@
       },
       {
        "faces": 14,
-       "signedVolume": 4.946087983626057e-10
+       "signedVolume": -1.4118010464396022e-10
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 14,
+       "signedVolume": -4.839838159872064e-10
       }
      ],
-     "negativeShells": 13
+     "negativeShells": 15
     },
     "weldedDiagnostic": {
      "nonmanifoldEdges": 0,
@@ -4407,7 +4425,7 @@
      "shells": [
       {
        "faces": 60,
-       "signedVolume": 0.00014467074322273746
+       "signedVolume": 0.00014467635163365838
       }
      ],
      "negativeShells": 0
@@ -4430,7 +4448,7 @@
     "vertices": 96,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999797960989404,
+    "minTriangleArea": 0.00014999911802451518,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -4479,14 +4497,6 @@
       },
       {
        "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 3.0316490059097606e-13
-      },
-      {
-       "faces": 2,
        "signedVolume": -3.0316490059097606e-13
       },
       {
@@ -4498,8 +4508,16 @@
        "signedVolume": 0.0
       },
       {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
        "faces": 14,
-       "signedVolume": -1.1743045054875742e-09
+       "signedVolume": -7.361361890427058e-10
       },
       {
        "faces": 2,
@@ -4507,10 +4525,10 @@
       },
       {
        "faces": 14,
-       "signedVolume": 2.5954053721003895e-11
+       "signedVolume": 2.412701149978602e-10
       }
      ],
-     "negativeShells": 16
+     "negativeShells": 17
     },
     "weldedDiagnostic": {
      "nonmanifoldEdges": 0,
@@ -4518,7 +4536,7 @@
      "shells": [
       {
        "faces": 60,
-       "signedVolume": 0.00014196036834590586
+       "signedVolume": 0.00015483153136959993
       }
      ],
      "negativeShells": 0
@@ -4538,14 +4556,14 @@
    {
     "name": "G28_light_07",
     "triangles": 60,
-    "vertices": 100,
+    "vertices": 96,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00015000270476324054,
+    "minTriangleArea": 0.00014999693011618698,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
-     "nonmanifoldEdges": 100,
+     "nonmanifoldEdges": 96,
      "badWindingEdges": 0,
      "shells": [
       {
@@ -4558,23 +4576,11 @@
       },
       {
        "faces": 2,
-       "signedVolume": 3.0316490059097606e-13
-      },
-      {
-       "faces": 2,
        "signedVolume": 0.0
       },
       {
        "faces": 2,
-       "signedVolume": -3.0316490059097606e-13
-      },
-      {
-       "faces": 2,
-       "signedVolume": 3.0316490059097606e-13
-      },
-      {
-       "faces": 4,
-       "signedVolume": -5.312491187699681e-11
+       "signedVolume": 0.0
       },
       {
        "faces": 2,
@@ -4586,7 +4592,15 @@
       },
       {
        "faces": 2,
-       "signedVolume": -3.495870259939693e-12
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 1.5158245029548803e-13
       },
       {
        "faces": 2,
@@ -4598,7 +4612,7 @@
       },
       {
        "faces": 2,
-       "signedVolume": 0.0
+       "signedVolume": -1.5158245029548803e-13
       },
       {
        "faces": 2,
@@ -4606,11 +4620,7 @@
       },
       {
        "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": -7.579122514774402e-14
+       "signedVolume": 7.579122514774402e-14
       },
       {
        "faces": 2,
@@ -4618,15 +4628,15 @@
       },
       {
        "faces": 14,
-       "signedVolume": -4.0201086903834943e-10
+       "signedVolume": -2.973052914967411e-10
       },
       {
        "faces": 2,
-       "signedVolume": 3.789561257387201e-14
+       "signedVolume": 0.0
       },
       {
-       "faces": 8,
-       "signedVolume": 3.6025937788508605e-10
+       "faces": 14,
+       "signedVolume": -3.0429229506504884e-10
       }
      ],
      "negativeShells": 16
@@ -4637,7 +4647,7 @@
      "shells": [
       {
        "faces": 60,
-       "signedVolume": 0.0001403621863573789
+       "signedVolume": 0.00015313938605506405
       }
      ],
      "negativeShells": 0
@@ -4660,13 +4670,57 @@
     "vertices": 96,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999792489307743,
+    "minTriangleArea": 0.0001499966458930065,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
      "nonmanifoldEdges": 96,
      "badWindingEdges": 0,
      "shells": [
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
       {
        "faces": 2,
        "signedVolume": 0.0
@@ -4684,52 +4738,8 @@
        "signedVolume": 3.0316490059097606e-13
       },
       {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 3.0316490059097606e-13
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 3.0316490059097606e-13
-      },
-      {
-       "faces": 2,
-       "signedVolume": 3.0316490059097606e-13
-      },
-      {
-       "faces": 2,
-       "signedVolume": 3.0316490059097606e-13
-      },
-      {
-       "faces": 2,
-       "signedVolume": 3.0316490059097606e-13
-      },
-      {
        "faces": 14,
-       "signedVolume": -3.839417672679702e-10
+       "signedVolume": -8.06489689845572e-11
       },
       {
        "faces": 2,
@@ -4737,10 +4747,10 @@
       },
       {
        "faces": 14,
-       "signedVolume": -2.1792108858183677e-10
+       "signedVolume": 4.996015453192135e-10
       }
      ],
-     "negativeShells": 12
+     "negativeShells": 14
     },
     "weldedDiagnostic": {
      "nonmanifoldEdges": 0,
@@ -4748,7 +4758,7 @@
      "shells": [
       {
        "faces": 60,
-       "signedVolume": 0.000144514423700078
+       "signedVolume": 0.00014467582055980682
       }
      ],
      "negativeShells": 0
@@ -4771,7 +4781,7 @@
     "vertices": 96,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999846372780516,
+    "minTriangleArea": 0.00014999517406721823,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -4788,7 +4798,23 @@
       },
       {
        "faces": 2,
-       "signedVolume": 3.0316490059097606e-13
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
       },
       {
        "faces": 2,
@@ -4800,6 +4826,10 @@
       },
       {
        "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
        "signedVolume": -3.0316490059097606e-13
       },
       {
@@ -4808,27 +4838,7 @@
       },
       {
        "faces": 2,
-       "signedVolume": 3.0316490059097606e-13
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 6.063298011819521e-13
+       "signedVolume": -6.063298011819521e-13
       },
       {
        "faces": 2,
@@ -4840,7 +4850,7 @@
       },
       {
        "faces": 14,
-       "signedVolume": 2.713846924962126e-10
+       "signedVolume": 7.65947305580994e-10
       },
       {
        "faces": 2,
@@ -4848,10 +4858,10 @@
       },
       {
        "faces": 14,
-       "signedVolume": 3.288131248761299e-10
+       "signedVolume": 6.16481532489388e-10
       }
      ],
-     "negativeShells": 13
+     "negativeShells": 16
     },
     "weldedDiagnostic": {
      "nonmanifoldEdges": 0,
@@ -4859,7 +4869,7 @@
      "shells": [
       {
        "faces": 60,
-       "signedVolume": 0.00017320985077044307
+       "signedVolume": 0.0001565233280569345
       }
      ],
      "negativeShells": 0
@@ -4882,49 +4892,13 @@
     "vertices": 96,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.0001499948747596663,
+    "minTriangleArea": 0.0001499974470272119,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
      "nonmanifoldEdges": 96,
      "badWindingEdges": 0,
      "shells": [
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
       {
        "faces": 2,
        "signedVolume": 0.0
@@ -4950,8 +4924,44 @@
        "signedVolume": 0.0
       },
       {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.789561257387201e-14
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 7.579122514774402e-14
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -1.5158245029548803e-13
+      },
+      {
        "faces": 14,
-       "signedVolume": 1.6423721641937547e-10
+       "signedVolume": -3.4353083340950735e-10
       },
       {
        "faces": 2,
@@ -4959,10 +4969,10 @@
       },
       {
        "faces": 14,
-       "signedVolume": -1.4132339742900518e-10
+       "signedVolume": 4.707286412516017e-10
       }
      ],
-     "negativeShells": 16
+     "negativeShells": 14
     },
     "weldedDiagnostic": {
      "nonmanifoldEdges": 0,
@@ -4970,7 +4980,7 @@
      "shells": [
       {
        "faces": 60,
-       "signedVolume": 0.00016640701536611385
+       "signedVolume": 0.00014298216502576605
       }
      ],
      "negativeShells": 0
@@ -4993,7 +5003,7 @@
     "vertices": 96,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999879716783132,
+    "minTriangleArea": 0.00014999535651962767,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -5007,38 +5017,6 @@
       {
        "faces": 2,
        "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": -3.0316490059097606e-13
       },
       {
        "faces": 2,
@@ -5061,16 +5039,48 @@
        "signedVolume": 0.0
       },
       {
-       "faces": 14,
-       "signedVolume": -1.07329848712349e-09
+       "faces": 2,
+       "signedVolume": 0.0
       },
       {
        "faces": 2,
-       "signedVolume": -1.5158245029548803e-13
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
       },
       {
        "faces": 14,
-       "signedVolume": 1.8287475237836287e-10
+       "signedVolume": -1.1923191323148783e-09
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 14,
+       "signedVolume": 1.4364095098547598e-09
       }
      ],
      "negativeShells": 16
@@ -5081,7 +5091,7 @@
      "shells": [
       {
        "faces": 60,
-       "signedVolume": 0.00017319181531168698
+       "signedVolume": 0.00015313939854403694
       }
      ],
      "negativeShells": 0
@@ -5104,7 +5114,7 @@
     "vertices": 96,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 0.00014999803739719145,
+    "minTriangleArea": 0.00014999696416371935,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -5121,6 +5131,30 @@
       },
       {
        "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
        "signedVolume": -3.0316490059097606e-13
       },
       {
@@ -5129,62 +5163,38 @@
       },
       {
        "faces": 2,
-       "signedVolume": 0.0
+       "signedVolume": 3.0316490059097606e-13
       },
       {
        "faces": 2,
-       "signedVolume": 0.0
+       "signedVolume": -3.0316490059097606e-13
       },
       {
        "faces": 2,
-       "signedVolume": -6.063298011819521e-13
+       "signedVolume": 3.0316490059097606e-13
       },
       {
        "faces": 2,
-       "signedVolume": 0.0
+       "signedVolume": 3.0316490059097606e-13
       },
       {
        "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 6.063298011819521e-13
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
-      },
-      {
-       "faces": 2,
-       "signedVolume": 0.0
+       "signedVolume": 3.0316490059097606e-13
       },
       {
        "faces": 14,
-       "signedVolume": -3.0096458658590564e-10
+       "signedVolume": 6.992995812045896e-10
       },
       {
        "faces": 2,
-       "signedVolume": 0.0
+       "signedVolume": -3.0316490059097606e-13
       },
       {
        "faces": 14,
-       "signedVolume": -4.760636329592671e-12
+       "signedVolume": 8.833940986126737e-11
       }
      ],
-     "negativeShells": 17
+     "negativeShells": 11
     },
     "weldedDiagnostic": {
      "nonmanifoldEdges": 0,
@@ -5192,7 +5202,7 @@
      "shells": [
       {
        "faces": 60,
-       "signedVolume": 0.00015260668879809225
+       "signedVolume": 0.00014806022682497174
       }
      ],
      "negativeShells": 0
@@ -5215,7 +5225,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.714265570748821e-05,
+    "minTriangleArea": 9.061886703272595e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -5224,7 +5234,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.1430920941735446
+       "signedVolume": 0.1423811797552669
       }
      ],
      "negativeShells": 0
@@ -5235,7 +5245,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.1430920941735446
+       "signedVolume": 0.1423811797552669
       }
      ],
      "negativeShells": 0
@@ -5258,7 +5268,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.76366972542203e-05,
+    "minTriangleArea": 9.090431921818838e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -5267,7 +5277,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.1573487356347735
+       "signedVolume": 0.1465828653690033
       }
      ],
      "negativeShells": 0
@@ -5278,7 +5288,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.1573487356347735
+       "signedVolume": 0.1465828653690033
       }
      ],
      "negativeShells": 0
@@ -5301,7 +5311,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.93401242442129e-05,
+    "minTriangleArea": 9.091532712958765e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -5310,7 +5320,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.13350875381802757
+       "signedVolume": 0.1212858621112529
       }
      ],
      "negativeShells": 0
@@ -5321,7 +5331,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.13350875381802757
+       "signedVolume": 0.1212858621112529
       }
      ],
      "negativeShells": 0
@@ -5344,7 +5354,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.672198429876307e-05,
+    "minTriangleArea": 9.079820701881556e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -5353,7 +5363,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.15109528686651333
+       "signedVolume": 0.14296265360768662
       }
      ],
      "negativeShells": 0
@@ -5364,7 +5374,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.15109528686651333
+       "signedVolume": 0.14296265360768662
       }
      ],
      "negativeShells": 0
@@ -5387,7 +5397,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.757448200014577e-05,
+    "minTriangleArea": 9.068312683688792e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -5396,7 +5406,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.14548139987591407
+       "signedVolume": 0.14719506842741983
       }
      ],
      "negativeShells": 0
@@ -5407,7 +5417,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.14548139987591407
+       "signedVolume": 0.14719506842741983
       }
      ],
      "negativeShells": 0
@@ -5430,7 +5440,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.862311396534956e-05,
+    "minTriangleArea": 9.100084789624303e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -5439,7 +5449,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.1279499525935027
+       "signedVolume": 0.13756524577365883
       }
      ],
      "negativeShells": 0
@@ -5450,7 +5460,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.1279499525935027
+       "signedVolume": 0.13756524577365883
       }
      ],
      "negativeShells": 0
@@ -5473,7 +5483,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.90381115989541e-05,
+    "minTriangleArea": 9.054178491651801e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -5482,7 +5492,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.13419975543212073
+       "signedVolume": 0.14239869334748337
       }
      ],
      "negativeShells": 0
@@ -5493,7 +5503,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.13419975543212073
+       "signedVolume": 0.14239869334748337
       }
      ],
      "negativeShells": 0
@@ -5516,7 +5526,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.749755316486116e-05,
+    "minTriangleArea": 9.104444105779514e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -5525,7 +5535,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.12803453298573136
+       "signedVolume": 0.12942668217078213
       }
      ],
      "negativeShells": 0
@@ -5536,7 +5546,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.12803453298573136
+       "signedVolume": 0.12942668217078213
       }
      ],
      "negativeShells": 0
@@ -5559,7 +5569,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.728357840438707e-05,
+    "minTriangleArea": 9.1156938946379e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -5568,7 +5578,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.15282484784894892
+       "signedVolume": 0.14405951455092678
       }
      ],
      "negativeShells": 0
@@ -5579,7 +5589,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.15282484784894892
+       "signedVolume": 0.14405951455092678
       }
      ],
      "negativeShells": 0
@@ -5602,7 +5612,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.86162872905914e-05,
+    "minTriangleArea": 9.050376259879074e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -5611,7 +5621,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.1512291485552401
+       "signedVolume": 0.13878079651552439
       }
      ],
      "negativeShells": 0
@@ -5622,7 +5632,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.1512291485552401
+       "signedVolume": 0.13878079651552439
       }
      ],
      "negativeShells": 0
@@ -5645,7 +5655,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.702176552285339e-05,
+    "minTriangleArea": 9.073890723833334e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -5654,7 +5664,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.15268420866695578
+       "signedVolume": 0.14240889809038398
       }
      ],
      "negativeShells": 0
@@ -5665,7 +5675,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.15268420866695578
+       "signedVolume": 0.14240889809038398
       }
      ],
      "negativeShells": 0
@@ -5688,7 +5698,7 @@
     "vertices": 128,
     "finite": true,
     "degenerateTriangles": 0,
-    "minTriangleArea": 8.70055106413317e-05,
+    "minTriangleArea": 9.092363919633696e-05,
     "badNormals": 0,
     "copyValidateWouldRepair": false,
     "rawTopology": {
@@ -5697,7 +5707,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.13613829741958328
+       "signedVolume": 0.13441868583972066
       }
      ],
      "negativeShells": 0
@@ -5708,7 +5718,7 @@
      "shells": [
       {
        "faces": 252,
-       "signedVolume": 0.13613829741958328
+       "signedVolume": 0.13441868583972066
       }
      ],
      "negativeShells": 0
@@ -5731,7 +5741,7 @@
     "role": "stone",
     "hex": "#8C8276",
     "faces": 648,
-    "area": 13.036087075524847,
+    "area": 13.03608690368128,
     "baseColor": [
      0.2622506618499756,
      0.22322796285152435,
@@ -5757,7 +5767,7 @@
     "role": "light",
     "hex": "#4FD1C5",
     "faces": 720,
-    "area": 0.4768020938936388,
+    "area": 0.4506014209036948,
     "baseColor": [
      0.07818742096424103,
      0.637596845626831,
@@ -5783,7 +5793,7 @@
     "role": "stone",
     "hex": "#B4A896",
     "faces": 3024,
-    "area": 19.56769127186999,
+    "area": 19.05588215802709,
     "baseColor": [
      0.4564110338687897,
      0.3915724754333496,
@@ -5815,594 +5825,594 @@
     {
      "x": -0.25,
      "height": 0.03,
-     "left": 0.6101234555244446,
-     "right": 0.6101234555244446,
-     "clearWidth": 1.2202469110488892
+     "left": 0.6078957319259644,
+     "right": 0.6123510599136353,
+     "clearWidth": 1.2202467918395996
     },
     {
      "x": -0.25,
      "height": 0.093,
-     "left": 0.6148569583892822,
-     "right": 0.6148569583892822,
-     "clearWidth": 1.2297139167785645
+     "left": 0.6126292943954468,
+     "right": 0.6170846819877625,
+     "clearWidth": 1.2297139763832092
     },
     {
      "x": -0.25,
      "height": 0.156,
-     "left": 0.6261538863182068,
-     "right": 0.6261539459228516,
+     "left": 0.6239262223243713,
+     "right": 0.628381609916687,
      "clearWidth": 1.2523078322410583
     },
     {
      "x": -0.25,
      "height": 0.219,
-     "left": 0.6334609985351562,
-     "right": 0.6334607601165771,
+     "left": 0.631233274936676,
+     "right": 0.6356884837150574,
      "clearWidth": 1.2669217586517334
     },
     {
      "x": -0.25,
      "height": 0.28200000000000003,
-     "left": 0.6387338042259216,
-     "right": 0.6387336254119873,
-     "clearWidth": 1.277467429637909
+     "left": 0.6365060806274414,
+     "right": 0.6409612894058228,
+     "clearWidth": 1.2774673700332642
     },
     {
      "x": -0.25,
      "height": 0.345,
-     "left": 0.6440066695213318,
-     "right": 0.6440065503120422,
-     "clearWidth": 1.288013219833374
+     "left": 0.6417790055274963,
+     "right": 0.6462341547012329,
+     "clearWidth": 1.2880131602287292
     },
     {
      "x": -0.25,
      "height": 0.40800000000000003,
-     "left": 0.6492795348167419,
-     "right": 0.6492794156074524,
-     "clearWidth": 1.2985589504241943
+     "left": 0.6470518112182617,
+     "right": 0.6515070796012878,
+     "clearWidth": 1.2985588908195496
     },
     {
      "x": -0.25,
      "height": 0.471,
-     "left": 0.6545524001121521,
-     "right": 0.6545522212982178,
-     "clearWidth": 1.3091046214103699
+     "left": 0.6523246765136719,
+     "right": 0.6567798852920532,
+     "clearWidth": 1.309104561805725
     },
     {
      "x": -0.25,
      "height": 0.534,
-     "left": 0.6510476469993591,
-     "right": 0.6510592699050903,
-     "clearWidth": 1.3021069169044495
+     "left": 0.657597541809082,
+     "right": 0.6620526909828186,
+     "clearWidth": 1.3196502327919006
     },
     {
      "x": -0.25,
      "height": 0.597,
-     "left": 0.6145686507225037,
-     "right": 0.614573061466217,
-     "clearWidth": 1.2291417121887207
+     "left": 0.6740676164627075,
+     "right": 0.678528368473053,
+     "clearWidth": 1.3525959849357605
     },
     {
      "x": -0.25,
      "height": 0.66,
-     "left": 0.6238821148872375,
-     "right": 0.6239022016525269,
-     "clearWidth": 1.2477843165397644
+     "left": 0.7600153684616089,
+     "right": 0.764502763748169,
+     "clearWidth": 1.5245181322097778
     },
     {
      "x": -0.25,
      "height": 0.7230000000000001,
-     "left": 0.6902286410331726,
-     "right": 0.6902708411216736,
-     "clearWidth": 1.3804994821548462
+     "left": 0.8360180258750916,
+     "right": 0.84056556224823,
+     "clearWidth": 1.6765835881233215
     },
     {
      "x": -0.25,
      "height": 0.786,
-     "left": 0.7476624250411987,
-     "right": 0.7477343678474426,
-     "clearWidth": 1.4953967928886414
+     "left": 0.9008402824401855,
+     "right": 0.9052006602287292,
+     "clearWidth": 1.8060409426689148
     },
     {
      "x": -0.25,
      "height": 0.849,
-     "left": 0.797983705997467,
-     "right": 0.7980771660804749,
-     "clearWidth": 1.596060872077942
+     "left": 0.9569273591041565,
+     "right": 0.9613069295883179,
+     "clearWidth": 1.9182342886924744
     },
     {
      "x": -0.25,
      "height": 0.912,
-     "left": 0.8424728512763977,
-     "right": 0.8425730466842651,
-     "clearWidth": 1.6850458979606628
+     "left": 1.0061241388320923,
+     "right": 1.0105117559432983,
+     "clearWidth": 2.0166358947753906
     },
     {
      "x": -0.25,
      "height": 0.9750000000000001,
-     "left": 0.8820646405220032,
-     "right": 0.8821535110473633,
-     "clearWidth": 1.7642181515693665
+     "left": 1.0495939254760742,
+     "right": 1.0563472509384155,
+     "clearWidth": 2.1059411764144897
     },
     {
      "x": -0.25,
      "height": 1.038,
-     "left": 0.9174610376358032,
-     "right": 0.9175198078155518,
-     "clearWidth": 1.834980845451355
+     "left": 1.0872822999954224,
+     "right": 1.094200849533081,
+     "clearWidth": 2.1814831495285034
     },
     {
      "x": -0.25,
      "height": 1.101,
-     "left": 0.9491667151451111,
-     "right": 0.9516611099243164,
-     "clearWidth": 1.9008278250694275
+     "left": 1.120527982711792,
+     "right": 1.1273362636566162,
+     "clearWidth": 2.247864246368408
     },
     {
      "x": -0.25,
      "height": 1.164,
-     "left": 0.9777170419692993,
-     "right": 0.9800817370414734,
-     "clearWidth": 1.9577987790107727
+     "left": 1.1493641138076782,
+     "right": 1.156191349029541,
+     "clearWidth": 2.3055554628372192
     },
     {
      "x": -0.25,
      "height": 1.227,
-     "left": 1.0034174919128418,
-     "right": 1.005661129951477,
-     "clearWidth": 2.009078621864319
+     "left": 1.1736704111099243,
+     "right": 1.180686593055725,
+     "clearWidth": 2.3543570041656494
     },
     {
      "x": -0.25,
      "height": 1.29,
-     "left": 1.0253874063491821,
-     "right": 1.0278817415237427,
-     "clearWidth": 2.053269147872925
+     "left": 1.194254755973816,
+     "right": 1.2011600732803345,
+     "clearWidth": 2.3954148292541504
     },
     {
      "x": -0.25,
      "height": 1.353,
-     "left": 1.044961929321289,
-     "right": 1.0473294258117676,
-     "clearWidth": 2.0922913551330566
+     "left": 1.2113441228866577,
+     "right": 1.2181475162506104,
+     "clearWidth": 2.429491639137268
     },
     {
      "x": -0.25,
      "height": 1.4160000000000001,
-     "left": 1.062341570854187,
-     "right": 1.0645906925201416,
-     "clearWidth": 2.1269322633743286
+     "left": 1.2251133918762207,
+     "right": 1.2318252325057983,
+     "clearWidth": 2.456938624382019
     },
     {
      "x": -0.25,
      "height": 1.479,
-     "left": 1.0773890018463135,
-     "right": 1.0798084735870361,
-     "clearWidth": 2.1571974754333496
+     "left": 1.238814353942871,
+     "right": 1.241064429283142,
+     "clearWidth": 2.479878783226013
     },
     {
      "x": -0.25,
      "height": 1.542,
-     "left": 1.089471459388733,
-     "right": 1.0918283462524414,
-     "clearWidth": 2.1812998056411743
+     "left": 1.2430471181869507,
+     "right": 1.247362732887268,
+     "clearWidth": 2.4904098510742188
     },
     {
      "x": -0.25,
      "height": 1.605,
-     "left": 1.0997227430343628,
-     "right": 1.1019680500030518,
-     "clearWidth": 2.2016907930374146
+     "left": 1.2467303276062012,
+     "right": 1.2513177394866943,
+     "clearWidth": 2.4980480670928955
     },
     {
      "x": -0.25,
      "height": 1.668,
-     "left": 1.116989254951477,
-     "right": 1.1121504306793213,
-     "clearWidth": 2.2291396856307983
+     "left": 1.2472161054611206,
+     "right": 1.251757025718689,
+     "clearWidth": 2.4989731311798096
     },
     {
      "x": -0.25,
      "height": 1.731,
-     "left": 1.1138826608657837,
-     "right": 1.1139702796936035,
-     "clearWidth": 2.227852940559387
+     "left": 1.244616150856018,
+     "right": 1.2491109371185303,
+     "clearWidth": 2.4937270879745483
     },
     {
      "x": 0,
      "height": 0.03,
-     "left": 0.6163111329078674,
-     "right": 0.6163111329078674,
+     "left": 0.614083468914032,
+     "right": 0.6185387969017029,
      "clearWidth": 1.2326222658157349
     },
     {
      "x": 0,
      "height": 0.093,
-     "left": 0.6205756664276123,
-     "right": 0.6205757260322571,
+     "left": 0.6183480024337769,
+     "right": 0.6228033900260925,
      "clearWidth": 1.2411513924598694
     },
     {
      "x": 0,
      "height": 0.156,
-     "left": 0.624840259552002,
-     "right": 0.624840259552002,
-     "clearWidth": 1.249680519104004
+     "left": 0.6226125359535217,
+     "right": 0.6270679235458374,
+     "clearWidth": 1.2496804594993591
     },
     {
      "x": 0,
      "height": 0.219,
-     "left": 0.6337016224861145,
-     "right": 0.6337016224861145,
+     "left": 0.6314738988876343,
+     "right": 0.6359293460845947,
      "clearWidth": 1.267403244972229
     },
     {
      "x": 0,
      "height": 0.28200000000000003,
-     "left": 0.6393210291862488,
-     "right": 0.6393207907676697,
-     "clearWidth": 1.2786418199539185
+     "left": 0.6370933651924133,
+     "right": 0.6415483951568604,
+     "clearWidth": 1.2786417603492737
     },
     {
      "x": 0,
      "height": 0.345,
-     "left": 0.6409965753555298,
-     "right": 0.6409962177276611,
-     "clearWidth": 1.281992793083191
+     "left": 0.6387688517570496,
+     "right": 0.6432238221168518,
+     "clearWidth": 1.2819926738739014
     },
     {
      "x": 0,
      "height": 0.40800000000000003,
-     "left": 0.645432710647583,
-     "right": 0.6454322934150696,
-     "clearWidth": 1.2908650040626526
+     "left": 0.6432051062583923,
+     "right": 0.647659957408905,
+     "clearWidth": 1.2908650636672974
     },
     {
      "x": 0,
      "height": 0.471,
-     "left": 0.6507055759429932,
-     "right": 0.6507052183151245,
-     "clearWidth": 1.3014107942581177
+     "left": 0.6484779119491577,
+     "right": 0.6529328227043152,
+     "clearWidth": 1.301410734653473
     },
     {
      "x": 0,
      "height": 0.534,
-     "left": 0.6510475277900696,
-     "right": 0.6510592699050903,
-     "clearWidth": 1.30210679769516
+     "left": 0.6537507176399231,
+     "right": 0.6582056879997253,
+     "clearWidth": 1.3119564056396484
     },
     {
      "x": 0,
      "height": 0.597,
-     "left": 0.6145685911178589,
-     "right": 0.6145730018615723,
-     "clearWidth": 1.2291415929794312
+     "left": 0.674068033695221,
+     "right": 0.6785283088684082,
+     "clearWidth": 1.3525963425636292
     },
     {
      "x": 0,
      "height": 0.66,
-     "left": 0.6238821148872375,
-     "right": 0.6239022612571716,
-     "clearWidth": 1.2477843761444092
+     "left": 0.7600153684616089,
+     "right": 0.7645024657249451,
+     "clearWidth": 1.524517834186554
     },
     {
      "x": 0,
      "height": 0.7230000000000001,
-     "left": 0.6902282238006592,
-     "right": 0.6902708411216736,
-     "clearWidth": 1.3804990649223328
+     "left": 0.8360181450843811,
+     "right": 0.84056556224823,
+     "clearWidth": 1.676583707332611
     },
     {
      "x": 0,
      "height": 0.786,
-     "left": 0.7476624250411987,
-     "right": 0.7477343678474426,
-     "clearWidth": 1.4953967928886414
+     "left": 0.9008402824401855,
+     "right": 0.9052010774612427,
+     "clearWidth": 1.8060413599014282
     },
     {
      "x": 0,
      "height": 0.849,
-     "left": 0.7979835867881775,
-     "right": 0.7980771064758301,
-     "clearWidth": 1.5960606932640076
+     "left": 0.9569275975227356,
+     "right": 0.9613069891929626,
+     "clearWidth": 1.9182345867156982
     },
     {
      "x": 0,
      "height": 0.912,
-     "left": 0.8424726128578186,
-     "right": 0.8425731062889099,
-     "clearWidth": 1.6850457191467285
+     "left": 1.0061239004135132,
+     "right": 1.0105117559432983,
+     "clearWidth": 2.0166356563568115
     },
     {
      "x": 0,
      "height": 0.9750000000000001,
-     "left": 0.8820643424987793,
-     "right": 0.8821535110473633,
-     "clearWidth": 1.7642178535461426
+     "left": 1.0495938062667847,
+     "right": 1.0536797046661377,
+     "clearWidth": 2.1032735109329224
     },
     {
      "x": 0,
      "height": 1.038,
-     "left": 0.9174608588218689,
-     "right": 0.9175199270248413,
-     "clearWidth": 1.8349807858467102
+     "left": 1.0872820615768433,
+     "right": 1.0916298627853394,
+     "clearWidth": 2.1789119243621826
     },
     {
      "x": 0,
      "height": 1.101,
-     "left": 0.9491667151451111,
-     "right": 0.9491549730300903,
-     "clearWidth": 1.8983216881752014
+     "left": 1.120528221130371,
+     "right": 1.1248449087142944,
+     "clearWidth": 2.2453731298446655
     },
     {
      "x": 0,
      "height": 1.164,
-     "left": 0.9777167439460754,
-     "right": 0.9776355624198914,
-     "clearWidth": 1.9553523063659668
+     "left": 1.1493643522262573,
+     "right": 1.1537654399871826,
+     "clearWidth": 2.30312979221344
     },
     {
      "x": 0,
      "height": 1.227,
-     "left": 1.0034170150756836,
-     "right": 1.0032635927200317,
-     "clearWidth": 2.0066806077957153
+     "left": 1.1736705303192139,
+     "right": 1.1782606840133667,
+     "clearWidth": 2.3519312143325806
     },
     {
      "x": 0,
      "height": 1.29,
-     "left": 1.0253872871398926,
-     "right": 1.0254840850830078,
-     "clearWidth": 2.0508713722229004
+     "left": 1.1942548751831055,
+     "right": 1.1987875699996948,
+     "clearWidth": 2.3930424451828003
     },
     {
      "x": 0,
      "height": 1.353,
-     "left": 1.0449618101119995,
-     "right": 1.0449713468551636,
-     "clearWidth": 2.089933156967163
+     "left": 1.2113440036773682,
+     "right": 1.2158170938491821,
+     "clearWidth": 2.4271610975265503
     },
     {
      "x": 0,
      "height": 1.4160000000000001,
-     "left": 1.062341570854187,
-     "right": 1.0622642040252686,
-     "clearWidth": 2.1246057748794556
+     "left": 1.2251131534576416,
+     "right": 1.2295252084732056,
+     "clearWidth": 2.454638361930847
     },
     {
      "x": 0,
      "height": 1.479,
-     "left": 1.0773887634277344,
-     "right": 1.0775068998336792,
-     "clearWidth": 2.1548956632614136
+     "left": 1.2388149499893188,
+     "right": 1.2410643100738525,
+     "clearWidth": 2.4798792600631714
     },
     {
      "x": 0,
      "height": 1.542,
-     "left": 1.0894711017608643,
-     "right": 1.0895264148712158,
-     "clearWidth": 2.17899751663208
+     "left": 1.2430468797683716,
+     "right": 1.247362732887268,
+     "clearWidth": 2.4904096126556396
     },
     {
      "x": 0,
      "height": 1.605,
-     "left": 1.0997225046157837,
-     "right": 1.099684476852417,
-     "clearWidth": 2.1994069814682007
+     "left": 1.2467302083969116,
+     "right": 1.2513177394866943,
+     "clearWidth": 2.498047947883606
     },
     {
      "x": 0,
      "height": 1.668,
-     "left": 1.1169902086257935,
-     "right": 1.1121509075164795,
-     "clearWidth": 2.229141116142273
+     "left": 1.2472162246704102,
+     "right": 1.2517569065093994,
+     "clearWidth": 2.4989731311798096
     },
     {
      "x": 0,
      "height": 1.731,
-     "left": 1.1138827800750732,
-     "right": 1.113970160484314,
-     "clearWidth": 2.227852940559387
+     "left": 1.244616150856018,
+     "right": 1.2491106986999512,
+     "clearWidth": 2.4937268495559692
     },
     {
      "x": 0.25,
      "height": 0.03,
-     "left": 0.6224989295005798,
-     "right": 0.6224989295005798,
-     "clearWidth": 1.2449978590011597
+     "left": 0.6202710866928101,
+     "right": 0.6247265338897705,
+     "clearWidth": 1.2449976205825806
     },
     {
      "x": 0.25,
      "height": 0.093,
-     "left": 0.6267634630203247,
-     "right": 0.6267635226249695,
-     "clearWidth": 1.2535269856452942
+     "left": 0.6245357394218445,
+     "right": 0.6289911866188049,
+     "clearWidth": 1.2535269260406494
     },
     {
      "x": 0.25,
      "height": 0.156,
-     "left": 0.6310279965400696,
-     "right": 0.6310279965400696,
-     "clearWidth": 1.2620559930801392
+     "left": 0.6288002729415894,
+     "right": 0.633255660533905,
+     "clearWidth": 1.2620559334754944
     },
     {
      "x": 0.25,
      "height": 0.219,
-     "left": 0.6352925300598145,
-     "right": 0.6352925300598145,
-     "clearWidth": 1.270585060119629
+     "left": 0.6330648064613342,
+     "right": 0.6375201940536499,
+     "clearWidth": 1.2705850005149841
     },
     {
      "x": 0.25,
      "height": 0.28200000000000003,
-     "left": 0.6412493586540222,
-     "right": 0.6412493586540222,
-     "clearWidth": 1.2824987173080444
+     "left": 0.6390215754508972,
+     "right": 0.6434769630432129,
+     "clearWidth": 1.28249853849411
     },
     {
      "x": 0.25,
      "height": 0.345,
-     "left": 0.6498043537139893,
-     "right": 0.649803876876831,
+     "left": 0.6475766897201538,
+     "right": 0.6520315408706665,
      "clearWidth": 1.2996082305908203
     },
     {
      "x": 0.25,
      "height": 0.40800000000000003,
-     "left": 0.6514798998832703,
-     "right": 0.6514793634414673,
-     "clearWidth": 1.3029592633247375
+     "left": 0.6492521166801453,
+     "right": 0.6537070274353027,
+     "clearWidth": 1.302959144115448
     },
     {
      "x": 0.25,
      "height": 0.471,
-     "left": 0.653155505657196,
-     "right": 0.6531549096107483,
-     "clearWidth": 1.3063104152679443
+     "left": 0.650927722454071,
+     "right": 0.655382513999939,
+     "clearWidth": 1.30631023645401
     },
     {
      "x": 0.25,
      "height": 0.534,
-     "left": 0.653451681137085,
-     "right": 0.6510593295097351,
-     "clearWidth": 1.30451101064682
+     "left": 0.652603268623352,
+     "right": 0.6570580005645752,
+     "clearWidth": 1.3096612691879272
     },
     {
      "x": 0.25,
      "height": 0.597,
-     "left": 0.6164273023605347,
-     "right": 0.6145730018615723,
-     "clearWidth": 1.231000304222107
+     "left": 0.6687127351760864,
+     "right": 0.6731681227684021,
+     "clearWidth": 1.3418808579444885
     },
     {
      "x": 0.25,
      "height": 0.66,
-     "left": 0.6263118386268616,
-     "right": 0.6239020824432373,
-     "clearWidth": 1.2502139210700989
+     "left": 0.7645154595375061,
+     "right": 0.7645025849342346,
+     "clearWidth": 1.5290180444717407
     },
     {
      "x": 0.25,
      "height": 0.7230000000000001,
-     "left": 0.6933451890945435,
-     "right": 0.690270721912384,
-     "clearWidth": 1.3836159110069275
+     "left": 0.8412628173828125,
+     "right": 0.84056556224823,
+     "clearWidth": 1.6818283796310425
     },
     {
      "x": 0.25,
      "height": 0.786,
-     "left": 0.7512779831886292,
-     "right": 0.7477343082427979,
-     "clearWidth": 1.499012291431427
+     "left": 0.9062477350234985,
+     "right": 0.9052011966705322,
+     "clearWidth": 1.8114489316940308
     },
     {
      "x": 0.25,
      "height": 0.849,
-     "left": 0.8019707202911377,
-     "right": 0.7980772256851196,
-     "clearWidth": 1.6000479459762573
+     "left": 0.9626898765563965,
+     "right": 0.9613068699836731,
+     "clearWidth": 1.9239967465400696
     },
     {
      "x": 0.25,
      "height": 0.912,
-     "left": 0.8467443585395813,
-     "right": 0.8425730466842651,
-     "clearWidth": 1.6893174052238464
+     "left": 1.012141466140747,
+     "right": 1.0105117559432983,
+     "clearWidth": 2.0226532220840454
     },
     {
      "x": 0.25,
      "height": 0.9750000000000001,
-     "left": 0.8865575790405273,
-     "right": 0.8821536302566528,
-     "clearWidth": 1.7687112092971802
+     "left": 1.0495936870574951,
+     "right": 1.0536795854568481,
+     "clearWidth": 2.1032732725143433
     },
     {
      "x": 0.25,
      "height": 1.038,
-     "left": 0.9221556782722473,
-     "right": 0.9175199866294861,
-     "clearWidth": 1.8396756649017334
+     "left": 1.0872819423675537,
+     "right": 1.0916297435760498,
+     "clearWidth": 2.1789116859436035
     },
     {
      "x": 0.25,
      "height": 1.101,
-     "left": 0.9491665959358215,
-     "right": 0.9491549730300903,
-     "clearWidth": 1.8983215689659119
+     "left": 1.120528221130371,
+     "right": 1.1248451471328735,
+     "clearWidth": 2.2453733682632446
     },
     {
      "x": 0.25,
      "height": 1.164,
-     "left": 0.9777163863182068,
-     "right": 0.9776356220245361,
-     "clearWidth": 1.955352008342743
+     "left": 1.1493644714355469,
+     "right": 1.153765320777893,
+     "clearWidth": 2.30312979221344
     },
     {
      "x": 0.25,
      "height": 1.227,
-     "left": 1.0034165382385254,
-     "right": 1.0032633543014526,
-     "clearWidth": 2.006679892539978
+     "left": 1.1736706495285034,
+     "right": 1.1782606840133667,
+     "clearWidth": 2.35193133354187
     },
     {
      "x": 0.25,
      "height": 1.29,
-     "left": 1.0253872871398926,
-     "right": 1.0254839658737183,
-     "clearWidth": 2.050871253013611
+     "left": 1.1942548751831055,
+     "right": 1.1987875699996948,
+     "clearWidth": 2.3930424451828003
     },
     {
      "x": 0.25,
      "height": 1.353,
-     "left": 1.0449618101119995,
-     "right": 1.044971227645874,
-     "clearWidth": 2.0899330377578735
+     "left": 1.2113438844680786,
+     "right": 1.2158172130584717,
+     "clearWidth": 2.4271610975265503
     },
     {
      "x": 0.25,
      "height": 1.4160000000000001,
-     "left": 1.062341570854187,
-     "right": 1.0622642040252686,
-     "clearWidth": 2.1246057748794556
+     "left": 1.225113034248352,
+     "right": 1.2295252084732056,
+     "clearWidth": 2.4546382427215576
     },
     {
      "x": 0.25,
      "height": 1.479,
-     "left": 1.0773886442184448,
-     "right": 1.0775071382522583,
-     "clearWidth": 2.154895782470703
+     "left": 1.2388149499893188,
+     "right": null,
+     "clearWidth": null
     },
     {
      "x": 0.25,
      "height": 1.542,
-     "left": 1.0894709825515747,
-     "right": 1.0895265340805054,
-     "clearWidth": 2.17899751663208
+     "left": 1.2430471181869507,
+     "right": null,
+     "clearWidth": null
     },
     {
      "x": 0.25,
      "height": 1.605,
-     "left": 1.0997225046157837,
-     "right": 1.099684476852417,
-     "clearWidth": 2.1994069814682007
+     "left": 1.2467302083969116,
+     "right": null,
+     "clearWidth": null
     },
     {
      "x": 0.25,
      "height": 1.668,
-     "left": 1.1169918775558472,
+     "left": 1.2472162246704102,
      "right": null,
      "clearWidth": null
     },
     {
      "x": 0.25,
      "height": 1.731,
-     "left": 1.113883137702942,
+     "left": 1.2446162700653076,
      "right": null,
      "clearWidth": null
     }
    ],
-   "minBodyHeightClearWidth": 1.2202469110488892,
-   "centreClearHeight": 3.3434114551544187,
+   "minBodyHeightClearWidth": 1.2202467918395996,
+   "centreClearHeight": 2.895289192199707,
    "stoneBaseContacts": [
     {
      "a": "G28_base_L_foot",
@@ -6419,7 +6429,7 @@
     {
      "a": "G28_base_L_foot",
      "b": "G28_stone_12",
-     "triangleOverlapPairs": 16,
+     "triangleOverlapPairs": 25,
      "relationship": "intentional embedded load-bearing assembly"
     },
     {
@@ -6431,19 +6441,19 @@
     {
      "a": "G28_base_L_outer",
      "b": "G28_stone_11",
-     "triangleOverlapPairs": 38,
+     "triangleOverlapPairs": 42,
      "relationship": "intentional embedded load-bearing assembly"
     },
     {
      "a": "G28_base_L_outer",
      "b": "G28_stone_12",
-     "triangleOverlapPairs": 57,
+     "triangleOverlapPairs": 67,
      "relationship": "intentional embedded load-bearing assembly"
     },
     {
      "a": "G28_base_L_toe",
      "b": "G28_stone_12",
-     "triangleOverlapPairs": 63,
+     "triangleOverlapPairs": 73,
      "relationship": "intentional embedded load-bearing assembly"
     },
     {
@@ -6461,7 +6471,7 @@
     {
      "a": "G28_base_R_foot",
      "b": "G28_stone_01",
-     "triangleOverlapPairs": 18,
+     "triangleOverlapPairs": 29,
      "relationship": "intentional embedded load-bearing assembly"
     },
     {
@@ -6473,19 +6483,19 @@
     {
      "a": "G28_base_R_outer",
      "b": "G28_stone_01",
-     "triangleOverlapPairs": 55,
+     "triangleOverlapPairs": 61,
      "relationship": "intentional embedded load-bearing assembly"
     },
     {
      "a": "G28_base_R_outer",
      "b": "G28_stone_02",
-     "triangleOverlapPairs": 41,
+     "triangleOverlapPairs": 55,
      "relationship": "intentional embedded load-bearing assembly"
     },
     {
      "a": "G28_base_R_toe",
      "b": "G28_stone_01",
-     "triangleOverlapPairs": 59,
+     "triangleOverlapPairs": 77,
      "relationship": "intentional embedded load-bearing assembly"
     }
    ],
@@ -6494,88 +6504,147 @@
      "light": "G28_light_01",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.0004997150437906384,
-     "maxFrontProudM": 0.0005002574227750301
+     "minFrontProudM": 0.0004998163833282887,
+     "maxFrontProudM": 0.0005002647569403052
     },
     {
      "light": "G28_light_02",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.0004996109102852642,
-     "maxFrontProudM": 0.0005003030575811862
+     "minFrontProudM": 0.0004997589905746281,
+     "maxFrontProudM": 0.0005001139990985393
     },
     {
      "light": "G28_light_03",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.0004999006680212914,
-     "maxFrontProudM": 0.0005002111476846039
+     "minFrontProudM": 0.0004996745894663035,
+     "maxFrontProudM": 0.0005001889123581349
     },
     {
      "light": "G28_light_04",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.000499631923250854,
-     "maxFrontProudM": 0.0005003400776535272
+     "minFrontProudM": 0.0004998001433908939,
+     "maxFrontProudM": 0.0005003312882967293
     },
     {
      "light": "G28_light_05",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.0004997513071633875,
-     "maxFrontProudM": 0.0005002944428473711
+     "minFrontProudM": 0.0004996948457323014,
+     "maxFrontProudM": 0.0005001435103826224
     },
     {
      "light": "G28_light_06",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.0004998873384669423,
-     "maxFrontProudM": 0.0005002444424666464
+     "minFrontProudM": 0.0004998278502374887,
+     "maxFrontProudM": 0.000500173429120332
     },
     {
      "light": "G28_light_07",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.000499886814597994,
-     "maxFrontProudM": 0.0005002692389301955
+     "minFrontProudM": 0.0004996147519908845,
+     "maxFrontProudM": 0.0005000194116495549
     },
     {
      "light": "G28_light_08",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.0004998038686811924,
-     "maxFrontProudM": 0.0005002183654345572
+     "minFrontProudM": 0.0004997169064357876,
+     "maxFrontProudM": 0.0005002212176099419
     },
     {
      "light": "G28_light_09",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.0004995779065415263,
-     "maxFrontProudM": 0.0005000231369398534
+     "minFrontProudM": 0.000499948747549206,
+     "maxFrontProudM": 0.0005001741858199238
     },
     {
      "light": "G28_light_10",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.0004998877459205687,
-     "maxFrontProudM": 0.0005002846057526767
+     "minFrontProudM": 0.000499885534029454,
+     "maxFrontProudM": 0.0005001119036227464
     },
     {
      "light": "G28_light_11",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.0004996849504299461,
-     "maxFrontProudM": 0.0005001590518280863
+     "minFrontProudM": 0.0004999738932587206,
+     "maxFrontProudM": 0.0005003084126859903
     },
     {
      "light": "G28_light_12",
      "frontTriangleSamples": 14,
      "misses": 0,
-     "minFrontProudM": 0.000499886872805655,
-     "maxFrontProudM": 0.0005003612652420997
+     "minFrontProudM": 0.0004996392574161291,
+     "maxFrontProudM": 0.0005001564906910061
     }
    ],
    "limit": "BVH surface-intersection and opening rays cover intended joints/opening; not an exhaustive global self-intersection certificate."
+  },
+  "circularity": {
+   "stones": [
+    {
+     "name": "G28_stone_01",
+     "innerRadiusM": 1.2495571286474147
+    },
+    {
+     "name": "G28_stone_02",
+     "innerRadiusM": 1.2495323823661597
+    },
+    {
+     "name": "G28_stone_03",
+     "innerRadiusM": 1.249569484402853
+    },
+    {
+     "name": "G28_stone_04",
+     "innerRadiusM": 1.2495200798768333
+    },
+    {
+     "name": "G28_stone_05",
+     "innerRadiusM": 1.249563028884801
+    },
+    {
+     "name": "G28_stone_06",
+     "innerRadiusM": 1.2495265284731494
+    },
+    {
+     "name": "G28_stone_07",
+     "innerRadiusM": 1.249532404993327
+    },
+    {
+     "name": "G28_stone_08",
+     "innerRadiusM": 1.2495632092795916
+    },
+    {
+     "name": "G28_stone_09",
+     "innerRadiusM": 1.249520229728496
+    },
+    {
+     "name": "G28_stone_10",
+     "innerRadiusM": 1.2495694463346698
+    },
+    {
+     "name": "G28_stone_11",
+     "innerRadiusM": 1.249532616769458
+    },
+    {
+     "name": "G28_stone_12",
+     "innerRadiusM": 1.2495509645760086
+    }
+   ],
+   "minInnerRadiusM": 1.2495200798768333,
+   "maxInnerRadiusM": 1.249569484402853,
+   "radiusSpreadM": 4.940452601975842e-05,
+   "maxNodeScaleError": 0.0,
+   "method": "fresh GLB import in Blender Z-up; minimum radial distance per closed stone to exported authoring centre",
+   "toleranceM": 0.005,
+   "pass": true
   }
  },
  "roundTrip": {

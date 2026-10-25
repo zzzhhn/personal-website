@@ -7,6 +7,7 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
 import { EXIT_POSTS } from './WorldCampContentLayout';
 import { useInteractable } from './WorldInteract';
 import { night } from './WorldNight';
+import { craftMaterial } from './WorldCraftMaterials';
 import { useWorldStore } from './store';
 import { worldText } from './world-i18n';
 import type { Vec3 } from './types';
@@ -35,7 +36,7 @@ export default function WorldEntry() {
       if (!(o instanceof Mesh)) return;
       const material = o.material as MeshStandardMaterial;
       if (!groups.has(material.name)) {
-        const copy = material.clone();
+        const copy = material.name.startsWith('G28_stone') ? craftMaterial(material, 'stone') : material.clone();
         if (material.name === 'G28_light_cyan') { copy.emissive.set('#4FD1C5'); copy.emissiveIntensity = .12; }
         groups.set(material.name, { material: copy, high: [], low: [] });
       }
@@ -66,13 +67,16 @@ export default function WorldEntry() {
     const distance = camera.position.distanceTo(center);
     if (near.current) near.current.visible = distance < 60;
     if (far.current) far.current.visible = distance >= 60 && distance < 140;
-    for (const b of built) if (b.name === 'G28_light_cyan') b.material.emissiveIntensity = .12 + 1.08 * night.value;
+    const player = useWorldStore.getState().position;
+    const focus = canOpen() ? 1 - Math.min(1, Math.max(0, Math.hypot(player[0] - center.x, player[2] - center.z) - 1.1) / 1.2) : 0;
+    for (const b of built) if (b.name === 'G28_light_cyan') b.material.emissiveIntensity = .12 + 1.08 * night.value + .28 * focus;
   });
   useEffect(() => {
     if (new URLSearchParams(location.search).get('qa') !== '1') return;
     Object.assign(window, { __worldEntry: {
       facts: () => ({ position: ENTRY_POSITION, highTriangles: built.reduce((n, b) => n + (b.high.index?.count ?? b.high.attributes.position.count) / 3, 0),
         lowTriangles: built.reduce((n, b) => n + (b.low.index?.count ?? b.low.attributes.position.count) / 3, 0), materials: built.length,
+        sourceArcRadiiM: [gltf.scene.getObjectByName('G28')?.userData.arcOuterRadiusM, gltf.scene.getObjectByName('G28')?.userData.arcInnerRadiusM], instanceScale: root.current?.scale.toArray(),
         nearVisible: near.current?.visible, farVisible: far.current?.visible, colliderCount: 0, shadowCasters: 2 }),
       visible: (value: boolean) => { if (root.current) root.current.visible = value; },
     } });

@@ -1,0 +1,328 @@
+{
+  "portalFront": {
+    "entry": {
+      "position": [
+        -33.5,
+        4.8,
+        34
+      ],
+      "highTriangles": 4392,
+      "lowTriangles": 360,
+      "materials": 3,
+      "sourceArcRadiiM": [
+        1.65,
+        1.25
+      ],
+      "instanceScale": [
+        1,
+        1,
+        1
+      ],
+      "nearVisible": true,
+      "farVisible": false,
+      "colliderCount": 0,
+      "shadowCasters": 2
+    },
+    "stats": {
+      "calls": 168,
+      "triangles": 366260,
+      "geometries": 187,
+      "textures": 52,
+      "camera": [
+        -29.4,
+        6.68,
+        34
+      ]
+    },
+    "loading": {
+      "phase": "ready",
+      "loaded": 0,
+      "total": 0,
+      "active": false,
+      "failed": 0
+    },
+    "state": {
+      "position": [
+        -42,
+        5,
+        30
+      ],
+      "paused": false,
+      "quality": "high",
+      "light": "dusk",
+      "lang": "en"
+    },
+    "frameMs": {
+      "samples": 120,
+      "p50": 61.299999952316284,
+      "p95": 68
+    }
+  },
+  "portalAngle": {
+    "entry": {
+      "position": [
+        -33.5,
+        4.8,
+        34
+      ],
+      "highTriangles": 4392,
+      "lowTriangles": 360,
+      "materials": 3,
+      "sourceArcRadiiM": [
+        1.65,
+        1.25
+      ],
+      "instanceScale": [
+        1,
+        1,
+        1
+      ],
+      "nearVisible": true,
+      "farVisible": false,
+      "colliderCount": 0,
+      "shadowCasters": 2
+    },
+    "stats": {
+      "calls": 178,
+      "triangles": 399167,
+      "geometries": 192,
+      "textures": 53,
+      "camera": [
+        -29,
+        9,
+        39
+      ]
+    },
+    "loading": {
+      "phase": "ready",
+      "loaded": 0,
+      "total": 0,
+      "active": false,
+      "failed": 0
+    },
+    "state": {
+      "position": [
+        -42,
+        5,
+        30
+      ],
+      "paused": false,
+      "quality": "high",
+      "light": "dusk",
+      "lang": "en"
+    },
+    "frameMs": {
+      "samples": 120,
+      "p50": 99,
+      "p95": 119.5
+    }
+  },
+  "portalNight": {
+    "entry": {
+      "position": [
+        -33.5,
+        4.8,
+        34
+      ],
+      "highTriangles": 4392,
+      "lowTriangles": 360,
+      "materials": 3,
+      "sourceArcRadiiM": [
+        1.65,
+        1.25
+      ],
+      "instanceScale": [
+        1,
+        1,
+        1
+      ],
+      "nearVisible": true,
+      "farVisible": false,
+      "colliderCount": 0,
+      "shadowCasters": 2
+    },
+    "stats": {
+      "calls": 179,
+      "triangles": 396100,
+      "geometries": 229,
+      "textures": 54,
+      "camera": [
+        -29,
+        9,
+        39
+      ]
+    },
+    "loading": {
+      "phase": "ready",
+      "loaded": 0,
+      "total": 0,
+      "active": false,
+      "failed": 0
+    },
+    "state": {
+      "position": [
+        -42,
+        5,
+        30
+      ],
+      "paused": false,
+      "quality": "balanced",
+      "light": "night",
+      "lang": "en"
+    },
+    "frameMs": {
+      "samples": 120,
+      "p50": 44.09999990463257,
+      "p95": 181.29999995231628
+    }
+  },
+  "walkNear": {
+    "entry": {
+      "position": [
+        -33.5,
+        4.8,
+        34
+      ],
+      "highTriangles": 4392,
+      "lowTriangles": 360,
+      "materials": 3,
+      "sourceArcRadiiM": [
+        1.65,
+        1.25
+      ],
+      "instanceScale": [
+        1,
+        1,
+        1
+      ],
+      "nearVisible": true,
+      "farVisible": false,
+      "colliderCount": 0,
+      "shadowCasters": 2
+    },
+    "stats": {
+      "calls": 159,
+      "triangles": 367147,
+      "geometries": 210,
+      "textures": 53,
+      "camera": [
+        -28.02711349357209,
+        14.754109194062789,
+        41.363935396021716
+      ]
+    },
+    "loading": {
+      "phase": "ready",
+      "loaded": 0,
+      "total": 0,
+      "active": false,
+      "failed": 0
+    },
+    "state": {
+      "position": [
+        -33.118282318115234,
+        5.618827819824219,
+        34.57571029663086
+      ],
+      "nearby": "G28-menu",
+      "paused": false,
+      "quality": "balanced",
+      "light": "dusk",
+      "lang": "zh"
+    },
+    "frameMs": {
+      "samples": 120,
+      "p50": 112.10000014305115,
+      "p95": 145.29999995231628
+    }
+  },
+  "menuNarrow": {
+    "atBottom": true,
+    "client": 624,
+    "scroll": 1387,
+    "top": 763.5
+  },
+  "walkSteady": {
+    "entry": {
+      "position": [
+        -33.5,
+        4.8,
+        34
+      ],
+      "highTriangles": 4392,
+      "lowTriangles": 360,
+      "materials": 3,
+      "sourceArcRadiiM": [
+        1.65,
+        1.25
+      ],
+      "instanceScale": [
+        1,
+        1,
+        1
+      ],
+      "nearVisible": true,
+      "farVisible": false,
+      "colliderCount": 0,
+      "shadowCasters": 2
+    },
+    "stats": {
+      "calls": 157,
+      "triangles": 362269,
+      "geometries": 222,
+      "textures": 53,
+      "camera": [
+        -28.02711349357209,
+        14.754109194062789,
+        41.36407653982054
+      ]
+    },
+    "loading": {
+      "phase": "ready",
+      "loaded": 0,
+      "total": 0,
+      "active": false,
+      "failed": 0
+    },
+    "state": {
+      "position": [
+        -33.118282318115234,
+        5.618827819824219,
+        34.57585144042969
+      ],
+      "nearby": "G28-menu",
+      "paused": false,
+      "quality": "balanced",
+      "light": "dusk",
+      "lang": "en"
+    },
+    "frameMs": {
+      "samples": 120,
+      "p50": 16.59999990463257,
+      "p95": 23.799999952316284
+    },
+    "viewport": {
+      "width": 1024,
+      "height": 680
+    }
+  },
+  "menuLowHeight": {
+    "viewport": {
+      "width": 1280,
+      "height": 680
+    },
+    "dialogHeight": 625.59375,
+    "sideClientHeight": 624,
+    "sideScrollHeight": 915,
+    "scrollTop": 291,
+    "atBottom": true
+  },
+  "ordinary": {
+    "url": "http://127.0.0.1:4344/world/",
+    "openedByE": true,
+    "closedByEscape": true,
+    "prompt": "EStone gateOpen map & settings",
+    "qaProbeAbsent": true
+  },
+  "errors": []
+}
