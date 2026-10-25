@@ -1,0 +1,41 @@
+{
+  "checks": [
+    {
+      "name": "held-input-entry-and-live-bilingual-hud",
+      "entryFrames": 56,
+      "nitroAfterBoost": 0.8333333246409904
+    },
+    {
+      "name": "pause-resume-queued-exit-no-stored-power",
+      "frozenStep": 598,
+      "carDrift": 0
+    },
+    {
+      "name": "unsafe-exit-refused"
+    },
+    {
+      "name": "normal-entry-no-qa-api"
+    }
+  ],
+  "errors": [],
+  "fixtures": [
+    {
+      "t": 0.001,
+      "to": [
+        -88,
+        2.02,
+        14.1
+      ],
+      "reason": "flat-road coupe entry fixture"
+    },
+    {
+      "t": 6.331,
+      "to": [
+        -88,
+        2.02,
+        14.1
+      ],
+      "reason": "flat-road coupe entry fixture"
+    }
+  ]
+}
