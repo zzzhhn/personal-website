@@ -18,6 +18,8 @@ export interface WorldGuideMotion {
   verticalSpeedMps?: number;
   /** Increments on every real take-off (the frame the jump velocity is set). */
   jumpSeq?: number;
+  /** Collision-checked contextual hurdle hop, using the running-jump mocap. */
+  vault?: boolean;
   /** Static walkable ground under (x, z), cast down from fromY; used by the stance slope fit. */
   probeGround?: SlopeProbe;
   /** Read-only, QA-query-gated physics snapshot at the exact final-sole recorder sample. */
@@ -31,7 +33,7 @@ export interface WorldGuideMotion {
   /** Hidden by the caller (driving, after the enter transition). */
   hidden?: boolean;
 }
-export interface WorldGuideProps extends WorldGuideMotion { visible: boolean; readMotion?: () => WorldGuideMotion; fallback?: ReactNode }
+export interface WorldGuideProps extends WorldGuideMotion { visible: boolean; readMotion?: () => WorldGuideMotion; onMovementLock?: (locked: boolean) => void; fallback?: ReactNode }
 /** v3 clip set (CMU-retargeted Walk/Run/Sprint, one-shot jump phases); see docs/world/quality-v3/guide. */
 const GAITS = ['Walk', 'Run', 'Sprint'];
 const LOOPS = new Set(['Idle', ...GAITS, 'SitIdle']);
@@ -46,14 +48,14 @@ const SIT_FORWARD = -.4825; // measured rear hip -0.2525 m, supported 0.23 m tow
 const TURN_MIN = .8;
 /** Idle variation: a measured look-around after this many seconds standing (randomised within the range). */
 const IDLE_VARY: [number, number] = [5, 9];
-/** Vehicle enter/exit: visible step toward / away from the door with a short fade (<= 0.8 s total). */
-export const VEHICLE_TRANSITION_S = .7;
+/** Door approach plus measured cabin transfer, shared with the driving input gate. */
+export const VEHICLE_TRANSITION_S = 1.15;
 /** Horizontal speed at take-off from which the running jump is used (spec 1.4). */
 const RUNJUMP_SPEED = 2.5;
 /** Standing landing length and the time after which movement may interrupt it (spec 1.4). */
 const LAND_DURATION = .3, LAND_LOCK = .12;
 /** Moving landing: additive spine compression length and peak pitch (rad) at 5 m/s impact. */
-const LAND_ADD = .15, LAND_PITCH = .14;
+const LAND_ADD = .24, LAND_PITCH = .22;
 /** A walk-off / terrain lip shorter than this keeps the gait (no air pose for a one-frame hop). */
 const FALL_GRACE = .15;
 /** Out-of-band playback (spec 1.2: 0.85-1.2) switches gait at once instead of waiting for a phase match. */
@@ -152,7 +154,7 @@ function guideFeet(scene: Object3D) {
   return feet;
 }
 
-function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible, facing: initialFacing, readMotion }: WorldGuideProps) {
+function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible, facing: initialFacing, readMotion, onMovementLock }: WorldGuideProps) {
   const gltf = useLoader(GLTFLoader, '/assets/world/guide/G24.glb', withDecoder) as GLTF;
   const group = useRef<Group>(null);
   const stop = useRef<GuideStopStep | null>(null);
@@ -254,7 +256,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
   }, [gltf]);
   const state = useRef({ current: 'Idle', speed: 0, grounded: initialGrounded, visible, airSeconds: 0, landing: 0, time: 0,
     pending: '', pendingTime: 0, phaseGateTimeouts: 0, jumpSeq: -1, jumpKind: '' as '' | 'Jump' | 'RunJump', takeoffSpeed: 0,
-    vy: 0, vyPeak: 0, airPhase: 0, blocked: 0, sat: false, seatReady: false, seatWait: 0, turn: null as null | { clip: string; from: number; to: number; t: number }, idleT: 0, idleNext: IDLE_VARY[0] + Math.random() * (IDLE_VARY[1] - IDLE_VARY[0]), shownYaw: 0, sitFromYaw: 0, yawInit: false, fade: 1, sitDrop: 0, groundY: NaN, prevSeated: false, seatChangeT: 9, lastSeat: null as null | { position: [number, number, number]; yaw: number }, hasLast: false, lean: 0, pitch: 0, prevFacing: 0, prevSpeed: 0, faded: 1, vehPhase: '', lastLand: '', landSpeed: 0, landT: 0, rateOut: 0, slopeOn: false });
+    vy: 0, vyPeak: 0, fallSpeed: 0, airPhase: 0, blocked: 0, sat: false, seatReady: false, seatWait: 0, turn: null as null | { clip: string; from: number; to: number; t: number }, idleT: 0, idleNext: IDLE_VARY[0] + Math.random() * (IDLE_VARY[1] - IDLE_VARY[0]), shownYaw: 0, sitFromYaw: 0, yawInit: false, fade: 1, sitDrop: 0, groundY: NaN, prevSeated: false, seatChangeT: 9, lastSeat: null as null | { position: [number, number, number]; yaw: number }, hasLast: false, lean: 0, pitch: 0, prevFacing: 0, prevSpeed: 0, faded: 1, vehPhase: '', lastLand: '', landSpeed: 0, landT: 0, rateOut: 0, slopeOn: false });
   useEffect(() => () => { rig.mixer.stopAllAction(); rig.mixer.uncacheRoot(rig.scene); }, [rig]);
   useEffect(() => {
     // Fable's 2026-10-22 acceptance permits this visual stop step in normal play.
@@ -306,7 +308,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         }
       });
       return { loaded: true, moving: s.speed > .12, running: s.current === 'Run' || s.current === 'Sprint', airborne: !s.grounded,
-        jumpKind: s.jumpKind, airPhase: +s.airPhase.toFixed(3), lastLanding: s.lastLand, playbackRate: +s.rateOut.toFixed(3),
+        jumpKind: s.jumpKind, vault: !!observedMotion?.vault, vehicle: observedMotion?.vehicle ?? null, airPhase: +s.airPhase.toFixed(3), lastLanding: s.lastLand, playbackRate: +s.rateOut.toFixed(3),
         designSpeedMps: rig.design, slope: rig.slope.debug(), slopeOn: s.slopeOn,
         animation: s.current, animationTime: rig.actions[s.current].time, animationTimeScale: rig.actions[s.current].getEffectiveTimeScale(),
         mixerTime: rig.mixer.time, speedMps: s.speed, visible: s.visible, phaseGateTimeouts:s.phaseGateTimeouts,
@@ -328,6 +330,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     const resumed = shown && !s.visible;
     if (group.current) group.current.visible = shown;
     if (!shown && s.visible) { stop.current?.cancel('hidden'); rig.inert.reset(); s.hasLast = false; }
+    if (!shown) onMovementLock?.(false);
     s.visible = shown;
     if (world.paused || world.shot || !shown) return;
     const dt = Math.max(1e-6, Math.min(delta, .08));
@@ -350,18 +353,18 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     if (seq !== undefined) { if (s.jumpSeq < 0) s.jumpSeq = seq; else if (seq !== s.jumpSeq) { s.jumpSeq = seq; takeoff = true; } }
     else if (s.grounded && !grounded && vy > 1) takeoff = true;     // legacy callers without jumpSeq
     if (takeoff) {
-      s.jumpKind = speedMps >= RUNJUMP_SPEED ? 'RunJump' : 'Jump';
-      s.takeoffSpeed = speedMps; s.vyPeak = Math.max(vy, 3); s.airPhase = 0;
+      s.jumpKind = motion.vault || speedMps >= RUNJUMP_SPEED ? 'RunJump' : 'Jump';
+      s.takeoffSpeed = speedMps; s.vyPeak = Math.max(vy, 3); s.airPhase = 0; s.fallSpeed = 0;
     }
     const justLanded = grounded && !s.grounded;
     if (!grounded) {
       if (s.grounded && !s.jumpKind) s.airPhase = .5;
-      s.airSeconds += dt; s.vyPeak = Math.max(s.vyPeak, vy);
+      s.airSeconds += dt; s.vyPeak = Math.max(s.vyPeak, vy); s.fallSpeed = Math.max(s.fallSpeed, -vy);
     }
     else if (justLanded) {
       // Moving input at >= 2.5 m/s lands straight into the gait (+ a short additive compression);
       // otherwise a standing landing (Land) that movement can interrupt after LAND_LOCK.
-      s.landSpeed = -s.vy;
+      s.landSpeed = Math.max(0, -s.vy, s.fallSpeed); s.landT = 0; s.fallSpeed = 0;
       const moving = intent !== 'idle' && speedMps >= RUNJUMP_SPEED;
       s.landing = s.airSeconds > .12 && !moving ? LAND_DURATION : 0;
       s.lastLand = s.airSeconds > .12 ? (moving ? 'moving' : 'stand') : '';
@@ -382,7 +385,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       const target = targetSpeedMps ?? 0;
       if (intent === 'idle' || target < .1) return isGait(s.current) && speedMps > STOP_SPEED ? s.current : 'Idle';
       if (speedMps < .25 && s.blocked > .25) return 'Idle';
-      if (intent === 'run') return target > (D.Run + D.Sprint) / 2 ? 'Sprint' : 'Run';
+      if (intent === 'run') return target > (D.Run + D.Sprint) / 2 && speedMps > (s.current === 'Sprint' ? 4.2 : 4.8) ? 'Sprint' : 'Run';
       return target > D.Walk * 1.35 ? 'Run' : 'Walk';
     };
     s.blocked = intent !== 'idle' && (targetSpeedMps ?? 0) > 1 && speedMps < .25 ? s.blocked + dt : 0;
@@ -463,10 +466,9 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         if (!s.seatReady && !approach) shownYaw = s.shownYaw;
         s.sat = true; s.turn = null;
       } else if (s.sat) {
-        // standing up: StandUp plays out unless movement interrupts after half of it
-        const half = s.current === 'StandUp' && act('StandUp').time > act('StandUp').getClip().duration * .5;
+        // Finish the weight transfer before locomotion resumes. Held input still selects the next gait.
         if (s.current !== 'StandUp') desired = 'StandUp';
-        else if (done('StandUp') || (half && intent !== 'idle')) { s.sat = false; }
+        else if (done('StandUp')) { s.sat = false; }
         else desired = 'StandUp';
       }
       // turn in place: a large heading change from a standstill (WorldActors turns the capsule first, A3).
@@ -503,27 +505,30 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       else if (desired === 'Idle' && s.current === 'IdleLook' && !done('IdleLook')) desired = 'IdleLook';
       else if (desired !== 'Idle') s.idleT = 0;
     }
-    // ---- vehicle enter / exit (<= 0.8 s): a visible walk/run step between the player spot and the door
-    // anchor (WorldActors: car body + door offset), fading out into / in from the car. No physics involved.
+    // Door approach -> measured hip flexion into the cabin; reverse for exit. Reuse the CMU sit/get-up
+    // clips as a bounded interaction layer, with the existing door anchor as the contact frame.
     const vt = motion.vehicle ?? null;
     rig.vehOff.set(0, 0, 0);
     if (vt && group.current?.parent) {
+      s.sat = false;
       // Enter and exit use different door frames, separated by a hidden driving state. An outgoing
       // walk velocity is not a valid extrapolation for the next door's first pose (whose fade starts at 0).
       if (s.vehPhase !== vt.phase) rig.inert.reset();
       const base = group.current.parent.getWorldPosition(rig.baseWorld);
       const dx = vt.door[0] - base.x, dz = vt.door[2] - base.z, dist = Math.hypot(dx, dz);
-      const e = vt.t * vt.t * (3 - 2 * vt.t), k = vt.phase === 'enter' ? e : 1 - e;
-      const prevX = s.vehPhase ? rig.vehOff.x : 0;
+      const pathT = vt.phase === 'enter' ? Math.min(1, vt.t / .55) : Math.max(0, (vt.t - .45) / .55);
+      const e = pathT * pathT * (3 - 2 * pathT), k = vt.phase === 'enter' ? e : 1 - e;
       rig.vehOff.set(dx * k, 0, dz * k);
-      travel = dist * Math.abs(6 * vt.t * (1 - vt.t)) * dt / Math.max(.35, Math.min(.8, .25 + dist / 4.5)); void prevX;
+      travel = dist * 6 * pathT * (1 - pathT) * dt / (VEHICLE_TRANSITION_S * .55);
       shownYaw = vt.phase === 'enter' ? Math.atan2(-dz, dx) : Math.atan2(dz, -dx);
       const v = travel / dt;
       desired = v > 2.2 ? 'Run' : v > .2 ? 'Walk' : 'Idle';
-      // fade: entering vanishes over the last 45 %, exiting appears over the first 40 %
-      s.faded = vt.phase === 'enter' ? 1 - Math.min(1, Math.max(0, (vt.t - .55) / .45)) : Math.min(1, vt.t / .4);
+      if (rig.extras && (vt.phase === 'enter' ? vt.t >= .55 : vt.t < .45)) desired = vt.phase === 'enter' ? 'SitDown' : 'StandUp';
+      // Only the cabin transfer fades. Boots remain visible through the approach and departure.
+      s.faded = vt.phase === 'enter' ? 1 - Math.min(1, Math.max(0, (vt.t - .65) / .3)) : Math.min(1, vt.t / .3);
       s.vehPhase = vt.phase; s.turn = null;
     } else { s.faded = 1; s.vehPhase = ''; }
+    onMovementLock?.(!!seat || s.sat || !!vt);
     if (approach && !seat && !s.sat && grounded && (desired === 'Idle' || desired === 'IdleLook')) desired = 'Walk';
     if (shownYawOverride !== null && (desired === 'Walk' || isGait(desired))) shownYaw = shownYawOverride;
     // SitDown changes from the approach heading to the seat heading while the short legs are lifted.
@@ -622,6 +627,11 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         if (isGait(desired)) s.lastLand = s.lastLand === 'moving' ? 'moving-entered' : '';
       }
     } else {s.pending='';s.pendingTime=0;}
+    if (vt && (s.current === 'SitDown' || s.current === 'StandUp')) {
+      const action = rig.actions[s.current];
+      const u = vt.phase === 'enter' ? (vt.t - .55) / .45 : vt.t / .45;
+      action.setEffectiveTimeScale(0); action.time = Math.min(1, Math.max(0, u)) * action.getClip().duration;
+    }
     if (s.current.endsWith('Air')) { const a = rig.actions[s.current]; a.paused = true; a.time = s.airPhase * a.getClip().duration; }
     // Match stride distance to the displayed body displacement, including fixed-step
     // physics interpolation. Velocity × display dt is a different clock during hitches.
@@ -646,10 +656,10 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       // point) during the hip descent of SitDown, and back during StandUp. A seat higher than the measured
       // 0.316 m leaves the short TABS legs dangling (never inside the seat); a lower one keeps the feet on the
       // ground (the root never goes below the ground it stood on).
-      const sitting = s.current === 'SitDown' || s.current === 'SitIdle' || s.current === 'StandUp';
+      const sitting = !vt && (s.current === 'SitDown' || s.current === 'SitIdle' || s.current === 'StandUp');
       const frac = (n: string) => Math.min(1, rig.actions[n].time / rig.actions[n].getClip().duration);
       const sstep = (x: number) => { const c = Math.min(1, Math.max(0, x)); return c * c * (3 - 2 * c); };
-      const sitW = s.current === 'SitIdle' ? 1 : s.current === 'SitDown' ? sstep((frac('SitDown') - .35) / .6) : s.current === 'StandUp' ? 1 - sstep(frac('StandUp') / .6) : 0;
+      const sitW = !sitting ? 0 : s.current === 'SitIdle' ? 1 : s.current === 'SitDown' ? sstep((frac('SitDown') - .35) / .6) : s.current === 'StandUp' ? 1 - sstep(frac('StandUp') / .6) : 0;
       const st = seat ?? s.lastSeat;
       s.sitDrop = 0;
       // walking to the seat (the body already sits at the seat point): feet stay on the ground they left
@@ -677,9 +687,9 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       group.current.updateWorldMatrix(true, true);
       const baseY = group.current.getWorldPosition(rig.rootPoint).y - group.current.position.y;
       // Moving landing: short additive spine/chest compression (<= 0.15 s, spec 1.4), no foot change.
-      if (s.lastLand === 'moving-entered' || s.lastLand === 'moving') {
+      if (s.lastLand) {
         s.landT = (s.landT ?? 0) + dt;
-        const k = Math.min(1, s.landSpeed / 5) * Math.sin(Math.PI * Math.min(1, s.landT / LAND_ADD));
+        const k = Math.min(1.25, s.landSpeed / 5) * Math.sin(Math.PI * Math.min(1, s.landT / LAND_ADD));
         if (s.landT >= LAND_ADD) { s.lastLand = ''; s.landT = 0; }
         else for (const b of rig.spineBones) b.quaternion.multiply(_landQ.setFromAxisAngle(b.userData.landAxis, LAND_PITCH * k));
       } else s.landT = 0;
