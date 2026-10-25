@@ -1,0 +1,27 @@
+{
+  "audio": {
+    "owners": 1,
+    "started": true,
+    "timer": false,
+    "subscribed": true,
+    "state": "suspended",
+    "transitioning": false,
+    "voices": 7,
+    "ticks": 494,
+    "muted": false
+  },
+  "live25": 0,
+  "ui": {
+    "consumers": 0,
+    "framePending": false,
+    "listening": false,
+    "connected": false,
+    "samples": 0
+  },
+  "dj": {
+    "runs": 1,
+    "notch": 1,
+    "crossfade": 0.25,
+    "audioState": "suspended"
+  }
+}

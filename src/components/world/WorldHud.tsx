@@ -3,6 +3,7 @@ import { useWorldStore } from './store';
 import { worldText } from './world-i18n';
 import type { WorldContent } from './types';
 import { readDrivingTelemetry, type DrivingTelemetry } from './vehicle-telemetry';
+import { watchUiGamepads } from './WorldUiGamepad';
 
 type Zone = ReturnType<typeof useWorldStore.getState>['zone'];
 const ZONE_HOLD_MS = 3400, ZONE_REPEAT_MS = 20000;
@@ -68,12 +69,18 @@ const readDone = (): Set<Hint> => { try { return new Set(JSON.parse(localStorage
 export function WorldFirstHints() {
   const lang = useWorldStore(s => s.lang), ready = useWorldStore(s => s.ready), driving = useWorldStore(s => s.activeVehicle);
   const card = useWorldStore(s => s.card), paused = useWorldStore(s => s.paused);
+  const shot = useWorldStore(s => s.shot);
   const [done, setDone] = useState<Set<Hint>>(() => new Set());
   const [loaded, setLoaded] = useState(false);
+  const needed: Hint[] = driving ? ['drive'] : ['move', 'look', 'interact'];
+  const collecting = loaded && ready && !card && !paused && !shot && needed.some(h => !done.has(h));
   useEffect(() => { setDone(readDone()); setLoaded(true); }, []);
   useEffect(() => {
-    if (!ready) return;
-    const mark = (h: Hint) => setDone(prev => { if (prev.has(h)) return prev; const next = new Set(prev).add(h); try { localStorage.setItem(HINT_KEY, JSON.stringify([...next])); } catch { /* optional */ } return next; });
+    if (!collecting) return;
+    const mark = (h: Hint) => {
+      const s = useWorldStore.getState(); if (s.paused || s.shot || document.hidden) return;
+      setDone(prev => { if (prev.has(h)) return prev; const next = new Set(prev).add(h); try { localStorage.setItem(HINT_KEY, JSON.stringify([...next])); } catch { /* optional */ } return next; });
+    };
     const key = (e: KeyboardEvent) => {
       if (/^Key[WASD]$/.test(e.code)) mark(useWorldStore.getState().activeVehicle ? 'drive' : 'move');
       if (e.code === 'KeyE' && (useWorldStore.getState().nearbyInteract || useWorldStore.getState().nearbyVehicle)) mark('interact');
@@ -85,15 +92,18 @@ export function WorldFirstHints() {
     const up = () => { downAt = null; };
     const wheel = () => mark('look');
     // Gamepad: a deliberate right-stick look or left-stick move counts like the mouse / keys.
-    let raf = 0;
-    const pad = () => { const g = navigator.getGamepads?.().find(Boolean); if (g) { if (Math.hypot(g.axes[2] ?? 0, g.axes[3] ?? 0) > .5) mark('look'); if (Math.hypot(g.axes[0] ?? 0, g.axes[1] ?? 0) > .5) mark(useWorldStore.getState().activeVehicle ? 'drive' : 'move'); if (g.buttons[3]?.pressed && useWorldStore.getState().nearbyInteract) mark('interact'); } raf = requestAnimationFrame(pad); };
-    raf = requestAnimationFrame(pad);
+    const stopPad = watchUiGamepads(pads => {
+      const g = pads.find(p => p?.connected); if (!g) return;
+      if (Math.hypot(g.axes[2] ?? 0, g.axes[3] ?? 0) > .5) mark('look');
+      if (Math.hypot(g.axes[0] ?? 0, g.axes[1] ?? 0) > .5) mark(useWorldStore.getState().activeVehicle ? 'drive' : 'move');
+      if (g.buttons[3]?.pressed && useWorldStore.getState().nearbyInteract) mark('interact');
+    });
     window.addEventListener('keydown', key);
     canvas?.addEventListener('pointerdown', down); canvas?.addEventListener('pointermove', move); window.addEventListener('pointerup', up); canvas?.addEventListener('wheel', wheel, { passive: true });
     const unsub = useWorldStore.subscribe((s, p) => { if (s.card && !p.card) mark('interact'); if (s.activeVehicle && !p.activeVehicle) mark('interact'); });
-    return () => { cancelAnimationFrame(raf); window.removeEventListener('keydown', key); canvas?.removeEventListener('pointerdown', down); canvas?.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); canvas?.removeEventListener('wheel', wheel); unsub(); };
-  }, [ready]);
-  if (!loaded || !ready || card || paused) return null;
+    return () => { stopPad(); window.removeEventListener('keydown', key); canvas?.removeEventListener('pointerdown', down); canvas?.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); canvas?.removeEventListener('wheel', wheel); unsub(); };
+  }, [collecting]);
+  if (!loaded || !ready || card || paused || shot) return null;
   const t = worldText[lang];
   const chips: { id: Hint; keys: string; label: string }[] = driving
     ? [{ id: 'drive', keys: t.hintKeysDrive, label: t.hintDrive }]

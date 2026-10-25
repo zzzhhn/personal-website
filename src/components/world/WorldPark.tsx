@@ -8,6 +8,7 @@ import type { Vec3 } from './types';
 import WorldSurfaceColliders from './WorldSurfaceColliders';
 import { useGreyboxClaim } from './WorldVisualClaims';
 import { night } from './WorldNight';
+import { parkAudio } from './WorldParkAudio';
 import { gltfPieces, gltfTrimesh, mergeBatch, parkMaterial, parkNight, parkUrl, plankDeck, ParkGeo, withDraco, type GLTF } from './WorldParkKit';
 import { DECK_Y, EXHIBIT_ANCHOR, HUTS, HUT_BACK_Z, HUT_FRONT_Z } from './WorldParkLayout';
 import WorldParkSigns from './WorldParkSigns';
@@ -112,6 +113,7 @@ function ParkClock() {
 }
 
 export default memo(function WorldPark({ projects }: { projects: WorldContent['projects'] }) {
+  useEffect(() => parkAudio.retain(), []);
   return <group name="world-park">
     <ParkClock />
     <ParkGuard id="huts"><ParkHuts projects={projects} /></ParkGuard>

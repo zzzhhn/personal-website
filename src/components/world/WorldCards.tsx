@@ -5,19 +5,21 @@ import { cycleInteractPick, reachableInteractables, type Interactable } from './
 import { resolveCard } from './WorldCardContent';
 import { trackPortfolioEvent } from '../../lib/analytics';
 import type { WorldContent } from './types';
+import { watchUiGamepads } from './WorldUiGamepad';
 
 type Device = 'kb' | 'pad';
 /** Last input device, so the key cap reads E on keyboard and Y on a gamepad (Bruno's setKeyIcon idea). */
-function useDevice() {
+function useDevice(showPrompt: boolean) {
   const [device, setDevice] = useState<Device>('kb');
   useEffect(() => {
     const kb = () => setDevice('kb');
-    let raf = 0;
-    const poll = () => { const g = navigator.getGamepads?.().find(Boolean); if (g && (g.buttons.some(b => b.pressed) || g.axes.some(a => Math.abs(a) > .4))) setDevice('pad'); raf = requestAnimationFrame(poll); };
-    raf = requestAnimationFrame(poll);
     window.addEventListener('keydown', kb); window.addEventListener('pointerdown', kb);
-    return () => { cancelAnimationFrame(raf); window.removeEventListener('keydown', kb); window.removeEventListener('pointerdown', kb); };
+    return () => { window.removeEventListener('keydown', kb); window.removeEventListener('pointerdown', kb); };
   }, []);
+  useEffect(() => {
+    if (!showPrompt) return;
+    return watchUiGamepads(pads => { if (pads.some(g => g && (g.buttons.some(b => b.pressed) || g.axes.some(a => Math.abs(a) > .4)))) setDevice('pad'); });
+  }, [showPrompt]);
   return device;
 }
 
@@ -51,9 +53,10 @@ export default function WorldCards({ content }: { content: WorldContent }) {
   const card = useWorldStore(s => s.card);
   const seat = useWorldStore(s => s.seat);
   const paused = useWorldStore(s => s.paused);
+  const shot = useWorldStore(s => s.shot);
   const pick = useWorldStore(s => s.interactPick);
   const position = useWorldStore(s => s.position);
-  const device = useDevice();
+  const device = useDevice(!paused && !shot && !card && !driving && !seat && !!(nearby || nearbyVehicle));
   const t = worldText[lang];
   const candidates = card || driving || seat ? [] : nearbyCandidates(position, nearby?.id);
   const ids = candidates.map(c => c.id).join('|');
