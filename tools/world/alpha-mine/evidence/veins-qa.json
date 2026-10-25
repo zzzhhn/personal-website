@@ -1,0 +1,500 @@
+{
+ "asset": "alpha-veins",
+ "bytes": 81160,
+ "sha256": "9749d146f7e7ca54a6e23c92929a5b29106a56dac39772853a487f05eacfc6a3",
+ "sourceSha256": "a81b85b31b750dd5c2f4ee5ccd15f5e03921696667a1af67aecb3e7185bdc9f7",
+ "native": {
+  "meshes": [
+   {
+    "node": "vein-lower_intact_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.8950005550031935,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-lower_cracked_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.8755706815949016,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-lower_open_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.795189362934201,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-middle_intact_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.8950005550031935,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-middle_cracked_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.8755706815949016,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-middle_open_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.795189362934201,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-upper_intact_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.8950005550031935,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-upper_cracked_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.8755706815949016,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-upper_open_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.795189362934201,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   }
+  ],
+  "triangles": 3348,
+  "sockets": {
+   "vein-lower_impact": [
+    0.0,
+    0.0,
+    0.2549999952316284
+   ],
+   "vein-lower_oreRest": [
+    0.0,
+    -0.6000000238418579,
+    0.30000001192092896
+   ],
+   "vein-middle_impact": [
+    0.0,
+    0.0,
+    0.2549999952316284
+   ],
+   "vein-middle_oreRest": [
+    0.0,
+    -0.6000000238418579,
+    0.30000001192092896
+   ],
+   "vein-upper_impact": [
+    0.0,
+    0.0,
+    0.2549999952316284
+   ],
+   "vein-upper_oreRest": [
+    0.0,
+    -0.6000000238418579,
+    0.30000001192092896
+   ]
+  }
+ },
+ "reopened": {
+  "meshes": [
+   {
+    "node": "vein-lower_intact_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.8950005550031935,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-lower_cracked_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.8755706815949016,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-lower_open_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.795189362934201,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-middle_intact_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.8950005550031935,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-middle_cracked_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.8755706815949016,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-middle_open_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.795189362934201,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-upper_intact_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.8950005550031935,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-upper_cracked_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.8755706815949016,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-upper_open_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.795189362934201,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   }
+  ],
+  "triangles": 3348,
+  "sockets": {
+   "vein-lower_impact": [
+    0.0,
+    0.0,
+    0.2549999952316284
+   ],
+   "vein-lower_oreRest": [
+    0.0,
+    -0.6000000238418579,
+    0.30000001192092896
+   ],
+   "vein-middle_impact": [
+    0.0,
+    0.0,
+    0.2549999952316284
+   ],
+   "vein-middle_oreRest": [
+    0.0,
+    -0.6000000238418579,
+    0.30000001192092896
+   ],
+   "vein-upper_impact": [
+    0.0,
+    0.0,
+    0.2549999952316284
+   ],
+   "vein-upper_oreRest": [
+    0.0,
+    -0.6000000238418579,
+    0.30000001192092896
+   ]
+  }
+ },
+ "freshGLB": {
+  "meshes": [
+   {
+    "node": "vein-lower_cracked_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.8755624369498642,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-lower_intact_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.8949886746540732,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-lower_open_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.7951773835053654,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-middle_cracked_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.8755624369498642,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-middle_intact_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.8949886746540732,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-middle_open_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.7951773835053654,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-upper_cracked_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.8755624369498642,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-upper_intact_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.8949886746540732,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   },
+   {
+    "node": "vein-upper_open_rock",
+    "triangles": 372,
+    "nonmanifold": 0,
+    "badWinding": 0,
+    "volume": 0.7951773835053654,
+    "degenerate": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ],
+    "validateWouldRepair": false
+   }
+  ],
+  "triangles": 3348,
+  "sockets": {
+   "vein-lower_impact": [
+    0.0,
+    0.0,
+    0.2549999952316284
+   ],
+   "vein-lower_oreRest": [
+    0.0,
+    -0.6000000238418579,
+    0.30000001192092896
+   ],
+   "vein-middle_impact": [
+    0.0,
+    0.0,
+    0.2549999952316284
+   ],
+   "vein-middle_oreRest": [
+    0.0,
+    -0.6000000238418579,
+    0.30000001192092896
+   ],
+   "vein-upper_impact": [
+    0.0,
+    0.0,
+    0.2549999952316284
+   ],
+   "vein-upper_oreRest": [
+    0.0,
+    -0.6000000238418579,
+    0.30000001192092896
+   ]
+  }
+ },
+ "units": "metres",
+ "rootPlacement": "each vein root is local zero; place at layout.veins[].socket",
+ "stateVisibility": "all states exported; runtime must show only intact initially, then cracked or open",
+ "oreRestMeaning": "ore centre, not bottom; supported by static stone ledge",
+ "scope": "geometry and socket exchange only; game light, pick contact, pickup and creative acceptance pending"
+}
