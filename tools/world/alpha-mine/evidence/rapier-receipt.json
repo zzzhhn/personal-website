@@ -1,0 +1,17 @@
+{
+ "command": "ALPHA_MINE_TEST_ASSETS=<art-worktree>/public/world/alpha-mine node --test <integration-worktree>/src/components/world/alpha-mine-physics.test.mjs",
+ "tests": 3,
+ "passed": 3,
+ "failed": 0,
+ "scope": [
+  "route support and capsule clearance",
+  "mining stands and seam reach",
+  "mining/pickup chest rays and capsules"
+ ],
+ "inputs": {
+  "layout.json": "e09574837f41ffc83872583db36952835f39f87b59d028848f47f3fa7e0bb7d7",
+  "colliders.json": "f1b9eac3bc32ec46cac04146e8daa531e44fd77851f3bb4cb583dec25d80a230",
+  "quarry-static.glb": "5d7c1a1a7875f3dd03a6d46261156b42c577bcb648287bf5362eabe64183eb90"
+ },
+ "limits": "Not character palm or pick-head animation acceptance; no broad free-roam swept capsule guarantee."
+}

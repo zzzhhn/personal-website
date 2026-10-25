@@ -1,0 +1,504 @@
+{
+  "schema": "alpha-mine-layout-v1",
+  "units": "metres",
+  "axis": {
+    "up": "+Y",
+    "entranceFace": "+Z",
+    "depth": "-Z"
+  },
+  "root": [
+    0,
+    0,
+    0
+  ],
+  "rootMeaning": "entrance lateral centre / lowest walking level / entrance line",
+  "integrationPlacement": {
+    "origin": [
+      60,
+      1.14,
+      -55
+    ],
+    "yaw": 0,
+    "providedBy": "main site audit; foundation/sea mask owned by main"
+  },
+  "footprint": {
+    "x": [
+      -16,
+      16
+    ],
+    "z": [
+      -36,
+      0
+    ]
+  },
+  "walkingLevels": [
+    0,
+    3,
+    6
+  ],
+  "maxRockY": 9,
+  "entrance": {
+    "center": [
+      0,
+      0,
+      0
+    ],
+    "clearWidth": 8
+  },
+  "terrainExcavation": false,
+  "staticAsset": "/world/alpha-mine/quarry-static.glb",
+  "collisionAsset": "/world/alpha-mine/colliders.json",
+  "ramps": [
+    {
+      "id": "ramp-west-0-3",
+      "a": [
+        -11.8,
+        0,
+        -9
+      ],
+      "b": [
+        -11.8,
+        3,
+        -21
+      ],
+      "deckWidth": 2.6,
+      "clearWidth": 2.4,
+      "slopeDeg": 14.036243467926479
+    },
+    {
+      "id": "ramp-east-3-6",
+      "a": [
+        11.8,
+        3,
+        -21
+      ],
+      "b": [
+        11.8,
+        6,
+        -33
+      ],
+      "deckWidth": 2.6,
+      "clearWidth": 2.4,
+      "slopeDeg": 14.036243467926479
+    }
+  ],
+  "bridge": {
+    "id": "bridge-middle",
+    "a": [
+      -3.7,
+      3,
+      -22.3
+    ],
+    "b": [
+      7.5,
+      3,
+      -22.3
+    ],
+    "deckWidth": 2.6,
+    "clearWidth": 2.4
+  },
+  "route": {
+    "points": [
+      [
+        0,
+        0,
+        0
+      ],
+      [
+        -5.2,
+        0,
+        -2
+      ],
+      [
+        -8.8,
+        0,
+        -2.55
+      ],
+      [
+        -11.8,
+        0,
+        -2.55
+      ],
+      [
+        -11.8,
+        0,
+        -9
+      ],
+      [
+        -11.8,
+        3,
+        -21
+      ],
+      [
+        -11.8,
+        3,
+        -22.3
+      ],
+      [
+        -3.7,
+        3,
+        -22.3
+      ],
+      [
+        7.5,
+        3,
+        -22.3
+      ],
+      [
+        8.8,
+        3,
+        -22.3
+      ],
+      [
+        8.8,
+        3,
+        -19.7
+      ],
+      [
+        11.8,
+        3,
+        -19.7
+      ],
+      [
+        11.8,
+        3,
+        -21
+      ],
+      [
+        11.8,
+        6,
+        -33
+      ],
+      [
+        11.8,
+        6,
+        -34.1
+      ],
+      [
+        1.5,
+        6,
+        -34.1
+      ],
+      [
+        -8.6,
+        6,
+        -34.1
+      ],
+      [
+        -8.6,
+        6,
+        -30
+      ]
+    ],
+    "return": "reverse; open forecourt loop around basin"
+  },
+  "veins": [
+    {
+      "id": "vein-lower",
+      "level": 0,
+      "socket": [
+        -6.4,
+        1.3,
+        -20.85
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "stand": [
+        -6.4,
+        0,
+        -19.85
+      ],
+      "host": "middle-west-front",
+      "oreCatch": {
+        "top": [
+          -6.4,
+          0.52,
+          -20.900000000000002
+        ],
+        "width": 1.15,
+        "depth": 1.15
+      },
+      "oreRest": [
+        -6.4,
+        0.7,
+        -20.55
+      ]
+    },
+    {
+      "id": "vein-middle",
+      "level": 3,
+      "socket": [
+        -8.6,
+        4.3,
+        -25.45
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "stand": [
+        -8.6,
+        3,
+        -24.45
+      ],
+      "host": "upper-west-front",
+      "oreCatch": {
+        "top": [
+          -8.6,
+          3.52,
+          -25.5
+        ],
+        "width": 1.15,
+        "depth": 1.15
+      },
+      "oreRest": [
+        -8.6,
+        3.7,
+        -25.15
+      ]
+    },
+    {
+      "id": "vein-upper",
+      "level": 6,
+      "socket": [
+        1.5,
+        7.3,
+        -35.45
+      ],
+      "normal": [
+        0,
+        0,
+        1
+      ],
+      "stand": [
+        1.5,
+        6,
+        -34.45
+      ],
+      "host": "rear-wall",
+      "oreCatch": {
+        "top": [
+          1.5,
+          6.52,
+          -35.5
+        ],
+        "width": 1.15,
+        "depth": 1.15
+      },
+      "oreRest": [
+        1.5,
+        6.7,
+        -35.150000000000006
+      ]
+    }
+  ],
+  "basin": {
+    "center": [
+      1.8,
+      0,
+      -6.5
+    ],
+    "outerRadius": 3.45,
+    "innerRadius": 2.85,
+    "rimY": 0.62,
+    "waterY": 0.28,
+    "approach": [
+      1.8,
+      0,
+      -2.3
+    ],
+    "dropSocket": [
+      1.8,
+      0.95,
+      -3.9
+    ],
+    "impact": [
+      1.8,
+      0.28,
+      -4.35
+    ]
+  },
+  "toolRack": {
+    "center": [
+      -8.8,
+      0,
+      -3.6
+    ],
+    "face": [
+      0,
+      0,
+      1
+    ],
+    "approach": [
+      -8.8,
+      0,
+      -2.55
+    ],
+    "detectorSocket": [
+      -9.35,
+      1.35,
+      -3.3
+    ],
+    "pickaxeSocket": [
+      -8.2,
+      1.5,
+      -3.3
+    ]
+  },
+  "socketConvention": "positions are facility-local glTF coordinates, not guessed bounds centres",
+  "surfaceContract": "ground y=0; intermediate/top walking planes y=3/6; no below-ground excavation or occupied underground void",
+  "placementNote": "root world position set by integration; offset all assets and proxies identically; avoid coplanarity with island ground",
+  "batch1Status": "native, reopened source and fresh GLB exchange passed; visual review pending",
+  "dynamicAssets": {
+    "status": "fixed file/node contract; geometry delivered in batch2",
+    "detector": {
+      "url": "/world/alpha-mine/detector.glb",
+      "root": "detector",
+      "sockets": {
+        "grip_R": "grip_R",
+        "scan_origin": "scan_origin"
+      },
+      "scale": 1
+    },
+    "pickaxe": {
+      "url": "/world/alpha-mine/pickaxe.glb",
+      "root": "pickaxe",
+      "sockets": {
+        "grip_R": "grip_R",
+        "grip_L": "grip_L",
+        "head_contact": "head_contact"
+      },
+      "scale": 1
+    },
+    "ore": {
+      "url": "/world/alpha-mine/ore.glb",
+      "root": "ore",
+      "sockets": {
+        "grip_R": "grip_R",
+        "grip_L": "grip_L",
+        "release": "release"
+      },
+      "scale": 1,
+      "approxDiameterM": 0.3,
+      "sharedGeometry": true,
+      "tintMaterial": "ore_mineral",
+      "tints": {
+        "vein-lower": "#b7864d",
+        "vein-middle": "#5c9b91",
+        "vein-upper": "#9ba8b1"
+      }
+    },
+    "veins": {
+      "url": "/world/alpha-mine/veins.glb",
+      "roots": {
+        "vein-lower": {
+          "root": "vein-lower",
+          "placement": [
+            -6.4,
+            1.3,
+            -20.85
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "states": {
+            "intact": "vein-lower_intact",
+            "cracked": "vein-lower_cracked",
+            "open": "vein-lower_open"
+          },
+          "defaultState": "intact",
+          "impactSocket": "vein-lower_impact",
+          "oreRestSocket": "vein-lower_oreRest",
+          "oreRestPosition": [
+            -6.4,
+            0.7,
+            -20.55
+          ],
+          "factorId": "REVERSAL_5"
+        },
+        "vein-middle": {
+          "root": "vein-middle",
+          "placement": [
+            -8.6,
+            4.3,
+            -25.45
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "states": {
+            "intact": "vein-middle_intact",
+            "cracked": "vein-middle_cracked",
+            "open": "vein-middle_open"
+          },
+          "defaultState": "intact",
+          "impactSocket": "vein-middle_impact",
+          "oreRestSocket": "vein-middle_oreRest",
+          "oreRestPosition": [
+            -8.6,
+            3.7,
+            -25.15
+          ],
+          "factorId": "ROC20_RANK"
+        },
+        "vein-upper": {
+          "root": "vein-upper",
+          "placement": [
+            1.5,
+            7.3,
+            -35.45
+          ],
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "states": {
+            "intact": "vein-upper_intact",
+            "cracked": "vein-upper_cracked",
+            "open": "vein-upper_open"
+          },
+          "defaultState": "intact",
+          "impactSocket": "vein-upper_impact",
+          "oreRestSocket": "vein-upper_oreRest",
+          "oreRestPosition": [
+            1.5,
+            6.7,
+            -35.150000000000006
+          ],
+          "factorId": "LOW_STD_20"
+        }
+      }
+    },
+    "toolSocketAxes": {
+      "Y": "along handle toward head",
+      "X": "pick tip / scan direction",
+      "Z": "right"
+    },
+    "pickaxeGripContract": {
+      "rightToHeadM": [
+        0.55,
+        0.65
+      ],
+      "leftAboveRightM": [
+        0.14,
+        0.2
+      ]
+    },
+    "socketNamesReason": "independent prop GLBs preserve exact grip_R/L names without loader renaming duplicate nodes"
+  },
+  "staticGeometry": {
+    "triangles": 23273,
+    "meshBatches": 6,
+    "bytes": 740792,
+    "sha256": "5d7c1a1a7875f3dd03a6d46261156b42c577bcb648287bf5362eabe64183eb90"
+  }
+}
