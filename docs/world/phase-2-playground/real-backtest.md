@@ -1,5 +1,15 @@
 # 因子矿石怎样落到真实回测
 
+## 2026-10-25：沿用现有 Alpha Agent 服务
+
+Bobby 已明确，数据与结果来源就是 `https://alpha.bobbyzhong.com` 及它关联的既有数据源。后续接入沿用这套项目、后端与数据链路，不再让用户重新寻找或选择行情源。
+
+主线已核对当前实现：矿区的三种历史回放使用同一 Alpha Agent 仓库的 `alpha_agent/data/factor_universe_sp500_v3.parquet`，只读取 `date`、`ticker`、`close`，并调用原有 `factor_engine/kernel.py`。仓库的 `scripts/fetch_sp500_alpaca.py` 将 Alpaca 历史行情写入这个面板；面板里的其他元数据没有进入矿区回放。因此已有数据源并未缺失，当前离线重放也不是另建的一套行情系统。
+
+当日主线对前端主页、前端 `/api/_health` 和 `https://alpha-api.bobbyzhong.com/api/_health` 的只读请求均返回 HTTP 402、`DEPLOYMENT_DISABLED`。这是本次实测的线上服务状态，不推断具体账单原因。4341 的本地历史回放保持可用；线上恢复后优先复用现有后端的受限结果接口。当前尚未声称已接通线上 API，也不因确认服务地址而把原始面板或凭据打包到前端。
+
+以下内容保留设计阶段的计算口径和接口边界；其中“需要准备数据源”的表述不能覆盖上面的已确认来源。
+
 这是第一轮接入边界及后续修订，不是已完成的 API 设计。当前产品范围见 [PRD](PRD-alpha-factor-mine.md)，协作见 [开发计划](development-plan.md)。主线已读代码审计并选定三白名单，在 `4341` 先做本地真实历史重放；数据、结果和 manifest 留在 gitignored 本地，公开展示权待确认，本地体验开发继续。
 
 本设计线没有访问真实行情、启动计算或验证外部服务。早期玩法画面保留在 [讨论稿](README.md)。
