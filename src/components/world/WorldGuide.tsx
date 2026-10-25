@@ -143,6 +143,7 @@ function mergeGuideMaterials(scene: Object3D) {
   mesh.name = 'G24_cloth'; mesh.bind(cloth[0].skeleton, cloth[0].bindMatrix);
   cloth[0].parent!.add(mesh);
   for (const m of cloth) m.removeFromParent();
+  return () => { merged.dispose(); mat.dispose(); };
 }
 
 function guideFeet(scene: Object3D) {
@@ -160,7 +161,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
   const stop = useRef<GuideStopStep | null>(null);
   const rig = useMemo(() => {
     const scene = clone(gltf.scene);
-    mergeGuideMaterials(scene);
+    const disposeMerged = mergeGuideMaterials(scene);
     scene.traverse(o => { if (o instanceof Mesh) { o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; } });
     const soles: { mesh: SkinnedMesh; indices: number[]; sides: ('left' | 'right')[] }[] = [];
     scene.traverse(o => {
@@ -249,7 +250,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       b.userData.leanAxis = new Vector3(1, 0, 0).applyQuaternion(scene.getWorldQuaternion(new Quaternion())).applyQuaternion(inv).normalize();
       spineBones.push(b);
     } });
-    return { scene, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4), design, contact, slope:new GuideSlopeFit(scene), spineBones, inert:new GuideInertializer(scene), extras, yawCurve,
+    return { scene, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4), design, contact, slope:new GuideSlopeFit(scene), spineBones, inert:new GuideInertializer(scene), extras, yawCurve, disposeMerged,
       materials: (() => { const m: MeshStandardMaterial[] = []; scene.traverse(o => { if (o instanceof Mesh) for (const x of [o.material].flat()) if (!m.includes(x as MeshStandardMaterial)) m.push(x as MeshStandardMaterial); }); return m; })(),
       rootOff: new Vector3(), rootOffVel: new Vector3(), rootOffFrom: new Vector3(), lastWorld: new Vector3(), baseWorld: new Vector3(), vehOff: new Vector3(),
       solePoint:new Vector3(), rootPoint:new Vector3(), recPoint:new Vector3(), inverseRoot:new Matrix4(), motionPoint:new Vector3(), previousMotionPoint:new Vector3(), hasMotionSample:false };
@@ -257,7 +258,12 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
   const state = useRef({ current: 'Idle', speed: 0, grounded: initialGrounded, visible, airSeconds: 0, landing: 0, time: 0,
     pending: '', pendingTime: 0, phaseGateTimeouts: 0, jumpSeq: -1, jumpKind: '' as '' | 'Jump' | 'RunJump', takeoffSpeed: 0,
     vy: 0, vyPeak: 0, fallSpeed: 0, airPhase: 0, blocked: 0, sat: false, seatReady: false, seatWait: 0, turn: null as null | { clip: string; from: number; to: number; t: number }, idleT: 0, idleNext: IDLE_VARY[0] + Math.random() * (IDLE_VARY[1] - IDLE_VARY[0]), shownYaw: 0, sitFromYaw: 0, yawInit: false, fade: 1, sitDrop: 0, groundY: NaN, prevSeated: false, seatChangeT: 9, lastSeat: null as null | { position: [number, number, number]; yaw: number }, hasLast: false, lean: 0, pitch: 0, prevFacing: 0, prevSpeed: 0, faded: 1, vehPhase: '', lastLand: '', landSpeed: 0, landT: 0, rateOut: 0, slopeOn: false });
-  useEffect(() => () => { rig.mixer.stopAllAction(); rig.mixer.uncacheRoot(rig.scene); }, [rig]);
+  useEffect(() => () => {
+    rig.mixer.stopAllAction(); rig.mixer.uncacheRoot(rig.scene); rig.disposeMerged?.();
+    const skeletons = new Set<SkinnedMesh['skeleton']>();
+    rig.scene.traverse(o => { if (o instanceof SkinnedMesh) skeletons.add(o.skeleton); });
+    skeletons.forEach(skeleton => skeleton.dispose());
+  }, [rig]);
   useEffect(() => {
     // Fable's 2026-10-22 acceptance permits this visual stop step in normal play.
     if (!group.current) return;
@@ -308,7 +314,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         }
       });
       return { loaded: true, moving: s.speed > .12, running: s.current === 'Run' || s.current === 'Sprint', airborne: !s.grounded,
-        jumpKind: s.jumpKind, vault: !!observedMotion?.vault, vehicle: observedMotion?.vehicle ?? null, airPhase: +s.airPhase.toFixed(3), lastLanding: s.lastLand, playbackRate: +s.rateOut.toFixed(3),
+        jumpKind: s.jumpKind, vault: !!observedMotion?.vault, movementLocked: !!(observedMotion?.seat || s.sat || observedMotion?.vehicle), vehicle: observedMotion?.vehicle ?? null, airPhase: +s.airPhase.toFixed(3), lastLanding: s.lastLand, playbackRate: +s.rateOut.toFixed(3),
         designSpeedMps: rig.design, slope: rig.slope.debug(), slopeOn: s.slopeOn,
         animation: s.current, animationTime: rig.actions[s.current].time, animationTimeScale: rig.actions[s.current].getEffectiveTimeScale(),
         mixerTime: rig.mixer.time, speedMps: s.speed, visible: s.visible, phaseGateTimeouts:s.phaseGateTimeouts,
@@ -511,6 +517,8 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     rig.vehOff.set(0, 0, 0);
     if (vt && group.current?.parent) {
       s.sat = false;
+      // A door transfer is not an airborne continuation of the preceding jump/vault.
+      s.jumpKind = ''; s.airSeconds = 0; s.landing = 0; s.fallSpeed = 0; s.lastLand = '';
       // Enter and exit use different door frames, separated by a hidden driving state. An outgoing
       // walk velocity is not a valid extrapolation for the next door's first pose (whose fade starts at 0).
       if (s.vehPhase !== vt.phase) rig.inert.reset();

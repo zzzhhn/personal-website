@@ -202,7 +202,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
 /** Guide-only door transfer. Physics advances elapsed, so pause freezes the interaction too.
  * 'door' is the car's door anchor at entry/exit (car body + side offset). */
 type GuideVehicleTransition = { phase: 'enter'|'exit'; elapsed: number; door: [number,number,number] } | null;
-function GuideVisual({ body, grounded, yaw, targetSpeed, intent, jumpSeq, visible, transition, supportDecision, movementLock, vault }: { body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; targetSpeed: RefObject<number>; intent: RefObject<'idle'|'walk'|'run'>; jumpSeq: RefObject<number>; visible: boolean; transition: RefObject<GuideVehicleTransition>; supportDecision: RefObject<Record<string, unknown> | null>; movementLock: RefObject<boolean>; vault: RefObject<ReturnType<typeof findLowVault> & { remaining: number } | null> }) {
+function GuideVisual({ body, grounded, yaw, targetSpeed, intent, jumpSeq, visible, transition, supportDecision, movementLock, vault, resetId }: { body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; targetSpeed: RefObject<number>; intent: RefObject<'idle'|'walk'|'run'>; jumpSeq: RefObject<number>; visible: boolean; transition: RefObject<GuideVehicleTransition>; supportDecision: RefObject<Record<string, unknown> | null>; movementLock: RefObject<boolean>; vault: RefObject<ReturnType<typeof findLowVault> & { remaining: number } | null>; resetId: number }) {
   const {world,rapier}=useRapier();
   const supportQA = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && new URLSearchParams(window.location.search).get('qaPhysicsSupport') === '1';
   const probeGround=(x:number,z:number,fromY:number)=>{
@@ -248,7 +248,7 @@ function GuideVisual({ body, grounded, yaw, targetSpeed, intent, jumpSeq, visibl
     if(tr){const t=tr.elapsed/VEHICLE_TRANSITION_S;if(t<1)vehicle={phase:tr.phase,t:Math.max(0,t),door:tr.door};}
     return {seat:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:!!st.activeVehicle&&!vehicle};
   };
-  return <WorldGuide speedMps={0} grounded facing={0} visible={visible} readMotion={readMotion} onMovementLock={locked=>{movementLock.current=locked;}} />;
+  return <WorldGuide key={resetId} speedMps={0} grounded facing={0} visible={visible} readMotion={readMotion} onMovementLock={locked=>{movementLock.current=locked;}} />;
 }
 
 export default function WorldActors() {
@@ -274,6 +274,7 @@ export default function WorldActors() {
   const vault=useRef<(NonNullable<ReturnType<typeof findLowVault>> & { remaining: number }) | null>(null);
   const guideTransition=useRef<GuideVehicleTransition>(null);
   const pendingVehicleExit=useRef(false);
+  const [guideResetId,setGuideResetId]=useState(0);
   const physicsSteps = useRef(0);
   const wetPlayer = useRef(0);
   const lastRecover = useRef(useWorldStore.getState().recoverRequest);
@@ -302,6 +303,21 @@ export default function WorldActors() {
   }
 
   function clearInput() { keys.current.clear(); actions.current={interact:false,jump:false,recover:false}; debugDrive.current=null; moveIntent.current='idle'; guideTargetSpeed.current=0; moveInput.current=[0,0]; cars.current.forEach(c=>{c.steerInput=0;c.throttleInput=0;}); }
+  function clearPlayerMotion(hardCut=false) {
+    vault.current=null;guideMovementLock.current=false;turnBeforeMove.current=false;
+    if(!hardCut)return;
+    guideTransition.current=null;pendingVehicleExit.current=false;
+    seatHeld.current=null;seatFrom.current=null;seatBody.current=null;
+    useWorldStore.setState({seat:null});
+    // Recovery is a cut: rebuild only the guide state from the cached GLTF, so old Sit/Air
+    // phases, root offsets and IK anchors cannot re-arm the movement lock at the new position.
+    setGuideResetId(id=>id+1);
+  }
+  function relocatePlayer(position:Vec3) {
+    if(!player.current)return;
+    clearPlayerMotion(true);clearInput();grounded.current=false;
+    player.current.setEnabled(true);resetBody(player.current,position);wetPlayer.current=0;
+  }
   function resetBody(body: RapierRigidBody, position: Vec3, yaw=0) {
     body.setTranslation(asVector(position),true); body.setRotation(yawRotation(yaw),true);
     body.setLinvel({x:0,y:0,z:0},true); body.setAngvel({x:0,y:0,z:0},true);
@@ -309,7 +325,8 @@ export default function WorldActors() {
   }
   function enter(id: VehicleId) {
     const car = cars.current.get(id);
-    if (!car || !player.current || useWorldStore.getState().activeVehicle || guideTransition.current) return false;
+    if (!car || !player.current || useWorldStore.getState().activeVehicle || useWorldStore.getState().seat || guideTransition.current) return false;
+    clearPlayerMotion();pendingVehicleExit.current=false;
     {
       // guide step-in: door anchor = the car side nearer the player, 0.6 m out from the body centre line
       const c=car.body.translation(),r=car.body.rotation(),p=player.current.translation();
@@ -347,7 +364,7 @@ export default function WorldActors() {
       // guide step-out starts at the door edge (car centre + side offset toward the exit spot) and walks to the spot
       {const toC=[center.x-candidate.x,center.z-candidate.z],d=Math.hypot(toC[0],toC[1])||1,k=Math.max(0,d-car.spec.size[2]/2-.25)/d;
         guideTransition.current={phase:'exit',elapsed:0,door:[candidate.x+toC[0]*k,candidate.y-PLAYER_CENTER_HEIGHT,candidate.z+toC[1]*k]};}
-      resetBody(player.current,asTuple(candidate)); player.current.setEnabled(true);
+      clearPlayerMotion();resetBody(player.current,asTuple(candidate)); player.current.setEnabled(true);
       clearInput(); wetPlayer.current=0;
       useWorldStore.setState({activeVehicle:null,canRecover:false,speed:0}); return true;
     }
@@ -359,7 +376,7 @@ export default function WorldActors() {
     if (!car || car.flipped<RECOVERY_SECONDS) return false;
     const p=car.body.translation();
     resetBody(car.body,[p.x,p.y+wheelGeometry(car.spec.size).height*.8,p.z],heading(car.body.rotation()));
-    car.flipped=0; car.wet=0; clearInput(); useWorldStore.setState({canRecover:false,speed:0}); return true;
+    car.flipped=0; car.wet=0; clearPlayerMotion(true);clearInput(); useWorldStore.setState({canRecover:false,speed:0}); return true;
   }
 
   /** Surface metadata (terrain, road, slab) on the collider's object chain or its body. */
@@ -567,12 +584,12 @@ export default function WorldActors() {
         // this fixture API intentionally exposes no guessed normal.
         return {hit:!!hit,toi:hit?.time_of_impact??1,other:hit?identifyCollider(hit.collider):null,normal:null};
       },
-      teleportPlayer:(p)=>{if(!player.current)return false;if(useWorldStore.getState().activeVehicle)useWorldStore.setState({activeVehicle:null,canRecover:false});player.current.setEnabled(true);resetBody(player.current,p);wetPlayer.current=0;clearInput();return true;},
-      teleportVehicle:(id,p,yaw=0)=>{const car=cars.current.get(id);if(!car)return false;resetBody(car.body,p,yaw);car.wet=0;car.flipped=0;return true;},
+      teleportPlayer:(p)=>{if(!player.current)return false;if(useWorldStore.getState().activeVehicle)useWorldStore.setState({activeVehicle:null,canRecover:false});relocatePlayer(p);return true;},
+      teleportVehicle:(id,p,yaw=0)=>{const car=cars.current.get(id);if(!car)return false;if(useWorldStore.getState().activeVehicle===id)clearPlayerMotion(true);resetBody(car.body,p,yaw);car.wet=0;car.flipped=0;return true;},
       enter,exit,clearInput,recover,
       drive:(input,seconds=1)=>{debugDrive.current={input,remaining:seconds};},
       flip:(id=useWorldStore.getState().activeVehicle ?? 'offroad')=>{const car=cars.current.get(id);if(!car)return false;const q=new Quaternion().setFromEuler(new Euler(Math.PI,heading(car.body.rotation()),0,'YXZ'));car.body.setRotation(q,true);car.body.setTranslation({...car.body.translation(),y:car.body.translation().y+1},true);car.body.setLinvel({x:0,y:0,z:0},true);car.body.setAngvel({x:0,y:0,z:0},true);car.flipped=0;return true;},
-      water:(id)=>{if(id || useWorldStore.getState().activeVehicle){const car=cars.current.get(id ?? useWorldStore.getState().activeVehicle!);if(!car)return false;resetBody(car.body,[110,WATER_Y-1,85]);car.wet=0;return true;}if(!player.current)return false;resetBody(player.current,[110,WATER_Y-1,85]);wetPlayer.current=0;return true;},
+      water:(id)=>{if(id || useWorldStore.getState().activeVehicle){const car=cars.current.get(id ?? useWorldStore.getState().activeVehicle!);if(!car)return false;if(useWorldStore.getState().activeVehicle===car.spec.id)clearPlayerMotion(true);resetBody(car.body,[110,WATER_Y-1,85]);car.wet=0;return true;}if(!player.current)return false;relocatePlayer([110,WATER_Y-1,85]);return true;},
     };
     debugTarget=api;
     return ()=>{
@@ -701,7 +718,7 @@ export default function WorldActors() {
       // be returned to dry land after RECOVERY_SECONDS. Driving through shallow surf stays possible.
       const p=car.body.translation(),floor=p.y+rotateVector([0,-car.spec.size[1]*.29,0],car.body.rotation())[1];
       car.wet=advanceTimer(car.wet,p.y<WATER_Y||floor<WATER_Y-.05,dt);
-      if(car.wet>=RECOVERY_SECONDS || p.y< -80){const dry=nearestDryPoint(p.x,p.z),road=dry??nearestRoadPoint(asTuple(p));resetBody(car.body,[road[0],road[1]+wheelGeometry(car.spec.size).height+.2,road[2]],heading(car.body.rotation()));car.wet=0;car.flipped=0;}
+      if(car.wet>=RECOVERY_SECONDS || p.y< -80){const dry=nearestDryPoint(p.x,p.z),road=dry??nearestRoadPoint(asTuple(p));if(useWorldStore.getState().activeVehicle===car.spec.id)clearPlayerMotion(true);resetBody(car.body,[road[0],road[1]+wheelGeometry(car.spec.size).height+.2,road[2]],heading(car.body.rotation()));car.wet=0;car.flipped=0;}
     });
     if(!active){
       const p=player.current.translation(),velocity=player.current.linvel();
@@ -809,7 +826,7 @@ export default function WorldActors() {
         grounded.current=false;jumpSeq.current++;
       }
       wetPlayer.current=advanceTimer(wetPlayer.current,p.y<WATER_Y,dt);
-      if(wetPlayer.current>=RECOVERY_SECONDS || p.y< -80){const dry=nearestDryPoint(p.x,p.z),road=dry??nearestRoadPoint(asTuple(p));resetBody(player.current,[road[0],road[1]+PLAYER_CENTER_HEIGHT,road[2]]);wetPlayer.current=0;}
+      if(wetPlayer.current>=RECOVERY_SECONDS || p.y< -80){const dry=nearestDryPoint(p.x,p.z),road=dry??nearestRoadPoint(asTuple(p));relocatePlayer([road[0],road[1]+PLAYER_CENTER_HEIGHT,road[2]]);}
     }
     actions.current.jump=false;
     const body=active?.body ?? player.current,p=body.translation(),v=body.linvel();
@@ -952,7 +969,7 @@ export default function WorldActors() {
           Horizontal impulse control handles braking; 10 cm soft CCD predicts landing contact. */}
       <CapsuleCollider name="player-capsule" args={[PLAYER_HALF_HEIGHT,PLAYER_RADIUS]} mass={72} friction={0} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={0}/>
       <group position={[0,-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),0]}>
-        <GuideVisual body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} intent={moveIntent} jumpSeq={jumpSeq} visible={!firstPerson} transition={guideTransition} supportDecision={supportDecision} movementLock={guideMovementLock} vault={vault} />
+        <GuideVisual body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} intent={moveIntent} jumpSeq={jumpSeq} visible={!firstPerson} transition={guideTransition} supportDecision={supportDecision} movementLock={guideMovementLock} vault={vault} resetId={guideResetId} />
       </group>
     </RigidBody>
   </>;
