@@ -1,17 +1,17 @@
 """One bounded native build / fresh GLB QA / local preview job for batch 1.
 Run from this checkout with existing Blender, factory startup and --threads 2.
 """
-import bpy, bmesh, math, json, hashlib, sys
+import bpy, bmesh, math, json, hashlib, sys, struct
 from pathlib import Path
 from mathutils import Vector
 HERE=Path(__file__).resolve().parent
 sys.path.insert(0,str(HERE))
-from layout import OUT, VEINS, POOL, RACK, ore_rest
+from layout import OUT, VEINS, POOL, RACK, LAMPS, ore_rest
 from geometry import build_geometry, write_proxies
 import grain
 
 EVIDENCE=HERE/'evidence';SOURCE=HERE/'batch1.blend';GLB=OUT/'quarry-static.glb'
-PALETTE={'stone':(.94,0),'ground':(.99,0),'wood':(.84,0),'metal':(.67,.35),'canvas':(.96,0),'foliage':(.96,0)}
+PALETTE={'stone':(.94,0),'ground':(.99,0),'wood':(.84,0),'metal':(.67,.35),'canvas':(.96,0),'glow':(.34,0)}
 def v3(p):return (p[0],-p[2],p[1])
 def linear(h):
     cs=[int(h[i:i+2],16)/255 for i in (1,3,5)]
@@ -22,6 +22,8 @@ def material(role):
     m=bpy.data.materials.new('AM_'+role);m.use_nodes=True;bs=m.node_tree.nodes.get('Principled BSDF')
     bs.inputs['Base Color'].default_value=(1,1,1,1);bs.inputs['Roughness'].default_value=PALETTE[role][0];bs.inputs['Metallic'].default_value=PALETTE[role][1]
     vc=m.node_tree.nodes.new('ShaderNodeVertexColor');vc.layer_name='Col';m.node_tree.links.new(vc.outputs['Color'],bs.inputs['Base Color'])
+    if role=='glow':
+        m.node_tree.links.new(vc.outputs['Color'],bs.inputs['Emission Color']);bs.inputs['Emission Strength'].default_value=2.5
     if role in ['stone','ground']:grain.link(m,vc,bs)
     m['materialRole']=role;m.use_backface_culling=True
     if role=='foliage':m.use_backface_culling=False
@@ -36,7 +38,7 @@ def create_source(scene):
             for idx in poly.loop_indices:col.data[idx].color=linear(color)
         ob=bpy.data.objects.new(data.name,me);scene.collection.objects.link(ob);ob.parent=root;ob['materialRole']=data.material;ob['semantic']=data.semantic
         # Applied small chamfers give timber real edge highlights. Collider allowance is explicit.
-        if data.material in ['wood','metal'] or data.name.startswith(('AM04_basin_masonry','AM01_ore_catch')):
+        if (data.material in ['wood','metal'] and data.name!='AM05_iron_nails') or data.name.startswith(('AM04_basin_masonry','AM01_ore_catch')):
             bpy.context.view_layer.objects.active=ob;ob.select_set(True)
             mod=ob.modifiers.new('Authored edge wear','BEVEL');mod.width=.025 if data.material=='stone' else (.012 if data.material=='wood' else .006);mod.segments=2 if data.material=='stone' else 1
             bpy.ops.object.modifier_apply(modifier=mod.name);ob.select_set(False)
@@ -45,7 +47,7 @@ def create_source(scene):
 
 def merge_runtime(source,scene):
     root=bpy.data.objects.new('alpha_mine',None);scene.collection.objects.link(root)
-    root['assetId']='alpha-mine-batch1';root['units']='metres';root['entranceFace']='+Z';root['layout']='layout.json'
+    root['assetId']='alpha-mine-quarry-v2';root['units']='metres';root['entranceFace']='+Z';root['layout']='layout.json'
     for role in PALETTE:
         verts=[];faces=[];colors=[];uvs=[]
         for ob in source.children:
@@ -115,7 +117,7 @@ def render_views(root):
     if eevee and hasattr(eevee,'taa_render_samples'):eevee.taa_render_samples=32
     if eevee and hasattr(eevee,'use_raytracing'):eevee.use_raytracing=True
     if scene.render.engine=='CYCLES':scene.cycles.device='CPU';scene.cycles.samples=16;scene.cycles.use_denoising=False
-    scene.render.resolution_x=1100;scene.render.resolution_y=800;scene.render.resolution_percentage=100
+    scene.render.resolution_x=1000;scene.render.resolution_y=760;scene.render.resolution_percentage=100
     scene.render.image_settings.file_format='PNG';scene.view_settings.view_transform='AgX'
     scene.view_settings.exposure=0;scene.view_settings.gamma=1
     looks={v.identifier for v in scene.view_settings.bl_rna.properties['look'].enum_items}
@@ -141,17 +143,16 @@ def render_views(root):
     water.data.materials.append(wm)
     camd=bpy.data.cameras.new('STUDIO_camera');cam=bpy.data.objects.new('STUDIO_camera',camd);scene.collection.objects.link(cam);scene.camera=cam
     camd.lens=36;camd.clip_end=250
-    views=[('overall',(34,25,28),(0,3,-18)),('entrance',(1.5,1.75,2.2),(0,3.4,-19)),('middle',(-1.8,6.0,-12),(-5.0,4.0,-25.6))]
+    for i,p in enumerate(LAMPS):
+        ld=bpy.data.lights.new('STUDIO_lantern_'+str(i),'POINT');ld.energy=24;ld.color=(1,.58,.23);ld.shadow_soft_size=.24
+        lo=bpy.data.objects.new(ld.name,ld);scene.collection.objects.link(lo);lo.location=v3(p)
+    views=[('entrance-close',(2.5,2.6,-8.5),(-6.2,3.8,-25))]
     outputs=[]
     for name,p,t in views:
         cam.location=v3(p);target=Vector(v3(t));cam.rotation_euler=(target-cam.location).to_track_quat('-Z','Y').to_euler()
         path=EVIDENCE/(name+'.png');scene.render.filepath=str(path)
         bpy.ops.render.render(write_still=True);outputs.append(path.name)
-    clay=bpy.data.materials.new('STUDIO_clay');clay.diffuse_color=(.42,.44,.43,1);clay.use_nodes=True
-    clay.node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value=(.42,.44,.43,1);clay.node_tree.nodes['Principled BSDF'].inputs['Roughness'].default_value=.9
-    water.hide_render=True;scene.view_layers[0].material_override=clay;cam.location=v3(views[0][1]);cam.rotation_euler=(Vector(v3(views[0][2]))-cam.location).to_track_quat('-Z','Y').to_euler()
-    scene.render.filepath=str(EVIDENCE/'overall-clay.png');bpy.ops.render.render(write_still=True);scene.view_layers[0].material_override=None
-    return {'images':outputs+['overall-clay.png'],'renderer':scene.render.engine,'resolution':[1100,800],
+    return {'images':outputs,'renderer':scene.render.engine,'resolution':[1000,760],
             'viewTransform':scene.view_settings.view_transform,'look':scene.view_settings.look,'exposure':0,'gamma':1,'views':views,
             'scope':'fresh exact delivered GLB; studio lights/floor/cameras and basin water are preview only; not game integration or character validation'}
 
@@ -163,8 +164,13 @@ def run():
     author=create_source(author_scene);author_scene.view_layers[0].update();author_stats=inspect(author)
     runtime_scene=bpy.data.scenes.new('AM_Runtime');root=merge_runtime(author,runtime_scene)
     bpy.context.window.scene=runtime_scene;bpy.context.view_layer.update();runtime_stats=inspect(root)
-    if author_stats['problems'] or runtime_stats['problems'] or author_stats['triangles']!=runtime_stats['triangles']:raise RuntimeError('Native or batch parity failure')
+    if author_stats['problems'] or runtime_stats['problems'] or author_stats['triangles']!=runtime_stats['triangles']:
+        (EVIDENCE/'build-failure.json').write_text(json.dumps({'author':author_stats,'runtime':runtime_stats},indent=1))
+        raise RuntimeError('Native or batch parity failure')
     export_opts=export_glb(root)
+    raw=GLB.read_bytes();json_length=struct.unpack_from('<I',raw,12)[0];serialized=json.loads(raw[20:20+json_length])
+    normal_materials={m['name']:m.get('normalTexture') for m in serialized['materials'] if m['name'] in ['AM_stone','AM_ground']}
+    if len(normal_materials)!=2 or not all(normal_materials.values()):raise RuntimeError('Portable grain normal texture missing in GLB')
     bpy.context.window.scene=author_scene;bpy.ops.wm.save_as_mainfile(filepath=str(SOURCE),compress=True)
     bpy.ops.wm.open_mainfile(filepath=str(SOURCE));bpy.context.window.scene=bpy.data.scenes['AM_Runtime'];bpy.context.view_layer.update()
     reopened=inspect(bpy.data.objects['alpha_mine'])
@@ -176,9 +182,11 @@ def run():
         fresh=imported['materials'].get(name)
         if not fresh or any(abs(m[k]-fresh[k])>1e-5 for k in ['roughness','metallic']) or not fresh['vertexColors']:badmat.append(name)
     if badmat:raise RuntimeError('Material persistence failure '+str(badmat))
+    (EVIDENCE/'build-failure.json').unlink(missing_ok=True)
     report={'asset':'alpha-mine-batch1','blenderVersion':bpy.app.version_string,'source':str(SOURCE.relative_to(HERE.parent.parent.parent)),
             'glb':'public/world/alpha-mine/quarry-static.glb','glbSha256':hashlib.sha256(GLB.read_bytes()).hexdigest(),
             'sourceSha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'bytes':GLB.stat().st_size,'exportOptions':export_opts,
+            'portableGrainNormals':normal_materials,
             'editable':author_stats,'runtime':runtime_stats,'reopened':reopened,'freshGLB':imported,'maxBoundsDeltaM':delta,
             'collisionScope':'rock/ground/basin source triangles; explicitly authored timber boxes with <=12mm bevel allowance; continuous plank support sheets',
             'limits':'global seam weld diagnostics may merge intentionally joined timber; see pre-Blender per-component topology and layout support samples; no game/capsule/animation claim'}

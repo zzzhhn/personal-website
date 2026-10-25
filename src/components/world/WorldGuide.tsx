@@ -12,6 +12,8 @@ import { guideSkinEvidence } from './WorldGuideEvidence';
 import { GuideMineLayer } from './WorldGuideMine';
 import { mineVisualSockets, useAlphaMineStore } from './alpha-mine-state';
 import { ALPHA_FACTORS } from './alpha-mine-data';
+import { GuideIdleLayer } from './WorldGuideIdle';
+import { refineGuideBoots } from './WorldGuideShape';
 
 export interface WorldGuideMotion {
   speedMps: number; grounded: boolean; facing: number; targetSpeedMps?: number;
@@ -49,8 +51,6 @@ const SIT_BUTTOCK = .2394;
 const SIT_FORWARD = -.4825; // measured rear hip -0.2525 m, supported 0.23 m toward the seat's front edge
 /** A body yaw change of at least this much from a standstill plays a measured turn-in-place step. */
 const TURN_MIN = .8;
-/** Idle variation: a measured look-around after this many seconds standing (randomised within the range). */
-const IDLE_VARY: [number, number] = [5, 9];
 /** Door approach plus measured cabin transfer, shared with the driving input gate. */
 export const VEHICLE_TRANSITION_S = 1.15;
 /** Horizontal speed at take-off from which the running jump is used (spec 1.4). */
@@ -181,8 +181,10 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
   const group = useRef<Group>(null);
   const stop = useRef<GuideStopStep | null>(null);
   const rig = useMemo(() => {
-    const scene = clone(gltf.scene);
+    const scene = clone(gltf.scene) as Group;
+    const disposeBoots = refineGuideBoots(scene);
     const disposeMerged = mergeGuideMaterials(scene);
+    const visualGLTF = { ...gltf, scene };
     scene.traverse(o => { if (o instanceof Mesh) { o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; } });
     const soles: { mesh: SkinnedMesh; indices: number[]; sides: ('left' | 'right')[] }[] = [];
     scene.traverse(o => {
@@ -223,7 +225,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     // the measured look-around (IdleLook) is a full gesture: loop once and hold nothing
     actions.Idle.play();
     const feet = guideFeet(scene);
-    const probe = clone(gltf.scene), probeFeet = guideFeet(probe), probeMixer = new AnimationMixer(probe);
+    const probe = clone(scene), probeFeet = guideFeet(probe), probeMixer = new AnimationMixer(probe);
     const probeSoles: {mesh:SkinnedMesh; index:number; side:'left'|'right'}[]=[];
     probe.traverse(o=>{if(o instanceof SkinnedMesh){
       const joints=o.geometry.getAttribute('skinIndex'),weights=o.geometry.getAttribute('skinWeight');
@@ -259,7 +261,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       }
     }
     probeMixer.stopAllAction(); probeMixer.uncacheRoot(probe);
-    const phase = GuidePhaseModel.fromGLTF(gltf, { authoredSpeed:{ Walk:design.Walk, Run:design.Run, Sprint:design.Sprint }, clips:['Idle', ...GAITS] });
+    const phase = GuidePhaseModel.fromGLTF(visualGLTF, { authoredSpeed:{ Walk:design.Walk, Run:design.Run, Sprint:design.Sprint }, clips:['Idle', ...GAITS] });
     // Bones for the moving-landing compression: pitch about each bone's local axis that maps to the
     // body's lateral axis in the bind pose (no local axis convention assumed).
     const spineBones: Bone[] = [];
@@ -271,17 +273,17 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       b.userData.leanAxis = new Vector3(1, 0, 0).applyQuaternion(scene.getWorldQuaternion(new Quaternion())).applyQuaternion(inv).normalize();
       spineBones.push(b);
     } });
-    return { scene, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4), design, contact, slope:new GuideSlopeFit(scene), spineBones, inert:new GuideInertializer(scene), extras, yawCurve, disposeMerged, mine: new GuideMineLayer(scene),
+    return { scene, visualGLTF, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4), design, contact, slope:new GuideSlopeFit(scene), spineBones, inert:new GuideInertializer(scene), extras, yawCurve, disposeMerged, disposeBoots, idle: new GuideIdleLayer(scene, actions.IdleLook?.getClip().duration), mine: new GuideMineLayer(scene),
       materials: (() => { const m: MeshStandardMaterial[] = []; scene.traverse(o => { if (o instanceof Mesh) for (const x of [o.material].flat()) if (!m.includes(x as MeshStandardMaterial)) m.push(x as MeshStandardMaterial); }); return m; })(),
       rootOff: new Vector3(), rootOffVel: new Vector3(), rootOffFrom: new Vector3(), lastWorld: new Vector3(), baseWorld: new Vector3(), vehOff: new Vector3(),
       solePoint:new Vector3(), rootPoint:new Vector3(), recPoint:new Vector3(), inverseRoot:new Matrix4(), motionPoint:new Vector3(), previousMotionPoint:new Vector3(), hasMotionSample:false };
   }, [gltf]);
   const state = useRef({ current: 'Idle', speed: 0, grounded: initialGrounded, visible, airSeconds: 0, landing: 0, time: 0,
     pending: '', pendingTime: 0, phaseGateTimeouts: 0, jumpSeq: -1, jumpKind: '' as '' | 'Jump' | 'RunJump', takeoffSpeed: 0,
-    vy: 0, vyPeak: 0, fallSpeed: 0, airPhase: 0, blocked: 0, sat: false, seatReady: false, seatWait: 0, turn: null as null | { clip: string; from: number; to: number; t: number }, idleT: 0, idleNext: IDLE_VARY[0] + Math.random() * (IDLE_VARY[1] - IDLE_VARY[0]), shownYaw: 0, sitFromYaw: 0, yawInit: false, fade: 1, sitDrop: 0, groundY: NaN, prevSeated: false, seatChangeT: 9, lastSeat: null as null | { position: [number, number, number]; yaw: number }, hasLast: false, lean: 0, pitch: 0, prevFacing: 0, prevSpeed: 0, faded: 1, vehPhase: '', lastLand: '', landSpeed: 0, landT: 0, rateOut: 0, slopeOn: false });
+    vy: 0, vyPeak: 0, fallSpeed: 0, airPhase: 0, blocked: 0, sat: false, seatReady: false, seatWait: 0, turn: null as null | { clip: string; from: number; to: number; t: number }, shownYaw: 0, sitFromYaw: 0, yawInit: false, fade: 1, sitDrop: 0, groundY: NaN, prevSeated: false, seatChangeT: 9, lastSeat: null as null | { position: [number, number, number]; yaw: number }, hasLast: false, lean: 0, pitch: 0, prevFacing: 0, prevSpeed: 0, faded: 1, vehPhase: '', lastLand: '', landSpeed: 0, landT: 0, rateOut: 0, slopeOn: false });
   useEffect(() => () => {
     rig.mine.dispose(); Object.assign(mineVisualSockets, { valid: false, assetsReady: false, sampledActionKind: null, sampledElapsed: 0 });
-    rig.mixer.stopAllAction(); rig.mixer.uncacheRoot(rig.scene); rig.disposeMerged?.();
+    rig.mixer.stopAllAction(); rig.mixer.uncacheRoot(rig.scene); rig.disposeMerged?.(); rig.disposeBoots();
     const skeletons = new Set<SkinnedMesh['skeleton']>();
     rig.scene.traverse(o => { if (o instanceof SkinnedMesh) skeletons.add(o.skeleton); });
     skeletons.forEach(skeleton => skeleton.dispose());
@@ -289,7 +291,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
   useEffect(() => {
     // Fable's 2026-10-22 acceptance permits this visual stop step in normal play.
     if (!group.current) return;
-    const candidate = new GuideStopStep(rig.scene, gltf, { anchor: group.current });
+    const candidate = new GuideStopStep(rig.scene, rig.visualGLTF, { anchor: group.current });
     stop.current = candidate;
     return () => { candidate.dispose(); if (stop.current === candidate) stop.current = null; };
   }, [rig, gltf]);
@@ -338,7 +340,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       return { loaded: true, moving: s.speed > .12, running: s.current === 'Run' || s.current === 'Sprint', airborne: !s.grounded,
         jumpKind: s.jumpKind, vault: !!observedMotion?.vault, movementLocked: !!(observedMotion?.seat || s.sat || observedMotion?.vehicle), vehicle: observedMotion?.vehicle ?? null, airPhase: +s.airPhase.toFixed(3), lastLanding: s.lastLand, playbackRate: +s.rateOut.toFixed(3),
         designSpeedMps: rig.design, slope: rig.slope.debug(), slopeOn: s.slopeOn, mine: { ...rig.mine.sockets },
-        animation: s.current, animationTime: rig.actions[s.current].time, animationTimeScale: rig.actions[s.current].getEffectiveTimeScale(),
+        animation: s.current, idleGesture: rig.idle.gesture, idleWaiting: rig.idle.waiting, animationTime: rig.actions[s.current].time, animationTimeScale: rig.actions[s.current].getEffectiveTimeScale(),
         mixerTime: rig.mixer.time, speedMps: s.speed, visible: s.visible, phaseGateTimeouts:s.phaseGateTimeouts,
         pendingAnimation:s.pending, pendingSeconds:s.pendingTime, stopPrototype:!!stop.current, stop:stop.current?.debug()??null,
         budget:(()=>{let draws=0,tris=0;rig.scene.traverse(o=>{if(o instanceof Mesh&&o.visible){const g=o.geometry,m=o.material;draws+=Array.isArray(m)?m.length:1;tris+=(g.index?g.index.count:g.getAttribute('position').count)/3;}});return{draws,triangles:tris};})(),inert:{switches:rig.inert.switches,lastJump:rig.inert.lastJump,residual:rig.inert.residual()},phasePrototype:!!rig.phase, phasePrediction:rig.gate.last, phaseWaitLimit:rig.phase?rig.gate.maxWait:null,
@@ -359,10 +361,11 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     if (group.current) group.current.visible = shown;
     if (!shown && s.visible) { stop.current?.cancel('hidden'); rig.inert.reset(); s.hasLast = false; }
     if (!shown) onMovementLock?.(false);
-    if (!shown) { rig.mine.hide(); Object.assign(mineVisualSockets, { valid: false, sampledActionKind: null, sampledElapsed: 0 }); }
+    if (!shown) { rig.idle.restore(); rig.idle.reset(); rig.mine.hide(); Object.assign(mineVisualSockets, { valid: false, sampledActionKind: null, sampledElapsed: 0 }); }
     s.visible = shown;
     if (world.paused || world.shot || !shown) return;
     rig.mine.restore();
+    rig.idle.restore();
     const dt = Math.max(1e-6, Math.min(delta, .08));
     const { speedMps, grounded, facing, targetSpeedMps } = motion;
     group.current?.updateWorldMatrix(true, false);
@@ -530,11 +533,13 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         }
         else desired = tr.clip;
       }
-      // idle variation: after 5-9 s of standing still, one measured look-around (100STYLE), then back to Idle
-      if (desired === 'Idle' && s.current === 'Idle') { s.idleT += dt; if (s.idleT > s.idleNext) { desired = 'IdleLook'; s.idleT = 0; s.idleNext = IDLE_VARY[0] + Math.random() * (IDLE_VARY[1] - IDLE_VARY[0]); } }
-      else if (desired === 'Idle' && s.current === 'IdleLook' && !done('IdleLook')) desired = 'IdleLook';
-      else if (desired !== 'Idle') s.idleT = 0;
     }
+    const mineIdle = useAlphaMineStore.getState();
+    const idleEligible = desired === 'Idle' && intent === 'idle' && speedMps < .12 && grounded &&
+      !seat && !s.sat && !approach && !s.turn && !motion.vehicle && !mineIdle.action && !mineIdle.carried && !mineIdle.equipped;
+    const gesture = rig.idle.advance(dt, idleEligible);
+    const idleLook = rig.actions.IdleLook;
+    if (gesture === 'measured' && idleLook && (s.current !== 'IdleLook' || idleLook.time < idleLook.getClip().duration - .015)) desired = 'IdleLook';
     // Door approach -> measured hip flexion into the cabin; reverse for exit. Reuse the CMU sit/get-up
     // clips as a bounded interaction layer, with the existing door anchor as the contact frame.
     const vt = motion.vehicle ?? null;
@@ -679,6 +684,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     rig.inert.capture();
     rig.mixer.update(dt); s.time += dt;
     rig.inert.apply(dt);
+    rig.idle.apply();
     if (group.current) {
       group.current.rotation.y = shownYaw;
       // Seated: the body (group) stands at seat.position (WorldActors). The measured sit puts the buttock

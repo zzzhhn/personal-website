@@ -14,21 +14,21 @@
   "rootMeaning": "entrance lateral centre / lowest walking level / entrance line",
   "integrationPlacement": {
     "origin": [
-      60,
+      -84,
       1.14,
       -55
     ],
     "yaw": 0,
-    "providedBy": "main site audit; foundation/sea mask owned by main"
+    "providedBy": "main site audit; expanded NW mainland owned by main"
   },
   "footprint": {
     "x": [
-      -16,
-      16
+      -24,
+      24
     ],
     "z": [
-      -36,
-      0
+      -52,
+      2
     ]
   },
   "walkingLevels": [
@@ -36,7 +36,7 @@
     3,
     6
   ],
-  "maxRockY": 9,
+  "maxRockY": 12,
   "entrance": {
     "center": [
       0,
@@ -192,6 +192,259 @@
     ],
     "return": "reverse; open forecourt loop around basin"
   },
+  "gallery": {
+    "ramps": [
+      {
+        "id": "gallery-west-entry",
+        "a": [
+          -19,
+          0,
+          -3
+        ],
+        "b": [
+          -19,
+          3,
+          -15
+        ],
+        "deckWidth": 3.0,
+        "clearWidth": 2.8
+      },
+      {
+        "id": "gallery-west-rise",
+        "a": [
+          -19,
+          3,
+          -29
+        ],
+        "b": [
+          -19,
+          6,
+          -41
+        ],
+        "deckWidth": 3.0,
+        "clearWidth": 2.8
+      }
+    ],
+    "bridges": [
+      {
+        "id": "gallery-west-link",
+        "a": [
+          -19,
+          3,
+          -22.3
+        ],
+        "b": [
+          -11.8,
+          3,
+          -22.3
+        ],
+        "deckWidth": 2.6,
+        "clearWidth": 2.4,
+        "railInset": 1.55
+      },
+      {
+        "id": "bridge-north-ravine",
+        "a": [
+          -8.6,
+          6,
+          -43
+        ],
+        "b": [
+          7.5,
+          6,
+          -43
+        ],
+        "deckWidth": 3.0,
+        "clearWidth": 2.8
+      }
+    ],
+    "route": [
+      [
+        -19,
+        0,
+        -3
+      ],
+      [
+        -19,
+        3,
+        -15
+      ],
+      [
+        -19,
+        3,
+        -22.3
+      ],
+      [
+        -19,
+        3,
+        -29
+      ],
+      [
+        -19,
+        6,
+        -41
+      ],
+      [
+        -19,
+        6,
+        -43
+      ],
+      [
+        -8.6,
+        6,
+        -43
+      ],
+      [
+        7.5,
+        6,
+        -43
+      ],
+      [
+        17,
+        6,
+        -43
+      ],
+      [
+        17,
+        6,
+        -37
+      ],
+      [
+        8.8,
+        6,
+        -37
+      ],
+      [
+        8.8,
+        6,
+        -34.1
+      ]
+    ],
+    "tunnel": {
+      "axis": "X",
+      "x": [
+        -17.2,
+        -9.7
+      ],
+      "floorY": 6,
+      "centerZ": -43,
+      "clearWidth": 3.4,
+      "clearHeight": 3.2
+    },
+    "coreConnection": {
+      "id": "gallery-west-link",
+      "a": [
+        -19,
+        3,
+        -22.3
+      ],
+      "b": [
+        -11.8,
+        3,
+        -22.3
+      ],
+      "deckWidth": 2.6,
+      "clearWidth": 2.4,
+      "railInset": 1.55
+    },
+    "rearConnection": [
+      8.8,
+      6,
+      -34.1
+    ]
+  },
+  "lamps": [
+    {
+      "position": [
+        -15.7,
+        2.65,
+        -5
+      ],
+      "color": "#FFC46D",
+      "intensity": 1.5,
+      "distance": 5
+    },
+    {
+      "position": [
+        -20.4,
+        5.65,
+        -18
+      ],
+      "color": "#FFC46D",
+      "intensity": 1.5,
+      "distance": 5
+    },
+    {
+      "position": [
+        9.7,
+        4.9,
+        -23.2
+      ],
+      "color": "#FFC46D",
+      "intensity": 1.5,
+      "distance": 5
+    },
+    {
+      "position": [
+        -19.9,
+        5.4,
+        -26.8
+      ],
+      "color": "#FFC46D",
+      "intensity": 1.5,
+      "distance": 5
+    },
+    {
+      "position": [
+        -17.8,
+        8.25,
+        -44.9
+      ],
+      "color": "#FFC46D",
+      "intensity": 1.5,
+      "distance": 5
+    },
+    {
+      "position": [
+        -11,
+        8.25,
+        -44.9
+      ],
+      "color": "#FFC46D",
+      "intensity": 1.5,
+      "distance": 5
+    },
+    {
+      "position": [
+        6.9,
+        8.3,
+        -44.6
+      ],
+      "color": "#FFC46D",
+      "intensity": 1.5,
+      "distance": 5
+    },
+    {
+      "position": [
+        17.9,
+        8.3,
+        -39.5
+      ],
+      "color": "#FFC46D",
+      "intensity": 1.5,
+      "distance": 5
+    },
+    {
+      "position": [
+        -5.2,
+        2.6,
+        -12.6
+      ],
+      "color": "#FFC46D",
+      "intensity": 1.5,
+      "distance": 5
+    }
+  ],
   "veins": [
     {
       "id": "vein-lower",
@@ -352,7 +605,7 @@
   "socketConvention": "positions are facility-local glTF coordinates, not guessed bounds centres",
   "surfaceContract": "ground y=0; intermediate/top walking planes y=3/6; no below-ground excavation or occupied underground void",
   "placementNote": "root world position set by integration; offset all assets and proxies identically; avoid coplanarity with island ground",
-  "batch1Status": "native, reopened source and fresh GLB exchange passed; visual review pending",
+  "batch1Status": "Native source reopen and exact GLB exchange passed; entrance-close internal preview read back; runtime integration acceptance pending",
   "dynamicAssets": {
     "status": "fixed file/node contract; geometry delivered in batch2",
     "detector": {
@@ -384,8 +637,30 @@
       },
       "scale": 1,
       "approxDiameterM": 0.3,
-      "sharedGeometry": true,
+      "sharedGeometry": false,
       "tintMaterial": "ore_mineral",
+      "variants": {
+        "vein-lower": "ore_reversal",
+        "vein-middle": "ore_momentum",
+        "vein-upper": "ore_lowvol"
+      },
+      "variantSockets": {
+        "ore_reversal": {
+          "grip_R": "ore_reversal_grip_R",
+          "grip_L": "ore_reversal_grip_L",
+          "release": "ore_reversal_release"
+        },
+        "ore_momentum": {
+          "grip_R": "ore_momentum_grip_R",
+          "grip_L": "ore_momentum_grip_L",
+          "release": "ore_momentum_release"
+        },
+        "ore_lowvol": {
+          "grip_R": "ore_lowvol_grip_R",
+          "grip_L": "ore_lowvol_grip_L",
+          "release": "ore_lowvol_release"
+        }
+      },
       "tints": {
         "vein-lower": "#b7864d",
         "vein-middle": "#5c9b91",
@@ -491,11 +766,6 @@
           ],
           "factorId": "LOW_STD_20"
         }
-      },
-      "geometry": {
-        "sha256": "64bddb5b98ca9ead0d44016f48718d1fb9799bc0629c8995d52c7ebb384e8517",
-        "bytes": 82108,
-        "triangles": 3348
       }
     },
     "toolSocketAxes": {
@@ -515,10 +785,1100 @@
     },
     "socketNamesReason": "independent prop GLBs preserve exact grip_R/L names without loader renaming duplicate nodes"
   },
+  "vegetation": [
+    {
+      "position": [
+        20.045,
+        6.015,
+        -47.968
+      ],
+      "scale": 1.1,
+      "yaw": 4.96
+    },
+    {
+      "position": [
+        -12.126,
+        6.015,
+        -47.36
+      ],
+      "scale": 1.174,
+      "yaw": 6.191
+    },
+    {
+      "position": [
+        -21.0,
+        6.015,
+        -47.005
+      ],
+      "scale": 1.137,
+      "yaw": 6.263
+    },
+    {
+      "position": [
+        11.324,
+        6.015,
+        -45.742
+      ],
+      "scale": 1.172,
+      "yaw": 4.345
+    },
+    {
+      "position": [
+        2.287,
+        0.015,
+        -2.496
+      ],
+      "scale": 1.12,
+      "yaw": 2.47
+    },
+    {
+      "position": [
+        -19.636,
+        6.015,
+        -44.743
+      ],
+      "scale": 1.101,
+      "yaw": 2.162
+    },
+    {
+      "position": [
+        6.352,
+        0.015,
+        -6.604
+      ],
+      "scale": 1.245,
+      "yaw": 5.545
+    },
+    {
+      "position": [
+        7.584,
+        6.015,
+        -41.052
+      ],
+      "scale": 1.021,
+      "yaw": 1.134
+    },
+    {
+      "position": [
+        9.262,
+        0.015,
+        -8.759
+      ],
+      "scale": 1.266,
+      "yaw": 2.534
+    },
+    {
+      "position": [
+        -15.355,
+        6.015,
+        -38.088
+      ],
+      "scale": 1.275,
+      "yaw": 5.231
+    },
+    {
+      "position": [
+        2.801,
+        0.015,
+        -10.307
+      ],
+      "scale": 0.96,
+      "yaw": 0.671
+    },
+    {
+      "position": [
+        12.418,
+        0.015,
+        -12.775
+      ],
+      "scale": 0.92,
+      "yaw": 0.248
+    },
+    {
+      "position": [
+        -12.555,
+        6.015,
+        -33.935
+      ],
+      "scale": 0.9,
+      "yaw": 5.013
+    },
+    {
+      "position": [
+        -2.636,
+        0.015,
+        -31.261
+      ],
+      "scale": 0.863,
+      "yaw": 1.84
+    },
+    {
+      "position": [
+        -4.429,
+        0.015,
+        -19.041
+      ],
+      "scale": 1.299,
+      "yaw": 6.181
+    },
+    {
+      "position": [
+        -6.015,
+        3.015,
+        -24.718
+      ],
+      "scale": 1.289,
+      "yaw": 2.431
+    },
+    {
+      "position": [
+        -2.453,
+        0.015,
+        -19.986
+      ],
+      "scale": 0.744,
+      "yaw": 6.282
+    },
+    {
+      "position": [
+        -0.64,
+        0.015,
+        -30.336
+      ],
+      "scale": 1.246,
+      "yaw": 1.103
+    },
+    {
+      "position": [
+        -20.78,
+        3.015,
+        -16.297
+      ],
+      "scale": 1.233,
+      "yaw": 3.683
+    },
+    {
+      "position": [
+        10.716,
+        0.015,
+        -13.642
+      ],
+      "scale": 1.206,
+      "yaw": 0.696
+    },
+    {
+      "position": [
+        4.773,
+        0.015,
+        -11.121
+      ],
+      "scale": 1.174,
+      "yaw": 0.232
+    },
+    {
+      "position": [
+        -16.723,
+        6.015,
+        -37.284
+      ],
+      "scale": 0.701,
+      "yaw": 5.796
+    },
+    {
+      "position": [
+        7.41,
+        0.015,
+        -9.532
+      ],
+      "scale": 0.7,
+      "yaw": 1.709
+    },
+    {
+      "position": [
+        8.24,
+        0.015,
+        -7.307
+      ],
+      "scale": 0.703,
+      "yaw": 4.895
+    },
+    {
+      "position": [
+        -20.456,
+        6.015,
+        -44.191
+      ],
+      "scale": 1.042,
+      "yaw": 1.378
+    },
+    {
+      "position": [
+        12.991,
+        6.015,
+        -45.252
+      ],
+      "scale": 0.733,
+      "yaw": 3.5
+    },
+    {
+      "position": [
+        20.662,
+        6.015,
+        -45.737
+      ],
+      "scale": 1.001,
+      "yaw": 4.563
+    },
+    {
+      "position": [
+        -10.408,
+        6.015,
+        -47.0
+      ],
+      "scale": 0.96,
+      "yaw": 6.281
+    },
+    {
+      "position": [
+        19.138,
+        6.015,
+        -47.678
+      ],
+      "scale": 0.78,
+      "yaw": 5.595
+    },
+    {
+      "position": [
+        -5.115,
+        6.015,
+        -47.965
+      ],
+      "scale": 0.92,
+      "yaw": 4.76
+    },
+    {
+      "position": [
+        -1.753,
+        0.015,
+        0.935
+      ],
+      "scale": 0.898,
+      "yaw": 4.095
+    },
+    {
+      "position": [
+        3.679,
+        6.015,
+        -47.422
+      ],
+      "scale": 0.998,
+      "yaw": 5.365
+    },
+    {
+      "position": [
+        -18.962,
+        0.015,
+        -1.114
+      ],
+      "scale": 1.019,
+      "yaw": 2.354
+    },
+    {
+      "position": [
+        5.457,
+        0.015,
+        -1.512
+      ],
+      "scale": 0.725,
+      "yaw": 3.46
+    },
+    {
+      "position": [
+        -17.171,
+        6.015,
+        -46.276
+      ],
+      "scale": 1.039,
+      "yaw": 2.276
+    },
+    {
+      "position": [
+        -17.977,
+        6.015,
+        -45.829
+      ],
+      "scale": 0.718,
+      "yaw": 1.28
+    },
+    {
+      "position": [
+        6.745,
+        0.015,
+        -2.407
+      ],
+      "scale": 1.06,
+      "yaw": 5.421
+    },
+    {
+      "position": [
+        8.887,
+        0.015,
+        -3.98
+      ],
+      "scale": 1.099,
+      "yaw": 6.137
+    },
+    {
+      "position": [
+        -20.704,
+        3.015,
+        -40.479
+      ],
+      "scale": 0.701,
+      "yaw": 5.14
+    },
+    {
+      "position": [
+        13.552,
+        6.015,
+        -39.004
+      ],
+      "scale": 1.188,
+      "yaw": 6.237
+    },
+    {
+      "position": [
+        20.41,
+        6.015,
+        -38.234
+      ],
+      "scale": 0.706,
+      "yaw": 6.23
+    },
+    {
+      "position": [
+        -4.025,
+        0.015,
+        -12.617
+      ],
+      "scale": 1.232,
+      "yaw": 2.692
+    },
+    {
+      "position": [
+        -6.409,
+        6.015,
+        -31.43
+      ],
+      "scale": 1.266,
+      "yaw": 0.021
+    },
+    {
+      "position": [
+        -4.651,
+        0.015,
+        -18.868
+      ],
+      "scale": 0.766,
+      "yaw": 5.393
+    },
+    {
+      "position": [
+        -9.207,
+        6.015,
+        -28.667
+      ],
+      "scale": 1.282,
+      "yaw": 1.313
+    },
+    {
+      "position": [
+        -20.911,
+        3.015,
+        -22.995
+      ],
+      "scale": 1.299,
+      "yaw": 6.277
+    },
+    {
+      "position": [
+        9.467,
+        0.015,
+        -30.165
+      ],
+      "scale": 0.898,
+      "yaw": 4.134
+    },
+    {
+      "position": [
+        4.37,
+        0.015,
+        -17.376
+      ],
+      "scale": 1.294,
+      "yaw": 1.638
+    },
+    {
+      "position": [
+        4.307,
+        0.015,
+        -11.273
+      ],
+      "scale": 0.998,
+      "yaw": 2.653
+    },
+    {
+      "position": [
+        11.129,
+        0.015,
+        -8.908
+      ],
+      "scale": 1.039,
+      "yaw": 5.621
+    },
+    {
+      "position": [
+        -13.777,
+        6.015,
+        -40.203
+      ],
+      "scale": 1.059,
+      "yaw": 0.026
+    },
+    {
+      "position": [
+        -20.931,
+        0.015,
+        -6.739
+      ],
+      "scale": 1.079,
+      "yaw": 6.03
+    },
+    {
+      "position": [
+        20.8,
+        6.015,
+        -41.601
+      ],
+      "scale": 1.206,
+      "yaw": 0.517
+    },
+    {
+      "position": [
+        17.81,
+        6.015,
+        -46.535
+      ],
+      "scale": 1.102,
+      "yaw": 5.668
+    },
+    {
+      "position": [
+        17.349,
+        6.015,
+        -46.93
+      ],
+      "scale": 1.203,
+      "yaw": 4.861
+    },
+    {
+      "position": [
+        -3.962,
+        6.015,
+        -47.914
+      ],
+      "scale": 1.231,
+      "yaw": 1.673
+    },
+    {
+      "position": [
+        5.394,
+        6.015,
+        -47.483
+      ],
+      "scale": 0.829,
+      "yaw": 2.391
+    },
+    {
+      "position": [
+        -18.995,
+        6.015,
+        -47.141
+      ],
+      "scale": 1.297,
+      "yaw": 1.377
+    },
+    {
+      "position": [
+        3.616,
+        0.015,
+        -1.436
+      ],
+      "scale": 1.294,
+      "yaw": 5.982
+    },
+    {
+      "position": [
+        10.154,
+        6.015,
+        -46.356
+      ],
+      "scale": 0.797,
+      "yaw": 0.109
+    },
+    {
+      "position": [
+        -20.562,
+        6.015,
+        -44.938
+      ],
+      "scale": 0.769,
+      "yaw": 0.956
+    },
+    {
+      "position": [
+        20.56,
+        6.015,
+        -43.248
+      ],
+      "scale": 0.745,
+      "yaw": 4.059
+    },
+    {
+      "position": [
+        -10.15,
+        6.015,
+        -41.309
+      ],
+      "scale": 0.726,
+      "yaw": 6.215
+    },
+    {
+      "position": [
+        -8.505,
+        0.015,
+        -8.48
+      ],
+      "scale": 1.221,
+      "yaw": 0.697
+    },
+    {
+      "position": [
+        -7.139,
+        0.015,
+        -10.81
+      ],
+      "scale": 1.191,
+      "yaw": 3.684
+    },
+    {
+      "position": [
+        -5.053,
+        0.015,
+        -12.46
+      ],
+      "scale": 0.701,
+      "yaw": 5.571
+    },
+    {
+      "position": [
+        -12.025,
+        6.015,
+        -30.688
+      ],
+      "scale": 1.103,
+      "yaw": 2.201
+    },
+    {
+      "position": [
+        12.939,
+        3.015,
+        -18.695
+      ],
+      "scale": 1.083,
+      "yaw": 2.43
+    },
+    {
+      "position": [
+        0.354,
+        0.015,
+        -28.84
+      ],
+      "scale": 0.71,
+      "yaw": 4.383
+    },
+    {
+      "position": [
+        9.837,
+        3.015,
+        -23.403
+      ],
+      "scale": 0.733,
+      "yaw": 0.291
+    },
+    {
+      "position": [
+        -16.177,
+        3.015,
+        -24.353
+      ],
+      "scale": 1.002,
+      "yaw": 0.928
+    },
+    {
+      "position": [
+        5.738,
+        0.015,
+        -26.25
+      ],
+      "scale": 0.754,
+      "yaw": 2.917
+    },
+    {
+      "position": [
+        -16.681,
+        3.015,
+        -29.993
+      ],
+      "scale": 0.921,
+      "yaw": 6.206
+    },
+    {
+      "position": [
+        4.71,
+        0.015,
+        -17.547
+      ],
+      "scale": 0.793,
+      "yaw": 0.003
+    },
+    {
+      "position": [
+        10.772,
+        0.015,
+        -14.841
+      ],
+      "scale": 0.825,
+      "yaw": 1.501
+    },
+    {
+      "position": [
+        -0.705,
+        6.015,
+        -36.983
+      ],
+      "scale": 0.878,
+      "yaw": 0.418
+    },
+    {
+      "position": [
+        -2.517,
+        0.015,
+        -9.049
+      ],
+      "scale": 0.797,
+      "yaw": 6.075
+    },
+    {
+      "position": [
+        15.148,
+        6.015,
+        -39.329
+      ],
+      "scale": 0.917,
+      "yaw": 0.453
+    },
+    {
+      "position": [
+        19.53,
+        6.015,
+        -40.068
+      ],
+      "scale": 0.783,
+      "yaw": 1.186
+    },
+    {
+      "position": [
+        -9.522,
+        0.015,
+        -7.571
+      ],
+      "scale": 0.936,
+      "yaw": 4.632
+    },
+    {
+      "position": [
+        -6.077,
+        0.015,
+        -5.535
+      ],
+      "scale": 0.977,
+      "yaw": 1.443
+    },
+    {
+      "position": [
+        19.505,
+        6.015,
+        -45.56
+      ],
+      "scale": 0.718,
+      "yaw": 4.959
+    },
+    {
+      "position": [
+        -11.077,
+        6.015,
+        -46.458
+      ],
+      "scale": 1.078,
+      "yaw": 2.849
+    },
+    {
+      "position": [
+        20.913,
+        6.015,
+        -47.562
+      ],
+      "scale": 1.117,
+      "yaw": 0.263
+    },
+    {
+      "position": [
+        12.364,
+        6.015,
+        -47.862
+      ],
+      "scale": 0.701,
+      "yaw": 0.005
+    },
+    {
+      "position": [
+        -13.549,
+        6.015,
+        -47.543
+      ],
+      "scale": 1.282,
+      "yaw": 0.142
+    },
+    {
+      "position": [
+        12.894,
+        6.015,
+        -47.207
+      ],
+      "scale": 0.779,
+      "yaw": 0.004
+    },
+    {
+      "position": [
+        -1.407,
+        6.015,
+        -46.434
+      ],
+      "scale": 1.293,
+      "yaw": 0.872
+    },
+    {
+      "position": [
+        15.65,
+        6.015,
+        -45.034
+      ],
+      "scale": 1.299,
+      "yaw": 3.944
+    },
+    {
+      "position": [
+        19.197,
+        6.015,
+        -44.505
+      ],
+      "scale": 0.842,
+      "yaw": 4.95
+    },
+    {
+      "position": [
+        -6.749,
+        0.015,
+        -5.572
+      ],
+      "scale": 1.298,
+      "yaw": 0.127
+    },
+    {
+      "position": [
+        19.82,
+        6.015,
+        -38.523
+      ],
+      "scale": 0.956,
+      "yaw": 1.195
+    },
+    {
+      "position": [
+        -1.873,
+        0.015,
+        -10.66
+      ],
+      "scale": 0.977,
+      "yaw": 6.071
+    },
+    {
+      "position": [
+        -11.679,
+        6.015,
+        -36.936
+      ],
+      "scale": 1.268,
+      "yaw": 0.058
+    },
+    {
+      "position": [
+        1.757,
+        0.015,
+        -14.892
+      ],
+      "scale": 1.235,
+      "yaw": 3.656
+    },
+    {
+      "position": [
+        3.561,
+        0.015,
+        -30.858
+      ],
+      "scale": 1.078,
+      "yaw": 5.221
+    },
+    {
+      "position": [
+        8.561,
+        0.015,
+        -29.014
+      ],
+      "scale": 1.192,
+      "yaw": 6.254
+    },
+    {
+      "position": [
+        -17.096,
+        3.015,
+        -28.08
+      ],
+      "scale": 1.117,
+      "yaw": 6.209
+    },
+    {
+      "position": [
+        7.082,
+        0.015,
+        -26.195
+      ],
+      "scale": 1.158,
+      "yaw": 5.024
+    },
+    {
+      "position": [
+        -16.947,
+        3.015,
+        -23.227
+      ],
+      "scale": 1.141,
+      "yaw": 2.798
+    },
+    {
+      "position": [
+        8.777,
+        0.015,
+        -24.176
+      ],
+      "scale": 1.17,
+      "yaw": 3.905
+    },
+    {
+      "position": [
+        -15.731,
+        3.015,
+        -22.4
+      ],
+      "scale": 1.187,
+      "yaw": 0.936
+    },
+    {
+      "position": [
+        3.328,
+        0.015,
+        -26.074
+      ],
+      "scale": 1.103,
+      "yaw": 5.708
+    },
+    {
+      "position": [
+        1.523,
+        0.015,
+        -19.573
+      ],
+      "scale": 1.217,
+      "yaw": 0.116
+    },
+    {
+      "position": [
+        -11.479,
+        6.015,
+        -32.549
+      ],
+      "scale": 1.255,
+      "yaw": 2.212
+    },
+    {
+      "position": [
+        -2.107,
+        0.015,
+        -15.006
+      ],
+      "scale": 1.003,
+      "yaw": 4.587
+    },
+    {
+      "position": [
+        -8.236,
+        6.015,
+        -36.831
+      ],
+      "scale": 0.942,
+      "yaw": 0.393
+    },
+    {
+      "position": [
+        -6.525,
+        0.015,
+        -9.191
+      ],
+      "scale": 1.293,
+      "yaw": 3.696
+    },
+    {
+      "position": [
+        -9.098,
+        0.015,
+        -6.997
+      ],
+      "scale": 1.299,
+      "yaw": 0.704
+    },
+    {
+      "position": [
+        19.311,
+        6.015,
+        -41.348
+      ],
+      "scale": 0.865,
+      "yaw": 5.891
+    },
+    {
+      "position": [
+        -2.981,
+        0.015,
+        -5.654
+      ],
+      "scale": 0.847,
+      "yaw": 0.001
+    },
+    {
+      "position": [
+        -20.949,
+        0.015,
+        -3.295
+      ],
+      "scale": 1.294,
+      "yaw": 2.758
+    },
+    {
+      "position": [
+        12.703,
+        6.015,
+        -44.968
+      ],
+      "scale": 0.798,
+      "yaw": 2.968
+    },
+    {
+      "position": [
+        -13.733,
+        6.015,
+        -45.47
+      ],
+      "scale": 1.29,
+      "yaw": 1.888
+    },
+    {
+      "position": [
+        2.457,
+        6.015,
+        -46.38
+      ],
+      "scale": 0.769,
+      "yaw": 0.313
+    },
+    {
+      "position": [
+        -19.558,
+        0.015,
+        -1.022
+      ],
+      "scale": 0.757,
+      "yaw": 6.272
+    },
+    {
+      "position": [
+        4.252,
+        0.015,
+        -0.664
+      ],
+      "scale": 1.268,
+      "yaw": 5.987
+    },
+    {
+      "position": [
+        -16.373,
+        6.015,
+        -47.502
+      ],
+      "scale": 0.745,
+      "yaw": 0.577
+    },
+    {
+      "position": [
+        -18.66,
+        6.015,
+        -47.809
+      ],
+      "scale": 1.258,
+      "yaw": 1.367
+    }
+  ],
+  "vegetationContract": "facility-local +Y-up reactive grass anchors; no baked foliage in static GLB",
   "staticGeometry": {
-    "triangles": 23273,
+    "triangles": 86663,
     "meshBatches": 6,
-    "bytes": 740792,
-    "sha256": "5d7c1a1a7875f3dd03a6d46261156b42c577bcb648287bf5362eabe64183eb90"
-  }
+    "bytes": 2497584,
+    "sha256": "f9d15c1b3a438345d59a9d1f3d0efa86187df976a70785136c2af83d173bcf17"
+  },
+  "quarryRevision": "v2-natural-fracture",
+  "actualStaticBounds": {
+    "x": [
+      -24.573219299316406,
+      24.61682891845703
+    ],
+    "y": [
+      -0.18000000715255737,
+      11.900016784667969
+    ],
+    "z": [
+      -52.869998931884766,
+      1.7785186767578125
+    ]
+  },
+  "groundEdgeContract": "Irregular clipped forecourt/west access; protected walking planes at local y=0; peripheral soil lip eases down up to 0.13m toward host mainland."
 }

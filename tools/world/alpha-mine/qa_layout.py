@@ -2,10 +2,10 @@
 import json, math
 from collections import Counter
 from pathlib import Path
-from layout import OUT, ROUTE, RAMPS, VEINS, ore_rest
+from layout import OUT, ROUTE, RAMPS, GALLERY_ROUTE, GALLERY_RAMPS, GALLERY_BRIDGES, VEINS, ore_rest
 from geometry import build_geometry, collision_data, triangles, cross, sub
 
-def support_at(surface,x,z):
+def support_at(surface,x,z,expected=None):
     vs=surface['vertices'];hits=[]
     for i in range(0,len(surface['indices']),3):
         p=[vs[3*j:3*j+3] for j in surface['indices'][i:i+3]]
@@ -14,6 +14,7 @@ def support_at(surface,x,z):
         u=((b[2]-c[2])*(x-c[0])+(c[0]-b[0])*(z-c[2]))/den
         v=((c[2]-a[2])*(x-c[0])+(a[0]-c[0])*(z-c[2]))/den
         if min(u,v,1-u-v)>=-1e-7:hits.append(u*a[1]+v*b[1]+(1-u-v)*c[1])
+    if expected is not None:hits=[h for h in hits if h<=expected+.006]
     return max(hits) if hits else None
 
 def run():
@@ -32,12 +33,13 @@ def run():
         rows.append(row)
         if bad or degenerate or (m.semantic not in ['open-walk-surface','open-foliage'] and (open_edges or volume<=0)):problems.append(row)
     probes=[]
-    for index,(a,b) in enumerate(zip(ROUTE,ROUTE[1:])):
+    all_segments=list(zip(ROUTE,ROUTE[1:]))+list(zip(GALLERY_ROUTE,GALLERY_ROUTE[1:]))
+    for index,(a,b) in enumerate(all_segments):
         n=max(1,math.ceil(math.dist(a,b)/.25))
         for j in range(n+1):
-            t=j/n;p=[a[k]+(b[k]-a[k])*t for k in range(3)];actual=support_at(data['surface'],p[0],p[2])
+            t=j/n;p=[a[k]+(b[k]-a[k])*t for k in range(3)];actual=support_at(data['surface'],p[0],p[2],p[1])
             if actual is None or abs(actual-p[1])>.006:probes.append({'segment':index,'point':p,'surfaceY':actual})
-    for ramp in RAMPS:
+    for ramp in RAMPS+GALLERY_RAMPS:
         # Check both edges of the stated 2.4m clear lane, not only its centre.
         a,b=ramp['a'],ramp['b']
         for sign in [-1,1]:

@@ -762,7 +762,7 @@ export const LANDMARKS_V4 = [
 /* ------------------------------------------------------------------ terrain integration (environment session) */
 
 /** Lattice for WorldLandform when v4 is active: covers the new outline + beach + shelf (multiples of 4 cells). */
-export const TERRAIN_GRID_V4 = { minX: -136, minZ: -144, nx: 440, nz: 528 };
+export const TERRAIN_GRID_V4 = { minX: -152, minZ: -160, nx: 472, nz: 560 };
 /** Set to true by the WorldLandform integration patch (it evaluates ridgeHeightV4 itself); until then
  * WorldDistricts draws the ridge as a local terrain patch. Keeping one owner avoids a doubled surface. */
 export const LANDFORM_HAS_RIDGE = true;
@@ -872,7 +872,7 @@ export const NETWORK_WALK_V4: Vec3[] = (() => {
  * the player wades and a car fords, so no recovery is expected there.) */
 export const SHORE_SAMPLES_V4: { id: string; p: P2 }[] = (() => {
   const c: P2 = [-30, -10];
-  return ([['north', [-26, -108]], ['north-west', [-72, -76]], ['west', [-99, 12]], ['south-west', [-85, 66]], ['south', [-38, 86]]] as [string, P2][])
+  return ([['north', [-40, -136]], ['north-west', [-114, -116]], ['west', [-122, -15]], ['south-west', [-85, 66]], ['south', [-38, 86]]] as [string, P2][])
     .map(([id, v]) => ({ id, p: add(v, mul(unit(sub(v, c)), 32)) }));
 })();
 export const heading = (d: P2) => Math.atan2(-d[1], d[0]);

@@ -3,7 +3,8 @@ import { BUILDINGS, CAMP_CENTER, FOUNDATIONS, GROUND_Y, ISLAND_OUTLINE, ROAD_POI
 import { LAYOUT_V4, keepOutV4, nearRidgeV4, ridgeHeightV4, TERRAIN_GRID_V4, townFactorV4 } from './layout-v4';
 import { groundRoadDistance, pavingGround, trailDistance } from './WorldTerrainPaving';
 import { TRAIL_HALF } from './layout-v4';
-import { ALPHA_MINE_BASE_Y, isOnAlphaMineBase } from './alpha-mine-layout';
+import { ALPHA_MINE_BASE_Y, ALPHA_MINE_CONNECTOR, isOnAlphaMineBase } from './alpha-mine-layout';
+import { ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout';
 
 /** quality-v3 landform (spec 2026-10-22 §3, §10.1/10.2). One deterministic height function
  * h(x, z) describes the whole island: flat town top (y=1), irregular sand beaches, the camp
@@ -570,7 +571,8 @@ export function shoreField() {
     let h = nodeHeight[k];
     if (Number.isNaN(h)) h = coastFrame(x, z).d < 0 ? GROUND_Y : -20;
     if (x > 36 && x < 54 && z > -54 && z < -36) h = Math.max(h, GROUND_Y); // park plaza block
-    if (isOnAlphaMineBase(x, z)) h = Math.max(h, ALPHA_MINE_BASE_Y); // independent mine base, not the main island outline
+    const e=ALPHA_EXCHANGE_FOOTPRINT;
+    if (isOnAlphaMineBase(x, z) || (x>=e.minX&&x<=e.maxX&&z>=e.minZ&&z<=e.maxZ)) h = Math.max(h, ALPHA_MINE_BASE_Y);
     land[k] = h > WATER_Y ? 1 : 0; water[k] = 1 - land[k];
   }
   const toLand = distanceTo(land), toWater = distanceTo(water), signed = new Float32Array(W * H);
@@ -719,6 +721,7 @@ const warp = (x: number, z: number, amp: number) => (valueNoise(x / 4, z / 4, 41
 /** Worn foot paths (visual only, no collider change): camp north rim down to the beach, the
  * west flank trail, and a short beach access from the coastal road. Grass never grows on them. */
 export const WORN_PATHS: [number, number][][] = [
+  ALPHA_MINE_CONNECTOR.map(p => [p[0],p[2]]),
   [[-42, 45], [-42.6, 50], [-43.4, 54.5], [-45.5, 59], [-47, 62.5]],
   [[-59, 33], [-64, 33.5], [-69, 34.5], [-74, 35.5], [-79, 35]],
   [[-4.5, 36], [-6, 41.5], [-9.5, 47], [-12, 52]],
@@ -748,6 +751,7 @@ export function groundSample(x: number, z: number, h = terrainHeight(x, z), slop
   return g;
 }
 function groundSampleBase(x: number, z: number, h = terrainHeight(x, z), slopeY = 1): { kind: GroundKind; colour: RGB; grass: number } {
+  if (isOnAlphaMineBase(x,z)) return { kind:'path', colour:lerp3(C.pit,C.earth,valueNoise(x/3,z/3,93)*.3), grass:0 };
   if (LAYOUT_V4 && z < -54 && x < -4 && x > -56) {
     // North hill dirt road (part of the height field): packed earth, two wheel ruts, grassy crown,
     // ragged grass edges.

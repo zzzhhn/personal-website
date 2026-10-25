@@ -12,6 +12,8 @@ export default defineConfig({
   output: "static",
   integrations: [react(), mdx(), sitemap()],
   vite: {
+    // Linked worktrees share dependencies, but must not invalidate one another's optimizer URLs.
+    cacheDir: fileURLToPath(new URL('./.astro/node_modules/.vite', import.meta.url)),
     plugins: [tailwindcss(), alphaReplayPlugin()],
     server: { fs: { allow: [fileURLToPath(new URL(".", import.meta.url)), realpathSync(fileURLToPath(new URL("./node_modules", import.meta.url)))] } },
   },

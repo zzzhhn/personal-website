@@ -2,7 +2,7 @@ import { BufferAttribute, BufferGeometry, CanvasTexture, Color, Matrix4, Mesh, M
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import type { VehicleId } from './types';
-import HULLS from './WorldVehicleHulls.json';
+import HULLS from './WorldVehicleHulls.json' with { type: 'json' };
 
 /** L1 vehicle assets (DESIGN docs/world/vehicles). An id appears here only once its GLB and hull
  * entry exist; others keep the greybox look and legacy colliders. */
@@ -32,13 +32,15 @@ export function bakeNode(node: Object3D): BufferGeometry {
     if (!mesh.isMesh) return;
     const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
     const src = mesh.geometry;
-    const groups = src.groups.length ? src.groups : [{ start: 0, count: src.index ? src.index.count : src.attributes.position.count, materialIndex: 0 }];
+    const groups = Array.isArray(mesh.material) && src.groups.length ? src.groups
+      : [{ start: 0, count: src.index ? src.index.count : src.attributes.position.count, materialIndex: 0 }];
     for (const g of groups) {
       const m = materials[g.materialIndex ?? 0] as MeshStandardMaterial;
       const piece = new BufferGeometry();
       piece.setAttribute('position', src.attributes.position.clone());
       piece.setAttribute('normal', src.attributes.normal.clone());
-      if (src.index) piece.setIndex(Array.from(src.index.array.slice(g.start, g.start + g.count)));
+      piece.setIndex(src.index ? Array.from(src.index.array.slice(g.start, g.start + g.count))
+        : Array.from({ length: g.count }, (_, i) => g.start + i));
       const n = piece.attributes.position.count, c = (m.color ?? new Color(1, 1, 1));
       const color = new Float32Array(n * 3), rm = new Float32Array(n * 2), role = new Float32Array(n);
       const r = ROLE_INDEX[roleOf(m)] ?? 0;
@@ -47,10 +49,11 @@ export function bakeNode(node: Object3D): BufferGeometry {
       piece.setAttribute('aRM', new BufferAttribute(rm, 2));
       piece.setAttribute('aRole', new BufferAttribute(role, 1));
       piece.applyMatrix4(new Matrix4().multiplyMatrices(inv, mesh.matrixWorld));
-      parts.push(src.index ? piece.toNonIndexed() : piece);
+      parts.push(piece.toNonIndexed()); piece.dispose();
     }
   });
   const merged = mergeGeometries(parts, false);
+  parts.forEach(piece => piece.dispose());
   if (!merged) throw new Error(`[world-vehicles] could not merge ${node.name}`);
   merged.computeBoundingSphere();
   return merged;

@@ -3,6 +3,54 @@ import type * as Rapier from '@dimforge/rapier3d-compat';
 import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
 
 type Vector = { x: number; y: number; z: number };
+/** A query-only swept guard. The dynamic body still owns gravity, support, impulses and CCD.
+ * Rapier's slide solver handles corners without widening the player's existing capsule. */
+export function createPlayerClearance(world: World) {
+  // Stay below the dynamic solver's normal contact skin; a larger query offset starts inside
+  // the floor and can incorrectly cancel tangential sliding along a nearby wall.
+  const controller = world.createCharacterController(.001);
+  controller.setSlideEnabled(true);
+  controller.disableAutostep(); controller.disableSnapToGround();
+  controller.setApplyImpulsesToDynamicBodies(false);
+  controller.setMaxSlopeClimbAngle(25 * Math.PI / 180);
+  controller.setMinSlopeSlideAngle(26 * Math.PI / 180);
+  return controller;
+}
+
+export function sweptPlayerVelocity(controller: ReturnType<typeof createPlayerClearance>, body: RigidBody,
+  velocity: Vector, dt: number, excludeSensors: number) {
+  if (dt <= 0 || Math.hypot(velocity.x, velocity.z) < .001) return velocity;
+  controller.computeColliderMovement(body.collider(0), { x: velocity.x * dt, y: velocity.y * dt, z: velocity.z * dt },
+    excludeSensors, undefined, c => {
+      const owner = c.parent();
+      // Loose props keep the dynamic controller's push response; static architecture and cars cannot
+      // be crossed by accelerating into them. No user-data-based ground classification is used.
+      return !owner || !owner.isDynamic() || !!(owner.userData as { vehicle?: string } | undefined)?.vehicle;
+    });
+  let wall = false;
+  for (let i = 0; i < controller.numComputedCollisions(); i++) {
+    const hit = controller.computedCollision(i);
+    if (hit && Math.abs(hit.normal1.y) < .65) { wall = true; break; }
+  }
+  // Ground-only results are deliberately ignored: preserve the existing slope/support servo and
+  // physical launch/landing behavior rather than turning the player into a kinematic controller.
+  if (!wall) return velocity;
+  const allowed = controller.computedMovement();
+  return { x: allowed.x / dt, y: velocity.y, z: allowed.z / dt };
+}
+
+/** Validate the entire standing-capsule route, including head clearance, for door step-outs. */
+export function playerRouteClear(world: World, rapier: Pick<typeof Rapier, 'Capsule'>, body: RigidBody,
+  from: Vector, to: Vector, excludedBody?: RigidBody) {
+  // The resting dynamic body can sit 1–2 mm inside the floor's contact skin. Lift only the
+  // query by 12 mm so horizontal door transfer does not hit that floor at t=0. Full capsule
+  // height/width and every wall/ceiling remain checked, including mixed terrain trimeshes.
+  return !world.castShape({ ...from, y: from.y + .012 }, { x: 0, y: 0, z: 0, w: 1 },
+    { x: to.x - from.x, y: to.y - from.y, z: to.z - from.z },
+    new rapier.Capsule(PLAYER_HALF_HEIGHT, PLAYER_RADIUS), .004, 1, true,
+    undefined, undefined, undefined, body,
+    c => !c.isSensor() && (!excludedBody || c.parent()?.handle !== excludedBody.handle));
+}
 /** Baseline 3cb1f25 response, including its verified 8 m/s² low-speed start. */
 export function playerVelocityChange(velocity: Vector, target: Vector, dt: number, grounded: boolean) {
   const factor = 1 - Math.exp(-(grounded ? 12 : 3) * dt);

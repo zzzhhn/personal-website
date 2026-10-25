@@ -16,7 +16,7 @@ export const ROAD_Y = 1.14;
  * north / west / south growth plus the approved local east easing beside the avenue; the bridge-axis
  * shore crossing stays at x = 29.45 and the bridge, under-bridge water, park and boardwalk are kept. */
 export const OUTLINE_V4: P2[] = [
-  [-99, 30], [-98, -12], [-91, -46], [-72, -76], [-50, -100], [-26, -108], [-2, -102], [16, -86], [27.4, -58],
+  [-122, -15], [-124, -70], [-114, -116], [-80, -136], [-40, -136], [-2, -112], [16, -86], [27.4, -58],
   [29, -46], [31, -30], [33, -8], [34, 12], [32, 30], [25, 52], [8, 72], [-14, 82], [-38, 86], [-64, 80], [-85, 66], [-96, 48],
 ];
 

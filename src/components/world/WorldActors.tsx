@@ -5,6 +5,8 @@ import { CapsuleCollider, ConvexHullCollider, CuboidCollider, CylinderCollider, 
 import { BoxGeometry, Euler, Group, Mesh, MeshStandardMaterial, PerspectiveCamera, Quaternion, Vector3 } from 'three';
 import { CAMP_SPAWN, VEHICLES, WATER_Y, nearestRoadPoint } from './layout';
 import { advanceMineAction, cancelMineAction, mineActor, mineBusy, mineNotice, putDownMineOre, useAlphaMineStore } from './alpha-mine-state';
+import { ALPHA_MINE_ORIGIN } from './alpha-mine-layout';
+import { ALPHA_EXCHANGE_ORIGIN } from './alpha-exchange-layout';
 import { nearestDryPoint } from './WorldLandform';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag.ts';
 import { useWorldStore, type NearbyInteract } from './store';
@@ -13,7 +15,7 @@ import type { Vec3, VehicleId } from './types';
 import WorldGuide, { VEHICLE_TRANSITION_S, worldGuideDebug } from './WorldGuide';
 import WorldVehicleVisual from './WorldVehicleVisual';
 import { playerSupport, followPlayerGround } from './player-ground';
-import { findLowVault, playerVelocityChange } from './player-motion';
+import { createPlayerClearance, findLowVault, playerRouteClear, playerVelocityChange, sweptPlayerVelocity } from './player-motion';
 import { vehicleHulls } from './WorldVehicleAssets';
 import { WorldOcclusion } from './WorldOcclusion';
 import { configureCoupeSuspension, createDrivingState, stepCoupeDrive, type DrivingInput, type DrivingState } from './vehicle-driving';
@@ -288,7 +290,21 @@ export default function WorldActors() {
   const firstPerson = useWorldStore(s=>s.zoom===3);
   const { world, rapier, colliderStates } = useRapier();
   const { camera, scene, gl } = useThree();
-  const arrival = useMemo<Vec3>(()=>new URLSearchParams(window.location.search).get('start')==='alpha'?[60,1.14+PLAYER_CENTER_HEIGHT,-54.5]:CAMP_SPAWN,[]);
+  const clearance = useRef<ReturnType<typeof createPlayerClearance> | null>(null);
+  useEffect(() => {
+    const controller = createPlayerClearance(world); clearance.current = controller;
+    return () => { clearance.current = null; world.removeCharacterController(controller); };
+  }, [world]);
+  const arrival = useMemo<Vec3>(()=>{
+    const start=new URLSearchParams(window.location.search).get('start');
+    if(start==='alpha'||start==='brain')return [ALPHA_MINE_ORIGIN[0],ALPHA_MINE_ORIGIN[1]+PLAYER_CENTER_HEIGHT,ALPHA_MINE_ORIGIN[2]+.5];
+    if(start==='exchange')return [ALPHA_EXCHANGE_ORIGIN[0],ALPHA_EXCHANGE_ORIGIN[1]+PLAYER_CENTER_HEIGHT,ALPHA_EXCHANGE_ORIGIN[2]+.5];
+    if(import.meta.env.DEV&&start==='coupe'){
+      const coupe=VEHICLES.find(v=>v.id==='coupe')!;
+      return [coupe.position[0],coupe.position[1]+PLAYER_CENTER_HEIGHT,coupe.position[2]+2];
+    }
+    return CAMP_SPAWN;
+  },[]);
   const target = useRef(new Vector3(...arrival));
   const cameraReady = useRef(false);
   const impact = useRef(0);
@@ -336,14 +352,16 @@ export default function WorldActors() {
     }
     const car = cars.current.get(id);
     if (!car || !player.current || useWorldStore.getState().activeVehicle || useWorldStore.getState().seat || guideTransition.current) return false;
-    clearPlayerMotion();pendingVehicleExit.current=false;
     {
       // guide step-in: door anchor = the car side nearer the player, 0.6 m out from the body centre line
       const c=car.body.translation(),r=car.body.rotation(),p=player.current.translation();
       const side=rotateVector([0,0,car.spec.size[2]/2+.25],r),toP=[p.x-c.x,p.z-c.z];
       const sg=side[0]*toP[0]+side[2]*toP[1]>=0?1:-1;
-      guideTransition.current={phase:'enter',elapsed:0,door:[c.x+sg*side[0],p.y-PLAYER_CENTER_HEIGHT,c.z+sg*side[2]]};
+      const door={x:c.x+sg*side[0],y:p.y,z:c.z+sg*side[2]};
+      if(!playerRouteClear(world,rapier,player.current,p,door,car.body))return false;
+      guideTransition.current={phase:'enter',elapsed:0,door:[door.x,p.y-PLAYER_CENTER_HEIGHT,door.z]};
     }
+    clearPlayerMotion();pendingVehicleExit.current=false;
     const held=[...keys.current].filter(code=>['KeyW','KeyA','KeyS','KeyD','ShiftLeft','ShiftRight','KeyX','Space'].includes(code));
     clearInput();held.forEach(code=>keys.current.add(code));player.current.setEnabled(false);
     useWorldStore.setState({activeVehicle:id,nearbyVehicle:null,canRecover:false});
@@ -372,9 +390,13 @@ export default function WorldActors() {
       world.intersectionsWithShape(candidate,{x:0,y:0,z:0,w:1},new rapier.Capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS),
         ()=>{blocked=true;return false;},undefined,undefined,undefined,player.current,collider=>!collider.isSensor());
       if (blocked) continue;
-      // guide step-out starts at the door edge (car centre + side offset toward the exit spot) and walks to the spot
-      {const toC=[center.x-candidate.x,center.z-candidate.z],d=Math.hypot(toC[0],toC[1])||1,k=Math.max(0,d-car.spec.size[2]/2-.25)/d;
-        guideTransition.current={phase:'exit',elapsed:0,door:[candidate.x+toC[0]*k,candidate.y-PLAYER_CENTER_HEIGHT,candidate.z+toC[1]*k]};}
+      // Check the door-to-spot corridor as well as its endpoint. The vehicle itself is the transfer
+      // frame; every other solid, including a wall between two free endpoints, blocks that route.
+      const distance=Math.hypot(local[0],local[2])||1;
+      const doorDistance=(offset[0] ? car.spec.size[0]/2 : car.spec.size[2]/2)+.25;
+      const door={x:center.x+local[0]*doorDistance/distance,y:candidate.y,z:center.z+local[2]*doorDistance/distance};
+      if (!playerRouteClear(world,rapier,player.current,door,candidate,car.body)) continue;
+      guideTransition.current={phase:'exit',elapsed:0,door:[door.x,door.y-PLAYER_CENTER_HEIGHT,door.z]};
       clearPlayerMotion();resetBody(player.current,asTuple(candidate)); player.current.setEnabled(true);
       clearInput(); wetPlayer.current=0;
       useWorldStore.setState({activeVehicle:null,canRecover:false,speed:0}); return true;
@@ -865,6 +887,9 @@ export default function WorldActors() {
       const mass=player.current.mass(),change=playerVelocityChange(velocity,{x:vx,y:0,z:vz},dt,grounded.current);
       const dx=change.x,dz=change.z;
       player.current.applyImpulse({x:dx*mass,y:0,z:dz*mass},true);
+      const currentVelocity=player.current.linvel();
+      const safeVelocity=clearance.current?sweptPlayerVelocity(clearance.current,player.current,currentVelocity,dt,rapier.QueryFilterFlags.EXCLUDE_SENSORS):currentVelocity;
+      if(safeVelocity!==currentVelocity)player.current.setLinvel(safeVelocity,true);
       const follow=seat?null:followPlayerGround(world,rapier,player.current,player.current.linvel(),dt,actions.current.jump&&grounded.current);
       if(supportDecision.current)supportDecision.current.follow=follow;
       // Local 12.5 m/s² gravity and 5 m/s launch give an approximately 1 m,

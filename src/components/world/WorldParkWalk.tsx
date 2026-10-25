@@ -8,7 +8,7 @@ import { DECK_Y, HUTS, HUT_FRONT_Z } from './WorldParkLayout';
 import { isWorldRunning } from './WorldWind';
 import { PARK_LAMP } from './WorldParkLamp';
 import type { Vec3 } from './types';
-import { ALPHA_MINE_CONNECTOR, ALPHA_MINE_CONNECTOR_WIDTH } from './alpha-mine-layout';
+import { ALPHA_EXCHANGE_APPROACH, ALPHA_EXCHANGE_APPROACH_WIDTH } from './alpha-exchange-layout';
 
 /**
  * P01 plaza, P02 boardwalk deck + piles, P03 low rails, P04 warm lamp posts: runtime-procedural from
@@ -52,7 +52,7 @@ function openings() {
   const list: { seg: number; side: number; s0: number; s1: number }[] = [];
   const joins = [
     ...HUTS.flatMap(h => h.spur ? [{ to: h.spur.to, width: h.spur.width }] : []),
-    { to: ALPHA_MINE_CONNECTOR[0], width: ALPHA_MINE_CONNECTOR_WIDTH },
+    { to: ALPHA_EXCHANGE_APPROACH[0], width: ALPHA_EXCHANGE_APPROACH_WIDTH },
   ];
   for (const join of joins) {
     const to: P2 = [join.to[0], join.to[2]];

@@ -3,10 +3,11 @@ No Blender import: collision proxies can ship before native modelling/render wor
 """
 import math, json, itertools
 from pathlib import Path
-from layout import XS, ZS, RAMPS, BRIDGE, POOL, RACK, VEINS, OUT, height, write_contract
+from layout import XS, ZS, RAMPS, BRIDGE, ROUTE, GALLERY_RAMPS, GALLERY_BRIDGES, GALLERY_ROUTE, LAMPS, POOL, RACK, VEINS, OUT, height, write_contract
 
 MESHES = {}
 PROXIES = []
+VEGETATION = []
 def sub(a,b): return tuple(x-y for x,y in zip(a,b))
 def cross(a,b): return (a[1]*b[2]-a[2]*b[1], a[2]*b[0]-a[0]*b[2], a[0]*b[1]-a[1]*b[0])
 def unit(v):
@@ -34,10 +35,12 @@ def rock_color(y,seed,x=0,z=0):
     # Broad tilted beds and local fault offsets, not equal-width horizontal stripes.
     section=int((x+17)//6);tilts=[-.13,.18,-.07,.11,-.16,.08]
     layer=y+tilts[section%6]*x+.23*math.sin(z*.28)+[0,.38,-.22,.17,-.34,.1][section%6]
-    q=.5+.5*math.sin(layer*.78);rust=math.exp(-((layer%5.9-2.2)/.43)**2)*.20
-    a=(126,123,111);b=(178,165,143);ochre=(164,128,81)
+    q=.5+.5*math.sin(layer*.78);rust=math.exp(-((layer%5.9-2.2)/.43)**2)*.17
+    a=(155,145,128);b=(181,168,146);ochre=(178,141,96)
     rgb=[(a[k]*(1-q)+b[k]*q)*(1-rust)+ochre[k]*rust for k in range(3)]
-    f=.98+.045*noise(seed)
+    teal=math.exp(-((layer%6.9-4.1)/.24)**2)*.16
+    rgb=[rgb[k]*(1-teal)+(72,112,101)[k]*teal for k in range(3)]
+    f=.95+.09*noise(seed)
     return '#'+''.join(f'{round(max(0,min(255,c*f))):02x}' for c in rgb)
 
 def warp(p):
@@ -45,7 +48,7 @@ def warp(p):
     fade=math.sin(math.pi*y/3)
     dx=.065*fade*math.sin(x*.91+z*.67+y*1.8)
     dz=.065*fade*math.sin(x*.73-z*.81+y*1.4)
-    if abs(x)>=15.99:
+    if abs(x)>=23.99:
         # Large bays and buttresses alter the actual silhouette, not face noise.
         taper=1.3*math.exp(-((z+7)/6.5)**2)
         dx=-math.copysign(.25+taper+.75*math.sin(z*.19+.8)**2,x)
@@ -64,18 +67,128 @@ def warp(p):
     if all(abs(y-level)>.001 for level in [0,3,6]):
         dy=.23*math.sin(x*.61+z*.47)+.11*math.sin(x*1.2-z*.3)
         if y>8.8:dy=-abs(dy)
-    return (x+dx,min(9,y+dy),z+dz)
+    return (x+dx,min(12,y+dy),z+dz)
+
+def rock_protection(x,z):
+    """Keep authored vein faces and walking joins exact while shaping adjacent rock."""
+    near=min(math.hypot(x-v['socket'][0],z-v['socket'][2]) for v in VEINS)
+    lane=.28+.72*max(0,min(1,(route_distance(x,z)-1.35)/.9))
+    return max(0,min(1,(near-1.25)/.75))*lane
+
+def fracture_skin(edge,low,high,n,seed):
+    """A closed attached skin of offset fracture planes, not stacked loose boulders.
+    The back is embedded in the original rock mass; all fronts generate collision.
+    """
+    a,b=edge(low);width=math.dist(a,b);nu=max(1,math.ceil(width/1.40));nv=max(2,math.ceil((high-low)/1.50))
+    m=group('AM01_connected_fracture_skin','stone','closed-fracture-skin');m.lookup={}
+    grids=[]
+    for front in [True,False]:
+        grid=[]
+        for j in range(nv+1):
+            row=[];t=j/nv
+            for i in range(nu+1):
+                s=i/nu;x=a[0]+(b[0]-a[0])*s;z=a[2]+(b[2]-a[2])*s;y=low+(high-low)*t
+                protection=rock_protection(x,z)
+                if front:
+                    # Slanted fracture joints dislocate across adjoining structural bays.
+                    y+=math.sin(math.pi*t)*(.23*math.sin(x*.64+z*.47)+.12*math.sin(x*1.23-z*.58))
+                    if j==nv and (high>6.1 or route_distance(x,z)>2.6):
+                        y+=protection*(.09+.38*noise(x*3.7+z*.4))
+                    d=protection*(.055+.24*math.sin(x*1.2+z*.72+y*.83)**2+.10*abs(math.sin(x*.37-z*.91-y*1.41)))
+                else:d=-.095
+                row.append(add(warp((x,y,z)),mul(n,d)))
+            grid.append(row)
+        grids.append(grid)
+    front,back=grids
+    for j in range(nv):
+        for i in range(nu):
+            ps=[front[j][i],front[j][i+1],front[j+1][i+1],front[j+1][i]]
+            # Offset fracture centres make oblique planes and chipped edges legible.
+            center=tuple(sum(p[k] for p in ps)/4 for k in range(3));protect=rock_protection(center[0],center[2])
+            center=add(center,mul(n,protect*(.035+.13*noise(seed+i*3.1+j*7.7))))
+            for k in range(4):m.face([ps[k],ps[(k+1)%4],center],rock_color(center[1],seed+i*9+j*3+k,center[0],center[2]))
+            m.face([back[j][i],back[j+1][i],back[j+1][i+1],back[j][i+1]],rock_color(center[1],seed,center[0],center[2]))
+    for j in range(nv):
+        for i,reverse in [(0,False),(nu,True)]:
+            ps=[front[j][i],front[j+1][i],back[j+1][i],back[j][i]]
+            m.face(list(reversed(ps)) if reverse else ps,rock_color(low+j,seed))
+    for i in range(nu):
+        m.face([front[0][i],back[0][i],back[0][i+1],front[0][i+1]],rock_color(low,seed))
+        m.face([front[nv][i],front[nv][i+1],back[nv][i+1],back[nv][i]],rock_color(high,seed))
+
+def attached_talus(edge,low,high,n,seed):
+    if high-low<2 or low>6:return
+    a,b=edge(low);length=math.dist(a,b);count=max(1,math.ceil(length/.95))
+    m=group('AM01_attached_talus','stone','closed-talus')
+    for i in range(count):
+        mid=add(a,mul(sub(b,a),(i+.5)/count))
+        if route_distance(mid[0],mid[2])<1.65 or rock_protection(mid[0],mid[2])<.99:continue
+        rings=[]
+        for t in [i/count,(i+1)/count]:
+            p=add(a,mul(sub(b,a),t));p=warp(p)
+            reach=.45+.42*noise(seed+t*13);rise=.24+.45*noise(seed+t*19)
+            rings.append([add(p,mul(n,.02)),add(p,mul(n,reach)),add(add(p,mul(n,.035)),(0,rise,0))])
+        ps=rings[0]+rings[1];center=tuple(sum(p[k] for p in ps)/6 for k in range(3));m.lookup={}
+        for f in [(0,1,2),(3,5,4),(0,3,4,1),(1,4,5,2),(2,5,3,0)]:
+            # Preserve shared-edge winding on warped nonplanar wedge faces.
+            face=[ps[k] for k in f]
+            m.face(face,rock_color(low+.2,seed+i,mid[0],mid[2]))
+
+def ground_field(x,z):
+    # Union of an eroded forecourt, its cliff-bound interior and the west access.
+    fore=(x/14.5)**2+((z+10)/11.6)**2-1+.045*math.sin(x*.9+z*.6)+.025*math.sin(x*2+z)
+    pit=max(abs(x)-13.05,z+17,-z-35)/10
+    west=((x+19)/2.3)**2+((z+6)/7)**2-1
+    near_lower=math.hypot(x-VEINS[0]['stand'][0],z-VEINS[0]['stand'][2])/1.6-1
+    approach=100
+    for a,b in zip(ROUTE,ROUTE[1:]):
+        if a[1]!=0 or b[1]!=0:continue
+        dx=b[0]-a[0];dz=b[2]-a[2];t=max(0,min(1,((x-a[0])*dx+(z-a[2])*dz)/max(dx*dx+dz*dz,1e-8)))
+        approach=min(approach,math.hypot(x-a[0]-t*dx,z-a[2]-t*dz)/1.5-1)
+    return min(fore,pit,west,near_lower,approach)
+
+def eroded_ground(mesh,x0,x1,z0,z1):
+    """Clip sub-triangles to a continuous irregular outline at exactly y=0."""
+    def cuts(lo,hi):return [lo]+[float(k) for k in range(math.floor(lo)+1,math.ceil(hi)) if lo+1e-7<k<hi-1e-7]+[hi]
+    xx=cuts(x0,x1);zz=cuts(z0,z1)
+    for a,b in zip(xx,xx[1:]):
+        for c,d in zip(zz,zz[1:]):
+            for tri in [[(a,0,c),(a,0,d),(b,0,d)],[(a,0,c),(b,0,d),(b,0,c)]]:
+                result=[]
+                for p,q in zip(tri,tri[1:]+tri[:1]):
+                    fp=ground_field(p[0],p[2]);fq=ground_field(q[0],q[2])
+                    if fp<=0:result.append(p)
+                    if (fp<=0)!=(fq<=0):
+                        t=fp/(fp-fq);result.append(tuple(p[k]+(q[k]-p[k])*t for k in range(3)))
+                clean=[]
+                for p in result:
+                    q=tuple(round(k,8) for k in p)
+                    if q not in clean:clean.append(q)
+                result=clean
+                if len(result)>=3:
+                    tapered=[]
+                    for p in result:
+                        f=ground_field(p[0],p[2]);fade=max(0,min(1,(f+.12)/.12))
+                        safe=route_distance(p[0],p[2])>1.8 and math.hypot(p[0]-POOL['center'][0],p[2]-POOL['center'][2])>4
+                        safe=safe and math.hypot(p[0]-RACK['center'][0],p[2]-RACK['center'][2])>2 and rock_protection(p[0],p[2])>.9
+                        tapered.append((p[0],-.13*fade*fade if safe else 0,p[2]))
+                    for j in range(1,len(tapered)-1):
+                        tri=[tapered[0],tapered[j],tapered[j+1]]
+                        if sum(v*v for v in cross(sub(tri[1],tri[0]),sub(tri[2],tri[0])))>1e-15:
+                            mesh.face(tri,['#A08C6F','#A18D70','#A28F72'][int(abs(a*13+c*7))%3])
 
 def geology():
     body=group('AM01_rock_mass','stone','closed-rock');ground=group('AM01_ground','ground','open-walk-surface')
     hs={(i,j): round(height((XS[i]+XS[i+1])/2,(ZS[j]+ZS[j+1])/2)/.75)*.75
         for i in range(len(XS)-1) for j in range(len(ZS)-1)}
-    levels=[0,.4,.75,1.3,1.5,2.1,2.25,3,3.75,4.5,5.25,6,6.75,7.5,8.25,9]
+    levels=[0,.4,.75,1.3,1.5,2.1,2.25,3,3.75,4.5,5.25,6,6.75,7.5,8.25,9,9.75,10.5,11.25,12]
     for (i,j),h in hs.items():
         x0,x1=XS[i:i+2];z0,z1=ZS[j:j+2]
         top=[(x0,h,z0),(x0,h,z1),(x1,h,z1),(x1,h,z0)]
         if h==0:
-            ground.face([warp(p) for p in top], '#A38E6E');continue
+            # Open dirt follows the forecourt and western access, avoiding a square tile
+            # boundary across the host mainland. The island provides surrounding soil.
+            eroded_ground(ground,x0,x1,z0,z1);continue
         body.face([warp(p) for p in top], rock_color(h,i+j,(x0+x1)/2,(z0+z1)/2))
         body.face([warp(p) for p in [(x1,0,z0),(x1,0,z1),(x0,0,z1),(x0,0,z0)]],'#726B5F')
         sides=[((i,j+1),(0,0,1),lambda y:[(x0,y,z1),(x1,y,z1)]),
@@ -85,6 +198,8 @@ def geology():
         for neighbor,n,edge in sides:
             low=hs.get(neighbor,0)
             if low>=h:continue
+            fracture_skin(edge,low,h,n,100+i*37+j*11)
+            attached_talus(edge,low,h,n,100+i*37+j*11)
             cuts=sorted(set([low,h]+[y for y in levels if low<y<h]))
             for k,(lo,hi) in enumerate(zip(cuts,cuts[1:])):
                 a,b=edge(lo);d,c=edge(hi);quad=[warp(p) for p in [a,b,c,d]]
@@ -115,6 +230,8 @@ def walkway(route):
         box(name,p,(route['deckWidth'],.17,length/n-.012),color=['#98764F','#A38158','#8B6A47'][i%3],axes=(side,normal,mul(along,-1)),collider=False)
     for sign in [-1,1]:
         aa=add(a,mul(side,sign*(half-.02)));bb=add(b,mul(side,sign*(half-.02)))
+        inset=route.get('railInset',0)
+        aa=add(aa,mul(along,inset));bb=sub(bb,mul(along,inset))
         for up in [.48,1.02]:beam(name+'_rail',add(aa,(0,up,0)),add(bb,(0,up,0)),.085,color='#806044')
         count=math.ceil(length/2.25)
         for i in range(count+1):
@@ -237,7 +354,7 @@ def rock_hull(name,lo,hi,seed):
 def route_distance(x,z):
     from layout import ROUTE
     best=1e6
-    for a,b in zip(ROUTE,ROUTE[1:]):
+    for a,b in list(zip(ROUTE,ROUTE[1:]))+list(zip(GALLERY_ROUTE,GALLERY_ROUTE[1:])):
         dx=b[0]-a[0];dz=b[2]-a[2];t=max(0,min(1,((x-a[0])*dx+(z-a[2])*dz)/max(dx*dx+dz*dz,1e-8)))
         best=min(best,math.hypot(x-a[0]-t*dx,z-a[2]-t*dz))
     return best
@@ -246,14 +363,14 @@ def fractures_and_ground():
     for i,(lo,hi) in enumerate([
         ((-10.1,0,-21.8),(-8.0,2.86,-20.1)),((-5.1,0,-21.9),(-3.3,2.72,-20.1)),
         ((-12.8,3,-26.2),(-10.0,5.88,-24.9)),((-6.9,3,-26.2),(-3.7,5.82,-24.7))]):rock_hull('AM01_primary_fractures',lo,hi,31+i*7)
-    for i,(x,width,top) in enumerate([(-11.5,4.1,9),(-6.4,3.4,7.6),(5.4,3.8,7.9),(11.2,4.8,9)]):
+    for i,(x,width,top) in enumerate([(-11.5,4.1,9),(-6.4,3.4,7.6),(5.4,3.8,7.9),(12.0,2.4,9)]):
         rock_hull('AM01_broken_ridge',(x-width/2,6.25,-36),(x+width/2,top,-35.12),80+i*9)
     # Sparse ground contact details stay outside the protected route and mining stands.
-    foliage=group('AM01_crevice_grass','foliage','open-foliage')
     accepted=0
-    for i in range(180):
-        x=-13+26*noise(i*2.71+7);z=-1-30*noise(i*4.11+23);level=height(x,z)
+    for i in range(650):
+        x=-22+44*noise(i*2.71+7);z=1-50*noise(i*4.11+23);level=height(x,z)
         if level not in [0,3,6] or route_distance(x,z)<1.45:continue
+        if level==0 and ground_field(x,z)>-.12:continue
         if math.hypot(x-POOL['center'][0],z-POOL['center'][2])<3.85:continue
         if any(math.hypot(x-v['stand'][0],z-v['stand'][2])<1.2 for v in VEINS):continue
         if math.hypot(x-RACK['center'][0],z-RACK['center'][2])<2:continue
@@ -261,19 +378,120 @@ def fractures_and_ground():
             sx=.07+.12*noise(i*7);sz=.05+.12*noise(i*5);sy=.04+.10*noise(i*3)
             rock_hull('AM01_ground_spalls',(x-sx,level,z-sz),(x+sx,level+sy,z+sz),i+300)
         else:
-            for j in range(11):
-                a=j*2.4+i*.7;h=.30+.30*noise(i+j*5);w=.035+.035*noise(i*2+j)
-                base=(x+.18*math.cos(a),level+.002,z+.18*math.sin(a));side=(math.cos(a)*w,0,math.sin(a)*w)
-                mid=add(base,(math.sin(a)*.10,h*.58,math.cos(a)*.10));tip=add(base,(math.sin(a)*.22,h,math.cos(a)*.22))
-                foliage.face([add(base,side),sub(base,side),sub(mid,mul(side,.5)),add(mid,mul(side,.5))],['#697449','#7D8154','#9C9368'][j%3])
-                foliage.face([add(mid,mul(side,.5)),sub(mid,mul(side,.5)),tip],['#7B8050','#9A946B'][j%2])
+            VEGETATION.append({'position':[round(x,3),level+.015,round(z,3)],'scale':round(.7+.6*noise(i*5),3),'yaw':round(noise(i*7)*math.tau,3)})
         accepted+=1
-        if accepted>=70:break
+        if accepted>=190:break
+
+def cylinder(name,a,b,radius,material='metal',color='#554C3D',n=10):
+    axis=unit(sub(b,a));u=unit(cross(axis,(0,0,1))) if abs(axis[2])<.95 else unit(cross(axis,(0,1,0)))
+    w=cross(u,axis);m=group(name,material,'closed-detail');m.lookup={}
+    rings=[[add(p,add(mul(u,radius*math.cos(i*math.tau/n)),mul(w,radius*math.sin(i*math.tau/n)))) for i in range(n)] for p in [a,b]]
+    m.face(rings[0],color);m.face(list(reversed(rings[1])),color)
+    for i in range(n):m.face([rings[0][i],rings[1][i],rings[1][(i+1)%n],rings[0][(i+1)%n]],color)
+
+def crate(x,y,z,size=1):
+    # Separate slats, raised corner battens, iron nails and diagonal face brace.
+    box('AM05_crates',(x,y+size*.45,z),(size,.9*size,size),color='#79583B')
+    for k in range(5):
+        q=(k-2)*size*.18
+        for sign in [-1,1]:
+            box('AM05_crate_slats',(x+q,y+size*.46,z+sign*size*.511),(size*.165,size*.82,.035),color=['#AA7C49','#9B6E42','#B58A59'][k%3],collider=False)
+        box('AM05_crate_lid',(x+q,y+size*.914,z),(size*.165,.035,size),color='#A37B4C',collider=False)
+    for dx in [-.43,.43]:
+        for dz in [-.53,.53]:box('AM05_crate_battens',(x+dx*size,y+size*.46,z+dz*size),(.10*size,.98*size,.07*size),color='#BD9562',collider=False)
+    beam('AM05_crate_diagonal',(x-size*.4,y+.11*size,z+.555*size),(x+size*.4,y+.82*size,z+.555*size),.085*size,color='#C09B6A',collider=False)
+    for dx in [-.43,.43]:
+        for dy in [.12,.78]:cylinder('AM05_iron_nails',(x+dx*size,y+dy*size,z+.57*size),(x+dx*size,y+dy*size,z+.585*size),.018*size,n=6)
+
+def lantern(p):
+    x,y,z=p
+    beam('AM05_lamp_posts',(x, max(0,y-2.65),z-.24),(x,y+.45,z-.24),.15)
+    beam('AM05_lamp_brackets',(x,y+.35,z-.24),(x,y+.35,z+.12),.095)
+    cylinder('AM05_lamp_hook',(x,y+.18,z),(x,y+.35,z),.025)
+    box('AM05_lamp_glass',(x,y,z),(.22,.36,.22),'glow','#FFC46D',collider=False)
+    for dy in [-.21,.21]:box('AM05_lamp_housing',(x,y+dy,z),(.32,.07,.32),'metal','#5A4E3B',collider=False)
+    for dx in [-.13,.13]:
+        for dz in [-.13,.13]:beam('AM05_lamp_cage',(x+dx,y-.19,z+dz),(x+dx,y+.19,z+dz),.026,color='#57452F',collider=False)
+
+def mine_cart(x,y,z):
+    for dz in [-.60,.60]:
+        cylinder('AM05_cart_axles',(x-.8,y+.34,z+dz),(x+.8,y+.34,z+dz),.06)
+        for sign in [-1,1]:
+            cylinder('AM05_cart_wheels',(x+sign*.64,y+.34,z+dz),(x+sign*.78,y+.34,z+dz),.29,color='#454B48',n=14)
+            cylinder('AM05_cart_hubs',(x+sign*.78,y+.34,z+dz),(x+sign*.81,y+.34,z+dz),.10,color='#A08657',n=10)
+    box('AM05_cart_base',(x,y+.55,z),(1.55,.18,1.80),color='#705238')
+    for dy in [.77,1.05,1.33]:
+        for sign in [-1,1]:
+            box('AM05_cart_sides',(x+sign*.72,y+dy,z),(.12,.25,1.8),color='#92704C')
+            box('AM05_cart_ends',(x,y+dy,z+sign*.84),(1.44,.25,.12),color='#A17D50')
+    for dx in [-.71,.71]:
+        for dz in [-.83,.83]:box('AM05_cart_iron',(x+dx,y+1.05,z+dz),(.09,1.0,.09),'metal','#4D5147',collider=False)
+    for i in range(6):
+        qx=x-.55+1.1*noise(i*3);qz=z-.6+1.2*noise(i*7)
+        rock_hull('AM05_cart_ore',(qx-.3,y+.62,qz-.3),(qx+.3,y+1.50+.25*noise(i),qz+.3),700+i)
+
+def scenic_galleries():
+    # Broad sloping fractures replace a rectangular perimeter with separated ridges.
+    for i,(x,z,wx,wz,base,top) in enumerate([
+        (-22.0,-14,3.2,5.5,0,5.7),(-22.2,-24,3.5,4.5,3,8.3),(-22,-35,3.2,5.0,3,9.0),
+        (-19,-49.5,6.0,3.4,6,11.6),(-10,-49,5.0,3.4,6,10.8),(0,-49.5,5.5,3.8,6,11.3),
+        (12,-49.3,6.0,3.7,6,11.9),(21.5,-46,3.8,5.4,6,10.8),(21.5,-38.7,3.9,4.5,6,9.5),
+        (15,-30.0,3,5,0,8.8),(-14.9,-10,2.4,4.4,0,3.6)]):
+        rock_hull('AM06_gallery_ridges',(x-wx/2,base,z-wz/2),(x+wx/2,top,z+wz/2),1100+i*9)
+    # Large irregular facing plates break the long grid walls into readable fractures.
+    for i,(z,base,top) in enumerate([(-14.8,.4,4.3),(-19.5,0,6.7),(-24.8,1.1,8.9),(-29.8,3,9.1)]):
+        rock_hull('AM06_east_buttresses',(13.36,base,z-2.1),(16.6,top-.25,z+1.8),1900+i*7)
+        rock_hull('AM06_east_crown',(14.5,top-.8,z-1.5),(16.7,top+.35,z+1.5),1930+i*7)
+    for i,(x,z) in enumerate([(-11.8,-37),(-5.2,-37.2),(3.4,-37.1)]):
+        rock_hull('AM06_rear_face_plates',(x-1.5,6.15,z-.9),(x+1.7,9.2+.8*noise(i),z+.65),1970+i*7)
+    # Actual roofed tunnel. Closed side buttresses and segmented roof over a clear void.
+    for i in range(4):
+        x=-17.1+i*1.8
+        rock_hull('AM06_cave_south',(x,6,-41.1),(x+1.85,10.6+.4*noise(i),-39.3),1200+i*4)
+        rock_hull('AM06_cave_north',(x,6,-46.8),(x+1.85,11.4,-44.9),1300+i*4)
+        # A solid irregular lintel stays entirely above the 3.2m clear headroom.
+        rock_hull('AM06_cave_roof',(x-.35,9.45,-46.2),(x+2.25,11.9,-39.9),1400+i*3)
+    for x in [-17.2,-13.6,-9.7]:
+        for z in [-44.75,-41.25]:
+            beam('AM06_cave_timber',(x,6,z),(x,9.36,z),.26,color='#61472F')
+            beam('AM06_cave_braces',(x,8.48,z),(x,9.25,z+(.67 if z<-43 else -.67)),.17,color='#7B5936')
+        beam('AM06_cave_lintel',(x,9.30,-44.95),(x,9.30,-41.05),.30,color='#8A653E')
+        for z in [-44.75,-41.25]:
+            box('AM06_cave_iron_bands',(x,8.67,z),(.29,.12,.29),'metal','#635F48',collider=False)
+    for z in [-44.5,-41.5]:beam('AM06_cave_longitudinal',(-17.2,9.36,z),(-9.7,9.36,z),.18,color='#694B30')
+    # Raised gallery guardrails leave route entry/exit and bridge landing gates open.
+    rail_line('AM06_west_gallery_rail',(-20.8,3,-15),(-20.8,3,-28.5))
+    rail_line('AM06_north_gallery_rail',(8.0,6,-46.1),(19.8,6,-46.1))
+    rail_line('AM06_east_gallery_rail',(19.8,6,-46.1),(19.8,6,-37.2))
+    # Two short freight tracks and an ore cart tell how this place works.
+    for x,z,y,length in [(12.6,-40.7,6,4.8),(-3.8,-12.2,0,5.2)]:
+        for sign in [-1,1]:box('AM05_freight_rails',(x+sign*.56,y+.07,z),(.085,.12,length),'metal','#625E4E',collider=False)
+        for i in range(math.ceil(length/.55)):
+            box('AM05_rail_sleepers',(x,y+.025,z-length/2+i*.55),(1.55,.05,.15),color='#765B3B',collider=False)
+    mine_cart(12.6,6,-40.7)
+    # Workbench, stacked crates and stone sample trays are outside protected lanes.
+    for x,y,z,s in [(-3.0,0,-18.6,1.0),(-2.0,0,-19.0,.65),(-13,0,-5.7,.95),
+                    (9.2,3,-18.8,.70),(-6.1,6,-31.7,.8),(-6.2,6,-31.7+0.03,.45),
+                    (-20.3,3,-25.5,.70),(15.4,6,-46,.9),(16.35,6,-46.3,.65)]:crate(x,y,z,s)
+    for x in [-6.6,-4.0]:
+        for z in [-31.2,-30.4]:beam('AM05_workbench',(x,6,z),(x,7.05,z),.11)
+    box('AM05_workbench',(-5.3,7.08,-30.8),(2.95,.16,1.08),color='#B38A54')
+    for i in range(7):
+        x=-6.4+i*.34
+        rock_hull('AM05_sample_stones',(x-.10,7.16,-30.91),(x+.15,7.34+.12*noise(i),-30.66),1700+i)
+    # Grounded lumber stock and a visibly assembled spare pick.
+    for i in range(6):box('AM05_lumber',(-12.0+(i%3)*.21,.10+(i//3)*.16,-12.2),(.18,.14,2.4),color='#AC8150',collider=False)
+    beam('AM05_spare_pick',(-7.6,0,-4.1),(-7.6,1.28,-4.5),.055,color='#A6814F',collider=False)
+    box('AM05_spare_pick_head',(-7.6,1.25,-4.5),(.62,.12,.10),'metal','#73796D',collider=False)
+    for lamp in LAMPS:lantern(lamp)
+    # Small face scars are real inlaid stone, at breaks away from the ore sockets.
+    for i,(x,z,y) in enumerate([(-9.8,-20.88,1.4),(-4.1,-25.48,4.5),(5.2,-35.45,7.7)]):
+        rock_hull('AM06_fault_seams',(x-.55,y-.08,z-.10),(x+.95,y+.14,z+.015),1800+i)
 
 def build_geometry():
-    MESHES.clear();PROXIES.clear();geology()
-    for route in RAMPS+[BRIDGE]:walkway(route)
-    basin();architecture();fractures_and_ground()
+    MESHES.clear();PROXIES.clear();VEGETATION.clear();geology()
+    for route in RAMPS+[BRIDGE]+GALLERY_RAMPS+GALLERY_BRIDGES:walkway(route)
+    basin();architecture();fractures_and_ground();scenic_galleries()
     return MESHES
 
 def collision_data():
@@ -298,6 +516,9 @@ def collision_data():
 
 def write_proxies():
     write_contract();build_geometry();data=collision_data()
+    layout=json.loads((OUT/'layout.json').read_text());layout['vegetation']=VEGETATION
+    layout['vegetationContract']='facility-local +Y-up reactive grass anchors; no baked foliage in static GLB'
+    (OUT/'layout.json').write_text(json.dumps(layout,indent=2)+'\n')
     (OUT/'colliders.json').write_text(json.dumps(data,separators=(',',':'))+'\n')
     evidence=Path(__file__).parent/'evidence';evidence.mkdir(exist_ok=True)
     (evidence/'proxy-parts.json').write_text(json.dumps(PROXIES,indent=1)+'\n')

@@ -8,7 +8,7 @@ import {
 import { VEHICLES } from './layout';
 import { useWorldStore } from './store';
 import { windUniforms } from './WorldWind';
-import { GRID, meshHeight } from './WorldLandform';
+import { GRID } from './WorldLandform';
 import type { VehicleId } from './types';
 
 /** quality-v4 ground grass (spec §3 ground detail, Bobby 2026-10-22 "grass bends under people and
@@ -116,6 +116,7 @@ function grassMaterial(uniforms: Record<string, { value: unknown }>) {
     shader.vertexShader = `attribute vec3 aBlade;
 uniform float uWindTime; uniform float uWindStrength;
 uniform vec4 uPush[${MAX_DISTURBERS}];
+uniform float uPushHeight[${MAX_DISTURBERS}];
 uniform sampler2D uTrample; uniform vec3 uFocus; uniform vec2 uFade;
 varying float vBend;
 varying vec2 vBladeDetail;
@@ -131,7 +132,7 @@ varying vec2 vBladeDetail;
         vec2 dir = vec2(0.0); float bend = 0.0;
         for (int i = 0; i < ${MAX_DISTURBERS}; i++) {
           vec4 d = uPush[i];
-          if (d.w <= 0.0) continue;
+          if (d.w <= 0.0 || abs(base.y - uPushHeight[i]) > 0.55) continue;
           vec2 o = base.xz - d.xy; float l = length(o);
           float k = d.w * (1.0 - smoothstep(d.z * 0.55, d.z, l));
           if (k > bend) { bend = k; dir = l > 1e-3 ? o / l : vec2(1.0, 0.0); }
@@ -140,7 +141,7 @@ varying vec2 vBladeDetail;
         vec2 trUv = (base.xz - vec2(${GRID.minX.toFixed(1)}, ${GRID.minZ.toFixed(1)}) + vec2(0.25)) / vec2(${(TRAMPLE_NX * TRAMPLE_CELL).toFixed(1)}, ${(TRAMPLE_NZ * TRAMPLE_CELL).toFixed(1)});
         vec4 tr = texture2D(uTrample, trUv);
         float near = 1.0 - smoothstep(26.0, 30.0, distance(base.xz, uFocus.xz));
-        float tb = tr.r * near;
+        float tb = tr.r * near * (1.0 - step(0.65, abs(base.y - (tr.a * 32.0 - 8.0))));
         if (tb > bend) { bend = tb; dir = normalize(tr.gb * 2.0 - 1.0 + vec2(1e-4)); }
         bend = clamp(bend, 0.0, 1.0);
         vBend = bend;
@@ -169,7 +170,7 @@ varying vec2 vBladeDetail;
       diffuseColor.rgb *= 1.0 + 0.08 * rib - 0.10 * margin;
       diffuseColor.rgb *= mix(vec3(1.0), vec3(1.16, 1.12, 1.0), vBend);`);
   };
-  m.customProgramCacheKey = () => 'ground-grass-blades-v3-bounded';
+  m.customProgramCacheKey = () => 'ground-grass-blades-v4-height-aware';
   return m;
 }
 
@@ -245,6 +246,7 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
   const uniforms = useMemo(() => ({
     uWindTime: windUniforms.uWindTime, uWindStrength: windUniforms.uWindStrength,
     uPush: { value: Array.from({ length: MAX_DISTURBERS }, () => new Vector4()) },
+    uPushHeight: { value: new Float32Array(MAX_DISTURBERS) },
     uTrample: { value: trample.texture }, uFocus: { value: new Vector3() }, uFade: { value: [30, 36] },
   }), [trample]);
   const material = useMemo(() => grassMaterial(uniforms), [uniforms]);
@@ -288,7 +290,7 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
     grassDebug.profile = q;
   };
 
-  const stamp = (x: number, z: number, radius: number, strength: number) => {
+  const stamp = (x: number, z: number, radius: number, strength: number, height: number) => {
     const r = Math.ceil(radius / TRAMPLE_CELL), cx = Math.round((x - GRID.minX) / TRAMPLE_CELL), cz = Math.round((z - GRID.minZ) / TRAMPLE_CELL);
     for (let j = -r; j <= r; j++) for (let i = -r; i <= r; i++) {
       const wx = GRID.minX + (cx + i) * TRAMPLE_CELL - x, wz = GRID.minZ + (cz + j) * TRAMPLE_CELL - z, l = Math.hypot(wx, wz);
@@ -302,6 +304,7 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
       const o = idx * 4;
       trample.data[o + 1] = Math.round((wx / Math.max(l, 1e-3) * .5 + .5) * 255);
       trample.data[o + 2] = Math.round((wz / Math.max(l, 1e-3) * .5 + .5) * 255);
+      trample.data[o + 3] = Math.round(Math.max(0,Math.min(1,(height+8)/32))*255);
       trample.active.add(idx);
     }
   };
@@ -321,15 +324,14 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
     for (const a of actorState.actors) {
       if (Math.hypot(a.x - fx, a.z - fz) > 40) continue;
       // Only bodies touching this ground bend its grass (no imprint below a bridge or a jump).
-      const ground = meshHeight(a.x, a.z);
       const size = a.kind === 'vehicle' ? VEHICLE_SIZE.get(a.id as VehicleId) : null;
       const foot = size ? a.y - (size[1] * .28 + .42 + Math.min(.5, Math.max(.34, size[1] * .28))) : a.bottom;
-      if (ground === null || Math.abs(foot - ground) > .55) continue;
       if (a.kind === 'player' && n < MAX_DISTURBERS) {
+        uniforms.uPushHeight.value[n] = foot;
         push[n++].set(a.x, a.z, .6, 1);
       } else if (a.kind === 'vehicle') {
         const axle = (a as ActorSample & { axle: number[] }).axle;
-        for (let k = 0; k < 2 && n < MAX_DISTURBERS; k++) push[n++].set(axle[k * 2], axle[k * 2 + 1], a.radius, 1);
+        for (let k = 0; k < 2 && n < MAX_DISTURBERS; k++) { uniforms.uPushHeight.value[n] = foot; push[n++].set(axle[k * 2], axle[k * 2 + 1], a.radius, 1); }
       }
     }
     for (let k = n; k < MAX_DISTURBERS; k++) push[k].set(0, 0, 0, 0);
@@ -339,7 +341,7 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
     const t = windUniforms.uWindTime.value, dt = s.lastTime < 0 ? 0 : Math.max(0, Math.min(.1, t - s.lastTime));
     s.lastTime = t;
     if (dt > 0) {
-      for (let k = 0; k < n; k++) stamp(push[k].x, push[k].y, push[k].z * .9, .95);
+      for (let k = 0; k < n; k++) stamp(push[k].x, push[k].y, push[k].z * .9, .95,uniforms.uPushHeight.value[k]);
       let max = 0; const dirty = trample.active.size > 0;
       for (const idx of trample.active) {
         const v = trample.amount[idx] - TRAMPLE_DECAY * dt;

@@ -1,5 +1,6 @@
 import { memo, Component, Suspense, useEffect, useMemo, type ReactNode } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
+import WorldAlphaExchange from './WorldAlphaExchange';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import type { BufferGeometry } from 'three';
@@ -119,5 +120,6 @@ export default memo(function WorldPark({ projects }: { projects: WorldContent['p
     <ParkGuard id="huts"><ParkHuts projects={projects} /></ParkGuard>
     <ParkGuard id="walk"><ParkWalk /></ParkGuard>
     <ParkGuard id="signs"><WorldParkSigns projects={projects} /></ParkGuard>
+    <ParkGuard id="alpha-exchange"><WorldAlphaExchange projectId={projects.find(p=>/alpha/i.test(p.slug))?.slug}/></ParkGuard>
   </group>;
 });

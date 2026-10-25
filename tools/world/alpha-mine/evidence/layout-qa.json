@@ -2,21 +2,39 @@
  "meshes": [
   {
    "name": "AM01_rock_mass",
-   "triangles": 3776,
+   "triangles": 9712,
    "openEdges": 0,
    "nonmanifoldEdges": 0,
    "degenerateTriangles": 0,
-   "signedVolumeM3": 1730.5958516273954,
+   "signedVolumeM3": 7151.631241207351,
    "semantic": "closed-rock"
   },
   {
    "name": "AM01_ground",
-   "triangles": 208,
-   "openEdges": 56,
+   "triangles": 2255,
+   "openEdges": 303,
    "nonmanifoldEdges": 0,
    "degenerateTriangles": 0,
-   "signedVolumeM3": 0.0,
+   "signedVolumeM3": 3.7708286525746035,
    "semantic": "open-walk-surface"
+  },
+  {
+   "name": "AM01_connected_fracture_skin",
+   "triangles": 20158,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 868.387846878882,
+   "semantic": "closed-fracture-skin"
+  },
+  {
+   "name": "AM01_attached_talus",
+   "triangles": 3176,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 43.725027545283325,
+   "semantic": "closed-talus"
   },
   {
    "name": "AM02_ramp-west-0-3",
@@ -151,6 +169,168 @@
    "nonmanifoldEdges": 0,
    "degenerateTriangles": 0,
    "signedVolumeM3": 0.3253407543360429,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM02_gallery-west-entry",
+   "triangles": 552,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 6.026831601235123,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM02_gallery-west-entry_rail",
+   "triangles": 48,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.3574732800000069,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM02_gallery-west-entry_posts",
+   "triangles": 168,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.30284800000007334,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM02_gallery-west-entry_supports",
+   "triangles": 72,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.3836699999999902,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM02_gallery-west-entry_brace",
+   "triangles": 72,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.2329962382799473,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM02_gallery-west-rise",
+   "triangles": 552,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 6.026831601235161,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM02_gallery-west-rise_rail",
+   "triangles": 48,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.35747327999990086,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM02_gallery-west-rise_posts",
+   "triangles": 168,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.30284799999958145,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM02_gallery-west-rise_supports",
+   "triangles": 72,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.38366999999949236,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM02_gallery-west-rise_brace",
+   "triangles": 72,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.23299623827964222,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM02_gallery-west-link",
+   "triangles": 324,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 3.0391920000000985,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM02_gallery-west-link_rail",
+   "triangles": 48,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.11849000000000132,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM02_gallery-west-link_posts",
+   "triangles": 120,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.2163200000003016,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM02_bridge-north-ravine",
+   "triangles": 720,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 7.843799999999474,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM02_bridge-north-ravine_rail",
+   "triangles": 48,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.46529000000011145,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM02_bridge-north-ravine_posts",
+   "triangles": 216,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.3893760000001312,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM02_bridge-north-ravine_supports",
+   "triangles": 72,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 1.5743700000001475,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM02_bridge-north-ravine_brace",
+   "triangles": 72,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.5989848383997867,
    "semantic": "structure"
   },
   {
@@ -339,25 +519,430 @@
    "openEdges": 0,
    "nonmanifoldEdges": 0,
    "degenerateTriangles": 0,
-   "signedVolumeM3": 12.202287653355846,
+   "signedVolumeM3": 9.621383667636396,
    "semantic": "embedded-fracture"
   },
   {
-   "name": "AM01_crevice_grass",
-   "triangles": 1551,
-   "openEdges": 2585,
-   "nonmanifoldEdges": 0,
-   "degenerateTriangles": 0,
-   "signedVolumeM3": 1.5626592129543846,
-   "semantic": "open-foliage"
-  },
-  {
    "name": "AM01_ground_spalls",
-   "triangles": 506,
+   "triangles": 1518,
    "openEdges": 0,
    "nonmanifoldEdges": 0,
    "degenerateTriangles": 0,
-   "signedVolumeM3": 0.036789578817027435,
+   "signedVolumeM3": 0.12188056121714295,
+   "semantic": "embedded-fracture"
+  },
+  {
+   "name": "AM06_gallery_ridges",
+   "triangles": 242,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 398.46827320782216,
+   "semantic": "embedded-fracture"
+  },
+  {
+   "name": "AM06_east_buttresses",
+   "triangles": 88,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 109.96431321260658,
+   "semantic": "embedded-fracture"
+  },
+  {
+   "name": "AM06_east_crown",
+   "triangles": 88,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 11.50704564731676,
+   "semantic": "embedded-fracture"
+  },
+  {
+   "name": "AM06_rear_face_plates",
+   "triangles": 66,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 17.379789476156986,
+   "semantic": "embedded-fracture"
+  },
+  {
+   "name": "AM06_cave_south",
+   "triangles": 88,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 23.40649278440548,
+   "semantic": "embedded-fracture"
+  },
+  {
+   "name": "AM06_cave_north",
+   "triangles": 88,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 28.48171551444339,
+   "semantic": "embedded-fracture"
+  },
+  {
+   "name": "AM06_cave_roof",
+   "triangles": 88,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 58.085755305607684,
+   "semantic": "embedded-fracture"
+  },
+  {
+   "name": "AM06_cave_timber",
+   "triangles": 72,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 1.3628159999993557,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM06_cave_braces",
+   "triangles": 72,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.17698696973989914,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM06_cave_lintel",
+   "triangles": 36,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 1.0529999999998578,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM06_cave_iron_bands",
+   "triangles": 72,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.060552000000503786,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM06_cave_longitudinal",
+   "triangles": 24,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.48599999999981236,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM06_west_gallery_rail_posts",
+   "triangles": 84,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.17325000000029045,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM06_west_gallery_rail",
+   "triangles": 24,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.2436749999998784,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM06_north_gallery_rail_posts",
+   "triangles": 72,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.1484999999987946,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM06_north_gallery_rail",
+   "triangles": 24,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.21299000000032464,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM06_east_gallery_rail_posts",
+   "triangles": 60,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.12374999999850145,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM06_east_gallery_rail",
+   "triangles": 24,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.16064500000001825,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_freight_rails",
+   "triangles": 48,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.20399999999948715,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_rail_sleepers",
+   "triangles": 228,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.22087500000002566,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_cart_axles",
+   "triangles": 72,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.03385643157298883,
+   "semantic": "closed-detail"
+  },
+  {
+   "name": "AM05_cart_wheels",
+   "triangles": 208,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.14303931735601497,
+   "semantic": "closed-detail"
+  },
+  {
+   "name": "AM05_cart_hubs",
+   "triangles": 144,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.0035267115663700672,
+   "semantic": "closed-detail"
+  },
+  {
+   "name": "AM05_cart_base",
+   "triangles": 12,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.5022000000000819,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_cart_sides",
+   "triangles": 72,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.3240000000003911,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_cart_ends",
+   "triangles": 72,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.2591999999997321,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_cart_iron",
+   "triangles": 48,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.03240000000048915,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_cart_ore",
+   "triangles": 132,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.7777817133043754,
+   "semantic": "embedded-fracture"
+  },
+  {
+   "name": "AM05_crates",
+   "triangles": 108,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 3.982275000000193,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_crate_slats",
+   "triangles": 1080,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.2547698999991419,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_crate_lid",
+   "triangles": 540,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.15534749999669337,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_crate_battens",
+   "triangles": 432,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.12141514000035314,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_crate_diagonal",
+   "triangles": 108,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.03419468379310148,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_iron_nails",
+   "triangles": 720,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.0002234790966154279,
+   "semantic": "closed-detail"
+  },
+  {
+   "name": "AM05_workbench",
+   "triangles": 60,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.5605799999997654,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_sample_stones",
+   "triangles": 154,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.03374372099864535,
+   "semantic": "embedded-fracture"
+  },
+  {
+   "name": "AM05_lumber",
+   "triangles": 72,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.36287999999999576,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_spare_pick",
+   "triangles": 12,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.00405665919999932,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_spare_pick_head",
+   "triangles": 12,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.0074399999999979,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_lamp_posts",
+   "triangles": 108,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.6266249999998306,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_lamp_brackets",
+   "triangles": 108,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.029240999999910516,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_lamp_hook",
+   "triangles": 324,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.002810347431086264,
+   "semantic": "closed-detail"
+  },
+  {
+   "name": "AM05_lamp_glass",
+   "triangles": 108,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.15681599999980456,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_lamp_housing",
+   "triangles": 216,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.1290239999995878,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM05_lamp_cage",
+   "triangles": 432,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.009247680001791107,
+   "semantic": "structure"
+  },
+  {
+   "name": "AM06_fault_seams",
+   "triangles": 66,
+   "openEdges": 0,
+   "nonmanifoldEdges": 0,
+   "degenerateTriangles": 0,
+   "signedVolumeM3": 0.04299131650607174,
    "semantic": "embedded-fracture"
   }
  ],
@@ -426,8 +1011,8 @@
   }
  ],
  "collisionTriangles": {
-  "surface": 630,
-  "solid": 6494
+  "surface": 4080,
+  "solid": 38809
  },
  "limits": "serialized top-support sampling at 0.25m and ramp lane edges; not a Rapier capsule, animation or full swept-clearance test"
 }

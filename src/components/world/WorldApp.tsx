@@ -18,6 +18,8 @@ const Runtime = lazy(async () => {
 // QA-only ui fixtures (?qa=1&uitest=1); the normal entry never loads this chunk.
 const uiTest = typeof window !== 'undefined' && /[?&]qa=1/.test(window.location.search) && /[?&]uitest=1/.test(window.location.search);
 const UiTest = uiTest ? lazy(() => import('./WorldUiTest')) : null;
+const PlaytestReadout = import.meta.env.DEV && typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa')==='1'
+  ? lazy(()=>import('./WorldPlaytestReadout')) : null;
 
 class WorldErrorBoundary extends Component<{ children: ReactNode; message: string; retry: string }, { failed: boolean }> {
   state = { failed: false };
@@ -102,6 +104,7 @@ export default function WorldApp({ content }: { content: WorldContent }) {
     <WorldFirstHints />
     <WorldDrivingHud />
     <WorldAlphaMineHud />
+    {PlaytestReadout&&<Suspense fallback={null}><PlaytestReadout/></Suspense>}
     <div className="world-interaction" aria-live="polite">{s.canRecover ? <button className="world-recover" onClick={() => useWorldStore.setState(v => ({ recoverRequest: v.recoverRequest + 1 }))}><kbd>R</kbd>{t.recover.replace(/^R \u00b7 /, '')}</button> : s.activeVehicle && !s.card ? <span className="world-chip"><kbd>E</kbd>{t.leave.replace(/^E \u00b7 /, '')}</span> : null}</div>
     <dialog className="world-dialog" ref={dialog} aria-label={t.menu} onCancel={e => { e.preventDefault(); useWorldStore.setState({ paused: false }); }}>
       <div className="world-dialog-map">

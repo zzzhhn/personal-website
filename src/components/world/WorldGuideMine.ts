@@ -1,6 +1,7 @@
 import { Bone, Group, Material, Matrix4, Mesh, Object3D, Quaternion, Vector3 } from 'three';
 import type { AlphaFactorId } from './alpha-mine-data';
 import type { MineAction, MinePoint } from './alpha-mine-state';
+import { factorOreSource } from './alpha-mine-ore';
 
 export interface GuideMineState { equipped: boolean; carried: AlphaFactorId | null; action: MineAction | null }
 export interface GuideMineAssets { detector: Object3D; pickaxe: Object3D; ore: Object3D; colors: Record<AlphaFactorId, string> }
@@ -124,7 +125,7 @@ export class GuideMineLayer {
       const root = object.clone(true); root.name = `mine-${key}`; root.visible = false; root.updateWorldMatrix(true, true);
       const inverseRoot = root.matrixWorld.clone().invert();
       const socket = (name: string, required = false) => {
-        const node = root.getObjectByName(name);
+        const node = root.getObjectByName(name) ?? root.getObjectByName(`${object.name}_${name}`);
         if (!node) { if (required) throw new Error(`${key}: missing ${name}`); return null; }
         return inverseRoot.clone().multiply(node.matrixWorld);
       };
@@ -153,7 +154,7 @@ export class GuideMineLayer {
     };
     try {
       install('detector', source.detector); install('pickaxe', source.pickaxe);
-      for (const id of Object.keys(source.colors) as AlphaFactorId[]) install(id, source.ore, source.colors[id]);
+      for (const id of Object.keys(source.colors) as AlphaFactorId[]) install(id, factorOreSource(source.ore,id), source.colors[id]);
       this.sockets.assetsReady = this.assets.size === 5;
     } catch (error) { this.clearAssets(); throw error; }
   }

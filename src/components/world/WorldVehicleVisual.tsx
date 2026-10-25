@@ -7,6 +7,8 @@ import type { VehicleId } from './types';
 import { useWorldStore } from './store';
 import { night } from './WorldNight';
 import { VEHICLE_ASSETS, bakeNode, headlightTexture, vehicleHulls, vehicleMaterial } from './WorldVehicleAssets';
+import { createVehicleBoostExhaust, refineCoupeWheel, refineVehicleBody, updateVehicleBoostExhaust } from './WorldVehicleDetail';
+import { readDrivingTelemetry } from './vehicle-telemetry';
 
 /**
  * Vehicle visuals (owner: vehicles session). Rendered inside the vehicle rigid body, in body space:
@@ -81,13 +83,16 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
   const hull = vehicleHulls(id)!;
   const visual = useRef<Group>(null), bodyMesh = useRef<Mesh>(null);
   const built = useMemo(() => {
-    const geometries = gltfs.map(gltf => {
+    const geometries = gltfs.map((gltf, level) => {
       const body = gltf.scene.getObjectByName(`${asset}_body`), wheel = gltf.scene.getObjectByName('wheel-front-left') as Mesh | undefined;
       if (!body || !wheel) throw new Error(`[world-vehicles] ${asset}.glb lacks body or wheel nodes`);
-      const bodyGeometry = bakeNode(body);
+      const rawBody = bakeNode(body), bodyGeometry = level === 0 ? refineVehicleBody(id, rawBody) : rawBody;
+      if (bodyGeometry !== rawBody) rawBody.dispose();
       // Both levels retain the same wheel-local origin and axle, so suspension/steer/roll are shared.
       const holder = new Group(); const clone = wheel.clone(); clone.position.set(0, 0, 0); clone.rotation.set(0, 0, 0); clone.scale.set(1, 1, 1); holder.add(clone);
-      return { body: bodyGeometry, wheel: bakeNode(holder) };
+      const rawWheel = bakeNode(holder), wheelGeometry = level === 0 && id === 'coupe' ? refineCoupeWheel(rawWheel) : rawWheel;
+      if (wheelGeometry !== rawWheel) rawWheel.dispose();
+      return { body: bodyGeometry, wheel: wheelGeometry };
     });
     const material = vehicleMaterial();
     const instanced = new InstancedMesh(geometries[0].wheel, material, 4);
@@ -98,7 +103,8 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
     const pool = new Mesh(new PlaneGeometry(9, 4.5), new MeshBasicMaterial({ map: headlightTexture(), transparent: true, depthWrite: false, blending: AdditiveBlending, side: DoubleSide, opacity: 0, toneMapped: false }));
     pool.rotation.x = -Math.PI / 2; pool.visible = false; pool.renderOrder = 2; pool.name = `vehicle-${id}-headlight-pool`;
     pool.userData.noOcclusionFade = true;
-    return { geometries, material, instanced, pool, level: 0, distance: 0 };
+    const exhaust = id === 'coupe' ? createVehicleBoostExhaust(hull.bodyY) : null;
+    return { geometries, material, instanced, pool, exhaust, level: 0, distance: 0 };
   }, [gltfs, asset, id, wheelPoints, wheelRest, hull.wheelRadius]);
   useEffect(() => {
     const triangles = (g: { body: Mesh['geometry']; wheel: Mesh['geometry'] }) => g.body.attributes.position.count / 3 + 4 * g.wheel.attributes.position.count / 3;
@@ -122,12 +128,19 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
       bodyUuid: bodyMesh.current?.uuid, wheelUuid: built.instanced.uuid, center: visual.current?.getWorldPosition(new Vector3()).toArray(),
       wheelMatrices: Array.from(built.instanced.instanceMatrix.array), wheelWorldMatrix: [...built.instanced.matrixWorld.elements], shadowProxies: proxies(),
       materialUuid: built.material.uuid, roles: built.geometries.map(g => [...new Set(Array.from(g.body.attributes.aRole.array))].sort()),
+      detailTriangles: built.geometries[0].body.userData.detailTriangles,
+      rotorTriangles: built.geometries[0].wheel.userData.detailTriangles ?? 0, boostExhaustVisible: built.exhaust?.visible ?? false,
       glow: [...built.material.userData.glow.value] });
     lodReaders.set(id, read);
     return () => { if (lodReaders.get(id) === read) lodReaders.delete(id); };
   }, [id, built]);
+  useEffect(() => () => {
+    built.geometries.forEach(g => { g.body.dispose(); g.wheel.dispose(); }); built.material.dispose();
+    built.pool.geometry.dispose(); (built.pool.material as MeshBasicMaterial).dispose();
+    built.exhaust?.geometry.dispose(); (built.exhaust?.material as MeshBasicMaterial | undefined)?.dispose();
+  }, [built]);
   const length = props.size[0];
-  useFrame(({ camera }) => {
+  useFrame(({ camera, clock }) => {
     if (visual.current && bodyMesh.current) {
       visual.current.getWorldPosition(_vehiclePosition);
       built.distance = camera.position.distanceTo(_vehiclePosition);
@@ -149,6 +162,8 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
     }
     built.instanced.instanceMatrix.needsUpdate = true;
     const driving = useWorldStore.getState().activeVehicle === id, n = night.value, l = lights.current, lamp = LAMPS[id];
+    if (built.exhaust) updateVehicleBoostExhaust(built.exhaust,
+      driving && !useWorldStore.getState().paused && readDrivingTelemetry()?.boosting === true, clock.elapsedTime);
     const glow = built.material.userData.glow.value;
     glow[0] = driving ? .25 + 1.1 * n : 0;
     glow[1] = l?.brake ? 1.25 : driving ? .3 + .35 * n : lamp.tailParked * (.18 + .42 * n);
@@ -162,6 +177,7 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
     <WheelAnchors wheelPoints={wheelPoints} wheelRest={wheelRest} wheels={wheels} />
     <mesh ref={bodyMesh} name={`vehicle-${id}-body`} geometry={built.geometries[0].body} material={built.material} position={[0, hull.bodyY, 0]} userData={{ shadowLodGeometry: built.geometries[1].body }} castShadow receiveShadow />
     <primitive object={built.instanced} />
+    {built.exhaust && <primitive object={built.exhaust} />}
     <primitive object={built.pool} position={[length / 2 + 4.2, hull.bodyY + .03, 0]} />
   </group>;
 }

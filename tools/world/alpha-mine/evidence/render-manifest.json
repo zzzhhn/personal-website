@@ -1,14 +1,11 @@
 {
  "images": [
-  "overall.png",
-  "entrance.png",
-  "middle.png",
-  "overall-clay.png"
+  "entrance-close.png"
  ],
  "renderer": "BLENDER_EEVEE",
  "resolution": [
-  1100,
-  800
+  1000,
+  760
  ],
  "viewTransform": "AgX",
  "look": "None",
@@ -16,45 +13,19 @@
  "gamma": 1,
  "views": [
   [
-   "overall",
+   "entrance-close",
    [
-    34,
-    25,
-    28
+    2.5,
+    2.6,
+    -8.5
    ],
    [
-    0,
-    3,
-    -18
-   ]
-  ],
-  [
-   "entrance",
-   [
-    1.5,
-    1.75,
-    2.2
-   ],
-   [
-    0,
-    3.4,
-    -19
-   ]
-  ],
-  [
-   "middle",
-   [
-    -1.8,
-    6.0,
-    -12
-   ],
-   [
-    -5.0,
-    4.0,
-    -25.6
+    -6.2,
+    3.8,
+    -25
    ]
   ]
  ],
  "scope": "fresh exact delivered GLB; studio lights/floor/cameras and basin water are preview only; not game integration or character validation",
- "glbSha256": "5d7c1a1a7875f3dd03a6d46261156b42c577bcb648287bf5362eabe64183eb90"
+ "glbSha256": "f9d15c1b3a438345d59a9d1f3d0efa86187df976a70785136c2af83d173bcf17"
 }

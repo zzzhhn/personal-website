@@ -1,37 +1,10 @@
-.alpha-mine-hud { position:absolute; z-index:4; right:28px; top:112px; width:min(330px,27vw); color:var(--paper); padding:17px 19px; border:1px solid #c7ba9144; border-radius:12px; background:#152b30e8; box-shadow:0 12px 32px #071b2130; pointer-events:none; }
-.alpha-mine-heading { display:grid; grid-template-columns:1fr auto; align-items:baseline; gap:7px; }
-.alpha-mine-heading > span { grid-column:1/-1; font-size:10px; letter-spacing:.18em; color:#d7b783; }
-.alpha-mine-heading strong { font:400 25px/1.2 var(--serif); }
-.alpha-mine-heading small { font-size:10px; color:#c4c3b5; }
-.alpha-mine-intent { font-size:13px; line-height:1.6; margin:13px 0 0; color:#e2dfd0; }
-.alpha-mine-detector { display:flex; align-items:center; gap:10px; margin-top:13px; }
-.alpha-mine-needle { display:block; color:#b8d7ca; font-size:23px; transform-origin:center; transition:transform .12s linear; }
-.alpha-mine-signal { height:4px; width:74px; background:#738c8138; border-radius:2px; overflow:hidden; }
-.alpha-mine-signal i { display:block; height:100%; background:#a2c8ad; transition:width .15s linear; }
-.alpha-mine-detector small { font-size:11px; color:#c6d3c3; }
-.alpha-mine-key { font-size:11px; color:#c6d3c3; margin:12px 0 0; }
-.alpha-mine-key kbd { padding:2px 5px; margin-right:4px; border:1px solid #b3bca950; border-radius:3px; }
-.alpha-mine-notice { font-size:11px; line-height:1.45; color:#d8bb8a; margin:11px 0 0; }
-.alpha-mine-results { border-top:1px solid #a9b29c36; padding-top:14px; margin-top:15px; pointer-events:auto; }
-.alpha-mine-pool-head { display:flex; justify-content:space-between; gap:12px; font-size:13px; }
-.alpha-mine-pool-head small { color:#c9c6b4; font-size:10px; align-self:center; }
-.alpha-mine-result-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:16px; }
-.alpha-mine-result { border-top:2px solid #8a988c; padding-top:8px; }
-.alpha-mine-result > span { display:block; font-size:11px; }
-.alpha-mine-result > strong { display:block; font:400 26px/1.1 var(--serif); margin-top:8px; }
-.alpha-mine-result > small { font-size:9px; color:#c9c6b4; }
-.alpha-mine-result dl { margin:10px 0 0; font-size:10px; }
-.alpha-mine-result dl div { display:flex; justify-content:space-between; gap:8px; margin-top:5px; }
-.alpha-mine-result dt { color:#c9c6b4; }.alpha-mine-result dd { margin:0; font-variant-numeric:tabular-nums; }
-.alpha-mine-result p { font-size:10px; line-height:1.55; color:#cdcbbd; margin:9px 0 0; }
-.alpha-mine-provenance { font-size:9px; line-height:1.6; color:#aebeb0; margin:14px 0 7px; }
-.alpha-mine-pool-empty,.alpha-mine-unavailable p { font-size:12px; line-height:1.6; margin:12px 0 3px; color:#d4d3c4; }
-.alpha-mine-hud button { color:#e5d8b9; background:none; border:0; font:inherit; cursor:pointer; text-align:left; }
-.alpha-mine-hud button:hover { color:#fff2ce; text-decoration:underline; }
-.alpha-mine-hud button:focus-visible { outline:2px solid #ceb87d; outline-offset:4px; }
-.alpha-mine-text-button { font-size:11px!important; padding:5px 0; }
-.alpha-mine-detail { max-height:25vh; overflow:auto; font-size:10px; line-height:1.65; color:#d2d4c8; padding-right:7px; }
-.alpha-mine-detail p { margin:8px 0; }
-.alpha-mine-retrieve { display:flex; justify-content:space-between; gap:8px; margin-top:10px; font-size:10px; }
-.alpha-mine-unavailable button { font-size:11px; padding:4px 0; }
-@media(max-height:760px) { .alpha-mine-hud { top:92px; padding:12px 15px; } .alpha-mine-result p { display:none; } .alpha-mine-intent { margin-top:8px; } }
+.alpha-mine-hud{position:absolute;z-index:4;right:28px;top:112px;width:236px;color:#e7dfc6;pointer-events:none;font:12px/1.5 var(--sans)}
+.mine-device-top{display:flex;justify-content:space-between;padding:9px 15px 7px;background:#464b3d;border:1px solid #8b8566;border-radius:14px 14px 0 0;font-size:9px;letter-spacing:.14em;color:#d3c6a0}
+.mine-instrument{background:#303e37;border:1px solid #77795c;border-top:0;padding:6px 15px 12px;border-radius:0 0 14px 14px;box-shadow:inset 0 -3px 0 #1b2b25}
+.mine-instrument svg{display:block;width:100%;height:auto}.mine-bezel{fill:#746e54;stroke:#b2a37c;stroke-width:2}.mine-screen{fill:#122f2a;stroke:#263e31;stroke-width:5}.mine-radar-ring{fill:none;stroke:#77a78b;stroke-width:.6;opacity:.4}.mine-crosshair{fill:none;stroke:#77a78b;stroke-width:.5;stroke-dasharray:2 4;opacity:.6}.mine-tick{stroke:#ddcfaa;stroke-width:1}.mine-echo{fill:#b4e5be;opacity:.18;animation:mine-echo 2s ease-out infinite}.mine-dial-label{font:9px monospace;fill:#8ab59e;letter-spacing:1px}.mine-dial-number{font:17px monospace;fill:#e5e8c4}
+.mine-frequency{display:grid;grid-template-columns:auto 1fr;gap:7px 10px;align-items:center}.mine-frequency>span{font:8px monospace;letter-spacing:.08em;color:#b2bc9a}.mine-frequency>div{display:flex;gap:3px}.mine-frequency i{display:block;flex:1;height:9px;background:#64745b50;border-radius:1px}.mine-frequency i.is-on{background:#bfd294;box-shadow:0 0 4px #b9d99a35}.mine-frequency b{grid-column:1/-1;font:400 16px/1.35 var(--serif);text-align:center;color:#e1d9b4}.mine-altitude{text-align:center;margin-top:5px;color:#96b49c;font:9px/1.5 var(--sans);letter-spacing:.08em}
+.mine-command{margin:10px 4px 0;text-align:center;font-size:11px;line-height:1.6;text-shadow:0 1px 4px #11251f,0 1px 8px #11251f}.mine-samples{display:flex;gap:7px;margin-top:11px}.mine-samples>span{flex:1;min-width:0;text-align:center;opacity:.4}.mine-samples>span.is-collected{opacity:1}.mine-samples i{display:flex;margin:auto;width:31px;height:31px;align-items:center;justify-content:center;border:1px solid var(--ore);border-radius:50%;font:23px Georgia;color:var(--ore);background:#1b302b}.mine-samples small{display:block;margin-top:4px;font-size:9px;line-height:1.3;color:#f1e8d0;text-shadow:0 1px 4px #11251f}.mine-key,.mine-notice{font-size:11px;text-align:center;margin:10px 0 0;background:#20352dde;border-radius:6px;padding:5px}.mine-key kbd{padding:1px 4px;border:1px solid #a9b09a75;border-radius:3px}.mine-notice{color:#e6d3a0}
+.mine-pool-control{margin-top:10px;text-align:center;pointer-events:auto}.mine-pool-control>p{font-size:11px;text-shadow:0 1px 4px #11251f;margin:8px 0}.mine-pool-control button{display:block;margin:5px auto;color:#e6dab9;background:#243b30ef;border:1px solid #b8ad7c65;padding:6px 10px;border-radius:5px;font:10px/1.4 var(--sans);letter-spacing:.04em;cursor:pointer}.mine-pool-control button:hover{background:#40513a}.mine-pool-control button:focus-visible,.mine-method a:focus-visible{outline:2px solid #e3ce8b;outline-offset:3px}.mine-method{background:#182f29f5;text-align:left;padding:10px 12px;border-radius:8px;max-height:25vh;overflow:auto;color:#d4d6be;font-size:10px}.mine-method p{margin:5px 0 12px}.mine-method a{color:#b7dfca;text-decoration:underline}.mine-qa{position:fixed;left:208px;bottom:80px;max-width:460px;max-height:38vh;overflow:hidden;white-space:pre-wrap;font:9px monospace;background:#142525e8;padding:8px;pointer-events:none}
+@keyframes mine-echo{0%{r:5;opacity:.4}100%{r:15;opacity:0}}@media(prefers-reduced-motion:reduce){.mine-echo{animation:none}}
+@media(max-height:760px){.alpha-mine-hud{top:90px;width:202px;right:20px}.mine-instrument{padding:4px 14px 9px}.mine-instrument svg{width:156px;margin:auto}.mine-samples{margin-top:7px}.mine-command{margin-top:6px}.mine-frequency b{font-size:14px}}
+@media(max-width:750px){.alpha-mine-hud{right:12px;width:170px;top:88px}.mine-device-top{font-size:8px;padding:7px 9px}.mine-instrument{padding:3px 9px 8px}.mine-instrument svg{width:140px}.mine-command{font-size:10px}.mine-samples small{font-size:8px}.mine-frequency b{font-size:12px}}

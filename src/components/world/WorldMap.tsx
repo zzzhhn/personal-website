@@ -3,6 +3,7 @@ import { useWorldStore } from './store';
 import { worldText } from './world-i18n';
 import { ISLAND_OUTLINE, LAYOUT_V4, ROAD_POINTS, BOARDWALK_POINTS, BUILDINGS, BOOTHS, FOUNDATIONS, CAMP_CENTER } from './layout';
 import { ALPHA_MINE_CONNECTOR, ALPHA_MINE_CONNECTOR_WIDTH, ALPHA_MINE_FOOTPRINT_POINTS, ALPHA_MINE_ORIGIN, isOnAlphaMineBase } from './alpha-mine-layout';
+import { ALPHA_EXCHANGE_ORIGIN, ALPHA_EXCHANGE_APPROACH, ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout';
 
 type MapRoad = { pts: number[][]; width: number; color: string; dash?: string };
 type Landmark = { id: string; p: [number, number]; label: string };
@@ -87,6 +88,9 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
       : !LAYOUT_V4 && <polyline points={path(ROAD_POINTS)} fill='none' stroke='#D9D2C2' strokeWidth='4' strokeLinejoin='round' />}
     <polyline points={path(BOARDWALK_POINTS)} fill='none' stroke='#B99469' strokeWidth='3' strokeLinecap='round' />
     <polyline points={path(ALPHA_MINE_CONNECTOR)} fill='none' stroke='#B99469' strokeWidth={ALPHA_MINE_CONNECTOR_WIDTH} strokeLinejoin='round' strokeLinecap='round' />
+    <polyline points={path(ALPHA_EXCHANGE_APPROACH)} fill='none' stroke='#B99469' strokeWidth='3.1'/>
+    <rect x={ALPHA_EXCHANGE_FOOTPRINT.minX} y={ALPHA_EXCHANGE_FOOTPRINT.minZ} width={17.2} height={18.5} fill='#8d7960' stroke='#c5b591'/>
+    <text x={ALPHA_EXCHANGE_ORIGIN[0]} y={ALPHA_EXCHANGE_ORIGIN[2]-5} textAnchor='middle' fontSize={full?'3.6':'4.4'} fill='#f1e3bc'>{lang==='zh'?'交易所':'EXCHANGE'}</text>
     {geometry ? <polygon points={path(geometry.camp)} fill='#D2B98A' stroke='#E8803A' strokeWidth={full ? 1.2 : 1} /> : <circle cx={CAMP_CENTER[0]} cy={CAMP_CENTER[2]} r='15' fill='#D2B98A' stroke='#E8803A' strokeWidth='1.2' />}
     {FOUNDATIONS.map(f => <rect key={f.id} x={f.position[0] - f.size[0] / 2} y={f.position[2] - f.size[2] / 2} width={f.size[0]} height={f.size[2]} fill='none' stroke='#F4ECDB' strokeWidth='.8' strokeDasharray='2 1.6' opacity='.8' />)}
     {/* Six internship buildings, numbered in startDate order (oldest -> newest). */}
@@ -95,7 +99,7 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
       <text className='world-map-num' y={1.9} fontSize={5.4} textAnchor='middle' fill={b.color === '#E6DCCB' ? '#23343D' : '#F4ECDB'}>{i + 1}</text>
     </g>)}
     {BOOTHS.filter(b => b.id !== 'alpha-agent').map(b => <rect key={b.id} x={b.position[0] - 2.4 * s} y={b.position[2] - 2.4 * s} width={4.8 * s} height={4.8 * s} transform={`rotate(45 ${b.position[0]} ${b.position[2]})`} fill='#23343D' stroke='#4FD1C5' strokeWidth='.9' />)}
-    <g data-project-id='alpha-agent' transform={`translate(${ALPHA_MINE_ORIGIN[0]} ${ALPHA_MINE_ORIGIN[2]})`}>
+    <g data-experience-id='worldquant' transform={`translate(${ALPHA_MINE_ORIGIN[0]} ${ALPHA_MINE_ORIGIN[2]})`}>
       <title>{lang === 'zh' ? 'Alpha 因子矿场入口' : 'Alpha factor mine entrance'}</title>
       <circle r={3 * s} fill='#23343D' stroke='#4FD1C5' strokeWidth='.9' />
       <path d={`M${-1.5 * s} ${1.8 * s}V${-1.6 * s}H${1.5 * s}V${1.8 * s}`} fill='none' stroke='#F4ECDB' strokeWidth='.7' />
@@ -111,7 +115,7 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
       <circle cy={-7.6 * s} r={1.25 * s} fill='#23343D' />
     </g>}
     {full && <g className='world-map-labels'>
-      <text x={ALPHA_MINE_ORIGIN[0]} y={-85} textAnchor='middle' fontSize='4.6'>{lang === 'zh' ? 'Alpha 因子矿场' : 'Alpha factor mine'}</text>
+      <text x={ALPHA_MINE_ORIGIN[0]} y={ALPHA_MINE_ORIGIN[2]-26} textAnchor='middle' fontSize='4.2'>{lang === 'zh' ? 'WorldQuant 因子矿场' : 'WorldQuant factor quarry'}</text>
       {(['camp', 'town', 'park'] as const).map(z => { const at = z === 'camp' ? [CAMP_CENTER[0], CAMP_CENTER[2] + 24] : z === 'town' ? [-15, -4] : [64, -62]; return <text key={z} x={at[0]} y={at[1]} textAnchor='middle' fontSize='6'>{t[z]}</text>; })}
       {geometry?.landmarks.filter(l => landmarkName[l.label]).map(l => <text key={l.id} x={l.p[0]} y={l.p[1] + 10} textAnchor='middle' fontSize='4.6'>{landmarkName[l.label]}</text>)}
     </g>}

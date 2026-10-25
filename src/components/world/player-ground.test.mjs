@@ -2,15 +2,18 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import RAPIER from '@dimforge/rapier3d-compat';
 import { playerSupport, followPlayerGround } from './player-ground.ts';
+import { createPlayerClearance, sweptPlayerVelocity } from './player-motion.ts';
 import { pavedV4 } from './layout-v4.ts';
 await RAPIER.init();
 const dt = 1 / 60;
+const guards = new WeakMap();
 function scene(x = -2, y = .82) {
   const world = new RAPIER.World({ x: 0, y: -12.5, z: 0 });
   world.timestep = dt;
   const body = world.createRigidBody(RAPIER.RigidBodyDesc.dynamic().setTranslation(x, y, 0)
     .lockRotations().setLinearDamping(.2).setCcdEnabled(true));
   world.createCollider(RAPIER.ColliderDesc.capsule(.48, .34).setMass(72).setFriction(0).setRestitution(0), body);
+  guards.set(world,createPlayerClearance(world));
   return { world, body };
 }
 function flat(world, halfLength = 10) {
@@ -19,6 +22,7 @@ function flat(world, halfLength = 10) {
 function tick(world, body, vx = 0, jumping = false) {
   const v = body.linvel();
   body.applyImpulse({ x: (vx - v.x) * body.mass(), y: 0, z: -v.z * body.mass() }, true);
+  body.setLinvel(sweptPlayerVelocity(guards.get(world),body,body.linvel(),dt,RAPIER.QueryFilterFlags.EXCLUDE_SENSORS),true);
   const result = followPlayerGround(world, RAPIER, body, body.linvel(), dt, jumping);
   if (jumping) body.setLinvel({ x: vx, y: 5, z: 0 }, true);
   world.step();
@@ -106,6 +110,7 @@ test('the real camp ramp supports both directions across its full driving lane',
     for (let i = 0; i < 125; i++) {
       const v = body.linvel(), vx = direction * 6.2 * 13 / Math.hypot(13,5), vz = -direction * 6.2 * 5 / Math.hypot(13,5);
       body.applyImpulse({x:(vx-v.x)*body.mass(),y:0,z:(vz-v.z)*body.mass()},true);
+      body.setLinvel(sweptPlayerVelocity(guards.get(world),body,body.linvel(),dt,RAPIER.QueryFilterFlags.EXCLUDE_SENSORS),true);
       followPlayerGround(world,RAPIER,body,body.linvel(),dt,false);world.step();
       const cast=world.castShape(body.translation(),body.rotation(),{x:0,y:-1,z:0},new RAPIER.Capsule(.48,.34),0,.4,true,undefined,undefined,undefined,body);
       maxGap=Math.max(maxGap,cast?.time_of_impact??.4);

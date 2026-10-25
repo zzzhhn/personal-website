@@ -2,34 +2,38 @@ import { useEffect, useRef, useState } from 'react';
 import { useWorldStore } from './store';
 import { worldText } from './world-i18n';
 import type { WorldContent } from './types';
-import { readDrivingTelemetry, type DrivingTelemetry } from './vehicle-telemetry';
+import { readDrivingTelemetry } from './vehicle-telemetry';
+import { drivingReadout } from './vehicle-driving-display';
 import { watchUiGamepads } from './WorldUiGamepad';
 
 type Zone = ReturnType<typeof useWorldStore.getState>['zone'];
 const ZONE_HOLD_MS = 3400, ZONE_REPEAT_MS = 20000;
 
-/** Read the physics-owned reservoir at HUD frequency; no second boost timer. */
+/** The actor publishes position at ~10 Hz even while stopped, so recharge needs no UI timer. */
 export function WorldDrivingHud() {
   const vehicle = useWorldStore(s => s.activeVehicle), speed = useWorldStore(s => s.speed);
-  const lang = useWorldStore(s => s.lang), paused = useWorldStore(s => s.paused);
-  const [driving, setDriving] = useState<DrivingTelemetry | null>(null);
-  useEffect(() => {
-    if (vehicle !== 'coupe') { setDriving(null); return; }
-    setDriving(readDrivingTelemetry());
-    if (paused) return;
-    const timer = setInterval(() => setDriving(readDrivingTelemetry()), 100);
-    return () => clearInterval(timer);
-  }, [vehicle, paused]);
+  const lang = useWorldStore(s => s.lang);
+  useWorldStore(s => s.activeVehicle === 'coupe' ? s.position : null);
   if (!vehicle) return null;
-  const t = worldText[lang], nitro = Math.round((driving?.nitro ?? 0) * 100);
+  const t = worldText[lang], driving = vehicle === 'coupe' ? readDrivingTelemetry() : null;
+  const readout = driving ? drivingReadout(driving) : null, zh = lang === 'zh';
+  const boostLabel = !readout ? '' : readout.boostState === 'boosting' ? (zh ? '加速中' : 'BOOSTING')
+    : readout.boostState === 'locked' ? (zh ? '松开 Shift 解锁' : 'RELEASE SHIFT')
+    : readout.boostState === 'cooldown' ? (zh ? `冷却 ${readout.cooldownSeconds.toFixed(1)} s` : `COOLDOWN ${readout.cooldownSeconds.toFixed(1)} s`)
+    : readout.boostState === 'ready' ? (zh ? '氮气就绪' : 'NITRO READY') : (zh ? '可用，松开 Shift 补充' : 'AVAILABLE · RELEASE TO REFILL');
   return <div className='world-speed'>
     <div className='world-speed-readout'><strong>{Math.round(speed)}</strong><span><em>km/h</em>{t[vehicle]}</span></div>
-    {vehicle === 'coupe' && driving && <div className={`world-nitro${driving.boosting ? ' is-boosting' : ''}`}>
-      <div className='world-nitro-label'><small>{t.nitro}</small><small>{nitro}%</small></div>
-      <div className='world-nitro-meter' role='meter' aria-label={t.nitro} aria-valuemin={0} aria-valuemax={100} aria-valuenow={nitro}>
-        <i style={{ transform: `scaleX(${nitro / 100})` }} />
+    {vehicle === 'coupe' && driving && readout && <div className={`world-nitro world-drive-instruments${driving.boosting ? ' is-boosting' : ''}${readout.drifting ? ' is-drifting' : ''}`}>
+      <div className='world-drive-slip'><span>{readout.drifting ? (zh ? '漂移中' : 'DRIFTING') : driving.handbrake ? (zh ? '手刹已拉起' : 'HANDBRAKE') : (zh ? '侧滑角' : 'SLIP ANGLE')}</span>
+        <strong>{readout.slipDegrees}<small>°</small></strong></div>
+      <p className='world-drive-sequence'><kbd>W</kbd><span>{zh ? '加速后' : 'Build speed'}</span><kbd>A / D</kbd><b>+</b><kbd>X</kbd></p>
+      <div className='world-nitro-label'><small>{boostLabel}</small><small>{readout.boostSeconds.toFixed(1)} s</small></div>
+      <div className='world-nitro-meter' role='meter' aria-label={t.nitro} aria-valuemin={0} aria-valuemax={100} aria-valuenow={readout.nitroPercent}>
+        <i style={{ transform: `scaleX(${readout.nitroPercent / 100})` }} />
       </div>
-      <small className='world-driving-state'>{driving.boosting ? t.boosting : driving.handbrake ? t.handbrake : t.nitroHint}</small>
+      <p className='world-drive-sequence'><kbd>W</kbd><b>+</b><kbd>Shift</kbd><span>{zh ? '直线加速，松开补充' : 'Boost straight · release to refill'}</span></p>
+      <small className='world-drive-pad'>{zh ? '手柄：RT 加速 · X 手刹 · A 氮气' : 'Pad: RT throttle · X handbrake · A nitro'}</small>
+      <small className='world-drive-recover'>{zh ? '松开 X，反向轻打方向接回抓地' : 'Release X, then countersteer to regain grip'}</small>
     </div>}
   </div>;
 }

@@ -245,3 +245,22 @@ kbd { font: 600 11px/1 "Geist", sans-serif; display: inline-flex; align-items: c
 .world-park-bubbles { display: grid; gap: 6px; width: min(18rem, calc(100vw - 3rem)); transform: translateY(-55%); color: #2a2421; font: 500 14px/1.5 Geist, "PingFang SC", sans-serif; }
 .world-park-bubbles p { margin: 0; padding: 9px 13px; border-radius: 12px 12px 12px 3px; background: rgba(244, 236, 219, .95); box-shadow: 0 3px 12px #0002; }
 body:has(.world-app) astro-dev-toolbar { display: none !important; }
+
+/* Driving instruments: measured slip and the physics-owned nitro reservoir. */
+.world-app .world-drive-instruments { width: 268px; padding: 12px 14px; border-radius: 8px; background: #142a33f2; text-shadow: none; }
+.world-drive-slip { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; color: var(--paper-2); }
+.world-drive-slip > span { font-size: 11px; letter-spacing: .07em; }
+.world-drive-slip > strong { font-size: 24px; line-height: 1; font-weight: 500; font-variant-numeric: tabular-nums; }
+.world-drive-slip > strong > small { font-size: 15px; }
+.world-drive-sequence { display: flex; align-items: center; gap: 5px; margin: 7px 0; font-size: 10px; }
+.world-drive-sequence > kbd { min-width: 22px; height: 20px; padding: 0 5px; border-radius: 4px; font-size: 10px; }
+.world-drive-sequence > span { flex: 1; min-width: 0; color: var(--paper-2); letter-spacing: 0; line-height: 1.35; }
+.world-drive-sequence > b { font-size: 10px; font-weight: 400; color: var(--sand); }
+.world-drive-instruments .world-nitro-label { margin-top: 13px; align-items: center; color: var(--paper); }
+.world-drive-instruments .world-nitro-label > small { font-size: 10px; }
+.world-drive-instruments .world-nitro-meter { height: 5px; border-radius: 2px; }
+.world-drive-pad, .world-drive-recover { display: block; font-size: 9px !important; color: #c1d0cf; line-height: 1.5; }
+.world-drive-recover { margin-top: 5px; }
+.world-drive-instruments.is-drifting .world-drive-slip { color: #efb476; }
+.world-drive-instruments.is-boosting .world-nitro-label { color: #8ce3d9; }
+@media (max-width: 600px) { .world-app .world-drive-instruments { width: 248px; padding: 10px 12px; } }

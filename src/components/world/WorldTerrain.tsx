@@ -15,6 +15,8 @@ import { useIsClaimed } from './WorldVisualClaims';
 import { windUniforms } from './WorldWind';
 import WorldGrass, { ActorTracker, actorState, grassDebug } from './WorldGrass';
 import { seaSpotDebug } from './WorldSea';
+import { useMineManifest } from './alpha-mine-assets';
+import { ALPHA_MINE_FOOTPRINT, mineLocalToWorld } from './alpha-mine-layout';
 
 /** quality-v3 island ground: one 0.5 m faceted terrain (WorldLandform) rendered with vertex
  * colours plus world-space detail and swash-driven wet sand, and the same triangles as the
@@ -322,6 +324,7 @@ function TerrainLodChunks({ geometry, material }: { geometry: BufferGeometry; ma
 export const terrainLodDebug = { triangles: 0, fineTiles: 0, updates: 0 };
 
 export function IslandTerrain() {
+  const vegetation = useMineManifest(s=>s.manifest?.vegetation);
   const terrain = useMemo(buildTerrain, []);
   const geometry = useMemo(() => {
     const g = createTerrainGeometry();
@@ -336,8 +339,15 @@ export function IslandTerrain() {
   // Grass candidates (~1 s of CPU in one go) are built in <= 6 ms slices on idle callbacks, so the
   // first frames are not blocked; the grass fades in once the build completes.
   const [blades, setBlades] = useState(() => new Float32Array(0));
+  const allBlades = useMemo(()=>{
+    const extra = (vegetation ?? []).flatMap((v,j)=>Array.from({length:7},(_,i)=>{
+      const a=i*2.399+j, r=i===0?0:.12+.16*(i%3)/2;
+      return [...mineLocalToWorld([v.position[0]+Math.cos(a)*r,v.position[1],v.position[2]+Math.sin(a)*r]),v.yaw+a,Math.max(0,Math.min(1,(v.scale-.7)/.75))*(.65+.35*(i%3)/2),0];
+    }).flat());
+    const data = new Float32Array(blades.length+extra.length); data.set(blades); data.set(extra,blades.length); return data;
+  },[blades,vegetation]);
   useEffect(() => {
-    const job = grassCandidateJob(SCATTER_BLOCKERS), w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number; cancelIdleCallback?: (id: number) => void };
+    const job = grassCandidateJob([...SCATTER_BLOCKERS,ALPHA_MINE_FOOTPRINT]), w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number; cancelIdleCallback?: (id: number) => void };
     let handle = 0, done = false; const t0 = performance.now();
     const tick = () => {
       if (done) return;
@@ -363,7 +373,7 @@ export function IslandTerrain() {
       : <mesh name="island-terrain-v3-mesh" geometry={geometry} material={material} receiveShadow />}
     <ActorTracker />
     <EnvDebug />
-    <WorldGrass data={blades} />
+    <WorldGrass data={allBlades} />
     <Scatter name="ground-pebbles" data={scatter.pebbles} geometry={pebble} material={pebbleMat} tint={pebbleTint} cap={160} />
   </group>;
 }
