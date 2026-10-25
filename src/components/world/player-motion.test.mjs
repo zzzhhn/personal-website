@@ -4,17 +4,16 @@ import RAPIER from '@dimforge/rapier3d-compat';
 import { findLowVault, playerVelocityChange } from './player-motion.ts';
 await RAPIER.init();
 
-test('start retains 8 m/s² cap; sprint brakes through several footfalls, reversal keeps momentum', () => {
-  const dt = 1 / 60;
-  assert.ok(playerVelocityChange({ x: 0, y: 0, z: 0 }, { x: 6.2, y: 0, z: 0 }, dt, true).x <= 8 * dt);
-  let velocity = { x: 6.2, y: 0, z: 0 }, distance = 0, frames = 0;
-  while (velocity.x > .1 && frames++ < 120) {
-    velocity.x += playerVelocityChange(velocity, { x: 0, y: 0, z: 0 }, dt, true).x;
-    distance += velocity.x * dt;
+test('ordinary start, braking, reversal and air response retain the 3cb1f25 baseline', () => {
+  // Fixed oracles calculated from the baseline WorldActors controller before the phase-2 experiment.
+  for (const [speed, target, grounded, expected] of [
+    [0, 6.2, true, .13333333333333333], [2.7, 6.2, true, .13333333333333333],
+    [3.6, 0, true, -.6525692889192655], [6.2, 0, true, -1.1238693309165126],
+    [6.2, -6.2, true, -2.2477386618330253], [4, -4, false, -.3901646039942879],
+  ]) {
+    const change = playerVelocityChange({ x: speed, y: 0, z: 0 }, { x: target, y: 0, z: 0 }, 1 / 60, grounded);
+    assert.ok(Math.abs(change.x - expected) < 1e-12); assert.equal(change.z, 0);
   }
-  assert.ok(distance > 1.3 && distance < 1.8, `brake distance ${distance}`);
-  const reverse = playerVelocityChange({ x: 6.2, y: 0, z: 0 }, { x: -6.2, y: 0, z: 0 }, dt, true);
-  assert.ok(reverse.x >= -16 * dt && 6.2 + reverse.x > 0);
 });
 
 function scene({ height = .45, width = .12, landing = true, ceiling = false, sensor = false, dynamic = false } = {}) {

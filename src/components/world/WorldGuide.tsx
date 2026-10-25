@@ -385,7 +385,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       const target = targetSpeedMps ?? 0;
       if (intent === 'idle' || target < .1) return isGait(s.current) && speedMps > STOP_SPEED ? s.current : 'Idle';
       if (speedMps < .25 && s.blocked > .25) return 'Idle';
-      if (intent === 'run') return target > (D.Run + D.Sprint) / 2 && speedMps > (s.current === 'Sprint' ? 4.2 : 4.8) ? 'Sprint' : 'Run';
+      if (intent === 'run') return target > (D.Run + D.Sprint) / 2 ? 'Sprint' : 'Run';
       return target > D.Walk * 1.35 ? 'Run' : 'Walk';
     };
     s.blocked = intent !== 'idle' && (targetSpeedMps ?? 0) > 1 && speedMps < .25 ? s.blocked + dt : 0;

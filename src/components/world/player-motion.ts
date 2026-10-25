@@ -3,15 +3,12 @@ import type * as Rapier from '@dimforge/rapier3d-compat';
 import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
 
 type Vector = { x: number; y: number; z: number };
-/** Bound the change of momentum, retaining the verified 8 m/s² low-speed start. */
+/** Baseline 3cb1f25 response, including its verified 8 m/s² low-speed start. */
 export function playerVelocityChange(velocity: Vector, target: Vector, dt: number, grounded: boolean) {
   const factor = 1 - Math.exp(-(grounded ? 12 : 3) * dt);
   let x = (target.x - velocity.x) * factor, z = (target.z - velocity.z) * factor;
-  if (grounded) {
-    const speed = Math.hypot(velocity.x, velocity.z), goal = Math.hypot(target.x, target.z);
-    const accelerating = goal > speed && velocity.x * target.x + velocity.z * target.z >= 0;
-    const limit = accelerating && speed < 2.8 ? 8 : goal < .1 ? 12 : 16;
-    const scale = Math.min(1, limit * dt / Math.max(1e-6, Math.hypot(x, z)));
+  if (grounded && Math.hypot(velocity.x, velocity.z) < 2.8 && Math.hypot(target.x, target.z) > Math.hypot(velocity.x, velocity.z)) {
+    const scale = Math.min(1, 8 * dt / Math.max(1e-6, Math.hypot(x, z)));
     x *= scale; z *= scale;
   }
   return { x, z };

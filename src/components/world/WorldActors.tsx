@@ -777,8 +777,7 @@ export default function WorldActors() {
       const locked=guideMovementLock.current || !!guideTransition.current;
       let vx=locked?0:wx*speed,vz=locked?0:wz*speed;
       if (magnitude>.05 && !locked) {
-        const desiredYaw=grounded.current&&!locked&&Math.hypot(velocity.x,velocity.z)>1.2
-          ?Math.atan2(-velocity.z,velocity.x):Math.atan2(-vz,vx);
+        const desiredYaw=Math.atan2(-vz,vx);
         const difference=Math.atan2(Math.sin(desiredYaw-guideYaw.current),Math.cos(desiredYaw-guideYaw.current));
         if (grounded.current && Math.hypot(velocity.x,velocity.z)<.5 && Math.abs(difference)>Math.PI/3)
           turnBeforeMove.current=true;
@@ -791,7 +790,6 @@ export default function WorldActors() {
         if (turnBeforeMove.current) { vx=0; vz=0; }
       } else turnBeforeMove.current=false;
       guideTargetSpeed.current=Math.hypot(vx,vz);
-      // Facing follows travel above walking speed, so reversal brakes before the body pivots.
       if(vault.current){
         vault.current.remaining-=dt;
         if(vault.current.remaining<=0 || (grounded.current&&vault.current.remaining<vault.current.duration-.15))vault.current=null;
