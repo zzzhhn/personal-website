@@ -6,9 +6,10 @@ import sys, math, json, hashlib
 from pathlib import Path
 import bpy, bmesh
 from mathutils import Vector
+from mathutils.bvhtree import BVHTree
 HERE=Path(__file__).resolve().parent
 sys.path.insert(0,str(HERE))
-from layout import OUT, VEINS, ore_rest
+from layout import OUT, VEINS, ore_rest, contract
 from build import v3, linear
 
 GLB=OUT/'veins.glb';SOURCE=HERE/'veins.blend';EVIDENCE=HERE/'evidence'
@@ -29,9 +30,10 @@ def patch(state):
         y=-.79+j/ny*1.58
         for i in range(nx+1):
             u=-1+2*i/nx
-            width=.72+.07*math.sin(y*6+.4)+.035*math.sin(y*13)
+            width=.42+.30*math.cos(y*1.7)+.065*math.sin(y*6+.4)+.035*math.sin(y*13)
             x=u*width
             yy=y+.025*math.sin(i*1.8+j*.7)*(1 if j in [0,ny] else .4)
+            if j in [0,ny]:yy+=(1 if j==ny else -1)*.12*(1-u*u)
             vertices.append((x,yy,front(x,yy)))
     for j in range(ny):
         for i in range(nx):
@@ -73,6 +75,7 @@ def create():
             me.from_pydata([v3(p) for p in vs],[],fs);me.update();me.materials.append(stone);me.materials.append(mineral)
             for p,role in zip(me.polygons,roles):p.material_index=role
             ob=bpy.data.objects.new(v['id']+'_'+state+'_rock',me);bpy.context.scene.collection.objects.link(ob);ob.parent=group
+            empty(v['id']+'_'+state+'_impact',group,(0,0,{'intact':.255,'cracked':.160,'open':.050}[state]))
         # The hit marker lies on the unbroken exposed front at the centre.
         empty(v['id']+'_impact',root,(0,0,.255))
         rest=ore_rest(v);empty(v['id']+'_oreRest',root,[rest[i]-v['socket'][i] for i in range(3)])
@@ -90,15 +93,26 @@ def inspect():
         assert not any(row[k] for k in ['nonmanifold','badWinding','degenerate','validateWouldRepair']),row
         assert row['volume']>0,row
         report.append(row)
-    sockets={}
+    sockets={};contacts={}
     for v in VEINS:
         root=bpy.data.objects[v['id']];assert all(abs(s-1)<1e-6 for s in root.scale)
         assert root.location.length<1e-8
         for state in ['intact','cracked','open']:assert bpy.data.objects[v['id']+'_'+state].parent==root
-        for kind in ['impact','oreRest']:
+        for kind in ['impact','oreRest','intact_impact','cracked_impact','open_impact']:
             ob=bpy.data.objects[v['id']+'_'+kind];p=ob.matrix_world.translation
             sockets[ob.name]=[p.x,p.z,-p.y]
-    return {'meshes':report,'triangles':sum(r['triangles'] for r in report),'sockets':sockets}
+        for state in ['intact','cracked','open']:
+            ob=bpy.data.objects[v['id']+'_'+state+'_rock'];target=bpy.data.objects[v['id']+'_'+state+'_impact'].matrix_world.translation
+            tree=BVHTree.FromPolygons([ob.matrix_world@p.co for p in ob.data.vertices],[list(p.vertices) for p in ob.data.polygons])
+            point,normal,index,distance=tree.find_nearest(target)
+            assert distance<.008,(v['id'],state,distance)
+            contacts[v['id']+'_'+state]={'nearestSurfaceDistanceM':distance,'surfacePoint':[point.x,point.z,-point.y]}
+    materials={}
+    for m in bpy.data.materials:
+        if not m.use_nodes:continue
+        bs=m.node_tree.nodes.get('Principled BSDF')
+        if bs:materials[m.name]={'baseColor':list(bs.inputs['Base Color'].default_value),'roughness':bs.inputs['Roughness'].default_value,'metallic':bs.inputs['Metallic'].default_value}
+    return {'meshes':report,'triangles':sum(r['triangles'] for r in report),'sockets':sockets,'surfaceContacts':contacts,'materials':materials}
 
 def render():
     scene=bpy.context.scene;scene.render.engine='BLENDER_EEVEE';scene.render.resolution_x=1000;scene.render.resolution_y=650;scene.render.resolution_percentage=100
@@ -111,11 +125,12 @@ def render():
     ld=bpy.data.lights.new('PREVIEW_key','AREA');ld.energy=700;ld.shape='DISK';ld.size=5
     light=bpy.data.objects.new('PREVIEW_key',ld);scene.collection.objects.link(light);light.location=v3((-3,6,6));light.rotation_euler=(-light.location).to_track_quat('-Z','Y').to_euler()
     cd=bpy.data.cameras.new('PREVIEW_camera');camera=bpy.data.objects.new('PREVIEW_camera',cd);scene.collection.objects.link(camera);scene.camera=camera
-    camera.location=v3((2.2,1,10));camera.rotation_euler=(-camera.location).to_track_quat('-Z','Y').to_euler();cd.type='ORTHO';cd.ortho_scale=8.4
+    camera.location=v3((2.2,1,10));camera.rotation_euler=(-camera.location).to_track_quat('-Z','Y').to_euler();cd.type='ORTHO';cd.ortho_scale=10.2
     scene.render.filepath=str(EVIDENCE/'veins-states.png');bpy.ops.render.render(write_still=True)
 
 def run():
     OUT.mkdir(parents=True,exist_ok=True);EVIDENCE.mkdir(exist_ok=True);bpy.ops.wm.read_factory_settings(use_empty=True)
+    bpy.context.preferences.filepaths.save_version=0
     roots=create();native=inspect();bpy.ops.object.select_all(action='SELECT')
     bpy.ops.export_scene.gltf(filepath=str(GLB),export_format='GLB',use_selection=True,export_yup=True,export_apply=True,
         export_extras=True,export_animations=False,export_cameras=False,export_lights=False,export_materials='EXPORT',
@@ -129,6 +144,9 @@ def run():
     bpy.context.view_layer.update();fresh=inspect()
     assert native['triangles']==reopened['triangles']==fresh['triangles']
     for name,p in native['sockets'].items():assert math.dist(p,fresh['sockets'][name])<1e-5,(name,p,fresh['sockets'][name])
+    for name,m in native['materials'].items():
+        f=fresh['materials'][name]
+        assert all(abs(m[k]-f[k])<1e-5 for k in ['roughness','metallic']) and math.dist(m['baseColor'],f['baseColor'])<1e-5,(name,m,f)
     report={'asset':'alpha-veins','bytes':GLB.stat().st_size,'sha256':hashlib.sha256(GLB.read_bytes()).hexdigest(),
             'sourceSha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'native':native,'reopened':reopened,'freshGLB':fresh,
             'units':'metres','rootPlacement':'each vein root is local zero; place at layout.veins[].socket',
@@ -136,6 +154,9 @@ def run():
             'oreRestMeaning':'ore centre, not bottom; supported by static stone ledge',
             'scope':'geometry and socket exchange only; game light, pick contact, pickup and creative acceptance pending'}
     (EVIDENCE/'veins-qa.json').write_text(json.dumps(report,indent=1)+'\n')
+    layout=json.loads((OUT/'layout.json').read_text());layout['dynamicAssets']['veins']=contract()['dynamicAssets']['veins']
+    layout['dynamicAssets']['veins']['geometry']={'sha256':report['sha256'],'bytes':report['bytes'],'triangles':fresh['triangles']}
+    (OUT/'layout.json').write_text(json.dumps(layout,indent=2)+'\n')
     print('AM_VEINS_PASS',report['bytes'],fresh['triangles'],flush=True);render()
     (EVIDENCE/'veins-render.json').write_text(json.dumps({'glbSha256':report['sha256'],'image':'veins-states.png','columns':['intact','cracked','open'],'rows':[v['id'] for v in VEINS],'previewOnly':'temporary row/column transforms and studio light'},indent=1)+'\n')
 

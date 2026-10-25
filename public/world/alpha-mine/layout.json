@@ -415,6 +415,11 @@
           "defaultState": "intact",
           "impactSocket": "vein-lower_impact",
           "oreRestSocket": "vein-lower_oreRest",
+          "stateImpactSockets": {
+            "intact": "vein-lower_intact_impact",
+            "cracked": "vein-lower_cracked_impact",
+            "open": "vein-lower_open_impact"
+          },
           "oreRestPosition": [
             -6.4,
             0.7,
@@ -442,6 +447,11 @@
           "defaultState": "intact",
           "impactSocket": "vein-middle_impact",
           "oreRestSocket": "vein-middle_oreRest",
+          "stateImpactSockets": {
+            "intact": "vein-middle_intact_impact",
+            "cracked": "vein-middle_cracked_impact",
+            "open": "vein-middle_open_impact"
+          },
           "oreRestPosition": [
             -8.6,
             3.7,
@@ -469,6 +479,11 @@
           "defaultState": "intact",
           "impactSocket": "vein-upper_impact",
           "oreRestSocket": "vein-upper_oreRest",
+          "stateImpactSockets": {
+            "intact": "vein-upper_intact_impact",
+            "cracked": "vein-upper_cracked_impact",
+            "open": "vein-upper_open_impact"
+          },
           "oreRestPosition": [
             1.5,
             6.7,
@@ -476,6 +491,11 @@
           ],
           "factorId": "LOW_STD_20"
         }
+      },
+      "geometry": {
+        "sha256": "64bddb5b98ca9ead0d44016f48718d1fb9799bc0629c8995d52c7ebb384e8517",
+        "bytes": 82108,
+        "triangles": 3348
       }
     },
     "toolSocketAxes": {

@@ -9,7 +9,7 @@
   "mining/pickup chest rays and capsules"
  ],
  "inputs": {
-  "layout.json": "e09574837f41ffc83872583db36952835f39f87b59d028848f47f3fa7e0bb7d7",
+  "layout.json": "3b5b47857aaf29902f918168f5366977fc158108799c3a06b4fbb59fb5d31417",
   "colliders.json": "f1b9eac3bc32ec46cac04146e8daa531e44fd77851f3bb4cb583dec25d80a230",
   "quarry-static.glb": "5d7c1a1a7875f3dd03a6d46261156b42c577bcb648287bf5362eabe64183eb90"
  },

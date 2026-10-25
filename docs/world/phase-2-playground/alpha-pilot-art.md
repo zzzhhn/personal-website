@@ -34,7 +34,7 @@
 
 矿脉每根有 `<id>_intact`、`<id>_cracked`、`<id>_open` 三状态组。GLB 包含全部状态，初始化仅显示 intact。矿脉为闭壳，开裂／采空改变真实前表面深度。根下 `<id>_impact` 对应完整面中心 [0,0,0.255]，`<id>_oreRest` 为矿石中心相对位置 [0,-0.60,0.30]。
 
-修订源另增加 `<id>_<state>_impact`，三状态局部 z 为 .255／.160／.050，让第二次击打跟随凹面。最终 GLB 节点以 `evidence/veins-qa.json` 的实际记录为准，未导出前不得从源代码推断现有 GLB 已含这些节点。
+最终 GLB 另含 `<id>_<state>_impact`，三状态局部 z 为 .255／.160／.050，让第二次击打跟随凹面。`layout.dynamicAssets.veins.roots[id].stateImpactSockets` 给出映射；`evidence/veins-qa.json` 记录独立 GLB 的 15 个 socket 及与真实表面的距离，最大约 4.03 mm。
 
 | 矿脉 | 因子 | 矿物色 |
 | --- | --- | --- |
@@ -52,12 +52,12 @@
 
 主线实际 Rapier 测试以本工作树资产运行，三项全部通过：路线支撑及 .48／.34 胶囊净空、三层站位和接缝、开采与 0.70 m 拾取位的胸口视线及胶囊空间。这只证明指定路线／站位，不是完整扫掠、角色握点或整场游戏验收。`rapier-receipt.json` 绑定当次输入哈希。
 
-矿脉第一版 81,160 bytes，9 状态合计 3,348 三角，原生／重开／独立 GLB 检查通过。`veins-qa.json` 绑定资产哈希，`veins-render.json` 说明临时预览变换。外缘与裁切修订尚需重导，最终统计随证据更新。
+最终矿脉 82,108 bytes，9 状态合计 3,348 三角，原生／重开／独立 GLB 检查通过。外缘和预览裁切已修正并实际看图。四材质的 baseColor／roughness／metallic 持久化核对通过，矿物 roughness .48、metallic .10，基岩 roughness .94、metallic 0，无发光。`veins-qa.json` 绑定资产哈希，`veins-render.json` 说明临时预览变换。实际游戏击打接触仍由角色／主线验证。
 
 ## 复现与证据
 
 轻量合同／几何：`python3 tools/world/alpha-mine/geometry.py`，然后 `python3 tools/world/alpha-mine/qa_layout.py`。前者重写 layout／colliders，静态 GLB 必须随后同版重导，中间状态不能交给运行时。
 
-使用已有 Blender，参数 `--background --factory-startup --disable-autoexec --threads 2 --python-exit-code 1 --python tools/world/alpha-mine/build.py`；矿脉入口为 veins.py。先预检并取得共享 `/tmp/bobby-world-phase2-heavy.lock`，完成立即释放，编码期间不持锁。不安装工具或启动新浏览器。低于 1 GiB 磁盘暂停重型任务，当前已触发限制。
+使用已有 Blender，参数 `--background --factory-startup --disable-autoexec --threads 2 --python-exit-code 1 --python tools/world/alpha-mine/build.py`；矿脉入口为 veins.py。先预检并取得共享 `/tmp/bobby-world-phase2-heavy.lock`，完成立即释放，编码期间不持锁。不安装工具或启动新浏览器。低于 1 GiB 磁盘暂停重型任务；本轮曾触发，资源恢复后才串行完成最终小型矿脉导出。
 
 `batch1.blend` 保留编辑／合批场景，`veins.blend` 保留矿脉状态。`batch1-qa.json` 和 `render-manifest.json` 绑定静态 GLB／源哈希及预览设置；overall.png、entrance.png、middle.png、overall-clay.png 已实际看图。矿脉状态预览为 veins-states.png。玩家视角、日夜光照、真实击打／拾取／投池仍待主线整合验收。
