@@ -2,6 +2,10 @@
 
 2026-10-25。代码提交 `0ac1342`，基于 `f4e4f40`，隔离分支 `codex/world-phase2-performance`。工作目录：`personal-world-phase2-performance`。未合并、推送或部署，由主协调 session 集成。
 
+主线审阅补记：候选代码已 cherry-pick 为 `8379c9e`，文档为 `dfd0c15`。集成目录与 `574147f` 的 `src`、`package.json`、`package-lock.json` 差异为零，复用下述正式构建验证；主线已检查最终短记录、截图和日志，未在资源压力下重复跑同一验证。用户保留的 4341 服务仍为 `f4e4f40`，未操作或更新。上段的未推送状态为性能线交接时状态。
+
+精简原始读数与来源哈希已保留为 [JSON 证据](evidence/pause-render-sleep-20261025.json)，并附 [最终暂停夜景截图](evidence/pause-render-sleep-20261025.jpg)。此截图来自性能线最终验证，主线已读图；不是主线另一次运行采样。
+
 ## 改动
 
 - `src/components/world/WorldRuntime.tsx`：可见运行时保持 always，前台暂停改为 demand，页面隐藏改为 never；隐藏时同时暂停物理。新增可见性监听有卸载清理。菜单修改／尺寸变化时重置帧时钟并请求必要重绘，保留初始化前三帧的 ready 信号。
