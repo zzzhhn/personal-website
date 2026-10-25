@@ -356,7 +356,7 @@ const TALL_RECEIVERS = BUILDINGS.map(({ position: [x, y, z], size: [w, h, d] }) 
 
 function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStandardMaterial }) {
   const light = useWorldStore((s) => s.light);
-  const { scene, camera } = useThree();
+  const { scene, camera, invalidate } = useThree();
   const hemisphere = useRef<HemisphereLight>(null), sun = useRef<DirectionalLight>(null), fire = useRef<PointLight>(null);
   const sea = useMemo(() => createWorldWaterMaterial(PALETTE.sea), []);
   const quality = useWorldStore(s => s.quality);
@@ -413,6 +413,8 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
       seaGlintUniforms.uGlint.value.copy(colors.glint).multiplyScalar(1 - n);
     }
     if (scene.fog) scene.fog.color.copy(skyUniforms.horizon.value);
+    // The sky/water blend has its own clock; finish it even while gameplay sleeps.
+    if (s.elapsed < 2) invalidate();
   });
   return <>
     <GlowClock /><GlowDemo />

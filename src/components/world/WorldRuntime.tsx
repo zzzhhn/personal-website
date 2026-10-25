@@ -1,5 +1,5 @@
 import { Raycaster, Vector3 } from 'three';
-import { lazy, memo, Suspense, useEffect, useRef, useState } from 'react';
+import { lazy, memo, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Physics, useRapier } from '@react-three/rapier';
 import WorldEnvironment from './WorldEnvironment';
@@ -13,7 +13,7 @@ import { useWindClock, windUniforms } from './WorldWind';
 import { campColliderRecords } from './WorldCampPhysics';
 import { useWorldResolution, visualInventory, objectIdentity, colliderBounds, renderSize } from './WorldQuality';
 import { guideSkinEvidence } from './WorldGuideEvidence';
-import { NightClock } from './WorldNight';
+import { night, NightClock } from './WorldNight';
 import { claimedKeys } from './WorldVisualClaims';
 // District mount points are imported statically so their greybox claims (WorldVisualClaims) are
 // registered before the greybox layout is first built. Heavy GLBs still load lazily inside them.
@@ -26,21 +26,46 @@ import WorldEntry from './WorldEntry';
 // Layout v4 greybox (?layout=v4) loads as its own chunk; the default entry never fetches it.
 const WorldDistricts = LAYOUT_V4 ? lazy(() => import('./WorldDistricts')) : null;
 
+function usePageVisible() {
+  const [visible, setVisible] = useState(() => !document.hidden);
+  useEffect(() => {
+    const update = () => setVisible(!document.hidden);
+    document.addEventListener('visibilitychange', update);
+    update();
+    return () => document.removeEventListener('visibilitychange', update);
+  }, []);
+  return visible;
+}
+
 function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
   useWindClock();
   useWorldResolution();
   const { world, colliderStates, rapier } = useRapier();
-  const { camera, gl, scene } = useThree();
+  const { camera, gl, scene, clock, invalidate, size, get } = useThree();
   const shot = useWorldStore(s => s.shot);
+  const paused = useWorldStore(s => s.paused);
+  const light = useWorldStore(s => s.light);
+  const quality = useWorldStore(s => s.quality);
   const frames = useRef(0);
+  const frameDelta = useRef(0);
+  useLayoutEffect(() => {
+    if (document.hidden) return;
+    // A demand frame must not include the time spent asleep. This also covers
+    // menu edits and resize without changing the requested drawing resolution.
+    clock.getDelta();
+    invalidate();
+  }, [paused, light, quality, size.width, size.height, clock, invalidate]);
   useEffect(() => { useWorldStore.setState(s => ({ loading: { ...s.loading, phase: 'scene' } })); }, []);
   useEffect(() => {
     if (!shot) return;
     const view = WORLD_SHOTS.find(v => v.id === shot);
     if (view) { camera.position.set(...view.position); camera.lookAt(...view.target); camera.updateProjectionMatrix(); }
   }, [shot, camera]);
-  useFrame(() => {
+  useFrame((_, delta) => {
+    frameDelta.current = delta;
     frames.current++;
+    // Loading may finish while paused; still deliver the existing ready signal.
+    if (frames.current < 3) invalidate();
     if (frames.current === 3) useWorldStore.setState(s => ({ ready: true, loading: { ...s.loading, phase: 'ready' } }));
   });
   useEffect(() => {
@@ -111,12 +136,13 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
           shadowMapSize, shadowType: gl.shadowMap.type, postprocessing: [] };
       },
       stats: () => ({ calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, camera: camera.position.toArray() }),
+      renderLoop: () => ({ mode: get().frameloop, frame: gl.info.render.frame, delta: frameDelta.current, night: night.value, windTime: windUniforms.uWindTime.value }),
       sceneObjects: () => { const result: string[] = []; scene.traverse(o => { if (o.name) result.push(o.name); }); return result; },
       claimedGreybox: () => claimedKeys(),
     };
     Object.assign(window, { __worldDebug: debug });
     return () => { delete (window as Window & { __worldDebug?: unknown }).__worldDebug; };
-  }, [camera, gl, scene, world, colliderStates, rapier, setOverlay]);
+  }, [camera, gl, scene, get, world, colliderStates, rapier, setOverlay]);
   return null;
 }
 
@@ -124,6 +150,7 @@ export default memo(function WorldRuntime({ content }: { content: WorldContent }
   const [overlay, setOverlay] = useState(false);
   const paused = useWorldStore(s => s.paused);
   const shot = useWorldStore(s => s.shot);
+  const visible = usePageVisible();
   useEffect(() => {
     const qa = new URLSearchParams(window.location.search).has('qa');
     if (qa || useWorldStore.getState().shot) return;
@@ -134,8 +161,8 @@ export default memo(function WorldRuntime({ content }: { content: WorldContent }
     });
     return unsubscribe;
   }, []);
-  return <Canvas shadows="percentage" dpr={[1, 2]} camera={{ position: [CAMP_SPAWN[0] + 10, CAMP_SPAWN[1] + 13, CAMP_SPAWN[2] + 10], fov: 50, near: .1, far: 600 }} gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}>
-    <Suspense fallback={null}><Physics debug={overlay} gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={paused || !!shot} colliders={false}>
+  return <Canvas frameloop={!visible ? 'never' : paused ? 'demand' : 'always'} shadows="percentage" dpr={[1, 2]} camera={{ position: [CAMP_SPAWN[0] + 10, CAMP_SPAWN[1] + 13, CAMP_SPAWN[2] + 10], fov: 50, near: .1, far: 600 }} gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}>
+    <Suspense fallback={null}><Physics debug={overlay} gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={paused || !visible || !!shot} colliders={false}>
       <NightClock />
       <WorldEnvironment experiences={content.experiences} />{WorldDistricts && <WorldDistricts />}<WorldObstacles /><WorldActors />
       {/* Each district suspends on its own GLBs without holding back the island or the player. */}
