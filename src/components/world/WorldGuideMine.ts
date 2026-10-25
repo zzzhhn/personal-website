@@ -29,7 +29,7 @@ export function minePose(state: GuideMineState): Pose {
   if (a.kind === 'scan') return { right: [.36 + .015 * Math.sin(t * 4), .98, .18 + .045 * Math.sin(t * 3)],
     tilt: -.08, lean: .03, target: 0, left: 0, tool: 'detector' };
   if (a.kind === 'equip') return sample([
-    [0, BELT, 0, 0, 0, 0], [.48, REST, 0, .18, 1, .2], [.8, REST, 0, 0, 0, 0],
+    [0, BELT, 0, 0, 0, 0], [.48, REST, 0, .65, 1, .2], [.8, REST, 0, 0, 0, 0],
   ], t, a.contact || state.equipped ? 'detector' : 'none');
   if (a.kind === 'strike') return sample([
     [0, REST, 0, 0, 0, 0], [.14, BELT, 0, 0, 0, .2],
@@ -84,25 +84,29 @@ export class GuideMineLayer {
   private applied = false;
   constructor(scene: Object3D) {
     this.scene = scene;
-    const bones = new Map<string, Bone>(); scene.traverse(o => { if ((o as Bone).isBone) bones.set(o.name, o as Bone); });
+    const bones = new Map<string, Bone>();
+    // GLTFLoader sanitizes dotted bone names (upperarm.R becomes upperarmR).
+    const boneKey=(name:string)=>name.replace(/[._]/g,'');
+    scene.traverse(o => { if ((o as Bone).isBone) bones.set(boneKey(o.name), o as Bone); });
+    const bone=(name:string)=>bones.get(boneKey(name));
     const arm = (tag: 'R' | 'L'): Arm | null => {
-      const upper = bones.get(`upperarm.${tag}`), lower = bones.get(`forearm.${tag}`), hand = bones.get(`hand.${tag}`);
+      const upper = bone(`upperarm.${tag}`), lower = bone(`forearm.${tag}`), hand = bone(`hand.${tag}`);
       if (!upper || !lower || !hand) return null;
       const palm = new Group(); palm.name = `mine-palm-${tag}`; palm.position.set(0, .043, 0); hand.add(palm);
       return { upper, lower, hand, palm, side: tag === 'R' ? 1 : -1 };
     };
     const right = arm('R'), left = arm('L'); this.arms = right && left ? { right, left } : null;
-    this.spine = ['spine', 'chest'].map(name => bones.get(name)).filter((b): b is Bone => !!b);
-    this.head = bones.get('head') ?? null; this.pelvis = bones.get('pelvis') ?? null;
+    this.spine = ['spine', 'chest'].map(name => bone(name)).filter((b): b is Bone => !!b);
+    this.head = bone('head') ?? null; this.pelvis = bone('pelvis') ?? null;
     if (this.pelvis) this.pelvisPosition.copy(this.pelvis.position);
     for (const tag of ['R', 'L']) {
-      const upper = bones.get(`thigh.${tag}`), lower = bones.get(`shin.${tag}`), foot = bones.get(`foot.${tag}`);
+      const upper = bone(`thigh.${tag}`), lower = bone(`shin.${tag}`), foot = bone(`foot.${tag}`);
       if (upper && lower && foot) this.legs.push({ upper, lower, foot, side: tag === 'R' ? 1 : -1 });
     }
     for (const b of [...this.spine, ...(this.head ? [this.head] : []),
       ...[right, left].flatMap(a => a ? [a.upper, a.lower, a.hand] : []), ...this.legs.flatMap(a => [a.upper, a.lower, a.foot])])
       this.saved.set(b, b.quaternion.clone());
-    const pelvis = bones.get('pelvis');
+    const pelvis = bone('pelvis');
     scene.updateWorldMatrix(true, true);
     for (const [position, angle] of [[[-.22, .68, .23], .30], [[-.10, .76, -.26], -.12]] as const) {
       const holder = new Group(); holder.name = 'mine-tool-holster'; holder.matrixAutoUpdate = false;

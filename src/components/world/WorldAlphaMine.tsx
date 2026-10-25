@@ -2,6 +2,7 @@ import { Component, Suspense, useEffect, useMemo, useRef, type ReactNode } from 
 import { useFrame, useLoader } from '@react-three/fiber';
 import { CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { BufferGeometry, CanvasTexture, FileLoader, Float32BufferAttribute, Group, InstancedMesh, Line as ThreeLine, LineBasicMaterial, Mesh, MeshStandardMaterial, Object3D, SRGBColorSpace, Vector3 } from 'three';
+import { withWorldAssetDecoder } from './WorldAssetDecoder';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { ALPHA_FACTORS, type AlphaFactorId } from './alpha-mine-data';
 import { ALPHA_MINE_ORIGIN, mineLocalToWorld } from './alpha-mine-layout';
@@ -43,8 +44,16 @@ function MineVein({ manifest, index, source, ore }: { manifest: MineManifest; in
   const m = manifest.veins[index], factor = ALPHA_FACTORS[index], s = useAlphaMineStore(), v = s.veins[factor.id];
   const root = useMemo(() => cloneVisual(source), [source]);
   const rock = useOre(ore,factor.id);
-  const socket = mineLocalToWorld(m.socket), oreRest = mineLocalToWorld(m.oreRest);
-  const stateNames = manifest.dynamicAssets.veins.roots[m.id].states;
+  const activeState=v.hits>=3?'open':v.hits>0?'cracked':'intact';
+  const contract=manifest.dynamicAssets.veins.roots[m.id], stateNames=contract.states;
+  const socket=useMemo(()=>{
+    root.updateWorldMatrix(true,true);
+    const node=root.getObjectByName(contract.stateImpactSockets[activeState]);
+    if(!node) throw new Error(`Missing mine contact socket: ${m.id} ${activeState}`);
+    const local=root.worldToLocal(node.getWorldPosition(new Vector3()));
+    return mineLocalToWorld([m.socket[0]+local.x,m.socket[1]+local.y,m.socket[2]+local.z]);
+  },[root,contract,m,activeState]);
+  const oreRest=mineLocalToWorld(m.oreRest);
   useEffect(() => {
     for (const [name,node] of Object.entries(stateNames)) { const o=root.getObjectByName(node); if(o) o.visible=name===(v.hits>=3?'open':v.hits>0?'cracked':'intact'); }
   }, [root,stateNames,v.hits]);
@@ -58,7 +67,7 @@ function MineVein({ manifest, index, source, ore }: { manifest: MineManifest; in
     },
   });
   return <group name={`alpha-mine-${m.id}`}>
-    <primitive object={root} />
+    <group position={m.socket}><primitive object={root} /></group>
     {depleted && !v.collected && <group position={m.oreRest}><primitive object={rock} /></group>}
   </group>;
 }
@@ -132,7 +141,7 @@ function PoolCurves({ manifest }: { manifest: MineManifest }) {
       ]);
       const geometry=new BufferGeometry(); geometry.setAttribute('position',new Float32BufferAttribute(positions,3));
       const line=new ThreeLine(geometry,new LineBasicMaterial({color:oreFactor(id).color,toneMapped:false}));
-      line.name=`alpha-mine-historical-curve-${id}`;
+      line.name=`alpha-mine-historical-curve-${bay}-${id}`;
       return [line];
     });
   },[pack,bays,manifest]);
@@ -189,7 +198,7 @@ function MineEffects() {
   useFrame((_,delta)=>{
     const target=mesh.current, s=useWorldStore.getState();if(!target||s.paused||s.card||document.hidden)return;
     const next=useAlphaMineStore.getState().effect;
-    if(next && next.seq!==seq.current){effect.current=next;seq.current=next.seq;age.current=0;parkAudio.cue(next.kind==='splash'?'splash':'strike',.7);}
+    if(next && next.seq!==seq.current){effect.current=next;seq.current=next.seq;age.current=0;(target.material as MeshStandardMaterial).color.set(next.kind==='splash'?'#a8d1c5':oreFactor(next.factorId).color);parkAudio.cue(next.kind==='splash'?'splash':'strike',.7);}
     age.current+=Math.min(.05,delta); const e=effect.current;
     target.visible=!!e&&age.current<.7;if(!target.visible||!e)return;
     const t=age.current;
@@ -206,7 +215,7 @@ type Proxy = { vertices:number[];indices:number[] };
 function MineAssets({ content }: { content: WorldContent }) {
   const manifest=useLoader(FileLoader,'/world/alpha-mine/layout.json',jsonLoader) as unknown as MineManifest;
   const proxy=useLoader(FileLoader,manifest.collisionAsset,jsonLoader) as unknown as {surface:Proxy;solid:Proxy};
-  const gltfs=useLoader(GLTFLoader,[manifest.staticAsset,manifest.dynamicAssets.veins.url,manifest.dynamicAssets.ore.url,manifest.dynamicAssets.detector.url,manifest.dynamicAssets.pickaxe.url]) as GLTF[];
+  const gltfs=useLoader(GLTFLoader,[manifest.staticAsset,manifest.dynamicAssets.veins.url,manifest.dynamicAssets.ore.url,manifest.dynamicAssets.detector.url,manifest.dynamicAssets.pickaxe.url],withWorldAssetDecoder) as GLTF[];
   const scene=useMemo(()=>cloneVisual(gltfs[0].scene),[gltfs]);
   const colliders=useMemo(()=>Object.fromEntries(Object.entries(proxy).map(([k,p])=>[k,{vertices:new Float32Array(p.vertices),indices:new Uint32Array(p.indices)}])) as Record<'surface'|'solid',{vertices:Float32Array;indices:Uint32Array}>,[proxy]);
   const ore=gltfs[2].scene.getObjectByName(manifest.dynamicAssets.ore.root)!;

@@ -3,7 +3,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { Bone, Group, Matrix4, Object3D, Vector3 } from 'three';
+import { Bone, Group, Matrix4, Object3D, PropertyBinding, Vector3 } from 'three';
 import { GuideMineLayer, minePose } from './WorldGuideMine.ts';
 const id = 'REVERSAL_5';
 function glbNodes(path, bones = false) {
@@ -139,4 +139,17 @@ test('delivered tool sockets fit both G24 hands and strike contact at facility s
   const oreSamples = samples.filter(row => row.kind !== 'strike');
   assert.ok(oreSamples.every(row => row.right <= .16), `facility ore reach: ${JSON.stringify(oreSamples)}`);
   layer.dispose();
+});
+
+test('GLTFLoader-sanitized bone names still resolve both arms and the grounded crouch',()=>{
+ const scene=rig();scene.traverse(o=>{o.name=PropertyBinding.sanitizeNodeName(o.name);});
+ const layer=new GuideMineLayer(scene);layer.installAssets(assets());
+ const strike=layer.apply(state('strike',.57));assert.ok(strike.valid&&strike.assetsReady);assert.ok(strike.contactError<.025);
+ const before=scene.getObjectByName('footR').getWorldPosition(new Vector3());
+ const pick=layer.apply(state('pickup',.48,[.5,.7,0],true));assert.ok(pick.valid);assert.ok(pick.rightReachError<.035);
+ assert.ok(scene.getObjectByName('footR').getWorldPosition(new Vector3()).distanceTo(before)<1e-6);layer.dispose();
+});
+test('rack grip is reachable at the installed 1.05 metre height',()=>{
+ const {layer}=setup();const result=layer.apply(state('equip',.48,[.6,1.05,0]));
+ assert.ok(result.rightReachError<.12,`rack reach ${result.rightReachError}`);layer.dispose();
 });

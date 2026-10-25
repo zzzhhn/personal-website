@@ -1,4 +1,6 @@
 import { defineConfig } from "astro/config";
+import { realpathSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import react from "@astrojs/react";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
@@ -11,5 +13,6 @@ export default defineConfig({
   integrations: [react(), mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss(), alphaReplayPlugin()],
+    server: { fs: { allow: [fileURLToPath(new URL(".", import.meta.url)), realpathSync(fileURLToPath(new URL("./node_modules", import.meta.url)))] } },
   },
 });

@@ -39,3 +39,17 @@ test('mining stands occupy their stated storeys and seams are reachable from tho
   assert.ok(Math.hypot(v.socket[0]-p[0],v.socket[2]-p[2])<=1.3,`${v.id}: out of pickaxe reach`);
  }}finally{world.free();}
 });
+
+test('all mining and pickup approaches keep a clear chest ray and reachable capsule space',()=>{
+ const {world,solid}=scene();
+ try{for(const v of layout.veins){
+  for(const [kind,target,distance] of [['strike',v.socket,1],['pickup',v.oreRest,.7]]){
+   const p=[target[0],v.stand[1],target[2]+distance], chest={x:p[0],y:p[1]+1.27,z:p[2]};
+   const dx=target[0]-chest.x,dy=target[1]+.2-chest.y,dz=target[2]-chest.z,len=Math.hypot(dx,dy,dz);
+   const hit=world.castRay(new RAPIER.Ray(chest,{x:dx/len,y:dy/len,z:dz/len}),len-.3,true);
+   assert.equal(hit,null,`${v.id} ${kind}: interaction blocked by geometry`);
+   let blocked=false;world.intersectionsWithShape({x:p[0],y:p[1]+.88,z:p[2]},{x:0,y:0,z:0,w:1},new RAPIER.Capsule(.48,.34),c=>{if(c.handle===solid.handle)blocked=true;return true;});
+   assert.equal(blocked,false,`${v.id} ${kind}: capsule cannot reach the proposed stand`);
+  }
+ }}finally{world.free();}
+});

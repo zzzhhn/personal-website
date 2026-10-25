@@ -11,7 +11,7 @@ export interface MineManifest {
   dynamicAssets: {
     ore: { url: string; root: string; tintMaterial: string };
     detector: { url: string; root: string }; pickaxe: { url: string; root: string };
-    veins: { url: string; roots: Record<string,{ root: string; states: Record<'intact'|'cracked'|'open',string> }> };
+    veins: { url: string; roots: Record<string,{ root: string; states: Record<'intact'|'cracked'|'open',string>; stateImpactSockets: Record<'intact'|'cracked'|'open',string> }> };
   };
 }
 export const useMineManifest = create<{ manifest: MineManifest | null }>(() => ({ manifest: null }));

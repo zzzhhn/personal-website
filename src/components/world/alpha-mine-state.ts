@@ -49,7 +49,7 @@ export function beginMineAction(kind: MineActionKind, target: MinePoint, factorI
   if (kind === 'pickup' && (!factorId || s.carried || (s.dropped?.factorId !== factorId && !s.recovered.includes(factorId) && (s.veins[factorId].hits < 3 || s.veins[factorId].collected)))) return false;
   if (kind === 'deposit' && (!factorId || s.carried !== factorId)) return false;
   const origin: MinePoint = mineVisualSockets.valid ? [...mineVisualSockets.rightHand] : [mineActor.position[0], mineActor.position[1] + .5, mineActor.position[2]];
-  useAlphaMineStore.setState({ action: { kind, elapsed: 0, duration: DURATIONS[kind], target: [...target], origin, factorId, contact: false, bay } });
+  useAlphaMineStore.setState({ notice: null, action: { kind, elapsed: 0, duration: DURATIONS[kind], target: [...target], origin, factorId, contact: false, bay } });
   return true;
 }
 
@@ -65,7 +65,7 @@ export function putDownMineOre() {
   if (!s.carried || s.action || s.dropped) return false;
   const target = mineActor.restTarget;
   if (!target || !mineCanReach(target, .8)) { mineNotice('靠近池边暂存台或矿脉接石台，再按 F 放下。', 'Approach a pool shelf or seam ledge, then press F to set it down.'); return false; }
-  useAlphaMineStore.setState({ action: {kind:'deposit',elapsed:0,duration:1.4,target,origin:[...mineVisualSockets.oreRelease],factorId:s.carried,contact:false} });
+  useAlphaMineStore.setState({ notice: null, action: {kind:'deposit',elapsed:0,duration:1.4,target,origin:[...mineVisualSockets.oreRelease],factorId:s.carried,contact:false} });
   return true;
 }
 export function resetMineVeins() {

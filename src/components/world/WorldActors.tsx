@@ -884,7 +884,7 @@ export default function WorldActors() {
     if(publishedTime.current>.09){
       publishedTime.current=0;
       const item=nearbyItem.current,prev=useWorldStore.getState().nearbyInteract;
-      const nearbyInteract:NearbyInteract|null=item&&!active?(prev?.id===item.id?prev:{id:item.id,label:item.label,kind:item.kind}):null;
+      const nearbyInteract:NearbyInteract|null=item&&!active?(prev?.id===item.id&&prev.label.zh===item.label.zh&&prev.label.en===item.label.en&&prev.kind===item.kind?prev:{id:item.id,label:item.label,kind:item.kind}):null;
       useWorldStore.setState({position:asTuple(p),speed:active?Math.hypot(v.x,v.z)*3.6:0,nearbyVehicle:active?null:nearby,nearbyInteract,canRecover:!!active && active.flipped>=RECOVERY_SECONDS,zone:LAYOUT_V4?zoneAtV4(p.x,p.z):p.x>35?'park':p.x< -15?'camp':'town'});
     }
   });

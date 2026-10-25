@@ -2,7 +2,7 @@ import { Component, Suspense, useEffect, useMemo, useRef, type ReactNode } from 
 import { useFrame, useLoader } from '@react-three/fiber';
 import { AnimationMixer, BufferAttribute, Color, LoopOnce, LoopPingPong, LoopRepeat, Matrix4, Mesh, MeshStandardMaterial, Quaternion, SkinnedMesh, Vector3, type AnimationAction, type Bone, type Group, type Object3D } from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { withWorldAssetDecoder as withDecoder } from './WorldAssetDecoder';
 import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { useWorldStore } from './store';
@@ -82,11 +82,7 @@ const INERT: Record<string, InertialHalflives> = {
   idle: { legs: .06, body: .12, pelvisPos: .08, planted: .012 },
   interaction: { legs: .075, body: .12, pelvisPos: .09 },
 };
-let decoder: DRACOLoader | null = null;
-const withDecoder = (loader: GLTFLoader) => {
-  decoder ??= new DRACOLoader().setDecoderPath('/assets/world/draco/');
-  loader.setDRACOLoader(decoder);
-};
+
 let readActor: (() => Record<string, unknown>) | null = null;
 let readSkin: ((topology: boolean) => unknown) | null = null;
 

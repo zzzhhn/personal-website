@@ -27,7 +27,7 @@ let reachableNow: { item: Interactable; distance: number }[] = [];
 export const interactables = () => registry.values();
 /** The same line-of-sight checked list used by the physics controller, also used by the prompt. */
 export const reachableInteractables = () => reachableNow.filter(c => registry.get(c.item.id) === c.item && (!c.item.enabled || c.item.enabled())).map(c => c.item);
-export function registerInteractable(item: Interactable) { registry.set(item.id, item); return () => { if (registry.get(item.id) === item) registry.delete(item.id); }; }
+export function registerInteractable(item: Interactable) { const id=item.id; registry.set(id, item); return () => { if (registry.get(id) === item) registry.delete(id); }; }
 
 /** QA-only listing (?qa=1): ids, kinds, positions and labels of every registered interactable. */
 if (typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1') {
@@ -64,6 +64,17 @@ export function cycleInteractPick(step = 1) {
   useWorldStore.setState({ interactPick: ids[(at + step + ids.length) % ids.length] });
 }
 
+/** Stable identity survives the render-to-effect-cleanup gap when an item disappears. */
+export function interactableProxy(initial: Interactable, read: () => Interactable | null): Interactable {
+  const id=initial.id, current=()=>{const item=read();return item?.id===id?item:null;};
+  return {
+    id, get position(){return current()?.position??initial.position;}, get radius(){return current()?.radius??initial.radius;},
+    get label(){return current()?.label??initial.label;}, get kind(){return current()?.kind??initial.kind;},
+    enabled:()=>{const item=current();return !!item&&(item.enabled?.()??true);},
+    onInteract:()=>current()?.onInteract(),
+  };
+}
+
 /** React registration; the latest onInteract / enabled closures are always used. */
 export function useInteractable(item: Interactable | null) {
   const ref = useRef(item);
@@ -71,12 +82,6 @@ export function useInteractable(item: Interactable | null) {
   const id = item?.id, key = item ? `${item.position.join(',')}|${item.radius ?? ''}|${item.kind}` : '';
   useEffect(() => {
     if (!id || !ref.current) return;
-    const proxy: Interactable = {
-      get id() { return ref.current!.id; }, get position() { return ref.current!.position; }, get radius() { return ref.current!.radius; },
-      get label() { return ref.current!.label; }, get kind() { return ref.current!.kind; },
-      enabled: () => ref.current?.enabled?.() ?? true,
-      onInteract: () => ref.current?.onInteract(),
-    };
-    return registerInteractable(proxy);
+    return registerInteractable(interactableProxy(ref.current,()=>ref.current));
   }, [id, key]);
 }
