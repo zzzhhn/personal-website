@@ -51,8 +51,9 @@ export function findLowVault(world: World, rapier: Pick<typeof Rapier, 'Ray' | '
     const t = duration * i / 12, next = duration * (i + 1) / 12;
     const a = { x: p.x + vx * t, y: p.y + vy * t - 6.25 * t * t + .025, z: p.z + vz * t };
     const b = { x: p.x + vx * next, y: p.y + vy * next - 6.25 * next * next + .025, z: p.z + vz * next };
+    // Only stationary objects may trigger a vault, but every solid can obstruct its envelope.
     const hit = world.castShape(a, body.rotation(), { x: b.x - a.x, y: b.y - a.y, z: b.z - a.z },
-      shape, 0, 1, true, undefined, undefined, undefined, body, solid);
+      shape, 0, 1, true, undefined, undefined, undefined, body, c => !c.isSensor());
     if (hit) return null;
   }
   return { vx, vz, vy, duration, height, obstacle: obstacle.collider.handle };

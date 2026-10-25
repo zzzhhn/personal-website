@@ -46,3 +46,16 @@ for (const [name, options] of Object.entries({ tall: { height: 1.2 }, thick: { w
     const { world, plan } = scene(options); assert.equal(plan(), null); world.free();
   });
 }
+
+for (const vehicle of [false, true]) {
+  test(`a valid fixed rail cannot vault into an awake ${vehicle ? 'vehicle' : 'prop'}`, () => {
+    const { world, plan } = scene();
+    assert.ok(plan(), 'the rail has a valid path before inserting the blocker');
+    const blocker = world.createRigidBody(RAPIER.RigidBodyDesc.dynamic().setTranslation(1.9, .4, 0));
+    blocker.userData = vehicle ? { vehicle: 'qa' } : { obstacle: 'qa' };
+    world.createCollider(RAPIER.ColliderDesc.cuboid(.2, .4, 1), blocker);
+    world.step(); assert.equal(blocker.isSleeping(), false);
+    assert.equal(plan(), null, 'all solid blockers participate even when they cannot trigger the vault');
+    world.free();
+  });
+}
