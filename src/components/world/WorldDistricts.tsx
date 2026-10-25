@@ -54,6 +54,7 @@ function prism(poly: PavedPoly, vis: Arrays, top: { pos: number[]; idx: number[]
   for (let i = 1; i < n - 1; i++) tri(T(0), T(i + 1), T(i), top);
   for (let i = 0; i < n; i++) {
     const j = (i + 1) % n;
+    if (poly.openEdges?.some(e => (order[i] === e && order[j] === (e + 1) % n) || (order[j] === e && order[i] === (e + 1) % n))) continue;
     // Outward walls.
     tri(T(i), T(j), B(j), side); tri(T(i), B(j), B(i), side);
   }

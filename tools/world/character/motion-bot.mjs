@@ -29,7 +29,9 @@ try {
   report.keyMap = { north: N, south: S, east: E, west: W_ };
   if (process.env.G24_ALIGN_STARTUP === '1') {
     // Supplemental direct Idle->Run coverage: establish heading with real keys, then reset position only.
-    await bot.hold(N); await page.waitForTimeout(600); await bot.release(); await page.waitForTimeout(1300);
+    await bot.hold(N);
+    await page.waitForFunction(() => Math.hypot(...__worldDebug.snapshot().playerVelocity) > 3.4, undefined, { timeout: 15000 });
+    await page.waitForTimeout(250); await bot.release(); await page.waitForTimeout(1300);
     await bot.fixtureTeleport([-88.6, 1.14 + .88, 24], 'supplemental aligned-heading start; position reset after real-key alignment');
     await page.waitForTimeout(1500); report.alignedStartup = true;
   }
@@ -70,7 +72,8 @@ try {
   }
   await bot.release();
   await page.evaluate(() => __worldDebug.actor('record:stop'));
-  const frames = await page.evaluate(() => __worldDebug.actor('record:take'));
+  // Return one JSON string, rather than millions of nested CDP values on a small-memory Mac.
+  const frames = JSON.parse(await page.evaluate(() => JSON.stringify(__worldDebug.actor('record:take'))));
   report.recorded = frames.length;
   if (captureSkin) {
     // Predeclared narrow A6 window: every captured frame from one frame before first Run through 250 ms after.

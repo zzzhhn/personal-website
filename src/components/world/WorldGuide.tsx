@@ -354,7 +354,10 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       s.takeoffSpeed = speedMps; s.vyPeak = Math.max(vy, 3); s.airPhase = 0;
     }
     const justLanded = grounded && !s.grounded;
-    if (!grounded) { s.airSeconds += dt; s.vyPeak = Math.max(s.vyPeak, vy); }
+    if (!grounded) {
+      if (s.grounded && !s.jumpKind) s.airPhase = .5;
+      s.airSeconds += dt; s.vyPeak = Math.max(s.vyPeak, vy);
+    }
     else if (justLanded) {
       // Moving input at >= 2.5 m/s lands straight into the gait (+ a short additive compression);
       // otherwise a standing landing (Land) that movement can interrupt after LAND_LOCK.
@@ -374,10 +377,8 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       if (intent === 'run') return speedMps > (D.Run + D.Sprint) / 2 ? 'Sprint' : speedMps > D.Walk * 1.35 ? 'Run' : 'Walk';
       return speedMps > D.Walk * 1.35 ? 'Run' : 'Walk';
     } : () => {
-      // Gait from the commanded speed (input), not the measured one: a 0.3 s start or stop no longer
-      // passes through two extra clip switches (Idle>Walk>Run, Run>Walk>Idle), each a leg pose change.
-      // The shown gait slows with the body (travel-driven clip time) and hands over to Idle below
-      // STOP_SPEED, where the stop step places the feet. Blocked by a wall (commanded but not moving) -> Idle.
+      // Input chooses the destination gait; travel-driven playback and bounded startup
+      // acceleration keep its stride in sync without inserting extra transient clip switches.
       const target = targetSpeedMps ?? 0;
       if (intent === 'idle' || target < .1) return isGait(s.current) && speedMps > STOP_SPEED ? s.current : 'Idle';
       if (speedMps < .25 && s.blocked > .25) return 'Idle';
@@ -394,7 +395,9 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       desired = s.jumpKind && (s.current !== `${kind}Start` || !startDone) && s.current !== `${kind}Air` ? `${kind}Start` : `${kind}Air`;
       // Air pose phase from vertical speed: 0 = take-off speed (rising), .5 = apex, 1 = falling as fast
       // as it rose. Not clip time: any flight length shows a valid pose, nothing freezes.
-      s.airPhase = Math.min(1, Math.max(0, .5 - .5 * vy / s.vyPeak));
+      // Collision can zero vertical speed one render before the fixed-step grounded flag
+      // catches up. Never rewind a descending pose to the apex on that landing frame.
+      s.airPhase = Math.max(s.airPhase, Math.min(1, Math.max(0, .5 - .5 * vy / s.vyPeak)));
     } else desired = s.landing > 0 ? 'Land' : gaitFor();
     // ---- v3d states on top of the locomotion choice (all measured clips, inertialized switches)
     const seat = motion.seat ?? null;
@@ -582,6 +585,11 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
             const sole = samples[i % samples.length].soleMin[support] * (1 - w)
               + samples[(i + 1) % samples.length].soleMin[support] * w;
             if ((support === 'left' ? mask.L[frame] : mask.R[frame]) <= .5 || sole > .006) continue;
+            // Enter near the start of support, not its final toe-off sample. At 8 m/s²
+            // the first 10 cm take ~160 ms, leaving time for the other foot to step.
+            const ahead = rig.phase ? rig.phase.advance(desired, next, .10, .1, 'contact') : next + .10 / D[desired];
+            const af = Math.min(mask.frames, Math.round((ahead % duration) / duration * mask.frames));
+            if ((support === 'left' ? mask.L[af] : mask.R[af]) <= .5) continue;
           }
           if (score < best) { best = score; entry = sample.time; }
         }
@@ -713,6 +721,19 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         stop.current.externalDrop = rig.slope.drop;
         stop.current.groundOffset = motion.probeGround ? (x, z) => rig.slope.offsetAt(motion.probeGround, baseY, x, z) : null;
         stop.current.groundTarget = motion.probeGround && s.slopeOn ? (side, pos, quat) => rig.slope.fitStopTarget(motion.probeGround!, baseY, side, pos, quat) : null;
+      }
+      if (stop.current) {
+        stop.current.gaitClearance = null;
+        if (stop.current.active && isGait(s.current)) {
+          const clearance = { left: Infinity, right: Infinity };
+          rig.scene.updateWorldMatrix(true, true);
+          for (const { mesh, indices, sides } of rig.soles) indices.forEach((i, k) => {
+            skinnedWorldPoint(mesh, i, rig.solePoint);
+            const side = sides[k], p = rig.solePoint;
+            clearance[side] = Math.min(clearance[side], p.y - (rig.slope.groundAt(side, p.x, p.z) ?? baseY));
+          });
+          stop.current.gaitClearance = clearance;
+        }
       }
       stop.current?.solve(dt);
       rig.slope.stopDrop = stop.current?.pelvisDrop ?? 0;

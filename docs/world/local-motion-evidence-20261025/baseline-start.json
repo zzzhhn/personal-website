@@ -1,0 +1,179 @@
+{
+ "base": "http://127.0.0.1:4341",
+ "tag": "baseline",
+ "startedAt": "2026-10-24T17:43:18.230Z",
+ "errors": [],
+ "phases": [
+  {
+   "label": "idle",
+   "keys": [],
+   "press": null,
+   "t": 5.538
+  },
+  {
+   "label": "start-run",
+   "keys": [
+    "KeyW",
+    "KeyD"
+   ],
+   "press": null,
+   "t": 6.342
+  }
+ ],
+ "glbSha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0",
+ "glbBytes": 726680,
+ "keyMap": {
+  "north": [
+   "KeyW",
+   "KeyD"
+  ],
+  "south": [
+   "KeyS",
+   "KeyA"
+  ],
+  "east": [
+   "KeyS",
+   "KeyD"
+  ],
+  "west": [
+   "KeyW",
+   "KeyA"
+  ]
+ },
+ "alignedStartup": true,
+ "fixtures": [
+  {
+   "t": 0.109,
+   "to": [
+    -88.6,
+    2.02,
+    24
+   ],
+   "reason": "west ring road straight (flat, ~45 m clear) for motion metrics"
+  },
+  {
+   "t": 3.779,
+   "to": [
+    -88.6,
+    2.02,
+    24
+   ],
+   "reason": "supplemental aligned-heading start; position reset after real-key alignment"
+  }
+ ],
+ "entryMode": "support",
+ "transitionMode": "gait-turn-exit",
+ "scope": "original idle 800 ms + start-run 1400 ms only",
+ "recorded": 132,
+ "metrics": {
+  "frames": 132,
+  "slipByAnim": {
+   "Idle": {
+    "n": 57,
+    "max_mm": 0
+   },
+   "Idle>Run": {
+    "n": 15,
+    "max_mm": 150
+   }
+  },
+  "turnSlipMax_mm": 0,
+  "slipMax_mm": 150,
+  "worstSlips": [
+   {
+    "t0": 5.4928,
+    "t1": 6.3094,
+    "mm": 150,
+    "anims": "Idle>Run"
+   },
+   {
+    "t0": 5.4928,
+    "t1": 6.3094,
+    "mm": 150,
+    "anims": "Idle>Run"
+   },
+   {
+    "t0": 5.4928,
+    "t1": 6.3094,
+    "mm": 150,
+    "anims": "Idle>Run"
+   },
+   {
+    "t0": 5.4928,
+    "t1": 6.3094,
+    "mm": 149.8,
+    "anims": "Idle>Run"
+   },
+   {
+    "t0": 5.4928,
+    "t1": 6.3094,
+    "mm": 149.8,
+    "anims": "Idle>Run"
+   },
+   {
+    "t0": 5.4928,
+    "t1": 6.3094,
+    "mm": 149.8,
+    "anims": "Idle>Run"
+   }
+  ],
+  "poseJumpSteadyP99_mm": 48.1,
+  "poseJumpSwitchMax_mm": 42.2,
+  "stanceSamples": 116,
+  "stanceMinH_mm": 1.5,
+  "stanceMaxH_mm": 22.2,
+  "switches": [
+   {
+    "t": 6.2929,
+    "from": "Idle",
+    "to": "Run",
+    "maxJump_mm": 42.2,
+    "bone": "foot.R"
+   }
+  ]
+ },
+ "actor": {
+  "inert": {
+   "switches": 4,
+   "lastJump": {
+    "angle": 1.192307507177949,
+    "pelvis": 0.004644384551022798,
+    "bone": "shinR"
+   },
+   "residual": {
+    "angle": 2.232510546631756e-9,
+    "pelvis": 2.135260103921663e-16
+   }
+  },
+  "stop": [
+   {
+    "t": 2.543,
+    "event": "begin from Run; steps right(swing) 39.4cm, left(swing) 8.4cm"
+   },
+   {
+    "t": 2.559,
+    "event": "right step 39.4cm"
+   },
+   {
+    "t": 2.91,
+    "event": "right landed 39.4cm in 0.35s lift 8.0cm"
+   },
+   {
+    "t": 2.976,
+    "event": "left step 3.8cm"
+   },
+   {
+    "t": 3.243,
+    "event": "left landed 3.8cm in 0.27s lift 6.3cm"
+   },
+   {
+    "t": 3.31,
+    "event": "releasing: settled"
+   },
+   {
+    "t": 3.493,
+    "event": "off after releasing"
+   }
+  ]
+ }
+}

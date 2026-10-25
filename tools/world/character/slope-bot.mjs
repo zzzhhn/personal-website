@@ -69,7 +69,7 @@ try {
   report.phases = [];
   for (const [label, keys, extra, ms] of runs) { await bot.hold([...keys, ...extra]); report.phases.push({ label, t: bot.now() }); await page.waitForTimeout(ms); }
   await bot.release();
-  const frames = await page.evaluate(() => { __worldDebug.actor('record:stop'); return __worldDebug.actor('record:take'); });
+  const frames = JSON.parse(await page.evaluate(() => { __worldDebug.actor('record:stop'); return JSON.stringify(__worldDebug.actor('record:take')); }));
   await writeFile(`${out}/frames-${tag}.json`, JSON.stringify(frames));
   if (captureSkin) await writeFile(`${out}/runtime-skin-${tag}.json`, JSON.stringify({ views: [{ label: 'complete-original-ramp-route', assetSha256: report.glbSha256, skinTopology, samples: frames }] }));
   Object.assign(report, summarizeSlope(frames));

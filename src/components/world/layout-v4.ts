@@ -307,7 +307,7 @@ export const PROMENADE = { x0: 27, x1: 30.4, z0: 20.2, z1: -30 };
 /* ------------------------------------------------------------------ paved prisms */
 
 export type PaveKind = 'road' | 'side' | 'apron' | 'joint' | 'layby' | 'walk' | 'boardwalk' | 'forecourt' | 'carpark' | 'platform';
-export interface PavedPoly { kind: PaveKind; pts: P2[]; ys: number[]; color: string; thickness: number; road: string }
+export interface PavedPoly { kind: PaveKind; pts: P2[]; ys: number[]; color: string; thickness: number; road: string; openEdges?: number[] }
 const TRIM_CURB = 3.5;
 
 function junctionsOn(pts: Vec3[]) {
@@ -352,6 +352,26 @@ function sideGaps(road: RoadV4, total: number, side: 1 | -1): [number, number][]
 
 function strips(road: RoadV4, out: PavedPoly[]) {
   const c = ROAD_CLASSES[road.cls], pts = road.pts, total = polylineLength(pts), w = c.width / 2;
+  if (road.id === 'camp-ramp') {
+    // Share the exact cross-section at the crest. Overlapping rectangular slabs create
+    // a raised lip on one side of a bend and a drop on the other, even on the centre lane.
+    const section = (i: number, offset: number): P2 => {
+      const p = xz(pts[i]);
+      const before = unit(sub(p, xz(pts[Math.max(0, i - 1)])));
+      const after = unit(sub(xz(pts[Math.min(pts.length - 1, i + 1)]), p));
+      const d = i === 0 ? after : i === pts.length - 1 ? before : unit(add(before, after));
+      const normal = rightOf(d), edge = rightOf(i === pts.length - 1 ? before : after);
+      return add(p, mul(normal, offset / Math.max(.5, dot(normal, edge))));
+    };
+    for (let i = 1; i < pts.length; i++) {
+      for (const [lo, hi, kind, shade] of [[-w, w, 'road', c.color], [-w - c.side, -w, 'side', c.sideColor], [w, w + c.side, 'side', c.sideColor]] as const) {
+        out.push({ kind, pts: [section(i - 1, lo), section(i, lo), section(i, hi), section(i - 1, hi)],
+          ys: [pts[i - 1][1], pts[i][1], pts[i][1], pts[i - 1][1]], color: shade, thickness: .18, road: road.id,
+          openEdges: [...(i < pts.length - 1 ? [1] : []), ...(i > 1 ? [3] : [])] });
+      }
+    }
+    return;
+  }
   let run = 0;
   const gaps = { [1]: sideGaps(road, total, 1), [-1]: sideGaps(road, total, -1) } as Record<1 | -1, [number, number][]>;
   for (let i = 1; i < pts.length; i++) {

@@ -99,7 +99,7 @@ interface Leg {
   ik: { thigh: Quaternion; shin: Quaternion; foot: Quaternion };
 }
 
-const MOVING = new Set(['Walk', 'Run', 'Sprint', 'TurnL', 'TurnR']);
+const MOVING = new Set(['Walk', 'Run', 'Sprint', 'TurnL', 'TurnR', 'Land']);
 const minJerk = (t: number) => t * t * t * (10 - 15 * t + 6 * t * t);
 const wrap = (a: number) => Math.atan2(Math.sin(a), Math.cos(a));
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
@@ -153,6 +153,8 @@ function setBoneWorldQuat(bone: Bone, world: Quaternion) {
 }
 
 export class GuideStopStep {
+  /** Actual pre-IK sole clearance: ankle height alone releases a rolled boot too early. */
+  gaitClearance: Record<StopSide, number> | null = null;
   readonly tuning: StopTuning;
   readonly scene: Object3D;
   readonly legs: Record<StopSide, Leg>;
@@ -284,6 +286,10 @@ export class GuideStopStep {
     // A landed target is absolute ground contact while the capsule finishes braking downhill.
     // Keep the authored XZ lock and swing arc; only the held foot's sole height/orientation is fitted.
     if (!leg.step && !leg.queued) this.groundTarget?.(leg.side, this.eff, leg.targetQuat);
+    // Lift vertically with the departing gait before blending its horizontal stride.
+    // Fading a ground anchor directly to a raised forward foot otherwise drags the toe.
+    if (this.state === 'exiting' && !leg.hold && this.gaitClearance)
+      this.eff.y += Math.min(.12, Math.max(0, this.gaitClearance[leg.side]));
     return this.eff;
   }
 
@@ -297,6 +303,13 @@ export class GuideStopStep {
     if (!input.visible) { this.cancel('hidden'); return; }
     if (this.state === 'off') {
       if (MOVING.has(previous) && input.animation === 'Idle' && input.grounded) this.begin(input, previous);
+      else if (previous === 'Idle' && ['Walk', 'Run', 'Sprint'].includes(input.animation) && input.grounded && input.speedMps < .7) {
+        // Reuse the existing contact solver for the first weight transfer. Keep each
+        // standing foot where it is until the destination gait actually lifts it.
+        // This avoids dragging Idle's boots to a different cyclic running pose.
+        this.begin(input, 'Idle startup');
+        this.startBlendOut('exiting', this.tuning.exitBlend, `animation:${input.animation}`);
+      }
       return;
     }
     if (this.state === 'exiting') return;
@@ -381,7 +394,7 @@ export class GuideStopStep {
       for (const leg of Object.values(this.legs)) {
         if (leg.hold) {
           const e = this.effective(leg);
-          const lifted = leg.animFoot.y - e.y > t.liftRelease;
+          const lifted = this.gaitClearance ? this.gaitClearance[leg.side] > t.liftRelease : leg.animFoot.y - e.y > t.liftRelease;
           if (lifted || this.blendTime >= t.maxHold) { leg.hold = false; leg.wFrom = leg.w; leg.wTime = 0; this.log(`${leg.side} hold released (${lifted ? 'lifted by gait' : 'maxHold'})`); }
           else { done = false; continue; }
         }

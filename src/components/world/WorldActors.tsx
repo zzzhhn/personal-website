@@ -11,6 +11,7 @@ import { cycleInteractPick, nearestInteractable, type Interactable } from './Wor
 import type { Vec3, VehicleId } from './types';
 import WorldGuide, { VEHICLE_TRANSITION_S, worldGuideDebug } from './WorldGuide';
 import WorldVehicleVisual from './WorldVehicleVisual';
+import { playerSupport, followPlayerGround } from './player-ground';
 import { vehicleHulls } from './WorldVehicleAssets';
 import { WorldOcclusion } from './WorldOcclusion';
 import { CAMERA_DEFAULT_PITCH, CAMERA_DEFAULT_YAW, CAMERA_MAX_DISTANCE, CAMERA_MIN_DISTANCE, CAMERA_PITCH_LIMITS, CAMERA_PRESETS, PHYSICS_STEP, PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS, RECOVERY_SECONDS, advanceTimer, angleDelta, cameraRelative, configureRaycastVehicle, heading, isUpsideDown, orbitDirection, radialDeadzone, rampAxis, rotateVector, wheelGeometry, yawRotation } from './actor-physics';
@@ -689,11 +690,11 @@ export default function WorldActors() {
     });
     if(!active){
       const p=player.current.translation(),velocity=player.current.linvel();
-      const ground=world.castRayAndGetNormal(new rapier.Ray(p,{x:0,y:-1,z:0}),PLAYER_CENTER_HEIGHT+.12,true,undefined,undefined,undefined,player.current,c=>!c.isSensor());
-      grounded.current=!!ground && ground.normal.y>.55 && velocity.y<1;
+      const ground=playerSupport(world,rapier,player.current);
+      grounded.current=ground?.grounded??false;
       if (new URLSearchParams(window.location.search).get('qaPhysicsSupport') === '1') supportDecision.current={
         step:physicsSteps.current,body:asTuple(p),velocity:asTuple(velocity),grounded:grounded.current,jumpRequested:actions.current.jump,
-        ray:ground?{distance:ground.timeOfImpact,normal:asTuple(ground.normal),groundY:p.y-ground.timeOfImpact}:null};
+        capsuleSupport:ground?{gap:ground.gap,normal:asTuple(ground.normal),centerY:ground.centerY}:null};
       // Raw input in camera space (x right, z forward): keys plus the left stick (analogue magnitude).
       let rx=Number(keys.current.has('KeyD'))-Number(keys.current.has('KeyA'));
       let rz=Number(keys.current.has('KeyW'))-Number(keys.current.has('KeyS'));
@@ -768,7 +769,15 @@ export default function WorldActors() {
       guideTargetSpeed.current=Math.hypot(vx,vz);
       const response=grounded.current?12:3;
       const factor=1-Math.exp(-response*dt),mass=player.current.mass();
-      player.current.applyImpulse({x:(vx-velocity.x)*mass*factor,y:0,z:(vz-velocity.z)*mass*factor},true);
+      let dx=(vx-velocity.x)*factor,dz=(vz-velocity.z)*factor;
+      // Start with a real weight transfer: cap low-speed acceleration at 8 m/s². Braking,
+      // high-speed steering and airborne momentum retain their existing response.
+      if(grounded.current&&Math.hypot(velocity.x,velocity.z)<2.8&&Math.hypot(vx,vz)>Math.hypot(velocity.x,velocity.z)){
+        const scale=Math.min(1,8*dt/Math.max(1e-6,Math.hypot(dx,dz)));dx*=scale;dz*=scale;
+      }
+      player.current.applyImpulse({x:dx*mass,y:0,z:dz*mass},true);
+      const follow=seat?null:followPlayerGround(world,rapier,player.current,player.current.linvel(),dt,actions.current.jump&&grounded.current);
+      if(supportDecision.current)supportDecision.current.follow=follow;
       // Local 12.5 m/s² gravity and 5 m/s launch give an approximately 1 m,
       // 0.8 s hop. Horizontal momentum is retained at the input edge.
       if(actions.current.jump && grounded.current){player.current.setLinvel({x:velocity.x,y:5,z:velocity.z},true);grounded.current=false;jumpSeq.current++;}
