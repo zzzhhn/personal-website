@@ -34,8 +34,8 @@ function inspect(framesPath, reportPath) {
 }
 const baseline = inspect(baseFrames, baseReport), candidate = inspect(nextFrames, nextReport);
 assert.equal(baseline.assetSha256, candidate.assetSha256, 'comparison uses the same baked asset');
-const result = { baselineCommit: '3cb1f25', candidateCommit: '2f8a466', vertex,
-  method: 'Full original summaries reproduced unchanged. Semantic first RunJumpAir→Run landing, same sole vertex; linear interpolation only for the additional fixed 0–100 ms table. Raw samples retained.',
+const result = { baselineCommit: '3cb1f25', candidateCommit: process.env.WORLD_CANDIDATE_COMMIT || '2f8a466', vertex,
+  method: 'Full original summaries reproduced unchanged. Semantic first RunJumpAir→Run landing, same sole vertex; linear interpolation only for the additional fixed 0 to 100 ms table. Raw samples retained.',
   boundary: { soleBand_mm: 6, minimumInterval_ms: 50, unchanged: true,
     baseline: '208.0 mm at 49.6 ms is below the duration gate; the next point is 6.6 mm high, outside the sole band.',
     candidate: '208.5 mm at 50.2 ms passes the duration gate; 272.7 mm at 67.2 ms is still 5.2 mm high and remains in-band.' },
