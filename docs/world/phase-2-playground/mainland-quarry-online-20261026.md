@@ -36,3 +36,9 @@ Bobby 的最新方向替代初期的小岛 Alpha 矿屋方案。因子矿区归�
 - 暂停/隐藏页面的既有休眠和音频释放保留。扩大地图后的长时间内存、温度、低配置设备和 Safari 尚未完成验收；不能把三角预算或测试通过称为完整性能验收。交易所目前是可玩的首版场景，后续仍需要更丰富的市场玩法和定向美术打磨。
 
 控制：`E` 交互/上下车；步行 `WASD`，`Shift` 冲刺；轿跑 `W/S` 驱动，`A/D` 转向，`Space` 脚刹，`X` 手刹，`W + Shift` 氮气。先提速再转向配合手刹，松开 X 后反打方向收回车身。氮气最多连续 3 秒，松开后补充，离地或制动时不会生效。
+
+## 试玩交付
+
+运行时代码提交 `fb074c3` 已推送 `codex/world-greybox`，继续使用草稿 PR #1。4341 checkout 为 `/Users/a22309/Desktop/Side-projects/Artifacts/personal-website-world`，已 fast-forward 到该版本。此目录使用按文件选择的 sparse checkout，集成时另补入 24 个新源码/文档；未关闭 sparse checkout，也未拉取历史录像。后续新增文件必须显式补入检出范围，单纯 fast-forward 不会自动生成未列入的路径。
+
+4341 现运行 `pnpm exec astro preview --host 127.0.0.1 --port 4341`，提供本轮静态构建，无开发文件监听。需要改代码时先另用隔离开发端口验证，更新构建后再重启该服务。4342 候选开发服务已停止。HTTP 读取的 HTML、quarry-static.glb、ore.glb 与 layout.json 均返回 200，SHA-256 与该 checkout 的构建/公共资源一致。未合并 main，未手动发布生产站点。
