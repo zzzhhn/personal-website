@@ -10,6 +10,7 @@ import { useWorldStore } from './store';
 import { windUniforms } from './WorldWind';
 import { GRID } from './WorldLandform';
 import type { VehicleId } from './types';
+import { quarryFloraBanks, quarryFloraKind } from './alpha-mine-flora';
 
 /** quality-v4 ground grass (spec §3 ground detail, Bobby 2026-10-22 "grass bends under people and
  * cars"). One instanced draw of 15-triangle tufts (5 blades x 3 triangles), dense near the focus
@@ -101,6 +102,11 @@ export function grassTuftGeometry() {
   g.setAttribute('position', new Float32BufferAttribute(pos, 3));
   g.setAttribute('color', new Float32BufferAttribute(col, 3));
   g.setAttribute('aBlade', new Float32BufferAttribute(blade, 3));
+  const flora=quarryFloraBanks();
+  g.setAttribute('aLeafPosition',new Float32BufferAttribute(flora.leaf,3));
+  g.setAttribute('aBloomPosition',new Float32BufferAttribute(flora.bloom,3));
+  g.setAttribute('aBloomColor',new Float32BufferAttribute(flora.colour,3));
+  g.setAttribute('aFloraKind',new InstancedBufferAttribute(new Float32Array(2450),1));
   // Up-facing normals: blades light like the ground they grow from (no dark back faces).
   g.setAttribute('normal', new Float32BufferAttribute(Array.from({ length: pos.length / 3 }, () => [0, 1, 0]).flat(), 3));
   g.computeBoundingSphere();
@@ -114,6 +120,7 @@ function grassMaterial(uniforms: Record<string, { value: unknown }>) {
   m.onBeforeCompile = shader => {
     Object.assign(shader.uniforms, uniforms);
     shader.vertexShader = `attribute vec3 aBlade;
+attribute vec3 aLeafPosition; attribute vec3 aBloomPosition; attribute vec3 aBloomColor; attribute float aFloraKind;
 uniform float uWindTime; uniform float uWindStrength;
 uniform vec4 uPush[${MAX_DISTURBERS}];
 uniform float uPushHeight[${MAX_DISTURBERS}];
@@ -122,9 +129,11 @@ varying float vBend;
 varying vec2 vBladeDetail;
 ` + shader.vertexShader.replace('#include <begin_vertex>', `#include <begin_vertex>
       {
+        if(aFloraKind>1.5)transformed=aBloomPosition;
+        else if(aFloraKind>.5)transformed=aLeafPosition;
         vec3 base = instanceMatrix[3].xyz;
         float s2 = dot(instanceMatrix[0].xyz, instanceMatrix[0].xyz);
-        float f = aBlade.x;
+        float f = transformed.y / ${BLADE_H.toFixed(2)};
         vBladeDetail = vec2(aBlade.z, aBlade.x);
         // Distance fade: blades shrink into the ground before they are culled (no popping).
         float fade = 1.0 - smoothstep(uFade.x, uFade.y, distance(base.xz, uFocus.xz));
@@ -149,14 +158,16 @@ varying vec2 vBladeDetail;
         float ph = dot(base.xz, vec2(0.37, 0.21)) + aBlade.y * 6.2831;
         vec2 wind = vec2(0.8, 0.6) * (sin(uWindTime * 1.9 + ph) * 0.06 + sin(uWindTime * 3.3 + ph * 1.7) * 0.025) * uWindStrength * (1.0 - bend * 0.85);
         // World-space bend: tip leans along dir and drops (blade length roughly kept).
-        float h = position.y;
+        float h = transformed.y;
         vec2 lean = dir * bend * h * 1.15 + wind * h / ${BLADE_H.toFixed(2)};
         vec3 disp = vec3(lean.x, -h * bend * 0.72, lean.y);
         // To instance-local space (instance = translate * yaw * uniform scale).
         transformed += vec3(dot(instanceMatrix[0].xyz, disp), 0.0, dot(instanceMatrix[2].xyz, disp)) / s2 + vec3(0.0, disp.y / sqrt(s2), 0.0);
         transformed *= vec3(1.0, fade, 1.0);
         transformed.y = max(transformed.y, 0.012 * f);
-      }`);
+      }`).replace('#include <color_vertex>',`#include <color_vertex>
+        if(aFloraKind>1.5)vColor=aBloomColor;
+      `);
     // Both faces use the ground-up normal (DoubleSide would flip back faces dark), and pressed
     // blades read a touch lighter/drier, so a trodden trail shows from the follow camera.
     shader.fragmentShader = 'varying float vBend;\nvarying vec2 vBladeDetail;\n' + shader.fragmentShader
@@ -170,7 +181,7 @@ varying vec2 vBladeDetail;
       diffuseColor.rgb *= 1.0 + 0.08 * rib - 0.10 * margin;
       diffuseColor.rgb *= mix(vec3(1.0), vec3(1.16, 1.12, 1.0), vBend);`);
   };
-  m.customProgramCacheKey = () => 'ground-grass-blades-v4-height-aware';
+  m.customProgramCacheKey = () => 'ground-grass-blades-v5-quarry-flora';
   return m;
 }
 
@@ -193,7 +204,7 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
   const ref = useRef<InstancedMesh>(null);
   const { scene } = useThree();
   const cull = useMemo(() => ({
-    matrices: new Float32Array(GRASS_PROFILE.high.cap * 16), colors: new Float32Array(GRASS_PROFILE.high.cap * 3),
+    matrices: new Float32Array(GRASS_PROFILE.high.cap * 16), colors: new Float32Array(GRASS_PROFILE.high.cap * 3), kinds:new Float32Array(GRASS_PROFILE.high.cap),
     count: 0, revision: 0, uploadedRevision: -1, enabled: true, uploadedEnabled: true,
     frustum: new Frustum(), viewProjection: new Matrix4(), previousView: new Matrix4(), previousWorld: new Matrix4(), sphere: new Sphere(),
   }), []);
@@ -213,6 +224,7 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
       cull.frustum.setFromProjectionMatrix(cull.viewProjection, camera.coordinateSystem);
       cull.sphere.radius = mesh.matrixWorld.getMaxScaleOnAxis(); // conservative 1 m, including wind / pressed tips
       const dst = mesh.instanceMatrix.array, colors = mesh.instanceColor!.array;
+      const kinds=mesh.geometry.getAttribute('aFloraKind') as InstancedBufferAttribute;
       let visible = 0;
       for (let i = 0; i < cull.count; i++) {
         const m = i * 16;
@@ -220,10 +232,11 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
         if (cull.enabled && !cull.frustum.intersectsSphere(cull.sphere)) continue;
         for (let k = 0; k < 16; k++) dst[visible * 16 + k] = cull.matrices[m + k];
         for (let k = 0; k < 3; k++) colors[visible * 3 + k] = cull.colors[i * 3 + k];
+        kinds.array[visible]=cull.kinds[i];
         visible++;
       }
       mesh.count = visible;
-      mesh.instanceMatrix.needsUpdate = true; mesh.instanceColor!.needsUpdate = true;
+      mesh.instanceMatrix.needsUpdate = true; mesh.instanceColor!.needsUpdate = true;kinds.needsUpdate=true;
       cull.previousView.copy(cull.viewProjection); cull.previousWorld.copy(mesh.matrixWorld);
       cull.uploadedRevision = cull.revision; cull.uploadedEnabled = cull.enabled;
       grassDebug.candidates = cull.count; grassDebug.culled = cull.count - visible;
@@ -284,6 +297,7 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
       dummy.position.set(data[i * 6], data[i * 6 + 1] - .02, data[i * 6 + 2]); dummy.rotation.set(0, data[i * 6 + 3], 0); dummy.scale.setScalar(s * (.82 + .3 * Math.abs(Math.sin(data[i * 6] * 5.7 + data[i * 6 + 2] * 3.9)))); dummy.updateMatrix();
       dummy.matrix.toArray(cull.matrices, n * 16);
       tint.c.copy(tint.a).lerp(tint.b, data[i * 6 + 4]).toArray(cull.colors, n * 3);
+      cull.kinds[n]=quarryFloraKind(data[i*6],data[i*6+2]);
     });
     cull.count = pick.length; cull.revision++;
     uniforms.uFade.value = [p.far - 6, p.far];

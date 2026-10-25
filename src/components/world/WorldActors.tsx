@@ -18,10 +18,12 @@ import { playerSupport, followPlayerGround } from './player-ground';
 import { createPlayerClearance, findLowVault, playerRouteClear, playerVelocityChange, sweptPlayerVelocity } from './player-motion';
 import { vehicleHulls } from './WorldVehicleAssets';
 import { WorldOcclusion } from './WorldOcclusion';
+import { cameraCollisionRadius, cameraOverlapsGuide, sweepCamera } from './camera-collision';
+import { returnPlayerToCamp } from './world-recovery';
 import { configureCoupeSuspension, createDrivingState, stepCoupeDrive, type DrivingInput, type DrivingState } from './vehicle-driving';
 import { publishDrivingTelemetry } from './vehicle-telemetry';
 import WorldDrivingFeedback from './WorldDrivingFeedback';
-import { CAMERA_DEFAULT_PITCH, CAMERA_DEFAULT_YAW, CAMERA_MAX_DISTANCE, CAMERA_MIN_DISTANCE, CAMERA_PITCH_LIMITS, CAMERA_PRESETS, PHYSICS_STEP, PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS, RECOVERY_SECONDS, advanceTimer, angleDelta, cameraRelative, configureRaycastVehicle, heading, isUpsideDown, orbitDirection, radialDeadzone, rampAxis, rotateVector, wheelGeometry, yawRotation } from './actor-physics';
+import { CAMERA_DEFAULT_PITCH, CAMERA_DEFAULT_YAW, CAMERA_MAX_DISTANCE, CAMERA_MIN_DISTANCE, CAMERA_PITCH_LIMITS, CAMERA_PRESETS, PHYSICS_STEP, PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS, RECOVERY_SECONDS, advanceTimer, angleDelta, cameraRelative, configureRaycastVehicle, heading, isUpsideDown, orbitDirection, radialDeadzone, rampAxis, resetActorBody, rotateVector, wheelGeometry, yawRotation } from './actor-physics';
 
 type VehicleSpec = (typeof VEHICLES)[number];
 type Controller = ReturnType<ReturnType<typeof useRapier>['world']['createVehicleController']>;
@@ -46,7 +48,8 @@ type ActorSnapshot = {
 };
 export type CameraDebug = { yaw: number; pitch: number; distance: number; desiredDistance: number; driveManualZoom: boolean; actualDistance: number; firstPerson: boolean; preset: number; collided: boolean; hitDistance: number|null;
   fov: number; mode: 'walk'|'drive'; recentering: boolean; position: Vec3; target: Vec3; forwardGround: [number,number]; groundBelowCamera: number|null; clearanceAboveGround: number|null; gamepad: boolean;
-  /** Static solids overlapping a 0.1 m ball at the camera (near plane), excluding the player and the driven car. */
+  /** Camera near-plane envelope, plus the draw-only self-occlusion guard. */
+  nearPlaneRadius: number; guideHidden: boolean;
   nearPlaneOverlaps: string[] };
 type ContactMeta = { colliderHandle: number; name: string | null; assetId: string | null; kind: 'surface' | 'solid' | 'vehicle' | 'obstacle' | 'unknown' };
 type LaneObstacle = 'post' | 'trunk' | 'wall' | 'profiles';
@@ -108,9 +111,9 @@ const STEER_RISE = 2.8, STEER_FALL = 5, THROTTLE_RISE = 3, THROTTLE_FALL = 6, WA
 const MOUSE_DRAG = .0055, MOUSE_LOCKED = .0028, PAD_LOOK = 2.8, WHEEL_ZOOM = .0011;
 /** Drive camera: seconds without manual look before it eases back behind the car. */
 const DRIVE_RECENTER_DELAY = 1.6, DRIVE_RECENTER_RATE = 2.4, DRIVE_PITCH = .3, DRIVE_MIN_DISTANCE = 7;
-const CAMERA_RADIUS = .22, CAMERA_GROUND_CLEARANCE = .35;
+const CAMERA_RADIUS = .22;
 /** First-person eye probe radius: covers the near-plane corners (near .1 m, FOV <= 70 deg, 16:9 ~ .15 m). */
-const EYE_RADIUS = .16, CAMERA_HIT_MARGIN = .05;
+const EYE_RADIUS = .16;
 function readPad(previous: PadState): PadState {
   const pads = typeof navigator !== 'undefined' && navigator.getGamepads ? navigator.getGamepads() : [];
   const g = [...(pads ?? [])].find(x => x && x.connected && x.mapping === 'standard') ?? [...(pads ?? [])].find(x => x && x.connected);
@@ -271,6 +274,8 @@ export default function WorldActors() {
   const seatFrom = useRef<Vec3|null>(null);
   const seatBody = useRef<Vec3|null>(null);
   const keys = useRef(new Set<string>());
+  const releasedKeys = useRef(new Set<string>());
+  const resetPad = useRef(false);
   const actions = useRef({interact:false,jump:false,recover:false});
   const debugDrive = useRef<{input:DriveInput;remaining:number}|null>(null);
   const grounded = useRef(false);
@@ -307,6 +312,7 @@ export default function WorldActors() {
   },[]);
   const target = useRef(new Vector3(...arrival));
   const cameraReady = useRef(false);
+  const guideView=useRef<Group>(null),guideCameraFoot=useRef(new Vector3());
   const impact = useRef(0);
   const cam = useRef<CameraRig>({ yaw: CAMERA_DEFAULT_YAW, pitch: CAMERA_DEFAULT_PITCH, distance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)],
     actual: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)], lastManual: -Infinity, firstPerson: useWorldStore.getState().zoom === 3, collided: false, hitDistance: null, fov: 50, mode: 'walk', recentering: false, driveManualZoom: false, desiredDistance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)] });
@@ -324,7 +330,12 @@ export default function WorldActors() {
     fixture.mesh.geometry.dispose();(fixture.mesh.material as MeshStandardMaterial).dispose();wheelFixture.current=null;
   }
 
-  function clearInput() { keys.current.clear(); actions.current={interact:false,jump:false,recover:false}; debugDrive.current=null; moveIntent.current='idle'; guideTargetSpeed.current=0; moveInput.current=[0,0]; cars.current.forEach(c=>{c.steerInput=0;c.throttleInput=0;c.driving.power=0;c.driving.boosting=false;c.driving.handbrake=false;}); publishDrivingTelemetry(null); }
+  function clearInput() {
+    keys.current.forEach(key=>releasedKeys.current.add(key));keys.current.clear();resetPad.current=true;
+    pad.current.move=[0,0];pad.current.look=[0,0];pad.current.throttle=0;pad.current.brake=0;pad.current.sprint=false;
+    actions.current={interact:false,jump:false,recover:false};debugDrive.current=null;moveIntent.current='idle';guideTargetSpeed.current=0;moveInput.current=[0,0];
+    cars.current.forEach(c=>{c.steerInput=0;c.throttleInput=0;c.driving.power=0;c.driving.boosting=false;c.driving.handbrake=false;});publishDrivingTelemetry(null);
+  }
   function clearPlayerMotion(hardCut=false) {
     vault.current=null;guideMovementLock.current=false;turnBeforeMove.current=false;
     if(!hardCut)return;
@@ -341,9 +352,21 @@ export default function WorldActors() {
     player.current.setEnabled(true);resetBody(player.current,position);wetPlayer.current=0;
   }
   function resetBody(body: RapierRigidBody, position: Vec3, yaw=0) {
-    body.setTranslation(asVector(position),true); body.setRotation(yawRotation(yaw),true);
-    body.setLinvel({x:0,y:0,z:0},true); body.setAngvel({x:0,y:0,z:0},true);
-    body.resetForces(true); body.resetTorques(true);
+    resetActorBody(body,position,yaw);
+  }
+  function returnToCamp() {
+    const vehicle=useWorldStore.getState().activeVehicle;
+    return returnPlayerToCamp(player.current,vehicle?cars.current.get(vehicle)?.body:undefined,()=>{
+      clearPlayerMotion(true);clearInput();grounded.current=false;wetPlayer.current=0;supportDecision.current=null;
+      nearbyItem.current=null;guideYaw.current=0;publishedTime.current=0;
+      cars.current.forEach(car=>{for(let i=0;i<4;i++){car.controller.setWheelEngineForce(i,0);car.controller.setWheelBrake(i,0);}});
+    },()=>{
+      cameraReady.current=false;target.current.set(...CAMP_SPAWN);impact.current=0;lastCarYaw.current=null;
+      if(guideView.current)guideView.current.visible=true;
+      Object.assign(cam.current,{yaw:CAMERA_DEFAULT_YAW,pitch:CAMERA_DEFAULT_PITCH,actual:CAMERA_PRESETS[1],distance:CAMERA_PRESETS[1],desiredDistance:CAMERA_PRESETS[1],
+        firstPerson:false,collided:false,hitDistance:null,mode:'walk',recentering:false,driveManualZoom:false,lastManual:-Infinity,fov:50});
+      if(camera instanceof PerspectiveCamera){camera.fov=50;camera.updateProjectionMatrix();}
+    });
   }
   function enter(id: VehicleId) {
     if (useAlphaMineStore.getState().carried || mineBusy()) {
@@ -412,11 +435,6 @@ export default function WorldActors() {
     car.flipped=0; car.wet=0; clearPlayerMotion(true);clearInput(); useWorldStore.setState({canRecover:false,speed:0}); return true;
   }
 
-  /** Surface metadata (terrain, road, slab) on the collider's object chain or its body. */
-  function isSurface(col: RapierCollider){
-    for(let o=colliderStates.get(col.handle)?.object;o;o=o.parent??undefined)if(o.userData.surface)return true;
-    return !!(col.parent()?.userData as {surface?:boolean}|undefined)?.surface;
-  }
   /** V cycles near -> mid -> far -> first person -> near. */
   function cycleCamera(){ const z=useWorldStore.getState().zoom; useWorldStore.setState({zoom:((z+1)%4) as 0|1|2|3}); }
   function applyPreset(z:number){
@@ -429,7 +447,8 @@ export default function WorldActors() {
   useEffect(() => {
     const down=(event:KeyboardEvent) => {
       const state=useWorldStore.getState();
-      if (event.metaKey || event.ctrlKey || event.altKey || state.paused || state.shot || /INPUT|TEXTAREA|SELECT/.test((event.target as HTMLElement)?.tagName ?? '')) return;
+      if (event.metaKey || event.ctrlKey || event.altKey || state.paused || state.poolInspect || state.shot || (event.repeat&&releasedKeys.current.has(event.code)) || /INPUT|TEXTAREA|SELECT/.test((event.target as HTMLElement)?.tagName ?? '')) return;
+      releasedKeys.current.delete(event.code);
       if (['KeyW','KeyA','KeyS','KeyD','ShiftLeft','ShiftRight','Space','KeyE','KeyR','KeyV'].includes(event.code)||(state.activeVehicle&&event.code==='KeyX')) event.preventDefault();
       keys.current.add(event.code);
       if (!event.repeat) {
@@ -442,11 +461,11 @@ export default function WorldActors() {
         if (event.code==='KeyV') cycleCamera();
       }
     };
-    const up=(event:KeyboardEvent)=>keys.current.delete(event.code);
+    const up=(event:KeyboardEvent)=>{keys.current.delete(event.code);releasedKeys.current.delete(event.code);};
     // Continuous scroll zoom (exponential, ~12 % per notch). Scrolling out of first person returns to the
     // nearest third-person distance; scrolling never enters first person (V does).
     const wheel=(event:WheelEvent)=>{
-      const state=useWorldStore.getState(); if(state.paused || state.shot) return;
+      const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot) return;
       event.preventDefault();
       const c=cam.current;
       if(c.firstPerson){ if(event.deltaY>0) useWorldStore.setState({zoom:0}); return; }
@@ -460,7 +479,7 @@ export default function WorldActors() {
       const c=cam.current,lim=c.firstPerson?CAMERA_PITCH_LIMITS.first:CAMERA_PITCH_LIMITS.third;
       c.yaw+=dx*k; c.pitch=clamp(c.pitch+dy*k,lim[0],lim[1]); c.lastManual=performance.now()/1000;
     };
-    const blocked=()=>{const st=useWorldStore.getState();return st.paused||!!st.shot;};
+    const blocked=()=>{const st=useWorldStore.getState();return st.paused||st.poolInspect||!!st.shot;};
     const pointerDown=(e:PointerEvent)=>{if(blocked())return;drag={id:e.pointerId,x:e.clientX,y:e.clientY};gl.domElement.setPointerCapture?.(e.pointerId);};
     const pointerMove=(e:PointerEvent)=>{
       if(blocked())return;
@@ -478,7 +497,10 @@ export default function WorldActors() {
     window.addEventListener('keydown',down); window.addEventListener('keyup',up); window.addEventListener('blur',clearInput);
     document.addEventListener('visibilitychange',hidden); gl.domElement.addEventListener('wheel',wheel,{passive:false});
     const unsubscribe=useWorldStore.subscribe((state,previous)=>{
-      if(state.paused!==previous.paused || state.shot!==previous.shot){clearInput();if(state.paused&&document.pointerLockElement===gl.domElement)document.exitPointerLock?.();}
+      if(state.campReturnRequest!==previous.campReturnRequest){returnToCamp();return;}
+      if(state.paused!==previous.paused || state.poolInspect!==previous.poolInspect || state.shot!==previous.shot){
+        clearInput();drag=null;if((state.paused||state.poolInspect)&&document.pointerLockElement===gl.domElement)document.exitPointerLock?.();
+      }
       if(state.zoom!==previous.zoom)applyPreset(state.zoom);
     });
     function identifyCollider(other: ReturnType<typeof world.getCollider>): ContactMeta {
@@ -568,6 +590,7 @@ export default function WorldActors() {
       },
       camera:()=>{
         const c=cam.current,dir=camera.getWorldDirection(new Vector3());
+        const radius=camera instanceof PerspectiveCamera?cameraCollisionRadius(camera.near,camera.fov,camera.aspect,c.firstPerson?EYE_RADIUS:CAMERA_RADIUS):CAMERA_RADIUS;
         const down=world.castRay(new rapier.Ray({x:camera.position.x,y:200,z:camera.position.z},{x:0,y:-1,z:0}),400,true,undefined,undefined,undefined,undefined,
           col=>!col.isSensor()&&identifyCollider(col).kind==='surface');
         const ground=down?200-down.timeOfImpact:null;
@@ -575,8 +598,9 @@ export default function WorldActors() {
           fov:camera instanceof PerspectiveCamera?camera.fov:0,mode:c.mode,recentering:c.recentering,position:camera.position.toArray() as Vec3,target:target.current.toArray() as Vec3,
           forwardGround:(()=>{const m=Math.hypot(dir.x,dir.z)||1;return [dir.x/m,dir.z/m] as [number,number];})(),groundBelowCamera:ground,
           clearanceAboveGround:ground===null?null:camera.position.y-ground,gamepad:pad.current.connected,
+          nearPlaneRadius:radius,guideHidden:guideView.current?.visible===false,
           nearPlaneOverlaps:(()=>{const out:string[]=[];const act=useWorldStore.getState().activeVehicle,carBody=act?cars.current.get(act)?.body:undefined;
-            world.intersectionsWithShape({x:camera.position.x,y:camera.position.y,z:camera.position.z},{x:0,y:0,z:0,w:1},new rapier.Ball(.1),col=>{const m=identifyCollider(col);out.push(m.assetId??m.name??String(m.colliderHandle));return true;},
+            world.intersectionsWithShape({x:camera.position.x,y:camera.position.y,z:camera.position.z},{x:0,y:0,z:0,w:1},new rapier.Ball(radius),col=>{const m=identifyCollider(col);out.push(m.assetId??m.name??String(m.colliderHandle));return true;},
               undefined,undefined,undefined,carBody??player.current??undefined,col=>!col.isSensor()&&col.parent()?.handle!==player.current?.handle&&!(col.parent()?.userData as {obstacle?:boolean}|undefined)?.obstacle);
             return out;})()};
       },
@@ -641,7 +665,7 @@ export default function WorldActors() {
   },[world,rapier,gl,colliderStates]);
 
   useBeforePhysicsStep(()=>{
-    const state=useWorldStore.getState(); if(state.paused || state.shot || !player.current) return;
+    const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot || !player.current) return;
     physicsSteps.current++;
     const dt=world.timestep || PHYSICS_STEP;
     if(guideTransition.current){
@@ -691,9 +715,16 @@ export default function WorldActors() {
       active=useWorldStore.getState().activeVehicle?cars.current.get(useWorldStore.getState().activeVehicle!):undefined;
     };
     if(actions.current.interact){interactNow(nearbyItem.current);actions.current.interact=false;}
+    if(useWorldStore.getState().paused||useWorldStore.getState().poolInspect)return;
     if(actions.current.recover || state.recoverRequest!==lastRecover.current){recover();lastRecover.current=state.recoverRequest;actions.current.recover=false;}
     // Gamepad (standard mapping): buttons as edges. A jump, Y enter/leave, B flip back, Back camera, Start pause.
-    const before=pad.current.buttons,gp=readPad(pad.current);pad.current=gp;
+    const before=pad.current.buttons,gp=readPad(pad.current);
+    if(resetPad.current){
+      const held=Math.hypot(...gp.move)+Math.hypot(...gp.look)+gp.throttle+gp.brake+Number(gp.buttons.some(Boolean));
+      if(held<.01)resetPad.current=false;
+      else{gp.move=[0,0];gp.look=[0,0];gp.throttle=0;gp.brake=0;gp.sprint=false;gp.buttons=[];}
+    }
+    pad.current=gp;
     const edge=(i:number)=>!!gp.buttons[i]&&!before[i];
     if(gp.connected){
       if(edge(12))cycleInteractPick(-1);
@@ -702,7 +733,7 @@ export default function WorldActors() {
       if(edge(3))interactNow(nearbyItem.current);
       if(edge(1))actions.current.recover=true;
       if(edge(8))cycleCamera();
-      if(edge(9))useWorldStore.setState({paused:true});
+      if(edge(9)){useWorldStore.setState({paused:true});return;}
     }
     const debug=debugDrive.current;
     // The shared actor transition owns the entry duration. Keep the car parked until seated,
@@ -917,13 +948,14 @@ export default function WorldActors() {
   useFrame((_,delta)=>{
     const state=useWorldStore.getState();
     if (state.shot) {
+      if(guideView.current)guideView.current.visible=true;
       // Fixed evidence cameras retain their original projection.
       if (camera instanceof PerspectiveCamera && camera.fov !== 50) {
         camera.fov = 50; camera.updateProjectionMatrix();
       }
       return;
     }
-    if (state.paused) return;
+    if (state.paused || state.poolInspect) return;
     const c=cam.current,driving=!!state.activeVehicle;
     const car=driving?cars.current.get(state.activeVehicle!):undefined;
     const body=car?.body??player.current;if(!body)return;
@@ -966,15 +998,23 @@ export default function WorldActors() {
     target.current.lerp(desiredTarget,c.firstPerson?1:1-Math.exp(-delta*10));
     const dir=orbitDirection(c.yaw,c.pitch);
     const exclude=car?.body??player.current??undefined;
-    // Sphere cast from `from` along unit `d` for `len` m against static ground and solid bodies (not the
-    // player, the driven car, sensors or knockable props). Returns the free distance (len if clear).
-    const probe=(from:{x:number;y:number;z:number},d:{x:number;y:number;z:number},len:number,radius:number,stopAtPenetration=true)=>{
-      if(len<1e-4)return {free:len,hit:null as number|null};
-      const h=world.castShape(from,{x:0,y:0,z:0,w:1},d,new rapier.Ball(radius),0,len,stopAtPenetration,undefined,undefined,undefined,exclude,
-        col=>{if(col.isSensor())return false;const b=col.parent();if(!b)return true;if(b.handle===player.current?.handle)return false;
-          const ud=b.userData as {vehicle?:string;obstacle?:boolean}|undefined;return !ud?.obstacle&&!(ud?.vehicle&&b.handle===car?.body.handle);});
-      return {free:h?Math.max(0,h.time_of_impact-CAMERA_HIT_MARGIN):len,hit:h?h.time_of_impact:null};
+    const radius=camera instanceof PerspectiveCamera
+      ?cameraCollisionRadius(camera.near,camera.fov,camera.aspect,c.firstPerson?EYE_RADIUS:CAMERA_RADIUS):CAMERA_RADIUS;
+    const solid=(col:RapierCollider)=>{
+      if(col.isSensor())return false;const b=col.parent();if(!b)return true;
+      if(b.handle===player.current?.handle)return false;
+      const ud=b.userData as {vehicle?:string;obstacle?:boolean}|undefined;
+      return !ud?.obstacle&&!(ud?.vehicle&&b.handle===car?.body.handle);
     };
+    // All corrections share the same physical sweep, including the smoothed pivot itself.
+    const probe=(from:{x:number;y:number;z:number},d:{x:number;y:number;z:number},len:number,radius:number)=>{
+      const result=sweepCamera(world,rapier,from,{x:from.x+d.x*len,y:from.y+d.y*len,z:from.z+d.z*len},radius,exclude,solid);
+      return {free:result.distance,hit:result.hit};
+    };
+    const origin={x:p.x,y:Math.max(p.y,WATER_Y),z:p.z};
+    // A lagging pivot can cut a corner even though the player capsule stayed outside the wall.
+    const pivot=sweepCamera(world,rapier,origin,target.current,radius,exclude,solid);
+    target.current.set(pivot.position.x,pivot.position.y,pivot.position.z);
     if(c.firstPerson){
       c.actual=0;c.desiredDistance=0;
       if(car){const f=rotateVector([car.spec.size[0]*.05,0,0],car.body.rotation());target.current.x+=f[0];target.current.z+=f[2];}
@@ -984,8 +1024,8 @@ export default function WorldActors() {
       // Near-wall guard: sweep an EYE_RADIUS ball from the body centre (inside the excluded capsule / car)
       // to the eye; if a wall or roof is closer, the eye stops in front of it, so the near plane never
       // enters geometry when standing against a wall or looking out of a car beside one.
-      const origin={x:p.x,y:Math.max(p.y,WATER_Y),z:p.z},span=new Vector3(eyePos.x-origin.x,eyePos.y-origin.y,eyePos.z-origin.z),len=span.length();
-      const r=probe(origin,len>1e-4?{x:span.x/len,y:span.y/len,z:span.z/len}:{x:0,y:1,z:0},len,EYE_RADIUS);
+      const span=new Vector3(eyePos.x-origin.x,eyePos.y-origin.y,eyePos.z-origin.z),len=span.length();
+      const r=probe(origin,len>1e-4?{x:span.x/len,y:span.y/len,z:span.z/len}:{x:0,y:1,z:0},len,radius);
       c.hitDistance=r.hit;c.collided=r.free<len-.01;
       if(c.collided)eyePos.set(origin.x,origin.y,origin.z).addScaledVector(span,r.free/len);
       camera.position.copy(eyePos);
@@ -999,27 +1039,32 @@ export default function WorldActors() {
       // Collision wins over distance: the camera stops CAMERA_HIT_MARGIN in front of the first hit, with no
       // minimum distance that could push it back into the obstacle.
       const from={x:target.current.x,y:target.current.y,z:target.current.z};
-      const r=probe(from,{x:dir[0],y:dir[1],z:dir[2]},want,CAMERA_RADIUS);
+      const r=probe(from,{x:dir[0],y:dir[1],z:dir[2]},want,radius);
       c.hitDistance=r.hit;
       const limit=r.free;
       c.collided=r.hit!==null&&limit<want-.01;
       // Pull in immediately (no frame inside a wall), ease back out.
       c.actual=limit<c.actual?limit:c.actual+(limit-c.actual)*(1-Math.exp(-delta*4));
       const pos=new Vector3(target.current.x+dir[0]*c.actual,target.current.y+dir[1]*c.actual,target.current.z+dir[2]*c.actual);
-      // Ground floor: never below the walkable surface under the camera.
-      // Only walkable surfaces (terrain, roads, slabs) count: a roof or canopy above the camera must not lift it.
-      const down=world.castRay(new rapier.Ray({x:pos.x,y:pos.y+40,z:pos.z},{x:0,y:-1,z:0}),80,true,undefined,undefined,undefined,exclude,
-        col=>!col.isSensor()&&isSurface(col));
-      if(down){const floor=pos.y+40-down.timeOfImpact+CAMERA_GROUND_CLEARANCE;if(pos.y<floor)pos.y=floor;}
-      pos.y=Math.max(pos.y,WATER_Y+.3);
-      camera.position.copy(pos);
+      // Never raycast from above every storey to "lift" the camera: that teleports through cave roofs.
+      // If water/shake changes the swept goal, validate the correction too, before applying it.
+      const originalY=pos.y;pos.y=Math.max(pos.y,WATER_Y+.3);
       impact.current *= Math.exp(-delta * 12);
-      if (impact.current > .001) camera.position.y += Math.sin(performance.now() * .07) * impact.current;
+      if (impact.current > .001) pos.y += Math.sin(performance.now() * .07) * impact.current;
+      if(pos.y!==originalY){const corrected=sweepCamera(world,rapier,from,pos,radius,exclude,solid);
+        pos.set(corrected.position.x,corrected.position.y,corrected.position.z);
+        if(corrected.hit!==null){c.collided=true;c.hitDistance=corrected.hit;}}
+      camera.position.copy(pos);
       camera.up.copy(UP);
       // A tight indoor orbit needs the body centred, while its collision sweep starts safely at
       // head height. This changes the framing without moving the camera into a chair or wall.
       if(cameraSeat) camera.lookAt(target.current.x,cameraSeat.position[1]+.45,target.current.z);
       else camera.lookAt(target.current);
+    }
+    // Hide drawing only, after final camera placement. Keep the child guide's pose/socket solve alive.
+    if(guideView.current){
+      const view=guideView.current,foot=view.getWorldPosition(guideCameraFoot.current);
+      view.visible=!c.firstPerson&&(!!car||!cameraOverlapsGuide(camera.position,foot,radius,!view.visible));
     }
     occlusion.current.update(scene,camera,target.current,delta);
   });
@@ -1044,7 +1089,7 @@ export default function WorldActors() {
       {/* Zero/min friction prevents low curbs and walls from pinning the round foot.
           Horizontal impulse control handles braking; 10 cm soft CCD predicts landing contact. */}
       <CapsuleCollider name="player-capsule" args={[PLAYER_HALF_HEIGHT,PLAYER_RADIUS]} mass={72} friction={0} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={0}/>
-      <group position={[0,-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),0]}>
+      <group ref={guideView} name="world-guide-camera-visibility" position={[0,-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),0]}>
         <GuideVisual body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} intent={moveIntent} jumpSeq={jumpSeq} visible={!firstPerson} transition={guideTransition} supportDecision={supportDecision} movementLock={guideMovementLock} vault={vault} resetId={guideResetId} />
       </group>
     </RigidBody>

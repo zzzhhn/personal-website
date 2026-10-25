@@ -1,14 +1,14 @@
 import { Component, Suspense, useEffect, useMemo, useRef, type ReactNode } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import { CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
-import { CanvasTexture, FileLoader, Group, InstancedMesh, Mesh, MeshStandardMaterial, Object3D, SRGBColorSpace, Vector3 } from 'three';
+import { CanvasTexture, Color, FileLoader, Group, InstancedMesh, Mesh, MeshStandardMaterial, Object3D, SRGBColorSpace, Vector3 } from 'three';
 import { withWorldAssetDecoder } from './WorldAssetDecoder';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { ALPHA_FACTORS, type AlphaFactorId } from './alpha-mine-data';
 import { ALPHA_MINE_ORIGIN, mineLocalToWorld } from './alpha-mine-layout';
 import { beginMineAction, cancelMineAction, mineActor, mineCanReach, mineNotice, resetMineVeins, useAlphaMineStore, type MinePoint } from './alpha-mine-state';
 import { useMineManifest, type MineManifest } from './alpha-mine-assets';
-import { releaseMineOnline } from './alpha-mine-online';
+import { releaseMineOnline, useMineOnline } from './alpha-mine-online';
 import WorldMinePool from './WorldMinePool';
 import { factorOreSource } from './alpha-mine-ore';
 import { useInteractable } from './WorldInteract';
@@ -45,7 +45,27 @@ function useOre(source: Object3D, id: AlphaFactorId) {
 
 function MineVein({ manifest, index, source, ore }: { manifest: MineManifest; index: number; source: Object3D; ore: Object3D }) {
   const m = manifest.veins[index], factor = ALPHA_FACTORS[index], s = useAlphaMineStore(), v = s.veins[factor.id];
-  const root = useMemo(() => cloneVisual(source), [source]);
+  const visual=useMemo(()=>{
+    const root=cloneVisual(source),materials=new Map<MeshStandardMaterial,MeshStandardMaterial>(),mineral:{material:MeshStandardMaterial;color:MeshStandardMaterial['color']}[]=[];
+    root.traverse(o=>{if(o instanceof Mesh&&!Array.isArray(o.material)&&o.material instanceof MeshStandardMaterial){
+      const authored=o.material;
+      if(!materials.has(authored)){
+        const copy=/AM_vein_host/.test(authored.name)?mineSurfaceMaterial(authored,m.socket):authored.clone();
+        materials.set(authored,copy);
+        if(/AM_mineral_/.test(authored.name))mineral.push({material:copy,color:authored.color.clone()});
+      }
+      o.material=materials.get(authored)!;
+    }});
+    return {root,materials:[...materials.values()],mineral};
+  },[source,m.socket]);
+  const root=visual.root;
+  useEffect(()=>()=>visual.materials.forEach(m=>m.dispose()),[visual]);
+  useEffect(()=>{for(const slot of visual.mineral){
+    // A continuous, quiet seam is visible before scanning; its productive pocket
+    // gains its identity colour only after the detector has identified it.
+    slot.material.color.copy(slot.color);
+    if(!v.revealed)slot.material.color.lerp(new Color('#92917e'),.90);
+  }},[visual,v.revealed]);
   const rock = useOre(ore,factor.id);
   const activeState=v.hits>=3?'open':v.hits>0?'cracked':'intact';
   const contract=manifest.dynamicAssets.veins.roots[m.id], stateNames=contract.states;
@@ -110,11 +130,18 @@ function PoolShelf({ manifest, index, ore }: { manifest: MineManifest; index: nu
 }
 function PoolBay({ manifest, bay }: { manifest: MineManifest; bay: 0|1 }) {
   const carried=useAlphaMineStore(s=>s.carried), basin=manifest.basin, offset=bay===0?-1.15:1.15;
+  const factorId=useAlphaMineStore(s=>s.bays[bay]);
+  const ready=useMineOnline(s=>!!factorId&&s.factors[factorId].status==='ready');
   const anchor: MinePoint=[basin.center[0]+offset,.83,basin.center[2]+3.35];
   const target=mineLocalToWorld([basin.impact[0]+offset*.45,basin.waterY,basin.impact[2]]);
   useInteractable({id:`alpha-mine-pool-${bay}`,position:mineLocalToWorld(anchor),radius:1.2,kind:'exhibit',
-    label:carried?{zh:`投入 ${bay?'B':'A'} 位 · 替换此处结果`,en:`Cast into ${bay?'B':'A'} · replace this result`}:{zh:'带一块矿石来试试',en:'Bring an ore to test'},
-    onInteract:()=>{const id=useAlphaMineStore.getState().carried;if(id){beginMineAction('deposit',target,id,bay);}else mineNotice('先采出矿石，或从池边回收台取一块。','Mine an ore, or retrieve one from a pool shelf.');},
+    label:carried?{zh:`投入 ${bay?'B':'A'} 位 · 替换此处结果`,en:`Cast into ${bay?'B':'A'} · replace this result`}:ready?{zh:'检视回测池',en:'Inspect results'}:{zh:'带一块矿石来试试',en:'Bring an ore to test'},
+    onInteract:()=>{const s=useAlphaMineStore.getState(),id=s.carried,existing=s.bays[bay];
+      if(id)beginMineAction('deposit',target,id,bay);
+      else if(existing&&useMineOnline.getState().factors[existing].status==='ready'){
+        useAlphaMineStore.setState({selectedBay:bay});useWorldStore.setState({poolInspect:true});
+      }
+      else mineNotice('先采出矿石，或从池边回收台取一块。','Mine an ore, or retrieve one from a pool shelf.');},
   });
   return <group name={`alpha-mine-pool-marker-${bay}`} position={anchor}>
     <mesh position={[0,-.46,0]} castShadow><boxGeometry args={[.08,.74,.08]}/><meshStandardMaterial color="#75664d" roughness={.8}/></mesh>
@@ -176,7 +203,7 @@ function MineEffects() {
   const mesh=useRef<InstancedMesh>(null), age=useRef(2), seq=useRef(0), effect=useRef<ReturnType<typeof useAlphaMineStore.getState>['effect']>(null);
   const dummy=useMemo(()=>new Object3D(),[]);
   useFrame((_,delta)=>{
-    const target=mesh.current, s=useWorldStore.getState();if(!target||s.paused||s.card||document.hidden)return;
+    const target=mesh.current, s=useWorldStore.getState();if(!target||s.paused||s.card||s.poolInspect||document.hidden)return;
     const next=useAlphaMineStore.getState().effect;
     if(next && next.seq!==seq.current){effect.current=next;seq.current=next.seq;age.current=0;(target.material as MeshStandardMaterial).color.set(next.kind==='splash'?'#a8d1c5':oreFactor(next.factorId).color);parkAudio.cue(next.kind==='splash'?'splash':'strike',.7);}
     age.current+=Math.min(.05,delta); const e=effect.current;
@@ -216,7 +243,7 @@ function MineAssets({ content }: { content: WorldContent }) {
     const w=useWorldStore.getState(),s=useAlphaMineStore.getState();
     const rests=[...manifest.veins.filter((v,i)=>s.veins[ALPHA_FACTORS[i].id].collected).map(v=>v.oreRest),...ALPHA_FACTORS.flatMap((f,i)=>s.recovered.includes(f.id)?[]:[poolShelf(manifest,i)])].map(mineLocalToWorld);
     mineActor.restTarget=rests.find(p=>mineCanReach(p,.8))??null;
-    if(w.paused||w.card||document.hidden||!s.equipped||s.carried||s.action||!mineActor.available)return;
+    if(w.paused||w.card||w.poolInspect||document.hidden||!s.equipped||s.carried||s.action||!mineActor.available)return;
     let near=Infinity;
     for(let i=0;i<manifest.veins.length;i++){
       if(s.veins[ALPHA_FACTORS[i].id].collected)continue;
@@ -245,7 +272,7 @@ class MineGuard extends Component<{children:ReactNode},{failed:boolean}> {
 export default function WorldAlphaMine({content}:{content:WorldContent}) {
   useEffect(()=>{
     const release=parkAudio.retain();
-    const unsubscribe=useWorldStore.subscribe((s,p)=>{if((s.paused&&!p.paused)||(s.card&&!p.card)||s.activeVehicle)cancelMineAction();});
+    const unsubscribe=useWorldStore.subscribe((s,p)=>{if((s.paused&&!p.paused)||(s.card&&!p.card)||(s.poolInspect&&!p.poolInspect)||s.activeVehicle)cancelMineAction();});
     return()=>{release();unsubscribe();cancelMineAction();releaseMineOnline();mineActor.available=false;};
   },[]);
   return <><WorldAlphaMineFoundation/><MineGuard><Suspense fallback={null}><MineAssets content={content}/></Suspense></MineGuard></>;

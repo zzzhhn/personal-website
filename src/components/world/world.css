@@ -2,7 +2,8 @@
  * camp orange #E8803A, tech teal #4FD1C5 (lines, never fills), sea #1E5A5E, ink #23343D. Type: Instrument Serif for
  * names and titles, Geist for everything read at a glance. */
 :root {
-  color-scheme: dark; font-family: "Geist", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --sans: "Geist", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  color-scheme: dark; font-family: var(--sans);
   --ink: #23343d; --ink-2: #4a5a60; --paper: #f4ecdb; --paper-2: #e6dccb; --sand: #c9a978; --orange: #e8803a; --teal: #4fd1c5; --slate: #4e647d;
   --glass: #142a33d9; --glass-line: #f4ecdb24; --serif: "Instrument Serif", "Songti SC", "STSong", Georgia, serif;
   --ease-out: cubic-bezier(.2, .8, .2, 1);
@@ -200,6 +201,10 @@ kbd { font: 600 11px/1 "Geist", sans-serif; display: inline-flex; align-items: c
 .world-credits p { margin: 6px 0; }
 .world-credits a { color: var(--paper); overflow-wrap: anywhere; text-underline-offset: 3px; }
 .world-dialog-actions { margin-top: auto; padding-top: 14px; display: flex; flex-direction: column; gap: 4px; }
+.world-dialog-actions > button:not(.world-primary) { padding: 11px 12px; border: 1px solid #f4ecdb40; border-radius: 10px; background: #ffffff0d; color: var(--paper); font-size: 14px; }
+.world-dialog-actions > button:not(.world-primary):hover { background: #ffffff1a; }
+.world-dialog-actions > button:disabled { opacity: .5; cursor: wait; }
+.world-dialog-actions .world-setting-hint { margin: 3px 0 8px; }
 .world-dialog .world-primary { width: 100%; padding: 13px; border: 0; border-radius: 10px; background: var(--paper); color: var(--ink); font-weight: 600; font-size: 14px; box-shadow: inset 0 -2px 0 #c9b99a; }
 .world-dialog .world-primary:hover { background: #fff8ec; }
 .world-dialog-actions a { color: #c4d3d4; text-align: center; font-size: 13px; padding: 10px; text-underline-offset: 4px; }

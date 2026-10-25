@@ -3,7 +3,7 @@ No Blender import: collision proxies can ship before native modelling/render wor
 """
 import math, json, itertools
 from pathlib import Path
-from layout import XS, ZS, RAMPS, BRIDGE, ROUTE, GALLERY_RAMPS, GALLERY_BRIDGES, GALLERY_ROUTE, LAMPS, POOL, RACK, VEINS, OUT, height, write_contract
+from layout import XS, ZS, RAMPS, BRIDGE, ROUTE, GALLERY_RAMPS, GALLERY_BRIDGES, GALLERY_ROUTE, LOW_EXITS, LOW_PASSAGES, LAMPS, POOL, RACK, VEINS, OUT, height, write_contract, perimeter_map, rock_intervals, smooth, outline
 
 MESHES = {}
 PROXIES = []
@@ -33,41 +33,44 @@ def group(name,material,semantic):
 
 def rock_color(y,seed,x=0,z=0):
     # Broad tilted beds and local fault offsets, not equal-width horizontal stripes.
-    section=int((x+17)//6);tilts=[-.13,.18,-.07,.11,-.16,.08]
-    layer=y+tilts[section%6]*x+.23*math.sin(z*.28)+[0,.38,-.22,.17,-.34,.1][section%6]
+    layer=y+.10*x+.045*z+.30*math.sin(x*.19+z*.11)+.14*math.sin(x*.42-z*.15)
     q=.5+.5*math.sin(layer*.78);rust=math.exp(-((layer%5.9-2.2)/.43)**2)*.17
-    a=(155,145,128);b=(181,168,146);ochre=(178,141,96)
+    a=(131,134,123);b=(183,171,148);ochre=(170,140,96)
     rgb=[(a[k]*(1-q)+b[k]*q)*(1-rust)+ochre[k]*rust for k in range(3)]
     teal=math.exp(-((layer%6.9-4.1)/.24)**2)*.16
     rgb=[rgb[k]*(1-teal)+(72,112,101)[k]*teal for k in range(3)]
-    f=.95+.09*noise(seed)
+    f=.985+.03*noise(seed)
     return '#'+''.join(f'{round(max(0,min(255,c*f))):02x}' for c in rgb)
 
 def warp(p):
     x,y,z=p
-    fade=math.sin(math.pi*y/3)
-    dx=.065*fade*math.sin(x*.91+z*.67+y*1.8)
-    dz=.065*fade*math.sin(x*.73-z*.81+y*1.4)
-    if abs(x)>=23.99:
-        # Large bays and buttresses alter the actual silhouette, not face noise.
-        taper=1.3*math.exp(-((z+7)/6.5)**2)
-        dx=-math.copysign(.25+taper+.75*math.sin(z*.19+.8)**2,x)
+    fade=math.sin(math.pi*y/3);protect=rock_protection(x,z)
+    dx=.32*fade*math.sin(x*.49+z*.23+y*.57)*protect
+    dz=.36*fade*math.sin(x*.31-z*.29+y*.67)*protect
     if z<=-35.99:dz=0
     if z>=-.01:dz=0
-    if abs(x-13.1)<1e-6:dx=.15+.4*math.sin(z*.45)**2
-    if abs(x+13.1)<1e-6:dx=-.15-.4*math.sin(z*.42+.5)**2
+    if abs(x-13.1)<1e-6:dx=.25+.8*math.sin(z*.22+.4)**2
+    if abs(x+13.1)<1e-6:dx=-.25-.8*math.sin(z*.20+.5)**2
     if abs(z+21)<1e-6 and -10.5<x<-3.7:
         protect=max(0,min(1,(abs(x+6.4)-.9)/.55));dz=.85*math.sin(x*.9+.4)**2*protect
     if abs(z+25.6)<1e-6 and -13.1<x<-3.7:
         protect=max(0,min(1,(abs(x+8.6)-.9)/.55));dz=.6*math.sin(x*.8)*protect
     if abs(z+33)<1e-6 and -3.7<x<10.5:dz=.85*math.sin(x*.33+.8)**2
     if abs(x+3.7)<1e-6 and -33<z<-25.6:dx=.7*math.sin((z+33)/7.4*math.pi)**2
-    if abs(z+35.6)<1e-6:dz=-.06*math.sin(x*.6)**2
+    if abs(z+35.6)<1e-6:dz=-(.3+.65*math.sin(x*.32)**2)*max(0,min(1,(abs(x-1.5)-1.0)/.8))
     dy=0
     if all(abs(y-level)>.001 for level in [0,3,6]):
         dy=.23*math.sin(x*.61+z*.47)+.11*math.sin(x*1.2-z*.3)
         if y>8.8:dy=-abs(dy)
-    return (x+dx,min(12,y+dy),z+dz)
+    if (abs(x)>=21 or z<=-48) and y>6:
+        dy=(y-6)/3*(.65*math.sin(x*.23+z*.14)+.40*math.sin(x*.50-z*.11))
+    # An actual eroded rock foot, not a tall wall cut at a rectangular domain.
+    # Raised routes stay fixed; distant crests descend into the host mainland.
+    edge=min(x+24,24-x,z+52,2-z)
+    foot=smooth(3.1,4.0,route_distance(x,z))*(1-smooth(0,5,edge))
+    yy=(y+dy)*(1-.994*foot)-.12*foot
+    px,pz=perimeter_map(x,z)
+    return (px+dx,min(12,yy),pz+dz)
 
 def rock_protection(x,z):
     """Keep authored vein faces and walking joins exact while shaping adjacent rock."""
@@ -117,12 +120,13 @@ def fracture_skin(edge,low,high,n,seed):
         m.face([front[nv][i],front[nv][i+1],back[nv][i+1],back[nv][i]],rock_color(high,seed))
 
 def attached_talus(edge,low,high,n,seed):
-    if high-low<2 or low>6:return
+    if high-low<2 or low not in [0,3,6]:return
     a,b=edge(low);length=math.dist(a,b);count=max(1,math.ceil(length/.95))
     m=group('AM01_attached_talus','stone','closed-talus')
     for i in range(count):
         mid=add(a,mul(sub(b,a),(i+.5)/count))
-        if route_distance(mid[0],mid[2])<1.65 or rock_protection(mid[0],mid[2])<.99:continue
+        if floor_route_distance(mid[0],low,mid[2])<1.6:continue
+        if any(abs(low-v['level'])<.5 and math.hypot(mid[0]-v['socket'][0],mid[2]-v['socket'][2])<1.4 for v in VEINS):continue
         rings=[]
         for t in [i/count,(i+1)/count]:
             p=add(a,mul(sub(b,a),t));p=warp(p)
@@ -141,7 +145,7 @@ def ground_field(x,z):
     west=((x+19)/2.3)**2+((z+6)/7)**2-1
     near_lower=math.hypot(x-VEINS[0]['stand'][0],z-VEINS[0]['stand'][2])/1.6-1
     approach=100
-    for a,b in zip(ROUTE,ROUTE[1:]):
+    for a,b in [pair for route in [ROUTE,*LOW_EXITS.values()] for pair in zip(route,route[1:])]:
         if a[1]!=0 or b[1]!=0:continue
         dx=b[0]-a[0];dz=b[2]-a[2];t=max(0,min(1,((x-a[0])*dx+(z-a[2])*dz)/max(dx*dx+dz*dz,1e-8)))
         approach=min(approach,math.hypot(x-a[0]-t*dx,z-a[2]-t*dz)/1.5-1)
@@ -179,33 +183,36 @@ def eroded_ground(mesh,x0,x1,z0,z1):
 
 def geology():
     body=group('AM01_rock_mass','stone','closed-rock');ground=group('AM01_ground','ground','open-walk-surface')
-    hs={(i,j): round(height((XS[i]+XS[i+1])/2,(ZS[j]+ZS[j+1])/2)/.75)*.75
+    cells={(i,j): rock_intervals((XS[i]+XS[i+1])/2,(ZS[j]+ZS[j+1])/2)
         for i in range(len(XS)-1) for j in range(len(ZS)-1)}
-    levels=[0,.4,.75,1.3,1.5,2.1,2.25,3,3.75,4.5,5.25,6,6.75,7.5,8.25,9,9.75,10.5,11.25,12]
-    for (i,j),h in hs.items():
+    levels=[0,.4,.75,1.3,1.5,2.1,2.25,2.7,3,3.75,4.5,5.25,6,6.75,7.5,8.25,9,9.75,10.5,11.25,12]
+    for (i,j),intervals in cells.items():
         x0,x1=XS[i:i+2];z0,z1=ZS[j:j+2]
+        h=intervals[-1][1] if intervals else 0
         top=[(x0,h,z0),(x0,h,z1),(x1,h,z1),(x1,h,z0)]
-        if h==0:
+        if h==0 or intervals[0][0]>0:
             # Open dirt follows the forecourt and western access, avoiding a square tile
             # boundary across the host mainland. The island provides surrounding soil.
-            eroded_ground(ground,x0,x1,z0,z1);continue
+            eroded_ground(ground,x0,x1,z0,z1)
+        if not intervals:continue
+        bottom=intervals[0][0]
         body.face([warp(p) for p in top], rock_color(h,i+j,(x0+x1)/2,(z0+z1)/2))
-        body.face([warp(p) for p in [(x1,0,z0),(x1,0,z1),(x0,0,z1),(x0,0,z0)]],'#726B5F')
+        body.face([warp(p) for p in [(x1,bottom,z0),(x1,bottom,z1),(x0,bottom,z1),(x0,bottom,z0)]],'#726B5F')
         sides=[((i,j+1),(0,0,1),lambda y:[(x0,y,z1),(x1,y,z1)]),
                ((i,j-1),(0,0,-1),lambda y:[(x1,y,z0),(x0,y,z0)]),
                ((i+1,j),(1,0,0),lambda y:[(x1,y,z1),(x1,y,z0)]),
                ((i-1,j),(-1,0,0),lambda y:[(x0,y,z0),(x0,y,z1)])]
         for neighbor,n,edge in sides:
-            low=hs.get(neighbor,0)
-            if low>=h:continue
-            fracture_skin(edge,low,h,n,100+i*37+j*11)
-            attached_talus(edge,low,h,n,100+i*37+j*11)
-            cuts=sorted(set([low,h]+[y for y in levels if low<y<h]))
+            other=cells.get(neighbor,[])
+            cuts=sorted(set([bottom,h]+[y for interval in other for y in interval if bottom<y<h]+[y for y in levels if bottom<y<h]))
             for k,(lo,hi) in enumerate(zip(cuts,cuts[1:])):
+                if any(a<(lo+hi)/2<b for a,b in other):continue
                 a,b=edge(lo);d,c=edge(hi);quad=[warp(p) for p in [a,b,c,d]]
                 center=tuple(sum(p[q] for p in quad)/4 for q in range(3))
-                center=add(center,mul(n,.09*math.sin(i*1.93+j*.83+k*2.1)))
+                # One continuous closed shell. No independently capped wall overlays.
+                center=add(center,mul(n,.42*surface_relief(*center)*math.sin(center[0]*.7+center[2]*.4+center[1])**2))
                 for t in range(4):body.face([quad[t],quad[(t+1)%4],center],rock_color((lo+hi)/2,i+j+k*.5,center[0],center[2]))
+            if not other:attached_talus(edge,bottom,h,n,100+i*37+j*11)
 
 def box(name,center,size,material='wood',color='#8E6E55',semantic='structure',axes=None,collider=True):
     mesh=group(name,material,semantic);mesh.lookup={};u,v,w=axes or ((1,0,0),(0,1,0),(0,0,1))
@@ -354,10 +361,26 @@ def rock_hull(name,lo,hi,seed):
 def route_distance(x,z):
     from layout import ROUTE
     best=1e6
-    for a,b in list(zip(ROUTE,ROUTE[1:]))+list(zip(GALLERY_ROUTE,GALLERY_ROUTE[1:])):
+    for a,b in [pair for route in [ROUTE,GALLERY_ROUTE,*LOW_EXITS.values()] for pair in zip(route,route[1:])]:
         dx=b[0]-a[0];dz=b[2]-a[2];t=max(0,min(1,((x-a[0])*dx+(z-a[2])*dz)/max(dx*dx+dz*dz,1e-8)))
         best=min(best,math.hypot(x-a[0]-t*dx,z-a[2]-t*dz))
     return best
+
+def floor_route_distance(x,y,z):
+    best=1e6
+    for a,b in [pair for route in [ROUTE,GALLERY_ROUTE,*LOW_EXITS.values()] for pair in zip(route,route[1:])]:
+        d=sub(b,a);t=max(0,min(1,sum((p-q)*v for p,q,v in zip((x,y,z),a,d))/max(sum(v*v for v in d),1e-8)))
+        closest=add(a,mul(d,t));best=min(best,math.dist((x,y,z),closest))
+    return best
+
+def surface_relief(x,y,z):
+    clearance=1e6
+    for a,b in [pair for route in [ROUTE,GALLERY_ROUTE,*LOW_EXITS.values()] for pair in zip(route,route[1:])]:
+        dx,dz=b[0]-a[0],b[2]-a[2];t=max(0,min(1,((x-a[0])*dx+(z-a[2])*dz)/max(dx*dx+dz*dz,1e-8)))
+        cx,cy,cz=add(a,mul(sub(b,a),t));dy=max(0,abs(y-(cy+.88))-.48)
+        clearance=min(clearance,math.sqrt((x-cx)**2+dy*dy+(z-cz)**2)-.34)
+    near=min(math.hypot(x-v['socket'][0],z-v['socket'][2]) for v in VEINS)
+    return smooth(.4,.9,clearance)*smooth(1.1,2,near)
 
 def fractures_and_ground():
     for i,(lo,hi) in enumerate([
@@ -380,7 +403,21 @@ def fractures_and_ground():
         else:
             VEGETATION.append({'position':[round(x,3),level+.015,round(z,3)],'scale':round(.7+.6*noise(i*5),3),'yaw':round(noise(i*7)*math.tau,3)})
         accepted+=1
-        if accepted>=190:break
+        if accepted>=140:break
+    # The fringe grows on the host ground, outside the eroded stone foot. Its
+    # roots sit 14cm below the quarry datum, matching mainland y=1 rather than
+    # hovering at the raised facility plane. No static grass is exported.
+    boundary=outline()
+    for i,(a,b) in enumerate(zip(boundary,boundary[1:]+boundary[:1])):
+        if noise(i*5.73)<.72:continue
+        dx,dz=b[0]-a[0],b[1]-a[1];length=math.hypot(dx,dz)
+        # A few irregular patches, with real empty stretches between them.
+        for j in range(3+int(4*noise(i*3.9))):
+            t=.2+.6*noise(i*13+j*2.1);offset=.25+1.05*noise(i*7+j)
+            x=a[0]+dx*t+dz/length*offset;z=a[1]+dz*t-dx/length*offset
+            spread=(noise(i*2+j*11)-.5)*1.7;x+=dx/length*spread;z+=dz/length*spread
+            if route_distance(x,z)<1.6:continue
+            VEGETATION.append({'position':[round(x,3),-.13,round(z,3)],'scale':round(.8+.45*noise(i+j*3),3),'yaw':round(noise(i+j*13)*math.tau,3)})
 
 def cylinder(name,a,b,radius,material='metal',color='#554C3D',n=10):
     axis=unit(sub(b,a));u=unit(cross(axis,(0,0,1))) if abs(axis[2])<.95 else unit(cross(axis,(0,1,0)))
@@ -431,13 +468,7 @@ def mine_cart(x,y,z):
         rock_hull('AM05_cart_ore',(qx-.3,y+.62,qz-.3),(qx+.3,y+1.50+.25*noise(i),qz+.3),700+i)
 
 def scenic_galleries():
-    # Broad sloping fractures replace a rectangular perimeter with separated ridges.
-    for i,(x,z,wx,wz,base,top) in enumerate([
-        (-22.0,-14,3.2,5.5,0,5.7),(-22.2,-24,3.5,4.5,3,8.3),(-22,-35,3.2,5.0,3,9.0),
-        (-19,-49.5,6.0,3.4,6,11.6),(-10,-49,5.0,3.4,6,10.8),(0,-49.5,5.5,3.8,6,11.3),
-        (12,-49.3,6.0,3.7,6,11.9),(21.5,-46,3.8,5.4,6,10.8),(21.5,-38.7,3.9,4.5,6,9.5),
-        (15,-30.0,3,5,0,8.8),(-14.9,-10,2.4,4.4,0,3.6)]):
-        rock_hull('AM06_gallery_ridges',(x-wx/2,base,z-wz/2),(x+wx/2,top,z+wz/2),1100+i*9)
+    # The ridge now belongs to the closed landscape shell; no floating crown pile.
     # Large irregular facing plates break the long grid walls into readable fractures.
     for i,(z,base,top) in enumerate([(-14.8,.4,4.3),(-19.5,0,6.7),(-24.8,1.1,8.9),(-29.8,3,9.1)]):
         rock_hull('AM06_east_buttresses',(13.36,base,z-2.1),(16.6,top-.25,z+1.8),1900+i*7)

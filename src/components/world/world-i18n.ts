@@ -1,5 +1,6 @@
 export const worldText = {
   en: {
+    returnCamp: 'Return to camp', returnCampHint: 'Keep your ore, mining progress and research results.',
     nitro: 'Nitro', boosting: 'Boosting', handbrake: 'Handbrake', nitroHint: 'Shift · boost   X · handbrake',
     loadingArrival: 'Finding our way to camp…', loadingPlaces: 'Bringing the island into view…', loadingStart: 'A place to begin…',
     title: 'Bobby’s island', stage: 'Experiences · Projects · Explore', loading: 'Preparing the island', loadingHint: 'Terrain, light, then a place to begin.',
@@ -28,6 +29,7 @@ export const worldText = {
     thanksTitle: 'Also used', groundCredit: 'Ground detail textures: ambientCG (CC0).',
   },
   zh: {
+    returnCamp: '回到营地', returnCampHint: '保留矿石、挖矿进度和研究结果。',
     nitro: '氮气', boosting: '氮气加速中', handbrake: '手刹', nitroHint: 'Shift 氮气 · X 手刹',
     loadingArrival: '从营地开始……', loadingPlaces: '城岛正慢慢亮起来……', loadingStart: '准备迈出第一步……',
     title: 'Bobby 的城岛', stage: '经历 · 项目 · 漫游', loading: '正在准备城岛', loadingHint: '铺好地面，点亮灯光，准备出发。',

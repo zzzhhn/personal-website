@@ -3,9 +3,9 @@
  "blenderVersion": "5.1.2",
  "source": "tools/world/alpha-mine/batch1.blend",
  "glb": "public/world/alpha-mine/quarry-static.glb",
- "glbSha256": "f9d15c1b3a438345d59a9d1f3d0efa86187df976a70785136c2af83d173bcf17",
- "sourceSha256": "c35643c1dce33d9bb4c64defa4339d9036f606432646b28630787230a014162b",
- "bytes": 2497584,
+ "glbSha256": "51f5cea6b3318b610a8fef5fe6484fef8d0f6e50f3744f8403fd2f918beb56ca",
+ "sourceSha256": "615218eefd593c60cfd91c87fb616bbcc022b1dfffa63dbb18593fa3aa339694",
+ "bytes": 2186512,
  "exportOptions": {
   "export_format": "GLB",
   "use_selection": true,
@@ -38,23 +38,23 @@
   }
  },
  "editable": {
-  "triangles": 86663,
-  "meshCount": 105,
+  "triangles": 70513,
+  "meshCount": 104,
   "blenderBounds": [
    [
-    -24.573219299316406,
+    -23.628660202026367,
     -1.7785097360610962,
     -0.18000000715255737
    ],
    [
-    24.6168155670166,
-    52.869998931884766,
+    23.073394775390625,
+    52.38564682006836,
     11.899999618530273
    ]
   ],
   "dimensionsBlender": [
-   49.19003486633301,
-   54.64850866794586,
+   46.70205497741699,
+   54.164156556129456,
    12.07999962568283
   ],
   "materials": {
@@ -74,7 +74,7 @@
     "colorLayers": [
      "Col"
     ],
-    "usersOnAsset": 2255
+    "usersOnAsset": 2571
    },
    "AM_wood": {
     "roughness": 0.8399999737739563,
@@ -116,11 +116,11 @@
   "meshes": [
    {
     "name": "AM01_attached_talus",
-    "triangles": 3176,
+    "triangles": 2864,
     "degenerate": 0,
     "validateWouldRepair": false,
     "rawNonmanifoldEdges": 0,
-    "weldedNonmanifoldEdges": 762,
+    "weldedNonmanifoldEdges": 702,
     "rawBadWinding": 0,
     "weldedBadWinding": 0,
     "scale": [
@@ -145,27 +145,12 @@
     ]
    },
    {
-    "name": "AM01_connected_fracture_skin",
-    "triangles": 20158,
-    "degenerate": 0,
-    "validateWouldRepair": false,
-    "rawNonmanifoldEdges": 0,
-    "weldedNonmanifoldEdges": 1153,
-    "rawBadWinding": 0,
-    "weldedBadWinding": 0,
-    "scale": [
-     1.0,
-     1.0,
-     1.0
-    ]
-   },
-   {
     "name": "AM01_ground",
-    "triangles": 2255,
+    "triangles": 2571,
     "degenerate": 0,
     "validateWouldRepair": false,
-    "rawNonmanifoldEdges": 303,
-    "weldedNonmanifoldEdges": 303,
+    "rawNonmanifoldEdges": 387,
+    "weldedNonmanifoldEdges": 387,
     "rawBadWinding": 0,
     "weldedBadWinding": 0,
     "scale": [
@@ -176,11 +161,26 @@
    },
    {
     "name": "AM01_ground_spalls",
-    "triangles": 1518,
+    "triangles": 1188,
     "degenerate": 0,
     "validateWouldRepair": false,
     "rawNonmanifoldEdges": 0,
     "weldedNonmanifoldEdges": 0,
+    "rawBadWinding": 0,
+    "weldedBadWinding": 0,
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "AM01_inlaid_seams",
+    "triangles": 4140,
+    "degenerate": 0,
+    "validateWouldRepair": false,
+    "rawNonmanifoldEdges": 0,
+    "weldedNonmanifoldEdges": 1336,
     "rawBadWinding": 0,
     "weldedBadWinding": 0,
     "scale": [
@@ -251,7 +251,7 @@
    },
    {
     "name": "AM01_rock_mass",
-    "triangles": 9712,
+    "triangles": 10148,
     "degenerate": 0,
     "validateWouldRepair": false,
     "rawNonmanifoldEdges": 0,
@@ -1600,21 +1600,6 @@
     ]
    },
    {
-    "name": "AM06_gallery_ridges",
-    "triangles": 242,
-    "degenerate": 0,
-    "validateWouldRepair": false,
-    "rawNonmanifoldEdges": 0,
-    "weldedNonmanifoldEdges": 0,
-    "rawBadWinding": 0,
-    "weldedBadWinding": 0,
-    "scale": [
-     1.0,
-     1.0,
-     1.0
-    ]
-   },
-   {
     "name": "AM06_north_gallery_rail",
     "triangles": 88,
     "degenerate": 0,
@@ -1693,23 +1678,23 @@
   "problems": []
  },
  "runtime": {
-  "triangles": 86663,
+  "triangles": 70513,
   "meshCount": 6,
   "blenderBounds": [
    [
-    -24.573219299316406,
+    -23.628660202026367,
     -1.7785097360610962,
     -0.18000000715255737
    ],
    [
-    24.6168155670166,
-    52.869998931884766,
+    23.073394775390625,
+    52.38564682006836,
     11.899999618530273
    ]
   ],
   "dimensionsBlender": [
-   49.19003486633301,
-   54.64850866794586,
+   46.70205497741699,
+   54.164156556129456,
    12.07999962568283
   ],
   "materials": {
@@ -1738,7 +1723,7 @@
     "colorLayers": [
      "Col"
     ],
-    "usersOnAsset": 2255
+    "usersOnAsset": 2571
    },
    "AM_metal": {
     "roughness": 0.6700000166893005,
@@ -1756,7 +1741,7 @@
     "colorLayers": [
      "Col"
     ],
-    "usersOnAsset": 30308
+    "usersOnAsset": 17656
    },
    "AM_wood": {
     "roughness": 0.8399999737739563,
@@ -1801,11 +1786,11 @@
    },
    {
     "name": "AM_batch_ground",
-    "triangles": 2255,
+    "triangles": 2571,
     "degenerate": 0,
     "validateWouldRepair": false,
-    "rawNonmanifoldEdges": 303,
-    "weldedNonmanifoldEdges": 303,
+    "rawNonmanifoldEdges": 387,
+    "weldedNonmanifoldEdges": 387,
     "rawBadWinding": 0,
     "weldedBadWinding": 0,
     "scale": [
@@ -1831,11 +1816,11 @@
    },
    {
     "name": "AM_batch_stone",
-    "triangles": 39908,
+    "triangles": 23442,
     "degenerate": 0,
     "validateWouldRepair": false,
     "rawNonmanifoldEdges": 0,
-    "weldedNonmanifoldEdges": 1915,
+    "weldedNonmanifoldEdges": 2038,
     "rawBadWinding": 0,
     "weldedBadWinding": 0,
     "scale": [
@@ -1863,23 +1848,23 @@
   "problems": []
  },
  "reopened": {
-  "triangles": 86663,
+  "triangles": 70513,
   "meshCount": 6,
   "blenderBounds": [
    [
-    -24.573219299316406,
+    -23.628660202026367,
     -1.7785097360610962,
     -0.18000000715255737
    ],
    [
-    24.6168155670166,
-    52.869998931884766,
+    23.073394775390625,
+    52.38564682006836,
     11.899999618530273
    ]
   ],
   "dimensionsBlender": [
-   49.19003486633301,
-   54.64850866794586,
+   46.70205497741699,
+   54.164156556129456,
    12.07999962568283
   ],
   "materials": {
@@ -1908,7 +1893,7 @@
     "colorLayers": [
      "Col"
     ],
-    "usersOnAsset": 2255
+    "usersOnAsset": 2571
    },
    "AM_metal": {
     "roughness": 0.6700000166893005,
@@ -1926,7 +1911,7 @@
     "colorLayers": [
      "Col"
     ],
-    "usersOnAsset": 30308
+    "usersOnAsset": 17656
    },
    "AM_wood": {
     "roughness": 0.8399999737739563,
@@ -1971,11 +1956,11 @@
    },
    {
     "name": "AM_batch_ground",
-    "triangles": 2255,
+    "triangles": 2571,
     "degenerate": 0,
     "validateWouldRepair": false,
-    "rawNonmanifoldEdges": 303,
-    "weldedNonmanifoldEdges": 303,
+    "rawNonmanifoldEdges": 387,
+    "weldedNonmanifoldEdges": 387,
     "rawBadWinding": 0,
     "weldedBadWinding": 0,
     "scale": [
@@ -2001,11 +1986,11 @@
    },
    {
     "name": "AM_batch_stone",
-    "triangles": 39908,
+    "triangles": 23442,
     "degenerate": 0,
     "validateWouldRepair": false,
     "rawNonmanifoldEdges": 0,
-    "weldedNonmanifoldEdges": 1915,
+    "weldedNonmanifoldEdges": 2038,
     "rawBadWinding": 0,
     "weldedBadWinding": 0,
     "scale": [
@@ -2033,24 +2018,24 @@
   "problems": []
  },
  "freshGLB": {
-  "triangles": 86663,
+  "triangles": 70513,
   "meshCount": 6,
   "blenderBounds": [
    [
-    -24.573219299316406,
-    -1.7785186767578125,
+    -23.628660202026367,
+    -1.7785110473632812,
     -0.18000000715255737
    ],
    [
-    24.61682891845703,
-    52.869998931884766,
-    11.900016784667969
+    23.073389053344727,
+    52.38564682006836,
+    11.900005340576172
    ]
   ],
   "dimensionsBlender": [
-   49.19004821777344,
-   54.64851760864258,
-   12.080016791820526
+   46.702049255371094,
+   54.16415786743164,
+   12.08000534772873
   ],
   "materials": {
    "AM_canvas": {
@@ -2078,7 +2063,7 @@
     "colorLayers": [
      "Color"
     ],
-    "usersOnAsset": 2255
+    "usersOnAsset": 2571
    },
    "AM_metal": {
     "roughness": 0.6700000166893005,
@@ -2096,7 +2081,7 @@
     "colorLayers": [
      "Color"
     ],
-    "usersOnAsset": 39908
+    "usersOnAsset": 23442
    },
    "AM_wood": {
     "roughness": 0.8399999737739563,
@@ -2141,11 +2126,11 @@
    },
    {
     "name": "AM_batch_ground",
-    "triangles": 2255,
+    "triangles": 2571,
     "degenerate": 0,
     "validateWouldRepair": false,
-    "rawNonmanifoldEdges": 4343,
-    "weldedNonmanifoldEdges": 303,
+    "rawNonmanifoldEdges": 4877,
+    "weldedNonmanifoldEdges": 387,
     "rawBadWinding": 0,
     "weldedBadWinding": 0,
     "scale": [
@@ -2171,11 +2156,11 @@
    },
    {
     "name": "AM_batch_stone",
-    "triangles": 39908,
+    "triangles": 23442,
     "degenerate": 0,
     "validateWouldRepair": false,
-    "rawNonmanifoldEdges": 98384,
-    "weldedNonmanifoldEdges": 2178,
+    "rawNonmanifoldEdges": 57456,
+    "weldedNonmanifoldEdges": 2038,
     "rawBadWinding": 0,
     "weldedBadWinding": 0,
     "scale": [
@@ -2202,7 +2187,7 @@
   ],
   "problems": []
  },
- "maxBoundsDeltaM": 1.71661376953125e-05,
+ "maxBoundsDeltaM": 5.7220458984375e-06,
  "collisionScope": "rock/ground/basin source triangles; explicitly authored timber boxes with <=12mm bevel allowance; continuous plank support sheets",
  "limits": "global seam weld diagnostics may merge intentionally joined timber; see pre-Blender per-component topology and layout support samples; no game/capsule/animation claim"
 }

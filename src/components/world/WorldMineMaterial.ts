@@ -1,13 +1,15 @@
-import { MeshStandardMaterial } from 'three';
+import { MeshStandardMaterial, Vector3 } from 'three';
 import { craftMaterial } from './WorldCraftMaterials';
 
 /** Asset roles retain authored colors; metre-scale weathering survives the glTF boundary. */
-export function mineSurfaceMaterial(source:MeshStandardMaterial) {
+export function mineSurfaceMaterial(source:MeshStandardMaterial,origin:readonly number[]=[0,0,0]) {
   if(/wood/i.test(source.name))return craftMaterial(source,'wood');
   const material=craftMaterial(source,'stone'), earth=/ground/i.test(source.name);
   const compile=material.onBeforeCompile, key=material.customProgramCacheKey();
   material.onBeforeCompile=(shader,renderer)=>{
     compile.call(material,shader,renderer);
+    shader.uniforms.uMineOrigin={value:new Vector3(origin[0],origin[1],origin[2])};
+    shader.vertexShader='uniform vec3 uMineOrigin;\n'+shader.vertexShader.replace('vCraftPosition = position;','vCraftPosition = position + uMineOrigin;');
     shader.fragmentShader=shader.fragmentShader.replace('#include <roughnessmap_fragment>',`#include <roughnessmap_fragment>
       vec3 mp = vCraftPosition;
       float minePixel = length(fwidth(mp));
@@ -18,6 +20,6 @@ export function mineSurfaceMaterial(source:MeshStandardMaterial) {
       diffuseColor.rgb *= mix(vec3(0.95,0.97,1.0),vec3(1.08,1.02,0.94),minePatch);
     `);
   };
-  material.customProgramCacheKey=()=>`${key}-quarry-${earth?'earth':'rock'}-v1`;
+  material.customProgramCacheKey=()=>`${key}-quarry-${earth?'earth':'rock'}-v2`;
   return material;
 }

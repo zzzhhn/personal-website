@@ -1,5 +1,5 @@
 import { Component, lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
-import { useWorldStore } from './store';
+import { handleWorldEscape, requestCampReturn, useWorldStore } from './store';
 import { worldText } from './world-i18n';
 import { CAMP_CENTER, WORLD_SHOTS } from './layout';
 import type { WorldContent } from './types';
@@ -7,6 +7,7 @@ import WorldExperienceSummary from './WorldExperienceSummary';
 import WorldCards from './WorldCards';
 import WorldMap, { loadMapGeometry } from './WorldMap';
 import WorldAlphaMineHud from './WorldAlphaMineHud';
+import WorldPoolInspect from './WorldPoolInspect';
 import { WorldDrivingHud, WorldFirstHints, WorldWaypointReadout, WorldZoneTitle } from './WorldHud';
 import './world.css';
 
@@ -71,8 +72,8 @@ export default function WorldApp({ content }: { content: WorldContent }) {
     const onKey = (e: KeyboardEvent) => {
       if (e.code !== 'Escape') return;
       e.preventDefault();
-      if (useWorldStore.getState().card && !useWorldStore.getState().paused) { useWorldStore.setState({ card: null }); return; }
-      useWorldStore.setState(state => ({ paused: !state.paused }));
+      if(e.repeat)return;
+      handleWorldEscape();
     };
     const onVisibility = () => { if (document.hidden) useWorldStore.setState({ paused: true }); };
     window.addEventListener('keydown', onKey);
@@ -104,6 +105,7 @@ export default function WorldApp({ content }: { content: WorldContent }) {
     <WorldFirstHints />
     <WorldDrivingHud />
     <WorldAlphaMineHud />
+    <WorldPoolInspect />
     {PlaytestReadout&&<Suspense fallback={null}><PlaytestReadout/></Suspense>}
     <div className="world-interaction" aria-live="polite">{s.canRecover ? <button className="world-recover" onClick={() => useWorldStore.setState(v => ({ recoverRequest: v.recoverRequest + 1 }))}><kbd>R</kbd>{t.recover.replace(/^R \u00b7 /, '')}</button> : s.activeVehicle && !s.card ? <span className="world-chip"><kbd>E</kbd>{t.leave.replace(/^E \u00b7 /, '')}</span> : null}</div>
     <dialog className="world-dialog" ref={dialog} aria-label={t.menu} onCancel={e => { e.preventDefault(); useWorldStore.setState({ paused: false }); }}>
@@ -130,7 +132,10 @@ export default function WorldApp({ content }: { content: WorldContent }) {
           <p>{t.styleCredit}</p><p><a href="https://ianxmason.github.io/100style/" target="_blank" rel="noreferrer">The 100STYLE Dataset - Ian Mason</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a></p>
           <h3>{t.thanksTitle}</h3><p>{t.groundCredit}</p><p>three.js · React Three Fiber · Rapier</p>
         </details>
-        <div className="world-dialog-actions"><button className="world-primary" onClick={() => useWorldStore.setState({ paused: false })}>{t.resume}</button><a href={`/#${s.zone === 'town' ? 'experience' : s.zone === 'park' ? 'projects' : 'about'}`}>← {t.back}</a></div>
+        <div className="world-dialog-actions"><button className="world-primary" onClick={() => useWorldStore.setState({ paused: false })}>{t.resume}</button>
+          <button onClick={requestCampReturn} disabled={!s.ready} aria-describedby="world-camp-return-hint">{t.returnCamp}</button>
+          <p id="world-camp-return-hint" className="world-setting-hint">{t.returnCampHint}</p>
+          <a href={`/#${s.zone === 'town' ? 'experience' : s.zone === 'park' ? 'projects' : 'about'}`}>← {t.back}</a></div>
       </div>
     </dialog>
   </main>;

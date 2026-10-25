@@ -63,7 +63,7 @@
     -34.1
    ]
   ],
-  "output": "using deprecated parameters for the initialization function; pass a single object instead\n✔ authored mine route has continuous support and full capsule head/side clearance (29.695667ms)\n✔ mining stands occupy their stated storeys and seams are reachable from those stands (14.023917ms)\n✔ all mining and pickup approaches keep a clear chest ray and reachable capsule space (11.273834ms)\nℹ tests 3\nℹ suites 0\nℹ pass 3\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 218.631667"
+  "output": "using deprecated parameters for the initialization function; pass a single object instead\n✔ authored mine route has continuous support and full capsule head/side clearance (20.37925ms)\n✔ mining stands occupy their stated storeys and seams are reachable from those stands (5.63475ms)\n✔ all mining and pickup approaches keep a clear chest ray and reachable capsule space (5.325584ms)\n✔ low exits retain a real capsule lane under bridge supports and through their rock mouths (13.559916ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 184.757667"
  },
  "westLink": {
   "passed": true,
@@ -154,6 +154,198 @@
     -34.1
    ]
   ],
-  "output": "using deprecated parameters for the initialization function; pass a single object instead\n✔ authored mine route has continuous support and full capsule head/side clearance (29.138041ms)\n✔ mining stands occupy their stated storeys and seams are reachable from those stands (11.683167ms)\n✔ all mining and pickup approaches keep a clear chest ray and reachable capsule space (12.715375ms)\nℹ tests 3\nℹ suites 0\nℹ pass 3\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 215.552708"
+  "output": "using deprecated parameters for the initialization function; pass a single object instead\n✔ authored mine route has continuous support and full capsule head/side clearance (21.24325ms)\n✔ mining stands occupy their stated storeys and seams are reachable from those stands (5.708125ms)\n✔ all mining and pickup approaches keep a clear chest ray and reachable capsule space (5.296875ms)\n✔ low exits retain a real capsule lane under bridge supports and through their rock mouths (13.038459ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 182.747833"
+ },
+ "ravine-to-forecourt": {
+  "passed": true,
+  "points": [
+   [
+    2.9,
+    0,
+    -44
+   ],
+   [
+    2.9,
+    0,
+    -41.8
+   ],
+   [
+    4.8,
+    0,
+    -40.8
+   ],
+   [
+    4.8,
+    0,
+    -34
+   ],
+   [
+    4.8,
+    0,
+    -26
+   ],
+   [
+    0,
+    0,
+    -26
+   ],
+   [
+    0,
+    0,
+    -19.8
+   ],
+   [
+    6.5,
+    0,
+    -15
+   ],
+   [
+    6.5,
+    0,
+    -7
+   ],
+   [
+    6.5,
+    0,
+    -4
+   ],
+   [
+    3,
+    0,
+    -1.1
+   ],
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    3,
+    0,
+    -1.1
+   ],
+   [
+    6.5,
+    0,
+    -4
+   ],
+   [
+    6.5,
+    0,
+    -7
+   ],
+   [
+    6.5,
+    0,
+    -15
+   ],
+   [
+    0,
+    0,
+    -19.8
+   ],
+   [
+    0,
+    0,
+    -26
+   ],
+   [
+    4.8,
+    0,
+    -26
+   ],
+   [
+    4.8,
+    0,
+    -34
+   ],
+   [
+    4.8,
+    0,
+    -40.8
+   ],
+   [
+    2.9,
+    0,
+    -41.8
+   ],
+   [
+    2.9,
+    0,
+    -44
+   ]
+  ],
+  "output": "using deprecated parameters for the initialization function; pass a single object instead\n✔ authored mine route has continuous support and full capsule head/side clearance (20.71725ms)\n✔ mining stands occupy their stated storeys and seams are reachable from those stands (5.731458ms)\n✔ all mining and pickup approaches keep a clear chest ray and reachable capsule space (5.243833ms)\n✔ low exits retain a real capsule lane under bridge supports and through their rock mouths (12.961667ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 182.8315"
+ },
+ "west-support-to-entrance": {
+  "passed": true,
+  "points": [
+   [
+    -15.8,
+    0,
+    -23
+   ],
+   [
+    -15.8,
+    0,
+    -18
+   ],
+   [
+    -15.8,
+    0,
+    -9
+   ],
+   [
+    -15.8,
+    0,
+    -2
+   ],
+   [
+    -12,
+    0,
+    -2
+   ],
+   [
+    -5.2,
+    0,
+    -2
+   ],
+   [
+    0,
+    0,
+    0
+   ],
+   [
+    -5.2,
+    0,
+    -2
+   ],
+   [
+    -12,
+    0,
+    -2
+   ],
+   [
+    -15.8,
+    0,
+    -2
+   ],
+   [
+    -15.8,
+    0,
+    -9
+   ],
+   [
+    -15.8,
+    0,
+    -18
+   ],
+   [
+    -15.8,
+    0,
+    -23
+   ]
+  ],
+  "output": "using deprecated parameters for the initialization function; pass a single object instead\n✔ authored mine route has continuous support and full capsule head/side clearance (19.090708ms)\n✔ mining stands occupy their stated storeys and seams are reachable from those stands (5.572666ms)\n✔ all mining and pickup approaches keep a clear chest ray and reachable capsule space (5.175917ms)\n✔ low exits retain a real capsule lane under bridge supports and through their rock mouths (13.747334ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 179.246542"
  }
 }

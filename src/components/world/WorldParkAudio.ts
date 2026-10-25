@@ -50,7 +50,7 @@ export class ParkAudio {
   private onGesture = (event: Event) => { if (event.isTrusted) this.cueBlocked = false; };
   private listen() {
     if (this.unsubscribe) return;
-    this.unsubscribe = useWorldStore.subscribe((s, p) => { if (s.paused !== p.paused || s.shot !== p.shot) this.sync(); });
+    this.unsubscribe = useWorldStore.subscribe((s, p) => { if (s.paused !== p.paused || s.poolInspect !== p.poolInspect || s.shot !== p.shot) this.sync(); });
     document.addEventListener('visibilitychange', this.onVisibility);
     window.addEventListener('pagehide', this.onPageHide);
     window.addEventListener('pageshow', this.onPageShow);
@@ -58,7 +58,7 @@ export class ParkAudio {
   }
   private available() {
     const s = useWorldStore.getState();
-    return this.owners > 0 && !this.pageInactive && !document.hidden && !s.paused && !s.shot;
+    return this.owners > 0 && !this.pageInactive && !document.hidden && !s.paused && !s.poolInspect && !s.shot;
   }
   private canRun() { return this.available() && !this.muted && (this.started || !!this.pendingCue || this.cueVoices.size > 0); }
   private stopTimer() {

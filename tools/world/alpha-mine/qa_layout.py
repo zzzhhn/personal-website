@@ -2,7 +2,7 @@
 import json, math
 from collections import Counter
 from pathlib import Path
-from layout import OUT, ROUTE, RAMPS, GALLERY_ROUTE, GALLERY_RAMPS, GALLERY_BRIDGES, VEINS, ore_rest
+from layout import OUT, ROUTE, RAMPS, GALLERY_ROUTE, GALLERY_RAMPS, GALLERY_BRIDGES, LOW_EXITS, VEINS, ore_rest
 from geometry import build_geometry, collision_data, triangles, cross, sub
 
 def support_at(surface,x,z,expected=None):
@@ -33,7 +33,7 @@ def run():
         rows.append(row)
         if bad or degenerate or (m.semantic not in ['open-walk-surface','open-foliage'] and (open_edges or volume<=0)):problems.append(row)
     probes=[]
-    all_segments=list(zip(ROUTE,ROUTE[1:]))+list(zip(GALLERY_ROUTE,GALLERY_ROUTE[1:]))
+    all_segments=[pair for route in [ROUTE,GALLERY_ROUTE,*LOW_EXITS.values()] for pair in zip(route,route[1:])]
     for index,(a,b) in enumerate(all_segments):
         n=max(1,math.ceil(math.dist(a,b)/.25))
         for j in range(n+1):

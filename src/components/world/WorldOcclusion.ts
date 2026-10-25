@@ -1,5 +1,5 @@
 import { Material, Mesh, Raycaster, Sphere, Vector3, type Camera, type InstancedMesh, type Object3D } from 'three';
-import { useWorldStore } from './store';
+import { useWorldStore } from './store.ts';
 
 type Fade = { mesh: Mesh; source: Material | Material[]; copies: Material[]; amount: { value: number }; active: boolean };
 
@@ -27,7 +27,7 @@ const sphere = new Sphere(), closest = new Vector3(), dir = new Vector3(), aim =
 function excluded(o: Object3D) {
   for (let p: Object3D | null = o; p; p = p.parent) {
     const u = p.userData;
-    if (u.noOcclusionFade || u.shadowProxy || u.vehicle || u.vehicleId || u.surface || u.assetId === 'G24' || p.name === 'world-guide-G24') return true;
+    if (u.noOcclusionFade || u.shadowProxy || u.vehicle || u.vehicleId || u.surface || u.assetId === 'G24' || u.assetId === 'alpha-mine' || p.name === 'world-guide-G24') return true;
   }
   return false;
 }

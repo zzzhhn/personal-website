@@ -1,16 +1,17 @@
 {
  "asset": "alpha-veins",
- "bytes": 82108,
- "sha256": "64bddb5b98ca9ead0d44016f48718d1fb9799bc0629c8995d52c7ebb384e8517",
- "sourceSha256": "3e84a63eeb81dfce18138ff4388eca66b7694258825c6e831786681ecd0cac81",
+ "bytes": 1072016,
+ "sha256": "7ff42255aae79cc25752e55f46ec35fbd5850db3e5c45d311c8b05809061adb7",
+ "sourceSha256": "c5151cca42dd4cc7f0cb622c2c99dc38a64d18ada78d1b9bfeda7ee720899b2d",
  "native": {
   "meshes": [
    {
     "node": "vein-lower_intact_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.8498131344107109,
+    "volume": 0.25046627641365743,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -21,10 +22,11 @@
    },
    {
     "node": "vein-lower_cracked_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.828067986929736,
+    "volume": 0.24455257391577603,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -35,10 +37,11 @@
    },
    {
     "node": "vein-lower_open_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.7493490656349677,
+    "volume": 0.2104460988677063,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -49,10 +52,11 @@
    },
    {
     "node": "vein-middle_intact_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.8498131344107109,
+    "volume": 0.4372409880977277,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -63,10 +67,11 @@
    },
    {
     "node": "vein-middle_cracked_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.828067986929736,
+    "volume": 0.4313272857501348,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -77,10 +82,11 @@
    },
    {
     "node": "vein-middle_open_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.7493490656349677,
+    "volume": 0.3972208102768007,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -91,10 +97,11 @@
    },
    {
     "node": "vein-upper_intact_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.8498131344107109,
+    "volume": 0.22710995495300462,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -105,10 +112,11 @@
    },
    {
     "node": "vein-upper_cracked_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.828067986929736,
+    "volume": 0.2211917878429613,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -119,10 +127,11 @@
    },
    {
     "node": "vein-upper_open_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.7493490656349677,
+    "volume": 0.18987205791718526,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -132,7 +141,7 @@
     "validateWouldRepair": false
    }
   ],
-  "triangles": 3348,
+  "triangles": 4428,
   "sockets": {
    "vein-lower_impact": [
     0.0,
@@ -212,79 +221,90 @@
   },
   "surfaceContacts": {
    "vein-lower_intact": {
-    "nearestSurfaceDistanceM": 0.000121825716632884,
+    "nearestSurfaceDistanceM": 0.0,
     "surfacePoint": [
      0.0,
-     2.3990869522094727e-06,
-     0.2548781931400299
+     0.0,
+     0.2549999952316284
     ]
    },
    "vein-lower_cracked": {
-    "nearestSurfaceDistanceM": 0.004025202244520187,
+    "nearestSurfaceDistanceM": 4.95947060699109e-05,
     "surfacePoint": [
      0.0,
-     0.0021987706422805786,
-     0.16337159276008606
+     3.08305025100708e-05,
+     0.16003884375095367
     ]
    },
    "vein-lower_open": {
-    "nearestSurfaceDistanceM": 0.00019688051543198526,
+    "nearestSurfaceDistanceM": 0.0,
     "surfacePoint": [
      0.0,
-     6.258487701416016e-06,
-     0.05019678175449371
+     0.0,
+     0.05000000074505806
     ]
    },
    "vein-middle_intact": {
-    "nearestSurfaceDistanceM": 0.000121825716632884,
+    "nearestSurfaceDistanceM": 0.0,
     "surfacePoint": [
      0.0,
-     2.3990869522094727e-06,
-     0.2548781931400299
+     0.0,
+     0.2549999952316284
     ]
    },
    "vein-middle_cracked": {
-    "nearestSurfaceDistanceM": 0.004025202244520187,
+    "nearestSurfaceDistanceM": 4.95947060699109e-05,
     "surfacePoint": [
      0.0,
-     0.0021987706422805786,
-     0.16337159276008606
+     3.08305025100708e-05,
+     0.16003884375095367
     ]
    },
    "vein-middle_open": {
-    "nearestSurfaceDistanceM": 0.00019688051543198526,
+    "nearestSurfaceDistanceM": 0.0,
     "surfacePoint": [
      0.0,
-     6.258487701416016e-06,
-     0.05019678175449371
+     0.0,
+     0.05000000074505806
     ]
    },
    "vein-upper_intact": {
-    "nearestSurfaceDistanceM": 0.000121825716632884,
+    "nearestSurfaceDistanceM": 1.644075934420508e-12,
     "surfacePoint": [
+     1.644075934420508e-12,
      0.0,
-     2.3990869522094727e-06,
-     0.2548781931400299
+     0.2549999952316284
     ]
    },
    "vein-upper_cracked": {
-    "nearestSurfaceDistanceM": 0.004025202244520187,
+    "nearestSurfaceDistanceM": 1.6078525732154958e-05,
     "surfacePoint": [
      0.0,
-     0.0021987706422805786,
-     0.16337159276008606
+     9.998679161071777e-06,
+     0.16001258790493011
     ]
    },
    "vein-upper_open": {
-    "nearestSurfaceDistanceM": 0.00019688051543198526,
+    "nearestSurfaceDistanceM": 1.644075934420508e-12,
     "surfacePoint": [
+     1.644075934420508e-12,
      0.0,
-     6.258487701416016e-06,
-     0.05019678175449371
+     0.05000000074505806
     ]
    }
   },
   "materials": {
+   "AM_vein_host": {
+    "baseColor": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "baseColorRoute": "resolved constant factor through VC/texture multiply graph",
+    "roughness": 0.9399999976158142,
+    "metallic": 0.0
+   },
    "AM_mineral_vein-lower": {
     "baseColor": [
      0.47353148460388184,
@@ -292,16 +312,7 @@
      0.07421357184648514,
      1.0
     ],
-    "roughness": 0.47999998927116394,
-    "metallic": 0.10000000149011612
-   },
-   "AM_mineral_vein-middle": {
-    "baseColor": [
-     0.10702310502529144,
-     0.3277781009674072,
-     0.28314873576164246,
-     1.0
-    ],
+    "baseColorRoute": "resolved constant factor through VC/texture multiply graph",
     "roughness": 0.47999998927116394,
     "metallic": 0.10000000149011612
    },
@@ -312,18 +323,20 @@
      0.43965718150138855,
      1.0
     ],
+    "baseColorRoute": "resolved constant factor through VC/texture multiply graph",
     "roughness": 0.47999998927116394,
     "metallic": 0.10000000149011612
    },
-   "AM_vein_host": {
+   "AM_mineral_vein-middle": {
     "baseColor": [
-     0.25015828013420105,
-     0.2345505803823471,
-     0.177888423204422,
+     0.10702310502529144,
+     0.3277781009674072,
+     0.28314873576164246,
      1.0
     ],
-    "roughness": 0.9399999976158142,
-    "metallic": 0.0
+    "baseColorRoute": "resolved constant factor through VC/texture multiply graph",
+    "roughness": 0.47999998927116394,
+    "metallic": 0.10000000149011612
    }
   }
  },
@@ -331,10 +344,11 @@
   "meshes": [
    {
     "node": "vein-lower_intact_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.8498131344107109,
+    "volume": 0.25046627641365743,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -345,10 +359,11 @@
    },
    {
     "node": "vein-lower_cracked_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.828067986929736,
+    "volume": 0.24455257391577603,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -359,10 +374,11 @@
    },
    {
     "node": "vein-lower_open_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.7493490656349677,
+    "volume": 0.2104460988677063,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -373,10 +389,11 @@
    },
    {
     "node": "vein-middle_intact_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.8498131344107109,
+    "volume": 0.4372409880977277,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -387,10 +404,11 @@
    },
    {
     "node": "vein-middle_cracked_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.828067986929736,
+    "volume": 0.4313272857501348,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -401,10 +419,11 @@
    },
    {
     "node": "vein-middle_open_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.7493490656349677,
+    "volume": 0.3972208102768007,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -415,10 +434,11 @@
    },
    {
     "node": "vein-upper_intact_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.8498131344107109,
+    "volume": 0.22710995495300462,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -429,10 +449,11 @@
    },
    {
     "node": "vein-upper_cracked_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.828067986929736,
+    "volume": 0.2211917878429613,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -443,10 +464,11 @@
    },
    {
     "node": "vein-upper_open_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.7493490656349677,
+    "volume": 0.18987205791718526,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -456,7 +478,7 @@
     "validateWouldRepair": false
    }
   ],
-  "triangles": 3348,
+  "triangles": 4428,
   "sockets": {
    "vein-lower_impact": [
     0.0,
@@ -536,88 +558,89 @@
   },
   "surfaceContacts": {
    "vein-lower_intact": {
-    "nearestSurfaceDistanceM": 0.000121825716632884,
+    "nearestSurfaceDistanceM": 0.0,
     "surfacePoint": [
      0.0,
-     2.3990869522094727e-06,
-     0.2548781931400299
+     0.0,
+     0.2549999952316284
     ]
    },
    "vein-lower_cracked": {
-    "nearestSurfaceDistanceM": 0.004025202244520187,
+    "nearestSurfaceDistanceM": 4.95947060699109e-05,
     "surfacePoint": [
      0.0,
-     0.0021987706422805786,
-     0.16337159276008606
+     3.08305025100708e-05,
+     0.16003884375095367
     ]
    },
    "vein-lower_open": {
-    "nearestSurfaceDistanceM": 0.00019688051543198526,
+    "nearestSurfaceDistanceM": 0.0,
     "surfacePoint": [
      0.0,
-     6.258487701416016e-06,
-     0.05019678175449371
+     0.0,
+     0.05000000074505806
     ]
    },
    "vein-middle_intact": {
-    "nearestSurfaceDistanceM": 0.000121825716632884,
+    "nearestSurfaceDistanceM": 0.0,
     "surfacePoint": [
      0.0,
-     2.3990869522094727e-06,
-     0.2548781931400299
+     0.0,
+     0.2549999952316284
     ]
    },
    "vein-middle_cracked": {
-    "nearestSurfaceDistanceM": 0.004025202244520187,
+    "nearestSurfaceDistanceM": 4.95947060699109e-05,
     "surfacePoint": [
      0.0,
-     0.0021987706422805786,
-     0.16337159276008606
+     3.08305025100708e-05,
+     0.16003884375095367
     ]
    },
    "vein-middle_open": {
-    "nearestSurfaceDistanceM": 0.00019688051543198526,
+    "nearestSurfaceDistanceM": 0.0,
     "surfacePoint": [
      0.0,
-     6.258487701416016e-06,
-     0.05019678175449371
+     0.0,
+     0.05000000074505806
     ]
    },
    "vein-upper_intact": {
-    "nearestSurfaceDistanceM": 0.000121825716632884,
+    "nearestSurfaceDistanceM": 1.644075934420508e-12,
     "surfacePoint": [
+     1.644075934420508e-12,
      0.0,
-     2.3990869522094727e-06,
-     0.2548781931400299
+     0.2549999952316284
     ]
    },
    "vein-upper_cracked": {
-    "nearestSurfaceDistanceM": 0.004025202244520187,
+    "nearestSurfaceDistanceM": 1.6078525732154958e-05,
     "surfacePoint": [
      0.0,
-     0.0021987706422805786,
-     0.16337159276008606
+     9.998679161071777e-06,
+     0.16001258790493011
     ]
    },
    "vein-upper_open": {
-    "nearestSurfaceDistanceM": 0.00019688051543198526,
+    "nearestSurfaceDistanceM": 1.644075934420508e-12,
     "surfacePoint": [
+     1.644075934420508e-12,
      0.0,
-     6.258487701416016e-06,
-     0.05019678175449371
+     0.05000000074505806
     ]
    }
   },
   "materials": {
-   "AM_mineral_vein-lower": {
+   "AM_vein_host": {
     "baseColor": [
-     0.47353148460388184,
-     0.23839756846427917,
-     0.07421357184648514,
-     1.0
+     1,
+     1,
+     1,
+     1
     ],
-    "roughness": 0.47999998927116394,
-    "metallic": 0.10000000149011612
+    "baseColorRoute": "resolved constant factor through VC/texture multiply graph",
+    "roughness": 0.9399999976158142,
+    "metallic": 0.0
    },
    "AM_mineral_vein-middle": {
     "baseColor": [
@@ -626,6 +649,18 @@
      0.28314873576164246,
      1.0
     ],
+    "baseColorRoute": "resolved constant factor through VC/texture multiply graph",
+    "roughness": 0.47999998927116394,
+    "metallic": 0.10000000149011612
+   },
+   "AM_mineral_vein-lower": {
+    "baseColor": [
+     0.47353148460388184,
+     0.23839756846427917,
+     0.07421357184648514,
+     1.0
+    ],
+    "baseColorRoute": "resolved constant factor through VC/texture multiply graph",
     "roughness": 0.47999998927116394,
     "metallic": 0.10000000149011612
    },
@@ -636,18 +671,9 @@
      0.43965718150138855,
      1.0
     ],
+    "baseColorRoute": "resolved constant factor through VC/texture multiply graph",
     "roughness": 0.47999998927116394,
     "metallic": 0.10000000149011612
-   },
-   "AM_vein_host": {
-    "baseColor": [
-     0.25015828013420105,
-     0.2345505803823471,
-     0.177888423204422,
-     1.0
-    ],
-    "roughness": 0.9399999976158142,
-    "metallic": 0.0
    }
   }
  },
@@ -655,10 +681,11 @@
   "meshes": [
    {
     "node": "vein-lower_cracked_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.8280656654968914,
+    "volume": 0.24456210913725812,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -669,10 +696,11 @@
    },
    {
     "node": "vein-lower_intact_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.8497958251010439,
+    "volume": 0.25047582644431027,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -683,10 +711,11 @@
    },
    {
     "node": "vein-lower_open_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.7493318369609967,
+    "volume": 0.21045557693669434,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -697,10 +726,11 @@
    },
    {
     "node": "vein-middle_cracked_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.8280656654968914,
+    "volume": 0.4313141117200627,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -711,10 +741,11 @@
    },
    {
     "node": "vein-middle_intact_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.8497958251010439,
+    "volume": 0.4372278002810009,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -725,10 +756,11 @@
    },
    {
     "node": "vein-middle_open_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.7493318369609967,
+    "volume": 0.39720767686162184,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -739,10 +771,11 @@
    },
    {
     "node": "vein-upper_cracked_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.8280656654968914,
+    "volume": 0.22123814653824886,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -753,10 +786,11 @@
    },
    {
     "node": "vein-upper_intact_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.8497958251010439,
+    "volume": 0.22715619946411456,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -767,10 +801,11 @@
    },
    {
     "node": "vein-upper_open_rock",
-    "triangles": 372,
+    "triangles": 492,
+    "hasCornerColors": true,
     "nonmanifold": 0,
     "badWinding": 0,
-    "volume": 0.7493318369609967,
+    "volume": 0.18991892886087808,
     "degenerate": 0,
     "scale": [
      1.0,
@@ -780,7 +815,7 @@
     "validateWouldRepair": false
    }
   ],
-  "triangles": 3348,
+  "triangles": 4428,
   "sockets": {
    "vein-lower_impact": [
     0.0,
@@ -860,79 +895,90 @@
   },
   "surfaceContacts": {
    "vein-lower_intact": {
-    "nearestSurfaceDistanceM": 0.00012111177056794986,
+    "nearestSurfaceDistanceM": 1.1920928955078125e-07,
     "surfacePoint": [
-     -5.960464477539062e-07,
-     2.384185791015625e-06,
-     0.2548789083957672
+     -7.169820293029261e-13,
+     -7.275957614183426e-12,
+     0.25500011444091797
     ]
    },
    "vein-lower_cracked": {
-    "nearestSurfaceDistanceM": 0.0040259999223053455,
+    "nearestSurfaceDistanceM": 4.975521005690098e-05,
     "surfacePoint": [
-     -5.960464477539062e-07,
-     0.0021992027759552,
-     0.16337226331233978
+     4.76837158203125e-07,
+     3.0934810638427734e-05,
+     0.16003896296024323
     ]
    },
    "vein-lower_open": {
-    "nearestSurfaceDistanceM": 0.0001963445683941245,
+    "nearestSurfaceDistanceM": 1.6764329302532133e-07,
     "surfacePoint": [
-     2.980232238769531e-07,
-     6.258487701416016e-06,
-     0.050196245312690735
+     1.3242242857813835e-09,
+     2.9103830456733704e-11,
+     0.04999983310699463
     ]
    },
    "vein-middle_intact": {
-    "nearestSurfaceDistanceM": 0.00012111177056794986,
+    "nearestSurfaceDistanceM": 4.172325134277344e-07,
     "surfacePoint": [
-     -5.960464477539062e-07,
-     2.384185791015625e-06,
-     0.2548789083957672
+     -7.169820293029261e-13,
+     -7.275957614183426e-12,
+     0.254999577999115
     ]
    },
    "vein-middle_cracked": {
-    "nearestSurfaceDistanceM": 0.0040259999223053455,
+    "nearestSurfaceDistanceM": 4.930613795295358e-05,
     "surfacePoint": [
-     -5.960464477539062e-07,
-     0.0021992027759552,
-     0.16337226331233978
+     4.76837158203125e-07,
+     3.0644237995147705e-05,
+     0.16003862023353577
     ]
    },
    "vein-middle_open": {
-    "nearestSurfaceDistanceM": 0.0001963445683941245,
+    "nearestSurfaceDistanceM": 4.284104306861991e-07,
     "surfacePoint": [
-     2.980232238769531e-07,
-     6.258487701416016e-06,
-     0.050196245312690735
+     1.3242242857813835e-09,
+     2.9103830456733704e-11,
+     0.05000042915344238
     ]
    },
    "vein-upper_intact": {
-    "nearestSurfaceDistanceM": 0.00012111177056794986,
+    "nearestSurfaceDistanceM": 4.768688768308493e-07,
     "surfacePoint": [
-     -5.960464477539062e-07,
-     2.384185791015625e-06,
-     0.2548789083957672
+     -5.449692253023386e-09,
+     7.294147508218884e-10,
+     0.2550004720687866
     ]
    },
    "vein-upper_cracked": {
-    "nearestSurfaceDistanceM": 0.0040259999223053455,
+    "nearestSurfaceDistanceM": 1.5775403880979866e-05,
     "surfacePoint": [
-     -5.960464477539062e-07,
-     0.0021992027759552,
-     0.16337226331233978
+     -3.5762786865234375e-07,
+     9.804964065551758e-06,
+     0.160012349486351
     ]
    },
    "vein-upper_open": {
-    "nearestSurfaceDistanceM": 0.0001963445683941245,
+    "nearestSurfaceDistanceM": 4.880434971710201e-07,
     "surfacePoint": [
-     2.980232238769531e-07,
-     6.258487701416016e-06,
-     0.050196245312690735
+     5.453330231830478e-09,
+     8.913048077374697e-11,
+     0.05000048875808716
     ]
    }
   },
   "materials": {
+   "AM_vein_host": {
+    "baseColor": [
+     1,
+     1,
+     1,
+     1
+    ],
+    "baseColorRoute": "resolved constant factor through VC/texture multiply graph",
+    "roughness": 0.9399999976158142,
+    "metallic": 0.0
+   },
    "AM_mineral_vein-lower": {
     "baseColor": [
      0.47353148460388184,
@@ -940,6 +986,7 @@
      0.07421357184648514,
      1.0
     ],
+    "baseColorRoute": "resolved constant factor through VC/texture multiply graph",
     "roughness": 0.47999998927116394,
     "metallic": 0.10000000149011612
    },
@@ -950,6 +997,7 @@
      0.28314873576164246,
      1.0
     ],
+    "baseColorRoute": "resolved constant factor through VC/texture multiply graph",
     "roughness": 0.47999998927116394,
     "metallic": 0.10000000149011612
    },
@@ -960,21 +1008,145 @@
      0.43965718150138855,
      1.0
     ],
+    "baseColorRoute": "resolved constant factor through VC/texture multiply graph",
     "roughness": 0.47999998927116394,
     "metallic": 0.10000000149011612
-   },
-   "AM_vein_host": {
-    "baseColor": [
-     0.25015828013420105,
-     0.2345505803823471,
-     0.177888423204422,
-     1.0
-    ],
-    "roughness": 0.9399999976158142,
-    "metallic": 0.0
    }
   }
  },
+ "serializedPBR": {
+  "AM_vein_host": {
+   "baseColorTexture": {
+    "index": 1
+   },
+   "metallicFactor": 0,
+   "roughnessFactor": 0.9399999976158142
+  },
+  "AM_mineral_vein-lower": {
+   "baseColorFactor": [
+    0.47353148460388184,
+    0.23839756846427917,
+    0.07421357184648514,
+    1
+   ],
+   "metallicFactor": 0.10000000149011612,
+   "roughnessFactor": 0.47999998927116394
+  },
+  "AM_mineral_vein-middle": {
+   "baseColorFactor": [
+    0.10702310502529144,
+    0.3277781009674072,
+    0.28314873576164246,
+    1
+   ],
+   "metallicFactor": 0.10000000149011612,
+   "roughnessFactor": 0.47999998927116394
+  },
+  "AM_mineral_vein-upper": {
+   "baseColorFactor": [
+    0.3277781009674072,
+    0.3915724754333496,
+    0.43965718150138855,
+    1
+   ],
+   "metallicFactor": 0.10000000149011612,
+   "roughnessFactor": 0.47999998927116394
+  }
+ },
+ "portableStoneContract": {
+  "static": {
+   "baseColor": {
+    "sha256": "1e7e547f18a5f2a3904658cf996a384482a00b0ef50ebaa5772fd4db30e5a089",
+    "bytes": 315281,
+    "scale": 1
+   },
+   "normal": {
+    "sha256": "6101ab268913287328660f0192772f7eea00ccce3c4715359a073a9ae13918bb",
+    "bytes": 608498,
+    "scale": 0.4000000059604645
+   }
+  },
+  "dynamic": {
+   "baseColor": {
+    "sha256": "1e7e547f18a5f2a3904658cf996a384482a00b0ef50ebaa5772fd4db30e5a089",
+    "bytes": 315281,
+    "scale": 1
+   },
+   "normal": {
+    "sha256": "6101ab268913287328660f0192772f7eea00ccce3c4715359a073a9ae13918bb",
+    "bytes": 608498,
+    "scale": 0.4000000059604645
+   }
+  },
+  "uv": "same dominant-face metre projection / 0.95, in facility coordinates",
+  "vertexColor": "barycentrically sampled from exact editable static host; no global colour multiplier"
+ },
+ "hostBindings": [
+  {
+   "vein": "vein-lower",
+   "state": "intact",
+   "embeddedOuterVertices": 154,
+   "exposedWidthM": 0.6236296419808027,
+   "exposedHeightM": 0.4851834584770241
+  },
+  {
+   "vein": "vein-lower",
+   "state": "cracked",
+   "embeddedOuterVertices": 154,
+   "exposedWidthM": 0.6236296419808027,
+   "exposedHeightM": 0.4851834584770241
+  },
+  {
+   "vein": "vein-lower",
+   "state": "open",
+   "embeddedOuterVertices": 154,
+   "exposedWidthM": 0.5152105514801202,
+   "exposedHeightM": 0.4851834584770241
+  },
+  {
+   "vein": "vein-middle",
+   "state": "intact",
+   "embeddedOuterVertices": 154,
+   "exposedWidthM": 0.6236296419808027,
+   "exposedHeightM": 0.4851834584770241
+  },
+  {
+   "vein": "vein-middle",
+   "state": "cracked",
+   "embeddedOuterVertices": 154,
+   "exposedWidthM": 0.6236296419808027,
+   "exposedHeightM": 0.4851834584770241
+  },
+  {
+   "vein": "vein-middle",
+   "state": "open",
+   "embeddedOuterVertices": 154,
+   "exposedWidthM": 0.5339349950394963,
+   "exposedHeightM": 0.4851834584770241
+  },
+  {
+   "vein": "vein-upper",
+   "state": "intact",
+   "embeddedOuterVertices": 124,
+   "exposedWidthM": 0.6236296419808027,
+   "exposedHeightM": 0.4403924130572734
+  },
+  {
+   "vein": "vein-upper",
+   "state": "cracked",
+   "embeddedOuterVertices": 124,
+   "exposedWidthM": 0.6236296419808027,
+   "exposedHeightM": 0.4403924130572734
+  },
+  {
+   "vein": "vein-upper",
+   "state": "open",
+   "embeddedOuterVertices": 124,
+   "exposedWidthM": 0.6049051984214266,
+   "exposedHeightM": 0.4403924130572734
+  }
+ ],
+ "staticHostSourceSha256": "615218eefd593c60cfd91c87fb616bbcc022b1dfffa63dbb18593fa3aa339694",
  "units": "metres",
  "rootPlacement": "each vein root is local zero; place at layout.veins[].socket",
  "stateVisibility": "all states exported; runtime must show only intact initially, then cracked or open",

@@ -1,4 +1,5 @@
 import type { Vec3 } from './types';
+import type { RigidBody } from '@dimforge/rapier3d-compat';
 
 export const PHYSICS_STEP = 1 / 60;
 export const RECOVERY_SECONDS = 2;
@@ -17,6 +18,16 @@ export function rotateVector(v: Vec3, q: Rotation): Vec3 {
 }
 export function yawRotation(yaw: number): Rotation {
   return { x: 0, y: Math.sin(yaw / 2), z: 0, w: Math.cos(yaw / 2) };
+}
+/** A teleport is a physics cut, including forces that would otherwise resume after pause. */
+export function resetActorBody(body: RigidBody, position: Vec3, yaw = 0) {
+  body.setTranslation({ x: position[0], y: position[1], z: position[2] }, true);
+  body.setRotation(yawRotation(yaw), true);
+  stopActorBody(body);
+}
+export function stopActorBody(body: RigidBody) {
+  body.setLinvel({ x: 0, y: 0, z: 0 }, true); body.setAngvel({ x: 0, y: 0, z: 0 }, true);
+  body.resetForces(true); body.resetTorques(true);
 }
 export function heading(q: Rotation): number {
   const front = rotateVector([1, 0, 0], q);

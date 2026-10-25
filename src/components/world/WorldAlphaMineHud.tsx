@@ -14,7 +14,7 @@ export default function WorldAlphaMineHud() {
   const manifest=useMineManifest(s=>s.manifest),[details,setDetails]=useState(false);
   const zh=world.lang==='zh',t=(cn:string,en:string)=>zh?cn:en;
   const [x,y,z]=world.position, b=ALPHA_MINE_FOOTPRINT;
-  if(world.paused||world.card||world.shot||world.activeVehicle||x<b.minX-5||x>b.maxX+5||z<b.minZ-5||z>b.maxZ+10)return null;
+  if(world.paused||world.poolInspect||world.card||world.shot||world.activeVehicle||x<b.minX-5||x>b.maxX+5||z<b.minZ-5||z>b.maxZ+10)return null;
   const carried=ALPHA_FACTORS.find(f=>f.id===mine.carried);
   const pool=mineLocalToWorld(manifest?.basin.center??[1.8,0,-6.5]),atPool=Math.hypot(x-pool[0],z-pool[2])<10;
   const targets=(manifest?.veins??[]).map((v,i)=>({p:mineLocalToWorld(v.socket),id:ALPHA_FACTORS[i].id}));
@@ -50,6 +50,7 @@ export default function WorldAlphaMineHud() {
     {mine.notice&&<p className="mine-notice" role="status">{zh?mine.notice.zh:mine.notice.en}</p>}
     {atPool&&<div className="mine-pool-control">
       <p>{t('将矿石投入 A／B，结果会从池面升起。','Cast into A / B. Results rise above the water.')}</p>
+      {mine.bays.some(id=>id&&online.factors[id].status==='ready')&&<button id="mine-pool-inspect" className="mine-inspect-action" onClick={()=>useWorldStore.setState({poolInspect:true})}>{t('聚焦检视 · 曲线与指标','Inspect curves & metrics')}</button>}
       {mine.bays.filter(Boolean).map(id=>id&&online.factors[id].status==='error'?<button key={id} onClick={()=>void requestMineBacktest(id,true)}>{t('重新接收','Retry')} · {zh?FACTOR_FAMILIES[id].zh:FACTOR_FAMILIES[id].en}</button>:null)}
       <button aria-expanded={details} onClick={()=>setDetails(!details)}>{t('计算口径与来源','METHOD & SOURCE')} {details?'−':'+'}</button>
       {details&&<div className="mine-method"><p>{t('WorldQuant 实习经历的个人玩法改编。计算由独立项目 Alpha Agent 提供，不是 BRAIN 官方回测。','A personal playable interpretation of the WorldQuant experience. Computed by Alpha Agent, not the BRAIN platform.')}</p>

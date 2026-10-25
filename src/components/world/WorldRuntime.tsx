@@ -44,7 +44,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
   const { world, colliderStates, rapier } = useRapier();
   const { camera, gl, scene, clock, invalidate, size, get } = useThree();
   const shot = useWorldStore(s => s.shot);
-  const paused = useWorldStore(s => s.paused);
+  const paused = useWorldStore(s => s.paused || s.poolInspect);
   const light = useWorldStore(s => s.light);
   const quality = useWorldStore(s => s.quality);
   const frames = useRef(0);
@@ -149,7 +149,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
 
 export default memo(function WorldRuntime({ content }: { content: WorldContent }) {
   const [overlay, setOverlay] = useState(false);
-  const paused = useWorldStore(s => s.paused);
+  const paused = useWorldStore(s => s.paused || s.poolInspect);
   const shot = useWorldStore(s => s.shot);
   const visible = usePageVisible();
   useEffect(() => {

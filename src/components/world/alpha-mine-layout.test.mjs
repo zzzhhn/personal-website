@@ -1,10 +1,23 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { ALPHA_MINE_ORIGIN, ALPHA_MINE_FOOTPRINT, ALPHA_MINE_CONNECTOR, isOnAlphaMineBase, mineLocalToWorld } from './alpha-mine-layout.ts';
+import { ALPHA_MINE_ORIGIN, ALPHA_MINE_FOOTPRINT, ALPHA_MINE_FOOTPRINT_POINTS, ALPHA_MINE_CONNECTOR, isOnAlphaMineBase, mineLocalToWorld, mineEdgeDistance } from './alpha-mine-layout.ts';
+import {readFileSync} from 'node:fs';
 import { ALL_HUTS, HUTS } from './WorldParkLayout.ts';
 import { BOOTHS } from './layout.ts';
 import { OUTLINE_V4, insidePolygon } from './layout-v4-flag.ts';
-import { terrainHeight } from './WorldLandform.ts';
+import { terrainHeight, groundSample } from './WorldLandform.ts';
+
+test('model, biome and map share the eroded outline and retain grassy corners',()=>{
+ const layout=JSON.parse(readFileSync(new URL('../../../public/world/alpha-mine/layout.json',import.meta.url),'utf8'));
+ assert.equal(layout.footprint.outline.length,ALPHA_MINE_FOOTPRINT_POINTS.length);
+ layout.footprint.outline.forEach((p,i)=>assert.ok(Math.hypot(p[0]+ALPHA_MINE_ORIGIN[0]-ALPHA_MINE_FOOTPRINT_POINTS[i][0],p[1]+ALPHA_MINE_ORIGIN[2]-ALPHA_MINE_FOOTPRINT_POINTS[i][1])<1e-4));
+ assert.equal(isOnAlphaMineBase(-109,-108),false);assert.equal(isOnAlphaMineBase(-84,-70),true);
+ assert.ok(mineEdgeDistance(-109,-108)>2);
+ assert.ok(groundSample(-109,-108).grass>.25,'old square corner should recover native vegetation');
+ assert.equal(groundSample(-84,-70).grass,0);
+ const a=ALPHA_MINE_FOOTPRINT_POINTS[0],b=ALPHA_MINE_FOOTPRINT_POINTS.at(-1),x=(a[0]+b[0])/2,z=(a[1]+b[1])/2;
+ assert.ok(Math.abs(mineEdgeDistance(x,z))<.01);
+});
 
 test('quarry footprint and complete walking approach are supported by continuous mainland',()=>{
   const b=ALPHA_MINE_FOOTPRINT;

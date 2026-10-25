@@ -6,7 +6,8 @@ import { join, resolve } from 'node:path';
 import { spawnSync } from 'node:child_process';
 const base=resolve('public/world/alpha-mine'),manifest=JSON.parse(readFileSync(join(base,'layout.json'),'utf8'));
 const routes={gallery:manifest.gallery.route,
- westLink:[...manifest.route.points.slice(0,7),manifest.gallery.coreConnection.a,...manifest.gallery.route.slice(3)]};
+ westLink:[...manifest.route.points.slice(0,7),manifest.gallery.coreConnection.a,...manifest.gallery.route.slice(3)],
+ ...Object.fromEntries(Object.entries(manifest.lowExits??{}).map(([name,p])=>[name,[...p,...p.slice(0,-1).reverse()]]))};
 const results={};
 for(const [name,points] of Object.entries(routes)){
  const folder=mkdtempSync(join(tmpdir(),'quarry-route-'));

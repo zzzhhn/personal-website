@@ -25,7 +25,7 @@ GALLERY_BRIDGES = [
 GALLERY_ROUTE = [[-19,0,-3],[-19,3,-15],[-19,3,-22.3],[-19,3,-29],[-19,6,-41],
                  [-19,6,-43],[-8.6,6,-43],[7.5,6,-43],[17,6,-43],[17,6,-37],
                  [8.8,6,-37],[8.8,6,-34.1]]
-LAMPS = [[-15.7,2.65,-5],[-20.4,5.65,-18],[9.7,4.9,-23.2],[-19.9,5.4,-26.8],
+LAMPS = [[-13.3,2.65,-.65],[-20.4,5.65,-18],[9.7,4.9,-23.2],[-19.9,5.4,-26.8],
          [-17.8,8.25,-44.9],[-11,8.25,-44.9],[6.9,8.3,-44.6],[17.9,8.3,-39.5],[-5.2,2.6,-12.6]]
 POOL = {'center': [1.8, 0, -6.5], 'outerRadius': 3.45, 'innerRadius': 2.85, 'rimY': .62,
         'waterY': .28, 'approach': [1.8, 0, -2.3], 'dropSocket': [1.8, .95, -3.9], 'impact': [1.8, .28, -4.35]}
@@ -34,6 +34,7 @@ VEINS = [
     {'id': 'vein-middle', 'level': 3, 'socket': [-8.6, 4.3, -25.45], 'normal': [0, 0, 1], 'stand': [-8.6, 3, -24.45], 'host': 'upper-west-front'},
     {'id': 'vein-upper', 'level': 6, 'socket': [1.5, 7.3, -35.45], 'normal': [0, 0, 1], 'stand': [1.5, 6, -34.45], 'host': 'rear-wall'},
 ]
+def seam_curve(x):return .06*x+.26*math.sin(x*.75)+.09*math.sin(x*1.7)
 RACK = {'center': [-8.8, 0, -3.6], 'face': [0, 0, 1], 'approach': [-8.8, 0, -2.55],
         'detectorSocket': [-9.35, 1.05, -3.30], 'pickaxeSocket': [-8.2, 1.05, -3.30]}
 ROUTE = [[0, 0, 0], [-5.2, 0, -2], [-8.8, 0, -2.55], [-11.8, 0, -2.55], [-11.8, 0, -9], [-11.8, 3, -21],
@@ -41,18 +42,54 @@ ROUTE = [[0, 0, 0], [-5.2, 0, -2], [-8.8, 0, -2.55], [-11.8, 0, -2.55], [-11.8, 
          [11.8, 3, -19.7], [11.8, 3, -21], [11.8, 6, -33], [11.8, 6, -34.1], [1.5, 6, -34.1],
          [-8.6, 6, -34.1], [-8.6, 6, -30]]
 
+# Ground-level egress is independent of the raised visitor route. The rear ravine
+# and western support slot must remain escapable after a deliberate jump down.
+LOW_EXITS = {
+    'ravine-to-forecourt': [[2.9,0,-44],[2.9,0,-41.8],[4.8,0,-40.8],[4.8,0,-34],[4.8,0,-26],
+        [0,0,-26],[0,0,-19.8],[6.5,0,-15],[6.5,0,-7],[6.5,0,-4],[3,0,-1.1],[0,0,0]],
+    'west-support-to-entrance': [[-15.8,0,-23],[-15.8,0,-18],[-15.8,0,-9],[-15.8,0,-2],
+        [-12,0,-2],[-5.2,0,-2],[0,0,0]],
+}
+LOW_PASSAGES = [
+    {'id':'ravine-egress','x':[2,7.5],'z':[-41,-33],'clearHeight':2.7},
+    {'id':'west-support-egress','x':[-17,-14.6],'z':[-24,-3],'clearHeight':2.25},
+]
+
+def smooth(a,b,x):
+    t=max(0,min(1,(x-a)/(b-a)));return t*t*(3-2*t)
+
+def perimeter_map(x,z):
+    """Broad erosion of the actual quarry boundary, away from every core join."""
+    left=smooth(20,24,-x);right=smooth(20,24,x);back=smooth(44,52,-z)
+    return (x+left*(1.8+.9*math.sin(z*.18)+.5*math.sin(z*.41)+8.5*smooth(-6,2,z)+4*smooth(38,52,-z))
+             -right*(1.6+1.1*math.sin(z*.19+1.4)+.6*math.sin(z*.4)+7.5*smooth(-24,2,z)+3*smooth(38,52,-z)),
+            z+back*(1.2+2*math.sin(x*.13+.5)**2+.8*math.sin(x*.47)+3*(x/24)**2)
+             +(left+right)*.8*math.sin(z*.23)+smooth(-3,2,z)*(1.2+.6*math.cos(x*.18)-3.5*(x/24)**2))
+
+def outline():
+    boundary=[(x,-52) for x in range(-24,25,4)]+[(24,z) for z in range(-48,3,4)]
+    boundary += [(24,2)]+[(x,2) for x in range(20,-25,-4)]+[(-24,z) for z in range(-2,-51,-4)]
+    return [[round(a,5),round(b,5)] for a,b in (perimeter_map(x,z) for x,z in boundary)]
+
+def rock_intervals(x,z):
+    h=round(height(x,z)/.75)*.75
+    for passage in LOW_PASSAGES:
+        if passage['x'][0]<x<passage['x'][1] and passage['z'][0]<z<passage['z'][1]:
+            return [(passage['clearHeight'],h)] if h>passage['clearHeight'] else []
+    return [(0,h)] if h else []
+
 def height(x, z):
     """Closed rock masses stand above the existing island, never excavate it."""
     # A genuinely traversable perimeter gallery, ravine and two rear portals.
     if -21 <= x < -17 and -41 <= z < -29:return 3
     if z < -36:
         if x < -21 or x > 21 or z < -48:
-            return 8.25+1.5*math.sin(x*.41+z*.17)**2+1.5*math.sin(z*.29-x*.23)**2
+            return 9
         if -8.6 <= x < 7.5 and -46 <= z < -39:return 0
         return 6
     if -36 <= z < -35.6 and 7.5 <= x <= 10.5:return 6
     if x < -17:
-        if x < -21 and z < -9:return 3.75+3.0*math.sin(z*.11)**2
+        if x < -21 and z < -9:return 6.75
         return 3 if z < -15 else 0
     if -24 <= z < -21 and x < -13.1:return 3
     if -17 <= x < -16:return 3 if z < -15 else 0
@@ -88,10 +125,11 @@ def contract():
     return {'schema': 'alpha-mine-layout-v1', 'units': 'metres', 'axis': {'up': '+Y', 'entranceFace': '+Z', 'depth': '-Z'},
         'root': [0, 0, 0], 'rootMeaning': 'entrance lateral centre / lowest walking level / entrance line',
         'integrationPlacement': {'origin': [-84,1.14,-55], 'yaw': 0, 'providedBy': 'main site audit; expanded NW mainland owned by main'},
-        'footprint': {'x': [-24,24], 'z': [-52,2]}, 'walkingLevels': [0,3,6], 'maxRockY': 12,
+        'footprint': {'x': [-24,24], 'z': [-52,2], 'outline':outline()}, 'walkingLevels': [0,3,6], 'maxRockY': 12,
         'entrance': {'center': [0,0,0], 'clearWidth': 8}, 'terrainExcavation': False,
         'staticAsset': '/world/alpha-mine/quarry-static.glb', 'collisionAsset': '/world/alpha-mine/colliders.json',
         'ramps': ramps, 'bridge': BRIDGE, 'route': {'points': ROUTE, 'return': 'reverse; open forecourt loop around basin'},
+        'lowExits':LOW_EXITS,'lowPassages':LOW_PASSAGES,
         'gallery': {'ramps':GALLERY_RAMPS,'bridges':GALLERY_BRIDGES,'route':GALLERY_ROUTE,
                     'tunnel':{'axis':'X','x':[-17.2,-9.7],'floorY':6,'centerZ':-43,'clearWidth':3.4,'clearHeight':3.2},
                     'coreConnection':GALLERY_BRIDGES[0],'rearConnection':[8.8,6,-34.1]},

@@ -8,6 +8,9 @@ interface WorldState {
   lang: Lang;
   light: 'dusk' | 'night';
   paused: boolean;
+  poolInspect: boolean;
+  /** A synchronous recovery request: must also work while the physics world is paused. */
+  campReturnRequest: number;
   activeVehicle: VehicleId | null;
   nearbyVehicle: VehicleId | null;
   /** Nearest interactable in reach when walking (null while driving). */
@@ -37,8 +40,15 @@ interface WorldState {
   interactPick: string | null;
 }
 export const useWorldStore = create<WorldState>(() => ({
-  lang: 'en', light: 'dusk', paused: false, activeVehicle: null, nearbyVehicle: null, nearbyInteract: null, card: null, seat: null, toast: null,
+  lang: 'en', light: 'dusk', paused: false, poolInspect: false, campReturnRequest: 0, activeVehicle: null, nearbyVehicle: null, nearbyInteract: null, card: null, seat: null, toast: null,
   canRecover: false, recoverRequest: 0, speed: 0, zone: 'camp', position: [-42, 5, 30],
   ready: false, zoom: 1, quality: 'high', shot: null, waypoint: null, interactPick: null,
   loading: { phase: 'runtime', loaded: 0, total: 0, active: false, failed: 0 },
 }));
+export const requestCampReturn = () => useWorldStore.setState(s => ({ campReturnRequest: s.campReturnRequest + 1 }));
+export function handleWorldEscape() {
+  const state=useWorldStore.getState();
+  if(state.poolInspect)useWorldStore.setState({poolInspect:false});
+  else if(state.card&&!state.paused)useWorldStore.setState({card:null});
+  else useWorldStore.setState({paused:!state.paused});
+}

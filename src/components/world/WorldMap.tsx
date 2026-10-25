@@ -83,7 +83,7 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
     <rect x={vb[0] - 300} y={vb[1] - 300} width={vb[2] + 600} height={vb[3] + 600} fill={`url(#${seaId})`} />
     <polygon points={path(geometry?.shore ?? ISLAND_OUTLINE)} fill='#E3D3B4' stroke='#F4ECDB' strokeWidth={full ? 1.4 : 1.1} strokeOpacity='.7' />
     <polygon points={path(geometry?.shore ?? ISLAND_OUTLINE)} fill='#7E8C3E' className='world-map-grass' />
-    <polygon points={path(ALPHA_MINE_FOOTPRINT_POINTS)} fill='#8C8276' stroke='#D2B98A' strokeWidth={full ? 1.2 : 1} />
+    <polygon data-quarry-outline='physical' points={path(ALPHA_MINE_FOOTPRINT_POINTS)} fill='#99917C' stroke='#B6AB89' strokeOpacity='.45' strokeWidth={full ? .8 : .6} strokeLinejoin='round' />
     {geometry?.roads ? geometry.roads.map((r, i) => <polyline key={i} points={path(r.pts)} fill='none' stroke={r.color} strokeWidth={r.width} strokeDasharray={r.dash} strokeLinejoin='round' strokeLinecap='round' />)
       : !LAYOUT_V4 && <polyline points={path(ROAD_POINTS)} fill='none' stroke='#D9D2C2' strokeWidth='4' strokeLinejoin='round' />}
     <polyline points={path(BOARDWALK_POINTS)} fill='none' stroke='#B99469' strokeWidth='3' strokeLinecap='round' />

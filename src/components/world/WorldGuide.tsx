@@ -363,7 +363,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     if (!shown) onMovementLock?.(false);
     if (!shown) { rig.idle.restore(); rig.idle.reset(); rig.mine.hide(); Object.assign(mineVisualSockets, { valid: false, sampledActionKind: null, sampledElapsed: 0 }); }
     s.visible = shown;
-    if (world.paused || world.shot || !shown) return;
+    if (world.paused || world.poolInspect || world.shot || !shown) return;
     rig.mine.restore();
     rig.idle.restore();
     const dt = Math.max(1e-6, Math.min(delta, .08));

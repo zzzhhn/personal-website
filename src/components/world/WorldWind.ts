@@ -9,7 +9,7 @@ import { useWorldStore } from './store';
 export const windUniforms = { uWindTime: { value: 0 }, uWindStrength: { value: 1 } };
 let reducedMotion = false;
 
-export const isWorldRunning = () => { const s = useWorldStore.getState(); return !s.paused && !s.shot; };
+export const isWorldRunning = () => { const s = useWorldStore.getState(); return !s.paused && !s.poolInspect && !s.shot; };
 
 /** Mount once inside the Canvas (WorldRuntime). */
 export function useWindClock() {

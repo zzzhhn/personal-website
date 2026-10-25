@@ -124,7 +124,7 @@ test('intensity and overlapping event voices are bounded, even under repeated ph
 test('pause, hidden, shot and mute cancel voices and never replay on return', async t => {
   const e = env(t), a = e.audio(), release = a.retain();
   const gates = [
-    value => store.setState({ paused: value }), value => e.hidden(value),
+    value => store.setState({ paused: value }), value => store.setState({ poolInspect: value }), value => e.hidden(value),
     value => store.setState({ shot: value ? 'camp' : null }), value => a.setMuted(value),
   ];
   for (const gate of gates) {

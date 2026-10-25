@@ -3,7 +3,7 @@ import { BUILDINGS, CAMP_CENTER, FOUNDATIONS, GROUND_Y, ISLAND_OUTLINE, ROAD_POI
 import { LAYOUT_V4, keepOutV4, nearRidgeV4, ridgeHeightV4, TERRAIN_GRID_V4, townFactorV4 } from './layout-v4';
 import { groundRoadDistance, pavingGround, trailDistance } from './WorldTerrainPaving';
 import { TRAIL_HALF } from './layout-v4';
-import { ALPHA_MINE_BASE_Y, ALPHA_MINE_CONNECTOR, isOnAlphaMineBase } from './alpha-mine-layout';
+import { ALPHA_MINE_BASE_Y, ALPHA_MINE_CONNECTOR, isOnAlphaMineBase, mineEdgeDistance } from './alpha-mine-layout';
 import { ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout';
 
 /** quality-v3 landform (spec 2026-10-22 §3, §10.1/10.2). One deterministic height function
@@ -741,6 +741,13 @@ const PATH_HALF = .75;
 /** CPU ground classification shared by vertex colours and scatter (so tufts sit on grass). */
 export function groundSample(x: number, z: number, h = terrainHeight(x, z), slopeY = 1) {
   const g = groundSampleBase(x, z, h, slopeY);
+  const mineEdge=mineEdgeDistance(x,z);
+  if(mineEdge<1.7){
+    const ragged=(valueNoise(x/1.3,z/1.3,93)-.5)*.8;
+    const wear=1-smoothstep(-2.0,1.7,mineEdge+ragged);
+    const soil=lerp3(C.pit,C.earth,.2+.3*valueNoise(x/3,z/3,94));
+    return {kind:wear>.62?'path' as GroundKind:g.kind,colour:lerp3(g.colour,soil,wear),grass:g.grass*(1-wear)};
+  }
   if ((g.kind === 'grass' || g.kind === 'plaza' || g.kind === 'sand') && h > WATER_Y + .3) {
     const p = pathDistance(x, z);
     if (p < PATH_HALF + .45) {
@@ -751,7 +758,6 @@ export function groundSample(x: number, z: number, h = terrainHeight(x, z), slop
   return g;
 }
 function groundSampleBase(x: number, z: number, h = terrainHeight(x, z), slopeY = 1): { kind: GroundKind; colour: RGB; grass: number } {
-  if (isOnAlphaMineBase(x,z)) return { kind:'path', colour:lerp3(C.pit,C.earth,valueNoise(x/3,z/3,93)*.3), grass:0 };
   if (LAYOUT_V4 && z < -54 && x < -4 && x > -56) {
     // North hill dirt road (part of the height field): packed earth, two wheel ruts, grassy crown,
     // ragged grass edges.

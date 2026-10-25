@@ -53,3 +53,17 @@ test('all mining and pickup approaches keep a clear chest ray and reachable caps
   }
  }}finally{world.free();}
 });
+
+test('low exits retain a real capsule lane under bridge supports and through their rock mouths',()=>{
+ const {world,surface,solid}=scene(),failures=[];
+ assert.ok(Object.keys(layout.lowExits??{}).length>=2,'both trapped low areas need an exit contract');
+ try{for(const [name,points] of Object.entries(layout.lowExits??{}))for(let i=1;i<points.length;i++){
+  const a=points[i-1],b=points[i],dx=b[0]-a[0],dz=b[2]-a[2],len=Math.hypot(dx,dz),n=Math.ceil(len/.24);
+  for(let j=0;j<=n;j++)for(const offset of [-.3,0,.3]){
+   const t=j/n,p=[a[0]+dx*t+dz/len*offset,a[1],a[2]+dz*t-dx/len*offset];
+   const hit=world.castRayAndGetNormal(new RAPIER.Ray({x:p[0],y:p[1]+.4,z:p[2]},{x:0,y:-1,z:0}),.7,true,undefined,undefined,undefined,undefined,c=>c.handle===surface.handle);
+   if(!hit||Math.abs(hit.timeOfImpact-.4)>.07||hit.normal.y<.9)failures.push({name,i,p,kind:'support'});
+   world.intersectionsWithShape({x:p[0],y:p[1]+.88,z:p[2]},{x:0,y:0,z:0,w:1},new RAPIER.Capsule(.48,.34),c=>{if(c.handle===solid.handle)failures.push({name,i,p,kind:'clearance'});return true;});
+  }
+ }assert.equal(failures.length,0,JSON.stringify(failures.slice(0,12)));}finally{world.free();}
+});

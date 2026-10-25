@@ -16,7 +16,7 @@ import { windUniforms } from './WorldWind';
 import WorldGrass, { ActorTracker, actorState, grassDebug } from './WorldGrass';
 import { seaSpotDebug } from './WorldSea';
 import { useMineManifest } from './alpha-mine-assets';
-import { ALPHA_MINE_FOOTPRINT, mineLocalToWorld } from './alpha-mine-layout';
+import { mineLocalToWorld } from './alpha-mine-layout';
 
 /** quality-v3 island ground: one 0.5 m faceted terrain (WorldLandform) rendered with vertex
  * colours plus world-space detail and swash-driven wet sand, and the same triangles as the
@@ -347,7 +347,7 @@ export function IslandTerrain() {
     const data = new Float32Array(blades.length+extra.length); data.set(blades); data.set(extra,blades.length); return data;
   },[blades,vegetation]);
   useEffect(() => {
-    const job = grassCandidateJob([...SCATTER_BLOCKERS,ALPHA_MINE_FOOTPRINT]), w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number; cancelIdleCallback?: (id: number) => void };
+    const job = grassCandidateJob(SCATTER_BLOCKERS), w = window as Window & { requestIdleCallback?: (cb: () => void, o?: { timeout: number }) => number; cancelIdleCallback?: (id: number) => void };
     let handle = 0, done = false; const t0 = performance.now();
     const tick = () => {
       if (done) return;

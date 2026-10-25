@@ -1,0 +1,52 @@
+{
+ "ribbons": [
+  {
+   "segments": 92,
+   "projectedSamples": 186,
+   "maxEdgeProjectionM": 0.12148396670818329
+  },
+  {
+   "segments": 18,
+   "projectedSamples": 38,
+   "maxEdgeProjectionM": 0.05405339226126671
+  },
+  {
+   "segments": 17,
+   "projectedSamples": 36,
+   "maxEdgeProjectionM": 0.05189379304647446
+  },
+  {
+   "segments": 80,
+   "projectedSamples": 162,
+   "maxEdgeProjectionM": 0.07746963948011398
+  },
+  {
+   "segments": 18,
+   "projectedSamples": 38,
+   "maxEdgeProjectionM": 0.023680860176682472
+  },
+  {
+   "segments": 18,
+   "projectedSamples": 38,
+   "maxEdgeProjectionM": 0.039529867470264435
+  },
+  {
+   "segments": 75,
+   "projectedSamples": 156,
+   "maxEdgeProjectionM": 0.12910912930965424
+  },
+  {
+   "segments": 18,
+   "projectedSamples": 38,
+   "maxEdgeProjectionM": 0.001541215111501515
+  },
+  {
+   "segments": 9,
+   "projectedSamples": 20,
+   "maxEdgeProjectionM": 0.05496685206890106
+  }
+ ],
+ "frontOffsetM": 0.003,
+ "embeddedThicknessM": 0.018,
+ "collision": "visual inlay; existing host wall collider retained"
+}

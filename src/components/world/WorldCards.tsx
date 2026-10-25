@@ -52,7 +52,7 @@ export default function WorldCards({ content }: { content: WorldContent }) {
   const driving = useWorldStore(s => s.activeVehicle);
   const card = useWorldStore(s => s.card);
   const seat = useWorldStore(s => s.seat);
-  const paused = useWorldStore(s => s.paused);
+  const paused = useWorldStore(s => s.paused || s.poolInspect);
   const shot = useWorldStore(s => s.shot);
   const pick = useWorldStore(s => s.interactPick);
   const position = useWorldStore(s => s.position);
@@ -66,7 +66,7 @@ export default function WorldCards({ content }: { content: WorldContent }) {
   useEffect(() => {
     const key = (e: KeyboardEvent) => {
       const s = useWorldStore.getState();
-      if (e.code !== 'KeyQ' || s.paused || e.metaKey || e.ctrlKey || e.altKey || e.repeat) return;
+      if (e.code !== 'KeyQ' || s.paused || s.poolInspect || e.metaKey || e.ctrlKey || e.altKey || e.repeat) return;
       e.preventDefault(); cycleInteractPick(1);
     };
     window.addEventListener('keydown', key, true);

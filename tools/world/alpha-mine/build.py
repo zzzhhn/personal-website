@@ -4,10 +4,11 @@ Run from this checkout with existing Blender, factory startup and --threads 2.
 import bpy, bmesh, math, json, hashlib, sys, struct
 from pathlib import Path
 from mathutils import Vector
+from mathutils.bvhtree import BVHTree
 HERE=Path(__file__).resolve().parent
 sys.path.insert(0,str(HERE))
 from layout import OUT, VEINS, POOL, RACK, LAMPS, ore_rest
-from geometry import build_geometry, write_proxies
+from geometry import build_geometry, write_proxies, rock_color
 import grain
 
 EVIDENCE=HERE/'evidence';SOURCE=HERE/'batch1.blend';GLB=OUT/'quarry-static.glb'
@@ -35,7 +36,10 @@ def create_source(scene):
         me=bpy.data.meshes.new(data.name);me.from_pydata([v3(p) for p in data.vertices],[],data.faces);me.update()
         me.materials.append(material(data.material));col=me.color_attributes.new(name='Col',type='FLOAT_COLOR',domain='CORNER')
         for poly,color in zip(me.polygons,data.colors):
-            for idx in poly.loop_indices:col.data[idx].color=linear(color)
+            for idx in poly.loop_indices:
+                if data.material=='stone' and data.name.startswith(('AM01_rock_mass','AM01_primary','AM01_attached','AM06_east','AM06_rear')):
+                    x,y,z=data.vertices[me.loops[idx].vertex_index];color=rock_color(y,0,x,z)
+                col.data[idx].color=linear(color)
         ob=bpy.data.objects.new(data.name,me);scene.collection.objects.link(ob);ob.parent=root;ob['materialRole']=data.material;ob['semantic']=data.semantic
         # Applied small chamfers give timber real edge highlights. Collider allowance is explicit.
         if (data.material in ['wood','metal'] and data.name!='AM05_iron_nails') or data.name.startswith(('AM04_basin_masonry','AM01_ore_catch')):
@@ -43,11 +47,67 @@ def create_source(scene):
             mod=ob.modifiers.new('Authored edge wear','BEVEL');mod.width=.025 if data.material=='stone' else (.012 if data.material=='wood' else .006);mod.segments=2 if data.material=='stone' else 1
             bpy.ops.object.modifier_apply(modifier=mod.name);ob.select_set(False)
         grain.uv(ob.data)
+    add_seams(root,scene)
     return root
+
+def add_seams(root,scene):
+    """Branching ribbons projected onto the actual continuous host facets.
+    Their back lies inside stone, with only a 3mm exposed face. No wall-sized decal.
+    """
+    host=bpy.data.objects['AM01_rock_mass'];tree=BVHTree.FromObject(host,bpy.context.evaluated_depsgraph_get())
+    vertices=[];faces=[];colors=[];receipts=[]
+    def ribbon(points,seed,width):
+        rings=[];samples=[]
+        for i,p in enumerate(points):
+            target=Vector(v3(p));hit,normal,_,distance=tree.find_nearest(target)
+            if distance is None or distance>.95:
+                rings.append(None);continue
+            tangent=Vector(v3(points[min(i+1,len(points)-1)]))-Vector(v3(points[max(0,i-1)]))
+            side=normal.cross(tangent).normalized();w=width*(.6+.4*math.sin(i*.67+seed)**2)
+            ring=[]
+            for sign in [-1,1]:
+                point,n,_,d=tree.find_nearest(hit+side*sign*w)
+                samples.append(d);ring.append(point+n*.003)
+            # Explicit embedded back, so each connected ribbon segment is closed.
+            ring += [p-normal*.018 for p in ring]
+            rings.append(ring)
+        live=0
+        for a,b in zip(rings,rings[1:]):
+            if a is None or b is None:continue
+            if (a[0]-a[1]).length<.004 or (b[0]-b[1]).length<.004 or ((a[0]+a[1])-(b[0]+b[1])).length<.015:continue
+            if (a[1]-a[0]).dot(b[1]-b[0])<0:b=[b[1],b[0],b[3],b[2]]
+            # Each short prism is independently closed and intentionally embedded.
+            ps=a+b;offset=len(vertices);vertices.extend(tuple(p) for p in ps)
+            shell=[(0,1,5,4),(2,6,7,3),(0,4,6,2),(1,3,7,5),(0,2,3,1),(4,5,7,6)]
+            volume=sum(ps[f[0]].dot(ps[f[k]].cross(ps[f[k+1]]))/6 for f in shell for k in range(1,len(f)-1))
+            # Reverse the complete shell, never individual bent quad faces.
+            for f in shell:
+                face=[offset+k for k in (list(reversed(f)) if volume<0 else f)]
+                faces.append(face);colors.append(['#A38D68','#738A7A','#9A9C91'][seed%3])
+            live+=1
+        receipts.append({'segments':live,'projectedSamples':len(samples),'maxEdgeProjectionM':max(samples,default=0)})
+    for index,v in enumerate(VEINS):
+        x0,y0,z0=v['socket'];left=-12.6 if index<2 else -11.5;right=-4.0 if index<2 else 11.5
+        def line(x):
+            dx=x-x0;return [x,y0+.06*dx+.26*math.sin(dx*.75)+.09*math.sin(dx*1.7),z0-.15]
+        points=[line(left+(right-left)*i/80) for i in range(81)]
+        if index==0:
+            points=[[ -13.35, y0-.45+.07*i, -18.0-i*.25] for i in range(12)]+points
+        ribbon(points,index,.13)
+        for sign in [-1,1]:
+            start=x0+sign*2.2;begin=line(start)
+            branch=[[begin[0]+sign*t*1.55,begin[1]+sign*t*.72+.13*math.sin(t*4),begin[2]] for t in [i/18 for i in range(19)]]
+            ribbon(branch,index,.055)
+    me=bpy.data.meshes.new('AM01_inlaid_seams');me.from_pydata(vertices,[],faces);me.update();me.materials.append(material('stone'))
+    col=me.color_attributes.new(name='Col',type='FLOAT_COLOR',domain='CORNER')
+    for p,c in zip(me.polygons,colors):
+        for i in p.loop_indices:col.data[i].color=linear(c)
+    grain.uv(me);ob=bpy.data.objects.new('AM01_inlaid_seams',me);scene.collection.objects.link(ob);ob.parent=root;ob['materialRole']='stone';ob['semantic']='inlaid-mineral'
+    (EVIDENCE/'seam-host-qa.json').write_text(json.dumps({'ribbons':receipts,'frontOffsetM':.003,'embeddedThicknessM':.018,'collision':'visual inlay; existing host wall collider retained'},indent=1)+'\n')
 
 def merge_runtime(source,scene):
     root=bpy.data.objects.new('alpha_mine',None);scene.collection.objects.link(root)
-    root['assetId']='alpha-mine-quarry-v2';root['units']='metres';root['entranceFace']='+Z';root['layout']='layout.json'
+    root['assetId']='alpha-mine-quarry-v3';root['units']='metres';root['entranceFace']='+Z';root['layout']='layout.json'
     for role in PALETTE:
         verts=[];faces=[];colors=[];uvs=[]
         for ob in source.children:
@@ -109,7 +169,7 @@ def export_glb(root):
     bpy.ops.export_scene.gltf(filepath=str(GLB),**opts)
     return opts
 
-def render_views(root):
+def render_views(root,views=None,folder=None):
     scene=bpy.context.scene
     engines={v.identifier for v in scene.render.bl_rna.properties['engine'].enum_items}
     scene.render.engine=next((e for e in ['BLENDER_EEVEE','BLENDER_EEVEE_NEXT'] if e in engines),'CYCLES')
@@ -125,10 +185,10 @@ def render_views(root):
     if look:scene.view_settings.look=look
     world=bpy.data.worlds.new('AM_studio_world');world.use_nodes=True;scene.world=world
     bg=world.node_tree.nodes.get('Background');bg.inputs['Color'].default_value=(.37,.46,.56,1);bg.inputs['Strength'].default_value=.65
-    floor=bpy.data.materials.new('AM_studio_floor');floor.diffuse_color=linear('#9F967E');floor.use_nodes=True
-    floor.node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value=linear('#9F967E')
+    floor=bpy.data.materials.new('AM_studio_floor');floor.diffuse_color=linear('#7B8551');floor.use_nodes=True
+    floor.node_tree.nodes['Principled BSDF'].inputs['Base Color'].default_value=linear('#7B8551')
     floor.node_tree.nodes['Principled BSDF'].inputs['Roughness'].default_value=.96
-    bpy.ops.mesh.primitive_plane_add(size=170,location=(0,0,-.025));bpy.context.object.name='STUDIO_floor';bpy.context.object.data.materials.append(floor)
+    bpy.ops.mesh.primitive_plane_add(size=170,location=(0,0,-.14));bpy.context.object.name='STUDIO_floor';bpy.context.object.data.materials.append(floor)
     for name,typ,position,energy,color in [('STUDIO_sun','SUN',(25,-35,45),3.4,(1,.80,.58)),('STUDIO_fill','AREA',(-20,-5,24),1150,(.64,.77,1))]:
         data=bpy.data.lights.new(name,typ);data.energy=energy;data.color=color
         if typ=='SUN':data.angle=math.radians(7)
@@ -146,17 +206,18 @@ def render_views(root):
     for i,p in enumerate(LAMPS):
         ld=bpy.data.lights.new('STUDIO_lantern_'+str(i),'POINT');ld.energy=24;ld.color=(1,.58,.23);ld.shadow_soft_size=.24
         lo=bpy.data.objects.new(ld.name,ld);scene.collection.objects.link(lo);lo.location=v3(p)
-    views=[('entrance-close',(2.5,2.6,-8.5),(-6.2,3.8,-25))]
+    views=views or [('entrance-close',(2.5,2.6,-8.5),(-6.2,3.8,-25))]
+    folder=folder or EVIDENCE
     outputs=[]
     for name,p,t in views:
         cam.location=v3(p);target=Vector(v3(t));cam.rotation_euler=(target-cam.location).to_track_quat('-Z','Y').to_euler()
-        path=EVIDENCE/(name+'.png');scene.render.filepath=str(path)
+        path=folder/(name+'.png');scene.render.filepath=str(path)
         bpy.ops.render.render(write_still=True);outputs.append(path.name)
     return {'images':outputs,'renderer':scene.render.engine,'resolution':[1000,760],
             'viewTransform':scene.view_settings.view_transform,'look':scene.view_settings.look,'exposure':0,'gamma':1,'views':views,
             'scope':'fresh exact delivered GLB; studio lights/floor/cameras and basin water are preview only; not game integration or character validation'}
 
-def run():
+def run(preview=True):
     EVIDENCE.mkdir(exist_ok=True);OUT.mkdir(parents=True,exist_ok=True)
     write_proxies();bpy.ops.wm.read_factory_settings(use_empty=True)
     bpy.context.preferences.filepaths.save_version=0
@@ -195,8 +256,9 @@ def run():
     layout['staticGeometry']={'triangles':imported['triangles'],'meshBatches':imported['meshCount'],'bytes':report['bytes'],'sha256':report['glbSha256']}
     (OUT/'layout.json').write_text(json.dumps(layout,indent=2)+'\n')
     print('AM_EXPORT_PASS',imported['triangles'],imported['meshCount'],report['bytes'],delta,flush=True)
-    render=render_views(root);render['glbSha256']=report['glbSha256'];(EVIDENCE/'render-manifest.json').write_text(json.dumps(render,indent=1)+'\n')
-    print('AM_RENDER_PASS',render['images'],flush=True)
+    if preview:
+        render=render_views(root);render['glbSha256']=report['glbSha256'];(EVIDENCE/'render-manifest.json').write_text(json.dumps(render,indent=1)+'\n')
+        print('AM_RENDER_PASS',render['images'],flush=True)
 
 def render_saved():
     before=hashlib.sha256(GLB.read_bytes()).hexdigest()
