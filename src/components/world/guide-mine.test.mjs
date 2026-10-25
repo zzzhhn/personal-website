@@ -109,7 +109,7 @@ test('put-down lowers the ore with anchored feet and reports an unreachable grou
 
 // Main integration can run this against the delivered art without decoding mesh buffers or opening WebGL.
 const artDirectory = process.env.ALPHA_MINE_ASSET_DIR;
-test('delivered tool sockets fit both G24 hands and strike contact', { skip: !artDirectory }, () => {
+test('delivered tool sockets fit both G24 hands and strike contact at facility stand distances', { skip: !artDirectory }, t => {
   const source = assets();
   for (const name of ['detector', 'pickaxe', 'ore']) {
     source[name] = glbNodes(join(artDirectory, `${name}.glb`)).getObjectByName(name);
@@ -121,5 +121,22 @@ test('delivered tool sockets fit both G24 hands and strike contact', { skip: !ar
   assert.ok(hit.rightReachError < .035 && hit.leftReachError < .035, `delivered pickaxe grips ${hit.rightReachError}/${hit.leftReachError}`);
   const pickup = layer.apply(state('pickup', .48, [.5,.7,0], true));
   assert.ok(pickup.rightReachError < .035 && pickup.leftReachError < .035, `delivered ore grips ${pickup.rightReachError}/${pickup.leftReachError}`);
+  const samples = [];
+  for (const x of [.6, .7, .8, .9, 1, 1.1]) {
+    const r = layer.apply(state('strike', .57, [x,1.3,0]));
+    samples.push({ kind: 'strike', x, y: 1.3, tip: r.contactError, right: r.rightReachError, left: r.leftReachError });
+  }
+  for (const kind of ['pickup', 'put-down']) for (const x of [.5, .6, .7]) {
+    const s = state(kind === 'pickup' ? 'pickup' : 'deposit', .48, [x,.7,0], kind === 'pickup');
+    if (kind === 'put-down') delete s.action.bay;
+    const r = layer.apply(s);
+    samples.push({ kind, x, y: .7, right: r.rightReachError, left: r.leftReachError });
+  }
+  t.diagnostic(JSON.stringify(samples.map(row => Object.fromEntries(Object.entries(row)
+    .map(([key, value]) => [key, typeof value === 'number' ? +value.toFixed(4) : value])))));
+  const facilityStrike = samples.find(row => row.kind === 'strike' && row.x === 1);
+  assert.ok(facilityStrike.tip <= .16 && facilityStrike.left <= .16, `facility strike unreachable: ${JSON.stringify(facilityStrike)}`);
+  const oreSamples = samples.filter(row => row.kind !== 'strike');
+  assert.ok(oreSamples.every(row => row.right <= .16), `facility ore reach: ${JSON.stringify(oreSamples)}`);
   layer.dispose();
 });
