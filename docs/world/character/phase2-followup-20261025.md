@@ -55,6 +55,8 @@
 - Guide 释放自行创建的合并几何、材质和克隆骨架纹理，避免反复硬恢复保留 GPU 分配；缓存 GLTF 的共享几何／材质不释放。
 - 不受控的其他车辆恢复不清玩家状态。当前驾驶车辆恢复的额外调用仅清人物交互，不修改车辆动力学或恢复位置。
 
+资源所有权已按本机安装源码静态核对：`three/examples/jsm/utils/SkeletonUtils.js` 的 clone 为每个克隆 SkinnedMesh 调用源 skeleton.clone，再把 bones 指向克隆节点；`three/src/objects/Skeleton.js` 的 clone 返回新 Skeleton，boneTexture 初始为空，dispose 只释放这个实例随后创建的骨架纹理，不释放源骨架或模型几何。相反，SkeletonUtils 的几何／材质仍按引用共享，所以这里不遍历 dispose 所有 mesh.geometry／mesh.material。`mergeGuideMaterials` 的 merged 来自 mergeGeometries，新 mat 来自 base.clone，回调只持有这两个新对象。R3F 的 primitive 卸载不会替它们统一释放，因此自行清理这些新资源；GLTF 缓存与原材质仍保留。以上是所有权依据，尚不是反复恢复后的 GPU 内存运行验收。
+
 ## 精确待测清单
 
 资源轮到人物后只做以下一轮，不扩展蒙皮全帧或历史素材：
