@@ -6,13 +6,13 @@
    "openEdges": 0,
    "nonmanifoldEdges": 0,
    "degenerateTriangles": 0,
-   "signedVolumeM3": 4473.427510923381,
+   "signedVolumeM3": 4473.465428530152,
    "semantic": "closed-rock"
   },
   {
    "name": "AM01_ground",
-   "triangles": 2548,
-   "openEdges": 382,
+   "triangles": 2571,
+   "openEdges": 387,
    "nonmanifoldEdges": 0,
    "degenerateTriangles": 0,
    "signedVolumeM3": 8.250421307700098,
@@ -20,11 +20,11 @@
   },
   {
    "name": "AM01_attached_talus",
-   "triangles": 2848,
+   "triangles": 2864,
    "openEdges": 0,
    "nonmanifoldEdges": 0,
    "degenerateTriangles": 0,
-   "signedVolumeM3": 36.12349437063162,
+   "signedVolumeM3": 36.374750568555044,
    "semantic": "closed-talus"
   },
   {
@@ -515,11 +515,11 @@
   },
   {
    "name": "AM01_ground_spalls",
-   "triangles": 1166,
+   "triangles": 1188,
    "openEdges": 0,
    "nonmanifoldEdges": 0,
    "degenerateTriangles": 0,
-   "signedVolumeM3": 0.10508745277268715,
+   "signedVolumeM3": 0.10587264210369668,
    "semantic": "embedded-fracture"
   },
   {
@@ -870,7 +870,7 @@
    "openEdges": 0,
    "nonmanifoldEdges": 0,
    "degenerateTriangles": 0,
-   "signedVolumeM3": 0.6266249999998093,
+   "signedVolumeM3": 0.6266249999998075,
    "semantic": "structure"
   },
   {
@@ -879,7 +879,7 @@
    "openEdges": 0,
    "nonmanifoldEdges": 0,
    "degenerateTriangles": 0,
-   "signedVolumeM3": 0.029240999999876376,
+   "signedVolumeM3": 0.02924099999987993,
    "semantic": "structure"
   },
   {
@@ -888,7 +888,7 @@
    "openEdges": 0,
    "nonmanifoldEdges": 0,
    "degenerateTriangles": 0,
-   "signedVolumeM3": 0.0028103474310788253,
+   "signedVolumeM3": 0.0028103474310807682,
    "semantic": "closed-detail"
   },
   {
@@ -906,7 +906,7 @@
    "openEdges": 0,
    "nonmanifoldEdges": 0,
    "degenerateTriangles": 0,
-   "signedVolumeM3": 0.12902399999960634,
+   "signedVolumeM3": 0.12902399999960168,
    "semantic": "structure"
   },
   {
@@ -915,7 +915,7 @@
    "openEdges": 0,
    "nonmanifoldEdges": 0,
    "degenerateTriangles": 0,
-   "signedVolumeM3": 0.009247680001750861,
+   "signedVolumeM3": 0.009247680001760076,
    "semantic": "structure"
   },
   {
@@ -993,8 +993,8 @@
   }
  ],
  "collisionTriangles": {
-  "surface": 5146,
-  "solid": 17392
+  "surface": 5175,
+  "solid": 17424
  },
  "limits": "serialized top-support sampling at 0.25m and ramp lane edges; not a Rapier capsule, animation or full swept-clearance test"
 }

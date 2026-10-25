@@ -1,0 +1,45 @@
+{
+  "codeCommit": "29f2d91",
+  "url": "http://127.0.0.1:4341/world/?start=brain",
+  "htmlStatus": 200,
+  "entryModule": "/_astro/WorldApp.CFWwVCir.js",
+  "checks": [
+    {
+      "path": "_astro/WorldApp.CFWwVCir.js",
+      "status": 200,
+      "sha256": "ca545209e4bd907ad7a9a48af41bde548a45bbb978c15e66203bec308d301bc6",
+      "bytes": 128
+    },
+    {
+      "path": "_astro/WorldApp.Cpyu3cuT.js",
+      "status": 200,
+      "sha256": "994cb67142101714f72457ae70ee49ef51598ff6e792f1fa5726cd6ad2c15613",
+      "bytes": 107799
+    },
+    {
+      "path": "world/alpha-mine/colliders.json",
+      "status": 200,
+      "sha256": "ec21999a87f800e79bfb6763e0508509e4cb2907342a75829abb176b4f24059a",
+      "bytes": 2168523
+    },
+    {
+      "path": "world/alpha-mine/layout.json",
+      "status": 200,
+      "sha256": "59a6ab88059cc70c1bdd04485512cdffaab0629e4ce18dfe47753ce590697ffb",
+      "bytes": 38254
+    },
+    {
+      "path": "world/alpha-mine/quarry-static.glb",
+      "status": 200,
+      "sha256": "51f5cea6b3318b610a8fef5fe6484fef8d0f6e50f3744f8403fd2f918beb56ca",
+      "bytes": 2186512
+    },
+    {
+      "path": "world/alpha-mine/veins.glb",
+      "status": 200,
+      "sha256": "7ff42255aae79cc25752e55f46ec35fbd5850db3e5c45d311c8b05809061adb7",
+      "bytes": 1072016
+    }
+  ],
+  "scope": "HTTP/source byte parity only; browser interaction pending while Mac locked"
+}
