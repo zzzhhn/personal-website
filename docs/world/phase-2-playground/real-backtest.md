@@ -2,11 +2,19 @@
 
 ## 2026-10-25：沿用现有 Alpha Agent 服务
 
+### Pro 恢复后的实际复查
+
+Bobby 恢复 Pro 后，主线重新验证：前端 `/data`、前端转发 `/api/_health`、后端 `/api/_health` 及 `/api/v1/data/universe` 均返回 200；浏览器数据页显示 READY 和 555 个标的。前后端生产部署均为 READY，25 个路由全部加载。
+
+随后使用矿区已登记的公开 `REVERSAL_5` 公式，向现有 `POST /api/v1/factor/backtest` 发起一次受限的 `mode=static` 回测。约 2.3 秒返回 200，包含 752 个策略净值点、752 个基准点及测试段指标。没有触发 LLM、行情刷新、交易或定时任务恢复。此前一次探测使用了不受支持的 `mode=single`，被接口以 422 正确拒绝，修正为其声明的 `static` 后成功。
+
+这证明现有线上计算服务恢复，不代表矿区前端已经切到该接口。当前 4341 继续读取原历史回放包。正式适配还需统一输出格式、来源证据和计算参数：线上响应为 `survivorship_corrected=true`，即使本次请求传入 `apply_survivorship_mask=false`；本地首版结果是未启用该修正的口径。不得将两者标成相同结果或覆盖原结果的哈希。线上 `/api/v1/factors` 返回 404，生产 OpenAPI 中对应可用入口是 `/api/v1/factors/library` 和 `/api/v1/alpha/factors`，后续以实际生产契约为准。
+
 Bobby 已明确，数据与结果来源就是 `https://alpha.bobbyzhong.com` 及它关联的既有数据源。后续接入沿用这套项目、后端与数据链路，不再让用户重新寻找或选择行情源。
 
 主线已核对当前实现：矿区的三种历史回放使用同一 Alpha Agent 仓库的 `alpha_agent/data/factor_universe_sp500_v3.parquet`，只读取 `date`、`ticker`、`close`，并调用原有 `factor_engine/kernel.py`。仓库的 `scripts/fetch_sp500_alpaca.py` 将 Alpaca 历史行情写入这个面板；面板里的其他元数据没有进入矿区回放。因此已有数据源并未缺失，当前离线重放也不是另建的一套行情系统。
 
-当日主线对前端主页、前端 `/api/_health` 和 `https://alpha-api.bobbyzhong.com/api/_health` 的只读请求均返回 HTTP 402、`DEPLOYMENT_DISABLED`。这是本次实测的线上服务状态，不推断具体账单原因。4341 的本地历史回放保持可用；线上恢复后优先复用现有后端的受限结果接口。当前尚未声称已接通线上 API，也不因确认服务地址而把原始面板或凭据打包到前端。
+Pro 恢复前，当日主线对前端主页、前端 `/api/_health` 和 `https://alpha-api.bobbyzhong.com/api/_health` 的只读请求均返回 HTTP 402、`DEPLOYMENT_DISABLED`。这条故障记录现已被上面的恢复验证更新。4341 的本地历史回放保持可用；后续优先复用现有后端的受限结果接口，不因确认服务地址而把原始面板或凭据打包到前端。
 
 以下内容保留设计阶段的计算口径和接口边界；其中“需要准备数据源”的表述不能覆盖上面的已确认来源。
 
