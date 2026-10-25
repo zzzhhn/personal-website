@@ -275,7 +275,8 @@ function createLayout() {
     }
   }));
   // Every hut gets a continuous landing spur from the nearest boardwalk segment.
-  mark('booth', () => BOOTHS.forEach(({ position: p }, i) => {
+  mark('booth', () => BOOTHS.forEach(({ id, position: p }, i) => {
+    if (id === 'alpha-agent') return;
     let best = Infinity, nearest: Vec3 = [49, 1.14, -46];
     BOARDWALK_POINTS.slice(1).forEach((b, n) => {
       const a = BOARDWALK_POINTS[n], dx = b[0] - a[0], dz = b[2] - a[2];

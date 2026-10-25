@@ -2,6 +2,7 @@ import { useEffect, useId, useRef, useState, type MouseEvent } from 'react';
 import { useWorldStore } from './store';
 import { worldText } from './world-i18n';
 import { ISLAND_OUTLINE, LAYOUT_V4, ROAD_POINTS, BOARDWALK_POINTS, BUILDINGS, BOOTHS, FOUNDATIONS, CAMP_CENTER } from './layout';
+import { ALPHA_MINE_CONNECTOR, ALPHA_MINE_CONNECTOR_WIDTH, ALPHA_MINE_FOOTPRINT_POINTS, ALPHA_MINE_ORIGIN, isOnAlphaMineBase } from './alpha-mine-layout';
 
 type MapRoad = { pts: number[][]; width: number; color: string; dash?: string };
 type Landmark = { id: string; p: [number, number]; label: string };
@@ -19,7 +20,8 @@ export function loadMapGeometry() {
   return mapGeometryPromise ??= Promise.all([import('./WorldLandform'), v4]).then(([{ islandShoreline, campRadius }, { roads, landmarks }]) => {
     const shore = islandShoreline().filter((_, i) => i % 2 === 0);
     const camp = Array.from({ length: 72 }, (_, i) => { const a = i / 72 * Math.PI * 2, r = campRadius(a) * .7; return [-42 + Math.cos(a) * r, 30 + Math.sin(a) * r]; });
-    const xs = [-77, 85, ...shore.map(p => p[0])], zs = [-62, 62, ...shore.map(p => p[1])];
+    const xs = [-77, 85, ...shore.map(p => p[0]), ...ALPHA_MINE_FOOTPRINT_POINTS.map(p => p[0]), ...ALPHA_MINE_CONNECTOR.map(p => p[0])];
+    const zs = [-62, 62, ...shore.map(p => p[1]), ...ALPHA_MINE_FOOTPRINT_POINTS.map(p => p[1]), ...ALPHA_MINE_CONNECTOR.map(p => p[2])];
     const x = Math.min(...xs) - 7, z = Math.min(...zs) - 7;
     return { shore, camp, roads, landmarks, viewBox: [x, z, Math.max(...xs) - x + 7, Math.max(...zs) - z + 7] as [number, number, number, number] };
   });
@@ -53,14 +55,15 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
   const svg = useRef<SVGSVGElement>(null);
   const full = mode === 'full';
   const R = 46; // minimap half-window in metres
-  const vb = full ? (geometry?.viewBox ?? [-85, -70, 180, 145]) : [px - R, pz - R, R * 2, R * 2];
+  const vb = full ? (geometry?.viewBox ?? [-85, -100, 180, 175]) : [px - R, pz - R, R * 2, R * 2];
   const s = full ? 1 : .8; // marker scale
   const click = (e: MouseEvent<SVGSVGElement>) => {
     if (!interactive || !svg.current) return;
     const m = svg.current.getScreenCTM(); if (!m) return;
     const p = new DOMPoint(e.clientX, e.clientY).matrixTransform(m.inverse());
-    if (waypoint && Math.hypot(p.x - waypoint[0], p.y - waypoint[1]) < 7) useWorldStore.setState({ waypoint: null });
-    else useWorldStore.setState({ waypoint: [Math.round(p.x * 10) / 10, Math.round(p.y * 10) / 10] });
+    const target: [number, number] = isOnAlphaMineBase(p.x, p.y) ? [ALPHA_MINE_ORIGIN[0], ALPHA_MINE_ORIGIN[2]] : [Math.round(p.x * 10) / 10, Math.round(p.y * 10) / 10];
+    if (waypoint && Math.hypot(target[0] - waypoint[0], target[1] - waypoint[1]) < 7) useWorldStore.setState({ waypoint: null });
+    else useWorldStore.setState({ waypoint: target });
   };
   // The minimap waypoint clamps to the radar rim when it lies outside the window.
   let wp: [number, number] | null = waypoint, wpEdge = false;
@@ -79,9 +82,11 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
     <rect x={vb[0] - 300} y={vb[1] - 300} width={vb[2] + 600} height={vb[3] + 600} fill={`url(#${seaId})`} />
     <polygon points={path(geometry?.shore ?? ISLAND_OUTLINE)} fill='#E3D3B4' stroke='#F4ECDB' strokeWidth={full ? 1.4 : 1.1} strokeOpacity='.7' />
     <polygon points={path(geometry?.shore ?? ISLAND_OUTLINE)} fill='#7E8C3E' className='world-map-grass' />
+    <polygon points={path(ALPHA_MINE_FOOTPRINT_POINTS)} fill='#8C8276' stroke='#D2B98A' strokeWidth={full ? 1.2 : 1} />
     {geometry?.roads ? geometry.roads.map((r, i) => <polyline key={i} points={path(r.pts)} fill='none' stroke={r.color} strokeWidth={r.width} strokeDasharray={r.dash} strokeLinejoin='round' strokeLinecap='round' />)
       : !LAYOUT_V4 && <polyline points={path(ROAD_POINTS)} fill='none' stroke='#D9D2C2' strokeWidth='4' strokeLinejoin='round' />}
     <polyline points={path(BOARDWALK_POINTS)} fill='none' stroke='#B99469' strokeWidth='3' strokeLinecap='round' />
+    <polyline points={path(ALPHA_MINE_CONNECTOR)} fill='none' stroke='#B99469' strokeWidth={ALPHA_MINE_CONNECTOR_WIDTH} strokeLinejoin='round' strokeLinecap='round' />
     {geometry ? <polygon points={path(geometry.camp)} fill='#D2B98A' stroke='#E8803A' strokeWidth={full ? 1.2 : 1} /> : <circle cx={CAMP_CENTER[0]} cy={CAMP_CENTER[2]} r='15' fill='#D2B98A' stroke='#E8803A' strokeWidth='1.2' />}
     {FOUNDATIONS.map(f => <rect key={f.id} x={f.position[0] - f.size[0] / 2} y={f.position[2] - f.size[2] / 2} width={f.size[0]} height={f.size[2]} fill='none' stroke='#F4ECDB' strokeWidth='.8' strokeDasharray='2 1.6' opacity='.8' />)}
     {/* Six internship buildings, numbered in startDate order (oldest -> newest). */}
@@ -89,7 +94,12 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
       <rect x={-b.size[0] / 2} y={-b.size[2] / 2} width={b.size[0]} height={b.size[2]} fill={b.color} stroke='#23343D' strokeWidth='.6' rx='.6' />
       <text className='world-map-num' y={1.9} fontSize={5.4} textAnchor='middle' fill={b.color === '#E6DCCB' ? '#23343D' : '#F4ECDB'}>{i + 1}</text>
     </g>)}
-    {BOOTHS.map(b => <rect key={b.id} x={b.position[0] - 2.4 * s} y={b.position[2] - 2.4 * s} width={4.8 * s} height={4.8 * s} transform={`rotate(45 ${b.position[0]} ${b.position[2]})`} fill='#23343D' stroke='#4FD1C5' strokeWidth='.9' />)}
+    {BOOTHS.filter(b => b.id !== 'alpha-agent').map(b => <rect key={b.id} x={b.position[0] - 2.4 * s} y={b.position[2] - 2.4 * s} width={4.8 * s} height={4.8 * s} transform={`rotate(45 ${b.position[0]} ${b.position[2]})`} fill='#23343D' stroke='#4FD1C5' strokeWidth='.9' />)}
+    <g data-project-id='alpha-agent' transform={`translate(${ALPHA_MINE_ORIGIN[0]} ${ALPHA_MINE_ORIGIN[2]})`}>
+      <title>{lang === 'zh' ? 'Alpha 因子矿场入口' : 'Alpha factor mine entrance'}</title>
+      <circle r={3 * s} fill='#23343D' stroke='#4FD1C5' strokeWidth='.9' />
+      <path d={`M${-1.5 * s} ${1.8 * s}V${-1.6 * s}H${1.5 * s}V${1.8 * s}`} fill='none' stroke='#F4ECDB' strokeWidth='.7' />
+    </g>
     <circle cx={CAMP_CENTER[0]} cy={CAMP_CENTER[2]} r={2.3 * s} fill='#E8803A' /><circle cx={CAMP_CENTER[0]} cy={CAMP_CENTER[2]} r={4.4 * s} fill='none' stroke='#E8803A' strokeWidth='.7' />
     {geometry?.landmarks.filter(l => landmarkName[l.label]).map(l => <g key={l.id} transform={`translate(${l.p[0]} ${l.p[1]})`}>
       {l.label === 'windmill' ? <path d={`M0 ${-4.4 * s}L${1.3 * s} 0L0 ${4.4 * s}L${-1.3 * s} 0Z M${-4.4 * s} 0L0 ${1.3 * s}L${4.4 * s} 0L0 ${-1.3 * s}Z`} fill='#F4ECDB' stroke='#23343D' strokeWidth='.5' />
@@ -101,6 +111,7 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
       <circle cy={-7.6 * s} r={1.25 * s} fill='#23343D' />
     </g>}
     {full && <g className='world-map-labels'>
+      <text x={ALPHA_MINE_ORIGIN[0]} y={-85} textAnchor='middle' fontSize='4.6'>{lang === 'zh' ? 'Alpha 因子矿场' : 'Alpha factor mine'}</text>
       {(['camp', 'town', 'park'] as const).map(z => { const at = z === 'camp' ? [CAMP_CENTER[0], CAMP_CENTER[2] + 24] : z === 'town' ? [-15, -4] : [64, -62]; return <text key={z} x={at[0]} y={at[1]} textAnchor='middle' fontSize='6'>{t[z]}</text>; })}
       {geometry?.landmarks.filter(l => landmarkName[l.label]).map(l => <text key={l.id} x={l.p[0]} y={l.p[1] + 10} textAnchor='middle' fontSize='4.6'>{landmarkName[l.label]}</text>)}
     </g>}

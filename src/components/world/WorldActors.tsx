@@ -4,6 +4,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { CapsuleCollider, ConvexHullCollider, CuboidCollider, CylinderCollider, RigidBody, useBeforePhysicsStep, useFilterContactPair, useRapier, type RapierCollider, type RapierRigidBody } from '@react-three/rapier';
 import { BoxGeometry, Euler, Group, Mesh, MeshStandardMaterial, PerspectiveCamera, Quaternion, Vector3 } from 'three';
 import { CAMP_SPAWN, VEHICLES, WATER_Y, nearestRoadPoint } from './layout';
+import { advanceMineAction, cancelMineAction, mineActor, mineBusy, mineNotice, putDownMineOre, useAlphaMineStore } from './alpha-mine-state';
 import { nearestDryPoint } from './WorldLandform';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag.ts';
 import { useWorldStore, type NearbyInteract } from './store';
@@ -287,7 +288,8 @@ export default function WorldActors() {
   const firstPerson = useWorldStore(s=>s.zoom===3);
   const { world, rapier, colliderStates } = useRapier();
   const { camera, scene, gl } = useThree();
-  const target = useRef(new Vector3(...CAMP_SPAWN));
+  const arrival = useMemo<Vec3>(()=>new URLSearchParams(window.location.search).get('start')==='alpha'?[60,1.14+PLAYER_CENTER_HEIGHT,-54.5]:CAMP_SPAWN,[]);
+  const target = useRef(new Vector3(...arrival));
   const cameraReady = useRef(false);
   const impact = useRef(0);
   const cam = useRef<CameraRig>({ yaw: CAMERA_DEFAULT_YAW, pitch: CAMERA_DEFAULT_PITCH, distance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)],
@@ -328,6 +330,10 @@ export default function WorldActors() {
     body.resetForces(true); body.resetTorques(true);
   }
   function enter(id: VehicleId) {
+    if (useAlphaMineStore.getState().carried || mineBusy()) {
+      mineNotice('先按 F 放下矿石，再上车。', 'Press F to put the ore down before entering.');
+      return false;
+    }
     const car = cars.current.get(id);
     if (!car || !player.current || useWorldStore.getState().activeVehicle || useWorldStore.getState().seat || guideTransition.current) return false;
     clearPlayerMotion();pendingVehicleExit.current=false;
@@ -405,6 +411,9 @@ export default function WorldActors() {
       if (['KeyW','KeyA','KeyS','KeyD','ShiftLeft','ShiftRight','Space','KeyE','KeyR','KeyV'].includes(event.code)||(state.activeVehicle&&event.code==='KeyX')) event.preventDefault();
       keys.current.add(event.code);
       if (!event.repeat) {
+        if (event.code === 'KeyF' && !state.card && !state.activeVehicle && player.current) {
+          if (putDownMineOre()) event.preventDefault();
+        }
         if (event.code==='KeyE') actions.current.interact=true;
         if (event.code==='Space') actions.current.jump=true;
         if (event.code==='KeyR') actions.current.recover=true;
@@ -625,6 +634,10 @@ export default function WorldActors() {
     // Evaluate proximity at physics frequency; UI publication is throttled separately.
     let nearby:VehicleId|null=null,nearest=3.8;
     const playerPosition=player.current.translation();
+    mineActor.position = [playerPosition.x, playerPosition.y, playerPosition.z];
+    mineActor.yaw = guideYaw.current;
+    mineActor.grounded = grounded.current;
+    mineActor.available = !active && !state.seat && !state.card;
     if(!active)cars.current.forEach(car=>{const p=car.body.translation();const d=Math.hypot(p.x-playerPosition.x,p.y-playerPosition.y,p.z-playerPosition.z);if(d<nearest){nearest=d;nearby=car.spec.id;}});
     // World interactables (spec §15.3). Only reachable anchors count: within reach and with a clear line
     // of sight from the chest (no wall / floor between), so nothing triggers through a wall or a storey.
@@ -647,6 +660,11 @@ export default function WorldActors() {
       const now=useWorldStore.getState();
       if(now.seat){useWorldStore.setState({seat:null});return;}
       if(now.card){useWorldStore.setState({card:null});return;}
+      if (mineBusy()) return;
+      if (useAlphaMineStore.getState().carried && item && !item.id.startsWith('alpha-mine-')) {
+        mineNotice('先在矿场暂存台按 F 放下矿石，再使用其他设施。', 'Set the ore on a mine shelf with F before using another attraction.');
+        return;
+      }
       if(active)exit();else if(item){item.onInteract();}else if(nearby)enter(nearby);
       active=useWorldStore.getState().activeVehicle?cars.current.get(useWorldStore.getState().activeVehicle!):undefined;
     };
@@ -746,6 +764,7 @@ export default function WorldActors() {
       const p=player.current.translation(),velocity=player.current.linvel();
       const ground=playerSupport(world,rapier,player.current);
       grounded.current=ground?.grounded??false;
+      mineActor.grounded = grounded.current;
       if (new URLSearchParams(window.location.search).get('qaPhysicsSupport') === '1') supportDecision.current={
         step:physicsSteps.current,body:asTuple(p),velocity:asTuple(velocity),grounded:grounded.current,jumpRequested:actions.current.jump,
         capsuleSupport:ground?{gap:ground.gap,normal:asTuple(ground.normal),centerY:ground.centerY}:null};
@@ -813,7 +832,14 @@ export default function WorldActors() {
       moveIntent.current=magnitude>.05?(running?'run':'walk'):'idle';
       // Movement is relative to the camera's current ground heading (GTA style), any angle.
       const [wx,wz]=magnitude>.05?cameraRelative(mv[0]/magnitude,mv[1]/magnitude,cam.current.yaw):[0,0];
-      const locked=guideMovementLock.current || !!guideTransition.current;
+      mineActor.moving = magnitude > .05;
+      const mining = useAlphaMineStore.getState().action;
+      if (mining && !mining.contact && magnitude > .05) cancelMineAction();
+      const locked=guideMovementLock.current || !!guideTransition.current || mineBusy();
+      if (mining && mineBusy()) {
+        const desired = Math.atan2(-(mining.target[2] - p.z), mining.target[0] - p.x);
+        guideYaw.current += clamp(Math.atan2(Math.sin(desired - guideYaw.current), Math.cos(desired - guideYaw.current)), -dt * 10, dt * 10);
+      }
       let vx=locked?0:wx*speed,vz=locked?0:wz*speed;
       if (magnitude>.05 && !locked) {
         const desiredYaw=Math.atan2(-vz,vx);
@@ -829,6 +855,8 @@ export default function WorldActors() {
         if (turnBeforeMove.current) { vx=0; vz=0; }
       } else turnBeforeMove.current=false;
       guideTargetSpeed.current=Math.hypot(vx,vz);
+      mineActor.yaw = guideYaw.current;
+      advanceMineAction(dt);
       if(vault.current){
         vault.current.remaining-=dt;
         if(vault.current.remaining<=0 || (grounded.current&&vault.current.remaining<vault.current.duration-.15))vault.current=null;
@@ -987,7 +1015,7 @@ export default function WorldActors() {
       </RigidBody>}
     </>}
     {VEHICLES.map(spec=><Vehicle key={spec.id} spec={spec} cars={cars} impact={impact}/>)}
-    <RigidBody ref={player} colliders={false} position={CAMP_SPAWN} enabledRotations={[false,false,false]} gravityScale={12.5/9.81} linearDamping={.2} ccd softCcdPrediction={.1} canSleep={false}>
+    <RigidBody ref={player} colliders={false} position={arrival} enabledRotations={[false,false,false]} gravityScale={12.5/9.81} linearDamping={.2} ccd softCcdPrediction={.1} canSleep={false}>
       {/* Zero/min friction prevents low curbs and walls from pinning the round foot.
           Horizontal impulse control handles braking; 10 cm soft CCD predicts landing contact. */}
       <CapsuleCollider name="player-capsule" args={[PLAYER_HALF_HEIGHT,PLAYER_RADIUS]} mass={72} friction={0} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={0}/>

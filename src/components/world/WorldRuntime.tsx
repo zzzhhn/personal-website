@@ -22,6 +22,7 @@ import WorldPark from './WorldPark';
 import WorldStreet from './WorldStreet';
 import WorldCampContent from './WorldCampContent';
 import WorldEntry from './WorldEntry';
+import WorldAlphaMine from './WorldAlphaMine';
 
 // Layout v4 greybox (?layout=v4) loads as its own chunk; the default entry never fetches it.
 const WorldDistricts = LAYOUT_V4 ? lazy(() => import('./WorldDistricts')) : null;
@@ -168,6 +169,7 @@ export default memo(function WorldRuntime({ content }: { content: WorldContent }
       {/* Each district suspends on its own GLBs without holding back the island or the player. */}
       <Suspense fallback={null}><WorldTown experiences={content.experiences} /></Suspense>
       <Suspense fallback={null}><WorldPark projects={content.projects} /></Suspense>
+      <WorldAlphaMine content={content} />
       <Suspense fallback={null}><WorldStreet experiences={content.experiences} /></Suspense>
       <Suspense fallback={null}><WorldCampContent /></Suspense>
       <Suspense fallback={null}><WorldEntry /></Suspense>

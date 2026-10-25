@@ -15,12 +15,12 @@ import { ParkLOD } from './WorldParkLOD';
 import type { Vec3, WorldProject, Lang } from './types';
 
 /**
- * P12-P18: six playable exhibits (PRD 3.3, spec 15.3). One E press = one action with one visible
+ * P13-P18: five playable exhibits. One E press = one action with one visible
  * result in 3D, <= 10 s, no submenu; E during a running action is ignored. Demo content is generated
  * locally and labelled DEMO / 演示: it never claims to be real service output or real statistics.
  * Static exhibit bodies join the park batch (returned to WorldPark); moving nodes are small meshes.
  */
-const ids = ['P12', 'P13', 'P14', 'P15', 'P16', 'P17', 'P18'];
+const ids = ['P13', 'P14', 'P15', 'P16', 'P17', 'P18'];
 export function useExhibitGltfs() {
   const list = useLoader(GLTFLoader, ids.map(parkUrl), withDraco) as GLTF[];
   return Object.fromEntries(ids.map((id, i) => [id, list[i]])) as Record<string, GLTF>;
@@ -115,74 +115,6 @@ function useExhibitE(p: Placed, kind: 'exhibit' | 'seat', label: { en: string; z
   const a = EXHIBIT_ANCHOR[p.hut.id];
   const position = useMemo(() => p.hut.local(a[0], 0.9, a[1]), [p.hut, a]);
   useInteractable({ id: `park-${p.id}-${p.hut.id}`, position, radius, label, kind, onInteract: () => { if (!new URLSearchParams(location.search).has('qa')) trackPortfolioEvent('world_booth_open', p.hut.slug); onPress(); } });
-}
-
-/* ------------------------------------------------------------------ P12 research desk */
-function ResearchDesk({ p }: { p: Placed }) {
-  const lang = useLang();
-  const disp = useDisplay(p.movers.screen, 0.6, 1.0, 320);
-  const shot = useOneShot(7.5);
-  const levers = useRef([1, 1, 1, 1, 1]);   // detent 0..2 (centre = 1)
-  const anim = useRef({ lever: 0, from: 1, curve: [] as number[], pass: true, seed: 0 });
-  useExhibitProbe(p.id, () => ({ runs: shot.state.current.n, time: shot.state.current.t, levers: levers.current.slice(), curvePoints: anim.current.curve.length, pass: anim.current.pass }));
-  const draw = (t: number) => {
-    const { ctx, canvas, tex } = disp, W = canvas.width, H = canvas.height, a = anim.current;
-    ctx.fillStyle = PAPER; ctx.fillRect(0, 0, W, H);
-    ctx.fillStyle = INK; ctx.font = `600 ${W * 0.075}px Geist, sans-serif`;
-    ctx.fillText(lang === 'zh' ? '假设 → 回测' : 'Hypothesis → backtest', W * 0.07, H * 0.08);
-    demoTag(ctx, lang, W * 0.07, H * 0.12, W * 0.045);
-    // lever state strip
-    levers.current.forEach((l, i) => { ctx.fillStyle = ['#E8803A', '#4E647D', '#8AA24A', '#B8975A', '#E8803A'][i]; ctx.fillRect(W * (0.08 + i * 0.17), H * 0.16 + (2 - l) * H * 0.012, W * 0.13, H * 0.012); });
-    // axes
-    const x0 = W * 0.1, x1 = W * 0.92, y0 = H * 0.78, y1 = H * 0.24;
-    ctx.strokeStyle = '#4A5C6A'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(x0, y1); ctx.lineTo(x0, y0); ctx.lineTo(x1, y0); ctx.stroke();
-    ctx.setLineDash([6, 6]); ctx.beginPath(); ctx.moveTo(x0, (y0 + y1) / 2); ctx.lineTo(x1, (y0 + y1) / 2); ctx.stroke(); ctx.setLineDash([]);
-    if (t >= 0 && a.curve.length) {
-      const k = Math.min(1, Math.max(0, (t - 0.6) / 3.2)), n = Math.max(2, Math.floor(a.curve.length * k));
-      ctx.strokeStyle = a.pass ? '#8AA24A' : '#E8803A'; ctx.lineWidth = W * 0.012; ctx.lineJoin = 'round'; ctx.beginPath();
-      for (let i = 0; i < n; i++) { const x = x0 + (x1 - x0) * i / (a.curve.length - 1), y = (y0 + y1) / 2 - a.curve[i] * (y0 - y1) * 0.45; if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y); }
-      ctx.stroke();
-      if (t > 4.0) {
-        const s = Math.min(1, (t - 4.0) / 0.25), sc = 1.6 - 0.6 * s;
-        ctx.save(); ctx.translate(W * 0.5, H * 0.88); ctx.rotate(-0.12); ctx.scale(sc, sc); ctx.globalAlpha = s;
-        ctx.strokeStyle = ctx.fillStyle = a.pass ? '#8AA24A' : '#E8803A'; ctx.lineWidth = W * 0.012;
-        ctx.strokeRect(-W * 0.3, -H * 0.045, W * 0.6, H * 0.09);
-        ctx.font = `700 ${W * 0.085}px Geist, sans-serif`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-        ctx.fillText(a.pass ? (lang === 'zh' ? '通过' : 'PASS') : (lang === 'zh' ? '拒绝' : 'REJECT'), 0, 2);
-        ctx.restore(); ctx.textAlign = 'left'; ctx.textBaseline = 'alphabetic';
-      }
-    } else {
-      ctx.fillStyle = '#8E9BA6'; ctx.font = `${W * 0.055}px Geist, sans-serif`;
-      ctx.fillText(lang === 'zh' ? '按 E 拨一根拨杆' : 'Press E to flip a lever', W * 0.1, H * 0.9);
-    }
-    tex.needsUpdate = true;
-  };
-  useEffect(() => draw(shot.state.current.n ? 7.4 : -1), [lang]); // eslint-disable-line react-hooks/exhaustive-deps
-  useExhibitE(p, 'exhibit', { en: 'Flip a hypothesis lever', zh: '拨一根假设拨杆' }, () => {
-    if (!shot.start()) return;
-    const a = anim.current, i = Math.floor(Math.random() * 5), l = levers.current[i];
-    a.lever = i; a.from = l;
-    levers.current[i] = l === 1 ? (Math.random() < 0.5 ? 0 : 2) : 1;
-    a.seed = levers.current.reduce((s, v, k) => s + v * 3 ** k, 0) + shot.state.current.n * 0.37;
-    // Deterministic toy backtest from the lever combination: drift + noise; pass when final > 0 and drawdown small.
-    const drift = (levers.current[0] - 1) * 0.012 + (levers.current[2] - 1) * 0.008 - (levers.current[4] - 1) * 0.006 + 0.002;
-    let v = 0, peak = 0, dd = 0; a.curve = [];
-    for (let k = 0; k < 60; k++) { v += drift + (hash(a.seed * 31 + k) - 0.5) * 0.09; peak = Math.max(peak, v); dd = Math.max(dd, peak - v); a.curve.push(Math.max(-1, Math.min(1, v))); }
-    a.pass = v > 0.05 && dd < 0.35;
-  });
-  const stamp = p.movers.stamp, base = useMemo(() => stamp?.position.y ?? 0, [stamp]);
-  useFrame((_, dt) => {
-    if (!isWorldRunning()) return;
-    const t = shot.advance(dt), a = anim.current;
-    p.movers[`lever_${a.lever}`] && levers.current.forEach((l, i) => {
-      const node = p.movers[`lever_${i}`]; if (!node) return;
-      const target = (l - 1) * 0.45, cur = node.rotation.x;
-      node.rotation.x = cur + (target - cur) * Math.min(1, dt * 14);
-    });
-    if (stamp) stamp.position.y = base + (t > 4.0 && t < 4.6 ? -Math.sin((t - 4.0) / 0.6 * Math.PI) * 0.035 : 0);
-    if (t >= 0) draw(t); else if (shot.state.current.n && shot.state.current.t === -1 && a.curve.length) { /* keep last frame */ }
-  });
-  return null;
 }
 
 /* ------------------------------------------------------------------ P13 review booth */
@@ -460,7 +392,6 @@ function ExhibitSet({ placed, projects }: { placed: Placed[]; projects: WorldPro
     {placed.map(p => {
       const key = `${p.hut.id}-${p.id}`;
       switch (p.id) {
-        case 'P12': return <ResearchDesk key={key} p={p} />;
         case 'P13': return <ReviewBooth key={key} p={p} />;
         case 'P14': return <DjTable key={key} p={p} />;
         case 'P15': return <RecordWall key={key} p={p} />;

@@ -6,6 +6,7 @@ import type { WorldContent } from './types';
 import WorldExperienceSummary from './WorldExperienceSummary';
 import WorldCards from './WorldCards';
 import WorldMap, { loadMapGeometry } from './WorldMap';
+import WorldAlphaMineHud from './WorldAlphaMineHud';
 import { WorldDrivingHud, WorldFirstHints, WorldWaypointReadout, WorldZoneTitle } from './WorldHud';
 import './world.css';
 
@@ -100,6 +101,7 @@ export default function WorldApp({ content }: { content: WorldContent }) {
     {UiTest && <Suspense fallback={null}><UiTest /></Suspense>}
     <WorldFirstHints />
     <WorldDrivingHud />
+    <WorldAlphaMineHud />
     <div className="world-interaction" aria-live="polite">{s.canRecover ? <button className="world-recover" onClick={() => useWorldStore.setState(v => ({ recoverRequest: v.recoverRequest + 1 }))}><kbd>R</kbd>{t.recover.replace(/^R \u00b7 /, '')}</button> : s.activeVehicle && !s.card ? <span className="world-chip"><kbd>E</kbd>{t.leave.replace(/^E \u00b7 /, '')}</span> : null}</div>
     <dialog className="world-dialog" ref={dialog} aria-label={t.menu} onCancel={e => { e.preventDefault(); useWorldStore.setState({ paused: false }); }}>
       <div className="world-dialog-map">

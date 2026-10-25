@@ -5,7 +5,7 @@ import { BufferAttribute, BufferGeometry, CanvasTexture, Matrix4, MeshStandardMa
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { ParkLOD } from './WorldParkLOD';
-import { HUTS, HUT_FRONT_Z } from './WorldParkLayout';
+import { ALL_HUTS, HUTS, HUT_FRONT_Z } from './WorldParkLayout';
 import { gltfPieces, gltfTrimesh, mergeBatch, parkMaterial, parkUrl, withDraco, yawMatrix, type GLTF } from './WorldParkKit';
 import { useInteractable } from './WorldInteract';
 import { useWorldStore } from './store';
@@ -73,7 +73,11 @@ export default function WorldParkSigns({ projects }: { projects: WorldProject[] 
       if (!s.project) {
         ctx.font = '600 52px Geist, "PingFang SC", sans-serif'; ctx.fillText(lang === 'zh' ? '在这里，把想法做出来' : 'Ideas, made tangible', 52, 123);
         ctx.font = '500 28px Geist, "PingFang SC", sans-serif';
-        HUTS.forEach((h, j) => { const p = projects.find(v => v.slug === h.slug); if (p) ctx.fillText(`${String(j + 1).padStart(2, '0')}  ${lang === 'zh' ? p.titleZh : p.title}`, 52, 190 + j * 46, W - 104); });
+        ALL_HUTS.forEach((h, j) => {
+          const p = projects.find(v => v.slug === h.slug);
+          const title = h.id === 'alpha-agent' ? (lang === 'zh' ? '因子矿场，向北' : 'Factor mine, north') : p && (lang === 'zh' ? p.titleZh : p.title);
+          if (title) ctx.fillText(`${String(j + 1).padStart(2, '0')}  ${title}`, 52, 190 + j * 46, W - 104);
+        });
       } else {
         const p = s.project, title = lang === 'zh' ? p.titleZh : p.title;
         let size = 58; ctx.font = `600 ${size}px Geist, "PingFang SC", sans-serif`;
@@ -91,7 +95,7 @@ export default function WorldParkSigns({ projects }: { projects: WorldProject[] 
   useEffect(() => () => { built.body.dispose(); built.faces?.dispose(); }, [built]);
   useEffect(() => () => { atlas.tex.dispose(); atlas.mat.dispose(); }, [atlas]);
   return <group name="park-signs">
-    <ParkLOD id="signs" center={[64, 1.14, -28]} nearTriangles={7 * 720 + 14} near={<><mesh name="park-sign-frames" geometry={built.body} material={parkMaterial()} castShadow receiveShadow userData={{ solid: true, occluder: true }} />
+    <ParkLOD id="signs" center={[64, 1.14, -28]} nearTriangles={built.signs.length * 722} near={<><mesh name="park-sign-frames" geometry={built.body} material={parkMaterial()} castShadow receiveShadow userData={{ solid: true, occluder: true }} />
     <mesh name="park-sign-text" geometry={built.faces!} material={atlas.mat} receiveShadow />
     </>} />
     {built.colliders.map((c, i) => <RigidBody key={built.signs[i].id} name={built.signs[i].id} type="fixed" colliders={false} userData={{ solid: true, interactable: built.signs[i].id }}>

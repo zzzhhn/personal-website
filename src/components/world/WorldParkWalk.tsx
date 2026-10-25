@@ -8,6 +8,7 @@ import { DECK_Y, HUTS, HUT_FRONT_Z } from './WorldParkLayout';
 import { isWorldRunning } from './WorldWind';
 import { PARK_LAMP } from './WorldParkLamp';
 import type { Vec3 } from './types';
+import { ALPHA_MINE_CONNECTOR, ALPHA_MINE_CONNECTOR_WIDTH } from './alpha-mine-layout';
 
 /**
  * P01 plaza, P02 boardwalk deck + piles, P03 low rails, P04 warm lamp posts: runtime-procedural from
@@ -46,19 +47,22 @@ function segments() {
   return out;
 }
 
-/** Hut spur openings on each boardwalk side (arc-length intervals per segment) so rails leave a gap. */
+/** Spur / mine connector openings, retained independently of the removed Alpha hut. */
 function openings() {
   const list: { seg: number; side: number; s0: number; s1: number }[] = [];
-  for (const h of HUTS) {
-    if (!h.spur) continue;
-    const to: P2 = [h.spur.to[0], h.spur.to[2]];
+  const joins = [
+    ...HUTS.flatMap(h => h.spur ? [{ to: h.spur.to, width: h.spur.width }] : []),
+    { to: ALPHA_MINE_CONNECTOR[0], width: ALPHA_MINE_CONNECTOR_WIDTH },
+  ];
+  for (const join of joins) {
+    const to: P2 = [join.to[0], join.to[2]];
     let best = { seg: 0, s: 0, side: 1, d: Infinity };
     for (let i = 0; i < P.length - 1; i++) {
       const a = P[i], d = unit(sub(P[i + 1], a)), L = Math.hypot(P[i + 1][0] - a[0], P[i + 1][1] - a[1]);
       const s = Math.max(0, Math.min(L, dot(sub(to, a), d))), q = add(a, d, s), dist = Math.hypot(to[0] - q[0], to[1] - q[1]);
       if (dist < best.d) best = { seg: i, s, side: Math.sign(dot(sub(to, a), perp(d))) || 1, d: dist };
     }
-    const half = h.spur.width / 2 + 0.25;
+    const half = join.width / 2 + 0.25;
     list.push({ seg: best.seg, side: best.side, s0: best.s - half, s1: best.s + half });
   }
   return list;
