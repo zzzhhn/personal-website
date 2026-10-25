@@ -86,10 +86,19 @@ kbd { font: 600 11px/1 "Geist", sans-serif; display: inline-flex; align-items: c
 .world-recover { color: var(--ink); background: #e8ad6b; border-color: #f6c894; }
 
 /* ── Speedometer (bottom-right, GTA vehicle-name corner) ── */
-.world-speed { position: absolute; z-index: 3; right: 30px; bottom: 26px; display: flex; align-items: baseline; gap: 12px; pointer-events: none; text-shadow: 0 2px 14px #0d1f27; }
-.world-speed strong { font: 400 64px/1 var(--serif); font-variant-numeric: tabular-nums; min-width: 2ch; text-align: right; }
-.world-speed span { display: flex; flex-direction: column; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
-.world-speed em { font-style: normal; color: var(--sand); }
+.world-speed { position: absolute; z-index: 3; right: 30px; bottom: 26px; display: flex; flex-direction: column; align-items: flex-end; gap: 10px; pointer-events: none; text-shadow: 0 2px 14px #0d1f27; }
+.world-speed-readout { display: flex; align-items: baseline; gap: 12px; }
+.world-speed-readout strong { font: 400 64px/1 var(--serif); font-variant-numeric: tabular-nums; min-width: 2ch; text-align: right; }
+.world-speed-readout span { display: flex; flex-direction: column; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
+.world-speed-readout em { font-style: normal; color: var(--sand); }
+.world-nitro { width: 190px; padding: 8px 10px; border-radius: 6px; background: #142a33e8; color: var(--paper); }
+.world-nitro-label { display: flex; justify-content: space-between; font-variant-numeric: tabular-nums; }
+.world-nitro small { font-size: 11px; }
+.world-nitro-meter { height: 3px; margin: 6px 0; overflow: hidden; background: #f4ecdb38; }
+.world-nitro-meter i { display: block; height: 100%; background: var(--paper-2); transform-origin: left; transition: transform .1s linear; }
+.world-nitro.is-boosting .world-nitro-meter i { background: var(--teal); }
+.world-driving-state { display: block; text-align: right; min-height: 16px; }
+@media (prefers-reduced-motion: reduce) { .world-nitro-meter i { transition: none; } }
 
 /* ── Internship line (driving content, PRD 4.3) ── */
 .world-experience { position: absolute; z-index: 2; bottom: 170px; left: 50%; transform: translateX(-50%); width: min(560px, 62vw); pointer-events: none; text-align: center; }

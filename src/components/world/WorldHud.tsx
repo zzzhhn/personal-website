@@ -2,9 +2,36 @@ import { useEffect, useRef, useState } from 'react';
 import { useWorldStore } from './store';
 import { worldText } from './world-i18n';
 import type { WorldContent } from './types';
+import { readDrivingTelemetry, type DrivingTelemetry } from './vehicle-telemetry';
 
 type Zone = ReturnType<typeof useWorldStore.getState>['zone'];
 const ZONE_HOLD_MS = 3400, ZONE_REPEAT_MS = 20000;
+
+/** Read the physics-owned reservoir at HUD frequency; no second boost timer. */
+export function WorldDrivingHud() {
+  const vehicle = useWorldStore(s => s.activeVehicle), speed = useWorldStore(s => s.speed);
+  const lang = useWorldStore(s => s.lang), paused = useWorldStore(s => s.paused);
+  const [driving, setDriving] = useState<DrivingTelemetry | null>(null);
+  useEffect(() => {
+    if (vehicle !== 'coupe') { setDriving(null); return; }
+    setDriving(readDrivingTelemetry());
+    if (paused) return;
+    const timer = setInterval(() => setDriving(readDrivingTelemetry()), 100);
+    return () => clearInterval(timer);
+  }, [vehicle, paused]);
+  if (!vehicle) return null;
+  const t = worldText[lang], nitro = Math.round((driving?.nitro ?? 0) * 100);
+  return <div className='world-speed'>
+    <div className='world-speed-readout'><strong>{Math.round(speed)}</strong><span><em>km/h</em>{t[vehicle]}</span></div>
+    {vehicle === 'coupe' && driving && <div className={`world-nitro${driving.boosting ? ' is-boosting' : ''}`}>
+      <div className='world-nitro-label'><small>{t.nitro}</small><small>{nitro}%</small></div>
+      <div className='world-nitro-meter' role='meter' aria-label={t.nitro} aria-valuemin={0} aria-valuemax={100} aria-valuenow={nitro}>
+        <i style={{ transform: `scaleX(${nitro / 100})` }} />
+      </div>
+      <small className='world-driving-state'>{driving.boosting ? t.boosting : driving.handbrake ? t.handbrake : t.nitroHint}</small>
+    </div>}
+  </div>;
+}
 
 /** Place name on entering a zone (GTA: area + street, Genshin: top-centre banner). The subtitle is the
  * portfolio section that zone stands for, read from the same UI.sections labels as the homepage. */

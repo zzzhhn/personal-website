@@ -1,5 +1,6 @@
 export const worldText = {
   en: {
+    nitro: 'Nitro', boosting: 'Boosting', handbrake: 'Handbrake', nitroHint: 'Shift · boost   X · handbrake',
     loadingArrival: 'Finding our way to camp…', loadingPlaces: 'Bringing the island into view…', loadingStart: 'A place to begin…',
     title: 'Bobby’s island', stage: 'Experiences · Projects · Explore', loading: 'Preparing the island', loadingHint: 'Terrain, light, then a place to begin.',
     controls: 'WASD move (relative to camera) · Shift sprint · Space jump · E enter a vehicle', driving: 'W/S throttle · A/D steer · Space brake · E leave · Coupe: X handbrake · Shift nitro',
@@ -27,6 +28,7 @@ export const worldText = {
     thanksTitle: 'Also used', groundCredit: 'Ground detail textures: ambientCG (CC0).',
   },
   zh: {
+    nitro: '氮气', boosting: '氮气加速中', handbrake: '手刹', nitroHint: 'Shift 氮气 · X 手刹',
     loadingArrival: '从营地开始……', loadingPlaces: '城岛正慢慢亮起来……', loadingStart: '准备迈出第一步……',
     title: 'Bobby 的城岛', stage: '经历 · 项目 · 漫游', loading: '正在准备城岛', loadingHint: '铺好地面，点亮灯光，准备出发。',
     controls: 'WASD 移动（相对镜头） · Shift 冲刺 · 空格跳 · E 上车', driving: 'W/S 油门 · A/D 转向 · 空格脚刹 · E 下车 · 跑车：X 手刹 · Shift 氮气',
