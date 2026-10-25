@@ -1,5 +1,7 @@
 # 地图玩法方案交接
 
+本文是第一轮方案交接的历史记录。后续已选 Alpha 矿脉 pilot 并授权开发，以 [当前 PRD](PRD-alpha-factor-mine.md) 和 [开发计划](development-plan.md) 为准；本记录的“本轮不启动开发”仅指当时的方案轮次。
+
 2026-10-25 · 分支 `codex/world-phase2-playground` · 基线 `3cb1f25`。
 
 ## 交付
