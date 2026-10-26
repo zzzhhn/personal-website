@@ -113,7 +113,7 @@ def far_wheel(asset,R,width):
     p.add(V.cylinder((0,face-.01,0),(0,face+.02,0),rim_r*.20,8),rim)
     return p
 
-for asset in assets:
+for asset in (assets if __name__ == '__main__' else []):
     source_glb=os.path.join(V.GLB_DIR,asset+'.glb');source_blend=os.path.join(V.BLEND_DIR,asset+'.blend')
     frozen={p:digest(p) for p in [source_glb,source_blend,V.HULL_JSON]}
     with open(os.path.join(V.DOC_DIR,asset+'-report.json')) as f: original=json.load(f)

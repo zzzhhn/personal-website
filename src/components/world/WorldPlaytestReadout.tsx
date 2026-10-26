@@ -8,11 +8,13 @@ import { createPortal } from 'react-dom';
 import { readRenderSnapshot } from './world-render-readout';
 import { setMineNetworkFailureForQA } from './alpha-mine-online';
 import { worldActorDebug } from './WorldActors';
+import { vehicleLodSnapshot } from './WorldVehicleVisual';
 
 function readContactSnapshot() {
   const value=worldActorDebug.actor(),physics=worldActorDebug.snapshot();
   const actor=value&&typeof value==='object'&&!Array.isArray(value)?value:{};
   return {actor:{animation:actor.animation,root:actor.root,seatSupport:actor.seatSupport,vehicleStage:actor.vehicleStage},
+    doors:Object.fromEntries(Object.entries(vehicleLodSnapshot()).map(([id,v])=>[id,{level:v.level,triangles:v.l0Triangles,doors:v.doors}])),
     physics:{player:physics.player,grounded:physics.grounded,vehicles:physics.vehicles.map(v=>({id:v.id,position:v.position,waterSeconds:v.waterSeconds,wheelContacts:v.wheelContacts}))}};
 }
 
@@ -26,6 +28,9 @@ export default function WorldPlaytestReadout() {
       <button onClick={()=>setRenderSnapshot(readRenderSnapshot())}>QA · 读取当前渲染开销</button>
       {import.meta.env.DEV&&<>
         <button onClick={()=>setRenderSnapshot(readContactSnapshot())}>QA · 读取动作与接触</button>
+        <button onClick={()=>{if(world.nearbyVehicle)worldActorDebug.enter(world.nearbyVehicle);worldActorDebug.holdVehicleTransition(.66);}}>QA · 上车并定格门洞</button>
+        <button onClick={()=>worldActorDebug.holdVehicleTransition(.79)}>QA · 定格入座</button>
+        <button onClick={()=>worldActorDebug.holdVehicleTransition(null)}>QA · 继续上下车动作</button>
         <button onClick={()=>worldActorDebug.water()}>QA · 当前角色或车辆落水</button>
       </>}
       <button aria-pressed={networkFailure} onClick={()=>{setMineNetworkFailureForQA(!networkFailure);setNetworkFailure(!networkFailure);}}>{networkFailure?'QA · 恢复真实回测连接':'QA · 模拟回测连接中断'}</button>

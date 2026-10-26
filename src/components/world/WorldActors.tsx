@@ -21,6 +21,8 @@ import { findSafePlayerLanding, findSafeVehicleLanding, updateHeadSubmersion } f
 import { roadLandingCandidates, portalRearmed } from './world-travel';
 import { WORLD_PORTALS, portalCrossing } from './world-portals';
 import { vehicleHulls } from './WorldVehicleAssets';
+import { VEHICLE_DOORS, vehicleDoorStanding, vehicleDoorQuaternion, type DoorSide, type VehicleDoorState } from './WorldVehicleDoors';
+import { guideVehicleProgress, guideVehicleSample } from './WorldGuideVehicle';
 import { WorldOcclusion } from './WorldOcclusion';
 import { cameraCollisionRadius, cameraOverlapsGuide, sweepCamera } from './camera-collision';
 import { returnPlayerToCamp } from './world-recovery';
@@ -36,8 +38,14 @@ type Car = { body: RapierRigidBody; controller: Controller; spec: VehicleSpec; f
   /** L1 hull colliders active: suspension rays only rest on fixed bodies (DESIGN 6). */
   hulls: boolean;
   lights: { brake: boolean; reverse: boolean };
+  doors: VehicleDoorState; driverSide: DoorSide;
   /** Continuous driver inputs after the keyboard ramp (-1..1); QA drive() bypasses the ramp. */
   steerInput: number; throttleInput: number; driving: DrivingState };
+function cabinAnchor(car:Car,side:number):Vec3 {
+  const seat=VEHICLE_DOORS[car.spec.id].seat;
+  const offset=rotateVector([seat[0],seat[1]+(vehicleHulls(car.spec.id)?.bodyY??0),side*seat[2]],car.body.rotation()),p=car.body.translation();
+  return [p.x+offset[0],p.y+offset[1],p.z+offset[2]];
+}
 /** Free orbit / first-person camera state (yaw, pitch in radians; distances in metres). */
 type CameraRig = { yaw: number; pitch: number; distance: number; actual: number; lastManual: number; firstPerson: boolean; collided: boolean; hitDistance: number|null; fov: number; mode: 'walk'|'drive'; recentering: boolean;
   /** Driving: true once the player scrolls in the car; then the 7 m comfort floor no longer applies. */
@@ -79,6 +87,7 @@ export interface WorldActorDebug {
   water(id?: VehicleId): boolean;
   recover(): boolean;
   clearInput(): void;
+  holdVehicleTransition(progress:number|null): boolean;
 }
 let debugTarget: WorldActorDebug | null = null;
 /** Runtime attaches this only behind its explicit debug query parameter. */
@@ -103,6 +112,7 @@ export const worldActorDebug: WorldActorDebug = {
   water: (id) => debugTarget?.water(id) ?? false,
   recover: () => debugTarget?.recover() ?? false,
   clearInput: () => debugTarget?.clearInput(),
+  holdVehicleTransition: progress => debugTarget?.holdVehicleTransition(progress)??false,
 };
 const asTuple = (v: {x:number;y:number;z:number}): Vec3 => [v.x,v.y,v.z];
 const asVector = ([x,y,z]: Vec3) => ({x,y,z});
@@ -136,6 +146,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
   const wheels = useRef<(Group | null)[]>([]);
   /** Brake / reverse state for tail-lamp visuals (WorldVehicleVisual). */
   const lights = useRef({ brake: false, reverse: false });
+  const doors = useRef<VehicleDoorState>({ side: 1, openness: 0 });
   const guards = useRef<(RapierCollider|null)[]>([]);
   const { world,rapier,colliderStates } = useRapier();
   // Isolated architecture candidate until reviewer decision; normal entry stays unchanged.
@@ -170,7 +181,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
     const controller = world.createVehicleController(body.current);
     configureRaycastVehicle(controller,spec.size,spec.mass,spec.grip,spec.suspension / spec.mass);
     if(spec.id==='coupe')configureCoupeSuspension(controller);
-    const car: Car = {body:body.current,controller,spec,flipped:0,wet:0,steering:0,guards:guards.current,lowCom,hulls:!!hullShapes,steerInput:0,throttleInput:0,lights:lights.current,driving:createDrivingState()};
+    const car: Car = {body:body.current,controller,spec,flipped:0,wet:0,steering:0,guards:guards.current,lowCom,hulls:!!hullShapes,steerInput:0,throttleInput:0,lights:lights.current,doors:doors.current,driverSide:1,driving:createDrivingState()};
     cars.current.set(spec.id,car);
     return () => { cars.current.delete(spec.id); world.removeVehicleController(controller); if(spec.id==='coupe')publishDrivingTelemetry(null); };
   },[world,spec,cars,lowCom,hullShapes]);
@@ -208,7 +219,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
       ref={c=>{guards.current[i]=c;if(c)c.setActiveHooks(rapier.ActiveHooks.FILTER_CONTACT_PAIRS);}}
       args={[.15,geometry.radius]} position={[p[0],p[1]-geometry.rest,p[2]]} rotation={[Math.PI/2,0,0]}
       mass={0} friction={0} restitution={0} contactSkin={.015} />)}
-    <WorldVehicleVisual id={spec.id} size={spec.size} color={spec.color} wheelRadius={geometry.radius} wheelPoints={geometry.points} wheelRest={geometry.rest} wheels={wheels} lights={lights} />
+    <WorldVehicleVisual id={spec.id} size={spec.size} color={spec.color} wheelRadius={geometry.radius} wheelPoints={geometry.points} wheelRest={geometry.rest} wheels={wheels} lights={lights} doors={doors} />
   </RigidBody>;
 }
 
@@ -216,8 +227,8 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
  * acceleration, braking, or contact transitions by several rendered frames. */
 /** Guide-only door transfer. Physics advances elapsed, so pause freezes the interaction too.
  * 'door' is the car's door anchor at entry/exit (car body + side offset). */
-type GuideVehicleTransition = { phase: 'enter'|'exit'; elapsed: number; door: Vec3; cabin: Vec3; yaw: number; approach?:Vec3[]; approachSeconds?:number; duration?:number } | null;
-function GuideVisual({ body, grounded, yaw, targetSpeed, intent, jumpSeq, visible, transition, supportDecision, movementLock, vault, railVault, resetId }: { body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; targetSpeed: RefObject<number>; intent: RefObject<'idle'|'walk'|'run'>; jumpSeq: RefObject<number>; visible: boolean; transition: RefObject<GuideVehicleTransition>; supportDecision: RefObject<Record<string, unknown> | null>; movementLock: RefObject<boolean>; vault: RefObject<ReturnType<typeof findLowVault> & { remaining: number } | null>; railVault: RefObject<(RailVault & { elapsed: number }) | null>; resetId: number }) {
+type GuideVehicleTransition = { id: VehicleId; side: DoorSide; phase: 'enter'|'exit'; elapsed: number; door: Vec3; cabin: Vec3; yaw: number; approach?:Vec3[]; approachSeconds?:number; duration?:number } | null;
+function GuideVisual({ cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, visible, transition, supportDecision, movementLock, vault, railVault, resetId }: { cars: RefObject<Map<VehicleId,Car>>; body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; targetSpeed: RefObject<number>; intent: RefObject<'idle'|'walk'|'run'>; jumpSeq: RefObject<number>; visible: boolean; transition: RefObject<GuideVehicleTransition>; supportDecision: RefObject<Record<string, unknown> | null>; movementLock: RefObject<boolean>; vault: RefObject<ReturnType<typeof findLowVault> & { remaining: number } | null>; railVault: RefObject<(RailVault & { elapsed: number }) | null>; resetId: number }) {
   const {world,rapier}=useRapier();
   const supportQA = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && new URLSearchParams(window.location.search).get('qaPhysicsSupport') === '1';
   const probeGround=(x:number,z:number,fromY:number)=>{
@@ -255,13 +266,13 @@ function GuideVisual({ body, grounded, yaw, targetSpeed, intent, jumpSeq, visibl
           staticContactManifolds:contacts };
       } } : {}),...guideStates() };
   };
-  // Seat (store.seat) and vehicle step-in/out timing for the guide's sit / enter / exit clips. Driving hides
-  // the guide only after the enter transition; during exit it fades in from the door.
+  // The guide keeps a live seat contact while driving, including before the exit door opens.
   const guideStates=()=>{
     const st=useWorldStore.getState(),tr=transition.current;
-    let vehicle:null|{phase:'enter'|'exit';t:number;door:Vec3;cabin:Vec3;yaw:number;approach?:Vec3[]}=null;
-    if(tr){const walk=tr.approachSeconds??VEHICLE_TRANSITION_S*.3;const t=tr.phase==='enter'?(tr.elapsed<walk?.3*tr.elapsed/walk:.3+(tr.elapsed-walk)/VEHICLE_TRANSITION_S):tr.elapsed/VEHICLE_TRANSITION_S;if(t<1)vehicle={phase:tr.phase,t:Math.max(0,t),door:tr.door,cabin:tr.cabin,yaw:tr.yaw,approach:tr.approach};}
-    return {seat:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:!!st.activeVehicle&&!vehicle};
+    let vehicle:null|{id:VehicleId;phase:'enter'|'exit';t:number;door:Vec3;cabin:Vec3;yaw:number;approach?:Vec3[]}=null;
+    if(tr)vehicle={id:tr.id,phase:tr.phase,t:guideVehicleProgress(tr.phase,tr.elapsed,tr.approachSeconds),door:tr.door,cabin:tr.cabin,yaw:tr.yaw,approach:tr.approach};
+    else if(st.activeVehicle){const car=cars.current.get(st.activeVehicle);if(car){const cabin=cabinAnchor(car,car.driverSide);vehicle={id:car.spec.id,phase:'enter',t:1,door:cabin,cabin,yaw:heading(car.body.rotation())};}}
+    return {seat:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:false};
   };
   return <WorldGuide key={resetId} speedMps={0} grounded facing={0} visible={visible} readMotion={readMotion} onMovementLock={locked=>{movementLock.current=locked;}} />;
 }
@@ -295,6 +306,7 @@ export default function WorldActors() {
   const railVault=useRef<(RailVault & { elapsed: number }) | null>(null);
   const vaultPreview=useRef<{elapsed:number;plan:RailVault|null;x:number;z:number;yaw:number;colliders:number}>({elapsed:0,plan:null,x:Infinity,z:Infinity,yaw:Infinity,colliders:0});
   const guideTransition=useRef<GuideVehicleTransition>(null);
+  const holdDoorForQA=useRef(false);
   const pendingVehicleExit=useRef(false);
   const [guideResetId,setGuideResetId]=useState(0);
   const physicsSteps = useRef(0);
@@ -322,8 +334,8 @@ export default function WorldActors() {
     if(import.meta.env.DEV&&start==='camp-bench'&&new URLSearchParams(window.location.search).get('qa')==='1')return [-37.05,6.5,33.535];
     if(start==='alpha'||start==='brain')return [ALPHA_MINE_ORIGIN[0],ALPHA_MINE_ORIGIN[1]+PLAYER_CENTER_HEIGHT,ALPHA_MINE_ORIGIN[2]+.5];
     if(start==='exchange')return [ALPHA_EXCHANGE_ORIGIN[0],ALPHA_EXCHANGE_ORIGIN[1]+PLAYER_CENTER_HEIGHT,ALPHA_EXCHANGE_ORIGIN[2]+.5];
-    if(import.meta.env.DEV&&start==='coupe'){
-      const coupe=VEHICLES.find(v=>v.id==='coupe')!;
+    if(import.meta.env.DEV&&['coupe','offroad','van'].includes(start??'')){
+      const coupe=VEHICLES.find(v=>v.id===start)!;
       return [coupe.position[0],coupe.position[1]+PLAYER_CENTER_HEIGHT,coupe.position[2]+2];
     }
     return CAMP_SPAWN;
@@ -357,7 +369,8 @@ export default function WorldActors() {
   function clearPlayerMotion(hardCut=false) {
     vault.current=null;railVault.current=null;vaultPreview.current.plan=null;useWorldStore.setState({canVault:false});guideMovementLock.current=false;turnBeforeMove.current=false;
     if(!hardCut)return;
-    guideTransition.current=null;pendingVehicleExit.current=false;
+    guideTransition.current=null;pendingVehicleExit.current=false;holdDoorForQA.current=false;
+    cars.current.forEach(car=>{car.doors.openness=0;});
     seatHeld.current=null;seatFrom.current=null;seatBody.current=null;
     useWorldStore.setState({seat:null});
     // Recovery is a cut: rebuild only the guide state from the cached GLTF, so old Sit/Air
@@ -374,12 +387,27 @@ export default function WorldActors() {
   function resetBody(body: RapierRigidBody, position: Vec3, yaw=0) {
     resetActorBody(body,position,yaw);
   }
-  function cabinAnchor(car:Car,side:number):Vec3 {
-    // Authored cabin fit targets, not claims of independent seat geometry in the current shells.
-    const local:Vec3=car.spec.id==='coupe'?[-.40,.57,side*.38]:car.spec.id==='van'?[1.18,1.15,side*.45]:[.05,1.02,side*.42];
-    local[1]+=vehicleHulls(car.spec.id)?.bodyY??0;
-    const offset=rotateVector(local,car.body.rotation()),p=car.body.translation();
-    return [p.x+offset[0],p.y+offset[1],p.z+offset[2]];
+  function doorSweepClear(car:Car,side:DoorSide) {
+    const spec=VEHICLE_DOORS[car.spec.id] as typeof VEHICLE_DOORS.coupe & {doorBounds?:{min:number[];max:number[]}};
+    if(!spec.doorBounds)return false;
+    const {min,max}=spec.doorBounds;
+    const half=new Vector3(...max as Vec3).sub(new Vector3(...min as Vec3)).multiplyScalar(.5);
+    const localCentre=new Vector3(...min as Vec3).add(new Vector3(...max as Vec3)).multiplyScalar(.5);
+    localCentre.z*=side;
+    const hinge=new Vector3(spec.hinge[0],spec.hinge[1]+(vehicleHulls(car.spec.id)?.bodyY??0),spec.hinge[2]*side);
+    const bodyQ=new Quaternion().copy(car.body.rotation()),doorQ=new Quaternion(),centre=new Vector3();
+    const position=car.body.translation(),shape=new rapier.Cuboid(half.x+.025,half.y+.025,half.z+.025);
+    // A finite sweep runs only on an E request, never as UI polling or per-frame physics.
+    for(let i=0;i<=12;i++){
+      vehicleDoorQuaternion(car.spec.id,side,i/12,doorQ);
+      centre.copy(localCentre).applyQuaternion(doorQ).add(hinge).applyQuaternion(bodyQ).add(position);
+      doorQ.premultiply(bodyQ);
+      let blocked=false;
+      world.intersectionsWithShape(centre,doorQ,shape,()=>{blocked=true;return false;},undefined,undefined,undefined,player.current??undefined,
+        collider=>!collider.isSensor()&&collider.parent()?.handle!==car.body.handle);
+      if(blocked)return false;
+    }
+    return true;
   }
   function returnToCamp() {
     const vehicle=useWorldStore.getState().activeVehicle;
@@ -409,20 +437,23 @@ export default function WorldActors() {
       const c=car.body.translation(),r=car.body.rotation(),p=player.current.translation();
       const side=rotateVector([0,0,car.spec.size[2]/2+.65],r),toP=[p.x-c.x,p.z-c.z];
       const preferred=side[0]*toP[0]+side[2]*toP[1]>=0?1:-1;
-      for(const sg of [preferred,-preferred]){
-        const door={x:c.x+sg*side[0],y:p.y,z:c.z+sg*side[2]};
+      for(const sg of [preferred,-preferred] as DoorSide[]){
+        if(!doorSweepClear(car,sg))continue;
+        const localDoor=rotateVector(vehicleDoorStanding(id,sg),r);
+        const door={x:c.x+localDoor[0],y:p.y,z:c.z+localDoor[2]};
         let route=[door];
         if(!playerRouteClear(world,rapier,player.current,p,door)){
           const local=rotateVector([p.x-c.x,p.y-c.y,p.z-c.z],{x:-r.x,y:-r.y,z:-r.z,w:r.w});
           const end=(local[0]>=0?1:-1)*(car.spec.size[0]/2+.75);
-          route=[[end,0,local[2]],[end,0,sg*(car.spec.size[2]/2+.65)]].map(q=>{const v=rotateVector(q as Vec3,r);return{x:c.x+v[0],y:p.y,z:c.z+v[2]};});route.push(door);
+          route=[[end,0,local[2]],[end,0,vehicleDoorStanding(id,sg)[2]]].map(q=>{const v=rotateVector(q as Vec3,r);return{x:c.x+v[0],y:p.y,z:c.z+v[2]};});route.push(door);
           let previous=p,clear=true;
           for(const point of route){if(!playerRouteClear(world,rapier,player.current,previous,point)){clear=false;break;}previous=point;}
           if(!clear)continue;
         }
         let distance=0,previous=p;for(const point of route){distance+=Math.hypot(point.x-previous.x,point.z-previous.z);previous=point;}
         const approachSeconds=Math.max(VEHICLE_TRANSITION_S*.3,distance/1.7);
-        guideTransition.current={phase:'enter',elapsed:0,door:[door.x,p.y-PLAYER_CENTER_HEIGHT,door.z],cabin:cabinAnchor(car,sg),yaw:heading(r),approach:route.slice(0,-1).map(v=>[v.x,v.y-PLAYER_CENTER_HEIGHT,v.z]),approachSeconds,duration:approachSeconds+VEHICLE_TRANSITION_S*.7};
+        car.driverSide=sg;car.doors.side=sg;
+        guideTransition.current={id,side:sg,phase:'enter',elapsed:0,door:[door.x,p.y-PLAYER_CENTER_HEIGHT,door.z],cabin:cabinAnchor(car,sg),yaw:heading(r),approach:route.slice(0,-1).map(v=>[v.x,v.y-PLAYER_CENTER_HEIGHT,v.z]),approachSeconds,duration:approachSeconds+VEHICLE_TRANSITION_S*.7};
         break;
       }
       if(!guideTransition.current){actorNotice('车门通道被挡住了，请走近空旷的一侧。','The door path is obstructed. Approach a clear side.');return false;}
@@ -443,8 +474,10 @@ export default function WorldActors() {
     const center=car.body.translation(), rotation=car.body.rotation();
     // Try both doors. A downward ground ray and capsule overlap reject
     // water, walls, parked vehicles and narrow gaps before the player is enabled.
-    const offsets: Vec3[] = [[0,0,car.spec.size[2]/2+.9],[0,0,-car.spec.size[2]/2-.9]];
+    const offsets: Vec3[] = [car.driverSide,-car.driverSide].map(side=>vehicleDoorStanding(car.spec.id,side as DoorSide));
     for (const offset of offsets) {
+      const side:DoorSide=offset[2]<0?-1:1;
+      if(!doorSweepClear(car,side))continue;
       const local=rotateVector(offset,rotation);
       const origin={x:center.x+local[0],y:center.y+3,z:center.z+local[2]};
       const hit=world.castRayAndGetNormal(new rapier.Ray(origin,{x:0,y:-1,z:0}),10,true,undefined,undefined,undefined,player.current,
@@ -459,16 +492,16 @@ export default function WorldActors() {
       if (blocked) continue;
       // Check the door-to-spot corridor as well as its endpoint. The vehicle itself is the transfer
       // frame; every other solid, including a wall between two free endpoints, blocks that route.
-      const distance=Math.hypot(local[0],local[2])||1;
-      const doorDistance=(offset[0] ? car.spec.size[0]/2 : car.spec.size[2]/2)+.65;
-      const door={x:center.x+local[0]*doorDistance/distance,y:candidate.y,z:center.z+local[2]*doorDistance/distance};
+      const door={x:candidate.x,y:candidate.y,z:candidate.z};
       if (!playerRouteClear(world,rapier,player.current,door,candidate,car.body)) continue;
-      guideTransition.current={phase:'exit',elapsed:0,door:[door.x,door.y-PLAYER_CENTER_HEIGHT,door.z],cabin:cabinAnchor(car,offset[2]<0?-1:1),yaw:heading(rotation)};
+      car.doors.side=side;car.driverSide=side;
+      guideTransition.current={id:car.spec.id,side,phase:'exit',elapsed:0,door:[door.x,door.y-PLAYER_CENTER_HEIGHT,door.z],cabin:cabinAnchor(car,side),yaw:heading(rotation)};
       clearPlayerMotion();resetBody(player.current,asTuple(candidate)); player.current.setEnabled(true);
       portalTravel.current.previous=asTuple(candidate);
       clearInput(); wetPlayer.current=0;
       useWorldStore.setState({activeVehicle:null,canRecover:false,speed:0}); return true;
     }
+    actorNotice('车门周围没有安全的下车空间，请换个停车位置。','No clear space to open the door. Move to an open parking spot.');
     return false;
   }
   function recover() {
@@ -692,6 +725,14 @@ export default function WorldActors() {
       teleportPlayer:(p)=>{if(!player.current)return false;if(useWorldStore.getState().activeVehicle)useWorldStore.setState({activeVehicle:null,canRecover:false});relocatePlayer(p);return true;},
       teleportVehicle:(id,p,yaw=0)=>{const car=cars.current.get(id);if(!car)return false;if(useWorldStore.getState().activeVehicle===id)clearPlayerMotion(true);resetBody(car.body,p,yaw);car.wet=0;car.flipped=0;car.driving=createDrivingState();return true;},
       enter,exit,clearInput,recover,
+      holdVehicleTransition:(progress)=>{
+        if(!import.meta.env.DEV)return false;
+        if(progress===null){holdDoorForQA.current=false;return true;}
+        const tr=guideTransition.current;if(!tr)return false;
+        holdDoorForQA.current=true;
+        tr.elapsed=tr.phase==='enter'?(tr.approachSeconds??VEHICLE_TRANSITION_S*.3)+(progress-.3)*VEHICLE_TRANSITION_S:progress*VEHICLE_TRANSITION_S;
+        return true;
+      },
       drive:(input,seconds=1)=>{debugDrive.current={input,remaining:seconds};},
       flip:(id=useWorldStore.getState().activeVehicle ?? 'offroad')=>{const car=cars.current.get(id);if(!car)return false;const q=new Quaternion().setFromEuler(new Euler(Math.PI,heading(car.body.rotation()),0,'YXZ'));car.body.setRotation(q,true);car.body.setTranslation({...car.body.translation(),y:car.body.translation().y+1},true);car.body.setLinvel({x:0,y:0,z:0},true);car.body.setAngvel({x:0,y:0,z:0},true);car.flipped=0;return true;},
       water:(id)=>{if(id || useWorldStore.getState().activeVehicle){const car=cars.current.get(id ?? useWorldStore.getState().activeVehicle!);if(!car)return false;if(useWorldStore.getState().activeVehicle===car.spec.id)clearPlayerMotion(true);resetBody(car.body,[110,WATER_Y-1,85]);car.wet=0;return true;}if(!player.current)return false;relocatePlayer([110,WATER_Y-1,85]);return true;},
@@ -716,8 +757,12 @@ export default function WorldActors() {
     for(const [id,seconds] of rescueRetry.current)rescueRetry.current.set(id,Math.max(0,seconds-dt));
     portalTravel.current.cooldown=Math.max(0,portalTravel.current.cooldown-dt);
     if(guideTransition.current){
-      guideTransition.current.elapsed+=dt;
+      const tr=guideTransition.current;
+      if(!holdDoorForQA.current)tr.elapsed+=dt;
+      const doorCar=cars.current.get(tr.id);
+      if(doorCar)doorCar.doors.openness=guideVehicleSample(tr.phase,guideVehicleProgress(tr.phase,tr.elapsed,tr.approachSeconds)).doorOpen;
       if(guideTransition.current.elapsed>=(guideTransition.current.duration??VEHICLE_TRANSITION_S)){
+        if(doorCar)doorCar.doors.openness=0;
         guideTransition.current=null;
         if(pendingVehicleExit.current){pendingVehicleExit.current=false;exit();}
       }
@@ -1210,7 +1255,7 @@ export default function WorldActors() {
           Horizontal impulse control handles braking; 10 cm soft CCD predicts landing contact. */}
       <CapsuleCollider name="player-capsule" args={[PLAYER_HALF_HEIGHT,PLAYER_RADIUS]} mass={72} friction={0} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={0}/>
       <group ref={guideView} name="world-guide-camera-visibility" position={[0,-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),0]}>
-        <GuideVisual body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} intent={moveIntent} jumpSeq={jumpSeq} visible={!firstPerson} transition={guideTransition} supportDecision={supportDecision} movementLock={guideMovementLock} vault={vault} railVault={railVault} resetId={guideResetId} />
+        <GuideVisual cars={cars} body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} intent={moveIntent} jumpSeq={jumpSeq} visible={!firstPerson} transition={guideTransition} supportDecision={supportDecision} movementLock={guideMovementLock} vault={vault} railVault={railVault} resetId={guideResetId} />
       </group>
     </RigidBody>
   </>;

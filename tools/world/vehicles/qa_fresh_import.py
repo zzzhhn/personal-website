@@ -9,7 +9,8 @@ with open(V.HULL_JSON) as f:
 results = []
 for asset in ('G25', 'G26', 'G27'):
     glb = os.path.join(V.GLB_DIR, asset + '.glb')
-    with open(os.path.join(V.DOC_DIR, asset + '-report.json')) as f:
+    door_report = os.path.join(V.DOC_DIR, 'door-' + asset + '-report.json')
+    with open(door_report if os.path.exists(door_report) else os.path.join(V.DOC_DIR, asset + '-report.json')) as f:
         expected = json.load(f)
     V.reset_scene()
     bpy.ops.import_scene.gltf(filepath=glb)
@@ -21,7 +22,7 @@ for asset in ('G25', 'G26', 'G27'):
     materials = {m.name: m.get('materialRole') for o in meshes for m in o.data.materials if m}
     entry = hulls[asset]
     errors = []
-    if bounds != expected['sourceBounds']: errors.append('bounds differ from source')
+    if bounds != expected.get('sourceBounds', expected.get('bounds')): errors.append('bounds differ from source')
     if sum(tris.values()) != expected['totalTris']: errors.append('triangles differ from source')
     # glTF splits vertices at material and normal seams; raw imported boundary edges are expected.
     # Inspect a welded copy only. Never repair the delivered GLB to make the QA pass.

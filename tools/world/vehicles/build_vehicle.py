@@ -701,4 +701,5 @@ def main():
     print('[vehicle] checks', json.dumps(checks))
     print('[vehicle] reimport', json.dumps({k: back[k] for k in ('tris', 'bounds', 'bytes')}))
 
-main()
+if __name__ == '__main__':
+    main()

@@ -9,6 +9,7 @@ import { night } from './WorldNight';
 import { VEHICLE_ASSETS, bakeNode, headlightTexture, vehicleHulls, vehicleMaterial } from './WorldVehicleAssets';
 import { createVehicleBoostExhaust, refineCoupeWheel, refineVehicleBody, updateVehicleBoostExhaust } from './WorldVehicleDetail';
 import { readDrivingTelemetry } from './vehicle-telemetry';
+import { vehicleDoorQuaternion, type VehicleDoorState, type DoorSide } from './WorldVehicleDoors';
 
 /**
  * Vehicle visuals (owner: vehicles session). Rendered inside the vehicle rigid body, in body space:
@@ -18,7 +19,7 @@ import { readDrivingTelemetry } from './vehicle-telemetry';
  * each group at the suspended wheel centre and steers it about +Y every frame, and rotates the
  * group's first child about local Z for rolling. `lights` exposes brake / reverse state for tail lamps.
  *
- * L1 cars (VEHICLE_ASSETS): the GLB body is baked into one mesh (vertex colour + role attributes, one
+ * L1 cars (VEHICLE_ASSETS): the fixed GLB body and two hinged doors are baked separately (vertex colour + role attributes, one
  * shared shader) placed with its ground-plane origin at the measured rest ground height (bodyY), and
  * the four wheels are one InstancedMesh that copies the wheel groups' transforms each frame.
  * Lamps glow from per-car uniforms; no light sources are added. Loading or a failed load shows the
@@ -33,6 +34,7 @@ export interface VehicleVisualProps {
   wheelRest: number;
   wheels: RefObject<(Group | null)[]>;
   lights: RefObject<{ brake: boolean; reverse: boolean }>;
+  doors: RefObject<VehicleDoorState>;
 }
 
 let draco: DRACOLoader | null = null;
@@ -92,7 +94,12 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
       const holder = new Group(); const clone = wheel.clone(); clone.position.set(0, 0, 0); clone.rotation.set(0, 0, 0); clone.scale.set(1, 1, 1); holder.add(clone);
       const rawWheel = bakeNode(holder), wheelGeometry = level === 0 && id === 'coupe' ? refineCoupeWheel(rawWheel) : rawWheel;
       if (wheelGeometry !== rawWheel) rawWheel.dispose();
-      return { body: bodyGeometry, wheel: wheelGeometry };
+      const doors = (['door-left', 'door-right'] as const).map(name => {
+        const node = gltf.scene.getObjectByName(name);
+        if (!node) throw new Error(`[world-vehicles] ${asset} lacks ${name}`);
+        return { geometry: bakeNode(node), position: node.position.clone(), side: (name === 'door-left' ? -1 : 1) as DoorSide };
+      });
+      return { body: bodyGeometry, wheel: wheelGeometry, doors };
     });
     const material = vehicleMaterial();
     const instanced = new InstancedMesh(geometries[0].wheel, material, 4);
@@ -104,10 +111,20 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
     pool.rotation.x = -Math.PI / 2; pool.visible = false; pool.renderOrder = 2; pool.name = `vehicle-${id}-headlight-pool`;
     pool.userData.noOcclusionFade = true;
     const exhaust = id === 'coupe' ? createVehicleBoostExhaust(hull.bodyY) : null;
-    return { geometries, material, instanced, pool, exhaust, level: 0, distance: 0 };
+    const doors = geometries[0].doors.map((door, i) => {
+      const mesh = new Mesh(door.geometry, material);
+      mesh.position.copy(door.position); mesh.position.y += hull.bodyY;
+      mesh.name = `vehicle-${id}-${door.side < 0 ? 'left' : 'right'}-door`;
+      mesh.castShadow = mesh.receiveShadow = true;
+      mesh.userData.shadowLodGeometry = geometries[1].doors[i].geometry;
+      // A moving part must keep its own transform, including in the shadow budget pass.
+      mesh.userData.vehicle = id;
+      return mesh;
+    });
+    return { geometries, material, instanced, pool, exhaust, doors, level: 0, distance: 0 };
   }, [gltfs, asset, id, wheelPoints, wheelRest, hull.wheelRadius]);
   useEffect(() => {
-    const triangles = (g: { body: Mesh['geometry']; wheel: Mesh['geometry'] }) => g.body.attributes.position.count / 3 + 4 * g.wheel.attributes.position.count / 3;
+    const triangles = (g: typeof built.geometries[number]) => (g.body.attributes.position.count + 4 * g.wheel.attributes.position.count + g.doors.reduce((n,d) => n + d.geometry.attributes.position.count, 0)) / 3;
     const proxies = () => {
       const rows: Record<string, unknown>[] = [];
       let scene: Group | null = visual.current;
@@ -130,12 +147,13 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
       materialUuid: built.material.uuid, roles: built.geometries.map(g => [...new Set(Array.from(g.body.attributes.aRole.array))].sort()),
       detailTriangles: built.geometries[0].body.userData.detailTriangles,
       rotorTriangles: built.geometries[0].wheel.userData.detailTriangles ?? 0, boostExhaustVisible: built.exhaust?.visible ?? false,
+      doors: built.doors.map((d,i) => ({side: built.geometries[0].doors[i].side, quaternion:d.quaternion.toArray(), vertices:d.geometry.attributes.position.count})),
       glow: [...built.material.userData.glow.value] });
     lodReaders.set(id, read);
     return () => { if (lodReaders.get(id) === read) lodReaders.delete(id); };
   }, [id, built]);
   useEffect(() => () => {
-    built.geometries.forEach(g => { g.body.dispose(); g.wheel.dispose(); }); built.material.dispose();
+    built.geometries.forEach(g => { g.body.dispose(); g.wheel.dispose(); g.doors.forEach(d => d.geometry.dispose()); }); built.material.dispose();
     built.pool.geometry.dispose(); (built.pool.material as MeshBasicMaterial).dispose();
     built.exhaust?.geometry.dispose(); (built.exhaust?.material as MeshBasicMaterial | undefined)?.dispose();
   }, [built]);
@@ -148,9 +166,11 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
       if (level !== built.level) {
         bodyMesh.current.geometry = built.geometries[level].body;
         built.instanced.geometry = built.geometries[level].wheel;
+        built.doors.forEach((door,i) => { door.geometry = built.geometries[level].doors[i].geometry; });
         built.level = level;
       }
     }
+    built.doors.forEach((door,i) => { const side = built.geometries[0].doors[i].side; vehicleDoorQuaternion(id, side, props.doors.current.side === side ? props.doors.current.openness : 0, door.quaternion); });
     const groups = wheels.current;
     for (let i = 0; i < 4; i++) {
       const g = groups?.[i], roll = g?.children[0];
@@ -176,6 +196,7 @@ function L1Visual(props: VehicleVisualProps & { asset: string }) {
   return <group ref={visual} name={`vehicle-${id}-visual`} userData={{ vehicle: id, assetId: asset }}>
     <WheelAnchors wheelPoints={wheelPoints} wheelRest={wheelRest} wheels={wheels} />
     <mesh ref={bodyMesh} name={`vehicle-${id}-body`} geometry={built.geometries[0].body} material={built.material} position={[0, hull.bodyY, 0]} userData={{ shadowLodGeometry: built.geometries[1].body }} castShadow receiveShadow />
+    {built.doors.map(door => <primitive key={door.name} object={door} />)}
     <primitive object={built.instanced} />
     {built.exhaust && <primitive object={built.exhaust} />}
     <primitive object={built.pool} position={[length / 2 + 4.2, hull.bodyY + .03, 0]} />

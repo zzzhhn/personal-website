@@ -17,7 +17,7 @@ import { refineGuideBoots } from './WorldGuideShape';
 import { calibrateGuideBootClips } from './WorldGuideBoots';
 import { GuideSeatContact, GuideSeatedIdle, guideSeatRootY, holdGuideSeatIdle } from './WorldGuideSeat';
 import { GuideVaultLayer, type GuideRailVault } from './WorldGuideVault';
-import { GUIDE_VEHICLE_TRANSITION_S, GuideVehicleUpperBody, guideVehicleApproach, guideVehicleRoot, guideVehicleSample } from './WorldGuideVehicle';
+import { GUIDE_VEHICLE_TRANSITION_S, GuideDrivingPose, GuideVehicleUpperBody, guideVehicleApproach, guideVehicleRoot, guideVehicleSample } from './WorldGuideVehicle';
 
 export interface WorldGuideMotion {
   speedMps: number; grounded: boolean; facing: number; targetSpeedMps?: number;
@@ -38,9 +38,9 @@ export interface WorldGuideMotion {
 export interface WorldGuideMotion {
   /** Seat from store.seat; the body (group) is already at seat.position (WorldActors). */
   seat?: { position: [number, number, number]; yaw: number } | null;
-  /** Vehicle transition: 'enter' while stepping in (guide fades out toward `door`), 'exit' while stepping out. */
-  vehicle?: { phase: 'enter' | 'exit'; t: number; door: [number, number, number]; cabin?: [number, number, number]; yaw?: number; approach?: [number, number, number][] } | null;
-  /** Hidden by the caller (driving, after the enter transition). */
+  /** Target-adapted passage through the open door; t=1 retains the seated driver. */
+  vehicle?: { id?: 'offroad'|'coupe'|'van'; phase: 'enter' | 'exit'; t: number; door: [number, number, number]; cabin?: [number, number, number]; yaw?: number; approach?: [number, number, number][] } | null;
+  /** Hidden by the caller when the actor is unavailable. */
   hidden?: boolean;
 }
 export interface WorldGuideProps extends WorldGuideMotion { visible: boolean; readMotion?: () => WorldGuideMotion; onMovementLock?: (locked: boolean) => void; fallback?: ReactNode }
@@ -276,7 +276,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       b.userData.leanAxis = new Vector3(1, 0, 0).applyQuaternion(scene.getWorldQuaternion(new Quaternion())).applyQuaternion(inv).normalize();
       spineBones.push(b);
     } });
-    return { scene, visualGLTF, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4), design, contact, slope:new GuideSlopeFit(scene), spineBones, inert:new GuideInertializer(scene), extras, yawCurve, disposeMerged, disposeBoots, idle: new GuideIdleLayer(scene, actions.IdleLook?.getClip().duration), seatContact: new GuideSeatContact(scene, animations), seatedIdle: new GuideSeatedIdle(scene), vehicleUpper: new GuideVehicleUpperBody(scene), seatPoint: new Vector3(), mine: new GuideMineLayer(scene), vault:new GuideVaultLayer(scene),
+    return { scene, visualGLTF, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4), design, contact, slope:new GuideSlopeFit(scene), spineBones, inert:new GuideInertializer(scene), extras, yawCurve, disposeMerged, disposeBoots, idle: new GuideIdleLayer(scene, actions.IdleLook?.getClip().duration), seatContact: new GuideSeatContact(scene, animations), seatedIdle: new GuideSeatedIdle(scene), vehicleUpper: new GuideVehicleUpperBody(scene), drivingPose:new GuideDrivingPose(scene), seatPoint: new Vector3(), mine: new GuideMineLayer(scene), vault:new GuideVaultLayer(scene),
       materials: (() => { const m: MeshStandardMaterial[] = []; scene.traverse(o => { if (o instanceof Mesh) for (const x of [o.material].flat()) if (!m.includes(x as MeshStandardMaterial)) m.push(x as MeshStandardMaterial); }); return m; })(),
       rootOff: new Vector3(), rootOffVel: new Vector3(), rootOffFrom: new Vector3(), lastWorld: new Vector3(), baseWorld: new Vector3(), vehOff: new Vector3(), vehiclePathPrevious: new Vector3(),
       solePoint:new Vector3(), rootPoint:new Vector3(), recPoint:new Vector3(), inverseRoot:new Matrix4(), motionPoint:new Vector3(), previousMotionPoint:new Vector3(), hasMotionSample:false };
@@ -370,14 +370,15 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     if (group.current) group.current.visible = shown;
     if (!shown && s.visible) { stop.current?.cancel('hidden'); rig.inert.reset(); s.hasLast = false; }
     if (!shown) onMovementLock?.(false);
-    if (!shown) { rig.idle.restore(); rig.idle.reset(); rig.seatedIdle.reset(); rig.vehicleUpper.restore(); rig.mine.hide(); Object.assign(mineVisualSockets, { valid: false, sampledActionKind: null, sampledElapsed: 0 }); }
+    if (!shown) { rig.drivingPose.restore(); rig.vehicleUpper.restore(); rig.seatedIdle.reset(); rig.idle.restore(); rig.idle.reset(); rig.mine.hide(); Object.assign(mineVisualSockets, { valid: false, sampledActionKind: null, sampledElapsed: 0 }); }
     s.visible = shown;
     if (world.paused || world.poolInspect || world.shot || !shown) return;
+    rig.drivingPose.restore();
+    rig.vehicleUpper.restore();
+    rig.seatedIdle.restore();
     rig.vault.restore();
     rig.mine.restore();
     rig.idle.restore();
-    rig.seatedIdle.restore();
-    rig.vehicleUpper.restore();
     const dt = Math.max(1e-6, Math.min(delta, .08));
     const { speedMps, grounded, facing, targetSpeedMps } = motion;
     group.current?.updateWorldMatrix(true, false);
@@ -561,8 +562,8 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       s.sat = false;
       // A door transfer is not an airborne continuation of the preceding jump/vault.
       s.jumpKind = ''; s.airSeconds = 0; s.landing = 0; s.fallSpeed = 0; s.lastLand = '';
-      // Enter and exit use different door frames, separated by a hidden driving state. An outgoing
-      // walk velocity is not a valid extrapolation for the next door's first pose (whose fade starts at 0).
+      // Entry and exit have different world-space roots. Discard the previous frame's
+      // extrapolation when switching, while keeping the actor fully visible.
       if (s.vehPhase !== vt.phase) rig.inert.reset();
       const base = group.current.parent.getWorldPosition(rig.baseWorld);
       const sample = vehicleSample!;
@@ -581,6 +582,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       desired = v > 2.2 ? 'Run' : v > .2 ? 'Walk' : 'Idle';
       if (rig.extras && sample.stage === 'turn' && Math.abs(angle) > .15) desired = (vt.phase === 'enter' ? angle : -angle) > 0 ? 'TurnL' : 'TurnR';
       if (rig.extras && (sample.stage === 'flex' || sample.stage === 'transfer')) desired = vt.phase === 'enter' ? 'SitDown' : 'StandUp';
+      if (sample.stage === 'seated' && rig.extras) desired = vt.phase === 'enter' ? 'SitDown' : 'StandUp';
       s.faded = sample.opacity;
       s.vehPhase = vt.phase; s.turn = null;
     } else { s.faded = 1; s.vehPhase = ''; }
@@ -705,8 +707,8 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     rig.mixer.update(dt); s.time += dt;
     rig.inert.apply(dt);
     rig.idle.apply();
-    rig.seatedIdle.apply(dt, !!seat && s.current === 'SitIdle' && !vt);
-    if (vehicleSample) rig.vehicleUpper.apply(vehicleSample.duck);
+    rig.seatedIdle.apply(dt, (!!seat && s.current === 'SitIdle') || vehicleSample?.stage === 'seated');
+    if (vehicleSample) { rig.vehicleUpper.apply(vehicleSample.duck); rig.drivingPose.apply(vt?.id??'offroad',vehicleSample.transfer); }
     if (group.current) {
       group.current.rotation.y = shownYaw;
       if (vt?.cabin && vehicleSample) {
