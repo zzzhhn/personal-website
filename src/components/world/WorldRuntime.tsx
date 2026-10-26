@@ -137,7 +137,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
           quality: useWorldStore.getState().quality, antialias: ctx.getContextAttributes()?.antialias, msaaSamples: ctx.getParameter(ctx.SAMPLES), toneMapping: gl.toneMapping, outputColorSpace: gl.outputColorSpace,
           shadowMapSize, shadowType: gl.shadowMap.type, postprocessing: [] };
       },
-      stats: () => ({ calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, camera: camera.position.toArray() }),
+      stats: () => ({ calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, programs: gl.info.programs?.length ?? 0, camera: camera.position.toArray() }),
       renderLoop: () => ({ mode: get().frameloop, frame: gl.info.render.frame, delta: frameDelta.current, night: night.value, windTime: windUniforms.uWindTime.value }),
       sceneObjects: () => { const result: string[] = []; scene.traverse(o => { if (o.name) result.push(o.name); }); return result; },
       claimedGreybox: () => claimedKeys(),
