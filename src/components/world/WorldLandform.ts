@@ -5,6 +5,7 @@ import { groundRoadDistance, pavingGround, trailDistance } from './WorldTerrainP
 import { TRAIL_HALF } from './layout-v4';
 import { ALPHA_MINE_BASE_Y, ALPHA_MINE_CONNECTOR, isOnAlphaMineBase, mineEdgeDistance } from './alpha-mine-layout';
 import { ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout';
+import { CLUB_CAPE, clubCapeDistance, meshWaterlineLoops } from './djc-club-layout';
 
 /** quality-v3 landform (spec 2026-10-22 §3, §10.1/10.2). One deterministic height function
  * h(x, z) describes the whole island: flat town top (y=1), irregular sand beaches, the camp
@@ -108,13 +109,17 @@ function seawallHeight(x: number, u: number, z: number) {
   const block = (valueNoise(x / .9, z / .9, 21) - .5) * .22 * Math.sin(Math.PI * u / SEAWALL_RUN);
   return GROUND_Y - (GROUND_Y - SEAWALL_FOOT) * u / SEAWALL_RUN + block;
 }
-function coastHeight(x: number, z: number) {
+/** Surface queries use the same union as the terrain; the old convex control outline stays intact. */
+export function effectiveCoastFrame(x: number, z: number) {
   const { d, s } = coastFrame(x, z), u = d - topPush(s);
-  if (u <= 0) return GROUND_Y;
   const town = townFactor(x, z);
   // Ends of the seawall blend into sand; rock groups mask the joint.
-  return mix(shoreProfile(u, beachWidth(s), shelfLength(s)), seawallHeight(x, u, z), smoothstep(.3, .7, town));
+  const original = u <= 0 ? GROUND_Y : mix(shoreProfile(u, beachWidth(s), shelfLength(s)), seawallHeight(x, u, z), smoothstep(.3, .7, town));
+  const capeDistance = LAYOUT_V4 ? clubCapeDistance(x, z) : Infinity;
+  const cape = capeDistance <= 0 ? GROUND_Y : shoreProfile(capeDistance, CLUB_CAPE.beachWidth, CLUB_CAPE.shelfLength);
+  return { s, topDistance: Math.min(u, capeDistance), town: cape > original + 1e-6 ? 0 : town, height: Math.max(original, cape), originalHeight: original };
 }
+const coastHeight = (x: number, z: number) => effectiveCoastFrame(x, z).height;
 
 /* ------------------------------------------------------------------ camp plateau */
 
@@ -297,7 +302,7 @@ function reliefAmplitude(x: number, z: number, base: number, coast: number, camp
   if (TENTS.some(([x0, z0, x1, z1]) => x > x0 && x < x1 && z > z0 && z < z1)) return 0;
   const r = Math.hypot(x - CAMP_CENTER[0], z - CAMP_CENTER[2]);
   if (camp >= CAMP_TOP && r < 30) return r < 8 ? .02 : r < 17 ? .03 : .05;
-  const { d, s } = coastFrame(x, z), inward = topPush(s) - d;
+  const inward = -effectiveCoastFrame(x, z).topDistance;
   const coastAmp = coast < GROUND_Y ? .03 : .03 * smoothstep(1.5, .5, inward);
   const hillAmp = camp > coast ? .045 * smoothstep(GROUND_Y, GROUND_Y + .5, camp) : 0;
   return base === coast && camp <= GROUND_Y ? coastAmp : Math.max(hillAmp, coast >= camp ? coastAmp : 0);
@@ -578,11 +583,11 @@ export function shoreField() {
   const toLand = distanceTo(land), toWater = distanceTo(water), signed = new Float32Array(W * H);
   const byte = (v: number) => Math.round(clamp(v, 0, 1) * 255);
   for (let j = 0; j < H; j++) for (let i = 0; i < W; i++) {
-    const k = j * W + i, x = nodeX(i), z = nodeZ(j), { d, s } = coastFrame(x, z);
+    const k = j * W + i, x = nodeX(i), z = nodeZ(j), coast = effectiveCoastFrame(x, z);
     signed[k] = land[k] ? -toWater[k] : toLand[k];
     data[k * 4] = byte((signed[k] + SHORE_RANGE) / (2 * SHORE_RANGE));
-    data[k * 4 + 1] = byte((topPush(s) - d) / SHORE_RANGE);
-    data[k * 4 + 2] = byte(townFactor(x, z));
+    data[k * 4 + 1] = byte(-coast.topDistance / SHORE_RANGE);
+    data[k * 4 + 2] = byte(coast.town);
     data[k * 4 + 3] = 255;
   }
   fieldCache = { data, signed, land };
@@ -627,7 +632,8 @@ export function nearestDryPoint(x: number, z: number): [number, number, number] 
     let best: [number, number, number] | null = null, bestScore = Infinity;
     for (let k = 0; k < n; k++) {
       const a = k / n * TAU, px = x + Math.cos(a) * r, pz = z + Math.sin(a) * r, h = terrainHeight(px, pz);
-      if (h < WATER_Y + .6 || townFactor(px, pz) >= .5 && coastFrame(px, pz).d > topPush(coastFrame(px, pz).s) - .5) continue;
+      const coast = effectiveCoastFrame(px, pz);
+      if (h < WATER_Y + .6 || coast.town >= .5 && coast.topDistance > -.5) continue;
       if (slopeDegAt(px, pz) > 20) continue;
       if (r < bestScore) { bestScore = r; best = [px, h, pz]; }
     }
@@ -635,22 +641,18 @@ export function nearestDryPoint(x: number, z: number): [number, number, number] 
   }
   return null;
 }
-/** Waterline polygon (radial march from the island centroid, 0.25 m steps) for maps/QA. */
-export function shorelinePolygon(samples = 360): [number, number][] {
-  const out: [number, number][] = [];
-  for (let k = 0; k < samples; k++) {
-    const a = k / samples * TAU, dx = Math.cos(a), dz = Math.sin(a);
-    let last = 0;
-    for (let r = 0; r < 160; r += .25) if ((meshHeight(CENTROID[0] + dx * r, CENTROID[1] + dz * r) ?? -20) > WATER_Y) last = r;
-    out.push([CENTROID[0] + dx * last, CENTROID[1] + dz * last]);
-  }
-  return out;
-}
+/** Largest connected island boundary at the real rendered/collided waterline.
+ * `samples` remains accepted for old QA callers; no radial resampling may bridge a concave bay. */
+export function shorelinePolygon(_samples = 360): [number, number][] { return islandShorelines()[0] ?? []; }
 export const ISLAND_CENTROID = CENTROID as [number, number];
-let shorelineCache: [number, number][] | null = null;
-/** Waterline polygon of the island (x, z; 360 points, counter-clockwise in x/z), cached.
+let shorelineCache: [number, number][][] | null = null;
+export function islandShorelines() {
+  if (!shorelineCache) { const t = buildTerrain(); shorelineCache = meshWaterlineLoops(t.positions, t.indices, WATER_Y); }
+  return shorelineCache;
+}
+/** Waterline polygon of the main island (x, z), cached, including its DJC cape.
  * Excludes the separate park plaza block (x 36..54, z -54..-36), which the map draws itself. */
-export function islandShoreline() { return shorelineCache ??= shorelinePolygon(360); }
+export function islandShoreline() { return shorelinePolygon(); }
 
 /** Rock groups (G21-G23 scaled) that dress the terraces and the seawall ends. Seated at the
  * lowest terrain point under their footprint so no edge floats. */
@@ -778,7 +780,8 @@ function groundSampleBase(x: number, z: number, h = terrainHeight(x, z), slopeY 
     const top = h > CAMP_TOP - .35 ? C.earth : band;
     return { kind: 'stone', colour: lerp3(top, C.stone, (valueNoise(x / .8, z / .8 + h, 43) - .5) * .5 + .25), grass: 0 };
   }
-  if (townFactor(x, z) > .5 && h < GROUND_Y - .05) return { kind: 'stone', colour: lerp3(C.stone, C.stoneMid, valueNoise(x / .9, z / .9, 21)), grass: 0 };
+  const coast = effectiveCoastFrame(x, z);
+  if (coast.town > .5 && h < GROUND_Y - .05) return { kind: 'stone', colour: lerp3(C.stone, C.stoneMid, valueNoise(x / .9, z / .9, 21)), grass: 0 };
   if (h >= CAMP_TOP - .01 && r <= R + .05) {
     // Camp plateau: pit -> trodden -> plaza -> light band (pads) -> patchy grass -> sandy rim.
     const rw = r + warp(x, z, 2.4);
@@ -799,13 +802,13 @@ function groundSampleBase(x: number, z: number, h = terrainHeight(x, z), slopeY 
     const c = lerp3(lerp3(C.beach, C.sand, .35), grassColour(x, z), g);
     return { kind: g > .5 ? 'grass' : 'sand', colour: c, grass: g };
   }
-  const { d, s } = coastFrame(x, z), inward = topPush(s) - d;
+  const { s } = coast, inward = -coast.topDistance;
   if (h < GROUND_Y - .02 || inward < 0) {
     // Beach between the top edge and the waterline; darker damp band near the water.
     const damp = smoothstep(WATER_Y + .45, WATER_Y - .1, h);
     return { kind: 'sand', colour: lerp3(C.beach, C.sandWet, damp * .6), grass: 0 };
   }
-  if (townFactor(x, z) > .5) {
+  if (coast.town > .5) {
     const cap = 1 - smoothstep(.8, 1.6, inward);
     return { kind: cap > .5 ? 'paved' : 'grass', colour: lerp3(grassColour(x, z), C.stoneLight, cap), grass: 1 - cap };
   }
@@ -900,7 +903,7 @@ export function scatterCandidates(blockers: ScatterBlocker[]) {
   for (let z = GRID.minZ; z < GRID.minZ + GRID.nz * CELL; z += cell) for (let x = GRID.minX; x < GRID.minX + GRID.nx * CELL; x += cell) {
     const ix = Math.round(x / cell), iz = Math.round(z / cell);
     const px = x + (hash2(ix, iz, 51) - .5) * cell * .9, pz = z + (hash2(ix, iz, 52) - .5) * cell * .9;
-    if (coastFrame(px, pz).d > 14) continue;
+    if (effectiveCoastFrame(px, pz).topDistance > 14) continue;
     if (roadDistance(px, pz) < 5.5) continue;
     if (blockers.some(b => px > b.minX && px < b.maxX && pz > b.minZ && pz < b.maxZ)) continue;
     if (PADS.some(([qx, qz]) => Math.hypot(px - qx, pz - qz) < 2.4)) continue;

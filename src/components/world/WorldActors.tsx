@@ -10,6 +10,8 @@ import { ALPHA_EXCHANGE_ORIGIN } from './alpha-exchange-layout';
 import { nearestDryPoint } from './WorldLandform';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag.ts';
 import { useWorldStore, type NearbyInteract } from './store';
+import { CLUB } from './djc-club-layout';
+import { clubAudio } from './WorldClubAudio';
 import { cycleInteractPick, nearestInteractable, type Interactable } from './WorldInteract';
 import type { Vec3, VehicleId } from './types';
 import WorldGuide, { VEHICLE_TRANSITION_S, worldGuideDebug } from './WorldGuide';
@@ -272,7 +274,8 @@ function GuideVisual({ cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, 
     let vehicle:null|{id:VehicleId;phase:'enter'|'exit';t:number;door:Vec3;cabin:Vec3;yaw:number;approach?:Vec3[]}=null;
     if(tr)vehicle={id:tr.id,phase:tr.phase,t:guideVehicleProgress(tr.phase,tr.elapsed,tr.approachSeconds),door:tr.door,cabin:tr.cabin,yaw:tr.yaw,approach:tr.approach};
     else if(st.activeVehicle){const car=cars.current.get(st.activeVehicle);if(car){const cabin=cabinAnchor(car,car.driverSide);vehicle={id:car.spec.id,phase:'enter',t:1,door:cabin,cabin,yaw:heading(car.body.rotation())};}}
-    return {seat:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:false};
+    return {seat:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:false,
+      dance:st.clubMode==='dance'&&clubAudio.energy()>0?st.danceStep:null,danceBeat:clubAudio.beat()};
   };
   return <WorldGuide key={resetId} speedMps={0} grounded facing={0} visible={visible} readMotion={readMotion} onMovementLock={locked=>{movementLock.current=locked;}} />;
 }
@@ -281,7 +284,8 @@ export default function WorldActors() {
   const player = useRef<RapierRigidBody>(null);
   const qaStart=import.meta.env.DEV&&new URLSearchParams(window.location.search).get('qa')==='1'?new URLSearchParams(window.location.search).get('start'):null;
   const qaPortal=WORLD_PORTALS.find(g=>qaStart===`portal-${g.id}`);
-  const qaFacing=qaPortal?Math.PI/2+qaPortal.yaw:qaStart==='brain-rail'?Math.PI/2:0;
+  const clubArrival=new URLSearchParams(window.location.search).get('start')?.startsWith('club')??false;
+  const qaFacing=qaPortal?Math.PI/2+qaPortal.yaw:qaStart==='brain-rail'?Math.PI/2:clubArrival?-Math.PI/2:0;
   const guideYaw = useRef(qaFacing);
   const guideTargetSpeed = useRef(0);
   const turnBeforeMove = useRef(false);
@@ -326,6 +330,10 @@ export default function WorldActors() {
   }, [world]);
   const arrival = useMemo<Vec3>(()=>{
     const start=new URLSearchParams(window.location.search).get('start');
+    if(start==='club')return [CLUB.spawn[0],1+PLAYER_CENTER_HEIGHT,CLUB.spawn[2]];
+    if(import.meta.env.DEV&&start==='club-dance')return [CLUB.dance[0],CLUB.dance[1]+PLAYER_CENTER_HEIGHT,CLUB.dance[2]];
+    if(import.meta.env.DEV&&start==='club-decks')return [31,2+PLAYER_CENTER_HEIGHT,55];
+    if(import.meta.env.DEV&&start==='club-view')return [70,1+PLAYER_CENTER_HEIGHT,55];
     if(qaPortal){const p=qaPortal.entryApproachCandidates[0];return [p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]];}
     if(qaStart==='wade')return [-26,-.3,106];
     // Reproduce the reported low-floor exit through the visible QA URL, without moving a live player.
@@ -344,7 +352,7 @@ export default function WorldActors() {
   const cameraReady = useRef(false);
   const guideView=useRef<Group>(null),guideCameraFoot=useRef(new Vector3());
   const impact = useRef(0);
-  const cam = useRef<CameraRig>({ yaw: qaPortal?Math.PI/2-qaPortal.yaw:qaStart==='brain-rail'?Math.PI/2:CAMERA_DEFAULT_YAW, pitch: CAMERA_DEFAULT_PITCH, distance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)],
+  const cam = useRef<CameraRig>({ yaw: qaPortal?Math.PI/2-qaPortal.yaw:qaStart==='brain-rail'?Math.PI/2:qaStart==='club-view'?0:clubArrival?-Math.PI/2:CAMERA_DEFAULT_YAW, pitch: clubArrival?.4:CAMERA_DEFAULT_PITCH, distance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)],
     actual: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)], lastManual: -Infinity, firstPerson: useWorldStore.getState().zoom === 3, collided: false, hitDistance: null, fov: 50, mode: 'walk', recentering: false, driveManualZoom: false, desiredDistance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)] });
   const pad = useRef<PadState>({ connected: false, move: [0,0], look: [0,0], throttle: 0, brake: 0, sprint: false, buttons: [] });
   const moveInput = useRef<[number,number]>([0,0]);
@@ -527,13 +535,21 @@ export default function WorldActors() {
       const state=useWorldStore.getState();
       if (event.metaKey || event.ctrlKey || event.altKey || state.paused || state.poolInspect || state.shot || (event.repeat&&releasedKeys.current.has(event.code)) || /INPUT|TEXTAREA|SELECT/.test((event.target as HTMLElement)?.tagName ?? '')) return;
       releasedKeys.current.delete(event.code);
+      if(state.clubMode==='dance'&&['Digit1','Digit2'].includes(event.code)){
+        event.preventDefault();useWorldStore.setState({danceStep:event.code==='Digit1'?0:1});return;
+      }
+      if(state.clubMode==='dance'&&['KeyW','KeyA','KeyS','KeyD','Space'].includes(event.code))useWorldStore.setState({clubMode:null});
+      if(state.clubMode==='dj'&&event.code!=='KeyE')return;
       if (['KeyW','KeyA','KeyS','KeyD','ShiftLeft','ShiftRight','Space','KeyE','KeyR','KeyV'].includes(event.code)||(state.activeVehicle&&event.code==='KeyX')) event.preventDefault();
       keys.current.add(event.code);
       if (!event.repeat) {
         if (event.code === 'KeyF' && !state.card && !state.activeVehicle && player.current) {
           if (putDownMineOre()) event.preventDefault();
         }
-        if (event.code==='KeyE') actions.current.interact=true;
+        if (event.code==='KeyE') {
+          if(!state.clubMode&&['djc-club-dance','djc-club-decks'].includes(state.nearbyInteract?.id??''))void clubAudio.enable();
+          actions.current.interact=true;
+        }
         if (event.code==='Space') actions.current.jump=true;
         if (event.code==='KeyR') actions.current.recover=true;
         if (event.code==='KeyV') cycleCamera();
@@ -543,7 +559,7 @@ export default function WorldActors() {
     // Continuous scroll zoom (exponential, ~12 % per notch). Scrolling out of first person returns to the
     // nearest third-person distance; scrolling never enters first person (V does).
     const wheel=(event:WheelEvent)=>{
-      const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot) return;
+      const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot || state.clubMode==='dj') return;
       event.preventDefault();
       const c=cam.current;
       if(c.firstPerson){ if(event.deltaY>0) useWorldStore.setState({zoom:0}); return; }
@@ -557,7 +573,7 @@ export default function WorldActors() {
       const c=cam.current,lim=c.firstPerson?CAMERA_PITCH_LIMITS.first:CAMERA_PITCH_LIMITS.third;
       c.yaw+=dx*k; c.pitch=clamp(c.pitch+dy*k,lim[0],lim[1]); c.lastManual=performance.now()/1000;
     };
-    const blocked=()=>{const st=useWorldStore.getState();return st.paused||st.poolInspect||!!st.shot;};
+    const blocked=()=>{const st=useWorldStore.getState();return st.paused||st.poolInspect||!!st.shot||st.clubMode==='dj';};
     const pointerDown=(e:PointerEvent)=>{if(blocked())return;drag={id:e.pointerId,x:e.clientX,y:e.clientY};gl.domElement.setPointerCapture?.(e.pointerId);};
     const pointerMove=(e:PointerEvent)=>{
       if(blocked())return;
@@ -576,8 +592,8 @@ export default function WorldActors() {
     document.addEventListener('visibilitychange',hidden); gl.domElement.addEventListener('wheel',wheel,{passive:false});
     const unsubscribe=useWorldStore.subscribe((state,previous)=>{
       if(state.campReturnRequest!==previous.campReturnRequest){returnToCamp();return;}
-      if(state.paused!==previous.paused || state.poolInspect!==previous.poolInspect || state.shot!==previous.shot){
-        clearInput();drag=null;if((state.paused||state.poolInspect)&&document.pointerLockElement===gl.domElement)document.exitPointerLock?.();
+      if(state.paused!==previous.paused || state.poolInspect!==previous.poolInspect || state.shot!==previous.shot || state.clubMode!==previous.clubMode){
+        clearInput();drag=null;if((state.paused||state.poolInspect||state.clubMode==='dj')&&document.pointerLockElement===gl.domElement)document.exitPointerLock?.();
       }
       if(state.zoom!==previous.zoom)applyPreset(state.zoom);
     });
@@ -775,7 +791,7 @@ export default function WorldActors() {
     mineActor.position = [playerPosition.x, playerPosition.y, playerPosition.z];
     mineActor.yaw = guideYaw.current;
     mineActor.grounded = grounded.current;
-    mineActor.available = !active && !state.seat && !state.card && !railVault.current;
+    mineActor.available = !active && !state.seat && !state.card && !state.clubMode && !railVault.current;
     if(!active)cars.current.forEach(car=>{const p=car.body.translation();const d=Math.hypot(p.x-playerPosition.x,p.y-playerPosition.y,p.z-playerPosition.z);if(d<nearest){nearest=d;nearby=car.spec.id;}});
     // World interactables (spec §15.3). Only reachable anchors count: within reach and with a clear line
     // of sight from the chest (no wall / floor between), so nothing triggers through a wall or a storey.
@@ -790,12 +806,13 @@ export default function WorldActors() {
         c=>!c.isSensor()&&!(c.parent()?.userData as {interactable?:string}|undefined)?.interactable&&!(c.parent()?.userData as {vehicle?:string}|undefined)?.vehicle);
       return !hit;
     };
-    const reach=active||seated||carded?null:nearestInteractable(playerPosition.x,playerPosition.y,playerPosition.z,sight,state.interactPick);
+    const reach=active||seated||carded||state.clubMode?null:nearestInteractable(playerPosition.x,playerPosition.y,playerPosition.z,sight,state.interactPick);
     if(!active)nearest=nearby?Math.hypot(cars.current.get(nearby)!.body.translation().x-playerPosition.x,cars.current.get(nearby)!.body.translation().z-playerPosition.z):Infinity;
     if(reach&&nearby&&nearest<reach.distance)nearbyItem.current=null;else{nearbyItem.current=reach?.item??null;if(reach)nearby=null;}
     if(seated||carded)nearby=null;
     const interactNow=(item:Interactable|null)=>{
       const now=useWorldStore.getState();
+      if(now.clubMode){useWorldStore.setState({clubMode:null});return;}
       if(now.seat){useWorldStore.setState({seat:null});return;}
       if(now.card){useWorldStore.setState({card:null});return;}
       if (mineBusy() || railVault.current) return;
@@ -817,11 +834,12 @@ export default function WorldActors() {
       else{gp.move=[0,0];gp.look=[0,0];gp.throttle=0;gp.brake=0;gp.sprint=false;gp.buttons=[];}
     }
     pad.current=gp;
+    if(useWorldStore.getState().clubMode==='dj'){gp.move=[0,0];gp.look=[0,0];actions.current.jump=false;}
     const edge=(i:number)=>!!gp.buttons[i]&&!before[i];
     if(gp.connected){
       if(edge(12))cycleInteractPick(-1);
       if(edge(13))cycleInteractPick(1);
-      if(edge(0))actions.current.jump=true;
+      if(edge(0)&&useWorldStore.getState().clubMode!=='dj')actions.current.jump=true;
       if(edge(3))interactNow(nearbyItem.current);
       if(edge(1))actions.current.recover=true;
       if(edge(8))cycleCamera();
@@ -927,6 +945,8 @@ export default function WorldActors() {
       let rx=Number(keys.current.has('KeyD'))-Number(keys.current.has('KeyA'));
       let rz=Number(keys.current.has('KeyW'))-Number(keys.current.has('KeyS'));
       if(gp.connected){rx+=gp.move[0];rz-=gp.move[1];}
+      if(useWorldStore.getState().clubMode==='dj'){rx=0;rz=0;actions.current.jump=false;}
+      if(useWorldStore.getState().clubMode==='dance'&&(Math.hypot(rx,rz)>.05||actions.current.jump))useWorldStore.setState({clubMode:null});
       let rm=Math.hypot(rx,rz);if(rm>1){rx/=rm;rz/=rm;rm=1;}
       // Direction smoothing: from rest the input applies at once (A3 turn-before-move still sees the full
       // turn); while moving, the direction turns at WALK_TURN rad/s, so changing keys sweeps through every

@@ -15,6 +15,7 @@ import { ALPHA_FACTORS } from './alpha-mine-data';
 import { GuideIdleLayer } from './WorldGuideIdle';
 import { refineGuideBoots } from './WorldGuideShape';
 import { calibrateGuideBootClips } from './WorldGuideBoots';
+import { createClubDanceClips } from './WorldGuideDance';
 import { GuideSeatContact, GuideSeatedIdle, guideSeatRootY, holdGuideSeatIdle } from './WorldGuideSeat';
 import { GuideVaultLayer, type GuideRailVault } from './WorldGuideVault';
 import { GUIDE_VEHICLE_TRANSITION_S, GuideDrivingPose, GuideVehicleUpperBody, guideVehicleApproach, guideVehicleRoot, guideVehicleSample } from './WorldGuideVehicle';
@@ -30,6 +31,8 @@ export interface WorldGuideMotion {
   /** Collision-checked contextual hurdle hop, using the running-jump mocap. */
   vault?: boolean;
   railVault?: GuideRailVault | null;
+  dance?: 0 | 1 | null;
+  danceBeat?: number;
   /** Static walkable ground under (x, z), cast down from fromY; used by the stance slope fit. */
   probeGround?: SlopeProbe;
   /** Read-only, QA-query-gated physics snapshot at the exact final-sole recorder sample. */
@@ -46,7 +49,7 @@ export interface WorldGuideMotion {
 export interface WorldGuideProps extends WorldGuideMotion { visible: boolean; readMotion?: () => WorldGuideMotion; onMovementLock?: (locked: boolean) => void; fallback?: ReactNode }
 /** v3 clip set (CMU-retargeted Walk/Run/Sprint, one-shot jump phases); see docs/world/quality-v3/guide. */
 const GAITS = ['Walk', 'Run', 'Sprint'];
-const LOOPS = new Set(['Idle', ...GAITS]);
+const LOOPS = new Set(['Idle', ...GAITS, 'ClubGroove', 'ClubDisco']);
 const REQUIRED = ['Idle', ...GAITS, 'JumpStart', 'JumpAir', 'RunJumpStart', 'RunJumpAir', 'Land'];
 /** v3d measured extras (optional: an older GLB without them keeps the v3c behaviour). */
 const EXTRAS = ['SitDown', 'SitIdle', 'StandUp', 'TurnL', 'TurnR', 'IdleLook'];
@@ -142,7 +145,7 @@ function GuideMineAssets({ layer }: { layer: GuideMineLayer }) {
  * pants, glove/boot and hip bag become 1 draw; helmet, visor and the cyan dot keep their own.
  * 8 -> 4 draws (plus shadow pass).
  */
-function mergeGuideMaterials(scene: Object3D) {
+export function mergeGuideMaterials(scene: Object3D) {
   const skinned: SkinnedMesh[] = [];
   scene.traverse(o => { if (o instanceof SkinnedMesh) skinned.push(o); });
   const cloth = skinned.filter(m => {
@@ -184,7 +187,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
   const rig = useMemo(() => {
     const scene = clone(gltf.scene) as Group;
     const disposeBoots = refineGuideBoots(scene);
-    const animations = calibrateGuideBootClips(scene, gltf.animations);
+    const animations = [...calibrateGuideBootClips(scene, gltf.animations), ...createClubDanceClips(scene)];
     const disposeMerged = mergeGuideMaterials(scene);
     const visualGLTF = { ...gltf, scene, animations };
     scene.traverse(o => { if (o instanceof Mesh) { o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; } });
@@ -586,6 +589,8 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       s.faded = sample.opacity;
       s.vehPhase = vt.phase; s.turn = null;
     } else { s.faded = 1; s.vehPhase = ''; }
+    const dancing = motion.dance != null && grounded && !seat && !s.sat && !vt && speedMps < .25;
+    if (dancing) { desired = motion.dance === 0 ? 'ClubGroove' : 'ClubDisco'; s.turn = null; }
     onMovementLock?.(!!seat || s.sat || !!vt);
     if (!vt && approach && !seat && !s.sat && grounded && (desired === 'Idle' || desired === 'IdleLook')) desired = 'Walk';
     if (!vt && shownYawOverride !== null && (desired === 'Walk' || isGait(desired))) shownYaw = shownYawOverride;
@@ -701,12 +706,17 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     s.rateOut = isGait(s.current) ? speedMps / D[s.current] : 0;
     // Door-step animation has its own moving visual root; a world-space stop anchor from the previous
     // door frame would cross the legs. Resume the ordinary stop helper after the door transition.
-    if (vt) stop.current?.cancel('vehicle-door-frame');
+    if (dancing) {
+      const a = rig.actions[s.current], beats = motion.dance === 0 ? 4 : 2;
+      a.time = (((motion.danceBeat ?? 0) % beats) + beats) % beats / beats * a.getClip().duration;
+      a.setEffectiveTimeScale(0);
+    }
+    if (vt || dancing) stop.current?.cancel(dancing ? 'club-dance' : 'vehicle-door-frame');
     else stop.current?.preUpdate({ animation:s.current, grounded, speedMps, facing: shownYaw, visible: shown, wantsMove: CROSSFADE_AB ? undefined : intent !== 'idle' });
     rig.inert.capture();
     rig.mixer.update(dt); s.time += dt;
     rig.inert.apply(dt);
-    rig.idle.apply();
+    if (!dancing) rig.idle.apply();
     rig.seatedIdle.apply(dt, (!!seat && s.current === 'SitIdle') || vehicleSample?.stage === 'seated');
     if (vehicleSample) { rig.vehicleUpper.apply(vehicleSample.duck); rig.drivingPose.apply(vt?.id??'offroad',vehicleSample.transfer); }
     if (group.current) {
@@ -797,7 +807,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         ahead.left += w * aL; ahead.right += w * aR;
       }
       if (wsum > 0) { contact.left /= wsum; contact.right /= wsum; ahead.left /= wsum; ahead.right /= wsum; }
-      s.slopeOn = grounded && !s.current.endsWith('Air') && !s.current.endsWith('Start') && !/^Sit|^StandUp/.test(s.current) && !s.vehPhase;
+      s.slopeOn = grounded && !dancing && !s.current.endsWith('Air') && !s.current.endsWith('Start') && !/^Sit|^StandUp/.test(s.current) && !s.vehPhase;
       rig.slope.solve(dt, s.slopeOn, motion.probeGround, baseY, contact, stop.current?.pelvisDrop ?? 0, ahead, group.current.position.y);
       if (stop.current) {
         stop.current.externalDrop = rig.slope.drop;
@@ -857,7 +867,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         m.opacity = s.faded;
       }
       // Apply after locomotion. Interaction crouches preserve the completed world-space foot anchors.
-      const mine = rig.mine.apply(useAlphaMineStore.getState(), !motion.seat && !motion.vehicle && !motion.railVault);
+      const mine = rig.mine.apply(useAlphaMineStore.getState(), !dancing && !motion.seat && !motion.vehicle && !motion.railVault);
       rig.vault.apply(motion.railVault);
       mineVisualSockets.valid = mine.valid && !world.card;
       Object.assign(mineVisualSockets, { assetsReady: mine.assetsReady, contactError: mine.contactError,

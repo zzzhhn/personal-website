@@ -4,10 +4,11 @@ import { worldText } from './world-i18n';
 import { ISLAND_OUTLINE, LAYOUT_V4, ROAD_POINTS, BOARDWALK_POINTS, BUILDINGS, BOOTHS, FOUNDATIONS, CAMP_CENTER } from './layout';
 import { ALPHA_MINE_CONNECTOR, ALPHA_MINE_CONNECTOR_WIDTH, ALPHA_MINE_FOOTPRINT_POINTS, ALPHA_MINE_ORIGIN, isOnAlphaMineBase } from './alpha-mine-layout';
 import { ALPHA_EXCHANGE_ORIGIN, ALPHA_EXCHANGE_APPROACH, ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout';
+import { CLUB, CLUB_APPROACH } from './djc-club-layout';
 
 type MapRoad = { pts: number[][]; width: number; color: string; dash?: string };
 type Landmark = { id: string; p: [number, number]; label: string };
-type MapGeometry = { shore: number[][]; camp: number[][]; viewBox: [number, number, number, number]; roads?: MapRoad[]; landmarks: Landmark[] };
+type MapGeometry = { shores: number[][][]; camp: number[][]; viewBox: [number, number, number, number]; roads?: MapRoad[]; landmarks: Landmark[] };
 let mapGeometryPromise: Promise<MapGeometry> | null = null;
 /** Shares the terrain's waterline and the v4 road hierarchy, loaded lazily with the runtime chunk so the
  * loading screen never pulls Three / terrain generation into the initial bundle. */
@@ -18,13 +19,13 @@ export function loadMapGeometry() {
       .sort((a, b) => b.width - a.width),
     landmarks: LANDMARKS_V4.map(l => ({ id: l.id, p: [l.p[0], l.p[1]] as [number, number], label: l.label })),
   })) : Promise.resolve({ roads: undefined, landmarks: [] as Landmark[] });
-  return mapGeometryPromise ??= Promise.all([import('./WorldLandform'), v4]).then(([{ islandShoreline, campRadius }, { roads, landmarks }]) => {
-    const shore = islandShoreline().filter((_, i) => i % 2 === 0);
+  return mapGeometryPromise ??= Promise.all([import('./WorldLandform'), v4]).then(([{ islandShorelines, campRadius }, { roads, landmarks }]) => {
+    const shores = islandShorelines(), shore = shores.flat();
     const camp = Array.from({ length: 72 }, (_, i) => { const a = i / 72 * Math.PI * 2, r = campRadius(a) * .7; return [-42 + Math.cos(a) * r, 30 + Math.sin(a) * r]; });
     const xs = [-77, 85, ...shore.map(p => p[0]), ...ALPHA_MINE_FOOTPRINT_POINTS.map(p => p[0]), ...ALPHA_MINE_CONNECTOR.map(p => p[0])];
     const zs = [-62, 62, ...shore.map(p => p[1]), ...ALPHA_MINE_FOOTPRINT_POINTS.map(p => p[1]), ...ALPHA_MINE_CONNECTOR.map(p => p[2])];
     const x = Math.min(...xs) - 7, z = Math.min(...zs) - 7;
-    return { shore, camp, roads, landmarks, viewBox: [x, z, Math.max(...xs) - x + 7, Math.max(...zs) - z + 7] as [number, number, number, number] };
+    return { shores, camp, roads, landmarks, viewBox: [x, z, Math.max(...xs) - x + 7, Math.max(...zs) - z + 7] as [number, number, number, number] };
   });
 }
 function useMapGeometry() {
@@ -34,6 +35,7 @@ function useMapGeometry() {
 }
 
 const path = (points: number[][]) => points.map(p => `${p[0]},${p.length === 3 ? p[2] : p[1]}`).join(' ');
+const shorePath = (loops: number[][][]) => loops.map(points => `M${path(points)}Z`).join(' ');
 /** Heading of travel (radians, map space) from successive published positions; holds while standing still. */
 function useHeading(x: number, z: number) {
   const last = useRef<[number, number] | null>(null), heading = useRef(-Math.PI / 2);
@@ -81,8 +83,8 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
       <pattern id={seaId} width='5' height='5' patternUnits='userSpaceOnUse' patternTransform='rotate(35)'><rect width='5' height='5' fill='#1E5A5E' /><line x1='0' y1='0' x2='0' y2='5' stroke='#3C8A8A' strokeWidth='.7' opacity='.5' /></pattern>
     </defs>
     <rect x={vb[0] - 300} y={vb[1] - 300} width={vb[2] + 600} height={vb[3] + 600} fill={`url(#${seaId})`} />
-    <polygon points={path(geometry?.shore ?? ISLAND_OUTLINE)} fill='#E3D3B4' stroke='#F4ECDB' strokeWidth={full ? 1.4 : 1.1} strokeOpacity='.7' />
-    <polygon points={path(geometry?.shore ?? ISLAND_OUTLINE)} fill='#7E8C3E' className='world-map-grass' />
+    <path d={shorePath(geometry?.shores ?? [ISLAND_OUTLINE])} fillRule='evenodd' fill='#E3D3B4' stroke='#F4ECDB' strokeWidth={full ? 1.4 : 1.1} strokeOpacity='.7' />
+    <path d={shorePath(geometry?.shores ?? [ISLAND_OUTLINE])} fillRule='evenodd' fill='#7E8C3E' className='world-map-grass' />
     <polygon data-quarry-outline='physical' points={path(ALPHA_MINE_FOOTPRINT_POINTS)} fill='#99917C' stroke='#B6AB89' strokeOpacity='.45' strokeWidth={full ? .8 : .6} strokeLinejoin='round' />
     {geometry?.roads ? geometry.roads.map((r, i) => <polyline key={i} points={path(r.pts)} fill='none' stroke={r.color} strokeWidth={r.width} strokeDasharray={r.dash} strokeLinejoin='round' strokeLinecap='round' />)
       : !LAYOUT_V4 && <polyline points={path(ROAD_POINTS)} fill='none' stroke='#D9D2C2' strokeWidth='4' strokeLinejoin='round' />}
@@ -91,6 +93,12 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
     <polyline points={path(ALPHA_EXCHANGE_APPROACH)} fill='none' stroke='#B99469' strokeWidth='3.1'/>
     <rect x={ALPHA_EXCHANGE_FOOTPRINT.minX} y={ALPHA_EXCHANGE_FOOTPRINT.minZ} width={17.2} height={18.5} fill='#8d7960' stroke='#c5b591'/>
     <text x={ALPHA_EXCHANGE_ORIGIN[0]} y={ALPHA_EXCHANGE_ORIGIN[2]-5} textAnchor='middle' fontSize={full?'3.6':'4.4'} fill='#f1e3bc'>{lang==='zh'?'交易所':'EXCHANGE'}</text>
+    {LAYOUT_V4 && <g data-experience-id='djc'>
+      <polyline points={path(CLUB_APPROACH)} fill='none' stroke='#B99469' strokeWidth='2.4' strokeLinecap='round'/>
+      <ellipse cx={CLUB.dance[0]} cy={CLUB.dance[2]} rx={CLUB.danceRadii[0]} ry={CLUB.danceRadii[1]} fill='#94775B' stroke='#D9C5A3' strokeWidth='.8'/>
+      <circle cx={CLUB.center[0]} cy={CLUB.center[2]} r={2.7*s} fill='#23343D' stroke='#4FD1C5' strokeWidth='.9'/>
+      <text x={CLUB.center[0]} y={CLUB.center[2]+17} textAnchor='middle' fontSize={full?'4.2':'4.6'} fill='#F4ECDB'>{lang==='zh'?'DJC 海边 Club':'DJC Beach Club'}</text>
+    </g>}
     {geometry ? <polygon points={path(geometry.camp)} fill='#D2B98A' stroke='#E8803A' strokeWidth={full ? 1.2 : 1} /> : <circle cx={CAMP_CENTER[0]} cy={CAMP_CENTER[2]} r='15' fill='#D2B98A' stroke='#E8803A' strokeWidth='1.2' />}
     {FOUNDATIONS.map(f => <rect key={f.id} x={f.position[0] - f.size[0] / 2} y={f.position[2] - f.size[2] / 2} width={f.size[0]} height={f.size[2]} fill='none' stroke='#F4ECDB' strokeWidth='.8' strokeDasharray='2 1.6' opacity='.8' />)}
     {/* Six internship buildings, numbered in startDate order (oldest -> newest). */}

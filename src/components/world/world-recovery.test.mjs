@@ -19,6 +19,8 @@ function scene(){
 }
 test('Escape closes pool inspection before the map, closes cards, and toggles the pause menu',()=>{
   useWorldStore.setState(structuredClone(initialWorld),true);
+  useWorldStore.setState({clubMode:'dj'});handleWorldEscape();
+  assert.equal(useWorldStore.getState().clubMode,null);assert.equal(useWorldStore.getState().paused,false);
   useWorldStore.setState({poolInspect:true});handleWorldEscape();
   assert.equal(useWorldStore.getState().poolInspect,false);assert.equal(useWorldStore.getState().paused,false);
   useWorldStore.setState({card:{kind:'note',id:'qa'}});handleWorldEscape();
@@ -30,7 +32,7 @@ test('return request synchronously recovers from a pit while paused, clearing se
   const {world,body}=scene();let transient=0,camera=0;
   try {
     body.setEnabled(false);body.setLinvel({x:8,y:-12,z:3},true);body.addForce({x:100,y:0,z:20},true);
-    useWorldStore.setState({paused:true,poolInspect:true,seat:{id:'bench',position:[-100,-6,-80],yaw:1},card:{kind:'note',id:'qa'},nearbyVehicle:'coupe',canRecover:true});
+    useWorldStore.setState({paused:true,clubMode:'dance',poolInspect:true,seat:{id:'bench',position:[-100,-6,-80],yaw:1},card:{kind:'note',id:'qa'},nearbyVehicle:'coupe',canRecover:true});
     const unsubscribe=useWorldStore.subscribe((s,p)=>{
       if(s.campReturnRequest!==p.campReturnRequest)returnPlayerToCamp(body,undefined,()=>{transient++;},()=>{camera++;});
     });
@@ -39,6 +41,7 @@ test('return request synchronously recovers from a pit while paused, clearing se
     assert.deepEqual(Object.values(body.linvel()),[0,0,0]);assert.deepEqual(Object.values(body.angvel()),[0,0,0]);
     const s=useWorldStore.getState();
     assert.equal(s.paused,false);assert.equal(s.poolInspect,false);assert.equal(s.seat,null);assert.equal(s.card,null);
+    assert.equal(s.clubMode,null);
     assert.equal(s.activeVehicle,null);assert.equal(s.nearbyVehicle,null);assert.equal(s.canRecover,false);
     assert.equal(s.zone,'camp');assert.equal(s.speed,0);assert.equal(transient,1);assert.equal(camera,1);
     for(let i=0;i<10;i++)world.step();assert.ok(atCamp(body),'old forces cannot resume');

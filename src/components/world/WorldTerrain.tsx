@@ -18,6 +18,7 @@ import WorldGrass, { ActorTracker, actorState, grassDebug } from './WorldGrass';
 import { seaSpotDebug } from './WorldSea';
 import { useMineManifest } from './alpha-mine-assets';
 import { mineLocalToWorld } from './alpha-mine-layout';
+import { CLUB_SCATTER_BLOCKERS } from './djc-club-layout';
 
 /** quality-v3 island ground: one 0.5 m faceted terrain (WorldLandform) rendered with vertex
  * colours plus world-space detail and swash-driven wet sand, and the same triangles as the
@@ -199,6 +200,7 @@ vec4 tileMix(sampler2D t, vec2 uv, vec3 w) { return texture2D(t, uv) * w.x + tex
 
 /** Footprints where ground detail must not appear (buildings, forecourts, foundations, blocks). */
 const SCATTER_BLOCKERS: ScatterBlocker[] = [
+  ...(LAYOUT_V4 ? CLUB_SCATTER_BLOCKERS : []),
   ...BUILDINGS.flatMap(({ position: [x, , z], size: [w, , d] }) => [
     { minX: x - w / 2 - .6, maxX: x + w / 2 + .6, minZ: z - d / 2 - .6, maxZ: z + d / 2 + .6 },
     { minX: x + w / 2, maxX: x + w / 2 + 5.6, minZ: z - d / 2 - 1, maxZ: z + d / 2 + 3.6 },

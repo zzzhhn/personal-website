@@ -57,7 +57,7 @@ export function nearestInteractable(x: number, y: number, z: number, reachable?:
 /** Keyboard Q and standard-gamepad D-pad choose from the exact same reachable list. */
 export function cycleInteractPick(step = 1) {
   const s = useWorldStore.getState();
-  if (s.paused || s.card || s.seat || s.activeVehicle || !s.nearbyInteract) return;
+  if (s.paused || s.card || s.seat || s.activeVehicle || s.clubMode || !s.nearbyInteract) return;
   const ids = reachableInteractables().slice(0, 4).map(i => i.id);
   if (ids.length < 2) return;
   const at = Math.max(0, ids.indexOf(s.interactPick ?? s.nearbyInteract.id));

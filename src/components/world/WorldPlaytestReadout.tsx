@@ -9,6 +9,7 @@ import { readRenderSnapshot } from './world-render-readout';
 import { setMineNetworkFailureForQA } from './alpha-mine-online';
 import { worldActorDebug } from './WorldActors';
 import { vehicleLodSnapshot } from './WorldVehicleVisual';
+import { clubAudio } from './WorldClubAudio';
 
 function readContactSnapshot() {
   const value=worldActorDebug.actor(),physics=worldActorDebug.snapshot();
@@ -28,6 +29,7 @@ export default function WorldPlaytestReadout() {
       <button onClick={()=>setRenderSnapshot(readRenderSnapshot())}>QA · 读取当前渲染开销</button>
       {import.meta.env.DEV&&<>
         <button onClick={()=>setRenderSnapshot(readContactSnapshot())}>QA · 读取动作与接触</button>
+        <button onClick={()=>setRenderSnapshot({club:clubAudio.inspect(),mode:useWorldStore.getState().clubMode,step:useWorldStore.getState().danceStep})}>QA · 读取 Club 音频</button>
         <button onClick={()=>{if(world.nearbyVehicle)worldActorDebug.enter(world.nearbyVehicle);worldActorDebug.holdVehicleTransition(.66);}}>QA · 上车并定格门洞</button>
         <button onClick={()=>worldActorDebug.holdVehicleTransition(.79)}>QA · 定格入座</button>
         <button onClick={()=>worldActorDebug.holdVehicleTransition(null)}>QA · 继续上下车动作</button>

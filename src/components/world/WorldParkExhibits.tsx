@@ -11,6 +11,7 @@ import { useWorldStore } from './store';
 import { isWorldRunning } from './WorldWind';
 import { trackPortfolioEvent } from '../../lib/analytics';
 import { parkAudio } from './WorldParkAudio';
+import { CLUB } from './djc-club-layout';
 import { ParkLOD } from './WorldParkLOD';
 import type { Vec3, WorldProject, Lang } from './types';
 
@@ -165,27 +166,11 @@ function ReviewBooth({ p }: { p: Placed }) {
 }
 
 /* ------------------------------------------------------------------ P14 DJ table */
-const NOTCHES = [-0.1, -0.05, 0, 0.05, 0.1];
 function DjTable({ p }: { p: Placed }) {
-  const pos = useRef(0), dir = useRef(1), shot = useOneShot(1.2);
-  useExhibitE(p, 'exhibit', { en: 'Slide the crossfader', zh: '推一格横推子' }, () => {
-    if (!shot.start()) return;
-    parkAudio.start();
-    if (pos.current + dir.current > 4 || pos.current + dir.current < 0) dir.current = -dir.current;
-    pos.current += dir.current;
-    parkAudio.setCrossfade(pos.current / 4);
-  });
-  useExhibitProbe(p.id, () => ({ runs: shot.state.current.n, notch: pos.current, crossfade: parkAudio.crossfade, audioState: parkAudio.ctx?.state }));
-  const fader = p.movers.crossfader, x0 = useMemo(() => fader?.position.x ?? 0, [fader]);
-  useFrame((_, dt) => {
-    if (!isWorldRunning()) return;
-    shot.advance(dt);
-    if (fader) fader.position.x += (x0 + NOTCHES[pos.current] - fader.position.x) * Math.min(1, dt * 12);
-    const [a, b] = parkAudio.started ? parkAudio.gains() : [0, 0];
-    // 33 1/3 rpm scaled by each deck's gain; idle decks stand still.
-    if (p.movers.platter_0) p.movers.platter_0.rotation.y -= dt * 3.49 * a;
-    if (p.movers.platter_1) p.movers.platter_1.rotation.y -= dt * 3.49 * b;
-  });
+  useExhibitE(p, 'exhibit', { en: 'Find the beach club', zh: '前往海边 Club' }, () => useWorldStore.setState({
+    waypoint:[CLUB.entrance[0],CLUB.entrance[2]],toast:{zh:'DJC 搬到海边了，沿地图标记前往 Club。',en:'DJC is at the beach. Follow the map marker to the club.',at:performance.now()}
+  }));
+  useExhibitProbe(p.id, () => ({ destination: 'djc-beach-club' }));
   return null;
 }
 

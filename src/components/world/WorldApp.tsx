@@ -8,6 +8,7 @@ import WorldExperienceSummary from './WorldExperienceSummary';
 import WorldCards from './WorldCards';
 import WorldMap, { loadMapGeometry } from './WorldMap';
 import WorldAlphaMineHud from './WorldAlphaMineHud';
+import WorldClubHud from './WorldClubHud';
 import WorldPoolInspect from './WorldPoolInspect';
 import { WorldDrivingHud, WorldFirstHints, WorldWaypointReadout, WorldZoneTitle, WorldNotice } from './WorldHud';
 import './world.css';
@@ -73,11 +74,10 @@ export default function WorldApp({ content }: { content: WorldContent }) {
     const validShot = WORLD_SHOTS.some(v => v.id === shot) ? shot : null;
     useWorldStore.setState({ lang: lang as 'en' | 'zh', shot: validShot });
     selectWorldTime(validShot?.endsWith('-night') ? 'night' : 'dusk');
-    if(import.meta.env.DEV&&new URLSearchParams(window.location.search).get('qa')==='1'){
-      const params=new URLSearchParams(window.location.search);
-      if(params.get('quality')==='balanced')useWorldStore.setState({quality:'balanced'});
-      if(params.get('paused')==='1')useWorldStore.setState({paused:true});
-    }
+    // Lightweight playtest links work in the packaged preview too; QA hooks stay development-only.
+    const params=new URLSearchParams(window.location.search);
+    if(params.get('quality')==='balanced')useWorldStore.setState({quality:'balanced'});
+    if(params.get('paused')==='1')useWorldStore.setState({paused:true});
     if(shellOnly)useWorldStore.setState({ready:true,paused:true});
     setSupported(!window.matchMedia('(pointer: coarse), (max-width: 767px)').matches);
     const onKey = (e: KeyboardEvent) => {
@@ -125,6 +125,7 @@ export default function WorldApp({ content }: { content: WorldContent }) {
     <WorldFirstHints />
     <WorldDrivingHud />
     <WorldAlphaMineHud />
+    <WorldClubHud />
     <WorldPoolInspect />
     {PlaytestReadout&&!shellOnly&&<Suspense fallback={null}><PlaytestReadout/></Suspense>}
     <div className="world-interaction" aria-live="polite">{s.canRecover ? <button className="world-recover" onClick={() => useWorldStore.setState(v => ({ recoverRequest: v.recoverRequest + 1 }))}><kbd>R</kbd>{t.recover.replace(/^R \u00b7 /, '')}</button> : s.activeVehicle && !s.card ? <span className="world-chip"><kbd>E</kbd>{t.leave.replace(/^E \u00b7 /, '')}</span> : null}</div>
