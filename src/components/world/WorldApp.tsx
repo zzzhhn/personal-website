@@ -19,6 +19,9 @@ const Runtime = lazy(async () => {
 // QA-only ui fixtures (?qa=1&uitest=1); the normal entry never loads this chunk.
 const uiTest = typeof window !== 'undefined' && /[?&]qa=1/.test(window.location.search) && /[?&]uitest=1/.test(window.location.search);
 const UiTest = uiTest ? lazy(() => import('./WorldUiTest')) : null;
+// Layout-only QA uses the real controls without allocating another WebGL scene.
+const shellOnly = import.meta.env.DEV && typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa')==='1'
+  && new URLSearchParams(window.location.search).get('shell')==='1';
 const PlaytestReadout = import.meta.env.DEV && typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa')==='1'
   ? lazy(()=>import('./WorldPlaytestReadout')) : null;
 
@@ -68,6 +71,7 @@ export default function WorldApp({ content }: { content: WorldContent }) {
     const shot = new URLSearchParams(window.location.search).get('shot');
     const validShot = WORLD_SHOTS.some(v => v.id === shot) ? shot : null;
     useWorldStore.setState({ lang: lang as 'en' | 'zh', shot: validShot, light: validShot?.endsWith('-night') ? 'night' : 'dusk' });
+    if(shellOnly)useWorldStore.setState({ready:true,paused:true});
     setSupported(!window.matchMedia('(pointer: coarse), (max-width: 767px)').matches);
     const onKey = (e: KeyboardEvent) => {
       if (e.code !== 'Escape') return;
@@ -92,11 +96,19 @@ export default function WorldApp({ content }: { content: WorldContent }) {
   if (supported === null) return <Loading />;
   if (!supported) return <main className="world-cover world-mobile"><WorldMap mode='full' /><span className="world-eyebrow">{t.title}</span><h1>{t.mobile}</h1><p>{t.mobileDetail}</p><a href="/">← {t.back}</a></main>;
   return <main className={`world-app ${s.shot ? 'world-shot' : ''}`} aria-label={t.title}>
-    <WorldErrorBoundary message={t.error} retry={t.retry}>
+    {shellOnly ? <p className="world-shell-preview">UI preview · 3D scene not loaded</p> : <WorldErrorBoundary message={t.error} retry={t.retry}>
       <Suspense fallback={null}><Runtime content={content} /></Suspense>
       {!s.ready && <Loading />}
-    </WorldErrorBoundary>
-    <header className="world-top"><div><span className="world-eyebrow">{t.stage}</span><h1>{t.title}</h1></div><button ref={trigger} onClick={() => { openedByButton.current = true; useWorldStore.setState({ paused: true }); }} aria-haspopup="dialog"><span>{t.menu}</span><kbd>Esc</kbd></button></header>
+    </WorldErrorBoundary>}
+    <header className="world-top"><div><span className="world-eyebrow">{t.stage}</span><h1>{t.title}</h1></div>
+      <div className="world-top-actions">
+        <button className="world-camp-return" onClick={requestCampReturn} disabled={!s.ready} title={t.returnCampHint}>
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"><path d="m3 20 9-16 9 16H3Zm5 0 4-7 4 7M10 2l4 4M14 2l-4 4" /></svg>
+          <span>{t.returnCamp}</span>
+        </button>
+        <button ref={trigger} onClick={() => { openedByButton.current = true; useWorldStore.setState({ paused: true }); }} aria-haspopup="dialog"><span>{t.menu}</span><kbd>Esc</kbd></button>
+      </div>
+    </header>
     <aside className="world-location"><div className="world-radar"><WorldMap /><span className="world-radar-n" aria-hidden="true">N</span></div><div className="world-location-text"><span>{t[s.zone]}</span><WorldWaypointReadout /></div></aside>
     <WorldZoneTitle about={content.about} />
     <WorldExperienceSummary experiences={content.experiences} />
@@ -106,7 +118,7 @@ export default function WorldApp({ content }: { content: WorldContent }) {
     <WorldDrivingHud />
     <WorldAlphaMineHud />
     <WorldPoolInspect />
-    {PlaytestReadout&&<Suspense fallback={null}><PlaytestReadout/></Suspense>}
+    {PlaytestReadout&&!shellOnly&&<Suspense fallback={null}><PlaytestReadout/></Suspense>}
     <div className="world-interaction" aria-live="polite">{s.canRecover ? <button className="world-recover" onClick={() => useWorldStore.setState(v => ({ recoverRequest: v.recoverRequest + 1 }))}><kbd>R</kbd>{t.recover.replace(/^R \u00b7 /, '')}</button> : s.activeVehicle && !s.card ? <span className="world-chip"><kbd>E</kbd>{t.leave.replace(/^E \u00b7 /, '')}</span> : null}</div>
     <dialog className="world-dialog" ref={dialog} aria-label={t.menu} onCancel={e => { e.preventDefault(); useWorldStore.setState({ paused: false }); }}>
       <div className="world-dialog-map">
@@ -118,6 +130,10 @@ export default function WorldApp({ content }: { content: WorldContent }) {
         </div>
       </div>
       <div className="world-dialog-side">
+        <div className="world-dialog-actions"><button className="world-primary" onClick={() => useWorldStore.setState({ paused: false })}>{t.resume}</button>
+          <button onClick={requestCampReturn} disabled={!s.ready} aria-describedby="world-camp-return-hint">{t.returnCamp}</button>
+          <p id="world-camp-return-hint" className="world-setting-hint">{t.returnCampHint}</p>
+        </div>
         <fieldset><legend>{t.language}</legend><button aria-pressed={s.lang === 'en'} onClick={() => useWorldStore.setState({ lang: 'en' })}>English</button><button aria-pressed={s.lang === 'zh'} onClick={() => useWorldStore.setState({ lang: 'zh' })}>中文</button></fieldset>
         <fieldset><legend>{t.light}</legend>{(['dusk', 'night'] as const).map(light => <button key={light} aria-pressed={s.light === light} onClick={() => useWorldStore.setState({ light })}>{t[light]}</button>)}</fieldset>
         <fieldset aria-describedby="world-quality-hint"><legend>{t.quality}</legend>{(['balanced', 'high'] as const).map(quality => <button key={quality} aria-pressed={s.quality === quality} onClick={() => useWorldStore.setState({ quality })}>{t[quality]}</button>)}</fieldset>
@@ -132,10 +148,7 @@ export default function WorldApp({ content }: { content: WorldContent }) {
           <p>{t.styleCredit}</p><p><a href="https://ianxmason.github.io/100style/" target="_blank" rel="noreferrer">The 100STYLE Dataset - Ian Mason</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noreferrer">CC BY 4.0</a></p>
           <h3>{t.thanksTitle}</h3><p>{t.groundCredit}</p><p>three.js · React Three Fiber · Rapier</p>
         </details>
-        <div className="world-dialog-actions"><button className="world-primary" onClick={() => useWorldStore.setState({ paused: false })}>{t.resume}</button>
-          <button onClick={requestCampReturn} disabled={!s.ready} aria-describedby="world-camp-return-hint">{t.returnCamp}</button>
-          <p id="world-camp-return-hint" className="world-setting-hint">{t.returnCampHint}</p>
-          <a href={`/#${s.zone === 'town' ? 'experience' : s.zone === 'park' ? 'projects' : 'about'}`}>← {t.back}</a></div>
+        <a className="world-back-link" href={`/#${s.zone === 'town' ? 'experience' : s.zone === 'park' ? 'projects' : 'about'}`}>← {t.back}</a>
       </div>
     </dialog>
   </main>;
