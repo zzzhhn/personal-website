@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { pathToFileURL } from 'node:url';
 import RAPIER from '@dimforge/rapier3d-compat';
 import { BoxGeometry, Group, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, Vector3 } from 'three';
 import { cameraCollisionRadius, cameraOverlapsGuide, sweepCamera } from './camera-collision.ts';
@@ -61,7 +62,7 @@ test('forced-close orbit hides its own helmet/body and restores drawing only aft
   }finally{world.free();}
 });
 test('actual quarry route camera sweeps stay clear at near/far distance and low/high orbit angles', t => {
-  const root=new URL('../../../public/world/alpha-mine/',import.meta.url);
+  const root=process.env.ALPHA_MINE_TEST_ASSETS?pathToFileURL(process.env.ALPHA_MINE_TEST_ASSETS.replace(/\/$/,'')+'/'):new URL('../../../public/world/alpha-mine/',import.meta.url);
   const layout=JSON.parse(readFileSync(new URL('layout.json',root),'utf8'));
   const proxy=JSON.parse(readFileSync(new URL('colliders.json',root),'utf8'));
   const world=new RAPIER.World({x:0,y:0,z:0}); let samples=0;
