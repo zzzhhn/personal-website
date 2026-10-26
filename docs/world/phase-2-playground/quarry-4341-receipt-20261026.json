@@ -1,19 +1,20 @@
 {
-  "codeCommit": "29f2d91",
+  "codeCommit": "8aeb2ae",
+  "checkedAt": "2026-10-26T11:28:06.575736+08:00",
   "url": "http://127.0.0.1:4341/world/?start=brain",
   "htmlStatus": 200,
-  "entryModule": "/_astro/WorldApp.CFWwVCir.js",
+  "entryModule": "/_astro/WorldApp.CPGGYEAM.js",
   "checks": [
     {
-      "path": "_astro/WorldApp.CFWwVCir.js",
+      "path": "_astro/WorldApp.CPGGYEAM.js",
       "status": 200,
-      "sha256": "ca545209e4bd907ad7a9a48af41bde548a45bbb978c15e66203bec308d301bc6",
+      "sha256": "761bb8e8023a01019aacd3c89c0828476af918b937c67c9fa80fac92d3705067",
       "bytes": 128
     },
     {
-      "path": "_astro/WorldApp.Cpyu3cuT.js",
+      "path": "_astro/WorldApp.txbQDuEF.js",
       "status": 200,
-      "sha256": "994cb67142101714f72457ae70ee49ef51598ff6e792f1fa5726cd6ad2c15613",
+      "sha256": "6d274a85027ec38339829ebc97c164eda4f3c188c61a8962a76be04d7197a02c",
       "bytes": 107799
     },
     {
@@ -41,5 +42,5 @@
       "bytes": 1072016
     }
   ],
-  "scope": "HTTP/source byte parity only; browser interaction pending while Mac locked"
+  "scope": "HTTP/source byte parity; production browser loaded without QA overlay. Full normal-input online loop and browser limitations documented in quarry-browser-qa-20261026.md."
 }
