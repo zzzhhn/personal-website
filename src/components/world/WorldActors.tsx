@@ -3,8 +3,8 @@ import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { CapsuleCollider, ConvexHullCollider, CuboidCollider, CylinderCollider, RigidBody, useBeforePhysicsStep, useFilterContactPair, useRapier, type RapierCollider, type RapierRigidBody } from '@react-three/rapier';
 import { BoxGeometry, Euler, Group, Mesh, MeshStandardMaterial, PerspectiveCamera, Quaternion, Vector3 } from 'three';
-import { CAMP_SPAWN, VEHICLES, WATER_Y, nearestRoadPoint } from './layout';
-import { advanceMineAction, cancelMineAction, mineActor, mineBusy, mineNotice, putDownMineOre, useAlphaMineStore } from './alpha-mine-state';
+import { CAMP_SPAWN, ROAD_POINTS, VEHICLES, WATER_Y } from './layout';
+import { advanceMineAction, cancelMineAction, mineActor, mineBusy, putDownMineOre, useAlphaMineStore } from './alpha-mine-state';
 import { ALPHA_MINE_ORIGIN } from './alpha-mine-layout';
 import { ALPHA_EXCHANGE_ORIGIN } from './alpha-exchange-layout';
 import { nearestDryPoint } from './WorldLandform';
@@ -17,6 +17,9 @@ import WorldVehicleVisual from './WorldVehicleVisual';
 import { playerSupport, followPlayerGround } from './player-ground';
 import { createPlayerClearance, findLowVault, playerRouteClear, playerVelocityChange, sweptPlayerVelocity } from './player-motion';
 import { findRailVault, railVaultVelocity, type RailVault } from './player-vault';
+import { findSafePlayerLanding, findSafeVehicleLanding, updateHeadSubmersion } from './safe-landing';
+import { roadLandingCandidates, portalRearmed } from './world-travel';
+import { WORLD_PORTALS, portalCrossing } from './world-portals';
 import { vehicleHulls } from './WorldVehicleAssets';
 import { WorldOcclusion } from './WorldOcclusion';
 import { cameraCollisionRadius, cameraOverlapsGuide, sweepCamera } from './camera-collision';
@@ -105,6 +108,7 @@ const asTuple = (v: {x:number;y:number;z:number}): Vec3 => [v.x,v.y,v.z];
 const asVector = ([x,y,z]: Vec3) => ({x,y,z});
 const clamp = (value:number, low:number, high:number) => Math.min(high,Math.max(low,value));
 const UP = new Vector3(0,1,0);
+const actorNotice=(zh:string,en:string)=>useWorldStore.setState({toast:{zh,en,at:performance.now()}});
 /* Controls tuning (AUTHORED). Keyboard axes ramp instead of jumping: steering reaches full lock in
  * ~0.36 s and recentres in ~0.2 s; throttle reaches full in ~0.33 s. Walking input direction turns at
  * WALK_TURN rad/s between key combinations (reversals > 150 deg snap, so a U-turn is not a sideways arc). */
@@ -212,7 +216,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
  * acceleration, braking, or contact transitions by several rendered frames. */
 /** Guide-only door transfer. Physics advances elapsed, so pause freezes the interaction too.
  * 'door' is the car's door anchor at entry/exit (car body + side offset). */
-type GuideVehicleTransition = { phase: 'enter'|'exit'; elapsed: number; door: [number,number,number] } | null;
+type GuideVehicleTransition = { phase: 'enter'|'exit'; elapsed: number; door: Vec3; cabin: Vec3; yaw: number; approach?:Vec3[]; approachSeconds?:number; duration?:number } | null;
 function GuideVisual({ body, grounded, yaw, targetSpeed, intent, jumpSeq, visible, transition, supportDecision, movementLock, vault, railVault, resetId }: { body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; targetSpeed: RefObject<number>; intent: RefObject<'idle'|'walk'|'run'>; jumpSeq: RefObject<number>; visible: boolean; transition: RefObject<GuideVehicleTransition>; supportDecision: RefObject<Record<string, unknown> | null>; movementLock: RefObject<boolean>; vault: RefObject<ReturnType<typeof findLowVault> & { remaining: number } | null>; railVault: RefObject<(RailVault & { elapsed: number }) | null>; resetId: number }) {
   const {world,rapier}=useRapier();
   const supportQA = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && new URLSearchParams(window.location.search).get('qaPhysicsSupport') === '1';
@@ -255,8 +259,8 @@ function GuideVisual({ body, grounded, yaw, targetSpeed, intent, jumpSeq, visibl
   // the guide only after the enter transition; during exit it fades in from the door.
   const guideStates=()=>{
     const st=useWorldStore.getState(),tr=transition.current;
-    let vehicle:null|{phase:'enter'|'exit';t:number;door:[number,number,number]}=null;
-    if(tr){const t=tr.elapsed/VEHICLE_TRANSITION_S;if(t<1)vehicle={phase:tr.phase,t:Math.max(0,t),door:tr.door};}
+    let vehicle:null|{phase:'enter'|'exit';t:number;door:Vec3;cabin:Vec3;yaw:number;approach?:Vec3[]}=null;
+    if(tr){const walk=tr.approachSeconds??VEHICLE_TRANSITION_S*.3;const t=tr.phase==='enter'?(tr.elapsed<walk?.3*tr.elapsed/walk:.3+(tr.elapsed-walk)/VEHICLE_TRANSITION_S):tr.elapsed/VEHICLE_TRANSITION_S;if(t<1)vehicle={phase:tr.phase,t:Math.max(0,t),door:tr.door,cabin:tr.cabin,yaw:tr.yaw,approach:tr.approach};}
     return {seat:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:!!st.activeVehicle&&!vehicle};
   };
   return <WorldGuide key={resetId} speedMps={0} grounded facing={0} visible={visible} readMotion={readMotion} onMovementLock={locked=>{movementLock.current=locked;}} />;
@@ -265,7 +269,9 @@ function GuideVisual({ body, grounded, yaw, targetSpeed, intent, jumpSeq, visibl
 export default function WorldActors() {
   const player = useRef<RapierRigidBody>(null);
   const qaStart=import.meta.env.DEV&&new URLSearchParams(window.location.search).get('qa')==='1'?new URLSearchParams(window.location.search).get('start'):null;
-  const guideYaw = useRef(qaStart==='brain-rail'?Math.PI/2:0);
+  const qaPortal=WORLD_PORTALS.find(g=>qaStart===`portal-${g.id}`);
+  const qaFacing=qaPortal?Math.PI/2+qaPortal.yaw:qaStart==='brain-rail'?Math.PI/2:0;
+  const guideYaw = useRef(qaFacing);
   const guideTargetSpeed = useRef(0);
   const turnBeforeMove = useRef(false);
   const cars = useRef(new Map<VehicleId,Car>());
@@ -293,6 +299,8 @@ export default function WorldActors() {
   const [guideResetId,setGuideResetId]=useState(0);
   const physicsSteps = useRef(0);
   const wetPlayer = useRef(0);
+  const rescueRetry = useRef(new Map<string,number>());
+  const portalTravel = useRef<{previous:Vec3|null;cooldown:number;armed:boolean}>({previous:null,cooldown:0,armed:true});
   const lastRecover = useRef(useWorldStore.getState().recoverRequest);
   const publishedTime = useRef(0);
   const activeVehicle = useWorldStore(s=>s.activeVehicle);
@@ -306,6 +314,8 @@ export default function WorldActors() {
   }, [world]);
   const arrival = useMemo<Vec3>(()=>{
     const start=new URLSearchParams(window.location.search).get('start');
+    if(qaPortal){const p=qaPortal.entryApproachCandidates[0];return [p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]];}
+    if(qaStart==='wade')return [-26,-.3,106];
     // Reproduce the reported low-floor exit through the visible QA URL, without moving a live player.
     if(import.meta.env.DEV&&start==='brain-exit'&&new URLSearchParams(window.location.search).get('qa')==='1')return [-81.23,1.82,-90.28];
     if(import.meta.env.DEV&&start==='brain-rail'&&new URLSearchParams(window.location.search).get('qa')==='1')return [ALPHA_MINE_ORIGIN[0]+8,ALPHA_MINE_ORIGIN[1]+PLAYER_CENTER_HEIGHT,ALPHA_MINE_ORIGIN[2]+.16];
@@ -322,7 +332,7 @@ export default function WorldActors() {
   const cameraReady = useRef(false);
   const guideView=useRef<Group>(null),guideCameraFoot=useRef(new Vector3());
   const impact = useRef(0);
-  const cam = useRef<CameraRig>({ yaw: qaStart==='brain-rail'?Math.PI/2:CAMERA_DEFAULT_YAW, pitch: CAMERA_DEFAULT_PITCH, distance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)],
+  const cam = useRef<CameraRig>({ yaw: qaPortal?Math.PI/2-qaPortal.yaw:qaStart==='brain-rail'?Math.PI/2:CAMERA_DEFAULT_YAW, pitch: CAMERA_DEFAULT_PITCH, distance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)],
     actual: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)], lastManual: -Infinity, firstPerson: useWorldStore.getState().zoom === 3, collided: false, hitDistance: null, fov: 50, mode: 'walk', recentering: false, driveManualZoom: false, desiredDistance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)] });
   const pad = useRef<PadState>({ connected: false, move: [0,0], look: [0,0], throttle: 0, brake: 0, sprint: false, buttons: [] });
   const moveInput = useRef<[number,number]>([0,0]);
@@ -358,15 +368,25 @@ export default function WorldActors() {
     if(!player.current)return;
     clearPlayerMotion(true);clearInput();grounded.current=false;
     player.current.setEnabled(true);resetBody(player.current,position);wetPlayer.current=0;
+    portalTravel.current.previous=position;
+    cameraReady.current=false;target.current.set(...position);supportDecision.current=null;
   }
   function resetBody(body: RapierRigidBody, position: Vec3, yaw=0) {
     resetActorBody(body,position,yaw);
+  }
+  function cabinAnchor(car:Car,side:number):Vec3 {
+    // Authored cabin fit targets, not claims of independent seat geometry in the current shells.
+    const local:Vec3=car.spec.id==='coupe'?[-.40,.57,side*.38]:car.spec.id==='van'?[1.18,1.15,side*.45]:[.05,1.02,side*.42];
+    local[1]+=vehicleHulls(car.spec.id)?.bodyY??0;
+    const offset=rotateVector(local,car.body.rotation()),p=car.body.translation();
+    return [p.x+offset[0],p.y+offset[1],p.z+offset[2]];
   }
   function returnToCamp() {
     const vehicle=useWorldStore.getState().activeVehicle;
     return returnPlayerToCamp(player.current,vehicle?cars.current.get(vehicle)?.body:undefined,()=>{
       clearPlayerMotion(true);clearInput();grounded.current=false;wetPlayer.current=0;supportDecision.current=null;
       nearbyItem.current=null;guideYaw.current=0;publishedTime.current=0;
+      portalTravel.current={previous:CAMP_SPAWN,cooldown:2,armed:false};
       cars.current.forEach(car=>{for(let i=0;i<4;i++){car.controller.setWheelEngineForce(i,0);car.controller.setWheelBrake(i,0);}});
     },()=>{
       cameraReady.current=false;target.current.set(...CAMP_SPAWN);impact.current=0;lastCarYaw.current=null;
@@ -378,19 +398,34 @@ export default function WorldActors() {
   }
   function enter(id: VehicleId) {
     if (useAlphaMineStore.getState().carried || mineBusy()) {
-      mineNotice('先按 F 放下矿石，再上车。', 'Press F to put the ore down before entering.');
+      actorNotice('先按 F 放下矿石，再上车。', 'Press F to put the ore down before entering.');
       return false;
     }
     const car = cars.current.get(id);
     if (!car || !player.current || useWorldStore.getState().activeVehicle || useWorldStore.getState().seat || guideTransition.current) return false;
+    if(Math.hypot(car.body.linvel().x,car.body.linvel().z)>.8){actorNotice('等车停稳再上车。','Wait for the vehicle to stop.');return false;}
     {
-      // guide step-in: door anchor = the car side nearer the player, 0.6 m out from the body centre line
+      // Visible arms extend beyond the physical capsule: keep the standing anchor 65 cm outside.
       const c=car.body.translation(),r=car.body.rotation(),p=player.current.translation();
-      const side=rotateVector([0,0,car.spec.size[2]/2+.25],r),toP=[p.x-c.x,p.z-c.z];
-      const sg=side[0]*toP[0]+side[2]*toP[1]>=0?1:-1;
-      const door={x:c.x+sg*side[0],y:p.y,z:c.z+sg*side[2]};
-      if(!playerRouteClear(world,rapier,player.current,p,door,car.body))return false;
-      guideTransition.current={phase:'enter',elapsed:0,door:[door.x,p.y-PLAYER_CENTER_HEIGHT,door.z]};
+      const side=rotateVector([0,0,car.spec.size[2]/2+.65],r),toP=[p.x-c.x,p.z-c.z];
+      const preferred=side[0]*toP[0]+side[2]*toP[1]>=0?1:-1;
+      for(const sg of [preferred,-preferred]){
+        const door={x:c.x+sg*side[0],y:p.y,z:c.z+sg*side[2]};
+        let route=[door];
+        if(!playerRouteClear(world,rapier,player.current,p,door)){
+          const local=rotateVector([p.x-c.x,p.y-c.y,p.z-c.z],{x:-r.x,y:-r.y,z:-r.z,w:r.w});
+          const end=(local[0]>=0?1:-1)*(car.spec.size[0]/2+.75);
+          route=[[end,0,local[2]],[end,0,sg*(car.spec.size[2]/2+.65)]].map(q=>{const v=rotateVector(q as Vec3,r);return{x:c.x+v[0],y:p.y,z:c.z+v[2]};});route.push(door);
+          let previous=p,clear=true;
+          for(const point of route){if(!playerRouteClear(world,rapier,player.current,previous,point)){clear=false;break;}previous=point;}
+          if(!clear)continue;
+        }
+        let distance=0,previous=p;for(const point of route){distance+=Math.hypot(point.x-previous.x,point.z-previous.z);previous=point;}
+        const approachSeconds=Math.max(VEHICLE_TRANSITION_S*.3,distance/1.7);
+        guideTransition.current={phase:'enter',elapsed:0,door:[door.x,p.y-PLAYER_CENTER_HEIGHT,door.z],cabin:cabinAnchor(car,sg),yaw:heading(r),approach:route.slice(0,-1).map(v=>[v.x,v.y-PLAYER_CENTER_HEIGHT,v.z]),approachSeconds,duration:approachSeconds+VEHICLE_TRANSITION_S*.7};
+        break;
+      }
+      if(!guideTransition.current){actorNotice('车门通道被挡住了，请走近空旷的一侧。','The door path is obstructed. Approach a clear side.');return false;}
     }
     clearPlayerMotion();pendingVehicleExit.current=false;
     const held=[...keys.current].filter(code=>['KeyW','KeyA','KeyS','KeyD','ShiftLeft','ShiftRight','KeyX','Space'].includes(code));
@@ -404,10 +439,11 @@ export default function WorldActors() {
     if (!car || !player.current) return false;
     // E during entry is remembered; finish the door transfer before reversing it.
     if(guideTransition.current?.phase==='enter'){pendingVehicleExit.current=true;return true;}
+    if(Math.hypot(car.body.linvel().x,car.body.linvel().z)>.8){actorNotice('先刹停，再下车。','Stop the vehicle before getting out.');return false;}
     const center=car.body.translation(), rotation=car.body.rotation();
-    // Try both doors, then behind. A downward ground ray and capsule overlap reject
+    // Try both doors. A downward ground ray and capsule overlap reject
     // water, walls, parked vehicles and narrow gaps before the player is enabled.
-    const offsets: Vec3[] = [[0,0,car.spec.size[2]/2+.9],[0,0,-car.spec.size[2]/2-.9],[-car.spec.size[0]/2-1,0,0]];
+    const offsets: Vec3[] = [[0,0,car.spec.size[2]/2+.9],[0,0,-car.spec.size[2]/2-.9]];
     for (const offset of offsets) {
       const local=rotateVector(offset,rotation);
       const origin={x:center.x+local[0],y:center.y+3,z:center.z+local[2]};
@@ -424,11 +460,12 @@ export default function WorldActors() {
       // Check the door-to-spot corridor as well as its endpoint. The vehicle itself is the transfer
       // frame; every other solid, including a wall between two free endpoints, blocks that route.
       const distance=Math.hypot(local[0],local[2])||1;
-      const doorDistance=(offset[0] ? car.spec.size[0]/2 : car.spec.size[2]/2)+.25;
+      const doorDistance=(offset[0] ? car.spec.size[0]/2 : car.spec.size[2]/2)+.65;
       const door={x:center.x+local[0]*doorDistance/distance,y:candidate.y,z:center.z+local[2]*doorDistance/distance};
       if (!playerRouteClear(world,rapier,player.current,door,candidate,car.body)) continue;
-      guideTransition.current={phase:'exit',elapsed:0,door:[door.x,door.y-PLAYER_CENTER_HEIGHT,door.z]};
+      guideTransition.current={phase:'exit',elapsed:0,door:[door.x,door.y-PLAYER_CENTER_HEIGHT,door.z],cabin:cabinAnchor(car,offset[2]<0?-1:1),yaw:heading(rotation)};
       clearPlayerMotion();resetBody(player.current,asTuple(candidate)); player.current.setEnabled(true);
+      portalTravel.current.previous=asTuple(candidate);
       clearInput(); wetPlayer.current=0;
       useWorldStore.setState({activeVehicle:null,canRecover:false,speed:0}); return true;
     }
@@ -676,9 +713,11 @@ export default function WorldActors() {
     const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot || !player.current) return;
     physicsSteps.current++;
     const dt=world.timestep || PHYSICS_STEP;
+    for(const [id,seconds] of rescueRetry.current)rescueRetry.current.set(id,Math.max(0,seconds-dt));
+    portalTravel.current.cooldown=Math.max(0,portalTravel.current.cooldown-dt);
     if(guideTransition.current){
       guideTransition.current.elapsed+=dt;
-      if(guideTransition.current.elapsed>=VEHICLE_TRANSITION_S){
+      if(guideTransition.current.elapsed>=(guideTransition.current.duration??VEHICLE_TRANSITION_S)){
         guideTransition.current=null;
         if(pendingVehicleExit.current){pendingVehicleExit.current=false;exit();}
       }
@@ -716,7 +755,7 @@ export default function WorldActors() {
       if(now.card){useWorldStore.setState({card:null});return;}
       if (mineBusy() || railVault.current) return;
       if (useAlphaMineStore.getState().carried && item && !item.id.startsWith('alpha-mine-')) {
-        mineNotice('先在矿场暂存台按 F 放下矿石，再使用其他设施。', 'Set the ore on a mine shelf with F before using another attraction.');
+        actorNotice('先在矿场暂存台按 F 放下矿石，再使用其他设施。', 'Set the ore on a mine shelf with F before using another attraction.');
         return;
       }
       if(active)exit();else if(item){item.onInteract();}else if(nearby)enter(nearby);
@@ -818,7 +857,17 @@ export default function WorldActors() {
       // be returned to dry land after RECOVERY_SECONDS. Driving through shallow surf stays possible.
       const p=car.body.translation(),floor=p.y+rotateVector([0,-car.spec.size[1]*.29,0],car.body.rotation())[1];
       car.wet=advanceTimer(car.wet,p.y<WATER_Y||floor<WATER_Y-.05,dt);
-      if(car.wet>=RECOVERY_SECONDS || p.y< -80){const dry=nearestDryPoint(p.x,p.z),road=dry??nearestRoadPoint(asTuple(p));if(useWorldStore.getState().activeVehicle===car.spec.id)clearPlayerMotion(true);resetBody(car.body,[road[0],road[1]+wheelGeometry(car.spec.size).height+.2,road[2]],heading(car.body.rotation()));car.wet=0;car.flipped=0;}
+      if((car.wet>=RECOVERY_SECONDS || p.y< -80)&&!(rescueRetry.current.get(car.spec.id)??0)){
+        rescueRetry.current.set(car.spec.id,1);
+        const landing=findSafeVehicleLanding(world,rapier,car.body,car.spec.size,roadLandingCandidates(asTuple(p),ROAD_POINTS),WATER_Y);
+        if(landing){
+          if(useWorldStore.getState().activeVehicle===car.spec.id){clearPlayerMotion(true);clearInput();cameraReady.current=false;target.current.set(...landing.position);}
+          resetBody(car.body,landing.position,landing.yaw);car.wet=0;car.flipped=0;car.steering=0;car.steerInput=0;car.throttleInput=0;
+          car.driving=createDrivingState();
+          for(let i=0;i<4;i++){car.controller.setWheelEngineForce(i,0);car.controller.setWheelBrake(i,car.spec.mass*.035);car.controller.setWheelSteering(i,0);}
+          if(driven)actorNotice('已回到宽阔路段，可以继续驾驶。','Recovered to a clear road. Ready to drive.');
+        }
+      }
     });
     publishDrivingTelemetry(active?.spec.id==='coupe'?active.driving:null);
     if(!active){
@@ -972,8 +1021,38 @@ export default function WorldActors() {
         grounded.current=false;jumpSeq.current++;
       }
       }
-      wetPlayer.current=advanceTimer(wetPlayer.current,p.y<WATER_Y,dt);
-      if(wetPlayer.current>=RECOVERY_SECONDS || p.y< -80){const dry=nearestDryPoint(p.x,p.z),road=dry??nearestRoadPoint(asTuple(p));relocatePlayer([road[0],road[1]+PLAYER_CENTER_HEIGHT,road[2]]);}
+      const wet=updateHeadSubmersion(wetPlayer.current,dt,p.y,WATER_Y);
+      wetPlayer.current=wet.submergedSeconds;
+      if((wet.shouldRescue||p.y< -80)&&!(rescueRetry.current.get('player')??0)){
+        rescueRetry.current.set('player',1);
+        const dry=nearestDryPoint(p.x,p.z);
+        const candidates:Vec3[]=[...(dry?[dry]:[]),...roadLandingCandidates(asTuple(p),ROAD_POINTS).map(c=>c.position),[CAMP_SPAWN[0],4.8,CAMP_SPAWN[2]]];
+        const landing=findSafePlayerLanding(world,rapier,player.current,candidates,WATER_Y);
+        if(landing){relocatePlayer(landing);actorNotice('已回到安全陆地。浅水仍可自由走动。','Back on safe ground. Shallow water is still walkable.');}
+      }
+      const travel=portalTravel.current,now=asTuple(player.current.translation());
+      if(!travel.armed&&portalRearmed(travel.cooldown,now,WORLD_PORTALS))travel.armed=true;
+      if(travel.armed&&travel.previous&&!seat&&!locked&&!state.card&&!railVault.current){
+        const source=WORLD_PORTALS.find(g=>portalCrossing(g,travel.previous!,now,PLAYER_RADIUS,PLAYER_HALF_HEIGHT));
+        if(source){
+          const destinations=WORLD_PORTALS.filter(g=>g.id!==source.id),start=Math.floor(Math.random()*destinations.length);
+          travel.armed=false;travel.cooldown=2;
+          let transferred=false;
+          for(let i=0;i<destinations.length;i++){
+            const destination=destinations[(i+start)%destinations.length];
+            const landing=findSafePlayerLanding(world,rapier,player.current,destination.arrivalCandidates,WATER_Y);
+            if(!landing)continue;
+            relocatePlayer(landing);guideYaw.current=Math.atan2(-(landing[2]-destination.position[2]),landing[0]-destination.position[0]);
+            useWorldStore.setState({position:landing,nearbyInteract:null,nearbyVehicle:null,canVault:false,zone:LAYOUT_V4?zoneAtV4(landing[0],landing[2]):destination.id==='camp'?'camp':'park'});
+            const zh={camp:'营地',mine:'WorldQuant 矿场',park:'项目广场'},en={camp:'camp',mine:'WorldQuant quarry',park:'project plaza'};
+            actorNotice(`已抵达${zh[destination.id]}。离开门口后可再次穿行。`,`Arrived at ${en[destination.id]}. Walk away to rearm the gate.`);
+            transferred=true;
+            break;
+          }
+          if(!transferred)actorNotice('出口暂时被挡住了，离开光幕后可再试。','The exits are obstructed. Step away from the veil and try again.');
+        }
+      }
+      travel.previous=asTuple(player.current.translation());
     }
     actions.current.jump=false;
     const body=active?.body ?? player.current,p=body.translation(),v=body.linvel();
@@ -997,7 +1076,7 @@ export default function WorldActors() {
       return;
     }
     if (state.paused || state.poolInspect) return;
-    const c=cam.current,driving=!!state.activeVehicle;
+    const c=cam.current,driving=!!state.activeVehicle&&guideTransition.current?.phase!=='enter';
     const car=driving?cars.current.get(state.activeVehicle!):undefined;
     const body=car?.body??player.current;if(!body)return;
     const p=body.translation(),velocity=body.linvel(),speed=Math.hypot(velocity.x,velocity.z);

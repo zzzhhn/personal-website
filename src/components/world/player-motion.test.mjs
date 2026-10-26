@@ -117,6 +117,14 @@ test('a settled capsule can transfer to an open door without treating floor cont
   p.free();
 });
 
+test('boarding can separate from a car contact but cannot cross through the touching car',()=>{
+  const p=passage(8),from={x:0,y:.88,z:0};
+  p.world.createCollider(RAPIER.ColliderDesc.cuboid(.015,1,1).setTranslation(.35,1,0));p.world.step();
+  assert.equal(playerRouteClear(p.world,RAPIER,p.body,from,{...from,x:-.5}),true);
+  assert.equal(playerRouteClear(p.world,RAPIER,p.body,from,{...from,x:1}),false);
+  p.free();
+});
+
 test('diagonal input cannot cut an inside corner; sensors stay traversable',()=>{
   const p=passage(8);
   p.world.createCollider(RAPIER.ColliderDesc.cuboid(.01,2,4).setTranslation(-1,1,0));

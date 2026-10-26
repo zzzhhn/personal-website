@@ -15,8 +15,9 @@ import { ALPHA_FACTORS } from './alpha-mine-data';
 import { GuideIdleLayer } from './WorldGuideIdle';
 import { refineGuideBoots } from './WorldGuideShape';
 import { calibrateGuideBootClips } from './WorldGuideBoots';
-import { guideSeatRootY, holdGuideSeatIdle } from './WorldGuideSeat';
+import { GuideSeatContact, GuideSeatedIdle, guideSeatRootY, holdGuideSeatIdle } from './WorldGuideSeat';
 import { GuideVaultLayer, type GuideRailVault } from './WorldGuideVault';
+import { GUIDE_VEHICLE_TRANSITION_S, GuideVehicleUpperBody, guideVehicleApproach, guideVehicleRoot, guideVehicleSample } from './WorldGuideVehicle';
 
 export interface WorldGuideMotion {
   speedMps: number; grounded: boolean; facing: number; targetSpeedMps?: number;
@@ -38,7 +39,7 @@ export interface WorldGuideMotion {
   /** Seat from store.seat; the body (group) is already at seat.position (WorldActors). */
   seat?: { position: [number, number, number]; yaw: number } | null;
   /** Vehicle transition: 'enter' while stepping in (guide fades out toward `door`), 'exit' while stepping out. */
-  vehicle?: { phase: 'enter' | 'exit'; t: number; door: [number, number, number] } | null;
+  vehicle?: { phase: 'enter' | 'exit'; t: number; door: [number, number, number]; cabin?: [number, number, number]; yaw?: number; approach?: [number, number, number][] } | null;
   /** Hidden by the caller (driving, after the enter transition). */
   hidden?: boolean;
 }
@@ -49,12 +50,10 @@ const LOOPS = new Set(['Idle', ...GAITS]);
 const REQUIRED = ['Idle', ...GAITS, 'JumpStart', 'JumpAir', 'RunJumpStart', 'RunJumpAir', 'Land'];
 /** v3d measured extras (optional: an older GLB without them keeps the v3c behaviour). */
 const EXTRAS = ['SitDown', 'SitIdle', 'StandUp', 'TurnL', 'TurnR', 'IdleLook'];
-/** Seated buttock centre ahead of root (+X), from tools/world/guide/out/sit_measure.json. */
-const SIT_FORWARD = -.4825; // measured rear hip -0.2525 m, supported 0.23 m toward the seat's front edge
 /** A body yaw change of at least this much from a standstill plays a measured turn-in-place step. */
 const TURN_MIN = .8;
 /** Door approach plus measured cabin transfer, shared with the driving input gate. */
-export const VEHICLE_TRANSITION_S = 1.15;
+export const VEHICLE_TRANSITION_S = GUIDE_VEHICLE_TRANSITION_S;
 /** Horizontal speed at take-off from which the running jump is used (spec 1.4). */
 const RUNJUMP_SPEED = 2.5;
 /** Standing landing length and the time after which movement may interrupt it (spec 1.4). */
@@ -277,9 +276,9 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       b.userData.leanAxis = new Vector3(1, 0, 0).applyQuaternion(scene.getWorldQuaternion(new Quaternion())).applyQuaternion(inv).normalize();
       spineBones.push(b);
     } });
-    return { scene, visualGLTF, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4), design, contact, slope:new GuideSlopeFit(scene), spineBones, inert:new GuideInertializer(scene), extras, yawCurve, disposeMerged, disposeBoots, idle: new GuideIdleLayer(scene, actions.IdleLook?.getClip().duration), mine: new GuideMineLayer(scene), vault:new GuideVaultLayer(scene),
+    return { scene, visualGLTF, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4), design, contact, slope:new GuideSlopeFit(scene), spineBones, inert:new GuideInertializer(scene), extras, yawCurve, disposeMerged, disposeBoots, idle: new GuideIdleLayer(scene, actions.IdleLook?.getClip().duration), seatContact: new GuideSeatContact(scene, animations), seatedIdle: new GuideSeatedIdle(scene), vehicleUpper: new GuideVehicleUpperBody(scene), seatPoint: new Vector3(), mine: new GuideMineLayer(scene), vault:new GuideVaultLayer(scene),
       materials: (() => { const m: MeshStandardMaterial[] = []; scene.traverse(o => { if (o instanceof Mesh) for (const x of [o.material].flat()) if (!m.includes(x as MeshStandardMaterial)) m.push(x as MeshStandardMaterial); }); return m; })(),
-      rootOff: new Vector3(), rootOffVel: new Vector3(), rootOffFrom: new Vector3(), lastWorld: new Vector3(), baseWorld: new Vector3(), vehOff: new Vector3(),
+      rootOff: new Vector3(), rootOffVel: new Vector3(), rootOffFrom: new Vector3(), lastWorld: new Vector3(), baseWorld: new Vector3(), vehOff: new Vector3(), vehiclePathPrevious: new Vector3(),
       solePoint:new Vector3(), rootPoint:new Vector3(), recPoint:new Vector3(), inverseRoot:new Matrix4(), motionPoint:new Vector3(), previousMotionPoint:new Vector3(), hasMotionSample:false };
   }, [gltf]);
   const state = useRef({ current: 'Idle', speed: 0, grounded: initialGrounded, visible, airSeconds: 0, landing: 0, time: 0,
@@ -349,7 +348,13 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         pendingAnimation:s.pending, pendingSeconds:s.pendingTime, stopPrototype:!!stop.current, stop:stop.current?.debug()??null,
         budget:(()=>{let draws=0,tris=0;rig.scene.traverse(o=>{if(o instanceof Mesh&&o.visible){const g=o.geometry,m=o.material;draws+=Array.isArray(m)?m.length:1;tris+=(g.index?g.index.count:g.getAttribute('position').count)/3;}});return{draws,triangles:tris};})(),inert:{switches:rig.inert.switches,lastJump:rig.inert.lastJump,residual:rig.inert.residual()},phasePrototype:!!rig.phase, phasePrediction:rig.gate.last, phaseWaitLimit:rig.phase?rig.gate.maxWait:null,
         root: group.current?.getWorldPosition(v).toArray() ?? null, soleCorrection:group.current?.position.y??0, soles, contactVertices,
-        bootSurface: seatSurface ? bootSurface : null };
+        bootSurface: seatSurface ? bootSurface : null,
+        seatSupport: seatSurface ? (() => {
+          const centre = rig.seatContact.sample(new Vector3()), target = new Vector3(...seatSurface.position);
+          return { centre: centre.toArray(), target: target.toArray(), errorXYZ: centre.clone().sub(target).toArray(), idleElapsed: rig.seatedIdle.elapsed,
+            points: rig.seatContact.points.map(p => ({ position: skinnedWorldPoint(p.mesh, p.index, new Vector3()).toArray(), weight: p.weight })) };
+        })() : null,
+        vehicleStage: observedMotion?.vehicle ? guideVehicleSample(observedMotion.vehicle.phase, observedMotion.vehicle.t) : null };
     };
     readActor = read;
     const skin = (topology: boolean) => group.current ? guideSkinEvidence(group.current, topology) : null;
@@ -365,12 +370,14 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     if (group.current) group.current.visible = shown;
     if (!shown && s.visible) { stop.current?.cancel('hidden'); rig.inert.reset(); s.hasLast = false; }
     if (!shown) onMovementLock?.(false);
-    if (!shown) { rig.idle.restore(); rig.idle.reset(); rig.mine.hide(); Object.assign(mineVisualSockets, { valid: false, sampledActionKind: null, sampledElapsed: 0 }); }
+    if (!shown) { rig.idle.restore(); rig.idle.reset(); rig.seatedIdle.reset(); rig.vehicleUpper.restore(); rig.mine.hide(); Object.assign(mineVisualSockets, { valid: false, sampledActionKind: null, sampledElapsed: 0 }); }
     s.visible = shown;
     if (world.paused || world.poolInspect || world.shot || !shown) return;
     rig.vault.restore();
     rig.mine.restore();
     rig.idle.restore();
+    rig.seatedIdle.restore();
+    rig.vehicleUpper.restore();
     const dt = Math.max(1e-6, Math.min(delta, .08));
     const { speedMps, grounded, facing, targetSpeedMps } = motion;
     group.current?.updateWorldMatrix(true, false);
@@ -467,8 +474,9 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     {
       // Walk to the final displayed root in front of the seat, rather than walking into the seat
       // centre and then translating forward again during the sitting clip.
-      const targetX = seat && !s.seatReady ? -SIT_FORWARD * Math.cos(seat.yaw) : 0;
-      const targetZ = seat && !s.seatReady ? SIT_FORWARD * Math.sin(seat.yaw) : 0;
+      const ref = rig.seatContact.reference;
+      const targetX = seat && !s.seatReady ? -ref.x * Math.cos(seat.yaw) - ref.z * Math.sin(seat.yaw) : 0;
+      const targetZ = seat && !s.seatReady ? ref.x * Math.sin(seat.yaw) - ref.z * Math.cos(seat.yaw) : 0;
       const ox = rig.rootOff.x - targetX, oz = rig.rootOff.z - targetZ;
       const len = Math.hypot(ox, oz);
       const standing = s.current === 'StandUp' && rig.actions.StandUp && rig.actions.StandUp.time < rig.actions.StandUp.getClip().duration - 1e-3;
@@ -545,9 +553,9 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     const gesture = rig.idle.advance(dt, idleEligible);
     const idleLook = rig.actions.IdleLook;
     if (gesture === 'measured' && idleLook && (s.current !== 'IdleLook' || idleLook.time < idleLook.getClip().duration - .015)) desired = 'IdleLook';
-    // Door approach -> measured hip flexion into the cabin; reverse for exit. Reuse the CMU sit/get-up
-    // clips as a bounded interaction layer, with the existing door anchor as the contact frame.
+    // Measured walk -> turn step -> CMU hip flexion -> target-adapted cabin transfer.
     const vt = motion.vehicle ?? null;
+    const vehicleSample = vt ? guideVehicleSample(vt.phase, vt.t) : null;
     rig.vehOff.set(0, 0, 0);
     if (vt && group.current?.parent) {
       s.sat = false;
@@ -557,22 +565,28 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       // walk velocity is not a valid extrapolation for the next door's first pose (whose fade starts at 0).
       if (s.vehPhase !== vt.phase) rig.inert.reset();
       const base = group.current.parent.getWorldPosition(rig.baseWorld);
-      const dx = vt.door[0] - base.x, dz = vt.door[2] - base.z, dist = Math.hypot(dx, dz);
-      const pathT = vt.phase === 'enter' ? Math.min(1, vt.t / .55) : Math.max(0, (vt.t - .45) / .55);
-      const e = pathT * pathT * (3 - 2 * pathT), k = vt.phase === 'enter' ? e : 1 - e;
-      rig.vehOff.set(dx * k, 0, dz * k);
-      travel = dist * 6 * pathT * (1 - pathT) * dt / (VEHICLE_TRANSITION_S * .55);
-      shownYaw = vt.phase === 'enter' ? Math.atan2(-dz, dx) : Math.atan2(dz, -dx);
+      const sample = vehicleSample!;
+      rig.rootOff.set(0, 0, 0);
+      const path = guideVehicleApproach(base, vt.door, vt.approach, sample.approach, rig.vehOff);
+      // Actors can give a long safe detour more approach time. Measure its actual frame distance,
+      // rather than deriving gait speed from the nominal 0.72 s window after that time remapping.
+      travel = sample.stage === 'approach' && s.vehPhase === vt.phase ? Math.hypot(rig.vehOff.x - rig.vehiclePathPrevious.x, rig.vehOff.z - rig.vehiclePathPrevious.z) : 0;
+      rig.vehiclePathPrevious.copy(rig.vehOff);
+      const approachYaw = vt.phase === 'enter' ? Math.atan2(-path.dz, path.dx) : Math.atan2(path.dz, -path.dx);
+      const cabinYaw = vt.yaw ?? approachYaw;
+      guideVehicleRoot(base, vt.door, vt.cabin, cabinYaw, rig.seatContact.reference, sample, rig.vehOff, vt.approach).sub(base);
+      const angle = Math.atan2(Math.sin(cabinYaw - approachYaw), Math.cos(cabinYaw - approachYaw));
+      shownYaw = approachYaw + angle * sample.turn;
       const v = travel / dt;
       desired = v > 2.2 ? 'Run' : v > .2 ? 'Walk' : 'Idle';
-      if (rig.extras && (vt.phase === 'enter' ? vt.t >= .55 : vt.t < .45)) desired = vt.phase === 'enter' ? 'SitDown' : 'StandUp';
-      // Only the cabin transfer fades. Boots remain visible through the approach and departure.
-      s.faded = vt.phase === 'enter' ? 1 - Math.min(1, Math.max(0, (vt.t - .65) / .3)) : Math.min(1, vt.t / .3);
+      if (rig.extras && sample.stage === 'turn' && Math.abs(angle) > .15) desired = (vt.phase === 'enter' ? angle : -angle) > 0 ? 'TurnL' : 'TurnR';
+      if (rig.extras && (sample.stage === 'flex' || sample.stage === 'transfer')) desired = vt.phase === 'enter' ? 'SitDown' : 'StandUp';
+      s.faded = sample.opacity;
       s.vehPhase = vt.phase; s.turn = null;
     } else { s.faded = 1; s.vehPhase = ''; }
     onMovementLock?.(!!seat || s.sat || !!vt);
-    if (approach && !seat && !s.sat && grounded && (desired === 'Idle' || desired === 'IdleLook')) desired = 'Walk';
-    if (shownYawOverride !== null && (desired === 'Walk' || isGait(desired))) shownYaw = shownYawOverride;
+    if (!vt && approach && !seat && !s.sat && grounded && (desired === 'Idle' || desired === 'IdleLook')) desired = 'Walk';
+    if (!vt && shownYawOverride !== null && (desired === 'Walk' || isGait(desired))) shownYaw = shownYawOverride;
     // SitDown changes from the approach heading to the seat heading while the short legs are lifted.
     // Keep the entering contact heading until hip descent has raised the feet; no planted 180° cut.
     if (desired === 'SitDown' && s.current !== 'SitDown') s.sitFromYaw = s.shownYaw;
@@ -669,9 +683,10 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         if (isGait(desired)) s.lastLand = s.lastLand === 'moving' ? 'moving-entered' : '';
       }
     } else {s.pending='';s.pendingTime=0;}
-    if (vt && (s.current === 'SitDown' || s.current === 'StandUp')) {
+    if (vt && vehicleSample && /^(SitDown|StandUp|TurnL|TurnR)$/.test(s.current)) {
       const action = rig.actions[s.current];
-      const u = vt.phase === 'enter' ? (vt.t - .55) / .45 : vt.t / .45;
+      const phase = s.current.startsWith('Turn') ? vehicleSample.turn : vehicleSample.sit;
+      const u = vt.phase === 'enter' ? phase : 1 - phase;
       action.setEffectiveTimeScale(0); action.time = Math.min(1, Math.max(0, u)) * action.getClip().duration;
     }
     if (s.current.endsWith('Air')) { const a = rig.actions[s.current]; a.paused = true; a.time = s.airPhase * a.getClip().duration; }
@@ -690,8 +705,18 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     rig.mixer.update(dt); s.time += dt;
     rig.inert.apply(dt);
     rig.idle.apply();
+    rig.seatedIdle.apply(dt, !!seat && s.current === 'SitIdle' && !vt);
+    if (vehicleSample) rig.vehicleUpper.apply(vehicleSample.duck);
     if (group.current) {
       group.current.rotation.y = shownYaw;
+      if (vt?.cabin && vehicleSample) {
+        group.current.updateWorldMatrix(true, true);
+        rig.seatContact.sample(rig.seatPoint).sub(group.current.getWorldPosition(rig.rootPoint));
+        const ref = rig.seatContact.reference, c = Math.cos(shownYaw), sn = Math.sin(shownYaw);
+        rig.vehOff.x += (ref.x * c + ref.z * sn - rig.seatPoint.x) * vehicleSample.transfer;
+        rig.vehOff.y += (ref.y - rig.seatPoint.y) * vehicleSample.transfer;
+        rig.vehOff.z += (-ref.x * sn + ref.z * c - rig.seatPoint.z) * vehicleSample.transfer;
+      }
       // Seat position is the buttock contact, independent of the approach surface. Blend to the
       // measured seated root without a cached-ground floor: that floor floated the sitter when the
       // approach came from the bench top. StandUp ends at the caller's current safe body root.
@@ -704,27 +729,31 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       // walking to the seat (the body already sits at the seat point): feet stay on the ground they left
       if (seat && !sitting && Number.isFinite(s.groundY) && group.current.parent) s.sitDrop = group.current.parent.getWorldPosition(rig.baseWorld).y - s.groundY;
       if (sitting && st) {
+        // Sample the same bilateral rear-underside patch after the mixer and upper-body life.
+        // Its world offset includes facing, so seat contact is solved in X/Y/Z for every yaw.
+        group.current.updateWorldMatrix(true, true);
+        rig.seatContact.sample(rig.seatPoint).sub(group.current.getWorldPosition(rig.rootPoint));
         const bodyY = group.current.parent ? group.current.parent.getWorldPosition(rig.baseWorld).y : st.position[1];
         const standingY = s.current === 'StandUp' || !Number.isFinite(s.groundY) ? bodyY : s.groundY;
-        const rootY = guideSeatRootY(standingY, st.position[1], sitW);
+        const rootY = guideSeatRootY(standingY, st.position[1], sitW, rig.seatPoint.y);
         s.sitDrop = bodyY - rootY;
-        const tx = -SIT_FORWARD * Math.cos(st.yaw), tz = SIT_FORWARD * Math.sin(st.yaw);
-        if (seat) { rig.rootOff.x = tx * (1 - sitW); rig.rootOff.z = tz * (1 - sitW); }
+        const ref = rig.seatContact.reference;
+        const tx = -ref.x * Math.cos(st.yaw) - ref.z * Math.sin(st.yaw), tz = ref.x * Math.sin(st.yaw) - ref.z * Math.cos(st.yaw);
+        if (seat) { rig.rootOff.x = tx * (1 - sitW) - rig.seatPoint.x * sitW; rig.rootOff.z = tz * (1 - sitW) - rig.seatPoint.z * sitW; }
         else if (group.current.parent) {
           const body = group.current.parent.getWorldPosition(rig.baseWorld);
           // Reach the selected safe body point during the first 35% of StandUp, while the high
           // seat still leaves both boots airborne (vertical seat weight reaches ground only at 60%).
           // This is a finite display-root blend, with no foot target or contact constraint.
           const k = sstep(frac('StandUp') / .35);
-          rig.rootOff.x = (st.position[0] + tx - body.x) * (1 - k) - tx * sitW;
-          rig.rootOff.z = (st.position[2] + tz - body.z) * (1 - k) - tz * sitW;
+          rig.rootOff.x = (st.position[0] - rig.seatPoint.x - body.x) * (1 - k);
+          rig.rootOff.z = (st.position[2] - rig.seatPoint.z - body.z) * (1 - k);
         }
       }
       // The helpers solve in world space. Apply this frame's display-root path before solving, so a
       // held stop foot is not translated again by rootOff after IK (the physical parent is stationary).
-      const seatBack = SIT_FORWARD * sitW;
-      group.current.position.x = rig.vehOff.x + rig.rootOff.x - seatBack * Math.cos(shownYaw);
-      group.current.position.z = rig.vehOff.z + rig.rootOff.z + seatBack * Math.sin(shownYaw);
+      group.current.position.x = rig.vehOff.x + rig.rootOff.x;
+      group.current.position.z = rig.vehOff.z + rig.rootOff.z;
       group.current.updateWorldMatrix(true, true);
       const baseY = group.current.getWorldPosition(rig.rootPoint).y - group.current.position.y;
       // Moving landing: short additive spine/chest compression (<= 0.15 s, spec 1.4), no foot change.
@@ -812,14 +841,11 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
           minSole=Math.min(minSole,ground===null?rig.solePoint.y-rootY:rig.solePoint.y-group.current!.position.y-ground);
         });
       }
-      group.current.position.y=grounded&&Number.isFinite(minSole)&&!s.sitDrop?Math.min(.025,Math.max(0,.0015-minSole)):0;
+      group.current.position.y=grounded&&!vt&&Number.isFinite(minSole)&&!s.sitDrop?Math.min(.025,Math.max(0,.0015-minSole)):0;
       // seat contact and the vehicle step offset, in the parent (body) frame
-      group.current.position.y -= s.sitDrop;
-      // The buttock moves forward inside the baked sit; compensate continuously with the hip descent.
-      // Using sitDrop as a boolean also shifted the approach walk and popped 15.4 cm at its boundary.
-      const back = SIT_FORWARD * sitW;
-      group.current.position.x = rig.vehOff.x + rig.rootOff.x - back * Math.cos(shownYaw);
-      group.current.position.z = rig.vehOff.z + rig.rootOff.z + back * Math.sin(shownYaw);
+      group.current.position.y += rig.vehOff.y - s.sitDrop;
+      group.current.position.x = rig.vehOff.x + rig.rootOff.x;
+      group.current.position.z = rig.vehOff.z + rig.rootOff.z;
       // the body rotation is fixed (enabledRotations off), so world offsets equal parent-frame offsets
       // dithered (alpha-hash) fade: opaque depth-sorted pixels, so the inside of the helmet/body never shows
       // through as it would with blended transparency

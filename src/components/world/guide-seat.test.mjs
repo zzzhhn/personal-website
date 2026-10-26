@@ -1,85 +1,81 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
-import { AnimationMixer, LoopOnce, LoopPingPong, Quaternion, SkinnedMesh, Vector3 } from 'three';
-import { GUIDE_SEAT_CONTACT_Y, guideSeatRootY, holdGuideSeatIdle } from './WorldGuideSeat.ts';
+import { AnimationMixer, Group, LoopOnce, Vector3 } from 'three';
+import { GuideSeatContact, GuideSeatedIdle, GUIDE_SEAT_CONTACT_Y, guideSeatRootY, holdGuideSeatIdle } from './WorldGuideSeat.ts';
+import { refineGuideBoots } from './WorldGuideShape.ts';
 import { skinnedWorldPoint } from './WorldGuideStop.ts';
 import { glb, loadGuide, motionDigest } from '../../../tools/world/guide/boot-analysis.mjs';
 
 const source = process.env.G24_SOURCE ?? new URL('../../../tools/world/guide/out/G24_uncompressed.glb', import.meta.url);
 const actual = { skip: !existsSync(source) && 'set G24_SOURCE to the local uncompressed G24 companion' };
-
-test('seat contact overrides an elevated approach surface and StandUp reaches the current safe root', () => {
-  const seatY = 1.45, safeExitY = 1;
-  for (const approachY of [1, seatY, seatY + .3]) {
-    const seated = guideSeatRootY(approachY, seatY, 1);
-    assert.ok(Math.abs(seated + GUIDE_SEAT_CONTACT_Y - seatY) < 1e-10);
-    assert.equal(guideSeatRootY(approachY, seatY, 0), approachY);
-    const oldRoot = Math.max(approachY, seatY - GUIDE_SEAT_CONTACT_Y);
-    if (approachY >= seatY) assert.ok(oldRoot + GUIDE_SEAT_CONTACT_Y - seatY >= .2393, 'old cached-ground clamp reproduces the floating sitter');
-  }
-  assert.equal(guideSeatRootY(safeExitY, seatY, 0), safeExitY, 'StandUp ends at fresh caller root, independent of old bench-top height');
-  for (let i = 0; i <= 120; i++) {
-    const w = i / 120, y = guideSeatRootY(safeExitY, seatY, w);
-    assert.ok(y >= safeExitY && y <= seatY - GUIDE_SEAT_CONTACT_Y);
-  }
-});
-
 async function fixture() {
   const asset = await loadGuide(source), production = glb(new URL('../../../public/assets/world/guide/G24.glb', import.meta.url));
-  assert.equal(motionDigest(asset), motionDigest(production), 'actual companion matches production rig and animation samples');
-  const { scene, animations } = asset.gltf, points = [];
-  // Same dominant-body criterion as the existing measure_sit.py, evaluated with actual GLTFLoader bones.
-  scene.traverse(o => {
-    if (!(o instanceof SkinnedMesh)) return;
-    const ids = o.geometry.getAttribute('skinIndex'), weights = o.geometry.getAttribute('skinWeight');
-    for (let i = 0; i < ids.count; i++) {
-      let dominant = 0;
-      for (let k = 1; k < 4; k++) if (weights.getComponent(i, k) > weights.getComponent(i, dominant)) dominant = k;
-      if (/^(pelvis|thigh[._]?[LR]|bag)$/.test(o.skeleton.bones[ids.getComponent(i, dominant)].name)) points.push({ mesh: o, index: i });
-    }
-  });
-  assert.ok(points.length > 20);
-  return { scene, animations, points };
+  assert.equal(motionDigest(asset), motionDigest(production), 'companion has production skeleton and animation samples');
+  const { scene, animations } = asset.gltf, dispose = refineGuideBoots(scene);
+  const contact = new GuideSeatContact(scene, animations), idle = new GuideSeatedIdle(scene), root = new Group(); root.add(scene);
+  return { scene, animations, contact, idle, root, mixer: new AnimationMixer(scene), dispose };
+}
+function sampleHeld(f) {
+  const clip = f.animations.find(c => c.name === 'SitIdle'), action = holdGuideSeatIdle(f.mixer.clipAction(clip)).play();
+  f.mixer.update(clip.duration + .01); return action;
+}
+function align(f, target) {
+  f.root.updateWorldMatrix(true, true);
+  const offset = f.contact.sample(new Vector3()).sub(f.root.getWorldPosition(new Vector3()));
+  f.root.position.copy(target).sub(offset); f.root.updateWorldMatrix(true, true);
 }
 
-function lowest(scene, points) {
-  scene.updateMatrixWorld(true);
-  return Math.min(...points.map(({ mesh, index }) => skinnedWorldPoint(mesh, index, new Vector3()).y));
-}
-
-test('actual G24 seated skin remains on the seat for ground, bench-top and elevated approaches', actual, async () => {
-  const { scene, animations, points } = await fixture(), mixer = new AnimationMixer(scene);
-  const clip = animations.find(c => c.name === 'SitIdle'), action = holdGuideSeatIdle(mixer.clipAction(clip)).play();
-  assert.equal(clip.userData.loop, false); assert.ok(clip.duration > .5 && clip.duration < .55);
-  let worst = 0, measuredEnd = 0;
-  for (let i = 0; i <= 240; i++) {
-    mixer.update(1 / 120); const buttock = lowest(scene, points);
-    for (const approachY of [1, 1.45, 1.75]) worst = Math.max(worst, Math.abs(guideSeatRootY(approachY, 1.45, 1) + buttock - 1.45));
-    if (i > 120) measuredEnd = buttock;
+test('seat support overrides elevated approach and StandUp reaches the fresh safe root', () => {
+  for (const approach of [1, 1.45, 1.75]) {
+    assert.equal(guideSeatRootY(approach, 1.45, 0), approach);
+    assert.ok(Math.abs(guideSeatRootY(approach, 1.45, 1) + GUIDE_SEAT_CONTACT_Y - 1.45) < 1e-10);
   }
-  assert.ok(worst < .003, `existing measured contact remains within 3 mm through settling: ${worst}`);
-  assert.ok(Math.abs(measuredEnd - GUIDE_SEAT_CONTACT_Y) < .0003, 'relaxed held pose contact within 0.3 mm');
-  assert.ok(action.enabled && action.paused); assert.equal(action.getEffectiveWeight(), 1);
-  console.log(JSON.stringify({ seatedSkinY: measuredEnd, maxSeatContactErrorM: worst, settlingSeconds: clip.duration }));
-  mixer.stopAllAction(); mixer.uncacheRoot(scene);
+  assert.equal(guideSeatRootY(1, 1.45, 0), 1);
 });
 
-test('old ping-pong replays the bow every second; new measured settle holds and can leave for StandUp', actual, async () => {
-  const { scene, animations } = await fixture(), clip = animations.find(c => c.name === 'SitIdle');
-  const chest = scene.getObjectByName('chest'), q = () => { scene.updateMatrixWorld(true); return chest.getWorldQuaternion(new Quaternion()).normalize(); };
-  const mixer = new AnimationMixer(scene), old = mixer.clipAction(clip).setLoop(LoopPingPong, Infinity).play();
-  mixer.update(clip.duration); const relaxed = q();
-  mixer.update(clip.duration); const repeatedBow = q().angleTo(relaxed) * 180 / Math.PI;
-  assert.ok(repeatedBow > 15, 'real source settling repeated backwards causes the reported bow');
-  old.stop(); mixer.uncacheClip(clip);
-  const idle = holdGuideSeatIdle(mixer.clipAction(clip)).play(); mixer.update(clip.duration + .01);
-  const held = q(); let maxHeldMotion = 0;
-  for (let i = 0; i < 1200; i++) { mixer.update(1 / 120); maxHeldMotion = Math.max(maxHeldMotion, q().angleTo(held)); }
-  assert.ok(maxHeldMotion < 1e-7, 'no repeated bow over ten seated seconds');
-  idle.stop(); const stand = mixer.clipAction(animations.find(c => c.name === 'StandUp')).setLoop(LoopOnce, 1);
-  stand.clampWhenFinished = true; stand.play(); mixer.update(stand.getClip().duration);
-  assert.ok(q().angleTo(held) > .1, 'original measured StandUp still replaces held SitIdle');
-  console.log(JSON.stringify({ oldBowRangeDeg: repeatedBow, oldBowPeriodS: clip.duration * 2, newHeldMotionDeg: maxHeldMotion * 180 / Math.PI }));
-  mixer.stopAllAction(); mixer.uncacheRoot(scene);
+test('actual posterior patch reproduces the old 11 cm gap and aligns X/Y/Z at eight facings', actual, async () => {
+  const f = await fixture(); sampleHeld(f);
+  assert.ok(f.contact.points.length >= 4, 'bilateral contact patch, not the lowest thigh/shin vertex');
+  const support = f.contact.sample(new Vector3());
+  assert.ok(support.y > .35 && support.y < .365); assert.ok(support.x < -.44 && support.x > -.49);
+  const oldGap = support.y - .2394; assert.ok(oldGap > .11, 'old height datum leaves the real rear buttocks airborne');
+  const target = new Vector3(7, 1.45, -3); let maxError = 0, worstBand = 0;
+  for (let i = 0; i < 8; i++) {
+    f.root.rotation.y = i * Math.PI / 4; align(f, target);
+    maxError = Math.max(maxError, f.contact.sample(new Vector3()).distanceTo(target));
+    for (const p of f.contact.points) {
+      const actual = skinnedWorldPoint(p.mesh, p.index, new Vector3()), local = actual.clone().sub(target).applyAxisAngle(new Vector3(0, 1, 0), -f.root.rotation.y);
+      worstBand = Math.max(worstBand, Math.abs(actual.y - target.y));
+      assert.ok(Math.abs(local.x) < .04 && Math.abs(local.z) < .13, 'rear contact stays over centre in side and oblique views');
+    }
+  }
+  const bench = glb(new URL('../../../public/assets/world/camp/C06.glb', import.meta.url));
+  const bounds = bench.json.accessors[bench.json.meshes[0].primitives[0].attributes.POSITION];
+  assert.ok(bounds.max[0] > .37 && bounds.max[2] > 2.39, 'actual C06 cross-section and ±1 m seats contain this patch');
+  assert.ok(maxError < 1e-6); assert.ok(worstBand < .006, 'posterior support band straddles the plane within 6 mm');
+  console.log(JSON.stringify({ patchVertices: f.contact.points.length, reference: f.contact.reference.toArray(), oldRearGapM: oldGap, maxXYZErrorM: maxError, posteriorBandM: worstBand }));
+  f.mixer.stopAllAction(); f.dispose();
+});
+
+test('held source settle gains breathing and slow gaze with fixed posterior support and clean exit', actual, async () => {
+  const f = await fixture(), held = sampleHeld(f), target = new Vector3(0, 1.45, 0);
+  const chest = f.scene.getObjectByName('chest'), head = f.scene.getObjectByName('head');
+  const chestStart = chest.quaternion.clone(), headStart = head.quaternion.clone();
+  const protectedBones = ['pelvis', 'thighL', 'thighR', 'shinL', 'shinR', 'footL', 'footR'].map(n => f.scene.getObjectByName(n));
+  const bases = protectedBones.map(b => b.quaternion.clone());
+  let chestMotion = 0, headMotion = 0, contactError = 0;
+  for (let frame = 0; frame < 1500; frame++) {
+    f.idle.restore(); f.mixer.update(1 / 60); f.idle.apply(1 / 60, true); align(f, target);
+    chestMotion = Math.max(chestMotion, chest.quaternion.angleTo(chestStart)); headMotion = Math.max(headMotion, head.quaternion.angleTo(headStart));
+    contactError = Math.max(contactError, f.contact.sample(new Vector3()).distanceTo(target));
+    protectedBones.forEach((b, i) => assert.deepEqual(b.quaternion.toArray(), bases[i].toArray(), 'idle life leaves pelvis and legs untouched'));
+  }
+  assert.ok(held.enabled && held.paused); assert.ok(chestMotion > .01 && chestMotion < .04); assert.ok(headMotion > .12 && headMotion < .18); assert.ok(contactError < 1e-7);
+  f.idle.reset(); assert.equal(f.idle.elapsed, 0); assert.ok(chest.quaternion.angleTo(chestStart) < 1e-7); assert.ok(head.quaternion.angleTo(headStart) < 1e-7);
+  const seatedHip = protectedBones[0].position.y;
+  held.stop(); const stand = f.mixer.clipAction(f.animations.find(c => c.name === 'StandUp')).setLoop(LoopOnce, 1); stand.clampWhenFinished = true; stand.play();
+  f.mixer.update(stand.getClip().duration); assert.ok(Math.abs(protectedBones[0].position.y - seatedHip) > .1, 'measured StandUp replaces the seat layer');
+  console.log(JSON.stringify({ breathingChestDeg: chestMotion * 180 / Math.PI, gazeHeadDeg: headMotion * 180 / Math.PI, maxContactErrorM: contactError }));
+  f.mixer.stopAllAction(); f.dispose();
 });

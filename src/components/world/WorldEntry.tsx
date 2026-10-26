@@ -1,34 +1,29 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
+import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { BoxGeometry, BufferGeometry, Group, Mesh, MeshStandardMaterial, Vector3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
-import { EXIT_POSTS } from './WorldCampContentLayout';
-import { useInteractable } from './WorldInteract';
 import { night } from './WorldNight';
 import { craftMaterial } from './WorldCraftMaterials';
 import { useWorldStore } from './store';
-import { worldText } from './world-i18n';
-import type { Vec3 } from './types';
+import { ENTRY_POSITION, PORTAL_THRESHOLD, WORLD_PORTALS } from './world-portals';
+import { createPortalSurface, createPortalThreshold, PORTAL_FRAME_YAW, PORTAL_PARTICLE_COUNT } from './WorldPortalSurface';
 
-// Beside the existing walking exit, 3.5 m inside its lamps. The road starts at the lamps;
-// even the eastmost stone stays 3 m west of that road. No layout, collider or greybox claim.
-export const ENTRY_POSITION: Vec3 = [EXIT_POSTS[0][0] - 3.5, EXIT_POSTS[0][1], (EXIT_POSTS[0][2] + EXIT_POSTS[1][2]) / 2];
+export { ENTRY_POSITION } from './world-portals';
 let draco: DRACOLoader | undefined;
 const withDraco = (loader: GLTFLoader) => {
   draco ??= new DRACOLoader().setDecoderPath('/assets/world/draco/');
   loader.setDRACOLoader(draco);
 };
-const canOpen = () => {
-  const s = useWorldStore.getState();
-  return !s.paused && !s.card && !s.seat && !s.activeVehicle && !s.shot;
-};
-
-/** G28 keeps the inventory's non-blocking entrance-trigger exception. It is not a teleporter. */
+/** The unscaled circular G28 at each walking portal. WorldActors owns crossing. */
 export default function WorldEntry() {
   const gltf = useLoader(GLTFLoader, '/assets/world/entry/G28.glb', withDraco);
-  const near = useRef<Group>(null), far = useRef<Group>(null), root = useRef<Group>(null);
+  const roots = useRef<(Group | null)[]>([]), near = useRef<(Group | null)[]>([]);
+  const far = useRef<(Group | null)[]>([]), effects = useRef<(Group | null)[]>([]);
+  const surface = useMemo(createPortalSurface, []), threshold = useMemo(createPortalThreshold, []);
+  useEffect(() => () => { surface.dispose(); threshold.dispose(); }, [surface, threshold]);
   const built = useMemo(() => {
     gltf.scene.updateMatrixWorld(true);
     const groups = new Map<string, { material: MeshStandardMaterial; high: BufferGeometry[]; low: BufferGeometry[] }>();
@@ -58,17 +53,17 @@ export default function WorldEntry() {
     });
   }, [gltf]);
   useEffect(() => () => built.forEach(b => { b.high.dispose(); b.low.dispose(); b.material.dispose(); }), [built]);
-  useInteractable({ id: 'G28-menu', kind: 'portal', position: [ENTRY_POSITION[0], ENTRY_POSITION[1] + .8, ENTRY_POSITION[2]], radius: 2,
-    label: { en: worldText.en.entryMenu, zh: worldText.zh.entryMenu }, enabled: canOpen,
-    onInteract: () => { if (canOpen()) useWorldStore.setState({ paused: true }); },
-  });
-  const center = useMemo(() => new Vector3(...ENTRY_POSITION), []);
   useFrame(({ camera }) => {
-    const distance = camera.position.distanceTo(center);
-    if (near.current) near.current.visible = distance < 60;
-    if (far.current) far.current.visible = distance >= 60 && distance < 140;
     const player = useWorldStore.getState().position;
-    const focus = canOpen() ? 1 - Math.min(1, Math.max(0, Math.hypot(player[0] - center.x, player[2] - center.z) - 1.1) / 1.2) : 0;
+    let focus = 0;
+    WORLD_PORTALS.forEach((site, i) => {
+      const p = site.position;
+      const distance = Math.hypot(camera.position.x - p[0], camera.position.y - p[1], camera.position.z - p[2]);
+      if (near.current[i]) near.current[i]!.visible = distance < 60;
+      if (far.current[i]) far.current[i]!.visible = distance >= 60 && distance < 140;
+      if (effects.current[i]) effects.current[i]!.visible = distance < 45;
+      focus = Math.max(focus, 1 - Math.min(1, Math.max(0, Math.hypot(player[0] - p[0], player[2] - p[2]) - 1.1) / 1.2));
+    });
     for (const b of built) if (b.name === 'G28_light_cyan') b.material.emissiveIntensity = .12 + 1.08 * night.value + .28 * focus;
   });
   useEffect(() => {
@@ -76,15 +71,34 @@ export default function WorldEntry() {
     Object.assign(window, { __worldEntry: {
       facts: () => ({ position: ENTRY_POSITION, highTriangles: built.reduce((n, b) => n + (b.high.index?.count ?? b.high.attributes.position.count) / 3, 0),
         lowTriangles: built.reduce((n, b) => n + (b.low.index?.count ?? b.low.attributes.position.count) / 3, 0), materials: built.length,
-        sourceArcRadiiM: [gltf.scene.getObjectByName('G28')?.userData.arcOuterRadiusM, gltf.scene.getObjectByName('G28')?.userData.arcInnerRadiusM], instanceScale: root.current?.scale.toArray(),
-        nearVisible: near.current?.visible, farVisible: far.current?.visible, colliderCount: 0, shadowCasters: 2 }),
-      visible: (value: boolean) => { if (root.current) root.current.visible = value; },
+        sourceArcRadiiM: [gltf.scene.getObjectByName('G28')?.userData.arcOuterRadiusM, gltf.scene.getObjectByName('G28')?.userData.arcInnerRadiusM], instanceScale: roots.current[0]?.scale.toArray(),
+        sourceFrontAxis: gltf.scene.getObjectByName('G28')?.userData.frontAxis, frameYaw: PORTAL_FRAME_YAW, localOpeningNormal: [0, 0, 1],
+        nearVisible: near.current[0]?.visible, farVisible: far.current[0]?.visible, colliderCount: WORLD_PORTALS.length, shadowCasters: 3,
+        sites: WORLD_PORTALS, particlesPerSite: PORTAL_PARTICLE_COUNT, thresholdTriangles: threshold.indices.length / 3,
+        sharedMembraneTriangles: surface.curtainGeometry.index!.count / 3,
+        threshold: PORTAL_THRESHOLD,
+        visibility: WORLD_PORTALS.map((site, i) => ({ id: site.id, near: near.current[i]?.visible, far: far.current[i]?.visible, surface: effects.current[i]?.visible })) }),
+      visible: (value: boolean) => { roots.current.forEach(root => { if (root) root.visible = value; }); },
     } });
     return () => { delete (window as Window & { __worldEntry?: unknown }).__worldEntry; };
-  }, [built]);
+  }, [built, surface, threshold]);
   const meshes = (level: 'high' | 'low') => built.map(b => <mesh key={b.name} name={`G28-${level}-${b.name}`} geometry={b[level]} material={b.material}
+    rotation={[0, PORTAL_FRAME_YAW, 0]}
     castShadow={level === 'high' && b.name !== 'G28_light_cyan'} receiveShadow userData={{ assetId: 'G28', kind: 'entrance-trigger', occluder: true }} />);
-  return <group name="G28-entry" ref={root} position={ENTRY_POSITION} userData={{ budgetZone: 'camp' }}>
-    <group ref={near}>{meshes('high')}</group><group ref={far} visible={false}>{meshes('low')}</group>
-  </group>;
+  return <>{WORLD_PORTALS.map((site, i) => <group key={site.id} name={i === 0 ? 'G28-entry' : `G28-entry-${site.id}`}
+    ref={g => { roots.current[i] = g; }} position={site.position} rotation={[0, site.yaw, 0]} userData={{ budgetZone: site.id }}>
+    <group ref={g => { near.current[i] = g; }}>{meshes('high')}
+      <mesh name={`G28-${site.id}-threshold`} geometry={threshold.geometry} material={threshold.material} castShadow receiveShadow userData={{ surface: true }} />
+    </group>
+    <group ref={g => { far.current[i] = g; }} visible={false}>{meshes('low')}
+      <mesh geometry={threshold.geometry} material={threshold.material} receiveShadow userData={{ surface: true }} />
+    </group>
+    <group ref={g => { effects.current[i] = g; }} userData={{ noOcclusionFade: true }}>
+      <mesh name={`G28-${site.id}-membrane`} geometry={surface.curtainGeometry} material={surface.curtainMaterial} renderOrder={2} userData={{ noOcclusionFade: true }} />
+      <points name={`G28-${site.id}-motes`} geometry={surface.particleGeometry} material={surface.particleMaterial} renderOrder={3} userData={{ noOcclusionFade: true }} />
+    </group>
+    <RigidBody name={`G28-${site.id}-threshold-body`} type="fixed" colliders={false} userData={{ surface: true, assetId: 'G28-threshold' }}>
+      <TrimeshCollider args={[threshold.vertices, threshold.indices]} friction={.95} restitution={0} />
+    </RigidBody>
+  </group>)}</>;
 }

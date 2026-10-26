@@ -9,7 +9,7 @@ import WorldCards from './WorldCards';
 import WorldMap, { loadMapGeometry } from './WorldMap';
 import WorldAlphaMineHud from './WorldAlphaMineHud';
 import WorldPoolInspect from './WorldPoolInspect';
-import { WorldDrivingHud, WorldFirstHints, WorldWaypointReadout, WorldZoneTitle } from './WorldHud';
+import { WorldDrivingHud, WorldFirstHints, WorldWaypointReadout, WorldZoneTitle, WorldNotice } from './WorldHud';
 import './world.css';
 
 const Runtime = lazy(async () => {
@@ -118,6 +118,7 @@ export default function WorldApp({ content }: { content: WorldContent }) {
     </header>
     <aside className="world-location"><div className="world-radar"><WorldMap /><span className="world-radar-n" aria-hidden="true">N</span></div><div className="world-location-text"><span>{t[s.zone]}</span><WorldWaypointReadout /></div></aside>
     <WorldZoneTitle about={content.about} />
+    <WorldNotice />
     <WorldExperienceSummary experiences={content.experiences} />
     <WorldCards content={content} />
     {UiTest && <Suspense fallback={null}><UiTest /></Suspense>}

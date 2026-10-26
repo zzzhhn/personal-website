@@ -56,9 +56,11 @@ export function playerRouteClear(world: World, rapier: Pick<typeof Rapier, 'Caps
   // The resting dynamic body can sit 1–2 mm inside the floor's contact skin. Lift only the
   // query by 12 mm so horizontal door transfer does not hit that floor at t=0. Full capsule
   // height/width and every wall/ceiling remain checked, including mixed terrain trimeshes.
+  // A resting capsule may also touch the car: ignore initial penetration only when separating,
+  // so it can step away before rounding a corner, while approaches into the body still block.
   return !world.castShape({ ...from, y: from.y + .012 }, { x: 0, y: 0, z: 0, w: 1 },
     { x: to.x - from.x, y: to.y - from.y, z: to.z - from.z },
-    new rapier.Capsule(PLAYER_HALF_HEIGHT, PLAYER_RADIUS), .004, 1, true,
+    new rapier.Capsule(PLAYER_HALF_HEIGHT, PLAYER_RADIUS), .004, 1, false,
     undefined, undefined, undefined, body,
     c => !c.isSensor() && (!excludedBody || c.parent()?.handle !== excludedBody.handle));
 }

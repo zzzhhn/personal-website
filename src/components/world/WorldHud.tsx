@@ -9,6 +9,17 @@ import { watchUiGamepads } from './WorldUiGamepad';
 type Zone = ReturnType<typeof useWorldStore.getState>['zone'];
 const ZONE_HOLD_MS = 3400, ZONE_REPEAT_MS = 20000;
 
+/** Event-driven feedback for travel and blocked actions; one cancellable expiry, no polling. */
+export function WorldNotice() {
+  const toast=useWorldStore(s=>s.toast),lang=useWorldStore(s=>s.lang);
+  const hidden=useWorldStore(s=>s.paused||s.poolInspect||!!s.shot);
+  useEffect(()=>{if(!toast)return;const timer=setTimeout(()=>{
+    if(useWorldStore.getState().toast===toast)useWorldStore.setState({toast:null});
+  },4400);return()=>clearTimeout(timer);},[toast]);
+  if(!toast||hidden)return null;
+  return <div className="world-notice" role="status" aria-live="polite">{toast[lang]}</div>;
+}
+
 /** The actor publishes position at ~10 Hz even while stopped, so recharge needs no UI timer. */
 export function WorldDrivingHud() {
   const vehicle = useWorldStore(s => s.activeVehicle), speed = useWorldStore(s => s.speed);
