@@ -37,14 +37,14 @@ export function quarryWorld(){
 const vector=p=>({x:p[0],y:p[1],z:p[2]});
 const tuple=p=>[p.x,p.y,p.z].map(v=>+v.toFixed(4));
 /** Real continuous dynamic walk: the only placement is the initial spawn. No jumping or recovery. */
-export function walkQuarry(points,{speed=3.6,tolerance=.18,analogue=false,configureWorld}={}){
+export function walkQuarry(points,{speed=3.6,tolerance=.18,analogue=false,configureWorld,spawnCenterHeight=PLAYER_CENTER_HEIGHT}={}){
   const world=quarryWorld();if(configureWorld){configureWorld(world);world.step();}
   const start=points[0],body=world.createRigidBody(RAPIER.RigidBodyDesc.dynamic()
-    .setTranslation(start[0],start[1]+PLAYER_CENTER_HEIGHT,start[2]).lockRotations().setLinearDamping(.2)
+    .setTranslation(start[0],start[1]+spawnCenterHeight,start[2]).lockRotations().setLinearDamping(.2)
     .setCcdEnabled(true).setSoftCcdPrediction(.1).setCanSleep(false));
   world.createCollider(RAPIER.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS).setMass(72).setFriction(0)
     .setFrictionCombineRule(RAPIER.CoefficientCombineRule.Min).setRestitution(0),body);
-  const guard=createPlayerClearance(world);let frames=0,segment=1,walked=0,previous=body.translation(),reason='reached';
+  const guard=createPlayerClearance(world);let frames=0,segment=1,walked=0,previous=body.translation(),reason='reached',settledCenter;
   const position=()=>{const p=body.translation();return [p.x,p.y-PLAYER_HALF_HEIGHT-PLAYER_RADIUS,p.z].map(v=>+v.toFixed(4));};
   try{
     let blocked=false;
@@ -52,6 +52,7 @@ export function walkQuarry(points,{speed=3.6,tolerance=.18,analogue=false,config
       undefined,undefined,undefined,body,c=>c.parent()?.userData?.kind==='solid');
     if(blocked)return {passed:false,reason:'spawn-overlaps-solid',segment:0,position:position(),goal:start,frames,walked};
     for(let i=0;i<45;i++)world.step();
+    settledCenter=tuple(body.translation());
     for(;segment<points.length;segment++){
       const goal=vector(points[segment]),initial=body.translation(),length=Math.hypot(goal.x-initial.x,goal.z-initial.z);
       const budget=Math.ceil((length/1.2+3)*60);let reached=false;
@@ -77,6 +78,6 @@ export function walkQuarry(points,{speed=3.6,tolerance=.18,analogue=false,config
       const c=guard.computedCollision(i);if(c)contacts.push({kind:c.collider?.parent()?.userData?.kind,normal:tuple(c.normal1),witness:tuple(c.witness1)});
     }
     return {passed:segment===points.length,reason,segment,position:position(),goal:points[Math.min(segment,points.length-1)],
-      frames,walked:+walked.toFixed(2),contacts:contacts.slice(0,4)};
+      settledCenter,frames,walked:+walked.toFixed(2),contacts:contacts.slice(0,4)};
   }finally{world.removeCharacterController(guard);world.free();}
 }

@@ -1,12 +1,13 @@
 import { useEffect, useMemo } from 'react';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { ALPHA_MINE_CONNECTOR } from './alpha-mine-layout';
-import { mineEntranceApron } from './alpha-mine-foundation';
+import { mineFoundationSurface } from './alpha-mine-foundation';
+import { terrainHeight } from './WorldLandform';
 import { ParkGeo, mergeBatch, parkMaterial } from './WorldParkKit';
 
-/** Mainland approach markers and a shallow shared draw/collision apron at the quarry lip. */
+/** Continuous low quarry earth and its graded island boundary, plus the approach markers. */
 export default function WorldAlphaMineFoundation() {
-  const apron=useMemo(mineEntranceApron,[]);
+  const apron=useMemo(()=>mineFoundationSurface(terrainHeight),[]);
   const geometry = useMemo(() => {
     const parts = new ParkGeo();
     parts.raw(Array.from(apron.indices).flatMap(i=>Array.from(apron.vertices.subarray(i*3,i*3+3))),'#8B7758');
