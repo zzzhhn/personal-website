@@ -7,10 +7,11 @@ export function cameraCollisionRadius(near: number, fov: number, aspect: number,
   const h = near * Math.tan(fov * Math.PI / 360);
   return Math.max(minimum, Math.hypot(near, h, h * aspect) + .025);
 }
-/** Conservative G24 body/helmet envelope, expanded by the camera's near plane. Draw-only guard. */
+/** Draw-only comfort envelope: a legal wall sweep can still leave the large G24
+ * helmet filling the view. Hide before reaching that distance, not just inside it. */
 export function cameraOverlapsGuide(camera: Point, foot: Point, nearRadius: number, alreadyHidden = false) {
   const y = Math.max(foot.y + .2, Math.min(foot.y + 1.425, camera.y));
-  return Math.hypot(camera.x-foot.x,camera.y-y,camera.z-foot.z) < .35+nearRadius+(alreadyHidden?.12:0);
+  return Math.hypot(camera.x-foot.x,camera.y-y,camera.z-foot.z) < .85+nearRadius+(alreadyHidden?.18:0);
 }
 
 /** One safety path for orbit, eye, pivot smoothing and camera shake. Never lift over a hit. */

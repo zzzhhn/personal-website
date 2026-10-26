@@ -166,7 +166,7 @@ varying vec2 vBladeDetail;
         transformed *= vec3(1.0, fade, 1.0);
         transformed.y = max(transformed.y, 0.012 * f);
       }`).replace('#include <color_vertex>',`#include <color_vertex>
-        if(aFloraKind>1.5)vColor=aBloomColor;
+        if(aFloraKind>1.5)vColor.rgb=aBloomColor;
       `);
     // Both faces use the ground-up normal (DoubleSide would flip back faces dark), and pressed
     // blades read a touch lighter/drier, so a trodden trail shows from the follow camera.
@@ -181,7 +181,7 @@ varying vec2 vBladeDetail;
       diffuseColor.rgb *= 1.0 + 0.08 * rib - 0.10 * margin;
       diffuseColor.rgb *= mix(vec3(1.0), vec3(1.16, 1.12, 1.0), vBend);`);
   };
-  m.customProgramCacheKey = () => 'ground-grass-blades-v5-quarry-flora';
+  m.customProgramCacheKey = () => 'ground-grass-blades-v6-quarry-flora-rgb';
   return m;
 }
 

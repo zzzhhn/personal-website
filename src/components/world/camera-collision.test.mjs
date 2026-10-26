@@ -55,8 +55,9 @@ test('forced-close orbit hides its own helmet/body and restores drawing only aft
     assert.equal(cameraOverlapsGuide(close.position,foot,radius),true,'legal camera sweep can end inside the guide envelope');
     assert.equal(cameraOverlapsGuide({x:0,y:1.425,z:0},foot,radius),true,'helmet interior');
     assert.equal(cameraOverlapsGuide({x:0,y:.6,z:0},foot,radius),true,'body interior');
-    assert.equal(cameraOverlapsGuide({x:.6,y:1.425,z:0},foot,radius,true),true,'hysteresis avoids visibility flicker');
-    assert.equal(cameraOverlapsGuide({x:.85,y:1.425,z:0},foot,radius,true),false,'normal orbit restores drawing');
+    assert.equal(cameraOverlapsGuide({x:.8,y:1.7,z:0},foot,radius),true,'bridge camera outside the helmet must not fill the view with it');
+    assert.equal(cameraOverlapsGuide({x:1.15,y:1.425,z:0},foot,radius,true),true,'hysteresis avoids visibility flicker');
+    assert.equal(cameraOverlapsGuide({x:1.4,y:1.425,z:0},foot,radius,true),false,'normal orbit restores drawing');
   }finally{world.free();}
 });
 test('actual quarry route camera sweeps stay clear at near/far distance and low/high orbit angles', t => {
