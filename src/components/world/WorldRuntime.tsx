@@ -23,6 +23,7 @@ import WorldStreet from './WorldStreet';
 import WorldCampContent from './WorldCampContent';
 import WorldEntry from './WorldEntry';
 import WorldAlphaMine from './WorldAlphaMine';
+import { setRenderReadoutSource } from './world-render-readout';
 
 // Layout v4 greybox (?layout=v4) loads as its own chunk; the default entry never fetches it.
 const WorldDistricts = LAYOUT_V4 ? lazy(() => import('./WorldDistricts')) : null;
@@ -142,7 +143,8 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
       claimedGreybox: () => claimedKeys(),
     };
     Object.assign(window, { __worldDebug: debug });
-    return () => { delete (window as Window & { __worldDebug?: unknown }).__worldDebug; };
+    if(import.meta.env.DEV)setRenderReadoutSource(()=>({sampledAt:new Date().toISOString(),...debug.stats(),...debug.renderLoop(),...debug.renderInfo()}));
+    return () => { if(import.meta.env.DEV)setRenderReadoutSource(null);delete (window as Window & { __worldDebug?: unknown }).__worldDebug; };
   }, [camera, gl, scene, get, world, colliderStates, rapier, setOverlay]);
   return null;
 }
