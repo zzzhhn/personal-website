@@ -48,6 +48,7 @@ function KeyCap({ device, k }: { device: Device; k: 'E' | 'Q' }) {
 export default function WorldCards({ content }: { content: WorldContent }) {
   const nearby = useWorldStore(s => s.nearbyInteract);
   const nearbyVehicle = useWorldStore(s => s.nearbyVehicle);
+  const canVault = useWorldStore(s => s.canVault);
   const lang = useWorldStore(s => s.lang);
   const driving = useWorldStore(s => s.activeVehicle);
   const card = useWorldStore(s => s.card);
@@ -56,7 +57,7 @@ export default function WorldCards({ content }: { content: WorldContent }) {
   const shot = useWorldStore(s => s.shot);
   const pick = useWorldStore(s => s.interactPick);
   const position = useWorldStore(s => s.position);
-  const device = useDevice(!paused && !shot && !card && !driving && !seat && !!(nearby || nearbyVehicle));
+  const device = useDevice(!paused && !shot && !card && !driving && !seat && !!(nearby || nearbyVehicle || canVault));
   const t = worldText[lang];
   const candidates = card || driving || seat ? [] : nearbyCandidates(position, nearby?.id);
   const ids = candidates.map(c => c.id).join('|');
@@ -75,6 +76,7 @@ export default function WorldCards({ content }: { content: WorldContent }) {
   if (paused) return null;
   if (card) return <WorldCardPanel content={content} />;
   if (driving || seat) return null;
+  if (canVault) return <div className='world-prompt' aria-live='polite'><ul><li className='is-active'><kbd className='world-key world-vault-key'>{device==='pad'?'A':lang==='zh'?'空格':'Space'}</kbd><span>{t.vault}</span></li></ul></div>;
   if (nearby) {
     const active = chosen?.id ?? nearby.id;
     const rows = candidates.length > 1 ? candidates.map(c => ({ id: c.id, label: c.label[lang] })) : [{ id: nearby.id, label: nearby.label[lang] }];

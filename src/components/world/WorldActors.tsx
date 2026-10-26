@@ -16,6 +16,7 @@ import WorldGuide, { VEHICLE_TRANSITION_S, worldGuideDebug } from './WorldGuide'
 import WorldVehicleVisual from './WorldVehicleVisual';
 import { playerSupport, followPlayerGround } from './player-ground';
 import { createPlayerClearance, findLowVault, playerRouteClear, playerVelocityChange, sweptPlayerVelocity } from './player-motion';
+import { findRailVault, railVaultVelocity, type RailVault } from './player-vault';
 import { vehicleHulls } from './WorldVehicleAssets';
 import { WorldOcclusion } from './WorldOcclusion';
 import { cameraCollisionRadius, cameraOverlapsGuide, sweepCamera } from './camera-collision';
@@ -212,7 +213,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
 /** Guide-only door transfer. Physics advances elapsed, so pause freezes the interaction too.
  * 'door' is the car's door anchor at entry/exit (car body + side offset). */
 type GuideVehicleTransition = { phase: 'enter'|'exit'; elapsed: number; door: [number,number,number] } | null;
-function GuideVisual({ body, grounded, yaw, targetSpeed, intent, jumpSeq, visible, transition, supportDecision, movementLock, vault, resetId }: { body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; targetSpeed: RefObject<number>; intent: RefObject<'idle'|'walk'|'run'>; jumpSeq: RefObject<number>; visible: boolean; transition: RefObject<GuideVehicleTransition>; supportDecision: RefObject<Record<string, unknown> | null>; movementLock: RefObject<boolean>; vault: RefObject<ReturnType<typeof findLowVault> & { remaining: number } | null>; resetId: number }) {
+function GuideVisual({ body, grounded, yaw, targetSpeed, intent, jumpSeq, visible, transition, supportDecision, movementLock, vault, railVault, resetId }: { body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; targetSpeed: RefObject<number>; intent: RefObject<'idle'|'walk'|'run'>; jumpSeq: RefObject<number>; visible: boolean; transition: RefObject<GuideVehicleTransition>; supportDecision: RefObject<Record<string, unknown> | null>; movementLock: RefObject<boolean>; vault: RefObject<ReturnType<typeof findLowVault> & { remaining: number } | null>; railVault: RefObject<(RailVault & { elapsed: number }) | null>; resetId: number }) {
   const {world,rapier}=useRapier();
   const supportQA = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && new URLSearchParams(window.location.search).get('qaPhysicsSupport') === '1';
   const probeGround=(x:number,z:number,fromY:number)=>{
@@ -223,7 +224,7 @@ function GuideVisual({ body, grounded, yaw, targetSpeed, intent, jumpSeq, visibl
   const readMotion = () => {
     const v = body.current?.linvel();
     return { speedMps: v ? Math.hypot(v.x, v.z) : 0, grounded: grounded.current, facing: yaw.current, targetSpeedMps:targetSpeed.current,
-      intent:intent.current,verticalSpeedMps:v?.y??0,jumpSeq:jumpSeq.current,probeGround,vault:!!vault.current,
+      intent:intent.current,verticalSpeedMps:v?.y??0,jumpSeq:jumpSeq.current,probeGround,vault:!!vault.current||!!railVault.current,railVault:railVault.current,
       ...(supportQA ? { physicsSupportQA: (root: number[], soles: number[][]) => {
         const b = body.current; if (!b) return null;
         const p = b.translation(), q = b.rotation(), velocity = b.linvel();
@@ -263,7 +264,8 @@ function GuideVisual({ body, grounded, yaw, targetSpeed, intent, jumpSeq, visibl
 
 export default function WorldActors() {
   const player = useRef<RapierRigidBody>(null);
-  const guideYaw = useRef(0);
+  const qaStart=import.meta.env.DEV&&new URLSearchParams(window.location.search).get('qa')==='1'?new URLSearchParams(window.location.search).get('start'):null;
+  const guideYaw = useRef(qaStart==='brain-rail'?Math.PI/2:0);
   const guideTargetSpeed = useRef(0);
   const turnBeforeMove = useRef(false);
   const cars = useRef(new Map<VehicleId,Car>());
@@ -284,6 +286,8 @@ export default function WorldActors() {
   const jumpSeq=useRef(0);
   const guideMovementLock=useRef(false);
   const vault=useRef<(NonNullable<ReturnType<typeof findLowVault>> & { remaining: number }) | null>(null);
+  const railVault=useRef<(RailVault & { elapsed: number }) | null>(null);
+  const vaultPreview=useRef<{elapsed:number;plan:RailVault|null;x:number;z:number;yaw:number;colliders:number}>({elapsed:0,plan:null,x:Infinity,z:Infinity,yaw:Infinity,colliders:0});
   const guideTransition=useRef<GuideVehicleTransition>(null);
   const pendingVehicleExit=useRef(false);
   const [guideResetId,setGuideResetId]=useState(0);
@@ -304,6 +308,8 @@ export default function WorldActors() {
     const start=new URLSearchParams(window.location.search).get('start');
     // Reproduce the reported low-floor exit through the visible QA URL, without moving a live player.
     if(import.meta.env.DEV&&start==='brain-exit'&&new URLSearchParams(window.location.search).get('qa')==='1')return [-81.23,1.82,-90.28];
+    if(import.meta.env.DEV&&start==='brain-rail'&&new URLSearchParams(window.location.search).get('qa')==='1')return [ALPHA_MINE_ORIGIN[0]+8,ALPHA_MINE_ORIGIN[1]+PLAYER_CENTER_HEIGHT,ALPHA_MINE_ORIGIN[2]+.16];
+    if(import.meta.env.DEV&&start==='camp-bench'&&new URLSearchParams(window.location.search).get('qa')==='1')return [-37.05,6.5,33.535];
     if(start==='alpha'||start==='brain')return [ALPHA_MINE_ORIGIN[0],ALPHA_MINE_ORIGIN[1]+PLAYER_CENTER_HEIGHT,ALPHA_MINE_ORIGIN[2]+.5];
     if(start==='exchange')return [ALPHA_EXCHANGE_ORIGIN[0],ALPHA_EXCHANGE_ORIGIN[1]+PLAYER_CENTER_HEIGHT,ALPHA_EXCHANGE_ORIGIN[2]+.5];
     if(import.meta.env.DEV&&start==='coupe'){
@@ -316,7 +322,7 @@ export default function WorldActors() {
   const cameraReady = useRef(false);
   const guideView=useRef<Group>(null),guideCameraFoot=useRef(new Vector3());
   const impact = useRef(0);
-  const cam = useRef<CameraRig>({ yaw: CAMERA_DEFAULT_YAW, pitch: CAMERA_DEFAULT_PITCH, distance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)],
+  const cam = useRef<CameraRig>({ yaw: qaStart==='brain-rail'?Math.PI/2:CAMERA_DEFAULT_YAW, pitch: CAMERA_DEFAULT_PITCH, distance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)],
     actual: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)], lastManual: -Infinity, firstPerson: useWorldStore.getState().zoom === 3, collided: false, hitDistance: null, fov: 50, mode: 'walk', recentering: false, driveManualZoom: false, desiredDistance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)] });
   const pad = useRef<PadState>({ connected: false, move: [0,0], look: [0,0], throttle: 0, brake: 0, sprint: false, buttons: [] });
   const moveInput = useRef<[number,number]>([0,0]);
@@ -339,7 +345,7 @@ export default function WorldActors() {
     cars.current.forEach(c=>{c.steerInput=0;c.throttleInput=0;c.driving.power=0;c.driving.boosting=false;c.driving.handbrake=false;});publishDrivingTelemetry(null);
   }
   function clearPlayerMotion(hardCut=false) {
-    vault.current=null;guideMovementLock.current=false;turnBeforeMove.current=false;
+    vault.current=null;railVault.current=null;vaultPreview.current.plan=null;useWorldStore.setState({canVault:false});guideMovementLock.current=false;turnBeforeMove.current=false;
     if(!hardCut)return;
     guideTransition.current=null;pendingVehicleExit.current=false;
     seatHeld.current=null;seatFrom.current=null;seatBody.current=null;
@@ -685,7 +691,7 @@ export default function WorldActors() {
     mineActor.position = [playerPosition.x, playerPosition.y, playerPosition.z];
     mineActor.yaw = guideYaw.current;
     mineActor.grounded = grounded.current;
-    mineActor.available = !active && !state.seat && !state.card;
+    mineActor.available = !active && !state.seat && !state.card && !railVault.current;
     if(!active)cars.current.forEach(car=>{const p=car.body.translation();const d=Math.hypot(p.x-playerPosition.x,p.y-playerPosition.y,p.z-playerPosition.z);if(d<nearest){nearest=d;nearby=car.spec.id;}});
     // World interactables (spec §15.3). Only reachable anchors count: within reach and with a clear line
     // of sight from the chest (no wall / floor between), so nothing triggers through a wall or a storey.
@@ -708,7 +714,7 @@ export default function WorldActors() {
       const now=useWorldStore.getState();
       if(now.seat){useWorldStore.setState({seat:null});return;}
       if(now.card){useWorldStore.setState({card:null});return;}
-      if (mineBusy()) return;
+      if (mineBusy() || railVault.current) return;
       if (useAlphaMineStore.getState().carried && item && !item.id.startsWith('alpha-mine-')) {
         mineNotice('先在矿场暂存台按 F 放下矿石，再使用其他设施。', 'Set the ore on a mine shelf with F before using another attraction.');
         return;
@@ -912,6 +918,38 @@ export default function WorldActors() {
       guideTargetSpeed.current=Math.hypot(vx,vz);
       mineActor.yaw = guideYaw.current;
       advanceMineAction(dt);
+      // Reuse the actor clock. A bounded preview query runs only while on foot and grounded;
+      // pressing Space always revalidates against current collision and landing geometry.
+      const eligible=!seat&&!locked&&grounded.current&&!useAlphaMineStore.getState().carried&&!railVault.current;
+      vaultPreview.current.elapsed+=dt;
+      if(!eligible){vaultPreview.current.plan=null;vaultPreview.current.x=Infinity;}
+      else if(vaultPreview.current.elapsed>=.18){
+        const preview=vaultPreview.current;
+        if(Math.hypot(p.x-preview.x,p.z-preview.z)>.08||Math.abs(guideYaw.current-preview.yaw)>.08||preview.colliders!==world.colliders.len()||(preview.plan&&preview.elapsed>=1)){
+          preview.elapsed=0;preview.x=p.x;preview.z=p.z;preview.yaw=guideYaw.current;preview.colliders=world.colliders.len();
+          preview.plan=findRailVault(world,rapier,player.current,{x:Math.cos(guideYaw.current),y:0,z:-Math.sin(guideYaw.current)},WATER_Y);
+        }
+      }
+      const canVault=!!vaultPreview.current.plan;
+      if(useWorldStore.getState().canVault!==canVault)useWorldStore.setState({canVault});
+      if(actions.current.jump&&eligible){
+        const plan=findRailVault(world,rapier,player.current,{x:magnitude>.05?wx:Math.cos(guideYaw.current),y:0,z:magnitude>.05?wz:-Math.sin(guideYaw.current)},WATER_Y);
+        if(plan){railVault.current={...plan,elapsed:0};vault.current=null;actions.current.jump=false;}
+      }
+      const transfer=railVault.current;
+      if(transfer){
+        const next=railVaultVelocity(world,rapier,player.current,transfer,transfer.elapsed,dt);
+        if(!next){railVault.current=null;player.current.setLinvel({x:0,y:Math.min(0,player.current.linvel().y),z:0},true);}
+        else{
+          if(transfer.elapsed<transfer.prepare&&transfer.elapsed+dt>=transfer.prepare)jumpSeq.current++;
+          player.current.setLinvel(next,true);transfer.elapsed+=dt;
+          guideYaw.current=Math.atan2(-transfer.direction.z,transfer.direction.x);
+          guideTargetSpeed.current=Math.hypot(next.x,next.z);moveIntent.current='idle';
+          if(transfer.elapsed>=transfer.prepare)grounded.current=false;
+          if(transfer.elapsed>=transfer.duration){railVault.current=null;player.current.setLinvel({x:0,y:next.y,z:0},true);}
+        }
+        actions.current.jump=false;
+      }else{
       if(vault.current){
         vault.current.remaining-=dt;
         if(vault.current.remaining<=0 || (grounded.current&&vault.current.remaining<vault.current.duration-.15))vault.current=null;
@@ -932,6 +970,7 @@ export default function WorldActors() {
         vault.current=hop?{...hop,remaining:hop.duration}:null;
         player.current.setLinvel({x:hop?.vx??velocity.x,y:hop?.vy??5,z:hop?.vz??velocity.z},true);
         grounded.current=false;jumpSeq.current++;
+      }
       }
       wetPlayer.current=advanceTimer(wetPlayer.current,p.y<WATER_Y,dt);
       if(wetPlayer.current>=RECOVERY_SECONDS || p.y< -80){const dry=nearestDryPoint(p.x,p.z),road=dry??nearestRoadPoint(asTuple(p));relocatePlayer([road[0],road[1]+PLAYER_CENTER_HEIGHT,road[2]]);}
@@ -1092,7 +1131,7 @@ export default function WorldActors() {
           Horizontal impulse control handles braking; 10 cm soft CCD predicts landing contact. */}
       <CapsuleCollider name="player-capsule" args={[PLAYER_HALF_HEIGHT,PLAYER_RADIUS]} mass={72} friction={0} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={0}/>
       <group ref={guideView} name="world-guide-camera-visibility" position={[0,-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),0]}>
-        <GuideVisual body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} intent={moveIntent} jumpSeq={jumpSeq} visible={!firstPerson} transition={guideTransition} supportDecision={supportDecision} movementLock={guideMovementLock} vault={vault} resetId={guideResetId} />
+        <GuideVisual body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} intent={moveIntent} jumpSeq={jumpSeq} visible={!firstPerson} transition={guideTransition} supportDecision={supportDecision} movementLock={guideMovementLock} vault={vault} railVault={railVault} resetId={guideResetId} />
       </group>
     </RigidBody>
   </>;

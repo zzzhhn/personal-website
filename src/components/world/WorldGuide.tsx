@@ -16,6 +16,7 @@ import { GuideIdleLayer } from './WorldGuideIdle';
 import { refineGuideBoots } from './WorldGuideShape';
 import { calibrateGuideBootClips } from './WorldGuideBoots';
 import { guideSeatRootY, holdGuideSeatIdle } from './WorldGuideSeat';
+import { GuideVaultLayer, type GuideRailVault } from './WorldGuideVault';
 
 export interface WorldGuideMotion {
   speedMps: number; grounded: boolean; facing: number; targetSpeedMps?: number;
@@ -27,6 +28,7 @@ export interface WorldGuideMotion {
   jumpSeq?: number;
   /** Collision-checked contextual hurdle hop, using the running-jump mocap. */
   vault?: boolean;
+  railVault?: GuideRailVault | null;
   /** Static walkable ground under (x, z), cast down from fromY; used by the stance slope fit. */
   probeGround?: SlopeProbe;
   /** Read-only, QA-query-gated physics snapshot at the exact final-sole recorder sample. */
@@ -275,7 +277,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       b.userData.leanAxis = new Vector3(1, 0, 0).applyQuaternion(scene.getWorldQuaternion(new Quaternion())).applyQuaternion(inv).normalize();
       spineBones.push(b);
     } });
-    return { scene, visualGLTF, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4), design, contact, slope:new GuideSlopeFit(scene), spineBones, inert:new GuideInertializer(scene), extras, yawCurve, disposeMerged, disposeBoots, idle: new GuideIdleLayer(scene, actions.IdleLook?.getClip().duration), mine: new GuideMineLayer(scene),
+    return { scene, visualGLTF, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4), design, contact, slope:new GuideSlopeFit(scene), spineBones, inert:new GuideInertializer(scene), extras, yawCurve, disposeMerged, disposeBoots, idle: new GuideIdleLayer(scene, actions.IdleLook?.getClip().duration), mine: new GuideMineLayer(scene), vault:new GuideVaultLayer(scene),
       materials: (() => { const m: MeshStandardMaterial[] = []; scene.traverse(o => { if (o instanceof Mesh) for (const x of [o.material].flat()) if (!m.includes(x as MeshStandardMaterial)) m.push(x as MeshStandardMaterial); }); return m; })(),
       rootOff: new Vector3(), rootOffVel: new Vector3(), rootOffFrom: new Vector3(), lastWorld: new Vector3(), baseWorld: new Vector3(), vehOff: new Vector3(),
       solePoint:new Vector3(), rootPoint:new Vector3(), recPoint:new Vector3(), inverseRoot:new Matrix4(), motionPoint:new Vector3(), previousMotionPoint:new Vector3(), hasMotionSample:false };
@@ -366,6 +368,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     if (!shown) { rig.idle.restore(); rig.idle.reset(); rig.mine.hide(); Object.assign(mineVisualSockets, { valid: false, sampledActionKind: null, sampledElapsed: 0 }); }
     s.visible = shown;
     if (world.paused || world.poolInspect || world.shot || !shown) return;
+    rig.vault.restore();
     rig.mine.restore();
     rig.idle.restore();
     const dt = Math.max(1e-6, Math.min(delta, .08));
@@ -826,7 +829,8 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         m.opacity = s.faded;
       }
       // Apply after locomotion. Interaction crouches preserve the completed world-space foot anchors.
-      const mine = rig.mine.apply(useAlphaMineStore.getState(), !motion.seat && !motion.vehicle);
+      const mine = rig.mine.apply(useAlphaMineStore.getState(), !motion.seat && !motion.vehicle && !motion.railVault);
+      rig.vault.apply(motion.railVault);
       mineVisualSockets.valid = mine.valid && !world.card;
       Object.assign(mineVisualSockets, { assetsReady: mine.assetsReady, contactError: mine.contactError,
         rightReachError: mine.rightReachError, leftReachError: mine.leftReachError,

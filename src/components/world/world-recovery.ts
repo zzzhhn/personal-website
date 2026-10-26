@@ -16,7 +16,7 @@ export function returnPlayerToCamp(player: RigidBody | null, driven: RigidBody |
   Object.assign(mineVisualSockets, { valid: false, sampledActionKind: null, sampledElapsed: 0 });
   resetCamera();
   useWorldStore.setState({ activeVehicle: null, nearbyVehicle: null, nearbyInteract: null, interactPick: null,
-    seat: null, card: null, poolInspect: false, canRecover: false, speed: 0, position: [...CAMP_SPAWN], zone: 'camp',
+    seat: null, card: null, poolInspect: false, canVault:false, canRecover: false, speed: 0, position: [...CAMP_SPAWN], zone: 'camp',
     paused: false, shot: null, zoom: 1, toast: { en: 'Back at camp. Your ore and research are kept.', zh: '已回到营地，矿石与研究进度已保留。', at: performance.now() } });
   return true;
 }

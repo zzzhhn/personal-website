@@ -1,5 +1,6 @@
 export const worldText = {
   en: {
+    vault:'Vault over',
     timeOfDay:'Time of day', islandTime:'Island time', morning:'Morning', noon:'Noon', afternoon:'Afternoon', evening:'Evening',
     timeFlow:'Let time flow', timeRate:'1 real second = 1 island minute. Pauses with the world.',
     weather:'Weather', clear:'Clear', rain:'Rain', snow:'Snow',
@@ -24,7 +25,7 @@ export const worldText = {
     waypoint: 'Waypoint', waypointSet: 'Click the map to set a waypoint; click it again to clear.', waypointClear: 'Clear waypoint', metres: 'm',
     legendBuildings: 'Internships (oldest → newest)', legendBooths: 'Project booths', legendYou: 'You', legendPlots: 'Plots for later',
     keysTitle: 'Controls', keysWalk: 'Walk', keysDriveTitle: 'Drive',
-    keyRows: [['WASD', 'Move (relative to the camera)'], ['Shift', 'Sprint'], ['Space', 'Jump'], ['E', 'Interact · enter or leave a vehicle'], ['Q', 'Switch between nearby objects'], ['Drag · Scroll', 'Look · zoom'], ['V', 'Camera view'], ['Esc', 'Map & settings']],
+    keyRows: [['WASD', 'Move (relative to the camera)'], ['Shift', 'Sprint'], ['Space', 'Jump · vault when facing a low rail'], ['E', 'Interact · enter or leave a vehicle'], ['Q', 'Switch between nearby objects'], ['Drag · Scroll', 'Look · zoom'], ['V', 'Camera view'], ['Esc', 'Map & settings']],
     driveRows: [['W / S', 'Throttle · brake to reverse'], ['A / D', 'Steer'], ['Space', 'Foot brake'], ['X', 'Coupe: handbrake · release to regain grip'], ['Shift', 'Coupe: nitro · 3 s, release to recharge'], ['Pad', 'Coupe: RT/LT drive · X handbrake · A nitro'], ['R', 'Flip back']],
     cardKind: { experience: 'Internship', project: 'Project', about: 'About', note: 'Note' },
     period: 'Period', location: 'Location', stack: 'Stack', highlights: 'Highlights', courses: 'Core courses', expected: 'Expected', page: 'Page',
@@ -32,6 +33,7 @@ export const worldText = {
     thanksTitle: 'Also used', groundCredit: 'Ground detail textures: ambientCG (CC0).',
   },
   zh: {
+    vault:'撑越栏杆',
     timeOfDay:'时间', islandTime:'岛上时间', morning:'清晨', noon:'正午', afternoon:'午后', evening:'傍晚',
     timeFlow:'时间自然流逝', timeRate:'现实 1 秒 = 岛上 1 分钟。暂停世界时，时间也会暂停。',
     weather:'天气', clear:'晴天', rain:'下雨', snow:'下雪',
@@ -55,7 +57,7 @@ export const worldText = {
     waypoint: '航点', waypointSet: '点击地图设置航点，再点一次航点取消。', waypointClear: '清除航点', metres: '米',
     legendBuildings: '实习楼（由旧到新）', legendBooths: '项目展位', legendYou: '你', legendPlots: '预留地块',
     keysTitle: '操作', keysWalk: '步行', keysDriveTitle: '驾驶',
-    keyRows: [['WASD', '移动（相对镜头）'], ['Shift', '冲刺'], ['空格', '跳'], ['E', '交互 · 上车或下车'], ['Q', '在附近的物件间切换'], ['拖拽 · 滚轮', '转镜头 · 缩放'], ['V', '切换视角'], ['Esc', '地图与设置']],
+    keyRows: [['WASD', '移动（相对镜头）'], ['Shift', '冲刺'], ['空格', '跳跃，面对低栏杆时撑越'], ['E', '交互 · 上车或下车'], ['Q', '在附近的物件间切换'], ['拖拽 · 滚轮', '转镜头 · 缩放'], ['V', '切换视角'], ['Esc', '地图与设置']],
     driveRows: [['W / S', '油门 · 先刹停再倒车'], ['A / D', '转向'], ['空格', '脚刹'], ['X', '跑车手刹，松开恢复抓地'], ['Shift', '跑车氮气，约 3 秒，松键恢复'], ['手柄', '跑车：RT/LT 油门刹车 · X 手刹 · A 氮气'], ['R', '翻回来']],
     cardKind: { experience: '实习', project: '项目', about: '关于', note: '便签' },
     period: '时间', location: '地点', stack: '技术栈', highlights: '亮点', courses: '核心课程', expected: '预计', page: '页',
