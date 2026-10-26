@@ -1,6 +1,6 @@
 import { Component, Suspense, useEffect, useMemo, useRef, type ReactNode } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
-import { AnimationMixer, BufferAttribute, Color, LoopOnce, LoopPingPong, LoopRepeat, Matrix4, Mesh, MeshStandardMaterial, Quaternion, SkinnedMesh, Vector3, type AnimationAction, type Bone, type Group, type Object3D } from 'three';
+import { AnimationMixer, BufferAttribute, Color, LoopOnce, LoopRepeat, Matrix4, Mesh, MeshStandardMaterial, Quaternion, SkinnedMesh, Vector3, type AnimationAction, type Bone, type Group, type Object3D } from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { withWorldAssetDecoder as withDecoder } from './WorldAssetDecoder';
 import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js';
@@ -15,6 +15,7 @@ import { ALPHA_FACTORS } from './alpha-mine-data';
 import { GuideIdleLayer } from './WorldGuideIdle';
 import { refineGuideBoots } from './WorldGuideShape';
 import { calibrateGuideBootClips } from './WorldGuideBoots';
+import { guideSeatRootY, holdGuideSeatIdle } from './WorldGuideSeat';
 
 export interface WorldGuideMotion {
   speedMps: number; grounded: boolean; facing: number; targetSpeedMps?: number;
@@ -42,13 +43,11 @@ export interface WorldGuideMotion {
 export interface WorldGuideProps extends WorldGuideMotion { visible: boolean; readMotion?: () => WorldGuideMotion; onMovementLock?: (locked: boolean) => void; fallback?: ReactNode }
 /** v3 clip set (CMU-retargeted Walk/Run/Sprint, one-shot jump phases); see docs/world/quality-v3/guide. */
 const GAITS = ['Walk', 'Run', 'Sprint'];
-const LOOPS = new Set(['Idle', ...GAITS, 'SitIdle']);
+const LOOPS = new Set(['Idle', ...GAITS]);
 const REQUIRED = ['Idle', ...GAITS, 'JumpStart', 'JumpAir', 'RunJumpStart', 'RunJumpAir', 'Land'];
 /** v3d measured extras (optional: an older GLB without them keeps the v3c behaviour). */
 const EXTRAS = ['SitDown', 'SitIdle', 'StandUp', 'TurnL', 'TurnR', 'IdleLook'];
-/** Seated buttock underside above the soles in SitIdle (tools/world/guide/out/sit_measure.json, fresh import). */
-const SIT_BUTTOCK = .2394;
-/** Seated buttock centre ahead of the root (+X) in SitIdle (same file); the root moves back by it. */
+/** Seated buttock centre ahead of root (+X), from tools/world/guide/out/sit_measure.json. */
 const SIT_FORWARD = -.4825; // measured rear hip -0.2525 m, supported 0.23 m toward the seat's front edge
 /** A body yaw change of at least this much from a standstill plays a measured turn-in-place step. */
 const TURN_MIN = .8;
@@ -205,8 +204,9 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     const mixer = new AnimationMixer(scene);
     const actions = Object.fromEntries(animations.map(clip => {
       const action = mixer.clipAction(clip);
+      if (clip.name === 'SitIdle') return [clip.name, holdGuideSeatIdle(action)];
       const once = !LOOPS.has(clip.name);
-      action.setLoop(once ? LoopOnce : clip.name === 'SitIdle' ? LoopPingPong : LoopRepeat, once ? 1 : Infinity);
+      action.setLoop(once ? LoopOnce : LoopRepeat, once ? 1 : Infinity);
       action.clampWhenFinished = once;
       return [clip.name, action];
     })) as Record<string, AnimationAction>;
@@ -490,7 +490,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     if (rig.extras && !CROSSFADE_AB) {
       const act = (n: string) => rig.actions[n], done = (n: string) => s.current === n && act(n).time >= act(n).getClip().duration - 1e-3;
       if (seat) {
-        // seated: SitDown (0.58 s) -> SitIdle (loop) while store.seat holds
+        // seated: SitDown -> measured SitIdle settle once, then hold while store.seat holds
         if (!s.seatReady && !approach && s.current === 'Idle') {
           s.seatWait += dt;
           const settle = stop.current?.debug().state;
@@ -689,13 +689,9 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     rig.idle.apply();
     if (group.current) {
       group.current.rotation.y = shownYaw;
-      // Seated: the body (group) stands at seat.position (WorldActors). The measured sit puts the buttock
-      // SIT_BUTTOCK above the soles; the seat point is the buttock contact, so the visual drops by that much
-      // (soles then rest below the seat on the floor / dangle for a high seat, never inside the seat).
-      // Root height while sitting: from the ground (feet planted) to seatY - SIT_BUTTOCK (buttock on the seat
-      // point) during the hip descent of SitDown, and back during StandUp. A seat higher than the measured
-      // 0.316 m leaves the short TABS legs dangling (never inside the seat); a lower one keeps the feet on the
-      // ground (the root never goes below the ground it stood on).
+      // Seat position is the buttock contact, independent of the approach surface. Blend to the
+      // measured seated root without a cached-ground floor: that floor floated the sitter when the
+      // approach came from the bench top. StandUp ends at the caller's current safe body root.
       const sitting = !vt && (s.current === 'SitDown' || s.current === 'SitIdle' || s.current === 'StandUp');
       const frac = (n: string) => Math.min(1, rig.actions[n].time / rig.actions[n].getClip().duration);
       const sstep = (x: number) => { const c = Math.min(1, Math.max(0, x)); return c * c * (3 - 2 * c); };
@@ -704,9 +700,11 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       s.sitDrop = 0;
       // walking to the seat (the body already sits at the seat point): feet stay on the ground they left
       if (seat && !sitting && Number.isFinite(s.groundY) && group.current.parent) s.sitDrop = group.current.parent.getWorldPosition(rig.baseWorld).y - s.groundY;
-      if (sitting && st && Number.isFinite(s.groundY)) {
-        const rootY = Math.max(s.groundY, s.groundY + (st.position[1] - SIT_BUTTOCK - s.groundY) * sitW);
-        s.sitDrop = (group.current.parent ? group.current.parent.getWorldPosition(rig.baseWorld).y : rootY) - rootY;
+      if (sitting && st) {
+        const bodyY = group.current.parent ? group.current.parent.getWorldPosition(rig.baseWorld).y : st.position[1];
+        const standingY = s.current === 'StandUp' || !Number.isFinite(s.groundY) ? bodyY : s.groundY;
+        const rootY = guideSeatRootY(standingY, st.position[1], sitW);
+        s.sitDrop = bodyY - rootY;
         const tx = -SIT_FORWARD * Math.cos(st.yaw), tz = SIT_FORWARD * Math.sin(st.yaw);
         if (seat) { rig.rootOff.x = tx * (1 - sitW); rig.rootOff.z = tz * (1 - sitW); }
         else if (group.current.parent) {
@@ -812,7 +810,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         });
       }
       group.current.position.y=grounded&&Number.isFinite(minSole)&&!s.sitDrop?Math.min(.025,Math.max(0,.0015-minSole)):0;
-      // seat alignment (see SIT_BUTTOCK) and the vehicle step offset, in the parent (body) frame
+      // seat contact and the vehicle step offset, in the parent (body) frame
       group.current.position.y -= s.sitDrop;
       // The buttock moves forward inside the baked sit; compensate continuously with the hip descent.
       // Using sitDrop as a boolean also shifted the approach walk and popped 15.4 cm at its boundary.
