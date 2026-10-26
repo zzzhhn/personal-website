@@ -10,7 +10,7 @@ import { useWorldStore } from './store';
 import { windUniforms } from './WorldWind';
 import { GRID } from './WorldLandform';
 import type { VehicleId } from './types';
-import { quarryFloraBanks, quarryFloraKind } from './alpha-mine-flora';
+import { quarryFloraBanks, quarryFloraStyle } from './alpha-mine-flora';
 
 /** quality-v4 ground grass (spec §3 ground detail, Bobby 2026-10-22 "grass bends under people and
  * cars"). One instanced draw of 15-triangle tufts (5 blades x 3 triangles), dense near the focus
@@ -79,7 +79,8 @@ function createTrample() {
 
 const BLADE_H = .42;
 /** Five blades, each a two-segment taper (quad + tip = 3 triangles): 15 triangles per tuft.
- * aBlade.x = height fraction 0..1 (bend weight), aBlade.y = blade phase. */
+ * aBlade.x = packed quarry detail, aBlade.y = island blade phase, aBlade.z = island cross-width.
+ * Bend weight is derived from the selected geometry's height, not the original grass bank. */
 export function grassTuftGeometry() {
   const pos: number[] = [], col: number[] = [], blade: number[] = [];
   for (let k = 0; k < 5; k++) {
@@ -103,9 +104,14 @@ export function grassTuftGeometry() {
   g.setAttribute('color', new Float32BufferAttribute(col, 3));
   g.setAttribute('aBlade', new Float32BufferAttribute(blade, 3));
   const flora=quarryFloraBanks();
-  g.setAttribute('aLeafPosition',new Float32BufferAttribute(flora.leaf,3));
-  g.setAttribute('aBloomPosition',new Float32BufferAttribute(flora.bloom,3));
-  g.setAttribute('aBloomColor',new Float32BufferAttribute(flora.colour,3));
+  // Spare .w lanes carry quarry tuft XYZ; aBlade.x no longer needs to store height,
+  // which the shader derives from the selected position. Keep the original attribute slots.
+  const packed=(bank:number[],axis:number)=>bank.flatMap((_,i)=>i%3===0
+    ?[bank[i],bank[i+1],bank[i+2],flora.tuft[i+axis]]:[]);
+  g.setAttribute('aLeafPosition',new Float32BufferAttribute(packed(flora.leaf,0),4));
+  g.setAttribute('aBloomPosition',new Float32BufferAttribute(packed(flora.bloom,1),4));
+  g.setAttribute('aBloomColor',new Float32BufferAttribute(packed(flora.colour,2),4));
+  for(let i=0;i<45;i++)g.getAttribute('aBlade').setX(i,flora.detail[i]);
   g.setAttribute('aFloraKind',new InstancedBufferAttribute(new Float32Array(2450),1));
   // Up-facing normals: blades light like the ground they grow from (no dark back faces).
   g.setAttribute('normal', new Float32BufferAttribute(Array.from({ length: pos.length / 3 }, () => [0, 1, 0]).flat(), 3));
@@ -114,13 +120,13 @@ export function grassTuftGeometry() {
 }
 export const GRASS_TUFT_TRIANGLES = 15;
 
-function grassMaterial(uniforms: Record<string, { value: unknown }>) {
+export function grassMaterial(uniforms: Record<string, { value: unknown }>) {
   const m = new MeshStandardMaterial({ vertexColors: true, roughness: .95, side: DoubleSide });
   m.name = 'ground-grass-blades';
   m.onBeforeCompile = shader => {
     Object.assign(shader.uniforms, uniforms);
     shader.vertexShader = `attribute vec3 aBlade;
-attribute vec3 aLeafPosition; attribute vec3 aBloomPosition; attribute vec3 aBloomColor; attribute float aFloraKind;
+attribute vec4 aLeafPosition; attribute vec4 aBloomPosition; attribute vec4 aBloomColor; attribute float aFloraKind;
 uniform float uWindTime; uniform float uWindStrength;
 uniform vec4 uPush[${MAX_DISTURBERS}];
 uniform float uPushHeight[${MAX_DISTURBERS}];
@@ -129,12 +135,14 @@ varying float vBend;
 varying vec2 vBladeDetail;
 ` + shader.vertexShader.replace('#include <begin_vertex>', `#include <begin_vertex>
       {
-        if(aFloraKind>1.5)transformed=aBloomPosition;
-        else if(aFloraKind>.5)transformed=aLeafPosition;
+        if(aFloraKind>2.5)transformed=vec3(aLeafPosition.w,aBloomPosition.w,aBloomColor.w);
+        else if(aFloraKind>1.5)transformed=aBloomPosition.xyz;
+        else if(aFloraKind>.5)transformed=aLeafPosition.xyz;
         vec3 base = instanceMatrix[3].xyz;
         float s2 = dot(instanceMatrix[0].xyz, instanceMatrix[0].xyz);
         float f = transformed.y / ${BLADE_H.toFixed(2)};
-        vBladeDetail = vec2(aBlade.z, aBlade.x);
+        float crossWidth = aFloraKind>2.5 ? mod(floor(aBlade.x/16.0),4.0)*0.5 : aFloraKind>1.5 ? mod(floor(aBlade.x/4.0),4.0)*0.5 : aFloraKind>.5 ? mod(aBlade.x,4.0)*0.5 : aBlade.z;
+        vBladeDetail = vec2(crossWidth, f);
         // Distance fade: blades shrink into the ground before they are culled (no popping).
         float fade = 1.0 - smoothstep(uFade.x, uFade.y, distance(base.xz, uFocus.xz));
         // Live disturbers: push away from each centre, strongest inside the radius.
@@ -155,7 +163,9 @@ varying vec2 vBladeDetail;
         bend = clamp(bend, 0.0, 1.0);
         vBend = bend;
         // Wind sway, reduced while flattened.
-        float ph = dot(base.xz, vec2(0.37, 0.21)) + aBlade.y * 6.2831;
+        // Connected stems/petals share a phase, so their junctions do not separate in wind.
+        float bladePhase = aFloraKind>2.5 ? floor(aBlade.x/64.0)/8.0 : aFloraKind>.5 ? 0.0 : aBlade.y;
+        float ph = dot(base.xz, vec2(0.37, 0.21)) + bladePhase * 6.2831;
         vec2 wind = vec2(0.8, 0.6) * (sin(uWindTime * 1.9 + ph) * 0.06 + sin(uWindTime * 3.3 + ph * 1.7) * 0.025) * uWindStrength * (1.0 - bend * 0.85);
         // World-space bend: tip leans along dir and drops (blade length roughly kept).
         float h = transformed.y;
@@ -166,7 +176,7 @@ varying vec2 vBladeDetail;
         transformed *= vec3(1.0, fade, 1.0);
         transformed.y = max(transformed.y, 0.012 * f);
       }`).replace('#include <color_vertex>',`#include <color_vertex>
-        if(aFloraKind>1.5)vColor.rgb=aBloomColor;
+        if(aFloraKind>1.5 && aFloraKind<2.5)vColor.rgb=aBloomColor.rgb;
       `);
     // Both faces use the ground-up normal (DoubleSide would flip back faces dark), and pressed
     // blades read a touch lighter/drier, so a trodden trail shows from the follow camera.
@@ -181,7 +191,7 @@ varying vec2 vBladeDetail;
       diffuseColor.rgb *= 1.0 + 0.08 * rib - 0.10 * margin;
       diffuseColor.rgb *= mix(vec3(1.0), vec3(1.16, 1.12, 1.0), vBend);`);
   };
-  m.customProgramCacheKey = () => 'ground-grass-blades-v6-quarry-flora-rgb';
+  m.customProgramCacheKey = () => 'ground-grass-blades-v7-quarry-crowns-rgb';
   return m;
 }
 
@@ -297,7 +307,7 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
       dummy.position.set(data[i * 6], data[i * 6 + 1] - .02, data[i * 6 + 2]); dummy.rotation.set(0, data[i * 6 + 3], 0); dummy.scale.setScalar(s * (.82 + .3 * Math.abs(Math.sin(data[i * 6] * 5.7 + data[i * 6 + 2] * 3.9)))); dummy.updateMatrix();
       dummy.matrix.toArray(cull.matrices, n * 16);
       tint.c.copy(tint.a).lerp(tint.b, data[i * 6 + 4]).toArray(cull.colors, n * 3);
-      cull.kinds[n]=quarryFloraKind(data[i*6],data[i*6+2]);
+      cull.kinds[n]=quarryFloraStyle(data[i*6],data[i*6+2]);
     });
     cull.count = pick.length; cull.revision++;
     uniforms.uFade.value = [p.far - 6, p.far];
