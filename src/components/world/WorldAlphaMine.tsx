@@ -8,7 +8,7 @@ import { ALPHA_FACTORS, type AlphaFactorId } from './alpha-mine-data';
 import { ALPHA_MINE_ORIGIN, mineLocalToWorld } from './alpha-mine-layout';
 import { beginMineAction, cancelMineAction, mineActor, mineCanReach, mineNotice, resetMineVeins, useAlphaMineStore, type MinePoint } from './alpha-mine-state';
 import { useMineManifest, type MineManifest } from './alpha-mine-assets';
-import { releaseMineOnline, useMineOnline } from './alpha-mine-online';
+import { releaseMineOnline, requestMineBacktest, useMineOnline } from './alpha-mine-online';
 import WorldMinePool from './WorldMinePool';
 import { factorOreSource } from './alpha-mine-ore';
 import { useInteractable } from './WorldInteract';
@@ -131,16 +131,18 @@ function PoolShelf({ manifest, index, ore }: { manifest: MineManifest; index: nu
 function PoolBay({ manifest, bay }: { manifest: MineManifest; bay: 0|1 }) {
   const carried=useAlphaMineStore(s=>s.carried), basin=manifest.basin, offset=bay===0?-1.15:1.15;
   const factorId=useAlphaMineStore(s=>s.bays[bay]);
-  const ready=useMineOnline(s=>!!factorId&&s.factors[factorId].status==='ready');
+  const status=useMineOnline(s=>factorId?s.factors[factorId].status:'idle');
   const anchor: MinePoint=[basin.center[0]+offset,.83,basin.center[2]+3.35];
   const target=mineLocalToWorld([basin.impact[0]+offset*.45,basin.waterY,basin.impact[2]]);
   useInteractable({id:`alpha-mine-pool-${bay}`,position:mineLocalToWorld(anchor),radius:1.2,kind:'exhibit',
-    label:carried?{zh:`投入 ${bay?'B':'A'} 位 · 替换此处结果`,en:`Cast into ${bay?'B':'A'} · replace this result`}:ready?{zh:'检视回测池',en:'Inspect results'}:{zh:'带一块矿石来试试',en:'Bring an ore to test'},
+    label:carried?{zh:`投入 ${bay?'B':'A'} 位 · 替换此处结果`,en:`Cast into ${bay?'B':'A'} · replace this result`}:status==='ready'?{zh:'检视回测池',en:'Inspect results'}:status==='error'?{zh:'重试这块矿石的回测',en:'Retry this ore’s backtest'}:status==='loading'?{zh:'矿石正在回测',en:'Backtest in progress'}:{zh:'带一块矿石来试试',en:'Bring an ore to test'},
     onInteract:()=>{const s=useAlphaMineStore.getState(),id=s.carried,existing=s.bays[bay];
       if(id)beginMineAction('deposit',target,id,bay);
       else if(existing&&useMineOnline.getState().factors[existing].status==='ready'){
         useAlphaMineStore.setState({selectedBay:bay});useWorldStore.setState({poolInspect:true});
       }
+      else if(existing&&useMineOnline.getState().factors[existing].status==='error')void requestMineBacktest(existing,true);
+      else if(existing)mineNotice('矿石仍在池中，正在等待线上回测。','Your ore is in the pool; the online calculation is pending.');
       else mineNotice('先采出矿石，或从池边回收台取一块。','Mine an ore, or retrieve one from a pool shelf.');},
   });
   return <group name={`alpha-mine-pool-marker-${bay}`} position={anchor}>
