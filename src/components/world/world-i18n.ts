@@ -1,5 +1,8 @@
 export const worldText = {
   en: {
+    timeOfDay:'Time of day', islandTime:'Island time', morning:'Morning', noon:'Noon', afternoon:'Afternoon', evening:'Evening',
+    timeFlow:'Let time flow', timeRate:'1 real second = 1 island minute. Pauses with the world.',
+    weather:'Weather', clear:'Clear', rain:'Rain', snow:'Snow',
     returnCamp: 'Return to camp', returnCampHint: 'Keep your ore, mining progress and research results.',
     nitro: 'Nitro', boosting: 'Boosting', handbrake: 'Handbrake', nitroHint: 'Shift · boost   X · handbrake',
     loadingArrival: 'Finding our way to camp…', loadingPlaces: 'Bringing the island into view…', loadingStart: 'A place to begin…',
@@ -7,7 +10,7 @@ export const worldText = {
     controls: 'WASD move (relative to camera) · Shift sprint · Space jump · E enter a vehicle', driving: 'W/S throttle · A/D steer · Space brake · E leave · Coupe: X handbrake · Shift nitro',
     credits: 'Credits', motionCredit: 'Character motion adapted from the CMU Graphics Lab Motion Capture Database.',
     styleCredit: 'Idle motion retargeted and edited from The 100STYLE Dataset - Ian Mason (CC BY 4.0).',
-    entryLandmark: 'Stone gate', entryMenu: 'Open map & settings', menu: 'Map & settings', resume: 'Back to the island', back: 'Back to portfolio', light: 'Light', dusk: 'Dusk', night: 'Night', language: 'Language',
+    entryLandmark: 'Stone gate', entryMenu: 'Open map & settings', menu: 'Map & settings', resume: 'Back to the island', back: 'Back to portfolio', light: 'Light', dusk: 'Sunset', night: 'Late night', language: 'Language',
     camp: 'Camp', town: 'Coastal town', park: 'Boardwalk park', ridge: 'Windmill hill', shore: 'Island shore', offroad: '4×4', coupe: 'Fastback', van: 'Van',
     enter: 'E · Enter', leave: 'E · Leave vehicle', recover: 'R · Flip back', recovering: 'Returning to the road…',
     zoom: 'Drag or double-click to look · Scroll to zoom · V camera view · Gamepad supported', error: 'The island could not be loaded.', retry: 'Try again',
@@ -29,6 +32,9 @@ export const worldText = {
     thanksTitle: 'Also used', groundCredit: 'Ground detail textures: ambientCG (CC0).',
   },
   zh: {
+    timeOfDay:'时间', islandTime:'岛上时间', morning:'清晨', noon:'正午', afternoon:'午后', evening:'傍晚',
+    timeFlow:'时间自然流逝', timeRate:'现实 1 秒 = 岛上 1 分钟。暂停世界时，时间也会暂停。',
+    weather:'天气', clear:'晴天', rain:'下雨', snow:'下雪',
     returnCamp: '回到营地', returnCampHint: '保留矿石、挖矿进度和研究结果。',
     nitro: '氮气', boosting: '氮气加速中', handbrake: '手刹', nitroHint: 'Shift 氮气 · X 手刹',
     loadingArrival: '从营地开始……', loadingPlaces: '城岛正慢慢亮起来……', loadingStart: '准备迈出第一步……',
@@ -36,7 +42,7 @@ export const worldText = {
     controls: 'WASD 移动（相对镜头） · Shift 冲刺 · 空格跳 · E 上车', driving: 'W/S 油门 · A/D 转向 · 空格脚刹 · E 下车 · 跑车：X 手刹 · Shift 氮气',
     credits: '致谢', motionCredit: '角色动作改编自 CMU Graphics Lab Motion Capture Database。',
     styleCredit: '待机动作重定向并编辑自 The 100STYLE Dataset - Ian Mason（CC BY 4.0）。',
-    entryLandmark: '营地石门', entryMenu: '打开地图与设置', menu: '地图与设置', resume: '继续探索', back: '回到简历', light: '光照', dusk: '黄昏', night: '夜晚', language: '语言',
+    entryLandmark: '营地石门', entryMenu: '打开地图与设置', menu: '地图与设置', resume: '继续探索', back: '回到简历', light: '光照', dusk: '黄昏', night: '深夜', language: '语言',
     camp: '营地', town: '海岸城区', park: '栈道园区', ridge: '风车山丘', shore: '环岛海岸', offroad: '越野车', coupe: '轿跑', van: '小货车',
     enter: 'E · 上车', leave: 'E · 下车', recover: 'R · 翻回来', recovering: '正在返回路面……',
     zoom: '拖拽或双击鼠标转镜头 · 滚轮缩放 · V 切换视角 · 支持手柄', error: '城岛暂时无法加载。', retry: '重试',

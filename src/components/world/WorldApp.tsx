@@ -1,5 +1,6 @@
 import { Component, lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
-import { handleWorldEscape, requestCampReturn, useWorldStore } from './store';
+import { handleWorldEscape, requestCampReturn, selectWorldTime, useWorldStore } from './store';
+import { TIME_PRESETS, formatWorldTime } from './world-climate';
 import { worldText } from './world-i18n';
 import { CAMP_CENTER, WORLD_SHOTS } from './layout';
 import type { WorldContent } from './types';
@@ -70,7 +71,13 @@ export default function WorldApp({ content }: { content: WorldContent }) {
     try { if (localStorage.getItem('lang') === 'zh') lang = 'zh'; } catch { /* Storage is optional. */ }
     const shot = new URLSearchParams(window.location.search).get('shot');
     const validShot = WORLD_SHOTS.some(v => v.id === shot) ? shot : null;
-    useWorldStore.setState({ lang: lang as 'en' | 'zh', shot: validShot, light: validShot?.endsWith('-night') ? 'night' : 'dusk' });
+    useWorldStore.setState({ lang: lang as 'en' | 'zh', shot: validShot });
+    selectWorldTime(validShot?.endsWith('-night') ? 'night' : 'dusk');
+    if(import.meta.env.DEV&&new URLSearchParams(window.location.search).get('qa')==='1'){
+      const params=new URLSearchParams(window.location.search);
+      if(params.get('quality')==='balanced')useWorldStore.setState({quality:'balanced'});
+      if(params.get('paused')==='1')useWorldStore.setState({paused:true});
+    }
     if(shellOnly)useWorldStore.setState({ready:true,paused:true});
     setSupported(!window.matchMedia('(pointer: coarse), (max-width: 767px)').matches);
     const onKey = (e: KeyboardEvent) => {
@@ -135,7 +142,10 @@ export default function WorldApp({ content }: { content: WorldContent }) {
           <p id="world-camp-return-hint" className="world-setting-hint">{t.returnCampHint}</p>
         </div>
         <fieldset><legend>{t.language}</legend><button aria-pressed={s.lang === 'en'} onClick={() => useWorldStore.setState({ lang: 'en' })}>English</button><button aria-pressed={s.lang === 'zh'} onClick={() => useWorldStore.setState({ lang: 'zh' })}>中文</button></fieldset>
-        <fieldset><legend>{t.light}</legend>{(['dusk', 'night'] as const).map(light => <button key={light} aria-pressed={s.light === light} onClick={() => useWorldStore.setState({ light })}>{t[light]}</button>)}</fieldset>
+        <fieldset className="world-time-presets"><legend>{t.timeOfDay} <span className="world-clock" aria-label={t.islandTime}>{formatWorldTime(s.worldMinutes)}</span></legend>{TIME_PRESETS.map(p => <button key={p.id} aria-pressed={s.light === p.id} onClick={() => selectWorldTime(p.id)}><span>{t[p.id]}</span><small>{formatWorldTime(p.minutes)}</small></button>)}</fieldset>
+        <label className="world-time-flow"><input type="checkbox" checked={s.timeRunning} onChange={e => useWorldStore.setState({timeRunning:e.target.checked})}/><span>{t.timeFlow}</span></label>
+        <p className="world-setting-hint world-clock-hint">{t.timeRate}</p>
+        <fieldset><legend>{t.weather}</legend>{(['clear','rain','snow'] as const).map(weather => <button key={weather} aria-pressed={s.weather===weather} onClick={()=>useWorldStore.setState({weather})}>{t[weather]}</button>)}</fieldset>
         <fieldset aria-describedby="world-quality-hint"><legend>{t.quality}</legend>{(['balanced', 'high'] as const).map(quality => <button key={quality} aria-pressed={s.quality === quality} onClick={() => useWorldStore.setState({ quality })}>{t[quality]}</button>)}</fieldset>
         <p id="world-quality-hint" className="world-setting-hint">{t.qualityHint}</p>
         <details className="world-keys"><summary>{t.keysTitle}</summary>

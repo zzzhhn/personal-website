@@ -195,6 +195,14 @@ kbd { font: 600 11px/1 "Geist", sans-serif; display: inline-flex; align-items: c
 .world-dialog fieldset button:hover { background: #ffffff16; }
 .world-dialog fieldset button[aria-pressed="true"] { border-color: var(--sand); background: #c9a97824; color: #fff7ea; }
 .world-setting-hint { color: #a9bdc1; font-size: 12px; line-height: 1.5; margin: -10px 0 16px; }
+.world-dialog .world-time-presets { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-bottom: 10px; }
+.world-time-presets legend { width: 100%; }
+.world-clock { float: right; color: var(--paper); font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+.world-dialog .world-time-presets button { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 5px; min-height: 57px; }
+.world-time-presets small { font-size: 10px; font-variant-numeric: tabular-nums; opacity: .76; }
+.world-time-flow { display: flex; gap: 8px; align-items: center; min-height: 34px; font-size: 12px; cursor: pointer; }
+.world-time-flow input { accent-color: var(--sand); width: 16px; height: 16px; }
+.world-clock-hint { margin: 4px 0 20px; }
 .world-keys, .world-credits { border-top: 1px solid #f4ecdb18; padding: 12px 0; font-size: 12.5px; color: #c4d3d4; line-height: 1.55; }
 .world-keys summary, .world-credits summary { cursor: pointer; color: var(--paper); font-size: 13.5px; list-style-position: outside; }
 .world-keys h3, .world-credits h3 { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: #a9bdc1; font-weight: 500; margin: 14px 0 8px; }

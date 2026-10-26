@@ -9,6 +9,7 @@ import { BUILDINGS, FOUNDATIONS, GROUND_Y } from './layout';
 import { LAYOUT_V4, keepOutV4 } from './layout-v4';
 import { buildTerrain, createTerrainGeometry, grassCandidateJob, scatterCandidates, SHORE_GLSL, shoreUniforms, terrainColours, type ScatterBlocker } from './WorldLandform';
 import { useWorldStore } from './store';
+import { weatherUniforms } from './WorldNight';
 import { buildLodTiles, lodIndices } from './WorldTerrainLod';
 import { chunkKey, paveClearance } from './WorldTerrainPaving';
 import { useIsClaimed } from './WorldVisualClaims';
@@ -60,7 +61,7 @@ function createGroundMaterial(pbr: Texture[] | null) {
   const material = new MeshStandardMaterial({ vertexColors: true, flatShading: !pbr, roughness: 1, metalness: 0 });
   material.name = pbr ? 'island-terrain-v4-pbr' : 'island-terrain-v4';
   material.onBeforeCompile = shader => {
-    Object.assign(shader.uniforms, shoreUniforms(), { uSeaTime: windUniforms.uWindTime, uSeaMotion: windUniforms.uWindStrength });
+    Object.assign(shader.uniforms, shoreUniforms(), weatherUniforms, { uSeaTime: windUniforms.uWindTime, uSeaMotion: windUniforms.uWindStrength });
     if (pbr) {
       PBR_SETS.forEach((k, i) => {
         shader.uniforms[`uAlb${i}`] = { value: pbr[i * 2] }; shader.uniforms[`uNr${i}`] = { value: pbr[i * 2 + 1] };
@@ -81,7 +82,7 @@ vec2 rotA(vec2 uv) { return mat2(0.7986, -0.6018, 0.6018, 0.7986) * uv * 1.13 + 
 vec2 rotB(vec2 uv) { return mat2(0.3256, 0.9455, -0.9455, 0.3256) * uv * 0.87 + vec2(0.61, 0.19); }
 vec4 tileMix(sampler2D t, vec2 uv, vec3 w) { return texture2D(t, uv) * w.x + texture2D(t, rotA(uv)) * w.y + texture2D(t, rotB(uv)) * w.z; }
 ` : '';
-    shader.fragmentShader = `varying vec3 vTerrainWorld;\nvarying vec4 vGroundMix;\nuniform float uSeaTime; uniform float uSeaMotion;\n${NOISE}${SHORE_GLSL}${pbrHead}` + shader.fragmentShader
+    shader.fragmentShader = `varying vec3 vTerrainWorld;\nvarying vec4 vGroundMix;\nuniform float uSeaTime; uniform float uSeaMotion; uniform float uRain; uniform float uSnow;\n${NOISE}${SHORE_GLSL}${pbrHead}` + shader.fragmentShader
       .replace('#include <color_fragment>', `#include <color_fragment>
       vec2 tp = vTerrainWorld.xz;
       // Fade sub-metre terms once a pixel covers more than ~25 cm of ground.
@@ -152,11 +153,15 @@ vec4 tileMix(sampler2D t, vec2 uv, vec3 w) { return texture2D(t, uv) * w.x + tex
       groundBump += rockWeight * (-0.006 * seam + 0.0015 * rockGrain) * detailFade;
       // Close grass soil is mottled in continuous patches, rather than per-triangle random brightness.
       float grassDry = smoothstep(0.42, 0.76, tNoise(tp / 3.4 + 6.0));
-      diffuseColor.rgb *= mix(vec3(1.0), vec3(1.10, 1.025, 0.88), vGroundMix.x * grassDry * 0.6);`)
+      diffuseColor.rgb *= mix(vec3(1.0), vec3(1.10, 1.025, 0.88), vGroundMix.x * grassDry * 0.6);
+      diffuseColor.rgb *= 1.0 - uRain * .18 * tWalk;
+      float snowDust = uSnow * tWalk * smoothstep(.32,.8,tNoise(tp/2.8+13.0)) * .48;
+      diffuseColor.rgb = mix(diffuseColor.rgb,vec3(.76,.82,.85),snowDust);`)
       .replace('#include <roughnessmap_fragment>', `#include <roughnessmap_fragment>
       // Matte with variation: 0.86-1.0 (wet sand 0.72) instead of one uniform sheen.
       roughnessFactor = mix(0.86, 1.0, tNoise(tp / 1.1 + 5.3)) ${pbr ? '* mix(1.0, 0.75 + 0.25 * nrS.b, tWalk)' : ''};
-      roughnessFactor = clamp(mix(roughnessFactor, 0.78, tWet), 0.78, 1.0);`)
+      roughnessFactor = clamp(mix(roughnessFactor, 0.78, tWet), 0.78, 1.0);
+      roughnessFactor = mix(roughnessFactor,.58,uRain*tWalk*.65);`)
       .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
       {
         // Fallback only: faceted micro relief on walkable ground (skewed triangular 0.45 m lattice,

@@ -10,6 +10,8 @@ import {
   FOUNDATIONS, GROUND_TREES, GROUND_Y, LAYOUT_V4, PALETTE, ROAD_POINTS, ROAD_WIDTH, WATER_Y,
 } from './layout';
 import { useWorldStore } from './store';
+import { climate, night } from './WorldNight';
+import { sampleTimeLight, TIME_LIGHT, TIME_PRESETS, type TimePreset } from './world-climate';
 import type { Vec3, WorldContent } from './types';
 import WorldYears from './WorldYears';
 import WorldCamp, { type CampLayout } from './WorldCamp';
@@ -356,8 +358,7 @@ const TALL_RECEIVERS = BUILDINGS.map(({ position: [x, y, z], size: [w, h, d] }) 
   new Box3(new Vector3(x - w / 2, y, z - d / 2), new Vector3(x + w / 2, y + h, z + d / 2)));
 
 function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStandardMaterial }) {
-  const light = useWorldStore((s) => s.light);
-  const { scene, camera, invalidate } = useThree();
+  const { scene, camera } = useThree();
   const hemisphere = useRef<HemisphereLight>(null), sun = useRef<DirectionalLight>(null), fire = useRef<PointLight>(null);
   const sea = useMemo(() => createWorldWaterMaterial(PALETTE.sea), []);
   const quality = useWorldStore(s => s.quality);
@@ -375,47 +376,60 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
   }, [shadowSize]);
   const parkFill = useRef<(PointLight | null)[]>([]);
   const parkFillPositions = useMemo<Vec3[]>(() => [[56, 5.4, -43], [69, 5.4, -29], [59, 5.4, -13]], []);
-  const state = useRef({ value: 0, start: 0, target: 0, elapsed: 2 });
-  const skyUniforms = useMemo(() => ({ top: { value: new Color('#6F86A8') }, horizon: { value: new Color('#F2B98A') } }), []);
-  const colors = useMemo(() => ({ duskSea: new Color('#1E5A5E'), nightSea: new Color('#0E2A33'), duskTop: new Color('#6F86A8'), nightTop: new Color('#121A33'), duskHorizon: new Color('#F2B98A'), nightHorizon: new Color('#4A3A3A'), glint: new Color('#FFD9A8').multiplyScalar(1.6) }), []);
-  useEffect(() => { state.current.start = state.current.value; state.current.target = light === 'night' ? 1 : 0; state.current.elapsed = 0; }, [light]);
+  const sample = useRef(sampleTimeLight(1050));
+  const skyUniforms = useMemo(() => ({ top: { value: new Color('#6F86A8') }, horizon: { value: new Color('#F2B98A') },
+    cloud: { value: .12 }, cloudTime: windUniforms.uWindTime, darkness: { value: 0 } }), []);
+  const palettes = useMemo(() => {
+    const result = {} as Record<TimePreset, Record<'top'|'horizon'|'sea'|'sun'|'sky'|'ground', Color>>;
+    for (const {id} of TIME_PRESETS) result[id] = Object.fromEntries(
+      ['top','horizon','sea','sun','sky','ground'].map(k => [k, new Color(TIME_LIGHT[id][k as 'top'])])) as typeof result[TimePreset];
+    return result;
+  }, []);
+  const colors = useMemo(() => ({ scratch: new Color(), storm: new Color(), stormDay: new Color('#8D9EA7'), stormNight: new Color('#29394D') }), []);
   useEffect(() => {
     const oldFog = scene.fog;
     scene.fog = new Fog('#C49C83', 140, 360);
     return () => { scene.fog = oldFog; };
   }, [scene]);
-  useFrame((_, delta) => {
-    const s = state.current;
-    s.elapsed = Math.min(2, s.elapsed + delta);
-    const t = s.elapsed / 2;
-    s.value = s.start + (s.target - s.start) * (t * t * (3 - 2 * t));
-    const n = s.value;
+  useFrame(() => {
+    const s = sampleTimeLight(climate.minutes, sample.current), n = night.value;
+    const a = TIME_LIGHT[s.from], b = TIME_LIGHT[s.to], ca = palettes[s.from], cb = palettes[s.to];
+    const overcast = climate.rain * .78 + climate.snow * .68;
+    const blend = climate.blend, scratch = colors.scratch;
+    colors.storm.copy(colors.stormDay).lerp(colors.stormNight, n);
     if (sun.current) {
       const lamp = sun.current;
-      lamp.intensity = 3.4 - n * 3.08;
+      lamp.intensity += ((a.key + (b.key - a.key) * s.mix) * (1 - overcast * .7) - lamp.intensity) * blend;
+      lamp.color.lerp(scratch.copy(ca.sun).lerp(cb.sun,s.mix).lerp(colors.storm,overcast*.3),blend);
       // Fixed sun direction; the orthographic window is fitted to the follow camera's visible
       // ground and texel-snapped (WorldShadows), so shadows track casters without crawling.
       const focus = useWorldStore.getState().position;
       fitSunShadow(lamp, shadowTarget, camera, { mapSize: shadowSize, wide: !!shot, focus, receivers: receiverBand(focus), tallReceivers: TALL_RECEIVERS });
     }
-    if (hemisphere.current) hemisphere.current.intensity = 1.65 - n * 0.95;
+    if (hemisphere.current) {
+      hemisphere.current.intensity += ((a.fill + (b.fill - a.fill) * s.mix) * (1 - overcast * .12) - hemisphere.current.intensity) * blend;
+      hemisphere.current.color.lerp(scratch.copy(ca.sky).lerp(cb.sky,s.mix).lerp(colors.storm,overcast*.55),blend);
+      hemisphere.current.groundColor.lerp(scratch.copy(ca.ground).lerp(cb.ground,s.mix),blend);
+    }
     if (fire.current) fire.current.intensity = (13 + n * 18) * (1 + Math.sin(windUniforms.uWindTime.value * 5) * windUniforms.uWindStrength.value * 0.065);
     warm.emissiveIntensity = 0.05 + n * 1.5;
     cyan.emissiveIntensity = 0.15 + n * 1.25;
     parkFill.current.forEach(lamp => { if (lamp) lamp.intensity = n * 26; });
-    skyUniforms.top.value.copy(colors.duskTop).lerp(colors.nightTop, n);
-    skyUniforms.horizon.value.copy(colors.duskHorizon).lerp(colors.nightHorizon, n);
+    skyUniforms.top.value.lerp(scratch.copy(ca.top).lerp(cb.top,s.mix).lerp(colors.storm,overcast),blend);
+    skyUniforms.horizon.value.lerp(scratch.copy(ca.horizon).lerp(cb.horizon,s.mix).lerp(colors.storm,overcast),blend);
+    skyUniforms.cloud.value = .12 + overcast; skyUniforms.darkness.value = n;
     {
-      sea.color.copy(colors.duskSea).lerp(colors.nightSea, n);
+      sea.color.lerp(scratch.copy(ca.sea).lerp(cb.sea,s.mix).lerp(colors.storm,overcast*.4),blend);
       // A low teal floor preserves the water silhouette; local warm park lights
       // supply the nearby illumination rather than widening cyan emissive strips.
       sea.emissiveIntensity = n * 0.22;
       // Sun glitter follows the key light (warm at dusk, gone at night).
-      seaGlintUniforms.uGlint.value.copy(colors.glint).multiplyScalar(1 - n);
+      seaGlintUniforms.uGlint.value.copy(ca.sun).lerp(cb.sun,s.mix).multiplyScalar(1.6*(1-n)*(1-overcast));
     }
-    if (scene.fog) scene.fog.color.copy(skyUniforms.horizon.value);
-    // The sky/water blend has its own clock; finish it even while gameplay sleeps.
-    if (s.elapsed < 2) invalidate();
+    if (scene.fog instanceof Fog) {
+      scene.fog.color.copy(skyUniforms.horizon.value);
+      scene.fog.near = 140 - overcast * 75; scene.fog.far = 360 - overcast * 170;
+    }
   });
   return <>
     <GlowClock /><GlowDemo />
@@ -430,7 +444,18 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
       <sphereGeometry args={[290, 24, 16]} />
       <shaderMaterial side={BackSide} depthWrite={false} uniforms={skyUniforms}
         vertexShader={'varying vec3 vDirection; void main(){vDirection=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}'}
-        fragmentShader={'uniform vec3 top; uniform vec3 horizon; varying vec3 vDirection; void main(){float t=smoothstep(-0.08,0.7,vDirection.y);gl_FragColor=vec4(mix(horizon,top,t),1.0);\n #include <tonemapping_fragment>\n #include <colorspace_fragment>\n}'} />
+        fragmentShader={`uniform vec3 top; uniform vec3 horizon; uniform float cloud; uniform float cloudTime; uniform float darkness; varying vec3 vDirection;
+          float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+          float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}
+          void main(){vec3 d=normalize(vDirection);float t=smoothstep(-0.08,0.7,d.y);vec3 col=mix(horizon,top,t);
+          vec2 p=d.xz/max(.18,d.y+.26)*2.6+vec2(cloudTime*.012,cloudTime*.004);
+          float v=noise(p)*.62+noise(p*2.1)*.26+noise(p*4.3)*.12;
+          float c=smoothstep(.74-cloud*.42,.88-cloud*.25,v)*smoothstep(-.04,.18,d.y);
+          col=mix(col,mix(vec3(.76,.81,.84),vec3(.10,.14,.21),darkness),c*(.25+cloud*.5));
+          gl_FragColor=vec4(col,1.0);
+          #include <tonemapping_fragment>
+          #include <colorspace_fragment>
+          }`} />
     </mesh>
     <WorldSea material={sea} />
   </>;

@@ -1,12 +1,17 @@
 import { create } from 'zustand';
 import type { Lang, Vec3, VehicleId } from './types';
+import { TIME_PRESETS, type TimePreset, type Weather } from './world-climate.ts';
 /** Content card opened by an interactable (rendered by WorldCards). `id` selects the content source. */
 export interface WorldCard { kind: 'project' | 'experience' | 'about' | 'note'; id: string; page?: number }
 /** Interactable currently in reach (prompt shown by the HUD). */
 export interface NearbyInteract { id: string; label: { en: string; zh: string }; kind: string }
 interface WorldState {
   lang: Lang;
-  light: 'dusk' | 'night';
+  light: TimePreset;
+  worldMinutes: number;
+  timeRevision: number;
+  timeRunning: boolean;
+  weather: Weather;
   paused: boolean;
   poolInspect: boolean;
   /** A synchronous recovery request: must also work while the physics world is paused. */
@@ -40,12 +45,14 @@ interface WorldState {
   interactPick: string | null;
 }
 export const useWorldStore = create<WorldState>(() => ({
-  lang: 'en', light: 'dusk', paused: false, poolInspect: false, campReturnRequest: 0, activeVehicle: null, nearbyVehicle: null, nearbyInteract: null, card: null, seat: null, toast: null,
+  lang: 'en', light: 'dusk', worldMinutes: 1050, timeRevision: 0, timeRunning: true, weather: 'clear', paused: false, poolInspect: false, campReturnRequest: 0, activeVehicle: null, nearbyVehicle: null, nearbyInteract: null, card: null, seat: null, toast: null,
   canRecover: false, recoverRequest: 0, speed: 0, zone: 'camp', position: [-42, 5, 30],
   ready: false, zoom: 1, quality: 'high', shot: null, waypoint: null, interactPick: null,
   loading: { phase: 'runtime', loaded: 0, total: 0, active: false, failed: 0 },
 }));
 export const requestCampReturn = () => useWorldStore.setState(s => ({ campReturnRequest: s.campReturnRequest + 1 }));
+export const selectWorldTime = (light: TimePreset) => useWorldStore.setState(s => ({ light,
+  worldMinutes: TIME_PRESETS.find(p => p.id === light)!.minutes, timeRevision: s.timeRevision + 1 }));
 export function handleWorldEscape() {
   const state=useWorldStore.getState();
   if(state.poolInspect)useWorldStore.setState({poolInspect:false});

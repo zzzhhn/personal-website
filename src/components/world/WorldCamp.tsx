@@ -15,6 +15,7 @@ import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeom
 import { CAMP_CENTER } from './layout';
 import { useIsClaimed } from './WorldVisualClaims';
 import { useWorldStore } from './store';
+import { night as worldNight } from './WorldNight';
 import { campCraftMaterial } from './WorldCraftMaterials';
 import type { Vec3 } from './types';
 
@@ -349,9 +350,8 @@ function CampFire({ position }: { position: Vec3 }) {
   }, []);
   useEffect(() => () => { flame.dispose(); embers.dispose(); flameMat.dispose(); emberMat.dispose(); }, [flame, embers, flameMat, emberMat]);
   useFrame((_, delta) => {
-    const night = useWorldStore.getState().light === 'night';
     const glow = flameMat.uniforms.uGlow;
-    glow.value += ((night ? 1.08 : 0.96) - glow.value) * Math.min(1, delta * 2);
+    glow.value += ((.96 + worldNight.value * .12) - glow.value) * Math.min(1, delta * 2);
     emberMat.uniforms.uPixel.value = gl.getPixelRatio() * gl.domElement.height / 1080;
   });
   return <group name="camp-runtime-flame" position={position} userData={{ fireStats: FIRE_STATS }}>
@@ -371,7 +371,7 @@ function CampNightFill() {
     const light = ref.current;
     if (!light) return;
     // decay 0 = flat low fill; the distance window (34 m) keeps it off the town and park.
-    const target = useWorldStore.getState().light === 'night' ? 4 : 0;
+    const target = worldNight.value * 4;
     light.intensity += (target - light.intensity) * Math.min(1, delta * 1.5);
   });
   return <pointLight name="camp-night-fill" ref={ref} position={[CAMP_CENTER[0], 16, CAMP_CENTER[2] - 4]} color="#6F82B2" intensity={0} distance={34} decay={0} castShadow={false} />;
@@ -385,7 +385,7 @@ function CampFireSpill() {
   useFrame((_, delta) => {
     const light = ref.current;
     if (!light) return;
-    level.current += ((useWorldStore.getState().light === 'night' ? 1 : 0) - level.current) * Math.min(1, delta * 1.5);
+    level.current += (worldNight.value - level.current) * Math.min(1, delta * 1.5);
     // decay 1 over 24 m; Fable r2 cut 30% from 11 so the pit, benches and pads read as three
     // brightness steps. The inverse-square fire light in WorldEnvironment stays the hot core.
     light.intensity = level.current * 7.7 * (1 + Math.sin(windUniforms.uWindTime.value * 5.3) * 0.05 * windUniforms.uWindStrength.value);
@@ -414,7 +414,7 @@ function useRegisteredCopies(copies: Material[]) {
 function CampNightMaterials() {
   const level = useRef(0);
   useFrame((_, delta) => {
-    level.current += ((useWorldStore.getState().light === 'night' ? 1 : 0) - level.current) * Math.min(1, delta * 1.5);
+    level.current += (worldNight.value - level.current) * Math.min(1, delta * 1.5);
     nightGlow.forEach(m => { m.emissiveIntensity = level.current * 0.15; });
   });
   return null;
@@ -428,7 +428,7 @@ function CampLamps({ heads }: { heads: CampBlock[] }) {
   const pool = useRef<PointLight>(null);
   const level = useRef(0);
   useFrame((_, delta) => {
-    level.current += ((useWorldStore.getState().light === 'night' ? 1 : 0) - level.current) * Math.min(1, delta * 1.5);
+    level.current += (worldNight.value - level.current) * Math.min(1, delta * 1.5);
     material.emissiveIntensity = 0.15 + level.current * 1.9;
     if (pool.current) pool.current.intensity = level.current * 2.4;
   });

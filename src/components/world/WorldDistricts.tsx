@@ -19,6 +19,7 @@ import { nearestDryPoint } from './WorldLandform';
 import WorldTerrainRoads from './WorldTerrainRoads';
 import { WATER_Y } from './layout';
 import { useWorldStore } from './store';
+import { night } from './WorldNight';
 import { windUniforms } from './WorldWind';
 import { useClaimStore, useIsClaimed, type GreyboxKey } from './WorldVisualClaims';
 import type { Vec3 } from './types';
@@ -347,7 +348,7 @@ function Knockables() {
   const tick = useRef(0), light = useRef(0);
   useFrame((_, delta) => {
     const s = useWorldStore.getState();
-    light.current += ((s.light === 'night' ? 1 : 0) - light.current) * Math.min(1, delta * 2.5);
+    light.current += (night.value - light.current) * Math.min(1, delta * 2.5);
     glowUniform.value = .05 + light.current * 1.5;
     if (s.paused || s.shot) return;
     tick.current += delta;

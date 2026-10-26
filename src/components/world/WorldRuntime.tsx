@@ -23,6 +23,7 @@ import WorldStreet from './WorldStreet';
 import WorldCampContent from './WorldCampContent';
 import WorldEntry from './WorldEntry';
 import WorldAlphaMine from './WorldAlphaMine';
+import WorldWeather from './WorldWeather';
 import { setRenderReadoutSource } from './world-render-readout';
 
 // Layout v4 greybox (?layout=v4) loads as its own chunk; the default entry never fetches it.
@@ -47,6 +48,8 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
   const shot = useWorldStore(s => s.shot);
   const paused = useWorldStore(s => s.paused || s.poolInspect);
   const light = useWorldStore(s => s.light);
+  const timeRevision = useWorldStore(s => s.timeRevision);
+  const weather = useWorldStore(s => s.weather);
   const quality = useWorldStore(s => s.quality);
   const frames = useRef(0);
   const frameDelta = useRef(0);
@@ -56,7 +59,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
     // menu edits and resize without changing the requested drawing resolution.
     clock.getDelta();
     invalidate();
-  }, [paused, light, quality, size.width, size.height, clock, invalidate]);
+  }, [paused, light, timeRevision, weather, quality, size.width, size.height, clock, invalidate]);
   useEffect(() => { useWorldStore.setState(s => ({ loading: { ...s.loading, phase: 'scene' } })); }, []);
   useEffect(() => {
     if (!shot) return;
@@ -167,6 +170,7 @@ export default memo(function WorldRuntime({ content }: { content: WorldContent }
   return <Canvas frameloop={!visible ? 'never' : paused ? 'demand' : 'always'} shadows="percentage" dpr={[1, 2]} camera={{ position: [CAMP_SPAWN[0] + 10, CAMP_SPAWN[1] + 13, CAMP_SPAWN[2] + 10], fov: 50, near: .1, far: 600 }} gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}>
     <Suspense fallback={null}><Physics debug={overlay} gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={paused || !visible || !!shot} colliders={false}>
       <NightClock />
+      <WorldWeather />
       <WorldEnvironment experiences={content.experiences} />{WorldDistricts && <WorldDistricts />}<WorldObstacles /><WorldActors />
       {/* Each district suspends on its own GLBs without holding back the island or the player. */}
       <Suspense fallback={null}><WorldTown experiences={content.experiences} /></Suspense>
