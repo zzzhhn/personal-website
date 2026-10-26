@@ -157,7 +157,15 @@ export function createMineOnlineClient(options: { fetch?: typeof fetch; timeoutM
               cache: 'no-store', redirect: 'error', signal: job.controller.signal, body: JSON.stringify(parameters),
             });
             if (!response.ok) throw new BacktestFailure('http', response.status);
-            try { return adaptMineBacktest(job.id, await response.json()); }
+            let payload: unknown;
+            try { payload = await response.json(); }
+            catch (error) {
+              // A body-stream failure is still a transport interruption. Only a fully
+              // received but malformed JSON document belongs to result validation.
+              if (error instanceof SyntaxError) throw new BacktestFailure('invalid');
+              throw error;
+            }
+            try { return adaptMineBacktest(job.id, payload); }
             catch { throw new BacktestFailure('invalid'); }
           };
           const result = await Promise.race([work(), aborted]);

@@ -8,7 +8,7 @@ import { createPortal } from 'react-dom';
 import { readRenderSnapshot } from './world-render-readout';
 import { setMineNetworkFailureForQA } from './alpha-mine-online';
 
-/** Visible, read-only diagnostics. Reuses actor publication; never polls or changes play state. */
+/** Development QA controls and visible diagnostics. Reuses actor publication without polling. */
 export default function WorldPlaytestReadout() {
   const world=useWorldStore(),exchange=useAlphaExchange();
   const [renderSnapshot,setRenderSnapshot]=useState<unknown>(null);

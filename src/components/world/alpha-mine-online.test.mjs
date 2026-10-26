@@ -131,6 +131,31 @@ test('a persistent network failure stops after two attempts and exposes actionab
   t.mock.timers.tick(100_000); await client.request(ids[1]); assert.equal(calls, 2);
 });
 
+test('a response body interrupted after headers recovers once as a network failure', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  let calls = 0;
+  const client = createMineOnlineClient({ fetch: async () => {
+    calls++;
+    return calls === 1 ? new Response(new ReadableStream({ start(controller) {
+      controller.error(new TypeError('Response body transport interrupted'));
+    } })) : response(ids[0]);
+  } });
+  const task = client.request(ids[0]); await settle();
+  const interrupted = client.store.getState().factors[ids[0]];
+  assert.equal(interrupted.phase, 'recovering'); assert.equal(interrupted.issue.kind, 'network');
+  t.mock.timers.tick(MINE_RECOVERY_DELAY_MS); await task;
+  assert.equal(calls, 2); assert.equal(client.store.getState().factors[ids[0]].status, 'ready');
+});
+
+test('a fully received malformed JSON result does not trigger automatic recalculation', async () => {
+  let calls = 0;
+  const client = createMineOnlineClient({ fetch: async () => { calls++; return new Response('{"equity_curve":'); } });
+  await client.request(ids[0]);
+  const entry = client.store.getState().factors[ids[0]];
+  assert.equal(calls, 1); assert.equal(entry.status, 'error'); assert.equal(entry.issue.kind, 'invalid');
+  assert.equal(entry.result, null);
+});
+
 test('offline, rate limits and invalid results do not auto-repeat a calculation', async () => {
   let calls = 0, online = false;
   const client = createMineOnlineClient({ isOnline: () => online, fetch: async () => { calls++; return response(ids[0]); } });
