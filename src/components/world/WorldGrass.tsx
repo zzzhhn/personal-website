@@ -11,6 +11,7 @@ import { windUniforms } from './WorldWind';
 import { GRID } from './WorldLandform';
 import type { VehicleId } from './types';
 import { quarryFloraBanks, quarryFloraStyle } from './alpha-mine-flora';
+import { createTrampleUploads } from './grass-trample-uploads.ts';
 
 /** quality-v4 ground grass (spec §3 ground detail, Bobby 2026-10-22 "grass bends under people and
  * cars"). One instanced draw of 15-triangle tufts (5 blades x 3 triangles), dense near the focus
@@ -71,8 +72,8 @@ function createTrample() {
   const texture = new DataTexture(data, TRAMPLE_NX, TRAMPLE_NZ, RGBAFormat, UnsignedByteType);
   texture.wrapS = texture.wrapT = ClampToEdgeWrapping;
   texture.magFilter = texture.minFilter = LinearFilter;
-  texture.needsUpdate = true;
-  return { data, texture, amount: new Float32Array(TRAMPLE_NX * TRAMPLE_NZ), active: new Set<number>() };
+  const uploads = createTrampleUploads(texture, data, TRAMPLE_NX, TRAMPLE_NZ);
+  return { data, texture, uploads, amount: new Float32Array(TRAMPLE_NX * TRAMPLE_NZ), active: new Set<number>() };
 }
 
 /* ------------------------------------------------------------------ geometry + material */
@@ -212,7 +213,7 @@ export const grassDebug = { candidates: 0, culled: 0, uploads: 0, setCullingForQ
 /** data stride 6: x, y, z, yaw, size 0..1, keep (lower = kept first). */
 export default function WorldGrass({ data }: { data: Float32Array }) {
   const ref = useRef<InstancedMesh>(null);
-  const { scene } = useThree();
+  const { scene, gl } = useThree();
   const cull = useMemo(() => ({
     matrices: new Float32Array(GRASS_PROFILE.high.cap * 16), colors: new Float32Array(GRASS_PROFILE.high.cap * 3), kinds:new Float32Array(GRASS_PROFILE.high.cap),
     count: 0, revision: 0, uploadedRevision: -1, enabled: true, uploadedEnabled: true,
@@ -273,7 +274,15 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
     uTrample: { value: trample.texture }, uFocus: { value: new Vector3() }, uFade: { value: [30, 36] },
   }), [trample]);
   const material = useMemo(() => grassMaterial(uniforms), [uniforms]);
-  useEffect(() => () => { geometry.dispose(); material.dispose(); trample.texture.dispose(); }, [geometry, material, trample]);
+  useEffect(() => {
+    trample.uploads.connect(); // Effect cleanup/setup may reuse memoized resources in React StrictMode.
+    return () => { geometry.dispose(); material.dispose(); trample.uploads.dispose(); trample.texture.dispose(); };
+  }, [geometry, material, trample]);
+  useEffect(() => {
+    const restore = () => trample.uploads.reset();
+    gl.domElement.addEventListener('webglcontextrestored', restore);
+    return () => gl.domElement.removeEventListener('webglcontextrestored', restore);
+  }, [gl, trample]);
   const state = useRef({ fx: 1e9, fz: 1e9, quality: '', lastTime: -1 });
   // Candidates arrive asynchronously (built over idle frames): force a refill when they do.
   useEffect(() => { state.current.fx = 1e9; }, [data]);
@@ -326,9 +335,9 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
       if (k <= trample.amount[idx]) continue;
       trample.amount[idx] = k;
       const o = idx * 4;
-      trample.data[o + 1] = Math.round((wx / Math.max(l, 1e-3) * .5 + .5) * 255);
-      trample.data[o + 2] = Math.round((wz / Math.max(l, 1e-3) * .5 + .5) * 255);
-      trample.data[o + 3] = Math.round(Math.max(0,Math.min(1,(height+8)/32))*255);
+      trample.uploads.write(o + 1, Math.round((wx / Math.max(l, 1e-3) * .5 + .5) * 255));
+      trample.uploads.write(o + 2, Math.round((wz / Math.max(l, 1e-3) * .5 + .5) * 255));
+      trample.uploads.write(o + 3, Math.round(Math.max(0,Math.min(1,(height+8)/32))*255));
       trample.active.add(idx);
     }
   };
@@ -366,17 +375,17 @@ export default function WorldGrass({ data }: { data: Float32Array }) {
     s.lastTime = t;
     if (dt > 0) {
       for (let k = 0; k < n; k++) stamp(push[k].x, push[k].y, push[k].z * .9, .95,uniforms.uPushHeight.value[k]);
-      let max = 0; const dirty = trample.active.size > 0;
+      let max = 0;
       for (const idx of trample.active) {
         const v = trample.amount[idx] - TRAMPLE_DECAY * dt;
-        if (v <= 0) { trample.amount[idx] = 0; trample.data[idx * 4] = 0; trample.active.delete(idx); continue; }
+        if (v <= 0) { trample.amount[idx] = 0; trample.uploads.write(idx * 4, 0); trample.active.delete(idx); continue; }
         trample.amount[idx] = v; max = Math.max(max, v);
         // Ease-out recovery: stays down, then rises.
-        trample.data[idx * 4] = Math.round(Math.min(1, v * 1.25) ** .7 * 255);
+        trample.uploads.write(idx * 4, Math.round(Math.min(1, v * 1.25) ** .7 * 255));
       }
       grassDebug.trampleActive = trample.active.size; grassDebug.maxTrample = +max.toFixed(3);
-      // Upload only while something is bent or recovering (full-island RGBA8 map).
-      if (dirty) trample.texture.needsUpdate = true;
+      // Quantized RGBA changes upload only their rows, retaining unconsumed offscreen edits.
+      trample.uploads.flush();
     }
   });
 
