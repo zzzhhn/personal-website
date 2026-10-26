@@ -3,6 +3,7 @@ import type * as Rapier from '@dimforge/rapier3d-compat';
 import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
 
 type Vector = { x: number; y: number; z: number };
+const clearanceQueries = new WeakMap<object, { world: World; candidates: Collider[]; blocked: Set<number> }>();
 /** A query-only swept guard. The dynamic body still owns gravity, support, impulses and CCD.
  * Rapier's slide solver handles corners without widening the player's existing capsule. */
 export function createPlayerClearance(world: World) {
@@ -14,19 +15,29 @@ export function createPlayerClearance(world: World) {
   controller.setApplyImpulsesToDynamicBodies(false);
   controller.setMaxSlopeClimbAngle(25 * Math.PI / 180);
   controller.setMinSlopeSlideAngle(26 * Math.PI / 180);
+  clearanceQueries.set(controller, { world, candidates: [], blocked: new Set() });
   return controller;
 }
 
 export function sweptPlayerVelocity(controller: ReturnType<typeof createPlayerClearance>, body: RigidBody,
   velocity: Vector, dt: number, excludeSensors: number) {
   if (dt <= 0 || Math.hypot(velocity.x, velocity.z) < .001) return velocity;
+  const query = clearanceQueries.get(controller);
+  if (!query) throw new Error('Player clearance must be created with createPlayerClearance');
+  const { world, candidates, blocked } = query;
+  candidates.length = 0; blocked.clear();
+  const p = body.translation(), reach = Math.hypot(velocity.x, velocity.y, velocity.z) * dt + .02;
+  // Collect only the local swept envelope. A slide cannot travel farther than the requested motion.
+  // WASM query callbacks must not call back into its borrowed body set (e.g. owner.isDynamic()).
+  world.collidersWithAabbIntersectingAabb(p,
+    { x: PLAYER_RADIUS + reach, y: PLAYER_HALF_HEIGHT + PLAYER_RADIUS + reach, z: PLAYER_RADIUS + reach },
+    c => { candidates.push(c); return true; });
+  for (const c of candidates) {
+    const owner = c.parent();
+    if (owner?.isDynamic() && !(owner.userData as { vehicle?: string } | undefined)?.vehicle) blocked.add(c.handle);
+  }
   controller.computeColliderMovement(body.collider(0), { x: velocity.x * dt, y: velocity.y * dt, z: velocity.z * dt },
-    excludeSensors, undefined, c => {
-      const owner = c.parent();
-      // Loose props keep the dynamic controller's push response; static architecture and cars cannot
-      // be crossed by accelerating into them. No user-data-based ground classification is used.
-      return !owner || !owner.isDynamic() || !!(owner.userData as { vehicle?: string } | undefined)?.vehicle;
-    });
+    excludeSensors, undefined, c => !blocked.has(c.handle));
   let wall = false;
   for (let i = 0; i < controller.numComputedCollisions(); i++) {
     const hit = controller.computedCollision(i);
