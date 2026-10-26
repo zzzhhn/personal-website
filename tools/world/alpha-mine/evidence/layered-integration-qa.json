@@ -1,0 +1,23 @@
+{
+ "runtimeCheckout": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration",
+ "runtimeRevision": "f99ab3d377bc218ff0902c81c4e40fd1d1f5b6ba",
+ "command": [
+  "node",
+  "--import",
+  "./tools/world/alpha-mine-tests/register.mjs",
+  "--test",
+  "src/components/world/alpha-mine-physics.test.mjs",
+  "src/components/world/camera-collision.test.mjs",
+  "src/components/world/guide-mine.test.mjs"
+ ],
+ "assetDirectory": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-art/public/world/alpha-mine",
+ "assetSha256": {
+  "layout.json": "5ac05059833ca8fd4b547a2326e217e0898d3e911d63df252fb8dd3cc9afc4df",
+  "colliders.json": "1316cedc6b207d7458f8bb5b5ae114e829f4555e1ee3b75f644d4cfcff86572e",
+  "quarry-static.glb": "61b22e1fd5cc1572df088946dfbf366fe3ca14fc39166e4cf3e23858b0aea10d",
+  "veins.glb": "ebcc25eb7bf2f1a32a22b359c4f341b191db09213963a2ff884df8fae5ce43b3"
+ },
+ "exitCode": 0,
+ "output": "using deprecated parameters for the initialization function; pass a single object instead\n\u2714 authored mine route has continuous support and full capsule head/side clearance (115.835875ms)\n\u2714 mining stands occupy their stated storeys and seams are reachable from those stands (25.349375ms)\n\u2714 all mining and pickup approaches keep a clear chest ray and reachable capsule space (22.646125ms)\n\u2714 low exits retain a real capsule lane under bridge supports and through their rock mouths (51.503708ms)\nusing deprecated parameters for the initialization function; pass a single object instead\n\u2714 near-plane corners fit the collision sphere at wide aspect ratios and first-person FOV (2.779958ms)\n\u2714 cave camera stays below the roof instead of lifting onto a higher walking deck (25.508834ms)\n\u2714 thin walls constrain orbit, lagging pivot and first-person eye without crossing or overlap (0.956042ms)\n\u2714 forced-close orbit hides its own helmet/body and restores drawing only after safe clearance (0.407375ms)\n\u2714 actual quarry route camera sweeps stay clear at near/far distance and low/high orbit angles (97.791292ms)\n\u2139 720 actual quarry camera placements\n\u2714 quarry walls stay opaque while ordinary view-corridor fading still works (7.607417ms)\n\u2714 authored strike has distinct preparation, contact at .57, and follow-through (5.70425ms)\n\u2714 actual G24 hand chain drives both fixture pickaxe grips and the contact socket (16.906083ms)\n\u2714 upper-body scanning leaves pelvis and both foot transforms untouched (9.115208ms)\n\u2714 pickup crouch keeps final solved foot positions and restores all bone transforms (5.433667ms)\n\u2714 repeating a held pose never accumulates rotation or changes arm lengths (24.061708ms)\n\u2714 unreachable targets are reported without stretching bones or spoofing the tip (7.844792ms)\n\u2714 deposit retains the actual ore through preparation then hides it only on release (3.041625ms)\n\u2714 put-down lowers the ore with anchored feet and reports an unreachable ground target honestly (3.096667ms)\n\u2714 delivered tool sockets fit both G24 hands and strike contact at facility stand distances (23.0375ms)\n\u2139 [{\"kind\":\"strike\",\"x\":0.6,\"y\":1.3,\"tip\":0,\"right\":0,\"left\":0},{\"kind\":\"strike\",\"x\":0.7,\"y\":1.3,\"tip\":0,\"right\":0,\"left\":0},{\"kind\":\"strike\",\"x\":0.8,\"y\":1.3,\"tip\":0,\"right\":0,\"left\":0},{\"kind\":\"strike\",\"x\":0.9,\"y\":1.3,\"tip\":0,\"right\":0,\"left\":0},{\"kind\":\"strike\",\"x\":1,\"y\":1.3,\"tip\":0,\"right\":0,\"left\":0.0196},{\"kind\":\"strike\",\"x\":1.1,\"y\":1.3,\"tip\":0,\"right\":0,\"left\":0.0822},{\"kind\":\"pickup\",\"x\":0.5,\"y\":0.7,\"right\":0,\"left\":0},{\"kind\":\"pickup\",\"x\":0.6,\"y\":0.7,\"right\":0,\"left\":0},{\"kind\":\"pickup\",\"x\":0.7,\"y\":0.7,\"right\":0.0732,\"left\":0.0025},{\"kind\":\"put-down\",\"x\":0.5,\"y\":0.7,\"right\":0,\"left\":0},{\"kind\":\"put-down\",\"x\":0.6,\"y\":0.7,\"right\":0,\"left\":0},{\"kind\":\"put-down\",\"x\":0.7,\"y\":0.7,\"right\":0.0732,\"left\":0.0025}]\n\u2714 GLTFLoader-sanitized bone names still resolve both arms and the grounded crouch (5.637625ms)\n\u2714 rack grip is reachable at the installed 1.05 metre height (2.994583ms)\n\u2139 tests 21\n\u2139 suites 0\n\u2139 pass 21\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 2285.052959\n",
+ "limits": "production Rapier sampling and camera sweeps plus delivered tool nodes; continuous dynamic KCC audit is a separate character-session check"
+}

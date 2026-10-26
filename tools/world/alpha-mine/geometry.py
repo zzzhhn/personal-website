@@ -31,22 +31,27 @@ def group(name,material,semantic):
     if name not in MESHES:MESHES[name]=Mesh(name,material,semantic)
     return MESHES[name]
 
+def layer_coordinate(x,y,z):
+    return y+.10*x+.045*z+.30*math.sin(x*.19+z*.11)+.14*math.sin(x*.42-z*.15)
+
 def rock_color(y,seed,x=0,z=0):
-    # Broad tilted beds and local fault offsets, not equal-width horizontal stripes.
-    layer=y+.10*x+.045*z+.30*math.sin(x*.19+z*.11)+.14*math.sin(x*.42-z*.15)
+    # The same folded coordinate drives actual bed relief and material strata.
+    layer=layer_coordinate(x,y,z)
     q=.5+.5*math.sin(layer*.78);rust=math.exp(-((layer%5.9-2.2)/.43)**2)*.17
     a=(131,134,123);b=(183,171,148);ochre=(170,140,96)
     rgb=[(a[k]*(1-q)+b[k]*q)*(1-rust)+ochre[k]*rust for k in range(3)]
     teal=math.exp(-((layer%6.9-4.1)/.24)**2)*.16
     rgb=[rgb[k]*(1-teal)+(72,112,101)[k]*teal for k in range(3)]
+    bed=.5+.5*math.sin(layer*math.tau/1.9+.22*math.sin(layer*1.37))
+    rgb=[c*(.95+.08*bed) for c in rgb]
     f=.985+.03*noise(seed)
     return '#'+''.join(f'{round(max(0,min(255,c*f))):02x}' for c in rgb)
 
 def warp(p):
     x,y,z=p
     fade=math.sin(math.pi*y/3);protect=rock_protection(x,z)
-    dx=.32*fade*math.sin(x*.49+z*.23+y*.57)*protect
-    dz=.36*fade*math.sin(x*.31-z*.29+y*.67)*protect
+    dx=.08*fade*math.sin(x*.49+z*.23+y*.57)*protect
+    dz=.09*fade*math.sin(x*.31-z*.29+y*.67)*protect
     if z<=-35.99:dz=0
     if z>=-.01:dz=0
     if abs(x-13.1)<1e-6:dx=.25+.8*math.sin(z*.22+.4)**2
@@ -57,7 +62,9 @@ def warp(p):
         protect=max(0,min(1,(abs(x+8.6)-.9)/.55));dz=.6*math.sin(x*.8)*protect
     if abs(z+33)<1e-6 and -3.7<x<10.5:dz=.85*math.sin(x*.33+.8)**2
     if abs(x+3.7)<1e-6 and -33<z<-25.6:dx=.7*math.sin((z+33)/7.4*math.pi)**2
-    if abs(z+35.6)<1e-6:dz=-(.3+.65*math.sin(x*.32)**2)*max(0,min(1,(abs(x-1.5)-1.0)/.8))
+    # The rear geological lip has a real 0.4m structural depth. Grow its exposed
+    # front into the quarry instead of folding it behind the back plane.
+    if abs(z+35.6)<1e-6:dz=(.18+.30*math.sin(x*.32)**2)*max(0,min(1,(abs(x-1.5)-1.0)/.8))
     dy=0
     if all(abs(y-level)>.001 for level in [0,3,6]):
         dy=.23*math.sin(x*.61+z*.47)+.11*math.sin(x*1.2-z*.3)
@@ -127,13 +134,19 @@ def attached_talus(edge,low,high,n,seed):
         mid=add(a,mul(sub(b,a),(i+.5)/count))
         if floor_route_distance(mid[0],low,mid[2])<1.6:continue
         if any(abs(low-v['level'])<.5 and math.hypot(mid[0]-v['socket'][0],mid[2]-v['socket'][2])<1.4 for v in VEINS):continue
-        rings=[]
+        rings=[];close_foot=low==0 and -22<mid[2]<-19 and -13.6<mid[0]<-3.1
         for t in [i/count,(i+1)/count]:
             p=add(a,mul(sub(b,a),t));p=warp(p)
             reach=.45+.42*noise(seed+t*13);rise=.24+.45*noise(seed+t*19)
-            rings.append([add(p,mul(n,.02)),add(p,mul(n,reach)),add(add(p,mul(n,.035)),(0,rise,0))])
-        ps=rings[0]+rings[1];center=tuple(sum(p[k] for p in ps)/6 for k in range(3));m.lookup={}
-        for f in [(0,1,2),(3,5,4),(0,3,4,1),(1,4,5,2),(2,5,3,0)]:
+            ring=[add(p,mul(n,-.045 if close_foot else .02)),add(p,mul(n,reach))]
+            if close_foot:
+                shoulder=add(add(p,mul(n,reach*(.48+.15*noise(seed+t*31)))),(0,rise*.57,0))
+                shoulder=add(shoulder,mul(unit(sub(b,a)),.06*math.sin(seed+t*23)))
+                ring.append(shoulder)
+            ring.append(add(add(p,mul(n,.035)),(0,rise,0)));rings.append(ring)
+        ps=rings[0]+rings[1];size=len(rings[0]);m.lookup={}
+        shell=[list(range(size)),list(reversed(range(size,size*2)))]+[[j,j+size,(j+1)%size+size,(j+1)%size] for j in range(size)]
+        for f in shell:
             # Preserve shared-edge winding on warped nonplanar wedge faces.
             face=[ps[k] for k in f]
             m.face(face,rock_color(low+.2,seed+i,mid[0],mid[2]))
@@ -183,11 +196,16 @@ def eroded_ground(mesh,x0,x1,z0,z1):
 
 def geology():
     body=group('AM01_rock_mass','stone','closed-rock');ground=group('AM01_ground','ground','open-walk-surface')
-    cells={(i,j): rock_intervals((XS[i]+XS[i+1])/2,(ZS[j]+ZS[j+1])/2)
-        for i in range(len(XS)-1) for j in range(len(ZS)-1)}
-    levels=[0,.4,.75,1.3,1.5,2.1,2.25,2.7,3,3.75,4.5,5.25,6,6.75,7.5,8.25,9,9.75,10.5,11.25,12]
+    # Carry the close-view fracture samples through the whole cell topology so
+    # adjoining caps and walls share their edges instead of acquiring T-joints.
+    xs=sorted(set(XS+[-12.1,-11.2,-9.9,-9.72,-9.5,-7.6,-5.2,-4.98,-4.75]))
+    cells={(i,j): rock_intervals((xs[i]+xs[i+1])/2,(ZS[j]+ZS[j+1])/2)
+        for i in range(len(xs)-1) for j in range(len(ZS)-1)}
+    levels=[0,.4,.75,1.02,1.3,1.5,1.8,2.1,2.25,2.7,3,3.75,4.5,5.25,6,6.75,7.5,8.25,9,9.75,10.5,11.25,12]
+    caps=[];walls=[];directions={}
+    def key(p):return tuple(round(v,8) for v in p)
     for (i,j),intervals in cells.items():
-        x0,x1=XS[i:i+2];z0,z1=ZS[j:j+2]
+        x0,x1=xs[i:i+2];z0,z1=ZS[j:j+2]
         h=intervals[-1][1] if intervals else 0
         top=[(x0,h,z0),(x0,h,z1),(x1,h,z1),(x1,h,z0)]
         if h==0 or intervals[0][0]>0:
@@ -196,8 +214,8 @@ def geology():
             eroded_ground(ground,x0,x1,z0,z1)
         if not intervals:continue
         bottom=intervals[0][0]
-        body.face([warp(p) for p in top], rock_color(h,i+j,(x0+x1)/2,(z0+z1)/2))
-        body.face([warp(p) for p in [(x1,bottom,z0),(x1,bottom,z1),(x0,bottom,z1),(x0,bottom,z0)]],'#726B5F')
+        caps.append((top,rock_color(h,i+j,(x0+x1)/2,(z0+z1)/2)))
+        caps.append(([(x1,bottom,z0),(x1,bottom,z1),(x0,bottom,z1),(x0,bottom,z0)],'#726B5F'))
         sides=[((i,j+1),(0,0,1),lambda y:[(x0,y,z1),(x1,y,z1)]),
                ((i,j-1),(0,0,-1),lambda y:[(x1,y,z0),(x0,y,z0)]),
                ((i+1,j),(1,0,0),lambda y:[(x1,y,z1),(x1,y,z0)]),
@@ -207,12 +225,36 @@ def geology():
             cuts=sorted(set([bottom,h]+[y for interval in other for y in interval if bottom<y<h]+[y for y in levels if bottom<y<h]))
             for k,(lo,hi) in enumerate(zip(cuts,cuts[1:])):
                 if any(a<(lo+hi)/2<b for a,b in other):continue
-                a,b=edge(lo);d,c=edge(hi);quad=[warp(p) for p in [a,b,c,d]]
-                center=tuple(sum(p[q] for p in quad)/4 for q in range(3))
-                # One continuous closed shell. No independently capped wall overlays.
-                center=add(center,mul(n,.42*surface_relief(*center)*math.sin(center[0]*.7+center[2]*.4+center[1])**2))
-                for t in range(4):body.face([quad[t],quad[(t+1)%4],center],rock_color((lo+hi)/2,i+j+k*.5,center[0],center[2]))
+                a,b=edge(lo);d,c=edge(hi);quad=[a,b,c,d]
+                walls.append((quad,rock_color((lo+hi)/2,i+j+k*.5,(x0+x1)/2,(z0+z1)/2)))
+                for p in quad:directions.setdefault(key(p),set()).add(n)
             if not other:attached_talus(edge,bottom,h,n,100+i*37+j*11)
+    normals={}
+    for p,ns in directions.items():
+        summed=tuple(sum(n[k] for n in ns) for k in range(3))
+        normals[p]=unit(summed) if sum(v*v for v in summed)>1e-12 else (0,0,0)
+    def bed_point(p):
+        q=warp(p);n=normals.get(key(p))
+        if n is None:return q
+        # Walking tops and joints retain their exact boundaries. Between them,
+        # the whole cliff follows broad beds rather than independent star fans.
+        lock=min(1,min(abs(p[1]-y) for y in [0,3,6])/.28)
+        layer=layer_coordinate(*q);phase=layer*math.tau/1.9+.22*math.sin(layer*1.37)
+        relief=.17*math.cos(phase)+.055*math.sin(phase*2+.4)
+        if -36.001<=p[2]<=-35.599 and p[1]>6:relief*=.25
+        if abs(p[2]+21)<1e-6 and 0<p[1]<3:
+            # Two narrow, oblique recesses interrupt the beds near the lower
+            # mineral face. They are real host geometry, not dark floating skins.
+            fault=min(abs(p[0]-(-9.72+.055*(p[1]-1.3))),abs(p[0]-(-4.98-.07*(p[1]-1.3))))
+            recess=-.13*max(0,1-fault/.23)
+            slip=.065*math.sin(p[1]*2.1+p[0])*(1-smooth(.25,.9,fault))
+            relief+=recess+slip
+        return add(q,mul(n,relief*lock*surface_relief(*q)))
+    for points,color in caps+walls:
+        quad=[bed_point(p) for p in points]
+        # Explicit diagonals keep the rendered and collision triangles identical.
+        body.face([quad[0],quad[1],quad[2]],color)
+        body.face([quad[0],quad[2],quad[3]],color)
 
 def box(name,center,size,material='wood',color='#8E6E55',semantic='structure',axes=None,collider=True):
     mesh=group(name,material,semantic);mesh.lookup={};u,v,w=axes or ((1,0,0),(0,1,0),(0,0,1))
@@ -234,7 +276,13 @@ def walkway(route):
     if normal[1]<0:normal=mul(normal,-1)
     for i in range(n):
         t=(i+.5)/n;p=add(a,mul(sub(b,a),t));p=add(p,mul(normal,-.085))
-        box(name,p,(route['deckWidth'],.17,length/n-.012),color=['#98764F','#A38158','#8B6A47'][i%3],axes=(side,normal,mul(along,-1)),collider=False)
+        color=['#9C7D56','#A58359','#93744F'][min(2,int(noise(i*2.13+length)*3))]
+        box(name,p,(route['deckWidth'],.17,length/n-.012),color=color,axes=(side,normal,mul(along,-1)),collider=False)
+    # Real load path: planks -> longitudinal joists -> cross-sills -> planted posts.
+    # Tops lap 10mm into the underside of the planks, without altering walk support.
+    for offset in [-.94,0,.94]:
+        aa=add(add(a,mul(side,offset)),mul(normal,-.30));bb=add(add(b,mul(side,offset)),mul(normal,-.30))
+        beam(name+'_stringers',aa,bb,.18,depth=.28,color='#765739')
     for sign in [-1,1]:
         aa=add(a,mul(side,sign*(half-.02)));bb=add(b,mul(side,sign*(half-.02)))
         inset=route.get('railInset',0)
@@ -251,10 +299,16 @@ def walkway(route):
     for t in [.16,.50,.84]:
         center=add(a,mul(sub(b,a),t));base=height(center[0],center[2])
         if center[1]-base<.3:continue
-        left=add(center,mul(side,-.94));right=add(center,mul(side,.94))
-        for p in [left,right]:beam(name+'_supports',(p[0],base,p[2]),add(p,(0,-.05,0)),.21)
-        beam(name+'_brace',(left[0],base+.15,left[2]),add(right,(0,-.25,0)),.13)
-        beam(name+'_brace',(right[0],base+.15,right[2]),add(left,(0,-.25,0)),.13)
+        sill=add(center,mul(normal,-.53));left=add(sill,mul(side,-.94));right=add(sill,mul(side,.94))
+        beam(name+'_cross_sills',add(sill,mul(side,-1.16)),add(sill,mul(side,1.16)),.22,depth=.28,color='#8B6945')
+        for p in [left,right]:beam(name+'_supports',(p[0],base,p[2]),p,.21)
+        if sill[1]-base>.65:
+            beam(name+'_brace',(left[0],base+.15,left[2]),add(right,(0,-.12,0)),.13)
+            beam(name+'_brace',(right[0],base+.15,right[2]),add(left,(0,-.12,0)),.13)
+        for sign in [-1,1]:
+            plate=add(add(sill,mul(side,sign*.94)),mul(along,.16))
+            box(name+'_joint_straps',plate,(.30,.22,.045),'metal','#60665B',axes=(side,normal,mul(along,-1)),collider=False)
+            cylinder(name+'_joint_bolts',add(plate,mul(along,.024)),add(plate,mul(along,.047)),.018,color='#8E927F',n=6)
 
 def prism(name,poly,y0,y1,color,material='stone',semantic='structure'):
     m=group(name,material,semantic);n=len(poly)
@@ -331,7 +385,28 @@ def architecture():
     # Mine bays have real low stone seats for short-character ore pickups.
     for v in VEINS:
         x,y,z=v['socket'];poly=[(x+a,z-.05+b) for a,b in [(-.6,-.4),(-.35,-.6),(.48,-.5),(.6,.25),(.35,.55),(-.5,.52)]]
-        prism('AM01_ore_catch_'+v['id'],poly,v['level'],v['level']+.52,'#928774')
+        if v['level']!=0:
+            prism('AM01_ore_catch_'+v['id'],poly,v['level'],v['level']+.52,'#928774')
+            continue
+        # Keep the exact .52m pickup seat and its 15cm ore footprint; break its
+        # vertical brick silhouette with an asymmetric, splayed fracture base.
+        seat=group('AM01_ore_catch_'+v['id'],'stone','structure')
+        rings=[]
+        for level in range(3):
+            ring=[]
+            for i,(px,pz) in enumerate(poly):
+                scale=[1.18+.12*noise(i+12),1.04+.06*noise(i+21),1][level]
+                py=[0,.27+.11*noise(i+44),.52][level]
+                ring.append((x+(px-x)*scale,py,z+(pz-z)*scale))
+            rings.append(ring)
+        if cross(sub(rings[-1][1],rings[-1][0]),sub(rings[-1][2],rings[-1][0]))[1]<0:
+            rings=[list(reversed(r)) for r in rings]
+        seat.face(rings[-1],'#9A917D');seat.face(list(reversed(rings[0])),'#817B69')
+        for low,high in zip(rings,rings[1:]):
+            for i in range(len(poly)):
+                j=(i+1)%len(poly)
+                seat.face([low[i],low[j],high[j]],['#8A806B','#A0957D','#918871'][i%3])
+                seat.face([low[i],high[j],high[i]],['#8A806B','#A0957D','#918871'][i%3])
     # Exposed front platform edges are protected, leaving ramp and bridge joins open.
     rail_line('AM02_west_landing_rail',(-10.3,3,-21),(-3.9,3,-21))
     rail_line('AM02_upper_front_rail',(-3.5,6,-33),(10.3,6,-33))
@@ -379,8 +454,8 @@ def surface_relief(x,y,z):
         dx,dz=b[0]-a[0],b[2]-a[2];t=max(0,min(1,((x-a[0])*dx+(z-a[2])*dz)/max(dx*dx+dz*dz,1e-8)))
         cx,cy,cz=add(a,mul(sub(b,a),t));dy=max(0,abs(y-(cy+.88))-.48)
         clearance=min(clearance,math.sqrt((x-cx)**2+dy*dy+(z-cz)**2)-.34)
-    near=min(math.hypot(x-v['socket'][0],z-v['socket'][2]) for v in VEINS)
-    return smooth(.4,.9,clearance)*smooth(1.1,2,near)
+    near=min(math.sqrt(((x-v['socket'][0])/.75)**2+((y-v['socket'][1])/.65)**2+((z-v['socket'][2])/.5)**2) for v in VEINS)
+    return smooth(.4,.9,clearance)*smooth(.7,1.7,near)
 
 def fractures_and_ground():
     for i,(lo,hi) in enumerate([
@@ -403,7 +478,18 @@ def fractures_and_ground():
         else:
             VEGETATION.append({'position':[round(x,3),level+.015,round(z,3)],'scale':round(.7+.6*noise(i*5),3),'yaw':round(noise(i*7)*math.tau,3)})
         accepted+=1
-        if accepted>=140:break
+        if accepted>=100:break
+    # Redistribute, rather than blanket-increase, the interior vegetation budget.
+    # Small colonies gather at actual rock feet/turns with broad soil between.
+    sites=[(-9.2,0,-19.3),(-4.4,0,-19.1),(11.5,0,-13.8),(-10.1,0,-6.2),
+           (-12.0,6,-31.9),(-4.6,6,-32.0),(-18.5,6,-46.5),(18.5,6,-45.0)]
+    for j,(x,level,z) in enumerate(sites):
+        for k in range(4):
+            angle=k*2.399+j;radius=.12+.30*noise(j*7+k*3)
+            px=x+math.cos(angle)*radius;pz=z+math.sin(angle)*radius
+            if abs(height(px,pz)-level)>.01 or route_distance(px,pz)<1.65:continue
+            if any(math.hypot(px-v['stand'][0],pz-v['stand'][2])<1.4 for v in VEINS):continue
+            VEGETATION.append({'position':[round(px,3),level+.015,round(pz,3)],'scale':round(.8+.45*noise(j+k*7),3),'yaw':round(angle,3)})
     # The fringe grows on the host ground, outside the eroded stone foot. Its
     # roots sit 14cm below the quarry datum, matching mainland y=1 rather than
     # hovering at the raised facility plane. No static grass is exported.
@@ -501,7 +587,7 @@ def scenic_galleries():
             box('AM05_rail_sleepers',(x,y+.025,z-length/2+i*.55),(1.55,.05,.15),color='#765B3B',collider=False)
     mine_cart(12.6,6,-40.7)
     # Workbench, stacked crates and stone sample trays are outside protected lanes.
-    for x,y,z,s in [(-3.0,0,-18.6,1.0),(-2.0,0,-19.0,.65),(-13,0,-5.7,.95),
+    for x,y,z,s in [(-3.0,0,-18.6,1.0),(-2.0,0,-19.0,.65),(-3.8,0,-17.0,.95),
                     (9.2,3,-18.8,.70),(-6.1,6,-31.7,.8),(-6.2,6,-31.7+0.03,.45),
                     (-20.3,3,-25.5,.70),(15.4,6,-46,.9),(16.35,6,-46.3,.65)]:crate(x,y,z,s)
     for x in [-6.6,-4.0]:

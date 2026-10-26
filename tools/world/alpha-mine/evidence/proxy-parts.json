@@ -1,6 +1,105 @@
 [
  {
-  "id": "AM02_ramp-west-0-3_rail-0",
+  "id": "AM02_ramp-west-0-3_stringers-0",
+  "shape": "oriented-box",
+  "center": [
+   -12.74,
+   1.2089572499564003,
+   -15.0727606875109
+  ],
+  "size": [
+   0.18,
+   12.36931687685298,
+   0.28
+  ],
+  "axes": [
+   [
+    1.0,
+    -0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.242535625036333,
+    -0.970142500145332
+   ],
+   [
+    0.0,
+    0.970142500145332,
+    0.242535625036333
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_ramp-west-0-3_stringers-1",
+  "shape": "oriented-box",
+  "center": [
+   -11.8,
+   1.2089572499564003,
+   -15.0727606875109
+  ],
+  "size": [
+   0.18,
+   12.36931687685298,
+   0.28
+  ],
+  "axes": [
+   [
+    1.0,
+    -0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.242535625036333,
+    -0.970142500145332
+   ],
+   [
+    0.0,
+    0.970142500145332,
+    0.242535625036333
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_ramp-west-0-3_stringers-2",
+  "shape": "oriented-box",
+  "center": [
+   -10.860000000000001,
+   1.2089572499564003,
+   -15.0727606875109
+  ],
+  "size": [
+   0.18,
+   12.36931687685298,
+   0.28
+  ],
+  "axes": [
+   [
+    1.0,
+    -0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.242535625036333,
+    -0.970142500145332
+   ],
+   [
+    0.0,
+    0.970142500145332,
+    0.242535625036333
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_ramp-west-0-3_rail-3",
   "shape": "oriented-box",
   "center": [
    -13.08,
@@ -33,7 +132,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_rail-1",
+  "id": "AM02_ramp-west-0-3_rail-4",
   "shape": "oriented-box",
   "center": [
    -13.08,
@@ -66,7 +165,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_posts-2",
+  "id": "AM02_ramp-west-0-3_posts-5",
   "shape": "oriented-box",
   "center": [
    -13.08,
@@ -99,7 +198,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_posts-3",
+  "id": "AM02_ramp-west-0-3_posts-6",
   "shape": "oriented-box",
   "center": [
    -13.08,
@@ -132,7 +231,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_posts-4",
+  "id": "AM02_ramp-west-0-3_posts-7",
   "shape": "oriented-box",
   "center": [
    -13.08,
@@ -165,7 +264,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_posts-5",
+  "id": "AM02_ramp-west-0-3_posts-8",
   "shape": "oriented-box",
   "center": [
    -13.08,
@@ -198,7 +297,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_posts-6",
+  "id": "AM02_ramp-west-0-3_posts-9",
   "shape": "oriented-box",
   "center": [
    -13.08,
@@ -231,7 +330,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_posts-7",
+  "id": "AM02_ramp-west-0-3_posts-10",
   "shape": "oriented-box",
   "center": [
    -13.08,
@@ -264,7 +363,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_posts-8",
+  "id": "AM02_ramp-west-0-3_posts-11",
   "shape": "oriented-box",
   "center": [
    -13.08,
@@ -297,7 +396,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_rail-9",
+  "id": "AM02_ramp-west-0-3_rail-12",
   "shape": "oriented-box",
   "center": [
    -10.520000000000001,
@@ -330,7 +429,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_rail-10",
+  "id": "AM02_ramp-west-0-3_rail-13",
   "shape": "oriented-box",
   "center": [
    -10.520000000000001,
@@ -363,7 +462,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_posts-11",
+  "id": "AM02_ramp-west-0-3_posts-14",
   "shape": "oriented-box",
   "center": [
    -10.520000000000001,
@@ -396,7 +495,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_posts-12",
+  "id": "AM02_ramp-west-0-3_posts-15",
   "shape": "oriented-box",
   "center": [
    -10.520000000000001,
@@ -429,7 +528,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_posts-13",
+  "id": "AM02_ramp-west-0-3_posts-16",
   "shape": "oriented-box",
   "center": [
    -10.520000000000001,
@@ -462,7 +561,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_posts-14",
+  "id": "AM02_ramp-west-0-3_posts-17",
   "shape": "oriented-box",
   "center": [
    -10.520000000000001,
@@ -495,7 +594,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_posts-15",
+  "id": "AM02_ramp-west-0-3_posts-18",
   "shape": "oriented-box",
   "center": [
    -10.520000000000001,
@@ -528,7 +627,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_posts-16",
+  "id": "AM02_ramp-west-0-3_posts-19",
   "shape": "oriented-box",
   "center": [
    -10.520000000000001,
@@ -561,7 +660,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_posts-17",
+  "id": "AM02_ramp-west-0-3_posts-20",
   "shape": "oriented-box",
   "center": [
    -10.520000000000001,
@@ -630,93 +729,27 @@
   "plankRevealM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_supports-19",
-  "shape": "oriented-box",
-  "center": [
-   -12.74,
-   0.215,
-   -10.92
-  ],
-  "size": [
-   0.21,
-   0.43,
-   0.21
-  ],
-  "axes": [
-   [
-    1.0,
-    0.0,
-    0.0
-   ],
-   [
-    0.0,
-    1.0,
-    0.0
-   ],
-   [
-    0.0,
-    0.0,
-    1.0
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
-  "id": "AM02_ramp-west-0-3_supports-20",
-  "shape": "oriented-box",
-  "center": [
-   -10.860000000000001,
-   0.215,
-   -10.92
-  ],
-  "size": [
-   0.21,
-   0.43,
-   0.21
-  ],
-  "axes": [
-   [
-    1.0,
-    0.0,
-    0.0
-   ],
-   [
-    0.0,
-    1.0,
-    0.0
-   ],
-   [
-    0.0,
-    0.0,
-    1.0
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
-  "id": "AM02_ramp-west-0-3_brace-21",
+  "id": "AM02_ramp-west-0-3_cross_sills-22",
   "shape": "oriented-box",
   "center": [
    -11.8,
-   0.19,
-   -10.92
+   -0.03417552507702604,
+   -11.048543881269257
   ],
   "size": [
-   0.13,
-   1.8817013578142512,
-   0.13
+   0.22,
+   2.3200000000000003,
+   0.28
   ],
   "axes": [
    [
-    0.04251471662481366,
-    -0.9990958406831207,
+    0.0,
+    -1.0,
     0.0
    ],
    [
-    0.9990958406831207,
-    0.04251471662481366,
+    1.0,
+    0.0,
     0.0
    ],
    [
@@ -729,60 +762,27 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_brace-22",
-  "shape": "oriented-box",
-  "center": [
-   -11.8,
-   0.19,
-   -10.92
-  ],
-  "size": [
-   0.13,
-   1.8817013578142512,
-   0.13
-  ],
-  "axes": [
-   [
-    0.04251471662481366,
-    0.9990958406831207,
-    -0.0
-   ],
-   [
-    -0.9990958406831207,
-    0.04251471662481366,
-    0.0
-   ],
-   [
-    0.0,
-    0.0,
-    1.0
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
   "id": "AM02_ramp-west-0-3_supports-23",
   "shape": "oriented-box",
   "center": [
    -12.74,
-   0.725,
-   -15.0
+   -0.01708776253851302,
+   -11.048543881269257
   ],
   "size": [
    0.21,
-   1.45,
+   0.03417552507702604,
    0.21
   ],
   "axes": [
    [
-    1.0,
+    -1.0,
     0.0,
     0.0
    ],
    [
     0.0,
-    1.0,
+    -1.0,
     0.0
    ],
    [
@@ -799,23 +799,23 @@
   "shape": "oriented-box",
   "center": [
    -10.860000000000001,
-   0.725,
-   -15.0
+   -0.01708776253851302,
+   -11.048543881269257
   ],
   "size": [
    0.21,
-   1.45,
+   0.03417552507702604,
    0.21
   ],
   "axes": [
    [
-    1.0,
+    -1.0,
     0.0,
     0.0
    ],
    [
     0.0,
-    1.0,
+    -1.0,
     0.0
    ],
    [
@@ -828,27 +828,27 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_brace-25",
+  "id": "AM02_ramp-west-0-3_cross_sills-25",
   "shape": "oriented-box",
   "center": [
    -11.8,
-   0.7,
-   -15.0
+   0.985824474922974,
+   -15.128543881269257
   ],
   "size": [
-   0.13,
-   2.178164364780582,
-   0.13
+   0.22,
+   2.3200000000000003,
+   0.28
   ],
   "axes": [
    [
-    0.505012393824012,
-    -0.8631120912628563,
+    0.0,
+    -1.0,
     0.0
    ],
    [
-    0.8631120912628563,
-    0.505012393824012,
+    1.0,
+    0.0,
     0.0
    ],
    [
@@ -861,27 +861,27 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_brace-26",
+  "id": "AM02_ramp-west-0-3_supports-26",
   "shape": "oriented-box",
   "center": [
-   -11.8,
-   0.7,
-   -15.0
+   -12.74,
+   0.492912237461487,
+   -15.128543881269257
   ],
   "size": [
-   0.13,
-   2.178164364780582,
-   0.13
+   0.21,
+   0.985824474922974,
+   0.21
   ],
   "axes": [
    [
-    0.505012393824012,
-    0.8631120912628563,
-    -0.0
+    1.0,
+    0.0,
+    0.0
    ],
    [
-    -0.8631120912628563,
-    0.505012393824012,
+    0.0,
+    1.0,
     0.0
    ],
    [
@@ -897,46 +897,13 @@
   "id": "AM02_ramp-west-0-3_supports-27",
   "shape": "oriented-box",
   "center": [
-   -12.74,
-   1.235,
-   -19.08
-  ],
-  "size": [
-   0.21,
-   2.47,
-   0.21
-  ],
-  "axes": [
-   [
-    1.0,
-    0.0,
-    0.0
-   ],
-   [
-    0.0,
-    1.0,
-    0.0
-   ],
-   [
-    0.0,
-    0.0,
-    1.0
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
-  "id": "AM02_ramp-west-0-3_supports-28",
-  "shape": "oriented-box",
-  "center": [
    -10.860000000000001,
-   1.235,
-   -19.08
+   0.492912237461487,
+   -15.128543881269257
   ],
   "size": [
    0.21,
-   2.47,
+   0.985824474922974,
    0.21
   ],
   "axes": [
@@ -960,27 +927,27 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_brace-29",
+  "id": "AM02_ramp-west-0-3_brace-28",
   "shape": "oriented-box",
   "center": [
    -11.8,
-   1.21,
-   -19.08
+   0.507912237461487,
+   -15.128543881269257
   ],
   "size": [
    0.13,
-   2.8335137197479736,
+   2.0116671391904646,
    0.13
   ],
   "axes": [
    [
-    0.7481876601566494,
-    -0.6634871703275944,
+    0.355836440819447,
+    -0.9345482477566089,
     0.0
    ],
    [
-    0.6634871703275943,
-    0.7481876601566493,
+    0.9345482477566089,
+    0.355836440819447,
     0.0
    ],
    [
@@ -993,27 +960,27 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-west-0-3_brace-30",
+  "id": "AM02_ramp-west-0-3_brace-29",
   "shape": "oriented-box",
   "center": [
    -11.8,
-   1.21,
-   -19.08
+   0.507912237461487,
+   -15.128543881269257
   ],
   "size": [
    0.13,
-   2.8335137197479736,
+   2.0116671391904646,
    0.13
   ],
   "axes": [
    [
-    0.7481876601566494,
-    0.6634871703275944,
+    0.355836440819447,
+    0.9345482477566089,
     -0.0
    ],
    [
-    -0.6634871703275943,
-    0.7481876601566493,
+    -0.9345482477566089,
+    0.355836440819447,
     0.0
    ],
    [
@@ -1026,7 +993,271 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_rail-31",
+  "id": "AM02_ramp-west-0-3_cross_sills-30",
+  "shape": "oriented-box",
+  "center": [
+   -11.8,
+   2.005824474922974,
+   -19.208543881269254
+  ],
+  "size": [
+   0.22,
+   2.3200000000000003,
+   0.28
+  ],
+  "axes": [
+   [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_ramp-west-0-3_supports-31",
+  "shape": "oriented-box",
+  "center": [
+   -12.74,
+   1.002912237461487,
+   -19.208543881269254
+  ],
+  "size": [
+   0.21,
+   2.005824474922974,
+   0.21
+  ],
+  "axes": [
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    1.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_ramp-west-0-3_supports-32",
+  "shape": "oriented-box",
+  "center": [
+   -10.860000000000001,
+   1.002912237461487,
+   -19.208543881269254
+  ],
+  "size": [
+   0.21,
+   2.005824474922974,
+   0.21
+  ],
+  "axes": [
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    1.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_ramp-west-0-3_brace-33",
+  "shape": "oriented-box",
+  "center": [
+   -11.8,
+   1.0179122374614868,
+   -19.208543881269254
+  ],
+  "size": [
+   0.13,
+   2.558805699489825,
+   0.13
+  ],
+  "axes": [
+   [
+    0.678372912515031,
+    -0.734717763202901,
+    0.0
+   ],
+   [
+    0.734717763202901,
+    0.678372912515031,
+    0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_ramp-west-0-3_brace-34",
+  "shape": "oriented-box",
+  "center": [
+   -11.8,
+   1.0179122374614868,
+   -19.208543881269254
+  ],
+  "size": [
+   0.13,
+   2.558805699489825,
+   0.13
+  ],
+  "axes": [
+   [
+    0.678372912515031,
+    0.734717763202901,
+    -0.0
+   ],
+   [
+    -0.734717763202901,
+    0.678372912515031,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_ramp-east-3-6_stringers-35",
+  "shape": "oriented-box",
+  "center": [
+   10.860000000000001,
+   4.2089572499564,
+   -27.0727606875109
+  ],
+  "size": [
+   0.18,
+   12.36931687685298,
+   0.28
+  ],
+  "axes": [
+   [
+    1.0,
+    -0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.242535625036333,
+    -0.970142500145332
+   ],
+   [
+    0.0,
+    0.970142500145332,
+    0.242535625036333
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_ramp-east-3-6_stringers-36",
+  "shape": "oriented-box",
+  "center": [
+   11.8,
+   4.2089572499564,
+   -27.0727606875109
+  ],
+  "size": [
+   0.18,
+   12.36931687685298,
+   0.28
+  ],
+  "axes": [
+   [
+    1.0,
+    -0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.242535625036333,
+    -0.970142500145332
+   ],
+   [
+    0.0,
+    0.970142500145332,
+    0.242535625036333
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_ramp-east-3-6_stringers-37",
+  "shape": "oriented-box",
+  "center": [
+   12.74,
+   4.2089572499564,
+   -27.0727606875109
+  ],
+  "size": [
+   0.18,
+   12.36931687685298,
+   0.28
+  ],
+  "axes": [
+   [
+    1.0,
+    -0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.242535625036333,
+    -0.970142500145332
+   ],
+   [
+    0.0,
+    0.970142500145332,
+    0.242535625036333
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_ramp-east-3-6_rail-38",
   "shape": "oriented-box",
   "center": [
    10.520000000000001,
@@ -1059,7 +1290,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_rail-32",
+  "id": "AM02_ramp-east-3-6_rail-39",
   "shape": "oriented-box",
   "center": [
    10.520000000000001,
@@ -1092,7 +1323,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_posts-33",
+  "id": "AM02_ramp-east-3-6_posts-40",
   "shape": "oriented-box",
   "center": [
    10.520000000000001,
@@ -1125,7 +1356,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_posts-34",
+  "id": "AM02_ramp-east-3-6_posts-41",
   "shape": "oriented-box",
   "center": [
    10.520000000000001,
@@ -1158,7 +1389,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_posts-35",
+  "id": "AM02_ramp-east-3-6_posts-42",
   "shape": "oriented-box",
   "center": [
    10.520000000000001,
@@ -1191,7 +1422,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_posts-36",
+  "id": "AM02_ramp-east-3-6_posts-43",
   "shape": "oriented-box",
   "center": [
    10.520000000000001,
@@ -1224,7 +1455,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_posts-37",
+  "id": "AM02_ramp-east-3-6_posts-44",
   "shape": "oriented-box",
   "center": [
    10.520000000000001,
@@ -1257,7 +1488,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_posts-38",
+  "id": "AM02_ramp-east-3-6_posts-45",
   "shape": "oriented-box",
   "center": [
    10.520000000000001,
@@ -1290,7 +1521,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_posts-39",
+  "id": "AM02_ramp-east-3-6_posts-46",
   "shape": "oriented-box",
   "center": [
    10.520000000000001,
@@ -1323,7 +1554,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_rail-40",
+  "id": "AM02_ramp-east-3-6_rail-47",
   "shape": "oriented-box",
   "center": [
    13.08,
@@ -1356,7 +1587,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_rail-41",
+  "id": "AM02_ramp-east-3-6_rail-48",
   "shape": "oriented-box",
   "center": [
    13.08,
@@ -1389,7 +1620,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_posts-42",
+  "id": "AM02_ramp-east-3-6_posts-49",
   "shape": "oriented-box",
   "center": [
    13.08,
@@ -1422,7 +1653,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_posts-43",
+  "id": "AM02_ramp-east-3-6_posts-50",
   "shape": "oriented-box",
   "center": [
    13.08,
@@ -1455,7 +1686,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_posts-44",
+  "id": "AM02_ramp-east-3-6_posts-51",
   "shape": "oriented-box",
   "center": [
    13.08,
@@ -1488,7 +1719,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_posts-45",
+  "id": "AM02_ramp-east-3-6_posts-52",
   "shape": "oriented-box",
   "center": [
    13.08,
@@ -1521,7 +1752,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_posts-46",
+  "id": "AM02_ramp-east-3-6_posts-53",
   "shape": "oriented-box",
   "center": [
    13.08,
@@ -1554,7 +1785,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_posts-47",
+  "id": "AM02_ramp-east-3-6_posts-54",
   "shape": "oriented-box",
   "center": [
    13.08,
@@ -1587,7 +1818,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_posts-48",
+  "id": "AM02_ramp-east-3-6_posts-55",
   "shape": "oriented-box",
   "center": [
    13.08,
@@ -1656,264 +1887,33 @@
   "plankRevealM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_supports-50",
-  "shape": "oriented-box",
-  "center": [
-   10.860000000000001,
-   3.215,
-   -22.92
-  ],
-  "size": [
-   0.21,
-   0.43000000000000016,
-   0.21
-  ],
-  "axes": [
-   [
-    1.0,
-    0.0,
-    0.0
-   ],
-   [
-    0.0,
-    1.0,
-    0.0
-   ],
-   [
-    0.0,
-    0.0,
-    1.0
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
-  "id": "AM02_ramp-east-3-6_supports-51",
-  "shape": "oriented-box",
-  "center": [
-   12.74,
-   3.215,
-   -22.92
-  ],
-  "size": [
-   0.21,
-   0.43000000000000016,
-   0.21
-  ],
-  "axes": [
-   [
-    1.0,
-    0.0,
-    0.0
-   ],
-   [
-    0.0,
-    1.0,
-    0.0
-   ],
-   [
-    0.0,
-    0.0,
-    1.0
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
-  "id": "AM02_ramp-east-3-6_brace-52",
+  "id": "AM02_ramp-east-3-6_cross_sills-57",
   "shape": "oriented-box",
   "center": [
    11.8,
-   3.19,
-   -22.92
+   2.965824474922974,
+   -23.048543881269257
   ],
   "size": [
-   0.13,
-   1.8817013578142512,
-   0.13
+   0.22,
+   2.3200000000000003,
+   0.28
   ],
   "axes": [
    [
-    0.04251471662481371,
-    -0.9990958406831207,
+    0.0,
+    -1.0,
     0.0
    ],
    [
-    0.9990958406831207,
-    0.04251471662481371,
+    1.0,
+    0.0,
     0.0
    ],
    [
     -0.0,
     0.0,
     1.0
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
-  "id": "AM02_ramp-east-3-6_brace-53",
-  "shape": "oriented-box",
-  "center": [
-   11.8,
-   3.19,
-   -22.92
-  ],
-  "size": [
-   0.13,
-   1.8817013578142512,
-   0.13
-  ],
-  "axes": [
-   [
-    0.04251471662481371,
-    0.9990958406831207,
-    -0.0
-   ],
-   [
-    -0.9990958406831207,
-    0.04251471662481371,
-    0.0
-   ],
-   [
-    0.0,
-    0.0,
-    1.0
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
-  "id": "AM02_ramp-east-3-6_supports-54",
-  "shape": "oriented-box",
-  "center": [
-   10.860000000000001,
-   2.225,
-   -27.0
-  ],
-  "size": [
-   0.21,
-   4.45,
-   0.21
-  ],
-  "axes": [
-   [
-    1.0,
-    0.0,
-    0.0
-   ],
-   [
-    0.0,
-    1.0,
-    0.0
-   ],
-   [
-    0.0,
-    0.0,
-    1.0
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
-  "id": "AM02_ramp-east-3-6_supports-55",
-  "shape": "oriented-box",
-  "center": [
-   12.74,
-   2.225,
-   -27.0
-  ],
-  "size": [
-   0.21,
-   4.45,
-   0.21
-  ],
-  "axes": [
-   [
-    1.0,
-    0.0,
-    0.0
-   ],
-   [
-    0.0,
-    1.0,
-    0.0
-   ],
-   [
-    0.0,
-    0.0,
-    1.0
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
-  "id": "AM02_ramp-east-3-6_brace-56",
-  "shape": "oriented-box",
-  "center": [
-   11.8,
-   2.2,
-   -27.0
-  ],
-  "size": [
-   0.13,
-   4.510476693211039,
-   0.13
-  ],
-  "axes": [
-   [
-    0.9089948311164383,
-    -0.4168073859753422,
-    0.0
-   ],
-   [
-    0.4168073859753422,
-    0.9089948311164383,
-    0.0
-   ],
-   [
-    -0.0,
-    0.0,
-    1.0000000000000002
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
-  "id": "AM02_ramp-east-3-6_brace-57",
-  "shape": "oriented-box",
-  "center": [
-   11.8,
-   2.2,
-   -27.0
-  ],
-  "size": [
-   0.13,
-   4.510476693211039,
-   0.13
-  ],
-  "axes": [
-   [
-    0.9089948311164383,
-    0.4168073859753422,
-    -0.0
-   ],
-   [
-    -0.4168073859753422,
-    0.9089948311164383,
-    0.0
-   ],
-   [
-    0.0,
-    0.0,
-    1.0000000000000002
    ]
   ],
   "kind": "solid",
@@ -1924,23 +1924,23 @@
   "shape": "oriented-box",
   "center": [
    10.860000000000001,
-   2.735,
-   -31.08
+   2.9829122374614867,
+   -23.048543881269257
   ],
   "size": [
    0.21,
-   5.47,
+   0.03417552507702615,
    0.21
   ],
   "axes": [
    [
-    1.0,
+    -1.0,
     0.0,
     0.0
    ],
    [
     0.0,
-    1.0,
+    -1.0,
     0.0
    ],
    [
@@ -1957,12 +1957,78 @@
   "shape": "oriented-box",
   "center": [
    12.74,
-   2.735,
-   -31.08
+   2.9829122374614867,
+   -23.048543881269257
   ],
   "size": [
    0.21,
-   5.47,
+   0.03417552507702615,
+   0.21
+  ],
+  "axes": [
+   [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_ramp-east-3-6_cross_sills-60",
+  "shape": "oriented-box",
+  "center": [
+   11.8,
+   3.985824474922974,
+   -27.128543881269255
+  ],
+  "size": [
+   0.22,
+   2.3200000000000003,
+   0.28
+  ],
+  "axes": [
+   [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_ramp-east-3-6_supports-61",
+  "shape": "oriented-box",
+  "center": [
+   10.860000000000001,
+   1.992912237461487,
+   -27.128543881269255
+  ],
+  "size": [
+   0.21,
+   3.985824474922974,
    0.21
   ],
   "axes": [
@@ -1986,73 +2052,370 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_brace-60",
+  "id": "AM02_ramp-east-3-6_supports-62",
+  "shape": "oriented-box",
+  "center": [
+   12.74,
+   1.992912237461487,
+   -27.128543881269255
+  ],
+  "size": [
+   0.21,
+   3.985824474922974,
+   0.21
+  ],
+  "axes": [
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    1.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_ramp-east-3-6_brace-63",
   "shape": "oriented-box",
   "center": [
    11.8,
-   2.71,
-   -31.08
+   2.007912237461487,
+   -27.128543881269255
   ],
   "size": [
    0.13,
-   5.454246052388908,
+   4.164342868741309,
    0.13
   ],
   "axes": [
    [
-    0.9387181932794337,
-    -0.3446855865947919,
+    0.8922955174548581,
+    -0.45145177985025947,
     0.0
    ],
    [
-    0.3446855865947919,
-    0.9387181932794337,
+    0.4514517798502594,
+    0.892295517454858,
     0.0
    ],
    [
     -0.0,
     0.0,
-    1.0000000000000002
+    1.0
    ]
   ],
   "kind": "solid",
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_ramp-east-3-6_brace-61",
+  "id": "AM02_ramp-east-3-6_brace-64",
   "shape": "oriented-box",
   "center": [
    11.8,
-   2.71,
-   -31.08
+   2.007912237461487,
+   -27.128543881269255
   ],
   "size": [
    0.13,
-   5.454246052388908,
+   4.164342868741309,
    0.13
   ],
   "axes": [
    [
-    0.9387181932794337,
-    0.3446855865947919,
+    0.8922955174548581,
+    0.45145177985025947,
     -0.0
    ],
    [
-    -0.3446855865947919,
-    0.9387181932794337,
+    -0.4514517798502594,
+    0.892295517454858,
     0.0
    ],
    [
     0.0,
     0.0,
-    1.0000000000000002
+    1.0
    ]
   ],
   "kind": "solid",
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_rail-62",
+  "id": "AM02_ramp-east-3-6_cross_sills-65",
+  "shape": "oriented-box",
+  "center": [
+   11.8,
+   5.005824474922973,
+   -31.208543881269254
+  ],
+  "size": [
+   0.22,
+   2.3200000000000003,
+   0.28
+  ],
+  "axes": [
+   [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_ramp-east-3-6_supports-66",
+  "shape": "oriented-box",
+  "center": [
+   10.860000000000001,
+   2.5029122374614867,
+   -31.208543881269254
+  ],
+  "size": [
+   0.21,
+   5.005824474922973,
+   0.21
+  ],
+  "axes": [
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    1.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_ramp-east-3-6_supports-67",
+  "shape": "oriented-box",
+  "center": [
+   12.74,
+   2.5029122374614867,
+   -31.208543881269254
+  ],
+  "size": [
+   0.21,
+   5.005824474922973,
+   0.21
+  ],
+  "axes": [
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    1.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_ramp-east-3-6_brace-68",
+  "shape": "oriented-box",
+  "center": [
+   11.8,
+   2.517912237461487,
+   -31.208543881269254
+  ],
+  "size": [
+   0.13,
+   5.095334479431105,
+   0.13
+  ],
+  "axes": [
+   [
+    0.9294432964196158,
+    -0.3689649830819156,
+    0.0
+   ],
+   [
+    0.3689649830819156,
+    0.9294432964196158,
+    0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_ramp-east-3-6_brace-69",
+  "shape": "oriented-box",
+  "center": [
+   11.8,
+   2.517912237461487,
+   -31.208543881269254
+  ],
+  "size": [
+   0.13,
+   5.095334479431105,
+   0.13
+  ],
+  "axes": [
+   [
+    0.9294432964196158,
+    0.3689649830819156,
+    -0.0
+   ],
+   [
+    -0.3689649830819156,
+    0.9294432964196158,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_bridge-middle_stringers-70",
+  "shape": "oriented-box",
+  "center": [
+   1.9,
+   2.7,
+   -23.240000000000002
+  ],
+  "size": [
+   0.18,
+   11.2,
+   0.28
+  ],
+  "axes": [
+   [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_bridge-middle_stringers-71",
+  "shape": "oriented-box",
+  "center": [
+   1.9,
+   2.7,
+   -22.3
+  ],
+  "size": [
+   0.18,
+   11.2,
+   0.28
+  ],
+  "axes": [
+   [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_bridge-middle_stringers-72",
+  "shape": "oriented-box",
+  "center": [
+   1.9,
+   2.7,
+   -21.36
+  ],
+  "size": [
+   0.18,
+   11.2,
+   0.28
+  ],
+  "axes": [
+   [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_bridge-middle_rail-73",
   "shape": "oriented-box",
   "center": [
    1.9,
@@ -2085,7 +2448,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_rail-63",
+  "id": "AM02_bridge-middle_rail-74",
   "shape": "oriented-box",
   "center": [
    1.9,
@@ -2118,7 +2481,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_posts-64",
+  "id": "AM02_bridge-middle_posts-75",
   "shape": "oriented-box",
   "center": [
    -3.7,
@@ -2151,7 +2514,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_posts-65",
+  "id": "AM02_bridge-middle_posts-76",
   "shape": "oriented-box",
   "center": [
    -1.4600000000000004,
@@ -2184,7 +2547,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_posts-66",
+  "id": "AM02_bridge-middle_posts-77",
   "shape": "oriented-box",
   "center": [
    0.7799999999999994,
@@ -2217,7 +2580,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_posts-67",
+  "id": "AM02_bridge-middle_posts-78",
   "shape": "oriented-box",
   "center": [
    3.0199999999999996,
@@ -2250,7 +2613,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_posts-68",
+  "id": "AM02_bridge-middle_posts-79",
   "shape": "oriented-box",
   "center": [
    5.259999999999999,
@@ -2283,7 +2646,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_posts-69",
+  "id": "AM02_bridge-middle_posts-80",
   "shape": "oriented-box",
   "center": [
    7.499999999999999,
@@ -2316,7 +2679,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_rail-70",
+  "id": "AM02_bridge-middle_rail-81",
   "shape": "oriented-box",
   "center": [
    1.9,
@@ -2349,7 +2712,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_rail-71",
+  "id": "AM02_bridge-middle_rail-82",
   "shape": "oriented-box",
   "center": [
    1.9,
@@ -2382,7 +2745,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_posts-72",
+  "id": "AM02_bridge-middle_posts-83",
   "shape": "oriented-box",
   "center": [
    -3.7,
@@ -2415,7 +2778,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_posts-73",
+  "id": "AM02_bridge-middle_posts-84",
   "shape": "oriented-box",
   "center": [
    -1.4600000000000004,
@@ -2448,7 +2811,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_posts-74",
+  "id": "AM02_bridge-middle_posts-85",
   "shape": "oriented-box",
   "center": [
    0.7799999999999994,
@@ -2481,7 +2844,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_posts-75",
+  "id": "AM02_bridge-middle_posts-86",
   "shape": "oriented-box",
   "center": [
    3.0199999999999996,
@@ -2514,7 +2877,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_posts-76",
+  "id": "AM02_bridge-middle_posts-87",
   "shape": "oriented-box",
   "center": [
    5.259999999999999,
@@ -2547,7 +2910,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_posts-77",
+  "id": "AM02_bridge-middle_posts-88",
   "shape": "oriented-box",
   "center": [
    7.499999999999999,
@@ -2616,16 +2979,49 @@
   "plankRevealM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_supports-79",
+  "id": "AM02_bridge-middle_cross_sills-90",
   "shape": "oriented-box",
   "center": [
    -1.9080000000000004,
-   1.475,
+   2.4699999999999998,
+   -22.3
+  ],
+  "size": [
+   0.22,
+   2.3200000000000003,
+   0.28
+  ],
+  "axes": [
+   [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ],
+   [
+    0.0,
+    1.0,
+    -0.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_bridge-middle_supports-91",
+  "shape": "oriented-box",
+  "center": [
+   -1.9080000000000004,
+   1.2349999999999999,
    -23.240000000000002
   ],
   "size": [
    0.21,
-   2.95,
+   2.4699999999999998,
    0.21
   ],
   "axes": [
@@ -2649,16 +3045,16 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_supports-80",
+  "id": "AM02_bridge-middle_supports-92",
   "shape": "oriented-box",
   "center": [
    -1.9080000000000004,
-   1.475,
+   1.2349999999999999,
    -21.36
   ],
   "size": [
    0.21,
-   2.95,
+   2.4699999999999998,
    0.21
   ],
   "axes": [
@@ -2682,16 +3078,16 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_brace-81",
+  "id": "AM02_bridge-middle_brace-93",
   "shape": "oriented-box",
   "center": [
    -1.9080000000000004,
-   1.45,
+   1.2499999999999998,
    -22.3
   ],
   "size": [
    0.13,
-   3.208488740824878,
+   2.893855559629749,
    0.13
   ],
   "axes": [
@@ -2702,29 +3098,29 @@
    ],
    [
     0.0,
-    0.8103503580728041,
-    0.5859456435295668
+    0.7602314471705962,
+    0.6496523275821469
    ],
    [
     0.0,
-    -0.5859456435295668,
-    0.8103503580728041
+    -0.6496523275821469,
+    0.7602314471705962
    ]
   ],
   "kind": "solid",
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_brace-82",
+  "id": "AM02_bridge-middle_brace-94",
   "shape": "oriented-box",
   "center": [
    -1.9080000000000004,
-   1.45,
+   1.2499999999999998,
    -22.3
   ],
   "size": [
    0.13,
-   3.208488740824878,
+   2.893855559629749,
    0.13
   ],
   "axes": [
@@ -2735,29 +3131,62 @@
    ],
    [
     0.0,
-    0.8103503580728041,
-    -0.5859456435295668
+    0.7602314471705962,
+    -0.6496523275821469
    ],
    [
     0.0,
-    0.5859456435295668,
-    0.8103503580728041
+    0.6496523275821469,
+    0.7602314471705962
    ]
   ],
   "kind": "solid",
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_supports-83",
+  "id": "AM02_bridge-middle_cross_sills-95",
   "shape": "oriented-box",
   "center": [
    1.8999999999999995,
-   1.475,
+   2.4699999999999998,
+   -22.3
+  ],
+  "size": [
+   0.22,
+   2.3200000000000003,
+   0.28
+  ],
+  "axes": [
+   [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ],
+   [
+    0.0,
+    1.0,
+    -0.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_bridge-middle_supports-96",
+  "shape": "oriented-box",
+  "center": [
+   1.8999999999999995,
+   1.2349999999999999,
    -23.240000000000002
   ],
   "size": [
    0.21,
-   2.95,
+   2.4699999999999998,
    0.21
   ],
   "axes": [
@@ -2781,16 +3210,16 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_supports-84",
+  "id": "AM02_bridge-middle_supports-97",
   "shape": "oriented-box",
   "center": [
    1.8999999999999995,
-   1.475,
+   1.2349999999999999,
    -21.36
   ],
   "size": [
    0.21,
-   2.95,
+   2.4699999999999998,
    0.21
   ],
   "axes": [
@@ -2814,16 +3243,16 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_brace-85",
+  "id": "AM02_bridge-middle_brace-98",
   "shape": "oriented-box",
   "center": [
    1.8999999999999995,
-   1.45,
+   1.2499999999999998,
    -22.3
   ],
   "size": [
    0.13,
-   3.208488740824878,
+   2.893855559629749,
    0.13
   ],
   "axes": [
@@ -2834,29 +3263,29 @@
    ],
    [
     0.0,
-    0.8103503580728041,
-    0.5859456435295668
+    0.7602314471705962,
+    0.6496523275821469
    ],
    [
     0.0,
-    -0.5859456435295668,
-    0.8103503580728041
+    -0.6496523275821469,
+    0.7602314471705962
    ]
   ],
   "kind": "solid",
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_brace-86",
+  "id": "AM02_bridge-middle_brace-99",
   "shape": "oriented-box",
   "center": [
    1.8999999999999995,
-   1.45,
+   1.2499999999999998,
    -22.3
   ],
   "size": [
    0.13,
-   3.208488740824878,
+   2.893855559629749,
    0.13
   ],
   "axes": [
@@ -2867,29 +3296,62 @@
    ],
    [
     0.0,
-    0.8103503580728041,
-    -0.5859456435295668
+    0.7602314471705962,
+    -0.6496523275821469
    ],
    [
     0.0,
-    0.5859456435295668,
-    0.8103503580728041
+    0.6496523275821469,
+    0.7602314471705962
    ]
   ],
   "kind": "solid",
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_supports-87",
+  "id": "AM02_bridge-middle_cross_sills-100",
   "shape": "oriented-box",
   "center": [
    5.707999999999999,
-   1.475,
+   2.4699999999999998,
+   -22.3
+  ],
+  "size": [
+   0.22,
+   2.3200000000000003,
+   0.28
+  ],
+  "axes": [
+   [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ],
+   [
+    0.0,
+    1.0,
+    -0.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_bridge-middle_supports-101",
+  "shape": "oriented-box",
+  "center": [
+   5.707999999999999,
+   1.2349999999999999,
    -23.240000000000002
   ],
   "size": [
    0.21,
-   2.95,
+   2.4699999999999998,
    0.21
   ],
   "axes": [
@@ -2913,16 +3375,16 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_supports-88",
+  "id": "AM02_bridge-middle_supports-102",
   "shape": "oriented-box",
   "center": [
    5.707999999999999,
-   1.475,
+   1.2349999999999999,
    -21.36
   ],
   "size": [
    0.21,
-   2.95,
+   2.4699999999999998,
    0.21
   ],
   "axes": [
@@ -2946,16 +3408,16 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_brace-89",
+  "id": "AM02_bridge-middle_brace-103",
   "shape": "oriented-box",
   "center": [
    5.707999999999999,
-   1.45,
+   1.2499999999999998,
    -22.3
   ],
   "size": [
    0.13,
-   3.208488740824878,
+   2.893855559629749,
    0.13
   ],
   "axes": [
@@ -2966,29 +3428,29 @@
    ],
    [
     0.0,
-    0.8103503580728041,
-    0.5859456435295668
+    0.7602314471705962,
+    0.6496523275821469
    ],
    [
     0.0,
-    -0.5859456435295668,
-    0.8103503580728041
+    -0.6496523275821469,
+    0.7602314471705962
    ]
   ],
   "kind": "solid",
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-middle_brace-90",
+  "id": "AM02_bridge-middle_brace-104",
   "shape": "oriented-box",
   "center": [
    5.707999999999999,
-   1.45,
+   1.2499999999999998,
    -22.3
   ],
   "size": [
    0.13,
-   3.208488740824878,
+   2.893855559629749,
    0.13
   ],
   "axes": [
@@ -2999,20 +3461,119 @@
    ],
    [
     0.0,
-    0.8103503580728041,
-    -0.5859456435295668
+    0.7602314471705962,
+    -0.6496523275821469
    ],
    [
     0.0,
-    0.5859456435295668,
-    0.8103503580728041
+    0.6496523275821469,
+    0.7602314471705962
    ]
   ],
   "kind": "solid",
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_rail-91",
+  "id": "AM02_gallery-west-entry_stringers-105",
+  "shape": "oriented-box",
+  "center": [
+   -19.94,
+   1.2089572499564003,
+   -9.0727606875109
+  ],
+  "size": [
+   0.18,
+   12.36931687685298,
+   0.28
+  ],
+  "axes": [
+   [
+    1.0,
+    -0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.242535625036333,
+    -0.970142500145332
+   ],
+   [
+    0.0,
+    0.970142500145332,
+    0.242535625036333
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-entry_stringers-106",
+  "shape": "oriented-box",
+  "center": [
+   -19.0,
+   1.2089572499564003,
+   -9.0727606875109
+  ],
+  "size": [
+   0.18,
+   12.36931687685298,
+   0.28
+  ],
+  "axes": [
+   [
+    1.0,
+    -0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.242535625036333,
+    -0.970142500145332
+   ],
+   [
+    0.0,
+    0.970142500145332,
+    0.242535625036333
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-entry_stringers-107",
+  "shape": "oriented-box",
+  "center": [
+   -18.06,
+   1.2089572499564003,
+   -9.0727606875109
+  ],
+  "size": [
+   0.18,
+   12.36931687685298,
+   0.28
+  ],
+  "axes": [
+   [
+    1.0,
+    -0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.242535625036333,
+    -0.970142500145332
+   ],
+   [
+    0.0,
+    0.970142500145332,
+    0.242535625036333
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-entry_rail-108",
   "shape": "oriented-box",
   "center": [
    -20.48,
@@ -3045,7 +3606,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_rail-92",
+  "id": "AM02_gallery-west-entry_rail-109",
   "shape": "oriented-box",
   "center": [
    -20.48,
@@ -3078,7 +3639,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_posts-93",
+  "id": "AM02_gallery-west-entry_posts-110",
   "shape": "oriented-box",
   "center": [
    -20.48,
@@ -3111,7 +3672,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_posts-94",
+  "id": "AM02_gallery-west-entry_posts-111",
   "shape": "oriented-box",
   "center": [
    -20.48,
@@ -3144,7 +3705,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_posts-95",
+  "id": "AM02_gallery-west-entry_posts-112",
   "shape": "oriented-box",
   "center": [
    -20.48,
@@ -3177,7 +3738,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_posts-96",
+  "id": "AM02_gallery-west-entry_posts-113",
   "shape": "oriented-box",
   "center": [
    -20.48,
@@ -3210,7 +3771,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_posts-97",
+  "id": "AM02_gallery-west-entry_posts-114",
   "shape": "oriented-box",
   "center": [
    -20.48,
@@ -3243,7 +3804,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_posts-98",
+  "id": "AM02_gallery-west-entry_posts-115",
   "shape": "oriented-box",
   "center": [
    -20.48,
@@ -3276,7 +3837,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_posts-99",
+  "id": "AM02_gallery-west-entry_posts-116",
   "shape": "oriented-box",
   "center": [
    -20.48,
@@ -3309,7 +3870,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_rail-100",
+  "id": "AM02_gallery-west-entry_rail-117",
   "shape": "oriented-box",
   "center": [
    -17.52,
@@ -3342,7 +3903,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_rail-101",
+  "id": "AM02_gallery-west-entry_rail-118",
   "shape": "oriented-box",
   "center": [
    -17.52,
@@ -3375,7 +3936,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_posts-102",
+  "id": "AM02_gallery-west-entry_posts-119",
   "shape": "oriented-box",
   "center": [
    -17.52,
@@ -3408,7 +3969,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_posts-103",
+  "id": "AM02_gallery-west-entry_posts-120",
   "shape": "oriented-box",
   "center": [
    -17.52,
@@ -3441,7 +4002,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_posts-104",
+  "id": "AM02_gallery-west-entry_posts-121",
   "shape": "oriented-box",
   "center": [
    -17.52,
@@ -3474,7 +4035,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_posts-105",
+  "id": "AM02_gallery-west-entry_posts-122",
   "shape": "oriented-box",
   "center": [
    -17.52,
@@ -3507,7 +4068,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_posts-106",
+  "id": "AM02_gallery-west-entry_posts-123",
   "shape": "oriented-box",
   "center": [
    -17.52,
@@ -3540,7 +4101,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_posts-107",
+  "id": "AM02_gallery-west-entry_posts-124",
   "shape": "oriented-box",
   "center": [
    -17.52,
@@ -3573,7 +4134,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_posts-108",
+  "id": "AM02_gallery-west-entry_posts-125",
   "shape": "oriented-box",
   "center": [
    -17.52,
@@ -3642,93 +4203,27 @@
   "plankRevealM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_supports-110",
-  "shape": "oriented-box",
-  "center": [
-   -19.94,
-   0.215,
-   -4.92
-  ],
-  "size": [
-   0.21,
-   0.43,
-   0.21
-  ],
-  "axes": [
-   [
-    1.0,
-    0.0,
-    0.0
-   ],
-   [
-    0.0,
-    1.0,
-    0.0
-   ],
-   [
-    0.0,
-    0.0,
-    1.0
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
-  "id": "AM02_gallery-west-entry_supports-111",
-  "shape": "oriented-box",
-  "center": [
-   -18.06,
-   0.215,
-   -4.92
-  ],
-  "size": [
-   0.21,
-   0.43,
-   0.21
-  ],
-  "axes": [
-   [
-    1.0,
-    0.0,
-    0.0
-   ],
-   [
-    0.0,
-    1.0,
-    0.0
-   ],
-   [
-    0.0,
-    0.0,
-    1.0
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
-  "id": "AM02_gallery-west-entry_brace-112",
+  "id": "AM02_gallery-west-entry_cross_sills-127",
   "shape": "oriented-box",
   "center": [
    -19.0,
-   0.19,
-   -4.92
+   -0.03417552507702604,
+   -5.048543881269256
   ],
   "size": [
-   0.13,
-   1.8817013578142547,
-   0.13
+   0.22,
+   2.3200000000000003,
+   0.28
   ],
   "axes": [
    [
-    0.042514716624813584,
-    -0.9990958406831207,
+    0.0,
+    -1.0,
     0.0
    ],
    [
-    0.9990958406831207,
-    0.042514716624813584,
+    1.0,
+    0.0,
     0.0
    ],
    [
@@ -3741,60 +4236,27 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_brace-113",
-  "shape": "oriented-box",
-  "center": [
-   -19.0,
-   0.19,
-   -4.92
-  ],
-  "size": [
-   0.13,
-   1.8817013578142547,
-   0.13
-  ],
-  "axes": [
-   [
-    0.042514716624813584,
-    0.9990958406831207,
-    -0.0
-   ],
-   [
-    -0.9990958406831207,
-    0.042514716624813584,
-    0.0
-   ],
-   [
-    0.0,
-    0.0,
-    1.0
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
-  "id": "AM02_gallery-west-entry_supports-114",
+  "id": "AM02_gallery-west-entry_supports-128",
   "shape": "oriented-box",
   "center": [
    -19.94,
-   0.725,
-   -9.0
+   -0.01708776253851302,
+   -5.048543881269256
   ],
   "size": [
    0.21,
-   1.45,
+   0.03417552507702604,
    0.21
   ],
   "axes": [
    [
-    1.0,
+    -1.0,
     0.0,
     0.0
    ],
    [
     0.0,
-    1.0,
+    -1.0,
     0.0
    ],
    [
@@ -3807,27 +4269,27 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_supports-115",
+  "id": "AM02_gallery-west-entry_supports-129",
   "shape": "oriented-box",
   "center": [
    -18.06,
-   0.725,
-   -9.0
+   -0.01708776253851302,
+   -5.048543881269256
   ],
   "size": [
    0.21,
-   1.45,
+   0.03417552507702604,
    0.21
   ],
   "axes": [
    [
-    1.0,
+    -1.0,
     0.0,
     0.0
    ],
    [
     0.0,
-    1.0,
+    -1.0,
     0.0
    ],
    [
@@ -3840,27 +4302,27 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_brace-116",
+  "id": "AM02_gallery-west-entry_cross_sills-130",
   "shape": "oriented-box",
   "center": [
    -19.0,
-   0.7,
-   -9.0
+   0.985824474922974,
+   -9.128543881269257
   ],
   "size": [
-   0.13,
-   2.178164364780585,
-   0.13
+   0.22,
+   2.3200000000000003,
+   0.28
   ],
   "axes": [
    [
-    0.5050123938240112,
-    -0.8631120912628567,
+    0.0,
+    -1.0,
     0.0
    ],
    [
-    0.8631120912628567,
-    0.5050123938240112,
+    1.0,
+    0.0,
     0.0
    ],
    [
@@ -3873,49 +4335,16 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_brace-117",
-  "shape": "oriented-box",
-  "center": [
-   -19.0,
-   0.7,
-   -9.0
-  ],
-  "size": [
-   0.13,
-   2.178164364780585,
-   0.13
-  ],
-  "axes": [
-   [
-    0.5050123938240112,
-    0.8631120912628567,
-    -0.0
-   ],
-   [
-    -0.8631120912628567,
-    0.5050123938240112,
-    0.0
-   ],
-   [
-    0.0,
-    0.0,
-    1.0
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
-  "id": "AM02_gallery-west-entry_supports-118",
+  "id": "AM02_gallery-west-entry_supports-131",
   "shape": "oriented-box",
   "center": [
    -19.94,
-   1.235,
-   -13.08
+   0.492912237461487,
+   -9.128543881269257
   ],
   "size": [
    0.21,
-   2.47,
+   0.985824474922974,
    0.21
   ],
   "axes": [
@@ -3939,16 +4368,16 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_supports-119",
+  "id": "AM02_gallery-west-entry_supports-132",
   "shape": "oriented-box",
   "center": [
    -18.06,
-   1.235,
-   -13.08
+   0.492912237461487,
+   -9.128543881269257
   ],
   "size": [
    0.21,
-   2.47,
+   0.985824474922974,
    0.21
   ],
   "axes": [
@@ -3972,27 +4401,27 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_brace-120",
+  "id": "AM02_gallery-west-entry_brace-133",
   "shape": "oriented-box",
   "center": [
    -19.0,
-   1.21,
-   -13.08
+   0.507912237461487,
+   -9.128543881269257
   ],
   "size": [
    0.13,
-   2.833513719747976,
+   2.0116671391904677,
    0.13
   ],
   "axes": [
    [
-    0.7481876601566488,
-    -0.6634871703275951,
+    0.35583644081944643,
+    -0.9345482477566093,
     0.0
    ],
    [
-    0.663487170327595,
-    0.7481876601566487,
+    0.9345482477566093,
+    0.35583644081944643,
     0.0
    ],
    [
@@ -4005,27 +4434,27 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-entry_brace-121",
+  "id": "AM02_gallery-west-entry_brace-134",
   "shape": "oriented-box",
   "center": [
    -19.0,
-   1.21,
-   -13.08
+   0.507912237461487,
+   -9.128543881269257
   ],
   "size": [
    0.13,
-   2.833513719747976,
+   2.0116671391904677,
    0.13
   ],
   "axes": [
    [
-    0.7481876601566488,
-    0.6634871703275951,
+    0.35583644081944643,
+    0.9345482477566093,
     -0.0
    ],
    [
-    -0.663487170327595,
-    0.7481876601566487,
+    -0.9345482477566093,
+    0.35583644081944643,
     0.0
    ],
    [
@@ -4038,7 +4467,271 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_rail-122",
+  "id": "AM02_gallery-west-entry_cross_sills-135",
+  "shape": "oriented-box",
+  "center": [
+   -19.0,
+   2.005824474922974,
+   -13.208543881269257
+  ],
+  "size": [
+   0.22,
+   2.3200000000000003,
+   0.28
+  ],
+  "axes": [
+   [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-entry_supports-136",
+  "shape": "oriented-box",
+  "center": [
+   -19.94,
+   1.002912237461487,
+   -13.208543881269257
+  ],
+  "size": [
+   0.21,
+   2.005824474922974,
+   0.21
+  ],
+  "axes": [
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    1.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-entry_supports-137",
+  "shape": "oriented-box",
+  "center": [
+   -18.06,
+   1.002912237461487,
+   -13.208543881269257
+  ],
+  "size": [
+   0.21,
+   2.005824474922974,
+   0.21
+  ],
+  "axes": [
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    1.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-entry_brace-138",
+  "shape": "oriented-box",
+  "center": [
+   -19.0,
+   1.0179122374614868,
+   -13.208543881269257
+  ],
+  "size": [
+   0.13,
+   2.558805699489828,
+   0.13
+  ],
+  "axes": [
+   [
+    0.6783729125150303,
+    -0.7347177632029017,
+    0.0
+   ],
+   [
+    0.7347177632029017,
+    0.6783729125150303,
+    0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-entry_brace-139",
+  "shape": "oriented-box",
+  "center": [
+   -19.0,
+   1.0179122374614868,
+   -13.208543881269257
+  ],
+  "size": [
+   0.13,
+   2.558805699489828,
+   0.13
+  ],
+  "axes": [
+   [
+    0.6783729125150303,
+    0.7347177632029017,
+    -0.0
+   ],
+   [
+    -0.7347177632029017,
+    0.6783729125150303,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-rise_stringers-140",
+  "shape": "oriented-box",
+  "center": [
+   -19.94,
+   4.2089572499564,
+   -35.0727606875109
+  ],
+  "size": [
+   0.18,
+   12.36931687685298,
+   0.28
+  ],
+  "axes": [
+   [
+    1.0,
+    -0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.242535625036333,
+    -0.970142500145332
+   ],
+   [
+    0.0,
+    0.970142500145332,
+    0.242535625036333
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-rise_stringers-141",
+  "shape": "oriented-box",
+  "center": [
+   -19.0,
+   4.2089572499564,
+   -35.0727606875109
+  ],
+  "size": [
+   0.18,
+   12.36931687685298,
+   0.28
+  ],
+  "axes": [
+   [
+    1.0,
+    -0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.242535625036333,
+    -0.970142500145332
+   ],
+   [
+    0.0,
+    0.970142500145332,
+    0.242535625036333
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-rise_stringers-142",
+  "shape": "oriented-box",
+  "center": [
+   -18.06,
+   4.2089572499564,
+   -35.0727606875109
+  ],
+  "size": [
+   0.18,
+   12.36931687685298,
+   0.28
+  ],
+  "axes": [
+   [
+    1.0,
+    -0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.242535625036333,
+    -0.970142500145332
+   ],
+   [
+    0.0,
+    0.970142500145332,
+    0.242535625036333
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-rise_rail-143",
   "shape": "oriented-box",
   "center": [
    -20.48,
@@ -4071,7 +4764,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_rail-123",
+  "id": "AM02_gallery-west-rise_rail-144",
   "shape": "oriented-box",
   "center": [
    -20.48,
@@ -4104,7 +4797,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_posts-124",
+  "id": "AM02_gallery-west-rise_posts-145",
   "shape": "oriented-box",
   "center": [
    -20.48,
@@ -4137,7 +4830,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_posts-125",
+  "id": "AM02_gallery-west-rise_posts-146",
   "shape": "oriented-box",
   "center": [
    -20.48,
@@ -4170,7 +4863,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_posts-126",
+  "id": "AM02_gallery-west-rise_posts-147",
   "shape": "oriented-box",
   "center": [
    -20.48,
@@ -4203,7 +4896,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_posts-127",
+  "id": "AM02_gallery-west-rise_posts-148",
   "shape": "oriented-box",
   "center": [
    -20.48,
@@ -4236,7 +4929,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_posts-128",
+  "id": "AM02_gallery-west-rise_posts-149",
   "shape": "oriented-box",
   "center": [
    -20.48,
@@ -4269,7 +4962,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_posts-129",
+  "id": "AM02_gallery-west-rise_posts-150",
   "shape": "oriented-box",
   "center": [
    -20.48,
@@ -4302,7 +4995,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_posts-130",
+  "id": "AM02_gallery-west-rise_posts-151",
   "shape": "oriented-box",
   "center": [
    -20.48,
@@ -4335,7 +5028,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_rail-131",
+  "id": "AM02_gallery-west-rise_rail-152",
   "shape": "oriented-box",
   "center": [
    -17.52,
@@ -4368,7 +5061,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_rail-132",
+  "id": "AM02_gallery-west-rise_rail-153",
   "shape": "oriented-box",
   "center": [
    -17.52,
@@ -4401,7 +5094,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_posts-133",
+  "id": "AM02_gallery-west-rise_posts-154",
   "shape": "oriented-box",
   "center": [
    -17.52,
@@ -4434,7 +5127,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_posts-134",
+  "id": "AM02_gallery-west-rise_posts-155",
   "shape": "oriented-box",
   "center": [
    -17.52,
@@ -4467,7 +5160,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_posts-135",
+  "id": "AM02_gallery-west-rise_posts-156",
   "shape": "oriented-box",
   "center": [
    -17.52,
@@ -4500,7 +5193,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_posts-136",
+  "id": "AM02_gallery-west-rise_posts-157",
   "shape": "oriented-box",
   "center": [
    -17.52,
@@ -4533,7 +5226,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_posts-137",
+  "id": "AM02_gallery-west-rise_posts-158",
   "shape": "oriented-box",
   "center": [
    -17.52,
@@ -4566,7 +5259,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_posts-138",
+  "id": "AM02_gallery-west-rise_posts-159",
   "shape": "oriented-box",
   "center": [
    -17.52,
@@ -4599,7 +5292,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_posts-139",
+  "id": "AM02_gallery-west-rise_posts-160",
   "shape": "oriented-box",
   "center": [
    -17.52,
@@ -4668,93 +5361,27 @@
   "plankRevealM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_supports-141",
-  "shape": "oriented-box",
-  "center": [
-   -19.94,
-   3.215,
-   -30.92
-  ],
-  "size": [
-   0.21,
-   0.43000000000000016,
-   0.21
-  ],
-  "axes": [
-   [
-    1.0,
-    0.0,
-    0.0
-   ],
-   [
-    0.0,
-    1.0,
-    0.0
-   ],
-   [
-    0.0,
-    0.0,
-    1.0
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
-  "id": "AM02_gallery-west-rise_supports-142",
-  "shape": "oriented-box",
-  "center": [
-   -18.06,
-   3.215,
-   -30.92
-  ],
-  "size": [
-   0.21,
-   0.43000000000000016,
-   0.21
-  ],
-  "axes": [
-   [
-    1.0,
-    0.0,
-    0.0
-   ],
-   [
-    0.0,
-    1.0,
-    0.0
-   ],
-   [
-    0.0,
-    0.0,
-    1.0
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
-  "id": "AM02_gallery-west-rise_brace-143",
+  "id": "AM02_gallery-west-rise_cross_sills-162",
   "shape": "oriented-box",
   "center": [
    -19.0,
-   3.19,
-   -30.92
+   2.965824474922974,
+   -31.048543881269257
   ],
   "size": [
-   0.13,
-   1.8817013578142547,
-   0.13
+   0.22,
+   2.3200000000000003,
+   0.28
   ],
   "axes": [
    [
-    0.042514716624813625,
-    -0.9990958406831207,
+    0.0,
+    -1.0,
     0.0
    ],
    [
-    0.9990958406831207,
-    0.042514716624813625,
+    1.0,
+    0.0,
     0.0
    ],
    [
@@ -4767,60 +5394,27 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_brace-144",
-  "shape": "oriented-box",
-  "center": [
-   -19.0,
-   3.19,
-   -30.92
-  ],
-  "size": [
-   0.13,
-   1.8817013578142547,
-   0.13
-  ],
-  "axes": [
-   [
-    0.042514716624813625,
-    0.9990958406831207,
-    -0.0
-   ],
-   [
-    -0.9990958406831207,
-    0.042514716624813625,
-    0.0
-   ],
-   [
-    0.0,
-    0.0,
-    1.0
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
-  "id": "AM02_gallery-west-rise_supports-145",
+  "id": "AM02_gallery-west-rise_supports-163",
   "shape": "oriented-box",
   "center": [
    -19.94,
-   3.725,
-   -35.0
+   2.9829122374614867,
+   -31.048543881269257
   ],
   "size": [
    0.21,
-   1.4500000000000002,
+   0.03417552507702615,
    0.21
   ],
   "axes": [
    [
-    1.0,
+    -1.0,
     0.0,
     0.0
    ],
    [
     0.0,
-    1.0,
+    -1.0,
     0.0
    ],
    [
@@ -4833,27 +5427,27 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_supports-146",
+  "id": "AM02_gallery-west-rise_supports-164",
   "shape": "oriented-box",
   "center": [
    -18.06,
-   3.725,
-   -35.0
+   2.9829122374614867,
+   -31.048543881269257
   ],
   "size": [
    0.21,
-   1.4500000000000002,
+   0.03417552507702615,
    0.21
   ],
   "axes": [
    [
-    1.0,
+    -1.0,
     0.0,
     0.0
    ],
    [
     0.0,
-    1.0,
+    -1.0,
     0.0
    ],
    [
@@ -4866,27 +5460,27 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_brace-147",
+  "id": "AM02_gallery-west-rise_cross_sills-165",
   "shape": "oriented-box",
   "center": [
    -19.0,
-   3.7,
-   -35.0
+   3.985824474922974,
+   -35.12854388126926
   ],
   "size": [
-   0.13,
-   2.178164364780585,
-   0.13
+   0.22,
+   2.3200000000000003,
+   0.28
   ],
   "axes": [
    [
-    0.5050123938240112,
-    -0.8631120912628567,
+    0.0,
+    -1.0,
     0.0
    ],
    [
-    0.8631120912628567,
-    0.5050123938240112,
+    1.0,
+    0.0,
     0.0
    ],
    [
@@ -4899,49 +5493,16 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_brace-148",
-  "shape": "oriented-box",
-  "center": [
-   -19.0,
-   3.7,
-   -35.0
-  ],
-  "size": [
-   0.13,
-   2.178164364780585,
-   0.13
-  ],
-  "axes": [
-   [
-    0.5050123938240112,
-    0.8631120912628567,
-    -0.0
-   ],
-   [
-    -0.8631120912628567,
-    0.5050123938240112,
-    0.0
-   ],
-   [
-    0.0,
-    0.0,
-    1.0
-   ]
-  ],
-  "kind": "solid",
-  "roundingAllowanceM": 0.012
- },
- {
-  "id": "AM02_gallery-west-rise_supports-149",
+  "id": "AM02_gallery-west-rise_supports-166",
   "shape": "oriented-box",
   "center": [
    -19.94,
-   4.234999999999999,
-   -39.08
+   3.492912237461487,
+   -35.12854388126926
   ],
   "size": [
    0.21,
-   2.4699999999999998,
+   0.9858244749229739,
    0.21
   ],
   "axes": [
@@ -4965,16 +5526,16 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_supports-150",
+  "id": "AM02_gallery-west-rise_supports-167",
   "shape": "oriented-box",
   "center": [
    -18.06,
-   4.234999999999999,
-   -39.08
+   3.492912237461487,
+   -35.12854388126926
   ],
   "size": [
    0.21,
-   2.4699999999999998,
+   0.9858244749229739,
    0.21
   ],
   "axes": [
@@ -4998,27 +5559,27 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_brace-151",
+  "id": "AM02_gallery-west-rise_brace-168",
   "shape": "oriented-box",
   "center": [
    -19.0,
-   4.21,
-   -39.08
+   3.507912237461487,
+   -35.12854388126926
   ],
   "size": [
    0.13,
-   2.8335137197479754,
+   2.0116671391904677,
    0.13
   ],
   "axes": [
    [
-    0.7481876601566487,
-    -0.6634871703275951,
+    0.3558364408194464,
+    -0.9345482477566093,
     0.0
    ],
    [
-    0.6634871703275951,
-    0.7481876601566487,
+    0.9345482477566093,
+    0.3558364408194464,
     0.0
    ],
    [
@@ -5031,27 +5592,27 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-rise_brace-152",
+  "id": "AM02_gallery-west-rise_brace-169",
   "shape": "oriented-box",
   "center": [
    -19.0,
-   4.21,
-   -39.08
+   3.507912237461487,
+   -35.12854388126926
   ],
   "size": [
    0.13,
-   2.8335137197479754,
+   2.0116671391904677,
    0.13
   ],
   "axes": [
    [
-    0.7481876601566487,
-    0.6634871703275951,
+    0.3558364408194464,
+    0.9345482477566093,
     -0.0
    ],
    [
-    -0.6634871703275951,
-    0.7481876601566487,
+    -0.9345482477566093,
+    0.3558364408194464,
     0.0
    ],
    [
@@ -5064,7 +5625,271 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-link_rail-153",
+  "id": "AM02_gallery-west-rise_cross_sills-170",
+  "shape": "oriented-box",
+  "center": [
+   -19.0,
+   5.005824474922973,
+   -39.20854388126926
+  ],
+  "size": [
+   0.22,
+   2.3200000000000003,
+   0.28
+  ],
+  "axes": [
+   [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-rise_supports-171",
+  "shape": "oriented-box",
+  "center": [
+   -19.94,
+   4.002912237461487,
+   -39.20854388126926
+  ],
+  "size": [
+   0.21,
+   2.0058244749229734,
+   0.21
+  ],
+  "axes": [
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    1.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-rise_supports-172",
+  "shape": "oriented-box",
+  "center": [
+   -18.06,
+   4.002912237461487,
+   -39.20854388126926
+  ],
+  "size": [
+   0.21,
+   2.0058244749229734,
+   0.21
+  ],
+  "axes": [
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    1.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-rise_brace-173",
+  "shape": "oriented-box",
+  "center": [
+   -19.0,
+   4.017912237461487,
+   -39.20854388126926
+  ],
+  "size": [
+   0.13,
+   2.558805699489828,
+   0.13
+  ],
+  "axes": [
+   [
+    0.6783729125150302,
+    -0.7347177632029018,
+    0.0
+   ],
+   [
+    0.7347177632029017,
+    0.6783729125150301,
+    0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-rise_brace-174",
+  "shape": "oriented-box",
+  "center": [
+   -19.0,
+   4.017912237461487,
+   -39.20854388126926
+  ],
+  "size": [
+   0.13,
+   2.558805699489828,
+   0.13
+  ],
+  "axes": [
+   [
+    0.6783729125150302,
+    0.7347177632029018,
+    -0.0
+   ],
+   [
+    -0.7347177632029017,
+    0.6783729125150301,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-link_stringers-175",
+  "shape": "oriented-box",
+  "center": [
+   -15.4,
+   2.7,
+   -23.240000000000002
+  ],
+  "size": [
+   0.18,
+   7.199999999999999,
+   0.28
+  ],
+  "axes": [
+   [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-link_stringers-176",
+  "shape": "oriented-box",
+  "center": [
+   -15.4,
+   2.7,
+   -22.3
+  ],
+  "size": [
+   0.18,
+   7.199999999999999,
+   0.28
+  ],
+  "axes": [
+   [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-link_stringers-177",
+  "shape": "oriented-box",
+  "center": [
+   -15.4,
+   2.7,
+   -21.36
+  ],
+  "size": [
+   0.18,
+   7.199999999999999,
+   0.28
+  ],
+  "axes": [
+   [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_gallery-west-link_rail-178",
   "shape": "oriented-box",
   "center": [
    -15.4,
@@ -5097,7 +5922,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-link_rail-154",
+  "id": "AM02_gallery-west-link_rail-179",
   "shape": "oriented-box",
   "center": [
    -15.4,
@@ -5130,7 +5955,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-link_posts-155",
+  "id": "AM02_gallery-west-link_posts-180",
   "shape": "oriented-box",
   "center": [
    -17.45,
@@ -5163,7 +5988,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-link_posts-156",
+  "id": "AM02_gallery-west-link_posts-181",
   "shape": "oriented-box",
   "center": [
    -16.425,
@@ -5196,7 +6021,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-link_posts-157",
+  "id": "AM02_gallery-west-link_posts-182",
   "shape": "oriented-box",
   "center": [
    -15.4,
@@ -5229,7 +6054,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-link_posts-158",
+  "id": "AM02_gallery-west-link_posts-183",
   "shape": "oriented-box",
   "center": [
    -14.375,
@@ -5262,7 +6087,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-link_posts-159",
+  "id": "AM02_gallery-west-link_posts-184",
   "shape": "oriented-box",
   "center": [
    -13.350000000000001,
@@ -5295,7 +6120,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-link_rail-160",
+  "id": "AM02_gallery-west-link_rail-185",
   "shape": "oriented-box",
   "center": [
    -15.4,
@@ -5328,7 +6153,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-link_rail-161",
+  "id": "AM02_gallery-west-link_rail-186",
   "shape": "oriented-box",
   "center": [
    -15.4,
@@ -5361,7 +6186,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-link_posts-162",
+  "id": "AM02_gallery-west-link_posts-187",
   "shape": "oriented-box",
   "center": [
    -17.45,
@@ -5394,7 +6219,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-link_posts-163",
+  "id": "AM02_gallery-west-link_posts-188",
   "shape": "oriented-box",
   "center": [
    -16.425,
@@ -5427,7 +6252,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-link_posts-164",
+  "id": "AM02_gallery-west-link_posts-189",
   "shape": "oriented-box",
   "center": [
    -15.4,
@@ -5460,7 +6285,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-link_posts-165",
+  "id": "AM02_gallery-west-link_posts-190",
   "shape": "oriented-box",
   "center": [
    -14.375,
@@ -5493,7 +6318,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_gallery-west-link_posts-166",
+  "id": "AM02_gallery-west-link_posts-191",
   "shape": "oriented-box",
   "center": [
    -13.350000000000001,
@@ -5562,7 +6387,106 @@
   "plankRevealM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_rail-168",
+  "id": "AM02_bridge-north-ravine_stringers-193",
+  "shape": "oriented-box",
+  "center": [
+   -0.5499999999999998,
+   5.7,
+   -43.94
+  ],
+  "size": [
+   0.18,
+   16.1,
+   0.28
+  ],
+  "axes": [
+   [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_bridge-north-ravine_stringers-194",
+  "shape": "oriented-box",
+  "center": [
+   -0.5499999999999998,
+   5.7,
+   -43.0
+  ],
+  "size": [
+   0.18,
+   16.1,
+   0.28
+  ],
+  "axes": [
+   [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_bridge-north-ravine_stringers-195",
+  "shape": "oriented-box",
+  "center": [
+   -0.5499999999999998,
+   5.7,
+   -42.06
+  ],
+  "size": [
+   0.18,
+   16.1,
+   0.28
+  ],
+  "axes": [
+   [
+    0.0,
+    -1.0,
+    0.0
+   ],
+   [
+    1.0,
+    0.0,
+    0.0
+   ],
+   [
+    -0.0,
+    0.0,
+    1.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_bridge-north-ravine_rail-196",
   "shape": "oriented-box",
   "center": [
    -0.5499999999999998,
@@ -5595,7 +6519,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_rail-169",
+  "id": "AM02_bridge-north-ravine_rail-197",
   "shape": "oriented-box",
   "center": [
    -0.5499999999999998,
@@ -5628,7 +6552,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_posts-170",
+  "id": "AM02_bridge-north-ravine_posts-198",
   "shape": "oriented-box",
   "center": [
    -8.6,
@@ -5661,7 +6585,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_posts-171",
+  "id": "AM02_bridge-north-ravine_posts-199",
   "shape": "oriented-box",
   "center": [
    -6.5874999999999995,
@@ -5694,7 +6618,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_posts-172",
+  "id": "AM02_bridge-north-ravine_posts-200",
   "shape": "oriented-box",
   "center": [
    -4.574999999999999,
@@ -5727,7 +6651,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_posts-173",
+  "id": "AM02_bridge-north-ravine_posts-201",
   "shape": "oriented-box",
   "center": [
    -2.562499999999999,
@@ -5760,7 +6684,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_posts-174",
+  "id": "AM02_bridge-north-ravine_posts-202",
   "shape": "oriented-box",
   "center": [
    -0.5499999999999989,
@@ -5793,7 +6717,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_posts-175",
+  "id": "AM02_bridge-north-ravine_posts-203",
   "shape": "oriented-box",
   "center": [
    1.4625000000000004,
@@ -5826,7 +6750,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_posts-176",
+  "id": "AM02_bridge-north-ravine_posts-204",
   "shape": "oriented-box",
   "center": [
    3.4750000000000014,
@@ -5859,7 +6783,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_posts-177",
+  "id": "AM02_bridge-north-ravine_posts-205",
   "shape": "oriented-box",
   "center": [
    5.4875000000000025,
@@ -5892,7 +6816,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_posts-178",
+  "id": "AM02_bridge-north-ravine_posts-206",
   "shape": "oriented-box",
   "center": [
    7.500000000000002,
@@ -5925,7 +6849,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_rail-179",
+  "id": "AM02_bridge-north-ravine_rail-207",
   "shape": "oriented-box",
   "center": [
    -0.5499999999999998,
@@ -5958,7 +6882,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_rail-180",
+  "id": "AM02_bridge-north-ravine_rail-208",
   "shape": "oriented-box",
   "center": [
    -0.5499999999999998,
@@ -5991,7 +6915,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_posts-181",
+  "id": "AM02_bridge-north-ravine_posts-209",
   "shape": "oriented-box",
   "center": [
    -8.6,
@@ -6024,7 +6948,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_posts-182",
+  "id": "AM02_bridge-north-ravine_posts-210",
   "shape": "oriented-box",
   "center": [
    -6.5874999999999995,
@@ -6057,7 +6981,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_posts-183",
+  "id": "AM02_bridge-north-ravine_posts-211",
   "shape": "oriented-box",
   "center": [
    -4.574999999999999,
@@ -6090,7 +7014,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_posts-184",
+  "id": "AM02_bridge-north-ravine_posts-212",
   "shape": "oriented-box",
   "center": [
    -2.562499999999999,
@@ -6123,7 +7047,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_posts-185",
+  "id": "AM02_bridge-north-ravine_posts-213",
   "shape": "oriented-box",
   "center": [
    -0.5499999999999989,
@@ -6156,7 +7080,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_posts-186",
+  "id": "AM02_bridge-north-ravine_posts-214",
   "shape": "oriented-box",
   "center": [
    1.4625000000000004,
@@ -6189,7 +7113,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_posts-187",
+  "id": "AM02_bridge-north-ravine_posts-215",
   "shape": "oriented-box",
   "center": [
    3.4750000000000014,
@@ -6222,7 +7146,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_posts-188",
+  "id": "AM02_bridge-north-ravine_posts-216",
   "shape": "oriented-box",
   "center": [
    5.4875000000000025,
@@ -6255,7 +7179,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_posts-189",
+  "id": "AM02_bridge-north-ravine_posts-217",
   "shape": "oriented-box",
   "center": [
    7.500000000000002,
@@ -6324,16 +7248,49 @@
   "plankRevealM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_supports-191",
+  "id": "AM02_bridge-north-ravine_cross_sills-219",
   "shape": "oriented-box",
   "center": [
    -6.023999999999999,
-   2.975,
+   5.47,
+   -43.0
+  ],
+  "size": [
+   0.22,
+   2.319999999999993,
+   0.28
+  ],
+  "axes": [
+   [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ],
+   [
+    0.0,
+    1.0,
+    -0.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_bridge-north-ravine_supports-220",
+  "shape": "oriented-box",
+  "center": [
+   -6.023999999999999,
+   2.735,
    -43.94
   ],
   "size": [
    0.21,
-   5.95,
+   5.47,
    0.21
   ],
   "axes": [
@@ -6357,16 +7314,16 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_supports-192",
+  "id": "AM02_bridge-north-ravine_supports-221",
   "shape": "oriented-box",
   "center": [
    -6.023999999999999,
-   2.975,
+   2.735,
    -42.06
   ],
   "size": [
    0.21,
-   5.95,
+   5.47,
    0.21
   ],
   "axes": [
@@ -6390,16 +7347,16 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_brace-193",
+  "id": "AM02_bridge-north-ravine_brace-222",
   "shape": "oriented-box",
   "center": [
    -6.023999999999999,
-   2.95,
+   2.75,
    -43.0
   ],
   "size": [
    0.13,
-   5.907148212124017,
+   5.52941226533164,
    0.13
   ],
   "axes": [
@@ -6410,29 +7367,29 @@
    ],
    [
     0.0,
-    0.9480039773687045,
-    0.3182584781166357
+    0.9404254467699953,
+    0.33999996921684367
    ],
    [
     0.0,
-    -0.3182584781166357,
-    0.9480039773687045
+    -0.33999996921684367,
+    0.9404254467699953
    ]
   ],
   "kind": "solid",
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_brace-194",
+  "id": "AM02_bridge-north-ravine_brace-223",
   "shape": "oriented-box",
   "center": [
    -6.023999999999999,
-   2.95,
+   2.75,
    -43.0
   ],
   "size": [
    0.13,
-   5.907148212124017,
+   5.52941226533164,
    0.13
   ],
   "axes": [
@@ -6443,29 +7400,62 @@
    ],
    [
     0.0,
-    0.9480039773687045,
-    -0.3182584781166357
+    0.9404254467699953,
+    -0.33999996921684367
    ],
    [
     0.0,
-    0.3182584781166357,
-    0.9480039773687045
+    0.33999996921684367,
+    0.9404254467699953
    ]
   ],
   "kind": "solid",
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_supports-195",
+  "id": "AM02_bridge-north-ravine_cross_sills-224",
   "shape": "oriented-box",
   "center": [
    -0.5499999999999989,
-   2.975,
+   5.47,
+   -43.0
+  ],
+  "size": [
+   0.22,
+   2.319999999999993,
+   0.28
+  ],
+  "axes": [
+   [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ],
+   [
+    0.0,
+    1.0,
+    -0.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_bridge-north-ravine_supports-225",
+  "shape": "oriented-box",
+  "center": [
+   -0.5499999999999989,
+   2.735,
    -43.94
   ],
   "size": [
    0.21,
-   5.95,
+   5.47,
    0.21
   ],
   "axes": [
@@ -6489,16 +7479,16 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_supports-196",
+  "id": "AM02_bridge-north-ravine_supports-226",
   "shape": "oriented-box",
   "center": [
    -0.5499999999999989,
-   2.975,
+   2.735,
    -42.06
   ],
   "size": [
    0.21,
-   5.95,
+   5.47,
    0.21
   ],
   "axes": [
@@ -6522,16 +7512,16 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_brace-197",
+  "id": "AM02_bridge-north-ravine_brace-227",
   "shape": "oriented-box",
   "center": [
    -0.5499999999999989,
-   2.95,
+   2.75,
    -43.0
   ],
   "size": [
    0.13,
-   5.907148212124017,
+   5.52941226533164,
    0.13
   ],
   "axes": [
@@ -6542,29 +7532,29 @@
    ],
    [
     0.0,
-    0.9480039773687045,
-    0.3182584781166357
+    0.9404254467699953,
+    0.33999996921684367
    ],
    [
     0.0,
-    -0.3182584781166357,
-    0.9480039773687045
+    -0.33999996921684367,
+    0.9404254467699953
    ]
   ],
   "kind": "solid",
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_brace-198",
+  "id": "AM02_bridge-north-ravine_brace-228",
   "shape": "oriented-box",
   "center": [
    -0.5499999999999989,
-   2.95,
+   2.75,
    -43.0
   ],
   "size": [
    0.13,
-   5.907148212124017,
+   5.52941226533164,
    0.13
   ],
   "axes": [
@@ -6575,29 +7565,62 @@
    ],
    [
     0.0,
-    0.9480039773687045,
-    -0.3182584781166357
+    0.9404254467699953,
+    -0.33999996921684367
    ],
    [
     0.0,
-    0.3182584781166357,
-    0.9480039773687045
+    0.33999996921684367,
+    0.9404254467699953
    ]
   ],
   "kind": "solid",
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_supports-199",
+  "id": "AM02_bridge-north-ravine_cross_sills-229",
   "shape": "oriented-box",
   "center": [
    4.924000000000001,
-   2.975,
+   5.47,
+   -43.0
+  ],
+  "size": [
+   0.22,
+   2.319999999999993,
+   0.28
+  ],
+  "axes": [
+   [
+    -1.0,
+    0.0,
+    0.0
+   ],
+   [
+    0.0,
+    0.0,
+    1.0
+   ],
+   [
+    0.0,
+    1.0,
+    -0.0
+   ]
+  ],
+  "kind": "solid",
+  "roundingAllowanceM": 0.012
+ },
+ {
+  "id": "AM02_bridge-north-ravine_supports-230",
+  "shape": "oriented-box",
+  "center": [
+   4.924000000000001,
+   2.735,
    -43.94
   ],
   "size": [
    0.21,
-   5.95,
+   5.47,
    0.21
   ],
   "axes": [
@@ -6621,16 +7644,16 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_supports-200",
+  "id": "AM02_bridge-north-ravine_supports-231",
   "shape": "oriented-box",
   "center": [
    4.924000000000001,
-   2.975,
+   2.735,
    -42.06
   ],
   "size": [
    0.21,
-   5.95,
+   5.47,
    0.21
   ],
   "axes": [
@@ -6654,16 +7677,16 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_brace-201",
+  "id": "AM02_bridge-north-ravine_brace-232",
   "shape": "oriented-box",
   "center": [
    4.924000000000001,
-   2.95,
+   2.75,
    -43.0
   ],
   "size": [
    0.13,
-   5.907148212124017,
+   5.52941226533164,
    0.13
   ],
   "axes": [
@@ -6674,29 +7697,29 @@
    ],
    [
     0.0,
-    0.9480039773687045,
-    0.3182584781166357
+    0.9404254467699953,
+    0.33999996921684367
    ],
    [
     0.0,
-    -0.3182584781166357,
-    0.9480039773687045
+    -0.33999996921684367,
+    0.9404254467699953
    ]
   ],
   "kind": "solid",
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_bridge-north-ravine_brace-202",
+  "id": "AM02_bridge-north-ravine_brace-233",
   "shape": "oriented-box",
   "center": [
    4.924000000000001,
-   2.95,
+   2.75,
    -43.0
   ],
   "size": [
    0.13,
-   5.907148212124017,
+   5.52941226533164,
    0.13
   ],
   "axes": [
@@ -6707,20 +7730,20 @@
    ],
    [
     0.0,
-    0.9480039773687045,
-    -0.3182584781166357
+    0.9404254467699953,
+    -0.33999996921684367
    ],
    [
     0.0,
-    0.3182584781166357,
-    0.9480039773687045
+    0.33999996921684367,
+    0.9404254467699953
    ]
   ],
   "kind": "solid",
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM04_drop_studs-203",
+  "id": "AM04_drop_studs-234",
   "shape": "oriented-box",
   "center": [
    1.0,
@@ -6753,7 +7776,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM04_drop_studs-204",
+  "id": "AM04_drop_studs-235",
   "shape": "oriented-box",
   "center": [
    2.6,
@@ -6786,7 +7809,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_entry_fence_posts-205",
+  "id": "AM03_entry_fence_posts-236",
   "shape": "oriented-box",
   "center": [
    -15.8,
@@ -6819,7 +7842,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_entry_fence_posts-206",
+  "id": "AM03_entry_fence_posts-237",
   "shape": "oriented-box",
   "center": [
    -13.46,
@@ -6852,7 +7875,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_entry_fence_posts-207",
+  "id": "AM03_entry_fence_posts-238",
   "shape": "oriented-box",
   "center": [
    -11.120000000000001,
@@ -6885,7 +7908,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_entry_fence_posts-208",
+  "id": "AM03_entry_fence_posts-239",
   "shape": "oriented-box",
   "center": [
    -8.780000000000001,
@@ -6918,7 +7941,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_entry_fence_posts-209",
+  "id": "AM03_entry_fence_posts-240",
   "shape": "oriented-box",
   "center": [
    -6.4399999999999995,
@@ -6951,7 +7974,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_entry_fence_posts-210",
+  "id": "AM03_entry_fence_posts-241",
   "shape": "oriented-box",
   "center": [
    -4.1,
@@ -6984,7 +8007,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_entry_fence-211",
+  "id": "AM03_entry_fence-242",
   "shape": "oriented-box",
   "center": [
    -9.95,
@@ -7017,7 +8040,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_entry_fence-212",
+  "id": "AM03_entry_fence-243",
   "shape": "oriented-box",
   "center": [
    -9.95,
@@ -7050,7 +8073,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_entry_fence_posts-213",
+  "id": "AM03_entry_fence_posts-244",
   "shape": "oriented-box",
   "center": [
    4.1,
@@ -7083,7 +8106,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_entry_fence_posts-214",
+  "id": "AM03_entry_fence_posts-245",
   "shape": "oriented-box",
   "center": [
    6.4399999999999995,
@@ -7116,7 +8139,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_entry_fence_posts-215",
+  "id": "AM03_entry_fence_posts-246",
   "shape": "oriented-box",
   "center": [
    8.780000000000001,
@@ -7149,7 +8172,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_entry_fence_posts-216",
+  "id": "AM03_entry_fence_posts-247",
   "shape": "oriented-box",
   "center": [
    11.120000000000001,
@@ -7182,7 +8205,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_entry_fence_posts-217",
+  "id": "AM03_entry_fence_posts-248",
   "shape": "oriented-box",
   "center": [
    13.46,
@@ -7215,7 +8238,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_entry_fence_posts-218",
+  "id": "AM03_entry_fence_posts-249",
   "shape": "oriented-box",
   "center": [
    15.8,
@@ -7248,7 +8271,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_entry_fence-219",
+  "id": "AM03_entry_fence-250",
   "shape": "oriented-box",
   "center": [
    9.95,
@@ -7281,7 +8304,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_entry_fence-220",
+  "id": "AM03_entry_fence-251",
   "shape": "oriented-box",
   "center": [
    9.95,
@@ -7314,7 +8337,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_tool_rack-221",
+  "id": "AM03_tool_rack-252",
   "shape": "oriented-box",
   "center": [
    -10.05,
@@ -7347,7 +8370,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_tool_rack-222",
+  "id": "AM03_tool_rack-253",
   "shape": "oriented-box",
   "center": [
    -10.05,
@@ -7380,7 +8403,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_tool_rack-223",
+  "id": "AM03_tool_rack-254",
   "shape": "oriented-box",
   "center": [
    -7.550000000000001,
@@ -7413,7 +8436,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_tool_rack-224",
+  "id": "AM03_tool_rack-255",
   "shape": "oriented-box",
   "center": [
    -7.550000000000001,
@@ -7446,7 +8469,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_tool_rack-225",
+  "id": "AM03_tool_rack-256",
   "shape": "oriented-box",
   "center": [
    -8.8,
@@ -7479,7 +8502,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_tool_rack-226",
+  "id": "AM03_tool_rack-257",
   "shape": "oriented-box",
   "center": [
    -8.8,
@@ -7512,7 +8535,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_tool_rack-227",
+  "id": "AM03_tool_rack-258",
   "shape": "oriented-box",
   "center": [
    -8.8,
@@ -7545,7 +8568,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_tool_rack-228",
+  "id": "AM03_tool_rack-259",
   "shape": "oriented-box",
   "center": [
    -9.8,
@@ -7578,7 +8601,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_tool_rack-229",
+  "id": "AM03_tool_rack-260",
   "shape": "oriented-box",
   "center": [
    -9.3,
@@ -7611,7 +8634,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_tool_rack-230",
+  "id": "AM03_tool_rack-261",
   "shape": "oriented-box",
   "center": [
    -8.8,
@@ -7644,7 +8667,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_tool_rack-231",
+  "id": "AM03_tool_rack-262",
   "shape": "oriented-box",
   "center": [
    -8.3,
@@ -7677,7 +8700,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_tool_rack-232",
+  "id": "AM03_tool_rack-263",
   "shape": "oriented-box",
   "center": [
    -7.800000000000001,
@@ -7710,7 +8733,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_upper_shelter-233",
+  "id": "AM03_upper_shelter-264",
   "shape": "oriented-box",
   "center": [
    -10.8,
@@ -7743,7 +8766,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_upper_shelter-234",
+  "id": "AM03_upper_shelter-265",
   "shape": "oriented-box",
   "center": [
    -10.8,
@@ -7776,7 +8799,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_upper_shelter-235",
+  "id": "AM03_upper_shelter-266",
   "shape": "oriented-box",
   "center": [
    -10.8,
@@ -7809,7 +8832,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_upper_shelter-236",
+  "id": "AM03_upper_shelter-267",
   "shape": "oriented-box",
   "center": [
    -6.2,
@@ -7842,7 +8865,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_upper_shelter-237",
+  "id": "AM03_upper_shelter-268",
   "shape": "oriented-box",
   "center": [
    -6.2,
@@ -7875,7 +8898,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_upper_shelter-238",
+  "id": "AM03_upper_shelter-269",
   "shape": "oriented-box",
   "center": [
    -6.2,
@@ -7908,7 +8931,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_upper_shelter-239",
+  "id": "AM03_upper_shelter-270",
   "shape": "oriented-box",
   "center": [
    -8.5,
@@ -7941,7 +8964,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_upper_shelter-240",
+  "id": "AM03_upper_shelter-271",
   "shape": "oriented-box",
   "center": [
    -8.5,
@@ -7974,7 +8997,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_gantry-241",
+  "id": "AM03_gantry-272",
   "shape": "oriented-box",
   "center": [
    -12.0,
@@ -8007,7 +9030,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_gantry-242",
+  "id": "AM03_gantry-273",
   "shape": "oriented-box",
   "center": [
    -10.525,
@@ -8040,7 +9063,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM03_gantry-243",
+  "id": "AM03_gantry-274",
   "shape": "oriented-box",
   "center": [
    -11.125,
@@ -8073,7 +9096,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_west_landing_rail_posts-244",
+  "id": "AM02_west_landing_rail_posts-275",
   "shape": "oriented-box",
   "center": [
    -10.3,
@@ -8106,7 +9129,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_west_landing_rail_posts-245",
+  "id": "AM02_west_landing_rail_posts-276",
   "shape": "oriented-box",
   "center": [
    -8.166666666666668,
@@ -8139,7 +9162,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_west_landing_rail_posts-246",
+  "id": "AM02_west_landing_rail_posts-277",
   "shape": "oriented-box",
   "center": [
    -6.033333333333334,
@@ -8172,7 +9195,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_west_landing_rail_posts-247",
+  "id": "AM02_west_landing_rail_posts-278",
   "shape": "oriented-box",
   "center": [
    -3.9000000000000004,
@@ -8205,7 +9228,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_west_landing_rail-248",
+  "id": "AM02_west_landing_rail-279",
   "shape": "oriented-box",
   "center": [
    -7.1000000000000005,
@@ -8238,7 +9261,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_west_landing_rail-249",
+  "id": "AM02_west_landing_rail-280",
   "shape": "oriented-box",
   "center": [
    -7.1000000000000005,
@@ -8271,7 +9294,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_upper_front_rail_posts-250",
+  "id": "AM02_upper_front_rail_posts-281",
   "shape": "oriented-box",
   "center": [
    -3.5,
@@ -8304,7 +9327,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_upper_front_rail_posts-251",
+  "id": "AM02_upper_front_rail_posts-282",
   "shape": "oriented-box",
   "center": [
    -1.2000000000000002,
@@ -8337,7 +9360,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_upper_front_rail_posts-252",
+  "id": "AM02_upper_front_rail_posts-283",
   "shape": "oriented-box",
   "center": [
    1.0999999999999996,
@@ -8370,7 +9393,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_upper_front_rail_posts-253",
+  "id": "AM02_upper_front_rail_posts-284",
   "shape": "oriented-box",
   "center": [
    3.4000000000000004,
@@ -8403,7 +9426,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_upper_front_rail_posts-254",
+  "id": "AM02_upper_front_rail_posts-285",
   "shape": "oriented-box",
   "center": [
    5.699999999999999,
@@ -8436,7 +9459,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_upper_front_rail_posts-255",
+  "id": "AM02_upper_front_rail_posts-286",
   "shape": "oriented-box",
   "center": [
    8.000000000000002,
@@ -8469,7 +9492,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_upper_front_rail_posts-256",
+  "id": "AM02_upper_front_rail_posts-287",
   "shape": "oriented-box",
   "center": [
    10.3,
@@ -8502,7 +9525,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_upper_front_rail-257",
+  "id": "AM02_upper_front_rail-288",
   "shape": "oriented-box",
   "center": [
    3.4000000000000004,
@@ -8535,7 +9558,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM02_upper_front_rail-258",
+  "id": "AM02_upper_front_rail-289",
   "shape": "oriented-box",
   "center": [
    3.4000000000000004,
@@ -8568,7 +9591,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_cave_timber-259",
+  "id": "AM06_cave_timber-290",
   "shape": "oriented-box",
   "center": [
    -17.2,
@@ -8601,7 +9624,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_cave_braces-260",
+  "id": "AM06_cave_braces-291",
   "shape": "oriented-box",
   "center": [
    -17.2,
@@ -8634,7 +9657,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_cave_timber-261",
+  "id": "AM06_cave_timber-292",
   "shape": "oriented-box",
   "center": [
    -17.2,
@@ -8667,7 +9690,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_cave_braces-262",
+  "id": "AM06_cave_braces-293",
   "shape": "oriented-box",
   "center": [
    -17.2,
@@ -8700,7 +9723,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_cave_lintel-263",
+  "id": "AM06_cave_lintel-294",
   "shape": "oriented-box",
   "center": [
    -17.2,
@@ -8733,7 +9756,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_cave_timber-264",
+  "id": "AM06_cave_timber-295",
   "shape": "oriented-box",
   "center": [
    -13.6,
@@ -8766,7 +9789,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_cave_braces-265",
+  "id": "AM06_cave_braces-296",
   "shape": "oriented-box",
   "center": [
    -13.6,
@@ -8799,7 +9822,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_cave_timber-266",
+  "id": "AM06_cave_timber-297",
   "shape": "oriented-box",
   "center": [
    -13.6,
@@ -8832,7 +9855,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_cave_braces-267",
+  "id": "AM06_cave_braces-298",
   "shape": "oriented-box",
   "center": [
    -13.6,
@@ -8865,7 +9888,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_cave_lintel-268",
+  "id": "AM06_cave_lintel-299",
   "shape": "oriented-box",
   "center": [
    -13.6,
@@ -8898,7 +9921,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_cave_timber-269",
+  "id": "AM06_cave_timber-300",
   "shape": "oriented-box",
   "center": [
    -9.7,
@@ -8931,7 +9954,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_cave_braces-270",
+  "id": "AM06_cave_braces-301",
   "shape": "oriented-box",
   "center": [
    -9.7,
@@ -8964,7 +9987,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_cave_timber-271",
+  "id": "AM06_cave_timber-302",
   "shape": "oriented-box",
   "center": [
    -9.7,
@@ -8997,7 +10020,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_cave_braces-272",
+  "id": "AM06_cave_braces-303",
   "shape": "oriented-box",
   "center": [
    -9.7,
@@ -9030,7 +10053,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_cave_lintel-273",
+  "id": "AM06_cave_lintel-304",
   "shape": "oriented-box",
   "center": [
    -9.7,
@@ -9063,7 +10086,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_cave_longitudinal-274",
+  "id": "AM06_cave_longitudinal-305",
   "shape": "oriented-box",
   "center": [
    -13.45,
@@ -9096,7 +10119,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_cave_longitudinal-275",
+  "id": "AM06_cave_longitudinal-306",
   "shape": "oriented-box",
   "center": [
    -13.45,
@@ -9129,7 +10152,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_west_gallery_rail_posts-276",
+  "id": "AM06_west_gallery_rail_posts-307",
   "shape": "oriented-box",
   "center": [
    -20.8,
@@ -9162,7 +10185,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_west_gallery_rail_posts-277",
+  "id": "AM06_west_gallery_rail_posts-308",
   "shape": "oriented-box",
   "center": [
    -20.8,
@@ -9195,7 +10218,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_west_gallery_rail_posts-278",
+  "id": "AM06_west_gallery_rail_posts-309",
   "shape": "oriented-box",
   "center": [
    -20.8,
@@ -9228,7 +10251,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_west_gallery_rail_posts-279",
+  "id": "AM06_west_gallery_rail_posts-310",
   "shape": "oriented-box",
   "center": [
    -20.8,
@@ -9261,7 +10284,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_west_gallery_rail_posts-280",
+  "id": "AM06_west_gallery_rail_posts-311",
   "shape": "oriented-box",
   "center": [
    -20.8,
@@ -9294,7 +10317,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_west_gallery_rail_posts-281",
+  "id": "AM06_west_gallery_rail_posts-312",
   "shape": "oriented-box",
   "center": [
    -20.8,
@@ -9327,7 +10350,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_west_gallery_rail_posts-282",
+  "id": "AM06_west_gallery_rail_posts-313",
   "shape": "oriented-box",
   "center": [
    -20.8,
@@ -9360,7 +10383,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_west_gallery_rail-283",
+  "id": "AM06_west_gallery_rail-314",
   "shape": "oriented-box",
   "center": [
    -20.8,
@@ -9393,7 +10416,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_west_gallery_rail-284",
+  "id": "AM06_west_gallery_rail-315",
   "shape": "oriented-box",
   "center": [
    -20.8,
@@ -9426,7 +10449,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_north_gallery_rail_posts-285",
+  "id": "AM06_north_gallery_rail_posts-316",
   "shape": "oriented-box",
   "center": [
    8.0,
@@ -9459,7 +10482,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_north_gallery_rail_posts-286",
+  "id": "AM06_north_gallery_rail_posts-317",
   "shape": "oriented-box",
   "center": [
    10.36,
@@ -9492,7 +10515,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_north_gallery_rail_posts-287",
+  "id": "AM06_north_gallery_rail_posts-318",
   "shape": "oriented-box",
   "center": [
    12.72,
@@ -9525,7 +10548,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_north_gallery_rail_posts-288",
+  "id": "AM06_north_gallery_rail_posts-319",
   "shape": "oriented-box",
   "center": [
    15.08,
@@ -9558,7 +10581,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_north_gallery_rail_posts-289",
+  "id": "AM06_north_gallery_rail_posts-320",
   "shape": "oriented-box",
   "center": [
    17.44,
@@ -9591,7 +10614,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_north_gallery_rail_posts-290",
+  "id": "AM06_north_gallery_rail_posts-321",
   "shape": "oriented-box",
   "center": [
    19.8,
@@ -9624,7 +10647,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_north_gallery_rail-291",
+  "id": "AM06_north_gallery_rail-322",
   "shape": "oriented-box",
   "center": [
    13.9,
@@ -9657,7 +10680,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_north_gallery_rail-292",
+  "id": "AM06_north_gallery_rail-323",
   "shape": "oriented-box",
   "center": [
    13.9,
@@ -9690,7 +10713,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_east_gallery_rail_posts-293",
+  "id": "AM06_east_gallery_rail_posts-324",
   "shape": "oriented-box",
   "center": [
    19.8,
@@ -9723,7 +10746,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_east_gallery_rail_posts-294",
+  "id": "AM06_east_gallery_rail_posts-325",
   "shape": "oriented-box",
   "center": [
    19.8,
@@ -9756,7 +10779,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_east_gallery_rail_posts-295",
+  "id": "AM06_east_gallery_rail_posts-326",
   "shape": "oriented-box",
   "center": [
    19.8,
@@ -9789,7 +10812,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_east_gallery_rail_posts-296",
+  "id": "AM06_east_gallery_rail_posts-327",
   "shape": "oriented-box",
   "center": [
    19.8,
@@ -9822,7 +10845,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_east_gallery_rail_posts-297",
+  "id": "AM06_east_gallery_rail_posts-328",
   "shape": "oriented-box",
   "center": [
    19.8,
@@ -9855,7 +10878,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_east_gallery_rail-298",
+  "id": "AM06_east_gallery_rail-329",
   "shape": "oriented-box",
   "center": [
    19.8,
@@ -9888,7 +10911,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM06_east_gallery_rail-299",
+  "id": "AM06_east_gallery_rail-330",
   "shape": "oriented-box",
   "center": [
    19.8,
@@ -9921,7 +10944,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_cart_base-300",
+  "id": "AM05_cart_base-331",
   "shape": "oriented-box",
   "center": [
    12.6,
@@ -9954,7 +10977,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_cart_sides-301",
+  "id": "AM05_cart_sides-332",
   "shape": "oriented-box",
   "center": [
    11.879999999999999,
@@ -9987,7 +11010,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_cart_ends-302",
+  "id": "AM05_cart_ends-333",
   "shape": "oriented-box",
   "center": [
    12.6,
@@ -10020,7 +11043,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_cart_sides-303",
+  "id": "AM05_cart_sides-334",
   "shape": "oriented-box",
   "center": [
    13.32,
@@ -10053,7 +11076,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_cart_ends-304",
+  "id": "AM05_cart_ends-335",
   "shape": "oriented-box",
   "center": [
    12.6,
@@ -10086,7 +11109,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_cart_sides-305",
+  "id": "AM05_cart_sides-336",
   "shape": "oriented-box",
   "center": [
    11.879999999999999,
@@ -10119,7 +11142,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_cart_ends-306",
+  "id": "AM05_cart_ends-337",
   "shape": "oriented-box",
   "center": [
    12.6,
@@ -10152,7 +11175,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_cart_sides-307",
+  "id": "AM05_cart_sides-338",
   "shape": "oriented-box",
   "center": [
    13.32,
@@ -10185,7 +11208,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_cart_ends-308",
+  "id": "AM05_cart_ends-339",
   "shape": "oriented-box",
   "center": [
    12.6,
@@ -10218,7 +11241,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_cart_sides-309",
+  "id": "AM05_cart_sides-340",
   "shape": "oriented-box",
   "center": [
    11.879999999999999,
@@ -10251,7 +11274,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_cart_ends-310",
+  "id": "AM05_cart_ends-341",
   "shape": "oriented-box",
   "center": [
    12.6,
@@ -10284,7 +11307,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_cart_sides-311",
+  "id": "AM05_cart_sides-342",
   "shape": "oriented-box",
   "center": [
    13.32,
@@ -10317,7 +11340,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_cart_ends-312",
+  "id": "AM05_cart_ends-343",
   "shape": "oriented-box",
   "center": [
    12.6,
@@ -10350,7 +11373,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_crates-313",
+  "id": "AM05_crates-344",
   "shape": "oriented-box",
   "center": [
    -3.0,
@@ -10383,7 +11406,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_crates-314",
+  "id": "AM05_crates-345",
   "shape": "oriented-box",
   "center": [
    -2.0,
@@ -10416,12 +11439,12 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_crates-315",
+  "id": "AM05_crates-346",
   "shape": "oriented-box",
   "center": [
-   -13,
+   -3.8,
    0.4275,
-   -5.7
+   -17.0
   ],
   "size": [
    0.95,
@@ -10449,7 +11472,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_crates-316",
+  "id": "AM05_crates-347",
   "shape": "oriented-box",
   "center": [
    9.2,
@@ -10482,7 +11505,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_crates-317",
+  "id": "AM05_crates-348",
   "shape": "oriented-box",
   "center": [
    -6.1,
@@ -10515,7 +11538,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_crates-318",
+  "id": "AM05_crates-349",
   "shape": "oriented-box",
   "center": [
    -6.2,
@@ -10548,7 +11571,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_crates-319",
+  "id": "AM05_crates-350",
   "shape": "oriented-box",
   "center": [
    -20.3,
@@ -10581,7 +11604,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_crates-320",
+  "id": "AM05_crates-351",
   "shape": "oriented-box",
   "center": [
    15.4,
@@ -10614,7 +11637,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_crates-321",
+  "id": "AM05_crates-352",
   "shape": "oriented-box",
   "center": [
    16.35,
@@ -10647,7 +11670,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_workbench-322",
+  "id": "AM05_workbench-353",
   "shape": "oriented-box",
   "center": [
    -6.6,
@@ -10680,7 +11703,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_workbench-323",
+  "id": "AM05_workbench-354",
   "shape": "oriented-box",
   "center": [
    -6.6,
@@ -10713,7 +11736,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_workbench-324",
+  "id": "AM05_workbench-355",
   "shape": "oriented-box",
   "center": [
    -4.0,
@@ -10746,7 +11769,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_workbench-325",
+  "id": "AM05_workbench-356",
   "shape": "oriented-box",
   "center": [
    -4.0,
@@ -10779,7 +11802,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_workbench-326",
+  "id": "AM05_workbench-357",
   "shape": "oriented-box",
   "center": [
    -5.3,
@@ -10812,7 +11835,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_lamp_posts-327",
+  "id": "AM05_lamp_posts-358",
   "shape": "oriented-box",
   "center": [
    -13.3,
@@ -10845,7 +11868,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_lamp_brackets-328",
+  "id": "AM05_lamp_brackets-359",
   "shape": "oriented-box",
   "center": [
    -13.3,
@@ -10878,7 +11901,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_lamp_posts-329",
+  "id": "AM05_lamp_posts-360",
   "shape": "oriented-box",
   "center": [
    -20.4,
@@ -10911,7 +11934,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_lamp_brackets-330",
+  "id": "AM05_lamp_brackets-361",
   "shape": "oriented-box",
   "center": [
    -20.4,
@@ -10944,7 +11967,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_lamp_posts-331",
+  "id": "AM05_lamp_posts-362",
   "shape": "oriented-box",
   "center": [
    9.7,
@@ -10977,7 +12000,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_lamp_brackets-332",
+  "id": "AM05_lamp_brackets-363",
   "shape": "oriented-box",
   "center": [
    9.7,
@@ -11010,7 +12033,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_lamp_posts-333",
+  "id": "AM05_lamp_posts-364",
   "shape": "oriented-box",
   "center": [
    -19.9,
@@ -11043,7 +12066,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_lamp_brackets-334",
+  "id": "AM05_lamp_brackets-365",
   "shape": "oriented-box",
   "center": [
    -19.9,
@@ -11076,7 +12099,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_lamp_posts-335",
+  "id": "AM05_lamp_posts-366",
   "shape": "oriented-box",
   "center": [
    -17.8,
@@ -11109,7 +12132,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_lamp_brackets-336",
+  "id": "AM05_lamp_brackets-367",
   "shape": "oriented-box",
   "center": [
    -17.8,
@@ -11142,7 +12165,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_lamp_posts-337",
+  "id": "AM05_lamp_posts-368",
   "shape": "oriented-box",
   "center": [
    -11.0,
@@ -11175,7 +12198,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_lamp_brackets-338",
+  "id": "AM05_lamp_brackets-369",
   "shape": "oriented-box",
   "center": [
    -11.0,
@@ -11208,7 +12231,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_lamp_posts-339",
+  "id": "AM05_lamp_posts-370",
   "shape": "oriented-box",
   "center": [
    6.9,
@@ -11241,7 +12264,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_lamp_brackets-340",
+  "id": "AM05_lamp_brackets-371",
   "shape": "oriented-box",
   "center": [
    6.9,
@@ -11274,7 +12297,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_lamp_posts-341",
+  "id": "AM05_lamp_posts-372",
   "shape": "oriented-box",
   "center": [
    17.9,
@@ -11307,7 +12330,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_lamp_brackets-342",
+  "id": "AM05_lamp_brackets-373",
   "shape": "oriented-box",
   "center": [
    17.9,
@@ -11340,7 +12363,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_lamp_posts-343",
+  "id": "AM05_lamp_posts-374",
   "shape": "oriented-box",
   "center": [
    -5.2,
@@ -11373,7 +12396,7 @@
   "roundingAllowanceM": 0.012
  },
  {
-  "id": "AM05_lamp_brackets-344",
+  "id": "AM05_lamp_brackets-375",
   "shape": "oriented-box",
   "center": [
    -5.2,

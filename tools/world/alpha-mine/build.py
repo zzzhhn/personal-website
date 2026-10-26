@@ -52,62 +52,126 @@ def create_source(scene):
 
 def add_seams(root,scene):
     """Branching ribbons projected onto the actual continuous host facets.
-    Their back lies inside stone, with only a 3mm exposed face. No wall-sized decal.
+    Their back lies inside stone, with a narrow, chipped exposed ridge.
     """
     host=bpy.data.objects['AM01_rock_mass'];tree=BVHTree.FromObject(host,bpy.context.evaluated_depsgraph_get())
-    vertices=[];faces=[];colors=[];receipts=[]
-    def ribbon(points,seed,width):
-        rings=[];samples=[]
+    vertices=[];faces=[];vertex_colors=[];receipts=[];grain_count=0
+    def edge_grain(ring,previous,seed):
+        nonlocal grain_count
+        side=(ring[3]-ring[0]).normalized();tangent=(ring[1]-previous[1]).normalized()
+        normal=tangent.cross(side).normalized()
+        if normal.dot(ring[1]-ring[6])<0:normal.negate()
+        edge=ring[0] if (seed//4)%2 else ring[3];center=edge-normal*.008
+        radii=[.025+.020*abs(math.sin(seed*3.1)),.015+.013*abs(math.sin(seed*1.7)),.022]
+        ps=[center+axis*sign*r for axis,r in zip([tangent,side,normal],radii) for sign in [-1,1]]
+        start=len(vertices);vertices.extend(tuple(p) for p in ps)
+        for a in [0,1]:
+            for b in [2,3]:
+                for c in [4,5]:
+                    face=[a,b,c]
+                    if (ps[b]-ps[a]).cross(ps[c]-ps[a]).dot((ps[a]+ps[b]+ps[c])/3-center)<0:face.reverse()
+                    faces.append([start+i for i in face])
+        vertex_colors.extend(['#8F8062','#B1A07C','#8C816A','#9D9174','#817B69','#B5A27D'])
+        grain_count+=1
+    def emit_strip(run,seed,fracture=False):
+        if len(run)<3:return None
+        arc=sum((b[1]-a[1]).length for a,b in zip(run,run[1:]))
+        if arc<.25:return None
+        points=[p for ring in run for p in ring];shell=[]
+        for i in range(len(run)-1):
+            for j in range(8):shell.append([i*8+j,(i+1)*8+j,(i+1)*8+(j+1)%8,i*8+(j+1)%8])
+        cap=[[j,j+1,7-j] for j in range(3)]+[[j+1,6-j,7-j] for j in range(3)]
+        shell.extend(cap);end=(len(run)-1)*8
+        shell.extend([[end+j for j in reversed(face)] for face in cap])
+        volume=sum(points[f[0]].dot(points[f[k]].cross(points[f[k+1]]))/6 for f in shell for k in range(1,len(f)-1))
+        assert abs(volume)>1e-9,'Collapsed continuous mineral strip'
+        offset=len(vertices);vertices.extend(tuple(p) for p in points)
+        for f in shell:faces.append([offset+j for j in (list(reversed(f)) if volume<0 else f)])
+        mineral=['#A28D66','#78988A','#A0A89B'][seed%3]
+        def tint(h,f):return '#'+''.join(f'{max(0,min(255,round(int(h[k:k+2],16)*f))):02x}' for k in (1,3,5))
+        for i,r in enumerate(run):
+            x,z,y=r[1];host=rock_color(y,0,x,-z)
+            dark=tint(host,.68 if fracture else .82)
+            core=dark if fracture else tint(mineral,.87+.25*(.5+.5*math.sin(i*2.73+seed*.91)))
+            vertex_colors.extend([dark,core,core,dark,dark,dark,dark,dark])
+        return {'segments':len(run)-1,'sharedRingVertices':len(points),'arcLengthM':arc,
+                'widthRangeM':[min((r[3]-r[0]).length for r in run),max((r[3]-r[0]).length for r in run)],
+                'closedSignedVolumeM3':abs(volume),'surface':'fracture' if fracture else 'mineral'}
+    def ribbon(points,seed,width,fracture=False):
+        rings=[];samples=[];last_side=None
         for i,p in enumerate(points):
             target=Vector(v3(p));hit,normal,_,distance=tree.find_nearest(target)
             if distance is None or distance>.95:
                 rings.append(None);continue
             tangent=Vector(v3(points[min(i+1,len(points)-1)]))-Vector(v3(points[max(0,i-1)]))
-            side=normal.cross(tangent).normalized();w=width*(.6+.4*math.sin(i*.67+seed)**2)
-            ring=[]
-            for sign in [-1,1]:
+            side=normal.cross(tangent).normalized()
+            if last_side is not None and side.dot(last_side)<0:side.negate()
+            last_side=side
+            taper=.20+.80*min(1,i/7,(len(points)-1-i)/7)
+            w=width*taper*(.44+.36*math.sin(i*.29+seed)**2+.20*abs(math.sin(i*2.13+seed)))
+            front=[];back=[]
+            jitter=.14*math.sin(i*2.37+seed)
+            for k,sign in enumerate([-1+jitter,-.38+jitter*.3,.38+jitter*.3,1+jitter]):
                 point,n,_,d=tree.find_nearest(hit+side*sign*w)
-                samples.append(d);ring.append(point+n*.003)
-            # Explicit embedded back, so each connected ribbon segment is closed.
-            ring += [p-normal*.018 for p in ring]
+                # A shallow broken ridge, flanked by dark host-coloured lips.
+                # The core is narrow; the full ribbon no longer reads as paint.
+                exposed=.0015 if k in [0,3] else .003+.011*(.5+.5*math.sin(i*1.67+k+seed))
+                samples.append(d);front.append(point+n*exposed);back.append(point-n*.045)
+            ring=front+list(reversed(back))
             rings.append(ring)
-        live=0
-        for a,b in zip(rings,rings[1:]):
-            if a is None or b is None:continue
-            if (a[0]-a[1]).length<.004 or (b[0]-b[1]).length<.004 or ((a[0]+a[1])-(b[0]+b[1])).length<.015:continue
-            if (a[1]-a[0]).dot(b[1]-b[0])<0:b=[b[1],b[0],b[3],b[2]]
-            # Each short prism is independently closed and intentionally embedded.
-            ps=a+b;offset=len(vertices);vertices.extend(tuple(p) for p in ps)
-            shell=[(0,1,5,4),(2,6,7,3),(0,4,6,2),(1,3,7,5),(0,2,3,1),(4,5,7,6)]
-            volume=sum(ps[f[0]].dot(ps[f[k]].cross(ps[f[k+1]]))/6 for f in shell for k in range(1,len(f)-1))
-            # Reverse the complete shell, never individual bent quad faces.
-            for f in shell:
-                face=[offset+k for k in (list(reversed(f)) if volume<0 else f)]
-                faces.append(face);colors.append(['#A38D68','#738A7A','#9A9C91'][seed%3])
-            live+=1
-        receipts.append({'segments':live,'projectedSamples':len(samples),'maxEdgeProjectionM':max(samples,default=0)})
+        run=[];components=[]
+        for ring in rings+[None]:
+            invalid=ring is None or (ring[3]-ring[0]).length<.006
+            if not invalid and run and (ring[1]-run[-1][1]).length<.012:continue
+            if not invalid and run and (ring[1]-run[-1][1]).length>.50:
+                receipt=emit_strip(run,seed,fracture)
+                if receipt:components.append(receipt)
+                run=[]
+            if invalid:
+                receipt=emit_strip(run,seed,fracture)
+                if receipt:components.append(receipt)
+                run=[]
+            else:run.append(ring)
+        if seed==0 and not fracture and width>.1:
+            for i in range(5,len(rings)-1,4):
+                if rings[i] is not None and rings[i-1] is not None and (rings[i][1]-rings[i-1][1]).length>.012:
+                    edge_grain(rings[i],rings[i-1],i)
+        receipts.append({'components':components,'projectedSamples':len(samples),'maxEdgeProjectionM':max(samples,default=0)})
     for index,v in enumerate(VEINS):
         x0,y0,z0=v['socket'];left=-12.6 if index<2 else -11.5;right=-4.0 if index<2 else 11.5
         def line(x):
             dx=x-x0;return [x,y0+.06*dx+.26*math.sin(dx*.75)+.09*math.sin(dx*1.7),z0-.15]
         points=[line(left+(right-left)*i/80) for i in range(81)]
         if index==0:
-            points=[[ -13.35, y0-.45+.07*i, -18.0-i*.25] for i in range(12)]+points
-        ribbon(points,index,.13)
+            side_path=[[-13.35,y0-.45+.07*i,-18.0-i*.25] for i in range(12)]
+            a,b=side_path[-1],points[0]
+            turn=[[a[k]+(b[k]-a[k])*i/10 for k in range(3)] for i in range(1,10)]
+            points=side_path+turn+points
+        ribbon(points,index,.115 if index==0 else .145)
         for sign in [-1,1]:
             start=x0+sign*2.2;begin=line(start)
             branch=[[begin[0]+sign*t*1.55,begin[1]+sign*t*.72+.13*math.sin(t*4),begin[2]] for t in [i/18 for i in range(19)]]
-            ribbon(branch,index,.055)
+            ribbon(branch,index,.043)
+        if index==0:
+            # Sparse hairline splays reach into two actual host faults. Their
+            # tips taper into rock; no loose scatter or extra runtime batch.
+            for j,x in enumerate([-11.0,-9.72,-7.6,-4.98]):
+                start=line(x);direction=-1 if j%2 else 1
+                branch=[[start[0]+.23*t+.07*math.sin(t*5+j),start[1]+direction*t*.62,start[2]] for t in [k/15 for k in range(16)]]
+                ribbon(branch,index,.018)
+            for j,x in enumerate([-9.72,-4.98]):
+                crack=[[x+(.055 if j==0 else -.07)*(yy-1.3),yy,z0-.15] for yy in [.45+k*.12 for k in range(19)]]
+                ribbon(crack,index,.013,fracture=True)
     me=bpy.data.meshes.new('AM01_inlaid_seams');me.from_pydata(vertices,[],faces);me.update();me.materials.append(material('stone'))
     col=me.color_attributes.new(name='Col',type='FLOAT_COLOR',domain='CORNER')
-    for p,c in zip(me.polygons,colors):
-        for i in p.loop_indices:col.data[i].color=linear(c)
+    for p in me.polygons:
+        for i in p.loop_indices:col.data[i].color=linear(vertex_colors[me.loops[i].vertex_index])
     grain.uv(me);ob=bpy.data.objects.new('AM01_inlaid_seams',me);scene.collection.objects.link(ob);ob.parent=root;ob['materialRole']='stone';ob['semantic']='inlaid-mineral'
-    (EVIDENCE/'seam-host-qa.json').write_text(json.dumps({'ribbons':receipts,'frontOffsetM':.003,'embeddedThicknessM':.018,'collision':'visual inlay; existing host wall collider retained'},indent=1)+'\n')
+    (EVIDENCE/'seam-host-qa.json').write_text(json.dumps({'ribbons':receipts,'edgeFractureGrains':grain_count,'frontOffsetRangeM':[.0015,.014],'embeddedThicknessM':.045,'construction':'shared eight-vertex jagged rings with narrow mineral core and host-coloured lips; end caps only at actual terminations','collision':'visual inlay; existing host wall collider retained'},indent=1)+'\n')
 
 def merge_runtime(source,scene):
     root=bpy.data.objects.new('alpha_mine',None);scene.collection.objects.link(root)
-    root['assetId']='alpha-mine-quarry-v3';root['units']='metres';root['entranceFace']='+Z';root['layout']='layout.json'
+    root['assetId']='alpha-mine-quarry-v4-layered';root['units']='metres';root['entranceFace']='+Z';root['layout']='layout.json'
     for role in PALETTE:
         verts=[];faces=[];colors=[];uvs=[]
         for ob in source.children:
@@ -169,15 +233,15 @@ def export_glb(root):
     bpy.ops.export_scene.gltf(filepath=str(GLB),**opts)
     return opts
 
-def render_views(root,views=None,folder=None):
+def render_views(root,views=None,folder=None,resolution=(1000,760)):
     scene=bpy.context.scene
     engines={v.identifier for v in scene.render.bl_rna.properties['engine'].enum_items}
     scene.render.engine=next((e for e in ['BLENDER_EEVEE','BLENDER_EEVEE_NEXT'] if e in engines),'CYCLES')
     eevee=getattr(scene,'eevee',None)
-    if eevee and hasattr(eevee,'taa_render_samples'):eevee.taa_render_samples=32
-    if eevee and hasattr(eevee,'use_raytracing'):eevee.use_raytracing=True
+    if eevee and hasattr(eevee,'taa_render_samples'):eevee.taa_render_samples=16
+    if eevee and hasattr(eevee,'use_raytracing'):eevee.use_raytracing=False
     if scene.render.engine=='CYCLES':scene.cycles.device='CPU';scene.cycles.samples=16;scene.cycles.use_denoising=False
-    scene.render.resolution_x=1000;scene.render.resolution_y=760;scene.render.resolution_percentage=100
+    scene.render.resolution_x=resolution[0];scene.render.resolution_y=resolution[1];scene.render.resolution_percentage=100
     scene.render.image_settings.file_format='PNG';scene.view_settings.view_transform='AgX'
     scene.view_settings.exposure=0;scene.view_settings.gamma=1
     looks={v.identifier for v in scene.view_settings.bl_rna.properties['look'].enum_items}
@@ -213,7 +277,7 @@ def render_views(root,views=None,folder=None):
         cam.location=v3(p);target=Vector(v3(t));cam.rotation_euler=(target-cam.location).to_track_quat('-Z','Y').to_euler()
         path=folder/(name+'.png');scene.render.filepath=str(path)
         bpy.ops.render.render(write_still=True);outputs.append(path.name)
-    return {'images':outputs,'renderer':scene.render.engine,'resolution':[1000,760],
+    return {'images':outputs,'renderer':scene.render.engine,'resolution':list(resolution),
             'viewTransform':scene.view_settings.view_transform,'look':scene.view_settings.look,'exposure':0,'gamma':1,'views':views,
             'scope':'fresh exact delivered GLB; studio lights/floor/cameras and basin water are preview only; not game integration or character validation'}
 
@@ -247,6 +311,7 @@ def run(preview=True):
     report={'asset':'alpha-mine-batch1','blenderVersion':bpy.app.version_string,'source':str(SOURCE.relative_to(HERE.parent.parent.parent)),
             'glb':'public/world/alpha-mine/quarry-static.glb','glbSha256':hashlib.sha256(GLB.read_bytes()).hexdigest(),
             'sourceSha256':hashlib.sha256(SOURCE.read_bytes()).hexdigest(),'bytes':GLB.stat().st_size,'exportOptions':export_opts,
+            'generatorSha256':{name:hashlib.sha256((HERE/name).read_bytes()).hexdigest() for name in ['layout.py','geometry.py','build.py','veins.py','refine.py','prepare_preview.mjs']},
             'portableGrainNormals':normal_materials,
             'editable':author_stats,'runtime':runtime_stats,'reopened':reopened,'freshGLB':imported,'maxBoundsDeltaM':delta,
             'collisionScope':'rock/ground/basin source triangles; explicitly authored timber boxes with <=12mm bevel allowance; continuous plank support sheets',

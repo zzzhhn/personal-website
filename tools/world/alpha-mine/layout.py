@@ -73,6 +73,9 @@ def outline():
 
 def rock_intervals(x,z):
     h=round(height(x,z)/.75)*.75
+    # Seal the dynamics-confirmed sub-headroom pocket east of the formal west
+    # exit. This is continuous bedrock, not a box moved over an accessible void.
+    if -14.6<x<-13.1 and -9<z<-3:h=max(h,2.7)
     for passage in LOW_PASSAGES:
         if passage['x'][0]<x<passage['x'][1] and passage['z'][0]<z<passage['z'][1]:
             return [(passage['clearHeight'],h)] if h>passage['clearHeight'] else []
@@ -130,6 +133,9 @@ def contract():
         'staticAsset': '/world/alpha-mine/quarry-static.glb', 'collisionAsset': '/world/alpha-mine/colliders.json',
         'ramps': ramps, 'bridge': BRIDGE, 'route': {'points': ROUTE, 'return': 'reverse; open forecourt loop around basin'},
         'lowExits':LOW_EXITS,'lowPassages':LOW_PASSAGES,
+        'sealedLowPockets':[{'id':'west-ramp-foot','x':[-14.6,-13.1],'z':[-9,-3],
+            'solidInterval':[0,2.7],'oldTrapPoint':[-14.2,0,-5.6],
+            'exit':'formal west passage remains x[-17,-14.6]; not a new walking pocket'}],
         'gallery': {'ramps':GALLERY_RAMPS,'bridges':GALLERY_BRIDGES,'route':GALLERY_ROUTE,
                     'tunnel':{'axis':'X','x':[-17.2,-9.7],'floorY':6,'centerZ':-43,'clearWidth':3.4,'clearHeight':3.2},
                     'coreConnection':GALLERY_BRIDGES[0],'rearConnection':[8.8,6,-34.1]},
