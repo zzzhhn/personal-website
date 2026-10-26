@@ -6,14 +6,17 @@ import { mineActor } from './alpha-mine-state';
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { readRenderSnapshot } from './world-render-readout';
+import { setMineNetworkFailureForQA } from './alpha-mine-online';
 
 /** Visible, read-only diagnostics. Reuses actor publication; never polls or changes play state. */
 export default function WorldPlaytestReadout() {
   const world=useWorldStore(),exchange=useAlphaExchange();
   const [renderSnapshot,setRenderSnapshot]=useState<unknown>(null);
+  const [networkFailure,setNetworkFailure]=useState(false);
   if(world.shot)return null;
   const renderPanel=<aside style={{position:'fixed',zIndex:80,left:16,bottom:12,width:280,maxHeight:'32vh',overflow:'auto',background:'#17231def',color:'#e7eddf',padding:8,font:'10px/1.25 monospace'}}>
       <button onClick={()=>setRenderSnapshot(readRenderSnapshot())}>QA · 读取当前渲染开销</button>
+      <button aria-pressed={networkFailure} onClick={()=>{setMineNetworkFailureForQA(!networkFailure);setNetworkFailure(!networkFailure);}}>{networkFailure?'QA · 恢复真实回测连接':'QA · 模拟回测连接中断'}</button>
       {renderSnapshot!=null&&<output data-world-render-snapshot style={{display:'block',whiteSpace:'pre-wrap'}}>{JSON.stringify(renderSnapshot,null,1)}</output>}
     </aside>;
   const menu=world.paused?document.querySelector('.world-dialog'):null;

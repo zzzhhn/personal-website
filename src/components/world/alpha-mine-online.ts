@@ -9,7 +9,9 @@ export interface MineOnlineIssue {
   requestId: string; attempt: number; elapsedMs: number; httpStatus?: number;
 }
 class BacktestFailure extends Error {
-  constructor(readonly kind: MineOnlineIssue['kind'], readonly httpStatus?: number) { super(kind); }
+  readonly kind: MineOnlineIssue['kind'];
+  readonly httpStatus?: number;
+  constructor(kind: MineOnlineIssue['kind'], httpStatus?: number) { super(kind); this.kind=kind; this.httpStatus=httpStatus; }
 }
 const PARAMETERS = {
   direction: 'long_short', top_pct: .3, bottom_pct: .3, train_ratio: .8,
@@ -217,7 +219,15 @@ export function createMineOnlineClient(options: { fetch?: typeof fetch; timeoutM
   return { store, request, release };
 }
 
-const online = createMineOnlineClient();
+let qaNetworkFailure = false;
+/** Explicit development UI fault injection; never alters the accepted result or game inventory. */
+export function setMineNetworkFailureForQA(enabled: boolean) {
+  if (import.meta.env?.DEV && typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1') qaNetworkFailure = enabled;
+}
+const online = createMineOnlineClient({ fetch: (url,init) => {
+  if (import.meta.env?.DEV && qaNetworkFailure) return Promise.reject(new TypeError('QA simulated transport interruption'));
+  return globalThis.fetch(url,init);
+} });
 export const useMineOnline = online.store;
 /** Call only after a player's completed deposit, or their explicit retry action. */
 export const requestMineBacktest = online.request;
