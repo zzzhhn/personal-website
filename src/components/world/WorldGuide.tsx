@@ -14,6 +14,7 @@ import { mineVisualSockets, useAlphaMineStore } from './alpha-mine-state';
 import { ALPHA_FACTORS } from './alpha-mine-data';
 import { GuideIdleLayer } from './WorldGuideIdle';
 import { refineGuideBoots } from './WorldGuideShape';
+import { calibrateGuideBootClips } from './WorldGuideBoots';
 
 export interface WorldGuideMotion {
   speedMps: number; grounded: boolean; facing: number; targetSpeedMps?: number;
@@ -183,8 +184,9 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
   const rig = useMemo(() => {
     const scene = clone(gltf.scene) as Group;
     const disposeBoots = refineGuideBoots(scene);
+    const animations = calibrateGuideBootClips(scene, gltf.animations);
     const disposeMerged = mergeGuideMaterials(scene);
-    const visualGLTF = { ...gltf, scene };
+    const visualGLTF = { ...gltf, scene, animations };
     scene.traverse(o => { if (o instanceof Mesh) { o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; } });
     const soles: { mesh: SkinnedMesh; indices: number[]; sides: ('left' | 'right')[] }[] = [];
     scene.traverse(o => {
@@ -201,7 +203,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       if(indices.length)soles.push({mesh:o,indices,sides});
     });
     const mixer = new AnimationMixer(scene);
-    const actions = Object.fromEntries(gltf.animations.map(clip => {
+    const actions = Object.fromEntries(animations.map(clip => {
       const action = mixer.clipAction(clip);
       const once = !LOOPS.has(clip.name);
       action.setLoop(once ? LoopOnce : clip.name === 'SitIdle' ? LoopPingPong : LoopRepeat, once ? 1 : Infinity);
@@ -214,14 +216,14 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     gltf.scene.traverse(o => { const raw = (o.userData as { clipDesignSpeedMps?: string }).clipDesignSpeedMps; if (raw) design = { ...design, ...JSON.parse(raw) }; });
     // Contact masks (frame-wise 0/1 per foot) for the slope fit's stance weight.
     const contact: Record<string, { L: number[]; R: number[]; frames: number }> = {};
-    for (const clip of gltf.animations) {
+    for (const clip of animations) {
       const u = clip.userData as { contactL?: number[]; contactR?: number[]; frames?: number };
       if (u.contactL && u.contactR) contact[clip.name] = { L: u.contactL, R: u.contactR, frames: u.frames ?? u.contactL.length - 1 };
     }
     const extras = EXTRAS.every(n => actions[n]);
     // measured heading curves of the turn clips (rad, one per frame), for the visual turn timing
     const yawCurve: Record<string, number[]> = {};
-    for (const clip of gltf.animations) { const y = (clip.userData as { yawCurve?: number[] }).yawCurve; if (y) yawCurve[clip.name] = y; }
+    for (const clip of animations) { const y = (clip.userData as { yawCurve?: number[] }).yawCurve; if (y) yawCurve[clip.name] = y; }
     // the measured look-around (IdleLook) is a full gesture: loop once and hold nothing
     actions.Idle.play();
     const feet = guideFeet(scene);
@@ -242,7 +244,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     const durations: Record<string, number> = {};
     const soleProbe=new Vector3();
     for (const name of GAITS) {
-      const clip = gltf.animations.find(c => c.name === name)!;
+      const clip = animations.find(c => c.name === name)!;
       durations[name] = clip.duration;
       probeMixer.stopAllAction(); probeMixer.clipAction(clip).reset().play();
       phaseSamples[name] = [];
