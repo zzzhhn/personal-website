@@ -4,7 +4,7 @@ import { ALPHA_FACTORS } from './alpha-mine-data';
 import { ALPHA_MINE_FOOTPRINT, mineLocalToWorld } from './alpha-mine-layout';
 import { mineActor, mineContactEvidence, mineVisualSockets, useAlphaMineStore } from './alpha-mine-state';
 import { useMineManifest } from './alpha-mine-assets';
-import { requestMineBacktest, useMineOnline } from './alpha-mine-online';
+import { mineOnlineMessage, requestMineBacktest, useMineOnline } from './alpha-mine-online';
 import { FACTOR_FAMILIES } from './alpha-mine-labels';
 import './alpha-mine.css';
 
@@ -51,9 +51,13 @@ export default function WorldAlphaMineHud() {
     {atPool&&<div className="mine-pool-control">
       <p>{t('将矿石投入 A／B，结果会从池面升起。','Cast into A / B. Results rise above the water.')}</p>
       {mine.bays.some(id=>id&&online.factors[id].status==='ready')&&<button id="mine-pool-inspect" className="mine-inspect-action" onClick={()=>useWorldStore.setState({poolInspect:true})}>{t('聚焦检视 · 曲线与指标','Inspect curves & metrics')}</button>}
-      {mine.bays.filter(Boolean).map(id=>id&&online.factors[id].status==='error'?<button key={id} onClick={()=>void requestMineBacktest(id,true)}>{t('重新接收','Retry')} · {zh?FACTOR_FAMILIES[id].zh:FACTOR_FAMILIES[id].en}</button>:null)}
+      {Array.from(new Set(mine.bays)).map(id=>{if(!id)return null;const entry=online.factors[id];if(entry.status!=='error'&&entry.status!=='loading')return null;const message=mineOnlineMessage(entry,zh);return <section key={id} className="mine-connection" role="status" aria-live="polite">
+        <small>{zh?FACTOR_FAMILIES[id].zh:FACTOR_FAMILIES[id].en}</small><strong>{message.title}</strong><p>{message.detail}</p>
+        {entry.status==='error'&&<button onClick={()=>void requestMineBacktest(id,true)}>{t('再试一次','Retry backtest')}</button>}
+      </section>;})}
       <button aria-expanded={details} onClick={()=>setDetails(!details)}>{t('计算口径与来源','METHOD & SOURCE')} {details?'−':'+'}</button>
       {details&&<div className="mine-method"><p>{t('WorldQuant 实习经历的个人玩法改编。计算由独立项目 Alpha Agent 提供，不是 BRAIN 官方回测。','A personal playable interpretation of the WorldQuant experience. Computed by Alpha Agent, not the BRAIN platform.')}</p>
+        {Array.from(new Set(mine.bays)).map(id=>{const issue=id?online.factors[id].issue:null;return issue?<p key={id}>{t('连接诊断','Connection diagnostic')} · {id}<br/>{issue.kind}{issue.httpStatus?` · HTTP ${issue.httpStatus}`:''}<br/>{issue.requestId} · {t('第','Attempt ')}{issue.attempt}{t('次','')} · {(issue.elapsedMs/1000).toFixed(1)} s</p>:null;})}
         <p>{t('固定多空组合；前后 30%，80% 训练段，10 bps 成本。曲线为完整历史净值；收益、IC、回撤只对应测试段。灰线为 SPY。','Fixed long/short, top/bottom 30%, 80% training, 10 bps costs. Full-history NAV; return, IC and drawdown cover the test segment. Grey: SPY.')}</p>
         {mine.bays.filter(Boolean).map(id=>{if(!id)return null;const r=online.factors[id].result;return r?<p key={id}>{zh?FACTOR_FAMILIES[id].zh:FACTOR_FAMILIES[id].en} · {r.metadata.survivorshipCorrected?t('历史成分修正已启用','Historical membership corrected'):t('未启用历史成分修正','No membership correction')}<br/>{r.metadata.dateRange.start} → {r.metadata.dateRange.end}<br/>{t('本次访问缓存；收到于','Visit cache; received')} {new Date(r.metadata.computedAt).toLocaleTimeString(zh?'zh-CN':'en-GB')}</p>:null;})}
         <a href="https://alpha.bobbyzhong.com/data" target="_blank" rel="noreferrer">{t('打开 Alpha Agent 数据源','Open Alpha Agent data')}</a>

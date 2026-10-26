@@ -3,6 +3,14 @@ import { ALPHA_FACTORS, type AlphaFactorId, type AlphaMetrics, type AlphaReplayF
 
 export const MINE_BACKTEST_ENDPOINT = 'https://alpha-api.bobbyzhong.com/api/v1/factor/backtest';
 export const MINE_BACKTEST_TIMEOUT_MS = 25_000;
+export const MINE_RECOVERY_DELAY_MS = 1_500;
+export interface MineOnlineIssue {
+  kind: 'offline' | 'network' | 'timeout' | 'http' | 'invalid';
+  requestId: string; attempt: number; elapsedMs: number; httpStatus?: number;
+}
+class BacktestFailure extends Error {
+  constructor(readonly kind: MineOnlineIssue['kind'], readonly httpStatus?: number) { super(kind); }
+}
 const PARAMETERS = {
   direction: 'long_short', top_pct: .3, bottom_pct: .3, train_ratio: .8,
   transaction_cost_bps: 10, purge_days: 1, embargo_days: 1, neutralize: 'none',
@@ -31,6 +39,7 @@ export interface MineOnlineResult {
 }
 export interface MineOnlineEntry {
   status: 'idle' | 'loading' | 'ready' | 'error'; result: MineOnlineResult | null; error: string | null;
+  phase?: 'queued' | 'requesting' | 'slow' | 'recovering'; issue?: MineOnlineIssue | null;
 }
 export interface MineOnlineState { factors: Record<AlphaFactorId, MineOnlineEntry> }
 const initial = (): MineOnlineState => ({ factors: Object.fromEntries(ALPHA_FACTORS.map(f => [f.id,
@@ -90,11 +99,32 @@ export function adaptMineBacktest(id: AlphaFactorId, value: unknown) {
     metricsDays: { train: train.days, test: test.days } } };
 }
 
-/** A single in-flight request, three visit-local cache entries, and explicit error retries only. */
-export function createMineOnlineClient(options: { fetch?: typeof fetch; timeoutMs?: number; now?: () => Date } = {}) {
+/** Shared, translated status for the detector and the pool. No raw server body is displayed. */
+export function mineOnlineMessage(entry: MineOnlineEntry, zh: boolean) {
+  const t = (cn: string, en: string) => zh ? cn : en;
+  if (entry.status === 'loading') {
+    if (entry.phase === 'queued') return { title: t('等待前一份回测完成', 'Waiting for the previous backtest'), detail: t('矿石已放好，轮到后会自动开始。', 'Your ore is in place. This calculation will start next.') };
+    if (entry.phase === 'recovering') return { title: t('连接暂时失联，正在恢复一次', 'Reconnecting once'), detail: t('矿石仍在池中，不用重新开采。', 'Your ore is still in the pool. No need to mine it again.') };
+    if (entry.phase === 'slow') return { title: t('这次计算稍慢，请再等一会儿', 'This calculation is taking a little longer'), detail: t('仍在等待线上结果，25 秒内未返回会停止等待。', 'Still awaiting the online result. Waiting stops after 25 seconds.') };
+    return { title: t('正在读取市场的回声…', 'Reading the market’s history…'), detail: t('线上计算完成后，曲线与指标会在这里浮现。', 'The online curve and metrics will appear here.') };
+  }
+  const issue = entry.issue;
+  if (issue?.kind === 'offline') return { title: t('设备当前离线', 'Your device is offline'), detail: t('矿石已保留。恢复网络后，在池边再试一次。', 'Ore retained. Reconnect, then retry at the pool.') };
+  if (issue?.kind === 'timeout') return { title: t('回测等待超过 25 秒', 'Backtest timed out after 25 seconds'), detail: t('矿石已保留。稍后重试，不需要重新投矿。', 'Ore retained. Retry shortly without casting another ore.') };
+  if (issue?.kind === 'invalid') return { title: t('回测结果未通过完整性检查', 'The result failed its integrity check'), detail: t('没有显示不完整的数据。矿石已保留，可重试。', 'Incomplete data was not displayed. Ore retained; you can retry.') };
+  if (issue?.kind === 'http') return { title: issue.httpStatus === 429 ? t('回测服务当前繁忙', 'The backtest service is busy') : t('回测服务暂时不可用', 'The backtest service is unavailable'), detail: t('矿石已保留。请稍后重试；错误编号见来源详情。', 'Ore retained. Retry later; the error code is in source details.') };
+  return { title: t('未能连接回测服务', 'Could not reach the backtest service'), detail: t('矿石已保留。检查网络后，在池边再试一次。', 'Ore retained. Check your connection, then retry at the pool.') };
+}
+
+/** One in-flight request, three caches and at most one recovery for a transient failure.
+ * Timeouts, rate limits and invalid data need a player retry; no background polling. */
+export function createMineOnlineClient(options: { fetch?: typeof fetch; timeoutMs?: number; now?: () => Date;
+  automaticRecovery?: boolean; isOnline?: () => boolean; isVisible?: () => boolean } = {}) {
   const store = create<MineOnlineState>(initial);
   const now = options.now ?? (() => new Date());
   const timeoutMs = Math.min(MINE_BACKTEST_TIMEOUT_MS, Math.max(1, options.timeoutMs ?? MINE_BACKTEST_TIMEOUT_MS));
+  const isOnline = options.isOnline ?? (() => typeof navigator === 'undefined' || navigator.onLine !== false);
+  const isVisible = options.isVisible ?? (() => typeof document === 'undefined' || !document.hidden);
   interface Job { id: AlphaFactorId; requestId: string; controller: AbortController; cancelled: boolean;
     timedOut: boolean; resolve: () => void; promise: Promise<void> }
   const jobs = new Map<AlphaFactorId, Job>(), queue: Job[] = [];
@@ -109,28 +139,57 @@ export function createMineOnlineClient(options: { fetch?: typeof fetch; timeoutM
       onAbort = () => reject(new DOMException('Request aborted', 'AbortError'));
       job.controller.signal.addEventListener('abort', onAbort, { once: true });
     });
-    const timer = setTimeout(() => { job.timedOut = true; job.controller.abort(); }, timeoutMs);
+    let timer: ReturnType<typeof setTimeout> | undefined, slowTimer: ReturnType<typeof setTimeout> | undefined;
+    let recoveryTimer: ReturnType<typeof setTimeout> | undefined;
     try {
-      const work = async () => {
-        const response = await (options.fetch ?? globalThis.fetch)(MINE_BACKTEST_ENDPOINT, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'omit',
-          cache: 'no-store', redirect: 'error', signal: job.controller.signal, body: JSON.stringify(parameters),
-        });
-        if (!response.ok) throw new Error(`在线回测失败 / Online backtest failed (HTTP ${response.status})`);
-        return adaptMineBacktest(job.id, await response.json());
-      };
-      const result = await Promise.race([work(), aborted]);
-      if (!job.cancelled) update(job.id, { status: 'ready', error: null, result: { factor: result.factor,
-        metadata: { source: 'live-alpha-backtest', endpoint: MINE_BACKTEST_ENDPOINT, requestId: job.requestId,
-          requestedAt, computedAt: now().toISOString(), computedAtBasis: 'client-response-validation', parameters,
-          ...result.actual, metricsScope: 'test', metricRangeBasis: 'returned-split-with-requested-purge-embargo',
-          acknowledgedParameters: { direction: 'long_short', benchmark: 'SPY', neutralize: 'none' } } } });
-    } catch (error) {
-      if (!job.cancelled) update(job.id, { status: 'error', result: null, error: job.timedOut
-        ? '在线回测超时，请手动重试。 / Backtest timed out. Retry manually.'
-        : error instanceof Error ? error.message : '在线回测不可用。 / Online backtest unavailable.' });
+      for (let attempt = 1; attempt <= 2 && !job.cancelled; attempt++) {
+        const startedAt = now().getTime();
+        update(job.id, { status: 'loading', phase: 'requesting', error: null, result: null });
+        timer = setTimeout(() => { job.timedOut = true; job.controller.abort(); }, timeoutMs);
+        slowTimer = setTimeout(() => { if (!job.cancelled) update(job.id, { status: 'loading', phase: 'slow', error: null, result: null }); }, 8_000);
+        try {
+          const work = async () => {
+            if (!isOnline()) throw new BacktestFailure('offline');
+            const response = await (options.fetch ?? globalThis.fetch)(MINE_BACKTEST_ENDPOINT, {
+              method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'omit',
+              cache: 'no-store', redirect: 'error', signal: job.controller.signal, body: JSON.stringify(parameters),
+            });
+            if (!response.ok) throw new BacktestFailure('http', response.status);
+            try { return adaptMineBacktest(job.id, await response.json()); }
+            catch { throw new BacktestFailure('invalid'); }
+          };
+          const result = await Promise.race([work(), aborted]);
+          if (!job.cancelled) update(job.id, { status: 'ready', error: null, result: { factor: result.factor,
+            metadata: { source: 'live-alpha-backtest', endpoint: MINE_BACKTEST_ENDPOINT, requestId: job.requestId,
+              requestedAt, computedAt: now().toISOString(), computedAtBasis: 'client-response-validation', parameters,
+              ...result.actual, metricsScope: 'test', metricRangeBasis: 'returned-split-with-requested-purge-embargo',
+              acknowledgedParameters: { direction: 'long_short', benchmark: 'SPY', neutralize: 'none' } } } });
+          break;
+        } catch (error) {
+          clearTimeout(timer); clearTimeout(slowTimer);
+          if (job.cancelled) break;
+          const issue: MineOnlineIssue = { kind: job.timedOut ? 'timeout' : error instanceof BacktestFailure ? error.kind : 'network',
+            requestId: job.requestId, attempt, elapsedMs: Math.max(0, now().getTime() - startedAt),
+            ...(error instanceof BacktestFailure && error.httpStatus ? { httpStatus: error.httpStatus } : {}) };
+          const transient = issue.kind === 'network' || (issue.kind === 'http' && [502, 503, 504].includes(issue.httpStatus!));
+          if (attempt === 1 && transient && options.automaticRecovery !== false && isOnline() && isVisible()) {
+            update(job.id, { status: 'loading', phase: 'recovering', error: null, result: null, issue });
+            await Promise.race([new Promise<void>(resolve => { recoveryTimer = setTimeout(resolve, MINE_RECOVERY_DELAY_MS); }), aborted]);
+            // A hidden tab must not start another calculation after the backoff.
+            if (!job.cancelled && isOnline() && isVisible()) continue;
+          }
+          if (!job.cancelled) {
+            const entry: MineOnlineEntry = { status: 'error', result: null, error: null, issue };
+            const cn = mineOnlineMessage(entry, true), en = mineOnlineMessage(entry, false);
+            entry.error = `${cn.title} / ${en.title}`;
+            update(job.id, entry);
+          }
+          break;
+        } finally { clearTimeout(timer); clearTimeout(slowTimer); }
+      }
+    } catch { /* release() cancels a pending recovery without publishing an error. */
     } finally {
-      clearTimeout(timer); job.controller.signal.removeEventListener('abort', onAbort);
+      clearTimeout(timer); clearTimeout(slowTimer); clearTimeout(recoveryTimer); job.controller.signal.removeEventListener('abort', onAbort);
       if (jobs.get(job.id) === job) jobs.delete(job.id);
       active = null; job.resolve(); void drain();
     }
@@ -145,7 +204,7 @@ export function createMineOnlineClient(options: { fetch?: typeof fetch; timeoutM
     const promise = new Promise<void>(done => { resolve = done; });
     const job: Job = { id, requestId: `mine-${++sequence}`, controller: new AbortController(),
       cancelled: false, timedOut: false, resolve, promise };
-    jobs.set(id, job); queue.push(job); update(id, { status: 'loading', result: null, error: null });
+    jobs.set(id, job); queue.push(job); update(id, { status: 'loading', phase: 'queued', result: null, error: null });
     void drain(); return promise;
   }
   function release() {

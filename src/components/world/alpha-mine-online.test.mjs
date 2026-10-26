@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { ALPHA_FACTORS } from './alpha-mine-data.ts';
 import { adaptMineBacktest, createMineOnlineClient, mineBacktestParameters,
-  MINE_BACKTEST_ENDPOINT, MINE_BACKTEST_TIMEOUT_MS } from './alpha-mine-online.ts';
+  MINE_BACKTEST_ENDPOINT, MINE_BACKTEST_TIMEOUT_MS, MINE_RECOVERY_DELAY_MS, mineOnlineMessage } from './alpha-mine-online.ts';
 
 const ids = ALPHA_FACTORS.map(f => f.id);
 const dates = Array.from({ length: 20 }, (_, i) => `2026-01-${String(i + 1).padStart(2, '0')}`);
@@ -90,14 +90,71 @@ test('no request until deposit callback; dedupes, serializes three factors and r
   client.release(); assert.ok(Object.values(client.store.getState().factors).every(e => e.status === 'ready'));
 });
 
-test('HTTP/network/validation failures stay errors without fallback or automatic retry, and retry is explicit', async () => {
+test('explicit-retry mode preserves failures without fallback and can retry the retained ore', async () => {
   for (const fail of [() => new Response('{}', { status: 503 }), () => { throw new Error('offline'); }, () => new Response('{}')]) {
     let count = 0;
-    const client = createMineOnlineClient({ fetch: async () => { count++; return count === 1 ? fail() : response(ids[0]); } });
+    const client = createMineOnlineClient({ automaticRecovery: false, fetch: async () => { count++; return count === 1 ? fail() : response(ids[0]); } });
     await client.request(ids[0]);
     assert.equal(client.store.getState().factors[ids[0]].status, 'error'); assert.equal(client.store.getState().factors[ids[0]].result, null);
     await client.request(ids[0]); assert.equal(count, 1);
     await client.request(ids[0], true); assert.equal(count, 2); assert.equal(client.store.getState().factors[ids[0]].status, 'ready');
+  }
+});
+
+const settle = () => new Promise(resolve => setImmediate(resolve));
+test('transient service failure recovers once, deduplicates player clicks and holds the single request queue', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  let calls = 0;
+  const client = createMineOnlineClient({ fetch: async (_url, init) => {
+    calls++; return calls === 1 ? new Response('{}', { status: 503 }) : response(JSON.parse(init.body).spec.name);
+  } });
+  const first = client.request(ids[1]), second = client.request(ids[2]);
+  await settle();
+  assert.equal(client.store.getState().factors[ids[1]].phase, 'recovering');
+  assert.equal(client.store.getState().factors[ids[2]].phase, 'queued');
+  assert.equal(client.request(ids[1], true), first);
+  t.mock.timers.tick(MINE_RECOVERY_DELAY_MS - 1); await settle(); assert.equal(calls, 1);
+  t.mock.timers.tick(1); await first; await second;
+  assert.equal(calls, 3); assert.equal(client.store.getState().factors[ids[1]].status, 'ready');
+  t.mock.timers.tick(100_000); assert.equal(calls, 3);
+});
+
+test('a persistent network failure stops after two attempts and exposes actionable diagnostics', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  let calls = 0;
+  const client = createMineOnlineClient({ fetch: async () => { calls++; throw new TypeError('Failed to fetch'); } });
+  const request = client.request(ids[1]); await settle();
+  t.mock.timers.tick(MINE_RECOVERY_DELAY_MS); await request;
+  const entry = client.store.getState().factors[ids[1]];
+  assert.equal(calls, 2); assert.equal(entry.issue.kind, 'network'); assert.equal(entry.issue.attempt, 2);
+  assert.match(mineOnlineMessage(entry, true).detail, /检查网络/);
+  t.mock.timers.tick(100_000); await client.request(ids[1]); assert.equal(calls, 2);
+});
+
+test('offline, rate limits and invalid results do not auto-repeat a calculation', async () => {
+  let calls = 0, online = false;
+  const client = createMineOnlineClient({ isOnline: () => online, fetch: async () => { calls++; return response(ids[0]); } });
+  await client.request(ids[0]); assert.equal(calls, 0); assert.equal(client.store.getState().factors[ids[0]].issue.kind, 'offline');
+  online = true; await client.request(ids[0], true); assert.equal(calls, 1);
+  for (const [reply,kind,status] of [[new Response('{}',{status:429}),'http',429],[new Response('{}'),'invalid',undefined]]) {
+    let count = 0; const c = createMineOnlineClient({fetch:async()=>{count++;return reply;}});
+    await c.request(ids[0]); const entry=c.store.getState().factors[ids[0]];
+    assert.equal(count,1); assert.equal(entry.issue.kind,kind); assert.equal(entry.issue.httpStatus,status);
+    assert.equal(entry.result,null); assert.notEqual(mineOnlineMessage(entry,true).title,'连接中断');
+  }
+});
+
+test('release or a newly hidden page prevents delayed recovery and clears its timers', async t => {
+  t.mock.timers.enable({ apis: ['setTimeout'] });
+  for (const cancel of [true,false]) {
+    let calls=0,visible=true;
+    const client=createMineOnlineClient({isVisible:()=>visible,fetch:async()=>{calls++;throw new TypeError('network');}});
+    const task=client.request(ids[0]); await settle();
+    assert.equal(client.store.getState().factors[ids[0]].phase,'recovering');
+    if(cancel)client.release();else visible=false;
+    t.mock.timers.tick(MINE_RECOVERY_DELAY_MS); await task;
+    t.mock.timers.tick(100_000); assert.equal(calls,1);
+    assert.equal(client.store.getState().factors[ids[0]].status,cancel?'idle':'error');
   }
 });
 

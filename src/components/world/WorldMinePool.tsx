@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { CanvasTexture, Group, MeshBasicMaterial, SRGBColorSpace } from 'three';
 import { type AlphaFactorId } from './alpha-mine-data';
-import { requestMineBacktest, useMineOnline, type MineOnlineEntry } from './alpha-mine-online';
+import { mineOnlineMessage, requestMineBacktest, useMineOnline, type MineOnlineEntry } from './alpha-mine-online';
 import { useAlphaMineStore } from './alpha-mine-state';
 import { useWorldStore } from './store';
 import { windUniforms } from './WorldWind';
@@ -19,9 +19,10 @@ function makePlot(id: AlphaFactorId, bay: number, entry: MineOnlineEntry, bounds
   c.fillStyle=ink;c.font='500 44px "Songti SC",Georgia,serif';c.fillText(`${bay?'B':'A'}  /  ${zh?family.zh:family.en}`,52,76);
   c.fillStyle='#c5d4c9';c.font='24px sans-serif';c.textAlign='right';c.fillText('ALPHA AGENT',1148,73);c.textAlign='left';
   if(entry.status!=='ready'||!entry.result){
+    const message=mineOnlineMessage(entry,zh);
     c.fillStyle='#faf4dd';c.font='36px "Songti SC",serif';
-    c.fillText(entry.status==='error'?(zh?'连接中断，矿石已保留':'Connection interrupted; ore retained'):(zh?'正在读取市场的回声…':'Reading the market’s history…'),52,350);
-    c.font='26px sans-serif';c.fillStyle='#c5d4c9';c.fillText(entry.status==='error'?(zh?'在探测器上重试':'Retry from your detector'):(zh?'线上计算完成后，曲线与指标在这里浮现。':'The online curve and metrics will appear here.'),52,405);
+    c.fillText(message.title,52,350,1096);
+    c.font='26px sans-serif';c.fillStyle='#c5d4c9';c.fillText(message.detail,52,405,1096);
   }else{
     const factor=entry.result.factor,m=factor.metrics,curve=factor.curve;
     const stats=[[zh?'测试段净收益':'TEST NET RETURN',poolPercent(m.totalReturn)],['IC',m.ic.toFixed(3)],[zh?'最大回撤':'MAX DRAWDOWN',poolPercent(m.maxDrawdown)]];
@@ -35,7 +36,7 @@ function makePlot(id: AlphaFactorId, bay: number, entry: MineOnlineEntry, bounds
     c.textAlign='left';c.fillStyle=ink;c.fillText(zh?'实线：因子':'SOLID / FACTOR',52,748);c.fillStyle='#d6dfd4';c.fillText(zh?'虚线：SPY':'DASHED / SPY',340,748);
     c.fillText(zh?'完整历史净值 · 阴影为测试段':'FULL-HISTORY NAV · SHADED TEST SEGMENT',52,793);
   }
-  c.textAlign='right';c.font='23px sans-serif';c.fillStyle='#f1e1b5';c.fillText(zh?'池边「聚焦检视」可放大查看':'INSPECT AT THE POOL TO ENLARGE',1148,831);
+  c.textAlign='right';c.font='23px sans-serif';c.fillStyle='#f1e1b5';c.fillText(entry.status==='ready'?(zh?'池边「聚焦检视」可放大查看':'INSPECT AT THE POOL TO ENLARGE'):(zh?'矿石留在池中，无需重新开采':'YOUR ORE STAYS IN THE POOL'),1148,831);
   const texture=new CanvasTexture(canvas);texture.colorSpace=SRGBColorSpace;
   return new MeshBasicMaterial({map:texture,transparent:true,depthWrite:false,toneMapped:false});
 }
