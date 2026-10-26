@@ -37,8 +37,9 @@ export function quarryWorld(){
 const vector=p=>({x:p[0],y:p[1],z:p[2]});
 const tuple=p=>[p.x,p.y,p.z].map(v=>+v.toFixed(4));
 /** Real continuous dynamic walk: the only placement is the initial spawn. No jumping or recovery. */
-export function walkQuarry(points,{speed=3.6,tolerance=.18,analogue=false}={}){
-  const world=quarryWorld(),start=points[0],body=world.createRigidBody(RAPIER.RigidBodyDesc.dynamic()
+export function walkQuarry(points,{speed=3.6,tolerance=.18,analogue=false,configureWorld}={}){
+  const world=quarryWorld();if(configureWorld){configureWorld(world);world.step();}
+  const start=points[0],body=world.createRigidBody(RAPIER.RigidBodyDesc.dynamic()
     .setTranslation(start[0],start[1]+PLAYER_CENTER_HEIGHT,start[2]).lockRotations().setLinearDamping(.2)
     .setCcdEnabled(true).setSoftCcdPrediction(.1).setCanSleep(false));
   world.createCollider(RAPIER.ColliderDesc.capsule(PLAYER_HALF_HEIGHT,PLAYER_RADIUS).setMass(72).setFriction(0)

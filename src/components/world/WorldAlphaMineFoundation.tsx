@@ -1,11 +1,15 @@
 import { useEffect, useMemo } from 'react';
+import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { ALPHA_MINE_CONNECTOR } from './alpha-mine-layout';
+import { mineEntranceApron } from './alpha-mine-foundation';
 import { ParkGeo, mergeBatch, parkMaterial } from './WorldParkKit';
 
-/** The expanded mainland supplies continuous support; low markers follow the approach trail. */
+/** Mainland approach markers and a shallow shared draw/collision apron at the quarry lip. */
 export default function WorldAlphaMineFoundation() {
+  const apron=useMemo(mineEntranceApron,[]);
   const geometry = useMemo(() => {
     const parts = new ParkGeo();
+    parts.raw(Array.from(apron.indices).flatMap(i=>Array.from(apron.vertices.subarray(i*3,i*3+3))),'#8B7758');
     for (let i = 1; i < ALPHA_MINE_CONNECTOR.length; i++) {
       const a = ALPHA_MINE_CONNECTOR[i-1], b = ALPHA_MINE_CONNECTOR[i];
       const dx=b[0]-a[0], dz=b[2]-a[2], length=Math.hypot(dx,dz);
@@ -16,7 +20,10 @@ export default function WorldAlphaMineFoundation() {
       }
     }
     return mergeBatch(parts.pieces);
-  },[]);
+  },[apron]);
   useEffect(()=>()=>geometry.dispose(),[geometry]);
-  return <mesh name="brain-quarry-approach" geometry={geometry} material={parkMaterial()} castShadow receiveShadow/>;
+  return <><mesh name="brain-quarry-approach" geometry={geometry} material={parkMaterial()} userData={{surface:true}} castShadow receiveShadow/>
+    <RigidBody type="fixed" colliders={false} userData={{surface:true,assetId:'alpha-mine-entrance'}}>
+      <TrimeshCollider args={[apron.vertices,apron.indices]} friction={.9} restitution={0}/>
+    </RigidBody></>;
 }
