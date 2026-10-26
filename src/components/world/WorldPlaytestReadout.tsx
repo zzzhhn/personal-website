@@ -4,6 +4,7 @@ import { readDrivingTelemetry } from './vehicle-telemetry';
 import { grassDebug } from './WorldGrass';
 import { mineActor } from './alpha-mine-state';
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { readRenderSnapshot } from './world-render-readout';
 
 /** Visible, read-only diagnostics. Reuses actor publication; never polls or changes play state. */
@@ -11,11 +12,13 @@ export default function WorldPlaytestReadout() {
   const world=useWorldStore(),exchange=useAlphaExchange();
   const [renderSnapshot,setRenderSnapshot]=useState<unknown>(null);
   if(world.shot)return null;
-  return <>
-    <aside style={{position:'fixed',zIndex:80,left:16,bottom:12,width:280,maxHeight:'32vh',overflow:'auto',background:'#17231def',color:'#e7eddf',padding:8,font:'10px/1.25 monospace'}}>
+  const renderPanel=<aside style={{position:'fixed',zIndex:80,left:16,bottom:12,width:280,maxHeight:'32vh',overflow:'auto',background:'#17231def',color:'#e7eddf',padding:8,font:'10px/1.25 monospace'}}>
       <button onClick={()=>setRenderSnapshot(readRenderSnapshot())}>QA · 读取当前渲染开销</button>
       {renderSnapshot!=null&&<output data-world-render-snapshot style={{display:'block',whiteSpace:'pre-wrap'}}>{JSON.stringify(renderSnapshot,null,1)}</output>}
-    </aside>
+    </aside>;
+  const menu=world.paused?document.querySelector('.world-dialog'):null;
+  return <>
+    {menu?createPortal(renderPanel,menu):renderPanel}
     {!world.paused&&<output data-world-playtest style={{position:'fixed',left:16,top:110,width:255,maxHeight:'35vh',overflow:'auto',font:'10px/1.25 monospace',whiteSpace:'pre-wrap',background:'#17231dcc',color:'#e7eddf',padding:8,pointerEvents:'none'}}>
     {JSON.stringify({position:world.position.map(v=>+v.toFixed(2)),yaw:+mineActor.yaw.toFixed(2),grounded:mineActor.grounded,
       nearby:world.nearbyInteract?.id,vehicle:world.activeVehicle,drive:readDrivingTelemetry(),
