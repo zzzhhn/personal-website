@@ -302,6 +302,8 @@ export default function WorldActors() {
   }, [world]);
   const arrival = useMemo<Vec3>(()=>{
     const start=new URLSearchParams(window.location.search).get('start');
+    // Reproduce the reported low-floor exit through the visible QA URL, without moving a live player.
+    if(import.meta.env.DEV&&start==='brain-exit'&&new URLSearchParams(window.location.search).get('qa')==='1')return [-81.23,1.82,-90.28];
     if(start==='alpha'||start==='brain')return [ALPHA_MINE_ORIGIN[0],ALPHA_MINE_ORIGIN[1]+PLAYER_CENTER_HEIGHT,ALPHA_MINE_ORIGIN[2]+.5];
     if(start==='exchange')return [ALPHA_EXCHANGE_ORIGIN[0],ALPHA_EXCHANGE_ORIGIN[1]+PLAYER_CENTER_HEIGHT,ALPHA_EXCHANGE_ORIGIN[2]+.5];
     if(import.meta.env.DEV&&start==='coupe'){
