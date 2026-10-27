@@ -548,6 +548,79 @@ export default function WorldActors() {
     car.flipped=0; car.wet=0; clearPlayerMotion(true);clearInput(); useWorldStore.setState({canRecover:false,speed:0}); return true;
   }
 
+  /** Suspension and recovery belong to the world, even when the player is on a ride. */
+  function stepWorldVehicles(dt:number,active?:Car,throttle=0,steer=0,transitioning=false,debugging=false,brake=false,handbrake=false,boost=false) {
+    cars.current.forEach(car=>{
+      const driven=active===car,velocity=car.body.linvel();
+      const front=rotateVector([1,0,0],car.body.rotation());
+      const speed=velocity.x*front[0]+velocity.z*front[2];
+      if(car.spec.id==='coupe'){
+        stepCoupeDrive(car.body,car.controller,car.driving,{throttle,steer,
+          brake:transitioning||brake,
+          handbrake:!transitioning&&handbrake,
+          boost:!transitioning&&boost},car.spec.mass,car.spec.size[0]*.68,dt,driven);
+        car.steering=car.driving.steering;
+        car.lights.brake=driven&&(car.driving.braking||car.driving.handbrake);
+        car.lights.reverse=driven&&throttle<-.05&&speed<.5;
+      } else {
+        const braking=driven && (transitioning||brake || throttle*speed<-.8);
+        const maxSteer=car.spec.id==='van'?.38:.47;
+        const desired=driven?steer*maxSteer/(1+Math.abs(speed)*.045):0;
+        // Keyboard / analogue input already limits the steering rate. Keep the existing offroad/van
+        // response; QA drive() inputs and the undriven return retain their old filter.
+        if(driven&&!debugging)car.steering=desired;
+        else car.steering+=(desired-car.steering)*Math.min(1,dt*(car.spec.id==='van'?3.5:6));
+        car.lights.brake=!!braking&&driven;car.lights.reverse=driven&&throttle<-.05&&speed<.5;
+        for(let i=0;i<4;i++){
+          car.controller.setWheelSteering(i,i<2?car.steering:0);
+          const force=driven && !braking && Math.abs(speed)<(throttle<0?9:car.spec.id==='van'?18:22)?throttle*car.spec.engineForce/4:0;
+          car.controller.setWheelEngineForce(i,force);
+          car.controller.setWheelBrake(i,braking?car.spec.mass*.028:!driven?car.spec.mass*.035:Math.abs(throttle)<.02?car.spec.mass*.0015:0);
+          car.controller.setWheelFrictionSlip(i,car.spec.grip);
+        }
+      }
+      // Filter sensor/dynamic shapes in Rapier itself. Calling isSensor() from the ray predicate
+      // re-enters the borrowed collider set in this Rapier version and prevents safe world disposal.
+      const rayFlags=rapier.QueryFilterFlags.EXCLUDE_SENSORS|(car.hulls?rapier.QueryFilterFlags.EXCLUDE_DYNAMIC|rapier.QueryFilterFlags.EXCLUDE_KINEMATIC:0);
+      car.controller.updateVehicle(dt,rayFlags,undefined,c=>{
+        if(c.parent()?.handle===car.body.handle || c.parent()?.handle===player.current?.handle)return false;
+        // L1: the suspension only rests on the static world. A knocked-over roadblock or another car under
+        // a wheel used to become a road surface and jack the body up (spec 10.2 roadblock lift); the body
+        // hulls handle those contacts instead.
+        if(car.hulls)return true;
+        if(!car.guards.some(Boolean))return true;
+        // Wheel-side obstacles must not also become suspension supports: a ray
+        // landing on a short post used to jack the chassis upward during a graze.
+        for(let o=colliderStates.get(c.handle)?.object;o;o=o.parent??undefined)if(o.userData.surface)return true;
+        return !!(c.parent()?.userData as {surface?:boolean}|undefined)?.surface;
+      });
+      const wheelShape=wheelGeometry(car.spec.size);
+      car.guards.forEach((guard,i)=>{
+        if(!guard)return;const p=wheelShape.points[i];
+        guard.setTranslationWrtParent({x:p[0],y:p[1]-(car.controller.wheelSuspensionLength(i)??wheelShape.rest),z:p[2]});
+        guard.setRotationWrtParent(new Quaternion().setFromAxisAngle(UP,car.controller.wheelSteering(i)??0)
+          .multiply(new Quaternion().setFromAxisAngle(new Vector3(1,0,0),Math.PI/2)));
+      });
+      car.flipped=advanceTimer(car.flipped,needsVehicleRighting(car.body.rotation()),dt);
+      // In water once the chassis floor is submerged (wheels fully under, >5 cm into the hull), not only
+      // when the body centre sinks: v4 beaches shelve gently, and a car parked in ~1 m of sea must still
+      // be returned to dry land after RECOVERY_SECONDS. Driving through shallow surf stays possible.
+      const p=car.body.translation(),floor=p.y+rotateVector([0,-car.spec.size[1]*.29,0],car.body.rotation())[1];
+      car.wet=advanceTimer(car.wet,p.y<WATER_Y||floor<WATER_Y-.05,dt);
+      if((car.wet>=RECOVERY_SECONDS || p.y< -80)&&!(rescueRetry.current.get(car.spec.id)??0)){
+        rescueRetry.current.set(car.spec.id,1);
+        const landing=findSafeVehicleLanding(world,rapier,car.body,car.spec.size,allRoadLandingCandidates(asTuple(p)),WATER_Y);
+        if(landing){
+          if(useWorldStore.getState().activeVehicle===car.spec.id){clearPlayerMotion(true);clearInput();cameraReady.current=false;target.current.set(...landing.position);}
+          resetBody(car.body,landing.position,landing.yaw);car.wet=0;car.flipped=0;car.steering=0;car.steerInput=0;car.throttleInput=0;
+          car.driving=createDrivingState();
+          for(let i=0;i<4;i++){car.controller.setWheelEngineForce(i,0);car.controller.setWheelBrake(i,car.spec.mass*.035);car.controller.setWheelSteering(i,0);}
+          if(driven)actorNotice('已回到宽阔路段，可以继续驾驶。','Recovered to a clear road. Ready to drive.');
+        }
+      }
+    });
+  }
+
   /** V cycles near -> mid -> far -> first person -> near. */
   function cycleCamera(){ const z=useWorldStore.getState().zoom; useWorldStore.setState({zoom:((z+1)%4) as 0|1|2|3}); }
   function applyPreset(z:number){
@@ -798,12 +871,17 @@ export default function WorldActors() {
     const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot || !player.current) return;
     physicsSteps.current++;
     const dt=world.timestep || PHYSICS_STEP;
+    for(const [id,seconds] of rescueRetry.current)rescueRetry.current.set(id,Math.max(0,seconds-dt));
     if(attractionRide.active){
       if(!rideHeld.current){
         clearPlayerMotion(true);clearInput();rideHeld.current=true;player.current.setEnabled(false);
         occlusion.current.dispose();
         nearbyItem.current=null;useWorldStore.setState({nearbyInteract:null,nearbyVehicle:null,canVault:false});
       }
+      const before=pad.current.buttons,gp=readPad(pad.current);pad.current=gp;
+      if(gp.connected&&gp.buttons[9]&&!before[9]){useWorldStore.setState({paused:true});return;}
+      if(gp.connected&&gp.buttons[1]&&!before[1])endAttractionRide();
+      stepWorldVehicles(dt);
       const pose=attractionRide.pose,p:Vec3=[pose.seat[0],pose.seat[1]+PLAYER_CENTER_HEIGHT,pose.seat[2]];
       resetBody(player.current,p);guideYaw.current=pose.yaw;grounded.current=true;
       guideTargetSpeed.current=0;moveIntent.current='idle';mineActor.available=false;
@@ -816,7 +894,6 @@ export default function WorldActors() {
       const landing=findSafePlayerLanding(world,rapier,player.current,[p,[p[0]+2,p[1],p[2]],[p[0]-2,p[1],p[2]]],WATER_Y);
       relocatePlayer(landing??CAMP_SPAWN);
     }
-    for(const [id,seconds] of rescueRetry.current)rescueRetry.current.set(id,Math.max(0,seconds-dt));
     portalTravel.current.cooldown=Math.max(0,portalTravel.current.cooldown-dt);
     if(guideTransition.current){
       const tr=guideTransition.current;
@@ -918,75 +995,10 @@ export default function WorldActors() {
     const throttle=transitioning?0:debug?clamp(debug.input.throttle,-1,1):active?.throttleInput??0;
     const steer=transitioning?0:debug?clamp(debug.input.steer,-1,1):active?.steerInput??0;
     if(debug){debug.remaining-=dt;if(debug.remaining<=0)debugDrive.current=null;}
-    cars.current.forEach(car=>{
-      const driven=active===car,velocity=car.body.linvel();
-      const front=rotateVector([1,0,0],car.body.rotation());
-      const speed=velocity.x*front[0]+velocity.z*front[2];
-      if(car.spec.id==='coupe'){
-        stepCoupeDrive(car.body,car.controller,car.driving,{throttle,steer,
-          brake:transitioning||(debug?.input.brake??(keys.current.has('Space')||!!gp.buttons[5])),
-          handbrake:!transitioning&&(debug?.input.handbrake??(keys.current.has('KeyX')||!!gp.buttons[2])),
-          boost:!transitioning&&(debug?.input.boost??(keys.current.has('ShiftLeft')||keys.current.has('ShiftRight')||!!gp.buttons[0]))},car.spec.mass,car.spec.size[0]*.68,dt,driven);
-        car.steering=car.driving.steering;
-        car.lights.brake=driven&&(car.driving.braking||car.driving.handbrake);
-        car.lights.reverse=driven&&throttle<-.05&&speed<.5;
-      } else {
-        const braking=driven && (transitioning||(debug?.input.brake ?? (keys.current.has('Space')||!!gp.buttons[5])) || throttle*speed<-.8);
-        const maxSteer=car.spec.id==='van'?.38:.47;
-        const desired=driven?steer*maxSteer/(1+Math.abs(speed)*.045):0;
-        // Keyboard / analogue input already limits the steering rate. Keep the existing offroad/van
-        // response; QA drive() inputs and the undriven return retain their old filter.
-        if(driven&&!debug)car.steering=desired;
-        else car.steering+=(desired-car.steering)*Math.min(1,dt*(car.spec.id==='van'?3.5:6));
-        car.lights.brake=!!braking&&driven;car.lights.reverse=driven&&throttle<-.05&&speed<.5;
-        for(let i=0;i<4;i++){
-          car.controller.setWheelSteering(i,i<2?car.steering:0);
-          const force=driven && !braking && Math.abs(speed)<(throttle<0?9:car.spec.id==='van'?18:22)?throttle*car.spec.engineForce/4:0;
-          car.controller.setWheelEngineForce(i,force);
-          car.controller.setWheelBrake(i,braking?car.spec.mass*.028:!driven?car.spec.mass*.035:Math.abs(throttle)<.02?car.spec.mass*.0015:0);
-          car.controller.setWheelFrictionSlip(i,car.spec.grip);
-        }
-      }
-      // Filter sensor/dynamic shapes in Rapier itself. Calling isSensor() from the ray predicate
-      // re-enters the borrowed collider set in this Rapier version and prevents safe world disposal.
-      const rayFlags=rapier.QueryFilterFlags.EXCLUDE_SENSORS|(car.hulls?rapier.QueryFilterFlags.EXCLUDE_DYNAMIC|rapier.QueryFilterFlags.EXCLUDE_KINEMATIC:0);
-      car.controller.updateVehicle(dt,rayFlags,undefined,c=>{
-        if(c.parent()?.handle===car.body.handle || c.parent()?.handle===player.current?.handle)return false;
-        // L1: the suspension only rests on the static world. A knocked-over roadblock or another car under
-        // a wheel used to become a road surface and jack the body up (spec 10.2 roadblock lift); the body
-        // hulls handle those contacts instead.
-        if(car.hulls)return true;
-        if(!car.guards.some(Boolean))return true;
-        // Wheel-side obstacles must not also become suspension supports: a ray
-        // landing on a short post used to jack the chassis upward during a graze.
-        for(let o=colliderStates.get(c.handle)?.object;o;o=o.parent??undefined)if(o.userData.surface)return true;
-        return !!(c.parent()?.userData as {surface?:boolean}|undefined)?.surface;
-      });
-      const wheelShape=wheelGeometry(car.spec.size);
-      car.guards.forEach((guard,i)=>{
-        if(!guard)return;const p=wheelShape.points[i];
-        guard.setTranslationWrtParent({x:p[0],y:p[1]-(car.controller.wheelSuspensionLength(i)??wheelShape.rest),z:p[2]});
-        guard.setRotationWrtParent(new Quaternion().setFromAxisAngle(UP,car.controller.wheelSteering(i)??0)
-          .multiply(new Quaternion().setFromAxisAngle(new Vector3(1,0,0),Math.PI/2)));
-      });
-      car.flipped=advanceTimer(car.flipped,needsVehicleRighting(car.body.rotation()),dt);
-      // In water once the chassis floor is submerged (wheels fully under, >5 cm into the hull), not only
-      // when the body centre sinks: v4 beaches shelve gently, and a car parked in ~1 m of sea must still
-      // be returned to dry land after RECOVERY_SECONDS. Driving through shallow surf stays possible.
-      const p=car.body.translation(),floor=p.y+rotateVector([0,-car.spec.size[1]*.29,0],car.body.rotation())[1];
-      car.wet=advanceTimer(car.wet,p.y<WATER_Y||floor<WATER_Y-.05,dt);
-      if((car.wet>=RECOVERY_SECONDS || p.y< -80)&&!(rescueRetry.current.get(car.spec.id)??0)){
-        rescueRetry.current.set(car.spec.id,1);
-        const landing=findSafeVehicleLanding(world,rapier,car.body,car.spec.size,allRoadLandingCandidates(asTuple(p)),WATER_Y);
-        if(landing){
-          if(useWorldStore.getState().activeVehicle===car.spec.id){clearPlayerMotion(true);clearInput();cameraReady.current=false;target.current.set(...landing.position);}
-          resetBody(car.body,landing.position,landing.yaw);car.wet=0;car.flipped=0;car.steering=0;car.steerInput=0;car.throttleInput=0;
-          car.driving=createDrivingState();
-          for(let i=0;i<4;i++){car.controller.setWheelEngineForce(i,0);car.controller.setWheelBrake(i,car.spec.mass*.035);car.controller.setWheelSteering(i,0);}
-          if(driven)actorNotice('已回到宽阔路段，可以继续驾驶。','Recovered to a clear road. Ready to drive.');
-        }
-      }
-    });
+    stepWorldVehicles(dt,active,throttle,steer,transitioning,!!debug,
+      debug?.input.brake??(keys.current.has('Space')||!!gp.buttons[5]),
+      debug?.input.handbrake??(keys.current.has('KeyX')||!!gp.buttons[2]),
+      debug?.input.boost??(keys.current.has('ShiftLeft')||keys.current.has('ShiftRight')||!!gp.buttons[0]));
     publishDrivingTelemetry(active?.spec.id==='coupe'?active.driving:null);
     if(!active){
       const p=player.current.translation(),velocity=player.current.linvel();

@@ -762,7 +762,14 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         s.sitDrop = bodyY - rootY;
         const ref = rig.seatContact.reference;
         const tx = -ref.x * Math.cos(st.yaw) - ref.z * Math.sin(st.yaw), tz = ref.x * Math.sin(st.yaw) - ref.z * Math.cos(st.yaw);
-        if (seat) { rig.rootOff.x = tx * (1 - sitW) - rig.seatPoint.x * sitW; rig.rootOff.z = tz * (1 - sitW) - rig.seatPoint.z * sitW; }
+        if (seat) {
+          // Ride seats move independently of Rapier's interpolated display parent. Solve the
+          // final contact against the current vehicle frame, retaining static bench approach.
+          const rideX = seat.orientation ? seat.position[0] - rig.baseWorld.x : 0;
+          const rideZ = seat.orientation ? seat.position[2] - rig.baseWorld.z : 0;
+          rig.rootOff.x = tx * (1 - sitW) + (rideX - rig.seatPoint.x) * sitW;
+          rig.rootOff.z = tz * (1 - sitW) + (rideZ - rig.seatPoint.z) * sitW;
+        }
         else if (group.current.parent) {
           const body = group.current.parent.getWorldPosition(rig.baseWorld);
           // Reach the selected safe body point during the first 35% of StandUp, while the high

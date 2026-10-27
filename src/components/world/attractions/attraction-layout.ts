@@ -48,6 +48,7 @@ export function attractionRoadDistance(x:number,z:number) {
   return best;
 }
 export function attractionScatterBlocked(x:number,z:number) {
-  return attractionRoadDistance(x,z)<4.4||[IBD_YARD,INTENT_COASTER].some(s=>
+  const forecourt=x>13&&x<87&&z>-135&&z<-125;
+  return forecourt||attractionRoadDistance(x,z)<5.3||[IBD_YARD,INTENT_COASTER].some(s=>
     Math.abs(x-s.center[0])<s.size[0]/2+2&&Math.abs(z-s.center[2])<s.size[1]/2+2);
 }

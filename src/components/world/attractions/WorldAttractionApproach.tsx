@@ -1,6 +1,7 @@
 import { useEffect, useMemo } from 'react';
 import { BufferGeometry, CanvasTexture, CatmullRomCurve3, Float32BufferAttribute, MeshStandardMaterial, SRGBColorSpace, Vector3 } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { ATTRACTION_ROADS } from './attraction-layout';
 import { terrainHeight } from '../WorldLandform';
 import { useWorldStore } from '../store';
@@ -41,13 +42,16 @@ export default function WorldAttractionApproach() {
     const groups=[asphalt,edge,paint],colors=['#65665e','#b9ae8c','#e1d4ad'];
     const meshes=groups.map((parts,i)=>{
       const geometry=mergeGeometries(parts)!;parts.forEach(p=>p.dispose());
-      return {geometry,material:new MeshStandardMaterial({color:colors[i],roughness:.96,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1})};
+      return {geometry,indices:new Uint32Array(geometry.index!.array),material:new MeshStandardMaterial({color:colors[i],roughness:.96,polygonOffset:true,polygonOffsetFactor:-1,polygonOffsetUnits:-1})};
     });
     return meshes;
   },[]);
   useEffect(()=>()=>built.forEach(m=>{m.geometry.dispose();m.material.dispose();}),[built]);
   return <group name="north-attractions-approach" userData={{noOcclusionFade:true}}>
     {built.map((m,i)=><mesh key={i} geometry={m.geometry} material={m.material} receiveShadow dispose={null}/>)}
+    <RigidBody type='fixed' colliders={false} userData={{surface:true,assetId:'north-road'}}>
+      <TrimeshCollider args={[built[0].geometry.getAttribute('position').array as Float32Array,built[0].indices]} friction={.9}/>
+    </RigidBody>
     {[[.8,-59],[-19,-117]].map(([x,z],i)=><group key={i} position={[x,terrainHeight(x,z),z]}>
       <mesh position={[0,1.2,0]} castShadow><boxGeometry args={[.14,2.4,.14]}/><meshStandardMaterial color='#63543e' roughness={.9}/></mesh>
       <mesh position={[0,2.4,0]}><planeGeometry args={[4.2,1.75]}/><meshBasicMaterial map={sign} toneMapped={false}/></mesh>

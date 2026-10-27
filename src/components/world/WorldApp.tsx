@@ -1,4 +1,4 @@
-import { Component, lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
+import { Component, lazy, memo, Suspense, useEffect, useRef, useState, type ReactNode } from 'react';
 import { handleWorldEscape, requestCampReturn, selectWorldTime, useWorldStore } from './store';
 import { TIME_PRESETS, formatWorldTime } from './world-climate';
 import { worldText } from './world-i18n';
@@ -18,6 +18,8 @@ const Runtime = lazy(async () => {
   attachLoadProgress();
   return import('./WorldRuntime');
 });
+const IbdHud=memo(lazy(()=>import('./attractions/WorldIbdHud')));
+const IntentHud=memo(lazy(()=>import('./attractions/WorldIntentHud')));
 // QA-only ui fixtures (?qa=1&uitest=1); the normal entry never loads this chunk.
 const uiTest = typeof window !== 'undefined' && /[?&]qa=1/.test(window.location.search) && /[?&]uitest=1/.test(window.location.search);
 const UiTest = uiTest ? lazy(() => import('./WorldUiTest')) : null;
@@ -126,6 +128,7 @@ export default function WorldApp({ content }: { content: WorldContent }) {
     <WorldDrivingHud />
     <WorldAlphaMineHud />
     <WorldClubHud />
+    <Suspense fallback={null}><IbdHud/><IntentHud/></Suspense>
     <WorldPoolInspect />
     {PlaytestReadout&&!shellOnly&&<Suspense fallback={null}><PlaytestReadout/></Suspense>}
     <div className="world-interaction" aria-live="polite">{s.canRecover ? <button className="world-recover" onClick={() => useWorldStore.setState(v => ({ recoverRequest: v.recoverRequest + 1 }))}><kbd>R</kbd>{t.recover.replace(/^R \u00b7 /, '')}</button> : s.activeVehicle && !s.card ? <span className="world-chip"><kbd>E</kbd>{t.leave.replace(/^E \u00b7 /, '')}</span> : null}</div>

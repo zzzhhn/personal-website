@@ -15,11 +15,14 @@ import { clubAudio } from './WorldClubAudio';
 import { readClubGuestPoses } from './WorldClubDancer';
 import { waterContacts, WATER_IMPACT_LIFETIME } from './WorldWaterInteraction';
 import { windUniforms } from './WorldWind';
+import { IBD_YARD, INTENT_COASTER } from './attractions/attraction-layout';
+import { attractionRide } from './attractions/attraction-ride';
+import { PLAYER_CENTER_HEIGHT } from './actor-physics';
 
 function readContactSnapshot() {
   const value=worldActorDebug.actor(),physics=worldActorDebug.snapshot();
   const actor=value&&typeof value==='object'&&!Array.isArray(value)?value:{};
-  return {actor:{animation:actor.animation,root:actor.root,seatSupport:actor.seatSupport,vehicleStage:actor.vehicleStage,vehicleRotation:actor.vehicleRotation,vehicle:actor.vehicle},
+  return {ride:{active:attractionRide.active,seat:attractionRide.pose?.seat},actor:{animation:actor.animation,root:actor.root,seatSupport:actor.seatSupport,vehicleStage:actor.vehicleStage,vehicleRotation:actor.vehicleRotation,vehicle:actor.vehicle},
     doors:Object.fromEntries(Object.entries(vehicleLodSnapshot()).map(([id,v])=>[id,{level:v.level,triangles:v.l0Triangles,doors:v.doors}])),
     physics:{player:physics.player,grounded:physics.grounded,vehicles:physics.vehicles.map(v=>({id:v.id,position:v.position,waterSeconds:v.waterSeconds,wheelContacts:v.wheelContacts}))}};
 }
@@ -34,6 +37,12 @@ export default function WorldPlaytestReadout() {
   const renderPanel=<aside style={{position:'fixed',zIndex:80,left:16,bottom:12,width:280,maxHeight:'32vh',overflow:'auto',background:'#17231def',color:'#e7eddf',padding:8,font:'10px/1.25 monospace'}}>
       <button onClick={()=>setRenderSnapshot(readRenderSnapshot())}>QA · 读取当前渲染开销</button>
       {import.meta.env.DEV&&<>
+        {[IBD_YARD,INTENT_COASTER].map(site=><button key={site.title.en} onClick={()=>{
+          const p=site.entrance;worldActorDebug.teleportPlayer([p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]]);
+          useWorldStore.setState({paused:false,clubMode:null,seat:null});
+        }}>QA · 到{site.title.zh}</button>)}
+        <button onClick={()=>{clubWaterFrameWindow.start();setRenderSnapshot({frameWindow:'started'});}}>QA · 开始场景帧采样</button>
+        <button onClick={()=>setRenderSnapshot({frameWindow:clubWaterFrameWindow.stop(),render:readRenderSnapshot()})}>QA · 结束场景帧采样</button>
         <button onClick={()=>{worldActorDebug.teleportPlayer([49,2.3,55]);useWorldStore.setState({paused:false,clubMode:null,seat:null});}}>QA · 到泳池西岸</button>
         <button onClick={()=>{clubWaterFrameWindow.invalidate();clubWaterDebug.enabled=!clubWaterDebug.enabled;setRenderSnapshot({poolOptics:clubWaterSnapshot()});}}>QA · 启停泳池光学</button>
         <button onClick={()=>{clubWaterFrameWindow.invalidate();clubWaterDebug.budgeted=!clubWaterDebug.budgeted;setRenderSnapshot({poolOptics:clubWaterSnapshot()});}}>QA · 切换旧／新采样预算（均无倒影）</button>
