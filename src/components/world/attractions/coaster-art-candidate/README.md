@@ -1,6 +1,6 @@
 # 过山车美术接入记录
 
-2026-10-28。主控报告 70 秒加速版实际整圈安全回站后，已明确允许接入。本轮已应用美术补丁，正式几何现导入新增景观；轨道与时序测试的接入前后 SHA-256 完全一致。独立美术测试已经改为检测正式几何。候选源码副本已清理，避免维护两份实现；补丁保留作审阅记录。
+2026-10-28。主控报告 70 秒加速版实际整圈安全回站后，已明确允许接入。本轮已应用美术补丁，正式几何现导入新增景观；轨道与时序测试的接入前后 SHA-256 完全一致。独立美术测试已经改为检测正式几何。候选源码副本已清理，避免维护两份实现；原候选补丁可在提交 `3802075` 中审阅，当前只保留正式源文件与验证。
 
 ## 实机问题及本轮回应
 
@@ -40,8 +40,6 @@ node --test src/components/world/attractions/coaster-art-candidate/art.test.mjs
 - `../coaster-landscape.ts`：新增岩台、植被、主塔轮廓、设备层次、步道细节。
 - `../intent-lighting.ts`：正式静态夜间补光。
 - `art.test.mjs`：独立美术数值检查，读取正式几何和主控最新轨道。
-- `activation.patch`：只改正式 `coaster-geometry.ts`、`intent-lighting.ts`，新增 `coaster-landscape.ts`。
-- `baseline-sha256.json`：补丁生成时两个正式源文件的哈希，用于接入前识别漂移。
 
 **补丁已应用，请勿重复应用。** 接入后由主控重拍同机位日夜截图，对照岩台层次、主塔剪影、青暖灯带及移动人物，并检查高速倒置、灯廊及性能。本轮未构建、未打开浏览器、未提交、未推广到 4341；视觉验收仍未通过。
 
@@ -50,7 +48,7 @@ node --test src/components/world/attractions/coaster-art-candidate/art.test.mjs
 
 2026-10-28：上述十项测试已改为导入正式 `../coaster-geometry.ts`，与主控轨道测试、意图进度及运行时测试串行执行，合计 **43／43 通过**。正式组件 TypeScript 检查通过，差异格式检查通过。近景／远景预算与表格一致。轨道源码 SHA-256 为 `a2418dbd88d7665389c681f843d9ef796645632b96128ece95646b39cb2b44f3`，轨道测试为 `090fc1a2d9a12ecbf7bdb22d72d1483e517aa6cfb495068edba812f87226e017`，与接入前完全一致。
 
-本轮正式运行文件为 `coaster-geometry.ts`、`coaster-landscape.ts`、`intent-lighting.ts`；验证文件为本目录 `art.test.mjs`；交接更新为本 README 与 `../intent-expanded-implementation.md`。本目录补丁和基线哈希仅作审阅记录，不应重复应用。
+本轮正式运行文件为 `coaster-geometry.ts`、`coaster-landscape.ts`、`intent-lighting.ts`；验证文件为本目录 `art.test.mjs`；交接更新为本 README 与 `../intent-expanded-implementation.md`。补丁及候选基线可在提交 `3802075` 中审阅，当前工作树已移除这两份完成接入的临时产物。
 
 ## 主控后续验证
 
