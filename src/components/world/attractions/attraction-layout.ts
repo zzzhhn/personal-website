@@ -22,7 +22,7 @@ export const ATTRACTIONS_CAPE: [number, number][] = [
 ];
 
 export const ATTRACTION_ROADS: [number, number][][] = [
-  [[-4,-54],[-5,-80],[-5,-103],[-15,-123],[-35,-143],[-62,-146],[-88,-146]],
+  [[-4,-54],[-5,-80],[-5,-103],[-15,-123],[-35,-143],[-62,-146],[-88,-146],[-88,-155]],
   [[-15,-123],[10,-122],[32,-123],[50,-132]],
 ];
 
@@ -38,7 +38,7 @@ export function attractionCapeDistance(x:number,z:number) {
   return inside?-best:best;
 }
 export function attractionRoadDistance(x:number,z:number) {
-  if(z>-48||z<-153||x<-96||x>59)return Infinity;
+  if(z>-48||z<-161||x<-96||x>59)return Infinity;
   let best=Infinity;
   for(const path of ATTRACTION_ROADS)for(let i=1;i<path.length;i++){
     const a=path[i-1],b=path[i],dx=b[0]-a[0],dz=b[1]-a[1];
