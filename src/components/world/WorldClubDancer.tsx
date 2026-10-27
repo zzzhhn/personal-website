@@ -1,12 +1,12 @@
 import { Component, useEffect, useMemo, useRef, Suspense, type ReactNode } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
-import { AnimationMixer, LoopRepeat, Mesh, SkinnedMesh, Vector3, type Group } from 'three';
+import { AnimationMixer, LoopRepeat, SkinnedMesh, Vector3, type Group } from 'three';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { clone } from 'three/examples/jsm/utils/SkeletonUtils.js';
 import { withWorldAssetDecoder } from './WorldAssetDecoder';
-import { refineGuideBoots } from './WorldGuideShape';
 import { createClubDanceClips } from './WorldGuideDance';
-import { mergeGuideMaterials } from './WorldGuide';
+import { createClubGuestAppearance } from './WorldClubGuestAppearance';
+import { advanceClubGuestClock, clubGuestAnimationInterval, clubGuestPlan, createClubGuestClock, createClubGuestGreeting } from './WorldClubDancePlan';
 import { useWorldStore } from './store';
 
 export interface WorldClubDancerProps {
@@ -19,9 +19,9 @@ export interface WorldClubDancerProps {
   playing: () => boolean;
 }
 
-const MAX_DISTANCE_SQ = 48 * 48, LOW_RATE_DISTANCE_SQ = 18 * 18;
-/** Authored choreography mapping, not a claim about the capture's original music. */
-const BEATS_PER_LOOP = [4, 2] as const;
+const MAX_DISTANCE_SQ = 48 * 48;
+const guestInspectors = new Map<number, () => unknown>();
+export const readClubGuestPoses = () => [...guestInspectors.values()].map(read => read());
 
 class ClubDancerBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
   state = { failed: false };
@@ -38,42 +38,56 @@ function ClubDancerModel({ position, facing, step, beat, playing }: WorldClubDan
     const skeletons = new Set<SkinnedMesh['skeleton']>();
     scene.traverse(o => {
       if (o instanceof SkinnedMesh) skeletons.add(o.skeleton);
-      if (o instanceof Mesh) { o.castShadow = true; o.receiveShadow = true; o.frustumCulled = false; }
     });
-    let disposeBoots: (() => void) | undefined, disposeMerged: (() => void) | undefined;
+    let appearance: ReturnType<typeof createClubGuestAppearance> | undefined;
     let mixer: AnimationMixer | undefined;
     try {
       const idleClip = gltf.animations.find(c => c.name === 'Idle');
       if (!idleClip) throw new Error('Club dancer requires G24 Idle');
-      disposeBoots = refineGuideBoots(scene);
-      // Bake before batching: calibration reads the actual refined skinned boot vertices.
+      appearance = createClubGuestAppearance(scene, step);
+      // Calibration reads the guest's actual trainers, never invisible player boots.
       const danceClips = createClubDanceClips(scene);
-      disposeMerged = mergeGuideMaterials(scene);
+      const greetingClip = createClubGuestGreeting(scene);
       mixer = new AnimationMixer(scene);
       const idle = mixer.clipAction(idleClip).setLoop(LoopRepeat, Infinity);
       const dances = danceClips.map(c => mixer!.clipAction(c).setLoop(LoopRepeat, Infinity));
+      const greeting = mixer.clipAction(greetingClip).setLoop(LoopRepeat, Infinity);
       for (const action of [idle, ...dances]) {
         action.paused = true; action.setEffectiveWeight(action === idle ? 1 : 0); action.play();
       }
+      greeting.paused = true; greeting.setEffectiveWeight(0); greeting.play();
       mixer.update(0);
-      return { scene, mixer, idle, dances, disposeBoots, disposeMerged, skeletons,
+      scene.scale.setScalar(appearance.scale);
+      return { scene, mixer, idle, dances, greeting, appearance, skeletons,
         camera: new Vector3(), origin: new Vector3() };
     } catch (error) {
       // A failed bake never reaches effect cleanup; release any already-owned resources here.
       mixer?.stopAllAction(); mixer?.uncacheRoot(scene);
-      disposeMerged?.(); disposeBoots?.(); skeletons.forEach(skeleton => skeleton.dispose());
+      appearance?.dispose(); skeletons.forEach(skeleton => skeleton.dispose());
       throw error;
     }
-  }, [gltf]);
-  const clock = useRef({ pending: 0, idle: 0, danceWeights: [0, 0], first: true });
-  // Position-derived phase offsets keep the two fixed stage characters from mirroring each other.
-  const phase = ((Math.sin(position[0] * 7.31 + position[2] * 3.71) + 1) * .5) % 1;
+  }, [gltf, step]);
+  const clock = useRef({ pending: 0, idle: 0, danceWeights: [0, 0], first: true,
+    audio: createClubGuestClock(), greetingTime: 1.9, lastGreetingPhrase: -1 });
 
   useEffect(() => {
-    for (const action of [rig.idle, ...rig.dances]) action.play();
+    if (!import.meta.env.DEV) return;
+    const read = () => ({ guest: step, visible: group.current?.visible, playing: playing(),
+      beat: beat(), idleWeight: rig.idle.getEffectiveWeight(),
+      dances: rig.dances.map(a => ({ name: a.getClip().name, time: a.time, weight: a.getEffectiveWeight(), enabled: a.enabled })),
+      feet: rig.appearance.mesh.skeleton.bones.filter(b => /^foot[._]?[LR]$/.test(b.name)).map(b => ({ name: b.name, position: b.getWorldPosition(new Vector3()).toArray() })) });
+    guestInspectors.set(step, read);
+    return () => { if (guestInspectors.get(step) === read) guestInspectors.delete(step); };
+  }, [rig, step, beat, playing]);
+
+  useEffect(() => {
+    // Development effect replay may have detached/disposed this private mesh. Its CPU
+    // attributes remain valid; Three re-uploads GPU buffers, and the mixer rebinds actions.
+    if (!rig.appearance.mesh.parent) rig.scene.add(rig.appearance.mesh);
+    for (const action of [rig.idle, ...rig.dances, rig.greeting]) action.play();
     return () => {
       rig.mixer.stopAllAction(); rig.mixer.uncacheRoot(rig.scene);
-      rig.disposeMerged?.(); rig.disposeBoots();
+      rig.appearance.dispose();
       // SkeletonUtils creates private Skeletons; shared loader geometry/materials stay cached.
       rig.skeletons.forEach(skeleton => skeleton.dispose());
     };
@@ -93,13 +107,17 @@ function ClubDancerModel({ position, facing, step, beat, playing }: WorldClubDan
     if (!root.visible) { clock.current.pending = 0; return; }
     const time = clock.current;
     time.pending += Math.min(Math.max(0, delta), .1);
-    const interval = distanceSq > LOW_RATE_DISTANCE_SQ ? 1 / 15 : 0;
+    const interval = clubGuestAnimationInterval(distanceSq, false);
+    if (interval === null) { time.pending = 0; return; }
     if (!time.first && time.pending < interval) return;
     const dt = time.pending; time.pending = 0; time.first = false;
     const audioBeat = beat(), isPlaying = playing() && Number.isFinite(audioBeat);
+    const plan = clubGuestPlan(audioBeat, step);
+    const times = isPlaying ? advanceClubGuestClock(time.audio, audioBeat, dt, rig.dances.map(a => a.getClip().duration)) : time.audio.times;
+    if (!isPlaying) time.audio.lastBeat = null;
     for (let i = 0; i < time.danceWeights.length; i++) {
-      const target = isPlaying && i === step ? 1 : 0;
-      time.danceWeights[i] += (target - time.danceWeights[i]) * (1 - Math.exp(-dt / .1));
+      const target = isPlaying && i === plan.move ? 1 : 0;
+      time.danceWeights[i] += (target - time.danceWeights[i]) * (1 - Math.exp(-dt / .26));
       if (Math.abs(time.danceWeights[i] - target) < .001) time.danceWeights[i] = target;
     }
     time.idle = (time.idle + dt) % rig.idle.getClip().duration;
@@ -108,12 +126,15 @@ function ClubDancerModel({ position, facing, step, beat, playing }: WorldClubDan
     for (let i = 0; i < rig.dances.length; i++) {
       const action = rig.dances[i];
       action.setEffectiveWeight(time.danceWeights[i]);
-      if (isPlaying && time.danceWeights[i] > 0) {
-        const cycle = audioBeat / BEATS_PER_LOOP[i] + phase;
-        action.time = (((cycle % 1) + 1) % 1) * action.getClip().duration;
-      }
+      if (isPlaying) action.time = times[i];
     }
-    // Absolute audio phase drives the dance; zero delta only evaluates the private pose.
+    if (isPlaying && plan.greet && time.lastGreetingPhrase !== plan.phrase) {
+      time.greetingTime = 0; time.lastGreetingPhrase = plan.phrase;
+    }
+    time.greetingTime = Math.min(1.9, time.greetingTime + dt);
+    rig.greeting.time = Math.min(1.8999, time.greetingTime);
+    rig.greeting.setEffectiveWeight(time.greetingTime < 1.9 ? .8 : 0);
+    // Beat-derived bounded cursors prevent a source/deck change from teleporting the pose.
     rig.mixer.update(0);
   });
 

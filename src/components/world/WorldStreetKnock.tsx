@@ -11,18 +11,19 @@
  * Bins and delineators stay free for people too. Knocked = displaced > .35 m, tilted > 20 deg or dropped
  * .5 m; 30 s later a .6 s dither fade-out, reset home (waits while home is occupied), sleep, .6 s fade-in.
  * Render: every kind in ONE BatchedMesh (L0/L1 per instance, far dither). Night: lamp lens glow plus ONE
- * instanced additive light-pool draw; no lights are added.
+ * instanced additive light-pool draw and one nearby shadowless key for the pedestrian.
  */
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { ConvexHullCollider, RigidBody, useBeforePhysicsStep, useRapier, type RapierRigidBody } from '@react-three/rapier';
 import {
-  AdditiveBlending, CanvasTexture, CircleGeometry, Color, Euler, InstancedMesh, Matrix4, MeshBasicMaterial, Object3D, Quaternion, Vector3,
+  AdditiveBlending, CanvasTexture, CircleGeometry, Color, Euler, InstancedMesh, Matrix4, MeshBasicMaterial, Object3D, PointLight, Quaternion, Vector3,
 } from 'three';
 import { knockablesV4, OBSTACLES_V4, type Knockable, type KnockKind as LayoutKind } from './layout-v4';
 import type { GreyboxKey } from './WorldVisualClaims';
 import { useWorldStore } from './store';
 import { night } from './WorldNight';
+import { terrainHeight } from './WorldLandform';
 import { StreetClaim } from './WorldStreetStatic';
 import * as A from './WorldStreetAssets';
 import { StreetBatch, type BatchKind } from './WorldStreetBatch';
@@ -166,15 +167,18 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
   const pools = useRef<InstancedMesh>(null);
   const poolMat = useMemo(() => new MeshBasicMaterial({ color: new Color('#FFD08A'), map: poolTexture(), transparent: true, depthWrite: false, blending: AdditiveBlending,
     polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2, toneMapped: false }), []);
-  const poolGeo = useMemo(() => new CircleGeometry(3.4, 28).rotateX(-Math.PI / 2), []);
+  const poolGeo = useMemo(() => new CircleGeometry(4.8, 28).rotateX(-Math.PI / 2), []);
   useEffect(() => () => { poolMat.map?.dispose(); poolMat.dispose(); poolGeo.dispose(); }, [poolMat, poolGeo]);
   const head = useMemo(() => new Vector3(...A.LAMP_HEAD_LOCAL), []);
+  const nearbyLamp=useRef<PointLight>(null);
+  const lampHeads=useMemo(()=>lamps.map(s=>new Vector3(...A.LAMP_HEAD_LOCAL).applyMatrix4(homeMatrix(s.item))),[lamps]);
   const placePools = () => {
     const m = pools.current; if (!m) return;
     const o = new Object3D(), p = new Vector3();
     lamps.forEach((s, i) => {
       p.copy(head).applyMatrix4(homeMatrix(s.item));
-      o.position.set(p.x, s.item.position[1] + .035, p.z);
+      // Lens overhang can sit over a different road height than the lamp footing.
+      o.position.set(p.x, Math.max(s.item.position[1],terrainHeight(p.x,p.z)) + .055, p.z);
       o.scale.setScalar(s.phase === 'home' ? 1 : 0); o.updateMatrix();
       m.setMatrixAt(i, o.matrix);
     });
@@ -257,7 +261,13 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
       }
     }
     if (poolsDirty) placePools();
-    if (pools.current) { pools.current.visible = night.value > .01; poolMat.opacity = .5 * night.value; }
+    if (pools.current) { pools.current.visible = night.value > .01; poolMat.opacity = .9 * night.value; }
+    if(nearbyLamp.current){
+      let nearest=-1,distanceSq=18*18;const player=st.position;
+      for(let i=0;i<lamps.length;i++){if(lamps[i].phase!=='home')continue;const p=lampHeads[i],d=(p.x-player[0])**2+(p.z-player[2])**2;if(d<distanceSq){nearest=i;distanceSq=d;}}
+      nearbyLamp.current.visible=night.value>.01&&nearest>=0;
+      if(nearest>=0){nearbyLamp.current.position.copy(lampHeads[nearest]);nearbyLamp.current.intensity=night.value*110*Math.min(1,(18-Math.sqrt(distanceSq))/5);}
+    }
     Object.assign(lastTris, b.update(camera));
     if (set === 'year') {
       const player = tv; let found = false;
@@ -270,6 +280,7 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
     <primitive object={built.batch.mesh} />
     {built.states.map((s, i) => <KnockBody key={s.item.id} state={s} hulls={built.hulls[i]} kind={s.item.kind} />)}
     {lamps.length > 0 && <instancedMesh ref={pools} name="street-lamp-pools" args={[poolGeo, poolMat, lamps.length]} frustumCulled renderOrder={2} userData={{ noOcclusionFade: true, surface: true }} />}
+    {lamps.length > 0 && <pointLight ref={nearbyLamp} name="street-nearest-lamp-key" color="#ffd5a1" intensity={0} distance={14} decay={2} castShadow={false}/>}
     {claim && <StreetClaim keys={[claim]} />}
   </group>;
 }

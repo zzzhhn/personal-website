@@ -1,0 +1,19 @@
+{
+  "build": "/tmp/bobby-club-presence-final-20261027",
+  "url": "http://127.0.0.1:4341/world/?start=club&quality=balanced&paused=1",
+  "baseHead": "d5224e3372201d3b3318c162d87a8371efed7e90",
+  "dirty": true,
+  "sourceSha256": {
+    "src/components/world/WorldGuideDance.ts": "8deda8af527378e65e252c8551b200cf20b6d9c3815d7f477487499eabe25576",
+    "src/components/world/WorldClubGuestAppearance.ts": "02f75cb2f062feb5e9faffff701bae034f287570f1aaf9dab0d885561aebc4c4",
+    "src/components/world/WorldClubDancer.tsx": "7eff7d0e400b0bcea5119857e175182adbdff53b42bb3d0ce4541e6fa4646592",
+    "src/components/world/WorldDjcClubGeometry.ts": "9a8985c0093c1c7b559b7dad4e9eed079983664f3af42387090c18c2842ffa10",
+    "src/components/world/WorldDjcClubVisual.tsx": "1890d7505cdd9ec50a546ac3d12a0d5d645e52a39369866da9d8c9d3e1abe2eb",
+    "src/components/world/WorldClubLighting.ts": "df6644e1ea6b5d0fb6cf1a845bac7a578aecface6824e1525532e6adae394a3b",
+    "src/components/world/WorldPoolWater.ts": "16d024c84c2146253f939381a54ab3cc96b369259d7944711efd7d25baeb399b",
+    "src/components/world/WorldStreetKnock.tsx": "ae79e58879eb6a4fe42978e82de7ec5a789beccda34b20535cae7b60162a80c1",
+    "src/components/world/djc-club-layout.ts": "f42b071c3cb53b54ca5d944b0b889442660f04b3631698df0a935780c5783dd7",
+    "src/components/world/WorldPlaytestReadout.tsx": "94a1e7c702be59efc3b9cfdeca9d3a36e491cad7066c00bed33dde1ce13ef9ec"
+  },
+  "worldHtmlSha256": "ae1b1872af4e52cfd2a55acd85292ffdd2129fefd0e592e255a22f347b3d1f07"
+}

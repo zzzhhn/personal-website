@@ -3,17 +3,19 @@ import type * as Rapier from '@dimforge/rapier3d-compat';
 import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
 
 type Vector = { x: number; y: number; z: number };
-type ShapeFactory = Pick<typeof Rapier, 'Capsule'>;
+type ShapeFactory = Pick<typeof Rapier, 'Ball'>;
 const UP = .06, CONTACT = .012, SEARCH = .03;
 const WALKABLE = Math.cos(25 * Math.PI / 180);
 const GRAVITY = 12.5;
 const staticSolid = (c: Collider) => !c.isSensor() && (!c.parent() || c.parent()!.isFixed());
 
-/** A lifted capsule sweep returns a usable normal even when the real capsule slightly penetrates. */
+/** Probe the real capsule's lower hemisphere with the same radius and sole height.
+ * Lifting the whole standing capsule can overlap a ceiling and mask the floor at TOI=0.
+ * The small lift still recovers a usable floor normal from slight sole penetration. */
 export function playerSupport(world: World, rapier: ShapeFactory, body: RigidBody,
   position: Vector = body.translation(), staticOnly = false, search = SEARCH) {
-  const hit = world.castShape({ ...position, y: position.y + UP }, body.rotation(), { x: 0, y: -1, z: 0 },
-    new rapier.Capsule(PLAYER_HALF_HEIGHT, PLAYER_RADIUS), 0, UP + search, true,
+  const hit = world.castShape({ ...position, y: position.y - PLAYER_HALF_HEIGHT + UP }, body.rotation(), { x: 0, y: -1, z: 0 },
+    new rapier.Ball(PLAYER_RADIUS), 0, UP + search, true,
     undefined, undefined, undefined, body, staticOnly ? staticSolid : c => !c.isSensor());
   if (!hit || hit.normal1.y < WALKABLE) return null;
   const gap = hit.time_of_impact - UP;

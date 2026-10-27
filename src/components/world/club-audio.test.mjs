@@ -1,15 +1,16 @@
 // node --import ./tools/world/alpha-mine-tests/register.mjs --test src/components/world/club-audio.test.mjs
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { ClubAudio, clubGains } from './WorldClubAudio.ts';
+import { ClubAudio, clubGains, clubMixPlan } from './WorldClubAudio.ts';
 import { useWorldStore } from './store.ts';
 
 class Context {
   static instances=[];
-  state='suspended';currentTime=0;destination={};nodes=[];closed=false;gate=null;
+  state='suspended';currentTime=0;destination={};nodes=[];params=[];closed=false;gate=null;
   constructor(){Context.instances.push(this);}
-  createGain(){return {gain:{value:1,setTargetAtTime(){}},connect(){},disconnect(){}};}
-  createBiquadFilter(){return {frequency:{value:0,setTargetAtTime(){}},connect(){},disconnect(){}};}
+  param(){const p={value:1,held:[],ramps:[],setTargetAtTime(){},cancelScheduledValues(){},cancelAndHoldAtTime(t){this.held.push(t);},linearRampToValueAtTime(value,time){this.ramps.push({value,time});},setValueAtTime(){},setValueCurveAtTime(){}};this.params.push(p);return p;}
+  createGain(){return {gain:this.param(),connect(){},disconnect(){}};}
+  createBiquadFilter(){return {frequency:this.param(),connect(){},disconnect(){}};}
   createBufferSource(){const n={buffer:null,loop:false,connect(){},disconnect(){},start(){n.started=true;},stop(){n.stopped=true;}};this.nodes.push(n);return n;}
   async decodeAudioData(){return {duration:120,length:24000*120,numberOfChannels:2};}
   async resume(){if(this.gate)await this.gate;if(!this.closed)this.state='running';}
@@ -36,7 +37,7 @@ test('one context, finite sources, pause/hidden/distance and BFCache preserve a 
   window.dispatchEvent(Object.assign(new Event('pagehide'),{persisted:true}));await settle();assert.equal(audio.inspect().sources,0);
   window.dispatchEvent(new Event('pageshow'));await settle();assert.equal(audio.inspect().sources,2);
   audio.mute();await settle();assert.equal(audio.inspect().sources,0);assert.equal(audio.energy(),0);
-  release();await settle();assert.deepEqual(audio.inspect(),{phase:'off',context:'absent',sources:0,buffers:0,bufferBytes:0,owners:0,timers:0});
+  release();await settle();assert.deepEqual(audio.inspect(),{phase:'off',context:'absent',sources:0,buffers:0,contextSeconds:0,transportBeats:0,decodedSeconds:[],bufferBytes:0,owners:0,timers:0});
 });
 test('a pending resume cannot revive audio after pause or release',async()=>{
   const {audio,release}=fixture();await audio.enable();await settle();const ctx=Context.instances.at(-1);
@@ -57,4 +58,38 @@ test('crossfade keeps equal power and inactive deck cannot become the dance cloc
   for(const x of [0,.25,.5,.75,1]){const [a,b]=clubGains(x);assert.ok(Math.abs(a*a+b*b-1)<1e-10);}
   const {audio,release}=fixture();await audio.enable();await settle();Context.instances.at(-1).currentTime=10;
   audio.crossfade(.6);assert.ok(audio.beat()>0);audio.crossfade(1);assert.ok(audio.energy()<1e-10);release();
+});
+test('performance lands on a bar, swaps the audible record, and preserves the continuous dance clock',async()=>{
+  const {audio,release}=fixture();await audio.enable();await settle();const ctx=Context.instances.at(-1);
+  ctx.currentTime=1.35;const before=audio.beat(),plan=clubMixPlan(before,0);
+  assert.equal(plan.start%4,0);assert.ok(plan.start>before);audio.performTransition();await settle();
+  assert.equal(audio.read().performance,'queued');assert.equal(audio.inspect().sources,2);
+  ctx.currentTime=(plan.start+1)*60/118;audio.tick();assert.equal(audio.read().performance,'build');
+  ctx.currentTime=(plan.end+.01)*60/118;audio.tick();assert.equal(audio.read().performance,'landed');
+  assert.equal(audio.read().crossfade,1);assert.deepEqual(audio.read().playing,[false,true]);assert.equal(audio.inspect().sources,1);
+  const after=audio.beat();audio.cue(1);assert.equal(audio.beat(),after);audio.crossfade(0);assert.equal(audio.beat(),after);
+  useWorldStore.setState({paused:true});await settle();assert.equal(audio.inspect().sources,0);release();await settle();
+});
+test('manual control cancels a queued performance and re-entering does not restart the muted deck',async()=>{
+  const {audio,release}=fixture();await audio.enable();await settle();audio.performTransition();await settle();
+  audio.crossfade(.25);assert.equal(audio.read().performance,'idle');
+  audio.crossfade(1);audio.toggle(0);await settle();assert.deepEqual(audio.read().playing,[false,true]);
+  await audio.enable();await settle();assert.deepEqual(audio.read().playing,[false,true]);release();
+});
+test('manual takeover preserves the exact in-flight fade between UI beat updates',async()=>{
+  const {audio,release}=fixture();await audio.enable();await settle();const ctx=Context.instances.at(-1);
+  const plan=clubMixPlan(audio.beat(),0);audio.performTransition();
+  ctx.currentTime=(plan.fade+1)*60/118;audio.tick();assert.equal(audio.read().crossfade,.25);
+  ctx.currentTime=(plan.fade+1.6)*60/118;audio.filter(.8);
+  assert.ok(Math.abs(audio.read().crossfade-.4)<1e-9);
+  assert.equal(audio.read().performance,'idle');
+  assert.ok(ctx.params.filter(p=>p.held.includes(ctx.currentTime)).length>=4);
+  release();
+});
+test('starting a performance from a manual blend eases into its lead deck',async()=>{
+  const {audio,release}=fixture();await audio.enable();await settle();const ctx=Context.instances.at(-1);
+  audio.crossfade(.4);ctx.currentTime=1;audio.performTransition();
+  const ramps=ctx.params.flatMap(p=>p.ramps);
+  assert.equal(ramps.length,2);assert.ok(ramps.every(r=>r.time>1&&r.time<=1.18));
+  assert.deepEqual(ramps.map(r=>r.value),[1,0]);release();
 });

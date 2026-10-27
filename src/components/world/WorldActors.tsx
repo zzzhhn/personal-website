@@ -7,10 +7,10 @@ import { CAMP_SPAWN, ROAD_POINTS, VEHICLES, WATER_Y } from './layout';
 import { advanceMineAction, cancelMineAction, mineActor, mineBusy, putDownMineOre, useAlphaMineStore } from './alpha-mine-state';
 import { ALPHA_MINE_ORIGIN } from './alpha-mine-layout';
 import { ALPHA_EXCHANGE_ORIGIN } from './alpha-exchange-layout';
-import { nearestDryPoint } from './WorldLandform';
+import { nearestDryPoint, terrainHeight } from './WorldLandform';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag.ts';
 import { useWorldStore, type NearbyInteract } from './store';
-import { CLUB } from './djc-club-layout';
+import { CLUB, CLUB_POOL } from './djc-club-layout';
 import { clubAudio } from './WorldClubAudio';
 import { cycleInteractPick, nearestInteractable, type Interactable } from './WorldInteract';
 import type { Vec3, VehicleId } from './types';
@@ -23,15 +23,15 @@ import { findSafePlayerLanding, findSafeVehicleLanding, updateHeadSubmersion } f
 import { roadLandingCandidates, portalRearmed } from './world-travel';
 import { WORLD_PORTALS, portalCrossing } from './world-portals';
 import { vehicleHulls } from './WorldVehicleAssets';
-import { VEHICLE_DOORS, vehicleDoorStanding, vehicleDoorQuaternion, type DoorSide, type VehicleDoorState } from './WorldVehicleDoors';
-import { guideVehicleProgress, guideVehicleSample } from './WorldGuideVehicle';
+import { VEHICLE_DOORS, vehicleDoorStanding, vehicleDoorQuaternion, vehicleDoorUpright, type DoorSide, type VehicleDoorState } from './WorldVehicleDoors';
+import { guideVehicleProgress, guideVehicleSample, guideVehicleOrientation, type GuideVehicleFrame } from './WorldGuideVehicle';
 import { WorldOcclusion } from './WorldOcclusion';
-import { cameraCollisionRadius, cameraOverlapsGuide, sweepCamera } from './camera-collision';
+import { cameraCollisionRadius, cameraLookTarget, cameraOverlapsGuide, sweepCamera } from './camera-collision';
 import { returnPlayerToCamp } from './world-recovery';
 import { configureCoupeSuspension, createDrivingState, stepCoupeDrive, type DrivingInput, type DrivingState } from './vehicle-driving';
 import { publishDrivingTelemetry } from './vehicle-telemetry';
 import WorldDrivingFeedback from './WorldDrivingFeedback';
-import { CAMERA_DEFAULT_PITCH, CAMERA_DEFAULT_YAW, CAMERA_MAX_DISTANCE, CAMERA_MIN_DISTANCE, CAMERA_PITCH_LIMITS, CAMERA_PRESETS, PHYSICS_STEP, PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS, RECOVERY_SECONDS, advanceTimer, angleDelta, cameraRelative, configureRaycastVehicle, heading, isUpsideDown, orbitDirection, radialDeadzone, rampAxis, resetActorBody, rotateVector, wheelGeometry, yawRotation } from './actor-physics';
+import { CAMERA_DEFAULT_PITCH, CAMERA_DEFAULT_YAW, CAMERA_MAX_DISTANCE, CAMERA_MIN_DISTANCE, CAMERA_PITCH_LIMITS, CAMERA_PRESETS, PHYSICS_STEP, PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS, RECOVERY_SECONDS, advanceTimer, angleDelta, cameraRelative, configureRaycastVehicle, heading, needsVehicleRighting, orbitDirection, radialDeadzone, rampAxis, resetActorBody, rotateVector, wheelGeometry, yawRotation } from './actor-physics';
 
 type VehicleSpec = (typeof VEHICLES)[number];
 type Controller = ReturnType<ReturnType<typeof useRapier>['world']['createVehicleController']>;
@@ -47,6 +47,10 @@ function cabinAnchor(car:Car,side:number):Vec3 {
   const seat=VEHICLE_DOORS[car.spec.id].seat;
   const offset=rotateVector([seat[0],seat[1]+(vehicleHulls(car.spec.id)?.bodyY??0),side*seat[2]],car.body.rotation()),p=car.body.translation();
   return [p.x+offset[0],p.y+offset[1],p.z+offset[2]];
+}
+function cabinFrame(car:Car,side:DoorSide):GuideVehicleFrame {
+  const r=car.body.rotation(),p=car.body.translation(),offset=rotateVector([0,vehicleHulls(car.spec.id)?.bodyY??0,0],r);
+  return {id:car.spec.id,side,position:[p.x+offset[0],p.y+offset[1],p.z+offset[2]],rotation:[r.x,r.y,r.z,r.w]};
 }
 /** Free orbit / first-person camera state (yaw, pitch in radians; distances in metres). */
 type CameraRig = { yaw: number; pitch: number; distance: number; actual: number; lastManual: number; firstPerson: boolean; collided: boolean; hitDistance: number|null; fov: number; mode: 'walk'|'drive'; recentering: boolean;
@@ -85,7 +89,7 @@ export interface WorldActorDebug {
   enter(id: VehicleId): boolean;
   exit(): boolean;
   drive(input: DriveInput, seconds?: number): void;
-  flip(id?: VehicleId): boolean;
+  flip(id?: VehicleId, side?: boolean): boolean;
   water(id?: VehicleId): boolean;
   recover(): boolean;
   clearInput(): void;
@@ -110,7 +114,7 @@ export const worldActorDebug: WorldActorDebug = {
   enter: (id) => debugTarget?.enter(id) ?? false,
   exit: () => debugTarget?.exit() ?? false,
   drive: (input,seconds) => debugTarget?.drive(input,seconds),
-  flip: (id) => debugTarget?.flip(id) ?? false,
+  flip: (id,side) => debugTarget?.flip(id,side) ?? false,
   water: (id) => debugTarget?.water(id) ?? false,
   recover: () => debugTarget?.recover() ?? false,
   clearInput: () => debugTarget?.clearInput(),
@@ -229,7 +233,7 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
  * acceleration, braking, or contact transitions by several rendered frames. */
 /** Guide-only door transfer. Physics advances elapsed, so pause freezes the interaction too.
  * 'door' is the car's door anchor at entry/exit (car body + side offset). */
-type GuideVehicleTransition = { id: VehicleId; side: DoorSide; phase: 'enter'|'exit'; elapsed: number; door: Vec3; cabin: Vec3; yaw: number; approach?:Vec3[]; approachSeconds?:number; duration?:number } | null;
+type GuideVehicleTransition = { id: VehicleId; side: DoorSide; phase: 'enter'|'exit'; elapsed: number; door: Vec3; cabin: Vec3; yaw: number; approach?:Vec3[]; approachSeconds?:number; duration?:number; exitPosition?:Vec3 } | null;
 function GuideVisual({ cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, visible, transition, supportDecision, movementLock, vault, railVault, resetId }: { cars: RefObject<Map<VehicleId,Car>>; body: RefObject<RapierRigidBody | null>; grounded: RefObject<boolean>; yaw: RefObject<number>; targetSpeed: RefObject<number>; intent: RefObject<'idle'|'walk'|'run'>; jumpSeq: RefObject<number>; visible: boolean; transition: RefObject<GuideVehicleTransition>; supportDecision: RefObject<Record<string, unknown> | null>; movementLock: RefObject<boolean>; vault: RefObject<ReturnType<typeof findLowVault> & { remaining: number } | null>; railVault: RefObject<(RailVault & { elapsed: number }) | null>; resetId: number }) {
   const {world,rapier}=useRapier();
   const supportQA = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && new URLSearchParams(window.location.search).get('qaPhysicsSupport') === '1';
@@ -271,9 +275,9 @@ function GuideVisual({ cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, 
   // The guide keeps a live seat contact while driving, including before the exit door opens.
   const guideStates=()=>{
     const st=useWorldStore.getState(),tr=transition.current;
-    let vehicle:null|{id:VehicleId;phase:'enter'|'exit';t:number;door:Vec3;cabin:Vec3;yaw:number;approach?:Vec3[]}=null;
-    if(tr)vehicle={id:tr.id,phase:tr.phase,t:guideVehicleProgress(tr.phase,tr.elapsed,tr.approachSeconds),door:tr.door,cabin:tr.cabin,yaw:tr.yaw,approach:tr.approach};
-    else if(st.activeVehicle){const car=cars.current.get(st.activeVehicle);if(car){const cabin=cabinAnchor(car,car.driverSide);vehicle={id:car.spec.id,phase:'enter',t:1,door:cabin,cabin,yaw:heading(car.body.rotation())};}}
+    let vehicle:null|{id:VehicleId;phase:'enter'|'exit';t:number;door:Vec3;cabin:Vec3;yaw:number;approach?:Vec3[];frame?:GuideVehicleFrame}=null;
+    if(tr){const car=cars.current.get(tr.id);vehicle={id:tr.id,phase:tr.phase,t:guideVehicleProgress(tr.phase,tr.elapsed,tr.approachSeconds),door:tr.door,cabin:car?cabinAnchor(car,tr.side):tr.cabin,yaw:tr.yaw,approach:tr.approach,frame:car?{...cabinFrame(car,tr.side),groundY:tr.door[1]}:undefined};}
+    else if(st.activeVehicle){const car=cars.current.get(st.activeVehicle);if(car){const cabin=cabinAnchor(car,car.driverSide);vehicle={id:car.spec.id,phase:'enter',t:1,door:cabin,cabin,yaw:heading(car.body.rotation()),frame:cabinFrame(car,car.driverSide)};}}
     return {seat:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:false,
       dance:st.clubMode==='dance'&&clubAudio.energy()>0?st.danceStep:null,danceBeat:clubAudio.beat()};
   };
@@ -333,9 +337,11 @@ export default function WorldActors() {
     if(start==='club')return [CLUB.spawn[0],1+PLAYER_CENTER_HEIGHT,CLUB.spawn[2]];
     if(import.meta.env.DEV&&start==='club-dance')return [CLUB.dance[0],CLUB.dance[1]+PLAYER_CENTER_HEIGHT,CLUB.dance[2]];
     if(import.meta.env.DEV&&start==='club-decks')return [31,2+PLAYER_CENTER_HEIGHT,55];
-    if(import.meta.env.DEV&&start==='club-view')return [70,1+PLAYER_CENTER_HEIGHT,55];
+    if(import.meta.env.DEV&&start==='club-view')return [CLUB.terrace[0],terrainHeight(CLUB.terrace[0],55)+PLAYER_CENTER_HEIGHT,55];
+    if(import.meta.env.DEV&&start==='club-water')return [CLUB.pool[0],CLUB_POOL.floorHeight(CLUB.pool[0],55)+PLAYER_CENTER_HEIGHT,55];
     if(qaPortal){const p=qaPortal.entryApproachCandidates[0];return [p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]];}
     if(qaStart==='wade')return [-26,-.3,106];
+    if(qaStart==='exchange-gallery')return [57.05,6.36,-81.99];
     // Reproduce the reported low-floor exit through the visible QA URL, without moving a live player.
     if(import.meta.env.DEV&&start==='brain-exit'&&new URLSearchParams(window.location.search).get('qa')==='1')return [-81.23,1.82,-90.28];
     if(import.meta.env.DEV&&start==='brain-rail'&&new URLSearchParams(window.location.search).get('qa')==='1')return [ALPHA_MINE_ORIGIN[0]+8,ALPHA_MINE_ORIGIN[1]+PLAYER_CENTER_HEIGHT,ALPHA_MINE_ORIGIN[2]+.16];
@@ -352,7 +358,7 @@ export default function WorldActors() {
   const cameraReady = useRef(false);
   const guideView=useRef<Group>(null),guideCameraFoot=useRef(new Vector3());
   const impact = useRef(0);
-  const cam = useRef<CameraRig>({ yaw: qaPortal?Math.PI/2-qaPortal.yaw:qaStart==='brain-rail'?Math.PI/2:qaStart==='club-view'?0:clubArrival?-Math.PI/2:CAMERA_DEFAULT_YAW, pitch: clubArrival?.4:CAMERA_DEFAULT_PITCH, distance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)],
+  const cam = useRef<CameraRig>({ yaw: qaPortal?Math.PI/2-qaPortal.yaw:qaStart==='exchange-gallery'?4.7113:qaStart==='brain-rail'?Math.PI/2:qaStart==='club-view'?0:clubArrival?-Math.PI/2:CAMERA_DEFAULT_YAW, pitch: qaStart==='exchange-gallery'?.4554:clubArrival?.4:CAMERA_DEFAULT_PITCH, distance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)],
     actual: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)], lastManual: -Infinity, firstPerson: useWorldStore.getState().zoom === 3, collided: false, hitDistance: null, fov: 50, mode: 'walk', recentering: false, driveManualZoom: false, desiredDistance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)] });
   const pad = useRef<PadState>({ connected: false, move: [0,0], look: [0,0], throttle: 0, brake: 0, sprint: false, buttons: [] });
   const moveInput = useRef<[number,number]>([0,0]);
@@ -440,6 +446,7 @@ export default function WorldActors() {
     const car = cars.current.get(id);
     if (!car || !player.current || useWorldStore.getState().activeVehicle || useWorldStore.getState().seat || guideTransition.current) return false;
     if(Math.hypot(car.body.linvel().x,car.body.linvel().z)>.8){actorNotice('等车停稳再上车。','Wait for the vehicle to stop.');return false;}
+    if(!vehicleDoorUpright(car.body.rotation())){actorNotice('车辆倾覆，先扶正再上车。','Right the tipped vehicle before entering.');return false;}
     {
       // Visible arms extend beyond the physical capsule: keep the standing anchor 65 cm outside.
       const c=car.body.translation(),r=car.body.rotation(),p=player.current.translation();
@@ -478,7 +485,9 @@ export default function WorldActors() {
     if (!car || !player.current) return false;
     // E during entry is remembered; finish the door transfer before reversing it.
     if(guideTransition.current?.phase==='enter'){pendingVehicleExit.current=true;return true;}
+    if(guideTransition.current?.phase==='exit')return true;
     if(Math.hypot(car.body.linvel().x,car.body.linvel().z)>.8){actorNotice('先刹停，再下车。','Stop the vehicle before getting out.');return false;}
+    if(!vehicleDoorUpright(car.body.rotation())){actorNotice('车辆倾覆，按 R 扶正后再下车，或返回营地。','The vehicle is tipped. Press R to right it before exiting, or return to camp.');return false;}
     const center=car.body.translation(), rotation=car.body.rotation();
     // Try both doors. A downward ground ray and capsule overlap reject
     // water, walls, parked vehicles and narrow gaps before the player is enabled.
@@ -503,11 +512,13 @@ export default function WorldActors() {
       const door={x:candidate.x,y:candidate.y,z:candidate.z};
       if (!playerRouteClear(world,rapier,player.current,door,candidate,car.body)) continue;
       car.doors.side=side;car.driverSide=side;
-      guideTransition.current={id:car.spec.id,side,phase:'exit',elapsed:0,door:[door.x,door.y-PLAYER_CENTER_HEIGHT,door.z],cabin:cabinAnchor(car,side),yaw:heading(rotation)};
-      clearPlayerMotion();resetBody(player.current,asTuple(candidate)); player.current.setEnabled(true);
+      guideTransition.current={id:car.spec.id,side,phase:'exit',elapsed:0,door:[door.x,door.y-PLAYER_CENTER_HEIGHT,door.z],cabin:cabinAnchor(car,side),yaw:heading(rotation),exitPosition:asTuple(candidate),duration:VEHICLE_TRANSITION_S*.7};
+      // The parked destination is only the visual reference until both feet have left the sill.
+      // Keep capsule disabled and the vehicle selected/braked through closing the door.
+      clearPlayerMotion();resetBody(player.current,asTuple(candidate)); player.current.setEnabled(false);
       portalTravel.current.previous=asTuple(candidate);
       clearInput(); wetPlayer.current=0;
-      useWorldStore.setState({activeVehicle:null,canRecover:false,speed:0}); return true;
+      useWorldStore.setState({canRecover:false,speed:0}); return true;
     }
     actorNotice('车门周围没有安全的下车空间，请换个停车位置。','No clear space to open the door. Move to an open parking spot.');
     return false;
@@ -750,7 +761,7 @@ export default function WorldActors() {
         return true;
       },
       drive:(input,seconds=1)=>{debugDrive.current={input,remaining:seconds};},
-      flip:(id=useWorldStore.getState().activeVehicle ?? 'offroad')=>{const car=cars.current.get(id);if(!car)return false;const q=new Quaternion().setFromEuler(new Euler(Math.PI,heading(car.body.rotation()),0,'YXZ'));car.body.setRotation(q,true);car.body.setTranslation({...car.body.translation(),y:car.body.translation().y+1},true);car.body.setLinvel({x:0,y:0,z:0},true);car.body.setAngvel({x:0,y:0,z:0},true);car.flipped=0;return true;},
+      flip:(id=useWorldStore.getState().activeVehicle ?? 'offroad',side=false)=>{const car=cars.current.get(id);if(!car)return false;const q=new Quaternion().setFromEuler(new Euler(side?Math.PI/2:Math.PI,heading(car.body.rotation()),0,'YXZ'));car.body.setRotation(q,true);car.body.setTranslation({...car.body.translation(),y:car.body.translation().y+1},true);car.body.setLinvel({x:0,y:0,z:0},true);car.body.setAngvel({x:0,y:0,z:0},true);car.flipped=0;return true;},
       water:(id)=>{if(id || useWorldStore.getState().activeVehicle){const car=cars.current.get(id ?? useWorldStore.getState().activeVehicle!);if(!car)return false;if(useWorldStore.getState().activeVehicle===car.spec.id)clearPlayerMotion(true);resetBody(car.body,[110,WATER_Y-1,85]);car.wet=0;return true;}if(!player.current)return false;relocatePlayer([110,WATER_Y-1,85]);return true;},
     };
     debugTarget=api;
@@ -779,6 +790,15 @@ export default function WorldActors() {
       if(doorCar)doorCar.doors.openness=guideVehicleSample(tr.phase,guideVehicleProgress(tr.phase,tr.elapsed,tr.approachSeconds)).doorOpen;
       if(guideTransition.current.elapsed>=(guideTransition.current.duration??VEHICLE_TRANSITION_S)){
         if(doorCar)doorCar.doors.openness=0;
+        if(tr.phase==='exit'&&tr.exitPosition){
+          // Revalidate after the animation: another object may have occupied the exit meanwhile.
+          const landing=findSafePlayerLanding(world,rapier,player.current,[tr.exitPosition.map((v,i)=>i===1?v-PLAYER_CENTER_HEIGHT:v) as Vec3],WATER_Y);
+          if(landing){
+            if(doorCar)guideYaw.current=heading(guideVehicleOrientation(cabinFrame(doorCar,tr.side),guideVehicleSample('exit',.7),Math.PI,new Quaternion()));
+            resetBody(player.current,landing);player.current.setEnabled(true);portalTravel.current.previous=landing;useWorldStore.setState({activeVehicle:null,speed:0});
+          }
+          else actorNotice('下车位置被挡住了，已留在车内，请换个停车位置。','The exit became blocked. You remain seated; choose a clear parking spot.');
+        }
         guideTransition.current=null;
         if(pendingVehicleExit.current){pendingVehicleExit.current=false;exit();}
       }
@@ -846,12 +866,12 @@ export default function WorldActors() {
       if(edge(9)){useWorldStore.setState({paused:true});return;}
     }
     const debug=debugDrive.current;
-    // The shared actor transition owns the entry duration. Keep the car parked until seated,
+    // The shared actor transition owns entry/exit duration. Keep the car parked throughout,
     // without freezing its rigid body or storing throttle that can fire after a cancelled entry.
-    const entering=!!active&&guideTransition.current?.phase==='enter';
+    const transitioning=!!active&&!!guideTransition.current;
     // Keyboard: W/S and A/D ramp toward +-1 (held = gradually full, released = back to 0). Gamepad: right
     // trigger throttle, left trigger brake/reverse, left stick steering, all analogue and used directly.
-    if(active&&entering){active.throttleInput=0;active.steerInput=0;active.driving.power=0;}
+    if(active&&transitioning){active.throttleInput=0;active.steerInput=0;active.driving.power=0;}
     else if(active&&!debug){
       const keyThrottle=Number(keys.current.has('KeyW'))-Number(keys.current.has('KeyS'));
       const keySteer=Number(keys.current.has('KeyA'))-Number(keys.current.has('KeyD'));
@@ -860,8 +880,8 @@ export default function WorldActors() {
       active.steerInput=keySteer!==0||padSteer===0?rampAxis(active.steerInput,keySteer,dt,STEER_RISE,STEER_FALL):padSteer;
     }
     cars.current.forEach(car=>{if(car!==active){car.steerInput=0;car.throttleInput=0;}});
-    const throttle=entering?0:debug?clamp(debug.input.throttle,-1,1):active?.throttleInput??0;
-    const steer=entering?0:debug?clamp(debug.input.steer,-1,1):active?.steerInput??0;
+    const throttle=transitioning?0:debug?clamp(debug.input.throttle,-1,1):active?.throttleInput??0;
+    const steer=transitioning?0:debug?clamp(debug.input.steer,-1,1):active?.steerInput??0;
     if(debug){debug.remaining-=dt;if(debug.remaining<=0)debugDrive.current=null;}
     cars.current.forEach(car=>{
       const driven=active===car,velocity=car.body.linvel();
@@ -869,14 +889,14 @@ export default function WorldActors() {
       const speed=velocity.x*front[0]+velocity.z*front[2];
       if(car.spec.id==='coupe'){
         stepCoupeDrive(car.body,car.controller,car.driving,{throttle,steer,
-          brake:entering||(debug?.input.brake??(keys.current.has('Space')||!!gp.buttons[5])),
-          handbrake:!entering&&(debug?.input.handbrake??(keys.current.has('KeyX')||!!gp.buttons[2])),
-          boost:!entering&&(debug?.input.boost??(keys.current.has('ShiftLeft')||keys.current.has('ShiftRight')||!!gp.buttons[0]))},car.spec.mass,car.spec.size[0]*.68,dt,driven);
+          brake:transitioning||(debug?.input.brake??(keys.current.has('Space')||!!gp.buttons[5])),
+          handbrake:!transitioning&&(debug?.input.handbrake??(keys.current.has('KeyX')||!!gp.buttons[2])),
+          boost:!transitioning&&(debug?.input.boost??(keys.current.has('ShiftLeft')||keys.current.has('ShiftRight')||!!gp.buttons[0]))},car.spec.mass,car.spec.size[0]*.68,dt,driven);
         car.steering=car.driving.steering;
         car.lights.brake=driven&&(car.driving.braking||car.driving.handbrake);
         car.lights.reverse=driven&&throttle<-.05&&speed<.5;
       } else {
-        const braking=driven && (entering||(debug?.input.brake ?? (keys.current.has('Space')||!!gp.buttons[5])) || throttle*speed<-.8);
+        const braking=driven && (transitioning||(debug?.input.brake ?? (keys.current.has('Space')||!!gp.buttons[5])) || throttle*speed<-.8);
         const maxSteer=car.spec.id==='van'?.38:.47;
         const desired=driven?steer*maxSteer/(1+Math.abs(speed)*.045):0;
         // Keyboard / analogue input already limits the steering rate. Keep the existing offroad/van
@@ -914,7 +934,7 @@ export default function WorldActors() {
         guard.setRotationWrtParent(new Quaternion().setFromAxisAngle(UP,car.controller.wheelSteering(i)??0)
           .multiply(new Quaternion().setFromAxisAngle(new Vector3(1,0,0),Math.PI/2)));
       });
-      car.flipped=advanceTimer(car.flipped,isUpsideDown(car.body.rotation()),dt);
+      car.flipped=advanceTimer(car.flipped,needsVehicleRighting(car.body.rotation()),dt);
       // In water once the chassis floor is submerged (wheels fully under, >5 cm into the hull), not only
       // when the body centre sinks: v4 beaches shelve gently, and a car parked in ~1 m of sea must still
       // be returned to dry land after RECOVERY_SECONDS. Driving through shallow surf stays possible.
@@ -945,7 +965,11 @@ export default function WorldActors() {
       let rx=Number(keys.current.has('KeyD'))-Number(keys.current.has('KeyA'));
       let rz=Number(keys.current.has('KeyW'))-Number(keys.current.has('KeyS'));
       if(gp.connected){rx+=gp.move[0];rz-=gp.move[1];}
-      if(useWorldStore.getState().clubMode==='dj'){rx=0;rz=0;actions.current.jump=false;}
+      if(useWorldStore.getState().clubMode==='dj'){
+        rx=0;rz=0;actions.current.jump=false;
+        const consoleYaw=Math.atan2(p.z-CLUB.console[2],CLUB.console[0]-p.x);
+        guideYaw.current+=clamp(angleDelta(guideYaw.current,consoleYaw),-dt*WALK_TURN,dt*WALK_TURN);
+      }
       if(useWorldStore.getState().clubMode==='dance'&&(Math.hypot(rx,rz)>.05||actions.current.jump))useWorldStore.setState({clubMode:null});
       let rm=Math.hypot(rx,rz);if(rm>1){rx/=rm;rz/=rm;rm=1;}
       // Direction smoothing: from rest the input applies at once (A3 turn-before-move still sees the full
@@ -1243,8 +1267,9 @@ export default function WorldActors() {
       camera.up.copy(UP);
       // A tight indoor orbit needs the body centred, while its collision sweep starts safely at
       // head height. This changes the framing without moving the camera into a chair or wall.
-      if(cameraSeat) camera.lookAt(target.current.x,cameraSeat.position[1]+.45,target.current.z);
-      else camera.lookAt(target.current);
+      const aim=cameraLookTarget(camera.position,cameraSeat
+        ?{x:target.current.x,y:cameraSeat.position[1]+.45,z:target.current.z}:target.current,dir);
+      camera.lookAt(aim.x,aim.y,aim.z);
     }
     // Hide drawing only, after final camera placement. Keep the child guide's pose/socket solve alive.
     if(guideView.current){

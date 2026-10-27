@@ -1,0 +1,100 @@
+{
+ "club": {
+  "phase": "ready",
+  "context": "running",
+  "sources": 1,
+  "buffers": 2,
+  "contextSeconds": 84.416,
+  "transportBeats": 166.00764444444442,
+  "decodedSeconds": [
+   32.542375,
+   32.542375
+  ],
+  "bufferBytes": 12496272,
+  "owners": 1,
+  "timers": 0
+ },
+ "energy": 0.55,
+ "guests": [
+  {
+   "guest": 0,
+   "visible": true,
+   "playing": true,
+   "beat": 166.00764444444442,
+   "idleWeight": 0,
+   "dances": [
+    {
+     "name": "ClubGroove",
+     "time": 2.0273278307011298,
+     "weight": 0,
+     "enabled": true
+    },
+    {
+     "name": "ClubDisco",
+     "time": 0.737648296845899,
+     "weight": 1,
+     "enabled": true
+    }
+   ],
+   "feet": [
+    {
+     "name": "footR",
+     "position": [
+      40.01824830637524,
+      1.6944005779011897,
+      51.37261271194134
+     ]
+    },
+    {
+     "name": "footL",
+     "position": [
+      40.01960064641126,
+      1.6921198530598571,
+      51.627400499150546
+     ]
+    }
+   ]
+  },
+  {
+   "guest": 1,
+   "visible": true,
+   "playing": true,
+   "beat": 166.00764444444442,
+   "idleWeight": 0,
+   "dances": [
+    {
+     "name": "ClubGroove",
+     "time": 2.0273446349162416,
+     "weight": 1,
+     "enabled": true
+    },
+    {
+     "name": "ClubDisco",
+     "time": 0.73766573919576,
+     "weight": 0,
+     "enabled": true
+    }
+   ],
+   "feet": [
+    {
+     "name": "footR",
+     "position": [
+      43.00384240955745,
+      1.6971818141176935,
+      59.01242811165736
+     ]
+    },
+    {
+     "name": "footL",
+     "position": [
+      43.06715758220479,
+      1.6949393962231971,
+      59.21709969069407
+     ]
+    }
+   ]
+  }
+ ],
+ "mode": "dance",
+ "step": 1
+}

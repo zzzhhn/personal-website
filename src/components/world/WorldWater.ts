@@ -2,6 +2,7 @@ import { Box3, Color, Float32BufferAttribute, Frustum, InstancedBufferAttribute,
 import { windUniforms } from './WorldWind';
 import { CELL as SHORE_CELL, GRID as SHORE_GRID, SHORE_GLSL, shoreField, shoreUniforms } from './WorldLandform';
 import { WATER_Y } from './layout';
+import { WATER_IMPACT_GLSL, waterImpactUniforms } from './WorldWaterInteraction';
 
 /** quality-v3 sea (spec §2). Four Gerstner waves (GPU Gems ch. 1, technique only) displace a
  * camera-following grid in world space: wavelengths 3.4-13 m, summed amplitude 0.245 m,
@@ -62,6 +63,7 @@ varying vec3 vSeaWorld;
 varying float vSeaCrest;
 ${SHORE_GLSL}
 ${SURF_GLSL}
+${WATER_IMPACT_GLSL}
 void seaWave(vec2 d, float k, float a, float q, float w, vec2 p, float t, float amp, inout vec3 disp) {
   float ph = k * dot(d, p) - w * t, c = cos(ph), s = sin(ph);
   disp += vec3(q * a * d.x * c, a * s, q * a * d.y * c) * amp;
@@ -74,9 +76,10 @@ void seaWave(vec2 d, float k, float a, float q, float w, vec2 p, float t, float 
 export const SEA_SPOTS = 4;
 export const seaSpotUniform = { value: Array.from({ length: SEA_SPOTS }, () => new Vector4()) };
 /** Remaining opacity at the spot centre (water tint is kept so it still reads as water). */
-export const SEA_SPOT_MIN_ALPHA = .16;
+export const SEA_SPOT_MIN_ALPHA = .42;
 /** Sun glitter: world direction toward the sun and its colour x strength (WorldEnvironment drives both per frame). */
-export const seaGlintUniforms = { uSunDir: { value: new Vector3(-90, 40, 65).normalize() }, uGlint: { value: new Color(0, 0, 0) } };
+export const seaGlintUniforms = { uSunDir: { value: new Vector3(-90, 40, 65).normalize() }, uGlint: { value: new Color(0, 0, 0) },
+  uWaterSkyTop: { value: new Color('#6F86A8') }, uWaterSkyHorizon: { value: new Color('#F2B98A') } };
 
 export function createWorldWaterMaterial(color: string) {
   // Transparent only for the clear spots (alpha is 1 elsewhere); it still writes depth, and every
@@ -88,6 +91,7 @@ export function createWorldWaterMaterial(color: string) {
   const deep = new Color('#1E5A5E'), near = new Color('#3C8A8A');
   const uniforms = {
     ...shoreUniforms(),
+    ...waterImpactUniforms,
     uSeaTime: windUniforms.uWindTime, uSeaMotion: windUniforms.uWindStrength,
     uNearTint: { value: [near.r / deep.r, near.g / deep.g, near.b / deep.b] },
     uFoam: { value: new Color('#E6DCCB') },
@@ -126,11 +130,13 @@ ${waveGlsl()}
         float surf = pow(0.5 + 0.5 * sin(surfPhase(p, shoreD, t * step(0.001, uSeaMotion))), 3.0) * smoothstep(0.3, 2.0, shoreD) * (1.0 - smoothstep(8.0, 14.0, shoreD));
         surf *= 1.0 - smoothstep(${(SEA_SURF.lengthM / 3.4).toFixed(3)}, ${(SEA_SURF.lengthM / 2.4).toFixed(3)}, cellEff);
         disp.y += ${SEA_SURF.amplitude.toFixed(3)} * surf * uSeaMotion;
+        disp.y += waterDisturbance(p, ${WATER_Y.toFixed(3)}, t).z;
         transformed += disp;
         vSeaCrest = disp.y / ${SEA_WAVES.reduce((a, w) => a + w.amplitude, 0).toFixed(3)};
       }`).replace('#include <project_vertex>', `#include <project_vertex>
       vSeaWorld = (modelMatrix * vec4(transformed, 1.0)).xyz;`);
     shader.fragmentShader = `varying vec3 vSeaWorld;\nvarying float vSeaCrest;\nuniform vec3 uSunDir; uniform vec3 uGlint;\nfloat seaFootprint = 0.0;\nuniform float uSeaTime; uniform float uSeaMotion; uniform vec3 uNearTint; uniform vec3 uFoam; uniform float uDeepLuma; uniform vec4 uSeaSpot[${SEA_SPOTS}];\n${SHORE_GLSL}\n${SURF_GLSL}
+${WATER_IMPACT_GLSL}
 float sHash(vec2 p) { p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
 float sNoise(vec2 p) { vec2 i = floor(p), f = fract(p), u = f * f * (3.0 - 2.0 * f);
   return mix(mix(sHash(i), sHash(i + vec2(1.0, 0.0)), u.x), mix(sHash(i + vec2(0.0, 1.0)), sHash(i + vec2(1.0, 1.0)), u.x), u.y); }
@@ -139,6 +145,7 @@ float sFbm(vec2 p) { return 0.5 * sNoise(p) + 0.3 * sNoise(mat2(0.8, -0.6, 0.6, 
 ` + shader.fragmentShader
       .replace('#include <color_fragment>', `#include <color_fragment>
       vec2 sp = vSeaWorld.xz;
+      vec4 contactWave = waterDisturbance(sp, ${WATER_Y.toFixed(3)}, uSeaTime);
       float shoreD = shoreSigned(shoreSample(sp));
       // Deep -> near-shore teal over 0-8 m from the waterline.
       diffuseColor.rgb *= mix(uNearTint, vec3(1.0), smoothstep(0.0, 8.0, shoreD));
@@ -180,7 +187,9 @@ float sFbm(vec2 p) { return 0.5 * sNoise(p) + 0.3 * sNoise(mat2(0.8, -0.6, 0.6, 
         clear = max(clear, sp4.w * (1.0 - smoothstep(sp4.z * 0.45, sp4.z, l)));
       }
       diffuseColor.rgb *= 1.0 + 0.25 * clear;
-      diffuseColor.a = mix(1.0, ${SEA_SPOT_MIN_ALPHA.toFixed(2)}, clear);`)
+      diffuseColor.rgb += contactWave.w * uFoam * seaLight * .55;
+      float depthAlpha = mix(.62, 1.0, smoothstep(0.0, 5.0, shoreD));
+      diffuseColor.a = mix(depthAlpha, ${SEA_SPOT_MIN_ALPHA.toFixed(2)}, clear);`)
       .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
       {
         // Fine ripples on top of the flat facets (keep distant water moving after waves fade).
@@ -191,7 +200,8 @@ float sFbm(vec2 p) { return 0.5 * sNoise(p) + 0.3 * sNoise(mat2(0.8, -0.6, 0.6, 
         vec2 slope = a * (0.07 * (1.0 - smoothstep(0.45, 0.9, px)) * cos(dot(sp, a) - uSeaTime * 1.6))
                    + b * (0.045 * (1.0 - smoothstep(0.36, 0.72, px)) * cos(dot(sp, b) - uSeaTime * 1.9 + 1.8))
                    + c * (0.03 * (1.0 - smoothstep(0.22, 0.45, px)) * cos(dot(sp, c) - uSeaTime * 2.3 + 0.7));
-        normal = normalize(normal + (viewMatrix * vec4(-slope.x * uSeaMotion, 0.0, -slope.y * uSeaMotion, 0.0)).xyz);
+        slope = slope * uSeaMotion + contactWave.xy;
+        normal = normalize(normal + (viewMatrix * vec4(-slope.x, 0.0, -slope.y, 0.0)).xyz);
       }`)
       .replace('#include <opaque_fragment>', `{
         // Sun glitter path (spec \u00a72: a narrow warm highlight toward the sun, no mirror reflection): world-space
@@ -204,7 +214,7 @@ float sFbm(vec2 p) { return 0.5 * sNoise(p) + 0.3 * sNoise(mat2(0.8, -0.6, 0.6, 
       }
       #include <opaque_fragment>`);
   };
-  material.customProgramCacheKey = () => 'world-sea-cdlod-v5';
+  material.customProgramCacheKey = () => 'world-sea-cdlod-contact-v6';
   return material;
 }
 

@@ -16,6 +16,10 @@ import { useWorldStore } from './store';
 import { parkAudio } from './WorldParkAudio';
 import WorldAlphaMineFoundation from './WorldAlphaMineFoundation';
 import { mineSurfaceMaterial } from './WorldMineMaterial';
+import { createPoolWaterMaterial } from './WorldPoolWater';
+import { waterContacts } from './WorldWaterInteraction';
+import { night } from './WorldNight';
+import { windUniforms } from './WorldWind';
 import type { WorldContent } from './types';
 
 const jsonLoader = (loader: FileLoader<unknown>) => { loader.setResponseType('json'); };
@@ -207,7 +211,10 @@ function MineEffects() {
   useFrame((_,delta)=>{
     const target=mesh.current, s=useWorldStore.getState();if(!target||s.paused||s.card||s.poolInspect||document.hidden)return;
     const next=useAlphaMineStore.getState().effect;
-    if(next && next.seq!==seq.current){effect.current=next;seq.current=next.seq;age.current=0;(target.material as MeshStandardMaterial).color.set(next.kind==='splash'?'#a8d1c5':oreFactor(next.factorId).color);parkAudio.cue(next.kind==='splash'?'splash':'strike',.7);}
+    if(next && next.seq!==seq.current){
+      effect.current=next;seq.current=next.seq;age.current=0;(target.material as MeshStandardMaterial).color.set(next.kind==='splash'?'#a8d1c5':oreFactor(next.factorId).color);parkAudio.cue(next.kind==='splash'?'splash':'strike',.7);
+      if(next.kind==='splash')waterContacts.emit({x:next.at[0],y:next.at[1],z:next.at[2],at:windUniforms.uWindTime.value,strength:.85,radius:.08,splash:.55});
+    }
     age.current+=Math.min(.05,delta); const e=effect.current;
     target.visible=!!e&&age.current<.7;if(!target.visible||!e)return;
     const t=age.current;
@@ -221,6 +228,14 @@ function MineEffects() {
 }
 
 type Proxy = { vertices:number[];indices:number[] };
+function MineWater({basin}:{basin:MineManifest['basin']}) {
+  const material=useMemo(()=>createPoolWaterMaterial(ALPHA_MINE_ORIGIN[1]+basin.waterY),[basin.waterY]);
+  useEffect(()=>()=>material.dispose(),[material]);
+  useFrame(()=>{material.uniforms.uNight.value=night.value;});
+  return <mesh position={[basin.center[0],basin.waterY,basin.center[2]]} rotation={[-Math.PI/2,0,0]}>
+    <circleGeometry args={[basin.innerRadius,64]}/><primitive object={material} attach="material"/>
+  </mesh>;
+}
 function MineAssets({ content }: { content: WorldContent }) {
   const manifest=useLoader(FileLoader,'/world/alpha-mine/layout.json',jsonLoader) as unknown as MineManifest;
   const proxy=useLoader(FileLoader,manifest.collisionAsset,jsonLoader) as unknown as {surface:Proxy;solid:Proxy};
@@ -259,7 +274,7 @@ function MineAssets({ content }: { content: WorldContent }) {
     {(['surface','solid'] as const).map(kind=><RigidBody key={kind} name={`alpha-mine-${kind}`} type="fixed" colliders={false} userData={{[kind]:true,assetId:'alpha-mine'}}><TrimeshCollider args={[colliders[kind].vertices,colliders[kind].indices]} friction={.9} restitution={0}/></RigidBody>)}
     <MineRack manifest={manifest} detector={detector} pickaxe={pickaxe}/>
     {manifest.veins.map((v,i)=><MineVein key={v.id} manifest={manifest} index={i} source={gltfs[1].scene.getObjectByName(v.id)!} ore={ore}/>)}
-    <mesh position={[manifest.basin.center[0],manifest.basin.waterY,manifest.basin.center[2]]} rotation={[-Math.PI/2,0,0]} receiveShadow><circleGeometry args={[manifest.basin.innerRadius,64]}/><meshStandardMaterial color="#498b81" metalness={.25} roughness={.22} transparent opacity={.82}/></mesh>
+    <MineWater basin={manifest.basin}/>
     <PoolBay manifest={manifest} bay={0}/><PoolBay manifest={manifest} bay={1}/>{ALPHA_FACTORS.map((f,i)=><PoolShelf key={f.id} manifest={manifest} index={i} ore={ore}/>)}<WorldMinePool manifest={manifest}/>
     <MineLooseOre source={ore}/><MineEffects/><MineInformation experienceId={experience?.startDate}/>
     <MineSign position={[3.8,0,-.6]} title="THE FACTOR QUARRY" detail="WORLDQUANT BRAIN"/>

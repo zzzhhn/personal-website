@@ -1,0 +1,4 @@
+{"clip":"ClubGroove","duration":2.6333333333333333,"frames":158,"source":"CMU 60_01","minFloor":-0.000015028454672616559,"maxContactGap":0.0002995404898751456,"maxContactSlipPer120HzFrame":0.000004820670002201245,"maxBoneStepPer120HzFrame":0.0135307946417474,"maxFootRadiusM":0.225,"maxReachErrorM":0}
+{"clip":"ClubDisco","duration":1.3666666666666667,"frames":82,"source":"CMU 141_12","minFloor":-0.000018073329288538603,"maxContactGap":0.00023778372295428138,"maxContactSlipPer120HzFrame":0.000027860183387433973,"maxBoneStepPer120HzFrame":0.011189137976288557,"maxFootRadiusM":0.19104973174542803,"maxReachErrorM":0}
+{"exitBlendSeconds":0.22,"phasesPerClip":4,"maxJointStepPer120HzFrame":0.025943953160925324}
+PASS: independent mocap-derived clips, rendered-foot contacts, loop endpoints, fixed bone lengths and caller isolation

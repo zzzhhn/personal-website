@@ -1,8 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { AnimationMixer, Box3, LoopOnce, Quaternion, SkinnedMesh, Vector3 } from 'three';
-import { VEHICLE_DOORS, vehicleDoorQuaternion, vehicleDoorStanding } from './WorldVehicleDoors.ts';
-import { GuideDrivingPose, guideVehicleProgress, guideVehicleSample, GUIDE_VEHICLE_TRANSITION_S } from './WorldGuideVehicle.ts';
+import { AnimationMixer, Box3, Group, LoopOnce, Quaternion, SkinnedMesh, Vector3 } from 'three';
+import { VEHICLE_DOORS, vehicleDoorQuaternion, vehicleDoorStanding, vehicleDoorCloseContact } from './WorldVehicleDoors.ts';
+import { createVehicleDoorControls } from './WorldVehicleDetail.ts';
+import { GuideDrivingPose, GuideVehicleContacts, GuideVehicleSitPose, settleGuideVehicle, guideVehicleProgress, guideVehicleSample, GUIDE_VEHICLE_TRANSITION_S } from './WorldGuideVehicle.ts';
 import { GuideSeatContact } from './WorldGuideSeat.ts';
 import { skinnedWorldPoint } from './WorldGuideStop.ts';
 import { glb, loadGuide } from '../../../tools/world/guide/boot-analysis.mjs';
@@ -50,13 +51,18 @@ test('six shipped GLBs keep two independent door pivots outside the baked body',
 
 test('actual seated G24 fits cabin height and footwell without changing its model scale', async () => {
   const {gltf:{scene,animations}}=await loadGuide(new URL('../../../tools/world/guide/out/G24_uncompressed.glb',import.meta.url));
-  const mixer=new AnimationMixer(scene),contact=new GuideSeatContact(scene,animations),pose=new GuideDrivingPose(scene);
+  const root=new Group();root.add(scene);
+  const mixer=new AnimationMixer(scene),contact=new GuideSeatContact(scene,animations),pose=new GuideDrivingPose(scene),sitPose=new GuideVehicleSitPose(scene,animations),contacts=new GuideVehicleContacts(scene);
   const clip=animations.find(c=>c.name==='SitDown'),action=mixer.clipAction(clip).setLoop(LoopOnce,1);
   action.clampWhenFinished=true;action.play();mixer.update(clip.duration);
   const originals=[];scene.traverse(o=>{if(o.isBone)originals.push([o,o.quaternion.clone()]);});
   const limits={offroad:{floor:.55,ceiling:1.735},coupe:{floor:.17,ceiling:1.225},van:{floor:.79,ceiling:1.955}};
   for(const id of Object.keys(limits)){
-    pose.restore();pose.apply(id,1);scene.updateWorldMatrix(true,true);
+    contacts.restore();pose.restore();sitPose.restore();root.position.set(0,0,0);mixer.update(0);
+    const sample=guideVehicleSample('enter',1),frame={id,side:1,position:[0,0,0],rotation:[0,0,0,1],groundY:0};
+    sitPose.apply(id,sample);pose.apply(id,1);scene.updateWorldMatrix(true,true);
+    const seat=VEHICLE_DOORS[id].seat;root.position.copy(new Vector3(...seat).sub(contact.sample(new Vector3())));root.updateWorldMatrix(true,true);
+    contacts.apply(frame,sample);settleGuideVehicle(root,contact,contacts,frame,sample);
     const posterior=contact.sample(new Vector3()),box=new Box3(),point=new Vector3();
     scene.traverse(m=>{if(m instanceof SkinnedMesh)for(let i=0;i<m.geometry.attributes.position.count;i++)
       box.expandByPoint(skinnedWorldPoint(m,i,point).sub(posterior));});
@@ -65,6 +71,18 @@ test('actual seated G24 fits cabin height and footwell without changing its mode
     assert.ok(sole>=limits[id].floor-.012&&sole<limits[id].floor+.045,`${id}: boot ${sole} misses footwell`);
     assert.deepEqual(scene.scale.toArray(),[1,1,1]);
   }
-  pose.restore();for(const [bone,q] of originals)assert.deepEqual(bone.quaternion.toArray(),q.toArray(),'exit restores source bones');
+  contacts.restore();pose.restore();sitPose.restore();for(const [bone,q] of originals)assert.deepEqual(bone.quaternion.toArray(),q.toArray(),'exit restores source bones');
   mixer.stopAllAction();mixer.uncacheRoot(scene);
+});
+
+test('powered butterfly-close contacts are actual visible button faces in the car body frame',()=>{
+  const bodyY=-.9959,controls=createVehicleDoorControls('coupe',bodyY);assert.ok(controls);controls.updateWorldMatrix(true,true);
+  for(const side of [-1,1]){
+    const button=controls.getObjectByName(`door-close-switch-${side}`);
+    const face=new Vector3(0,-side*.007,0).applyMatrix4(button.matrixWorld);
+    const contact=vehicleDoorCloseContact('coupe',side,1,new Vector3());contact.y+=bodyY;
+    assert.ok(face.distanceTo(contact)<1e-9,'animation touches the rendered switch face');
+  }
+  assert.equal(createVehicleDoorControls('van',0),null,'ordinary doors retain their manual pull');
+  const materials=new Set();controls.traverse(o=>{if(o.isMesh){o.geometry.dispose();for(const material of [o.material].flat())materials.add(material);}});materials.forEach(m=>m.dispose());
 });

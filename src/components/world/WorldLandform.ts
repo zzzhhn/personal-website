@@ -4,8 +4,8 @@ import { LAYOUT_V4, keepOutV4, nearRidgeV4, ridgeHeightV4, TERRAIN_GRID_V4, town
 import { groundRoadDistance, pavingGround, trailDistance } from './WorldTerrainPaving';
 import { TRAIL_HALF } from './layout-v4';
 import { ALPHA_MINE_BASE_Y, ALPHA_MINE_CONNECTOR, isOnAlphaMineBase, mineEdgeDistance } from './alpha-mine-layout';
-import { ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout';
-import { CLUB_CAPE, clubCapeDistance, meshWaterlineLoops } from './djc-club-layout';
+import { EXCHANGE_CAPE, exchangeCapeDistance } from './alpha-exchange-layout';
+import { CLUB_CAPE, CLUB_POOL, clubCapeDistance, clubScatterBlocked, meshWaterlineLoops } from './djc-club-layout';
 
 /** quality-v3 landform (spec 2026-10-22 §3, §10.1/10.2). One deterministic height function
  * h(x, z) describes the whole island: flat town top (y=1), irregular sand beaches, the camp
@@ -117,7 +117,10 @@ export function effectiveCoastFrame(x: number, z: number) {
   const original = u <= 0 ? GROUND_Y : mix(shoreProfile(u, beachWidth(s), shelfLength(s)), seawallHeight(x, u, z), smoothstep(.3, .7, town));
   const capeDistance = LAYOUT_V4 ? clubCapeDistance(x, z) : Infinity;
   const cape = capeDistance <= 0 ? GROUND_Y : shoreProfile(capeDistance, CLUB_CAPE.beachWidth, CLUB_CAPE.shelfLength);
-  return { s, topDistance: Math.min(u, capeDistance), town: cape > original + 1e-6 ? 0 : town, height: Math.max(original, cape), originalHeight: original };
+  const exchangeDistance=LAYOUT_V4?exchangeCapeDistance(x,z):Infinity;
+  const exchange=exchangeDistance<=0?GROUND_Y:shoreProfile(exchangeDistance,EXCHANGE_CAPE.beachWidth,EXCHANGE_CAPE.shelfLength);
+  const extra=Math.max(cape,exchange);
+  return { s, topDistance: Math.min(u, capeDistance,exchangeDistance), town: extra > original + 1e-6 ? 0 : town, height: Math.max(original, extra), originalHeight: original };
 }
 const coastHeight = (x: number, z: number) => effectiveCoastFrame(x, z).height;
 
@@ -312,7 +315,7 @@ export function terrainBaseHeight(x: number, z: number) {
   const ground = campFlankTan(Math.atan2(z - CAMP_CENTER[2], x - CAMP_CENTER[0])) > 1 ? Math.max(coast, camp) : smax(coast, camp, .4);
   let h = Math.min(roadCap(x, z), Math.max(ground, rampHeight(x, z), LAYOUT_V4 ? ridgeHeightV4(x, z) ?? -Infinity : -Infinity));
   if (!underSlab(x, z)) h = Math.min(h, keepOutCap(x, z));
-  return LAYOUT_V4 ? pave(h, x, z) : h;
+  return LAYOUT_V4 ? clubGroundHeight(pave(h, x, z),x,z) : h;
 }
 export function terrainHeight(x: number, z: number) {
   const coast = coastHeight(x, z), camp = campHillHeight(x, z), cap = roadCap(x, z);
@@ -321,11 +324,13 @@ export function terrainHeight(x: number, z: number) {
   const ground = campFlankTan(Math.atan2(z - CAMP_CENTER[2], x - CAMP_CENTER[0])) > 1 ? Math.max(coast, camp) : smax(coast, camp, .4);
   let base = Math.min(cap, Math.max(ground, rampHeight(x, z), LAYOUT_V4 ? ridgeHeightV4(x, z) ?? -Infinity : -Infinity));
   if (!underSlab(x, z)) base = Math.min(base, keepOutCap(x, z));
-  if (cap < Infinity) return LAYOUT_V4 ? pave(base, x, z) : base;
+  if (cap < Infinity) return LAYOUT_V4 ? clubGroundHeight(pave(base, x, z),x,z) : base;
   const amp = reliefAmplitude(x, z, base, coast, camp);
   const h = amp ? base + amp * (.6 * valueNoise(x / 2.4, z / 2.4, 3) + .4 * valueNoise(x / 1.05 + 7.3, z / 1.05 - 3.1, 9)) : base;
-  return LAYOUT_V4 ? pave(h, x, z) : h;
+  return LAYOUT_V4 ? clubGroundHeight(pave(h, x, z),x,z) : h;
 }
+/** Local shallow basin, 3.5 cm below its editable mineral lining, inside the same island mesh. */
+function clubGroundHeight(h:number,x:number,z:number) {return CLUB_POOL.contains(x,z)?Math.min(h,CLUB_POOL.floorHeight(x,z)-.035):h;}
 /** v4: ground under / beside the field paving (cap under it, fill under its outer chamfer). */
 function pave(h: number, x: number, z: number) {
   const [cap, floor] = pavingGround(x, z);
@@ -371,7 +376,7 @@ export function buildTerrain(): Terrain {
     const { d, s } = coastFrame(cx, cz);
     const camp = Math.hypot(cx - CAMP_CENTER[0], cz - CAMP_CENTER[2]);
     let k = 2;
-    if (d < topPush(s) - 4.5 && camp > 40 && rampHeight(cx, cz) < -30 && !(LAYOUT_V4 && nearRidgeV4(cx, cz))) k = 3;
+    if (d < topPush(s) - 4.5 && camp > 40 && rampHeight(cx, cz) < -30 && !(LAYOUT_V4 && (nearRidgeV4(cx, cz)||CLUB_POOL.distance(cx,cz)<4))) k = 3;
     else {
       let maxH = -Infinity;
       for (let j = j0; j <= j0 + BLOCK; j++) for (let i = i0; i <= i0 + BLOCK; i++) maxH = Math.max(maxH, terrainHeight(nodeX(i), nodeZ(j)));
@@ -576,8 +581,7 @@ export function shoreField() {
     let h = nodeHeight[k];
     if (Number.isNaN(h)) h = coastFrame(x, z).d < 0 ? GROUND_Y : -20;
     if (x > 36 && x < 54 && z > -54 && z < -36) h = Math.max(h, GROUND_Y); // park plaza block
-    const e=ALPHA_EXCHANGE_FOOTPRINT;
-    if (isOnAlphaMineBase(x, z) || (x>=e.minX&&x<=e.maxX&&z>=e.minZ&&z<=e.maxZ)) h = Math.max(h, ALPHA_MINE_BASE_Y);
+    if (isOnAlphaMineBase(x, z)) h = Math.max(h, ALPHA_MINE_BASE_Y);
     land[k] = h > WATER_Y ? 1 : 0; water[k] = 1 - land[k];
   }
   const toLand = distanceTo(land), toWater = distanceTo(water), signed = new Float32Array(W * H);
@@ -650,7 +654,7 @@ export function islandShorelines() {
   if (!shorelineCache) { const t = buildTerrain(); shorelineCache = meshWaterlineLoops(t.positions, t.indices, WATER_Y); }
   return shorelineCache;
 }
-/** Waterline polygon of the main island (x, z), cached, including its DJC cape.
+/** Waterline polygon of the main island (x, z), cached, including Club and exchange shoulders.
  * Excludes the separate park plaza block (x 36..54, z -54..-36), which the map draws itself. */
 export function islandShoreline() { return shorelinePolygon(); }
 
@@ -742,6 +746,7 @@ const PATH_HALF = .75;
 
 /** CPU ground classification shared by vertex colours and scatter (so tufts sit on grass). */
 export function groundSample(x: number, z: number, h = terrainHeight(x, z), slopeY = 1) {
+  if(LAYOUT_V4&&CLUB_POOL.contains(x,z))return {kind:'stone' as GroundKind,colour:srgb('#8fa9a2'),grass:0};
   const g = groundSampleBase(x, z, h, slopeY);
   const mineEdge=mineEdgeDistance(x,z);
   if(mineEdge<1.7){
@@ -873,6 +878,7 @@ export function grassCandidateJob(blockers: ScatterBlocker[]) {
       if (roll > mix(.2, 1, clump)) continue;
       if (roadDistance(px, pz) < 5.6) continue;
       if (blockers.some(b => px > b.minX && px < b.maxX && pz > b.minZ && pz < b.maxZ)) continue;
+      if(LAYOUT_V4&&clubScatterBlocked(px,pz))continue;
       if (PADS.some(([qx, qz]) => Math.hypot(px - qx, pz - qz) < 2.3)) continue;
       if (TENTS.some(([x0, z0, x1, z1]) => px > x0 - .4 && px < x1 + .4 && pz > z0 - .4 && pz < z1 + .4)) continue;
       const gx = (node(ni + 1, nj) - node(ni - 1, nj)) / (2 * CELL), gz = (node(ni, nj + 1) - node(ni, nj - 1)) / (2 * CELL);
@@ -906,6 +912,7 @@ export function scatterCandidates(blockers: ScatterBlocker[]) {
     if (effectiveCoastFrame(px, pz).topDistance > 14) continue;
     if (roadDistance(px, pz) < 5.5) continue;
     if (blockers.some(b => px > b.minX && px < b.maxX && pz > b.minZ && pz < b.maxZ)) continue;
+    if(LAYOUT_V4&&clubScatterBlocked(px,pz))continue;
     if (PADS.some(([qx, qz]) => Math.hypot(px - qx, pz - qz) < 2.4)) continue;
     if (TENTS.some(([x0, z0, x1, z1]) => px > x0 - .5 && px < x1 + .5 && pz > z0 - .5 && pz < z1 + .5)) continue;
     const h = terrainHeight(px, pz), e = .3;

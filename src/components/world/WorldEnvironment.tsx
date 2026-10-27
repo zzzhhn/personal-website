@@ -17,6 +17,7 @@ import WorldYears from './WorldYears';
 import WorldCamp, { type CampLayout } from './WorldCamp';
 import { IslandTerrain } from './WorldTerrain';
 import WorldSea from './WorldSea';
+import WorldWaterInteractionLayer from './WorldWaterInteractionLayer';
 import { createWorldWaterMaterial, seaGlintUniforms } from './WorldWater';
 import { GlowClock, GlowDemo } from './WorldGlow';
 import { windUniforms } from './WorldWind';
@@ -418,6 +419,8 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
     skyUniforms.top.value.lerp(scratch.copy(ca.top).lerp(cb.top,s.mix).lerp(colors.storm,overcast),blend);
     skyUniforms.horizon.value.lerp(scratch.copy(ca.horizon).lerp(cb.horizon,s.mix).lerp(colors.storm,overcast),blend);
     skyUniforms.cloud.value = .12 + overcast; skyUniforms.darkness.value = n;
+    seaGlintUniforms.uWaterSkyTop.value.copy(skyUniforms.top.value);
+    seaGlintUniforms.uWaterSkyHorizon.value.copy(skyUniforms.horizon.value);
     {
       sea.color.lerp(scratch.copy(ca.sea).lerp(cb.sea,s.mix).lerp(colors.storm,overcast*.4),blend);
       // A low teal floor preserves the water silhouette; local warm park lights
@@ -458,6 +461,7 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
           }`} />
     </mesh>
     <WorldSea material={sea} />
+    <WorldWaterInteractionLayer />
   </>;
 }
 

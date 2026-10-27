@@ -1,0 +1,36 @@
+[
+  {
+    "title": "Backbay Lounge",
+    "artist": "Kevin MacLeod",
+    "license": "CC BY 4.0",
+    "source_file": "Kevin MacLeod - Backbay Lounge.mp3",
+    "source_sha256": "be307a0527d493bca7fcb0df3f719b00ff0e84a329918c6b2a8a624df89cd851",
+    "source_bpm": 120,
+    "source_start_seconds": 12.03,
+    "source_duration_seconds": 32.0,
+    "output_bpm": 118,
+    "beats": 64,
+    "output_samples": 1041356,
+    "sample_rate": 32000,
+    "processing": "atrim=start=12.03:duration=32.0,asetpts=PTS-STARTPTS,atempo=0.9833333333333333,loudnorm=I=-18:TP=-1.5:LRA=9,aresample=32000,apad,atrim=end_sample=1041356,asetpts=PTS-STARTPTS,afade=t=in:d=0.008,afade=t=out:st=32.534375:d=0.008",
+    "output_file": "backbay-lounge-club.mp3",
+    "output_sha256": "50ec8b504f2522a1d22d3c5c7f12908a2d115af905a1f85f8f75121255fb4cca"
+  },
+  {
+    "title": "Disco con Tutti",
+    "artist": "Kevin MacLeod",
+    "license": "CC BY 4.0",
+    "source_file": "Kevin MacLeod - Disco con Tutti.mp3",
+    "source_sha256": "8641496defde2e3849b5ec5cd7cddeb51985684e0987cfd4d46bc22eb77fef0e",
+    "source_bpm": 115,
+    "source_start_seconds": 4.194782608695652,
+    "source_duration_seconds": 33.391304347826086,
+    "output_bpm": 118,
+    "beats": 64,
+    "output_samples": 1041356,
+    "sample_rate": 32000,
+    "processing": "atrim=start=4.194782608695652:duration=33.391304347826086,asetpts=PTS-STARTPTS,atempo=1.0260869565217392,loudnorm=I=-18:TP=-1.5:LRA=9,aresample=32000,apad,atrim=end_sample=1041356,asetpts=PTS-STARTPTS,afade=t=in:d=0.008,afade=t=out:st=32.534375:d=0.008",
+    "output_file": "disco-con-tutti-club.mp3",
+    "output_sha256": "9bf3218dc0b79c7823598d0eaaf498806312985f45a8c52c23f1d95bc62efc1f"
+  }
+]

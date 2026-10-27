@@ -53,13 +53,16 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
   const quality = useWorldStore(s => s.quality);
   const frames = useRef(0);
   const frameDelta = useRef(0);
+  const [frameSample] = useState(() => import.meta.env.DEV && new URLSearchParams(window.location.search).get('qa') === '1'
+    ? { values: new Float32Array(180), count: 0, cursor: 0, warm: 0 } : null);
   useLayoutEffect(() => {
     if (document.hidden) return;
     // A demand frame must not include the time spent asleep. This also covers
     // menu edits and resize without changing the requested drawing resolution.
     clock.getDelta();
+    if (frameSample && !paused) { frameSample.count = 0; frameSample.cursor = 0; frameSample.warm = 0; }
     invalidate();
-  }, [paused, light, timeRevision, weather, quality, size.width, size.height, clock, invalidate]);
+  }, [paused, light, timeRevision, weather, quality, size.width, size.height, clock, invalidate, frameSample]);
   useEffect(() => { useWorldStore.setState(s => ({ loading: { ...s.loading, phase: 'scene' } })); }, []);
   useEffect(() => {
     if (!shot) return;
@@ -68,6 +71,14 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
   }, [shot, camera]);
   useFrame((_, delta) => {
     frameDelta.current = delta;
+    if (frameSample && !paused && !document.hidden && delta > 0) {
+      if (frameSample.warm < 30) frameSample.warm++;
+      else {
+        frameSample.values[frameSample.cursor] = delta * 1000;
+        frameSample.cursor = (frameSample.cursor + 1) % frameSample.values.length;
+        frameSample.count = Math.min(frameSample.count + 1, frameSample.values.length);
+      }
+    }
     frames.current++;
     // Loading may finish while paused; still deliver the existing ready signal.
     if (frames.current < 3) invalidate();
@@ -141,7 +152,12 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
           shadowMapSize, shadowType: gl.shadowMap.type, postprocessing: [] };
       },
       stats: () => ({ calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, programs: gl.info.programs?.length ?? 0, camera: camera.position.toArray() }),
-      renderLoop: () => ({ mode: get().frameloop, frame: gl.info.render.frame, delta: frameDelta.current, night: night.value, windTime: windUniforms.uWindTime.value }),
+      renderLoop: () => ({ mode: get().frameloop, frame: gl.info.render.frame, delta: frameDelta.current, night: night.value, windTime: windUniforms.uWindTime.value,
+        frameMs: (() => {
+          if (!frameSample?.count) return null;
+          const values = Array.from(frameSample.values.subarray(0, frameSample.count)).sort((a,b) => a-b);
+          return { samples: values.length, p50: values[Math.floor(values.length*.5)], p95: values[Math.floor(values.length*.95)], max: values[values.length-1] };
+        })() }),
       sceneObjects: () => { const result: string[] = []; scene.traverse(o => { if (o.name) result.push(o.name); }); return result; },
       claimedGreybox: () => claimedKeys(),
     };

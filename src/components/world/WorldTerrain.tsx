@@ -19,6 +19,7 @@ import { seaSpotDebug } from './WorldSea';
 import { useMineManifest } from './alpha-mine-assets';
 import { mineLocalToWorld } from './alpha-mine-layout';
 import { CLUB_SCATTER_BLOCKERS } from './djc-club-layout';
+import { ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout';
 
 /** quality-v3 island ground: one 0.5 m faceted terrain (WorldLandform) rendered with vertex
  * colours plus world-space detail and swash-driven wet sand, and the same triangles as the
@@ -200,6 +201,8 @@ vec4 tileMix(sampler2D t, vec2 uv, vec3 w) { return texture2D(t, uv) * w.x + tex
 
 /** Footprints where ground detail must not appear (buildings, forecourts, foundations, blocks). */
 const SCATTER_BLOCKERS: ScatterBlocker[] = [
+  {minX:ALPHA_EXCHANGE_FOOTPRINT.minX-.5,maxX:ALPHA_EXCHANGE_FOOTPRINT.maxX+3,minZ:ALPHA_EXCHANGE_FOOTPRINT.minZ-.5,maxZ:ALPHA_EXCHANGE_FOOTPRINT.maxZ+.5},
+  {minX:55.5,maxX:62,minZ:-56,maxZ:-43.5},
   ...(LAYOUT_V4 ? CLUB_SCATTER_BLOCKERS : []),
   ...BUILDINGS.flatMap(({ position: [x, , z], size: [w, , d] }) => [
     { minX: x - w / 2 - .6, maxX: x + w / 2 + .6, minZ: z - d / 2 - .6, maxZ: z + d / 2 + .6 },

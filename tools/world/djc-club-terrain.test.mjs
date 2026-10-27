@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { CLUB, CLUB_CAPE, CLUB_APPROACH, CLUB_SCATTER_BLOCKERS, clubCapeDistance, meshWaterlineLoops } from '../../src/components/world/djc-club-layout.ts';
+import { CLUB, CLUB_CAPE, CLUB_POOL, CLUB_APPROACH, CLUB_SOFT_PLANTS, CLUB_PALMS, clubScatterBlocked, clubCapeBoundary, clubCapeScale, clubCapeDistance, meshWaterlineLoops } from '../../src/components/world/djc-club-layout.ts';
 import { effectiveCoastFrame, terrainBaseHeight, terrainHeight, groundSample } from '../../src/components/world/WorldLandform.ts';
 import { WATER_Y } from '../../src/components/world/layout.ts';
 import { TERRAIN_GRID_V4, insidePolygon } from '../../src/components/world/layout-v4.ts';
@@ -8,9 +8,11 @@ import { TERRAIN_GRID_V4, insidePolygon } from '../../src/components/world/layou
 test('DJC contract, continuous earth, live shoulders and protected bridge water', () => {
   console.log('DJC analytic samples:', JSON.stringify([[24,40],[29,43],[32,55],[48,55],[61,56],[44,75],[35,-43],[39,-43],[50,10],[60,15]].map(([x,z]) => ({ x,z,height:+terrainHeight(x,z).toFixed(4),coast:+effectiveCoastFrame(x,z).height.toFixed(4),kind:groundSample(x,z).kind }))));
   assert.deepEqual(CLUB.center, [45, 1, 55]);
-  assert.deepEqual(CLUB.terrace, [61, 1.16, 56]);
+  assert.deepEqual(CLUB.terrace, [89, 1.4, 56]);
   assert.deepEqual(CLUB.entrance, [24, 1, 40]);
-  for (const [x, z] of [[72, 55], [12, 55], [42, 28], [42, 82]]) assert.ok(Math.abs(clubCapeDistance(x, z)) < 1e-8);
+  const coast=Array.from({length:96},(_,i)=>clubCapeBoundary(i*Math.PI*2/96));
+  for (const [x, z] of coast) assert.ok(Math.abs(clubCapeDistance(x, z)) < 1e-8);
+  const scales=Array.from({length:96},(_,i)=>clubCapeScale(i*Math.PI*2/96));assert.ok(Math.max(...scales)-Math.min(...scales)>.2);
   for (const p of [CLUB.center, CLUB.dance, CLUB.stage, CLUB.console, CLUB.terrace, CLUB.spawn]) {
     const base = terrainBaseHeight(p[0], p[2]), h = terrainHeight(p[0], p[2]);
     assert.ok(base >= .99 && h < 1.2, `dry supported club earth at ${p}: ${base}/${h}`);
@@ -27,12 +29,25 @@ test('DJC contract, continuous earth, live shoulders and protected bridge water'
   for (const [x, z] of [[42, -30], [50, 10], [60, 15]]) {
     assert.ok(terrainHeight(x, z) < WATER_Y, `bridge/channel/bay stays water at ${x},${z}`);
   }
-  const blocked = ([x, , z]) => CLUB_SCATTER_BLOCKERS.some(b => x >= b.minX && x <= b.maxX && z >= b.minZ && z <= b.maxZ);
+  const blocked = ([x, , z]) => clubScatterBlocked(x,z);
   for (const p of [CLUB.dance, CLUB.stage, CLUB.terrace, ...CLUB_APPROACH]) assert.ok(blocked(p));
   assert.equal(blocked([44, 1, 75]), false);
   assert.equal(groundSample(44, 75).kind, 'grass');
   assert.ok(effectiveCoastFrame(44, 75).topDistance < -5);
-  assert.ok(TERRAIN_GRID_V4.minX + TERRAIN_GRID_V4.nx * .5 >= CLUB_CAPE.center[0] + CLUB_CAPE.radii[0] + 39);
+  assert.ok(TERRAIN_GRID_V4.minX+TERRAIN_GRID_V4.nx*.5>=Math.max(...coast.map(p=>p[0]))+CLUB_CAPE.beachWidth+15,'waterline retains at least 15 m of underwater mesh');
+  for(let i=0;i<96;i++){const [x,z]=CLUB_POOL.boundary(i*Math.PI*2/96,5.2);assert.ok(terrainHeight(x,z)>.9,`pool promenade retains earth underneath at ${x},${z}`);}
+});
+
+test('shared shallow basin floor stays continuous, supported and free of vegetation',()=>{
+  for(let i=0;i<48;i++)for(const r of [0,.3,.6,.9]) {
+    const boundary=CLUB_POOL.boundary(i*Math.PI*2/48),x=CLUB.pool[0]+(boundary[0]-CLUB.pool[0])*r,z=CLUB.pool[2]+(boundary[1]-CLUB.pool[2])*r;
+    assert.ok(CLUB_POOL.contains(x,z));assert.ok(clubScatterBlocked(x,z));assert.equal(groundSample(x,z).grass,0);
+    const floor=CLUB_POOL.floorHeight(x,z),h=terrainHeight(x,z);assert.ok(Math.abs(h-floor+.035)<.001);assert.ok(floor>=.55&&floor<=1);
+    const e=.02,slope=Math.hypot((CLUB_POOL.floorHeight(x+e,z)-CLUB_POOL.floorHeight(x-e,z))/(2*e),(CLUB_POOL.floorHeight(x,z+e)-CLUB_POOL.floorHeight(x,z-e))/(2*e));assert.ok(slope<.45);
+  }
+});
+test('new vegetation roots sit outside hard circulation and pool paving',()=>{
+  for(const [x,z] of [...CLUB_SOFT_PLANTS,...CLUB_PALMS])assert.equal(clubScatterBlocked(x,z),false,`plant is not embedded in paving at ${x},${z}`);
 });
 
 test('waterline comes from triangles and retains a concave bay and separate island', () => {

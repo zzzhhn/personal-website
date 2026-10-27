@@ -34,6 +34,8 @@ export function heading(q: Rotation): number {
   return Math.atan2(-front[2], front[0]);
 }
 export function isUpsideDown(q: Rotation): boolean { return rotateVector([0, 1, 0], q)[1] < -0.25; }
+/** A car resting on its side also needs rescue; ordinary slopes retain their driving state. */
+export function needsVehicleRighting(q: Rotation): boolean { return rotateVector([0, 1, 0], q)[1] < .5; }
 export function advanceTimer(previous: number, condition: boolean, delta: number): number {
   return condition ? previous + delta : 0;
 }

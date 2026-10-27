@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { advanceTimer, cameraDistance, configureRaycastVehicle, heading, isUpsideDown, rotateVector, wheelGeometry, yawRotation } from './actor-physics.ts';
+import { advanceTimer, cameraDistance, configureRaycastVehicle, heading, isUpsideDown, needsVehicleRighting, rotateVector, wheelGeometry, yawRotation } from './actor-physics.ts';
 import { nearestRoadPoint, VEHICLES } from './layout.ts';
 
 const require = createRequire(import.meta.url);
@@ -25,6 +25,17 @@ test('vehicle contract and recovery timers preserve orientation, pause and road 
   assert.equal(cameraDistance(true,2,100),27);
   const road=nearestRoadPoint([-14,-20,31.5]);
   assert.ok(road[1]>1.14 && road[1]<4.84,'ramp recovery retains interpolated surface height');
+});
+
+test('side-resting cars can be righted after two seconds without flagging normal slopes', () => {
+  const roll = degrees => ({x:Math.sin(degrees*Math.PI/360),y:0,z:0,w:Math.cos(degrees*Math.PI/360)});
+  for(const degrees of [0,15,30,45])assert.equal(needsVehicleRighting(roll(degrees)),false);
+  for(const degrees of [-90,70,90,120,180]) {
+    let elapsed=0;
+    for(let frame=0;frame<120;frame++)elapsed=advanceTimer(elapsed,needsVehicleRighting(roll(degrees)),1/60);
+    assert.ok(elapsed>1.99,`${degrees} degrees becomes recoverable`);
+    assert.equal(advanceTimer(elapsed,needsVehicleRighting(roll(0)),1/60),0);
+  }
 });
 
 test('three Rapier chassis settle on four suspension rays, drive +X, brake and collide', () => {

@@ -2,6 +2,13 @@ import type { Collider, RigidBody, World } from '@dimforge/rapier3d-compat';
 import type * as Rapier from '@dimforge/rapier3d-compat';
 
 type Point = { x: number; y: number; z: number };
+/** Collision may legitimately compress an orbit to its pivot. A zero lookAt vector
+ * loses the requested yaw/pitch; keep looking inward along the orbit in that case.
+ * This changes only orientation, never the collision-constrained camera position. */
+export function cameraLookTarget(position: Point, target: Point, orbit: readonly [number, number, number]): Point {
+  if (Math.hypot(target.x-position.x,target.y-position.y,target.z-position.z) >= .001) return target;
+  return { x: position.x-orbit[0], y: position.y-orbit[1], z: position.z-orbit[2] };
+}
 /** A sphere enclosing every near-plane corner, including wide windows and first-person FOV. */
 export function cameraCollisionRadius(near: number, fov: number, aspect: number, minimum = .22) {
   const h = near * Math.tan(fov * Math.PI / 360);

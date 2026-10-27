@@ -1,8 +1,9 @@
-import { BufferAttribute, BufferGeometry, CanvasTexture, Color, Matrix4, Mesh, MeshStandardMaterial, type Material, type Object3D } from 'three';
+import { BufferAttribute, BufferGeometry, CanvasTexture, Color, Matrix4, Mesh, MeshStandardMaterial, Vector3, type Material, type Object3D } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import type { VehicleId } from './types';
 import HULLS from './WorldVehicleHulls.json' with { type: 'json' };
+import { VEHICLE_AUTHORED_DOORS, VEHICLE_PASSAGE, VEHICLE_SEAT_ADJUSTMENT } from './WorldVehicleDoors';
 
 /** L1 vehicle assets (DESIGN docs/world/vehicles). An id appears here only once its GLB and hull
  * entry exist; others keep the greybox look and legacy colliders. */
@@ -12,6 +13,40 @@ export type VehicleHullEntry = { bodyY: number; clip: number; wheelRadius: numbe
 export function vehicleHulls(id: VehicleId): VehicleHullEntry | null {
   const asset = VEHICLE_ASSETS[id];
   return asset ? ((HULLS as Record<string, VehicleHullEntry>)[asset] ?? null) : null;
+}
+
+/** Seats are separate closed boxes inside the shipped merged body, not separate nodes.
+ * Transform only complete seat triangles inside their authored bounds. The floor,
+ * body shell, dashboard and exterior retain their exact baked positions at both LODs. */
+export function adaptVehicleSeats(id:VehicleId,source:BufferGeometry) {
+  if(id==='coupe')return source;
+  const seat=VEHICLE_AUTHORED_DOORS[id].seat,adjust=VEHICLE_SEAT_ADJUSTMENT[id],floor=VEHICLE_PASSAGE[id].floor;
+  const result=source.index?source.toNonIndexed():source.clone(),position=result.getAttribute('position'),normal=result.getAttribute('normal');
+  const counts={cushion:0,backrest:0,headrest:0,pedestal:0},eps=.0003;
+  for(const side of [-1,1]){
+    const z=side*seat[2],x=seat[0],y=seat[1],drop=adjust.top-y;
+    const parts=[
+      {name:'cushion' as const,min:[x-.25,y-.13,z-.22],max:[x+.25,y,z+.22],low:adjust.top-adjust.thickness,high:adjust.top},
+      {name:'backrest' as const,min:[x-.30,y-.04,z-.22],max:[x-.23,y+.39,z+.22],low:floor+.005,high:y+.39+drop},
+      {name:'headrest' as const,min:[x-.31,y+.34,z-.13],max:[x-.21,y+.49,z+.13],low:y+.34+drop,high:y+.49+drop},
+      {name:'pedestal' as const,min:[x-.17,floor-.02,z-.14],max:[x+.14,y-.12,z+.14],low:floor,high:adjust.top-adjust.thickness},
+    ];
+    for(let i=0;i<position.count;i+=3){
+      const part=parts.find(p=>[0,1,2].every(j=>[position.getX(i+j),position.getY(i+j),position.getZ(i+j)].every((v,k)=>v>=p.min[k]-eps&&v<=p.max[k]+eps)));
+      if(!part)continue;
+      const scale=(part.high-part.low)/(part.max[1]-part.min[1]);
+      for(let j=0;j<3;j++){
+        position.setY(i+j,part.low+(position.getY(i+j)-part.min[1])*scale);
+        position.setX(i+j,position.getX(i+j)+adjust.shiftX);
+        const reclined=part.name==='backrest'||part.name==='headrest';
+        if(reclined){const px=x+adjust.shiftX-.25,py=adjust.top-.025,dx=position.getX(i+j)-px,dy=position.getY(i+j)-py,c=Math.cos(adjust.recline),s=Math.sin(adjust.recline);
+          position.setX(i+j,px+dx*c-dy*s);position.setY(i+j,py+dx*s+dy*c);}
+        if(normal){const n=new Vector3(normal.getX(i+j),normal.getY(i+j)/scale,normal.getZ(i+j)).normalize();if(reclined)n.applyAxisAngle(new Vector3(0,0,1),adjust.recline);normal.setXYZ(i+j,n.x,n.y,n.z);}
+      }counts[part.name]++;
+    }
+  }
+  position.needsUpdate=true;if(normal)normal.needsUpdate=true;result.computeBoundingSphere();
+  result.userData.seatAdaptation={top:adjust.top,bottom:adjust.top-adjust.thickness,floor,shiftX:adjust.shiftX,recline:adjust.recline,triangles:counts};return result;
 }
 
 /** Material roles (ART-LOCK v3) -> per-vertex role index used by the shared vehicle shader. */

@@ -1,0 +1,143 @@
+Browser tab: 1395913741, Title: "Bobby’s island · World playtest", URL: "http://127.0.0.1:4343/world/?start=brain&quality=balanced&paused=1&qa=1".
+1 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4343/world/?start=brain&quality=balanced&paused=1&qa=1
+	2 container Bobby 的城岛
+		3 container
+			4 text 经历 · 项目 · 漫游
+			5 heading Bobby 的城岛, Value: 1
+				6 text Bobby 的城岛
+			7 button 回到营地, Help: 保留矿石、挖矿进度和研究结果。
+			8 pop up button 地图与设置 Esc
+		9 container
+			10 container 城岛地图 · 环岛海岸
+			11 text 环岛海岸
+		16 container WorldQuant 因子勘探仪
+			17 text WQ / FIELDWORK
+			18 container
+				19 text 00  / 03
+			20 container 相对人物朝向的矿脉方位
+			21 text 信号
+			22 text 未辨认矿线
+			23 text 等待工具接入
+			24 text 入口左侧取工具 · E
+			25 container 短期反转
+				26 text ↶
+				27 text ???
+			28 container 横截面动量
+				29 text ↗
+				30 text ???
+			31 container 低波动
+				32 text ≈
+				33 text ???
+			34 text 将矿石投入 A／B，结果会从池面升起。
+			35 button (collapsed) 计算口径与来源 +, Secondary Actions: Expand
+				36 text 计算口径与来源
+				37 text +
+			38 text {
+ "position": [
+  -82.28,
+  2.04,
+  -60.76
+ ],
+ "yaw": 3.14,
+ "grounded": true,
+ "equipped": false,
+ "carried": null,
+ "veins": {
+  "REVERSAL_5": {
+   "revealed": false,
+   "hits": 0,
+   "collected": false
+  },
+  "ROC20_RANK": {
+   "revealed": false,
+   "hits": 0,
+   "collected": false
+  },
+  "LOW_STD_20": {
+   "revealed": false,
+   "hits": 0,
+   "collected": false
+  }
+ },
+ "bays": [
+  null,
+  null
+ ],
+ "online": {
+  "REVERSAL_5": {
+   "status": "idle"
+  },
+  "ROC20_RANK": {
+   "status": "idle"
+  },
+  "LOW_STD_20": {
+   "status": "idle"
+  }
+ },
+ "assetsReady": false,
+ "action": null,
+ "contact": {
+  "kind": "",
+  "factor": "",
+  "accepted": false,
+  "error": 0,
+  "leftError": 0,
+  "sampledElapsed": 0
+ }
+}
+		39 container
+			40 button QA · 读取当前渲染开销
+			41 button QA · 读取动作与接触
+			42 button QA · 读取 Club 音频
+			43 button QA · 读取水面接触
+			44 button (disabled) QA · 倾覆当前车辆
+			45 button QA · 上车并定格门洞
+			46 button QA · 定格入座
+			47 button QA · 继续上下车动作
+			48 button QA · 当前角色或车辆落水
+			49 checkbox QA · 模拟回测连接中断, Value: 0
+			54 text {
+ "water": {
+  "emitted": 5,
+  "active": [
+   {
+    "x": -82.10266632082077,
+    "z": -60.763107177734554,
+    "y": 1.42,
+    "at": 81.00010000000833,
+    "strength": 0.3399709027450942,
+    "radius": 0.12,
+    "splash": 0.08886302466230596
+   }
+  ]
+ }
+}
+		50 text {
+ "position": [
+  -82.28,
+  2.04,
+  -60.76
+ ],
+ "yaw": 3.14,
+ "grounded": true,
+ "vehicle": null,
+ "drive": null,
+ "grass": {
+  "instances": 217,
+  "disturbers": 1,
+  "trampled": 6,
+  "strength": 0.804
+ },
+ "exchange": {
+  "phase": "closed",
+  "days": 0,
+  "day": 0,
+  "cash": 10000,
+  "units": 0,
+  "equity": 10000,
+  "message": "ring-first",
+  "ledger": []
+ }
+}
+
+The focused UI element is 43 button QA · 读取水面接触

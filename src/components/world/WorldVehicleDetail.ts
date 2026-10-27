@@ -4,11 +4,28 @@ import { AdditiveBlending, BoxGeometry, BufferAttribute, BufferGeometry, Color, 
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { bakeNode } from './WorldVehicleAssets';
 import type { VehicleId } from './types';
+import { vehicleDoorCloseContact } from './WorldVehicleDoors';
 
 type Point = [number, number, number];
 type Aperture = [number, number][]; // lateral Z, height Y, counterclockwise
 type Plane = { normal: Point; offset: number };
 type Vertex = Record<string, number[]>;
+
+/** Two actual powered-close switches on the coupe's inner trim. The hand target is the
+ * button's outer face, shared with the animation contract, not an invisible proxy. */
+export function createVehicleDoorControls(id:VehicleId,bodyY:number) {
+  if(id!=='coupe')return null;
+  const group=new Group();group.name='vehicle-coupe-powered-door-controls';
+  const trim=new MeshStandardMaterial({color:'#303A3D',roughness:.7}),button=new MeshStandardMaterial({color:'#63BEB3',emissive:'#63BEB3',emissiveIntensity:.22,roughness:.45});
+  for(const side of [-1,1] as const){
+    const point=vehicleDoorCloseContact(id,side,0,new Vector3());point.y+=bodyY;
+    const back=new Mesh(new BoxGeometry(.095,.09,.025),trim);back.position.copy(point).add(new Vector3(0,0,side*.022));back.name=`door-close-trim-${side}`;
+    const key=new Mesh(new CylinderGeometry(.024,.024,.014,12),button);key.rotation.x=Math.PI/2;key.position.copy(point).add(new Vector3(0,0,side*.007));key.name=`door-close-switch-${side}`;
+    key.userData.contact=point.toArray();group.add(back,key);
+  }
+  group.userData.noOcclusionFade=true;
+  return group;
+}
 const EPS = 1e-8;
 const PALETTE = {
   dark: ['#3A3F47', .85, 0, 'accent'], metal: ['#A3A7AA', .4, .55, 'metal'],

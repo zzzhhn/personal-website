@@ -1,0 +1,30 @@
+15:04:37 [content] Syncing content
+15:04:37 [content] Synced content
+15:04:37 [types] Generated 307ms
+15:04:37 [build] output: "static"
+15:04:37 [build] mode: "static"
+15:04:37 [build] directory: /tmp/bobby-club-presence-final-20261027/
+15:04:37 [build] Collecting build info...
+15:04:37 [build] ✓ Completed in 318ms.
+15:04:37 [build] Building static entrypoints...
+15:04:39 [vite] ✓ built in 1.37s
+15:04:42 [WARN] [vite] [plugin vite:reporter] 
+(!) /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/layout-v4.ts is dynamically imported by /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldMap.tsx but also statically imported by /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldDistricts.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldLandform.ts, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldStreetBillboards.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldStreetConstructionSigns.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldStreetFixed.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldStreetKnock.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldStreetLandmarks.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldStreetRails.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldStreetTrees.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldStreetYears.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldTerrain.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldTerrainPaving.ts, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/WorldTownAssets.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/layout.ts, dynamic import will not move module into another chunk.
+
+15:04:42 [WARN] [vite] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+15:04:42 [vite] ✓ built in 3.32s
+15:04:42 [build] Rearranging server assets...
+
+ generating static routes 
+15:04:42   ├─ /world/index.html (+15ms) 
+15:04:42   ├─ /index.html (+132ms) 
+15:04:42 ✓ Completed in 163ms.
+
+15:04:42 [build] ✓ Completed in 4.88s.
+15:04:42 [@astrojs/sitemap] `sitemap-index.xml` created at `../../../../../../tmp/bobby-club-presence-final-20261027`
+15:04:42 [build] 2 page(s) built in 5.21s
+15:04:42 [build] Complete!

@@ -1,15 +1,17 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { CuboidCollider, RigidBody } from '@react-three/rapier';
-import { BoxGeometry, CanvasTexture, CircleGeometry, Euler, Group, LatheGeometry, Matrix4, MeshStandardMaterial, PlaneGeometry, Quaternion, SRGBColorSpace, TorusGeometry, Vector2, Vector3 } from 'three';
+import { TrimeshCollider, RigidBody } from '@react-three/rapier';
+import { CanvasTexture, CircleGeometry, Group, LatheGeometry, MeshStandardMaterial, PlaneGeometry, SRGBColorSpace, Vector2 } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
-import { ParkGeo, mergeBatch, parkMaterial, toBatch } from './WorldParkKit';
+import { parkMaterial } from './WorldParkKit';
+import { buildAlphaExchangeGeometry } from './WorldAlphaExchangeGeometry';
+import { night } from './WorldNight';
 import { useInteractable } from './WorldInteract';
 import { useWorldStore } from './store';
 import { parkAudio } from './WorldParkAudio';
 import { actExchange, exchangeEquity, releaseExchange, ringExchange, useAlphaExchange, type ExchangeMessage } from './alpha-exchange-state';
 import { EXCHANGE_INITIAL_POINTS } from './alpha-exchange-data';
-import { ALPHA_EXCHANGE_ORIGIN, EXCHANGE_STATIONS, exchangeBoxes, exchangeWorld } from './alpha-exchange-layout';
+import { ALPHA_EXCHANGE_ORIGIN, EXCHANGE_HALL, EXCHANGE_STATIONS, exchangeWorld } from './alpha-exchange-layout';
 import type { Vec3 } from './types';
 export { ALPHA_EXCHANGE_ORIGIN, ALPHA_EXCHANGE_FOOTPRINT, ALPHA_EXCHANGE_APPROACH, ALPHA_EXCHANGE_APPROACH_WIDTH } from './alpha-exchange-layout';
 
@@ -33,19 +35,19 @@ const MESSAGES:Record<ExchangeMessage,[string,string]>={
 };
 const money=(n:number)=>n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 
-function texturePlane(width:number,height:number,position:Vec3,rect:[number,number,number,number],circle=false) {
+function texturePlane(width:number,height:number,position:Vec3,rect:[number,number,number,number],circle=false,yaw=0) {
   const g=circle?new CircleGeometry(width/2,32):new PlaneGeometry(width,height),uv=g.getAttribute('uv');
   const [x,y,w,h]=rect;
   for(let i=0;i<uv.count;i++){uv.setXY(i,(x+uv.getX(i)*w)/1024,1-(y+(1-uv.getY(i))*h)/1024);}
-  g.translate(...position);return g;
+  g.rotateY(yaw);g.translate(...position);return g;
 }
 
 function ExchangeInput({projectId}:{projectId?:string}) {
   const phase=useAlphaExchange(s=>s.phase);
-  useInteractable(projectId?{id:'alpha-exchange-project',kind:'board',position:exchangeWorld([0,1.4,-12.8]),radius:1.8,
+  useInteractable(projectId?{id:'alpha-exchange-project',kind:'board',position:exchangeWorld(EXCHANGE_HALL.project),radius:1.8,
     label:{zh:'Alpha Agent · 项目与数据',en:'Alpha Agent · project & data'},
     onInteract:()=>useWorldStore.setState({card:{kind:'project',id:projectId}})}:null);
-  useInteractable({id:'alpha-exchange-bell',kind:'exhibit',position:exchangeWorld([0,1.55,-1.45]),radius:1.65,
+  useInteractable({id:'alpha-exchange-bell',kind:'exhibit',position:exchangeWorld(EXCHANGE_HALL.bell),radius:1.65,
     label:phase==='loading'?{zh:'历史净值读取中',en:'Historical benchmark loading'}:{zh:phase==='error'?'敲钟重试历史净值':'敲响开市钟',en:phase==='error'?'Ring to retry history':'Ring the opening bell'},
     enabled:()=>useAlphaExchange.getState().phase!=='loading',onInteract:()=>{parkAudio.cue('scan',.55);void ringExchange();}});
   return <>{EXCHANGE_STATIONS.map(s=><ExchangeStationInput key={s.action} station={s}/>)}</>;
@@ -57,45 +59,27 @@ function ExchangeStationInput({station}:{station:(typeof EXCHANGE_STATIONS)[numb
   return null;
 }
 
-/** A walkable exchange pavilion. Architecture is one static vertex-colour batch; all board faces
+/** A walkable high trading hall. Architecture is one static vertex-colour batch; all board faces
  * share one 1024² atlas, redrawn only after a language or game-state change. No timer or mount fetch. */
 export default function WorldAlphaExchange({projectId}:{projectId?:string}) {
   const state=useAlphaExchange(),lang=useWorldStore(s=>s.lang),zh=lang==='zh',bell=useRef<Group>(null);
   const bellClock=useRef({rings:state.rings,elapsed:1});
   const built=useMemo(()=>{
-    const boxes=exchangeBoxes(),parts=new ParkGeo();
-    for(const b of boxes){const source=new BoxGeometry(...b.size);
-      const frame=new Matrix4().compose(new Vector3(...b.center),new Quaternion().setFromEuler(new Euler(...(b.rotation??[0,0,0]))),new Vector3(1,1,1));
-      parts.pieces.push(toBatch(source,frame,b.color));source.dispose();}
-    // Staggered parquet shares the static batch; seams give the floor a physical scale.
-    for(let row=0;row<38;row++)for(let col=0;col<6;col++){
-      const x=-8.35+row*.445,z=-15.9+col*3+(row%2)*1.5;
-      const end=Math.min(1.8,z+2.97);if(end<=z)continue;
-      parts.box([x,.009,(z+end)/2],[.433,.016,end-z],['#92775a','#9b8061','#a08868','#967d5e'][(row*7+col*3)%4]);
-    }
-    // Inlaid ring and radial parquet show the pit without creating a physical step.
-    parts.cyl([0,-.012,-8.1],[0,.001,-8.1],2.72,2.72,40,'#71604c');
-    for(let i=0;i<16;i++){const a=i*Math.PI/8;
-      parts.cyl([.4*Math.cos(a),.003,-8.1+.4*Math.sin(a)],[2.7*Math.cos(a),.003,-8.1+2.7*Math.sin(a)],.012,.012,4,'#af945f');}
-    // Small roof slats connect the arched ribs while preserving an open view into the trading floor.
-    for(const x of [-6.5,-5.2,5.2,6.5]){const y=3.6+2.5*Math.sqrt(1-(x/7.45)**2);parts.box([x,y,-7.2],[.2,.14,14.9],'#647261');}
-    // Brass clock case and opening-bell gantry are geometry, not flat scenery.
-    const clock=new TorusGeometry(.64,.075,8,32);clock.translate(0,5.35,-14.03);parts.pieces.push(toBatch(clock,new Matrix4(),'#b8975a'));clock.dispose();
-    parts.box([-.43,1.51,-1.8],[.07,.68,.07],'#b8975a');parts.box([.43,1.51,-1.8],[.07,.68,.07],'#b8975a');parts.box([0,1.83,-1.8],[.91,.07,.1],'#b8975a');
-    const body=mergeBatch(parts.pieces);
-    const faces=mergeGeometries([
-      texturePlane(9.8,2.75,[0,3.05,-14.115],[0,0,1024,288]),
-      texturePlane(8.6,.95,[0,4.5,.25],[0,320,1024,128]),
-      ...EXCHANGE_STATIONS.map((s,i)=>texturePlane(1.38,.56,[s.at[0],1.5,s.at[2]+.026],[i*256,464,256,128])),
-      texturePlane(1.12,1.12,[0,5.35,-14.005],[0,640,256,256],true),
-    ])!;
+    const architecture=buildAlphaExchangeGeometry();
+    const faceParts=[
+      texturePlane(9.8,2.75,EXCHANGE_HALL.board,[0,0,1024,288]),
+      texturePlane(8.6,.95,[0,5.65,1.15],[0,320,1024,128]),
+      ...EXCHANGE_STATIONS.map((s,i)=>texturePlane(.72,.45,[s.at[0]+.2*Math.sin(s.yaw),1.49,s.at[2]+.2*Math.cos(s.yaw)],[i*256,464,256,128],false,s.yaw)),
+      texturePlane(3,3,[EXCHANGE_HALL.clock[0],EXCHANGE_HALL.clock[1],EXCHANGE_HALL.clock[2]+.42],[0,640,256,256],true),
+    ];
+    const faces=mergeGeometries(faceParts)!;faceParts.forEach(g=>g.dispose());
     const bellGeometry=new LatheGeometry([new Vector2(.3,-.32),new Vector2(.31,-.27),new Vector2(.24,-.23),new Vector2(.16,-.04),new Vector2(.08,.02),new Vector2(.025,.03)],20);
-    return {boxes,body,faces,bellGeometry};
+    return {...architecture,faces,bellGeometry};
   },[]);
   const atlas=useMemo(()=>{const canvas=document.createElement('canvas');canvas.width=canvas.height=1024;
     const texture=new CanvasTexture(canvas);texture.colorSpace=SRGBColorSpace;texture.anisotropy=4;
     return{canvas,texture,material:new MeshStandardMaterial({map:texture,roughness:.85,metalness:0,emissive:'#ffffff',emissiveMap:texture,emissiveIntensity:.16}),
-      brass:new MeshStandardMaterial({color:'#b8975a',metalness:.55,roughness:.42})};},[]);
+      brass:new MeshStandardMaterial({color:'#b8975a',metalness:.55,roughness:.42}),glass:new MeshStandardMaterial({vertexColors:true,color:'#f3dba8',transparent:true,opacity:.29,roughness:.35,metalness:0,depthWrite:false,emissive:'#c19b56',emissiveIntensity:.04})};},[]);
   useEffect(()=>{
     const c=atlas.canvas.getContext('2d')!;c.clearRect(0,0,1024,1024);
     c.fillStyle='#253e39';c.fillRect(0,0,1024,608);c.textBaseline='alphabetic';
@@ -129,7 +113,7 @@ export default function WorldAlphaExchange({projectId}:{projectId?:string}) {
     c.strokeStyle='#354d43';c.lineWidth=9;c.beginPath();c.moveTo(128,768);c.lineTo(60,768);c.moveTo(128,768);c.lineTo(128,852);c.stroke();
     c.fillStyle='#867041';c.font='600 18px Georgia';c.fillText('REPLAY',128,718);c.textAlign='left';atlas.texture.needsUpdate=true;
   },[atlas,state,zh]);
-  useEffect(()=>()=>{releaseExchange();built.body.dispose();built.faces.dispose();built.bellGeometry.dispose();atlas.texture.dispose();atlas.material.dispose();atlas.brass.dispose();},[built,atlas]);
+  useEffect(()=>()=>{releaseExchange();built.body.dispose();built.glass.dispose();built.faces.dispose();built.bellGeometry.dispose();atlas.texture.dispose();atlas.material.dispose();atlas.brass.dispose();atlas.glass.dispose();},[built,atlas]);
   useEffect(()=>{
     if(new URLSearchParams(window.location.search).get('qa')!=='1')return;
     const api={read:()=>{const s=useAlphaExchange.getState();return{phase:s.phase,date:s.history[s.day]?.date??null,day:s.day,days:s.history.length,
@@ -138,20 +122,22 @@ export default function WorldAlphaExchange({projectId}:{projectId?:string}) {
     return()=>{if(host.__worldExchange===api)delete host.__worldExchange;};
   },[]);
   useFrame((_,dt)=>{
+    atlas.glass.emissiveIntensity=.025+.13*night.value;
     if(useWorldStore.getState().paused||useWorldStore.getState().shot)return;
     const clock=bellClock.current,rings=useAlphaExchange.getState().rings;if(rings!==clock.rings){clock.rings=rings;clock.elapsed=0;}
     if(clock.elapsed>=1)return;clock.elapsed=Math.min(1,clock.elapsed+Math.min(.05,dt));
     if(bell.current)bell.current.rotation.z=clock.elapsed>=1?0:Math.sin(clock.elapsed*25)*.32*Math.exp(-clock.elapsed*5);
   });
-  return <group name="alpha-agent-exchange" position={ALPHA_EXCHANGE_ORIGIN}>
+  return <group name="alpha-agent-exchange" position={ALPHA_EXCHANGE_ORIGIN} userData={{noOcclusionFade:true}}>
     <mesh name="alpha-exchange-architecture" geometry={built.body} material={parkMaterial()} castShadow receiveShadow/>
     <mesh name="alpha-exchange-displays" geometry={built.faces} material={atlas.material}/>
+    <mesh name="alpha-exchange-skylights" geometry={built.glass} material={atlas.glass} receiveShadow renderOrder={1}/>
+    <pointLight position={[-6,6,-10]} color="#ffdb9d" intensity={80} distance={20} decay={2} castShadow={false}/>
+    <pointLight position={[6,6,-21]} color="#ffd293" intensity={65} distance={18} decay={2} castShadow={false}/>
     <group ref={bell} position={[0,1.79,-1.8]}><mesh geometry={built.bellGeometry} material={atlas.brass} castShadow/>
       <mesh position={[0,-.3,0]} material={atlas.brass}><sphereGeometry args={[.055,8,6]}/></mesh></group>
-    {[true,false].map(surface=><RigidBody key={String(surface)} type="fixed" colliders={false}
-      userData={surface?{surface:true,assetId:'alpha-exchange'}:{solid:true,assetId:'alpha-exchange'}}>
-      {built.boxes.filter(b=>!!b.surface===surface).map(b=><CuboidCollider key={b.id} name={`alpha-exchange-${b.id}`}
-        position={b.center} rotation={b.rotation} args={[b.size[0]/2,b.size[1]/2,b.size[2]/2]} friction={.65}/>)}
+    {(['surface','solid'] as const).map(kind=><RigidBody key={kind} type="fixed" colliders={false} userData={{[kind]:true,assetId:'alpha-exchange'}}>
+      <TrimeshCollider name={`alpha-exchange-${kind}`} args={[built.colliders[kind].vertices,built.colliders[kind].indices]} friction={.85}/>
     </RigidBody>)}
     <ExchangeInput projectId={projectId}/>
   </group>;

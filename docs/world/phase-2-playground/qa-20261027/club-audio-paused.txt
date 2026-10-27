@@ -1,0 +1,92 @@
+Browser tab: 1395913741, Title: "Bobby’s island · World playtest", URL: "http://127.0.0.1:4343/world/?start=club-decks&quality=balanced&paused=1&qa=1".
+1 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4343/world/?start=club-decks&quality=balanced&paused=1&qa=1
+	2 container 地图与设置
+		3 text BOBBY 的城岛
+		4 heading 地图与设置, Value: 2
+			5 text 地图与设置
+		6 container 城岛地图. 点击地图设置航点，再点一次航点取消。
+		7 text 你
+		8 text 实习楼（由旧到新）
+		9 text 项目展位
+		10 text 预留地块
+		11 text 点击地图设置航点，再点一次航点取消。
+		12 container
+			13 button 继续探索
+			14 button 回到营地
+			15 text 保留矿石、挖矿进度和研究结果。
+			16 container 语言
+				17 text 语言
+				18 checkbox English, Value: 0
+				19 checkbox 中文, Value: 1
+			20 container 时间 岛上时间
+				21 container
+					22 text 时间
+					23 container 岛上时间
+						24 text 15:00
+				25 checkbox 清晨 06:00, Value: 0
+					26 text 清晨
+					27 text 06:00
+				28 checkbox 正午 12:00, Value: 0
+					29 text 正午
+					30 text 12:00
+				31 checkbox 午后 15:00, Value: 1
+					32 text 午后
+					33 text 15:00
+				34 checkbox 黄昏 17:30, Value: 0
+					35 text 黄昏
+					36 text 17:30
+				37 checkbox 傍晚 19:00, Value: 0
+					38 text 傍晚
+					39 text 19:00
+				40 checkbox 深夜 00:00, Value: 0
+					41 text 深夜
+					42 text 00:00
+			74 checkbox (settable, integer) Description: 时间自然流逝, Value: 0
+			75 text 时间自然流逝 现实 1 秒 = 岛上 1 分钟。暂停世界时，时间也会暂停。
+			47 container 天气
+				48 text 天气
+				49 checkbox 晴天, Value: 1
+				50 checkbox 下雨, Value: 0
+				51 checkbox 下雪, Value: 0
+			52 container 画面质量
+				53 text 画面质量
+				54 checkbox 流畅, Value: 1
+				55 checkbox 高清, Value: 0
+			56 text 如果移动时卡顿，可以切换到流畅。
+			57 button (collapsed) 操作, Secondary Actions: Expand
+				58 text 操作
+			59 button (collapsed) 致谢, Secondary Actions: Expand
+				60 text 致谢
+			61 link Description: ← 回到简历, Value: 127.0.0.1:4343/#about
+		62 container
+			63 button QA · 读取当前渲染开销
+			64 button QA · 读取动作与接触
+			65 button QA · 读取 Club 音频
+			66 button QA · 读取水面接触
+			67 button (disabled) QA · 倾覆当前车辆
+			68 button QA · 上车并定格门洞
+			69 button QA · 定格入座
+			70 button QA · 继续上下车动作
+			71 button QA · 当前角色或车辆落水
+			72 checkbox QA · 模拟回测连接中断, Value: 0
+			73 text {
+ "club": {
+  "phase": "ready",
+  "context": "suspended",
+  "sources": 0,
+  "buffers": 2,
+  "contextSeconds": 99.61066666666666,
+  "transportBeats": 195.89048888888885,
+  "decodedSeconds": [
+   32.542375,
+   32.542375
+  ],
+  "bufferBytes": 12496272,
+  "owners": 1,
+  "timers": 0
+ },
+ "mode": "dj",
+ "step": 0
+}
+
+The focused UI element is 65 button QA · 读取 Club 音频

@@ -4,7 +4,7 @@ import { worldText } from './world-i18n';
 import { ISLAND_OUTLINE, LAYOUT_V4, ROAD_POINTS, BOARDWALK_POINTS, BUILDINGS, BOOTHS, FOUNDATIONS, CAMP_CENTER } from './layout';
 import { ALPHA_MINE_CONNECTOR, ALPHA_MINE_CONNECTOR_WIDTH, ALPHA_MINE_FOOTPRINT_POINTS, ALPHA_MINE_ORIGIN, isOnAlphaMineBase } from './alpha-mine-layout';
 import { ALPHA_EXCHANGE_ORIGIN, ALPHA_EXCHANGE_APPROACH, ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout';
-import { CLUB, CLUB_APPROACH } from './djc-club-layout';
+import { CLUB, CLUB_APPROACH, CLUB_POOL, CLUB_WALKWAYS } from './djc-club-layout';
 
 type MapRoad = { pts: number[][]; width: number; color: string; dash?: string };
 type Landmark = { id: string; p: [number, number]; label: string };
@@ -91,11 +91,13 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
     <polyline points={path(BOARDWALK_POINTS)} fill='none' stroke='#B99469' strokeWidth='3' strokeLinecap='round' />
     <polyline points={path(ALPHA_MINE_CONNECTOR)} fill='none' stroke='#B99469' strokeWidth={ALPHA_MINE_CONNECTOR_WIDTH} strokeLinejoin='round' strokeLinecap='round' />
     <polyline points={path(ALPHA_EXCHANGE_APPROACH)} fill='none' stroke='#B99469' strokeWidth='3.1'/>
-    <rect x={ALPHA_EXCHANGE_FOOTPRINT.minX} y={ALPHA_EXCHANGE_FOOTPRINT.minZ} width={17.2} height={18.5} fill='#8d7960' stroke='#c5b591'/>
+    <rect data-exchange-footprint='building' x={ALPHA_EXCHANGE_FOOTPRINT.minX} y={ALPHA_EXCHANGE_FOOTPRINT.minZ} width={ALPHA_EXCHANGE_FOOTPRINT.maxX-ALPHA_EXCHANGE_FOOTPRINT.minX} height={ALPHA_EXCHANGE_FOOTPRINT.maxZ-ALPHA_EXCHANGE_FOOTPRINT.minZ} fill='#8d7960' stroke='#c5b591'/>
     <text x={ALPHA_EXCHANGE_ORIGIN[0]} y={ALPHA_EXCHANGE_ORIGIN[2]-5} textAnchor='middle' fontSize={full?'3.6':'4.4'} fill='#f1e3bc'>{lang==='zh'?'交易所':'EXCHANGE'}</text>
     {LAYOUT_V4 && <g data-experience-id='djc'>
       <polyline points={path(CLUB_APPROACH)} fill='none' stroke='#B99469' strokeWidth='2.4' strokeLinecap='round'/>
       <ellipse cx={CLUB.dance[0]} cy={CLUB.dance[2]} rx={CLUB.danceRadii[0]} ry={CLUB.danceRadii[1]} fill='#94775B' stroke='#D9C5A3' strokeWidth='.8'/>
+      {CLUB_WALKWAYS.map((p,i)=><polygon key={i} points={path(p)} fill='#B9A788'/>)}
+      <polygon data-club-pool='physical' points={path(CLUB_POOL.outline)} fill='#558D8C' stroke='#D0C7AF' strokeWidth='1.2' strokeLinejoin='round'/>
       <circle cx={CLUB.center[0]} cy={CLUB.center[2]} r={2.7*s} fill='#23343D' stroke='#4FD1C5' strokeWidth='.9'/>
       <text x={CLUB.center[0]} y={CLUB.center[2]+17} textAnchor='middle' fontSize={full?'4.2':'4.6'} fill='#F4ECDB'>{lang==='zh'?'DJC 海边 Club':'DJC Beach Club'}</text>
     </g>}
