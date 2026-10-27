@@ -1,48 +1,10 @@
-import { BufferAttribute, BufferGeometry, IcosahedronGeometry, Matrix4, Quaternion, Vector3 } from 'three';
-import { coasterFrame, coasterWorld } from './coaster-track.ts';
+import { coasterWorld } from './coaster-track.ts';
 import type { CoasterBatch, CoasterCollider } from './coaster-geometry.ts';
 import { onCoasterCliffWalk } from './coaster-landscape-cliffs.ts';
-import { coasterInfieldHeight, onCoasterInfieldWalk, COASTER_INFIELD_LAMPS } from './coaster-terrain-relief.ts';
+import { coasterInfieldHeight, COASTER_INFIELD_LAMPS } from './coaster-terrain-relief.ts';
+import { addLandscapeRocks } from './coaster-landscape-rocks.ts';
 import type { Vec3 } from '../types';
 
-const STONE = ['#777f82', '#899292', '#a2a69c', '#616f76'];
-const frames = Array.from({ length: 900 }, (_, i) => coasterFrame(i / 900));
-// Candidate placement checks preserve the rail/head envelope before mesh-level ray tests.
-function clear(p: Vec3, half: Vec3, margin = 1.7) {
-  if (onCoasterCliffWalk(p[0],p[2],Math.max(half[0],half[2])+2)) return false;
-  if (onCoasterInfieldWalk(p[0],p[2],Math.max(half[0],half[2])+1)) return false;
-  const world = new Vector3(...coasterWorld(p));
-  return frames.every(f => {
-    const points = [f.point, f.point.clone().addScaledVector(f.up, 2.2)];
-    return points.every(q => Math.abs(q.x - world.x) > half[0] + margin || Math.abs(q.y - world.y) > half[1] + margin || Math.abs(q.z - world.z) > half[2] + margin);
-  });
-}
-function facet(batch: CoasterBatch, p: Vec3, size: Vec3, color: string, seed: number) {
-  const g = new IcosahedronGeometry(1, 0), q = new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), seed * 1.37);
-  batch.add(g, color, new Matrix4().compose(new Vector3(...coasterWorld(p)), q, new Vector3(...size)));
-}
-function rock(batch: CoasterBatch, p: Vec3, size: Vec3, seed: number) {
-  // Three irregular rings produce a readable broad top and broken vertical cliff faces.
-  const vertices: number[] = [], colors: string[] = [], rings: Vec3[][] = [];
-  for (let ring = 0; ring < 3; ring++) rings.push(Array.from({ length: 8 }, (_, i) => {
-    const angle = i * Math.PI / 4 + seed * .13, radius = (ring === 0 ? 1 : ring === 1 ? .9 : .72) * (1 + Math.sin(i * 5.8 + seed) * .13);
-    return [p[0] + Math.cos(angle) * size[0] * radius, p[1] + size[1] * (ring === 0 ? -.5 : ring === 1 ? .22 : .5), p[2] + Math.sin(angle) * size[2] * radius];
-  }));
-  const triangle = (a: Vec3, b: Vec3, c: Vec3, color: string) => { vertices.push(...coasterWorld(a), ...coasterWorld(b), ...coasterWorld(c)); colors.push(color); };
-  for (let i = 0; i < 8; i++) {
-    const j = (i + 1) % 8;
-    for (let k = 0; k < 2; k++) {
-      triangle(rings[k][i], rings[k + 1][j], rings[k][j], STONE[(i + k + seed) % 4]);
-      triangle(rings[k][i], rings[k + 1][i], rings[k + 1][j], STONE[(i + k + seed) % 4]);
-    }
-    triangle([p[0], p[1] + size[1] * .5, p[2]], rings[2][(i + 1) % 8], rings[2][i], '#66734e');
-  }
-  // Group by palette to preserve flat face colour after merging.
-  for (const color of new Set(colors)) {
-    const positions = colors.flatMap((c, i) => c === color ? vertices.slice(i * 9, i * 9 + 9) : []);
-    const g = new BufferGeometry().setAttribute('position', new BufferAttribute(new Float32Array(positions), 3)); g.computeVertexNormals(); batch.add(g, color);
-  }
-}
 export function addCoasterLandscape(steel: CoasterBatch, glow: CoasterBatch, colliders: CoasterCollider[], detailed: boolean) {
   const box = (p: Vec3, size: Vec3, color: string, solid = false) => {
     steel.box(coasterWorld(p), size, color);
@@ -54,25 +16,7 @@ export function addCoasterLandscape(steel: CoasterBatch, glow: CoasterBatch, col
     steel.housing(coasterWorld(p), size, color);
     colliders.push({ position: coasterWorld(p), half: size.map(v => v / 2) as Vec3 });
   };
-  // Deliberate islands: tower foot, inside the inversion, central equipment and front-right coastal garden.
-  const islands: [number, number, number, number, number][] = [
-    [-43,-65,8,5.6,9], [-48,-9,5,2.7,8],
-    [70,-81,9,6,12], [84,-57,7,5.8,9],
-    [-36,13,5.8,2.4,5.8], [-25,47,7,2.4,6], [-44,43,7,2.8,8],
-  ];
-  const builtIslands: typeof islands = [];
-  islands.forEach(([x,z,rx,h,rz], i) => {
-    const p: Vec3 = [x, h / 2 - .15, z], half: Vec3 = [rx * 1.15, h / 2, rz * 1.15];
-    if (clear(p, half, 1.2)) {
-      builtIslands.push([x,z,rx,h,rz]);
-      rock(steel, p, [rx,h,rz], i); colliders.push({ position: coasterWorld(p), half });
-      for (let k = 0; k < (detailed ? 5 : 2); k++) {
-        const angle = k * 2.4 + i, r = .85;
-        const at: Vec3 = [x + Math.cos(angle) * rx * r, .7, z + Math.sin(angle) * rz * r];
-        if (clear(at, [2.8,1.2,2.4])) facet(steel, at, [2.8,1.2,2.4], STONE[(i + k) % 4], i + k);
-      }
-    }
-  });
+  const islandCount = addLandscapeRocks(steel, colliders);
   // Trees, their matching trunk colliders and planter foliage are owned by WorldCoasterVegetation.
   // Continuous warm promenade reinforces the entrance-to-station route without moving its contacts.
   for (const [x,z,w,d] of [[-24,53,31,3],[31,53,34,3],[16,43,3,20],[-18,42,3,18]]) {
@@ -93,7 +37,7 @@ export function addCoasterLandscape(steel: CoasterBatch, glow: CoasterBatch, col
     colliders.push({position:coasterWorld([x,y+1.5,z]),half:[.16,1.5,.16]});
   }
   addEquipment(steel, glow, box, light, beam, housing, detailed);
-  return { islands: builtIslands.length, trees: 0, shrubs: 0 };
+  return { islands: islandCount, trees: 0, shrubs: 0 };
 }
 
 type Box = (p: Vec3, size: Vec3, color: string, solid?: boolean) => void;

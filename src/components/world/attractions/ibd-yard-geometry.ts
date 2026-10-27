@@ -58,7 +58,16 @@ export function buildIbdStatic() {
   const indices = new Uint32Array(groundSurface.indices.length + gallerySurface.indices.length);
   indices.set(groundSurface.indices);
   indices.set(gallerySurface.indices.map(i => i + groundSurface.vertices.length / 3), groundSurface.indices.length);
-  const walkSurface = { vertices, indices };
+  const rollerVertices: number[] = [], rollerIndices: number[] = [];
+  // Reuse each visible closed bar verbatim in the existing static trimesh. Preserve the
+  // spaces between rollers and the two walking gaps instead of filling the whole lane.
+  const rollerBar = (a: V3, end: V3, radius: number, surf: Surf, sides: number) => {
+    const firstVertex = b.pos.length / 3, firstIndex = b.idx.length;
+    bar(b, a, end, radius, surf, sides);
+    const offset = rollerVertices.length / 3 - firstVertex;
+    rollerVertices.push(...b.pos.slice(firstVertex * 3));
+    for (let i = firstIndex; i < b.idx.length; i++) rollerIndices.push(b.idx[i] + offset);
+  };
   const rail = (a: V3, end: V3) => {
     bar(b, a, end, .06, P.amber, 6);
     const dx = end[0] - a[0], dy = end[1] - a[1], dz = end[2] - a[2];
@@ -90,11 +99,11 @@ export function buildIbdStatic() {
     cube([x, .94, -12], [3.3, .12, 3], P.steel);
     // Leave a standing gap in front of each inspection bench; guide arrows must not enter a roller bed.
     for (const [start, end] of [[-8.2, -3], [5, 7]]) {
-      for (const xx of [-1.7, 1.7]) bar(b, [x + xx, .6, start], [x + xx, .6, end], .08, P.dark, 6);
-      for (let z = start; z <= end; z += .8) bar(b, [x - 1.5, .65, z], [x + 1.5, .65, z], .13, P.steel, 8);
+      for (const xx of [-1.7, 1.7]) rollerBar([x + xx, .6, start], [x + xx, .6, end], .08, P.dark, 6);
+      for (let z = start; z <= end; z += .8) rollerBar([x - 1.5, .65, z], [x + 1.5, .65, z], .13, P.steel, 8);
     }
   }
-  // Raised rollers are visual, with open walking gaps at z=0 and z=4, no invisible wall colliders.
+  // Exact roller/side-frame contacts stop grounded players; z=0 and z=4 stay open.
   // Receiving and tools have real work surfaces, not identical machine levers.
   for (const [x, z, top] of [[-3, 26, .8], [-6, 19, 1.1]]) {
     cube([x, top, z], [2.2, .16, 1.2], P.timber, true);
@@ -129,6 +138,10 @@ export function buildIbdStatic() {
   }
   cube([-28.3, .8, 3.96], [.14, 1.6, .14], P.dark, true);
   cube([-28.3, 1.6, 3.96], [2.7, .8, .12], P.dark, true);
+  const walkSurface = {
+    vertices: new Float32Array([...vertices, ...rollerVertices]),
+    indices: new Uint32Array([...indices, ...rollerIndices.map(i => i + vertices.length / 3)]),
+  };
   return { geometry: bakeIbdLight(b.build()), solids, walkSurface, groundSurface };
 }
 

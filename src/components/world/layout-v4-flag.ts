@@ -64,6 +64,7 @@ export const WORLD_SHOTS_V4 = [
     { id: `coaster-overview-${time}`, position: [147, 76, -83] as Vec3, target: [50, 16, -192] as Vec3 },
     { id: `coaster-entrance-${time}`, position: [50, 4.2, -114] as Vec3, target: [50, 14, -194] as Vec3 },
     { id: `coaster-lookout-${time}`, position: [128, 16, -155] as Vec3, target: [105, 6, -180] as Vec3 },
+    { id: `coaster-rocks-${time}`, position: [30, 12, -235] as Vec3, target: [7, 3, -260] as Vec3 },
     { id: `workshop-${time}`, position: [48, 10, -110] as Vec3, target: [34, 2, -129] as Vec3 },
     { id: `ibd-overview-${time}`, position: [-16, 46, -104] as Vec3, target: [-88, 5, -177] as Vec3 },
     { id: `ibd-entrance-${time}`, position: [-84, 4.2, -134] as Vec3, target: [-88, 6, -179] as Vec3 },

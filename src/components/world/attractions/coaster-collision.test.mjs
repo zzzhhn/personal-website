@@ -5,6 +5,7 @@ import { Euler, Mesh, MeshBasicMaterial, Quaternion, Raycaster, Vector3 } from '
 import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js';
 import { coasterColliderDescriptor } from './coaster-collision.ts';
 import { coasterLookoutSolids, createLookoutRockGeometry, lookoutSolidCollider, lookoutSolidMatrix } from './coaster-lookout-sample.ts';
+import { landscapeRocks, landscapeRockCollider, landscapeRockSurfaceParts } from './coaster-landscape-rocks.ts';
 
 await R.init();
 const hull = new Float32Array([-2,-2,-2, 2,-2,-2, -2,-2,2, -2,2,-2, 2,2,-2, -2,2,2]);
@@ -67,5 +68,30 @@ test('each authored lookout rock has physical contact at its visible world-space
         assert.ok(Math.abs(visible.distance-physical.timeOfImpact)<.003, `${solid.id}: visible/physical face mismatch`);
       }
     } finally { world.free(); mesh.geometry.dispose(); mesh.material.dispose(); }
+  }
+});
+
+test('every landscape island and loose stone contacts its rendered coloured surface', () => {
+  const { rocks } = landscapeRocks();
+  assert.equal(rocks.length, 32);
+  for (const rock of rocks) {
+    const world = new R.World({x:0,y:0,z:0});
+    const material = new MeshBasicMaterial();
+    const meshes = landscapeRockSurfaceParts(rock).map(({geometry}) => new Mesh(geometry, material));
+    try {
+      const collider = landscapeRockCollider(rock);
+      world.createCollider(coasterColliderDescriptor(R, collider)); world.step();
+      const centre = new Vector3(...collider.position);
+      for (const axis of [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]]) {
+        const direction = new Vector3(...axis).negate(), origin = centre.clone().addScaledVector(direction,-40);
+        const visible = new Raycaster(origin,direction,0,80).intersectObjects(meshes)[0];
+        const physical = world.castRay(new R.Ray(origin,direction),80,true);
+        assert.ok(visible && physical, `${rock.id}: missing contact from ${axis}`);
+        assert.ok(Math.abs(visible.distance-physical.timeOfImpact)<.003,
+          `${rock.id}: visible ${visible.distance} vs physical ${physical.timeOfImpact}`);
+      }
+    } finally {
+      world.free(); for (const mesh of meshes) mesh.geometry.dispose(); material.dispose();
+    }
   }
 });
