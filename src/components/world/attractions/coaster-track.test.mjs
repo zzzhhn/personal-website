@@ -48,7 +48,8 @@ test('the first drop carries its speed through the low run without the former ar
   const speed = t => (coasterDistanceAt(t+.001)-coasterDistanceAt(t-.001))/.002*COASTER_LENGTH;
   const lowStart=timeAt(coasterControlU(9)),lowEnd=timeAt(coasterControlU(10));
   const speeds=Array.from({length:101},(_,i)=>speed(lowStart+(lowEnd-lowStart)*i/100));
-  assert.ok(Math.min(...speeds)>22, 'low run must not collapse to the previous 7.6 m/s');
+  const previousLowRunSpeed = 7.64;
+  assert.ok(Math.min(...speeds) >= previousLowRunSpeed * 3, 'the entire low run must sustain at least three times the original speed');
   assert.ok(Math.max(...speeds)/Math.min(...speeds)<1.12, 'near-level track should retain momentum');
   for(let t=36.3;t<lowEnd-.02;t+=.02) {
     const acceleration=(speed(t+.01)-speed(t-.01))/.02;

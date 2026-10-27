@@ -221,6 +221,18 @@ proxyGroup.visible = false;
 proxyGroup.userData.shadowProxy = true;
 proxyGroup.matrixAutoUpdate = false; proxyGroup.matrixWorldAutoUpdate = false; // proxy matrices are set per pass
 let scanFrame = -1e9, frameNo = 0, inShadowRender = false;
+type RebuildSample = { frame: number; elapsedMs: number; durationMs: number; rigidCasters: number; trainCasters: number; trainMergedBefore: number; trainRigid: number; chunks: number };
+let rebuildProbeAt: number | null = null;
+const rebuildSamples: RebuildSample[] = [];
+/** Explicit QA window only, bounded records and no timer or production sampling. */
+export const shadowRebuildProbe = {
+  start() { if (import.meta.env.DEV) { rebuildSamples.length = 0; rebuildProbeAt = performance.now(); } },
+  stop() { rebuildProbeAt = null; return [...rebuildSamples]; },
+};
+const isCoasterTrain = (mesh: Object3D) => {
+  for (let p: Object3D | null = mesh; p; p = p.parent) if (p.name === 'intent-train') return true;
+  return false;
+};
 const passStats: Record<string, { casters: number; proxies: number; instances: number }> = {};
 const sphere = new Sphere(), m4 = new Matrix4(), sv = new Vector3();
 
@@ -594,9 +606,12 @@ function rebuildChunks() {
   };
   const rigid = [...casters.values()].filter(c => c.cast && !c.animated && !c.dynamic && c.stable >= STABLE_SCANS && !c.fire?.match(/guide|vehicle/) && !c.mesh.customDepthMaterial && !c.root && plainDepth(c));
   const key = rigid.map(c => `${c.mesh.uuid}:${c.sum}`).join('|');
+  const probing = import.meta.env.DEV && rebuildProbeAt !== null && rebuildSamples.length < 16 && key !== chunkKey;
+  const trainMergedBefore = probing ? [...casters.values()].filter(c => c.merged && isCoasterTrain(c.mesh)).length : 0;
   for (const c of casters.values()) c.merged = false;
   for (const c of rigid) c.merged = true;
   if (key === chunkKey) return;
+  const probeAt = probing ? performance.now() : null;
   chunkKey = key;
   for (const ch of chunks) { proxyGroup.remove(ch.mesh); ch.mesh.geometry.dispose(); }
   type Bucket = { side: number; cascade: 0 | 1 | 2; data: [number[], number[]]; zones: Map<string, number> };
@@ -655,6 +670,11 @@ function rebuildChunks() {
       lightBounds[2] = Math.min(lightBounds[2], u); lightBounds[3] = Math.max(lightBounds[3], u);
     }
     chunks.push({ mesh, cascade: b.cascade, sphere: mesh.geometry.boundingSphere!.clone(), lightBounds });
+  }
+  if (probeAt !== null) {
+    const durationMs = performance.now() - probeAt;
+    rebuildSamples.push({ frame: frameNo, elapsedMs: probeAt - rebuildProbeAt!, durationMs, rigidCasters: rigid.length,
+      trainCasters: [...casters.keys()].filter(isCoasterTrain).length, trainMergedBefore, trainRigid: rigid.filter(c => isCoasterTrain(c.mesh)).length, chunks: chunks.length });
   }
 }
 

@@ -92,7 +92,8 @@ function CoasterTrain({ active }: { active: boolean }) {
     const second = Math.floor(intentRideClock.elapsed);
     if (second !== s.rideSecond) useIntentStore.setState({ rideSecond: second });
   }, -60);
-  return <group name="intent-train" onClick={e => { e.stopPropagation(); activateIntentTarget('board'); }}>
+  // Boarding holds the cars still for seconds; they must never enter static shadow chunks.
+  return <group name="intent-train" userData={{ shadowDynamic: true }} onClick={e => { e.stopPropagation(); activateIntentTarget('board'); }}>
     {[0, 1, 2].map(i => {
       const f = coasterFrame(-i * 3.55 / COASTER_LENGTH);
       return <group key={i} ref={el => { cars.current[i] = el; }} position={f.point} quaternion={f.rotation}>

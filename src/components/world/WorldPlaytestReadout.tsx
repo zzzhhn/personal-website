@@ -23,6 +23,7 @@ import { INTENT_TARGETS } from './attractions/intent-stations';
 import { IBD_STATIONS, ibdWorld } from './attractions/ibd-yard-layout';
 import { intentRideClock, useIntentStore } from './attractions/intent-state';
 import { readCoasterMotionAudioSnapshot } from './attractions/coaster-motion-audio';
+import { shadowRebuildProbe } from './WorldShadows';
 
 function readContactSnapshot() {
   const value=worldActorDebug.actor(),physics=worldActorDebug.snapshot();
@@ -65,8 +66,8 @@ export default function WorldPlaytestReadout() {
             useWorldStore.setState({paused:false,seat:null});
           }}>QA · 到{s.title.zh}</button>)}
         </details>
-        <button onClick={()=>{clubWaterFrameWindow.start();setRenderSnapshot({frameWindow:'started'});}}>QA · 开始场景帧采样</button>
-        <button onClick={()=>setRenderSnapshot({frameWindow:clubWaterFrameWindow.stop(),render:readRenderSnapshot()})}>QA · 结束场景帧采样</button>
+        <button onClick={()=>{shadowRebuildProbe.start();clubWaterFrameWindow.start();setRenderSnapshot({frameWindow:'started'});}}>QA · 开始场景帧采样</button>
+        <button onClick={()=>setRenderSnapshot({frameWindow:clubWaterFrameWindow.stop(),shadowRebuilds:shadowRebuildProbe.stop(),render:readRenderSnapshot()})}>QA · 结束场景帧采样</button>
         <button onClick={()=>setRenderSnapshot({coasterAudio:readCoasterMotionAudioSnapshot()})}>QA · 读取过山车音频</button>
         <button onClick={()=>{worldActorDebug.teleportPlayer([49,2.3,55]);useWorldStore.setState({paused:false,clubMode:null,seat:null});}}>QA · 到泳池西岸</button>
         <button onClick={()=>{clubWaterFrameWindow.invalidate();clubWaterDebug.enabled=!clubWaterDebug.enabled;setRenderSnapshot({poolOptics:clubWaterSnapshot()});}}>QA · 启停泳池光学</button>
