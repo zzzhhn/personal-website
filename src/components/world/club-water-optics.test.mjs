@@ -26,17 +26,17 @@ function fixture(budgeted=false){
 }
 test('pool captures only local objects, reuses targets, caps updates and freezes while paused',()=>{
   const f=fixture(),run=t=>f.capture.render(f.renderer,f.scene,f.camera,f.water,t,false);
-  run(0);assert.equal(f.renderer.renders.length,3);assert.equal(f.uniforms.uOptics.value,1);
+  run(0);assert.equal(f.renderer.renders.length,2);assert.equal(f.uniforms.uOptics.value,1);
   const targets=f.renderer.renders.map(r=>r.target);
-  run(.01);assert.equal(f.renderer.renders.length,3);
-  run(.06);assert.equal(f.renderer.renders.length,5,'reflection has its own lower rate');
-  run(.06);assert.equal(f.renderer.renders.length,5,'paused demand frames do not recapture');
-  f.uniforms.uNight.value=1;run(.06);assert.equal(f.renderer.renders.length,8,'one demand capture after a lighting edit');
-  assert.equal(f.renderer.renders[5].target,targets[0]);assert.equal(f.renderer.renders[6].target,targets[1]);
+  run(.01);assert.equal(f.renderer.renders.length,2);
+  run(.06);assert.equal(f.renderer.renders.length,4);
+  run(.06);assert.equal(f.renderer.renders.length,4,'paused demand frames do not recapture');
+  f.uniforms.uNight.value=1;run(.06);assert.equal(f.renderer.renders.length,6,'one demand capture after a lighting edit');
+  assert.equal(f.renderer.renders[4].target,targets[0]);assert.equal(f.renderer.renders[5].target,targets[1]);
   assert.equal(f.basin.layers.mask,1|8);assert.equal(f.scene.background,f.background);
   assert.equal(f.renderer.target,null);assert.equal(f.renderer.alpha,.8);assert.equal(f.renderer.autoClear,false);
   assert.equal(f.renderer.shadowMap.autoUpdate,true);assert.equal(f.renderer.shadowMap.needsUpdate,true);
-  f.camera.position.set(500,7,500);f.camera.updateMatrixWorld();run(1);assert.equal(f.uniforms.uOptics.value,0);assert.equal(f.renderer.renders.length,8);
+  f.camera.position.set(500,7,500);f.camera.updateMatrixWorld();run(1);assert.equal(f.uniforms.uOptics.value,0);assert.equal(f.renderer.renders.length,6);
   f.capture.dispose();
 });
 test('a failed auxiliary render restores the main renderer, object visibility and all layers',()=>{
@@ -60,14 +60,14 @@ test('basin material patch preserves and restores the existing compile hook',()=
   restore();assert.equal(material.onBeforeCompile,original);material.dispose();
 });
 
-test('budgeted captures suppress main-scene hooks, preserve underwater geometry, and restore reflection layers',()=>{
+test('budgeted captures suppress main-scene hooks, preserve underwater geometry, and restore main-scene layers',()=>{
   const f=fixture(true),above=new Mesh(new BoxGeometry(),new MeshStandardMaterial()),guide=new Group(),body=new Mesh(new BoxGeometry(),new MeshStandardMaterial());
   above.position.set(68,5,55);f.club.add(above);guide.name='world-guide-G24';guide.position.set(68,1,55);guide.add(body);f.scene.add(guide);f.scene.updateMatrixWorld();
   let hooks=0;const hook=()=>hooks++;f.scene.onBeforeRender=hook;f.scene.onAfterRender=hook;
   const base=f.renderer.render;
   f.renderer.render=function(s,c){
     if(s===f.scene){s.onBeforeRender();s.onAfterRender();assert.ok(c.layers.test(body.layers));
-      assert.equal(c.layers.test(above.layers),this.target.width===320,'above-water rigid mesh only appears in reflection');}
+      assert.equal(c.layers.test(above.layers),false,'above-water rigid mesh is excluded from underwater transmission');}
     if(s!==f.scene)assert.equal(s.children[0].geometry.index.count/3,8192);
     base.call(this,s,c);
   };
@@ -85,13 +85,13 @@ test('budgeted captures suppress main-scene hooks, preserve underwater geometry,
 
 test('paused edits use the wall clock, stable and hidden frames do no additional work',()=>{
   const f=fixture(true),run=(time,now,flags={})=>f.capture.render(f.renderer,f.scene,f.camera,f.water,time,false,{now,...flags});
-  run(0,0);run(.017,.017);assert.equal(f.renderer.renders.length,3);
+  run(0,0);run(.017,.017);assert.equal(f.renderer.renders.length,2);
   f.camera.position.x+=1;f.camera.updateMatrixWorld();run(.017,.018,{paused:true});
-  const edited=f.renderer.renders.length;assert.equal(edited,5,'camera edit updates transmission and reflection without advancing animation');
+  const edited=f.renderer.renders.length;assert.equal(edited,3,'camera edit updates transmission without advancing animation');
   run(.017,1,{paused:true});const settled=f.renderer.renders.length;
   run(.017,2,{paused:true});assert.equal(f.renderer.renders.length,settled);
-  f.uniforms.uNight.value=1;run(.017,2.001,{paused:true});assert.equal(f.renderer.renders.length,settled+3);
-  run(3,3,{hidden:true});assert.equal(f.renderer.renders.length,settled+3);
+  f.uniforms.uNight.value=1;run(.017,2.001,{paused:true});assert.equal(f.renderer.renders.length,settled+2);
+  run(3,3,{hidden:true});assert.equal(f.renderer.renders.length,settled+2);
   f.capture.dispose();
 });
 
@@ -123,18 +123,33 @@ test('auxiliary failures restore hooks and repeated disconnect/connect cycles do
 test('paused daytime palette edits and intermediate night presets settle correctly, including quality changes',()=>{
   const f=fixture(true),run=(now,high=false,lightingSettled=true)=>f.capture.render(f.renderer,f.scene,f.camera,f.water,0,high,{now,paused:true,lightingSettled});
   run(0);f.uniforms.uWaterSkyTop.value.set('#ffffff');run(.001,false,false);
-  assert.equal(f.renderer.renders.length,3,'transition stays capped despite a constant night amount');
-  run(.002);assert.equal(f.renderer.renders.length,6,'final daytime palette gets a capture before sleeping');
-  f.uniforms.uNight.value=.72;run(.003);assert.equal(f.renderer.renders.length,9,'evening preset does not require night to reach zero or one');
-  run(.004,true);assert.deepEqual(clubWaterDebug.size,[1024,640]);assert.equal(f.renderer.renders.length,12);
-  run(5,true);assert.equal(f.renderer.renders.length,12);f.capture.dispose();
+  assert.equal(f.renderer.renders.length,2,'transition stays capped despite a constant night amount');
+  run(.002);assert.equal(f.renderer.renders.length,4,'final daytime palette gets a capture before sleeping');
+  f.uniforms.uNight.value=.72;run(.003);assert.equal(f.renderer.renders.length,6,'evening preset does not require night to reach zero or one');
+  run(.004,true);assert.deepEqual(clubWaterDebug.size,[1024,640]);assert.equal(f.renderer.renders.length,8);
+  run(5,true);assert.equal(f.renderer.renders.length,8);f.capture.dispose();
 });
 
 test('tiny projected pools skip captures and baseline mode restores original target budgets',()=>{
   const f=fixture(true);f.capture.render(f.renderer,f.scene,f.camera,f.water,0,false,{now:0});
   f.water.geometry=new BoxGeometry(.001,.001,.001);f.water.position.set(68,1.35,55);f.water.updateMatrixWorld();
-  f.capture.render(f.renderer,f.scene,f.camera,f.water,1,false,{now:1});assert.equal(f.renderer.renders.length,3);
+  f.capture.render(f.renderer,f.scene,f.camera,f.water,1,false,{now:1});assert.equal(f.renderer.renders.length,2);
   assert.ok(clubWaterDebug.coverage<.001);clubWaterDebug.budgeted=false;
-  f.capture.render(f.renderer,f.scene,f.camera,f.water,1,false,{now:1});assert.deepEqual(clubWaterDebug.size,[768,480]);assert.equal(f.renderer.renders.length,6);
+  f.capture.render(f.renderer,f.scene,f.camera,f.water,1,false,{now:1});assert.deepEqual(clubWaterDebug.size,[768,480]);assert.equal(f.renderer.renders.length,4);
   f.capture.dispose();f.water.geometry.dispose();
+});
+
+test('neither quality tier nor QA budget mode draws an extra scene-reflection target',()=>{
+  for(const high of [false,true])for(const budgeted of [false,true]){
+    const f=fixture(budgeted),before=clubWaterDebug.reflections;
+    for(let frame=0;frame<60;frame++){
+      f.camera.position.x+=.005;f.camera.updateMatrixWorld();
+      f.capture.render(f.renderer,f.scene,f.camera,f.water,frame/60,high,{now:frame/60});
+    }
+    const targets=new Set(f.renderer.renders.map(r=>r.target));
+    assert.equal(targets.size,2,'only the caustic and underwater targets exist');
+    assert.equal(clubWaterDebug.reflections,before);
+    assert.ok(f.renderer.renders.some(r=>r.s===f.scene),'underwater transmission remains active');
+    assert.equal(f.uniforms.uOptics.value,1);f.capture.dispose();
+  }
 });

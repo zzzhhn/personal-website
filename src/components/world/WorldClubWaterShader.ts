@@ -32,20 +32,20 @@ export function clubWaterUniforms() {
   return { uTime:windUniforms.uWindTime,uWind:windUniforms.uWindStrength,...waterImpactUniforms,...seaGlintUniforms,
     uNight:{value:0},uSurfaceY:{value:CLUB_POOL.waterY},uPoolCenter:{value:new Vector2(CLUB_POOL.center[0],CLUB_POOL.center[2])},
     uPoolRadii:{value:new Vector2(...CLUB_POOL.radii)},uCaustics:{value:null},uCausticExtent:{value:29},uOptics:{value:0},
-    uRefraction:{value:null},uDepth:{value:null},uReflection:{value:null},uReflectionWeight:{value:1},uCaptureVP:{value:new Matrix4()},
-    uCaptureInverse:{value:new Matrix4()},uReflectionMatrix:{value:new Matrix4()},uCaptureEye:{value:new Vector3()} };
+    uRefraction:{value:null},uDepth:{value:null},uCaptureVP:{value:new Matrix4()},
+    uCaptureInverse:{value:new Matrix4()},uCaptureEye:{value:new Vector3()} };
 }
 export type ClubWaterUniforms=ReturnType<typeof clubWaterUniforms>;
 
 export function createClubOpticalWater(uniforms:ClubWaterUniforms) {
-  return new ShaderMaterial({name:'Club water: depth, transmission and local reflection',uniforms,side:DoubleSide,
+  return new ShaderMaterial({name:'Club water: depth, transmission and sky light',uniforms,side:DoubleSide,
     vertexShader:`varying vec3 vPoolWorld;void main(){vec4 p=modelMatrix*vec4(position,1.);vPoolWorld=p.xyz;gl_Position=projectionMatrix*viewMatrix*p;}`,
     fragmentShader:/* glsl */`
       ${CLUB_WATER_GLSL}
-      uniform sampler2D uRefraction,uDepth,uReflection;
-      uniform mat4 uCaptureVP,uCaptureInverse,uReflectionMatrix;
+      uniform sampler2D uRefraction,uDepth;
+      uniform mat4 uCaptureVP,uCaptureInverse;
       uniform vec3 uCaptureEye,uWaterSkyTop,uWaterSkyHorizon,uSunDir,uGlint;
-      uniform float uOptics,uReflectionWeight;
+      uniform float uOptics;
       varying vec3 vPoolWorld;
       vec2 screenUV(vec3 p){vec4 q=uCaptureVP*vec4(p,1.);return q.xy/q.w*.5+.5;}
       vec3 hitAt(vec2 uv){float d=texture2D(uDepth,uv).r;vec4 p=uCaptureInverse*vec4(uv*2.-1.,d*2.-1.,1.);return p.xyz/p.w;}
@@ -69,11 +69,6 @@ export function createClubOpticalWater(uniforms:ClubWaterUniforms) {
           float valid=step(.001,sampleColor.a)*step(hit.y,uSurfaceY+.025);
           transmitted=mix(transmitted,sampleColor.rgb,valid);
           thickness=mix(thickness,clamp(length(hit-p),.02,4.),valid);
-          vec4 projected=uReflectionMatrix*vec4(p,1.);
-          vec2 mirrorUV=projected.xy/projected.w+n.xz*.008;
-          vec4 mirror=texture2D(uReflection,clamp(mirrorUV,vec2(.002),vec2(.998)));
-          float inFrame=step(0.,mirrorUV.x)*step(mirrorUV.x,1.)*step(0.,mirrorUV.y)*step(mirrorUV.y,1.);
-          sky=mix(sky,mirror.rgb,mirror.a*inFrame*uReflectionWeight);
         }
         vec3 transmission=exp(-vec3(1.35,.34,.20)*thickness);
         vec3 body=transmitted*transmission+vec3(.025,.19,.17)*(1.-transmission)*mix(.45,.07,uNight);

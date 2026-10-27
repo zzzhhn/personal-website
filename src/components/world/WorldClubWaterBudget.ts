@@ -1,22 +1,17 @@
-export type WaterPass = 'refraction' | 'reflection' | 'caustic';
-export type WaterHistory = Record<WaterPass, number> & {reflectionTime:number;causticTime:number};
-export const waterHistory = ():WaterHistory => ({refraction:-Infinity,reflection:-Infinity,caustic:-Infinity,reflectionTime:-Infinity,causticTime:-Infinity});
+export type WaterPass = 'refraction' | 'caustic';
+export type WaterHistory = Record<WaterPass, number> & {causticTime:number};
+export const waterHistory = ():WaterHistory => ({refraction:-Infinity,caustic:-Infinity,causticTime:-Infinity});
 
 /** Render budgets only: no timer, model LOD or main-canvas quality changes. */
 export function clubWaterBudget(high:boolean,distance:number,coverage=1) {
   const outside=Math.max(0,distance-23);
-  const fadeStart=high?24:8,fadeEnd=high?44:20;
-  const t=Math.max(0,Math.min(1,(outside-fadeStart)/(fadeEnd-fadeStart)));
-  const area=Math.max(0,Math.min(1,(coverage-.001)/.019));
-  const reflectionWeight=(1-t*t*(3-2*t))*area*area*(3-2*area);
-  const far=outside>=fadeEnd||coverage<.02;
-  return {refractionHz:far?4:high?30:15,reflectionHz:far?0:high?15:6,causticHz:far?4:high?15:8,
-    reflectionWeight,width:high?1024:640,mirrorSize:high?512:320};
+  const far=outside>=(high?44:20)||coverage<.02;
+  return {refractionHz:far?4:high?30:15,causticHz:far?4:high?15:8};
 }
 
 export function planClubWater(input:{now:number;time:number;high:boolean;distance:number;visible:boolean;paused:boolean;
   force:boolean;viewChanged:boolean;nightChanged:boolean;night:number;dynamic:boolean;coverage?:number;lightingSettled?:boolean},last:WaterHistory) {
-  const no={refraction:false,reflection:false,caustic:false};
+  const no={refraction:false,caustic:false};
   if(!input.visible&&!(input.paused&&input.viewChanged))return no;
   const b=clubWaterBudget(input.high,input.distance,input.coverage),due=(pass:WaterPass,hz:number)=>hz>0&&input.now-last[pass]>=1/hz-1e-7;
   const endpoint=input.paused&&input.nightChanged&&(input.lightingSettled??(input.night===0||input.night===1));
@@ -24,9 +19,7 @@ export function planClubWater(input:{now:number;time:number;high:boolean;distanc
   const caustic=input.force||endpoint||due('caustic',b.causticHz)&&(input.time!==last.causticTime||input.nightChanged);
   const refraction=input.force||cameraEdit||endpoint||due('refraction',b.refractionHz)
     &&(input.viewChanged||input.nightChanged||input.dynamic&&!input.paused||caustic||last.caustic>last.refraction);
-  const reflection=b.reflectionWeight>0&&(input.force||cameraEdit||endpoint||due('reflection',b.reflectionHz||4)
-    &&(input.viewChanged||input.nightChanged||input.time!==last.reflectionTime));
-  return {refraction,reflection,caustic};
+  return {refraction,caustic};
 }
 
 /** Same projection footprint as before, with a smaller balanced offscreen buffer. */

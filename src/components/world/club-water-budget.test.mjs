@@ -5,33 +5,31 @@ import {budgetWaterSize,clubWaterBudget,planClubWater,waterHistory,WaterFrameWin
 const input=(extra={})=>({now:0,time:0,high:false,distance:20,visible:true,paused:false,force:false,viewChanged:true,nightChanged:false,night:0,dynamic:false,...extra});
 test('independent clocks cap moving captures and cut static/daytime work over a fixed interval',()=>{
   const simulate=(moving,high=false)=>{
-    const history=waterHistory(),counts={refraction:0,reflection:0,caustic:0};
+    const history=waterHistory(),counts={refraction:0,caustic:0};
     for(let frame=0;frame<600;frame++){
       const t=frame/60,plan=planClubWater(input({now:t,time:t,high,force:frame===0,viewChanged:moving||frame===0}),history);
       for(const pass of Object.keys(counts))if(plan[pass]){counts[pass]++;history[pass]=t;}
-      if(plan.reflection)history.reflectionTime=t;if(plan.caustic)history.causticTime=t;
+      if(plan.caustic)history.causticTime=t;
     }
     return counts;
   };
-  assert.deepEqual(simulate(true),{refraction:150,reflection:60,caustic:75});
-  assert.deepEqual(simulate(false),{refraction:75,reflection:60,caustic:75});
-  assert.deepEqual(simulate(true,true),{refraction:300,reflection:150,caustic:150});
+  assert.deepEqual(simulate(true),{refraction:150,caustic:75});
+  assert.deepEqual(simulate(false),{refraction:75,caustic:75});
+  assert.deepEqual(simulate(true,true),{refraction:300,caustic:150});
 });
-test('reflection fades continuously at both distance and projected-area cutoffs',()=>{
+test('distant or tiny pools retain the reduced transmission and caustic budgets',()=>{
   for(const high of [false,true]){
     const end=23+(high?44:20);
-    assert.ok(clubWaterBudget(high,end-.001).reflectionWeight<1e-6);
-    assert.equal(clubWaterBudget(high,end).reflectionWeight,0);
-    assert.ok(Math.abs(clubWaterBudget(high,20,.020001).reflectionWeight-clubWaterBudget(high,20,.019999).reflectionWeight)<1e-6);
-    assert.equal(clubWaterBudget(high,20,.001).reflectionWeight,0);
+    assert.deepEqual(clubWaterBudget(high,end),{refractionHz:4,causticHz:4});
+    assert.deepEqual(clubWaterBudget(high,20,.001),{refractionHz:4,causticHz:4});
   }
 });
 test('paused final lighting edits bypass cadence once, hidden samples cannot force a capture',()=>{
-  const history={...waterHistory(),refraction:1,reflection:1,caustic:1,reflectionTime:.017,causticTime:.017};
-  assert.deepEqual(planClubWater(input({now:1.001,time:.017,paused:true,viewChanged:false}),history),{refraction:false,reflection:false,caustic:false});
-  assert.deepEqual(planClubWater(input({now:1.001,time:.017,paused:true,viewChanged:false,nightChanged:true,night:1}),history),{refraction:true,reflection:true,caustic:true});
-  assert.deepEqual(planClubWater(input({visible:false,force:true}),history),{refraction:false,reflection:false,caustic:false});
-  assert.deepEqual(planClubWater(input({distance:75,force:true}),history),{refraction:true,reflection:false,caustic:true});
+  const history={...waterHistory(),refraction:1,caustic:1,causticTime:.017};
+  assert.deepEqual(planClubWater(input({now:1.001,time:.017,paused:true,viewChanged:false}),history),{refraction:false,caustic:false});
+  assert.deepEqual(planClubWater(input({now:1.001,time:.017,paused:true,viewChanged:false,nightChanged:true,night:1}),history),{refraction:true,caustic:true});
+  assert.deepEqual(planClubWater(input({visible:false,force:true}),history),{refraction:false,caustic:false});
+  assert.deepEqual(planClubWater(input({distance:75,force:true}),history),{refraction:true,caustic:true});
 });
 test('target sizes stay bounded across aspect ratios and preserve high quality',()=>{
   for(const high of [false,true])for(const aspect of [.25,.5,1,16/9,4]){

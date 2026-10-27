@@ -1,8 +1,7 @@
 import { Box3, Camera, Color, DepthTexture, Material, Matrix4, Mesh, Object3D, PerspectiveCamera, Plane, PlaneGeometry, Scene, ShaderMaterial, UnsignedIntType, Vector2, Vector3, Vector4, WebGLRenderer, WebGLRenderTarget, type MeshStandardMaterial } from 'three';
-import { Reflector } from 'three/addons/objects/Reflector.js';
 import { CLUB_POOL } from './djc-club-layout';
 import { CLUB_WATER_GLSL, createClubCausticMaterial, type ClubWaterUniforms } from './WorldClubWaterShader';
-import { budgetWaterSize,clubWaterBudget,planClubWater,waterHistory } from './WorldClubWaterBudget';
+import { budgetWaterSize,planClubWater,waterHistory } from './WorldClubWaterBudget';
 
 const CAPTURE_LAYER=29;
 const totals=()=>({captures:0,reflections:0,caustics:0,passes:0,calls:0,triangles:0,visits:0});
@@ -14,12 +13,10 @@ export const waterCaptureSize=(aspect:number,high:boolean):[number,number]=>{
 };
 export const waterCaptureDue=(time:number,last:number,changed:boolean,high:boolean)=>changed||time-last>=1/(high?30:20);
 
-/** One visible pool only. Captures club architecture and actors, not the whole island.
- * Uses Three's maintained Reflector for its oblique clipping, with no extra shadow render. */
+/** One visible pool only. Captures underwater colour/depth and caustics.
+ * Scene reflections are intentionally absent: low-rate mirrors visibly stutter. */
 export class ClubWaterCapture {
   private refraction=new WebGLRenderTarget(512,320,{depthBuffer:true});
-  private mirrorGeometry=new PlaneGeometry(1,1);
-  private mirror=new Reflector(this.mirrorGeometry,{textureWidth:512,textureHeight:512,multisample:0});
   private causticTarget=new WebGLRenderTarget(256,256,{depthBuffer:false});
   private causticGeometry=new PlaneGeometry(2,2,128,128);
   private balancedCausticGeometry=new PlaneGeometry(2,2,64,64);
@@ -30,13 +27,11 @@ export class ClubWaterCapture {
   private camera=new PerspectiveCamera();
   private previousCamera=new Matrix4();
   private previousProjection=new Matrix4();
-  private inverseMirror=new Matrix4();
   private viewport=new Vector4();
   private scissor=new Vector4();
   private clearColor=new Color();
   private size=new Vector2();
   private last=-Infinity;
-  private lastReflection=-Infinity;
   private previousNight=-1;
   private previousSky=new Color();
   private previousHorizon=new Color();
@@ -67,12 +62,10 @@ export class ClubWaterCapture {
 
   constructor(private uniforms:ClubWaterUniforms){
     this.refraction.depthTexture=new DepthTexture(512,320,UnsignedIntType);
-    this.mirror.rotation.x=-Math.PI/2;this.mirror.position.y=CLUB_POOL.waterY;this.mirror.updateMatrixWorld();
-    this.inverseMirror.copy(this.mirror.matrixWorld).invert();
     this.causticMaterial=createClubCausticMaterial(uniforms);
     this.causticMesh=new Mesh(this.causticGeometry,this.causticMaterial);this.causticMesh.frustumCulled=false;this.causticScene.add(this.causticMesh);
     Object.assign(uniforms.uRefraction,{value:this.refraction.texture});Object.assign(uniforms.uDepth,{value:this.refraction.depthTexture});
-    Object.assign(uniforms.uReflection,{value:this.mirror.getRenderTarget().texture});Object.assign(uniforms.uCaustics,{value:this.causticTarget.texture});
+    Object.assign(uniforms.uCaustics,{value:this.causticTarget.texture});
     clubWaterDebug.liveCaptures++;
   }
   connect(){if(this.disposed){this.disposed=false;this.history=waterHistory();this.last=-Infinity;this.uniforms.uOptics.value=0;clubWaterDebug.liveCaptures++;}}
@@ -95,11 +88,10 @@ export class ClubWaterCapture {
     const legacyDue=waterCaptureDue(time,this.last,changed&&time===this.last,high)||force;
     const coverage=budgeted?this.projectedCoverage(water,camera):1;clubWaterDebug.coverage=coverage;
     if(budgeted&&coverage<.001){clubWaterDebug.skippedSmall++;return;}
-    const budget=clubWaterBudget(high,distance,coverage);this.uniforms.uReflectionWeight.value=budgeted?budget.reflectionWeight:1;
     const dynamic=this.uniforms.uNight.value>.01||this.guideInWater();
     const plan=budgeted?planClubWater({now,time,high,distance,coverage,visible:true,paused,force,viewChanged,nightChanged,night:this.uniforms.uNight.value,dynamic,lightingSettled:frame.lightingSettled},this.history)
-      :{refraction:legacyDue,caustic:legacyDue,reflection:legacyDue&&(time-this.lastReflection>=1/(high?20:10)||changed&&time===this.last||this.uniforms.uOptics.value===0)};
-    if(!plan.refraction&&!plan.reflection&&!plan.caustic)return;
+      :{refraction:legacyDue,caustic:legacyDue};
+    if(!plan.refraction&&!plan.caustic)return;
     this.active=true;
     const target=renderer.getRenderTarget(),background=scene.background,shadowAuto=renderer.shadowMap.autoUpdate,shadowNeeds=renderer.shadowMap.needsUpdate,xr=renderer.xr.enabled;
     const scissorTest=renderer.getScissorTest(),autoClear=renderer.autoClear,alpha=renderer.getClearAlpha();
@@ -111,7 +103,6 @@ export class ClubWaterCapture {
     try {
       const [w,h]=budgeted?budgetWaterSize(aspect,high):waterCaptureSize(aspect,high);
       if(this.refraction.width!==w||this.refraction.height!==h)this.refraction.setSize(w,h);
-      const mirrorSize=budgeted?budget.mirrorSize:high?512:384;if(this.mirror.getRenderTarget().width!==mirrorSize)this.mirror.getRenderTarget().setSize(mirrorSize,mirrorSize);
       clubWaterDebug.size=[w,h];
       this.selected.length=0;this.masks.length=0;this.above.length=0;
       const visit=(node:Object3D,inside=false)=>{
@@ -147,15 +138,8 @@ export class ClubWaterCapture {
         this.previousSky.copy(this.uniforms.uWaterSkyTop.value);this.previousHorizon.copy(this.uniforms.uWaterSkyHorizon.value);
         this.previousGlint.copy(this.uniforms.uGlint.value);this.previousSun.copy(this.uniforms.uSunDir.value);this.previousWind=this.uniforms.uWind.value;
       }
-      if(plan.reflection){
-        this.mirror.getReflectionCamera(camera).layers.set(CAPTURE_LAYER);
-        const mirrorMaterial=this.mirror.material as ShaderMaterial;
-        this.mirror.onBeforeRender(renderer,scene,camera,this.mirrorGeometry,mirrorMaterial,null!);
-        this.uniforms.uReflectionMatrix.value.copy(mirrorMaterial.uniforms.textureMatrix.value).multiply(this.inverseMirror);
-        this.lastReflection=time;clubWaterDebug.reflections++;count.reflections++;count.passes++;this.history.reflection=now;this.history.reflectionTime=time;
-      }
       this.uniforms.uOptics.value=1;this.last=time;
-      this.previousAspect=aspect;this.previousHigh=high;clubWaterDebug.passes=Number(plan.caustic)+Number(plan.refraction)+Number(plan.reflection);
+      this.previousAspect=aspect;this.previousHigh=high;clubWaterDebug.passes=Number(plan.caustic)+Number(plan.refraction);
     }finally{
       scene.onBeforeRender=before;scene.onAfterRender=after;
       clubWaterDebug.calls=Math.max(0,renderer.info.render.calls-calls);clubWaterDebug.triangles=Math.max(0,renderer.info.render.triangles-triangles);
@@ -230,7 +214,7 @@ export class ClubWaterCapture {
   }
   dispose(){
     if(this.disposed)return;this.disposed=true;clubWaterDebug.liveCaptures--;
-    this.refraction.dispose();this.refraction.depthTexture?.dispose();this.mirror.dispose();this.mirrorGeometry.dispose();
+    this.refraction.dispose();this.refraction.depthTexture?.dispose();
     this.causticTarget.dispose();this.causticGeometry.dispose();this.balancedCausticGeometry.dispose();this.causticMaterial.dispose();
     this.selected.length=0;this.masks.length=0;this.above.length=0;this.selectedSet.clear();this.roots.length=0;this.lights.length=0;this.guide=null;this.scannedScene=null;
     this.uniforms.uOptics.value=0;

@@ -36,7 +36,7 @@ export default function WorldPlaytestReadout() {
       {import.meta.env.DEV&&<>
         <button onClick={()=>{worldActorDebug.teleportPlayer([49,2.3,55]);useWorldStore.setState({paused:false,clubMode:null,seat:null});}}>QA · 到泳池西岸</button>
         <button onClick={()=>{clubWaterFrameWindow.invalidate();clubWaterDebug.enabled=!clubWaterDebug.enabled;setRenderSnapshot({poolOptics:clubWaterSnapshot()});}}>QA · 启停泳池光学</button>
-        <button onClick={()=>{clubWaterFrameWindow.invalidate();clubWaterDebug.budgeted=!clubWaterDebug.budgeted;setRenderSnapshot({poolOptics:clubWaterSnapshot()});}}>QA · 切换原版／预算版捕获</button>
+        <button onClick={()=>{clubWaterFrameWindow.invalidate();clubWaterDebug.budgeted=!clubWaterDebug.budgeted;setRenderSnapshot({poolOptics:clubWaterSnapshot()});}}>QA · 切换旧／新采样预算（均无倒影）</button>
         <button onClick={()=>setRenderSnapshot({poolOptics:clubWaterSnapshot()})}>QA · 读取泳池光学开销</button>
         <button onClick={()=>{waterWindow.current=clubWaterSnapshot();clubWaterFrameWindow.start();setRenderSnapshot({poolWindow:'started',mode:clubWaterDebug.budgeted?'budgeted':'baseline'});}}>QA · 开始泳池采样</button>
         <button onClick={()=>{
