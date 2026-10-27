@@ -30,9 +30,10 @@ export function ibdCargoPose(game: IbdYardGame, slot: IbdSlot, progress = 0) {
       const coil = slot.startsWith('coil');
       const quarantine: Vec3 = coil ? [-17, 2.35, 12] : [14, 1.1, -16.3];
       const spare: Vec3 = coil ? [-22, 2.35, 12] : [20, 1.1, -16.3];
-      const outgoing: Vec3[] = coil ? [home, [-12, home[1], 1], [-17, home[1], 1], quarantine]
+      // Leave either coil parking bay southward before turning; a diagonal from the moved bay clips the lane guard.
+      const outgoing: Vec3[] = coil ? [home, [home[0], home[1], 1], [-17, home[1], 1], quarantine]
         : [home, [home[0], home[1], -15.1], quarantine];
-      const incoming: Vec3[] = coil ? [spare, [-22, home[1], 8], [-17, home[1], 1], [-12, home[1], 1], home]
+      const incoming: Vec3[] = coil ? [spare, [-22, home[1], 8], [-17, home[1], 1], [home[0], home[1], 1], home]
         : [spare, [home[0], home[1], -15.1], home];
       at = progress < .5 ? route(outgoing, progress * 2) : route(incoming, (progress - .5) * 2);
       if (progress >= .5) { yaw = 0; lid = 0; }

@@ -3,17 +3,18 @@ import { BufferGeometry, CanvasTexture, CatmullRomCurve3, Float32BufferAttribute
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { ATTRACTION_ROADS } from './attraction-layout';
-import { terrainHeight } from '../WorldLandform';
+import { meshHeight, terrainHeight } from '../WorldLandform';
 import { useWorldStore } from '../store';
 
-/** A continuous ribbon follows the same terrain query used by the ground collider. */
+/** Follow the physical triangles, including the ridge's snapped crease vertices. */
+const approachHeight = (x:number,z:number) => meshHeight(x,z)??terrainHeight(x,z);
 function ribbon(points:Vector3[],half:number,offset:number,lift:number) {
   const p:number[]=[],indices:number[]=[];
   points.forEach((v,i)=>{
     const a=points[Math.max(0,i-1)],b=points[Math.min(points.length-1,i+1)],dx=b.x-a.x,dz=b.z-a.z,l=Math.hypot(dx,dz);
     for(const side of [-1,1]){
       const x=v.x-dz/l*(offset+half*side),z=v.z+dx/l*(offset+half*side);
-      p.push(x,terrainHeight(x,z)+lift,z);
+      p.push(x,approachHeight(x,z)+lift,z);
     }
     if(i){const k=i*2;indices.push(k-2,k-1,k,k-1,k+1,k);}
   });
@@ -52,7 +53,7 @@ export default function WorldAttractionApproach() {
     <RigidBody type='fixed' colliders={false} userData={{surface:true,assetId:'north-road'}}>
       <TrimeshCollider args={[built[0].geometry.getAttribute('position').array as Float32Array,built[0].indices]} friction={.9}/>
     </RigidBody>
-    {[[.8,-59],[-19,-117]].map(([x,z],i)=><group key={i} position={[x,terrainHeight(x,z),z]}>
+    {[[.8,-59],[-19,-117]].map(([x,z],i)=><group key={i} position={[x,approachHeight(x,z),z]}>
       <mesh position={[0,1.2,0]} castShadow><boxGeometry args={[.14,2.4,.14]}/><meshStandardMaterial color='#63543e' roughness={.9}/></mesh>
       <mesh position={[0,2.4,0]}><planeGeometry args={[4.2,1.75]}/><meshBasicMaterial map={sign} toneMapped={false}/></mesh>
     </group>)}

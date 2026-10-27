@@ -11,7 +11,9 @@
       "scope": "v1视觉方向继承：切面海岸、工业体量、冷暖照明；不等于v2布局通过"
     },
     "layout": {
-      "status": "pending",
+      "status": "approved",
+      "quote": "这两个场景的方向我觉得都 OK，继续开工吧。",
+      "scope": "按已展示的扩大版日夜参考继续实施，具体轨道工程由可乘坐样板验证",
       "requestedChange": "装置难度、刺激度、复杂度提升；相对v1参考占地约1.8倍",
       "source": "human-user",
       "date": "2026-10-27"
@@ -43,7 +45,10 @@
     "真实乘坐中遮挡或姿态失效"
   ],
   "runtimeEvidence": {
-    "status": "not-started",
-    "note": "4341仍运行c9a4720可玩版；新参考方案没有实施或视觉验收"
+    "status": "reviewed-for-local-preview",
+    "date": "2026-10-28",
+    "report": "docs/world/phase-2-playground/visual-calibration-20261027/delivery-20261028.md",
+    "userVisualAcceptance": "pending",
+    "note": "已比较实际日夜画面并验证核心交互；用户尚未验收最终视觉。数值、浏览器与性能证据分开记录。"
   }
 }

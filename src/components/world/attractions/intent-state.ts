@@ -8,7 +8,7 @@ import { reachableInteractables } from '../WorldInteract';
 import { mineActor, useAlphaMineStore } from '../alpha-mine-state';
 import { parkAudio } from '../WorldParkAudio';
 import { attractionRide, beginAttractionRide, endAttractionRide } from './attraction-ride.ts';
-import { coasterRidePose, COASTER_EXIT, type CoasterView, type CoasterClock } from './coaster-track.ts';
+import { coasterRidePose, coasterWorld, COASTER_GATE_Z, COASTER_EXIT, type CoasterView, type CoasterClock } from './coaster-track.ts';
 
 interface IntentState {
   progress: IntentProgress; loaded: boolean; saveIssue: IntentText | null;
@@ -99,7 +99,7 @@ export function stopIntentRide() {
 }
 export function resetIntentVisit() {
   if (useIntentStore.getState().riding) return;
-  if (useWorldStore.getState().position[2] < -141.5) {
+  if (useWorldStore.getState().position[2] < coasterWorld([0, 0, COASTER_GATE_Z + 1.5])[2]) {
     useIntentStore.setState({ notice: { zh: '先走回大门外，再重开任务。', en: 'Walk outside the gate before restarting the tasks.' } }); return;
   }
   commit({ type: 'reset' });

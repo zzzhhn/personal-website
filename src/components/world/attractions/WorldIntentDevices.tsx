@@ -5,7 +5,8 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
 import { useWorldStore } from '../store';
 import { useInteractable } from '../WorldInteract';
 import { COASTER_PALETTE as P, CoasterBatch, createIntentMicroBase } from './coaster-geometry';
-import { coasterWorld } from './coaster-track';
+import WorldIntentSurface from './WorldIntentSurface';
+import { coasterWorld, COASTER_DURATION, COASTER_GATE_Z } from './coaster-track';
 import { INTENT_STATIONS, INTENT_TARGETS, INTENT_TOOL_ACTIONS, intentReachRadius, type IntentStation, type IntentTarget } from './intent-stations';
 import { activateIntentTarget, clarifyIntent, currentIntentTask, intentAvailable, nextIntentTask, operateIntent, selectIntentTool, useIntentStore } from './intent-state';
 import type { IntentClass, IntentText } from './intent-tasks';
@@ -17,7 +18,7 @@ export function IntentInteraction({ target }: { target: IntentTarget }) {
     visitor: state.progress.clarified.includes('T7') ? INTENT_TOOL_ACTIONS[state.tools.visitor] : { zh: '摇铃问清目标', en: 'Ring to clarify' },
     chest: state.progress.keyTaken ? { zh: '钥匙已取出', en: 'Key collected' } : state.progress.chestOpen ? { zh: '拿起实体钥匙', en: 'Take the key' } : { zh: '掀开宝箱', en: 'Open the chest' },
     gate: state.progress.gateOpen ? { zh: '大门已打开', en: 'Gate is open' } : { zh: '用钥匙开门', en: 'Unlock the gate' },
-    board: { zh: '坐进列车 · 94 秒', en: 'Board the train · 94 seconds' },
+    board: { zh: `坐进列车 · ${COASTER_DURATION} 秒`, en: `Board the train · ${COASTER_DURATION} seconds` },
   };
   useInteractable({ id: `intent-${target}`, kind: target === 'gate' ? 'door' : 'exhibit', position: INTENT_TARGETS[target],
     radius: intentReachRadius(target), label: labels[target], enabled: () => intentAvailable(target), onInteract: () => activateIntentTarget(target) });
@@ -75,9 +76,9 @@ function Device({ spec }: { spec: IntentStation }) {
     <instancedMesh ref={switches} args={[switchGeometry, undefined, spec.tools.length]} onClick={(e: ThreeEvent<MouseEvent>) => {
       e.stopPropagation(); if (e.instanceId === undefined) return;
       const chosen = spec.tools[e.instanceId]; selectIntentTool(spec.id, chosen); operateIntent(spec.id, chosen);
-    }}><meshStandardMaterial vertexColors roughness={.7} /></instancedMesh>
+    }}><WorldIntentSurface roughness={.7} /></instancedMesh>
     <group ref={moving} position={spec.id === 'route' ? [-2.2, 1.58, -.5] : spec.id === 'press' ? [-1.55, 1.75, .6] : [1, 2.4, .25]}>
-      <mesh geometry={movingGeometry} onClick={e => { e.stopPropagation(); if (spec.id === 'visitor') clarifyIntent(); else activateIntentTarget(spec.id); }}><meshStandardMaterial vertexColors roughness={.65} /></mesh>
+      <mesh geometry={movingGeometry} onClick={e => { e.stopPropagation(); if (spec.id === 'visitor') clarifyIntent(); else activateIntentTarget(spec.id); }}><WorldIntentSurface roughness={.65} /></mesh>
     </group>
     <IntentInteraction target={spec.id} />
     {spec.tools.map((id, i) => <ToolInteraction key={id} spec={spec} tool={id} index={i} />)}
@@ -107,7 +108,7 @@ export default function WorldIntentDevices() {
     const merged = mergeGeometries(parts, false)!; parts.forEach(p => p.dispose()); return merged;
   }, [passed]);
   useEffect(() => () => base.dispose(), [base]);
-  return <><mesh geometry={base}><meshStandardMaterial vertexColors roughness={.85} /></mesh>
+  return <><mesh geometry={base}><WorldIntentSurface roughness={.85} /></mesh>
     {INTENT_STATIONS.map(spec => <Device key={spec.id} spec={spec} />)}<IntentChest /><IntentGate />
     <IntentInteraction target="chest" /><IntentInteraction target="gate" /><IntentInteraction target="board" /></>;
 }
@@ -116,7 +117,7 @@ function IntentChest() {
   const progress = useIntentStore(s => s.progress), lid = useRef<Group>(null);
   const initiallyOpen = useRef(progress.chestOpen).current;
   const body = useMemo(() => {
-    const b = new CoasterBatch(); b.box([0, .65, 0], [3.8, 1.15, 2.1], P.dark);
+    const b = new CoasterBatch(coasterWorld([-8, 0, 59.5])); b.box([0, .65, 0], [3.8, 1.15, 2.1], P.dark);
     for (const x of [-1.6, 1.6]) b.box([x, .65, 0], [.14, 1.25, 2.17], P.copper);
     for (let i = 0; i < 6; i++) {
       const x = -1.38 + i * .55, opened = i < progress.passed.length;
@@ -145,14 +146,14 @@ function IntentChest() {
     lid.current.rotation.x += (target - lid.current.rotation.x) * (1 - Math.exp(-dt * 7));
   });
   return <>
-    <group position={coasterWorld([-7, 0, 34.3])} onClick={e => { e.stopPropagation(); activateIntentTarget('chest'); }}>
-      <mesh geometry={body}><meshStandardMaterial vertexColors roughness={.7} /></mesh>
+    <group position={coasterWorld([-8, 0, 59.5])} onClick={e => { e.stopPropagation(); activateIntentTarget('chest'); }}>
+      <mesh geometry={body}><WorldIntentSurface roughness={.7} /></mesh>
       <group ref={lid} position={[0, 1.23, -1]} rotation={[initiallyOpen ? -1.3 : 0, 0, 0]}>
         <mesh position={[0, .07, 1]}><boxGeometry args={[3.9, .2, 2.2]} /><meshStandardMaterial color={P.copper} roughness={.7} /></mesh>
       </group>
-      {progress.chestOpen && !progress.keyTaken && <mesh geometry={key} position={[-.2, 1.4, .25]} rotation={[-.25, 0, .25]}><meshStandardMaterial vertexColors metalness={.35} roughness={.4} /></mesh>}
+      {progress.chestOpen && !progress.keyTaken && <mesh geometry={key} position={[-.2, 1.4, .25]} rotation={[-.25, 0, .25]}><WorldIntentSurface metalness={.35} roughness={.4} /></mesh>}
     </group>
-    {progress.gateOpen && <mesh geometry={key} position={coasterWorld([5.3, 1.65, 32.5])}><meshStandardMaterial vertexColors roughness={.4} /></mesh>}
+    {progress.gateOpen && <mesh geometry={key} position={coasterWorld([5.3, 1.65, COASTER_GATE_Z + .5])}><WorldIntentSurface roughness={.4} /></mesh>}
   </>;
 }
 function IntentGate() {
@@ -170,7 +171,7 @@ function IntentGate() {
     if (right.current) right.current.rotation.y += ((open ? -1.45 : 0) - right.current.rotation.y) * (1 - Math.exp(-dt * 4));
   });
   return <group onClick={e => { e.stopPropagation(); activateIntentTarget('gate'); }}>
-    <group ref={left} position={coasterWorld([-5, 0, 32])}><mesh geometry={geometry}><meshStandardMaterial vertexColors roughness={.8} /></mesh></group>
-    <group ref={right} position={coasterWorld([5, 0, 32])}><mesh geometry={geometry} scale={[-1, 1, 1]}><meshStandardMaterial vertexColors roughness={.8} /></mesh></group>
+    <group ref={left} position={coasterWorld([-5, 0, COASTER_GATE_Z])}><mesh geometry={geometry}><WorldIntentSurface roughness={.8} /></mesh></group>
+    <group ref={right} position={coasterWorld([5, 0, COASTER_GATE_Z])}><mesh geometry={geometry} scale={[-1, 1, 1]}><WorldIntentSurface roughness={.8} /></mesh></group>
   </group>;
 }

@@ -4,10 +4,16 @@
   "referenceVersion": "v1",
   "approvals": {
     "style": {
-      "status": "pending"
+      "status": "approved",
+      "source": "human-user",
+      "date": "2026-10-27",
+      "quote": "这两个场景的方向我觉得都 OK，继续开工吧。"
     },
     "layout": {
-      "status": "pending"
+      "status": "approved",
+      "source": "human-user",
+      "date": "2026-10-27",
+      "quote": "这两个场景的方向我觉得都 OK，继续开工吧。"
     }
   },
   "references": [
@@ -15,6 +21,11 @@
       "role": "day",
       "path": "docs/world/phase-2-playground/visual-calibration-20261027/ibd-yard-v1.png",
       "sha256": "a6187c621435fa51c3313c571b6ee6e47a9ff41809065314cd2856261b2de672"
+    },
+    {
+      "role": "night",
+      "path": "docs/world/phase-2-playground/visual-calibration-20261027/ibd-yard-night-v1.png",
+      "sha256": "980b773734042fc306bd96affd0693e309af45b8cc6a802212457b72ea0c5aa1"
     }
   ],
   "reviewViews": [
@@ -30,7 +41,10 @@
     "装卸或出口发生碰撞陷阱"
   ],
   "runtimeEvidence": {
-    "status": "not-started",
-    "note": "待用户确认与夜景参考，保留现有玩法"
+    "status": "reviewed-for-local-preview",
+    "date": "2026-10-28",
+    "report": "docs/world/phase-2-playground/visual-calibration-20261027/delivery-20261028.md",
+    "userVisualAcceptance": "pending",
+    "note": "已比较实际日夜画面并验证核心交互；用户尚未验收最终视觉。数值、浏览器与性能证据分开记录。"
   }
 }

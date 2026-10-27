@@ -3,7 +3,7 @@ import { CanvasTexture, Matrix4, PlaneGeometry, SRGBColorSpace } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { useWorldStore } from '../store';
 import { useIntentStore } from './intent-state';
-import { coasterWorld } from './coaster-track';
+import { coasterWorld, COASTER_DURATION, COASTER_GATE_Z } from './coaster-track';
 import { INTENT_STATIONS } from './intent-stations';
 import type { Vec3 } from '../types';
 
@@ -26,7 +26,7 @@ export default function WorldIntentSigns() {
       [t('文字加工台', 'THE WORD WORKSHOP'), t('原件进去，目的决定输出', 'ONE ORIGINAL. TWO DIFFERENT OUTCOMES.')],
       [t('先听清，再动手', 'ASK BEFORE YOU ACT'), t('铃在右边', 'THE BELL IS ON YOUR RIGHT')],
       [t(`已理解 ${progress.passed.length}/7`, `${progress.passed.length}/7 UNDERSTOOD`), t('六个不同任务 → 开箱 → 钥匙 → 大门', 'SIX TASKS → CHEST → KEY → GATE')],
-      [t('回路车站', 'SHIFT STATION'), t('94 秒 · 随时可回站', '94 SECONDS · RETURN AT ANY TIME')],
+      [t('回路车站', 'SHIFT STATION'), t(`${COASTER_DURATION} 秒 · 随时可回站`, `${COASTER_DURATION} SECONDS · RETURN AT ANY TIME`)],
       [routeText, t('园内原创模拟', 'A FICTIONAL PARK MODEL')],
       [pressText, t('只改变请求中需要改变的部分', 'CHANGE ONLY WHAT WAS REQUESTED')],
       [progress.passed.includes('T7') ? t('请勿攀爬，谢谢配合。', 'Please do not climb. Thank you.') : progress.clarified.includes('T7') ? t('只改礼貌，别发送。', 'MAKE IT POLITE. DO NOT SEND.') : t('帮我弄一下这个。', 'CAN YOU SORT THIS OUT?'), t('摇铃听目标', 'RING TO CLARIFY')],
@@ -45,10 +45,10 @@ export default function WorldIntentSigns() {
   }, [lang, progress, tasks]);
   const geometry = useMemo(() => {
     const panels: { at: Vec3; size: [number, number]; tile: number }[] = [
-      { at: [0, 6.4, 32.53], size: [10, .95], tile: 0 },
-      ...INTENT_STATIONS.map((s, i) => ({ at: [s.origin[0], 3, s.origin[2] - 1.31] as Vec3, size: [7, .85] as [number, number], tile: i + 1 })),
-      { at: [-7, 2.6, 35], size: [6, .95], tile: 4 },
-      { at: [-2.6, 4.7, 30.54], size: [8.5, .95], tile: 5 },
+      { at: [0, 6.4, COASTER_GATE_Z + 1.03], size: [10, .95], tile: 0 },
+      ...INTENT_STATIONS.map((s, i) => ({ at: [s.origin[0], 3.85, s.origin[2] - 1.31] as Vec3, size: [7, .85] as [number, number], tile: i + 1 })),
+      { at: [-8, 2.6, 60.2], size: [6, .95], tile: 4 },
+      { at: [-2, 5.6, 53.1], size: [8.5, .95], tile: 5 },
       ...INTENT_STATIONS.map((s, i) => ({ at: [s.origin[0], 1.9, s.origin[2] + 1.76] as Vec3, size: [6.4, .65] as [number, number], tile: i + 6 })),
     ];
     const parts = panels.map(panel => {

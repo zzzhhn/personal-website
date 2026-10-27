@@ -5,12 +5,15 @@ import { COASTER_DURATION, coasterPhase, type CoasterView } from './coaster-trac
 import { INTENT_STATIONS, INTENT_TARGETS, INTENT_TOOL_ACTIONS, intentInReach, type IntentTarget } from './intent-stations';
 import { INTENT_LABELS, INTENT_TASKS, type IntentText } from './intent-tasks';
 import { activateIntentTarget, clarifyIntent, currentIntentTask, intentContact, nextIntentTask, resetIntentVisit, selectIntentTool, stopIntentRide, useIntentStore } from './intent-state';
+import { INTENT_COASTER } from './attraction-layout';
 import './intent-coaster.css';
 
 const PHASE_TEXT: Record<ReturnType<typeof coasterPhase>, IntentText> = {
   station: { zh: '离站', en: 'Leaving the station' }, lift: { zh: '攀升，看见全岛', en: 'Climbing above the island' },
   crest: { zh: '高处停一瞬', en: 'A moment at the top' }, drop: { zh: '骤变', en: 'The sudden shift' },
   bank: { zh: '掠过反弯', en: 'Through the banked turns' }, tunnel: { zh: '穿过灯廊', en: 'Into the light corridor' },
+  low: { zh: '贴地疾驰', en: 'The low run' }, airtime: { zh: '越过驼峰', en: 'Over the airtime hill' },
+  inversion: { zh: '倒置回环', en: 'Through the inversion' }, helix: { zh: '环绕设备楼', en: 'Around the equipment house' },
   return: { zh: '减速回站', en: 'Braking into the station' },
 };
 const VIEWS: { id: CoasterView; label: IntentText }[] = [
@@ -21,7 +24,7 @@ const VIEWS: { id: CoasterView; label: IntentText }[] = [
 function WorldIntentHud() {
   const w = useWorldStore(useShallow(state => {
     const [x, , z] = state.position;
-    const inside = x > 12 && x < 88 && z > -220 && z < -125;
+    const inside = Math.abs(x - INTENT_COASTER.center[0]) < INTENT_COASTER.size[0] / 2 + 3 && Math.abs(z - INTENT_COASTER.center[2]) < INTENT_COASTER.size[1] / 2 + 6;
     let target: IntentTarget | undefined, distance = Infinity;
     if (inside) for (const id of Object.keys(INTENT_TARGETS) as IntentTarget[]) {
       if (!intentInReach(state.position, id)) continue;
@@ -50,7 +53,7 @@ function WorldIntentHud() {
   </aside>;
   const primaryText = target === 'chest' ? s.progress.keyTaken ? t('钥匙已在身上', 'You have the key') : s.progress.chestOpen ? t('拿起钥匙', 'Take the key') : t('掀开宝箱', 'Open the chest')
     : target === 'gate' ? s.progress.gateOpen ? t('大门已打开', 'Gate open') : t('插入钥匙，打开大门', 'Insert key and unlock gate')
-    : target === 'board' ? t('坐进列车，开始 94 秒回路', 'Board the 94-second ride')
+    : target === 'board' ? t(`坐进列车，开始 ${COASTER_DURATION} 秒回路`, `Board the ${COASTER_DURATION}-second ride`)
     : station ? station.id === 'visitor' && !s.progress.clarified.includes('T7') ? t('摇铃问清目标', 'Ring to clarify the goal') : INTENT_TOOL_ACTIONS[s.tools[station.id]][lang] : '';
   const disabled = !contact || (target === 'chest' && s.progress.keyTaken) || (target === 'gate' && s.progress.gateOpen);
   return <aside className="intent-hud" data-theme={theme} lang={lang === 'zh' ? 'zh-CN' : 'en'} aria-label={t('意图过山车', 'Intent coaster')}>

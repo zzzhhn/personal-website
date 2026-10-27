@@ -1,5 +1,7 @@
 # 骤变回路：集成交接
 
+> 历史 94 秒版本记录。2026-10-28 扩大版的当前布局、70 秒轨道与验证见 [intent-expanded-implementation.md](./intent-expanded-implementation.md)。
+
 2026-10-27。实现位于 `codex/world-intent-coaster`，基线 `69b14e0`。本交付为可集成源码与轻量逻辑／几何验证，浏览器视觉、实际手感、碰撞试玩与性能仍待主 session 验收。
 
 ## 挂载与所有权

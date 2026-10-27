@@ -115,5 +115,5 @@ test('cargo has continuous motion endpoints; crane actually raises and moves the
   assert.deepEqual(ibdCargoPose(g, 'coil-front', 0).at, IBD_CARGO_HOME['coil-front']);
   assert.ok(ibdCargoPose(g, 'coil-front', .5).at[1] > IBD_CARGO_HOME['coil-front'][1] + 1);
   assert.deepEqual(ibdCargoPose(g, 'coil-front', 1).at, [-20, 2.35, -4]);
-  assert.ok(IBD_STATIONS.every(s => Math.abs(s.at[0]) <= 27.5 && Math.abs(s.at[2]) <= 22.5));
+  assert.ok(IBD_STATIONS.every(s => Math.abs(s.at[0]) <= 34 && Math.abs(s.at[2]) <= 30));
 });

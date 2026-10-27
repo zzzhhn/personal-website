@@ -368,6 +368,10 @@ export default function WorldActors() {
     }
     return CAMP_SPAWN;
   },[]);
+  useEffect(() => {
+    // Paused arrivals and fixed shots have no physics publication to activate nearby facilities.
+    useWorldStore.setState({ position: [...arrival], zone: LAYOUT_V4 ? zoneAtV4(arrival[0], arrival[2]) : 'camp' });
+  }, [arrival]);
   const target = useRef(new Vector3(...arrival));
   const cameraReady = useRef(false);
   const guideView=useRef<Group>(null),guideCameraFoot=useRef(new Vector3());
@@ -1214,12 +1218,13 @@ export default function WorldActors() {
     if (state.paused || state.poolInspect) return;
     if(attractionRide.active){
       const pose=attractionRide.pose;
-      camera.position.set(...pose.cameraPosition);camera.up.set(0,1,0);camera.lookAt(...pose.cameraTarget);
+      camera.position.set(...pose.cameraPosition);camera.up.set(...(pose.cameraUp??[0,1,0]));camera.lookAt(...pose.cameraTarget);
       if(camera instanceof PerspectiveCamera&&camera.fov!==pose.fov){camera.fov=pose.fov;camera.updateProjectionMatrix();}
       if(guideView.current)guideView.current.visible=!pose.firstPerson;
       cameraReady.current=false;
       return;
     }
+    camera.up.set(0,1,0);
     const c=cam.current,driving=!!state.activeVehicle&&guideTransition.current?.phase!=='enter';
     const car=driving?cars.current.get(state.activeVehicle!):undefined;
     const body=car?.body??player.current;if(!body)return;

@@ -9,7 +9,7 @@ import { ATTRACTION_ROADS, IBD_YARD, INTENT_COASTER } from './attractions/attrac
 
 type MapRoad = { pts: number[][]; width: number; color: string; dash?: string };
 type Landmark = { id: string; p: [number, number]; label: string };
-type MapGeometry = { shores: number[][][]; camp: number[][]; viewBox: [number, number, number, number]; roads?: MapRoad[]; landmarks: Landmark[] };
+type MapGeometry = { shores: number[][][]; camp: number[][]; viewBox: [number, number, number, number]; roads?: MapRoad[]; landmarks: Landmark[]; coaster: number[][] };
 let mapGeometryPromise: Promise<MapGeometry> | null = null;
 /** Shares the terrain's waterline and the v4 road hierarchy, loaded lazily with the runtime chunk so the
  * loading screen never pulls Three / terrain generation into the initial bundle. */
@@ -20,13 +20,14 @@ export function loadMapGeometry() {
       .sort((a, b) => b.width - a.width),
     landmarks: LANDMARKS_V4.map(l => ({ id: l.id, p: [l.p[0], l.p[1]] as [number, number], label: l.label })),
   })) : Promise.resolve({ roads: undefined, landmarks: [] as Landmark[] });
-  return mapGeometryPromise ??= Promise.all([import('./WorldLandform'), v4]).then(([{ islandShorelines, campRadius }, { roads, landmarks }]) => {
+  return mapGeometryPromise ??= Promise.all([import('./WorldLandform'), v4, import('./attractions/coaster-track')]).then(([{ islandShorelines, campRadius }, { roads, landmarks }, {coasterCurve}]) => {
     const shores = islandShorelines(), shore = shores.flat();
     const camp = Array.from({ length: 72 }, (_, i) => { const a = i / 72 * Math.PI * 2, r = campRadius(a) * .7; return [-42 + Math.cos(a) * r, 30 + Math.sin(a) * r]; });
     const xs = [-77, 85, ...shore.map(p => p[0]), ...ALPHA_MINE_FOOTPRINT_POINTS.map(p => p[0]), ...ALPHA_MINE_CONNECTOR.map(p => p[0])];
     const zs = [-62, 62, ...shore.map(p => p[1]), ...ALPHA_MINE_FOOTPRINT_POINTS.map(p => p[1]), ...ALPHA_MINE_CONNECTOR.map(p => p[2])];
     const x = Math.min(...xs) - 7, z = Math.min(...zs) - 7;
-    return { shores, camp, roads, landmarks, viewBox: [x, z, Math.max(...xs) - x + 7, Math.max(...zs) - z + 7] as [number, number, number, number] };
+    const coaster=coasterCurve.getSpacedPoints(140).map(p=>[p.x,p.z]);
+    return { shores, camp, roads, landmarks, coaster, viewBox: [x, z, Math.max(...xs) - x + 7, Math.max(...zs) - z + 7] as [number, number, number, number] };
   });
 }
 function useMapGeometry() {
@@ -96,7 +97,7 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
       {ATTRACTION_ROADS.map((road,i)=><polyline key={i} points={path(road)} fill='none' stroke='#D9D2C2' strokeWidth='5.4' strokeLinejoin='round'/>)}
       {[IBD_YARD,INTENT_COASTER].map((site,i)=><g key={i}>
         <rect x={site.center[0]-site.size[0]/2} y={site.center[2]-site.size[1]/2} width={site.size[0]} height={site.size[1]} rx='5' fill={i?'#36565e':'#89745c'} stroke='#c4c5a3' strokeWidth='.7'/>
-        {i===1&&<path d='M46 -140 C10 -150 15 -207 47 -207 S86 -169 61 -155 S30 -177 49 -194' fill='none' stroke='#86cfcc' strokeWidth='1.4'/>}
+        {i===1&&geometry&&<polyline points={path(geometry.coaster)} fill='none' stroke='#86cfcc' strokeWidth='1.4'/>}
         <circle cx={site.entrance[0]} cy={site.entrance[2]} r='3.3' fill='#23343D' stroke='#4FD1C5'/>
         <text x={site.center[0]} y={site.center[2]+(i?0:2)} textAnchor='middle' fontSize={full?'4.5':'5'} fill='#fff7de' paintOrder='stroke' stroke='#23343d' strokeWidth='1.1'>{lang==='zh'?(i?'意图过山车':'物资清点场'):(i?'INTENT COASTER':'INVENTORY YARD')}</text>
       </g>)}

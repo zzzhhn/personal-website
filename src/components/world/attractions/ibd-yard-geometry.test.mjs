@@ -3,19 +3,21 @@ import assert from 'node:assert/strict';
 import RAPIER from '@dimforge/rapier3d-compat';
 import { Euler, Quaternion } from 'three';
 import { buildIbdStatic, buildIbdCoil, buildIbdPack, buildIbdLid, buildIbdCrane, buildIbdHook, buildIbdCables, buildIbdShutter, buildIbdTools } from './ibd-yard-geometry.ts';
-import { IBD_STATIONS, IBD_CARGO_HOME, IBD_RAMP } from './ibd-yard-layout.ts';
+import { IBD_STATIONS, IBD_CARGO_HOME, IBD_RAMP, IBD_SHEDS } from './ibd-yard-layout.ts';
 import { playerSupport, followPlayerGround } from '../player-ground.ts';
 import { createPlayerClearance, playerVelocityChange, sweptPlayerVelocity } from '../player-motion.ts';
+import { createIbdYardGame } from './ibd-yard-game.ts';
+import { ibdCargoPose } from './ibd-yard-motion.ts';
 await RAPIER.init();
 const identity = { x: 0, y: 0, z: 0, w: 1 }, capsule = new RAPIER.Capsule(.48, .34);
-function fixture() {
+function fixture(cargo = true) {
   const data = buildIbdStatic(), world = new RAPIER.World({ x: 0, y: -9.81, z: 0 });
   for (const s of data.solids) {
     const q = new Quaternion().setFromEuler(new Euler(...(s.rotation ?? [0, 0, 0])));
     world.createCollider(RAPIER.ColliderDesc.cuboid(...s.size.map(n => n / 2)).setTranslation(...s.at).setRotation(q));
   }
   world.createCollider(RAPIER.ColliderDesc.trimesh(data.walkSurface.vertices, data.walkSurface.indices));
-  for (const [slot, at] of Object.entries(IBD_CARGO_HOME)) {
+  for (const [slot, at] of cargo ? Object.entries(IBD_CARGO_HOME) : []) {
     const coil = slot.startsWith('coil');
     world.createCollider(RAPIER.ColliderDesc.cuboid(...(coil ? [2, 2, 1.4] : [1.4, .55, 1.3])).setTranslation(at[0], at[1] + (coil ? 0 : .45), at[2]));
   }
@@ -37,22 +39,46 @@ test('geometry is finite, bounded to the survey, and stays below the provisional
     assert.ok([...g.getAttribute('position').array].every(Number.isFinite)); g.dispose();
   }
   assert.ok(triangles < 70000, `${triangles} triangles`);
-  assert.ok(staticData.geometry.boundingBox.min.x >= -27.51 && staticData.geometry.boundingBox.max.x <= 27.51);
-  assert.ok(staticData.geometry.boundingBox.min.z >= -22.51 && staticData.geometry.boundingBox.max.z <= 22.51);
+  assert.ok(staticData.geometry.boundingBox.min.x >= -34.1 && staticData.geometry.boundingBox.max.x <= 34.1);
+  assert.ok(staticData.geometry.boundingBox.min.z >= -30.1 && staticData.geometry.boundingBox.max.z <= 30.1);
+});
+test('all animated transport lanes clear the enlarged architecture with the actual cargo collider sizes', () => {
+  const f = fixture(false);
+  try {
+    for (const slot of ['parts-a', 'parts-b', 'coil-front', 'coil-rear']) {
+      const coil = slot.startsWith('coil');
+      const kinds = coil ? ['turn', 'replace', ...(slot === 'coil-front' ? ['crane', 'replace-moved'] : [])] : ['load', 'unload', 'replace'];
+      // Shrink 2 cm solely to exclude resting contact with cradles and benches.
+      const shape = new RAPIER.Cuboid(...(coil ? [1.98, 1.98, 1.38] : [1.38, .53, 1.28]));
+      for (const kind of kinds) {
+        const game = createIbdYardGame();
+        if (kind === 'replace-moved') game.core.moved.push('coil-front');
+        game.pending = { token: 1, seconds: 1, action: { kind: kind === 'replace-moved' ? 'replace' : kind, slot, station: slot } };
+        for (let i = 0; i <= 160; i++) {
+          const pose = ibdCargoPose(game, slot, i / 160), [x, y, z] = pose.at;
+          const hits = [];
+          const rotation = new Quaternion().setFromEuler(new Euler(0, pose.yaw, 0));
+          f.world.intersectionsWithShape({ x, y: y + (coil ? 0 : .45), z }, rotation, shape,
+            collider => { hits.push(collider.translation()); return true; });
+          assert.deepEqual(hits, [], `${slot}/${kind} collides at progress ${i / 160}, position ${pose.at}`);
+        }
+      }
+    }
+  } finally { f.dispose(); }
 });
 test('south entrance and the outside portal landings have no facility collider obstruction', () => {
   const f = fixture();
   try {
-    for (let z = 22; z <= 30; z += .5) for (const x of [-1, 0, 1]) assert.ok(f.free(x, .1, z), `entry blocked at ${x},${z}`);
+    for (let z = 22; z <= 34; z += .5) for (const x of [-1, 0, 1]) assert.ok(f.free(x, .1, z), `entry blocked at ${x},${z}`);
     for (const z of [28.5, 31, 33.5]) assert.ok(f.free(-13, .1, z), `portal blocked at ${z}`);
   } finally { f.dispose(); }
 });
 test('camera-sized sphere sweeps hit both physical roof slopes of all three sheds', () => {
   const f = fixture();
   try {
-    for (const [x, z, width, height] of [[-14, -8, 22, 7.2], [14, -11, 21, 5.7], [14, 12.5, 21, 6.4]]) {
+    for (const { x, z, width, eave: height, rise } of IBD_SHEDS) {
       for (const side of [-1, 1]) {
-        const hit = f.world.castShape({ x: x + side * width / 4, y: height + .9 + 1.5, z }, identity,
+        const hit = f.world.castShape({ x: x + side * width / 4, y: height + rise / 2 + 1.5, z }, identity,
           { x: 0, y: -1, z: 0 }, new RAPIER.Ball(.25), 0, 2, true);
         assert.ok(hit && hit.time_of_impact < 1.5, `roof ${x},${z}/${side} must stop the camera sphere`);
       }

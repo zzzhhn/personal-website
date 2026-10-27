@@ -6,7 +6,7 @@ For substantial new scenes or changes to their layout, modelling, materials or l
 - Run `node tools/world/check-visual-reference.mjs <manifest> --for-implementation` from the repository root before implementing a referenced redesign. Approval evidence comes from the human conversation, never a self-awarded aesthetic score. An explicit current instruction can update the manifest without asking again.
 - First validate a playable spatial/ride sample, then build a representative art-and-lighting sample. Compare real daylight and midnight screenshots from the same frozen camera and exposure against the reference before propagating assets across the whole facility.
 - Keep visual acceptance, gameplay, collision/camera safety and performance evidence separate. A passing build, test suite or beautiful generated image proves none of the other categories.
-- Do not promote a visual redesign to the user's preview before these comparisons. The current reference pack is pending layout review; 4341 remains the prior playable version.
+- Do not promote a visual redesign to the user's preview before these comparisons. Read the current manifest and human instructions for approval state; do not infer it from older handoff notes.
 - Small correctness repairs that preserve the agreed visual direction do not need fresh concept art or new approval. Keep collaborators on explicitly owned files and record any deviation from the reference.
 
 This is project workflow guidance, not an automated Git or CI enforcement hook. The checker validates assets and recorded approvals; it cannot certify taste, track connectivity, motion quality or performance.

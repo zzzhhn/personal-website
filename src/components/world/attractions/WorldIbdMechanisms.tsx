@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { CuboidCollider, RigidBody, type RapierRigidBody } from '@react-three/rapier';
 import { BufferGeometry, Group, Mesh, MeshStandardMaterial, Quaternion, Vector3 } from 'three';
 import { IBD_ALL_CLEAR } from './ibd-cases.ts';
-import { IBD_SLOTS, IBD_CARGO_HOME, ibdStation, ibdWorld, type IbdSlot } from './ibd-yard-layout.ts';
+import { IBD_SLOTS, IBD_CARGO_HOME, IBD_CRANE_Y, ibdStation, ibdWorld, type IbdSlot } from './ibd-yard-layout.ts';
 import { yardCase, yardItemId } from './ibd-yard-game.ts';
 import { advanceIbdMotion, ibdCargoPose } from './ibd-yard-motion.ts';
 import { finishIbdAction, ibdActor, useIbdYardStore } from './ibd-yard-store.ts';
@@ -51,10 +51,10 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
       if (lid) lid.rotation.x = pose.lid;
     }
     const coil = ibdCargoPose(game, 'coil-front', progress);
-    if (crane.current) crane.current.position.set(coil.at[0], 6.7, -4);
+    if (crane.current) crane.current.position.set(coil.at[0], IBD_CRANE_Y + .7, -4);
     const hookY = coil.at[1] + 2.4;
     if (hook.current) hook.current.position.set(coil.at[0], hookY, -4);
-    if (cables.current) { cables.current.position.set(coil.at[0], 6.35, -4); cables.current.scale.y = Math.max(.05, 6.35 - hookY); }
+    if (cables.current) { cables.current.position.set(coil.at[0], IBD_CRANE_Y + .35, -4); cables.current.scale.y = Math.max(.05, IBD_CRANE_Y + .35 - hookY); }
     const releasing = game.pending?.action.kind === 'release' ? progress : game.released ? 1 : 0;
     if (shutterBody.current) {
       const [x, y, z] = ibdWorld([7, 1.65 + releasing * 3.7, 19.3]);
@@ -95,9 +95,9 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
         </group>}
       </RigidBody>;
     })}
-    <mesh ref={crane} geometry={fixed.crane} material={material} position={[-12, 6.7, -4]} castShadow userData={movable} />
+    <mesh ref={crane} geometry={fixed.crane} material={material} position={[-12, IBD_CRANE_Y + .7, -4]} castShadow userData={movable} />
     <mesh ref={hook} geometry={fixed.hook} material={material} position={[-12, 5, -4]} castShadow userData={movable} />
-    <mesh ref={cables} geometry={fixed.cables} material={material} position={[-12, 6.35, -4]} userData={movable} />
+    <mesh ref={cables} geometry={fixed.cables} material={material} position={[-12, IBD_CRANE_Y + .35, -4]} userData={movable} />
     <RigidBody ref={shutterBody} type="kinematicPosition" colliders={false} position={[7, 1.65, 19.3]} rotation={[0, Math.PI / 2, 0]} userData={movable}>
       <CuboidCollider args={[.065, 1.5, 4.4]} />
       <mesh geometry={fixed.shutter} material={material} castShadow userData={movable} />

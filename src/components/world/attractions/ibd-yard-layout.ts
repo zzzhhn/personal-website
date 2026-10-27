@@ -11,8 +11,8 @@ const station = (id: IbdStationId, at: Vec3, zh: string, en: string, slot?: IbdS
   ({ id, at, title: { zh, en }, slot, radius: id.startsWith('gallery') ? 1.8 : 2.1 });
 /** Local coordinates, relative to IBD_YARD.center. Interaction anchors sit on the walking side. */
 export const IBD_STATIONS: readonly IbdStation[] = [
-  station('manifest', [0, 1.1, 21], '接货台', 'Receiving desk'),
-  station('kit', [-5, 1.1, 15], '检验工具', 'Inspection kit'),
+  station('manifest', [-3, 1.1, 27], '接货台', 'Receiving desk'),
+  station('kit', [-6, 1.1, 20], '检验工具', 'Inspection kit'),
   station('crane', [-6, 1.1, 1], '桥式吊架', 'Gantry crane'),
   station('coil-front', [-12, 1.2, -1.7], '前卷检验位', 'Front coil', 'coil-front'),
   station('coil-rear', [-12, 1.2, -6.7], '后卷检验位', 'Rear coil', 'coil-rear'),
@@ -50,3 +50,10 @@ export const IBD_MOVED_COIL: Vec3 = [-20, 2.35, -4];
 export const IBD_GALLERY_HEIGHT = 4;
 /** Ends at the south edge of a 3.8 m-deep landing; one welded collision shell covers the whole gallery. */
 export const IBD_RAMP = { center: [-24, 2.1, -4.35] as Vec3, length: 15.7, width: 3.2, rise: 4, south: 3.5, north: -12.2, landingNorth: -16 };
+/** Metres, in the same local frame as all workstations and cargo. */
+export const IBD_SHEDS = [
+  { id: 'coil', x: -17, z: -9.5, width: 28, depth: 29, eave: 10.6, rise: 2.8 },
+  { id: 'parts', x: 15.5, z: -16.5, width: 31, depth: 19, eave: 7.3, rise: 1.9 },
+  { id: 'dispatch', x: 17, z: 14.5, width: 28, depth: 23, eave: 6.6, rise: 2.2 },
+] as const;
+export const IBD_CRANE_Y = 8.6;

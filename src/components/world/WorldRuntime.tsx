@@ -70,7 +70,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
   useEffect(() => {
     if (!shot) return;
     const view = WORLD_SHOTS.find(v => v.id === shot);
-    if (view) { camera.position.set(...view.position); camera.lookAt(...view.target); camera.updateProjectionMatrix(); }
+    if (view) { camera.position.set(...view.position); camera.up.set(0,1,0); camera.lookAt(...view.target); camera.updateProjectionMatrix(); }
   }, [shot, camera]);
   useFrame((_, delta) => {
     frameDelta.current = delta;

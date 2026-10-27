@@ -762,7 +762,8 @@ export const LANDMARKS_V4 = [
 /* ------------------------------------------------------------------ terrain integration (environment session) */
 
 /** Lattice for WorldLandform when v4 is active: covers the new outline + beach + shelf (multiples of 4 cells). */
-export const TERRAIN_GRID_V4 = { minX: -176, minZ: -268, nx: 616, nz: 784 };
+// Includes the expanded north cape and its full beach/shelf; flat interiors still use coarse tiles.
+export const TERRAIN_GRID_V4 = { minX: -176, minZ: -320, nx: 704, nz: 888 };
 /** Set to true by the WorldLandform integration patch (it evaluates ridgeHeightV4 itself); until then
  * WorldDistricts draws the ridge as a local terrain patch. Keeping one owner avoids a doubled surface. */
 export const LANDFORM_HAS_RIDGE = true;

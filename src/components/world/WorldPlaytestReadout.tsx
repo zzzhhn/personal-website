@@ -18,11 +18,14 @@ import { windUniforms } from './WorldWind';
 import { IBD_YARD, INTENT_COASTER } from './attractions/attraction-layout';
 import { attractionRide } from './attractions/attraction-ride';
 import { PLAYER_CENTER_HEIGHT } from './actor-physics';
+import { INTENT_TARGETS } from './attractions/intent-stations';
+import { IBD_STATIONS, ibdWorld } from './attractions/ibd-yard-layout';
+import { intentRideClock, useIntentStore } from './attractions/intent-state';
 
 function readContactSnapshot() {
   const value=worldActorDebug.actor(),physics=worldActorDebug.snapshot();
   const actor=value&&typeof value==='object'&&!Array.isArray(value)?value:{};
-  return {ride:{active:attractionRide.active,seat:attractionRide.pose?.seat},actor:{animation:actor.animation,root:actor.root,seatSupport:actor.seatSupport,vehicleStage:actor.vehicleStage,vehicleRotation:actor.vehicleRotation,vehicle:actor.vehicle},
+  return {ride:{active:attractionRide.active,...attractionRide.pose},camera:worldActorDebug.camera(),actor:{animation:actor.animation,root:actor.root,seatSupport:actor.seatSupport,vehicleStage:actor.vehicleStage,vehicleRotation:actor.vehicleRotation,vehicle:actor.vehicle},
     doors:Object.fromEntries(Object.entries(vehicleLodSnapshot()).map(([id,v])=>[id,{level:v.level,triangles:v.l0Triangles,doors:v.doors}])),
     physics:{player:physics.player,grounded:physics.grounded,vehicles:physics.vehicles.map(v=>({id:v.id,position:v.position,waterSeconds:v.waterSeconds,wheelContacts:v.wheelContacts}))}};
 }
@@ -41,6 +44,21 @@ export default function WorldPlaytestReadout() {
           const p=site.entrance;worldActorDebug.teleportPlayer([p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]]);
           useWorldStore.setState({paused:false,clubMode:null,seat:null});
         }}>QA · 到{site.title.zh}</button>)}
+        <details><summary>QA · 设施操作点</summary>
+          {([['首降',37],['倒置',45],['灯廊',60]] as const).map(([label,second])=><button key={label} disabled={!attractionRide.active} onClick={()=>{
+            if(!attractionRide.active)return;
+            intentRideClock.elapsed=second;useIntentStore.setState({rideSecond:second});
+            useWorldStore.setState({paused:false});
+          }}>QA · 乘坐定位{label}</button>)}
+          {Object.entries(INTENT_TARGETS).map(([id,p])=><button key={id} disabled={attractionRide.active} onClick={()=>{
+            worldActorDebug.teleportPlayer([p[0],INTENT_COASTER.center[1]+.1+PLAYER_CENTER_HEIGHT,p[2]+1]);
+            useWorldStore.setState({paused:false,seat:null});
+          }}>QA · 到意图 {id}</button>)}
+          {IBD_STATIONS.filter(s=>['manifest','crane','gallery-rear','parts-a','dispatch'].includes(s.id)).map(s=><button key={s.id} disabled={attractionRide.active} onClick={()=>{
+            const p=ibdWorld(s.at);worldActorDebug.teleportPlayer([p[0],IBD_YARD.center[1]+(s.id.startsWith('gallery')?4.1:.1)+PLAYER_CENTER_HEIGHT,p[2]+.6]);
+            useWorldStore.setState({paused:false,seat:null});
+          }}>QA · 到{s.title.zh}</button>)}
+        </details>
         <button onClick={()=>{clubWaterFrameWindow.start();setRenderSnapshot({frameWindow:'started'});}}>QA · 开始场景帧采样</button>
         <button onClick={()=>setRenderSnapshot({frameWindow:clubWaterFrameWindow.stop(),render:readRenderSnapshot()})}>QA · 结束场景帧采样</button>
         <button onClick={()=>{worldActorDebug.teleportPlayer([49,2.3,55]);useWorldStore.setState({paused:false,clubMode:null,seat:null});}}>QA · 到泳池西岸</button>

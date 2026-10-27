@@ -1,14 +1,11 @@
 import { Builder, cbox, bar, lathe, type Surf, type V3 } from '../WorldStreetGeometry.ts';
 import { IBD_RAMP } from './ibd-yard-layout.ts';
-
-const surf = (color: string, metal = .1): Surf => ({ color, rough: .78, metal });
-export const IBD_MATERIALS = {
-  steel: surf('#879ba5', .3), dark: surf('#30444d', .24), roof: surf('#536d72', .2), timber: surf('#a77a49'),
-  endgrain: surf('#d0a771'), concrete: surf('#a2a298'), pale: surf('#e8e5d8'), amber: surf('#e9ac39'),
-  rubber: surf('#293133'), rust: surf('#c17551'), blue: surf('#608a9e'), green: surf('#557d68'),
-};
-const P = IBD_MATERIALS;
-export interface IbdSolid { at: V3; size: V3; rotation?: V3 }
+import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
+import { buildIbdArchitecture, buildIbdStores, type IbdSolid } from './ibd-yard-architecture.ts';
+import { buildIbdSite } from './ibd-yard-site.ts';
+import { bakeIbdLight } from './ibd-yard-lighting.ts';
+export { IBD_MATERIALS } from './ibd-yard-palette.ts';
+export type { IbdSolid } from './ibd-yard-architecture.ts';
 function buildIbdWalkSurface(b: Builder) {
   const vertices: number[] = [], indices: number[] = [], ids = new Map<string, number>();
   const boundary = new Map<string, { a: V3; end: V3; count: number }>();
@@ -40,47 +37,19 @@ export function buildIbdStatic() {
     if (rotation) b.tr(at, rotation, () => cbox(b, [0, 0, 0], size, s, bevel)); else cbox(b, at, size, s, bevel);
     if (solid) solids.push({ at, size, ...(rotation ? { rotation } : {}) });
   };
-  cube([0, -.12, 0], [55, .4, 45], P.concrete, true);
-  // Three open-sided sheds. Tall portal frames, split roof slopes and lower rear panels retain sightlines.
-  const shed = (x: number, z: number, w: number, d: number, h: number, roof: Surf, rear = true) => {
-    for (const zz of [-d / 2, 0, d / 2]) {
-      for (const xx of [-w / 2, w / 2]) {
-        cube([x + xx, h / 2, z + zz], [.32, h, .38], P.dark, true);
-        cube([x + xx, .3, z + zz], [.65, .6, .7], P.concrete, true);
-        bar(b, [x + xx, h - 2, z + zz], [x + xx * .62, h, z + zz], .1, P.steel, 4);
-      }
-      bar(b, [x - w / 2, h, z + zz], [x, h + 1.8, z + zz], .16, P.dark, 4);
-      bar(b, [x, h + 1.8, z + zz], [x + w / 2, h, z + zz], .16, P.dark, 4);
-      bar(b, [x - w / 2, h, z + zz], [x + w / 2, h, z + zz], .09, P.steel, 4);
-    }
-    const angle = Math.atan2(1.8, w / 2), span = Math.hypot(w / 2, 1.8);
-    for (const side of [-1, 1]) cube([x + side * w / 4, h + .9, z], [span + .5, .16, d + .8], roof, true, 0, [0, 0, -side * angle]);
-    for (let zz = -d / 2; zz <= d / 2; zz += 1.6)
-      for (const side of [-1, 1]) bar(b, [x + side * (w / 2 + .15), h + .1, z + zz], [x, h + 1.9, z + zz], .025, P.steel, 4);
-    if (rear) {
-      cube([x, 1.1, z - d / 2], [w, 2.2, .14], P.roof, true);
-      for (let xx = -w / 2 + 1; xx < w / 2; xx += 1.5) cube([x + xx, 1.1, z - d / 2 + .09], [.06, 2.15, .06], P.steel);
-    }
-  };
-  shed(-14, -8, 22, 22, 7.2, P.roof);
-  shed(14, -11, 21, 16, 5.7, P.blue);
-  // Dispatch canopy is open on both travel axes; no fourth wall can trap the player.
-  shed(14, 12.5, 21, 15, 6.4, P.green, false);
-  // Crane rails and trussed bridge: the yellow carriage is a separate moving mesh.
-  for (const z of [-6, -2]) {
-    cube([-15, 6.7, z], [21, .35, .35], P.dark);
-    for (const x of [-25, -4.5]) cube([x, 3.35, z], [.35, 6.7, .35], P.dark, true);
-  }
+  buildIbdArchitecture(b, cube);
+  buildIbdStores(b, cube, solids);
+  buildIbdSite(b, cube);
   for (const x of [-20, -12]) for (const z of [-4, ...(x === -12 ? [-9] : [])]) {
-    cube([x, .15, z], [4.6, .25, 3.4], P.dark);
-    for (const side of [-1, 1]) cube([x + side * 1.25, .4, z], [.45, .5, 3.2], P.timber, true);
+    cube([x, .095, z], [4.6, .02, 3.4], P.dark, false, 0);
+    for (const side of [-1, 1]) cube([x + side * 2.35, .11, z], [.25, .015, 3.2], P.amber, false, 0);
   }
   // The narrow crane lane makes the front coil a physical occluder. The gantry lifts above its guards.
   for (const x of [-14.5, -9.5]) {
-    cube([x, .75, -6.6], [.12, 1.5, 9.2], P.dark, true);
-    cube([x, 1.53, -6.6], [.16, .06, 9.2], P.amber);
+    cube([x, .75, -6.85], [.12, 1.5, 9.7], P.dark, true);
+    cube([x, 1.53, -6.85], [.16, .06, 9.7], P.amber);
   }
-  cube([-12, .75, -11.2], [5.1, 1.5, .12], P.dark, true);
+  cube([-12, .75, -11.7], [5.1, 1.5, .12], P.dark, true);
   // One welded shell has no internal vertical box ends for the character's swept guard to hit.
   const walkSurface = buildIbdWalkSurface(b);
   const rail = (a: V3, end: V3) => {
@@ -118,7 +87,7 @@ export function buildIbdStatic() {
     }
   }
   // Raised rollers are visual, with open walking gaps at z=0 and z=4, no invisible wall colliders.
-  for (const [x, z] of [[0, 20], [-5, 14], [-6, .2], [-8, -4], [-8, -9], [7, -12], [21, -12], [7.8, -6.5], [20.2, -6.5], [8, 7.7], [8, 17.3], [7, 18]]) {
+  for (const [x, z] of [[-3, 26], [-6, 19], [-6, .2], [-8, -4], [-8, -9], [7, -12], [21, -12], [7.8, -6.5], [20.2, -6.5], [8, 7.7], [8, 17.3], [7, 18]]) {
     cube([x, .6, z], [.8, 1.2, .7], P.dark, true);
     cube([x, 1.25, z], [1, .16, .9], P.amber);
     bar(b, [x, 1.3, z], [x, 1.75, z + .18], .07, P.rubber, 6);
@@ -132,20 +101,21 @@ export function buildIbdStatic() {
   cube([23, 1.55, 12.5], [3.5, 2.6, 3.8], P.green, true, .18);
   cube([23, 2.6, 14.45], [2.8, .65, .04], P.blue);
   for (const z of [10.5, 14.5]) cube([12.5, .45, z], [Math.hypot(3, .9), .14, 2.9], P.steel, true, 0, [0, 0, Math.atan2(.9, 3)]);
-  // Small quarantine rack and spares are visibly outside the current inventory positions.
-  for (const z of [-17, -15.7]) cube([14, .9, z], [7, .16, .8], P.rust);
-  for (const x of [11, 17]) cube([x, .5, -16.4], [.16, 1.2, 2], P.dark, true);
+  // The quarantine dollies roll onto a marked floor bay. Raised rack feet used to clip the exchange path.
+  for (const z of [-18.5, -14.5]) cube([15.5, .11, z], [15, .015, .14], P.rust, false, 0);
+  for (const x of [8, 23]) cube([x, .11, -16.5], [.14, .015, 4], P.rust, false, 0);
+  for (const x of [9, 22]) cube([x, 1.75, -19], [.14, 3.5, .14], P.dark, true);
+  cube([14, 3.2, -19], [5.2, .95, .12], P.dark);
   for (let z = 3; z < 21; z += 3) cube([1, .092, z], [.15, .012, 1.7], P.pale, false, 0);
-  for (const x of [-26, 26]) for (const z of [-20, 0, 20]) cube([x, .5, z], [.35, 1, .35], P.amber, true);
-  for (const x of [-3.4, 3.4]) cube([x, 1.7, 21.2], [.18, 3.4, .18], P.dark, true);
-  cube([0, 3.4, 21.2], [7.6, 1.6, .14], P.dark);
+  for (const x of [-4.6, 4.6]) cube([x, 1.8, 28.2], [.22, 3.6, .22], P.dark, true);
+  cube([0, 3.6, 28.2], [9.4, 1.6, .18], P.dark);
   for (const [x, z] of [[-6, -3.5], [-10, -13.5]]) {
     cube([x, 4.6, z - .4], [.18, 1.2, .18], P.steel);
     bar(b, [x, 5.25, z - .8], [x, 5.25, z + .2], .13, P.dark, 8);
   }
-  cube([-20.6, .8, 3.96], [.14, 1.6, .14], P.dark, true);
-  cube([-20.6, 1.6, 3.96], [2.7, .8, .12], P.dark, true);
-  return { geometry: b.build(), solids, walkSurface };
+  cube([-28.3, .8, 3.96], [.14, 1.6, .14], P.dark, true);
+  cube([-28.3, 1.6, 3.96], [2.7, .8, .12], P.dark, true);
+  return { geometry: bakeIbdLight(b.build()), solids, walkSurface };
 }
 
 export function buildIbdCoil(damaged: boolean, number = 1) {
@@ -158,9 +128,11 @@ export function buildIbdCoil(damaged: boolean, number = 1) {
   });
   cbox(b, [.8, .65, 1.4], [.65, .42, .04], P.pale, .02);
   for (let i = 0; i < number; i++) cbox(b, [.64 + i * .18, .65, 1.43], [.06, .24, .015], P.dark, .005);
-  cbox(b, [0, -2.07, 0], [4.25, .14, 3.05], P.dark, .03);
+  cbox(b, [0, -2.07, 0], [3.9, .14, 2.7], P.dark, .03);
+  // The cradles belong to the moving dolly, so exchanging a coil cannot drag through fixed timber blocks.
+  for (const x of [-1.25, 1.25]) cbox(b, [x, -1.72, 0], [.45, .6, 2.7], P.timber, .03);
   for (const x of [-1.7, 1.7]) for (const z of [-1.05, 1.05])
-    b.tr([x, -2.2, z], [0, 0, Math.PI / 2], () => lathe(b, [[0, -.09], [.13, -.09], [.13, .09], [0, .09]], P.steel, { sides: 8 }));
+    b.tr([x, -2.12, z], [0, 0, Math.PI / 2], () => lathe(b, [[0, -.09], [.13, -.09], [.13, .09], [0, .09]], P.steel, { sides: 8 }));
   if (damaged) {
     b.face([[-1.35, .5, -1.4], [-.65, 1.4, -1.4], [.1, .95, -1.44], [-.4, .2, -1.52]], P.rust, [0, 0, -1]);
     bar(b, [-1.2, .55, -1.48], [-.3, 1.1, -1.48], .08, P.dark, 5);

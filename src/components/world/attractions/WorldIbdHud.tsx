@@ -16,7 +16,7 @@ export default memo(function WorldIbdHud({ active = true }: { active?: boolean }
   const theme = useWorldStore(s => sampleTimeLight(s.worldMinutes).night < .5 ? 'light' : 'dark');
   // A primitive visibility selector remains equal for every position publication outside the yard.
   const inYard = useWorldStore(s => active && Math.abs(s.position[0] - IBD_YARD.center[0]) <= IBD_YARD.size[0] / 2 + 4
-    && s.position[2] >= IBD_YARD.center[2] - IBD_YARD.size[1] / 2 - 4 && s.position[2] <= IBD_YARD.center[2] + 30);
+    && s.position[2] >= IBD_YARD.center[2] - IBD_YARD.size[1] / 2 - 4 && s.position[2] <= IBD_YARD.center[2] + IBD_YARD.size[1] / 2 + 6);
   const suppressed = useWorldStore(s => s.paused || !!s.card || s.poolInspect || !!s.shot || !!s.activeVehicle || !!s.seat);
   const nearby = useWorldStore(s => inYard && s.nearbyInteract?.id.startsWith('ibd-') ? s.nearbyInteract.id : null), [details, setDetails] = useState(false);
   if (!active || !mounted || suppressed || !inYard) return null;

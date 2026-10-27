@@ -75,7 +75,7 @@ export default function WorldApp({ content }: { content: WorldContent }) {
     const shot = new URLSearchParams(window.location.search).get('shot');
     const validShot = WORLD_SHOTS.some(v => v.id === shot) ? shot : null;
     useWorldStore.setState({ lang: lang as 'en' | 'zh', shot: validShot });
-    selectWorldTime(validShot?.endsWith('-night') ? 'night' : 'dusk');
+    selectWorldTime(validShot?.endsWith('-night') ? 'night' : validShot?.endsWith('-day') ? 'noon' : 'dusk');
     // Lightweight playtest links work in the packaged preview too; QA hooks stay development-only.
     const params=new URLSearchParams(window.location.search);
     if(params.get('quality')==='balanced')useWorldStore.setState({quality:'balanced'});

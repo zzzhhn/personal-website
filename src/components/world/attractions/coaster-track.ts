@@ -3,39 +3,52 @@ import { INTENT_COASTER } from './attraction-layout.ts';
 import type { AttractionRidePose } from './attraction-ride.ts';
 import type { Vec3 } from '../types';
 
-export const COASTER_DURATION = 94;
+export const COASTER_RUN_MULTIPLIER = 3;
+// Preserve the climb/hold and eight-second station brake; compress only the thrill run.
+const rideTime = (authoredSeconds: number) => authoredSeconds <= 36 ? authoredSeconds
+  : 36 + (Math.min(authoredSeconds, 114) - 36) / COASTER_RUN_MULTIPLIER + Math.max(0, authoredSeconds - 114);
+export const COASTER_DURATION = rideTime(122);
 export type CoasterView = 'chase' | 'first-person' | 'comfort';
 export const coasterWorld = ([x, y, z]: Vec3): Vec3 => [x + INTENT_COASTER.center[0], y + INTENT_COASTER.center[1], z + INTENT_COASTER.center[2]];
-// The station apron is a flat collider at y=1.08. This egress stays outside the rail envelope.
-export const COASTER_EXIT = coasterWorld([-4.2, .08, 25]);
-export const COASTER_BOARD = coasterWorld([-2.8, .65, 25]);
-export const COASTER_CANOPY_BOUNDS = { min: coasterWorld([-10.6, 5.375, 14.5]), max: coasterWorld([3.4, 5.625, 30.5]) };
+export const COASTER_GATE_Z = 56;
+export const COASTER_EXIT = coasterWorld([-4.2, .08, 43]);
+export const COASTER_BOARD = coasterWorld([-2.8, .65, 43]);
+export const COASTER_CANOPY_BOUNDS = { min: coasterWorld([-11, 6.2, 30]), max: coasterWorld([7, 7.4, 53]) };
+// New topology: lift, plunge, airtime, complete vertical inversion, high turn,
+// low S bends, descending equipment helix, enclosed return and station.
 export const COASTER_POINTS: Vec3[] = [
-  [0, .8, 27], [0, 1.6, 15], [-13, 9, 2], [-25, 23, -14],
-  [-18, 28.6, -30], [-5, 28.6, -32], [2, 15, -25], [10, 3, -15],
-  [26, 5, -20], [28, 10, -34], [16, 10, -38], [9, 13, -31],
-  [19, 9, -8], [27, 2.6, 3], [24, 2.4, 14], [14, 2.1, 21],
-  [7, 1.3, 10], [-3, 1, 3], [-12, .8, 12], [-12, .8, 25],
-  [-7, .8, 29], [0, .8, 31],
+  [0, .8, 43], [0, 1.2, 30], [-17, 8, 24], [-33, 18, 4],
+  [-33, 35, -17], [-33, 43, -31], [-25, 43, -35], [-18, 34, -33],
+  [-15, 9, -26], [-10, 2.4, -13], [1, 2.4, -2], [14, 19, 7],
+  [25, 9, 0], [28, 7, -20], [29, 6, -36], [29, 10, -47],
+  [30, 21, -53], [32, 32, -47], [34, 34, -37], [36, 30, -27],
+  [38, 19, -22], [40, 8, -28], [41, 6, -39], [43, 10, -53],
+  [27, 16, -58], [6, 17, -54], [-8, 11, -39], [0, 7, -26],
+  [14, 9, -17], [18, 5, 1], [5, 4, 14], [-10, 8, 7],
+  [-25, 11, -3], [-43, 12, -1], [-49, 9, 15], [-38, 6, 28],
+  [-23, 4, 22], [-21, 3, 6], [-34, 2.8, 1], [-47, 2.4, 13],
+  [-40, 2.2, 34], [-22, 1.8, 38], [-16, 1, 43], [-9, .8, 51], [-2, .8, 49],
 ];
 export const coasterCurve = new CatmullRomCurve3(COASTER_POINTS.map(p => new Vector3(...coasterWorld(p))), true, 'centripetal');
-coasterCurve.arcLengthDivisions = 2048;
+coasterCurve.arcLengthDivisions = 4096;
 const lengths = coasterCurve.getLengths();
 export const COASTER_LENGTH = lengths[lengths.length - 1];
-const atControl = (index: number) => {
+export const coasterControlU = (index: number) => {
   const at = index / COASTER_POINTS.length * (lengths.length - 1), low = Math.floor(at);
   return (lengths[low] + (lengths[Math.min(low + 1, lengths.length - 1)] - lengths[low]) * (at - low)) / COASTER_LENGTH;
 };
 export const COASTER_TIMELINE = [
-  { time: 0, u: 0 }, { time: 5, u: atControl(1) }, { time: 31, u: atControl(4) },
-  { time: 35, u: atControl(5) }, { time: 38, u: atControl(5) },
-  { time: 45, u: atControl(7) }, { time: 58, u: atControl(10) },
-  { time: 68, u: atControl(13) }, { time: 79, u: atControl(16) }, { time: COASTER_DURATION, u: 1 },
-];
+  { time: 0, u: 0 }, { time: 6, u: coasterControlU(1) }, { time: 31, u: coasterControlU(5) },
+  { time: 34, u: coasterControlU(6) }, { time: 36, u: coasterControlU(6) },
+  { time: 42, u: coasterControlU(9) }, { time: 47, u: coasterControlU(10) },
+  { time: 53, u: coasterControlU(12) }, { time: 57, u: coasterControlU(14) },
+  { time: 69, u: coasterControlU(22) }, { time: 79, u: coasterControlU(26) },
+  { time: 91, u: coasterControlU(31) }, { time: 104, u: coasterControlU(37) },
+  { time: 114, u: coasterControlU(41) }, { time: 122, u: 1 },
+].map(key => ({ ...key, time: rideTime(key.time) }));
 const secants = COASTER_TIMELINE.slice(1).map((b, i) => (b.u - COASTER_TIMELINE[i].u) / (b.time - COASTER_TIMELINE[i].time));
 const slopes = COASTER_TIMELINE.map((_, i) => i === 0 || i === COASTER_TIMELINE.length - 1 || !secants[i - 1] || !secants[i]
   ? 0 : 2 / (1 / secants[i - 1] + 1 / secants[i]));
-/** Monotone cubic interpolation keeps speed continuous and the crest hold truly stationary. */
 export function coasterDistanceAt(seconds: number) {
   const t = Math.max(0, Math.min(COASTER_DURATION, Number.isFinite(seconds) ? seconds : 0));
   const i = Math.max(0, COASTER_TIMELINE.findIndex((p, index) => index > 0 && t <= p.time) - 1);
@@ -44,53 +57,81 @@ export function coasterDistanceAt(seconds: number) {
   return (2 * f3 - 3 * f2 + 1) * a.u + (f3 - 2 * f2 + f) * span * slopes[i]
     + (-2 * f3 + 3 * f2) * b.u + (f3 - f2) * span * slopes[i + 1];
 }
-export function coasterPhase(seconds: number): 'station' | 'lift' | 'crest' | 'drop' | 'bank' | 'tunnel' | 'return' {
-  return seconds < 5 ? 'station' : seconds < 31 ? 'lift' : seconds < 38 ? 'crest'
-    : seconds < 45 ? 'drop' : seconds < 68 ? 'bank' : seconds < 79 ? 'tunnel' : 'return';
+export function coasterPhase(seconds: number) {
+  return seconds < 6 ? 'station' : seconds < 31 ? 'lift' : seconds < 36 ? 'crest'
+    : seconds < rideTime(42) ? 'drop' : seconds < rideTime(47) ? 'low' : seconds < rideTime(57) ? 'airtime'
+      : seconds < rideTime(69) ? 'inversion' : seconds < rideTime(91) ? 'bank' : seconds < rideTime(104) ? 'helix' : seconds < rideTime(114) ? 'tunnel' : 'return';
 }
 const wrap = (u: number) => ((u % 1) + 1) % 1;
-const tunnelStart = coasterDistanceAt(68) * COASTER_LENGTH, tunnelEnd = coasterDistanceAt(79) * COASTER_LENGTH;
-const smootherstep = (value: number) => {
-  const t = Math.max(0, Math.min(1, value));
-  return t * t * t * (t * (t * 6 - 15) + 10);
-};
-export function coasterFrame(u: number, banking = true) {
-  const point = coasterCurve.getPointAt(wrap(u)), forward = coasterCurve.getTangentAt(wrap(u)).normalize();
-  const side = new Vector3().crossVectors(forward, new Vector3(0, 1, 0)).normalize();
-  const up = new Vector3().crossVectors(side, forward).normalize();
-  const before = coasterCurve.getTangentAt(wrap(u - .003)), after = coasterCurve.getTangentAt(wrap(u + .003));
-  const turn = Math.atan2(before.x * after.z - before.z * after.x, before.x * after.x + before.z * after.z);
-  const bank = banking ? Math.max(-.38, Math.min(.38, -turn * 1.5)) : 0;
-  up.applyAxisAngle(forward, bank); side.applyAxisAngle(forward, bank);
-  const rotation = new Quaternion().setFromRotationMatrix(new Matrix4().makeBasis(forward, up, side));
-  return { point, forward, side, up, rotation, bank, yaw: Math.atan2(-forward.z, forward.x) };
+const smooth = (value: number) => { const t = Math.max(0, Math.min(1, value)); return t * t * t * (t * (t * 6 - 15) + 10); };
+export const COASTER_TUNNEL = { start: coasterControlU(37), end: coasterControlU(41), height: 4.5, halfWidth: 3 };
+export const COASTER_INVERSION = { start: coasterControlU(14), end: coasterControlU(22), top: coasterControlU(18) };
+const UP = new Vector3(0, 1, 0), FRAME_COUNT = 2400;
+const signedAngle = (a: Vector3, b: Vector3, axis: Vector3) => Math.atan2(new Vector3().crossVectors(a, b).dot(axis), a.dot(b));
+/** Parallel transport never crosses a world-up singularity at vertical tangents. */
+const transported: { forward: Vector3; up: Vector3 }[] = [];
+for (let i = 0; i <= FRAME_COUNT; i++) {
+  const forward = coasterCurve.getTangentAt(i / FRAME_COUNT).normalize();
+  const up = i ? transported[i - 1].up.clone().applyQuaternion(new Quaternion().setFromUnitVectors(transported[i - 1].forward, forward))
+    : UP.clone().addScaledVector(forward, -UP.dot(forward)).normalize();
+  up.addScaledVector(forward, -up.dot(forward)).normalize(); transported.push({ forward, up });
 }
-export function coasterRidePose(u: number, view: CoasterView): AttractionRidePose & { orientation: [number, number, number, number] } {
-  const f = coasterFrame(u), seat = f.point.clone().addScaledVector(f.up, .72);
-  const horizontal = new Vector3(f.forward.x, 0, f.forward.z).normalize();
-  const eye = seat.clone().addScaledVector(f.up, 1.02);
-  const camera = view === 'first-person' ? eye : view === 'comfort'
-    ? seat.clone().addScaledVector(f.forward, -8).add(new Vector3(0, 3.4, 0))
-    : seat.clone().addScaledVector(f.forward, -7.5).add(new Vector3(0, 3.4, 0));
-  const target = view === 'comfort' ? seat.clone().addScaledVector(horizontal, 5).add(new Vector3(0, 1, 0))
-    : eye.clone().addScaledVector(f.forward, view === 'first-person' ? 8 : 4);
-  if (view !== 'first-person') {
-    const distance = wrap(u) * COASTER_LENGTH;
-    // Settle before the first roof bay reaches the sight line; release only after the camera exits.
-    const blend = smootherstep((distance - tunnelStart + 24) / 14) * (1 - smootherstep((distance - tunnelEnd - 12) / 14));
-    if (blend > 0) {
-      // Following the centreline avoids the outside-of-bend shortcut of a tangent-offset camera.
-      const behind = coasterFrame(u - (view === 'comfort' ? 3.4 : 3.1) / COASTER_LENGTH);
-      const ahead = coasterFrame(u + 1.6 / COASTER_LENGTH);
-      camera.lerp(behind.point.addScaledVector(behind.up, 2.75), blend);
-      target.lerp(ahead.point.addScaledVector(ahead.up, 1.9), blend);
-    }
+const gravityAngle = (index: number) => {
+  const f = transported[index], up = UP.clone().addScaledVector(f.forward, -f.forward.y).normalize();
+  return signedAngle(f.up, up, f.forward);
+};
+const inversionStartIndex = Math.round(COASTER_INVERSION.start * FRAME_COUNT), inversionEndIndex = Math.round(COASTER_INVERSION.end * FRAME_COUNT);
+const entryRoll = gravityAngle(inversionStartIndex), rawExit = gravityAngle(inversionEndIndex);
+const exitRoll = entryRoll + Math.atan2(Math.sin(rawExit - entryRoll), Math.cos(rawExit - entryRoll));
+const rotations = transported.map((f, i) => {
+  const u = i / FRAME_COUNT;
+  const roll = i >= inversionStartIndex && i <= inversionEndIndex
+    ? entryRoll + (exitRoll - entryRoll) * smooth((u - COASTER_INVERSION.start) / (COASTER_INVERSION.end - COASTER_INVERSION.start)) : gravityAngle(i);
+  const up = f.up.clone().applyAxisAngle(f.forward, roll), side = new Vector3().crossVectors(f.forward, up).normalize();
+  return new Quaternion().setFromRotationMatrix(new Matrix4().makeBasis(f.forward, up, side));
+});
+// Numerical endpoint tangents differ slightly; the closed station shares one exact frame.
+rotations[FRAME_COUNT].copy(rotations[0]);
+export function coasterFrame(u: number, banking = true) {
+  const distance = wrap(u), at = distance * FRAME_COUNT, low = Math.floor(at);
+  const point = coasterCurve.getPointAt(distance), rotation = rotations[low].clone().slerp(rotations[low + 1], at - low);
+  const forward = new Vector3(1, 0, 0).applyQuaternion(rotation), up = UP.clone().applyQuaternion(rotation);
+  const before = coasterCurve.getTangentAt(wrap(distance - .002)), after = coasterCurve.getTangentAt(wrap(distance + .002));
+  const turn = Math.atan2(before.x * after.z - before.z * after.x, before.x * after.x + before.z * after.z);
+  const outsideLoop = 1 - smooth((distance - COASTER_INVERSION.start + .015) / .015) * (1 - smooth((distance - COASTER_INVERSION.end) / .015));
+  const stationWeight = smooth(distance * COASTER_LENGTH / 20) * smooth((1 - distance) * COASTER_LENGTH / 30);
+  const bank = banking ? Math.max(-.48, Math.min(.48, -turn * 1.7)) * outsideLoop * stationWeight : 0;
+  up.applyAxisAngle(forward, bank);
+  const side = new Vector3().crossVectors(forward, up).normalize();
+  rotation.setFromRotationMatrix(new Matrix4().makeBasis(forward, up, side));
+  const horizontal = Math.hypot(forward.x, forward.z) > .015 ? forward : transported[Math.max(0, low - 2)].forward;
+  return { point, forward, side, up, rotation, bank, yaw: Math.atan2(-horizontal.z, horizontal.x) };
+}
+
+export function coasterRidePose(u: number, view: CoasterView): AttractionRidePose & { orientation: [number, number, number, number]; cameraUp: Vec3 } {
+  const f = coasterFrame(u), seat = f.point.clone().addScaledVector(f.up, .72), eye = seat.clone().addScaledVector(f.up, 1.02);
+  if (view === 'first-person') return { seat: seat.toArray() as Vec3, yaw: f.yaw, orientation: f.rotation.toArray(),
+    cameraPosition: eye.toArray() as Vec3, cameraTarget: eye.clone().addScaledVector(f.forward, 8).toArray() as Vec3,
+    cameraUp: f.up.toArray() as Vec3, firstPerson: true, fov: 66 };
+  const distance = wrap(u) * COASTER_LENGTH, behind = coasterFrame(u - (view === 'comfort' ? 7.5 : 5.8) / COASTER_LENGTH);
+  const camera = behind.point.clone().addScaledVector(UP, 3.3);
+  const target = seat.clone().addScaledVector(UP, 1).addScaledVector(f.forward, view === 'comfort' ? 0 : 1.6);
+  const inversion = smooth((distance - COASTER_INVERSION.start * COASTER_LENGTH + 24) / 16)
+    * (1 - smooth((distance - COASTER_INVERSION.end * COASTER_LENGTH - 10) / 16));
+  // The third-person spectator watches the actual train invert; the camera never rolls with it.
+  camera.lerp(f.point.clone().addScaledVector(f.side, view === 'comfort' ? 8 : 6.5).addScaledVector(f.up, 4.8), inversion);
+  target.lerp(seat.clone().addScaledVector(f.up, .7), inversion);
+  const tunnel = smooth((distance - COASTER_TUNNEL.start * COASTER_LENGTH + 24) / 14)
+    * (1 - smooth((distance - COASTER_TUNNEL.end * COASTER_LENGTH - 10) / 12));
+  if (tunnel > 0) {
+    const near = coasterFrame(u - 3.2 / COASTER_LENGTH), ahead = coasterFrame(u + 1.6 / COASTER_LENGTH);
+    camera.lerp(near.point.addScaledVector(near.up, 2.9), tunnel);
+    target.lerp(ahead.point.addScaledVector(ahead.up, 1.9), tunnel);
   }
   return { seat: seat.toArray() as Vec3, yaw: f.yaw, orientation: f.rotation.toArray(), cameraPosition: camera.toArray() as Vec3,
-    cameraTarget: target.toArray() as Vec3, firstPerson: view === 'first-person', fov: view === 'comfort' ? 52 : view === 'first-person' ? 66 : 58 };
+    cameraTarget: target.toArray() as Vec3, cameraUp: [0, 1, 0], firstPerson: false, fov: view === 'comfort' ? 52 : 58 };
 }
 export interface CoasterClock { elapsed: number; riding: boolean; revision: number }
-/** No wall clock: hidden/paused frames and stale bridge ownership can never be replayed. */
 export function advanceCoaster(clock: CoasterClock, dt: number, enabled: boolean, paused: boolean, hidden: boolean, bridgeActive: boolean, bridgeRevision: number): CoasterClock {
   if (!clock.riding) return clock;
   if (!enabled || !bridgeActive || clock.revision !== bridgeRevision) return { ...clock, riding: false, elapsed: 0 };
@@ -98,19 +139,18 @@ export function advanceCoaster(clock: CoasterClock, dt: number, enabled: boolean
   const elapsed = Math.min(COASTER_DURATION, clock.elapsed + dt);
   return { ...clock, elapsed, riding: elapsed < COASTER_DURATION };
 }
-
-/** Skip a tower where its cross braces would occupy a different, lower rail's envelope. */
 export function coasterSupports(detailed: boolean) {
-  const count = Math.ceil(COASTER_LENGTH / (detailed ? 10 : 18));
-  const samples = Array.from({ length: 240 }, (_, i) => ({ u: i / 240, point: coasterFrame(i / 240).point }));
+  const count = Math.ceil(COASTER_LENGTH / (detailed ? 14 : 24));
+  const samples = Array.from({ length: 500 }, (_, i) => ({ u: i / 500, point: coasterFrame(i / 500).point }));
   return Array.from({ length: count }, (_, i) => {
-    const u = i / count, f = coasterFrame(u), top = f.point.clone().addScaledVector(f.up, -.25);
-    if (top.y < 2.5) return null;
+    const u = i / count, f = coasterFrame(u), top = f.point.clone().addScaledVector(f.up, -.6);
+    if (top.y < 3.8) return null;
+    const side = new Vector3(f.side.x, 0, f.side.z).normalize();
     const blocked = samples.some(s => {
       const arc = Math.min(Math.abs(s.u - u), 1 - Math.abs(s.u - u)) * COASTER_LENGTH;
-      return arc > 12 && s.point.y < top.y + 2 && Math.hypot(s.point.x - top.x, s.point.z - top.z) < 4.2;
+      return arc > 12 && s.point.y < top.y + 2.5 && Math.hypot(s.point.x - top.x, s.point.z - top.z) < 5.2;
     });
     if (blocked) return null;
-    return { a: top.clone().addScaledVector(f.side, -1.7), b: top.clone().addScaledVector(f.side, 1.7), top };
+    return { a: top.clone().addScaledVector(side, -2.35), b: top.clone().addScaledVector(side, 2.35), top };
   }).filter((s): s is { a: Vector3; b: Vector3; top: Vector3 } => s !== null);
 }
