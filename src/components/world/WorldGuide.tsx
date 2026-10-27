@@ -40,7 +40,7 @@ export interface WorldGuideMotion {
 }
 export interface WorldGuideMotion {
   /** Seat from store.seat; the body (group) is already at seat.position (WorldActors). */
-  seat?: { position: [number, number, number]; yaw: number } | null;
+  seat?: { position: [number, number, number]; yaw: number; orientation?: [number,number,number,number] } | null;
   /** Target-adapted passage through the open door; t=1 retains the seated driver. */
   vehicle?: { id?: 'offroad'|'coupe'|'van'; phase: 'enter' | 'exit'; t: number; door: [number, number, number]; cabin?: [number, number, number]; yaw?: number; approach?: [number, number, number][]; frame?:GuideVehicleFrame } | null;
   /** Hidden by the caller when the actor is unavailable. */
@@ -70,6 +70,7 @@ const RATE_LO = .7, RATE_HI = 1.25;
 /** Below this measured speed a decelerating gait hands over to Idle (stop step places the feet). */
 const STOP_SPEED = .6;
 const _landQ = new Quaternion();
+const _rideSeatQ = new Quaternion();
 /** QA only: preserve b052396 turn-entry selection and interaction decay for direct A/B. */
 const TRANSITION_LEGACY_AB = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('qa') === '1' && new URLSearchParams(window.location.search).get('guideTransitionLegacy') === '1';
 /** QA only: compare the former entry selector and pre-advance planted flags on the same recorder. */
@@ -731,6 +732,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     }
     if (group.current) {
       if(vt?.frame)group.current.quaternion.copy(group.current.parent!.getWorldQuaternion(new Quaternion()).invert().multiply(rig.vehicleQuaternion));
+      else if(seat?.orientation)group.current.quaternion.copy(group.current.parent!.getWorldQuaternion(rig.vehicleQuaternion).invert().multiply(_rideSeatQ.set(...seat.orientation)));
       else group.current.rotation.set(0,shownYaw,0);
       if (vt?.cabin && vehicleSample) {
         group.current.updateWorldMatrix(true, true);

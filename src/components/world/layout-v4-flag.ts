@@ -76,9 +76,11 @@ export function insidePolygon(p: P2, poly: P2[]) {
   }
   return c;
 }
-export type ZoneV4 = 'camp' | 'town' | 'park' | 'ridge' | 'shore';
+export type ZoneV4 = 'camp' | 'town' | 'park' | 'ridge' | 'shore' | 'yard' | 'coaster';
 const TOWN_POLY: P2[] = [[-36, -50], [31, -50], [31, 27], [-1, 27], [-1, 8], [-17, 8], [-24, -24], [-36, -31]];
 export function zoneAtV4(x: number, z: number): ZoneV4 {
+  if(z<-146&&x<-50)return 'yard';
+  if(z<-125&&x>8)return 'coaster';
   if (x > 35) return 'park';
   if (Math.hypot(x - CAMP_XZ[0], z - CAMP_XZ[1]) < CAMP_FOOT_RADIUS - 2) return 'camp';
   if (Math.hypot(x - RIDGE_CENTER[0], z - RIDGE_CENTER[1]) < RIDGE_FOOT_R + 2) return 'ridge';

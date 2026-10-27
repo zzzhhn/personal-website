@@ -6,6 +6,7 @@ import { TRAIL_HALF } from './layout-v4';
 import { ALPHA_MINE_BASE_Y, ALPHA_MINE_CONNECTOR, isOnAlphaMineBase, mineEdgeDistance } from './alpha-mine-layout';
 import { EXCHANGE_CAPE, exchangeCapeDistance } from './alpha-exchange-layout';
 import { CLUB_CAPE, CLUB_POOL, clubCapeDistance, clubScatterBlocked, meshWaterlineLoops } from './djc-club-layout';
+import { attractionCapeDistance, attractionScatterBlocked } from './attractions/attraction-layout';
 
 /** quality-v3 landform (spec 2026-10-22 §3, §10.1/10.2). One deterministic height function
  * h(x, z) describes the whole island: flat town top (y=1), irregular sand beaches, the camp
@@ -119,8 +120,10 @@ export function effectiveCoastFrame(x: number, z: number) {
   const cape = capeDistance <= 0 ? GROUND_Y : shoreProfile(capeDistance, CLUB_CAPE.beachWidth, CLUB_CAPE.shelfLength);
   const exchangeDistance=LAYOUT_V4?exchangeCapeDistance(x,z):Infinity;
   const exchange=exchangeDistance<=0?GROUND_Y:shoreProfile(exchangeDistance,EXCHANGE_CAPE.beachWidth,EXCHANGE_CAPE.shelfLength);
-  const extra=Math.max(cape,exchange);
-  return { s, topDistance: Math.min(u, capeDistance,exchangeDistance), town: extra > original + 1e-6 ? 0 : town, height: Math.max(original, extra), originalHeight: original };
+  const northDistance=LAYOUT_V4?attractionCapeDistance(x,z):Infinity;
+  const north=northDistance<=0?GROUND_Y:shoreProfile(northDistance,8.5,15);
+  const extra=Math.max(cape,exchange,north);
+  return { s, topDistance: Math.min(u, capeDistance,exchangeDistance,northDistance), town: extra > original + 1e-6 ? 0 : town, height: Math.max(original, extra), originalHeight: original };
 }
 const coastHeight = (x: number, z: number) => effectiveCoastFrame(x, z).height;
 
@@ -376,7 +379,7 @@ export function buildTerrain(): Terrain {
     const { d, s } = coastFrame(cx, cz);
     const camp = Math.hypot(cx - CAMP_CENTER[0], cz - CAMP_CENTER[2]);
     let k = 2;
-    if (d < topPush(s) - 4.5 && camp > 40 && rampHeight(cx, cz) < -30 && !(LAYOUT_V4 && (nearRidgeV4(cx, cz)||CLUB_POOL.distance(cx,cz)<4))) k = 3;
+    if ((d < topPush(s) - 4.5 || LAYOUT_V4 && attractionCapeDistance(cx,cz)<-4.5) && camp > 40 && rampHeight(cx, cz) < -30 && !(LAYOUT_V4 && (nearRidgeV4(cx, cz)||CLUB_POOL.distance(cx,cz)<4))) k = 3;
     else {
       let maxH = -Infinity;
       for (let j = j0; j <= j0 + BLOCK; j++) for (let i = i0; i <= i0 + BLOCK; i++) maxH = Math.max(maxH, terrainHeight(nodeX(i), nodeZ(j)));
@@ -869,6 +872,8 @@ export function grassCandidateJob(blockers: ScatterBlocker[]) {
     for (let x = GRID.minX; x < xEnd; x += cell) {
       const ix = Math.round(x / cell), iz = Math.round(z / cell);
       const px = x + (hash2(ix, iz, 91) - .5) * cell * .95, pz = z + (hash2(ix, iz, 92) - .5) * cell * .95;
+      // New northern lawns use broad clumps, with a fixed candidate budget rather than 4 tufts/m².
+      if(LAYOUT_V4&&(attractionScatterBlocked(px,pz)||pz<-125&&hash2(ix,iz,97)>.32))continue;
       const ni = clamp(Math.round((px - GRID.minX) / CELL), 1, GRID.nx - 1), nj = clamp(Math.round((pz - GRID.minZ) / CELL), 1, GRID.nz - 1);
       const h0 = node(ni, nj);
       if (h0 < WATER_Y + .6) continue;
@@ -909,6 +914,7 @@ export function scatterCandidates(blockers: ScatterBlocker[]) {
   for (let z = GRID.minZ; z < GRID.minZ + GRID.nz * CELL; z += cell) for (let x = GRID.minX; x < GRID.minX + GRID.nx * CELL; x += cell) {
     const ix = Math.round(x / cell), iz = Math.round(z / cell);
     const px = x + (hash2(ix, iz, 51) - .5) * cell * .9, pz = z + (hash2(ix, iz, 52) - .5) * cell * .9;
+    if(LAYOUT_V4&&(attractionScatterBlocked(px,pz)||pz<-125&&hash2(ix,iz,97)>.32))continue;
     if (effectiveCoastFrame(px, pz).topDistance > 14) continue;
     if (roadDistance(px, pz) < 5.5) continue;
     if (blockers.some(b => px > b.minX && px < b.maxX && pz > b.minZ && pz < b.maxZ)) continue;

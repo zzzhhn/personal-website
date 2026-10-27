@@ -11,6 +11,8 @@ import { nearestDryPoint, terrainHeight } from './WorldLandform';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag.ts';
 import { useWorldStore, type NearbyInteract } from './store';
 import { CLUB, CLUB_POOL } from './djc-club-layout';
+import { IBD_YARD, INTENT_COASTER, ATTRACTION_ROADS } from './attractions/attraction-layout';
+import { attractionRide, endAttractionRide } from './attractions/attraction-ride';
 import { clubAudio } from './WorldClubAudio';
 import { cycleInteractPick, nearestInteractable, type Interactable } from './WorldInteract';
 import type { Vec3, VehicleId } from './types';
@@ -34,6 +36,11 @@ import WorldDrivingFeedback from './WorldDrivingFeedback';
 import { CAMERA_DEFAULT_PITCH, CAMERA_DEFAULT_YAW, CAMERA_MAX_DISTANCE, CAMERA_MIN_DISTANCE, CAMERA_PITCH_LIMITS, CAMERA_PRESETS, PHYSICS_STEP, PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS, RECOVERY_SECONDS, advanceTimer, angleDelta, cameraRelative, configureRaycastVehicle, heading, needsVehicleRighting, orbitDirection, radialDeadzone, rampAxis, resetActorBody, rotateVector, wheelGeometry, yawRotation } from './actor-physics';
 
 type VehicleSpec = (typeof VEHICLES)[number];
+const attractionRecoveryRoads=ATTRACTION_ROADS.map(path=>path.map(([x,z])=>[x,1.04,z] as Vec3));
+function allRoadLandingCandidates(p:Vec3){
+  return [roadLandingCandidates(p,ROAD_POINTS),...attractionRecoveryRoads.map(path=>roadLandingCandidates(p,path))].flat()
+    .sort((a,b)=>Math.hypot(a.position[0]-p[0],a.position[2]-p[2])-Math.hypot(b.position[0]-p[0],b.position[2]-p[2]));
+}
 type Controller = ReturnType<ReturnType<typeof useRapier>['world']['createVehicleController']>;
 type DriveInput = DrivingInput;
 type Car = { body: RapierRigidBody; controller: Controller; spec: VehicleSpec; flipped: number; wet: number; steering: number; guards:(RapierCollider|null)[]; lowCom:boolean;
@@ -278,7 +285,8 @@ function GuideVisual({ cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, 
     let vehicle:null|{id:VehicleId;phase:'enter'|'exit';t:number;door:Vec3;cabin:Vec3;yaw:number;approach?:Vec3[];frame?:GuideVehicleFrame}=null;
     if(tr){const car=cars.current.get(tr.id);vehicle={id:tr.id,phase:tr.phase,t:guideVehicleProgress(tr.phase,tr.elapsed,tr.approachSeconds),door:tr.door,cabin:car?cabinAnchor(car,tr.side):tr.cabin,yaw:tr.yaw,approach:tr.approach,frame:car?{...cabinFrame(car,tr.side),groundY:tr.door[1]}:undefined};}
     else if(st.activeVehicle){const car=cars.current.get(st.activeVehicle);if(car){const cabin=cabinAnchor(car,car.driverSide);vehicle={id:car.spec.id,phase:'enter',t:1,door:cabin,cabin,yaw:heading(car.body.rotation()),frame:cabinFrame(car,car.driverSide)};}}
-    return {seat:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:false,
+    const ride=attractionRide.active?attractionRide.pose:null;
+    return {seat:ride?{position:ride.seat,yaw:ride.yaw,orientation:ride.orientation}:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:false,
       dance:st.clubMode==='dance'&&clubAudio.energy()>0?st.danceStep:null,danceBeat:clubAudio.beat()};
   };
   return <WorldGuide key={resetId} speedMps={0} grounded facing={0} visible={visible} readMotion={readMotion} onMovementLock={locked=>{movementLock.current=locked;}} />;
@@ -286,10 +294,12 @@ function GuideVisual({ cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, 
 
 export default function WorldActors() {
   const player = useRef<RapierRigidBody>(null);
+  const rideHeld=useRef(false);
   const qaStart=import.meta.env.DEV&&new URLSearchParams(window.location.search).get('qa')==='1'?new URLSearchParams(window.location.search).get('start'):null;
   const qaPortal=WORLD_PORTALS.find(g=>qaStart===`portal-${g.id}`);
   const clubArrival=new URLSearchParams(window.location.search).get('start')?.startsWith('club')??false;
-  const qaFacing=qaPortal?Math.PI/2+qaPortal.yaw:qaStart==='brain-rail'?Math.PI/2:clubArrival?-Math.PI/2:0;
+  const attractionArrival=['ibd','coaster'].includes(new URLSearchParams(window.location.search).get('start')??'');
+  const qaFacing=qaPortal?Math.PI/2+qaPortal.yaw:qaStart==='brain-rail'||attractionArrival?Math.PI/2:clubArrival?-Math.PI/2:0;
   const guideYaw = useRef(qaFacing);
   const guideTargetSpeed = useRef(0);
   const turnBeforeMove = useRef(false);
@@ -334,6 +344,10 @@ export default function WorldActors() {
   }, [world]);
   const arrival = useMemo<Vec3>(()=>{
     const start=new URLSearchParams(window.location.search).get('start');
+    if(start==='ibd'||start==='coaster'){
+      const p=(start==='ibd'?IBD_YARD:INTENT_COASTER).entrance;
+      return [p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]];
+    }
     if(start==='club')return [CLUB.spawn[0],1+PLAYER_CENTER_HEIGHT,CLUB.spawn[2]];
     if(import.meta.env.DEV&&start==='club-dance')return [CLUB.dance[0],CLUB.dance[1]+PLAYER_CENTER_HEIGHT,CLUB.dance[2]];
     if(import.meta.env.DEV&&start==='club-decks')return [31,2+PLAYER_CENTER_HEIGHT,55];
@@ -358,7 +372,7 @@ export default function WorldActors() {
   const cameraReady = useRef(false);
   const guideView=useRef<Group>(null),guideCameraFoot=useRef(new Vector3());
   const impact = useRef(0);
-  const cam = useRef<CameraRig>({ yaw: qaPortal?Math.PI/2-qaPortal.yaw:qaStart==='exchange-gallery'?4.7113:qaStart==='brain-rail'?Math.PI/2:qaStart==='club-view'?0:clubArrival?-Math.PI/2:CAMERA_DEFAULT_YAW, pitch: qaStart==='exchange-gallery'?.4554:clubArrival?.4:CAMERA_DEFAULT_PITCH, distance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)],
+  const cam = useRef<CameraRig>({ yaw: qaPortal?Math.PI/2-qaPortal.yaw:qaStart==='exchange-gallery'?4.7113:qaStart==='brain-rail'||attractionArrival?Math.PI/2:qaStart==='club-view'?0:clubArrival?-Math.PI/2:CAMERA_DEFAULT_YAW, pitch: qaStart==='exchange-gallery'?.4554:clubArrival?.4:CAMERA_DEFAULT_PITCH, distance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)],
     actual: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)], lastManual: -Infinity, firstPerson: useWorldStore.getState().zoom === 3, collided: false, hitDistance: null, fov: 50, mode: 'walk', recentering: false, driveManualZoom: false, desiredDistance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)] });
   const pad = useRef<PadState>({ connected: false, move: [0,0], look: [0,0], throttle: 0, brake: 0, sprint: false, buttons: [] });
   const moveInput = useRef<[number,number]>([0,0]);
@@ -393,6 +407,7 @@ export default function WorldActors() {
   }
   function relocatePlayer(position:Vec3) {
     if(!player.current)return;
+    endAttractionRide();rideHeld.current=false;
     clearPlayerMotion(true);clearInput();grounded.current=false;
     player.current.setEnabled(true);resetBody(player.current,position);wetPlayer.current=0;
     portalTravel.current.previous=position;
@@ -424,6 +439,7 @@ export default function WorldActors() {
     return true;
   }
   function returnToCamp() {
+    endAttractionRide();rideHeld.current=false;
     const vehicle=useWorldStore.getState().activeVehicle;
     return returnPlayerToCamp(player.current,vehicle?cars.current.get(vehicle)?.body:undefined,()=>{
       clearPlayerMotion(true);clearInput();grounded.current=false;wetPlayer.current=0;supportDecision.current=null;
@@ -544,6 +560,7 @@ export default function WorldActors() {
   useEffect(() => {
     const down=(event:KeyboardEvent) => {
       const state=useWorldStore.getState();
+      if(attractionRide.active)return;
       if (event.metaKey || event.ctrlKey || event.altKey || state.paused || state.poolInspect || state.shot || (event.repeat&&releasedKeys.current.has(event.code)) || /INPUT|TEXTAREA|SELECT/.test((event.target as HTMLElement)?.tagName ?? '')) return;
       releasedKeys.current.delete(event.code);
       if(state.clubMode==='dance'&&['Digit1','Digit2'].includes(event.code)){
@@ -584,7 +601,7 @@ export default function WorldActors() {
       const c=cam.current,lim=c.firstPerson?CAMERA_PITCH_LIMITS.first:CAMERA_PITCH_LIMITS.third;
       c.yaw+=dx*k; c.pitch=clamp(c.pitch+dy*k,lim[0],lim[1]); c.lastManual=performance.now()/1000;
     };
-    const blocked=()=>{const st=useWorldStore.getState();return st.paused||st.poolInspect||!!st.shot||st.clubMode==='dj';};
+    const blocked=()=>{const st=useWorldStore.getState();return st.paused||st.poolInspect||!!st.shot||st.clubMode==='dj'||attractionRide.active;};
     const pointerDown=(e:PointerEvent)=>{if(blocked())return;drag={id:e.pointerId,x:e.clientX,y:e.clientY};gl.domElement.setPointerCapture?.(e.pointerId);};
     const pointerMove=(e:PointerEvent)=>{
       if(blocked())return;
@@ -781,6 +798,24 @@ export default function WorldActors() {
     const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot || !player.current) return;
     physicsSteps.current++;
     const dt=world.timestep || PHYSICS_STEP;
+    if(attractionRide.active){
+      if(!rideHeld.current){
+        clearPlayerMotion(true);clearInput();rideHeld.current=true;player.current.setEnabled(false);
+        occlusion.current.dispose();
+        nearbyItem.current=null;useWorldStore.setState({nearbyInteract:null,nearbyVehicle:null,canVault:false});
+      }
+      const pose=attractionRide.pose,p:Vec3=[pose.seat[0],pose.seat[1]+PLAYER_CENTER_HEIGHT,pose.seat[2]];
+      resetBody(player.current,p);guideYaw.current=pose.yaw;grounded.current=true;
+      guideTargetSpeed.current=0;moveIntent.current='idle';mineActor.available=false;
+      publishedTime.current+=dt;
+      if(publishedTime.current>.09){publishedTime.current=0;useWorldStore.setState({position:p,speed:0,zone:'coaster'});}
+      return;
+    }
+    if(rideHeld.current){
+      const p=attractionRide.exit;
+      const landing=findSafePlayerLanding(world,rapier,player.current,[p,[p[0]+2,p[1],p[2]],[p[0]-2,p[1],p[2]]],WATER_Y);
+      relocatePlayer(landing??CAMP_SPAWN);
+    }
     for(const [id,seconds] of rescueRetry.current)rescueRetry.current.set(id,Math.max(0,seconds-dt));
     portalTravel.current.cooldown=Math.max(0,portalTravel.current.cooldown-dt);
     if(guideTransition.current){
@@ -942,7 +977,7 @@ export default function WorldActors() {
       car.wet=advanceTimer(car.wet,p.y<WATER_Y||floor<WATER_Y-.05,dt);
       if((car.wet>=RECOVERY_SECONDS || p.y< -80)&&!(rescueRetry.current.get(car.spec.id)??0)){
         rescueRetry.current.set(car.spec.id,1);
-        const landing=findSafeVehicleLanding(world,rapier,car.body,car.spec.size,roadLandingCandidates(asTuple(p),ROAD_POINTS),WATER_Y);
+        const landing=findSafeVehicleLanding(world,rapier,car.body,car.spec.size,allRoadLandingCandidates(asTuple(p)),WATER_Y);
         if(landing){
           if(useWorldStore.getState().activeVehicle===car.spec.id){clearPlayerMotion(true);clearInput();cameraReady.current=false;target.current.set(...landing.position);}
           resetBody(car.body,landing.position,landing.yaw);car.wet=0;car.flipped=0;car.steering=0;car.steerInput=0;car.throttleInput=0;
@@ -1115,7 +1150,7 @@ export default function WorldActors() {
       if((wet.shouldRescue||p.y< -80)&&!(rescueRetry.current.get('player')??0)){
         rescueRetry.current.set('player',1);
         const dry=nearestDryPoint(p.x,p.z);
-        const candidates:Vec3[]=[...(dry?[dry]:[]),...roadLandingCandidates(asTuple(p),ROAD_POINTS).map(c=>c.position),[CAMP_SPAWN[0],4.8,CAMP_SPAWN[2]]];
+        const candidates:Vec3[]=[...(dry?[dry]:[]),...allRoadLandingCandidates(asTuple(p)).map(c=>c.position),[CAMP_SPAWN[0],4.8,CAMP_SPAWN[2]]];
         const landing=findSafePlayerLanding(world,rapier,player.current,candidates,WATER_Y);
         if(landing){relocatePlayer(landing);actorNotice('已回到安全陆地。浅水仍可自由走动。','Back on safe ground. Shallow water is still walkable.');}
       }
@@ -1133,7 +1168,7 @@ export default function WorldActors() {
             if(!landing)continue;
             relocatePlayer(landing);guideYaw.current=Math.atan2(-(landing[2]-destination.position[2]),landing[0]-destination.position[0]);
             useWorldStore.setState({position:landing,nearbyInteract:null,nearbyVehicle:null,canVault:false,zone:LAYOUT_V4?zoneAtV4(landing[0],landing[2]):destination.id==='camp'?'camp':'park'});
-            const zh={camp:'营地',mine:'WorldQuant 矿场',park:'项目广场'},en={camp:'camp',mine:'WorldQuant quarry',park:'project plaza'};
+            const zh={camp:'营地',mine:'WorldQuant 矿场',park:'项目广场',yard:'物资清点场',coaster:'意图过山车'},en={camp:'camp',mine:'WorldQuant quarry',park:'project plaza',yard:'Inventory yard',coaster:'Intent coaster'};
             actorNotice(`已抵达${zh[destination.id]}。离开门口后可再次穿行。`,`Arrived at ${en[destination.id]}. Walk away to rearm the gate.`);
             transferred=true;
             break;
@@ -1165,6 +1200,14 @@ export default function WorldActors() {
       return;
     }
     if (state.paused || state.poolInspect) return;
+    if(attractionRide.active){
+      const pose=attractionRide.pose;
+      camera.position.set(...pose.cameraPosition);camera.up.set(0,1,0);camera.lookAt(...pose.cameraTarget);
+      if(camera instanceof PerspectiveCamera&&camera.fov!==pose.fov){camera.fov=pose.fov;camera.updateProjectionMatrix();}
+      if(guideView.current)guideView.current.visible=!pose.firstPerson;
+      cameraReady.current=false;
+      return;
+    }
     const c=cam.current,driving=!!state.activeVehicle&&guideTransition.current?.phase!=='enter';
     const car=driving?cars.current.get(state.activeVehicle!):undefined;
     const body=car?.body??player.current;if(!body)return;
@@ -1300,7 +1343,7 @@ export default function WorldActors() {
           Horizontal impulse control handles braking; 10 cm soft CCD predicts landing contact. */}
       <CapsuleCollider name="player-capsule" args={[PLAYER_HALF_HEIGHT,PLAYER_RADIUS]} mass={72} friction={0} frictionCombineRule={rapier.CoefficientCombineRule.Min} restitution={0}/>
       <group ref={guideView} name="world-guide-camera-visibility" position={[0,-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),0]}>
-        <GuideVisual cars={cars} body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} intent={moveIntent} jumpSeq={jumpSeq} visible={!firstPerson} transition={guideTransition} supportDecision={supportDecision} movementLock={guideMovementLock} vault={vault} railVault={railVault} resetId={guideResetId} />
+        <GuideVisual cars={cars} body={player} grounded={grounded} yaw={guideYaw} targetSpeed={guideTargetSpeed} intent={moveIntent} jumpSeq={jumpSeq} visible={!firstPerson||rideHeld.current} transition={guideTransition} supportDecision={supportDecision} movementLock={guideMovementLock} vault={vault} railVault={railVault} resetId={guideResetId} />
       </group>
     </RigidBody>
   </>;

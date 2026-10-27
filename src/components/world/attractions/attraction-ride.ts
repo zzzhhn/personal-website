@@ -6,6 +6,8 @@ export interface AttractionRidePose {
   seat: Vec3;
   /** Guide heading: forward is (cos(yaw), 0, -sin(yaw)). */
   yaw: number;
+  /** Optional full world rotation, guide local +X forward and +Y up. */
+  orientation?: [number,number,number,number];
   cameraPosition: Vec3;
   cameraTarget: Vec3;
   firstPerson: boolean;

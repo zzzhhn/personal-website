@@ -20,7 +20,8 @@ export const worldText = {
     future: 'Under construction', map: 'Island map', privacy: 'Movement is never recorded.',
 
     // HUD, prompts, cards, map (ui session). Facts never live here: only interface words.
-    zoneSub: { ridge: 'Lookout', shore: 'Open coast' }, present: 'Present', close: 'Close', interact: 'Interact', switchTarget: 'Switch',
+    yard:'The Inventory Yard', coaster:'Intent Coaster',
+    zoneSub: { ridge: 'Lookout', shore: 'Open coast',yard:'SDIC · IBD fieldwork',coaster:'ByteDance · AI product experience' }, present: 'Present', close: 'Close', interact: 'Interact', switchTarget: 'Switch',
     hintMove: 'Move', hintLook: 'Look', hintInteract: 'Interact', hintDrive: 'Drive', hintKeysMove: 'WASD', hintKeysLook: 'Drag · Scroll', hintKeysDrive: 'W/S · A/D',
     waypoint: 'Waypoint', waypointSet: 'Click the map to set a waypoint; click it again to clear.', waypointClear: 'Clear waypoint', metres: 'm',
     legendBuildings: 'Internships (oldest → newest)', legendBooths: 'Project booths', legendYou: 'You', legendPlots: 'Plots for later',
@@ -52,7 +53,8 @@ export const worldText = {
     mobile: '在桌面打开可进入。', mobileDetail: '城岛正在试玩阶段，使用键鼠或手柄步行与驾驶。',
     future: '建设中', map: '城岛地图', privacy: '不记录移动轨迹。',
 
-    zoneSub: { ridge: '远眺', shore: '开阔海岸' }, present: '至今', close: '关闭', interact: '交互', switchTarget: '切换',
+    yard:'物资清点场', coaster:'意图过山车',
+    zoneSub: { ridge: '远眺', shore: '开阔海岸',yard:'国投证券 · IBD 现场经历',coaster:'字节跳动 · AI 产品经历' }, present: '至今', close: '关闭', interact: '交互', switchTarget: '切换',
     hintMove: '移动', hintLook: '镜头', hintInteract: '交互', hintDrive: '驾驶', hintKeysMove: 'WASD', hintKeysLook: '拖拽 · 滚轮', hintKeysDrive: 'W/S · A/D',
     waypoint: '航点', waypointSet: '点击地图设置航点，再点一次航点取消。', waypointClear: '清除航点', metres: '米',
     legendBuildings: '实习楼（由旧到新）', legendBooths: '项目展位', legendYou: '你', legendPlots: '预留地块',

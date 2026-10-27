@@ -33,7 +33,7 @@ interface WorldState {
   recoverRequest: number;
   speed: number;
   /** v4 adds the north ridge and the open shore (west / south beach). */
-  zone: 'camp' | 'town' | 'park' | 'ridge' | 'shore';
+  zone: 'camp' | 'town' | 'park' | 'ridge' | 'shore' | 'yard' | 'coaster';
   position: Vec3;
   ready: boolean;
   /** Actual discovered loader items; the core scene still determines when play can begin. */

@@ -5,6 +5,7 @@ import { ISLAND_OUTLINE, LAYOUT_V4, ROAD_POINTS, BOARDWALK_POINTS, BUILDINGS, BO
 import { ALPHA_MINE_CONNECTOR, ALPHA_MINE_CONNECTOR_WIDTH, ALPHA_MINE_FOOTPRINT_POINTS, ALPHA_MINE_ORIGIN, isOnAlphaMineBase } from './alpha-mine-layout';
 import { ALPHA_EXCHANGE_ORIGIN, ALPHA_EXCHANGE_APPROACH, ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout';
 import { CLUB, CLUB_APPROACH, CLUB_POOL, CLUB_WALKWAYS } from './djc-club-layout';
+import { ATTRACTION_ROADS, IBD_YARD, INTENT_COASTER } from './attractions/attraction-layout';
 
 type MapRoad = { pts: number[][]; width: number; color: string; dash?: string };
 type Landmark = { id: string; p: [number, number]; label: string };
@@ -91,6 +92,15 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
     <polyline points={path(BOARDWALK_POINTS)} fill='none' stroke='#B99469' strokeWidth='3' strokeLinecap='round' />
     <polyline points={path(ALPHA_MINE_CONNECTOR)} fill='none' stroke='#B99469' strokeWidth={ALPHA_MINE_CONNECTOR_WIDTH} strokeLinejoin='round' strokeLinecap='round' />
     <polyline points={path(ALPHA_EXCHANGE_APPROACH)} fill='none' stroke='#B99469' strokeWidth='3.1'/>
+    {LAYOUT_V4&&<g data-attractions='north'>
+      {ATTRACTION_ROADS.map((road,i)=><polyline key={i} points={path(road)} fill='none' stroke='#D9D2C2' strokeWidth='5.4' strokeLinejoin='round'/>)}
+      {[IBD_YARD,INTENT_COASTER].map((site,i)=><g key={i}>
+        <rect x={site.center[0]-site.size[0]/2} y={site.center[2]-site.size[1]/2} width={site.size[0]} height={site.size[1]} rx='5' fill={i?'#36565e':'#89745c'} stroke='#c4c5a3' strokeWidth='.7'/>
+        {i===1&&<path d='M46 -140 C10 -150 15 -207 47 -207 S86 -169 61 -155 S30 -177 49 -194' fill='none' stroke='#86cfcc' strokeWidth='1.4'/>}
+        <circle cx={site.entrance[0]} cy={site.entrance[2]} r='3.3' fill='#23343D' stroke='#4FD1C5'/>
+        <text x={site.center[0]} y={site.center[2]+(i?0:2)} textAnchor='middle' fontSize={full?'4.5':'5'} fill='#fff7de' paintOrder='stroke' stroke='#23343d' strokeWidth='1.1'>{lang==='zh'?(i?'意图过山车':'物资清点场'):(i?'INTENT COASTER':'INVENTORY YARD')}</text>
+      </g>)}
+    </g>}
     <rect data-exchange-footprint='building' x={ALPHA_EXCHANGE_FOOTPRINT.minX} y={ALPHA_EXCHANGE_FOOTPRINT.minZ} width={ALPHA_EXCHANGE_FOOTPRINT.maxX-ALPHA_EXCHANGE_FOOTPRINT.minX} height={ALPHA_EXCHANGE_FOOTPRINT.maxZ-ALPHA_EXCHANGE_FOOTPRINT.minZ} fill='#8d7960' stroke='#c5b591'/>
     <text x={ALPHA_EXCHANGE_ORIGIN[0]} y={ALPHA_EXCHANGE_ORIGIN[2]-5} textAnchor='middle' fontSize={full?'3.6':'4.4'} fill='#f1e3bc'>{lang==='zh'?'交易所':'EXCHANGE'}</text>
     {LAYOUT_V4 && <g data-experience-id='djc'>

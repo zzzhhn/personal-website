@@ -1,7 +1,7 @@
 import type { Vec3 } from './types';
 
 export interface WorldPortalSite {
-  id: 'camp' | 'mine' | 'park';
+  id: 'camp' | 'mine' | 'park' | 'yard' | 'coaster';
   /** Stone base, in world metres; yaw rotates the local +Z crossing normal. */
   position: Vec3;
   yaw: number;
@@ -30,6 +30,10 @@ export const WORLD_PORTALS: readonly WorldPortalSite[] = [
   { id: 'park', position: [49.5, 1.15, -39.5], yaw: Math.PI / 2, ...shape,
     arrivalCandidates: [[52, 1.15, -39.5], [47, 1.15, -39.5]],
     entryApproachCandidates: [[52.7, 1.15, -39.5], [46.3, 1.15, -39.5]] },
+  { id:'yard',position:[-101,1,-146],yaw:0,...shape,
+    arrivalCandidates:[[-101,1,-143.5],[-101,1,-148.5]],entryApproachCandidates:[[-101,1,-142.8],[-101,1,-149.2]] },
+  { id:'coaster',position:[60,1,-122],yaw:0,...shape,
+    arrivalCandidates:[[60,1,-119.5],[60,1,-124.5]],entryApproachCandidates:[[60,1,-118.8],[60,1,-125.2]] },
 ];
 
 /** World point to the unscaled G28 frame, with y measured from the stone base. */
