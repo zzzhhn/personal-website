@@ -1,7 +1,7 @@
 import WorldVehicleTestProfiles from './WorldVehicleTestProfiles';
 import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { CapsuleCollider, ConvexHullCollider, CuboidCollider, CylinderCollider, RigidBody, useBeforePhysicsStep, useFilterContactPair, useRapier, type RapierCollider, type RapierRigidBody } from '@react-three/rapier';
+import { CapsuleCollider, ConvexHullCollider, CuboidCollider, CylinderCollider, RigidBody, useBeforePhysicsStep, useAfterPhysicsStep, useFilterContactPair, useRapier, type RapierCollider, type RapierRigidBody } from '@react-three/rapier';
 import { BoxGeometry, Euler, Group, Mesh, MeshStandardMaterial, PerspectiveCamera, Quaternion, Vector3 } from 'three';
 import { CAMP_SPAWN, ROAD_POINTS, VEHICLES, WATER_Y } from './layout';
 import { advanceMineAction, cancelMineAction, mineActor, mineBusy, putDownMineOre, useAlphaMineStore } from './alpha-mine-state';
@@ -20,7 +20,7 @@ import { cycleInteractPick, nearestInteractable, type Interactable } from './Wor
 import type { Vec3, VehicleId } from './types';
 import WorldGuide, { VEHICLE_TRANSITION_S, worldGuideDebug } from './WorldGuide';
 import WorldVehicleVisual from './WorldVehicleVisual';
-import { playerSupport, followPlayerGround } from './player-ground';
+import { playerSupport, followPlayerGround, compensatePlayerSlopeGravity, clearPlayerSlopeGravity } from './player-ground';
 import { createPlayerClearance, findLowVault, playerRouteClear, playerVelocityChange, sweptPlayerVelocity } from './player-motion';
 import { findRailVault, railVaultVelocity, type RailVault } from './player-vault';
 import { findSafePlayerLanding, findSafeVehicleLanding, updateHeadSubmersion } from './safe-landing';
@@ -883,6 +883,7 @@ export default function WorldActors() {
     };
   },[world,rapier,gl,colliderStates]);
 
+  useAfterPhysicsStep(()=>{if(player.current)clearPlayerSlopeGravity(player.current);});
   useBeforePhysicsStep(()=>{
     const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot || !player.current) return;
     physicsSteps.current++;
@@ -1171,6 +1172,8 @@ export default function WorldActors() {
         else {vx=vault.current.vx;vz=vault.current.vz;guideYaw.current=Math.atan2(-vz,vx);}
       }
       const mass=player.current.mass(),change=playerVelocityChange(velocity,{x:vx,y:0,z:vz},dt,grounded.current);
+      const slopeGravity=seat?null:compensatePlayerSlopeGravity(world,player.current,ground,dt,actions.current.jump&&grounded.current);
+      if(supportDecision.current)supportDecision.current.slopeGravity=slopeGravity;
       const dx=change.x,dz=change.z;
       player.current.applyImpulse({x:dx*mass,y:0,z:dz*mass},true);
       const currentVelocity=player.current.linvel();

@@ -38,7 +38,7 @@ export default function WorldPlaytestReadout() {
   const [renderSnapshot,setRenderSnapshot]=useState<unknown>(null);
   const [networkFailure,setNetworkFailure]=useState(false);
   const waterWindow=useRef<ReturnType<typeof clubWaterSnapshot>|null>(null);
-  if(world.shot)return null;
+  if(world.shot&&!world.paused)return null;
   const renderPanel=<aside style={{position:'fixed',zIndex:80,left:16,bottom:12,width:280,maxHeight:'32vh',overflow:'auto',background:'#17231def',color:'#e7eddf',padding:8,font:'10px/1.25 monospace'}}>
       <button onClick={()=>setRenderSnapshot(readRenderSnapshot())}>QA · 读取当前渲染开销</button>
       {import.meta.env.DEV&&<>

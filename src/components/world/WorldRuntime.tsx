@@ -1,5 +1,5 @@
 import { Raycaster, Vector3 } from 'three';
-import { lazy, memo, Suspense, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { lazy, memo, Suspense, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Physics, useRapier } from '@react-three/rapier';
 import WorldEnvironment from './WorldEnvironment';
@@ -27,6 +27,9 @@ import WorldWeather from './WorldWeather';
 import { setRenderReadoutSource } from './world-render-readout';
 import { clubWaterFrameWindow } from './WorldClubWaterBudget';
 import WorldAttractions from './attractions/WorldAttractions';
+import { intentRideClock, useIntentStore } from './attractions/intent-state';
+import { coasterPhase } from './attractions/coaster-track';
+import { INTENT_COASTER } from './attractions/attraction-layout';
 
 // Layout v4 greybox (?layout=v4) loads as its own chunk; the default entry never fetches it.
 const WorldDistricts = LAYOUT_V4 ? lazy(() => import('./WorldDistricts')) : null;
@@ -57,6 +60,25 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
   const frameDelta = useRef(0);
   const [frameSample] = useState(() => import.meta.env.DEV && new URLSearchParams(window.location.search).get('qa') === '1'
     ? { values: new Float32Array(180), count: 0, cursor: 0, warm: 0 } : null);
+  // Only invoked for a retained slow interval in an explicitly started QA window.
+  // This callback runs before the current render: GL counters describe the last
+  // render, while store/camera values are observed now, not a causal CPU trace.
+  const readSlowFrameContext = useCallback(() => {
+    const w = useWorldStore.getState(), ride = useIntentStore.getState(), b = INTENT_COASTER.bounds;
+    const distance = Math.hypot(Math.max(b.minX-w.position[0],0,w.position[0]-b.maxX),
+      Math.max(b.minZ-w.position[2],0,w.position[2]-b.maxZ));
+    return { lastRenderFrame: gl.info.render.frame, lastRenderCalls: gl.info.render.calls,
+      lastRenderTriangles: gl.info.render.triangles, geometries: gl.info.memory.geometries,
+      textures: gl.info.memory.textures, programs: gl.info.programs?.length ?? 0,
+      cameraX: camera.position.x, cameraY: camera.position.y, cameraZ: camera.position.z,
+      actorX: w.position[0], actorY: w.position[1], actorZ: w.position[2],
+      quality: w.quality, night: night.value, paused: w.paused, poolInspect: w.poolInspect,
+      hidden: document.hidden, shot: w.shot, vehicle: w.activeVehicle,
+      coasterBoundsDistance: distance, coasterProximityActive: distance < 24,
+      coasterEnabled: ride.active, coasterRiding: ride.riding, coasterRidePhase: ride.ridePhase,
+      coasterTrackPhase: coasterPhase(intentRideClock.elapsed), coasterElapsed: intentRideClock.elapsed,
+      coasterClockRiding: intentRideClock.riding, coasterRevision: intentRideClock.revision };
+  }, [camera, gl]);
   useLayoutEffect(() => {
     if (import.meta.env.DEV) clubWaterFrameWindow.invalidate();
     if (document.hidden) return;
@@ -77,7 +99,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
     if (frameSample && !paused && !document.hidden && delta > 0) {
       if (frameSample.warm < 30) frameSample.warm++;
       else {
-        clubWaterFrameWindow.record(delta * 1000);
+        clubWaterFrameWindow.record(delta * 1000, readSlowFrameContext);
         frameSample.values[frameSample.cursor] = delta * 1000;
         frameSample.cursor = (frameSample.cursor + 1) % frameSample.values.length;
         frameSample.count = Math.min(frameSample.count + 1, frameSample.values.length);
@@ -150,10 +172,17 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
       renderInfo: () => {
         const buffer = gl.getDrawingBufferSize(renderSize), rect = gl.domElement.getBoundingClientRect(), ctx = gl.getContext();
         let shadowMapSize = 0;
-        scene.traverse(o => { const l = o as unknown as { isDirectionalLight?: boolean; shadow?: { mapSize: { x: number } } }; if (l.isDirectionalLight && l.shadow) shadowMapSize = l.shadow.mapSize.x; });
+        const coasterVegetation: { name: string; instances: number; triangles: number; matrixUploads: number }[] = [];
+        // This inventory runs only when the visible QA snapshot button is pressed.
+        scene.traverse(o => {
+          const l = o as unknown as { isDirectionalLight?: boolean; shadow?: { mapSize: { x: number } } };
+          if (l.isDirectionalLight && l.shadow) shadowMapSize = l.shadow.mapSize.x;
+          const plant = o.userData.coasterVegetationStats;
+          if (typeof plant === 'function') coasterVegetation.push({ name: o.name, ...plant() });
+        });
         return { drawingBuffer: [buffer.x, buffer.y], cssSize: [rect.width, rect.height], pixelRatio: gl.getPixelRatio(), dprRange: [0, useWorldStore.getState().quality === 'high' ? 2 : 1.5],
           quality: useWorldStore.getState().quality, antialias: ctx.getContextAttributes()?.antialias, msaaSamples: ctx.getParameter(ctx.SAMPLES), toneMapping: gl.toneMapping, outputColorSpace: gl.outputColorSpace,
-          shadowMapSize, shadowType: gl.shadowMap.type, postprocessing: [] };
+          shadowMapSize, shadowType: gl.shadowMap.type, postprocessing: [], coasterVegetation };
       },
       stats: () => ({ calls: gl.info.render.calls, triangles: gl.info.render.triangles, geometries: gl.info.memory.geometries, textures: gl.info.memory.textures, programs: gl.info.programs?.length ?? 0, camera: camera.position.toArray() }),
       renderLoop: () => ({ mode: get().frameloop, frame: gl.info.render.frame, delta: frameDelta.current, night: night.value, windTime: windUniforms.uWindTime.value,

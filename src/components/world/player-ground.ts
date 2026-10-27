@@ -8,6 +8,13 @@ const UP = .06, CONTACT = .012, SEARCH = .03;
 const WALKABLE = Math.cos(25 * Math.PI / 180);
 const GRAVITY = 12.5;
 const staticSolid = (c: Collider) => !c.isSensor() && (!c.parent() || c.parent()!.isFixed());
+const slopeForces = new WeakMap<RigidBody, Vector>();
+
+/** Remove only our force after each world step, including the last grounded frame. */
+export function clearPlayerSlopeGravity(body: RigidBody) {
+  const force = slopeForces.get(body);
+  if (force) { body.addForce({ x: -force.x, y: 0, z: -force.z }, true); slopeForces.delete(body); }
+}
 
 /** Probe the real capsule's lower hemisphere with the same radius and sole height.
  * Lifting the whole standing capsule can overlap a ceiling and mask the floor at TOI=0.
@@ -22,6 +29,26 @@ export function playerSupport(world: World, rapier: ShapeFactory, body: RigidBod
   const n = hit.normal1;
   return { gap, centerY: position.y - gap, normal: n, handle: hit.collider.handle,
     grounded: gap <= CONTACT };
+}
+
+/** Cancel tangential gravity at the current static contact, independently of the next-floor
+ * search used by downhill following. Keep zero friction so walls still cannot pin the player. */
+export function compensatePlayerSlopeGravity(world: World, body: RigidBody,
+  support: ReturnType<typeof playerSupport>, dt: number, jumping: boolean) {
+  clearPlayerSlopeGravity(body);
+  if (jumping || !support?.grounded || !Number.isFinite(dt) || dt <= 0) return null;
+  const collider = world.getCollider(support.handle);
+  if (!collider || !staticSolid(collider)) return null;
+  const n = support.normal, v = body.linvel();
+  if (n.y < WALKABLE || v.x * n.x + v.y * n.y + v.z * n.z > .1) return null;
+  // Horizontal -g*n.xz/n.y makes net gravity parallel to -n. Rapier supplies the
+  // normal reaction; no vertical lift, position lock or extra friction is introduced.
+  // Match gravity's substep integration. A frame-start impulse cancels final velocity but
+  // still creates a positional drift during the intermediate solver substeps.
+  const scale = -GRAVITY / n.y, acceleration = { x: scale * n.x, z: scale * n.z };
+  const force = { x: acceleration.x * body.mass(), y: 0, z: acceleration.z * body.mass() };
+  body.addForce(force, true); slopeForces.set(body, force);
+  return acceleration;
 }
 
 /** Follow only the next continuous static support. Rapier still moves and collides the dynamic body.

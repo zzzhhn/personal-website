@@ -1,0 +1,216 @@
+{
+  "ride": {
+    "active": true,
+    "seat": [
+      34.585830348620625,
+      2.6652932378407157,
+      -151.61941997616742
+    ],
+    "yaw": -0.843875991987531,
+    "orientation": [
+      -0.09444111622366277,
+      -0.40414450986408,
+      -0.06915839226597707,
+      0.9071742982979271
+    ],
+    "cameraPosition": [
+      32.6547258577094,
+      5.097779951636888,
+      -153.7861229890379
+    ],
+    "cameraTarget": [
+      35.741780715806364,
+      3.7715859487929766,
+      -150.43871827145907
+    ],
+    "cameraUp": [
+      0,
+      1,
+      0
+    ],
+    "firstPerson": false,
+    "fov": 58
+  },
+  "camera": {
+    "yaw": 1.5707963267948966,
+    "pitch": 0.7853981633974483,
+    "distance": 12,
+    "desiredDistance": 12,
+    "driveManualZoom": false,
+    "actualDistance": 6.216628265380856,
+    "firstPerson": false,
+    "preset": 1,
+    "collided": true,
+    "hitDistance": 6.266628265380859,
+    "fov": 58,
+    "mode": "walk",
+    "recentering": false,
+    "position": [
+      37.85342520944009,
+      4.339352774302859,
+      -154.64733026803287
+    ],
+    "target": [
+      46.03483581542969,
+      2.5488249301910404,
+      -152.47021484375
+    ],
+    "forwardGround": [
+      -0.4484599698821698,
+      0.8938029175457436
+    ],
+    "groundBelowCamera": 1,
+    "clearanceAboveGround": 3.339352774302859,
+    "gamepad": false,
+    "nearPlaneRadius": 0.22,
+    "guideHidden": false,
+    "nearPlaneOverlaps": []
+  },
+  "actor": {
+    "animation": "SitIdle",
+    "root": [
+      34.82526577231195,
+      2.2955903548637804,
+      -151.23825414679703
+    ],
+    "seatSupport": null,
+    "vehicleStage": null,
+    "vehicleRotation": null,
+    "vehicle": null
+  },
+  "doors": {
+    "offroad": {
+      "level": 1,
+      "triangles": 15242,
+      "doors": [
+        {
+          "side": -1,
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "vertices": 540
+        },
+        {
+          "side": 1,
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "vertices": 540
+        }
+      ]
+    },
+    "coupe": {
+      "level": 1,
+      "triangles": 14816,
+      "doors": [
+        {
+          "side": -1,
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "vertices": 636
+        },
+        {
+          "side": 1,
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "vertices": 636
+        }
+      ]
+    },
+    "van": {
+      "level": 1,
+      "triangles": 14273,
+      "doors": [
+        {
+          "side": -1,
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "vertices": 540
+        },
+        {
+          "side": 1,
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "vertices": 540
+        }
+      ]
+    }
+  },
+  "physics": {
+    "player": [
+      34.58583068847656,
+      3.48529314994812,
+      -151.61941528320312
+    ],
+    "grounded": true,
+    "vehicles": [
+      {
+        "id": "offroad",
+        "position": [
+          -26.00594139099121,
+          5.896547794342041,
+          34
+        ],
+        "waterSeconds": 0,
+        "wheelContacts": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "id": "coupe",
+        "position": [
+          26.199382781982422,
+          2.1374425888061523,
+          2.002410411834717
+        ],
+        "waterSeconds": 0,
+        "wheelContacts": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "id": "van",
+        "position": [
+          45.992454528808594,
+          2.464979648590088,
+          -45
+        ],
+        "waterSeconds": 0,
+        "wheelContacts": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    ]
+  }
+}

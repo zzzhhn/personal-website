@@ -4,7 +4,9 @@ import type { CoasterBatch, CoasterCollider } from './coaster-geometry.ts';
 import type { Vec3 } from '../types';
 
 /** Actual walkable surfaces: start on the retained forecourt and reach an eight-metre lookout. */
-export const COASTER_CLIFF_WALK: Vec3[] = [[16,.08,54],[45,.08,48],[60,5,32],[55,8.08,18],[55,8.08,14]];
+// Reach deck height at its south edge (z=20), before entering the horizontal slab.
+// Ending the incline inside the deck left its 44 cm front face across the route.
+export const COASTER_CLIFF_WALK: Vec3[] = [[16,.08,54],[45,.08,48],[60,5,32],[55,8.08,20],[55,8.08,14]];
 export const COASTER_CLIFF_LAMPS: Vec3[] = [[49,10.3,8],[61,10.3,8]];
 export const COASTER_LOOKOUT = { center: [55,7.88,14] as Vec3, size: [12,.4,12] as Vec3 };
 export function onCoasterCliffWalk(x: number,z: number,margin=3) {

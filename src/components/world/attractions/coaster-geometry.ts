@@ -376,9 +376,13 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
     const sections=i===0?[[a,[-5,56]],[[5,56],b]]:[[a,b]];
     for(const [from,to] of sections){
       const dx=to[0]-from[0],dz=to[1]-from[1],length=Math.hypot(dx,dz),yaw=-Math.atan2(dz,dx);
-      for(const y of [1,2.7]) beam([from[0],y,from[1]],[to[0],y,to[1]],.08);
-      colliders.push({position:coasterWorld([(from[0]+to[0])/2,1.6,(from[1]+to[1])/2]),half:[length/2,1.6,.15],rotation:[0,yaw,0]});
-      for(let d=0;d<length;d+=5) housing([from[0]+dx*d/length,1.6,from[1]+dz*d/length],[.32,3.2,.32],P.concrete,false);
+      // The open railings need open collision too. A full-height invisible wall
+      // collapsed a legal walking orbit to 13 cm beside the station entrance.
+      for(const y of [1,2.7]) {
+        beam([from[0],y,from[1]],[to[0],y,to[1]],.08);
+        colliders.push({position:coasterWorld([(from[0]+to[0])/2,y,(from[1]+to[1])/2]),half:[length/2,.08,.08],rotation:[0,yaw,0]});
+      }
+      for(let d=0;d<length;d+=5) housing([from[0]+dx*d/length,1.6,from[1]+dz*d/length],[.32,3.2,.32],P.concrete);
     }
   }
   for (const x of [-5.8, 5.8]) {

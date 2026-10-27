@@ -12,6 +12,7 @@ import { advanceCoasterTransition, returnCoasterToStation } from './coaster-tran
 import WorldIntentDevices from './WorldIntentDevices';
 import WorldIntentSigns from './WorldIntentSigns';
 import WorldIntentSurface from './WorldIntentSurface';
+import WorldCoasterVegetation from './WorldCoasterVegetation';
 import { night } from '../WorldNight';
 import { CoasterMotionAudio } from './coaster-motion-audio';
 
@@ -27,7 +28,7 @@ function WorldIntentCoaster({ active }: { active: boolean }) {
     const releaseAudio = parkAudio.retain();
     return () => { clearIntentRide(true); useIntentStore.setState({ active: false }); releaseAudio(); };
   }, [enabled]);
-  return <group name="intent-coaster" userData={{noOcclusionFade:true}}>
+  return <><group name="intent-coaster" userData={{noOcclusionFade:true}}>
     <mesh geometry={structure.steel} castShadow receiveShadow><WorldIntentSurface roughness={.82} metalness={.16} /></mesh>
     <mesh geometry={structure.glow}><meshBasicMaterial vertexColors toneMapped={false} /></mesh>
     <CoasterTrain active={enabled} />
@@ -36,7 +37,7 @@ function WorldIntentCoaster({ active }: { active: boolean }) {
         <TrimeshCollider args={[structure.relief.vertices, structure.relief.indices]} friction={.9} />
       </RigidBody>
     </>}
-  </group>;
+  </group><WorldCoasterVegetation /></>;
 }
 export default memo(WorldIntentCoaster);
 

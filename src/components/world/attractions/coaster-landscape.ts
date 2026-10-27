@@ -6,7 +6,6 @@ import { coasterInfieldHeight, onCoasterInfieldWalk, COASTER_INFIELD_LAMPS } fro
 import type { Vec3 } from '../types';
 
 const STONE = ['#777f82', '#899292', '#a2a69c', '#616f76'];
-const LEAF = ['#355943', '#527247', '#68804b', '#899254'];
 const frames = Array.from({ length: 900 }, (_, i) => coasterFrame(i / 900));
 // Candidate placement checks preserve the rail/head envelope before mesh-level ray tests.
 function clear(p: Vec3, half: Vec3, margin = 1.7) {
@@ -62,7 +61,6 @@ export function addCoasterLandscape(steel: CoasterBatch, glow: CoasterBatch, col
     [-36,13,5.8,2.4,5.8], [-25,47,7,2.4,6], [-44,43,7,2.8,8],
   ];
   const builtIslands: typeof islands = [];
-  let treeCount = 0, shrubCount = 0;
   islands.forEach(([x,z,rx,h,rz], i) => {
     const p: Vec3 = [x, h / 2 - .15, z], half: Vec3 = [rx * 1.15, h / 2, rz * 1.15];
     if (clear(p, half, 1.2)) {
@@ -73,39 +71,9 @@ export function addCoasterLandscape(steel: CoasterBatch, glow: CoasterBatch, col
         const at: Vec3 = [x + Math.cos(angle) * rx * r, .7, z + Math.sin(angle) * rz * r];
         if (clear(at, [2.8,1.2,2.4])) facet(steel, at, [2.8,1.2,2.4], STONE[(i + k) % 4], i + k);
       }
-      for (let k = 0; k < (detailed ? 6 : 3); k++) {
-        const angle = k * 2.2 + i * .8;
-        const at: Vec3 = [x + Math.cos(angle) * rx * .95, .8, z + Math.sin(angle) * rz * .95];
-        if (clear(at, [1.8,1.2,1.8], 2)) {
-          facet(steel, at, [1.8,1.2,1.8], LEAF[(i+k)%4], i+k); shrubCount++;
-        }
-      }
     }
   });
-  // Tree groves follow the island groups, not a uniform scatter over the track.
-  const trees: Vec3[] = [[-48,4.4,-48],[-40,4.4,-49],[-47,3.5,-27],[-49,2.8,-9],
-    [-4,2.5,-45],[8,2.5,-47],[5,2.5,-37],[33,3,-45],[38,3,-38],[34,3,-32],
-    [46,3.8,-15],[42,3.8,-10],[29,3.3,18],[34,3.3,23],[26,3.3,24],
-    [43,3,36],[47,3,41],[36,3,43],[26,2.2,46],[21,2.2,43],[-46,2.8,43],[-42,2.8,47],[-27,2.4,48],[-22,2.4,50],
-    // Small groves inhabit the continuous shoulders, leaving the track cuttings open.
-    [-21,0,-58],[-17,0,-55],[-18,0,-43],[-14,0,-39],[-17,0,-25],[-12,0,-22],
-    [7,0,-53],[11,0,-49],[13,0,-30],[17,0,-27],[28,0,-22],[32,0,-18],
-    [39,0,-41],[42,0,-37],[38,0,-5],[34,0,1],[40,0,28],[38,0,33]];
-  trees.forEach((original, i) => {
-    const p: Vec3 = [...original];
-    const island = builtIslands.find(([x,z,rx,,rz]) => ((p[0]-x)/rx)**2 + ((p[2]-z)/rz)**2 < .4);
-    p[1] = coasterInfieldHeight(p[0],p[2]) ?? (island ? island[3] - .15 : 0);
-    if (!detailed && i % 2) return;
-    const h = 3.6 + (i % 3) * .7, crown: Vec3 = [p[0], p[1] + h + 1, p[2]];
-    if (!clear(crown, [3.4,2.8,3.4], 2.3)) return;
-    treeCount++;
-    beam(p, [p[0] + .3, p[1] + h, p[2]], .28, '#6d6049');
-    beam([p[0],p[1]+h*.65,p[2]], [p[0]-1.5,p[1]+h+1,p[2]+.6], .16, '#6d6049');
-    colliders.push({ position: coasterWorld([p[0],p[1]+h/2,p[2]]), half: [.45,h/2,.45] });
-    facet(steel, crown, [2.6,2.5,2.5], LEAF[i % 4], i);
-    facet(steel, [p[0]-1.6,p[1]+h+.3,p[2]+.6], [1.8,1.7,1.8], LEAF[(i+1)%4], i+2);
-    if (detailed) facet(steel,[p[0]+1.4,p[1]+h+.5,p[2]-.8],[1.5,1.9,1.5],LEAF[(i+2)%4],i+4);
-  });
+  // Trees, their matching trunk colliders and planter foliage are owned by WorldCoasterVegetation.
   // Continuous warm promenade reinforces the entrance-to-station route without moving its contacts.
   for (const [x,z,w,d] of [[-24,53,31,3],[31,53,34,3],[16,43,3,20],[-18,42,3,18]]) {
     box([x,.055,z],[w,.11,d],'#b2a58c');
@@ -114,7 +82,6 @@ export function addCoasterLandscape(steel: CoasterBatch, glow: CoasterBatch, col
   for (const x of [-48,-38,-18,17,29,45]) {
     if(onCoasterCliffWalk(x,55,3)) continue;
     housing([x,.5,55],[5,1,1.8],'#777c6b');
-    for (let i=0;i<3;i++) facet(steel,[x-1.6+i*1.6,1.4,55],[1.2,.9,.9],LEAF[(i+3)%4],i);
   }
   // The new loop is part of the same terrain/collision mesh. Four small lanterns mark its turns.
   for (const [x,z] of COASTER_INFIELD_LAMPS) {
@@ -126,7 +93,7 @@ export function addCoasterLandscape(steel: CoasterBatch, glow: CoasterBatch, col
     colliders.push({position:coasterWorld([x,y+1.5,z]),half:[.16,1.5,.16]});
   }
   addEquipment(steel, glow, box, light, beam, housing, detailed);
-  return { islands: builtIslands.length, trees: treeCount, shrubs: shrubCount };
+  return { islands: builtIslands.length, trees: 0, shrubs: 0 };
 }
 
 type Box = (p: Vec3, size: Vec3, color: string, solid?: boolean) => void;
