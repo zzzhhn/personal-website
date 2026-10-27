@@ -3,13 +3,15 @@ import { CLUB_POOL } from './djc-club-layout';
 import { windUniforms } from './WorldWind';
 import { seaGlintUniforms } from './WorldWater';
 import { WATER_IMPACT_GLSL, waterImpactUniforms } from './WorldWaterInteraction';
+import { poolWaveGlsl } from './WorldWaterWaves';
 
 // Shared optical surface: the floor light and the refraction use identical wind waves.
-// The contact rings remain on the existing bounded, pause-aware interaction clock.
+// Contact impulses and directional wakes share the bounded, pause-aware clock.
 export const CLUB_WATER_GLSL = /* glsl */`
 uniform float uTime, uWind, uSurfaceY, uNight;
 uniform vec2 uPoolCenter, uPoolRadii;
 ${WATER_IMPACT_GLSL}
+${poolWaveGlsl()}
 float poolDistance(vec2 p){
   vec2 d=p-uPoolCenter,q=d/uPoolRadii;float r=length(q);
   if(r<.00001)return -min(uPoolRadii.x,uPoolRadii.y);
@@ -19,10 +21,7 @@ float poolDistance(vec2 p){
 float poolFloor(vec2 p){float edge=smoothstep(0.,3.4,-poolDistance(p));
   float shelf=.55+.28*clamp((uPoolCenter.x-p.x-1.)/7.,0.,1.);return 1.-(1.-shelf)*edge;}
 vec3 poolNormalWithContact(vec2 p,vec2 contact){
-  vec2 a=vec2(2.2,1.1),b=vec2(-1.5,3.4),c=vec2(4.1,-2.7),d=vec2(-5.2,-3.3);
-  vec2 slope=(a*.018*cos(dot(p,a)-uTime*.95)+b*.014*cos(dot(p,b)+uTime*.72)
-    +c*.013*cos(dot(p,c)-uTime*1.24)+d*.009*cos(dot(p,d)+uTime*1.47))*uWind;
-  slope+=contact;
+  vec2 slope=poolWindField(p,uTime,uWind).xy+contact*uWind;
   return normalize(vec3(-slope.x,1.,-slope.y));
 }
 vec3 poolNormal(vec2 p){return poolNormalWithContact(p,waterDisturbance(p,uSurfaceY,uTime).xy);}
@@ -39,7 +38,10 @@ export type ClubWaterUniforms=ReturnType<typeof clubWaterUniforms>;
 
 export function createClubOpticalWater(uniforms:ClubWaterUniforms) {
   return new ShaderMaterial({name:'Club water: depth, transmission and sky light',uniforms,side:DoubleSide,
-    vertexShader:`varying vec3 vPoolWorld;void main(){vec4 p=modelMatrix*vec4(position,1.);vPoolWorld=p.xyz;gl_Position=projectionMatrix*viewMatrix*p;}`,
+    vertexShader:`uniform float uTime,uWind;varying vec3 vPoolWorld;
+      ${poolWaveGlsl(true)}
+      void main(){vec4 p=modelMatrix*vec4(position,1.);p.y+=poolWindField(p.xz,uTime,uWind).z;
+        vPoolWorld=p.xyz;gl_Position=projectionMatrix*viewMatrix*p;}`,
     fragmentShader:/* glsl */`
       ${CLUB_WATER_GLSL}
       uniform sampler2D uRefraction,uDepth;
@@ -75,7 +77,7 @@ export function createClubOpticalWater(uniforms:ClubWaterUniforms) {
         vec3 col=mix(body,sky,clamp(fresnel,0.,.92));
         float sun=max(0.,dot(reflected,uSunDir));col+=uGlint*(pow(sun,320.)*.15+pow(sun,45.)*.006);
         float contact=disturbance.w;
-        col=mix(col,vec3(.55,.77,.73)*mix(1.,.2,uNight),min(.24,contact*.6));
+        col=mix(col,vec3(.55,.77,.73)*mix(1.,.2,uNight),min(.14,contact*.35));
         gl_FragColor=vec4(col,1.);
         #include <tonemapping_fragment>
         #include <colorspace_fragment>

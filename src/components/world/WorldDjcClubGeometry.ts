@@ -517,8 +517,16 @@ export function buildDjcClubGeometry() {
   }
   // Pool water has its own transparent draw, no support or side collider.
   const poolOutline=CLUB_POOL.outline.map(([x,z])=>[x,CLUB_POOL.waterY,z] as V3),water:number[]=[];
-  for(let i=0;i<CLUB_POOL.segments;i++) water.push(CLUB.pool[0],CLUB_POOL.waterY,CLUB.pool[2],...poolOutline[(i+1)%CLUB_POOL.segments],...poolOutline[i]);
+  // Eleven radial bands resolve the two long surface waves without another draw or collider.
+  // Sub-metre waves stay in the analytical normal field, never on this coarse grid.
+  const poolBands=11,center:V3=[CLUB.pool[0],CLUB_POOL.waterY,CLUB.pool[2]];
+  const ring=(i:number,r:number):V3=>[center[0]+(poolOutline[i][0]-center[0])*r,center[1],center[2]+(poolOutline[i][2]-center[2])*r];
+  for(let band=0;band<poolBands;band++)for(let i=0;i<CLUB_POOL.segments;i++){
+    const j=(i+1)%CLUB_POOL.segments,a=ring(i,band/poolBands),b=ring(j,band/poolBands),c=ring(i,(band+1)/poolBands),d=ring(j,(band+1)/poolBands);
+    water.push(...a,...d,...c);if(band>0)water.push(...a,...b,...d);
+  }
   const pool=fromTriangles(water);
+  pool.boundingBox?.expandByScalar(.06);if(pool.boundingSphere)pool.boundingSphere.radius+=.06;
   pool.userData={shape:'djc-pool',waterY:CLUB_POOL.waterY,outline:CLUB_POOL.outline};
   const built=Object.fromEntries(Object.entries(batches).map(([key,batch])=>[key,batch.geometry()])) as Record<ClubBatch,BufferGeometry>;
   built.foliage.boundingBox?.expandByScalar(.75);if(built.foliage.boundingSphere)built.foliage.boundingSphere.radius+=.75;

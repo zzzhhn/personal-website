@@ -156,7 +156,16 @@ test('rounded eave caps have matching camera guards and bamboo collars follow th
 });
 test('freeform basin, solid daybeds and full palm trunks keep their physical contract',()=>{
   const area=CLUB_POOL.outline.reduce((s,p,i)=>{const q=CLUB_POOL.outline[(i+1)%CLUB_POOL.segments];return s+p[0]*q[1]-q[0]*p[1];},0)/2;
-  assert.ok(area>2.5*Math.PI*10.5*14.2,'water area exceeds 2.5 times the previous pool');assert.equal(club.pool.getAttribute('position').count/3,CLUB_POOL.segments);
+  assert.ok(area>2.5*Math.PI*10.5*14.2,'water area exceeds 2.5 times the previous pool');
+  assert.ok(triangles(club.pool)<=2304,'bounded surface grid keeps the venue below its existing triangle budget');
+  const waterPositions=club.pool.getAttribute('position');let surfaceArea=0;
+  for(let i=0;i<waterPositions.count;i+=3){
+    const a=new Vector3().fromBufferAttribute(waterPositions,i),b=new Vector3().fromBufferAttribute(waterPositions,i+1),c=new Vector3().fromBufferAttribute(waterPositions,i+2);
+    const cross=b.clone().sub(a).cross(c.clone().sub(a));assert.ok(cross.y>0,'all water triangles face up');
+    surfaceArea+=cross.length()/2;
+    assert.ok(Math.max(a.distanceTo(b),b.distanceTo(c),c.distanceTo(a))<3,'long waves are spatially resolved');
+  }
+  assert.ok(Math.abs(surfaceArea-area)<.01,'subdivision preserves the existing freeform waterline');
   for(const [x,z] of CLUB_DAYBEDS)assert.ok(Math.abs(heightAt(x,z)-1.755)<.001,'seat pad has same-mesh support');
   const g=club.batches.wood,p=g.getAttribute('position').array,col=g.getAttribute('color'),targets=['#74634a','#857251'].map(c=>new Color(c));
   const key=(p,i)=>Array.from(p.slice(i,i+9)).map(v=>v.toFixed(4)).join(',');const solid=new Set(),s=club.colliders.solid.vertices;

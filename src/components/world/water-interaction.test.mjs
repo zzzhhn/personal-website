@@ -48,3 +48,15 @@ test('thrown objects share bounded impact storage with footfalls', () => {
   assert.equal(s.emitted,30);assert.equal(s.impacts.length,WATER_IMPACT_CAPACITY);
   assert.ok(s.impacts.some(p=>p.at===29&&p.y===1.74));
 });
+
+test('walking wakes follow motion and turning changes their direction without changing entry impulses',()=>{
+  const s=new WaterContactSystem();
+  s.step([actor(.1,1)],0,surface);
+  assert.equal(s.impacts[0].vx,0);assert.equal(s.impacts[0].vz,0,'entry radiates outward');
+  s.step([actor(.7,1)],.2,surface);
+  assert.ok(s.impacts[1].vx>0);assert.equal(s.impacts[1].vz,0);
+  s.step([{...actor(.7,1),z:.7}],.4,surface);
+  assert.equal(s.impacts[2].vx,0);assert.ok(s.impacts[2].vz>0);
+  for(let i=0;i<WATER_IMPACT_CAPACITY;i++)s.emit({x:0,z:0,y:1.35,at:1+i,strength:.8,radius:.1,splash:.5});
+  assert.ok(s.impacts.every(p=>p.vx===0&&p.vz===0),'reused drop slots never inherit walking directions');
+});
