@@ -49,6 +49,11 @@ export function coasterPhase(seconds: number): 'station' | 'lift' | 'crest' | 'd
     : seconds < 45 ? 'drop' : seconds < 68 ? 'bank' : seconds < 79 ? 'tunnel' : 'return';
 }
 const wrap = (u: number) => ((u % 1) + 1) % 1;
+const tunnelStart = coasterDistanceAt(68) * COASTER_LENGTH, tunnelEnd = coasterDistanceAt(79) * COASTER_LENGTH;
+const smootherstep = (value: number) => {
+  const t = Math.max(0, Math.min(1, value));
+  return t * t * t * (t * (t * 6 - 15) + 10);
+};
 export function coasterFrame(u: number, banking = true) {
   const point = coasterCurve.getPointAt(wrap(u)), forward = coasterCurve.getTangentAt(wrap(u)).normalize();
   const side = new Vector3().crossVectors(forward, new Vector3(0, 1, 0)).normalize();
@@ -69,6 +74,18 @@ export function coasterRidePose(u: number, view: CoasterView): AttractionRidePos
     : seat.clone().addScaledVector(f.forward, -7.5).add(new Vector3(0, 3.4, 0));
   const target = view === 'comfort' ? seat.clone().addScaledVector(horizontal, 5).add(new Vector3(0, 1, 0))
     : eye.clone().addScaledVector(f.forward, view === 'first-person' ? 8 : 4);
+  if (view !== 'first-person') {
+    const distance = wrap(u) * COASTER_LENGTH;
+    // Settle before the first roof bay reaches the sight line; release only after the camera exits.
+    const blend = smootherstep((distance - tunnelStart + 24) / 14) * (1 - smootherstep((distance - tunnelEnd - 12) / 14));
+    if (blend > 0) {
+      // Following the centreline avoids the outside-of-bend shortcut of a tangent-offset camera.
+      const behind = coasterFrame(u - (view === 'comfort' ? 3.4 : 3.1) / COASTER_LENGTH);
+      const ahead = coasterFrame(u + 1.6 / COASTER_LENGTH);
+      camera.lerp(behind.point.addScaledVector(behind.up, 2.75), blend);
+      target.lerp(ahead.point.addScaledVector(ahead.up, 1.9), blend);
+    }
+  }
   return { seat: seat.toArray() as Vec3, yaw: f.yaw, orientation: f.rotation.toArray(), cameraPosition: camera.toArray() as Vec3,
     cameraTarget: target.toArray() as Vec3, firstPerson: view === 'first-person', fov: view === 'comfort' ? 52 : view === 'first-person' ? 66 : 58 };
 }

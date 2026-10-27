@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { Vector3 } from 'three';
+import { DoubleSide, Mesh, MeshBasicMaterial, Raycaster, Vector3 } from 'three';
 import { advanceCoaster, coasterCurve, coasterDistanceAt, coasterFrame, coasterRidePose, coasterSupports, COASTER_CANOPY_BOUNDS, COASTER_DURATION, COASTER_EXIT, COASTER_LENGTH } from './coaster-track.ts';
 import { attractionRide, beginAttractionRide, endAttractionRide, updateAttractionRide } from './attraction-ride.ts';
 import { createCoasterCar, createCoasterStructure } from './coaster-geometry.ts';
@@ -144,5 +144,71 @@ test('large tower columns and station posts do not cut through the train envelop
       if (frame.point.y > p.y + .2) continue;
       assert.ok(Math.hypot(frame.point.x - p.x, frame.point.z - p.z) > 1.2, `Column at ${p.toArray()} cuts rail ${i / 600}`);
     }
+  }
+});
+
+test('third-person tunnel entry, interior and exit keep both the rider and forward sight line clear of the actual structure', () => {
+  const geometry = createCoasterStructure(true), material = new MeshBasicMaterial({ side: DoubleSide });
+  const objects = [new Mesh(geometry.steel, material), new Mesh(geometry.glow, material)], ray = new Raycaster();
+  objects.forEach(mesh => mesh.updateMatrixWorld());
+  try {
+    for (const mode of ['chase', 'comfort']) for (let t = 61; t <= 85; t += .1) {
+      const u = coasterDistanceAt(t), pose = coasterRidePose(u, mode), frame = coasterFrame(u);
+      const camera = new Vector3(...pose.cameraPosition), head = frame.point.clone().addScaledVector(frame.up, 2.2);
+      assert.equal(pose.firstPerson, false);
+      assert.ok(camera.distanceTo(head) > 2.5, `${mode} must remain third person at ${t}`);
+      for (const target of [head, new Vector3(...pose.cameraTarget)]) {
+        const direction = target.clone().sub(camera);
+        ray.set(camera, direction.clone().normalize()); ray.near = .05; ray.far = direction.length();
+        assert.equal(ray.intersectObjects(objects, false).length, 0, `${mode} blocked at ${t}`);
+      }
+    }
+  } finally { geometry.steel.dispose(); geometry.glow.dispose(); material.dispose(); }
+});
+
+test('the camera and complete sight segment fit inside the banked tunnel clearance', () => {
+  const start = coasterDistanceAt(68) * COASTER_LENGTH, end = coasterDistanceAt(79) * COASTER_LENGTH;
+  const centreline = Array.from({ length: Math.ceil((end - start + 12) / .15) }, (_, i) => coasterFrame((start - 6 + i * .15) / COASTER_LENGTH));
+  for (const mode of ['chase', 'comfort']) for (let t = 68; t <= 79; t += .1) {
+    const pose = coasterRidePose(coasterDistanceAt(t), mode), from = new Vector3(...pose.cameraPosition), to = new Vector3(...pose.cameraTarget);
+    for (let sample = 0; sample <= 16; sample++) {
+      const point = from.clone().lerp(to, sample / 16);
+      const nearest = centreline.reduce((best, frame) => frame.point.distanceToSquared(point) < best.point.distanceToSquared(point) ? frame : best);
+      const relative = point.sub(nearest.point), lateral = relative.dot(nearest.side), height = relative.dot(nearest.up);
+      // Extra clearance inside the 5.1 m roof / 5 m walls and the lower 3.5 m light arches.
+      assert.ok(Math.abs(lateral) < 1.7, `Side clearance ${mode} at ${t}: ${lateral}`);
+      assert.ok(height > 1.5 && height < 3.1, `Vertical clearance ${mode} at ${t}: ${height}`);
+    }
+  }
+});
+
+test('tunnel transitions are continuous and preserve the exterior and first-person camera contracts', () => {
+  const start = coasterDistanceAt(68), end = coasterDistanceAt(79);
+  for (const mode of ['chase', 'comfort']) {
+    for (const u of [start - 24 / COASTER_LENGTH, start - 10 / COASTER_LENGTH, end + 12 / COASTER_LENGTH, end + 26 / COASTER_LENGTH]) {
+      const epsilon = 1e-6;
+      for (const key of ['cameraPosition', 'cameraTarget']) {
+        const before = new Vector3(...coasterRidePose(u - epsilon, mode)[key]);
+        const at = new Vector3(...coasterRidePose(u, mode)[key]);
+        const after = new Vector3(...coasterRidePose(u + epsilon, mode)[key]);
+        assert.ok(before.distanceTo(after) < .002, `${mode} position step at ${u}`);
+        const inSlope = at.clone().sub(before).divideScalar(epsilon * COASTER_LENGTH);
+        const outSlope = after.clone().sub(at).divideScalar(epsilon * COASTER_LENGTH);
+        assert.ok(inSlope.distanceTo(outSlope) < .03, `${mode} velocity step at ${u}`);
+      }
+    }
+    for (const t of [0, 5, 31, 35, 38, 45, 58, 60, 86, 90, 94]) {
+      const u = coasterDistanceAt(t), pose = coasterRidePose(u, mode), frame = coasterFrame(u);
+      const expected = new Vector3(...pose.seat).addScaledVector(frame.forward, mode === 'comfort' ? -8 : -7.5).add(new Vector3(0, 3.4, 0));
+      assert.ok(expected.distanceTo(new Vector3(...pose.cameraPosition)) < 1e-10);
+      assert.equal(pose.fov, mode === 'comfort' ? 52 : 58);
+    }
+  }
+  for (let t = 0; t <= COASTER_DURATION; t += .5) {
+    const u = coasterDistanceAt(t), pose = coasterRidePose(u, 'first-person'), frame = coasterFrame(u);
+    const eye = frame.point.clone().addScaledVector(frame.up, 1.74);
+    assert.ok(eye.distanceTo(new Vector3(...pose.cameraPosition)) < 1e-10);
+    assert.ok(eye.addScaledVector(frame.forward, 8).distanceTo(new Vector3(...pose.cameraTarget)) < 1e-10);
+    assert.equal(pose.firstPerson, true); assert.equal(pose.fov, 66);
   }
 });
