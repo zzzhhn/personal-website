@@ -11,7 +11,7 @@ import type { Vec3 } from '../types';
 export default function WorldIntentSigns() {
   const lang = useWorldStore(s => s.lang), progress = useIntentStore(s => s.progress), tasks = useIntentStore(s => s.tasks);
   const atlas = useMemo(() => {
-    const canvas = document.createElement('canvas'); canvas.width = 1024; canvas.height = 1280;
+    const canvas = document.createElement('canvas'); canvas.width = 2048; canvas.height = 640;
     const ctx = canvas.getContext('2d')!;
     const zh = lang === 'zh', t = (cn: string, en: string) => zh ? cn : en;
     const routeTask = INTENT_STATIONS[0].tasks[tasks.route];
@@ -32,13 +32,13 @@ export default function WorldIntentSigns() {
       [progress.passed.includes('T7') ? t('请勿攀爬，谢谢配合。', 'Please do not climb. Thank you.') : progress.clarified.includes('T7') ? t('只改礼貌，别发送。', 'MAKE IT POLITE. DO NOT SEND.') : t('帮我弄一下这个。', 'CAN YOU SORT THIS OUT?'), t('摇铃听目标', 'RING TO CLARIFY')],
     ];
     for (let i = 0; i < entries.length; i++) {
-      const x = i % 2 * 512, y = Math.floor(i / 2) * 256;
-      ctx.fillStyle = '#1e303b'; ctx.fillRect(x, y, 512, 256);
+      const x = i % 2 * 1024, y = Math.floor(i / 2) * 128;
+      ctx.fillStyle = '#1e303b'; ctx.fillRect(x, y, 1024, 128);
       ctx.fillStyle = '#edf0e6'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      ctx.font = `600 ${i >= 6 ? 24 : 36}px ${zh ? '"Songti SC", serif' : 'sans-serif'}`;
-      ctx.fillText(entries[i][0], x + 256, y + 95, 480);
-      ctx.fillStyle = '#8dd7ce'; ctx.font = '20px sans-serif';
-      ctx.fillText(entries[i][1], x + 256, y + 163, 480);
+      ctx.font = `600 ${i >= 6 ? 32 : 48}px ${zh ? '"Songti SC", serif' : 'sans-serif'}`;
+      ctx.fillText(entries[i][0], x + 512, y + 46, 960);
+      ctx.fillStyle = '#8dd7ce'; ctx.font = '22px sans-serif';
+      ctx.fillText(entries[i][1], x + 512, y + 96, 960);
     }
     const texture = new CanvasTexture(canvas); texture.colorSpace = SRGBColorSpace;
     return texture;
