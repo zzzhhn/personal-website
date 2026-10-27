@@ -1,5 +1,6 @@
 import { memo, useState } from 'react';
 import { useWorldStore } from '../store';
+import { sampleTimeLight } from '../world-climate';
 import { IBD_YARD } from './attraction-layout';
 import { assessIbd } from './ibd-model';
 import { IBD_SLOTS, IBD_STATIONS, ibdLocal, ibdReach, ibdStation, type IbdStationId } from './ibd-yard-layout';
@@ -12,6 +13,7 @@ import './ibd-yard.css';
 export default memo(function WorldIbdHud({ active = true }: { active?: boolean }) {
   const game = useIbdYardStore(s => s.game), mounted = useIbdYardStore(s => s.active);
   const lang = useWorldStore(s => s.lang);
+  const theme = useWorldStore(s => sampleTimeLight(s.worldMinutes).night < .5 ? 'light' : 'dark');
   // A primitive visibility selector remains equal for every position publication outside the yard.
   const inYard = useWorldStore(s => active && Math.abs(s.position[0] - IBD_YARD.center[0]) <= IBD_YARD.size[0] / 2 + 4
     && s.position[2] >= IBD_YARD.center[2] - IBD_YARD.size[1] / 2 - 4 && s.position[2] <= IBD_YARD.center[2] + 30);
@@ -35,7 +37,7 @@ export default memo(function WorldIbdHud({ active = true }: { active?: boolean }
     : game.core.loaded.length < 2 ? t('料棚装车杆：让两托货真正进入车厢', 'Use the load levers to put both pallets in the truck')
     : game.released ? t('本批已发货，可接下一批或从南侧回岛', 'Dispatched. Receive another batch or leave to the south')
     : t('东南月台：按实际装载核对运单，再升闸', 'Southeast dock: reconcile actual cargo, then raise the shutter');
-  return <aside className="ibd-yard-hud" aria-label={t('物资清点场随身货单', 'Inventory yard field manifest')} data-ibd-hud>
+  return <aside className="ibd-yard-hud" data-ibd-theme={theme} aria-label={t('物资清点场随身货单', 'Inventory yard field manifest')} data-ibd-hud>
     <div className="ibd-ticket-head"><span>SDIC · {t('物资清点场', 'INVENTORY YARD')}</span><b>{String(game.round).padStart(2, '0')}</b></div>
     <p className="ibd-fiction">{t('原创模拟货物与差异案例', 'Fictional cargo and discrepancy scenarios')}</p>
     <h2>{game.released ? t('发货完成', 'Shipment released') : station ? station.title[lang] : t('把看不清的事实翻出来', 'Reveal what is still hidden')}</h2>

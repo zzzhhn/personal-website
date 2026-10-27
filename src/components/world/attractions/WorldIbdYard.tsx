@@ -1,5 +1,5 @@
 import { memo, useEffect, useMemo } from 'react';
-import { CuboidCollider, RigidBody } from '@react-three/rapier';
+import { CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { MeshStandardMaterial } from 'three';
 import { useInteractable } from '../WorldInteract';
 import { IBD_YARD } from './attraction-layout.ts';
@@ -32,6 +32,7 @@ export default memo(function WorldIbdYard({ active = true }: { active?: boolean 
     <mesh name="ibd-three-sheds-static" geometry={data.geometry} material={data.material} castShadow receiveShadow
       userData={{ solid: true, assetId: 'ibd-yard-architecture' }} />
     <RigidBody type="fixed" colliders={false} name="ibd-yard-architecture" userData={{ solid: true, assetId: 'ibd-yard-architecture' }}>
+      <TrimeshCollider args={[data.walkSurface.vertices, data.walkSurface.indices]} friction={.85} />
       {data.solids.map((s, i) => <CuboidCollider key={i} position={s.at} rotation={s.rotation} friction={.85}
         args={[s.size[0] / 2, s.size[1] / 2, s.size[2] / 2]} />)}
     </RigidBody>

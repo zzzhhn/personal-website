@@ -33,8 +33,8 @@
 .ibd-finding { color: #f3bb58; }
 .ibd-finding span { display: block; }
 .ibd-yard-hud button:focus-visible { outline: 2px solid #81d2d0; outline-offset: 3px; }
-[data-theme="light"] .ibd-yard-hud { --ibd-bg: #e7e9e4; --ibd-fg: #21363e; --ibd-muted: #465b65; --ibd-line: #9caeb4; }
-[data-theme="light"] .ibd-ticket-head b, [data-theme="light"] .ibd-working, [data-theme="light"] .ibd-finding { color: #825514; }
+.ibd-yard-hud[data-ibd-theme="light"] { --ibd-bg: #e7e9e4; --ibd-fg: #21363e; --ibd-muted: #465b65; --ibd-line: #9caeb4; color-scheme: light; }
+.ibd-yard-hud[data-ibd-theme="light"] :is(.ibd-ticket-head b, .ibd-working, .ibd-finding) { color: #825514; }
 @media (max-width: 900px) {
   .ibd-yard-hud { right: 12px; top: 92px; width: 278px; padding: 12px 14px; max-height: calc(100dvh - 210px); }
   .ibd-yard-hud h2 { font-size: 22px; }

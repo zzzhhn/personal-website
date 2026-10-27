@@ -9,6 +9,31 @@ export const IBD_MATERIALS = {
 };
 const P = IBD_MATERIALS;
 export interface IbdSolid { at: V3; size: V3; rotation?: V3 }
+function buildIbdWalkSurface(b: Builder) {
+  const vertices: number[] = [], indices: number[] = [], ids = new Map<string, number>();
+  const boundary = new Map<string, { a: V3; end: V3; count: number }>();
+  const vertex = (p: V3) => { const key = p.join(','); let id = ids.get(key); if (id === undefined) { id = vertices.length / 3; ids.set(key, id); vertices.push(...p); } return id; };
+  const below = (p: V3): V3 => [p[0], p[1] - .2, p[2]];
+  const face = (points: V3[]) => { const v = points.map(vertex); indices.push(v[0], v[1], v[2], v[0], v[2], v[3]); };
+  const top = (points: V3[]) => {
+    b.face(points, P.dark, [0, 1, 0]); face(points);
+    const bottom = points.map(below).reverse(); b.face(bottom, P.dark, [0, -1, 0]); face(bottom);
+    for (let i = 0; i < 4; i++) {
+      const a = points[i], end = points[(i + 1) % 4], key = [vertex(a), vertex(end)].sort((x, y) => x - y).join(',');
+      const prior = boundary.get(key);
+      if (prior) prior.count++; else boundary.set(key, { a, end, count: 1 });
+    }
+  };
+  top([[-25.6, 4.1, -12.2], [-25.6, .1, 3.5], [-22.4, .1, 3.5], [-22.4, 4.1, -12.2]]);
+  const cuts = [-25.6, -22.4, -7.3, -4.7];
+  for (let i = 0; i < cuts.length - 1; i++) top([[cuts[i], 4.1, -16], [cuts[i], 4.1, -12.2], [cuts[i + 1], 4.1, -12.2], [cuts[i + 1], 4.1, -16]]);
+  top([[-7.3, 4.1, -12.2], [-7.3, 4.1, -2.5], [-4.7, 4.1, -2.5], [-4.7, 4.1, -12.2]]);
+  for (const { a, end, count } of boundary.values()) if (count === 1) {
+    const side = [a, below(a), below(end), end];
+    b.face(side, P.dark, [a[2] - end[2], 0, end[0] - a[0]]); face(side);
+  }
+  return { vertices: new Float32Array(vertices), indices: new Uint32Array(indices) };
+}
 export function buildIbdStatic() {
   const b = new Builder(), solids: IbdSolid[] = [];
   const cube = (at: V3, size: V3, s: Surf, solid = false, bevel = .03, rotation?: V3) => {
@@ -29,7 +54,7 @@ export function buildIbdStatic() {
       bar(b, [x - w / 2, h, z + zz], [x + w / 2, h, z + zz], .09, P.steel, 4);
     }
     const angle = Math.atan2(1.8, w / 2), span = Math.hypot(w / 2, 1.8);
-    for (const side of [-1, 1]) cube([x + side * w / 4, h + .9, z], [span + .5, .16, d + .8], roof, false, 0, [0, 0, -side * angle]);
+    for (const side of [-1, 1]) cube([x + side * w / 4, h + .9, z], [span + .5, .16, d + .8], roof, true, 0, [0, 0, -side * angle]);
     for (let zz = -d / 2; zz <= d / 2; zz += 1.6)
       for (const side of [-1, 1]) bar(b, [x + side * (w / 2 + .15), h + .1, z + zz], [x, h + 1.9, z + zz], .025, P.steel, 4);
     if (rear) {
@@ -56,23 +81,32 @@ export function buildIbdStatic() {
     cube([x, 1.53, -6.6], [.16, .06, 9.2], P.amber);
   }
   cube([-12, .75, -11.2], [5.1, 1.5, .12], P.dark, true);
-  // The raised alternative route is a real continuous collider, not a teleport prompt.
-  const rampAngle = Math.atan2(IBD_RAMP.rise, IBD_RAMP.length);
-  cube(IBD_RAMP.center, [IBD_RAMP.width, .2, Math.hypot(17, 4)], P.dark, true, 0, [rampAngle, 0, 0]);
-  // Leave the ramp approach open underneath the west landing; a full-width deck makes a shin-high lip.
-  cube([-24, 3.98, -14.15], [2.6, .24, 1.3], P.dark, true);
-  cube([-13.7, 3.98, -13.5], [18, .24, 2.6], P.dark, true);
-  cube([-6, 3.98, -8], [2.6, .24, 11], P.dark, true);
-  for (const x of [-25.2, -22.8]) {
-    bar(b, [x, 1, 3.5], [x, 5, -13.5], .06, P.amber, 6);
-    for (let i = 0; i <= 8; i++) bar(b, [x, i / 2, 3.5 - i * 2.125], [x, 1 + i / 2, 3.5 - i * 2.125], .05, P.steel, 6);
+  // One welded shell has no internal vertical box ends for the character's swept guard to hit.
+  const walkSurface = buildIbdWalkSurface(b);
+  const rail = (a: V3, end: V3) => {
+    bar(b, a, end, .06, P.amber, 6);
+    const dx = end[0] - a[0], dy = end[1] - a[1], dz = end[2] - a[2];
+    solids.push({ at: [(a[0] + end[0]) / 2, (a[1] + end[1]) / 2, (a[2] + end[2]) / 2],
+      size: dx ? [Math.abs(dx), .12, .12] : [.12, .12, Math.hypot(dy, dz)],
+      ...(dx ? {} : { rotation: [Math.atan2(-dy, dz), 0, 0] as V3 }) });
+  };
+  for (const x of [-25.5, -22.5]) {
+    for (const h of [.55, 1.05]) rail([x, .1 + h, IBD_RAMP.south], [x, 4.1 + h, IBD_RAMP.north]);
+    for (let i = 0; i <= 8; i++) bar(b, [x, .1 + i / 2, IBD_RAMP.south - i * IBD_RAMP.length / 8], [x, 1.15 + i / 2, IBD_RAMP.south - i * IBD_RAMP.length / 8], .05, P.steel, 6);
   }
-  for (const z of [-14.7, -12.3]) {
-    bar(b, [-22.8, 5, z], [-4.8, 5, z], .06, P.amber, 6);
-    for (let x = -22.8; x < -4.7; x += 3) bar(b, [x, 4, z], [x, 5, z], .05, P.steel, 6);
+  const edges: [V3, V3][] = [
+    [[-25.5, 0, -12.2], [-25.5, 0, -15.9]], [[-25.5, 0, -15.9], [-4.8, 0, -15.9]],
+    [[-22.4, 0, -12.3], [-7.3, 0, -12.3]], [[-4.8, 0, -15.9], [-4.8, 0, -2.6]],
+    [[-7.2, 0, -12.2], [-7.2, 0, -2.6]], [[-7.2, 0, -2.6], [-4.8, 0, -2.6]],
+  ];
+  for (const [a, end] of edges) for (const h of [4.65, 5.15]) rail([a[0], h, a[2]], [end[0], h, end[2]]);
+  for (const [a, end] of edges) {
+    const count = Math.ceil(Math.hypot(end[0] - a[0], end[2] - a[2]) / 3);
+    for (let i = 0; i <= count; i++) {
+      const x = a[0] + (end[0] - a[0]) * i / count, z = a[2] + (end[2] - a[2]) * i / count;
+      bar(b, [x, 4.1, z], [x, 5.15, z], .05, P.steel, 6);
+    }
   }
-  for (const x of [-7.2, -4.8]) bar(b, [x, 5, -12.2], [x, 5, -2.5], .06, P.amber, 6);
-  for (const z of [-12, -9, -6, -3]) for (const x of [-7.2, -4.8]) bar(b, [x, 4, z], [x, 5, z], .05, P.steel, 6);
   // Benches, load rollers and the prominent empty spaces in their trays carry the interaction.
   for (const x of [10, 18]) {
     cube([x, .72, -12], [3.6, .3, 3.2], P.dark, true);
@@ -109,7 +143,9 @@ export function buildIbdStatic() {
     cube([x, 4.6, z - .4], [.18, 1.2, .18], P.steel);
     bar(b, [x, 5.25, z - .8], [x, 5.25, z + .2], .13, P.dark, 8);
   }
-  return { geometry: b.build(), solids };
+  cube([-20.6, .8, 3.96], [.14, 1.6, .14], P.dark, true);
+  cube([-20.6, 1.6, 3.96], [2.7, .8, .12], P.dark, true);
+  return { geometry: b.build(), solids, walkSurface };
 }
 
 export function buildIbdCoil(damaged: boolean, number = 1) {

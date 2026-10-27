@@ -48,5 +48,5 @@ export const IBD_CARGO_HOME: Record<IbdSlot, Vec3> = {
 export const IBD_TRUCK: Partial<Record<IbdSlot, Vec3>> = { 'parts-a': [16, 2, 10.5], 'parts-b': [16, 2, 14.5] };
 export const IBD_MOVED_COIL: Vec3 = [-20, 2.35, -4];
 export const IBD_GALLERY_HEIGHT = 4;
-/** Gentle 4 m rise over 17 m. North deck joins a side gallery; both have a ground return route. */
-export const IBD_RAMP = { center: [-24, 2, -5] as Vec3, length: 17, width: 2.6, rise: 4 };
+/** Ends at the south edge of a 3.8 m-deep landing; one welded collision shell covers the whole gallery. */
+export const IBD_RAMP = { center: [-24, 2.1, -4.35] as Vec3, length: 15.7, width: 3.2, rise: 4, south: 3.5, north: -12.2, landingNorth: -16 };

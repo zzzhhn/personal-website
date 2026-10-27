@@ -16,7 +16,7 @@ export default function WorldIbdSigns() {
       { at: [-14, 6.1, 3.3], w: 8, h: 1.3, title: zh ? '钢卷检验棚' : 'COIL INSPECTION', sub: zh ? '地面吊运 ／ 西侧高廊' : 'CRANE FLOOR / WEST GALLERY' },
       { at: [14, 4.7, -2.7], w: 8, h: 1.3, title: zh ? '五金拆检棚' : 'PARTS INSPECTION', sub: zh ? '称重是线索 · 开箱才有证据' : 'WEIGH FOR A CLUE · OPEN TO VERIFY' },
       { at: [14, 5.3, 20.3], w: 8, h: 1.3, title: zh ? '物流发货仓' : 'DISPATCH DEPOT', sub: zh ? '发货目标：M8 五金 8 件' : 'MANIFEST: 8 M8 PIECES' },
-      { at: [-23.5, 1.6, 4], w: 2.6, h: .7, title: zh ? '缓坡上高廊' : 'GALLERY RAMP', sub: zh ? '换个角度看后排' : 'A DIFFERENT VIEW' },
+      { at: [-20.6, 1.6, 4.03], w: 2.6, h: .7, title: zh ? '缓坡上高廊' : 'GALLERY RAMP', sub: zh ? '换个角度看后排' : 'A DIFFERENT VIEW' },
       { at: [14, 2.1, -15.4], w: 5, h: .8, title: zh ? '隔离记录 ／ 备件' : 'QUARANTINE / SPARES', sub: zh ? '原始差异保留，新货须再验' : 'KEEP FINDINGS · RECHECK REPLACEMENTS' },
       { at: [-17, 1.3, 14.2], w: 4, h: .8, title: zh ? '钢卷退换位' : 'COIL EXCHANGE', sub: zh ? '隔离原货与新供货分开' : 'RETURNED CARGO IS SEPARATE' },
       ...IBD_STATIONS.map(original => { const s = ibdStation(original.id, moved); return ({ at: [s.at[0], s.at[1] + .95, s.at[2] - .35] as Vec3,
