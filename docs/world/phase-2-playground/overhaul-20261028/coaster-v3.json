@@ -45,9 +45,10 @@
     "列车角色或镜头穿模"
   ],
   "runtimeEvidence": {
-    "status": "not-implemented",
+    "status": "candidate-implemented",
     "date": "2026-10-28",
     "userVisualAcceptance": "pending",
-    "note": "v3参考已生成；整体地形、扩建、实体玩法尚未实施。已有速度、相机、上下车修复是现有布局的功能样板。"
+    "note": "已完成最终日夜同机位对照、工坊链路、IBD首单与安全联锁、完整乘坐和生产构建验证，作为可试玩迭代交付。连续地形、站房构造与太阳阴影已接入；植被密度、多层建筑及音乐音色仍待继续完善，不代表参考图最终复现或用户美术认可。端口与提交记录见 journal。",
+    "journal": "docs/world/phase-2-playground/OVERHAUL-20261028.md"
   }
 }

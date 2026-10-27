@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { CuboidCollider, RigidBody, type RapierRigidBody } from '@react-three/rapier';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { CuboidCollider, RigidBody, useBeforePhysicsStep, useAfterPhysicsStep, useRapier, type RapierRigidBody, type RapierCollider } from '@react-three/rapier';
 import { BufferGeometry, Group, Mesh, MeshStandardMaterial, Quaternion, Vector3 } from 'three';
 import { IBD_ALL_CLEAR } from './ibd-cases.ts';
 import { IBD_SLOTS, IBD_CARGO_HOME, IBD_CRANE_Y, ibdStation, ibdWorld, type IbdSlot } from './ibd-yard-layout.ts';
 import { yardCase, yardItemId } from './ibd-yard-game.ts';
-import { advanceIbdMotion, ibdCargoPose } from './ibd-yard-motion.ts';
-import { finishIbdAction, ibdActor, useIbdYardStore } from './ibd-yard-store.ts';
+import { ibdCargoPose, ibdPhysicalCargoPose } from './ibd-yard-motion.ts';
+import { createIbdMotionClock, createIbdSafety, stepIbdSafeMotion } from './ibd-yard-safety.ts';
+import { finishIbdAction, ibdActor, setIbdMotionWait, useIbdYardStore } from './ibd-yard-store.ts';
 import { buildIbdCoil, buildIbdPack, buildIbdLid, buildIbdCrane, buildIbdHook, buildIbdCables, buildIbdShutter, buildIbdTools } from './ibd-yard-geometry.ts';
 import type { IbdItem } from './ibd-model.ts';
 
@@ -15,11 +15,20 @@ const movable = { movable: true, solid: true, assetId: 'ibd-yard-cargo' };
 /** Four controlled cargo bodies. No per-frame React updates and no free debris simulation. */
 export default function WorldIbdMechanisms({ material, active }: { material: MeshStandardMaterial; active: boolean }) {
   const game = useIbdYardStore(s => s.game);
+  const { world, rapier, colliderStates } = useRapier();
+  const safety = useMemo(() => createIbdSafety(rapier, game), [rapier, game.pending, game.core, game.exchanges]);
+  const playerCollider = useRef<RapierCollider | null>(null), lookupDelay = useRef(0), completeToken = useRef<number | null>(null);
+  const exchanging = game.pending?.action.kind === 'replace' ? game.pending.action.slot : undefined;
   const bodies = useRef<Partial<Record<IbdSlot, RapierRigidBody | null>>>({});
   const meshes = useRef<Partial<Record<IbdSlot, Mesh | null>>>({});
   const lids = useRef<Partial<Record<IbdSlot, Group | null>>>({});
-  const crane = useRef<Mesh>(null), hook = useRef<Mesh>(null), cables = useRef<Mesh>(null), shutterBody = useRef<RapierRigidBody>(null), tools = useRef<Mesh>(null), returnPreview = useRef<Mesh>(null);
-  const clock = useRef({ token: -1, elapsed: 0 });
+  const crane = useRef<Mesh>(null), hook = useRef<Mesh>(null), cables = useRef<Mesh>(null), shutterBody = useRef<RapierRigidBody>(null), tools = useRef<Mesh>(null);
+  const spareBody = useRef<RapierRigidBody | null>(null);
+  const mountSpare = useCallback((body: RapierRigidBody | null) => {
+    spareBody.current = body;
+    body?.setEnabled(false);
+  }, []);
+  const clock = useRef(createIbdMotionClock());
   const resources = useMemo(() => {
     const scenario = yardCase(game);
     const goods = Object.fromEntries(IBD_SLOTS.map(slot => [slot, cargoGeometry(scenario.items.find(i => i.id === yardItemId(game, slot))!)])) as Record<IbdSlot, BufferGeometry>;
@@ -31,23 +40,20 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
   useEffect(() => () => { Object.values(resources.goods).forEach(g => g.dispose()); Object.values(resources.fresh).forEach(g => g.dispose()); resources.returned.forEach(r => r.geometry.dispose()); }, [resources]);
   useEffect(() => () => { fixed.lid.dispose(); fixed.crane.dispose(); fixed.hook.dispose(); fixed.cables.dispose(); fixed.shutter.dispose(); fixed.tools.dispose(); }, [fixed]);
   const apply = (progress: number, snap = false) => {
-    const exchanging = game.pending?.action.kind === 'replace' ? game.pending.action.slot : undefined;
-    if (returnPreview.current) {
-      returnPreview.current.visible = !!exchanging && progress >= .5;
-      if (exchanging) {
-        returnPreview.current.geometry = resources.goods[exchanging];
-        const at = exchanging.startsWith('coil') ? [-17, 2.35, 12] : [14, 1.1, -16.3];
-        returnPreview.current.position.set(at[0], at[1], at[2]);
-      }
+    if (exchanging && spareBody.current) {
+      const pose = ibdPhysicalCargoPose(game, exchanging, progress, true), [x,y,z] = ibdWorld(pose.at);
+      spareBody.current.setEnabled(clock.current.started);
+      if (snap) spareBody.current.setTranslation({ x,y,z }, true);
+      else spareBody.current.setNextKinematicTranslation({ x,y,z });
     }
     for (const slot of IBD_SLOTS) {
-      const pose = ibdCargoPose(game, slot, progress), body = bodies.current[slot], mesh = meshes.current[slot], lid = lids.current[slot];
+      const pose = ibdPhysicalCargoPose(game, slot, progress), body = bodies.current[slot], mesh = meshes.current[slot], lid = lids.current[slot];
       const [x, y, z] = ibdWorld(pose.at); fixed.rotation.setFromAxisAngle(fixed.up, pose.yaw);
       if (body) {
         if (snap) { body.setTranslation({ x, y, z }, true); body.setRotation(fixed.rotation, true); }
         else { body.setNextKinematicTranslation({ x, y, z }); body.setNextKinematicRotation(fixed.rotation); }
       }
-      if (mesh) mesh.geometry = game.pending?.action.kind === 'replace' && game.pending.action.slot === slot && progress >= .5 ? resources.fresh[slot] : resources.goods[slot];
+      if (mesh) mesh.geometry = resources.goods[slot];
       if (lid) lid.rotation.x = pose.lid;
     }
     const coil = ibdCargoPose(game, 'coil-front', progress);
@@ -72,16 +78,33 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
     }
   };
   // Rapier creates body refs in child passive effects. Restore after those effects, including lazy remounts.
-  useEffect(() => { clock.current = { token: game.pending?.token ?? -1, elapsed: 0 }; apply(0, true); }, [game.core, game.pending, game.round, resources]);
-  useFrame((_, delta) => {
+  useEffect(() => { clock.current = createIbdMotionClock(); completeToken.current = null; setIbdMotionWait(null); apply(0, true); }, [game.core, game.pending, game.round, resources]);
+  useBeforePhysicsStep(() => {
     if (!game.pending) return;
     const actor = ibdActor(), running = active && actor.active && !actor.paused && !actor.hidden;
-    if (!running) return;
     const pending = game.pending;
-    if (clock.current.token !== pending.token) clock.current = { token: pending.token, elapsed: 0 };
-    clock.current.elapsed = advanceIbdMotion(clock.current.elapsed, delta, pending.seconds, true);
-    apply(clock.current.elapsed / pending.seconds);
-    if (clock.current.elapsed >= pending.seconds) finishIbdAction(pending.token);
+    if (!running) { apply(clock.current.elapsed / pending.seconds); return; }
+    const dt = world.timestep;
+    if (playerCollider.current && !world.getCollider(playerCollider.current.handle)) playerCollider.current = null;
+    if (safety.protectedMotion && !playerCollider.current) {
+      lookupDelay.current -= dt;
+      if (lookupDelay.current <= 0) {
+        playerCollider.current = [...colliderStates.values()].find(s => s.object.name === 'player-capsule')?.collider ?? null;
+        lookupDelay.current = .25;
+      }
+    }
+    const player = safety.protectedMotion ? playerCollider.current : null, disabled = !!player && !player.isEnabled();
+    const snapshot = player && !disabled ? { shape: player.shape, position: player.translation(), rotation: player.rotation(), velocity: player.parent()?.linvel() ?? {x:0,y:0,z:0} } : null;
+    const result = stepIbdSafeMotion(clock.current, pending.seconds, dt, safety, snapshot, true, disabled);
+    setIbdMotionWait(result.wait);
+    // Reissue the held pose too: a pending kinematic target must never keep pushing during a wait.
+    apply(result.progress);
+    if (result.done) completeToken.current = pending.token;
+  });
+  useAfterPhysicsStep(() => {
+    if (completeToken.current === null) return;
+    const token = completeToken.current; completeToken.current = null;
+    if (useIbdYardStore.getState().game.pending?.token === token) finishIbdAction(token);
   });
   return <group name="ibd-mechanisms" dispose={null}>
     {IBD_SLOTS.map(slot => {
@@ -103,7 +126,12 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
       <mesh geometry={fixed.shutter} material={material} castShadow userData={movable} />
     </RigidBody>
     <mesh ref={tools} geometry={fixed.tools} material={material} visible={false} userData={movable} />
-    <mesh ref={returnPreview} geometry={resources.goods['parts-b']} material={material} visible={false} rotation={[0, Math.PI, 0]} userData={movable} />
+    {exchanging && <RigidBody ref={mountSpare} type="kinematicPosition" colliders={false}
+      position={ibdPhysicalCargoPose(game, exchanging, 0, true).at} userData={movable}>
+      <CuboidCollider args={exchanging.startsWith('coil') ? [2,2,1.4] : [1.4,.55,1.3]} position={exchanging.startsWith('coil') ? [0,0,0] : [0,.45,0]} />
+      <mesh geometry={resources.fresh[exchanging]} material={material} castShadow receiveShadow userData={movable} />
+      {!exchanging.startsWith('coil') && <mesh geometry={fixed.lid} material={material} position={[0,1.08,-1.25]} castShadow />}
+    </RigidBody>}
     {resources.returned.map(r => <RigidBody key={r.slot} type="fixed" colliders={false} userData={{ solid: true, assetId: 'ibd-quarantine' }}
       position={r.slot.startsWith('coil') ? [-17, 2.35, 12] : [14, 1.1, -16.3]} rotation={[0, Math.PI, 0]}>
       <CuboidCollider args={r.slot.startsWith('coil') ? [2, 2, 1.4] : [1.4, .55, 1.3]} position={r.slot.startsWith('coil') ? [0, 0, 0] : [0, .45, 0]} />

@@ -63,6 +63,7 @@ export const WORLD_SHOTS_V4 = [
   ...(['day', 'night'] as const).flatMap(time => [
     { id: `coaster-overview-${time}`, position: [147, 76, -83] as Vec3, target: [50, 16, -192] as Vec3 },
     { id: `coaster-entrance-${time}`, position: [50, 4.2, -114] as Vec3, target: [50, 14, -194] as Vec3 },
+    { id: `workshop-${time}`, position: [48, 10, -110] as Vec3, target: [34, 2, -129] as Vec3 },
     { id: `ibd-overview-${time}`, position: [-16, 46, -104] as Vec3, target: [-88, 5, -177] as Vec3 },
     { id: `ibd-entrance-${time}`, position: [-84, 4.2, -134] as Vec3, target: [-88, 6, -179] as Vec3 },
   ]),
@@ -86,8 +87,8 @@ export function insidePolygon(p: P2, poly: P2[]) {
 export type ZoneV4 = 'camp' | 'town' | 'park' | 'ridge' | 'shore' | 'yard' | 'coaster';
 const TOWN_POLY: P2[] = [[-36, -50], [31, -50], [31, 27], [-1, 27], [-1, 8], [-17, 8], [-24, -24], [-36, -31]];
 export function zoneAtV4(x: number, z: number): ZoneV4 {
-  if(z<-146&&x<-50)return 'yard';
-  if(z<-125&&x>8)return 'coaster';
+  if(z<-132&&x<-50)return 'yard';
+  if(z<-110&&x>8)return 'coaster';
   if (x > 35) return 'park';
   if (Math.hypot(x - CAMP_XZ[0], z - CAMP_XZ[1]) < CAMP_FOOT_RADIUS - 2) return 'camp';
   if (Math.hypot(x - RIDGE_CENTER[0], z - RIDGE_CENTER[1]) < RIDGE_FOOT_R + 2) return 'ridge';

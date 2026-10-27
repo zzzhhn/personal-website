@@ -1,15 +1,17 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { IBD_YARD,INTENT_COASTER,ATTRACTION_ROADS,attractionCapeDistance,attractionScatterBlocked } from './attraction-layout.ts';
+import { IBD_YARD,INTENT_COASTER,INTENT_COASTER_FOOTPRINT,ATTRACTION_ROADS,attractionCapeDistance,attractionScatterBlocked } from './attraction-layout.ts';
 import { attractionRide,beginAttractionRide,updateAttractionRide,endAttractionRide } from './attraction-ride.ts';
 
 test('both full facilities fit safely inside the connected northern headland',()=>{
-  for(const site of [IBD_YARD,INTENT_COASTER]){
+  for(const site of [IBD_YARD]){
     for(const dx of [-1,1])for(const dz of [-1,1])
       assert.ok(attractionCapeDistance(site.center[0]+dx*site.size[0]/2,site.center[2]+dz*site.size[1]/2)<-5);
     assert.ok(attractionCapeDistance(site.entrance[0],site.entrance[2])<-5);
     assert.ok(attractionScatterBlocked(site.center[0],site.center[2]));
   }
+  for(const p of INTENT_COASTER_FOOTPRINT) assert.ok(attractionCapeDistance(...p)<-5, `coaster boundary clearance ${p}`);
+  assert.deepEqual(INTENT_COASTER.entrance,[50,1.08,-125]);
   assert.ok(attractionCapeDistance(-75,-125)<0,'new cape overlaps the original north coast');
   assert.ok(attractionCapeDistance(200,-200)>0);
 });

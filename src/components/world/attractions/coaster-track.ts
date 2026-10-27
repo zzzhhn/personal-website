@@ -13,17 +13,18 @@ export const COASTER_CANOPY_BOUNDS = { min: coasterWorld([-11, 6.2, 30]), max: c
 // New topology: lift, plunge, airtime, complete vertical inversion, high turn,
 // low S bends, descending equipment helix, enclosed return and station.
 export const COASTER_POINTS: Vec3[] = [
-  [0, .8, 43], [0, 1.2, 30], [-17, 8, 24], [-33, 18, 4],
-  [-33, 35, -17], [-33, 43, -31], [-25, 43, -35], [-18, 34, -33],
-  [-15, 9, -26], [-10, 2.4, -13], [1, 2.4, -2], [14, 19, 7],
-  [25, 9, 0], [28, 7, -20], [29, 6, -36], [29, 10, -47],
-  [30, 21, -53], [32, 32, -47], [34, 34, -37], [36, 30, -27],
-  [38, 19, -22], [40, 8, -28], [41, 6, -39], [43, 10, -53],
-  [27, 16, -58], [6, 17, -54], [-8, 11, -39], [0, 7, -26],
-  [14, 9, -17], [18, 5, 1], [5, 4, 14], [-10, 8, 7],
-  [-25, 11, -3], [-43, 12, -1], [-49, 9, 15], [-38, 6, 28],
-  [-23, 4, 22], [-21, 3, 6], [-34, 2.8, 1], [-47, 2.4, 13],
-  [-40, 2.2, 34], [-22, 1.8, 38], [-16, 1, 43], [-9, .8, 51], [-2, .8, 49],
+  [0,0.8,43], [0,1.2,30], [-17,8,24], [-33,22,-8],
+  [-33,43,-55], [-33,54,-80], [-24,54,-85], [-13,42,-78],
+  [-6,13,-58], [1,3,-39], [18,3,-24], [39,26,-12],
+  [59,14,-28], [62,11,-54], [64,10,-79], [64,15,-93],
+  [65,28,-101], [67,41,-94], [69,43,-80], [71,39,-65],
+  [73,26,-59], [76,13,-67], [78,11,-80], [81,17,-101],
+  [60,26,-113], [30,27,-110], [9,20,-91], [4,14,-69],
+  [25,16,-51], [38,8,-29], [16,6,-7], [-10,8,7],
+  [-25,11,-3], [-43,12,-1], [-49,9,15], [-38,6,28],
+  [-23,4,22], [-21,3,6], [-34,2.8,1], [-47,2.4,13],
+  [-40,2.2,34], [-22,1.8,38], [-16,1,43], [-9,0.8,51],
+  [-2,0.8,49],
 ];
 export const coasterCurve = new CatmullRomCurve3(COASTER_POINTS.map(p => new Vector3(...coasterWorld(p))), true, 'centripetal');
 coasterCurve.arcLengthDivisions = 4096;
@@ -37,7 +38,7 @@ export const coasterControlU = (index: number) => {
 // through the low run; the final braking distance brings the train to rest at the station.
 const releaseU = coasterControlU(6), releaseY = coasterCurve.getPointAt(releaseU).y;
 const run = Array.from({ length: 641 }, (_, i) => {
-  const u = releaseU + (1 - releaseU) * i / 640, s = (u - releaseU) * COASTER_LENGTH;
+  const u = Math.min(1, releaseU + (1 - releaseU) * i / 640), s = (u - releaseU) * COASTER_LENGTH;
   const remaining = (1 - u) * COASTER_LENGTH;
   const energy = Math.max(0, 2 * 9.81 * (releaseY - coasterCurve.getPointAt(u).y) + 3 * Math.min(s, 12));
   const free = Math.min(34, Math.sqrt(energy)), brake = Math.sqrt(2 * 3.8 * remaining);
@@ -107,7 +108,7 @@ export function coasterFrame(u: number, banking = true) {
   const distance = wrap(u), at = distance * FRAME_COUNT, low = Math.floor(at);
   const point = coasterCurve.getPointAt(distance), rotation = rotations[low].clone().slerp(rotations[low + 1], at - low);
   const forward = new Vector3(1, 0, 0).applyQuaternion(rotation), up = UP.clone().applyQuaternion(rotation);
-  const before = coasterCurve.getTangentAt(wrap(distance - .002)), after = coasterCurve.getTangentAt(wrap(distance + .002));
+  const before = coasterCurve.getTangentAt(wrap(distance - 1.47 / COASTER_LENGTH)), after = coasterCurve.getTangentAt(wrap(distance + 1.47 / COASTER_LENGTH));
   const turn = Math.atan2(before.x * after.z - before.z * after.x, before.x * after.x + before.z * after.z);
   const outsideLoop = 1 - smooth((distance - COASTER_INVERSION.start + .015) / .015) * (1 - smooth((distance - COASTER_INVERSION.end) / .015));
   const stationWeight = smooth(distance * COASTER_LENGTH / 20) * smooth((1 - distance) * COASTER_LENGTH / 30);
@@ -157,11 +158,13 @@ export function coasterSupports(detailed: boolean) {
     const u = i / count, f = coasterFrame(u), top = f.point.clone().addScaledVector(f.up, -.6);
     if (top.y < 3.8) return null;
     const side = new Vector3(f.side.x, 0, f.side.z).normalize();
+    const inLoop=u>=COASTER_INVERSION.start&&u<=COASTER_INVERSION.end;
+    const a=top.clone().addScaledVector(side,inLoop?-6.5:-2.35),b=top.clone().addScaledVector(side,inLoop?-3.5:2.35);
     const blocked = samples.some(s => {
       const arc = Math.min(Math.abs(s.u - u), 1 - Math.abs(s.u - u)) * COASTER_LENGTH;
-      return arc > 12 && s.point.y < top.y + 2.5 && Math.hypot(s.point.x - top.x, s.point.z - top.z) < 5.2;
+      return arc > 12 && s.point.y < top.y + 2.5 && (Math.hypot(s.point.x - top.x, s.point.z - top.z) < 5.2 || [a,b].some(p=>Math.hypot(s.point.x-p.x,s.point.z-p.z)<2.8));
     });
     if (blocked) return null;
-    return { a: top.clone().addScaledVector(side, -2.35), b: top.clone().addScaledVector(side, 2.35), top };
+    return { a, b, top };
   }).filter((s): s is { a: Vector3; b: Vector3; top: Vector3 } => s !== null);
 }

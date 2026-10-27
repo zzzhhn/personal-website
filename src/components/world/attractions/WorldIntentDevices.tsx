@@ -1,15 +1,15 @@
 import { useEffect, useMemo, useRef } from 'react';
-import { useFrame, type ThreeEvent } from '@react-three/fiber';
-import { Color, Group, InstancedMesh, Matrix4 } from 'three';
-import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { useFrame } from '@react-three/fiber';
+import { Group } from 'three';
 import { useWorldStore } from '../store';
 import { useInteractable } from '../WorldInteract';
-import { COASTER_PALETTE as P, CoasterBatch, createIntentMicroBase } from './coaster-geometry';
+import { COASTER_PALETTE as P, CoasterBatch } from './coaster-geometry';
 import WorldIntentSurface from './WorldIntentSurface';
 import { coasterWorld, COASTER_DURATION, COASTER_GATE_Z } from './coaster-track';
-import { INTENT_STATIONS, INTENT_TARGETS, INTENT_TOOL_ACTIONS, intentReachRadius, type IntentStation, type IntentTarget } from './intent-stations';
-import { activateIntentTarget, clarifyIntent, currentIntentTask, intentAvailable, nextIntentTask, operateIntent, selectIntentTool, useIntentStore } from './intent-state';
-import type { IntentClass, IntentText } from './intent-tasks';
+import { INTENT_TARGETS, INTENT_TOOL_ACTIONS, intentReachRadius, type IntentTarget } from './intent-stations';
+import { activateIntentTarget, intentAvailable, useIntentStore } from './intent-state';
+import type { IntentText } from './intent-tasks';
+import WorldIntentWorkshop from './WorldIntentWorkshop';
 
 export function IntentInteraction({ target }: { target: IntentTarget }) {
   const state = useIntentStore();
@@ -24,92 +24,8 @@ export function IntentInteraction({ target }: { target: IntentTarget }) {
     radius: intentReachRadius(target), label: labels[target], enabled: () => intentAvailable(target), onInteract: () => activateIntentTarget(target) });
   return null;
 }
-function Device({ spec }: { spec: IntentStation }) {
-  const effect = useIntentStore(s => s.effect), tool = useIntentStore(s => s.tools[spec.id]);
-  const moving = useRef<Group>(null), switches = useRef<InstancedMesh>(null), elapsed = useRef(3);
-  const switchGeometry = useMemo(() => {
-    const b = new CoasterBatch(); b.box([0, 0, 0], [.55, .12, .38], '#ffffff');
-    b.beam([0, .06, 0], [0, .32, -.15], .045, '#ffffff'); b.box([0, .33, -.15], [.3, .08, .12], '#ffffff'); return b.finish();
-  }, []);
-  const movingGeometry = useMemo(() => {
-    const b = new CoasterBatch();
-    if (spec.id === 'route') {
-      b.box([0, 0, 0], [.6, .22, .4], P.copper); b.box([-.1, .2, 0], [.15, .3, .4], P.dark);
-      b.beam([.12, .15, -.2], [.12, .15, .2], .03, P.rail);
-    } else if (spec.id === 'press') {
-      b.box([0, 0, 0], [1.1, .04, .75], P.white);
-      for (let i = 0; i < 3; i++) b.box([-.35 + i * .35, .025, 0], [.24, .015, .5], P.copper);
-    } else {
-      b.beam([0, -.3, 0], [0, 0, 0], .2, P.gold, 6); b.beam([0, -.42, 0], [0, -.3, 0], .055, P.dark);
-    }
-    return b.finish();
-  }, [spec.id]);
-  useEffect(() => () => { switchGeometry.dispose(); movingGeometry.dispose(); }, [switchGeometry, movingGeometry]);
-  useEffect(() => { if (effect?.station === spec.id) elapsed.current = 0; }, [effect, spec.id]);
-  useEffect(() => {
-    if (!switches.current) return;
-    spec.tools.forEach((id, i) => {
-      switches.current!.setMatrixAt(i, new Matrix4().makeTranslation((i - (spec.tools.length - 1) / 2) * 1.25, 1.4, 1.35));
-      switches.current!.setColorAt(i, new Color(id === tool ? P.gold : P.rail));
-    });
-    switches.current.instanceMatrix.needsUpdate = true;
-    if (switches.current.instanceColor) switches.current.instanceColor.needsUpdate = true;
-  }, [spec, tool]);
-  useFrame((_, dt) => {
-    if (!moving.current || !intentAvailable(spec.id) || dt > .25) return;
-    elapsed.current += dt;
-    const t = elapsed.current, playing = t < 2, task = currentIntentTask(spec.id);
-    if (spec.id === 'route') {
-      const fixed = useIntentStore.getState().progress.passed.includes('T5');
-      const travel = playing ? Math.min(1, t / 1.4) : task.id === 'T5' && !fixed ? (t % 1) * .3 : 0;
-      moving.current.position.set(-2.2 + travel * 4.4, 1.58, effect?.tool === 'act' && playing ? .2 : -.5);
-    } else if (spec.id === 'press') {
-      const extract = effect?.station === 'press' && effect.tool === 'extract';
-      moving.current.position.set(extract ? 1.55 : -1.55, 1.75 + (playing ? Math.sin(Math.min(1, t / 2) * Math.PI) * .7 : 0), .6);
-      moving.current.rotation.x = playing && !extract ? Math.sin(t * Math.PI) * .4 : 0;
-    } else {
-      const ringing = playing && effect?.tool === 'bell';
-      moving.current.position.set(1, 2.4, .25); moving.current.rotation.z = ringing ? Math.sin(t * 16) * .35 * (1 - t / 2) : 0;
-    }
-  });
-  return <group position={coasterWorld(spec.origin)}>
-    <instancedMesh ref={switches} args={[switchGeometry, undefined, spec.tools.length]} onClick={(e: ThreeEvent<MouseEvent>) => {
-      e.stopPropagation(); if (e.instanceId === undefined) return;
-      const chosen = spec.tools[e.instanceId]; selectIntentTool(spec.id, chosen); operateIntent(spec.id, chosen);
-    }}><WorldIntentSurface roughness={.7} /></instancedMesh>
-    <group ref={moving} position={spec.id === 'route' ? [-2.2, 1.58, -.5] : spec.id === 'press' ? [-1.55, 1.75, .6] : [1, 2.4, .25]}>
-      <mesh geometry={movingGeometry} onClick={e => { e.stopPropagation(); if (spec.id === 'visitor') clarifyIntent(); else activateIntentTarget(spec.id); }}><WorldIntentSurface roughness={.65} /></mesh>
-    </group>
-    <IntentInteraction target={spec.id} />
-    {spec.tools.map((id, i) => <ToolInteraction key={id} spec={spec} tool={id} index={i} />)}
-    <RequestInteraction spec={spec} />
-  </group>;
-}
-
-function ToolInteraction({ spec, tool, index }: { spec: IntentStation; tool: IntentClass; index: number }) {
-  const x = (index - (spec.tools.length - 1) / 2) * 1.25;
-  useInteractable({ id: `intent-${spec.id}-${tool}`, kind: 'exhibit', radius: 1.55,
-    position: coasterWorld([spec.origin[0] + x, 1.45, spec.origin[2] + 1.95]), label: INTENT_TOOL_ACTIONS[tool],
-    enabled: () => intentAvailable(spec.id), onInteract: () => { selectIntentTool(spec.id, tool); operateIntent(spec.id, tool); } });
-  return null;
-}
-function RequestInteraction({ spec }: { spec: IntentStation }) {
-  useInteractable({ id: `intent-${spec.id}-request`, kind: 'exhibit', radius: 1.55,
-    position: coasterWorld([spec.origin[0] + (spec.id === 'visitor' ? 1 : -2.9), 1.45, spec.origin[2] + 1.95]),
-    label: spec.id === 'visitor' ? { zh: '摇铃，问清目标', en: 'Ring the clarification bell' } : { zh: '转动请求筒，换个请求', en: 'Turn the request drum' },
-    enabled: () => intentAvailable(spec.id), onInteract: () => spec.id === 'visitor' ? clarifyIntent() : nextIntentTask(spec.id) });
-  return null;
-}
-
 export default function WorldIntentDevices() {
-  const passed = useIntentStore(s => s.progress.passed);
-  const base = useMemo(() => {
-    const parts = INTENT_STATIONS.map(spec => createIntentMicroBase(spec.id, passed).applyMatrix4(new Matrix4().makeTranslation(...coasterWorld(spec.origin))));
-    const merged = mergeGeometries(parts, false)!; parts.forEach(p => p.dispose()); return merged;
-  }, [passed]);
-  useEffect(() => () => base.dispose(), [base]);
-  return <><mesh geometry={base}><WorldIntentSurface roughness={.85} /></mesh>
-    {INTENT_STATIONS.map(spec => <Device key={spec.id} spec={spec} />)}<IntentChest /><IntentGate />
+  return <><WorldIntentWorkshop /><IntentChest /><IntentGate />
     <IntentInteraction target="chest" /><IntentInteraction target="gate" /><IntentInteraction target="board" /></>;
 }
 

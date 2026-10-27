@@ -5,7 +5,7 @@ import { ISLAND_OUTLINE, LAYOUT_V4, ROAD_POINTS, BOARDWALK_POINTS, BUILDINGS, BO
 import { ALPHA_MINE_CONNECTOR, ALPHA_MINE_CONNECTOR_WIDTH, ALPHA_MINE_FOOTPRINT_POINTS, ALPHA_MINE_ORIGIN, isOnAlphaMineBase } from './alpha-mine-layout';
 import { ALPHA_EXCHANGE_ORIGIN, ALPHA_EXCHANGE_APPROACH, ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout';
 import { CLUB, CLUB_APPROACH, CLUB_POOL, CLUB_WALKWAYS } from './djc-club-layout';
-import { ATTRACTION_ROADS, IBD_YARD, INTENT_COASTER } from './attractions/attraction-layout';
+import { ATTRACTION_ROADS, ATTRACTIONS_CAPE, INTENT_COASTER_FOOTPRINT, IBD_YARD, IBD_FOOTPRINT, INTENT_COASTER } from './attractions/attraction-layout';
 
 type MapRoad = { pts: number[][]; width: number; color: string; dash?: string };
 type Landmark = { id: string; p: [number, number]; label: string };
@@ -23,8 +23,8 @@ export function loadMapGeometry() {
   return mapGeometryPromise ??= Promise.all([import('./WorldLandform'), v4, import('./attractions/coaster-track')]).then(([{ islandShorelines, campRadius }, { roads, landmarks }, {coasterCurve}]) => {
     const shores = islandShorelines(), shore = shores.flat();
     const camp = Array.from({ length: 72 }, (_, i) => { const a = i / 72 * Math.PI * 2, r = campRadius(a) * .7; return [-42 + Math.cos(a) * r, 30 + Math.sin(a) * r]; });
-    const xs = [-77, 85, ...shore.map(p => p[0]), ...ALPHA_MINE_FOOTPRINT_POINTS.map(p => p[0]), ...ALPHA_MINE_CONNECTOR.map(p => p[0])];
-    const zs = [-62, 62, ...shore.map(p => p[1]), ...ALPHA_MINE_FOOTPRINT_POINTS.map(p => p[1]), ...ALPHA_MINE_CONNECTOR.map(p => p[2])];
+    const xs = [-77, 85, ...shore.map(p => p[0]), ...ATTRACTIONS_CAPE.map(p => p[0]), ...ALPHA_MINE_FOOTPRINT_POINTS.map(p => p[0]), ...ALPHA_MINE_CONNECTOR.map(p => p[0])];
+    const zs = [-62, 62, ...shore.map(p => p[1]), ...ATTRACTIONS_CAPE.map(p => p[1]), ...ALPHA_MINE_FOOTPRINT_POINTS.map(p => p[1]), ...ALPHA_MINE_CONNECTOR.map(p => p[2])];
     const x = Math.min(...xs) - 7, z = Math.min(...zs) - 7;
     const coaster=coasterCurve.getSpacedPoints(140).map(p=>[p.x,p.z]);
     return { shores, camp, roads, landmarks, coaster, viewBox: [x, z, Math.max(...xs) - x + 7, Math.max(...zs) - z + 7] as [number, number, number, number] };
@@ -96,7 +96,7 @@ export default function WorldMap({ mode = 'mini', interactive = false, showPlaye
     {LAYOUT_V4&&<g data-attractions='north'>
       {ATTRACTION_ROADS.map((road,i)=><polyline key={i} points={path(road)} fill='none' stroke='#D9D2C2' strokeWidth='5.4' strokeLinejoin='round'/>)}
       {[IBD_YARD,INTENT_COASTER].map((site,i)=><g key={i}>
-        <rect x={site.center[0]-site.size[0]/2} y={site.center[2]-site.size[1]/2} width={site.size[0]} height={site.size[1]} rx='5' fill={i?'#36565e':'#89745c'} stroke='#c4c5a3' strokeWidth='.7'/>
+        {i===1?<polygon points={path(INTENT_COASTER_FOOTPRINT)} fill='#36565e' stroke='#c4c5a3' strokeWidth='.7'/>:<polygon data-ibd-footprint='physical' points={path(IBD_FOOTPRINT)} fill='#89745c' stroke='#c4c5a3' strokeWidth='.7'/>}
         {i===1&&geometry&&<polyline points={path(geometry.coaster)} fill='none' stroke='#86cfcc' strokeWidth='1.4'/>}
         <circle cx={site.entrance[0]} cy={site.entrance[2]} r='3.3' fill='#23343D' stroke='#4FD1C5'/>
         <text x={site.center[0]} y={site.center[2]+(i?0:2)} textAnchor='middle' fontSize={full?'4.5':'5'} fill='#fff7de' paintOrder='stroke' stroke='#23343d' strokeWidth='1.1'>{lang==='zh'?(i?'意图过山车':'物资清点场'):(i?'INTENT COASTER':'INVENTORY YARD')}</text>

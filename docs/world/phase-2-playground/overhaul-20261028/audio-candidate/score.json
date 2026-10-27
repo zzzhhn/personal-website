@@ -1,0 +1,1215 @@
+{
+  "title": "Island Walk 01 candidate",
+  "bpm": 80,
+  "meter": "4/4",
+  "seconds": 48,
+  "midi_convention": "C4=60",
+  "beat_convention": "zero-based within each one-based bar",
+  "harmony": [
+    {
+      "bar": 1,
+      "chord": "Cmaj7",
+      "pad_voicing_midi": [
+        48,
+        52,
+        55,
+        59
+      ]
+    },
+    {
+      "bar": 2,
+      "chord": "Fmaj7",
+      "pad_voicing_midi": [
+        52,
+        53,
+        57,
+        60
+      ]
+    },
+    {
+      "bar": 3,
+      "chord": "Cmaj7",
+      "pad_voicing_midi": [
+        48,
+        52,
+        55,
+        59
+      ]
+    },
+    {
+      "bar": 4,
+      "chord": "Fmaj7",
+      "pad_voicing_midi": [
+        52,
+        53,
+        57,
+        60
+      ]
+    },
+    {
+      "bar": 5,
+      "chord": "Am7",
+      "pad_voicing_midi": [
+        48,
+        52,
+        55,
+        57
+      ]
+    },
+    {
+      "bar": 6,
+      "chord": "Dm7",
+      "pad_voicing_midi": [
+        48,
+        50,
+        53,
+        57
+      ]
+    },
+    {
+      "bar": 7,
+      "chord": "Fm",
+      "pad_voicing_midi": [
+        48,
+        53,
+        56
+      ]
+    },
+    {
+      "bar": 8,
+      "chord": "G7",
+      "pad_voicing_midi": [
+        50,
+        53,
+        55,
+        59
+      ]
+    },
+    {
+      "bar": 9,
+      "chord": "Cmaj7",
+      "pad_voicing_midi": []
+    },
+    {
+      "bar": 10,
+      "chord": "Cmaj7",
+      "pad_voicing_midi": []
+    },
+    {
+      "bar": 11,
+      "chord": "Cmaj7",
+      "pad_voicing_midi": [
+        48,
+        52,
+        55,
+        59
+      ]
+    },
+    {
+      "bar": 12,
+      "chord": "Fmaj7",
+      "pad_voicing_midi": [
+        52,
+        53,
+        57,
+        60
+      ]
+    },
+    {
+      "bar": 13,
+      "chord": "Dm7",
+      "pad_voicing_midi": [
+        48,
+        50,
+        53,
+        57
+      ]
+    },
+    {
+      "bar": 14,
+      "chord": "G7",
+      "pad_voicing_midi": [
+        50,
+        53,
+        55,
+        59
+      ]
+    },
+    {
+      "bar": 15,
+      "chord": "Cmaj7",
+      "pad_voicing_midi": [
+        48,
+        52,
+        55,
+        59
+      ]
+    },
+    {
+      "bar": 16,
+      "chord": "Cmaj7",
+      "pad_voicing_midi": []
+    }
+  ],
+  "events": [
+    {
+      "part": "mallet",
+      "section": "A",
+      "bar": 1,
+      "beat": 0,
+      "midi": [
+        64
+      ],
+      "beats": 1,
+      "velocity": 0.84,
+      "offset_ms": 0,
+      "seconds": 0.0
+    },
+    {
+      "part": "pad",
+      "section": "A",
+      "bar": 1,
+      "beat": 0.45,
+      "midi": [
+        48,
+        52,
+        55,
+        59
+      ],
+      "beats": 2.25,
+      "velocity": 0.62,
+      "offset_ms": 0,
+      "seconds": 0.3375
+    },
+    {
+      "part": "mallet",
+      "section": "A",
+      "bar": 1,
+      "beat": 1,
+      "midi": [
+        67
+      ],
+      "beats": 0.5,
+      "velocity": 0.66,
+      "offset_ms": 0,
+      "seconds": 0.75
+    },
+    {
+      "part": "mallet",
+      "section": "A",
+      "bar": 1,
+      "beat": 1.5,
+      "midi": [
+        69
+      ],
+      "beats": 0.5,
+      "velocity": 0.74,
+      "offset_ms": 0,
+      "seconds": 1.125
+    },
+    {
+      "part": "mallet",
+      "section": "A",
+      "bar": 1,
+      "beat": 2,
+      "midi": [
+        67
+      ],
+      "beats": 1,
+      "velocity": 0.62,
+      "offset_ms": 0,
+      "seconds": 1.5
+    },
+    {
+      "part": "mallet",
+      "section": "A",
+      "bar": 2,
+      "beat": 0,
+      "midi": [
+        62
+      ],
+      "beats": 1,
+      "velocity": 0.68,
+      "offset_ms": 0,
+      "seconds": 3.0
+    },
+    {
+      "part": "pad",
+      "section": "A",
+      "bar": 2,
+      "beat": 0.45,
+      "midi": [
+        52,
+        53,
+        57,
+        60
+      ],
+      "beats": 2.25,
+      "velocity": 0.62,
+      "offset_ms": 0,
+      "seconds": 3.3375
+    },
+    {
+      "part": "mallet",
+      "section": "A",
+      "bar": 2,
+      "beat": 1,
+      "midi": [
+        60
+      ],
+      "beats": 1,
+      "velocity": 0.57,
+      "offset_ms": 0,
+      "seconds": 3.75
+    },
+    {
+      "part": "mallet",
+      "section": "A",
+      "bar": 3,
+      "beat": 0,
+      "midi": [
+        64
+      ],
+      "beats": 1,
+      "velocity": 0.84,
+      "offset_ms": 0,
+      "seconds": 6.0
+    },
+    {
+      "part": "pad",
+      "section": "A",
+      "bar": 3,
+      "beat": 0.45,
+      "midi": [
+        48,
+        52,
+        55,
+        59
+      ],
+      "beats": 2.25,
+      "velocity": 0.62,
+      "offset_ms": 0,
+      "seconds": 6.3375
+    },
+    {
+      "part": "mallet",
+      "section": "A",
+      "bar": 3,
+      "beat": 1,
+      "midi": [
+        67
+      ],
+      "beats": 0.5,
+      "velocity": 0.66,
+      "offset_ms": 0,
+      "seconds": 6.75
+    },
+    {
+      "part": "mallet",
+      "section": "A",
+      "bar": 3,
+      "beat": 1.5,
+      "midi": [
+        69
+      ],
+      "beats": 0.5,
+      "velocity": 0.74,
+      "offset_ms": 0,
+      "seconds": 7.125
+    },
+    {
+      "part": "mallet",
+      "section": "A",
+      "bar": 3,
+      "beat": 2,
+      "midi": [
+        67
+      ],
+      "beats": 1,
+      "velocity": 0.62,
+      "offset_ms": 0,
+      "seconds": 7.5
+    },
+    {
+      "part": "mallet",
+      "section": "A",
+      "bar": 4,
+      "beat": 0,
+      "midi": [
+        62
+      ],
+      "beats": 1,
+      "velocity": 0.68,
+      "offset_ms": 0,
+      "seconds": 9.0
+    },
+    {
+      "part": "pad",
+      "section": "A",
+      "bar": 4,
+      "beat": 0.45,
+      "midi": [
+        52,
+        53,
+        57,
+        60
+      ],
+      "beats": 2.25,
+      "velocity": 0.62,
+      "offset_ms": 0,
+      "seconds": 9.3375
+    },
+    {
+      "part": "mallet",
+      "section": "A",
+      "bar": 4,
+      "beat": 1,
+      "midi": [
+        60
+      ],
+      "beats": 1,
+      "velocity": 0.57,
+      "offset_ms": 0,
+      "seconds": 9.75
+    },
+    {
+      "part": "mallet",
+      "section": "B",
+      "bar": 5,
+      "beat": 0,
+      "midi": [
+        64
+      ],
+      "beats": 1,
+      "velocity": 0.84,
+      "offset_ms": 0,
+      "seconds": 12.0
+    },
+    {
+      "part": "bass",
+      "section": "B",
+      "bar": 5,
+      "beat": 0.25,
+      "midi": [
+        40
+      ],
+      "beats": 0.65,
+      "velocity": 0.78,
+      "offset_ms": 0,
+      "seconds": 12.1875
+    },
+    {
+      "part": "pad",
+      "section": "B",
+      "bar": 5,
+      "beat": 0.45,
+      "midi": [
+        48,
+        52,
+        55,
+        57
+      ],
+      "beats": 2.25,
+      "velocity": 0.76,
+      "offset_ms": 0,
+      "seconds": 12.3375
+    },
+    {
+      "part": "wood",
+      "section": "B",
+      "bar": 5,
+      "beat": 0.75,
+      "midi": [
+        72
+      ],
+      "beats": 0.13,
+      "velocity": 0.48,
+      "offset_ms": 12,
+      "seconds": 12.5745
+    },
+    {
+      "part": "mallet",
+      "section": "B",
+      "bar": 5,
+      "beat": 1,
+      "midi": [
+        67
+      ],
+      "beats": 0.5,
+      "velocity": 0.66,
+      "offset_ms": 0,
+      "seconds": 12.75
+    },
+    {
+      "part": "mallet",
+      "section": "B",
+      "bar": 5,
+      "beat": 1.5,
+      "midi": [
+        69
+      ],
+      "beats": 0.5,
+      "velocity": 0.74,
+      "offset_ms": 0,
+      "seconds": 13.125
+    },
+    {
+      "part": "mallet",
+      "section": "B",
+      "bar": 5,
+      "beat": 2,
+      "midi": [
+        67
+      ],
+      "beats": 1,
+      "velocity": 0.62,
+      "offset_ms": 0,
+      "seconds": 13.5
+    },
+    {
+      "part": "wood",
+      "section": "B",
+      "bar": 5,
+      "beat": 2.5,
+      "midi": [
+        75
+      ],
+      "beats": 0.13,
+      "velocity": 0.34,
+      "offset_ms": 12,
+      "seconds": 13.887
+    },
+    {
+      "part": "bass",
+      "section": "B",
+      "bar": 5,
+      "beat": 2.75,
+      "midi": [
+        40
+      ],
+      "beats": 0.65,
+      "velocity": 0.56,
+      "offset_ms": 0,
+      "seconds": 14.0625
+    },
+    {
+      "part": "mallet",
+      "section": "B",
+      "bar": 6,
+      "beat": 0,
+      "midi": [
+        62
+      ],
+      "beats": 1,
+      "velocity": 0.68,
+      "offset_ms": 0,
+      "seconds": 15.0
+    },
+    {
+      "part": "bass",
+      "section": "B",
+      "bar": 6,
+      "beat": 0.25,
+      "midi": [
+        38
+      ],
+      "beats": 0.65,
+      "velocity": 0.78,
+      "offset_ms": 0,
+      "seconds": 15.1875
+    },
+    {
+      "part": "pad",
+      "section": "B",
+      "bar": 6,
+      "beat": 0.45,
+      "midi": [
+        48,
+        50,
+        53,
+        57
+      ],
+      "beats": 2.25,
+      "velocity": 0.76,
+      "offset_ms": 0,
+      "seconds": 15.3375
+    },
+    {
+      "part": "mallet",
+      "section": "B",
+      "bar": 6,
+      "beat": 1,
+      "midi": [
+        59
+      ],
+      "beats": 1,
+      "velocity": 0.57,
+      "offset_ms": 0,
+      "seconds": 15.75
+    },
+    {
+      "part": "wood",
+      "section": "B",
+      "bar": 6,
+      "beat": 1.75,
+      "midi": [
+        72
+      ],
+      "beats": 0.13,
+      "velocity": 0.48,
+      "offset_ms": 12,
+      "seconds": 16.3245
+    },
+    {
+      "part": "bass",
+      "section": "B",
+      "bar": 6,
+      "beat": 2.75,
+      "midi": [
+        38
+      ],
+      "beats": 0.65,
+      "velocity": 0.56,
+      "offset_ms": 0,
+      "seconds": 17.0625
+    },
+    {
+      "part": "wood",
+      "section": "B",
+      "bar": 6,
+      "beat": 3.1,
+      "midi": [
+        75
+      ],
+      "beats": 0.13,
+      "velocity": 0.34,
+      "offset_ms": 12,
+      "seconds": 17.337
+    },
+    {
+      "part": "mallet",
+      "section": "B",
+      "bar": 7,
+      "beat": 0,
+      "midi": [
+        65
+      ],
+      "beats": 1,
+      "velocity": 0.84,
+      "offset_ms": 0,
+      "seconds": 18.0
+    },
+    {
+      "part": "bass",
+      "section": "B",
+      "bar": 7,
+      "beat": 0.25,
+      "midi": [
+        41
+      ],
+      "beats": 0.65,
+      "velocity": 0.78,
+      "offset_ms": 0,
+      "seconds": 18.1875
+    },
+    {
+      "part": "pad",
+      "section": "B",
+      "bar": 7,
+      "beat": 0.45,
+      "midi": [
+        48,
+        53,
+        56
+      ],
+      "beats": 2.25,
+      "velocity": 0.76,
+      "offset_ms": 0,
+      "seconds": 18.3375
+    },
+    {
+      "part": "wood",
+      "section": "B",
+      "bar": 7,
+      "beat": 0.75,
+      "midi": [
+        72
+      ],
+      "beats": 0.13,
+      "velocity": 0.48,
+      "offset_ms": 12,
+      "seconds": 18.5745
+    },
+    {
+      "part": "mallet",
+      "section": "B",
+      "bar": 7,
+      "beat": 1,
+      "midi": [
+        67
+      ],
+      "beats": 0.5,
+      "velocity": 0.66,
+      "offset_ms": 0,
+      "seconds": 18.75
+    },
+    {
+      "part": "mallet",
+      "section": "B",
+      "bar": 7,
+      "beat": 1.5,
+      "midi": [
+        68
+      ],
+      "beats": 0.5,
+      "velocity": 0.74,
+      "offset_ms": 0,
+      "seconds": 19.125
+    },
+    {
+      "part": "mallet",
+      "section": "B",
+      "bar": 7,
+      "beat": 2,
+      "midi": [
+        67
+      ],
+      "beats": 1,
+      "velocity": 0.62,
+      "offset_ms": 0,
+      "seconds": 19.5
+    },
+    {
+      "part": "wood",
+      "section": "B",
+      "bar": 7,
+      "beat": 2.5,
+      "midi": [
+        75
+      ],
+      "beats": 0.13,
+      "velocity": 0.34,
+      "offset_ms": 12,
+      "seconds": 19.887
+    },
+    {
+      "part": "bass",
+      "section": "B",
+      "bar": 7,
+      "beat": 2.75,
+      "midi": [
+        41
+      ],
+      "beats": 0.65,
+      "velocity": 0.56,
+      "offset_ms": 0,
+      "seconds": 20.0625
+    },
+    {
+      "part": "mallet",
+      "section": "B",
+      "bar": 8,
+      "beat": 0,
+      "midi": [
+        62
+      ],
+      "beats": 1,
+      "velocity": 0.68,
+      "offset_ms": 0,
+      "seconds": 21.0
+    },
+    {
+      "part": "bass",
+      "section": "B",
+      "bar": 8,
+      "beat": 0.25,
+      "midi": [
+        43
+      ],
+      "beats": 0.65,
+      "velocity": 0.78,
+      "offset_ms": 0,
+      "seconds": 21.1875
+    },
+    {
+      "part": "pad",
+      "section": "B",
+      "bar": 8,
+      "beat": 0.45,
+      "midi": [
+        50,
+        53,
+        55,
+        59
+      ],
+      "beats": 2.25,
+      "velocity": 0.76,
+      "offset_ms": 0,
+      "seconds": 21.3375
+    },
+    {
+      "part": "mallet",
+      "section": "B",
+      "bar": 8,
+      "beat": 1,
+      "midi": [
+        59
+      ],
+      "beats": 1,
+      "velocity": 0.57,
+      "offset_ms": 0,
+      "seconds": 21.75
+    },
+    {
+      "part": "wood",
+      "section": "B",
+      "bar": 8,
+      "beat": 1.75,
+      "midi": [
+        72
+      ],
+      "beats": 0.13,
+      "velocity": 0.48,
+      "offset_ms": 12,
+      "seconds": 22.3245
+    },
+    {
+      "part": "bass",
+      "section": "B",
+      "bar": 8,
+      "beat": 2.75,
+      "midi": [
+        43
+      ],
+      "beats": 0.65,
+      "velocity": 0.56,
+      "offset_ms": 0,
+      "seconds": 23.0625
+    },
+    {
+      "part": "wood",
+      "section": "B",
+      "bar": 8,
+      "beat": 3.25,
+      "midi": [
+        75
+      ],
+      "beats": 0.13,
+      "velocity": 0.34,
+      "offset_ms": 12,
+      "seconds": 23.4495
+    },
+    {
+      "part": "wood",
+      "section": "B",
+      "bar": 8,
+      "beat": 3.6,
+      "midi": [
+        72
+      ],
+      "beats": 0.13,
+      "velocity": 0.34,
+      "offset_ms": 12,
+      "seconds": 23.712
+    },
+    {
+      "part": "mallet",
+      "section": "C",
+      "bar": 9,
+      "beat": 0,
+      "midi": [
+        64
+      ],
+      "beats": 0.5,
+      "velocity": 0.56,
+      "offset_ms": 0,
+      "seconds": 24.0
+    },
+    {
+      "part": "mallet",
+      "section": "C",
+      "bar": 9,
+      "beat": 2,
+      "midi": [
+        67
+      ],
+      "beats": 0.5,
+      "velocity": 0.48,
+      "offset_ms": 0,
+      "seconds": 25.5
+    },
+    {
+      "part": "mallet",
+      "section": "D",
+      "bar": 11,
+      "beat": 0,
+      "midi": [
+        64
+      ],
+      "beats": 1,
+      "velocity": 0.84,
+      "offset_ms": 0,
+      "seconds": 30.0
+    },
+    {
+      "part": "bass",
+      "section": "D",
+      "bar": 11,
+      "beat": 0.25,
+      "midi": [
+        36
+      ],
+      "beats": 0.65,
+      "velocity": 0.78,
+      "offset_ms": 0,
+      "seconds": 30.1875
+    },
+    {
+      "part": "pad",
+      "section": "D",
+      "bar": 11,
+      "beat": 0.45,
+      "midi": [
+        48,
+        52,
+        55,
+        59
+      ],
+      "beats": 2.25,
+      "velocity": 0.76,
+      "offset_ms": 0,
+      "seconds": 30.3375
+    },
+    {
+      "part": "mallet",
+      "section": "D",
+      "bar": 11,
+      "beat": 1,
+      "midi": [
+        67
+      ],
+      "beats": 0.5,
+      "velocity": 0.66,
+      "offset_ms": 0,
+      "seconds": 30.75
+    },
+    {
+      "part": "mallet",
+      "section": "D",
+      "bar": 11,
+      "beat": 1.5,
+      "midi": [
+        69
+      ],
+      "beats": 0.5,
+      "velocity": 0.74,
+      "offset_ms": 0,
+      "seconds": 31.125
+    },
+    {
+      "part": "mallet",
+      "section": "D",
+      "bar": 11,
+      "beat": 2,
+      "midi": [
+        67
+      ],
+      "beats": 1,
+      "velocity": 0.62,
+      "offset_ms": 0,
+      "seconds": 31.5
+    },
+    {
+      "part": "bass",
+      "section": "D",
+      "bar": 11,
+      "beat": 2.75,
+      "midi": [
+        36
+      ],
+      "beats": 0.65,
+      "velocity": 0.56,
+      "offset_ms": 0,
+      "seconds": 32.0625
+    },
+    {
+      "part": "mallet",
+      "section": "D",
+      "bar": 12,
+      "beat": 0,
+      "midi": [
+        62
+      ],
+      "beats": 1,
+      "velocity": 0.68,
+      "offset_ms": 0,
+      "seconds": 33.0
+    },
+    {
+      "part": "bass",
+      "section": "D",
+      "bar": 12,
+      "beat": 0.25,
+      "midi": [
+        41
+      ],
+      "beats": 0.65,
+      "velocity": 0.78,
+      "offset_ms": 0,
+      "seconds": 33.1875
+    },
+    {
+      "part": "pad",
+      "section": "D",
+      "bar": 12,
+      "beat": 0.45,
+      "midi": [
+        52,
+        53,
+        57,
+        60
+      ],
+      "beats": 2.25,
+      "velocity": 0.76,
+      "offset_ms": 0,
+      "seconds": 33.3375
+    },
+    {
+      "part": "mallet",
+      "section": "D",
+      "bar": 12,
+      "beat": 1,
+      "midi": [
+        60
+      ],
+      "beats": 1,
+      "velocity": 0.57,
+      "offset_ms": 0,
+      "seconds": 33.75
+    },
+    {
+      "part": "bass",
+      "section": "D",
+      "bar": 12,
+      "beat": 2.75,
+      "midi": [
+        41
+      ],
+      "beats": 0.65,
+      "velocity": 0.56,
+      "offset_ms": 0,
+      "seconds": 35.0625
+    },
+    {
+      "part": "mallet",
+      "section": "D",
+      "bar": 13,
+      "beat": 0,
+      "midi": [
+        64
+      ],
+      "beats": 1,
+      "velocity": 0.84,
+      "offset_ms": 0,
+      "seconds": 36.0
+    },
+    {
+      "part": "bass",
+      "section": "D",
+      "bar": 13,
+      "beat": 0.25,
+      "midi": [
+        38
+      ],
+      "beats": 0.65,
+      "velocity": 0.78,
+      "offset_ms": 0,
+      "seconds": 36.1875
+    },
+    {
+      "part": "pad",
+      "section": "D",
+      "bar": 13,
+      "beat": 0.45,
+      "midi": [
+        48,
+        50,
+        53,
+        57
+      ],
+      "beats": 2.25,
+      "velocity": 0.76,
+      "offset_ms": 0,
+      "seconds": 36.3375
+    },
+    {
+      "part": "mallet",
+      "section": "D",
+      "bar": 13,
+      "beat": 1,
+      "midi": [
+        67
+      ],
+      "beats": 0.5,
+      "velocity": 0.66,
+      "offset_ms": 0,
+      "seconds": 36.75
+    },
+    {
+      "part": "mallet",
+      "section": "D",
+      "bar": 13,
+      "beat": 1.5,
+      "midi": [
+        69
+      ],
+      "beats": 0.5,
+      "velocity": 0.74,
+      "offset_ms": 0,
+      "seconds": 37.125
+    },
+    {
+      "part": "mallet",
+      "section": "D",
+      "bar": 13,
+      "beat": 2,
+      "midi": [
+        67
+      ],
+      "beats": 1,
+      "velocity": 0.62,
+      "offset_ms": 0,
+      "seconds": 37.5
+    },
+    {
+      "part": "bass",
+      "section": "D",
+      "bar": 13,
+      "beat": 2.75,
+      "midi": [
+        38
+      ],
+      "beats": 0.65,
+      "velocity": 0.56,
+      "offset_ms": 0,
+      "seconds": 38.0625
+    },
+    {
+      "part": "mallet",
+      "section": "D",
+      "bar": 14,
+      "beat": 0,
+      "midi": [
+        62
+      ],
+      "beats": 1,
+      "velocity": 0.68,
+      "offset_ms": 0,
+      "seconds": 39.0
+    },
+    {
+      "part": "bass",
+      "section": "D",
+      "bar": 14,
+      "beat": 0.25,
+      "midi": [
+        43
+      ],
+      "beats": 0.65,
+      "velocity": 0.78,
+      "offset_ms": 0,
+      "seconds": 39.1875
+    },
+    {
+      "part": "pad",
+      "section": "D",
+      "bar": 14,
+      "beat": 0.45,
+      "midi": [
+        50,
+        53,
+        55,
+        59
+      ],
+      "beats": 2.25,
+      "velocity": 0.76,
+      "offset_ms": 0,
+      "seconds": 39.3375
+    },
+    {
+      "part": "mallet",
+      "section": "D",
+      "bar": 14,
+      "beat": 1,
+      "midi": [
+        60
+      ],
+      "beats": 1,
+      "velocity": 0.57,
+      "offset_ms": 0,
+      "seconds": 39.75
+    },
+    {
+      "part": "bass",
+      "section": "D",
+      "bar": 14,
+      "beat": 2.75,
+      "midi": [
+        43
+      ],
+      "beats": 0.65,
+      "velocity": 0.56,
+      "offset_ms": 0,
+      "seconds": 41.0625
+    },
+    {
+      "part": "mallet",
+      "section": "E",
+      "bar": 15,
+      "beat": 0,
+      "midi": [
+        62
+      ],
+      "beats": 1,
+      "velocity": 0.62,
+      "offset_ms": 0,
+      "seconds": 42.0
+    },
+    {
+      "part": "pad",
+      "section": "E",
+      "bar": 15,
+      "beat": 0.45,
+      "midi": [
+        48,
+        52,
+        55,
+        59
+      ],
+      "beats": 2.25,
+      "velocity": 0.62,
+      "offset_ms": 0,
+      "seconds": 42.3375
+    },
+    {
+      "part": "mallet",
+      "section": "E",
+      "bar": 15,
+      "beat": 1,
+      "midi": [
+        60
+      ],
+      "beats": 1,
+      "velocity": 0.49,
+      "offset_ms": 0,
+      "seconds": 42.75
+    }
+  ],
+  "decisions": [
+    "Bar 7 motif becomes F4 G4 Ab4 G4 to avoid E4 against Fm, retaining rhythm and contour.",
+    "Bar 5 Am7/E uses E2 bass to stay in C2-G2; harmonic identity remains Am7.",
+    "Bars 9-10 keep only E4 and G4; wood never returns after B.",
+    "Bar 16 has no new notes or tails; final three seconds are exact silence.",
+    "No runtime interaction ducking is applied to this standalone music candidate."
+  ]
+}

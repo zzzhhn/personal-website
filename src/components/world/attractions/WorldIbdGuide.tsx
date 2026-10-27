@@ -26,6 +26,7 @@ export default memo(function WorldIbdGuide() {
   const suppressed = useWorldStore(s => s.paused || !!s.card || s.poolInspect || !!s.shot || !!s.activeVehicle || !!s.seat);
   const step = ibdGuideStep(game), station = ibdStation(step.action.station, game.core.moved);
   const near = useWorldStore(s => s.nearbyInteract?.id === `ibd-${station.id}` && ibdReach(ibdLocal(s.position), station));
+  const atWorkstation = useWorldStore(s => ibdReach(ibdLocal(s.position), station));
   const inYard = useWorldStore(s => Math.abs(s.position[0] - IBD_YARD.center[0]) <= IBD_YARD.size[0] / 2 + 4
     && Math.abs(s.position[2] - IBD_YARD.center[2]) <= IBD_YARD.size[1] / 2 + 6);
   const props = useMemo(() => ({ paper: workObjects(), tools: buildIbdTools(), stamp: new RingGeometry(.1, .16, 12),
@@ -74,7 +75,8 @@ export default memo(function WorldIbdGuide() {
       <mesh name="ibd-next-work-route" geometry={cue.geometry} material={cue.material} />
       <mesh name="ibd-next-work-standing-point" position={[station.at[0], station.id.startsWith('gallery') ? 4.13 : .15, station.at[2]]} rotation={[-Math.PI / 2, 0, 0]}
         geometry={props.standing} material={near ? props.good : props.amber} />
-      <sprite name="ibd-next-work-label" position={[station.at[0], station.at[1] + 2.25, station.at[2]]} scale={[4, .84, 1]} material={cue.label} renderOrder={10} />
+      <sprite name="ibd-next-work-label" visible={!atWorkstation && !game.pending}
+        position={[station.at[0], station.at[1] + 2.25, station.at[2]]} scale={[4, .84, 1]} material={cue.label} renderOrder={10} />
     </group>
   </group>;
 });

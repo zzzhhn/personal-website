@@ -94,3 +94,7 @@
 @media (max-height: 520px) and (min-width: 641px) {
   .intent-hud { bottom: 18px; max-height: calc(100dvh - 36px); }
 }
+.intent-workshop-summary { top: 104px; bottom: auto; width: 325px; padding: 14px 16px; }
+.intent-workshop-summary p { margin: 8px 0; line-height: 1.55; font-size: 13px; }
+.intent-workshop-summary blockquote { margin: 14px 0; padding: 0 0 0 12px; border-left: 2px solid var(--intent-accent); font-size: 16px; line-height: 1.6; }
+@media (max-width: 640px) { .intent-workshop-summary { top: auto; bottom: 112px; width: min(300px, calc(100vw - 24px)); } }

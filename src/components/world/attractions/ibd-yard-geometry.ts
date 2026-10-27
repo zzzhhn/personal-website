@@ -37,7 +37,7 @@ export function buildIbdStatic() {
     if (rotation) b.tr(at, rotation, () => cbox(b, [0, 0, 0], size, s, bevel)); else cbox(b, at, size, s, bevel);
     if (solid) solids.push({ at, size, ...(rotation ? { rotation } : {}) });
   };
-  buildIbdArchitecture(b, cube);
+  const groundSurface = buildIbdArchitecture(b, cube);
   buildIbdStores(b, cube, solids);
   buildIbdSite(b, cube);
   for (const x of [-20, -12]) for (const z of [-4, ...(x === -12 ? [-9] : [])]) {
@@ -51,7 +51,14 @@ export function buildIbdStatic() {
   }
   cube([-12, .75, -11.7], [5.1, 1.5, .12], P.dark, true);
   // One welded shell has no internal vertical box ends for the character's swept guard to hit.
-  const walkSurface = buildIbdWalkSurface(b);
+  const gallerySurface = buildIbdWalkSurface(b);
+  // Reuse the existing static Trimesh collider for the exact clipped paving and the unchanged gallery.
+  const vertices = new Float32Array(groundSurface.vertices.length + gallerySurface.vertices.length);
+  vertices.set(groundSurface.vertices); vertices.set(gallerySurface.vertices, groundSurface.vertices.length);
+  const indices = new Uint32Array(groundSurface.indices.length + gallerySurface.indices.length);
+  indices.set(groundSurface.indices);
+  indices.set(gallerySurface.indices.map(i => i + groundSurface.vertices.length / 3), groundSurface.indices.length);
+  const walkSurface = { vertices, indices };
   const rail = (a: V3, end: V3) => {
     bar(b, a, end, .06, P.amber, 6);
     const dx = end[0] - a[0], dy = end[1] - a[1], dz = end[2] - a[2];
@@ -122,7 +129,7 @@ export function buildIbdStatic() {
   }
   cube([-28.3, .8, 3.96], [.14, 1.6, .14], P.dark, true);
   cube([-28.3, 1.6, 3.96], [2.7, .8, .12], P.dark, true);
-  return { geometry: bakeIbdLight(b.build()), solids, walkSurface };
+  return { geometry: bakeIbdLight(b.build()), solids, walkSurface, groundSurface };
 }
 
 export function buildIbdCoil(damaged: boolean, number = 1) {

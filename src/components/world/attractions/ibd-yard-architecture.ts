@@ -1,19 +1,14 @@
 import { Builder, bar, cbox, lathe, type Surf, type V3 } from '../WorldStreetGeometry.ts';
 import { IBD_SHEDS, IBD_CRANE_Y } from './ibd-yard-layout.ts';
 import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
+import { buildIbdPaving } from './ibd-yard-site.ts';
 
 export interface IbdSolid { at: V3; size: V3; rotation?: V3 }
 export type IbdCube = (at: V3, size: V3, surface: Surf, solid?: boolean, bevel?: number, rotation?: V3) => void;
 
 /** Three distinct building sections, sharing only construction details and the physical roof contract. */
 export function buildIbdArchitecture(b: Builder, cube: IbdCube) {
-  cube([0, -.12, 0], [68, .4, 60], P.concrete, true, 0);
-  // Small top faces interpolate light pools; one four-corner slab would miss every interior fixture.
-  for (let x = -34; x < 34; x += 2) for (let z = -30; z < 30; z += 2)
-    b.face([[x, .085, z], [x, .085, z + 2], [x + 2, .085, z + 2], [x + 2, .085, z]],
-      (Math.floor(x / 4) + Math.floor(z / 4)) % 2 ? P.slab : P.concrete, [0, 1, 0]);
-  for (let x = -34; x <= 34; x += 4) cube([x, .092, 0], [.035, .008, 60], P.dark, false, 0);
-  for (let z = -30; z <= 30; z += 4) cube([0, .092, z], [68, .008, .035], P.dark, false, 0);
+  const groundSurface = buildIbdPaving(b);
   for (const shed of IBD_SHEDS) {
     const { x, z, width: w, depth: d, eave: h, rise } = shed;
     const left = x - w / 2, right = x + w / 2, back = z - d / 2, front = z + d / 2;
@@ -89,6 +84,7 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube) {
   // Gallery columns support the existing continuous walking shell, outside its clear capsule corridor.
   for (const x of [-25.4, -18, -10, -4.9]) cube([x, 2, -15.7], [.22, 4, .22], P.dark, true);
   for (const z of [-11, -6, -2.7]) cube([-4.9, 2, z], [.22, 4, .22], P.dark, true);
+  return groundSurface;
 }
 
 /** Deep rear stores and maintenance alcove, kept outside inspection faces and every animated pallet lane. */

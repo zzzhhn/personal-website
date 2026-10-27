@@ -6,7 +6,7 @@ import { TRAIL_HALF } from './layout-v4';
 import { ALPHA_MINE_BASE_Y, ALPHA_MINE_CONNECTOR, isOnAlphaMineBase, mineEdgeDistance } from './alpha-mine-layout';
 import { EXCHANGE_CAPE, exchangeCapeDistance } from './alpha-exchange-layout';
 import { CLUB_CAPE, CLUB_POOL, clubCapeDistance, clubScatterBlocked, meshWaterlineLoops } from './djc-club-layout';
-import { attractionCapeDistance, attractionScatterBlocked } from './attractions/attraction-layout';
+import { attractionCapeDistance, attractionScatterBlocked, attractionCliffCoastHeight } from './attractions/attraction-layout';
 
 /** quality-v3 landform (spec 2026-10-22 §3, §10.1/10.2). One deterministic height function
  * h(x, z) describes the whole island: flat town top (y=1), irregular sand beaches, the camp
@@ -121,7 +121,7 @@ export function effectiveCoastFrame(x: number, z: number) {
   const exchangeDistance=LAYOUT_V4?exchangeCapeDistance(x,z):Infinity;
   const exchange=exchangeDistance<=0?GROUND_Y:shoreProfile(exchangeDistance,EXCHANGE_CAPE.beachWidth,EXCHANGE_CAPE.shelfLength);
   const northDistance=LAYOUT_V4?attractionCapeDistance(x,z):Infinity;
-  const north=northDistance<=0?GROUND_Y:shoreProfile(northDistance,8.5,15);
+  const north=attractionCliffCoastHeight(x,z,northDistance) ?? (northDistance<=0?GROUND_Y:shoreProfile(northDistance,8.5,15));
   const extra=Math.max(cape,exchange,north);
   return { s, topDistance: Math.min(u, capeDistance,exchangeDistance,northDistance), town: extra > original + 1e-6 ? 0 : town, height: Math.max(original, extra), originalHeight: original };
 }

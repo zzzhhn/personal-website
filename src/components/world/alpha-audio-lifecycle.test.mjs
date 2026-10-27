@@ -7,7 +7,7 @@ const audioUrl = new URL('./WorldParkAudio.ts', import.meta.url).href;
 const hook = registerHooks({ resolve(specifier, context, next) {
   return next(specifier === './store' && context.parentURL === audioUrl ? new URL('./store.ts', import.meta.url).href : specifier, context);
 } });
-const { ParkAudio } = await import('./WorldParkAudio.ts');
+const { ParkAudio, renderWorkshopSound, WORKSHOP_SOUND_SECONDS } = await import('./WorldParkAudio.ts');
 const { useWorldStore: store } = await import('./store.ts');
 hook.deregister();
 
@@ -41,7 +41,10 @@ class Audio extends Target {
   createGain() { return this.node(); }
   createDynamicsCompressor() { return this.node(); }
   createBiquadFilter() { return this.node(); }
-  createBuffer() { return { getChannelData: () => new Float32Array(this.sampleRate) }; }
+  createBuffer(channels = 1, length = this.sampleRate, sampleRate = this.sampleRate) {
+    const data = new Float32Array(length);
+    return { duration: length / sampleRate, length, sampleRate, numberOfChannels: channels, getChannelData: () => data };
+  }
   createOscillator() { const n = this.node(); this.sources.push(n); return n; }
   createBufferSource() { return this.createOscillator(); }
   change(state) { this.state = state; queueMicrotask(() => this.dispatchEvent(new Event('statechange'))); }
@@ -246,4 +249,66 @@ test('music zero stops legacy scheduler and stale notes while SFX stays usable',
   setWorldAudioVolume('sfx', 0); setWorldAudioVolume('music', .5); await settle();
   assert.equal(e.intervals.size, 1); assert.equal(a.snapshot().cueVoices, 0);
   assert.equal(a.deck[0].gain.events.at(-1)[0], .5); release();
+});
+
+test('workshop renders seven distinct finite PCM sounds with bounded samples and faded endpoints', () => {
+  const signatures = new Set(); let bytes = 0;
+  for (const [kind, duration] of Object.entries(WORKSHOP_SOUND_SECONDS)) {
+    const pcm = renderWorkshopSound(kind); bytes += pcm.byteLength;
+    let energy = 0, peak = 0;
+    for (const sample of pcm) { assert.ok(Number.isFinite(sample)); energy += sample * sample; peak = Math.max(peak, Math.abs(sample)); }
+    assert.equal(pcm.length, Math.ceil(duration * 24000)); assert.equal(pcm[0], 0); assert.equal(Math.abs(pcm.at(-1)), 0);
+    assert.ok(peak > .03 && peak <= .500001); assert.ok(Math.sqrt(energy / pcm.length) > .002);
+    assert.deepEqual(renderWorkshopSound(kind), pcm, 'reproducible samples, not an unrendered prompt');
+    signatures.add(`${pcm.length}:${pcm.slice(20, 30).join(',')}`);
+  }
+  assert.equal(signatures.size, 7); assert.ok(bytes < 600000);
+  assert.throws(() => renderWorkshopSound('process', Infinity), RangeError);
+});
+
+test('workshop playback uses actual PCM buffers, one source per action, shared SFX bus and a bounded cache', async t => {
+  const e = env(t), a = e.audio(), release = a.retain(); setWorldAudioVolume('music', 0); setWorldAudioVolume('sfx', .4);
+  for (const kind of Object.keys(WORKSHOP_SOUND_SECONDS)) {
+    a.workshopCue(kind); await settle(); const ctx = a.ctx, source = ctx.sources.at(-1);
+    assert.ok(source.buffer.getChannelData(0).some(sample => sample !== 0));
+    assert.equal(source.buffer.sampleRate, 24000); assert.equal(source.buffer.numberOfChannels, 1);
+    assert.equal(source.connections[0].connections[0], a.cueOutput);
+    assert.equal(a.snapshot().cueVoices, 1); assert.equal(e.intervals.size, 0);
+    assert.ok(source.stopTime - source.startTime <= 2.351);
+    source.end(); await settle(); assert.equal(ctx.state, 'suspended');
+  }
+  assert.equal(a.cueOutput.gain.value, .4); assert.equal(a.workshopBuffers.size, 7);
+  const cached = a.workshopBuffers.get('intake'); const stop = a.workshopCue('intake'); await settle();
+  assert.equal(a.ctx.sources.at(-1).buffer, cached); stop(); await settle();
+  assert.equal(a.snapshot().cueVoices, 0); assert.equal(a.ctx.state, 'suspended');
+  release(); assert.equal(a.workshopBuffers.size, 0);
+});
+
+test('workshop cues cancel on every lifecycle gate, never replay, and keep the eight-source ceiling', async t => {
+  const e = env(t), a = e.audio(), release = a.retain();
+  const gates = [v => store.setState({ paused: v }), v => store.setState({ poolInspect: v }),
+    v => store.setState({ shot: v ? 'camp' : null }), v => e.hidden(v), v => setWorldAudioMuted(v),
+    v => setWorldAudioVolume('sfx', v ? 0 : 1), v => e.page(v ? 'pagehide' : 'pageshow')];
+  for (const gate of gates) {
+    a.workshopCue('process'); await settle(); const ctx = a.ctx, before = ctx.sources.length;
+    gate(true); a.workshopCue('success'); await settle(); assert.equal(a.snapshot().cueVoices, 0);
+    assert.equal(ctx.state, 'suspended'); gate(false); await settle(); assert.equal(ctx.sources.length, before);
+    assert.equal(ctx.state, 'suspended');
+  }
+  a.workshopCue('intake'); await settle();
+  for (let i = 0; i < 100; i++) a.workshopCue('bell');
+  assert.equal(a.snapshot().cueVoices, 8); assert.equal(e.intervals.size, 0); release();
+});
+
+test('cancelled or expired workshop resume cannot play later, cancellation never removes a newer result', async t => {
+  const e = env(t), a = e.audio(), release = a.retain(); a.workshopCue('intake'); await settle();
+  const ctx = a.ctx; ctx.sources.at(-1).end(); await settle(); ctx.holdResume = true;
+  const cancel = a.workshopCue('process'); cancel(); ctx.finishResume(); await settle();
+  assert.equal(ctx.sources.length, 1); assert.equal(ctx.state, 'suspended');
+  a.workshopCue('success'); e.now(300); ctx.finishResume(); await settle();
+  assert.equal(ctx.sources.length, 1); assert.equal(ctx.state, 'suspended');
+  ctx.holdResume = false;
+  const stop = a.workshopCue('process'); await settle(); a.workshopCue('success'); await settle(); stop();
+  assert.equal(a.snapshot().cueVoices, 1); assert.equal(ctx.sources.at(-1).buffer, a.workshopBuffers.get('success'));
+  release();
 });

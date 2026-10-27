@@ -8,6 +8,7 @@ import { playerSupport, followPlayerGround } from '../player-ground.ts';
 import { createPlayerClearance, playerVelocityChange, sweptPlayerVelocity } from '../player-motion.ts';
 import { createIbdYardGame } from './ibd-yard-game.ts';
 import { ibdCargoPose } from './ibd-yard-motion.ts';
+import { IBD_FOOTPRINT, IBD_YARD } from './attraction-layout.ts';
 await RAPIER.init();
 const identity = { x: 0, y: 0, z: 0, w: 1 }, capsule = new RAPIER.Capsule(.48, .34);
 function fixture(cargo = true) {
@@ -39,8 +40,9 @@ test('geometry is finite, bounded to the survey, and stays below the provisional
     assert.ok([...g.getAttribute('position').array].every(Number.isFinite)); g.dispose();
   }
   assert.ok(triangles < 70000, `${triangles} triangles`);
-  assert.ok(staticData.geometry.boundingBox.min.x >= -34.1 && staticData.geometry.boundingBox.max.x <= 34.1);
-  assert.ok(staticData.geometry.boundingBox.min.z >= -30.1 && staticData.geometry.boundingBox.max.z <= 30.1);
+  const xs = IBD_FOOTPRINT.map(p => p[0] - IBD_YARD.center[0]), zs = IBD_FOOTPRINT.map(p => p[1] - IBD_YARD.center[2]);
+  assert.ok(staticData.geometry.boundingBox.min.x >= Math.min(...xs) - .2 && staticData.geometry.boundingBox.max.x <= Math.max(...xs) + .2);
+  assert.ok(staticData.geometry.boundingBox.min.z >= Math.min(...zs) - .2 && staticData.geometry.boundingBox.max.z <= Math.max(...zs) + .2);
 });
 test('all animated transport lanes clear the enlarged architecture with the actual cargo collider sizes', () => {
   const f = fixture(false);

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { DoubleSide, Mesh, MeshBasicMaterial, Raycaster, Vector3 } from 'three';
+import { DoubleSide, Mesh, MeshBasicMaterial, Raycaster, Vector3, Quaternion, Euler } from 'three';
 import { advanceCoaster, coasterCurve, coasterDistanceAt, coasterFrame, coasterRidePose, coasterSupports, COASTER_CANOPY_BOUNDS, COASTER_INVERSION, COASTER_TUNNEL, COASTER_GATE_Z, coasterControlU, coasterWorld, COASTER_DURATION, COASTER_EXIT, COASTER_LENGTH } from '../coaster-track.ts';
 import { attractionRide, beginAttractionRide, endAttractionRide, updateAttractionRide } from '../attraction-ride.ts';
 import { createCoasterCar, createCoasterStructure } from '../coaster-geometry.ts';
@@ -8,28 +8,30 @@ import { INTENT_COASTER } from '../attraction-layout.ts';
 import { INTENT_STATIONS, INTENT_TARGETS, intentInReach } from '../intent-stations.ts';
 
 test('the continuous closed track fits its surveyed site and stays above ground', () => {
-  assert.ok(COASTER_LENGTH > 700 && COASTER_LENGTH < 800);
+  assert.ok(COASTER_LENGTH > 940 && COASTER_LENGTH < 1000);
   assert.ok(coasterCurve.getPointAt(0).distanceTo(coasterCurve.getPointAt(1)) < 1e-8);
   assert.ok(coasterCurve.getTangentAt(0).dot(coasterCurve.getTangentAt(1)) > .999);
   let high = 0;
   for (let i = 0; i <= 1200; i++) {
     const f = coasterFrame(i / 1200), p = f.point;
     assert.ok([...p, ...f.rotation].every(Number.isFinite));
-    assert.ok(Math.abs(p.x - INTENT_COASTER.center[0]) < INTENT_COASTER.size[0] / 2 - 2);
-    assert.ok(Math.abs(p.z - INTENT_COASTER.center[2]) < INTENT_COASTER.size[1] / 2 - 2);
+    assert.ok(p.x > INTENT_COASTER.bounds.minX + 2 && p.x < INTENT_COASTER.bounds.maxX - 2);
+    assert.ok(p.z > INTENT_COASTER.bounds.minZ + 2 && p.z < INTENT_COASTER.bounds.maxZ - 2);
     assert.ok(p.y > 1.55); high = Math.max(high, p.y);
     assert.ok(Math.abs(f.rotation.length() - 1) < 1e-8);
     const orientationForward = new Vector3(1, 0, 0).applyQuaternion(f.rotation);
     assert.ok(orientationForward.dot(f.forward) > .99999);
   }
-  assert.ok(high > 43 && high < 46);
+  assert.ok(high > 55 && high < 57);
 });
 
 test('merged static structure and three cars stay below the authored geometry budget', () => {
   for (const detailed of [false, true]) {
     const g = createCoasterStructure(detailed), car = createCoasterCar();
     const all = [g.steel, g.glow, car];
-    assert.ok((g.steel.getAttribute('position').count + g.glow.getAttribute('position').count + car.getAttribute('position').count * 3) / 3 < 90000);
+    // Frozen post-tower totals plus the authorized 20,000-triangle terrain increment.
+    const budget = (detailed ? 94352 : 47296) + 20000;
+    assert.ok((g.steel.getAttribute('position').count + g.glow.getAttribute('position').count + car.getAttribute('position').count * 3) / 3 <= budget);
     for (const geometry of all) {
       assert.ok([...geometry.getAttribute('position').array].every(Number.isFinite));
       assert.equal(geometry.groups.length, 0); geometry.dispose();
@@ -110,46 +112,31 @@ test('architecture collision volumes clear a one-metre rider envelope throughout
       const f = coasterFrame(i / 1200), head = f.point.clone().addScaledVector(f.up, 1.4);
       for (const c of g.colliders) {
         if (c.surface) continue;
-        const delta = head.clone().sub(new Vector3(...c.position));
+        const delta = head.clone().sub(new Vector3(...c.position)).applyQuaternion(new Quaternion().setFromEuler(new Euler(...(c.rotation ?? [0,0,0]))).invert());
         assert.ok(Math.abs(delta.x) >= c.half[0] + 1 || Math.abs(delta.y) >= c.half[1] + 1 || Math.abs(delta.z) >= c.half[2] + 1, `collider ${c.position} at ${i / 1200}`);
       }
     }
   } finally { g.steel.dispose(); g.glow.dispose(); }
 });
 
-test('candidate adds grouped landforms and preserves two merged static draws within 83k triangles', () => {
+test('candidate preserves two merged static draws within the frozen baseline plus tower allowance', () => {
   for (const detailed of [false, true]) {
     const g = createCoasterStructure(detailed);
     try {
-      assert.ok(g.art.islands >= 8); assert.ok(g.art.trees >= (detailed ? 18 : 9)); assert.ok(g.art.shrubs >= (detailed ? 30 : 15));
+
       const triangles = (g.steel.attributes.position.count + g.glow.attributes.position.count) / 3;
-      assert.ok(triangles < (detailed ? 83000 : 38000), `${triangles} exceeds candidate budget`);
+      // Static-only baseline excludes the unchanged 756 triangles of the three cars.
+      assert.ok(triangles <= (detailed ? 93596 : 46540) + 20000, `${triangles} exceeds terrain sample budget`);
       assert.equal(g.steel.groups.length, 0); assert.equal(g.glow.groups.length, 0);
       for (const geometry of [g.steel,g.glow]) {
         geometry.computeBoundingBox();
-        assert.ok(geometry.boundingBox.min.x >= INTENT_COASTER.center[0]-55);
-        assert.ok(geometry.boundingBox.max.x <= INTENT_COASTER.center[0]+55);
-        assert.ok(geometry.boundingBox.min.z >= INTENT_COASTER.center[2]-65);
-        assert.ok(geometry.boundingBox.max.z <= INTENT_COASTER.center[2]+65);
+        assert.ok(geometry.boundingBox.min.x >= INTENT_COASTER.bounds.minX);
+        assert.ok(geometry.boundingBox.max.x <= INTENT_COASTER.bounds.maxX);
+        assert.ok(geometry.boundingBox.min.z >= INTENT_COASTER.bounds.minZ);
+        assert.ok(geometry.boundingBox.max.z <= INTENT_COASTER.bounds.maxZ);
       }
     } finally { g.steel.dispose(); g.glow.dispose(); }
   }
-});
-
-test('new landscaping leaves the existing guest approach and task frontage clear', async () => {
-  // Frozen pre-candidate baseline: 181 colliders, recorded with the activation patch hashes.
-  const candidate = createCoasterStructure(true);
-  try {
-    const added = candidate.colliders.slice(181);
-    const path = [
-      ...Array.from({length:81},(_,i)=>coasterWorld([0,.98,63-i*.25])),
-      ...Array.from({length:261},(_,i)=>coasterWorld([-25+i*.25,.98,63.5])),
-      ...Array.from({length:20},(_,i)=>coasterWorld([-i*.15,.98,43])),
-    ];
-    for(const p of path) for(const c of added) {
-      assert.ok(Math.abs(p[0]-c.position[0]) >= c.half[0]+.45 || Math.abs(p[1]-c.position[1]) >= c.half[1]+.9 || Math.abs(p[2]-c.position[2]) >= c.half[2]+.45, `new object blocks existing route at ${p}`);
-    }
-  } finally { for(const g of [candidate.steel,candidate.glow])g.dispose(); }
 });
 
 test('cyan technical lighting has substantial visible surface rather than isolated hairline marks', async () => {

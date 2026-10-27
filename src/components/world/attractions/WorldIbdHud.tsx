@@ -5,7 +5,7 @@ import { IBD_YARD } from './attraction-layout';
 import { assessIbd } from './ibd-model';
 import { IBD_SLOTS, IBD_STATIONS, ibdLocal, ibdReach, ibdStation, type IbdStationId } from './ibd-yard-layout';
 import { yardActions, yardCase, yardItemComplete, yardItemDifferent, yardItemId } from './ibd-yard-game';
-import { IBD_ACTION_LABEL, ibdNotice } from './ibd-yard-copy';
+import { IBD_ACTION_LABEL, IBD_MOTION_WAIT_LABEL, ibdNotice } from './ibd-yard-copy';
 import { dispatchIbdAction, setIbdGuide, useIbdYardStore } from './ibd-yard-store';
 import { ibdGuideStep, ibdGuideResult, ibdGuidePhaseDone, IBD_GUIDE_PHASES } from './ibd-yard-guide';
 import './ibd-yard.css';
@@ -13,6 +13,7 @@ import './ibd-yard.css';
 /** The manifest is a readout. Every cargo action is still gated by the same physical station as E. */
 export default memo(function WorldIbdHud({ active = true }: { active?: boolean }) {
   const game = useIbdYardStore(s => s.game), mounted = useIbdYardStore(s => s.active);
+  const motionWait = useIbdYardStore(s => s.motionWait);
   const guided = useIbdYardStore(s => s.guideEnabled), guide = ibdGuideStep(game), target = ibdStation(guide.action.station, game.core.moved);
   const lang = useWorldStore(s => s.lang);
   const theme = useWorldStore(s => sampleTimeLight(s.worldMinutes).night < .5 ? 'light' : 'dark');
@@ -27,6 +28,7 @@ export default memo(function WorldIbdHud({ active = true }: { active?: boolean }
   const zh = lang === 'zh', t = (cn: string, en: string) => zh ? cn : en;
   const id = nearby?.startsWith('ibd-') ? nearby.slice(4) as IbdStationId : null;
   const station = id && IBD_STATIONS.some(s => s.id === id) ? ibdStation(id, game.core.moved) : null;
+  const workingStation = game.pending ? ibdStation(game.pending.action.station, game.core.moved) : station;
   const atTarget = nearby === `ibd-${target.id}` && ibdReach(local, target);
   const actions = guided ? atTarget ? [guide.action] : [] : station && ibdReach(local, station) ? yardActions(game, station.id) : [];
   const scenario = yardCase(game), assessment = assessIbd(scenario, game.core);
@@ -46,9 +48,9 @@ export default memo(function WorldIbdHud({ active = true }: { active?: boolean }
       <h2>{guide.title[lang]}</h2>
       <p className="ibd-next">{guide.hint[lang]}</p>
       {!atTarget && !game.pending && !game.released && <p className="ibd-walk-hint">{t('沿地面箭头走到黄圈，靠近后按 E。', 'Follow the floor arrows to the ring. Press E when close.')}</p>}
-    </> : <><h2>{station ? station.title[lang] : t('自由检查', 'Explore the yard')}</h2>
+    </> : <><h2>{workingStation ? workingStation.title[lang] : t('自由检查', 'Explore the yard')}</h2>
       <p className="ibd-next">{t('靠近装置按 E 操作；需要时可恢复带路。', 'Approach a device and press E. Resume guidance at any time.')}</p></>}
-    {game.pending ? <div className="ibd-working" role="status"><i aria-hidden="true" />{IBD_ACTION_LABEL[game.pending.action.kind][lang]}</div>
+    {game.pending ? <div className="ibd-working" role="status" aria-live="polite"><i aria-hidden="true" />{motionWait ? IBD_MOTION_WAIT_LABEL[motionWait][lang] : IBD_ACTION_LABEL[game.pending.action.kind][lang]}</div>
       : actions.length > 0 && <div className="ibd-actions">{actions.map((a, i) => <button key={a.kind} className={i === 0 ? 'ibd-primary' : 'ibd-secondary'}
         onClick={() => dispatchIbdAction(a)}><kbd>{i === 0 ? 'E / Y' : '↻'}</kbd>{guided && !game.released ? guide.title[lang] : IBD_ACTION_LABEL[a.kind][lang]}</button>)}</div>}
     {notice && <p className="ibd-feedback" role="status" aria-live="polite">{notice}</p>}

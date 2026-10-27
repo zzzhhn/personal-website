@@ -39,18 +39,23 @@ export function loadIntentProgress() {
     useIntentStore.setState({ loaded: true, saveIssue: { zh: '本机存储不可用，本次进度仍可继续。', en: 'Local storage is unavailable. Progress works for this visit.' } });
   }
 }
-function commit(event: IntentEvent) {
+export function commitIntentEvent(event: IntentEvent) {
   const result = transitionIntent(useIntentStore.getState().progress, event);
   useIntentStore.setState({ progress: result.state, notice: result.reply ?? result.message });
   if (writable) try { localStorage.setItem(INTENT_STORAGE_KEY, serializeIntentProgress(result.state)); }
   catch { writable = false; useIntentStore.setState({ saveIssue: { zh: '无法保存，当前进度保留到本次离开。', en: 'Saving failed. Progress remains for this visit.' } }); }
   return result;
 }
-export function intentAvailable(target: IntentTarget) {
+const commit = commitIntentEvent;
+export function intentActorAvailable() {
   const w = useWorldStore.getState(), s = useIntentStore.getState(), mine = useAlphaMineStore.getState();
   return s.active && w.ready && !s.riding && !attractionRide.active && !w.paused && !w.activeVehicle && !w.card && !w.shot
     && !w.seat && !w.clubMode && !w.poolInspect && !mine.action && !mine.carried && (typeof document === 'undefined' || !document.hidden)
-    && intentInReach(w.position, target) && (target !== 'board' || (s.progress.gateOpen && mineActor.available && mineActor.grounded && coasterAtBoardingEntrance([w.position[0], w.position[1] - (PLAYER_RADIUS + PLAYER_HALF_HEIGHT), w.position[2]])));
+    ;
+}
+export function intentAvailable(target: IntentTarget) {
+  const w = useWorldStore.getState(), s = useIntentStore.getState();
+  return intentActorAvailable() && intentInReach(w.position, target) && (target !== 'board' || (s.progress.gateOpen && mineActor.available && mineActor.grounded && coasterAtBoardingEntrance([w.position[0], w.position[1] - (PLAYER_RADIUS + PLAYER_HALF_HEIGHT), w.position[2]])));
 }
 // DOM buttons and pointer picks share the actor's line-of-sight result, not just screen visibility.
 export const intentContact = (target: IntentTarget) => intentAvailable(target)
@@ -86,7 +91,11 @@ export function activateIntentTarget(target: IntentTarget) {
     if (target === 'visitor' && !useIntentStore.getState().progress.clarified.includes('T7')) clarifyIntent();
     else operateIntent(target);
   } else if (target === 'chest') commit({ type: useIntentStore.getState().progress.chestOpen ? 'take-key' : 'open-chest' });
-  else if (target === 'gate') commit({ type: 'unlock-gate' });
+  else if (target === 'gate') {
+    const wasOpen = useIntentStore.getState().progress.gateOpen;
+    const result = commit({ type: 'unlock-gate' });
+    if (!wasOpen && result.state.gateOpen) parkAudio.workshopCue('unlock');
+  }
   else if (beginAttractionRide(coasterRidePose(0, useIntentStore.getState().view), COASTER_BOARDING.exit, [useWorldStore.getState().position[0], useWorldStore.getState().position[1] - (PLAYER_RADIUS + PLAYER_HALF_HEIGHT), useWorldStore.getState().position[2]], mineActor.yaw)) {
     parkAudio.cue('scan', .3);
     Object.assign(intentRideClock, { elapsed: 0, riding: false, revision: attractionRide.revision });
