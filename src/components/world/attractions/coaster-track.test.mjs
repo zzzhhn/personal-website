@@ -25,7 +25,7 @@ test('the continuous closed track fits its surveyed site and stays above ground'
   assert.ok(high > 43 && high < 46);
 });
 
-test('70 seconds preserves the climb and hold, triples the thrill run and brakes smoothly', () => {
+test('70 seconds preserves the climb and hold, carries momentum and brakes smoothly', () => {
   assert.equal(COASTER_DURATION,70);
   assert.equal(coasterDistanceAt(0), 0); assert.equal(coasterDistanceAt(COASTER_DURATION), 1);
   let previous = 0;
@@ -34,23 +34,23 @@ test('70 seconds preserves the climb and hold, triples the thrill run and brakes
   }
   assert.equal(coasterDistanceAt(34), coasterDistanceAt(35.9));
   const top = coasterFrame(coasterDistanceAt(36)).point.y;
-  const bottom = coasterFrame(coasterDistanceAt(38)).point.y;
+  const bottom = coasterFrame(coasterDistanceAt(40.5)).point.y;
   assert.ok(top - bottom > 23);
   const speed = t => (coasterDistanceAt(t + .01) - coasterDistanceAt(t)) / .01 * COASTER_LENGTH;
-  assert.ok(speed(37) > speed(20) * 6);
+  assert.ok(speed(40.5) > speed(20) * 6);
   assert.ok(speed(COASTER_DURATION - .02) < .1);
 });
 
-test('thrill-run checkpoints retain the route with three times the previous measured speed', () => {
-  // Measurements from the prior 122-second run, before the requested speed change.
-  const baseline = [[39,137.0148402971,12.3171150566],[44,174.4035908199,2.6247046958],
-    [50,201.0674809976,7.1160013882],[63,309.9044079170,7.9541885009],
-    [85,478.2619818852,7.2917574675],[98,580.6070085419,8.3991002355]];
-  for (const [oldTime, metres, oldSpeed] of baseline) {
-    const t=36+(oldTime-36)/3;
-    assert.ok(Math.abs(coasterDistanceAt(t)*COASTER_LENGTH-metres)<1e-6);
-    const speed=(coasterDistanceAt(t+.0001)-coasterDistanceAt(t-.0001))/.0002*COASTER_LENGTH;
-    assert.ok(Math.abs(speed/oldSpeed-3)<1e-5, `speed ratio at ${t}`);
+test('the first drop carries its speed through the low run without the former artificial braking', () => {
+  const timeAt = u => { let low=36, high=70; for(let i=0;i<50;i++){const mid=(low+high)/2;if(coasterDistanceAt(mid)<u)low=mid;else high=mid;} return (low+high)/2; };
+  const speed = t => (coasterDistanceAt(t+.001)-coasterDistanceAt(t-.001))/.002*COASTER_LENGTH;
+  const lowStart=timeAt(coasterControlU(9)),lowEnd=timeAt(coasterControlU(10));
+  const speeds=Array.from({length:101},(_,i)=>speed(lowStart+(lowEnd-lowStart)*i/100));
+  assert.ok(Math.min(...speeds)>22, 'low run must not collapse to the previous 7.6 m/s');
+  assert.ok(Math.max(...speeds)/Math.min(...speeds)<1.12, 'near-level track should retain momentum');
+  for(let t=36.3;t<lowEnd-.02;t+=.02) {
+    const acceleration=(speed(t+.01)-speed(t-.01))/.02;
+    assert.ok(Math.abs(acceleration)<12, `unmotivated acceleration at ${t}: ${acceleration}`);
   }
 });
 

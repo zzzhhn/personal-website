@@ -1,6 +1,7 @@
 import { BoxGeometry, BufferAttribute, BufferGeometry, Color, CylinderGeometry, ExtrudeGeometry, Matrix4, Quaternion, Shape, Vector3 } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { coasterFrame, coasterSupports, coasterWorld, COASTER_LENGTH, COASTER_TUNNEL, COASTER_INVERSION, COASTER_GATE_Z } from './coaster-track.ts';
+import { COASTER_BOARDING } from './coaster-transition.ts';
 import { INTENT_STATIONS } from './intent-stations.ts';
 import { bakeIntentNight, INTENT_LAMP_POINTS } from './intent-lighting.ts';
 import { addCoasterLandscape } from './coaster-landscape.ts';
@@ -44,7 +45,7 @@ export class CoasterBatch {
   }
 }
 const tuple = (v: Vector3) => v.toArray() as Vec3;
-export interface CoasterCollider { position: Vec3; half: Vec3; surface?: boolean }
+export interface CoasterCollider { position: Vec3; half: Vec3; rotation?: Vec3; surface?: boolean }
 export function createCoasterStructure(detailed: boolean) {
   const steel = new CoasterBatch(), glow = new CoasterBatch(), colliders: CoasterCollider[] = [];
   const steps = detailed ? 800 : 280;
@@ -121,6 +122,11 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
   box([0, .04, 60.5], [110, .08, 9], P.concrete, true, true);
   box([-2, .04, 41.5], [18, .08, 23], P.concrete, true, true);
   box([0, .04, 55], [10, .08, 8], P.concrete, true, true);
+  // Functional boarding passage: six real treads and a flush bridge to the stopped car.
+  for (const step of [...COASTER_BOARDING.stairs, COASTER_BOARDING.threshold]) {
+    steel.box(step.position, step.size, P.concrete, new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), step.yaw));
+    colliders.push({ position: step.position, half: step.size.map(v => v / 2) as Vec3, rotation: [0, step.yaw, 0], surface: true });
+  }
   housing([-2, 6.8, 41.5], [18, 1.2, 23], P.dark);
   for (const x of [-10, 6]) for (const z of [31, x < 0 ? 43 : 51]) {
     housing([x, 3.1, z], [1.1, 6.2, 1.1], P.white);
@@ -232,15 +238,17 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
 export function createCoasterCar() {
   const b = new CoasterBatch();
   b.box([0, .27, 0], [2.9, .35, 1.85], P.copper);
-  b.box([1.25, .65, 0], [.35, .55, 1.8], P.dark);
+  b.box([1.4, .65, 0], [.15, .55, 1.8], P.dark);
   b.box([0, .64, 0], [1.1, .16, 1.22], P.dark);
   b.box([-.53, 1.05, 0], [.18, .85, 1.25], P.dark);
   for (const side of [-.85, .85]) {
-    b.box([-.1, .75, side], [2.6, .35, .15], P.steel);
-    b.beam([.7, .5, side], [.7, 1.22, side], .065, P.rail);
+    // Left-side opening spans local X .25..1.325, directly beside the footwell.
+    if (side < 0) b.box([-.575, .75, side], [1.65, .35, .15], P.steel);
+    else b.box([-.1, .75, side], [2.6, .35, .15], P.steel);
+    b.beam([1.25, .5, side], [1.25, 1.22, side], .065, P.rail);
     for (const x of [-1, 1]) b.beam([x, .08, side - .15], [x, .08, side + .15], .26, P.dark);
   }
-  b.beam([.7, 1.22, -.85], [.7, 1.22, .85], .065, P.rail);
+  b.beam([1.25, 1.22, -.85], [1.25, 1.22, .85], .065, P.rail);
   b.box([1.46, .7, 0], [.03, .12, 1.2], P.cyan);
   return b.finish();
 }

@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "node tools/world/check-club-audio.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",

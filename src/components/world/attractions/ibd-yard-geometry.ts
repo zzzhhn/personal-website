@@ -81,13 +81,20 @@ export function buildIbdStatic() {
     cube([x, .72, -12], [3.6, .3, 3.2], P.dark, true);
     for (const xx of [-1.4, 1.4]) for (const z of [-13.3, -10.7]) cube([x + xx, .35, z], [.18, .7, .18], P.steel, true);
     cube([x, .94, -12], [3.3, .12, 3], P.steel);
-    for (const [start, end] of [[-9.8, -3], [5, 7]]) {
+    // Leave a standing gap in front of each inspection bench; guide arrows must not enter a roller bed.
+    for (const [start, end] of [[-8.2, -3], [5, 7]]) {
       for (const xx of [-1.7, 1.7]) bar(b, [x + xx, .6, start], [x + xx, .6, end], .08, P.dark, 6);
       for (let z = start; z <= end; z += .8) bar(b, [x - 1.5, .65, z], [x + 1.5, .65, z], .13, P.steel, 8);
     }
   }
   // Raised rollers are visual, with open walking gaps at z=0 and z=4, no invisible wall colliders.
-  for (const [x, z] of [[-3, 26], [-6, 19], [-6, .2], [-8, -4], [-8, -9], [7, -12], [21, -12], [7.8, -6.5], [20.2, -6.5], [8, 7.7], [8, 17.3], [7, 18]]) {
+  // Receiving and tools have real work surfaces, not identical machine levers.
+  for (const [x, z, top] of [[-3, 26, .8], [-6, 19, 1.1]]) {
+    cube([x, top, z], [2.2, .16, 1.2], P.timber, true);
+    for (const dx of [-.85, .85]) cube([x + dx, top / 2, z], [.18, top, .9], P.dark, true);
+    cube([x, top + .14, z - .48], [2, .12, .12], P.amber);
+  }
+  for (const [x, z] of [[-6, .2], [-8, -4], [-8, -9], [7, -12], [21, -12], [7.8, -6.5], [20.2, -6.5], [8, 7.7], [8, 17.3], [7, 18]]) {
     cube([x, .6, z], [.8, 1.2, .7], P.dark, true);
     cube([x, 1.25, z], [1, .16, .9], P.amber);
     bar(b, [x, 1.3, z], [x, 1.75, z + .18], .07, P.rubber, 6);

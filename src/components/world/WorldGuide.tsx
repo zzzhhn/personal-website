@@ -16,11 +16,14 @@ import { GuideIdleLayer } from './WorldGuideIdle';
 import { refineGuideBoots } from './WorldGuideShape';
 import { calibrateGuideBootClips } from './WorldGuideBoots';
 import { createClubDanceClips, clubDanceSampleTime } from './WorldGuideDance';
+import { GuideAttractionFeet, settleGuideAttraction } from './WorldGuideAttraction';
+import type { CoasterActorFrame } from './attractions/coaster-transition';
 import { GuideSeatContact, GuideSeatedIdle, guideSeatRootY, holdGuideSeatIdle } from './WorldGuideSeat';
 import { GuideVaultLayer, type GuideRailVault } from './WorldGuideVault';
 import { GUIDE_VEHICLE_TRANSITION_S, GuideDrivingPose, GuideVehicleUpperBody, GuideVehicleContacts, GuideVehicleSitPose, guideVehicleApproach, guideVehicleRoot, guideVehicleSample, guideVehicleOrientation, guideVehicleSeatBlend, guideVehicleDrivingBlend, settleGuideVehicle, type GuideVehicleFrame } from './WorldGuideVehicle';
 
 export interface WorldGuideMotion {
+  attraction?: CoasterActorFrame | null;
   speedMps: number; grounded: boolean; facing: number; targetSpeedMps?: number;
   /** Movement intent from input (WorldActors): no keys / WASD / WASD+Shift. */
   intent?: 'idle' | 'walk' | 'run';
@@ -280,7 +283,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       b.userData.leanAxis = new Vector3(1, 0, 0).applyQuaternion(scene.getWorldQuaternion(new Quaternion())).applyQuaternion(inv).normalize();
       spineBones.push(b);
     } });
-    return { scene, visualGLTF, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4), design, contact, slope:new GuideSlopeFit(scene), spineBones, inert:new GuideInertializer(scene), extras, yawCurve, disposeMerged, disposeBoots, idle: new GuideIdleLayer(scene, actions.IdleLook?.getClip().duration), seatContact: new GuideSeatContact(scene, animations), seatedIdle: new GuideSeatedIdle(scene), vehicleUpper: new GuideVehicleUpperBody(scene), drivingPose:new GuideDrivingPose(scene), vehicleContacts:new GuideVehicleContacts(scene), vehicleQuaternion:new Quaternion(), vehicleReference:new Vector3(), seatPoint: new Vector3(), mine: new GuideMineLayer(scene), vault:new GuideVaultLayer(scene),
+    return { scene, visualGLTF, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4), design, contact, slope:new GuideSlopeFit(scene), spineBones, inert:new GuideInertializer(scene), extras, yawCurve, disposeMerged, disposeBoots, idle: new GuideIdleLayer(scene, actions.IdleLook?.getClip().duration), seatContact: new GuideSeatContact(scene, animations), seatedIdle: new GuideSeatedIdle(scene), attractionFeet: new GuideAttractionFeet(), vehicleUpper: new GuideVehicleUpperBody(scene), drivingPose:new GuideDrivingPose(scene), vehicleContacts:new GuideVehicleContacts(scene), vehicleQuaternion:new Quaternion(), vehicleReference:new Vector3(), seatPoint: new Vector3(), mine: new GuideMineLayer(scene), vault:new GuideVaultLayer(scene),
       vehicleSit:new GuideVehicleSitPose(scene,animations),
       materials: (() => { const m: MeshStandardMaterial[] = []; scene.traverse(o => { if (o instanceof Mesh) for (const x of [o.material].flat()) if (!m.includes(x as MeshStandardMaterial)) m.push(x as MeshStandardMaterial); }); return m; })(),
       rootOff: new Vector3(), rootOffVel: new Vector3(), rootOffFrom: new Vector3(), lastWorld: new Vector3(), baseWorld: new Vector3(), vehOff: new Vector3(), vehiclePathPrevious: new Vector3(),
@@ -385,14 +388,17 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     rig.vehicleSit.restore();
     rig.seatedIdle.restore();
     rig.vault.restore();
+    rig.attractionFeet.restore();
     rig.mine.restore();
     rig.idle.restore();
     const dt = Math.max(1e-6, Math.min(delta, .08));
-    const { speedMps, grounded, facing, targetSpeedMps } = motion;
+    const { grounded, facing, targetSpeedMps } = motion;
+    const attraction = motion.attraction;
+    const speedMps = attraction?.speed ?? motion.speedMps;
     group.current?.updateWorldMatrix(true, false);
     group.current?.getWorldPosition(rig.motionPoint);
     const moved = Math.hypot(rig.motionPoint.x-rig.previousMotionPoint.x, rig.motionPoint.z-rig.previousMotionPoint.z);
-    let travel = rig.hasMotionSample && moved < 1 ? moved : speedMps * dt;
+    let travel = attraction ? speedMps * dt : rig.hasMotionSample && moved < 1 ? moved : speedMps * dt;
     rig.previousMotionPoint.copy(rig.motionPoint); rig.hasMotionSample = true;
     // Use measured velocity directly. A wall contact must stop the stride, even with W held.
     s.speed = speedMps;
@@ -595,7 +601,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     } else { s.faded = 1; s.vehPhase = ''; }
     const dancing = motion.dance != null && grounded && !seat && !s.sat && !vt && speedMps < .25;
     if (dancing) { desired = motion.dance === 0 ? 'ClubGroove' : 'ClubDisco'; s.turn = null; }
-    onMovementLock?.(!!seat || s.sat || !!vt);
+    onMovementLock?.(!!seat || s.sat || !!vt || !!attraction);
     if (!vt && approach && !seat && !s.sat && grounded && (desired === 'Idle' || desired === 'IdleLook')) desired = 'Walk';
     if (!vt && shownYawOverride !== null && (desired === 'Walk' || isGait(desired))) shownYaw = shownYawOverride;
     // SitDown changes from the approach heading to the seat heading while the short legs are lifted.
@@ -606,6 +612,11 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       const p = Math.min(1, Math.max(0, (u - .45) / .45)), k = p * p * (3 - 2 * p);
       const angle = Math.atan2(Math.sin(seat.yaw - s.sitFromYaw), Math.cos(seat.yaw - s.sitFromYaw));
       shownYaw = s.sitFromYaw + angle * k;
+    }
+    if (attraction) {
+      desired = rig.extras || !['TurnL', 'TurnR', 'SitDown', 'SitIdle', 'StandUp'].includes(attraction.clip) ? attraction.clip : 'Idle';
+      shownYaw = attraction.yaw; s.turn = null; s.sat = false; s.lastSeat = null;
+      rig.rootOff.set(0, 0, 0); rig.vehOff.set(0, 0, 0);
     }
     s.shownYaw = shownYaw;
     const locomotionSwitch = desired !== s.current && isGait(desired) && isGait(s.current) && grounded;
@@ -701,6 +712,11 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       action.setEffectiveTimeScale(0); action.time = Math.min(1, Math.max(0, u)) * action.getClip().duration;
     }
     if (s.current.endsWith('Air')) { const a = rig.actions[s.current]; a.paused = true; a.time = s.airPhase * a.getClip().duration; }
+    if (attraction?.clipPhase !== undefined) {
+      const action = rig.actions[s.current];
+      action.paused = false; action.setEffectiveTimeScale(0);
+      action.time = attraction.clipPhase * action.getClip().duration;
+    }
     // Match stride distance to the displayed body displacement, including fixed-step
     // physics interpolation. Velocity × display dt is a different clock during hitches.
     // The fading source action must follow that clock too: its feet still contribute
@@ -715,13 +731,13 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       a.time = clubDanceSampleTime(motion.dance===0?0:1,motion.danceBeat??0,a.getClip().duration);
       a.setEffectiveTimeScale(0);
     }
-    if (vt || dancing) stop.current?.cancel(dancing ? 'club-dance' : 'vehicle-door-frame');
+    if (attraction || vt || dancing) stop.current?.cancel(dancing ? 'club-dance' : 'vehicle-door-frame');
     else stop.current?.preUpdate({ animation:s.current, grounded, speedMps, facing: shownYaw, visible: shown, wantsMove: CROSSFADE_AB ? undefined : intent !== 'idle' });
     rig.inert.capture();
     rig.mixer.update(dt); s.time += dt;
     rig.inert.apply(dt);
     if (!dancing) rig.idle.apply();
-    rig.seatedIdle.apply(dt, (!!seat && s.current === 'SitIdle') || vehicleSample?.stage === 'seated');
+    rig.seatedIdle.apply(dt, ((!!seat || !!attraction) && s.current === 'SitIdle') || vehicleSample?.stage === 'seated');
     if (vehicleSample) {
       const clamp01=(v:number)=>Math.min(1,Math.max(0,v)),smooth=(v:number)=>{const t=clamp01(v);return t*t*(3-2*t);};
       const closeReach=vt?.frame&&vt.id!=='coupe'?smooth((vehicleSample.q-.92)/.025)*(1-smooth((vehicleSample.q-.98)/.02)):0;
@@ -743,7 +759,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       // Seat position is the buttock contact, independent of the approach surface. Blend to the
       // measured seated root without a cached-ground floor: that floor floated the sitter when the
       // approach came from the bench top. StandUp ends at the caller's current safe body root.
-      const sitting = !vt && (s.current === 'SitDown' || s.current === 'SitIdle' || s.current === 'StandUp');
+      const sitting = !attraction && !vt && (s.current === 'SitDown' || s.current === 'SitIdle' || s.current === 'StandUp');
       const frac = (n: string) => Math.min(1, rig.actions[n].time / rig.actions[n].getClip().duration);
       const sstep = (x: number) => { const c = Math.min(1, Math.max(0, x)); return c * c * (3 - 2 * c); };
       const sitW = !sitting ? 0 : s.current === 'SitIdle' ? 1 : s.current === 'SitDown' ? sstep((frac('SitDown') - .35) / .6) : s.current === 'StandUp' ? 1 - sstep(frac('StandUp') / .6) : 0;
@@ -825,7 +841,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         ahead.left += w * aL; ahead.right += w * aR;
       }
       if (wsum > 0) { contact.left /= wsum; contact.right /= wsum; ahead.left /= wsum; ahead.right /= wsum; }
-      s.slopeOn = grounded && !dancing && !s.current.endsWith('Air') && !s.current.endsWith('Start') && !/^Sit|^StandUp/.test(s.current) && !s.vehPhase;
+      s.slopeOn = !attraction && grounded && !dancing && !s.current.endsWith('Air') && !s.current.endsWith('Start') && !/^Sit|^StandUp/.test(s.current) && !s.vehPhase;
       rig.slope.solve(dt, s.slopeOn, motion.probeGround, baseY, contact, stop.current?.pelvisDrop ?? 0, ahead, group.current.position.y);
       if (stop.current) {
         stop.current.externalDrop = rig.slope.drop;
@@ -887,8 +903,10 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         m.opacity = s.faded;
       }
       // Apply after locomotion. Interaction crouches preserve the completed world-space foot anchors.
-      const mine = rig.mine.apply(useAlphaMineStore.getState(), !dancing && !motion.seat && !motion.vehicle && !motion.railVault);
+      const mine = rig.mine.apply(useAlphaMineStore.getState(), !attraction && !dancing && !motion.seat && !motion.vehicle && !motion.railVault);
       rig.vault.apply(motion.railVault);
+      settleGuideAttraction(group.current, rig.seatContact, attraction);
+      rig.attractionFeet.apply(rig.slope, attraction, dt);
       mineVisualSockets.valid = mine.valid && !world.card;
       Object.assign(mineVisualSockets, { assetsReady: mine.assetsReady, contactError: mine.contactError,
         rightReachError: mine.rightReachError, leftReachError: mine.leftReachError,

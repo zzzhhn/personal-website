@@ -15,6 +15,8 @@ const { nearestInteractable, registerInteractable } = await import('../WorldInte
 const { INTENT_TARGETS, intentReachRadius } = await import('./intent-stations.ts');
 const { createIntentProgress, INTENT_STORAGE_KEY } = await import('./intent-progress.ts');
 const runtime = await import('./intent-state.ts');
+const { COASTER_BOARDING } = await import('./coaster-transition.ts');
+const { PLAYER_RADIUS, PLAYER_HALF_HEIGHT } = await import('../actor-physics.ts');
 const { attractionRide, endAttractionRide } = await import('./attraction-ride.ts');
 globalThis.document = { hidden: false };
 const records = new Map();
@@ -24,11 +26,12 @@ const release = Object.entries(INTENT_TARGETS).map(([id, position]) => registerI
   enabled: () => runtime.intentAvailable(id), onInteract: () => runtime.activateIntentTarget(id),
 }));
 function standAt(id) {
-  useWorldStore.setState({ position: [...INTENT_TARGETS[id]] });
-  nearestInteractable(...INTENT_TARGETS[id], () => true);
+  const position = id === 'board' ? COASTER_BOARDING.approach.map((v, i) => i === 1 ? v + PLAYER_RADIUS + PLAYER_HALF_HEIGHT : v) : [...INTENT_TARGETS[id]];
+  useWorldStore.setState({ position });
+  nearestInteractable(...position, () => true);
 }
 function fresh() {
-  endAttractionRide(); runtime.stopIntentRide(); records.clear();
+  endAttractionRide(); runtime.clearIntentRide(); records.clear();
   useWorldStore.setState({ ...useWorldStore.getInitialState(), ready: true });
   useAlphaMineStore.setState({ action: null, carried: null });
   Object.assign(mineActor, { available: true, grounded: true });
@@ -51,7 +54,11 @@ test('the actual runtime accepts six spatial actions, then chest, key, gate and 
   standAt('gate'); runtime.activateIntentTarget('gate'); assert.equal(s().progress.gateOpen, true);
   mineActor.grounded = false; standAt('board'); runtime.activateIntentTarget('board'); assert.equal(attractionRide.active, false);
   mineActor.grounded = true; standAt('board'); runtime.activateIntentTarget('board'); assert.equal(attractionRide.active, true); assert.equal(s().riding, true);
-  const exit = [...attractionRide.exit]; runtime.stopIntentRide(); assert.equal(attractionRide.active, false); assert.deepEqual(attractionRide.exit, exit);
+  assert.equal(runtime.intentRideClock.riding, false, 'clicking starts a walk, not the train');
+  assert.equal(attractionRide.transition.phase, 'approach');
+  const exit = [...attractionRide.exit]; runtime.stopIntentRide();
+  assert.equal(attractionRide.active, true, 'cancel requests a physical station exit');
+  assert.equal(attractionRide.transition.exitRequested, true); assert.deepEqual(attractionRide.exit, exit);
   assert.equal(s().progress.gateOpen, true); assert.equal(JSON.parse(records.get(INTENT_STORAGE_KEY)).passed.length, 6);
 });
 test('device calls cannot bypass distance, the shared sight check, pause, hiding or other actor actions', () => {

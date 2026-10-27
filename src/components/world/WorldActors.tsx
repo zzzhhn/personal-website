@@ -12,7 +12,9 @@ import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag.ts';
 import { useWorldStore, type NearbyInteract } from './store';
 import { CLUB, CLUB_POOL } from './djc-club-layout';
 import { IBD_YARD, INTENT_COASTER, ATTRACTION_ROADS } from './attractions/attraction-layout';
-import { attractionRide, endAttractionRide } from './attractions/attraction-ride';
+import { captureCoasterStart } from './attractions/coaster-transition';
+import { attractionRide, endAttractionRide, requestAttractionExit, completeAttractionRide } from './attractions/attraction-ride';
+import { attractionCameraPose, attractionLook, turnAttractionLook, zoomAttractionLook } from './attractions/attraction-camera';
 import { clubAudio } from './WorldClubAudio';
 import { cycleInteractPick, nearestInteractable, type Interactable } from './WorldInteract';
 import type { Vec3, VehicleId } from './types';
@@ -286,7 +288,7 @@ function GuideVisual({ cars, body, grounded, yaw, targetSpeed, intent, jumpSeq, 
     if(tr){const car=cars.current.get(tr.id);vehicle={id:tr.id,phase:tr.phase,t:guideVehicleProgress(tr.phase,tr.elapsed,tr.approachSeconds),door:tr.door,cabin:car?cabinAnchor(car,tr.side):tr.cabin,yaw:tr.yaw,approach:tr.approach,frame:car?{...cabinFrame(car,tr.side),groundY:tr.door[1]}:undefined};}
     else if(st.activeVehicle){const car=cars.current.get(st.activeVehicle);if(car){const cabin=cabinAnchor(car,car.driverSide);vehicle={id:car.spec.id,phase:'enter',t:1,door:cabin,cabin,yaw:heading(car.body.rotation()),frame:cabinFrame(car,car.driverSide)};}}
     const ride=attractionRide.active?attractionRide.pose:null;
-    return {seat:ride?{position:ride.seat,yaw:ride.yaw,orientation:ride.orientation}:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:false,
+    return {attraction:ride?attractionRide.transition?.frame:null,seat:ride&&!attractionRide.transition?{position:ride.seat,yaw:ride.yaw,orientation:ride.orientation}:st.seat?{position:st.seat.position,yaw:st.seat.yaw}:null,vehicle,hidden:false,
       dance:st.clubMode==='dance'&&clubAudio.energy()>0?st.danceStep:null,danceBeat:clubAudio.beat()};
   };
   return <WorldGuide key={resetId} speedMps={0} grounded facing={0} visible={visible} readMotion={readMotion} onMovementLock={locked=>{movementLock.current=locked;}} />;
@@ -666,6 +668,10 @@ export default function WorldActors() {
     const wheel=(event:WheelEvent)=>{
       const state=useWorldStore.getState(); if(state.paused || state.poolInspect || state.shot || state.clubMode==='dj') return;
       event.preventDefault();
+      if(attractionRide.active){
+        if(!attractionRide.pose.firstPerson){const step=event.deltaMode===1?event.deltaY*33:event.deltaMode===2?event.deltaY*400:event.deltaY;zoomAttractionLook(step*WHEEL_ZOOM);}
+        return;
+      }
       const c=cam.current;
       if(c.firstPerson){ if(event.deltaY>0) useWorldStore.setState({zoom:0}); return; }
       const step=event.deltaMode===1?event.deltaY*33:event.deltaMode===2?event.deltaY*400:event.deltaY;
@@ -675,18 +681,24 @@ export default function WorldActors() {
     // Mouse look: drag with any button, or move freely while the pointer is locked (double-click).
     let drag:{id:number;x:number;y:number}|null=null;
     const look=(dx:number,dy:number,k:number)=>{
+      if(attractionRide.active){turnAttractionLook(dx*k,dy*k);return;}
       const c=cam.current,lim=c.firstPerson?CAMERA_PITCH_LIMITS.first:CAMERA_PITCH_LIMITS.third;
       c.yaw+=dx*k; c.pitch=clamp(c.pitch+dy*k,lim[0],lim[1]); c.lastManual=performance.now()/1000;
     };
-    const blocked=()=>{const st=useWorldStore.getState();return st.paused||st.poolInspect||!!st.shot||st.clubMode==='dj'||attractionRide.active;};
-    const pointerDown=(e:PointerEvent)=>{if(blocked())return;drag={id:e.pointerId,x:e.clientX,y:e.clientY};gl.domElement.setPointerCapture?.(e.pointerId);};
+    const blocked=()=>{const st=useWorldStore.getState();return st.paused||st.poolInspect||!!st.shot||st.clubMode==='dj';};
+    const pointerDown=(e:PointerEvent)=>{
+      if(blocked()||document.pointerLockElement===gl.domElement)return;
+      drag={id:e.pointerId,x:e.clientX,y:e.clientY};
+      try { gl.domElement.setPointerCapture?.(e.pointerId); }
+      catch(error) { if(!(error instanceof DOMException)||!['InvalidStateError','NotFoundError'].includes(error.name))throw error;drag=null; }
+    };
     const pointerMove=(e:PointerEvent)=>{
       if(blocked())return;
       if(document.pointerLockElement===gl.domElement){look(e.movementX,e.movementY,MOUSE_LOCKED);return;}
       if(!drag||drag.id!==e.pointerId)return;
       look(e.clientX-drag.x,e.clientY-drag.y,MOUSE_DRAG);drag.x=e.clientX;drag.y=e.clientY;
     };
-    const pointerUp=(e:PointerEvent)=>{if(drag?.id===e.pointerId){drag=null;gl.domElement.releasePointerCapture?.(e.pointerId);}};
+    const pointerUp=(e:PointerEvent)=>{if(drag?.id===e.pointerId){drag=null;if(gl.domElement.hasPointerCapture?.(e.pointerId))gl.domElement.releasePointerCapture(e.pointerId);}};
     const dbl=()=>{if(!blocked()&&document.pointerLockElement!==gl.domElement)Promise.resolve(gl.domElement.requestPointerLock?.()).catch(()=>{});};
     const menu=(e:Event)=>e.preventDefault();
     const el=gl.domElement;
@@ -878,17 +890,31 @@ export default function WorldActors() {
     for(const [id,seconds] of rescueRetry.current)rescueRetry.current.set(id,Math.max(0,seconds-dt));
     if(attractionRide.active){
       if(!rideHeld.current){
-        clearPlayerMotion(true);clearInput();rideHeld.current=true;player.current.setEnabled(false);
+        const start=player.current.translation();
+        if(attractionRide.transition)captureCoasterStart(attractionRide.transition,[start.x,start.y-(PLAYER_RADIUS+PLAYER_HALF_HEIGHT),start.z],guideYaw.current);
+        clearPlayerMotion();clearInput();rideHeld.current=true;player.current.setEnabled(false);
         occlusion.current.dispose();
         nearbyItem.current=null;useWorldStore.setState({nearbyInteract:null,nearbyVehicle:null,canVault:false});
       }
       const before=pad.current.buttons,gp=readPad(pad.current);pad.current=gp;
       if(gp.connected&&gp.buttons[9]&&!before[9]){useWorldStore.setState({paused:true});return;}
-      if(gp.connected&&gp.buttons[1]&&!before[1])endAttractionRide();
+      if(gp.connected&&gp.buttons[1]&&!before[1])requestAttractionExit();
       stepWorldVehicles(dt);
-      const pose=attractionRide.pose,p:Vec3=[pose.seat[0],pose.seat[1]+PLAYER_CENTER_HEIGHT,pose.seat[2]];
-      resetBody(player.current,p);guideYaw.current=pose.yaw;grounded.current=true;
-      guideTargetSpeed.current=0;moveIntent.current='idle';mineActor.available=false;
+      const pose=attractionRide.pose,actor=attractionRide.transition?.frame,root=actor?.root??pose.seat;
+      const p:Vec3=[root[0],root[1]+PLAYER_RADIUS+PLAYER_HALF_HEIGHT,root[2]];
+      resetBody(player.current,p);guideYaw.current=actor?.yaw??pose.yaw;grounded.current=true;
+      guideTargetSpeed.current=actor?.speed??0;moveIntent.current=actor&&actor.speed>.05?'walk':'idle';mineActor.available=false;
+      if(attractionRide.transition?.phase==='complete'){
+        // Revalidate the exact walked-to endpoint. An obstruction holds the actor here;
+        // it never selects a different platform position or silently sends them to camp.
+        const landing=findSafePlayerLanding(world,rapier,player.current,[root],WATER_Y);
+        if(landing&&Math.abs(landing[1]-PLAYER_CENTER_HEIGHT-root[1])<.12){
+          completeAttractionRide();rideHeld.current=false;player.current.setEnabled(true);
+          clearInput();guideMovementLock.current=false;portalTravel.current.previous=p;
+          useWorldStore.setState({position:p,speed:0});
+        }
+        return;
+      }
       publishedTime.current+=dt;
       if(publishedTime.current>.09){publishedTime.current=0;useWorldStore.setState({position:p,speed:0,zone:'coaster'});}
       return;
@@ -1217,8 +1243,18 @@ export default function WorldActors() {
     }
     if (state.paused || state.poolInspect) return;
     if(attractionRide.active){
-      const pose=attractionRide.pose;
-      camera.position.set(...pose.cameraPosition);camera.up.set(...(pose.cameraUp??[0,1,0]));camera.lookAt(...pose.cameraTarget);
+      if(pad.current.connected)turnAttractionLook(pad.current.look[0]*PAD_LOOK*delta,pad.current.look[1]*PAD_LOOK*delta);
+      const pose=attractionCameraPose(attractionRide.pose);
+      const desired=new Vector3(...pose.cameraPosition),pivot=new Vector3(...pose.cameraTarget);
+      if(!pose.firstPerson&&(attractionLook.yaw||attractionLook.pitch||attractionLook.zoom!==1)){
+        const radius=camera instanceof PerspectiveCamera?cameraCollisionRadius(camera.near,pose.fov,camera.aspect,.22):.22;
+        const swept=sweepCamera(world,rapier,pivot,desired,radius,player.current??undefined,col=>!col.isSensor());
+        desired.set(swept.position.x,swept.position.y,swept.position.z);
+        const diff=new Vector3(...pose.cameraPosition).sub(pivot).normalize();
+        const safeTarget=cameraLookTarget(desired,pivot,[diff.x,diff.y,diff.z]);
+        pivot.set(safeTarget.x,safeTarget.y,safeTarget.z);
+      }
+      camera.position.copy(desired);camera.up.set(...(pose.cameraUp??[0,1,0]));camera.lookAt(pivot);
       if(camera instanceof PerspectiveCamera&&camera.fov!==pose.fov){camera.fov=pose.fov;camera.updateProjectionMatrix();}
       if(guideView.current)guideView.current.visible=!pose.firstPerson;
       cameraReady.current=false;

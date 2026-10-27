@@ -8,7 +8,8 @@ import { attractionRide, updateAttractionRide } from './attraction-ride';
 import { advanceCoaster, coasterDistanceAt, coasterFrame, coasterPhase, coasterRidePose, coasterWorld, COASTER_GATE_Z, COASTER_DURATION, COASTER_LENGTH } from './coaster-track';
 import { createCoasterCar, createCoasterStructure, type CoasterCollider } from './coaster-geometry';
 import { INTENT_STATIONS } from './intent-stations';
-import { activateIntentTarget, intentRideClock, loadIntentProgress, stopIntentRide, useIntentStore } from './intent-state';
+import { activateIntentTarget, intentRideClock, loadIntentProgress, clearIntentRide, useIntentStore } from './intent-state';
+import { advanceCoasterTransition, returnCoasterToStation } from './coaster-transition';
 import WorldIntentDevices from './WorldIntentDevices';
 import WorldIntentSigns from './WorldIntentSigns';
 import WorldIntentSurface from './WorldIntentSurface';
@@ -16,20 +17,21 @@ import { night } from '../WorldNight';
 
 /** World-space scene. The parent owns actor/camera integration and the activation radius. */
 function WorldIntentCoaster({ active }: { active: boolean }) {
-  const structure = useMemo(() => createCoasterStructure(active), [active]);
+  const occupied = useIntentStore(s => s.riding), enabled = active || occupied;
+  const structure = useMemo(() => createCoasterStructure(enabled), [enabled]);
   useEffect(() => () => { structure.steel.dispose(); structure.glow.dispose(); }, [structure]);
   useEffect(() => {
-    useIntentStore.setState({ active });
-    if (!active) { stopIntentRide(); return; }
+    useIntentStore.setState({ active: enabled });
+    if (!enabled) { clearIntentRide(); return; }
     loadIntentProgress();
     const releaseAudio = parkAudio.retain();
-    return () => { stopIntentRide(); useIntentStore.setState({ active: false }); releaseAudio(); };
-  }, [active]);
+    return () => { clearIntentRide(true); useIntentStore.setState({ active: false }); releaseAudio(); };
+  }, [enabled]);
   return <group name="intent-coaster" userData={{noOcclusionFade:true}}>
     <mesh geometry={structure.steel} receiveShadow><WorldIntentSurface roughness={.82} metalness={.16} /></mesh>
     <mesh geometry={structure.glow}><meshBasicMaterial vertexColors toneMapped={false} /></mesh>
-    <CoasterTrain active={active} />
-    {active && <><WorldIntentDevices /><WorldIntentSigns /><CoasterCollisions colliders={structure.colliders} /><IntentMovingLight /></>}
+    <CoasterTrain active={enabled} />
+    {enabled && <><WorldIntentDevices /><WorldIntentSigns /><CoasterCollisions colliders={structure.colliders} /><IntentMovingLight /></>}
   </group>;
 }
 export default memo(WorldIntentCoaster);
@@ -42,21 +44,39 @@ function CoasterTrain({ active }: { active: boolean }) {
   useFrame((_, dt) => {
     if (!active) return;
     const w = useWorldStore.getState(), s = useIntentStore.getState();
-    const next = advanceCoaster(intentRideClock, dt, active, w.paused || w.poolInspect || !!w.shot, document.hidden, attractionRide.active, attractionRide.revision);
-    if (intentRideClock.riding && !next.riding) {
-      stopIntentRide(); lastCue.current = -1;
-      if (next.elapsed >= COASTER_DURATION) useIntentStore.setState({ notice: { zh: '已安全回站，可以再次乘坐。', en: 'Back at the station. Ride again whenever you like.' } });
-    } else Object.assign(intentRideClock, next);
-    const u = intentRideClock.riding ? coasterDistanceAt(intentRideClock.elapsed) : 0;
+    const transition = attractionRide.transition;
+    const owned = s.riding && attractionRide.active && intentRideClock.revision === attractionRide.revision && !!transition;
+    const frozen = w.paused || w.poolInspect || !!w.shot || document.hidden;
+    if (s.riding && !owned) { clearIntentRide(); lastCue.current = -1; }
+    if (owned && transition.phase === 'riding') {
+      const next = advanceCoaster(intentRideClock, dt, active, frozen, document.hidden, true, attractionRide.revision);
+      Object.assign(intentRideClock, next);
+      if (!next.riding && next.elapsed >= COASTER_DURATION) {
+        returnCoasterToStation(transition);
+        useIntentStore.setState({ rideSecond: COASTER_DURATION });
+      }
+    }
+    const u = owned && transition.phase === 'riding' ? coasterDistanceAt(intentRideClock.elapsed) : 0;
+    if (owned) {
+      const wasRiding = transition.phase === 'riding';
+      const pose = coasterRidePose(u, wasRiding ? s.view : 'chase');
+      advanceCoasterTransition(transition, dt, frozen, pose);
+      if (!wasRiding && transition.phase === 'riding') Object.assign(intentRideClock, { elapsed: 0, riding: true });
+      if (transition.phase !== 'riding') {
+        // Boarding remains visible even when the selected on-track view is first person.
+        pose.cameraTarget = [transition.frame.root[0], transition.frame.root[1] + .9, transition.frame.root[2]];
+      }
+      updateAttractionRide(pose);
+      if (s.ridePhase !== transition.phase || s.exitRequested !== transition.exitRequested)
+        useIntentStore.setState({ ridePhase: transition.phase, exitRequested: transition.exitRequested });
+    }
     const moved = presented.current.u !== u;
     if (moved) cars.current.forEach((car, i) => {
       if (!car) return; const f = coasterFrame(u - i * 3.55 / COASTER_LENGTH);
       car.position.copy(f.point); car.quaternion.copy(f.rotation);
     });
-    const viewChanged = presented.current.view !== s.view;
     presented.current.u = u; presented.current.view = s.view;
     if (!intentRideClock.riding) return;
-    if (moved || viewChanged) updateAttractionRide(coasterRidePose(u, s.view));
     const second = Math.floor(intentRideClock.elapsed), phase = coasterPhase(intentRideClock.elapsed);
     if (second !== s.rideSecond) useIntentStore.setState({ rideSecond: second });
     if (phase !== lastPhase.current) { lastPhase.current = phase; if (phase === 'crest') parkAudio.cue('scan', .12); }
@@ -76,7 +96,7 @@ function CoasterCollisions({ colliders }: { colliders: CoasterCollider[] }) {
   const gateOpen = useIntentStore(s => s.progress.gateOpen);
   return <>
     {[true, false].map(surface => <RigidBody key={String(surface)} type="fixed" colliders={false} userData={surface ? { surface: true, assetId: 'intent-coaster' } : { solid: true, assetId: 'intent-coaster' }}>
-      {colliders.filter(c => !!c.surface === surface).map((c, i) => <CuboidCollider key={i} position={c.position} args={c.half} friction={.9} />)}
+      {colliders.filter(c => !!c.surface === surface).map((c, i) => <CuboidCollider key={i} position={c.position} rotation={c.rotation} args={c.half} friction={.9} />)}
     </RigidBody>)}
     <RigidBody type="fixed" colliders={false} userData={{ solid: true, assetId: 'intent-coaster' }}>
       {!gateOpen && <CuboidCollider position={coasterWorld([0, 1.6, COASTER_GATE_Z])} args={[5, 1.6, .18]} />}

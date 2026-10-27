@@ -4,7 +4,9 @@ import { ibdLocal } from './ibd-yard-layout.ts';
 import { createIbdYardGame, requestIbdYardAction, finishIbdYardAction, cancelIbdYardAction, type IbdAction, type IbdActor } from './ibd-yard-game.ts';
 
 /** One scene/HUD bridge, no global timer or browser storage. Retains this visit across a lazy remount. */
-export const useIbdYardStore = create(() => ({ game: createIbdYardGame(), active: false }));
+export const useIbdYardStore = create(() => ({ game: createIbdYardGame(), active: false, guideEnabled: true }));
+/** Guidance is an independent visit preference: skipping/resuming never changes cargo or evidence. */
+export function setIbdGuide(enabled: boolean) { useIbdYardStore.setState({ guideEnabled: enabled }); }
 export function ibdActor(): IbdActor {
   const world = useWorldStore.getState();
   return { local: ibdLocal(world.position), active: useIbdYardStore.getState().active,

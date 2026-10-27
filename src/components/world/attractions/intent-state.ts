@@ -7,19 +7,21 @@ import { useWorldStore } from '../store';
 import { reachableInteractables } from '../WorldInteract';
 import { mineActor, useAlphaMineStore } from '../alpha-mine-state';
 import { parkAudio } from '../WorldParkAudio';
-import { attractionRide, beginAttractionRide, endAttractionRide } from './attraction-ride.ts';
-import { coasterRidePose, coasterWorld, COASTER_GATE_Z, COASTER_EXIT, type CoasterView, type CoasterClock } from './coaster-track.ts';
+import { attractionRide, beginAttractionRide, endAttractionRide, requestAttractionExit } from './attraction-ride.ts';
+import { PLAYER_RADIUS, PLAYER_HALF_HEIGHT } from '../actor-physics.ts';
+import { COASTER_BOARDING, coasterAtBoardingEntrance, type CoasterBoardingPhase } from './coaster-transition.ts';
+import { coasterRidePose, coasterWorld, COASTER_GATE_Z, type CoasterView, type CoasterClock } from './coaster-track.ts';
 
 interface IntentState {
   progress: IntentProgress; loaded: boolean; saveIssue: IntentText | null;
   tasks: Record<IntentStationId, number>; tools: Record<IntentStationId, IntentClass>;
   notice: IntentText | null; effect: { station: IntentStationId; tool: IntentClass | 'bell'; correct: boolean; sequence: number } | null;
-  riding: boolean; view: CoasterView; rideSecond: number; active: boolean;
+  ridePhase: CoasterBoardingPhase | null; exitRequested: boolean; riding: boolean; view: CoasterView; rideSecond: number; active: boolean;
 }
 export const useIntentStore = create<IntentState>(() => ({
   progress: createIntentProgress(), loaded: false, saveIssue: null,
   tasks: { route: 0, press: 0, visitor: 0 }, tools: { route: 'lookup', press: 'rewrite', visitor: 'rewrite' },
-  notice: null, effect: null, riding: false, view: 'chase', rideSecond: 0, active: false,
+  notice: null, effect: null, ridePhase: null, exitRequested: false, riding: false, view: 'chase', rideSecond: 0, active: false,
 }));
 export const intentRideClock: CoasterClock = { elapsed: 0, riding: false, revision: -1 };
 let writable = true, sequence = 0;
@@ -48,7 +50,7 @@ export function intentAvailable(target: IntentTarget) {
   const w = useWorldStore.getState(), s = useIntentStore.getState(), mine = useAlphaMineStore.getState();
   return s.active && w.ready && !s.riding && !attractionRide.active && !w.paused && !w.activeVehicle && !w.card && !w.shot
     && !w.seat && !w.clubMode && !w.poolInspect && !mine.action && !mine.carried && (typeof document === 'undefined' || !document.hidden)
-    && intentInReach(w.position, target) && (target !== 'board' || (s.progress.gateOpen && mineActor.available && mineActor.grounded));
+    && intentInReach(w.position, target) && (target !== 'board' || (s.progress.gateOpen && mineActor.available && mineActor.grounded && coasterAtBoardingEntrance([w.position[0], w.position[1] - (PLAYER_RADIUS + PLAYER_HALF_HEIGHT), w.position[2]])));
 }
 // DOM buttons and pointer picks share the actor's line-of-sight result, not just screen visibility.
 export const intentContact = (target: IntentTarget) => intentAvailable(target)
@@ -85,17 +87,23 @@ export function activateIntentTarget(target: IntentTarget) {
     else operateIntent(target);
   } else if (target === 'chest') commit({ type: useIntentStore.getState().progress.chestOpen ? 'take-key' : 'open-chest' });
   else if (target === 'gate') commit({ type: 'unlock-gate' });
-  else if (beginAttractionRide(coasterRidePose(0, useIntentStore.getState().view), COASTER_EXIT)) {
+  else if (beginAttractionRide(coasterRidePose(0, useIntentStore.getState().view), COASTER_BOARDING.exit, [useWorldStore.getState().position[0], useWorldStore.getState().position[1] - (PLAYER_RADIUS + PLAYER_HALF_HEIGHT), useWorldStore.getState().position[2]], mineActor.yaw)) {
     parkAudio.cue('scan', .3);
-    Object.assign(intentRideClock, { elapsed: 0, riding: true, revision: attractionRide.revision });
-    useIntentStore.setState({ riding: true, rideSecond: 0, notice: null });
+    Object.assign(intentRideClock, { elapsed: 0, riding: false, revision: attractionRide.revision });
+    useIntentStore.setState({ riding: true, ridePhase: 'approach', exitRequested: false, rideSecond: 0, notice: null });
   }
 }
 export function stopIntentRide() {
+  if (intentRideClock.revision !== attractionRide.revision || !attractionRide.active) return;
+  requestAttractionExit();
+  useIntentStore.setState({ exitRequested: true });
+}
+/** Lifecycle/recovery cleanup is distinct from the normal station-only exit request. */
+export function clearIntentRide(abort = false) {
   // Never end another attraction's ride after external recovery has changed bridge ownership.
-  if (intentRideClock.riding && intentRideClock.revision === attractionRide.revision) endAttractionRide();
+  if (abort && intentRideClock.revision === attractionRide.revision) endAttractionRide();
   Object.assign(intentRideClock, { riding: false, elapsed: 0 });
-  useIntentStore.setState({ riding: false, rideSecond: 0 });
+  useIntentStore.setState({ riding: false, ridePhase: null, exitRequested: false, rideSecond: 0 });
 }
 export function resetIntentVisit() {
   if (useIntentStore.getState().riding) return;

@@ -12,14 +12,21 @@ import WorldIbdSigns from './WorldIbdSigns';
 import WorldIbdLighting from './WorldIbdLighting';
 import { createIbdMaterial } from './ibd-yard-lighting.ts';
 import { night } from '../WorldNight';
+import WorldIbdGuide from './WorldIbdGuide';
+import { ibdGuideStep } from './ibd-yard-guide.ts';
 
 function Station({ id, active }: { id: IbdStationId; active: boolean }) {
   const game = useIbdYardStore(s => s.game), station = ibdStation(id, game.core.moved);
-  const action = yardActions(game, id)[0];
+  const guided = useIbdYardStore(s => s.guideEnabled), guide = ibdGuideStep(game), target = ibdStation(guide.action.station, game.core.moved);
+  // E and the HUD execute the same recommended action, including an exchange or
+  // the next batch. Do not keep advertising receipt after the manifest was taken.
+  const action = guided && id === target.id ? guide.action
+    : guided && id === 'manifest' && game.started ? undefined : yardActions(game, id)[0];
   useInteractable(active && action ? {
     id: `ibd-${id}`, kind: 'exhibit', position: ibdWorld(station.at), radius: station.radius,
-    label: IBD_ACTION_LABEL[action.kind],
-    enabled: () => { const a = ibdActor(); return a.active && !a.paused && !a.hidden && !a.driving && !useIbdYardStore.getState().game.pending; },
+    label: guided && id === target.id ? guide.title : IBD_ACTION_LABEL[action.kind],
+    enabled: () => { const a = ibdActor(); return a.active && !a.paused && !a.hidden && !a.driving && !useIbdYardStore.getState().game.pending
+      && (!guided || id === target.id); },
     onInteract: () => dispatchIbdAction(action),
   } : null);
   return null;
@@ -44,6 +51,7 @@ export default memo(function WorldIbdYard({ active = true }: { active?: boolean 
     <WorldIbdMechanisms material={data.movingMaterial} active={active} />
     <WorldIbdLighting active={active} uniform={data.uniform} />
     {active && <WorldIbdSigns />}
+    {active && <WorldIbdGuide />}
     {IBD_STATIONS.map(s => <Station key={s.id} id={s.id} active={active} />)}
   </group>;
 });

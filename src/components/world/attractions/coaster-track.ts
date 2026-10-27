@@ -3,11 +3,7 @@ import { INTENT_COASTER } from './attraction-layout.ts';
 import type { AttractionRidePose } from './attraction-ride.ts';
 import type { Vec3 } from '../types';
 
-export const COASTER_RUN_MULTIPLIER = 3;
-// Preserve the climb/hold and eight-second station brake; compress only the thrill run.
-const rideTime = (authoredSeconds: number) => authoredSeconds <= 36 ? authoredSeconds
-  : 36 + (Math.min(authoredSeconds, 114) - 36) / COASTER_RUN_MULTIPLIER + Math.max(0, authoredSeconds - 114);
-export const COASTER_DURATION = rideTime(122);
+export const COASTER_DURATION = 70;
 export type CoasterView = 'chase' | 'first-person' | 'comfort';
 export const coasterWorld = ([x, y, z]: Vec3): Vec3 => [x + INTENT_COASTER.center[0], y + INTENT_COASTER.center[1], z + INTENT_COASTER.center[2]];
 export const COASTER_GATE_Z = 56;
@@ -37,30 +33,45 @@ export const coasterControlU = (index: number) => {
   const at = index / COASTER_POINTS.length * (lengths.length - 1), low = Math.floor(at);
   return (lengths[low] + (lengths[Math.min(low + 1, lengths.length - 1)] - lengths[low]) * (at - low)) / COASTER_LENGTH;
 };
+// Sample kinetic energy along distance, not arbitrary segment durations. Momentum carries
+// through the low run; the final braking distance brings the train to rest at the station.
+const releaseU = coasterControlU(6), releaseY = coasterCurve.getPointAt(releaseU).y;
+const run = Array.from({ length: 641 }, (_, i) => {
+  const u = releaseU + (1 - releaseU) * i / 640, s = (u - releaseU) * COASTER_LENGTH;
+  const remaining = (1 - u) * COASTER_LENGTH;
+  const energy = Math.max(0, 2 * 9.81 * (releaseY - coasterCurve.getPointAt(u).y) + 3 * Math.min(s, 12));
+  const free = Math.min(34, Math.sqrt(energy)), brake = Math.sqrt(2 * 3.8 * remaining);
+  // Smooth minimum avoids a sudden acceleration change where braking takes over.
+  const speed = free > 0 && brake > 0 ? (free ** -8 + brake ** -8) ** (-1 / 8) : 0;
+  return { u, speed, time: 0 };
+});
+for (let i = 1; i < run.length; i++) run[i].time = run[i - 1].time
+  + 2 * (run[i].u - run[i - 1].u) * COASTER_LENGTH / Math.max(.001, run[i].speed + run[i - 1].speed);
+const runSeconds = run[run.length - 1].time;
 export const COASTER_TIMELINE = [
   { time: 0, u: 0 }, { time: 6, u: coasterControlU(1) }, { time: 31, u: coasterControlU(5) },
   { time: 34, u: coasterControlU(6) }, { time: 36, u: coasterControlU(6) },
-  { time: 42, u: coasterControlU(9) }, { time: 47, u: coasterControlU(10) },
-  { time: 53, u: coasterControlU(12) }, { time: 57, u: coasterControlU(14) },
-  { time: 69, u: coasterControlU(22) }, { time: 79, u: coasterControlU(26) },
-  { time: 91, u: coasterControlU(31) }, { time: 104, u: coasterControlU(37) },
-  { time: 114, u: coasterControlU(41) }, { time: 122, u: 1 },
-].map(key => ({ ...key, time: rideTime(key.time) }));
+  ...run.slice(1).map(p => ({ time: 36 + p.time / runSeconds * (COASTER_DURATION - 36), u: p.u })),
+];
 const secants = COASTER_TIMELINE.slice(1).map((b, i) => (b.u - COASTER_TIMELINE[i].u) / (b.time - COASTER_TIMELINE[i].time));
-const slopes = COASTER_TIMELINE.map((_, i) => i === 0 || i === COASTER_TIMELINE.length - 1 || !secants[i - 1] || !secants[i]
-  ? 0 : 2 / (1 / secants[i - 1] + 1 / secants[i]));
+const slopes = COASTER_TIMELINE.map((_, i) => i >= 4
+  ? run[i - 4].speed * runSeconds / ((COASTER_DURATION - 36) * COASTER_LENGTH)
+  : i === 0 || !secants[i - 1] || !secants[i] ? 0 : 2 / (1 / secants[i - 1] + 1 / secants[i]));
 export function coasterDistanceAt(seconds: number) {
   const t = Math.max(0, Math.min(COASTER_DURATION, Number.isFinite(seconds) ? seconds : 0));
-  const i = Math.max(0, COASTER_TIMELINE.findIndex((p, index) => index > 0 && t <= p.time) - 1);
+  let low = 0, high = COASTER_TIMELINE.length - 1;
+  while (high - low > 1) { const mid = (low + high) >>> 1; if (COASTER_TIMELINE[mid].time < t) low = mid; else high = mid; }
+  const i = low;
   const a = COASTER_TIMELINE[i], b = COASTER_TIMELINE[i + 1], span = b.time - a.time;
   const f = (t - a.time) / span, f2 = f * f, f3 = f2 * f;
   return (2 * f3 - 3 * f2 + 1) * a.u + (f3 - 2 * f2 + f) * span * slopes[i]
     + (-2 * f3 + 3 * f2) * b.u + (f3 - f2) * span * slopes[i + 1];
 }
 export function coasterPhase(seconds: number) {
-  return seconds < 6 ? 'station' : seconds < 31 ? 'lift' : seconds < 36 ? 'crest'
-    : seconds < rideTime(42) ? 'drop' : seconds < rideTime(47) ? 'low' : seconds < rideTime(57) ? 'airtime'
-      : seconds < rideTime(69) ? 'inversion' : seconds < rideTime(91) ? 'bank' : seconds < rideTime(104) ? 'helix' : seconds < rideTime(114) ? 'tunnel' : 'return';
+  if (seconds < 6) return 'station'; if (seconds < 31) return 'lift'; if (seconds < 36) return 'crest';
+  const u = coasterDistanceAt(seconds);
+  return u < coasterControlU(9) ? 'drop' : u < coasterControlU(10) ? 'low' : u < coasterControlU(14) ? 'airtime'
+    : u < coasterControlU(22) ? 'inversion' : u < coasterControlU(31) ? 'bank' : u < coasterControlU(37) ? 'helix' : u < coasterControlU(41) ? 'tunnel' : 'return';
 }
 const wrap = (u: number) => ((u % 1) + 1) % 1;
 const smooth = (value: number) => { const t = Math.max(0, Math.min(1, value)); return t * t * t * (t * (t * 6 - 15) + 10); };

@@ -1,4 +1,5 @@
-import { coasterWorld, COASTER_BOARD, COASTER_GATE_Z } from './coaster-track.ts';
+import { coasterWorld, COASTER_GATE_Z } from './coaster-track.ts';
+import { COASTER_BOARDING } from './coaster-transition.ts';
 import type { IntentClass, IntentText } from './intent-tasks.ts';
 import type { Vec3 } from '../types';
 
@@ -16,7 +17,8 @@ export const INTENT_STATIONS: IntentStation[] = [
 ];
 export const INTENT_TARGETS = {
   route: INTENT_STATIONS[0].target, press: INTENT_STATIONS[1].target, visitor: INTENT_STATIONS[2].target,
-  chest: coasterWorld([-8, 1, 61]), gate: coasterWorld([0, 1.3, COASTER_GATE_Z + 1.4]), board: COASTER_BOARD,
+  chest: coasterWorld([-8, 1, 61]), gate: coasterWorld([0, 1.3, COASTER_GATE_Z + 1.4]),
+  board: [COASTER_BOARDING.approach[0], COASTER_BOARDING.platformY + .8, COASTER_BOARDING.approach[2]] as Vec3,
 };
 export type IntentTarget = keyof typeof INTENT_TARGETS;
 export const intentReachRadius = (target: IntentTarget) => target === 'board' ? 3.4 : target === 'route' || target === 'press' || target === 'visitor' ? 3.6 : 3.1;

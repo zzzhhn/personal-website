@@ -6,6 +6,8 @@ import { INTENT_STATIONS, INTENT_TARGETS, INTENT_TOOL_ACTIONS, intentInReach, ty
 import { INTENT_LABELS, INTENT_TASKS, type IntentText } from './intent-tasks';
 import { activateIntentTarget, clarifyIntent, currentIntentTask, intentContact, nextIntentTask, resetIntentVisit, selectIntentTool, stopIntentRide, useIntentStore } from './intent-state';
 import { INTENT_COASTER } from './attraction-layout';
+import type { CoasterBoardingPhase } from './coaster-transition';
+import { resetAttractionLook } from './attraction-camera';
 import './intent-coaster.css';
 
 const PHASE_TEXT: Record<ReturnType<typeof coasterPhase>, IntentText> = {
@@ -15,6 +17,17 @@ const PHASE_TEXT: Record<ReturnType<typeof coasterPhase>, IntentText> = {
   low: { zh: '贴地疾驰', en: 'The low run' }, airtime: { zh: '越过驼峰', en: 'Over the airtime hill' },
   inversion: { zh: '倒置回环', en: 'Through the inversion' }, helix: { zh: '环绕设备楼', en: 'Around the equipment house' },
   return: { zh: '减速回站', en: 'Braking into the station' },
+};
+const BOARDING_TEXT: Record<CoasterBoardingPhase, IntentText> = {
+  approach: { zh: '走向登车踏步', en: 'Walking to the boarding steps' },
+  'step-in': { zh: '沿踏步进入车厢', en: 'Climbing the boarding steps' },
+  'turn-in': { zh: '转身对准座位', en: 'Turning toward the seat' },
+  sit: { zh: '正在坐下', en: 'Sitting down' }, settle: { zh: '坐稳后发车', en: 'Settling before departure' },
+  riding: { zh: '乘坐中', en: 'On the ride' }, stand: { zh: '列车已停稳，正在起身', en: 'Train stopped. Standing up' },
+  'turn-out': { zh: '转向车厢出口', en: 'Turning toward the exit' },
+  'step-out': { zh: '沿踏步下车', en: 'Walking down the steps' },
+  'walk-out': { zh: '走回安全站台', en: 'Walking onto the platform' },
+  complete: { zh: '正在确认站台出口畅通', en: 'Checking the platform exit is clear' },
 };
 const VIEWS: { id: CoasterView; label: IntentText }[] = [
   { id: 'chase', label: { zh: '追尾', en: 'Chase' } }, { id: 'first-person', label: { zh: '第一人称', en: 'First person' } },
@@ -43,17 +56,19 @@ function WorldIntentHud() {
   const contact = target ? intentContact(target) : false;
   const theme = ['night', 'evening'].includes(w.light) ? 'dark' : 'light';
   const viewControls = <div className="intent-views" role="group" aria-label={t('乘坐视角', 'Ride view')}>
-    {VIEWS.map(view => <button key={view.id} type="button" aria-pressed={s.view === view.id} onClick={() => useIntentStore.setState({ view: view.id })}>{view.label[lang]}</button>)}
+    {VIEWS.map(view => <button key={view.id} type="button" aria-pressed={s.view === view.id} onClick={() => { resetAttractionLook(); useIntentStore.setState({ view: view.id }); }}>{view.label[lang]}</button>)}
   </div>;
   if (s.riding) return <aside className="intent-hud intent-riding" data-theme={theme} aria-label={t('过山车乘坐控制', 'Coaster ride controls')}>
-    <div className="intent-ride-heading"><strong>{PHASE_TEXT[coasterPhase(s.rideSecond)][lang]}</strong><span>{s.rideSecond} / {COASTER_DURATION} s</span></div>
+    <div className="intent-ride-heading"><strong>{s.ridePhase && s.ridePhase !== 'riding' ? BOARDING_TEXT[s.ridePhase][lang] : PHASE_TEXT[coasterPhase(s.rideSecond)][lang]}</strong><span>{s.rideSecond} / {COASTER_DURATION} s</span></div>
     <progress value={s.rideSecond} max={COASTER_DURATION} aria-label={t('乘坐进度', 'Ride progress')} />
-    {viewControls}<button type="button" className="intent-primary" onClick={stopIntentRide}>{t('结束乘坐，回安全车站', 'End ride and return to the station')}</button>
-    <small>{t('Esc／手柄 Start 暂停；手柄 B 退出。恢复后从原处继续。', 'Esc / gamepad Start pauses; gamepad B exits. Resume from the same point.')}</small>
+    {viewControls}<button type="button" onClick={resetAttractionLook}>{t('视角归位', 'Reset view')}</button>
+    <p><small>{t('拖拽自由观察 · 滚轮缩放 · 手柄右摇杆转头', 'Drag to look · scroll to zoom · right stick to look')}</small></p>
+    <button type="button" className="intent-primary" disabled={s.exitRequested || ['stand', 'turn-out', 'step-out', 'walk-out', 'complete'].includes(s.ridePhase ?? '')} onClick={stopIntentRide}>{s.exitRequested ? t('已登记，回站后下车', 'Exit requested. Leaving at the station') : s.ridePhase === 'riding' ? t('回站后下车', 'Leave at the station') : t('取消本次发车并下车', 'Cancel departure and step out')}</button>
+    <small>{t('Esc／手柄 Start 暂停；手柄 B 申请下车。行驶中会完成当前回路，恢复后从原处继续。', 'Esc / Start pauses; B requests an exit. A moving train completes its loop. Resume from the same point.')}</small>
   </aside>;
   const primaryText = target === 'chest' ? s.progress.keyTaken ? t('钥匙已在身上', 'You have the key') : s.progress.chestOpen ? t('拿起钥匙', 'Take the key') : t('掀开宝箱', 'Open the chest')
     : target === 'gate' ? s.progress.gateOpen ? t('大门已打开', 'Gate open') : t('插入钥匙，打开大门', 'Insert key and unlock gate')
-    : target === 'board' ? t(`坐进列车，开始 ${COASTER_DURATION} 秒回路`, `Board the ${COASTER_DURATION}-second ride`)
+    : target === 'board' ? t(`沿踏步登车，坐稳后开始 ${COASTER_DURATION} 秒回路`, `Board the ${COASTER_DURATION}-second ride`)
     : station ? station.id === 'visitor' && !s.progress.clarified.includes('T7') ? t('摇铃问清目标', 'Ring to clarify the goal') : INTENT_TOOL_ACTIONS[s.tools[station.id]][lang] : '';
   const disabled = !contact || (target === 'chest' && s.progress.keyTaken) || (target === 'gate' && s.progress.gateOpen);
   return <aside className="intent-hud" data-theme={theme} lang={lang === 'zh' ? 'zh-CN' : 'en'} aria-label={t('意图过山车', 'Intent coaster')}>
@@ -78,7 +93,7 @@ function WorldIntentHud() {
     </section>}
     {target === 'board' && viewControls}
     {target && <button type="button" className="intent-primary" disabled={disabled} onClick={() => activateIntentTarget(target)}>{!station && <kbd>E</kbd>}{primaryText}</button>}
-    {target && !contact && <small>{t('再靠近一点，面向装置。', 'Move closer and face the device.')}</small>}
+    {target && !contact && <small>{target === 'board' ? t('走到车厢左侧踏步前，再按 E 登车。', 'Walk to the foot of the steps on the left, then press E.') : t('再靠近一点，面向装置。', 'Move closer and face the device.')}</small>}
     {s.notice && <p className="intent-notice" role="status" aria-live="polite">{s.notice[lang]}</p>}
     {s.saveIssue && <p className="intent-save-issue" role="status">{s.saveIssue[lang]}</p>}
     <button type="button" className="intent-text-button" aria-expanded={details} onClick={() => setDetails(!details)}>{t('玩法与本机进度', 'About this ride & local progress')}</button>
