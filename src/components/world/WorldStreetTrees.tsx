@@ -38,7 +38,7 @@ function merged(gltf: GLTF, prefix: string) {
 export default function StreetTrees() {
   const files = useLoader(GLTFLoader, IDS.map(id => `/assets/world/street/${id}.glb`), loader) as GLTF[];
   const built = useMemo(() => {
-    const northTrees=[[-17,1,-115],[-3,1,-116],[-24,1,-132],[-39,1,-134],[-52,1,-139],[-70,1,-139],[-104,1,-147],[-118,1,-172],[-114,1,-207],[-83,1,-209],[-62,1,-205],[5,1,-137],[15,1,-132],[32,1,-133],[89,1,-150],[93,1,-180],[77,1,-221],[43,1,-226]];
+    const northTrees=[[-17,1,-115],[-3,1,-116],[-24,1,-132],[-39,1,-134],[-52,1,-139],[-70,1,-139],[-104,1,-147],[-118,1,-172],[-114,1,-207],[-83,1,-209],[-62,1,-205],[5,1,-137],[15,1,-132],[38,1,-116],[89,1,-150],[93,1,-180],[77,1,-221],[43,1,-226]];
     const points = [...TREES_V4.filter(p => p[1] < 2), ...solidsV4().filter(s => s.kind === 'trunk').map(s => [s.position[0], s.position[1] - s.size[1] / 2, s.position[2]]),...northTrees];
     const placements = points.map((p, i) => ({ kind: i % 2, matrix: new Matrix4().compose(new Vector3(...p), new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), i * 2.399), new Vector3().setScalar(.91 + (i % 4) * .07)), p: new Vector3(...p), tint: new Color().setRGB(.94 + (i % 3) * .025, .95 + (i % 4) * .018, .9 + (i % 2) * .05) }));
     const meshes: InstancedMesh[] = [], clean: (() => void)[] = [];

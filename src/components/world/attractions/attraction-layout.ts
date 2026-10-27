@@ -23,7 +23,7 @@ export const ATTRACTIONS_CAPE: [number, number][] = [
 
 export const ATTRACTION_ROADS: [number, number][][] = [
   [[-4,-54],[-5,-80],[-5,-103],[-15,-123],[-35,-143],[-62,-146],[-88,-146]],
-  [[-15,-123],[10,-122],[32,-123],[50,-128]],
+  [[-15,-123],[10,-122],[32,-123],[50,-132]],
 ];
 
 export function attractionCapeDistance(x:number,z:number) {

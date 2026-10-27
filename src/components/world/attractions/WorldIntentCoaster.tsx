@@ -23,7 +23,7 @@ function WorldIntentCoaster({ active }: { active: boolean }) {
     const releaseAudio = parkAudio.retain();
     return () => { stopIntentRide(); useIntentStore.setState({ active: false }); releaseAudio(); };
   }, [active]);
-  return <group name="intent-coaster">
+  return <group name="intent-coaster" userData={{noOcclusionFade:true}}>
     <mesh geometry={structure.steel} receiveShadow><meshStandardMaterial vertexColors roughness={.82} metalness={.16} /></mesh>
     <mesh geometry={structure.glow}><meshBasicMaterial vertexColors toneMapped={false} /></mesh>
     <CoasterTrain active={active} />

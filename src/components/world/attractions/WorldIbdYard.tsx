@@ -28,7 +28,7 @@ export default memo(function WorldIbdYard({ active = true }: { active?: boolean 
   const data = useMemo(() => ({ ...buildIbdStatic(), material: new MeshStandardMaterial({ vertexColors: true, roughness: .76, metalness: .18 }) }), []);
   useEffect(() => { useIbdYardStore.setState({ active }); return () => { useIbdYardStore.setState({ active: false }); }; }, [active]);
   useEffect(() => () => { cancelIbdAction(); data.geometry.dispose(); data.material.dispose(); }, [data]);
-  return <group name="world-ibd-yard" position={IBD_YARD.center} dispose={null}>
+  return <group name="world-ibd-yard" position={IBD_YARD.center} dispose={null} userData={{noOcclusionFade:true}}>
     <mesh name="ibd-three-sheds-static" geometry={data.geometry} material={data.material} castShadow receiveShadow
       userData={{ solid: true, assetId: 'ibd-yard-architecture' }} />
     <RigidBody type="fixed" colliders={false} name="ibd-yard-architecture" userData={{ solid: true, assetId: 'ibd-yard-architecture' }}>
