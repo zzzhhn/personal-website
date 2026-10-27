@@ -1,10 +1,9 @@
 import { useWorldStore } from './store';
+import { useWorldAudioSettings, worldAudioLevel } from './world-audio-settings';
 
 /**
- * DJC exhibit background music (PRD 3.3): two procedurally synthesised loops in the same key and tempo
- * (WebAudio only, no third-party audio, nothing to license), crossfaded with an equal-power law by the
- * DJ table's crossfader. Starts on the first E press (a user gesture, so autoplay policy allows it),
- * then plays island-wide. Suspended while the world is paused or the tab is hidden.
+ * Finite world interaction cues and a retained legacy two-loop music API (no current UI caller).
+ * WebAudio synthesis only; music and cues have separate shared volume controls.
  * Deck A "warm": soft kick on 1 and 3, brushed clap, sustained triangle pads, round sine bass.
  * Deck B "bright": four-on-the-floor kick, offbeat hats, 16th-note arpeggio over the same chords.
  * Alpha event cues share the graph and wake it only until their finite voices have ended.
@@ -18,6 +17,8 @@ const hz = (m: number) => 440 * 2 ** ((m - 69) / 12);
 export class ParkAudio {
   ctx: AudioContext | null = null;
   private master: GainNode | null = null; private deck: [GainNode, GainNode] | null = null;
+  private cueOutput: GainNode | null = null;
+  private stopSettings: (() => void) | null = null;
   private noise: AudioBuffer | null = null;
   private step = 0; private next = 0; private timer: number | null = null;
   private x = 0; private muted = false;
@@ -51,6 +52,7 @@ export class ParkAudio {
   private listen() {
     if (this.unsubscribe) return;
     this.unsubscribe = useWorldStore.subscribe((s, p) => { if (s.paused !== p.paused || s.poolInspect !== p.poolInspect || s.shot !== p.shot) this.sync(); });
+    this.stopSettings = useWorldAudioSettings.subscribe(() => { this.applyFade(false); this.sync(); });
     document.addEventListener('visibilitychange', this.onVisibility);
     window.addEventListener('pagehide', this.onPageHide);
     window.addEventListener('pageshow', this.onPageShow);
@@ -60,20 +62,28 @@ export class ParkAudio {
     const s = useWorldStore.getState();
     return this.owners > 0 && !this.pageInactive && !document.hidden && !s.paused && !s.poolInspect && !s.shot;
   }
-  private canRun() { return this.available() && !this.muted && (this.started || !!this.pendingCue || this.cueVoices.size > 0); }
+  private musicEnabled() { return this.available() && !this.muted && worldAudioLevel('music') > 0; }
+  private cuesEnabled() { return this.available() && !this.muted && worldAudioLevel('sfx') > 0; }
+  private canRun() { return (this.musicEnabled() && this.started) || (this.cuesEnabled() && (!!this.pendingCue || this.cueVoices.size > 0)); }
   private stopTimer() {
     if (this.timer !== null) window.clearInterval(this.timer);
     this.timer = null;
   }
   private startTimer() {
-    if (this.timer !== null || !this.started || !this.ctx || this.ctx.state !== 'running' || !this.canRun()) return;
-    this.next = Math.max(this.next, this.ctx.currentTime + 0.05);
+    if (this.timer !== null || !this.started || !this.ctx || this.ctx.state !== 'running' || !this.musicEnabled()) return;
+    this.next = this.ctx.currentTime + 0.05;
     this.timer = window.setInterval(() => this.schedule(), 25);
   }
   private sync() {
     const ctx = this.ctx; if (!ctx) return;
     if (ctx.state === 'closed') { this.dispose(); return; }
-    if (!this.available() || this.muted) this.clearCues();
+    if (!this.cuesEnabled()) this.clearCues();
+    if (!this.musicEnabled()) {
+      for (const [source, release] of this.voices) if (!this.cueVoices.has(source)) {
+        try { source.stop(); } catch { /* Already ended. */ } release();
+      }
+      this.stopTimer();
+    }
     const running = this.canRun();
     if (!running || ctx.state !== 'running') this.stopTimer();
     if (this.transitioning) return;
@@ -115,6 +125,7 @@ export class ParkAudio {
     master.connect(comp).connect(ctx.destination);
     this.deck = [ctx.createGain(), ctx.createGain()];
     this.deck.forEach(g => g.connect(master));
+    this.cueOutput = ctx.createGain(); this.cueOutput.connect(master);
     this.applyFade(true);
     this.noise = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
     const d = this.noise.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
@@ -124,14 +135,14 @@ export class ParkAudio {
   cue(kind: 'scan' | 'strike' | 'splash', intensity = 1) {
     const level = Number.isFinite(intensity) ? Math.max(0, Math.min(1, intensity)) : 0;
     const cost = kind === 'strike' ? 2 : 1;
-    if (!level || !this.available() || this.muted || this.cueBlocked || this.cueVoices.size + cost > 8) return;
+    if (!level || !this.cuesEnabled() || this.cueBlocked || this.cueVoices.size + cost > 8) return;
     this.listen();
     if (!this.ensureContext()) return;
     // At most the latest event waits for resume, never a queue of missed physics steps.
     const requestedAt = performance.now();
     this.pendingCue = () => {
       if (performance.now() - requestedAt > 250) return;
-      const t = this.ctx!.currentTime + 0.005, out = this.master!;
+      const t = this.ctx!.currentTime + 0.005, out = this.cueOutput!;
       if (kind === 'scan') this.tone(out, 'sine', 980, t, 0.09, 0.24 * level, 0.007, 0, true);
       else if (kind === 'strike') {
         this.tone(out, 'triangle', 1600, t, 0.055, 0.3 * level, 0.002, 5000, true);
@@ -155,13 +166,17 @@ export class ParkAudio {
   gains(): [number, number] { return [Math.cos(this.x * Math.PI / 2), Math.sin(this.x * Math.PI / 2)]; }
   private applyFade(now: boolean) {
     if (!this.ctx || !this.deck) return;
-    const [a, b] = this.gains(), t = this.ctx.currentTime;
+    const [a, b] = this.gains().map(g => g * worldAudioLevel('music')), t = this.ctx.currentTime;
+    if (this.cueOutput) {
+      if (now) this.cueOutput.gain.value = worldAudioLevel('sfx');
+      else this.cueOutput.gain.setTargetAtTime(worldAudioLevel('sfx'), t, .025);
+    }
     if (now) { this.deck[0].gain.value = a; this.deck[1].gain.value = b; return; }
     this.deck[0].gain.setTargetAtTime(a, t, 0.25); this.deck[1].gain.setTargetAtTime(b, t, 0.25);
   }
   private schedule() {
     this.ticks++;
-    const ctx = this.ctx; if (!this.started || !ctx || ctx.state !== 'running' || !this.canRun()) { this.sync(); return; }
+    const ctx = this.ctx; if (!this.started || !ctx || ctx.state !== 'running' || !this.musicEnabled()) { this.sync(); return; }
     // A late main-thread task skips the gap instead of synthesizing a backlog.
     if (this.next < ctx.currentTime) this.next = ctx.currentTime + 0.05;
     while (this.next < ctx.currentTime + 0.12) { this.play(this.step, this.next); this.step = (this.step + 1) % (BAR * 4); this.next += STEP; }
@@ -220,6 +235,7 @@ export class ParkAudio {
   dispose() {
     this.stopTimer();
     this.unsubscribe?.(); this.unsubscribe = null;
+    this.stopSettings?.(); this.stopSettings = null;
     document.removeEventListener('visibilitychange', this.onVisibility);
     window.removeEventListener('pagehide', this.onPageHide); window.removeEventListener('pageshow', this.onPageShow);
     window.removeEventListener('keydown', this.onGesture); window.removeEventListener('pointerdown', this.onGesture);
@@ -228,7 +244,7 @@ export class ParkAudio {
     ctx?.removeEventListener('statechange', this.onContextState);
     for (const [source, release] of this.voices) { try { source.stop(); } catch { /* Already ended. */ } release(); }
     if (ctx && ctx.state !== 'closed') void ctx.close().catch(() => {});
-    this.master = null; this.deck = null; this.noise = null; this.step = 0; this.next = 0;
+    this.master = null; this.deck = null; this.cueOutput = null; this.noise = null; this.step = 0; this.next = 0;
   }
 }
 export const parkAudio = new ParkAudio();

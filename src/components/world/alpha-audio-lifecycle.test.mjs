@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { registerHooks } from 'node:module';
+import { useWorldAudioSettings, setWorldAudioMuted, setWorldAudioVolume } from './world-audio-settings.ts';
 
 const audioUrl = new URL('./WorldParkAudio.ts', import.meta.url).href;
 const hook = registerHooks({ resolve(specifier, context, next) {
@@ -68,11 +69,13 @@ function env(t) {
     Object.defineProperty(globalThis, name, { configurable: true, writable: true, value });
   }
   Audio.instances.length = 0; Audio.initialState = 'running'; store.setState(store.getInitialState(), true);
+  useWorldAudioSettings.setState(useWorldAudioSettings.getInitialState(), true);
   const subscribe = store.subscribe;
   store.subscribe = listener => { subscriptions++; const stop = subscribe(listener); let active = true;
     return () => { if (active) { active = false; subscriptions--; stop(); } }; };
   t.after(() => {
     audios.forEach(audio => audio.dispose()); store.subscribe = subscribe; store.setState(store.getInitialState(), true);
+    useWorldAudioSettings.setState(useWorldAudioSettings.getInitialState(), true);
     for (const [name, descriptor] of originals) { if (descriptor) Object.defineProperty(globalThis, name, descriptor); else delete globalThis[name]; }
   });
   return { win, doc, intervals,
@@ -174,7 +177,7 @@ test('DJ starts on the existing cue context and keeps exactly its original music
   [...e.intervals.values()][0](); const music = ctx.sources.filter(source => source.onended);
   assert.ok(music.length > 0); a.cue('strike');
   store.setState({ paused: true }); await settle(); assert.equal(e.intervals.size, 0); assert.equal(a.snapshot().cueVoices, 0);
-  assert.ok(music.every(source => source.onended));
+  assert.ok(music.every(source => !source.onended && source.disconnected));
   store.setState({ paused: false }); await settle(); assert.equal(e.intervals.size, 1); release();
 });
 
@@ -216,4 +219,31 @@ test('an already queued old DJ callback cannot start music on a later cue-only c
   const oldTick = [...e.intervals.values()][0]; release(); await settle();
   release = a.retain(); a.cue('scan'); const ctx = a.ctx; oldTick();
   assert.equal(a.started, false); assert.equal(ctx.sources.length, 1); assert.equal(e.intervals.size, 0); release();
+});
+
+test('shared SFX mute drops pending and live cues, music volume does not mute cues', async t => {
+  const e = env(t), a = e.audio(), release = a.retain();
+  setWorldAudioVolume('music', 0); a.cue('scan'); await settle(); const ctx = a.ctx;
+  assert.equal(a.snapshot().cueVoices, 1);
+  setWorldAudioVolume('sfx', .4);
+  assert.equal(a.cueOutput.gain.events.at(-1)[0], .4);
+  setWorldAudioMuted(true); await settle(); const count = ctx.sources.length;
+  assert.equal(a.snapshot().voices, 0); assert.equal(ctx.state, 'suspended');
+  a.cue('strike'); setWorldAudioMuted(false); await settle();
+  assert.equal(ctx.sources.length, count); assert.equal(ctx.state, 'suspended');
+  ctx.holdResume = true; a.cue('splash'); setWorldAudioVolume('sfx', 0);
+  setWorldAudioVolume('sfx', 1); ctx.finishResume(); await settle();
+  assert.equal(ctx.sources.length, count); assert.equal(a.snapshot().cuePending, false);
+  assert.equal(ctx.state, 'suspended'); release();
+});
+
+test('music zero stops legacy scheduler and stale notes while SFX stays usable', async t => {
+  const e = env(t), a = e.audio(), release = a.retain(); a.start(); await settle();
+  [...e.intervals.values()][0](); const ctx = a.ctx; assert.ok(ctx.sources.length > 0);
+  setWorldAudioVolume('music', 0); await settle();
+  assert.equal(e.intervals.size, 0); assert.equal(a.snapshot().voices, 0);
+  a.cue('scan'); await settle(); assert.equal(a.snapshot().cueVoices, 1); assert.equal(e.intervals.size, 0);
+  setWorldAudioVolume('sfx', 0); setWorldAudioVolume('music', .5); await settle();
+  assert.equal(e.intervals.size, 1); assert.equal(a.snapshot().cueVoices, 0);
+  assert.equal(a.deck[0].gain.events.at(-1)[0], .5); release();
 });

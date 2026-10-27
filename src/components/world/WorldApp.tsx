@@ -10,6 +10,7 @@ import WorldMap, { loadMapGeometry } from './WorldMap';
 import WorldAlphaMineHud from './WorldAlphaMineHud';
 import WorldClubHud from './WorldClubHud';
 import WorldPoolInspect from './WorldPoolInspect';
+import WorldAudioSettings from './WorldAudioSettings';
 import { WorldDrivingHud, WorldFirstHints, WorldWaypointReadout, WorldZoneTitle, WorldNotice } from './WorldHud';
 import './world.css';
 
@@ -153,6 +154,7 @@ export default function WorldApp({ content }: { content: WorldContent }) {
         <fieldset><legend>{t.weather}</legend>{(['clear','rain','snow'] as const).map(weather => <button key={weather} aria-pressed={s.weather===weather} onClick={()=>useWorldStore.setState({weather})}>{t[weather]}</button>)}</fieldset>
         <fieldset aria-describedby="world-quality-hint"><legend>{t.quality}</legend>{(['balanced', 'high'] as const).map(quality => <button key={quality} aria-pressed={s.quality === quality} onClick={() => useWorldStore.setState({ quality })}>{t[quality]}</button>)}</fieldset>
         <p id="world-quality-hint" className="world-setting-hint">{t.qualityHint}</p>
+        <WorldAudioSettings lang={s.lang} />
         <details className="world-keys"><summary>{t.keysTitle}</summary>
           <h3>{t.keysWalk}</h3><dl>{t.keyRows.map(([k, v]) => <div key={k}><dt><kbd>{k}</kbd></dt><dd>{v}</dd></div>)}</dl>
           <h3>{t.keysDriveTitle}</h3><dl>{t.driveRows.map(([k, v]) => <div key={k}><dt><kbd>{k}</kbd></dt><dd>{v}</dd></div>)}</dl>

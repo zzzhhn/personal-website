@@ -3,12 +3,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { ClubAudio, clubGains, clubMixPlan } from './WorldClubAudio.ts';
 import { useWorldStore } from './store.ts';
+import { useWorldAudioSettings, setWorldAudioMuted, setWorldAudioVolume } from './world-audio-settings.ts';
 
 class Context {
   static instances=[];
   state='suspended';currentTime=0;destination={};nodes=[];params=[];closed=false;gate=null;
   constructor(){Context.instances.push(this);}
-  param(){const p={value:1,held:[],ramps:[],setTargetAtTime(){},cancelScheduledValues(){},cancelAndHoldAtTime(t){this.held.push(t);},linearRampToValueAtTime(value,time){this.ramps.push({value,time});},setValueAtTime(){},setValueCurveAtTime(){}};this.params.push(p);return p;}
+  param(){const p={value:1,held:[],ramps:[],targets:[],setTargetAtTime(value,time){this.targets.push({value,time});},cancelScheduledValues(){},cancelAndHoldAtTime(t){this.held.push(t);},linearRampToValueAtTime(value,time){this.ramps.push({value,time});},setValueAtTime(){},setValueCurveAtTime(){}};this.params.push(p);return p;}
   createGain(){return {gain:this.param(),connect(){},disconnect(){}};}
   createBiquadFilter(){return {frequency:this.param(),connect(){},disconnect(){}};}
   createBufferSource(){const n={buffer:null,loop:false,connect(){},disconnect(){},start(){n.started=true;},stop(){n.stopped=true;}};this.nodes.push(n);return n;}
@@ -23,6 +24,7 @@ function fixture(){
   globalThis.window=Object.assign(new EventTarget(),{AudioContext:Context});
   globalThis.fetch=async()=>({ok:true,arrayBuffer:async()=>new ArrayBuffer(8)});
   useWorldStore.setState({paused:false,poolInspect:false,shot:null});
+  useWorldAudioSettings.setState(useWorldAudioSettings.getInitialState(),true);
   const audio=new ClubAudio(),release=audio.retain();audio.proximity(0);return {audio,release};
 }
 test('one context, finite sources, pause/hidden/distance and BFCache preserve a bounded lifecycle',async()=>{
@@ -92,4 +94,29 @@ test('starting a performance from a manual blend eases into its lead deck',async
   const ramps=ctx.params.flatMap(p=>p.ramps);
   assert.equal(ramps.length,2);assert.ok(ramps.every(r=>r.time>1&&r.time<=1.18));
   assert.deepEqual(ramps.map(r=>r.value),[1,0]);release();
+});
+
+test('shared music volume multiplies local controls, zero suspends, SFX volume is independent',async()=>{
+  const {audio,release}=fixture();await audio.enable();await settle();const ctx=Context.instances.at(-1);
+  audio.volume(.4);setWorldAudioVolume('music',.5);
+  assert.ok(Math.abs(ctx.params[0].targets.at(-1).value-.4*.65*.5)<1e-12);
+  assert.equal(audio.read().volume,.4);assert.equal(audio.energy(),.2);
+  setWorldAudioVolume('sfx',0);await settle();assert.equal(audio.inspect().sources,1);
+  setWorldAudioVolume('music',0);await settle();assert.equal(ctx.state,'suspended');assert.equal(audio.inspect().sources,0);
+  setWorldAudioVolume('music',1);await settle();assert.equal(audio.inspect().sources,1);
+  audio.mute();setWorldAudioMuted(true);setWorldAudioMuted(false);await settle();
+  assert.equal(audio.read().muted,true);assert.equal(audio.inspect().sources,0);
+  audio.mute();await settle();audio.volume(0);await settle();assert.equal(audio.inspect().sources,0);release();
+});
+
+test('master mute during pending resume cannot revive Club, pool inspection stops it too',async()=>{
+  const {audio,release}=fixture();await audio.enable();await settle();const ctx=Context.instances.at(-1);
+  setWorldAudioMuted(true);await settle();let resume;ctx.gate=new Promise(resolve=>resume=resolve);
+  setWorldAudioMuted(false);setWorldAudioMuted(true);resume();await settle();
+  assert.equal(ctx.state,'suspended');assert.equal(audio.inspect().sources,0);
+  ctx.gate=null;setWorldAudioMuted(false);await settle();
+  useWorldStore.setState({poolInspect:true});await settle();assert.equal(audio.inspect().sources,0);
+  useWorldStore.setState({poolInspect:false});await settle();assert.equal(audio.inspect().sources,1);
+  release();setWorldAudioMuted(true);setWorldAudioVolume('music',.2);await settle();
+  assert.equal(ctx.state,'closed');assert.equal(audio.inspect().sources,0);
 });
