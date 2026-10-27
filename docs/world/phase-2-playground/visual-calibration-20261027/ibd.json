@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "scene": "ibd-yard",
+  "referenceVersion": "v1",
+  "approvals": {
+    "style": {
+      "status": "pending"
+    },
+    "layout": {
+      "status": "pending"
+    }
+  },
+  "references": [
+    {
+      "role": "day",
+      "path": "docs/world/phase-2-playground/visual-calibration-20261027/ibd-yard-v1.png",
+      "sha256": "a6187c621435fa51c3313c571b6ee6e47a9ff41809065314cd2856261b2de672"
+    }
+  ],
+  "reviewViews": [
+    "I01 entrance day/night",
+    "I02 gallery and coil sides",
+    "I03 pack bench and loading bay day/night"
+  ],
+  "failureConditions": [
+    "三棚剪影无差异",
+    "高廊或吊运通道不连通",
+    "夜间地面人物工具不可辨",
+    "装饰挡住检查面",
+    "装卸或出口发生碰撞陷阱"
+  ],
+  "runtimeEvidence": {
+    "status": "not-started",
+    "note": "待用户确认与夜景参考，保留现有玩法"
+  }
+}
