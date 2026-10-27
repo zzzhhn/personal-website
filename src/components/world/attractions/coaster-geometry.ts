@@ -57,7 +57,15 @@ export class CoasterBatch {
   }
 }
 const tuple = (v: Vector3) => v.toArray() as Vec3;
-export interface CoasterCollider { position: Vec3; half: Vec3; rotation?: Vec3; surface?: boolean }
+export interface CoasterCollider {
+  position: Vec3;
+  /** Conservative local envelope, also used by track/head-clearance checks. */
+  half: Vec3;
+  /** Local vertices of a closed convex rock; absent for architectural cuboids. */
+  hull?: Float32Array;
+  rotation?: Vec3;
+  surface?: boolean;
+}
 export function createCoasterStructure(detailed: boolean) {
   const steel = new CoasterBatch(), glow = new CoasterBatch(), colliders: CoasterCollider[] = [];
   const steps = detailed ? 800 : 256;

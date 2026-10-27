@@ -1,6 +1,6 @@
 import { memo, useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
+import { ConvexHullCollider, CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { Group, PointLight } from 'three';
 import { useWorldStore } from '../store';
 import { parkAudio } from '../WorldParkAudio';
@@ -107,7 +107,9 @@ function CoasterCollisions({ colliders }: { colliders: CoasterCollider[] }) {
   const gateOpen = useIntentStore(s => s.progress.gateOpen);
   return <>
     {[true, false].map(surface => <RigidBody key={String(surface)} type="fixed" colliders={false} userData={surface ? { surface: true, assetId: 'intent-coaster' } : { solid: true, assetId: 'intent-coaster' }}>
-      {colliders.filter(c => !!c.surface === surface).map((c, i) => <CuboidCollider key={i} position={c.position} rotation={c.rotation} args={c.half} friction={.9} />)}
+      {colliders.filter(c => !!c.surface === surface).map((c, i) => c.hull
+        ? <ConvexHullCollider key={i} position={c.position} rotation={c.rotation} args={[c.hull]} friction={.9} />
+        : <CuboidCollider key={i} position={c.position} rotation={c.rotation} args={c.half} friction={.9} />)}
     </RigidBody>)}
     <RigidBody type="fixed" colliders={false} userData={{ solid: true, assetId: 'intent-coaster' }}>
       {!gateOpen && <CuboidCollider position={coasterWorld([0, 1.6, COASTER_GATE_Z])} args={[5, 1.6, .18]} />}

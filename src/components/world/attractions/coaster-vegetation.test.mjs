@@ -3,12 +3,13 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import draco3d from 'draco3d';
 import R from '@dimforge/rapier3d-compat';
-import { Box3, BufferGeometry, Color, Euler, Float32BufferAttribute, Group, InstancedMesh, Mesh, MeshStandardMaterial, Quaternion, Ray, Vector3 } from 'three';
+import { Box3, BufferGeometry, Color, Float32BufferAttribute, Group, InstancedMesh, Mesh, MeshStandardMaterial, Ray, Vector3 } from 'three';
 import { COASTER_VEGETATION_BUDGET as B, coasterVegetationLayout, mergeCoasterPlantGeometry, coasterTrunkCollider, selectCoasterVegetation, updateCoasterVegetationInstances } from './coaster-vegetation-layout.ts';
 import { coasterFrame, coasterRidePose, coasterSupports, coasterWorld } from './coaster-track.ts';
 import { COASTER_INFIELD_WALK, onCoasterInfieldWalk } from './coaster-terrain-relief.ts';
 import { onCoasterCliffWalk } from './coaster-landscape-cliffs.ts';
 import { createCoasterStructure } from './coaster-geometry.ts';
+import { coasterColliderDescriptor } from './coaster-collision.ts';
 
 let sources, geometry, trunks, plants, colliders;
 const assetPaths = ['street/ST1','street/ST2','camp/G19'];
@@ -194,7 +195,7 @@ test('the player capsule completes the garden loop with actual tree trunks and r
   try {
     world.createCollider(R.ColliderDesc.trimesh(scene.relief.vertices,scene.relief.indices));
     world.createCollider(R.ColliderDesc.cuboid(80,.5,120).setTranslation(50,.5,-195));
-    for(const c of scene.colliders) world.createCollider(R.ColliderDesc.cuboid(...c.half).setTranslation(...c.position).setRotation(new Quaternion().setFromEuler(new Euler(...(c.rotation??[0,0,0])))));
+    for(const c of scene.colliders) world.createCollider(coasterColliderDescriptor(R, c));
     for(const c of colliders) world.createCollider(R.ColliderDesc.trimesh(c.pos,c.idx));
     const first=COASTER_INFIELD_WALK[0],start=coasterWorld([first[0],first[1]+.87,first[2]]);
     const body=world.createRigidBody(R.RigidBodyDesc.kinematicPositionBased().setTranslation(...start));

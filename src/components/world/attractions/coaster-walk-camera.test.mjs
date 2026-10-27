@@ -1,8 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import R from '@dimforge/rapier3d-compat';
-import { Euler, Quaternion, Vector3 } from 'three';
+import { Vector3 } from 'three';
 import { createCoasterStructure } from './coaster-geometry.ts';
+import { coasterColliderDescriptor } from './coaster-collision.ts';
 import { cameraCollisionRadius, sweepCamera } from '../camera-collision.ts';
 import { orbitDirection } from '../actor-physics.ts';
 
@@ -13,8 +14,7 @@ const reported = { x: 65.82469177246091, y: 2.468825006484986, z: -139.495712280
 function withStructure(check) {
   const structure = createCoasterStructure(true), world = new R.World({ x: 0, y: 0, z: 0 });
   try {
-    for (const c of structure.colliders) world.createCollider(R.ColliderDesc.cuboid(...c.half)
-      .setTranslation(...c.position).setRotation(new Quaternion().setFromEuler(new Euler(...(c.rotation ?? [0, 0, 0])))));
+    for (const c of structure.colliders) world.createCollider(coasterColliderDescriptor(R, c));
     world.step(); check(world, structure.colliders.length);
   } finally { world.free(); structure.steel.dispose(); structure.glow.dispose(); }
 }
@@ -25,7 +25,7 @@ test('the reproduced station-side orbit passes through the real fence opening wi
   const result = sweepCamera(world, R, reported, target, radius, undefined, c => !c.isSensor());
   assert.ok(result.distance > 11.9, `legal orbit shortened to ${result.distance}`);
   assert.ok(count < 650, `fixed collider count unexpectedly grew to ${count}`);
-  t.diagnostic(`station-side camera distance ${result.distance.toFixed(3)} m; fixed cuboids ${count}`);
+  t.diagnostic(`station-side camera distance ${result.distance.toFixed(3)} m; fixed colliders ${count}`);
 }));
 
 test('actual lower rails still stop a standing capsule and posts remain solid', () => withStructure(world => {

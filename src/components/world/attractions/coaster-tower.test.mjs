@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { Box3, DoubleSide, Mesh, MeshBasicMaterial, Raycaster, Triangle, Vector3 } from 'three';
 import R from '@dimforge/rapier3d-compat';
 import { addCoasterTower, CoasterBatch } from './coaster-geometry.ts';
+import { coasterColliderDescriptor } from './coaster-collision.ts';
 import { coasterFrame, coasterRidePose, coasterWorld } from './coaster-track.ts';
 import { sweepCamera } from '../camera-collision.ts';
 
@@ -94,7 +95,7 @@ test('free orbit camera sweeps stop at tower skins, platforms and guardrails', a
   await R.init();
   const g = tower(), world = new R.World({ x: 0, y: 0, z: 0 });
   try {
-    for (const c of g.colliders) world.createCollider(R.ColliderDesc.cuboid(...c.half).setTranslation(...c.position));
+    for (const c of g.colliders) world.createCollider(coasterColliderDescriptor(R, c));
     world.step();
     const point = p => new Vector3(...coasterWorld(p));
     const cases = [];

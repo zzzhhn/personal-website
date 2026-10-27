@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { Euler, Quaternion } from 'three';
 import R from '@dimforge/rapier3d-compat';
 import { createCoasterStructure, createCoasterCar } from './coaster-geometry.ts';
+import { coasterColliderDescriptor } from './coaster-collision.ts';
 import { COASTER_INFIELD_WALK } from './coaster-terrain-relief.ts';
 import { coasterWorld } from './coaster-track.ts';
 
@@ -27,10 +27,7 @@ test('a player-sized physical capsule completes the garden loop against the actu
   try{
     world.createCollider(R.ColliderDesc.trimesh(g.relief.vertices,g.relief.indices));
     world.createCollider(R.ColliderDesc.cuboid(80,.5,120).setTranslation(50,.5,-195));
-    for(const c of g.colliders){
-      const q=new Quaternion().setFromEuler(new Euler(...(c.rotation??[0,0,0])));
-      world.createCollider(R.ColliderDesc.cuboid(...c.half).setTranslation(...c.position).setRotation(q));
-    }
+    for(const c of g.colliders) world.createCollider(coasterColliderDescriptor(R, c));
     const first=COASTER_INFIELD_WALK[0],start=coasterWorld([first[0],first[1]+.87,first[2]]);
     const body=world.createRigidBody(R.RigidBodyDesc.kinematicPositionBased().setTranslation(...start));
     const collider=world.createCollider(R.ColliderDesc.capsule(.48,.34),body);

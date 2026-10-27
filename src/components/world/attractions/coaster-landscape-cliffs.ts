@@ -1,5 +1,6 @@
-import { BufferAttribute, BufferGeometry, Euler, ExtrudeGeometry, Matrix4, Quaternion, Shape, Vector3 } from 'three';
+import { Euler, ExtrudeGeometry, Matrix4, Quaternion, Shape, Vector3 } from 'three';
 import { coasterWorld } from './coaster-track.ts';
+import { addCoasterLookoutSample } from './coaster-lookout-sample.ts';
 import type { CoasterBatch, CoasterCollider } from './coaster-geometry.ts';
 import type { Vec3 } from '../types';
 
@@ -36,12 +37,16 @@ export function addCoasterCliffs(steel: CoasterBatch,glow: CoasterBatch,collider
     const q=new Quaternion().setFromRotationMatrix(new Matrix4().makeBasis(forward,normal,side)),length=a.distanceTo(b),mid=a.clone().add(b).multiplyScalar(.5);
     addBox(mid.clone().addScaledVector(normal,-.18),[length+.2,.36,5.2],q,'#aaa08b',true);
     for(const sign of [-1,1]){
-      const edge=mid.clone().addScaledVector(side,sign*2.55);
-      addBox(edge.clone().addScaledVector(up,.55),[length,1.1,.12],q,'#50666d');
       glow.beam(a.clone().addScaledVector(side,sign*2.48).addScaledVector(up,.16).toArray() as Vec3,b.clone().addScaledVector(side,sign*2.48).addScaledVector(up,.16).toArray() as Vec3,.045,'#ffd087',4);
-      for(let at=1;at<length;at+=4){
-        const point=a.clone().lerp(b,at/length).addScaledVector(side,sign*2.5);
-        steel.beam(point.toArray() as Vec3,point.clone().addScaledVector(up,1.15).toArray() as Vec3,.075,'#a8895d');
+      // The final horizontal leg is already inside the guarded deck. Preserve its floor/light
+      // guide while removing the duplicate opaque corridor walls inside the lookout.
+      if(i<COASTER_CLIFF_WALK.length-1){
+        const edge=mid.clone().addScaledVector(side,sign*2.55);
+        addBox(edge.clone().addScaledVector(up,.55),[length,1.1,.12],q,'#50666d');
+        for(let at=1;at<length;at+=4){
+          const point=a.clone().lerp(b,at/length).addScaledVector(side,sign*2.5);
+          steel.beam(point.toArray() as Vec3,point.clone().addScaledVector(up,1.15).toArray() as Vec3,.075,'#a8895d');
+        }
       }
     }
     // Piers anchor the slope slabs instead of presenting a floating path.
@@ -51,26 +56,11 @@ export function addCoasterCliffs(steel: CoasterBatch,glow: CoasterBatch,collider
     }
   }
   addBox(new Vector3(...coasterWorld(COASTER_LOOKOUT.center)),COASTER_LOOKOUT.size,new Quaternion(),'#a9a18c',true);
-  // One representative cliff mass, with distinct upper strata and a battered lower face.
-  const edge: [number,number][]=[[47,8],[54,5],[62,9],[64,17],[60,24],[47,24],[44,16]];
-  const colors=['#78848a','#92968d','#65757e'];
-  for(let ring=0;ring<3;ring++)for(let i=0;i<edge.length;i++){
-    const a=edge[i],b=edge[(i+1)%edge.length],low=[-5,2,5.7][ring],high=[2,5.7,7.65][ring];
-    const p=(v:[number,number],y:number,scale:number)=>coasterWorld([55+(v[0]-55)*scale,y,14+(v[1]-14)*scale]);
-    const verts=[p(a,low,1.1),p(a,high,1),p(b,high,1),p(a,low,1.1),p(b,high,1),p(b,low,1.1)];
-    const g=new BufferGeometry().setAttribute('position',new BufferAttribute(new Float32Array(verts.flat()),3));g.computeVertexNormals();steel.add(g,colors[(i+ring)%3]);
-  }
-  colliders.push({position:coasterWorld([55,3.8,14]),half:[5.8,3.8,5.8]});
+  addCoasterLookoutSample(steel,glow,colliders);
   for(const [x,y,z] of COASTER_CLIFF_LAMPS){
     steel.beam(coasterWorld([x,8.08,z]),coasterWorld([x,y+.35,z]),.1,'#62737a');
     steel.housing(coasterWorld([x,y,z]),[.5,.8,.5],'#3d5660');
     glow.box(coasterWorld([x,y,z]),[.3,.55,.53],'#ffd087');
     glow.box(coasterWorld([x,y,z]),[.53,.55,.3],'#ffd087');
-  }
-  // The far and side rails leave the south access open at z=20.
-  for(const [a,b] of [[[49,8],[61,8]],[[49,8],[49,20]],[[61,8],[61,20]]] as [number,number][][]){
-    const dx=b[0]-a[0],dz=b[1]-a[1],len=Math.hypot(dx,dz),q=new Quaternion().setFromAxisAngle(up,-Math.atan2(dz,dx));
-    addBox(new Vector3(...coasterWorld([(a[0]+b[0])/2,8.68,(a[1]+b[1])/2])),[len,1.2,.16],q,'#536870');
-    glow.beam(coasterWorld([a[0],8.3,a[1]]),coasterWorld([b[0],8.3,b[1]]),.055,'#ffca7e',4);
   }
 }

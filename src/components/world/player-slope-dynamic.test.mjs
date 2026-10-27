@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import R from '@dimforge/rapier3d-compat';
-import { Euler, Quaternion } from 'three';
 import { PHYSICS_STEP as dt, PLAYER_RADIUS, PLAYER_HALF_HEIGHT } from './actor-physics.ts';
 import { playerSupport, followPlayerGround, compensatePlayerSlopeGravity, clearPlayerSlopeGravity } from './player-ground.ts';
 import { playerVelocityChange, createPlayerClearance, sweptPlayerVelocity } from './player-motion.ts';
 import { createCoasterStructure } from './attractions/coaster-geometry.ts';
+import { coasterColliderDescriptor } from './attractions/coaster-collision.ts';
 import { COASTER_CLIFF_WALK } from './attractions/coaster-landscape-cliffs.ts';
 import { coasterWorld } from './attractions/coaster-track.ts';
 await R.init();
@@ -136,8 +136,7 @@ test('actual cliff promenade supports the dynamic player uphill, ten-second stop
   const f = fixture([points[0][0], points[0][1] + .84, points[0][2]], world => {
     world.createCollider(R.ColliderDesc.trimesh(g.relief.vertices, g.relief.indices));
     world.createCollider(R.ColliderDesc.cuboid(80, .5, 120).setTranslation(50, .5, -195));
-    for (const c of g.colliders) world.createCollider(R.ColliderDesc.cuboid(...c.half).setTranslation(...c.position)
-      .setRotation(new Quaternion().setFromEuler(new Euler(...(c.rotation ?? [0, 0, 0])))).setFriction(.9));
+    for (const c of g.colliders) world.createCollider(coasterColliderDescriptor(R, c));
   });
   try {
     for (let i = 0; i < 60; i++) f.tick();
