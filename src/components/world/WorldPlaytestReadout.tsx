@@ -3,9 +3,10 @@ import { exchangeEquity, useAlphaExchange } from './alpha-exchange-state';
 import { readDrivingTelemetry } from './vehicle-telemetry';
 import { grassDebug } from './WorldGrass';
 import { mineActor } from './alpha-mine-state';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { clubWaterDebug } from './WorldClubWaterCapture';
+import { clubWaterDebug, clubWaterSnapshot } from './WorldClubWaterCapture';
+import { clubWaterFrameWindow } from './WorldClubWaterBudget';
 import { readRenderSnapshot } from './world-render-readout';
 import { setMineNetworkFailureForQA } from './alpha-mine-online';
 import { worldActorDebug } from './WorldActors';
@@ -28,13 +29,22 @@ export default function WorldPlaytestReadout() {
   const world=useWorldStore(),exchange=useAlphaExchange();
   const [renderSnapshot,setRenderSnapshot]=useState<unknown>(null);
   const [networkFailure,setNetworkFailure]=useState(false);
+  const waterWindow=useRef<ReturnType<typeof clubWaterSnapshot>|null>(null);
   if(world.shot)return null;
   const renderPanel=<aside style={{position:'fixed',zIndex:80,left:16,bottom:12,width:280,maxHeight:'32vh',overflow:'auto',background:'#17231def',color:'#e7eddf',padding:8,font:'10px/1.25 monospace'}}>
       <button onClick={()=>setRenderSnapshot(readRenderSnapshot())}>QA · 读取当前渲染开销</button>
       {import.meta.env.DEV&&<>
         <button onClick={()=>{worldActorDebug.teleportPlayer([49,2.3,55]);useWorldStore.setState({paused:false,clubMode:null,seat:null});}}>QA · 到泳池西岸</button>
-        <button onClick={()=>{clubWaterDebug.enabled=!clubWaterDebug.enabled;setRenderSnapshot({poolOptics:{...clubWaterDebug}});}}>QA · 切换泳池光学对照</button>
-        <button onClick={()=>setRenderSnapshot({poolOptics:{...clubWaterDebug}})}>QA · 读取泳池光学开销</button>
+        <button onClick={()=>{clubWaterFrameWindow.invalidate();clubWaterDebug.enabled=!clubWaterDebug.enabled;setRenderSnapshot({poolOptics:clubWaterSnapshot()});}}>QA · 启停泳池光学</button>
+        <button onClick={()=>{clubWaterFrameWindow.invalidate();clubWaterDebug.budgeted=!clubWaterDebug.budgeted;setRenderSnapshot({poolOptics:clubWaterSnapshot()});}}>QA · 切换原版／预算版捕获</button>
+        <button onClick={()=>setRenderSnapshot({poolOptics:clubWaterSnapshot()})}>QA · 读取泳池光学开销</button>
+        <button onClick={()=>{waterWindow.current=clubWaterSnapshot();clubWaterFrameWindow.start();setRenderSnapshot({poolWindow:'started',mode:clubWaterDebug.budgeted?'budgeted':'baseline'});}}>QA · 开始泳池采样</button>
+        <button onClick={()=>{
+          const before=waterWindow.current,after=clubWaterSnapshot(),frames=clubWaterFrameWindow.stop();waterWindow.current=null;
+          if(!before){setRenderSnapshot({poolWindow:'not started'});return;}
+          const work=Object.fromEntries((['baseline','budgeted'] as const).map(mode=>[mode,Object.fromEntries(Object.entries(after.totals[mode]).map(([key,value])=>[key,value-before.totals[mode][key as keyof typeof after.totals.baseline]]))]));
+          setRenderSnapshot({poolWindow:{mode:before.budgeted?'budgeted':'baseline',frames,work,comparable:!!frames?.frames&&!frames.changedDuringWindow&&before.budgeted===after.budgeted&&before.enabled===after.enabled,ending:after}});
+        }}>QA · 结束泳池采样</button>
         <button onClick={()=>setRenderSnapshot(readContactSnapshot())}>QA · 读取动作与接触</button>
         <button onClick={()=>setRenderSnapshot({club:clubAudio.inspect(),energy:clubAudio.energy(),guests:readClubGuestPoses(),mode:useWorldStore.getState().clubMode,step:useWorldStore.getState().danceStep})}>QA · 读取 Club 音频</button>
         <button onClick={()=>setRenderSnapshot({water:{emitted:waterContacts.emitted,active:waterContacts.impacts.filter(p=>p.strength>0&&windUniforms.uWindTime.value-p.at<WATER_IMPACT_LIFETIME)}})}>QA · 读取水面接触</button>

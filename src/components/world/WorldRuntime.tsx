@@ -25,6 +25,7 @@ import WorldEntry from './WorldEntry';
 import WorldAlphaMine from './WorldAlphaMine';
 import WorldWeather from './WorldWeather';
 import { setRenderReadoutSource } from './world-render-readout';
+import { clubWaterFrameWindow } from './WorldClubWaterBudget';
 
 // Layout v4 greybox (?layout=v4) loads as its own chunk; the default entry never fetches it.
 const WorldDistricts = LAYOUT_V4 ? lazy(() => import('./WorldDistricts')) : null;
@@ -56,6 +57,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
   const [frameSample] = useState(() => import.meta.env.DEV && new URLSearchParams(window.location.search).get('qa') === '1'
     ? { values: new Float32Array(180), count: 0, cursor: 0, warm: 0 } : null);
   useLayoutEffect(() => {
+    if (import.meta.env.DEV) clubWaterFrameWindow.invalidate();
     if (document.hidden) return;
     // A demand frame must not include the time spent asleep. This also covers
     // menu edits and resize without changing the requested drawing resolution.
@@ -74,6 +76,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
     if (frameSample && !paused && !document.hidden && delta > 0) {
       if (frameSample.warm < 30) frameSample.warm++;
       else {
+        clubWaterFrameWindow.record(delta * 1000);
         frameSample.values[frameSample.cursor] = delta * 1000;
         frameSample.cursor = (frameSample.cursor + 1) % frameSample.values.length;
         frameSample.count = Math.min(frameSample.count + 1, frameSample.values.length);

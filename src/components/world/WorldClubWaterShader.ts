@@ -18,20 +18,21 @@ float poolDistance(vec2 p){
 }
 float poolFloor(vec2 p){float edge=smoothstep(0.,3.4,-poolDistance(p));
   float shelf=.55+.28*clamp((uPoolCenter.x-p.x-1.)/7.,0.,1.);return 1.-(1.-shelf)*edge;}
-vec3 poolNormal(vec2 p){
+vec3 poolNormalWithContact(vec2 p,vec2 contact){
   vec2 a=vec2(2.2,1.1),b=vec2(-1.5,3.4),c=vec2(4.1,-2.7),d=vec2(-5.2,-3.3);
   vec2 slope=(a*.018*cos(dot(p,a)-uTime*.95)+b*.014*cos(dot(p,b)+uTime*.72)
     +c*.013*cos(dot(p,c)-uTime*1.24)+d*.009*cos(dot(p,d)+uTime*1.47))*uWind;
-  slope+=waterDisturbance(p,uSurfaceY,uTime).xy;
+  slope+=contact;
   return normalize(vec3(-slope.x,1.,-slope.y));
 }
+vec3 poolNormal(vec2 p){return poolNormalWithContact(p,waterDisturbance(p,uSurfaceY,uTime).xy);}
 `;
 
 export function clubWaterUniforms() {
   return { uTime:windUniforms.uWindTime,uWind:windUniforms.uWindStrength,...waterImpactUniforms,...seaGlintUniforms,
     uNight:{value:0},uSurfaceY:{value:CLUB_POOL.waterY},uPoolCenter:{value:new Vector2(CLUB_POOL.center[0],CLUB_POOL.center[2])},
     uPoolRadii:{value:new Vector2(...CLUB_POOL.radii)},uCaustics:{value:null},uCausticExtent:{value:29},uOptics:{value:0},
-    uRefraction:{value:null},uDepth:{value:null},uReflection:{value:null},uCaptureVP:{value:new Matrix4()},
+    uRefraction:{value:null},uDepth:{value:null},uReflection:{value:null},uReflectionWeight:{value:1},uCaptureVP:{value:new Matrix4()},
     uCaptureInverse:{value:new Matrix4()},uReflectionMatrix:{value:new Matrix4()},uCaptureEye:{value:new Vector3()} };
 }
 export type ClubWaterUniforms=ReturnType<typeof clubWaterUniforms>;
@@ -44,12 +45,13 @@ export function createClubOpticalWater(uniforms:ClubWaterUniforms) {
       uniform sampler2D uRefraction,uDepth,uReflection;
       uniform mat4 uCaptureVP,uCaptureInverse,uReflectionMatrix;
       uniform vec3 uCaptureEye,uWaterSkyTop,uWaterSkyHorizon,uSunDir,uGlint;
-      uniform float uOptics;
+      uniform float uOptics,uReflectionWeight;
       varying vec3 vPoolWorld;
       vec2 screenUV(vec3 p){vec4 q=uCaptureVP*vec4(p,1.);return q.xy/q.w*.5+.5;}
       vec3 hitAt(vec2 uv){float d=texture2D(uDepth,uv).r;vec4 p=uCaptureInverse*vec4(uv*2.-1.,d*2.-1.,1.);return p.xyz/p.w;}
       void main(){
-        vec3 p=vPoolWorld,n=poolNormal(p.xz),eye=normalize(cameraPosition-p);
+        vec3 p=vPoolWorld;vec4 disturbance=waterDisturbance(p.xz,uSurfaceY,uTime);
+        vec3 n=poolNormalWithContact(p.xz,disturbance.xy),eye=normalize(cameraPosition-p);
         float fresnel=.0204+.9796*pow(1.-max(0.,dot(eye,n)),5.);
         vec3 reflected=reflect(-eye,n);
         vec3 sky=mix(uWaterSkyHorizon,uWaterSkyTop,pow(clamp(reflected.y,0.,1.),.45));
@@ -71,13 +73,13 @@ export function createClubOpticalWater(uniforms:ClubWaterUniforms) {
           vec2 mirrorUV=projected.xy/projected.w+n.xz*.008;
           vec4 mirror=texture2D(uReflection,clamp(mirrorUV,vec2(.002),vec2(.998)));
           float inFrame=step(0.,mirrorUV.x)*step(mirrorUV.x,1.)*step(0.,mirrorUV.y)*step(mirrorUV.y,1.);
-          sky=mix(sky,mirror.rgb,mirror.a*inFrame);
+          sky=mix(sky,mirror.rgb,mirror.a*inFrame*uReflectionWeight);
         }
         vec3 transmission=exp(-vec3(1.35,.34,.20)*thickness);
         vec3 body=transmitted*transmission+vec3(.025,.19,.17)*(1.-transmission)*mix(.45,.07,uNight);
         vec3 col=mix(body,sky,clamp(fresnel,0.,.92));
         float sun=max(0.,dot(reflected,uSunDir));col+=uGlint*(pow(sun,320.)*.15+pow(sun,45.)*.006);
-        float contact=waterDisturbance(p.xz,uSurfaceY,uTime).w;
+        float contact=disturbance.w;
         col=mix(col,vec3(.55,.77,.73)*mix(1.,.2,uNight),min(.24,contact*.6));
         gl_FragColor=vec4(col,1.);
         #include <tonemapping_fragment>

@@ -6,7 +6,7 @@ import { clubWaterUniforms, createClubOpticalWater } from './WorldClubWaterShade
 import { applyPoolCaustics, ClubWaterCapture, clubWaterDebug } from './WorldClubWaterCapture';
 import { useWorldStore } from './store';
 import { windUniforms } from './WorldWind';
-import { night } from './WorldNight';
+import { climate, night } from './WorldNight';
 
 export default function WorldClubWater({geometry,basinMaterial}:{geometry:BufferGeometry;basinMaterial:MeshStandardMaterial}){
   const mesh=useRef<Mesh>(null);
@@ -14,6 +14,7 @@ export default function WorldClubWater({geometry,basinMaterial}:{geometry:Buffer
     const uniforms=clubWaterUniforms();return{uniforms,material:createClubOpticalWater(uniforms),legacy:createClubPoolWaterMaterial(),capture:new ClubWaterCapture(uniforms)};
   },[]);
   useEffect(()=>{
+    resources.capture.connect();
     const restore=applyPoolCaustics(basinMaterial,resources.uniforms);
     return()=>{restore();resources.material.dispose();resources.legacy.dispose();resources.capture.dispose();};
   },[basinMaterial,resources]);
@@ -24,6 +25,7 @@ export default function WorldClubWater({geometry,basinMaterial}:{geometry:Buffer
   });
   return <mesh ref={mesh} name="djc-pool-water-no-collider" geometry={geometry} material={resources.material} renderOrder={2}
     onBeforeRender={(renderer,scene,camera)=>{
-      if(!document.hidden&&mesh.current)resources.capture.render(renderer,scene,camera,mesh.current,windUniforms.uWindTime.value,useWorldStore.getState().quality==='high');
+      const state=useWorldStore.getState();
+      if(mesh.current)resources.capture.render(renderer,scene,camera,mesh.current,windUniforms.uWindTime.value,state.quality==='high',{paused:state.paused||state.poolInspect||!!state.shot,hidden:document.hidden,lightingSettled:climate.blend===1});
     }}/>;
 }
