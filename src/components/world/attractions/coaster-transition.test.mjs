@@ -3,14 +3,15 @@ import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { AnimationMixer, DoubleSide, Group, Mesh, MeshBasicMaterial, Raycaster, Vector3 } from 'three';
 import ts from 'typescript';
-import { COASTER_BOARDING as B, advanceCoasterTransition, captureCoasterStart, coasterAtBoardingEntrance,
+import { COASTER_BOARDING as B, COASTER_STAIR_SPEED, advanceCoasterTransition, captureCoasterStart, coasterAtBoardingEntrance,
   coasterBoardingGround, coasterTransitionDuration, createCoasterTransition, returnCoasterToStation } from './coaster-transition.ts';
 import { coasterRidePose } from './coaster-track.ts';
 import { attractionRide, beginAttractionRide, completeAttractionRide, endAttractionRide, requestAttractionExit } from './attraction-ride.ts';
 import { createCoasterCar, createCoasterStructure } from './coaster-geometry.ts';
 import { settleGuideAttraction, GuideAttractionFeet } from '../WorldGuideAttraction.ts';
 import { GuideSeatContact, holdGuideSeatIdle } from '../WorldGuideSeat.ts';
-import { GuideSlopeFit } from '../WorldGuideStop.ts';
+import { GuideSlopeFit, skinnedWorldPoint } from '../WorldGuideStop.ts';
+import { GuidePhaseModel } from '../WorldGuidePhase.ts';
 import { glb, loadGuide, motionDigest } from '../../../../tools/world/guide/boot-analysis.mjs';
 const pose = coasterRidePose(0, 'chase');
 function start() {
@@ -22,7 +23,7 @@ function until(t, target) {
   for (let i = 0; i < 6000 && t.phase !== target; i++) tick(t);
   assert.equal(t.phase, target);
 }
-test('click waits for the exact physics pose; boarding walks, turns, sits and settles before dispatch', () => {
+test('click waits for the exact physics pose; boarding approaches, jogs, turns, sits and settles before dispatch', () => {
   const t = createCoasterTransition(B.approach, 0, pose);
   for (let i = 0; i < 60; i++) tick(t);
   assert.equal(t.elapsed, 0); assert.equal(t.phase, 'approach');
@@ -32,11 +33,28 @@ test('click waits for the exact physics pose; boarding walks, turns, sits and se
   const visited = new Set(); let previous = t.frame.root;
   for (let i = 0; i < 3000 && t.phase !== 'riding'; i++) {
     const f = tick(t); visited.add(t.phase);
-    if (t.phase !== 'riding') assert.ok(new Vector3(...f.root).distanceTo(new Vector3(...previous)) < .04, 'continuous station foot datum');
+    if (t.phase !== 'riding') assert.ok(new Vector3(...f.root).distanceTo(new Vector3(...previous)) < .05, 'continuous station foot datum at 60 Hz');
     previous = f.root;
   }
   assert.deepEqual([...visited], ['approach', 'step-in', 'turn-in', 'sit', 'settle', 'riding']);
   assert.equal(t.frame.seatWeight, 1); assert.equal(t.frame.clip, 'SitIdle');
+});
+test('the stair jog traverses every tread in about two seconds and eases into the stationary turns', () => {
+  for (const phase of ['step-in', 'step-out']) {
+    const t = start(); t.phase = phase;
+    const duration = coasterTransitionDuration(t);
+    assert.ok(duration > 1.7 && duration < 2.4, `stair duration ${duration}`);
+    let maximum = 0; const heights = new Set();
+    for (let i = 0; i < 240; i++) {
+      t.elapsed = i / 240 * duration;
+      const f = tick(t, 1e-6);
+      assert.equal(f.clip, 'Run'); maximum = Math.max(maximum, f.speed);
+      assert.ok(f.speed <= COASTER_STAIR_SPEED + 1e-8);
+      if (i === 0 || i === 239) assert.ok(f.speed < .1, 'no high-speed pop into the next pose');
+      for (let j = 0; j < B.stairs.length; j++) if (Math.abs(f.root[1] - B.stairs[j].top) < .035) heights.add(j);
+    }
+    assert.equal(maximum, COASTER_STAIR_SPEED); assert.equal(heights.size, 6);
+  }
 });
 test('pause, tab hiding and stale-frame gaps freeze every boarding and exit phase', () => {
   for (const phase of ['approach', 'step-in', 'turn-in', 'sit', 'settle', 'riding', 'stand', 'turn-out', 'step-out', 'walk-out']) {
@@ -91,6 +109,35 @@ test('the entry apron, six real tread tops and clear car opening agree with the 
   structure.steel.dispose(); structure.glow.dispose(); carGeometry.dispose(); material.dispose();
 });
 const source = new URL('../../../../tools/world/guide/out/G24_uncompressed.glb', import.meta.url);
+test('actual running boot soles clear all six treads going up and down', { skip: !existsSync(source) }, async context => {
+  const { gltf } = await loadGuide(source), { scene, animations } = gltf;
+  const parent = new Group(), root = new Group(); parent.add(root); root.add(scene);
+  let design = { Walk: 1.5, Run: 3.6, Sprint: 6.2 };
+  scene.traverse(o => { if (o.userData.clipDesignSpeedMps) design = { ...design, ...JSON.parse(o.userData.clipDesignSpeedMps) }; });
+  const phaseModel = GuidePhaseModel.fromGLTF(gltf, { authoredSpeed: design, clips: ['Idle', 'Walk', 'Run', 'Sprint'] });
+  const mixer = new AnimationMixer(scene), action = mixer.clipAction(animations.find(c => c.name === 'Run')).play();
+  const contact = new GuideSeatContact(scene, animations), slope = new GuideSlopeFit(scene), feet = new GuideAttractionFeet();
+  let minimum = Infinity, samples = 0;
+  for (const phase of ['step-in', 'step-out']) for (const startPhase of [0, .3, .6]) {
+    feet.restore(); feet.apply(slope, null, 0); action.reset().play(); action.time = startPhase * action.getClip().duration;
+    const t = start(); t.phase = phase; let previous = null;
+    while (t.phase === phase) {
+      feet.restore(); const f = tick(t, 1 / 120); if (t.phase !== phase) break;
+      const travel = previous ? Math.hypot(f.root[0] - previous[0], f.root[2] - previous[2]) : 0;
+      action.setEffectiveTimeScale(phaseModel.timeScale('Run', action.time, travel, 1 / 120, 'contact'));
+      mixer.update(1 / 120); settleGuideAttraction(root, contact, f); feet.apply(slope, f, 1 / 120); root.updateWorldMatrix(true, true);
+      for (const leg of Object.values(slope.legs)) for (const p of leg.sole) {
+        const v = skinnedWorldPoint(p.mesh, p.index, new Vector3()), ground = coasterBoardingGround(v.x, v.z);
+        if (ground !== null) {
+          const clearance = v.y - ground; minimum = Math.min(minimum, clearance); samples++;
+          assert.ok(clearance >= -.01, `${phase}, clip phase ${startPhase}, tread penetration ${clearance}`);
+        }
+      }
+      previous = [...f.root];
+    }
+  }
+  mixer.stopAllAction(); context.diagnostic(`${samples} sole/tread samples; minimum clearance ${minimum.toFixed(6)} m`);
+});
 test('actual G24 seat patch follows full train rotation despite an interpolated parent; tread IK restores bones', { skip: !existsSync(source) }, async () => {
   const asset = await loadGuide(source);
   assert.equal(motionDigest(asset), motionDigest(glb(new URL('../../../../public/assets/world/guide/G24.glb', import.meta.url))));
@@ -103,7 +150,7 @@ test('actual G24 seat patch follows full train rotation despite an interpolated 
     settleGuideAttraction(root, contact, { root: p.seat, seat: p.seat, seatWeight: 1, yaw: p.yaw, orientation: p.orientation, speed: 0, clip: 'SitIdle' });
     assert.ok(contact.sample(new Vector3()).distanceTo(new Vector3(...p.seat)) < 1e-6);
   }
-  action.stop(); mixer.clipAction(animations.find(c => c.name === 'Walk')).play(); mixer.update(.2);
+  action.stop(); mixer.clipAction(animations.find(c => c.name === 'Run')).play(); mixer.update(.2);
   const slope = new GuideSlopeFit(scene), feet = new GuideAttractionFeet(), t = start(); t.phase = 'step-in'; t.elapsed = coasterTransitionDuration(t) * .4; tick(t);
   settleGuideAttraction(root, contact, t.frame);
   const bones = Object.values(slope.legs).flatMap(l => [l.thigh, l.shin, l.foot]);

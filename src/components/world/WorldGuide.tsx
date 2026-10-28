@@ -397,8 +397,9 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     const speedMps = attraction?.speed ?? motion.speedMps;
     group.current?.updateWorldMatrix(true, false);
     group.current?.getWorldPosition(rig.motionPoint);
+    if (attraction) rig.motionPoint.set(...attraction.root);
     const moved = Math.hypot(rig.motionPoint.x-rig.previousMotionPoint.x, rig.motionPoint.z-rig.previousMotionPoint.z);
-    let travel = attraction ? speedMps * dt : rig.hasMotionSample && moved < 1 ? moved : speedMps * dt;
+    let travel = attraction && !GAITS.includes(attraction.clip) ? 0 : rig.hasMotionSample && moved < 1 ? moved : speedMps * dt;
     rig.previousMotionPoint.copy(rig.motionPoint); rig.hasMotionSample = true;
     // Use measured velocity directly. A wall contact must stop the stride, even with W held.
     s.speed = speedMps;

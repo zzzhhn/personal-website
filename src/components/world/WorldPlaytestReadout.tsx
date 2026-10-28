@@ -18,6 +18,7 @@ import { windUniforms } from './WorldWind';
 import { IBD_YARD, INTENT_COASTER } from './attractions/attraction-layout';
 import { WORKSHOP_TARGETS, workshopTarget } from './attractions/intent-workshop-layout';
 import { attractionRide } from './attractions/attraction-ride';
+import { attractionLook } from './attractions/attraction-camera';
 import { PLAYER_CENTER_HEIGHT } from './actor-physics';
 import { INTENT_TARGETS } from './attractions/intent-stations';
 import { IBD_STATIONS, ibdWorld } from './attractions/ibd-yard-layout';
@@ -31,7 +32,7 @@ import { coasterStructureJobs } from './attractions/coaster-structure-job';
 function readContactSnapshot() {
   const value=worldActorDebug.actor(),physics=worldActorDebug.snapshot();
   const actor=value&&typeof value==='object'&&!Array.isArray(value)?value:{};
-  return {ride:{active:attractionRide.active,...attractionRide.pose},camera:worldActorDebug.camera(),actor:{animation:actor.animation,root:actor.root,seatSupport:actor.seatSupport,vehicleStage:actor.vehicleStage,vehicleRotation:actor.vehicleRotation,vehicle:actor.vehicle},
+  return {ride:{active:attractionRide.active,...attractionRide.pose,look:{...attractionLook},phase:attractionRide.transition?.phase},camera:worldActorDebug.camera(),actor:{animation:actor.animation,root:actor.root,seatSupport:actor.seatSupport,vehicleStage:actor.vehicleStage,vehicleRotation:actor.vehicleRotation,vehicle:actor.vehicle},
     doors:Object.fromEntries(Object.entries(vehicleLodSnapshot()).map(([id,v])=>[id,{level:v.level,triangles:v.l0Triangles,doors:v.doors}])),
     physics:{player:physics.player,grounded:physics.grounded,vehicles:physics.vehicles.map(v=>({id:v.id,position:v.position,waterSeconds:v.waterSeconds,wheelContacts:v.wheelContacts}))}};
 }

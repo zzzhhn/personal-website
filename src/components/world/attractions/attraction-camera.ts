@@ -19,9 +19,11 @@ export function attractionCameraPose(pose: AttractionRidePose, look = attraction
   const up = new Vector3(...(pose.cameraUp ?? [0, 1, 0])).normalize();
   const camera = new Vector3(...pose.cameraPosition), target = new Vector3(...pose.cameraTarget);
   const direction = pose.firstPerson ? target.clone().sub(camera) : camera.clone().sub(target);
-  direction.applyAxisAngle(up, look.yaw);
+  // Match the walking orbit: increasing yaw runs +X towards +Z. Three's
+  // right-handed Y rotation runs the other way, for both orbit and head look.
+  direction.applyAxisAngle(up, -look.yaw);
   const side = new Vector3().crossVectors(up, direction).normalize();
-  direction.applyAxisAngle(side, pose.firstPerson ? -look.pitch : look.pitch);
+  direction.applyAxisAngle(side, pose.firstPerson ? look.pitch : -look.pitch);
   if (pose.firstPerson) target.copy(camera).add(direction);
   else {
     // Orbit above the seat, not through the wheels. Clamp the resulting elevation,

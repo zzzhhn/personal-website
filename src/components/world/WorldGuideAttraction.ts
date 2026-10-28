@@ -21,7 +21,7 @@ export function settleGuideAttraction(group: Object3D, contact: GuideSeatContact
   }
 }
 
-/** Reuse Walk and the guide's measured boot soles for the six treads. This is a local IK
+/** Adapt the current gait and the guide's measured boot soles to the six treads. This is a local IK
  * adaptation, not a new motion capture take. Restore every modified bone before the next mixer. */
 export class GuideAttractionFeet {
   private saved = new Map<Bone, Quaternion>();
@@ -39,7 +39,16 @@ export class GuideAttractionFeet {
       let low = Infinity;
       const points = leg.sole.map(p => skinnedWorldPoint(p.mesh, p.index, new Vector3()));
       for (const p of points) low = Math.min(low, p.y);
-      const ground = coasterBoardingGround(ankle.x, ankle.z);
+      // A boot can straddle two treads while its ankle is over the lower one.
+      // Sample the whole rigid sole so the toe/heel cannot cut through a riser.
+      let ground = coasterBoardingGround(ankle.x, ankle.z), requiredLift = 0;
+      for (const p of points) {
+        const support = coasterBoardingGround(p.x, p.z);
+        if (support !== null) {
+          ground = Math.max(ground ?? support, support);
+          requiredLift = Math.max(requiredLift, support + .003 - p.y);
+        }
+      }
       if (ground === null || !Number.isFinite(low)) continue;
       const clearance = Math.max(0, low - frame.root[1]);
       // Anticipate the next riser only while the recorded boot is swinging.
@@ -48,7 +57,8 @@ export class GuideAttractionFeet {
       const targetGround = ground + Math.max(0, ahead - ground) * swing;
       const wanted = Math.max(-.28, Math.min(.28, targetGround + clearance + .003 - low));
       const before = this.shifts.get(foot) ?? wanted;
-      const shift = before + (wanted - before) * (1 - Math.exp(-dt / .045));
+      // Smooth the release, but never smooth through a newly contacted tread.
+      const shift = Math.max(requiredLift, before + (wanted - before) * (1 - Math.exp(-dt / .045)));
       this.shifts.set(foot, shift);
       for (const bone of [thigh, shin, foot]) this.saved.set(bone, bone.quaternion.clone());
       const target = ankle.clone(); target.y += shift;

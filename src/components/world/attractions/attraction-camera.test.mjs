@@ -3,6 +3,24 @@ import assert from 'node:assert/strict';
 import { Vector3 } from 'three';
 import { attractionCameraPose, attractionLook, resetAttractionLook, turnAttractionLook, zoomAttractionLook } from './attraction-camera.ts';
 import { coasterRidePose, COASTER_INVERSION } from './coaster-track.ts';
+import { orbitDirection } from '../actor-physics.ts';
+
+test('the same drag delta has the walking camera direction in orbit and first person', () => {
+  for (const firstPerson of [false, true]) for (const yaw of [-2, -.5, .8, 2.4]) {
+    const pitch = .45, pivot = new Vector3(5, 3, -8), direction = new Vector3(...orbitDirection(yaw, pitch));
+    const base = { ...coasterRidePose(0, firstPerson ? 'first-person' : 'comfort'), firstPerson,
+      cameraUp: [0, 1, 0], cameraPosition: (firstPerson ? pivot : pivot.clone().addScaledVector(direction, 8)).toArray(),
+      cameraTarget: (firstPerson ? pivot.clone().sub(direction) : pivot).toArray() };
+    for (const dx of [-.2, .2]) for (const dy of [-.12, .12]) {
+      resetAttractionLook(); turnAttractionLook(dx, dy);
+      const pose = attractionCameraPose(base);
+      const expected = new Vector3(...orbitDirection(yaw + dx, pitch + dy));
+      const actual = new Vector3(...pose.cameraPosition).sub(new Vector3(...pose.cameraTarget)).normalize();
+      assert.ok(actual.distanceTo(expected) < 1e-8, `firstPerson=${firstPerson}, yaw=${yaw}, delta=${dx},${dy}`);
+    }
+  }
+  resetAttractionLook();
+});
 
 test('full orbit during a real inversion changes the view without moving the rider or train', () => {
   const base=coasterRidePose(COASTER_INVERSION.top,'chase'),original=structuredClone(base);
