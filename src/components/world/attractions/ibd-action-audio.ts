@@ -22,6 +22,10 @@ export function committedIbdAction(before: IbdYardGame, after: IbdYardGame): Ibd
   if (before === after) return null;
   if (!before.pending && !after.pending && !before.started && after.started && before.round === after.round)
     return { kind: 'brief', station: 'manifest' };
+  // The last verified pocket commits contents directly; there is no timed machine pending.
+  if (!before.pending && !after.pending && before.round === after.round && after.revision === before.revision + 1
+    && after.completedAction?.kind === 'contents' && after.completedAction !== before.completedAction
+    && after.core !== before.core) return after.completedAction;
   const pending = before.pending;
   if (!pending || after.pending || after.revision !== pending.token || before.round !== after.round) return null;
   return before.core !== after.core || before.equipped !== after.equipped || before.released !== after.released

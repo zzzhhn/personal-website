@@ -7,9 +7,11 @@ import { ibdStation } from './ibd-yard-layout.ts';
 import { cancelIbdYardAction, createIbdYardGame, requestIbdYardAction, finishIbdYardAction, yardActions,
   yardCase, yardItemId, yardItemComplete, yardItemDifferent } from './ibd-yard-game.ts';
 import { playerVerdict } from './ibd-test-player.mjs';
+import { inspectIbdTestPack } from './ibd-test-pack-inspection.mjs';
 
 function act(game, action) {
   assert.ok(action, 'the requested station must offer the action');
+  if (action.kind === 'contents') return inspectIbdTestPack(game, action);
   const actor = { active: true, local: ibdStation(action.station, game.core.moved).at };
   const selected = playerVerdict(game, action), requested = requestIbdYardAction(game, selected, actor);
   assert.ok(requested.pending || requested.completedAction === selected, `${action.kind} rejected: ${requested.notice}`);

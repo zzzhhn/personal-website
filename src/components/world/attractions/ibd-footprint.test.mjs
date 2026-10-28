@@ -6,6 +6,7 @@ import { IBD_YARD, IBD_FOOTPRINT, IBD_BOUNDARY_SEGMENTS, ibdFootprintDistance, a
 import { IBD_STATIONS, IBD_SHEDS } from './ibd-yard-layout.ts';
 import { buildIbdPaving } from './ibd-yard-site.ts';
 import { buildIbdStatic } from './ibd-yard-geometry.ts';
+import { IBD_GEOMETRY_BUDGET } from './ibd-geometry-budget.ts';
 
 const local = IBD_FOOTPRINT.map(([x,z]) => [x - IBD_YARD.center[0], z - IBD_YARD.center[2]]);
 const insideDistance = (x,z) => ibdFootprintDistance(x + IBD_YARD.center[0], z + IBD_YARD.center[2]);
@@ -50,7 +51,7 @@ test('paving top exactly covers the polygon once, with no old rectangular floor 
     assert.ok(!data.solids.some(s=>s.at[1]<.3&&s.size[0]>20&&s.size[2]>20), 'old cuboid slab removed');
     assert.deepEqual(Array.from(data.walkSurface.indices.slice(0,ground.indices.length)),Array.from(ground.indices));
     assert.deepEqual(Array.from(data.walkSurface.vertices.slice(0,ground.vertices.length)),Array.from(ground.vertices));
-    assert.ok(data.geometry.index.count/3<35000,'static geometry remains under 35k triangles');
+    assert.ok(data.geometry.index.count/3<IBD_GEOMETRY_BUDGET.static,'static yard stays within its existing geometry allocation');
   } finally { data.geometry.dispose(); }
 });
 test('all new boundaries stay inland and physical fences leave existing roads and arrival gates clear', () => {

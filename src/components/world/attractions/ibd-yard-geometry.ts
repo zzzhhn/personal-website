@@ -8,6 +8,7 @@ import { addInspectionTools, addWoundCoil, addYardControl } from './ibd-craft-ge
 import { buildIbdTruck } from './ibd-truck-geometry.ts';
 export { IBD_MATERIALS } from './ibd-yard-palette.ts';
 export type { IbdSolid } from './ibd-yard-architecture.ts';
+export { buildIbdPack } from './ibd-pack-geometry.ts';
 function buildIbdWalkSurface(b: Builder) {
   const vertices: number[] = [], indices: number[] = [], ids = new Map<string, number>();
   const boundary = new Map<string, { a: V3; end: V3; count: number }>();
@@ -149,36 +150,6 @@ export function buildIbdCoil(damaged: boolean, number = 1) {
   for (const x of [-1.25, 1.25]) cbox(b, [x, -1.72, 0], [.45, .6, 2.7], P.timber, .03);
   for (const x of [-1.7, 1.7]) for (const z of [-1.05, 1.05])
     b.tr([x, -2.12, z], [0, 0, Math.PI / 2], () => lathe(b, [[0, -.09], [.13, -.09], [.13, .09], [0, .09]], P.steel, { sides: 8 }));
-  return b.build();
-}
-export function buildIbdPack(quantity: number, spec: string) {
-  const b = new Builder();
-  for (const x of [-1.2, 0, 1.2]) cbox(b, [x, -.06, 0], [.35, .18, 2.7], P.timber, .025);
-  cbox(b, [0, -.3, 0], [2.8, .15, 2.3], P.dark, .03);
-  for (const x of [-1.2, 1.2]) for (const z of [-.9, .9]) {
-    cbox(b, [x, -.55, z], [.12, .4, .12], P.steel);
-    b.tr([x, -.75, z], [0, 0, Math.PI / 2], () => lathe(b, [[0, -.09], [.26, -.09], [.26, .09], [0, .09]], P.rubber, { sides: 10 }));
-  }
-  for (const z of [-1, -.5, 0, .5, 1]) cbox(b, [0, .06, z], [3, .12, .4], P.endgrain, .025);
-  cbox(b, [0, .23, 0], [2.7, .2, 2.4], P.dark, .025);
-  for (const x of [-1.35, 1.35]) cbox(b, [x, .62, 0], [.12, .85, 2.5], P.timber, .03);
-  for (const z of [-1.22, 1.22]) cbox(b, [0, .62, z], [2.7, .85, .12], P.endgrain, .03);
-  for (let i = 0; i < 4; i++) {
-    const x = i % 2 ? .65 : -.65, z = i < 2 ? -.55 : .55;
-    cbox(b, [x, .37, z], [.84, .1, .8], P.rubber, .08);
-    if (i >= quantity) continue;
-    const r = spec === 'M6' ? .14 : .23, h = spec === 'M6' ? .35 : .56;
-    b.tr([x, .43, z], [0, 0, 0], () => {
-      lathe(b, [[0, 0], [r * 1.5, 0], [r * 1.5, .13], [r, .13], [r, h], [0, h]], P.steel, { sides: 6, faceted: true });
-      for (let y = .18; y < h; y += .08) lathe(b, [[r, y], [r + .02, y], [r + .02, y + .025], [r, y + .025]], P.dark, { sides: 8 });
-    });
-  }
-  cbox(b, [0, .64, 1.3], [.95, .44, .04], P.pale, .02);
-  // Geometric M8 / 4 markings describe the package declaration, even in the wrong-spec fixture.
-  const ink = (a: [number, number], c: [number, number]) => bar(b, [a[0], a[1], 1.33], [c[0], c[1], 1.33], .013, P.dark, 4);
-  for (const [a, c] of [[[-.36, .53], [-.36, .75]], [[-.36, .75], [-.25, .63]], [[-.25, .63], [-.14, .75]], [[-.14, .75], [-.14, .53]],
-    [[-.03, .53], [-.03, .75]], [[.1, .53], [.1, .75]], [[-.03, .53], [.1, .53]], [[-.03, .64], [.1, .64]], [[-.03, .75], [.1, .75]],
-    [[.3, .75], [.23, .62]], [[.23, .62], [.39, .62]], [[.35, .75], [.35, .53]]] as [[number, number], [number, number]][]) ink(a, c);
   return b.build();
 }
 export function buildIbdLid() {

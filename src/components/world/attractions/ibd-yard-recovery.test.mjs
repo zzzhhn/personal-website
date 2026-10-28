@@ -8,9 +8,11 @@ import { canCancelIbdObservation, cancelIbdYardAction, createIbdYardGame, finish
   requestIbdYardAction, yardActions, yardCase, yardItemId } from './ibd-yard-game.ts';
 import { playerVerdict } from './ibd-test-player.mjs';
 import { ibdVerdictEvidence } from './ibd-yard-verdict.ts';
+import { inspectIbdTestPack } from './ibd-test-pack-inspection.mjs';
 
 const actor = (game, action) => ({ active: true, local: ibdStation(action.station, game.core.moved).at });
 function complete(game, action = ibdGuideStep(game).action) {
+  if (action.kind === 'contents') return inspectIbdTestPack(game, action);
   const local = actor(game, action), requested = requestIbdYardAction(game, playerVerdict(game, action), local);
   return requested.pending ? finishIbdYardAction(requested, requested.pending.token, local) : requested;
 }

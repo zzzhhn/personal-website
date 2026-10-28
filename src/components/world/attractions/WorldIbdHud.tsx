@@ -10,9 +10,12 @@ import { IBD_ACTION_LABEL, IBD_MOTION_WAIT_LABEL, ibdNotice } from './ibd-yard-c
 import { cancelIbdAction, dispatchIbdAction, setIbdGuide, useIbdYardStore } from './ibd-yard-store';
 import { ibdGuideStep, ibdGuideResult, ibdGuidePhaseDone, IBD_GUIDE_PHASES } from './ibd-yard-guide';
 import './ibd-yard.css';
+import WorldIbdPackControls from './WorldIbdPackControls';
+import { useIbdPackPlay, openIbdPack, ibdPackWorkBusy } from './ibd-pack-play';
 
 /** The manifest is a readout. Every cargo action is still gated by the same physical station as E. */
 export default memo(function WorldIbdHud({ active = true }: { active?: boolean }) {
+  const packView=useIbdPackPlay();
   const game = useIbdYardStore(s => s.game), mounted = useIbdYardStore(s => s.active);
   const motionWait = useIbdYardStore(s => s.motionWait);
   const guided = useIbdYardStore(s => s.guideEnabled), guide = ibdGuideStep(game), target = ibdStation(guide.action.station, game.core.moved);
@@ -29,7 +32,7 @@ export default memo(function WorldIbdHud({ active = true }: { active?: boolean }
   const zh = lang === 'zh', t = (cn: string, en: string) => zh ? cn : en;
   const id = nearby?.startsWith('ibd-') ? nearby.slice(4) as IbdStationId : null;
   const station = id && IBD_STATIONS.some(s => s.id === id) ? ibdStation(id, game.core.moved) : null;
-  const workingStation = game.pending ? ibdStation(game.pending.action.station, game.core.moved) : station;
+  const workingStation = packView.pack ? ibdStation(packView.pack,game.core.moved) : game.pending ? ibdStation(game.pending.action.station, game.core.moved) : station;
   const atTarget = nearby === `ibd-${target.id}` && ibdReach(local, target);
   const actions = guided ? atTarget ? [guide.action] : [] : station && ibdReach(local, station) ? yardActions(game, station.id) : [];
   const judgement = actions.find(a => a.kind === 'judge');
@@ -51,8 +54,8 @@ export default memo(function WorldIbdHud({ active = true }: { active?: boolean }
       <p className="ibd-next">{guide.hint[lang]}</p>
       {!atTarget && !game.pending && !game.released && <p className="ibd-walk-hint">{t('沿地面箭头走到黄圈，靠近后按 E。', 'Follow the floor arrows to the ring. Press E when close.')}</p>}
     </> : <><h2>{workingStation ? workingStation.title[lang] : t('自由检查', 'Explore the yard')}</h2>
-      <p className="ibd-next">{t('靠近装置按 E 操作；需要时可恢复带路。', 'Approach a device and press E. Resume guidance at any time.')}</p></>}
-    {game.pending ? <><div className="ibd-working" role="status" aria-live="polite"><i aria-hidden="true" />{motionWait ? IBD_MOTION_WAIT_LABEL[motionWait][lang] : IBD_ACTION_LABEL[game.pending.action.kind][lang]}</div>
+      <p className="ibd-next">{packView.pack?t('取出样件，合拢夹爪贴住杆身，夹量后放回原槽。','Present a sample, fit the jaws to its shaft, gauge it, then return it.'):t('靠近装置按 E 操作；需要时可恢复带路。', 'Approach a device and press E. Resume guidance at any time.')}</p></>}
+    {packView.pack ? <WorldIbdPackControls zh={zh}/> : game.pending ? <><div className="ibd-working" role="status" aria-live="polite"><i aria-hidden="true" />{motionWait ? IBD_MOTION_WAIT_LABEL[motionWait][lang] : IBD_ACTION_LABEL[game.pending.action.kind][lang]}</div>
       {canCancelIbdObservation(game) && <div className="ibd-actions"><button className="ibd-secondary" onClick={() => {
         if (canCancelIbdObservation(useIbdYardStore.getState().game)) cancelIbdAction();
       }}>{t('取消本次操作', 'Cancel this operation')}</button></div>}</>
@@ -61,8 +64,8 @@ export default memo(function WorldIbdHud({ active = true }: { active?: boolean }
         <div className="ibd-actions">{ibdVerdictOptions(judgement.slot).map(verdict => <button key={verdict} className="ibd-secondary"
           onClick={() => dispatchIbdAction({ ...judgement, verdict })}>{IBD_VERDICT_LABEL[verdict][lang]}</button>)}</div>
       </div> : actions.length > 0 && <div className="ibd-actions">{actions.map((a, i) => <button key={a.kind} className={i === 0 ? 'ibd-primary' : 'ibd-secondary'}
-        onClick={() => dispatchIbdAction(a)}><kbd>{i === 0 ? 'E / Y' : '↻'}</kbd>{guided && !game.released ? guide.title[lang] : IBD_ACTION_LABEL[a.kind][lang]}</button>)}</div>}
-    {notice && <p className="ibd-feedback" role="status" aria-live="polite">{notice}</p>}
+        onClick={() => {if(ibdPackWorkBusy())return;if(a.kind==='contents'&&a.slot)openIbdPack(a.slot);else dispatchIbdAction(a);}}><kbd>{i === 0 ? 'E / Y' : '↻'}</kbd>{guided && !game.released ? guide.title[lang] : IBD_ACTION_LABEL[a.kind][lang]}</button>)}</div>}
+    {notice && !packView.pack && <p className="ibd-feedback" role="status" aria-live="polite">{notice}</p>}
     <button className="ibd-details-toggle" aria-expanded={details} onClick={() => setDetails(v => !v)}>{t('货单、已见证据与退换记录', 'Manifest, observed evidence and exchanges')} {details ? '−' : '+'}</button>
     {details && <div className="ibd-details">
       <div className="ibd-milestones"><span>{t('钢卷', 'Coils')}<b>{count('coil')}/2</b></span><span>{t('五金', 'Packs')}<b>{count('parts')}/2</b></span><span>{t('装车', 'Loaded')}<b>{game.core.loaded.length}/2</b></span></div>

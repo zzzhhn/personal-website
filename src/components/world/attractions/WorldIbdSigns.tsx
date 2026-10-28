@@ -22,11 +22,11 @@ export default function WorldIbdSigns() {
       { at: [-17, 1.3, 14.2], w: 4, h: .8, title: zh ? '钢卷退换位' : 'COIL EXCHANGE', sub: zh ? '隔离原货与新供货分开' : 'RETURNED CARGO IS SEPARATE' },
       ...IBD_STATIONS.map(original => {
         const s = ibdStation(original.id, moved), coil = s.id === 'coil-front' || s.id === 'coil-rear';
-        const table = s.id === 'kit' || s.id === 'manifest';
+        const table = s.id === 'kit' || s.id === 'manifest', pack=s.id==='parts-a'||s.id==='parts-b';
         // Floor placards leave the bore and wound inspection face unobstructed.
-        return { at: [s.at[0], coil ? .31 : table ? (s.id === 'kit' ? .9 : .6) : s.at[1] + .95,
+        return { at: [s.at[0], pack ? .42 : coil ? .31 : table ? (s.id === 'kit' ? .9 : .6) : s.at[1] + .95,
           s.at[2] - (table ? .39 : .35)] as Vec3,
-          w: s.id.startsWith('gallery') ? 2 : table ? 1.5 : 1.8, h: coil ? .42 : table ? .35 : .65,
+          w: s.id.startsWith('gallery') ? 2 : table ? 1.5 : 1.8, h: coil||pack ? .42 : table ? .35 : .65,
           title: s.title[lang], sub: s.id === 'manifest' ? '2 COILS / 8 M8' : 'E / Y' };
       }),
     ];

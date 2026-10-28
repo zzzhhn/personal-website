@@ -9,6 +9,8 @@ import { createIbdMotionClock, createIbdSafety, stepIbdSafeMotion } from './ibd-
 import { finishIbdAction, ibdActor, setIbdMotionWait, useIbdYardStore } from './ibd-yard-store.ts';
 import { buildIbdCoil, buildIbdPack, buildIbdLid, buildIbdCrane, buildIbdHook, buildIbdCables, buildIbdShutter, buildIbdTools } from './ibd-yard-geometry.ts';
 import type { IbdItem } from './ibd-model.ts';
+import { buildIbdPackShell } from './ibd-pack-geometry';
+import WorldIbdPackInspection from './WorldIbdPackInspection';
 
 const cargoGeometry = (item: IbdItem) => item.kind === 'coil' ? buildIbdCoil(!!item.defects['quality-rear'], item.id.includes('rear') ? 2 : 1) : buildIbdPack(item.quantity, item.specId);
 const movable = { movable: true, solid: true, assetId: 'ibd-yard-cargo' };
@@ -31,7 +33,7 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
   const clock = useRef(createIbdMotionClock());
   const resources = useMemo(() => {
     const scenario = yardCase(game);
-    const goods = Object.fromEntries(IBD_SLOTS.map(slot => [slot, cargoGeometry(scenario.items.find(i => i.id === yardItemId(game, slot))!)])) as Record<IbdSlot, BufferGeometry>;
+    const goods = Object.fromEntries(IBD_SLOTS.map(slot => [slot, slot.startsWith('parts')?buildIbdPackShell():cargoGeometry(scenario.items.find(i => i.id === yardItemId(game, slot))!)])) as Record<IbdSlot, BufferGeometry>;
     const fresh = Object.fromEntries(IBD_SLOTS.map(slot => [slot, cargoGeometry(IBD_ALL_CLEAR.items.find(i => i.id === slot)!)])) as Record<IbdSlot, BufferGeometry>;
     const returned = game.exchanges.map(e => ({ slot: e.slot, geometry: cargoGeometry(e.original) }));
     return { goods, fresh, returned };
@@ -113,6 +115,7 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
         position={IBD_CARGO_HOME[slot]} name={`ibd-cargo-${slot}`} userData={movable}>
         <CuboidCollider args={coil ? [2, 2, 1.4] : [1.4, .55, 1.3]} position={coil ? [0, 0, 0] : [0, .45, 0]} friction={.8} />
         <mesh ref={m => { meshes.current[slot] = m; }} geometry={resources.goods[slot]} material={material} castShadow receiveShadow userData={movable} />
+        {!coil&&<WorldIbdPackInspection key={yardItemId(game,slot)} slot={slot} item={yardCase(game).items.find(i=>i.id===yardItemId(game,slot))!} material={material}/>}
         {!coil && <group ref={g => { lids.current[slot] = g; }} position={[0, 1.08, -1.25]}>
           <mesh geometry={fixed.lid} material={material} castShadow userData={movable} />
         </group>}

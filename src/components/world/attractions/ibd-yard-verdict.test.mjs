@@ -6,11 +6,13 @@ import { ibdStation } from './ibd-yard-layout.ts';
 import { ibdGuideStep, ibdGuidePhaseDone } from './ibd-yard-guide.ts';
 import { ibdVerdictOptions, ibdVerdictEvidence } from './ibd-yard-verdict.ts';
 import { ibdNotice } from './ibd-yard-copy.ts';
+import { inspectIbdTestPack } from './ibd-test-pack-inspection.mjs';
 
 const actor = (g, station) => ({ active: true, local: ibdStation(station, g.core.moved).at });
 function act(g, station, kind, verdict) {
   const offered = yardActions(g, station).find(a => !kind || a.kind === kind);
   assert.ok(offered, `${station}/${kind}`);
+  if (offered.kind === 'contents') return inspectIbdTestPack(g, offered);
   const a = verdict ? { ...offered, verdict } : offered;
   const next = requestIbdYardAction(g, a, actor(g, station));
   return next.pending ? finishIbdYardAction(next, next.pending.token, actor(g, station)) : next;

@@ -9,6 +9,9 @@ import { ALPHA_MINE_ORIGIN } from './alpha-mine-layout';
 import { ALPHA_EXCHANGE_ORIGIN, ALPHA_EXCHANGE_FOOTPRINT } from './alpha-exchange-layout';
 import { advanceExchangeBodyAction, cancelExchangeBodyAction, exchangeActor, exchangeBody, exchangeBodyBusy } from './alpha-exchange-motion';
 import { cancelExchangePlay } from './alpha-exchange-play';
+import { ibdInspectionActor, ibdInspectionBody, ibdInspectionBodyBusy, IBD_INSPECTION_STAND_TOLERANCE } from './attractions/ibd-inspection-motion';
+import { cancelIbdPack, tickIbdPackInspection, useIbdPackPlay } from './attractions/ibd-pack-play';
+import { IBD_CARGO_HOME, ibdWorld } from './attractions/ibd-yard-layout';
 import { nearestDryPoint, terrainHeight } from './WorldLandform';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag.ts';
 import { useWorldStore, type NearbyInteract } from './store';
@@ -409,6 +412,7 @@ export default function WorldActors() {
     cars.current.forEach(c=>{c.steerInput=0;c.throttleInput=0;c.driving.power=0;c.driving.boosting=false;c.driving.handbrake=false;});publishDrivingTelemetry(null);
   }
   function clearPlayerMotion(hardCut=false) {
+    cancelIbdPack(true);
     cancelExchangeBodyAction();
     if(hardCut)cancelExchangePlay('recovery');
     if(player.current)clearPlayerSlopeGravity(player.current);
@@ -971,6 +975,9 @@ export default function WorldActors() {
     exchangeActor.yaw = guideYaw.current;
     exchangeActor.grounded = grounded.current;
     exchangeActor.available = mineActor.available && !mineBusy() && !useAlphaMineStore.getState().carried && !guideTransition.current;
+    Object.assign(ibdInspectionActor,{position:[playerPosition.x,playerPosition.y,playerPosition.z],yaw:guideYaw.current,
+      grounded:grounded.current,available:exchangeActor.available&&!exchangeBody.action&&!exchangeBody.carried,mode:active?'vehicle':'guide'});
+    if(ibdInspectionBodyBusy()||ibdInspectionBody.carried)exchangeActor.available=false;
     if(!exchangeActor.available)cancelExchangeBodyAction();
     if(exchangeBody.carried && (playerPosition.x<ALPHA_EXCHANGE_FOOTPRINT.minX-8 || playerPosition.x>ALPHA_EXCHANGE_FOOTPRINT.maxX+8
       || playerPosition.z<ALPHA_EXCHANGE_FOOTPRINT.minZ-8 || playerPosition.z>ALPHA_EXCHANGE_FOOTPRINT.maxZ+8))cancelExchangePlay('left-hall');
@@ -997,7 +1004,7 @@ export default function WorldActors() {
       if(now.clubMode){useWorldStore.setState({clubMode:null});return;}
       if(now.seat){useWorldStore.setState({seat:null});return;}
       if(now.card){useWorldStore.setState({card:null});return;}
-      if (mineBusy() || railVault.current || exchangeBodyBusy()) return;
+      if (mineBusy() || railVault.current || exchangeBodyBusy() || ibdInspectionBodyBusy()) return;
       if (useAlphaMineStore.getState().carried && item && !item.id.startsWith('alpha-mine-')) {
         actorNotice('先在矿场暂存台按 F 放下矿石，再使用其他设施。', 'Set the ore on a mine shelf with F before using another attraction.');
         return;
@@ -1056,6 +1063,7 @@ export default function WorldActors() {
       grounded.current=ground?.grounded??false;
       mineActor.grounded = grounded.current;
       exchangeActor.grounded = grounded.current;
+      ibdInspectionActor.grounded = grounded.current;
       if (new URLSearchParams(window.location.search).get('qaPhysicsSupport') === '1') supportDecision.current={
         step:physicsSteps.current,body:asTuple(p),velocity:asTuple(velocity),grounded:grounded.current,jumpRequested:actions.current.jump,
         capsuleSupport:ground?{gap:ground.gap,normal:asTuple(ground.normal),centerY:ground.centerY}:null};
@@ -1132,8 +1140,9 @@ export default function WorldActors() {
       mineActor.moving = magnitude > .05;
       const mining = useAlphaMineStore.getState().action;
       if (mining && !mining.contact && magnitude > .05) cancelMineAction();
-      const trading=exchangeBody.action;
-      const locked=guideMovementLock.current || !!guideTransition.current || mineBusy() || !!trading;
+      const inspecting=ibdInspectionBody.action;
+      const trading=exchangeBody.action??inspecting;
+      const locked=guideMovementLock.current || !!guideTransition.current || mineBusy() || !!trading || !!ibdInspectionBody.carried;
       if (mining && mineBusy()) {
         const desired = Math.atan2(-(mining.target[2] - p.z), mining.target[0] - p.x);
         guideYaw.current += clamp(Math.atan2(Math.sin(desired - guideYaw.current), Math.cos(desired - guideYaw.current)), -dt * 10, dt * 10);
@@ -1142,7 +1151,7 @@ export default function WorldActors() {
       if(trading){
         actions.current.jump=false;
         const dx=trading.anchor.stand[0]-p.x,dz=trading.anchor.stand[2]-p.z,distance=Math.hypot(dx,dz);
-        const approaching=trading.phase==='approach'&&distance>.04;
+        const approaching=trading.phase==='approach'&&distance>(inspecting?IBD_INSPECTION_STAND_TOLERANCE*.5:.04);
         if(approaching){const pace=Math.min(1.5,distance*4);vx=dx/distance*pace;vz=dz/distance*pace;}
         const desired=approaching&&distance>.22?Math.atan2(-dz,dx):trading.anchor.yaw;
         guideYaw.current+=clamp(angleDelta(guideYaw.current,desired),-dt*10,dt*10);
@@ -1166,6 +1175,8 @@ export default function WorldActors() {
       advanceMineAction(dt);
       exchangeActor.yaw=guideYaw.current;
       advanceExchangeBodyAction(dt);
+      ibdInspectionActor.yaw=guideYaw.current;
+      tickIbdPackInspection(dt);
       // Reuse the actor clock. A bounded preview query runs only while on foot and grounded;
       // pressing Space always revalidates against current collision and landing geometry.
       const eligible=!seat&&!locked&&grounded.current&&!useAlphaMineStore.getState().carried&&!railVault.current;
@@ -1278,6 +1289,19 @@ export default function WorldActors() {
       return;
     }
     if (state.paused || state.poolInspect) return;
+    const inspectionPack=useIbdPackPlay.getState().pack;
+    if(inspectionPack&&!state.activeVehicle){
+      // Frame the actual tray, hands and jaws. The same scene and collision sweep remain active.
+      const home=ibdWorld(IBD_CARGO_HOME[inspectionPack]);
+      const pivot=new Vector3(home[0],home[1]+.45,home[2]+1.65);
+      const desired=new Vector3(home[0]-2.7,home[1]+2.8,home[2]+4);
+      const swept=sweepCamera(world,rapier,pivot,desired,.18,player.current??undefined,col=>!col.isSensor());
+      camera.position.lerp(new Vector3(swept.position.x,swept.position.y,swept.position.z),1-Math.exp(-delta*7));
+      target.current.lerp(pivot,1-Math.exp(-delta*7));camera.up.set(0,1,0);camera.lookAt(target.current);
+      if(camera instanceof PerspectiveCamera&&camera.fov!==42){camera.fov=42;camera.updateProjectionMatrix();}
+      if(guideView.current)guideView.current.visible=true;
+      occlusion.current.update(scene,camera,target.current,delta);cameraReady.current=false;return;
+    }
     if(attractionRide.active){
       if(pad.current.connected)turnAttractionLook(pad.current.look[0]*PAD_LOOK*delta,pad.current.look[1]*PAD_LOOK*delta);
       const pose=attractionCameraPose(attractionRide.pose);

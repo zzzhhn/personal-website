@@ -15,6 +15,7 @@ import { night } from '../WorldNight';
 import WorldIbdGuide from './WorldIbdGuide';
 import { ibdGuideStep } from './ibd-yard-guide.ts';
 import WorldIbdAudio from './WorldIbdAudio';
+import { openIbdPack, requestIbdPackContact, useIbdPackPlay, ibdPackWorkBusy, cancelIbdPack } from './ibd-pack-play';
 
 function Station({ id, active }: { id: IbdStationId; active: boolean }) {
   const game = useIbdYardStore(s => s.game), station = ibdStation(id, game.core.moved);
@@ -26,8 +27,12 @@ function Station({ id, active }: { id: IbdStationId; active: boolean }) {
     id: `ibd-${id}`, kind: 'exhibit', position: ibdWorld(station.at), radius: station.radius,
     label: guided && id === target.id ? guide.title : IBD_ACTION_LABEL[action.kind],
     enabled: () => { const a = ibdActor(); return a.active && !a.paused && !a.hidden && !a.driving && !useIbdYardStore.getState().game.pending
-      && (!guided || id === target.id); },
-    onInteract: () => dispatchIbdAction(action),
+      && !ibdPackWorkBusy() && (!guided || id === target.id); },
+    onInteract: () => {
+      if(action.kind==='contents'&&action.slot){
+        if(useIbdPackPlay.getState().pack===action.slot)requestIbdPackContact();else openIbdPack(action.slot);
+      }else dispatchIbdAction(action);
+    },
   } : null);
   return null;
 }
@@ -39,7 +44,7 @@ export default memo(function WorldIbdYard({ active = true }: { active?: boolean 
     return { ...buildIbdStatic(), uniform, material: createIbdMaterial(true, uniform), movingMaterial: createIbdMaterial(false, uniform) };
   }, []);
   useEffect(() => { useIbdYardStore.setState({ active }); return () => { useIbdYardStore.setState({ active: false }); }; }, [active]);
-  useEffect(() => () => { cancelIbdAction(); data.geometry.dispose(); data.material.dispose(); data.movingMaterial.dispose(); }, [data]);
+  useEffect(() => () => { cancelIbdPack(true); cancelIbdAction(); data.geometry.dispose(); data.material.dispose(); data.movingMaterial.dispose(); }, [data]);
   return <group name="world-ibd-yard" position={IBD_YARD.center} dispose={null} userData={{noOcclusionFade:true}}>
     <WorldIbdAudio />
     <mesh name="ibd-three-sheds-static" geometry={data.geometry} material={data.material} castShadow receiveShadow

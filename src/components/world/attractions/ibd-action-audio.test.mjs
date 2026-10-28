@@ -8,6 +8,8 @@ import { useWorldAudioSettings, setWorldAudioMuted, setWorldAudioVolume } from '
 import { useIbdYardStore, dispatchIbdAction, finishIbdAction, cancelIbdAction } from './ibd-yard-store.ts';
 import { createIbdYardGame, requestIbdYardAction, finishIbdYardAction, cancelIbdYardAction, yardActions } from './ibd-yard-game.ts';
 import { ibdStation, ibdWorld } from './ibd-yard-layout.ts';
+import { inspectIbdTestPack } from './ibd-test-pack-inspection.mjs';
+import { PARK_AUDIO_MIX } from '../park-audio-mix.ts';
 
 class Target extends EventTarget {
   listeners = new Map();
@@ -61,6 +63,10 @@ function fixture(t) {
   const act = (station, kind, verdict) => {
     move(station); const game = useIbdYardStore.getState().game;
     const offered = yardActions(game, station).find(a => !kind || a.kind === kind); assert.ok(offered, `${station}/${kind}`);
+    if (offered.kind === 'contents') {
+      inspectIbdTestPack(game, offered, next => useIbdYardStore.setState({ game: next }));
+      return undefined;
+    }
     const action = verdict ? { ...offered, verdict } : offered;
     // WorldActors' gamepad Y edge invokes this same reachable Interactable callback.
     // There is deliberately no synthetic key/pointer event on this path.
@@ -200,7 +206,7 @@ test('IBD and Alpha/workshop cues share one eight-source ceiling, SFX bus and li
   for (let i = 0; i < 20; i++) e.act('gallery-front'); await settle();
   assert.equal(e.audio.snapshot().cueVoices, 8); assert.ok(ctx.peakSources <= 8);
   setWorldAudioVolume('music', 0); assert.equal(e.audio.snapshot().cueVoices, 8);
-  setWorldAudioVolume('sfx', .4); assert.equal(e.audio.cueOutput.gain.value, .4);
+  setWorldAudioVolume('sfx', .4); assert.equal(e.audio.cueOutput.gain.value, .4 * PARK_AUDIO_MIX.sfx);
   const gates = [v => useWorldStore.setState({ paused: v }), v => useWorldStore.setState({ poolInspect: v }),
     v => useWorldStore.setState({ shot: v ? 'camp' : null }), v => useWorldStore.setState({ card: v ? { kind: 'project', id: 'x' } : null }),
     v => { e.doc.hidden = v; e.doc.dispatchEvent(new Event('visibilitychange')); }, v => setWorldAudioMuted(v),

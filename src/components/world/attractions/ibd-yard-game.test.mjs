@@ -2,17 +2,29 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { IBD_CASES } from './ibd-cases.ts';
 import { assessIbd } from './ibd-model.ts';
-import { createIbdYardGame, yardCase, yardActions, yardItemId, requestIbdYardAction, finishIbdYardAction, cancelIbdYardAction } from './ibd-yard-game.ts';
+import { createIbdYardGame, yardCase, yardActions, yardItemId, requestIbdYardAction, finishIbdYardAction, cancelIbdYardAction, inspectIbdYardPack, canCancelIbdObservation } from './ibd-yard-game.ts';
 import { ibdStation, IBD_STATIONS, IBD_CARGO_HOME } from './ibd-yard-layout.ts';
 import { advanceIbdMotion, ibdCargoPose } from './ibd-yard-motion.ts';
 import { playerVerdict } from './ibd-test-player.mjs';
 
 const actor = (g, station) => ({ active: true, local: ibdStation(station, g.core.moved).at });
 function act(g, station, kind) {
+  if (kind === 'contents') return inspectPack(g,station);
   const action = yardActions(g, station).find(a => !kind || a.kind === kind);
   assert.ok(action, `${station}/${kind} unavailable`);
   const next = requestIbdYardAction(g, playerVerdict(g, action), actor(g, station));
   return next.pending ? finishIbdYardAction(next, next.pending.token, actor(g, station)) : next;
+}
+function packEvent(g,station,type,slot=0,extra={}) {
+  return inspectIbdYardPack(g,{type,itemId:yardItemId(g,station),slot,contact:true,aligned:true,visible:true,round:g.round,revision:g.revision,...extra},actor(g,station));
+}
+function inspectPack(g,station) {
+  const item=yardCase(g).items.find(item=>item.id===yardItemId(g,station));
+  for(const slot of [2,0,3,1]) {
+    if(slot>=item.quantity) g=packEvent(g,station,'view-empty',slot);
+    else { g=packEvent(g,station,'take',slot); g=packEvent(g,station,'measure',slot); g=packEvent(g,station,'return',slot); }
+  }
+  return g;
 }
 function prepare(index = 0, route = 'gallery') {
   let g = act(act(createIbdYardGame(index), 'manifest'), 'kit');
@@ -120,4 +132,52 @@ test('cargo has continuous motion endpoints; crane actually raises and moves the
   assert.ok(ibdCargoPose(g, 'coil-front', .5).at[1] > IBD_CARGO_HOME['coil-front'][1] + 1);
   assert.deepEqual(ibdCargoPose(g, 'coil-front', 1).at, [-20, 2.35, -4]);
   assert.ok(IBD_STATIONS.every(s => Math.abs(s.at[0]) <= 34 && Math.abs(s.at[2]) <= 30));
+});
+
+test('one contents action cannot grant evidence, and slot events retain real physical prerequisites', () => {
+  let g=act(act(createIbdYardGame(),'manifest'),'kit');
+  assert.equal(packEvent(g,'parts-a','take').notice,'package-sealed');
+  g=act(g,'parts-a','open');
+  const contents=yardActions(g,'parts-a').find(action=>action.kind==='contents');
+  const refused=requestIbdYardAction(g,contents,actor(g,'parts-a'));
+  assert.equal(refused.notice,'pack-inspection-incomplete'); assert.equal(refused.pending,null); assert.deepEqual(refused.core.proofs,{});
+  g=packEvent(g,'parts-a','take',0,{contact:false}); assert.equal(g.packInspections['parts-a'].held,null);
+  g=packEvent(g,'parts-a','take'); g=packEvent(g,'parts-a','measure',0,{aligned:false});
+  assert.equal(g.packInspections['parts-a'].measurement,null); assert.deepEqual(g.core.proofs,{});
+  g=packEvent(g,'parts-a','measure'); g=packEvent(g,'parts-a','return');
+  assert.equal(g.packInspections['parts-a'].slots[0].complete,true); assert.deepEqual(g.core.proofs,{});
+  g=inspectPack(g,'parts-a'); assert.deepEqual(g.core.proofs['parts-a'],['identity','quantity','specification','quality-contents']);
+});
+
+test('cancel and walking away restore only the held sample; stale events and unknown goods are inert', () => {
+  let g=act(act(createIbdYardGame(),'manifest'),'kit'); g=act(g,'parts-b','open');
+  g=packEvent(packEvent(packEvent(g,'parts-b','take',2),'parts-b','measure',2),'parts-b','return',2);
+  g=packEvent(g,'parts-b','take',0); const captured={type:'measure',itemId:'parts-b',slot:0,contact:true,aligned:true,round:g.round,revision:g.revision};
+  g=cancelIbdYardAction(g); assert.equal(g.packInspections['parts-b'].held,null); assert.equal(g.packInspections['parts-b'].slots[2].complete,true);
+  assert.strictEqual(inspectIbdYardPack(g,captured,actor(g,'parts-b')),g);
+  g=packEvent(g,'parts-b','take',1);
+  g=inspectIbdYardPack(g,{...captured,slot:1,revision:g.revision},{active:true,local:[0,0,0]});
+  assert.equal(g.notice,'walked-away'); assert.equal(g.packInspections['parts-b'].held,null); assert.equal(g.packInspections['parts-b'].slots[2].complete,true);
+  const unknown=inspectIbdYardPack(g,{...captured,itemId:'unknown',revision:g.revision},actor(g,'parts-b'));
+  assert.equal(unknown.notice,'unknown-item'); assert.deepEqual(unknown.core.proofs,{});
+});
+
+test('replacement, next and reset never reuse old item pocket conclusions', () => {
+  let g=prepare(1); assert.equal(g.packInspections['parts-b'].slots.filter(slot=>slot.complete).length,4);
+  g=act(g,'parts-b','replace'); assert.equal(g.packInspections['parts-b'],undefined); assert.equal(g.packInspections['parts-b:replacement'],undefined);
+  const old=inspectIbdYardPack(g,{type:'take',itemId:'parts-b',slot:0,contact:true,round:g.round,revision:g.revision},actor(g,'parts-b'));
+  assert.equal(old.notice,'unknown-item'); g=act(g,'parts-b','open'); g=packEvent(g,'parts-b','take');
+  assert.equal(g.packInspections['parts-b:replacement'].slots.some(slot=>slot.complete),false);
+  g=act(g,'manifest','next'); assert.deepEqual(g.packInspections,{});
+  g=act(g,'manifest','reset'); assert.deepEqual(g.packInspections,{});
+});
+
+test('one held sample interlocks other machines and packs and exposes the existing cancel affordance', () => {
+  let g=act(act(createIbdYardGame(),'manifest'),'kit'); g=act(g,'parts-a','open'); g=act(g,'parts-b','open');
+  g=packEvent(g,'parts-a','take'); assert.equal(canCancelIbdObservation(g),true);
+  assert.equal(packEvent(g,'parts-b','take').notice,'pack-return-first');
+  const load=yardActions(g,'load-a')[0]; assert.equal(requestIbdYardAction(g,load,actor(g,'load-a')).notice,'pack-return-first');
+  g=cancelIbdYardAction(g); assert.equal(canCancelIbdObservation(g),false);
+  g=packEvent(g,'parts-b','take'); assert.equal(g.packInspections['parts-b'].held,0);
+  g=act(g,'manifest','reset'); assert.deepEqual(g.packInspections,{});
 });

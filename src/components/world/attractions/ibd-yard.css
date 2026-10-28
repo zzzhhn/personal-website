@@ -58,3 +58,10 @@
   .ibd-milestones { gap: 8px; padding: 5px 0; }
   .ibd-milestones b { font-size: 17px; }
 }
+.ibd-pack-slots{display:grid;grid-template-columns:repeat(4,1fr);gap:.35rem;margin:.6rem 0}
+.ibd-pack-slots button{padding:.5rem .15rem;background:transparent;color:inherit;border:1px solid #a58d5c;border-radius:.25rem;cursor:pointer}
+.ibd-pack-slots button[aria-pressed=true]{background:#7a632f;color:#fff4d6}
+.ibd-pack-slots button:disabled{opacity:.5;cursor:default}
+.ibd-pack-controls label{display:grid;gap:.35rem;font-size:.85rem}
+.ibd-pack-controls input{width:100%;accent-color:#c49d4f}
+.world-app:has(.ibd-pack-controls) .world-prompt { display: none; }

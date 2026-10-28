@@ -8,9 +8,11 @@ import { ibdStation } from './ibd-yard-layout.ts';
 import { assessIbd } from './ibd-model.ts';
 import { buildIbdStatic } from './ibd-yard-geometry.ts';
 import { playerVerdict } from './ibd-test-player.mjs';
+import { inspectIbdTestPack } from './ibd-test-pack-inspection.mjs';
 
 const actor = (game, station) => ({ active: true, local: ibdStation(station, game.core.moved).at });
 function act(game, action) {
+  if (action.kind === 'contents') return inspectIbdTestPack(game, action);
   const a = actor(game, action.station), requested = requestIbdYardAction(game, playerVerdict(game, action), a);
   return requested.pending ? finishIbdYardAction(requested, requested.pending.token, a) : requested;
 }

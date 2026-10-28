@@ -1,6 +1,7 @@
 import { IBD_ALL_CLEAR, IBD_CASES } from './ibd-cases.ts';
 import { assessIbd, createIbdState, transitionIbd, type IbdCase, type IbdItem, type IbdState, type IbdEvent, type IbdAspect } from './ibd-model.ts';
 import { ibdReach, ibdStation, type IbdSlot, type IbdStationId } from './ibd-yard-layout.ts';
+import { createIbdPackInspection, ibdPackInspectionComplete, reduceIbdPackInspection, type IbdPackInspection, type IbdPackInspectionEvent } from './ibd-pack-inspection.ts';
 
 export type IbdVerdict = 'matches' | 'short' | 'wrong-spec' | 'sound' | 'rear-damage';
 export type IbdActionKind = 'brief' | 'kit' | 'crane' | 'scan' | 'rear' | 'survey' | 'turn' | 'weigh' | 'open' | 'contents' | 'judge'
@@ -11,6 +12,7 @@ export interface IbdYardGame {
   caseIndex: number; round: number; revision: number; started: boolean; equipped: boolean;
   core: IbdState; exchanges: readonly IbdExchange[]; released: boolean;
   judgements: Readonly<Record<string, IbdVerdict>>;
+  packInspections: Readonly<Record<string, IbdPackInspection>>;
   pending: { action: IbdAction; token: number; seconds: number } | null;
   notice: string; reading?: number; completedAction?: IbdAction;
 }
@@ -18,7 +20,7 @@ export interface IbdActor { local: readonly number[]; active: boolean; paused?: 
 export function createIbdYardGame(caseIndex = 0, round = 1): IbdYardGame {
   const index = ((caseIndex % IBD_CASES.length) + IBD_CASES.length) % IBD_CASES.length;
   return { caseIndex: index, round, revision: 0, started: false, equipped: false, core: createIbdState(IBD_CASES[index]),
-    exchanges: [], judgements: {}, released: false, pending: null, notice: 'welcome' };
+    exchanges: [], judgements: {}, packInspections: {}, released: false, pending: null, notice: 'welcome' };
 }
 export function yardItemId(game: IbdYardGame, slot: IbdSlot): string {
   return game.exchanges.find(e => e.slot === slot)?.replacementId ?? slot;
@@ -80,7 +82,8 @@ const yardAllJudged = (game: IbdYardGame) => yardCase(game).items.every(item => 
 const observations = new Set<IbdActionKind>(['scan', 'rear', 'survey', 'contents', 'weigh', 'open', 'kit', 'verify']);
 /** User cancellation is for unfinished local work; moving cargo keeps its existing interlock. */
 export function canCancelIbdObservation(game: IbdYardGame): boolean {
-  return !!game.pending && observations.has(game.pending.action.kind);
+  return Object.values(game.packInspections).some(inspection => inspection.held !== null)
+    || (!!game.pending && observations.has(game.pending.action.kind));
 }
 function perform(game: IbdYardGame, action: IbdAction): { game: IbdYardGame; ok: boolean } {
   const scenario = yardCase(game), itemId = action.slot ? yardItemId(game, action.slot) : '';
@@ -112,8 +115,11 @@ function perform(game: IbdYardGame, action: IbdAction): { game: IbdYardGame; ok:
     const replacementId = `${action.slot}:replacement`;
     const exchanges = [...game.exchanges, { slot: action.slot, original, proofs: game.core.proofs[itemId], replacementId }];
     const core = { ...game.core, shipmentConfirmed: false, moved: game.core.moved.map(id => id === itemId ? replacementId : id) };
-    return done('replaced', { exchanges, core });
+    const packInspections = { ...game.packInspections }; delete packInspections[itemId]; delete packInspections[replacementId];
+    return done('replaced', { exchanges, core, packInspections });
   }
+  if (action.kind === 'contents' && (!game.packInspections[itemId] || !ibdPackInspectionComplete(game.packInspections[itemId])))
+    return fail('pack-inspection-incomplete');
   const events: IbdEvent[] = [];
   const observe = (aspect: IbdAspect, tool: 'visual' | 'tag-reader' | 'gauge' | 'flashlight') =>
     events.push({ type: 'inspect', itemId, aspect, tool, viewpoint: action.kind === 'survey' ? 'catwalk' : 'floor' });
@@ -144,6 +150,8 @@ export function requestIbdYardAction(game: IbdYardGame, action: IbdAction, actor
   if (!actor.active || actor.paused || actor.hidden || actor.driving) return game;
   if (game.pending) return { ...game, notice: 'busy' };
   if (!ibdReach(actor.local, ibdStation(action.station, game.core.moved))) return { ...game, notice: 'out-of-reach' };
+  if (!['reset', 'next'].includes(action.kind) && Object.values(game.packInspections).some(inspection => inspection.held !== null))
+    return { ...game, notice: 'pack-return-first' };
   if (!yardActions(game, action.station).some(a => a.kind === action.kind && a.slot === action.slot && a.itemId === action.itemId && a.round === action.round))
     return { ...game, notice: 'action-unavailable' };
   const preview = perform(game, action);
@@ -161,5 +169,39 @@ export function finishIbdYardAction(game: IbdYardGame, token: number, actor: Ibd
   return { ...perform(game, pending.action).game, pending: null };
 }
 export function cancelIbdYardAction(game: IbdYardGame): IbdYardGame {
-  return game.pending ? { ...game, pending: null, revision: game.revision + 1, notice: 'interrupted' } : game;
+  let changed = false;
+  const packInspections = Object.fromEntries(Object.entries(game.packInspections).map(([id, state]) => {
+    const next = reduceIbdPackInspection(state, { type: 'cancel', itemId: id });
+    changed ||= next !== state; return [id, next];
+  }));
+  return game.pending || changed ? { ...game, packInspections, pending: null, revision: game.revision + 1, notice: 'interrupted' } : game;
+}
+
+export type IbdPackYardEvent = IbdPackInspectionEvent & { readonly round: number; readonly revision: number };
+
+/** Narrow physical-event bridge. Contact geometry is verified by the character/tool controller. */
+export function inspectIbdYardPack(game: IbdYardGame, event: IbdPackYardEvent, actor: IbdActor): IbdYardGame {
+  if (event.round !== game.round || event.revision !== game.revision) return game;
+  if (!actor.active || actor.paused || actor.hidden || actor.driving) return game;
+  if (game.pending) return { ...game, notice: 'busy' };
+  const scenario = yardCase(game), item = scenario.items.find(current => current.id === event.itemId);
+  if (!item || item.kind !== 'hardware-pack') return { ...game, notice: 'unknown-item' };
+  const slot = (['parts-a', 'parts-b'] as const).find(candidate => yardItemId(game, candidate) === item.id)!;
+  if (!game.started || !game.equipped || game.released || game.core.loaded.includes(item.id)) return { ...game, notice: 'action-unavailable' };
+  if (!game.core.opened.includes(item.id)) return { ...game, notice: 'package-sealed' };
+  if (event.type === 'cancel') return cancelIbdYardAction(game);
+  if (!ibdReach(actor.local, ibdStation(slot, game.core.moved))) {
+    const restored = cancelIbdYardAction(game);
+    return { ...restored, notice: 'walked-away' };
+  }
+  if (Object.values(game.packInspections).some(inspection => inspection.itemId !== item.id && inspection.held !== null))
+    return { ...game, notice: 'pack-return-first' };
+  const current = game.packInspections[item.id] ?? createIbdPackInspection(item);
+  const inspection = reduceIbdPackInspection(current, event);
+  if (inspection === current && game.packInspections[item.id]) return game;
+  const updated = { ...game, packInspections: { ...game.packInspections, [item.id]: inspection },
+    revision: game.revision + 1, notice: `pack-${inspection.notice}` };
+  if (!ibdPackInspectionComplete(inspection) || yardItemComplete(updated, slot)) return updated;
+  // Existing inspect events still own identity/quantity/specification/quality semantics and sealed-pack rules.
+  return perform(updated, { kind: 'contents', station: slot, slot }).game;
 }

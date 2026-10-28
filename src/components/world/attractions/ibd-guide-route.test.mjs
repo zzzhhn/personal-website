@@ -9,9 +9,11 @@ import { ibdCargoPose } from './ibd-yard-motion.ts';
 import { ibdGuideRoute, ibdGuideStep } from './ibd-yard-guide.ts';
 import { ibdRouteBetween } from './ibd-guide-route.ts';
 import { playerVerdict } from './ibd-test-player.mjs';
+import { inspectIbdTestPack } from './ibd-test-pack-inspection.mjs';
 await RAPIER.init();
 const identity = { x: 0, y: 0, z: 0, w: 1 }, capsule = new RAPIER.Capsule(.48, .34);
 function act(game, action) {
+  if (action.kind === 'contents') return inspectIbdTestPack(game, action);
   const actor = { active: true, local: ibdStation(action.station, game.core.moved).at };
   const next = requestIbdYardAction(game, playerVerdict(game, action), actor);
   return next.pending ? finishIbdYardAction(next, next.pending.token, actor) : next;
