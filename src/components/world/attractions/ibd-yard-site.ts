@@ -43,9 +43,10 @@ export function buildIbdPaving(b: Builder) {
       let patch = clip(clip(triangle, 0, x, true), 0, x + 2, false);
       patch = clean(clip(clip(patch, 1, z, true), 1, z + 2, false));
       if (patch.length < 3 || Math.abs(area(patch)) < 1e-7) continue;
-      // Turning apron uses a quieter slab tone; inspection courts keep the approved concrete palette.
-      const surface = x < -14 && z >= 16 ? P.slab : (Math.floor(x / 4) + Math.floor(z / 4)) % 2 ? P.slab : P.concrete;
-      b.face(patch.map(([xx, zz]): V3 => [xx, .085, zz]), surface, [0, 1, 0]);
+      const top = b.face(patch.map(([xx, zz]): V3 => [xx, .085, zz]), P.paving, [0, 1, 0]);
+      // The IBD shader reserves aMat.w=2 for paving; ordinary props/signs retain 0/1.
+      // This changes only shading, never the closed collision slab or its tessellation.
+      for (const vertex of top) b.mat[vertex * 4 + 3] = 2;
     }
     b.face(triangle.map(([x, z]): V3 => [x, -.32, z]), P.concrete, [0, -1, 0]);
   }

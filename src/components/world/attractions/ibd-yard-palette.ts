@@ -11,6 +11,7 @@ export const IBD_MATERIALS = {
   rust: surf('#c17551'), blue: { color: '#608a9e', rough: .66, metal: .14 } satisfies Surf,
   green: { color: '#557d68', rough: .7, metal: .12 } satisfies Surf,
   wall: surf('#b8b7aa'), slab: surf('#939b9c'), leaf: surf('#66794e'), leafDark: surf('#465e48'),
+  paving: { color: '#9b9d98', rough: .91, metal: 0 } satisfies Surf,
   lens: { color: '#ffe1a1', rough: .4, metal: 0, glow: 1 } satisfies Surf,
   glass: { color: '#9fb7bd', rough: .5, metal: .16 } satisfies Surf,
 };

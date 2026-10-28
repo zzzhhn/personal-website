@@ -1,5 +1,6 @@
 import { BufferGeometry, Float32BufferAttribute, MeshStandardMaterial } from 'three';
 import type { V3 } from '../WorldStreetGeometry.ts';
+import { IBD_CONCRETE_GLSL, IBD_CONCRETE_COLOR } from './ibd-concrete-surface.ts';
 
 export interface IbdFixture {
   at: V3; reach: number; power: number; pendant?: boolean;
@@ -64,12 +65,14 @@ export function bakeIbdLight(geometry: BufferGeometry) {
 /** Keep PBR material differences in the merged draw; only the authored night fill is emissive. */
 export function createIbdMaterial(baked: boolean, nightUniform: { value: number }) {
   const material = new MeshStandardMaterial({ vertexColors: true, roughness: .78, metalness: .1 });
-  material.customProgramCacheKey = () => `ibd-industrial-v2-${baked ? 'static' : 'moving'}`;
+  material.customProgramCacheKey = () => `ibd-industrial-v3-${baked ? 'static' : 'moving'}`;
   material.onBeforeCompile = shader => {
     shader.uniforms.uIbdNight = nightUniform;
-    shader.vertexShader = `attribute vec4 aMat; varying vec4 vIbdSurface; varying vec3 vIbdBake; ${baked ? 'attribute vec3 aIbdBake;' : ''}\n${shader.vertexShader}`
-      .replace('#include <begin_vertex>', `#include <begin_vertex>\nvIbdSurface = aMat; vIbdBake = ${baked ? 'aIbdBake' : 'vec3(0.075, 0.09, 0.12) * (0.7 + 0.3 * max(normal.y, 0.0))'};`);
-    shader.fragmentShader = `uniform float uIbdNight; varying vec4 vIbdSurface; varying vec3 vIbdBake;\n${shader.fragmentShader}`
+    shader.vertexShader = `attribute vec4 aMat; varying vec4 vIbdSurface; varying vec3 vIbdBake; ${baked ? 'attribute vec3 aIbdBake; varying vec2 vIbdPavingXZ;' : ''}\n${shader.vertexShader}`
+      .replace('#include <begin_vertex>', `#include <begin_vertex>\nvIbdSurface = aMat; vIbdBake = ${baked ? 'aIbdBake; vIbdPavingXZ = position.xz' : 'vec3(0.075, 0.09, 0.12) * (0.7 + 0.3 * max(normal.y, 0.0))'};`);
+    shader.fragmentShader = `uniform float uIbdNight; varying vec4 vIbdSurface; varying vec3 vIbdBake;${baked ? `varying vec2 vIbdPavingXZ;\n${IBD_CONCRETE_GLSL}` : ''}\n${shader.fragmentShader}`
+      .replace('#include <color_fragment>', `#include <color_fragment>\n${baked ? IBD_CONCRETE_COLOR : ''}`)
+      .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>\n${baked ? 'if (vIbdSurface.w > 1.5) normal = ibdConcreteNormal(-vViewPosition, normal, ibdConcreteHeight, faceDirection);' : ''}`)
       .replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = vIbdSurface.x;')
       .replace('#include <metalnessmap_fragment>', '#include <metalnessmap_fragment>\nmetalnessFactor = vIbdSurface.y;')
       .replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\ntotalEmissiveRadiance += uIbdNight * (diffuseColor.rgb * vIbdBake + vec3(1.0, 0.68, 0.3) * step(0.5, vIbdSurface.z) * 1.6);');

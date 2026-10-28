@@ -1,0 +1,259 @@
+{
+  "url": "http://127.0.0.1:4343/world/?start=ibd&quality=balanced&qa=1&paused=1",
+  "scope": "ordinary IBD walking, noon, clear, balanced; no baseline A/B; adaptive DPR changed during window",
+  "movement": {
+    "from": [
+      -88,
+      1.9,
+      -143
+    ],
+    "observedMidpoint": [
+      -85.76,
+      1.91,
+      -159
+    ],
+    "midpointGrounded": true,
+    "sequence": [
+      "w 2.4s",
+      "d 2.3s",
+      "w 2.4s",
+      "d 2.6s",
+      "w 4.0s",
+      "s 1.8s"
+    ]
+  },
+  "frameWindow": {
+    "activeSeconds": 41.09470000001788,
+    "changedDuringWindow": true,
+    "frames": 2449,
+    "maxMs": 71.59999999403954,
+    "p50Ms": 16.700000762939453,
+    "p95Ms": 18.100000381469727,
+    "percentileSamples": 1800,
+    "slow25Ratio": 0.009799918334013884,
+    "slow33Ratio": 0.006124948958758677
+  },
+  "shadowRebuilds": [
+    {
+      "addedNames": [
+        "park-walk-deck",
+        "park-walk-solid",
+        "park-plaza-far-deck",
+        "park-plaza-far-solid",
+        "park-walk-0-deck",
+        "park-walk-0-solid",
+        "park-walk-0-far-deck",
+        "park-walk-0-far-solid",
+        "park-walk-1-deck",
+        "park-walk-1-solid",
+        "park-walk-1-far-deck",
+        "park-walk-1-far-solid",
+        "park-walk-2-deck",
+        "park-walk-2-solid",
+        "park-walk-2-far-deck",
+        "park-walk-2-far-solid"
+      ],
+      "chunks": 543,
+      "durationMs": 355.1000000834465,
+      "elapsedMs": 967.5999999940396,
+      "frame": 613,
+      "hullWorker": {
+        "maxInputVertices": 89760,
+        "maxSource": "AM_batch_wood",
+        "maxWorkerMs": 25.400000005960464,
+        "requests": 54,
+        "workerMs": 91
+      },
+      "maxSliceMs": 3,
+      "phases": [
+        {
+          "count": 427,
+          "maxFrame": 319,
+          "maxMs": 0.8999999761581421,
+          "phase": "validate",
+          "source": "",
+          "totalMs": 168.40000039339066
+        },
+        {
+          "count": 364,
+          "maxFrame": 187,
+          "maxMs": 0.20000001788139343,
+          "phase": "source",
+          "source": "park-walk-deck",
+          "totalMs": 0.9000000357627869
+        },
+        {
+          "count": 1350,
+          "maxFrame": 191,
+          "maxMs": 0.30000001192092896,
+          "phase": "transform",
+          "source": "park-walk-2-deck",
+          "totalMs": 17.09999990463257
+        },
+        {
+          "count": 2224,
+          "maxFrame": 328,
+          "maxMs": 0.5999999940395355,
+          "phase": "bin",
+          "source": "AM_batch_wood",
+          "totalMs": 60.699999898672104
+        },
+        {
+          "count": 305,
+          "maxFrame": 294,
+          "maxMs": 0.9000000059604645,
+          "phase": "hull-copy",
+          "source": "camp-content-static",
+          "totalMs": 6.699999988079071
+        },
+        {
+          "count": 54,
+          "maxFrame": 253,
+          "maxMs": 0.699999988079071,
+          "phase": "hull-submit",
+          "source": "C10_pole_3",
+          "totalMs": 2.6000000536441803
+        },
+        {
+          "count": 3,
+          "maxFrame": 320,
+          "maxMs": 0,
+          "phase": "hull-wait",
+          "source": "AM_batch_wood",
+          "totalMs": 0
+        },
+        {
+          "count": 54,
+          "maxFrame": 299,
+          "maxMs": 0.10000002384185792,
+          "phase": "hull-hydrate",
+          "source": "G28-high-G28_stone_base",
+          "totalMs": 0.6000000238418579
+        },
+        {
+          "count": 3225,
+          "maxFrame": 482,
+          "maxMs": 0.20000001788139343,
+          "phase": "buffer",
+          "source": "",
+          "totalMs": 50.700000166893005
+        },
+        {
+          "count": 5177,
+          "maxFrame": 437,
+          "maxMs": 0.19999998807907104,
+          "phase": "bounds",
+          "source": "",
+          "totalMs": 42.79999968409538
+        },
+        {
+          "count": 1,
+          "maxFrame": 613,
+          "maxMs": 1.5,
+          "phase": "publish",
+          "source": "",
+          "totalMs": 1.5
+        }
+      ],
+      "rigidCasters": 182,
+      "slices": 427,
+      "trainCasters": 3,
+      "trainMergedBefore": 0,
+      "trainRigid": 0,
+      "update": {
+        "added": 182,
+        "builtSources": 182,
+        "changed": 0,
+        "mode": "rebuild",
+        "rebuiltChunks": 543,
+        "removed": 0,
+        "reusedChunks": 0,
+        "reusedSources": 0
+      },
+      "wallMs": 7094.0999999940395
+    }
+  ],
+  "render": {
+    "antialias": true,
+    "calls": 77,
+    "camera": [
+      -81.72764558435118,
+      7.74238281699465,
+      -162.20498452774268
+    ],
+    "coasterVegetation": [
+      {
+        "instances": 0,
+        "matrixUploads": 0,
+        "name": "coaster-ST1-L0",
+        "triangles": 0,
+        "visible": false
+      },
+      {
+        "instances": 0,
+        "matrixUploads": 0,
+        "name": "coaster-ST1-L1",
+        "triangles": 0,
+        "visible": false
+      },
+      {
+        "instances": 0,
+        "matrixUploads": 0,
+        "name": "coaster-ST2-L0",
+        "triangles": 0,
+        "visible": false
+      },
+      {
+        "instances": 0,
+        "matrixUploads": 0,
+        "name": "coaster-ST2-L1",
+        "triangles": 0,
+        "visible": false
+      },
+      {
+        "instances": 0,
+        "matrixUploads": 0,
+        "name": "coaster-G19",
+        "triangles": 0,
+        "visible": false
+      }
+    ],
+    "cssSize": [
+      1710,
+      875
+    ],
+    "delta": 0.017,
+    "dprRange": [
+      0,
+      1.5
+    ],
+    "drawingBuffer": [
+      2013,
+      1030
+    ],
+    "frame": 2635,
+    "frameMs": {
+      "max": 18.600000381469727,
+      "p50": 16.700000762939453,
+      "p95": 18,
+      "samples": 180
+    },
+    "geometries": 345,
+    "mode": "always",
+    "msaaSamples": 4,
+    "night": 0,
+    "outputColorSpace": "srgb",
+    "pixelRatio": 1.1772275318111345,
+    "postprocessing": [],
+    "programs": 145,
+    "quality": "balanced",
+    "sampledAt": "2026-10-28T21:09:03.670Z",
+    "shadowMapSize": 1254,
+    "shadowType": 1,
+    "textures": 61,
+    "toneMapping": 4,
+    "triangles": 431858,
+    "windTime": 41.094700000018385
+  },
+  "errors": []
+}
