@@ -97,6 +97,12 @@ test('same mesh replacing geometry or shadow override invalidates; unrelated col
     mesh.geometry = b; mesh.userData.shadowGeometry = a; assert.notEqual(shadowChunkSourceKey(mesh, 42), override);
     delete mesh.userData.shadowGeometry; assert.equal(shadowChunkSourceKey(mesh, 42), replaced);
     material.side = 2; assert.notEqual(shadowChunkSourceKey(mesh, 42), replaced);
+    const beforeUpload = shadowChunkSourceKey(mesh, 42);
+    b.getAttribute('position').needsUpdate = true;
+    assert.notEqual(shadowChunkSourceKey(mesh, 42), beforeUpload);
+    const beforeAttribute = shadowChunkSourceKey(mesh, 42);
+    b.setAttribute('position', b.getAttribute('position').clone());
+    assert.notEqual(shadowChunkSourceKey(mesh, 42), beforeAttribute);
   } finally { a.dispose(); b.dispose(); c.dispose(); material.dispose(); }
 });
 

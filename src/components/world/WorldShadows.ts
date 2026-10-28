@@ -224,7 +224,7 @@ proxyGroup.visible = false;
 proxyGroup.userData.shadowProxy = true;
 proxyGroup.matrixAutoUpdate = false; proxyGroup.matrixWorldAutoUpdate = false; // proxy matrices are set per pass
 let scanFrame = -1e9, frameNo = 0, inShadowRender = false;
-type RebuildSample = { frame: number; elapsedMs: number; durationMs: number; rigidCasters: number; trainCasters: number; trainMergedBefore: number; trainRigid: number; chunks: number; update: ShadowChunkUpdate; addedNames: string[] };
+type RebuildSample = { frame: number; elapsedMs: number; durationMs: number; wallMs: number; slices: number; maxSliceMs: number; rigidCasters: number; trainCasters: number; trainMergedBefore: number; trainRigid: number; chunks: number; update: ShadowChunkUpdate; addedNames: string[] };
 let rebuildProbeAt: number | null = null;
 const rebuildSamples: RebuildSample[] = [];
 /** Explicit QA window only, bounded records and no timer or production sampling. */
@@ -586,6 +586,42 @@ const CHUNK_CELL = [12, 20, 32] as const;
 const chunkCache = new ShadowChunkCache(CHUNK_CELL, LIGHT_RIGHT, LIGHT_UP);
 const chunkMeshes = new Map<string, Chunk>();
 const sideMaterials = new Map<number, Material>();
+type ChunkJob = { task: Generator<void, void>; valid: () => boolean; detach: () => void; cpuMs: number; slices: number; sliceStart: number; maxSliceMs: number };
+let chunkJob: ChunkJob | null = null;
+let chunkScene: Object3D | null = null;
+let cancelledChunkJobs = 0;
+/** Small scalar QA state only. No sampling loop or retained source/triangle history. */
+export const shadowChunkWork = () => ({ pending: !!chunkJob, slices: chunkJob?.slices ?? 0,
+  cpuMs: chunkJob?.cpuMs ?? 0, maxSliceMs: chunkJob?.maxSliceMs ?? 0, cancelled: cancelledChunkJobs });
+function clearChunks() {
+  for (const chunk of chunkMeshes.values()) proxyGroup.remove(chunk.mesh);
+  chunkMeshes.clear(); chunks = []; chunkCache.dispose(); chunkKey = '';
+  for (const c of casters.values()) c.merged = false;
+}
+function cancelChunks() {
+  const job = chunkJob; chunkJob = null;
+  if (job) { job.task.return(); job.detach(); cancelledChunkJobs++; }
+  clearChunks(); scanFrame = -1e9;
+}
+function advanceChunks() {
+  const job = chunkJob; if (!job) return;
+  const start = performance.now(), token = sceneWorkProbe.begin('shadow-chunks');
+  job.slices++; job.sliceStart = start;
+  try {
+    if (!job.valid()) { cancelChunks(); return; }
+    // Cooperative soft 3 ms target, at most 32 bounded units per render frame.
+    // Allocation, convex hull creation and final mesh publication are indivisible.
+    for (let units = 0; units < 32; units++) {
+      if (job.task.next().done) { job.detach(); chunkJob = null; break; }
+      if (performance.now() - start >= 3) break;
+    }
+  } catch (error) {
+    cancelChunks(); throw error;
+  } finally {
+    const ms = performance.now() - start; job.cpuMs += ms; job.maxSliceMs = Math.max(job.maxSliceMs, ms);
+    sceneWorkProbe.end(token);
+  }
+}
 const sideMaterial = (side: number) => { let m = sideMaterials.get(side); if (!m) { m = new MeshBasicMaterial({ side: side as 0 | 1 | 2 }); sideMaterials.set(side, m); } return m; };
 function makeChunkMesh(g: BufferGeometry, side: number, name: string) {
   const m = new Mesh(g, sideMaterial(side));
@@ -594,7 +630,7 @@ function makeChunkMesh(g: BufferGeometry, side: number, name: string) {
   proxyGroup.add(m);
   return m;
 }
-function rebuildChunks() {
+function eligibleChunkCaster(c: Caster) {
   // Static, rigid, default-depth casters only: never animated, skinned, dynamic, guide/vehicle, or custom depth.
   // Multi-material meshes merge by their first material's side (GLB buildings: all opaque, same side in practice).
   const plainDepth = (c: Caster) => {
@@ -604,64 +640,109 @@ function rebuildChunks() {
     return !g.morphAttributes.position && mats.every(m => { const x = m as Material & { alphaTest?: number; map?: unknown; alphaMap?: unknown; displacementMap?: unknown; clippingPlanes?: unknown[] | null };
       return !(x.alphaTest && (x.map || x.alphaMap)) && !x.displacementMap && !x.clippingPlanes?.length && x.side === mats[0].side && x.visible; });
   };
-  const rigid = [...casters.values()].filter(c => c.cast && !c.animated && !c.dynamic && c.stable >= STABLE_SCANS && !c.fire?.match(/guide|vehicle/) && !c.mesh.customDepthMaterial && !c.root && plainDepth(c));
-  const sources = rigid.map(c => ({ id: c.mesh.uuid, version: `${shadowChunkSourceKey(c.mesh, c.sum)}:${budgetZoneOf(c.mesh)}` }));
+  const mesh = c.mesh, meta = assetOf(mesh);
+  return mesh.castShadow && !c.animated && !c.dynamic && c.stable >= STABLE_SCANS && !c.fire?.match(/guide|vehicle/) && !mesh.customDepthMaterial && !c.root && plainDepth(c)
+    && !meta.movable && !meta.vehicle && !meta.guide && !mesh.geometry.getAttribute('_wind') && !mesh.geometry.getAttribute('_cloth')
+    && !(mesh as Mesh & { isSkinnedMesh?: boolean }).isSkinnedMesh
+    && !(c.instanced && (mesh as InstancedMesh).instanceMatrix.usage === DynamicDrawUsage);
+}
+function chunkSource(c: Caster, sum = matrixSum(c.mesh)) {
+  return { id: c.mesh.uuid, version: `${shadowChunkSourceKey(c.mesh, sum)}:${budgetZoneOf(c.mesh)}` };
+}
+function rebuildChunks() {
+  const rigid = [...casters.values()].filter(eligibleChunkCaster);
+  const sources = rigid.map(c => chunkSource(c));
+  // Invalid published geometry must never shadow alongside its raw replacement.
+  if (!chunkCache.matches(sources)) cancelChunks();
+  for (const c of casters.values()) c.merged = chunkCache.hasSource(c.mesh.uuid);
+  if (chunkJob) return; // Additions do not restart an otherwise valid first cohort.
   const key = sources.map(s => s.version).join('|');
   const probing = import.meta.env?.DEV && rebuildProbeAt !== null && rebuildSamples.length < 16 && key !== chunkKey;
+  const probeEpoch = rebuildProbeAt;
   const trainMergedBefore = probing ? [...casters.values()].filter(c => c.merged && isCoasterTrain(c.mesh)).length : 0;
-  for (const c of casters.values()) c.merged = false;
-  for (const c of rigid) c.merged = true;
   if (key === chunkKey) return;
   const probeAt = probing ? performance.now() : null;
   const addedNames = probing ? rigid.filter(c => !chunkCache.hasSource(c.mesh.uuid)).slice(0, 16).map(c => c.mesh.name || c.mesh.parent?.name || '(unnamed)') : [];
-  const workToken = sceneWorkProbe.begin('shadow-chunks');
+  const startedAt = performance.now();
   const nearCascades = [0, 1] as const, allCascades = [0, 1, 2] as const, farCascade = [2] as const;
   // Budget attribution (QA): each merged chunk reports the zone that contributes most of its triangles.
   const top = (zones: Map<string, number>) => [...zones.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? 'other';
-  const one = new Float32Array(4);
+  const one = new Float32Array(4), matrix = new Matrix4(), localSphere = new Sphere();
   const byId = new Map(rigid.map(c => [c.mesh.uuid, c]));
-  // A later stable/lazy cohort only contributes its new triangles. Existing
-  // chunk buffers are copied only in touched cells, never transformed/rebinned.
-  // Removals and source changes conservatively rebuild the complete set.
-  const update = chunkCache.update(sources, (id, builder) => {
-    const c = byId.get(id)!;
-    const src = c.mesh as InstancedMesh, mat = Array.isArray(src.material) ? src.material[0] : src.material;
-    // userData.shadowGeometry: an asset-supplied simplified shadow proxy (same local frame as the mesh).
-    const g = (src.userData.shadowGeometry as BufferGeometry | undefined) ?? src.geometry, hull = farHull(g), side = mat.side, zone = budgetZoneOf(src);
-    let s = c.spheres;
-    if (!c.instanced) { meshSphere(c, sphere); one.set([sphere.center.x, sphere.center.y, sphere.center.z, sphere.radius]); s = one; }
-    const count = c.instanced ? src.count : 1;
-    for (let i = 0; i < count; i++) {
-      if (c.instanced) { src.getMatrixAt(i, m4); m4.premultiply(src.matrixWorld); } else m4.copy(src.matrixWorld);
-      const includeFar = !(s[i * 4 + 3] < FAR_MIN_RADIUS);
-      builder.add(g, m4, includeFar && !hull ? allCascades : nearCascades, side, zone);
-      if (includeFar && hull) builder.add(hull, m4, farCascade, side, zone);
-    }
+  const scene = chunkScene!;
+  const valid = () => sources.every((source, i) => {
+    const c = rigid[i], mesh = c.mesh;
+    let p: Object3D | null = mesh; while (p && p !== scene) p = p.parent;
+    mesh.updateWorldMatrix(true, false);
+    const sum = matrixSum(mesh);
+    return p === scene && casters.get(mesh) === c && eligibleChunkCaster(c) && sum === c.sum && chunkSource(c, sum).version === source.version;
   });
-  chunkKey = key;
-  for (const [key, chunk] of chunkMeshes) {
-    if (!chunkCache.chunks.has(key)) { proxyGroup.remove(chunk.mesh); chunkMeshes.delete(key); }
+  const geometrySet = new Set<BufferGeometry>(), ancestors = new Set<Object3D>();
+  for (const c of rigid) {
+    geometrySet.add(c.mesh.geometry);
+    if (c.mesh.userData.shadowGeometry) geometrySet.add(c.mesh.userData.shadowGeometry);
+    for (let p: Object3D | null = c.mesh; p && p !== scene; p = p.parent) ancestors.add(p);
   }
-  for (const [key, b] of chunkCache.chunks) {
-    let chunk = chunkMeshes.get(key);
-    if (chunk?.mesh.geometry === b.geometry) continue;
-    if (chunk) {
-      chunk.mesh.geometry = b.geometry;
-      chunk.sphere.copy(b.geometry.boundingSphere!); chunk.lightBounds = b.lightBounds;
-    } else {
-      const mesh = makeChunkMesh(b.geometry, b.side, `sun-chunk-${key}`);
-      chunk = { mesh, cascade: b.cascade, sphere: b.geometry.boundingSphere!.clone(), lightBounds: b.lightBounds };
-      chunkMeshes.set(key, chunk);
+  const onHidden = () => { if (document.hidden) cancelChunks(); };
+  for (const g of geometrySet) g.addEventListener('dispose', cancelChunks);
+  for (const p of ancestors) p.addEventListener('removed', cancelChunks);
+  if (typeof window !== 'undefined') window.addEventListener('pagehide', cancelChunks);
+  if (typeof document !== 'undefined') document.addEventListener('visibilitychange', onHidden);
+  const detach = () => {
+    for (const g of geometrySet) g.removeEventListener('dispose', cancelChunks);
+    for (const p of ancestors) p.removeEventListener('removed', cancelChunks);
+    if (typeof window !== 'undefined') window.removeEventListener('pagehide', cancelChunks);
+    if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', onHidden);
+  };
+  const task = function* (): Generator<void, void> {
+    // A later stable/lazy cohort only contributes its new triangles. Existing
+    // chunk buffers are copied only in touched cells, never transformed/rebinned.
+    // Removals and source changes conservatively rebuild the complete set.
+    const update = yield* chunkCache.updateSteps(sources, function* (id, builder) {
+      const c = byId.get(id)!;
+      const src = c.mesh as InstancedMesh, mat = Array.isArray(src.material) ? src.material[0] : src.material;
+      // userData.shadowGeometry: an asset-supplied simplified shadow proxy (same local frame as the mesh).
+      const g = (src.userData.shadowGeometry as BufferGeometry | undefined) ?? src.geometry, hull = farHull(g), side = mat.side, zone = budgetZoneOf(src);
+      let s = c.spheres;
+      if (!c.instanced) { meshSphere(c, localSphere); one.set([localSphere.center.x, localSphere.center.y, localSphere.center.z, localSphere.radius]); s = one; }
+      yield; // Hull/bounds work gets its own scheduling boundary.
+      const count = c.instanced ? src.count : 1;
+      for (let i = 0; i < count; i++) {
+        if (c.instanced) { src.getMatrixAt(i, matrix); matrix.premultiply(src.matrixWorld); } else matrix.copy(src.matrixWorld);
+        const includeFar = !(s[i * 4 + 3] < FAR_MIN_RADIUS);
+        yield* builder.addSteps(g, matrix, includeFar && !hull ? allCascades : nearCascades, side, zone);
+        if (includeFar && hull) yield* builder.addSteps(hull, matrix, farCascade, side, zone);
+      }
+    }, valid);
+    if (!update) { clearChunks(); scanFrame = -1e9; cancelledChunkJobs++; return; }
+    chunkKey = key;
+    for (const c of casters.values()) c.merged = chunkCache.hasSource(c.mesh.uuid);
+    for (const [key, chunk] of chunkMeshes) {
+      if (!chunkCache.chunks.has(key)) { proxyGroup.remove(chunk.mesh); chunkMeshes.delete(key); }
     }
-    chunk.mesh.userData.budgetZone = top(b.zones);
-  }
-  chunks = [...chunkMeshes.values()];
-  if (probeAt !== null) {
-    const durationMs = performance.now() - probeAt;
-    rebuildSamples.push({ frame: frameNo, elapsedMs: probeAt - rebuildProbeAt!, durationMs, rigidCasters: rigid.length,
-      trainCasters: [...casters.keys()].filter(isCoasterTrain).length, trainMergedBefore, trainRigid: rigid.filter(c => isCoasterTrain(c.mesh)).length, chunks: chunks.length, update, addedNames });
-  }
-  sceneWorkProbe.end(workToken);
+    for (const [key, b] of chunkCache.chunks) {
+      let chunk = chunkMeshes.get(key);
+      if (chunk?.mesh.geometry === b.geometry) continue;
+      if (chunk) {
+        chunk.mesh.geometry = b.geometry;
+        chunk.sphere.copy(b.geometry.boundingSphere!); chunk.lightBounds = b.lightBounds;
+      } else {
+        const mesh = makeChunkMesh(b.geometry, b.side, `sun-chunk-${key}`);
+        chunk = { mesh, cascade: b.cascade, sphere: b.geometry.boundingSphere!.clone(), lightBounds: b.lightBounds };
+        chunkMeshes.set(key, chunk);
+      }
+      chunk.mesh.userData.budgetZone = top(b.zones);
+    }
+    chunks = [...chunkMeshes.values()];
+    if (probeAt !== null && rebuildProbeAt === probeEpoch && rebuildProbeAt !== null && rebuildSamples.length < 16) {
+      // CPU is accumulated slices, wall time includes yielding. Neither is a single-frame stall.
+      const job = chunkJob!;
+      const currentMs = performance.now() - job.sliceStart;
+      rebuildSamples.push({ frame: frameNo, elapsedMs: probeAt - rebuildProbeAt!, durationMs: job.cpuMs + currentMs, wallMs: performance.now() - startedAt, slices: job.slices, maxSliceMs: Math.max(job.maxSliceMs, currentMs), rigidCasters: rigid.length,
+        trainCasters: [...casters.keys()].filter(isCoasterTrain).length, trainMergedBefore, trainRigid: rigid.filter(c => isCoasterTrain(c.mesh)).length, chunks: chunks.length, update, addedNames });
+    }
+  };
+  chunkJob = { task: task(), valid, detach, cpuMs: 0, slices: 0, sliceStart: 0, maxSliceMs: 0 };
 }
 
 /** World sphere of a non-instanced caster (guide: fixed body sphere around its root). */
@@ -925,6 +1006,12 @@ function updateCascades(shadow: CascadeShadow, viewCamera: Camera | undefined) {
 }
 
 function ensureSun(light: DirectionalLight, scene: Object3D) {
+  if (controller !== light || chunkScene !== scene) {
+    cancelChunks();
+    controller?.removeEventListener('removed', cancelChunks);
+    light.addEventListener('removed', cancelChunks);
+    chunkScene = scene;
+  }
   if (!sun) {
     sun = new SunLight(light.color.getHex(), light.intensity);
     sun.name = 'world-sun-cascaded';
@@ -975,12 +1062,14 @@ export function fitSunShadow(light: DirectionalLight, target: Object3D, camera: 
   target.position.set(options.focus[0], options.focus[1], options.focus[2]);
   frameNo++;
   if (frameNo - scanFrame >= 30) { scanFrame = frameNo; rescan(scene); }
+  advanceChunks();
   worldLightsFrame(scene, camera, tier, sun!, options.focus);
   if (typeof window !== 'undefined' && (window as unknown as { __worldDebug?: Record<string, unknown> }).__worldDebug) {
     // QA page only (the debug object exists solely behind ?qa=1).
     const debug = (window as unknown as { __worldDebug: Record<string, unknown> }).__worldDebug;
     debug.shadowInfo ??= shadowTelemetry;
     debug.shadowTexelsOf ??= shadowTexelsOf;
+    debug.shadowChunkWork ??= shadowChunkWork;
   }
 }
 
