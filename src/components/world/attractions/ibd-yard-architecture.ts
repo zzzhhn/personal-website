@@ -167,12 +167,19 @@ export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
   for (const x of [-26, -20, -14]) {
     cube([x, .3, -21], [4.5, .45, 2.7], P.amber, true);
     b.tr([x, 2, -21], [Math.PI / 2, 0, 0], () => lathe(b,
-      [[.65, -1.2], [1.7, -1.2], [1.8, -1], [1.8, 1], [1.7, 1.2], [.65, 1.2], [.65, -1.2]], P.steel, { sides: 16, caps: false, faceted: true }));
+      [[.65, -1.2], [1.7, -1.2], [1.8, -1], [1.8, 1], [1.7, 1.2], [.65, 1.2], [.65, -1.2]], P.steel, { sides: 32, caps: false }));
     b.tr([x, 2, -21], [Math.PI / 2, 0, 0], () => {
-      for (const z of [-.7, .7]) lathe(b, [[1.8, z - .055], [1.82, z - .055], [1.82, z + .055], [1.8, z + .055]], P.blue, { sides: 16, caps: false });
-      for (const side of [-1, 1]) for (const r of [.85, 1.2, 1.55]) lathe(b,
-        [[r, side * 1.203], [r + .025, side * 1.203]], P.dark, { sides: 16, caps: false });
+      for (const z of [-.7, .7]) lathe(b, [[1.8, z - .055], [1.82, z - .055], [1.82, z + .055], [1.8, z + .055]], P.blue, { sides: 24, caps: false });
     });
+    // Both cut ends show the same continuous rolled sheet as the inspection
+    // specimen, sampled more coarsely because these coils sit behind the gallery.
+    for (const side of [-1, 1]) for (let i = 0; i < 128; i++) {
+      const edge = (step: number, width: number): V3 => {
+        const t = step / 128, a = t * Math.PI * 12, r = .7 + t * .94 + width;
+        return [x + r * Math.cos(a), 2 + r * Math.sin(a), -21 + side * 1.204];
+      };
+      b.face([edge(i, 0), edge(i + 1, 0), edge(i + 1, .015), edge(i, .015)], P.dark, [0, 0, side]);
+    }
     solids.push({ at: [x, 2, -21], size: [3.6, 3.6, 2.4] });
   }
   // Small service cabinet and louvred vent, not a fourth competing warehouse.

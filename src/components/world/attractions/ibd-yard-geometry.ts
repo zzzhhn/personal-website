@@ -189,14 +189,49 @@ export function buildIbdLid() {
 }
 export function buildIbdCrane() {
   const b = new Builder();
-  cbox(b, [0, 0, 0], [3.6, .5, 4.4], P.amber, .08);
-  for (const z of [-1.6, 1.6]) cbox(b, [0, -.3, z], [3.8, .18, .4], P.dark);
+  // Open trolley chassis: four flanged wheels sit on the existing bridge rails.
+  // All parts travel with the old trolley pivot, without additional scene nodes.
+  for (const x of [-1.3, 1.3]) {
+    cbox(b, [x, .25, 0], [.35, .4, 4.3], P.amber, .045);
+    for (const z of [-2, 2]) b.tr([x, 0, z], [Math.PI / 2, 0, 0], () => {
+      lathe(b, [[0, -.17], [.25, -.17], [.25, -.1], [.21, -.1], [.21, .1], [.25, .1], [.25, .17], [0, .17]], P.dark, { sides: 16 });
+      lathe(b, [[0, -.18], [.09, -.18], [.09, .18], [0, .18]], P.cutSteel, { sides: 12 });
+    });
+    // Paired winding drums align with the two existing suspension cables.
+    b.tr([x, .56, 0], [Math.PI / 2, 0, 0], () => {
+      lathe(b, [[0, -.78], [.28, -.78], [.28, -.68], [.21, -.68], [.21, .68], [.28, .68], [.28, .78], [0, .78]], P.steel, { sides: 16 });
+      for (let j = 0; j < 8; j++) {
+        const y = -.56 + j * .16;
+        lathe(b, [[.21, y], [.225, y], [.225, y + .025], [.21, y + .025]], P.dark, { sides: 10, caps: false });
+      }
+    });
+    for (const z of [-.87, .87]) cbox(b, [x, .48, z], [.47, .63, .12], P.amber, .03);
+  }
+  for (const z of [-1.65, 1.65]) {
+    cbox(b, [0, .25, z], [3.65, .35, .34], P.amber, .035);
+    for (const x of [-1.6, 1.6]) cbox(b, [x, .46, z], [.24, .06, .27], P.dark, .01);
+  }
+  // Central motor and gearbox, with cooling ribs; the open corners reveal the
+  // mechanical silhouette rather than disguising it with a larger solid box.
+  cbox(b, [0, .53, 0], [.76, .55, 1.1], P.blue, .08);
+  for (let i = 0; i < 6; i++) cbox(b, [0, .57, -.42 + i * .16], [.84, .52, .045], P.steel, .015);
+  bar(b, [-1.3, .56, .76], [1.3, .56, .76], .055, P.cutSteel, 10);
+  cbox(b, [0, .46, 1.65], [.76, .03, .25], P.pale, .01);
   return b.build();
 }
 export function buildIbdHook() {
   const b = new Builder();
-  cbox(b, [0, 0, 0], [3.5, .18, .2], P.amber);
-  for (const x of [-1.3, 1.3]) bar(b, [x, 0, 0], [x, -.7, 0], .08, P.dark, 6);
+  // Welded spreader beam, end clevises and curved clamp shoes contact the coil
+  // shoulder. Existing cable anchors and the clearance above the coil stay fixed.
+  cbox(b, [0, 0, 0], [3.5, .24, .12], P.amber, .02);
+  for (const y of [-.145, .145]) cbox(b, [0, y, 0], [3.5, .05, .4], P.amber, .01);
+  for (const x of [-1.3, 1.3]) {
+    for (const z of [-.13, .13]) cbox(b, [x, -.15, z], [.26, .5, .07], P.steel, .025);
+    bar(b, [x, -.27, -.21], [x, -.27, .21], .075, P.cutSteel, 10);
+    bar(b, [x, -.27, 0], [x, -.87, 0], .07, P.dark, 10);
+    cbox(b, [x, -.89, 0], [.33, .12, .45], P.cutSteel, .035);
+  }
+  for (const x of [-.7, 0, .7]) cbox(b, [x, 0, .076], [.055, .21, .035], P.dark);
   return b.build();
 }
 export function buildIbdCables() {

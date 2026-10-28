@@ -15,11 +15,14 @@ export default function WorldIbdLighting({ active, uniform }: { active: boolean;
   const last = useRef({ x: Infinity, y: Infinity, z: Infinity, night: -1 });
   const shot = useWorldStore(s => s.shot);
   const shotTarget = useMemo(() => WORLD_SHOTS.find(view => view.id === shot)?.target, [shot]);
-  useEffect(() => { if (!active) for (const light of lights.current) if (light) light.intensity = 0; }, [active]);
+  // A frozen yard camera inspects the same local lights as a nearby player.
+  // Gameplay proximity can remain inactive when the dormant actor is at camp.
+  const lightingActive = active || !!shot?.startsWith('ibd-');
+  useEffect(() => { if (!lightingActive) for (const light of lights.current) if (light) light.intensity = 0; }, [lightingActive]);
   useFrame((_, delta) => {
     if (document.hidden) return;
     uniform.value = night.value;
-    if (!active) return;
+    if (!lightingActive) return;
     const world = useWorldStore.getState();
     // Evidence cameras must sample the fixtures at the inspected object, just as
     // a player standing there does; the dormant spawn is often outside the shed.
