@@ -73,6 +73,10 @@ export default function WorldPlaytestReadout() {
             useWorldStore.setState({paused:false,seat:null});
           }}>QA · 到仓棚边立柱</button>
           <button disabled={attractionRide.active} onClick={()=>{
+            worldActorDebug.teleportPlayer([44.64528,1.81885,-140.40560]);
+            useWorldStore.setState({paused:false,seat:null});
+          }}>QA · 到车站出口边柱</button>
+          <button disabled={attractionRide.active} onClick={()=>{
             worldActorDebug.teleportPlayer([24.96,5,-129.43]);
             useWorldStore.setState({paused:false,seat:null});
           }}>QA · 落到探照仪设备</button>

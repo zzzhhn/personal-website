@@ -57,10 +57,13 @@ export function cameraShoulderPivot(world: World, rapier: Pick<typeof Rapier, 'B
   if (centre.distance < (Math.abs(previous) > .01 ? 3 : 1.5)) {
     // Check the current shoulder first so small differences do not alternate sides.
     const signs = previous < 0 ? [-1,1] : [1,-1];
-    for (const sign of signs) {
-      const offset = sign * 1.35;
+    // Wider entrance piers need more than the narrow shed post's 1.35 m.
+    // Still require continuous lateral access and an unobstructed body sightline.
+    for (const reach of [1.35, 2.1]) for (const sign of signs) {
+      if (desired !== 0) break;
+      const offset = sign * reach;
       const lateral = cast(pivot, {x:pivot.x+side.x*offset,y:pivot.y,z:pivot.z+side.z*offset});
-      if (lateral.distance < 1.34) continue;
+      if (lateral.distance < reach-.01) continue;
       const candidate = shoulderOrbit(lateral.position);
       if (candidate.distance >= 2 && candidate.distance > centre.distance+1
         &&cast(pivot,candidate.position).hit===null) { desired=offset; break; }

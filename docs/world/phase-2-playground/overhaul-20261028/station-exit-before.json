@@ -1,0 +1,55 @@
+{
+  "camera": {
+    "yaw": 1.5707963267948966,
+    "pitch": 0.7853981633974483,
+    "distance": 12,
+    "desiredDistance": 12,
+    "driveManualZoom": false,
+    "actualDistance": 0.3538819670677185,
+    "firstPerson": false,
+    "preset": 1,
+    "collided": true,
+    "hitDistance": 0.4038819670677185,
+    "fov": 50,
+    "mode": "walk",
+    "recentering": false,
+    "position": [
+      44.64527976772288,
+      2.719400636234928,
+      -140.15536819102715
+    ],
+    "target": [
+      44.64527976772288,
+      2.4691682975817097,
+      -140.40560052968036
+    ],
+    "forwardGround": [
+      0,
+      -1
+    ],
+    "groundBelowCamera": 1,
+    "clearanceAboveGround": 1.7194006362349281,
+    "gamepad": false,
+    "nearPlaneRadius": 0.22,
+    "guideHidden": true,
+    "shoulderOffset": 0,
+    "nearPlaneOverlaps": []
+  },
+  "actor": {
+    "animation": "Idle",
+    "root": [
+      44.63888931274414,
+      1.0070071765807087,
+      -140.35174560546875
+    ],
+    "seatSupport": null,
+    "vehicleStage": null,
+    "vehicleRotation": null,
+    "vehicle": null
+  },
+  "player": [
+    44.63878631591797,
+    1.8188525438308716,
+    -140.35092163085938
+  ]
+}

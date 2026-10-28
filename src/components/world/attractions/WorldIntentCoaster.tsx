@@ -5,7 +5,7 @@ import { Group, PointLight } from 'three';
 import { useWorldStore } from '../store';
 import { parkAudio } from '../WorldParkAudio';
 import { attractionRide, updateAttractionRide } from './attraction-ride';
-import { advanceCoaster, coasterDistanceAt, coasterFrame, coasterRidePose, coasterWorld, COASTER_GATE_Z, COASTER_DURATION, COASTER_LENGTH } from './coaster-track';
+import { advanceCoaster, coasterDistanceAt, coasterFrame, coasterRidePose, coasterWorld, COASTER_DURATION, COASTER_LENGTH } from './coaster-track';
 import { createCoasterCar, createCoasterStructure, type CoasterCollider } from './coaster-geometry';
 import { activateIntentTarget, intentRideClock, loadIntentProgress, clearIntentRide, useIntentStore } from './intent-state';
 import { advanceCoasterTransition, returnCoasterToStation } from './coaster-transition';
@@ -17,6 +17,7 @@ import { night } from '../WorldNight';
 import { CoasterMotionAudio } from './coaster-motion-audio';
 import { CoasterStructureCache, coasterStructureMemory } from './coaster-structure-cache';
 import { buildCoasterInWorker } from './coaster-structure-job';
+import { COASTER_CAR_PANELS } from './coaster-access';
 
 /** World-space scene. The parent owns actor/camera integration and the activation radius. */
 function WorldIntentCoaster({ active }: { active: boolean }) {
@@ -66,6 +67,7 @@ function WorldIntentCoaster({ active }: { active: boolean }) {
 export default memo(WorldIntentCoaster);
 
 function CoasterTrain({ active }: { active: boolean }) {
+  const occupied = useIntentStore(s => s.riding);
   const cars = useRef<(Group | null)[]>([]), geometry = useMemo(createCoasterCar, []);
   const audio = useRef<CoasterMotionAudio | null>(null);
   useEffect(() => {
@@ -122,23 +124,21 @@ function CoasterTrain({ active }: { active: boolean }) {
       const f = coasterFrame(-i * 3.55 / COASTER_LENGTH);
       return <group key={i} ref={el => { cars.current[i] = el; }} position={f.point} quaternion={f.rotation}>
         <mesh geometry={geometry} castShadow receiveShadow><WorldIntentSurface roughness={.65} metalness={.12} /></mesh>
+        {active && !occupied && <RigidBody type="fixed" colliders={false} userData={{ solid: true, assetId: 'coaster-parked-car' }}>
+          {COASTER_CAR_PANELS.map((p, j) => <CuboidCollider key={j} position={p.at} args={p.size.map(v => v / 2) as [number, number, number]} />)}
+        </RigidBody>}
       </group>;
     })}
   </group>;
 }
 
 function CoasterCollisions({ colliders }: { colliders: CoasterCollider[] }) {
-  const gateOpen = useIntentStore(s => s.progress.gateOpen);
   return <>
     {[true, false].map(surface => <RigidBody key={String(surface)} type="fixed" colliders={false} userData={surface ? { surface: true, assetId: 'intent-coaster' } : { solid: true, assetId: 'intent-coaster' }}>
       {colliders.filter(c => !!c.surface === surface).map((c, i) => c.hull
         ? <ConvexHullCollider key={i} position={c.position} rotation={c.rotation} args={[c.hull]} friction={.9} />
         : <CuboidCollider key={i} position={c.position} rotation={c.rotation} args={c.half} friction={.9} />)}
     </RigidBody>)}
-    <RigidBody type="fixed" colliders={false} userData={{ solid: true, assetId: 'intent-coaster' }}>
-      {!gateOpen && <CuboidCollider position={coasterWorld([0, 1.6, COASTER_GATE_Z])} args={[5, 1.6, .18]} />}
-      {gateOpen && [-1, 1].map(side => <CuboidCollider key={side} position={coasterWorld([side * (5 - 2.5 * Math.cos(1.45)), 1.6, COASTER_GATE_Z - 2.5 * Math.sin(1.45)])} rotation={[0, -side * 1.45, 0]} args={[2.5, 1.6, .18]} />)}
-    </RigidBody>
     <RigidBody type="fixed" colliders={false} userData={{ solid: true, interactable: 'intent-chest' }}>
       <CuboidCollider position={coasterWorld([-8, .65, 59.5])} args={[1.9, .65, 1.05]} />
     </RigidBody>

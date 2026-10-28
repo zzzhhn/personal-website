@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Group } from 'three';
+import { Group, Quaternion } from 'three';
+import { CuboidCollider, RigidBody, useBeforePhysicsStep, useRapier, type RapierRigidBody } from '@react-three/rapier';
 import { useWorldStore } from '../store';
 import { useInteractable } from '../WorldInteract';
 import { COASTER_PALETTE as P, CoasterBatch } from './coaster-geometry';
@@ -10,6 +11,7 @@ import { INTENT_TARGETS, INTENT_TOOL_ACTIONS, intentReachRadius, type IntentTarg
 import { activateIntentTarget, intentAvailable, useIntentStore } from './intent-state';
 import type { IntentText } from './intent-tasks';
 import WorldIntentWorkshop from './WorldIntentWorkshop';
+import { COASTER_GATE_LEAVES, coasterGateAngle } from './coaster-access';
 
 export function IntentInteraction({ target }: { target: IntentTarget }) {
   const state = useIntentStore();
@@ -73,7 +75,10 @@ function IntentChest() {
   </>;
 }
 function IntentGate() {
-  const open = useIntentStore(s => s.progress.gateOpen), left = useRef<Group>(null), right = useRef<Group>(null);
+  const open = useIntentStore(s => s.progress.gateOpen);
+  const leaves = useRef<(RapierRigidBody | null)[]>([]), progress = useRef(open ? 1 : 0);
+  const initial = useRef(open ? 1 : 0).current, rotation = useRef(new Quaternion());
+  const { world } = useRapier();
   const geometry = useMemo(() => {
     const b = new CoasterBatch(); b.box([2.5, .5, 0], [5, .8, .25], P.dark);
     for (let x = 0; x <= 5; x += .5) b.box([x, 1.6, 0], [.1, 3.1, .16], P.steel);
@@ -81,13 +86,23 @@ function IntentGate() {
     b.beam([0, .4, 0], [5, 2.9, 0], .08, P.steel); return b.finish();
   }, []);
   useEffect(() => () => geometry.dispose(), [geometry]);
-  useFrame((_, dt) => {
-    if (useWorldStore.getState().paused || document.hidden || dt > .25) return;
-    if (left.current) left.current.rotation.y += ((open ? 1.45 : 0) - left.current.rotation.y) * (1 - Math.exp(-dt * 4));
-    if (right.current) right.current.rotation.y += ((open ? -1.45 : 0) - right.current.rotation.y) * (1 - Math.exp(-dt * 4));
+  useBeforePhysicsStep(() => {
+    const target = open ? 1 : 0;
+    if (useWorldStore.getState().paused || document.hidden || progress.current === target) return;
+    progress.current += (target - progress.current) * (1 - Math.exp(-world.timestep * 4));
+    if (Math.abs(target - progress.current) < .0001) progress.current = target;
+    COASTER_GATE_LEAVES.forEach((leaf, i) => {
+      const angle = coasterGateAngle(leaf.side, progress.current);
+      rotation.current.set(0, Math.sin(angle / 2), 0, Math.cos(angle / 2));
+      leaves.current[i]?.setNextKinematicRotation(rotation.current);
+    });
   });
   return <group onClick={e => { e.stopPropagation(); activateIntentTarget('gate'); }}>
-    <group ref={left} position={coasterWorld([-5, 0, COASTER_GATE_Z])}><mesh geometry={geometry}><WorldIntentSurface roughness={.8} /></mesh></group>
-    <group ref={right} position={coasterWorld([5, 0, COASTER_GATE_Z])}><mesh geometry={geometry} scale={[-1, 1, 1]}><WorldIntentSurface roughness={.8} /></mesh></group>
+    {COASTER_GATE_LEAVES.map((leaf, i) => <RigidBody key={leaf.side} ref={body => { leaves.current[i] = body; }}
+      type="kinematicPosition" colliders={false} position={leaf.hinge} rotation={[0, coasterGateAngle(leaf.side, initial), 0]}
+      userData={{ solid: true, assetId: 'coaster-gate' }}>
+      <CuboidCollider position={leaf.centre} args={leaf.half} />
+      <mesh geometry={geometry} scale={[-leaf.side, 1, 1]}><WorldIntentSurface roughness={.8} /></mesh>
+    </RigidBody>)}
   </group>;
 }

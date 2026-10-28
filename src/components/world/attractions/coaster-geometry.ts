@@ -7,6 +7,7 @@ import { INTENT_COASTER_FOOTPRINT } from './attraction-layout.ts';
 import { addCoasterCliffs } from './coaster-landscape-cliffs.ts';
 import { lightCoasterCliffs } from './coaster-landscape-lighting.ts';
 import { INTENT_STATIONS } from './intent-stations.ts';
+import { COASTER_CAR_PANELS } from './coaster-access.ts';
 import { bakeIntentNight, INTENT_LAMP_POINTS } from './intent-lighting.ts';
 import { addCoasterLandscape } from './coaster-landscape.ts';
 import { addCoasterTerrainRelief } from './coaster-terrain-relief.ts';
@@ -419,14 +420,8 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
 
 export function createCoasterCar() {
   const b = new CoasterBatch();
-  b.box([0, .27, 0], [2.9, .35, 1.85], P.copper);
-  b.box([1.4, .65, 0], [.15, .55, 1.8], P.dark);
-  b.box([0, .64, 0], [1.1, .16, 1.22], P.dark);
-  b.box([-.53, 1.05, 0], [.18, .85, 1.25], P.dark);
+  for (const panel of COASTER_CAR_PANELS) b.box(panel.at, panel.size, P[panel.color]);
   for (const side of [-.85, .85]) {
-    // Left-side opening spans local X .25..1.325, directly beside the footwell.
-    if (side < 0) b.box([-.575, .75, side], [1.65, .35, .15], P.steel);
-    else b.box([-.1, .75, side], [2.6, .35, .15], P.steel);
     b.beam([1.25, .5, side], [1.25, 1.22, side], .065, P.rail);
     for (const x of [-1, 1]) b.beam([x, .08, side - .15], [x, .08, side + .15], .26, P.dark);
   }
