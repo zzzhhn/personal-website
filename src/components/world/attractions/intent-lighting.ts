@@ -1,6 +1,7 @@
 import { BufferAttribute, Color, type BufferGeometry } from 'three';
 import { coasterWorld, coasterFrame, COASTER_LENGTH } from './coaster-track.ts';
 import type { Vec3 } from '../types';
+import { lightsTouchingPart } from './intent-lighting-cull';
 
 export const INTENT_LAMP_POINTS: Vec3[] = [-47, -32, -16, 0, 16, 32, 48].map(x => [x, 3.2, 64]);
 const warm = new Color('#ffd29a'), cool = new Color('#a6cedc');
@@ -21,13 +22,16 @@ const sources = [
 export function bakeIntentNight(geometry: BufferGeometry, origin: Vec3 = [0, 0, 0]) {
   const p = geometry.getAttribute('position'), n = geometry.getAttribute('normal'), color = geometry.getAttribute('color');
   const night = new Float32Array(p.count * 3);
+  const localSources = lightsTouchingPart(geometry, origin, sources);
   for (let i = 0; i < p.count; i++) {
     const x = p.getX(i) + origin[0], y = p.getY(i) + origin[1], z = p.getZ(i) + origin[2];
     const nx = n.getX(i), ny = n.getY(i), nz = n.getZ(i);
     const base = .14 + Math.max(0, ny) * .12 + Math.max(0, nx * .4 + nz * .6) * .09;
     let r = base * .72, g = base * .91, b = base;
-    for (const light of sources) {
-      const dx = light.p[0] - x, dy = light.p[1] - y, dz = light.p[2] - z, d = Math.hypot(dx, dy, dz);
+    for (const light of localSources) {
+      const dx = light.p[0] - x, dy = light.p[1] - y, dz = light.p[2] - z;
+      if (Math.abs(dx) >= light.radius || Math.abs(dy) >= light.radius || Math.abs(dz) >= light.radius) continue;
+      const d = Math.hypot(dx, dy, dz);
       if (d >= light.radius) continue;
       const facing = Math.max(.05, (nx * dx + ny * dy + nz * dz) / Math.max(.01, d));
       const attenuation = (1 - d / light.radius) ** 2 * facing * light.power;

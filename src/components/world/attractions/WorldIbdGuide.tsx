@@ -8,6 +8,7 @@ import { yardItemComplete, yardItemDifferent, yardItemId } from './ibd-yard-game
 import { useIbdYardStore } from './ibd-yard-store.ts';
 import { buildIbdTools } from './ibd-yard-geometry.ts';
 import { IBD_YARD } from './attraction-layout.ts';
+import { sceneWorkProbe } from '../world-scene-work';
 
 const paper = { color: '#f5efda', rough: .9, metal: 0 }, ink = { color: '#263e48', rough: .8, metal: 0 };
 function workObjects() {
@@ -29,13 +30,13 @@ export default memo(function WorldIbdGuide() {
   const atWorkstation = useWorldStore(s => ibdReach(ibdLocal(s.position), station));
   const inYard = useWorldStore(s => Math.abs(s.position[0] - IBD_YARD.center[0]) <= IBD_YARD.size[0] / 2 + 4
     && Math.abs(s.position[2] - IBD_YARD.center[2]) <= IBD_YARD.size[1] / 2 + 6);
-  const props = useMemo(() => ({ paper: workObjects(), tools: buildIbdTools(), stamp: new RingGeometry(.1, .16, 12),
+  const props = useMemo(() => sceneWorkProbe.measure('ibd-guide-props', () => ({ paper: workObjects(), tools: buildIbdTools(), stamp: new RingGeometry(.1, .16, 12),
     checked: new RingGeometry(.27, .42, 16), standing: new RingGeometry(.7, .87, 32),
     good: new MeshBasicMaterial({ color: '#84ce9b', toneMapped: false }), bad: new MeshBasicMaterial({ color: '#ee8252', toneMapped: false }),
     amber: new MeshBasicMaterial({ color: '#efbd57', toneMapped: false }),
-    material: new MeshStandardMaterial({ vertexColors: true, roughness: .8, emissive: '#857b59', emissiveIntensity: .2 }) }), []);
+    material: new MeshStandardMaterial({ vertexColors: true, roughness: .8, emissive: '#857b59', emissiveIntensity: .2 }) })), []);
   useEffect(() => () => { Object.values(props).forEach(resource => resource.dispose()); }, [props]);
-  const cue = useMemo(() => {
+  const cue = useMemo(() => sceneWorkProbe.measure('ibd-guide-cue', () => {
     const b = new Builder(), route = station.id.startsWith('gallery') ? [] : ibdGuideRoute(game, step);
     const paint = { color: '#efbd57', rough: 1, metal: 0 };
     for (let i = 0; i < route.length - 1; i++) {
@@ -59,7 +60,7 @@ export default memo(function WorldIbdGuide() {
     const texture = new CanvasTexture(canvas); texture.colorSpace = SRGBColorSpace;
     const label = new SpriteMaterial({ map: texture, depthTest: false, depthWrite: false, toneMapped: false });
     return { geometry, material, texture, label };
-  }, [step.action.kind, step.action.station, game.core.moved, game.pending?.token, game.released, lang, near]);
+  }), [step.action.kind, step.action.station, game.core.moved, game.pending?.token, game.released, lang, near]);
   useEffect(() => () => { cue.geometry.dispose(); cue.material.dispose(); cue.texture.dispose(); cue.label.dispose(); }, [cue]);
   return <group name="ibd-work-guidance" dispose={null}>
     <mesh name="ibd-pickup-manifest" geometry={props.paper} material={props.material} position={[-3, .96, 26]} rotation={[.12, 0, 0]} scale={1.5} />

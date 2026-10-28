@@ -26,6 +26,7 @@ import WorldAlphaMine from './WorldAlphaMine';
 import WorldWeather from './WorldWeather';
 import { setRenderReadoutSource } from './world-render-readout';
 import { clubWaterFrameWindow } from './WorldClubWaterBudget';
+import { sceneWorkProbe } from './world-scene-work';
 import WorldAttractions from './attractions/WorldAttractions';
 import { intentRideClock, useIntentStore } from './attractions/intent-state';
 import { coasterPhase } from './attractions/coaster-track';
@@ -58,6 +59,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
   const quality = useWorldStore(s => s.quality);
   const frames = useRef(0);
   const frameDelta = useRef(0);
+  useEffect(() => { if (import.meta.env.DEV) return sceneWorkProbe.bind(() => gl.info.render.frame); }, [gl]);
   const [frameSample] = useState(() => import.meta.env.DEV && new URLSearchParams(window.location.search).get('qa') === '1'
     ? { values: new Float32Array(180), count: 0, cursor: 0, warm: 0 } : null);
   // Only invoked for a retained slow interval in an explicitly started QA window.
@@ -67,7 +69,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
     const w = useWorldStore.getState(), ride = useIntentStore.getState(), b = INTENT_COASTER.bounds;
     const distance = Math.hypot(Math.max(b.minX-w.position[0],0,w.position[0]-b.maxX),
       Math.max(b.minZ-w.position[2],0,w.position[2]-b.maxZ));
-    return { lastRenderFrame: gl.info.render.frame, lastRenderCalls: gl.info.render.calls,
+    return { observedAtMs: performance.now(), lastRenderFrame: gl.info.render.frame, lastRenderCalls: gl.info.render.calls,
       lastRenderTriangles: gl.info.render.triangles, geometries: gl.info.memory.geometries,
       textures: gl.info.memory.textures, programs: gl.info.programs?.length ?? 0,
       cameraX: camera.position.x, cameraY: camera.position.y, cameraZ: camera.position.z,

@@ -11,6 +11,7 @@ import { bakeIntentNight, INTENT_LAMP_POINTS } from './intent-lighting.ts';
 import { addCoasterLandscape } from './coaster-landscape.ts';
 import { addCoasterTerrainRelief } from './coaster-terrain-relief.ts';
 import type { Vec3 } from '../types';
+import { sceneWorkProbe } from '../world-scene-work';
 
 export const COASTER_PALETTE = { steel: '#526b79', dark: '#273e4e', rail: '#c2ccd1', concrete: '#a9aaa1', copper: '#c38c50', cyan: '#69dedb', gold: '#ffcc83', white: '#d9ddd5' };
 const P = COASTER_PALETTE;
@@ -67,6 +68,7 @@ export interface CoasterCollider {
   surface?: boolean;
 }
 export function createCoasterStructure(detailed: boolean) {
+  return sceneWorkProbe.measure(`coaster-structure:${detailed ? 'near' : 'far'}`, () => {
   const steel = new CoasterBatch(), glow = new CoasterBatch(), colliders: CoasterCollider[] = [];
   const steps = detailed ? 800 : 256;
   for (let i = 0; i < steps; i++) {
@@ -111,6 +113,7 @@ export function createCoasterStructure(detailed: boolean) {
   addCoasterCliffs(steel, glow, colliders);
   const relief = addCoasterTerrainRelief(steel);
   return { steel: steel.finish(), glow: glow.finish(), colliders, art, relief };
+  });
 }
 
 function addTunnel(steel: CoasterBatch, glow: CoasterBatch, detailed: boolean) {

@@ -4,12 +4,13 @@ import { useWorldStore } from '../store';
 import { IBD_STATIONS, ibdStation } from './ibd-yard-layout.ts';
 import { useIbdYardStore } from './ibd-yard-store.ts';
 import type { Vec3 } from '../types';
+import { sceneWorkProbe } from '../world-scene-work';
 
 /** One local canvas atlas and one draw for every physical sign; no font fetch or DOM in the canvas. */
 export default function WorldIbdSigns() {
   const lang = useWorldStore(s => s.lang);
   const moved = useIbdYardStore(s => s.game.core.moved);
-  const data = useMemo(() => {
+  const data = useMemo(() => sceneWorkProbe.measure('ibd-signs', () => {
     const zh = lang === 'zh';
     const signs: { at: Vec3; w: number; h: number; title: string; sub: string }[] = [
       { at: [0, 3.6, 28.31], w: 9.2, h: 1.5, title: zh ? '物资清点场' : 'INVENTORY YARD', sub: zh ? '国投证券经历改编 · 模拟资料' : 'SDIC EXPERIENCE · FICTIONAL CARGO' },
@@ -47,7 +48,7 @@ export default function WorldIbdSigns() {
     const texture = new CanvasTexture(canvas); texture.colorSpace = SRGBColorSpace; texture.anisotropy = 2;
     const material = new MeshBasicMaterial({ map: texture, toneMapped: false });
     return { geometry, material, texture };
-  }, [lang, moved]);
+  }), [lang, moved]);
   useEffect(() => () => { data.geometry.dispose(); data.material.dispose(); data.texture.dispose(); }, [data]);
   return <mesh name="ibd-physical-sign-atlas" geometry={data.geometry} material={data.material} dispose={null} />;
 }

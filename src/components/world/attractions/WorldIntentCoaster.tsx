@@ -15,12 +15,19 @@ import WorldIntentSurface from './WorldIntentSurface';
 import WorldCoasterVegetation from './WorldCoasterVegetation';
 import { night } from '../WorldNight';
 import { CoasterMotionAudio } from './coaster-motion-audio';
+import { CoasterStructureCache, coasterStructureMemory } from './coaster-structure-cache';
 
 /** World-space scene. The parent owns actor/camera integration and the activation radius. */
 function WorldIntentCoaster({ active }: { active: boolean }) {
   const occupied = useIntentStore(s => s.riding), enabled = active || occupied;
-  const structure = useMemo(() => createCoasterStructure(enabled), [enabled]);
-  useEffect(() => () => { structure.steel.dispose(); structure.glow.dispose(); }, [structure]);
+  const structures = useMemo(() => new CoasterStructureCache(createCoasterStructure), []);
+  const structure = useMemo(() => {
+    const result = structures.get(enabled);
+    Object.assign(coasterStructureMemory, structures.snapshot());
+    return result;
+  }, [structures, enabled]);
+  useEffect(() => () => structures.releaseGpu(enabled), [structures, enabled]);
+  useEffect(() => () => { structures.dispose(); Object.assign(coasterStructureMemory, structures.snapshot()); }, [structures]);
   useEffect(() => {
     useIntentStore.setState({ active: enabled });
     if (!enabled) { clearIntentRide(); return; }

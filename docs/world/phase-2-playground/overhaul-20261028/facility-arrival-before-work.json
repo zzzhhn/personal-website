@@ -1,0 +1,326 @@
+{
+  "frameWindow": {
+    "frames": 866,
+    "activeSeconds": 15.950700000017882,
+    "maxMs": 981.8000000119209,
+    "slow25Ratio": 0.005773672055427252,
+    "slow33Ratio": 0.004618937644341801,
+    "percentileSamples": 866,
+    "p50Ms": 16.700000762939453,
+    "p95Ms": 17.200000762939453,
+    "changedDuringWindow": true,
+    "slowestFrames": [
+      {
+        "sample": 2,
+        "activeElapsedMs": 1199.6000000238419,
+        "ms": 981.8000000119209,
+        "context": {
+          "observedAtMs": 87391.90000000596,
+          "lastRenderFrame": 773,
+          "lastRenderCalls": 46,
+          "lastRenderTriangles": 181895,
+          "geometries": 326,
+          "textures": 56,
+          "programs": 164,
+          "cameraX": -84.7,
+          "cameraY": 2.93466802577436,
+          "cameraZ": -174.5191491160811,
+          "actorX": -85,
+          "actorY": 1.9038232564926147,
+          "actorZ": -174.89999389648438,
+          "quality": "balanced",
+          "night": 0,
+          "paused": false,
+          "poolInspect": false,
+          "hidden": false,
+          "shot": null,
+          "vehicle": null,
+          "coasterBoundsDistance": 80,
+          "coasterProximityActive": false,
+          "coasterEnabled": false,
+          "coasterRiding": false,
+          "coasterRidePhase": null,
+          "coasterTrackPhase": "station",
+          "coasterElapsed": 0,
+          "coasterClockRiding": false,
+          "coasterRevision": -1
+        }
+      },
+      {
+        "sample": 11,
+        "activeElapsedMs": 1713,
+        "ms": 257.09999999403954,
+        "context": {
+          "observedAtMs": 87893.30000001192,
+          "lastRenderFrame": 782,
+          "lastRenderCalls": 55,
+          "lastRenderTriangles": 196576,
+          "geometries": 296,
+          "textures": 61,
+          "programs": 181,
+          "cameraX": -84.03190000003578,
+          "cameraY": 3.760521043439872,
+          "cameraZ": -173.6932961094716,
+          "actorX": -85,
+          "actorY": 1.9038232564926147,
+          "actorZ": -174.89999389648438,
+          "quality": "balanced",
+          "night": 0,
+          "paused": false,
+          "poolInspect": false,
+          "hidden": false,
+          "shot": null,
+          "vehicle": null,
+          "coasterBoundsDistance": 80,
+          "coasterProximityActive": false,
+          "coasterEnabled": false,
+          "coasterRiding": false,
+          "coasterRidePhase": null,
+          "coasterTrackPhase": "station",
+          "coasterElapsed": 0,
+          "coasterClockRiding": false,
+          "coasterRevision": -1
+        }
+      },
+      {
+        "sample": 1,
+        "activeElapsedMs": 217.80000001192093,
+        "ms": 217.80000001192093,
+        "context": {
+          "observedAtMs": 86401.09999999404,
+          "lastRenderFrame": 772,
+          "lastRenderCalls": 91,
+          "lastRenderTriangles": 302176,
+          "geometries": 311,
+          "textures": 58,
+          "programs": 166,
+          "cameraX": -84.85,
+          "cameraY": 2.9232568253589246,
+          "cameraZ": -174.53035612210508,
+          "actorX": -85,
+          "actorY": 1.90335214138031,
+          "actorZ": -174.89999389648438,
+          "quality": "balanced",
+          "night": 0,
+          "paused": false,
+          "poolInspect": false,
+          "hidden": false,
+          "shot": null,
+          "vehicle": null,
+          "coasterBoundsDistance": 80,
+          "coasterProximityActive": false,
+          "coasterEnabled": true,
+          "coasterRiding": false,
+          "coasterRidePhase": null,
+          "coasterTrackPhase": "station",
+          "coasterElapsed": 0,
+          "coasterClockRiding": false,
+          "coasterRevision": -1
+        }
+      },
+      {
+        "sample": 3,
+        "activeElapsedMs": 1333.2000000178814,
+        "ms": 133.59999999403954,
+        "context": {
+          "observedAtMs": 87510.90000000596,
+          "lastRenderFrame": 774,
+          "lastRenderCalls": 45,
+          "lastRenderTriangles": 183819,
+          "geometries": 328,
+          "textures": 57,
+          "programs": 176,
+          "cameraX": -84.55,
+          "cameraY": 3.019986703065213,
+          "cameraZ": -174.43383044698797,
+          "actorX": -85,
+          "actorY": 1.9038232564926147,
+          "actorZ": -174.89999389648438,
+          "quality": "balanced",
+          "night": 0,
+          "paused": false,
+          "poolInspect": false,
+          "hidden": false,
+          "shot": null,
+          "vehicle": null,
+          "coasterBoundsDistance": 80,
+          "coasterProximityActive": false,
+          "coasterEnabled": false,
+          "coasterRiding": false,
+          "coasterRidePhase": null,
+          "coasterTrackPhase": "station",
+          "coasterElapsed": 0,
+          "coasterClockRiding": false,
+          "coasterRevision": -1
+        }
+      },
+      {
+        "sample": 9,
+        "activeElapsedMs": 1450.1000000238419,
+        "ms": 33,
+        "context": {
+          "observedAtMs": 87625.90000000596,
+          "lastRenderFrame": 780,
+          "lastRenderCalls": 63,
+          "lastRenderTriangles": 201251,
+          "geometries": 330,
+          "textures": 61,
+          "programs": 181,
+          "cameraX": -84.19929999998213,
+          "cameraY": 3.3740795587851062,
+          "cameraZ": -174.07973759328354,
+          "actorX": -85,
+          "actorY": 1.9038232564926147,
+          "actorZ": -174.89999389648438,
+          "quality": "balanced",
+          "night": 0,
+          "paused": false,
+          "poolInspect": false,
+          "hidden": false,
+          "shot": null,
+          "vehicle": null,
+          "coasterBoundsDistance": 80,
+          "coasterProximityActive": false,
+          "coasterEnabled": false,
+          "coasterRiding": false,
+          "coasterRidePhase": null,
+          "coasterTrackPhase": "station",
+          "coasterElapsed": 0,
+          "coasterClockRiding": false,
+          "coasterRevision": -1
+        }
+      }
+    ]
+  },
+  "shadowRebuilds": [
+    {
+      "frame": 781,
+      "elapsedMs": 2118.4000000059605,
+      "durationMs": 248.39999997615814,
+      "rigidCasters": 196,
+      "trainCasters": 3,
+      "trainMergedBefore": 0,
+      "trainRigid": 0,
+      "chunks": 380
+    }
+  ],
+  "sceneWork": [
+    {
+      "name": "ibd-signs",
+      "startMs": 86422.09999999404,
+      "lastRenderFrame": 773,
+      "endMs": 86429.40000000596,
+      "durationMs": 7.300000011920929
+    },
+    {
+      "name": "ibd-guide-props",
+      "startMs": 86429.69999998808,
+      "lastRenderFrame": 773,
+      "endMs": 86430.19999998808,
+      "durationMs": 0.5
+    },
+    {
+      "name": "ibd-guide-cue",
+      "startMs": 86430.19999998808,
+      "lastRenderFrame": 773,
+      "endMs": 86430.90000000596,
+      "durationMs": 0.7000000178813934
+    },
+    {
+      "name": "coaster-structure:far",
+      "startMs": 86431.40000000596,
+      "lastRenderFrame": 773,
+      "endMs": 87357.40000000596,
+      "durationMs": 926
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 87634.80000001192,
+      "lastRenderFrame": 781,
+      "endMs": 87883.40000000596,
+      "durationMs": 248.59999999403954
+    }
+  ],
+  "render": {
+    "sampledAt": "2026-10-28T03:08:40.441Z",
+    "calls": 55,
+    "triangles": 197600,
+    "geometries": 297,
+    "textures": 61,
+    "programs": 181,
+    "camera": [
+      -83.65,
+      3.9680368188657074,
+      -173.48578033411127
+    ],
+    "mode": "always",
+    "frame": 1638,
+    "delta": 0.01730000001192093,
+    "night": 0,
+    "windTime": 26.535900000005952,
+    "frameMs": {
+      "samples": 180,
+      "p50": 16.700000762939453,
+      "p95": 17.200000762939453,
+      "max": 18.299999237060547
+    },
+    "drawingBuffer": [
+      1951,
+      1062
+    ],
+    "cssSize": [
+      1710,
+      931
+    ],
+    "pixelRatio": 1.1412731405118963,
+    "dprRange": [
+      0,
+      1.5
+    ],
+    "quality": "balanced",
+    "antialias": true,
+    "msaaSamples": 4,
+    "toneMapping": 4,
+    "outputColorSpace": "srgb",
+    "shadowMapSize": 1254,
+    "shadowType": 1,
+    "postprocessing": [],
+    "coasterVegetation": [
+      {
+        "name": "coaster-ST1-L0",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      },
+      {
+        "name": "coaster-ST1-L1",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 1
+      },
+      {
+        "name": "coaster-ST2-L0",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      },
+      {
+        "name": "coaster-ST2-L1",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 1
+      },
+      {
+        "name": "coaster-G19",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 1
+      }
+    ]
+  }
+}

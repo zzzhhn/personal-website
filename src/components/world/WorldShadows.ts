@@ -4,6 +4,8 @@ import { ConvexGeometry } from 'three/examples/jsm/geometries/ConvexGeometry.js'
 import type { SunLightShadow } from 'three/examples/jsm/lights/SunLightShadow.js';
 import { SHADOW_BUDGET, budgetZoneOf, type ShadowTier } from './WorldQuality';
 import { setQaRenderer, worldLightsFrame } from './WorldLights';
+import { sceneWorkProbe } from './world-scene-work';
+import { ShadowChunkBuilder, shadowChunkSourceKey } from './shadow-chunk-builder';
 
 /**
  * Sun shadow (shadows v4.1, spec v3 §14.2): three FIXED-SIZE cascades plus per-pass caster culling.
@@ -605,40 +607,21 @@ function rebuildChunks() {
       return !(x.alphaTest && (x.map || x.alphaMap)) && !x.displacementMap && !x.clippingPlanes?.length && x.side === mats[0].side && x.visible; });
   };
   const rigid = [...casters.values()].filter(c => c.cast && !c.animated && !c.dynamic && c.stable >= STABLE_SCANS && !c.fire?.match(/guide|vehicle/) && !c.mesh.customDepthMaterial && !c.root && plainDepth(c));
-  const key = rigid.map(c => `${c.mesh.uuid}:${c.sum}`).join('|');
+  const key = rigid.map(c => shadowChunkSourceKey(c.mesh, c.sum)).join('|');
   const probing = import.meta.env.DEV && rebuildProbeAt !== null && rebuildSamples.length < 16 && key !== chunkKey;
   const trainMergedBefore = probing ? [...casters.values()].filter(c => c.merged && isCoasterTrain(c.mesh)).length : 0;
   for (const c of casters.values()) c.merged = false;
   for (const c of rigid) c.merged = true;
   if (key === chunkKey) return;
   const probeAt = probing ? performance.now() : null;
+  const workToken = sceneWorkProbe.begin('shadow-chunks');
   chunkKey = key;
   for (const ch of chunks) { proxyGroup.remove(ch.mesh); ch.mesh.geometry.dispose(); }
-  type Bucket = { side: number; cascade: 0 | 1 | 2; data: [number[], number[]]; zones: Map<string, number> };
-  const buckets = new Map<string, Bucket>();
+  const builder = new ShadowChunkBuilder(CHUNK_CELL, LIGHT_RIGHT, LIGHT_UP);
+  const nearCascades = [0, 1] as const, allCascades = [0, 1, 2] as const, farCascade = [2] as const;
   // Budget attribution (QA): each merged chunk reports the zone that contributes most of its triangles.
   const top = (zones: Map<string, number>) => [...zones.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? 'other';
   const v = new Vector3();
-  const push = (g: BufferGeometry, matrix: Matrix4, cascade: 0 | 1 | 2, side: number, zone: string) => {
-    const pos = g.getAttribute('position'), idx = g.index, world = new Float32Array(pos.count * 3);
-    for (let j = 0; j < pos.count; j++) {
-      v.fromBufferAttribute(pos, j).applyMatrix4(matrix); world.set([v.x, v.y, v.z], j * 3);
-    }
-    const cell = CHUNK_CELL[cascade], count = idx ? idx.count : pos.count;
-    // A batched district can span the island. Bin its triangles, rather than putting the entire
-    // mesh in its centre's cell: the latter makes every nearby cascade redraw distant buildings/decks.
-    for (let j = 0; j + 2 < count; j += 3) {
-      const a = (idx ? idx.getX(j) : j) * 3, b = (idx ? idx.getX(j + 1) : j + 1) * 3, c = (idx ? idx.getX(j + 2) : j + 2) * 3;
-      v.set((world[a] + world[b] + world[c]) / 3, (world[a + 1] + world[b + 1] + world[c + 1]) / 3, (world[a + 2] + world[b + 2] + world[c + 2]) / 3);
-      const key = `${cascade}:${Math.floor(v.dot(LIGHT_RIGHT) / cell)},${Math.floor(v.dot(LIGHT_UP) / cell)},${side}`;
-      let bucket = buckets.get(key);
-      if (!bucket) { bucket = { side, cascade, data: [[], []], zones: new Map() }; buckets.set(key, bucket); }
-      const [points, indices] = bucket.data, base = points.length / 3;
-      for (const n of [a, b, c]) points.push(world[n], world[n + 1], world[n + 2]);
-      indices.push(base, base + 1, base + 2);
-      bucket.zones.set(zone, (bucket.zones.get(zone) ?? 0) + 3);
-    }
-  };
   const one = new Float32Array(4);
   for (const c of rigid) {
     const src = c.mesh as InstancedMesh, mat = Array.isArray(src.material) ? src.material[0] : src.material;
@@ -649,15 +632,13 @@ function rebuildChunks() {
     const count = c.instanced ? src.count : 1;
     for (let i = 0; i < count; i++) {
       if (c.instanced) { src.getMatrixAt(i, m4); m4.premultiply(src.matrixWorld); } else m4.copy(src.matrixWorld);
-      for (const k of [0, 1, 2] as const) {
-        if (k === 2 && s[i * 4 + 3] < FAR_MIN_RADIUS) continue;
-        const geo = k === 2 ? hull ?? g : g;
-        push(geo, m4, k, side, zone);
-      }
+      const includeFar = !(s[i * 4 + 3] < FAR_MIN_RADIUS);
+      builder.add(g, m4, includeFar && !hull ? allCascades : nearCascades, side, zone);
+      if (includeFar && hull) builder.add(hull, m4, farCascade, side, zone);
     }
   }
   chunks = [];
-  for (const [key, b] of buckets) {
+  for (const [key, b] of builder.buckets) {
     const mesh = makeChunkMesh(b.data[0], b.data[1], b.side, `sun-chunk-${key}`);
     if (!mesh) continue;
     mesh.userData.budgetZone = top(b.zones);
@@ -676,6 +657,7 @@ function rebuildChunks() {
     rebuildSamples.push({ frame: frameNo, elapsedMs: probeAt - rebuildProbeAt!, durationMs, rigidCasters: rigid.length,
       trainCasters: [...casters.keys()].filter(isCoasterTrain).length, trainMergedBefore, trainRigid: rigid.filter(c => isCoasterTrain(c.mesh)).length, chunks: chunks.length });
   }
+  sceneWorkProbe.end(workToken);
 }
 
 /** World sphere of a non-instanced caster (guide: fixed body sphere around its root). */
