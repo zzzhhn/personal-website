@@ -1,7 +1,7 @@
 import { BufferGeometry, Matrix4, TorusGeometry } from 'three';
 import { CoasterBatch, COASTER_PALETTE as P } from './coaster-geometry.ts';
 import { coasterWorld } from './coaster-track.ts';
-import { WORKSHOP_HUB, WORKSHOP_INTAKE, WORKSHOP_POST_TOP, WORKSHOP_RAIL_Y, WORKSHOP_TOOLS } from './intent-workshop-layout.ts';
+import { WORKSHOP_HUB, WORKSHOP_INTAKE, WORKSHOP_INTAKE_PANELS, WORKSHOP_POST_TOP, WORKSHOP_RAIL_Y, WORKSHOP_TOOLS } from './intent-workshop-layout.ts';
 import type { IntentClass } from './intent-tasks.ts';
 import type { Vec3 } from '../types';
 
@@ -185,6 +185,15 @@ export function createWorkshopGeometry() {
   contactParts(b.parts.slice(rollersStart), iy + 1.36);
   b.housing([ix - 2.5, iy + .65, iz], [.8, 1.3, .8], P.white);
   b.beam([ix - 2.5, iy + 1.3, iz], [ix - 2.5, iy + 1.7, iz], .22, P.copper, 12);
+  for (const { at, size } of WORKSHOP_INTAKE_PANELS) {
+    const p = coasterWorld(at);
+    b.housing([p[0], p[1], p[2] - .105], [size[0] + .16, size[1] + .12, .18], P.dark);
+  }
+  for (const side of [-1, 1]) {
+    const x = ix + side * 1.15;
+    b.beam([x, iy + WORKSHOP_POST_TOP, iz - .85], [x, iy + 4.95, iz + 1.245], .055, P.rail, 6);
+    b.beam([x, iy + 4.95, iz + 1.245], [x, iy + 3.2, iz + 1.245], .055, P.rail, 6);
+  }
   return { body: b.finish(), glow: glow.finish(),
     contactSurface: { vertices: new Float32Array(contactVertices), indices: new Uint32Array(contactIndices) } };
 }

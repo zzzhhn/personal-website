@@ -1,10 +1,9 @@
 import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
-import { createHash } from 'node:crypto';
 import RAPIER from '@dimforge/rapier3d-compat';
 import { Euler, Mesh, MeshBasicMaterial, Quaternion, Raycaster, Vector3 } from 'three';
 import { createWorkshopGeometry } from './intent-workshop-geometry.ts';
-import { WORKSHOP_INTAKE, WORKSHOP_TOOLS, WORKSHOP_CARRIER_Y, WORKSHOP_TARGETS, workshopColliders, workshopLocal } from './intent-workshop-layout.ts';
+import { WORKSHOP_INTAKE, WORKSHOP_INTAKE_PANELS, WORKSHOP_TOOLS, WORKSHOP_CARRIER_Y, WORKSHOP_TARGETS, workshopColliders, workshopLocal } from './intent-workshop-layout.ts';
 import { coasterWorld } from './coaster-track.ts';
 import { PLAYER_CENTER_HEIGHT, PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from '../actor-physics.ts';
 
@@ -22,18 +21,12 @@ function fixture(contact=true,base=true) {
 }
 after(()=>{data.body.dispose();data.glow.dispose();material.dispose();});
 
-test('tabletop contacts reuse visible triangles while all render attributes remain byte-identical',()=>{
-  const hashes={body:'d48eefbb333dc0639e362cdb67515550b67b34b586bed09b53b30e0c494620e0',glow:'5ce61d9f566fe343f0b7af48233255168ab3bc2fc3f498337ff126c58fd0d1a6'};
-  for(const name of ['body','glow']) {
-    const g=data[name],hash=createHash('sha256');
-    for(const key of Object.keys(g.attributes).sort())hash.update(new Uint8Array(g.attributes[key].array.buffer));
-    if(g.index)hash.update(new Uint8Array(g.index.array.buffer));assert.equal(hash.digest('hex'),hashes[name]);
-  }
+test('tabletop contacts reuse visible triangles without an enlarged enclosure',()=>{
   const key=ps=>ps.map(p=>p.join(',')).sort().join('|'),visible=new Set(),p=data.body.attributes.position;
   for(let i=0;i<p.count;i+=3)visible.add(key([0,1,2].map(j=>[p.getX(i+j),p.getY(i+j),p.getZ(i+j)])));
   const {vertices,indices}=data.contactSurface;
   for(let i=0;i<indices.length;i+=3)assert.ok(visible.has(key([0,1,2].map(j=>Array.from(vertices.slice(indices[i+j]*3,indices[i+j]*3+3))))));
-  assert.equal(workshopColliders().length,44);
+  assert.equal(workshopColliders().length,44 + WORKSHOP_INTAKE_PANELS.length);
   assert.ok(indices.length/3<4000,'bounded tabletop contact cost');
   console.log(JSON.stringify({visibleTriangles:p.count/3,contactTriangles:indices.length/3,contactVertices:vertices.length/3,
     contactBytes:vertices.byteLength+indices.byteLength,colliderIncrement:1}));
@@ -108,6 +101,19 @@ test('ground approaches and previously open full-height side passages stay open'
     }
   }}finally{world.free();before.free();}
   assert.ok(sweeps>=20);console.log(JSON.stringify({clearPlayerApproachSweeps:sweeps,unchangedExistingObstructions:existingObstructions}));
+});
+
+test('intake text faces remain clear of carrier beams and their own supports from front and oblique approaches',()=>{
+  let samples=0;
+  for(const camera of [[-16,6,88],[-23,6,84],[-9,6,84]])for(const {at,size} of WORKSHOP_INTAKE_PANELS) {
+    const origin=new Vector3(...coasterWorld(camera));
+    for(const x of [-.45,0,.45])for(const y of [-.35,0,.35]) {
+      const target=new Vector3(...coasterWorld([at[0]+x*size[0],at[1]+y*size[1],at[2]]));
+      const distance=origin.distanceTo(target),ray=new Raycaster(origin,target.sub(origin).normalize(),0,distance-.005);
+      assert.equal(ray.intersectObject(mesh).length,0,`sign row ${at[1]} obscured from ${camera} at ${x},${y}`);samples++;
+    }
+  }
+  console.log(JSON.stringify({unobstructedIntakeTextRays:samples}));
 });
 
 test('a full capsule at tabletop height can pass beside the machines without an enlarged enclosure',()=>{

@@ -6,7 +6,8 @@ import { useWorldStore } from '../store';
 import { useInteractable } from '../WorldInteract';
 import { night } from '../WorldNight';
 import { WORKSHOP_CARRIER_Y, WORKSHOP_INTAKE, WORKSHOP_TARGETS, WORKSHOP_TOOLS, workshopTarget, workshopColliders, type WorkshopTarget } from './intent-workshop-layout';
-import { advanceWorkshop, operateWorkshop, resetWorkshop, useWorkshopStore, workshopAvailable, workshopClock, WORKSHOP_PROCESS_SECONDS } from './intent-workshop-runtime';
+import { advanceWorkshop, operateWorkshop, resetWorkshop, useWorkshopStore, workshopAvailable, workshopClock, workshopCarrierProgress, workshopOutputComplete, WORKSHOP_LEVER_SECONDS } from './intent-workshop-runtime';
+import { useIntentStore } from './intent-state';
 import { createWorkshopCapsule, createWorkshopGeometry, createWorkshopMoving, createWorkshopLever } from './intent-workshop-geometry';
 import { coasterWorld } from './coaster-track';
 import WorldIntentSurface from './WorldIntentSurface';
@@ -24,6 +25,7 @@ function WorkshopInteraction({ id }: { id: WorkshopTarget }) {
   return null;
 }
 function WorkshopMotion({ tool }: { tool: IntentClass }) {
+  const completed = useIntentStore(s => workshopOutputComplete(tool, s.progress.passed));
   const geometry = useMemo(() => createWorkshopMoving(tool), [tool]), group = useRef<Group>(null);
   const at = useMemo(() => coasterWorld(WORKSHOP_TOOLS.find(t => t.id === tool)!.at), [tool]);
   useEffect(() => () => geometry.dispose(), [geometry]);
@@ -31,8 +33,8 @@ function WorkshopMotion({ tool }: { tool: IntentClass }) {
     if (!group.current) return;
     const s = useWorkshopStore.getState(), elapsed = workshopClock.elapsed;
     const operating = s.tool === tool && s.phase === 'processing';
-    const f = operating ? Math.max(0, Math.min(1, (elapsed - 1.5) / 1.3)) : s.outputs[tool] ? 1 : 0;
-    group.current.visible = operating || !!s.outputs[tool];
+    const f = operating ? Math.max(0, Math.min(1, (elapsed - 1.5) / 1.3)) : completed ? 1 : 0;
+    group.current.visible = operating || completed;
     const [x, y, z] = at;
     group.current.position.set(x, y + 1.53, z);
     if (tool === 'lookup') group.current.position.set(x - .7 + f * 1.15, y + 2.05, z - .2);
@@ -48,7 +50,7 @@ export default function WorldIntentWorkshop() {
   const geometry = useMemo(createWorkshopGeometry, []), capsuleGeometry = useMemo(createWorkshopCapsule, []);
   const solids = useMemo(workshopColliders, []);
   const leverGeometry = useMemo(createWorkshopLever, []), levers = useRef<InstancedMesh>(null);
-  const leverFrame = useMemo(() => ({ matrix: new Matrix4(), rotation: new Quaternion(), axis: new Vector3(1,0,0), scale: new Vector3(1,1,1), at: new Vector3(), value: NaN, tool: '' }), []);
+  const leverFrame = useMemo(() => ({ matrix: new Matrix4(), rotation: new Quaternion(), axis: new Vector3(1,0,0), scale: new Vector3(1,1,1), at: new Vector3(), value: NaN, intakeValue: NaN, tool: '' }), []);
   const capsule = useRef<Group>(null), lamp = useRef<PointLight>(null);
   const positions = useMemo(() => ({ a: new Vector3(...coasterWorld([-16, 1.66, 73])), b: new Vector3(), p: new Vector3() }), []);
   const paths = useMemo(() => Object.fromEntries(WORKSHOP_TOOLS.map(({ id, at }) => [id,
@@ -61,19 +63,20 @@ export default function WorldIntentWorkshop() {
     if (lamp.current) lamp.current.intensity = 48 * night.value;
     if (!capsule.current) return;
     const s = useWorkshopStore.getState();
-    const lever = s.phase === 'processing' ? Math.sin(Math.min(1, workshopClock.elapsed / .7) * Math.PI) * .85 : 0;
-    if (levers.current && (leverFrame.value !== lever || leverFrame.tool !== (s.tool ?? ''))) {
+    const lever = s.phase === 'processing' ? Math.sin(Math.min(1, workshopClock.elapsed / WORKSHOP_LEVER_SECONDS) * Math.PI) * .85 : 0;
+    const intakeLever = Math.sin(workshopClock.intakeElapsed / WORKSHOP_LEVER_SECONDS * Math.PI) * .85;
+    if (levers.current && (leverFrame.value !== lever || leverFrame.intakeValue !== intakeLever || leverFrame.tool !== (s.tool ?? ''))) {
       [WORKSHOP_INTAKE, ...WORKSHOP_TOOLS.map(tool => tool.at)].forEach((at, i) => {
         const id = i ? WORKSHOP_TOOLS[i - 1].id : null;
         leverFrame.at.set(...coasterWorld([at[0] + .96, 1.3, at[2] + .75]));
-        leverFrame.rotation.setFromAxisAngle(leverFrame.axis, id === s.tool ? lever : 0);
+        leverFrame.rotation.setFromAxisAngle(leverFrame.axis, i === 0 ? intakeLever : id === s.tool ? lever : 0);
         levers.current!.setMatrixAt(i, leverFrame.matrix.compose(leverFrame.at, leverFrame.rotation, leverFrame.scale));
       });
-      levers.current.instanceMatrix.needsUpdate = true; leverFrame.value = lever; leverFrame.tool = s.tool ?? '';
+      levers.current.instanceMatrix.needsUpdate = true; leverFrame.value = lever; leverFrame.intakeValue = intakeLever; leverFrame.tool = s.tool ?? '';
     }
-    capsule.current.visible = s.phase === 'ready' || s.phase === 'processing' || (s.phase === 'result' && !s.correct);
-    if (s.phase === 'processing' && s.tool) {
-      const f = workshopClock.elapsed / WORKSHOP_PROCESS_SECONDS, path = paths[s.tool];
+    capsule.current.visible = s.phase === 'ready' || s.phase === 'processing' || s.phase === 'returning';
+    if ((s.phase === 'processing' || s.phase === 'returning') && s.tool) {
+      const f = workshopCarrierProgress(s.phase, workshopClock.elapsed), path = paths[s.tool];
       const step = Math.min(3, Math.floor(f * 4)), blend = Math.min(1, f * 4 - step);
       positions.p.fromArray(path[step]); positions.b.fromArray(path[step + 1]); positions.p.lerp(positions.b, blend);
       capsule.current.position.copy(positions.p);

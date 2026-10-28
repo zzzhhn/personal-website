@@ -4,8 +4,8 @@ import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js
 import { useWorldStore } from '../store';
 import { useIntentStore } from './intent-state';
 import { findIntentTask } from './intent-tasks';
-import { useWorkshopStore } from './intent-workshop-runtime';
-import { WORKSHOP_TOOLS } from './intent-workshop-layout';
+import { useWorkshopStore, workshopOutputComplete } from './intent-workshop-runtime';
+import { WORKSHOP_INTAKE_PANELS, WORKSHOP_TOOLS } from './intent-workshop-layout';
 import { coasterWorld } from './coaster-track';
 
 export default function WorldWorkshopSigns() {
@@ -19,8 +19,9 @@ export default function WorldWorkshopSigns() {
     const rows = [
       [s.phase === 'idle' ? t('先拉接件杆，接收一件请求', 'PULL THE INTAKE LEVER. RECEIVE A REQUEST.') : request ?? t('请求已完成', 'REQUESTS COMPLETE'),
         s.phase === 'processing' ? t('看它被送到机器里……', 'WATCH THE CARRIER REACH THE MACHINE…')
-          : s.phase === 'result' ? notice?.[lang] ?? '' : t('读目标 → 走到机器旁 → 拉杆送件', 'READ THE GOAL → WALK TO A MACHINE → PULL ITS LEVER')],
-      ...WORKSHOP_TOOLS.map(tool => [tool.label[lang], s.outputs[tool.id] ? t(
+          : s.phase === 'returning' ? t('原件沿轨道退回 · 机器未执行', 'RETURNING THE ORIGINAL · NO CHANGE MADE')
+          : notice?.[lang] ?? t('读目标 → 走到机器旁 → 拉杆送件', 'READ THE GOAL → WALK TO A MACHINE → PULL ITS LEVER')],
+      ...WORKSHOP_TOOLS.map(tool => [tool.label[lang], workshopOutputComplete(tool.id, progress.passed) ? t(
         { lookup: '20:00 · 仍有 3 席 · 未预订', plan: '灯塔 → 列车 → 门口', debug: '循环已断开 · 小车前进', rewrite: '请勿攀爬，谢谢配合。', extract: '10/27 · 20:00 · 2 人', act: '20:00 · 已预订 1 席' }[tool.id],
         { lookup: '20:00 · 3 FREE · NOT BOOKED', plan: 'LIGHTHOUSE → TRAIN → GATE', debug: 'LOOP BROKEN · CART FORWARD', rewrite: 'Please do not climb. Thank you.', extract: '10/27 · 20:00 · PARTY 2', act: '20:00 · ONE SEAT BOOKED' }[tool.id]) : t(
         { lookup: '只查看，不占座', plan: '按顺序连接目的地', debug: '修复错误循环', rewrite: '换说法，不换意思', extract: '拆出原有字段', act: '改变模拟席位状态' }[tool.id],
@@ -35,11 +36,10 @@ export default function WorldWorkshopSigns() {
       c.fillStyle = '#a8e6df'; c.font = '25px sans-serif'; c.fillText(b, 512, y + 94, 985);
     });
     const texture = new CanvasTexture(canvas); texture.colorSpace = SRGBColorSpace; return texture;
-  }, [lang, s.phase, s.taskId, s.outputs, progress, notice]);
+  }, [lang, s.phase, s.taskId, progress, notice]);
   const geometry = useMemo(() => {
-    const panels = [{ at: [-16, 2.7, 72.05], size: [5.3, .85], row: 0 },
-      ...WORKSHOP_TOOLS.map((tool, i) => ({ at: [tool.at[0], 2.55, tool.at[2] - .81], size: [2.65, .6], row: i + 1 })),
-      { at: [-16, 3.6, 72.05], size: [5.3, .7], row: 7 }];
+    const panels = [...WORKSHOP_INTAKE_PANELS,
+      ...WORKSHOP_TOOLS.map((tool, i) => ({ at: [tool.at[0], 2.55, tool.at[2] - .81], size: [2.65, .6], row: i + 1 }))];
     const parts = panels.map(({ at, size, row }) => {
       const g = new PlaneGeometry(size[0], size[1]), uv = g.getAttribute('uv');
       for (let i = 0; i < uv.count; i++) uv.setY(i, (uv.getY(i) + 7 - row) / 8);

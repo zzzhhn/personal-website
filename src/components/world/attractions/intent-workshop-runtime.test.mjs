@@ -15,7 +15,8 @@ const { useIntentStore, activateIntentTarget } = await import('./intent-state.ts
 const { INTENT_TARGETS } = await import('./intent-stations.ts');
 const { parkAudio } = await import('../WorldParkAudio.ts');
 const { WORKSHOP_TARGETS, workshopTarget } = await import('./intent-workshop-layout.ts');
-const { operateWorkshop, advanceWorkshop, resetWorkshop, workshopAvailable, useWorkshopStore, workshopClock } = await import('./intent-workshop-runtime.ts');
+const { operateWorkshop, advanceWorkshop, resetWorkshop, workshopAvailable, useWorkshopStore, workshopClock,
+  workshopOutputComplete, workshopCarrierProgress, WORKSHOP_RETURN_SECONDS, WORKSHOP_PROCESS_SECONDS } = await import('./intent-workshop-runtime.ts');
 globalThis.document = { hidden: false }; globalThis.localStorage = { setItem() {} };
 for (const id of WORKSHOP_TARGETS) registerInteractable({ id: `intent-workshop-${id}`, position: workshopTarget(id), radius: 2.6,
   label: { zh: id, en: id }, kind: 'exhibit', enabled: () => workshopAvailable(id), onInteract: () => operateWorkshop(id) });
@@ -35,7 +36,7 @@ test('the six physical machines finish six distinct requests and unlock the exis
     action(tool); assert.equal(useWorkshopStore.getState().phase, 'processing');
     assert.equal(useIntentStore.getState().progress.passed.length, i, 'credit must wait for the actual machine cycle');
     finish(); assert.equal(useIntentStore.getState().progress.passed.length, i + 1);
-    assert.equal(useWorkshopStore.getState().outputs[tool], 1);
+    assert.equal(workshopOutputComplete(tool, useIntentStore.getState().progress.passed), true);
   }
   assert.equal(intentProgressView(useIntentStore.getState().progress).chestReady, true);
   assert.equal(useIntentStore.getState().progress.gateOpen, false, 'six requests unlock the chest, not the gate');
@@ -43,8 +44,29 @@ test('the six physical machines finish six distinct requests and unlock the exis
 test('a wrong route preserves the original task and produces no credit; repeating a completed clock cannot double-count', () => {
   fresh(); action('intake'); action('act'); finish();
   assert.equal(useWorkshopStore.getState().correct, false); assert.deepEqual(useIntentStore.getState().progress.passed, []);
-  action('intake'); assert.equal(useWorkshopStore.getState().taskId, 'T1'); action('lookup'); finish(); finish();
+  assert.equal(useWorkshopStore.getState().phase, 'returning');
+  assert.equal(workshopOutputComplete('act', useIntentStore.getState().progress.passed), false, 'rejected bookings cannot reserve a seat');
+  for (const id of WORKSHOP_TARGETS) { at(id); assert.equal(workshopAvailable(id), false, `${id} must wait for the carrier`); }
+  const elapsed = workshopClock.elapsed;
+  advanceWorkshop(.1, true, false); advanceWorkshop(.1, false, true);
+  assert.equal(workshopClock.elapsed, elapsed, 'return motion pauses with the world');
+  finish(); assert.equal(useWorkshopStore.getState().phase, 'ready');
+  assert.equal(useWorkshopStore.getState().taskId, 'T1'); action('lookup'); finish(); finish();
   assert.deepEqual(useIntentStore.getState().progress.passed, ['T1']);
+});
+test('the rejected carrier reverses continuously and arrives at intake before retry', () => {
+  assert.equal(workshopCarrierProgress('processing', WORKSHOP_PROCESS_SECONDS), workshopCarrierProgress('returning', 0));
+  const samples = [0, .25, .5, .75, 1].map(f => workshopCarrierProgress('returning', WORKSHOP_RETURN_SECONDS * f));
+  samples.forEach((value, i) => assert.ok(Math.abs(value - [1, .75, .5, .25, 0][i]) < 1e-10));
+  assert.equal(workshopCarrierProgress('returning', WORKSHOP_RETURN_SECONDS), workshopCarrierProgress('ready', 0));
+});
+test('machine outputs survive the next request and a scene reset, but follow a cleared saved progression', () => {
+  fresh(); action('intake'); action('lookup'); finish(); action('intake');
+  assert.equal(workshopOutputComplete('lookup', useIntentStore.getState().progress.passed), true);
+  resetWorkshop();
+  assert.equal(workshopOutputComplete('lookup', useIntentStore.getState().progress.passed), true);
+  useIntentStore.setState({ progress: createIntentProgress() });
+  assert.equal(workshopOutputComplete('lookup', useIntentStore.getState().progress.passed), false);
 });
 test('paused, hidden and abnormal frames do not advance a request, and recovery cancels the unsettled cycle', () => {
   fresh(); action('intake'); action('lookup');
@@ -60,7 +82,7 @@ test('spatial controls require actual line of sight and cannot submit while othe
 test('the ambiguous seventh request needs the physical bell before a route can earn credit', () => {
   fresh(); useIntentStore.setState({ progress: { ...createIntentProgress(), passed: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6'] } });
   action('intake'); action('rewrite'); finish(); assert.equal(useIntentStore.getState().progress.passed.length, 6);
-  action('intake'); action('bell'); action('rewrite'); finish(); assert.equal(useIntentStore.getState().progress.passed.length, 7);
+  finish(); action('bell'); action('rewrite'); finish(); assert.equal(useIntentStore.getState().progress.passed.length, 7);
   at('intake'); assert.equal(workshopAvailable('intake'), false);
 });
 

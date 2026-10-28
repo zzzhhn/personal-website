@@ -73,14 +73,15 @@ function WorldIntentHud() {
   const request = task?.clarification && s.progress.clarified.includes(task.id) ? task.clarification.reply[lang] : task?.request[lang];
   const guidance = s.progress.gateOpen ? t('大门已开，左侧踏步登车。', 'Gate open. Board via the steps on the left.')
     : s.progress.keyTaken ? t('把钥匙插入大门。', 'Take the key to the gate.') : s.progress.passed.length >= 6 ? t('六道锁已解开，掀箱拿钥匙。', 'Six locks open. Take the key from the chest.')
-    : workshop.phase === 'idle' ? t('入口左侧拉动接件杆，接收第一件请求。', 'Pull the intake lever on the left to receive a request.')
+    : workshop.phase === 'idle' ? t('接件台在入口左侧，绕到文字牌正面，拉杆接收请求。', 'Find the intake on the left. Walk to the front of its sign and pull the lever.')
     : workshop.phase === 'processing' ? t('看请求沿轨道进入机器。', 'Watch the request reach the machine.')
+    : workshop.phase === 'returning' ? t('原件正在退回，机器未执行。稍后可直接换一台机器。', 'The original is returning without making changes. Then try another machine.')
     : workshop.phase === 'result' ? t('回到接件台，继续接件。', 'Return to the intake lever for the next request.') : t('读清目标，走到对应机器旁拉杆。', 'Read the goal. Walk to a machine and pull its lever.');
   return <aside className="intent-hud intent-workshop-summary" data-theme={theme} lang={lang === 'zh' ? 'zh-CN' : 'en'} aria-label={t('意图分流工坊', 'Intent routing workshop')}>
     <div className="intent-ride-heading"><strong>{t('意图分流工坊', 'Intent routing workshop')}</strong><span>{Math.min(6, s.progress.passed.length)} / 6</span></div>
     <p>{guidance}</p>
-    {request && ['ready', 'processing'].includes(workshop.phase) && <blockquote>{request}</blockquote>}
-    {workshop.phase === 'result' && s.notice && <p role="status">{s.notice[lang]}</p>}
+    {request && ['ready', 'processing', 'returning'].includes(workshop.phase) && <blockquote>{request}</blockquote>}
+    {s.notice && <p role="status">{s.notice[lang]}</p>}
     {target && <button type="button" className="intent-primary" disabled={!contact || (target === 'chest' && s.progress.keyTaken) || (target === 'gate' && s.progress.gateOpen)} onClick={() => activateIntentTarget(target)}><kbd>E</kbd>{primaryText}</button>}
     {s.saveIssue && <p role="status">{s.saveIssue[lang]}</p>}
     <button type="button" className="intent-text-button" aria-expanded={details} onClick={() => setDetails(!details)}>{t('玩法与本机进度', 'About & local progress')}</button>

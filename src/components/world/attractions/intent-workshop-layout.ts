@@ -3,6 +3,12 @@ import type { IntentClass, IntentText } from './intent-tasks.ts';
 import { coasterWorld } from './coaster-track.ts';
 
 export const WORKSHOP_INTAKE: Vec3 = [-16, 0, 73];
+// Front-mounted on the intake canopy, clear of the rear carrier rails.
+// Text, housing and solid contact share these coordinates.
+export const WORKSHOP_INTAKE_PANELS: { at: Vec3; size: [number, number]; row: number }[] = [
+  { at: [-16, 3.6, 74.35], size: [5.3, .85], row: 0 },
+  { at: [-16, 4.5, 74.35], size: [5.3, .7], row: 7 },
+];
 export const WORKSHOP_RAIL_Y = 3.65;
 export const WORKSHOP_POST_TOP = 4.45;
 export const WORKSHOP_CARRIER_Y = 3.15;
@@ -37,5 +43,8 @@ export function workshopColliders() {
   }
   colliders.push({ position: coasterWorld([-16, WORKSHOP_RAIL_Y + .23, 67]), half: [.52, .23, .52] });
   colliders.push({ position: coasterWorld([-18.5, .65, 73]), half: [.4, .65, .4] });
+  for (const { at, size } of WORKSHOP_INTAKE_PANELS) colliders.push({
+    position: coasterWorld([at[0], at[1], at[2] - .105]), half: [(size[0] + .16) / 2, (size[1] + .12) / 2, .09],
+  });
   return colliders;
 }
