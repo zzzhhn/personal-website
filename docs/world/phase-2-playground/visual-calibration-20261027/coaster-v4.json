@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "scene": "intent-coaster",
+  "referenceVersion": "v4-thrill-topology",
+  "approvals": {
+    "style": {
+      "status": "approved",
+      "source": "human-user",
+      "date": "2026-10-28",
+      "quote": "挺好，重新校准的参考图我通过，可以按照它来改了",
+      "scope": "已展示的 v4 日景图及其切面海岸、蓝灰钢架、青色轨灯和暖色站房风格"
+    },
+    "layout": {
+      "status": "approved",
+      "source": "human-user",
+      "date": "2026-10-28",
+      "quote": "挺好，重新校准的参考图我通过，可以按照它来改了",
+      "scope": "高塔、巨大完整双立环、交错回转和近水螺旋的 v4 方向；连续轨道、净空和姿态仍需独立验证，不将画中多列车解释为多车调度"
+    }
+  },
+  "references": [
+    {
+      "role": "day",
+      "path": "docs/world/phase-2-playground/visual-calibration-20261027/coaster-day-v4.png",
+      "sha256": "1e026a8f3df607476684d132ea9b2ec308389a53eb29ecc9ef8eda3a8762b7e5"
+    },
+    {
+      "role": "night",
+      "path": "docs/world/phase-2-playground/visual-calibration-20261027/coaster-night-v4.png",
+      "sha256": "8a5355ce8c66029be465d233bcc4a3387339ada14fb66e6ba5a1fec152c480d2"
+    }
+  ],
+  "nightScope": "由已批准日景同构图生成的照明实施参考；未声称用户单独验收过夜景或实际运行画面",
+  "reviewViews": [
+    "C01 station approach day/night",
+    "C02 apparatus silhouette day/night",
+    "C04 first drop and all eight inversions",
+    "C05 actual rider and support clearance"
+  ],
+  "failureConditions": [
+    "只是园区变大而轨道动作不变",
+    "高塔与完整立环在总览中不可辨",
+    "翻滚只旋转相机而不转车体",
+    "轨道交叉或乘员与支架相撞",
+    "夜间只剩灯线且实体不可辨",
+    "扩大装置导致新常驻高成本渲染"
+  ],
+  "runtimeEvidence": {
+    "status": "spatial-prototype-in-progress",
+    "userVisualAcceptance": "pending",
+    "note": "当前 4341 仍为 v14；新样板不进入正式世界，待实际乘坐、昼夜画面和性能核验后集成"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "tool": "native imagegen",
+  "date": "2026-10-28",
+  "mode": "lighting-weather edit",
+  "input": "coaster-day-v4.png",
+  "output": "coaster-night-v4.png",
+  "prompt": "Use case: lighting-weather. Asset: night lighting companion for the USER-APPROVED v4 roller-coaster concept of Bobby's faceted coastal 3D world. Edit target: the supplied image. Change ONLY time of day and lighting to deep night with a blue-black sky and dim readable ocean. Preserve the exact camera, composition, geometry, all track shapes, giant two complete vertical loops, tall left drop tower, twisting right foreground, cliff silhouettes, station size, character scale and faceted material style. No redesign, no new track, no cropped loop. Architectural night lighting should illuminate the physical steel support faces and pale concrete bases, NOT merely emissive rail outlines: restrained cyan rail accents, subtle cyan uplight across support ribs, warm amber station soffits and windows, warm low bollards along guest paths and stairs, readable edge lighting on cliffs. Allow the rock faces and steel to retain volume and depth. Maintain exposure so structures, people, platform and walkable paths can actually be seen, without daylight sky or blown-out neon. No text, UI, logos, fog bloom wall or additional objects. This is a matching night reference, not a photorealistic theme park; preserve the supplied stylized 3D world exactly."
+}
