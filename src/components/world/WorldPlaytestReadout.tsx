@@ -29,6 +29,8 @@ import { shadowRebuildProbe, shadowChunkWork } from './WorldShadows';
 import { sceneWorkProbe } from './world-scene-work';
 import { coasterStructureMemory } from './attractions/coaster-structure-cache';
 import { coasterStructureJobs } from './attractions/coaster-structure-job';
+import { coasterDropHeight } from './attractions/coaster-terrain-relief';
+import { coasterWorld } from './attractions/coaster-track';
 
 function readContactSnapshot() {
   const value=worldActorDebug.actor(),physics=worldActorDebug.snapshot();
@@ -78,6 +80,11 @@ export default function WorldPlaytestReadout() {
             const p=ibdWorld(s.at);worldActorDebug.teleportPlayer([p[0],IBD_YARD.center[1]+(s.id.startsWith('gallery')?4.1:.1)+PLAYER_CENTER_HEIGHT,p[2]+.6]);
             useWorldStore.setState({paused:false,seat:null});
           }}>QA · 到{s.title.zh}</button>)}
+          <button disabled={attractionRide.active||!useIntentStore.getState().active} onClick={()=>{
+            const ground=coasterDropHeight(23,-160);if(ground===null)return;
+            worldActorDebug.teleportPlayer(coasterWorld([23,ground+PLAYER_CENTER_HEIGHT+.1,-160]));
+            useWorldStore.setState({paused:false,seat:null});
+          }}>QA · 到首降岩肩</button>
           <button disabled={attractionRide.active} onClick={()=>{
             worldActorDebug.teleportPlayer([-85,1.9,-174.9]);
             useWorldStore.setState({paused:false,seat:null});
