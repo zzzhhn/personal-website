@@ -12,6 +12,7 @@ import { setMineNetworkFailureForQA } from './alpha-mine-online';
 import { worldActorDebug } from './WorldActors';
 import { vehicleLodSnapshot } from './WorldVehicleVisual';
 import { clubAudio } from './WorldClubAudio';
+import { parkAudio } from './WorldParkAudio';
 import { readClubGuestPoses } from './WorldClubDancer';
 import { waterContacts, WATER_IMPACT_LIFETIME } from './WorldWaterInteraction';
 import { windUniforms } from './WorldWind';
@@ -46,6 +47,7 @@ export default function WorldPlaytestReadout() {
   if(world.shot&&!world.paused)return null;
   const renderPanel=<aside style={{position:'fixed',zIndex:80,left:16,bottom:12,width:280,maxHeight:'32vh',overflow:'auto',background:'#17231def',color:'#e7eddf',padding:8,font:'10px/1.25 monospace'}}>
       <button onClick={()=>setRenderSnapshot(readRenderSnapshot())}>QA · 读取当前渲染开销</button>
+      <button onClick={()=>setRenderSnapshot({parkAudio:parkAudio.snapshot()})}>QA · 读取环境音频</button>
       {import.meta.env.DEV&&<>
         {[IBD_YARD,INTENT_COASTER].map(site=><button key={site.title.en} onClick={()=>{
           const p=site.entrance;worldActorDebug.teleportPlayer([p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]]);
