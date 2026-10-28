@@ -190,7 +190,9 @@ function Vehicle({ spec, cars, impact }: { spec: VehicleSpec; cars: RefObject<Ma
     }
     return rapier.SolverFlags.COMPUTE_IMPULSE;
   });
-  const geometry = wheelGeometry(spec.size);
+  // Rapier context changes on pause. Keep wheel anchors stable so the visual's
+  // resource memo does not rebake both vehicle LODs and recreate materials.
+  const geometry = useMemo(() => wheelGeometry(spec.size), [spec.size[0], spec.size[1], spec.size[2]]);
   const bodyData = useMemo(() => ({ vehicle: spec.id }), [spec.id]);
   useEffect(() => {
     if (!body.current) return;

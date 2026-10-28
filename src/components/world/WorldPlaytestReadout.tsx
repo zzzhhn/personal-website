@@ -37,7 +37,8 @@ function readContactSnapshot() {
   const value=worldActorDebug.actor(),physics=worldActorDebug.snapshot();
   const actor=value&&typeof value==='object'&&!Array.isArray(value)?value:{};
   return {ride:{active:attractionRide.active,...attractionRide.pose,look:{...attractionLook},phase:attractionRide.transition?.phase},camera:worldActorDebug.camera(),actor:{animation:actor.animation,root:actor.root,seatSupport:actor.seatSupport,vehicleStage:actor.vehicleStage,vehicleRotation:actor.vehicleRotation,vehicle:actor.vehicle},
-    doors:Object.fromEntries(Object.entries(vehicleLodSnapshot()).map(([id,v])=>[id,{level:v.level,triangles:v.l0Triangles,doors:v.doors}])),
+    doors:Object.fromEntries(Object.entries(vehicleLodSnapshot()).map(([id,v])=>[id,{level:v.level,triangles:v.l0Triangles,doors:v.doors,
+      material:v.materialUuid,bodyNear:v.bodyNearGeometry,bodyFar:v.bodyLodGeometry,wheel:v.wheelGeometry}])),
     physics:{player:physics.player,grounded:physics.grounded,vehicles:physics.vehicles.map(v=>({id:v.id,position:v.position,waterSeconds:v.waterSeconds,wheelContacts:v.wheelContacts}))}};
 }
 
