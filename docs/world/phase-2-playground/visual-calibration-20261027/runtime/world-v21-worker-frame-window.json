@@ -1,0 +1,1091 @@
+{
+  "frameWindow": {
+    "frames": 2582,
+    "activeSeconds": 43.441,
+    "maxMs": 230.09999999403954,
+    "slow25Ratio": 0.003098373353989156,
+    "slow33Ratio": 0.001549186676994578,
+    "percentileSamples": 1800,
+    "p50Ms": 16.700000762939453,
+    "p95Ms": 18,
+    "changedDuringWindow": true,
+    "slowestFrames": [
+      {
+        "sample": 1,
+        "activeElapsedMs": 230.09999999403954,
+        "ms": 230.09999999403954,
+        "context": {
+          "observedAtMs": 72830.10000002384,
+          "lastRenderFrame": 116,
+          "lastRenderCalls": 310,
+          "lastRenderTriangles": 1506776,
+          "geometries": 275,
+          "textures": 61,
+          "programs": 141,
+          "cameraX": 49.99997329711914,
+          "cameraY": 11.000236203454572,
+          "cameraZ": -116.51470336697237,
+          "actorX": 50,
+          "actorY": 1.8649846315383911,
+          "actorZ": -125,
+          "quality": "balanced",
+          "night": 0,
+          "paused": false,
+          "poolInspect": false,
+          "hidden": false,
+          "shot": null,
+          "vehicle": null,
+          "coasterBoundsDistance": 0,
+          "coasterProximityActive": true,
+          "coasterEnabled": true,
+          "coasterRiding": false,
+          "coasterRidePhase": null,
+          "coasterTrackPhase": "station",
+          "coasterElapsed": 0,
+          "coasterClockRiding": false,
+          "coasterRevision": -1
+        }
+      },
+      {
+        "sample": 2,
+        "activeElapsedMs": 366.30000001192093,
+        "ms": 136.2000000178814,
+        "context": {
+          "observedAtMs": 72929.5,
+          "lastRenderFrame": 117,
+          "lastRenderCalls": 81,
+          "lastRenderTriangles": 1183185,
+          "geometries": 280,
+          "textures": 61,
+          "programs": 145,
+          "cameraX": 49.99987965729887,
+          "cameraY": 11.000124474123567,
+          "cameraZ": -116.51452176247246,
+          "actorX": 49.99991226196289,
+          "actorY": 1.8648762702941895,
+          "actorZ": -124.99986267089844,
+          "quality": "balanced",
+          "night": 0,
+          "paused": false,
+          "poolInspect": false,
+          "hidden": false,
+          "shot": null,
+          "vehicle": null,
+          "coasterBoundsDistance": 0,
+          "coasterProximityActive": true,
+          "coasterEnabled": true,
+          "coasterRiding": false,
+          "coasterRidePhase": null,
+          "coasterTrackPhase": "station",
+          "coasterElapsed": 0,
+          "coasterClockRiding": false,
+          "coasterRevision": -1
+        }
+      },
+      {
+        "sample": 3,
+        "activeElapsedMs": 416.09999999403954,
+        "ms": 49.79999998211861,
+        "context": {
+          "observedAtMs": 72955.5,
+          "lastRenderFrame": 118,
+          "lastRenderCalls": 83,
+          "lastRenderTriangles": 1186945,
+          "geometries": 281,
+          "textures": 61,
+          "programs": 145,
+          "cameraX": 49.999838578607815,
+          "cameraY": 11.000090163811588,
+          "cameraZ": -116.51446132033688,
+          "actorX": 49.99980163574219,
+          "actorY": 1.864771842956543,
+          "actorZ": -124.99967956542969,
+          "quality": "balanced",
+          "night": 0,
+          "paused": false,
+          "poolInspect": false,
+          "hidden": false,
+          "shot": null,
+          "vehicle": null,
+          "coasterBoundsDistance": 0,
+          "coasterProximityActive": true,
+          "coasterEnabled": true,
+          "coasterRiding": false,
+          "coasterRidePhase": null,
+          "coasterTrackPhase": "station",
+          "coasterElapsed": 0,
+          "coasterClockRiding": false,
+          "coasterRevision": -1
+        }
+      },
+      {
+        "sample": 105,
+        "activeElapsedMs": 2144.199999988079,
+        "ms": 35.39999997615814,
+        "context": {
+          "observedAtMs": 74683.20000001788,
+          "lastRenderFrame": 220,
+          "lastRenderCalls": 83,
+          "lastRenderTriangles": 1186960,
+          "geometries": 281,
+          "textures": 61,
+          "programs": 145,
+          "cameraX": 49.99808926615174,
+          "cameraY": 10.999223531615822,
+          "cameraZ": -116.51168430155457,
+          "actorX": 49.99805450439453,
+          "actorY": 1.8639421463012695,
+          "actorZ": -124.99690246582031,
+          "quality": "balanced",
+          "night": 0,
+          "paused": false,
+          "poolInspect": false,
+          "hidden": false,
+          "shot": null,
+          "vehicle": null,
+          "coasterBoundsDistance": 0,
+          "coasterProximityActive": true,
+          "coasterEnabled": true,
+          "coasterRiding": false,
+          "coasterRidePhase": null,
+          "coasterTrackPhase": "station",
+          "coasterElapsed": 0,
+          "coasterClockRiding": false,
+          "coasterRevision": -1
+        }
+      },
+      {
+        "sample": 16,
+        "activeElapsedMs": 641,
+        "ms": 32.400000005960464,
+        "context": {
+          "observedAtMs": 73182.5,
+          "lastRenderFrame": 131,
+          "lastRenderCalls": 83,
+          "lastRenderTriangles": 1186945,
+          "geometries": 281,
+          "textures": 61,
+          "programs": 145,
+          "cameraX": 49.99958672087012,
+          "cameraY": 10.999891864120812,
+          "cameraZ": -116.5141003383295,
+          "actorX": 49.999534606933594,
+          "actorY": 1.8645730018615723,
+          "actorZ": -124.99931335449219,
+          "quality": "balanced",
+          "night": 0,
+          "paused": false,
+          "poolInspect": false,
+          "hidden": false,
+          "shot": null,
+          "vehicle": null,
+          "coasterBoundsDistance": 0,
+          "coasterProximityActive": true,
+          "coasterEnabled": true,
+          "coasterRiding": false,
+          "coasterRidePhase": null,
+          "coasterTrackPhase": "station",
+          "coasterElapsed": 0,
+          "coasterClockRiding": false,
+          "coasterRevision": -1
+        }
+      },
+      {
+        "sample": 1587,
+        "activeElapsedMs": 26855.30000001192,
+        "ms": 30.600000023841858,
+        "context": {
+          "observedAtMs": 99398.30000001192,
+          "lastRenderFrame": 1702,
+          "lastRenderCalls": 94,
+          "lastRenderTriangles": 465888,
+          "geometries": 321,
+          "textures": 61,
+          "programs": 145,
+          "cameraX": 49.996391296386726,
+          "cameraY": 10.999223520539838,
+          "cameraZ": -116.5108734109177,
+          "actorX": 49.99639129638672,
+          "actorY": 1.8639421463012695,
+          "actorZ": -124.99615478515625,
+          "quality": "balanced",
+          "night": 0,
+          "paused": false,
+          "poolInspect": false,
+          "hidden": false,
+          "shot": null,
+          "vehicle": null,
+          "coasterBoundsDistance": 0,
+          "coasterProximityActive": true,
+          "coasterEnabled": true,
+          "coasterRiding": false,
+          "coasterRidePhase": null,
+          "coasterTrackPhase": "station",
+          "coasterElapsed": 0,
+          "coasterClockRiding": false,
+          "coasterRevision": -1
+        }
+      },
+      {
+        "sample": 1590,
+        "activeElapsedMs": 26904.69999998808,
+        "ms": 30.399999976158142,
+        "context": {
+          "observedAtMs": 99442.10000002384,
+          "lastRenderFrame": 1705,
+          "lastRenderCalls": 94,
+          "lastRenderTriangles": 465888,
+          "geometries": 321,
+          "textures": 61,
+          "programs": 145,
+          "cameraX": 49.996391296386726,
+          "cameraY": 10.999223520539838,
+          "cameraZ": -116.5108734109177,
+          "actorX": 49.99639129638672,
+          "actorY": 1.8639421463012695,
+          "actorZ": -124.99615478515625,
+          "quality": "balanced",
+          "night": 0,
+          "paused": false,
+          "poolInspect": false,
+          "hidden": false,
+          "shot": null,
+          "vehicle": null,
+          "coasterBoundsDistance": 0,
+          "coasterProximityActive": true,
+          "coasterEnabled": true,
+          "coasterRiding": false,
+          "coasterRidePhase": null,
+          "coasterTrackPhase": "station",
+          "coasterElapsed": 0,
+          "coasterClockRiding": false,
+          "coasterRevision": -1
+        }
+      },
+      {
+        "sample": 724,
+        "activeElapsedMs": 12468.40000000596,
+        "ms": 26.80000001192093,
+        "context": {
+          "observedAtMs": 85005.90000000596,
+          "lastRenderFrame": 839,
+          "lastRenderCalls": 94,
+          "lastRenderTriangles": 465888,
+          "geometries": 321,
+          "textures": 61,
+          "programs": 145,
+          "cameraX": 49.99639129638673,
+          "cameraY": 10.999223520539838,
+          "cameraZ": -116.51087341091771,
+          "actorX": 49.99639129638672,
+          "actorY": 1.8639421463012695,
+          "actorZ": -124.99615478515625,
+          "quality": "balanced",
+          "night": 0,
+          "paused": false,
+          "poolInspect": false,
+          "hidden": false,
+          "shot": null,
+          "vehicle": null,
+          "coasterBoundsDistance": 0,
+          "coasterProximityActive": true,
+          "coasterEnabled": true,
+          "coasterRiding": false,
+          "coasterRidePhase": null,
+          "coasterTrackPhase": "station",
+          "coasterElapsed": 0,
+          "coasterClockRiding": false,
+          "coasterRevision": -1
+        }
+      }
+    ]
+  },
+  "shadowRebuilds": [
+    {
+      "frame": 661,
+      "elapsedMs": 1043.699999988079,
+      "durationMs": 602.6999998986721,
+      "wallMs": 9104.90000000596,
+      "slices": 545,
+      "maxSliceMs": 9.5,
+      "phases": [
+        {
+          "phase": "validate",
+          "count": 545,
+          "totalMs": 290.29999965429306,
+          "maxMs": 1,
+          "maxFrame": 615,
+          "source": ""
+        },
+        {
+          "phase": "source",
+          "count": 368,
+          "totalMs": 1.8999999463558197,
+          "maxMs": 0.10000002384185791,
+          "maxFrame": 341,
+          "source": "vein-middle_cracked_shell"
+        },
+        {
+          "phase": "transform",
+          "count": 1625,
+          "totalMs": 19.599999845027924,
+          "maxMs": 0.20000001788139343,
+          "maxFrame": 154,
+          "source": "ibd-three-sheds-static"
+        },
+        {
+          "phase": "bin",
+          "count": 2585,
+          "totalMs": 122.60000026226044,
+          "maxMs": 9.099999994039536,
+          "maxFrame": 215,
+          "source": "park-sign-frames"
+        },
+        {
+          "phase": "hull-copy",
+          "count": 1018,
+          "totalMs": 29.700000077486038,
+          "maxMs": 7.699999988079071,
+          "maxFrame": 217,
+          "source": "intent-coaster"
+        },
+        {
+          "phase": "hull-submit",
+          "count": 63,
+          "totalMs": 3.4000000953674316,
+          "maxMs": 1.7000000178813934,
+          "maxFrame": 141,
+          "source": "djc-fabric"
+        },
+        {
+          "phase": "hull-wait",
+          "count": 17,
+          "totalMs": 0.4000000059604645,
+          "maxMs": 0.10000002384185791,
+          "maxFrame": 239,
+          "source": "intent-coaster"
+        },
+        {
+          "phase": "hull-hydrate",
+          "count": 63,
+          "totalMs": 1.1000000834465027,
+          "maxMs": 0.10000002384185791,
+          "maxFrame": 333,
+          "source": "case_screw_7"
+        },
+        {
+          "phase": "buffer",
+          "count": 3751,
+          "totalMs": 67.00000005960464,
+          "maxMs": 0.4000000059604645,
+          "maxFrame": 418,
+          "source": ""
+        },
+        {
+          "phase": "bounds",
+          "count": 6264,
+          "totalMs": 59.199999779462814,
+          "maxMs": 0.20000001788139343,
+          "maxFrame": 363,
+          "source": ""
+        },
+        {
+          "phase": "publish",
+          "count": 1,
+          "totalMs": 1.800000011920929,
+          "maxMs": 1.800000011920929,
+          "maxFrame": 661,
+          "source": ""
+        }
+      ],
+      "hullWorker": {
+        "requests": 63,
+        "workerMs": 317.09999990463257,
+        "maxWorkerMs": 157.09999999403954,
+        "maxSource": "intent-coaster",
+        "maxInputVertices": 575724
+      },
+      "rigidCasters": 184,
+      "trainCasters": 3,
+      "trainMergedBefore": 0,
+      "trainRigid": 0,
+      "chunks": 540,
+      "update": {
+        "mode": "rebuild",
+        "added": 184,
+        "removed": 0,
+        "changed": 0,
+        "builtSources": 184,
+        "reusedSources": 0,
+        "rebuiltChunks": 540,
+        "reusedChunks": 0
+      },
+      "addedNames": [
+        "park-walk-deck",
+        "park-walk-solid",
+        "park-plaza-far-deck",
+        "park-plaza-far-solid",
+        "park-walk-0-deck",
+        "park-walk-0-solid",
+        "park-walk-0-far-deck",
+        "park-walk-0-far-solid",
+        "park-walk-1-deck",
+        "park-walk-1-solid",
+        "park-walk-1-far-deck",
+        "park-walk-1-far-solid",
+        "park-walk-2-deck",
+        "park-walk-2-solid",
+        "park-walk-2-far-deck",
+        "park-walk-2-far-solid"
+      ]
+    }
+  ],
+  "shadowWork": {
+    "pending": false,
+    "slices": 0,
+    "cpuMs": 0,
+    "maxSliceMs": 0,
+    "cancelled": 1,
+    "error": "",
+    "phases": [
+      {
+        "phase": "validate",
+        "count": 545,
+        "totalMs": 290.29999965429306,
+        "maxMs": 1,
+        "maxFrame": 615,
+        "source": ""
+      },
+      {
+        "phase": "source",
+        "count": 368,
+        "totalMs": 1.8999999463558197,
+        "maxMs": 0.10000002384185791,
+        "maxFrame": 341,
+        "source": "vein-middle_cracked_shell"
+      },
+      {
+        "phase": "transform",
+        "count": 1625,
+        "totalMs": 19.599999845027924,
+        "maxMs": 0.20000001788139343,
+        "maxFrame": 154,
+        "source": "ibd-three-sheds-static"
+      },
+      {
+        "phase": "bin",
+        "count": 2585,
+        "totalMs": 122.60000026226044,
+        "maxMs": 9.099999994039536,
+        "maxFrame": 215,
+        "source": "park-sign-frames"
+      },
+      {
+        "phase": "hull-copy",
+        "count": 1018,
+        "totalMs": 29.700000077486038,
+        "maxMs": 7.699999988079071,
+        "maxFrame": 217,
+        "source": "intent-coaster"
+      },
+      {
+        "phase": "hull-submit",
+        "count": 63,
+        "totalMs": 3.4000000953674316,
+        "maxMs": 1.7000000178813934,
+        "maxFrame": 141,
+        "source": "djc-fabric"
+      },
+      {
+        "phase": "hull-wait",
+        "count": 17,
+        "totalMs": 0.4000000059604645,
+        "maxMs": 0.10000002384185791,
+        "maxFrame": 239,
+        "source": "intent-coaster"
+      },
+      {
+        "phase": "hull-hydrate",
+        "count": 63,
+        "totalMs": 1.1000000834465027,
+        "maxMs": 0.10000002384185791,
+        "maxFrame": 333,
+        "source": "case_screw_7"
+      },
+      {
+        "phase": "buffer",
+        "count": 3751,
+        "totalMs": 67.00000005960464,
+        "maxMs": 0.4000000059604645,
+        "maxFrame": 418,
+        "source": ""
+      },
+      {
+        "phase": "bounds",
+        "count": 6264,
+        "totalMs": 59.199999779462814,
+        "maxMs": 0.20000001788139343,
+        "maxFrame": 363,
+        "source": ""
+      },
+      {
+        "phase": "publish",
+        "count": 1,
+        "totalMs": 1.800000011920929,
+        "maxMs": 1.800000011920929,
+        "maxFrame": 661,
+        "source": ""
+      }
+    ],
+    "hullWorker": {
+      "requests": 63,
+      "workerMs": 317.09999990463257,
+      "maxWorkerMs": 157.09999999403954,
+      "maxSource": "intent-coaster",
+      "maxInputVertices": 575724
+    }
+  },
+  "sceneWork": [
+    {
+      "name": "shadow-chunks",
+      "startMs": 71890.60000002384,
+      "lastRenderFrame": 100,
+      "endMs": 71893.70000001788,
+      "durationMs": 3.0999999940395355
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 71910.5,
+      "lastRenderFrame": 101,
+      "endMs": 71912.40000000596,
+      "durationMs": 1.9000000059604645
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 71928.5,
+      "lastRenderFrame": 102,
+      "endMs": 71930.60000002384,
+      "durationMs": 2.100000023841858
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 71947.60000002384,
+      "lastRenderFrame": 103,
+      "endMs": 71949.10000002384,
+      "durationMs": 1.5
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 71967.30000001192,
+      "lastRenderFrame": 104,
+      "endMs": 71968.70000001788,
+      "durationMs": 1.4000000059604645
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 71985.90000000596,
+      "lastRenderFrame": 105,
+      "endMs": 71987.70000001788,
+      "durationMs": 1.800000011920929
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 72004.60000002384,
+      "lastRenderFrame": 106,
+      "endMs": 72006.60000002384,
+      "durationMs": 2
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 72023.30000001192,
+      "lastRenderFrame": 107,
+      "endMs": 72024.20000001788,
+      "durationMs": 0.9000000059604645
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 72042,
+      "lastRenderFrame": 108,
+      "endMs": 72042.80000001192,
+      "durationMs": 0.800000011920929
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 72060.70000001788,
+      "lastRenderFrame": 109,
+      "endMs": 72060.90000000596,
+      "durationMs": 0.19999998807907104
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 72079.5,
+      "lastRenderFrame": 110,
+      "endMs": 72081.10000002384,
+      "durationMs": 1.600000023841858
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 72098.10000002384,
+      "lastRenderFrame": 111,
+      "endMs": 72098.90000000596,
+      "durationMs": 0.7999999821186066
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 72117,
+      "lastRenderFrame": 112,
+      "endMs": 72118.20000001788,
+      "durationMs": 1.2000000178813934
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 72135.40000000596,
+      "lastRenderFrame": 113,
+      "endMs": 72138.20000001788,
+      "durationMs": 2.800000011920929
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 72154.20000001788,
+      "lastRenderFrame": 114,
+      "endMs": 72155.5,
+      "durationMs": 1.2999999821186066
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 72173.80000001192,
+      "lastRenderFrame": 115,
+      "endMs": 72174.80000001192,
+      "durationMs": 1
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 72827.5,
+      "lastRenderFrame": 116,
+      "endMs": 72828,
+      "durationMs": 0.5
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 72926,
+      "lastRenderFrame": 117,
+      "endMs": 72928.90000000596,
+      "durationMs": 2.9000000059604645
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 72953.60000002384,
+      "lastRenderFrame": 118,
+      "endMs": 72955,
+      "durationMs": 1.399999976158142
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 72972.60000002384,
+      "lastRenderFrame": 119,
+      "endMs": 72974.10000002384,
+      "durationMs": 1.5
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 72977.70000001788,
+      "lastRenderFrame": 120,
+      "endMs": 72978.5,
+      "durationMs": 0.7999999821186066
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 72994.5,
+      "lastRenderFrame": 121,
+      "endMs": 72995.40000000596,
+      "durationMs": 0.9000000059604645
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73011.5,
+      "lastRenderFrame": 122,
+      "endMs": 73012.5,
+      "durationMs": 1
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73031.70000001788,
+      "lastRenderFrame": 123,
+      "endMs": 73032.70000001788,
+      "durationMs": 1
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73045.10000002384,
+      "lastRenderFrame": 124,
+      "endMs": 73045.80000001192,
+      "durationMs": 0.699999988079071
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73062.10000002384,
+      "lastRenderFrame": 125,
+      "endMs": 73063,
+      "durationMs": 0.8999999761581421
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73079.70000001788,
+      "lastRenderFrame": 126,
+      "endMs": 73080.5,
+      "durationMs": 0.7999999821186066
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73094.70000001788,
+      "lastRenderFrame": 127,
+      "endMs": 73096,
+      "durationMs": 1.2999999821186066
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73111.40000000596,
+      "lastRenderFrame": 128,
+      "endMs": 73113.30000001192,
+      "durationMs": 1.9000000059604645
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73129,
+      "lastRenderFrame": 129,
+      "endMs": 73132.5,
+      "durationMs": 3.5
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73144.60000002384,
+      "lastRenderFrame": 130,
+      "endMs": 73148.60000002384,
+      "durationMs": 4
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73178.80000001192,
+      "lastRenderFrame": 131,
+      "endMs": 73182,
+      "durationMs": 3.199999988079071
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73197.40000000596,
+      "lastRenderFrame": 132,
+      "endMs": 73201.60000002384,
+      "durationMs": 4.200000017881393
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73211.80000001192,
+      "lastRenderFrame": 133,
+      "endMs": 73213.5,
+      "durationMs": 1.699999988079071
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73228.30000001192,
+      "lastRenderFrame": 134,
+      "endMs": 73230.20000001788,
+      "durationMs": 1.9000000059604645
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73244.60000002384,
+      "lastRenderFrame": 135,
+      "endMs": 73245.40000000596,
+      "durationMs": 0.7999999821186066
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73262.10000002384,
+      "lastRenderFrame": 136,
+      "endMs": 73262.90000000596,
+      "durationMs": 0.7999999821186066
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73278.20000001788,
+      "lastRenderFrame": 137,
+      "endMs": 73279.90000000596,
+      "durationMs": 1.699999988079071
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73294.90000000596,
+      "lastRenderFrame": 138,
+      "endMs": 73296.20000001788,
+      "durationMs": 1.300000011920929
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73311.60000002384,
+      "lastRenderFrame": 139,
+      "endMs": 73312.80000001192,
+      "durationMs": 1.199999988079071
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73328.70000001788,
+      "lastRenderFrame": 140,
+      "endMs": 73330.30000001192,
+      "durationMs": 1.5999999940395355
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73345.20000001788,
+      "lastRenderFrame": 141,
+      "endMs": 73347.70000001788,
+      "durationMs": 2.5
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73365.5,
+      "lastRenderFrame": 142,
+      "endMs": 73366,
+      "durationMs": 0.5
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73378.80000001192,
+      "lastRenderFrame": 143,
+      "endMs": 73379.30000001192,
+      "durationMs": 0.5
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73394.80000001192,
+      "lastRenderFrame": 144,
+      "endMs": 73395.10000002384,
+      "durationMs": 0.30000001192092896
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73411.40000000596,
+      "lastRenderFrame": 145,
+      "endMs": 73412,
+      "durationMs": 0.5999999940395355
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73428.10000002384,
+      "lastRenderFrame": 146,
+      "endMs": 73428.90000000596,
+      "durationMs": 0.7999999821186066
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73446.30000001192,
+      "lastRenderFrame": 147,
+      "endMs": 73447.20000001788,
+      "durationMs": 0.9000000059604645
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73463.60000002384,
+      "lastRenderFrame": 148,
+      "endMs": 73465,
+      "durationMs": 1.399999976158142
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73478.40000000596,
+      "lastRenderFrame": 149,
+      "endMs": 73480.5,
+      "durationMs": 2.0999999940395355
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73495.60000002384,
+      "lastRenderFrame": 150,
+      "endMs": 73497.10000002384,
+      "durationMs": 1.5
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73510.80000001192,
+      "lastRenderFrame": 151,
+      "endMs": 73511.90000000596,
+      "durationMs": 1.0999999940395355
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73526.5,
+      "lastRenderFrame": 152,
+      "endMs": 73527,
+      "durationMs": 0.5
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73543.10000002384,
+      "lastRenderFrame": 153,
+      "endMs": 73543.70000001788,
+      "durationMs": 0.5999999940395355
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73562.10000002384,
+      "lastRenderFrame": 154,
+      "endMs": 73563.90000000596,
+      "durationMs": 1.7999999821186066
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73578.10000002384,
+      "lastRenderFrame": 155,
+      "endMs": 73579.10000002384,
+      "durationMs": 1
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73594.70000001788,
+      "lastRenderFrame": 156,
+      "endMs": 73597,
+      "durationMs": 2.2999999821186066
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73611.5,
+      "lastRenderFrame": 157,
+      "endMs": 73613.20000001788,
+      "durationMs": 1.7000000178813934
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73627.90000000596,
+      "lastRenderFrame": 158,
+      "endMs": 73629.80000001192,
+      "durationMs": 1.9000000059604645
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73645.20000001788,
+      "lastRenderFrame": 159,
+      "endMs": 73646.70000001788,
+      "durationMs": 1.5
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73662,
+      "lastRenderFrame": 160,
+      "endMs": 73663.90000000596,
+      "durationMs": 1.9000000059604645
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73677.40000000596,
+      "lastRenderFrame": 161,
+      "endMs": 73680.60000002384,
+      "durationMs": 3.2000000178813934
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73694.70000001788,
+      "lastRenderFrame": 162,
+      "endMs": 73696.40000000596,
+      "durationMs": 1.699999988079071
+    },
+    {
+      "name": "shadow-chunks",
+      "startMs": 73711.20000001788,
+      "lastRenderFrame": 163,
+      "endMs": 73711.70000001788,
+      "durationMs": 0.5
+    }
+  ],
+  "coasterStructureMemory": {
+    "variants": 1,
+    "attributeBytes": 30935232
+  },
+  "coasterStructureJobs": {
+    "active": 0,
+    "completed": 0,
+    "failed": 0,
+    "lastWorkerMs": 0,
+    "lastError": ""
+  },
+  "render": {
+    "sampledAt": "2026-10-28T12:35:51.707Z",
+    "calls": 94,
+    "triangles": 465888,
+    "geometries": 321,
+    "textures": 61,
+    "programs": 145,
+    "camera": [
+      49.996391296386726,
+      10.999223520539838,
+      -116.5108734109177
+    ],
+    "mode": "always",
+    "frame": 2698,
+    "delta": 0.016099999994039535,
+    "night": 0,
+    "windTime": 43.27469999998867,
+    "frameMs": {
+      "samples": 180,
+      "p50": 16.700000762939453,
+      "p95": 18.200000762939453,
+      "max": 20.299999237060547
+    },
+    "drawingBuffer": [
+      1951,
+      1062
+    ],
+    "cssSize": [
+      1710,
+      931
+    ],
+    "pixelRatio": 1.1412731405118963,
+    "dprRange": [
+      0,
+      1.5
+    ],
+    "quality": "balanced",
+    "antialias": true,
+    "msaaSamples": 4,
+    "toneMapping": 4,
+    "outputColorSpace": "srgb",
+    "shadowMapSize": 1254,
+    "shadowType": 1,
+    "postprocessing": [],
+    "coasterVegetation": [
+      {
+        "name": "coaster-ST1-L0",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      },
+      {
+        "name": "coaster-ST1-L1",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      },
+      {
+        "name": "coaster-ST2-L0",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      },
+      {
+        "name": "coaster-ST2-L1",
+        "visible": true,
+        "instances": 2,
+        "triangles": 3444,
+        "matrixUploads": 1
+      },
+      {
+        "name": "coaster-G19",
+        "visible": true,
+        "instances": 4,
+        "triangles": 8208,
+        "matrixUploads": 1
+      }
+    ]
+  }
+}
