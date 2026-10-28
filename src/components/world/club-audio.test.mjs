@@ -4,6 +4,7 @@ import assert from 'node:assert/strict';
 import { ClubAudio, clubGains, clubMixPlan } from './WorldClubAudio.ts';
 import { useWorldStore } from './store.ts';
 import { useWorldAudioSettings, setWorldAudioMuted, setWorldAudioVolume } from './world-audio-settings.ts';
+import { isClubAudible } from './world-music-focus.ts';
 
 class Context {
   static instances=[];
@@ -27,6 +28,26 @@ function fixture(){
   useWorldAudioSettings.setState(useWorldAudioSettings.getInitialState(),true);
   const audio=new ClubAudio(),release=audio.retain();audio.proximity(0);return {audio,release};
 }
+test('music focus reports an audible source, not a loaded buffer or a silent deck play intention', async () => {
+  const { audio, release } = fixture();
+  assert.equal(isClubAudible(), false); await audio.enable(); await settle(); assert.equal(isClubAudible(), true);
+  audio.crossfade(1); assert.equal(audio.read().playing[0], true); assert.equal(isClubAudible(), false);
+  audio.toggle(1); await settle(); assert.equal(isClubAudible(), true);
+  setWorldAudioVolume('sfx', 0); assert.equal(isClubAudible(), true);
+  setWorldAudioVolume('music', 0); await settle(); assert.equal(isClubAudible(), false);
+  setWorldAudioVolume('music', 1); await settle(); assert.equal(isClubAudible(), true);
+  audio.proximity(70); await settle(); assert.equal(isClubAudible(), false);
+  audio.proximity(0); await settle(); assert.equal(isClubAudible(), true);
+  useWorldStore.setState({ paused: true }); await settle(); assert.equal(isClubAudible(), false);
+  useWorldStore.setState({ paused: false }); await settle(); assert.equal(isClubAudible(), true);
+  release(); assert.equal(isClubAudible(), false);
+});
+
+test('releasing one Club cannot clear another audible owner', async () => {
+  const { audio, release } = fixture(); await audio.enable(); await settle();
+  const second = new ClubAudio(), stopSecond = second.retain(); second.proximity(0); await second.enable(); await settle();
+  release(); assert.equal(isClubAudible(), true); stopSecond(); assert.equal(isClubAudible(), false);
+});
 test('one context, finite sources, pause/hidden/distance and BFCache preserve a bounded lifecycle',async()=>{
   const {audio,release}=fixture();await audio.enable();await settle();
   assert.equal(audio.inspect().sources,1);assert.equal(audio.inspect().buffers,2);

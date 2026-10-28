@@ -6,6 +6,7 @@ import { useWorldAudioSettings, setWorldAudioMuted, setWorldAudioVolume } from '
 import { useIntentStore, intentRideClock } from './intent-state.ts';
 import { attractionRide } from './attraction-ride.ts';
 import { COASTER_LENGTH, COASTER_DURATION, coasterDistanceAt } from './coaster-track.ts';
+import { THRILL_RELEASE_SECONDS } from './coaster-thrill-motion.ts';
 
 class Target extends EventTarget {
   listeners = new Map();
@@ -68,7 +69,8 @@ test('motion follows the actual track distance curve and respects ownership and 
     let distance = 0;
     for (let t = .05; t < COASTER_DURATION; t += .1) distance += coasterSoundSpeed(t) * .1;
     assert.ok(Math.abs(distance - COASTER_LENGTH) / COASTER_LENGTH < .003);
-    assert.equal(coasterSoundSpeed(35), 0); assert.equal(coasterSoundSpeed(NaN), 0);
+    // v4 releases at 29 s; 35 s is already moving. Keep the exact-zero check inside its real hold.
+    assert.equal(coasterSoundSpeed(THRILL_RELEASE_SECONDS - 1), 0); assert.equal(coasterSoundSpeed(NaN), 0);
     const expected = (coasterDistanceAt(20.02) - coasterDistanceAt(19.98)) * COASTER_LENGTH / .04;
     assert.ok(Math.abs(coasterSoundSpeed(20) - expected) < 1e-8);
   } finally { Object.assign(attractionRide, old); Object.assign(intentRideClock, clock); useIntentStore.setState(state, true); }

@@ -2,6 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { registerHooks } from 'node:module';
 import { useWorldAudioSettings, setWorldAudioMuted, setWorldAudioVolume } from './world-audio-settings.ts';
+import { isClubAudible, setClubAudible } from './world-music-focus.ts';
+import { renderWorkshopCandidate } from './walk-music-candidate.ts';
 
 const audioUrl = new URL('./WorldParkAudio.ts', import.meta.url).href;
 const hook = registerHooks({ resolve(specifier, context, next) {
@@ -42,8 +44,8 @@ class Audio extends Target {
   createDynamicsCompressor() { return this.node(); }
   createBiquadFilter() { return this.node(); }
   createBuffer(channels = 1, length = this.sampleRate, sampleRate = this.sampleRate) {
-    const data = new Float32Array(length);
-    return { duration: length / sampleRate, length, sampleRate, numberOfChannels: channels, getChannelData: () => data };
+    const data = Array.from({ length: channels }, () => new Float32Array(length));
+    return { duration: length / sampleRate, length, sampleRate, numberOfChannels: channels, getChannelData: i => data[i] };
   }
   createOscillator() { const n = this.node(); this.sources.push(n); return n; }
   createBufferSource() { return this.createOscillator(); }
@@ -99,6 +101,80 @@ test('cue needs an owner and drops muted, invalid, paused and hidden requests wi
   e.hidden(true); a.cue('scan'); e.hidden(false);
   store.setState({ shot: 'camp' }); a.cue('scan'); store.setState({ shot: null });
   assert.equal(Audio.instances.length, 0); assert.equal(e.subscriptions, 0); release();
+});
+
+test('QA music needs explicit query and trusted input, ends once, then sleeps without a scheduler', async t => {
+  const e = env(t), a = e.audio(); e.win.location = { search: '?audioCandidate=b' };
+  let release = a.retain(); e.gesture(); assert.equal(a.snapshot().candidate, null); assert.equal(a.ctx, null); release();
+  e.win.location.search = '?qa=1&audioCandidate=b'; release = a.retain();
+  e.gesture(false); setWorldAudioVolume('music', .5); assert.equal(a.ctx, null);
+  e.gesture(); await settle(); const ctx = a.ctx, source = ctx.sources.at(-1);
+  assert.equal(a.snapshot().previewPlaying, true); assert.equal(source.buffer.duration, 12);
+  assert.equal(source.buffer.numberOfChannels, 2); assert.equal(source.loop, false);
+  assert.equal(a.snapshot().previewBytes, 2304000); assert.equal(a.previewGain.gain.value, .4);
+  assert.equal(e.intervals.size, 0); assert.equal(a.snapshot().ticks, 0); assert.equal(ctx.sources.length, 1);
+  source.end(); await settle(); assert.equal(ctx.state, 'suspended');
+  e.gesture(); await settle(); assert.equal(ctx.sources.length, 1); assert.equal(a.snapshot().previewPlaying, false);
+  release(); assert.equal(ctx.state, 'closed'); assert.equal(a.snapshot().previewBytes, 0);
+  assert.equal(e.win.count + e.doc.count + ctx.count, 0);
+});
+
+test('every lifecycle gate cancels the audition without replay; music mute leaves workshop cues usable', async t => {
+  const e = env(t), a = e.audio(), release = a.retain();
+  const trusted = Object.assign(new Event('pointerdown'));
+  Object.defineProperty(trusted, 'isTrusted', { value: true });
+  const owner = {}; t.after(() => setClubAudible(owner, false));
+  const gates = [
+    v => store.setState({ paused: v }), v => store.setState({ poolInspect: v }),
+    v => store.setState({ shot: v ? 'camp' : null }), v => e.hidden(v),
+    v => e.page(v ? 'pagehide' : 'pageshow'), v => setWorldAudioMuted(v),
+    v => setWorldAudioVolume('music', v ? 0 : 1), v => a.setMuted(v), v => setClubAudible(owner, v),
+  ];
+  for (const gate of gates) {
+    a.previewMusic('b', trusted); await settle(); const ctx = a.ctx, source = ctx.sources.at(-1), before = ctx.sources.length;
+    assert.equal(a.snapshot().previewPlaying, true);
+    gate(true); await settle(); assert.equal(a.snapshot().previewPlaying, false); assert.equal(source.disconnected, true);
+    assert.equal(ctx.state, 'suspended'); gate(false); await settle();
+    assert.equal(ctx.sources.length, before); assert.equal(ctx.state, 'suspended'); assert.equal(e.intervals.size, 0);
+  }
+  setWorldAudioVolume('music', 0); a.workshopCue('intake'); await settle(); assert.equal(a.snapshot().cueVoices, 1);
+  assert.equal(a.ctx.state, 'running'); release(); assert.equal(a.snapshot().previewBytes, 0);
+});
+
+test('an expired, paused or released pending music resume cannot leave a source or idle running context', async t => {
+  const e = env(t), a = e.audio(), release = a.retain(); a.cue('scan'); await settle(); const ctx = a.ctx;
+  ctx.sources[0].end(); await settle(); ctx.holdResume = true;
+  const event = new Event('pointerdown'); Object.defineProperty(event, 'isTrusted', { value: true });
+  a.previewMusic('a', event); e.now(300); ctx.finishResume(); await settle();
+  assert.equal(a.snapshot().previewPlaying, false); assert.equal(ctx.state, 'suspended');
+  a.previewMusic('b', event); store.setState({ paused: true }); ctx.finishResume(); await settle();
+  assert.equal(ctx.sources.length, 1); assert.equal(ctx.state, 'suspended');
+  store.setState({ paused: false }); a.previewMusic('a', event); release(); ctx.finishResume(); await settle();
+  assert.equal(ctx.state, 'closed'); assert.equal(a.snapshot().previewBytes, 0); assert.equal(ctx.sources.length, 1);
+});
+
+test('B selects only its three workshop patches and remains independent from Club music focus', async t => {
+  const e = env(t), a = e.audio(); e.win.location = { search: '?qa=1&audioCandidate=b' };
+  const release = a.retain(), owner = {}; t.after(() => setClubAudible(owner, false));
+  setClubAudible(owner, true); assert.equal(isClubAudible(), true);
+  for (const kind of ['intake', 'bell', 'success', 'process']) {
+    a.workshopCue(kind); await settle(); const source = a.ctx.sources.at(-1);
+    assert.deepEqual(source.buffer.getChannelData(0), kind === 'process' ? renderWorkshopSound(kind) : renderWorkshopCandidate(kind));
+    source.end(); await settle();
+  }
+  assert.equal(a.snapshot().previewPlaying, false); assert.equal(e.intervals.size, 0); release();
+});
+
+test('interaction ducks only the finite preview and the legacy music API cannot stack over it', async t => {
+  const e = env(t), a = e.audio(), release = a.retain();
+  const event = new Event('pointerdown'); Object.defineProperty(event, 'isTrusted', { value: true });
+  a.previewMusic('a', event); await settle(); const preview = a.previewSource;
+  a.workshopCue('intake'); await settle();
+  assert.ok(Math.abs(a.previewGain.gain.events.at(-1)[0] - .32) < 1e-12);
+  a.ctx.sources.at(-1).end(); await settle(); assert.equal(a.previewGain.gain.events.at(-1)[0], .8);
+  a.start(); await settle(); assert.equal(preview.disconnected, true); assert.equal(a.snapshot().previewPlaying, false);
+  a.previewMusic('b', event); assert.equal(a.snapshot().previewPending, false);
+  release();
 });
 
 test('all three cues use one context, finite voices, no DJ loop, then suspend after onended', async t => {

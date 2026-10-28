@@ -1,6 +1,7 @@
 import { useSyncExternalStore } from 'react';
 import { useWorldStore } from './store';
 import { useWorldAudioSettings, worldAudioLevel } from './world-audio-settings';
+import { setClubAudible } from './world-music-focus';
 
 export const CLUB_TRACKS = [
   { title: 'Backbay Lounge', genre: 'Lounge', bpm: 118, url: '/assets/world/club/audio/backbay-lounge-club.mp3' },
@@ -48,6 +49,7 @@ export class ClubAudio {
   private allowed() { const s = useWorldStore.getState(); return this.owners > 0 && !this.pageInactive && !document.hidden && !s.paused && !s.poolInspect && !s.shot && this.distance > AUDIBLE_GAIN && !this.snapshot.muted && this.snapshot.volume > 0 && worldAudioLevel('music') > 0 && !this.blocked; }
   private pageHide = (event: PageTransitionEvent) => { this.pageInactive = true; if (event.persisted) this.sync(); else this.dispose(); };
   private pageShow = () => { this.pageInactive = false; this.sync(); };
+  private contextState = () => this.sync();
   retain() {
     if (++this.owners === 1) {
       this.pageInactive = false;
@@ -67,12 +69,19 @@ export class ClubAudio {
     const node = this.ctx.createBufferSource(); node.buffer = d.buffer; node.loop = true; node.loopEnd = Math.min(LOOP_SECONDS, d.buffer.duration); node.connect(d.filter);
     d.node = node; d.at = this.ctx.currentTime; node.start(0, d.offset);
   }
+  private notifyAudibility() {
+    const x = this.performance ? clubPerformanceCrossfade(this.performance, this.beat()) : this.snapshot.crossfade;
+    const gains = clubGains(x);
+    setClubAudible(this, !!this.ctx && this.ctx.state === 'running' && this.allowed()
+      && this.decks.some((d, i) => d.node && gains[i] * this.snapshot.volume * this.distance * worldAudioLevel('music') > AUDIBLE_GAIN));
+  }
   sync = () => {
     const ctx = this.ctx; if (!ctx) return;
     const active = this.allowed() && this.snapshot.phase === 'ready' && this.decks.some(d => d.playing);
     if (!active) this.decks.forEach(d => this.stop(d));
+    this.notifyAudibility();
     if (this.transition || ctx.state === 'closed') return;
-    if (active && ctx.state === 'running') { this.decks.forEach(d => this.start(d)); return; }
+    if (active && ctx.state === 'running') { this.decks.forEach(d => this.start(d)); this.notifyAudibility(); return; }
     if (!active && ctx.state === 'suspended') return;
     this.transition = (active ? ctx.resume() : ctx.suspend()).then(() => {
       if (this.ctx !== ctx) return;
@@ -89,6 +98,7 @@ export class ClubAudio {
       const Ctx = window.AudioContext ?? (window as unknown as {webkitAudioContext?:typeof AudioContext}).webkitAudioContext;
       if (!Ctx) { this.publish({phase:'error'}); return; }
       try { this.ctx = new Ctx({ sampleRate: 24000 }); } catch { this.ctx = new Ctx(); }
+      this.ctx.addEventListener?.('statechange', this.contextState);
       const ctx = this.ctx; this.master = ctx.createGain(); this.master.connect(ctx.destination);
       this.decks = CLUB_TRACKS.map(() => {
         const gain = ctx.createGain(), filter = ctx.createBiquadFilter(); filter.type = 'lowpass'; filter.frequency.value = 11000;
@@ -138,6 +148,7 @@ export class ClubAudio {
   private updateLevels() {
     if (!this.ctx || !this.master) return;
     this.master.gain.setTargetAtTime(this.snapshot.volume * this.distance * .65 * worldAudioLevel('music'), this.ctx.currentTime, .12);
+    this.notifyAudibility();
     if (this.performance) return;
     const gains = clubGains(this.snapshot.crossfade);
     this.decks.forEach((d, i) => { d.gain.gain.setTargetAtTime(gains[i], this.ctx!.currentTime, .025); d.filter.frequency.setTargetAtTime(220 * 50 ** this.snapshot.filter, this.ctx!.currentTime, .04); });
@@ -199,7 +210,10 @@ export class ClubAudio {
     this.cancelPerformance(); this.transportOrigin = 0; this.lastBeat = -1;
     this.abort?.abort(); this.abort = null; this.load = null; this.transition = null;
     this.decks.forEach(d => { this.stop(d); d.filter.disconnect(); d.gain.disconnect(); d.buffer = null; }); this.decks = [];
-    this.master?.disconnect(); this.master = null; const ctx = this.ctx; this.ctx = null; if (ctx && ctx.state !== 'closed') void ctx.close().catch(() => {});
+    this.master?.disconnect(); this.master = null; const ctx = this.ctx; this.ctx = null;
+    ctx?.removeEventListener?.('statechange', this.contextState);
+    if (ctx && ctx.state !== 'closed') void ctx.close().catch(() => {});
+    setClubAudible(this, false);
     this.stopStore?.(); this.stopStore = null; document.removeEventListener('visibilitychange', this.sync); window.removeEventListener('pagehide', this.pageHide); window.removeEventListener('pageshow', this.pageShow);
     this.stopSettings?.(); this.stopSettings = null;
     this.publish({ phase: 'off', playing: [false, false] });

@@ -1,5 +1,7 @@
 import { useWorldStore } from './store';
 import { useWorldAudioSettings, worldAudioLevel } from './world-audio-settings';
+import { isClubAudible, subscribeClubAudible } from './world-music-focus';
+import { renderWalkMusic, renderWorkshopCandidate, WALK_RATE, type AudioCandidate } from './walk-music-candidate';
 
 /**
  * Finite world interaction cues and a retained legacy two-loop music API (no current UI caller).
@@ -80,6 +82,13 @@ export class ParkAudio {
   private workshopBuffers = new Map<WorkshopSound, AudioBuffer>();
   private pcmBuffers = new Map<string, AudioBuffer>();
   private stopSettings: (() => void) | null = null;
+  private stopClub: (() => void) | null = null;
+  private candidate: AudioCandidate | null = null;
+  private previewAttempted = false;
+  private previewPending: { variant: AudioCandidate; at: number } | null = null;
+  private previewSource: AudioBufferSourceNode | null = null;
+  private previewGain: GainNode | null = null;
+  private previewBuffer: { variant: AudioCandidate; buffer: AudioBuffer } | null = null;
   private noise: AudioBuffer | null = null;
   private step = 0; private next = 0; private timer: number | null = null;
   private x = 0; private muted = false;
@@ -94,7 +103,15 @@ export class ParkAudio {
   get crossfade() { return this.x; }
   /** The district owns the service, not an individual DJ interaction. */
   retain() {
-    if (this.owners++ === 0) this.pageInactive = false;
+    if (this.owners++ === 0) {
+      this.pageInactive = false;
+      const params = new URLSearchParams(window.location?.search ?? '');
+      const candidate = params.get('audioCandidate');
+      if (params.get('qa') === '1' && (candidate === 'a' || candidate === 'b')) {
+        this.candidate = candidate;
+        this.listen(); // QA opt-in only. Default mounting still allocates/subscribes nothing.
+      }
+    }
     let released = false;
     return () => {
       if (released) return;
@@ -109,11 +126,19 @@ export class ParkAudio {
   };
   private onPageShow = () => { this.pageInactive = false; this.sync(); };
   private onContextState = () => this.sync();
-  private onGesture = (event: Event) => { if (event.isTrusted) this.cueBlocked = false; };
+  private onGesture = (event: Event) => {
+    if (!event.isTrusted) return;
+    this.cueBlocked = false;
+    if (this.candidate && !this.previewAttempted && this.musicEnabled()) {
+      this.previewAttempted = true;
+      this.previewMusic(this.candidate, event);
+    }
+  };
   private listen() {
     if (this.unsubscribe) return;
     this.unsubscribe = useWorldStore.subscribe((s, p) => { if (s.paused !== p.paused || s.poolInspect !== p.poolInspect || s.shot !== p.shot) this.sync(); });
     this.stopSettings = useWorldAudioSettings.subscribe(() => { this.applyFade(false); this.sync(); });
+    this.stopClub = subscribeClubAudible(() => this.sync());
     document.addEventListener('visibilitychange', this.onVisibility);
     window.addEventListener('pagehide', this.onPageHide);
     window.addEventListener('pageshow', this.onPageShow);
@@ -123,9 +148,9 @@ export class ParkAudio {
     const s = useWorldStore.getState();
     return this.owners > 0 && !this.pageInactive && !document.hidden && !s.paused && !s.poolInspect && !s.shot;
   }
-  private musicEnabled() { return this.available() && !this.muted && worldAudioLevel('music') > 0; }
+  private musicEnabled() { return this.available() && !this.muted && worldAudioLevel('music') > 0 && !isClubAudible(); }
   private cuesEnabled() { return this.available() && !this.muted && worldAudioLevel('sfx') > 0; }
-  private canRun() { return (this.musicEnabled() && this.started) || (this.cuesEnabled() && (!!this.pendingCue || this.cueVoices.size > 0)); }
+  private canRun() { return (this.musicEnabled() && (this.started || !!this.previewPending || !!this.previewSource)) || (this.cuesEnabled() && (!!this.pendingCue || this.cueVoices.size > 0)); }
   private stopTimer() {
     if (this.timer !== null) window.clearInterval(this.timer);
     this.timer = null;
@@ -140,15 +165,17 @@ export class ParkAudio {
     if (ctx.state === 'closed') { this.dispose(); return; }
     if (!this.cuesEnabled()) this.clearCues();
     if (!this.musicEnabled()) {
+      this.stopPreview();
       for (const [source, release] of this.voices) if (!this.cueVoices.has(source)) {
         try { source.stop(); } catch { /* Already ended. */ } release();
       }
       this.stopTimer();
     }
+    this.updatePreviewLevel();
     const running = this.canRun();
     if (!running || ctx.state !== 'running') this.stopTimer();
     if (this.transitioning) return;
-    if (running && ctx.state === 'running') { this.flushCue(); this.startTimer(); return; }
+    if (running && ctx.state === 'running') { this.flushPreview(); this.flushCue(); this.startTimer(); return; }
     if (!running && ctx.state === 'suspended') return;
     // Serialize transitions. A pause/unmount can arrive before resume resolves.
     this.transitioning = true;
@@ -157,14 +184,56 @@ export class ParkAudio {
       this.transitioning = false;
       this.cueBlocked = false;
       if (this.canRun() !== running) this.sync();
-      else if (running && ctx.state === 'running') { this.flushCue(); this.startTimer(); }
+      else if (running && ctx.state === 'running') { this.flushPreview(); this.flushCue(); this.startTimer(); }
     }).catch(() => {
       if (this.ctx !== ctx) return;
       this.transitioning = false;
       this.pendingCue = null;
+      this.stopPreview();
       this.cueBlocked = true;
       this.stopTimer(); // Retry only on another gesture/state change, not a busy loop.
     });
+  }
+  /** Explicit trusted-gesture audition only. QA query starts it once; no default island BGM.
+   * A pause, mute or actual Club playback cancels it. Restoration never replays the excerpt. */
+  previewMusic(variant: AudioCandidate, gesture: Event) {
+    if (!gesture?.isTrusted || (variant !== 'a' && variant !== 'b') || !this.musicEnabled() || this.cueBlocked || this.started) return;
+    this.listen();
+    if (!this.ensureContext()) return;
+    this.stopPreview();
+    this.previewPending = { variant, at: performance.now() };
+    this.sync();
+  }
+  private flushPreview() {
+    const pending = this.previewPending; this.previewPending = null;
+    if (!pending || !this.ctx || !this.musicEnabled()) return;
+    if (performance.now() - pending.at > 250) { this.sync(); return; }
+    const ctx = this.ctx;
+    if (this.previewBuffer?.variant !== pending.variant) {
+      const channels = renderWalkMusic(pending.variant);
+      const buffer = ctx.createBuffer(2, channels[0].length, WALK_RATE);
+      channels.forEach((pcm, i) => buffer.getChannelData(i).set(pcm));
+      this.previewBuffer = { variant: pending.variant, buffer }; // One cached excerpt, never both.
+    }
+    const source = this.previewSource = ctx.createBufferSource(), gain = this.previewGain = ctx.createGain();
+    source.buffer = this.previewBuffer.buffer; source.loop = false;
+    gain.gain.value = this.previewLevel();
+    source.connect(gain).connect(this.master!);
+    source.onended = () => { if (this.previewSource === source) { this.stopPreview(); this.sync(); } };
+    const at = ctx.currentTime + .005; source.start(at); source.stop(at + source.buffer.duration);
+  }
+  private stopPreview() {
+    this.previewPending = null;
+    if (this.previewSource) {
+      this.previewSource.onended = null;
+      try { this.previewSource.stop(); } catch { /* Already ended. */ }
+      this.previewSource.disconnect(); this.previewSource = null;
+    }
+    this.previewGain?.disconnect(); this.previewGain = null;
+  }
+  private previewLevel() { return worldAudioLevel('music') * .8 * (this.pendingCue || this.cueVoices.size ? .4 : 1); }
+  private updatePreviewLevel() {
+    if (this.ctx && this.previewGain) this.previewGain.gain.setTargetAtTime(this.previewLevel(), this.ctx.currentTime, .035);
   }
   start() {
     if (!this.owners) return;
@@ -172,6 +241,7 @@ export class ParkAudio {
     this.listen();
     if (this.started) { this.sync(); return; }
     if (!this.available() || !this.ensureContext()) return;
+    this.stopPreview(); // The retained legacy API and a QA excerpt never stack.
     this.next = this.ctx!.currentTime + 0.1; this.started = true;
     this.sync();
   }
@@ -224,7 +294,8 @@ export class ParkAudio {
       if (cancelled || this.ctx !== ctx || performance.now() - requestedAt > 250 || !this.cuesEnabled() || this.cueVoices.size >= 8) return;
       let buffer = this.workshopBuffers.get(kind);
       if (!buffer) {
-        const pcm = renderWorkshopSound(kind);
+        const pcm = this.candidate === 'b' && (kind === 'intake' || kind === 'bell' || kind === 'success')
+          ? renderWorkshopCandidate(kind) : renderWorkshopSound(kind);
         buffer = ctx.createBuffer(1, pcm.length, 24000); buffer.getChannelData(0).set(pcm);
         this.workshopBuffers.set(kind, buffer);
       }
@@ -311,6 +382,7 @@ export class ParkAudio {
       if (now) this.cueOutput.gain.value = worldAudioLevel('sfx');
       else this.cueOutput.gain.setTargetAtTime(worldAudioLevel('sfx'), t, .025);
     }
+    this.updatePreviewLevel();
     if (now) { this.deck[0].gain.value = a; this.deck[1].gain.value = b; return; }
     this.deck[0].gain.setTargetAtTime(a, t, 0.25); this.deck[1].gain.setTargetAtTime(b, t, 0.25);
   }
@@ -372,11 +444,15 @@ export class ParkAudio {
   snapshot() { return { owners: this.owners, started: this.started, timer: this.timer !== null, subscribed: !!this.unsubscribe,
     state: this.ctx?.state ?? 'absent', transitioning: this.transitioning, voices: this.voices.size, ticks: this.ticks, muted: this.muted,
     cueVoices: this.cueVoices.size, cuePending: !!this.pendingCue, pcmKeys: this.pcmBuffers.size,
-    pcmBytes: [...this.pcmBuffers.values()].reduce((n, b) => n + b.length * b.numberOfChannels * 4, 0) }; }
+    pcmBytes: [...this.pcmBuffers.values()].reduce((n, b) => n + b.length * b.numberOfChannels * 4, 0),
+    candidate: this.candidate, previewPlaying: !!this.previewSource, previewPending: !!this.previewPending,
+    previewBytes: this.previewBuffer ? this.previewBuffer.buffer.length * this.previewBuffer.buffer.numberOfChannels * 4 : 0 }; }
   dispose() {
     this.stopTimer();
     this.unsubscribe?.(); this.unsubscribe = null;
     this.stopSettings?.(); this.stopSettings = null;
+    this.stopClub?.(); this.stopClub = null;
+    this.stopPreview(); this.previewBuffer = null; this.candidate = null; this.previewAttempted = false;
     document.removeEventListener('visibilitychange', this.onVisibility);
     window.removeEventListener('pagehide', this.onPageHide); window.removeEventListener('pageshow', this.onPageShow);
     window.removeEventListener('keydown', this.onGesture); window.removeEventListener('pointerdown', this.onGesture);
