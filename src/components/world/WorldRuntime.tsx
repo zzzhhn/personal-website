@@ -97,9 +97,11 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
   useFrame((_, delta) => {
     frameDelta.current = delta;
     if (frameSample && !paused && !document.hidden && delta > 0) {
+      // An explicitly started QA window includes arrival/resume warm-up too.
+      // Only the passive HUD percentile ring may discard its first 30 frames.
+      clubWaterFrameWindow.record(delta * 1000, readSlowFrameContext);
       if (frameSample.warm < 30) frameSample.warm++;
       else {
-        clubWaterFrameWindow.record(delta * 1000, readSlowFrameContext);
         frameSample.values[frameSample.cursor] = delta * 1000;
         frameSample.cursor = (frameSample.cursor + 1) % frameSample.values.length;
         frameSample.count = Math.min(frameSample.count + 1, frameSample.values.length);

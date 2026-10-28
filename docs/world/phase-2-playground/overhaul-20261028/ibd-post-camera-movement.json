@@ -1,0 +1,88 @@
+{
+  "departed": {
+    "player": [
+      -81.90269470214844,
+      1.9049261808395386,
+      -174.9091796875
+    ],
+    "camera": {
+      "yaw": 1.5707963267948966,
+      "pitch": 0.7853981633974483,
+      "distance": 12,
+      "desiredDistance": 12,
+      "driveManualZoom": false,
+      "actualDistance": 6.912324609622423,
+      "firstPerson": false,
+      "preset": 1,
+      "collided": true,
+      "hitDistance": 7.292497158050537,
+      "fov": 50,
+      "mode": "walk",
+      "recentering": false,
+      "position": [
+        -82.15890590724325,
+        7.443296164160786,
+        -170.01934682104454
+      ],
+      "target": [
+        -82.15890590724325,
+        2.555544558934117,
+        -174.9070984262712
+      ],
+      "forwardGround": [
+        0,
+        -1
+      ],
+      "groundBelowCamera": 1,
+      "clearanceAboveGround": 6.443296164160786,
+      "gamepad": false,
+      "nearPlaneRadius": 0.22,
+      "guideHidden": false,
+      "shoulderOffset": 0,
+      "nearPlaneOverlaps": []
+    }
+  },
+  "dragged": {
+    "player": [
+      -81.79144287109375,
+      1.9038249254226685,
+      -174.9107666015625
+    ],
+    "camera": {
+      "yaw": 2.395796326794896,
+      "pitch": 1.0603981633974486,
+      "distance": 12,
+      "desiredDistance": 12,
+      "driveManualZoom": false,
+      "actualDistance": 5.565240573883057,
+      "firstPerson": false,
+      "preset": 1,
+      "collided": true,
+      "hitDistance": 5.615240573883057,
+      "fov": 50,
+      "mode": "walk",
+      "recentering": false,
+      "position": [
+        -83.78850016245926,
+        7.40977594522924,
+        -173.06593476276583
+      ],
+      "target": [
+        -81.79144287109378,
+        2.5538249254226693,
+        -174.91076660156244
+      ],
+      "forwardGround": [
+        0.7345477822465781,
+        -0.6785569656238403
+      ],
+      "groundBelowCamera": 1,
+      "clearanceAboveGround": 6.40977594522924,
+      "gamepad": false,
+      "nearPlaneRadius": 0.22,
+      "guideHidden": false,
+      "shoulderOffset": 0,
+      "nearPlaneOverlaps": []
+    }
+  }
+}

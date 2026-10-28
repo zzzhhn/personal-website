@@ -65,6 +65,14 @@ export default function WorldPlaytestReadout() {
             const p=ibdWorld(s.at);worldActorDebug.teleportPlayer([p[0],IBD_YARD.center[1]+(s.id.startsWith('gallery')?4.1:.1)+PLAYER_CENTER_HEIGHT,p[2]+.6]);
             useWorldStore.setState({paused:false,seat:null});
           }}>QA · 到{s.title.zh}</button>)}
+          <button disabled={attractionRide.active} onClick={()=>{
+            worldActorDebug.teleportPlayer([-85,1.9,-174.9]);
+            useWorldStore.setState({paused:false,seat:null});
+          }}>QA · 到仓棚边立柱</button>
+          <button disabled={attractionRide.active} onClick={()=>{
+            worldActorDebug.teleportPlayer([24.96,5,-129.43]);
+            useWorldStore.setState({paused:false,seat:null});
+          }}>QA · 落到探照仪设备</button>
         </details>
         <button onClick={()=>{shadowRebuildProbe.start();clubWaterFrameWindow.start();setRenderSnapshot({frameWindow:'started'});}}>QA · 开始场景帧采样</button>
         <button onClick={()=>setRenderSnapshot({frameWindow:clubWaterFrameWindow.stop(),shadowRebuilds:shadowRebuildProbe.stop(),render:readRenderSnapshot()})}>QA · 结束场景帧采样</button>

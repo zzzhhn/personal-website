@@ -1,4 +1,4 @@
-import { Matrix4, TorusGeometry } from 'three';
+import { BufferGeometry, Matrix4, TorusGeometry } from 'three';
 import { CoasterBatch, COASTER_PALETTE as P } from './coaster-geometry.ts';
 import { coasterWorld } from './coaster-track.ts';
 import { WORKSHOP_HUB, WORKSHOP_INTAKE, WORKSHOP_POST_TOP, WORKSHOP_RAIL_Y, WORKSHOP_TOOLS } from './intent-workshop-layout.ts';
@@ -129,11 +129,32 @@ function workshopArt(b: CoasterBatch, at: Vec3, kind: IntentClass | 'intake') {
 
 export function createWorkshopGeometry() {
   const b = new CoasterBatch(), glow = new CoasterBatch();
+  const contactVertices: number[] = [], contactIndices: number[] = [];
+  const contactIds = new Map<string, number>();
+  // Capture only static tabletop devices from their already transformed visible parts.
+  // Existing cabinet boxes stop at 1.36 m; individual mesh faces preserve machine openings.
+  const contactParts = (parts: BufferGeometry[], cabinetTop: number) => {
+    for (const part of parts) {
+      part.computeBoundingBox();
+      if (part.boundingBox!.max.y <= cabinetTop) continue;
+      const positions = part.getAttribute('position'), ids: number[] = [];
+      for (let i = 0; i < positions.count; i++) {
+        const p: Vec3 = [positions.getX(i), positions.getY(i), positions.getZ(i)], key = p.join(',');
+        let id = contactIds.get(key);
+        if (id === undefined) { id = contactVertices.length / 3; contactIds.set(key, id); contactVertices.push(...p); }
+        ids.push(id);
+      }
+      if (part.index) for (let i = 0; i < part.index.count; i++) contactIndices.push(ids[part.index.getX(i)]);
+      else contactIndices.push(...ids);
+    }
+  };
   for (const { at, id } of [{ at: WORKSHOP_INTAKE, id: 'intake' as const }, ...WORKSHOP_TOOLS]) {
     const [x, y, z] = coasterWorld(at);
     b.housing([x, y + .15, z], [3.1, .3, 2.65], P.concrete);
     b.housing([x, y + 1.24, z], [2.8, .18, 2.3], P.rail);
+    const artStart = b.parts.length;
     workshopArt(b, at, id);
+    contactParts(b.parts.slice(artStart), y + 1.36);
     for (const dx of [-1.15, 1.15]) {
       b.beam([x + dx, y + .3, z - .85], [x + dx, y + WORKSHOP_POST_TOP, z - .85], .1, P.steel, 8);
       b.box([x + dx, y + .32, z - .85], [.35, .08, .35], P.copper);
@@ -159,10 +180,13 @@ export function createWorkshopGeometry() {
   b.beam([hub[0], hub[1] + .46, hub[2]], [hub[0], hub[1] + .53, hub[2]], .34, P.copper, 12);
   glow.beam([hub[0], hub[1] + .34, hub[2]], [hub[0], hub[1] + .39, hub[2]], .505, P.cyan, 12);
   const [ix, iy, iz] = coasterWorld(WORKSHOP_INTAKE);
+  const rollersStart = b.parts.length;
   for (let n = 0; n < 9; n++) b.beam([ix - .85, iy + 1.42, iz - .6 + n * .15], [ix + .4, iy + 1.42, iz - .6 + n * .15], .07, P.steel, 8);
+  contactParts(b.parts.slice(rollersStart), iy + 1.36);
   b.housing([ix - 2.5, iy + .65, iz], [.8, 1.3, .8], P.white);
   b.beam([ix - 2.5, iy + 1.3, iz], [ix - 2.5, iy + 1.7, iz], .22, P.copper, 12);
-  return { body: b.finish(), glow: glow.finish() };
+  return { body: b.finish(), glow: glow.finish(),
+    contactSurface: { vertices: new Float32Array(contactVertices), indices: new Uint32Array(contactIndices) } };
 }
 export function createWorkshopMoving(tool: IntentClass) {
   const b = new CoasterBatch();

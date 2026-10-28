@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { CuboidCollider, RigidBody } from '@react-three/rapier';
+import { CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { Group, InstancedMesh, Matrix4, Quaternion, PointLight, Vector3 } from 'three';
 import { useWorldStore } from '../store';
 import { useInteractable } from '../WorldInteract';
@@ -90,6 +90,7 @@ export default function WorldIntentWorkshop() {
     <WorldWorkshopSigns />
     <pointLight ref={lamp} position={coasterWorld([-16, 4.1, 67])} color="#ffd6a3" intensity={0} distance={16} decay={2} />
     <RigidBody type="fixed" colliders={false} userData={{ solid: true, assetId: 'intent-workshop' }}>
+      <TrimeshCollider args={[geometry.contactSurface.vertices, geometry.contactSurface.indices]} />
       {solids.map((solid, i) => <CuboidCollider key={i}
         position={solid.position} args={solid.half} rotation={solid.rotation} />)}
     </RigidBody>

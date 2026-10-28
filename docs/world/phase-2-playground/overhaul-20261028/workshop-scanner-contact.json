@@ -1,0 +1,31 @@
+{
+  "entry": "QA placement above scanner, then gravity landing and real S walk-off",
+  "landed": {
+    "player": [
+      24.960058212280273,
+      3.808884382247925,
+      -129.42999267578125
+    ],
+    "grounded": true,
+    "actor": {
+      "animation": "Idle",
+      "root": [
+        24.960058212280273,
+        2.9915000655728154,
+        -129.42999267578125
+      ],
+      "seatSupport": null,
+      "vehicleStage": null,
+      "vehicleRotation": null,
+      "vehicle": null
+    }
+  },
+  "off": {
+    "player": [
+      24.960599899291992,
+      1.9388247728347778,
+      -127.54492950439453
+    ],
+    "grounded": true
+  }
+}

@@ -33,3 +33,43 @@ export function sweepCamera(world: World, rapier: Pick<typeof Rapier, 'Ball'>,
   return { position: { x: from.x + dx * k, y: from.y + dy * k, z: from.z + dz * k }, distance,
     hit: hit ? hit.time_of_impact : null };
 }
+
+/** A thin post can compress an otherwise open orbit into the guide's helmet.
+ * Try a small shoulder translation, never an automatic change to input yaw/pitch.
+ * Both the lateral pivot and its orbit must be reachable; broad walls/low roofs
+ * therefore retain the ordinary compressed camera instead of being bypassed. */
+export function cameraShoulderPivot(world: World, rapier: Pick<typeof Rapier, 'Ball'>,
+  pivot: Point, orbit: readonly [number, number, number], distance: number, radius: number,
+  exclude: RigidBody | undefined, solid: (collider: Collider) => boolean, previous: number, delta: number) {
+  const cast = (from: Point, to: Point) => sweepCamera(world, rapier, from, to, radius, exclude, solid);
+  const end = (from: Point, length=distance) => ({x:from.x+orbit[0]*length,y:from.y+orbit[1]*length,z:from.z+orbit[2]*length});
+  const shoulderOrbit = (from: Point) => {
+    const result=cast(from,end(from));
+    // A safe camera endpoint alone can still put the post across the character.
+    // Keep a closer third-person view until the original centred view is clear.
+    if(result.distance>2&&cast(pivot,result.position).hit!==null)
+      return {...result,distance:2,position:end(from,2)};
+    return result;
+  };
+  const centre = cast(pivot, end(pivot)), horizontal = Math.hypot(orbit[0],orbit[2]);
+  const side = horizontal > .01 ? {x:orbit[2]/horizontal,z:-orbit[0]/horizontal} : {x:1,z:0};
+  let desired = 0;
+  if (centre.distance < (Math.abs(previous) > .01 ? 3 : 1.5)) {
+    // Check the current shoulder first so small differences do not alternate sides.
+    const signs = previous < 0 ? [-1,1] : [1,-1];
+    for (const sign of signs) {
+      const offset = sign * 1.35;
+      const lateral = cast(pivot, {x:pivot.x+side.x*offset,y:pivot.y,z:pivot.z+side.z*offset});
+      if (lateral.distance < 1.34) continue;
+      const candidate = shoulderOrbit(lateral.position);
+      if (candidate.distance >= 2 && candidate.distance > centre.distance+1
+        &&cast(pivot,candidate.position).hit===null) { desired=offset; break; }
+    }
+  }
+  const maxStep = Math.max(0,Math.min(delta,.05))*3;
+  const offset = previous+Math.max(-maxStep,Math.min(maxStep,desired-previous));
+  if (Math.abs(offset) < 1e-6) return {position:pivot,offset:0,orbit:centre};
+  const lateral = cast(pivot,{x:pivot.x+side.x*offset,y:pivot.y,z:pivot.z+side.z*offset});
+  const safeOffset = Math.sign(offset)*Math.min(Math.abs(offset),lateral.distance);
+  return {position:lateral.position,offset:safeOffset,orbit:shoulderOrbit(lateral.position)};
+}

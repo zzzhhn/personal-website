@@ -30,7 +30,7 @@ import { vehicleHulls } from './WorldVehicleAssets';
 import { VEHICLE_DOORS, vehicleDoorStanding, vehicleDoorQuaternion, vehicleDoorUpright, type DoorSide, type VehicleDoorState } from './WorldVehicleDoors';
 import { guideVehicleProgress, guideVehicleSample, guideVehicleOrientation, type GuideVehicleFrame } from './WorldGuideVehicle';
 import { WorldOcclusion } from './WorldOcclusion';
-import { cameraCollisionRadius, cameraLookTarget, cameraOverlapsGuide, sweepCamera } from './camera-collision';
+import { cameraCollisionRadius, cameraLookTarget, cameraOverlapsGuide, cameraShoulderPivot, sweepCamera } from './camera-collision';
 import { returnPlayerToCamp } from './world-recovery';
 import { configureCoupeSuspension, createDrivingState, stepCoupeDrive, type DrivingInput, type DrivingState } from './vehicle-driving';
 import { publishDrivingTelemetry } from './vehicle-telemetry';
@@ -76,7 +76,7 @@ type ActorSnapshot = {
 export type CameraDebug = { yaw: number; pitch: number; distance: number; desiredDistance: number; driveManualZoom: boolean; actualDistance: number; firstPerson: boolean; preset: number; collided: boolean; hitDistance: number|null;
   fov: number; mode: 'walk'|'drive'; recentering: boolean; position: Vec3; target: Vec3; forwardGround: [number,number]; groundBelowCamera: number|null; clearanceAboveGround: number|null; gamepad: boolean;
   /** Camera near-plane envelope, plus the draw-only self-occlusion guard. */
-  nearPlaneRadius: number; guideHidden: boolean;
+  nearPlaneRadius: number; guideHidden: boolean; shoulderOffset: number;
   nearPlaneOverlaps: string[] };
 type ContactMeta = { colliderHandle: number; name: string | null; assetId: string | null; kind: 'surface' | 'solid' | 'vehicle' | 'obstacle' | 'unknown' };
 type LaneObstacle = 'post' | 'trunk' | 'wall' | 'profiles';
@@ -376,6 +376,7 @@ export default function WorldActors() {
   }, [arrival]);
   const target = useRef(new Vector3(...arrival));
   const cameraReady = useRef(false);
+  const cameraShoulder = useRef({offset:0,previous:null as Vector3|null});
   const guideView=useRef<Group>(null),guideCameraFoot=useRef(new Vector3());
   const impact = useRef(0);
   const cam = useRef<CameraRig>({ yaw: qaPortal?Math.PI/2-qaPortal.yaw:qaStart==='exchange-gallery'?4.7113:qaStart==='brain-rail'||attractionArrival?Math.PI/2:qaStart==='club-view'?0:clubArrival?-Math.PI/2:CAMERA_DEFAULT_YAW, pitch: qaStart==='exchange-gallery'?.4554:clubArrival?.4:CAMERA_DEFAULT_PITCH, distance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)],
@@ -809,7 +810,7 @@ export default function WorldActors() {
           fov:camera instanceof PerspectiveCamera?camera.fov:0,mode:c.mode,recentering:c.recentering,position:camera.position.toArray() as Vec3,target:target.current.toArray() as Vec3,
           forwardGround:(()=>{const m=Math.hypot(dir.x,dir.z)||1;return [dir.x/m,dir.z/m] as [number,number];})(),groundBelowCamera:ground,
           clearanceAboveGround:ground===null?null:camera.position.y-ground,gamepad:pad.current.connected,
-          nearPlaneRadius:radius,guideHidden:guideView.current?.visible===false,
+          nearPlaneRadius:radius,guideHidden:guideView.current?.visible===false,shoulderOffset:cameraShoulder.current.offset,
           nearPlaneOverlaps:(()=>{const out:string[]=[];const act=useWorldStore.getState().activeVehicle,carBody=act?cars.current.get(act)?.body:undefined;
             world.intersectionsWithShape({x:camera.position.x,y:camera.position.y,z:camera.position.z},{x:0,y:0,z:0,w:1},new rapier.Ball(radius),col=>{const m=identifyCollider(col);out.push(m.assetId??m.name??String(m.colliderHandle));return true;},
               undefined,undefined,undefined,carBody??player.current??undefined,col=>!col.isSensor()&&col.parent()?.handle!==player.current?.handle&&!(col.parent()?.userData as {obstacle?:boolean}|undefined)?.obstacle);
@@ -1302,7 +1303,7 @@ export default function WorldActors() {
     // Keep the sweep above the chair back; the orbit view frames the chest separately below.
     const targetY=cameraSeat?cameraSeat.position[1]+.92:Math.max(p.y,WATER_Y)+(c.firstPerson?eye:car?car.spec.size[1]*.6:.65);
     const desiredTarget=new Vector3(p.x,targetY,p.z);
-    if(!cameraReady.current){target.current.copy(desiredTarget);cameraReady.current=true;}
+    if(!cameraReady.current){target.current.copy(desiredTarget);cameraReady.current=true;cameraShoulder.current={offset:0,previous:null};}
     target.current.lerp(desiredTarget,c.firstPerson?1:1-Math.exp(-delta*10));
     const dir=orbitDirection(c.yaw,c.pitch);
     const exclude=car?.body??player.current??undefined;
@@ -1324,6 +1325,7 @@ export default function WorldActors() {
     const pivot=sweepCamera(world,rapier,origin,target.current,radius,exclude,solid);
     target.current.set(pivot.position.x,pivot.position.y,pivot.position.z);
     if(c.firstPerson){
+      cameraShoulder.current={offset:0,previous:null};
       c.actual=0;c.desiredDistance=0;
       if(car){const f=rotateVector([car.spec.size[0]*.05,0,0],car.body.rotation());target.current.x+=f[0];target.current.z+=f[2];}
       // On foot the eye sits just in front of the visor (near plane .1 m) so the helmet shell is not in view.
@@ -1346,14 +1348,19 @@ export default function WorldActors() {
       c.desiredDistance=want;
       // Collision wins over distance: the camera stops CAMERA_HIT_MARGIN in front of the first hit, with no
       // minimum distance that could push it back into the obstacle.
-      const from={x:target.current.x,y:target.current.y,z:target.current.z};
-      const r=probe(from,{x:dir[0],y:dir[1],z:dir[2]},want,radius);
-      c.hitDistance=r.hit;
-      const limit=r.free;
-      c.collided=r.hit!==null&&limit<want-.01;
+      let from={x:target.current.x,y:target.current.y,z:target.current.z};
+      const shoulder=cameraShoulder.current,wasOffset=shoulder.offset;
+      const placement=!car&&!cameraSeat
+        ?cameraShoulderPivot(world,rapier,from,dir,want,radius,exclude,solid,shoulder.offset,delta):null;
+      if(placement){from=placement.position;shoulder.offset=placement.offset;}
+      else {shoulder.offset=0;shoulder.previous=null;}
+      const orbit=placement?.orbit??sweepCamera(world,rapier,from,{x:from.x+dir[0]*want,y:from.y+dir[1]*want,z:from.z+dir[2]*want},radius,exclude,solid);
+      c.hitDistance=orbit.hit;
+      const limit=orbit.distance;
+      c.collided=orbit.hit!==null&&limit<want-.01;
       // Pull in immediately (no frame inside a wall), ease back out.
       c.actual=limit<c.actual?limit:c.actual+(limit-c.actual)*(1-Math.exp(-delta*4));
-      const pos=new Vector3(target.current.x+dir[0]*c.actual,target.current.y+dir[1]*c.actual,target.current.z+dir[2]*c.actual);
+      const pos=new Vector3(from.x+dir[0]*c.actual,from.y+dir[1]*c.actual,from.z+dir[2]*c.actual);
       // Never raycast from above every storey to "lift" the camera: that teleports through cave roofs.
       // If water/shake changes the swept goal, validate the correction too, before applying it.
       const originalY=pos.y;pos.y=Math.max(pos.y,WATER_Y+.3);
@@ -1362,6 +1369,13 @@ export default function WorldActors() {
       if(pos.y!==originalY){const corrected=sweepCamera(world,rapier,from,pos,radius,exclude,solid);
         pos.set(corrected.position.x,corrected.position.y,corrected.position.z);
         if(corrected.hit!==null){c.collided=true;c.hitDistance=corrected.hit;}}
+      // The two endpoints may be individually clear on opposite sides of a post.
+      // Sweep the frame-to-frame move as well; only allow a continuous detour.
+      if(shoulder.previous&&(Math.abs(shoulder.offset)>.001||Math.abs(wasOffset)>.001)){
+        const travel=sweepCamera(world,rapier,shoulder.previous,pos,radius,exclude,solid);
+        if(travel.hit!==null){pos.set(travel.position.x,travel.position.y,travel.position.z);c.collided=true;c.hitDistance=travel.hit;}
+      }
+      if(placement){if(!shoulder.previous)shoulder.previous=new Vector3();shoulder.previous.copy(pos);}
       camera.position.copy(pos);
       camera.up.copy(UP);
       // A tight indoor orbit needs the body centred, while its collision sweep starts safely at
