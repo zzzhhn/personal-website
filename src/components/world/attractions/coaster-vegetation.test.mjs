@@ -6,7 +6,7 @@ import R from '@dimforge/rapier3d-compat';
 import { Box3, BufferGeometry, Color, Float32BufferAttribute, Group, InstancedMesh, Mesh, MeshStandardMaterial, Ray, Vector3 } from 'three';
 import { COASTER_VEGETATION_BUDGET as B, coasterVegetationLayout, mergeCoasterPlantGeometry, coasterTrunkCollider, selectCoasterVegetation, updateCoasterVegetationInstances } from './coaster-vegetation-layout.ts';
 import { coasterFrame, coasterRidePose, coasterSupports, coasterWorld } from './coaster-track.ts';
-import { COASTER_INFIELD_WALK, onCoasterInfieldWalk } from './coaster-terrain-relief.ts';
+import { COASTER_INFIELD_WALK, onCoasterInfieldWalk, coasterDropHeight, createCoasterTerrainRelief } from './coaster-terrain-relief.ts';
 import { onCoasterCliffWalk } from './coaster-landscape-cliffs.ts';
 import { createCoasterStructure } from './coaster-geometry.ts';
 import { coasterColliderDescriptor } from './coaster-collision.ts';
@@ -107,6 +107,34 @@ test('both visible LODs keep precisely the physical L0 trunk and rigid branch we
       }
     }
   }
+});
+
+test('drop grove reuses authored moving crowns and roots on the exact new rock contacts within the old capacities',async t=>{
+  const drop=plants.filter(p=>p.id.startsWith('drop-'));
+  assert.equal(drop.filter(p=>p.kind!==2).length,4);assert.equal(drop.filter(p=>p.kind===2).length,6);
+  assert.deepEqual([0,1,2].map(k=>plants.filter(p=>p.kind===k).length),[22,26,36]);
+  await R.init();const relief=createCoasterTerrainRelief(),world=new R.World({x:0,y:0,z:0});
+  world.createCollider(R.ColliderDesc.trimesh(relief.vertices,relief.indices));world.step();let maxError=0,minLeafGround=Infinity;
+  try {
+    for(const p of drop){
+      const [x,,z]=p.local,heights=[[0,0],[-.3,0],[.3,0],[0,-.3],[0,.3]].map(([dx,dz])=>{
+        const height=coasterDropHeight(x+dx,z+dz);assert.ok(height!==null);
+        const hit=world.castRay(new R.Ray({x:x+dx+50,y:35,z:z+dz-195},{x:0,y:-1,z:0}),40,true);assert.ok(hit);
+        maxError=Math.max(maxError,Math.abs(34-hit.timeOfImpact-height));return height;
+      });
+      assert.ok(Math.abs(p.local[1]-(Math.min(...heights)-.06))<.00001,p.id+' root detached');
+      for(const index of p.kind===2?[4]:[p.kind*2,p.kind*2+1]){
+        const g=geometry[index],position=g.attributes.position,wind=g.attributes._wind;let moving=0;
+        for(let i=0;i<position.count;i++)if(wind.getX(i)||wind.getY(i)||wind.getZ(i)){
+          moving++;const v=new Vector3().fromBufferAttribute(position,i).applyMatrix4(p.matrix),ground=coasterDropHeight(v.x-50,v.z+195);
+          if(ground!==null)minLeafGround=Math.min(minLeafGround,v.y-1-ground);
+        }
+        assert.ok(moving>0,p.id+' lost authored wind weights');
+      }
+    }
+    assert.ok(maxError<.001);
+    t.diagnostic(JSON.stringify({dropTrees:4,dropBushes:6,maxGroundContactErrorM:maxError,minAuthoredLeafAboveGroundM:minLeafGround}));
+  }finally{world.free();relief.geometry.dispose();}
 });
 
 test('denser independent ride samples retain rail, rider and every camera sight line',()=>{

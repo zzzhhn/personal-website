@@ -3,9 +3,8 @@ import { beddedRockColour } from './coaster-rock-bedding.ts';
 import type { Vec3 } from '../types';
 
 type Sampler = (x: number, z: number) => number;
-export type DropDetail = { points: Vec3[]; faces: [number, number, number][]; colours: Color[]; kind: 'rock' | 'tree' | 'shrub' };
+export type DropDetail = { points: Vec3[]; faces: [number, number, number][]; colours: Color[]; kind: 'rock' };
 const mineral = new Color('#aaa48e'), broken = new Color('#878b7c'), earth = new Color('#92906a'), grass = new Color('#7c8957');
-const leaves = ['#526b3d', '#73864c', '#8b9857', '#657b43'].map(c => new Color(c));
 
 /** Low maintenance aprons become soil/grass; mineral colour follows actual exposed slope. */
 export function dropCoastGroundColour(a: Vec3, b: Vec3, c: Vec3) {
@@ -52,40 +51,5 @@ export function createDropRock(bed: readonly number[], seed: number, ground: Sam
   connect(0,n,n,broken);connect(n,n*2,n,mineral);connect(n*2,n*3,n,broken);
   const roof=vertex([x,top-.03,z]),bottom=vertex([x,floor,z]);
   for(let i=0;i<n;i++){face(roof,n*3+(i+1)%n,n*3+i,mineral.clone().lerp(earth,.18));face(bottom,i,(i+1)%n,broken);}
-  return mesh;
-}
-
-// Groves sit behind the scarp; low scrub follows its foot and the safe loop shoulder.
-export const DROP_PLANTS = [
-  [-48,-179,1],[-35,-179,1],[-23.5,-178.5,1],[-2.5,-171.5,1],[8,-169.5,1],[23.5,-166,1],
-  [-51,-174.5,0],[-44.5,-178,0],[-35.5,-176.5,0],[-29,-171.5,0],[-24,-172.5,0],[-22.5,-174,0],
-  [7.5,-166,0],[8,-165.5,0],[19,-162,0],[23.5,-160,0],
-  [-18,-134,0],[-16,-132,0],[-8,-135,0],[-6.5,-130,0],[0,-134.5,0],
-] as const;
-
-export function createDropPlant(x:number,z:number,tree:boolean,seed:number,ground:Sampler,ceiling:Sampler):DropDetail|null {
-  const radius=tree?1.8:1.05,height=tree?4.4:1.2,y=ground(x,z);
-  if(!Number.isFinite(y)||y<0)return null;
-  if(tree&&[[.2,0],[-.2,0],[0,.2],[0,-.2]].some(([dx,dz])=>Math.abs(ground(x+dx,z+dz)-y)>.3))return null;
-  const envelope=radius+(tree?.65:.3);
-  for(let dx=-envelope;dx<=envelope+.01;dx+=envelope/2)for(let dz=-envelope;dz<=envelope+.01;dz+=envelope/2){
-    const g=ground(x+dx,z+dz);
-    // A rooted crown may overhang a lower ledge. Uphill terrain must stay below its branches.
-    if((tree?g>y+1.3:!Number.isFinite(g)||Math.abs(g-y)>.65)||y+height+.3>=ceiling(x+dx,z+dz))return null;
-  }
-  const {mesh,vertex,face,connect}=builder(tree?'tree':'shrub'),n=5;
-  if(tree){
-    for(const level of [y-.2,y+2.5])for(let i=0;i<n;i++){const angle=i*Math.PI*2/n;vertex([x+Math.cos(angle)*.16,level,z+Math.sin(angle)*.16]);}
-    connect(0,n,n,new Color('#695e44'));
-    for(let i=1;i<n-1;i++){face(0,i,i+1,new Color('#695e44'));face(n,n+i+1,n+i,new Color('#695e44'));}
-  }
-  for(let lobe=0;lobe<(tree?2:1);lobe++){
-    const start=mesh.points.length,cx=x+(lobe?-.6:.25),cz=z+(lobe?.25:-.1),base=y+(tree?(lobe?2.2:1.4):-.12),r=radius*(lobe?.78:1);
-    for(const [scale,h] of [[.6,0],[1,tree?.9:.5]] as const)for(let i=0;i<n;i++){
-      const angle=i*Math.PI*2/n+seed*.4;vertex([cx+Math.cos(angle)*r*scale,base+h,cz+Math.sin(angle)*r*scale]);
-    }
-    const top=vertex([cx+.15,base+(tree?2.2:1.2),cz]),bottom=vertex([cx,base-.05,cz]);
-    for(let i=0;i<n;i++){const j=(i+1)%n,colour=leaves[(i+seed+lobe)%leaves.length];face(start+i,start+n+i,start+j,colour);face(start+j,start+n+i,start+n+j,colour);face(top,start+n+j,start+n+i,colour);face(bottom,start+i,start+j,leaves[0]);}
-  }
   return mesh;
 }

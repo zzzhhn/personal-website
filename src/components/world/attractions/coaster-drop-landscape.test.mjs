@@ -12,10 +12,11 @@ world.createCollider(R.ColliderDesc.trimesh(relief.vertices,relief.indices.slice
 world.step();
 test.after(()=>{world.free();relief.geometry.dispose();});
 
-test('local scarp, rooted groves and soil aprons stay inside the existing footprint and bounded budget',t=>{
-  const {rocks,trees,shrubs,detailTriangles,savedApronTriangles}=relief.dropSample;
-  assert.ok(rocks>=4&&trees>=6&&shrubs>=12);
-  assert.ok(detailTriangles<=1000&&savedApronTriangles>=300);
+test('local scarp and soil aprons keep their footprint with no static replacement foliage',t=>{
+  const {rocks,detailTriangles,savedApronTriangles}=relief.dropSample;
+  assert.equal(rocks,4);
+  assert.equal(north.triangleCount,north.terrainTriangleCount,'foliage must live in the shared wind/LOD pipeline');
+  assert.equal(detailTriangles,224);assert.ok(savedApronTriangles>=300);
   assert.ok(relief.triangleCount<=25226,'local additions may not consume the far scene budget');
   const p=relief.geometry.attributes.position,c=relief.geometry.attributes.color;let soilArea=0;
   for(let i=north.firstTriangle;i<north.firstTriangle+north.triangleCount;i++) {
@@ -26,10 +27,10 @@ test('local scarp, rooted groves and soil aprons stay inside the existing footpr
     }
   }
   assert.ok(soilArea>500);
-  t.diagnostic(JSON.stringify({rocks,trees,shrubs,detailTriangles,savedApronTriangles,soilApronArea:soilArea,totalTerrainTriangles:relief.triangleCount}));
+  t.diagnostic(JSON.stringify({rocks,detailTriangles,savedApronTriangles,soilApronArea:soilArea,totalTerrainTriangles:relief.triangleCount}));
 });
 
-test('actual scarp and foliage contacts match visible surfaces and preserve both support aprons',t=>{
+test('actual scarp contacts match visible surfaces and preserve both support aprons',t=>{
   const material=new MeshBasicMaterial({side:DoubleSide}),mesh=new Mesh(relief.geometry,material);mesh.updateMatrixWorld();let samples=0,maxError=0;
   try {
     for(let x=-51.37;x<30;x+=8.3)for(let z=-181.21;z<-129;z+=9.7){
@@ -47,7 +48,7 @@ test('actual scarp and foliage contacts match visible surfaces and preserve both
   }finally{material.dispose();}
 });
 
-test('full train envelope, seated head and preset sight lines clear the actual local terrain and canopy meshes',()=>{
+test('full train envelope, seated head and preset sight lines clear the actual local terrain meshes',()=>{
   for(let i=0;i<2400;i++) {
     const u=(i+.317)/2400,f=coasterFrame(u);
     assert.ok(!world.intersectionWithShape(f.point.clone().addScaledVector(f.up,.8),f.rotation,new R.Cuboid(1.5,.5,.95)),`train hit at ${u}`);

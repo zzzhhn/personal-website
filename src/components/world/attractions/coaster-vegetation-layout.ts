@@ -1,7 +1,7 @@
 import { Box3, Float32BufferAttribute, Matrix4, Mesh, MeshStandardMaterial, Quaternion, Vector3, type BufferGeometry, type InstancedMesh, type Object3D } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { coasterFrame, coasterRidePose, coasterSupports, coasterWorld, COASTER_LENGTH } from './coaster-track.ts';
-import { coasterInfieldHeight, onCoasterInfieldWalk, COASTER_INFIELD_LAMPS, COASTER_RELIEF_FORMATIONS } from './coaster-terrain-relief.ts';
+import { coasterDropHeight, coasterInfieldHeight, onCoasterInfieldWalk, COASTER_INFIELD_LAMPS, COASTER_RELIEF_FORMATIONS } from './coaster-terrain-relief.ts';
 import { onCoasterCliffWalk } from './coaster-landscape-cliffs.ts';
 import type { Vec3 } from '../types';
 
@@ -91,12 +91,16 @@ let layout: readonly CoasterPlant[] | undefined;
 export function coasterVegetationLayout(): readonly CoasterPlant[] {
   if (layout) return layout;
   const plants: CoasterPlant[] = [];
-  const place = (id: string, kind: 0 | 1 | 2, x: number, z: number, scale: number, yaw: number, planter = false) => {
+  const place = (id: string, kind: 0 | 1 | 2, x: number, z: number, scale: number, yaw: number, planter = false, drop = false) => {
     const radius = PLANT_ENVELOPES[kind].radius*scale;
     if (!planter && publicOrSolid(x,z,radius)) return;
-    const ground = planter ? 1 : coasterInfieldHeight(x,z) ?? 0;
+    const height=(px:number,pz:number)=>drop?coasterDropHeight(px,pz):coasterInfieldHeight(px,pz)??0;
+    const ground = planter ? 1 : height(x,z);
+    if(ground===null)return;
     // Embed roots slightly, and reject discontinuous/steep support instead of floating on slopes.
-    const heights = planter ? [ground] : [[-.3,0],[.3,0],[0,-.3],[0,.3]].map(([dx,dz]) => coasterInfieldHeight(x+dx,z+dz) ?? 0);
+    const support = planter ? [ground] : [[-.3,0],[.3,0],[0,-.3],[0,.3]].map(([dx,dz]) => height(x+dx,z+dz));
+    if(support.some(h=>h===null))return;
+    const heights=support as number[];
     if (Math.max(...heights)-Math.min(...heights) > .42 || Math.max(...heights.map(h=>Math.abs(h-ground))) > .35) return;
     const local: Vec3 = [x,Math.min(ground,...heights)-.06,z], bounds = coasterPlantBounds(local,kind,scale);
     if (!clearCoasterPlant(bounds)) return;
@@ -105,6 +109,13 @@ export function coasterVegetationLayout(): readonly CoasterPlant[] {
     plants.push({ id, kind, local, scale, yaw, bounds, matrix: new Matrix4().compose(new Vector3(...coasterWorld(local)),
       new Quaternion().setFromAxisAngle(new Vector3(0,1,0),yaw),new Vector3().setScalar(scale)) });
   };
+  // Four authored trees reuse the existing ST1/ST2 instances; the later grove fill
+  // yields the same number of slots. No static foliage is baked into the north terrain.
+  const dropTrees=[[-48,-179],[-35,-179],[-23.5,-178.5],[-2.5,-171.5],[8,-169.5],[23.5,-166]];
+  for(const [i,[x,z]] of dropTrees.entries()){
+    if(plants.length>=4)break;
+    place(`drop-tree-${i}`,i%2 as 0|1,x,z,.87,i*.71,false,true);
+  }
   // Round-robin clusters retain distribution when the explicit capacity is reached.
   for (let ring = 0; ring < 16 && plants.length < COASTER_VEGETATION_BUDGET.trees; ring++) groves.forEach(([cx,cz],g) => {
     if (plants.length >= COASTER_VEGETATION_BUDGET.trees) return;
@@ -117,7 +128,14 @@ export function coasterVegetationLayout(): readonly CoasterPlant[] {
   for (const x of [-48,-38,-18,17,29,45]) if (!onCoasterCliffWalk(x,55,3)) for (const dx of [-1.5,0,1.5]) {
     const before = plants.length; place(`planter-${x}-${dx}`,2,x+dx,55,.68,(x+dx)*.31,true); bushes += plants.length-before;
   }
-  const trees = plants.filter(p=>p.kind !== 2);
+  const dropBushes=[[-44.5,-178],[-35.5,-176.5],[-24,-172.5],[7.5,-166],[19,-162],[-18,-134],[-8,-135],[0,-134.5]];
+  let dropBushCount=0;
+  for(const [i,[x,z]] of dropBushes.entries()){
+    if(dropBushCount>=6||bushes>=COASTER_VEGETATION_BUDGET.bushes)break;
+    const before=plants.length;place(`drop-bush-${i}`,2,x,z,.8,i*.83,false,true);
+    dropBushCount+=plants.length-before;bushes+=plants.length-before;
+  }
+  const trees = plants.filter(p=>p.kind !== 2&&!p.id.startsWith('drop-'));
   for (let layer = 0; layer < 4; layer++) for (let i = 0; i < trees.length && bushes < COASTER_VEGETATION_BUDGET.bushes; i++) {
     const tree = trees[i], angle = tree.yaw+layer*2.4, r = 2+layer*.8, before = plants.length;
     place(`understory-${i}-${layer}`,2,tree.local[0]+Math.cos(angle)*r,tree.local[2]+Math.sin(angle)*r,.72+(i%4)*.07,angle);
