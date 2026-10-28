@@ -88,7 +88,7 @@ export class GuideIbdInspectionLayer {
     const performing=action?.phase==='perform'?action:null;
     const t=performing?clamp(performing.elapsed,0,performing.duration):0;
     const reach=performing?(t<=performing.contactAt
-      ?ease((t-performing.reachStartAt)/(performing.contactAt-performing.reachStartAt))
+      ?ease((t-performing.reachStartAt)/(performing.kind==='coil-check'?.6:performing.contactAt-performing.reachStartAt))
       :1-ease((t-performing.contactAt)/performing.recoverDuration)):0;
     const root=this.scene.getWorldQuaternion(new Quaternion());
     const leftQ=root.clone().multiply(new Quaternion().setFromAxisAngle(Z,-.08));
@@ -98,7 +98,7 @@ export class GuideIbdInspectionLayer {
       left.lerp(new Vector3(...performing.anchor.leftTarget),reach);
       right.lerp(new Vector3(...performing.anchor.rightTarget),reach);
       // A modest lift clears the slot edge; both arcs end exactly at the contact pose.
-      if(t<performing.contactAt&&performing.kind!=='measure')left.y+=.045*Math.sin(Math.PI*clamp(
+      if(t<performing.contactAt&&performing.kind!=='measure'&&performing.kind!=='coil-check')left.y+=.045*Math.sin(Math.PI*clamp(
         (t-performing.reachStartAt)/(performing.contactAt-performing.reachStartAt)));
     }
     const reachable=!performing||(this.reachable(this.arms.left,new Vector3(...performing.anchor.leftTarget),leftQ)

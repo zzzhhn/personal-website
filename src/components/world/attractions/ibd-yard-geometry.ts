@@ -4,7 +4,7 @@ import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
 import { buildIbdArchitecture, buildIbdStores, type IbdSolid } from './ibd-yard-architecture.ts';
 import { buildIbdSite } from './ibd-yard-site.ts';
 import { bakeIbdLight } from './ibd-yard-lighting.ts';
-import { addInspectionTools, addWoundCoil, addYardControl } from './ibd-craft-geometry.ts';
+import { addInspectionTools, addInspectionTorch, addWoundCoil, addYardControl } from './ibd-craft-geometry.ts';
 import { buildIbdTruck } from './ibd-truck-geometry.ts';
 export { IBD_MATERIALS } from './ibd-yard-palette.ts';
 export type { IbdSolid } from './ibd-yard-architecture.ts';
@@ -210,10 +210,13 @@ export function buildIbdCables() {
   for (const x of [-1.3, 1.3]) cbox(b, [x, -.5, 0], [.045, 1, .045], P.dark);
   return b.build();
 }
-export function buildIbdTools() {
+export function buildIbdTorch() {
   const b = new Builder();
-  addInspectionTools(b);
+  addInspectionTorch(b);
   return b.build();
+}
+export function buildIbdTools() {
+  const b=new Builder();addInspectionTools(b);return b.build();
 }
 export function buildIbdShutter() {
   const b = new Builder();

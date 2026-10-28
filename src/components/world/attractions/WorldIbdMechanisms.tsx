@@ -2,15 +2,17 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { CuboidCollider, RigidBody, useBeforePhysicsStep, useAfterPhysicsStep, useRapier, type RapierRigidBody, type RapierCollider } from '@react-three/rapier';
 import { BufferGeometry, Group, Mesh, MeshStandardMaterial, Quaternion, Vector3 } from 'three';
 import { IBD_ALL_CLEAR } from './ibd-cases.ts';
-import { IBD_SLOTS, IBD_CARGO_HOME, IBD_CRANE_Y, ibdStation, ibdWorld, type IbdSlot } from './ibd-yard-layout.ts';
+import { IBD_SLOTS, IBD_CARGO_HOME, IBD_CRANE_Y, ibdWorld, type IbdSlot } from './ibd-yard-layout.ts';
 import { yardCase, yardItemId } from './ibd-yard-game.ts';
 import { ibdCargoPose, ibdPhysicalCargoPose } from './ibd-yard-motion.ts';
 import { createIbdMotionClock, createIbdSafety, stepIbdSafeMotion } from './ibd-yard-safety.ts';
 import { finishIbdAction, ibdActor, setIbdMotionWait, useIbdYardStore } from './ibd-yard-store.ts';
-import { buildIbdCoil, buildIbdPack, buildIbdLid, buildIbdCrane, buildIbdHook, buildIbdCables, buildIbdShutter, buildIbdTools } from './ibd-yard-geometry.ts';
+import { buildIbdCoil, buildIbdPack, buildIbdLid, buildIbdCrane, buildIbdHook, buildIbdCables, buildIbdShutter } from './ibd-yard-geometry.ts';
 import type { IbdItem } from './ibd-model.ts';
 import { buildIbdPackShell } from './ibd-pack-geometry';
 import WorldIbdPackInspection from './WorldIbdPackInspection';
+import WorldIbdCoilInspection from './WorldIbdCoilInspection';
+import { isIbdCoilCheck } from './ibd-coil-inspection.ts';
 
 const cargoGeometry = (item: IbdItem) => item.kind === 'coil' ? buildIbdCoil(!!item.defects['quality-rear'], item.id.includes('rear') ? 2 : 1) : buildIbdPack(item.quantity, item.specId);
 const movable = { movable: true, solid: true, assetId: 'ibd-yard-cargo' };
@@ -24,7 +26,7 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
   const bodies = useRef<Partial<Record<IbdSlot, RapierRigidBody | null>>>({});
   const meshes = useRef<Partial<Record<IbdSlot, Mesh | null>>>({});
   const lids = useRef<Partial<Record<IbdSlot, Group | null>>>({});
-  const crane = useRef<Mesh>(null), hook = useRef<Mesh>(null), cables = useRef<Mesh>(null), shutterBody = useRef<RapierRigidBody>(null), tools = useRef<Mesh>(null);
+  const crane = useRef<Mesh>(null), hook = useRef<Mesh>(null), cables = useRef<Mesh>(null), shutterBody = useRef<RapierRigidBody>(null);
   const spareBody = useRef<RapierRigidBody | null>(null);
   const mountSpare = useCallback((body: RapierRigidBody | null) => {
     spareBody.current = body;
@@ -38,9 +40,9 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
     const returned = game.exchanges.map(e => ({ slot: e.slot, geometry: cargoGeometry(e.original) }));
     return { goods, fresh, returned };
   }, [game.caseIndex, game.exchanges]);
-  const fixed = useMemo(() => ({ lid: buildIbdLid(), crane: buildIbdCrane(), hook: buildIbdHook(), cables: buildIbdCables(), shutter: buildIbdShutter(), tools: buildIbdTools(), rotation: new Quaternion(), up: new Vector3(0, 1, 0) }), []);
+  const fixed = useMemo(() => ({ lid: buildIbdLid(), crane: buildIbdCrane(), hook: buildIbdHook(), cables: buildIbdCables(), shutter: buildIbdShutter(), rotation: new Quaternion(), up: new Vector3(0, 1, 0) }), []);
   useEffect(() => () => { Object.values(resources.goods).forEach(g => g.dispose()); Object.values(resources.fresh).forEach(g => g.dispose()); resources.returned.forEach(r => r.geometry.dispose()); }, [resources]);
-  useEffect(() => () => { fixed.lid.dispose(); fixed.crane.dispose(); fixed.hook.dispose(); fixed.cables.dispose(); fixed.shutter.dispose(); fixed.tools.dispose(); }, [fixed]);
+  useEffect(() => () => { fixed.lid.dispose(); fixed.crane.dispose(); fixed.hook.dispose(); fixed.cables.dispose(); fixed.shutter.dispose(); }, [fixed]);
   const apply = (progress: number, snap = false) => {
     if (exchanging && spareBody.current) {
       const pose = ibdPhysicalCargoPose(game, exchanging, progress, true), [x,y,z] = ibdWorld(pose.at);
@@ -69,20 +71,11 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
       if (snap) shutterBody.current.setTranslation({ x, y, z }, true);
       else shutterBody.current.setNextKinematicTranslation({ x, y, z });
     }
-    if (tools.current) {
-      const action = game.pending?.action;
-      tools.current.visible = !!action && ['scan', 'rear', 'contents', 'survey'].includes(action.kind);
-      if (action) {
-        const at = action.slot ? ibdCargoPose(game, action.slot, progress).at : ibdStation(action.station).at;
-        tools.current.position.set(at[0] + Math.sin(progress * Math.PI * 2) * .7, at[1] + .45, at[2] + 1.6);
-        tools.current.rotation.z = Math.sin(progress * Math.PI) * .25;
-      }
-    }
   };
   // Rapier creates body refs in child passive effects. Restore after those effects, including lazy remounts.
   useEffect(() => { clock.current = createIbdMotionClock(); completeToken.current = null; setIbdMotionWait(null); apply(0, true); }, [game.core, game.pending, game.round, resources]);
   useBeforePhysicsStep(() => {
-    if (!game.pending) return;
+    if (!game.pending || isIbdCoilCheck(game.pending.action)) return;
     const actor = ibdActor(), running = active && actor.active && !actor.paused && !actor.hidden;
     const pending = game.pending;
     if (!running) { apply(clock.current.elapsed / pending.seconds); return; }
@@ -128,7 +121,7 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
       <CuboidCollider args={[.065, 1.5, 4.4]} />
       <mesh geometry={fixed.shutter} material={material} castShadow userData={movable} />
     </RigidBody>
-    <mesh ref={tools} geometry={fixed.tools} material={material} visible={false} userData={movable} />
+    <WorldIbdCoilInspection material={material}/>
     {exchanging && <RigidBody ref={mountSpare} type="kinematicPosition" colliders={false}
       position={ibdPhysicalCargoPose(game, exchanging, 0, true).at} userData={movable}>
       <CuboidCollider args={exchanging.startsWith('coil') ? [2,2,1.4] : [1.4,.55,1.3]} position={exchanging.startsWith('coil') ? [0,0,0] : [0,.45,0]} />

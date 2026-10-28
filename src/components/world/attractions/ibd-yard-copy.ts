@@ -20,6 +20,7 @@ const messages: Record<string, Bi> = {
   welcome: bi('入口接货台领取货单。所有货物与差异均为模拟资料。', 'Receive a manifest at the entrance. All cargo and discrepancies are fictional.'),
   manifest: bi('库存目标：钢卷 2 卷、M8 五金 8 件。发货单：只发 M8 五金 8 件。左侧取工具。', 'Stock: 2 steel coils and 8 M8 pieces. Ship only the 8 M8 pieces. Collect the kit on your left.'),
   equipped: bi('手电、标识读头、卡规已备好。钢卷可以吊开查，也可以走西侧缓坡上高廊。', 'Torch, reader and gauge ready. Use the crane or walk up the west ramp to survey the coils.'),
+  'inspection-stand-clear': bi('先在卷前地面站稳，并放回手上的零件，再照检钢卷。', 'Stand on the ground in front of the coil and return any held sample before inspecting.'),
   crane: bi('前卷已落在侧方检查位。后排现在露出来了。', 'The front coil is on the side inspection pad. The rear row is now exposed.'),
   scan: bi('身份、数量、规格及前面已记录。背面还需转台或高廊观测。', 'Identity, quantity, specification and front recorded. Check the rear with the turntable or gallery scope.'),
   rear: bi('背面检查已记录。', 'Rear condition recorded.'), survey: bi('高廊观测完成，卷号、数量、规格与两面外观均已记录。', 'Gallery survey complete: identity, count, specification and both faces recorded.'),

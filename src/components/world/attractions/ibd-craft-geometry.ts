@@ -44,7 +44,7 @@ export function addWoundCoil(b: Builder, damaged: boolean) {
   }
 }
 
-export function addInspectionTools(b: Builder) {
+export function addInspectionTorch(b: Builder) {
   // Inspection head faces the cargo (-z); the handgrip stays in the old tool pivot.
   b.tr([0, 0, 0], [-Math.PI / 2, 0, 0], () => {
     lathe(b, [[0, -.27], [.085, -.27], [.09, -.23], [.09, .04], [.145, .1], [.145, .19], [0, .19]], P.dark, { sides: 16 });
@@ -53,6 +53,9 @@ export function addInspectionTools(b: Builder) {
     lathe(b, [[0, .197], [.108, .197], [.108, .2], [0, .2]], P.pale, { sides: 20 });
   });
   cbox(b, [.04, .098, .04], [.065, .025, .09], P.amber, .008);
+}
+export function addInspectionTools(b: Builder) {
+  addInspectionTorch(b);
   // Caliper beam, fixed jaw, sliding jaw and an engraved scale.
   cbox(b, [.4, 0, 0], [.6, .045, .07], cutSteel, .008);
   for (const x of [.13, .5]) {

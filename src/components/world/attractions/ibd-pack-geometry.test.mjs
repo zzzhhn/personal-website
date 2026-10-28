@@ -116,10 +116,10 @@ test('the two-part caliper can stow below the existing closed lid',()=>{
 test('the representative yard plus two complete inspection rigs retain the original 70k budget',async()=>{
   const y=await import('./ibd-yard-geometry.ts'),parts=buildIbdPackParts(4,'M8');
   const all=[y.buildIbdStatic().geometry,y.buildIbdCoil(false),y.buildIbdCoil(true,2),y.buildIbdPack(4,'M8'),y.buildIbdPack(3,'M8'),
-    y.buildIbdLid(),y.buildIbdLid(),y.buildIbdCrane(),y.buildIbdHook(),y.buildIbdCables(),y.buildIbdShutter(),y.buildIbdTools(),y.buildIbdPack(4,'M6')];
+    y.buildIbdLid(),y.buildIbdLid(),y.buildIbdCrane(),y.buildIbdHook(),y.buildIbdCables(),y.buildIbdShutter(),y.buildIbdTorch(),y.buildIbdPack(4,'M6')];
   try{
     const rigs=2*[parts.tray,parts.caliperFixed,parts.caliperJaw,parts.rigMast,parts.rigBoom,parts.rigTether].reduce((n,g)=>n+triangles(g),0);
-    const total=all.reduce((n,g)=>n+triangles(g),0)+rigs;
+    const total=all.reduce((n,g)=>n+triangles(g),0)+rigs+24; // open 12-sided inspection light shaft
     assert.ok(total<70000,`${total} representative triangles including both rigs`);
     console.log(JSON.stringify({representativeWithTwoRigs:total,budget:70000}));
   }finally{all.forEach(g=>g.dispose());parts.dispose();}

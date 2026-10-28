@@ -1,10 +1,10 @@
 import { PLAYER_CENTER_HEIGHT } from '../actor-physics.ts';
 import type { Vec3 } from '../types.ts';
 
-export type IbdInspectionActionKind = 'pickup' | 'measure' | 'return' | 'empty';
+export type IbdInspectionActionKind = 'pickup' | 'measure' | 'return' | 'empty' | 'coil-check';
 /** Ownership and stock identity belong to the yard controller. This is only the held silhouette. */
 export type IbdInspectionCarried = { spec: 'M6' | 'M8' } | null;
-export interface IbdInspectionAnchor { stand: Vec3; yaw: number; leftTarget: Vec3; rightTarget: Vec3 }
+export interface IbdInspectionAnchor { stand: Vec3; yaw: number; leftTarget: Vec3; rightTarget: Vec3; focus?: Vec3 }
 export interface IbdInspectionAction {
   id: number; kind: IbdInspectionActionKind; phase: 'approach' | 'perform'; elapsed: number;
   duration: number; contactAt: number; reachStartAt: number; recoverDuration: number;
@@ -31,6 +31,7 @@ export const IBD_INSPECTION_TIMING: Readonly<Record<IbdInspectionActionKind,
   measure: {duration:1.35,contactAt:.72,reachStartAt:0,recoverDuration:.63},
   return: {duration:2.6,contactAt:.55,reachStartAt:0,recoverDuration:.35},
   empty: {duration:4.1,contactAt:2.05,reachStartAt:1.5,recoverDuration:.4},
+  'coil-check': {duration:3.1,contactAt:2.5,reachStartAt:0,recoverDuration:.6},
 };
 let sequence = 0;
 let callbacks: { id: number; contact: () => boolean | void; cancel?: () => void } | null = null;
@@ -51,13 +52,15 @@ export function beginIbdInspectionAction(kind: IbdInspectionActionKind, anchor: 
     || !pointValid(ibdInspectionActor.position) || !Number.isFinite(ibdInspectionActor.yaw)
     || typeof ibdInspectionActor.mode !== 'string' || !anchor || !pointValid(anchor.stand)
     || !pointValid(anchor.leftTarget) || !pointValid(anchor.rightTarget) || !Number.isFinite(anchor.yaw)
+    || (kind==='coil-check' && (!anchor.focus || !pointValid(anchor.focus)))
     || !Object.hasOwn(IBD_INSPECTION_TIMING,kind) || typeof onContact !== 'function' || standDistance(anchor)>1.1 || standHeight(anchor)>.25
     || ((kind==='measure'||kind==='return') && !ibdInspectionBody.carried)
-    || ((kind==='pickup'||kind==='empty') && !!ibdInspectionBody.carried)) return false;
+    || ((kind==='pickup'||kind==='empty'||kind==='coil-check') && !!ibdInspectionBody.carried)) return false;
   const timing=IBD_INSPECTION_TIMING[kind], id=++sequence;
   ibdInspectionBody.action={ id,kind,phase:'approach',elapsed:0,...timing,committed:false,contactWait:0,
     actorMode:ibdInspectionActor.mode,
-    anchor:{stand:[...anchor.stand],yaw:anchor.yaw,leftTarget:[...anchor.leftTarget],rightTarget:[...anchor.rightTarget]} };
+    anchor:{stand:[...anchor.stand],yaw:anchor.yaw,leftTarget:[...anchor.leftTarget],rightTarget:[...anchor.rightTarget],
+      ...(anchor.focus?{focus:[...anchor.focus] as Vec3}:{})} };
   callbacks={id,contact:onContact,cancel:onCancel}; clearSample(); return true;
 }
 /** Clear first so cancellation cannot deliver an old contact callback. Carried ownership remains with the caller. */

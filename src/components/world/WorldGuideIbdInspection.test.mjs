@@ -4,6 +4,8 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { Bone,Group,Matrix4,PropertyBinding,Vector3 } from 'three';
 import { GuideIbdInspectionLayer } from './WorldGuideIbdInspection.ts';
+import { ibdCoilInspectAnchor } from './attractions/ibd-coil-inspection.ts';
+import { createIbdYardGame } from './attractions/ibd-yard-game.ts';
 import { PLAYER_CENTER_HEIGHT } from './actor-physics.ts';
 import { advanceIbdInspectionAction,beginIbdInspectionAction,cancelIbdInspectionAction,ibdInspectionActor,
   ibdInspectionBody,ibdInspectionVisualSockets,IBD_INSPECTION_TIMING } from './attractions/ibd-inspection-motion.ts';
@@ -23,6 +25,21 @@ const action=(kind,patch={})=>({id:9,kind,phase:'perform',elapsed:.6,contactAt:.
   reachStartAt:0,recoverDuration:.6,committed:false,contactWait:0,actorMode:'guide',...patch});
 const distance=(a,b)=>new Vector3(...a).distanceTo(new Vector3(...b));
 const count=scene=>{let n=0;scene.traverse(()=>n++);return n;};
+test('real G24 holds the coil torch at every approach heading and reaches a stable inspection pose',()=>{
+  const scene=rig(),layer=new GuideIbdInspectionLayer(scene),game=createIbdYardGame();
+  for(const x of[-101,-100,-99]){
+    const position=[x,1.1+PLAYER_CENTER_HEIGHT,-178];
+    const anchor=ibdCoilInspectAnchor(game,{kind:'scan',station:'coil-front',slot:'coil-front'},position);
+    scene.position.set(...anchor.stand);scene.rotation.y=anchor.yaw;scene.updateWorldMatrix(true,true);
+    const a=action('coil-check',{...IBD_INSPECTION_TIMING['coil-check'],anchor});
+    for(const t of[0,.3,.6,1.5,2.5,2.8,3.1]){
+      a.elapsed=t;const s=layer.apply(a,null);assert.equal(s.reachable,true,`${x}/${t}`);
+      if(t>=.6&&t<=2.5)assert.ok(s.contactError<=.025,`${x}/${t}: ${s.contactError}`);
+    }
+    layer.restore();
+  }
+  layer.dispose();
+});
 test('real G24 left support and right push palms reach each contact and report actual world matrices',()=>{
   const scene=rig(),layer=new GuideIbdInspectionLayer(scene);
   for(const kind of['pickup','measure','return','empty']){

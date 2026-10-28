@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { IBD_GEOMETRY_BUDGET } from './ibd-geometry-budget.ts';
 import RAPIER from '@dimforge/rapier3d-compat';
 import { Euler, Quaternion } from 'three';
-import { buildIbdStatic, buildIbdCoil, buildIbdPack, buildIbdLid, buildIbdCrane, buildIbdHook, buildIbdCables, buildIbdShutter, buildIbdTools } from './ibd-yard-geometry.ts';
+import { buildIbdStatic, buildIbdCoil, buildIbdPack, buildIbdLid, buildIbdCrane, buildIbdHook, buildIbdCables, buildIbdShutter, buildIbdTorch } from './ibd-yard-geometry.ts';
 import { IBD_STATIONS, IBD_CARGO_HOME, IBD_RAMP, IBD_SHEDS } from './ibd-yard-layout.ts';
 import { playerSupport, followPlayerGround } from '../player-ground.ts';
 import { createPlayerClearance, playerVelocityChange, sweptPlayerVelocity } from '../player-motion.ts';
@@ -34,8 +34,8 @@ function fixture(cargo = true) {
 test('geometry is finite, bounded to the survey, and stays below the provisional triangle budget', () => {
   const staticData = buildIbdStatic();
   const geometries = [staticData.geometry, buildIbdCoil(false), buildIbdCoil(true, 2), buildIbdPack(4, 'M8'), buildIbdPack(3, 'M8'),
-    buildIbdLid(), buildIbdLid(), buildIbdCrane(), buildIbdHook(), buildIbdCables(), buildIbdShutter(), buildIbdTools(), buildIbdPack(4, 'M6')];
-  let triangles = 0;
+    buildIbdLid(), buildIbdLid(), buildIbdCrane(), buildIbdHook(), buildIbdCables(), buildIbdShutter(), buildIbdTorch(), buildIbdPack(4, 'M6')];
+  let triangles = 24; // open 12-sided inspection light shaft
   for (const g of geometries) {
     assert.ok(g.index && g.getAttribute('color')); triangles += g.index.count / 3;
     assert.ok([...g.getAttribute('position').array].every(Number.isFinite)); g.dispose();

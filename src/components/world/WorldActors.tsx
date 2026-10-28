@@ -11,6 +11,7 @@ import { advanceExchangeBodyAction, cancelExchangeBodyAction, exchangeActor, exc
 import { cancelExchangePlay } from './alpha-exchange-play';
 import { ibdInspectionActor, ibdInspectionBody, ibdInspectionBodyBusy, IBD_INSPECTION_STAND_TOLERANCE } from './attractions/ibd-inspection-motion';
 import { cancelIbdPack, tickIbdPackInspection, useIbdPackPlay } from './attractions/ibd-pack-play';
+import { tickIbdCoilInspection } from './attractions/ibd-yard-store';
 import { IBD_CARGO_HOME, ibdWorld } from './attractions/ibd-yard-layout';
 import { nearestDryPoint, terrainHeight } from './WorldLandform';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag.ts';
@@ -1177,6 +1178,7 @@ export default function WorldActors() {
       advanceExchangeBodyAction(dt);
       ibdInspectionActor.yaw=guideYaw.current;
       tickIbdPackInspection(dt);
+      tickIbdCoilInspection(dt);
       // Reuse the actor clock. A bounded preview query runs only while on foot and grounded;
       // pressing Space always revalidates against current collision and landing geometry.
       const eligible=!seat&&!locked&&grounded.current&&!useAlphaMineStore.getState().carried&&!railVault.current;
