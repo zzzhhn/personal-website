@@ -5,7 +5,11 @@ import type { Vec3 } from '../types';
 import { lightsTouchingPart } from './intent-lighting-cull';
 
 const warm=new Color('#ffd092'),cool=new Color('#57bdcb');
+export const COASTER_STATION_EDGE_LIGHTS:Vec3[]=[[-10,5.51,35],[-10,5.51,47],[6,5.51,35],[6,5.51,47]];
 const sources=[
+  ...COASTER_STATION_EDGE_LIGHTS.map(p=>({p:coasterWorld(p),radius:10,power:1.5,color:warm})),
+  // Broad, low-intensity static reflected fill reveals the coast's faceted mineral faces.
+  ...[[74,13,-178],[153,11,-125],[142,10,-68]].map(p=>({p:coasterWorld(p as Vec3),radius:27,power:.7,color:cool})),
   ...COASTER_CLIFF_LAMPS.map(p=>({p:coasterWorld(p),radius:12,power:2.5,color:warm})),
   ...COASTER_CLIFF_WALK.map(([x,y,z])=>({p:coasterWorld([x,y+2,z]),radius:15,power:3,color:warm})),
   ...[12,36,60,83].map(y=>({p:coasterWorld([-44,y+2,-148.8]),radius:23,power:3.2,color:warm})),

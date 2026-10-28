@@ -2,6 +2,7 @@ import { BufferAttribute, BufferGeometry, Color, ShapeUtils, Vector2 } from 'thr
 import { coasterFrame, coasterRidePose, coasterSupports, coasterWorld, COASTER_LENGTH } from './coaster-track.ts';
 import { bakeIntentNight } from './intent-lighting.ts';
 import { lightCoasterCliffs } from './coaster-landscape-lighting.ts';
+import { beddedRockColour, beddedRockHeight } from './coaster-rock-bedding.ts';
 import type { CoasterBatch } from './coaster-geometry.ts';
 import type { Vec3 } from '../types';
 
@@ -134,7 +135,7 @@ function thrillReliefHeight(formation:typeof COASTER_THRILL_RELIEF[number],x:num
   const fold=Math.max(...formation.folds.map(([rx,rz,h,wx,wz])=>h*Math.exp(-(((x-rx)/wx)**2+((z-rz)/wz)**2))));
   const broken=.45+fold+fracture(x*.27,z*.27,7)*.8;
   const height=.04+(broken-.04)*Math.min(1,edgeDistance(formation.outline,x,z)/8);
-  return Math.max(-.45,Math.min(height,coasterThrillReliefCeiling(x,z)));
+  return Math.max(-.45,Math.min(beddedRockHeight(height,x,z),coasterThrillReliefCeiling(x,z)));
 }
 
 const ridges: readonly (readonly [number,number,number,number])[] = [
@@ -370,7 +371,7 @@ export function createCoasterTerrainRelief() {
   for(const formation of COASTER_THRILL_RELIEF){
     const firstTriangle=indices.length/3,vertexStart=vertices.length/3;
     const surface=clippedSurface(formation.outline,5,(x,z)=>thrillReliefHeight(formation,x,z));
-    solidTop(surface.points,surface.faces,infieldColor);
+    solidTop(surface.points,surface.faces,beddedRockColour);
     const terrainEnd=indices.length/3;
     formation.shrubs.forEach(([x,z],cluster)=>{for(let lobe=0;lobe<3;lobe++){
       const px=x+(lobe-1)*1.1,pz=z+(lobe===1?.65:-.25),y=groundAt(px,pz,firstTriangle,terrainEnd);

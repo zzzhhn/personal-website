@@ -6,6 +6,7 @@ import { addThrillTower } from './coaster-thrill-tower.ts';
 import { COASTER_BOARDING } from './coaster-transition.ts';
 import { INTENT_COASTER_FOOTPRINT, attractionCapeDistance } from './attraction-layout.ts';
 import { coasterSupportBase } from './coaster-thrill-supports.ts';
+import { addStationStructureDetail, createSupportMemberDetail } from './coaster-detailing.ts';
 import { addCoasterCliffs } from './coaster-landscape-cliffs.ts';
 import { lightCoasterCliffs } from './coaster-landscape-lighting.ts';
 import { INTENT_STATIONS } from './intent-stations.ts';
@@ -100,7 +101,8 @@ export function createCoasterStructure(detailed: boolean) {
   for (const { a, b, beams } of coasterSupports(detailed)) {
     for (const segment of beams) {
       const {a:from,b:to,radius}=segment,d=to.clone().sub(from);
-      steel.beam(tuple(from),tuple(to),radius,radius<.2?P.rail:P.steel,8);
+      if(detailed&&radius>=.3)steel.parts.push(createSupportMemberDetail(segment));
+      else steel.beam(tuple(from),tuple(to),radius,radius<.2?P.rail:P.steel,8);
       const q=new Quaternion().setFromUnitVectors(new Vector3(0,1,0),d.clone().normalize()),e=new Euler().setFromQuaternion(q);
       colliders.push({position:tuple(from.clone().add(to).multiplyScalar(.5)),half:[radius,d.length()/2,radius],rotation:[e.x,e.y,e.z]});
     }
@@ -253,6 +255,7 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
     colliders.push({ position: step.position, half: step.size.map(v => v / 2) as Vec3, rotation: [0, step.yaw, 0], surface: true });
   }
   addCoasterStationRoof(steel);
+  addStationStructureDetail(steel,glow,colliders);
   colliders.push({position:coasterWorld([-2,6.8,41.5]),half:[9,.6,11.5]});
   for (const x of [-10, 6]) for (const z of [31, x < 0 ? 43 : 51]) {
     housing([x, 3.1, z], [1.1, 6.2, 1.1], P.white);

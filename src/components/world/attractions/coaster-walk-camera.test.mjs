@@ -7,6 +7,7 @@ import { coasterColliderDescriptor } from './coaster-collision.ts';
 import { cameraCollisionRadius, sweepCamera } from '../camera-collision.ts';
 import { orbitDirection } from '../actor-physics.ts';
 import { createIntentSignGeometry } from './intent-sign-layout.ts';
+import { coasterSupports } from './coaster-track.ts';
 
 await R.init();
 const radius = cameraCollisionRadius(.1, 50, 1710 / 875);
@@ -25,7 +26,13 @@ test('the reproduced station-side orbit passes through the real fence opening wi
   const target = new Vector3(reported.x, reported.y, reported.z).addScaledVector(new Vector3(...direction), 12);
   const result = sweepCamera(world, R, reported, target, radius, undefined, c => !c.isSensor());
   assert.ok(result.distance > 11.9, `legal orbit shortened to ${result.distance}`);
-  assert.ok(count < 650, `fixed collider count unexpectedly grew to ${count}`);
+  // v4's independently audited 62 support bays contribute 389 members + 124 foundations.
+  // The former 650 cap predated the 1.9 km / 85 m / eight-inversion installation.
+  // Keep separate finite bounds so support growth cannot consume the park's contact budget.
+  const supportContacts=coasterSupports(true).reduce((sum,bay)=>sum+bay.beams.length+2,0);
+  assert.ok(supportContacts<=528, `support contacts unexpectedly grew to ${supportContacts}`);
+  // 43f9507 had 561 other contacts, including 148 in the tower; this round adds six station members.
+  assert.ok(count-supportContacts<=568, `non-support contacts unexpectedly grew to ${count-supportContacts}`);
   t.diagnostic(`station-side camera distance ${result.distance.toFixed(3)} m; fixed colliders ${count}`);
 }));
 
