@@ -25,7 +25,7 @@ import { INTENT_TARGETS } from './attractions/intent-stations';
 import { IBD_STATIONS, ibdWorld } from './attractions/ibd-yard-layout';
 import { intentRideClock, intentRideQaHold, useIntentStore } from './attractions/intent-state';
 import { readCoasterMotionAudioSnapshot } from './attractions/coaster-motion-audio';
-import { shadowRebuildProbe } from './WorldShadows';
+import { shadowRebuildProbe, shadowChunkWork } from './WorldShadows';
 import { sceneWorkProbe } from './world-scene-work';
 import { coasterStructureMemory } from './attractions/coaster-structure-cache';
 import { coasterStructureJobs } from './attractions/coaster-structure-job';
@@ -54,7 +54,7 @@ export default function WorldPlaytestReadout() {
           useWorldStore.setState({paused:false,clubMode:null,seat:null});
         }}>QA · 到{site.title.zh}</button>)}
         <details><summary>QA · 设施操作点</summary>
-          {[32.5, 99.3].map(second=><button key={`hold-${second}`} disabled={attractionRide.transition?.phase!=='riding'} onClick={()=>{
+          {[3.5, 32.5, 79.5, 99.3, 110.7].map(second=><button key={`hold-${second}`} disabled={attractionRide.transition?.phase!=='riding'} onClick={()=>{
             if(attractionRide.transition?.phase!=='riding')return;
             Object.assign(intentRideQaHold,{second,revision:attractionRide.revision});
             intentRideClock.elapsed=second;useIntentStore.setState({rideSecond:second});useWorldStore.setState({paused:false});
@@ -92,7 +92,8 @@ export default function WorldPlaytestReadout() {
           }}>QA · 落到探照仪设备</button>
         </details>
         <button onClick={()=>{shadowRebuildProbe.start();sceneWorkProbe.start();clubWaterFrameWindow.start();setRenderSnapshot({frameWindow:'started'});}}>QA · 开始场景帧采样</button>
-        <button onClick={()=>setRenderSnapshot({frameWindow:clubWaterFrameWindow.stop(),shadowRebuilds:shadowRebuildProbe.stop(),sceneWork:sceneWorkProbe.stop(),coasterStructureMemory:{...coasterStructureMemory},coasterStructureJobs:{...coasterStructureJobs},render:readRenderSnapshot()})}>QA · 结束场景帧采样</button>
+        <button onClick={()=>setRenderSnapshot({frameWindow:clubWaterFrameWindow.stop(),shadowRebuilds:shadowRebuildProbe.stop(),shadowWork:shadowChunkWork(),sceneWork:sceneWorkProbe.stop(),coasterStructureMemory:{...coasterStructureMemory},coasterStructureJobs:{...coasterStructureJobs},render:readRenderSnapshot()})}>QA · 结束场景帧采样</button>
+        <button onClick={()=>setRenderSnapshot({shadowWork:shadowChunkWork()})}>QA · 读取阴影构建状态</button>
         <button onClick={()=>setRenderSnapshot({coasterAudio:readCoasterMotionAudioSnapshot()})}>QA · 读取过山车音频</button>
         <button onClick={()=>{worldActorDebug.teleportPlayer([49,2.3,55]);useWorldStore.setState({paused:false,clubMode:null,seat:null});}}>QA · 到泳池西岸</button>
         <button onClick={()=>{clubWaterFrameWindow.invalidate();clubWaterDebug.enabled=!clubWaterDebug.enabled;setRenderSnapshot({poolOptics:clubWaterSnapshot()});}}>QA · 启停泳池光学</button>
