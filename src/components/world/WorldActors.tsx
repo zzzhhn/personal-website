@@ -14,7 +14,7 @@ import { CLUB, CLUB_POOL } from './djc-club-layout';
 import { IBD_YARD, INTENT_COASTER, ATTRACTION_ROADS } from './attractions/attraction-layout';
 import { captureCoasterStart } from './attractions/coaster-transition';
 import { attractionRide, endAttractionRide, requestAttractionExit, completeAttractionRide } from './attractions/attraction-ride';
-import { attractionCameraPose, attractionLook, turnAttractionLook, zoomAttractionLook } from './attractions/attraction-camera';
+import { attractionCameraPose, attractionCameraSweepOrigin, attractionLook, turnAttractionLook, zoomAttractionLook } from './attractions/attraction-camera';
 import { clubAudio } from './WorldClubAudio';
 import { cycleInteractPick, nearestInteractable, type Interactable } from './WorldInteract';
 import type { Vec3, VehicleId } from './types';
@@ -1252,9 +1252,9 @@ export default function WorldActors() {
       if(pad.current.connected)turnAttractionLook(pad.current.look[0]*PAD_LOOK*delta,pad.current.look[1]*PAD_LOOK*delta);
       const pose=attractionCameraPose(attractionRide.pose);
       const desired=new Vector3(...pose.cameraPosition),pivot=new Vector3(...pose.cameraTarget);
-      if(!pose.firstPerson&&(attractionLook.yaw||attractionLook.pitch||attractionLook.zoom!==1)){
+      if(!pose.firstPerson&&(pose.orientation||attractionLook.yaw||attractionLook.pitch||attractionLook.zoom!==1)){
         const radius=camera instanceof PerspectiveCamera?cameraCollisionRadius(camera.near,pose.fov,camera.aspect,.22):.22;
-        const swept=sweepCamera(world,rapier,pivot,desired,radius,player.current??undefined,col=>!col.isSensor());
+        const swept=sweepCamera(world,rapier,attractionCameraSweepOrigin(pose),desired,radius,player.current??undefined,col=>!col.isSensor());
         desired.set(swept.position.x,swept.position.y,swept.position.z);
         const diff=new Vector3(...pose.cameraPosition).sub(pivot).normalize();
         const safeTarget=cameraLookTarget(desired,pivot,[diff.x,diff.y,diff.z]);
