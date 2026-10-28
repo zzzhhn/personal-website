@@ -1,6 +1,7 @@
 import type { Collider, RigidBody, World } from '@dimforge/rapier3d-compat';
 import type * as Rapier from '@dimforge/rapier3d-compat';
-import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS } from './actor-physics.ts';
+import { PLAYER_HALF_HEIGHT, PLAYER_RADIUS, resetActorBody } from './actor-physics.ts';
+import type { Vec3 } from './types';
 
 type Vector = { x: number; y: number; z: number };
 type ShapeFactory = Pick<typeof Rapier, 'Ball'>;
@@ -14,6 +15,13 @@ const slopeForces = new WeakMap<RigidBody, Vector>();
 export function clearPlayerSlopeGravity(body: RigidBody) {
   const force = slopeForces.get(body);
   if (force) { body.addForce({ x: -force.x, y: 0, z: -force.z }, true); slopeForces.delete(body); }
+}
+
+/** A recovery can run before this step's after-physics callback. Drain the pending
+ * slope force before resetActorBody clears all forces, so later cleanup cannot invert it. */
+export function resetPlayerBody(body: RigidBody, position: Vec3, yaw = 0) {
+  clearPlayerSlopeGravity(body);
+  resetActorBody(body, position, yaw);
 }
 
 /** Probe the real capsule's lower hemisphere with the same radius and sole height.

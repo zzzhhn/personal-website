@@ -20,7 +20,7 @@ import { cycleInteractPick, nearestInteractable, type Interactable } from './Wor
 import type { Vec3, VehicleId } from './types';
 import WorldGuide, { VEHICLE_TRANSITION_S, worldGuideDebug } from './WorldGuide';
 import WorldVehicleVisual from './WorldVehicleVisual';
-import { playerSupport, followPlayerGround, compensatePlayerSlopeGravity, clearPlayerSlopeGravity } from './player-ground';
+import { playerSupport, followPlayerGround, compensatePlayerSlopeGravity, clearPlayerSlopeGravity, resetPlayerBody } from './player-ground';
 import { createPlayerClearance, findLowVault, playerRouteClear, playerVelocityChange, sweptPlayerVelocity } from './player-motion';
 import { findRailVault, railVaultVelocity, type RailVault } from './player-vault';
 import { findSafePlayerLanding, findSafeVehicleLanding, updateHeadSubmersion } from './safe-landing';
@@ -402,6 +402,7 @@ export default function WorldActors() {
     cars.current.forEach(c=>{c.steerInput=0;c.throttleInput=0;c.driving.power=0;c.driving.boosting=false;c.driving.handbrake=false;});publishDrivingTelemetry(null);
   }
   function clearPlayerMotion(hardCut=false) {
+    if(player.current)clearPlayerSlopeGravity(player.current);
     vault.current=null;railVault.current=null;vaultPreview.current.plan=null;useWorldStore.setState({canVault:false});guideMovementLock.current=false;turnBeforeMove.current=false;
     if(!hardCut)return;
     guideTransition.current=null;pendingVehicleExit.current=false;holdDoorForQA.current=false;
@@ -421,7 +422,8 @@ export default function WorldActors() {
     cameraReady.current=false;target.current.set(...position);supportDecision.current=null;
   }
   function resetBody(body: RapierRigidBody, position: Vec3, yaw=0) {
-    resetActorBody(body,position,yaw);
+    if(body===player.current)resetPlayerBody(body,position,yaw);
+    else resetActorBody(body,position,yaw);
   }
   function doorSweepClear(car:Car,side:DoorSide) {
     const spec=VEHICLE_DOORS[car.spec.id] as typeof VEHICLE_DOORS.coupe & {doorBounds?:{min:number[];max:number[]}};
