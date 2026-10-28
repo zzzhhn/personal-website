@@ -8,7 +8,7 @@ const copy: Partial<Record<IbdActionKind, [Bi, Bi]>> = {
   brief: [bi('拿起货单', 'Pick up the manifest'), bi('走到入口左侧的白色货单旁。', 'Walk to the white manifest left of the entrance.')],
   kit: [bi('拿走检验工具', 'Collect the tools'), bi('拿走桌上的手电和卡规。', 'Take the torch and gauge from the table.')],
   scan: [bi('检查钢卷正面', 'Inspect the coil front'), bi('朝向卷号牌，读标识、量规格。', 'Face the coil tag to read and measure it.')],
-  turn: [bi('拉杆，把背面转出来', 'Turn the rear face toward you'), bi('看钢卷转动，再回到卷前。', 'Watch the coil turn, then return to its face.')],
+  turn: [bi('转动手轮，翻看背面', 'Turn the handwheel'), bi('看钢卷转动，再回到卷前。', 'Watch the coil turn, then return to its face.')],
   rear: [bi('照检刚转出的背面', 'Inspect the exposed rear'), bi('背面检查完成，这卷才算验完。', 'Check this face to finish inspecting the coil.')],
   crane: [bi('吊开前卷，露出后卷', 'Lift the front coil aside'), bi('拉吊架杆，看前卷移到左侧。', 'Use the crane lever; watch the front coil move left.')],
   weigh: [bi('按台秤，看重量', 'Read the scale'), bi('重量是线索，下一步仍要拆箱。', 'Weight is a clue. Open the carton next.')],

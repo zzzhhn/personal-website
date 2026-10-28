@@ -14,6 +14,7 @@ import { createIbdMaterial } from './ibd-yard-lighting.ts';
 import { night } from '../WorldNight';
 import WorldIbdGuide from './WorldIbdGuide';
 import { ibdGuideStep } from './ibd-yard-guide.ts';
+import WorldIbdAudio from './WorldIbdAudio';
 
 function Station({ id, active }: { id: IbdStationId; active: boolean }) {
   const game = useIbdYardStore(s => s.game), station = ibdStation(id, game.core.moved);
@@ -41,6 +42,7 @@ export default memo(function WorldIbdYard({ active = true }: { active?: boolean 
   useEffect(() => { useIbdYardStore.setState({ active }); return () => { useIbdYardStore.setState({ active: false }); }; }, [active]);
   useEffect(() => () => { cancelIbdAction(); data.geometry.dispose(); data.material.dispose(); data.movingMaterial.dispose(); }, [data]);
   return <group name="world-ibd-yard" position={IBD_YARD.center} dispose={null} userData={{noOcclusionFade:true}}>
+    <WorldIbdAudio />
     <mesh name="ibd-three-sheds-static" geometry={data.geometry} material={data.material} castShadow receiveShadow
       userData={{ solid: true, assetId: 'ibd-yard-architecture' }} />
     <RigidBody type="fixed" colliders={false} name="ibd-yard-architecture" userData={{ solid: true, assetId: 'ibd-yard-architecture' }}>

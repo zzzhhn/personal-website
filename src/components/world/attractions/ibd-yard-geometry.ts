@@ -4,6 +4,7 @@ import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
 import { buildIbdArchitecture, buildIbdStores, type IbdSolid } from './ibd-yard-architecture.ts';
 import { buildIbdSite } from './ibd-yard-site.ts';
 import { bakeIbdLight } from './ibd-yard-lighting.ts';
+import { addDispatchTruckDetails, addInspectionTools, addWoundCoil, addYardControl } from './ibd-craft-geometry.ts';
 export { IBD_MATERIALS } from './ibd-yard-palette.ts';
 export type { IbdSolid } from './ibd-yard-architecture.ts';
 function buildIbdWalkSurface(b: Builder) {
@@ -111,18 +112,16 @@ export function buildIbdStatic() {
     cube([x, top + .14, z - .48], [2, .12, .12], P.amber);
   }
   for (const [x, z] of [[-6, .2], [-8, -4], [-8, -9], [7, -12], [21, -12], [7.8, -6.5], [20.2, -6.5], [8, 7.7], [8, 17.3], [7, 18]]) {
-    cube([x, .6, z], [.8, 1.2, .7], P.dark, true);
-    cube([x, 1.25, z], [1, .16, .9], P.amber);
-    bar(b, [x, 1.3, z], [x, 1.75, z + .18], .07, P.rubber, 6);
+    const kind = x === -6 ? 'crane' : x === -8 ? 'turn' : z === -12 ? 'scale' : x === 7 && z === 18 ? 'dispatch' : 'load';
+    addYardControl(b, cube, x, z, kind);
   }
   // Open truck body; side cutaway lets the player distinguish staged goods from loaded pallets.
   cube([17, .75, 12.5], [8, .3, 9], P.dark, true);
   cube([21, 2.3, 12.5], [.2, 3.1, 9], P.green, true);
   cube([17, 3.9, 12.5], [8, .16, 9], P.green);
   for (const z of [8, 17]) { cube([17, 2.3, z], [8, 3.1, .15], P.steel, true); }
-  for (const x of [14, 20]) for (const z of [9, 16]) b.tr([x, .6, z], [0, 0, Math.PI / 2], () => lathe(b, [[0, -.28], [.58, -.28], [.58, .28], [0, .28]], P.rubber, { sides: 10 }));
   cube([23, 1.55, 12.5], [3.5, 2.6, 3.8], P.green, true, .18);
-  cube([23, 2.6, 14.45], [2.8, .65, .04], P.blue);
+  addDispatchTruckDetails(b, cube);
   for (const z of [10.5, 14.5]) cube([12.5, .45, z], [Math.hypot(3, .9), .14, 2.9], P.steel, true, 0, [0, 0, Math.atan2(.9, 3)]);
   // The quarantine dollies roll onto a marked floor bay. Raised rack feet used to clip the exchange path.
   for (const z of [-18.5, -14.5]) cube([15.5, .11, z], [15, .015, .14], P.rust, false, 0);
@@ -147,24 +146,15 @@ export function buildIbdStatic() {
 
 export function buildIbdCoil(damaged: boolean, number = 1) {
   const b = new Builder();
-  b.tr([0, 0, 0], [Math.PI / 2, 0, 0], () => {
-    lathe(b, [[.65, -1.35], [1.9, -1.35], [2, -1.2], [2, 1.2], [1.9, 1.35], [.65, 1.35], [.65, -1.35]], P.steel, { sides: 20, caps: false, faceted: true });
-    for (const y of [-1.38, 1.38]) for (const r of [.83, 1.08, 1.34, 1.6, 1.82])
-      lathe(b, [[r, y - .014], [r + .025, y - .014], [r + .025, y + .014], [r, y + .014]], P.dark, { sides: 20, caps: false });
-    for (const y of [-.9, .9]) lathe(b, [[1.99, y - .07], [2.025, y - .07], [2.025, y + .07], [1.99, y + .07]], P.blue, { sides: 20, caps: false });
-  });
-  cbox(b, [.8, .65, 1.4], [.65, .42, .04], P.pale, .02);
-  for (let i = 0; i < number; i++) cbox(b, [.64 + i * .18, .65, 1.43], [.06, .24, .015], P.dark, .005);
+  addWoundCoil(b, damaged);
+  cbox(b, [.8, .65, 1.37], [.65, .42, .04], P.pale, .02);
+  for (let i = 0; i < number; i++) cbox(b, [.64 + i * .18, .65, 1.395], [.06, .24, .008], P.dark, .002);
+  for (const x of [.52, 1.08]) cbox(b, [x, .8, 1.394], [.035, .035, .008], P.dark);
   cbox(b, [0, -2.07, 0], [3.9, .14, 2.7], P.dark, .03);
   // The cradles belong to the moving dolly, so exchanging a coil cannot drag through fixed timber blocks.
   for (const x of [-1.25, 1.25]) cbox(b, [x, -1.72, 0], [.45, .6, 2.7], P.timber, .03);
   for (const x of [-1.7, 1.7]) for (const z of [-1.05, 1.05])
     b.tr([x, -2.12, z], [0, 0, Math.PI / 2], () => lathe(b, [[0, -.09], [.13, -.09], [.13, .09], [0, .09]], P.steel, { sides: 8 }));
-  if (damaged) {
-    b.face([[-1.35, .5, -1.4], [-.65, 1.4, -1.4], [.1, .95, -1.44], [-.4, .2, -1.52]], P.rust, [0, 0, -1]);
-    bar(b, [-1.2, .55, -1.48], [-.3, 1.1, -1.48], .08, P.dark, 5);
-    bar(b, [-.3, 1.1, -1.48], [-.45, .35, -1.48], .08, P.dark, 5);
-  }
   return b.build();
 }
 export function buildIbdPack(quantity: number, spec: string) {
@@ -222,10 +212,7 @@ export function buildIbdCables() {
 }
 export function buildIbdTools() {
   const b = new Builder();
-  b.tr([0, 0, 0], [Math.PI / 2, 0, 0], () => lathe(b, [[0, -.3], [.09, -.3], [.09, 0], [.16, .1], [.16, .2], [0, .2]], P.dark, { sides: 8 }));
-  cbox(b, [.4, 0, 0], [.6, .04, .05], P.steel);
-  for (const x of [.12, .5]) cbox(b, [x, -.1, 0], [.04, .22, .05], P.steel);
-  cbox(b, [.4, .08, 0], [.17, .1, .08], P.amber);
+  addInspectionTools(b);
   return b.build();
 }
 export function buildIbdShutter() {

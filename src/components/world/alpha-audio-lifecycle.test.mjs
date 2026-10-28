@@ -47,7 +47,7 @@ class Audio extends Target {
   }
   createOscillator() { const n = this.node(); this.sources.push(n); return n; }
   createBufferSource() { return this.createOscillator(); }
-  change(state) { this.state = state; queueMicrotask(() => this.dispatchEvent(new Event('statechange'))); }
+  change(state) { if (this.state === 'closed') return; this.state = state; queueMicrotask(() => this.dispatchEvent(new Event('statechange'))); }
   resume() {
     this.resumes++;
     if (this.rejectResume) return Promise.reject(new Error('gesture required'));
@@ -311,4 +311,50 @@ test('cancelled or expired workshop resume cannot play later, cancellation never
   const stop = a.workshopCue('process'); await settle(); a.workshopCue('success'); await settle(); stop();
   assert.equal(a.snapshot().cueVoices, 1); assert.equal(ctx.sources.at(-1).buffer, a.workshopBuffers.get('success'));
   release();
+});
+
+test('generic PCM handles share the cue bus, update volume and cancel only their own pending/live source', async t => {
+  const e = env(t), a = e.audio(), release = a.retain(), pcm = () => Float32Array.of(0, .2, -.2, 0);
+  const first = a.pcmCue('ibd:wood:0', pcm); await settle(); const ctx = a.ctx, source = ctx.sources.at(-1);
+  assert.equal(first.active, true); assert.equal(source.loop, false); first.setVolume(.25);
+  assert.equal(source.connections[0].gain.events.at(-1)[0], .25);
+  const other = a.workshopCue('process'); await settle(); const workshop = ctx.sources.at(-1);
+  first.cancel(); await settle(); assert.equal(first.active, false); assert.equal(a.snapshot().cueVoices, 1);
+  assert.equal(workshop.onended !== null, true); assert.equal(ctx.state, 'running');
+  other(); await settle(); ctx.holdResume = true;
+  const pending = a.pcmCue('ibd:metal:0', pcm); const newest = a.pcmCue('ibd:paper:0', pcm);
+  assert.equal(pending.active, false); pending.cancel(); assert.equal(newest.active, true);
+  ctx.finishResume(); await settle(); assert.equal(newest.active, true); assert.equal(a.snapshot().cueVoices, 1);
+  newest.setVolume(0); await settle(); assert.equal(newest.active, false); assert.equal(ctx.state, 'suspended');
+  release();
+});
+
+test('generic PCM cache is bounded by both key count and bytes; invalid PCM never starts a source', async t => {
+  const e = env(t), a = e.audio(), release = a.retain();
+  for (let i = 0; i < 40; i++) {
+    a.pcmCue(`small:${i}`, () => new Float32Array(16)); await settle(); a.ctx.sources.at(-1).end(); await settle();
+  }
+  assert.equal(a.snapshot().pcmKeys, 24);
+  for (let i = 0; i < 10; i++) {
+    a.pcmCue(`large:${i}`, () => new Float32Array(72000)); await settle(); a.ctx.sources.at(-1).end(); await settle();
+    assert.ok(a.snapshot().pcmBytes <= 1048576); assert.ok(a.snapshot().pcmKeys <= 24);
+  }
+  const count = a.ctx.sources.length;
+  for (const render of [() => new Float32Array(0), () => Float32Array.of(NaN), () => Float32Array.of(2),
+    () => new Float32Array(72001), () => { throw new Error('invalid source'); }]) {
+    const handle = a.pcmCue('invalid', render); await settle(); assert.equal(handle.active, false);
+  }
+  assert.equal(a.ctx.sources.length, count); assert.equal(a.ctx.state, 'suspended');
+  release(); assert.equal(a.snapshot().pcmBytes, 0); assert.equal(a.snapshot().pcmKeys, 0);
+});
+
+test('generic PCM shares the total eight-source budget and cannot leave a resume after final owner release', async t => {
+  const e = env(t), a = e.audio(), release = a.retain(), pcm = () => Float32Array.of(0, .2, 0);
+  a.cue('strike'); for (let i = 0; i < 3; i++) a.workshopCue('process');
+  for (let i = 0; i < 100; i++) a.pcmCue(`ibd:${i}`, pcm);
+  assert.equal(a.snapshot().cueVoices, 8); assert.equal(a.ctx.sources.length, 8); assert.equal(e.intervals.size, 0);
+  a.ctx.sources.forEach(source => source.end()); await settle(); const ctx = a.ctx; ctx.holdResume = true;
+  const handle = a.pcmCue('late', pcm); release(); ctx.finishResume(); await settle();
+  assert.equal(handle.active, false); assert.equal(ctx.state, 'closed'); assert.equal(ctx.sources.length, 8);
+  assert.equal(a.snapshot().pcmBytes, 0); assert.equal(e.win.count + e.doc.count + ctx.count, 0);
 });

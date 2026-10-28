@@ -43,8 +43,8 @@
   "runtimeEvidence": {
     "status": "reviewed-for-local-preview",
     "date": "2026-10-28",
-    "report": "docs/world/phase-2-playground/visual-calibration-20261027/delivery-20261028.md",
+    "report": "docs/world/phase-2-playground/ibd-craft-20261028.md",
     "userVisualAcceptance": "pending",
-    "note": "已比较实际日夜画面并验证核心交互；用户尚未验收最终视觉。数值、浏览器与性能证据分开记录。"
+    "note": "v16 已比较三组固定日夜近景，并实际验证接货、拾取、检查和转台。全流程历史与本轮局部证据分开；货车比例、整体货物密度、音乐听感与整岛性能仍未完成，用户尚未验收最终视觉。"
   }
 }

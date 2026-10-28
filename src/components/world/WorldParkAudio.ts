@@ -16,6 +16,11 @@ const hz = (m: number) => 440 * 2 ** ((m - 69) / 12);
 
 export const WORKSHOP_SOUND_SECONDS = { intake: .24, route: .36, process: 2.35, success: .48, error: .4, bell: .7, unlock: .8 } as const;
 export type WorkshopSound = keyof typeof WORKSHOP_SOUND_SECONDS;
+export interface PcmCueHandle {
+  cancel: () => void;
+  setVolume: (volume: number) => void;
+  readonly active: boolean;
+}
 /** Small deterministic mono Foley sketches, not recordings or an external music model.
  * Short attacks identify the material; space between impacts identifies the action. */
 export function renderWorkshopSound(kind: WorkshopSound, sampleRate = 24000) {
@@ -73,6 +78,7 @@ export class ParkAudio {
   private master: GainNode | null = null; private deck: [GainNode, GainNode] | null = null;
   private cueOutput: GainNode | null = null;
   private workshopBuffers = new Map<WorkshopSound, AudioBuffer>();
+  private pcmBuffers = new Map<string, AudioBuffer>();
   private stopSettings: (() => void) | null = null;
   private noise: AudioBuffer | null = null;
   private step = 0; private next = 0; private timer: number | null = null;
@@ -235,6 +241,56 @@ export class ParkAudio {
       this.sync();
     };
   }
+  /** Finite mono material cue on the existing SFX graph. No new context/player per caller.
+   * Cache is LRU-bounded to 24 keys / 1 MiB; each rendered cue is at most three seconds.
+   * Cancellation and volume updates affect this handle only, including a pending resume. */
+  pcmCue(key: string, render: () => Float32Array, sampleRate = 24000, intensity = 1): PcmCueHandle {
+    let level = Number.isFinite(intensity) ? Math.max(0, Math.min(1, intensity)) : 0;
+    const noop: PcmCueHandle = { cancel() {}, setVolume() {}, active: false };
+    if (!key || key.length > 128 || !Number.isInteger(sampleRate) || sampleRate < 8000 || sampleRate > 192000
+      || !level || !this.cuesEnabled() || this.cueBlocked || this.cueVoices.size >= 8) return noop;
+    this.listen();
+    if (!this.ensureContext()) return noop;
+    const ctx = this.ctx!, requestedAt = performance.now(), cacheKey = `${sampleRate}:${key}`;
+    let source: AudioBufferSourceNode | null = null, gain: GainNode | null = null, cancelled = false;
+    const play = () => {
+      if (cancelled || !level || this.ctx !== ctx || performance.now() - requestedAt > 250 || !this.cuesEnabled() || this.cueVoices.size >= 8) return;
+      let buffer = this.pcmBuffers.get(cacheKey);
+      if (buffer) { this.pcmBuffers.delete(cacheKey); this.pcmBuffers.set(cacheKey, buffer); }
+      else {
+        let pcm: Float32Array;
+        try { pcm = render(); } catch { return; }
+        if (!(pcm instanceof Float32Array) || !pcm.length || pcm.length > sampleRate * 3 || pcm.byteLength > 1048576
+          || !pcm.every(v => Number.isFinite(v) && Math.abs(v) <= 1)) return;
+        const bytes = () => [...this.pcmBuffers.values()].reduce((n, b) => n + b.length * 4, 0);
+        while (this.pcmBuffers.size >= 24 || bytes() + pcm.byteLength > 1048576)
+          this.pcmBuffers.delete(this.pcmBuffers.keys().next().value!);
+        buffer = ctx.createBuffer(1, pcm.length, sampleRate); buffer.getChannelData(0).set(pcm); this.pcmBuffers.set(cacheKey, buffer);
+      }
+      source = ctx.createBufferSource(); source.buffer = buffer; source.loop = false;
+      gain = ctx.createGain(); gain.gain.value = level;
+      source.connect(gain).connect(this.cueOutput!); this.ownVoice(source, [gain], true);
+      const at = ctx.currentTime + .005; source.start(at); source.stop(at + buffer.duration);
+    };
+    const cancel = () => {
+      cancelled = true;
+      if (this.pendingCue === play) this.pendingCue = null;
+      if (source) { try { source.stop(); } catch { /* Already ended. */ } this.voices.get(source)?.(); }
+      this.sync();
+    };
+    const owner = this;
+    const handle: PcmCueHandle = { cancel,
+      setVolume(volume) {
+        if (cancelled || !Number.isFinite(volume)) return;
+        level = Math.max(0, Math.min(1, volume));
+        if (!level) { cancel(); return; }
+        if (gain && source && owner.voices.has(source)) gain.gain.setTargetAtTime(level, ctx.currentTime, .02);
+      },
+      get active() { return !cancelled && owner.ctx === ctx && (owner.pendingCue === play || !!source && owner.voices.has(source)); },
+    };
+    this.pendingCue = play; this.sync();
+    return handle;
+  }
   private flushCue() {
     const cue = this.pendingCue; this.pendingCue = null; cue?.();
     if (!this.canRun()) this.sync(); // An expired event must not leave an idle context running.
@@ -315,7 +371,8 @@ export class ParkAudio {
   }
   snapshot() { return { owners: this.owners, started: this.started, timer: this.timer !== null, subscribed: !!this.unsubscribe,
     state: this.ctx?.state ?? 'absent', transitioning: this.transitioning, voices: this.voices.size, ticks: this.ticks, muted: this.muted,
-    cueVoices: this.cueVoices.size, cuePending: !!this.pendingCue }; }
+    cueVoices: this.cueVoices.size, cuePending: !!this.pendingCue, pcmKeys: this.pcmBuffers.size,
+    pcmBytes: [...this.pcmBuffers.values()].reduce((n, b) => n + b.length * b.numberOfChannels * 4, 0) }; }
   dispose() {
     this.stopTimer();
     this.unsubscribe?.(); this.unsubscribe = null;
@@ -326,6 +383,7 @@ export class ParkAudio {
     const ctx = this.ctx; this.ctx = null; this.started = false; this.transitioning = false;
     this.pendingCue = null; this.cueVoices.clear(); this.cueBlocked = false;
     this.workshopBuffers.clear();
+    this.pcmBuffers.clear();
     ctx?.removeEventListener('statechange', this.onContextState);
     for (const [source, release] of this.voices) { try { source.stop(); } catch { /* Already ended. */ } release(); }
     if (ctx && ctx.state !== 'closed') void ctx.close().catch(() => {});

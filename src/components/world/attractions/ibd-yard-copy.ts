@@ -2,7 +2,7 @@ import type { Bi } from '../types';
 import type { IbdActionKind, IbdYardGame } from './ibd-yard-game.ts';
 const bi = (zh: string, en: string): Bi => ({ zh, en });
 export const IBD_MOTION_WAIT_LABEL = {
-  'path-occupied': bi('运输通道有人，请退到拉杆外侧；清空后自动继续。', 'Transport lane occupied. Step outside the lever lane; movement resumes when clear.'),
+  'path-occupied': bi('运输通道有人，请退到操作台外侧；清空后自动继续。', 'Transport lane occupied. Step to the outer side of the controls; movement resumes when clear.'),
   'player-unavailable': bi('等待人物碰撞体就绪，货物已停稳。', 'Waiting for the player collider. Cargo is held in place.'),
 };
 export const IBD_ACTION_LABEL: Record<IbdActionKind, Bi> = {

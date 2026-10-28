@@ -2,7 +2,9 @@ import type { Surf } from '../WorldStreetGeometry.ts';
 
 const surf = (color: string, metal = .1): Surf => ({ color, rough: .78, metal });
 export const IBD_MATERIALS = {
-  steel: surf('#879ba5', .3), dark: surf('#30444d', .24), roof: surf('#536d72', .2), timber: surf('#a77a49'),
+  steel: { color: '#879ba5', rough: .56, metal: .38 } satisfies Surf,
+  dark: { color: '#30444d', rough: .64, metal: .24 } satisfies Surf,
+  roof: { color: '#536d72', rough: .67, metal: .2 } satisfies Surf, timber: surf('#a77a49'),
   endgrain: surf('#d0a771'), concrete: surf('#a2a298'), pale: surf('#e8e5d8'), amber: surf('#e9ac39'),
   rubber: surf('#293133'), rust: surf('#c17551'), blue: surf('#608a9e'), green: surf('#557d68'),
   wall: surf('#b8b7aa'), slab: surf('#939b9c'), leaf: surf('#66794e'), leafDark: surf('#465e48'),

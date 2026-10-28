@@ -69,6 +69,9 @@ export const WORLD_SHOTS_V4 = [
     { id: `workshop-${time}`, position: [48, 10, -110] as Vec3, target: [34, 2, -129] as Vec3 },
     { id: `ibd-overview-${time}`, position: [-16, 46, -104] as Vec3, target: [-88, 5, -177] as Vec3 },
     { id: `ibd-entrance-${time}`, position: [-84, 4.2, -134] as Vec3, target: [-88, 6, -179] as Vec3 },
+    { id: `ibd-coil-detail-${time}`, position: [-104, 5.7, -170] as Vec3, target: [-100, 3.2, -181] as Vec3 },
+    { id: `ibd-tools-detail-${time}`, position: [-92.5, 3.5, -155.1] as Vec3, target: [-93.8, 2.38, -158] as Vec3 },
+    { id: `ibd-dispatch-detail-${time}`, position: [-57, 5.7, -154] as Vec3, target: [-67, 2.2, -164] as Vec3 },
   ]),
 ];
 

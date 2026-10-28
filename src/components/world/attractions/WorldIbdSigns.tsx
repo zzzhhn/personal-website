@@ -20,8 +20,15 @@ export default function WorldIbdSigns() {
       { at: [-28.3, 1.6, 4.03], w: 2.6, h: .7, title: zh ? '缓坡上高廊' : 'GALLERY RAMP', sub: zh ? '换个角度看后排' : 'A DIFFERENT VIEW' },
       { at: [14, 3.2, -18.92], w: 5, h: .8, title: zh ? '隔离记录 ／ 备件' : 'QUARANTINE / SPARES', sub: zh ? '原始差异保留，新货须再验' : 'KEEP FINDINGS · RECHECK REPLACEMENTS' },
       { at: [-17, 1.3, 14.2], w: 4, h: .8, title: zh ? '钢卷退换位' : 'COIL EXCHANGE', sub: zh ? '隔离原货与新供货分开' : 'RETURNED CARGO IS SEPARATE' },
-      ...IBD_STATIONS.map(original => { const s = ibdStation(original.id, moved); return ({ at: [s.at[0], s.at[1] + .95, s.at[2] - .35] as Vec3,
-        w: s.id.startsWith('gallery') ? 2 : 1.8, h: .65, title: s.title[lang], sub: s.id === 'manifest' ? '2 COILS / 8 M8' : 'E / Y' }); }),
+      ...IBD_STATIONS.map(original => {
+        const s = ibdStation(original.id, moved), coil = s.id === 'coil-front' || s.id === 'coil-rear';
+        const table = s.id === 'kit' || s.id === 'manifest';
+        // Floor placards leave the bore and wound inspection face unobstructed.
+        return { at: [s.at[0], coil ? .31 : table ? (s.id === 'kit' ? .9 : .6) : s.at[1] + .95,
+          s.at[2] - (table ? .39 : .35)] as Vec3,
+          w: s.id.startsWith('gallery') ? 2 : table ? 1.5 : 1.8, h: coil ? .42 : table ? .35 : .65,
+          title: s.title[lang], sub: s.id === 'manifest' ? '2 COILS / 8 M8' : 'E / Y' };
+      }),
     ];
     const canvas = document.createElement('canvas'); canvas.width = 1024; canvas.height = 1024;
     const ctx = canvas.getContext('2d')!;

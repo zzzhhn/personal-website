@@ -1,10 +1,11 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import type { PointLight } from 'three';
 import { night } from '../WorldNight';
 import { useWorldStore } from '../store';
 import { IBD_YARD } from './attraction-layout.ts';
 import { IBD_FIXTURES, nearestIbdFixtures } from './ibd-yard-lighting.ts';
+import { WORLD_SHOTS } from '../layout';
 
 /** Static fill follows the shared clock; exactly two nearby fixtures shade the player and moving cargo. */
 export default function WorldIbdLighting({ active, uniform }: { active: boolean; uniform: { value: number } }) {
@@ -12,16 +13,21 @@ export default function WorldIbdLighting({ active, uniform }: { active: boolean;
   const selection = useRef([-1, -1]);
   const previous = useRef([-1, -1]);
   const last = useRef({ x: Infinity, z: Infinity, night: -1 });
+  const shot = useWorldStore(s => s.shot);
+  const shotTarget = useMemo(() => WORLD_SHOTS.find(view => view.id === shot)?.target, [shot]);
   useEffect(() => { if (!active) for (const light of lights.current) if (light) light.intensity = 0; }, [active]);
   useFrame((_, delta) => {
     if (document.hidden) return;
     uniform.value = night.value;
     if (!active) return;
     const world = useWorldStore.getState();
-    const unchanged = last.current.x === world.position[0] && last.current.z === world.position[2] && last.current.night === night.value;
+    // Evidence cameras must sample the fixtures at the inspected object, just as
+    // a player standing there does; the dormant spawn is often outside the shed.
+    const focus = shotTarget ?? world.position;
+    const unchanged = last.current.x === focus[0] && last.current.z === focus[2] && last.current.night === night.value;
     if ((world.paused || world.shot || world.poolInspect || world.card) && unchanged) return;
-    last.current.x = world.position[0]; last.current.z = world.position[2]; last.current.night = night.value;
-    nearestIbdFixtures(world.position[0] - IBD_YARD.center[0], world.position[2] - IBD_YARD.center[2], selection.current);
+    last.current.x = focus[0]; last.current.z = focus[2]; last.current.night = night.value;
+    nearestIbdFixtures(focus[0] - IBD_YARD.center[0], focus[2] - IBD_YARD.center[2], selection.current);
     for (let i = 0; i < 2; i++) {
       const light = lights.current[i], index = selection.current[i];
       if (!light) continue;
