@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "scene": "alpha-agent-exchange",
+  "referenceVersion": "v2-tactile-historical-exchange",
+  "approvals": {
+    "style": {
+      "status": "approved",
+      "source": "human-user",
+      "date": "2026-10-29",
+      "quote": "通过，按这个方向做",
+      "scope": "已展示的校准版概念图：切面海岸、白盔人物、奶油石材、胡桃木和低光泽铜件"
+    },
+    "layout": {
+      "status": "approved",
+      "source": "human-user",
+      "date": "2026-10-29",
+      "quote": "通过，按这个方向做",
+      "scope": "中央交易池连接档案室、清算室和连通回廊；取票、送单、调仓与历史重演的空间方向"
+    }
+  },
+  "references": [
+    {
+      "role": "concept-sheet",
+      "path": "docs/world/phase-2-playground/alpha-exchange/rebuild-v2-20261029/exchange-concept-v2.png",
+      "sha256": "17d2cd89482277d8b64f3d62adbc570e6b49123414778f0cb7e852b7c9a099f7"
+    }
+  ],
+  "reviewViews": [
+    "E01 entrance and connected hall layout, day/night",
+    "E02 player ticket/slider contact at dealing station, day/night",
+    "E03 archive, gallery and two safe exits",
+    "E04 clearing-machine interaction and return route"
+  ],
+  "failureConditions": [
+    "Only more decorative computers, no embodied actions",
+    "Disconnected gallery or blocked exit",
+    "Character/material style drifts into photographic miniature",
+    "Night lights do not illuminate the floor, player and contact surfaces",
+    "Play requires repetitive next-day buttons or reading a large dashboard",
+    "Architecture requires permanent heavy reflections, lights or polling"
+  ],
+  "generation": {
+    "method": "native imagegen",
+    "prompt": "prompt.txt",
+    "styleCorrection": "style-calibration-prompt.txt",
+    "dayNightStatus": "Overview and alternate-angle blue-hour inset; not a frozen-camera pair. Generate matched views after direction approval and before implementation."
+  },
+  "runtimeEvidence": {
+    "status": "proposal-only",
+    "note": "No exchange runtime files changed. Images do not establish collision, animation or performance acceptance."
+  }
+}

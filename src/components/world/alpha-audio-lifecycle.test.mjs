@@ -310,7 +310,7 @@ test('shared SFX mute drops pending and live cues, music volume does not mute cu
   setWorldAudioVolume('music', 0); a.cue('scan'); await settle(); const ctx = a.ctx;
   assert.equal(a.snapshot().cueVoices, 1);
   setWorldAudioVolume('sfx', .4);
-  assert.equal(a.cueOutput.gain.events.at(-1)[0], .4);
+  assert.equal(a.cueOutput.gain.events.at(-1)[0], .68);
   setWorldAudioMuted(true); await settle(); const count = ctx.sources.length;
   assert.equal(a.snapshot().voices, 0); assert.equal(ctx.state, 'suspended');
   a.cue('strike'); setWorldAudioMuted(false); await settle();
@@ -329,7 +329,7 @@ test('music zero stops the recording while SFX stays usable and restoration reus
   a.cue('scan'); await settle(); assert.equal(a.snapshot().cueVoices, 1); assert.equal(e.intervals.size, 0);
   setWorldAudioVolume('sfx', 0); setWorldAudioVolume('music', .5); await settle();
   assert.equal(e.intervals.size, 0); assert.equal(a.snapshot().cueVoices, 0);
-  assert.equal(a.snapshot().roaming.level, .8); assert.equal(ctx.decodes, 1); release();
+  assert.equal(a.snapshot().roaming.level, 1.6); assert.equal(ctx.decodes, 1); release();
 });
 
 test('workshop renders seven distinct finite PCM sounds with bounded samples and faded endpoints', () => {
@@ -358,7 +358,7 @@ test('workshop playback uses actual PCM buffers, one source per action, shared S
     assert.ok(source.stopTime - source.startTime <= 2.351);
     source.end(); await settle(); assert.equal(ctx.state, 'suspended');
   }
-  assert.equal(a.cueOutput.gain.value, .4); assert.equal(a.workshopBuffers.size, 7);
+  assert.equal(a.cueOutput.gain.value, .68); assert.equal(a.workshopBuffers.size, 7);
   const cached = a.workshopBuffers.get('intake'); const stop = a.workshopCue('intake'); await settle();
   assert.equal(a.ctx.sources.at(-1).buffer, cached); stop(); await settle();
   assert.equal(a.snapshot().cueVoices, 0); assert.equal(a.ctx.state, 'suspended');

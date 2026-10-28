@@ -95,9 +95,9 @@ test('pause, background, inspection, shot, BFCache and entering/leaving Club sto
 
 test('shared levels and SFX duck the recording without restarting it, and Music=0 preserves finite SFX', async t => {
   const e = fixture(t); e.gesture(); await settle(); const ctx = Audio.instances[0], source = ctx.sources[0];
-  e.audio.workshopCue('intake'); await settle(); assert.equal(e.audio.snapshot().roaming.level, 1.6 * .45);
-  ctx.sources.at(-1).end(); await settle(); assert.equal(e.audio.snapshot().roaming.level, 1.6);
-  setWorldAudioVolume('music', .3); assert.equal(e.audio.snapshot().roaming.level, .48);
+  e.audio.workshopCue('intake'); await settle(); assert.equal(e.audio.snapshot().roaming.level, 3.2 * .62);
+  ctx.sources.at(-1).end(); await settle(); assert.equal(e.audio.snapshot().roaming.level, 3.2);
+  setWorldAudioVolume('music', .3); assert.equal(e.audio.snapshot().roaming.level, .96);
   assert.equal(ctx.sources[0], source); assert.equal(source.stopped, undefined);
   setWorldAudioVolume('music', 0); await settle(); e.audio.cue('scan'); await settle();
   assert.equal(e.audio.snapshot().roaming.sources, 0); assert.equal(e.audio.snapshot().cueVoices, 1);
@@ -108,8 +108,8 @@ test('Club exit eases the saved phrase in from silence and pause still cuts that
   const e = fixture(t); setWorldAudioVolume('music', .5); e.gesture(); await settle();
   const ctx = Audio.instances[0], initial = ctx.sources[0];
   const assertOnset = source => {
-    assert.deepEqual(source.connections[0].gain.events, [{ from: 0, value: .8, at: ctx.currentTime, tau: .08 }]);
-    assert.equal(e.audio.snapshot().roaming.level, .8, 'the user-selected target level is preserved');
+    assert.deepEqual(source.connections[0].gain.events, [{ from: 0, value: 1.6, at: ctx.currentTime, tau: .08 }]);
+    assert.equal(e.audio.snapshot().roaming.level, 1.6, 'the user-selected target level is preserved');
   };
   assertOnset(initial); ctx.currentTime = 13.375; setClubAudible(e.club, true);
   assert.equal(initial.stopped, true, 'Club entry stops immediately without an outgoing fade');
@@ -121,6 +121,30 @@ test('Club exit eases the saved phrase in from silence and pause still cuts that
   assert.equal(restored.stopped, true); assert.equal(restored.disconnected, true);
   assert.equal(restored.connections[0].disconnected, true, 'no scheduled gain target can leak through pause');
   assert.equal(e.audio.snapshot().roaming.sources, 0);
+});
+
+test('the actual quiet WAV gains presence with bounded output headroom and independent user channel scaling', async t => {
+  const e = fixture(t); e.gesture(); await settle();
+  const ctx = Audio.instances[0], source = ctx.sources[0], musicGain = source.connections[0].gain;
+  const wav = readFileSync(new URL(`../../../public${PARK_ROAMING_TRACK.url}`, import.meta.url));
+  let peak = 0, energy = 0;
+  for (let offset = 44; offset < wav.length; offset += 2) {
+    const sample = wav.readInt16LE(offset) / 32768; peak = Math.max(peak, Math.abs(sample)); energy += sample ** 2;
+  }
+  const effective = musicGain.value * e.audio.master.gain.value;
+  const rms = Math.sqrt(energy / ((wav.length - 44) / 2));
+  const outputRmsDb = 20 * Math.log10(rms * effective), outputPeakDb = 20 * Math.log10(peak * effective);
+  assert.ok(outputRmsDb > -36 && outputRmsDb < -35, `measured full-volume RMS ${outputRmsDb}`);
+  assert.ok(outputPeakDb < -18, 'the accepted source retains at least 18 dB of peak headroom');
+  assert.ok(Math.abs(20 * Math.log10(effective / .256) - 6.0206) < .001);
+  assert.equal(e.audio.master.gain.value, .16, 'QA audition and the safety master are unchanged');
+  setWorldAudioVolume('music', .5); assert.equal(musicGain.value * e.audio.master.gain.value, effective / 2);
+  setWorldAudioVolume('sfx', .4); e.audio.workshopCue('intake'); await settle();
+  assert.equal(e.audio.cueOutput.gain.value, .68);
+  assert.equal(musicGain.value, 1.6 * .62, 'the cue keeps the selected music level with a finite dip');
+  assert.equal(useWorldAudioSettings.getState().musicVolume, .5); assert.equal(useWorldAudioSettings.getState().sfxVolume, .4);
+  setWorldAudioVolume('sfx', 0); assert.equal(e.audio.snapshot().cueVoices, 0); assert.equal(musicGain.value, 1.6);
+  setWorldAudioVolume('music', 0); assert.equal(source.stopped, true); assert.equal(source.disconnected, true);
 });
 
 test('pause cancels fetch, stale replies cannot decode, and failed loads retry only on the next trusted gesture', async t => {

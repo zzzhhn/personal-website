@@ -3,6 +3,7 @@ import { useWorldAudioSettings, worldAudioLevel } from './world-audio-settings';
 import { isClubAudible, subscribeClubAudible } from './world-music-focus';
 import { renderWalkMusic, renderWorkshopCandidate, WALK_RATE, type AudioCandidate } from './walk-music-candidate';
 import { ParkRoamingMusic } from './park-roaming-music';
+import { PARK_AUDIO_MIX } from './park-audio-mix';
 
 /**
  * Shared Park context: the pre-rendered roaming recording and finite interaction cues.
@@ -183,7 +184,7 @@ export class ParkAudio {
       this.roaming.stop(); this.roaming.cancelLoading(); // Retry only on a trusted input.
     });
   }
-  private roamingLevel() { return worldAudioLevel('music') * 1.6 * (this.pendingCue || this.cueVoices.size ? .45 : 1); }
+  private roamingLevel() { return worldAudioLevel('music') * PARK_AUDIO_MIX.roaming * (this.pendingCue || this.cueVoices.size ? PARK_AUDIO_MIX.roamingCueDuck : 1); }
   private playReady() {
     this.flushPreview(); this.flushCue();
     if (this.roamingWanted() && this.ctx && this.master) this.roaming.play(this.ctx, this.master, this.roamingLevel());
@@ -249,7 +250,7 @@ export class ParkAudio {
     try { ctx = new Ctx({ sampleRate: 24000 }); } catch { ctx = new Ctx(); }
     this.ctx = ctx;
     ctx.addEventListener('statechange', this.onContextState);
-    const master = this.master = ctx.createGain(); master.gain.value = this.muted ? 0 : 0.16;
+    const master = this.master = ctx.createGain(); master.gain.value = this.muted ? 0 : PARK_AUDIO_MIX.master;
     const comp = ctx.createDynamicsCompressor(); comp.threshold.value = -18; comp.ratio.value = 3;
     master.connect(comp).connect(ctx.destination);
     this.cueOutput = ctx.createGain(); this.cueOutput.connect(master);
@@ -368,15 +369,15 @@ export class ParkAudio {
     for (const source of sources) { try { source.stop(); } catch { /* Already ended. */ } this.voices.get(source)?.(); }
   }
   setCrossfade(x: number) { this.x = Math.max(0, Math.min(1, x)); this.applyFade(false); }
-  setMuted(m: boolean) { this.muted = m; if (this.ctx && this.master) this.master.gain.setTargetAtTime(m ? 0 : 0.16, this.ctx.currentTime, 0.1); this.sync(); }
+  setMuted(m: boolean) { this.muted = m; if (this.ctx && this.master) this.master.gain.setTargetAtTime(m ? 0 : PARK_AUDIO_MIX.master, this.ctx.currentTime, 0.1); this.sync(); }
   /** Current deck gains for visuals (platter speed). */
   gains(): [number, number] { return [Math.cos(this.x * Math.PI / 2), Math.sin(this.x * Math.PI / 2)]; }
   private applyFade(now: boolean) {
     if (!this.ctx) return;
     const t = this.ctx.currentTime;
     if (this.cueOutput) {
-      if (now) this.cueOutput.gain.value = worldAudioLevel('sfx');
-      else this.cueOutput.gain.setTargetAtTime(worldAudioLevel('sfx'), t, .025);
+      if (now) this.cueOutput.gain.value = worldAudioLevel('sfx') * PARK_AUDIO_MIX.sfx;
+      else this.cueOutput.gain.setTargetAtTime(worldAudioLevel('sfx') * PARK_AUDIO_MIX.sfx, t, .025);
     }
     this.updatePreviewLevel();
     this.roaming.volume(this.roamingLevel());
