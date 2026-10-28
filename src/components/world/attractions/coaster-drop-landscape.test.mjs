@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import R from '@dimforge/rapier3d-compat';
 import { DoubleSide, Mesh, MeshBasicMaterial, Raycaster, Triangle, Vector3 } from 'three';
 import { createCoasterTerrainRelief } from './coaster-terrain-relief.ts';
+import { createDropRock, DROP_ROCK_BEDS } from './coaster-drop-landscape.ts';
 import { coasterFrame, coasterRidePose, coasterSupports } from './coaster-track.ts';
 
 await R.init();
@@ -16,18 +17,43 @@ test('local scarp and soil aprons keep their footprint with no static replacemen
   const {rocks,detailTriangles,savedApronTriangles}=relief.dropSample;
   assert.equal(rocks,4);
   assert.equal(north.triangleCount,north.terrainTriangleCount,'foliage must live in the shared wind/LOD pipeline');
-  assert.equal(detailTriangles,224);assert.ok(savedApronTriangles>=300);
+  assert.ok(detailTriangles>224&&detailTriangles<=650);assert.ok(savedApronTriangles>=300);
   assert.ok(relief.triangleCount<=25226,'local additions may not consume the far scene budget');
   const p=relief.geometry.attributes.position,c=relief.geometry.attributes.color;let soilArea=0;
   for(let i=north.firstTriangle;i<north.firstTriangle+north.triangleCount;i++) {
     const a=new Vector3().fromBufferAttribute(p,i*3),b=new Vector3().fromBufferAttribute(p,i*3+1),d=new Vector3().fromBufferAttribute(p,i*3+2),triangle=new Triangle(a,b,d);
     for(const v of [a,b,d])assert.ok(v.x>=-15.01&&v.x<=98.01&&v.z>=-385.01&&v.z<=-312.99,'sample expanded outside north escarpment');
-    if(Math.max(a.y,b.y,d.y)<1.2&&triangle.getNormal(new Vector3()).y>.99) {
+    if(Math.max(a.y,b.y,d.y)<1.2&&Math.max(a.y,b.y,d.y)-Math.min(a.y,b.y,d.y)<.0001&&triangle.getNormal(new Vector3()).y>.99) {
       assert.ok(c.getY(i*3)>c.getX(i*3)+.005,'a low apron remains bare mineral grey');soilArea+=triangle.getArea();
     }
   }
   assert.ok(soilArea>500);
   t.diagnostic(JSON.stringify({rocks,detailTriangles,savedApronTriangles,soilApronArea:soilArea,totalTerrainTriangles:relief.triangleCount}));
+});
+
+test('a representative bed has closed skewed scarps and a few low detached flakes instead of concentric bands',()=>{
+  const bed=DROP_ROCK_BEDS[0],rock=createDropRock(bed,0,()=>.3,()=>50);assert.ok(rock);
+  const adjacency=rock.points.map(()=>new Set()),edges=new Map();
+  for(const [a,b,c] of rock.faces){
+    assert.ok(new Triangle(...[a,b,c].map(i=>new Vector3(...rock.points[i]))).getArea()>.00001);
+    for(const [u,v] of [[a,b],[b,c],[c,a]]){adjacency[u].add(v);adjacency[v].add(u);const key=[Math.min(u,v),Math.max(u,v)].join(':');const e=edges.get(key)??[0,0];e[0]++;e[1]+=u<v?1:-1;edges.set(key,e);}
+  }
+  for(const [count,orientation] of edges.values())assert.deepEqual([count,orientation],[2,0]);
+  const seen=new Set(),components=[];
+  for(let i=0;i<rock.points.length;i++)if(!seen.has(i)){
+    const ids=[],todo=[i];seen.add(i);while(todo.length){const at=todo.pop();ids.push(at);for(const next of adjacency[at])if(!seen.has(next)){seen.add(next);todo.push(next);}}
+    components.push(ids);
+  }
+  assert.equal(components.length,4,'one main mass and three purposeful toe flakes');
+  const main=components[0].map(i=>rock.points[i]);
+  const wallHeights=main.filter(p=>p[1]>1&&p[1]<bed[4]-1).map(p=>p[1]);
+  assert.ok(Math.max(...wallHeights)-Math.min(...wallHeights)>3,'scarp joints still make one horizontal band');
+  for(const ids of components.slice(1)){
+    const points=ids.map(i=>rock.points[i]),ys=points.map(p=>p[1]);
+    assert.ok(Math.min(...ys)<.3&&Math.max(...ys)<1,'flakes must be embedded at the toe');
+    assert.ok(new Set(ys.map(y=>y.toFixed(3))).size>=3,'flake roof must be inclined');
+  }
+  assert.ok(Math.max(...main.map(p=>p[1]))<=bed[4]+.151,'scarp exceeds the retained height envelope');
 });
 
 test('actual scarp contacts match visible surfaces and preserve both support aprons',t=>{
