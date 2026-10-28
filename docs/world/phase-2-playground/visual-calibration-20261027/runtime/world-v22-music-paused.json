@@ -1,0 +1,32 @@
+{
+  "parkAudio": {
+    "owners": 4,
+    "started": true,
+    "timer": false,
+    "subscribed": true,
+    "state": "suspended",
+    "transitioning": false,
+    "voices": 0,
+    "ticks": 0,
+    "muted": false,
+    "cueVoices": 0,
+    "cuePending": false,
+    "pcmKeys": 0,
+    "pcmBytes": 0,
+    "candidate": null,
+    "previewPlaying": false,
+    "previewPending": false,
+    "previewBytes": 0,
+    "roaming": {
+      "phase": "ready",
+      "sources": 0,
+      "buffers": 1,
+      "loading": false,
+      "decoding": false,
+      "bytes": 6912000,
+      "seconds": 36,
+      "offset": 30.165333333333333,
+      "level": -1
+    }
+  }
+}
