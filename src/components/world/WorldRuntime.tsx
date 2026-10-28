@@ -32,6 +32,7 @@ import { intentRideClock, useIntentStore } from './attractions/intent-state';
 import { coasterPhase } from './attractions/coaster-track';
 import { INTENT_COASTER } from './attractions/attraction-layout';
 import { StaticShotFrames, worldRenderMode } from './performance-render-policy';
+import { worldResumeProbe } from './world-resume-probe';
 
 // Layout v4 greybox (?layout=v4) loads as its own chunk; the default entry never fetches it.
 const WorldDistricts = LAYOUT_V4 ? lazy(() => import('./WorldDistricts')) : null;
@@ -45,6 +46,25 @@ function usePageVisible() {
     return () => document.removeEventListener('visibilitychange', update);
   }, []);
   return visible;
+}
+
+/** DEV-only, earlier than the default-priority physics/scene subscribers. The
+ * callback is a no-op until the user explicitly arms the five-frame probe. */
+function ResumeProbeBridge() {
+  const { world } = useRapier();
+  const { gl, scene, camera } = useThree();
+  useLayoutEffect(() => {
+    const unbind = worldResumeProbe.bind({ world, renderer: gl, scene, camera, state: () => {
+      const s = useWorldStore.getState();
+      return { paused: s.paused, poolInspect: s.poolInspect, shot: s.shot, hidden: document.hidden };
+    } });
+    const hidden = () => { if (document.hidden) worldResumeProbe.cancel('hidden'); };
+    const leave = () => worldResumeProbe.cancel('pagehide');
+    document.addEventListener('visibilitychange', hidden); window.addEventListener('pagehide', leave);
+    return () => { document.removeEventListener('visibilitychange', hidden); window.removeEventListener('pagehide', leave); unbind(); };
+  }, [world, gl, scene, camera]);
+  useFrame((_, delta) => worldResumeProbe.beginFrame(delta), -1000);
+  return null;
 }
 
 function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
@@ -91,6 +111,7 @@ function SceneLifecycle({ setOverlay }: { setOverlay: (on: boolean) => void }) {
     // A demand frame must not include the time spent asleep. This also covers
     // menu edits and resize without changing the requested drawing resolution.
     clock.getDelta();
+    if (import.meta.env.DEV) worldResumeProbe.clockReset();
     if (frameSample && !frozen) { frameSample.count = 0; frameSample.cursor = 0; frameSample.warm = 0; }
     invalidate();
   }, [frozen, shot, light, timeRevision, weather, quality, size.width, size.height, clock, invalidate, frameSample, staticShotFrames]);
@@ -228,6 +249,7 @@ export default memo(function WorldRuntime({ content }: { content: WorldContent }
   }, []);
   return <Canvas frameloop={renderMode} shadows="percentage" dpr={[1, 2]} camera={{ position: [CAMP_SPAWN[0] + 10, CAMP_SPAWN[1] + 13, CAMP_SPAWN[2] + 10], fov: 50, near: .1, far: 600 }} gl={{ antialias: true, alpha: false, powerPreference: 'high-performance' }}>
     <Suspense fallback={null}><Physics debug={overlay} gravity={[0, -9.81, 0]} timeStep={1 / 60} paused={renderMode !== 'always'} colliders={false}>
+      {import.meta.env.DEV && <ResumeProbeBridge />}
       <NightClock />
       <WorldWeather />
       <WorldEnvironment experiences={content.experiences} />{WorldDistricts && <WorldDistricts />}<WorldObstacles /><WorldActors />

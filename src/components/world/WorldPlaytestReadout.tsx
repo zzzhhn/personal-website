@@ -31,6 +31,7 @@ import { coasterStructureMemory } from './attractions/coaster-structure-cache';
 import { coasterStructureJobs } from './attractions/coaster-structure-job';
 import { coasterDropHeight } from './attractions/coaster-terrain-relief';
 import { coasterWorld } from './attractions/coaster-track';
+import { worldResumeProbe } from './world-resume-probe';
 
 function readContactSnapshot() {
   const value=worldActorDebug.actor(),physics=worldActorDebug.snapshot();
@@ -101,6 +102,14 @@ export default function WorldPlaytestReadout() {
         <button onClick={()=>{shadowRebuildProbe.start();sceneWorkProbe.start();clubWaterFrameWindow.start();setRenderSnapshot({frameWindow:'started'});}}>QA · 开始场景帧采样</button>
         <button onClick={()=>setRenderSnapshot({frameWindow:clubWaterFrameWindow.stop(),shadowRebuilds:shadowRebuildProbe.stop(),shadowWork:shadowChunkWork(),sceneWork:sceneWorkProbe.stop(),coasterStructureMemory:{...coasterStructureMemory},coasterStructureJobs:{...coasterStructureJobs},render:readRenderSnapshot()})}>QA · 结束场景帧采样</button>
         <button onClick={()=>setRenderSnapshot({shadowWork:shadowChunkWork()})}>QA · 读取阴影构建状态</button>
+        <details><summary>QA · 恢复诊断</summary>
+          <button disabled={!world.paused||world.poolInspect||!!world.shot} onClick={()=>{
+            const result=worldResumeProbe.arm();
+            if(result.started)useWorldStore.setState({paused:false});
+            else setRenderSnapshot({resumeProbe:result});
+          }}>QA · 恢复并采集 5 帧</button>
+          <button onClick={()=>setRenderSnapshot({resumeProbe:worldResumeProbe.read()})}>QA · 读取恢复诊断</button>
+        </details>
         <button onClick={()=>setRenderSnapshot({coasterAudio:readCoasterMotionAudioSnapshot()})}>QA · 读取过山车音频</button>
         <button onClick={()=>{worldActorDebug.teleportPlayer([49,2.3,55]);useWorldStore.setState({paused:false,clubMode:null,seat:null});}}>QA · 到泳池西岸</button>
         <button onClick={()=>{clubWaterFrameWindow.invalidate();clubWaterDebug.enabled=!clubWaterDebug.enabled;setRenderSnapshot({poolOptics:clubWaterSnapshot()});}}>QA · 启停泳池光学</button>
