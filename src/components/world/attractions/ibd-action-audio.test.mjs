@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { IbdActionAudio, renderIbdSound, ibdActionSound, committedIbdAction, ibdSoundDistance } from './ibd-action-audio.ts';
+import { IbdActionAudio, renderIbdSound, ibdActionSound, committedIbdAction, committedIbdPackContact, ibdSoundDistance } from './ibd-action-audio.ts';
 import { ParkAudio } from '../WorldParkAudio.ts';
 import { registerInteractable, nearestInteractable } from '../WorldInteract.ts';
 import { useWorldStore } from '../store.ts';
@@ -8,7 +8,7 @@ import { useWorldAudioSettings, setWorldAudioMuted, setWorldAudioVolume } from '
 import { useIbdYardStore, dispatchIbdAction, finishIbdAction, cancelIbdAction } from './ibd-yard-store.ts';
 import { createIbdYardGame, requestIbdYardAction, finishIbdYardAction, cancelIbdYardAction, yardActions } from './ibd-yard-game.ts';
 import { ibdStation, ibdWorld } from './ibd-yard-layout.ts';
-import { inspectIbdTestPack } from './ibd-test-pack-inspection.mjs';
+import { inspectIbdTestPack, ibdTestPackEvent } from './ibd-test-pack-inspection.mjs';
 import { PARK_AUDIO_MIX } from '../park-audio-mix.ts';
 
 class Target extends EventTarget {
@@ -166,6 +166,23 @@ test('a complete real shipment emits its material cue once at every accepted com
     ['parts-a', 'open'], ['parts-a', 'contents'], ['parts-a', 'judge', 'matches'], ['scale-a', 'weigh'], ['load-a', 'load'],
     ['parts-b', 'open'], ['parts-b', 'contents'], ['parts-b', 'judge', 'matches'], ['load-b', 'load'], ['dispatch', 'verify'], ['dispatch', 'release']];
   for (const [station, kind, verdict] of route) {
+    if (kind === 'contents') {
+      e.move(station);
+      const game = useIbdYardStore.getState().game, states = [];
+      inspectIbdTestPack(game, { kind, station }, next => states.push(next));
+      // Run real contact commits in sequence, with time for each finite voice to finish.
+      for (let i = 0; i < states.length; i++) {
+        const count = ctx.sources.length, material = ['tool', 'metal', 'wood'][i % 3];
+        useIbdYardStore.setState({ game: states[i] }); await settle();
+        assert.equal(ctx.sources.length, count + 1, 'one sound per contact, including the final return');
+        const variant = variants.get(material) ?? 0;
+        assert.deepEqual(ctx.sources.at(-1).buffer.getChannelData(0), renderIbdSound(material, variant));
+        variants.set(material, (variant + 1) % 3);
+        ctx.sources.at(-1).end(); await settle();
+      }
+      assert.equal(states.length, 12, 'four occupied pockets each have three physical contacts');
+      continue;
+    }
     const count = ctx.sources.length; e.act(station, kind, verdict); await settle();
     if (kind === 'judge') { assert.equal(ctx.sources.length, count, 'instant verdict does not invent a machine sound'); continue; }
     assert.equal(ctx.sources.length, count + 1, `${kind} emits once after commit`);
@@ -175,6 +192,58 @@ test('a complete real shipment emits its material cue once at every accepted com
     ctx.sources.at(-1).end(); await settle(); assert.equal(ctx.state, 'suspended');
   }
   assert.equal(useIbdYardStore.getState().game.released, true);
+});
+
+test('pocket audio rejects missed contact, wrong jaws, repeated callbacks, viewing empty pockets and recovery', () => {
+  let game = createIbdYardGame(); game.started = true; game.equipped = true; game.core.opened = ['parts-a'];
+  const step = (event, expected) => {
+    const next = ibdTestPackEvent(game, 'parts-a', event);
+    assert.deepEqual(committedIbdPackContact(game, next), expected ? { station: 'parts-a', contact: expected } : null);
+    assert.equal(committedIbdPackContact(next, next), null);
+    game = next;
+  };
+  step({ type: 'take', slot: 0, contact: false }, null);
+  step({ type: 'take', slot: 0, contact: true }, 'pickup');
+  step({ type: 'measure', slot: 0, contact: true, aligned: false }, null);
+  step({ type: 'measure', slot: 0, contact: false, aligned: true }, null);
+  step({ type: 'measure', slot: 0, contact: true, aligned: true }, 'measure');
+  step({ type: 'measure', slot: 0, contact: true, aligned: true }, null);
+  step({ type: 'return', slot: 1, contact: true }, null);
+  step({ type: 'return', slot: 0, contact: true }, 'return');
+  step({ type: 'take', slot: 1, contact: true }, 'pickup');
+  const cancelled = cancelIbdYardAction(game);
+  assert.equal(committedIbdPackContact(game, cancelled), null);
+  assert.equal(committedIbdPackContact(game, createIbdYardGame(0, game.round + 1)), null);
+  // A three-piece fixture has a real empty pocket; observing it must not invent an impact.
+  game = createIbdYardGame(1); game.started = true; game.equipped = true; game.core.opened = ['parts-b'];
+  const viewed = ibdTestPackEvent(game, 'parts-b', { type: 'view-empty', slot: 3, visible: true });
+  assert.equal(committedIbdPackContact(game, viewed), null);
+  assert.equal(viewed.packInspections['parts-b'].slots[3].present, false);
+  assert.equal(viewed.packInspections['parts-b'].slots[3].complete, true);
+});
+
+test('pocket contacts share the SFX gate, preserve their quieter level on distance changes, and never replay on resume', async t => {
+  const e = fixture(t), ctx = await e.prime();
+  e.act('manifest'); await settle(); e.act('kit'); await settle(); e.act('parts-a', 'open'); await settle();
+  for (const source of ctx.sources) if (source.live) source.end(); await settle();
+  const event = action => ibdTestPackEvent(useIbdYardStore.getState().game, 'parts-a', action,
+    game => useIbdYardStore.setState({ game }));
+  const count = ctx.sources.length;
+  event({ type: 'take', slot: 0, contact: true }); await settle();
+  assert.equal(ctx.sources.length, count + 1);
+  const gain = ctx.gains.at(-1).gain, at = ibdWorld(ibdStation('parts-a').at);
+  assert.equal(gain.value, .58);
+  useWorldStore.setState({ position: [at[0] + 9, at[1], at[2]] });
+  assert.equal(gain.value, .58 * .25);
+  useWorldStore.setState({ paused: true }); await settle();
+  assert.equal(e.service.inspect().activeHandles, 0);
+  event({ type: 'measure', slot: 0, contact: true, aligned: true }); await settle();
+  useWorldStore.setState({ paused: false }); e.move('parts-a'); await settle();
+  assert.equal(ctx.sources.length, count + 1, 'paused contacts are discarded, not replayed');
+  setWorldAudioMuted(true);
+  event({ type: 'return', slot: 0, contact: true }); await settle();
+  setWorldAudioMuted(false); await settle(); assert.equal(ctx.sources.length, count + 1);
+  assert.equal(e.service.inspect().timers, 0); assert.equal(Audio.instances.length, 1);
 });
 
 test('IBD cancellation, distance and unmount stop only owned cues and keep other shared voices running', async t => {

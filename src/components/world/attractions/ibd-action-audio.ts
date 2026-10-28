@@ -3,7 +3,7 @@ import { worldAudioLevel } from '../world-audio-settings';
 import { parkAudio, type ParkAudio, type PcmCueHandle } from '../WorldParkAudio';
 import { useIbdYardStore } from './ibd-yard-store.ts';
 import { ibdStation, ibdWorld } from './ibd-yard-layout.ts';
-import type { IbdAction, IbdYardGame } from './ibd-yard-game.ts';
+import { yardItemId, type IbdAction, type IbdYardGame } from './ibd-yard-game.ts';
 
 export type IbdSound = 'paper' | 'tool' | 'metal' | 'wood' | 'machine' | 'release';
 const RATE = 24000;
@@ -22,14 +22,37 @@ export function committedIbdAction(before: IbdYardGame, after: IbdYardGame): Ibd
   if (before === after) return null;
   if (!before.pending && !after.pending && !before.started && after.started && before.round === after.round)
     return { kind: 'brief', station: 'manifest' };
-  // The last verified pocket commits contents directly; there is no timed machine pending.
-  if (!before.pending && !after.pending && before.round === after.round && after.revision === before.revision + 1
-    && after.completedAction?.kind === 'contents' && after.completedAction !== before.completedAction
-    && after.core !== before.core) return after.completedAction;
   const pending = before.pending;
   if (!pending || after.pending || after.revision !== pending.token || before.round !== after.round) return null;
   return before.core !== after.core || before.equipped !== after.equipped || before.released !== after.released
     || before.exchanges !== after.exchanges ? pending.action : null;
+}
+type PackContact = 'pickup' | 'measure' | 'return';
+const PACK_SOUND: Record<PackContact, { kind: IbdSound; level: number }> = {
+  pickup: { kind: 'tool', level: .58 }, measure: { kind: 'metal', level: .72 }, return: { kind: 'wood', level: .6 },
+};
+/** State changes here follow the motion controller's verified palm contacts, not button presses.
+ * Empty-slot viewing, failed jaws, recovery and repeated callbacks have no material impact. */
+export function committedIbdPackContact(before: IbdYardGame, after: IbdYardGame):
+  { station: 'parts-a' | 'parts-b'; contact: PackContact } | null {
+  if (before === after || before.pending || after.pending || before.round !== after.round
+    || after.revision !== before.revision + 1 || before.packInspections === after.packInspections) return null;
+  for (const station of ['parts-a', 'parts-b'] as const) {
+    const id = yardItemId(after, station);
+    if (yardItemId(before, station) !== id) continue;
+    const previous = before.packInspections[id], next = after.packInspections[id];
+    if (!next || previous === next) continue;
+    if ((previous?.held ?? null) === null && next.held !== null && next.notice === 'held')
+      return { station, contact: 'pickup' };
+    if (!previous || previous.held === null) continue;
+    if (next.held === previous.held
+      && next.measurement !== null && next.measurement !== previous.measurement && next.notice === 'measured')
+      return { station, contact: 'measure' };
+    if (next.held === null && next.notice === 'returned'
+      && !previous.slots[previous.held].complete && next.slots[previous.held].complete)
+      return { station, contact: 'return' };
+  }
+  return null;
 }
 export function ibdSoundDistance(listener: readonly number[], source: readonly number[]) {
   const d = Math.hypot(...source.map((n, i) => n - listener[i]));
@@ -69,7 +92,7 @@ export function renderIbdSound(kind: IbdSound, variant = 0) {
   return data;
 }
 
-type Voice = { handle: PcmCueHandle; at: readonly number[]; distance: number };
+type Voice = { handle: PcmCueHandle; at: readonly number[]; distance: number; level: number };
 /** Domain-to-audio adapter only. The shared ParkAudio owns playback and browser authorization. */
 export class IbdActionAudio {
   private variants = new Map<IbdSound, number>();
@@ -96,19 +119,22 @@ export class IbdActionAudio {
     }),
       useIbdYardStore.subscribe((s, before) => {
         const action = committedIbdAction(before.game, s.game);
-        if (action && this.available()) {
-          const at = ibdWorld(ibdStation(action.station, s.game.core.moved).at), kind = ibdActionSound(action);
+        const pack = committedIbdPackContact(before.game, s.game);
+        const station = pack?.station ?? action?.station;
+        if (station && this.available()) {
+          const at = ibdWorld(ibdStation(station, s.game.core.moved).at);
+          const { kind, level } = pack ? PACK_SOUND[pack.contact] : { kind: ibdActionSound(action!), level: 1 };
           const distance = ibdSoundDistance(useWorldStore.getState().position, at);
           if (distance) {
             const variant = this.variants.get(kind) ?? 0;
-            const handle = this.audio.pcmCue(`ibd:${kind}:${variant}`, () => renderIbdSound(kind, variant), RATE, distance);
+            const handle = this.audio.pcmCue(`ibd:${kind}:${variant}`, () => renderIbdSound(kind, variant), RATE, distance * level);
             if (handle.active) {
               this.variants.set(kind, (variant + 1) % 3);
-              this.voices.add({ handle, at, distance });
+              this.voices.add({ handle, at, distance, level });
             }
           }
         }
-        if (action || s.active !== before.active) this.sync();
+        if (action || pack || s.active !== before.active) this.sync();
       }));
     return this.dispose;
   }
@@ -120,7 +146,7 @@ export class IbdActionAudio {
       const distance = available ? ibdSoundDistance(useWorldStore.getState().position, voice.at) : 0;
       if (!distance) { voice.handle.cancel(); this.voices.delete(voice); }
       else if (Math.abs(distance - voice.distance) > .005) {
-        voice.distance = distance; voice.handle.setVolume(distance);
+        voice.distance = distance; voice.handle.setVolume(distance * voice.level);
       }
     }
   };
