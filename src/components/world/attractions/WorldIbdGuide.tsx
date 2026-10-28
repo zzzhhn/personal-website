@@ -3,8 +3,8 @@ import { CanvasTexture, MeshBasicMaterial, MeshStandardMaterial, RingGeometry, S
 import { Builder, cbox, type V3 } from '../WorldStreetGeometry.ts';
 import { useWorldStore } from '../store';
 import { ibdLocal, ibdReach, ibdStation, IBD_SLOTS, IBD_CARGO_HOME, IBD_MOVED_COIL, IBD_TRUCK } from './ibd-yard-layout.ts';
-import { ibdGuideRoute, ibdGuideReturnRoute, ibdGuideStep } from './ibd-yard-guide.ts';
-import { yardItemComplete, yardItemDifferent, yardItemId } from './ibd-yard-game.ts';
+import { ibdGuideRoute, ibdGuideStep } from './ibd-yard-guide.ts';
+import { yardItemJudged, yardItemDifferent, yardItemId } from './ibd-yard-game.ts';
 import { useIbdYardStore } from './ibd-yard-store.ts';
 import { buildIbdTools } from './ibd-yard-geometry.ts';
 import { IBD_YARD } from './attraction-layout.ts';
@@ -37,15 +37,15 @@ export default memo(function WorldIbdGuide() {
     material: new MeshStandardMaterial({ vertexColors: true, roughness: .8, emissive: '#857b59', emissiveIntensity: .2 }) })), []);
   useEffect(() => () => { Object.values(props).forEach(resource => resource.dispose()); }, [props]);
   const cue = useMemo(() => sceneWorkProbe.measure('ibd-guide-cue', () => {
-    const b = new Builder(), routes = station.id.startsWith('gallery') ? [] : [ibdGuideRoute(game, step), ibdGuideReturnRoute(game, step)];
+    const b = new Builder(), route = ibdGuideRoute(game, step);
     const paint = { color: '#efbd57', rough: 1, metal: 0 };
-    for (const route of routes) for (let i = 0; i < route.length - 1; i++) {
+    for (let i = 0; i < route.length - 1; i++) {
       const a = route[i], end = route[i + 1], dx = end[0] - a[0], dz = end[2] - a[2], length = Math.hypot(dx, dz);
       if (length < .1) continue;
-      const ux = dx / length, uz = dz / length;
+      const ux = dx / length, uz = dz / length, uy = (end[1] - a[1]) / length;
       for (let d = .7; d < length - .4; d += 2.4) {
         const x = a[0] + ux * d, z = a[2] + uz * d;
-        const p = (along: number, across: number): V3 => [x + ux * along - uz * across, .14, z + uz * along + ux * across];
+        const p = (along: number, across: number): V3 => [x + ux * along - uz * across, a[1] + uy * (d + along), z + uz * along + ux * across];
         b.face([p(.45, 0), p(-.3, -.36), p(-.1, 0), p(-.3, .36)], paint, [0, 1, 0]);
       }
     }
@@ -60,14 +60,14 @@ export default memo(function WorldIbdGuide() {
     const texture = new CanvasTexture(canvas); texture.colorSpace = SRGBColorSpace;
     const label = new SpriteMaterial({ map: texture, depthTest: false, depthWrite: false, toneMapped: false });
     return { geometry, material, texture, label };
-  }), [step.action.kind, step.action.station, game.core.moved, game.pending?.token, game.released, lang, near]);
+  }), [step.action.kind, step.action.station, game.completedAction?.station, game.core.moved, game.pending?.token, game.released, lang, near]);
   useEffect(() => () => { cue.geometry.dispose(); cue.material.dispose(); cue.texture.dispose(); cue.label.dispose(); }, [cue]);
   return <group name="ibd-work-guidance" dispose={null}>
     <mesh name="ibd-pickup-manifest" geometry={props.paper} material={props.material} position={[-3, .96, 26]} rotation={[.12, 0, 0]} scale={1.5} />
     <mesh name="ibd-takeable-tools" geometry={props.tools} material={props.material} position={[-6, 1.4, 19]} scale={1.6} visible={!game.equipped} />
     <mesh name="ibd-received-stamp" position={[-2.65, 1.06, 26.1]} rotation={[-Math.PI / 2, 0, 0]} visible={game.started} geometry={props.stamp} material={props.good} />
     {IBD_SLOTS.map(slot => {
-      const id = yardItemId(game, slot), loaded = game.core.loaded.includes(id), checked = yardItemComplete(game, slot);
+      const id = yardItemId(game, slot), loaded = game.core.loaded.includes(id), checked = yardItemJudged(game, slot);
       const at = loaded ? IBD_TRUCK[slot]! : slot === 'coil-front' && game.core.moved.includes(id) ? IBD_MOVED_COIL : IBD_CARGO_HOME[slot];
       return <mesh key={slot} name={`ibd-cargo-checked-${slot}`} position={[at[0], at[1] + (slot.startsWith('coil') ? 2.35 : 1.55), at[2]]}
         rotation={[-Math.PI / 2, 0, 0]} visible={checked && !game.pending} geometry={props.checked} material={yardItemDifferent(game, slot) ? props.bad : props.good} />;

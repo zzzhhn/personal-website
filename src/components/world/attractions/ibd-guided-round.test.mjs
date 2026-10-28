@@ -6,12 +6,13 @@ import { ibdGuideStep, ibdGuidePhaseDone } from './ibd-yard-guide.ts';
 import { ibdStation } from './ibd-yard-layout.ts';
 import { cancelIbdYardAction, createIbdYardGame, requestIbdYardAction, finishIbdYardAction, yardActions,
   yardCase, yardItemId, yardItemComplete, yardItemDifferent } from './ibd-yard-game.ts';
+import { playerVerdict } from './ibd-test-player.mjs';
 
 function act(game, action) {
   assert.ok(action, 'the requested station must offer the action');
   const actor = { active: true, local: ibdStation(action.station, game.core.moved).at };
-  const requested = requestIbdYardAction(game, action, actor);
-  assert.ok(requested.pending || requested.completedAction === action, `${action.kind} rejected: ${requested.notice}`);
+  const selected = playerVerdict(game, action), requested = requestIbdYardAction(game, selected, actor);
+  assert.ok(requested.pending || requested.completedAction === selected, `${action.kind} rejected: ${requested.notice}`);
   return requested.pending ? finishIbdYardAction(requested, requested.pending.token, actor) : requested;
 }
 const at = (game, station, kind) => act(game, yardActions(game, station).find(a => !kind || a.kind === kind));
@@ -19,7 +20,7 @@ function finishGuided(initial, label) {
   let game = structuredClone(initial);
   const trace = [], states = new Set();
   for (let i = 0; i < 60 && !game.released; i++) {
-    const state = JSON.stringify([game.started, game.equipped, game.core, game.exchanges]);
+    const state = JSON.stringify([game.started, game.equipped, game.core, game.exchanges, game.judgements]);
     assert.equal(states.has(state), false, `${label}: guide stalled after ${trace.join(', ')}`);
     states.add(state);
     const { action, title, hint } = ibdGuideStep(game);
@@ -66,8 +67,7 @@ test('all four orders resume guidance after partial gallery checks, pack work, l
       const trace = finishGuided(game, `case=${index},gallery=${gallery},packs=${packs},loaded=${loaded}`);
       for (const [bit, side] of [[1, 'a'], [2, 'b']]) {
         if (!(loaded & bit)) continue;
-        const mustUnload = packs < 2 || yardItemDifferent(game, `parts-${side}`);
-        assert.equal(trace.includes(`truck-${side}/unload`), mustUnload, 'only unchecked or faulty loaded cargo needs unloading');
+        assert.equal(trace.includes(`truck-${side}/unload`), true, 'unjudged loaded cargo must return for its onsite verdict');
       }
       actions += trace.length; journeys++;
     }

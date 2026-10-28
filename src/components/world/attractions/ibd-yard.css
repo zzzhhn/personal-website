@@ -28,6 +28,9 @@
 .ibd-primary:hover { background: #ffd181; }
 .ibd-secondary { color: var(--ibd-fg); border: 1px solid var(--ibd-line); background: transparent; }
 .ibd-secondary:hover { background: #78909a25; }
+.ibd-verdict { border-block: 1px solid var(--ibd-line); padding: 10px 0 12px; }
+.ibd-verdict-evidence p { margin: 2px 0; font-variant-numeric: tabular-nums; }
+.ibd-verdict .ibd-actions { margin-top: 9px; }
 .ibd-actions kbd { flex-shrink: 0; font-size: 9px; min-width: 34px; padding: 0 4px; background: #f4eddb; color: #20353e; }
 .ibd-working { display: flex; align-items: center; gap: 9px; padding: 12px 0 0; color: #f3bb58; }
 .ibd-working i { display: inline-block; width: 7px; height: 7px; background: currentColor; border-radius: 50%; }

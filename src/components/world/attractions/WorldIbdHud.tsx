@@ -4,7 +4,8 @@ import { sampleTimeLight } from '../world-climate';
 import { IBD_YARD } from './attraction-layout';
 import { assessIbd } from './ibd-model';
 import { IBD_SLOTS, IBD_STATIONS, ibdLocal, ibdReach, ibdStation, type IbdStationId } from './ibd-yard-layout';
-import { canCancelIbdObservation, yardActions, yardCase, yardItemComplete, yardItemDifferent, yardItemId } from './ibd-yard-game';
+import { canCancelIbdObservation, yardActions, yardCase, yardItemJudged, yardItemDifferent, yardItemId } from './ibd-yard-game';
+import { IBD_VERDICT_LABEL, ibdVerdictEvidence, ibdVerdictOptions } from './ibd-yard-verdict';
 import { IBD_ACTION_LABEL, IBD_MOTION_WAIT_LABEL, ibdNotice } from './ibd-yard-copy';
 import { cancelIbdAction, dispatchIbdAction, setIbdGuide, useIbdYardStore } from './ibd-yard-store';
 import { ibdGuideStep, ibdGuideResult, ibdGuidePhaseDone, IBD_GUIDE_PHASES } from './ibd-yard-guide';
@@ -31,9 +32,10 @@ export default memo(function WorldIbdHud({ active = true }: { active?: boolean }
   const workingStation = game.pending ? ibdStation(game.pending.action.station, game.core.moved) : station;
   const atTarget = nearby === `ibd-${target.id}` && ibdReach(local, target);
   const actions = guided ? atTarget ? [guide.action] : [] : station && ibdReach(local, station) ? yardActions(game, station.id) : [];
+  const judgement = actions.find(a => a.kind === 'judge');
   const scenario = yardCase(game), assessment = assessIbd(scenario, game.core);
-  const count = (prefix: string) => IBD_SLOTS.filter(slot => slot.startsWith(prefix) && yardItemComplete(game, slot)).length;
-  const findings = [...assessment.inventory.findings, ...assessment.shipment.findings];
+  const count = (prefix: string) => IBD_SLOTS.filter(slot => slot.startsWith(prefix) && yardItemJudged(game, slot)).length;
+  const findings = [...assessment.inventory.findings, ...assessment.shipment.findings].filter(() => IBD_SLOTS.every(slot => yardItemJudged(game, slot)));
   const result = ibdGuideResult(game)[lang];
   const phasesDone = ibdGuidePhaseDone(game);
   const notice = result || (game.notice === 'welcome' || game.pending ? '' : ibdNotice(game)[lang]);
@@ -54,7 +56,11 @@ export default memo(function WorldIbdHud({ active = true }: { active?: boolean }
       {canCancelIbdObservation(game) && <div className="ibd-actions"><button className="ibd-secondary" onClick={() => {
         if (canCancelIbdObservation(useIbdYardStore.getState().game)) cancelIbdAction();
       }}>{t('取消本次操作', 'Cancel this operation')}</button></div>}</>
-      : actions.length > 0 && <div className="ibd-actions">{actions.map((a, i) => <button key={a.kind} className={i === 0 ? 'ibd-primary' : 'ibd-secondary'}
+      : judgement?.slot ? <div className="ibd-verdict" aria-label={t('现场判断', 'Inspection verdict')}>
+        <div className="ibd-verdict-evidence">{ibdVerdictEvidence(game, judgement.slot).map((row, i) => <p key={i}>{row[lang]}</p>)}</div>
+        <div className="ibd-actions">{ibdVerdictOptions(judgement.slot).map(verdict => <button key={verdict} className="ibd-secondary"
+          onClick={() => dispatchIbdAction({ ...judgement, verdict })}>{IBD_VERDICT_LABEL[verdict][lang]}</button>)}</div>
+      </div> : actions.length > 0 && <div className="ibd-actions">{actions.map((a, i) => <button key={a.kind} className={i === 0 ? 'ibd-primary' : 'ibd-secondary'}
         onClick={() => dispatchIbdAction(a)}><kbd>{i === 0 ? 'E / Y' : '↻'}</kbd>{guided && !game.released ? guide.title[lang] : IBD_ACTION_LABEL[a.kind][lang]}</button>)}</div>}
     {notice && <p className="ibd-feedback" role="status" aria-live="polite">{notice}</p>}
     <button className="ibd-details-toggle" aria-expanded={details} onClick={() => setDetails(v => !v)}>{t('货单、已见证据与退换记录', 'Manifest, observed evidence and exchanges')} {details ? '−' : '+'}</button>
@@ -70,7 +76,7 @@ export default memo(function WorldIbdHud({ active = true }: { active?: boolean }
         return <li key={slot}><strong>{label}{game.exchanges.some(e => e.slot === slot) ? t('（替换件）', ' (replacement)') : ''}</strong>
           <span>{proof.includes('quantity') ? `${item.quantity} ${item.unit === 'coil' ? t('卷', 'coil') : t('件', 'pieces')}` : t('数量待核', 'Count unchecked')}
             {' · '}{proof.includes('specification') ? item.specId : t('规格待核', 'Spec unchecked')}</span>
-          <span>{yardItemDifferent(game, slot) ? t('已证实差异', 'Discrepancy proven') : yardItemComplete(game, slot) ? t('证据齐全，核对一致', 'Evidence complete, matching') : t('仍缺检查面或开箱证据', 'Some faces or contents unchecked')}
+          <span>{yardItemDifferent(game, slot) ? t('异常已签认', 'Discrepancy confirmed') : yardItemJudged(game, slot) ? t('已签认验收', 'Accepted by verdict') : t('检查或现场判断待完成', 'Inspection or verdict pending')}
             {game.core.loaded.includes(item.id) ? t(' · 已装车', ' · Loaded') : ''}</span></li>;
       })}</ul>
       {findings.length > 0 && <p className="ibd-finding">{findings.map((f, i) => <span key={i}>{f.code === 'quantity-difference'

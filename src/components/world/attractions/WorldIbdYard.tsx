@@ -19,8 +19,7 @@ import WorldIbdAudio from './WorldIbdAudio';
 function Station({ id, active }: { id: IbdStationId; active: boolean }) {
   const game = useIbdYardStore(s => s.game), station = ibdStation(id, game.core.moved);
   const guided = useIbdYardStore(s => s.guideEnabled), guide = ibdGuideStep(game), target = ibdStation(guide.action.station, game.core.moved);
-  // E and the HUD execute the same recommended action, including an exchange or
-  // the next batch. Do not keep advertising receipt after the manifest was taken.
+  // E opens the judgement prompt without a verdict. Only an explicit HUD choice signs it.
   const action = guided && id === target.id ? guide.action
     : guided && id === 'manifest' && game.started ? undefined : yardActions(game, id)[0];
   useInteractable(active && action ? {

@@ -5,11 +5,13 @@ import { assessIbd } from './ibd-model.ts';
 import { ibdStation } from './ibd-yard-layout.ts';
 import { ibdGuideResult, ibdGuideStep } from './ibd-yard-guide.ts';
 import { canCancelIbdObservation, cancelIbdYardAction, createIbdYardGame, finishIbdYardAction,
-  requestIbdYardAction, yardActions, yardCase } from './ibd-yard-game.ts';
+  requestIbdYardAction, yardActions, yardCase, yardItemId } from './ibd-yard-game.ts';
+import { playerVerdict } from './ibd-test-player.mjs';
+import { ibdVerdictEvidence } from './ibd-yard-verdict.ts';
 
 const actor = (game, action) => ({ active: true, local: ibdStation(action.station, game.core.moved).at });
 function complete(game, action = ibdGuideStep(game).action) {
-  const local = actor(game, action), requested = requestIbdYardAction(game, action, local);
+  const local = actor(game, action), requested = requestIbdYardAction(game, playerVerdict(game, action), local);
   return requested.pending ? finishIbdYardAction(requested, requested.pending.token, local) : requested;
 }
 function finishBatch(game) {
@@ -50,7 +52,7 @@ test('every batch recovers after duplicate input, suspension, cancellation and r
     for (let i = 0; i < 60 && !game.released; i++) {
       const action = ibdGuideStep(game).action, local = actor(game, action);
       const pending = requestIbdYardAction(game, action, local);
-      if (!pending.pending) { game = pending; continue; }
+      if (!pending.pending) { game = complete(game, action); continue; }
       const token = pending.pending.token;
       const duplicate = requestIbdYardAction(pending, action, local);
       assert.equal(duplicate.pending, pending.pending); assert.equal(duplicate.core, game.core);
@@ -102,19 +104,19 @@ test('only local observations offer cancellation, and walking away never records
   assert.deepEqual(cancelIbdYardAction(surveying).core.proofs, {});
 });
 
-test('feedback reports observed quantities, specifications and defects only after the actual inspection', () => {
-  for (const [index, zh, en] of [[1, /B 箱实点 3 件，应有 4 件/, /Pack B: 3 pieces counted; 4 required/],
-    [2, /后卷背面已照见凹痕/, /Rear coil: a rear dent/], [3, /B 箱实测 M6，应为 M8/, /Pack B: measured M6; M8 required/]]) {
+test('proof-backed evidence reports measurements before the player signs, without auto-revealing a verdict', () => {
+  for (const [index, zh, en] of [[1, /实点：3 件/, /Counted: 3 pieces/],
+    [2, /背面照检：可见凹痕/, /Rear: visible dent/], [3, /卡规：M6/, /Gauge: M6/]]) {
     let game = createIbdYardGame(index), observed = false;
     for (let i = 0; i < 60 && !game.released; i++) {
       const action = ibdGuideStep(game).action, requested = requestIbdYardAction(game, action, actor(game, action));
       if (requested.pending) assert.deepEqual(ibdGuideResult(requested), { zh: '', en: '' });
       game = complete(game, action);
       const result = ibdGuideResult(game);
-      if (game.notice === 'difference-observed') {
-        assert.match(result.zh, zh); assert.match(result.en, en); observed = true;
-      } else {
-        assert.doesNotMatch(result.zh, zh, 'future or quarantined facts must not leak into a new inspection');
+      if (game.notice === 'evidence-ready' && action.slot === (index === 2 ? 'coil-rear' : 'parts-b') && yardItemId(game, action.slot) === action.slot) {
+        const evidence = ibdVerdictEvidence(game, action.slot);
+        assert.match(evidence.map(e => e.zh).join(' '), zh); assert.match(evidence.map(e => e.en).join(' '), en); observed = true;
+        assert.doesNotMatch(result.zh, /退换|差异|核对一致/);
       }
       if (action.kind === 'weigh' || action.kind === 'open') assert.doesNotMatch(result.zh, /实点|实测|凹痕/);
     }

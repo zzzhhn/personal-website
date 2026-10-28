@@ -58,9 +58,10 @@ function fixture(t) {
   const gesture = (trusted = true, type = 'keydown') => { const e = new Event(type); Object.defineProperty(e, 'isTrusted', { value: trusted }); win.dispatchEvent(e); };
   const prime = async () => { audio.cue('scan'); await settle(); audio.ctx.sources.at(-1).end(); await settle(); return audio.ctx; };
   const move = station => useWorldStore.setState({ position: ibdWorld(ibdStation(station, useIbdYardStore.getState().game.core.moved).at) });
-  const act = (station, kind) => {
+  const act = (station, kind, verdict) => {
     move(station); const game = useIbdYardStore.getState().game;
-    const action = yardActions(game, station).find(a => !kind || a.kind === kind); assert.ok(action, `${station}/${kind}`);
+    const offered = yardActions(game, station).find(a => !kind || a.kind === kind); assert.ok(offered, `${station}/${kind}`);
+    const action = verdict ? { ...offered, verdict } : offered;
     // WorldActors' gamepad Y edge invokes this same reachable Interactable callback.
     // There is deliberately no synthetic key/pointer event on this path.
     const position = useWorldStore.getState().position;
@@ -154,12 +155,13 @@ test('gamepad-equivalent registry callbacks use already unlocked shared audio wi
 test('a complete real shipment emits its material cue once at every accepted completion, including release', async t => {
   const e = fixture(t), ctx = await e.prime(), variants = new Map();
   const route = [['manifest', 'brief'], ['kit', 'kit'], ['crane', 'crane'],
-    ['coil-front', 'scan'], ['turn-front', 'turn'], ['coil-front', 'rear'],
-    ['coil-rear', 'scan'], ['turn-rear', 'turn'], ['coil-rear', 'rear'],
-    ['parts-a', 'open'], ['parts-a', 'contents'], ['scale-a', 'weigh'], ['load-a', 'load'],
-    ['parts-b', 'open'], ['parts-b', 'contents'], ['load-b', 'load'], ['dispatch', 'verify'], ['dispatch', 'release']];
-  for (const [station, kind] of route) {
-    const count = ctx.sources.length; e.act(station, kind); await settle();
+    ['coil-front', 'scan'], ['turn-front', 'turn'], ['coil-front', 'rear'], ['coil-front', 'judge', 'sound'],
+    ['coil-rear', 'scan'], ['turn-rear', 'turn'], ['coil-rear', 'rear'], ['coil-rear', 'judge', 'sound'],
+    ['parts-a', 'open'], ['parts-a', 'contents'], ['parts-a', 'judge', 'matches'], ['scale-a', 'weigh'], ['load-a', 'load'],
+    ['parts-b', 'open'], ['parts-b', 'contents'], ['parts-b', 'judge', 'matches'], ['load-b', 'load'], ['dispatch', 'verify'], ['dispatch', 'release']];
+  for (const [station, kind, verdict] of route) {
+    const count = ctx.sources.length; e.act(station, kind, verdict); await settle();
+    if (kind === 'judge') { assert.equal(ctx.sources.length, count, 'instant verdict does not invent a machine sound'); continue; }
     assert.equal(ctx.sources.length, count + 1, `${kind} emits once after commit`);
     const material = ibdActionSound({ kind }), variant = variants.get(material) ?? 0;
     assert.deepEqual(ctx.sources.at(-1).buffer.getChannelData(0), renderIbdSound(material, variant));

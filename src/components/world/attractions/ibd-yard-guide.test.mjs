@@ -1,22 +1,23 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { ibdGuideStep, ibdGuideRoute, ibdGuideReturnRoute, ibdGuideResult, ibdGuidePhaseDone } from './ibd-yard-guide.ts';
+import { ibdGuideStep, ibdGuideRoute, ibdGuideResult, ibdGuidePhaseDone } from './ibd-yard-guide.ts';
 import { readFileSync } from 'node:fs';
 import ts from 'typescript';
 import { createIbdYardGame, requestIbdYardAction, finishIbdYardAction, yardActions, yardCase } from './ibd-yard-game.ts';
 import { ibdStation } from './ibd-yard-layout.ts';
 import { assessIbd } from './ibd-model.ts';
 import { buildIbdStatic } from './ibd-yard-geometry.ts';
+import { playerVerdict } from './ibd-test-player.mjs';
 
 const actor = (game, station) => ({ active: true, local: ibdStation(station, game.core.moved).at });
 function act(game, action) {
-  const a = actor(game, action.station), requested = requestIbdYardAction(game, action, a);
+  const a = actor(game, action.station), requested = requestIbdYardAction(game, playerVerdict(game, action), a);
   return requested.pending ? finishIbdYardAction(requested, requested.pending.token, a) : requested;
 }
 function manual(game, station, kind) {
   return act(game, yardActions(game, station).find(a => !kind || a.kind === kind));
 }
-test('a fresh player can finish the first real batch by following only the current recommended action', () => {
+test('a fresh player finishes the guided route by explicitly judging each item from its evidence', () => {
   let game = createIbdYardGame(); const visited = [];
   for (let i = 0; i < 40 && !game.released; i++) {
     const step = ibdGuideStep(game); visited.push(step.action.kind);
@@ -26,7 +27,7 @@ test('a fresh player can finish the first real batch by following only the curre
     assert.notDeepEqual(next, game, `${step.action.station}/${step.action.kind} must do actual work`); game = next;
   }
   assert.equal(game.released, true); assert.equal(assessIbd(yardCase(game), game.core).status, 'clear');
-  assert.deepEqual(visited, ['brief', 'kit', 'scan', 'turn', 'rear', 'crane', 'scan', 'turn', 'rear', 'weigh', 'open', 'contents', 'weigh', 'open', 'contents', 'load', 'load', 'verify', 'release']);
+  assert.deepEqual(visited, ['brief', 'kit', 'scan', 'turn', 'rear', 'judge', 'crane', 'scan', 'turn', 'rear', 'judge', 'weigh', 'open', 'contents', 'judge', 'weigh', 'open', 'contents', 'judge', 'load', 'load', 'verify', 'release']);
   assert.deepEqual(game.core.loaded, ['parts-a', 'parts-b']);
 });
 test('all anomaly cases guide through real correction, replacement reinspection and dispatch without a dead end', () => {
@@ -56,6 +57,7 @@ test('pending, cancelled, remote and paused actions never falsely advance the ne
 test('resuming after free exploration respects gallery proofs, opened cartons and wrongly loaded cargo', () => {
   let game = manual(manual(createIbdYardGame(), 'manifest'), 'kit');
   game = manual(manual(game, 'gallery-front'), 'gallery-rear');
+  game = manual(game, 'coil-front', 'judge'); game = manual(game, 'crane'); game = manual(game, 'coil-rear', 'judge');
   assert.equal(ibdGuideStep(game).action.kind, 'weigh');
   game = manual(game, 'parts-a', 'open');
   assert.equal(ibdGuideStep(game).action.kind, 'contents', 'do not force optional weighing after opening');
@@ -69,7 +71,7 @@ test('resuming after free exploration respects gallery proofs, opened cartons an
   assert.equal(ibdGuideStep(game).action.kind, 'brief'); assert.equal(game.round, 2);
 });
 test('changed React components and guide modules parse without TS/JSX syntax errors', () => {
-  for (const file of ['WorldIbdGuide.tsx', 'WorldIbdHud.tsx', 'WorldIbdYard.tsx', 'ibd-yard-guide.ts', 'ibd-yard-store.ts']) {
+  for (const file of ['WorldIbdGuide.tsx', 'WorldIbdHud.tsx', 'WorldIbdYard.tsx', 'ibd-yard-guide.ts', 'ibd-yard-store.ts', 'ibd-yard-game.ts', 'ibd-yard-verdict.ts']) {
     const source = readFileSync(new URL(file, import.meta.url), 'utf8');
     const parsed = ts.createSourceFile(file, source, ts.ScriptTarget.Latest, true, file.endsWith('tsx') ? ts.ScriptKind.TSX : ts.ScriptKind.TS);
     assert.deepEqual(parsed.parseDiagnostics.map(d => ts.flattenDiagnosticMessageText(d.messageText, '\n')), [], file);
@@ -81,7 +83,7 @@ test('the first-batch ground breadcrumbs avoid floor-level fixed cuboids with pl
     const obstacles = data.solids.filter(s => !s.rotation && s.at[1] + s.size[1] / 2 > .16 && s.at[1] - s.size[1] / 2 < 1.7);
     let game = createIbdYardGame();
     for (let action = 0; action < 30 && !game.released; action++) {
-      const step = ibdGuideStep(game), paths = [ibdGuideRoute(game, step), ibdGuideReturnRoute(game, step)];
+      const step = ibdGuideStep(game), paths = [ibdGuideRoute(game, step)];
       for (const path of paths) for (let j = 0; j < path.length - 1; j++) {
         const a = path[j], b = path[j + 1], samples = Math.ceil(Math.hypot(b[0] - a[0], b[2] - a[2]) / .2);
         for (let i = 0; i <= samples; i++) {
@@ -102,7 +104,7 @@ test('rear-coil approach and return cues use the south opening and keep turn ins
   for (let i = 0; i < 12 && game.notice !== 'crane'; i++) game = act(game, ibdGuideStep(game).action);
   assert.equal(game.notice, 'crane');
   for (const kind of ['scan', 'turn', 'rear']) {
-    const step = ibdGuideStep(game), path = ibdGuideReturnRoute(game, step);
+    const step = ibdGuideStep(game), path = ibdGuideRoute(game, step);
     assert.equal(step.action.kind, kind); assert.equal(step.action.slot, 'coil-rear');
     assert.match(step.hint.zh, /南端开口/); assert.match(step.hint.en, /south opening/);
     const pending = requestIbdYardAction(game, step.action, actor(game, step.action.station));
@@ -112,17 +114,49 @@ test('rear-coil approach and return cues use the south opening and keep turn ins
       if ((a[0] + 9.5) * (b[0] + 9.5) <= 0)
         assert.ok(a[2] > 0 && b[2] > 0, 'cross the guard line only beyond its open south end');
     }
-    assert.ok(path.at(-1)[2] > path[0][2], 'return south before crossing the guard');
+    assert.ok(path.some(p => p[2] === 1), 'return via the south opening before crossing the guard');
     if (kind === 'turn') {
       assert.match(step.hint.zh, /操作台外侧/); assert.match(step.hint.en, /outer side/);
       assert.ok(path[0][0] < -9.5 && path.at(-1)[0] > -9.5);
-    } else {
+    } else if (kind === 'rear') {
       assert.ok(path[0][0] > -9.5 && path.at(-1)[0] < -9.5);
-      assert.deepEqual(path.slice(0, 3).map(p => [p[0], p[2]]), [[-8, -8], [-7, -8], [-7, 1]],
+      assert.deepEqual(path.slice(0, 2).map(p => [p[0], p[2]]), [[-8, -8], [-7, -8]],
         'move east of both control pedestals before walking south');
+      assert.ok(path.slice(1, path.findIndex(p => p[0] < -9.5)).every(p => p[0] === -7),
+        'stay in the outer aisle until reaching the south opening');
     }
     game = act(game, step.action);
     if (kind === 'turn') assert.match(ibdGuideResult(game).zh, /南端开口/);
   }
-  assert.equal(ibdGuideReturnRoute(game).length, 0, 'subsequent pack work keeps its existing route');
+  assert.equal(ibdGuideRoute(game).length, 1, 'judging at the same coil needs only the standing ring');
+});
+
+test('every guided transition starts at the last completed workstation rather than restarting at the entrance', () => {
+  const xz = p => [p[0], p[2]];
+  for (let caseIndex = 0; caseIndex < 4; caseIndex++) {
+    let game = createIbdYardGame(caseIndex);
+    for (let i = 0; i < 60 && !game.released; i++) {
+      const step = ibdGuideStep(game), route = ibdGuideRoute(game, step);
+      const origin = game.completedAction?.station;
+      assert.deepEqual(xz(route[0]), origin ? xz(ibdStation(origin, game.core.moved).at) : [0, 31]);
+      assert.deepEqual(xz(route.at(-1)), xz(ibdStation(step.action.station, game.core.moved).at));
+      if (origin === step.action.station) assert.equal(route.length, 1, 'same-point actions draw no misleading detour');
+      if (origin && !['manifest', 'kit', 'dispatch'].includes(origin))
+        assert.ok(route.every(p => p[2] <= 20), `${origin} must not detour through the receiving entrance`);
+      const pending = requestIbdYardAction(game, playerVerdict(game, step.action), actor(game, step.action.station));
+      if (pending.pending) assert.deepEqual(ibdGuideRoute(pending), route, 'an unfinished action does not move the origin');
+      game = act(game, step.action);
+    }
+    assert.ok(game.released);
+  }
+});
+
+test('a nearby manual inspection updates the origin even when the recommended next step stays the same', () => {
+  let game = manual(manual(createIbdYardGame(), 'manifest'), 'kit');
+  const target = ibdGuideStep(game).action.station;
+  game = manual(game, 'parts-a', 'open');
+  assert.equal(ibdGuideStep(game).action.station, target);
+  assert.deepEqual(ibdGuideRoute(game)[0], [10, .14, -9.5]);
+  const failed = requestIbdYardAction(game, ibdGuideStep(game).action, { active: true, local: [500, 1, 500] });
+  assert.deepEqual(ibdGuideRoute(failed), ibdGuideRoute(game), 'a failed action cannot reset the route');
 });

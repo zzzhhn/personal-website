@@ -5,12 +5,13 @@ import { assessIbd } from './ibd-model.ts';
 import { createIbdYardGame, yardCase, yardActions, yardItemId, requestIbdYardAction, finishIbdYardAction, cancelIbdYardAction } from './ibd-yard-game.ts';
 import { ibdStation, IBD_STATIONS, IBD_CARGO_HOME } from './ibd-yard-layout.ts';
 import { advanceIbdMotion, ibdCargoPose } from './ibd-yard-motion.ts';
+import { playerVerdict } from './ibd-test-player.mjs';
 
 const actor = (g, station) => ({ active: true, local: ibdStation(station, g.core.moved).at });
 function act(g, station, kind) {
   const action = yardActions(g, station).find(a => !kind || a.kind === kind);
   assert.ok(action, `${station}/${kind} unavailable`);
-  const next = requestIbdYardAction(g, action, actor(g, station));
+  const next = requestIbdYardAction(g, playerVerdict(g, action), actor(g, station));
   return next.pending ? finishIbdYardAction(next, next.pending.token, actor(g, station)) : next;
 }
 function prepare(index = 0, route = 'gallery') {
@@ -24,6 +25,7 @@ function prepare(index = 0, route = 'gallery') {
     }
   }
   for (const side of ['a', 'b']) { g = act(g, `parts-${side}`, 'open'); g = act(g, `parts-${side}`, 'contents'); }
+  for (const slot of ['coil-front', 'coil-rear', 'parts-a', 'parts-b']) g = act(g, slot, 'judge');
   return g;
 }
 function dispatch(g) {
@@ -53,6 +55,7 @@ test('each anomaly can be corrected and a fresh identity must be inspected befor
     assert.equal(assessIbd(yardCase(g), g.core).inventory.status, 'insufficient');
     if (index === 2) g = act(g, 'gallery-rear');
     else { g = act(g, 'parts-b', 'open'); g = act(g, 'parts-b', 'contents'); }
+    g = act(g, slot, 'judge');
     g = dispatch(g); assert.equal(g.released, true);
   }
   assert.equal(JSON.stringify(IBD_CASES), original);
@@ -63,6 +66,7 @@ test('wrong load remains physical, unload invalidates confirmation, then correct
   assert.equal(yardActions(g, 'parts-b').length, 0);
   g = act(g, 'truck-b'); assert.equal(g.core.shipmentConfirmed, false);
   g = act(g, 'parts-b', 'replace'); g = act(g, 'parts-b', 'open'); g = act(g, 'parts-b', 'contents');
+  g = act(g, 'parts-b', 'judge');
   g = act(g, 'load-b'); g = act(g, 'dispatch', 'verify'); g = act(g, 'dispatch', 'release');
   assert.equal(g.released, true); assert.equal(new Set(g.core.loaded).size, 2);
 });

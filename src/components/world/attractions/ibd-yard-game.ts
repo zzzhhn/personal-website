@@ -2,13 +2,15 @@ import { IBD_ALL_CLEAR, IBD_CASES } from './ibd-cases.ts';
 import { assessIbd, createIbdState, transitionIbd, type IbdCase, type IbdItem, type IbdState, type IbdEvent, type IbdAspect } from './ibd-model.ts';
 import { ibdReach, ibdStation, type IbdSlot, type IbdStationId } from './ibd-yard-layout.ts';
 
-export type IbdActionKind = 'brief' | 'kit' | 'crane' | 'scan' | 'rear' | 'survey' | 'turn' | 'weigh' | 'open' | 'contents'
+export type IbdVerdict = 'matches' | 'short' | 'wrong-spec' | 'sound' | 'rear-damage';
+export type IbdActionKind = 'brief' | 'kit' | 'crane' | 'scan' | 'rear' | 'survey' | 'turn' | 'weigh' | 'open' | 'contents' | 'judge'
   | 'load' | 'unload' | 'replace' | 'verify' | 'release' | 'reset' | 'next';
-export interface IbdAction { kind: IbdActionKind; station: IbdStationId; slot?: IbdSlot }
+export interface IbdAction { kind: IbdActionKind; station: IbdStationId; slot?: IbdSlot; itemId?: string; round?: number; verdict?: IbdVerdict }
 export interface IbdExchange { slot: IbdSlot; original: IbdItem; proofs: readonly IbdAspect[]; replacementId: string }
 export interface IbdYardGame {
   caseIndex: number; round: number; revision: number; started: boolean; equipped: boolean;
   core: IbdState; exchanges: readonly IbdExchange[]; released: boolean;
+  judgements: Readonly<Record<string, IbdVerdict>>;
   pending: { action: IbdAction; token: number; seconds: number } | null;
   notice: string; reading?: number; completedAction?: IbdAction;
 }
@@ -16,7 +18,7 @@ export interface IbdActor { local: readonly number[]; active: boolean; paused?: 
 export function createIbdYardGame(caseIndex = 0, round = 1): IbdYardGame {
   const index = ((caseIndex % IBD_CASES.length) + IBD_CASES.length) % IBD_CASES.length;
   return { caseIndex: index, round, revision: 0, started: false, equipped: false, core: createIbdState(IBD_CASES[index]),
-    exchanges: [], released: false, pending: null, notice: 'welcome' };
+    exchanges: [], judgements: {}, released: false, pending: null, notice: 'welcome' };
 }
 export function yardItemId(game: IbdYardGame, slot: IbdSlot): string {
   return game.exchanges.find(e => e.slot === slot)?.replacementId ?? slot;
@@ -36,14 +38,23 @@ export function yardItemComplete(game: IbdYardGame, slot: IbdSlot): boolean {
   return ['identity', 'quantity', 'specification', ...item.qualityChecks].every(p => (game.core.proofs[item.id] ?? []).includes(p as IbdAspect));
 }
 export function yardItemDifferent(game: IbdYardGame, slot: IbdSlot): boolean {
-  if (!yardItemComplete(game, slot)) return false;
+  const verdict = game.judgements?.[yardItemId(game, slot)];
+  return !!verdict && !['matches', 'sound'].includes(verdict);
+}
+export function yardItemJudged(game: IbdYardGame, slot: IbdSlot): boolean {
+  return yardItemComplete(game, slot) && !!game.judgements?.[yardItemId(game, slot)];
+}
+/** Truth is derived from the cargo fixtures, never persisted as a second case state. */
+function yardExpectedVerdict(game: IbdYardGame, slot: IbdSlot): IbdVerdict {
   const item = yardCase(game).items.find(i => i.id === yardItemId(game, slot))!;
   const expected = IBD_ALL_CLEAR.items.find(i => i.id === slot)!;
-  return item.quantity !== expected.quantity || item.specId !== expected.specId || Object.keys(item.defects).length > 0;
+  if (item.kind === 'coil') return item.defects['quality-rear'] ? 'rear-damage' : 'sound';
+  return item.specId !== expected.specId ? 'wrong-spec' : item.quantity < expected.quantity ? 'short' : 'matches';
 }
 export function yardActions(game: IbdYardGame, id: IbdStationId): IbdAction[] {
   const s = ibdStation(id, game.core.moved), slot = s.slot, itemId = slot ? yardItemId(game, slot) : '';
-  const action = (kind: IbdActionKind): IbdAction => ({ kind, station: id, ...(slot ? { slot } : {}) });
+  const action = (kind: IbdActionKind): IbdAction => ({ kind, station: id, ...(slot ? { slot } : {}),
+    ...(kind === 'judge' ? { itemId, round: game.round } : {}) });
   if (id === 'manifest') return [action('brief'), ...(game.started ? [action('reset'), action('next')] : [])];
   if (id === 'dispatch' && game.released) return [action('next')];
   if (!game.started || game.released) return [];
@@ -55,14 +66,17 @@ export function yardActions(game: IbdYardGame, id: IbdStationId): IbdAction[] {
   if (id.startsWith('scale')) return game.core.loaded.includes(itemId) ? [] : [action('weigh')];
   if (id.startsWith('load')) return game.core.loaded.includes(itemId) ? [] : [action('load')];
   if (id.startsWith('truck')) return game.core.loaded.includes(itemId) ? [action('unload')] : [];
-  if (id === 'dispatch') return [action(assessIbd(yardCase(game), game.core).status === 'clear' ? 'release' : 'verify')];
+  if (id === 'dispatch') return [action(yardAllJudged(game) && assessIbd(yardCase(game), game.core).status === 'clear' ? 'release' : 'verify')];
   if (slot && game.core.loaded.includes(itemId)) return [];
+  if (slot && yardItemComplete(game, slot) && !yardItemJudged(game, slot)) return [action('judge')];
+  if (slot && yardItemJudged(game, slot)) return yardItemDifferent(game, slot) ? [action('replace')] : [];
   const primary: IbdActionKind = id.startsWith('parts') ? game.core.opened.includes(itemId) ? 'contents' : 'open'
     : game.core.turned.includes(itemId) || ((game.core.proofs[itemId] ?? []).includes('quality-front') && !yardItemComplete(game, slot!)) ? 'rear' : 'scan';
-  return slot && yardItemDifferent(game, slot) ? [action('replace'), action(primary)] : [action(primary)];
+  return [action(primary)];
 }
 const duration: Record<IbdActionKind, number> = { brief: 0, kit: .65, crane: 2.8, scan: 1.1, rear: 1.1, survey: 1.3,
-  turn: 1.4, weigh: .8, open: .9, contents: 1.2, load: 3, unload: 3, replace: 2.4, verify: .7, release: 3.5, reset: 0, next: 0 };
+  turn: 1.4, weigh: .8, open: .9, contents: 1.2, judge: 0, load: 3, unload: 3, replace: 2.4, verify: .7, release: 3.5, reset: 0, next: 0 };
+const yardAllJudged = (game: IbdYardGame) => yardCase(game).items.every(item => !!game.judgements?.[item.id]);
 const observations = new Set<IbdActionKind>(['scan', 'rear', 'survey', 'contents', 'weigh', 'open', 'kit', 'verify']);
 /** User cancellation is for unfinished local work; moving cargo keeps its existing interlock. */
 export function canCancelIbdObservation(game: IbdYardGame): boolean {
@@ -79,8 +93,17 @@ function perform(game: IbdYardGame, action: IbdAction): { game: IbdYardGame; ok:
   }
   if (action.kind === 'brief') return done('manifest', { started: true });
   if (action.kind === 'kit') return done('equipped', { equipped: true });
+  if (action.kind === 'judge') {
+    if (!action.slot || !yardItemComplete(game, action.slot)) return fail('judgement-evidence-missing');
+    if (!action.verdict) return fail('judgement-needed');
+    const expected = yardExpectedVerdict(game, action.slot);
+    if (action.verdict !== expected) return fail(`judgement-retry-${expected}`);
+    return done(['matches', 'sound'].includes(expected) ? 'judgement-clear' : 'judgement-different',
+      { judgements: { ...game.judgements, [itemId]: action.verdict } });
+  }
   if (action.kind === 'turn' && !(game.core.proofs[itemId] ?? []).includes('quality-front')) return fail('front-first');
-  if (action.kind === 'release') return assessIbd(scenario, game.core).status === 'clear' ? done('released', { released: true }) : fail('not-cleared');
+  if (action.kind === 'release') return yardAllJudged(game) && assessIbd(scenario, game.core).status === 'clear' ? done('released', { released: true }) : fail('not-cleared');
+  if (action.kind === 'verify' && !yardAllJudged(game)) return done('judgement-missing');
   if (action.kind === 'replace') {
     if (!action.slot || !yardItemDifferent(game, action.slot)) return fail('no-proven-difference');
     if (game.core.loaded.includes(itemId)) return fail('unload-first');
@@ -110,9 +133,9 @@ function perform(game: IbdYardGame, action: IbdAction): { game: IbdYardGame; ok:
     if (result.state === core) return fail(result.code);
     core = result.state; reading = result.readingKg ?? reading;
   }
-  const next = { ...game, core };
   const notice = action.kind === 'verify' ? `check-${assessIbd(scenario, core).status}`
-    : action.slot && yardItemDifferent(next, action.slot) ? 'difference-observed' : action.kind;
+    : action.slot && !game.judgements?.[itemId] && ['scan', 'rear', 'survey', 'contents'].includes(action.kind)
+      && yardItemComplete({ ...game, core }, action.slot) ? 'evidence-ready' : action.kind;
   return done(notice, { core, reading });
 }
 
@@ -121,7 +144,8 @@ export function requestIbdYardAction(game: IbdYardGame, action: IbdAction, actor
   if (!actor.active || actor.paused || actor.hidden || actor.driving) return game;
   if (game.pending) return { ...game, notice: 'busy' };
   if (!ibdReach(actor.local, ibdStation(action.station, game.core.moved))) return { ...game, notice: 'out-of-reach' };
-  if (!yardActions(game, action.station).some(a => a.kind === action.kind && a.slot === action.slot)) return { ...game, notice: 'action-unavailable' };
+  if (!yardActions(game, action.station).some(a => a.kind === action.kind && a.slot === action.slot && a.itemId === action.itemId && a.round === action.round))
+    return { ...game, notice: 'action-unavailable' };
   const preview = perform(game, action);
   if (!preview.ok || duration[action.kind] === 0) return preview.game;
   const token = game.revision + 1;
