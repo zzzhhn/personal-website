@@ -23,7 +23,7 @@ import { attractionLook } from './attractions/attraction-camera';
 import { PLAYER_CENTER_HEIGHT } from './actor-physics';
 import { INTENT_TARGETS } from './attractions/intent-stations';
 import { IBD_STATIONS, ibdWorld } from './attractions/ibd-yard-layout';
-import { intentRideClock, useIntentStore } from './attractions/intent-state';
+import { intentRideClock, intentRideQaHold, useIntentStore } from './attractions/intent-state';
 import { readCoasterMotionAudioSnapshot } from './attractions/coaster-motion-audio';
 import { shadowRebuildProbe } from './WorldShadows';
 import { sceneWorkProbe } from './world-scene-work';
@@ -54,8 +54,15 @@ export default function WorldPlaytestReadout() {
           useWorldStore.setState({paused:false,clubMode:null,seat:null});
         }}>QA · 到{site.title.zh}</button>)}
         <details><summary>QA · 设施操作点</summary>
+          {[32.5, 99.3].map(second=><button key={`hold-${second}`} disabled={attractionRide.transition?.phase!=='riding'} onClick={()=>{
+            if(attractionRide.transition?.phase!=='riding')return;
+            Object.assign(intentRideQaHold,{second,revision:attractionRide.revision});
+            intentRideClock.elapsed=second;useIntentStore.setState({rideSecond:second});useWorldStore.setState({paused:false});
+          }}>QA · 定格乘坐 {second} s</button>)}
+          <button disabled={!attractionRide.active} onClick={()=>{intentRideQaHold.second=null;useWorldStore.setState({paused:false});}}>QA · 继续列车</button>
           {([['首降',37],['倒置',45],['灯廊',60]] as const).map(([label,second])=><button key={label} disabled={!attractionRide.active} onClick={()=>{
             if(!attractionRide.active)return;
+            intentRideQaHold.second=null;
             intentRideClock.elapsed=second;useIntentStore.setState({rideSecond:second});
             useWorldStore.setState({paused:false});
           }}>QA · 乘坐定位{label}</button>)}

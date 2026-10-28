@@ -24,6 +24,8 @@ export const useIntentStore = create<IntentState>(() => ({
   notice: null, effect: null, ridePhase: null, exitRequested: false, riding: false, view: 'chase', rideSecond: 0, active: false,
 }));
 export const intentRideClock: CoasterClock = { elapsed: 0, riding: false, revision: -1 };
+/** Explicit development UI only; never persisted or used by a production frame. */
+export const intentRideQaHold = { second: null as number | null, revision: -1 };
 let writable = true, sequence = 0;
 export function loadIntentProgress() {
   if (useIntentStore.getState().loaded) return;
@@ -97,6 +99,7 @@ export function activateIntentTarget(target: IntentTarget) {
     if (!wasOpen && result.state.gateOpen) parkAudio.workshopCue('unlock');
   }
   else if (beginAttractionRide(coasterRidePose(0, useIntentStore.getState().view), COASTER_BOARDING.exit, [useWorldStore.getState().position[0], useWorldStore.getState().position[1] - (PLAYER_RADIUS + PLAYER_HALF_HEIGHT), useWorldStore.getState().position[2]], mineActor.yaw)) {
+    if (import.meta.env?.DEV) intentRideQaHold.second = null;
     parkAudio.cue('scan', .3);
     Object.assign(intentRideClock, { elapsed: 0, riding: false, revision: attractionRide.revision });
     useIntentStore.setState({ riding: true, ridePhase: 'approach', exitRequested: false, rideSecond: 0, notice: null });
@@ -109,6 +112,7 @@ export function stopIntentRide() {
 }
 /** Lifecycle/recovery cleanup is distinct from the normal station-only exit request. */
 export function clearIntentRide(abort = false) {
+  if (import.meta.env?.DEV) intentRideQaHold.second = null;
   // Never end another attraction's ride after external recovery has changed bridge ownership.
   if (abort && intentRideClock.revision === attractionRide.revision) endAttractionRide();
   Object.assign(intentRideClock, { riding: false, elapsed: 0 });

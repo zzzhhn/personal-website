@@ -7,7 +7,7 @@ import { parkAudio } from '../WorldParkAudio';
 import { attractionRide, updateAttractionRide } from './attraction-ride';
 import { advanceCoaster, coasterDistanceAt, coasterFrame, coasterRidePose, coasterWorld, COASTER_DURATION, COASTER_LENGTH } from './coaster-track';
 import { createCoasterCar, createCoasterStructure, type CoasterCollider } from './coaster-geometry';
-import { activateIntentTarget, intentRideClock, loadIntentProgress, clearIntentRide, useIntentStore } from './intent-state';
+import { activateIntentTarget, intentRideClock, intentRideQaHold, loadIntentProgress, clearIntentRide, useIntentStore } from './intent-state';
 import { advanceCoasterTransition, returnCoasterToStation } from './coaster-transition';
 import WorldIntentDevices from './WorldIntentDevices';
 import WorldIntentSigns from './WorldIntentSigns';
@@ -89,7 +89,9 @@ function CoasterTrain({ active }: { active: boolean }) {
     const frozen = w.paused || w.poolInspect || !!w.shot || document.hidden;
     if (s.riding && !owned) { clearIntentRide(); }
     if (owned && transition.phase === 'riding') {
-      const next = advanceCoaster(intentRideClock, dt, active, frozen, document.hidden, true, attractionRide.revision);
+      const qaHold = import.meta.env.DEV && intentRideQaHold.revision === attractionRide.revision && intentRideQaHold.second !== null;
+      if (qaHold) intentRideClock.elapsed = intentRideQaHold.second!;
+      const next = advanceCoaster(intentRideClock, dt, active, frozen || qaHold, document.hidden, true, attractionRide.revision);
       Object.assign(intentRideClock, next);
       if (!next.riding && next.elapsed >= COASTER_DURATION) {
         returnCoasterToStation(transition);
