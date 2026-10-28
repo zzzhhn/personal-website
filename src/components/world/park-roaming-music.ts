@@ -56,7 +56,10 @@ export class ParkRoamingMusic {
   play(ctx: AudioContext, output: AudioNode, volume: number) {
     if (this.source || !this.buffer || this.ctx !== ctx || ctx.state !== 'running') return;
     const gain = this.gain = ctx.createGain(), source = this.source = ctx.createBufferSource();
-    this.level = volume; gain.gain.value = volume;
+    this.level = volume; gain.gain.value = 0;
+    // Club/pause restoration can land mid-waveform. Ease in on the audio clock
+    // (95% in 240 ms); stop() still disconnects immediately at every silence gate.
+    gain.gain.setTargetAtTime(volume, ctx.currentTime, .08);
     source.buffer = this.buffer; source.loop = true; source.loopStart = 0; source.loopEnd = PARK_ROAMING_TRACK.seconds;
     source.connect(gain).connect(output); this.at = ctx.currentTime;
     source.start(0, this.offset);

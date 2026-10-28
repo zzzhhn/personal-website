@@ -14,7 +14,7 @@ class Target extends EventTarget {
   removeEventListener(type, fn) { this.listeners.get(type)?.delete(fn); super.removeEventListener(type, fn); }
   get count() { return [...this.listeners.values()].reduce((n, set) => n + set.size, 0); }
 }
-const param = () => ({ value: 0, events: [], setTargetAtTime(value, at, tau) { this.value = value; this.events.push({ value, at, tau }); },
+const param = () => ({ value: 0, events: [], setTargetAtTime(value, at, tau) { this.events.push({ from: this.value, value, at, tau }); this.value = value; },
   setValueAtTime() {}, linearRampToValueAtTime() {}, exponentialRampToValueAtTime() {} });
 class Audio extends Target {
   static instances = [];
@@ -22,7 +22,7 @@ class Audio extends Target {
   decodes = 0; resumes = 0; holdResume = false; rejectResume = false; holdDecode = false;
   constructor(options) { super(); this.options = options; Audio.instances.push(this); }
   node() { const node = { gain: param(), frequency: param(), threshold: param(), ratio: param(),
-    connect() { return node; }, disconnect() { node.disconnected = true; } }; this.nodes.push(node); return node; }
+    connections: [], connect(target) { node.connections.push(target); return target; }, disconnect() { node.disconnected = true; } }; this.nodes.push(node); return node; }
   createGain() { return this.node(); } createBiquadFilter() { return this.node(); } createDynamicsCompressor() { return this.node(); }
   createBuffer(channels, length, sampleRate) { const pcm = Array.from({ length: channels }, () => new Float32Array(length));
     return { length, sampleRate, numberOfChannels: channels, duration: length / sampleRate, getChannelData: i => pcm[i] }; }
@@ -102,6 +102,25 @@ test('shared levels and SFX duck the recording without restarting it, and Music=
   setWorldAudioVolume('music', 0); await settle(); e.audio.cue('scan'); await settle();
   assert.equal(e.audio.snapshot().roaming.sources, 0); assert.equal(e.audio.snapshot().cueVoices, 1);
   setWorldAudioMuted(true); await settle(); assert.equal(ctx.state, 'suspended'); assert.equal(e.audio.snapshot().cueVoices, 0);
+});
+
+test('Club exit eases the saved phrase in from silence and pause still cuts that onset immediately', async t => {
+  const e = fixture(t); setWorldAudioVolume('music', .5); e.gesture(); await settle();
+  const ctx = Audio.instances[0], initial = ctx.sources[0];
+  const assertOnset = source => {
+    assert.deepEqual(source.connections[0].gain.events, [{ from: 0, value: .8, at: ctx.currentTime, tau: .08 }]);
+    assert.equal(e.audio.snapshot().roaming.level, .8, 'the user-selected target level is preserved');
+  };
+  assertOnset(initial); ctx.currentTime = 13.375; setClubAudible(e.club, true);
+  assert.equal(initial.stopped, true, 'Club entry stops immediately without an outgoing fade');
+  await settle(); ctx.currentTime = 30; setClubAudible(e.club, false); await settle();
+  const restored = ctx.sources.at(-1); assert.notEqual(restored, initial); assert.equal(restored.offset, 13.375);
+  assertOnset(restored); assert.equal(ctx.decodes, 1); assert.equal(e.requests.length, 1);
+  assert.equal(ctx.sources.filter(source => source.loop && !source.stopped).length, 1);
+  useWorldStore.setState({ paused: true });
+  assert.equal(restored.stopped, true); assert.equal(restored.disconnected, true);
+  assert.equal(restored.connections[0].disconnected, true, 'no scheduled gain target can leak through pause');
+  assert.equal(e.audio.snapshot().roaming.sources, 0);
 });
 
 test('pause cancels fetch, stale replies cannot decode, and failed loads retry only on the next trusted gesture', async t => {
