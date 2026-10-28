@@ -17,6 +17,7 @@ function withStructure(check) {
   const structure = createCoasterStructure(true), world = new R.World({ x: 0, y: 0, z: 0 });
   try {
     for (const c of structure.colliders) world.createCollider(coasterColliderDescriptor(R, c));
+    world.createCollider(R.ColliderDesc.trimesh(structure.track.vertices,structure.track.indices));
     world.step(); check(world, structure.colliders.length);
   } finally { world.free(); structure.steel.dispose(); structure.glow.dispose(); }
 }

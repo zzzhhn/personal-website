@@ -7,6 +7,7 @@ import { COASTER_BOARDING } from './coaster-transition.ts';
 import { INTENT_COASTER_FOOTPRINT, attractionCapeDistance } from './attraction-layout.ts';
 import { coasterSupportBase } from './coaster-thrill-supports.ts';
 import { addStationStructureDetail, createSupportMemberDetail } from './coaster-detailing.ts';
+import { addCoasterRailSections, addCoasterSampleNodes, coasterRailSpans, inCoasterStructureSample } from './coaster-rail-section.ts';
 import { addCoasterCliffs } from './coaster-landscape-cliffs.ts';
 import { lightCoasterCliffs } from './coaster-landscape-lighting.ts';
 import { INTENT_STATIONS } from './intent-stations.ts';
@@ -74,22 +75,18 @@ export interface CoasterCollider {
 export function createCoasterStructure(detailed: boolean) {
   return sceneWorkProbe.measure(`coaster-structure:${detailed ? 'near' : 'far'}`, () => {
   const steel = new CoasterBatch(), glow = new CoasterBatch(), colliders: CoasterCollider[] = [];
+  const spans = coasterRailSpans(detailed), track = addCoasterRailSections(steel, detailed, spans);
   const steps = Math.ceil(COASTER_LENGTH / (detailed ? 1.05 : 3));
   for (let i = 0; i < steps; i++) {
-    const a = coasterFrame(i / steps), b = coasterFrame((i + 1) / steps);
-    for (const offset of [-.78, .78]) steel.beam(tuple(a.point.clone().addScaledVector(a.side, offset)), tuple(b.point.clone().addScaledVector(b.side, offset)), .11, P.rail);
-    if (i % 3 === 0) steel.beam(tuple(a.point.clone().addScaledVector(a.side, -1)), tuple(a.point.clone().addScaledVector(a.side, 1)), .09, P.copper);
-    if (i % 4 === 0) {
-      const c = coasterFrame((i + 4) / steps);
-      const spine = (f: ReturnType<typeof coasterFrame>) => f.point.clone().addScaledVector(f.up, -Math.min(.42, Math.max(.15, f.point.y - 1.45)));
-      const spineA = spine(a), spineB = spine(c);
-      steel.beam(tuple(spineA), tuple(spineB), .3, P.dark, 4);
-      steel.beam(tuple(a.point.clone().addScaledVector(a.side, -.75)), tuple(spineB), .065, P.steel, 4);
-    }
-    if (i % 8 !== 7) for (const side of [-1, 1]) {
+    const a = coasterFrame(i / steps);
+    if (!inCoasterStructureSample(i / steps) && i % 3 === 0) steel.beam(tuple(a.point.clone().addScaledVector(a.side, -1)), tuple(a.point.clone().addScaledVector(a.side, 1)), .09, P.copper);
+  }
+  for (const rings of spans) for (let i = 0; i < rings.length - 1; i++) {
+    const { frame: a, u } = rings[i], b = rings[i + 1].frame;
+    if (Math.floor(u * COASTER_LENGTH / 1.05) % 8 !== 7) for (const side of [-1, 1]) {
       const lightA = a.point.clone().addScaledVector(a.side, side * .98).addScaledVector(a.up, -.12);
       const lightB = b.point.clone().addScaledVector(b.side, side * .98).addScaledVector(b.up, -.12);
-      const tint = Math.abs(i / steps - COASTER_INVERSION.top) < .025 ? '#ed7bb6' : '#37dce8';
+      const tint = Math.abs(u - COASTER_INVERSION.top) < .025 ? '#ed7bb6' : '#37dce8';
       for (const axis of ['side', 'up'] as const) {
         const vertices = [lightA.clone().addScaledVector(a[axis], -.12), lightB.clone().addScaledVector(b[axis], -.12), lightB.clone().addScaledVector(b[axis], .12), lightA.clone().addScaledVector(a[axis], .12)];
         const order = axis === 'side' ? [0, 2, 1, 0, 3, 2] : side > 0 ? [0, 1, 2, 0, 2, 3] : [0, 2, 1, 0, 3, 2];
@@ -98,7 +95,9 @@ export function createCoasterStructure(detailed: boolean) {
       }
     }
   }
-  for (const { a, b, beams } of coasterSupports(detailed)) {
+  const supports = coasterSupports(detailed);
+  addCoasterSampleNodes(steel, supports, track);
+  for (const { a, b, beams, u } of supports) {
     for (const segment of beams) {
       const {a:from,b:to,radius}=segment,d=to.clone().sub(from);
       if(detailed&&radius>=.3)steel.parts.push(createSupportMemberDetail(segment));
@@ -110,7 +109,7 @@ export function createCoasterStructure(detailed: boolean) {
       const base=coasterSupportBase(p.x,p.z);
       steel.housing([p.x,base+.5,p.z],[2.5,1,2.5],P.concrete);
       colliders.push({position:[p.x,base+.5,p.z],half:[1.25,.5,1.25]});
-      steel.box([p.x,base+1.05,p.z],[1,.15,1],P.dark);
+      if (!inCoasterStructureSample(u)) steel.box([p.x,base+1.05,p.z],[1,.15,1],P.dark);
     }
   }
   addArchitecture(steel, glow, colliders, detailed);
@@ -118,7 +117,7 @@ export function createCoasterStructure(detailed: boolean) {
   const art = addCoasterLandscape(steel, glow, colliders, detailed);
   addCoasterCliffs(steel, glow, colliders);
   const relief = addCoasterTerrainRelief(steel);
-  return { steel: steel.finish(), glow: glow.finish(), colliders, art, relief };
+  return { steel: steel.finish(), glow: glow.finish(), colliders, art, relief, track };
   });
 }
 

@@ -34,6 +34,8 @@ export function packCoasterStructure(structure: CoasterStructure) {
   for (const c of structure.colliders) if (c.hull) buffers.add(c.hull.buffer as ArrayBuffer);
   buffers.add(structure.relief.vertices.buffer as ArrayBuffer);
   buffers.add(structure.relief.indices.buffer as ArrayBuffer);
+  buffers.add(structure.track.vertices.buffer as ArrayBuffer);
+  buffers.add(structure.track.indices.buffer as ArrayBuffer);
   return { packet, transfer: [...buffers] };
 }
 

@@ -11,6 +11,7 @@ const shape = data => ({
   glow:Object.entries(data.glow.attributes).map(([key,a])=>[key,a.itemSize,a.normalized,hash(a.array)]),
   colliders:data.colliders.map(c=>({...c,hull:c.hull&&hash(c.hull)})),
   relief:{...data.relief,vertices:hash(data.relief.vertices),indices:hash(data.relief.indices)},
+  track:{vertices:hash(data.track.vertices),indices:hash(data.track.indices)},
   art:data.art,
   sphere:[data.steel,data.glow].map(g=>[g.boundingSphere.center.toArray(),g.boundingSphere.radius]),
 });
@@ -24,6 +25,7 @@ test('real far/near batches retain every render, night-light and contact byte af
     const restored=unpackCoasterStructure(received);
     assert.deepEqual(shape(restored),before);
     assert.equal(restored.steel.attributes.position.array,received.steel.attributes.position.array,'hydration must not copy vertex arrays');
+    assert.equal(restored.track.vertices,received.track.vertices,'track contact must transfer without a second copy');
     restored.steel.dispose();restored.glow.dispose();
   }
 });

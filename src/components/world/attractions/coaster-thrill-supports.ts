@@ -3,9 +3,10 @@ import { THRILL_LENGTH } from './coaster-thrill-layout.ts';
 import { thrillFrame, thrillRidePose } from './coaster-thrill-frame.ts';
 import { attractionCapeDistance } from './attraction-layout.ts';
 import { PointClearanceIndex } from './coaster-clearance-index.ts';
+import { inCoasterStructureSample } from './coaster-rail-section.ts';
 
 export interface ThrillBeam { a: Vector3; b: Vector3; radius: number }
-export interface ThrillSupport { a: Vector3; b: Vector3; top: Vector3; beams: ThrillBeam[] }
+export interface ThrillSupport { a: Vector3; b: Vector3; top: Vector3; beams: ThrillBeam[]; u: number }
 export const coasterSupportBase=(x:number,z:number)=>attractionCapeDistance(x,z)>0?-9:1;
 export function pointSegmentDistance(p: Vector3, a: Vector3, b: Vector3) {
   const x=b.x-a.x,y=b.y-a.y,z=b.z-a.z;
@@ -42,8 +43,8 @@ export function thrillSupports(detailed: boolean): ThrillSupport[] {
     const top=f.point.clone().addScaledVector(f.up,-.7),side=new Vector3(f.side.x,0,f.side.z).normalize();
     const a=top.clone().addScaledVector(side,-5.5),b=top.clone().addScaledVector(side,5.5);
     const footA=new Vector3(a.x,coasterSupportBase(a.x,a.z),a.z),footB=new Vector3(b.x,coasterSupportBase(b.x,b.z),b.z);
-    const radius=top.y>35?.42:.3;
-    const beams:ThrillBeam[]=[{a:footA,b:a,radius},{a:footB,b:b,radius},{a,b,radius:.3}];
+    const sample=inCoasterStructureSample(i/n),radius=sample?.65:top.y>35?.42:.3;
+    const beams:ThrillBeam[]=[{a:footA,b:a,radius},{a:footB,b:b,radius},{a,b,radius:sample?.42:.3}];
     if(beams.some(s=>!clear(s.a,s.b,s.radius)))continue;
     // Braced bays shorten the visual unsupported length. Omit only a brace that
     // actually conflicts with a crossing train, retaining the screened main frame.
@@ -53,7 +54,7 @@ export function thrillSupports(detailed: boolean): ThrillSupport[] {
       const otherA=new Vector3(b.x,y,b.z),otherB=new Vector3(a.x,high,a.z);
       if(clear(otherA,otherB,.14))beams.push({a:otherA,b:otherB,radius:.14});
     }
-    groups.push({a,b,top,beams});
+    groups.push({a,b,top,beams,u:i/n});
   }
   cache.set(detailed,groups);return groups;
 }

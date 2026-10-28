@@ -58,6 +58,9 @@ function WorldIntentCoaster({ active }: { active: boolean }) {
       {/* LODs have different support counts. Never reuse an index-keyed collider
           for a different solid while its Rapier hook still owns the old shape. */}
       <CoasterCollisions key={String(renderedNear)} colliders={structure.colliders} /><IntentMovingLight />
+      <RigidBody key={`track-${renderedNear}`} type="fixed" colliders={false} userData={{ solid: true, assetId: 'coaster-track-sample' }}>
+        <TrimeshCollider args={[structure.track.vertices, structure.track.indices]} friction={.9} />
+      </RigidBody>
       <RigidBody type="fixed" colliders={false} userData={{ surface: true, solid: true, assetId: 'coaster-relief' }}>
         <TrimeshCollider args={[structure.relief.vertices, structure.relief.indices]} friction={.9} />
       </RigidBody>
