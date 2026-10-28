@@ -43,8 +43,8 @@
   "runtimeEvidence": {
     "status": "reviewed-for-local-preview",
     "date": "2026-10-28",
-    "report": "docs/world/phase-2-playground/ibd-craft-20261028.md",
+    "report": "docs/world/phase-2-playground/ibd-truck-20261028.md",
     "userVisualAcceptance": "pending",
-    "note": "v16 已比较三组固定日夜近景，并实际验证接货、拾取、检查和转台。全流程历史与本轮局部证据分开；货车比例、整体货物密度、音乐听感与整岛性能仍未完成，用户尚未验收最终视觉。"
+    "note": "v17 已比较车厢与车头两组冻结日夜近景，确认后轮不再穿出地板；实际普通页行走、发货闸阻挡与退离正常。本轮未重跑完整订单；车厢夜间亮度、整体工业细节、音乐听感与整岛性能仍未完成，用户尚未验收最终视觉。"
   }
 }
