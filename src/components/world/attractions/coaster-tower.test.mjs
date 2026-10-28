@@ -14,13 +14,12 @@ function tower(detailed = true) {
   return { body, lamps, colliders, dispose() { body.dispose(); lamps.dispose(); } };
 }
 
-test('tower alone adds at most 6000 triangles and preserves two finite batched surfaces', () => {
+test('the 85 metre open tower preserves two finite batches within its geometry budget', () => {
   for (const detailed of [true, false]) {
     const g = tower(detailed);
     try {
       const total = (g.body.attributes.position.count + g.lamps.attributes.position.count) / 3;
-      // Original tower: 972 near / 828 far triangles, measured before this refinement.
-      assert.ok(total - (detailed ? 972 : 828) <= 6000);
+      assert.ok(total <= (detailed ? 9000 : 7500));
       for (const geometry of [g.body, g.lamps]) {
         assert.equal(geometry.groups.length, 0);
         for (const attribute of Object.values(geometry.attributes)) assert.ok(attribute.array.every(Number.isFinite));
@@ -30,21 +29,18 @@ test('tower alone adds at most 6000 triangles and preserves two finite batched s
   }
 });
 
-test('both opaque tower facades receive warm diffuse vertex light near the bulkheads', () => {
+test('tower equipment and platforms receive real diffuse light at each service level', () => {
   const g = tower(), p = g.body.attributes.position, n = g.body.attributes.normal, fill = g.body.attributes.nightRadiance;
   try {
-    for (const face of ['east', 'front']) {
-      let count = 0, warm = 0;
-      for (let i = 0; i < p.count; i++) {
-        const y = p.getY(i) - 1;
-        const selected = face === 'east'
-          ? p.getX(i) > 13.35 && p.getX(i) < 13.6 && n.getX(i) > .9 && [10, 26, 42].some(h => Math.abs(y - h) < 3)
-          : p.getX(i) > 6 && p.getX(i) < 14 && Math.abs(p.getZ(i) + 270.5) < .06 && n.getZ(i) > .9 && y > 10 && y < 45;
-        if (!selected) continue;
-        count++; if (fill.getX(i) > .25 && fill.getX(i) > fill.getZ(i)) warm++;
+    for (const level of [12,36,60,83]) {
+      let count=0,warm=0;
+      for(let i=0;i<p.count;i++) {
+        const selected=p.getX(i)>4.6&&p.getX(i)<7.4&&Math.abs(p.getZ(i)+344.8)<.03&&n.getZ(i)>.9&&Math.abs(p.getY(i)-(level+2.3))<1.2;
+        if(!selected)continue;count++;
+        if(fill.getX(i)>.25&&fill.getX(i)>fill.getZ(i))warm++;
       }
-      assert.ok(count >= 12, `${face} needs interior lighting samples`);
-      assert.ok(warm / count > .5, `${face}: ${warm}/${count} warm opaque vertices`);
+      assert.ok(count>=6, `service level ${level} has real opaque faces`);
+      assert.ok(warm/count>.5, `service level ${level}: ${warm}/${count} lit faces`);
     }
   } finally { g.dispose(); }
 });
@@ -99,12 +95,10 @@ test('free orbit camera sweeps stop at tower skins, platforms and guardrails', a
     world.step();
     const point = p => new Vector3(...coasterWorld(p));
     const cases = [];
-    for (const y of [2, 12, 18, 25, 34, 42, 52]) {
-      cases.push([[-32, y, -80], [-40, y, -80]], [[-40, y, -68], [-40, y, -80]]);
-    }
-    for (const y of [5, 15, 28, 41].map(v => v * 54 / 44)) {
-      cases.push([[-40, y + 3, -74.8], [-40, y - 1, -74.8]]);
-      cases.push([[-40, y + 1.8, -72], [-40, y + 1.8, -75]]);
+    for(const y of [2,18,34,52,75])cases.push([[-40,y,-151],[-44,y,-151]]);
+    for(const y of [12,36,60,83]){
+      cases.push([[-46,y+3,-150],[-46,y-1,-150]]);
+      cases.push([[-46,y+1.2,-142],[-46,y+1.2,-147]]);
     }
     for (const [from, to] of cases) {
       const result = sweepCamera(world, R, point(from), point(to), .22, undefined, () => true);

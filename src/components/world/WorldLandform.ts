@@ -374,6 +374,7 @@ export function buildTerrain(): Terrain {
   // neighbouring fine cells meet them without cracks.
   const NB = GRID.nx / BLOCK, MB = GRID.nz / BLOCK, kind = new Uint8Array(NB * MB); // 0 skip, 1 coarse, 2 fine, 3 coarse flat top
   const fixed = new Uint8Array(NODES_X * NODES_Z);
+  const blockHeights = new Float64Array((BLOCK + 1) ** 2);
   for (let bj = 0; bj < MB; bj++) for (let bi = 0; bi < NB; bi++) {
     const i0 = bi * BLOCK, j0 = bj * BLOCK, cx = nodeX(i0 + 2), cz = nodeZ(j0 + 2);
     const { d, s } = coastFrame(cx, cz);
@@ -382,8 +383,23 @@ export function buildTerrain(): Terrain {
     if ((d < topPush(s) - 4.5 || LAYOUT_V4 && attractionCapeDistance(cx,cz)<-4.5) && camp > 40 && rampHeight(cx, cz) < -30 && !(LAYOUT_V4 && (nearRidgeV4(cx, cz)||CLUB_POOL.distance(cx,cz)<4))) k = 3;
     else {
       let maxH = -Infinity;
-      for (let j = j0; j <= j0 + BLOCK; j++) for (let i = i0; i <= i0 + BLOCK; i++) maxH = Math.max(maxH, terrainHeight(nodeX(i), nodeZ(j)));
+      for (let j = j0; j <= j0 + BLOCK; j++) for (let i = i0; i <= i0 + BLOCK; i++) {
+        const h = terrainHeight(nodeX(i), nodeZ(j));
+        blockHeights[(j-j0)*(BLOCK+1)+i-i0]=h; maxH=Math.max(maxH,h);
+      }
       k = maxH <= -8.99 ? 0 : maxH <= -1.3 ? 1 : 2;
+      // Submerged nearly planar shelves do not need 32 faces per block. Preserve
+      // the shoreline and all dry walkable ground; compare against the exact
+      // two-triangle diagonal used below, not a bilinear approximation.
+      if(k===2 && maxH<WATER_Y-.35){
+        const a=blockHeights[0],b=blockHeights[BLOCK],c=blockHeights[BLOCK*(BLOCK+1)],d=blockHeights[blockHeights.length-1];
+        let error=0;
+        for(let j=0;j<=BLOCK;j++)for(let i=0;i<=BLOCK;i++){
+          const x=i/BLOCK,z=j/BLOCK,flat=x>=z?a+(b-a)*x+(d-b)*z:a+(d-c)*x+(c-a)*z;
+          error=Math.max(error,Math.abs(blockHeights[j*(BLOCK+1)+i]-flat));
+        }
+        if(error<.045)k=1;
+      }
     }
     kind[bj * NB + bi] = k;
     if (k === 1 || k === 3) for (let t = 0; t <= BLOCK; t++) for (const [i, j] of [[i0 + t, j0], [i0 + t, j0 + BLOCK], [i0, j0 + t], [i0 + BLOCK, j0 + t]]) fixed[j * NODES_X + i] = 1;

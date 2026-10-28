@@ -144,10 +144,8 @@ test('public routes remain outside foliage, with no random layout or distance-de
 
 test('neither support LOD grows through a tree or bush, including its diagonal braces',()=>{
   const ray = new Ray(), hit = new Vector3(), box = new Box3();
-  for(const detailed of [true,false]) for(const {a,b,top} of coasterSupports(detailed)) {
-    const segments = [[new Vector3(a.x,1.2,a.z),a,.38],[new Vector3(b.x,1.2,b.z),b,.38],[a,b,.3]];
-    if(a.distanceTo(top)>3) segments.push([b,top,.36]);
-    if(top.y>9) segments.push([new Vector3(a.x,1.6,a.z),b,.15],[new Vector3(b.x,1.6,b.z),a,.15]);
+  for(const detailed of [true,false]) for(const {a,b,beams} of coasterSupports(detailed)) {
+    const segments = beams.map(beam=>[beam.a,beam.b,beam.radius]);
     for(const p of plants) {
       for(const q of [a,b]) assert.equal(p.bounds.intersectsBox(new Box3(new Vector3(q.x-1.05,1,q.z-1.05),new Vector3(q.x+1.05,1.8,q.z+1.05))),false,p.id);
       for(const [from,to,radius] of segments) {

@@ -8,9 +8,9 @@ const warm=new Color('#ffd092'),cool=new Color('#57bdcb');
 const sources=[
   ...COASTER_CLIFF_LAMPS.map(p=>({p:coasterWorld(p),radius:12,power:2.5,color:warm})),
   ...COASTER_CLIFF_WALK.map(([x,y,z])=>({p:coasterWorld([x,y+2,z]),radius:15,power:3,color:warm})),
-  ...[5,15,28,41].map(y=>({p:coasterWorld([-40,y*54/44+2.2,-73.4]),radius:19,power:3,color:warm})),
-  // Short side bulkheads illuminate the inset equipment casing; vertex fill adds no runtime lights.
-  ...[10,26,42].map(y=>({p:coasterWorld([-35.65,y-.25,-80]),radius:12,power:3,color:warm})),
+  ...[12,36,60,83].map(y=>({p:coasterWorld([-44,y+2,-148.8]),radius:23,power:3.2,color:warm})),
+  // Static floodlight spill on the tall steelwork; no extra runtime light or shadow pass.
+  ...[8,30,54,78].flatMap(y=>[-1,1].map(side=>({p:coasterWorld([-44+side*12,y,-143]),radius:29,power:1.8,color:cool}))),
   {p:coasterWorld([60,8,-75]),radius:30,power:1.1,color:cool},
 ];
 /** Supplemental local diffuse fill for the north tower and cliff walk; no runtime lights. */

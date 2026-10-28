@@ -389,7 +389,7 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
   const colors = useMemo(() => ({ scratch: new Color(), storm: new Color(), stormDay: new Color('#8D9EA7'), stormNight: new Color('#29394D') }), []);
   useEffect(() => {
     const oldFog = scene.fog;
-    scene.fog = new Fog('#C49C83', 140, 360);
+    scene.fog = new Fog('#C49C83', 350, 600);
     return () => { scene.fog = oldFog; };
   }, [scene]);
   useFrame(() => {
@@ -431,7 +431,9 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
     }
     if (scene.fog instanceof Fog) {
       scene.fog.color.copy(skyUniforms.horizon.value);
-      scene.fog.near = 140 - overcast * 75; scene.fog.far = 360 - overcast * 170;
+      // The expanded cape is over 300 m across. Keep its silhouette legible in
+      // clear weather while retaining the much shorter rain/snow visibility.
+      scene.fog.near = 350 - overcast * 260; scene.fog.far = 600 - overcast * 410;
     }
   });
   return <>
@@ -443,10 +445,10 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
     <pointLight ref={fire} name="camp-fire-key" position={[-42, 6.5, 30]} color="#FF8A3A" intensity={9} distance={26} decay={2} />
     {parkFillPositions.map((position, i) => <pointLight key={i} ref={lamp => { parkFill.current[i] = lamp; }}
       position={position} color="#FFD08A" intensity={0} distance={25} decay={2} castShadow={false} />)}
-    <mesh name="world-sky" position={[0, 0, 0]} renderOrder={-10}>
+    <mesh name="world-sky" frustumCulled={false} renderOrder={-10}>
       <sphereGeometry args={[290, 24, 16]} />
       <shaderMaterial side={BackSide} depthWrite={false} uniforms={skyUniforms}
-        vertexShader={'varying vec3 vDirection; void main(){vDirection=normalize(position);gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}'}
+        vertexShader={'varying vec3 vDirection; void main(){vDirection=normalize(position);gl_Position=projectionMatrix*mat4(mat3(viewMatrix))*vec4(position,1.0);}'}
         fragmentShader={`uniform vec3 top; uniform vec3 horizon; uniform float cloud; uniform float cloudTime; uniform float darkness; varying vec3 vDirection;
           float h(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
           float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);return mix(mix(h(i),h(i+vec2(1,0)),f.x),mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x),f.y);}

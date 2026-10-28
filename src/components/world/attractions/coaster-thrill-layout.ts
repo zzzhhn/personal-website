@@ -1,8 +1,7 @@
 import { CatmullRomCurve3, Vector3 } from 'three';
 import type { Vec3 } from '../types';
 
-/** Ride-space prototype for the user's high-drop/multiple-inversion correction.
- * Deliberately not selected by the live island until structure, camera and night review.
+/** Approved v4 route, shared by the spatial sample and integrated island.
  * Local origin matches the current station, so boarding does not move with the expansion. */
 export type ThrillKind = 'loop' | 'cobra' | 'stall' | 'roll';
 export interface ThrillElement {
@@ -59,7 +58,7 @@ points([[135,12,-50],[152,9,-27],[146,8,-7],[125,7,4]]);
 start=THRILL_POINTS.length;
 for(let i=0;i<=16;i++) {
   const t=i/16;
-  point([110-60*t,8+3*Math.sin(Math.PI*t),8+2*Math.sin(2*Math.PI*t)]);
+  point([110-60*t,8+3*Math.sin(Math.PI*t),-1+2*Math.sin(2*Math.PI*t)]);
 }
 marks.push({id:'water-roll',label:'贴水桶滚',kind:'roll',start,end:THRILL_POINTS.length-1,peaks:[start+8],turns:1});
 points([[34,7,14],[18,6,23],[0,5,14],[-20,4,6]]);

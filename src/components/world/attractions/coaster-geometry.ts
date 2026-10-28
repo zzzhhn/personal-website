@@ -1,9 +1,11 @@
-import { BoxGeometry, BufferAttribute, BufferGeometry, Color, CylinderGeometry, ExtrudeGeometry, Matrix4, Quaternion, Shape, Vector3 } from 'three';
+import { Euler, BoxGeometry, BufferAttribute, BufferGeometry, Color, CylinderGeometry, ExtrudeGeometry, Matrix4, Quaternion, Shape, Vector3 } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { TessellateModifier } from 'three/examples/jsm/modifiers/TessellateModifier.js';
 import { coasterFrame, coasterSupports, coasterWorld, COASTER_LENGTH, COASTER_TUNNEL, COASTER_INVERSION, COASTER_GATE_Z } from './coaster-track.ts';
+import { addThrillTower } from './coaster-thrill-tower.ts';
 import { COASTER_BOARDING } from './coaster-transition.ts';
-import { INTENT_COASTER_FOOTPRINT } from './attraction-layout.ts';
+import { INTENT_COASTER_FOOTPRINT, attractionCapeDistance } from './attraction-layout.ts';
+import { coasterSupportBase } from './coaster-thrill-supports.ts';
 import { addCoasterCliffs } from './coaster-landscape-cliffs.ts';
 import { lightCoasterCliffs } from './coaster-landscape-lighting.ts';
 import { INTENT_STATIONS } from './intent-stations.ts';
@@ -71,7 +73,7 @@ export interface CoasterCollider {
 export function createCoasterStructure(detailed: boolean) {
   return sceneWorkProbe.measure(`coaster-structure:${detailed ? 'near' : 'far'}`, () => {
   const steel = new CoasterBatch(), glow = new CoasterBatch(), colliders: CoasterCollider[] = [];
-  const steps = detailed ? 800 : 256;
+  const steps = Math.ceil(COASTER_LENGTH / (detailed ? 1.05 : 3));
   for (let i = 0; i < steps; i++) {
     const a = coasterFrame(i / steps), b = coasterFrame((i + 1) / steps);
     for (const offset of [-.78, .78]) steel.beam(tuple(a.point.clone().addScaledVector(a.side, offset)), tuple(b.point.clone().addScaledVector(b.side, offset)), .11, P.rail);
@@ -95,17 +97,18 @@ export function createCoasterStructure(detailed: boolean) {
       }
     }
   }
-  for (const { a, b, top } of coasterSupports(detailed)) {
-    for (const p of [a, b]) {
-      steel.beam([p.x, 1.2, p.z], tuple(p), .38, P.steel);
-      steel.housing([p.x, 1.4, p.z], [2.1, .8, 2.1], P.concrete);
-      colliders.push({ position: [p.x, (p.y + 1.2) / 2, p.z], half: [.38, (p.y - 1.2) / 2, .38] }, { position: [p.x, 1.4, p.z], half: [1.05, .4, 1.05] });
+  for (const { a, b, beams } of coasterSupports(detailed)) {
+    for (const segment of beams) {
+      const {a:from,b:to,radius}=segment,d=to.clone().sub(from);
+      steel.beam(tuple(from),tuple(to),radius,radius<.2?P.rail:P.steel,8);
+      const q=new Quaternion().setFromUnitVectors(new Vector3(0,1,0),d.clone().normalize()),e=new Euler().setFromQuaternion(q);
+      colliders.push({position:tuple(from.clone().add(to).multiplyScalar(.5)),half:[radius,d.length()/2,radius],rotation:[e.x,e.y,e.z]});
     }
-    steel.beam(tuple(a), tuple(b), .3, P.dark);
-    if(a.distanceTo(top)>3) steel.beam(tuple(b),tuple(top),.36,P.dark);
-    if (top.y > 9) {
-      steel.beam([a.x, 1.6, a.z], tuple(b), .15, P.steel);
-      steel.beam([b.x, 1.6, b.z], tuple(a), .15, P.steel);
+    for (const p of [a,b]) {
+      const base=coasterSupportBase(p.x,p.z);
+      steel.housing([p.x,base+.5,p.z],[2.5,1,2.5],P.concrete);
+      colliders.push({position:[p.x,base+.5,p.z],half:[1.25,.5,1.25]});
+      steel.box([p.x,base+1.05,p.z],[1,.15,1],P.dark);
     }
   }
   addArchitecture(steel, glow, colliders, detailed);
@@ -134,98 +137,8 @@ function addTunnel(steel: CoasterBatch, glow: CoasterBatch, detailed: boolean) {
   }
 }
 
-/** The service tower stays west of the crest; all dimensions here use actual metres. */
-export function addCoasterTower(steel: CoasterBatch, glow: CoasterBatch, colliders: CoasterCollider[], detailed: boolean) {
-  const box = (p: Vec3, size: Vec3, color: string, solid = true, surface = false) => {
-    steel.box(coasterWorld(p), size, color);
-    if (solid) colliders.push({ position: coasterWorld(p), half: size.map(v => v / 2) as Vec3, surface });
-  };
-  const shell = (p: Vec3, size: Vec3, color: string) => {
-    steel.housing(coasterWorld(p), size, color);
-    colliders.push({ position: coasterWorld(p), half: size.map(v => v / 2) as Vec3 });
-  };
-  const beam = (a: Vec3, b: Vec3, radius: number, color = P.steel, sides = 6) =>
-    steel.beam(coasterWorld(a), coasterWorld(b), radius, color, sides);
-  const light = (p: Vec3, size: Vec3, color = P.gold) => glow.box(coasterWorld(p), size, color);
-  // Recessed machinery core and four load-bearing corners replace the uninterrupted white wall.
-  shell([-40, 27, -80], [5.8, 54, 7.8], P.dark);
-  for (const x of [-42.95, -37.05]) for (const z of [-83.95, -76.05]) {
-    shell([x, 26.6, z], [1.1, 53.2, 1.1], P.white);
-    shell([x, 1.1, z], [1.5, 2.2, 1.5], P.concrete);
-    for (const y of [8.3, 22, 38, 51.6]) box([x, y, z], [1.18, .32, 1.18], P.steel, false);
-  }
-  // The existing western service spine remains; braces and equipment break up its long silhouette.
-  shell([-44.2, 22.09, -81], [2, 44.18, 6], P.dark);
-  shell([-40, 3.682, -73.8], [12, 7.364, 4], P.concrete);
-  for (const y of [10.5, 24.5, 39.5]) {
-    shell([-44.9, y, -81], [.6, 6.2, 4.7], P.steel);
-    for (const z of [-83.6, -78.4]) beam([-45.05, y - 3.1, z], [-45.05, y + 3.1, z], .13, P.rail);
-    beam([-45.08, y - 2.8, -83.4], [-45.08, y + 2.8, -78.6], .11, P.copper);
-  }
-  // Layered east-facing casings keep their outer skin inside the original tower's rail-side boundary.
-  for (const [y, h] of [[6, 8], [17, 9], [31, 10], [45, 8]]) {
-    shell([-36.72, y, -80], [.32, h, 5.1], P.white);
-    box([-36.53, y - h / 2 + .45, -80], [.08, .38, 4.5], P.copper, false);
-    box([-36.52, y + h / 2 - .55, -80], [.08, .5, 4.5], P.steel, false);
-  }
-  for (const y of [11.4, 23.7, 38.3, 50.2]) {
-    // Short glazed recesses sit between opaque panels; only their inner lower sill emits light.
-    box([-36.96, y, -80], [.2, 1.65, 4.8], P.steel);
-    box([-36.83, y, -80], [.08, 1.23, 4.25], P.dark, false);
-    for (const z of [-81.4, -80, -78.6]) box([-36.76, y, z], [.14, 1.5, .12], P.rail, false);
-    light([-36.77, y - .53, -80], [.06, .12, 3.9], P.cyan);
-  }
-  for (const y of [10, 26, 42]) {
-    box([-36.3, y, -80], [.4, .45, .9], P.dark);
-    light([-36.075, y - .12, -80], [.06, .13, .65]);
-  }
-  // Front equipment bays are inset between the corners, rather than pasted over a continuous wall.
-  for (const [y, h] of [[12, 6], [25.8, 9.2], [42, 10]]) {
-    shell([-40, y, -75.96], [4.3, h, .35], P.steel);
-    for (const x of [-41.35, -38.65]) {
-      shell([x, y, -75.65], [.9, h - 1.3, .35], P.white);
-      beam([x, y - h / 2 + .3, -75.35], [x, y + h / 2 - .3, -75.35], .12, P.copper);
-    }
-    for (let i = 0; i < (detailed ? 5 : 3); i++) box([-40, y - 1 + i * .5, -75.7], [1.2, .17, .18], P.dark, false);
-  }
-  // Four staff platforms retain the original footprint, now with a deck, knee braces and solid guardrails.
-  for (const y of [5, 15, 28, 41].map(v => v * 54 / 44)) {
-    box([-40, y, -74.95], [8.5, 1.227, 2.3], P.steel, true, true);
-    box([-40, y + .65, -74.95], [8.1, .08, 2.08], P.concrete, false);
-    for (const x of [-43.8, -40, -36.2]) {
-      box([x, y + 1.22, -73.88], [.13, 1.2, .13], P.copper);
-      if (x !== -40) beam([x, y - 2.4, -75.5], [x, y - .65, -74.05], .16, P.steel);
-    }
-    for (const height of [.95, 1.8]) {
-      box([-40, y + height, -73.88], [7.73, .11, .11], P.copper);
-      for (const x of [-43.8, -36.2]) box([x, y + height, -74.9], [.11, .11, 2.14], P.copper);
-    }
-    // Bulkhead fixtures correspond to the existing baked warm pools on the front facade.
-    box([-40, y + 2.2, -75.6], [1.5, .48, .32], P.dark, false);
-    light([-40, y + 2.14, -75.4], [1.14, .21, .09]);
-    box([-42.3, y + 1.45, -75.62], [.8, 1.35, .24], P.dark, false);
-    light([-42.3, y + 1.9, -75.47], [.4, .16, .08]);
-  }
-  // A capped drive head gives the summit a readable termination without reaching across the rails.
-  shell([-40, 53.8, -80], [7, 1.2, 9], P.steel);
-  shell([-40.7, 54.8, -80.7], [3.7, 1.1, 4.5], P.dark);
-  for (const z of [-82, -79.4]) beam([-42.7, 54.45, z], [-38.7, 54.45, z], .25, P.copper, 8);
-  beam([-42.6, 54.4, -82.9], [-42.6, 56, -82.9], .08);
-  light([-42.6, 56, -82.9], [.24, .4, .24]);
-  // Low cabinets and louvres give the foot of the tower human scale; no guest ladder is implied.
-  for (const x of [-43.5, -36.5]) {
-    shell([x, 2.8, -71.93], [2.2, 4.6, .4], P.steel);
-    for (let i = 0; i < 5; i++) box([x, 1.5 + i * .5, -71.69], [1.6, .16, .12], P.dark, false);
-  }
-  if (detailed) for (const y of [8.3, 22, 38, 51.6]) {
-    for (const x of [-42.95, -37.05]) for (const dz of [-.26, .26])
-      beam([x + dz, y, -75.44], [x + dz, y, -75.35], .075, P.copper);
-    for (const z of [-83.95, -76.05]) for (const dy of [-.3, .3])
-      beam([-36.46, y + dy, z], [-36.38, y + dy, z], .075, P.copper);
-  }
-}
+export const addCoasterTower = addThrillTower;
 
-/** Folded roof stays wholly inside the original station canopy collision volume. */
 export function addCoasterStationRoof(steel: CoasterBatch) {
   const section = new Shape();
   [[-9,6.2],[9,6.2],[9,6.55],[6.7,7.4],[-6.7,7.4],[-9,6.55]].forEach(([x,y],i)=>i?section.lineTo(x,y):section.moveTo(x,y));
@@ -387,6 +300,8 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
     const a=boundary[i], b=boundary[(i+1)%boundary.length];
     const sections=i===0?[[a,[-5,56]],[[5,56],b]]:[[a,b]];
     for(const [from,to] of sections){
+      // Sea-facing gaps belong to the rocky coast, not floating perimeter rails.
+      if([0,.5,1].some(t=>attractionCapeDistance(50+from[0]+(to[0]-from[0])*t,-195+from[1]+(to[1]-from[1])*t)>-2))continue;
       const dx=to[0]-from[0],dz=to[1]-from[1],length=Math.hypot(dx,dz),yaw=-Math.atan2(dz,dx);
       // The open railings need open collision too. A full-height invisible wall
       // collapsed a legal walking orbit to 13 cm beside the station entrance.

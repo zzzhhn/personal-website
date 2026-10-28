@@ -6,7 +6,7 @@ import { useWorldStore } from '../store';
 import { useInteractable } from '../WorldInteract';
 import { COASTER_PALETTE as P, CoasterBatch } from './coaster-geometry';
 import WorldIntentSurface from './WorldIntentSurface';
-import { coasterWorld, COASTER_DURATION, COASTER_GATE_Z } from './coaster-track';
+import { coasterWorld, COASTER_DISPLAY_SECONDS, COASTER_GATE_Z } from './coaster-track';
 import { INTENT_TARGETS, INTENT_TOOL_ACTIONS, intentReachRadius, type IntentTarget } from './intent-stations';
 import { activateIntentTarget, intentAvailable, useIntentStore } from './intent-state';
 import type { IntentText } from './intent-tasks';
@@ -20,7 +20,7 @@ export function IntentInteraction({ target }: { target: IntentTarget }) {
     visitor: state.progress.clarified.includes('T7') ? INTENT_TOOL_ACTIONS[state.tools.visitor] : { zh: '摇铃问清目标', en: 'Ring to clarify' },
     chest: state.progress.keyTaken ? { zh: '钥匙已取出', en: 'Key collected' } : state.progress.chestOpen ? { zh: '拿起实体钥匙', en: 'Take the key' } : { zh: '掀开宝箱', en: 'Open the chest' },
     gate: state.progress.gateOpen ? { zh: '大门已打开', en: 'Gate is open' } : { zh: '用钥匙开门', en: 'Unlock the gate' },
-    board: { zh: `坐进列车 · ${COASTER_DURATION} 秒`, en: `Board the train · ${COASTER_DURATION} seconds` },
+    board: { zh: `坐进列车 · ${COASTER_DISPLAY_SECONDS} 秒`, en: `Board the train · ${COASTER_DISPLAY_SECONDS} seconds` },
   };
   useInteractable({ id: `intent-${target}`, kind: target === 'gate' ? 'door' : 'exhibit', position: INTENT_TARGETS[target],
     radius: intentReachRadius(target), label: labels[target], enabled: () => intentAvailable(target), onInteract: () => activateIntentTarget(target) });

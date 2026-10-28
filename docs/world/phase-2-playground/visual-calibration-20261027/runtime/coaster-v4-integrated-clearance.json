@@ -1,0 +1,269 @@
+{
+  "duration": 113.49295195965102,
+  "length": 1904.1460322281057,
+  "step": 0.125,
+  "samples": 909,
+  "triangles": 207268,
+  "colliders": 1074,
+  "counts": {
+    "car-panel-collider": 37,
+    "car-corner-mesh": 2122
+  },
+  "uniqueGroups": 35,
+  "examples": [
+    {
+      "kind": "car-panel-collider",
+      "time": 0,
+      "u": 0,
+      "phase": "station",
+      "section": "连接段",
+      "inverted": false,
+      "car": 0,
+      "panel": 0,
+      "collider": {
+        "index": 522,
+        "position": [
+          49.16982864799442,
+          2.2050900286869832,
+          -152.96164369290238
+        ],
+        "half": [
+          0.54,
+          0.05,
+          0.09
+        ],
+        "surface": true,
+        "hull": false
+      }
+    },
+    {
+      "kind": "car-corner-mesh",
+      "time": 0,
+      "u": 0,
+      "phase": "station",
+      "section": "连接段",
+      "inverted": false,
+      "car": 0,
+      "point": [
+        49.3258,
+        2.1913,
+        -153.4486
+      ],
+      "source": "at addArchitecture (file:///Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/attractions/coaster-geometry.ts:282:15)",
+      "mesh": "steel",
+      "triangle": 133084,
+      "contact": [
+        49.3313,
+        2.1913,
+        -153.4824
+      ],
+      "distance": 0.0342
+    },
+    {
+      "kind": "car-corner-mesh",
+      "time": 0,
+      "u": 0,
+      "phase": "station",
+      "section": "连接段",
+      "inverted": false,
+      "car": 1,
+      "point": [
+        48.0744,
+        1.8879,
+        -147.362
+      ],
+      "source": "at file:///Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/attractions/coaster-geometry.ts:86:23",
+      "mesh": "steel",
+      "triangle": 115730,
+      "contact": [
+        48.049,
+        1.892,
+        -147.3271
+      ],
+      "distance": 0.0433
+    },
+    {
+      "kind": "car-corner-mesh",
+      "time": 0,
+      "u": 0,
+      "phase": "station",
+      "section": "连接段",
+      "inverted": false,
+      "car": 1,
+      "point": [
+        48.0744,
+        1.8879,
+        -147.362
+      ],
+      "source": "at file:///Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/attractions/coaster-geometry.ts:88:23",
+      "mesh": "steel",
+      "triangle": 115855,
+      "contact": [
+        48.0686,
+        1.8678,
+        -147.3519
+      ],
+      "distance": 0.0232
+    },
+    {
+      "kind": "car-corner-mesh",
+      "time": 3,
+      "u": 0.0041295,
+      "phase": "lift",
+      "section": "连接段",
+      "inverted": false,
+      "car": 0,
+      "point": [
+        50.0552,
+        1.735,
+        -158.3523
+      ],
+      "source": "at file:///Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/attractions/coaster-geometry.ts:86:23",
+      "mesh": "steel",
+      "triangle": 409,
+      "contact": [
+        50.0585,
+        1.7206,
+        -158.352
+      ],
+      "distance": 0.0147
+    },
+    {
+      "kind": "car-corner-mesh",
+      "time": 3,
+      "u": 0.0041295,
+      "phase": "lift",
+      "section": "连接段",
+      "inverted": false,
+      "car": 0,
+      "point": [
+        50.0552,
+        1.735,
+        -158.3523
+      ],
+      "source": "at file:///Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/attractions/coaster-geometry.ts:88:23",
+      "mesh": "steel",
+      "triangle": 455,
+      "contact": [
+        50.0545,
+        1.7292,
+        -158.3439
+      ],
+      "distance": 0.0102
+    },
+    {
+      "kind": "car-panel-collider",
+      "time": 3,
+      "u": 0.0041295,
+      "phase": "lift",
+      "section": "连接段",
+      "inverted": false,
+      "car": 2,
+      "panel": 0,
+      "collider": {
+        "index": 522,
+        "position": [
+          49.16982864799442,
+          2.2050900286869832,
+          -152.96164369290238
+        ],
+        "half": [
+          0.54,
+          0.05,
+          0.09
+        ],
+        "surface": true,
+        "hull": false
+      }
+    },
+    {
+      "kind": "car-corner-mesh",
+      "time": 3.25,
+      "u": 0.0048142,
+      "phase": "lift",
+      "section": "连接段",
+      "inverted": false,
+      "car": 2,
+      "point": [
+        49.1952,
+        2.2617,
+        -152.777
+      ],
+      "source": "at addArchitecture (file:///Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/attractions/coaster-geometry.ts:282:15)",
+      "mesh": "steel",
+      "triangle": 133088,
+      "contact": [
+        49.1703,
+        2.2551,
+        -152.7769
+      ],
+      "distance": 0.0258
+    }
+  ],
+  "firstByKind": {
+    "car-panel-collider": {
+      "kind": "car-panel-collider",
+      "time": 0,
+      "u": 0,
+      "phase": "station",
+      "section": "连接段",
+      "inverted": false,
+      "car": 0,
+      "panel": 0,
+      "collider": {
+        "index": 522,
+        "position": [
+          49.16982864799442,
+          2.2050900286869832,
+          -152.96164369290238
+        ],
+        "half": [
+          0.54,
+          0.05,
+          0.09
+        ],
+        "surface": true,
+        "hull": false
+      }
+    },
+    "car-corner-mesh": {
+      "kind": "car-corner-mesh",
+      "time": 0,
+      "u": 0,
+      "phase": "station",
+      "section": "连接段",
+      "inverted": false,
+      "car": 0,
+      "point": [
+        49.3258,
+        2.1913,
+        -153.4486
+      ],
+      "source": "at addArchitecture (file:///Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/src/components/world/attractions/coaster-geometry.ts:282:15)",
+      "mesh": "steel",
+      "triangle": 133084,
+      "contact": [
+        49.3313,
+        2.1913,
+        -153.4824
+      ],
+      "distance": 0.0342
+    }
+  },
+  "hashes": {
+    "coaster-track.ts": "5b229e111a89f85044ee286e0513643be9beef1a21eb2af6225fbdafb531da1e",
+    "coaster-geometry.ts": "3c8d2ea7e3b6ce9ce38ab535826c302e146edbc0cbc793b0f938e4db4c745667",
+    "coaster-thrill-tower.ts": "da6495b6ec54a7463f41d0685db07b50c59426593c5c48593095c3c880fbb53b",
+    "coaster-thrill-supports.ts": "3af11243fd2a3756ed6be8687cacdc77a8a5fbe1923da95a38ebdea2e94d506b",
+    "coaster-landscape.ts": "958c9694338e4b92246e7c6fc6c32c602e68d1ef506498eb7f94143a0ed2a1f8",
+    "attraction-layout.ts": "0a49f18789c6816fee1b8c339e28df8fec65f4fb2f38107835ff4425baca85bd"
+  },
+  "changedDuringRun": [],
+  "limits": [
+    "Numerical 0.125 s samples are not continuous collision proof.",
+    "Merged coaster structure includes architecture, main tower, supports, landscape rocks/cliffs/relief; excludes separately instanced vegetation, other island districts and live avatar/access transitions.",
+    "Hull collider OBBs are conservative; actual mesh hits identify confirmed surface contact.",
+    "All three default cameras checked; arbitrary user orbit angles excluded.",
+    "Panel corner proximity does not prove every mesh edge or face is clear."
+  ]
+}

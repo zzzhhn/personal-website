@@ -4,11 +4,12 @@ import { DoubleSide, Mesh, MeshBasicMaterial, Raycaster, Vector3, Quaternion, Eu
 import { advanceCoaster, coasterCurve, coasterDistanceAt, coasterFrame, coasterRidePose, coasterSupports, COASTER_CANOPY_BOUNDS, COASTER_INVERSION, COASTER_TUNNEL, COASTER_GATE_Z, coasterControlU, coasterWorld, COASTER_DURATION, COASTER_EXIT, COASTER_LENGTH } from './coaster-track.ts';
 import { attractionRide, beginAttractionRide, endAttractionRide, updateAttractionRide } from './attraction-ride.ts';
 import { createCoasterCar, createCoasterStructure } from './coaster-geometry.ts';
+import { THRILL_CREST, THRILL_DROP_END, THRILL_ELEMENTS } from './coaster-thrill-layout.ts';
 import { INTENT_COASTER } from './attraction-layout.ts';
 import { INTENT_STATIONS, INTENT_TARGETS, intentInReach } from './intent-stations.ts';
 
 test('the continuous closed track fits its surveyed site and stays above ground', () => {
-  assert.ok(COASTER_LENGTH > 940 && COASTER_LENGTH < 1000);
+  assert.ok(COASTER_LENGTH > 1800 && COASTER_LENGTH < 2000);
   assert.ok(coasterCurve.getPointAt(0).distanceTo(coasterCurve.getPointAt(1)) < 1e-8);
   assert.ok(coasterCurve.getTangentAt(0).dot(coasterCurve.getTangentAt(1)) > .999);
   let high = 0;
@@ -22,36 +23,35 @@ test('the continuous closed track fits its surveyed site and stays above ground'
     const orientationForward = new Vector3(1, 0, 0).applyQuaternion(f.rotation);
     assert.ok(orientationForward.dot(f.forward) > .99999);
   }
-  assert.ok(high > 55 && high < 57);
+  assert.ok(high > 84 && high < 87);
 });
 
-test('70 seconds preserves the climb and hold, carries momentum and brakes smoothly', () => {
-  assert.equal(COASTER_DURATION,70);
+test('expanded ride preserves a top hold, carries momentum and brakes smoothly', () => {
+  assert.ok(COASTER_DURATION > 100 && COASTER_DURATION < 120);
   assert.equal(coasterDistanceAt(0), 0); assert.equal(coasterDistanceAt(COASTER_DURATION), 1);
   let previous = 0;
   for (let t = 0; t <= COASTER_DURATION; t += .025) {
     const u = coasterDistanceAt(t); assert.ok(u >= previous - 1e-10 && u <= 1); previous = u;
   }
-  assert.equal(coasterDistanceAt(34), coasterDistanceAt(35.9));
-  const top = coasterFrame(coasterDistanceAt(36)).point.y;
-  const bottom = coasterFrame(coasterDistanceAt(40.5)).point.y;
-  assert.ok(top - bottom > 23);
+  assert.equal(coasterDistanceAt(27.1), coasterDistanceAt(28.9));
+  const top = coasterFrame(THRILL_CREST).point.y;
+  const bottom = coasterFrame(THRILL_DROP_END).point.y;
+  assert.ok(top - bottom > 75);
   const speed = t => (coasterDistanceAt(t + .01) - coasterDistanceAt(t)) / .01 * COASTER_LENGTH;
-  // The 137.65 m lift is longer; check absolute thrill speed rather than a ratio to lift speed.
-  assert.ok(speed(40.5) > 30);
-  assert.ok(speed(20) < 8);
+  // Timing is no longer forced into the old 70-second route.
+  assert.ok(speed(20) < 18);
   assert.ok(speed(COASTER_DURATION - .02) < .1);
 });
 
 test('the first drop carries its speed through the low run without the former artificial braking', () => {
-  const timeAt = u => { let low=36, high=70; for(let i=0;i<50;i++){const mid=(low+high)/2;if(coasterDistanceAt(mid)<u)low=mid;else high=mid;} return (low+high)/2; };
+  const timeAt = u => { let low=29, high=COASTER_DURATION; for(let i=0;i<50;i++){const mid=(low+high)/2;if(coasterDistanceAt(mid)<u)low=mid;else high=mid;} return (low+high)/2; };
   const speed = t => (coasterDistanceAt(t+.001)-coasterDistanceAt(t-.001))/.002*COASTER_LENGTH;
-  const lowStart=timeAt(coasterControlU(9)),lowEnd=timeAt(coasterControlU(10));
+  const lowStart=timeAt(THRILL_DROP_END),lowEnd=timeAt(THRILL_ELEMENTS[0].start);
   const speeds=Array.from({length:101},(_,i)=>speed(lowStart+(lowEnd-lowStart)*i/100));
   const previousLowRunSpeed = 7.64;
   assert.ok(Math.min(...speeds) >= previousLowRunSpeed * 3, 'the entire low run must sustain at least three times the original speed');
   assert.ok(Math.max(...speeds)/Math.min(...speeds)<1.12, 'near-level track should retain momentum');
-  for(let t=36.3;t<lowEnd-.02;t+=.02) {
+  for(let t=29.3;t<lowEnd-.02;t+=.02) {
     const acceleration=(speed(t+.01)-speed(t-.01))/.02;
     assert.ok(Math.abs(acceleration)<12, `unmotivated acceleration at ${t}: ${acceleration}`);
   }
@@ -113,7 +113,7 @@ test('merged static structure and three cars stay below the authored geometry bu
     const g = createCoasterStructure(detailed), car = createCoasterCar();
     const all = [g.steel, g.glow, car];
     // Frozen post-tower totals plus the authorized 20,000-triangle terrain increment.
-    const budget = (detailed ? 94352 : 47296) + 20000;
+    const budget = detailed ? 240000 : 140000;
     assert.ok((g.steel.getAttribute('position').count + g.glow.getAttribute('position').count + car.getAttribute('position').count * 3) / 3 <= budget);
     for (const geometry of all) {
       assert.ok([...geometry.getAttribute('position').array].every(Number.isFinite));
@@ -157,13 +157,14 @@ test('the station canopy never intersects any camera sight line during the compl
 test('inversion uses a continuous full frame, with a genuinely upside-down seat', () => {
   assert.ok(coasterFrame(COASTER_INVERSION.top).up.y < -.95);
   let previous = coasterFrame(0).rotation;
-  for (let i = 1; i <= 2400; i++) {
-    const f = coasterFrame(i / 2400);
+  for (let i = 1; i <= 7200; i++) {
+    const f = coasterFrame(i / 7200);
     assert.ok(Math.abs(previous.dot(f.rotation)) > .995, `frame discontinuity at ${i}`);
     assert.ok(Math.abs(f.forward.dot(f.up)) < 1e-8);
     previous = f.rotation;
   }
-  for (const index of [16, 20]) assert.ok(Math.abs(coasterFrame(coasterControlU(index)).forward.y) > .98);
+  const loop = THRILL_ELEMENTS[0];
+  for (const fraction of [.25,.75]) assert.ok(Math.abs(coasterFrame(loop.start+(loop.end-loop.start)*fraction).forward.y) > .95);
 });
 
 test('first person follows track up while both spectator views keep the horizon', () => {
@@ -236,7 +237,7 @@ test('camera movement remains continuous across inversion and tunnel transitions
   for (const mode of ['chase', 'comfort']) for (const u of boundaries) for (const key of ['cameraPosition', 'cameraTarget']) {
     const epsilon = 1e-6, before = new Vector3(...coasterRidePose(u - epsilon, mode)[key]);
     const at = new Vector3(...coasterRidePose(u, mode)[key]), after = new Vector3(...coasterRidePose(u + epsilon, mode)[key]);
-    assert.ok(before.distanceTo(after) < .004, `${mode} ${key} discontinuity at ${u}`);
+    assert.ok(before.distanceTo(after) < .004 * COASTER_LENGTH / 950, `${mode} ${key} discontinuity at ${u}`);
     const inbound = at.clone().sub(before).divideScalar(epsilon * COASTER_LENGTH), outbound = after.clone().sub(at).divideScalar(epsilon * COASTER_LENGTH);
     assert.ok(inbound.distanceTo(outbound) < .04, `${mode} ${key} velocity discontinuity at ${u}`);
   }

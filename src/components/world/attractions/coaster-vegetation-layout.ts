@@ -50,14 +50,12 @@ function clearanceBins() {
     }
   }
   // The two structure LODs sample different support stations. Both must remain free of trees.
-  for (const detailed of [true,false]) for (const {a,b,top} of coasterSupports(detailed)) {
+  for (const detailed of [true,false]) for (const {a,b,beams} of coasterSupports(detailed)) {
     for (const p of [a,b]) {
       add([p.x,1.2,p.z],p.toArray() as Vec3,.8);
       add([p.x,1.4,p.z],[p.x,1.4,p.z],1.35);
     }
-    add(a.toArray() as Vec3,b.toArray() as Vec3,.7);
-    if (a.distanceTo(top)>3) add(b.toArray() as Vec3,top.toArray() as Vec3,.76);
-    if (top.y>9) { add([a.x,1.6,a.z],b.toArray() as Vec3,.6); add([b.x,1.6,b.z],a.toArray() as Vec3,.6); }
+    for(const beam of beams)add(beam.a.toArray() as Vec3,beam.b.toArray() as Vec3,beam.radius+.4);
   }
   return safety;
 }
@@ -80,7 +78,7 @@ function publicOrSolid(x: number, z: number, radius: number) {
   if (x > -21-radius && x < 20+radius && z > 29-radius) return true;
   if (z > 50-radius) return true; // station forecourt, planters and workshop routes
   if (Math.abs(x+36) < 8+radius && Math.abs(z-13) < 8+radius) return true;
-  if (Math.abs(x+40) < 10+radius && Math.abs(z+80) < 10+radius) return true;
+  if (Math.abs(x+44) < 12+radius && Math.abs(z+150) < 12+radius) return true;
   if (rocks.some(([rx,rz,w,d]) => Math.abs(x-rx) < w*1.2+radius && Math.abs(z-rz) < d*1.2+radius)) return true;
   // These older rock formations do not expose a height sampler; never plant into their skins.
   if (COASTER_RELIEF_FORMATIONS.some(f => x > Math.min(...f.outline.map(p=>p[0]))-radius && x < Math.max(...f.outline.map(p=>p[0]))+radius

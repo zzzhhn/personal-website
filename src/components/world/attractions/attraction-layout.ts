@@ -35,28 +35,28 @@ export function ibdFootprintDistance(x: number, z: number): number {
 }
 export const INTENT_COASTER = {
   center: [50, 1, -195] as Vec3,
-  size: [154, 214] as const,
+  size: [243, 298] as const,
   // center remains the interaction/track origin. The expanded survey is offset north/east.
-  surveyCenter: [72, 1, -221] as Vec3,
-  bounds: { minX: -5, maxX: 149, minZ: -328, maxZ: -114 },
+  surveyCenter: [113.5, 1, -263] as Vec3,
+  bounds: { minX: -8, maxX: 235, minZ: -412, maxZ: -114 },
   entrance: [50, 1.08, -125] as Vec3,
   title: { zh: '字节跳动 · 意图过山车', en: 'ByteDance · Intent Coaster' },
 };
 
 /** Irregular guest boundary in world x/z; the concave east side frames the inlet. */
 export const INTENT_COASTER_FOOTPRINT: [number, number][] = [
-  [-54,65],[-30,78],[-5,80],[10,71],[54,65],[95,45],[98,27],[84,13],[55,5],[49,-12],[58,-27],
-  [73,-37],[89,-29],[98,-43],[95,-74],[88,-95],[71,-113],[46,-125],
-  [20,-132],[-5,-130],[-35,-125],[-48,-118],[-54,-110],[-54,-25],
+  [-54,65],[-30,78],[-5,80],[10,71],[54,65],[177,38],[180,20],[157,5],[132,-6],[122,-25],
+  [147,-45],[179,-66],[184,-102],[179,-146],[179,-174],[157,-204],[109,-216],[53,-217],
+  [2,-210],[-44,-193],[-54,-163],[-54,-25],
 ].map(([x,z]) => [x + INTENT_COASTER.center[0], z + INTENT_COASTER.center[2]]);
 
 /** Connected headland; western IBD frontage is preserved, with a real concave eastern inlet. */
 export const ATTRACTIONS_CAPE: [number, number][] = [
   [-133,-114],[-146,-156],[-145,-197],[-137,-220],[-112,-237],[-82,-242],
-  [-47,-233],[-29,-249],[-16,-273],[-24,-308],[-2,-330],[24,-338],
-  [50,-337],[78,-340],[108,-332],[143,-314],[160,-282],[160,-254],
-  [164,-231],[154,-211],[142,-216],[129,-224],[116,-220],[108,-208],
-  [109,-194],[150,-188],[166,-166],[162,-145],[113,-128],[100,-114],
+  [-47,-233],[-29,-249],[-16,-273],[-24,-331],[-18,-375],[4,-401],[40,-417],
+  [96,-426],[157,-422],[209,-406],[236,-375],[247,-333],[249,-293],
+  [238,-256],[214,-235],[171,-230],[132,-220],[115,-206],[116,-191],[162,-183],[217,-185],[243,-175],
+  [242,-153],[213,-136],[158,-127],[100,-114],
   [75,-111],[42,-104],[10,-105],[-20,-119],[-65,-121],[-103,-109],
 ];
 
@@ -66,7 +66,7 @@ export const ATTRACTION_ROADS: [number, number][][] = [
 ];
 
 export function attractionCapeDistance(x:number,z:number) {
-  if(z>-75||z<-380||x<-185||x>200)return Infinity;
+  if(z>-75||z<-450||x<-185||x>275)return Infinity;
   let inside=false,best=Infinity;
   for(let i=0,j=ATTRACTIONS_CAPE.length-1;i<ATTRACTIONS_CAPE.length;j=i++){
     const a=ATTRACTIONS_CAPE[j],b=ATTRACTIONS_CAPE[i],dx=b[0]-a[0],dz=b[1]-a[1];

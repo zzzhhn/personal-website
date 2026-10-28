@@ -1,7 +1,7 @@
 import { memo, useState } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import { useWorldStore } from '../store';
-import { COASTER_DURATION, coasterPhase, type CoasterView } from './coaster-track';
+import { COASTER_DURATION, COASTER_DISPLAY_SECONDS, coasterPhase, type CoasterView } from './coaster-track';
 import { INTENT_TARGETS, intentInReach, type IntentTarget } from './intent-stations';
 import { findIntentTask, type IntentText } from './intent-tasks';
 import { activateIntentTarget, intentContact, resetIntentVisit, stopIntentRide, useIntentStore } from './intent-state';
@@ -15,8 +15,9 @@ const PHASE_TEXT: Record<ReturnType<typeof coasterPhase>, IntentText> = {
   station: { zh: '离站', en: 'Leaving the station' }, lift: { zh: '攀升，看见全岛', en: 'Climbing above the island' },
   crest: { zh: '高处停一瞬', en: 'A moment at the top' }, drop: { zh: '骤变', en: 'The sudden shift' },
   bank: { zh: '掠过反弯', en: 'Through the banked turns' }, tunnel: { zh: '穿过灯廊', en: 'Into the light corridor' },
-  low: { zh: '贴地疾驰', en: 'The low run' }, airtime: { zh: '越过驼峰', en: 'Over the airtime hill' },
-  inversion: { zh: '倒置回环', en: 'Through the inversion' }, helix: { zh: '环绕设备楼', en: 'Around the equipment house' },
+  low: { zh: '贴地疾驰', en: 'The low run' }, stall: { zh: '高空倒挂', en: 'The inverted stall' },
+  inversion: { zh: '倒置回环', en: 'Through the inversion' }, corkscrew: { zh: '连续双螺旋', en: 'The double corkscrew' },
+  'water-roll': { zh: '贴水翻滚', en: 'The water roll' },
   return: { zh: '减速回站', en: 'Braking into the station' },
 };
 const BOARDING_TEXT: Record<CoasterBoardingPhase, IntentText> = {
@@ -61,7 +62,7 @@ function WorldIntentHud() {
     {VIEWS.map(view => <button key={view.id} type="button" aria-pressed={s.view === view.id} onClick={() => { resetAttractionLook(); useIntentStore.setState({ view: view.id }); }}>{view.label[lang]}</button>)}
   </div>;
   if (s.riding) return <aside className="intent-hud intent-riding" data-theme={theme} aria-label={t('过山车乘坐控制', 'Coaster ride controls')}>
-    <div className="intent-ride-heading"><strong>{s.ridePhase && s.ridePhase !== 'riding' ? BOARDING_TEXT[s.ridePhase][lang] : PHASE_TEXT[coasterPhase(s.rideSecond)][lang]}</strong><span>{s.rideSecond} / {COASTER_DURATION} s</span></div>
+    <div className="intent-ride-heading"><strong>{s.ridePhase && s.ridePhase !== 'riding' ? BOARDING_TEXT[s.ridePhase][lang] : PHASE_TEXT[coasterPhase(s.rideSecond)][lang]}</strong><span>{Math.ceil(s.rideSecond)} / {COASTER_DISPLAY_SECONDS} s</span></div>
     <progress value={s.rideSecond} max={COASTER_DURATION} aria-label={t('乘坐进度', 'Ride progress')} />
     {viewControls}<button type="button" onClick={resetAttractionLook}>{t('视角归位', 'Reset view')}</button>
     <p><small>{t('拖拽自由观察 · 滚轮缩放 · 手柄右摇杆转头', 'Drag to look · scroll to zoom · right stick to look')}</small></p>

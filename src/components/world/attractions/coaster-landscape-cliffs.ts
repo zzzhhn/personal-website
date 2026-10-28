@@ -8,7 +8,7 @@ import type { Vec3 } from '../types';
 // Reach deck height at its south edge (z=20), before entering the horizontal slab.
 // Ending the incline inside the deck left its 44 cm front face across the route.
 export const COASTER_CLIFF_WALK: Vec3[] = [[16,.08,54],[45,.08,48],[60,5,32],[55,8.08,20],[55,8.08,14]];
-export const COASTER_CLIFF_LAMPS: Vec3[] = [[49,10.3,8],[61,10.3,8]];
+export const COASTER_CLIFF_LAMPS: Vec3[] = [[49,10.3,17],[61,10.3,8]];
 export const COASTER_LOOKOUT = { center: [55,7.88,14] as Vec3, size: [12,.4,12] as Vec3 };
 export function onCoasterCliffWalk(x: number,z: number,margin=3) {
   for(let i=1;i<COASTER_CLIFF_WALK.length;i++){
@@ -62,5 +62,7 @@ export function addCoasterCliffs(steel: CoasterBatch,glow: CoasterBatch,collider
     steel.housing(coasterWorld([x,y,z]),[.5,.8,.5],'#3d5660');
     glow.box(coasterWorld([x,y,z]),[.3,.55,.53],'#ffd087');
     glow.box(coasterWorld([x,y,z]),[.53,.55,.3],'#ffd087');
+    colliders.push({position:coasterWorld([x,(8.08+y+.35)/2,z]),half:[.1,(y+.35-8.08)/2,.1]},
+      {position:coasterWorld([x,y,z]),half:[.25,.4,.25]});
   }
 }

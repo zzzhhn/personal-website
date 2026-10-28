@@ -64,7 +64,7 @@ export function thrillSeat(u:number) {
   return {position:f.point.clone().addScaledVector(f.up,.72),eye:f.point.clone().addScaledVector(f.up,1.74),rotation:f.rotation};
 }
 export function thrillRidePose(u:number,firstPerson=false):AttractionRidePose {
-  const f=thrillFrame(u),seat=thrillSeat(u),d=wrap(u)*THRILL_LENGTH;
+  const f=thrillFrame(u),seat={position:f.point.clone().addScaledVector(f.up,.72),eye:f.point.clone().addScaledVector(f.up,1.74),rotation:f.rotation},d=wrap(u)*THRILL_LENGTH;
   let camera=seat.eye.clone(),target=camera.clone().addScaledVector(f.forward,8);
   if(!firstPerson) {
     camera=f.point.clone().addScaledVector(f.forward,-8).addScaledVector(UP,4.5);

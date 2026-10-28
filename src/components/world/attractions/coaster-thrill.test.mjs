@@ -13,7 +13,7 @@ test('the apparatus expands in three dimensions and its first drop passes vertic
   assert.ok(span('x')>200&&span('z')>240);
   assert.ok(Math.max(...p.map(v=>v.y))>84&&Math.max(...p.map(v=>v.y))<87);
   assert.ok(Math.min(...p.map(v=>v.y))>1.6);
-  assert.ok(THRILL_LENGTH>COASTER_LENGTH*1.7);
+  assert.ok(THRILL_LENGTH>950*1.7, 'more than 1.7 times the approximately 950 m v3 route');
   let drop=0;
   for(let i=0;i<=1000;i++){const f=thrillFrame(THRILL_CREST+(THRILL_DROP_END-THRILL_CREST)*i/1000);drop=Math.max(drop,Math.atan2(-f.forward.y,f.forward.x)*180/Math.PI);}
   assert.ok(drop>104&&drop<112,`drop angle ${drop}`);

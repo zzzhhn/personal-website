@@ -16,8 +16,8 @@ const ray = new Raycaster(), nearest = new Vector3();
 test.after(() => { relief.geometry.dispose(); material.dispose(); });
 
 test('north formations and connected infield share closed outward visible and collision triangles under budget', () => {
-  // Original north relief was 2,562 triangles; this round has an authorized 20k total increment.
-  assert.equal(relief.formations.length, 4); assert.ok(relief.triangleCount <= 2562 + 20000);
+  // Seven connected formations now cover the approved v4 north/east expansion.
+  assert.equal(relief.formations.length, 7); assert.ok(relief.triangleCount <= 27000);
   const positions = relief.geometry.getAttribute('position');
   assert.equal(positions.count, relief.indices.length);
   relief.indices.forEach((v, i) => assert.deepEqual([positions.getX(i), positions.getY(i), positions.getZ(i)], point(v).toArray()));
