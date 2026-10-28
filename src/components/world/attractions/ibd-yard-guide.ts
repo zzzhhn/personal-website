@@ -1,5 +1,6 @@
 import { IBD_SLOTS, ibdStation, type IbdStationId, type IbdSlot } from './ibd-yard-layout.ts';
-import { yardActions, yardItemComplete, yardItemDifferent, yardItemId, type IbdAction, type IbdActionKind, type IbdYardGame } from './ibd-yard-game.ts';
+import { yardActions, yardCase, yardItemComplete, yardItemDifferent, yardItemId, type IbdAction, type IbdActionKind, type IbdYardGame } from './ibd-yard-game.ts';
+import { IBD_ALL_CLEAR } from './ibd-cases.ts';
 import type { Bi, Vec3 } from '../types';
 
 const bi = (zh: string, en: string): Bi => ({ zh, en });
@@ -86,8 +87,24 @@ export function ibdGuideRoute(game: IbdYardGame, step = ibdGuideStep(game)): Vec
 }
 
 export function ibdGuideResult(game: IbdYardGame): Bi {
+  if (game.pending) return bi('', '');
+  const slot = game.completedAction?.slot;
+  if (slot && ['contents', 'difference-observed'].includes(game.notice)) {
+    const id = yardItemId(game, slot), item = yardCase(game).items.find(i => i.id === id)!;
+    const expected = IBD_ALL_CLEAR.items.find(i => i.id === slot)!, proof = game.core.proofs[id] ?? [];
+    const label = ({ 'coil-front': bi('前卷', 'Front coil'), 'coil-rear': bi('后卷', 'Rear coil'),
+      'parts-a': bi('A 箱', 'Pack A'), 'parts-b': bi('B 箱', 'Pack B') })[slot];
+    if (proof.includes('quantity') && item.quantity !== expected.quantity)
+      return bi(`${label.zh}实点 ${item.quantity} 件，应有 ${expected.quantity} 件。退换后再检。`, `${label.en}: ${item.quantity} pieces counted; ${expected.quantity} required. Exchange and inspect again.`);
+    if (proof.includes('specification') && item.specId !== expected.specId)
+      return bi(`${label.zh}实测 ${item.specId}，应为 ${expected.specId}。退换后再检。`, `${label.en}: measured ${item.specId}; ${expected.specId} required. Exchange and inspect again.`);
+    if (proof.includes('quality-rear') && item.defects['quality-rear'])
+      return bi(`${label.zh}背面已照见凹痕。退换后再检。`, `${label.en}: a rear dent was observed. Exchange and inspect again.`);
+    if (game.notice === 'contents' && proof.includes('quantity') && proof.includes('specification'))
+      return bi(`${label.zh}：${item.quantity} 件 ${item.specId}，核对一致。`, `${label.en}: ${item.quantity} ${item.specId} pieces, matching the manifest.`);
+  }
   const results: Record<string, Bi> = {
-    manifest: bi('货单已领，接着取工具。', 'Manifest received. Collect your tools.'), equipped: bi('工具已拿到。', 'Tools collected.'),
+    manifest: bi('本批验 2 卷钢卷、8 件 M8，只发五金。', 'This batch: inspect 2 coils and 8 M8 pieces. Ship only the parts.'), equipped: bi('工具已拿到。', 'Tools collected.'),
     scan: bi('正面已记录，背面还没看。', 'Front recorded. The rear is still unchecked.'), turn: bi('背面已转出，回到卷前照检。', 'Rear exposed. Return to the coil to inspect it.'),
     rear: bi('这一卷的两面都已记录。', 'Both coil faces recorded.'), survey: bi('高廊检查完成，两面均已记录。', 'Gallery check complete. Both faces recorded.'),
     crane: bi('前卷已移开，后卷露出来了。', 'Front coil moved. Rear coil exposed.'), open: bi('箱盖打开了，现在核对内件。', 'Lid open. Check the contents now.'),

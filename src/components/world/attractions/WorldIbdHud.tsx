@@ -4,9 +4,9 @@ import { sampleTimeLight } from '../world-climate';
 import { IBD_YARD } from './attraction-layout';
 import { assessIbd } from './ibd-model';
 import { IBD_SLOTS, IBD_STATIONS, ibdLocal, ibdReach, ibdStation, type IbdStationId } from './ibd-yard-layout';
-import { yardActions, yardCase, yardItemComplete, yardItemDifferent, yardItemId } from './ibd-yard-game';
+import { canCancelIbdObservation, yardActions, yardCase, yardItemComplete, yardItemDifferent, yardItemId } from './ibd-yard-game';
 import { IBD_ACTION_LABEL, IBD_MOTION_WAIT_LABEL, ibdNotice } from './ibd-yard-copy';
-import { dispatchIbdAction, setIbdGuide, useIbdYardStore } from './ibd-yard-store';
+import { cancelIbdAction, dispatchIbdAction, setIbdGuide, useIbdYardStore } from './ibd-yard-store';
 import { ibdGuideStep, ibdGuideResult, ibdGuidePhaseDone, IBD_GUIDE_PHASES } from './ibd-yard-guide';
 import './ibd-yard.css';
 
@@ -50,7 +50,10 @@ export default memo(function WorldIbdHud({ active = true }: { active?: boolean }
       {!atTarget && !game.pending && !game.released && <p className="ibd-walk-hint">{t('沿地面箭头走到黄圈，靠近后按 E。', 'Follow the floor arrows to the ring. Press E when close.')}</p>}
     </> : <><h2>{workingStation ? workingStation.title[lang] : t('自由检查', 'Explore the yard')}</h2>
       <p className="ibd-next">{t('靠近装置按 E 操作；需要时可恢复带路。', 'Approach a device and press E. Resume guidance at any time.')}</p></>}
-    {game.pending ? <div className="ibd-working" role="status" aria-live="polite"><i aria-hidden="true" />{motionWait ? IBD_MOTION_WAIT_LABEL[motionWait][lang] : IBD_ACTION_LABEL[game.pending.action.kind][lang]}</div>
+    {game.pending ? <><div className="ibd-working" role="status" aria-live="polite"><i aria-hidden="true" />{motionWait ? IBD_MOTION_WAIT_LABEL[motionWait][lang] : IBD_ACTION_LABEL[game.pending.action.kind][lang]}</div>
+      {canCancelIbdObservation(game) && <div className="ibd-actions"><button className="ibd-secondary" onClick={() => {
+        if (canCancelIbdObservation(useIbdYardStore.getState().game)) cancelIbdAction();
+      }}>{t('取消本次操作', 'Cancel this operation')}</button></div>}</>
       : actions.length > 0 && <div className="ibd-actions">{actions.map((a, i) => <button key={a.kind} className={i === 0 ? 'ibd-primary' : 'ibd-secondary'}
         onClick={() => dispatchIbdAction(a)}><kbd>{i === 0 ? 'E / Y' : '↻'}</kbd>{guided && !game.released ? guide.title[lang] : IBD_ACTION_LABEL[a.kind][lang]}</button>)}</div>}
     {notice && <p className="ibd-feedback" role="status" aria-live="polite">{notice}</p>}

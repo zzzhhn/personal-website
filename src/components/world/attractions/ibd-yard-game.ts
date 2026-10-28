@@ -10,7 +10,7 @@ export interface IbdYardGame {
   caseIndex: number; round: number; revision: number; started: boolean; equipped: boolean;
   core: IbdState; exchanges: readonly IbdExchange[]; released: boolean;
   pending: { action: IbdAction; token: number; seconds: number } | null;
-  notice: string; reading?: number;
+  notice: string; reading?: number; completedAction?: IbdAction;
 }
 export interface IbdActor { local: readonly number[]; active: boolean; paused?: boolean; hidden?: boolean; driving?: boolean }
 export function createIbdYardGame(caseIndex = 0, round = 1): IbdYardGame {
@@ -63,11 +63,20 @@ export function yardActions(game: IbdYardGame, id: IbdStationId): IbdAction[] {
 }
 const duration: Record<IbdActionKind, number> = { brief: 0, kit: .65, crane: 2.8, scan: 1.1, rear: 1.1, survey: 1.3,
   turn: 1.4, weigh: .8, open: .9, contents: 1.2, load: 3, unload: 3, replace: 2.4, verify: .7, release: 3.5, reset: 0, next: 0 };
+const observations = new Set<IbdActionKind>(['scan', 'rear', 'survey', 'contents', 'weigh', 'open', 'kit', 'verify']);
+/** User cancellation is for unfinished local work; moving cargo keeps its existing interlock. */
+export function canCancelIbdObservation(game: IbdYardGame): boolean {
+  return !!game.pending && observations.has(game.pending.action.kind);
+}
 function perform(game: IbdYardGame, action: IbdAction): { game: IbdYardGame; ok: boolean } {
   const scenario = yardCase(game), itemId = action.slot ? yardItemId(game, action.slot) : '';
   const fail = (notice: string) => ({ game: { ...game, notice }, ok: false });
-  const done = (notice: string, change: Partial<IbdYardGame> = {}) => ({ game: { ...game, ...change, notice }, ok: true });
-  if (action.kind === 'reset' || action.kind === 'next') return { game: { ...createIbdYardGame(game.caseIndex + (action.kind === 'next' ? 1 : 0), game.round + 1), revision: game.revision + 1 }, ok: true };
+  const done = (notice: string, change: Partial<IbdYardGame> = {}) => ({ game: { ...game, ...change, notice, completedAction: action }, ok: true });
+  if (action.kind === 'reset' || action.kind === 'next') {
+    const next = action.kind === 'next';
+    return { game: { ...createIbdYardGame(game.caseIndex + (next ? 1 : 0), game.round + 1), revision: game.revision + 1,
+      ...(next ? { started: true, equipped: game.equipped, notice: 'manifest', completedAction: action } : {}) }, ok: true };
+  }
   if (action.kind === 'brief') return done('manifest', { started: true });
   if (action.kind === 'kit') return done('equipped', { equipped: true });
   if (action.kind === 'turn' && !(game.core.proofs[itemId] ?? []).includes('quality-front')) return fail('front-first');
@@ -122,7 +131,7 @@ export function requestIbdYardAction(game: IbdYardGame, action: IbdAction, actor
 export function finishIbdYardAction(game: IbdYardGame, token: number, actor: IbdActor): IbdYardGame {
   const pending = game.pending;
   if (!pending || token !== pending.token || !actor.active || actor.paused || actor.hidden) return game;
-  const observing = ['scan', 'rear', 'survey', 'contents', 'weigh', 'open', 'kit', 'verify'].includes(pending.action.kind);
+  const observing = canCancelIbdObservation(game);
   if (observing && (!ibdReach(actor.local, ibdStation(pending.action.station, game.core.moved)) || actor.driving))
     return { ...game, pending: null, notice: 'walked-away' };
   return { ...perform(game, pending.action).game, pending: null };
