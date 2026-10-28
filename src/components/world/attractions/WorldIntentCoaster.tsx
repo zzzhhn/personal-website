@@ -1,4 +1,4 @@
-import { memo, useEffect, useMemo, useRef } from 'react';
+import { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { ConvexHullCollider, CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { Group, PointLight } from 'three';
@@ -16,17 +16,31 @@ import WorldCoasterVegetation from './WorldCoasterVegetation';
 import { night } from '../WorldNight';
 import { CoasterMotionAudio } from './coaster-motion-audio';
 import { CoasterStructureCache, coasterStructureMemory } from './coaster-structure-cache';
+import { buildCoasterInWorker } from './coaster-structure-job';
 
 /** World-space scene. The parent owns actor/camera integration and the activation radius. */
 function WorldIntentCoaster({ active }: { active: boolean }) {
   const occupied = useIntentStore(s => s.riding), enabled = active || occupied;
-  const structures = useMemo(() => new CoasterStructureCache(createCoasterStructure), []);
-  const structure = useMemo(() => {
+  const structures = useMemo(() => new CoasterStructureCache(createCoasterStructure, buildCoasterInWorker), []);
+  const [presented, setPresented] = useState(() => {
     const result = structures.get(enabled);
     Object.assign(coasterStructureMemory, structures.snapshot());
-    return result;
+    return { near: enabled, structure: result };
+  });
+  const cached = structures.peek(enabled);
+  const structure = cached ?? presented.structure, renderedNear = cached ? enabled : presented.near;
+  useEffect(() => {
+    let current = true;
+    if (!structures.peek(enabled)) structures.load(enabled).then(value => {
+      Object.assign(coasterStructureMemory, structures.snapshot());
+      if (current) setPresented({ near: enabled, structure: value });
+    }).catch(error => {
+      // Retain the existing model and its matching contacts if a worker cannot run.
+      if (current) console.warn('Coaster detail retained:', error);
+    });
+    return () => { current = false; };
   }, [structures, enabled]);
-  useEffect(() => () => structures.releaseGpu(enabled), [structures, enabled]);
+  useEffect(() => () => structures.releaseGpu(renderedNear), [structures, renderedNear]);
   useEffect(() => () => { structures.dispose(); Object.assign(coasterStructureMemory, structures.snapshot()); }, [structures]);
   useEffect(() => {
     useIntentStore.setState({ active: enabled });
@@ -39,7 +53,10 @@ function WorldIntentCoaster({ active }: { active: boolean }) {
     <mesh geometry={structure.steel} castShadow receiveShadow><WorldIntentSurface roughness={.82} metalness={.16} /></mesh>
     <mesh geometry={structure.glow}><meshBasicMaterial vertexColors toneMapped={false} /></mesh>
     <CoasterTrain active={enabled} />
-    {enabled && <><WorldIntentDevices /><WorldIntentSigns /><CoasterCollisions colliders={structure.colliders} /><IntentMovingLight />
+    {enabled && <><WorldIntentDevices /><WorldIntentSigns />
+      {/* LODs have different support counts. Never reuse an index-keyed collider
+          for a different solid while its Rapier hook still owns the old shape. */}
+      <CoasterCollisions key={String(renderedNear)} colliders={structure.colliders} /><IntentMovingLight />
       <RigidBody type="fixed" colliders={false} userData={{ surface: true, solid: true, assetId: 'coaster-relief' }}>
         <TrimeshCollider args={[structure.relief.vertices, structure.relief.indices]} friction={.9} />
       </RigidBody>
