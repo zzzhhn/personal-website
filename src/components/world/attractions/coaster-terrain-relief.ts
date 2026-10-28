@@ -3,6 +3,7 @@ import { coasterFrame, coasterRidePose, coasterSupports, coasterWorld, COASTER_L
 import { bakeIntentNight } from './intent-lighting.ts';
 import { lightCoasterCliffs } from './coaster-landscape-lighting.ts';
 import { beddedRockColour, beddedRockHeight } from './coaster-rock-bedding.ts';
+import { createDropPlant, createDropRock, dropCoastGroundColour, DROP_PLANTS, DROP_ROCK_BEDS, type DropDetail } from './coaster-drop-landscape.ts';
 import type { CoasterBatch } from './coaster-geometry.ts';
 import type { Vec3 } from '../types';
 
@@ -156,8 +157,9 @@ function infieldHeight(x:number,z:number) {
 
 type InfieldSurface = { points: Vec3[]; faces: [number,number,number][]; cells: Map<string,number[]> };
 let infieldSurface: InfieldSurface | undefined;
-function clippedSurface(outline:readonly Point2[],step:number,height:(x:number,z:number)=>number) {
+function clippedSurface(outline:readonly Point2[],step:number,height:(x:number,z:number)=>number,compactAprons=false) {
   const points:Vec3[]=[],faces:[number,number,number][]=[],cells=new Map<string,number[]>(),lookup=new Map<string,number>();
+  let savedTopTriangles=0;
   const vertex=(x:number,z:number)=>{const key=`${Math.round(x*1e5)},${Math.round(z*1e5)}`;let i=lookup.get(key);if(i===undefined){i=points.length;lookup.set(key,i);points.push([x,height(x,z),z]);}return i;};
   const clip=(poly:Point2[],axis:0|1,value:number,positive:boolean)=>{
     const out:Point2[]=[];
@@ -185,12 +187,19 @@ function clippedSurface(outline:readonly Point2[],step:number,height:(x:number,z
     if(poly.length<3)continue;
     const area=poly.reduce((s,a,i)=>{const b=poly[(i+1)%poly.length];return s+a[0]*b[1]-b[0]*a[1];},0);
     if(Math.abs(area)<1e-5)continue;
-    const centre=vertex(poly.reduce((s,p)=>s+p[0],0)/poly.length,poly.reduce((s,p)=>s+p[1],0)/poly.length);
+    const cx=poly.reduce((s,p)=>s+p[0],0)/poly.length,cz=poly.reduce((s,p)=>s+p[1],0)/poly.length;
+    const heights=compactAprons?[height(cx,cz),...poly.map(p=>height(...p))]:[];
+    if(compactAprons&&heights.every(h=>h>=0&&h<.05)&&Math.max(...heights)-Math.min(...heights)<1e-6){
+      // Reuse the planar apron perimeter. Save its redundant centre fan for real silhouettes.
+      for(let i=1;i<poly.length-1;i++){list.push(faces.length);faces.push([vertex(...poly[0]),vertex(...poly[i+1]),vertex(...poly[i])]);}
+      savedTopTriangles+=2;continue;
+    }
+    const centre=vertex(cx,cz);
     poly.forEach((a,i)=>{list.push(faces.length);faces.push([centre,vertex(...poly[(i+1)%poly.length]),vertex(...a)]);});
     }
     if(list.length)cells.set(`${x},${z}`,list);
   }
-  return {points,faces,cells};
+  return {points,faces,cells,savedTopTriangles};
 }
 function getInfieldSurface() {
   return infieldSurface??=clippedSurface(COASTER_INFIELD_OUTLINE,3,infieldHeight);
@@ -239,9 +248,17 @@ function bakeReliefSpill(g: BufferGeometry) {
 export function createCoasterTerrainRelief() {
   const vertices: number[] = [], indices: number[] = [], shades: (number | Color)[] = [];
   let shrubCount = 0;
+  const dropSample={rocks:0,trees:0,shrubs:0,detailTriangles:0,savedApronTriangles:0};
   const formations: { id: string; firstTriangle: number; triangleCount: number; vertexStart: number; vertexCount: number; terrainTriangleCount?: number }[] = [];
   const vertex = (p: Vec3) => { const index = vertices.length / 3; vertices.push(...coasterWorld(p)); return index; };
   const face = (a: number, b: number, c: number, shade: number | Color) => { indices.push(a, b, c); shades.push(shade); };
+  const detail=(mesh:DropDetail|null)=>{
+    if(!mesh)return;
+    const map=mesh.points.map(vertex);
+    mesh.faces.forEach(([a,b,c],i)=>face(map[a],map[b],map[c],mesh.colours[i]));
+    dropSample.detailTriangles+=mesh.faces.length;
+    if(mesh.kind==='rock')dropSample.rocks++;else if(mesh.kind==='tree')dropSample.trees++;else{dropSample.shrubs++;shrubCount++;}
+  };
   const groundAt = (x: number,z: number,firstTriangle: number,lastTriangle: number) => {
     const [wx,,wz]=coasterWorld([x,0,z]);let highest=-Infinity;
     for(let t=firstTriangle;t<lastTriangle;t++) {
@@ -253,6 +270,25 @@ export function createCoasterTerrainRelief() {
       if(u>=0&&v>=0&&u+v<=1)highest=Math.max(highest,u*a[1]+v*b[1]+(1-u-v)*c[1]-1);
     }
     return highest;
+  };
+  const indexedGround=(first:number,last:number)=>{
+    const bins=new Map<string,number[][][]>();
+    for(let t=first;t<last;t++){
+      const p=indices.slice(t*3,t*3+3).map(i=>vertices.slice(i*3,i*3+3));
+      for(let x=Math.floor(Math.min(...p.map(v=>v[0]))/5);x<=Math.floor(Math.max(...p.map(v=>v[0]))/5);x++)
+        for(let z=Math.floor(Math.min(...p.map(v=>v[2]))/5);z<=Math.floor(Math.max(...p.map(v=>v[2]))/5);z++){
+          const key=`${x},${z}`,list=bins.get(key)??[];list.push(p);bins.set(key,list);
+        }
+    }
+    return (x:number,z:number)=>{
+      const [wx,,wz]=coasterWorld([x,0,z]);let highest=-Infinity;
+      for(const [a,b,c] of bins.get(`${Math.floor(wx/5)},${Math.floor(wz/5)}`)??[]){
+        const d=(b[2]-c[2])*(a[0]-c[0])+(c[0]-b[0])*(a[2]-c[2]);if(Math.abs(d)<1e-7)continue;
+        const u=((b[2]-c[2])*(wx-c[0])+(c[0]-b[0])*(wz-c[2]))/d,v=((c[2]-a[2])*(wx-c[0])+(a[0]-c[0])*(wz-c[2]))/d;
+        if(u>=0&&v>=0&&u+v<=1)highest=Math.max(highest,u*a[1]+v*b[1]+(1-u-v)*c[1]-1);
+      }
+      return highest;
+    };
   };
   const shrub = (x:number,y:number,z:number,seed:number) => {
     const start=vertices.length/3,radius=1.15+Math.sin(seed)*.2;
@@ -370,10 +406,19 @@ export function createCoasterTerrainRelief() {
   formations.push({id:'infield-folds',firstTriangle,triangleCount:indices.length/3-firstTriangle,vertexStart,vertexCount:vertices.length/3-vertexStart});
   for(const formation of COASTER_THRILL_RELIEF){
     const firstTriangle=indices.length/3,vertexStart=vertices.length/3;
-    const surface=clippedSurface(formation.outline,5,(x,z)=>thrillReliefHeight(formation,x,z));
-    solidTop(surface.points,surface.faces,beddedRockColour);
+    const drop=formation.id==='thrill-north-escarpment';
+    const surface=clippedSurface(formation.outline,5,(x,z)=>thrillReliefHeight(formation,x,z),drop);
+    solidTop(surface.points,surface.faces,drop?dropCoastGroundColour:beddedRockColour);
+    if(drop){
+      dropSample.savedApronTriangles=surface.savedTopTriangles*2;
+      const ground=indexedGround(firstTriangle,indices.length/3);
+      DROP_ROCK_BEDS.forEach((bed,i)=>detail(createDropRock(bed,i,ground,coasterThrillReliefCeiling)));
+    }
     const terrainEnd=indices.length/3;
-    formation.shrubs.forEach(([x,z],cluster)=>{for(let lobe=0;lobe<3;lobe++){
+    if(drop){
+      const ground=indexedGround(firstTriangle,terrainEnd);
+      DROP_PLANTS.forEach(([x,z,tree],i)=>detail(createDropPlant(x,z,!!tree,i,ground,coasterThrillReliefCeiling)));
+    }else formation.shrubs.forEach(([x,z],cluster)=>{for(let lobe=0;lobe<3;lobe++){
       const px=x+(lobe-1)*1.1,pz=z+(lobe===1?.65:-.25),y=groundAt(px,pz,firstTriangle,terrainEnd);
       // The complete canopy footprint, not only its root, stays below the ride
       // and away from support aprons; all lobes are seated on the actual mesh.
@@ -394,7 +439,7 @@ export function createCoasterTerrainRelief() {
   const geometry = new BufferGeometry().setAttribute('position', new BufferAttribute(positions, 3)).setAttribute('color', new BufferAttribute(colors, 3));
   geometry.computeVertexNormals(); geometry.computeBoundingBox(); geometry.computeBoundingSphere();
   bakeIntentNight(geometry); lightCoasterCliffs(geometry); bakeReliefSpill(geometry);
-  return { geometry, ...collision, formations, shrubCount, triangleCount: indices.length / 3 };
+  return { geometry, ...collision, formations, shrubCount, dropSample, triangleCount: indices.length / 3 };
 }
 
 /** Appends one vertex-colour batch; collision uses the exact same world-space faces. */
