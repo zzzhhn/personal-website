@@ -15,6 +15,7 @@ import { IBD_YARD, INTENT_COASTER, ATTRACTION_ROADS } from './attractions/attrac
 import { captureCoasterStart } from './attractions/coaster-transition';
 import { attractionRide, endAttractionRide, requestAttractionExit, completeAttractionRide } from './attractions/attraction-ride';
 import { attractionCameraPose, attractionCameraSweepOrigin, attractionLook, turnAttractionLook, zoomAttractionLook } from './attractions/attraction-camera';
+import { AttractionCameraObstruction } from './attractions/attraction-camera-obstruction';
 import { clubAudio } from './WorldClubAudio';
 import { cycleInteractPick, nearestInteractable, type Interactable } from './WorldInteract';
 import type { Vec3, VehicleId } from './types';
@@ -377,6 +378,7 @@ export default function WorldActors() {
   const target = useRef(new Vector3(...arrival));
   const cameraReady = useRef(false);
   const cameraShoulder = useRef({offset:0,previous:null as Vector3|null});
+  const attractionObstruction = useRef(new AttractionCameraObstruction());
   const guideView=useRef<Group>(null),guideCameraFoot=useRef(new Vector3());
   const impact = useRef(0);
   const cam = useRef<CameraRig>({ yaw: qaPortal?Math.PI/2-qaPortal.yaw:qaStart==='exchange-gallery'?4.7113:qaStart==='brain-rail'||attractionArrival?Math.PI/2:qaStart==='club-view'?0:clubArrival?-Math.PI/2:CAMERA_DEFAULT_YAW, pitch: qaStart==='exchange-gallery'?.4554:clubArrival?.4:CAMERA_DEFAULT_PITCH, distance: CAMERA_PRESETS[Math.min(2, useWorldStore.getState().zoom)],
@@ -1239,6 +1241,7 @@ export default function WorldActors() {
 
   useFrame((_,delta)=>{
     const state=useWorldStore.getState();
+    if(!attractionRide.active||state.shot||state.poolInspect)attractionObstruction.current.clear();
     if (state.shot) {
       if(guideView.current)guideView.current.visible=true;
       // Fixed evidence cameras retain their original projection.
@@ -1252,14 +1255,17 @@ export default function WorldActors() {
       if(pad.current.connected)turnAttractionLook(pad.current.look[0]*PAD_LOOK*delta,pad.current.look[1]*PAD_LOOK*delta);
       const pose=attractionCameraPose(attractionRide.pose);
       const desired=new Vector3(...pose.cameraPosition),pivot=new Vector3(...pose.cameraTarget);
+      if(!pose.orientation)attractionObstruction.current.clear();
       if(!pose.firstPerson&&(pose.orientation||attractionLook.yaw||attractionLook.pitch||attractionLook.zoom!==1)){
         const radius=camera instanceof PerspectiveCamera?cameraCollisionRadius(camera.near,pose.fov,camera.aspect,.22):.22;
-        const swept=sweepCamera(world,rapier,attractionCameraSweepOrigin(pose),desired,radius,player.current??undefined,col=>!col.isSensor());
+        const swept=pose.orientation
+          ?attractionObstruction.current.step(world,rapier,pose,radius,delta,`${attractionRide.revision}:${attractionRide.transition?.phase??'riding'}`,player.current??undefined)
+          :sweepCamera(world,rapier,attractionCameraSweepOrigin(pose),desired,radius,player.current??undefined,col=>!col.isSensor());
         desired.set(swept.position.x,swept.position.y,swept.position.z);
         const diff=new Vector3(...pose.cameraPosition).sub(pivot).normalize();
         const safeTarget=cameraLookTarget(desired,pivot,[diff.x,diff.y,diff.z]);
         pivot.set(safeTarget.x,safeTarget.y,safeTarget.z);
-      }
+      }else attractionObstruction.current.clear();
       camera.position.copy(desired);camera.up.set(...(pose.cameraUp??[0,1,0]));camera.lookAt(pivot);
       if(camera instanceof PerspectiveCamera&&camera.fov!==pose.fov){camera.fov=pose.fov;camera.updateProjectionMatrix();}
       if(guideView.current)guideView.current.visible=!pose.firstPerson;

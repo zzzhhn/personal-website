@@ -4,7 +4,11 @@ import type { Vec3 } from '../types';
 
 /** User offsets live outside React; track motion never clears a manual look. */
 export const attractionLook = { yaw: 0, pitch: 0, zoom: 1 };
-export function resetAttractionLook() { Object.assign(attractionLook, { yaw: 0, pitch: 0, zoom: 1 }); }
+/** Also invalidates obstruction recovery when a view button explicitly resets. */
+export let attractionLookRevision = 0;
+export function resetAttractionLook() {
+  Object.assign(attractionLook, { yaw: 0, pitch: 0, zoom: 1 }); attractionLookRevision++;
+}
 export function turnAttractionLook(yaw: number, pitch: number) {
   if (!Number.isFinite(yaw) || !Number.isFinite(pitch)) return;
   attractionLook.yaw = Math.atan2(Math.sin(attractionLook.yaw + yaw), Math.cos(attractionLook.yaw + yaw));
