@@ -46,6 +46,11 @@ export const IBD_CARGO_HOME: Record<IbdSlot, Vec3> = {
   'parts-a': [10, 1.1, -12], 'parts-b': [18, 1.1, -12],
 };
 export const IBD_TRUCK_FLOOR = 1.2;
+/** The fixed loading truck, shared by its visible tyres and local ground occlusion. */
+export const IBD_TRUCK_WHEELS = {
+  centerX: 16, centerY: .6, halfTrack: 1.73, radius: .58, halfWidth: .23,
+  axles: [9.5, 14.5, 19.5],
+} as const;
 export const IBD_TRUCK: Partial<Record<IbdSlot, Vec3>> = {
   'parts-a': [16, IBD_TRUCK_FLOOR + 1.1, 10.5], 'parts-b': [16, IBD_TRUCK_FLOOR + 1.1, 14.5],
 };

@@ -22,6 +22,7 @@ import { createWorldWaterMaterial, seaGlintUniforms } from './WorldWater';
 import { GlowClock, GlowDemo } from './WorldGlow';
 import { windUniforms } from './WorldWind';
 import { SUN_OFFSET, fitSunShadow } from './WorldShadows';
+import { worldShadowCapture } from './world-shadow-capture';
 import WorldSurfaceColliders from './WorldSurfaceColliders';
 import { useClaimStore, useIsClaimed, type GreyboxKey } from './WorldVisualClaims';
 
@@ -364,6 +365,7 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
   const sea = useMemo(() => createWorldWaterMaterial(PALETTE.sea), []);
   const quality = useWorldStore(s => s.quality);
   const shot = useWorldStore(s => s.shot);
+  const shadowCapture = useMemo(() => worldShadowCapture(shot), [shot]);
   const shadowSize = quality === 'high' ? 4096 : 2048;
   const shadowTarget = useMemo(() => new Object3D(), []);
   useEffect(() => { scene.add(shadowTarget); return () => { scene.remove(shadowTarget); }; }, [scene, shadowTarget]);
@@ -404,8 +406,9 @@ function Lighting({ warm, cyan }: { warm: MeshStandardMaterial; cyan: MeshStanda
       lamp.color.lerp(scratch.copy(ca.sun).lerp(cb.sun,s.mix).lerp(colors.storm,overcast*.3),blend);
       // Fixed sun direction; the orthographic window is fitted to the follow camera's visible
       // ground and texel-snapped (WorldShadows), so shadows track casters without crawling.
-      const focus = useWorldStore.getState().position;
-      fitSunShadow(lamp, shadowTarget, camera, { mapSize: shadowSize, wide: !!shot, focus, receivers: receiverBand(focus), tallReceivers: TALL_RECEIVERS });
+      const focus = shadowCapture?.focus ?? useWorldStore.getState().position;
+      fitSunShadow(lamp, shadowTarget, camera, { mapSize: shadowSize, wide: shadowCapture?.wide ?? false,
+        wideBounds: shadowCapture?.bounds, focus, receivers: receiverBand(focus), tallReceivers: TALL_RECEIVERS });
     }
     if (hemisphere.current) {
       hemisphere.current.intensity += ((a.fill + (b.fill - a.fill) * s.mix) * (1 - overcast * .12) - hemisphere.current.intensity) * blend;

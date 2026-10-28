@@ -126,8 +126,9 @@ const ISLAND_BOX = new Box3(new Vector3(-86, -2, -82), new Vector3(96, 17.5, 62)
 export interface ShadowFitOptions {
   /** Legacy single-map size from WorldEnvironment (4096 high / 2048 balanced); selects the tier. */
   mapSize: number;
-  /** Fixed evidence shots use the whole-island window. */
+  /** Overview shots use a surveyed window; close shots retain the play cascades. */
   wide: boolean;
+  wideBounds?: Box3;
   /** Walker/vehicle position (window centre). */
   focus: readonly number[];
   /** Unused since v4.1 (kept for the WorldEnvironment call signature). */
@@ -175,15 +176,18 @@ let tier: ShadowTier = 'high';
 /** QA only (contact-gap diagnosis): override the depth bias (m along the light) and/or the normal offset (m). */
 export const shadowBiasQa: { bias_m: number | null; normal_m: number | null } = { bias_m: null, normal_m: null };
 
-const islandLight = (() => {
+function projectShadowBounds(bounds: Box3) {
   let minR = Infinity, maxR = -Infinity, minU = Infinity, maxU = -Infinity, minZ = Infinity, maxZ = -Infinity;
   for (let i = 0; i < 8; i++) {
-    point.set(i & 1 ? ISLAND_BOX.max.x : ISLAND_BOX.min.x, i & 2 ? ISLAND_BOX.max.y : ISLAND_BOX.min.y, i & 4 ? ISLAND_BOX.max.z : ISLAND_BOX.min.z);
+    point.set(i & 1 ? bounds.max.x : bounds.min.x, i & 2 ? bounds.max.y : bounds.min.y, i & 4 ? bounds.max.z : bounds.min.z);
     const r = point.dot(LIGHT_RIGHT), u = point.dot(LIGHT_UP), z = point.dot(LIGHT_Z);
     minR = Math.min(minR, r); maxR = Math.max(maxR, r); minU = Math.min(minU, u); maxU = Math.max(maxU, u); minZ = Math.min(minZ, z); maxZ = Math.max(maxZ, z);
   }
   return { centre: [(minR + maxR) / 2, (minU + maxU) / 2, (minZ + maxZ) / 2], half: [(maxR - minR) / 2 + 1, (maxU - minU) / 2 + 1] as [number, number], depthHalf: (maxZ - minZ) / 2 };
-})();
+}
+const islandLight = projectShadowBounds(ISLAND_BOX);
+// Captures own immutable bounds; project them once, not in every shadow pass.
+const captureBoundsCache = new WeakMap<Box3, ReturnType<typeof projectShadowBounds>>();
 /** Casters up to this far above the island top can still shadow it (light near plane margin). */
 const DEPTH_MARGIN = 20;
 /** Snapped light-space windows of the current frame (centre r, u and half extents). */
@@ -978,6 +982,12 @@ function updateCascades(shadow: CascadeShadow, viewCamera: Camera | undefined) {
   for (let i = 0; i < CASCADES; i++) shadow._viewports[i].set(i + inset, inset, 1 - 2 * inset, 1 - 2 * inset);
   const perspective = viewCamera as PerspectiveCamera;
   const wide = options.wide || !perspective.isPerspectiveCamera;
+  let extent = islandLight;
+  if (wide && options.wideBounds) {
+    const cached = captureBoundsCache.get(options.wideBounds);
+    if (cached) extent = cached;
+    else { extent = projectShadowBounds(options.wideBounds); captureBoundsCache.set(options.wideBounds, extent); }
+  }
   const f = options.focus;
   viewCamera.updateMatrixWorld();
   viewMatrix.multiplyMatrices(viewCamera.projectionMatrix, viewCamera.matrixWorldInverse);
@@ -998,8 +1008,8 @@ function updateCascades(shadow: CascadeShadow, viewCamera: Camera | undefined) {
   const cascades: CascadeInfo[] = [];
   for (let i = 0; i < CASCADES; i++) {
     const spec = CASCADE_WINDOWS[i];
-    const [halfR, halfU] = wide ? islandLight.half : spec.half;
-    let cR = islandLight.centre[0], cU = islandLight.centre[1];
+    const [halfR, halfU] = wide ? extent.half : spec.half;
+    let cR = extent.centre[0], cU = extent.centre[1], cZ = extent.centre[2];
     if (!wide) {
       if (i < 2) point.set(f[0] + gx * spec.shift[0], f[1], f[2] + gz * spec.shift[0]);
       else {
@@ -1007,17 +1017,19 @@ function updateCascades(shadow: CascadeShadow, viewCamera: Camera | undefined) {
         const mid = (nearG + Math.min(farG, nearG + 90)) / 2;
         point.set(camGround[0] + gx * mid, f[1], camGround[1] + gz * mid);
       }
-      cR = point.dot(LIGHT_RIGHT); cU = point.dot(LIGHT_UP);
+      cR = point.dot(LIGHT_RIGHT); cU = point.dot(LIGHT_UP); cZ = point.dot(LIGHT_Z);
     }
     const texelR = 2 * halfR / resolution, texelU = 2 * halfU / resolution;
     cR = Math.round(cR / texelR) * texelR; cU = Math.round(cU / texelU) * texelU;
     Object.assign(windows[i], { r: cR, u: cU, hr: halfR, hu: halfU });
-    centre.set(0, 0, 0).addScaledVector(LIGHT_RIGHT, cR).addScaledVector(LIGHT_UP, cU).addScaledVector(LIGHT_Z, islandLight.centre[2]);
+    // Follow the local light-space depth too. Keeping the old island's depth
+    // clipped casters/receivers as play moved far north into the new parks.
+    centre.set(0, 0, 0).addScaledVector(LIGHT_RIGHT, cR).addScaledVector(LIGHT_UP, cU).addScaledVector(LIGHT_Z, cZ);
     const cam = shadow._cameras[i];
-    cam.position.copy(centre).addScaledVector(LIGHT_Z, islandLight.depthHalf + DEPTH_MARGIN);
+    cam.position.copy(centre).addScaledVector(LIGHT_Z, extent.depthHalf + DEPTH_MARGIN);
     cam.up.set(0, 1, 0); cam.lookAt(centre);
     cam.left = -halfR; cam.right = halfR; cam.bottom = -halfU; cam.top = halfU;
-    cam.near = LIGHT_NEAR; cam.far = 2 * islandLight.depthHalf + DEPTH_MARGIN + 2;
+    cam.near = LIGHT_NEAR; cam.far = 2 * extent.depthHalf + DEPTH_MARGIN + 2;
     cam.coordinateSystem = shadow.camera.coordinateSystem;
     (cam as OrthographicCamera & { _reversedDepth?: boolean })._reversedDepth = (shadow.camera as OrthographicCamera & { _reversedDepth?: boolean })._reversedDepth;
     cam.updateProjectionMatrix(); cam.updateMatrixWorld();

@@ -1,7 +1,7 @@
 import { Builder, bar, cbox, lathe, type Surf, type V3 } from '../WorldStreetGeometry.ts';
 import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
 import type { IbdCube, IbdSolid } from './ibd-yard-architecture.ts';
-import { IBD_TRUCK_FLOOR as floor } from './ibd-yard-layout.ts';
+import { IBD_TRUCK_FLOOR as floor, IBD_TRUCK_WHEELS as wheels } from './ibd-yard-layout.ts';
 
 const trim: Surf = { color: '#b8c2c2', rough: .57, metal: .38 };
 const seam: Surf = { color: '#40575c', rough: .67, metal: .28 };
@@ -158,18 +158,18 @@ export function buildIbdTruck(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
   }
   for (const z of [8.2, 11, 14, 16.8]) cube([17.945, 2.3, z], [.07, 2.85, .075], P.steel, false, 0);
   for (const x of [14.7, 17.3]) cube([x, .38, 14.3], [.23, .24, 13.5], P.dark);
-  for (const z of [9.5, 14.5, 19.5]) cube([16, .47, z], [3.5, .18, .22], P.steel);
+  for (const z of wheels.axles) cube([wheels.centerX, .47, z], [3.5, .18, .22], P.steel);
 
   buildIbdCab(b, cube, solids);
 
-  // Six axles ends share the same travel axis as the chassis; rims face outwards.
-  for (const z of [9.5, 14.5, 19.5]) for (const side of [-1, 1]) {
-    const x = 16 + side * 1.73;
-    b.tr([x, .6, z], [0, 0, Math.PI / 2], () => {
-      lathe(b, [[0, -.23], [.5, -.23], [.58, -.15], [.58, .15], [.5, .23], [0, .23]], P.rubber, { sides: 20 });
+  // Six axle ends share the same travel axis as the chassis; rims face outwards.
+  for (const z of wheels.axles) for (const side of [-1, 1]) {
+    const x = wheels.centerX + side * wheels.halfTrack;
+    b.tr([x, wheels.centerY, z], [0, 0, Math.PI / 2], () => {
+      lathe(b, [[0, -wheels.halfWidth], [.5, -wheels.halfWidth], [wheels.radius, -.15], [wheels.radius, .15], [.5, wheels.halfWidth], [0, wheels.halfWidth]], P.rubber, { sides: 20 });
       for (const y of [-.237, .237]) lathe(b, [[0, y], [.3, y], [.34, y + .008], [0, y + .008]], P.steel, { sides: 16 });
     });
-    for (let i = 0; i < 6; i++) cbox(b, [x + side * .25, .6 + .2 * Math.sin(i * Math.PI / 3), z + .2 * Math.cos(i * Math.PI / 3)], [.025, .05, .05], seam, .005);
+    for (let i = 0; i < 6; i++) cbox(b, [x + side * .25, wheels.centerY + .2 * Math.sin(i * Math.PI / 3), z + .2 * Math.cos(i * Math.PI / 3)], [.025, .05, .05], seam, .005);
   }
   for (const z of [10.5, 14.5]) cube([12.5, floor / 2, z], [Math.hypot(3, floor), .14, 2.9], P.steel, true, 0, [0, 0, Math.atan2(floor, 3)]);
 }
