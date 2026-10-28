@@ -1,20 +1,34 @@
 import { Color } from 'three';
-import { beddedRockColour } from './coaster-rock-bedding.ts';
 import type { Vec3 } from '../types';
 
 type Sampler = (x: number, z: number) => number;
+/** Colours are indexed by shared vertex, independently of the flat render normals. */
 export type DropDetail = { points: Vec3[]; faces: [number, number, number][]; colours: Color[]; kind: 'rock' };
-const mineral = new Color('#aaa48e'), broken = new Color('#878b7c'), earth = new Color('#92906a'), grass = new Color('#7c8957');
+const mineral = new Color('#aaa48e'), weathered = new Color('#99977e'), earth = new Color('#92906a'), grass = new Color('#7c8957');
 
-/** Low maintenance aprons become soil/grass; mineral colour follows actual exposed slope. */
-export function dropCoastGroundColour(a: Vec3, b: Vec3, c: Vec3) {
-  const ux=b[0]-a[0],uy=b[1]-a[1],uz=b[2]-a[2],vx=c[0]-a[0],vy=c[1]-a[1],vz=c[2]-a[2];
-  const slope=Math.hypot(uy*vz-uz*vy,ux*vy-uy*vx)/Math.max(1e-6,Math.abs(uz*vx-ux*vz));
-  const x=(a[0]+b[0]+c[0])/3,y=(a[1]+b[1]+c[1])/3,z=(a[2]+b[2]+c[2])/3;
-  const patch=.5+.5*Math.sin(x*.09+z*.06)*Math.cos(z*.12-x*.04);
-  const cover=grass.clone().lerp(earth,.12+patch*.25);
-  const exposed=Math.min(1,Math.max(0,(y-.4)*.16+slope*.8-.15));
-  return cover.lerp(beddedRockColour(a,b,c),exposed);
+/** Continuous local material field; render normals remain flat so rock facets still read.
+ * Area-weighted slope prevents colour changes at arbitrary triangle diagonals. */
+export function dropSurfaceColours(points:Vec3[],faces:[number,number,number][],ground?:Sampler):Color[] {
+  const normals=points.map(()=>[0,0,0]);
+  for(const [ia,ib,ic] of faces){
+    const [a,b,c]=[points[ia],points[ib],points[ic]];
+    const ux=b[0]-a[0],uy=b[1]-a[1],uz=b[2]-a[2],vx=c[0]-a[0],vy=c[1]-a[1],vz=c[2]-a[2];
+    const n=[uy*vz-uz*vy,uz*vx-ux*vz,ux*vy-uy*vx];
+    if(n[1]<-1e-6)continue; // Buried undersides do not turn upper edges into grass.
+    for(const i of [ia,ib,ic])for(let axis=0;axis<3;axis++)normals[i][axis]+=n[axis];
+  }
+  return points.map(([x,y,z],i)=>{
+    const [nx,ny,nz]=normals[i],slope=Math.hypot(nx,nz)/Math.max(.001,ny);
+    const patch=.5+.5*Math.sin(x*.09+z*.06)*Math.cos(z*.12-x*.04);
+    const strata=.5+.5*Math.sin(y*.7+x*.055-z*.035);
+    const exposed=slope/(slope+.65),ledge=1-exposed;
+    const soil=grass.clone().lerp(earth,.2+patch*.28);
+    const stone=mineral.clone().lerp(weathered,.3+strata*.3);
+    const foot=ground?Math.max(0,1-Math.max(0,y-ground(x,z))/1.1):0;
+    const apron=Math.max(0,1-Math.max(0,y-.15)/.9)*.88;
+    const cover=ground?Math.max(ledge*(.4+patch*.2),foot*.78):Math.max(ledge*(.83+patch*.1),apron);
+    return stone.lerp(soil,cover);
+  });
 }
 
 /** A broken ridge behind the drop, with smaller debris at the foot of the same beds.
@@ -29,8 +43,8 @@ export const DROP_ROCK_BEDS = [
 function builder(kind: DropDetail['kind']) {
   const mesh: DropDetail={points:[],faces:[],colours:[],kind};
   const vertex=(p:Vec3)=>{mesh.points.push(p);return mesh.points.length-1;};
-  const face=(a:number,b:number,c:number,colour:Color)=>{mesh.faces.push([a,b,c]);mesh.colours.push(colour);};
-  const connect=(a:number,b:number,n:number,colour:Color)=>{for(let i=0;i<n;i++){const j=(i+1)%n;face(a+i,b+i,a+j,colour);face(a+j,b+i,b+j,colour);}};
+  const face=(a:number,b:number,c:number)=>{mesh.faces.push([a,b,c]);};
+  const connect=(a:number,b:number,n:number)=>{for(let i=0;i<n;i++){const j=(i+1)%n;face(a+i,b+i,a+j);face(a+j,b+i,b+j);}};
   return {mesh,vertex,face,connect};
 }
 
@@ -74,11 +88,10 @@ export function createDropRock(bed: readonly number[], seed: number, ground: Sam
   // Large inclined fracture faces and narrow inset seams replace the continuous colour bands.
   for(let layer=0;layer<3;layer++)for(let i=0;i<n;i++){
     const j=(i+1)%n,a=layer*n+i,b=layer*n+j,c=(layer+1)*n+j,e=(layer+1)*n+i;
-    const tint=layer===1&&boundary[i].shelf?mineral:broken.clone().lerp(mineral,.2+.12*((i+seed)%3));
-    if((i+layer+seed)%2){face(a,e,b,tint);face(b,e,c,tint);}else{face(a,e,c,tint);face(a,c,b,tint);}
+    if((i+layer+seed)%2){face(a,e,b);face(b,e,c);}else{face(a,e,c);face(a,c,b);}
   }
   const roof=vertex([x,top-.03,z]),bottom=vertex([x,floor,z]);
-  for(let i=0;i<n;i++){face(roof,n*3+(i+1)%n,n*3+i,mineral.clone().lerp(earth,.18));face(bottom,i,(i+1)%n,broken);}
+  for(let i=0;i<n;i++){face(roof,n*3+(i+1)%n,n*3+i);face(bottom,i,(i+1)%n);}
   // A few detached, tilted flakes fall towards the low end of the same bed.
   // Keep the planted west shelf clear and reject any flake whose whole footprint lacks ground/clearance.
   const toes=[2,3,4,5].sort((a,b)=>feet[a]-feet[b]).slice(0,3);
@@ -88,13 +101,19 @@ export function createDropRock(bed: readonly number[], seed: number, ground: Sam
     const outline=[[-.65,-.3],[.2,-.48],[.66,-.06],[.3,.4],[-.5,.31]].map(([dx,dz])=>[cx+dx*size,cz+dz*size] as const);
     const support=outline.map(([px,pz])=>ground(px,pz));
     if(!support.every(Number.isFinite)||Math.max(...support)-Math.min(...support)>.65)continue;
-    const base=Math.max(...support),low=Math.min(...support)-.16;
-    if(outline.some(([px,pz])=>base+h+.2>=ceiling(px,pz)))continue;
+    // A narrow, leaning fracture crest ends in a low buried toe, not a parallel top cap.
+    const upper=outline.map(([px,pz],i)=>{
+      const taper=[.48,.62,.7,.52,.68][i],lift=[.12,.72,.96,.46,.08][i];
+      const tx=cx+(px-cx)*taper+size*.07,tz=cz+(pz-cz)*taper-size*.08;
+      return [tx,ground(tx,tz)+h*lift,tz] as Vec3;
+    });
+    if(upper.some(([px,py,pz])=>!Number.isFinite(py)||py+.2>=ceiling(px,pz)))continue;
     const start=mesh.points.length;
-    outline.forEach(([px,pz])=>vertex([px,low,pz]));
-    outline.forEach(([px,pz],i)=>vertex([px+size*.09,base+h*(.45+(i%3)*.21),pz-size*.06]));
-    connect(start,start+5,5,broken);
-    for(let i=1;i<4;i++){face(start,start+i,start+i+1,broken);face(start+5,start+5+i+1,start+5+i,mineral);}
+    outline.forEach(([px,pz],i)=>vertex([px,support[i]-.16,pz]));
+    upper.forEach(vertex);
+    connect(start,start+5,5);
+    for(let i=1;i<4;i++){face(start,start+i,start+i+1);face(start+5,start+5+i+1,start+5+i);}
   }
+  mesh.colours=dropSurfaceColours(mesh.points,mesh.faces,ground);
   return mesh;
 }

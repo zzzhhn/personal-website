@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import R from '@dimforge/rapier3d-compat';
 import { DoubleSide, Mesh, MeshBasicMaterial, Raycaster, Triangle, Vector3 } from 'three';
 import { createCoasterTerrainRelief } from './coaster-terrain-relief.ts';
-import { createDropRock, DROP_ROCK_BEDS } from './coaster-drop-landscape.ts';
+import { createDropRock, dropSurfaceColours, DROP_ROCK_BEDS } from './coaster-drop-landscape.ts';
 import { coasterFrame, coasterRidePose, coasterSupports } from './coaster-track.ts';
 
 await R.init();
@@ -17,7 +17,7 @@ test('local scarp and soil aprons keep their footprint with no static replacemen
   const {rocks,detailTriangles,savedApronTriangles}=relief.dropSample;
   assert.equal(rocks,4);
   assert.equal(north.triangleCount,north.terrainTriangleCount,'foliage must live in the shared wind/LOD pipeline');
-  assert.ok(detailTriangles>224&&detailTriangles<=650);assert.ok(savedApronTriangles>=300);
+  assert.equal(detailTriangles,560,'material and flake shaping must not add triangles');assert.ok(savedApronTriangles>=300);
   assert.ok(relief.triangleCount<=25226,'local additions may not consume the far scene budget');
   const p=relief.geometry.attributes.position,c=relief.geometry.attributes.color;let soilArea=0;
   for(let i=north.firstTriangle;i<north.firstTriangle+north.triangleCount;i++) {
@@ -52,8 +52,38 @@ test('a representative bed has closed skewed scarps and a few low detached flake
     const points=ids.map(i=>rock.points[i]),ys=points.map(p=>p[1]);
     assert.ok(Math.min(...ys)<.3&&Math.max(...ys)<1,'flakes must be embedded at the toe');
     assert.ok(new Set(ys.map(y=>y.toFixed(3))).size>=3,'flake roof must be inclined');
+    const ordered=[...ids].sort((a,b)=>a-b).map(i=>rock.points[i]),lower=ordered.slice(0,5),upper=ordered.slice(5);
+    const area=ring=>Math.abs(ring.reduce((sum,p,i)=>{const q=ring[(i+1)%ring.length];return sum+p[0]*q[2]-q[0]*p[2];},0))/2;
+    assert.ok(area(upper)<area(lower)*.55,'parallel caps still read as cut stone blocks');
+    assert.ok(Math.min(...upper.map(p=>p[1]))<.36,'one end must die into the ground');
   }
   assert.ok(Math.max(...main.map(p=>p[1]))<=bed[4]+.151,'scarp exceeds the retained height envelope');
+  const ground=(x,z)=>.3+(x-bed[0])*.015+(z-bed[1])*.02,sloped=createDropRock(bed,0,ground,()=>50);
+  assert.equal(sloped.points.length,rock.points.length);
+  for(const ids of components.slice(1)){
+    const ordered=[...ids].sort((a,b)=>a-b).map(i=>sloped.points[i]);
+    ordered.forEach(([x,y,z],i)=>{
+      const gap=y-ground(x,z);
+      assert.ok(i<5?Math.abs(gap+.16)<1e-9:gap>0&&gap<.65,'a flake corner floats above or cuts through its sloped support');
+    });
+  }
+});
+
+test('north material colours cross shared edges continuously while render normals retain facets',t=>{
+  const c=relief.geometry.attributes.color,n=relief.geometry.attributes.normal,seen=new Map();let shared=0,creased=0;
+  for(let i=north.firstTriangle*3;i<(north.firstTriangle+north.triangleCount)*3;i++){
+    const id=relief.indices[i],colour=[c.getX(i),c.getY(i),c.getZ(i)],normal=[n.getX(i),n.getY(i),n.getZ(i)],before=seen.get(id);
+    assert.ok(colour.every(v=>Number.isFinite(v)&&v>=0&&v<=1));
+    if(relief.vertices[id*3+1]<.151)continue; // Retained buried closure uses the original global palette.
+    if(before){
+      assert.deepEqual(colour,before.colour,'triangle-local material seam');shared++;
+      if(normal.some((value,j)=>Math.abs(value-before.normal[j])>.05))creased++;
+    }else seen.set(id,{colour,normal});
+  }
+  assert.ok(shared>1000&&creased>100,'keep geometric facets, not face-by-face paint');
+  const p=[[0,2,0],[4,2,0],[4,2,4],[0,2,4]],a=dropSurfaceColours(p,[[0,2,1],[0,3,2]]),b=dropSurfaceColours(p,[[0,3,1],[1,3,2]]);
+  a.forEach((colour,i)=>assert.ok(colour.toArray().every((v,j)=>Math.abs(v-b[i].toArray()[j])<1e-10),'a different diagonal changed the mineral field'));
+  t.diagnostic(JSON.stringify({sharedCorners:shared,facetedCorners:creased}));
 });
 
 test('actual scarp contacts match visible surfaces and preserve both support aprons',t=>{

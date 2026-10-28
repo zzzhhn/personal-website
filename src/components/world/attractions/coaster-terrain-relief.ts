@@ -3,7 +3,7 @@ import { coasterFrame, coasterRidePose, coasterSupports, coasterWorld, COASTER_L
 import { bakeIntentNight } from './intent-lighting.ts';
 import { lightCoasterCliffs } from './coaster-landscape-lighting.ts';
 import { beddedRockColour, beddedRockHeight } from './coaster-rock-bedding.ts';
-import { createDropRock, dropCoastGroundColour, DROP_ROCK_BEDS, type DropDetail } from './coaster-drop-landscape.ts';
+import { createDropRock, dropSurfaceColours, DROP_ROCK_BEDS, type DropDetail } from './coaster-drop-landscape.ts';
 import type { CoasterBatch } from './coaster-geometry.ts';
 import type { Vec3 } from '../types';
 
@@ -281,6 +281,7 @@ function bakeReliefSpill(g: BufferGeometry) {
 
 export function createCoasterTerrainRelief() {
   const vertices: number[] = [], indices: number[] = [], shades: (number | Color)[] = [];
+  const dropVertexShades=new Map<number,Color>();
   let shrubCount = 0;
   const dropSample={rocks:0,detailTriangles:0,savedApronTriangles:0};
   const formations: { id: string; firstTriangle: number; triangleCount: number; vertexStart: number; vertexCount: number; terrainTriangleCount?: number }[] = [];
@@ -289,7 +290,8 @@ export function createCoasterTerrainRelief() {
   const detail=(mesh:DropDetail|null)=>{
     if(!mesh)return;
     const map=mesh.points.map(vertex);
-    mesh.faces.forEach(([a,b,c],i)=>face(map[a],map[b],map[c],mesh.colours[i]));
+    map.forEach((index,i)=>dropVertexShades.set(index,mesh.colours[i]));
+    mesh.faces.forEach(([a,b,c])=>face(map[a],map[b],map[c],mesh.colours[a]));
     dropSample.detailTriangles+=mesh.faces.length;
     dropSample.rocks++;
   };
@@ -386,11 +388,12 @@ export function createCoasterTerrainRelief() {
   // One connected infield terrain surface, closed beneath the ground. Its grid is clipped
   // to the authored irregular boundary and its ridges are cut by the unchanged ride envelope.
   const infield=getInfieldSurface(),firstTriangle=indices.length/3,vertexStart=vertices.length/3;
-  const solidTop=(points:Vec3[],faces:[number,number,number][],shade:(a:Vec3,b:Vec3,c:Vec3)=>number|Color)=>{
+  const solidTop=(points:Vec3[],faces:[number,number,number][],shade:(a:Vec3,b:Vec3,c:Vec3)=>number|Color,colours?:Color[])=>{
     const top=points.map(vertex),bottom=points.map(([x,,z])=>vertex([x,-.85,z]));
+    if(colours)top.forEach((index,i)=>dropVertexShades.set(index,colours[i]));
     const edges=new Map<string,{a:number;b:number;count:number}>();
     for(const [a,b,c] of faces){
-      face(top[a],top[b],top[c],shade(points[a],points[b],points[c]));face(bottom[a],bottom[c],bottom[b],0);
+      face(top[a],top[b],top[c],colours?.[a]??shade(points[a],points[b],points[c]));face(bottom[a],bottom[c],bottom[b],0);
       for(const [u,v] of [[a,b],[b,c],[c,a]]){const key=[Math.min(u,v),Math.max(u,v)].join(':');const edge=edges.get(key);if(edge)edge.count++;else edges.set(key,{a:u,b:v,count:1});}
     }
     for(const {a,b,count} of edges.values())if(count===1){face(top[b],top[a],bottom[a],3);face(top[b],bottom[a],bottom[b],3);}
@@ -423,7 +426,7 @@ export function createCoasterTerrainRelief() {
     const firstTriangle=indices.length/3,vertexStart=vertices.length/3;
     const drop=formation.id==='thrill-north-escarpment';
     const surface=drop?getDropGround().surface:clippedSurface(formation.outline,5,(x,z)=>thrillReliefHeight(formation,x,z));
-    solidTop(surface.points,surface.faces,drop?dropCoastGroundColour:beddedRockColour);
+    solidTop(surface.points,surface.faces,beddedRockColour,drop?dropSurfaceColours(surface.points,surface.faces):undefined);
     if(drop){
       dropSample.savedApronTriangles=surface.savedTopTriangles*2;
       getDropGround().rocks.forEach(detail);
@@ -445,7 +448,7 @@ export function createCoasterTerrainRelief() {
   indices.forEach((index, i) => {
     positions.set(collision.vertices.subarray(index * 3, index * 3 + 3), i * 3);
     const shade=shades[Math.floor(i/3)];
-    colors.set((typeof shade==='number'?palette[shade]:shade).toArray(),i*3);
+    colors.set((dropVertexShades.get(index)??(typeof shade==='number'?palette[shade]:shade)).toArray(),i*3);
   });
   const geometry = new BufferGeometry().setAttribute('position', new BufferAttribute(positions, 3)).setAttribute('color', new BufferAttribute(colors, 3));
   geometry.computeVertexNormals(); geometry.computeBoundingBox(); geometry.computeBoundingSphere();
