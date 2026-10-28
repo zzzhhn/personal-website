@@ -9,7 +9,7 @@ const copy: Partial<Record<IbdActionKind, [Bi, Bi]>> = {
   brief: [bi('拿起货单', 'Pick up the manifest'), bi('走到入口左侧的白色货单旁。', 'Walk to the white manifest left of the entrance.')],
   kit: [bi('拿走检验工具', 'Collect the tools'), bi('拿走桌上的手电和卡规。', 'Take the torch and gauge from the table.')],
   scan: [bi('检查钢卷正面', 'Inspect the coil front'), bi('朝向卷号牌，读标识、量规格。', 'Face the coil tag to read and measure it.')],
-  turn: [bi('转动手轮，翻看背面', 'Turn the handwheel'), bi('看钢卷转动，再回到卷前。', 'Watch the coil turn, then return to its face.')],
+  turn: [bi('转动手轮，翻看背面', 'Turn the handwheel'), bi('退到操作台外侧翻卷，等钢卷停稳。', 'Stand on the outer side of the controls to turn the coil. Wait until it stops.')],
   rear: [bi('照检刚转出的背面', 'Inspect the exposed rear'), bi('背面检查完成，这卷才算验完。', 'Check this face to finish inspecting the coil.')],
   crane: [bi('吊开前卷，露出后卷', 'Lift the front coil aside'), bi('拉吊架杆，看前卷移到左侧。', 'Use the crane lever; watch the front coil move left.')],
   weigh: [bi('按台秤，看重量', 'Read the scale'), bi('重量是线索，下一步仍要拆箱。', 'Weight is a clue. Open the carton next.')],
@@ -23,6 +23,15 @@ const copy: Partial<Record<IbdActionKind, [Bi, Bi]>> = {
   next: [bi('这单已完成', 'Batch complete'), bi('可接下一批，也可以直接离开园区。', 'Receive another batch or leave the yard.')],
 };
 export interface IbdGuideStep { action: IbdAction; phase: number; title: Bi; hint: Bi }
+function guideCopy(action: IbdAction): [Bi, Bi] {
+  const text: [Bi, Bi] = copy[action.kind] ?? [bi('观察装置动作', 'Watch the mechanism'), bi('等动作停稳。', 'Wait until it settles.')];
+  if (action.slot !== 'coil-rear') return text;
+  if (action.kind === 'scan' || action.kind === 'rear') return [text[0],
+    bi('沿东侧退到南端开口，再绕入后卷黄圈。', 'Follow the east aisle back to the south opening, then enter the rear-coil ring.')];
+  if (action.kind === 'turn') return [text[0],
+    bi('从南端开口绕出，退到操作台外侧翻卷。', 'Exit through the south opening, then turn the coil from the outer side of the controls.')];
+  return text;
+}
 export function ibdGuidePhaseDone(game: IbdYardGame): boolean[] {
   const checked = (prefix: string) => IBD_SLOTS.filter(s => s.startsWith(prefix)).every(s => yardItemComplete(game, s) && !yardItemDifferent(game, s));
   return [game.started, game.equipped, checked('coil'), checked('parts'),
@@ -34,14 +43,14 @@ export function ibdGuideStep(game: IbdYardGame): IbdGuideStep {
   const step = (station: IbdStationId, kind: IbdActionKind, phase: number): IbdGuideStep => {
     const action = yardActions(game, station).find(a => a.kind === kind);
     if (!action) throw new Error(`IBD guide requested unavailable action ${station}/${kind}`);
-    const [title, hint] = copy[kind]!;
+    const [title, hint] = guideCopy(action);
     return { action, phase, title, hint };
   };
   if (game.released) return step('dispatch', 'next', 5);
   if (game.pending) {
     const { action } = game.pending;
     // Keep the target attached to the moving operation until it actually commits.
-    const c = copy[action.kind] ?? [bi('观察装置动作', 'Watch the mechanism'), bi('等动作停稳。', 'Wait until it settles.')];
+    const c = guideCopy(action);
     const phase = action.kind === 'brief' ? 0 : action.kind === 'kit' ? 1 : action.station.includes('dispatch') ? 5
       : ['load', 'unload'].includes(action.kind) ? 4 : action.slot?.startsWith('parts') ? 3 : 2;
     return { action, phase, title: c[0], hint: c[1] };
@@ -86,9 +95,20 @@ export function ibdGuideRoute(game: IbdYardGame, step = ibdGuideStep(game)): Vec
   return [at(0, 20), at(0, 2), at(aisle, 2), at(aisle, z), at(x, z)];
 }
 
+/** Join the main trail at the open south end instead of directing a lateral crossing of the guard. */
+export function ibdGuideReturnRoute(game: IbdYardGame, step = ibdGuideStep(game)): Vec3[] {
+  if (step.action.slot !== 'coil-rear') return [];
+  const at = (x: number, z: number): Vec3 => [x, .13, z];
+  if (step.action.kind === 'scan' || step.action.kind === 'rear') return [at(-8, -8), at(-8, 1), at(-12, 1)];
+  if (step.action.kind === 'turn') return [at(-12, -6.7), at(-12, 1), at(-7, 1)];
+  return [];
+}
+
 export function ibdGuideResult(game: IbdYardGame): Bi {
   if (game.pending) return bi('', '');
   const slot = game.completedAction?.slot;
+  if (game.notice === 'turn' && slot === 'coil-rear')
+    return bi('钢卷已翻转，从南端开口绕回黄圈。', 'Coil turned. Return to the ring through the south opening.');
   if (slot && ['contents', 'difference-observed'].includes(game.notice)) {
     const id = yardItemId(game, slot), item = yardCase(game).items.find(i => i.id === id)!;
     const expected = IBD_ALL_CLEAR.items.find(i => i.id === slot)!, proof = game.core.proofs[id] ?? [];
@@ -107,7 +127,7 @@ export function ibdGuideResult(game: IbdYardGame): Bi {
     manifest: bi('本批验 2 卷钢卷、8 件 M8，只发五金。', 'This batch: inspect 2 coils and 8 M8 pieces. Ship only the parts.'), equipped: bi('工具已拿到。', 'Tools collected.'),
     scan: bi('正面已记录，背面还没看。', 'Front recorded. The rear is still unchecked.'), turn: bi('背面已转出，回到卷前照检。', 'Rear exposed. Return to the coil to inspect it.'),
     rear: bi('这一卷的两面都已记录。', 'Both coil faces recorded.'), survey: bi('高廊检查完成，两面均已记录。', 'Gallery check complete. Both faces recorded.'),
-    crane: bi('前卷已移开，后卷露出来了。', 'Front coil moved. Rear coil exposed.'), open: bi('箱盖打开了，现在核对内件。', 'Lid open. Check the contents now.'),
+    crane: bi('前卷已移开，从南端开口绕入后卷。', 'Front coil moved. Reach the rear coil through the south opening.'), open: bi('箱盖打开了，现在核对内件。', 'Lid open. Check the contents now.'),
     contents: bi('内件数量、规格已记录。', 'Contents counted and gauged.'), load: bi('一托已进车厢。', 'One pallet is in the truck.'),
     unload: bi('货物已回检验台。', 'Cargo returned to the bench.'), replaced: bi('新货到了，需重新检查。', 'Replacement arrived. Inspect it again.'),
     'difference-observed': bi('发现实物差异，先退换。', 'Discrepancy found. Exchange this cargo.'),

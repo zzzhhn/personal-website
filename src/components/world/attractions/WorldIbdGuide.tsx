@@ -3,7 +3,7 @@ import { CanvasTexture, MeshBasicMaterial, MeshStandardMaterial, RingGeometry, S
 import { Builder, cbox, type V3 } from '../WorldStreetGeometry.ts';
 import { useWorldStore } from '../store';
 import { ibdLocal, ibdReach, ibdStation, IBD_SLOTS, IBD_CARGO_HOME, IBD_MOVED_COIL, IBD_TRUCK } from './ibd-yard-layout.ts';
-import { ibdGuideRoute, ibdGuideStep } from './ibd-yard-guide.ts';
+import { ibdGuideRoute, ibdGuideReturnRoute, ibdGuideStep } from './ibd-yard-guide.ts';
 import { yardItemComplete, yardItemDifferent, yardItemId } from './ibd-yard-game.ts';
 import { useIbdYardStore } from './ibd-yard-store.ts';
 import { buildIbdTools } from './ibd-yard-geometry.ts';
@@ -37,9 +37,9 @@ export default memo(function WorldIbdGuide() {
     material: new MeshStandardMaterial({ vertexColors: true, roughness: .8, emissive: '#857b59', emissiveIntensity: .2 }) })), []);
   useEffect(() => () => { Object.values(props).forEach(resource => resource.dispose()); }, [props]);
   const cue = useMemo(() => sceneWorkProbe.measure('ibd-guide-cue', () => {
-    const b = new Builder(), route = station.id.startsWith('gallery') ? [] : ibdGuideRoute(game, step);
+    const b = new Builder(), routes = station.id.startsWith('gallery') ? [] : [ibdGuideRoute(game, step), ibdGuideReturnRoute(game, step)];
     const paint = { color: '#efbd57', rough: 1, metal: 0 };
-    for (let i = 0; i < route.length - 1; i++) {
+    for (const route of routes) for (let i = 0; i < route.length - 1; i++) {
       const a = route[i], end = route[i + 1], dx = end[0] - a[0], dz = end[2] - a[2], length = Math.hypot(dx, dz);
       if (length < .1) continue;
       const ux = dx / length, uz = dz / length;

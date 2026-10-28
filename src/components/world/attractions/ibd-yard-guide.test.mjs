@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { ibdGuideStep, ibdGuideRoute, ibdGuidePhaseDone } from './ibd-yard-guide.ts';
+import { ibdGuideStep, ibdGuideRoute, ibdGuideReturnRoute, ibdGuideResult, ibdGuidePhaseDone } from './ibd-yard-guide.ts';
 import { readFileSync } from 'node:fs';
 import ts from 'typescript';
 import { createIbdYardGame, requestIbdYardAction, finishIbdYardAction, yardActions, yardCase } from './ibd-yard-game.ts';
@@ -81,8 +81,8 @@ test('the first-batch ground breadcrumbs avoid floor-level fixed cuboids with pl
     const obstacles = data.solids.filter(s => !s.rotation && s.at[1] + s.size[1] / 2 > .16 && s.at[1] - s.size[1] / 2 < 1.7);
     let game = createIbdYardGame();
     for (let action = 0; action < 30 && !game.released; action++) {
-      const step = ibdGuideStep(game), path = ibdGuideRoute(game, step);
-      for (let j = 0; j < path.length - 1; j++) {
+      const step = ibdGuideStep(game), paths = [ibdGuideRoute(game, step), ibdGuideReturnRoute(game, step)];
+      for (const path of paths) for (let j = 0; j < path.length - 1; j++) {
         const a = path[j], b = path[j + 1], samples = Math.ceil(Math.hypot(b[0] - a[0], b[2] - a[2]) / .2);
         for (let i = 0; i <= samples; i++) {
           const t = samples ? i / samples : 0, x = a[0] + (b[0] - a[0]) * t, z = a[2] + (b[2] - a[2]) * t;
@@ -95,4 +95,26 @@ test('the first-batch ground breadcrumbs avoid floor-level fixed cuboids with pl
       game = act(game, step.action);
     }
   } finally { data.geometry.dispose(); }
+});
+
+test('rear-coil approach and return cues use the south opening and keep turn instructions outside the controls', () => {
+  let game = createIbdYardGame();
+  for (let i = 0; i < 12 && game.notice !== 'crane'; i++) game = act(game, ibdGuideStep(game).action);
+  assert.equal(game.notice, 'crane');
+  for (const kind of ['scan', 'turn', 'rear']) {
+    const step = ibdGuideStep(game), path = ibdGuideReturnRoute(game, step);
+    assert.equal(step.action.kind, kind); assert.equal(step.action.slot, 'coil-rear');
+    assert.match(step.hint.zh, /南端开口/); assert.match(step.hint.en, /south opening/);
+    const pending = requestIbdYardAction(game, step.action, actor(game, step.action.station));
+    assert.deepEqual(ibdGuideStep(pending).hint, step.hint, 'the same approach/retreat instruction remains during the operation');
+    assert.ok(path[1][2] > 0 && path[2][2] > 0, 'cross the guard line only beyond its open south end');
+    assert.ok(path[0][2] < path[1][2], 'first return south instead of walking sideways through the guard');
+    if (kind === 'turn') {
+      assert.match(step.hint.zh, /操作台外侧/); assert.match(step.hint.en, /outer side/);
+      assert.ok(path[0][0] < -9.5 && path.at(-1)[0] > -9.5);
+    } else assert.ok(path[0][0] > -9.5 && path.at(-1)[0] < -9.5);
+    game = act(game, step.action);
+    if (kind === 'turn') assert.match(ibdGuideResult(game).zh, /南端开口/);
+  }
+  assert.equal(ibdGuideReturnRoute(game).length, 0, 'subsequent pack work keeps its existing route');
 });
