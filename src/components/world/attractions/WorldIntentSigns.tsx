@@ -1,10 +1,9 @@
 import { useEffect, useMemo } from 'react';
-import { CanvasTexture, Matrix4, PlaneGeometry, SRGBColorSpace } from 'three';
-import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { CanvasTexture, SRGBColorSpace } from 'three';
 import { useWorldStore } from '../store';
 import { useIntentStore } from './intent-state';
-import { coasterWorld, COASTER_DURATION, COASTER_GATE_Z } from './coaster-track';
-import type { Vec3 } from '../types';
+import { COASTER_DURATION } from './coaster-track';
+import { createIntentSignGeometry } from './intent-sign-layout';
 
 /** Gate, chest and station share one small atlas. Workshop signs own their request state. */
 export default function WorldIntentSigns() {
@@ -25,18 +24,7 @@ export default function WorldIntentSigns() {
     });
     const texture = new CanvasTexture(canvas); texture.colorSpace = SRGBColorSpace; return texture;
   }, [lang, passed]);
-  const geometry = useMemo(() => {
-    const panels: { at: Vec3; size: [number, number] }[] = [
-      { at: [0, 6.4, COASTER_GATE_Z + 1.03], size: [10, .95] },
-      { at: [-8, 2.6, 60.2], size: [6, .95] }, { at: [-2, 5.6, 53.1], size: [8.5, .95] },
-    ];
-    const parts = panels.map((panel, tile) => {
-      const g = new PlaneGeometry(...panel.size), uv = g.getAttribute('uv');
-      for (let i = 0; i < uv.count; i++) uv.setY(i, (uv.getY(i) + 2 - tile) / 3);
-      g.applyMatrix4(new Matrix4().makeTranslation(...coasterWorld(panel.at))); return g;
-    });
-    const merged = mergeGeometries(parts, false)!; parts.forEach(p => p.dispose()); return merged;
-  }, []);
+  const geometry = useMemo(createIntentSignGeometry, []);
   useEffect(() => () => atlas.dispose(), [atlas]); useEffect(() => () => geometry.dispose(), [geometry]);
   return <mesh geometry={geometry}><meshBasicMaterial map={atlas} toneMapped={false} /></mesh>;
 }
