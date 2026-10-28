@@ -1,7 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { BoxGeometry, DirectionalLight, Mesh, MeshBasicMaterial, Object3D, PerspectiveCamera, Scene } from 'three';
+import { BoxGeometry, DirectionalLight, Mesh, MeshBasicMaterial, Object3D, PerspectiveCamera, Scene, SphereGeometry } from 'three';
 import { fitSunShadow, shadowChunkWork } from './WorldShadows.ts';
+import { computeShadowHull } from './shadow-chunk-hull.ts';
 
 test('actual scene rescans append late stable casters, reuse untouched mesh/buffers, and rebuild on removal/replacement', t => {
   const scene = new Scene(), target = new Object3D(), light = new DirectionalLight(), camera = new PerspectiveCamera();
@@ -12,11 +13,12 @@ test('actual scene rescans append late stable casters, reuse untouched mesh/buff
   for (const mesh of [near, far, late]) mesh.castShadow = true;
   scene.add(near, far);
   const advance = frames => { for (let i = 0; i < frames; i++) fitSunShadow(light, target, camera, { mapSize: 2048, wide: false, focus: [0, 0, 0] }); };
+  const settle = () => { for (let i = 0; i < 100 && shadowChunkWork().pending; i++) advance(1); assert.equal(shadowChunkWork().pending, false); };
   const chunks = () => scene.getObjectByName('world-shadow-proxies').children.filter(o => o.name.startsWith('sun-chunk-'));
   let sourceDisposals = 0;
   for (const geometry of [a, b, c, replacement]) geometry.addEventListener('dispose', () => sourceDisposals++);
   t.after(() => { scene.remove(light, near, far, late); [a, b, c, replacement].forEach(g => g.dispose()); material.dispose(); });
-  advance(61);
+  advance(61); settle();
   const initial = new Map(chunks().map(m => [m.name, { mesh: m, geometry: m.geometry }]));
   assert.ok(initial.size > 0);
   let oldVertexReads = 0;
@@ -35,10 +37,10 @@ test('actual scene rescans append late stable casters, reuse untouched mesh/buff
   assert.ok(reused > 0); assert.ok(replaced > 0);
   const settled = chunks().map(m => m.geometry); advance(90);
   assert.deepEqual(chunks().map(m => m.geometry), settled);
-  scene.remove(late); advance(30);
+  scene.remove(late); advance(30); settle();
   assert.ok(oldVertexReads > 0, 'removal uses the conservative full rebuild');
   const beforeReplacement = chunks().map(m => m.geometry);
-  near.geometry = replacement; advance(30);
+  near.geometry = replacement; advance(30); settle();
   assert.ok(chunks().some(m => !beforeReplacement.includes(m.geometry)));
   assert.equal(sourceDisposals, 0, 'the shadow system never owns source geometry');
   scene.remove(near, far); advance(30);
@@ -128,4 +130,43 @@ test('late qualification does not restart the first cohort; mutation, subtree re
   geometry.dispose();
   assert.equal(shadowChunkWork().pending, false, 'source dispose releases scratch immediately');
   assert.equal(chunks().length, 0);
+});
+
+test('actual chunk path rejects a cancelled worker reply and keeps raw shadows after worker startup failure', t => {
+  const previousWorker = globalThis.Worker, ports = [];
+  class TestWorker {
+    onmessage = null; onerror = null; onmessageerror = null; terminated = 0; input = null;
+    constructor() { ports.push(this); }
+    postMessage(input, transfer) { this.input = structuredClone(input, { transfer }); }
+    terminate() { this.terminated++; }
+  }
+  globalThis.Worker = TestWorker;
+  const scene = new Scene(), target = new Object3D(), camera = new PerspectiveCamera();
+  let light = new DirectionalLight(); scene.add(target, light);
+  const old = new SphereGeometry(2, 16, 8), replacement = new SphereGeometry(3, 16, 8), material = new MeshBasicMaterial();
+  const mesh = new Mesh(old, material); mesh.castShadow = true; scene.add(mesh);
+  const advance = n => { for (let i = 0; i < n; i++) fitSunShadow(light, target, camera, { mapSize: 2048, wide: false, focus: [0, 0, 0] }); };
+  const chunks = () => scene.getObjectByName('world-shadow-proxies')?.children.filter(o => o.name.startsWith('sun-chunk-')) ?? [];
+  const waitFor = predicate => { for (let i = 0; i < 150; i++) { advance(1); if (predicate()) return; } assert.fail('condition not reached'); };
+  t.after(() => { scene.remove(light); old.dispose(); replacement.dispose(); material.dispose(); globalThis.Worker = previousWorker; });
+  waitFor(() => ports.length === 1 && ports[0].input);
+  const lateCallback = ports[0].onmessage, oldReply = computeShadowHull(ports[0].input);
+  assert.equal(chunks().length, 0); assert.equal(mesh.castShadow, true);
+  mesh.geometry = replacement; advance(1);
+  assert.equal(ports[0].terminated, 1); assert.equal(shadowChunkWork().pending, false);
+  lateCallback({ data: oldReply });
+  waitFor(() => ports.length === 2 && ports[1].input);
+  ports[1].onmessage({ data: computeShadowHull(ports[1].input) });
+  waitFor(() => !shadowChunkWork().pending && chunks().length > 0);
+  assert.equal(ports[1].terminated, 1);
+  const positions = chunks().flatMap(m => [...m.geometry.getAttribute('position').array]);
+  assert.ok(positions.includes(3)); assert.ok(!positions.includes(2), 'old worker geometry was not published');
+
+  scene.remove(light); light = new DirectionalLight(); scene.add(light);
+  mesh.geometry = old; // Cold hull: the cancelled reply must not have populated the cache.
+  let attempts = 0;
+  globalThis.Worker = class { constructor() { attempts++; throw Error('worker denied'); } };
+  waitFor(() => !!shadowChunkWork().error);
+  assert.equal(shadowChunkWork().pending, false); assert.equal(chunks().length, 0); assert.equal(mesh.castShadow, true);
+  advance(90); assert.equal(attempts, 1, 'failure must not restart work on each rescan');
 });

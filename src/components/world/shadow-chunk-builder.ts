@@ -1,4 +1,5 @@
 import { Vector3, type BufferGeometry, type Matrix4, type Mesh } from 'three';
+import type { ShadowChunkStage } from './shadow-chunk-stages';
 
 type Cascade = 0 | 1 | 2;
 const attributeIds = new WeakMap<object, number>();
@@ -32,15 +33,16 @@ export class ShadowChunkBuilder {
     for (const _ of this.addSteps(geometry, matrix, cascades, side, zone)) { /* synchronous compatibility */ }
   }
 
-  *addSteps(geometry: BufferGeometry, matrix: Matrix4, cascades: readonly Cascade[], side: number, zone: string): Generator<void> {
+  *addSteps(geometry: BufferGeometry, matrix: Matrix4, cascades: readonly Cascade[], side: number, zone: string): Generator<ShadowChunkStage> {
     const position = geometry.getAttribute('position'), index = geometry.index;
     const world = new Float32Array(position.count * 3), point = this.point;
     // c0/c1 (and c2 when no hull is used) share this transform. No temporary xyz arrays.
     for (let i = 0; i < position.count; i++) {
       point.fromBufferAttribute(position, i).applyMatrix4(matrix);
       world[i * 3] = point.x; world[i * 3 + 1] = point.y; world[i * 3 + 2] = point.z;
-      if ((i + 1) % 1024 === 0) yield;
+      if ((i + 1) % 1024 === 0) yield 'transform';
     }
+    yield 'transform';
     const count = index ? index.count : position.count;
     for (const cascade of cascades) {
       const planeKey = `${cascade}:${side}`, cell = this.cells[cascade];
@@ -73,10 +75,9 @@ export class ShadowChunkBuilder {
         points.push(world[a], world[a + 1], world[a + 2], world[b], world[b + 1], world[b + 2], world[c], world[c + 1], world[c + 2]);
         indices.push(base, base + 1, base + 2);
         bucket.zones.set(zone, (bucket.zones.get(zone) ?? 0) + 3);
-        if ((i + 3) % 1536 === 0) yield;
+        if ((i + 3) % 1536 === 0) yield 'bin';
       }
-      yield;
+      yield 'bin';
     }
-    yield;
   }
 }

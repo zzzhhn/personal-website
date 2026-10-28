@@ -1,5 +1,6 @@
 import { BufferAttribute, BufferGeometry, Sphere, Vector3 } from 'three';
 import { ShadowChunkBuilder, type ShadowChunkBucket } from './shadow-chunk-builder';
+import type { ShadowChunkStage } from './shadow-chunk-stages';
 
 export type ShadowChunkSource = { id: string; version: string };
 export type CachedShadowChunk = {
@@ -33,7 +34,7 @@ export class ShadowChunkCache {
 
   /** Transactional: yielding never changes the published cache. return() frees
    * staged geometry; a stale revision or failed validation cannot publish. */
-  *updateSteps(sources: readonly ShadowChunkSource[], build: (id: string, builder: ShadowChunkBuilder) => Generator<void>, valid = () => true): Generator<void, ShadowChunkUpdate | null> {
+  *updateSteps(sources: readonly ShadowChunkSource[], build: (id: string, builder: ShadowChunkBuilder) => Generator<ShadowChunkStage>, valid = () => true): Generator<ShadowChunkStage, ShadowChunkUpdate | null> {
     const revision = this.revision;
     const next = new Map(sources.map(s => [s.id, s.version]));
     const added = sources.filter(s => !this.versions.has(s.id));
@@ -49,13 +50,13 @@ export class ShadowChunkCache {
     const created: BufferGeometry[] = [];
     let committed = false;
     try {
-      for (const source of selected) { yield* build(source.id, builder); yield; }
+      for (const source of selected) { yield* build(source.id, builder); yield 'source'; }
       for (const [key, bucket] of builder.buckets) {
         const chunk = yield* this.makeChunk(bucket, mode === 'append' ? this.chunks.get(key) : undefined);
         created.push(chunk.geometry); result.set(key, chunk);
         // Drop numeric scratch as soon as its final typed buffers exist.
         bucket.data[0].length = 0; bucket.data[1].length = 0;
-        yield;
+        yield 'buffer';
       }
       if (revision !== this.revision || !valid()) return null;
       let reusedChunks = 0;
@@ -73,13 +74,13 @@ export class ShadowChunkCache {
     }
   }
 
-  private *makeChunk(bucket: ShadowChunkBucket, previous?: CachedShadowChunk): Generator<void, CachedShadowChunk> {
+  private *makeChunk(bucket: ShadowChunkBucket, previous?: CachedShadowChunk): Generator<ShadowChunkStage, CachedShadowChunk> {
     const oldPosition = previous?.geometry.getAttribute('position'), oldIndex = previous?.geometry.index;
     const offset = oldPosition?.count ?? 0, [points, indices] = bucket.data;
     const positions = new Float32Array(offset * 3 + points.length);
     for (let i = 0; i < positions.length; i++) {
       positions[i] = i < offset * 3 ? oldPosition!.array[i] : points[i - offset * 3];
-      if ((i + 1) % 4096 === 0) yield;
+      if ((i + 1) % 4096 === 0) yield 'buffer';
     }
     const oldCount = oldIndex?.count ?? 0;
     // Builder chunks use sequential indices. Match Three's primitive-restart
@@ -87,8 +88,9 @@ export class ShadowChunkCache {
     const index = positions.length / 3 > 65535 ? new Uint32Array(oldCount + indices.length) : new Uint16Array(oldCount + indices.length);
     for (let i = 0; i < index.length; i++) {
       index[i] = i < oldCount ? oldIndex!.array[i] : offset + indices[i - oldCount];
-      if ((i + 1) % 4096 === 0) yield;
+      if ((i + 1) % 4096 === 0) yield 'buffer';
     }
+    yield 'buffer';
     const zones = new Map(previous?.zones);
     for (const [zone, count] of bucket.zones) zones.set(zone, (zones.get(zone) ?? 0) + count);
     const bounds: CachedShadowChunk['lightBounds'] = previous ? [...previous.lightBounds] : [Infinity, -Infinity, Infinity, -Infinity];
@@ -101,14 +103,15 @@ export class ShadowChunkCache {
         bounds[0] = Math.min(bounds[0], r); bounds[1] = Math.max(bounds[1], r);
         bounds[2] = Math.min(bounds[2], u); bounds[3] = Math.max(bounds[3], u);
       }
-      if ((i + 3) % 3072 === 0) yield;
+      if ((i + 3) % 3072 === 0) yield 'bounds';
     }
     const center = min.add(max).multiplyScalar(.5);
     let radiusSq = 0;
     for (let i = 0; i < positions.length; i += 3) {
       radiusSq = Math.max(radiusSq, p.fromArray(positions, i).distanceToSquared(center));
-      if ((i + 3) % 3072 === 0) yield;
+      if ((i + 3) % 3072 === 0) yield 'bounds';
     }
+    yield 'bounds';
     const geometry = new BufferGeometry();
     geometry.setAttribute('position', new BufferAttribute(positions, 3));
     geometry.setIndex(new BufferAttribute(index, 1));

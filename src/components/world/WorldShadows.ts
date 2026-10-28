@@ -7,6 +7,8 @@ import { setQaRenderer, worldLightsFrame } from './WorldLights';
 import { sceneWorkProbe } from './world-scene-work';
 import { shadowChunkSourceKey } from './shadow-chunk-builder';
 import { ShadowChunkCache, type ShadowChunkUpdate } from './shadow-chunk-cache';
+import { ShadowHullError, ShadowHullJob } from './shadow-chunk-hull-job';
+import { ShadowChunkStages, type ShadowChunkStage } from './shadow-chunk-stages';
 
 /**
  * Sun shadow (shadows v4.1, spec v3 §14.2): three FIXED-SIZE cascades plus per-pass caster culling.
@@ -224,7 +226,7 @@ proxyGroup.visible = false;
 proxyGroup.userData.shadowProxy = true;
 proxyGroup.matrixAutoUpdate = false; proxyGroup.matrixWorldAutoUpdate = false; // proxy matrices are set per pass
 let scanFrame = -1e9, frameNo = 0, inShadowRender = false;
-type RebuildSample = { frame: number; elapsedMs: number; durationMs: number; wallMs: number; slices: number; maxSliceMs: number; rigidCasters: number; trainCasters: number; trainMergedBefore: number; trainRigid: number; chunks: number; update: ShadowChunkUpdate; addedNames: string[] };
+type RebuildSample = { frame: number; elapsedMs: number; durationMs: number; wallMs: number; slices: number; maxSliceMs: number; phases: ReturnType<ShadowChunkStages['snapshot']>; hullWorker: ShadowHullJob['stats']; rigidCasters: number; trainCasters: number; trainMergedBefore: number; trainRigid: number; chunks: number; update: ShadowChunkUpdate; addedNames: string[] };
 let rebuildProbeAt: number | null = null;
 const rebuildSamples: RebuildSample[] = [];
 /** Explicit QA window only, bounded records and no timer or production sampling. */
@@ -262,12 +264,15 @@ const FIRE_STATIC = new Set(['C05', 'C06']);
  * ~60 texels and the leaf notches inside it are near the texel size. */
 const hulls = new WeakMap<BufferGeometry, BufferGeometry | null>();
 const HULL_MIN_TRIS = 400;
+function wantsFarHull(g: BufferGeometry) {
+  const tris = (g.index ? g.index.count : g.getAttribute('position').count) / 3;
+  return tris >= (g.getAttribute('_wind') ? HULL_MIN_TRIS : 120) && !g.getAttribute('_cloth');
+}
 function farHull(g: BufferGeometry): BufferGeometry | null {
   if (hulls.has(g)) return hulls.get(g)!;
   const pos = g.getAttribute('position'), wind = g.getAttribute('_wind');
-  const tris = (g.index ? g.index.count : pos.count) / 3;
   let out: BufferGeometry | null = null;
-  if (tris >= (wind ? HULL_MIN_TRIS : 120) && !g.getAttribute('_cloth')) {
+  if (wantsFarHull(g)) {
     const pts: Vector3[] = [], key = new Map<string, number>();
     for (let i = 0; i < pos.count; i++) {
       const k = `${pos.getX(i).toFixed(4)},${pos.getY(i).toFixed(4)},${pos.getZ(i).toFixed(4)}`;
@@ -290,6 +295,15 @@ function farHull(g: BufferGeometry): BufferGeometry | null {
   }
   hulls.set(g, out);
   return out;
+}
+/** Cold hulls on the chunk path never run QuickHull on the rendering thread. */
+function* chunkFarHull(g: BufferGeometry, name: string, worker: ShadowHullJob): Generator<ShadowChunkStage, BufferGeometry | null> {
+  if (hulls.has(g)) return hulls.get(g)!;
+  if (!wantsFarHull(g)) { hulls.set(g, null); return null; }
+  const hull = yield* worker.build(g, name);
+  hulls.set(g, hull);
+  yield 'hull-hydrate';
+  return hull;
 }
 
 function instanceSpheres(mesh: InstancedMesh, animated: boolean) {
@@ -586,13 +600,18 @@ const CHUNK_CELL = [12, 20, 32] as const;
 const chunkCache = new ShadowChunkCache(CHUNK_CELL, LIGHT_RIGHT, LIGHT_UP);
 const chunkMeshes = new Map<string, Chunk>();
 const sideMaterials = new Map<number, Material>();
-type ChunkJob = { task: Generator<void, void>; valid: () => boolean; detach: () => void; cpuMs: number; slices: number; sliceStart: number; maxSliceMs: number };
+type ChunkJob = { task: Generator<ShadowChunkStage, void>; valid: () => boolean; detach: () => void; complete: () => void;
+  cpuMs: number; slices: number; sliceStart: number; maxSliceMs: number; source: string; profile: ShadowChunkStages | null; hullWorker: ShadowHullJob };
 let chunkJob: ChunkJob | null = null;
 let chunkScene: Object3D | null = null;
 let cancelledChunkJobs = 0;
+let hullWorkerError = '';
+let lastChunkPhases: ReturnType<ShadowChunkStages['snapshot']> = [];
+let lastHullWorker: ShadowHullJob['stats'] | null = null;
 /** Small scalar QA state only. No sampling loop or retained source/triangle history. */
 export const shadowChunkWork = () => ({ pending: !!chunkJob, slices: chunkJob?.slices ?? 0,
-  cpuMs: chunkJob?.cpuMs ?? 0, maxSliceMs: chunkJob?.maxSliceMs ?? 0, cancelled: cancelledChunkJobs });
+  cpuMs: chunkJob?.cpuMs ?? 0, maxSliceMs: chunkJob?.maxSliceMs ?? 0, cancelled: cancelledChunkJobs, error: hullWorkerError,
+  phases: chunkJob ? chunkJob.profile?.snapshot() ?? [] : lastChunkPhases, hullWorker: chunkJob ? { ...chunkJob.hullWorker.stats } : lastHullWorker });
 function clearChunks() {
   for (const chunk of chunkMeshes.values()) proxyGroup.remove(chunk.mesh);
   chunkMeshes.clear(); chunks = []; chunkCache.dispose(); chunkKey = '';
@@ -600,26 +619,39 @@ function clearChunks() {
 }
 function cancelChunks() {
   const job = chunkJob; chunkJob = null;
-  if (job) { job.task.return(); job.detach(); cancelledChunkJobs++; }
+  if (job) {
+    job.task.return(); job.detach(); cancelledChunkJobs++;
+    lastChunkPhases = job.profile?.snapshot() ?? []; lastHullWorker = { ...job.hullWorker.stats };
+  }
   clearChunks(); scanFrame = -1e9;
 }
 function advanceChunks() {
   const job = chunkJob; if (!job) return;
   const start = performance.now(), token = sceneWorkProbe.begin('shadow-chunks');
   job.slices++; job.sliceStart = start;
+  let completed = false;
   try {
-    if (!job.valid()) { cancelChunks(); return; }
+    const validStart = performance.now(), valid = job.valid();
+    job.profile?.record('validate', performance.now() - validStart, frameNo);
+    if (!valid) { cancelChunks(); return; }
     // Cooperative soft 3 ms target, at most 32 bounded units per render frame.
-    // Allocation, convex hull creation and final mesh publication are indivisible.
+    // Allocation, validation and final mesh publication remain indivisible.
     for (let units = 0; units < 32; units++) {
-      if (job.task.next().done) { job.detach(); chunkJob = null; break; }
-      if (performance.now() - start >= 3) break;
+      const unitStart = performance.now(), step = job.task.next(), now = performance.now();
+      const phase = step.done ? 'publish' : step.value;
+      job.profile?.record(phase, now - unitStart, frameNo, phase === 'publish' || phase === 'buffer' || phase === 'bounds' ? '' : job.source);
+      if (step.done) { job.detach(); chunkJob = null; completed = true; break; }
+      if (step.value === 'hull-wait' || step.value === 'hull-submit' || now - start >= 3) break;
     }
   } catch (error) {
-    cancelChunks(); throw error;
+    cancelChunks();
+    if (error instanceof ShadowHullError) { hullWorkerError = error.message; return; }
+    throw error;
   } finally {
     const ms = performance.now() - start; job.cpuMs += ms; job.maxSliceMs = Math.max(job.maxSliceMs, ms);
     sceneWorkProbe.end(token);
+    if (chunkJob !== job) { lastChunkPhases = job.profile?.snapshot() ?? []; lastHullWorker = { ...job.hullWorker.stats }; }
+    if (completed) job.complete();
   }
 }
 const sideMaterial = (side: number) => { let m = sideMaterials.get(side); if (!m) { m = new MeshBasicMaterial({ side: side as 0 | 1 | 2 }); sideMaterials.set(side, m); } return m; };
@@ -655,6 +687,7 @@ function rebuildChunks() {
   // Invalid published geometry must never shadow alongside its raw replacement.
   if (!chunkCache.matches(sources)) cancelChunks();
   for (const c of casters.values()) c.merged = chunkCache.hasSource(c.mesh.uuid);
+  if (hullWorkerError) return; // Worker failure keeps raw shadows; never retry every rescan or fall back to synchronous QuickHull.
   if (chunkJob) return; // Additions do not restart an otherwise valid first cohort.
   const key = sources.map(s => s.version).join('|');
   const probing = import.meta.env?.DEV && rebuildProbeAt !== null && rebuildSamples.length < 16 && key !== chunkKey;
@@ -670,6 +703,7 @@ function rebuildChunks() {
   const one = new Float32Array(4), matrix = new Matrix4(), localSphere = new Sphere();
   const byId = new Map(rigid.map(c => [c.mesh.uuid, c]));
   const scene = chunkScene!;
+  const hullWorker = new ShadowHullJob();
   const valid = () => sources.every((source, i) => {
     const c = rigid[i], mesh = c.mesh;
     let p: Object3D | null = mesh; while (p && p !== scene) p = p.parent;
@@ -689,23 +723,29 @@ function rebuildChunks() {
   if (typeof window !== 'undefined') window.addEventListener('pagehide', cancelChunks);
   if (typeof document !== 'undefined') document.addEventListener('visibilitychange', onHidden);
   const detach = () => {
+    hullWorker.dispose();
     for (const g of geometrySet) g.removeEventListener('dispose', cancelChunks);
     for (const p of ancestors) p.removeEventListener('removed', cancelChunks);
     if (typeof window !== 'undefined') window.removeEventListener('pagehide', cancelChunks);
     if (typeof document !== 'undefined') document.removeEventListener('visibilitychange', onHidden);
   };
-  const task = function* (): Generator<void, void> {
+  let completedUpdate: ShadowChunkUpdate | null = null;
+  const task = function* (): Generator<ShadowChunkStage, void> {
     // A later stable/lazy cohort only contributes its new triangles. Existing
     // chunk buffers are copied only in touched cells, never transformed/rebinned.
     // Removals and source changes conservatively rebuild the complete set.
     const update = yield* chunkCache.updateSteps(sources, function* (id, builder) {
       const c = byId.get(id)!;
       const src = c.mesh as InstancedMesh, mat = Array.isArray(src.material) ? src.material[0] : src.material;
+      const name = src.name || src.parent?.name || '(unnamed)';
+      chunkJob!.source = name;
       // userData.shadowGeometry: an asset-supplied simplified shadow proxy (same local frame as the mesh).
-      const g = (src.userData.shadowGeometry as BufferGeometry | undefined) ?? src.geometry, hull = farHull(g), side = mat.side, zone = budgetZoneOf(src);
+      const g = (src.userData.shadowGeometry as BufferGeometry | undefined) ?? src.geometry;
+      const hull = yield* chunkFarHull(g, name, hullWorker);
+      const side = mat.side, zone = budgetZoneOf(src);
       let s = c.spheres;
       if (!c.instanced) { meshSphere(c, localSphere); one.set([localSphere.center.x, localSphere.center.y, localSphere.center.z, localSphere.radius]); s = one; }
-      yield; // Hull/bounds work gets its own scheduling boundary.
+      yield 'source';
       const count = c.instanced ? src.count : 1;
       for (let i = 0; i < count; i++) {
         if (c.instanced) { src.getMatrixAt(i, matrix); matrix.premultiply(src.matrixWorld); } else matrix.copy(src.matrixWorld);
@@ -734,15 +774,18 @@ function rebuildChunks() {
       chunk.mesh.userData.budgetZone = top(b.zones);
     }
     chunks = [...chunkMeshes.values()];
+    completedUpdate = update;
+  };
+  const complete = () => {
     if (probeAt !== null && rebuildProbeAt === probeEpoch && rebuildProbeAt !== null && rebuildSamples.length < 16) {
       // CPU is accumulated slices, wall time includes yielding. Neither is a single-frame stall.
-      const job = chunkJob!;
-      const currentMs = performance.now() - job.sliceStart;
-      rebuildSamples.push({ frame: frameNo, elapsedMs: probeAt - rebuildProbeAt!, durationMs: job.cpuMs + currentMs, wallMs: performance.now() - startedAt, slices: job.slices, maxSliceMs: Math.max(job.maxSliceMs, currentMs), rigidCasters: rigid.length,
-        trainCasters: [...casters.keys()].filter(isCoasterTrain).length, trainMergedBefore, trainRigid: rigid.filter(c => isCoasterTrain(c.mesh)).length, chunks: chunks.length, update, addedNames });
+      if (!completedUpdate) return;
+      rebuildSamples.push({ frame: frameNo, elapsedMs: probeAt - rebuildProbeAt!, durationMs: job.cpuMs, wallMs: performance.now() - startedAt, slices: job.slices, maxSliceMs: job.maxSliceMs, phases: job.profile?.snapshot() ?? [], hullWorker: { ...hullWorker.stats }, rigidCasters: rigid.length,
+        trainCasters: [...casters.keys()].filter(isCoasterTrain).length, trainMergedBefore, trainRigid: rigid.filter(c => isCoasterTrain(c.mesh)).length, chunks: chunks.length, update: completedUpdate, addedNames });
     }
   };
-  chunkJob = { task: task(), valid, detach, cpuMs: 0, slices: 0, sliceStart: 0, maxSliceMs: 0 };
+  const job: ChunkJob = { task: task(), valid, detach, complete, cpuMs: 0, slices: 0, sliceStart: 0, maxSliceMs: 0, source: '', profile: probing ? new ShadowChunkStages() : null, hullWorker };
+  chunkJob = job;
 }
 
 /** World sphere of a non-instanced caster (guide: fixed body sphere around its root). */
@@ -1008,6 +1051,7 @@ function updateCascades(shadow: CascadeShadow, viewCamera: Camera | undefined) {
 function ensureSun(light: DirectionalLight, scene: Object3D) {
   if (controller !== light || chunkScene !== scene) {
     cancelChunks();
+    hullWorkerError = '';
     controller?.removeEventListener('removed', cancelChunks);
     light.addEventListener('removed', cancelChunks);
     chunkScene = scene;
