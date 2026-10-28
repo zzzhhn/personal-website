@@ -39,7 +39,7 @@ export function buildIbdStatic() {
     if (rotation) b.tr(at, rotation, () => cbox(b, [0, 0, 0], size, s, bevel)); else cbox(b, at, size, s, bevel);
     if (solid) solids.push({ at, size, ...(rotation ? { rotation } : {}) });
   };
-  const groundSurface = buildIbdArchitecture(b, cube);
+  const groundSurface = buildIbdArchitecture(b, cube, solids);
   buildIbdStores(b, cube, solids);
   buildIbdSite(b, cube);
   for (const x of [-20, -12]) for (const z of [-4, ...(x === -12 ? [-9] : [])]) {

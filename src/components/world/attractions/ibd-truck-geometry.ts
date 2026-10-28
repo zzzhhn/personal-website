@@ -9,8 +9,15 @@ const seam: Surf = { color: '#40575c', rough: .67, metal: .28 };
 /** Side-loading rigid truck. Its long axis follows the two real pallet bays (+Z).
  * West remains open all the way to the floor: no decorative sill crosses a ramp. */
 export function buildIbdTruck(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
-  cube([16, floor - .15, 12.5], [4, .3, 9], P.dark, true);
-  cube([18, 2.3, 12.5], [.2, 3.1, 9], P.green, true);
+  // Preserve the two original continuous collision envelopes. Three visible
+  // deck bays and smaller liner panels give the static light bake real samples
+  // between the distant corners, without adding coplanar overlay sheets.
+  solids.push({ at: [16, floor - .15, 12.5], size: [4, .3, 9] });
+  solids.push({ at: [18, 2.3, 12.5], size: [.2, 3.1, 9] });
+  for (const z of [9.5, 12.5, 15.5]) {
+    cube([16, floor - .15, z], [4, .3, 3], P.steel, false, 0);
+    for (let row = 0; row < 3; row++) cube([18.01, .75 + (row + .5) * 3.1 / 3, z], [.18, 3.1 / 3, 3], P.green, false, 0);
+  }
   cube([16, 3.9, 12.5], [4, .16, 9], P.green, true);
   for (const z of [8, 17]) cube([16, 2.3, z], [4, 3.1, .15], P.steel, true);
 
@@ -29,6 +36,13 @@ export function buildIbdTruck(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
     cube([18.105, 2.3, z], [.035, 2.85, .09], seam, false, 0);
     cube([18.13, .98, z], [.045, .09, .22], P.amber, false, .01);
   }
+  // Interior wear/lashing rails remain east of the loaded cargo envelope.
+  // The open west side, its ramps and the tyre/floor gap are untouched.
+  for (const y of [1.53, 2.75]) {
+    cube([17.945, y, 12.5], [.07, .14, 8.5], y < 2 ? P.timber : P.steel, false, 0);
+    for (let z = 8.8; z <= 16.3; z += 1.25) cube([17.904, y, z], [.012, .045, .2], P.dark, false, 0);
+  }
+  for (const z of [8.2, 11, 14, 16.8]) cube([17.945, 2.3, z], [.07, 2.85, .075], P.steel, false, 0);
   for (const x of [14.7, 17.3]) cube([x, .38, 14.3], [.23, .24, 13.5], P.dark);
   for (const z of [9.5, 14.5, 19.5]) cube([16, .47, z], [3.5, .18, .22], P.steel);
 

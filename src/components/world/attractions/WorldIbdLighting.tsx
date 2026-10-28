@@ -12,7 +12,7 @@ export default function WorldIbdLighting({ active, uniform }: { active: boolean;
   const lights = useRef<(PointLight | null)[]>([null, null]);
   const selection = useRef([-1, -1]);
   const previous = useRef([-1, -1]);
-  const last = useRef({ x: Infinity, z: Infinity, night: -1 });
+  const last = useRef({ x: Infinity, y: Infinity, z: Infinity, night: -1 });
   const shot = useWorldStore(s => s.shot);
   const shotTarget = useMemo(() => WORLD_SHOTS.find(view => view.id === shot)?.target, [shot]);
   useEffect(() => { if (!active) for (const light of lights.current) if (light) light.intensity = 0; }, [active]);
@@ -24,10 +24,11 @@ export default function WorldIbdLighting({ active, uniform }: { active: boolean;
     // Evidence cameras must sample the fixtures at the inspected object, just as
     // a player standing there does; the dormant spawn is often outside the shed.
     const focus = shotTarget ?? world.position;
-    const unchanged = last.current.x === focus[0] && last.current.z === focus[2] && last.current.night === night.value;
+    const unchanged = last.current.x === focus[0] && last.current.y === focus[1] && last.current.z === focus[2] && last.current.night === night.value;
     if ((world.paused || world.shot || world.poolInspect || world.card) && unchanged) return;
-    last.current.x = focus[0]; last.current.z = focus[2]; last.current.night = night.value;
-    nearestIbdFixtures(focus[0] - IBD_YARD.center[0], focus[2] - IBD_YARD.center[2], selection.current);
+    last.current.x = focus[0]; last.current.y = focus[1]; last.current.z = focus[2]; last.current.night = night.value;
+    nearestIbdFixtures(focus[0] - IBD_YARD.center[0], focus[2] - IBD_YARD.center[2], selection.current,
+      Math.max(.9, focus[1] - IBD_YARD.center[1]));
     for (let i = 0; i < 2; i++) {
       const light = lights.current[i], index = selection.current[i];
       if (!light) continue;
@@ -35,7 +36,7 @@ export default function WorldIbdLighting({ active, uniform }: { active: boolean;
       const fixture = IBD_FIXTURES[index];
       if (previous.current[i] !== index) { light.position.set(...fixture.at); light.intensity = 0; previous.current[i] = index; }
       light.distance = fixture.reach;
-      const target = night.value * (fixture.pendant ? 80 : 24) * fixture.power;
+      const target = night.value * (fixture.pendant || fixture.mount ? 80 : 24) * fixture.power;
       const frozen = world.paused || world.shot || world.poolInspect || world.card;
       light.intensity += (target - light.intensity) * (frozen ? 1 : 1 - Math.exp(-Math.min(delta, .05) * 12));
     }

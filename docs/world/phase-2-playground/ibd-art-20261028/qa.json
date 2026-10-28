@@ -1,0 +1,89 @@
+{
+  "baselineRevision": "43f9507",
+  "referenceVersion": "IBD v1; day/layout approved, night is lighting reference",
+  "baseline": {
+    "triangles": 37729,
+    "vertices": 72173,
+    "solids": 258,
+    "solidSha256": "fe75e95906d935d2e50d0587960c55d5e859f1591baaaef47332f705ae01be1c",
+    "groundSha256": "535fa52555311b9e4c6fe84e202df3ce1db58b04254f2b22d40b20cf1ad03a88",
+    "walkSha256": "489aae1ce87d2d44096aec3dc00dac7bfac88bec0120b9e8a64890104c659481",
+    "geometryBytes": 5649204
+  },
+  "current": {
+    "triangles": 44461,
+    "vertices": 83485,
+    "solids": 258,
+    "solidSha256": "fe75e95906d935d2e50d0587960c55d5e859f1591baaaef47332f705ae01be1c",
+    "groundSha256": "535fa52555311b9e4c6fe84e202df3ce1db58b04254f2b22d40b20cf1ad03a88",
+    "walkSha256": "489aae1ce87d2d44096aec3dc00dac7bfac88bec0120b9e8a64890104c659481",
+    "geometryBytes": 6544452,
+    "degenerateTriangles": 0
+  },
+  "unchangedPhysics": true,
+  "ownedSyntaxFiles": [
+    "WorldIbdLighting.tsx",
+    "ibd-truck-geometry.ts",
+    "ibd-yard-architecture.ts",
+    "ibd-yard-geometry.ts",
+    "ibd-yard-lighting.ts",
+    "ibd-yard-palette.ts",
+    "ibd-yard-site.ts"
+  ],
+  "sourceSha256": {
+    "WorldIbdLighting.tsx": "3480ba9dafe6b6c9aa728845ba1cba2813ffe16e97a3834d6bafa6b52070a954",
+    "ibd-truck-geometry.ts": "bf0490bb5e93ce03a97f58ef2871617acea616a8b3182b7ee42f84d0fd099720",
+    "ibd-yard-architecture.ts": "f83afd2a1d062b25c9eeef6c221ec18506809adf11993b17389b11a1b21d96b4",
+    "ibd-yard-geometry.ts": "a28d8f41196c23178956c78d6c2b87631cda7d627c99188d46a24896fc9cfb50",
+    "ibd-yard-lighting.ts": "114739dad1ed50318efe55c08abc81d568b6f33dd7899437e0aeb1c274a331dd",
+    "ibd-yard-palette.ts": "524b9f06ce9850594f019650531c75e363311c48efe3b61ed65c60968793719a",
+    "ibd-yard-site.ts": "2896407bf4d78adc848db4fc556cbd38e56030f555bb0bfab0c56b8d1584f2ef",
+    "ibd-yard-art.test.mjs": "f46aff6bd7f511da87b7a5917ce70a855573c3720054fd0b7ed5674caf892698"
+  },
+  "tests": {
+    "passed": 22,
+    "failed": 0,
+    "skipped": 0,
+    "command": "node --max-old-space-size=192 --import ./tools/world/alpha-mine-tests/register.mjs --test --test-concurrency=1 src/components/world/attractions/ibd-yard-art.test.mjs src/components/world/attractions/ibd-yard-geometry.test.mjs src/components/world/attractions/ibd-yard-lighting.test.mjs src/components/world/attractions/ibd-craft-geometry.test.mjs src/components/world/attractions/ibd-truck-layout.test.mjs"
+  },
+  "lighting": {
+    "authoredFixtures": 22,
+    "realTimeLights": 2,
+    "shadowMaps": 0,
+    "taskSamples": [
+      {
+        "at": [
+          -6,
+          1.2,
+          19
+        ],
+        "upwardWarmFill": 0.6037684887302115
+      },
+      {
+        "at": [
+          -3,
+          0.9,
+          26
+        ],
+        "upwardWarmFill": 0.8139070549602297
+      },
+      {
+        "at": [
+          10,
+          0.94,
+          -12
+        ],
+        "upwardWarmFill": 1.0918161637320125
+      },
+      {
+        "at": [
+          18,
+          0.94,
+          -12
+        ],
+        "upwardWarmFill": 0.5947826851641077
+      }
+    ]
+  },
+  "limits": "geometry, production collision tests, material shader patch contract and TypeScript syntax; no current rendered daylight/midnight, full build, human aesthetic acceptance or frame-time claim"
+}

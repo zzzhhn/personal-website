@@ -1,4 +1,4 @@
-import { ShapeUtils, Vector2 } from 'three';
+import { Euler, Quaternion, ShapeUtils, Vector2, Vector3 } from 'three';
 import { bar, lathe, type Builder, type V3 } from '../WorldStreetGeometry.ts';
 import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
 import { IBD_FIXTURES } from './ibd-yard-lighting.ts';
@@ -115,7 +115,31 @@ export function buildIbdSite(b: Builder, cube: IbdCube) {
   }
   for (const f of IBD_FIXTURES) {
     const [x, y, z] = f.at;
-    if (f.pendant) {
+    if (f.mount) {
+      if (f.mount === 'bench') {
+        // Clamped to the already-blocked rear edge of each desk, never a new
+        // floor-standing obstacle in front of the receiving/tool station.
+        const base = f.baseY!;
+        cube([x - .24, base + .025, z - .12], [.18, .05, .18], P.dark, false, 0);
+        bar(b, [x - .24, base, z - .12], [x - .24, y + .16, z - .12], .025, P.dark, 6);
+        bar(b, [x - .24, y + .16, z - .12], [x, y + .08, z], .025, P.steel, 6);
+      } else if (f.pendant) {
+        const shed = IBD_SHEDS.find(s => Math.abs(x - s.x) < s.width / 2 && Math.abs(z - s.z) < s.depth / 2)!;
+        const ceiling = shed.eave + shed.rise * (1 - Math.abs(x - shed.x) / (shed.width / 2)) - .3;
+        bar(b, [x, y + .08, z], [x, ceiling, z], .025, P.dark, 4);
+      }
+      const aim = f.aim!, q = new Quaternion().setFromUnitVectors(new Vector3(0, -1, 0),
+        new Vector3(aim[0] - x, aim[1] - y, aim[2] - z).normalize());
+      const e = new Euler().setFromQuaternion(q, 'YXZ'), rotation: V3 = [e.x, e.y, e.z];
+      b.tr(f.at, rotation, () => {
+        const truck = f.mount === 'truck', width = f.mount === 'bench' ? .48 : 1.2;
+        // Truck units sit flush under the unchanged ceiling: bottom 3.764m,
+        // leaving >.25m above the actual closed loaded pallet/lid envelope.
+        cube([0, 0, 0], [width, truck ? .05 : .14, .35], P.dark, false, 0);
+        cube([0, truck ? -.032 : -.083, 0], [width - .1, .018, .25], P.lens, false, 0);
+        for (const side of [-1, 1]) cube([side * (width / 2 - .025), 0, 0], [.05, truck ? .045 : .12, .37], P.cutSteel, false, 0);
+      });
+    } else if (f.pendant) {
       const shed = IBD_SHEDS.find(s => Math.abs(x - s.x) < s.width / 2 && Math.abs(z - s.z) < s.depth / 2)!;
       const ceiling = shed.eave + shed.rise * (1 - Math.abs(x - shed.x) / (shed.width / 2)) - .3;
       bar(b, [x, y, z], [x, ceiling, z], .035, P.dark, 4);
