@@ -5,7 +5,8 @@ import type { SunLightShadow } from 'three/examples/jsm/lights/SunLightShadow.js
 import { SHADOW_BUDGET, budgetZoneOf, type ShadowTier } from './WorldQuality';
 import { setQaRenderer, worldLightsFrame } from './WorldLights';
 import { sceneWorkProbe } from './world-scene-work';
-import { ShadowChunkBuilder, shadowChunkSourceKey } from './shadow-chunk-builder';
+import { shadowChunkSourceKey } from './shadow-chunk-builder';
+import { ShadowChunkCache, type ShadowChunkUpdate } from './shadow-chunk-cache';
 
 /**
  * Sun shadow (shadows v4.1, spec v3 §14.2): three FIXED-SIZE cascades plus per-pass caster culling.
@@ -223,12 +224,12 @@ proxyGroup.visible = false;
 proxyGroup.userData.shadowProxy = true;
 proxyGroup.matrixAutoUpdate = false; proxyGroup.matrixWorldAutoUpdate = false; // proxy matrices are set per pass
 let scanFrame = -1e9, frameNo = 0, inShadowRender = false;
-type RebuildSample = { frame: number; elapsedMs: number; durationMs: number; rigidCasters: number; trainCasters: number; trainMergedBefore: number; trainRigid: number; chunks: number };
+type RebuildSample = { frame: number; elapsedMs: number; durationMs: number; rigidCasters: number; trainCasters: number; trainMergedBefore: number; trainRigid: number; chunks: number; update: ShadowChunkUpdate; addedNames: string[] };
 let rebuildProbeAt: number | null = null;
 const rebuildSamples: RebuildSample[] = [];
 /** Explicit QA window only, bounded records and no timer or production sampling. */
 export const shadowRebuildProbe = {
-  start() { if (import.meta.env.DEV) { rebuildSamples.length = 0; rebuildProbeAt = performance.now(); } },
+  start() { if (import.meta.env?.DEV) { rebuildSamples.length = 0; rebuildProbeAt = performance.now(); } },
   stop() { rebuildProbeAt = null; return [...rebuildSamples]; },
 };
 const isCoasterTrain = (mesh: Object3D) => {
@@ -582,14 +583,11 @@ let chunkKey = '';
 /** Light-space cells per cascade (m). Spatial batches keep district-wide merged decks/buildings from
  * entering every nearby cascade; each chunk is culled by its actual light-space rectangle. */
 const CHUNK_CELL = [12, 20, 32] as const;
+const chunkCache = new ShadowChunkCache(CHUNK_CELL, LIGHT_RIGHT, LIGHT_UP);
+const chunkMeshes = new Map<string, Chunk>();
 const sideMaterials = new Map<number, Material>();
 const sideMaterial = (side: number) => { let m = sideMaterials.get(side); if (!m) { m = new MeshBasicMaterial({ side: side as 0 | 1 | 2 }); sideMaterials.set(side, m); } return m; };
-function makeChunkMesh(positions: number[], indices: number[], side: number, name: string) {
-  if (!indices.length) return null;
-  const g = new BufferGeometry();
-  g.setAttribute('position', new BufferAttribute(new Float32Array(positions), 3));
-  g.setIndex(indices);
-  g.computeBoundingSphere();
+function makeChunkMesh(g: BufferGeometry, side: number, name: string) {
   const m = new Mesh(g, sideMaterial(side));
   m.name = name; m.matrixAutoUpdate = false; m.matrixWorldAutoUpdate = false; m.matrixWorld.identity(); m.frustumCulled = false;
   m.castShadow = false; m.receiveShadow = false; m.userData.shadowProxy = true;
@@ -607,23 +605,26 @@ function rebuildChunks() {
       return !(x.alphaTest && (x.map || x.alphaMap)) && !x.displacementMap && !x.clippingPlanes?.length && x.side === mats[0].side && x.visible; });
   };
   const rigid = [...casters.values()].filter(c => c.cast && !c.animated && !c.dynamic && c.stable >= STABLE_SCANS && !c.fire?.match(/guide|vehicle/) && !c.mesh.customDepthMaterial && !c.root && plainDepth(c));
-  const key = rigid.map(c => shadowChunkSourceKey(c.mesh, c.sum)).join('|');
-  const probing = import.meta.env.DEV && rebuildProbeAt !== null && rebuildSamples.length < 16 && key !== chunkKey;
+  const sources = rigid.map(c => ({ id: c.mesh.uuid, version: `${shadowChunkSourceKey(c.mesh, c.sum)}:${budgetZoneOf(c.mesh)}` }));
+  const key = sources.map(s => s.version).join('|');
+  const probing = import.meta.env?.DEV && rebuildProbeAt !== null && rebuildSamples.length < 16 && key !== chunkKey;
   const trainMergedBefore = probing ? [...casters.values()].filter(c => c.merged && isCoasterTrain(c.mesh)).length : 0;
   for (const c of casters.values()) c.merged = false;
   for (const c of rigid) c.merged = true;
   if (key === chunkKey) return;
   const probeAt = probing ? performance.now() : null;
+  const addedNames = probing ? rigid.filter(c => !chunkCache.hasSource(c.mesh.uuid)).slice(0, 16).map(c => c.mesh.name || c.mesh.parent?.name || '(unnamed)') : [];
   const workToken = sceneWorkProbe.begin('shadow-chunks');
-  chunkKey = key;
-  for (const ch of chunks) { proxyGroup.remove(ch.mesh); ch.mesh.geometry.dispose(); }
-  const builder = new ShadowChunkBuilder(CHUNK_CELL, LIGHT_RIGHT, LIGHT_UP);
   const nearCascades = [0, 1] as const, allCascades = [0, 1, 2] as const, farCascade = [2] as const;
   // Budget attribution (QA): each merged chunk reports the zone that contributes most of its triangles.
   const top = (zones: Map<string, number>) => [...zones.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? 'other';
-  const v = new Vector3();
   const one = new Float32Array(4);
-  for (const c of rigid) {
+  const byId = new Map(rigid.map(c => [c.mesh.uuid, c]));
+  // A later stable/lazy cohort only contributes its new triangles. Existing
+  // chunk buffers are copied only in touched cells, never transformed/rebinned.
+  // Removals and source changes conservatively rebuild the complete set.
+  const update = chunkCache.update(sources, (id, builder) => {
+    const c = byId.get(id)!;
     const src = c.mesh as InstancedMesh, mat = Array.isArray(src.material) ? src.material[0] : src.material;
     // userData.shadowGeometry: an asset-supplied simplified shadow proxy (same local frame as the mesh).
     const g = (src.userData.shadowGeometry as BufferGeometry | undefined) ?? src.geometry, hull = farHull(g), side = mat.side, zone = budgetZoneOf(src);
@@ -636,26 +637,29 @@ function rebuildChunks() {
       builder.add(g, m4, includeFar && !hull ? allCascades : nearCascades, side, zone);
       if (includeFar && hull) builder.add(hull, m4, farCascade, side, zone);
     }
+  });
+  chunkKey = key;
+  for (const [key, chunk] of chunkMeshes) {
+    if (!chunkCache.chunks.has(key)) { proxyGroup.remove(chunk.mesh); chunkMeshes.delete(key); }
   }
-  chunks = [];
-  for (const [key, b] of builder.buckets) {
-    const mesh = makeChunkMesh(b.data[0], b.data[1], b.side, `sun-chunk-${key}`);
-    if (!mesh) continue;
-    mesh.userData.budgetZone = top(b.zones);
-    const lightBounds: Chunk['lightBounds'] = [Infinity, -Infinity, Infinity, -Infinity];
-    const pos = mesh.geometry.getAttribute('position');
-    for (let i = 0; i < pos.count; i++) {
-      v.fromBufferAttribute(pos, i);
-      const r = v.dot(LIGHT_RIGHT), u = v.dot(LIGHT_UP);
-      lightBounds[0] = Math.min(lightBounds[0], r); lightBounds[1] = Math.max(lightBounds[1], r);
-      lightBounds[2] = Math.min(lightBounds[2], u); lightBounds[3] = Math.max(lightBounds[3], u);
+  for (const [key, b] of chunkCache.chunks) {
+    let chunk = chunkMeshes.get(key);
+    if (chunk?.mesh.geometry === b.geometry) continue;
+    if (chunk) {
+      chunk.mesh.geometry = b.geometry;
+      chunk.sphere.copy(b.geometry.boundingSphere!); chunk.lightBounds = b.lightBounds;
+    } else {
+      const mesh = makeChunkMesh(b.geometry, b.side, `sun-chunk-${key}`);
+      chunk = { mesh, cascade: b.cascade, sphere: b.geometry.boundingSphere!.clone(), lightBounds: b.lightBounds };
+      chunkMeshes.set(key, chunk);
     }
-    chunks.push({ mesh, cascade: b.cascade, sphere: mesh.geometry.boundingSphere!.clone(), lightBounds });
+    chunk.mesh.userData.budgetZone = top(b.zones);
   }
+  chunks = [...chunkMeshes.values()];
   if (probeAt !== null) {
     const durationMs = performance.now() - probeAt;
     rebuildSamples.push({ frame: frameNo, elapsedMs: probeAt - rebuildProbeAt!, durationMs, rigidCasters: rigid.length,
-      trainCasters: [...casters.keys()].filter(isCoasterTrain).length, trainMergedBefore, trainRigid: rigid.filter(c => isCoasterTrain(c.mesh)).length, chunks: chunks.length });
+      trainCasters: [...casters.keys()].filter(isCoasterTrain).length, trainMergedBefore, trainRigid: rigid.filter(c => isCoasterTrain(c.mesh)).length, chunks: chunks.length, update, addedNames });
   }
   sceneWorkProbe.end(workToken);
 }
