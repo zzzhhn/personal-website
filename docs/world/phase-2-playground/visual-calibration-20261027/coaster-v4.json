@@ -46,9 +46,9 @@
     "扩大装置导致新常驻高成本渲染"
   ],
   "runtimeEvidence": {
-    "status": "integrated-production-candidate-validated",
+    "status": "integrated-playable-v15-promoted",
     "userVisualAcceptance": "pending",
-    "note": "v15 已在 4343 普通生产页完成真实角色登车、完整 114 秒回路及下车行走，并完成同机位日夜、实际结构净空和预算检查；4341 尚待推广。参考级地貌、植被及支撑细节仍未完成。",
+    "note": "v15 已在普通生产页完成真实角色登车、完整 114 秒回路及下车行走，并完成同机位日夜、实际结构净空和预算检查；同一构建已推广 4341，实际加载与 W 行走正常。参考级地貌、植被及支撑细节仍未完成。",
     "report": "docs/world/phase-2-playground/coaster-v4-integration.md"
   }
 }
