@@ -4,7 +4,8 @@ import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
 import { buildIbdArchitecture, buildIbdStores, type IbdSolid } from './ibd-yard-architecture.ts';
 import { buildIbdSite } from './ibd-yard-site.ts';
 import { bakeIbdLight } from './ibd-yard-lighting.ts';
-import { addDispatchTruckDetails, addInspectionTools, addWoundCoil, addYardControl } from './ibd-craft-geometry.ts';
+import { addInspectionTools, addWoundCoil, addYardControl } from './ibd-craft-geometry.ts';
+import { buildIbdTruck } from './ibd-truck-geometry.ts';
 export { IBD_MATERIALS } from './ibd-yard-palette.ts';
 export type { IbdSolid } from './ibd-yard-architecture.ts';
 function buildIbdWalkSurface(b: Builder) {
@@ -115,14 +116,7 @@ export function buildIbdStatic() {
     const kind = x === -6 ? 'crane' : x === -8 ? 'turn' : z === -12 ? 'scale' : x === 7 && z === 18 ? 'dispatch' : 'load';
     addYardControl(b, cube, x, z, kind);
   }
-  // Open truck body; side cutaway lets the player distinguish staged goods from loaded pallets.
-  cube([17, .75, 12.5], [8, .3, 9], P.dark, true);
-  cube([21, 2.3, 12.5], [.2, 3.1, 9], P.green, true);
-  cube([17, 3.9, 12.5], [8, .16, 9], P.green);
-  for (const z of [8, 17]) { cube([17, 2.3, z], [8, 3.1, .15], P.steel, true); }
-  cube([23, 1.55, 12.5], [3.5, 2.6, 3.8], P.green, true, .18);
-  addDispatchTruckDetails(b, cube);
-  for (const z of [10.5, 14.5]) cube([12.5, .45, z], [Math.hypot(3, .9), .14, 2.9], P.steel, true, 0, [0, 0, Math.atan2(.9, 3)]);
+  buildIbdTruck(b, cube, solids);
   // The quarantine dollies roll onto a marked floor bay. Raised rack feet used to clip the exchange path.
   for (const z of [-18.5, -14.5]) cube([15.5, .11, z], [15, .015, .14], P.rust, false, 0);
   for (const x of [8, 23]) cube([x, .11, -16.5], [.14, .015, 4], P.rust, false, 0);

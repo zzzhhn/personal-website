@@ -64,44 +64,6 @@ export function addInspectionTools(b: Builder) {
   for (let i = 0; i < 11; i++) cbox(b, [.21 + i * .043, .024, -.005], [.006, .003, i % 5 === 0 ? .05 : .026], winding);
 }
 
-/** Surface-mounted truck details. The open west side and both loading ramps remain clear. */
-export function addDispatchTruckDetails(b: Builder, cube: IbdCube) {
-  // Sill, crossmembers, bed seams and rear body rivets provide a readable layered construction.
-  for (const z of [8.18, 16.82]) {
-    cube([17, .47, z], [7.7, .19, .18], P.steel);
-    cube([17, .96, z], [7.8, .12, .16], P.amber);
-    for (let x = 13.5; x < 21; x += 1.1) {
-      cube([x, 2.3, z < 12 ? 7.905 : 17.095], [.09, 2.8, .04], P.dark);
-      for (const y of [1, 3.6]) cube([x, y, z < 12 ? 7.878 : 17.122], [.075, .075, .025], cutSteel);
-    }
-  }
-  for (let z = 8.5; z < 17; z += .65) cube([17, .907, z], [7.8, .014, .025], winding, false, 0);
-  for (const x of [14.5, 19]) cube([x, .37, 12.5], [.22, .24, 8.5], P.dark);
-  // Six wheels face across the vehicle rather than pointing along its travel direction.
-  for (const x of [14.5, 19, 23]) for (const side of [-1, 1]) {
-    const z = 12.5 + side * (x === 23 ? 1.73 : 4.12), radius = x === 23 ? .53 : .58;
-    b.tr([x, .6, z], [Math.PI / 2, 0, 0], () => {
-      lathe(b, [[0, -.21], [radius - .09, -.21], [radius, -.13], [radius, .13], [radius - .09, .21], [0, .21]], P.rubber, { sides: 20 });
-      for (const y of [-.216, .216]) lathe(b, [[0, y], [.31, y], [.34, y + .008], [0, y + .008]], P.steel, { sides: 16 });
-    });
-    for (let i = 0; i < 6; i++) cbox(b, [x + .2 * Math.cos(i * Math.PI / 3), .6 + .2 * Math.sin(i * Math.PI / 3), z + side * .23], [.052, .052, .03], P.dark, .008);
-  }
-  // Cab faces +x. Split the windshield with physical surrounds, wipers and a lower grille.
-  cube([24.761, 2.25, 12.5], [.018, 1.05, 3.12], P.dark, false, .005);
-  for (const side of [-1, 1]) {
-    cube([24.777, 2.29, 12.5 + side * .77], [.018, .81, 1.38], P.glass, false, .005);
-    bar(b, [24.796, 1.93, 12.5 + side * .15], [24.796, 2.14, 12.5 + side * 1.25], .016, P.dark, 6);
-    cube([23.05, 2.33, 12.5 + side * 1.91], [2.54, .94, .024], P.dark, false, .01);
-    cube([23.05, 2.36, 12.5 + side * 1.929], [2.28, .7, .018], P.glass, false, .005);
-    cube([22.2, 1.58, 12.5 + side * 1.94], [.25, .055, .045], cutSteel);
-    cube([24.78, 1.07, 12.5 + side * 1.36], [.04, .25, .44], P.pale, false, .02);
-    cube([21.4, .95, 12.5 + side * 1.9], [.22, .12, .13], P.amber);
-  }
-  cube([24.78, .63, 12.5], [.08, .25, 3.35], P.dark);
-  for (let y = .98; y <= 1.63; y += .13) cube([24.78, y, 12.5], [.035, .06, 1.9], winding, false, 0);
-  for (const z of [8.25, 16.75]) cube([13.05, .62, z], [.18, .24, .34], P.rust);
-}
-
 /** Task-specific controls share the existing protected base and physical reach anchors. */
 export function addYardControl(b: Builder, cube: IbdCube, x: number, z: number, kind: 'crane' | 'turn' | 'scale' | 'load' | 'dispatch') {
   cube([x, .6, z], [.8, 1.2, .7], P.dark, true);

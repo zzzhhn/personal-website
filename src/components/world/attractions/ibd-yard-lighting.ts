@@ -10,7 +10,7 @@ export const IBD_FIXTURES: readonly { at: V3; reach: number; power: number; pend
   { at: [23, 6.2, -11], reach: 14, power: 1.3, pendant: true },
   { at: [15, 6.2, -22], reach: 13, power: 1.2, pendant: true },
   { at: [8, 5.7, 9], reach: 14, power: 1.3, pendant: true },
-  { at: [22, 5.7, 21], reach: 14, power: 1.3, pendant: true },
+  { at: [18, 5.7, 24], reach: 14, power: 1.3, pendant: true },
   { at: [-27, 2.3, 5], reach: 10, power: .9 },
   { at: [-7, 2.3, 13], reach: 11, power: .9 },
   { at: [-6, 2.3, 25], reach: 11, power: 1 },

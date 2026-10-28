@@ -7,13 +7,13 @@ import { useWorldAudioSettings, setWorldAudioMuted, setWorldAudioVolume } from '
 
 class Context {
   static instances=[];
-  state='suspended';currentTime=0;destination={};nodes=[];params=[];closed=false;gate=null;
+  state='suspended';currentTime=0;destination={};nodes=[];params=[];closed=false;gate=null;decodes=0;
   constructor(){Context.instances.push(this);}
   param(){const p={value:1,held:[],ramps:[],targets:[],setTargetAtTime(value,time){this.targets.push({value,time});},cancelScheduledValues(){},cancelAndHoldAtTime(t){this.held.push(t);},linearRampToValueAtTime(value,time){this.ramps.push({value,time});},setValueAtTime(){},setValueCurveAtTime(){}};this.params.push(p);return p;}
   createGain(){return {gain:this.param(),connect(){},disconnect(){}};}
   createBiquadFilter(){return {frequency:this.param(),connect(){},disconnect(){}};}
   createBufferSource(){const n={buffer:null,loop:false,connect(){},disconnect(){},start(){n.started=true;},stop(){n.stopped=true;}};this.nodes.push(n);return n;}
-  async decodeAudioData(){return {duration:120,length:24000*120,numberOfChannels:2};}
+  async decodeAudioData(){this.decodes++;return {duration:120,length:24000*120,numberOfChannels:2};}
   async resume(){if(this.gate)await this.gate;if(!this.closed)this.state='running';}
   async suspend(){this.state='suspended';}
   async close(){this.closed=true;this.state='closed';}
@@ -48,6 +48,30 @@ test('a pending resume cannot revive audio after pause or release',async()=>{
   useWorldStore.setState({paused:false});useWorldStore.setState({paused:true});resume();await settle();
   assert.equal(audio.inspect().sources,0);assert.equal(ctx.state,'suspended');
   release();await settle();assert.equal(ctx.state,'closed');assert.ok(ctx.nodes.every(n=>!n.started||n.stopped));
+});
+test('small proximity changes across audibility stop and resume the real sources',async()=>{
+  const {audio,release}=fixture();await audio.enable();await settle();const ctx=Context.instances.at(-1);
+  try {
+    audio.proximity(69.88);await settle();assert.equal(audio.inspect().sources,1);
+    audio.proximity(70);await settle();
+    assert.equal(audio.inspect().sources,0);assert.equal(ctx.state,'suspended');
+    audio.proximity(69.94);await settle();
+    assert.equal(audio.inspect().sources,1);assert.equal(ctx.state,'running');
+    audio.proximity(69.99);await settle();
+    assert.equal(audio.inspect().sources,0);assert.equal(ctx.state,'suspended');
+  } finally {release();await settle();}
+});
+test('retry after one track fails reuses the successfully decoded deck',async()=>{
+  const {audio,release}=fixture(),requests=[];let failed=false;
+  globalThis.fetch=async url=>{requests.push(url);if(url.includes('disco-con-tutti')&&!failed){failed=true;return {ok:false};}return {ok:true,arrayBuffer:async()=>new ArrayBuffer(8)};};
+  try {
+    await audio.enable();await settle();const ctx=Context.instances.at(-1);
+    assert.equal(audio.read().phase,'error');assert.equal(audio.inspect().buffers,1);assert.equal(ctx.decodes,1);
+    await audio.enable();await settle();
+    assert.equal(audio.read().phase,'ready');assert.equal(audio.inspect().buffers,2);assert.equal(audio.inspect().sources,1);
+    assert.equal(requests.filter(url=>url.includes('backbay-lounge')).length,1);
+    assert.equal(requests.filter(url=>url.includes('disco-con-tutti')).length,2);assert.equal(ctx.decodes,2);
+  } finally {release();await settle();}
 });
 test('release during fetch cancels loading, shared ownership does not multiply contexts',async()=>{
   const {audio,release}=fixture();const second=audio.retain();let reply;

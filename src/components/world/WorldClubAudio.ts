@@ -8,6 +8,7 @@ export const CLUB_TRACKS = [
 ] as const;
 export const CLUB_BPM = 118;
 const LOOP_SECONDS = 64 * 60 / CLUB_BPM;
+const AUDIBLE_GAIN = .001;
 export function clubMixPlan(beat: number, from: 0 | 1) {
   const start = Math.ceil((beat + .15) / 4) * 4;
   return { from, to: (1 - from) as 0 | 1, start, fade: start + 4, end: start + 8 };
@@ -44,7 +45,7 @@ export class ClubAudio {
   subscribe = (fn: () => void) => { this.listeners.add(fn); return () => this.listeners.delete(fn); };
   read = () => this.snapshot;
   private publish(patch: Partial<Snapshot>) { this.snapshot = { ...this.snapshot, ...patch }; this.listeners.forEach(fn => fn()); }
-  private allowed() { const s = useWorldStore.getState(); return this.owners > 0 && !this.pageInactive && !document.hidden && !s.paused && !s.poolInspect && !s.shot && this.distance > .001 && !this.snapshot.muted && this.snapshot.volume > 0 && worldAudioLevel('music') > 0 && !this.blocked; }
+  private allowed() { const s = useWorldStore.getState(); return this.owners > 0 && !this.pageInactive && !document.hidden && !s.paused && !s.poolInspect && !s.shot && this.distance > AUDIBLE_GAIN && !this.snapshot.muted && this.snapshot.volume > 0 && worldAudioLevel('music') > 0 && !this.blocked; }
   private pageHide = (event: PageTransitionEvent) => { this.pageInactive = true; if (event.persisted) this.sync(); else this.dispose(); };
   private pageShow = () => { this.pageInactive = false; this.sync(); };
   retain() {
@@ -110,6 +111,7 @@ export class ClubAudio {
       try {
         // Sequential decoding keeps peak memory bounded; no whole-workstation worklets or stem models.
         for (let i = 0; i < CLUB_TRACKS.length; i++) {
+          if (decks[i].buffer) continue; // A retry only fetches the missing deck.
           const response = await fetch(CLUB_TRACKS[i].url, { signal: abort.signal }); if (!response.ok) throw new Error('track unavailable');
           const buffer = await ctx.decodeAudioData(await response.arrayBuffer());
           if (this.ctx !== ctx || abort.signal.aborted) return; decks[i].buffer = buffer;
@@ -129,7 +131,8 @@ export class ClubAudio {
   mute() { this.publish({ muted: !this.snapshot.muted }); this.sync(); }
   proximity(distance: number) {
     const gain = Math.max(0, Math.min(1, (70 - distance) / 40));
-    if (Math.abs(gain - this.distance) < .005) return;
+    const crossesAudibility = (gain > AUDIBLE_GAIN) !== (this.distance > AUDIBLE_GAIN);
+    if (!crossesAudibility && Math.abs(gain - this.distance) < .005) return;
     this.distance = gain; this.updateLevels(); this.sync();
   }
   private updateLevels() {

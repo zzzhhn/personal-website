@@ -50,7 +50,7 @@ function walk(world,start,velocity,steps=180) {
 }
 
 test('all 20 rollers and eight side bars reuse exact closed visual triangles without extra colliders',()=>{
-  assert.equal(data.solids.length,257);
+  assert.equal(data.solids.length,258); // Truck roof now stops a jumping player's head.
   // Near-field truck/control detail may evolve; the contact mesh must still reuse the exact bars.
   assert.ok(data.geometry.index.count/3 < 40000, 'static yard stays within its geometry allocation');
   assert.equal(rollerVertices.length/3,832);assert.equal(rollerIndices.length/3,720);
