@@ -1,5 +1,6 @@
 import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
+import { IBD_GEOMETRY_BUDGET } from './ibd-geometry-budget.ts';
 import RAPIER from '@dimforge/rapier3d-compat';
 import { Euler, Quaternion } from 'three';
 import { buildIbdStatic } from './ibd-yard-geometry.ts';
@@ -52,7 +53,7 @@ function walk(world,start,velocity,steps=180) {
 test('all 20 rollers and eight side bars reuse exact closed visual triangles without extra colliders',()=>{
   assert.equal(data.solids.length,258); // Truck roof now stops a jumping player's head.
   // Near-field truck/control detail may evolve; the contact mesh must still reuse the exact bars.
-  assert.ok(data.geometry.index.count/3 < 40000, 'static yard stays within its geometry allocation');
+  assert.ok(data.geometry.index.count/3 < IBD_GEOMETRY_BUDGET.static, 'static yard stays within its geometry allocation');
   assert.equal(rollerVertices.length/3,832);assert.equal(rollerIndices.length/3,720);
   const p=data.geometry.attributes.position,idx=data.geometry.index;
   const key=(a,b,c)=>[a,b,c].map(v=>v.join(',')).sort().join('|'),visual=new Set();

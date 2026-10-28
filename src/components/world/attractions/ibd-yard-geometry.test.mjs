@@ -1,5 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { IBD_GEOMETRY_BUDGET } from './ibd-geometry-budget.ts';
 import RAPIER from '@dimforge/rapier3d-compat';
 import { Euler, Quaternion } from 'three';
 import { buildIbdStatic, buildIbdCoil, buildIbdPack, buildIbdLid, buildIbdCrane, buildIbdHook, buildIbdCables, buildIbdShutter, buildIbdTools } from './ibd-yard-geometry.ts';
@@ -39,7 +40,7 @@ test('geometry is finite, bounded to the survey, and stays below the provisional
     assert.ok(g.index && g.getAttribute('color')); triangles += g.index.count / 3;
     assert.ok([...g.getAttribute('position').array].every(Number.isFinite)); g.dispose();
   }
-  assert.ok(triangles < 70000, `${triangles} triangles`);
+  assert.ok(triangles < IBD_GEOMETRY_BUDGET.representative, `${triangles} triangles`);
   const xs = IBD_FOOTPRINT.map(p => p[0] - IBD_YARD.center[0]), zs = IBD_FOOTPRINT.map(p => p[1] - IBD_YARD.center[2]);
   assert.ok(staticData.geometry.boundingBox.min.x >= Math.min(...xs) - .2 && staticData.geometry.boundingBox.max.x <= Math.max(...xs) + .2);
   assert.ok(staticData.geometry.boundingBox.min.z >= Math.min(...zs) - .2 && staticData.geometry.boundingBox.max.z <= Math.max(...zs) + .2);
