@@ -3,7 +3,7 @@ import { coasterFrame, coasterRidePose, coasterSupports, coasterWorld, COASTER_L
 import { bakeIntentNight } from './intent-lighting.ts';
 import { lightCoasterCliffs } from './coaster-landscape-lighting.ts';
 import { beddedRockColour, beddedRockHeight } from './coaster-rock-bedding.ts';
-import { createDropRock, dropSurfaceColours, DROP_ROCK_BEDS, type DropDetail } from './coaster-drop-landscape.ts';
+import { createDropRock, dropSurfaceColours, smoothDropGroundNormals, DROP_ROCK_BEDS, type DropDetail } from './coaster-drop-landscape.ts';
 import type { CoasterBatch } from './coaster-geometry.ts';
 import type { Vec3 } from '../types';
 
@@ -282,6 +282,7 @@ function bakeReliefSpill(g: BufferGeometry) {
 export function createCoasterTerrainRelief() {
   const vertices: number[] = [], indices: number[] = [], shades: (number | Color)[] = [];
   const dropVertexShades=new Map<number,Color>();
+  let dropGroundTriangles:[number,number]=[0,0];
   let shrubCount = 0;
   const dropSample={rocks:0,detailTriangles:0,savedApronTriangles:0};
   const formations: { id: string; firstTriangle: number; triangleCount: number; vertexStart: number; vertexCount: number; terrainTriangleCount?: number }[] = [];
@@ -428,6 +429,7 @@ export function createCoasterTerrainRelief() {
     const surface=drop?getDropGround().surface:clippedSurface(formation.outline,5,(x,z)=>thrillReliefHeight(formation,x,z));
     solidTop(surface.points,surface.faces,beddedRockColour,drop?dropSurfaceColours(surface.points,surface.faces):undefined);
     if(drop){
+      dropGroundTriangles=[firstTriangle,indices.length/3];
       dropSample.savedApronTriangles=surface.savedTopTriangles*2;
       getDropGround().rocks.forEach(detail);
     }
@@ -452,6 +454,7 @@ export function createCoasterTerrainRelief() {
   });
   const geometry = new BufferGeometry().setAttribute('position', new BufferAttribute(positions, 3)).setAttribute('color', new BufferAttribute(colors, 3));
   geometry.computeVertexNormals(); geometry.computeBoundingBox(); geometry.computeBoundingSphere();
+  smoothDropGroundNormals(geometry,collision.indices,...dropGroundTriangles);
   bakeIntentNight(geometry); lightCoasterCliffs(geometry); bakeReliefSpill(geometry);
   return { geometry, ...collision, formations, shrubCount, dropSample, triangleCount: indices.length / 3 };
 }

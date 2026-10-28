@@ -69,7 +69,7 @@ test('a representative bed has closed skewed scarps and a few low detached flake
   }
 });
 
-test('north material colours cross shared edges continuously while render normals retain facets',t=>{
+test('north material colours cross shared edges continuously while rock facets remain',t=>{
   const c=relief.geometry.attributes.color,n=relief.geometry.attributes.normal,seen=new Map();let shared=0,creased=0;
   for(let i=north.firstTriangle*3;i<(north.firstTriangle+north.triangleCount)*3;i++){
     const id=relief.indices[i],colour=[c.getX(i),c.getY(i),c.getZ(i)],normal=[n.getX(i),n.getY(i),n.getZ(i)],before=seen.get(id);
@@ -84,6 +84,30 @@ test('north material colours cross shared edges continuously while render normal
   const p=[[0,2,0],[4,2,0],[4,2,4],[0,2,4]],a=dropSurfaceColours(p,[[0,2,1],[0,3,2]]),b=dropSurfaceColours(p,[[0,3,1],[1,3,2]]);
   a.forEach((colour,i)=>assert.ok(colour.toArray().every((v,j)=>Math.abs(v-b[i].toArray()[j])<1e-10),'a different diagonal changed the mineral field'));
   t.diagnostic(JSON.stringify({sharedCorners:shared,facetedCorners:creased}));
+});
+
+test('gentle north ground shares continuous unit normals while steep cuts and rock beds stay flat',t=>{
+  const p=relief.geometry.attributes.position,n=relief.geometry.attributes.normal,night=relief.geometry.attributes.nightRadiance;
+  const rocksBegin=north.firstTriangle+north.triangleCount-relief.dropSample.detailTriangles,seen=new Map();
+  let shared=0,smoothedCorners=0,steepFaces=0,rockFaces=0;
+  for(let face=north.firstTriangle;face<north.firstTriangle+north.triangleCount;face++){
+    const at=face*3,points=[0,1,2].map(j=>new Vector3().fromBufferAttribute(p,at+j));
+    const flat=new Triangle(...points).getNormal(new Vector3());
+    const gentle=face<rocksBegin&&flat.y>=Math.SQRT1_2;
+    if(!gentle){if(face>=rocksBegin)rockFaces++;else if(flat.y>0)steepFaces++;}
+    for(let j=0;j<3;j++){
+      const v=new Vector3().fromBufferAttribute(n,at+j);
+      assert.ok(Math.abs(v.length()-1)<1e-6);
+      if(!gentle){assert.ok(v.distanceTo(flat)<1e-5,'a cliff or rock face was rounded');continue;}
+      assert.ok(v.y>=Math.SQRT1_2-1e-6,'ground normal no longer follows its gentle slopes');
+      if(v.distanceTo(flat)>.01)smoothedCorners++;
+      const id=relief.indices[at+j],value=[...v.toArray(),night.getX(at+j),night.getY(at+j),night.getZ(at+j)],before=seen.get(id);
+      if(before){assert.deepEqual(value,before,'ground normal or existing night response splits at a shared corner');shared++;}else seen.set(id,value);
+    }
+  }
+  assert.ok(shared>1000&&smoothedCorners>500&&steepFaces>20);
+  assert.equal(rockFaces,560);
+  t.diagnostic(JSON.stringify({sharedGentleCorners:shared,smoothedCorners,steepFaces,flatRockFaces:rockFaces}));
 });
 
 test('actual scarp contacts match visible surfaces and preserve both support aprons',t=>{

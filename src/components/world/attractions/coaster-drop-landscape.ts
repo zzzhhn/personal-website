@@ -1,12 +1,12 @@
-import { Color } from 'three';
+import { Color, type BufferGeometry } from 'three';
 import type { Vec3 } from '../types';
 
 type Sampler = (x: number, z: number) => number;
-/** Colours are indexed by shared vertex, independently of the flat render normals. */
+/** Rock colours are indexed by shared vertex, independently of their flat render normals. */
 export type DropDetail = { points: Vec3[]; faces: [number, number, number][]; colours: Color[]; kind: 'rock' };
 const mineral = new Color('#aaa48e'), weathered = new Color('#99977e'), earth = new Color('#92906a'), grass = new Color('#7c8957');
 
-/** Continuous local material field; render normals remain flat so rock facets still read.
+/** Continuous local material field, independent of the render normals.
  * Area-weighted slope prevents colour changes at arbitrary triangle diagonals. */
 export function dropSurfaceColours(points:Vec3[],faces:[number,number,number][],ground?:Sampler):Color[] {
   const normals=points.map(()=>[0,0,0]);
@@ -29,6 +29,31 @@ export function dropSurfaceColours(points:Vec3[],faces:[number,number,number][],
     const cover=ground?Math.max(ledge*(.4+patch*.2),foot*.78):Math.max(ledge*(.83+patch*.1),apron);
     return stone.lerp(soil,cover);
   });
+}
+
+/** Smooth only upward ground faces within 45 degrees of level. The caller excludes
+ * separate rock beds; steep scarps and buried closures keep their flat normals. */
+export function smoothDropGroundNormals(geometry:BufferGeometry,indices:Uint32Array,firstTriangle:number,lastTriangle:number) {
+  const position=geometry.getAttribute('position'),normal=geometry.getAttribute('normal');
+  const sums=new Map<number,Vec3>(),gentle:number[]=[];
+  for(let t=firstTriangle;t<lastTriangle;t++){
+    const at=t*3;
+    if(normal.getY(at)<Math.SQRT1_2)continue;
+    const ux=position.getX(at+1)-position.getX(at),uy=position.getY(at+1)-position.getY(at),uz=position.getZ(at+1)-position.getZ(at);
+    const vx=position.getX(at+2)-position.getX(at),vy=position.getY(at+2)-position.getY(at),vz=position.getZ(at+2)-position.getZ(at);
+    const areaNormal=[uy*vz-uz*vy,uz*vx-ux*vz,ux*vy-uy*vx];
+    gentle.push(at);
+    for(let j=0;j<3;j++){
+      const id=indices[at+j],sum:Vec3=sums.get(id)??[0,0,0];
+      for(let axis=0;axis<3;axis++)sum[axis]+=areaNormal[axis];
+      sums.set(id,sum);
+    }
+  }
+  for(const sum of sums.values()){
+    const length=Math.hypot(...sum);
+    for(let axis=0;axis<3;axis++)sum[axis]/=length;
+  }
+  for(const at of gentle)for(let j=0;j<3;j++)normal.setXYZ(at+j,...sums.get(indices[at+j])!);
 }
 
 /** A broken ridge behind the drop, with smaller debris at the foot of the same beds.
