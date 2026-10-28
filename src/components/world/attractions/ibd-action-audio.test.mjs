@@ -50,7 +50,8 @@ function fixture(t) {
   Object.defineProperty(globalThis, 'document', { configurable: true, value: doc });
   Audio.instances.length = 0;
   useWorldStore.setState({ ...useWorldStore.getInitialState(), paused: false, position: ibdWorld(ibdStation('manifest').at) });
-  useWorldAudioSettings.setState(useWorldAudioSettings.getInitialState(), true);
+  // Isolate IBD's finite SFX from the now-enabled roaming music gesture listener.
+  useWorldAudioSettings.setState({ ...useWorldAudioSettings.getInitialState(), musicVolume: 0 }, true);
   useIbdYardStore.setState({ game: createIbdYardGame(), active: true });
   const audio = new ParkAudio(), externalRelease = audio.retain();
   const service = new IbdActionAudio(audio), release = service.mount();

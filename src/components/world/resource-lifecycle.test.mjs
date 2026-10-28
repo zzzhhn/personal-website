@@ -39,6 +39,7 @@ class Audio extends Target {
   createBuffer() { return { getChannelData: () => new Float32Array(this.sampleRate) }; }
   createOscillator() { const n = new Node(); this.sources.push(n); return n; }
   createBufferSource() { return this.createOscillator(); }
+  async decodeAudioData() { return { duration: 36, length: 864000, numberOfChannels: 2 }; }
   change(state) { this.state = state; queueMicrotask(() => this.dispatchEvent(new Event('statechange'))); }
   resume() {
     this.resumes++;
@@ -51,14 +52,15 @@ class Audio extends Target {
 }
 const settle = () => new Promise(resolve => setImmediate(resolve));
 function env(t) {
-  const names = ['window', 'document', 'navigator', 'requestAnimationFrame', 'cancelAnimationFrame'];
+  const names = ['window', 'document', 'navigator', 'requestAnimationFrame', 'cancelAnimationFrame', 'fetch'];
   const descriptors = new Map(names.map(n => [n, Object.getOwnPropertyDescriptor(globalThis, n)]));
   const win = new Target(), doc = Object.assign(new Target(), { hidden: false });
   const intervals = new Map(), frames = new Map(), audios = [], stops = [];
   let id = 0, pads = [], reads = 0, denied = false, subscriptions = 0;
   const request = fn => { frames.set(++id, fn); return id; }, cancel = i => frames.delete(i);
   Object.assign(win, { AudioContext: Audio, setInterval: fn => { intervals.set(++id, fn); return id; }, clearInterval: i => intervals.delete(i) });
-  const values = { window: win, document: doc, navigator: { getGamepads: () => { reads++; if (denied) throw new Error('denied'); return pads; } }, requestAnimationFrame: request, cancelAnimationFrame: cancel };
+  const values = { window: win, document: doc, navigator: { getGamepads: () => { reads++; if (denied) throw new Error('denied'); return pads; } }, requestAnimationFrame: request, cancelAnimationFrame: cancel,
+    fetch: async () => ({ ok: true, arrayBuffer: async () => new ArrayBuffer(3456044) }) };
   for (const [name, value] of Object.entries(values)) Object.defineProperty(globalThis, name, { configurable: true, writable: true, value });
   Audio.instances.length = 0;
   useWorldStore.setState(useWorldStore.getInitialState(), true);
@@ -88,10 +90,10 @@ test('audio ownership: five start/unmount cycles release timers, graphs and list
   const e = env(t), a = e.audio();
   a.start(); assert.equal(Audio.instances.length, 0, 'no audio without a mounted owner');
   for (let i = 0; i < 5; i++) {
-    const release = a.retain(); assert.equal(e.subscriptions, 0, 'unused audio has no store subscription');
+    const release = a.retain(); assert.equal(e.subscriptions, 1, 'mounted music watches gestures and lifecycle without creating a context');
     a.start(); a.start(); const ctx = a.ctx;
-    assert.equal(e.intervals.size, 1); assert.equal(e.subscriptions, 1);
-    e.tick(); assert.ok(a.snapshot().voices > 0);
+    assert.equal(e.intervals.size, 0); assert.equal(e.subscriptions, 1);
+    await settle(); assert.equal(a.snapshot().roaming.sources, 1);
     release(); release(); await settle();
     assert.equal(a.started, false); assert.equal(a.ctx, null); assert.equal(ctx.state, 'closed');
     assert.equal(e.intervals.size, 0); assert.equal(e.subscriptions, 0); assert.equal(e.win.count + e.doc.count, 0);
@@ -101,22 +103,22 @@ test('audio ownership: five start/unmount cycles release timers, graphs and list
 });
 
 test('pause, hidden, mute and shot suspend audio without keeping the scheduler awake', async t => {
-  const e = env(t), a = e.audio(), release = a.retain(); a.start(); const ctx = a.ctx;
+  const e = env(t), a = e.audio(), release = a.retain(); a.start(); await settle(); const ctx = a.ctx;
   e.tick(); const ticks = a.snapshot().ticks;
   useWorldStore.setState({ paused: true }); await settle(); e.tick();
   assert.equal(e.intervals.size, 0); assert.equal(a.snapshot().ticks, ticks); assert.equal(ctx.state, 'suspended');
   useWorldStore.setState({ position: [1, 2, 3] }); assert.equal(ctx.suspends, 1, 'unrelated store writes do not suspend again');
-  useWorldStore.setState({ paused: false }); await settle(); assert.equal(e.intervals.size, 1);
+  useWorldStore.setState({ paused: false }); await settle(); assert.equal(a.snapshot().roaming.sources, 1);
   e.hidden(true); await settle(); assert.equal(e.intervals.size, 0);
-  e.hidden(false); await settle(); assert.equal(e.intervals.size, 1);
+  e.hidden(false); await settle(); assert.equal(a.snapshot().roaming.sources, 1);
   a.setMuted(true); await settle(); assert.equal(e.intervals.size, 0);
-  a.setMuted(false); await settle(); assert.equal(e.intervals.size, 1);
+  a.setMuted(false); await settle(); assert.equal(a.snapshot().roaming.sources, 1);
   useWorldStore.setState({ shot: 'camp' }); await settle(); assert.equal(e.intervals.size, 0);
-  useWorldStore.setState({ shot: null }); await settle(); assert.equal(e.intervals.size, 1);
+  useWorldStore.setState({ shot: null }); await settle(); assert.equal(a.snapshot().roaming.sources, 1);
   release();
 });
 
-test('a late resume cannot resurrect a disposed context or duplicate a newer timer', async t => {
+test('a late resume cannot resurrect a disposed context or duplicate a newer music source', async t => {
   const e = env(t), a = e.audio(), release = a.retain(); a.start(); const old = a.ctx;
   useWorldStore.setState({ paused: true }); await settle();
   old.holdResume = true;
@@ -124,7 +126,8 @@ test('a late resume cannot resurrect a disposed context or duplicate a newer tim
   useWorldStore.setState({ paused: true }); a.dispose();
   useWorldStore.setState({ paused: false }); a.start(); const current = a.ctx;
   old.finishResume(); await settle();
-  assert.notEqual(current, old); assert.equal(e.intervals.size, 1); assert.equal(a.ctx, current);
+  assert.notEqual(current, old); assert.equal(e.intervals.size, 0); assert.equal(a.ctx, current);
+  assert.equal(a.snapshot().roaming.sources, 1);
   assert.equal(e.subscriptions, 1); assert.equal(current.resumes, 0);
   release();
 });
@@ -139,26 +142,26 @@ test('pause wins over an in-flight resume; failed autoplay waits for a new gestu
   useWorldStore.setState({ paused: false }); await settle();
   const attempts = ctx.resumes; await settle();
   assert.equal(ctx.resumes, attempts); assert.equal(e.intervals.size, 0);
-  ctx.rejectResume = false; a.start(); await settle(); assert.equal(e.intervals.size, 1);
+  ctx.rejectResume = false; a.start(); await settle(); assert.equal(a.snapshot().roaming.sources, 1);
   release();
 });
 
 test('cached pagehide suspends and pageshow restores; normal departure disposes', async t => {
   const e = env(t), a = e.audio(), release = a.retain(); a.start(); const ctx = a.ctx;
   e.page('pagehide'); await settle(); assert.equal(e.intervals.size, 0); assert.equal(ctx.state, 'suspended');
-  e.page('pageshow'); await settle(); assert.equal(e.intervals.size, 1); assert.equal(a.ctx, ctx);
+  e.page('pageshow'); await settle(); assert.equal(a.snapshot().roaming.sources, 1); assert.equal(a.ctx, ctx);
   e.page('pagehide', false); await settle();
   assert.equal(a.ctx, null); assert.equal(ctx.state, 'closed'); assert.equal(e.subscriptions, 0); assert.equal(e.win.count + e.doc.count, 0);
   release(); const releaseAgain = a.retain(); a.start();
-  assert.notEqual(a.ctx, ctx); assert.equal(e.intervals.size, 1); releaseAgain();
+  await settle(); assert.notEqual(a.ctx, ctx); assert.equal(a.snapshot().roaming.sources, 1); releaseAgain();
 });
 
-test('ended voices disconnect and a long scheduler gap never synthesizes a backlog', t => {
+test('ended cues disconnect and a long gap never creates a synthesized music backlog', async t => {
   const e = env(t), a = e.audio(), release = a.retain(); a.start(); const ctx = a.ctx;
-  e.tick(); assert.ok(ctx.sources.length > 0);
-  ctx.sources.forEach(s => s.end()); assert.equal(a.snapshot().voices, 0);
+  await settle(); assert.equal(a.snapshot().roaming.sources, 1); a.cue('scan');
+  ctx.sources.at(-1).end(); assert.equal(a.snapshot().voices, 0);
   const before = ctx.sources.length; ctx.currentTime += 1000; e.tick();
-  assert.ok(ctx.sources.length - before < 20, 'one current step rather than thousands of overdue beats');
+  assert.equal(ctx.sources.length, before); assert.equal(e.intervals.size, 0);
   release();
 });
 
