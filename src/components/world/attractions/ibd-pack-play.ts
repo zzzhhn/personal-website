@@ -27,7 +27,10 @@ export function openIbdPack(pack: IbdSlot) {
   if (!pack.startsWith('parts') || !a.active || a.paused || a.hidden || a.driving || g.pending
     || !g.equipped || !g.core.opened.includes(id) || g.core.loaded.includes(id) || ibdInspectionBodyBusy()) return;
   if (ibdInspectionBody.carried && useIbdPackPlay.getState().pack!==pack) return;
-  useIbdPackPlay.setState({pack,feedback:'',round:g.round,itemId:id});
+  const view=useIbdPackPlay.getState(), slots=g.packInspections[id]?.slots;
+  const resume=view.itemId===id&&view.round===g.round&&!slots?.[view.selected].complete;
+  const selected=resume?view.selected:slots?.find(p=>!p.complete)?.index??0;
+  useIbdPackPlay.setState({pack,selected,feedback:'',round:g.round,itemId:id});
 }
 export function selectIbdPackPocket(index: IbdPackSlotIndex) {
   if (ibdInspectionBodyBusy() || ibdInspectionBody.carried || ibdPackVisual.progress>0 || index<0 || index>3) return;
@@ -111,7 +114,14 @@ export function tickIbdPackInspection(dt: number) {
     const busy=ibdPackWorkBusy();
     if(useIbdPackPlay.getState().busy!==busy)useIbdPackPlay.setState({busy});
     const latest=currentIbdPack();
-    if(!cancelRequested&&ibdPackVisual.progress===0&&latest?.inspection.slots.every(p=>p.complete))useIbdPackPlay.setState({pack:null});
+    // Keep the original pocket selected until both the hand and tray have cleared.
+    // A completed pocket must never leave an enabled primary action that does nothing.
+    if(!cancelRequested&&ibdPackVisual.progress===0&&latest){
+      const next=latest.inspection.slots.find(p=>!p.complete);
+      if(!next)useIbdPackPlay.setState({pack:null});
+      else if(latest.inspection.slots[latest.view.selected].complete)
+        useIbdPackPlay.setState({selected:next.index,feedback:''});
+    }
     if(cancelRequested){
       if(ibdInspectionBody.carried)requestIbdPackContact('return');
       else if(ibdPackVisual.progress===0){cancelRequested=false;useIbdPackPlay.setState({pack:null});}

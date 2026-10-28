@@ -19,7 +19,7 @@ export default function WorldIbdPackControls({zh}:{zh:boolean}) {
     {view.feedback==='clamp-misaligned'&&<p role="status">{t('夹爪还未贴合杆身，调节后再试。','The jaws do not fit the shaft yet. Adjust and try again.')}</p>}
     {view.feedback==='interrupted'&&<p role="status">{t('动作未完成，可重新操作。','The action was interrupted. Try again.')}</p>}
     {view.feedback==='move-closer'&&<p role="status">{t('再走近箱前一步后取样。','Step closer to the front of the carton before sampling.')}</p>}
-    <div className="ibd-actions"><button disabled={view.busy||c.inspection.slots.every(p=>p.complete)} onClick={()=>requestIbdPackContact()}>
+    <div className="ibd-actions"><button disabled={view.busy||(!held&&c.inspection.slots[view.selected].complete)} onClick={()=>requestIbdPackContact()}>
       {view.busy?t('操作中…','Working…'):held?measured?t('放回原槽','Return to pocket'):t('夹量','Gauge sample'):t('取出所选槽','Present selected pocket')}</button>
       <button className="ibd-secondary" onClick={()=>cancelIbdPack()}>{t('归位并退出','Put back and leave')}</button>
     </div>
