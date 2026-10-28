@@ -1,6 +1,7 @@
 import { Builder, bar, cbox, lathe, type Surf, type V3 } from '../WorldStreetGeometry.ts';
 import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
 import type { IbdCube, IbdSolid } from './ibd-yard-architecture.ts';
+import { IBD_TRUCK_FLOOR as floor } from './ibd-yard-layout.ts';
 
 const trim: Surf = { color: '#b8c2c2', rough: .57, metal: .38 };
 const seam: Surf = { color: '#40575c', rough: .67, metal: .28 };
@@ -8,21 +9,21 @@ const seam: Surf = { color: '#40575c', rough: .67, metal: .28 };
 /** Side-loading rigid truck. Its long axis follows the two real pallet bays (+Z).
  * West remains open all the way to the floor: no decorative sill crosses a ramp. */
 export function buildIbdTruck(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
-  cube([16, .75, 12.5], [4, .3, 9], P.dark, true);
+  cube([16, floor - .15, 12.5], [4, .3, 9], P.dark, true);
   cube([18, 2.3, 12.5], [.2, 3.1, 9], P.green, true);
   cube([16, 3.9, 12.5], [4, .16, 9], P.green, true);
   for (const z of [8, 17]) cube([16, 2.3, z], [4, 3.1, .15], P.steel, true);
 
   // Body framing stays at the ends and east wall; the opening has no middle post.
   for (const z of [8.15, 16.85]) {
-    cube([16, .49, z], [3.8, .19, .18], P.steel);
-    cube([16, .98, z], [3.9, .12, .16], P.amber);
+    cube([16, floor - .41, z], [3.8, .19, .18], P.steel);
+    cube([16, floor + .08, z], [3.9, .12, .16], P.amber);
     for (const x of [14.18, 15.1, 16, 16.9, 17.82]) {
       cube([x, 2.3, z < 12 ? 7.905 : 17.095], [.08, 2.8, .035], seam, false, 0);
       for (const y of [1.05, 3.6]) cube([x, y, z < 12 ? 7.879 : 17.121], [.06, .06, .02], trim, false, 0);
     }
   }
-  for (let z = 8.5; z < 17; z += .65) cube([16, .907, z], [3.8, .014, .025], seam, false, 0);
+  for (let z = 8.5; z < 17; z += .65) cube([16, floor + .007, z], [3.8, .014, .025], seam, false, 0);
   for (const x of [14.12, 17.88]) cube([x, 3.8, 12.5], [.15, .15, 8.8], trim);
   for (const z of [8.2, 12.5, 16.8]) {
     cube([18.105, 2.3, z], [.035, 2.85, .09], seam, false, 0);
@@ -84,5 +85,5 @@ export function buildIbdTruck(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
     });
     for (let i = 0; i < 6; i++) cbox(b, [x + side * .25, .6 + .2 * Math.sin(i * Math.PI / 3), z + .2 * Math.cos(i * Math.PI / 3)], [.025, .05, .05], seam, .005);
   }
-  for (const z of [10.5, 14.5]) cube([12.5, .45, z], [Math.hypot(3, .9), .14, 2.9], P.steel, true, 0, [0, 0, Math.atan2(.9, 3)]);
+  for (const z of [10.5, 14.5]) cube([12.5, floor / 2, z], [Math.hypot(3, floor), .14, 2.9], P.steel, true, 0, [0, 0, Math.atan2(floor, 3)]);
 }

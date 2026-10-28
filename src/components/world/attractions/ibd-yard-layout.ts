@@ -45,7 +45,10 @@ export const IBD_CARGO_HOME: Record<IbdSlot, Vec3> = {
   'coil-front': [-12, 2.35, -4], 'coil-rear': [-12, 2.35, -9],
   'parts-a': [10, 1.1, -12], 'parts-b': [18, 1.1, -12],
 };
-export const IBD_TRUCK: Partial<Record<IbdSlot, Vec3>> = { 'parts-a': [16, 2, 10.5], 'parts-b': [16, 2, 14.5] };
+export const IBD_TRUCK_FLOOR = 1.2;
+export const IBD_TRUCK: Partial<Record<IbdSlot, Vec3>> = {
+  'parts-a': [16, IBD_TRUCK_FLOOR + 1.1, 10.5], 'parts-b': [16, IBD_TRUCK_FLOOR + 1.1, 14.5],
+};
 export const IBD_MOVED_COIL: Vec3 = [-20, 2.35, -4];
 export const IBD_GALLERY_HEIGHT = 4;
 /** Ends at the south edge of a 3.8 m-deep landing; one welded collision shell covers the whole gallery. */

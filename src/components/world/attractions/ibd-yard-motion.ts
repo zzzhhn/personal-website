@@ -17,7 +17,7 @@ export function ibdCargoRoutes(game: IbdYardGame, slot: IbdSlot): IbdCargoRoute[
   if (action?.slot !== slot) return [];
   if (action.kind === 'load' || action.kind === 'unload') {
     const truck = IBD_TRUCK[slot]!, lane = slot === 'parts-b' ? 6 : 10.5;
-    const points: Vec3[] = [home, [home[0], 1.1, -2], [home[0], 1.1, 2], [lane, 1.1, 2], [lane, 1.1, truck[2]], [10.5, 1.1, truck[2]], [14, 2, truck[2]], truck];
+    const points: Vec3[] = [home, [home[0], 1.1, -2], [home[0], 1.1, 2], [lane, 1.1, 2], [lane, 1.1, truck[2]], [10.5, 1.1, truck[2]], [14, truck[1], truck[2]], truck];
     return [{ start: 0, end: 1, points: action.kind === 'unload' ? points.reverse() : points }];
   }
   if (action.kind === 'replace') {
