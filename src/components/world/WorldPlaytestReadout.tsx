@@ -1,5 +1,6 @@
 import { useWorldStore } from './store';
 import { roundEquity } from './alpha-exchange-round';
+import { exchangeReview } from './alpha-exchange-review';
 import { readDrivingTelemetry } from './vehicle-telemetry';
 import { grassDebug } from './WorldGrass';
 import { mineActor } from './alpha-mine-state';
@@ -65,12 +66,19 @@ export default function WorldPlaytestReadout() {
           action:a?{kind:a.kind,phase:a.phase,elapsed:a.elapsed,committed:a.committed,anchor:a.anchor}:null,
           sockets:ibdInspectionVisualSockets,inspection:c?.inspection??g.packInspections[id],proofs:g.core.proofs[id],loaded:g.core.loaded}}));}}>QA · 读取逐槽接触</button>
         <button onClick={()=>{const p=exchangeWorld([...EXCHANGE_PLAY_STATIONS.archive.stand]);worldActorDebug.teleportPlayer([p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]+.5]);useWorldStore.setState({paused:false,seat:null,clubMode:null});}}>QA · 到交易所档案台</button>
+        <button onClick={()=>{const s=useExchangePlay.getState(),v=exchangeReview(s.round,s.reviewIndex);setRenderSnapshot({exchangeReview:{index:s.reviewIndex,phase:s.round?.phase,
+          intervals:s.round?.choices.length,contact:s.lastContact,contacts:s.contacts,carried:exchangeBody.carried,
+          selection:v?{from:v.from,through:v.through,units:v.units,pnl:v.pnl,previousPnl:v.previousPnl,difference:v.difference,marks:v.marks.length,previousMarks:v.previous?.length??0}:null}});}}>QA · 读取回廊复盘</button>
         <button onClick={()=>{const s=useExchangePlay.getState(),r=s.round,a=exchangeBody.action;setRenderSnapshot({exchange:{phase:r?.phase??s.notice,checkpoint:r?.checkpoint??0,day:r?.day??0,target:r?.targetUnits??0,units:r?.units??0,contacts:s.contacts,lastContact:s.lastContact,carried:exchangeBody.carried,ticketReturned:s.ticketReturned,error:s.error,actor:exchangeActor,action:a?{kind:a.kind,phase:a.phase,elapsed:a.elapsed,target:a.anchor.target}:null,sockets:exchangeVisualSockets,receipt:r?.receipt?{equity:r.receipt.finalEquity,pnl:r.receipt.pnl,choices:r.receipt.choices.length}:null}});}}>QA · 读取交易所接触</button>
         {[IBD_YARD,INTENT_COASTER].map(site=><button key={site.title.en} onClick={()=>{
           const p=site.entrance;worldActorDebug.teleportPlayer([p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]]);
           useWorldStore.setState({paused:false,clubMode:null,seat:null});
         }}>QA · 到{site.title.zh}</button>)}
         <details><summary>QA · 设施操作点</summary>
+          {(['desk','bell','clearing','review'] as const).map(id=><button key={`exchange-${id}`} onClick={()=>{
+            const p=exchangeWorld([...EXCHANGE_PLAY_STATIONS[id].stand]);worldActorDebug.teleportPlayer([p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]+.25]);
+            useWorldStore.setState({paused:false,seat:null,clubMode:null});
+          }}>QA · 到交易所 {id}</button>)}
           {[3.5, 32.5, 79.5, 99.3, 110.7].map(second=><button key={`hold-${second}`} disabled={attractionRide.transition?.phase!=='riding'} onClick={()=>{
             if(attractionRide.transition?.phase!=='riding')return;
             Object.assign(intentRideQaHold,{second,revision:attractionRide.revision});

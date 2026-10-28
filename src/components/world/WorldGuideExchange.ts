@@ -103,28 +103,33 @@ export class GuideExchangeLayer {
     const lateral = Z.clone().applyQuaternion(rootRotation);
     // Only the spine and arms are modified. Pelvis, knees, solved soles and root remain untouched.
     for (const bone of this.spine) this.rotateWorld(bone, new Quaternion().setFromAxisAngle(lateral, -lean / this.spine.length));
-    const rest = carried ? CARRY : REST, right = this.frame(rest);
+    // Keep the receipt in the right hand during review. Use the nearer hand at
+    // the position rail so left detents do not require a cross-body overreach.
+    const leftContact = performing?.kind === 'review' || performing?.kind === 'adjust'
+      && this.scene.worldToLocal(new Vector3(...performing.anchor.target)).z < -.04;
+    const rest = carried ? CARRY : REST, right = this.frame(rest), left = this.frame([.20 + reach * .035, 1.00, -.24]);
+    const active = leftContact ? left : right;
     if (performing) {
-      right.lerp(new Vector3(...performing.anchor.target), reach);
+      active.lerp(new Vector3(...performing.anchor.target), reach);
       const arc = Math.sin(Math.PI * clamp(t / performing.contactAt));
       if (t < performing.contactAt) {
-        if (performing.kind === 'ring') right.y += .15 * arc;
-        else if (performing.kind === 'adjust') right.add(Z.clone().applyQuaternion(rootRotation).multiplyScalar(-.07 * arc));
-        else right.y += .035 * arc;
+        if (performing.kind === 'ring') active.y += .15 * arc;
+        else if (performing.kind === 'adjust') active.add(Z.clone().applyQuaternion(rootRotation).multiplyScalar(-.07 * arc));
+        else active.y += .035 * arc;
       }
     }
     const palmRotation = rootRotation.clone().multiply(new Quaternion().setFromAxisAngle(Z,
       performing?.kind === 'insert' ? -1.25 * reach : -.85 * reach));
-    this.solveArm(this.arms.right, right, palmRotation);
+    this.solveArm(this.arms.right, right, leftContact ? rootRotation : palmRotation);
     // The free hand counters the reach without moving the lower body or pretending to touch the device.
-    this.solveArm(this.arms.left, this.frame([.20 + reach * .035, 1.00, -.24]),
+    this.solveArm(this.arms.left, left, leftContact ? palmRotation :
       rootRotation.clone().multiply(new Quaternion().setFromAxisAngle(Y, -.12 * reach)));
     this.scene.updateWorldMatrix(true, true);
     this.sockets.rightHand = tuple(this.arms.right.palm.getWorldPosition(new Vector3()));
     this.sockets.leftHand = tuple(this.arms.left.palm.getWorldPosition(new Vector3()));
     this.sockets.valid = this.sockets.rightHand.every(Number.isFinite) && this.sockets.leftHand.every(Number.isFinite);
     this.sockets.sampledId = performing?.id ?? null; this.sockets.sampledElapsed = performing?.elapsed ?? 0;
-    if (performing) this.sockets.contactError = new Vector3(...this.sockets.rightHand).distanceTo(new Vector3(...performing.anchor.target));
+    if (performing) this.sockets.contactError = new Vector3(...(leftContact ? this.sockets.leftHand : this.sockets.rightHand)).distanceTo(new Vector3(...performing.anchor.target));
     // Ownership changes at confirmed contact in the motion module, never at a visual timestamp.
     this.paper.visible = carried !== null;
     this.paper.name = carried === 'receipt' ? 'exchange-carried-receipt' : 'exchange-carried-paper';

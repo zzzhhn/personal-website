@@ -5,6 +5,7 @@ import { readFileSync } from 'node:fs';
 import { Bone, Group, Matrix4, PropertyBinding, Vector3 } from 'three';
 import { GuideExchangeLayer } from './WorldGuideExchange.ts';
 import { PLAYER_CENTER_HEIGHT } from './actor-physics.ts';
+import { exchangePlayAnchor } from './alpha-exchange-play.ts';
 import { advanceExchangeBodyAction, beginExchangeBodyAction, cancelExchangeBodyAction, exchangeActor, exchangeBody,
   exchangeVisualSockets } from './alpha-exchange-motion.ts';
 function rig() {
@@ -97,4 +98,25 @@ test('actual sampled G24 palm drives the motion contact gate through pickup and 
     assert.equal(exchangeBody.carried,kind==='pickup'?'ticket':null);
   }
   assert.equal(commits,2); layer.dispose(); cancelExchangeBodyAction();
+});
+
+test('gallery selector is reachable by the real left palm while the receipt stays in the right hand',()=>{
+  const anchor=exchangePlayAnchor('review'),scene=rig();scene.position.fromArray(anchor.stand);scene.rotation.y=anchor.yaw;scene.updateWorldMatrix(true,true);
+  const layer=new GuideExchangeLayer(scene),a={...action('review'),anchor};
+  const result=layer.apply(a,'receipt');assert.ok(result.contactError<.1,`left contact ${result.contactError}`);
+  assert.ok(distance(result.leftHand,anchor.target)<.1);assert.ok(distance(result.rightHand,anchor.target)>.2);
+  assert.equal(layer.paper.parent,layer.arms.right.palm);assert.equal(layer.paper.visible,true);
+  cancelExchangeBodyAction();exchangeBody.carried='receipt';Object.assign(exchangeActor,{position:[anchor.stand[0],anchor.stand[1]+PLAYER_CENTER_HEIGHT,anchor.stand[2]],yaw:anchor.yaw,grounded:true,available:true});
+  let committed=0;assert.ok(beginExchangeBodyAction('review',anchor,()=>{committed++;}));
+  for(let i=0;i<120&&exchangeBody.action;i++){Object.assign(exchangeVisualSockets,layer.apply(exchangeBody.action,exchangeBody.carried));advanceExchangeBodyAction(1/60);}
+  assert.equal(committed,1);assert.equal(exchangeBody.action,null);assert.equal(exchangeBody.carried,'receipt');layer.dispose();cancelExchangeBodyAction();exchangeBody.carried=null;
+});
+
+test('every position detent stays reachable at the observed controller settling offset',()=>{
+  for(const units of [0,10,20,30,40,50]){
+    const anchor=exchangePlayAnchor('desk',units),scene=rig();
+    scene.position.set(anchor.stand[0]+.016,anchor.stand[1],anchor.stand[2]+.022);scene.rotation.y=anchor.yaw;scene.updateWorldMatrix(true,true);
+    const layer=new GuideExchangeLayer(scene),result=layer.apply({...action('adjust'),anchor},null);
+    assert.ok(result.contactError<.1,`${units} units: ${result.contactError}`);layer.dispose();
+  }
 });

@@ -22,7 +22,7 @@ export function exchangePlayInstruction(state: ExchangePlayState, zh: boolean): 
     selecting: t('点选铜轨档位；选定后靠近票槽按 E 封单。', 'Click a brass detent. At the slot, press E to seal.'),
     sealed: t('前往大钟下拉铃，推进一段历史。', 'Pull the bell under the clock to advance one historical interval.'),
     clearing: t('去清算室压印并领取回执。', 'Visit clearing to stamp and collect the receipt.'),
-    complete: t('本轮完成；回档案台重演，与上一轮对照。', 'Replay at the archive and compare with this run.'),
+    complete: t('上回廊拨动复盘台；回档案室可重演。', 'Review upstairs at the gallery selector. Replay at the archive.'),
   })[r.phase];
 }
 function Station({ id }: { id: ExchangePlayStationId }) {
@@ -30,7 +30,10 @@ function Station({ id }: { id: ExchangePlayStationId }) {
   const label = id === 'archive' ? state.loading ? ['历史读取中', 'Loading history']
     : state.notice === 'error' ? ['重试读取历史', 'Retry historical data'] : r?.phase === 'complete' ? ['取票重演同一时段', 'Take a ticket to replay'] : ['领取历史时段票', 'Take historical ticket']
     : id === 'desk' ? r?.phase === 'ticket' ? ['插入时段票', 'Insert the ticket'] : ['封存当前仓位，送往开市钟', 'Seal the selected position']
-    : id === 'bell' ? ['拉铃，推进历史', 'Pull bell to advance history'] : ['压印并领取清算回执', 'Stamp and collect receipt'];
+    : id === 'bell' ? ['拉铃，推进历史', 'Pull bell to advance history'] : id === 'review'
+    ? [state.reviewIndex === null ? '拨动复盘台，查看第一段选择' : state.reviewIndex + 1 < (r?.choices.length ?? 0) ? '拨动复盘台，查看下一段' : '拨回复盘台，查看市场总览',
+      state.reviewIndex === null ? 'Turn selector: review first interval' : state.reviewIndex + 1 < (r?.choices.length ?? 0) ? 'Turn selector: next interval' : 'Turn selector: market overview']
+    : ['压印并领取清算回执', 'Stamp and collect receipt'];
   const s = S[id];
   useInteractable({ id: `alpha-exchange-${id}`, kind: 'exhibit', position: exchangeWorld([...s.stand]), radius: 1.05,
     label: { zh: label[0], en: label[1] }, enabled: () => canRequestExchangePlay(id), onInteract: () => { void requestExchangePlay(id); } });
@@ -93,7 +96,11 @@ export default function WorldAlphaExchangePlay({ brass, paperFace }: { brass: Me
     if (rope.current) { const top = P.bell.clapperPivot[1]; rope.current.position.y = (top + pullY) / 2; rope.current.scale.y = top - pullY; }
   });
   return <group name="alpha-exchange-play-props">
-    {(['archive','desk','bell','clearing'] as const).map(id => <Station key={id} id={id}/>)}
+    {(['archive','desk','bell','clearing','review'] as const).map(id => <Station key={id} id={id}/>)}
+    <group name="exchange-review-selector" position={P.review.selector} rotation={[0,(state.reviewIndex ?? -1)*Math.PI/2,0]}>
+      <mesh material={brass}><cylinderGeometry args={[.14,.17,.05,12]}/></mesh>
+      <mesh material={parts.ink} position={[0,.04,.035]}><boxGeometry args={[.035,.045,.2]}/></mesh>
+    </group>
     <mesh ref={ticket} name="exchange-archive-ticket" geometry={parts.ticket} material={parts.paper} position={P.archive.ticketRest}>
       <mesh geometry={parts.ticketFace} material={paperFace}/></mesh>
     <mesh ref={receipt} name="exchange-clearing-receipt" geometry={parts.receipt} material={parts.paper} position={P.clearing.receiptRest} visible={false}>

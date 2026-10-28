@@ -11,6 +11,8 @@ import { useInteractable } from './WorldInteract';
 import { useWorldStore } from './store';
 import { useExchangePlay, releaseExchangePlay } from './alpha-exchange-play';
 import { roundEquity } from './alpha-exchange-round';
+import { exchangePreviousMarks, exchangeReview } from './alpha-exchange-review';
+import { drawExchangeReview } from './alpha-exchange-review-display';
 import { useAlphaExchange } from './alpha-exchange-state';
 import { ALPHA_EXCHANGE_ORIGIN, EXCHANGE_HALL, exchangeWorld } from './alpha-exchange-layout';
 import { EXCHANGE_PLAY_STATIONS as S, EXCHANGE_SECOND_DESK } from './alpha-exchange-play-layout';
@@ -58,7 +60,9 @@ export default function WorldAlphaExchange({ projectId }: { projectId?: string }
     };
   }, []);
   useEffect(() => {
-    const c = atlas.canvas.getContext('2d')!, r = state.round, row = r?.history[r.day], previous = r?.previousRun;
+    const c = atlas.canvas.getContext('2d')!, r = state.round, row = r?.history[r.day];
+    const previous = r ? exchangePreviousMarks(r,r.equityTrace.filter(mark=>mark.day===r.day))?.[0] : null;
+    const review = exchangeReview(r,state.reviewIndex);
     const source = useAlphaExchange.getState(), ticketHistory = r?.history ?? (source.phase === 'open' ? source.history : []);
     const t = (cn: string, en: string) => zh ? cn : en;
     const font = (size: number, heading = false) => `${heading ? 600 : 500} ${size}px ${heading ? 'Georgia,"Songti SC",serif' : '"Avenir Next","PingFang SC",sans-serif'}`;
@@ -83,16 +87,17 @@ export default function WorldAlphaExchange({ projectId }: { projectId?: string }
       if (r.receipt) text(`${t('清算回执','RECEIPT')}  ${r.receipt.pnl >= 0 ? '+' : ''}${money(r.receipt.pnl)}  (${r.receipt.returnPct.toFixed(2)}%)`,28,258,20,'#d9c98f');
     }
     text(t('来源：Alpha Agent API 历史 SPY 基准。虚拟积分，无真实下单，不计手续费或滑点。','SOURCE: ALPHA AGENT API SPY BENCHMARK. VIRTUAL POINTS; NO REAL ORDERS; FEES / SLIPPAGE EXCLUDED.'),28,280,13,'#91a295');
+    if(review)drawExchangeReview(c,review,zh);
     panel(0,300,1024,112,'#d7ccb9'); c.fillStyle = '#354d43'; c.font = font(58,true); c.textAlign = 'center'; c.fillText('ALPHA AGENT',512,363);
     text(t('历史中的一次选择','A DECISION THROUGH HISTORY'),512,397,23,'#354d43'); c.textAlign = 'left';
     panel(0,432,512,160); text(t('本轮仓位','THIS RUN'),18,462,25,'#ccb88b',470);
     text(`${t('目标','TARGET')} ${r?.targetUnits ?? 0} / 50`,18,502,31,'#f0e5cf',470);
     text(r?.phase === 'selecting' ? t('点铜轨选档，E 封单','CLICK DETENT; E TO SEAL') : exchangePlayInstruction(state,zh),18,540,19,'#d7ccb9',470);
     text(t('拨杆：Q 切换，E 操作','NUDGES: Q TO CHOOSE, E TO USE'),18,576,16,'#91a295',470);
-    panel(512,432,512,160); text(t('上一轮 · 同一时段','PREVIOUS RUN · SAME HISTORY'),530,462,23,'#ccb88b',470);
-    text(previous ? `${t('终值','FINAL')} ${money(previous.finalEquity)}` : t('完成首轮后留下对照','FINISH A RUN TO LEAVE A COMPARISON'),530,505,previous ? 30 : 20,'#eadfc5',470);
-    text(previous ? `${previous.startDate} → ${previous.endDate}` : t('回执保留完整选择与轨迹','RECEIPTS KEEP EVERY CHOICE AND EQUITY MARK'),530,542,18,'#91a295',470);
-    if (previous) text(`${t('盈亏','P/L')} ${money(previous.pnl)}    ${previous.returnPct.toFixed(2)}%`,530,577,21,'#d9c98f',470);
+    panel(512,432,512,160); text(t('上一轮 · 同一日期','PREVIOUS RUN · SAME DATE'),530,462,23,'#ccb88b',470);
+    text(previous ? `${t('权益','EQUITY')} ${money(previous.equity)}` : t('完成首轮后留下对照','FINISH A RUN TO LEAVE A COMPARISON'),530,505,previous ? 30 : 20,'#eadfc5',470);
+    text(previous ? previous.date : t('上回廊，逐段复盘自己的选择','REVIEW EACH CHOICE AT THE UPPER GALLERY'),530,542,18,'#91a295',470);
+    if (previous) text(`${t('本轮差额','EQUITY DIFFERENCE')} ${money(roundEquity(r!)-previous.equity)}`,530,577,21,'#d9c98f',470);
     panel(0,608,512,128,'#eadfc2');
     text('ALPHA API · SPY HISTORY',20,640,27,'#354d43',470);
     text(ticketHistory.length ? `${ticketHistory[0].date} → ${ticketHistory.at(-1)!.date}` : t('先按 E 读取真实历史','E: LOAD VALIDATED HISTORY'),20,675,22,'#544736',470);
@@ -111,7 +116,7 @@ export default function WorldAlphaExchange({ projectId }: { projectId?: string }
     text(t('历史 SPY · 不计费用或滑点','SPY HISTORY · NO FEES / SLIPPAGE'),274,984,16,'#544736',345);
     panel(640,752,384,128); text(t('清算室','CLEARING'),656,790,30,'#ccb88b',350);
     text(r?.phase === 'clearing' ? t('按 E 压印并取回执','E: STAMP AND COLLECT') : r?.phase === 'complete'
-      ? t('回执已领取，可回档案重演','RECEIPT COLLECTED; REPLAY AT ARCHIVE') : t('推进完本轮历史后领取','COLLECT AFTER THE LAST INTERVAL'),656,836,17,'#eadfc5',350);
+      ? t('带回执上回廊，拨台复盘','TAKE RECEIPT UPSTAIRS TO REVIEW') : t('推进完本轮历史后领取','COLLECT AFTER THE LAST INTERVAL'),656,836,17,'#eadfc5',350);
     panel(640,896,384,112,'#d7ccb9'); c.textAlign = 'center';
     [0,10,20,30,40,50].forEach((units,i) => text(String(units),672+i*64,963,34,'#354d43',60));
     panel(0,752,256,256,'#e6dccb'); c.strokeStyle = '#867041'; c.lineWidth = 4;
@@ -131,6 +136,7 @@ export default function WorldAlphaExchange({ projectId }: { projectId?: string }
       equity:r ? roundEquity(r) : 10000, choices:r?.choices ?? [], traceLength:r?.equityTrace.length ?? 0,
       receipt:r?.receipt ? { pnl:r.receipt.pnl, finalEquity:r.receipt.finalEquity, choices:r.receipt.choices.length } : null,
       previousRun:r?.previousRun ? { pnl:r.previousRun.pnl, finalEquity:r.previousRun.finalEquity } : null,
+      reviewIndex:s.reviewIndex,
       contacts:s.contacts, ticketReturned:s.ticketReturned, error:s.error }; } };
     const host=window as unknown as { __worldExchange?: typeof api }; host.__worldExchange=api;
     return () => { if (host.__worldExchange===api) delete host.__worldExchange; };

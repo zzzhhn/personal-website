@@ -94,3 +94,20 @@ test('production adapter blocks paused and distant requests, then commits throug
   assert.equal(useExchangePlay.getState().round.phase,'ticket');assert.equal(exchangeBody.carried,'ticket');
   assert.equal(useExchangePlay.getState().contacts,1);assert.equal(exchangeBody.action,null);releaseExchangePlay();
 });
+
+test('gallery selector is contact-gated, cycles only completed intervals and preserves accounting and the held receipt',async()=>{
+  const f=fixture();assert.equal(f.play.request('review'),false);await start(f);f.play.request('desk');f.commit();
+  assert.equal(f.play.request('review'),false);
+  for(let i=0;i<3;i++){f.play.request('desk');f.commit();f.play.request('bell');f.commit();}
+  f.play.request('clearing');f.commit();const round=f.play.store.getState().round;
+  assert.equal(f.carried,'receipt');
+  f.near(false);assert.equal(f.play.request('review'),false);f.near(true);
+  for(const index of [0,1,2,null]){
+    const before=f.play.store.getState().reviewIndex;assert.equal(f.play.request('review'),true);const pending=f.action;
+    assert.equal(f.play.store.getState().reviewIndex,before);f.commit();assert.equal(pending.contact(),false);
+    assert.equal(f.play.store.getState().reviewIndex,index);assert.equal(f.play.store.getState().round,round);assert.equal(f.carried,'receipt');
+  }
+  f.play.request('review');const stale=f.action;f.play.cancel();assert.equal(stale.contact(),false);assert.equal(f.play.store.getState().reviewIndex,null);
+  f.play.request('review');f.commit();assert.equal(f.play.store.getState().reviewIndex,0);
+  await f.play.request('archive');f.commit();assert.equal(f.play.store.getState().reviewIndex,null);assert.equal(f.play.request('review'),false);
+});

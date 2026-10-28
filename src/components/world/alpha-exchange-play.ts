@@ -15,6 +15,7 @@ export type ExchangePlayNotice = 'archive' | 'loading' | 'history-ready' | 'erro
 export interface ExchangePlayState {
   round: ExchangeRound | null; ticketReturned: boolean; loading: boolean; notice: ExchangePlayNotice;
   error: string | null; contacts: number; lastContact: ExchangeActionKind | null;
+  reviewIndex: number | null;
 }
 interface HistoryState { phase: string; history: ExchangeDay[]; error: string | null }
 interface PlayDependencies {
@@ -29,13 +30,14 @@ interface PlayDependencies {
 /** The scene owns requests; only the motion contact callback commits a round transition. */
 export function createExchangePlayController(deps: PlayDependencies) {
   const store = create<ExchangePlayState>(() => ({ round: null, ticketReturned: false, loading: false,
-    notice: 'archive', error: null, contacts: 0, lastContact: null }));
+    notice: 'archive', error: null, contacts: 0, lastContact: null, reviewIndex: null }));
   let generation = 0;
   const allowed = (station: ExchangePlayStationId) => {
     const state = store.getState(), round = state.round;
     if (state.loading || deps.busy?.()) return false;
     if (station === 'archive') return !round || round.phase === 'complete' || round.phase === 'ticket' && state.ticketReturned;
     if (!round) return false;
+    if (station === 'review') return round.choices.length > 0;
     if (station === 'desk') return round.phase === 'selecting' || round.phase === 'ticket' && !state.ticketReturned && deps.carried() === 'ticket';
     return station === 'bell' ? round.phase === 'sealed' : round.phase === 'clearing';
   };
@@ -49,7 +51,14 @@ export function createExchangePlayController(deps: PlayDependencies) {
     return deps.begin(kind, anchor, () => {
       const live = store.getState();
       if (generation !== requestGeneration || live.round !== round || live.round?.phase !== phase
-        || live.ticketReturned !== before.ticketReturned || !deps.reachable(anchor)) return false;
+        || live.contacts !== before.contacts || live.ticketReturned !== before.ticketReturned || !deps.reachable(anchor)) return false;
+      if (kind === 'review') {
+        if (!round?.choices.length || live.reviewIndex !== before.reviewIndex) return false;
+        const index = (live.reviewIndex ?? -1) + 1;
+        store.setState({ reviewIndex: index < round.choices.length ? index : null,
+          contacts: live.contacts + 1, lastContact: kind, notice: 'contact' });
+        return true;
+      }
       let next: ExchangeRound;
       if (kind === 'pickup') {
         if (round?.phase === 'complete') next = reduceExchangeRound(round, { type: 'replay' });
@@ -65,7 +74,7 @@ export function createExchangePlayController(deps: PlayDependencies) {
         next = reduceExchangeRound(round, kind === 'adjust' ? { type: 'target', units: units! } : { type: kind });
         if (next === round) return false;
       }
-      store.setState({ round: next, ticketReturned: false, notice: 'contact', error: null,
+      store.setState({ round: next, ticketReturned: false, notice: 'contact', error: null, reviewIndex: null,
         contacts: live.contacts + 1, lastContact: kind });
       return true;
     }, () => {
@@ -96,7 +105,7 @@ export function createExchangePlayController(deps: PlayDependencies) {
     if (station === 'archive') return archive();
     if (!canRequest(station)) return false;
     return contact(station === 'desk' ? store.getState().round?.phase === 'ticket' ? 'insert' : 'seal'
-      : station === 'bell' ? 'ring' : 'collect', station);
+      : station === 'bell' ? 'ring' : station === 'review' ? 'review' : 'collect', station);
   }
   function adjust(units: number) {
     const round = store.getState().round;

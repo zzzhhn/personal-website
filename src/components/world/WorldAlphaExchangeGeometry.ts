@@ -233,6 +233,12 @@ export function buildAlphaExchangeGeometry() {
   for(const x of [11.28,12.12])box([x,1.52,-25.9],[.045,.12,.43],'#b8975a','visual');
   box([12.82,1.44,-26.52],[.38,.24,.43],'#293f37');
   box([12.82,1.57,-26.52],[.42,.04,.48],'#b8975a');
+  // A shallow gallery console leaves the through-route clear. Its selector uses the same contact anchor.
+  const review=EXCHANGE_PLAY_PROPS.review;
+  box([-3,5.65,-39.04],[1.24,.9,.48],'#5a4634');
+  box(review.counter,review.counterSize,'#9a7952');
+  box([-3,6.235,-39.04],[1.32,.025,.53],'#b8975a','visual');
+  for(let i=0;i<4;i++)box([-3.42+i*.28,6.255,-39.15],[.055,.018,.13],'#354d43','visual');
   // Clock, board and floor bell form the rear focal axis. Dynamic bell/striker use the exported pivots.
   add(new CylinderGeometry(1.65,1.65,.3,48),'#b19254',EXCHANGE_HALL.clock,[-Math.PI/2,0,0]);
   add(new TorusGeometry(1.57,.12,8,48),'#c7a86b',[0,EXCHANGE_HALL.clock[1],EXCHANGE_HALL.clock[2]+.26]);

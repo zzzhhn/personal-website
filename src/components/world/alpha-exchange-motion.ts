@@ -1,7 +1,7 @@
 import { PLAYER_CENTER_HEIGHT } from './actor-physics.ts';
 import type { Vec3 } from './types.ts';
 
-export type ExchangeActionKind = 'pickup' | 'insert' | 'adjust' | 'seal' | 'ring' | 'collect';
+export type ExchangeActionKind = 'pickup' | 'insert' | 'adjust' | 'seal' | 'ring' | 'collect' | 'review';
 export type ExchangeCarried = 'ticket' | 'receipt' | null;
 export interface ExchangeAnchor { stand: Vec3; yaw: number; target: Vec3 }
 export interface ExchangeBodyAction {
@@ -22,7 +22,7 @@ export const EXCHANGE_CONTACT_TOLERANCE = .1;
 export const EXCHANGE_STAND_TOLERANCE = .07;
 export const EXCHANGE_YAW_TOLERANCE = .12;
 const TIMING: Record<ExchangeActionKind, [number, number]> = {
-  pickup: [1.05, .52], insert: [1.15, .58], adjust: [1.2, .62], seal: [.9, .42], ring: [1.1, .5], collect: [1.05, .52],
+  pickup: [1.05, .52], insert: [1.15, .58], adjust: [1.2, .62], seal: [.9, .42], ring: [1.1, .5], collect: [1.05, .52], review: [1.1, .55],
 };
 let sequence = 0;
 let callbacks: { id: number; contact: () => boolean | void; cancel?: () => void } | null = null;

@@ -149,6 +149,7 @@ export const EXCHANGE_WALK_PATHS: Vec3[][] = [
   [[-9.4,.45,-16],[-11.7,.45,-16],[...EXCHANGE_PLAY_STATIONS.archive.stand]],
   [[9.4,.45,-23],[11.7,.45,-23],[...EXCHANGE_PLAY_STATIONS.clearing.stand]],
   [[0,.45,-31],[...EXCHANGE_PLAY_STATIONS.bell.stand]],
+  [[-11.7,5.2,-37.6],[-3,5.2,-37.6],[...EXCHANGE_PLAY_STATIONS.review.stand],[-3,5.2,-37.6],[11.7,5.2,-37.6]],
   EXCHANGE_PIT_REAR_ROUTE,
   [[-11.9,.45,-7.25],[-15.7,.45,-7.25],[-15.7,.45,-8],[-15.7,5.2,-30],[-15.7,5.2,-30.8],[-11.7,5.2,-30.8],[-11.7,5.2,-37.6],[11.7,5.2,-37.6],[11.7,5.2,-18]],
   ...EXCHANGE_OUTER_ROUTES,
