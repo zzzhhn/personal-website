@@ -99,7 +99,7 @@ export function ibdGuideRoute(game: IbdYardGame, step = ibdGuideStep(game)): Vec
 export function ibdGuideReturnRoute(game: IbdYardGame, step = ibdGuideStep(game)): Vec3[] {
   if (step.action.slot !== 'coil-rear') return [];
   const at = (x: number, z: number): Vec3 => [x, .13, z];
-  if (step.action.kind === 'scan' || step.action.kind === 'rear') return [at(-8, -8), at(-8, 1), at(-12, 1)];
+  if (step.action.kind === 'scan' || step.action.kind === 'rear') return [at(-8, -8), at(-7, -8), at(-7, 1), at(-12, 1)];
   if (step.action.kind === 'turn') return [at(-12, -6.7), at(-12, 1), at(-7, 1)];
   return [];
 }

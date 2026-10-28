@@ -107,12 +107,20 @@ test('rear-coil approach and return cues use the south opening and keep turn ins
     assert.match(step.hint.zh, /南端开口/); assert.match(step.hint.en, /south opening/);
     const pending = requestIbdYardAction(game, step.action, actor(game, step.action.station));
     assert.deepEqual(ibdGuideStep(pending).hint, step.hint, 'the same approach/retreat instruction remains during the operation');
-    assert.ok(path[1][2] > 0 && path[2][2] > 0, 'cross the guard line only beyond its open south end');
-    assert.ok(path[0][2] < path[1][2], 'first return south instead of walking sideways through the guard');
+    for (let i = 1; i < path.length; i++) {
+      const a = path[i - 1], b = path[i];
+      if ((a[0] + 9.5) * (b[0] + 9.5) <= 0)
+        assert.ok(a[2] > 0 && b[2] > 0, 'cross the guard line only beyond its open south end');
+    }
+    assert.ok(path.at(-1)[2] > path[0][2], 'return south before crossing the guard');
     if (kind === 'turn') {
       assert.match(step.hint.zh, /操作台外侧/); assert.match(step.hint.en, /outer side/);
       assert.ok(path[0][0] < -9.5 && path.at(-1)[0] > -9.5);
-    } else assert.ok(path[0][0] > -9.5 && path.at(-1)[0] < -9.5);
+    } else {
+      assert.ok(path[0][0] > -9.5 && path.at(-1)[0] < -9.5);
+      assert.deepEqual(path.slice(0, 3).map(p => [p[0], p[2]]), [[-8, -8], [-7, -8], [-7, 1]],
+        'move east of both control pedestals before walking south');
+    }
     game = act(game, step.action);
     if (kind === 'turn') assert.match(ibdGuideResult(game).zh, /南端开口/);
   }
