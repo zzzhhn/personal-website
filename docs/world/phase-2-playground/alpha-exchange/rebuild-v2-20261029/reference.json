@@ -23,6 +23,16 @@
       "role": "concept-sheet",
       "path": "docs/world/phase-2-playground/alpha-exchange/rebuild-v2-20261029/exchange-concept-v2.png",
       "sha256": "17d2cd89482277d8b64f3d62adbc570e6b49123414778f0cb7e852b7c9a099f7"
+    },
+    {
+      "role": "day",
+      "path": "docs/world/phase-2-playground/alpha-exchange/rebuild-v2-20261029/exchange-day-v2.png",
+      "sha256": "d353423f9e3f1e157d55c18c1c5085dc7f55298a83af797ff8ff780ad77b3f9b"
+    },
+    {
+      "role": "night",
+      "path": "docs/world/phase-2-playground/alpha-exchange/rebuild-v2-20261029/exchange-night-v2.png",
+      "sha256": "875f6c5d36d2fc7a677019bae9acfb7102419277ed5750d237ad12657c606145"
     }
   ],
   "reviewViews": [
@@ -43,10 +53,12 @@
     "method": "native imagegen",
     "prompt": "prompt.txt",
     "styleCorrection": "style-calibration-prompt.txt",
-    "dayNightStatus": "Overview and alternate-angle blue-hour inset; not a frozen-camera pair. Generate matched views after direction approval and before implementation."
+    "dayNightStatus": "Matching-camera day and midnight edits derived from the approved concept. Illumination implementation references, not separate user acceptance or engine renders."
   },
   "runtimeEvidence": {
-    "status": "proposal-only",
-    "note": "No exchange runtime files changed. Images do not establish collision, animation or performance acceptance."
-  }
+    "status": "implemented-v25-primary-verified",
+    "report": "docs/world/phase-2-playground/goal-integration-v25-20261029.md",
+    "note": "Primary reviewed actual same-camera day/night renders, a complete keyboard-played historical round, replay, and bidirectional production entrance traversal. Generated images remain reference material; user acceptance of the implemented scene is pending."
+  },
+  "nightScope": "保持已批准建筑和布局的日夜照明实施参考，未声称用户已独立验收运行画面。"
 }

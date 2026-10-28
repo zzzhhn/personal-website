@@ -1,144 +1,157 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { TrimeshCollider, RigidBody } from '@react-three/rapier';
-import { CanvasTexture, CircleGeometry, Group, LatheGeometry, MeshStandardMaterial, PlaneGeometry, SRGBColorSpace, Vector2 } from 'three';
+import { CanvasTexture, CircleGeometry, MeshStandardMaterial, PlaneGeometry, SRGBColorSpace } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { parkMaterial } from './WorldParkKit';
 import { buildAlphaExchangeGeometry } from './WorldAlphaExchangeGeometry';
+import WorldAlphaExchangePlay, { exchangePlayInstruction } from './WorldAlphaExchangePlay';
 import { night } from './WorldNight';
 import { useInteractable } from './WorldInteract';
 import { useWorldStore } from './store';
-import { parkAudio } from './WorldParkAudio';
-import { actExchange, exchangeEquity, releaseExchange, ringExchange, useAlphaExchange, type ExchangeMessage } from './alpha-exchange-state';
-import { EXCHANGE_INITIAL_POINTS } from './alpha-exchange-data';
-import { ALPHA_EXCHANGE_ORIGIN, EXCHANGE_HALL, EXCHANGE_STATIONS, exchangeWorld } from './alpha-exchange-layout';
+import { useExchangePlay, releaseExchangePlay } from './alpha-exchange-play';
+import { roundEquity } from './alpha-exchange-round';
+import { useAlphaExchange } from './alpha-exchange-state';
+import { ALPHA_EXCHANGE_ORIGIN, EXCHANGE_HALL, exchangeWorld } from './alpha-exchange-layout';
+import { EXCHANGE_PLAY_STATIONS as S, EXCHANGE_SECOND_DESK } from './alpha-exchange-play-layout';
 import type { Vec3 } from './types';
 export { ALPHA_EXCHANGE_ORIGIN, ALPHA_EXCHANGE_FOOTPRINT, ALPHA_EXCHANGE_APPROACH, ALPHA_EXCHANGE_APPROACH_WIDTH } from './alpha-exchange-layout';
 
-const LABELS = {
-  buy:{zh:'买入 10 份',en:'BUY 10 UNITS'},sell:{zh:'卖出 10 份',en:'SELL 10 UNITS'},
-  next:{zh:'推进一个交易日',en:'NEXT TRADING DAY'},reset:{zh:'重开这段历史',en:'RESET REPLAY'},
-};
-const MESSAGES:Record<ExchangeMessage,[string,string]>={
-  'ring-first':['敲响入口铜钟，开启历史交易日。','Ring the brass bell to open the historical floor.'],
-  loading:['正在读取真实历史净值……','Loading the real historical benchmark…'],
-  opened:['用虚拟点数买入份额，再向前走一个交易日。','Buy virtual units, then advance one historical trading day.'],
-  bought:['已按这一天的净值买入 10 份。','Bought 10 units at this historical NAV.'],
-  sold:['已按这一天的净值卖出 10 份。','Sold 10 units at this historical NAV.'],
-  'next-day':['新的一天。看看你持有的份额发生了什么。','A new historical day. See what happened to your holding.'],
-  insufficient:['虚拟点数不足。可以卖出，或重开。','Not enough virtual points. Sell units or reset.'],
-  'position-limit':['沙盘最多持有 50 份，没有杠杆。','The sandbox holds at most 50 units, without leverage.'],
-  'no-shares':['还没有可卖出的份额。先去买入席。','No units to sell. Visit the buy desk first.'],
-  'last-day':['已到真实历史序列末日。可以卖出或重开。','The historical series is complete. Sell or reset to play again.'],
-  reset:['虚拟点数和持仓已重置；仍使用同一段真实历史。','Points and positions reset; the same real history stays loaded.'],
-  error:['历史暂时不可用。再次敲钟可重试，不会生成替代行情。','History is unavailable. Ring again to retry; no substitute prices are generated.'],
-};
-const money=(n:number)=>n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
-
-function texturePlane(width:number,height:number,position:Vec3,rect:[number,number,number,number],circle=false,yaw=0) {
-  const g=circle?new CircleGeometry(width/2,32):new PlaneGeometry(width,height),uv=g.getAttribute('uv');
-  const [x,y,w,h]=rect;
-  for(let i=0;i<uv.count;i++){uv.setXY(i,(x+uv.getX(i)*w)/1024,1-(y+(1-uv.getY(i))*h)/1024);}
-  g.rotateY(yaw);g.translate(...position);return g;
+const money = (n: number) => n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+function texturePlane(width: number, height: number, position: Vec3, rect: number[], circle = false, pitch = 0) {
+  const g = circle ? new CircleGeometry(width / 2, 32) : new PlaneGeometry(width, height), uv = g.getAttribute('uv');
+  const [x,y,w,h] = rect;
+  for (let i = 0; i < uv.count; i++) uv.setXY(i, (x + uv.getX(i) * w) / 1024, 1 - (y + (1 - uv.getY(i)) * h) / 1024);
+  g.rotateX(pitch); g.translate(...position); return g;
 }
-
-function ExchangeInput({projectId}:{projectId?:string}) {
-  const phase=useAlphaExchange(s=>s.phase);
-  useInteractable(projectId?{id:'alpha-exchange-project',kind:'board',position:exchangeWorld(EXCHANGE_HALL.project),radius:1.8,
-    label:{zh:'Alpha Agent · 项目与数据',en:'Alpha Agent · project & data'},
-    onInteract:()=>useWorldStore.setState({card:{kind:'project',id:projectId}})}:null);
-  useInteractable({id:'alpha-exchange-bell',kind:'exhibit',position:exchangeWorld(EXCHANGE_HALL.bell),radius:1.65,
-    label:phase==='loading'?{zh:'历史净值读取中',en:'Historical benchmark loading'}:{zh:phase==='error'?'敲钟重试历史净值':'敲响开市钟',en:phase==='error'?'Ring to retry history':'Ring the opening bell'},
-    enabled:()=>useAlphaExchange.getState().phase!=='loading',onInteract:()=>{parkAudio.cue('scan',.55);void ringExchange();}});
-  return <>{EXCHANGE_STATIONS.map(s=><ExchangeStationInput key={s.action} station={s}/>)}</>;
-}
-function ExchangeStationInput({station}:{station:(typeof EXCHANGE_STATIONS)[number]}) {
-  const label=LABELS[station.action];
-  useInteractable({id:`alpha-exchange-${station.action}`,kind:'exhibit',position:exchangeWorld([station.stand[0],1.05,station.stand[2]]),radius:1.25,
-    label:{zh:label.zh,en:label.en},onInteract:()=>{actExchange(station.action);parkAudio.cue('scan',.15);}});
+function ProjectInput({ projectId }: { projectId?: string }) {
+  useInteractable(projectId ? { id: 'alpha-exchange-project', kind: 'board', position: exchangeWorld(EXCHANGE_HALL.project), radius: 1.8,
+    label: { zh: 'Alpha Agent · 项目与数据', en: 'Alpha Agent · project & data' },
+    onInteract: () => useWorldStore.setState({ card: { kind: 'project', id: projectId } }) } : null);
   return null;
 }
 
-/** A walkable high trading hall. Architecture is one static vertex-colour batch; all board faces
- * share one 1024² atlas, redrawn only after a language or game-state change. No timer or mount fetch. */
-export default function WorldAlphaExchange({projectId}:{projectId?:string}) {
-  const state=useAlphaExchange(),lang=useWorldStore(s=>s.lang),zh=lang==='zh',bell=useRef<Group>(null);
-  const bellClock=useRef({rings:state.rings,elapsed:1});
-  const built=useMemo(()=>{
-    const architecture=buildAlphaExchangeGeometry();
-    const faceParts=[
-      texturePlane(9.8,2.75,EXCHANGE_HALL.board,[0,0,1024,288]),
-      texturePlane(8.6,.95,[0,5.65,1.15],[0,320,1024,128]),
-      ...EXCHANGE_STATIONS.map((s,i)=>texturePlane(.72,.45,[s.at[0]+.2*Math.sin(s.yaw),1.49,s.at[2]+.2*Math.cos(s.yaw)],[i*256,464,256,128],false,s.yaw)),
-      texturePlane(3,3,[EXCHANGE_HALL.clock[0],EXCHANGE_HALL.clock[1],EXCHANGE_HALL.clock[2]+.42],[0,640,256,256],true),
+/** One finite replay, physical contacts and one event-driven 1024² display atlas. Mounting never fetches. */
+export default function WorldAlphaExchange({ projectId }: { projectId?: string }) {
+  const state = useExchangePlay(), zh = useWorldStore(s => s.lang === 'zh');
+  const built = useMemo(() => {
+    const architecture = buildAlphaExchangeGeometry();
+    const planes = [texturePlane(9.8,2.75,EXCHANGE_HALL.board,[0,0,1024,288]),
+      texturePlane(8.6,.95,[0,5.65,1.15],[0,300,1024,112]),
+      ...[S.desk,EXCHANGE_SECOND_DESK].map((s,i) => texturePlane(.6,.4,[s.stand[0],1.43,-15.77],[i*512,432,512,160])),
+      texturePlane(2.5,.62,[-11.7,2.08,-19.18],[512,608,512,128]),
+      texturePlane(1.6,.65,[11.7,2.17,-26.48],[640,752,384,128]),
+      texturePlane(.52,.15,[-1.35,1.064,-15.32],[640,896,384,112],false,-Math.PI/2),
+      texturePlane(3,3,[EXCHANGE_HALL.clock[0],EXCHANGE_HALL.clock[1],EXCHANGE_HALL.clock[2]+.42],[0,752,256,256],true),
     ];
-    const faces=mergeGeometries(faceParts)!;faceParts.forEach(g=>g.dispose());
-    const bellGeometry=new LatheGeometry([new Vector2(.3,-.32),new Vector2(.31,-.27),new Vector2(.24,-.23),new Vector2(.16,-.04),new Vector2(.08,.02),new Vector2(.025,.03)],20);
-    return {...architecture,faces,bellGeometry};
-  },[]);
-  const atlas=useMemo(()=>{const canvas=document.createElement('canvas');canvas.width=canvas.height=1024;
-    const texture=new CanvasTexture(canvas);texture.colorSpace=SRGBColorSpace;texture.anisotropy=4;
-    return{canvas,texture,material:new MeshStandardMaterial({map:texture,roughness:.85,metalness:0,emissive:'#ffffff',emissiveMap:texture,emissiveIntensity:.16}),
-      brass:new MeshStandardMaterial({color:'#b8975a',metalness:.55,roughness:.42}),glass:new MeshStandardMaterial({vertexColors:true,color:'#f3dba8',transparent:true,opacity:.29,roughness:.35,metalness:0,depthWrite:false,emissive:'#c19b56',emissiveIntensity:.04})};},[]);
-  useEffect(()=>{
-    const c=atlas.canvas.getContext('2d')!;c.clearRect(0,0,1024,1024);
-    c.fillStyle='#253e39';c.fillRect(0,0,1024,608);c.textBaseline='alphabetic';
-    const row=state.history[state.day],nav=row?.value??100,equity=exchangeEquity(state),pnl=equity-EXCHANGE_INITIAL_POINTS;
-    c.fillStyle='#ccb88b';c.font='600 24px "Avenir Next","PingFang SC",sans-serif';
-    c.fillText(zh?'SPY 历史净值沙盘':'SPY HISTORICAL NAV SANDBOX',30,35);
-    c.textAlign='right';c.fillText(row?`${row.date}  ·  ${state.day+1}/${state.history.length}`:zh?'历史回放，非实时行情':'HISTORICAL REPLAY, NOT LIVE',994,35);c.textAlign='left';
-    c.fillStyle='#f0e5cf';c.font='600 47px Georgia,"Songti SC",serif';c.fillText(state.phase==='open'?`NAV ${nav.toFixed(2)}`:zh?'等待开市钟':'RING TO OPEN',30,96);
-    c.font='500 22px "Avenir Next","PingFang SC",sans-serif';c.fillStyle='#e6dccb';
-    c.fillText(`${zh?'虚拟点数':'POINTS'}  ${money(state.cash)}`,365,75);c.fillText(`${zh?'指数份额':'INDEX UNITS'}  ${state.units}`,730,75);
-    c.fillText(`${zh?'总权益':'EQUITY'}  ${money(equity)}`,365,107);
-    c.fillStyle=pnl<0?'#e8a08a':'#afc89b';c.fillText(`${zh?'虚拟盈亏':'PAPER P/L'}  ${pnl>=0?'+':''}${money(pnl)}`,730,107);
-    const message=MESSAGES[state.message][zh?0:1];c.fillStyle='#dccba6';c.font='500 20px "Avenir Next","PingFang SC",sans-serif';c.fillText(message,30,141,964);
-    // Reveal the past only. Advancing a day, rather than an automatic animation, changes this curve.
-    if(state.phase==='open'){
-      const values=state.history.slice(0,state.day+1).map(x=>x.value),lo=Math.min(...values),hi=Math.max(...values),span=Math.max(.1,hi-lo);
-      c.strokeStyle='#46594e';c.lineWidth=1;for(const y of [165,197,229]){c.beginPath();c.moveTo(32,y);c.lineTo(550,y);c.stroke();}
-      c.strokeStyle='#c7b36d';c.lineWidth=3;c.beginPath();values.forEach((v,i)=>{const x=32+i/Math.max(1,state.day)*518,y=226-(v-lo)/span*64;i?c.lineTo(x,y):c.moveTo(x,y);});c.stroke();
-      c.fillStyle='#cfbf9d';c.font='500 15px "Avenir Next","PingFang SC",sans-serif';c.fillText(zh?'真实 SPY 基准净值，首日 = 100':'REAL SPY BENCHMARK NAV, FIRST DAY = 100',32,253);
-      c.font='500 17px "Avenir Next","PingFang SC",sans-serif';state.ledger.slice(-3).forEach((e,i)=>{const label=e.kind==='buy'?(zh?'买':'BUY'):(zh?'卖':'SELL');c.fillText(`${e.date}  ${label} ${e.units}  @ ${e.value.toFixed(2)}`,610,178+i*28);});
-    }else{c.fillStyle='#91a295';c.font='500 22px "Avenir Next","PingFang SC",sans-serif';c.fillText(zh?'敲钟 → 买入 → 推进一天 → 卖出':'RING → BUY → NEXT DAY → SELL',32,205);}
-    c.fillStyle='#8fa092';c.font='500 14px "Avenir Next","PingFang SC",sans-serif';
-    c.fillText(zh?'来源：Alpha Agent API 的历史 SPY 基准。仅虚拟点数，无真实订单，不计手续费或滑点。':'SOURCE: ALPHA AGENT API SPY BENCHMARK. VIRTUAL POINTS; NO REAL ORDERS. FEES / SLIPPAGE EXCLUDED.',30,278,964);
-    c.fillStyle='#d7ccb9';c.fillRect(0,320,1024,128);c.fillStyle='#354d43';c.textAlign='center';c.font='600 64px Georgia,"Songti SC",serif';c.fillText('ALPHA AGENT',512,390);
-    c.font='600 23px "Avenir Next","PingFang SC",sans-serif';c.fillText(zh?'交易所 · 在历史里试一次决定':'THE EXCHANGE · PLAY A DECISION THROUGH HISTORY',512,429);
-    EXCHANGE_STATIONS.forEach((s,i)=>{const x=i*256;c.fillStyle=s.action==='buy'?'#425e4c':s.action==='sell'?'#745547':'#334b46';c.fillRect(x,464,256,128);
-      c.fillStyle='#eadfc5';c.font='600 23px "Avenir Next","PingFang SC",sans-serif';c.fillText(zh?LABELS[s.action].zh:LABELS[s.action].en,x+128,518,238);
-      c.fillStyle='#c2b492';c.font='500 17px "Avenir Next","PingFang SC",sans-serif';c.fillText(s.action==='buy'||s.action==='sell'?(zh?'历史净值 · 虚拟份额':'HISTORICAL NAV · PAPER UNITS'):(zh?'走近后按 E':'WALK UP & PRESS E'),x+128,555,238);});
-    c.fillStyle='#e6dccb';c.beginPath();c.arc(128,768,126,0,Math.PI*2);c.fill();c.strokeStyle='#867041';c.lineWidth=5;
-    for(let i=0;i<12;i++){const a=i*Math.PI/6;c.beginPath();c.moveTo(128+Math.sin(a)*101,768-Math.cos(a)*101);c.lineTo(128+Math.sin(a)*112,768-Math.cos(a)*112);c.stroke();}
-    c.strokeStyle='#354d43';c.lineWidth=9;c.beginPath();c.moveTo(128,768);c.lineTo(60,768);c.moveTo(128,768);c.lineTo(128,852);c.stroke();
-    c.fillStyle='#867041';c.font='600 18px Georgia';c.fillText('REPLAY',128,718);c.textAlign='left';atlas.texture.needsUpdate=true;
-  },[atlas,state,zh]);
-  useEffect(()=>()=>{releaseExchange();built.body.dispose();built.glass.dispose();built.faces.dispose();built.bellGeometry.dispose();atlas.texture.dispose();atlas.material.dispose();atlas.brass.dispose();atlas.glass.dispose();},[built,atlas]);
-  useEffect(()=>{
-    if(new URLSearchParams(window.location.search).get('qa')!=='1')return;
-    const api={read:()=>{const s=useAlphaExchange.getState();return{phase:s.phase,date:s.history[s.day]?.date??null,day:s.day,days:s.history.length,
-      nav:s.history[s.day]?.value??null,cash:s.cash,units:s.units,equity:exchangeEquity(s),message:s.message,rings:s.rings,ledger:s.ledger,error:s.error};}};
-    const host=window as unknown as {__worldExchange?:typeof api};host.__worldExchange=api;
-    return()=>{if(host.__worldExchange===api)delete host.__worldExchange;};
-  },[]);
-  useFrame((_,dt)=>{
+    const faces = mergeGeometries(planes)!; planes.forEach(g => g.dispose());
+    return { ...architecture, faces };
+  }, []);
+  const atlas = useMemo(() => {
+    const canvas = document.createElement('canvas'); canvas.width = canvas.height = 1024;
+    const texture = new CanvasTexture(canvas); texture.colorSpace = SRGBColorSpace; texture.anisotropy = 4;
+    return { canvas, texture,
+      material: new MeshStandardMaterial({ map: texture, roughness: .85, emissive: '#ffffff', emissiveMap: texture, emissiveIntensity: .16 }),
+      brass: new MeshStandardMaterial({ color: '#b8975a', metalness: .55, roughness: .42, emissive: '#9d7541', emissiveIntensity: 0 }),
+      glass: new MeshStandardMaterial({ vertexColors: true, color: '#f3dba8', transparent: true, opacity: .29, roughness: .35,
+        metalness: 0, depthWrite: false, emissive: '#c19b56', emissiveIntensity: .04 }),
+    };
+  }, []);
+  useEffect(() => {
+    const c = atlas.canvas.getContext('2d')!, r = state.round, row = r?.history[r.day], previous = r?.previousRun;
+    const source = useAlphaExchange.getState(), ticketHistory = r?.history ?? (source.phase === 'open' ? source.history : []);
+    const t = (cn: string, en: string) => zh ? cn : en;
+    const font = (size: number, heading = false) => `${heading ? 600 : 500} ${size}px ${heading ? 'Georgia,"Songti SC",serif' : '"Avenir Next","PingFang SC",sans-serif'}`;
+    const text = (value: string, x: number, y: number, size = 20, color = '#e6dccb', width = 960) => {
+      c.font = font(size); c.fillStyle = color; c.fillText(value,x,y,width);
+    };
+    const panel = (x: number, y: number, w: number, h: number, color = '#253e39') => { c.fillStyle = color; c.fillRect(x,y,w,h); };
+    c.clearRect(0,0,1024,1024); c.textAlign = 'left'; c.textBaseline = 'alphabetic';
+    panel(0,0,1024,288);
+    text(t('SPY 历史净值回放','SPY HISTORICAL NAV REPLAY'),28,34,24,'#ccb88b');
+    text(row ? `${row.date}  ·  ${t('已推进','INTERVALS')} ${r!.checkpoint}/3` : t('到档案室领取时段票','TAKE A TICKET AT THE ARCHIVE'),570,34,19,'#ccb88b',430);
+    text(row ? `NAV ${row.value.toFixed(2)}` : 'ALPHA AGENT',28,92,43,'#f0e5cf');
+    text(`${t('虚拟点数','POINTS')} ${money(r?.cash ?? 10000)}    ${t('持仓','UNITS')} ${r?.units ?? 0}`,360,70,24);
+    text(`${t('权益','EQUITY')} ${money(r ? roundEquity(r) : 10000)}    ${t('目标','TARGET')} ${r?.targetUnits ?? 0}`,360,106,24);
+    text(exchangePlayInstruction(state,zh),28,143,21,'#dccba6');
+    // Only dates already reached by this round contribute to the plot or its scale.
+    if (r) {
+      const values = r.history.slice(0,r.day+1).map(point => point.value), lo = Math.min(...values), hi = Math.max(...values), span = Math.max(.1,hi-lo);
+      c.strokeStyle = '#c7b36d'; c.lineWidth = 3; c.beginPath();
+      values.forEach((value,i) => { const x = 30 + i / Math.max(1,r.day) * 520, y = 230 - (value-lo)/span*65; if (i) c.lineTo(x,y); else c.moveTo(x,y); }); c.stroke();
+      r.choices.forEach((choice,i) => text(`${choice.date}   ${choice.units} ${t('份','UNITS')}  →  ${money(choice.equityAfter)}`,600,180+i*25,16,'#cfbf9d',395));
+      if (r.receipt) text(`${t('清算回执','RECEIPT')}  ${r.receipt.pnl >= 0 ? '+' : ''}${money(r.receipt.pnl)}  (${r.receipt.returnPct.toFixed(2)}%)`,28,258,20,'#d9c98f');
+    }
+    text(t('来源：Alpha Agent API 历史 SPY 基准。虚拟积分，无真实下单，不计手续费或滑点。','SOURCE: ALPHA AGENT API SPY BENCHMARK. VIRTUAL POINTS; NO REAL ORDERS; FEES / SLIPPAGE EXCLUDED.'),28,280,13,'#91a295');
+    panel(0,300,1024,112,'#d7ccb9'); c.fillStyle = '#354d43'; c.font = font(58,true); c.textAlign = 'center'; c.fillText('ALPHA AGENT',512,363);
+    text(t('历史中的一次选择','A DECISION THROUGH HISTORY'),512,397,23,'#354d43'); c.textAlign = 'left';
+    panel(0,432,512,160); text(t('本轮仓位','THIS RUN'),18,462,25,'#ccb88b',470);
+    text(`${t('目标','TARGET')} ${r?.targetUnits ?? 0} / 50`,18,502,31,'#f0e5cf',470);
+    text(r?.phase === 'selecting' ? t('点铜轨选档，E 封单','CLICK DETENT; E TO SEAL') : exchangePlayInstruction(state,zh),18,540,19,'#d7ccb9',470);
+    text(t('拨杆：Q 切换，E 操作','NUDGES: Q TO CHOOSE, E TO USE'),18,576,16,'#91a295',470);
+    panel(512,432,512,160); text(t('上一轮 · 同一时段','PREVIOUS RUN · SAME HISTORY'),530,462,23,'#ccb88b',470);
+    text(previous ? `${t('终值','FINAL')} ${money(previous.finalEquity)}` : t('完成首轮后留下对照','FINISH A RUN TO LEAVE A COMPARISON'),530,505,previous ? 30 : 20,'#eadfc5',470);
+    text(previous ? `${previous.startDate} → ${previous.endDate}` : t('回执保留完整选择与轨迹','RECEIPTS KEEP EVERY CHOICE AND EQUITY MARK'),530,542,18,'#91a295',470);
+    if (previous) text(`${t('盈亏','P/L')} ${money(previous.pnl)}    ${previous.returnPct.toFixed(2)}%`,530,577,21,'#d9c98f',470);
+    panel(0,608,512,128,'#eadfc2');
+    text('ALPHA API · SPY HISTORY',20,640,27,'#354d43',470);
+    text(ticketHistory.length ? `${ticketHistory[0].date} → ${ticketHistory.at(-1)!.date}` : t('先按 E 读取真实历史','E: LOAD VALIDATED HISTORY'),20,675,22,'#544736',470);
+    text(t('虚拟积分 · 最多三次选择','VIRTUAL POINTS · UP TO THREE CHOICES'),20,714,17,'#544736',470);
+    panel(512,608,512,128); text(t('历史档案室','HISTORICAL ARCHIVE'),530,641,28,'#ccb88b',470);
+    text(state.loading ? t('读取中，请稍候再取票','LOADING; TAKE TICKET WHEN READY') : state.notice === 'error'
+      ? t('按 E 重试，没有替代行情','E TO RETRY; NO SUBSTITUTE PRICES') : t('取票 → 插票 → 选仓 → 拉铃','TICKET → INSERT → POSITION → BELL'),530,681,20,'#eadfc5',470);
+    text(t('沿回廊前往清算室','FOLLOW THE GALLERY TO CLEARING'),530,718,19,'#91a295',470);
+    panel(256,752,384,256,'#eadfc2'); text(t('清算回执','CLEARING RECEIPT'),274,790,27,'#354d43',345);
+    if (r?.receipt) {
+      text(`${r.receipt.startDate} → ${r.receipt.endDate}`,274,826,17,'#544736',345);
+      text(`${t('权益','EQUITY')} ${money(r.receipt.finalEquity)}`,274,867,24,'#544736',345);
+      text(`${t('盈亏','P/L')} ${money(r.receipt.pnl)}`,274,903,24,'#544736',345);
+      text(`${r.receipt.choices.length} ${t('次选择','CHOICES')}`,274,940,22,'#544736',345);
+    }
+    text(t('历史 SPY · 不计费用或滑点','SPY HISTORY · NO FEES / SLIPPAGE'),274,984,16,'#544736',345);
+    panel(640,752,384,128); text(t('清算室','CLEARING'),656,790,30,'#ccb88b',350);
+    text(r?.phase === 'clearing' ? t('按 E 压印并取回执','E: STAMP AND COLLECT') : r?.phase === 'complete'
+      ? t('回执已领取，可回档案重演','RECEIPT COLLECTED; REPLAY AT ARCHIVE') : t('推进完本轮历史后领取','COLLECT AFTER THE LAST INTERVAL'),656,836,17,'#eadfc5',350);
+    panel(640,896,384,112,'#d7ccb9'); c.textAlign = 'center';
+    [0,10,20,30,40,50].forEach((units,i) => text(String(units),672+i*64,963,34,'#354d43',60));
+    panel(0,752,256,256,'#e6dccb'); c.strokeStyle = '#867041'; c.lineWidth = 4;
+    for (let i=0;i<12;i++) { const a=i*Math.PI/6; c.beginPath(); c.moveTo(128+Math.sin(a)*100,880-Math.cos(a)*100); c.lineTo(128+Math.sin(a)*112,880-Math.cos(a)*112); c.stroke(); }
+    c.strokeStyle = '#354d43'; c.lineWidth = 8; c.beginPath(); c.moveTo(128,880); c.lineTo(65,880); c.moveTo(128,880); c.lineTo(128,960); c.stroke();
+    text('REPLAY',128,826,17,'#867041'); c.textAlign = 'left'; atlas.texture.needsUpdate = true;
+  }, [atlas,state,zh]);
+  useEffect(() => () => {
+    releaseExchangePlay(); built.body.dispose(); built.glass.dispose(); built.faces.dispose();
+    atlas.texture.dispose(); atlas.material.dispose(); atlas.brass.dispose(); atlas.glass.dispose();
+  }, [built,atlas]);
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('qa') !== '1') return;
+    const api = { read: () => { const s=useExchangePlay.getState(), r=s.round; return { phase:r?.phase ?? s.notice, notice:s.notice,
+      day:r?.day ?? 0, days:r?.history.length ?? 0, date:r?.history[r.day].date ?? null, nav:r?.history[r.day].value ?? null,
+      cash:r?.cash ?? 10000, units:r?.units ?? 0, targetUnits:r?.targetUnits ?? 0, checkpoint:r?.checkpoint ?? 0,
+      equity:r ? roundEquity(r) : 10000, choices:r?.choices ?? [], traceLength:r?.equityTrace.length ?? 0,
+      receipt:r?.receipt ? { pnl:r.receipt.pnl, finalEquity:r.receipt.finalEquity, choices:r.receipt.choices.length } : null,
+      previousRun:r?.previousRun ? { pnl:r.previousRun.pnl, finalEquity:r.previousRun.finalEquity } : null,
+      contacts:s.contacts, ticketReturned:s.ticketReturned, error:s.error }; } };
+    const host=window as unknown as { __worldExchange?: typeof api }; host.__worldExchange=api;
+    return () => { if (host.__worldExchange===api) delete host.__worldExchange; };
+  }, []);
+  useFrame(() => {
     atlas.glass.emissiveIntensity=.025+.13*night.value;
-    if(useWorldStore.getState().paused||useWorldStore.getState().shot)return;
-    const clock=bellClock.current,rings=useAlphaExchange.getState().rings;if(rings!==clock.rings){clock.rings=rings;clock.elapsed=0;}
-    if(clock.elapsed>=1)return;clock.elapsed=Math.min(1,clock.elapsed+Math.min(.05,dt));
-    if(bell.current)bell.current.rotation.z=clock.elapsed>=1?0:Math.sin(clock.elapsed*25)*.32*Math.exp(-clock.elapsed*5);
+    atlas.material.emissiveIntensity=.16+.32*night.value;
+    atlas.brass.emissiveIntensity=.12*night.value;
   });
-  return <group name="alpha-agent-exchange" position={ALPHA_EXCHANGE_ORIGIN} userData={{noOcclusionFade:true}}>
+  return <group name="alpha-agent-exchange" position={ALPHA_EXCHANGE_ORIGIN} userData={{ noOcclusionFade:true }}>
     <mesh name="alpha-exchange-architecture" geometry={built.body} material={parkMaterial()} castShadow receiveShadow/>
     <mesh name="alpha-exchange-displays" geometry={built.faces} material={atlas.material}/>
     <mesh name="alpha-exchange-skylights" geometry={built.glass} material={atlas.glass} receiveShadow renderOrder={1}/>
-    <pointLight position={[-6,6,-10]} color="#ffdb9d" intensity={80} distance={20} decay={2} castShadow={false}/>
-    <pointLight position={[6,6,-21]} color="#ffd293" intensity={65} distance={18} decay={2} castShadow={false}/>
-    <group ref={bell} position={[0,1.79,-1.8]}><mesh geometry={built.bellGeometry} material={atlas.brass} castShadow/>
-      <mesh position={[0,-.3,0]} material={atlas.brass}><sphereGeometry args={[.055,8,6]}/></mesh></group>
-    {(['surface','solid'] as const).map(kind=><RigidBody key={kind} type="fixed" colliders={false} userData={{[kind]:true,assetId:'alpha-exchange'}}>
-      <TrimeshCollider name={`alpha-exchange-${kind}`} args={[built.colliders[kind].vertices,built.colliders[kind].indices]} friction={.85}/>
+    <pointLight position={[-7,6,-18]} color="#ffdb9d" intensity={130} distance={26} decay={2} castShadow={false}/>
+    <pointLight position={[7,6,-31]} color="#ffd293" intensity={130} distance={26} decay={2} castShadow={false}/>
+    {(['surface','solid'] as const).map(kind => <RigidBody key={kind} type="fixed" colliders={false} userData={{ [kind]:true, assetId:'alpha-exchange' }}>
+      {/* Rapier accepts flags as the third argument; R3 Rapier's tuple type omits it. */}
+      <TrimeshCollider name={`alpha-exchange-${kind}`}
+        args={[built.colliders[kind].vertices,built.colliders[kind].indices,built.colliders[kind].flags] as unknown as [Float32Array,Uint32Array]}
+        friction={.85}/>
     </RigidBody>)}
-    <ExchangeInput projectId={projectId}/>
+    <WorldAlphaExchangePlay brass={atlas.brass} paperFace={atlas.material}/><ProjectInput projectId={projectId}/>
   </group>;
 }

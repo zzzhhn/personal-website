@@ -1,10 +1,13 @@
 import { BoxGeometry, BufferGeometry, CylinderGeometry, Euler, Float32BufferAttribute, Matrix4, Quaternion, TorusGeometry, Vector2,Vector3,ShapeUtils } from 'three';
+import { TriMeshFlags } from '@dimforge/rapier3d-compat';
 import { mergeBatch, toBatch, type Emit } from './WorldParkKit';
-import { EXCHANGE_HALL, EXCHANGE_STATIONS,EXCHANGE_COLUMNS, exchangeBoxes,exchangePlatformSlabs } from './alpha-exchange-layout';
+import { EXCHANGE_HALL,EXCHANGE_COLUMNS,exchangeBoxes,exchangePlatformSlabs } from './alpha-exchange-layout';
+import { EXCHANGE_PLAY_PROPS,EXCHANGE_PLAY_STATIONS,EXCHANGE_SECOND_DESK } from './alpha-exchange-play-layout';
 import type { Vec3 } from './types';
 
-export interface ExchangeCollision {vertices:Float32Array;indices:Uint32Array}
-/** All shapes are local to the stable entrance origin. Collision reads the same transformed vertices. */
+export interface ExchangeCollision {vertices:Float32Array;indices:Uint32Array;flags?:TriMeshFlags}
+/** Local to the unchanged entrance origin. Visible and collider faces share source vertices.
+ * Caller owns/disposes the two merged geometries, as with the original model. */
 export function buildAlphaExchangeGeometry() {
   const parts:BufferGeometry[]=[],glass:BufferGeometry[]=[],support:number[]=[],solid:number[]=[];
   const add=(g:BufferGeometry,color:string,p:Vec3=[0,0,0],rotation:Vec3=[0,0,0],kind:'solid'|'surface'|'visual'='solid',emit:Emit=[0,0,0],window=false)=>{
@@ -15,23 +18,38 @@ export function buildAlphaExchangeGeometry() {
   };
   const box=(p:Vec3,s:Vec3,c:string,kind:'solid'|'surface'|'visual'='solid',yaw=0,emit:Emit=[0,0,0])=>add(new BoxGeometry(...s),c,p,[0,yaw,0],kind,emit);
   const rod=(a:Vec3,b:Vec3,r:number,c:string,kind:'solid'|'visual'='solid')=>{
-    const av=new Vector3(...a),bv=new Vector3(...b),d=bv.clone().sub(av),g=new CylinderGeometry(r,r,d.length(),8);
+    const av=new Vector3(...a),bv=new Vector3(...b),d=bv.clone().sub(av),g=new CylinderGeometry(r,r,d.length(),6);
     g.applyQuaternion(new Quaternion().setFromUnitVectors(new Vector3(0,1,0),d.normalize()));add(g,c,av.add(bv).multiplyScalar(.5).toArray() as Vec3,[0,0,0],kind);
   };
-  const raw=(p:number[],c:string,kind:'surface'|'solid'|'visual'='solid')=>{const g=new BufferGeometry();g.setAttribute('position',new Float32BufferAttribute(p,3));g.computeVertexNormals();add(g,c,[0,0,0],[0,0,0],kind);};
-  const ring=(cx:number,cz:number,inner:number,outer:number,y:number,depth:number,start:number,end:number,c:string,n=36)=>{
+  const raw=(p:number[],c:string,kind:'surface'|'solid'|'visual'='solid',emit:Emit=[0,0,0])=>{
+    if(!p.length)return;const g=new BufferGeometry();g.setAttribute('position',new Float32BufferAttribute(p,3));g.computeVertexNormals();add(g,c,[0,0,0],[0,0,0],kind,emit);
+  };
+  const ring=(cx:number,cz:number,inner:number,outer:number,y:number,depth:number,c:string,n=48,kind:'solid'|'visual'='solid',emit:Emit=[0,0,0])=>{
     const p:number[]=[];
     for(let i=0;i<n;i++) {
-      const a=start+(end-start)*i/n,b=start+(end-start)*(i+1)/n;
-      const v=(t:number,r:number,h:number):Vec3=>[cx+r*Math.cos(t),h,cz+r*Math.sin(t)];
+      const a=i*Math.PI*2/n,b=(i+1)*Math.PI*2/n,v=(t:number,r:number,h:number):Vec3=>[cx+r*Math.cos(t),h,cz+r*Math.sin(t)];
       const a0=v(a,inner,y),a1=v(a,outer,y),b1=v(b,outer,y),b0=v(b,inner,y),a2=v(a,outer,y-depth),b2=v(b,outer,y-depth),a3=v(a,inner,y-depth),b3=v(b,inner,y-depth);
       p.push(...a0,...b1,...a1,...a0,...b0,...b1,...a1,...b1,...b2,...a1,...b2,...a2,...a0,...a3,...b3,...a0,...b3,...b0);
-      if(i===0)p.push(...a0,...a1,...a2,...a0,...a2,...a3);
-      if(i===n-1)p.push(...b0,...b3,...b2,...b0,...b2,...b1);
-    }raw(p,c);
+    }raw(p,c,kind,emit);
   };
-  // Platform ownership is split at its shared boundary. No coplanar top overlap and no
-  // hidden vertical walls across the flat walk joints; render and collider read these same faces.
+  const rail=(a:Vec3,b:Vec3,height=1.1)=>{
+    const d=Math.hypot(...b.map((v,i)=>v-a[i])),n=Math.ceil(d/1.4);
+    rod([a[0],a[1]+height,a[2]],[b[0],b[1]+height,b[2]],.06,'#b8975a');
+    rod([a[0],a[1]+height*.48,a[2]],[b[0],b[1]+height*.48,b[2]],.035,'#927446');
+    for(let i=0;i<=n;i++){const t=i/n,p=a.map((v,k)=>v+(b[k]-v)*t) as Vec3;rod(p,[p[0],p[1]+height,p[2]],.04,'#aa8950');}
+  };
+  const slope=(x0:number,x1:number,z0:number,z1:number,y0:number,y1:number,c='#947451')=>{
+    const a:Vec3=[x0,y0,z0],b:Vec3=[x1,y0,z0],d:Vec3=[x0,y1,z1],e:Vec3=[x1,y1,z1];
+    raw(z1<z0?[...a,...b,...e,...a,...e,...d]:[...a,...e,...b,...a,...d,...e],c,'surface',[0,.09,1]);
+    for(const [u,v]of[[a,d],[b,e]])raw([...u,...v,u[0],u[1]-.22,u[2],...v,v[0],v[1]-.22,v[2],u[0],u[1]-.22,u[2]],'#765a3d');
+  };
+  const rampWedge=(x0:number,x1:number,z0:number,z1:number,y0:number,y1:number,c:string)=>{
+    const a:Vec3=[x0,y0,z0],b:Vec3=[x1,y0,z0],d:Vec3=[x0,y1,z1],e:Vec3=[x1,y1,z1];
+    const low=Math.min(y0,y1),lowZ=y0<y1?z1:z0;
+    raw([...a,...b,...e,...a,...e,...d],c,'surface',[0,.09,1]);
+    raw([...a,...d,x0,low,lowZ,...b,x1,low,lowZ,...e],c);
+  };
+  // Butt-jointed slab ownership preserves the existing bridge/park seam exactly.
   for(const slab of exchangePlatformSlabs()) {
     const top:number[]=[],bottom:number[]=[],walls:number[]=[];
     for(const ids of ShapeUtils.triangulateShape(slab.outline.map(p=>new Vector2(...p)),[])) {
@@ -40,111 +58,192 @@ export function buildAlphaExchangeGeometry() {
       for(const i of [0,2,1])bottom.push(v[i][0],slab.y-slab.depth,v[i][2]);
     }
     slab.outline.forEach((a,i)=>{if(!slab.walls[i])return;const b=slab.outline[(i+1)%slab.outline.length],p:Vec3=[a[0],slab.y,a[1]],q:Vec3=[b[0],slab.y,b[1]],r:Vec3=[b[0],slab.y-slab.depth,b[1]],s:Vec3=[a[0],slab.y-slab.depth,a[1]];walls.push(...p,...q,...r,...p,...r,...s);});
-    raw(top,slab.color,'surface');raw(bottom,slab.color);raw(walls,slab.color);
+    raw(top,slab.color,'surface',[0,.09,1]);raw(bottom,slab.color);raw(walls,slab.color);
   }
   for(const b of exchangeBoxes())add(new BoxGeometry(...b.size),b.color,b.center,b.rotation??[0,0,0],b.surface?'surface':'solid');
-  // Real parquet above the mineral base, inset borders and an eight-point compass inlay.
-  for(let row=0;row<50;row++)for(let col=0;col<10;col++) {
-    const x=-12.35+row*.5,z=-28.15+col*3+(row%2)*1.5,end=Math.min(.6,z+2.97);if(end<=z)continue;
-    box([x,.006,(z+end)/2],[.486,.012,end-z],['#987b56','#a58b64','#ad9370','#91744f'][(row*7+col)%4],'visual');
+  // Broad visible steps are complemented by continuous entrance and pit side routes.
+  // Their central stair cores are cut out in the slab layout: these visible stone
+  // wedges own both the walk surface and collider, with no hidden stair risers.
+  rampWedge(-3,3,-5,-7,0,.45,'#d4c4a5');
+  rampWedge(-2,2,-11,-12.8,.45,0,'#c9b99a');
+  slope(-14.2,-10.5,-5,-7,0,.45);slope(10.5,14.2,-5,-7,0,.45);
+  slope(-8.8,-6.4,-11,-17,.45,0);
+  // Full-height stone retaining faces hide the earth below the raised walk. The old
+  // omitted slab edges exposed a 0.45 m opening around the otherwise paved pit.
+  const pitRiser=(a:Vec3,b:Vec3)=>raw([...a,...b,b[0],.45,b[2],...a,b[0],.45,b[2],a[0],.45,a[2]],'#b9a583');
+  pitRiser([-8.8,0,-11],[-8.8,0,-28]);pitRiser([8.8,0,-28],[8.8,0,-11]);
+  pitRiser([-8.8,0,-28],[-3,0,-28]);pitRiser([3,0,-28],[8.8,0,-28]);
+  // A 6 m wide, 2.4 m long rear ramp connects directly to the bell walk. Side
+  // cheeks close the wedge to the pit floor; no vertical face crosses its top joint.
+  raw([-3,0,-25.6,3,0,-25.6,3,.45,-28,-3,0,-25.6,3,.45,-28,-3,.45,-28],'#c9b99a','surface',[0,.09,1]);
+  raw([-3,0,-25.6,-3,.45,-28,-3,0,-28,3,0,-25.6,3,0,-28,3,.45,-28],'#b9a583');
+  slope(-17,-14.4,-8,-30,.45,5.2);
+  rail([-16.95,.45,-8],[-16.95,5.2,-30]);rail([-14.45,.45,-8],[-14.45,5.2,-30]);
+  rail([-8.75,.45,-11],[-8.75,0,-17],.9);
+  // East gallery stair has broad treads and an open top landing; west ramp is the smooth route.
+  for(let i=0;i<22;i++){
+    const y=.45+(i+1)*4.75/22,z=-10.8-(i+.5)*19.2/22;
+    box([15.7,y-.12,z],[2.6,.24,19.2/22],'#bba88b','surface');
+    box([15.7,y+.012,z+19.2/44-.04],[2.48,.024,.055],'#d7c5a4','visual');
   }
-  ring(0,-11.5,2.55,2.65,.018,.012,0,Math.PI*2,'#c1ae83',64);
-  for(let i=0;i<8;i++) {
-    const a=i*Math.PI/4,b=a+Math.PI/8,p0:Vec3=[0,.02,-11.5],p1:Vec3=[Math.cos(a)*2.55,.02,-11.5+Math.sin(a)*2.55],p2:Vec3=[Math.cos(b)*.7,.02,-11.5+Math.sin(b)*.7];
-    raw([...p0,...p2,...p1],i%2?'#675641':'#c8b791','visual');
+  rail([14.45,.45,-10.8],[14.45,5.2,-30]);rail([16.95,.45,-10.8],[16.95,5.2,-30]);
+  // Raised exit landing returns to the original local ground level outside the building.
+  const exitTop=[20.8,.45,-35,23.5,0,-35,23.5,0,-30,20.8,.45,-30];
+  raw([...exitTop.slice(0,3),...exitTop.slice(6,9),...exitTop.slice(3,6),...exitTop.slice(0,3),...exitTop.slice(9,12),...exitTop.slice(6,9)],'#bba98a','surface');
+  // Deep limestone bays, faceted column drums and walnut window reveals.
+  for(const side of [-1,1])for(const z of EXCHANGE_COLUMNS.bays) {
+    if(side===1&&z===-32)continue;
+    add(new CylinderGeometry(EXCHANGE_COLUMNS.shaftTopRadius,EXCHANGE_COLUMNS.shaftBottomRadius,10.7,12),'#dfd2ba',[side*EXCHANGE_COLUMNS.x,6.7,z]);
+    for(const y of [1.24,1.48,11.9,12.15]){const r=y<2?EXCHANGE_COLUMNS.lowerDrumRadius:EXCHANGE_COLUMNS.upperDrumRadius;add(new CylinderGeometry(r,r,.16,12),'#c3b396',[side*EXCHANGE_COLUMNS.x,y,z]);}
+    for(let i=0;i<8;i++){const a=i*Math.PI/4;rod([side*EXCHANGE_COLUMNS.x+.6*Math.cos(a),1.7,z+.6*Math.sin(a)],[side*EXCHANGE_COLUMNS.x+.52*Math.cos(a),11.65,z+.52*Math.sin(a)],.035,'#c4b69d','visual');}
   }
-  // Columns have actual shafts, drums, flutes and layered capitals, not a few thin posts.
-  for(const side of [-1,1])for(const z of [.2,-8.2,-17,-27.6]) {
-    add(new CylinderGeometry(EXCHANGE_COLUMNS.shaftTopRadius,EXCHANGE_COLUMNS.shaftBottomRadius,8.15,16),'#dfd2ba',[side*EXCHANGE_COLUMNS.x,4.82,z]);
-    for(const y of [.85,1.1,8.8,9.1]){const r=y<2?EXCHANGE_COLUMNS.lowerDrumRadius:EXCHANGE_COLUMNS.upperDrumRadius;add(new CylinderGeometry(r,r,.15,16),'#c3b396',[side*EXCHANGE_COLUMNS.x,y,z]);}
-    for(let i=0;i<10;i++){const a=i*Math.PI*2/10;rod([side*EXCHANGE_COLUMNS.x+.53*Math.cos(a),1.3,z+.53*Math.sin(a)],[side*EXCHANGE_COLUMNS.x+.5*Math.cos(a),8.6,z+.5*Math.sin(a)],.025,'#c4b69d','visual');}
-  }
-  // Side bays are tall framed windows; their glass blocks camera sweeps but casts no opaque shadow.
-  for(const side of [-1,1])for(const z of [-4,-12.6,-22.3]) {
-    const x=side*12.6,low=side===1&&z===-22.3?3.4:2.2;
-    add(new BoxGeometry(.1,9.6-low,6.9),'#e2c68c',[x,(9.6+low)/2,z],[0,0,0],'solid',[.04,.16,1],true);
-    for(const zz of [z-3.45,z,z+3.45])box([x,(9.6+low)/2,zz],[.22,9.6-low,.12],'#806947');
-    for(const y of [low,5.5,8.4,9.6])box([x,y,z],[.28,.16,7.1],'#a78b5a');
-    // Shallow voussoirs describe the stone arch above each window.
-    for(let i=0;i<16;i++){const a=i*Math.PI/16,b=(i+1)*Math.PI/16;rod([x,7.9+1.7*Math.sin(a),z+3.4*Math.cos(a)],[x,7.9+1.7*Math.sin(b),z+3.4*Math.cos(b)],.16,'#d3c4a9');}
-  }
-  // Coffer frames remain thick. Transparent skylight panels leave the global sun's light paths open.
-  for(let x=-9;x<=9;x+=6)for(let z=-4.5;z>=-24.5;z-=5) {
-    add(new BoxGeometry(5.68,.12,4.66),'#eed3a0',[x,11.86,z],[0,0,0],'solid',[.08,.18,1],true);
-    box([x,11.57,z],[5.82,.12,.1],'#b59a6d');
-  }
-  for(const x of [-8.2,8.2]) {
-    add(new BoxGeometry(6.4,2.8,.12),'#e2c68c',[x,8.4,.65],[0,0,0],'solid',[.04,.16,1],true);
-    for(const xx of [x-3.2,x,x+3.2])box([xx,8.4,.65],[.14,2.9,.2],'#9b8054');
-    box([x,6.98,.65],[6.65,.2,.4],'#d2c1a0');
-  }
-  // Mezzanine and a broad continuous ramp occupy the left rear aisle; no decorative fake stairs.
-  const ramp=[-11.1,0,-14,-8.9,0,-14,-8.9,4.4,-24.3,-11.1,4.4,-24.3];
-  raw([...ramp.slice(0,3),...ramp.slice(3,6),...ramp.slice(6,9),...ramp.slice(0,3),...ramp.slice(6,9),...ramp.slice(9,12)],'#8e7152','surface');
-  const rampBack=ramp.map((v,i)=>i%3===1?v-.22:v);
-  raw([...rampBack.slice(0,3),...rampBack.slice(6,9),...rampBack.slice(3,6),...rampBack.slice(0,3),...rampBack.slice(9,12),...rampBack.slice(6,9)],'#71583e');
-  for(const x of [-11.1,-8.9]) {
-    rod([x,.75,-14],[x,5.15,-24.3],.055,'#ab8a4e');
-    for(let i=0;i<=5;i++){const y=4.4*i/5,z=-14-10.3*i/5;rod([x,y,z],[x,y+.75,z],.035,'#ab8a4e');}
-  }
-  for(const x of [-8,8])box([x,2.05,-25.8],[.48,4.1,.48],'#9b805b');
-  for(let x=-8.4;x<=10.8;x+=1.2){rod([x,4.4,-24.34],[x,5.4,-24.34],.042,'#ad8d51');}
-  rod([-8.5,5.4,-24.34],[11.4,5.4,-24.34],.065,'#bc9b5a');
-  // Two front horseshoes and a quieter rear trading post retain a real open inside/rear passage.
-  const crt=(x:number,z:number,yaw:number,active=false)=>{
-    const at=(dx:number,dy:number,dz:number):Vec3=>[x+dx*Math.cos(yaw)+(dz-.2)*Math.sin(yaw),dy,z-dx*Math.sin(yaw)+(dz-.2)*Math.cos(yaw)];
-    box(at(0,1.49,0),[.91,.7,.69],'#b9b29b','solid',yaw);
-    box(at(0,1.18,.02),[.55,.12,.48],'#8a8b79','solid',yaw);
-    box(at(0,1.49,.355),[.77,.57,.06],'#3b4940','visual',yaw,[.035,.06,0]);
-    if(!active)box(at(0,1.49,.39),[.65,.43,.018],'#223e32','visual',yaw,[.015,.04,0]);
-    box(at(0,1.115,.67),[.78,.055,.28],'#c2baa4','solid',yaw);
-    for(let row=0;row<3;row++)for(let key=0;key<8;key++)box(at(-.31+key*.088,1.15,.59+row*.07),[.062,.012,.045],'#827e69','visual',yaw);
-    // A chunky desk telephone, handset and coiled lead are legible at arm's length.
-    box(at(.67,1.19,.3),[.31,.16,.42],'#383c35','solid',yaw);
-    rod(at(.57,1.32,.16),at(.78,1.32,.43),.065,'#272e28','visual');
-    for(let i=0;i<10;i++){const a=i*.63,b=(i+1)*.63;rod(at(.83+.045*Math.cos(a),1.22-i*.035,.35+.045*Math.sin(a)),at(.83+.045*Math.cos(b),1.22-(i+1)*.035,.35+.045*Math.sin(b)),.009,'#252f29','visual');}
-    box(at(-.65,1.14,.35),[.24,.06,.39],'#d7cdb5','visual',yaw);
+  const windowBay=(side:number,z:number,width:number,low=2.3)=>{
+    const x=side*17.55,high=12.2;
+    add(new BoxGeometry(.12,high-low,width),'#c8b890',[x,(high+low)/2,z],[0,0,0],'solid',[.025,.12,1],true);
+    for(const zz of [z-width/2,z,z+width/2])box([x,(high+low)/2,zz],[.38,high-low,.16],'#725c43');
+    for(const y of [low,5.65,9.2,high])if(y>=low)box([x,y,z],[.5,.18,width+.3],'#9c8057');
+    // Deep stone jambs and a flattened arch retain readable thickness from the entrance.
+    for(const zz of [z-width/2-.12,z+width/2+.12])box([x,7.2,zz],[.95,10.1,.36],'#d5c6aa');
+    for(let i=0;i<10;i++){const a=i*Math.PI/10,b=(i+1)*Math.PI/10;rod([x,10.15+2.05*Math.sin(a),z+width/2*Math.cos(a)],[x,10.15+2.05*Math.sin(b),z+width/2*Math.cos(b)],.19,'#dfd0b4');}
   };
-  for(const [cx,cz,r] of [[-6.6,-9,3.6],[6.6,-9,3.6],[0,-20,2.8]]) {
-    ring(cx,cz,r-.48,r+.48,1.05,1.05,0,Math.PI,'#5a4230',32);
-    ring(cx,cz,r-.6,r+.6,1.14,.12,0,Math.PI,'#8e6b44',32);
-    ring(cx,cz,r+.49,r+.53,.25,.15,0,Math.PI,'#b2945a',32);
-    for(const side of [-1,1]) {
-      box([cx+side*r,.52,cz-1.8],[.96,1.04,3.6],'#5a4230');
-      box([cx+side*r,1.09,cz-1.8],[1.2,.12,3.6],'#8e6b44');
-    }
-    for(let i=0;i<10;i++) {
-      const a=(i+.5)*Math.PI/10,x=cx+r*Math.cos(a),z=cz+r*Math.sin(a);
-      if(!EXCHANGE_STATIONS.some(s=>Math.hypot(s.at[0]-x,s.at[2]-z)<1.1))crt(x,z,Math.PI/2-a);
-      const ax=cx+(r+.5)*Math.cos(a),az=cz+(r+.5)*Math.sin(a);
-      rod([ax,.12,az],[ax,.94,az],.035,'#ab8b51','visual');
-    }
+  for(const side of [-1,1]){
+    for(const z of [-4,-12,-20])windowBay(side,z,6.5);
+    windowBay(side,-27,4.5);windowBay(side,-37.5,4.1);
+    windowBay(side,-32.5,4.7,side===1?4.4:2.3);
   }
-  // Four actual action monitors reuse the live atlas, positioned to face their published stands.
-  for(const s of EXCHANGE_STATIONS)crt(s.at[0],s.at[2],s.yaw,true);
-  // A large cast-brass clock has a deep case. The atlas face stays explicitly labelled REPLAY.
-  add(new CylinderGeometry(1.65,1.65,.3,48),'#b19254',EXCHANGE_HALL.clock,[-Math.PI/2,0,0]);
-  const clock=new TorusGeometry(1.57,.12,8,48);add(clock,'#c7a86b',[EXCHANGE_HALL.clock[0],EXCHANGE_HALL.clock[1],EXCHANGE_HALL.clock[2]+.26]);
-  box([0,6.12,-27.12],[5.6,.22,.65],'#856540');
-  // Facade pediment and thick mouldings anchor the building's grand scale.
-  const pediment=[-5.2,7.0,1.3,5.2,7.0,1.3,0,9.1,1.3,-5.2,7.0,.15,0,9.1,.15,5.2,7.0,.15];
-  raw(pediment,'#ccbca0');rod([-5.2,7.03,1.35],[0,9.13,1.35],.18,'#e0d0b5');rod([0,9.13,1.35],[5.2,7.03,1.35],.18,'#e0d0b5');
-  for(const [a,b]of[[[-5.2,7],[5.2,7]],[[5.2,7],[0,9.1]],[[0,9.1],[-5.2,7]]])raw([a[0],a[1],1.3,b[0],b[1],1.3,b[0],b[1],.15,a[0],a[1],1.3,b[0],b[1],.15,a[0],a[1],.15],'#c0b194');
+  // Open upper structure: thick coffers, no opaque ceiling or hidden camera collider.
+  for(const x of [-10.5,-3.5,3.5,10.5])for(const z of [-5.5,-12.5,-19.5,-26.5,-33.5]){
+    box([x,13.1,z-3.12],[6.58,.16,.18],'#ae8c5d');
+    for(const side of [-1,1])box([x+side*3.12,13.1,z],[.18,.16,6.24],'#ae8c5d');
+  }
+  // Gallery guardrails leave only the two genuine access openings unrailed.
+  for(const side of [-1,1]) {
+    const inner=side*10,outer=side*13.4;
+    rail([inner,5.2,-17],[inner,5.2,-35.8]);
+    rail([inner,5.2,-17],[outer,5.2,-17]);
+    rail([outer,5.2,-17],[outer,5.2,-30]);
+    rail([outer,5.2,-31.6],[outer,5.2,-35.8]);
+    rail([side*17,5.2,-31.6],[outer,5.2,-31.6]);
+    rail([side*14.4,5.2,-30],[outer,5.2,-30]);
+    for(const z of [-18,-26,-34]){
+      box([side*10.35,2.65,z],[.48,4.75,.55],'#a68d69');
+      box([side*10.35,4.78,z],[.85,.3,1.05],'#c4ad86');
+    }
+    box([side*11.7,4.94,-26.4],[3.4,.18,18.8],'#68503a');
+  }
+  rail([-10,5.2,-35.8],[10,5.2,-35.8]);
+  rail([-17.35,5.2,-35.8],[-17.35,5.2,-39.7]);
+  rail([17.35,5.2,-35.8],[17.35,5.2,-39.7]);
+  // Low pit parapets clarify the level change while preserving stairs and ramp openings.
+  for(const side of [-1,1]){
+    box([side*8.75,.68,-22.5],[.18,.46,10.6],'#b9a583');
+    rod([side*8.75,.96,-17.2],[side*8.75,.96,-27.8],.055,'#b8975a');
+    box([side<0?-5.15:6.4,.68,-11],[side<0?2.1:4.6,.46,.18],'#b9a583');
+  }
+  // Stone and wood joints are medium-scale inlays, not hundreds of tiny parquet meshes.
+  for(const x of [-6,-3,0,3,6])for(const z of [-4,-1])box([x,.006,z],[.025,.012,2.85],'#8f7b5c','visual');
+  for(const side of [-1,1])for(const z of [-13,-17,-21,-25])box([side*11.5,.458,z],[5,.016,.035],'#70583e','visual');
+  ring(0,-20,5.65,5.75,.012,.012,'#c8b48b',64,'visual');
+  // Bounded warm fixture surfaces remain in the existing batch/night uniform.
+  for(const [x,z] of [[-7,-18],[7,-31]]) {
+    rod([x,13.3,z],[x,6.6,z],.035,'#8f7548','visual');
+    box([x,6.5,z],[1.1,.12,1.1],'#81633e','visual');
+    box([x,6.2,z],[.7,.48,.7],'#efd8a8','visual',0,[.08,1.1,1]);
+    box([x,5.93,z],[.95,.08,.95],'#9f8050','visual');
+  }
+  for(const side of [-1,1])for(const z of [-4,-12,-20,-28,-37]) {
+    rod([side*16.75,3.3,z],[side*16.2,3.3,z],.07,'#8f7548');
+    box([side*16.15,3.65,z],[.32,.85,.36],'#efd8a8','visual',0,[.15,1.25,1]);
+    for(const dx of [-.2,.2])for(const dz of [-.22,.22])rod([side*16.15+dx,3.2,z+dz],[side*16.15+dx,4.1,z+dz],.028,'#8a7045','visual');
+    if(z<-17)box([side*11.65,5.27,z],[2.25,.08,.3],'#d8bb82','visual',0,[.03,.28,1]);
+  }
+  // Entrance pediment, substantial mouldings and two fabric Alpha banners.
+  raw([-5.2,7,1.3,5.2,7,1.3,0,9.1,1.3,-5.2,7,.15,0,9.1,.15,5.2,7,.15],'#ccbca0');
+  rod([-5.2,7.03,1.35],[0,9.13,1.35],.18,'#e0d0b5');rod([0,9.13,1.35],[5.2,7.03,1.35],.18,'#e0d0b5');
+  box([0,7.05,.7],[10.8,.34,1.4],'#dfd0b5');
   for(const side of [-1,1]) {
     box([side*5.25,4,.95],[1.25,7.6,1.25],'#dfd2ba');
     box([side*5.25,.35,.95],[1.7,.7,1.65],'#b8ab92');
     box([side*5.25,7.75,.95],[2.05,.4,1.7],'#e3d5bc');
-    box([side*8.4,4.4,1.115],[1.7,4.6,.07],'#304652','visual');
-    // Non-numeric stepped Alpha mark on fabric banners, never an invented market quotation.
-    for(let i=0;i<3;i++)box([side*8.4-.45+i*.45,3.1+i*.35,1.17],[.28,.65+i*.7,.035],'#be9b57','visual');
+    box([side*9.4,4.4,1.115],[2,4.6,.07],'#304652','visual');
+    for(let i=0;i<3;i++)box([side*9.4-.45+i*.45,3.1+i*.35,1.17],[.28,.65+i*.7,.035],'#be9b57','visual');
   }
-  // Bounded warm fixtures remain in the same static batch, driven by the existing park night uniform.
-  for(const side of [-1,1])for(const z of [-2,-10,-18,-26]) {
-    rod([side*11.7,3.2,z],[side*11.15,3.2,z],.06,'#8f7548');
-    box([side*11.1,3.65,z],[.28,.82,.28],'#f1d79f','visual',0,[.24,1.4,1]);
-    for(const dx of [-.17,.17])for(const dz of [-.17,.17])rod([side*11.1+dx,3.18,z+dz],[side*11.1+dx,4.12,z+dz],.022,'#8a7045','visual');
+  // One circular walnut trading island, two working positions and a central paper ticker.
+  const desk=EXCHANGE_PLAY_PROPS.desk;
+  ring(0,-20,desk.innerRadius,desk.outerRadius-.1,.96,.91,'#5a4230',48,'solid',[0,.045,0]);
+  ring(0,-20,desk.innerRadius-.1,desk.outerRadius,desk.top,.12,'#987348',48,'solid',[0,.1,1]);
+  ring(0,-20,desk.outerRadius-.12,desk.outerRadius-.07,.25,.12,'#b2945a',48,'visual');
+  for(let i=0;i<20;i++) {
+    const a=i*Math.PI/10,x=(desk.outerRadius-.1)*Math.cos(a),z=-20+(desk.outerRadius-.1)*Math.sin(a);
+    rod([x,.18,z],[x,.91,z],.025,'#ad8a51','visual');
   }
-  for(const s of [-1,1]){rod([s*.43,1.2,-1.8],[s*.43,1.87,-1.8],.045,'#b8975a');}rod([-.43,1.87,-1.8],[.43,1.87,-1.8],.055,'#b8975a');
-  const collision=(p:number[]):ExchangeCollision=>({vertices:new Float32Array(p),indices:Uint32Array.from({length:p.length/3},(_,i)=>i)});
-  return {body:mergeBatch(parts),glass:mergeBatch(glass),colliders:{surface:collision(support),solid:collision(solid)}};
+  add(new CylinderGeometry(1.15,1.35,.32,12),'#b8a17b',[0,.16,-20]);
+  box([0,.82,-20],[1.2,1.3,.9],'#3b4d47');
+  box([0,1.56,-20],[1.48,.22,1.12],'#b8975a');
+  for(const x of [-.48,.48])rod([x,1.7,-19.95],[x,2.7,-19.95],.065,'#6e765f');
+  rod([-.57,2.72,-19.95],[.57,2.72,-19.95],.09,'#b8975a');
+  box([0,2.23,-19.87],[.58,.9,.025],'#e2d7be','visual');
+  for(let i=0;i<6;i++)box([0,2.56-i*.12,-19.85],[.36,.02,.01],'#8f9278','visual');
+  // Only two CRTs, one per actual working position. No decorative terminal rows.
+  for(const s of [EXCHANGE_PLAY_STATIONS.desk,EXCHANGE_SECOND_DESK]) {
+    const x=s.stand[0];
+    box([x,1.4,-16.12],[.78,.62,.62],'#c1b69c');
+    box([x,1.09,-16.12],[.48,.1,.45],'#847d68');
+    box([x,1.43,-15.794],[.64,.43,.035],'#203d34','visual',0,[.025,.1,0]);
+    box([x,1.09,-15.66],[.76,.055,.24],'#c8bea7');
+    for(let i=0;i<3;i++)box([x,1.124,-15.73+i*.065],[.61,.018,.028],'#807968','visual');
+  }
+  const slot=desk.ticketSlot;
+  box([slot[0],slot[1]+.015,slot[2]],[.52,.035,.21],'#b8975a','visual');
+  box([slot[0],slot[1]+.035,slot[2]+.025],desk.slotSize,'#253c35','visual');
+  const a=EXCHANGE_PLAY_STATIONS.desk.slideStart,b=EXCHANGE_PLAY_STATIONS.desk.slideEnd;
+  rod([a[0]-.12,a[1],a[2]],[b[0]+.12,b[1],b[2]],.028,'#c4a369','visual');
+  for(const x of [a[0]-.12,b[0]+.12])box([x,1.075,a[2]],[.08,.07,.13],'#6b5b3e','visual');
+  // Open archive wing: service counter, real ticket throat, index drawers and reading ledgers.
+  const archive=EXCHANGE_PLAY_PROPS.archive;
+  box([-11.7,.84,-19.31],[3.15,.78,1.15],'#5a4634');
+  box(archive.counter,archive.counterSize,'#9a7952');
+  box([-11.7,1.4,-19],[1.1,.3,.62],'#536359');
+  box(archive.ticketSlot,archive.slotSize,'#233b33','visual');
+  for(const x of [-12.08,-11.32])box([x,1.48,-18.7],[.08,.2,.16],'#b8975a','visual');
+  box([-11.7,1.56,-18.72],[.84,.07,.18],'#b8975a','visual');
+  box([-11.7,1.43,-18.63],[.79,.055,.28],'#b8975a','visual');
+  // Chunky shallow drawers have framed faces, index tabs and useful brass pulls.
+  for(const cx of [-13.1,-11]) {
+    box([cx,1.93,-23.65],[1.95,2.96,.82],'#684e38');
+    for(let row=0;row<5;row++)for(const side of [-1,1]) {
+      const x=cx+side*.46,y=.76+row*.54;
+      box([x,y,-23.19],[.85,.46,.12],row%2?'#90714c':'#9d8058');
+      box([x,y+.08,-23.115],[.29,.105,.035],'#d3c8aa','visual');
+      rod([x-.13,y-.08,-23.08],[x+.13,y-.08,-23.08],.024,'#b8975a','visual');
+    }
+    box([cx,3.48,-23.65],[2.08,.14,1],'#a98b5b');
+  }
+  for(let i=0;i<3;i++)box([-12.65,1.33+i*.08,-19.42],[.65,.075,.84],['#61735b','#7a5a43','#a98d58'][i],'visual',-.12+i*.07);
+  // Clearing wing: a physical press with platen, guide columns, flywheel and output tray.
+  const clearing=EXCHANGE_PLAY_PROPS.clearing;
+  box([11.7,.84,-26.45],[3.15,.78,1.15],'#5a4634');box(clearing.counter,clearing.counterSize,'#9a7952');
+  box(clearing.machineBase,clearing.machineSize,'#4e6158');
+  for(const x of [11.23,12.17])rod([x,1.47,-26.45],[x,2.4,-26.45],.075,'#a78b56');
+  box([11.7,2.43,-26.45],[1.17,.2,.5],'#4e6158');
+  box([11.7,1.52,-26.38],[.56,.075,.48],'#b8975a');
+  add(new TorusGeometry(.29,.055,6,16),'#b8975a',[10.9,1.95,-26.45]);
+  for(let i=0;i<4;i++){const a=i*Math.PI/2;rod([10.9,1.95,-26.45],[10.9+.27*Math.cos(a),1.95+.27*Math.sin(a),-26.45],.035,'#92784b','visual');}
+  box(clearing.receiptTray,[.8,.06,.42],'#b8975a','visual');
+  for(const x of [11.28,12.12])box([x,1.52,-25.9],[.045,.12,.43],'#b8975a','visual');
+  box([12.82,1.44,-26.52],[.38,.24,.43],'#293f37');
+  box([12.82,1.57,-26.52],[.42,.04,.48],'#b8975a');
+  // Clock, board and floor bell form the rear focal axis. Dynamic bell/striker use the exported pivots.
+  add(new CylinderGeometry(1.65,1.65,.3,48),'#b19254',EXCHANGE_HALL.clock,[-Math.PI/2,0,0]);
+  add(new TorusGeometry(1.57,.12,8,48),'#c7a86b',[0,EXCHANGE_HALL.clock[1],EXCHANGE_HALL.clock[2]+.26]);
+  box([0,5.45,-39.55],[11,.25,.65],'#856540');
+  const bell=EXCHANGE_PLAY_PROPS.bell;
+  for(const x of [-.56,.56])rod([x,1.5,-37.16],[x,bell.frameTop[1],-37.16],.075,'#b8975a');
+  rod([-.65,bell.frameTop[1],-37.16],[.65,bell.frameTop[1],-37.16],.09,'#b8975a');
+  rod([0,2.22,-37.16],[0,1.61,-36.66],.022,'#ab9057','visual');
+  box([0,1.52,-36.66],[.25,.045,.17],'#72583c','visual');
+  const collision=(p:number[],flags?:TriMeshFlags):ExchangeCollision=>({vertices:new Float32Array(p),indices:Uint32Array.from({length:p.length/3},(_,i)=>i),flags});
+  // Coplanar floor diagonals are mesh seams, not physical ridges. Apply Rapier's
+  // local adjacent-face normal correction without changing vertices or player tolerances.
+  return {body:mergeBatch(parts),glass:mergeBatch(glass),colliders:{surface:collision(support,TriMeshFlags.FIX_INTERNAL_EDGES),solid:collision(solid)}};
 }

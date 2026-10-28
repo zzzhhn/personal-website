@@ -10,6 +10,8 @@ import { GuideSlopeFit, GuideStopStep, skinnedWorldPoint, type SlopeProbe } from
 import { GuideInertializer, GuidePhaseModel, PhaseGate, type InertialHalflives } from './WorldGuidePhase';
 import { guideSkinEvidence } from './WorldGuideEvidence';
 import { GuideMineLayer } from './WorldGuideMine';
+import { GuideExchangeLayer } from './WorldGuideExchange';
+import { exchangeBody, exchangeVisualSockets } from './alpha-exchange-motion';
 import { mineVisualSockets, useAlphaMineStore } from './alpha-mine-state';
 import { ALPHA_FACTORS } from './alpha-mine-data';
 import { GuideIdleLayer } from './WorldGuideIdle';
@@ -283,7 +285,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
       b.userData.leanAxis = new Vector3(1, 0, 0).applyQuaternion(scene.getWorldQuaternion(new Quaternion())).applyQuaternion(inv).normalize();
       spineBones.push(b);
     } });
-    return { scene, visualGLTF, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4), design, contact, slope:new GuideSlopeFit(scene), spineBones, inert:new GuideInertializer(scene), extras, yawCurve, disposeMerged, disposeBoots, idle: new GuideIdleLayer(scene, actions.IdleLook?.getClip().duration), seatContact: new GuideSeatContact(scene, animations), seatedIdle: new GuideSeatedIdle(scene), attractionFeet: new GuideAttractionFeet(), vehicleUpper: new GuideVehicleUpperBody(scene), drivingPose:new GuideDrivingPose(scene), vehicleContacts:new GuideVehicleContacts(scene), vehicleQuaternion:new Quaternion(), vehicleReference:new Vector3(), seatPoint: new Vector3(), mine: new GuideMineLayer(scene), vault:new GuideVaultLayer(scene),
+    return { scene, visualGLTF, mixer, actions, soles, feet, phaseSamples, durations, phase, gate:new PhaseGate(.4), design, contact, slope:new GuideSlopeFit(scene), spineBones, inert:new GuideInertializer(scene), extras, yawCurve, disposeMerged, disposeBoots, idle: new GuideIdleLayer(scene, actions.IdleLook?.getClip().duration), seatContact: new GuideSeatContact(scene, animations), seatedIdle: new GuideSeatedIdle(scene), attractionFeet: new GuideAttractionFeet(), vehicleUpper: new GuideVehicleUpperBody(scene), drivingPose:new GuideDrivingPose(scene), vehicleContacts:new GuideVehicleContacts(scene), vehicleQuaternion:new Quaternion(), vehicleReference:new Vector3(), seatPoint: new Vector3(), mine: new GuideMineLayer(scene), exchange:new GuideExchangeLayer(scene), vault:new GuideVaultLayer(scene),
       vehicleSit:new GuideVehicleSitPose(scene,animations),
       materials: (() => { const m: MeshStandardMaterial[] = []; scene.traverse(o => { if (o instanceof Mesh) for (const x of [o.material].flat()) if (!m.includes(x as MeshStandardMaterial)) m.push(x as MeshStandardMaterial); }); return m; })(),
       rootOff: new Vector3(), rootOffVel: new Vector3(), rootOffFrom: new Vector3(), lastWorld: new Vector3(), baseWorld: new Vector3(), vehOff: new Vector3(), vehiclePathPrevious: new Vector3(),
@@ -293,7 +295,9 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     pending: '', pendingTime: 0, phaseGateTimeouts: 0, jumpSeq: -1, jumpKind: '' as '' | 'Jump' | 'RunJump', takeoffSpeed: 0,
     vy: 0, vyPeak: 0, fallSpeed: 0, airPhase: 0, blocked: 0, sat: false, seatReady: false, seatWait: 0, turn: null as null | { clip: string; from: number; to: number; t: number }, shownYaw: 0, sitFromYaw: 0, yawInit: false, fade: 1, sitDrop: 0, groundY: NaN, prevSeated: false, seatChangeT: 9, lastSeat: null as null | { position: [number, number, number]; yaw: number }, hasLast: false, lean: 0, pitch: 0, prevFacing: 0, prevSpeed: 0, faded: 1, vehPhase: '', lastLand: '', landSpeed: 0, landT: 0, rateOut: 0, slopeOn: false });
   useEffect(() => () => {
-    rig.mine.dispose(); Object.assign(mineVisualSockets, { valid: false, assetsReady: false, sampledActionKind: null, sampledElapsed: 0 });
+    rig.mine.dispose(); rig.exchange.dispose();
+    Object.assign(exchangeVisualSockets,{valid:false,sampledId:null,contactError:Infinity});
+    Object.assign(mineVisualSockets, { valid: false, assetsReady: false, sampledActionKind: null, sampledElapsed: 0 });
     rig.mixer.stopAllAction(); rig.mixer.uncacheRoot(rig.scene); rig.disposeMerged?.(); rig.disposeBoots();
     const skeletons = new Set<SkinnedMesh['skeleton']>();
     rig.scene.traverse(o => { if (o instanceof SkinnedMesh) skeletons.add(o.skeleton); });
@@ -379,7 +383,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     if (group.current) group.current.visible = shown;
     if (!shown && s.visible) { stop.current?.cancel('hidden'); rig.inert.reset(); s.hasLast = false; }
     if (!shown) onMovementLock?.(false);
-    if (!shown) { rig.vehicleContacts.restore(); rig.drivingPose.restore(); rig.vehicleUpper.restore(); rig.vehicleSit.restore(); rig.seatedIdle.reset(); rig.idle.restore(); rig.idle.reset(); rig.mine.hide(); Object.assign(mineVisualSockets, { valid: false, sampledActionKind: null, sampledElapsed: 0 }); }
+    if (!shown) { rig.vehicleContacts.restore(); rig.drivingPose.restore(); rig.vehicleUpper.restore(); rig.vehicleSit.restore(); rig.seatedIdle.reset(); rig.idle.restore(); rig.idle.reset(); rig.mine.hide(); Object.assign(exchangeVisualSockets,rig.exchange.apply(null,null,false)); Object.assign(mineVisualSockets, { valid: false, sampledActionKind: null, sampledElapsed: 0 }); }
     s.visible = shown;
     if (world.paused || world.poolInspect || world.shot || !shown) return;
     rig.vehicleContacts.restore();
@@ -390,6 +394,7 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
     rig.vault.restore();
     rig.attractionFeet.restore();
     rig.mine.restore();
+    rig.exchange.restore();
     rig.idle.restore();
     const dt = Math.max(1e-6, Math.min(delta, .08));
     const { grounded, facing, targetSpeedMps } = motion;
@@ -904,7 +909,10 @@ function GuideModel({ speedMps: initialSpeed, grounded: initialGrounded, visible
         m.opacity = s.faded;
       }
       // Apply after locomotion. Interaction crouches preserve the completed world-space foot anchors.
-      const mine = rig.mine.apply(useAlphaMineStore.getState(), !attraction && !dancing && !motion.seat && !motion.vehicle && !motion.railVault);
+      const handsAvailable=!attraction&&!dancing&&!motion.seat&&!motion.vehicle&&!motion.railVault;
+      const exchangeActive=!!exchangeBody.action||!!exchangeBody.carried;
+      const mine = rig.mine.apply(useAlphaMineStore.getState(), handsAvailable&&!exchangeActive);
+      Object.assign(exchangeVisualSockets,rig.exchange.apply(exchangeBody.action,exchangeBody.carried,handsAvailable&&!world.card));
       rig.vault.apply(motion.railVault);
       settleGuideAttraction(group.current, rig.seatContact, attraction);
       rig.attractionFeet.apply(rig.slope, attraction, dt);

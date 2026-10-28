@@ -1,0 +1,42 @@
+{
+ "exchange": {
+  "phase": "ticket",
+  "checkpoint": 0,
+  "day": 0,
+  "target": 0,
+  "units": 0,
+  "contacts": 11,
+  "lastContact": "pickup",
+  "carried": "ticket",
+  "ticketReturned": false,
+  "error": null,
+  "actor": {
+   "position": [
+    48.29999923706055,
+    2.408825635910034,
+    -73.17720031738281
+   ],
+   "yaw": 1.5707963267948966,
+   "grounded": true,
+   "available": true
+  },
+  "action": null,
+  "sockets": {
+   "valid": true,
+   "contactError": null,
+   "sampledId": null,
+   "sampledElapsed": 0,
+   "rightHand": [
+    48.47999925341211,
+    2.62150004921233,
+    -73.50720031582495
+   ],
+   "leftHand": [
+    48.05999923877542,
+    2.5915000307247995,
+    -73.37720032639862
+   ]
+  },
+  "receipt": null
+ }
+}

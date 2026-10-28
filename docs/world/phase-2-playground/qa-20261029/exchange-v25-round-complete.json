@@ -1,0 +1,46 @@
+{
+ "exchange": {
+  "phase": "complete",
+  "checkpoint": 3,
+  "day": 751,
+  "target": 10,
+  "units": 10,
+  "contacts": 10,
+  "lastContact": "collect",
+  "carried": "receipt",
+  "ticketReturned": false,
+  "error": null,
+  "actor": {
+   "position": [
+    71.67402648925781,
+    2.408824920654297,
+    -80.34960174560547
+   ],
+   "yaw": 7.853981633974483,
+   "grounded": true,
+   "available": true
+  },
+  "action": null,
+  "sockets": {
+   "valid": true,
+   "contactError": null,
+   "sampledId": null,
+   "sampledElapsed": 0,
+   "rightHand": [
+    71.85402650718876,
+    2.6215000848638503,
+    -80.67960172376549
+   ],
+   "leftHand": [
+    71.43402648451828,
+    2.5915000779460895,
+    -80.54960173688683
+   ]
+  },
+  "receipt": {
+   "equity": 10749.245448349722,
+   "pnl": 749.2454483497222,
+   "choices": 3
+  }
+ }
+}

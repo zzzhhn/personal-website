@@ -1,5 +1,5 @@
 import { useWorldStore } from './store';
-import { exchangeEquity, useAlphaExchange } from './alpha-exchange-state';
+import { roundEquity } from './alpha-exchange-round';
 import { readDrivingTelemetry } from './vehicle-telemetry';
 import { grassDebug } from './WorldGrass';
 import { mineActor } from './alpha-mine-state';
@@ -32,6 +32,10 @@ import { coasterStructureJobs } from './attractions/coaster-structure-job';
 import { coasterDropHeight } from './attractions/coaster-terrain-relief';
 import { coasterWorld } from './attractions/coaster-track';
 import { worldResumeProbe } from './world-resume-probe';
+import { useExchangePlay } from './alpha-exchange-play';
+import { exchangeBody, exchangeActor, exchangeVisualSockets } from './alpha-exchange-motion';
+import { exchangeWorld } from './alpha-exchange-layout';
+import { EXCHANGE_PLAY_STATIONS } from './alpha-exchange-play-layout';
 
 function readContactSnapshot() {
   const value=worldActorDebug.actor(),physics=worldActorDebug.snapshot();
@@ -44,7 +48,7 @@ function readContactSnapshot() {
 
 /** Development QA controls and visible diagnostics. Reuses actor publication without polling. */
 export default function WorldPlaytestReadout() {
-  const world=useWorldStore(),exchange=useAlphaExchange();
+  const world=useWorldStore(),exchange=useExchangePlay(),round=exchange.round;
   const [renderSnapshot,setRenderSnapshot]=useState<unknown>(null);
   const [networkFailure,setNetworkFailure]=useState(false);
   const waterWindow=useRef<ReturnType<typeof clubWaterSnapshot>|null>(null);
@@ -53,6 +57,8 @@ export default function WorldPlaytestReadout() {
       <button onClick={()=>setRenderSnapshot(readRenderSnapshot())}>QA · 读取当前渲染开销</button>
       <button onClick={()=>setRenderSnapshot({parkAudio:parkAudio.snapshot()})}>QA · 读取环境音频</button>
       {import.meta.env.DEV&&<>
+        <button onClick={()=>{const p=exchangeWorld([...EXCHANGE_PLAY_STATIONS.archive.stand]);worldActorDebug.teleportPlayer([p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]+.5]);useWorldStore.setState({paused:false,seat:null,clubMode:null});}}>QA · 到交易所档案台</button>
+        <button onClick={()=>{const s=useExchangePlay.getState(),r=s.round,a=exchangeBody.action;setRenderSnapshot({exchange:{phase:r?.phase??s.notice,checkpoint:r?.checkpoint??0,day:r?.day??0,target:r?.targetUnits??0,units:r?.units??0,contacts:s.contacts,lastContact:s.lastContact,carried:exchangeBody.carried,ticketReturned:s.ticketReturned,error:s.error,actor:exchangeActor,action:a?{kind:a.kind,phase:a.phase,elapsed:a.elapsed,target:a.anchor.target}:null,sockets:exchangeVisualSockets,receipt:r?.receipt?{equity:r.receipt.finalEquity,pnl:r.receipt.pnl,choices:r.receipt.choices.length}:null}});}}>QA · 读取交易所接触</button>
         {[IBD_YARD,INTENT_COASTER].map(site=><button key={site.title.en} onClick={()=>{
           const p=site.entrance;worldActorDebug.teleportPlayer([p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]]);
           useWorldStore.setState({paused:false,clubMode:null,seat:null});
@@ -143,8 +149,8 @@ export default function WorldPlaytestReadout() {
     {JSON.stringify({position:world.position.map(v=>+v.toFixed(2)),yaw:+mineActor.yaw.toFixed(2),grounded:mineActor.grounded,
       nearby:world.nearbyInteract?.id,vehicle:world.activeVehicle,drive:readDrivingTelemetry(),
       grass:{instances:grassDebug.instances,disturbers:grassDebug.disturbers,trampled:grassDebug.trampleActive,strength:grassDebug.maxTrample},
-      exchange:{phase:exchange.phase,date:exchange.history[exchange.day]?.date,days:exchange.history.length,day:exchange.day,
-        cash:exchange.cash,units:exchange.units,equity:exchangeEquity(exchange),message:exchange.message,ledger:exchange.ledger}},null,1)}
+      exchange:{phase:round?.phase??exchange.notice,date:round?.history[round.day]?.date,day:round?.day,checkpoint:round?.checkpoint,
+        cash:round?.cash,units:round?.units,equity:round?roundEquity(round):null,contacts:exchange.contacts,carried:exchangeBody.carried}},null,1)}
   </output>}
   </>;
 }
