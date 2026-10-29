@@ -4,6 +4,7 @@ import { BoxGeometry, CylinderGeometry, LatheGeometry, MeshStandardMaterial, Pla
 import { useInteractable } from './WorldInteract';
 import { useWorldStore } from './store';
 import { exchangeActionAudio } from './alpha-exchange-audio';
+import { exchangeChamferBox } from './alpha-exchange-craft';
 import { exchangeWorld } from './alpha-exchange-layout';
 import { EXCHANGE_PLAY_PROPS as P, EXCHANGE_PLAY_STATIONS as S } from './alpha-exchange-play-layout';
 import { exchangeBody } from './alpha-exchange-motion';
@@ -62,8 +63,8 @@ export default function WorldAlphaExchangePlay({ brass, paperFace }: { brass: Me
     receipt = useRef<Mesh>(null), bell = useRef<Group>(null), pull = useRef<Mesh>(null), rope = useRef<Mesh>(null);
   const sliderStart = useRef({ id: -1, x: 0 });
   const parts = useMemo(() => ({ ticket: new BoxGeometry(...P.archive.ticketSize), receipt: new BoxGeometry(...P.clearing.receiptSize),
-    grip: new BoxGeometry(...P.desk.sliderGripSize), stamp: new BoxGeometry(...P.clearing.stampSize),
-    marker: new BoxGeometry(.055,.025,.095), pull: new BoxGeometry(.22,.075,.075), rope: new CylinderGeometry(.014,.014,1,6),
+    grip: exchangeChamferBox(P.desk.sliderGripSize,.018), stamp: exchangeChamferBox(P.clearing.stampSize,.018),
+    marker: new BoxGeometry(.055,.025,.095), pull: exchangeChamferBox([.22,.075,.075],.015), rope: new CylinderGeometry(.014,.014,1,6),
     ticketFace: paperFaceGeometry(.245,.16,[0,608,512,128]), receiptFace: paperFaceGeometry(.27,.19,[256,752,384,256]),
     bell: new LatheGeometry([new Vector2(.39,-.4),new Vector2(.4,-.34),new Vector2(.3,-.27),new Vector2(.18,-.04),new Vector2(.04,.02)],16),
     ink: new MeshStandardMaterial({ color: '#544736', roughness: .9 }), paper: new MeshStandardMaterial({ color: '#eadfc2', roughness: .9 }),

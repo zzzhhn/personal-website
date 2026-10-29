@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { TrimeshCollider, RigidBody } from '@react-three/rapier';
 import { CanvasTexture, CircleGeometry, MeshStandardMaterial, PlaneGeometry, SRGBColorSpace } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
-import { parkMaterial } from './WorldParkKit';
+import { exchangeCraftMaterial } from './alpha-exchange-craft';
 import { buildAlphaExchangeGeometry } from './WorldAlphaExchangeGeometry';
 import WorldAlphaExchangePlay, { exchangePlayInstruction } from './WorldAlphaExchangePlay';
 import { night } from './WorldNight';
@@ -53,6 +53,7 @@ export default function WorldAlphaExchange({ projectId }: { projectId?: string }
     const canvas = document.createElement('canvas'); canvas.width = canvas.height = 1024;
     const texture = new CanvasTexture(canvas); texture.colorSpace = SRGBColorSpace; texture.anisotropy = 4;
     return { canvas, texture,
+      architecture: exchangeCraftMaterial(),
       material: new MeshStandardMaterial({ map: texture, roughness: .85, emissive: '#ffffff', emissiveMap: texture, emissiveIntensity: .16 }),
       brass: new MeshStandardMaterial({ color: '#b8975a', metalness: .55, roughness: .42, emissive: '#9d7541', emissiveIntensity: 0 }),
       glass: new MeshStandardMaterial({ vertexColors: true, color: '#f3dba8', transparent: true, opacity: .29, roughness: .35,
@@ -126,7 +127,7 @@ export default function WorldAlphaExchange({ projectId }: { projectId?: string }
   }, [atlas,state,zh]);
   useEffect(() => () => {
     releaseExchangePlay(); built.body.dispose(); built.glass.dispose(); built.faces.dispose();
-    atlas.texture.dispose(); atlas.material.dispose(); atlas.brass.dispose(); atlas.glass.dispose();
+    atlas.texture.dispose(); atlas.material.dispose(); atlas.architecture.dispose(); atlas.brass.dispose(); atlas.glass.dispose();
   }, [built,atlas]);
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get('qa') !== '1') return;
@@ -147,7 +148,7 @@ export default function WorldAlphaExchange({ projectId }: { projectId?: string }
     atlas.brass.emissiveIntensity=.12*night.value;
   });
   return <group name="alpha-agent-exchange" position={ALPHA_EXCHANGE_ORIGIN} userData={{ noOcclusionFade:true }}>
-    <mesh name="alpha-exchange-architecture" geometry={built.body} material={parkMaterial()} castShadow receiveShadow/>
+    <mesh name="alpha-exchange-architecture" geometry={built.body} material={atlas.architecture} castShadow receiveShadow/>
     <mesh name="alpha-exchange-displays" geometry={built.faces} material={atlas.material}/>
     <mesh name="alpha-exchange-skylights" geometry={built.glass} material={atlas.glass} receiveShadow renderOrder={1}/>
     <pointLight position={[-7,6,-18]} color="#ffdb9d" intensity={130} distance={26} decay={2} castShadow={false}/>

@@ -3,6 +3,7 @@ import { TriMeshFlags } from '@dimforge/rapier3d-compat';
 import { mergeBatch, toBatch, type Emit } from './WorldParkKit';
 import { EXCHANGE_HALL,EXCHANGE_COLUMNS,exchangeBoxes,exchangePlatformSlabs } from './alpha-exchange-layout';
 import { EXCHANGE_PLAY_PROPS,EXCHANGE_PLAY_STATIONS,EXCHANGE_SECOND_DESK } from './alpha-exchange-play-layout';
+import { exchangeChamferBox,exchangeSurface,bakeExchangeWorklights,EXCHANGE_BANK_LAMPS } from './alpha-exchange-craft';
 import type { Vec3 } from './types';
 
 export interface ExchangeCollision {vertices:Float32Array;indices:Uint32Array;flags?:TriMeshFlags}
@@ -13,10 +14,14 @@ export function buildAlphaExchangeGeometry() {
   const add=(g:BufferGeometry,color:string,p:Vec3=[0,0,0],rotation:Vec3=[0,0,0],kind:'solid'|'surface'|'visual'='solid',emit:Emit=[0,0,0],window=false)=>{
     const m=new Matrix4().compose(new Vector3(...p),new Quaternion().setFromEuler(new Euler(...rotation)),new Vector3(1,1,1));
     const baked=toBatch(g,m,color,emit),v=baked.getAttribute('position'),n=baked.getAttribute('normal');g.dispose();
+    const response=exchangeSurface(color),surface=new Float32Array(v.count*2);
+    for(let i=0;i<v.count;i++){surface[i*2]=response[0];surface[i*2+1]=response[1];}
+    baked.setAttribute('aExchangeSurface',new Float32BufferAttribute(surface,2));
     if(kind!=='visual')for(let i=0;i<v.count;i+=3){const list=kind==='surface'&&n.getY(i)>.7?support:solid;for(let k=0;k<3;k++)list.push(v.getX(i+k),v.getY(i+k),v.getZ(i+k));}
     (window?glass:parts).push(baked);
   };
   const box=(p:Vec3,s:Vec3,c:string,kind:'solid'|'surface'|'visual'='solid',yaw=0,emit:Emit=[0,0,0])=>add(new BoxGeometry(...s),c,p,[0,yaw,0],kind,emit);
+  const chamfer=(p:Vec3,s:Vec3,c:string,kind:'solid'|'visual'='solid',yaw=0,bevel=.025,emit:Emit=[0,0,0])=>add(exchangeChamferBox(s,bevel),c,p,[0,yaw,0],kind,emit);
   const rod=(a:Vec3,b:Vec3,r:number,c:string,kind:'solid'|'visual'='solid')=>{
     const av=new Vector3(...a),bv=new Vector3(...b),d=bv.clone().sub(av),g=new CylinderGeometry(r,r,d.length(),6);
     g.applyQuaternion(new Quaternion().setFromUnitVectors(new Vector3(0,1,0),d.normalize()));add(g,c,av.add(bv).multiplyScalar(.5).toArray() as Vec3,[0,0,0],kind);
@@ -172,10 +177,17 @@ export function buildAlphaExchangeGeometry() {
   const desk=EXCHANGE_PLAY_PROPS.desk;
   ring(0,-20,desk.innerRadius,desk.outerRadius-.1,.96,.91,'#5a4230',48,'solid',[0,.045,0]);
   ring(0,-20,desk.innerRadius-.1,desk.outerRadius,desk.top,.12,'#987348',48,'solid',[0,.1,1]);
-  ring(0,-20,desk.outerRadius-.12,desk.outerRadius-.07,.25,.12,'#b2945a',48,'visual');
-  for(let i=0;i<20;i++) {
-    const a=i*Math.PI/10,x=(desk.outerRadius-.1)*Math.cos(a),z=-20+(desk.outerRadius-.1)*Math.sin(a);
-    rod([x,.18,z],[x,.91,z],.025,'#ad8a51','visual');
+  ring(0,-20,desk.outerRadius-.12,desk.outerRadius-.07,.22,.07,'#b2945a',48,'visual');
+  ring(0,-20,desk.outerRadius-.015,desk.outerRadius+.005,1.025,.025,'#b8975a',64,'visual');
+  // Joinery has a raised frame, a recessed field and a narrow shadow line. Its
+  // chord stays inside the counter lip; the existing body still owns the collision.
+  for(let i=0;i<24;i++) {
+    const a=i*Math.PI/12,yaw=Math.PI/2-a,r=desk.outerRadius-.095;
+    const at=(u:number,y:number,depth=0):Vec3=>[r*Math.cos(a)+u*Math.cos(yaw)+depth*Math.sin(yaw),y,-20+r*Math.sin(a)-u*Math.sin(yaw)+depth*Math.cos(yaw)];
+    chamfer(at(0,.57),[1.12,.61,.065],i%3===0?'#715337':'#886440','visual',yaw,.018,[0,.075,1]);
+    box(at(0,.57,.037),[.91,.41,.018],'#5a4230','visual',yaw, [0,.06,1]);
+    for(const u of [-.5,.5])box(at(u,.57,.045),[.045,.51,.025],'#9a7952','visual',yaw);
+    for(const y of [.32,.82])box(at(0,y,.045),[1.04,.035,.025],'#9a7952','visual',yaw);
   }
   add(new CylinderGeometry(1.15,1.35,.32,12),'#b8a17b',[0,.16,-20]);
   box([0,.82,-20],[1.2,1.3,.9],'#3b4d47');
@@ -187,11 +199,23 @@ export function buildAlphaExchangeGeometry() {
   // Only two CRTs, one per actual working position. No decorative terminal rows.
   for(const s of [EXCHANGE_PLAY_STATIONS.desk,EXCHANGE_SECOND_DESK]) {
     const x=s.stand[0];
-    box([x,1.4,-16.12],[.78,.62,.62],'#c1b69c');
-    box([x,1.09,-16.12],[.48,.1,.45],'#847d68');
+    chamfer([x,1.4,-16.12],[.78,.62,.62],'#c1b69c','solid',0,.045);
+    chamfer([x,1.09,-16.12],[.48,.1,.45],'#847d68','solid',0,.018);
     box([x,1.43,-15.794],[.64,.43,.035],'#203d34','visual',0,[.025,.1,0]);
-    box([x,1.09,-15.66],[.76,.055,.24],'#c8bea7');
-    for(let i=0;i<3;i++)box([x,1.124,-15.73+i*.065],[.61,.018,.028],'#807968','visual');
+    chamfer([x,1.09,-15.66],[.76,.055,.24],'#c8bea7','solid',0,.012);
+    for(let row=0;row<3;row++)for(let col=0;col<9;col++)box([x-.28+col*.07,1.124,-15.73+row*.065],[.052,.018,.039],'#807968','visual');
+    for(let i=0;i<5;i++)box([x+.391,1.36+i*.045,-16.21],[.008,.016,.24],'#665e4c','visual');
+    add(new CylinderGeometry(.028,.028,.013,8),'#b8975a',[x+.27,1.19,-15.799],[Math.PI/2,0,0],'visual');
+  }
+  // Two banker lamps sit on the inner worktop, clear of both hand trajectories.
+  // Their finite luminous liners use the existing night channel, not new lights.
+  for(const [x,,z] of EXCHANGE_BANK_LAMPS) {
+    add(new CylinderGeometry(.22,.27,.06,16),'#b8975a',[x,1.08,z],[0,0,0],'solid');
+    rod([x,1.11,z],[x,1.69,z],.032,'#b8975a');
+    rod([x-.34,1.68,z],[x+.34,1.68,z],.025,'#b8975a');
+    chamfer([x,1.72,z+.01],[.88,.22,.34],'#486c54','solid',0,.085,[0,.06,0]);
+    chamfer([x,1.616,z+.01],[.72,.025,.25],'#efd8a8','visual',0,.01,[.025,.85,1]);
+    rod([x+.24,1.61,z+.07],[x+.24,1.39,z+.07],.009,'#b8975a','visual');
   }
   const slot=desk.ticketSlot;
   box([slot[0],slot[1]+.015,slot[2]],[.52,.035,.21],'#b8975a','visual');
@@ -202,8 +226,8 @@ export function buildAlphaExchangeGeometry() {
   // Open archive wing: service counter, real ticket throat, index drawers and reading ledgers.
   const archive=EXCHANGE_PLAY_PROPS.archive;
   box([-11.7,.84,-19.31],[3.15,.78,1.15],'#5a4634');
-  box(archive.counter,archive.counterSize,'#9a7952');
-  box([-11.7,1.4,-19],[1.1,.3,.62],'#536359');
+  chamfer(archive.counter,archive.counterSize,'#9a7952','solid',0,.035);
+  chamfer([-11.7,1.4,-19],[1.1,.3,.62],'#536359','solid',0,.045);
   box(archive.ticketSlot,archive.slotSize,'#233b33','visual');
   for(const x of [-12.08,-11.32])box([x,1.48,-18.7],[.08,.2,.16],'#b8975a','visual');
   box([-11.7,1.56,-18.72],[.84,.07,.18],'#b8975a','visual');
@@ -222,8 +246,8 @@ export function buildAlphaExchangeGeometry() {
   for(let i=0;i<3;i++)box([-12.65,1.33+i*.08,-19.42],[.65,.075,.84],['#61735b','#7a5a43','#a98d58'][i],'visual',-.12+i*.07);
   // Clearing wing: a physical press with platen, guide columns, flywheel and output tray.
   const clearing=EXCHANGE_PLAY_PROPS.clearing;
-  box([11.7,.84,-26.45],[3.15,.78,1.15],'#5a4634');box(clearing.counter,clearing.counterSize,'#9a7952');
-  box(clearing.machineBase,clearing.machineSize,'#4e6158');
+  box([11.7,.84,-26.45],[3.15,.78,1.15],'#5a4634');chamfer(clearing.counter,clearing.counterSize,'#9a7952','solid',0,.035);
+  chamfer(clearing.machineBase,clearing.machineSize,'#4e6158','solid',0,.035);
   for(const x of [11.23,12.17])rod([x,1.47,-26.45],[x,2.4,-26.45],.075,'#a78b56');
   box([11.7,2.43,-26.45],[1.17,.2,.5],'#4e6158');
   box([11.7,1.52,-26.38],[.56,.075,.48],'#b8975a');
@@ -236,7 +260,7 @@ export function buildAlphaExchangeGeometry() {
   // A shallow gallery console leaves the through-route clear. Its selector uses the same contact anchor.
   const review=EXCHANGE_PLAY_PROPS.review;
   box([-3,5.65,-39.04],[1.24,.9,.48],'#5a4634');
-  box(review.counter,review.counterSize,'#9a7952');
+  chamfer(review.counter,review.counterSize,'#9a7952','solid',0,.025);
   box([-3,6.235,-39.04],[1.32,.025,.53],'#b8975a','visual');
   for(let i=0;i<4;i++)box([-3.42+i*.28,6.255,-39.15],[.055,.018,.13],'#354d43','visual');
   // Clock, board and floor bell form the rear focal axis. Dynamic bell/striker use the exported pivots.
@@ -251,5 +275,6 @@ export function buildAlphaExchangeGeometry() {
   const collision=(p:number[],flags?:TriMeshFlags):ExchangeCollision=>({vertices:new Float32Array(p),indices:Uint32Array.from({length:p.length/3},(_,i)=>i),flags});
   // Coplanar floor diagonals are mesh seams, not physical ridges. Apply Rapier's
   // local adjacent-face normal correction without changing vertices or player tolerances.
-  return {body:mergeBatch(parts),glass:mergeBatch(glass),colliders:{surface:collision(support,TriMeshFlags.FIX_INTERNAL_EDGES),solid:collision(solid)}};
+  const body=mergeBatch(parts);bakeExchangeWorklights(body);
+  return {body,glass:mergeBatch(glass),colliders:{surface:collision(support,TriMeshFlags.FIX_INTERNAL_EDGES),solid:collision(solid)}};
 }
