@@ -33,6 +33,8 @@
 
 类型检查使用 `tsc --noEmit --strict --jsx react-jsx --module ESNext --moduleResolution Bundler --target ES2022 --lib ES2022,DOM --types vite/client --skipLibCheck --allowImportingTsExtensions`。构建目录 `/tmp/bobby-world-v42-20261029`。
 
+最终产物在 4343 实际启动，世界实景及地图暂停操作正常。随后同一构建切换至 4341，HTML SHA-256 为 `207117a6029dbe3e7cd25495917f05392233645e9bfa08dcc585d55fb9c3f120`，两端一致，5 个入口脚本/样式均为 200。4343 临时服务已停止，4341 保留；旧 v41 构建留作回滚。
+
 ## 尚未关闭的整体目标
 
 本轮不把五条长期目标整体划掉。其它新场景的近景模型和夜景还需按代表区域继续对照；国投箱盖及更多完整游玩反馈仍有细化空间。音乐已经有用户认可的方向，但最终混音听感与场景切换仍需实际体验反馈。Alpha 的本轮新增柜体是已批准方向的局部细化，整体玩法是否足够有趣仍待用户试玩判断。
