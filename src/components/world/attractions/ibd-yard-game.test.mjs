@@ -6,14 +6,20 @@ import { createIbdYardGame, yardCase, yardActions, yardItemId, requestIbdYardAct
 import { ibdStation, IBD_STATIONS, IBD_CARGO_HOME } from './ibd-yard-layout.ts';
 import { advanceIbdMotion, ibdCargoPose } from './ibd-yard-motion.ts';
 import { playerVerdict } from './ibd-test-player.mjs';
+import { ibdStockItem } from './ibd-stock.ts';
 
 const actor = (g, station) => ({ active: true, local: ibdStation(station, g.core.moved).at });
 function act(g, station, kind) {
   if (kind === 'contents') return inspectPack(g,station);
   const action = yardActions(g, station).find(a => !kind || a.kind === kind);
   assert.ok(action, `${station}/${kind} unavailable`);
-  const next = requestIbdYardAction(g, playerVerdict(g, action), actor(g, station));
+  const answer = action.kind === 'judge' && action.itemId.startsWith('reserve:') ? { ...action, verdict: 'matches' } : playerVerdict(g, action);
+  const next = requestIbdYardAction(g, answer, actor(g, station));
   return next.pending ? finishIbdYardAction(next, next.pending.token, actor(g, station)) : next;
+}
+function chooseCorrectStock(g) {
+  const key = ['stock-a', 'stock-b'].find(key => ibdStockItem(g.round, g.caseIndex, key).specId === 'M8');
+  return act(g, key, 'select-stock');
 }
 function packEvent(g,station,type,slot=0,extra={}) {
   return inspectIbdYardPack(g,{type,itemId:yardItemId(g,station),slot,contact:true,aligned:true,visible:true,round:g.round,revision:g.revision,...extra},actor(g,station));
@@ -61,8 +67,13 @@ test('each anomaly can be corrected and a fresh identity must be inspected befor
     assert.equal(assessIbd(yardCase(g), g.core).inventory.status, 'different');
     if (index === 2) { assert.equal(act(g, slot, 'replace').notice, 'clear-exchange-lane'); g = act(g, 'crane'); }
     g = act(g, slot, 'replace');
-    assert.equal(g.exchanges.length, 1); assert.equal(g.exchanges[0].original.id, slot);
-    assert.ok(g.exchanges[0].proofs.length >= 4);
+    if (index === 2) {
+      assert.equal(g.exchanges.length, 1); assert.equal(g.exchanges[0].original.id, slot);
+      assert.ok(g.exchanges[0].proofs.length >= 4);
+    } else {
+      assert.equal(g.exchanges.length, 0); assert.equal(g.stock.originalReturned, true);
+      assert.deepEqual(yardActions(g, 'parts-b'), []); g = chooseCorrectStock(g);
+    }
     assert.notEqual(yardItemId(g, slot), slot);
     assert.equal(assessIbd(yardCase(g), g.core).inventory.status, 'insufficient');
     if (index === 2) g = act(g, 'gallery-rear');
@@ -77,7 +88,7 @@ test('wrong load remains physical, unload invalidates confirmation, then correct
   assert.equal(g.notice, 'check-different'); assert.equal(g.released, false);
   assert.equal(yardActions(g, 'parts-b').length, 0);
   g = act(g, 'truck-b'); assert.equal(g.core.shipmentConfirmed, false);
-  g = act(g, 'parts-b', 'replace'); g = act(g, 'parts-b', 'open'); g = act(g, 'parts-b', 'contents');
+  g = chooseCorrectStock(act(g, 'parts-b', 'replace')); g = act(g, 'parts-b', 'open'); g = act(g, 'parts-b', 'contents');
   g = act(g, 'parts-b', 'judge');
   g = act(g, 'load-b'); g = act(g, 'dispatch', 'verify'); g = act(g, 'dispatch', 'release');
   assert.equal(g.released, true); assert.equal(new Set(g.core.loaded).size, 2);
@@ -166,8 +177,8 @@ test('replacement, next and reset never reuse old item pocket conclusions', () =
   let g=prepare(1); assert.equal(g.packInspections['parts-b'].slots.filter(slot=>slot.complete).length,4);
   g=act(g,'parts-b','replace'); assert.equal(g.packInspections['parts-b'],undefined); assert.equal(g.packInspections['parts-b:replacement'],undefined);
   const old=inspectIbdYardPack(g,{type:'take',itemId:'parts-b',slot:0,contact:true,round:g.round,revision:g.revision},actor(g,'parts-b'));
-  assert.equal(old.notice,'unknown-item'); g=act(g,'parts-b','open'); g=packEvent(g,'parts-b','take');
-  assert.equal(g.packInspections['parts-b:replacement'].slots.some(slot=>slot.complete),false);
+  assert.equal(old.notice,'unknown-item'); g=chooseCorrectStock(g); g=act(g,'parts-b','open'); g=packEvent(g,'parts-b','take');
+  assert.equal(g.packInspections[yardItemId(g,'parts-b')].slots.some(slot=>slot.complete),false);
   g=act(g,'manifest','next'); assert.deepEqual(g.packInspections,{});
   g=act(g,'manifest','reset'); assert.deepEqual(g.packInspections,{});
 });

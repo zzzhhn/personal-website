@@ -4,7 +4,8 @@ import { ibdGuideStep, ibdGuideRoute, ibdGuideResult, ibdGuidePhaseDone } from '
 import { readFileSync } from 'node:fs';
 import ts from 'typescript';
 import { createIbdYardGame, requestIbdYardAction, finishIbdYardAction, yardActions, yardCase } from './ibd-yard-game.ts';
-import { ibdStation } from './ibd-yard-layout.ts';
+import { ibdStation, IBD_STOCK_KEYS } from './ibd-yard-layout.ts';
+import { ibdStockItem } from './ibd-stock.ts';
 import { assessIbd } from './ibd-model.ts';
 import { buildIbdStatic } from './ibd-yard-geometry.ts';
 import { playerVerdict } from './ibd-test-player.mjs';
@@ -12,6 +13,11 @@ import { inspectIbdTestPack } from './ibd-test-pack-inspection.mjs';
 
 const actor = (game, station) => ({ active: true, local: ibdStation(station, game.core.moved).at });
 function act(game, action) {
+  if(action.station==='stock-room'){
+    // Guidance ends at the reserve aisle. The simulated player makes an explicit choice.
+    const chosen=IBD_STOCK_KEYS.find(key=>ibdStockItem(game.round,game.caseIndex,key).specId==='M8');
+    return manual(game,chosen,'select-stock');
+  }
   if (action.kind === 'contents') return inspectIbdTestPack(game, action);
   const a = actor(game, action.station), requested = requestIbdYardAction(game, playerVerdict(game, action), a);
   return requested.pending ? finishIbdYardAction(requested, requested.pending.token, a) : requested;
@@ -41,7 +47,7 @@ test('all anomaly cases guide through real correction, replacement reinspection 
     }
     assert.equal(game.released, true, `case ${index}`); assert.equal(exchanges, 1);
     assert.equal(assessIbd(yardCase(game), game.core).status, 'clear');
-    assert.equal(game.exchanges.length, 1);
+    assert.equal(game.exchanges.length+(game.stock.originalReturned?1:0), 1);
   }
 });
 test('pending, cancelled, remote and paused actions never falsely advance the next physical instruction', () => {

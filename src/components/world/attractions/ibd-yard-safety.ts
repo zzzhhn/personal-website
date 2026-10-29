@@ -7,7 +7,7 @@ import type { Vec3 } from '../types';
 export type IbdMotionWait = 'path-occupied' | 'player-unavailable' | null;
 export const IBD_SAFETY_GAP = .18;
 export interface IbdSafetyPlayer { shape: Rapier.Shape; position: Rapier.Vector; rotation: Rapier.Rotation; velocity: Rapier.Vector }
-const protectedKinds = new Set(['load', 'unload', 'replace', 'crane', 'turn', 'weigh', 'release']);
+const protectedKinds = new Set(['load', 'unload', 'replace', 'select-stock', 'return-stock', 'crane', 'turn', 'weigh', 'release']);
 const zero = { x: 0, y: 0, z: 0 };
 
 /** Per-operation pair queries only. No world traversal, position-store sampling or player mutation. */
@@ -43,7 +43,7 @@ export function createIbdSafety(rapier: Pick<typeof Rapier, 'Cuboid'>, game: Ibd
       if (stop <= start + 1e-9) continue;
       const end = Math.min(stop, b);
       if (segmentBlocked(start, end, player, predictSeconds, false)) return true;
-      if (action?.kind === 'replace' && segmentBlocked(start, end, player, predictSeconds, true)) return true;
+      if (action?.kind === 'replace' && slot!=='parts-b' && segmentBlocked(start, end, player, predictSeconds, true)) return true;
       if (end >= b - 1e-9) break;
       start = end;
     }

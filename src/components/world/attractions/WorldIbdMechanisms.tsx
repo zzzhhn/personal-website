@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { CuboidCollider, RigidBody, useBeforePhysicsStep, useAfterPhysicsStep, useRapier, type RapierRigidBody, type RapierCollider } from '@react-three/rapier';
 import { BufferGeometry, Group, Mesh, MeshStandardMaterial, Quaternion, Vector3 } from 'three';
-import { IBD_ALL_CLEAR } from './ibd-cases.ts';
-import { IBD_SLOTS, IBD_CARGO_HOME, IBD_CRANE_Y, ibdWorld, type IbdSlot } from './ibd-yard-layout.ts';
+import { IBD_ALL_CLEAR, IBD_CASES } from './ibd-cases.ts';
+import { IBD_SLOTS, IBD_CARGO_HOME, IBD_CRANE_Y, IBD_STOCK_KEYS, IBD_STOCK_HOME, isIbdStockKey, ibdWorld, type IbdStockKey, type IbdSlot } from './ibd-yard-layout.ts';
 import { yardCase, yardItemId } from './ibd-yard-game.ts';
 import { ibdCargoPose, ibdPhysicalCargoPose } from './ibd-yard-motion.ts';
 import { createIbdMotionClock, createIbdSafety, stepIbdSafeMotion } from './ibd-yard-safety.ts';
@@ -15,6 +15,7 @@ import WorldIbdCoilInspection from './WorldIbdCoilInspection';
 import { isIbdCoilCheck } from './ibd-coil-inspection.ts';
 import { craneMayAdvance,craneLanded,craneControl } from './ibd-crane-control';
 import WorldIbdCraneLevers from './WorldIbdCraneLevers';
+import { ibdStockItem } from './ibd-stock';
 
 const cargoGeometry = (item: IbdItem) => item.kind === 'coil' ? buildIbdCoil(!!item.defects['quality-rear'], item.id.includes('rear') ? 2 : 1) : buildIbdPack(item.quantity, item.specId);
 const movable = { movable: true, solid: true, assetId: 'ibd-yard-cargo' };
@@ -24,10 +25,15 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
   const { world, rapier, colliderStates } = useRapier();
   const safety = useMemo(() => createIbdSafety(rapier, game), [rapier, game.pending, game.core, game.exchanges]);
   const playerCollider = useRef<RapierCollider | null>(null), lookupDelay = useRef(0), completeToken = useRef<number | null>(null);
-  const exchanging = game.pending?.action.kind === 'replace' ? game.pending.action.slot : undefined;
+  const exchanging = game.pending?.action.kind === 'replace'&&game.pending.action.slot!=='parts-b' ? game.pending.action.slot : undefined;
+  const selecting=game.pending?.action.kind==='select-stock'&&isIbdStockKey(game.pending.action.station)?game.pending.action.station:null;
+  const bVisible=!game.stock.requested||!!selecting;
+  const itemFor=(slot:IbdSlot)=>slot==='parts-b'&&selecting?ibdStockItem(game.round,game.caseIndex,selecting)
+    :yardCase(game).items.find(i=>i.id===yardItemId(game,slot))!;
   const bodies = useRef<Partial<Record<IbdSlot, RapierRigidBody | null>>>({});
   const meshes = useRef<Partial<Record<IbdSlot, Mesh | null>>>({});
   const lids = useRef<Partial<Record<IbdSlot, Group | null>>>({});
+  const stockLids=useRef<Partial<Record<IbdStockKey,Group|null>>>({});
   const crane = useRef<Mesh>(null), hook = useRef<Mesh>(null), cables = useRef<Mesh>(null), shutterBody = useRef<RapierRigidBody>(null);
   const spareBody = useRef<RapierRigidBody | null>(null);
   const mountSpare = useCallback((body: RapierRigidBody | null) => {
@@ -40,8 +46,9 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
     const goods = Object.fromEntries(IBD_SLOTS.map(slot => [slot, slot.startsWith('parts')?buildIbdPackShell():cargoGeometry(scenario.items.find(i => i.id === yardItemId(game, slot))!)])) as Record<IbdSlot, BufferGeometry>;
     const fresh = Object.fromEntries(IBD_SLOTS.map(slot => [slot, cargoGeometry(IBD_ALL_CLEAR.items.find(i => i.id === slot)!)])) as Record<IbdSlot, BufferGeometry>;
     const returned = game.exchanges.map(e => ({ slot: e.slot, geometry: cargoGeometry(e.original) }));
+    if(game.stock.originalReturned)returned.push({slot:'parts-b',geometry:cargoGeometry(IBD_CASES[game.caseIndex].items.find(i=>i.id==='parts-b')!)});
     return { goods, fresh, returned };
-  }, [game.caseIndex, game.exchanges]);
+  }, [game.caseIndex, game.exchanges, game.stock.originalReturned]);
   const fixed = useMemo(() => ({ lid: buildIbdLid(), crane: buildIbdCrane(), hook: buildIbdHook(), cables: buildIbdCables(), shutter: buildIbdShutter(), rotation: new Quaternion(), up: new Vector3(0, 1, 0) }), []);
   useEffect(() => () => { Object.values(resources.goods).forEach(g => g.dispose()); Object.values(resources.fresh).forEach(g => g.dispose()); resources.returned.forEach(r => r.geometry.dispose()); }, [resources]);
   useEffect(() => () => { fixed.lid.dispose(); fixed.crane.dispose(); fixed.hook.dispose(); fixed.cables.dispose(); fixed.shutter.dispose(); }, [fixed]);
@@ -56,11 +63,18 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
       const pose = ibdPhysicalCargoPose(game, slot, progress), body = bodies.current[slot], mesh = meshes.current[slot], lid = lids.current[slot];
       const [x, y, z] = ibdWorld(pose.at); fixed.rotation.setFromAxisAngle(fixed.up, pose.yaw);
       if (body) {
+        body.setEnabled(slot!=='parts-b'||bVisible);
         if (snap) { body.setTranslation({ x, y, z }, true); body.setRotation(fixed.rotation, true); }
         else { body.setNextKinematicTranslation({ x, y, z }); body.setNextKinematicRotation(fixed.rotation); }
       }
       if (mesh) mesh.geometry = resources.goods[slot];
       if (lid) lid.rotation.x = pose.lid;
+    }
+    for(const key of IBD_STOCK_KEYS){
+      const lid=stockLids.current[key];if(!lid)continue;
+      const id=ibdStockItem(game.round,game.caseIndex,key).id;
+      lid.rotation.x=game.pending?.action.station===key&&game.pending.action.kind==='open'
+        ?-2*(progress*progress*(3-2*progress)):game.core.opened.includes(id)?-2:0;
     }
     const coil = ibdCargoPose(game, 'coil-front', progress);
     if (crane.current) crane.current.position.set(coil.at[0], IBD_CRANE_Y + .7, -4);
@@ -116,11 +130,24 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
       return <RigidBody key={slot} ref={b => { bodies.current[slot] = b; }} type="kinematicPosition" colliders={false}
         position={IBD_CARGO_HOME[slot]} name={`ibd-cargo-${slot}`} userData={movable}>
         <CuboidCollider args={coil ? [2, 2, 1.4] : [1.4, .55, 1.3]} position={coil ? [0, 0, 0] : [0, .45, 0]} friction={.8} />
+        <group visible={slot!=='parts-b'||bVisible}>
         <mesh ref={m => { meshes.current[slot] = m; }} geometry={resources.goods[slot]} material={material} castShadow receiveShadow userData={movable} />
-        {!coil&&<WorldIbdPackInspection key={yardItemId(game,slot)} slot={slot} item={yardCase(game).items.find(i=>i.id===yardItemId(game,slot))!} material={material}/>}
+        {!coil&&(slot==='parts-a'||slot==='parts-b')&&<WorldIbdPackInspection key={itemFor(slot).id} slot={slot} item={itemFor(slot)} material={material}/>}
         {!coil && <group ref={g => { lids.current[slot] = g; }} position={[0, 1.08, -1.25]}>
           <mesh geometry={fixed.lid} material={material} castShadow userData={movable} />
         </group>}
+        </group>
+      </RigidBody>;
+    })}
+    {IBD_STOCK_KEYS.filter(key=>game.stock.assigned!==key&&selecting!==key).map(key=>{
+      const item=ibdStockItem(game.round,game.caseIndex,key);
+      return <RigidBody key={key} type="fixed" colliders={false} position={IBD_STOCK_HOME[key]} userData={movable}>
+        <CuboidCollider args={[1.4,.55,1.3]} position={[0,.45,0]} friction={.8}/>
+        <mesh geometry={resources.goods['parts-b']} material={material} castShadow receiveShadow userData={movable}/>
+        <WorldIbdPackInspection slot={key} item={item} material={material}/>
+        <group ref={g=>{stockLids.current[key]=g;}} position={[0,1.08,-1.25]} rotation={[game.core.opened.includes(item.id)?-2:0,0,0]}>
+          <mesh geometry={fixed.lid} material={material} castShadow userData={movable}/>
+        </group>
       </RigidBody>;
     })}
     <mesh ref={crane} geometry={fixed.crane} material={material} position={[-12, IBD_CRANE_Y + .7, -4]} castShadow userData={movable} />

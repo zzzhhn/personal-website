@@ -1,5 +1,6 @@
-import { IBD_CARGO_HOME, IBD_MOVED_COIL, IBD_TRUCK, type IbdSlot } from './ibd-yard-layout.ts';
+import { IBD_CARGO_HOME, IBD_MOVED_COIL, IBD_TRUCK, ibdStockRoute, isIbdStockKey, type IbdSlot } from './ibd-yard-layout.ts';
 import { yardItemId, type IbdYardGame } from './ibd-yard-game.ts';
+import { ibdStockItem } from './ibd-stock.ts';
 import type { Vec3 } from '../types';
 const smooth = (t: number) => { const v = Math.max(0, Math.min(1, t)); return v * v * (3 - 2 * v); };
 const mix = (a: Vec3, b: Vec3, t: number): Vec3 => a.map((n, i) => n + (b[i] - n) * smooth(t)) as Vec3;
@@ -15,6 +16,10 @@ export function ibdCargoRoutes(game: IbdYardGame, slot: IbdSlot): IbdCargoRoute[
   if (action?.kind === 'crane' && slot === 'coil-front') return [{ start: 0, end: 1,
     points: [IBD_CARGO_HOME[slot], [-12, 3.9, -4], [-20, 3.9, -4], IBD_MOVED_COIL] }];
   if (action?.slot !== slot) return [];
+  if(slot==='parts-b'&&action.kind==='select-stock'&&isIbdStockKey(action.station))
+    return [{start:.16,end:1,points:ibdStockRoute(action.station)}];
+  if(slot==='parts-b'&&action.kind==='return-stock'&&game.stock.assigned)
+    return [{start:.16,end:1,points:ibdStockRoute(game.stock.assigned).reverse()}];
   if (action.kind === 'load' || action.kind === 'unload') {
     const truck = IBD_TRUCK[slot]!, lane = slot === 'parts-b' ? 6 : 10.5;
     const points: Vec3[] = [home, [home[0], 1.1, -2], [home[0], 1.1, 2], [lane, 1.1, 2], [lane, 1.1, truck[2]], [10.5, 1.1, truck[2]], [14, truck[1], truck[2]], truck];
@@ -24,6 +29,7 @@ export function ibdCargoRoutes(game: IbdYardGame, slot: IbdSlot): IbdCargoRoute[
     const coil = slot.startsWith('coil');
     const quarantine: Vec3 = coil ? [-17, 2.35, 12] : [14, 1.1, -16.3];
     const spare: Vec3 = coil ? [-22, 2.35, 12] : [20, 1.1, -16.3];
+    if(slot==='parts-b')return [{start:.16,end:1,points:[home,[home[0],home[1],-15.1],quarantine]}];
     return [{ start: 0, end: .5, points: coil ? [home, [home[0], home[1], 1], [-17, home[1], 1], quarantine]
       : [home, [home[0], home[1], -15.1], quarantine] },
     { start: .5, end: 1, points: coil ? [spare, [-22, home[1], 8], [-17, home[1], 1], [home[0], home[1], 1], home]
@@ -50,6 +56,11 @@ export function ibdCargoPose(game: IbdYardGame, slot: IbdSlot, progress = 0) {
     if (action.kind === 'replace') {
       if (progress >= .5) { yaw = 0; lid = 0; }
     }
+    if(action.kind==='select-stock'||action.kind==='return-stock'||(action.kind==='replace'&&slot==='parts-b')){
+      const sourceId=action.kind==='select-stock'&&isIbdStockKey(action.station)
+        ?ibdStockItem(game.round,game.caseIndex,action.station).id:id;
+      lid=game.core.opened.includes(sourceId)?-2*(1-smooth(progress/.16)):0;
+    }
   }
   // Once loaded, the lid is closed; evidence remains attached to the physical item ID.
   if (loaded && action?.kind !== 'unload') lid = 0;
@@ -58,6 +69,7 @@ export function ibdCargoPose(game: IbdYardGame, slot: IbdSlot, progress = 0) {
 
 /** Original stays in quarantine while a separate incoming body follows the second leg. */
 export function ibdPhysicalCargoPose(game: IbdYardGame, slot: IbdSlot, progress: number, incoming = false) {
+  if(slot==='parts-b')return ibdCargoPose(game,slot,progress);
   if (game.pending?.action.kind !== 'replace' || game.pending.action.slot !== slot) return ibdCargoPose(game, slot, progress);
   const legs = ibdCargoRoutes(game, slot), p = ibdCargoPose(game, slot, incoming ? 1 : 0);
   return { ...p, at: route(legs[incoming ? 1 : 0].points, incoming ? Math.max(0, (progress - .5) * 2) : Math.min(1, progress * 2)) };

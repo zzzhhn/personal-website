@@ -1,30 +1,32 @@
 import { create } from 'zustand';
 import { useIbdYardStore, ibdActor } from './ibd-yard-store';
-import { inspectIbdYardPack, yardCase, yardItemId, cancelIbdYardAction } from './ibd-yard-game';
+import { inspectIbdYardPack, yardPackItem, cancelIbdYardAction } from './ibd-yard-game';
 import { createIbdPackInspection, type IbdPackSlotIndex, type IbdPackInspectionEvent } from './ibd-pack-inspection';
-import { IBD_CARGO_HOME, ibdLocal, ibdWorld, type IbdSlot } from './ibd-yard-layout';
+import { ibdPackHome, ibdLocal, ibdWorld, type IbdPackStation } from './ibd-yard-layout';
 import { ibdPackInspectAnchors } from './ibd-pack-layout';
 import { advanceIbdInspectionAction, beginIbdInspectionAction, cancelIbdInspectionAction,
   ibdInspectionActor, ibdInspectionBody, ibdInspectionBodyBusy, type IbdInspectionActionKind } from './ibd-inspection-motion';
 import type { Vec3 } from '../types';
 
-export const useIbdPackPlay = create(() => ({ pack: null as IbdSlot|null, selected: 0 as IbdPackSlotIndex,
+export const useIbdPackPlay = create(() => ({ pack: null as IbdPackStation|null, selected: 0 as IbdPackSlotIndex,
   gap: .54, busy: false, feedback: '', round:0, itemId:'' }));
 /** Animation data is sampled on the existing physics clock, never pushed through React each frame. */
-export const ibdPackVisual = { pack: null as IbdSlot|null, index: 0 as IbdPackSlotIndex, progress: 0, jaw: .54, retracting: false };
+export const ibdPackVisual = { pack: null as IbdPackStation|null, index: 0 as IbdPackSlotIndex, progress: 0, jaw: .54, retracting: false };
 export const ibdPackWorkBusy=()=>ibdInspectionBodyBusy()||ibdPackVisual.retracting||(!ibdInspectionBody.carried&&ibdPackVisual.progress>0);
 let cancelRequested = false;
 const actor = () => ({ ...ibdActor(), local: ibdLocal(ibdInspectionActor.position) });
 export function currentIbdPack() {
   const view = useIbdPackPlay.getState(), game = useIbdYardStore.getState().game;
   if (!view.pack) return null;
-  const itemId = yardItemId(game,view.pack), item = yardCase(game).items.find(i=>i.id===itemId);
+  const item = yardPackItem(game,view.pack);
   if (!item || item.kind!=='hardware-pack') return null;
-  return { view,game,item,inspection:game.packInspections[itemId]??createIbdPackInspection(item) };
+  return { view,game,item,inspection:game.packInspections[item.id]??createIbdPackInspection(item) };
 }
-export function openIbdPack(pack: IbdSlot) {
-  const g=useIbdYardStore.getState().game, id=yardItemId(g,pack), a=actor();
-  if (!pack.startsWith('parts') || !a.active || a.paused || a.hidden || a.driving || g.pending
+export function openIbdPack(pack: IbdPackStation) {
+  const g=useIbdYardStore.getState().game, item=yardPackItem(g,pack), a=actor();
+  if(!item)return;
+  const id=item.id;
+  if (!a.active || a.paused || a.hidden || a.driving || g.pending
     || !g.equipped || !g.core.opened.includes(id) || g.core.loaded.includes(id) || ibdInspectionBodyBusy()) return;
   if (ibdInspectionBody.carried && useIbdPackPlay.getState().pack!==pack) return;
   const view=useIbdPackPlay.getState(), slots=g.packInspections[id]?.slots;
@@ -53,7 +55,7 @@ export function requestIbdPackContact(kind?: IbdInspectionActionKind) {
   const {view,game,item,inspection}=c, index=inspection.held??view.selected, pocket=inspection.slots[index];
   const action=kind??(inspection.held!==null ? inspection.measurement ? 'return':'measure' : pocket.present?'pickup':'empty');
   if ((action==='pickup'||action==='empty') && pocket.complete) return false;
-  const spec=item.specId==='M6'?'M6':'M8', local=ibdPackInspectAnchors(spec,view.gap), home=IBD_CARGO_HOME[view.pack!];
+  const spec=item.specId==='M6'?'M6':'M8', local=ibdPackInspectAnchors(spec,view.gap), home=ibdPackHome(view.pack!);
   const world=(p:Vec3)=>ibdWorld(p.map((n,i)=>n+home[i]) as Vec3);
   const anchor={stand:world(local.stand),yaw:local.yaw,leftTarget:world(local.leftTarget),rightTarget:world(local.rightTarget)};
   const round=game.round, revision=game.revision;
@@ -100,7 +102,7 @@ export function cancelIbdPack(hard=false) {
 export function tickIbdPackInspection(dt: number) {
   const c=currentIbdPack(); if(!c)return;
   if(!ibdInspectionActor.available || !actor().active || c.view.round!==c.game.round || c.view.itemId!==c.item.id || c.game.core.loaded.includes(c.item.id)
-    || Math.hypot(actor().local[0]-IBD_CARGO_HOME[c.view.pack!][0],actor().local[2]-IBD_CARGO_HOME[c.view.pack!][2])>4){cancelIbdPack(true);return;}
+    || Math.hypot(actor().local[0]-ibdPackHome(c.view.pack!)[0],actor().local[2]-ibdPackHome(c.view.pack!)[2])>4){cancelIbdPack(true);return;}
   const a=ibdInspectionBody.action;
   advanceIbdInspectionAction(dt);
   if(a?.phase==='perform'){

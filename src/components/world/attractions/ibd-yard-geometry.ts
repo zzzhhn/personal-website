@@ -121,8 +121,8 @@ export function buildIbdStatic() {
   // The quarantine dollies roll onto a marked floor bay. Raised rack feet used to clip the exchange path.
   for (const z of [-18.5, -14.5]) cube([15.5, .11, z], [15, .015, .14], P.rust, false, 0);
   for (const x of [8, 23]) cube([x, .11, -16.5], [.14, .015, 4], P.rust, false, 0);
-  for (const x of [9, 22]) cube([x, 1.75, -19], [.14, 3.5, .14], P.dark, true);
-  cube([14, 3.2, -19], [5.2, .95, .12], P.dark);
+  // Rack-mounted sign leaves the closed-carton transfer corridor clear below it.
+  cube([14, 5.6, -21.15], [5.2, .95, .12], P.dark);
   for (let z = 3; z < 21; z += 3) cube([1, .092, z], [.15, .012, 1.7], P.pale, false, 0);
   for (const x of [-4.6, 4.6]) cube([x, 1.8, 28.2], [.22, 3.6, .22], P.dark, true);
   cube([0, 3.6, 28.2], [9.4, 1.6, .18], P.dark);

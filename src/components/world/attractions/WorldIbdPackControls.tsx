@@ -1,6 +1,7 @@
 import { useIbdYardStore } from './ibd-yard-store';
 import { useIbdPackPlay,currentIbdPack,selectIbdPackPocket,adjustIbdPackGap,requestIbdPackContact,cancelIbdPack } from './ibd-pack-play';
 import type { IbdPackSlotIndex } from './ibd-pack-inspection';
+import { isIbdStockKey } from './ibd-yard-layout';
 
 export default function WorldIbdPackControls({zh}:{zh:boolean}) {
   const view=useIbdPackPlay();useIbdYardStore(s=>s.game);
@@ -16,12 +17,14 @@ export default function WorldIbdPackControls({zh}:{zh:boolean}) {
         disabled={view.busy} onChange={e=>adjustIbdPackGap(Number(e.target.value))}/>
     </label>}
     {c.inspection.measurement&&<p role="status">{t('夹量记录：','Gauge record: ')}{c.inspection.measurement}</p>}
+    {view.pack&&isIbdStockKey(view.pack)&&!held&&c.inspection.slots.some(p=>p.reading)&&
+      <p>{t('已验样：','Samples checked: ')}{c.inspection.slots.filter(p=>p.reading).map(p=>`${p.index+1} · ${p.reading}`).join(' / ')}</p>}
     {view.feedback==='clamp-misaligned'&&<p role="status">{t('夹爪还未贴合杆身，调节后再试。','The jaws do not fit the shaft yet. Adjust and try again.')}</p>}
     {view.feedback==='interrupted'&&<p role="status">{t('动作未完成，可重新操作。','The action was interrupted. Try again.')}</p>}
     {view.feedback==='move-closer'&&<p role="status">{t('再走近箱前一步后取样。','Step closer to the front of the carton before sampling.')}</p>}
     <div className="ibd-actions"><button disabled={view.busy||(!held&&c.inspection.slots[view.selected].complete)} onClick={()=>requestIbdPackContact()}>
       {view.busy?t('操作中…','Working…'):held?measured?t('放回原槽','Return to pocket'):t('夹量','Gauge sample'):t('取出所选槽','Present selected pocket')}</button>
-      <button className="ibd-secondary" onClick={()=>cancelIbdPack()}>{t('归位并退出','Put back and leave')}</button>
+      <button className="ibd-secondary" onClick={()=>cancelIbdPack()}>{view.pack&&isIbdStockKey(view.pack)?t('归位，继续选箱','Put back and choose a carton'):t('归位并退出','Put back and leave')}</button>
     </div>
   </section>;
 }

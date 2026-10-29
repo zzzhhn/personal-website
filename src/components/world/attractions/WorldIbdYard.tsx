@@ -2,7 +2,7 @@ import { memo, useEffect, useMemo } from 'react';
 import { CuboidCollider, RigidBody, TrimeshCollider } from '@react-three/rapier';
 import { useInteractable } from '../WorldInteract';
 import { IBD_YARD } from './attraction-layout.ts';
-import { IBD_STATIONS, ibdStation, ibdWorld, type IbdStationId } from './ibd-yard-layout.ts';
+import { IBD_STATIONS, ibdStation, ibdWorld, isIbdStockKey, isIbdPackStation, type IbdStationId } from './ibd-yard-layout.ts';
 import { yardActions } from './ibd-yard-game.ts';
 import { IBD_ACTION_LABEL } from './ibd-yard-copy.ts';
 import { cancelIbdAction, dispatchIbdAction, ibdActor, useIbdYardStore } from './ibd-yard-store.ts';
@@ -21,16 +21,17 @@ function Station({ id, active }: { id: IbdStationId; active: boolean }) {
   const game = useIbdYardStore(s => s.game), station = ibdStation(id, game.core.moved);
   const guided = useIbdYardStore(s => s.guideEnabled), guide = ibdGuideStep(game), target = ibdStation(guide.action.station, game.core.moved);
   // E opens the judgement prompt without a verdict. Only an explicit HUD choice signs it.
-  const action = guided && id === target.id ? guide.action
+  const stockChoice=game.stock.requested&&isIbdStockKey(id);
+  const action = id==='stock-room'?undefined:guided && id === target.id ? guide.action
     : guided && id === 'manifest' && game.started ? undefined : yardActions(game, id)[0];
   useInteractable(active && action ? {
     id: `ibd-${id}`, kind: 'exhibit', position: ibdWorld(station.at), radius: station.radius,
     label: guided && id === target.id ? guide.title : IBD_ACTION_LABEL[action.kind],
     enabled: () => { const a = ibdActor(); return a.active && !a.paused && !a.hidden && !a.driving && !useIbdYardStore.getState().game.pending
-      && !ibdPackWorkBusy() && (!guided || id === target.id); },
+      && !ibdPackWorkBusy() && (!guided || id === target.id || stockChoice); },
     onInteract: () => {
-      if(action.kind==='contents'&&action.slot){
-        if(useIbdPackPlay.getState().pack===action.slot)requestIbdPackContact();else openIbdPack(action.slot);
+      if(action.kind==='contents'&&isIbdPackStation(action.station)){
+        if(useIbdPackPlay.getState().pack===action.station)requestIbdPackContact();else openIbdPack(action.station);
       }else dispatchIbdAction(action);
     },
   } : null);

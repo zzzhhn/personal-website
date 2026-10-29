@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { ShaderLib } from 'three';
 import { buildIbdStatic } from './ibd-yard-geometry.ts';
-import { createIbdMaterial, nearestIbdFixtures, IBD_FIXTURES } from './ibd-yard-lighting.ts';
+import { createIbdMaterial, nearestIbdFixtures, IBD_FIXTURES, ibdWorkLight } from './ibd-yard-lighting.ts';
 
 test('night bake is finite, nonuniform and lights working floors as well as lamp lenses', () => {
   const { geometry } = buildIbdStatic();
@@ -63,4 +63,11 @@ test('nearby fixture selection never duplicates lights or activates more than tw
     }
   }
   nearestIbdFixtures(100, 100, pair); assert.deepEqual(pair, [-1, -1]);
+});
+test('both reserve stations receive floor fill and select their own work-face lamp within the same live pair',()=>{
+  for(const x of [5,26]){
+    const pair=[-1,-1];nearestIbdFixtures(x,-16.32,pair,1.3);
+    assert.ok(pair.some(i=>i>=0&&IBD_FIXTURES[i].at[0]===x&&IBD_FIXTURES[i].mount==='strip'));
+    assert.ok(ibdWorkLight(x,.085,-16.32,0,1,0)>.3);
+  }
 });

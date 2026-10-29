@@ -14,6 +14,8 @@ export const IBD_ACTION_LABEL: Record<IbdActionKind, Bi> = {
   judge: bi('对照证据，选择现场结论', 'Compare evidence and choose a verdict'),
   load: bi('推托盘进入车厢', 'Send this pallet into the truck'), unload: bi('卸回原检验位', 'Return the pallet to inspection'),
   replace: bi('退回差异货物，换一件新货', 'Quarantine and exchange this cargo'), verify: bi('按实际装载核对运单', 'Reconcile the actual truck load'),
+  'select-stock':bi('选这箱，送回 B 台','Choose this carton for bench B'),
+  'return-stock':bi('退回后库，重新选箱','Return to reserve and choose again'),
   release: bi('升起月台闸，放行发货', 'Raise the shutter and release'), reset: bi('重做本批', 'Restart this batch'), next: bi('接下一批模拟货', 'Receive the next fictional batch'),
 };
 const messages: Record<string, Bi> = {

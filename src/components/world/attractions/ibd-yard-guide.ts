@@ -17,6 +17,8 @@ const copy: Partial<Record<IbdActionKind, [Bi, Bi]>> = {
   contents: [bi('核对槽位里的零件', 'Check the parts in the slots'), bi('数实物，再用卡规核 M8 规格。', 'Count the parts and gauge the M8 specification.')],
   judge: [bi('签下你的现场判断', 'Make your inspection call'), bi('对照货单与实测记录，选择结论。', 'Compare the manifest with the observations and choose a verdict.')],
   replace: [bi('换掉已确认的异常货', 'Exchange the faulty cargo'), bi('看原货退到隔离位，再检查新货。', 'Watch the original move to quarantine. Inspect its replacement.')],
+  'select-stock':[bi('将所选箱送回 B 台','Send this carton to bench B'),bi('先收回样件、合上箱盖，沿后库通道送出。','Return the sample and close the lid before transporting the carton.')],
+  'return-stock':[bi('把这箱退回后库','Return this carton to reserve'),bi('实物与规格保持不变，退回后可以重新选择。','The same goods return unchanged. You can choose again.')],
   unload: [bi('先把这托卸回来', 'Unload this pallet first'), bi('看货物回到检验台，再补检查。', 'Watch it return to the bench, then finish inspection.')],
   load: [bi('拉杆，把这一托送上车', 'Load this pallet'), bi('看托盘进入车厢；空货位不算丢货。', 'Watch the pallet enter the truck, leaving its bench empty.')],
   verify: [bi('核对车内两托实货', 'Check both pallets in the truck'), bi('库存验完、两托装齐后，在闸旁核对。', 'At the gate, reconcile the checked stock and loaded pallets.')],
@@ -25,6 +27,8 @@ const copy: Partial<Record<IbdActionKind, [Bi, Bi]>> = {
 };
 export interface IbdGuideStep { action: IbdAction; phase: number; title: Bi; hint: Bi }
 function guideCopy(action: IbdAction): [Bi, Bi] {
+  if(action.kind==='replace'&&action.slot==='parts-b')return [bi('将异常箱退到隔离位','Quarantine the faulty carton'),
+    bi('原箱留在隔离位，接着去后库选替换箱。','The original stays in quarantine. Choose a replacement in the reserve area.')];
   const text: [Bi, Bi] = copy[action.kind] ?? [bi('观察装置动作', 'Watch the mechanism'), bi('等动作停稳。', 'Wait until it settles.')];
   if (action.slot !== 'coil-rear') return text;
   if (action.kind === 'scan' || action.kind === 'rear') return [text[0],
@@ -53,11 +57,14 @@ export function ibdGuideStep(game: IbdYardGame): IbdGuideStep {
     // Keep the target attached to the moving operation until it actually commits.
     const c = guideCopy(action);
     const phase = action.kind === 'brief' ? 0 : action.kind === 'kit' ? 1 : action.station.includes('dispatch') ? 5
-      : ['load', 'unload'].includes(action.kind) ? 4 : action.slot?.startsWith('parts') ? 3 : 2;
+      : ['load', 'unload'].includes(action.kind) ? 4 : action.slot?.startsWith('parts')||action.station.startsWith('stock-') ? 3 : 2;
     return { action, phase, title: c[0], hint: c[1] };
   }
   if (!game.started) return step('manifest', 'brief', 0);
   if (!game.equipped) return step('kit', 'kit', 1);
+  if(game.stock.requested)return {action:{kind:'contents',station:'stock-room'},phase:3,
+    title:bi('验样后，自己选一箱','Sample, then choose a carton'),
+    hint:bi('两箱都标 M8。任选槽位验样，再选箱送回 B 台。','Both labels say M8. Sample any pocket, check it with the gauge, then send your choice to bench B.')};
   for (const slot of IBD_SLOTS) {
     const id = yardItemId(game, slot), coil = slot.startsWith('coil'), phase = coil ? 2 : 3;
     const complete = yardItemComplete(game, slot), different = yardItemDifferent(game, slot);
@@ -65,7 +72,7 @@ export function ibdGuideStep(game: IbdYardGame): IbdGuideStep {
     if (game.core.loaded.includes(id)) return step(slot === 'parts-a' ? 'truck-a' : 'truck-b', 'unload', 4);
     if (slot === 'coil-rear' && !game.core.moved.includes(yardItemId(game, 'coil-front')))
       return step('crane', 'crane', 2);
-    if (different) return step(slot, 'replace', phase);
+    if (different) return step(slot, slot==='parts-b'&&game.stock.assigned?'return-stock':'replace', phase);
     if (complete) return step(slot, 'judge', phase);
     if (coil) {
       if (!(game.core.proofs[id] ?? []).includes('quality-front')) return step(slot, 'scan', phase);
@@ -102,6 +109,9 @@ export function ibdGuideResult(game: IbdYardGame): Bi {
     crane: bi('前卷已移开，从南端开口绕入后卷。', 'Front coil moved. Reach the rear coil through the south opening.'), open: bi('箱盖打开了，现在核对内件。', 'Lid open. Check the contents now.'),
     contents: bi('内件数量、规格已记录。', 'Contents counted and gauged.'), load: bi('一托已进车厢。', 'One pallet is in the truck.'),
     unload: bi('货物已回检验台。', 'Cargo returned to the bench.'), replaced: bi('新货到了，需重新检查。', 'Replacement arrived. Inspect it again.'),
+    'stock-requested':bi('原箱已隔离。后库两箱可开盖验样，由你选择。','Original quarantined. Open and sample either reserve carton, then choose.'),
+    'stock-selected':bi('所选实物已到 B 台，按货单重新完整核验。','Your chosen goods reached bench B. Complete their inspection against the manifest.'),
+    'stock-returned':bi('同一箱已退回原位，可继续验样或改选另一箱。','The same carton returned home. Sample again or choose the other one.'),
     'evidence-ready': bi('证据齐了，请对照货单作出判断。', 'Evidence complete. Compare it with the manifest and make your call.'),
     'judgement-clear': bi('判断已确认，这件货验收完成。', 'Verdict confirmed. This item is accepted.'),
     'judgement-different': bi('判断已确认，退换装置已解锁。', 'Verdict confirmed. The exchange controls are unlocked.'),

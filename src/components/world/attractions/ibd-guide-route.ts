@@ -42,6 +42,10 @@ export function ibdRouteBetween(from: IbdStationId | undefined, to: IbdStationId
   lane(ground(6, -9.5), station('parts-a'), ground(14, -9.5), station('parts-b'), ground(23, -9.5));
   for (const [id, x] of [['scale-a', 6], ['load-a', 6], ['scale-b', 23], ['load-b', 23]] as const)
     lane(ground(x, station(id)[2]), station(id));
+  // Walk around the sides of the main benches, then cross in front of quarantine.
+  lane(ground(6,-10.8),ground(5,-10.8),ground(5,-14.3),station('stock-a'));
+  lane(ground(23,-10.8),station('stock-room'),ground(26,-14.3),station('stock-b'));
+  lane(ground(5,-14.3),ground(23,-14.3));
 
   // Free exploration may finish a scope check upstairs. Return via the ramp,
   // never paint a ground-level shortcut through the coil or the gallery rail.

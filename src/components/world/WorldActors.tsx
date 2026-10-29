@@ -12,7 +12,7 @@ import { cancelExchangePlay } from './alpha-exchange-play';
 import { ibdInspectionActor, ibdInspectionBody, ibdInspectionBodyBusy, IBD_INSPECTION_STAND_TOLERANCE } from './attractions/ibd-inspection-motion';
 import { cancelIbdPack, tickIbdPackInspection, useIbdPackPlay } from './attractions/ibd-pack-play';
 import { tickIbdCoilInspection } from './attractions/ibd-yard-store';
-import { IBD_CARGO_HOME, ibdWorld } from './attractions/ibd-yard-layout';
+import { ibdPackHome, ibdWorld } from './attractions/ibd-yard-layout';
 import { nearestDryPoint, terrainHeight } from './WorldLandform';
 import { LAYOUT_V4, zoneAtV4 } from './layout-v4-flag.ts';
 import { useWorldStore, type NearbyInteract } from './store';
@@ -1294,7 +1294,7 @@ export default function WorldActors() {
     const inspectionPack=useIbdPackPlay.getState().pack;
     if(inspectionPack&&!state.activeVehicle){
       // Frame the actual tray, hands and jaws. The same scene and collision sweep remain active.
-      const home=ibdWorld(IBD_CARGO_HOME[inspectionPack]);
+      const home=ibdWorld(ibdPackHome(inspectionPack));
       const pivot=new Vector3(home[0],home[1]+.45,home[2]+1.65);
       const desired=new Vector3(home[0]-2.7,home[1]+2.8,home[2]+4);
       const swept=sweepCamera(world,rapier,pivot,desired,.18,player.current??undefined,col=>!col.isSensor());

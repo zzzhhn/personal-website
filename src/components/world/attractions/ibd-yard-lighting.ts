@@ -27,6 +27,8 @@ export const IBD_FIXTURES: readonly IbdFixture[] = [
   { at: [-10, 6.3, -5.6], reach: 9, power: 1, pendant: true, mount: 'strip', aim: [-12, 2.35, -7.65] },
   { at: [10, 4.8, -9.3], reach: 7, power: .65, pendant: true, mount: 'strip', aim: [10, 1.2, -12] },
   { at: [18, 4.8, -9.3], reach: 7, power: .65, pendant: true, mount: 'strip', aim: [18, 1.2, -12] },
+  { at: [5, 4.8, -16.1], reach: 7, power: .65, pendant: true, mount: 'strip', aim: [5, 1.2, -18.8] },
+  { at: [26, 4.8, -16.1], reach: 7, power: .65, pendant: true, mount: 'strip', aim: [26, 1.2, -18.8] },
   { at: [-6.65, 2.45, 18.6], reach: 5.5, power: .48, mount: 'bench', baseY: 1.18, aim: [-6, 1.2, 19] },
   { at: [-3.65, 2.15, 25.6], reach: 5.5, power: .48, mount: 'bench', baseY: .88, aim: [-3, .9, 26] },
   { at: [16, 3.805, 10.5], reach: 5.8, power: .6, mount: 'truck', aim: [16, 1.6, 10.5] },

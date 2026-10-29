@@ -7,6 +7,7 @@ import { ibdGuideStep, ibdGuidePhaseDone } from './ibd-yard-guide.ts';
 import { ibdVerdictOptions, ibdVerdictEvidence } from './ibd-yard-verdict.ts';
 import { ibdNotice } from './ibd-yard-copy.ts';
 import { inspectIbdTestPack } from './ibd-test-pack-inspection.mjs';
+import { ibdStockItem } from './ibd-stock.ts';
 
 const actor = (g, station) => ({ active: true, local: ibdStation(station, g.core.moved).at });
 function act(g, station, kind, verdict) {
@@ -79,9 +80,13 @@ test('verdicts require physical reach and a live item identity; replacement insp
   g = act(g, 'parts-b', 'judge', 'short');
   const originalProofs = g.core.proofs['parts-b'];
   g = act(g, 'parts-b', 'replace');
+  assert.equal(g.stock.originalReturned, true); assert.equal(yardItemJudged(g, 'parts-b'), false);
+  const key = ['stock-a', 'stock-b'].find(key => ibdStockItem(g.round, g.caseIndex, key).specId === 'M8');
+  g = act(g, key, 'select-stock');
   const freshId = yardItemId(g, 'parts-b');
   assert.notEqual(freshId, 'parts-b'); assert.equal(g.judgements[freshId], undefined);
-  assert.equal(g.judgements['parts-b'], 'short'); assert.deepEqual(g.exchanges[0].proofs, originalProofs);
+  assert.equal(g.judgements['parts-b'], 'short'); assert.deepEqual(g.core.proofs['parts-b'], originalProofs);
+  assert.deepEqual(g.exchanges, [], 'original quarantine does not spawn an automatic replacement');
   assert.equal(g.core.proofs[freshId], undefined); assert.equal(yardItemJudged(g, 'parts-b'), false);
   assert.equal(requestIbdYardAction(g, oldAction, actor(g, 'parts-b')).notice, 'action-unavailable');
   g = act(act(g, 'parts-b', 'open'), 'parts-b', 'contents');

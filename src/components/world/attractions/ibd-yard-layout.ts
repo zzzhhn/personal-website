@@ -2,10 +2,12 @@ import { IBD_YARD } from './attraction-layout.ts';
 import type { Vec3, Bi } from '../types';
 
 export type IbdSlot = 'coil-front' | 'coil-rear' | 'parts-a' | 'parts-b';
+export type IbdStockKey = 'stock-a' | 'stock-b';
+export type IbdPackStation = 'parts-a' | 'parts-b' | IbdStockKey;
 export const IBD_SLOTS: readonly IbdSlot[] = ['coil-front', 'coil-rear', 'parts-a', 'parts-b'];
 export type IbdStationId = 'manifest' | 'kit' | 'crane' | 'coil-front' | 'coil-rear' | 'turn-front' | 'turn-rear'
   | 'gallery-front' | 'gallery-rear' | 'parts-a' | 'parts-b' | 'scale-a' | 'scale-b'
-  | 'load-a' | 'load-b' | 'truck-a' | 'truck-b' | 'dispatch';
+  | 'load-a' | 'load-b' | 'truck-a' | 'truck-b' | 'dispatch' | 'stock-room' | IbdStockKey;
 export interface IbdStation { id: IbdStationId; at: Vec3; title: Bi; slot?: IbdSlot; radius: number }
 const station = (id: IbdStationId, at: Vec3, zh: string, en: string, slot?: IbdSlot): IbdStation =>
   ({ id, at, title: { zh, en }, slot, radius: id.startsWith('gallery') ? 1.8 : 2.1 });
@@ -22,6 +24,9 @@ export const IBD_STATIONS: readonly IbdStation[] = [
   station('gallery-rear', [-10, 4.8, -13.5], '高廊后卷观测仪', 'Rear survey scope', 'coil-rear'),
   station('parts-a', [10, 1.1, -9.5], 'A 箱拆检台', 'Pack A inspection', 'parts-a'),
   station('parts-b', [18, 1.1, -9.5], 'B 箱拆检台', 'Pack B inspection', 'parts-b'),
+  station('stock-a', [5, 1.1, -16.32], '后库左验样台', 'Left reserve bench'),
+  station('stock-b', [26, 1.1, -16.32], '后库右验样台', 'Right reserve bench'),
+  station('stock-room', [23, 1.1, -14.3], '后库备货区', 'Reserve stock'),
   station('scale-a', [7.2, 1.1, -10.8], 'A 台秤', 'Scale A', 'parts-a'),
   station('scale-b', [21, 1.1, -10.8], 'B 台秤', 'Scale B', 'parts-b'),
   station('load-a', [7.8, 1.1, -5.8], 'A 托装车杆', 'Load pallet A', 'parts-a'),
@@ -45,6 +50,17 @@ export const IBD_CARGO_HOME: Record<IbdSlot, Vec3> = {
   'coil-front': [-12, 2.35, -4], 'coil-rear': [-12, 2.35, -9],
   'parts-a': [10, 1.1, -12], 'parts-b': [18, 1.1, -12],
 };
+export const IBD_STOCK_KEYS: readonly IbdStockKey[] = ['stock-a','stock-b'];
+export const IBD_STOCK_HOME: Record<IbdStockKey, Vec3> = {
+  'stock-a':[5,1.1,-18.8], 'stock-b':[26,1.1,-18.8],
+};
+export const isIbdStockKey=(id:string):id is IbdStockKey=>id==='stock-a'||id==='stock-b';
+export const isIbdPackStation=(id:string):id is IbdPackStation=>id==='parts-a'||id==='parts-b'||isIbdStockKey(id);
+export const ibdPackHome=(id:IbdPackStation):Vec3=>isIbdStockKey(id)?IBD_STOCK_HOME[id]:IBD_CARGO_HOME[id];
+/** Closed-carton transport passes behind quarantine, never through the other reserve. */
+export const ibdStockRoute=(key:IbdStockKey):Vec3[]=>[
+  [...IBD_STOCK_HOME[key]],[IBD_STOCK_HOME[key][0],1.1,-19.7],[18,1.1,-19.7],[...IBD_CARGO_HOME['parts-b']],
+];
 export const IBD_TRUCK_FLOOR = 1.2;
 /** The fixed loading truck, shared by its visible tyres and local ground occlusion. */
 export const IBD_TRUCK_WHEELS = {

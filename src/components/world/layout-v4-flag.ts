@@ -76,6 +76,7 @@ export const WORLD_SHOTS_V4 = [
     { id: `ibd-entrance-${time}`, position: [-84, 4.2, -134] as Vec3, target: [-88, 6, -179] as Vec3 },
     { id: `ibd-coil-detail-${time}`, position: [-104, 5.7, -170] as Vec3, target: [-100, 3.2, -181] as Vec3 },
     { id: `ibd-tools-detail-${time}`, position: [-92.5, 3.5, -155.1] as Vec3, target: [-93.8, 2.38, -158] as Vec3 },
+    { id: `ibd-stock-detail-${time}`, position: [-72.5, 6.8, -178] as Vec3, target: [-72.5, 2.8, -195.8] as Vec3 },
     { id: `ibd-dispatch-detail-${time}`, position: [-80, 6.3, -147] as Vec3, target: [-72, 2.7, -162] as Vec3 },
     { id: `ibd-loading-detail-${time}`, position: [-83, 5.6, -162.5] as Vec3, target: [-72, 2.9, -162.5] as Vec3 },
     { id: `ibd-cab-detail-${time}`, position: [-79, 4.6, -148] as Vec3, target: [-72, 2.55, -157.1] as Vec3 },

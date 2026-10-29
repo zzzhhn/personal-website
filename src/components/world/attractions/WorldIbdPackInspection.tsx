@@ -7,13 +7,12 @@ import { ibdPackVisual } from './ibd-pack-play';
 import { ibdInspectionHands } from './ibd-inspection-hands';
 import { ibdInspectionBody } from './ibd-inspection-motion';
 import { useIbdYardStore } from './ibd-yard-store';
-import { yardItemId } from './ibd-yard-game';
 import type { IbdItem } from './ibd-model';
-import type { IbdSlot } from './ibd-yard-layout';
+import type { IbdPackStation } from './ibd-yard-layout';
 import type { Vec3 } from '../types';
 
 /** Scene-local props follow the existing cargo body, except a grasped sample parented to the real palm. */
-export default function WorldIbdPackInspection({slot,item,material}:{slot:IbdSlot;item:IbdItem;material:MeshStandardMaterial}) {
+export default function WorldIbdPackInspection({slot,item,material}:{slot:IbdPackStation;item:IbdItem;material:MeshStandardMaterial}) {
   const parts=useMemo(()=>buildIbdPackParts(item.quantity,item.specId),[item.id,item.quantity,item.specId]);
   const root=useRef<Group>(null), mechanism=useRef<Group>(null), carrier=useRef<Group>(null), carried=useRef<Mesh>(null);
   const pockets=useRef<(Mesh|null)[]>([]), fixed=useRef<Mesh>(null), jaw=useRef<Mesh>(null);
@@ -27,7 +26,7 @@ export default function WorldIbdPackInspection({slot,item,material}:{slot:IbdSlo
   };
   useFrame(()=>{
     if(!root.current||!mechanism.current||!carrier.current||!carried.current)return;
-    const game=useIbdYardStore.getState().game,id=yardItemId(game,slot),check=game.packInspections[id];
+    const game=useIbdYardStore.getState().game,id=item.id,check=game.packInspections[id];
     const open=game.core.opened.includes(id)&&!game.core.loaded.includes(id)&&!game.pending;
     const owning=ibdPackVisual.pack===slot, index=ibdPackVisual.index, p=owning?ibdPackVisual.progress:0;
     const held=owning&&check?.held===index&&!!ibdInspectionBody.carried,last=previous.current;

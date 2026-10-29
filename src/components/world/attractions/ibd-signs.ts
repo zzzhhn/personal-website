@@ -11,16 +11,16 @@ export function createIbdSigns(canvas: HTMLCanvasElement, lang: 'zh' | 'en') {
       { at: [15.5, 6.8, -6.68], w: 8, h: 1.3, title: zh ? '五金拆检棚' : 'PARTS INSPECTION', sub: zh ? '称重是线索 · 开箱才有证据' : 'WEIGH FOR A CLUE · OPEN TO VERIFY' },
       { at: [17, 6.1, 26.32], w: 8, h: 1.3, title: zh ? '物流发货仓' : 'DISPATCH DEPOT', sub: zh ? '发货目标：M8 五金 8 件' : 'MANIFEST: 8 M8 PIECES' },
       { at: [-28.3, 1.6, 4.03], w: 2.6, h: .7, title: zh ? '缓坡上高廊' : 'GALLERY RAMP', sub: zh ? '换个角度看后排' : 'A DIFFERENT VIEW' },
-      { at: [14, 3.2, -18.92], w: 5, h: .8, title: zh ? '隔离记录 ／ 备件' : 'QUARANTINE / SPARES', sub: zh ? '原始差异保留，新货须再验' : 'KEEP FINDINGS · RECHECK REPLACEMENTS' },
+      { at: [14, 5.6, -21.07], w: 5, h: .8, title: zh ? '隔离记录 ／ 备件' : 'QUARANTINE / SPARES', sub: zh ? '原始差异保留，新货须再验' : 'KEEP FINDINGS · RECHECK REPLACEMENTS' },
       { at: [-17, 1.3, 14.2], w: 4, h: .8, title: zh ? '钢卷退换位' : 'COIL EXCHANGE', sub: zh ? '隔离原货与新供货分开' : 'RETURNED CARGO IS SEPARATE' },
-      ...IBD_STATIONS.map(s => {
+      ...IBD_STATIONS.filter(s=>s.id!=='stock-room').map(s => {
         const coil = s.id === 'coil-front' || s.id === 'coil-rear';
-        const table = s.id === 'kit' || s.id === 'manifest', pack=s.id==='parts-a'||s.id==='parts-b';
+        const table = s.id === 'kit' || s.id === 'manifest', pack=s.id==='parts-a'||s.id==='parts-b'||s.id.startsWith('stock-');
         // Floor placards leave the bore and wound inspection face unobstructed.
         return { id: s.id, at: [s.at[0], pack ? .42 : coil ? .31 : table ? (s.id === 'kit' ? .9 : .6) : s.at[1] + .95,
           s.at[2] - (table ? .39 : .35)] as Vec3,
           w: s.id.startsWith('gallery') ? 2 : table ? 1.5 : 1.8, h: coil||pack ? .42 : table ? .35 : .65,
-          title: s.title[lang], sub: s.id === 'manifest' ? '2 COILS / 8 M8' : 'E / Y' };
+          title: s.title[lang], sub: s.id === 'manifest' ? '2 COILS / 8 M8' : s.id.startsWith('stock-')?'M8 / 4 PCS':'E / Y' };
       }),
     ];
     canvas.width = 1024; canvas.height = 1024;

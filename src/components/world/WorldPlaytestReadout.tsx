@@ -36,8 +36,9 @@ import { worldResumeProbe } from './world-resume-probe';
 import { useExchangePlay } from './alpha-exchange-play';
 import { exchangeBody, exchangeActor, exchangeVisualSockets } from './alpha-exchange-motion';
 import { ibdInspectionActor,ibdInspectionBody,ibdInspectionVisualSockets } from './attractions/ibd-inspection-motion';
-import { currentIbdPack,useIbdPackPlay,ibdPackVisual } from './attractions/ibd-pack-play';
-import { useIbdYardStore } from './attractions/ibd-yard-store';
+import { currentIbdPack,useIbdPackPlay,ibdPackVisual,cancelIbdPack } from './attractions/ibd-pack-play';
+import { useIbdYardStore,cancelIbdAction } from './attractions/ibd-yard-store';
+import { createIbdYardGame,yardCase } from './attractions/ibd-yard-game';
 import { exchangeWorld } from './alpha-exchange-layout';
 import { EXCHANGE_PLAY_STATIONS,EXCHANGE_ARCHIVE_DRAWERS } from './alpha-exchange-play-layout';
 import { exchangeActionAudio } from './alpha-exchange-audio';
@@ -63,6 +64,22 @@ export default function WorldPlaytestReadout() {
       <button onClick={()=>setRenderSnapshot(readRenderSnapshot())}>QA · 读取当前渲染开销</button>
       <button onClick={()=>setRenderSnapshot({parkAudio:parkAudio.snapshot()})}>QA · 读取环境音频</button>
       {import.meta.env.DEV&&<>
+        <button onClick={()=>{
+          // A named QA starting fixture, not evidence that prior inspections were played.
+          cancelIbdPack(true);cancelIbdAction();
+          const game=createIbdYardGame(1);
+          game.started=true;game.equipped=true;
+          game.core={...game.core,moved:['coil-front'],turned:['coil-front','coil-rear'],opened:['parts-a','parts-b'],
+            proofs:Object.fromEntries(yardCase(game).items.map(item=>[item.id,['identity','quantity','specification',...item.qualityChecks] as const]))};
+          game.judgements={'coil-front':'sound','coil-rear':'sound','parts-a':'matches','parts-b':'short'};
+          game.completedAction={kind:'judge',station:'parts-b',slot:'parts-b',itemId:'parts-b',round:game.round,verdict:'short'};
+          game.notice='judgement-different';useIbdYardStore.setState({game,guideEnabled:true,motionWait:null});
+          const p=ibdWorld([18,.1,-9.5]);worldActorDebug.teleportPlayer([p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]]);
+          useWorldStore.setState({paused:false,seat:null,clubMode:null});
+        }}>QA · 后库换货起点</button>
+        <button onClick={()=>{const g=useIbdYardStore.getState().game;setRenderSnapshot({reserve:{stock:g.stock,
+          pending:g.pending?.action??null,notice:g.notice,goods:yardCase(g).items.map(i=>({id:i.id,spec:i.specId,quantity:i.quantity})),
+          samples:Object.fromEntries(Object.entries(g.packInspections).map(([id,s])=>[id,{held:s.held,readings:s.slots.map(p=>p.reading)}]))}});}}>QA · 读取后库实物</button>
         <button onClick={()=>{const g=useIbdYardStore.getState().game,a=ibdInspectionBody.action;
           setRenderSnapshot({crane:{...craneControl,...useIbdCraneControl.getState(),round:g.round,moved:g.core.moved,
             pending:g.pending?.action.kind??null,actor:ibdInspectionActor,handError:ibdInspectionVisualSockets.contactError,
@@ -83,6 +100,9 @@ export default function WorldPlaytestReadout() {
           useWorldStore.setState({paused:false,clubMode:null,seat:null});
         }}>QA · 到{site.title.zh}</button>)}
         <details><summary>QA · 设施操作点</summary>
+          {(['day','night'] as const).map(time=><button key={`stock-shot-${time}`} onClick={()=>{
+            selectWorldTime(time==='day'?'noon':'night');useWorldStore.setState({shot:`ibd-stock-detail-${time}`,paused:false});
+          }}>QA · 后库定帧 {time}</button>)}
           {(['day','night'] as const).map(time=><button key={`archive-shot-${time}`} onClick={()=>{
             selectWorldTime(time==='day'?'noon':'night');useWorldStore.setState({shot:`exchange-craft-archive-${time}`,paused:false});
           }}>QA · 档案室定帧 {time}</button>)}
@@ -118,7 +138,7 @@ export default function WorldPlaytestReadout() {
             const p=workshopTarget(id);worldActorDebug.teleportPlayer([p[0],INTENT_COASTER.center[1]+.1+PLAYER_CENTER_HEIGHT,p[2]+.8]);
             useWorldStore.setState({paused:false,seat:null});
           }}>QA · 到分流工坊 {id}</button>)}
-          {IBD_STATIONS.filter(s=>['manifest','crane','gallery-rear','parts-a','dispatch'].includes(s.id)).map(s=><button key={s.id} disabled={attractionRide.active} onClick={()=>{
+          {IBD_STATIONS.filter(s=>['manifest','crane','gallery-rear','parts-a','parts-b','stock-a','stock-b','dispatch'].includes(s.id)).map(s=><button key={s.id} disabled={attractionRide.active} onClick={()=>{
             const p=ibdWorld(s.at);worldActorDebug.teleportPlayer([p[0],IBD_YARD.center[1]+(s.id.startsWith('gallery')?4.1:.1)+PLAYER_CENTER_HEIGHT,p[2]+.6]);
             useWorldStore.setState({paused:false,seat:null});
           }}>QA · 到{s.title.zh}</button>)}

@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { DoubleSide, Matrix4, Mesh, MeshBasicMaterial, Raycaster, Vector3 } from 'three';
 import { buildIbdPack,buildIbdPackParts,buildIbdPackShell } from './ibd-pack-geometry.ts';
 import { IBD_PACK_SLOTS,IBD_PACK_SAMPLE_DIMENSIONS,IBD_PACK_INSPECTION,ibdPackInspectAnchors,ibdPackTransferPose } from './ibd-pack-layout.ts';
+import { IBD_GEOMETRY_BUDGET } from './ibd-geometry-budget.ts';
+import { buildIbdCraneLever } from './ibd-craft-geometry.ts';
 const triangles=g=>g.index.count/3,near=(a,b,e=1e-6)=>assert.ok(Math.abs(a-b)<e,`${a} != ${b}`);
 const material=new MeshBasicMaterial({side:DoubleSide});
 function hit(g,origin,direction,at=[0,0,0]){
@@ -113,15 +115,20 @@ test('the two-part caliper can stow below the existing closed lid',()=>{
     assert.ok(box.max.y<1.02,'stowed caliper clears the unchanged closed lid');
   }finally{parts.dispose();}
 });
-test('the representative yard plus two complete inspection rigs retain the original 70k budget',async()=>{
+test('four real cartons and the single active inspection rig stay within the reserve-workspace budget',async()=>{
   const y=await import('./ibd-yard-geometry.ts'),parts=buildIbdPackParts(4,'M8');
-  const all=[y.buildIbdStatic().geometry,y.buildIbdCoil(false),y.buildIbdCoil(true,2),y.buildIbdPack(4,'M8'),y.buildIbdPack(3,'M8'),
-    y.buildIbdLid(),y.buildIbdLid(),y.buildIbdCrane(),y.buildIbdHook(),y.buildIbdCables(),y.buildIbdShutter(),y.buildIbdTorch(),y.buildIbdPack(4,'M6')];
+  // Four physical cartons total, never a fifth copy when one changes locations.
+  // Three full M8 cartons + one M6 is the highest-detail starting fixture.
+  const all=[y.buildIbdStatic().geometry,y.buildIbdCoil(false),y.buildIbdCoil(true,2),y.buildIbdPack(4,'M8'),y.buildIbdPack(4,'M8'),
+    y.buildIbdLid(),y.buildIbdLid(),y.buildIbdCrane(),buildIbdCraneLever(),buildIbdCraneLever(),y.buildIbdHook(),y.buildIbdCables(),y.buildIbdShutter(),y.buildIbdTorch(),
+    y.buildIbdPack(4,'M6'),y.buildIbdPack(4,'M8'),y.buildIbdLid(),y.buildIbdLid()];
   try{
-    const rigs=2*[parts.tray,parts.caliperFixed,parts.caliperJaw,parts.rigMast,parts.rigBoom,parts.rigTether].reduce((n,g)=>n+triangles(g),0);
+    // All four cartons are visible; only ibdPackVisual.pack owns a deployed rig.
+    // Include the extra carried sample conservatively even though its home mesh is hidden.
+    const rigs=[parts.tray,parts.caliperFixed,parts.caliperJaw,parts.rigMast,parts.rigBoom,parts.rigTether,parts.sample].reduce((n,g)=>n+triangles(g),0);
     const total=all.reduce((n,g)=>n+triangles(g),0)+rigs+24; // open 12-sided inspection light shaft
-    assert.ok(total<70000,`${total} representative triangles including both rigs`);
-    console.log(JSON.stringify({representativeWithTwoRigs:total,budget:70000}));
+    assert.ok(total<IBD_GEOMETRY_BUDGET.representative,`${total} representative visible triangles including four cartons and one deployed rig`);
+    console.log(JSON.stringify({representativeVisibleWithReserve:total,budget:IBD_GEOMETRY_BUDGET.representative}));
   }finally{all.forEach(g=>g.dispose());parts.dispose();}
 });
 test.after(()=>material.dispose());
