@@ -5,7 +5,9 @@ import { ParkAudio } from '../WorldParkAudio.ts';
 import { registerInteractable, nearestInteractable } from '../WorldInteract.ts';
 import { useWorldStore } from '../store.ts';
 import { useWorldAudioSettings, setWorldAudioMuted, setWorldAudioVolume } from '../world-audio-settings.ts';
-import { useIbdYardStore, dispatchIbdAction, finishIbdAction, cancelIbdAction } from './ibd-yard-store.ts';
+import { useIbdYardStore, dispatchIbdAction, finishIbdAction, cancelIbdAction, tickIbdCoilInspection } from './ibd-yard-store.ts';
+import { ibdInspectionActor, ibdInspectionBody, ibdInspectionVisualSockets } from './ibd-inspection-motion.ts';
+import { PLAYER_CENTER_HEIGHT } from '../actor-physics.ts';
 import { createIbdYardGame, requestIbdYardAction, finishIbdYardAction, cancelIbdYardAction, yardActions } from './ibd-yard-game.ts';
 import { ibdStation, ibdWorld } from './ibd-yard-layout.ts';
 import { inspectIbdTestPack, ibdTestPackEvent } from './ibd-test-pack-inspection.mjs';
@@ -43,6 +45,9 @@ class Audio extends Target {
 }
 const settle = async () => { for (let i = 0; i < 18; i++) await Promise.resolve(); };
 function fixture(t) {
+  cancelIbdAction();
+  const oldActor = { ...ibdInspectionActor }, oldCarried = ibdInspectionBody.carried;
+  ibdInspectionBody.carried = null;
   const oldGlobals = new Map(['window', 'document'].map(k => [k, Object.getOwnPropertyDescriptor(globalThis, k)]));
   const oldYard = useIbdYardStore.getState(), oldWorld = useWorldStore.getState(), oldSettings = useWorldAudioSettings.getState();
   const win = Object.assign(new Target(), { AudioContext: Audio,
@@ -59,7 +64,12 @@ function fixture(t) {
   const service = new IbdActionAudio(audio), release = service.mount();
   const gesture = (trusted = true, type = 'keydown') => { const e = new Event(type); Object.defineProperty(e, 'isTrusted', { value: trusted }); win.dispatchEvent(e); };
   const prime = async () => { audio.cue('scan'); await settle(); audio.ctx.sources.at(-1).end(); await settle(); return audio.ctx; };
-  const move = station => useWorldStore.setState({ position: ibdWorld(ibdStation(station, useIbdYardStore.getState().game.core.moved).at) });
+  const move = station => {
+    const at = ibdWorld(ibdStation(station, useIbdYardStore.getState().game.core.moved).at);
+    const position = [at[0], at[1] + PLAYER_CENTER_HEIGHT, at[2]];
+    useWorldStore.setState({ position });
+    Object.assign(ibdInspectionActor, { position, grounded: true, available: true, mode: 'guide' });
+  };
   const act = (station, kind, verdict) => {
     move(station); const game = useIbdYardStore.getState().game;
     const offered = yardActions(game, station).find(a => !kind || a.kind === kind); assert.ok(offered, `${station}/${kind}`);
@@ -75,11 +85,21 @@ function fixture(t) {
       label: { en: station, zh: station }, onInteract: () => dispatchIbdAction(action) });
     try { nearestInteractable(...position).item.onInteract(); } finally { unregister(); }
     const token = useIbdYardStore.getState().game.pending?.token;
+    // Follow the coil controller's rendered-palm contact and recovery gate, rather
+    // than allowing the old timer-only fixture to bypass the physical inspection.
+    for (let i = 0; i < 350 && ibdInspectionBody.action; i++) {
+      const a = ibdInspectionBody.action;
+      ibdInspectionActor.yaw = a.anchor.yaw;
+      Object.assign(ibdInspectionVisualSockets, { valid: true, reachable: true, sampledId: a.id, sampledElapsed: a.elapsed,
+        leftHand: [...a.anchor.leftTarget], rightHand: [...a.anchor.rightTarget], leftContactError: 0, rightContactError: 0, contactError: 0 });
+      tickIbdCoilInspection(1 / 60);
+    }
     if (token !== undefined) finishIbdAction(token);
     return token;
   };
   const page = (type, persisted = true) => win.dispatchEvent(Object.assign(new Event(type), { persisted }));
   t.after(() => {
+    cancelIbdAction(); Object.assign(ibdInspectionActor, oldActor); ibdInspectionBody.carried = oldCarried;
     release(); externalRelease(); useIbdYardStore.setState(oldYard, true); useWorldStore.setState(oldWorld, true); useWorldAudioSettings.setState(oldSettings, true);
     for (const [k, descriptor] of oldGlobals) { if (descriptor) Object.defineProperty(globalThis, k, descriptor); else delete globalThis[k]; }
   });

@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { BoxGeometry, CylinderGeometry, LatheGeometry, MeshStandardMaterial, PlaneGeometry, Vector2, type Group, type Mesh } from 'three';
 import { useInteractable } from './WorldInteract';
 import { useWorldStore } from './store';
-import { parkAudio } from './WorldParkAudio';
+import { exchangeActionAudio } from './alpha-exchange-audio';
 import { exchangeWorld } from './alpha-exchange-layout';
 import { EXCHANGE_PLAY_PROPS as P, EXCHANGE_PLAY_STATIONS as S } from './alpha-exchange-play-layout';
 import { exchangeBody } from './alpha-exchange-motion';
@@ -61,7 +61,6 @@ export default function WorldAlphaExchangePlay({ brass, paperFace }: { brass: Me
   const state = useExchangePlay(), stamp = useRef<Mesh>(null), slider = useRef<Mesh>(null), ticket = useRef<Mesh>(null),
     receipt = useRef<Mesh>(null), bell = useRef<Group>(null), pull = useRef<Mesh>(null), rope = useRef<Mesh>(null);
   const sliderStart = useRef({ id: -1, x: 0 });
-  const observedContacts = useRef(state.contacts);
   const parts = useMemo(() => ({ ticket: new BoxGeometry(...P.archive.ticketSize), receipt: new BoxGeometry(...P.clearing.receiptSize),
     grip: new BoxGeometry(...P.desk.sliderGripSize), stamp: new BoxGeometry(...P.clearing.stampSize),
     marker: new BoxGeometry(.055,.025,.095), pull: new BoxGeometry(.22,.075,.075), rope: new CylinderGeometry(.014,.014,1,6),
@@ -70,11 +69,7 @@ export default function WorldAlphaExchangePlay({ brass, paperFace }: { brass: Me
     ink: new MeshStandardMaterial({ color: '#544736', roughness: .9 }), paper: new MeshStandardMaterial({ color: '#eadfc2', roughness: .9 }),
   }), []);
   useEffect(() => () => { Object.values(parts).forEach(part => part.dispose()); }, [parts]);
-  useEffect(() => {
-    if (state.contacts === observedContacts.current) return;
-    observedContacts.current = state.contacts;
-    parkAudio.cue('scan', state.lastContact === 'ring' ? .45 : .16);
-  }, [state.contacts, state.lastContact]);
+  useEffect(() => exchangeActionAudio.mount(), []);
   useFrame(() => {
     const world = useWorldStore.getState();
     if (world.paused || world.card || world.shot || world.poolInspect || document.hidden) return;

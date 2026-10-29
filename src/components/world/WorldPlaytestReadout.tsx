@@ -40,6 +40,7 @@ import { currentIbdPack,useIbdPackPlay,ibdPackVisual } from './attractions/ibd-p
 import { useIbdYardStore } from './attractions/ibd-yard-store';
 import { exchangeWorld } from './alpha-exchange-layout';
 import { EXCHANGE_PLAY_STATIONS } from './alpha-exchange-play-layout';
+import { exchangeActionAudio } from './alpha-exchange-audio';
 
 function readContactSnapshot() {
   const value=worldActorDebug.actor(),physics=worldActorDebug.snapshot();
@@ -66,6 +67,7 @@ export default function WorldPlaytestReadout() {
           action:a?{kind:a.kind,phase:a.phase,elapsed:a.elapsed,committed:a.committed,anchor:a.anchor}:null,
           sockets:ibdInspectionVisualSockets,inspection:c?.inspection??g.packInspections[id],proofs:g.core.proofs[id],loaded:g.core.loaded}}));}}>QA · 读取逐槽接触</button>
         <button onClick={()=>{const p=exchangeWorld([...EXCHANGE_PLAY_STATIONS.archive.stand]);worldActorDebug.teleportPlayer([p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]+.5]);useWorldStore.setState({paused:false,seat:null,clubMode:null});}}>QA · 到交易所档案台</button>
+        <button onClick={()=>setRenderSnapshot({exchangeAudio:exchangeActionAudio.inspect(),park:parkAudio.snapshot()})}>QA · 读取交易所音频</button>
         <button onClick={()=>{const s=useExchangePlay.getState(),v=exchangeReview(s.round,s.reviewIndex);setRenderSnapshot({exchangeReview:{index:s.reviewIndex,phase:s.round?.phase,
           intervals:s.round?.choices.length,contact:s.lastContact,contacts:s.contacts,carried:exchangeBody.carried,
           selection:v?{from:v.from,through:v.through,units:v.units,pnl:v.pnl,previousPnl:v.previousPnl,difference:v.difference,marks:v.marks.length,previousMarks:v.previous?.length??0}:null}});}}>QA · 读取回廊复盘</button>
