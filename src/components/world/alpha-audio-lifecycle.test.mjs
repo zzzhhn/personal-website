@@ -20,6 +20,7 @@ class Target extends EventTarget {
   get count() { return [...this.listeners.values()].reduce((n, set) => n + set.size, 0); }
 }
 const param = () => ({ value: 0, events: [],
+  cancelAndHoldAtTime(at) { this.events.push(['hold', at]); },
   setValueAtTime(value, at) { this.events.push([value, at]); },
   linearRampToValueAtTime(value, at) { this.events.push([value, at]); },
   exponentialRampToValueAtTime(value, at) { this.events.push([value, at]); },
@@ -50,7 +51,7 @@ class Audio extends Target {
   }
   createOscillator() { const n = this.node(); this.sources.push(n); return n; }
   createBufferSource() { return this.createOscillator(); }
-  async decodeAudioData() { this.decodes++; return { duration: 36, length: 864000, numberOfChannels: 2 }; }
+  async decodeAudioData() { this.decodes++; return { duration: 40, length: 960000, numberOfChannels: 2 }; }
   change(state) { if (this.state === 'closed') return; this.state = state; queueMicrotask(() => this.dispatchEvent(new Event('statechange'))); }
   resume() {
     this.resumes++;
@@ -73,7 +74,7 @@ function env(t) {
     requestAnimationFrame() { assert.fail('cue must not create a RAF'); },
   });
   for (const [name, value] of Object.entries({ window: win, document: doc, performance: { now: () => clock },
-    fetch: async () => ({ ok: true, arrayBuffer: async () => new ArrayBuffer(3456044) }) })) {
+    fetch: async () => ({ ok: true, arrayBuffer: async () => new ArrayBuffer(3840044) }) })) {
     Object.defineProperty(globalThis, name, { configurable: true, writable: true, value });
   }
   Audio.instances.length = 0; Audio.initialState = 'running'; store.setState(store.getInitialState(), true);
@@ -301,7 +302,7 @@ test('old loading work cannot start music on a later cue-only context', async t 
   globalThis.fetch = () => new Promise(resolve => { finish = resolve; });
   let release = a.retain(); a.start(); release(); await settle();
   release = a.retain(); a.cue('scan'); const ctx = a.ctx;
-  finish({ ok: true, arrayBuffer: async () => new ArrayBuffer(3456044) }); await settle();
+  finish({ ok: true, arrayBuffer: async () => new ArrayBuffer(3840044) }); await settle();
   assert.equal(a.started, false); assert.equal(ctx.sources.length, 1); assert.equal(e.intervals.size, 0); release();
 });
 

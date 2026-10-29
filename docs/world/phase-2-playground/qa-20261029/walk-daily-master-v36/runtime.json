@@ -1,0 +1,409 @@
+{
+  "initial": {
+    "parkAudio": {
+      "owners": 4,
+      "started": false,
+      "timer": false,
+      "subscribed": true,
+      "state": "absent",
+      "transitioning": false,
+      "voices": 0,
+      "ticks": 0,
+      "muted": false,
+      "cueVoices": 0,
+      "cuePending": false,
+      "pcmKeys": 0,
+      "pcmBytes": 0,
+      "candidate": null,
+      "previewPlaying": false,
+      "previewPending": false,
+      "previewBytes": 0,
+      "roaming": {
+        "phase": "idle",
+        "sources": 0,
+        "buffers": 0,
+        "loading": false,
+        "decoding": false,
+        "bytes": 0,
+        "seconds": 0,
+        "offset": 0,
+        "position": 0,
+        "level": -1,
+        "fading": false
+      }
+    }
+  },
+  "roaming": {
+    "parkAudio": {
+      "owners": 4,
+      "started": true,
+      "timer": false,
+      "subscribed": true,
+      "state": "running",
+      "transitioning": false,
+      "voices": 0,
+      "ticks": 0,
+      "muted": false,
+      "cueVoices": 0,
+      "cuePending": false,
+      "pcmKeys": 0,
+      "pcmBytes": 0,
+      "candidate": null,
+      "previewPlaying": false,
+      "previewPending": false,
+      "previewBytes": 0,
+      "roaming": {
+        "phase": "ready",
+        "sources": 1,
+        "buffers": 1,
+        "loading": false,
+        "decoding": false,
+        "bytes": 7680000,
+        "seconds": 40,
+        "offset": 0,
+        "position": 24.672,
+        "level": 3.2,
+        "fading": false
+      }
+    }
+  },
+  "club": {
+    "club": {
+      "phase": "ready",
+      "context": "running",
+      "sources": 1,
+      "buffers": 2,
+      "contextSeconds": 25.2,
+      "transportBeats": 49.559999999999995,
+      "decodedSeconds": [
+        32.542375,
+        32.542375
+      ],
+      "bufferBytes": 12496272,
+      "owners": 1,
+      "timers": 0
+    },
+    "energy": 0.55,
+    "guests": [
+      {
+        "guest": 0,
+        "visible": true,
+        "playing": true,
+        "beat": 49.559999999999995,
+        "idleWeight": 0.950499337752976,
+        "dances": [
+          {
+            "name": "ClubGroove",
+            "time": 0.49185932310755903,
+            "weight": 0,
+            "enabled": true
+          },
+          {
+            "name": "ClubDisco",
+            "time": 0.5105375252508858,
+            "weight": 0.04950066224702393,
+            "enabled": true
+          }
+        ],
+        "feet": [
+          {
+            "name": "footR",
+            "position": [
+              39.98723907257562,
+              1.6924206114414786,
+              51.39311029197418
+            ]
+          },
+          {
+            "name": "footL",
+            "position": [
+              39.982944427268876,
+              1.6935639307148824,
+              51.60662181713197
+            ]
+          }
+        ]
+      },
+      {
+        "guest": 1,
+        "visible": true,
+        "playing": true,
+        "beat": 49.559999999999995,
+        "idleWeight": 0,
+        "dances": [
+          {
+            "name": "ClubGroove",
+            "time": 0.4579619865818596,
+            "weight": 0.060576626971451684,
+            "enabled": true
+          },
+          {
+            "name": "ClubDisco",
+            "time": 0.4753529480976264,
+            "weight": 0.9394233730285483,
+            "enabled": true
+          }
+        ],
+        "feet": [
+          {
+            "name": "footR",
+            "position": [
+              42.978563172852745,
+              1.6952763832300186,
+              58.86781427118303
+            ]
+          },
+          {
+            "name": "footL",
+            "position": [
+              42.95246696194432,
+              1.7146764253268236,
+              59.15743492050171
+            ]
+          }
+        ]
+      }
+    ],
+    "mode": null,
+    "step": 0
+  },
+  "handedOff": {
+    "parkAudio": {
+      "owners": 4,
+      "started": true,
+      "timer": false,
+      "subscribed": true,
+      "state": "suspended",
+      "transitioning": false,
+      "voices": 0,
+      "ticks": 0,
+      "muted": false,
+      "cueVoices": 0,
+      "cuePending": false,
+      "pcmKeys": 0,
+      "pcmBytes": 0,
+      "candidate": null,
+      "previewPlaying": false,
+      "previewPending": false,
+      "previewBytes": 0,
+      "roaming": {
+        "phase": "ready",
+        "sources": 0,
+        "buffers": 1,
+        "loading": false,
+        "decoding": false,
+        "bytes": 7680000,
+        "seconds": 40,
+        "offset": 26.158666666666665,
+        "position": 26.158666666666665,
+        "level": -1,
+        "fading": false
+      }
+    }
+  },
+  "campResume": {
+    "parkAudio": {
+      "owners": 4,
+      "started": true,
+      "timer": false,
+      "subscribed": true,
+      "state": "running",
+      "transitioning": false,
+      "voices": 0,
+      "ticks": 0,
+      "muted": false,
+      "cueVoices": 0,
+      "cuePending": false,
+      "pcmKeys": 0,
+      "pcmBytes": 0,
+      "candidate": null,
+      "previewPlaying": false,
+      "previewPending": false,
+      "previewBytes": 0,
+      "roaming": {
+        "phase": "ready",
+        "sources": 1,
+        "buffers": 1,
+        "loading": false,
+        "decoding": false,
+        "bytes": 7680000,
+        "seconds": 40,
+        "offset": 26.158666666666665,
+        "position": 26.862666666666666,
+        "level": 3.2,
+        "fading": false
+      }
+    }
+  },
+  "exchange": {
+    "parkAudio": {
+      "owners": 4,
+      "started": true,
+      "timer": false,
+      "subscribed": true,
+      "state": "running",
+      "transitioning": false,
+      "voices": 0,
+      "ticks": 0,
+      "muted": false,
+      "cueVoices": 0,
+      "cuePending": false,
+      "pcmKeys": 0,
+      "pcmBytes": 0,
+      "candidate": null,
+      "previewPlaying": false,
+      "previewPending": false,
+      "previewBytes": 0,
+      "roaming": {
+        "phase": "ready",
+        "sources": 1,
+        "buffers": 1,
+        "loading": false,
+        "decoding": false,
+        "bytes": 7680000,
+        "seconds": 40,
+        "offset": 26.158666666666665,
+        "position": 39.571999999999996,
+        "level": 3.2,
+        "fading": false
+      }
+    }
+  },
+  "paused": {
+    "parkAudio": {
+      "owners": 4,
+      "started": true,
+      "timer": false,
+      "subscribed": true,
+      "state": "suspended",
+      "transitioning": false,
+      "voices": 0,
+      "ticks": 0,
+      "muted": false,
+      "cueVoices": 0,
+      "cuePending": false,
+      "pcmKeys": 0,
+      "pcmBytes": 0,
+      "candidate": null,
+      "previewPlaying": false,
+      "previewPending": false,
+      "previewBytes": 0,
+      "roaming": {
+        "phase": "ready",
+        "sources": 0,
+        "buffers": 1,
+        "loading": false,
+        "decoding": false,
+        "bytes": 7680000,
+        "seconds": 40,
+        "offset": 0.33466666666666356,
+        "position": 0.33466666666666356,
+        "level": -1,
+        "fading": false
+      }
+    }
+  },
+  "musicZero": {
+    "parkAudio": {
+      "owners": 4,
+      "started": true,
+      "timer": false,
+      "subscribed": true,
+      "state": "suspended",
+      "transitioning": false,
+      "voices": 0,
+      "ticks": 0,
+      "muted": false,
+      "cueVoices": 0,
+      "cuePending": false,
+      "pcmKeys": 0,
+      "pcmBytes": 0,
+      "candidate": null,
+      "previewPlaying": false,
+      "previewPending": false,
+      "previewBytes": 0,
+      "roaming": {
+        "phase": "ready",
+        "sources": 0,
+        "buffers": 1,
+        "loading": false,
+        "decoding": false,
+        "bytes": 7680000,
+        "seconds": 40,
+        "offset": 0.33466666666666356,
+        "position": 0.33466666666666356,
+        "level": -1,
+        "fading": false
+      }
+    }
+  },
+  "muted": {
+    "parkAudio": {
+      "owners": 4,
+      "started": true,
+      "timer": false,
+      "subscribed": true,
+      "state": "suspended",
+      "transitioning": false,
+      "voices": 0,
+      "ticks": 0,
+      "muted": false,
+      "cueVoices": 0,
+      "cuePending": false,
+      "pcmKeys": 0,
+      "pcmBytes": 0,
+      "candidate": null,
+      "previewPlaying": false,
+      "previewPending": false,
+      "previewBytes": 0,
+      "roaming": {
+        "phase": "ready",
+        "sources": 0,
+        "buffers": 1,
+        "loading": false,
+        "decoding": false,
+        "bytes": 7680000,
+        "seconds": 40,
+        "offset": 0.33466666666666356,
+        "position": 0.33466666666666356,
+        "level": -1,
+        "fading": false
+      }
+    }
+  },
+  "restored": {
+    "parkAudio": {
+      "owners": 4,
+      "started": true,
+      "timer": false,
+      "subscribed": true,
+      "state": "running",
+      "transitioning": false,
+      "voices": 0,
+      "ticks": 0,
+      "muted": false,
+      "cueVoices": 0,
+      "cuePending": false,
+      "pcmKeys": 0,
+      "pcmBytes": 0,
+      "candidate": null,
+      "previewPlaying": false,
+      "previewPending": false,
+      "previewBytes": 0,
+      "roaming": {
+        "phase": "ready",
+        "sources": 1,
+        "buffers": 1,
+        "loading": false,
+        "decoding": false,
+        "bytes": 7680000,
+        "seconds": 40,
+        "offset": 0.33466666666666356,
+        "position": 0.9479999999999933,
+        "level": 3.2,
+        "fading": false
+      }
+    }
+  },
+  "errors": []
+}

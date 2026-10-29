@@ -148,13 +148,17 @@ export class ParkAudio {
   private musicEnabled() { return this.available() && !this.muted && worldAudioLevel('music') > 0 && !isClubAudible(); }
   private cuesEnabled() { return this.available() && !this.muted && worldAudioLevel('sfx') > 0; }
   private roamingWanted() { return this.started && !this.candidate && !this.cueBlocked && this.musicEnabled(); }
-  private canRun() { return (this.musicEnabled() && (!!this.previewPending || !!this.previewSource || (this.roamingWanted() && this.roaming.phase !== 'error'))) || (this.cuesEnabled() && (!!this.pendingCue || this.cueVoices.size > 0)); }
+  private canRun() { return this.roaming.fading || (this.musicEnabled() && (!!this.previewPending || !!this.previewSource || (this.roamingWanted() && this.roaming.phase !== 'error'))) || (this.cuesEnabled() && (!!this.pendingCue || this.cueVoices.size > 0)); }
   private sync() {
     const ctx = this.ctx; if (!ctx) return;
     if (ctx.state === 'closed') { this.dispose(); return; }
     if (!this.cuesEnabled()) this.clearCues();
     if (this.roamingWanted()) this.roaming.request(ctx);
-    else { this.roaming.stop(); this.roaming.cancelLoading(); }
+    else {
+      if(this.available()&&!this.muted&&worldAudioLevel('music')>0&&isClubAudible())this.roaming.handoff();
+      else this.roaming.stop();
+      this.roaming.cancelLoading();
+    }
     if (!this.musicEnabled()) {
       this.stopPreview();
       for (const [source, release] of this.voices) if (!this.cueVoices.has(source)) {

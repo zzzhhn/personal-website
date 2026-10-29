@@ -38,9 +38,9 @@ test('small individual picked/wood voices are deterministic, finite and release 
   assert.throws(() => renderDailyVoice({ ...score[0], duration: Infinity }), RangeError);
 });
 
-test('the candidate stays offline and cannot replace or fetch the accepted runtime recording', () => {
+test('daily synthesis stays offline; the runtime fetches its finite mastered asset', () => {
   const source = readFileSync(new URL('./park-roaming-music.ts', import.meta.url), 'utf8');
-  assert.ok(source.includes("url: '/assets/world/park/audio/island-walk-b-loop.wav'"));
+  assert.ok(source.includes("url: '/assets/world/park/audio/island-walk-daily-v1.wav'"));
   assert.ok(!source.includes('walk-music-daily'));
   const script = readFileSync(new URL('../../../tools/world/render-walk-music-daily.mjs', import.meta.url), 'utf8');
   assert.ok(script.includes('walk-daily-candidate-v24/')); assert.ok(!script.includes('public/'));

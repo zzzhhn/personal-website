@@ -1,8 +1,8 @@
-/** The approved 36-second recording, decoded only after Park's trusted gesture.
+/** The mastered 40-second daily exploration recording, decoded after a trusted gesture.
  * Owns one buffer/source on the caller's context. No synthesis, context, timer, RAF or global listeners. */
 export const PARK_ROAMING_TRACK = {
-  url: '/assets/world/park/audio/island-walk-b-loop.wav', seconds: 36, fileBytes: 3456044,
-  decodedBytesAt24k: 6912000, maxDecodedBytes: 13824000,
+  url: '/assets/world/park/audio/island-walk-daily-v1.wav', seconds: 40, fileBytes: 3840044,
+  decodedBytesAt24k: 7680000, maxDecodedBytes: 15360000,
 } as const;
 export class ParkRoamingMusic {
   private ctx: AudioContext | null = null;
@@ -15,6 +15,8 @@ export class ParkRoamingMusic {
   private offset = 0;
   private at = 0;
   private level = -1;
+  private fadeEnd = Infinity;
+  fading = false;
   phase: 'idle' | 'loading' | 'ready' | 'error' = 'idle';
   constructor(private changed: () => void) {}
   retry() { if (this.phase === 'error') this.phase = 'idle'; }
@@ -54,6 +56,9 @@ export class ParkRoamingMusic {
     this.revision++; this.abort.abort(); this.abort = null; this.phase = 'idle';
   }
   play(ctx: AudioContext, output: AudioNode, volume: number) {
+    // A quick Club boundary reversal cannot unschedule stop() on the old source.
+    // Retire it first, keeping the current phrase position and one source only.
+    if (this.fading) this.stop();
     if (this.source || !this.buffer || this.ctx !== ctx || ctx.state !== 'running') return;
     const gain = this.gain = ctx.createGain(), source = this.source = ctx.createBufferSource();
     this.level = volume; gain.gain.value = 0;
@@ -65,22 +70,36 @@ export class ParkRoamingMusic {
     source.start(0, this.offset);
   }
   volume(volume: number) {
-    if (!this.ctx || !this.gain || Math.abs(volume - this.level) < .0001) return;
+    if (this.fading || !this.ctx || !this.gain || Math.abs(volume - this.level) < .0001) return;
     const lowering = volume < this.level;
     this.level = volume; this.gain.gain.setTargetAtTime(volume, this.ctx.currentTime, lowering ? .045 : .22);
   }
-  stop() {
+  /** Only musical hand-off uses a bounded tail. Silence gates still call stop(). */
+  handoff() {
+    if (!this.source || this.fading) return;
+    const ctx=this.ctx, gain=this.gain?.gain;
+    if (!ctx || ctx.state!=='running' || !gain) { this.stop(); return; }
+    const source=this.source, now=ctx.currentTime, end=now+.18;
+    this.fading=true;this.fadeEnd=end;
+    if (gain.cancelAndHoldAtTime) gain.cancelAndHoldAtTime(now);
+    else { const current=gain.value;gain.cancelScheduledValues(now);gain.setValueAtTime(current,now); }
+    gain.linearRampToValueAtTime(0,end);
+    source.onended=()=>{if(this.source!==source)return;this.stop(end);this.changed();};
+    source.stop(end);
+  }
+  stop(endedAt=this.ctx?.currentTime??this.at) {
     if (!this.source) return;
-    if (this.ctx) this.offset = (this.offset + Math.max(0, this.ctx.currentTime - this.at)) % PARK_ROAMING_TRACK.seconds;
+    if (this.ctx) this.offset = (this.offset + Math.max(0, Math.min(endedAt,this.ctx.currentTime,this.fadeEnd) - this.at)) % PARK_ROAMING_TRACK.seconds;
     this.source.onended = null;
     try { this.source.stop(); } catch { /* Already stopped by browser shutdown. */ }
     this.source.disconnect(); this.source = null;
-    this.gain?.disconnect(); this.gain = null; this.level = -1;
+    this.gain?.disconnect(); this.gain = null; this.level = -1;this.fading=false;this.fadeEnd=Infinity;
   }
   inspect() {
+    const position=(this.offset+(this.source&&this.ctx?Math.max(0,Math.min(this.ctx.currentTime,this.fadeEnd)-this.at):0))%PARK_ROAMING_TRACK.seconds;
     return { phase: this.phase, sources: this.source ? 1 : 0, buffers: this.buffer ? 1 : 0, loading: !!this.abort, decoding: !!this.decoding,
       bytes: this.buffer ? this.buffer.length * this.buffer.numberOfChannels * 4 : 0,
-      seconds: this.buffer?.duration ?? 0, offset: this.offset, level: this.level };
+      seconds: this.buffer?.duration ?? 0, offset: this.offset, position, level: this.level, fading: this.fading };
   }
   dispose() {
     this.cancelLoading(); this.stop(); this.revision++; this.buffer = null; this.ctx = null;
