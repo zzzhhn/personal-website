@@ -3,6 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import { BoxGeometry, CylinderGeometry, LatheGeometry, MeshStandardMaterial, PlaneGeometry, Vector2, type Group, type Mesh } from 'three';
 import { useInteractable } from './WorldInteract';
 import { useWorldStore } from './store';
+import WorldAlphaArchiveTickets from './WorldAlphaArchiveTickets';
 import { exchangeActionAudio } from './alpha-exchange-audio';
 import { exchangeChamferBox } from './alpha-exchange-craft';
 import { exchangeWorld } from './alpha-exchange-layout';
@@ -17,7 +18,7 @@ export function exchangePlayInstruction(state: ExchangePlayState, zh: boolean): 
   if (state.loading) return t('正在读取历史，完成后请再次取票。', 'Loading history. Return to take a ticket when ready.');
   if (state.notice === 'error') return t('历史暂不可用，回档案台重试。', 'History unavailable. Retry at the archive.');
   const r = state.round;
-  if (!r || state.ticketReturned) return t('档案台取票，带往中央票槽。', 'Take a ticket at the archive and carry it to the central slot.');
+  if (!r || state.ticketReturned) return t('档案台取完整票，后方柜中可选年份票。', 'Take the full ticket at the counter, or choose a year at the drawers behind it.');
   if (r.message === 'insufficient') return t('点数不足，降低仓位后重新封单。', 'Insufficient points. Lower the target and seal again.');
   return ({ ticket: t('将手中时段票插入中央票槽。', 'Insert the ticket at the central desk.'),
     selecting: t('点选铜轨档位；选定后靠近票槽按 E 封单。', 'Click a brass detent. At the slot, press E to seal.'),
@@ -29,7 +30,7 @@ export function exchangePlayInstruction(state: ExchangePlayState, zh: boolean): 
 function Station({ id }: { id: ExchangePlayStationId }) {
   const state = useExchangePlay(), r = state.round;
   const label = id === 'archive' ? state.loading ? ['历史读取中', 'Loading history']
-    : state.notice === 'error' ? ['重试读取历史', 'Retry historical data'] : r?.phase === 'complete' ? ['取票重演同一时段', 'Take a ticket to replay'] : ['领取历史时段票', 'Take historical ticket']
+    : state.notice === 'error' ? ['重试读取历史', 'Retry historical data'] : ['领取完整历史票', 'Take the full history ticket']
     : id === 'desk' ? r?.phase === 'ticket' ? ['插入时段票', 'Insert the ticket'] : ['封存当前仓位，送往开市钟', 'Seal the selected position']
     : id === 'bell' ? ['拉铃，推进历史', 'Pull bell to advance history'] : id === 'review'
     ? [state.reviewIndex === null ? '拨动复盘台，查看第一段选择' : state.reviewIndex + 1 < (r?.choices.length ?? 0) ? '拨动复盘台，查看下一段' : '拨回复盘台，查看市场总览',
@@ -99,6 +100,7 @@ export default function WorldAlphaExchangePlay({ brass, paperFace }: { brass: Me
     </group>
     <mesh ref={ticket} name="exchange-archive-ticket" geometry={parts.ticket} material={parts.paper} position={P.archive.ticketRest}>
       <mesh geometry={parts.ticketFace} material={paperFace}/></mesh>
+    <WorldAlphaArchiveTickets paper={parts.paper} ticket={parts.ticket}/>
     <mesh ref={receipt} name="exchange-clearing-receipt" geometry={parts.receipt} material={parts.paper} position={P.clearing.receiptRest} visible={false}>
       <mesh geometry={parts.receiptFace} material={paperFace}/></mesh>
     <mesh ref={stamp} name="exchange-clearing-stamp" geometry={parts.stamp} material={brass} position={P.clearing.stampRest}/>

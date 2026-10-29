@@ -17,6 +17,10 @@ export const EXCHANGE_PLAY_STATIONS = {
 
 /** The second working position shares the same circular island; it is not another desk. */
 export const EXCHANGE_SECOND_DESK = {stand:[1.35,0,-14.98] as Vec3,contact:[1.35,1.05,-15.44] as Vec3,yaw:Math.PI/2};
+/** Four reachable catalogue drawers. Ticket, lip, hand target and stand share one source. */
+export const EXCHANGE_ARCHIVE_DRAWERS: ExchangePlayStation[] = [-13.56,-12.64,-11.46,-10.54].map(x => ({
+  stand:[x,.45,-22.38], contact:[x,1.48,-22.86], yaw:Math.PI/2,
+}));
 /** Static supports and dynamic parts consume the same anchors. Sizes are metres. */
 export const EXCHANGE_PLAY_PROPS = {
   review:{counter:[-3,6.15,-39.04] as Vec3,counterSize:[1.5,.15,.65] as Vec3,

@@ -2,7 +2,7 @@ import { BoxGeometry, BufferGeometry, CylinderGeometry, Euler, Float32BufferAttr
 import { TriMeshFlags } from '@dimforge/rapier3d-compat';
 import { mergeBatch, toBatch, type Emit } from './WorldParkKit';
 import { EXCHANGE_HALL,EXCHANGE_COLUMNS,exchangeBoxes,exchangePlatformSlabs } from './alpha-exchange-layout';
-import { EXCHANGE_PLAY_PROPS,EXCHANGE_PLAY_STATIONS,EXCHANGE_SECOND_DESK } from './alpha-exchange-play-layout';
+import { EXCHANGE_PLAY_PROPS,EXCHANGE_PLAY_STATIONS,EXCHANGE_SECOND_DESK,EXCHANGE_ARCHIVE_DRAWERS } from './alpha-exchange-play-layout';
 import { exchangeChamferBox,exchangeSurface,bakeExchangeWorklights,EXCHANGE_BANK_LAMPS } from './alpha-exchange-craft';
 import type { Vec3 } from './types';
 
@@ -226,22 +226,55 @@ export function buildAlphaExchangeGeometry() {
   // Open archive wing: service counter, real ticket throat, index drawers and reading ledgers.
   const archive=EXCHANGE_PLAY_PROPS.archive;
   box([-11.7,.84,-19.31],[3.15,.78,1.15],'#5a4634');
+  chamfer([-11.7,.9,-18.69],[2.65,.49,.08],'#5a4634','solid',0,.015);
   chamfer(archive.counter,archive.counterSize,'#9a7952','solid',0,.035);
   chamfer([-11.7,1.4,-19],[1.1,.3,.62],'#536359','solid',0,.045);
   box(archive.ticketSlot,archive.slotSize,'#233b33','visual');
   for(const x of [-12.08,-11.32])box([x,1.48,-18.7],[.08,.2,.16],'#b8975a','visual');
   box([-11.7,1.56,-18.72],[.84,.07,.18],'#b8975a','visual');
   box([-11.7,1.43,-18.63],[.79,.055,.28],'#b8975a','visual');
-  // Chunky shallow drawers have framed faces, index tabs and useful brass pulls.
+  // A shallow limestone surround makes the cabinets a room-sized destination.
+  // Its outer x edges are -14.23/-9.87: both side routes retain their clear width.
+  box([-12.05,2.26,-24.12],[4.3,3.62,.12],'#725c43');
+  for(const x of [-14.16,-9.94])box([x,2.34,-23.7],[.14,3.78,.98],'#d5c6aa');
+  box([-12.05,4.23,-23.7],[4.36,.18,1.02],'#dfd0b4');
+  // Drawer reveals, proud frames and mounted pulls keep thickness at hand distance.
   for(const cx of [-13.1,-11]) {
     box([cx,1.93,-23.65],[1.95,2.96,.82],'#684e38');
+    box([cx,.55,-23.59],[1.99,.2,.94],'#5a4634');
+    for(const x of [cx-.93,cx,cx+.93])box([x,1.96,-23.175],[.065,2.82,.12],'#72583c');
+    for(let row=0;row<=5;row++)box([cx,.49+row*.54,-23.175],[1.88,.045,.12],'#72583c');
     for(let row=0;row<5;row++)for(const side of [-1,1]) {
       const x=cx+side*.46,y=.76+row*.54;
       box([x,y,-23.19],[.85,.46,.12],row%2?'#90714c':'#9d8058');
-      box([x,y+.08,-23.115],[.29,.105,.035],'#d3c8aa','visual');
-      rod([x-.13,y-.08,-23.08],[x+.13,y-.08,-23.08],.024,'#b8975a','visual');
+      box([x,y+.08,-23.102],[.33,.145,.042],'#927446');
+      box([x,y+.08,-23.075],[.29,.105,.015],'#d3c8aa');
+      for(const dx of [-.13,.13])box([x+dx,y-.08,-23.092],[.055,.06,.1],'#927446');
+      // Both open ends terminate inside the solid mounting feet; hidden caps
+      // would add 240 redundant visible/collision triangles across the cabinet.
+      add(new CylinderGeometry(.024,.024,.26,6,1,true),'#b8975a',[x,y-.08,-23.045],[0,0,Math.PI/2]);
     }
     box([cx,3.48,-23.65],[2.08,.14,1],'#a98b5b');
+    // Upper files stay below the gallery and above reachable player space.
+    box([cx,3.79,-24.015],[1.94,.48,.09],'#5a4634','visual');
+    for(const x of [cx-.91,cx+.91])box([x,3.8,-23.65],[.075,.5,.7],'#72583c','visual');
+    for(let i=0;i<10;i++) {
+      const x=cx-.76+i*.165,h=.32+(i%3)*.065;
+      box([x,3.55+h/2,-23.65],[.12,h,.57],['#61735b','#72583c','#9a7952','#536359'][i%4],'visual');
+      box([x,3.55+h-.065,-23.355],[.075,.018,.025],'#c4a369','visual');
+    }
+    // Hood and warm underside use the shared night emission, without a real light.
+    chamfer([cx,3.48,-23.08],[1.7,.1,.42],'#536359','solid',0,.018);
+    box([cx,3.424,-23.04],[1.42,.012,.28],'#efd8a8','visual',0,[0,.72,1]);
+  }
+  // Four physical trays share the interaction anchors. Their foremost face is
+  // z=-22.76, leaving the stand capsule and z>-22.65 aisle unobstructed.
+  // Dynamic paper belongs to the interaction component, not this static batch.
+  for(const {contact:[x,y,z]} of EXCHANGE_ARCHIVE_DRAWERS) {
+    box([x,y-.035,z-.195],[.68,.04,.59],'#b8975a');
+    box([x,y-.024,z+.085],[.68,.028,.03],'#927446');
+    for(const dx of [-.325,.325])box([x+dx,y+.005,z-.195],[.03,.065,.59],'#927446');
+    box([x,y+.055,-23.115],[.64,.105,.035],'#233b33');
   }
   for(let i=0;i<3;i++)box([-12.65,1.33+i*.08,-19.42],[.65,.075,.84],['#61735b','#7a5a43','#a98d58'][i],'visual',-.12+i*.07);
   // Clearing wing: a physical press with platen, guide columns, flywheel and output tray.

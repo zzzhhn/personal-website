@@ -1,4 +1,4 @@
-import { useWorldStore } from './store';
+import { selectWorldTime,useWorldStore } from './store';
 import { roundEquity } from './alpha-exchange-round';
 import { exchangeReview } from './alpha-exchange-review';
 import { readDrivingTelemetry } from './vehicle-telemetry';
@@ -39,7 +39,7 @@ import { ibdInspectionActor,ibdInspectionBody,ibdInspectionVisualSockets } from 
 import { currentIbdPack,useIbdPackPlay,ibdPackVisual } from './attractions/ibd-pack-play';
 import { useIbdYardStore } from './attractions/ibd-yard-store';
 import { exchangeWorld } from './alpha-exchange-layout';
-import { EXCHANGE_PLAY_STATIONS } from './alpha-exchange-play-layout';
+import { EXCHANGE_PLAY_STATIONS,EXCHANGE_ARCHIVE_DRAWERS } from './alpha-exchange-play-layout';
 import { exchangeActionAudio } from './alpha-exchange-audio';
 import { craneControl,useIbdCraneControl } from './attractions/ibd-crane-control';
 
@@ -83,6 +83,14 @@ export default function WorldPlaytestReadout() {
           useWorldStore.setState({paused:false,clubMode:null,seat:null});
         }}>QA · 到{site.title.zh}</button>)}
         <details><summary>QA · 设施操作点</summary>
+          {(['day','night'] as const).map(time=><button key={`archive-shot-${time}`} onClick={()=>{
+            selectWorldTime(time==='day'?'noon':'night');useWorldStore.setState({shot:`exchange-craft-archive-${time}`,paused:false});
+          }}>QA · 档案室定帧 {time}</button>)}
+          <button onClick={()=>useWorldStore.setState({shot:null,paused:false})}>QA · 退出定帧</button>
+          {EXCHANGE_ARCHIVE_DRAWERS.map((s,i)=><button key={`archive-${i}`} onClick={()=>{
+            const p=exchangeWorld(s.stand);worldActorDebug.teleportPlayer([p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]+.2]);
+            useWorldStore.setState({paused:false,seat:null,clubMode:null});
+          }}>QA · 到档案柜 {i+1}</button>)}
           {(['desk','bell','clearing','review'] as const).map(id=><button key={`exchange-${id}`} onClick={()=>{
             const p=exchangeWorld([...EXCHANGE_PLAY_STATIONS[id].stand]);worldActorDebug.teleportPlayer([p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]+.25]);
             useWorldStore.setState({paused:false,seat:null,clubMode:null});
@@ -172,7 +180,8 @@ export default function WorldPlaytestReadout() {
     {JSON.stringify({position:world.position.map(v=>+v.toFixed(2)),yaw:+mineActor.yaw.toFixed(2),grounded:mineActor.grounded,
       nearby:world.nearbyInteract?.id,vehicle:world.activeVehicle,drive:readDrivingTelemetry(),
       grass:{instances:grassDebug.instances,disturbers:grassDebug.disturbers,trampled:grassDebug.trampleActive,strength:grassDebug.maxTrample},
-      exchange:{phase:round?.phase??exchange.notice,date:round?.history[round.day]?.date,day:round?.day,checkpoint:round?.checkpoint,
+      exchange:{phase:round?.phase??exchange.notice,ticketId:exchange.ticketId,archive:exchange.catalog.map(t=>({id:t.id,from:t.history[0].date,through:t.history.at(-1)!.date,days:t.history.length})),
+        date:round?.history[round.day]?.date,day:round?.day,checkpoint:round?.checkpoint,
         cash:round?.cash,units:round?.units,equity:round?roundEquity(round):null,contacts:exchange.contacts,carried:exchangeBody.carried}},null,1)}
   </output>}
   </>;

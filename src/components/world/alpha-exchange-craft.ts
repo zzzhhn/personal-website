@@ -36,17 +36,27 @@ const BRASS=new Set(['#b8975a','#b2945a','#ad8a51','#c4a369','#a78b56','#92784b'
 const WOOD=new Set(['#5a4230','#987348','#5a4634','#9a7952','#684e38','#90714c','#9d8058','#a98b5b','#765a3d','#947451','#68503a','#856540','#72583c','#725c43','#70583e','#715337','#886440']);
 export const exchangeSurface=(color:string):[number,number]=>BRASS.has(color)?[.46,.55]:WOOD.has(color)?[.68,0]:[.86,0];
 export const EXCHANGE_BANK_LAMPS=[[-2.4,1.6,-16.5],[2.4,1.6,-16.5]] as const;
+export const EXCHANGE_ARCHIVE_LAMPS=[[-13.1,3.424,-22.96],[-11,3.424,-22.96]] as const;
 
-/** Static downward light on the worktop only. It cannot leak onto floors, walls,
- * monitor backs or the lamps themselves. The shared night uniform fades it. */
+/** Bounded static worklight pools. Desk lamps reach only their horizontal top;
+ * archive hoods softly wash upward/front-facing drawer and tray surfaces below
+ * them. Floors, cabinet backs, both side routes and lamps remain outside the bake.
+ * The shared night uniform fades all pools, with no new light or frame work. */
 export function bakeExchangeWorklights(g:BufferGeometry) {
   const p=g.getAttribute('position'),n=g.getAttribute('normal'),e=g.getAttribute('aEmit');
   for(let i=0;i<p.count;i++) {
-    if(p.getY(i)<1.02||p.getY(i)>1.15||n.getY(i)<.75)continue;
     let pool=0;
-    for(const [x,,z]of EXCHANGE_BANK_LAMPS) {
-      const distance=Math.hypot(p.getX(i)-x,p.getZ(i)-z);
+    const px=p.getX(i),py=p.getY(i),pz=p.getZ(i);
+    if(py>=1.02&&py<=1.15&&n.getY(i)>=.75)for(const [x,,z]of EXCHANGE_BANK_LAMPS) {
+      const distance=Math.hypot(px-x,pz-z);
       if(distance<1.55)pool+=.65*(1-distance/1.55)**2;
+    }
+    if(py>=.6&&py<=3.35&&pz>=-24.04&&pz<=-22.74) {
+      const facing=Math.min(1,Math.max(0,n.getY(i))*.85+Math.max(0,n.getZ(i))*.5);
+      if(facing>0)for(const [x,,z]of EXCHANGE_ARCHIVE_LAMPS) {
+        const width=Math.max(0,1-Math.abs(px-x)/1.1),depth=Math.max(0,1-Math.abs(pz-z)/1.15);
+        pool+=.95*width**.8*depth*(.4+.6*(py-.6)/2.75)*facing;
+      }
     }
     if(pool>0){e.setY(i,e.getY(i)+pool);e.setZ(i,1);}
   }

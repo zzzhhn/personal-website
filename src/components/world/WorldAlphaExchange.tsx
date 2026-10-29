@@ -41,7 +41,7 @@ export default function WorldAlphaExchange({ projectId }: { projectId?: string }
     const planes = [texturePlane(9.8,2.75,EXCHANGE_HALL.board,[0,0,1024,288]),
       texturePlane(8.6,.95,[0,5.65,1.15],[0,300,1024,112]),
       ...[S.desk,EXCHANGE_SECOND_DESK].map((s,i) => texturePlane(.6,.4,[s.stand[0],1.43,-15.77],[i*512,432,512,160])),
-      texturePlane(2.5,.62,[-11.7,2.08,-19.18],[512,608,512,128]),
+      texturePlane(2.5,.42,[-11.7,.9,-18.648],[512,608,512,128]),
       texturePlane(1.6,.65,[11.7,2.17,-26.48],[640,752,384,128]),
       texturePlane(.52,.15,[-1.35,1.064,-15.32],[640,896,384,112],false,-Math.PI/2),
       texturePlane(3,3,[EXCHANGE_HALL.clock[0],EXCHANGE_HALL.clock[1],EXCHANGE_HALL.clock[2]+.42],[0,752,256,256],true),
@@ -64,7 +64,7 @@ export default function WorldAlphaExchange({ projectId }: { projectId?: string }
     const c = atlas.canvas.getContext('2d')!, r = state.round, row = r?.history[r.day];
     const previous = r ? exchangePreviousMarks(r,r.equityTrace.filter(mark=>mark.day===r.day))?.[0] : null;
     const review = exchangeReview(r,state.reviewIndex);
-    const source = useAlphaExchange.getState(), ticketHistory = r?.history ?? (source.phase === 'open' ? source.history : []);
+    const source = useAlphaExchange.getState(), ticketHistory = state.catalog[0]?.history ?? (source.phase === 'open' ? source.history : []);
     const t = (cn: string, en: string) => zh ? cn : en;
     const font = (size: number, heading = false) => `${heading ? 600 : 500} ${size}px ${heading ? 'Georgia,"Songti SC",serif' : '"Avenir Next","PingFang SC",sans-serif'}`;
     const text = (value: string, x: number, y: number, size = 20, color = '#e6dccb', width = 960) => {
@@ -105,8 +105,8 @@ export default function WorldAlphaExchange({ projectId }: { projectId?: string }
     text(t('虚拟积分 · 最多三次选择','VIRTUAL POINTS · UP TO THREE CHOICES'),20,714,17,'#544736',470);
     panel(512,608,512,128); text(t('历史档案室','HISTORICAL ARCHIVE'),530,641,28,'#ccb88b',470);
     text(state.loading ? t('读取中，请稍候再取票','LOADING; TAKE TICKET WHEN READY') : state.notice === 'error'
-      ? t('按 E 重试，没有替代行情','E TO RETRY; NO SUBSTITUTE PRICES') : t('取票 → 插票 → 选仓 → 拉铃','TICKET → INSERT → POSITION → BELL'),530,681,20,'#eadfc5',470);
-    text(t('沿回廊前往清算室','FOLLOW THE GALLERY TO CLEARING'),530,718,19,'#91a295',470);
+      ? t('按 E 重试，没有替代行情','E TO RETRY; NO SUBSTITUTE PRICES') : t('完整历史 · E 取票','FULL HISTORY · E TO TAKE TICKET'),530,681,20,'#eadfc5',470);
+    text(t('柜台后方：按年份查档','BEHIND THE COUNTER: CHOOSE A YEAR'),530,718,19,'#91a295',470);
     panel(256,752,384,256,'#eadfc2'); text(t('清算回执','CLEARING RECEIPT'),274,790,27,'#354d43',345);
     if (r?.receipt) {
       text(`${r.receipt.startDate} → ${r.receipt.endDate}`,274,826,17,'#544736',345);
@@ -136,7 +136,8 @@ export default function WorldAlphaExchange({ projectId }: { projectId?: string }
       cash:r?.cash ?? 10000, units:r?.units ?? 0, targetUnits:r?.targetUnits ?? 0, checkpoint:r?.checkpoint ?? 0,
       equity:r ? roundEquity(r) : 10000, choices:r?.choices ?? [], traceLength:r?.equityTrace.length ?? 0,
       receipt:r?.receipt ? { pnl:r.receipt.pnl, finalEquity:r.receipt.finalEquity, choices:r.receipt.choices.length } : null,
-      previousRun:r?.previousRun ? { pnl:r.previousRun.pnl, finalEquity:r.previousRun.finalEquity } : null,
+      previousRun:r?.previousRun ? { available:true, currentMark:exchangePreviousMarks(r,r.equityTrace.filter(mark=>mark.day===r.day))?.[0]??null } : null,
+      ticketId:s.ticketId, archive:s.catalog.map(t=>({id:t.id,label:t.label,start:t.history[0].date,end:t.history.at(-1)!.date,days:t.history.length})),
       reviewIndex:s.reviewIndex,
       contacts:s.contacts, ticketReturned:s.ticketReturned, error:s.error }; } };
     const host=window as unknown as { __worldExchange?: typeof api }; host.__worldExchange=api;

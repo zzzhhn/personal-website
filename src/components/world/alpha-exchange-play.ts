@@ -1,12 +1,12 @@
 import { create } from 'zustand';
-import { createExchangeRound, reduceExchangeRound, type ExchangeRound } from './alpha-exchange-round.ts';
+import { createExchangeRound, reduceExchangeRound, type ExchangeRound, type ExchangeRoundReceipt } from './alpha-exchange-round.ts';
 import { beginExchangeBodyAction, cancelExchangeBodyAction, exchangeActor, exchangeBody,
   type ExchangeAnchor, type ExchangeActionKind } from './alpha-exchange-motion.ts';
 import { ringExchange, releaseExchange, useAlphaExchange } from './alpha-exchange-state.ts';
-import { EXCHANGE_PLAY_STATIONS } from './alpha-exchange-play-layout.ts';
+import { EXCHANGE_PLAY_STATIONS, EXCHANGE_ARCHIVE_DRAWERS } from './alpha-exchange-play-layout.ts';
 import { exchangeWorld } from './alpha-exchange-layout.ts';
 import { PLAYER_CENTER_HEIGHT } from './actor-physics.ts';
-import type { ExchangeDay } from './alpha-exchange-data.ts';
+import { exchangeArchiveCatalog, type ExchangeDay, type ExchangeArchiveTicket } from './alpha-exchange-data.ts';
 import type { Vec3 } from './types.ts';
 import { useWorldStore } from './store.ts';
 
@@ -16,6 +16,7 @@ export interface ExchangePlayState {
   round: ExchangeRound | null; ticketReturned: boolean; loading: boolean; notice: ExchangePlayNotice;
   error: string | null; contacts: number; lastContact: ExchangeActionKind | null;
   reviewIndex: number | null;
+  catalog: ExchangeArchiveTicket[]; ticketId: string | null;
 }
 interface HistoryState { phase: string; history: ExchangeDay[]; error: string | null }
 interface PlayDependencies {
@@ -24,14 +25,26 @@ interface PlayDependencies {
   busy?: () => boolean;
   reachable: (anchor: ExchangeAnchor) => boolean;
   carried: () => 'ticket' | 'receipt' | null; clearCarry: () => void;
-  anchor: (station: ExchangePlayStationId, units?: number) => ExchangeAnchor;
+  anchor: (station: ExchangePlayStationId, units?: number, archiveIndex?: number) => ExchangeAnchor;
 }
 
 /** The scene owns requests; only the motion contact callback commits a round transition. */
 export function createExchangePlayController(deps: PlayDependencies) {
   const store = create<ExchangePlayState>(() => ({ round: null, ticketReturned: false, loading: false,
-    notice: 'archive', error: null, contacts: 0, lastContact: null, reviewIndex: null }));
+    notice: 'archive', error: null, contacts: 0, lastContact: null, reviewIndex: null, catalog: [], ticketId: null }));
   let generation = 0;
+  let catalogSource: ExchangeDay[] | null = null, ticketIdentity: string | null = null;
+  const receipts = new Map<string, ExchangeRoundReceipt>();
+  function refreshCatalog() {
+    const source = deps.history();
+    if (source.phase !== 'open') return [];
+    if (source.history !== catalogSource) {
+      const catalog = exchangeArchiveCatalog(source.history);
+      catalogSource = source.history;
+      store.setState({ catalog });
+    }
+    return store.getState().catalog;
+  }
   const allowed = (station: ExchangePlayStationId) => {
     const state = store.getState(), round = state.round;
     if (state.loading || deps.busy?.()) return false;
@@ -44,9 +57,10 @@ export function createExchangePlayController(deps: PlayDependencies) {
   function canRequest(station: ExchangePlayStationId) {
     return allowed(station) && deps.reachable(deps.anchor(station));
   }
-  function contact(kind: ExchangeActionKind, station: ExchangePlayStationId, units?: number) {
+  function contact(kind: ExchangeActionKind, station: ExchangePlayStationId, units?: number,
+    selection?: ExchangeArchiveTicket, archiveIndex?: number) {
     const before = store.getState(), round = before.round, phase = round?.phase, requestGeneration = generation;
-    const anchor = deps.anchor(station, units);
+    const anchor = deps.anchor(station, units, archiveIndex), sourceAtRequest = catalogSource;
     if (!deps.reachable(anchor)) return false;
     return deps.begin(kind, anchor, () => {
       const live = store.getState();
@@ -61,21 +75,22 @@ export function createExchangePlayController(deps: PlayDependencies) {
       }
       let next: ExchangeRound;
       if (kind === 'pickup') {
-        if (round?.phase === 'complete') next = reduceExchangeRound(round, { type: 'replay' });
-        else if (round?.phase === 'ticket') next = round;
-        else {
-          const history = deps.history();
-          if (history.phase !== 'open') return false;
-          next = createExchangeRound(history.history);
-        }
+        if (!selection || deps.history().phase !== 'open' || deps.history().history !== sourceAtRequest) return false;
+        next = round?.phase === 'ticket' && ticketIdentity === selection.identity ? round
+          : createExchangeRound(selection.history, receipts.get(selection.identity) ?? null);
+        ticketIdentity = selection.identity;
       } else {
         if (!round) return false;
         if (kind === 'insert' && deps.carried() !== 'ticket') return false;
         next = reduceExchangeRound(round, kind === 'adjust' ? { type: 'target', units: units! } : { type: kind });
         if (next === round) return false;
       }
+      if (kind === 'collect' && next.receipt && ticketIdentity) {
+        receipts.delete(ticketIdentity); receipts.set(ticketIdentity, next.receipt);
+        if (receipts.size > 5) receipts.delete(receipts.keys().next().value!);
+      }
       store.setState({ round: next, ticketReturned: false, notice: 'contact', error: null, reviewIndex: null,
-        contacts: live.contacts + 1, lastContact: kind });
+        contacts: live.contacts + 1, lastContact: kind, ticketId: selection?.id ?? live.ticketId });
       return true;
     }, () => {
       if (generation !== requestGeneration) return;
@@ -85,7 +100,10 @@ export function createExchangePlayController(deps: PlayDependencies) {
   async function archive() {
     if (!canRequest('archive')) return false;
     const before = store.getState();
-    if (before.round || deps.history().phase === 'open') return contact('pickup', 'archive');
+    if (deps.history().phase === 'open') {
+      const catalog = refreshCatalog();
+      return contact('pickup', 'archive', undefined, catalog[0]);
+    }
     const requestGeneration = ++generation, round = before.round;
     store.setState({ loading: true, notice: 'loading', error: null });
     try {
@@ -93,6 +111,7 @@ export function createExchangePlayController(deps: PlayDependencies) {
       if (requestGeneration !== generation || store.getState().round !== round) return false;
       const source = deps.history();
       if (source.phase !== 'open') throw new Error(source.error ?? 'Historical SPY data unavailable.');
+      refreshCatalog();
       store.setState({ loading: false, notice: 'history-ready', error: null });
     } catch (error) {
       if (requestGeneration !== generation || store.getState().round !== round) return false;
@@ -100,6 +119,17 @@ export function createExchangePlayController(deps: PlayDependencies) {
     }
     // Loading never queues a delayed pickup. A new local request is required.
     return false;
+  }
+  function canRequestTicket(id: string) {
+    const index = store.getState().catalog.findIndex(ticket => ticket.id === id);
+    return index > 0 && allowed('archive') && deps.history().phase === 'open'
+      && deps.reachable(deps.anchor('archive', undefined, index - 1));
+  }
+  function requestTicket(id: string) {
+    if (!allowed('archive') || deps.history().phase !== 'open') return false;
+    const catalog = refreshCatalog(), index = catalog.findIndex(ticket => ticket.id === id);
+    if (index < 1 || !canRequestTicket(id)) return false;
+    return contact('pickup', 'archive', undefined, catalog[index], index - 1);
   }
   function request(station: ExchangePlayStationId): boolean | Promise<boolean> {
     if (station === 'archive') return archive();
@@ -121,11 +151,12 @@ export function createExchangePlayController(deps: PlayDependencies) {
     store.setState({ loading: false, ticketReturned: returned, notice: 'cancelled' });
   }
   function release() { cancel('unmount'); deps.release(); }
-  return { store, request, adjust, canRequest, cancel, release };
+  return { store, request, requestTicket, canRequestTicket, adjust, canRequest, cancel, release };
 }
 
-export function exchangePlayAnchor(station: ExchangePlayStationId, units?: number): ExchangeAnchor {
-  const source = EXCHANGE_PLAY_STATIONS[station];
+export function exchangePlayAnchor(station: ExchangePlayStationId, units?: number, archiveIndex?: number): ExchangeAnchor {
+  const source = station === 'archive' && archiveIndex !== undefined
+    ? EXCHANGE_ARCHIVE_DRAWERS[archiveIndex] : EXCHANGE_PLAY_STATIONS[station];
   let target: Vec3 = [...source.contact];
   if (station === 'desk' && units !== undefined) {
     const { slideStart: a, slideEnd: b } = EXCHANGE_PLAY_STATIONS.desk;
@@ -147,6 +178,8 @@ const play = createExchangePlayController({ history: useAlphaExchange.getState, 
 });
 export const useExchangePlay = play.store;
 export const requestExchangePlay = play.request;
+export const requestExchangeArchiveTicket = play.requestTicket;
+export const canRequestExchangeArchiveTicket = play.canRequestTicket;
 export const adjustExchangePlay = play.adjust;
 export const canRequestExchangePlay = play.canRequest;
 export const cancelExchangePlay = play.cancel;
