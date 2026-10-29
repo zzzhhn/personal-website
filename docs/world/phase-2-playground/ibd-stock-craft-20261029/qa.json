@@ -1,0 +1,164 @@
+{
+  "baseline": "10df592",
+  "branch": "codex/goal-ibd-stock-craft-v42",
+  "reference": "docs/world/phase-2-playground/visual-calibration-20261027/ibd.json",
+  "metrics": {
+    "static": {
+      "before": 47853,
+      "after": 47669,
+      "delta": -184,
+      "budget": 48000
+    },
+    "shell": {
+      "before": 916,
+      "after": 1180,
+      "delta": 264
+    },
+    "representativeFourCartonsOneRig": {
+      "before": 72235,
+      "after": 73107,
+      "delta": 872,
+      "budget": 75000
+    }
+  },
+  "preservedPhysicsAndLid": {
+    "solids": {
+      "count": 256,
+      "hash": "ad00d1525a6e8602925b1b43253f441332a69503a7a6f013291b00ca73a9a56e"
+    },
+    "walkSurface": {
+      "vertices": "a7a86e1c42de0df4951a7a839a08368a648436fd77b81c04a34cffb40fb54ee2",
+      "indices": "6d27b54f865dd07c848f77a54e2accce001e770a22ea968ffc51fd473d33f284"
+    },
+    "groundSurface": {
+      "vertices": "535fa52555311b9e4c6fe84e202df3ce1db58b04254f2b22d40b20cf1ad03a88",
+      "indices": "e2a614626d1575e5db62adbc59acff1e1bf9aea8409bf033020322383f607daf"
+    },
+    "lid": {
+      "triangles": 132,
+      "index": {
+        "count": 396,
+        "hash": "4853a42e5116ec35cbc854440fd33c6d55628638f3fffe64aa4f77b5a0c71525"
+      },
+      "attributes": {
+        "position": {
+          "length": 864,
+          "hash": "68d054b80e9e9c8416e43a68af8e400d3634b97405b3292c51dcbaed500110b2"
+        },
+        "normal": {
+          "length": 864,
+          "hash": "9d9e903d47df06e01c2359dc10bc57a4e416f6cb8fe8ede4eb3f4842f23c5491"
+        },
+        "color": {
+          "length": 864,
+          "hash": "d70a14c9059fd3bf0a8c44cf3c253a928aef746e6b506cfa1fc63b3b1360be65"
+        },
+        "aMat": {
+          "length": 1152,
+          "hash": "0e62b716888d024e7506eef8c2ac05f386a5ff6af3a3c606dece6a4865b86fcf"
+        },
+        "aSuv": {
+          "length": 576,
+          "hash": "cfc335996cfae29fdf14fd2db7ea853366d350a5d387aa3c322616e81dacd56b"
+        }
+      }
+    }
+  },
+  "originalShellPrefix": {
+    "M6": {
+      "originalTriangles": 916,
+      "originalIndex": {
+        "count": 2748,
+        "hash": "394b155de4a9285bc148c29d1b9ef9dd5c493cd8c5fbd7c411a2bb101132b7f2"
+      },
+      "originalAttributes": {
+        "position": {
+          "length": 5064,
+          "hash": "ce6c12a175776735b071bba0217d3f2c461cc2bd8ff0d10983fab4127ba8a605"
+        },
+        "normal": {
+          "length": 5064,
+          "hash": "6534983db89542b7d3ef941edfac7259843f3f6234e3e97aa84d0238c1be0d78"
+        },
+        "color": {
+          "length": 5064,
+          "hash": "fa42a22b73ad47d6faf4db416aaa0fa79f4a7bf53e8398d23bcdc971696c6ce0"
+        },
+        "aMat": {
+          "length": 6752,
+          "hash": "2060dfe2d9d5fbedc50acfc7a6b442215b4487e3d93de78846418c48044ebe97"
+        },
+        "aSuv": {
+          "length": 3376,
+          "hash": "6ca970f9ad9e6de9dcb1e750a3e0f7b62482096c2b052444349975182d5627d5"
+        }
+      },
+      "verified": true
+    },
+    "M8": {
+      "originalTriangles": 916,
+      "originalIndex": {
+        "count": 2748,
+        "hash": "394b155de4a9285bc148c29d1b9ef9dd5c493cd8c5fbd7c411a2bb101132b7f2"
+      },
+      "originalAttributes": {
+        "position": {
+          "length": 5064,
+          "hash": "ce6c12a175776735b071bba0217d3f2c461cc2bd8ff0d10983fab4127ba8a605"
+        },
+        "normal": {
+          "length": 5064,
+          "hash": "6534983db89542b7d3ef941edfac7259843f3f6234e3e97aa84d0238c1be0d78"
+        },
+        "color": {
+          "length": 5064,
+          "hash": "fa42a22b73ad47d6faf4db416aaa0fa79f4a7bf53e8398d23bcdc971696c6ce0"
+        },
+        "aMat": {
+          "length": 6752,
+          "hash": "2060dfe2d9d5fbedc50acfc7a6b442215b4487e3d93de78846418c48044ebe97"
+        },
+        "aSuv": {
+          "length": 3376,
+          "hash": "6ca970f9ad9e6de9dcb1e750a3e0f7b62482096c2b052444349975182d5627d5"
+        }
+      },
+      "verified": true
+    }
+  },
+  "preservedComponents": {
+    "verified": true,
+    "specifications": [
+      "M6",
+      "M8"
+    ],
+    "names": [
+      "sample",
+      "tray",
+      "caliperFixed",
+      "caliperJaw",
+      "rigMast",
+      "rigBoom",
+      "rigTether"
+    ],
+    "slotsUnchanged": true
+  },
+  "sourceSha256": {
+    "ibd-yard-architecture.ts": "bf5a918daac87531e46568936ae94fd8789699c003ad29e8a44f98dcdeed1b7a",
+    "ibd-pack-geometry.ts": "6f73e53da9b0229fe3dc0e5e36553d1d087978359acdc25128cc0e5832f37e24",
+    "ibd-stock-craft.ts": "3c5c2c5d3b31beaea87529c9795eef018821376a12816428a4ba5d4027b86de2",
+    "ibd-stock-craft.test.mjs": "86088d38536353e8679b178e002bb6923f824272f3b34d66ace1da862ec1ff96"
+  },
+  "verification": {
+    "testsPassed": 43,
+    "testsFailed": 0,
+    "geometryAndTraversal": "source and CPU geometry only",
+    "visualAcceptance": "pending main-session day/night comparison",
+    "runtimePerformance": "not measured",
+    "resourceScope": "No browser, renderer, full build, install or service started"
+  },
+  "remainingVisualGaps": [
+    "Full scene day/night legibility and density require runtime screenshots.",
+    "Original flat carton lid remains outside this change ownership."
+  ]
+}

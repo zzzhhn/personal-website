@@ -1,6 +1,7 @@
 import { Builder, bar, cbox, lathe, type V3 } from '../WorldStreetGeometry.ts';
 import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
 import { IBD_PACK_SLOTS, ibdPackSampleDimensions as dimensions } from './ibd-pack-layout.ts';
+import { addIbdPackBindings } from './ibd-stock-craft.ts';
 export * from './ibd-pack-layout.ts';
 const clamp=(v:number,lo=0,hi=1)=>Math.max(lo,Math.min(hi,Number.isFinite(v)?v:lo));
 
@@ -28,6 +29,7 @@ function addPackShell(b:Builder){
   cbox(b,[1.18,.33,-.95],[.18,.12,.18],P.blue,0);
   bar(b,[1.18,.35,-.95],[1.18,.96,-.95],.055,P.steel,8);
   for(const y of [.4,.9])cbox(b,[1.18,y,-.95],[.15,.08,.15],P.dark,0);
+  addIbdPackBindings(b);
 }
 function addSample(b:Builder,spec:string){
   const d=dimensions(spec),r=d.radius,h=d.height;

@@ -2,6 +2,7 @@ import { Builder, bar, cbox, lathe, type Surf, type V3 } from '../WorldStreetGeo
 import { IBD_SHEDS, IBD_CRANE_Y } from './ibd-yard-layout.ts';
 import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
 import { buildIbdPaving } from './ibd-yard-site.ts';
+import { addIbdStockRack } from './ibd-stock-craft.ts';
 
 export interface IbdSolid { at: V3; size: V3; rotation?: V3 }
 export type IbdCube = (at: V3, size: V3, surface: Surf, solid?: boolean, bevel?: number, rotation?: V3) => void;
@@ -128,8 +129,14 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
 export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
   const crate = (x: number, y: number, z: number, w = 2.2) => {
     cube([x, y, z], [w, 1.5, 1.65], P.timber, false, .04);
-    for (const xx of [-w / 2 + .14, w / 2 - .14]) cube([x + xx, y, z + .84], [.14, 1.5, .08], P.endgrain);
-    for (const yy of [-.6, .6]) cube([x, y + yy, z + .85], [w, .12, .1], P.endgrain);
+    for (const xx of [-w / 2 + .14, w / 2 - .14]) cube([x + xx, y, z + .84], [.14, 1.5, .08], P.endgrain, false, 0);
+    for (const yy of [-.6, .6]) cube([x, y + yy, z + .85], [w, .12, .1], P.endgrain, false, 0);
+    // Square-cut battens save bevel faces for the structural rack connections.
+    for (const zz of [-.73, .73]) cube([x, y + .79, z + zz], [w, .08, .1], P.endgrain, false, 0);
+    for (const dx of [-w * .25, 0, w * .25]) b.face([
+      [x + dx - .006, y - .49, z + .826], [x + dx + .006, y - .49, z + .826],
+      [x + dx + .006, y + .49, z + .826], [x + dx - .006, y + .49, z + .826],
+    ], P.dark, [0, 0, 1]);
     // Panel joints, paired straps and fork pockets remain inside the rack's
     // existing protected volume. Their scale reads before individual fasteners.
     for (const dx of [-w * .22, w * .22]) {
@@ -142,10 +149,7 @@ export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
   };
   for (const x of [5, 13, 23]) {
     solids.push({ at: [x, 2.5, -23], size: [6.4, 5, 3.4] });
-    for (const xx of [x - 3, x + 3]) cube([xx, 2.5, -23], [.2, 5, 3.2], P.dark);
-    for (const y of [.4, 2.5, 4.7]) cube([x, y, -23], [6.4, .18, 3.4], P.steel);
-    for (const y of [.53, 2.63, 4.83]) cube([x, y, -21.29], [6.2, .12, .06], P.amber, false, 0);
-    for (const side of [-1, 1]) bar(b, [x + side * 3, .5, -24.45], [x + side * 3, 4.6, -21.55], .045, P.steel, 4);
+    addIbdStockRack(b, cube, x);
     for (const xx of [x - 1.6, x + 1.5]) crate(xx, 1.3, -23);
     if (x === 13) {
       for (const xx of [x - 1.8, x, x + 1.8]) b.tr([xx, 2.6, -23], [0, 0, 0], () => {
