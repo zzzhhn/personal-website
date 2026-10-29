@@ -23,7 +23,8 @@ type Deck = { node: AudioBufferSourceNode | null; gain: GainNode; filter: Biquad
 type Snapshot = { phase: 'off' | 'loading' | 'ready' | 'error'; playing: readonly boolean[]; crossfade: number; volume: number; filter: number; muted: boolean;
   performance: 'idle' | 'queued' | 'build' | 'landed'; beatsLeft: number };
 
-/** Two finite buffers, one context, no scheduling timer/worker/analyser. Sources exist only while audible. */
+/** Two finite buffers, one context, no scheduling timer/worker/analyser.
+ * Keep mixed decks in phase; suspend when the whole manual mix is silent. */
 export class ClubAudio {
   private ctx: AudioContext | null = null;
   private master: GainNode | null = null;
@@ -77,7 +78,10 @@ export class ClubAudio {
   }
   sync = () => {
     const ctx = this.ctx; if (!ctx) return;
-    const active = this.allowed() && this.snapshot.phase === 'ready' && this.decks.some(d => d.playing);
+    const gains = clubGains(this.snapshot.crossfade);
+    // A queued transition needs its musical clock even before the next deck fades in.
+    const active = this.allowed() && this.snapshot.phase === 'ready'
+      && this.decks.some((d, i) => d.playing && (this.performance !== null || gains[i] > AUDIBLE_GAIN));
     if (!active) this.decks.forEach(d => this.stop(d));
     this.notifyAudibility();
     if (this.transition || ctx.state === 'closed') return;
@@ -135,7 +139,7 @@ export class ClubAudio {
   }
   toggle(i: number) { const d = this.decks[i]; if (!d?.buffer) return; this.cancelPerformance(); this.blocked = false; d.playing = !d.playing; if (!d.playing) this.stop(d); else d.offset = this.beat() * 60 / CLUB_BPM % Math.min(LOOP_SECONDS, d.buffer.duration); this.publish({ playing: this.decks.map(d => d.playing) }); this.sync(); }
   cue(i: number) { const d = this.decks[i]; if (!d) return; this.cancelPerformance(); this.stop(d); d.offset = this.beat() * 60 / CLUB_BPM % LOOP_SECONDS; this.sync(); }
-  crossfade(x: number) { this.cancelPerformance(); this.publish({ crossfade: Math.max(0, Math.min(1, x)) }); this.updateLevels(); }
+  crossfade(x: number) { this.cancelPerformance(); this.publish({ crossfade: Math.max(0, Math.min(1, x)) }); this.updateLevels(); this.sync(); }
   volume(x: number) { this.publish({ volume: Math.max(0, Math.min(1, x)) }); this.updateLevels(); this.sync(); }
   filter(x: number) { this.cancelPerformance(); this.publish({ filter: Math.max(0, Math.min(1, x)) }); this.updateLevels(); }
   mute() { this.publish({ muted: !this.snapshot.muted }); this.sync(); }

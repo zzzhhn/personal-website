@@ -88,11 +88,14 @@ export function buildAlphaExchangeGeometry() {
   slope(-17,-14.4,-8,-30,.45,5.2);
   rail([-16.95,.45,-8],[-16.95,5.2,-30]);rail([-14.45,.45,-8],[-14.45,5.2,-30]);
   rail([-8.75,.45,-11],[-8.75,0,-17],.9);
-  // East gallery stair has broad treads and an open top landing; west ramp is the smooth route.
+  // Each east tread has a visible shallow stone bevel, not a hidden collision ramp.
+  // The dynamic capsule cannot auto-step over a vertical 22 cm riser. A 50 cm
+  // run keeps its real contact below the motor's 25 degree walkable limit.
   for(let i=0;i<22;i++){
-    const y=.45+(i+1)*4.75/22,z=-10.8-(i+.5)*19.2/22;
-    box([15.7,y-.12,z],[2.6,.24,19.2/22],'#bba88b','surface');
-    box([15.7,y+.012,z+19.2/44-.04],[2.48,.024,.055],'#d7c5a4','visual');
+    const low=.45+i*4.75/22,y=.45+(i+1)*4.75/22,front=-10.8-i*19.2/22,back=front-19.2/22,bevel=.5;
+    rampWedge(14.4,17,front,front-bevel,low,y,'#bba88b');
+    box([15.7,y-.12,(front-bevel+back)/2],[2.6,.24,19.2/22-bevel],'#bba88b','surface');
+    box([15.7,y+.012,front-bevel-.04],[2.48,.024,.055],'#d7c5a4','visual');
   }
   rail([14.45,.45,-10.8],[14.45,5.2,-30]);rail([16.95,.45,-10.8],[16.95,5.2,-30]);
   // Raised exit landing returns to the original local ground level outside the building.

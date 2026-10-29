@@ -13,7 +13,7 @@ class Context {
   param(){const p={value:1,held:[],ramps:[],targets:[],setTargetAtTime(value,time){this.targets.push({value,time});},cancelScheduledValues(){},cancelAndHoldAtTime(t){this.held.push(t);},linearRampToValueAtTime(value,time){this.ramps.push({value,time});},setValueAtTime(){},setValueCurveAtTime(){}};this.params.push(p);return p;}
   createGain(){return {gain:this.param(),connect(){},disconnect(){}};}
   createBiquadFilter(){return {frequency:this.param(),connect(){},disconnect(){}};}
-  createBufferSource(){const n={buffer:null,loop:false,connect(){},disconnect(){},start(){n.started=true;},stop(){n.stopped=true;}};this.nodes.push(n);return n;}
+  createBufferSource(){const n={buffer:null,loop:false,connect(){},disconnect(){},start(when,offset){n.started=true;n.offset=offset;},stop(){n.stopped=true;}};this.nodes.push(n);return n;}
   async decodeAudioData(){this.decodes++;return {duration:120,length:24000*120,numberOfChannels:2};}
   async resume(){if(this.gate)await this.gate;if(!this.closed)this.state='running';}
   async suspend(){this.state='suspended';}
@@ -47,6 +47,37 @@ test('releasing one Club cannot clear another audible owner', async () => {
   const { audio, release } = fixture(); await audio.enable(); await settle();
   const second = new ClubAudio(), stopSecond = second.retain(); second.proximity(0); await second.enable(); await settle();
   release(); assert.equal(isClubAudible(), true); stopSecond(); assert.equal(isClubAudible(), false);
+});
+test('a silent manual mix stops its source and clock, then resumes the same loop position',async()=>{
+  const {audio,release}=fixture();await audio.enable();await settle();const ctx=Context.instances.at(-1);
+  try {
+    ctx.currentTime=7.25;const original=ctx.nodes.at(-1),beat=audio.beat();
+    audio.crossfade(1);await settle();
+    assert.deepEqual(audio.read().playing,[true,false]);
+    assert.equal(audio.inspect().sources,0);assert.equal(ctx.state,'suspended');
+    assert.equal(original.stopped,true);assert.equal(isClubAudible(),false);
+    audio.crossfade(.5);await settle();
+    assert.equal(ctx.state,'running');assert.equal(audio.inspect().sources,1);
+    assert.equal(ctx.nodes.at(-1).offset,7.25);assert.equal(audio.beat(),beat);
+    assert.equal(ctx.decodes,2);assert.equal(isClubAudible(),true);
+    audio.crossfade(1);await settle();audio.performTransition();await settle();
+    assert.equal(ctx.state,'running');assert.equal(audio.inspect().sources,2);
+    const plan=clubMixPlan(audio.beat(),1);ctx.currentTime=plan.end*60/118+.01;audio.tick();
+    assert.equal(audio.read().performance,'landed');assert.equal(audio.inspect().sources,1);
+    assert.deepEqual(audio.read().playing,[true,false]);
+    assert.equal(audio.read().crossfade,0);assert.equal(isClubAudible(),true);
+  } finally {release();await settle();}
+});
+test('rapid silent-mix reversal cannot suspend a newly audible deck after a pending resume',async()=>{
+  const {audio,release}=fixture();await audio.enable();await settle();const ctx=Context.instances.at(-1);
+  try {
+    audio.crossfade(1);await settle();let resume;ctx.gate=new Promise(resolve=>resume=resolve);
+    audio.crossfade(.5);audio.crossfade(1);resume();await settle();
+    assert.equal(ctx.state,'suspended');assert.equal(audio.inspect().sources,0);
+    ctx.gate=null;audio.toggle(1);await settle();
+    assert.equal(ctx.state,'running');assert.equal(audio.inspect().sources,2);
+    assert.equal(isClubAudible(),true);
+  } finally {release();await settle();}
 });
 test('one context, finite sources, pause/hidden/distance and BFCache preserve a bounded lifecycle',async()=>{
   const {audio,release}=fixture();await audio.enable();await settle();
