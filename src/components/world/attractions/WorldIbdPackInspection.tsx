@@ -31,6 +31,8 @@ export default function WorldIbdPackInspection({slot,item,material}:{slot:IbdPac
     const open=game.core.opened.includes(id)&&!game.core.loaded.includes(id)&&!game.pending;
     const owning=ibdPackVisual.pack===slot, index=ibdPackVisual.index, p=owning?ibdPackVisual.progress:0;
     const held=owning&&check?.held===index&&!!ibdInspectionBody.carried,last=previous.current;
+    // Fast Refresh can retain the pre-cache ref from an already open dev page.
+    last.world??=new Matrix4();
     // Other crates' index/jaw changes do not dirty this idle rig. Still flush an
     // ownership exit, local state/resource change or a changed scene parent.
     const expectedParent=held&&ibdInspectionHands.left?ibdInspectionHands.left:carrier.current;

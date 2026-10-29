@@ -1,6 +1,7 @@
 import { BufferGeometry, Float32BufferAttribute, MeshStandardMaterial, Vector3 } from 'three';
 import { parkMaterial } from './WorldParkKit';
 import type { Vec3 } from './types';
+import { EXCHANGE_CLEARING_LAMPS } from './alpha-exchange-clearing-craft';
 
 /** A single flat chamfer, rather than a subdivided rubbery rounded box.
  * All faces remain within the original support envelope; 44 triangles. */
@@ -45,7 +46,7 @@ export const EXCHANGE_ARCHIVE_LAMPS=[[-13.1,3.424,-22.96],[-11,3.424,-22.96]] as
 export function bakeExchangeWorklights(g:BufferGeometry) {
   const p=g.getAttribute('position'),n=g.getAttribute('normal'),e=g.getAttribute('aEmit');
   for(let i=0;i<p.count;i++) {
-    let pool=0;
+    let pool=0,warmth=1;
     const px=p.getX(i),py=p.getY(i),pz=p.getZ(i);
     if(py>=1.02&&py<=1.15&&n.getY(i)>=.75)for(const [x,,z]of EXCHANGE_BANK_LAMPS) {
       const distance=Math.hypot(px-x,pz-z);
@@ -74,7 +75,17 @@ export function bakeExchangeWorklights(g:BufferGeometry) {
         pool+=.42*width*(.45+.55*(py-5.55)/2.7)*facing;
       }
     }
-    if(pool>0){e.setY(i,e.getY(i)+pool);e.setZ(i,1);}
+    // The press wing's hoods wash only the fitted cabinet and work surfaces.
+    // Keep the floor, hands/receipt approach and the adjacent stairs unaffected.
+    if(px>=9.92&&px<=13.48&&py>=1.29&&py<=3.9&&pz>=-27.81&&pz<=-25.72) {
+      warmth=.25;
+      const facing=Math.min(1,Math.max(0,n.getY(i))*.75+Math.max(0,n.getZ(i))*.55);
+      for(const [x,,z] of EXCHANGE_CLEARING_LAMPS) {
+        const width=Math.max(0,1-Math.abs(px-x)/1.65),depth=Math.max(0,1-Math.abs(pz-z)/1.8);
+        pool+=.75*width*depth*(.5+.5*(py-1.29)/2.61)*facing;
+      }
+    }
+    if(pool>0){e.setY(i,e.getY(i)+pool);e.setZ(i,warmth);}
   }
 }
 

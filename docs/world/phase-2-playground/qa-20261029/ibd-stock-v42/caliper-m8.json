@@ -1,0 +1,91 @@
+{
+ "packInspection": {
+  "view": {
+   "pack": "parts-a",
+   "selected": 0,
+   "gap": 0.46,
+   "busy": false,
+   "feedback": "measured",
+   "round": 1,
+   "itemId": "parts-a"
+  },
+  "visual": {
+   "pack": "parts-a",
+   "index": 0,
+   "progress": 1,
+   "jaw": 0.46,
+   "retracting": false
+  },
+  "actor": {
+   "position": [
+    -78,
+    1.9039127826690674,
+    -186.52000427246094
+   ],
+   "yaw": 1.5707963267948966,
+   "grounded": true,
+   "available": true,
+   "mode": "guide"
+  },
+  "held": {
+   "spec": "M8"
+  },
+  "action": null,
+  "sockets": {
+   "valid": true,
+   "reachable": true,
+   "sampledId": null,
+   "sampledElapsed": 0,
+   "leftHand": [
+    -78.11334406559736,
+    2.1088073147687667,
+    -186.92812281619968
+   ],
+   "rightHand": [
+    -77.78000000303454,
+    2.076500175534381,
+    -186.81000428252446
+   ],
+   "leftContactError": null,
+   "rightContactError": null,
+   "contactError": null
+  },
+  "inspection": {
+   "itemId": "parts-a",
+   "held": 0,
+   "measurement": "M8",
+   "notice": "measured",
+   "slots": [
+    {
+     "index": 0,
+     "present": true,
+     "specId": "M8",
+     "complete": false,
+     "reading": null
+    },
+    {
+     "index": 1,
+     "present": true,
+     "specId": "M8",
+     "complete": false,
+     "reading": null
+    },
+    {
+     "index": 2,
+     "present": true,
+     "specId": "M8",
+     "complete": false,
+     "reading": null
+    },
+    {
+     "index": 3,
+     "present": true,
+     "specId": "M8",
+     "complete": false,
+     "reading": null
+    }
+   ]
+  },
+  "loaded": []
+ }
+}

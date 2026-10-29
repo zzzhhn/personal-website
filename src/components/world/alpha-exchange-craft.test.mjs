@@ -37,3 +37,12 @@ test('worklight baking reaches the horizontal worktop but not the floor, monitor
   const e=g.getAttribute('aEmit');assert.ok(e.getY(0)>.6&&e.getY(0)<.7);assert.equal(e.getX(0),0);
   for(let i=1;i<5;i++)assert.equal(e.getY(i),0);g.dispose();
 });
+test('clearing hood wash reaches the cabinet and press, but not the route, stairs, or cabinet back',()=>{
+  const points=[[10.8,3,-27.3],[11.7,1.52,-26.38],[11.7,.45,-26],[14.4,3,-27],[11.7,3,-28],[10.8,3,-27.76]];
+  const g=new BufferGeometry();
+  g.setAttribute('position',new Float32BufferAttribute(points.flat(),3));
+  g.setAttribute('normal',new Float32BufferAttribute([[0,0,1],[0,1,0],[0,1,0],[0,1,0],[0,0,1],[0,0,-1]].flat(),3));
+  g.setAttribute('aEmit',new Float32BufferAttribute(new Float32Array(18),3));bakeExchangeWorklights(g);
+  const e=g.getAttribute('aEmit');assert.ok(e.getY(0)>.2);assert.ok(e.getY(1)>.05);
+  for(let i=2;i<6;i++)assert.equal(e.getY(i),0);g.dispose();
+});

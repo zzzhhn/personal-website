@@ -50,6 +50,18 @@ test('two-level open hall has bounded finite same-source geometry and at most th
   assert.ok(geometry.colliders.solid.indices.length/3<22000);
   console.log(JSON.stringify({triangles,modelBatches:2,withAtlasBatches:3,surface:geometry.colliders.surface.indices.length/3,solid:geometry.colliders.solid.indices.length/3}));
 });
+test('clearing furniture preserves the hand approach, rear aisle and passage beside the stairs',()=>{
+  const w=new R.World({x:0,y:-12.5,z:0});
+  const m=geometry.colliders.solid;
+  w.createCollider(R.ColliderDesc.trimesh(m.vertices,m.indices),w.createRigidBody(R.RigidBodyDesc.fixed()));w.step();
+  const routes=[[[11.7,.45,-23],[11.7,.45,-25.34]],[[9.4,.45,-28.4],[15,.45,-28.4]],[[13.95,.45,-25.4],[13.95,.45,-28.4]]];
+  for(const [a,b] of routes)for(let t=0;t<=1;t+=.025) {
+    const p=a.map((v,i)=>v+(b[i]-v)*t),hits=[];
+    w.intersectionsWithShape({x:p[0],y:p[1]+.88,z:p[2]},{x:0,y:0,z:0,w:1},new R.Capsule(.48,.34),c=>{hits.push(c.handle);return true;});
+    assert.equal(hits.length,0,`clear working route at ${p}`);
+  }
+  w.free();
+});
 test('mezzanine ramp has real support, open landing and capsule clearance; open coffers preserve sky',()=>{
   const w=new R.World({x:0,y:-12.5,z:0}),surface=new Set();
   for(const [kind,m]of Object.entries(geometry.colliders)){const c=w.createCollider(R.ColliderDesc.trimesh(m.vertices,m.indices,m.flags),w.createRigidBody(R.RigidBodyDesc.fixed()));if(kind==='surface')surface.add(c.handle);}w.step();

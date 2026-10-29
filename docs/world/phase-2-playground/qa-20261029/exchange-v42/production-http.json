@@ -1,0 +1,19 @@
+{
+  "port": 4343,
+  "htmlStatus": 200,
+  "htmlSHA256": "207117a6029dbe3e7cd25495917f05392233645e9bfa08dcc585d55fb9c3f120",
+  "entryAssets": [
+    {
+      "path": "/_astro/WorldApp.CL5m6nP3.css",
+      "status": 200
+    },
+    {
+      "path": "/_astro/WorldIbdHud.BFP9lrI4.css",
+      "status": 200
+    },
+    {
+      "path": "/_astro/WorldIntentHud.-YiVMeyH.css",
+      "status": 200
+    }
+  ]
+}

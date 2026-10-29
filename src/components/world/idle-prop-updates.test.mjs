@@ -42,18 +42,24 @@ function ibdRig(slot, shared) {
   const rod = ibdSource.variable('rod', {scratch});
   const item={id:slot,specId:'M8'};
   const env=()=>({root,mechanism,carrier,carried,pockets,fixed,jaw,mast,boom,tether,previous,scratch,rod,parts,item,slot,
-    IBD_PACK_INSPECTION, ibdPackVisual:shared.visual,ibdInspectionBody:shared.body,ibdInspectionHands:shared.hands,
+    IBD_PACK_INSPECTION, Matrix4, ibdPackVisual:shared.visual,ibdInspectionBody:shared.body,ibdInspectionHands:shared.hands,
     useIbdYardStore:{getState:()=>({game:shared.game})},
     ibdPackTransferPose(...args){poseCalls++;return ibdPackTransferPose(...args);},
     ibdPackInspectAnchors(...args){anchorCalls++;return ibdPackInspectAnchors(...args);}});
   let callback=ibdSource.frame(env());
-  return {root,parent,mechanism,carrier,carried,pockets,
+  return {root,parent,mechanism,carrier,carried,pockets,previous,
     frame(){ callback(); parent.updateMatrixWorld(true); shared.hands.left.updateMatrixWorld(true); },
     replaceParts(){parts={slots:parts.slots.map(s=>({...s,occupied:s.index!==3}))};callback=ibdSource.frame(env());},
     counts:()=>({poseCalls,anchorCalls,writes})};
 }
 function ibdState() { return {visual:{pack:'parts-a',index:0,progress:1,jaw:.54},body:{carried:null},hands:{left:new Group()},
   game:{core:{opened:['parts-a','parts-b','stock-a','stock-b'],loaded:[]},pending:null,packInspections:{}}}; }
+
+test('an existing dev rig upgrades its retained pre-cache ref on the first frame',()=>{
+  const rig=ibdRig('parts-a',ibdState());delete rig.previous.current.world;
+  rig.frame();assert.ok(rig.previous.current.world instanceof Matrix4);
+  assert.equal(rig.counts().writes,1);rig.frame();assert.equal(rig.counts().writes,1);
+});
 
 test('120 changing jaw frames update only the owning rig, with actual pose/anchor/setter counts',()=>{
   const s=ibdState(), rigs=['parts-a','parts-b','stock-a','stock-b'].map(slot=>ibdRig(slot,s));

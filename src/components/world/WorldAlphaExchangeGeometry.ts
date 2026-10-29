@@ -6,6 +6,7 @@ import { EXCHANGE_PLAY_PROPS,EXCHANGE_PLAY_STATIONS,EXCHANGE_SECOND_DESK,EXCHANG
 import { exchangeChamferBox,exchangeSurface,bakeExchangeWorklights,EXCHANGE_BANK_LAMPS } from './alpha-exchange-craft';
 import { buildExchangeInteriorCraft } from './alpha-exchange-interior-craft';
 import { buildExchangeGalleryCraft } from './alpha-exchange-gallery-craft';
+import { buildExchangeClearingCraft } from './alpha-exchange-clearing-craft';
 import type { Vec3 } from './types';
 
 export interface ExchangeCollision {vertices:Float32Array;indices:Uint32Array;flags?:TriMeshFlags}
@@ -319,6 +320,7 @@ export function buildAlphaExchangeGeometry() {
   box([0,1.52,-36.66],[.25,.045,.17],'#72583c','visual');
   buildExchangeInteriorCraft({box,chamfer});
   buildExchangeGalleryCraft({box,chamfer,rod,add,raw});
+  buildExchangeClearingCraft({box,chamfer,rod,add,raw});
   const collision=(p:number[],flags?:TriMeshFlags):ExchangeCollision=>({vertices:new Float32Array(p),indices:Uint32Array.from({length:p.length/3},(_,i)=>i),flags});
   // Coplanar floor diagonals are mesh seams, not physical ridges. Apply Rapier's
   // local adjacent-face normal correction without changing vertices or player tolerances.
