@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Group, Mesh, Vector3, type MeshStandardMaterial } from 'three';
+import { Group, Matrix4, Mesh, Vector3, type MeshStandardMaterial } from 'three';
 import { buildIbdPackParts } from './ibd-pack-geometry';
 import { IBD_PACK_INSPECTION, ibdPackInspectAnchors, ibdPackTransferPose } from './ibd-pack-layout';
 import { ibdPackVisual } from './ibd-pack-play';
@@ -18,7 +18,8 @@ export default function WorldIbdPackInspection({slot,item,material}:{slot:IbdPac
   const pockets=useRef<(Mesh|null)[]>([]), fixed=useRef<Mesh>(null), jaw=useRef<Mesh>(null);
   const mast=useRef<Mesh>(null),boom=useRef<Mesh>(null),tether=useRef<Mesh>(null);
   const scratch=useMemo(()=>({a:new Vector3(),b:new Vector3(),up:new Vector3(0,1,0)}),[]);
-  const previous=useRef({p:NaN,index:-1,jaw:NaN,open:false,owning:false,held:false});
+  const previous=useRef({p:NaN,index:-1,jaw:NaN,open:false,owning:false,held:false,
+    parts:null as typeof parts|null,parent:null as Group['parent'],world:new Matrix4()});
   useEffect(()=>()=>{carried.current?.removeFromParent();parts.dispose();},[parts]);
   const rod=(mesh:Mesh|null,a:Vec3,b:Vec3)=>{
     if(!mesh)return;scratch.a.set(...a);scratch.b.set(...b).sub(scratch.a);
@@ -30,11 +31,17 @@ export default function WorldIbdPackInspection({slot,item,material}:{slot:IbdPac
     const open=game.core.opened.includes(id)&&!game.core.loaded.includes(id)&&!game.pending;
     const owning=ibdPackVisual.pack===slot, index=ibdPackVisual.index, p=owning?ibdPackVisual.progress:0;
     const held=owning&&check?.held===index&&!!ibdInspectionBody.carried,last=previous.current;
-    // Idle crates and a sample already attached to its palm need no pose allocations or writes.
+    // Other crates' index/jaw changes do not dirty this idle rig. Still flush an
+    // ownership exit, local state/resource change or a changed scene parent.
     const expectedParent=held&&ibdInspectionHands.left?ibdInspectionHands.left:carrier.current;
-    if(last.p===p&&last.index===index&&last.jaw===ibdPackVisual.jaw&&last.open===open&&last.owning===owning&&last.held===held
+    const motionUnchanged=!owning&&!last.owning || last.index===index&&last.jaw===ibdPackVisual.jaw;
+    // matrixWorld is maintained by the scene traversal; do not force an extra
+    // ancestor traversal just to test dirtiness. Parent motion is inherited.
+    if(last.parts===parts&&last.parent===root.current.parent&&last.world.equals(root.current.matrixWorld)
+      &&last.p===p&&motionUnchanged&&last.open===open&&last.owning===owning&&last.held===held
       &&carried.current.parent===expectedParent)return;
-    Object.assign(last,{p,index,jaw:ibdPackVisual.jaw,open,owning,held});
+    Object.assign(last,{p,index,jaw:ibdPackVisual.jaw,open,owning,held,parts,parent:root.current.parent});
+    last.world.copy(root.current.matrixWorld);
     mechanism.current.visible=open&&owning&&(p>0||held);
     const pose=ibdPackTransferPose(index,item.specId,p);
     carrier.current.position.set(...pose.at);

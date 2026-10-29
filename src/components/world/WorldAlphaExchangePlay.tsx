@@ -63,6 +63,8 @@ export default function WorldAlphaExchangePlay({ brass, paperFace }: { brass: Me
   const state = useExchangePlay(), stamp = useRef<Mesh>(null), slider = useRef<Mesh>(null), ticket = useRef<Mesh>(null),
     receipt = useRef<Mesh>(null), bell = useRef<Group>(null), pull = useRef<Mesh>(null), rope = useRef<Mesh>(null);
   const sliderStart = useRef({ id: -1, x: 0 });
+  const previous = useRef({ ready:false, active:false, target:0, phase:undefined as string|undefined,
+    returned:false, carried:null as typeof exchangeBody.carried });
   const parts = useMemo(() => ({ ticket: new BoxGeometry(...P.archive.ticketSize), receipt: new BoxGeometry(...P.clearing.receiptSize),
     grip: exchangeChamferBox(P.desk.sliderGripSize,.018), stamp: exchangeChamferBox(P.clearing.stampSize,.018),
     marker: new BoxGeometry(.055,.025,.095), pull: exchangeChamferBox([.22,.075,.075],.015), rope: new CylinderGeometry(.014,.014,1,6),
@@ -74,8 +76,15 @@ export default function WorldAlphaExchangePlay({ brass, paperFace }: { brass: Me
   useEffect(() => exchangeActionAudio.mount(), []);
   useFrame(() => {
     const world = useWorldStore.getState();
-    if (world.paused || world.card || world.shot || world.poolInspect || document.hidden) return;
+    const last = previous.current;
+    if (world.paused || world.card || world.shot || world.poolInspect || document.hidden) { last.ready=false; return; }
+    if (!stamp.current || !slider.current || !ticket.current || !receipt.current || !bell.current || !pull.current || !rope.current) { last.ready=false; return; }
     const live = useExchangePlay.getState(), r = live.round, a = exchangeBody.action;
+    const target=r?.targetUnits??0, phase=r?.phase, returned=live.ticketReturned, carried=exchangeBody.carried;
+    // Active motion keeps the original per-frame interpolation. Its final or
+    // cancelled pose, state-only visibility changes and resume each flush once.
+    if (!a&&last.ready&&!last.active&&last.target===target&&last.phase===phase&&last.returned===returned&&last.carried===carried) return;
+    Object.assign(last,{ready:true,active:!!a,target,phase,returned,carried});
     const elapsed = a?.phase === 'perform' ? a.elapsed : 0, p = a ? Math.min(1, elapsed / a.contactAt) : 0;
     const at = detent(r?.targetUnits ?? 0);
     if (a?.kind === 'adjust') {
