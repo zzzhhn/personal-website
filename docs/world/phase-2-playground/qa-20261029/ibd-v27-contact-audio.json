@@ -1,0 +1,209 @@
+{
+  "version": 27,
+  "kind": "visible browser diagnostics; not listening approval",
+  "steps": [
+    {
+      "step": "before",
+      "parkAudio": {
+        "owners": 3,
+        "started": false,
+        "timer": false,
+        "subscribed": true,
+        "state": "suspended",
+        "transitioning": false,
+        "voices": 0,
+        "ticks": 0,
+        "muted": false,
+        "cueVoices": 0,
+        "cuePending": false,
+        "pcmKeys": 3,
+        "pcmBytes": 71040,
+        "candidate": null,
+        "previewPlaying": false,
+        "previewPending": false,
+        "previewBytes": 0,
+        "roaming": {
+          "phase": "idle",
+          "sources": 0,
+          "buffers": 0,
+          "loading": false,
+          "decoding": false,
+          "bytes": 0,
+          "seconds": 0,
+          "offset": 0,
+          "level": -1
+        }
+      }
+    },
+    {
+      "step": "pickup",
+      "parkAudio": {
+        "owners": 3,
+        "started": false,
+        "timer": false,
+        "subscribed": true,
+        "state": "suspended",
+        "transitioning": false,
+        "voices": 0,
+        "ticks": 0,
+        "muted": false,
+        "cueVoices": 0,
+        "cuePending": false,
+        "pcmKeys": 4,
+        "pcmBytes": 92160,
+        "candidate": null,
+        "previewPlaying": false,
+        "previewPending": false,
+        "previewBytes": 0,
+        "roaming": {
+          "phase": "idle",
+          "sources": 0,
+          "buffers": 0,
+          "loading": false,
+          "decoding": false,
+          "bytes": 0,
+          "seconds": 0,
+          "offset": 0,
+          "level": -1
+        }
+      }
+    },
+    {
+      "step": "misaligned",
+      "parkAudio": {
+        "owners": 3,
+        "started": false,
+        "timer": false,
+        "subscribed": true,
+        "state": "suspended",
+        "transitioning": false,
+        "voices": 0,
+        "ticks": 0,
+        "muted": false,
+        "cueVoices": 0,
+        "cuePending": false,
+        "pcmKeys": 4,
+        "pcmBytes": 92160,
+        "candidate": null,
+        "previewPlaying": false,
+        "previewPending": false,
+        "previewBytes": 0,
+        "roaming": {
+          "phase": "idle",
+          "sources": 0,
+          "buffers": 0,
+          "loading": false,
+          "decoding": false,
+          "bytes": 0,
+          "seconds": 0,
+          "offset": 0,
+          "level": -1
+        }
+      }
+    },
+    {
+      "step": "measure",
+      "parkAudio": {
+        "owners": 3,
+        "started": false,
+        "timer": false,
+        "subscribed": true,
+        "state": "suspended",
+        "transitioning": false,
+        "voices": 0,
+        "ticks": 0,
+        "muted": false,
+        "cueVoices": 0,
+        "cuePending": false,
+        "pcmKeys": 5,
+        "pcmBytes": 124800,
+        "candidate": null,
+        "previewPlaying": false,
+        "previewPending": false,
+        "previewBytes": 0,
+        "roaming": {
+          "phase": "idle",
+          "sources": 0,
+          "buffers": 0,
+          "loading": false,
+          "decoding": false,
+          "bytes": 0,
+          "seconds": 0,
+          "offset": 0,
+          "level": -1
+        }
+      }
+    },
+    {
+      "step": "return",
+      "parkAudio": {
+        "owners": 3,
+        "started": false,
+        "timer": false,
+        "subscribed": true,
+        "state": "suspended",
+        "transitioning": false,
+        "voices": 0,
+        "ticks": 0,
+        "muted": false,
+        "cueVoices": 0,
+        "cuePending": false,
+        "pcmKeys": 5,
+        "pcmBytes": 124800,
+        "candidate": null,
+        "previewPlaying": false,
+        "previewPending": false,
+        "previewBytes": 0,
+        "roaming": {
+          "phase": "idle",
+          "sources": 0,
+          "buffers": 0,
+          "loading": false,
+          "decoding": false,
+          "bytes": 0,
+          "seconds": 0,
+          "offset": 0,
+          "level": -1
+        }
+      }
+    },
+    {
+      "step": "second-return",
+      "parkAudio": {
+        "owners": 3,
+        "started": false,
+        "timer": false,
+        "subscribed": true,
+        "state": "suspended",
+        "transitioning": false,
+        "voices": 0,
+        "ticks": 0,
+        "muted": false,
+        "cueVoices": 0,
+        "cuePending": false,
+        "pcmKeys": 6,
+        "pcmBytes": 151680,
+        "candidate": null,
+        "previewPlaying": false,
+        "previewPending": false,
+        "previewBytes": 0,
+        "roaming": {
+          "phase": "idle",
+          "sources": 0,
+          "buffers": 0,
+          "loading": false,
+          "decoding": false,
+          "bytes": 0,
+          "seconds": 0,
+          "offset": 0,
+          "level": -1
+        }
+      }
+    }
+  ],
+  "completedSlots": [
+    1,
+    2
+  ],
+  "errors": []
+}

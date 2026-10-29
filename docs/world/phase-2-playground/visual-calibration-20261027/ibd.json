@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "scene": "ibd-yard",
+  "referenceVersion": "v1",
+  "approvals": {
+    "style": {
+      "status": "approved",
+      "source": "human-user",
+      "date": "2026-10-27",
+      "quote": "这两个场景的方向我觉得都 OK，继续开工吧。"
+    },
+    "layout": {
+      "status": "approved",
+      "source": "human-user",
+      "date": "2026-10-27",
+      "quote": "这两个场景的方向我觉得都 OK，继续开工吧。"
+    }
+  },
+  "references": [
+    {
+      "role": "day",
+      "path": "docs/world/phase-2-playground/visual-calibration-20261027/ibd-yard-v1.png",
+      "sha256": "a6187c621435fa51c3313c571b6ee6e47a9ff41809065314cd2856261b2de672"
+    },
+    {
+      "role": "night",
+      "path": "docs/world/phase-2-playground/visual-calibration-20261027/ibd-yard-night-v1.png",
+      "sha256": "980b773734042fc306bd96affd0693e309af45b8cc6a802212457b72ea0c5aa1"
+    }
+  ],
+  "reviewViews": [
+    "I01 entrance day/night",
+    "I02 gallery and coil sides",
+    "I03 pack bench and loading bay day/night"
+  ],
+  "failureConditions": [
+    "三棚剪影无差异",
+    "高廊或吊运通道不连通",
+    "夜间地面人物工具不可辨",
+    "装饰挡住检查面",
+    "装卸或出口发生碰撞陷阱"
+  ],
+  "runtimeEvidence": {
+    "status": "reviewed-for-local-preview",
+    "date": "2026-10-28",
+    "report": "docs/world/phase-2-playground/ibd-truck-20261028.md",
+    "userVisualAcceptance": "pending",
+    "note": "v17 已比较车厢与车头两组冻结日夜近景，确认后轮不再穿出地板；实际普通页行走、发货闸阻挡与退离正常。本轮未重跑完整订单；车厢夜间亮度、整体工业细节、音乐听感与整岛性能仍未完成，用户尚未验收最终视觉。"
+  }
+}

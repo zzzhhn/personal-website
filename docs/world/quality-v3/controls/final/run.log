@@ -1,0 +1,121 @@
+{"id":"C03","direction":"east","passed":true,"status":"contact-and-blocked","contacts":24,"gapMax":0.000037670135496603585}
+{"id":"C03","direction":"west","passed":true,"status":"contact-and-blocked","contacts":24,"gapMax":0.04756534099579002}
+{"id":"C03","direction":"south","passed":true,"status":"door-enter-exit","contacts":0,"gapMax":null}
+{"id":"C03","direction":"north","passed":true,"status":"contact-and-blocked","contacts":10,"gapMax":0.00038909912109341693}
+{"id":"C04","direction":"east","passed":true,"status":"contact-and-blocked","contacts":24,"gapMax":0.00003759906956696257}
+{"id":"C04","direction":"west","passed":true,"status":"contact-and-blocked","contacts":24,"gapMax":0.04416573047638084}
+{"id":"C04","direction":"south","passed":true,"status":"door-enter-exit","contacts":0,"gapMax":null}
+{"id":"C04","direction":"north","passed":true,"status":"contact-and-blocked","contacts":18,"gapMax":0.005242880307908537}
+{"id":"C05","direction":"east","passed":true,"status":"contact-and-blocked","contacts":11,"gapMax":0.00007648396971138283}
+{"id":"C05","direction":"west","passed":true,"status":"contact-and-blocked","contacts":10,"gapMax":0.000060278669076596625}
+{"id":"C05","direction":"south","passed":true,"status":"contact-and-blocked","contacts":9,"gapMax":0.00005667859935315489}
+{"id":"C05","direction":"north","passed":true,"status":"contact-and-blocked","contacts":10,"gapMax":0.000059552792113726216}
+{"id":"C06","direction":"east","passed":true,"status":"contact-and-blocked","contacts":44,"gapMax":0.00003792468730351439}
+{"id":"C06","direction":"west","passed":true,"status":"contact-and-blocked","contacts":50,"gapMax":0.00003668034170739576}
+{"id":"C06","direction":"south","passed":true,"status":"contact-and-blocked","contacts":32,"gapMax":0.000035054901718234444}
+{"id":"C06","direction":"north","passed":true,"status":"contact-and-blocked","contacts":32,"gapMax":0.0000337848074384306}
+{"id":"C07","direction":"east","passed":true,"status":"contact-and-blocked","contacts":71,"gapMax":0.005864645218403353}
+{"id":"C07","direction":"west","passed":true,"status":"contact-and-blocked","contacts":36,"gapMax":0.004327056520855466}
+{"id":"C07","direction":"south","passed":true,"status":"contact-and-blocked","contacts":44,"gapMax":0.004265222729066431}
+{"id":"C07","direction":"north","passed":true,"status":"contact-and-blocked","contacts":84,"gapMax":0.0012241039867613157}
+{"id":"C08","direction":"east","passed":true,"status":"occluded-by-other-solid","contacts":0,"gapMax":null}
+{"id":"C08","direction":"west","passed":true,"status":"occluded-by-other-solid","contacts":0,"gapMax":null}
+{"id":"C08","direction":"south","passed":true,"status":"occluded-by-other-solid","contacts":0,"gapMax":null}
+{"id":"C08","direction":"north","passed":true,"status":"occluded-by-other-solid","contacts":0,"gapMax":null}
+{"id":"C09","direction":"east","passed":true,"status":"contact-and-blocked","contacts":36,"gapMax":0.0021693117472724732}
+{"id":"C09","direction":"west","passed":true,"status":"contact-and-blocked","contacts":68,"gapMax":0.0022438403707404353}
+{"id":"C09","direction":"south","passed":true,"status":"contact-and-blocked","contacts":36,"gapMax":0.0022525387960513066}
+{"id":"C09","direction":"north","passed":true,"status":"contact-and-blocked","contacts":55,"gapMax":0.00252995920997251}
+{"id":"C10","direction":"east","passed":true,"status":"contact-and-blocked","contacts":22,"gapMax":0.00017234140646688045}
+{"id":"C10","direction":"west","passed":true,"status":"contact-and-blocked","contacts":22,"gapMax":0.0006752100634405123}
+{"id":"C10","direction":"south","passed":true,"status":"contact-and-blocked","contacts":14,"gapMax":0.0006364551775809302}
+{"id":"C10","direction":"north","passed":true,"status":"contact-and-blocked","contacts":17,"gapMax":0.0004553029894868721}
+{"id":"G16","direction":"east","passed":true,"status":"contact-and-blocked","contacts":36,"gapMax":0.006235485235138338}
+{"id":"G16","direction":"west","passed":true,"status":"contact-and-blocked","contacts":36,"gapMax":0.004900675742032956}
+{"id":"G16","direction":"south","passed":true,"status":"contact-and-blocked","contacts":21,"gapMax":0.004498019624603999}
+{"id":"G16","direction":"north","passed":true,"status":"contact-and-blocked","contacts":31,"gapMax":0.0029273075501223267}
+{"id":"G17","direction":"east","passed":true,"status":"contact-and-blocked","contacts":22,"gapMax":0.005596402954982038}
+{"id":"G17","direction":"west","passed":true,"status":"contact-and-blocked","contacts":84,"gapMax":0.001432907665246952}
+{"id":"G17","direction":"south","passed":true,"status":"contact-and-blocked","contacts":28,"gapMax":0.0029996893621868637}
+{"id":"G17","direction":"north","passed":true,"status":"contact-and-blocked","contacts":39,"gapMax":0.0051054682663797535}
+{"id":"G18","direction":"east","passed":true,"status":"contact-and-blocked","contacts":22,"gapMax":0.003136818678071307}
+{"id":"G18","direction":"west","passed":true,"status":"contact-and-blocked","contacts":59,"gapMax":0.005371747624842549}
+{"id":"G18","direction":"south","passed":true,"status":"contact-and-blocked","contacts":41,"gapMax":0.005473611160733194}
+{"id":"G18","direction":"north","passed":true,"status":"contact-and-blocked","contacts":39,"gapMax":0.0061111702511108534}
+{"id":"G19","direction":"east","passed":false,"status":"no-target-contact","contacts":0,"gapMax":null}
+{"id":"G19","direction":"west","passed":false,"status":"occluded-by-other-solid","contacts":0,"gapMax":null}
+{"id":"G19","direction":"south","passed":false,"status":"no-target-contact","contacts":0,"gapMax":null}
+{"id":"G19","direction":"north","passed":false,"status":"no-target-contact","contacts":0,"gapMax":null}
+{"id":"G20","direction":"east","passed":false,"status":"no-target-contact","contacts":0,"gapMax":null}
+{"id":"G20","direction":"west","passed":false,"status":"no-target-contact","contacts":0,"gapMax":null}
+{"id":"G20","direction":"south","passed":false,"status":"no-target-contact","contacts":0,"gapMax":null}
+{"id":"G20","direction":"north","passed":false,"status":"no-target-contact","contacts":0,"gapMax":null}
+{"id":"G21","direction":"east","passed":true,"status":"contact-and-blocked","contacts":18,"gapMax":0.0004284972687984001}
+{"id":"G21","direction":"west","passed":true,"status":"contact-and-blocked","contacts":13,"gapMax":0.002302602407276144}
+{"id":"G21","direction":"south","passed":true,"status":"contact-and-blocked","contacts":22,"gapMax":0.0004317895450005049}
+{"id":"G21","direction":"north","passed":true,"status":"contact-and-blocked","contacts":8,"gapMax":0.000158761078034364}
+{"id":"G22","direction":"east","passed":true,"status":"contact-and-blocked","contacts":38,"gapMax":0.000353258469313833}
+{"id":"G22","direction":"west","passed":true,"status":"contact-and-blocked","contacts":44,"gapMax":0.0011564596092794033}
+{"id":"G22","direction":"south","passed":true,"status":"contact-and-blocked","contacts":27,"gapMax":0.0029455382302654987}
+{"id":"G22","direction":"north","passed":true,"status":"contact-and-blocked","contacts":36,"gapMax":0.0005225236125004362}
+{"id":"G23","direction":"east","passed":true,"status":"contact-and-stepped-over","contacts":2,"gapMax":0.0009792836140011807}
+{"id":"G23","direction":"west","passed":true,"status":"contact-and-stepped-over","contacts":5,"gapMax":0.000885906041044271}
+{"id":"G23","direction":"south","passed":true,"status":"contact-and-blocked","contacts":11,"gapMax":0.002683038533019544}
+{"id":"G23","direction":"north","passed":true,"status":"contact-and-stepped-over","contacts":3,"gapMax":0.00036985096923891625}
+{
+  "checksPassed": 14,
+  "checksTotal": 14,
+  "collisionPasses": 56,
+  "collisionCases": 64,
+  "unresolved": [
+    {
+      "id": "G19",
+      "direction": "east",
+      "status": "no-target-contact",
+      "boundary15cm": null
+    },
+    {
+      "id": "G19",
+      "direction": "west",
+      "status": "occluded-by-other-solid",
+      "boundary15cm": null
+    },
+    {
+      "id": "G19",
+      "direction": "south",
+      "status": "no-target-contact",
+      "boundary15cm": null
+    },
+    {
+      "id": "G19",
+      "direction": "north",
+      "status": "no-target-contact",
+      "boundary15cm": null
+    },
+    {
+      "id": "G20",
+      "direction": "east",
+      "status": "no-target-contact",
+      "boundary15cm": null
+    },
+    {
+      "id": "G20",
+      "direction": "west",
+      "status": "no-target-contact",
+      "boundary15cm": null
+    },
+    {
+      "id": "G20",
+      "direction": "south",
+      "status": "no-target-contact",
+      "boundary15cm": null
+    },
+    {
+      "id": "G20",
+      "direction": "north",
+      "status": "no-target-contact",
+      "boundary15cm": null
+    }
+  ],
+  "errors": 0
+}

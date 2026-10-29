@@ -1,0 +1,32 @@
+✔ rear inspection damage is a real recess while the front face and bore stay intact (17.368459ms)
+✔ the inspection torch lens faces the cargo and the kit still fits its takeable desk envelope (1.72775ms)
+using deprecated parameters for the initialization function; pass a single object instead
+✔ unchanged load and unload routes sweep the full runtime pallet collider clear of the production truck (14.590583ms)
+✔ both final visible pallet footprints have truck-floor support, wall clearance and roof headroom (25.140417ms)
+✔ ordinary player capsules climb and leave both real loading ramps without a floor-contact false wall (40.994042ms)
+✔ actual rear wheel vertices remain below the visible carrying surface and its collision floor (25.222833ms)
+✔ cab faces the exit direction while a full standing player can pass its west side to the yard exit (20.091792ms)
+✔ all three front portal columns expose a recessed web between their structural flanges (42.047542ms)
+✔ the rear parts rack contains actual hollow stock instead of a closed case or painted dark disc (9.823958ms)
+✔ the new ceiling lamps leave full closed-pallet headroom across both loaded bays, including their centres (138.309875ms)
+✔ task surfaces receive local warm fill and the live pair selects their actual desk/inside-truck fixtures (0.223625ms)
+✔ crossing between the two interior lamps preserves live-light assignments instead of restarting both fades (1.008042ms)
+using deprecated parameters for the initialization function; pass a single object instead
+✔ geometry is finite, bounded to the survey, and stays below the provisional triangle budget (146.484666ms)
+✔ all animated transport lanes clear the enlarged architecture with the actual cargo collider sizes (122.644708ms)
+✔ south entrance and the outside portal landings have no facility collider obstruction (103.349375ms)
+✔ camera-sized sphere sweeps hit both physical roof slopes of all three sheds (92.885583ms)
+✔ west ramp, north deck and side gallery form a continuous capsule-clear route (93.089083ms)
+✔ the real player support and swept-motion helpers cross the ramp crest without a southward ejection (150.592958ms)
+✔ every station has a collision-free standing point within its own interaction radius (89.520458ms)
+✔ night bake is finite, nonuniform and lights working floors as well as lamp lenses (125.350833ms)
+✔ both material variants patch the installed Three shader and share the world night uniform (0.395125ms)
+✔ nearby fixture selection never duplicates lights or activates more than two, and shuts off outside the yard (1.487791ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3563.539583

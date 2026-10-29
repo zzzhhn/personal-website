@@ -1,0 +1,86 @@
+Browser tab: 1395913741, Title: "Bobby’s island · World playtest", URL: "http://127.0.0.1:4343/world/?start=wade&quality=balanced&paused=1&qa=1".
+1 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4343/world/?start=wade&quality=balanced&paused=1&qa=1
+	2 container Bobby 的城岛
+		3 container
+			4 text 经历 · 项目 · 漫游
+			5 heading Bobby 的城岛, Value: 1
+				6 text Bobby 的城岛
+			7 button 回到营地, Help: 保留矿石、挖矿进度和研究结果。
+			8 pop up button 地图与设置 Esc
+		9 container
+			10 container 城岛地图 · 环岛海岸
+			11 text 环岛海岸
+		16 container
+			17 button QA · 读取当前渲染开销
+			18 button QA · 读取动作与接触
+			19 button QA · 读取 Club 音频
+			20 button QA · 读取水面接触
+			21 button (disabled) QA · 倾覆当前车辆
+			22 button QA · 上车并定格门洞
+			23 button QA · 定格入座
+			24 button QA · 继续上下车动作
+			25 button QA · 当前角色或车辆落水
+			26 checkbox QA · 模拟回测连接中断, Value: 0
+			27 text {
+ "water": {
+  "emitted": 3,
+  "active": [
+   {
+    "x": -26,
+    "z": 106,
+    "y": -0.7,
+    "at": 0,
+    "strength": 0.5,
+    "radius": 0.12,
+    "splash": 0.32
+   },
+   {
+    "x": -26.295442977899256,
+    "z": 106.3193952636666,
+    "y": -0.7,
+    "at": 0.49559999999403953,
+    "strength": 0.36543447531139545,
+    "radius": 0.12,
+    "splash": 0.10337180450248283
+   },
+   {
+    "x": -26.88436492921561,
+    "z": 106.799079223646,
+    "y": -0.7,
+    "at": 0.6769000000059604,
+    "strength": 0.4914945202407153,
+    "radius": 0.12,
+    "splash": 0.20785062695668988
+   }
+  ]
+ }
+}
+		28 text {
+ "position": [
+  -26.96,
+  -0.77,
+  108.75
+ ],
+ "yaw": -2.5,
+ "grounded": true,
+ "vehicle": null,
+ "drive": null,
+ "grass": {
+  "instances": 0,
+  "disturbers": 1,
+  "trampled": 4,
+  "strength": 0.85
+ },
+ "exchange": {
+  "phase": "closed",
+  "days": 0,
+  "day": 0,
+  "cash": 10000,
+  "units": 0,
+  "equity": 10000,
+  "message": "ring-first",
+  "ledger": []
+ }
+}
+
+The focused UI element is 20 button QA · 读取水面接触

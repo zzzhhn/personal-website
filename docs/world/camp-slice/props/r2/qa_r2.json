@@ -1,0 +1,2060 @@
+{
+ "blender": "4.2.23 LTS",
+ "assets": {
+  "C07": {
+   "native": {
+    "triangles": 828,
+    "boundsGLB_min": [
+     -0.64798814,
+     0.0,
+     -1.0
+    ],
+    "boundsGLB_max": [
+     0.64798814,
+     0.8523289,
+     1.0
+    ],
+    "sizeGLB_xyz": [
+     1.296,
+     0.8523,
+     2.0
+    ],
+    "xzCenterGLB": [
+     0.0,
+     0.0
+    ],
+    "minYGLB": 0.0,
+    "materials": {
+     "props_wood_light": {
+      "materialRole": "wood",
+      "baseColorLinear": [
+       0.4851,
+       0.2961,
+       0.1413
+      ],
+      "roughness": 0.72,
+      "metallic": 0.0
+     },
+     "props_wood_mid": {
+      "materialRole": "wood",
+      "baseColorLinear": [
+       0.2705,
+       0.1559,
+       0.0908
+      ],
+      "roughness": 0.76,
+      "metallic": 0.0
+     }
+    },
+    "objects": [
+     "C07",
+     "C07_desk",
+     "C07_stool"
+    ],
+    "objectOrigins": {
+     "C07": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "C07_desk": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "C07_stool": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "topology": [
+     {
+      "name": "C07_desk",
+      "triangles": 592,
+      "vertex_edge_components": 14,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "nonmanifold_vertices": 0,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 0,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 0,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_wood_light": 3.6873589451893465,
+       "props_wood_mid": 2.962080707366271
+      }
+     },
+     {
+      "name": "C07_stool",
+      "triangles": 236,
+      "vertex_edge_components": 7,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "nonmanifold_vertices": 0,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 0,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 0,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_wood_light": 0.20006364153765507,
+       "props_wood_mid": 0.3469205093210614
+      }
+     }
+    ]
+   },
+   "glbImport": {
+    "triangles": 828,
+    "boundsGLB_min": [
+     -0.64798814,
+     0.0,
+     -1.0
+    ],
+    "boundsGLB_max": [
+     0.64798808,
+     0.85232824,
+     1.0
+    ],
+    "sizeGLB_xyz": [
+     1.296,
+     0.8523,
+     2.0
+    ],
+    "xzCenterGLB": [
+     -3e-08,
+     0.0
+    ],
+    "minYGLB": 0.0,
+    "materials": {
+     "props_wood_light": {
+      "materialRole": "wood",
+      "baseColorLinear": [
+       0.4851,
+       0.2961,
+       0.1413
+      ],
+      "roughness": 0.72,
+      "metallic": 0.0
+     },
+     "props_wood_mid": {
+      "materialRole": "wood",
+      "baseColorLinear": [
+       0.2705,
+       0.1559,
+       0.0908
+      ],
+      "roughness": 0.76,
+      "metallic": 0.0
+     }
+    },
+    "objects": [
+     "C07",
+     "C07_desk",
+     "C07_stool"
+    ],
+    "topology_raw_import": [
+     {
+      "name": "C07_desk",
+      "triangles": 592,
+      "vertex_edge_components": 346,
+      "boundary_edges": 1284,
+      "nonmanifold_edges": 1284,
+      "nonmanifold_vertices": 1284,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 6,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 330,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_wood_light": 3.6873524533356705,
+       "props_wood_mid": 2.9620940714309523
+      }
+     },
+     {
+      "name": "C07_stool",
+      "triangles": 236,
+      "vertex_edge_components": 110,
+      "boundary_edges": 456,
+      "nonmanifold_edges": 456,
+      "nonmanifold_vertices": 456,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 40,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 42,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_wood_light": 0.200063724463046,
+       "props_wood_mid": 0.34691984683766225
+      }
+     }
+    ]
+   },
+   "glb": {
+    "magic": "glTF",
+    "version": 2,
+    "bytes": 15920,
+    "nodes": [
+     {
+      "name": "C07_desk",
+      "mesh": true,
+      "translation": [
+       0,
+       0,
+       0
+      ],
+      "extrasKeys": []
+     },
+     {
+      "name": "C07_stool",
+      "mesh": true,
+      "translation": [
+       0,
+       0,
+       0
+      ],
+      "extrasKeys": []
+     },
+     {
+      "name": "C07",
+      "mesh": false,
+      "translation": [
+       0,
+       0,
+       0
+      ],
+      "extrasKeys": [
+       "assetId",
+       "designBoundsGLB_xyz",
+       "deskTopHeight_m",
+       "deskTopRectGLB",
+       "front",
+       "generator",
+       "materialRoles",
+       "notes",
+       "units",
+       "up",
+       "useSide"
+      ]
+     }
+    ],
+    "scenesRootNodes": [
+     "C07"
+    ],
+    "materials": [
+     {
+      "name": "props_wood_light",
+      "role": "wood",
+      "baseColorFactor": [
+       0.4851,
+       0.2961,
+       0.1413,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.7200000286102295,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     },
+     {
+      "name": "props_wood_mid",
+      "role": "wood",
+      "baseColorFactor": [
+       0.2705,
+       0.1559,
+       0.0908,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.7599999904632568,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     }
+    ],
+    "images": 0,
+    "textures": 0,
+    "cameras": 0,
+    "animations": 0,
+    "extensionsUsed": [
+     "KHR_draco_mesh_compression"
+    ],
+    "extensionsRequired": [
+     "KHR_draco_mesh_compression"
+    ],
+    "dracoPrimitives": 4,
+    "totalPrimitives": 4,
+    "rootExtras": {
+     "assetId": "C07",
+     "generator": "props-r2",
+     "units": "meters",
+     "front": "+X",
+     "up": "+Y (glTF)",
+     "designBoundsGLB_xyz": [
+      1.296,
+      0.8523,
+      2.0
+     ],
+     "materialRoles": [
+      "wood"
+     ],
+     "deskTopHeight_m": 0.85,
+     "useSide": "+X",
+     "notes": "C07_stool is a separate node inside the declared 1.3 m depth; hide it at runtime if not wanted.",
+     "deskTopRectGLB": {
+      "y": 0.85,
+      "x": [
+       -0.618,
+       0.122
+      ],
+      "z": [
+       -0.97,
+       0.97
+      ]
+     }
+    }
+   },
+   "checks": {
+    "triangles_match": true,
+    "bounds_max_abs_diff": 6.6e-07,
+    "bounds_within_draco_tol": true,
+    "draco_all_primitives": true,
+    "min_y_zero": true,
+    "xz_centered": true,
+    "material_names_match": true,
+    "all_materials_have_role": true,
+    "no_textures_cameras_animations": true,
+    "no_transmission_or_blend": true,
+    "single_root": true,
+    "native_closed_shells": true,
+    "native_no_degenerate": true,
+    "finite": true,
+    "zero_area_material_slots": []
+   }
+  },
+  "C08": {
+   "native": {
+    "triangles": 364,
+    "boundsGLB_min": [
+     -0.21572037,
+     0.0,
+     -0.34369013
+    ],
+    "boundsGLB_max": [
+     0.21572037,
+     0.32100001,
+     0.34369013
+    ],
+    "sizeGLB_xyz": [
+     0.4314,
+     0.321,
+     0.6874
+    ],
+    "xzCenterGLB": [
+     0.0,
+     0.0
+    ],
+    "minYGLB": 0.0,
+    "materials": {
+     "props_paper": {
+      "materialRole": "paper",
+      "baseColorLinear": [
+       0.7913,
+       0.7157,
+       0.5972
+      ],
+      "roughness": 0.9,
+      "metallic": 0.0
+     },
+     "props_cover_slate": {
+      "materialRole": "accent",
+      "baseColorLinear": [
+       0.0762,
+       0.1274,
+       0.2051
+      ],
+      "roughness": 0.8,
+      "metallic": 0.0
+     },
+     "props_cover_orange": {
+      "materialRole": "accent",
+      "baseColorLinear": [
+       0.807,
+       0.2159,
+       0.0423
+      ],
+      "roughness": 0.8,
+      "metallic": 0.0
+     },
+     "props_cover_olive": {
+      "materialRole": "accent",
+      "baseColorLinear": [
+       0.2086,
+       0.2623,
+       0.0482
+      ],
+      "roughness": 0.82,
+      "metallic": 0.0
+     },
+     "props_cover_brick": {
+      "materialRole": "accent",
+      "baseColorLinear": [
+       0.2705,
+       0.1559,
+       0.0908
+      ],
+      "roughness": 0.82,
+      "metallic": 0.0
+     }
+    },
+    "objects": [
+     "C08",
+     "C08_books"
+    ],
+    "objectOrigins": {
+     "C08": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "C08_books": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "topology": [
+     {
+      "name": "C08_books",
+      "triangles": 364,
+      "vertex_edge_components": 7,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "nonmanifold_vertices": 0,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 0,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 0,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_paper": 0.3175340880260291,
+       "props_cover_slate": 0.4871428766185559,
+       "props_cover_orange": 0.46187920081938516,
+       "props_cover_olive": 0.47851590876630623,
+       "props_cover_brick": 0.21391851269021075
+      }
+     }
+    ]
+   },
+   "glbImport": {
+    "triangles": 364,
+    "boundsGLB_min": [
+     -0.21572037,
+     0.0,
+     -0.34369013
+    ],
+    "boundsGLB_max": [
+     0.21572037,
+     0.32099998,
+     0.3436901
+    ],
+    "sizeGLB_xyz": [
+     0.4314,
+     0.321,
+     0.6874
+    ],
+    "xzCenterGLB": [
+     0.0,
+     -1e-08
+    ],
+    "minYGLB": 0.0,
+    "materials": {
+     "props_paper": {
+      "materialRole": "paper",
+      "baseColorLinear": [
+       0.7913,
+       0.7157,
+       0.5972
+      ],
+      "roughness": 0.9,
+      "metallic": 0.0
+     },
+     "props_cover_slate": {
+      "materialRole": "accent",
+      "baseColorLinear": [
+       0.0762,
+       0.1274,
+       0.2051
+      ],
+      "roughness": 0.8,
+      "metallic": 0.0
+     },
+     "props_cover_orange": {
+      "materialRole": "accent",
+      "baseColorLinear": [
+       0.807,
+       0.2159,
+       0.0423
+      ],
+      "roughness": 0.8,
+      "metallic": 0.0
+     },
+     "props_cover_olive": {
+      "materialRole": "accent",
+      "baseColorLinear": [
+       0.2086,
+       0.2623,
+       0.0482
+      ],
+      "roughness": 0.82,
+      "metallic": 0.0
+     },
+     "props_cover_brick": {
+      "materialRole": "accent",
+      "baseColorLinear": [
+       0.2705,
+       0.1559,
+       0.0908
+      ],
+      "roughness": 0.82,
+      "metallic": 0.0
+     }
+    },
+    "objects": [
+     "C08",
+     "C08_books"
+    ],
+    "topology_raw_import": [
+     {
+      "name": "C08_books",
+      "triangles": 364,
+      "vertex_edge_components": 168,
+      "boundary_edges": 700,
+      "nonmanifold_edges": 700,
+      "nonmanifold_vertices": 700,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 32,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 95,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_paper": 0.3175342009639475,
+       "props_cover_slate": 0.4871420842759693,
+       "props_cover_orange": 0.4618798173027802,
+       "props_cover_olive": 0.47851604052996644,
+       "props_cover_brick": 0.21391828973781946
+      }
+     }
+    ]
+   },
+   "glb": {
+    "magic": "glTF",
+    "version": 2,
+    "bytes": 10584,
+    "nodes": [
+     {
+      "name": "C08_books",
+      "mesh": true,
+      "translation": [
+       0,
+       0,
+       0
+      ],
+      "extrasKeys": []
+     },
+     {
+      "name": "C08",
+      "mesh": false,
+      "translation": [
+       0,
+       0,
+       0
+      ],
+      "extrasKeys": [
+       "assetId",
+       "designBoundsGLB_xyz",
+       "front",
+       "generator",
+       "materialRoles",
+       "placement",
+       "text",
+       "units",
+       "up"
+      ]
+     }
+    ],
+    "scenesRootNodes": [
+     "C08"
+    ],
+    "materials": [
+     {
+      "name": "props_paper",
+      "role": "paper",
+      "baseColorFactor": [
+       0.7913,
+       0.7157,
+       0.5972,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.8999999761581421,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     },
+     {
+      "name": "props_cover_slate",
+      "role": "accent",
+      "baseColorFactor": [
+       0.0762,
+       0.1274,
+       0.2051,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.800000011920929,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     },
+     {
+      "name": "props_cover_orange",
+      "role": "accent",
+      "baseColorFactor": [
+       0.807,
+       0.2159,
+       0.0423,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.800000011920929,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     },
+     {
+      "name": "props_cover_olive",
+      "role": "accent",
+      "baseColorFactor": [
+       0.2086,
+       0.2623,
+       0.0482,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.8199999928474426,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     },
+     {
+      "name": "props_cover_brick",
+      "role": "accent",
+      "baseColorFactor": [
+       0.2705,
+       0.1559,
+       0.0908,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.8199999928474426,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     }
+    ],
+    "images": 0,
+    "textures": 0,
+    "cameras": 0,
+    "animations": 0,
+    "extensionsUsed": [
+     "KHR_draco_mesh_compression"
+    ],
+    "extensionsRequired": [
+     "KHR_draco_mesh_compression"
+    ],
+    "dracoPrimitives": 5,
+    "totalPrimitives": 5,
+    "rootExtras": {
+     "assetId": "C08",
+     "generator": "props-r2",
+     "units": "meters",
+     "front": "+X",
+     "up": "+Y (glTF)",
+     "designBoundsGLB_xyz": [
+      0.4314,
+      0.321,
+      0.6874
+     ],
+     "materialRoles": [
+      "accent",
+      "paper"
+     ],
+     "placement": "origin at stack bottom centre; drop onto C07 deskTopRectGLB",
+     "text": "none (spines and covers intentionally blank)"
+    }
+   },
+   "checks": {
+    "triangles_match": true,
+    "bounds_max_abs_diff": 3e-08,
+    "bounds_within_draco_tol": true,
+    "draco_all_primitives": true,
+    "min_y_zero": true,
+    "xz_centered": true,
+    "material_names_match": true,
+    "all_materials_have_role": true,
+    "no_textures_cameras_animations": true,
+    "no_transmission_or_blend": true,
+    "single_root": true,
+    "native_closed_shells": true,
+    "native_no_degenerate": true,
+    "finite": true,
+    "zero_area_material_slots": []
+   }
+  },
+  "C09": {
+   "native": {
+    "triangles": 1832,
+    "boundsGLB_min": [
+     -0.29250002,
+     0.0,
+     -0.88499999
+    ],
+    "boundsGLB_max": [
+     0.29250002,
+     1.6825,
+     0.88499999
+    ],
+    "sizeGLB_xyz": [
+     0.585,
+     1.6825,
+     1.77
+    ],
+    "xzCenterGLB": [
+     0.0,
+     0.0
+    ],
+    "minYGLB": 0.0,
+    "materials": {
+     "props_wood_mid": {
+      "materialRole": "wood",
+      "baseColorLinear": [
+       0.2705,
+       0.1559,
+       0.0908
+      ],
+      "roughness": 0.76,
+      "metallic": 0.0
+     },
+     "props_wood_light": {
+      "materialRole": "wood",
+      "baseColorLinear": [
+       0.4851,
+       0.2961,
+       0.1413
+      ],
+      "roughness": 0.72,
+      "metallic": 0.0
+     },
+     "props_wood_dark": {
+      "materialRole": "wood",
+      "baseColorLinear": [
+       0.1022,
+       0.0612,
+       0.0343
+      ],
+      "roughness": 0.8,
+      "metallic": 0.0
+     },
+     "props_brass_matte": {
+      "materialRole": "metal",
+      "baseColorLinear": [
+       0.4793,
+       0.3095,
+       0.1022
+      ],
+      "roughness": 0.55,
+      "metallic": 0.4
+     },
+     "props_paper": {
+      "materialRole": "paper",
+      "baseColorLinear": [
+       0.7913,
+       0.7157,
+       0.5972
+      ],
+      "roughness": 0.9,
+      "metallic": 0.0
+     },
+     "props_cover_slate": {
+      "materialRole": "accent",
+      "baseColorLinear": [
+       0.0762,
+       0.1274,
+       0.2051
+      ],
+      "roughness": 0.8,
+      "metallic": 0.0
+     },
+     "props_cover_orange": {
+      "materialRole": "accent",
+      "baseColorLinear": [
+       0.807,
+       0.2159,
+       0.0423
+      ],
+      "roughness": 0.8,
+      "metallic": 0.0
+     }
+    },
+    "objects": [
+     "C09",
+     "C09_books",
+     "C09_shelf",
+     "C09_trophies"
+    ],
+    "objectOrigins": {
+     "C09": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "C09_shelf": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "C09_trophies": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "C09_books": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "topology": [
+     {
+      "name": "C09_shelf",
+      "triangles": 320,
+      "vertex_edge_components": 8,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "nonmanifold_vertices": 0,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 0,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 0,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_wood_mid": 3.7811491486489497,
+       "props_wood_light": 5.987202215348391,
+       "props_wood_dark": 5.469444738865537
+      }
+     },
+     {
+      "name": "C09_trophies",
+      "triangles": 1408,
+      "vertex_edge_components": 16,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "nonmanifold_vertices": 0,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 0,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 0,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_wood_dark": 0.48212601534908034,
+       "props_brass_matte": 1.1289932208199764,
+       "props_wood_mid": 0.4213372319786794
+      }
+     },
+     {
+      "name": "C09_books",
+      "triangles": 104,
+      "vertex_edge_components": 2,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "nonmanifold_vertices": 0,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 0,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 0,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_paper": 0.048741269742823105,
+       "props_cover_slate": 0.15973190831237635,
+       "props_cover_orange": 0.1319845202758443
+      }
+     }
+    ]
+   },
+   "glbImport": {
+    "triangles": 1832,
+    "boundsGLB_min": [
+     -0.29250002,
+     0.0,
+     -0.88499999
+    ],
+    "boundsGLB_max": [
+     0.29250008,
+     1.6825,
+     0.88499999
+    ],
+    "sizeGLB_xyz": [
+     0.585,
+     1.6825,
+     1.77
+    ],
+    "xzCenterGLB": [
+     3e-08,
+     0.0
+    ],
+    "minYGLB": 0.0,
+    "materials": {
+     "props_paper": {
+      "materialRole": "paper",
+      "baseColorLinear": [
+       0.7913,
+       0.7157,
+       0.5972
+      ],
+      "roughness": 0.9,
+      "metallic": 0.0
+     },
+     "props_cover_slate": {
+      "materialRole": "accent",
+      "baseColorLinear": [
+       0.0762,
+       0.1274,
+       0.2051
+      ],
+      "roughness": 0.8,
+      "metallic": 0.0
+     },
+     "props_cover_orange": {
+      "materialRole": "accent",
+      "baseColorLinear": [
+       0.807,
+       0.2159,
+       0.0423
+      ],
+      "roughness": 0.8,
+      "metallic": 0.0
+     },
+     "props_wood_mid": {
+      "materialRole": "wood",
+      "baseColorLinear": [
+       0.2705,
+       0.1559,
+       0.0908
+      ],
+      "roughness": 0.76,
+      "metallic": 0.0
+     },
+     "props_wood_light": {
+      "materialRole": "wood",
+      "baseColorLinear": [
+       0.4851,
+       0.2961,
+       0.1413
+      ],
+      "roughness": 0.72,
+      "metallic": 0.0
+     },
+     "props_wood_dark": {
+      "materialRole": "wood",
+      "baseColorLinear": [
+       0.1022,
+       0.0612,
+       0.0343
+      ],
+      "roughness": 0.8,
+      "metallic": 0.0
+     },
+     "props_brass_matte": {
+      "materialRole": "metal",
+      "baseColorLinear": [
+       0.4793,
+       0.3095,
+       0.1022
+      ],
+      "roughness": 0.55,
+      "metallic": 0.4
+     }
+    },
+    "objects": [
+     "C09",
+     "C09_books",
+     "C09_shelf",
+     "C09_trophies"
+    ],
+    "topology_raw_import": [
+     {
+      "name": "C09_books",
+      "triangles": 104,
+      "vertex_edge_components": 48,
+      "boundary_edges": 200,
+      "nonmanifold_edges": 200,
+      "nonmanifold_vertices": 200,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 8,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 30,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_paper": 0.048741275770781134,
+       "props_cover_slate": 0.15973193150509232,
+       "props_cover_orange": 0.13198476680677365
+      }
+     },
+     {
+      "name": "C09_shelf",
+      "triangles": 320,
+      "vertex_edge_components": 188,
+      "boundary_edges": 696,
+      "nonmanifold_edges": 696,
+      "nonmanifold_vertices": 696,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 0,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 188,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_wood_mid": 3.7811403013052685,
+       "props_wood_light": 5.987200117780517,
+       "props_wood_dark": 5.469447014574415
+      }
+     },
+     {
+      "name": "C09_trophies",
+      "triangles": 1408,
+      "vertex_edge_components": 648,
+      "boundary_edges": 2672,
+      "nonmanifold_edges": 2672,
+      "nonmanifold_vertices": 2672,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 117,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 415,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_wood_dark": 0.4821286198610496,
+       "props_brass_matte": 1.1289918843330915,
+       "props_wood_mid": 0.4213373335965898
+      }
+     }
+    ]
+   },
+   "glb": {
+    "magic": "glTF",
+    "version": 2,
+    "bytes": 32404,
+    "nodes": [
+     {
+      "name": "C09_books",
+      "mesh": true,
+      "translation": [
+       0,
+       0,
+       0
+      ],
+      "extrasKeys": []
+     },
+     {
+      "name": "C09_shelf",
+      "mesh": true,
+      "translation": [
+       0,
+       0,
+       0
+      ],
+      "extrasKeys": []
+     },
+     {
+      "name": "C09_trophies",
+      "mesh": true,
+      "translation": [
+       0,
+       0,
+       0
+      ],
+      "extrasKeys": []
+     },
+     {
+      "name": "C09",
+      "mesh": false,
+      "translation": [
+       0,
+       0,
+       0
+      ],
+      "extrasKeys": [
+       "assetId",
+       "designBoundsGLB_xyz",
+       "front",
+       "generator",
+       "materialRoles",
+       "metalNote",
+       "text",
+       "units",
+       "up"
+      ]
+     }
+    ],
+    "scenesRootNodes": [
+     "C09"
+    ],
+    "materials": [
+     {
+      "name": "props_paper",
+      "role": "paper",
+      "baseColorFactor": [
+       0.7913,
+       0.7157,
+       0.5972,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.8999999761581421,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     },
+     {
+      "name": "props_cover_slate",
+      "role": "accent",
+      "baseColorFactor": [
+       0.0762,
+       0.1274,
+       0.2051,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.800000011920929,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     },
+     {
+      "name": "props_cover_orange",
+      "role": "accent",
+      "baseColorFactor": [
+       0.807,
+       0.2159,
+       0.0423,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.800000011920929,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     },
+     {
+      "name": "props_wood_mid",
+      "role": "wood",
+      "baseColorFactor": [
+       0.2705,
+       0.1559,
+       0.0908,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.7599999904632568,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     },
+     {
+      "name": "props_wood_light",
+      "role": "wood",
+      "baseColorFactor": [
+       0.4851,
+       0.2961,
+       0.1413,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.7200000286102295,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     },
+     {
+      "name": "props_wood_dark",
+      "role": "wood",
+      "baseColorFactor": [
+       0.1022,
+       0.0612,
+       0.0343,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.800000011920929,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     },
+     {
+      "name": "props_brass_matte",
+      "role": "metal",
+      "baseColorFactor": [
+       0.4793,
+       0.3095,
+       0.1022,
+       1
+      ],
+      "metallic": 0.4000000059604645,
+      "roughness": 0.550000011920929,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     }
+    ],
+    "images": 0,
+    "textures": 0,
+    "cameras": 0,
+    "animations": 0,
+    "extensionsUsed": [
+     "KHR_draco_mesh_compression"
+    ],
+    "extensionsRequired": [
+     "KHR_draco_mesh_compression"
+    ],
+    "dracoPrimitives": 9,
+    "totalPrimitives": 9,
+    "rootExtras": {
+     "assetId": "C09",
+     "generator": "props-r2",
+     "units": "meters",
+     "front": "+X",
+     "up": "+Y (glTF)",
+     "designBoundsGLB_xyz": [
+      0.585,
+      1.6825,
+      1.77
+     ],
+     "materialRoles": [
+      "accent",
+      "metal",
+      "paper",
+      "wood"
+     ],
+     "text": "none (plaque intentionally blank)",
+     "metalNote": "matte brass, metallic 0.40 / roughness 0.55, not mirror gold"
+    }
+   },
+   "checks": {
+    "triangles_match": true,
+    "bounds_max_abs_diff": 6e-08,
+    "bounds_within_draco_tol": true,
+    "draco_all_primitives": true,
+    "min_y_zero": true,
+    "xz_centered": true,
+    "material_names_match": true,
+    "all_materials_have_role": true,
+    "no_textures_cameras_animations": true,
+    "no_transmission_or_blend": true,
+    "single_root": true,
+    "native_closed_shells": true,
+    "native_no_degenerate": true,
+    "finite": true,
+    "zero_area_material_slots": []
+   }
+  },
+  "C10": {
+   "native": {
+    "triangles": 1236,
+    "boundsGLB_min": [
+     -0.5,
+     0.0,
+     -0.74897999
+    ],
+    "boundsGLB_max": [
+     0.5,
+     3.20499992,
+     0.74897999
+    ],
+    "sizeGLB_xyz": [
+     1.0,
+     3.205,
+     1.498
+    ],
+    "xzCenterGLB": [
+     0.0,
+     0.0
+    ],
+    "minYGLB": 0.0,
+    "materials": {
+     "props_wood_mid": {
+      "materialRole": "wood",
+      "baseColorLinear": [
+       0.2705,
+       0.1559,
+       0.0908
+      ],
+      "roughness": 0.76,
+      "metallic": 0.0
+     },
+     "props_brass_matte": {
+      "materialRole": "metal",
+      "baseColorLinear": [
+       0.4793,
+       0.3095,
+       0.1022
+      ],
+      "roughness": 0.55,
+      "metallic": 0.4
+     },
+     "props_wood_dark": {
+      "materialRole": "wood",
+      "baseColorLinear": [
+       0.1022,
+       0.0612,
+       0.0343
+      ],
+      "roughness": 0.8,
+      "metallic": 0.0
+     },
+     "props_iron_matte": {
+      "materialRole": "metal",
+      "baseColorLinear": [
+       0.1119,
+       0.1046,
+       0.0953
+      ],
+      "roughness": 0.7,
+      "metallic": 0.3
+     },
+     "props_canvas_orange": {
+      "materialRole": "canvas",
+      "baseColorLinear": [
+       0.807,
+       0.2159,
+       0.0423
+      ],
+      "roughness": 0.9,
+      "metallic": 0.0
+     },
+     "props_canvas_cream": {
+      "materialRole": "canvas",
+      "baseColorLinear": [
+       0.7913,
+       0.7157,
+       0.5972
+      ],
+      "roughness": 0.9,
+      "metallic": 0.0
+     },
+     "props_canvas_slate": {
+      "materialRole": "canvas",
+      "baseColorLinear": [
+       0.0762,
+       0.1274,
+       0.2051
+      ],
+      "roughness": 0.9,
+      "metallic": 0.0
+     },
+     "props_canvas_olive": {
+      "materialRole": "canvas",
+      "baseColorLinear": [
+       0.2542,
+       0.3613,
+       0.0685
+      ],
+      "roughness": 0.9,
+      "metallic": 0.0
+     }
+    },
+    "objects": [
+     "C10",
+     "C10_pole",
+     "flag_01",
+     "flag_02",
+     "flag_03",
+     "flag_04"
+    ],
+    "objectOrigins": {
+     "C10": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "C10_pole": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "flag_01": [
+      0.0,
+      -0.249,
+      2.96
+     ],
+     "flag_02": [
+      0.0,
+      -0.249,
+      2.51
+     ],
+     "flag_03": [
+      0.0,
+      -0.249,
+      2.06
+     ],
+     "flag_04": [
+      0.0,
+      -0.249,
+      1.61
+     ]
+    },
+    "topology": [
+     {
+      "name": "C10_pole",
+      "triangles": 932,
+      "vertex_edge_components": 20,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "nonmanifold_vertices": 0,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 0,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 0,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_wood_mid": 1.3379841164239368,
+       "props_brass_matte": 0.06126056064356108,
+       "props_wood_dark": 0.9849915537993524,
+       "props_iron_matte": 0.11749845657232902
+      }
+     },
+     {
+      "name": "flag_01",
+      "triangles": 72,
+      "vertex_edge_components": 1,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "nonmanifold_vertices": 0,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 0,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 0,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_canvas_orange": 0.3753371916569959
+      }
+     },
+     {
+      "name": "flag_02",
+      "triangles": 80,
+      "vertex_edge_components": 1,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "nonmanifold_vertices": 0,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 0,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 0,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_canvas_cream": 0.6144076910042178
+      }
+     },
+     {
+      "name": "flag_03",
+      "triangles": 72,
+      "vertex_edge_components": 1,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "nonmanifold_vertices": 0,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 0,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 0,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_canvas_slate": 0.3753371667735451
+      }
+     },
+     {
+      "name": "flag_04",
+      "triangles": 80,
+      "vertex_edge_components": 1,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "nonmanifold_vertices": 0,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 0,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 0,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_canvas_olive": 0.6144076597821588
+      }
+     }
+    ]
+   },
+   "glbImport": {
+    "triangles": 1236,
+    "boundsGLB_min": [
+     -0.5,
+     0.0,
+     -0.74897999
+    ],
+    "boundsGLB_max": [
+     0.5,
+     3.20499992,
+     0.74897999
+    ],
+    "sizeGLB_xyz": [
+     1.0,
+     3.205,
+     1.498
+    ],
+    "xzCenterGLB": [
+     0.0,
+     0.0
+    ],
+    "minYGLB": 0.0,
+    "materials": {
+     "props_wood_mid": {
+      "materialRole": "wood",
+      "baseColorLinear": [
+       0.2705,
+       0.1559,
+       0.0908
+      ],
+      "roughness": 0.76,
+      "metallic": 0.0
+     },
+     "props_brass_matte": {
+      "materialRole": "metal",
+      "baseColorLinear": [
+       0.4793,
+       0.3095,
+       0.1022
+      ],
+      "roughness": 0.55,
+      "metallic": 0.4
+     },
+     "props_wood_dark": {
+      "materialRole": "wood",
+      "baseColorLinear": [
+       0.1022,
+       0.0612,
+       0.0343
+      ],
+      "roughness": 0.8,
+      "metallic": 0.0
+     },
+     "props_iron_matte": {
+      "materialRole": "metal",
+      "baseColorLinear": [
+       0.1119,
+       0.1046,
+       0.0953
+      ],
+      "roughness": 0.7,
+      "metallic": 0.3
+     },
+     "props_canvas_orange": {
+      "materialRole": "canvas",
+      "baseColorLinear": [
+       0.807,
+       0.2159,
+       0.0423
+      ],
+      "roughness": 0.9,
+      "metallic": 0.0
+     },
+     "props_canvas_cream": {
+      "materialRole": "canvas",
+      "baseColorLinear": [
+       0.7913,
+       0.7157,
+       0.5972
+      ],
+      "roughness": 0.9,
+      "metallic": 0.0
+     },
+     "props_canvas_slate": {
+      "materialRole": "canvas",
+      "baseColorLinear": [
+       0.0762,
+       0.1274,
+       0.2051
+      ],
+      "roughness": 0.9,
+      "metallic": 0.0
+     },
+     "props_canvas_olive": {
+      "materialRole": "canvas",
+      "baseColorLinear": [
+       0.2542,
+       0.3613,
+       0.0685
+      ],
+      "roughness": 0.9,
+      "metallic": 0.0
+     }
+    },
+    "objects": [
+     "C10",
+     "C10_pole",
+     "flag_01",
+     "flag_02",
+     "flag_03",
+     "flag_04"
+    ],
+    "topology_raw_import": [
+     {
+      "name": "C10_pole",
+      "triangles": 932,
+      "vertex_edge_components": 366,
+      "boundary_edges": 1632,
+      "nonmanifold_edges": 1632,
+      "nonmanifold_vertices": 1632,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 16,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 334,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_wood_mid": 1.3379920403067,
+       "props_brass_matte": 0.06126057660077121,
+       "props_wood_dark": 0.9849902261965414,
+       "props_iron_matte": 0.11749796398946326
+      }
+     },
+     {
+      "name": "flag_01",
+      "triangles": 72,
+      "vertex_edge_components": 15,
+      "boundary_edges": 102,
+      "nonmanifold_edges": 102,
+      "nonmanifold_vertices": 102,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 2,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 11,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_canvas_orange": 0.3753371606216384
+      }
+     },
+     {
+      "name": "flag_02",
+      "triangles": 80,
+      "vertex_edge_components": 29,
+      "boundary_edges": 138,
+      "nonmanifold_edges": 138,
+      "nonmanifold_vertices": 138,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 13,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 3,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_canvas_cream": 0.614407823274137
+      }
+     },
+     {
+      "name": "flag_03",
+      "triangles": 72,
+      "vertex_edge_components": 15,
+      "boundary_edges": 102,
+      "nonmanifold_edges": 102,
+      "nonmanifold_vertices": 102,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 3,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 11,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_canvas_slate": 0.37533775164317423
+      }
+     },
+     {
+      "name": "flag_04",
+      "triangles": 80,
+      "vertex_edge_components": 29,
+      "boundary_edges": 138,
+      "nonmanifold_edges": 138,
+      "nonmanifold_vertices": 138,
+      "inconsistent_winding_edges": 0,
+      "negative_volume_components": 13,
+      "zero_or_near_zero_area_triangles": 0,
+      "zero_or_near_zero_volume_components": 3,
+      "duplicate_triangle_index_sets": 0,
+      "sliver_triangle_count": 0,
+      "finite_coordinates": true,
+      "mesh_validate_would_repair": false,
+      "face_material_world_areas": {
+       "props_canvas_olive": 0.6144080905586845
+      }
+     }
+    ]
+   },
+   "glb": {
+    "magic": "glTF",
+    "version": 2,
+    "bytes": 23844,
+    "nodes": [
+     {
+      "name": "C10_pole",
+      "mesh": true,
+      "translation": [
+       0,
+       0,
+       0
+      ],
+      "extrasKeys": []
+     },
+     {
+      "name": "flag_01",
+      "mesh": true,
+      "translation": [
+       0,
+       2.96,
+       0.249
+      ],
+      "extrasKeys": [
+       "flyDirectionGLB",
+       "hoistBottomLocalGLB",
+       "hoistHeightM",
+       "hoistTopLocalGLB",
+       "lengthM",
+       "pivot",
+       "role",
+       "shape"
+      ]
+     },
+     {
+      "name": "flag_02",
+      "mesh": true,
+      "translation": [
+       0,
+       2.51,
+       0.249
+      ],
+      "extrasKeys": [
+       "flyDirectionGLB",
+       "hoistBottomLocalGLB",
+       "hoistHeightM",
+       "hoistTopLocalGLB",
+       "lengthM",
+       "pivot",
+       "role",
+       "shape"
+      ]
+     },
+     {
+      "name": "flag_03",
+      "mesh": true,
+      "translation": [
+       0,
+       2.06,
+       0.249
+      ],
+      "extrasKeys": [
+       "flyDirectionGLB",
+       "hoistBottomLocalGLB",
+       "hoistHeightM",
+       "hoistTopLocalGLB",
+       "lengthM",
+       "pivot",
+       "role",
+       "shape"
+      ]
+     },
+     {
+      "name": "flag_04",
+      "mesh": true,
+      "translation": [
+       0,
+       1.61,
+       0.249
+      ],
+      "extrasKeys": [
+       "flyDirectionGLB",
+       "hoistBottomLocalGLB",
+       "hoistHeightM",
+       "hoistTopLocalGLB",
+       "lengthM",
+       "pivot",
+       "role",
+       "shape"
+      ]
+     },
+     {
+      "name": "C10",
+      "mesh": false,
+      "translation": [
+       0,
+       0,
+       0
+      ],
+      "extrasKeys": [
+       "animatedNodes",
+       "assetId",
+       "designBoundsGLB_xyz",
+       "front",
+       "generator",
+       "materialRoles",
+       "poleAxisGLB_xz",
+       "staticNodes",
+       "text",
+       "units",
+       "up"
+      ]
+     }
+    ],
+    "scenesRootNodes": [
+     "C10"
+    ],
+    "materials": [
+     {
+      "name": "props_wood_mid",
+      "role": "wood",
+      "baseColorFactor": [
+       0.2705,
+       0.1559,
+       0.0908,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.7599999904632568,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     },
+     {
+      "name": "props_brass_matte",
+      "role": "metal",
+      "baseColorFactor": [
+       0.4793,
+       0.3095,
+       0.1022,
+       1
+      ],
+      "metallic": 0.4000000059604645,
+      "roughness": 0.550000011920929,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     },
+     {
+      "name": "props_wood_dark",
+      "role": "wood",
+      "baseColorFactor": [
+       0.1022,
+       0.0612,
+       0.0343,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.800000011920929,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     },
+     {
+      "name": "props_iron_matte",
+      "role": "metal",
+      "baseColorFactor": [
+       0.1119,
+       0.1046,
+       0.0953,
+       1
+      ],
+      "metallic": 0.30000001192092896,
+      "roughness": 0.699999988079071,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     },
+     {
+      "name": "props_canvas_orange",
+      "role": "canvas",
+      "baseColorFactor": [
+       0.807,
+       0.2159,
+       0.0423,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.8999999761581421,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     },
+     {
+      "name": "props_canvas_cream",
+      "role": "canvas",
+      "baseColorFactor": [
+       0.7913,
+       0.7157,
+       0.5972,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.8999999761581421,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     },
+     {
+      "name": "props_canvas_slate",
+      "role": "canvas",
+      "baseColorFactor": [
+       0.0762,
+       0.1274,
+       0.2051,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.8999999761581421,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     },
+     {
+      "name": "props_canvas_olive",
+      "role": "canvas",
+      "baseColorFactor": [
+       0.2542,
+       0.3613,
+       0.0685,
+       1
+      ],
+      "metallic": 0,
+      "roughness": 0.8999999761581421,
+      "alphaMode": "OPAQUE",
+      "extensions": []
+     }
+    ],
+    "images": 0,
+    "textures": 0,
+    "cameras": 0,
+    "animations": 0,
+    "extensionsUsed": [
+     "KHR_draco_mesh_compression"
+    ],
+    "extensionsRequired": [
+     "KHR_draco_mesh_compression"
+    ],
+    "dracoPrimitives": 8,
+    "totalPrimitives": 8,
+    "rootExtras": {
+     "assetId": "C10",
+     "generator": "props-r2",
+     "units": "meters",
+     "front": "+X",
+     "up": "+Y (glTF)",
+     "designBoundsGLB_xyz": [
+      1.0,
+      3.205,
+      1.498
+     ],
+     "materialRoles": [
+      "canvas",
+      "metal",
+      "wood"
+     ],
+     "animatedNodes": [
+      "flag_01",
+      "flag_02",
+      "flag_03",
+      "flag_04"
+     ],
+     "staticNodes": [
+      "C10_pole"
+     ],
+     "text": "none (flags intentionally blank)",
+     "poleAxisGLB_xz": [
+      -0.0,
+      0.249
+     ]
+    }
+   },
+   "checks": {
+    "triangles_match": true,
+    "bounds_max_abs_diff": 0.0,
+    "bounds_within_draco_tol": true,
+    "draco_all_primitives": true,
+    "min_y_zero": true,
+    "xz_centered": true,
+    "material_names_match": true,
+    "all_materials_have_role": true,
+    "no_textures_cameras_animations": true,
+    "no_transmission_or_blend": true,
+    "single_root": true,
+    "native_closed_shells": true,
+    "native_no_degenerate": true,
+    "finite": true,
+    "zero_area_material_slots": [],
+    "flag_nodes": [
+     "flag_01",
+     "flag_02",
+     "flag_03",
+     "flag_04"
+    ],
+    "flag_nodes_ok": true,
+    "flag_pivots_on_pole_axis": true,
+    "flag_pivot_heights": [
+     2.96,
+     2.51,
+     2.06,
+     1.61
+    ]
+   }
+  }
+ }
+}

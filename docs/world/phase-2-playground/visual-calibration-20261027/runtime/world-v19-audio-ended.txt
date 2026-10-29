@@ -1,0 +1,20 @@
+Chrome development runtime; natural completion followed by manual UI snapshot.
+"parkAudio": {
+  "owners": 4,
+  "started": false,
+  "timer": false,
+  "subscribed": true,
+  "state": "suspended",
+  "transitioning": false,
+  "voices": 0,
+  "ticks": 0,
+  "muted": false,
+  "cueVoices": 0,
+  "cuePending": false,
+  "pcmKeys": 0,
+  "pcmBytes": 0,
+  "candidate": "b",
+  "previewPlaying": false,
+  "previewPending": false,
+  "previewBytes": 2304000
+ }

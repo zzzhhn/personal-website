@@ -1,0 +1,9 @@
+{
+  "version": 27,
+  "status": 200,
+  "matches_build": true,
+  "sha256": "7310b712047b45abe5f8917a3fb68c2d05dcecd991f144c0b9b9c7e21493c0e2",
+  "bytes": 52276,
+  "build_directory": "/tmp/bobby-world-v27-20261029",
+  "rollback_directory": "/tmp/bobby-world-v26-20261029"
+}

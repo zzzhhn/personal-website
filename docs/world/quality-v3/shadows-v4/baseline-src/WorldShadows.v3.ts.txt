@@ -1,0 +1,192 @@
+import { Box3, Frustum, Matrix4, Vector3, type Camera, type DirectionalLight, type Object3D, type PerspectiveCamera } from 'three';
+
+/**
+ * Sun shadow projection fitted to what the follow camera actually sees.
+ *
+ * The sun direction is fixed (dusk key light from the west-south-west, ~19.8 deg elevation), so a
+ * shadow keeps its direction while the body moves; its position and silhouette follow the caster.
+ * At that low elevation a light-space texel stretches ~2.95x on the ground along the sun
+ * direction, which is what turned the old square 84 m window (4096 map: 2.05 x 6.05 cm ground
+ * texels) into visible stair steps on pads and furniture.
+ *
+ * Instead of raising the map size, the orthographic window is the light-space bounds of what the
+ * camera can see that can receive a shadow: (a) the view frustum clipped to a low receiver band
+ * (sea level up to focus height + 7 m: ground, pads, furniture, trees, huts) and (b) for each tall
+ * receiver (town buildings, roofs up to y=16) only the surface sample points that are actually
+ * inside the view frustum. A roof that is off screen therefore no longer coarsens the ground
+ * shadow, and an on-screen roof still keeps its shadow. Receivers that are neither in the band nor
+ * in the tall list are not guaranteed coverage. Stability while following:
+ *  - window half extents are quantized to 1 m with hysteresis (grow at once, shrink only after
+ *    3 m of slack), so texel size does not breathe while the driving camera pulls back;
+ *  - the window centre is snapped to whole texels in light space, so moving the camera never
+ *    resamples static shadows (no crawling edges);
+ *  - PCF radius and normal bias are expressed per texel / per ground texel.
+ * Casters outside the visible ground still project inside the window (orthographic light: a
+ * caster and its shadow share light-space XY).
+ */
+
+export const SUN_OFFSET = new Vector3(-90, 40, 65);
+const LIGHT_Z = SUN_OFFSET.clone().normalize();
+// Same basis as Object3D.lookAt for a camera at target + SUN_OFFSET with world-up +Y.
+const LIGHT_RIGHT = new Vector3(0, 1, 0).cross(LIGHT_Z).normalize();
+const LIGHT_UP = new Vector3().crossVectors(LIGHT_Z, LIGHT_RIGHT).normalize();
+const SIN_ELEVATION = LIGHT_Z.y;
+
+export interface ShadowFitOptions {
+  mapSize: number;
+  /** Fixed evidence shots keep the whole-island window. */
+  wide: boolean;
+  /** Walker/vehicle position; its light depth sets the near/far centre. */
+  focus: readonly number[];
+  /** Receiver height band [lo, hi] (m) intersected with the view frustum. Points outside it that
+   * are on screen can fall outside the window and render unshadowed; callers pass the real scene
+   * range near the focus (sea level up to the tallest nearby roof). */
+  receivers: readonly [number, number];
+  /** Tall receivers outside the band (world AABBs); only their on-screen surface counts. */
+  tallReceivers?: readonly Box3[];
+  /** Farthest receiver distance along a view ray (m). 110 m covers the far ground edge of the
+   * farthest driving camera (22 m + 5 m speed term, 30 deg half fov) down to sea level; fog starts at 140 m. */
+  maxDistance?: number;
+  /** PCF radius in shadow texels. */
+  radiusTexels?: number;
+}
+export interface ShadowTelemetry {
+  mode: 'follow-frustum' | 'wide';
+  receiverBand_m: number[] | null;
+  tallReceiversOnScreen: number;
+  mapSize: number;
+  centre: number[];
+  halfExtent_m: [right: number, up: number];
+  lightTexel_m: [right: number, up: number];
+  groundTexel_m: { acrossSun: number; alongSun: number };
+  sunElevation_deg: number;
+  pcfRadiusTexels: number;
+  normalBias_m: number;
+  bias: number;
+  updates: number;
+  applied?: unknown;
+}
+
+const ndc = [[-1, -1], [1, -1], [-1, 1], [1, 1], [0, -1], [0, 1], [-1, 0], [1, 0]];
+const ray = new Vector3(), point = new Vector3(), centre = new Vector3(), probe = new Vector3();
+let telemetry: ShadowTelemetry | null = null;
+let updates = 0, held = { r: 0, u: 0 };
+let lastLight: DirectionalLight | null = null;
+const settle = (needed: number, current: number) => needed > current || needed < current - 3 ? Math.ceil(needed) : current;
+const frustum = new Frustum(), viewProjection = new Matrix4();
+const samples = new WeakMap<Box3, Float32Array>();
+/** Surface sample grid of an AABB (all six faces, <= 1.5 m spacing), computed once per box. */
+function surfaceSamples(box: Box3) {
+  let out = samples.get(box);
+  if (out) return out;
+  const pts: number[] = [], min = box.min, max = box.max;
+  const n = [0, 1, 2].map(k => Math.max(1, Math.ceil((max.getComponent(k) - min.getComponent(k)) / 1.5)));
+  for (let i = 0; i <= n[0]; i++) for (let j = 0; j <= n[1]; j++) for (let k = 0; k <= n[2]; k++) {
+    if (i && i < n[0] && j && j < n[1] && k && k < n[2]) continue; // surface only
+    pts.push(min.x + (max.x - min.x) * i / n[0], min.y + (max.y - min.y) * j / n[1], min.z + (max.z - min.z) * k / n[2]);
+  }
+  out = Float32Array.from(pts);
+  samples.set(box, out);
+  return out;
+}
+/** QA: shadow-map texel coordinates of world points with the matrix used by the last render.
+ * Constant fractional parts across frames prove static shadows are not resampled (no crawl). */
+export const shadowTexelsOf = (points: number[][]) => {
+  const light = lastLight;
+  if (!light) return null;
+  const size = light.shadow.mapSize.x;
+  return points.map(p => { probe.set(p[0], p[1], p[2]).applyMatrix4(light.shadow.matrix); return [probe.x * size, probe.y * size]; });
+};
+/** Last applied fit (QA read-out; values are the ones actually given to the light). */
+export const shadowTelemetry = () => telemetry;
+
+let bandOverride: [number, number] | null = null;
+/** QA only: force a receiver band to compare coverage; null restores the caller's band. */
+export const setShadowBand = (band: [number, number] | null) => { bandOverride = band; };
+
+function frustumBounds(camera: PerspectiveCamera, band: readonly [number, number], maxDistance: number) {
+  let minR = Infinity, maxR = -Infinity, minU = Infinity, maxU = -Infinity;
+  const origin = camera.position;
+  for (const [x, y] of ndc) {
+    ray.set(x, y, .5).unproject(camera).sub(origin).normalize();
+    for (const height of band) {
+      let t = maxDistance;
+      if (Math.abs(ray.y) > 1e-5) { const hit = (height - origin.y) / ray.y; if (hit > 0) t = Math.min(t, hit); }
+      point.copy(origin).addScaledVector(ray, t);
+      const r = point.dot(LIGHT_RIGHT), u = point.dot(LIGHT_UP);
+      minR = Math.min(minR, r); maxR = Math.max(maxR, r); minU = Math.min(minU, u); maxU = Math.max(maxU, u);
+    }
+  }
+  return { minR, maxR, minU, maxU, tall: 0 };
+}
+
+/** Extends light-space bounds by the on-screen surface samples of tall receivers. */
+function addTallReceivers(b: ReturnType<typeof frustumBounds>, camera: PerspectiveCamera, boxes: readonly Box3[]) {
+  viewProjection.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse);
+  frustum.setFromProjectionMatrix(viewProjection);
+  for (const box of boxes) {
+    if (!frustum.intersectsBox(box)) continue;
+    const s = surfaceSamples(box);
+    let any = false;
+    for (let i = 0; i < s.length; i += 3) {
+      point.set(s[i], s[i + 1], s[i + 2]);
+      if (!frustum.containsPoint(point)) continue;
+      any = true;
+      const r = point.dot(LIGHT_RIGHT), u = point.dot(LIGHT_UP);
+      b.minR = Math.min(b.minR, r); b.maxR = Math.max(b.maxR, r); b.minU = Math.min(b.minU, u); b.maxU = Math.max(b.maxU, u);
+    }
+    if (any) b.tall++;
+  }
+  return b;
+}
+
+/** Call once per frame before render. `target` must be in the scene graph. */
+export function fitSunShadow(light: DirectionalLight, target: Object3D, camera: Camera, options: ShadowFitOptions) {
+  const size = options.mapSize, radius = options.radiusTexels ?? 2;
+  let halfR: number, halfU: number, cR: number, cU: number, tall = 0;
+  const wide = options.wide || !(camera as PerspectiveCamera).isPerspectiveCamera;
+  if (wide) {
+    halfR = halfU = 105; cR = 0; cU = 0;
+  } else {
+    camera.updateMatrixWorld();
+    const band = bandOverride ?? options.receivers;
+    const b = addTallReceivers(frustumBounds(camera as PerspectiveCamera, band, options.maxDistance ?? 110), camera as PerspectiveCamera, options.tallReceivers ?? []);
+    tall = b.tall;
+    const margin = 1.5;
+    held = { r: settle((b.maxR - b.minR) / 2 + margin, held.r), u: settle((b.maxU - b.minU) / 2 + margin, held.u) };
+    halfR = held.r; halfU = held.u;
+    cR = (b.maxR + b.minR) / 2; cU = (b.maxU + b.minU) / 2;
+  }
+  const texelR = 2 * halfR / size, texelU = 2 * halfU / size;
+  cR = Math.round(cR / texelR) * texelR;
+  cU = Math.round(cU / texelU) * texelU;
+  const depth = wide ? 0 : point.set(options.focus[0], options.focus[1], options.focus[2]).dot(LIGHT_Z);
+  centre.set(0, 0, 0).addScaledVector(LIGHT_RIGHT, cR).addScaledVector(LIGHT_UP, cU).addScaledVector(LIGHT_Z, depth);
+  target.position.copy(centre);
+  light.position.copy(centre).add(SUN_OFFSET);
+  light.target = target;
+  const shadow = light.shadow, cam = shadow.camera;
+  if (cam.right !== halfR || cam.top !== halfU) {
+    cam.left = -halfR; cam.right = halfR; cam.bottom = -halfU; cam.top = halfU;
+    cam.updateProjectionMatrix();
+  }
+  const groundAlong = texelU / SIN_ELEVATION;
+  // Normal offset of about one ground texel removes acne on low-angle receivers without the
+  // visible contact gap the old fixed 2.5 cm produced at finer texels.
+  const normalBias = Math.max(.012, Math.min(.03, groundAlong));
+  shadow.normalBias = normalBias;
+  shadow.radius = radius;
+  lastLight = light;
+  updates++;
+  telemetry = { mode: wide ? 'wide' : 'follow-frustum', receiverBand_m: wide ? null : [...(bandOverride ?? options.receivers)], tallReceiversOnScreen: tall, mapSize: size, centre: centre.toArray(), halfExtent_m: [halfR, halfU],
+    lightTexel_m: [texelR, texelU], groundTexel_m: { acrossSun: texelR, alongSun: groundAlong },
+    sunElevation_deg: Math.asin(SIN_ELEVATION) * 180 / Math.PI, pcfRadiusTexels: radius, normalBias_m: normalBias, bias: shadow.bias, updates,
+    applied: { camera: [cam.left, cam.right, cam.bottom, cam.top, cam.near, cam.far], mapAllocated: shadow.map ? [shadow.map.width, shadow.map.height] : null, lightPosition: light.position.toArray(), targetWorld: target.getWorldPosition(new Vector3()).toArray(), targetInScene: !!target.parent } };
+  if (typeof window !== 'undefined' && (window as unknown as { __worldDebug?: Record<string, unknown> }).__worldDebug) {
+    // QA page only (the debug object exists solely behind ?qa=1).
+    const debug = (window as unknown as { __worldDebug: Record<string, unknown> }).__worldDebug;
+    debug.shadowInfo ??= shadowTelemetry;
+    debug.shadowTexelsOf ??= shadowTexelsOf;
+    debug.setShadowBand ??= setShadowBand;
+  }
+}

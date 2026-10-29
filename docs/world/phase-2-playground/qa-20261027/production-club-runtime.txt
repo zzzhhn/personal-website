@@ -1,0 +1,22 @@
+Browser tab: 1395913741, Title: "Bobby’s island · World playtest", URL: "http://127.0.0.1:4343/world/?start=club&quality=balanced&paused=1".
+0 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4343/world/?start=club&quality=balanced&paused=1
+	1 container Bobby 的城岛
+		2 container
+			3 text 经历 · 项目 · 漫游
+			4 heading Bobby 的城岛, Value: 1
+				5 text Bobby 的城岛
+			6 button 回到营地, Help: 保留矿石、挖矿进度和研究结果。
+			7 pop up button 地图与设置 Esc
+		8 container
+			9 container 城岛地图 · 环岛海岸
+			10 text 环岛海岸
+		11 container DJC beach club
+			12 container
+				13 text DJC BEACH CLUB
+				14 checkbox 静音, Value: 0
+			18 text Backbay Lounge
+			19 text 舞池 / DJ 台附近按 E
+			16 button (collapsed) 音乐署名, Secondary Actions: Expand
+				17 text 音乐署名
+
+The focused UI element is 0 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4343/world/?start=club&quality=balanced&paused=1

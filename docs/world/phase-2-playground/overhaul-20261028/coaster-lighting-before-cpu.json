@@ -1,0 +1,36 @@
+[
+  {
+    "detailed": false,
+    "ms": 602.9058339999999,
+    "shapes": {
+      "steel": {
+        "hash": "eafe6ac11a235b8ed225772eb127ac85504caad087d48a810fbbd80ad234e3d5",
+        "bytes": 8660736,
+        "vertices": 180432
+      },
+      "glow": {
+        "hash": "57b44999b9fdd096967eee4f3acf21593a299e4f1d4e53680391a03e81854a57",
+        "bytes": 579456,
+        "vertices": 12072
+      }
+    },
+    "colliders": 572
+  },
+  {
+    "detailed": true,
+    "ms": 829.6965419999999,
+    "shapes": {
+      "steel": {
+        "hash": "5787c83c63fe6c774e2568f15f920e244f854f1cbcbcebf1a6970157dc14fde5",
+        "bytes": 14809536,
+        "vertices": 308532
+      },
+      "glow": {
+        "hash": "87623ca640d7f11cb63360a3d11c0838b97cc7171335f14f27cdf4a14242e825",
+        "bytes": 1210752,
+        "vertices": 25224
+      }
+    },
+    "colliders": 645
+  }
+]

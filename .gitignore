@@ -7,3 +7,6 @@ dist/
 __pycache__/
 .vercel
 .wrangler/
+*.blend1
+/local/alpha-pilot/
+/docs/world/phase-2-playground/overhaul-20261028/audio-candidate/*.wav

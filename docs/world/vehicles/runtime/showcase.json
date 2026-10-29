@@ -1,0 +1,641 @@
+{
+  "base": "http://127.0.0.1:4345",
+  "entry": "/world/",
+  "shots": [
+    {
+      "name": "offroad-close-front",
+      "file": "runtime/offroad-close-front.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": "offroad",
+      "light": "dusk",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-v2 (before COM/light-pool-only correction)"
+    },
+    {
+      "name": "offroad-close-side",
+      "file": "runtime/offroad-close-side.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": "offroad",
+      "light": "dusk",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-v2 (before COM/light-pool-only correction)"
+    },
+    {
+      "name": "offroad-close-rear",
+      "file": "runtime/offroad-close-rear.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": "offroad",
+      "light": "dusk",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-v2 (before COM/light-pool-only correction)"
+    },
+    {
+      "name": "coupe-close-front",
+      "file": "runtime/coupe-close-front.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": "coupe",
+      "light": "dusk",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-v2 (before COM/light-pool-only correction)"
+    },
+    {
+      "name": "coupe-close-side",
+      "file": "runtime/coupe-close-side.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": "coupe",
+      "light": "dusk",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-v2 (before COM/light-pool-only correction)"
+    },
+    {
+      "name": "coupe-close-rear",
+      "file": "runtime/coupe-close-rear.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": "coupe",
+      "light": "dusk",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-v2 (before COM/light-pool-only correction)"
+    },
+    {
+      "name": "van-close-front",
+      "file": "runtime/van-close-front.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": "van",
+      "light": "dusk",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-v2 (before COM/light-pool-only correction)"
+    },
+    {
+      "name": "van-close-side",
+      "file": "runtime/van-close-side.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": "van",
+      "light": "dusk",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-v2 (before COM/light-pool-only correction)"
+    },
+    {
+      "name": "van-close-rear",
+      "file": "runtime/van-close-rear.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": "van",
+      "light": "dusk",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-v2 (before COM/light-pool-only correction)"
+    },
+    {
+      "name": "normal-entry-default",
+      "file": "runtime/normal-entry-default.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": null,
+      "light": "dusk",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-final2 (final COM and soft headlight pool)"
+    },
+    {
+      "name": "offroad-parked-dusk",
+      "file": "runtime/offroad-parked-dusk.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": null,
+      "light": "dusk",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-final2 (final COM and soft headlight pool)"
+    },
+    {
+      "name": "offroad-night-driving",
+      "file": "runtime/offroad-night-driving.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": "offroad",
+      "light": "night",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-final2 (final COM and soft headlight pool)"
+    },
+    {
+      "name": "offroad-night-brake",
+      "file": "runtime/offroad-night-brake.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": "offroad",
+      "light": "night",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-final2 (final COM and soft headlight pool)"
+    },
+    {
+      "name": "offroad-night-reverse",
+      "file": "runtime/offroad-night-reverse.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": "offroad",
+      "light": "night",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-final2 (final COM and soft headlight pool)"
+    },
+    {
+      "name": "coupe-parked-dusk",
+      "file": "runtime/coupe-parked-dusk.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": null,
+      "light": "dusk",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-final2 (final COM and soft headlight pool)"
+    },
+    {
+      "name": "coupe-night-driving",
+      "file": "runtime/coupe-night-driving.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": "coupe",
+      "light": "night",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-final2 (final COM and soft headlight pool)"
+    },
+    {
+      "name": "coupe-night-brake",
+      "file": "runtime/coupe-night-brake.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": "coupe",
+      "light": "night",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-final2 (final COM and soft headlight pool)"
+    },
+    {
+      "name": "coupe-night-reverse",
+      "file": "runtime/coupe-night-reverse.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": "coupe",
+      "light": "night",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-final2 (final COM and soft headlight pool)"
+    },
+    {
+      "name": "van-parked-dusk",
+      "file": "runtime/van-parked-dusk.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": null,
+      "light": "dusk",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-final2 (final COM and soft headlight pool)"
+    },
+    {
+      "name": "van-night-driving",
+      "file": "runtime/van-night-driving.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": "van",
+      "light": "night",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-final2 (final COM and soft headlight pool)"
+    },
+    {
+      "name": "van-night-brake",
+      "file": "runtime/van-night-brake.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": "van",
+      "light": "night",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-final2 (final COM and soft headlight pool)"
+    },
+    {
+      "name": "van-night-reverse",
+      "file": "runtime/van-night-reverse.jpg",
+      "stats": {
+        "calls": null,
+        "triangles": null
+      },
+      "activeVehicle": "van",
+      "light": "night",
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ]
+      },
+      "vehicles": [],
+      "source": "normal-final2 (final COM and soft headlight pool)"
+    }
+  ],
+  "errors": [
+    "404 http://127.0.0.1:4345/api/events",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "404 http://127.0.0.1:4345/api/events",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "404 http://127.0.0.1:4345/api/events",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)",
+    "404 http://127.0.0.1:4345/api/events",
+    "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "fixtures": [
+    {
+      "t": 7.736,
+      "to": [
+        -26,
+        6.04,
+        39.5
+      ],
+      "reason": "stand beside parked offroad"
+    },
+    {
+      "t": 10.747,
+      "to": [
+        -26,
+        6.04,
+        36.6
+      ],
+      "reason": "step to offroad door"
+    },
+    {
+      "t": 19.631,
+      "to": [
+        31.7,
+        2.34,
+        2.0000000000000004
+      ],
+      "reason": "stand beside parked coupe"
+    },
+    {
+      "t": 23.448,
+      "to": [
+        28.8,
+        2.34,
+        2
+      ],
+      "reason": "step to coupe door"
+    },
+    {
+      "t": 32.307,
+      "to": [
+        46,
+        2.34,
+        -39.5
+      ],
+      "reason": "stand beside parked van"
+    },
+    {
+      "t": 35.942,
+      "to": [
+        46,
+        2.34,
+        -42.4
+      ],
+      "reason": "step to van door"
+    }
+  ],
+  "normalAdapter": "test-only actor fixture adapter; no QA URL, no rendering/physics changes; budget unavailable",
+  "nearViewFixtures": [
+    {
+      "t": 26.874,
+      "to": [
+        -26,
+        6.04,
+        39.5
+      ],
+      "reason": "stand beside parked offroad"
+    },
+    {
+      "t": 29.016,
+      "to": [
+        -26,
+        6.04,
+        36.6
+      ],
+      "reason": "step to offroad door (close views)"
+    },
+    {
+      "t": 51.407,
+      "to": [
+        -26,
+        6.04,
+        36.6
+      ],
+      "reason": "step to offroad door"
+    },
+    {
+      "t": 67.259,
+      "to": [
+        31.7,
+        2.34,
+        2.0000000000000004
+      ],
+      "reason": "stand beside parked coupe"
+    },
+    {
+      "t": 70.992,
+      "to": [
+        28.8,
+        2.34,
+        2
+      ],
+      "reason": "step to coupe door (close views)"
+    },
+    {
+      "t": 103.66,
+      "to": [
+        28.8,
+        2.34,
+        2
+      ],
+      "reason": "step to coupe door"
+    },
+    {
+      "t": 115.497,
+      "to": [
+        46,
+        2.34,
+        -39.5
+      ],
+      "reason": "stand beside parked van"
+    },
+    {
+      "t": 118.311,
+      "to": [
+        46,
+        2.34,
+        -42.4
+      ],
+      "reason": "step to van door (close views)"
+    },
+    {
+      "t": 138.848,
+      "to": [
+        46,
+        2.34,
+        -42.4
+      ],
+      "reason": "step to van door"
+    }
+  ],
+  "note": "Near geometry/rig screenshots use identical final GLBs; final parked/night shots include COM and ground-pool correction. Console/HTTP errors are analytics /api/events 404 only."
+}

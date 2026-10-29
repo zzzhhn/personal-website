@@ -1,0 +1,1025 @@
+{
+ "blender": "4.2.23 LTS",
+ "note": "Machine checks only; not art approval. Self-intersection between separate shells is not proven by these checks.",
+ "assets": [
+  {
+   "id": "C03",
+   "native": {
+    "triangles": 792,
+    "bounds_min_blender": [
+     -2.056305170059204,
+     -2.7095932960510254,
+     0.0
+    ],
+    "bounds_max_blender": [
+     2.056305170059204,
+     2.7095932960510254,
+     3.299999952316284
+    ],
+    "dims_glb_xyz": [
+     4.112610340118408,
+     3.299999952316284,
+     5.419186592102051
+    ],
+    "min_z": 0.0,
+    "xy_center": [
+     0.0,
+     0.0
+    ],
+    "object_origins": {
+     "C03": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "C03_geo": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "non_asset_objects": [],
+    "components": 53,
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "nonmanifold_vertices": 0,
+    "inconsistent_winding_edges": 0,
+    "negative_volume_components": 0,
+    "zero_volume_components": 0,
+    "zero_area_triangles": 0,
+    "duplicate_triangles": 0,
+    "min_triangle_quality": 0.008194605203835496,
+    "finite": true,
+    "validate_would_repair": false,
+    "material_area_m2": {
+     "camp_canvas_binding": 12.975,
+     "camp_canvas_cream": 1.3614,
+     "camp_canvas_orange": 75.2918,
+     "camp_groundsheet": 19.7776,
+     "camp_wood_light": 3.5855
+    },
+    "materials": {
+     "camp_canvas_orange": {
+      "role": "canvas",
+      "hex": "#E8803A",
+      "base_linear": [
+       0.80695,
+       0.21586,
+       0.04231,
+       1.0
+      ],
+      "roughness": 0.88,
+      "metallic": 0.0
+     },
+     "camp_canvas_binding": {
+      "role": "canvas",
+      "hex": "#B9602A",
+      "base_linear": [
+       0.48515,
+       0.11697,
+       0.02315,
+       1.0
+      ],
+      "roughness": 0.9,
+      "metallic": 0.0
+     },
+     "camp_canvas_cream": {
+      "role": "canvas",
+      "hex": "#E6DCCB",
+      "base_linear": [
+       0.7913,
+       0.71569,
+       0.5972,
+       1.0
+      ],
+      "roughness": 0.9,
+      "metallic": 0.0
+     },
+     "camp_groundsheet": {
+      "role": "canvas",
+      "hex": "#5A4634",
+      "base_linear": [
+       0.10224,
+       0.06125,
+       0.03434,
+       1.0
+      ],
+      "roughness": 0.95,
+      "metallic": 0.0
+     },
+     "camp_wood_light": {
+      "role": "wood",
+      "hex": "#B99469",
+      "base_linear": [
+       0.48515,
+       0.29614,
+       0.14126,
+       1.0
+      ],
+      "roughness": 0.85,
+      "metallic": 0.0
+     }
+    }
+   },
+   "glb_file": {
+    "path": "/Users/bobby/WorkBuddy/personal-website/personal-website/public/assets/world/camp/C03.glb",
+    "bytes": 14360,
+    "extensionsUsed": [
+     "KHR_draco_mesh_compression"
+    ],
+    "extensionsRequired": [
+     "KHR_draco_mesh_compression"
+    ],
+    "nodes": [
+     "C03_geo",
+     "C03"
+    ],
+    "cameras": 0,
+    "lights": false,
+    "animations": 0,
+    "images": 0,
+    "textures": 0,
+    "draco_primitives": 5,
+    "primitives": 5,
+    "materials": [
+     {
+      "name": "camp_canvas_orange",
+      "role": "canvas",
+      "baseColorFactor": [
+       0.80695,
+       0.21586,
+       0.04231,
+       1
+      ],
+      "roughness": 0.8799999952316284,
+      "metallic": 0
+     },
+     {
+      "name": "camp_canvas_binding",
+      "role": "canvas",
+      "baseColorFactor": [
+       0.48515,
+       0.11697,
+       0.02315,
+       1
+      ],
+      "roughness": 0.8999999761581421,
+      "metallic": 0
+     },
+     {
+      "name": "camp_canvas_cream",
+      "role": "canvas",
+      "baseColorFactor": [
+       0.7913,
+       0.71569,
+       0.5972,
+       1
+      ],
+      "roughness": 0.8999999761581421,
+      "metallic": 0
+     },
+     {
+      "name": "camp_groundsheet",
+      "role": "canvas",
+      "baseColorFactor": [
+       0.10224,
+       0.06125,
+       0.03434,
+       1
+      ],
+      "roughness": 0.949999988079071,
+      "metallic": 0
+     },
+     {
+      "name": "camp_wood_light",
+      "role": "wood",
+      "baseColorFactor": [
+       0.48515,
+       0.29614,
+       0.14126,
+       1
+      ],
+      "roughness": 0.8500000238418579,
+      "metallic": 0
+     }
+    ],
+    "root_extras": {
+     "assetId": "C03",
+     "front": "+X",
+     "units": "m"
+    }
+   },
+   "glb_reimport": {
+    "triangles": 792,
+    "bounds_min_glb": [
+     -2.056305170059204,
+     0.0,
+     -2.7095932960510254
+    ],
+    "bounds_max_glb": [
+     2.056307554244995,
+     3.299999475479126,
+     2.7095932960510254
+    ],
+    "dims_glb_xyz": [
+     4.112612724304199,
+     3.299999475479126,
+     5.419186592102051
+    ],
+    "objects": [
+     [
+      "C03",
+      "EMPTY"
+     ],
+     [
+      "C03_geo",
+      "MESH"
+     ]
+    ],
+    "materials": [
+     "camp_canvas_binding",
+     "camp_canvas_cream",
+     "camp_canvas_orange",
+     "camp_groundsheet",
+     "camp_wood_light"
+    ],
+    "material_area_m2": {
+     "camp_canvas_binding": 12.975,
+     "camp_canvas_cream": 1.3613,
+     "camp_canvas_orange": 75.2918,
+     "camp_groundsheet": 19.7776,
+     "camp_wood_light": 3.5855
+    },
+    "raw_components_after_import": 357,
+    "raw_boundary_edges_after_import": 1506,
+    "finite": true,
+    "zero_area_triangles": 0
+   },
+   "compare": {
+    "triangles_equal": true,
+    "bounds_delta_max_m": 2.384185791015625e-06,
+    "tolerance_m": 0.002,
+    "materials_equal": true,
+    "target_dims": [
+     4.2,
+     3.3,
+     5.5
+    ],
+    "dims_minus_target": [
+     -0.0874,
+     -0.0,
+     -0.0808
+    ],
+    "within_target_footprint": true,
+    "baseline_estimate": 1000,
+    "ratio_vs_legacy_estimate": 0.79
+   },
+   "machine_failures": [],
+   "machine_pass": true
+  },
+  {
+   "id": "C04",
+   "native": {
+    "triangles": 792,
+    "bounds_min_blender": [
+     -1.6564767360687256,
+     -2.1594650745391846,
+     0.0
+    ],
+    "bounds_max_blender": [
+     1.6564767360687256,
+     2.1594650745391846,
+     2.5
+    ],
+    "dims_glb_xyz": [
+     3.312953472137451,
+     2.5,
+     4.318930149078369
+    ],
+    "min_z": 0.0,
+    "xy_center": [
+     0.0,
+     0.0
+    ],
+    "object_origins": {
+     "C04": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "C04_geo": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "non_asset_objects": [],
+    "components": 53,
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "nonmanifold_vertices": 0,
+    "inconsistent_winding_edges": 0,
+    "negative_volume_components": 0,
+    "zero_volume_components": 0,
+    "zero_area_triangles": 0,
+    "duplicate_triangles": 0,
+    "min_triangle_quality": 0.008347490409119048,
+    "finite": true,
+    "validate_would_repair": false,
+    "material_area_m2": {
+     "camp_canvas_binding": 9.7399,
+     "camp_canvas_cream": 0.9454,
+     "camp_canvas_orange": 47.0806,
+     "camp_groundsheet": 12.7492,
+     "camp_wood_light": 2.8924
+    },
+    "materials": {
+     "camp_canvas_orange": {
+      "role": "canvas",
+      "hex": "#E8803A",
+      "base_linear": [
+       0.80695,
+       0.21586,
+       0.04231,
+       1.0
+      ],
+      "roughness": 0.88,
+      "metallic": 0.0
+     },
+     "camp_canvas_binding": {
+      "role": "canvas",
+      "hex": "#B9602A",
+      "base_linear": [
+       0.48515,
+       0.11697,
+       0.02315,
+       1.0
+      ],
+      "roughness": 0.9,
+      "metallic": 0.0
+     },
+     "camp_canvas_cream": {
+      "role": "canvas",
+      "hex": "#E6DCCB",
+      "base_linear": [
+       0.7913,
+       0.71569,
+       0.5972,
+       1.0
+      ],
+      "roughness": 0.9,
+      "metallic": 0.0
+     },
+     "camp_groundsheet": {
+      "role": "canvas",
+      "hex": "#5A4634",
+      "base_linear": [
+       0.10224,
+       0.06125,
+       0.03434,
+       1.0
+      ],
+      "roughness": 0.95,
+      "metallic": 0.0
+     },
+     "camp_wood_light": {
+      "role": "wood",
+      "hex": "#B99469",
+      "base_linear": [
+       0.48515,
+       0.29614,
+       0.14126,
+       1.0
+      ],
+      "roughness": 0.85,
+      "metallic": 0.0
+     }
+    }
+   },
+   "glb_file": {
+    "path": "/Users/bobby/WorkBuddy/personal-website/personal-website/public/assets/world/camp/C04.glb",
+    "bytes": 14380,
+    "extensionsUsed": [
+     "KHR_draco_mesh_compression"
+    ],
+    "extensionsRequired": [
+     "KHR_draco_mesh_compression"
+    ],
+    "nodes": [
+     "C04_geo",
+     "C04"
+    ],
+    "cameras": 0,
+    "lights": false,
+    "animations": 0,
+    "images": 0,
+    "textures": 0,
+    "draco_primitives": 5,
+    "primitives": 5,
+    "materials": [
+     {
+      "name": "camp_canvas_orange",
+      "role": "canvas",
+      "baseColorFactor": [
+       0.80695,
+       0.21586,
+       0.04231,
+       1
+      ],
+      "roughness": 0.8799999952316284,
+      "metallic": 0
+     },
+     {
+      "name": "camp_canvas_binding",
+      "role": "canvas",
+      "baseColorFactor": [
+       0.48515,
+       0.11697,
+       0.02315,
+       1
+      ],
+      "roughness": 0.8999999761581421,
+      "metallic": 0
+     },
+     {
+      "name": "camp_canvas_cream",
+      "role": "canvas",
+      "baseColorFactor": [
+       0.7913,
+       0.71569,
+       0.5972,
+       1
+      ],
+      "roughness": 0.8999999761581421,
+      "metallic": 0
+     },
+     {
+      "name": "camp_groundsheet",
+      "role": "canvas",
+      "baseColorFactor": [
+       0.10224,
+       0.06125,
+       0.03434,
+       1
+      ],
+      "roughness": 0.949999988079071,
+      "metallic": 0
+     },
+     {
+      "name": "camp_wood_light",
+      "role": "wood",
+      "baseColorFactor": [
+       0.48515,
+       0.29614,
+       0.14126,
+       1
+      ],
+      "roughness": 0.8500000238418579,
+      "metallic": 0
+     }
+    ],
+    "root_extras": {
+     "assetId": "C04",
+     "front": "+X",
+     "units": "m"
+    }
+   },
+   "glb_reimport": {
+    "triangles": 792,
+    "bounds_min_glb": [
+     -1.6564767360687256,
+     0.0,
+     -2.1594650745391846
+    ],
+    "bounds_max_glb": [
+     1.6564762592315674,
+     2.500001907348633,
+     2.1594650745391846
+    ],
+    "dims_glb_xyz": [
+     3.312952995300293,
+     2.500001907348633,
+     4.318930149078369
+    ],
+    "objects": [
+     [
+      "C04",
+      "EMPTY"
+     ],
+     [
+      "C04_geo",
+      "MESH"
+     ]
+    ],
+    "materials": [
+     "camp_canvas_binding",
+     "camp_canvas_cream",
+     "camp_canvas_orange",
+     "camp_groundsheet",
+     "camp_wood_light"
+    ],
+    "material_area_m2": {
+     "camp_canvas_binding": 9.7399,
+     "camp_canvas_cream": 0.9454,
+     "camp_canvas_orange": 47.0806,
+     "camp_groundsheet": 12.7492,
+     "camp_wood_light": 2.8924
+    },
+    "raw_components_after_import": 357,
+    "raw_boundary_edges_after_import": 1506,
+    "finite": true,
+    "zero_area_triangles": 0
+   },
+   "compare": {
+    "triangles_equal": true,
+    "bounds_delta_max_m": 1.9073486328125e-06,
+    "tolerance_m": 0.002,
+    "materials_equal": true,
+    "target_dims": [
+     3.4,
+     2.5,
+     4.4
+    ],
+    "dims_minus_target": [
+     -0.087,
+     0.0,
+     -0.0811
+    ],
+    "within_target_footprint": true,
+    "baseline_estimate": 1000,
+    "ratio_vs_legacy_estimate": 0.79
+   },
+   "machine_failures": [],
+   "machine_pass": true
+  },
+  {
+   "id": "C05",
+   "native": {
+    "triangles": 576,
+    "bounds_min_blender": [
+     -1.5993762016296387,
+     -1.5993762016296387,
+     0.0
+    ],
+    "bounds_max_blender": [
+     1.5993762016296387,
+     1.5993762016296387,
+     0.5704732537269592
+    ],
+    "dims_glb_xyz": [
+     3.1987524032592773,
+     0.5704732537269592,
+     3.1987524032592773
+    ],
+    "min_z": 0.0,
+    "xy_center": [
+     0.0,
+     0.0
+    ],
+    "object_origins": {
+     "C05": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "C05_geo": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "non_asset_objects": [],
+    "components": 20,
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "nonmanifold_vertices": 0,
+    "inconsistent_winding_edges": 0,
+    "negative_volume_components": 0,
+    "zero_volume_components": 0,
+    "zero_area_triangles": 0,
+    "duplicate_triangles": 0,
+    "min_triangle_quality": 0.14083870174009194,
+    "finite": true,
+    "validate_would_repair": false,
+    "material_area_m2": {
+     "camp_ash_charcoal": 8.7209,
+     "camp_stone_dark": 5.3642,
+     "camp_stone_light": 11.106,
+     "camp_wood_bark": 1.8863,
+     "camp_wood_light": 0.2739
+    },
+    "materials": {
+     "camp_stone_light": {
+      "role": "stone",
+      "hex": "#B4A896",
+      "base_linear": [
+       0.45641,
+       0.39157,
+       0.30499,
+       1.0
+      ],
+      "roughness": 0.92,
+      "metallic": 0.0
+     },
+     "camp_stone_dark": {
+      "role": "stone",
+      "hex": "#8C8276",
+      "base_linear": [
+       0.26225,
+       0.22323,
+       0.18116,
+       1.0
+      ],
+      "roughness": 0.95,
+      "metallic": 0.0
+     },
+     "camp_ash_charcoal": {
+      "role": "stone",
+      "hex": "#5B5650",
+      "base_linear": [
+       0.10462,
+       0.09306,
+       0.08022,
+       1.0
+      ],
+      "roughness": 0.97,
+      "metallic": 0.0
+     },
+     "camp_wood_bark": {
+      "role": "wood",
+      "hex": "#5A4634",
+      "base_linear": [
+       0.10224,
+       0.06125,
+       0.03434,
+       1.0
+      ],
+      "roughness": 0.92,
+      "metallic": 0.0
+     },
+     "camp_wood_light": {
+      "role": "wood",
+      "hex": "#B99469",
+      "base_linear": [
+       0.48515,
+       0.29614,
+       0.14126,
+       1.0
+      ],
+      "roughness": 0.85,
+      "metallic": 0.0
+     }
+    }
+   },
+   "glb_file": {
+    "path": "/Users/bobby/WorkBuddy/personal-website/personal-website/public/assets/world/camp/C05.glb",
+    "bytes": 11536,
+    "extensionsUsed": [
+     "KHR_draco_mesh_compression"
+    ],
+    "extensionsRequired": [
+     "KHR_draco_mesh_compression"
+    ],
+    "nodes": [
+     "C05_geo",
+     "C05"
+    ],
+    "cameras": 0,
+    "lights": false,
+    "animations": 0,
+    "images": 0,
+    "textures": 0,
+    "draco_primitives": 5,
+    "primitives": 5,
+    "materials": [
+     {
+      "name": "camp_stone_light",
+      "role": "stone",
+      "baseColorFactor": [
+       0.45641,
+       0.39157,
+       0.30499,
+       1
+      ],
+      "roughness": 0.9200000166893005,
+      "metallic": 0
+     },
+     {
+      "name": "camp_stone_dark",
+      "role": "stone",
+      "baseColorFactor": [
+       0.26225,
+       0.22323,
+       0.18116,
+       1
+      ],
+      "roughness": 0.949999988079071,
+      "metallic": 0
+     },
+     {
+      "name": "camp_ash_charcoal",
+      "role": "stone",
+      "baseColorFactor": [
+       0.10462,
+       0.09306,
+       0.08022,
+       1
+      ],
+      "roughness": 0.9700000286102295,
+      "metallic": 0
+     },
+     {
+      "name": "camp_wood_bark",
+      "role": "wood",
+      "baseColorFactor": [
+       0.10224,
+       0.06125,
+       0.03434,
+       1
+      ],
+      "roughness": 0.9200000166893005,
+      "metallic": 0
+     },
+     {
+      "name": "camp_wood_light",
+      "role": "wood",
+      "baseColorFactor": [
+       0.48515,
+       0.29614,
+       0.14126,
+       1
+      ],
+      "roughness": 0.8500000238418579,
+      "metallic": 0
+     }
+    ],
+    "root_extras": {
+     "assetId": "C05",
+     "front": "+X",
+     "units": "m"
+    }
+   },
+   "glb_reimport": {
+    "triangles": 576,
+    "bounds_min_glb": [
+     -1.5993762016296387,
+     0.0,
+     -1.5993762016296387
+    ],
+    "bounds_max_glb": [
+     1.5993762016296387,
+     0.5704737305641174,
+     1.5993762016296387
+    ],
+    "dims_glb_xyz": [
+     3.1987524032592773,
+     0.5704737305641174,
+     3.1987524032592773
+    ],
+    "objects": [
+     [
+      "C05",
+      "EMPTY"
+     ],
+     [
+      "C05_geo",
+      "MESH"
+     ]
+    ],
+    "materials": [
+     "camp_ash_charcoal",
+     "camp_stone_dark",
+     "camp_stone_light",
+     "camp_wood_bark",
+     "camp_wood_light"
+    ],
+    "material_area_m2": {
+     "camp_ash_charcoal": 8.7209,
+     "camp_stone_dark": 5.3642,
+     "camp_stone_light": 11.106,
+     "camp_wood_bark": 1.8863,
+     "camp_wood_light": 0.2739
+    },
+    "raw_components_after_import": 179,
+    "raw_boundary_edges_after_import": 914,
+    "finite": true,
+    "zero_area_triangles": 0
+   },
+   "compare": {
+    "triangles_equal": true,
+    "bounds_delta_max_m": 4.76837158203125e-07,
+    "tolerance_m": 0.002,
+    "materials_equal": true,
+    "target_dims": [
+     3.2,
+     0.6,
+     3.2
+    ],
+    "dims_minus_target": [
+     -0.0012,
+     -0.0295,
+     -0.0012
+    ],
+    "within_target_footprint": true,
+    "baseline_estimate": 1000,
+    "ratio_vs_legacy_estimate": 0.58
+   },
+   "machine_failures": [],
+   "machine_pass": true
+  },
+  {
+   "id": "C06",
+   "native": {
+    "triangles": 240,
+    "bounds_min_blender": [
+     -0.3799999952316284,
+     -2.4000000953674316,
+     0.0
+    ],
+    "bounds_max_blender": [
+     0.3799999952316284,
+     2.4000000953674316,
+     0.6000000238418579
+    ],
+    "dims_glb_xyz": [
+     0.7599999904632568,
+     0.6000000238418579,
+     4.800000190734863
+    ],
+    "min_z": 0.0,
+    "xy_center": [
+     0.0,
+     0.0
+    ],
+    "object_origins": {
+     "C06": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "C06_geo": [
+      0.0,
+      0.0,
+      0.0
+     ]
+    },
+    "non_asset_objects": [],
+    "components": 4,
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "nonmanifold_vertices": 0,
+    "inconsistent_winding_edges": 0,
+    "negative_volume_components": 0,
+    "zero_volume_components": 0,
+    "zero_area_triangles": 0,
+    "duplicate_triangles": 0,
+    "min_triangle_quality": 0.07861426276986101,
+    "finite": true,
+    "validate_would_repair": false,
+    "material_area_m2": {
+     "camp_wood_bark": 7.8658,
+     "camp_wood_light": 2.7577
+    },
+    "materials": {
+     "camp_wood_bark": {
+      "role": "wood",
+      "hex": "#5A4634",
+      "base_linear": [
+       0.10224,
+       0.06125,
+       0.03434,
+       1.0
+      ],
+      "roughness": 0.92,
+      "metallic": 0.0
+     },
+     "camp_wood_light": {
+      "role": "wood",
+      "hex": "#B99469",
+      "base_linear": [
+       0.48515,
+       0.29614,
+       0.14126,
+       1.0
+      ],
+      "roughness": 0.85,
+      "metallic": 0.0
+     }
+    }
+   },
+   "glb_file": {
+    "path": "/Users/bobby/WorkBuddy/personal-website/personal-website/public/assets/world/camp/C06.glb",
+    "bytes": 4804,
+    "extensionsUsed": [
+     "KHR_draco_mesh_compression"
+    ],
+    "extensionsRequired": [
+     "KHR_draco_mesh_compression"
+    ],
+    "nodes": [
+     "C06_geo",
+     "C06"
+    ],
+    "cameras": 0,
+    "lights": false,
+    "animations": 0,
+    "images": 0,
+    "textures": 0,
+    "draco_primitives": 2,
+    "primitives": 2,
+    "materials": [
+     {
+      "name": "camp_wood_bark",
+      "role": "wood",
+      "baseColorFactor": [
+       0.10224,
+       0.06125,
+       0.03434,
+       1
+      ],
+      "roughness": 0.9200000166893005,
+      "metallic": 0
+     },
+     {
+      "name": "camp_wood_light",
+      "role": "wood",
+      "baseColorFactor": [
+       0.48515,
+       0.29614,
+       0.14126,
+       1
+      ],
+      "roughness": 0.8500000238418579,
+      "metallic": 0
+     }
+    ],
+    "root_extras": {
+     "assetId": "C06",
+     "front": "+X",
+     "units": "m"
+    }
+   },
+   "glb_reimport": {
+    "triangles": 240,
+    "bounds_min_glb": [
+     -0.3799999952316284,
+     0.0,
+     -2.4000000953674316
+    ],
+    "bounds_max_glb": [
+     0.3799983263015747,
+     0.6000006198883057,
+     2.4000000953674316
+    ],
+    "dims_glb_xyz": [
+     0.7599983215332031,
+     0.6000006198883057,
+     4.800000190734863
+    ],
+    "objects": [
+     [
+      "C06",
+      "EMPTY"
+     ],
+     [
+      "C06_geo",
+      "MESH"
+     ]
+    ],
+    "materials": [
+     "camp_wood_bark",
+     "camp_wood_light"
+    ],
+    "material_area_m2": {
+     "camp_wood_bark": 7.8658,
+     "camp_wood_light": 2.7577
+    },
+    "raw_components_after_import": 62,
+    "raw_boundary_edges_after_import": 352,
+    "finite": true,
+    "zero_area_triangles": 0
+   },
+   "compare": {
+    "triangles_equal": true,
+    "bounds_delta_max_m": 1.6689300537109375e-06,
+    "tolerance_m": 0.002,
+    "materials_equal": true,
+    "target_dims": [
+     0.8,
+     0.6,
+     4.8
+    ],
+    "dims_minus_target": [
+     -0.04,
+     0.0,
+     0.0
+    ],
+    "within_target_footprint": true,
+    "baseline_estimate": 500,
+    "ratio_vs_legacy_estimate": 0.48
+   },
+   "machine_failures": [],
+   "machine_pass": true
+  }
+ ]
+}

@@ -1,0 +1,59 @@
+{"triangles":65961,"staticDraws":9,"dynamicDraws":5,"realLights":6,"supportTriangles":12815,"solidTriangles":17772,"seats":8}
+(node:44362) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ geometry remains within one medium venue and the 68k triangle / 12 static draw budget (18.851958ms)
+✔ pool paving uses metre-scale inlaid joints with complete stone and wood union coverage (6.592833ms)
+✔ both flush wooden approaches have no positive-area coplanar overlap with stone (11.449167ms)
+✔ every support triangle faces upward with a walkable slope (1.382541ms)
+✔ mirror tiles face outward and remain visible with front-face culling (0.416125ms)
+✔ registered daybed datums agree with the cushion support and all front ramps reach them (12.810708ms)
+✔ dance floor, stage and entrance ramp share their rendered top heights (1.512333ms)
+✔ two broad routes reach the sea side without a vertical step (8.750666ms)
+✔ pool has no collider at its central water surface, and four shallow slopes lead out (3.003417ms)
+✔ all collider indices are valid and all source surfaces match a visible triangle (114.335292ms)
+✔ closed roof shell and bounded main bamboo guards share their visual triangles with solid (28.479708ms)
+✔ rounded eave caps have matching camera guards and bamboo collars follow the arch tangent (24.08875ms)
+✔ freeform basin, solid daybeds and full palm trunks keep their physical contract (25.333084ms)
+✔ six palm crowns have separated small folded leaflets with fixed crown roots and moving tips (94.115375ms)
+✔ eight planted islands have layered terrain-rooted soft leaves clear of circulation (81.508333ms)
+✔ camera rays hit the roof underside and outer face with front-face culling (2.5605ms)
+using deprecated parameters for the initialization function; pass a single object instead
+(node:44363) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+dynamic daybed: {"bed":0,"offset":-0.41,"reached":true,"arrived":{"x":61.70466613769531,"y":2.5748252868652344,"z":40.45948028564453},"stopped":{"x":61.70506286621094,"y":2.57391357421875,"z":40.7109375},"grounded":true,"gap":-0.001087607294321058,"holdDrift":2.384185791015625e-7}
+dynamic daybed: {"bed":0,"offset":0.41,"reached":true,"arrived":{"x":62.51660919189453,"y":2.574526071548462,"z":40.45913314819336},"stopped":{"x":62.511295318603516,"y":2.57391357421875,"z":40.7136116027832},"grounded":true,"gap":-0.0010894103348255135,"holdDrift":0.0023725849683244446}
+dynamic daybed: {"bed":1,"offset":-0.41,"reached":true,"arrived":{"x":73.619384765625,"y":2.5747768878936768,"z":46.45794677734375},"stopped":{"x":73.6195297241211,"y":2.57391357421875,"z":46.711647033691406},"grounded":true,"gap":-0.0010961046814918496,"holdDrift":0.0000011920928955078125}
+dynamic daybed: {"bed":1,"offset":0.41,"reached":true,"arrived":{"x":74.43809509277344,"y":2.574533462524414,"z":46.50044631958008},"stopped":{"x":74.44002532958984,"y":2.57391357421875,"z":46.75406265258789},"grounded":true,"gap":-0.0011303736269474007,"holdDrift":2.384185791015625e-7}
+dynamic daybed: {"bed":2,"offset":-0.41,"reached":true,"arrived":{"x":77.62616729736328,"y":2.574737310409546,"z":64.4864501953125},"stopped":{"x":77.62583923339844,"y":2.57391357421875,"z":64.73777770996094},"grounded":true,"gap":-0.0011162883043289162,"holdDrift":2.384185791015625e-7}
+dynamic daybed: {"bed":2,"offset":0.41,"reached":true,"arrived":{"x":78.42207336425781,"y":2.57450532913208,"z":64.50711822509766},"stopped":{"x":78.42405700683594,"y":2.57391357421875,"z":64.76126098632812},"grounded":true,"gap":-0.0010973638296127297,"holdDrift":0.0000011920928955078125}
+dynamic daybed: {"bed":3,"offset":-0.41,"reached":true,"arrived":{"x":61.68349075317383,"y":2.5747756958007812,"z":68.48934936523438},"stopped":{"x":61.68302536010742,"y":2.57391357421875,"z":68.74175262451172},"grounded":true,"gap":-0.001093228757381437,"holdDrift":2.384185791015625e-7}
+dynamic daybed: {"bed":3,"offset":0.41,"reached":true,"arrived":{"x":62.501258850097656,"y":2.574526786804199,"z":68.4945297241211},"stopped":{"x":62.496849060058594,"y":2.573913812637329,"z":68.74703979492188},"grounded":true,"gap":-0.0010908296704292275,"holdDrift":0.001928477147217559}
+dynamic pool exit: {"angle":0,"side":-1.2,"reached":true,"position":{"x":88.53465270996094,"y":2.218825578689575,"z":53.976158142089844},"grounded":true}
+dynamic pool exit: {"angle":0,"side":1.2,"reached":true,"position":{"x":88.48374938964844,"y":2.218825578689575,"z":56.2857666015625},"grounded":true}
+dynamic pool exit: {"angle":1.5707963267948966,"side":-1.2,"reached":true,"position":{"x":69.1917724609375,"y":2.21882700920105,"z":79.37688446044922},"grounded":true}
+dynamic pool exit: {"angle":1.5707963267948966,"side":1.2,"reached":true,"position":{"x":66.95114135742188,"y":2.218825578689575,"z":79.41788482666016},"grounded":true}
+dynamic pool exit: {"angle":3.141592653589793,"side":-1.2,"reached":true,"position":{"x":49.77592849731445,"y":2.2188258171081543,"z":56.72462844848633},"grounded":true}
+dynamic pool exit: {"angle":3.141592653589793,"side":1.2,"reached":true,"position":{"x":49.75728988647461,"y":2.2188258171081543,"z":54.2426643371582},"grounded":true}
+dynamic pool exit: {"angle":4.71238898038469,"side":-1.2,"reached":true,"position":{"x":66.97235870361328,"y":2.2188258171081543,"z":28.652027130126953},"grounded":true}
+dynamic pool exit: {"angle":4.71238898038469,"side":1.2,"reached":true,"position":{"x":69.22443389892578,"y":2.2188258171081543,"z":28.653669357299805},"grounded":true}
+✔ eight real seat interactions register, sit with exact support, clear for existing stand-up, and unregister (13.241292ms)
+✔ pool-level, rear and distant approaches cannot sit; a newly inserted obstruction is rechecked on activation (1.474875ms)
+✔ each seated anchor has a supported clear landing within the existing stand-up search envelope (11.200459ms)
+✔ mirror fixed sphere has physical contact and stops the production camera sweep (0.439125ms)
+✔ production dynamic capsule walks from pool to every daybed, stops on the landing and activates a reachable seat (301.390709ms)
+✔ production dynamic capsule leaves the pool through all four broad shallow bays (188.9115ms)
+DJC analytic samples: [{"x":24,"z":40,"height":1,"coast":1,"kind":"grass"},{"x":29,"z":43,"height":1,"coast":1,"kind":"grass"},{"x":32,"z":55,"height":1,"coast":1,"kind":"grass"},{"x":48,"z":55,"height":1,"coast":1,"kind":"grass"},{"x":61,"z":56,"height":0.755,"coast":1,"kind":"stone"},{"x":44,"z":75,"height":1,"coast":1,"kind":"grass"},{"x":35,"z":-43,"height":0.95,"coast":-3.713,"kind":"stone"},{"x":39,"z":-43,"height":-3.9118,"coast":-3.9118,"kind":"water"},{"x":50,"z":10,"height":-1.6325,"coast":-1.6325,"kind":"water"},{"x":60,"z":15,"height":-0.8874,"coast":-0.8874,"kind":"sand"}]
+✔ DJC contract, continuous earth, live shoulders and protected bridge water (513.08775ms)
+✔ shared shallow basin floor stays continuous, supported and free of vegetation (6.181ms)
+✔ new vegetation roots sit outside hard circulation and pool paving (0.126583ms)
+✔ waterline comes from triangles and retains a concave bay and separate island (0.771708ms)
+ℹ tests 26
+ℹ suites 0
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2148.88775

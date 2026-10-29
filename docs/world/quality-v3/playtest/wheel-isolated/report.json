@@ -1,0 +1,282 @@
+{
+  "base": "http://127.0.0.1:4322",
+  "scope": "wheel",
+  "startedAt": "2026-10-22T04:13:19.229Z",
+  "errors": [],
+  "limits": [
+    "Isolated fixture starts are not a continuous all-island traversal.",
+    "M5 Pro browser; no M1 Air hardware certification.",
+    "Sampled cases, not every instance or every collision angle."
+  ],
+  "canvas": {
+    "cssSize": [
+      1920,
+      1080
+    ],
+    "canvasAttr": [
+      1920,
+      1080
+    ],
+    "drawingBuffer": [
+      1920,
+      1080
+    ],
+    "viewport": [
+      0,
+      0,
+      1920,
+      1080
+    ],
+    "devicePixelRatio": 1,
+    "effectiveRenderScale": 1,
+    "windowInner": [
+      1920,
+      1080
+    ],
+    "antialias": true,
+    "preserveDrawingBuffer": false,
+    "maxSamples": 8,
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)"
+  },
+  "treeFixture": {
+    "id": "G16",
+    "key": "camp-collider-G16-instances-0-trunk-0",
+    "instance": 0,
+    "label": "instances",
+    "part": "trunk",
+    "kind": "trimesh",
+    "aabb": {
+      "min": [
+        -59.36943817138672,
+        4.800000190734863,
+        33.34025573730469
+      ],
+      "max": [
+        -57.88301467895508,
+        8.794986724853516,
+        35.09921646118164
+      ]
+    }
+  },
+  "fixtures": [
+    {
+      "t": 1.804,
+      "to": [
+        -52.6262264251709,
+        5.976,
+        31.162325592041014
+      ],
+      "reason": "offroad glancing tree / outer tyre approach; car placed separately"
+    },
+    {
+      "t": 5.393,
+      "to": [
+        -52.6262264251709,
+        5.854,
+        31.210325592041016
+      ],
+      "reason": "coupe glancing tree / outer tyre approach; car placed separately"
+    },
+    {
+      "t": 8.974,
+      "to": [
+        -52.6262264251709,
+        6.252,
+        31.066325592041018
+      ],
+      "reason": "van glancing tree / outer tyre approach; car placed separately"
+    }
+  ],
+  "events": [
+    {
+      "t": 2.657,
+      "press": "KeyE"
+    },
+    {
+      "t": 6.247,
+      "press": "KeyE"
+    },
+    {
+      "t": 9.825,
+      "press": "KeyE"
+    }
+  ],
+  "finishedAt": "2026-10-22T04:13:31.863Z",
+  "summary": {
+    "passed": 0,
+    "total": 3,
+    "failed": [
+      {
+        "name": "offroad-wheel-side-tree no >3cm visual tyre penetration",
+        "evidence": {
+          "entered": true,
+          "maxWheelPenetration": 0,
+          "nearestTreeWheelDistance": null
+        }
+      },
+      {
+        "name": "coupe-wheel-side-tree no >3cm visual tyre penetration",
+        "evidence": {
+          "entered": true,
+          "maxWheelPenetration": 0,
+          "nearestTreeWheelDistance": null
+        }
+      },
+      {
+        "name": "van-wheel-side-tree no >3cm visual tyre penetration",
+        "evidence": {
+          "entered": true,
+          "maxWheelPenetration": 0,
+          "nearestTreeWheelDistance": null
+        }
+      }
+    ],
+    "errors": []
+  },
+  "fullEvidence": "report-full.json.gz",
+  "cases": [
+    {
+      "name": "reset-cars-fixture",
+      "t": 1.797,
+      "placements": [
+        {
+          "id": "offroad",
+          "p": [
+            -26,
+            6.1,
+            34
+          ]
+        },
+        {
+          "id": "coupe",
+          "p": [
+            19.8,
+            2.3,
+            12
+          ]
+        },
+        {
+          "id": "van",
+          "p": [
+            46,
+            2.7,
+            -45
+          ]
+        }
+      ],
+      "sampleCount": 0
+    },
+    {
+      "name": "offroad-wheel-side-tree",
+      "maxWheelPenetration": 0,
+      "entered": true,
+      "nearestTreeWheelDistance": null,
+      "sampleCount": 51
+    },
+    {
+      "name": "reset-cars-fixture",
+      "t": 5.391,
+      "placements": [
+        {
+          "id": "offroad",
+          "p": [
+            -26,
+            6.1,
+            34
+          ]
+        },
+        {
+          "id": "coupe",
+          "p": [
+            19.8,
+            2.3,
+            12
+          ]
+        },
+        {
+          "id": "van",
+          "p": [
+            46,
+            2.7,
+            -45
+          ]
+        }
+      ],
+      "sampleCount": 0
+    },
+    {
+      "name": "coupe-wheel-side-tree",
+      "maxWheelPenetration": 0,
+      "entered": true,
+      "nearestTreeWheelDistance": null,
+      "sampleCount": 51
+    },
+    {
+      "name": "reset-cars-fixture",
+      "t": 8.972,
+      "placements": [
+        {
+          "id": "offroad",
+          "p": [
+            -26,
+            6.1,
+            34
+          ]
+        },
+        {
+          "id": "coupe",
+          "p": [
+            19.8,
+            2.3,
+            12
+          ]
+        },
+        {
+          "id": "van",
+          "p": [
+            46,
+            2.7,
+            -45
+          ]
+        }
+      ],
+      "sampleCount": 0
+    },
+    {
+      "name": "van-wheel-side-tree",
+      "maxWheelPenetration": 0,
+      "entered": true,
+      "nearestTreeWheelDistance": null,
+      "sampleCount": 51
+    }
+  ],
+  "checks": [
+    {
+      "name": "offroad-wheel-side-tree no >3cm visual tyre penetration",
+      "passed": false,
+      "evidence": {
+        "entered": true,
+        "maxWheelPenetration": 0,
+        "nearestTreeWheelDistance": null
+      }
+    },
+    {
+      "name": "coupe-wheel-side-tree no >3cm visual tyre penetration",
+      "passed": false,
+      "evidence": {
+        "entered": true,
+        "maxWheelPenetration": 0,
+        "nearestTreeWheelDistance": null
+      }
+    },
+    {
+      "name": "van-wheel-side-tree no >3cm visual tyre penetration",
+      "passed": false,
+      "evidence": {
+        "entered": true,
+        "maxWheelPenetration": 0,
+        "nearestTreeWheelDistance": null
+      }
+    }
+  ]
+}

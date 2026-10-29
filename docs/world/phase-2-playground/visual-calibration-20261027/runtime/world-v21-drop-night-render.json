@@ -1,0 +1,82 @@
+{
+  "sampledAt": "2026-10-28T12:45:20.825Z",
+  "calls": 58,
+  "triangles": 385145,
+  "geometries": 469,
+  "textures": 63,
+  "programs": 140,
+  "camera": [
+    40.11275849939934,
+    64.69669931295506,
+    -346.0043717107065
+  ],
+  "mode": "always",
+  "frame": 8985,
+  "delta": 0.014199999988079071,
+  "night": 1,
+  "windTime": 153.01649999999998,
+  "frameMs": {
+    "samples": 180,
+    "p50": 19,
+    "p95": 30.100000381469727,
+    "max": 72.80000305175781
+  },
+  "drawingBuffer": [
+    1951,
+    1062
+  ],
+  "cssSize": [
+    1710,
+    931
+  ],
+  "pixelRatio": 1.1412731405118963,
+  "dprRange": [
+    0,
+    1.5
+  ],
+  "quality": "balanced",
+  "antialias": true,
+  "msaaSamples": 4,
+  "toneMapping": 4,
+  "outputColorSpace": "srgb",
+  "shadowMapSize": 1254,
+  "shadowType": 1,
+  "postprocessing": [],
+  "coasterVegetation": [
+    {
+      "name": "coaster-ST1-L0",
+      "visible": false,
+      "instances": 0,
+      "triangles": 0,
+      "matrixUploads": 0
+    },
+    {
+      "name": "coaster-ST1-L1",
+      "visible": true,
+      "instances": 2,
+      "triangles": 2980,
+      "matrixUploads": 41
+    },
+    {
+      "name": "coaster-ST2-L0",
+      "visible": false,
+      "instances": 0,
+      "triangles": 0,
+      "matrixUploads": 2
+    },
+    {
+      "name": "coaster-ST2-L1",
+      "visible": true,
+      "instances": 1,
+      "triangles": 1722,
+      "matrixUploads": 37
+    },
+    {
+      "name": "coaster-G19",
+      "visible": true,
+      "instances": 3,
+      "triangles": 6156,
+      "matrixUploads": 28
+    }
+  ]
+}

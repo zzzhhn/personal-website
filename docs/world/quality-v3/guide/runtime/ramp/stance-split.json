@@ -1,0 +1,9 @@
+{
+ "stance_samples": 18,
+ "stance_min": -0.016230523586273193,
+ "stance_max": 0.05190777778625488,
+ "swing_samples": 146,
+ "swing_min": -0.03873944282531738,
+ "slope_deg_max": 14.9,
+ "pelvis_drop_max": 0.05
+}

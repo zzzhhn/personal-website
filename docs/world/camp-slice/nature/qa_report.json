@@ -1,0 +1,2428 @@
+{
+ "G16": {
+  "meta": {
+   "assetId": "G16",
+   "title": "medium round broadleaf tree (4 clumps)",
+   "kind": "tree",
+   "trunkAxisXY_blender": "[-0.0, -0.0]",
+   "clumpCount": 4,
+   "trunk": {
+    "assetId": "G16",
+    "materialRoles": "{\"wood_trunk\": \"wood\"}",
+    "semantic": "trunk",
+    "note": "trunk+branches; static collider stays the 0.7x2.8 placeholder"
+   },
+   "crown": {
+    "assetId": "G16",
+    "materialRoles": "{\"foliage_dark\": \"foliage\", \"foliage_mid\": \"foliage\", \"foliage_light\": \"foliage\"}",
+    "semantic": "crown",
+    "clumps": "[{\"center\": [-0.022, -0.199, 4.385], \"radii\": [1.16, 1.11, 1.05], \"tier\": \"foliage_light\", \"attach\": \"trunk tip buried\"}, {\"center\": [0.936, -0.804, 3.485], \"radii\": [0.958, 0.928, 0.88], \"tier\": \"foliage_mid\", \"attach\": \"branch from trunk z=1.95\"}, {\"center\": [-0.073, 0.81, 3.535], \"radii\": [0.928, 0.908, 0.86], \"tier\": \"foliage_mid\", \"attach\": \"branch from trunk z=2.1\"}, {\"center\": [-0.981, -0.804, 3.335], \"radii\": [0.908, 0.908, 0.84], \"tier\": \"foliage_dark\", \"attach\": \"branch from trunk z=1.9\"}]"
+   }
+  },
+  "checks": {
+   "minZ_is_0": true,
+   "xy_center_is_0": true,
+   "origins_at_0": true,
+   "roundtrip_bounds_maxdiff_m": 1.7e-06,
+   "roundtrip_bounds_ok": true,
+   "draco_all_primitives": true,
+   "roundtrip_triangles_equal": true,
+   "within_declared_budget": true,
+   "finite": true,
+   "no_degenerate_or_duplicate": true,
+   "native_closed_manifold_shells": true,
+   "native_consistent_winding_positive_volumes": true,
+   "contact_graph_connected": true,
+   "material_roles_in_glb_extras": true,
+   "no_emission_no_metal_no_textures": true,
+   "tree_has_crown_and_trunk_nodes": true,
+   "welded_import_closed_like_native": true,
+   "no_presentation_objects": true
+  },
+  "native": {
+   "boundary_edges": 0,
+   "wire_edges": 0,
+   "nonmanifold_edges": 0,
+   "nonmanifold_vertices": 0,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 0,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.00098,
+   "components": 5,
+   "triangles": 532,
+   "face_material_world_areas": {
+    "wood_trunk": 8.8168,
+    "foliage_light": 13.5137,
+    "foliage_mid": 18.5788,
+    "foliage_dark": 8.8079
+   }
+  },
+  "imported": {
+   "boundary_edges": 1438,
+   "wire_edges": 0,
+   "nonmanifold_edges": 1438,
+   "nonmanifold_vertices": 1438,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 19,
+   "zero_or_near_zero_volume_components": 409,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.00098,
+   "components": 453,
+   "triangles": 532,
+   "face_material_world_areas": {
+    "foliage_dark": 8.8079,
+    "foliage_mid": 18.5788,
+    "foliage_light": 13.5137,
+    "wood_trunk": 8.8168
+   }
+  },
+  "imported_welded_diagnostic": {
+   "boundary_edges": 0,
+   "wire_edges": 0,
+   "nonmanifold_edges": 0,
+   "nonmanifold_vertices": 0,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 0,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.00098,
+   "components": 5,
+   "triangles": 532,
+   "face_material_world_areas": {
+    "foliage_dark": 8.8079,
+    "foliage_mid": 18.5788,
+    "foliage_light": 13.5137,
+    "wood_trunk": 8.8168
+   },
+   "weld_tolerance_m": 0.0001
+  },
+  "native_bounds": [
+   [
+    -1.9000000953674316,
+    -1.7014071941375732,
+    0.0
+   ],
+   [
+    1.9000000953674316,
+    1.7014071941375732,
+    5.399999618530273
+   ]
+  ],
+  "imported_bounds": [
+   [
+    -1.9000000953674316,
+    -1.7014071941375732,
+    0.0
+   ],
+   [
+    1.9000017642974854,
+    1.7014071941375732,
+    5.399999141693115
+   ]
+  ],
+  "contacts": {
+   "components": [
+    {
+     "index": 0,
+     "object": "trunk",
+     "triangles": 212,
+     "materials": [
+      "wood_trunk"
+     ],
+     "minZ": 0.0,
+     "maxZ": 4.02202
+    },
+    {
+     "index": 1,
+     "object": "crown",
+     "triangles": 80,
+     "materials": [
+      "foliage_light"
+     ],
+     "minZ": 3.5144,
+     "maxZ": 5.4
+    },
+    {
+     "index": 2,
+     "object": "crown",
+     "triangles": 80,
+     "materials": [
+      "foliage_mid"
+     ],
+     "minZ": 2.7501,
+     "maxZ": 4.36022
+    },
+    {
+     "index": 3,
+     "object": "crown",
+     "triangles": 80,
+     "materials": [
+      "foliage_mid"
+     ],
+     "minZ": 2.82912,
+     "maxZ": 4.38339
+    },
+    {
+     "index": 4,
+     "object": "crown",
+     "triangles": 80,
+     "materials": [
+      "foliage_dark"
+     ],
+     "minZ": 2.6527,
+     "maxZ": 4.13552
+    }
+   ],
+   "contact_pairs_overlapping_triangle_pairs": [
+    [
+     0,
+     1,
+     25
+    ],
+    [
+     0,
+     2,
+     16
+    ],
+    [
+     0,
+     3,
+     51
+    ],
+    [
+     0,
+     4,
+     14
+    ],
+    [
+     1,
+     2,
+     29
+    ],
+    [
+     1,
+     3,
+     28
+    ],
+    [
+     1,
+     4,
+     25
+    ]
+   ],
+   "contact_graph_connected": true,
+   "isolated_components": [],
+   "method": "BVHTree.overlap between vertex-connected components (incl. across nodes); overlap = embedded contact, not shared topology."
+  },
+  "native_materials": {
+   "wood_trunk": {
+    "materialRole": "wood",
+    "baseColorLinear": [
+     0.10224,
+     0.06125,
+     0.03434
+    ],
+    "roughness": 0.95,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "foliage_dark": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.15896,
+     0.25415,
+     0.04231
+    ],
+    "roughness": 0.92,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "foliage_mid": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.25415,
+     0.36131,
+     0.06848
+    ],
+    "roughness": 0.92,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "foliage_light": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.39676,
+     0.45079,
+     0.10224
+    ],
+    "roughness": 0.9,
+    "metallic": 0.0,
+    "emission": 0.0
+   }
+  },
+  "imported_materials": {
+   "foliage_dark": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.15896,
+     0.25415,
+     0.04231
+    ],
+    "roughness": 0.92,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "foliage_mid": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.25415,
+     0.36131,
+     0.06848
+    ],
+    "roughness": 0.92,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "foliage_light": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.39676,
+     0.45079,
+     0.10224
+    ],
+    "roughness": 0.9,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "wood_trunk": {
+    "materialRole": "wood",
+    "baseColorLinear": [
+     0.10224,
+     0.06125,
+     0.03434
+    ],
+    "roughness": 0.95,
+    "metallic": 0.0,
+    "emission": 0.0
+   }
+  },
+  "glb": {
+   "nodes": [
+    "crown",
+    "trunk",
+    "G16"
+   ],
+   "meshes": 2,
+   "primitives": 4,
+   "materials": [
+    {
+     "name": "foliage_dark",
+     "extras": {
+      "materialRole": "foliage",
+      "srgbHex": "#6F8A3A"
+     },
+     "baseColorFactor": [
+      0.15896,
+      0.25415,
+      0.04231,
+      1
+     ],
+     "roughness": 0.9200000166893005,
+     "metallic": 0,
+     "emissive": null
+    },
+    {
+     "name": "foliage_mid",
+     "extras": {
+      "materialRole": "foliage",
+      "srgbHex": "#8AA24A"
+     },
+     "baseColorFactor": [
+      0.25415,
+      0.36131,
+      0.06848,
+      1
+     ],
+     "roughness": 0.9200000166893005,
+     "metallic": 0,
+     "emissive": null
+    },
+    {
+     "name": "foliage_light",
+     "extras": {
+      "materialRole": "foliage",
+      "srgbHex": "#A9B35A"
+     },
+     "baseColorFactor": [
+      0.39676,
+      0.45079,
+      0.10224,
+      1
+     ],
+     "roughness": 0.8999999761581421,
+     "metallic": 0,
+     "emissive": null
+    },
+    {
+     "name": "wood_trunk",
+     "extras": {
+      "materialRole": "wood",
+      "srgbHex": "#5A4634"
+     },
+     "baseColorFactor": [
+      0.10224,
+      0.06125,
+      0.03434,
+      1
+     ],
+     "roughness": 0.949999988079071,
+     "metallic": 0,
+     "emissive": null
+    }
+   ],
+   "images": 0,
+   "textures": 0,
+   "cameras": 0,
+   "lights": 0,
+   "animations": 0,
+   "extensionsUsed": [
+    "KHR_draco_mesh_compression"
+   ],
+   "extensionsRequired": [
+    "KHR_draco_mesh_compression"
+   ],
+   "dracoPrimitives": 4,
+   "sha256": "adb2f94a21b1da0af1fea743c417cdb693a7efca7a146dd9717efa2e83215f1d",
+   "bytes": 16476
+  },
+  "imported_object_names": [
+   "G16",
+   "crown",
+   "trunk"
+  ]
+ },
+ "G17": {
+  "meta": {
+   "assetId": "G17",
+   "title": "low wide-crown tree (3 clumps)",
+   "kind": "tree",
+   "trunkAxisXY_blender": "[-0.0, -0.0]",
+   "clumpCount": 3,
+   "trunk": {
+    "assetId": "G17",
+    "materialRoles": "{\"wood_trunk\": \"wood\"}",
+    "semantic": "trunk",
+    "note": "trunk+branches; static collider stays the 0.7x2.8 placeholder"
+   },
+   "crown": {
+    "assetId": "G17",
+    "materialRoles": "{\"foliage_dark\": \"foliage\", \"foliage_mid\": \"foliage\", \"foliage_light\": \"foliage\"}",
+    "semantic": "crown",
+    "clumps": "[{\"center\": [-0.037, -0.015, 3.758], \"radii\": [1.312, 1.201, 1.02], \"tier\": \"foliage_mid\", \"attach\": \"trunk tip buried\"}, {\"center\": [0.535, -1.29, 3.158], \"radii\": [0.942, 0.942, 0.86], \"tier\": \"foliage_dark\", \"attach\": \"branch from trunk z=1.65\"}, {\"center\": [-0.592, 1.278, 3.218], \"radii\": [0.924, 0.924, 0.84], \"tier\": \"foliage_light\", \"attach\": \"branch from trunk z=1.75\"}]"
+   }
+  },
+  "checks": {
+   "minZ_is_0": true,
+   "xy_center_is_0": true,
+   "origins_at_0": true,
+   "roundtrip_bounds_maxdiff_m": 7e-07,
+   "roundtrip_bounds_ok": true,
+   "draco_all_primitives": true,
+   "roundtrip_triangles_equal": true,
+   "within_declared_budget": true,
+   "finite": true,
+   "no_degenerate_or_duplicate": true,
+   "native_closed_manifold_shells": true,
+   "native_consistent_winding_positive_volumes": true,
+   "contact_graph_connected": true,
+   "material_roles_in_glb_extras": true,
+   "no_emission_no_metal_no_textures": true,
+   "tree_has_crown_and_trunk_nodes": true,
+   "welded_import_closed_like_native": true,
+   "no_presentation_objects": true
+  },
+  "native": {
+   "boundary_edges": 0,
+   "wire_edges": 0,
+   "nonmanifold_edges": 0,
+   "nonmanifold_vertices": 0,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 0,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.00632,
+   "components": 4,
+   "triangles": 416,
+   "face_material_world_areas": {
+    "wood_trunk": 7.5652,
+    "foliage_mid": 15.3645,
+    "foliage_dark": 9.4058,
+    "foliage_light": 8.9307
+   }
+  },
+  "imported": {
+   "boundary_edges": 1110,
+   "wire_edges": 0,
+   "nonmanifold_edges": 1110,
+   "nonmanifold_vertices": 1110,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 15,
+   "zero_or_near_zero_volume_components": 315,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.00632,
+   "components": 347,
+   "triangles": 416,
+   "face_material_world_areas": {
+    "foliage_dark": 9.4058,
+    "foliage_mid": 15.3645,
+    "foliage_light": 8.9307,
+    "wood_trunk": 7.5652
+   }
+  },
+  "imported_welded_diagnostic": {
+   "boundary_edges": 0,
+   "wire_edges": 0,
+   "nonmanifold_edges": 0,
+   "nonmanifold_vertices": 0,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 0,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.00632,
+   "components": 4,
+   "triangles": 416,
+   "face_material_world_areas": {
+    "foliage_dark": 9.4058,
+    "foliage_mid": 15.3645,
+    "foliage_light": 8.9307,
+    "wood_trunk": 7.5652
+   },
+   "weld_tolerance_m": 0.0001
+  },
+  "native_bounds": [
+   [
+    -1.4764007329940796,
+    -2.200000047683716,
+    0.0
+   ],
+   [
+    1.4764007329940796,
+    2.200000047683716,
+    4.799999713897705
+   ]
+  ],
+  "imported_bounds": [
+   [
+    -1.4764007329940796,
+    -2.200000762939453,
+    0.0
+   ],
+   [
+    1.47640061378479,
+    2.200000047683716,
+    4.799999713897705
+   ]
+  ],
+  "contacts": {
+   "components": [
+    {
+     "index": 0,
+     "object": "trunk",
+     "triangles": 176,
+     "materials": [
+      "wood_trunk"
+     ],
+     "minZ": 0.0,
+     "maxZ": 3.40435
+    },
+    {
+     "index": 1,
+     "object": "crown",
+     "triangles": 80,
+     "materials": [
+      "foliage_mid"
+     ],
+     "minZ": 2.89502,
+     "maxZ": 4.8
+    },
+    {
+     "index": 2,
+     "object": "crown",
+     "triangles": 80,
+     "materials": [
+      "foliage_dark"
+     ],
+     "minZ": 2.44842,
+     "maxZ": 4.00697
+    },
+    {
+     "index": 3,
+     "object": "crown",
+     "triangles": 80,
+     "materials": [
+      "foliage_light"
+     ],
+     "minZ": 2.51688,
+     "maxZ": 4.02483
+    }
+   ],
+   "contact_pairs_overlapping_triangle_pairs": [
+    [
+     0,
+     1,
+     27
+    ],
+    [
+     0,
+     2,
+     14
+    ],
+    [
+     0,
+     3,
+     14
+    ],
+    [
+     1,
+     2,
+     31
+    ],
+    [
+     1,
+     3,
+     27
+    ]
+   ],
+   "contact_graph_connected": true,
+   "isolated_components": [],
+   "method": "BVHTree.overlap between vertex-connected components (incl. across nodes); overlap = embedded contact, not shared topology."
+  },
+  "native_materials": {
+   "wood_trunk": {
+    "materialRole": "wood",
+    "baseColorLinear": [
+     0.10224,
+     0.06125,
+     0.03434
+    ],
+    "roughness": 0.95,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "foliage_dark": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.15896,
+     0.25415,
+     0.04231
+    ],
+    "roughness": 0.92,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "foliage_mid": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.25415,
+     0.36131,
+     0.06848
+    ],
+    "roughness": 0.92,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "foliage_light": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.39676,
+     0.45079,
+     0.10224
+    ],
+    "roughness": 0.9,
+    "metallic": 0.0,
+    "emission": 0.0
+   }
+  },
+  "imported_materials": {
+   "foliage_dark": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.15896,
+     0.25415,
+     0.04231
+    ],
+    "roughness": 0.92,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "foliage_mid": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.25415,
+     0.36131,
+     0.06848
+    ],
+    "roughness": 0.92,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "foliage_light": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.39676,
+     0.45079,
+     0.10224
+    ],
+    "roughness": 0.9,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "wood_trunk": {
+    "materialRole": "wood",
+    "baseColorLinear": [
+     0.10224,
+     0.06125,
+     0.03434
+    ],
+    "roughness": 0.95,
+    "metallic": 0.0,
+    "emission": 0.0
+   }
+  },
+  "glb": {
+   "nodes": [
+    "crown",
+    "trunk",
+    "G17"
+   ],
+   "meshes": 2,
+   "primitives": 4,
+   "materials": [
+    {
+     "name": "foliage_dark",
+     "extras": {
+      "materialRole": "foliage",
+      "srgbHex": "#6F8A3A"
+     },
+     "baseColorFactor": [
+      0.15896,
+      0.25415,
+      0.04231,
+      1
+     ],
+     "roughness": 0.9200000166893005,
+     "metallic": 0,
+     "emissive": null
+    },
+    {
+     "name": "foliage_mid",
+     "extras": {
+      "materialRole": "foliage",
+      "srgbHex": "#8AA24A"
+     },
+     "baseColorFactor": [
+      0.25415,
+      0.36131,
+      0.06848,
+      1
+     ],
+     "roughness": 0.9200000166893005,
+     "metallic": 0,
+     "emissive": null
+    },
+    {
+     "name": "foliage_light",
+     "extras": {
+      "materialRole": "foliage",
+      "srgbHex": "#A9B35A"
+     },
+     "baseColorFactor": [
+      0.39676,
+      0.45079,
+      0.10224,
+      1
+     ],
+     "roughness": 0.8999999761581421,
+     "metallic": 0,
+     "emissive": null
+    },
+    {
+     "name": "wood_trunk",
+     "extras": {
+      "materialRole": "wood",
+      "srgbHex": "#5A4634"
+     },
+     "baseColorFactor": [
+      0.10224,
+      0.06125,
+      0.03434,
+      1
+     ],
+     "roughness": 0.949999988079071,
+     "metallic": 0,
+     "emissive": null
+    }
+   ],
+   "images": 0,
+   "textures": 0,
+   "cameras": 0,
+   "lights": 0,
+   "animations": 0,
+   "extensionsUsed": [
+    "KHR_draco_mesh_compression"
+   ],
+   "extensionsRequired": [
+    "KHR_draco_mesh_compression"
+   ],
+   "dracoPrimitives": 4,
+   "sha256": "1bcc77d2693c7a5fe46f2c44b35b4427d78236fe256c1fc553eed08ad36ac03e",
+   "bytes": 13800
+  },
+  "imported_object_names": [
+   "G17",
+   "crown",
+   "trunk"
+  ]
+ },
+ "G18": {
+  "meta": {
+   "assetId": "G18",
+   "title": "tall stacked tree (5 clumps)",
+   "kind": "tree",
+   "trunkAxisXY_blender": "[-0.0, -0.0]",
+   "clumpCount": 5,
+   "trunk": {
+    "assetId": "G18",
+    "materialRoles": "{\"wood_trunk\": \"wood\"}",
+    "semantic": "trunk",
+    "note": "trunk+branches; static collider stays the 0.7x2.8 placeholder"
+   },
+   "crown": {
+    "assetId": "G18",
+    "materialRoles": "{\"foliage_dark\": \"foliage\", \"foliage_mid\": \"foliage\", \"foliage_light\": \"foliage\"}",
+    "semantic": "crown",
+    "clumps": "[{\"center\": [-0.003, 0.029, 5.524], \"radii\": [0.876, 0.854, 0.82], \"tier\": \"foliage_light\", \"attach\": \"trunk tip buried\"}, {\"center\": [0.599, 0.489, 4.524], \"radii\": [0.832, 0.81, 0.74], \"tier\": \"foliage_light\", \"attach\": \"branch from trunk z=3.75\"}, {\"center\": [-0.605, -0.409, 4.424], \"radii\": [0.832, 0.81, 0.72], \"tier\": \"foliage_mid\", \"attach\": \"branch from trunk z=3.65\"}, {\"center\": [0.545, -0.65, 3.374], \"radii\": [0.876, 0.854, 0.74], \"tier\": \"foliage_mid\", \"attach\": \"branch from trunk z=2.5\"}, {\"center\": [-0.572, 0.708, 3.274], \"radii\": [0.876, 0.854, 0.72], \"tier\": \"foliage_dark\", \"attach\": \"branch from trunk z=2.4\"}]"
+   }
+  },
+  "checks": {
+   "minZ_is_0": true,
+   "xy_center_is_0": true,
+   "origins_at_0": true,
+   "roundtrip_bounds_maxdiff_m": 2e-07,
+   "roundtrip_bounds_ok": true,
+   "draco_all_primitives": true,
+   "roundtrip_triangles_equal": true,
+   "within_declared_budget": true,
+   "finite": true,
+   "no_degenerate_or_duplicate": true,
+   "native_closed_manifold_shells": true,
+   "native_consistent_winding_positive_volumes": true,
+   "contact_graph_connected": true,
+   "material_roles_in_glb_extras": true,
+   "no_emission_no_metal_no_textures": true,
+   "tree_has_crown_and_trunk_nodes": true,
+   "welded_import_closed_like_native": true,
+   "no_presentation_objects": true
+  },
+  "native": {
+   "boundary_edges": 0,
+   "wire_edges": 0,
+   "nonmanifold_edges": 0,
+   "nonmanifold_vertices": 0,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 0,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.00027,
+   "components": 6,
+   "triangles": 684,
+   "face_material_world_areas": {
+    "wood_trunk": 9.6959,
+    "foliage_light": 14.9645,
+    "foliage_mid": 14.3827,
+    "foliage_dark": 7.4205
+   }
+  },
+  "imported": {
+   "boundary_edges": 1820,
+   "wire_edges": 0,
+   "nonmanifold_edges": 1820,
+   "nonmanifold_vertices": 1820,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 28,
+   "zero_or_near_zero_volume_components": 505,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.00027,
+   "components": 568,
+   "triangles": 684,
+   "face_material_world_areas": {
+    "foliage_dark": 7.4205,
+    "foliage_mid": 14.3827,
+    "foliage_light": 14.9645,
+    "wood_trunk": 9.6959
+   }
+  },
+  "imported_welded_diagnostic": {
+   "boundary_edges": 0,
+   "wire_edges": 0,
+   "nonmanifold_edges": 0,
+   "nonmanifold_vertices": 0,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 0,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.00027,
+   "components": 6,
+   "triangles": 684,
+   "face_material_world_areas": {
+    "foliage_dark": 7.4205,
+    "foliage_mid": 14.3827,
+    "foliage_light": 14.9645,
+    "wood_trunk": 9.6959
+   },
+   "weld_tolerance_m": 0.0001
+  },
+  "native_bounds": [
+   [
+    -1.424646019935608,
+    -1.5,
+    0.0
+   ],
+   [
+    1.424646019935608,
+    1.5,
+    6.300000190734863
+   ]
+  ],
+  "imported_bounds": [
+   [
+    -1.424646019935608,
+    -1.4999998807907104,
+    0.0
+   ],
+   [
+    1.4246457815170288,
+    1.5,
+    6.300000190734863
+   ]
+  ],
+  "contacts": {
+   "components": [
+    {
+     "index": 0,
+     "object": "trunk",
+     "triangles": 284,
+     "materials": [
+      "wood_trunk"
+     ],
+     "minZ": 0.0,
+     "maxZ": 5.23825
+    },
+    {
+     "index": 1,
+     "object": "crown",
+     "triangles": 80,
+     "materials": [
+      "foliage_light"
+     ],
+     "minZ": 4.87441,
+     "maxZ": 6.3
+    },
+    {
+     "index": 2,
+     "object": "crown",
+     "triangles": 80,
+     "materials": [
+      "foliage_light"
+     ],
+     "minZ": 3.92217,
+     "maxZ": 5.23539
+    },
+    {
+     "index": 3,
+     "object": "crown",
+     "triangles": 80,
+     "materials": [
+      "foliage_mid"
+     ],
+     "minZ": 3.83644,
+     "maxZ": 5.14137
+    },
+    {
+     "index": 4,
+     "object": "crown",
+     "triangles": 80,
+     "materials": [
+      "foliage_mid"
+     ],
+     "minZ": 2.78133,
+     "maxZ": 4.08096
+    },
+    {
+     "index": 5,
+     "object": "crown",
+     "triangles": 80,
+     "materials": [
+      "foliage_dark"
+     ],
+     "minZ": 2.69469,
+     "maxZ": 3.97874
+    }
+   ],
+   "contact_pairs_overlapping_triangle_pairs": [
+    [
+     0,
+     1,
+     32
+    ],
+    [
+     0,
+     2,
+     48
+    ],
+    [
+     0,
+     3,
+     50
+    ],
+    [
+     0,
+     4,
+     52
+    ],
+    [
+     0,
+     5,
+     42
+    ],
+    [
+     1,
+     2,
+     24
+    ],
+    [
+     1,
+     3,
+     20
+    ],
+    [
+     2,
+     3,
+     11
+    ]
+   ],
+   "contact_graph_connected": true,
+   "isolated_components": [],
+   "method": "BVHTree.overlap between vertex-connected components (incl. across nodes); overlap = embedded contact, not shared topology."
+  },
+  "native_materials": {
+   "wood_trunk": {
+    "materialRole": "wood",
+    "baseColorLinear": [
+     0.10224,
+     0.06125,
+     0.03434
+    ],
+    "roughness": 0.95,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "foliage_dark": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.15896,
+     0.25415,
+     0.04231
+    ],
+    "roughness": 0.92,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "foliage_mid": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.25415,
+     0.36131,
+     0.06848
+    ],
+    "roughness": 0.92,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "foliage_light": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.39676,
+     0.45079,
+     0.10224
+    ],
+    "roughness": 0.9,
+    "metallic": 0.0,
+    "emission": 0.0
+   }
+  },
+  "imported_materials": {
+   "foliage_dark": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.15896,
+     0.25415,
+     0.04231
+    ],
+    "roughness": 0.92,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "foliage_mid": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.25415,
+     0.36131,
+     0.06848
+    ],
+    "roughness": 0.92,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "foliage_light": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.39676,
+     0.45079,
+     0.10224
+    ],
+    "roughness": 0.9,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "wood_trunk": {
+    "materialRole": "wood",
+    "baseColorLinear": [
+     0.10224,
+     0.06125,
+     0.03434
+    ],
+    "roughness": 0.95,
+    "metallic": 0.0,
+    "emission": 0.0
+   }
+  },
+  "glb": {
+   "nodes": [
+    "crown",
+    "trunk",
+    "G18"
+   ],
+   "meshes": 2,
+   "primitives": 4,
+   "materials": [
+    {
+     "name": "foliage_dark",
+     "extras": {
+      "materialRole": "foliage",
+      "srgbHex": "#6F8A3A"
+     },
+     "baseColorFactor": [
+      0.15896,
+      0.25415,
+      0.04231,
+      1
+     ],
+     "roughness": 0.9200000166893005,
+     "metallic": 0,
+     "emissive": null
+    },
+    {
+     "name": "foliage_mid",
+     "extras": {
+      "materialRole": "foliage",
+      "srgbHex": "#8AA24A"
+     },
+     "baseColorFactor": [
+      0.25415,
+      0.36131,
+      0.06848,
+      1
+     ],
+     "roughness": 0.9200000166893005,
+     "metallic": 0,
+     "emissive": null
+    },
+    {
+     "name": "foliage_light",
+     "extras": {
+      "materialRole": "foliage",
+      "srgbHex": "#A9B35A"
+     },
+     "baseColorFactor": [
+      0.39676,
+      0.45079,
+      0.10224,
+      1
+     ],
+     "roughness": 0.8999999761581421,
+     "metallic": 0,
+     "emissive": null
+    },
+    {
+     "name": "wood_trunk",
+     "extras": {
+      "materialRole": "wood",
+      "srgbHex": "#5A4634"
+     },
+     "baseColorFactor": [
+      0.10224,
+      0.06125,
+      0.03434,
+      1
+     ],
+     "roughness": 0.949999988079071,
+     "metallic": 0,
+     "emissive": null
+    }
+   ],
+   "images": 0,
+   "textures": 0,
+   "cameras": 0,
+   "lights": 0,
+   "animations": 0,
+   "extensionsUsed": [
+    "KHR_draco_mesh_compression"
+   ],
+   "extensionsRequired": [
+    "KHR_draco_mesh_compression"
+   ],
+   "dracoPrimitives": 4,
+   "sha256": "cf740f2186cb72b6dbb470c088ccdf74b0a4ce5f03569d15a57568cbafe3eca3",
+   "bytes": 19392
+  },
+  "imported_object_names": [
+   "G18",
+   "crown",
+   "trunk"
+  ]
+ },
+ "G19": {
+  "meta": {
+   "assetId": "G19",
+   "materialRoles": "{\"foliage_dark\": \"foliage\"}",
+   "title": "single-clump bush",
+   "kind": "bush",
+   "clumps": 1
+  },
+  "checks": {
+   "minZ_is_0": true,
+   "xy_center_is_0": true,
+   "origins_at_0": true,
+   "roundtrip_bounds_maxdiff_m": 7e-07,
+   "roundtrip_bounds_ok": true,
+   "draco_all_primitives": true,
+   "roundtrip_triangles_equal": true,
+   "within_declared_budget": true,
+   "finite": true,
+   "no_degenerate_or_duplicate": true,
+   "native_closed_manifold_shells": true,
+   "native_consistent_winding_positive_volumes": true,
+   "contact_graph_connected": true,
+   "material_roles_in_glb_extras": true,
+   "no_emission_no_metal_no_textures": true,
+   "tree_has_crown_and_trunk_nodes": true,
+   "welded_import_closed_like_native": true,
+   "no_presentation_objects": true
+  },
+  "native": {
+   "boundary_edges": 0,
+   "wire_edges": 0,
+   "nonmanifold_edges": 0,
+   "nonmanifold_vertices": 0,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 0,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.21261,
+   "components": 1,
+   "triangles": 96,
+   "face_material_world_areas": {
+    "foliage_dark": 4.9312
+   }
+  },
+  "imported": {
+   "boundary_edges": 256,
+   "wire_edges": 0,
+   "nonmanifold_edges": 256,
+   "nonmanifold_vertices": 256,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 2,
+   "zero_or_near_zero_volume_components": 72,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.21261,
+   "components": 80,
+   "triangles": 96,
+   "face_material_world_areas": {
+    "foliage_dark": 4.9312
+   }
+  },
+  "imported_welded_diagnostic": {
+   "boundary_edges": 0,
+   "wire_edges": 0,
+   "nonmanifold_edges": 0,
+   "nonmanifold_vertices": 0,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 0,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.21261,
+   "components": 1,
+   "triangles": 96,
+   "face_material_world_areas": {
+    "foliage_dark": 4.9312
+   },
+   "weld_tolerance_m": 0.0001
+  },
+  "native_bounds": [
+   [
+    -0.707534909248352,
+    -0.6478359699249268,
+    0.0
+   ],
+   [
+    0.707534909248352,
+    0.6478359699249268,
+    1.0044825077056885
+   ]
+  ],
+  "imported_bounds": [
+   [
+    -0.707534909248352,
+    -0.6478352546691895,
+    0.0
+   ],
+   [
+    0.707534909248352,
+    0.6478359699249268,
+    1.0044819116592407
+   ]
+  ],
+  "contacts": {
+   "components": [
+    {
+     "index": 0,
+     "object": "G19",
+     "triangles": 96,
+     "materials": [
+      "foliage_dark"
+     ],
+     "minZ": 0.0,
+     "maxZ": 1.00448
+    }
+   ],
+   "contact_pairs_overlapping_triangle_pairs": [],
+   "contact_graph_connected": true,
+   "isolated_components": [],
+   "method": "BVHTree.overlap between vertex-connected components (incl. across nodes); overlap = embedded contact, not shared topology."
+  },
+  "native_materials": {
+   "foliage_dark": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.15896,
+     0.25415,
+     0.04231
+    ],
+    "roughness": 0.92,
+    "metallic": 0.0,
+    "emission": 0.0
+   }
+  },
+  "imported_materials": {
+   "foliage_dark": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.15896,
+     0.25415,
+     0.04231
+    ],
+    "roughness": 0.92,
+    "metallic": 0.0,
+    "emission": 0.0
+   }
+  },
+  "glb": {
+   "nodes": [
+    "G19"
+   ],
+   "meshes": 1,
+   "primitives": 1,
+   "materials": [
+    {
+     "name": "foliage_dark",
+     "extras": {
+      "materialRole": "foliage",
+      "srgbHex": "#6F8A3A"
+     },
+     "baseColorFactor": [
+      0.15896,
+      0.25415,
+      0.04231,
+      1
+     ],
+     "roughness": 0.9200000166893005,
+     "metallic": 0,
+     "emissive": null
+    }
+   ],
+   "images": 0,
+   "textures": 0,
+   "cameras": 0,
+   "lights": 0,
+   "animations": 0,
+   "extensionsUsed": [
+    "KHR_draco_mesh_compression"
+   ],
+   "extensionsRequired": [
+    "KHR_draco_mesh_compression"
+   ],
+   "dracoPrimitives": 1,
+   "sha256": "15dd0b94ccfdeb78977741796cc382efd5190b6e21896376d7b922f3f4061762",
+   "bytes": 3480
+  },
+  "imported_object_names": [
+   "G19"
+  ]
+ },
+ "G20": {
+  "meta": {
+   "assetId": "G20",
+   "materialRoles": "{\"foliage_dark\": \"foliage\", \"foliage_mid\": \"foliage\"}",
+   "title": "double-clump bush",
+   "kind": "bush",
+   "clumps": 2
+  },
+  "checks": {
+   "minZ_is_0": true,
+   "xy_center_is_0": true,
+   "origins_at_0": true,
+   "roundtrip_bounds_maxdiff_m": 7e-07,
+   "roundtrip_bounds_ok": true,
+   "draco_all_primitives": true,
+   "roundtrip_triangles_equal": true,
+   "within_declared_budget": true,
+   "finite": true,
+   "no_degenerate_or_duplicate": true,
+   "native_closed_manifold_shells": true,
+   "native_consistent_winding_positive_volumes": true,
+   "contact_graph_connected": true,
+   "material_roles_in_glb_extras": true,
+   "no_emission_no_metal_no_textures": true,
+   "tree_has_crown_and_trunk_nodes": true,
+   "welded_import_closed_like_native": true,
+   "no_presentation_objects": true
+  },
+  "native": {
+   "boundary_edges": 0,
+   "wire_edges": 0,
+   "nonmanifold_edges": 0,
+   "nonmanifold_vertices": 0,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 0,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.23829,
+   "components": 2,
+   "triangles": 170,
+   "face_material_world_areas": {
+    "foliage_dark": 4.9239,
+    "foliage_mid": 2.6888
+   }
+  },
+  "imported": {
+   "boundary_edges": 482,
+   "wire_edges": 0,
+   "nonmanifold_edges": 482,
+   "nonmanifold_vertices": 482,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 2,
+   "zero_or_near_zero_volume_components": 151,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.23829,
+   "components": 156,
+   "triangles": 170,
+   "face_material_world_areas": {
+    "foliage_dark": 4.9239,
+    "foliage_mid": 2.6888
+   }
+  },
+  "imported_welded_diagnostic": {
+   "boundary_edges": 0,
+   "wire_edges": 0,
+   "nonmanifold_edges": 0,
+   "nonmanifold_vertices": 0,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 0,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.23829,
+   "components": 2,
+   "triangles": 170,
+   "face_material_world_areas": {
+    "foliage_dark": 4.9239,
+    "foliage_mid": 2.6888
+   },
+   "weld_tolerance_m": 0.0001
+  },
+  "native_bounds": [
+   [
+    -0.7105828523635864,
+    -0.998162567615509,
+    0.0
+   ],
+   [
+    0.7105828523635864,
+    0.998162567615509,
+    1.0385700464248657
+   ]
+  ],
+  "imported_bounds": [
+   [
+    -0.7105828523635864,
+    -0.9981632232666016,
+    0.0
+   ],
+   [
+    0.7105828523635864,
+    0.998162567615509,
+    1.038569450378418
+   ]
+  ],
+  "contacts": {
+   "components": [
+    {
+     "index": 0,
+     "object": "G20",
+     "triangles": 82,
+     "materials": [
+      "foliage_dark"
+     ],
+     "minZ": 0.0,
+     "maxZ": 1.03857
+    },
+    {
+     "index": 1,
+     "object": "G20",
+     "triangles": 88,
+     "materials": [
+      "foliage_mid"
+     ],
+     "minZ": 0.0,
+     "maxZ": 0.74519
+    }
+   ],
+   "contact_pairs_overlapping_triangle_pairs": [
+    [
+     0,
+     1,
+     30
+    ]
+   ],
+   "contact_graph_connected": true,
+   "isolated_components": [],
+   "method": "BVHTree.overlap between vertex-connected components (incl. across nodes); overlap = embedded contact, not shared topology."
+  },
+  "native_materials": {
+   "foliage_dark": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.15896,
+     0.25415,
+     0.04231
+    ],
+    "roughness": 0.92,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "foliage_mid": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.25415,
+     0.36131,
+     0.06848
+    ],
+    "roughness": 0.92,
+    "metallic": 0.0,
+    "emission": 0.0
+   }
+  },
+  "imported_materials": {
+   "foliage_dark": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.15896,
+     0.25415,
+     0.04231
+    ],
+    "roughness": 0.92,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "foliage_mid": {
+    "materialRole": "foliage",
+    "baseColorLinear": [
+     0.25415,
+     0.36131,
+     0.06848
+    ],
+    "roughness": 0.92,
+    "metallic": 0.0,
+    "emission": 0.0
+   }
+  },
+  "glb": {
+   "nodes": [
+    "G20"
+   ],
+   "meshes": 1,
+   "primitives": 2,
+   "materials": [
+    {
+     "name": "foliage_dark",
+     "extras": {
+      "materialRole": "foliage",
+      "srgbHex": "#6F8A3A"
+     },
+     "baseColorFactor": [
+      0.15896,
+      0.25415,
+      0.04231,
+      1
+     ],
+     "roughness": 0.9200000166893005,
+     "metallic": 0,
+     "emissive": null
+    },
+    {
+     "name": "foliage_mid",
+     "extras": {
+      "materialRole": "foliage",
+      "srgbHex": "#8AA24A"
+     },
+     "baseColorFactor": [
+      0.25415,
+      0.36131,
+      0.06848,
+      1
+     ],
+     "roughness": 0.9200000166893005,
+     "metallic": 0,
+     "emissive": null
+    }
+   ],
+   "images": 0,
+   "textures": 0,
+   "cameras": 0,
+   "lights": 0,
+   "animations": 0,
+   "extensionsUsed": [
+    "KHR_draco_mesh_compression"
+   ],
+   "extensionsRequired": [
+    "KHR_draco_mesh_compression"
+   ],
+   "dracoPrimitives": 2,
+   "sha256": "51db25751ac8dc52b7c188075babc00d8d232ecc856353eaf6af30a9b7de8721",
+   "bytes": 6220
+  },
+  "imported_object_names": [
+   "G20"
+  ]
+ },
+ "G21": {
+  "meta": {
+   "assetId": "G21",
+   "materialRoles": "{\"stone_base\": \"stone\", \"stone_top\": \"stone\"}",
+   "title": "large rock",
+   "kind": "rock",
+   "seed": 2129,
+   "minTriangleQuality": 0.6263
+  },
+  "checks": {
+   "minZ_is_0": true,
+   "xy_center_is_0": true,
+   "origins_at_0": true,
+   "roundtrip_bounds_maxdiff_m": 1e-06,
+   "roundtrip_bounds_ok": true,
+   "draco_all_primitives": true,
+   "roundtrip_triangles_equal": true,
+   "within_declared_budget": true,
+   "finite": true,
+   "no_degenerate_or_duplicate": true,
+   "native_closed_manifold_shells": true,
+   "native_consistent_winding_positive_volumes": true,
+   "contact_graph_connected": true,
+   "material_roles_in_glb_extras": true,
+   "no_emission_no_metal_no_textures": true,
+   "tree_has_crown_and_trunk_nodes": true,
+   "welded_import_closed_like_native": true,
+   "no_presentation_objects": true
+  },
+  "native": {
+   "boundary_edges": 0,
+   "wire_edges": 0,
+   "nonmanifold_edges": 0,
+   "nonmanifold_vertices": 0,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 0,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.62629,
+   "components": 1,
+   "triangles": 44,
+   "face_material_world_areas": {
+    "stone_base": 11.0473,
+    "stone_top": 3.7656
+   }
+  },
+  "imported": {
+   "boundary_edges": 124,
+   "wire_edges": 0,
+   "nonmanifold_edges": 124,
+   "nonmanifold_vertices": 124,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 40,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.62629,
+   "components": 40,
+   "triangles": 44,
+   "face_material_world_areas": {
+    "stone_base": 11.0473,
+    "stone_top": 3.7656
+   }
+  },
+  "imported_welded_diagnostic": {
+   "boundary_edges": 0,
+   "wire_edges": 0,
+   "nonmanifold_edges": 0,
+   "nonmanifold_vertices": 0,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 0,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.62629,
+   "components": 1,
+   "triangles": 44,
+   "face_material_world_areas": {
+    "stone_base": 11.0472,
+    "stone_top": 3.7656
+   },
+   "weld_tolerance_m": 0.0001
+  },
+  "native_bounds": [
+   [
+    -1.0999999046325684,
+    -1.399999976158142,
+    0.0
+   ],
+   [
+    1.0999999046325684,
+    1.399999976158142,
+    1.5
+   ]
+  ],
+  "imported_bounds": [
+   [
+    -1.0999999046325684,
+    -1.399999976158142,
+    0.0
+   ],
+   [
+    1.099998950958252,
+    1.399999976158142,
+    1.4999998807907104
+   ]
+  ],
+  "contacts": {
+   "components": [
+    {
+     "index": 0,
+     "object": "G21",
+     "triangles": 44,
+     "materials": [
+      "stone_base",
+      "stone_top"
+     ],
+     "minZ": 0.0,
+     "maxZ": 1.5
+    }
+   ],
+   "contact_pairs_overlapping_triangle_pairs": [],
+   "contact_graph_connected": true,
+   "isolated_components": [],
+   "method": "BVHTree.overlap between vertex-connected components (incl. across nodes); overlap = embedded contact, not shared topology."
+  },
+  "native_materials": {
+   "stone_base": {
+    "materialRole": "stone",
+    "baseColorLinear": [
+     0.26225,
+     0.22323,
+     0.18116
+    ],
+    "roughness": 0.96,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "stone_top": {
+    "materialRole": "stone",
+    "baseColorLinear": [
+     0.45641,
+     0.39157,
+     0.30499
+    ],
+    "roughness": 0.94,
+    "metallic": 0.0,
+    "emission": 0.0
+   }
+  },
+  "imported_materials": {
+   "stone_base": {
+    "materialRole": "stone",
+    "baseColorLinear": [
+     0.26225,
+     0.22323,
+     0.18116
+    ],
+    "roughness": 0.96,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "stone_top": {
+    "materialRole": "stone",
+    "baseColorLinear": [
+     0.45641,
+     0.39157,
+     0.30499
+    ],
+    "roughness": 0.94,
+    "metallic": 0.0,
+    "emission": 0.0
+   }
+  },
+  "glb": {
+   "nodes": [
+    "G21"
+   ],
+   "meshes": 1,
+   "primitives": 2,
+   "materials": [
+    {
+     "name": "stone_base",
+     "extras": {
+      "materialRole": "stone",
+      "srgbHex": "#8C8276"
+     },
+     "baseColorFactor": [
+      0.26225,
+      0.22323,
+      0.18116,
+      1
+     ],
+     "roughness": 0.9599999785423279,
+     "metallic": 0,
+     "emissive": null
+    },
+    {
+     "name": "stone_top",
+     "extras": {
+      "materialRole": "stone",
+      "srgbHex": "#B4A896"
+     },
+     "baseColorFactor": [
+      0.45641,
+      0.39157,
+      0.30499,
+      1
+     ],
+     "roughness": 0.9399999976158142,
+     "metallic": 0,
+     "emissive": null
+    }
+   ],
+   "images": 0,
+   "textures": 0,
+   "cameras": 0,
+   "lights": 0,
+   "animations": 0,
+   "extensionsUsed": [
+    "KHR_draco_mesh_compression"
+   ],
+   "extensionsRequired": [
+    "KHR_draco_mesh_compression"
+   ],
+   "dracoPrimitives": 2,
+   "sha256": "c936ffb2547fc5c86e64a416eaf27c58c6a42a2ec628572207c0b61888075479",
+   "bytes": 3308
+  },
+  "imported_object_names": [
+   "G21"
+  ]
+ },
+ "G22": {
+  "meta": {
+   "assetId": "G22",
+   "materialRoles": "{\"stone_base\": \"stone\", \"stone_top\": \"stone\"}",
+   "title": "medium rock",
+   "kind": "rock",
+   "seed": 2203,
+   "minTriangleQuality": 0.6237
+  },
+  "checks": {
+   "minZ_is_0": true,
+   "xy_center_is_0": true,
+   "origins_at_0": true,
+   "roundtrip_bounds_maxdiff_m": 2e-07,
+   "roundtrip_bounds_ok": true,
+   "draco_all_primitives": true,
+   "roundtrip_triangles_equal": true,
+   "within_declared_budget": true,
+   "finite": true,
+   "no_degenerate_or_duplicate": true,
+   "native_closed_manifold_shells": true,
+   "native_consistent_winding_positive_volumes": true,
+   "contact_graph_connected": true,
+   "material_roles_in_glb_extras": true,
+   "no_emission_no_metal_no_textures": true,
+   "tree_has_crown_and_trunk_nodes": true,
+   "welded_import_closed_like_native": true,
+   "no_presentation_objects": true
+  },
+  "native": {
+   "boundary_edges": 0,
+   "wire_edges": 0,
+   "nonmanifold_edges": 0,
+   "nonmanifold_vertices": 0,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 0,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.6237,
+   "components": 1,
+   "triangles": 46,
+   "face_material_world_areas": {
+    "stone_base": 3.6773,
+    "stone_top": 1.2265
+   }
+  },
+  "imported": {
+   "boundary_edges": 130,
+   "wire_edges": 0,
+   "nonmanifold_edges": 130,
+   "nonmanifold_vertices": 130,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 42,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.6237,
+   "components": 42,
+   "triangles": 46,
+   "face_material_world_areas": {
+    "stone_base": 3.6773,
+    "stone_top": 1.2265
+   }
+  },
+  "imported_welded_diagnostic": {
+   "boundary_edges": 0,
+   "wire_edges": 0,
+   "nonmanifold_edges": 0,
+   "nonmanifold_vertices": 0,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 0,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.6237,
+   "components": 1,
+   "triangles": 46,
+   "face_material_world_areas": {
+    "stone_base": 3.6773,
+    "stone_top": 1.2265
+   },
+   "weld_tolerance_m": 0.0001
+  },
+  "native_bounds": [
+   [
+    -0.6499999761581421,
+    -0.800000011920929,
+    0.0
+   ],
+   [
+    0.6499999761581421,
+    0.800000011920929,
+    0.8500000238418579
+   ]
+  ],
+  "imported_bounds": [
+   [
+    -0.6499999761581421,
+    -0.800000011920929,
+    0.0
+   ],
+   [
+    0.649999737739563,
+    0.800000011920929,
+    0.8500000238418579
+   ]
+  ],
+  "contacts": {
+   "components": [
+    {
+     "index": 0,
+     "object": "G22",
+     "triangles": 46,
+     "materials": [
+      "stone_base",
+      "stone_top"
+     ],
+     "minZ": 0.0,
+     "maxZ": 0.85
+    }
+   ],
+   "contact_pairs_overlapping_triangle_pairs": [],
+   "contact_graph_connected": true,
+   "isolated_components": [],
+   "method": "BVHTree.overlap between vertex-connected components (incl. across nodes); overlap = embedded contact, not shared topology."
+  },
+  "native_materials": {
+   "stone_base": {
+    "materialRole": "stone",
+    "baseColorLinear": [
+     0.26225,
+     0.22323,
+     0.18116
+    ],
+    "roughness": 0.96,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "stone_top": {
+    "materialRole": "stone",
+    "baseColorLinear": [
+     0.45641,
+     0.39157,
+     0.30499
+    ],
+    "roughness": 0.94,
+    "metallic": 0.0,
+    "emission": 0.0
+   }
+  },
+  "imported_materials": {
+   "stone_base": {
+    "materialRole": "stone",
+    "baseColorLinear": [
+     0.26225,
+     0.22323,
+     0.18116
+    ],
+    "roughness": 0.96,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "stone_top": {
+    "materialRole": "stone",
+    "baseColorLinear": [
+     0.45641,
+     0.39157,
+     0.30499
+    ],
+    "roughness": 0.94,
+    "metallic": 0.0,
+    "emission": 0.0
+   }
+  },
+  "glb": {
+   "nodes": [
+    "G22"
+   ],
+   "meshes": 1,
+   "primitives": 2,
+   "materials": [
+    {
+     "name": "stone_base",
+     "extras": {
+      "materialRole": "stone",
+      "srgbHex": "#8C8276"
+     },
+     "baseColorFactor": [
+      0.26225,
+      0.22323,
+      0.18116,
+      1
+     ],
+     "roughness": 0.9599999785423279,
+     "metallic": 0,
+     "emissive": null
+    },
+    {
+     "name": "stone_top",
+     "extras": {
+      "materialRole": "stone",
+      "srgbHex": "#B4A896"
+     },
+     "baseColorFactor": [
+      0.45641,
+      0.39157,
+      0.30499,
+      1
+     ],
+     "roughness": 0.9399999976158142,
+     "metallic": 0,
+     "emissive": null
+    }
+   ],
+   "images": 0,
+   "textures": 0,
+   "cameras": 0,
+   "lights": 0,
+   "animations": 0,
+   "extensionsUsed": [
+    "KHR_draco_mesh_compression"
+   ],
+   "extensionsRequired": [
+    "KHR_draco_mesh_compression"
+   ],
+   "dracoPrimitives": 2,
+   "sha256": "eef7f598cc74e2e609b2cf31bd63bd5485565a311f47ca2a619cb04d0a68c163",
+   "bytes": 3348
+  },
+  "imported_object_names": [
+   "G22"
+  ]
+ },
+ "G23": {
+  "meta": {
+   "assetId": "G23",
+   "materialRoles": "{\"stone_base\": \"stone\", \"stone_top\": \"stone\"}",
+   "title": "small rock",
+   "kind": "rock",
+   "seed": 2336,
+   "minTriangleQuality": 0.6213
+  },
+  "checks": {
+   "minZ_is_0": true,
+   "xy_center_is_0": true,
+   "origins_at_0": true,
+   "roundtrip_bounds_maxdiff_m": 2e-07,
+   "roundtrip_bounds_ok": true,
+   "draco_all_primitives": true,
+   "roundtrip_triangles_equal": true,
+   "within_declared_budget": true,
+   "finite": true,
+   "no_degenerate_or_duplicate": true,
+   "native_closed_manifold_shells": true,
+   "native_consistent_winding_positive_volumes": true,
+   "contact_graph_connected": true,
+   "material_roles_in_glb_extras": true,
+   "no_emission_no_metal_no_textures": true,
+   "tree_has_crown_and_trunk_nodes": true,
+   "welded_import_closed_like_native": true,
+   "no_presentation_objects": true
+  },
+  "native": {
+   "boundary_edges": 0,
+   "wire_edges": 0,
+   "nonmanifold_edges": 0,
+   "nonmanifold_vertices": 0,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 0,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.62126,
+   "components": 1,
+   "triangles": 42,
+   "face_material_world_areas": {
+    "stone_base": 0.8601,
+    "stone_top": 0.3251
+   }
+  },
+  "imported": {
+   "boundary_edges": 120,
+   "wire_edges": 0,
+   "nonmanifold_edges": 120,
+   "nonmanifold_vertices": 120,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 39,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.62126,
+   "components": 39,
+   "triangles": 42,
+   "face_material_world_areas": {
+    "stone_base": 0.8601,
+    "stone_top": 0.3251
+   }
+  },
+  "imported_welded_diagnostic": {
+   "boundary_edges": 0,
+   "wire_edges": 0,
+   "nonmanifold_edges": 0,
+   "nonmanifold_vertices": 0,
+   "inconsistent_winding_edges": 0,
+   "zero_or_near_zero_area_triangles": 0,
+   "duplicate_triangle_index_sets": 0,
+   "negative_volume_components": 0,
+   "zero_or_near_zero_volume_components": 0,
+   "sliver_triangle_count": 0,
+   "finite_coordinates": true,
+   "mesh_validate_would_repair": false,
+   "min_triangle_shape_quality": 0.62126,
+   "components": 1,
+   "triangles": 42,
+   "face_material_world_areas": {
+    "stone_base": 0.8601,
+    "stone_top": 0.3251
+   },
+   "weld_tolerance_m": 0.0001
+  },
+  "native_bounds": [
+   [
+    -0.32499998807907104,
+    -0.4000000059604645,
+    0.0
+   ],
+   [
+    0.32499998807907104,
+    0.4000000059604645,
+    0.4000000059604645
+   ]
+  ],
+  "imported_bounds": [
+   [
+    -0.32499998807907104,
+    -0.4000000059604645,
+    0.0
+   ],
+   [
+    0.3249998688697815,
+    0.4000000059604645,
+    0.4000002145767212
+   ]
+  ],
+  "contacts": {
+   "components": [
+    {
+     "index": 0,
+     "object": "G23",
+     "triangles": 42,
+     "materials": [
+      "stone_base",
+      "stone_top"
+     ],
+     "minZ": 0.0,
+     "maxZ": 0.4
+    }
+   ],
+   "contact_pairs_overlapping_triangle_pairs": [],
+   "contact_graph_connected": true,
+   "isolated_components": [],
+   "method": "BVHTree.overlap between vertex-connected components (incl. across nodes); overlap = embedded contact, not shared topology."
+  },
+  "native_materials": {
+   "stone_base": {
+    "materialRole": "stone",
+    "baseColorLinear": [
+     0.26225,
+     0.22323,
+     0.18116
+    ],
+    "roughness": 0.96,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "stone_top": {
+    "materialRole": "stone",
+    "baseColorLinear": [
+     0.45641,
+     0.39157,
+     0.30499
+    ],
+    "roughness": 0.94,
+    "metallic": 0.0,
+    "emission": 0.0
+   }
+  },
+  "imported_materials": {
+   "stone_base": {
+    "materialRole": "stone",
+    "baseColorLinear": [
+     0.26225,
+     0.22323,
+     0.18116
+    ],
+    "roughness": 0.96,
+    "metallic": 0.0,
+    "emission": 0.0
+   },
+   "stone_top": {
+    "materialRole": "stone",
+    "baseColorLinear": [
+     0.45641,
+     0.39157,
+     0.30499
+    ],
+    "roughness": 0.94,
+    "metallic": 0.0,
+    "emission": 0.0
+   }
+  },
+  "glb": {
+   "nodes": [
+    "G23"
+   ],
+   "meshes": 1,
+   "primitives": 2,
+   "materials": [
+    {
+     "name": "stone_base",
+     "extras": {
+      "materialRole": "stone",
+      "srgbHex": "#8C8276"
+     },
+     "baseColorFactor": [
+      0.26225,
+      0.22323,
+      0.18116,
+      1
+     ],
+     "roughness": 0.9599999785423279,
+     "metallic": 0,
+     "emissive": null
+    },
+    {
+     "name": "stone_top",
+     "extras": {
+      "materialRole": "stone",
+      "srgbHex": "#B4A896"
+     },
+     "baseColorFactor": [
+      0.45641,
+      0.39157,
+      0.30499,
+      1
+     ],
+     "roughness": 0.9399999976158142,
+     "metallic": 0,
+     "emissive": null
+    }
+   ],
+   "images": 0,
+   "textures": 0,
+   "cameras": 0,
+   "lights": 0,
+   "animations": 0,
+   "extensionsUsed": [
+    "KHR_draco_mesh_compression"
+   ],
+   "extensionsRequired": [
+    "KHR_draco_mesh_compression"
+   ],
+   "dracoPrimitives": 2,
+   "sha256": "9f71a4188ce1a9bf1b8b0d5921752f6b9ac19923df7f3562cf1257977f95fe54",
+   "bytes": 3308
+  },
+  "imported_object_names": [
+   "G23"
+  ]
+ }
+}

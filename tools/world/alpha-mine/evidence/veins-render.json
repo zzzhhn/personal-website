@@ -1,0 +1,15 @@
+{
+ "glbSha256": "64bddb5b98ca9ead0d44016f48718d1fb9799bc0629c8995d52c7ebb384e8517",
+ "image": "veins-states.png",
+ "columns": [
+  "intact",
+  "cracked",
+  "open"
+ ],
+ "rows": [
+  "vein-lower",
+  "vein-middle",
+  "vein-upper"
+ ],
+ "previewOnly": "temporary row/column transforms and studio light"
+}

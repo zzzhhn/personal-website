@@ -1,0 +1,345 @@
+{
+  "startedAt": "2026-10-21T12:29:45.904Z",
+  "base": "http://127.0.0.1:4322",
+  "motionOnly": true,
+  "errors": [],
+  "checks": [
+    {
+      "name": "deformed sole positions readable",
+      "passed": true
+    },
+    {
+      "name": "physical jump and landing",
+      "passed": true
+    },
+    {
+      "name": "Idle Walk Run Jump Land visible in runtime",
+      "passed": true,
+      "clips": [
+        "Idle",
+        "Walk",
+        "Run",
+        "Jump",
+        "Land"
+      ]
+    },
+    {
+      "name": "steady walk/run world-space planted vertex drift",
+      "passed": true,
+      "threshold_m": 0.0172
+    }
+  ],
+  "sourceAssets": {
+    "C03": {
+      "url": "/assets/world/camp/C03.glb",
+      "sha256": "4c6274a202639c407ad68f1e30cf1fadacf3f2bf0ff2c7cd1ac72a506c93acde"
+    },
+    "C04": {
+      "url": "/assets/world/camp/C04.glb",
+      "sha256": "0d4b22d1836247b54393ec67e1c01e6c516296a14061e3c00abb76b3553f3f94"
+    },
+    "G16": {
+      "url": "/assets/world/camp/G16.glb",
+      "sha256": "951d6c001a5536437bf795967d74750de0eacc4757f48ac9c3c0cae727b19472"
+    },
+    "G17": {
+      "url": "/assets/world/camp/G17.glb",
+      "sha256": "b03f9dc88f253eb7011b64f607e50785f4410131d2e17079c704c2bb6b1ed116"
+    },
+    "G18": {
+      "url": "/assets/world/camp/G18.glb",
+      "sha256": "2a3e6555426c51dcfd9baeff8d35791fe3658e9c6fcd3915b2a8a5a6e0ece385"
+    },
+    "G19": {
+      "url": "/assets/world/camp/G19.glb",
+      "sha256": "a5ecd893344a0188cce3df1915cfe7360dba507e2156adb9b63533157c15ec22"
+    },
+    "G20": {
+      "url": "/assets/world/camp/G20.glb",
+      "sha256": "9e4421962be721a7a5edd6491936c64f9827a6ab640c7d8ab87002650ff0b921"
+    },
+    "G21": {
+      "url": "/assets/world/camp/G21.glb",
+      "sha256": "98a0a74799d15b11ca4b2dac2518dab8f2be6ce63e834c09d8ca606d325200ed"
+    },
+    "G22": {
+      "url": "/assets/world/camp/G22.glb",
+      "sha256": "40f7e4121004bbb06c994e12f841951c25f153b3d3d29ec52c948d4a580f7c73"
+    },
+    "G23": {
+      "url": "/assets/world/camp/G23.glb",
+      "sha256": "2c8055759722362e0b37f71bfaeb13e98d57646ea6c2b0940f186fea11125e55"
+    },
+    "G24": {
+      "url": "/assets/world/guide/G24.glb",
+      "sha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357"
+    }
+  },
+  "retina": null,
+  "soleMinY": 4.800358814239501,
+  "solePenetration_m": 0,
+  "footContact": {
+    "method": "stable deformed vertex IDs within 6 mm of collider foot plane; finite sampling, no slope IK claim",
+    "steadyDefinition": "at least 0.5 s after each commanded phase begins; turning/start/stop retained separately",
+    "threshold_m": 0.0172,
+    "steady": {
+      "idle": {
+        "samples": 35,
+        "continuousPairs": 1224,
+        "maxStep_m": 2.689696223900852e-07,
+        "maxIntervalDrift_m": 2.3797045376604178e-07,
+        "longestInterval_s": 1.8199999999999998,
+        "worst": {
+          "t": 4.432,
+          "side": "left",
+          "vertex": "0dc6e54d-26c3-4870-aa51-c729e6b9c839:503",
+          "start": [
+            -41.892056139012425,
+            4.800358918563899,
+            34.8616720279326
+          ],
+          "end": [
+            -41.89205593343927,
+            4.8003588335320595,
+            34.86167214780593
+          ],
+          "animation": "Idle",
+          "speed": 0
+        }
+      },
+      "walk": {
+        "samples": 39,
+        "continuousPairs": 507,
+        "maxStep_m": 0.005292961414211389,
+        "maxIntervalDrift_m": 0.005181786829351458,
+        "longestInterval_s": 0.2629999999999999,
+        "worst": {
+          "t": 7.269,
+          "side": "right",
+          "vertex": "0dc6e54d-26c3-4870-aa51-c729e6b9c839:696",
+          "start": [
+            -43.97998227482295,
+            4.800363859594035,
+            36.359669112772394
+          ],
+          "end": [
+            -43.98412307451887,
+            4.8016371979282555,
+            36.36278434833702
+          ],
+          "animation": "Walk",
+          "speed": 1.767498326303929
+        }
+      },
+      "run": {
+        "samples": 28,
+        "continuousPairs": 162,
+        "maxStep_m": 0.010408177531599998,
+        "maxIntervalDrift_m": 0.010165051801457263,
+        "longestInterval_s": 0.10699999999999932,
+        "worst": {
+          "t": 9.126,
+          "side": "right",
+          "vertex": "0dc6e54d-26c3-4870-aa51-c729e6b9c839:696",
+          "start": [
+            -47.82732654463605,
+            4.800377102950586,
+            39.25671417687136
+          ],
+          "end": [
+            -47.83557154562335,
+            4.801319350963449,
+            39.26265961519378
+          ],
+          "animation": "Run",
+          "speed": 4.123911571502765
+        }
+      },
+      "stop": {
+        "samples": 9,
+        "continuousPairs": 288,
+        "maxStep_m": 0.000249634700867182,
+        "maxIntervalDrift_m": 0.0005119479003294759,
+        "longestInterval_s": 0.4269999999999996,
+        "worst": {
+          "t": 11.352,
+          "side": "right",
+          "vertex": "0dc6e54d-26c3-4870-aa51-c729e6b9c839:689",
+          "start": [
+            -52.55796341004086,
+            4.800362152099609,
+            42.74469297924985
+          ],
+          "end": [
+            -52.558374870921455,
+            4.800362180995343,
+            42.74499759473927
+          ],
+          "animation": "Idle",
+          "speed": 3.884936576575418e-05
+        }
+      },
+      "jump-land": {
+        "samples": 20,
+        "continuousPairs": 648,
+        "maxStep_m": 3.738041364264892e-07,
+        "maxIntervalDrift_m": 4.6289792202159085e-07,
+        "longestInterval_s": 0.9600000000000009,
+        "worst": {
+          "t": 12.78,
+          "side": "left",
+          "vertex": "0dc6e54d-26c3-4870-aa51-c729e6b9c839:449",
+          "start": [
+            -52.36154084283589,
+            4.800926336118193,
+            42.93856120398293
+          ],
+          "end": [
+            -52.36154082756593,
+            4.800582612272257,
+            42.93856166662892
+          ],
+          "animation": "Land",
+          "speed": 1.8409982401615767e-08
+        }
+      }
+    },
+    "includingTransitions": {
+      "idle": {
+        "samples": 45,
+        "continuousPairs": 1584,
+        "maxStep_m": 2.689696223900852e-07,
+        "maxIntervalDrift_m": 2.3779959536024633e-07,
+        "longestInterval_s": 2.366,
+        "worst": {
+          "t": 4.219,
+          "side": "right",
+          "vertex": "0dc6e54d-26c3-4870-aa51-c729e6b9c839:689",
+          "start": [
+            -41.89205599862664,
+            4.800358874189477,
+            35.13832786584483
+          ],
+          "end": [
+            -41.8920561847144,
+            4.800358850497691,
+            35.13832801389885
+          ],
+          "animation": "Idle",
+          "speed": 0
+        }
+      },
+      "walk": {
+        "samples": 49,
+        "continuousPairs": 648,
+        "maxStep_m": 0.14580713988008512,
+        "maxIntervalDrift_m": 0.3313295395980501,
+        "longestInterval_s": 0.26699999999999946,
+        "worst": {
+          "t": 5.993,
+          "side": "left",
+          "vertex": "0dc6e54d-26c3-4870-aa51-c729e6b9c839:462",
+          "start": [
+            -41.87971924578889,
+            4.800358818369117,
+            34.89199962210913
+          ],
+          "end": [
+            -42.059988479954306,
+            4.800399580305602,
+            35.16999650522776
+          ],
+          "animation": "Walk",
+          "speed": 1.6649085164072102
+        }
+      },
+      "run": {
+        "samples": 38,
+        "continuousPairs": 225,
+        "maxStep_m": 0.041942345587052704,
+        "maxIntervalDrift_m": 0.04783576991031878,
+        "longestInterval_s": 0.1070000000000011,
+        "worst": {
+          "t": 8.488,
+          "side": "left",
+          "vertex": "0dc6e54d-26c3-4870-aa51-c729e6b9c839:462",
+          "start": [
+            -45.660162710484805,
+            4.800363016111436,
+            37.8693841032709
+          ],
+          "end": [
+            -45.703488990233865,
+            4.800360244750976,
+            37.88965956543627
+          ],
+          "animation": "Run",
+          "speed": 3.4283804893493652
+        }
+      },
+      "stop": {
+        "samples": 19,
+        "continuousPairs": 504,
+        "maxStep_m": 0.03093314889198394,
+        "maxIntervalDrift_m": 0.027099743505063383,
+        "longestInterval_s": 0.9570000000000007,
+        "worst": {
+          "t": 11.244,
+          "side": "left",
+          "vertex": "0dc6e54d-26c3-4870-aa51-c729e6b9c839:455",
+          "start": [
+            -52.42347270750363,
+            4.8019928056802454,
+            42.891222018648456
+          ],
+          "end": [
+            -52.42877436096874,
+            4.80036216958172,
+            42.917798108815674
+          ],
+          "animation": "Idle",
+          "speed": 0.00012991093905275283
+        }
+      },
+      "jump-land": {
+        "samples": 21,
+        "continuousPairs": 648,
+        "maxStep_m": 3.738041364264892e-07,
+        "maxIntervalDrift_m": 4.6289792202159085e-07,
+        "longestInterval_s": 0.9600000000000009,
+        "worst": {
+          "t": 12.78,
+          "side": "left",
+          "vertex": "0dc6e54d-26c3-4870-aa51-c729e6b9c839:449",
+          "start": [
+            -52.36154084283589,
+            4.800926336118193,
+            42.93856120398293
+          ],
+          "end": [
+            -52.36154082756593,
+            4.800582612272257,
+            42.93856166662892
+          ],
+          "animation": "Land",
+          "speed": 1.8409982401615767e-08
+        }
+      }
+    },
+    "steadyWalkRunPassed": true
+  },
+  "fixtures": [],
+  "events": [
+    {
+      "t": 11.406,
+      "press": "Space"
+    }
+  ],
+  "finishedAt": "2026-10-21T12:29:59.763Z",
+  "samplesCount": 193,
+  "fullReport": {
+    "path": "report-full.json.gz",
+    "uncompressedSha256": "cb23e400fd8d7f541296436b41d3425021afc67b5ab23fe5935238f3b0f62d14",
+    "note": "Lossless original report. Compact JSON omits only long samples/rows arrays; counts, metrics, phases, failures and verdicts are retained. Expand the archive for frame-level evidence."
+  }
+}

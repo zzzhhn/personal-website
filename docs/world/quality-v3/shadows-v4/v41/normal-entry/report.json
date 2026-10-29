@@ -1,0 +1,39 @@
+{
+ "base": "http://127.0.0.1:4322",
+ "startedAt": "2026-10-22T19:56:03.663Z",
+ "gitHead": "84e4d546787fc5eeeb3789dcb0ce9418a15efbec",
+ "sourceSha256": {
+  "WorldShadows.ts": "c4cb0391f75da8231946278b835c9bf9fe767907bf6c1bc55ed72bdb466f3d89",
+  "WorldLights.ts": "4d86c1b26429f8d5fe808578a3bdafb392bad55f2e9f80d4e3ca673ceeaed23b",
+  "WorldOcclusion.ts": "1402e8201656d64dda06a2ffa2828500237b305fb1d19039268fe39656863f5b",
+  "WorldQuality.ts": "41b918b0db95bdbc29577fdfaab721435e0df23270ad7af1460da8e7c6244e30",
+  "WorldEnvironment.tsx": "34c732a542b24647da31178fb5e0b9a07975cd19322ad4fbd30daea154eaea9f"
+ },
+ "steps": [
+  {
+   "t": 0,
+   "s": "walk loop around the fire (W, D, S, A)"
+  },
+  {
+   "t": 4.415,
+   "s": "orbit 360 deg by mouse drag"
+  },
+  {
+   "t": 6.482,
+   "s": "wheel out to 30 m"
+  },
+  {
+   "t": 9.5,
+   "s": "orbit at 30 m"
+  },
+  {
+   "t": 10.55,
+   "s": "wheel back in"
+  }
+ ],
+ "errors": [],
+ "entryUrl": "http://127.0.0.1:4322/world/",
+ "debugApiPresent": false,
+ "clipSeconds": 13.675,
+ "finishedAt": "2026-10-22T19:56:25.259Z"
+}

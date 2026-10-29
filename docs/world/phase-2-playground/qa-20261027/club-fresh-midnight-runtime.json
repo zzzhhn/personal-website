@@ -1,0 +1,45 @@
+{
+ "sampledAt": "2026-10-26T21:14:20.947Z",
+ "calls": 85,
+ "triangles": 283893,
+ "geometries": 274,
+ "textures": 60,
+ "programs": 171,
+ "camera": [
+  41,
+  7.741845972495675,
+  43.94726807196538
+ ],
+ "mode": "always",
+ "frame": 8192,
+ "delta": 0.017099999994039536,
+ "night": 1,
+ "windTime": 133.84419999998875,
+ "frameMs": {
+  "samples": 180,
+  "p50": 16.700000762939453,
+  "p95": 17.600000381469727,
+  "max": 18.5
+ },
+ "drawingBuffer": [
+  2013,
+  1030
+ ],
+ "cssSize": [
+  1710,
+  875
+ ],
+ "pixelRatio": 1.1772275318111343,
+ "dprRange": [
+  0,
+  1.5
+ ],
+ "quality": "balanced",
+ "antialias": true,
+ "msaaSamples": 4,
+ "toneMapping": 4,
+ "outputColorSpace": "srgb",
+ "shadowMapSize": 1254,
+ "shadowType": 1,
+ "postprocessing": []
+}

@@ -1,0 +1,78 @@
+{
+ "freeze": {
+  "pause": {
+   "pair": [
+    "pause-a.png",
+    "pause-b.png"
+   ],
+   "changedPixelFraction(>8/255)": 0.0,
+   "meanAbs": 0.227
+  },
+  "shot": {
+   "pair": [
+    "shot-a.png",
+    "shot-b.png"
+   ],
+   "changedPixelFraction(>8/255)": 0.0,
+   "meanAbs": 0.013
+  }
+ },
+ "actionStrip": [
+  {
+   "phase": "walk",
+   "frames": 6,
+   "centrePatchMeanAbsDiffConsecutive": [
+    7.57,
+    8.16,
+    9.95,
+    12.05,
+    14.16
+   ],
+   "playerY": [
+    5.619,
+    5.619,
+    5.619,
+    5.619,
+    5.619,
+    5.619
+   ]
+  },
+  {
+   "phase": "run",
+   "frames": 6,
+   "centrePatchMeanAbsDiffConsecutive": [
+    9.92,
+    5.39,
+    5.39,
+    6.58,
+    9.6
+   ],
+   "playerY": [
+    5.619,
+    5.619,
+    5.619,
+    5.619,
+    5.619,
+    5.619
+   ]
+  },
+  {
+   "phase": "jump",
+   "frames": 5,
+   "centrePatchMeanAbsDiffConsecutive": [
+    10.16,
+    3.86,
+    4.14,
+    3.87
+   ],
+   "playerY": [
+    5.89,
+    6.48,
+    6.883,
+    7.103,
+    7.145
+   ]
+  }
+ ],
+ "actionNote": "Follow camera keeps the capsule near screen centre; the background scrolls so centre-patch diffs are not limb motion. Limb/pose judgement is from the cropped contact sheet by eye: see action-sheet.png."
+}

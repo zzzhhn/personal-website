@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-28T07:02:36.891Z",
+  "root": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration",
+  "sourceHashes": {
+    "coaster-clearance-index.ts": "363f9b19353a59c6f7cf5a66285f7eadc1caadb40aebf60512e8719a459617f4",
+    "coaster-thrill-supports.ts": "3af11243fd2a3756ed6be8687cacdc77a8a5fbe1923da95a38ebdea2e94d506b",
+    "coaster-thrill-layout.ts": "c2331ee191d260bf67b17476c7954d641a2c29ee6e234a5bd0516dc09b22af05",
+    "coaster-thrill-frame.ts": "d29f2ece7d60983c94ba8f1a5ef7ec15c152d37ded466b276da8e29d58bc5db0"
+  },
+  "sourcesUnchangedDuringRun": true,
+  "rows": [
+    {
+      "detailed": true,
+      "sampleCount": 36000,
+      "queries": 425,
+      "blocked": 15,
+      "mismatchCount": 0,
+      "firstMismatches": [],
+      "indexQueryMs": 2.1662970000004407,
+      "bruteQueryMs": 361.1815380000003,
+      "instrumentedGenerationMs": 453.19258400000007,
+      "supportGroups": 62,
+      "beams": 389,
+      "querySpeedRatio": 166.7276176811983
+    },
+    {
+      "detailed": false,
+      "sampleCount": 36000,
+      "queries": 122,
+      "blocked": 5,
+      "mismatchCount": 0,
+      "firstMismatches": [],
+      "indexQueryMs": 0.5083359999991899,
+      "bruteQueryMs": 114.05366900000092,
+      "instrumentedGenerationMs": 148.47595799999988,
+      "supportGroups": 36,
+      "beams": 108,
+      "querySpeedRatio": 224.36669643736167
+    }
+  ],
+  "totals": {
+    "queries": 547,
+    "mismatchCount": 0,
+    "indexQueryMs": 2.6746329999996306,
+    "bruteQueryMs": 475.2352070000012,
+    "querySpeedRatio": 177.68239866930037
+  },
+  "scope": "One cold call each to actual thrillSupports(true/false). Each actual body-index query is immediately compared with the old strict point-by-point predicate over the identical ordered numeric snapshot. Camera sight screening remains unchanged.",
+  "limitations": "Single instrumented run, index first then brute, no warmups or repeated benchmark. Query totals exclude index construction and sample generation. Instrumented generation includes both predicates, snapshot reconstruction and unchanged camera screening, so it is not production generation time. No browser/FPS/GPU claims."
+}

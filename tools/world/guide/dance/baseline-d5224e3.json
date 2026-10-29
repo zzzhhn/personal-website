@@ -1,0 +1,8 @@
+{
+  "commit": "d5224e3",
+  "method": "actual G24 skeleton, refineGuideBoots, two native-speed cycles sampled at 120 Hz before editing WorldGuideDance; no renderer",
+  "clips": [
+    { "name": "ClubGroove", "sourceDurationSeconds": 2.6333333333333333, "hipRangeM": 0.022476255568562586, "hipMinM": 0.5789094568031601, "hipMaxM": 0.6013857123717227, "kneeMinDegrees": 35.29262886827886, "kneeMaxDegrees": 98.33185820715359, "peakKneeDegreesPerSecond": 652.3852240940977, "peakAngularRadiansPerSecond": 8.737968891769803, "oldBeatsPerLoop": 4 },
+    { "name": "ClubDisco", "sourceDurationSeconds": 1.3666666666666667, "hipRangeM": 0.1460761125506163, "hipMinM": 0.44599857955046246, "hipMaxM": 0.5920746921010788, "kneeMinDegrees": 56.02823477322538, "kneeMaxDegrees": 103.7858803496658, "peakKneeDegreesPerSecond": 499.0645373513295, "peakAngularRadiansPerSecond": 24.79777623293858, "oldBeatsPerLoop": 2 }
+  ]
+}

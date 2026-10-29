@@ -1,0 +1,1856 @@
+{
+  "source": "../playtest/acceptance-r3/report.json",
+  "summary": {
+    "checksPassed": 14,
+    "checksTotal": 14,
+    "collisionPasses": 64,
+    "collisionCases": 64,
+    "unresolved": [],
+    "errors": 0
+  },
+  "collisions": [
+    {
+      "id": "C03",
+      "direction": "east",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 24,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": "C03-east-contact-and-blocked.png",
+      "maxVisualBoundaryGap_m": 1.8596649168478585e-05
+    },
+    {
+      "id": "C03",
+      "direction": "west",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 24,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.04758059978485252
+    },
+    {
+      "id": "C03",
+      "direction": "south",
+      "passed": true,
+      "status": "door-enter-exit",
+      "contactSamples": 0,
+      "visualBoundaryWithin15cm": null,
+      "maxPenetration_m": null,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0
+    },
+    {
+      "id": "C03",
+      "direction": "north",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 11,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.0003918111324310303,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.00019645690917935443
+    },
+    {
+      "id": "C04",
+      "direction": "east",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 25,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": "C04-east-contact-and-blocked.png",
+      "maxVisualBoundaryGap_m": 2.2340282315680415e-05
+    },
+    {
+      "id": "C04",
+      "direction": "west",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 24,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.04418480396270896
+    },
+    {
+      "id": "C04",
+      "direction": "south",
+      "passed": true,
+      "status": "door-enter-exit",
+      "contactSamples": 0,
+      "visualBoundaryWithin15cm": null,
+      "maxPenetration_m": null,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0
+    },
+    {
+      "id": "C04",
+      "direction": "north",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 14,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 8.046627044677734e-07,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 1.5735626221036192e-05
+    },
+    {
+      "id": "C05",
+      "direction": "east",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 11,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 2.1666288375854492e-05,
+      "elevatedProbe": null,
+      "screenshot": "C05-east-contact-and-blocked.png",
+      "maxVisualBoundaryGap_m": 1.8752748201011915e-05
+    },
+    {
+      "id": "C05",
+      "direction": "west",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 10,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 5.8870462496307674e-05
+    },
+    {
+      "id": "C05",
+      "direction": "south",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 13,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 2.142786979675293e-05,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 4.628376254572908e-05
+    },
+    {
+      "id": "C05",
+      "direction": "north",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 16,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 1.996755599975586e-06,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 1.3181682766982838e-06
+    },
+    {
+      "id": "C06",
+      "direction": "east",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 49,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": "C06-east-contact-and-blocked.png",
+      "maxVisualBoundaryGap_m": 1.7449832467264503e-05
+    },
+    {
+      "id": "C06",
+      "direction": "west",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 55,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 2.1127804815446183e-05
+    },
+    {
+      "id": "C06",
+      "direction": "south",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 32,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 6.549233614761008e-05
+    },
+    {
+      "id": "C06",
+      "direction": "north",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 28,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 2.1882731129685418e-05
+    },
+    {
+      "id": "C07",
+      "direction": "east",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 52,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": "C07-east-contact-and-blocked.png",
+      "maxVisualBoundaryGap_m": 0.0032131155072442352
+    },
+    {
+      "id": "C07",
+      "direction": "west",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 32,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.0035702798784061907
+    },
+    {
+      "id": "C07",
+      "direction": "south",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 44,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.0034483097945757213
+    },
+    {
+      "id": "C07",
+      "direction": "north",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 74,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 8.090602023003157e-06,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.0007670906561701996
+    },
+    {
+      "id": "C08",
+      "direction": "east",
+      "passed": true,
+      "status": "occluded-by-other-solid",
+      "contactSamples": 0,
+      "visualBoundaryWithin15cm": null,
+      "maxPenetration_m": null,
+      "elevatedProbe": {
+        "origin": [
+          -51.27758377075195,
+          5.991000099182129,
+          41.21485710144043
+        ],
+        "direction": [
+          -1,
+          0,
+          0
+        ],
+        "result": {
+          "radius": 0.05,
+          "toi": 0.8170982599258423,
+          "point": [
+            -52.13324737548828,
+            5.991001605987549,
+            41.24668884277344
+          ],
+          "normal": [
+            0.7675916348903509,
+            0,
+            -0.6409392186832995
+          ],
+          "visualBoundaryGap": 3.7296909616291174e-06
+        }
+      },
+      "screenshot": "C08-east-occluded-by-other-solid.png",
+      "maxVisualBoundaryGap_m": 0
+    },
+    {
+      "id": "C08",
+      "direction": "west",
+      "passed": true,
+      "status": "occluded-by-other-solid",
+      "contactSamples": 0,
+      "visualBoundaryWithin15cm": null,
+      "maxPenetration_m": null,
+      "elevatedProbe": {
+        "origin": [
+          -53.68040115356445,
+          5.991000099182129,
+          41.21485710144043
+        ],
+        "direction": [
+          1,
+          0,
+          0
+        ],
+        "result": {
+          "radius": 0.05,
+          "toi": 1.1876393556594849,
+          "point": [
+            -52.453792572021484,
+            5.991059303283691,
+            41.2462158203125
+          ],
+          "normal": [
+            -0.7789292070890743,
+            -0.00020477588291308886,
+            -0.6271118308646585
+          ],
+          "visualBoundaryGap": 7.274795841283321e-07
+        }
+      },
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0
+    },
+    {
+      "id": "C08",
+      "direction": "south",
+      "passed": true,
+      "status": "occluded-by-other-solid",
+      "contactSamples": 0,
+      "visualBoundaryWithin15cm": null,
+      "maxPenetration_m": null,
+      "elevatedProbe": {
+        "origin": [
+          -52.4789924621582,
+          5.991000099182129,
+          42.39497024536133
+        ],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "result": {
+          "radius": 0.05,
+          "toi": 0.8914059996604919,
+          "point": [
+            -52.461814880371094,
+            5.953000068664551,
+            41.47595977783203
+          ],
+          "normal": [
+            -0.3418458726575828,
+            0.7614495216991144,
+            0.5507594985573698
+          ],
+          "visualBoundaryGap": 1.5655573271100565e-07
+        }
+      },
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0
+    },
+    {
+      "id": "C08",
+      "direction": "north",
+      "passed": true,
+      "status": "occluded-by-other-solid",
+      "contactSamples": 0,
+      "visualBoundaryWithin15cm": null,
+      "maxPenetration_m": null,
+      "elevatedProbe": {
+        "origin": [
+          -52.4789924621582,
+          5.991000099182129,
+          40.03474395751953
+        ],
+        "direction": [
+          0,
+          0,
+          1
+        ],
+        "result": {
+          "radius": 0.05,
+          "toi": 1.162993311882019,
+          "point": [
+            -52.440025329589844,
+            5.99112606048584,
+            41.2291145324707
+          ],
+          "normal": [
+            -0.7788800154998453,
+            2.3547242118566478e-05,
+            -0.62717295931863
+          ],
+          "visualBoundaryGap": 1.8035912256464393e-06
+        }
+      },
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0
+    },
+    {
+      "id": "C09",
+      "direction": "east",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 44,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": "C09-east-contact-and-blocked.png",
+      "maxVisualBoundaryGap_m": 0.0023325166866784985
+    },
+    {
+      "id": "C09",
+      "direction": "west",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 68,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.002289661552393407
+    },
+    {
+      "id": "C09",
+      "direction": "south",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 32,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.0022427779402202086
+    },
+    {
+      "id": "C09",
+      "direction": "north",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 52,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.002241982382709229
+    },
+    {
+      "id": "C10",
+      "direction": "east",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 21,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.00010696053504943848,
+      "elevatedProbe": null,
+      "screenshot": "C10-east-contact-and-blocked.png",
+      "maxVisualBoundaryGap_m": 0.00047952994143524164
+    },
+    {
+      "id": "C10",
+      "direction": "west",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 20,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 4.1425228118896484e-05,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 8.602389189404924e-05
+    },
+    {
+      "id": "C10",
+      "direction": "south",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 16,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.001400404842570424,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.0006426147261773818
+    },
+    {
+      "id": "C10",
+      "direction": "north",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 22,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.000418245792388916,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.0002533408121520031
+    },
+    {
+      "id": "G16",
+      "direction": "east",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 23,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": "G16-east-contact-and-blocked.png",
+      "maxVisualBoundaryGap_m": 0.0018777993834274698
+    },
+    {
+      "id": "G16",
+      "direction": "west",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 29,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.00010564923286437988,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.0031058856153328707
+    },
+    {
+      "id": "G16",
+      "direction": "south",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 15,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 8.642673492431641e-07,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.024022119976775724
+    },
+    {
+      "id": "G16",
+      "direction": "north",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 29,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.00010880827903747559,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.0025701901261397375
+    },
+    {
+      "id": "G17",
+      "direction": "east",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 16,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.0001678466796875,
+      "elevatedProbe": null,
+      "screenshot": "G17-east-contact-and-blocked.png",
+      "maxVisualBoundaryGap_m": 8.136934043273536e-05
+    },
+    {
+      "id": "G17",
+      "direction": "west",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 72,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.00032070279121398926,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.0017751523880484843
+    },
+    {
+      "id": "G17",
+      "direction": "south",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 20,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.0005075335502624512,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.003204260193249431
+    },
+    {
+      "id": "G17",
+      "direction": "north",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 32,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.0025115621471875627
+    },
+    {
+      "id": "G18",
+      "direction": "east",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 12,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": "G18-east-contact-and-blocked.png",
+      "maxVisualBoundaryGap_m": 5.5217057412737525e-05
+    },
+    {
+      "id": "G18",
+      "direction": "west",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 36,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.00011196732521057129,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.0023376124450183444
+    },
+    {
+      "id": "G18",
+      "direction": "south",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 27,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 8.654594421386719e-05,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.0030974032084128966
+    },
+    {
+      "id": "G18",
+      "direction": "north",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 14,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 5.543900175819516e-05
+    },
+    {
+      "id": "G19",
+      "direction": "east",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 11,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 4.0411949157714844e-05,
+      "elevatedProbe": null,
+      "screenshot": "G19-east-contact-and-blocked.png",
+      "maxVisualBoundaryGap_m": 0.06090303560812388
+    },
+    {
+      "id": "G19",
+      "direction": "west",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 7,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.00025519728660583496,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.06471341889785942
+    },
+    {
+      "id": "G19",
+      "direction": "south",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 8,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 7.912516593933105e-05,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.06031447820769853
+    },
+    {
+      "id": "G19",
+      "direction": "north",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 9,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.00012925267219543457,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.05861420804346196
+    },
+    {
+      "id": "G20",
+      "direction": "east",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 9,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.00019073486328125,
+      "elevatedProbe": null,
+      "screenshot": "G20-east-contact-and-blocked.png",
+      "maxVisualBoundaryGap_m": 0.06314145546479077
+    },
+    {
+      "id": "G20",
+      "direction": "west",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 14,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.0013948414707556367,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.07024382843684851
+    },
+    {
+      "id": "G20",
+      "direction": "south",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 8,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 2.771615982055664e-05,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.05723931246599373
+    },
+    {
+      "id": "G20",
+      "direction": "north",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 10,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.0002951323986053467,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.057877070282509435
+    },
+    {
+      "id": "G21",
+      "direction": "east",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 24,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.00016483664512634277,
+      "elevatedProbe": null,
+      "screenshot": "G21-east-contact-and-blocked.png",
+      "maxVisualBoundaryGap_m": 0.00024314004978975845
+    },
+    {
+      "id": "G21",
+      "direction": "west",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 11,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.00013846158981323242,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.0022214673995013534
+    },
+    {
+      "id": "G21",
+      "direction": "south",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 30,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 2.294778823852539e-06,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.0013925983775569528
+    },
+    {
+      "id": "G21",
+      "direction": "north",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 7,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.0004893839359283447,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.00024592343022061813
+    },
+    {
+      "id": "G22",
+      "direction": "east",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 32,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.00010436773300170898,
+      "elevatedProbe": null,
+      "screenshot": "G22-east-contact-and-blocked.png",
+      "maxVisualBoundaryGap_m": 0.0004229282492050901
+    },
+    {
+      "id": "G22",
+      "direction": "west",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 37,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.00036701686709472714
+    },
+    {
+      "id": "G22",
+      "direction": "south",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 21,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.0030863583087921143,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.0019724800815087984
+    },
+    {
+      "id": "G22",
+      "direction": "north",
+      "passed": true,
+      "status": "contact-and-blocked",
+      "contactSamples": 36,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.0013577704136318314
+    },
+    {
+      "id": "G23",
+      "direction": "east",
+      "passed": true,
+      "status": "contact-and-stepped-over",
+      "contactSamples": 11,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 5.885958671569824e-05,
+      "elevatedProbe": null,
+      "screenshot": "G23-east-contact-and-stepped-over.png",
+      "maxVisualBoundaryGap_m": 0.00043556728943255907
+    },
+    {
+      "id": "G23",
+      "direction": "west",
+      "passed": true,
+      "status": "contact-and-stepped-over",
+      "contactSamples": 7,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.0010362891200385582
+    },
+    {
+      "id": "G23",
+      "direction": "south",
+      "passed": true,
+      "status": "contact-and-stepped-over",
+      "contactSamples": 10,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 0.012246698141098022,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.006123833499927123
+    },
+    {
+      "id": "G23",
+      "direction": "north",
+      "passed": true,
+      "status": "contact-and-stepped-over",
+      "contactSamples": 8,
+      "visualBoundaryWithin15cm": true,
+      "maxPenetration_m": 8.571147918701172e-05,
+      "elevatedProbe": null,
+      "screenshot": null,
+      "maxVisualBoundaryGap_m": 0.0003048515424927123
+    }
+  ],
+  "checks": [
+    {
+      "name": "No asset fallback",
+      "passed": true
+    },
+    {
+      "name": "Continuous spawn to tent to exit keyboard tour",
+      "passed": true,
+      "evidence": [
+        {
+          "target": [
+            -42,
+            40
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -42,
+            5.618858814239502,
+            35
+          ],
+          "end": [
+            -42.08442687988281,
+            5.618860244750977,
+            39.66096496582031
+          ],
+          "seconds": 2.82,
+          "minDist": 0.349
+        },
+        {
+          "target": [
+            -32,
+            40
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -42.08442687988281,
+            5.618860244750977,
+            39.66096496582031
+          ],
+          "end": [
+            -32.253196716308594,
+            5.718865871429443,
+            40.094268798828125
+          ],
+          "seconds": 5.92,
+          "minDist": 0.275
+        },
+        {
+          "target": [
+            -30,
+            28
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -32.253196716308594,
+            5.718865871429443,
+            40.094268798828125
+          ],
+          "end": [
+            -30.1672420501709,
+            5.618863105773926,
+            28.284019470214844
+          ],
+          "seconds": 6.92,
+          "minDist": 0.33
+        },
+        {
+          "target": [
+            -34,
+            20
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -30.1672420501709,
+            5.618863105773926,
+            28.284019470214844
+          ],
+          "end": [
+            -33.99238586425781,
+            5.618863105773926,
+            20.269588470458984
+          ],
+          "seconds": 5.35,
+          "minDist": 0.27
+        },
+        {
+          "target": [
+            -42,
+            17
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -33.99238586425781,
+            5.618863105773926,
+            20.269588470458984
+          ],
+          "end": [
+            -41.78532409667969,
+            5.618863105773926,
+            17.14194107055664
+          ],
+          "seconds": 5.07,
+          "minDist": 0.257
+        },
+        {
+          "target": [
+            -42,
+            12.5
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -41.78532409667969,
+            5.618863105773926,
+            17.14194107055664
+          ],
+          "end": [
+            -41.89933395385742,
+            5.619227409362793,
+            12.778553009033203
+          ],
+          "seconds": 2.82,
+          "minDist": 0.296
+        },
+        {
+          "target": [
+            -42,
+            17
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -41.89933395385742,
+            5.619227409362793,
+            12.778553009033203
+          ],
+          "end": [
+            -42.0944938659668,
+            5.678991317749023,
+            16.729761123657227
+          ],
+          "seconds": 2.53,
+          "minDist": 0.313
+        },
+        {
+          "target": [
+            -30,
+            28
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -42.0944938659668,
+            5.678991317749023,
+            16.729761123657227
+          ],
+          "end": [
+            -30.229045867919922,
+            5.618863105773926,
+            27.86039924621582
+          ],
+          "seconds": 9.73,
+          "minDist": 0.296
+        },
+        {
+          "target": [
+            -22,
+            30
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -30.229045867919922,
+            5.618863105773926,
+            27.86039924621582
+          ],
+          "end": [
+            -22.324573516845703,
+            5.658864974975586,
+            29.804096221923828
+          ],
+          "seconds": 4.85,
+          "minDist": 0.379
+        },
+        {
+          "target": [
+            -22,
+            34
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -22.324573516845703,
+            5.658864974975586,
+            29.804096221923828
+          ],
+          "end": [
+            -22.081806182861328,
+            5.658864974975586,
+            33.63713073730469
+          ],
+          "seconds": 2.32,
+          "minDist": 0.372
+        },
+        {
+          "target": [
+            -18.8,
+            34
+          ],
+          "reached": true,
+          "recoveries": 0,
+          "blockedAt": null,
+          "start": [
+            -22.081806182861328,
+            5.658864974975586,
+            33.63713073730469
+          ],
+          "end": [
+            -19.105464935302734,
+            5.658864498138428,
+            34.13008117675781
+          ],
+          "seconds": 1.78,
+          "minDist": 0.332
+        }
+      ]
+    },
+    {
+      "name": "Actual Idle Walk Run Jump clips",
+      "passed": true,
+      "evidence": [
+        "Idle",
+        "Walk",
+        "Run",
+        "Jump",
+        "Land"
+      ]
+    },
+    {
+      "name": "Jump physically rises then lands",
+      "passed": true,
+      "evidence": {
+        "start": [
+          -45.64869689941406,
+          5.618862628936768,
+          41.73646545410156
+        ],
+        "peak": 7.150601863861084,
+        "land": [
+          -45.650970458984375,
+          5.61894416809082,
+          41.73814392089844
+        ]
+      }
+    },
+    {
+      "name": "Real E enters then exits",
+      "passed": true,
+      "evidence": {
+        "entered": {
+          "s": {
+            "player": [
+              -26,
+              5.659505844116211,
+              36.20000076293945
+            ],
+            "activeVehicle": "offroad",
+            "canRecover": false,
+            "grounded": true,
+            "playerVelocity": [
+              -2.38184583167822e-08,
+              2.3205712351703767e-10,
+              5.54782445760793e-07
+            ],
+            "playerCollider": {
+              "radius": 0.34,
+              "halfHeight": 0.48,
+              "centerHeight": 0.8200000000000001
+            },
+            "playerYaw": -2.498091544796509,
+            "physicsStep": 9375,
+            "vehicles": [
+              {
+                "id": "offroad",
+                "position": [
+                  -26.00619125366211,
+                  5.896547794342041,
+                  34
+                ],
+                "velocity": [
+                  -3.6510825474067587e-09,
+                  -0.06119523569941521,
+                  0
+                ],
+                "mass": 1400,
+                "wheelContacts": [
+                  true,
+                  true,
+                  true,
+                  true
+                ],
+                "upsideDownSeconds": 0,
+                "waterSeconds": 0
+              },
+              {
+                "id": "coupe",
+                "position": [
+                  19.799999237060547,
+                  2.1359031200408936,
+                  12.002385139465332
+                ],
+                "velocity": [
+                  5.492976384857684e-08,
+                  -0.06118990108370781,
+                  2.0955495116936618e-09
+                ],
+                "mass": 1100,
+                "wheelContacts": [
+                  true,
+                  true,
+                  true,
+                  true
+                ],
+                "upsideDownSeconds": 0,
+                "waterSeconds": 0
+              },
+              {
+                "id": "van",
+                "position": [
+                  45.9923095703125,
+                  2.4549784660339355,
+                  -45
+                ],
+                "velocity": [
+                  2.293820067222896e-08,
+                  -0.0611904002726078,
+                  -8.920790708389215e-21
+                ],
+                "mass": 2100,
+                "wheelContacts": [
+                  true,
+                  true,
+                  true,
+                  true
+                ],
+                "upsideDownSeconds": 0,
+                "waterSeconds": 0
+              }
+            ]
+          },
+          "a": {
+            "loaded": true,
+            "moving": false,
+            "running": false,
+            "airborne": false,
+            "animation": "Idle",
+            "animationTime": 0.18360000002384183,
+            "animationTimeScale": 1,
+            "mixerTime": 155.95449999999332,
+            "speedMps": 0.00024779611830434906,
+            "visible": false,
+            "root": [
+              -26,
+              4.839505844116211,
+              36.20000076293945
+            ],
+            "soles": {
+              "left": null,
+              "right": null
+            }
+          },
+          "contacts": []
+        },
+        "exited": {
+          "s": {
+            "player": [
+              -26.00619125366211,
+              5.6592230796813965,
+              35.900001525878906
+            ],
+            "activeVehicle": null,
+            "canRecover": false,
+            "grounded": true,
+            "playerVelocity": [
+              -4.694666984050855e-07,
+              0,
+              6.259554083953844e-07
+            ],
+            "playerCollider": {
+              "radius": 0.34,
+              "halfHeight": 0.48,
+              "centerHeight": 0.8200000000000001
+            },
+            "playerYaw": -2.498091544796509,
+            "physicsStep": 9399,
+            "vehicles": [
+              {
+                "id": "offroad",
+                "position": [
+                  -26.00619125366211,
+                  5.896547794342041,
+                  34
+                ],
+                "velocity": [
+                  -3.6510825474067587e-09,
+                  -0.06119523569941521,
+                  0
+                ],
+                "mass": 1400,
+                "wheelContacts": [
+                  true,
+                  true,
+                  true,
+                  true
+                ],
+                "upsideDownSeconds": 0,
+                "waterSeconds": 0
+              },
+              {
+                "id": "coupe",
+                "position": [
+                  19.799999237060547,
+                  2.1359031200408936,
+                  12.002385139465332
+                ],
+                "velocity": [
+                  3.765713785242042e-08,
+                  -0.0611899234354496,
+                  3.25856208682751e-09
+                ],
+                "mass": 1100,
+                "wheelContacts": [
+                  true,
+                  true,
+                  true,
+                  true
+                ],
+                "upsideDownSeconds": 0,
+                "waterSeconds": 0
+              },
+              {
+                "id": "van",
+                "position": [
+                  45.9923095703125,
+                  2.4549784660339355,
+                  -45
+                ],
+                "velocity": [
+                  2.293820067222896e-08,
+                  -0.0611904002726078,
+                  -8.920790708389215e-21
+                ],
+                "mass": 2100,
+                "wheelContacts": [
+                  true,
+                  true,
+                  true,
+                  true
+                ],
+                "upsideDownSeconds": 0,
+                "waterSeconds": 0
+              }
+            ]
+          },
+          "a": {
+            "loaded": true,
+            "moving": false,
+            "running": false,
+            "airborne": false,
+            "animation": "Idle",
+            "animationTime": 0.567100000023842,
+            "animationTimeScale": 1,
+            "mixerTime": 156.3379999999932,
+            "speedMps": 0.00024779611830434906,
+            "visible": true,
+            "root": [
+              -26.00619125366211,
+              4.839237422943033,
+              35.900001525878906
+            ],
+            "soles": {
+              "left": null,
+              "right": null
+            }
+          },
+          "contacts": [
+            {
+              "self": "player",
+              "other": {
+                "colliderHandle": 1e-323,
+                "name": "world-surface-0",
+                "assetId": null,
+                "kind": "surface"
+              },
+              "normal": [
+                -5.26058556715725e-07,
+                1,
+                7.014114089543e-07
+              ],
+              "distance": -0.0007387697696685791,
+              "points": [
+                [
+                  -26.00619125366211,
+                  4.839630603790283,
+                  35.900001525878906
+                ],
+                [
+                  -26.00619125366211,
+                  4.839630603790283,
+                  35.900001525878906
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Esc freezes physics and all motion clocks",
+      "passed": true,
+      "evidence": {
+        "pauseA": {
+          "clock": {
+            "flags": 157.47430000000483,
+            "fire": 157.47430000000483,
+            "nature": 157.47430000000483,
+            "water": 157.47430000000483,
+            "cloth": 157.47430000000483
+          },
+          "actor": {
+            "loaded": true,
+            "moving": false,
+            "running": false,
+            "airborne": false,
+            "animation": "Idle",
+            "animationTime": 1.4336000000238405,
+            "animationTimeScale": 1,
+            "mixerTime": 157.204499999993,
+            "speedMps": 0.00024779611830434906,
+            "visible": true,
+            "root": [
+              -42,
+              4.7988654899597165,
+              35
+            ],
+            "soles": {
+              "left": null,
+              "right": null
+            }
+          },
+          "step": 9451
+        },
+        "pauseB": {
+          "clock": {
+            "flags": 157.47430000000483,
+            "fire": 157.47430000000483,
+            "nature": 157.47430000000483,
+            "water": 157.47430000000483,
+            "cloth": 157.47430000000483
+          },
+          "actor": {
+            "loaded": true,
+            "moving": false,
+            "running": false,
+            "airborne": false,
+            "animation": "Idle",
+            "animationTime": 1.4336000000238405,
+            "animationTimeScale": 1,
+            "mixerTime": 157.204499999993,
+            "speedMps": 0.00024779611830434906,
+            "visible": true,
+            "root": [
+              -42,
+              4.7988654899597165,
+              35
+            ],
+            "soles": {
+              "left": null,
+              "right": null
+            }
+          },
+          "step": 9451
+        },
+        "prior": {
+          "s": {
+            "player": [
+              -42,
+              5.618865489959717,
+              35
+            ],
+            "activeVehicle": null,
+            "canRecover": false,
+            "grounded": true,
+            "playerVelocity": [
+              0,
+              0,
+              0
+            ],
+            "playerCollider": {
+              "radius": 0.34,
+              "halfHeight": 0.48,
+              "centerHeight": 0.8200000000000001
+            },
+            "playerYaw": -2.498091544796509,
+            "physicsStep": 9451,
+            "vehicles": [
+              {
+                "id": "offroad",
+                "position": [
+                  -26.00619125366211,
+                  5.896547794342041,
+                  34
+                ],
+                "velocity": [
+                  4.020709098995212e-08,
+                  -0.0611950121819973,
+                  0
+                ],
+                "mass": 1400,
+                "wheelContacts": [
+                  true,
+                  true,
+                  true,
+                  true
+                ],
+                "upsideDownSeconds": 0,
+                "waterSeconds": 0
+              },
+              {
+                "id": "coupe",
+                "position": [
+                  19.799999237060547,
+                  2.1359031200408936,
+                  12.002385139465332
+                ],
+                "velocity": [
+                  -2.9090211128846022e-08,
+                  -0.06118994578719139,
+                  1.480735090098051e-08
+                ],
+                "mass": 1100,
+                "wheelContacts": [
+                  true,
+                  true,
+                  true,
+                  true
+                ],
+                "upsideDownSeconds": 0,
+                "waterSeconds": 0
+              },
+              {
+                "id": "van",
+                "position": [
+                  45.9923095703125,
+                  2.4549784660339355,
+                  -45
+                ],
+                "velocity": [
+                  2.293820067222896e-08,
+                  -0.0611904002726078,
+                  -8.920790708389215e-21
+                ],
+                "mass": 2100,
+                "wheelContacts": [
+                  true,
+                  true,
+                  true,
+                  true
+                ],
+                "upsideDownSeconds": 0,
+                "waterSeconds": 0
+              }
+            ]
+          },
+          "a": {
+            "loaded": true,
+            "moving": false,
+            "running": false,
+            "airborne": false,
+            "animation": "Idle",
+            "animationTime": 1.4336000000238405,
+            "animationTimeScale": 1,
+            "mixerTime": 157.204499999993,
+            "speedMps": 0.00024779611830434906,
+            "visible": true,
+            "root": [
+              -42,
+              4.7988654899597165,
+              35
+            ],
+            "soles": {
+              "left": null,
+              "right": null
+            }
+          },
+          "contacts": [
+            {
+              "self": "player",
+              "other": {
+                "colliderHandle": 0,
+                "name": "camp-ground-surface",
+                "assetId": null,
+                "kind": "surface"
+              },
+              "normal": [
+                0,
+                1,
+                0
+              ],
+              "distance": -0.0011347532272338867,
+              "points": [
+                [
+                  -42,
+                  4.799432754516602,
+                  35
+                ],
+                [
+                  -42,
+                  4.799432754516602,
+                  35
+                ]
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Evidence shot freezes physics and motion",
+      "passed": true,
+      "evidence": {
+        "shotA": {
+          "clock": {
+            "flags": 157.5743000000048,
+            "fire": 157.5743000000048,
+            "nature": 157.5743000000048,
+            "water": 157.5743000000048,
+            "cloth": 157.5743000000048
+          },
+          "actor": {
+            "loaded": true,
+            "moving": false,
+            "running": false,
+            "airborne": false,
+            "animation": "Idle",
+            "animationTime": 1.5336000000238401,
+            "animationTimeScale": 1,
+            "mixerTime": 157.30449999999297,
+            "speedMps": 0.00024779611830434906,
+            "visible": true,
+            "root": [
+              -42,
+              4.7988654899597165,
+              35
+            ],
+            "soles": {
+              "left": null,
+              "right": null
+            }
+          },
+          "step": 9457
+        },
+        "shotB": {
+          "clock": {
+            "flags": 157.5743000000048,
+            "fire": 157.5743000000048,
+            "nature": 157.5743000000048,
+            "water": 157.5743000000048,
+            "cloth": 157.5743000000048
+          },
+          "actor": {
+            "loaded": true,
+            "moving": false,
+            "running": false,
+            "airborne": false,
+            "animation": "Idle",
+            "animationTime": 1.5336000000238401,
+            "animationTimeScale": 1,
+            "mixerTime": 157.30449999999297,
+            "speedMps": 0.00024779611830434906,
+            "visible": true,
+            "root": [
+              -42,
+              4.7988654899597165,
+              35
+            ],
+            "soles": {
+              "left": null,
+              "right": null
+            }
+          },
+          "step": 9457
+        }
+      }
+    },
+    {
+      "name": "Reduced motion damps environmental motion",
+      "passed": true,
+      "evidence": 0.011783673309757105
+    },
+    {
+      "name": "Cloth has two pinned curtain shells per asset",
+      "passed": true,
+      "evidence": [
+        {
+          "name": "camp-mesh-C03-C03_mesh",
+          "cloth": true,
+          "wind": false,
+          "curtainShells": 2,
+          "matchingDepth": true,
+          "matchingDistance": false
+        },
+        {
+          "name": "camp-mesh-C04-C04_mesh",
+          "cloth": true,
+          "wind": false,
+          "curtainShells": 2,
+          "matchingDepth": true,
+          "matchingDistance": false
+        }
+      ]
+    },
+    {
+      "name": "Nature has matching deformed shadow materials",
+      "passed": true
+    },
+    {
+      "name": "1920x1080 actual buffer",
+      "passed": true,
+      "evidence": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 4096,
+        "shadowType": 1,
+        "postprocessing": []
+      }
+    },
+    {
+      "name": "2560x1440 actual buffer",
+      "passed": true,
+      "evidence": {
+        "drawingBuffer": [
+          2560,
+          1440
+        ],
+        "cssSize": [
+          2560,
+          1440
+        ],
+        "pixelRatio": 1,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 4096,
+        "shadowType": 1,
+        "postprocessing": []
+      }
+    },
+    {
+      "name": "No page/console errors",
+      "passed": true,
+      "evidence": []
+    },
+    {
+      "name": "No failed HTTP responses",
+      "passed": true,
+      "evidence": []
+    }
+  ],
+  "errors": [],
+  "networkErrors": [],
+  "quality": [
+    {
+      "requested": [
+        1920,
+        1080
+      ],
+      "info": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 4096,
+        "shadowType": 1,
+        "postprocessing": []
+      },
+      "png": "06-quality-1920x1080.png"
+    },
+    {
+      "requested": [
+        2560,
+        1440
+      ],
+      "info": {
+        "drawingBuffer": [
+          2560,
+          1440
+        ],
+        "cssSize": [
+          2560,
+          1440
+        ],
+        "pixelRatio": 1,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 4096,
+        "shadowType": 1,
+        "postprocessing": []
+      },
+      "png": "06-quality-2560x1440.png"
+    }
+  ],
+  "stepOver": "../playtest/acceptance-r3/step-over-derived.json"
+}

@@ -1,0 +1,26 @@
+{
+  "port": 4341,
+  "sha256": "c93187c23c9cff76c42952f1acf41cbd4590306ef1b688cc338e40dc57c7ff22",
+  "assets": [
+    {
+      "path": "/_astro/WorldApp.CL5m6nP3.css",
+      "status": 200
+    },
+    {
+      "path": "/_astro/WorldApp.CoVKVCWf.js",
+      "status": 200
+    },
+    {
+      "path": "/_astro/WorldIbdHud.BFP9lrI4.css",
+      "status": 200
+    },
+    {
+      "path": "/_astro/WorldIntentHud.-YiVMeyH.css",
+      "status": 200
+    },
+    {
+      "path": "/_astro/client.BINMsa6k.js",
+      "status": 200
+    }
+  ]
+}

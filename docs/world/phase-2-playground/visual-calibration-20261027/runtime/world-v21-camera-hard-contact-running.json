@@ -1,0 +1,223 @@
+{
+ "ride": {
+  "active": true,
+  "seat": [
+   18.53302742499085,
+   24.166841124245543,
+   -303.1579063810427
+  ],
+  "yaw": -2.1825964751436704,
+  "orientation": [
+   0.08005713914023484,
+   0.8836073265887604,
+   -0.04162722359813882,
+   -0.45945197913041474
+  ],
+  "cameraPosition": [
+   22.978619913756123,
+   26.520729003550287,
+   -309.49425471342147
+  ],
+  "cameraTarget": [
+   18.53302742499085,
+   24.866841124245543,
+   -303.1579063810427
+  ],
+  "cameraUp": [
+   0,
+   1,
+   0
+  ],
+  "firstPerson": false,
+  "fov": 58,
+  "look": {
+   "yaw": 1.43,
+   "pitch": 0,
+   "zoom": 1
+  },
+  "phase": "riding"
+ },
+ "camera": {
+  "yaw": 1.5707963267948966,
+  "pitch": 0.7853981633974483,
+  "distance": 12,
+  "desiredDistance": 12,
+  "driveManualZoom": false,
+  "actualDistance": 6.214835834503174,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": true,
+  "hitDistance": 6.264835834503174,
+  "fov": 58,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   20.768538026694895,
+   25.81602460479913,
+   -302.1055536810981
+  ],
+  "target": [
+   44.9019660949707,
+   2.54882493019104,
+   -153.66233825683594
+  ],
+  "forwardGround": [
+   -0.9047644771365904,
+   -0.4259122455527104
+  ],
+  "groundBelowCamera": 10.115692138671875,
+  "clearanceAboveGround": 15.700332466127254,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "actor": {
+  "animation": "SitIdle",
+  "root": [
+   18.24097978747537,
+   23.900328100774768,
+   -302.730147078944
+  ],
+  "seatSupport": null,
+  "vehicleStage": null,
+  "vehicleRotation": null,
+  "vehicle": null
+ },
+ "doors": {
+  "offroad": {
+   "level": 1,
+   "triangles": 15242,
+   "doors": [
+    {
+     "side": -1,
+     "quaternion": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "vertices": 540
+    },
+    {
+     "side": 1,
+     "quaternion": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "vertices": 540
+    }
+   ]
+  },
+  "coupe": {
+   "level": 1,
+   "triangles": 14816,
+   "doors": [
+    {
+     "side": -1,
+     "quaternion": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "vertices": 636
+    },
+    {
+     "side": 1,
+     "quaternion": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "vertices": 636
+    }
+   ]
+  },
+  "van": {
+   "level": 1,
+   "triangles": 14273,
+   "doors": [
+    {
+     "side": -1,
+     "quaternion": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "vertices": 540
+    },
+    {
+     "side": 1,
+     "quaternion": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "vertices": 540
+    }
+   ]
+  }
+ },
+ "physics": {
+  "player": [
+   18.53302764892578,
+   24.986841201782227,
+   -303.15789794921875
+  ],
+  "grounded": true,
+  "vehicles": [
+   {
+    "id": "offroad",
+    "position": [
+     -26.00594139099121,
+     5.896547794342041,
+     34
+    ],
+    "waterSeconds": 0,
+    "wheelContacts": [
+     true,
+     true,
+     true,
+     true
+    ]
+   },
+   {
+    "id": "coupe",
+    "position": [
+     26.199382781982422,
+     2.1374423503875732,
+     2.002410411834717
+    ],
+    "waterSeconds": 0,
+    "wheelContacts": [
+     true,
+     true,
+     true,
+     true
+    ]
+   },
+   {
+    "id": "van",
+    "position": [
+     45.992454528808594,
+     2.464979648590088,
+     -45
+    ],
+    "waterSeconds": 0,
+    "wheelContacts": [
+     true,
+     true,
+     true,
+     true
+    ]
+   }
+  ]
+ }
+}

@@ -1,0 +1,53 @@
+
+> personal-website@0.0.1 check
+> astro check
+
+11:13:34 [vite] Re-optimizing dependencies because vite config has changed
+11:13:35 [content] Syncing content
+11:13:35 [content] Synced content
+11:13:35 [types] Generated 364ms
+11:13:35 [check] Getting diagnostics for Astro files in /Users/bobby/WorkBuddy/personal-website/personal-website...
+src/content.config.ts:28:26 - warning ts(6385): '(params?: string | { abort?: boolean | undefined; pattern?: RegExp | undefined; hostname?: RegExp | undefined; protocol?: RegExp | undefined; normalize?: boolean | undefined; error?: string | ... 1 more ... | undefined; message?: string | undefined; } | undefined): ZodString' is deprecated.
+
+28       github: z.string().url().optional(),
+                            ~~~
+src/content.config.ts:27:24 - warning ts(6385): '(params?: string | { abort?: boolean | undefined; pattern?: RegExp | undefined; hostname?: RegExp | undefined; protocol?: RegExp | undefined; normalize?: boolean | undefined; error?: string | ... 1 more ... | undefined; message?: string | undefined; } | undefined): ZodString' is deprecated.
+
+27       live: z.string().url().optional(),
+                          ~~~
+
+src/components/astro/Hero.astro:1108:5 - warning ts(6199): All variables are unused.
+
+1108     var i, p;
+         ~~~~~~~~~
+src/components/astro/Hero.astro:851:27 - warning ts(6133): 't' is declared but its value is never read.
+
+851   function drawDark(w, h, t) {
+                              ~
+src/components/astro/Hero.astro:851:24 - warning ts(6133): 'h' is declared but its value is never read.
+
+851   function drawDark(w, h, t) {
+                           ~
+src/components/astro/Hero.astro:851:21 - warning ts(6133): 'w' is declared but its value is never read.
+
+851   function drawDark(w, h, t) {
+                        ~
+
+src/components/react/WorkflowDiagram.tsx:94:17 - warning ts(6133): 'x2' is declared but its value is never read.
+
+94           const x2 = Math.max(tp.l, tp.cx - 4);
+                   ~~
+src/components/react/WorkflowDiagram.tsx:93:17 - warning ts(6133): 'x1' is declared but its value is never read.
+
+93           const x1 = Math.min(fp.r, fp.cx + 4);
+                   ~~
+
+src/layouts/BaseLayout.astro:125:13 - warning ts(6133): 'raf' is declared but its value is never read.
+
+125         var raf;
+                ~~~
+
+Result (68 files):
+- 0 errors
+- 0 warnings
+- 9 hints

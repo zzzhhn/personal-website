@@ -1,0 +1,401 @@
+{
+  "runtimeSource": "e2db366",
+  "publishedBase": "2852612",
+  "assetDeltaSinceBase": [],
+  "glbSha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0",
+  "slope": {
+    "byClipCurve": {
+      "n": 415,
+      "maxFloat_mm": 326.7,
+      "maxSink_mm": -3.1,
+      "floatOver20": 87,
+      "sinkOver15": 0
+    },
+    "excludingStopStepSwing": {
+      "n": 299,
+      "maxFloat_mm": 161.5,
+      "maxSink_mm": -3.1,
+      "floatOver20": 6,
+      "sinkOver15": 0
+    },
+    "limits": {
+      "maxSharedPelvisDrop": 0.05,
+      "maxShift": 0.1,
+      "maxPitchDeg": 20,
+      "maxRollDeg": 20
+    },
+    "errors": []
+  },
+  "runtimeA6": {
+    "samples": 202,
+    "sampleStride": 1,
+    "relationsAudited": true,
+    "sameShellPassed": true,
+    "crossShellPassed": true,
+    "passed": true,
+    "inputSha256": "5786b2319519169273b5246e0cd234e0406e73a355597dc4af80c60112b9d4fc"
+  },
+  "motion": {
+    "frames": 1178,
+    "errors": [],
+    "metrics": {
+      "frames": 1178,
+      "slipByAnim": {
+        "Idle": {
+          "n": 547,
+          "max_mm": 73.7
+        },
+        "Idle>TurnL": {
+          "n": 39,
+          "max_mm": 9.8
+        },
+        "Idle>Run": {
+          "n": 15,
+          "max_mm": 183.8
+        },
+        "Sprint>Idle>Run": {
+          "n": 3,
+          "max_mm": 58.6
+        },
+        "Run>Idle": {
+          "n": 6,
+          "max_mm": 37.7
+        },
+        "Run": {
+          "n": 27,
+          "max_mm": 79.6
+        },
+        "Land>Idle": {
+          "n": 144,
+          "max_mm": 105.5
+        }
+      },
+      "turnSlipMax_mm": 371.9,
+      "slipMax_mm": 183.8,
+      "worstSlips": [
+        {
+          "t0": 6.2846,
+          "t1": 6.7508,
+          "mm": 183.8,
+          "anims": "Idle>Run"
+        },
+        {
+          "t0": 6.2846,
+          "t1": 6.7508,
+          "mm": 183.8,
+          "anims": "Idle>Run"
+        },
+        {
+          "t0": 6.2846,
+          "t1": 6.7508,
+          "mm": 183.8,
+          "anims": "Idle>Run"
+        },
+        {
+          "t0": 6.2846,
+          "t1": 6.7342,
+          "mm": 117.5,
+          "anims": "Idle>Run"
+        },
+        {
+          "t0": 6.2846,
+          "t1": 6.7342,
+          "mm": 117.5,
+          "anims": "Idle>Run"
+        },
+        {
+          "t0": 6.2846,
+          "t1": 6.7342,
+          "mm": 117.5,
+          "anims": "Idle>Run"
+        }
+      ],
+      "poseJumpSteadyP99_mm": 69.3,
+      "poseJumpSwitchMax_mm": 211.1,
+      "stanceSamples": 1017,
+      "stanceMinH_mm": -48,
+      "stanceMaxH_mm": 272.3,
+      "switches": [
+        {
+          "t": 2.5977,
+          "from": "Idle",
+          "to": "TurnL",
+          "maxJump_mm": 31.2,
+          "bone": "foot.R"
+        },
+        {
+          "t": 2.6175,
+          "from": "TurnL",
+          "to": "Run",
+          "maxJump_mm": 36.6,
+          "bone": "foot.R"
+        },
+        {
+          "t": 4.0008,
+          "from": "Run",
+          "to": "Sprint",
+          "maxJump_mm": 51.9,
+          "bone": "foot.R"
+        },
+        {
+          "t": 5.7008,
+          "from": "Sprint",
+          "to": "Idle",
+          "maxJump_mm": 52.2,
+          "bone": "foot.L"
+        },
+        {
+          "t": 6.7175,
+          "from": "Idle",
+          "to": "Run",
+          "maxJump_mm": 38.4,
+          "bone": "foot.L"
+        },
+        {
+          "t": 7.8511,
+          "from": "Run",
+          "to": "Idle",
+          "maxJump_mm": 38.8,
+          "bone": "shin.R"
+        },
+        {
+          "t": 8.9676,
+          "from": "Idle",
+          "to": "Run",
+          "maxJump_mm": 38.8,
+          "bone": "foot.L"
+        },
+        {
+          "t": 9.3673,
+          "from": "Run",
+          "to": "Idle",
+          "maxJump_mm": 51.5,
+          "bone": "foot.R"
+        },
+        {
+          "t": 10.2342,
+          "from": "Idle",
+          "to": "Run",
+          "maxJump_mm": 38.1,
+          "bone": "foot.L"
+        },
+        {
+          "t": 10.6175,
+          "from": "Run",
+          "to": "Idle",
+          "maxJump_mm": 51.9,
+          "bone": "foot.R"
+        },
+        {
+          "t": 11.4343,
+          "from": "Idle",
+          "to": "Run",
+          "maxJump_mm": 19.3,
+          "bone": "hand.R"
+        },
+        {
+          "t": 13.1174,
+          "from": "Run",
+          "to": "Idle",
+          "maxJump_mm": 44,
+          "bone": "shin.L"
+        },
+        {
+          "t": 13.9999,
+          "from": "Idle",
+          "to": "JumpStart",
+          "maxJump_mm": 55.5,
+          "bone": "shin.L"
+        },
+        {
+          "t": 14.1007,
+          "from": "JumpStart",
+          "to": "JumpAir",
+          "maxJump_mm": 37.3,
+          "bone": "shin.L"
+        },
+        {
+          "t": 14.7508,
+          "from": "JumpAir",
+          "to": "Land",
+          "maxJump_mm": 47.9,
+          "bone": "shin.R"
+        },
+        {
+          "t": 15.0504,
+          "from": "Land",
+          "to": "Idle",
+          "maxJump_mm": 7.7,
+          "bone": "hand.L"
+        },
+        {
+          "t": 15.4004,
+          "from": "Idle",
+          "to": "Run",
+          "maxJump_mm": 38,
+          "bone": "foot.L"
+        },
+        {
+          "t": 16.2,
+          "from": "Run",
+          "to": "RunJumpStart",
+          "maxJump_mm": 211.1,
+          "bone": "foot.R"
+        },
+        {
+          "t": 16.2839,
+          "from": "RunJumpStart",
+          "to": "RunJumpAir",
+          "maxJump_mm": 84,
+          "bone": "hand.L"
+        },
+        {
+          "t": 16.9505,
+          "from": "RunJumpAir",
+          "to": "Run",
+          "maxJump_mm": 57.4,
+          "bone": "foot.R"
+        },
+        {
+          "t": 17.5006,
+          "from": "Run",
+          "to": "Sprint",
+          "maxJump_mm": 32,
+          "bone": "shin.R"
+        },
+        {
+          "t": 19.517,
+          "from": "Sprint",
+          "to": "RunJumpStart",
+          "maxJump_mm": 179.1,
+          "bone": "foot.R"
+        },
+        {
+          "t": 19.6006,
+          "from": "RunJumpStart",
+          "to": "RunJumpAir",
+          "maxJump_mm": 107.3,
+          "bone": "hand.R"
+        },
+        {
+          "t": 20.2673,
+          "from": "RunJumpAir",
+          "to": "Land",
+          "maxJump_mm": 48.4,
+          "bone": "shin.R"
+        },
+        {
+          "t": 20.5665,
+          "from": "Land",
+          "to": "Idle",
+          "maxJump_mm": 8.4,
+          "bone": "hand.L"
+        }
+      ]
+    },
+    "gatePassed": false
+  },
+  "performanceSmoke": {
+    "runs": [
+      {
+        "label": "published-2852612",
+        "timing": {
+          "frames": 295,
+          "seconds": 5,
+          "fps": 59,
+          "p50": 16.7,
+          "p90": 16.7,
+          "p95": 16.7,
+          "p99": 16.8,
+          "max": 100.1,
+          "over33ms": 2
+        },
+        "errors": [],
+        "render": {
+          "drawingBuffer": [
+            1920,
+            1080
+          ],
+          "cssSize": [
+            1920,
+            1080
+          ],
+          "pixelRatio": 1,
+          "dprRange": [
+            0,
+            2
+          ],
+          "quality": "high",
+          "antialias": true,
+          "msaaSamples": 4,
+          "toneMapping": 4,
+          "outputColorSpace": "srgb",
+          "shadowMapSize": 2508,
+          "shadowType": 1,
+          "postprocessing": []
+        }
+      },
+      {
+        "label": "integrated-e2db366",
+        "timing": {
+          "frames": 294,
+          "seconds": 5,
+          "fps": 58.8,
+          "p50": 16.7,
+          "p90": 16.7,
+          "p95": 16.8,
+          "p99": 16.8,
+          "max": 100,
+          "over33ms": 2
+        },
+        "errors": [],
+        "render": {
+          "drawingBuffer": [
+            1920,
+            1080
+          ],
+          "cssSize": [
+            1920,
+            1080
+          ],
+          "pixelRatio": 1,
+          "dprRange": [
+            0,
+            2
+          ],
+          "quality": "high",
+          "antialias": true,
+          "msaaSamples": 4,
+          "toneMapping": 4,
+          "outputColorSpace": "srgb",
+          "shadowMapSize": 2508,
+          "shadowType": 1,
+          "postprocessing": []
+        }
+      }
+    ],
+    "limitation": "single sequential local A/B; build started concurrently and may overlap the first sample; timing is indicative only, not M1 certification"
+  },
+  "screenshots": [
+    {
+      "file": "normal-dusk-default.jpg",
+      "bytes": 378501,
+      "committed": true,
+      "original": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/motion-followup/slope/normal-dusk-default.jpg"
+    },
+    {
+      "file": "normal-dusk-near.jpg",
+      "bytes": 427900,
+      "committed": false,
+      "original": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/motion-followup/slope/normal-dusk-near.jpg"
+    },
+    {
+      "file": "normal-night-near.jpg",
+      "bytes": 431620,
+      "committed": false,
+      "original": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/motion-followup/slope/normal-night-near.jpg"
+    }
+  ],
+  "review": "not sent: WorkBuddy global quota exhausted and Send disabled",
+  "originalWholeIslandChecks": "remain attributed to their previous source revisions; no whole-island rerun"
+}

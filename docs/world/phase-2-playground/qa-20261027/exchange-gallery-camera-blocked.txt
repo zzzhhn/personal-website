@@ -1,0 +1,91 @@
+Browser tab: 1395913741, Title: "Bobby’s island · World playtest", URL: "http://127.0.0.1:4343/world/?start=exchange&quality=balanced&paused=1&qa=1".
+1 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4343/world/?start=exchange&quality=balanced&paused=1&qa=1
+	2 container Bobby 的城岛
+		3 container
+			4 text 经历 · 项目 · 漫游
+			5 heading Bobby 的城岛, Value: 1
+				6 text Bobby 的城岛
+			7 button 回到营地, Help: 保留矿石、挖矿进度和研究结果。
+			8 pop up button 地图与设置 Esc
+		9 container
+			10 container 城岛地图 · 栈道园区
+			11 text 栈道园区
+		12 container
+			13 button QA · 读取当前渲染开销
+			14 button QA · 读取动作与接触
+			15 button QA · 读取 Club 音频
+			16 button QA · 读取水面接触
+			17 button (disabled) QA · 倾覆当前车辆
+			18 button QA · 上车并定格门洞
+			19 button QA · 定格入座
+			20 button QA · 继续上下车动作
+			21 button QA · 当前角色或车辆落水
+			22 checkbox QA · 模拟回测连接中断, Value: 0
+			24 text {
+ "sampledAt": "2026-10-26T20:04:05.965Z",
+ "calls": 165,
+ "triangles": 464147,
+ "geometries": 331,
+ "textures": 69,
+ "programs": 176,
+ "camera": [
+  57.048082587976296,
+  6.968928650051636,
+  -81.98900796913836
+ ],
+ "mode": "always",
+ "frame": 20501,
+ "delta": 0.018099999994039537,
+ "night": 0,
+ "windTime": 339.34699999996224,
+ "drawingBuffer": [
+  2013,
+  1030
+ ],
+ "cssSize": [
+  1710,
+  875
+ ],
+ "pixelRatio": 1.1772275318111343,
+ "dprRange": [
+  0,
+  1.5
+ ],
+ "quality": "balanced",
+ "antialias": true,
+ "msaaSamples": 4,
+ "toneMapping": 4,
+ "outputColorSpace": "srgb",
+ "shadowMapSize": 1254,
+ "shadowType": 1,
+ "postprocessing": []
+}
+		23 text {
+ "position": [
+  57.05,
+  6.36,
+  -81.99
+ ],
+ "yaw": 0,
+ "grounded": false,
+ "vehicle": null,
+ "drive": null,
+ "grass": {
+  "instances": 0,
+  "disturbers": 3,
+  "trampled": 46,
+  "strength": 0.946
+ },
+ "exchange": {
+  "phase": "closed",
+  "days": 0,
+  "day": 0,
+  "cash": 10000,
+  "units": 0,
+  "equity": 10000,
+  "message": "ring-first",
+  "ledger": []
+ }
+}
+
+The focused UI element is 13 button QA · 读取当前渲染开销

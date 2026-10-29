@@ -1,0 +1,19 @@
+{
+  "baseline": {
+    "triangles": 47965,
+    "vertices": 89241,
+    "solids": "fe75e95906d935d2e50d0587960c55d5e859f1591baaaef47332f705ae01be1c",
+    "ground": "55551b26f5177ddcf20ac8bc7f518fef2b71fb907372f80ea24c0d54e9f2c6de",
+    "walk": "489aae1ce87d2d44096aec3dc00dac7bfac88bec0120b9e8a64890104c659481",
+    "positions": "1a5a39284ca897c23d9d6b214ba1868753dba869d5c342b95ec8549d53e45fac"
+  },
+  "current": {
+    "triangles": 47965,
+    "vertices": 89241,
+    "solids": "fe75e95906d935d2e50d0587960c55d5e859f1591baaaef47332f705ae01be1c",
+    "ground": "55551b26f5177ddcf20ac8bc7f518fef2b71fb907372f80ea24c0d54e9f2c6de",
+    "walk": "489aae1ce87d2d44096aec3dc00dac7bfac88bec0120b9e8a64890104c659481",
+    "positions": "1a5a39284ca897c23d9d6b214ba1868753dba869d5c342b95ec8549d53e45fac"
+  },
+  "unchanged": true
+}

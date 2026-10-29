@@ -1,0 +1,224 @@
+{
+  "liveBell": {
+    "exchangeAudio": {
+      "mounted": true,
+      "emitted": 5,
+      "last": "bell",
+      "activeHandles": 1,
+      "updates": 27,
+      "timers": 0
+    },
+    "park": {
+      "owners": 5,
+      "started": true,
+      "timer": false,
+      "subscribed": true,
+      "state": "running",
+      "transitioning": false,
+      "voices": 1,
+      "ticks": 0,
+      "muted": false,
+      "cueVoices": 1,
+      "cuePending": false,
+      "pcmKeys": 5,
+      "pcmBytes": 257280,
+      "candidate": null,
+      "previewPlaying": false,
+      "previewPending": false,
+      "previewBytes": 0,
+      "roaming": {
+        "phase": "ready",
+        "sources": 1,
+        "buffers": 1,
+        "loading": false,
+        "decoding": false,
+        "bytes": 6912000,
+        "seconds": 36,
+        "offset": 0,
+        "level": 1.984
+      }
+    }
+  },
+  "paused": {
+    "exchangeAudio": {
+      "mounted": true,
+      "emitted": 5,
+      "last": "bell",
+      "activeHandles": 0,
+      "updates": 35,
+      "timers": 0
+    },
+    "park": {
+      "owners": 5,
+      "started": true,
+      "timer": false,
+      "subscribed": true,
+      "state": "suspended",
+      "transitioning": false,
+      "voices": 0,
+      "ticks": 0,
+      "muted": false,
+      "cueVoices": 0,
+      "cuePending": false,
+      "pcmKeys": 5,
+      "pcmBytes": 257280,
+      "candidate": null,
+      "previewPlaying": false,
+      "previewPending": false,
+      "previewBytes": 0,
+      "roaming": {
+        "phase": "ready",
+        "sources": 0,
+        "buffers": 1,
+        "loading": false,
+        "decoding": false,
+        "bytes": 6912000,
+        "seconds": 36,
+        "offset": 26.954666666666668,
+        "level": -1
+      }
+    }
+  },
+  "resumed": {
+    "exchangeAudio": {
+      "mounted": true,
+      "emitted": 5,
+      "last": "bell",
+      "activeHandles": 0,
+      "updates": 36,
+      "timers": 0
+    },
+    "park": {
+      "owners": 5,
+      "started": true,
+      "timer": false,
+      "subscribed": true,
+      "state": "running",
+      "transitioning": false,
+      "voices": 0,
+      "ticks": 0,
+      "muted": false,
+      "cueVoices": 0,
+      "cuePending": false,
+      "pcmKeys": 5,
+      "pcmBytes": 257280,
+      "candidate": null,
+      "previewPlaying": false,
+      "previewPending": false,
+      "previewBytes": 0,
+      "roaming": {
+        "phase": "ready",
+        "sources": 1,
+        "buffers": 1,
+        "loading": false,
+        "decoding": false,
+        "bytes": 6912000,
+        "seconds": 36,
+        "offset": 26.954666666666668,
+        "level": 3.2
+      }
+    }
+  },
+  "complete": {
+    "exchangeAudio": {
+      "mounted": true,
+      "emitted": 10,
+      "last": "receipt",
+      "activeHandles": 0,
+      "updates": 84,
+      "timers": 0
+    },
+    "park": {
+      "owners": 4,
+      "started": true,
+      "timer": false,
+      "subscribed": true,
+      "state": "running",
+      "transitioning": false,
+      "voices": 0,
+      "ticks": 0,
+      "muted": false,
+      "cueVoices": 0,
+      "cuePending": false,
+      "pcmKeys": 10,
+      "pcmBytes": 661440,
+      "candidate": null,
+      "previewPlaying": false,
+      "previewPending": false,
+      "previewBytes": 0,
+      "roaming": {
+        "phase": "ready",
+        "sources": 1,
+        "buffers": 1,
+        "loading": false,
+        "decoding": false,
+        "bytes": 6912000,
+        "seconds": 36,
+        "offset": 26.954666666666668,
+        "level": 3.2
+      }
+    }
+  },
+  "review": {
+    "exchangeAudio": {
+      "mounted": true,
+      "emitted": 11,
+      "last": "detent",
+      "activeHandles": 0,
+      "updates": 88,
+      "timers": 0
+    },
+    "park": {
+      "owners": 5,
+      "started": true,
+      "timer": false,
+      "subscribed": true,
+      "state": "running",
+      "transitioning": false,
+      "voices": 0,
+      "ticks": 0,
+      "muted": false,
+      "cueVoices": 0,
+      "cuePending": false,
+      "pcmKeys": 11,
+      "pcmBytes": 678720,
+      "candidate": null,
+      "previewPlaying": false,
+      "previewPending": false,
+      "previewBytes": 0,
+      "roaming": {
+        "phase": "ready",
+        "sources": 1,
+        "buffers": 1,
+        "loading": false,
+        "decoding": false,
+        "bytes": 6912000,
+        "seconds": 36,
+        "offset": 26.954666666666668,
+        "level": 3.2
+      }
+    }
+  },
+  "reviewState": {
+    "exchangeReview": {
+      "index": 0,
+      "phase": "complete",
+      "intervals": 3,
+      "contact": "review",
+      "contacts": 11,
+      "carried": null,
+      "selection": {
+        "from": "2023-05-02",
+        "through": "2024-04-30",
+        "units": 10,
+        "pnl": 221.83818518157932,
+        "previousPnl": null,
+        "difference": null,
+        "marks": 251,
+        "previousMarks": 0
+      }
+    }
+  },
+  "errors": [],
+  "note": "Actual E contacts; ordinary archive-to-desk walk; QA positioning between unladen stations and to review (which clears receipt)."
+}

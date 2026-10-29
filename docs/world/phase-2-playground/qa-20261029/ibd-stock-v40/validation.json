@@ -1,0 +1,53 @@
+{
+  "tests": {
+    "pass": 66,
+    "fail": 0
+  },
+  "typecheck": {
+    "strict": true,
+    "exitCode": 0
+  },
+  "reference": {
+    "scene": "ibd-yard",
+    "style": "approved",
+    "layout": "approved",
+    "checkerPassed": true
+  },
+  "build": {
+    "exitCode": 0,
+    "seconds": 5.85,
+    "heapLimitMiB": 1536,
+    "firstAttemptMiB": 768,
+    "firstAttemptError": "explicit V8 heap limit reached"
+  },
+  "geometry": {
+    "representativeVisibleTriangles": 72235,
+    "representativeBudget": 75000,
+    "staticBudget": 48000
+  },
+  "camera": {
+    "id": "ibd-stock-detail-day/night",
+    "position": [
+      -72.5,
+      6.8,
+      -178
+    ],
+    "target": [
+      -72.5,
+      2.8,
+      -195.8
+    ],
+    "fov": 50,
+    "viewport": [
+      1710,
+      875
+    ],
+    "quality": "balanced",
+    "weather": "clear",
+    "worldMinutes": [
+      720,
+      0
+    ],
+    "timeRunning": false
+  }
+}

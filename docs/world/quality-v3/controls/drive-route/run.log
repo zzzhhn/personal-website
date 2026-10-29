@@ -1,0 +1,4 @@
+{"name":"offroad-coast-route","reached":true,"maxCrossTrack":1.1506156921386719,"minY":2.1566500663757324,"last":[46.870513916015625,2.1963000297546387,-45.34624481201172]}
+{"name":"coupe-coast-route","reached":true,"maxCrossTrack":1.2091453855734522,"minY":2.1036953926086426,"last":[46.6966438293457,2.1358730792999268,-45.32025909423828]}
+{"name":"van-coast-route","reached":true,"maxCrossTrack":2.840391159057617,"minY":2.4115545749664307,"last":[46.650821685791016,2.4549999237060547,-45.33512878417969]}
+{"total":15,"passed":15,"failed":[],"errors":[]}

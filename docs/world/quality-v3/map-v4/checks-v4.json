@@ -1,0 +1,819 @@
+{
+ "summary": {
+  "outline": {
+   "old_area_m2": 8954.0,
+   "v4_area_m2": 20541.0,
+   "area_ratio": 2.29,
+   "old_perimeter_m": 348.5,
+   "v4_perimeter_m": 526.7,
+   "old_bbox": [
+    -70,
+    -57,
+    31,
+    59
+   ],
+   "v4_bbox": [
+    -99,
+    -108,
+    34,
+    86
+   ]
+  },
+  "road_length_m": {
+   "old_drivable": 131.8,
+   "v4_drivable": 762.5,
+   "v4_main_loop": 416.6,
+   "by_class": {
+    "coastal": 332.6,
+    "avenue": 84.0,
+    "collector": 144.3,
+    "local": 83.0,
+    "bridge": 22.2,
+    "dirt": 96.4,
+    "foot": 75.0,
+    "boardwalk": 54.7
+   }
+  },
+  "loop_seconds": {
+   "offroad_top_22mps": 18.9,
+   "coupe_top_29mps": 14.4,
+   "cruise_12mps": 34.7
+  },
+  "timeline_route_m": {
+   "old": 131.8,
+   "v4": 153.5
+  },
+  "timeline_route_points": [
+   [
+    -30,
+    4.84,
+    34
+   ],
+   [
+    -18,
+    4.84,
+    34
+   ],
+   [
+    -5,
+    1.14,
+    29
+   ],
+   [
+    12,
+    1.14,
+    29.6
+   ],
+   [
+    21,
+    1.14,
+    30
+   ],
+   [
+    21,
+    1.14,
+    -43
+   ],
+   [
+    26,
+    1.14,
+    -42
+   ],
+   [
+    43,
+    1.14,
+    -44
+   ],
+   [
+    49,
+    1.14,
+    -46
+   ]
+  ],
+  "density": {
+   "downtown_avenue": {
+    "length_m": 84.0,
+    "lamps_per_100m": 7.1,
+    "junctions_per_100m": 4.8,
+    "frontage_buildings_per_100m": 7.1,
+    "incl_second_row_per_100m": 11.9
+   },
+   "old_town_local": {
+    "length_m": 83.0,
+    "lamps_per_100m": 2.4,
+    "junctions_per_100m": 4.8
+   },
+   "coastal_ring": {
+    "length_m": 332.6,
+    "lamps_per_100m": 3.3,
+    "junctions_per_100m": 1.2,
+    "buildings_per_100m": 1.5
+   },
+   "hill_trail": {
+    "length_m": 96.4,
+    "lamps_per_100m": 0,
+    "trail_posts_per_100m": 12.5
+   }
+  },
+  "per_road": [
+   {
+    "road": "camp-ramp",
+    "class": "collector",
+    "length_m": 25.9,
+    "lamps": 2,
+    "lamps_per_100m": 7.7,
+    "junctions": [],
+    "junctions_per_100m": 0.0
+   },
+   {
+    "road": "camp-road",
+    "class": "collector",
+    "length_m": 26.0,
+    "lamps": 1,
+    "lamps_per_100m": 3.8,
+    "junctions": [
+     "J1"
+    ],
+    "junctions_per_100m": 3.8
+   },
+   {
+    "road": "avenue",
+    "class": "avenue",
+    "length_m": 84.0,
+    "lamps": 6,
+    "lamps_per_100m": 7.1,
+    "junctions": [
+     "J1",
+     "J2",
+     "J3",
+     "J8"
+    ],
+    "junctions_per_100m": 4.8
+   },
+   {
+    "road": "bridge-link",
+    "class": "bridge",
+    "length_m": 5.1,
+    "lamps": 0,
+    "lamps_per_100m": 0.0,
+    "junctions": [
+     "J3"
+    ],
+    "junctions_per_100m": 19.6
+   },
+   {
+    "road": "bridge",
+    "class": "bridge",
+    "length_m": 17.1,
+    "lamps": 0,
+    "lamps_per_100m": 0.0,
+    "junctions": [],
+    "junctions_per_100m": 0.0
+   },
+   {
+    "road": "park-spur",
+    "class": "collector",
+    "length_m": 6.3,
+    "lamps": 1,
+    "lamps_per_100m": 15.8,
+    "junctions": [],
+    "junctions_per_100m": 0.0
+   },
+   {
+    "road": "ring-north",
+    "class": "coastal",
+    "length_m": 117.8,
+    "lamps": 2,
+    "lamps_per_100m": 1.7,
+    "junctions": [
+     "J8",
+     "J4",
+     "J5",
+     "J7"
+    ],
+    "junctions_per_100m": 3.4
+   },
+   {
+    "road": "ring-west",
+    "class": "coastal",
+    "length_m": 81.5,
+    "lamps": 3,
+    "lamps_per_100m": 3.7,
+    "junctions": [
+     "J7"
+    ],
+    "junctions_per_100m": 1.2
+   },
+   {
+    "road": "ring-south",
+    "class": "coastal",
+    "length_m": 133.2,
+    "lamps": 6,
+    "lamps_per_100m": 4.5,
+    "junctions": [
+     "J1"
+    ],
+    "junctions_per_100m": 0.8
+   },
+   {
+    "road": "year-street",
+    "class": "local",
+    "length_m": 25.0,
+    "lamps": 0,
+    "lamps_per_100m": 0.0,
+    "junctions": [
+     "J2",
+     "J6"
+    ],
+    "junctions_per_100m": 8.0
+   },
+   {
+    "road": "west-road",
+    "class": "collector",
+    "length_m": 86.0,
+    "lamps": 4,
+    "lamps_per_100m": 4.7,
+    "junctions": [
+     "J6",
+     "J7"
+    ],
+    "junctions_per_100m": 2.3
+   },
+   {
+    "road": "back-street",
+    "class": "local",
+    "length_m": 58.0,
+    "lamps": 2,
+    "lamps_per_100m": 3.4,
+    "junctions": [
+     "J4",
+     "J6"
+    ],
+    "junctions_per_100m": 3.4
+   },
+   {
+    "road": "ridge-trail",
+    "class": "dirt",
+    "length_m": 96.4,
+    "lamps": 0,
+    "lamps_per_100m": 0.0,
+    "junctions": [
+     "J5"
+    ],
+    "junctions_per_100m": 1.0
+   },
+   {
+    "road": "beach-walk",
+    "class": "foot",
+    "length_m": 75.0,
+    "lamps": 5,
+    "lamps_per_100m": 6.7,
+    "junctions": [],
+    "junctions_per_100m": 0.0
+   },
+   {
+    "road": "boardwalk",
+    "class": "boardwalk",
+    "length_m": 54.7,
+    "lamps": 0,
+    "lamps_per_100m": 0.0,
+    "junctions": [],
+    "junctions_per_100m": 0.0
+   }
+  ],
+  "furniture": {
+   "street_lamp": 32,
+   "traffic_signal_pole": 10,
+   "stop_sign": 8,
+   "street_name_sign": 8,
+   "direction_sign": 6,
+   "crosswalk": 10,
+   "guardrail_m": 165,
+   "delineator": 32,
+   "chevron_sign": 24,
+   "bollard": 36,
+   "bench": 17,
+   "bin": 14,
+   "hydrant": 2,
+   "parking_bay": 14,
+   "bus_shelter": 1,
+   "trail_post": 12,
+   "fence_m": 25
+  },
+  "ridge_flank_deg": 23.2,
+  "trail_grades_pct": [
+   0.0,
+   7.6,
+   7.6,
+   7.7,
+   7.5,
+   7.6,
+   7.6,
+   7.6,
+   7.6,
+   7.7,
+   7.5,
+   7.6,
+   7.6,
+   7.5,
+   7.5,
+   7.7,
+   7.6
+  ]
+ },
+ "checks": [
+  {
+   "name": "v4 base outline is convex (WorldLandform.coastFrame assumption)",
+   "pass": true,
+   "value": true,
+   "limit": "true"
+  },
+  {
+   "name": "v4 outline contains every old outline vertex (pure expansion)",
+   "pass": true,
+   "value": [],
+   "limit": "[]"
+  },
+  {
+   "name": "land roads keep paved edge >= 0.5 m inside the base outline (topPush adds 0.3-3.4 m of top; beach lies outside)",
+   "pass": true,
+   "value": [
+    {
+     "road": "camp-ramp",
+     "margin_m": 29.56
+    },
+    {
+     "road": "camp-road",
+     "margin_m": 4.48
+    },
+    {
+     "road": "avenue",
+     "margin_m": 0.37
+    },
+    {
+     "road": "ring-north",
+     "margin_m": 0.87
+    },
+    {
+     "road": "ring-west",
+     "margin_m": 2.73
+    },
+    {
+     "road": "ring-south",
+     "margin_m": 1.77
+    },
+    {
+     "road": "year-street",
+     "margin_m": 6.59
+    },
+    {
+     "road": "west-road",
+     "margin_m": 2.73
+    },
+    {
+     "road": "back-street",
+     "margin_m": 25.59
+    },
+    {
+     "road": "ridge-trail",
+     "margin_m": 4.97
+    }
+   ],
+   "limit": ">= 0"
+  },
+  {
+   "name": "new roads clear the camp plateau rim + 19 deg flank foot (37.4 m)",
+   "pass": true,
+   "value": [
+    {
+     "road": "avenue",
+     "margin_m": 19.6
+    },
+    {
+     "road": "bridge-link",
+     "margin_m": 53.83
+    },
+    {
+     "road": "bridge",
+     "margin_m": 56.44
+    },
+    {
+     "road": "park-spur",
+     "margin_m": 69.8
+    },
+    {
+     "road": "ring-north",
+     "margin_m": 29.11
+    },
+    {
+     "road": "ring-west",
+     "margin_m": 0.18
+    },
+    {
+     "road": "ring-south",
+     "margin_m": 1.35
+    },
+    {
+     "road": "year-street",
+     "margin_m": 14.74
+    },
+    {
+     "road": "west-road",
+     "margin_m": 12.47
+    },
+    {
+     "road": "back-street",
+     "margin_m": 4.14
+    },
+    {
+     "road": "ridge-trail",
+     "margin_m": 44.7
+    },
+    {
+     "road": "beach-walk",
+     "margin_m": 18.66
+    },
+    {
+     "road": "boardwalk",
+     "margin_m": 64.6
+    }
+   ],
+   "limit": ">= 0"
+  },
+  {
+   "name": "roads other than the hill trail clear the ridge foot",
+   "pass": true,
+   "value": [
+    {
+     "road": "camp-ramp",
+     "margin_m": 86.28
+    },
+    {
+     "road": "camp-road",
+     "margin_m": 86.28
+    },
+    {
+     "road": "avenue",
+     "margin_m": 30.18
+    },
+    {
+     "road": "bridge-link",
+     "margin_m": 37.0
+    },
+    {
+     "road": "bridge",
+     "margin_m": 41.62
+    },
+    {
+     "road": "park-spur",
+     "margin_m": 54.8
+    },
+    {
+     "road": "ring-north",
+     "margin_m": 0.5
+    },
+    {
+     "road": "ring-west",
+     "margin_m": 50.99
+    },
+    {
+     "road": "ring-south",
+     "margin_m": 95.57
+    },
+    {
+     "road": "year-street",
+     "margin_m": 48.17
+    },
+    {
+     "road": "west-road",
+     "margin_m": 27.5
+    },
+    {
+     "road": "back-street",
+     "margin_m": 11.71
+    },
+    {
+     "road": "beach-walk",
+     "margin_m": 138.55
+    },
+    {
+     "road": "boardwalk",
+     "margin_m": 62.07
+    }
+   ],
+   "limit": ">= 0"
+  },
+  {
+   "name": "ridge flank slope <= 25 deg (walkable surface)",
+   "pass": true,
+   "value": 23.2,
+   "limit": "<= 25"
+  },
+  {
+   "name": "ridge foot stays inside the base outline (north face meets the beach)",
+   "pass": true,
+   "value": 2.53,
+   "limit": ">= 0"
+  },
+  {
+   "name": "hill trail grade per leg <= 14 % (the frozen camp ramp is about 27 %)",
+   "pass": true,
+   "value": [
+    0.0,
+    7.6,
+    7.6,
+    7.7,
+    7.5,
+    7.6,
+    7.6,
+    7.6,
+    7.6,
+    7.7,
+    7.5,
+    7.6,
+    7.6,
+    7.5,
+    7.5,
+    7.7,
+    7.6
+   ],
+   "limit": "<= 14"
+  },
+  {
+   "name": "timeline route keeps the frozen camp exit + ramp points",
+   "pass": true,
+   "value": [
+    [
+     -30,
+     34
+    ],
+    [
+     -18,
+     34
+    ],
+    [
+     -5,
+     29
+    ]
+   ],
+   "limit": "[(-30, 34), (-18, 34), (-5, 29)]"
+  },
+  {
+   "name": "volumes/plots keep >= 0.8 m from paved edges (car park = back street dead end; unchanged plots exempt)",
+   "pass": true,
+   "value": [
+    {
+     "rect": "building-sdic",
+     "road_clearance_m": 1.26
+    },
+    {
+     "rect": "building-worldquant",
+     "road_clearance_m": 2.0
+    },
+    {
+     "rect": "building-moe",
+     "road_clearance_m": 1.0
+    },
+    {
+     "rect": "building-aime",
+     "road_clearance_m": 1.0
+    },
+    {
+     "rect": "building-video-rebirth",
+     "road_clearance_m": 3.0
+    },
+    {
+     "rect": "building-hunyuan",
+     "road_clearance_m": 1.0
+    },
+    {
+     "rect": "massing-0-old-town",
+     "road_clearance_m": 1.0
+    },
+    {
+     "rect": "massing-1-old-town",
+     "road_clearance_m": 2.5
+    },
+    {
+     "rect": "massing-2-old-town",
+     "road_clearance_m": 1.0
+    },
+    {
+     "rect": "massing-3-old-town",
+     "road_clearance_m": 1.0
+    },
+    {
+     "rect": "massing-4-west-shore",
+     "road_clearance_m": 3.5
+    },
+    {
+     "rect": "massing-5-west-shore",
+     "road_clearance_m": 2.0
+    },
+    {
+     "rect": "massing-6-west-shore",
+     "road_clearance_m": 3.5
+    },
+    {
+     "rect": "massing-7-south-beach",
+     "road_clearance_m": 2.84
+    },
+    {
+     "rect": "massing-8-south-beach",
+     "road_clearance_m": 1.26
+    },
+    {
+     "rect": "foundation-film",
+     "road_clearance_m": 2.5
+    },
+    {
+     "rect": "plaza-pocket-park",
+     "road_clearance_m": 2.5
+    },
+    {
+     "rect": "plaza-car-park",
+     "road_clearance_m": 9.5
+    }
+   ],
+   "limit": ">= 0.8"
+  },
+  {
+   "name": "volumes on land (beach kiosks may sit <= 3.5 m onto the sand), off camp flank (unchanged plots exempt) and ridge",
+   "pass": true,
+   "value": [
+    {
+     "rect": "building-sdic",
+     "outline_margin_m": 21.2,
+     "camp_margin_m": 7.73,
+     "ridge_margin_m": 79.83
+    },
+    {
+     "rect": "building-worldquant",
+     "outline_margin_m": 22.05,
+     "camp_margin_m": 10.79,
+     "ridge_margin_m": 69.47
+    },
+    {
+     "rect": "building-moe",
+     "outline_margin_m": 21.55,
+     "camp_margin_m": 14.6,
+     "ridge_margin_m": 59.81
+    },
+    {
+     "rect": "building-aime",
+     "outline_margin_m": 19.83,
+     "camp_margin_m": 27.69,
+     "ridge_margin_m": 43.18
+    },
+    {
+     "rect": "building-video-rebirth",
+     "outline_margin_m": 18.54,
+     "camp_margin_m": 36.71,
+     "ridge_margin_m": 34.5
+    },
+    {
+     "rect": "building-hunyuan",
+     "outline_margin_m": 17.21,
+     "camp_margin_m": 44.17,
+     "ridge_margin_m": 25.09
+    },
+    {
+     "rect": "massing-0-old-town",
+     "outline_margin_m": 38.16,
+     "camp_margin_m": 34.88,
+     "ridge_margin_m": 16.11
+    },
+    {
+     "rect": "massing-1-old-town",
+     "outline_margin_m": 48.15,
+     "camp_margin_m": 31.07,
+     "ridge_margin_m": 14.12
+    },
+    {
+     "rect": "massing-2-old-town",
+     "outline_margin_m": 39.38,
+     "camp_margin_m": 26.57,
+     "ridge_margin_m": 24.93
+    },
+    {
+     "rect": "massing-3-old-town",
+     "outline_margin_m": 42.55,
+     "camp_margin_m": 0.84,
+     "ridge_margin_m": 55.68
+    },
+    {
+     "rect": "massing-4-west-shore",
+     "outline_margin_m": 25.24,
+     "camp_margin_m": 10.49,
+     "ridge_margin_m": 50.95
+    },
+    {
+     "rect": "massing-5-west-shore",
+     "outline_margin_m": 18.19,
+     "camp_margin_m": 14.7,
+     "ridge_margin_m": 56.63
+    },
+    {
+     "rect": "massing-6-west-shore",
+     "outline_margin_m": 21.1,
+     "camp_margin_m": 6.16,
+     "ridge_margin_m": 63.04
+    },
+    {
+     "rect": "massing-7-south-beach",
+     "outline_margin_m": -3.11,
+     "camp_margin_m": 16.66,
+     "ridge_margin_m": 144.63
+    },
+    {
+     "rect": "massing-8-south-beach",
+     "outline_margin_m": -1.99,
+     "camp_margin_m": 19.63,
+     "ridge_margin_m": 141.15
+    },
+    {
+     "rect": "foundation-film",
+     "outline_margin_m": 4.99,
+     "camp_margin_m": 63.94,
+     "ridge_margin_m": 9.53
+    },
+    {
+     "rect": "foundation-community",
+     "outline_margin_m": 34.83,
+     "camp_margin_m": -0.06,
+     "ridge_margin_m": 43.25
+    },
+    {
+     "rect": "foundation-contact",
+     "outline_margin_m": 24.31,
+     "camp_margin_m": -10.67,
+     "ridge_margin_m": 98.76
+    },
+    {
+     "rect": "plaza-pocket-park",
+     "outline_margin_m": 46.57,
+     "camp_margin_m": 32.69,
+     "ridge_margin_m": 14.35
+    },
+    {
+     "rect": "plaza-car-park",
+     "outline_margin_m": 33.57,
+     "camp_margin_m": 0.18,
+     "ridge_margin_m": 67.74
+    }
+   ],
+   "limit": "outline >= -3.5, camp >= 0, ridge >= 0"
+  },
+  {
+   "name": "no two volumes/plots overlap",
+   "pass": true,
+   "value": [],
+   "limit": "[]"
+  },
+  {
+   "name": "bridge open-water span not shortened (outline exit x within +0.5 m of today)",
+   "pass": true,
+   "value": {
+    "old_x": 29.45,
+    "v4_x": 29.45
+   },
+   "limit": "v4 <= old + 0.5"
+  },
+  {
+   "name": "buildings ordered by start date south -> north (z strictly decreasing)",
+   "pass": true,
+   "value": [
+    18.5,
+    7.5,
+    -2.5,
+    -21.5,
+    -32.5,
+    -43.0
+   ],
+   "limit": "strictly decreasing"
+  },
+  {
+   "name": "year pillar (east face + 5 m) on the west curb, 0.3-1.5 m from carriageway edge x=17",
+   "pass": true,
+   "value": [
+    16.5,
+    16.5,
+    16.5,
+    16.5,
+    16.5,
+    16.5
+   ],
+   "limit": "15.5..16.7"
+  },
+  {
+   "name": "coupe lay-by in the sea-side sidewalk (x 25-27.5), car body clear of the carriageway",
+   "pass": true,
+   "value": [
+    26.2,
+    1.14,
+    2
+   ],
+   "limit": "x 25.95..26.55 (1.9 m car)"
+  }
+ ]
+}

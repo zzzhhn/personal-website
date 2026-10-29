@@ -1,0 +1,355 @@
+{
+  "generatedAt": "2026-10-22T06:57:04.982Z",
+  "terrain": {
+    "triangles": 109358,
+    "fineBlocks": 2952,
+    "coarseBlocks": 7447,
+    "surfaceTriangles": 103969,
+    "solidTriangles": 5389,
+    "maxWalkableDeg": 24.986418799610394,
+    "buildMs": 701
+  },
+  "slopeHistogramSurface": {
+    "0-5": 46661,
+    "5-10": 31043,
+    "10-15": 11925,
+    "20-25": 1645,
+    "15-20": 12695
+  },
+  "seaTriangles": 152352,
+  "shoreFieldBytes": 668868,
+  "checks": [
+    {
+      "name": "no NaN vertex",
+      "pass": true,
+      "value": 55644,
+      "limit": "all finite"
+    },
+    {
+      "name": "surface triangles <= 25 deg (standable)",
+      "pass": true,
+      "value": 24.986,
+      "limit": "<= 25"
+    },
+    {
+      "name": "surface triangles face up",
+      "pass": true,
+      "value": 0,
+      "limit": "0 downward"
+    },
+    {
+      "name": "solid triangles > 25 deg",
+      "pass": true,
+      "value": 25.003,
+      "limit": "> 25"
+    },
+    {
+      "name": "terrain below every road top",
+      "pass": true,
+      "value": -0.035,
+      "limit": "<= 0 m"
+    },
+    {
+      "name": "camp exit/ramp slab supported",
+      "pass": true,
+      "value": 0.222,
+      "limit": "<= 0.35 m gap below slab"
+    },
+    {
+      "name": "footprints supported, terrain never above their base/top (outside existing road slabs)",
+      "pass": true,
+      "value": [
+        {
+          "name": "building-sdic",
+          "lo": 1,
+          "hi": 1,
+          "top": 1,
+          "roadCoveredSamples": 9
+        },
+        {
+          "name": "building-worldquant",
+          "lo": 1,
+          "hi": 1,
+          "top": 1,
+          "roadCoveredSamples": 0
+        },
+        {
+          "name": "building-moe",
+          "lo": 1,
+          "hi": 1,
+          "top": 1,
+          "roadCoveredSamples": 0
+        },
+        {
+          "name": "building-aime",
+          "lo": 1,
+          "hi": 1,
+          "top": 1,
+          "roadCoveredSamples": 0
+        },
+        {
+          "name": "building-video-rebirth",
+          "lo": 1,
+          "hi": 1,
+          "top": 1,
+          "roadCoveredSamples": 0
+        },
+        {
+          "name": "building-hunyuan",
+          "lo": 1,
+          "hi": 1,
+          "top": 1,
+          "roadCoveredSamples": 0
+        },
+        {
+          "name": "foundation-film",
+          "lo": 1,
+          "hi": 1,
+          "top": 1.1500000000000001,
+          "roadCoveredSamples": 0
+        },
+        {
+          "name": "foundation-community",
+          "lo": 1,
+          "hi": 1,
+          "top": 1.1500000000000001,
+          "roadCoveredSamples": 0
+        },
+        {
+          "name": "foundation-contact",
+          "lo": 1,
+          "hi": 1,
+          "top": 1.1500000000000001,
+          "roadCoveredSamples": 4
+        },
+        {
+          "name": "camp-plateau r<=24",
+          "lo": 4.8,
+          "hi": 4.838,
+          "top": 4.8,
+          "roadCoveredSamples": 10
+        }
+      ],
+      "limit": "support within 0.1 m (foundations 0.25 m), never above; camp 4.79-4.85"
+    },
+    {
+      "name": "camp spawn ground unchanged",
+      "pass": true,
+      "value": 4.800000190734863,
+      "limit": "4.80 +- 0.03"
+    },
+    {
+      "name": "vehicle spots (offroad on ramp head embankment, coupe on bay)",
+      "pass": true,
+      "value": [
+        [
+          "offroad",
+          4.800000190734863
+        ],
+        [
+          "coupe",
+          1
+        ],
+        [
+          "van",
+          -4.176099061965942
+        ]
+      ],
+      "limit": "terrain <= road surface"
+    },
+    {
+      "name": "irregular shoreline (local radius deviation)",
+      "pass": true,
+      "value": {
+        "gateWindowDeg": 20,
+        "minDev": -0.104,
+        "maxDev": 0.12,
+        "bayToHeadlandCrossings": 11,
+        "perimeter": 468,
+        "metresPerCrossing": 42.5,
+        "broadWindowDeg30": {
+          "crossings": 8,
+          "metresPerCrossing": 58.5
+        }
+      },
+      "limit": "deviation range > 6 %, 30-50 m per bay/headland crossing"
+    },
+    {
+      "name": "beach width (non-town coast, top edge to waterline)",
+      "pass": true,
+      "value": {
+        "min": 5,
+        "max": 12
+      },
+      "limit": "5-12 m"
+    },
+    {
+      "name": "underwater shelf to -2.5 m along coast normal",
+      "pass": true,
+      "value": {
+        "samples": 71,
+        "min": 10.25,
+        "max": 16.25,
+        "mean": 13.1,
+        "share8to20": 1
+      },
+      "limit": ">= 90 % of samples reach -2.5 m within 8-20 m"
+    },
+    {
+      "name": "rock groups seated",
+      "pass": true,
+      "value": [
+        [
+          "G21",
+          [
+            -32.2,
+            1,
+            5.75
+          ]
+        ],
+        [
+          "G22",
+          [
+            -28.99,
+            1.47,
+            7.47
+          ]
+        ],
+        [
+          "G23",
+          [
+            -29.87,
+            1,
+            5.14
+          ]
+        ],
+        [
+          "G21",
+          [
+            -22.38,
+            2.12,
+            14.67
+          ]
+        ],
+        [
+          "G21",
+          [
+            -21.27,
+            1.47,
+            45.06
+          ]
+        ],
+        [
+          "G23",
+          [
+            -21.58,
+            2.23,
+            47.13
+          ]
+        ],
+        [
+          "G21",
+          [
+            -71.46,
+            2.29,
+            32.06
+          ]
+        ],
+        [
+          "G22",
+          [
+            -73.57,
+            2.14,
+            28.35
+          ]
+        ],
+        [
+          "G21",
+          [
+            20.87,
+            -0.54,
+            -55.2
+          ]
+        ],
+        [
+          "G22",
+          [
+            21.94,
+            0.27,
+            -56.9
+          ]
+        ],
+        [
+          "G21",
+          [
+            25.35,
+            -1.3,
+            18.59
+          ]
+        ],
+        [
+          "G23",
+          [
+            26.9,
+            0.41,
+            19.5
+          ]
+        ]
+      ],
+      "limit": "seat = lowest footprint ground"
+    },
+    {
+      "name": "nearestDryPoint lands on terrain above water",
+      "pass": true,
+      "value": [
+        {
+          "from": [
+            -90,
+            10
+          ],
+          "to": [
+            -80.71108845857711,
+            -0.07593377551177385,
+            11.991512584851192
+          ]
+        },
+        {
+          "from": [
+            0,
+            75
+          ],
+          "to": [
+            -4.256588786409016,
+            -0.09667627592493838,
+            64.3167677221069
+          ]
+        },
+        {
+          "from": [
+            10,
+            -80
+          ],
+          "to": [
+            8.000695669393322,
+            -0.09344285161868175,
+            -65.1338376776783
+          ]
+        },
+        {
+          "from": [
+            40,
+            20
+          ],
+          "to": [
+            32.034805216247854,
+            -0.07309559814096628,
+            19.25456586012743
+          ]
+        }
+      ],
+      "limit": "h > WATER_Y + 0.5"
+    }
+  ],
+  "passed": 14,
+  "failed": []
+}

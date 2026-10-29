@@ -1,0 +1,6 @@
+{
+  "src/components/world/WorldEntry.tsx": "eecedcd21ddcb7640308c9d46546aed994b08d7de33b76db91fa4b381a9e82a3",
+  "src/components/world/WorldRuntime.tsx": "637d86089c654b7720eef9928ee92a606d2bca22d3547787a3b62ca9ba6a2af9",
+  "src/components/world/world-i18n.ts": "0ca3f2a39db8af39d6e8932d3a18fdb34291ff7b71d6f6643c5b59893dd19433",
+  "public/assets/world/entry/G28.glb": "1dd81e576c14ca84057d6cd8bd54aac07f1429acc629f67e8403dd25e2324141"
+}

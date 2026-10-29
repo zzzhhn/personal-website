@@ -1,0 +1,270 @@
+{
+  "base": "http://127.0.0.1:4322",
+  "tag": "before",
+  "views": [
+    {
+      "name": "retina",
+      "width": 1840,
+      "height": 1117,
+      "dpr": 2,
+      "shots": [
+        {
+          "name": "desk",
+          "file": "/tmp/sh/before/before-retina-desk.png",
+          "player": [
+            -50.400001525878906,
+            5.618865489959717,
+            40.900001525878906
+          ],
+          "cam": [
+            -44.67243511493546,
+            15.814807115543388,
+            48.53675372082961
+          ],
+          "shadow": null
+        },
+        {
+          "name": "desk-night",
+          "file": "/tmp/sh/before/before-retina-desk-night.png",
+          "player": [
+            -50.400001525878906,
+            5.618865489959717,
+            40.900001525878906
+          ],
+          "cam": [
+            -44.672436598267716,
+            15.81480703597812,
+            48.5367547626935
+          ],
+          "shadow": null
+        },
+        {
+          "name": "walk-0",
+          "file": "/tmp/sh/before/before-retina-walk-0.png",
+          "player": [
+            -42.85163879394531,
+            5.618864059448242,
+            35.13877868652344
+          ],
+          "cam": [
+            -37.361068287751635,
+            15.814807357767007,
+            42.95326572457745
+          ],
+          "shadow": null,
+          "i": 0
+        },
+        {
+          "name": "walk-1",
+          "file": "/tmp/sh/before/before-retina-walk-1.png",
+          "player": [
+            -42.61512756347656,
+            5.618864059448242,
+            34.96147155761719
+          ],
+          "cam": [
+            -37.20641501868445,
+            15.81480626406096,
+            42.83729297394908
+          ],
+          "shadow": null,
+          "i": 1
+        },
+        {
+          "name": "walk-2",
+          "file": "/tmp/sh/before/before-retina-walk-2.png",
+          "player": [
+            -42.02384948730469,
+            5.618864059448242,
+            34.51820373535156
+          ],
+          "cam": [
+            -36.59312149305594,
+            15.814805661024991,
+            42.377492311550085
+          ],
+          "shadow": null,
+          "i": 2
+        },
+        {
+          "name": "walk-3",
+          "file": "/tmp/sh/before/before-retina-walk-3.png",
+          "player": [
+            -41.05415344238281,
+            5.618864059448242,
+            33.79124450683594
+          ],
+          "cam": [
+            -35.528193040151635,
+            15.814805606409138,
+            41.57913617167061
+          ],
+          "shadow": null,
+          "i": 3
+        },
+        {
+          "name": "walk-4",
+          "file": "/tmp/sh/before/before-retina-walk-4.png",
+          "player": [
+            -40.81764221191406,
+            5.618864059448242,
+            33.61393737792969
+          ],
+          "cam": [
+            -35.39239191333722,
+            15.814805605815181,
+            41.477329091698074
+          ],
+          "shadow": null,
+          "i": 4
+        },
+        {
+          "name": "walk-5",
+          "file": "/tmp/sh/before/before-retina-walk-5.png",
+          "player": [
+            -39.84794616699219,
+            5.618864059448242,
+            32.88697814941406
+          ],
+          "cam": [
+            -34.33233446682445,
+            15.814805605472465,
+            40.68262793526325
+          ],
+          "shadow": null,
+          "i": 5
+        },
+        {
+          "name": "walk-stopped",
+          "file": "/tmp/sh/before/before-retina-walk-stopped.png",
+          "player": [
+            -39.64846420288086,
+            5.618864059448242,
+            32.73747253417969
+          ],
+          "cam": [
+            -33.92160304530581,
+            15.814805605466645,
+            40.37475307323223
+          ],
+          "shadow": null
+        },
+        {
+          "name": "town",
+          "file": "/tmp/sh/before/before-retina-town.png",
+          "player": [
+            18,
+            1.9588626623153687,
+            0
+          ],
+          "cam": [
+            23.72755234885745,
+            12.154805010883203,
+            7.636760380057518
+          ],
+          "shadow": null
+        },
+        {
+          "name": "town-zoom0",
+          "file": "/tmp/sh/before/before-retina-town-zoom0.png",
+          "player": [
+            18,
+            1.9588626623153687,
+            0
+          ],
+          "cam": [
+            23.092462905308427,
+            11.096300883879728,
+            6.789950591005159
+          ],
+          "shadow": null
+        },
+        {
+          "name": "town-zoom2",
+          "file": "/tmp/sh/before/before-retina-town-zoom2.png",
+          "player": [
+            18,
+            1.9588626623153687,
+            0
+          ],
+          "cam": [
+            24.36081465771385,
+            13.210220425276038,
+            8.481086210399669
+          ],
+          "shadow": null
+        }
+      ],
+      "render": {
+        "drawingBuffer": [
+          2464,
+          1495
+        ],
+        "cssSize": [
+          1840,
+          1117
+        ],
+        "pixelRatio": 1.3392625681257504,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 4096,
+        "shadowType": 1,
+        "postprocessing": []
+      }
+    },
+    {
+      "name": "1080p",
+      "width": 1920,
+      "height": 1080,
+      "dpr": 1,
+      "shots": [
+        {
+          "name": "desk",
+          "file": "/tmp/sh/before/before-1080p-desk.png",
+          "player": [
+            -50.400001525878906,
+            5.618865489959717,
+            40.900001525878906
+          ],
+          "cam": [
+            -44.67243113557441,
+            15.814807435913284,
+            48.536751036277565
+          ],
+          "shadow": null
+        }
+      ],
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 4096,
+        "shadowType": 1,
+        "postprocessing": []
+      }
+    }
+  ],
+  "errors": []
+}

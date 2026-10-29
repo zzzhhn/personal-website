@@ -1,0 +1,9 @@
+{
+  "base": "http://127.0.0.1:4322",
+  "cases": [],
+  "errors": [
+    "__worldDebug is not defined",
+    "page.waitForFunction: ReferenceError: __worldDebug is not defined\n    at eval (eval at predicate (eval at evaluate (:311:30)), <anonymous>:1:1)\n    at predicate (eval at evaluate (:311:30), <anonymous>:7:27)\n    at next (eval at evaluate (:311:30), <anonymous>:29:33)\n    at eval (eval at evaluate (:311:30), <anonymous>:42:13)\n    at UtilityScript.evaluate (<anonymous>:313:16)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)\n    at /Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/playtest/handling-ab.mjs:12:160"
+  ],
+  "basis": "Same current scene: guards/COM disabled vs enabled. Real keys; initial fixture placements only."
+}

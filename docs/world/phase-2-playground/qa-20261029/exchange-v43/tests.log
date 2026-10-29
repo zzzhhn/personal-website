@@ -1,0 +1,68 @@
+using deprecated parameters for the initialization function; pass a single object instead
+✔ furnished gallery keeps rear through-route, both landings and real selector hand access (114.551666ms)
+✔ rear lantern and shelf washes remain local, front-facing and night-only (0.161333ms)
+using deprecated parameters for the initialization function; pass a single object instead
+{"triangles":37616,"modelBatches":2,"withAtlasBatches":3,"surface":164,"solid":21644}
+outer aisle {"routeIndex":0,"reverse":false,"steps":1355,"final":{"x":24.172504425048828,"y":0.8188244700431824,"z":-32.49991989135742}}
+outer aisle {"routeIndex":0,"reverse":true,"steps":1345,"final":{"x":0.00008835335029289126,"y":0.818648636341095,"z":0.9801718592643738}}
+outer aisle {"routeIndex":1,"reverse":false,"steps":1667,"final":{"x":24.17249298095703,"y":0.8188244700431824,"z":-32.49989318847656}}
+outer aisle {"routeIndex":1,"reverse":true,"steps":1657,"final":{"x":-0.00008835099288262427,"y":0.818648636341095,"z":0.9801718592643738}}
+✔ the pavilion and approach have continuous real support and full standing-capsule clearance (35.268625ms)
+✔ two-level open hall has bounded finite same-source geometry and at most three static batches (104.889292ms)
+✔ clearing furniture preserves the hand approach, rear aisle and passage beside the stairs (12.738875ms)
+✔ mezzanine ramp has real support, open landing and capsule clearance; open coffers preserve sky (8.88925ms)
+✔ expanded hall has natural continuous earth, while the existing bridge and park entry stay intact (618.136792ms)
+✔ ground platforms and park strip have no positive-area coplanar overlaps (0.553459ms)
+✔ production dynamic capsule crosses park/bridge/porch/floor and side landing seams in both directions (225.80475ms)
+✔ production dynamic capsule completes both outer aisles from entry to side exit and back (329.291084ms)
+✔ v2 dimensions and reachable play stations replace the old repeated horseshoes (0.189916ms)
+✔ mount is inert; first request loads only and requires a second local pickup after readiness (1.852166ms)
+✔ year selection commits only on a reachable contact, then inserted rounds reject switching (0.637375ms)
+✔ A to B to A restores only that exact archive receipt, with no unfinished overwrite (1.43425ms)
+✔ replaced source, cancellation and range checks reject stale or distant drawer contacts (0.33225ms)
+✔ same year with changed source NAV cannot inherit a previous receipt (0.385916ms)
+✔ release rejects stale history completion and cancellation rejects old contact callbacks (0.14ms)
+✔ source failure is retained and a new explicit archive request can retry without fabricated data (0.217916ms)
+✔ wrong stages, distant clicks and duplicate contacts never commit a round change (0.133333ms)
+✔ three contacts advance finite history, preserve the full receipt and replay against the previous run (0.199667ms)
+✔ ticket returns on recovery, while inserted rounds and committed choices survive interrupted actions (0.158417ms)
+✔ production adapter blocks paused and distant requests, then commits through the real sampled motion contact (0.545958ms)
+✔ gallery selector is contact-gated, cycles only completed intervals and preserves accounting and the held receipt (0.184959ms)
+using deprecated parameters for the initialization function; pass a single object instead
+✔ production capsule walks the actual east treads uphill and downhill without a jump (326.575083ms)
+✔ music focus reports an audible source, not a loaded buffer or a silent deck play intention (1.780333ms)
+✔ releasing one Club cannot clear another audible owner (0.321458ms)
+✔ a silent manual mix stops its source and clock, then resumes the same loop position (1.252125ms)
+✔ rapid silent-mix reversal cannot suspend a newly audible deck after a pending resume (0.2825ms)
+✔ one context, finite sources, pause/hidden/distance and BFCache preserve a bounded lifecycle (0.500708ms)
+✔ a pending resume cannot revive audio after pause or release (0.604166ms)
+✔ small proximity changes across audibility stop and resume the real sources (0.218208ms)
+✔ retry after one track fails reuses the successfully decoded deck (0.213584ms)
+✔ release during fetch cancels loading, shared ownership does not multiply contexts (0.133167ms)
+✔ crossfade keeps equal power and inactive deck cannot become the dance clock (0.153917ms)
+✔ performance lands on a bar, swaps the audible record, and preserves the continuous dance clock (0.210209ms)
+✔ manual control cancels a queued performance and re-entering does not restart the muted deck (0.173917ms)
+✔ manual takeover preserves the exact in-flight fade between UI beat updates (0.151708ms)
+✔ starting a performance from a manual blend eases into its lead deck (0.143542ms)
+✔ shared music volume multiplies local controls, zero suspends, SFX volume is independent (0.178792ms)
+✔ master mute during pending resume cannot revive Club, pool inspection stops it too (0.16225ms)
+✔ normal world starts only on a trusted gesture, fetches the rendered asset and shares one context/source/cache (8.338417ms)
+✔ pause, background, inspection, shot and BFCache stop then resume at the same position without duplication (1.603584ms)
+✔ shared levels and SFX duck the recording without restarting it, and Music=0 preserves finite SFX (2.427667ms)
+✔ Club entry fades on the audio clock, then exit resumes the saved phrase without a fresh decode (1.091667ms)
+✔ a rapid Club boundary reversal replaces the fading source once, and silence gates cut its tail immediately (1.062209ms)
+✔ the actual quiet WAV gains presence with bounded output headroom and independent user channel scaling (13.817958ms)
+✔ pause cancels fetch, stale replies cannot decode, and failed loads retry only on the next trusted gesture (1.817917ms)
+✔ uncancellable decoding is serialized across pause/resume, and late completion after unmount is discarded (0.827541ms)
+✔ a pending resume cannot resurrect sources after Club entry or final release (0.798ms)
+✔ an uncancellable decode completed after final release cannot repopulate the cache or start a source (0.531875ms)
+✔ autoplay rejection stays silent across state/settings updates until the next trusted gesture (1.457042ms)
+✔ public recording exactly matches the mastered release and reports the real uncompressed/decoded budgets (3.017125ms)
+ℹ tests 52
+ℹ suites 0
+ℹ pass 52
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 4940.896167

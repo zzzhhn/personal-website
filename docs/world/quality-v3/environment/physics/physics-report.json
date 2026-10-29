@@ -1,0 +1,298 @@
+{
+  "startedAt": "2026-10-22T05:46:44.255Z",
+  "base": "http://127.0.0.1:4322",
+  "checks": [
+    {
+      "name": "terrain colliders present (surface + solid trimesh)",
+      "pass": true,
+      "value": [
+        {
+          "kind": "surface",
+          "shape": "trimesh",
+          "aabb": {
+            "min": [
+              -120,
+              -8.997750282287598,
+              -104
+            ],
+            "max": [
+              80,
+              4.848300933837891,
+              104
+            ]
+          }
+        },
+        {
+          "kind": "solid",
+          "shape": "trimesh",
+          "aabb": {
+            "min": [
+              -110,
+              -8.994166374206543,
+              -94
+            ],
+            "max": [
+              80,
+              4.836024284362793,
+              96
+            ]
+          }
+        }
+      ],
+      "limit": "2 trimesh"
+    },
+    {
+      "name": "old camp cylinder / island slab removed",
+      "pass": true,
+      "value": 0,
+      "limit": "0"
+    },
+    {
+      "name": "park plaza: surface top + solid sides",
+      "pass": true,
+      "value": [
+        {
+          "kind": "surface",
+          "shape": "trimesh"
+        },
+        {
+          "kind": "solid",
+          "shape": "trimesh"
+        }
+      ],
+      "limit": "surface top, solid sides"
+    },
+    {
+      "name": "capsule ground vs rendered mesh (flat probes, |d| <= 3 cm; capsule radius rounds slopes)",
+      "pass": true,
+      "value": {
+        "probes": 12,
+        "worst": 0.002,
+        "samples": [
+          {
+            "x": -60,
+            "z": -20,
+            "mesh": 1,
+            "physics": 1.002,
+            "d": 0.002,
+            "other": "island-terrain-surface-top",
+            "kind": "surface"
+          },
+          {
+            "x": -30,
+            "z": -50,
+            "mesh": 1,
+            "physics": 1.002,
+            "d": 0.002,
+            "other": "island-terrain-surface-top",
+            "kind": "surface"
+          },
+          {
+            "x": 0,
+            "z": -52,
+            "mesh": 1,
+            "physics": 1.002,
+            "d": 0.002,
+            "other": "island-terrain-surface-top",
+            "kind": "surface"
+          },
+          {
+            "x": -50,
+            "z": 50,
+            "mesh": 4.827,
+            "physics": 4.829,
+            "d": 0.002,
+            "other": "island-terrain-surface-top",
+            "kind": "surface"
+          },
+          {
+            "x": -36,
+            "z": 26,
+            "mesh": 4.8,
+            "physics": 4.802,
+            "d": 0.002,
+            "other": "island-terrain-surface-top",
+            "kind": "surface"
+          },
+          {
+            "x": -50,
+            "z": 20,
+            "mesh": 4.809,
+            "physics": 4.811,
+            "d": 0.002,
+            "other": "island-terrain-surface-top",
+            "kind": "surface"
+          },
+          {
+            "x": -40,
+            "z": 44,
+            "mesh": 4.816,
+            "physics": 4.818,
+            "d": 0.002,
+            "other": "island-terrain-surface-top",
+            "kind": "surface"
+          },
+          {
+            "x": -5,
+            "z": 10,
+            "mesh": 1,
+            "physics": 1.002,
+            "d": 0.002,
+            "other": "island-terrain-surface-top",
+            "kind": "surface"
+          },
+          {
+            "x": -40,
+            "z": -20,
+            "mesh": 1,
+            "physics": 1.002,
+            "d": 0.002,
+            "other": "island-terrain-surface-top",
+            "kind": "surface"
+          },
+          {
+            "x": -62,
+            "z": 34,
+            "mesh": 4.821,
+            "physics": 4.823,
+            "d": 0.002,
+            "other": "island-terrain-surface-top",
+            "kind": "surface"
+          },
+          {
+            "x": 5,
+            "z": 45,
+            "mesh": 0.998,
+            "physics": 1,
+            "d": 0.002,
+            "other": "island-terrain-surface-top",
+            "kind": "surface"
+          },
+          {
+            "x": -8,
+            "z": -30,
+            "mesh": 1,
+            "physics": 1.002,
+            "d": 0.002,
+            "other": "island-terrain-surface-top",
+            "kind": "surface"
+          }
+        ]
+      },
+      "limit": "<= 0.03 m"
+    },
+    {
+      "name": "water recovery (west) ends on land above WATER_Y",
+      "pass": true,
+      "value": {
+        "minY": -1.15,
+        "final": [
+          -30,
+          5.66,
+          34
+        ],
+        "grounded": true
+      },
+      "limit": "sinks below -0.7, ends grounded above water"
+    },
+    {
+      "name": "water recovery (north) ends on land above WATER_Y",
+      "pass": true,
+      "value": {
+        "minY": -2.25,
+        "final": [
+          -20.3,
+          5.66,
+          34
+        ],
+        "grounded": true
+      },
+      "limit": "sinks below -0.7, ends grounded above water"
+    },
+    {
+      "name": "walk up 19 deg camp flank onto the plateau with keys",
+      "pass": true,
+      "value": {
+        "start": [
+          -78.12,
+          1.49,
+          16.87
+        ],
+        "end": [
+          -43.72,
+          5.64,
+          21.99
+        ],
+        "rise": 4.14,
+        "groundedShare": 0.86,
+        "keys": [
+          "KeyS",
+          "KeyD"
+        ]
+      },
+      "limit": "reaches plateau (capsule centre > 5.5) within 11 s, grounded"
+    },
+    {
+      "name": "58 deg rock terrace not walkable",
+      "pass": true,
+      "value": {
+        "start": [
+          -22.59,
+          1.82,
+          6.87
+        ],
+        "maxRise": 0.44,
+        "keys": [
+          "KeyA"
+        ]
+      },
+      "limit": "rise < 1.0 m (ledge is 1.6-2 m up)"
+    }
+  ],
+  "fixtures": [
+    {
+      "name": "water-west",
+      "teleport": [
+        -92,
+        2,
+        6
+      ]
+    },
+    {
+      "name": "water-north",
+      "teleport": [
+        -20,
+        2,
+        78
+      ]
+    },
+    {
+      "name": "slope-start",
+      "teleport": [
+        -77.90106140816212,
+        1.6434110694434412,
+        16.933082268865917
+      ]
+    },
+    {
+      "name": "terrace-foot",
+      "teleport": [
+        -22.587814187466517,
+        1.9300000000000002,
+        6.86545781780686
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "calls": 113,
+    "triangles": 361329,
+    "geometries": 145,
+    "textures": 18,
+    "camera": [
+      -19.901664098182934,
+      12.337250977591383,
+      15.32465937907097
+    ]
+  }
+}

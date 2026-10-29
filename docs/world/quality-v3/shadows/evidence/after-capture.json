@@ -1,0 +1,595 @@
+{
+  "base": "http://127.0.0.1:4322",
+  "tag": "after",
+  "views": [
+    {
+      "name": "retina",
+      "width": 1840,
+      "height": 1117,
+      "dpr": 2,
+      "shots": [
+        {
+          "name": "desk",
+          "file": "/tmp/sh/after/after-retina-desk.png",
+          "player": [
+            -50.400001525878906,
+            5.618865489959717,
+            40.900001525878906
+          ],
+          "cam": [
+            -44.672429908267304,
+            15.814807529554788,
+            48.53675018566403
+          ],
+          "shadow": {
+            "mode": "follow-frustum",
+            "mapSize": 4096,
+            "centre": [
+              -57.3871712446942,
+              3.294955816541105,
+              32.65555709885379
+            ],
+            "halfExtent_m": [
+              21,
+              13
+            ],
+            "lightTexel_m": [
+              0.01025390625,
+              0.00634765625
+            ],
+            "groundTexel_m": {
+              "acrossSun": 0.01025390625,
+              "alongSun": 0.0187262583466403
+            },
+            "sunElevation_deg": 19.814186858126565,
+            "pcfRadiusTexels": 2,
+            "normalBias_m": 0.0187262583466403,
+            "bias": -0.00015,
+            "updates": 164
+          }
+        },
+        {
+          "name": "desk-night",
+          "file": "/tmp/sh/after/after-retina-desk-night.png",
+          "player": [
+            -50.400001525878906,
+            5.618865489959717,
+            40.900001525878906
+          ],
+          "cam": [
+            -44.67243659826783,
+            15.814807035978113,
+            48.53675476269358
+          ],
+          "shadow": {
+            "mode": "follow-frustum",
+            "mapSize": 4096,
+            "centre": [
+              -57.3871712446942,
+              3.294955816541105,
+              32.65555709885379
+            ],
+            "halfExtent_m": [
+              21,
+              13
+            ],
+            "lightTexel_m": [
+              0.01025390625,
+              0.00634765625
+            ],
+            "groundTexel_m": {
+              "acrossSun": 0.01025390625,
+              "alongSun": 0.0187262583466403
+            },
+            "sunElevation_deg": 19.814186858126565,
+            "pcfRadiusTexels": 2,
+            "normalBias_m": 0.0187262583466403,
+            "bias": -0.00015,
+            "updates": 328
+          }
+        },
+        {
+          "name": "walk-0",
+          "file": "/tmp/sh/after/after-retina-walk-0.png",
+          "player": [
+            -42.87528991699219,
+            5.618864059448242,
+            35.15650939941406
+          ],
+          "cam": [
+            -37.38409713884607,
+            15.814807420132707,
+            42.97053226023808
+          ],
+          "shadow": {
+            "mode": "follow-frustum",
+            "mapSize": 4096,
+            "centre": [
+              -49.82727042997375,
+              3.2009051509473654,
+              27.069143362241814
+            ],
+            "halfExtent_m": [
+              21,
+              13
+            ],
+            "lightTexel_m": [
+              0.01025390625,
+              0.00634765625
+            ],
+            "groundTexel_m": {
+              "acrossSun": 0.01025390625,
+              "alongSun": 0.0187262583466403
+            },
+            "sunElevation_deg": 19.814186858126565,
+            "pcfRadiusTexels": 2,
+            "normalBias_m": 0.0187262583466403,
+            "bias": -0.00015,
+            "updates": 612
+          },
+          "i": 0
+        },
+        {
+          "name": "walk-1",
+          "file": "/tmp/sh/after/after-retina-walk-1.png",
+          "player": [
+            -42.63877868652344,
+            5.618864059448242,
+            34.97920227050781
+          ],
+          "cam": [
+            -37.22929014607084,
+            15.81480628874767,
+            42.85444321076679
+          ],
+          "shadow": {
+            "mode": "follow-frustum",
+            "mapSize": 4096,
+            "centre": [
+              -49.60547471276516,
+              3.365313457492853,
+              26.972200251692545
+            ],
+            "halfExtent_m": [
+              21,
+              13
+            ],
+            "lightTexel_m": [
+              0.01025390625,
+              0.00634765625
+            ],
+            "groundTexel_m": {
+              "acrossSun": 0.01025390625,
+              "alongSun": 0.0187262583466403
+            },
+            "sunElevation_deg": 19.814186858126565,
+            "pcfRadiusTexels": 2,
+            "normalBias_m": 0.0187262583466403,
+            "bias": -0.00015,
+            "updates": 622
+          },
+          "i": 1
+        },
+        {
+          "name": "walk-2",
+          "file": "/tmp/sh/after/after-retina-walk-2.png",
+          "player": [
+            -42.04750061035156,
+            5.618864059448242,
+            34.53593444824219
+          ],
+          "cam": [
+            -36.61627260711779,
+            15.814805663080396,
+            42.39484831742521
+          ],
+          "shadow": {
+            "mode": "follow-frustum",
+            "mapSize": 4096,
+            "centre": [
+              -49.018230632813875,
+              3.3660426218945325,
+              26.57337660136828
+            ],
+            "halfExtent_m": [
+              21,
+              13
+            ],
+            "lightTexel_m": [
+              0.01025390625,
+              0.00634765625
+            ],
+            "groundTexel_m": {
+              "acrossSun": 0.01025390625,
+              "alongSun": 0.0187262583466403
+            },
+            "sunElevation_deg": 19.814186858126565,
+            "pcfRadiusTexels": 2,
+            "normalBias_m": 0.0187262583466403,
+            "bias": -0.00015,
+            "updates": 632
+          },
+          "i": 2
+        },
+        {
+          "name": "walk-3",
+          "file": "/tmp/sh/after/after-retina-walk-3.png",
+          "player": [
+            -41.47987365722656,
+            5.618864059448242,
+            34.11039733886719
+          ],
+          "cam": [
+            -36.05314465245303,
+            15.814805610785498,
+            41.972680843655304
+          ],
+          "shadow": {
+            "mode": "follow-frustum",
+            "mapSize": 4096,
+            "centre": [
+              -48.45500081386012,
+              3.3667717862962157,
+              26.14130243581668
+            ],
+            "halfExtent_m": [
+              21,
+              13
+            ],
+            "lightTexel_m": [
+              0.01025390625,
+              0.00634765625
+            ],
+            "groundTexel_m": {
+              "acrossSun": 0.01025390625,
+              "alongSun": 0.0187262583466403
+            },
+            "sunElevation_deg": 19.814186858126565,
+            "pcfRadiusTexels": 2,
+            "normalBias_m": 0.0187262583466403,
+            "bias": -0.00015,
+            "updates": 642
+          },
+          "i": 3
+        },
+        {
+          "name": "walk-4",
+          "file": "/tmp/sh/after/after-retina-walk-4.png",
+          "player": [
+            -40.58113098144531,
+            5.618864059448242,
+            33.43663024902344
+          ],
+          "cam": [
+            -35.08138858151358,
+            15.814805605587845,
+            41.2441768997414
+          ],
+          "shadow": {
+            "mode": "follow-frustum",
+            "mapSize": 4096,
+            "centre": [
+              -47.508311936415524,
+              3.203821808554096,
+              25.43228561691059
+            ],
+            "halfExtent_m": [
+              21,
+              13
+            ],
+            "lightTexel_m": [
+              0.01025390625,
+              0.00634765625
+            ],
+            "groundTexel_m": {
+              "acrossSun": 0.01025390625,
+              "alongSun": 0.0187262583466403
+            },
+            "sunElevation_deg": 19.814186858126565,
+            "pcfRadiusTexels": 2,
+            "normalBias_m": 0.0187262583466403,
+            "bias": -0.00015,
+            "updates": 653
+          },
+          "i": 4
+        },
+        {
+          "name": "walk-5",
+          "file": "/tmp/sh/after/after-retina-walk-5.png",
+          "player": [
+            -40.32096862792969,
+            5.618864059448242,
+            33.24159240722656
+          ],
+          "cam": [
+            -34.932211750972705,
+            15.814805605511197,
+            41.132342392613026
+          ],
+          "shadow": {
+            "mode": "follow-frustum",
+            "mapSize": 4096,
+            "centre": [
+              -47.20130292801443,
+              3.3116797826826154,
+              25.18525981453591
+            ],
+            "halfExtent_m": [
+              21,
+              13
+            ],
+            "lightTexel_m": [
+              0.01025390625,
+              0.00634765625
+            ],
+            "groundTexel_m": {
+              "acrossSun": 0.01025390625,
+              "alongSun": 0.0187262583466403
+            },
+            "sunElevation_deg": 19.814186858126565,
+            "pcfRadiusTexels": 2,
+            "normalBias_m": 0.0187262583466403,
+            "bias": -0.00015,
+            "updates": 663
+          },
+          "i": 5
+        },
+        {
+          "name": "walk-stopped",
+          "file": "/tmp/sh/after/after-retina-walk-stopped.png",
+          "player": [
+            -39.81402587890625,
+            5.618864059448242,
+            32.86158752441406
+          ],
+          "cam": [
+            -34.08714793098248,
+            15.814805605466645,
+            40.49885548040166
+          ],
+          "shadow": {
+            "mode": "follow-frustum",
+            "mapSize": 4096,
+            "centre": [
+              -46.8000873024405,
+              3.2973147004424597,
+              24.617225158908663
+            ],
+            "halfExtent_m": [
+              21,
+              13
+            ],
+            "lightTexel_m": [
+              0.01025390625,
+              0.00634765625
+            ],
+            "groundTexel_m": {
+              "acrossSun": 0.01025390625,
+              "alongSun": 0.0187262583466403
+            },
+            "sunElevation_deg": 19.814186858126565,
+            "pcfRadiusTexels": 2,
+            "normalBias_m": 0.0187262583466403,
+            "bias": -0.00015,
+            "updates": 745
+          }
+        },
+        {
+          "name": "town",
+          "file": "/tmp/sh/after/after-retina-town.png",
+          "player": [
+            18,
+            1.9588626623153687,
+            0
+          ],
+          "cam": [
+            23.72755261301426,
+            12.154804991931535,
+            7.63676023645767
+          ],
+          "shadow": {
+            "mode": "follow-frustum",
+            "mapSize": 4096,
+            "centre": [
+              11.012008490155141,
+              -0.3675636431762168,
+              -8.244033594867288
+            ],
+            "halfExtent_m": [
+              21,
+              13
+            ],
+            "lightTexel_m": [
+              0.01025390625,
+              0.00634765625
+            ],
+            "groundTexel_m": {
+              "acrossSun": 0.01025390625,
+              "alongSun": 0.0187262583466403
+            },
+            "sunElevation_deg": 19.814186858126565,
+            "pcfRadiusTexels": 2,
+            "normalBias_m": 0.0187262583466403,
+            "bias": -0.00015,
+            "updates": 901
+          }
+        },
+        {
+          "name": "town-zoom0",
+          "file": "/tmp/sh/after/after-retina-town-zoom0.png",
+          "player": [
+            18,
+            1.9588626623153687,
+            0
+          ],
+          "cam": [
+            23.092341632813575,
+            11.096098757731825,
+            6.789788888513629
+          ],
+          "shadow": {
+            "mode": "follow-frustum",
+            "mapSize": 4096,
+            "centre": [
+              14.03687252828707,
+              0.9026040007555531,
+              -4.837401938334938
+            ],
+            "halfExtent_m": [
+              16,
+              11
+            ],
+            "lightTexel_m": [
+              0.0078125,
+              0.00537109375
+            ],
+            "groundTexel_m": {
+              "acrossSun": 0.0078125,
+              "alongSun": 0.01584529552408025
+            },
+            "sunElevation_deg": 19.814186858126565,
+            "pcfRadiusTexels": 2,
+            "normalBias_m": 0.01584529552408025,
+            "bias": -0.00015,
+            "updates": 962
+          }
+        },
+        {
+          "name": "town-zoom2",
+          "file": "/tmp/sh/after/after-retina-town-zoom2.png",
+          "player": [
+            18,
+            1.9588626623153687,
+            0
+          ],
+          "cam": [
+            24.360820328233306,
+            13.210229876139381,
+            8.481093771089665
+          ],
+          "shadow": {
+            "mode": "follow-frustum",
+            "mapSize": 4096,
+            "centre": [
+              6.98512814173939,
+              1.1116189295038188,
+              -14.729980275861429
+            ],
+            "halfExtent_m": [
+              30,
+              15
+            ],
+            "lightTexel_m": [
+              0.0146484375,
+              0.00732421875
+            ],
+            "groundTexel_m": {
+              "acrossSun": 0.0146484375,
+              "alongSun": 0.021607221169200344
+            },
+            "sunElevation_deg": 19.814186858126565,
+            "pcfRadiusTexels": 2,
+            "normalBias_m": 0.021607221169200344,
+            "bias": -0.00015,
+            "updates": 1022
+          }
+        }
+      ],
+      "render": {
+        "drawingBuffer": [
+          2464,
+          1495
+        ],
+        "cssSize": [
+          1840,
+          1117
+        ],
+        "pixelRatio": 1.3392625681257504,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 4096,
+        "shadowType": 1,
+        "postprocessing": []
+      }
+    },
+    {
+      "name": "1080p",
+      "width": 1920,
+      "height": 1080,
+      "dpr": 1,
+      "shots": [
+        {
+          "name": "desk",
+          "file": "/tmp/sh/after/after-1080p-desk.png",
+          "player": [
+            -50.400001525878906,
+            5.618865489959717,
+            40.900001525878906
+          ],
+          "cam": [
+            -44.67243137455325,
+            15.814807448771143,
+            48.53675119726208
+          ],
+          "shadow": {
+            "mode": "follow-frustum",
+            "mapSize": 4096,
+            "centre": [
+              -57.482771301603876,
+              3.0087661448704033,
+              32.69930451031467
+            ],
+            "halfExtent_m": [
+              21,
+              14
+            ],
+            "lightTexel_m": [
+              0.01025390625,
+              0.0068359375
+            ],
+            "groundTexel_m": {
+              "acrossSun": 0.01025390625,
+              "alongSun": 0.02016673975792032
+            },
+            "sunElevation_deg": 19.814186858126565,
+            "pcfRadiusTexels": 2,
+            "normalBias_m": 0.02016673975792032,
+            "bias": -0.00015,
+            "updates": 169
+          }
+        }
+      ],
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 4096,
+        "shadowType": 1,
+        "postprocessing": []
+      }
+    }
+  ],
+  "errors": []
+}
