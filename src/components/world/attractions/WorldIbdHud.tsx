@@ -11,6 +11,7 @@ import { cancelIbdAction, dispatchIbdAction, setIbdGuide, useIbdYardStore } from
 import { ibdGuideStep, ibdGuideResult, ibdGuidePhaseDone, IBD_GUIDE_PHASES } from './ibd-yard-guide';
 import './ibd-yard.css';
 import WorldIbdPackControls from './WorldIbdPackControls';
+import WorldIbdCraneControls from './WorldIbdCraneControls';
 import { useIbdPackPlay, openIbdPack, ibdPackWorkBusy } from './ibd-pack-play';
 
 /** The manifest is a readout. Every cargo action is still gated by the same physical station as E. */
@@ -55,7 +56,8 @@ export default memo(function WorldIbdHud({ active = true }: { active?: boolean }
       {!atTarget && !game.pending && !game.released && <p className="ibd-walk-hint">{t('沿地面箭头走到黄圈，靠近后按 E。', 'Follow the floor arrows to the ring. Press E when close.')}</p>}
     </> : <><h2>{workingStation ? workingStation.title[lang] : t('自由检查', 'Explore the yard')}</h2>
       <p className="ibd-next">{packView.pack?t('取出样件，合拢夹爪贴住杆身，夹量后放回原槽。','Present a sample, fit the jaws to its shaft, gauge it, then return it.'):t('靠近装置按 E 操作；需要时可恢复带路。', 'Approach a device and press E. Resume guidance at any time.')}</p></>}
-    {packView.pack ? <WorldIbdPackControls zh={zh}/> : game.pending ? <><div className="ibd-working" role="status" aria-live="polite"><i aria-hidden="true" />{motionWait ? IBD_MOTION_WAIT_LABEL[motionWait][lang] : IBD_ACTION_LABEL[game.pending.action.kind][lang]}</div>
+    {packView.pack ? <WorldIbdPackControls zh={zh}/> : game.pending ? <>{game.pending.action.kind==='crane'&&<WorldIbdCraneControls zh={zh}/>}
+      {(game.pending.action.kind!=='crane'||motionWait)&&<div className="ibd-working" role="status" aria-live="polite"><i aria-hidden="true" />{motionWait ? IBD_MOTION_WAIT_LABEL[motionWait][lang] : IBD_ACTION_LABEL[game.pending.action.kind][lang]}</div>}
       {canCancelIbdObservation(game) && <div className="ibd-actions"><button className="ibd-secondary" onClick={() => {
         if (canCancelIbdObservation(useIbdYardStore.getState().game)) cancelIbdAction();
       }}>{t('取消本次操作', 'Cancel this operation')}</button></div>}</>

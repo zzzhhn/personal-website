@@ -76,7 +76,7 @@ export function yardActions(game: IbdYardGame, id: IbdStationId): IbdAction[] {
     : game.core.turned.includes(itemId) || ((game.core.proofs[itemId] ?? []).includes('quality-front') && !yardItemComplete(game, slot!)) ? 'rear' : 'scan';
   return [action(primary)];
 }
-const duration: Record<IbdActionKind, number> = { brief: 0, kit: .65, crane: 2.8, scan: 3.1, rear: 3.1, survey: 1.3,
+const duration: Record<IbdActionKind, number> = { brief: 0, kit: .65, crane: 6.6, scan: 3.1, rear: 3.1, survey: 1.3,
   turn: 1.4, weigh: .8, open: .9, contents: 1.2, judge: 0, load: 3, unload: 3, replace: 2.4, verify: .7, release: 3.5, reset: 0, next: 0 };
 const yardAllJudged = (game: IbdYardGame) => yardCase(game).items.every(item => !!game.judgements?.[item.id]);
 const observations = new Set<IbdActionKind>(['scan', 'rear', 'survey', 'contents', 'weigh', 'open', 'kit', 'verify']);

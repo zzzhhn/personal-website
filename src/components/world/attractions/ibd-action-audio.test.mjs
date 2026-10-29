@@ -12,6 +12,8 @@ import { createIbdYardGame, requestIbdYardAction, finishIbdYardAction, cancelIbd
 import { ibdStation, ibdWorld } from './ibd-yard-layout.ts';
 import { inspectIbdTestPack, ibdTestPackEvent } from './ibd-test-pack-inspection.mjs';
 import { PARK_AUDIO_MIX } from '../park-audio-mix.ts';
+import { CRANE_STAND,CRANE_STEPS,craneMayAdvance,craneLanded,setCraneInput,useIbdCraneControl } from './ibd-crane-control.ts';
+import { createIbdMotionClock,stepIbdSafeMotion } from './ibd-yard-safety.ts';
 
 class Target extends EventTarget {
   listeners = new Map();
@@ -65,7 +67,7 @@ function fixture(t) {
   const gesture = (trusted = true, type = 'keydown') => { const e = new Event(type); Object.defineProperty(e, 'isTrusted', { value: trusted }); win.dispatchEvent(e); };
   const prime = async () => { audio.cue('scan'); await settle(); audio.ctx.sources.at(-1).end(); await settle(); return audio.ctx; };
   const move = station => {
-    const at = ibdWorld(ibdStation(station, useIbdYardStore.getState().game.core.moved).at);
+    const at = ibdWorld(station==='crane'?CRANE_STAND:ibdStation(station, useIbdYardStore.getState().game.core.moved).at);
     const position = [at[0], at[1] + PLAYER_CENTER_HEIGHT, at[2]];
     useWorldStore.setState({ position });
     Object.assign(ibdInspectionActor, { position, grounded: true, available: true, mode: 'guide' });
@@ -87,12 +89,21 @@ function fixture(t) {
     const token = useIbdYardStore.getState().game.pending?.token;
     // Follow the coil controller's rendered-palm contact and recovery gate, rather
     // than allowing the old timer-only fixture to bypass the physical inspection.
-    for (let i = 0; i < 350 && ibdInspectionBody.action; i++) {
+    const craneClock=createIbdMotionClock();
+    for (let i = 0; i < 700 && ibdInspectionBody.action; i++) {
       const a = ibdInspectionBody.action;
       ibdInspectionActor.yaw = a.anchor.yaw;
       Object.assign(ibdInspectionVisualSockets, { valid: true, reachable: true, sampledId: a.id, sampledElapsed: a.elapsed,
         leftHand: [...a.anchor.leftTarget], rightHand: [...a.anchor.rightTarget], leftContactError: 0, rightContactError: 0, contactError: 0 });
       tickIbdCoilInspection(1 / 60);
+      if(action.kind==='crane'){
+        const live=useIbdYardStore.getState().game,p=live.pending,s=useIbdCraneControl.getState();
+        if(s.ready&&!s.held)setCraneInput(CRANE_STEPS[s.stage]);
+        if(p&&craneMayAdvance(live,craneClock.elapsed/p.seconds)){
+          const step=stepIbdSafeMotion(craneClock,p.seconds,1/60,{protectedMotion:false,stops:[0,1/3,2/3,1]},null,true);
+          if(step.done)craneLanded();
+        }
+      }
     }
     if (token !== undefined) finishIbdAction(token);
     return token;

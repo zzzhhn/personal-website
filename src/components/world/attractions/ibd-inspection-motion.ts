@@ -1,7 +1,7 @@
 import { PLAYER_CENTER_HEIGHT } from '../actor-physics.ts';
 import type { Vec3 } from '../types.ts';
 
-export type IbdInspectionActionKind = 'pickup' | 'measure' | 'return' | 'empty' | 'coil-check';
+export type IbdInspectionActionKind = 'pickup' | 'measure' | 'return' | 'empty' | 'coil-check' | 'crane-control';
 /** Ownership and stock identity belong to the yard controller. This is only the held silhouette. */
 export type IbdInspectionCarried = { spec: 'M6' | 'M8' } | null;
 export interface IbdInspectionAnchor { stand: Vec3; yaw: number; leftTarget: Vec3; rightTarget: Vec3; focus?: Vec3 }
@@ -9,7 +9,7 @@ export interface IbdInspectionAction {
   id: number; kind: IbdInspectionActionKind; phase: 'approach' | 'perform'; elapsed: number;
   duration: number; contactAt: number; reachStartAt: number; recoverDuration: number;
   anchor: IbdInspectionAnchor; committed: boolean; contactWait: number;
-  actorMode: string;
+  actorMode: string; released?: boolean;
 }
 export interface IbdInspectionVisualSockets {
   valid: boolean; reachable: boolean; sampledId: number | null; sampledElapsed: number;
@@ -32,6 +32,7 @@ export const IBD_INSPECTION_TIMING: Readonly<Record<IbdInspectionActionKind,
   return: {duration:2.6,contactAt:.55,reachStartAt:0,recoverDuration:.35},
   empty: {duration:4.1,contactAt:2.05,reachStartAt:1.5,recoverDuration:.4},
   'coil-check': {duration:3.1,contactAt:2.5,reachStartAt:0,recoverDuration:.6},
+  'crane-control': {duration:1.1,contactAt:.6,reachStartAt:0,recoverDuration:.5},
 };
 let sequence = 0;
 let callbacks: { id: number; contact: () => boolean | void; cancel?: () => void } | null = null;
@@ -55,7 +56,7 @@ export function beginIbdInspectionAction(kind: IbdInspectionActionKind, anchor: 
     || (kind==='coil-check' && (!anchor.focus || !pointValid(anchor.focus)))
     || !Object.hasOwn(IBD_INSPECTION_TIMING,kind) || typeof onContact !== 'function' || standDistance(anchor)>1.1 || standHeight(anchor)>.25
     || ((kind==='measure'||kind==='return') && !ibdInspectionBody.carried)
-    || ((kind==='pickup'||kind==='empty'||kind==='coil-check') && !!ibdInspectionBody.carried)) return false;
+    || ((kind==='pickup'||kind==='empty'||kind==='coil-check'||kind==='crane-control') && !!ibdInspectionBody.carried)) return false;
   const timing=IBD_INSPECTION_TIMING[kind], id=++sequence;
   ibdInspectionBody.action={ id,kind,phase:'approach',elapsed:0,...timing,committed:false,contactWait:0,
     actorMode:ibdInspectionActor.mode,
@@ -112,6 +113,8 @@ export function advanceIbdInspectionAction(dt: number, paused=false): void {
     if (accepted===false && ibdInspectionBody.action===action) cancelIbdInspectionAction();
     return;
   }
+  // A crane operator keeps both palms at the controls until the cargo has landed.
+  if(action.kind==='crane-control'&&!action.released)return;
   action.elapsed=Math.min(action.duration,action.elapsed+step);
   if (action.elapsed>=action.duration) { ibdInspectionBody.action=null; callbacks=null; clearSample(); }
 }

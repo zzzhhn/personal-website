@@ -11,7 +11,7 @@ const copy: Partial<Record<IbdActionKind, [Bi, Bi]>> = {
   scan: [bi('检查钢卷正面', 'Inspect the coil front'), bi('朝向卷号牌，读标识、量规格。', 'Face the coil tag to read and measure it.')],
   turn: [bi('转动手轮，翻看背面', 'Turn the handwheel'), bi('退到操作台外侧翻卷，等钢卷停稳。', 'Stand on the outer side of the controls to turn the coil. Wait until it stops.')],
   rear: [bi('照检刚转出的背面', 'Inspect the exposed rear'), bi('背面检查完成，这卷才算验完。', 'Check this face to finish inspecting the coil.')],
-  crane: [bi('吊开前卷，露出后卷', 'Lift the front coil aside'), bi('拉吊架杆，看前卷移到左侧。', 'Use the crane lever; watch the front coil move left.')],
+  crane: [bi('吊开前卷，露出后卷', 'Lift the front coil aside'), bi('握住控制杆，依次吊起、左移、落稳。松开即停。', 'Take the levers: lift, traverse left, then lower. Release to stop.')],
   weigh: [bi('按台秤，看重量', 'Read the scale'), bi('重量是线索，下一步仍要拆箱。', 'Weight is a clue. Open the carton next.')],
   open: [bi('打开箱盖', 'Open the carton'), bi('看箱盖翻开，露出四个槽位。', 'Watch the lid open and reveal four slots.')],
   contents: [bi('核对槽位里的零件', 'Check the parts in the slots'), bi('数实物，再用卡规核 M8 规格。', 'Count the parts and gauge the M8 specification.')],

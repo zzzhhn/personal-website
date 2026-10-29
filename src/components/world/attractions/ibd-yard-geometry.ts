@@ -113,7 +113,7 @@ export function buildIbdStatic() {
     for (const dx of [-.85, .85]) cube([x + dx, top / 2, z], [.18, top, .9], P.dark, true);
     cube([x, top + .14, z - .48], [2, .12, .12], P.amber);
   }
-  for (const [x, z] of [[-6, .2], [-8, -4], [-8, -9], [7, -12], [21, -12], [7.8, -6.5], [20.2, -6.5], [8, 7.7], [8, 17.3], [7, 18]]) {
+  for (const [x, z] of [[-6, 0], [-8, -4], [-8, -9], [7, -12], [21, -12], [7.8, -6.5], [20.2, -6.5], [8, 7.7], [8, 17.3], [7, 18]]) {
     const kind = x === -6 ? 'crane' : x === -8 ? 'turn' : z === -12 ? 'scale' : x === 7 && z === 18 ? 'dispatch' : 'load';
     addYardControl(b, cube, x, z, kind);
   }

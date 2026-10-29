@@ -41,6 +41,7 @@ import { useIbdYardStore } from './attractions/ibd-yard-store';
 import { exchangeWorld } from './alpha-exchange-layout';
 import { EXCHANGE_PLAY_STATIONS } from './alpha-exchange-play-layout';
 import { exchangeActionAudio } from './alpha-exchange-audio';
+import { craneControl,useIbdCraneControl } from './attractions/ibd-crane-control';
 
 function readContactSnapshot() {
   const value=worldActorDebug.actor(),physics=worldActorDebug.snapshot();
@@ -62,6 +63,11 @@ export default function WorldPlaytestReadout() {
       <button onClick={()=>setRenderSnapshot(readRenderSnapshot())}>QA · 读取当前渲染开销</button>
       <button onClick={()=>setRenderSnapshot({parkAudio:parkAudio.snapshot()})}>QA · 读取环境音频</button>
       {import.meta.env.DEV&&<>
+        <button onClick={()=>{const g=useIbdYardStore.getState().game,a=ibdInspectionBody.action;
+          setRenderSnapshot({crane:{...craneControl,...useIbdCraneControl.getState(),round:g.round,moved:g.core.moved,
+            pending:g.pending?.action.kind??null,actor:ibdInspectionActor,handError:ibdInspectionVisualSockets.contactError,
+            action:a?{kind:a.kind,phase:a.phase,elapsed:a.elapsed,committed:a.committed,released:a.released}:null}});
+        }}>QA · 读取吊架控制</button>
         <button onClick={()=>{const c=currentIbdPack(),a=ibdInspectionBody.action,g=useIbdYardStore.getState().game,id=useIbdPackPlay.getState().itemId;setRenderSnapshot(structuredClone({packInspection:{
           view:useIbdPackPlay.getState(),visual:ibdPackVisual,actor:ibdInspectionActor,held:ibdInspectionBody.carried,
           action:a?{kind:a.kind,phase:a.phase,elapsed:a.elapsed,committed:a.committed,anchor:a.anchor}:null,

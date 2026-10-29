@@ -13,6 +13,8 @@ import { buildIbdPackShell } from './ibd-pack-geometry';
 import WorldIbdPackInspection from './WorldIbdPackInspection';
 import WorldIbdCoilInspection from './WorldIbdCoilInspection';
 import { isIbdCoilCheck } from './ibd-coil-inspection.ts';
+import { craneMayAdvance,craneLanded,craneControl } from './ibd-crane-control';
+import WorldIbdCraneLevers from './WorldIbdCraneLevers';
 
 const cargoGeometry = (item: IbdItem) => item.kind === 'coil' ? buildIbdCoil(!!item.defects['quality-rear'], item.id.includes('rear') ? 2 : 1) : buildIbdPack(item.quantity, item.specId);
 const movable = { movable: true, solid: true, assetId: 'ibd-yard-cargo' };
@@ -80,6 +82,12 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
     const pending = game.pending;
     if (!running) { apply(clock.current.elapsed / pending.seconds); return; }
     const dt = world.timestep;
+    if(pending.action.kind==='crane'&&!craneMayAdvance(game,clock.current.elapsed/pending.seconds)){
+      setIbdMotionWait(null);
+      apply(clock.current.elapsed/pending.seconds);
+      if(craneControl.done)completeToken.current=pending.token;
+      return;
+    }
     if (playerCollider.current && !world.getCollider(playerCollider.current.handle)) playerCollider.current = null;
     if (safety.protectedMotion && !playerCollider.current) {
       lookupDelay.current -= dt;
@@ -94,7 +102,7 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
     setIbdMotionWait(result.wait);
     // Reissue the held pose too: a pending kinematic target must never keep pushing during a wait.
     apply(result.progress);
-    if (result.done) completeToken.current = pending.token;
+    if (result.done) {if(pending.action.kind==='crane')craneLanded();completeToken.current = pending.token;}
   });
   useAfterPhysicsStep(() => {
     if (completeToken.current === null) return;
@@ -102,6 +110,7 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
     if (useIbdYardStore.getState().game.pending?.token === token) finishIbdAction(token);
   });
   return <group name="ibd-mechanisms" dispose={null}>
+    <WorldIbdCraneLevers material={material}/>
     {IBD_SLOTS.map(slot => {
       const coil = slot.startsWith('coil');
       return <RigidBody key={slot} ref={b => { bodies.current[slot] = b; }} type="kinematicPosition" colliders={false}

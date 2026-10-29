@@ -7,6 +7,7 @@ import { GuideIbdInspectionLayer } from './WorldGuideIbdInspection.ts';
 import { ibdCoilInspectAnchor } from './attractions/ibd-coil-inspection.ts';
 import { createIbdYardGame } from './attractions/ibd-yard-game.ts';
 import { PLAYER_CENTER_HEIGHT } from './actor-physics.ts';
+import { CRANE_STAND,craneGripTarget } from './attractions/ibd-crane-control.ts';
 import { advanceIbdInspectionAction,beginIbdInspectionAction,cancelIbdInspectionAction,ibdInspectionActor,
   ibdInspectionBody,ibdInspectionVisualSockets,IBD_INSPECTION_TIMING } from './attractions/ibd-inspection-motion.ts';
 function rig(){
@@ -25,6 +26,17 @@ const action=(kind,patch={})=>({id:9,kind,phase:'perform',elapsed:.6,contactAt:.
   reachStartAt:0,recoverDuration:.6,committed:false,contactWait:0,actorMode:'guide',...patch});
 const distance=(a,b)=>new Vector3(...a).distanceTo(new Vector3(...b));
 const count=scene=>{let n=0;scene.traverse(()=>n++);return n;};
+test('real G24 palms reach both crane levers throughout their articulated travel without changing the feet',()=>{
+  const scene=rig(),layer=new GuideIbdInspectionLayer(scene);
+  for(const left of[-.18,0,.18])for(const right of[0,.18])for(const yaw of[-.06,0,.06]){
+    layer.restore();scene.position.set(...CRANE_STAND);scene.rotation.y=Math.PI/2+yaw;scene.updateWorldMatrix(true,true);
+    const a=action('crane-control',{...IBD_INSPECTION_TIMING['crane-control'],elapsed:.6,committed:true,
+      anchor:{stand:CRANE_STAND,yaw:Math.PI/2,leftTarget:craneGripTarget(0,left),rightTarget:craneGripTarget(1,right)}});
+    const before=scene.position.toArray(),s=layer.apply(a,null);
+    assert.equal(s.reachable,true,`${left}/${right}/${yaw}`);assert.ok(s.contactError<=.025,`${left}/${right}/${yaw}: ${s.contactError}`);
+    assert.deepEqual(scene.position.toArray(),before);
+  }layer.dispose();
+});
 test('real G24 holds the coil torch at every approach heading and reaches a stable inspection pose',()=>{
   const scene=rig(),layer=new GuideIbdInspectionLayer(scene),game=createIbdYardGame();
   for(const x of[-101,-100,-99]){

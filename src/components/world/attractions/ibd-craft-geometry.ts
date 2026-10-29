@@ -69,9 +69,9 @@ export function addInspectionTools(b: Builder) {
 
 /** Task-specific controls share the existing protected base and physical reach anchors. */
 export function addYardControl(b: Builder, cube: IbdCube, x: number, z: number, kind: 'crane' | 'turn' | 'scale' | 'load' | 'dispatch') {
-  cube([x, .6, z], [.8, 1.2, .7], P.dark, true);
+  cube([x, kind==='crane'?.4:.6, z], [.8, kind==='crane'?.8:1.2, .7], P.dark, true);
   cube([x, .09, z], [.95, .16, .84], P.steel);
-  cube([x, 1.25, z], [1, .16, .9], P.amber);
+  cube([x, kind==='crane'?.85:1.25, z], [1, .16, .9], P.amber);
   if (kind === 'scale' || kind === 'dispatch') {
     cube([x, 1.51, z - .15], [.72, .39, .25], P.dark, false, .025, [-.2, 0, 0]);
     cube([x, 1.55, z - .008], [.55, .19, .026], P.pale, false, .005, [-.2, 0, 0]);
@@ -84,10 +84,18 @@ export function addYardControl(b: Builder, cube: IbdCube, x: number, z: number, 
     });
     bar(b, [x, 1.3, z], [x, 1.49, z], .05, P.steel, 8);
   } else {
-    for (const dx of kind === 'crane' ? [-.22, .22] : [0]) {
+    // Crane levers are articulated scene-owned meshes sharing their pivots with the hands.
+    for (const dx of kind === 'crane' ? [] : [0]) {
       bar(b, [x + dx, 1.3, z], [x + dx, 1.61, z + .13], .045, P.steel, 8);
       cube([x + dx, 1.65, z + .15], [.15, .16, .15], P.rubber, false, .035);
     }
-    cube([x + .31, 1.36, z - .2], [.13, .06, .13], P.rust);
+    cube([x + .31, kind==='crane'?.96:1.36, z - .2], [.13, .06, .13], P.rust);
   }
+}
+
+export function buildIbdCraneLever(){
+  const b=new Builder();
+  bar(b,[0,0,0],[0,.14,.48],.045,P.steel,8);
+  cbox(b,[0,.17,.5],[.15,.16,.15],P.rubber,.035);
+  return b.build();
 }

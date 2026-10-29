@@ -1,0 +1,804 @@
+{
+  "flow": {
+    "ready": {
+      "crane": {
+        "token": 2,
+        "round": 1,
+        "progress": 0,
+        "done": false,
+        "cancelled": false,
+        "leftAngle": 0,
+        "rightAngle": 0,
+        "stage": 0,
+        "held": null,
+        "ready": true,
+        "wrong": false,
+        "moved": [],
+        "pending": "crane",
+        "actor": {
+          "position": [
+            -94,
+            1.9039127826690674,
+            -176.15780639648438
+          ],
+          "yaw": 1.5707963267948966,
+          "grounded": true,
+          "available": true,
+          "mode": "guide"
+        },
+        "handError": 2.972414580444127e-8,
+        "action": {
+          "kind": "crane-control",
+          "phase": "perform",
+          "elapsed": 0.6,
+          "committed": true
+        }
+      }
+    },
+    "wrong": {
+      "crane": {
+        "token": 2,
+        "round": 1,
+        "progress": 0,
+        "done": false,
+        "cancelled": false,
+        "leftAngle": 0,
+        "rightAngle": 0,
+        "stage": 0,
+        "held": null,
+        "ready": true,
+        "wrong": true,
+        "moved": [],
+        "pending": "crane",
+        "actor": {
+          "position": [
+            -94,
+            1.9039127826690674,
+            -176.15780639648438
+          ],
+          "yaw": 1.5707963267948966,
+          "grounded": true,
+          "available": true,
+          "mode": "guide"
+        },
+        "handError": 2.1850818348011943e-8,
+        "action": {
+          "kind": "crane-control",
+          "phase": "perform",
+          "elapsed": 0.6,
+          "committed": true
+        }
+      }
+    },
+    "released": {
+      "crane": {
+        "token": 2,
+        "round": 1,
+        "progress": 0.14393940144641826,
+        "done": false,
+        "cancelled": false,
+        "leftAngle": -0.0031929412856405194,
+        "rightAngle": 0,
+        "stage": 0,
+        "held": null,
+        "ready": true,
+        "wrong": false,
+        "moved": [],
+        "pending": "crane",
+        "actor": {
+          "position": [
+            -94,
+            1.9039127826690674,
+            -176.15780639648438
+          ],
+          "yaw": 1.5707963267948966,
+          "grounded": true,
+          "available": true,
+          "mode": "guide"
+        },
+        "handError": 1.9760070270796872e-8,
+        "action": {
+          "kind": "crane-control",
+          "phase": "perform",
+          "elapsed": 0.6,
+          "committed": true
+        }
+      }
+    },
+    "paused": {
+      "crane": {
+        "token": 2,
+        "round": 1,
+        "progress": 0.14393940144641826,
+        "done": false,
+        "cancelled": false,
+        "leftAngle": -2.997757261268533e-203,
+        "rightAngle": 0,
+        "stage": 0,
+        "held": null,
+        "ready": true,
+        "wrong": false,
+        "moved": [],
+        "pending": "crane",
+        "actor": {
+          "position": [
+            -94,
+            1.9039127826690674,
+            -176.15780639648438
+          ],
+          "yaw": 1.5707963267948966,
+          "grounded": true,
+          "available": true,
+          "mode": "guide"
+        },
+        "handError": 1.860886119683331e-8,
+        "action": {
+          "kind": "crane-control",
+          "phase": "perform",
+          "elapsed": 0.6,
+          "committed": true
+        }
+      }
+    },
+    "resumed": {
+      "crane": {
+        "token": 2,
+        "round": 1,
+        "progress": 0.14393940144641826,
+        "done": false,
+        "cancelled": false,
+        "leftAngle": -1.2270243414641197e-208,
+        "rightAngle": 0,
+        "stage": 0,
+        "held": null,
+        "ready": true,
+        "wrong": false,
+        "moved": [],
+        "pending": "crane",
+        "actor": {
+          "position": [
+            -94,
+            1.9039127826690674,
+            -176.15780639648438
+          ],
+          "yaw": 1.5707963267948966,
+          "grounded": true,
+          "available": true,
+          "mode": "guide"
+        },
+        "handError": 4.233437364176777e-8,
+        "action": {
+          "kind": "crane-control",
+          "phase": "perform",
+          "elapsed": 0.6,
+          "committed": true
+        }
+      }
+    },
+    "raised": {
+      "crane": {
+        "token": 2,
+        "round": 1,
+        "progress": 0.3333333333333333,
+        "done": false,
+        "cancelled": false,
+        "leftAngle": -3.0156847121754453e-12,
+        "rightAngle": 0,
+        "stage": 1,
+        "held": null,
+        "ready": true,
+        "wrong": false,
+        "moved": [],
+        "pending": "crane",
+        "actor": {
+          "position": [
+            -94,
+            1.9039127826690674,
+            -176.15780639648438
+          ],
+          "yaw": 1.5707963267948966,
+          "grounded": true,
+          "available": true,
+          "mode": "guide"
+        },
+        "handError": 2.1417878262661566e-8,
+        "action": {
+          "kind": "crane-control",
+          "phase": "perform",
+          "elapsed": 0.6,
+          "committed": true
+        }
+      }
+    },
+    "earlyLower": {
+      "crane": {
+        "token": 2,
+        "round": 1,
+        "progress": 0.3333333333333333,
+        "done": false,
+        "cancelled": false,
+        "leftAngle": -3.83280213270637e-186,
+        "rightAngle": 0,
+        "stage": 1,
+        "held": null,
+        "ready": true,
+        "wrong": true,
+        "moved": [],
+        "pending": "crane",
+        "actor": {
+          "position": [
+            -94,
+            1.9039127826690674,
+            -176.15780639648438
+          ],
+          "yaw": 1.5707963267948966,
+          "grounded": true,
+          "available": true,
+          "mode": "guide"
+        },
+        "handError": 2.601592641715138e-8,
+        "action": {
+          "kind": "crane-control",
+          "phase": "perform",
+          "elapsed": 0.6,
+          "committed": true
+        }
+      }
+    },
+    "traverseHeldThenRelease": {
+      "crane": {
+        "token": 2,
+        "round": 1,
+        "progress": 0.5075757666632081,
+        "done": false,
+        "cancelled": false,
+        "leftAngle": -4.492132054383696e-199,
+        "rightAngle": 0.020529691815576963,
+        "stage": 1,
+        "held": null,
+        "ready": true,
+        "wrong": false,
+        "moved": [],
+        "pending": "crane",
+        "actor": {
+          "position": [
+            -94,
+            1.9039127826690674,
+            -176.15780639648438
+          ],
+          "yaw": 1.5707963267948966,
+          "grounded": true,
+          "available": true,
+          "mode": "guide"
+        },
+        "handError": 2.6457093014149897e-8,
+        "action": {
+          "kind": "crane-control",
+          "phase": "perform",
+          "elapsed": 0.6,
+          "committed": true
+        }
+      }
+    },
+    "traversed": {
+      "crane": {
+        "token": 2,
+        "round": 1,
+        "progress": 0.6666666666666666,
+        "done": false,
+        "cancelled": false,
+        "leftAngle": -5e-324,
+        "rightAngle": 1.9389982903544983e-11,
+        "stage": 2,
+        "held": null,
+        "ready": true,
+        "wrong": false,
+        "moved": [],
+        "pending": "crane",
+        "actor": {
+          "position": [
+            -94,
+            1.9039127826690674,
+            -176.15780639648438
+          ],
+          "yaw": 1.5707963267948966,
+          "grounded": true,
+          "available": true,
+          "mode": "guide"
+        },
+        "handError": 2.861035463994105e-8,
+        "action": {
+          "kind": "crane-control",
+          "phase": "perform",
+          "elapsed": 0.6,
+          "committed": true
+        }
+      }
+    },
+    "completed": {
+      "crane": {
+        "token": null,
+        "round": 1,
+        "progress": 0,
+        "done": false,
+        "cancelled": false,
+        "leftAngle": 0,
+        "rightAngle": 0,
+        "stage": 0,
+        "held": null,
+        "ready": false,
+        "wrong": false,
+        "moved": [
+          "coil-front"
+        ],
+        "pending": null,
+        "actor": {
+          "position": [
+            -94,
+            1.9039127826690674,
+            -176.15780639648438
+          ],
+          "yaw": 1.5707963267948966,
+          "grounded": true,
+          "available": true,
+          "mode": "guide"
+        },
+        "handError": null,
+        "action": null
+      }
+    },
+    "walkAway": {
+      "position": [
+        -93.2,
+        1.91,
+        -175.12
+      ],
+      "yaw": -0.91,
+      "grounded": true,
+      "vehicle": null,
+      "drive": null,
+      "grass": {
+        "instances": 0,
+        "disturbers": 1,
+        "trampled": 8,
+        "strength": 0.927
+      },
+      "exchange": {
+        "phase": "cancelled",
+        "equity": null,
+        "contacts": 0,
+        "carried": null
+      }
+    },
+    "errors": []
+  },
+  "performance": {
+    "frameWindow": {
+      "frames": 5231,
+      "activeSeconds": 110.34619999998807,
+      "maxMs": 197.5,
+      "slow25Ratio": 0.23876887784362455,
+      "slow33Ratio": 0.1531255974001147,
+      "percentileSamples": 1800,
+      "p50Ms": 16.600000381469727,
+      "p95Ms": 42.20000076293945,
+      "changedDuringWindow": false,
+      "slowestFrames": [
+        {
+          "sample": 4201,
+          "activeElapsedMs": 89956.09999999404,
+          "ms": 197.5,
+          "context": {
+            "observedAtMs": 1280163.699999988,
+            "lastRenderFrame": 58495,
+            "lastRenderCalls": 72,
+            "lastRenderTriangles": 319533,
+            "geometries": 337,
+            "textures": 60,
+            "programs": 140,
+            "cameraX": -91.18791135666171,
+            "cameraY": 2.335887850206519,
+            "cameraZ": -172.53447068915747,
+            "actorX": -94,
+            "actorY": 1.9039127826690674,
+            "actorZ": -176.15780639648438,
+            "quality": "balanced",
+            "night": 1,
+            "paused": false,
+            "poolInspect": false,
+            "hidden": false,
+            "shot": null,
+            "vehicle": null,
+            "coasterBoundsDistance": 86,
+            "coasterProximityActive": false,
+            "coasterEnabled": false,
+            "coasterRiding": false,
+            "coasterRidePhase": null,
+            "coasterTrackPhase": "station",
+            "coasterElapsed": 0,
+            "coasterClockRiding": false,
+            "coasterRevision": -1
+          }
+        },
+        {
+          "sample": 176,
+          "activeElapsedMs": 4345.300000011921,
+          "ms": 171.90000000596046,
+          "context": {
+            "observedAtMs": 1194557.8999999762,
+            "lastRenderFrame": 54470,
+            "lastRenderCalls": 72,
+            "lastRenderTriangles": 319533,
+            "geometries": 337,
+            "textures": 60,
+            "programs": 140,
+            "cameraX": -91.18791135666171,
+            "cameraY": 2.335887850206519,
+            "cameraZ": -172.53447068915747,
+            "actorX": -94,
+            "actorY": 1.9039127826690674,
+            "actorZ": -176.15780639648438,
+            "quality": "balanced",
+            "night": 1,
+            "paused": false,
+            "poolInspect": false,
+            "hidden": false,
+            "shot": null,
+            "vehicle": null,
+            "coasterBoundsDistance": 86,
+            "coasterProximityActive": false,
+            "coasterEnabled": false,
+            "coasterRiding": false,
+            "coasterRidePhase": null,
+            "coasterTrackPhase": "station",
+            "coasterElapsed": 0,
+            "coasterClockRiding": false,
+            "coasterRevision": -1
+          }
+        },
+        {
+          "sample": 782,
+          "activeElapsedMs": 18603.09999999404,
+          "ms": 157.19999998807907,
+          "context": {
+            "observedAtMs": 1208832.3999999762,
+            "lastRenderFrame": 55076,
+            "lastRenderCalls": 72,
+            "lastRenderTriangles": 319533,
+            "geometries": 337,
+            "textures": 60,
+            "programs": 140,
+            "cameraX": -91.18791135666171,
+            "cameraY": 2.335887850206519,
+            "cameraZ": -172.53447068915747,
+            "actorX": -94,
+            "actorY": 1.9039127826690674,
+            "actorZ": -176.15780639648438,
+            "quality": "balanced",
+            "night": 1,
+            "paused": false,
+            "poolInspect": false,
+            "hidden": false,
+            "shot": null,
+            "vehicle": null,
+            "coasterBoundsDistance": 86,
+            "coasterProximityActive": false,
+            "coasterEnabled": false,
+            "coasterRiding": false,
+            "coasterRidePhase": null,
+            "coasterTrackPhase": "station",
+            "coasterElapsed": 0,
+            "coasterClockRiding": false,
+            "coasterRevision": -1
+          }
+        },
+        {
+          "sample": 664,
+          "activeElapsedMs": 15507.800000011921,
+          "ms": 145.5,
+          "context": {
+            "observedAtMs": 1205721.199999988,
+            "lastRenderFrame": 54958,
+            "lastRenderCalls": 72,
+            "lastRenderTriangles": 319533,
+            "geometries": 337,
+            "textures": 60,
+            "programs": 140,
+            "cameraX": -91.18791135666171,
+            "cameraY": 2.335887850206519,
+            "cameraZ": -172.53447068915747,
+            "actorX": -94,
+            "actorY": 1.9039127826690674,
+            "actorZ": -176.15780639648438,
+            "quality": "balanced",
+            "night": 1,
+            "paused": false,
+            "poolInspect": false,
+            "hidden": false,
+            "shot": null,
+            "vehicle": null,
+            "coasterBoundsDistance": 86,
+            "coasterProximityActive": false,
+            "coasterEnabled": false,
+            "coasterRiding": false,
+            "coasterRidePhase": null,
+            "coasterTrackPhase": "station",
+            "coasterElapsed": 0,
+            "coasterClockRiding": false,
+            "coasterRevision": -1
+          }
+        },
+        {
+          "sample": 3564,
+          "activeElapsedMs": 76754.5,
+          "ms": 142.40000000596046,
+          "context": {
+            "observedAtMs": 1266959.5,
+            "lastRenderFrame": 57858,
+            "lastRenderCalls": 72,
+            "lastRenderTriangles": 319533,
+            "geometries": 336,
+            "textures": 59,
+            "programs": 139,
+            "cameraX": -91.18791135666171,
+            "cameraY": 2.335887850206519,
+            "cameraZ": -172.53447068915747,
+            "actorX": -94,
+            "actorY": 1.9039127826690674,
+            "actorZ": -176.15780639648438,
+            "quality": "balanced",
+            "night": 1,
+            "paused": false,
+            "poolInspect": false,
+            "hidden": false,
+            "shot": null,
+            "vehicle": null,
+            "coasterBoundsDistance": 86,
+            "coasterProximityActive": false,
+            "coasterEnabled": false,
+            "coasterRiding": false,
+            "coasterRidePhase": null,
+            "coasterTrackPhase": "station",
+            "coasterElapsed": 0,
+            "coasterClockRiding": false,
+            "coasterRevision": -1
+          }
+        },
+        {
+          "sample": 1362,
+          "activeElapsedMs": 31617.30000001192,
+          "ms": 131.5,
+          "context": {
+            "observedAtMs": 1221830.2999999821,
+            "lastRenderFrame": 55656,
+            "lastRenderCalls": 72,
+            "lastRenderTriangles": 319533,
+            "geometries": 337,
+            "textures": 60,
+            "programs": 140,
+            "cameraX": -91.18791135666171,
+            "cameraY": 2.335887850206519,
+            "cameraZ": -172.53447068915747,
+            "actorX": -94,
+            "actorY": 1.9039127826690674,
+            "actorZ": -176.15780639648438,
+            "quality": "balanced",
+            "night": 1,
+            "paused": false,
+            "poolInspect": false,
+            "hidden": false,
+            "shot": null,
+            "vehicle": null,
+            "coasterBoundsDistance": 86,
+            "coasterProximityActive": false,
+            "coasterEnabled": false,
+            "coasterRiding": false,
+            "coasterRidePhase": null,
+            "coasterTrackPhase": "station",
+            "coasterElapsed": 0,
+            "coasterClockRiding": false,
+            "coasterRevision": -1
+          }
+        },
+        {
+          "sample": 395,
+          "activeElapsedMs": 9281.199999988079,
+          "ms": 131.2999999821186,
+          "context": {
+            "observedAtMs": 1199492.699999988,
+            "lastRenderFrame": 54689,
+            "lastRenderCalls": 72,
+            "lastRenderTriangles": 319533,
+            "geometries": 337,
+            "textures": 60,
+            "programs": 140,
+            "cameraX": -91.18791135666171,
+            "cameraY": 2.335887850206519,
+            "cameraZ": -172.53447068915747,
+            "actorX": -94,
+            "actorY": 1.9039127826690674,
+            "actorZ": -176.15780639648438,
+            "quality": "balanced",
+            "night": 1,
+            "paused": false,
+            "poolInspect": false,
+            "hidden": false,
+            "shot": null,
+            "vehicle": null,
+            "coasterBoundsDistance": 86,
+            "coasterProximityActive": false,
+            "coasterEnabled": false,
+            "coasterRiding": false,
+            "coasterRidePhase": null,
+            "coasterTrackPhase": "station",
+            "coasterElapsed": 0,
+            "coasterClockRiding": false,
+            "coasterRevision": -1
+          }
+        },
+        {
+          "sample": 917,
+          "activeElapsedMs": 21785.09999999404,
+          "ms": 131.2999999821186,
+          "context": {
+            "observedAtMs": 1212036.7999999821,
+            "lastRenderFrame": 55211,
+            "lastRenderCalls": 72,
+            "lastRenderTriangles": 319533,
+            "geometries": 337,
+            "textures": 60,
+            "programs": 140,
+            "cameraX": -91.18791135666171,
+            "cameraY": 2.335887850206519,
+            "cameraZ": -172.53447068915747,
+            "actorX": -94,
+            "actorY": 1.9039127826690674,
+            "actorZ": -176.15780639648438,
+            "quality": "balanced",
+            "night": 1,
+            "paused": false,
+            "poolInspect": false,
+            "hidden": false,
+            "shot": null,
+            "vehicle": null,
+            "coasterBoundsDistance": 86,
+            "coasterProximityActive": false,
+            "coasterEnabled": false,
+            "coasterRiding": false,
+            "coasterRidePhase": null,
+            "coasterTrackPhase": "station",
+            "coasterElapsed": 0,
+            "coasterClockRiding": false,
+            "coasterRevision": -1
+          }
+        }
+      ]
+    },
+    "shadowRebuilds": [],
+    "shadowWork": {
+      "pending": false,
+      "slices": 0,
+      "cpuMs": 0,
+      "maxSliceMs": 0,
+      "cancelled": 1,
+      "error": "",
+      "phases": [],
+      "hullWorker": {
+        "requests": 0,
+        "workerMs": 0,
+        "maxWorkerMs": 0,
+        "maxSource": "",
+        "maxInputVertices": 0
+      }
+    },
+    "sceneWork": [
+      {
+        "name": "ibd-signs",
+        "startMs": 1266869.2999999821,
+        "lastRenderFrame": 57858,
+        "endMs": 1266930.2999999821,
+        "durationMs": 61
+      },
+      {
+        "name": "ibd-guide-cue",
+        "startMs": 1266930.8999999762,
+        "lastRenderFrame": 57858,
+        "endMs": 1266933.599999994,
+        "durationMs": 2.7000000178813934
+      }
+    ],
+    "coasterStructureMemory": {
+      "variants": 1,
+      "attributeBytes": 19679040
+    },
+    "coasterStructureJobs": {
+      "active": 0,
+      "completed": 0,
+      "failed": 0,
+      "lastWorkerMs": 0,
+      "lastError": ""
+    },
+    "render": {
+      "sampledAt": "2026-10-29T02:59:06.933Z",
+      "calls": 73,
+      "triangles": 329081,
+      "geometries": 338,
+      "textures": 60,
+      "programs": 140,
+      "camera": [
+        -91.19109093047771,
+        2.417919152146722,
+        -172.5345010216606
+      ],
+      "mode": "always",
+      "frame": 59526,
+      "delta": 0.017799999982118606,
+      "night": 1,
+      "windTime": 1128.0576999998557,
+      "frameMs": {
+        "samples": 180,
+        "p50": 16.600000381469727,
+        "p95": 42.099998474121094,
+        "max": 76
+      },
+      "drawingBuffer": [
+        2013,
+        1030
+      ],
+      "cssSize": [
+        1710,
+        875
+      ],
+      "pixelRatio": 1.1772275318111343,
+      "dprRange": [
+        0,
+        1.5
+      ],
+      "quality": "balanced",
+      "antialias": true,
+      "msaaSamples": 4,
+      "toneMapping": 4,
+      "outputColorSpace": "srgb",
+      "shadowMapSize": 1254,
+      "shadowType": 1,
+      "postprocessing": [],
+      "coasterVegetation": [
+        {
+          "name": "coaster-ST1-L0",
+          "visible": false,
+          "instances": 0,
+          "triangles": 0,
+          "matrixUploads": 0
+        },
+        {
+          "name": "coaster-ST1-L1",
+          "visible": false,
+          "instances": 0,
+          "triangles": 0,
+          "matrixUploads": 0
+        },
+        {
+          "name": "coaster-ST2-L0",
+          "visible": false,
+          "instances": 0,
+          "triangles": 0,
+          "matrixUploads": 0
+        },
+        {
+          "name": "coaster-ST2-L1",
+          "visible": false,
+          "instances": 0,
+          "triangles": 0,
+          "matrixUploads": 0
+        },
+        {
+          "name": "coaster-G19",
+          "visible": false,
+          "instances": 0,
+          "triangles": 0,
+          "matrixUploads": 0
+        }
+      ]
+    }
+  }
+}

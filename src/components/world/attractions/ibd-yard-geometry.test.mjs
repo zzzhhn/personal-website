@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { IBD_GEOMETRY_BUDGET } from './ibd-geometry-budget.ts';
+import { buildIbdCraneLever } from './ibd-craft-geometry.ts';
+import { CRANE_STAND } from './ibd-crane-control.ts';
 import RAPIER from '@dimforge/rapier3d-compat';
 import { Euler, Quaternion } from 'three';
 import { buildIbdStatic, buildIbdCoil, buildIbdPack, buildIbdLid, buildIbdCrane, buildIbdHook, buildIbdCables, buildIbdShutter, buildIbdTorch } from './ibd-yard-geometry.ts';
@@ -31,10 +33,13 @@ function fixture(cargo = true) {
   };
   return { world, data, free, dispose: () => { world.free(); data.geometry.dispose(); } };
 }
+test('the exact two-handed crane stance is reachable from the operating side with a full player capsule',()=>{
+  const f=fixture();try{for(let z=CRANE_STAND[2];z<=1.8;z+=.025)assert.equal(f.free(CRANE_STAND[0],CRANE_STAND[1],z),true,`crane approach ${z}`);}finally{f.dispose();}
+});
 test('geometry is finite, bounded to the survey, and stays below the provisional triangle budget', () => {
   const staticData = buildIbdStatic();
   const geometries = [staticData.geometry, buildIbdCoil(false), buildIbdCoil(true, 2), buildIbdPack(4, 'M8'), buildIbdPack(3, 'M8'),
-    buildIbdLid(), buildIbdLid(), buildIbdCrane(), buildIbdHook(), buildIbdCables(), buildIbdShutter(), buildIbdTorch(), buildIbdPack(4, 'M6')];
+    buildIbdLid(), buildIbdLid(), buildIbdCrane(), buildIbdHook(), buildIbdCables(), buildIbdShutter(), buildIbdTorch(), buildIbdPack(4, 'M6'),buildIbdCraneLever(),buildIbdCraneLever()];
   let triangles = 24; // open 12-sided inspection light shaft
   for (const g of geometries) {
     assert.ok(g.index && g.getAttribute('color')); triangles += g.index.count / 3;

@@ -5,6 +5,7 @@ import { createIbdYardGame, requestIbdYardAction, finishIbdYardAction, cancelIbd
 import type { IbdMotionWait } from './ibd-yard-safety.ts';
 import { advanceIbdInspectionAction, beginIbdInspectionAction, cancelIbdInspectionAction, ibdInspectionActor, ibdInspectionBody } from './ibd-inspection-motion.ts';
 import { ibdCoilInspectAnchor, isIbdCoilCheck } from './ibd-coil-inspection.ts';
+import { beginCraneControl,craneControl,resetCraneControl,setCraneInput,tickCraneControl } from './ibd-crane-control.ts';
 
 // This reservation owns the physical observation, not a second cargo/evidence state.
 let coilCheck: {token:number; round:number; itemId:string; observed:boolean} | null = null;
@@ -26,6 +27,8 @@ export function ibdActor(): IbdActor {
 export function dispatchIbdAction(action: IbdAction) {
   const s=useIbdYardStore.getState();
   let game=requestIbdYardAction(s.game,action,ibdActor());
+  if(game.pending&&game.pending!==s.game.pending&&action.kind==='crane'&&!beginCraneControl(game))
+    game={...cancelIbdYardAction(game),notice:'inspection-stand-clear'};
   if(game.pending && game.pending!==s.game.pending && isIbdCoilCheck(action)) {
     const reservation={token:game.pending.token,round:game.round,itemId:yardItemId(game,action.slot!),observed:false};
     const began=beginIbdInspectionAction('coil-check',ibdCoilInspectAnchor(game,action,ibdInspectionActor.position),()=>{
@@ -45,18 +48,29 @@ export function dispatchIbdAction(action: IbdAction) {
   useIbdYardStore.setState({game,motionWait:game.pending===s.game.pending?s.motionWait:null});
 }
 export function finishIbdAction(token: number) {
+  if(useIbdYardStore.getState().game.pending?.action.kind==='crane'
+    &&(craneControl.token!==token||!craneControl.done||ibdInspectionBody.action))return;
   // A mechanism timer cannot bypass the rendered hand pose or the recovery phase.
   if(isIbdCoilCheck(useIbdYardStore.getState().game.pending?.action)
     && (!coilCheck || coilCheck.token!==token || !coilCheck.observed || ibdInspectionBody.action))return;
   useIbdYardStore.setState(s => ({ game: finishIbdYardAction(s.game, token, ibdActor()), motionWait: null }));
+  if(craneControl.token===token&&!useIbdYardStore.getState().game.pending)resetCraneControl();
 }
 export function cancelIbdAction() {
+  resetCraneControl();
   if(coilCheck)cancelIbdInspectionAction();
   coilCheck=null;
   useIbdYardStore.setState(s => ({ game: cancelIbdYardAction(s.game), motionWait: null }));
 }
 /** Reuse the existing fixed actor clock; no interval, polling or per-frame React update. */
 export function tickIbdCoilInspection(dt:number) {
+  if(craneControl.token!==null){
+    const game=useIbdYardStore.getState().game,actor=ibdActor();
+    if(game.pending?.token!==craneControl.token||game.round!==craneControl.round||!actor.active||actor.driving||craneControl.cancelled){cancelIbdAction();return;}
+    if(actor.paused||actor.hidden){setCraneInput(null);return;}
+    tickCraneControl(dt);
+    if(craneControl.cancelled){cancelIbdAction();return;}
+  }
   const check=coilCheck;if(!check)return;
   const game=useIbdYardStore.getState().game,actor=ibdActor();
   if(game.pending?.token!==check.token || game.round!==check.round || !actor.active || actor.driving) {
