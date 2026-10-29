@@ -1,6 +1,6 @@
 import { Bone, Group, Object3D, Quaternion, Vector3 } from 'three';
 import type { IbdInspectionAction, IbdInspectionCarried, IbdInspectionVisualSockets } from './attractions/ibd-inspection-motion.ts';
-import { IBD_INSPECTION_CONTACT_TOLERANCE } from './attractions/ibd-inspection-motion.ts';
+import { IBD_INSPECTION_CONTACT_TOLERANCE, IBD_CALIPER_REACH_SECONDS } from './attractions/ibd-inspection-motion.ts';
 import type { Vec3 } from './types.ts';
 
 interface Arm { upper: Bone; lower: Bone; hand: Bone; palm: Group; side: number }
@@ -88,7 +88,8 @@ export class GuideIbdInspectionLayer {
     const performing=action?.phase==='perform'?action:null;
     const t=performing?clamp(performing.elapsed,0,performing.duration):0;
     const reach=performing?(t<=performing.contactAt
-      ?ease((t-performing.reachStartAt)/(performing.kind==='coil-check'?.6:performing.contactAt-performing.reachStartAt))
+      ?ease((t-performing.reachStartAt)/(performing.kind==='coil-check'?.6:performing.kind==='measure'
+        ?IBD_CALIPER_REACH_SECONDS:performing.contactAt-performing.reachStartAt))
       :1-ease((t-performing.contactAt)/performing.recoverDuration)):0;
     const root=this.scene.getWorldQuaternion(new Quaternion());
     const leftQ=root.clone().multiply(new Quaternion().setFromAxisAngle(Z,-.08));

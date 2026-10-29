@@ -23,7 +23,8 @@ import { attractionRide } from './attractions/attraction-ride';
 import { attractionLook } from './attractions/attraction-camera';
 import { PLAYER_CENTER_HEIGHT } from './actor-physics';
 import { INTENT_TARGETS } from './attractions/intent-stations';
-import { IBD_STATIONS, ibdWorld } from './attractions/ibd-yard-layout';
+import { IBD_STATIONS, ibdWorld, ibdPackHome } from './attractions/ibd-yard-layout';
+import { ibdPackInspectAnchors } from './attractions/ibd-pack-layout';
 import { intentRideClock, intentRideQaHold, useIntentStore } from './attractions/intent-state';
 import { readCoasterMotionAudioSnapshot } from './attractions/coaster-motion-audio';
 import { shadowRebuildProbe, shadowChunkWork } from './WorldShadows';
@@ -77,6 +78,16 @@ export default function WorldPlaytestReadout() {
           const p=ibdWorld([18,.1,-9.5]);worldActorDebug.teleportPlayer([p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]]);
           useWorldStore.setState({paused:false,seat:null,clubMode:null});
         }}>QA · 后库换货起点</button>
+        {(['M8','M6'] as const).map(spec=><button key={`caliper-${spec}`} onClick={()=>{
+          // Only arrange an open carton and a grounded start. No sample, reading or proof is granted.
+          cancelIbdPack(true);cancelIbdAction();
+          const station=spec==='M8'?'parts-a':'parts-b',game=createIbdYardGame(3);
+          game.started=true;game.equipped=true;game.core={...game.core,opened:[station]};
+          useIbdYardStore.setState({game,guideEnabled:false,motionWait:null});
+          const home=ibdPackHome(station),p=ibdWorld(ibdPackInspectAnchors(spec,.54).stand.map((v,i)=>v+home[i]));
+          worldActorDebug.teleportPlayer([p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]]);
+          useWorldStore.setState({paused:false,seat:null,clubMode:null});
+        }}>QA · 卡规起点 {spec}</button>)}
         <button onClick={()=>{const g=useIbdYardStore.getState().game;setRenderSnapshot({reserve:{stock:g.stock,
           pending:g.pending?.action??null,notice:g.notice,goods:yardCase(g).items.map(i=>({id:i.id,spec:i.specId,quantity:i.quantity})),
           samples:Object.fromEntries(Object.entries(g.packInspections).map(([id,s])=>[id,{held:s.held,readings:s.slots.map(p=>p.reading)}]))}});}}>QA · 读取后库实物</button>

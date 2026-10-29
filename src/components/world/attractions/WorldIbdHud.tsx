@@ -58,7 +58,7 @@ export default memo(function WorldIbdHud({ active = true }: { active?: boolean }
       <p className="ibd-next">{guide.hint[lang]}</p>
       {!atTarget && !atStock && !game.pending && !game.released && <p className="ibd-walk-hint">{game.stock.requested?t('进入后库，两侧验样台都可操作。','Enter the reserve area. Both sampling benches are available.'):t('沿地面箭头走到黄圈，靠近后按 E。', 'Follow the floor arrows to the ring. Press E when close.')}</p>}
     </> : <><h2>{workingStation ? workingStation.title[lang] : t('自由检查', 'Explore the yard')}</h2>
-      <p className="ibd-next">{packView.pack?t('取出样件，合拢夹爪贴住杆身，夹量后放回原槽。','Present a sample, fit the jaws to its shaft, gauge it, then return it.'):t('靠近装置按 E 操作；需要时可恢复带路。', 'Approach a device and press E. Resume guidance at any time.')}</p></>}
+      <p className="ibd-next">{packView.pack?t('取样 → 合拢并读数 → 放回原槽，按 E 完成每一步。','Present → close and read → return. Press E for each step.'):t('靠近装置按 E 操作；需要时可恢复带路。', 'Approach a device and press E. Resume guidance at any time.')}</p></>}
     {packView.pack ? <WorldIbdPackControls zh={zh}/> : game.pending ? <>{game.pending.action.kind==='crane'&&<WorldIbdCraneControls zh={zh}/>}
       {(game.pending.action.kind!=='crane'||motionWait)&&<div className="ibd-working" role="status" aria-live="polite"><i aria-hidden="true" />{motionWait ? IBD_MOTION_WAIT_LABEL[motionWait][lang] : game.pending.action.kind==='replace'&&game.pending.action.slot==='parts-b'?t('正将原箱送往隔离位','Moving the original carton to quarantine'):IBD_ACTION_LABEL[game.pending.action.kind][lang]}</div>}
       {canCancelIbdObservation(game) && <div className="ibd-actions"><button className="ibd-secondary" onClick={() => {

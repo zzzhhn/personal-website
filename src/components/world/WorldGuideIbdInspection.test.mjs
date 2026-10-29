@@ -6,6 +6,7 @@ import { Bone,Group,Matrix4,PropertyBinding,Vector3 } from 'three';
 import { GuideIbdInspectionLayer } from './WorldGuideIbdInspection.ts';
 import { ibdCoilInspectAnchor } from './attractions/ibd-coil-inspection.ts';
 import { createIbdYardGame } from './attractions/ibd-yard-game.ts';
+import { ibdPackInspectAnchors } from './attractions/ibd-pack-layout.ts';
 import { PLAYER_CENTER_HEIGHT } from './actor-physics.ts';
 import { CRANE_STAND,craneGripTarget } from './attractions/ibd-crane-control.ts';
 import { advanceIbdInspectionAction,beginIbdInspectionAction,cancelIbdInspectionAction,ibdInspectionActor,
@@ -95,6 +96,20 @@ test('builder presentation rail and caliper thumb-tab contacts are reachable for
     assert.ok(s.leftContactError<=.025,`${spec} left ${s.leftContactError}`);
     assert.ok(s.rightContactError<=.025,`${spec} right ${s.rightContactError}`);
   }layer.dispose();
+});
+test('the real palms remain on the sample and moving thumb tab throughout caliper closure',()=>{
+  const scene=rig(),layer=new GuideIbdInspectionLayer(scene);
+  scene.position.set(10,.1,-9.52);scene.rotation.y=Math.PI/2;scene.updateWorldMatrix(true,true);
+  for(const spec of['M6','M8'])for(const t of[.4,.55,.7,.85,1,1.15]){
+    const diameter=ibdPackInspectAnchors(spec,.54).diameter,u=Math.min(1,(t-.4)/.65);
+    const gap=.54+(diameter-.54)*u*u*(3-2*u),local=ibdPackInspectAnchors(spec,gap);
+    const world=p=>p.map((v,i)=>v+[10,1.1,-12][i]);
+    const a=action('measure',{...IBD_INSPECTION_TIMING.measure,elapsed:t,
+      anchor:{stand:world(local.stand),yaw:local.yaw,leftTarget:world(local.leftTarget),rightTarget:world(local.rightTarget)}});
+    const s=layer.apply(a,{spec});assert.equal(s.reachable,true);
+    assert.ok(s.contactError<=.025,`${spec} ${t}: ${s.contactError}`);
+  }
+  layer.dispose();
 });
 test('M6/M8 contact stays within tolerance across the permitted stand and heading residuals',()=>{
   const scene=rig(),layer=new GuideIbdInspectionLayer(scene);

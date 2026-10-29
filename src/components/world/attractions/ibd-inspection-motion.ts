@@ -24,11 +24,13 @@ export const ibdInspectionVisualSockets: IbdInspectionVisualSockets = {
 export const IBD_INSPECTION_CONTACT_TOLERANCE = .025;
 export const IBD_INSPECTION_STAND_TOLERANCE = .02;
 export const IBD_INSPECTION_YAW_TOLERANCE = .06;
+/** Settle both hands before pushing the moving jaw along the shaft. */
+export const IBD_CALIPER_REACH_SECONDS = .4;
 /** Tray presents during 0..1.5. Return/empty tray retracts only after the hand has cleared. */
 export const IBD_INSPECTION_TIMING: Readonly<Record<IbdInspectionActionKind,
   Readonly<{ duration:number; contactAt:number; reachStartAt:number; recoverDuration:number }>>> = {
   pickup: {duration:2.6,contactAt:2.05,reachStartAt:1.5,recoverDuration:.55},
-  measure: {duration:1.35,contactAt:.72,reachStartAt:0,recoverDuration:.63},
+  measure: {duration:1.8,contactAt:1.15,reachStartAt:0,recoverDuration:.65},
   return: {duration:2.6,contactAt:.55,reachStartAt:0,recoverDuration:.35},
   empty: {duration:4.1,contactAt:2.05,reachStartAt:1.5,recoverDuration:.4},
   'coil-check': {duration:3.1,contactAt:2.5,reachStartAt:0,recoverDuration:.6},
