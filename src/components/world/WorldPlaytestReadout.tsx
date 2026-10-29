@@ -86,6 +86,9 @@ export default function WorldPlaytestReadout() {
           {(['day','night'] as const).map(time=><button key={`archive-shot-${time}`} onClick={()=>{
             selectWorldTime(time==='day'?'noon':'night');useWorldStore.setState({shot:`exchange-craft-archive-${time}`,paused:false});
           }}>QA · 档案室定帧 {time}</button>)}
+          {(['day','night'] as const).map(time=><button key={`gallery-shot-${time}`} onClick={()=>{
+            selectWorldTime(time==='day'?'noon':'night');useWorldStore.setState({shot:`exchange-craft-gallery-${time}`,paused:false});
+          }}>QA · 回廊定帧 {time}</button>)}
           <button onClick={()=>useWorldStore.setState({shot:null,paused:false})}>QA · 退出定帧</button>
           {EXCHANGE_ARCHIVE_DRAWERS.map((s,i)=><button key={`archive-${i}`} onClick={()=>{
             const p=exchangeWorld(s.stand);worldActorDebug.teleportPlayer([p[0],p[1]+PLAYER_CENTER_HEIGHT,p[2]+.2]);

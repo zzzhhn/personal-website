@@ -4,6 +4,8 @@ import { mergeBatch, toBatch, type Emit } from './WorldParkKit';
 import { EXCHANGE_HALL,EXCHANGE_COLUMNS,exchangeBoxes,exchangePlatformSlabs } from './alpha-exchange-layout';
 import { EXCHANGE_PLAY_PROPS,EXCHANGE_PLAY_STATIONS,EXCHANGE_SECOND_DESK,EXCHANGE_ARCHIVE_DRAWERS } from './alpha-exchange-play-layout';
 import { exchangeChamferBox,exchangeSurface,bakeExchangeWorklights,EXCHANGE_BANK_LAMPS } from './alpha-exchange-craft';
+import { buildExchangeInteriorCraft } from './alpha-exchange-interior-craft';
+import { buildExchangeGalleryCraft } from './alpha-exchange-gallery-craft';
 import type { Vec3 } from './types';
 
 export interface ExchangeCollision {vertices:Float32Array;indices:Uint32Array;flags?:TriMeshFlags}
@@ -292,9 +294,19 @@ export function buildAlphaExchangeGeometry() {
   box([12.82,1.57,-26.52],[.42,.04,.48],'#b8975a');
   // A shallow gallery console leaves the through-route clear. Its selector uses the same contact anchor.
   const review=EXCHANGE_PLAY_PROPS.review;
-  box([-3,5.65,-39.04],[1.24,.9,.48],'#5a4634');
+  chamfer([-3,5.65,-39.04],[2.62,.9,.48],'#5a4634','solid',0,.035);
   chamfer(review.counter,review.counterSize,'#9a7952','solid',0,.025);
-  box([-3,6.235,-39.04],[1.32,.025,.53],'#b8975a','visual');
+  box([-3,6.235,-39.04],[2.74,.025,.53],'#b8975a','visual');
+  for(const x of [-4.14,-1.86])box([x,5.65,-38.779],[.055,.64,.035],'#9a7952','visual');
+  for(const y of [5.33,5.97])box([-3,y,-38.779],[2.32,.055,.035],'#9a7952','visual');
+  // The already event-driven display atlas is repeated on this reading console.
+  // A tilted walnut back and brass frame place the plot at the selector, leaving
+  // the existing contact point and front aisle clear.
+  const [rx,ry,rz]=review.display,pitch=review.displayPitch;
+  const screen=(x:number,y:number,z:number):Vec3=>[rx+x,ry+y*Math.cos(pitch)-z*Math.sin(pitch),rz+y*Math.sin(pitch)+z*Math.cos(pitch)];
+  add(exchangeChamferBox([2.82,1.06,.11],.025),'#5a4634',screen(0,0,-.07),[pitch,0,0]);
+  for(const x of [-1.36,1.36])add(new BoxGeometry(.06,.98,.025),'#b8975a',screen(x,0,-.01),[pitch,0,0],'visual');
+  for(const y of [-.48,.48])add(new BoxGeometry(2.76,.055,.025),'#b8975a',screen(0,y,-.01),[pitch,0,0],'visual');
   for(let i=0;i<4;i++)box([-3.42+i*.28,6.255,-39.15],[.055,.018,.13],'#354d43','visual');
   // Clock, board and floor bell form the rear focal axis. Dynamic bell/striker use the exported pivots.
   add(new CylinderGeometry(1.65,1.65,.3,48),'#b19254',EXCHANGE_HALL.clock,[-Math.PI/2,0,0]);
@@ -305,6 +317,8 @@ export function buildAlphaExchangeGeometry() {
   rod([-.65,bell.frameTop[1],-37.16],[.65,bell.frameTop[1],-37.16],.09,'#b8975a');
   rod([0,2.22,-37.16],[0,1.61,-36.66],.022,'#ab9057','visual');
   box([0,1.52,-36.66],[.25,.045,.17],'#72583c','visual');
+  buildExchangeInteriorCraft({box,chamfer});
+  buildExchangeGalleryCraft({box,chamfer,rod,add,raw});
   const collision=(p:number[],flags?:TriMeshFlags):ExchangeCollision=>({vertices:new Float32Array(p),indices:Uint32Array.from({length:p.length/3},(_,i)=>i),flags});
   // Coplanar floor diagonals are mesh seams, not physical ridges. Apply Rapier's
   // local adjacent-face normal correction without changing vertices or player tolerances.

@@ -15,7 +15,7 @@ import { exchangePreviousMarks, exchangeReview } from './alpha-exchange-review';
 import { drawExchangeReview } from './alpha-exchange-review-display';
 import { useAlphaExchange } from './alpha-exchange-state';
 import { ALPHA_EXCHANGE_ORIGIN, EXCHANGE_HALL, exchangeWorld } from './alpha-exchange-layout';
-import { EXCHANGE_PLAY_STATIONS as S, EXCHANGE_SECOND_DESK } from './alpha-exchange-play-layout';
+import { EXCHANGE_PLAY_STATIONS as S, EXCHANGE_SECOND_DESK, EXCHANGE_PLAY_PROPS } from './alpha-exchange-play-layout';
 import type { Vec3 } from './types';
 export { ALPHA_EXCHANGE_ORIGIN, ALPHA_EXCHANGE_FOOTPRINT, ALPHA_EXCHANGE_APPROACH, ALPHA_EXCHANGE_APPROACH_WIDTH } from './alpha-exchange-layout';
 
@@ -45,6 +45,7 @@ export default function WorldAlphaExchange({ projectId }: { projectId?: string }
       texturePlane(1.6,.65,[11.7,2.17,-26.48],[640,752,384,128]),
       texturePlane(.52,.15,[-1.35,1.064,-15.32],[640,896,384,112],false,-Math.PI/2),
       texturePlane(3,3,[EXCHANGE_HALL.clock[0],EXCHANGE_HALL.clock[1],EXCHANGE_HALL.clock[2]+.42],[0,752,256,256],true),
+      texturePlane(...EXCHANGE_PLAY_PROPS.review.displaySize,EXCHANGE_PLAY_PROPS.review.display,[0,0,1024,288],false,EXCHANGE_PLAY_PROPS.review.displayPitch),
     ];
     const faces = mergeGeometries(planes)!; planes.forEach(g => g.dispose());
     return { ...architecture, faces };

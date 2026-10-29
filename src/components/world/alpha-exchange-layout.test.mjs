@@ -45,7 +45,9 @@ test('two-level open hall has bounded finite same-source geometry and at most th
   const visible=new Set(),key=(p,i)=>Array.from(p.slice(i,i+9)).map(x=>x.toFixed(4)).join(',');
   for(const g of all){const p=g.getAttribute('position').array;for(const a of Object.values(g.attributes))for(const x of a.array)assert.ok(Number.isFinite(x));for(let i=0;i<p.length;i+=9)visible.add(key(p,i));}
   for(const mesh of Object.values(geometry.colliders))for(let i=0;i<mesh.vertices.length;i+=9)assert.ok(visible.has(key(mesh.vertices,i)));
-  assert.ok(geometry.colliders.solid.indices.length/3<20000);
+  // v39 adds actual cabinet boards, planter shells and fitted lower-wall faces.
+  // Keep collision bounded independently from the 65k visible budget.
+  assert.ok(geometry.colliders.solid.indices.length/3<22000);
   console.log(JSON.stringify({triangles,modelBatches:2,withAtlasBatches:3,surface:geometry.colliders.surface.indices.length/3,solid:geometry.colliders.solid.indices.length/3}));
 });
 test('mezzanine ramp has real support, open landing and capsule clearance; open coffers preserve sky',()=>{

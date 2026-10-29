@@ -58,6 +58,22 @@ export function bakeExchangeWorklights(g:BufferGeometry) {
         pool+=.95*width**.8*depth*(.4+.6*(py-.6)/2.75)*facing;
       }
     }
+    // The two rear-wall lanterns illuminate only their fitted wall faces. The
+    // finite wash is baked once; no new shadow passes or animated light updates.
+    if(py>=1.4&&py<=4.45&&pz>=-39.81&&pz<=-39.45&&n.getZ(i)>.4) {
+      for(const x of [-6.15,6.15]) {
+        const width=Math.max(0,1-Math.abs(px-x)/2.4);
+        const height=Math.max(0,1-Math.abs(py-3.3)/2.2);
+        pool+=.38*width*height*n.getZ(i);
+      }
+    }
+    if(py>=5.55&&py<=8.25&&pz>=-39.74&&pz<=-38.96) {
+      const facing=Math.min(1,Math.max(0,n.getY(i))*.45+Math.max(0,n.getZ(i))*.7);
+      for(const x of [-11.8,11.8]) {
+        const width=Math.max(0,1-Math.abs(px-x)/2.3);
+        pool+=.42*width*(.45+.55*(py-5.55)/2.7)*facing;
+      }
+    }
     if(pool>0){e.setY(i,e.getY(i)+pool);e.setZ(i,1);}
   }
 }

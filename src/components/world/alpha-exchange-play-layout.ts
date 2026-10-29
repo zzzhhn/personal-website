@@ -23,8 +23,9 @@ export const EXCHANGE_ARCHIVE_DRAWERS: ExchangePlayStation[] = [-13.56,-12.64,-1
 }));
 /** Static supports and dynamic parts consume the same anchors. Sizes are metres. */
 export const EXCHANGE_PLAY_PROPS = {
-  review:{counter:[-3,6.15,-39.04] as Vec3,counterSize:[1.5,.15,.65] as Vec3,
-    selector:[-3,6.26,-38.72] as Vec3},
+  review:{counter:[-3,6.15,-39.04] as Vec3,counterSize:[2.9,.15,.65] as Vec3,
+    selector:[-3,6.26,-38.72] as Vec3,
+    display:[-3,6.72,-39.12] as Vec3,displaySize:[2.62,.86] as const,displayPitch:-.35},
   archive:{counter:[-11.7,1.22,-19.31] as Vec3,counterSize:[3.4,.16,1.3] as Vec3,
     ticketSlot:[-11.7,1.48,-18.72] as Vec3,slotSize:[.68,.11,.16] as Vec3,
     ticketRest:[-11.7,1.47,-18.61] as Vec3,ticketSize:[.27,.015,.18] as Vec3},

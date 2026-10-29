@@ -1,0 +1,41 @@
+{
+  "url": "http://127.0.0.1:4343/world/",
+  "status": 200,
+  "htmlSha256": "171fac1cc33753f46303aefffe9c977043ea9c89d3aed21dc751833d98c2ef0b",
+  "matchesBuild": true,
+  "assets": [
+    {
+      "path": "/_astro/WorldApp.BVOjJepZ.js",
+      "status": 200,
+      "bytes": 128
+    },
+    {
+      "path": "/_astro/WorldApp.CL5m6nP3.css",
+      "status": 200,
+      "bytes": 37538
+    },
+    {
+      "path": "/_astro/WorldIbdHud.BeVh2OUX.css",
+      "status": 200,
+      "bytes": 5774
+    },
+    {
+      "path": "/_astro/WorldIntentHud.-YiVMeyH.css",
+      "status": 200,
+      "bytes": 5252
+    },
+    {
+      "path": "/_astro/client.BINMsa6k.js",
+      "status": 200,
+      "bytes": 1898
+    }
+  ],
+  "browser": {
+    "url": "http://127.0.0.1:4343/world/?quality=balanced&start=exchange&paused=1",
+    "ready": true,
+    "entryScreenshot": "production-entry.png",
+    "controlsResponded": true,
+    "pausedAtEnd": true,
+    "consoleErrors": []
+  }
+}
