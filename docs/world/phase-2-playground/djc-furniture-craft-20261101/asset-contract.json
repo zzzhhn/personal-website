@@ -1,0 +1,84 @@
+{
+  "approval_scope": "Parent brief records human acceptance of Club V4 and earlier bar/daybed/lantern/umbrella quality; this pack is authorized refinement, not newly accepted imagery.",
+  "references": [
+    {
+      "path": "docs/world/phase-2-playground/djc-beach-club/concept-v4-finns-game-style-20261027.png",
+      "sha256": "5cd64bc242071a338ea3e1c790481f6eea36698ce62fb8ba0a0e79f1e007c1ca"
+    },
+    {
+      "path": "docs/world/phase-2-playground/djc-daybed-craft-20261101/daybed-after.png",
+      "sha256": "6cc7b4002c41bd68a5ce08bcc828b758d768f74c9f405b9b19aba4200d42635e"
+    },
+    {
+      "path": "docs/world/phase-2-playground/djc-pool-lantern-craft-20261101/lantern-after-fresh-glb.png",
+      "sha256": "728cc77ecd534963e48ef46b3380e3d5538210a71238c00acfbda6ec98dc20af"
+    },
+    {
+      "path": "docs/world/phase-2-playground/djc-umbrella-craft-20261101/umbrella-after.png",
+      "sha256": "73372289aed6b8f04b8be9db9190e81e73c483310f0ce4c7c157519f5f65e242"
+    }
+  ],
+  "baseline_revision": "0118dfc",
+  "families": [
+    "lounger",
+    "console_carcass",
+    "speaker_cabinet"
+  ],
+  "root_contracts": {
+    "lounger": {
+      "placements": [
+        [
+          74,
+          1.4,
+          47
+        ],
+        [
+          74,
+          1.4,
+          63
+        ]
+      ],
+      "size_max": [
+        1.2,
+        0.355,
+        2.4
+      ]
+    },
+    "console": {
+      "placements": [
+        [
+          32.8,
+          2,
+          55
+        ]
+      ],
+      "size_max": [
+        1.39,
+        0.92,
+        5
+      ]
+    },
+    "speaker": {
+      "placements": [
+        [
+          35.1,
+          2,
+          49.1
+        ],
+        [
+          35.1,
+          2,
+          60.9
+        ]
+      ],
+      "size_max": [
+        0.953,
+        1.675,
+        0.78
+      ]
+    }
+  },
+  "physics": "All original surface/solid triangles byte-identical; no new colliders or seat anchors.",
+  "browser_verification": "parent coordinator pending",
+  "images_inspected": true
+}

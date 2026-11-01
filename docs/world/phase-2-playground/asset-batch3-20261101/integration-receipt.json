@@ -1,0 +1,74 @@
+{
+  "shared": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration",
+  "source_branch": "codex/world-craft-batch3",
+  "changed_paths": [
+    "src/components/world/WorldCamp.tsx",
+    "src/components/world/WorldDjcClubGeometry.ts",
+    "src/components/world/WorldDjcClubVisual.tsx",
+    "src/components/world/attractions/WorldIbdYard.tsx",
+    "src/components/world/attractions/ibd-yard-geometry.ts",
+    "tools/world/check-world-craft-assets.mjs"
+  ],
+  "added_paths": [
+    "src/components/world/WorldCampCraftProps.tsx",
+    "src/components/world/WorldDjcClubFurniture.tsx",
+    "src/components/world/camp-craft-visual.ts",
+    "src/components/world/camp-craft-visual.test.mjs",
+    "src/components/world/djc-furniture-visual.ts",
+    "src/components/world/djc-furniture-visual.test.mjs",
+    "src/components/world/attractions/WorldIbdStaticCraft.tsx",
+    "src/components/world/attractions/ibd-static-craft-visual.ts",
+    "src/components/world/attractions/ibd-static-craft-visual.test.mjs",
+    "public/assets/world/club/furniture/furniture-v1.glb",
+    "public/assets/world/camp/craft/camp-props-v1.glb",
+    "public/assets/world/ibd/static-craft/static-craft-v1.glb"
+  ],
+  "before": {
+    "src/components/world/WorldCamp.tsx": "c58f0ddfb09dd5cecefd8342e6450e2a7e818390505c31548365b91e3dd6a282",
+    "src/components/world/WorldDjcClubGeometry.ts": "cbda8632ad23dd9f8344b338297e963c6411598a38a0c4261d9bf44feab128ee",
+    "src/components/world/WorldDjcClubVisual.tsx": "11634fb19fdab433d7f5a3ce2ec0bed5f51363da371d1364538d3d4552d03838",
+    "src/components/world/attractions/WorldIbdYard.tsx": "77bd637437e03420212d5bbfc939a5ac22360904d1631b5b8c0984fe9fc4462c",
+    "src/components/world/attractions/ibd-yard-geometry.ts": "7563ae68852ddde9d07caf623124945e24e30a88bcfe478c154a34069fd80545",
+    "tools/world/check-world-craft-assets.mjs": "38d6103fbd6bc2a8888129f78b43078874e9877e6fb9767b68c506857fdb1393"
+  },
+  "after": {
+    "src/components/world/WorldCamp.tsx": "d563b6391b26e6e3b35e79a0a0f1a8fa6480245a4ee07c024aac1ed3d648eec1",
+    "src/components/world/WorldDjcClubGeometry.ts": "ecb71d59b74cf5304c1d29d99b5bad33f000ce97040ed92b166183eecbec9b17",
+    "src/components/world/WorldDjcClubVisual.tsx": "2bc4f8964179026ff36ba6abe299237e85b30fa3339bc657b9fe40d74e9abb1b",
+    "src/components/world/attractions/WorldIbdYard.tsx": "e2f98770f6de4cc44c543dc05adbfa480199713d7f8fec8589e01f9fa96e2605",
+    "src/components/world/attractions/ibd-yard-geometry.ts": "2eae23c2e7c1a38f6d4e05f234b9a0cc883da4e0d2c767af344dcf3c349cbc1e",
+    "tools/world/check-world-craft-assets.mjs": "51084e73818f3d663a99b584c70f25056045d1d0acbc5b43185ef2d22199cad1",
+    "src/components/world/WorldCampCraftProps.tsx": "d8d22680716a8795fc7a5bddea261c19002c2a5928789305349ebff993b42a89",
+    "src/components/world/WorldDjcClubFurniture.tsx": "100ac559798f25b24d67a9efbcc47f51428e799cebb1fcaa0533fdf78abdbe7e",
+    "src/components/world/camp-craft-visual.ts": "4afaf50aa97e79a85211e9c15d6542ab9365fcb9b30c41124723fb83cc36d8cd",
+    "src/components/world/camp-craft-visual.test.mjs": "074d00898969bc3db4d6ff33fbde331e8b230c70c812507892d16035a69adf9c",
+    "src/components/world/djc-furniture-visual.ts": "1c29889132bec11d24ddae4724294dd92a6b4ac5ef0ebfd723ae87e5cb82360b",
+    "src/components/world/djc-furniture-visual.test.mjs": "ba3445a89056ee906f301f1345ca4bc9598c2dbe8d67e9dba57f290b8377a64c",
+    "src/components/world/attractions/WorldIbdStaticCraft.tsx": "6f24b853ffd55fac3657f2c879309a7da23cb994736ce33bb3719e160c80c739",
+    "src/components/world/attractions/ibd-static-craft-visual.ts": "7f8044deef23806c7122f611855b004d6ba31b822e83a2aaeac4069bb3d53ca1",
+    "src/components/world/attractions/ibd-static-craft-visual.test.mjs": "ae642fe05abeb5698f7f0dd3f20aeec4c66466c7c157804d8218427741634f11",
+    "public/assets/world/club/furniture/furniture-v1.glb": "35ca81133737bcee227b7c5686327d428c71d43d19d94b38b6125ca2c533aca3",
+    "public/assets/world/camp/craft/camp-props-v1.glb": "8290214333f06013be479bf650adddb149b1d5ed96ce32cbeed9a1d08c2baf39",
+    "public/assets/world/ibd/static-craft/static-craft-v1.glb": "a78dd5173df444a8d24afa4be7f1bbfd514a58c608348228b58c7856f1a247d5"
+  },
+  "preserved_club_basin_claim": true,
+  "shared_tests_pending": false,
+  "artifact_copy_pending": false,
+  "shared_tests": {
+    "passed": 15,
+    "failed": 0,
+    "skipped": 0,
+    "log": "shared-tests.txt"
+  },
+  "native_artifacts": {
+    "files": 106,
+    "bytes": 64321867,
+    "sha256_equal": true
+  },
+  "r3_camp_shared_tests": {
+    "pass": 4,
+    "fail": 0,
+    "skipped": 0
+  },
+  "original_integration_patch": "integration-source.patch.gz"
+}

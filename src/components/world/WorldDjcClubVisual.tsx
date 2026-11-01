@@ -17,6 +17,8 @@ import WorldDjcClubLanterns from './WorldDjcClubLanterns';
 import { djcPoolLanternCandidate } from './djc-pool-lantern-visual';
 import WorldDjcClubUmbrellas from './WorldDjcClubUmbrellas';
 import { djcUmbrellaLegacy } from './djc-umbrella-visual';
+import WorldDjcClubFurniture from './WorldDjcClubFurniture';
+import { djcFurnitureLegacy } from './djc-furniture-visual';
 
 const RUNNING_RADIUS_SQ=180*180;
 const keys:ClubBatch[]=['wood','stone','metal','fabric','foliage','glass','amber','cyan'];
@@ -65,16 +67,18 @@ export default function WorldDjcClubVisual({beat,energy}:{beat?:()=>number;energ
   const legacyDaybeds=useMemo(()=>djcDaybedLegacy(typeof window==='undefined'?'':window.location.search),[]);
   const candidatePoolLanterns=useMemo(()=>djcPoolLanternCandidate(typeof window==='undefined'?'':window.location.search),[]);
   const legacyUmbrellas=useMemo(()=>djcUmbrellaLegacy(typeof window==='undefined'?'':window.location.search),[]);
+  const legacyFurniture=useMemo(()=>djcFurnitureLegacy(typeof window==='undefined'?'':window.location.search),[]);
   const group=useRef<Group>(null),mirror=useRef<Mesh>(null),spots=useRef<Mesh>(null);
   const lights=useRef<(PointLight|null)[]>([]),beams=useRef<(Mesh|null)[]>([]);
-  const resources=useMemo(()=>({geometry:buildDjcClubGeometry({includeNorthBar:legacyNorthBar,separateDaybeds:!legacyDaybeds,separatePoolLanterns:candidatePoolLanterns,separateUmbrellas:!legacyUmbrellas}),mirror:buildDjcMirrorGeometry(),spots:buildDjcSpotsGeometry(),materials:materials(),
+  const resources=useMemo(()=>({geometry:buildDjcClubGeometry({includeNorthBar:legacyNorthBar,separateDaybeds:!legacyDaybeds,separatePoolLanterns:candidatePoolLanterns,separateUmbrellas:!legacyUmbrellas,separateFurniture:!legacyFurniture}),mirror:buildDjcMirrorGeometry(),spots:buildDjcSpotsGeometry(),materials:materials(),
     mirrorMaterial:createClubMirrorMaterial(),spot:spotMaterial(),spill:createClubLightSpill(),
-    beamGeometry:new CylinderGeometry(.035,1,1,18,1,true),beamMaterial:createClubBeamMaterial(),up:new Vector3(0,1,0),start:new Vector3(),target:new Vector3(),direction:new Vector3()}),[legacyNorthBar,legacyDaybeds,candidatePoolLanterns,legacyUmbrellas]);
+    beamGeometry:new CylinderGeometry(.035,1,1,18,1,true),beamMaterial:createClubBeamMaterial(),up:new Vector3(0,1,0),start:new Vector3(),target:new Vector3(),direction:new Vector3()}),[legacyNorthBar,legacyDaybeds,candidatePoolLanterns,legacyUmbrellas,legacyFurniture]);
   useEffect(()=>()=>{
     Object.values(resources.geometry.batches).forEach(g=>g.dispose());resources.geometry.pool.dispose();resources.mirror.dispose();resources.spots.dispose();
     Object.values(resources.geometry.daybeds).forEach(g=>g.dispose());
     Object.values(resources.geometry.poolLanterns).forEach(g=>g.dispose());
     Object.values(resources.geometry.umbrellas).forEach(g=>g.dispose());
+    Object.values(resources.geometry.furniture).forEach(g=>g.dispose());
     Object.values(resources.materials).forEach(m=>m.dispose());resources.mirrorMaterial.dispose();resources.spot.dispose();
     resources.spill.geometry.dispose();resources.spill.material.dispose();resources.beamGeometry.dispose();resources.beamMaterial.dispose();
   },[resources]);
@@ -113,6 +117,9 @@ export default function WorldDjcClubVisual({beat,energy}:{beat?:()=>number;energ
   });
   return <>
     {!legacyNorthBar&&<WorldDjcClubBar />}
+    {!legacyFurniture&&<WorldDjcClubFurniture fallback={<group name="djc-original-furniture">
+      {keys.filter(key=>resources.geometry.furniture[key].attributes.position.count>0).map(key=><mesh key={key} geometry={resources.geometry.furniture[key]} material={resources.materials[key]} castShadow receiveShadow dispose={null}/>)}
+    </group>}/>}
     {!legacyUmbrellas&&<WorldDjcClubUmbrellas fallback={<group name="djc-original-umbrellas">
       {keys.filter(key=>resources.geometry.umbrellas[key].attributes.position.count>0).map(key=><mesh key={key} geometry={resources.geometry.umbrellas[key]} material={resources.materials[key]} castShadow receiveShadow dispose={null}/>)}
     </group>}/>}

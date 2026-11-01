@@ -1,0 +1,127 @@
+{
+ "view": "v1-club-lounger",
+ "configuration": {
+  "families": [
+   "Club flat lounger"
+  ],
+  "player": [
+   78,
+   3,
+   59
+  ],
+  "position": [
+   78.5,
+   4.2,
+   59
+  ],
+  "target": [
+   74,
+   1.65,
+   63
+  ]
+ },
+ "cameraSource": "existing __worldCampQA.close art camera",
+ "actualCameraPosition": [
+  78.5,
+  4.2,
+  59
+ ],
+ "fov": 50,
+ "drawingBuffer": [
+  1710,
+  931
+ ],
+ "cssSize": [
+  1710,
+  931
+ ],
+ "pixelRatio": 1,
+ "quality": "balanced",
+ "weather": "clear",
+ "light": "night",
+ "worldMinutes": 0,
+ "timeRunning": false,
+ "paused": false,
+ "shot": "camp-qa-close",
+ "frame": 481,
+ "mode": "demand",
+ "night": 1,
+ "player": [
+  78,
+  3,
+  59
+ ],
+ "grounded": false,
+ "resourceQuietMs": 30614.5,
+ "glbCount": 63,
+ "recentGlbs": [
+  {
+   "url": "http://127.0.0.1:4356/assets/world/park/P15.glb",
+   "bytes": 75788,
+   "responseEnd": 46479.19999998808
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/park/P16.glb",
+   "bytes": 18436,
+   "responseEnd": 46479.5
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/park/P17.glb",
+   "bytes": 20044,
+   "responseEnd": 46483.69999998808
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/park/P18.glb",
+   "bytes": 20068,
+   "responseEnd": 46479.69999998808
+  },
+  {
+   "url": "http://127.0.0.1:4356/world/alpha-mine/veins.glb",
+   "bytes": 1077004,
+   "responseEnd": 46537.60000002384
+  },
+  {
+   "url": "http://127.0.0.1:4356/world/alpha-mine/ore.glb",
+   "bytes": 67084,
+   "responseEnd": 46535.5
+  },
+  {
+   "url": "http://127.0.0.1:4356/world/alpha-mine/quarry-static.glb",
+   "bytes": 2301720,
+   "responseEnd": 46677.30000001192
+  },
+  {
+   "url": "http://127.0.0.1:4356/world/alpha-mine/detector.glb",
+   "bytes": 145956,
+   "responseEnd": 46534.89999997616
+  },
+  {
+   "url": "http://127.0.0.1:4356/world/alpha-mine/pickaxe.glb",
+   "bytes": 101388,
+   "responseEnd": 46535.10000002384
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/umbrella/umbrella-v1.glb",
+   "bytes": 2471556,
+   "responseEnd": 51772.5
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/daybed/daybed-ao-v1.glb",
+   "bytes": 13905392,
+   "responseEnd": 51795.39999997616
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/lantern/pool-lantern-v2.glb",
+   "bytes": 1358944,
+   "responseEnd": 51744.5
+  }
+ ],
+ "renderer": {
+  "calls": 89,
+  "triangles": 940217,
+  "geometries": 262,
+  "textures": 81,
+  "programs": 212
+ },
+ "url": "http://127.0.0.1:4356/world/?qa=1&quality=balanced&paused=1"
+}

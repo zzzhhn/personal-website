@@ -1,0 +1,41 @@
+{
+  "file": "candidate-after-r3-n3-camp-sample-4.json",
+  "summary": {
+    "frames": 300,
+    "warmupFrames": 90,
+    "fps": 60.0012000242866,
+    "p50": 16.69999998807907,
+    "p95": 18,
+    "max": 18.69999998807907,
+    "over33_4ms": 0,
+    "gpuMs": null
+  },
+  "drawMedian": 309.0,
+  "triangleMedian": 869863.0,
+  "counterLevels": [
+    {
+      "draws": 309,
+      "triangles": 869863,
+      "frames": 300
+    }
+  ],
+  "beforeRenderer": {
+    "calls": 309,
+    "triangles": 869863,
+    "geometries": 343,
+    "textures": 81,
+    "programs": 206
+  },
+  "afterRenderer": {
+    "calls": 309,
+    "triangles": 869863,
+    "geometries": 343,
+    "textures": 81,
+    "programs": 206
+  },
+  "extraSettleSeconds": 10,
+  "sampleAssertions": "PASS",
+  "allFrozenHashesRechecked": true,
+  "server4356Stopped": true,
+  "exclusiveFileLockReleased": true
+}

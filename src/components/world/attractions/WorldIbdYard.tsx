@@ -15,6 +15,7 @@ import { night } from '../WorldNight';
 import WorldIbdGuide from './WorldIbdGuide';
 import { ibdGuideStep } from './ibd-yard-guide.ts';
 import WorldIbdAudio from './WorldIbdAudio';
+import WorldIbdStaticCraft from './WorldIbdStaticCraft';
 import { openIbdPack, requestIbdPackContact, useIbdPackPlay, ibdPackWorkBusy, cancelIbdPack } from './ibd-pack-play';
 
 function Station({ id, active }: { id: IbdStationId; active: boolean }) {
@@ -42,14 +43,15 @@ function Station({ id, active }: { id: IbdStationId; active: boolean }) {
 export default memo(function WorldIbdYard({ active = true }: { active?: boolean }) {
   const data = useMemo(() => {
     const uniform = { value: night.value };
-    return { ...buildIbdStatic(), uniform, material: createIbdMaterial(true, uniform), movingMaterial: createIbdMaterial(false, uniform) };
+    return { ...buildIbdStatic({separateCraftShells:true}), uniform, material: createIbdMaterial(true, uniform), movingMaterial: createIbdMaterial(false, uniform) };
   }, []);
   useEffect(() => { useIbdYardStore.setState({ active }); return () => { useIbdYardStore.setState({ active: false }); }; }, [active]);
-  useEffect(() => () => { cancelIbdPack(true); cancelIbdAction(); data.geometry.dispose(); data.material.dispose(); data.movingMaterial.dispose(); }, [data]);
+  useEffect(() => () => { cancelIbdPack(true); cancelIbdAction(); data.geometry.dispose(); data.craftShellGeometry?.dispose(); data.material.dispose(); data.movingMaterial.dispose(); }, [data]);
   return <group name="world-ibd-yard" position={IBD_YARD.center} dispose={null} userData={{noOcclusionFade:true}}>
     <WorldIbdAudio />
     <mesh name="ibd-three-sheds-static" geometry={data.geometry} material={data.material} castShadow receiveShadow
       userData={{ solid: true, assetId: 'ibd-yard-architecture' }} />
+    <WorldIbdStaticCraft uniform={data.uniform} fallback={<mesh name="ibd-static-equipment-legacy" geometry={data.craftShellGeometry!} material={data.material} castShadow receiveShadow/>}/>
     <RigidBody type="fixed" colliders={false} name="ibd-yard-architecture" userData={{ solid: true, assetId: 'ibd-yard-architecture' }}>
       <TrimeshCollider args={[data.walkSurface.vertices, data.walkSurface.indices]} friction={.85} />
       {data.solids.map((s, i) => <CuboidCollider key={i} position={s.at} rotation={s.rotation} friction={.85}

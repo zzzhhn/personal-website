@@ -34,10 +34,12 @@ function buildIbdWalkSurface(b: Builder) {
   }
   return { vertices: new Float32Array(vertices), indices: new Uint32Array(indices) };
 }
-export function buildIbdStatic() {
-  const b = new Builder(), solids: IbdSolid[] = [];
+export function buildIbdStatic(options: { separateCraftShells?: boolean } = {}) {
+  const b = new Builder(), craftShells = new Builder(), solids: IbdSolid[] = [];
+  let shell = false;
   const cube = (at: V3, size: V3, s: Surf, solid = false, bevel = .03, rotation?: V3) => {
-    if (rotation) b.tr(at, rotation, () => cbox(b, [0, 0, 0], size, s, bevel)); else cbox(b, at, size, s, bevel);
+    const target = shell && options.separateCraftShells ? craftShells : b;
+    if (rotation) target.tr(at, rotation, () => cbox(target, [0, 0, 0], size, s, bevel)); else cbox(target, at, size, s, bevel);
     if (solid) solids.push({ at, size, ...(rotation ? { rotation } : {}) });
   };
   const groundSurface = buildIbdArchitecture(b, cube, solids);
@@ -97,9 +99,11 @@ export function buildIbdStatic() {
   }
   // Benches, load rollers and the prominent empty spaces in their trays carry the interaction.
   for (const x of [10, 18]) {
+    shell = true;
     cube([x, .72, -12], [3.6, .3, 3.2], P.dark, true);
     for (const xx of [-1.4, 1.4]) for (const z of [-13.3, -10.7]) cube([x + xx, .35, z], [.18, .7, .18], P.steel, true);
     cube([x, .94, -12], [3.3, .12, 3], P.steel);
+    shell = false;
     // Leave a standing gap in front of each inspection bench; guide arrows must not enter a roller bed.
     for (const [start, end] of [[-8.2, -3], [5, 7]]) {
       for (const xx of [-1.7, 1.7]) rollerBar([x + xx, .6, start], [x + xx, .6, end], .08, P.dark, 6);
@@ -109,13 +113,20 @@ export function buildIbdStatic() {
   // Exact roller/side-frame contacts stop grounded players; z=0 and z=4 stay open.
   // Receiving and tools have real work surfaces, not identical machine levers.
   for (const [x, z, top] of [[-3, 26, .8], [-6, 19, 1.1]]) {
+    shell = true;
     cube([x, top, z], [2.2, .16, 1.2], P.timber, true);
     for (const dx of [-.85, .85]) cube([x + dx, top / 2, z], [.18, top, .9], P.dark, true);
     cube([x, top + .14, z - .48], [2, .12, .12], P.amber);
+    shell = false;
   }
   for (const [x, z] of [[-6, 0], [-8, -4], [-8, -9], [7, -12], [21, -12], [7.8, -6.5], [20.2, -6.5], [8, 7.7], [8, 17.3], [7, 18]]) {
     const kind = x === -6 ? 'crane' : x === -8 ? 'turn' : z === -12 ? 'scale' : x === 7 && z === 18 ? 'dispatch' : 'load';
-    addYardControl(b, cube, x, z, kind);
+    let part = 0;
+    addYardControl(b, (...args) => {
+      // Only cabinet, foot and cap move to the portable pack. Controls remain
+      // in their original builder, material and interaction-local coordinates.
+      shell = part++ < 3; cube(...args); shell = false;
+    }, x, z, kind);
   }
   buildIbdTruck(b, cube, solids);
   // The quarantine dollies roll onto a marked floor bay. Raised rack feet used to clip the exchange path.
@@ -136,7 +147,8 @@ export function buildIbdStatic() {
     vertices: new Float32Array([...vertices, ...rollerVertices]),
     indices: new Uint32Array([...indices, ...rollerIndices.map(i => i + vertices.length / 3)]),
   };
-  return { geometry: bakeIbdLight(b.build()), solids, walkSurface, groundSurface };
+  return { geometry: bakeIbdLight(b.build()), solids, walkSurface, groundSurface,
+    craftShellGeometry: options.separateCraftShells ? bakeIbdLight(craftShells.build()) : null };
 }
 
 export function buildIbdCoil(damaged: boolean, number = 1) {

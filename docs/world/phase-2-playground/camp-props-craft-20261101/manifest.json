@@ -1,0 +1,376 @@
+{
+  "assets": {
+    "C05": {
+      "triangles": 1724,
+      "bounds_zup": [
+        [
+          -1.5993759632110596,
+          -1.5993759632110596,
+          0.0
+        ],
+        [
+          1.5993759632110596,
+          1.5993759632110596,
+          0.5715498328208923
+        ]
+      ],
+      "degenerate": 0,
+      "nonfinite": 0,
+      "native_nonmanifold_edges": 0,
+      "parts": 25,
+      "baseline_sha256": "54790864187123a55c4fd00590186a1e958990ca735a9861c00304332a316692",
+      "roundtrip": {
+        "triangles": 1724,
+        "bounds_zup": [
+          [
+            -1.5993759632110596,
+            -1.5993759632110596,
+            0.0
+          ],
+          [
+            1.5993759632110596,
+            1.5993759632110596,
+            0.5715498328208923
+          ]
+        ],
+        "degenerate": 0,
+        "nonfinite": 0,
+        "native_nonmanifold_edges": "not applicable: material batches may have open boundaries",
+        "parts": 5
+      }
+    },
+    "C06": {
+      "triangles": 1112,
+      "bounds_zup": [
+        [
+          -0.3799999952316284,
+          -2.4000000953674316,
+          0.0
+        ],
+        [
+          0.3799999952316284,
+          2.4000000953674316,
+          0.6000000238418579
+        ]
+      ],
+      "degenerate": 0,
+      "nonfinite": 0,
+      "native_nonmanifold_edges": 0,
+      "parts": 53,
+      "baseline_sha256": "401862b7b8ea1cea4cfafbccb26f38760025f34f006ba47463f6072ae5c8a556",
+      "roundtrip": {
+        "triangles": 1112,
+        "bounds_zup": [
+          [
+            -0.3799999952316284,
+            -2.4000000953674316,
+            0.0
+          ],
+          [
+            0.3799999952316284,
+            2.4000000953674316,
+            0.6000000238418579
+          ]
+        ],
+        "degenerate": 0,
+        "nonfinite": 0,
+        "native_nonmanifold_edges": "not applicable: material batches may have open boundaries",
+        "parts": 3
+      }
+    },
+    "C07": {
+      "triangles": 2932,
+      "bounds_zup": [
+        [
+          -0.6469881534576416,
+          -1.0,
+          -0.0003030367661267519
+        ],
+        [
+          0.6470118761062622,
+          1.0,
+          0.8520448207855225
+        ]
+      ],
+      "degenerate": 0,
+      "nonfinite": 0,
+      "native_nonmanifold_edges": 0,
+      "parts": 31,
+      "baseline_sha256": "ea34c4389d8504410746a43ba5b228aba1d46cf525eca3659abcbf34cebc6873",
+      "roundtrip": {
+        "triangles": 2932,
+        "bounds_zup": [
+          [
+            -0.6469881534576416,
+            -1.0,
+            -0.00030303001403808594
+          ],
+          [
+            0.6470118761062622,
+            1.0,
+            0.8520448207855225
+          ]
+        ],
+        "degenerate": 0,
+        "nonfinite": 0,
+        "native_nonmanifold_edges": "not applicable: material batches may have open boundaries",
+        "parts": 4
+      }
+    }
+  },
+  "artifact": {
+    "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/craft/camp-props-v1.glb",
+    "bytes": 3313188,
+    "sha256": "8290214333f06013be479bf650adddb149b1d5ed96ce32cbeed9a1d08c2baf39"
+  },
+  "blender": "5.1.2",
+  "units": "meters; native Z-up / GLB Y-up",
+  "renderer": {
+    "engine": "Cycles",
+    "samples": 20,
+    "resolution": [
+      1000,
+      760
+    ],
+    "exposure": 0,
+    "transform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "orthographic": true,
+    "cameras": {
+      "C05": [
+        [
+          4,
+          -5,
+          4
+        ],
+        [
+          0,
+          0,
+          0.2
+        ],
+        4.2
+      ],
+      "C06": [
+        [
+          3,
+          -5,
+          3
+        ],
+        [
+          0,
+          0,
+          0.3
+        ],
+        5.9
+      ],
+      "C07": [
+        [
+          3,
+          -4,
+          2.8
+        ],
+        [
+          -0.1,
+          0,
+          0.4
+        ],
+        2.6
+      ]
+    },
+    "area_lights": [
+      [
+        "Key",
+        [
+          1,
+          -4,
+          7
+        ],
+        1150,
+        5
+      ],
+      [
+        "Fill",
+        [
+          -5,
+          -1,
+          4
+        ],
+        700,
+        4
+      ],
+      [
+        "Rim",
+        [
+          3,
+          4,
+          6
+        ],
+        950,
+        3
+      ]
+    ]
+  },
+  "approval": "technical candidate; runtime and user visual acceptance pending",
+  "editableSourceSha256": "4054428b3230ff9324361965b5ed0d18190c1842478f1ac38f0c2082a8ea48a6",
+  "generatorSha256": "c28259523f1dbf263d53cd562312836eea482c9fca265a6a389c16e490df1585",
+  "c05SurfaceGeneratorSha256": "7e42c529fccd55a25a65edecedebe6ce640c2e4f9d7b6a9c4f3cd9f6e36e878b",
+  "exportInventory": {
+    "meshes": 12,
+    "materials": 7,
+    "images": [
+      {
+        "name": "bark-normal",
+        "size": [
+          512,
+          512
+        ],
+        "bytes": 89470,
+        "sha256": "6ca1c7c8548c15d470685b57651dcf1d6f3a23573fa46d0e5ff3d4758e1ed10b"
+      },
+      {
+        "name": "C05 adapted scanned bark charcoal pigment 512",
+        "size": [
+          512,
+          512
+        ],
+        "bytes": 361018,
+        "sha256": "34c6587dd92232848f4e21548b13e3f249a21767d83eafb24c43654f369b06ee"
+      },
+      {
+        "name": "C05 scanned bark charcoal roughness 512",
+        "size": [
+          512,
+          512
+        ],
+        "bytes": 126926,
+        "sha256": "d8181b422e8a5d6bd5efa1d7e858ce0e7fc384fd6cffe532aeb61882f19341bf"
+      },
+      {
+        "name": "C05 authored pale ash normal 512",
+        "size": [
+          256,
+          256
+        ],
+        "bytes": 108683,
+        "sha256": "bcbead81735ba6e0407c62f2d155c376586597bfbe1766922d613045e1956f03"
+      },
+      {
+        "name": "C05 authored pale ash color 512",
+        "size": [
+          256,
+          256
+        ],
+        "bytes": 98436,
+        "sha256": "b779186d2a89f1636ad24fcd2484535d02975e9552f0305db9579a5af2510c8e"
+      },
+      {
+        "name": "C05 authored powder roughness 256",
+        "size": [
+          256,
+          256
+        ],
+        "bytes": 66943,
+        "sha256": "f32bb6175cc79817f6a0181824bd786ee0e7056c2c33ec60bddec97d21be48cb"
+      },
+      {
+        "name": "stone-normal",
+        "size": [
+          512,
+          512
+        ],
+        "bytes": 58062,
+        "sha256": "bcf66369ea932720bda811365cd7ec25c05b8d6f11c89c376b70a20f3e59db3f"
+      },
+      {
+        "name": "stone-color",
+        "size": [
+          1024,
+          1024
+        ],
+        "bytes": 927082,
+        "sha256": "ea48e0e47ad42c8bd312476178b1248ec66f0eb19156a26a1c222f2a40caaf2d"
+      },
+      {
+        "name": "C05 scanned mineral roughness 512",
+        "size": [
+          512,
+          512
+        ],
+        "bytes": 175560,
+        "sha256": "ec5da1aecab06e8e2bea4632006be032d9bb41c52a0165586cfb9610f0a49901"
+      },
+      {
+        "name": "Authored endgrain normal 512",
+        "size": [
+          512,
+          512
+        ],
+        "bytes": 223785,
+        "sha256": "e275871911a69b06d60d82bb692502e9c2db76914369cabb9f835a074c39247f"
+      },
+      {
+        "name": "Authored endgrain color 512",
+        "size": [
+          512,
+          512
+        ],
+        "bytes": 263289,
+        "sha256": "55019cc05044870451aa3810fe90d058c18dd1d33224813f689c7d158a1e2319"
+      },
+      {
+        "name": "Authored bark normal 512",
+        "size": [
+          512,
+          512
+        ],
+        "bytes": 214841,
+        "sha256": "b29caf93631e7086d53d9709dba495622cd145783fca1431dbad38a12d8d0dab"
+      },
+      {
+        "name": "Authored bark color 512",
+        "size": [
+          512,
+          512
+        ],
+        "bytes": 23650,
+        "sha256": "a1f5ae4c403446ba567b70a0965dae3b31f8218695b6e11ba6c947551720c830"
+      },
+      {
+        "name": "wood_nor_gl",
+        "size": [
+          1024,
+          1024
+        ],
+        "bytes": 27563,
+        "sha256": "52629129d3df7679398793b3e8c6915ef34f865b2598b918aad01d2b0fe645f7"
+      },
+      {
+        "name": "wood_diff",
+        "size": [
+          1024,
+          1024
+        ],
+        "bytes": 153971,
+        "sha256": "d59806e00816d18df6c3a2f523c3dcf02c11f4c9e0cafc80241653bce5242659"
+      }
+    ],
+    "totalTriangles": 5768,
+    "nativeParts": 109,
+    "renderedInstancesTriangles": 9104
+  },
+  "review": {
+    "revision": "C05 surface r2; C06/C07 exact r1 semantics",
+    "finalOpened": "C05-r2-fresh-glb.png",
+    "reusedClay": "C05-r2-clay-fresh-glb.png: same geometry, normal-independent neutral clay, lights and camera; only ash texture changed after this image",
+    "reusedUnaffected": [
+      "C06-fresh-glb.png",
+      "C06-clay-fresh-glb.png",
+      "C07-fresh-glb.png",
+      "C07-clay-fresh-glb.png"
+    ],
+    "rejectedFirstSurface": "C05-r2-first-fresh-glb.png shows periodic ash-grid defect; retained only as diagnosis",
+    "materialSources": "texture-sources.json; six existing local CC0 stone/bark scan files hash-verified; no downloads",
+    "scopeProof": "c05-r2-contract.json",
+    "result": "Author opened final C05 and reused clay. Mineral stone, scanned bark morphology and powder ash distinguish physical response. Browser and user visual acceptance pending."
+  }
+}

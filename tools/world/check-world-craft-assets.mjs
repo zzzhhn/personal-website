@@ -5,6 +5,11 @@ import { fileURLToPath } from 'node:url';
 const identity=(value,expected)=>value===undefined||value.length===expected.length&&value.every((n,i)=>Number.isFinite(n)&&Math.abs(n-expected[i])<1e-6);
 const identityNode=node=>identity(node.translation,[0,0,0])&&identity(node.rotation,[0,0,0,1])&&identity(node.scale,[1,1,1])
   &&identity(node.matrix,[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1]);
+const familyRoots={
+  furniture:['DJC_Furniture_lounger','DJC_Furniture_console','DJC_Furniture_speaker'],
+  camp:['C05','C06','C07'],
+  ibdStatic:['InspectionBench','UtilityBench','ControlPedestal'],
+};
 const sourceUrl=path=>{
   const source=readFileSync(new URL(`../../src/components/world/${path}`,import.meta.url),'utf8');
   const urls=[...source.matchAll(/['"]([^'"]+\.glb)['"]/g)].map(match=>match[1]);
@@ -46,6 +51,12 @@ export function checkWorldCraftAsset(file,kind,root=dirname(resolve(file))){
       throw new Error('Crate requires independent identity Shell and Lid scene roots.');
     const hasMesh=node=>node.mesh!==undefined||(node.children??[]).some(index=>hasMesh(nodes[index]));
     if(roots.some(node=>!hasMesh(node)))throw new Error('Both crate parts must contain visible meshes.');
+  }else if(familyRoots[kind]){
+    const names=familyRoots[kind];
+    const hasMesh=node=>node.mesh!==undefined||(node.children??[]).some(index=>hasMesh(nodes[index]));
+    if(roots.length!==names.length||names.some(name=>roots.filter(node=>node.name===name).length!==1)||roots.some(node=>!hasMesh(node)))
+      throw new Error(`${kind} requires its three non-empty, identity family roots: ${names.join(', ')}.`);
+    if(primitives.some(p=>p.attributes.TEXCOORD_0===undefined))throw new Error(`${kind} requires fabrication UVs on every material batch.`);
   }else throw new Error(`Unknown world craft asset kind: ${kind}`);
   let images=0;
   for(const image of doc.images??[]){
@@ -60,11 +71,15 @@ export function checkWorldCraftAsset(file,kind,root=dirname(resolve(file))){
 }
 
 export function checkWorldCraftAssets(root='public'){
-  const entries=[['umbrella',sourceUrl('djc-umbrella-visual.ts')],['crate',sourceUrl('attractions/ibd-crate-visual.ts')]];
+  const entries=[
+    ['umbrella',sourceUrl('djc-umbrella-visual.ts')],['crate',sourceUrl('attractions/ibd-crate-visual.ts')],
+    ['furniture',sourceUrl('djc-furniture-visual.ts')],['camp',sourceUrl('camp-craft-visual.ts')],
+    ['ibdStatic',sourceUrl('attractions/ibd-static-craft-visual.ts')],
+  ];
   return entries.map(([kind,url])=>({kind,url,...checkWorldCraftAsset(resolve(root,`.${url}`),kind,root)}));
 }
 
 if(resolve(process.argv[1]??'')===fileURLToPath(import.meta.url)){
   const assets=checkWorldCraftAssets(resolve(process.argv[2]??'public'));
-  console.log(`World craft: ${assets.length} production GLBs present; ${assets.map(asset=>`${asset.kind} ${asset.primitives} batches`).join(', ')}.`);
+  console.log(`World craft: ${assets.length} production GLBs present; ${assets.map(asset=>`${asset.kind} ${asset.primitives} source primitives`).join(', ')}.`);
 }

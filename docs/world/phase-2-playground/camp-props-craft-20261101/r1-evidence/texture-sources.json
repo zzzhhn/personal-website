@@ -1,0 +1,23 @@
+[
+  {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/docs/world/phase-2-playground/djc-quality-pilot-20261101/textures/wood_diff.jpg",
+    "sha256": "5da68c7ebe8732f029ecbd602cb0d86d2a271e32539df953a0f10efa052b9516",
+    "asset": "https://polyhaven.com/a/wood_table_001",
+    "license": "CC0",
+    "license_url": "https://polyhaven.com/license",
+    "derivative": "1024px, no second base-color tint"
+  },
+  {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/docs/world/phase-2-playground/djc-quality-pilot-20261101/textures/wood_nor_gl.jpg",
+    "sha256": "fc9f1d2600e7686504b36d805b79bd785a327b752a3e7943a41e7d6e9bdfe399",
+    "asset": "https://polyhaven.com/a/wood_table_001",
+    "license": "CC0",
+    "license_url": "https://polyhaven.com/license",
+    "derivative": "1024px, no second base-color tint"
+  },
+  {
+    "source": "Deterministically authored by build.py",
+    "license": "original task output",
+    "usage": "512px bark, endgrain and stone maps, not scans; bark U wraps log circumference and V follows length"
+  }
+]

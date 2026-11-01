@@ -1,0 +1,298 @@
+{
+  "status": "technical_export_and_offline_visual_review_complete",
+  "families": [
+    "lounger",
+    "console",
+    "speaker"
+  ],
+  "native": {
+    "lounger": {
+      "meshes": 81,
+      "triangles": 7908,
+      "materials": [
+        "01 Sand canvas | tailored tension panels",
+        "02 Teal cover binding and timber join plugs",
+        "03 Un-tinted oiled timber | CC0 photograph",
+        "04 Aged joint metal | hinge pins and sleeve"
+      ],
+      "bounds_min": [
+        -0.6000000238418579,
+        -1.2000000476837158,
+        -0.05999999865889549
+      ],
+      "bounds_max": [
+        0.6000000238418579,
+        1.2000000476837158,
+        0.29499998688697815
+      ],
+      "dimensions": [
+        1.2000000476837158,
+        2.4000000953674316,
+        0.35499998554587364
+      ],
+      "max_horizontal_radius": 1.3385548719560059,
+      "nonfinite_vertices": 0,
+      "degenerate_triangles": 0,
+      "nonmanifold_parts": []
+    },
+    "console": {
+      "meshes": 119,
+      "triangles": 13596,
+      "materials": [
+        "03 Un-tinted oiled timber | CC0 photograph",
+        "04 Aged joint metal | hinge pins and sleeve",
+        "05 Flexible speaker rubber and foot isolation"
+      ],
+      "bounds_min": [
+        -0.6785000562667847,
+        -2.5,
+        0.0
+      ],
+      "bounds_max": [
+        0.7100000381469727,
+        2.5,
+        0.9199999570846558
+      ],
+      "dimensions": [
+        1.3885000944137573,
+        5.0,
+        0.9199999570846558
+      ],
+      "max_horizontal_radius": 2.5880994941811415,
+      "nonfinite_vertices": 0,
+      "degenerate_triangles": 0,
+      "nonmanifold_parts": []
+    },
+    "speaker": {
+      "meshes": 104,
+      "triangles": 11776,
+      "materials": [
+        "04 Aged joint metal | hinge pins and sleeve",
+        "05 Flexible speaker rubber and foot isolation",
+        "06 Fine textured painted speaker cabinet"
+      ],
+      "bounds_min": [
+        -0.45000001788139343,
+        -0.38999998569488525,
+        0.0
+      ],
+      "bounds_max": [
+        0.4985000193119049,
+        0.38999998569488525,
+        1.6750000715255737
+      ],
+      "dimensions": [
+        0.9485000371932983,
+        0.7799999713897705,
+        1.6750000715255737
+      ],
+      "max_horizontal_radius": 0.608868398027304,
+      "nonfinite_vertices": 0,
+      "degenerate_triangles": 0,
+      "nonmanifold_parts": []
+    }
+  },
+  "fresh_glb": {
+    "lounger": {
+      "meshes": 4,
+      "triangles": 7908,
+      "materials": [
+        "01 Sand canvas | tailored tension panels",
+        "02 Teal cover binding and timber join plugs",
+        "03 Un-tinted oiled timber | CC0 photograph",
+        "04 Aged joint metal | hinge pins and sleeve"
+      ],
+      "bounds_min": [
+        -0.6000000238418579,
+        -1.2000000476837158,
+        -0.05999999865889549
+      ],
+      "bounds_max": [
+        0.5999999642372131,
+        1.2000000476837158,
+        0.29499998688697815
+      ],
+      "dimensions": [
+        1.199999988079071,
+        2.4000000953674316,
+        0.35499998554587364
+      ],
+      "max_horizontal_radius": 1.3385548719560059,
+      "nonfinite_vertices": 0,
+      "degenerate_triangles": 0,
+      "nonmanifold_parts": []
+    },
+    "console": {
+      "meshes": 3,
+      "triangles": 13596,
+      "materials": [
+        "03 Un-tinted oiled timber | CC0 photograph",
+        "04 Aged joint metal | hinge pins and sleeve",
+        "05 Flexible speaker rubber and foot isolation"
+      ],
+      "bounds_min": [
+        -0.6785000562667847,
+        -2.5,
+        0.0
+      ],
+      "bounds_max": [
+        0.7100000381469727,
+        2.5,
+        0.9199999570846558
+      ],
+      "dimensions": [
+        1.3885000944137573,
+        5.0,
+        0.9199999570846558
+      ],
+      "max_horizontal_radius": 2.5880995097034125,
+      "nonfinite_vertices": 0,
+      "degenerate_triangles": 0,
+      "nonmanifold_parts": []
+    },
+    "speaker": {
+      "meshes": 3,
+      "triangles": 11776,
+      "materials": [
+        "04 Aged joint metal | hinge pins and sleeve",
+        "05 Flexible speaker rubber and foot isolation",
+        "06 Fine textured painted speaker cabinet"
+      ],
+      "bounds_min": [
+        -0.4500000476837158,
+        -0.38999998569488525,
+        0.0
+      ],
+      "bounds_max": [
+        0.4985000491142273,
+        0.38999998569488525,
+        1.6750000715255737
+      ],
+      "dimensions": [
+        0.9485000967979431,
+        0.7799999713897705,
+        1.6750000715255737
+      ],
+      "max_horizontal_radius": 0.608868398027304,
+      "nonfinite_vertices": 0,
+      "degenerate_triangles": 0,
+      "nonmanifold_parts": []
+    }
+  },
+  "revision": "0118dfc",
+  "glb_bytes": 2891784,
+  "materials": 6,
+  "meshes": 10,
+  "embedded_images": 6,
+  "render": {
+    "engine": "Cycles CPU",
+    "threads": 3,
+    "samples": 16,
+    "resolution": [
+      960,
+      768
+    ],
+    "exposure": 0,
+    "look": "AgX Medium High Contrast",
+    "cameras": {
+      "lounger": {
+        "position": [
+          2.5,
+          3.4,
+          2.6
+        ],
+        "target": [
+          0,
+          0,
+          0.1
+        ],
+        "ortho_scale": 3.2
+      },
+      "console": {
+        "position": [
+          3.6,
+          5,
+          3.3
+        ],
+        "target": [
+          0,
+          0,
+          0.45
+        ],
+        "ortho_scale": 6
+      },
+      "speaker": {
+        "position": [
+          3,
+          3.4,
+          2.3
+        ],
+        "target": [
+          0,
+          0,
+          0.83
+        ],
+        "ortho_scale": 2.7
+      }
+    },
+    "lights": "Read-only accepted umbrella rig:3large area lights; transforms/energies in imported rig helper; no depth of field",
+    "ground_center_z": {
+      "lounger": -0.078,
+      "console": -0.018,
+      "speaker": -0.018
+    }
+  },
+  "browser_verification": "coordinator pending",
+  "images_inspected": true,
+  "hashes": {
+    "furniture.glb": "35ca81133737bcee227b7c5686327d428c71d43d19d94b38b6125ca2c533aca3",
+    "furniture-editable.blend": "ddba00a6f8d315de50d8703bd0684c9a3b71407d8c25ff1f0405e06c9d86accd",
+    "baseline-captured.json": "ba6cd5b7153afc07d9adf5a71e4dabb4191328688c2223e189df53b61251d3a2",
+    "lounger-before.png": "a5bd037615e45e534aba18484347c1a87e225aa2f3fe303dd1f96519f3252bf2",
+    "lounger-after.png": "6c7f4c965ff331c455f2354f01b40c00a775cc434dd9fe03fd3d871baf264a2e",
+    "lounger-fresh-glb.png": "5dfdf53a3552985df854dc11a565308c52b35488a70ccd62f7a347486300d0d1",
+    "lounger-clay.png": "6f2291feb380b668178d001ff82ffadaaa6f0c25e1cb8b762cf56620e400545c",
+    "console-before.png": "a22da0177049449e6d6bc45c7ab9ec6232e1fcf7b718e569a58e86261f1e04bd",
+    "console-after.png": "18c48aa537971fa5bab00cdfa5412752e3eaf12d50e8e9150b2b5ee908507fee",
+    "console-fresh-glb.png": "b26845191893b8996161e660f050dd4a9281faef2c8aab3a07ae919c087ed7e0",
+    "console-clay.png": "fb07933adfc0f8b3a7188dc361c4c2f4be4476804e245864244669ccfb49f0e0",
+    "speaker-before.png": "7a0682e26e6967b09f9c71dc511ccf95edae655f6eda6c15631c7bcbcb0089d4",
+    "speaker-after.png": "830faecce595b80f4e0f2fff30d33eddcc907215920deb4585730e76fe0d48f6",
+    "speaker-fresh-glb.png": "8a86aba2850a2f7780e378aedc56e06090a707d883b7cc2202754402d70ce05c",
+    "speaker-clay.png": "46da0b1f5244cb09e48b513390cb268a6a62b0ccb79d226f1710d8dc712386e8"
+  },
+  "inspected_images": [
+    "lounger-before.png",
+    "lounger-fresh-glb.png",
+    "lounger-clay.png",
+    "console-before.png",
+    "console-fresh-glb.png",
+    "console-clay.png",
+    "speaker-before.png",
+    "speaker-fresh-glb.png",
+    "speaker-clay.png"
+  ],
+  "visual_review": {
+    "lounger": "Controlled low timber silhouette,continuous welt,round cushion corners and fabrication-aligned timber read; hidden under-pad slats retained editable.",
+    "console": "Top boards,battens and side steel trestles read,full top stays clear for unchanged original controller.",
+    "speaker": "Final wider camera includes full cabinet and stand; dark metal tweeter,real grille gaps and driver rings read; no cropping.",
+    "existing_layout_limit": "First flat lounger intersects old round daybed; both original parasol poles intersect flat mattress centers. Preserved original transforms/colliders."
+  },
+  "scripts": {
+    "build.py": "5a7e45678fc528402834c1d74866bdb0e4550fc5d21ec7c9d1bb6d6218d4fece",
+    "run.py": "a56aa292aefb75339cab4be1309a805301b7b30273b13330c82edb9ba96ac210",
+    "capture-baseline.mjs": "9d58102f8a0d755622d3957eacd5dedf503a3a9dd6b926493db945ec26f1df93"
+  },
+  "public_asset_sha256": "35ca81133737bcee227b7c5686327d428c71d43d19d94b38b6125ca2c533aca3",
+  "verification": {
+    "focused_tests": {
+      "command": "node --import ./tools/world/alpha-mine-tests/register.mjs --test src/components/world/djc-furniture-visual.test.mjs src/components/world/djc-umbrella-visual.test.mjs",
+      "passed": 10,
+      "failed": 0,
+      "skipped": 0
+    },
+    "heavy_window": "Closed; both owned Blender processes exited,owned lock released.",
+    "browser": "Not run by asset owner; parent coordinator owns same-package day/night/performance verification.",
+    "native_topology": "Every named native part manifold; fresh GLB topology may contain exporter UV seams; finite attributes and triangle/bounds equality checked."
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "memory_pressure_level": 2,
+  "swap_used_gib": 10.53,
+  "disk_free_gib": 5.44,
+  "resource_state": "constrained",
+  "heavy_work_policy": "defer_or_serialize",
+  "processes": {
+    "codex_app": {
+      "count": 123,
+      "rss_mib": 3570.8
+    },
+    "image_mcp": {
+      "count": 0,
+      "rss_mib": 0.0
+    },
+    "chrome_devtools_mcp": {
+      "count": 0,
+      "rss_mib": 0.0
+    },
+    "agent_browser": {
+      "count": 0,
+      "rss_mib": 0.0
+    }
+  },
+  "rss_note": "RSS excludes some compressed/swapped memory; use footprint for manual diagnosis.",
+  "cache_busy": {
+    "npm": false,
+    "pnpm": false,
+    "uv": false,
+    "docker": false
+  }
+}

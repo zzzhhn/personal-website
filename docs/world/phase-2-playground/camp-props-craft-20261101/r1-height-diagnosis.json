@@ -1,0 +1,7 @@
+{
+  "issue": "C07 top was shifted twice by original vertical recenter offset",
+  "measured": 0.8540895581245422,
+  "expected": 0.8520448207855225,
+  "correction": "Subtract dz at top board placement; preserve all original gameplay and physical sources",
+  "r1_glb_sha256": "deec6cc13b63f2d71bf52df98bf66919fe741949415a450f978efec3bd4c94b0"
+}

@@ -1,0 +1,38 @@
+{
+  "build.py": {
+    "bytes": 19766,
+    "sha256": "c41542b8a25f0786a9ad03d01d348c583acd16268e8c2276ea4ff94c36718676"
+  },
+  "C05-fresh-glb.png": {
+    "bytes": 853104,
+    "sha256": "39bbf0a17c9563175e29ef6e14d51cd508be6da7f2de3a47abddd8e278cf5bd7"
+  },
+  "C05-after-native.png": {
+    "bytes": 854263,
+    "sha256": "1cbfd0c45b6a2d348cf659f82b27a319f0061d86962d7528ce679456ebd2242f"
+  },
+  "C05-before.png": {
+    "bytes": 829601,
+    "sha256": "aeeab5a849588eebdfd43a534e2198d1f04d8da5ade6ea6de934f704a1590407"
+  },
+  "camp-props-v1.glb": {
+    "bytes": 1493492,
+    "sha256": "1de43b186d451cec336e06ed072b5371814130fbe69e627ce43e659cc7b169a6"
+  },
+  "camp-props-editable.blend": {
+    "bytes": 3885755,
+    "sha256": "e8f39dda7cde453d28659f8f807dd7e4a563354f78eb6f5ba39959f37f245039"
+  },
+  "manifest.json": {
+    "bytes": 7228,
+    "sha256": "4fc67c2bd162b129822a77441855c96eeaa0c93fc34101687a5e2c8ab29c2169"
+  },
+  "C05-clay-fresh-glb.png": {
+    "bytes": 816826,
+    "sha256": "2ba3f73f449939bbd28813e2fd53907a4714b13008c0c0bddfdc44acbdd3e652"
+  },
+  "texture-sources.json": {
+    "bytes": 1121,
+    "sha256": "2040a3f77c538179b218b43c9a341792d531b00b885feb755afe25b447baab77"
+  }
+}

@@ -1,0 +1,87 @@
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/tools/world/camp-props-craft/build.py:54: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m=bpy.data.materials.new(name);m.use_nodes=True;p=m.node_tree.nodes.get('Principled BSDF');p.inputs['Base Color'].default_value=(*rgb(h),1);p.inputs['Roughness'].default_value=rough;p.inputs['Metallic'].default_value=metal;m.diffuse_color=(*rgb(h),1);return m
+00:37:31 | INFO: Data are loaded, start creating Blender stuff
+00:37:31 | INFO: Blender create Mesh node C05_mesh
+00:37:31 | INFO: Draco Decoder: Decode primitive C05_mesh
+00:37:31 | INFO: Draco Decoder: Decode primitive C05_mesh
+00:37:31 | INFO: Draco Decoder: Decode primitive C05_mesh
+00:37:31 | INFO: Draco Decoder: Decode primitive C05_mesh
+00:37:31 | INFO: Draco Decoder: Decode primitive C05_mesh
+00:37:31 | INFO: glTF import finished in 0.01s
+00:37:31 | INFO: Data are loaded, start creating Blender stuff
+00:37:31 | INFO: Blender create Mesh node C06_mesh
+00:37:31 | INFO: Draco Decoder: Decode primitive C06_mesh
+00:37:31 | INFO: Draco Decoder: Decode primitive C06_mesh
+00:37:31 | INFO: glTF import finished in 0.00s
+00:37:31 | INFO: Data are loaded, start creating Blender stuff
+00:37:31 | INFO: Blender create Mesh node C07_desk
+00:37:31 | INFO: Draco Decoder: Decode primitive C07_desk
+00:37:31 | INFO: Draco Decoder: Decode primitive C07_desk
+00:37:31 | INFO: Blender create Mesh node C07_stool
+00:37:31 | INFO: Draco Decoder: Decode primitive C07_stool
+00:37:31 | INFO: Draco Decoder: Decode primitive C07_stool
+00:37:31 | INFO: glTF import finished in 0.01s
+00:10.410  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/camp-props-craft-20261101/C05-r2-after-native.png'
+Info: Saved as "camp-props-editable.blend"
+Warning: No mesh data to join
+Warning: No mesh data to join
+Warning: No mesh data to join
+INFO Draco mesh compression is available, use library at /Applications/Blender.app/Contents/Resources/5.1/scripts/addons_core/io_scene_gltf2/libextern_draco.dylib
+00:37:39 | INFO: Starting glTF 2.0 export
+00:37:39 | INFO: Extracting primitive: C05 charred radial log 00 | flame core kept open.001
+00:37:39 | INFO: Primitives created: 1
+00:37:39 | INFO: Extracting primitive: C05 ash bed | under stone inner lip.001
+00:37:39 | INFO: Primitives created: 1
+00:37:39 | INFO: Extracting primitive: C05 dressed stone 01 | open dry laid joint.001
+00:37:39 | INFO: Primitives created: 1
+00:37:39 | INFO: Extracting primitive: C05 charred cut end 00.001
+00:37:39 | INFO: Primitives created: 1
+00:37:39 | INFO: Extracting primitive: C05 dry kindling 0.001
+00:37:39 | INFO: Primitives created: 1
+00:37:39 | INFO: Extracting primitive: C06 split log | flat continuous 600mm seat contact.003
+00:37:39 | INFO: Primitives created: 1
+00:37:39 | INFO: Extracting primitive: C06 split log | flat continuous 600mm seat contact.001
+00:37:39 | INFO: Primitives created: 1
+00:37:39 | INFO: Extracting primitive: C06 split log | flat continuous 600mm seat contact.002
+00:37:39 | INFO: Primitives created: 1
+00:37:39 | INFO: Extracting primitive: Cube.023
+00:37:39 | INFO: Primitives created: 1
+00:37:39 | INFO: Extracting primitive: Cube.022
+00:37:39 | INFO: Primitives created: 1
+00:37:39 | INFO: Extracting primitive: Cube.043
+00:37:39 | INFO: Primitives created: 1
+00:37:39 | INFO: Extracting primitive: Cube.041
+00:37:39 | INFO: Primitives created: 1
+00:37:39 | INFO: Finished glTF 2.0 export in 0.15992498397827148 s
+
+00:37:39 | INFO: Data are loaded, start creating Blender stuff
+00:37:39 | INFO: Blender create Mesh node C05 charred radial log 00 | flame core kept open.001
+00:37:39 | INFO: Blender create Mesh node C05 ash bed | under stone inner lip.001
+00:37:39 | INFO: Blender create Mesh node C05 dressed stone 01 | open dry laid joint.001
+00:37:39 | INFO: Blender create Mesh node C05 charred cut end 00.001
+00:37:39 | INFO: Blender create Mesh node C05 dry kindling 0.001
+00:37:39 | INFO: Blender create Mesh node C06 split log | flat continuous 600mm seat contact.003
+00:37:39 | INFO: Blender create Mesh node C06 split log | flat continuous 600mm seat contact.001
+00:37:39 | INFO: Blender create Mesh node C06 split log | flat continuous 600mm seat contact.002
+00:37:39 | INFO: Blender create Mesh node Cube.023
+00:37:39 | INFO: Blender create Mesh node Cube.022
+00:37:39 | INFO: Blender create Mesh node Cube.043
+00:37:39 | INFO: Blender create Mesh node Cube.041
+00:37:39 | INFO: glTF import finished in 0.03s
+00:18.867  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/camp-props-craft-20261101/C05-r2-fresh-glb.png'
+00:26.269  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/camp-props-craft-20261101/C05-r2-clay-fresh-glb.png'
+CAMP CRAFT COMPLETE {"path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/craft/camp-props-v1.glb", "bytes": 3317472, "sha256": "aeb399816675b27eb0172904d51afae2cf3ade481230017af9ba1434ee403d8f"}
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+DracoDecoder | Decoded 288 vertices, 480 indices
+DracoDecoder | Decoded 144 vertices, 240 indices
+DracoDecoder | Decoded 72 vertices, 132 indices
+DracoDecoder | Decoded 280 vertices, 630 indices
+DracoDecoder | Decoded 130 vertices, 246 indices
+DracoDecoder | Decoded 284 vertices, 570 indices
+DracoDecoder | Decoded 68 vertices, 150 indices
+DracoDecoder | Decoded 192 vertices, 264 indices
+DracoDecoder | Decoded 1092 vertices, 1512 indices
+DracoDecoder | Decoded 240 vertices, 348 indices
+DracoDecoder | Decoded 216 vertices, 360 indices
+
+Blender quit

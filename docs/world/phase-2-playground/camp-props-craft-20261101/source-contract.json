@@ -1,0 +1,35 @@
+{
+  "frozenRuntime": "/tmp/bobby-world-batch2-c5f79ee1-20261101",
+  "frozenRuntimeOriginalGlbsMatchCurrent": true,
+  "units": "meters",
+  "rootFrame": "Three Y-up, identity transform; Blender native Z-up",
+  "physics": "WorldCamp InstancedAsset keeps campShapes(id, original gltf) and CampColliders unchanged",
+  "families": {
+    "C05": {
+      "sourceSha256": "54790864187123a55c4fd00590186a1e958990ca735a9861c00304332a316692",
+      "bounds": [[-1.59937620163, 0, -1.59937620163], [1.59937620163, 0.570473253727, 1.59937620163]],
+      "placement": [-42, 4.8, 30],
+      "yaw": 0,
+      "flame": "Unchanged CampFire at [-42,4.86,30]; source firepit only replaced visually"
+    },
+    "C06": {
+      "sourceSha256": "401862b7b8ea1cea4cfafbccb26f38760025f34f006ba47463f6072ae5c8a556",
+      "bounds": [[-0.38, 0, -2.40000009537], [0.38, 0.600000023842, 2.40000009537]],
+      "instances": 4,
+      "placement": "angle=PI/4+i*PI/2; [-42+6*cos(angle),4.8,30+6*sin(angle)]; yaw=-angle-PI",
+      "seatContactLocalY": 0.6000000238418579,
+      "seatLocalXZ": [[0, -1], [0, 1]],
+      "seatPrompt": "Original WorldCampContent: 0.55m toward fire and 0.25m above seat",
+      "seats": 8
+    },
+    "C07": {
+      "sourceSha256": "ea34c4389d8504410746a43ba5b228aba1d46cf525eca3659abcbf34cebc6873",
+      "bounds": [[-0.647988140583, 0, -1], [0.647988140583, 0.852044820786, 1]],
+      "placement": "Original WorldCamp data.onPad(0), camp ring index3; yaw=PI-3*PI/4",
+      "deskTopLocalY": 0.8520448207855225,
+      "bookAndLantern": "C08 bookStack and WorldCampContent C16 lamp placements unchanged"
+    }
+  },
+  "visualReference": "Current camp art and actual original GLBs; refinements within current approved family/placement scope",
+  "approvalBoundary": "User authorization for three-family craft implementation, not user acceptance of unreviewed final artifacts"
+}

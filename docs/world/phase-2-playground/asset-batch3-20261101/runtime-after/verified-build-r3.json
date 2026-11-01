@@ -1,0 +1,38 @@
+{
+  "receipt": {
+    "baseline": "0118dfc",
+    "branch": "codex/world-craft-batch3",
+    "frozen": "/tmp/bobby-world-batch3-2693c6e1-20261102",
+    "build_log": "/tmp/bobby-world-batch3-r3-build.log",
+    "revision": "r3 closed Camp surfaces FrontSide; geometry/textures/IBL unchanged",
+    "files": {
+      "world/index.html": {
+        "sha256": "2693c6e1c4f23be6bcffcba1a2d647c335f1aa9548258e6cec1a61b85e3bcf2b",
+        "bytes": 52275
+      },
+      "_astro/WorldRuntime.Du5LRF1A.js": {
+        "sha256": "78f49d5687b3d822a78e1459c8d54f097bf5d871cef89d9e78d281fae8f24687",
+        "bytes": 3468942
+      },
+      "assets/world/club/furniture/furniture-v1.glb": {
+        "sha256": "35ca81133737bcee227b7c5686327d428c71d43d19d94b38b6125ca2c533aca3",
+        "bytes": 2891784
+      },
+      "assets/world/camp/craft/camp-props-v1.glb": {
+        "sha256": "8290214333f06013be479bf650adddb149b1d5ed96ce32cbeed9a1d08c2baf39",
+        "bytes": 3313188
+      },
+      "assets/world/ibd/static-craft/static-craft-v1.glb": {
+        "sha256": "a78dd5173df444a8d24afa4be7f1bbfd514a58c608348228b58c7856f1a247d5",
+        "bytes": 2962376
+      }
+    },
+    "tests": {
+      "focused_pass": 15,
+      "failed": 0,
+      "skipped": 0
+    },
+    "browser_verified": false
+  },
+  "all_five_files_match": true
+}

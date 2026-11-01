@@ -1,0 +1,388 @@
+{"memory_pressure_level": 2, "swap_used_gib": 9.93, "disk_free_gib": 6.36, "resource_state": "constrained", "heavy_work_policy": "defer_or_serialize", "processes": {"codex_app": {"count": 126, "rss_mib": 2697.3}, "image_mcp": {"count": 0, "rss_mib": 0.0}, "chrome_devtools_mcp": {"count": 0, "rss_mib": 0.0}, "agent_browser": {"count": 0, "rss_mib": 0.0}}, "rss_note": "RSS excludes some compressed/swapped memory; use footprint for manual diagnosis.", "cache_busy": {"npm": false, "pnpm": false, "uv": false, "docker": false}}
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/tools/world/ibd-static-craft/build.py:16: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m=bpy.data.materials.new('IBD static | '+key);m.use_nodes=True;q=m.node_tree.nodes.get('Principled BSDF')
+Info: Saved as "static-craft-editable.blend"
+INFO Draco mesh compression is available, use library at /Applications/Blender.app/Contents/Resources/5.1/scripts/addons_core/io_scene_gltf2/libextern_draco.dylib
+00:30:24 | INFO: Starting glTF 2.0 export
+00:30:24 | INFO: Extracting primitive: Cube.001
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.004
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.008
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.011
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.002
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.005
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.009
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.012
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.020
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.021
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.018
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.019
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.016
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.006
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.013
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.024
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.025
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.001
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.002
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.003
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.014
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.015
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.022
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.023
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.017
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.003
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.007
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.010
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.039
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.040
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.042
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.043
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.031
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.036
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.026
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.027
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.028
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.033
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.038
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.041
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.004
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.005
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.006
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.007
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.029
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.030
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.034
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.035
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.032
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.037
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.057
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.058
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.060
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.061
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.049
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.054
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.044
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.045
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.046
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.051
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.056
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.059
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.008
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.009
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.010
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.011
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.047
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.048
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.052
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.053
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.050
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.055
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.092
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.080
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.083
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.089
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.081
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.082
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.084
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.085
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.086
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.016
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.017
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.018
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.019
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.090
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.091
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.093
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.094
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.095
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.096
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.097
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.087
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.088
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.074
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.062
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.065
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.071
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.063
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.064
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.066
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.067
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.068
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.012
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.013
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.014
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cylinder.015
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.072
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.073
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.075
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.076
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.077
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.078
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.079
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.069
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Extracting primitive: Cube.070
+00:30:24 | INFO: Primitives created: 1
+00:30:24 | INFO: Finished glTF 2.0 export in 0.24120688438415527 s
+00:09.745  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/InspectionBench-native.png'
+00:16.730  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/InspectionBench-clay.png'
+00:23.897  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/UtilityBench-Receiving-native.png'
+00:30.924  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/UtilityBench-Receiving-clay.png'
+00:38.102  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/UtilityBench-Tools-native.png'
+00:45.236  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/UtilityBench-Tools-clay.png'
+00:52.470  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/ControlPedestal-Standard-native.png'
+00:59.808  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/ControlPedestal-Standard-clay.png'
+01:06.841  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/ControlPedestal-Crane-native.png'
+01:14.852  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/ControlPedestal-Crane-clay.png'
+01:25.438  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/InspectionBench-before.png'
+01:34.296  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/UtilityBench-Receiving-before.png'
+01:47.745  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/UtilityBench-Tools-before.png'
+01:58.535  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/ControlPedestal-Standard-before.png'
+02:08.420  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/ControlPedestal-Crane-before.png'
+
+00:32:30 | INFO: Data are loaded, start creating Blender stuff
+00:32:30 | INFO: Blender create Mesh node Cube.001
+00:32:30 | INFO: Blender create Mesh node Cube.004
+00:32:30 | INFO: Blender create Mesh node Cube.008
+00:32:30 | INFO: Blender create Mesh node Cube.011
+00:32:30 | INFO: Blender create Mesh node Cube.002
+00:32:30 | INFO: Blender create Mesh node Cube.005
+00:32:30 | INFO: Blender create Mesh node Cube.009
+00:32:30 | INFO: Blender create Mesh node Cube.012
+00:32:30 | INFO: Blender create Mesh node Cube.020
+00:32:30 | INFO: Blender create Mesh node Cube.021
+00:32:30 | INFO: Blender create Mesh node Cube.018
+00:32:30 | INFO: Blender create Mesh node Cube.019
+00:32:30 | INFO: Blender create Mesh node Cube.016
+00:32:30 | INFO: Blender create Mesh node Cube.006
+00:32:30 | INFO: Blender create Mesh node Cube.013
+00:32:30 | INFO: Blender create Mesh node Cube.024
+00:32:30 | INFO: Blender create Mesh node Cube.025
+00:32:30 | INFO: Blender create Mesh node Cylinder
+00:32:30 | INFO: Blender create Mesh node Cylinder.001
+00:32:30 | INFO: Blender create Mesh node Cylinder.002
+00:32:30 | INFO: Blender create Mesh node Cylinder.003
+00:32:30 | INFO: Blender create Mesh node Cube.014
+00:32:30 | INFO: Blender create Mesh node Cube.015
+00:32:30 | INFO: Blender create Mesh node Cube.022
+00:32:30 | INFO: Blender create Mesh node Cube.023
+00:32:30 | INFO: Blender create Mesh node Cube.017
+00:32:30 | INFO: Blender create Mesh node Cube
+00:32:30 | INFO: Blender create Mesh node Cube.003
+00:32:30 | INFO: Blender create Mesh node Cube.007
+00:32:30 | INFO: Blender create Mesh node Cube.010
+00:32:30 | INFO: Blender create Mesh node Cube.039
+00:32:30 | INFO: Blender create Mesh node Cube.040
+00:32:30 | INFO: Blender create Mesh node Cube.042
+00:32:30 | INFO: Blender create Mesh node Cube.043
+00:32:30 | INFO: Blender create Mesh node Cube.031
+00:32:30 | INFO: Blender create Mesh node Cube.036
+00:32:30 | INFO: Blender create Mesh node Cube.026
+00:32:30 | INFO: Blender create Mesh node Cube.027
+00:32:30 | INFO: Blender create Mesh node Cube.028
+00:32:30 | INFO: Blender create Mesh node Cube.033
+00:32:30 | INFO: Blender create Mesh node Cube.038
+00:32:30 | INFO: Blender create Mesh node Cube.041
+00:32:30 | INFO: Blender create Mesh node Cylinder.004
+00:32:30 | INFO: Blender create Mesh node Cylinder.005
+00:32:30 | INFO: Blender create Mesh node Cylinder.006
+00:32:30 | INFO: Blender create Mesh node Cylinder.007
+00:32:30 | INFO: Blender create Mesh node Cube.029
+00:32:30 | INFO: Blender create Mesh node Cube.030
+00:32:30 | INFO: Blender create Mesh node Cube.034
+00:32:30 | INFO: Blender create Mesh node Cube.035
+00:32:30 | INFO: Blender create Mesh node Cube.032
+00:32:30 | INFO: Blender create Mesh node Cube.037
+00:32:30 | INFO: Blender create Mesh node Cube.057
+00:32:30 | INFO: Blender create Mesh node Cube.058
+00:32:30 | INFO: Blender create Mesh node Cube.060
+00:32:30 | INFO: Blender create Mesh node Cube.061
+00:32:30 | INFO: Blender create Mesh node Cube.049
+00:32:30 | INFO: Blender create Mesh node Cube.054
+00:32:30 | INFO: Blender create Mesh node Cube.044
+00:32:30 | INFO: Blender create Mesh node Cube.045
+00:32:30 | INFO: Blender create Mesh node Cube.046
+00:32:30 | INFO: Blender create Mesh node Cube.051
+00:32:30 | INFO: Blender create Mesh node Cube.056
+00:32:30 | INFO: Blender create Mesh node Cube.059
+00:32:30 | INFO: Blender create Mesh node Cylinder.008
+00:32:30 | INFO: Blender create Mesh node Cylinder.009
+00:32:30 | INFO: Blender create Mesh node Cylinder.010
+00:32:30 | INFO: Blender create Mesh node Cylinder.011
+00:32:30 | INFO: Blender create Mesh node Cube.047
+00:32:30 | INFO: Blender create Mesh node Cube.048
+00:32:30 | INFO: Blender create Mesh node Cube.052
+00:32:30 | INFO: Blender create Mesh node Cube.053
+00:32:30 | INFO: Blender create Mesh node Cube.050
+00:32:30 | INFO: Blender create Mesh node Cube.055
+00:32:30 | INFO: Blender create Mesh node Cube.092
+00:32:30 | INFO: Blender create Mesh node Cube.080
+00:32:30 | INFO: Blender create Mesh node Cube.083
+00:32:30 | INFO: Blender create Mesh node Cube.089
+00:32:30 | INFO: Blender create Mesh node Cube.081
+00:32:30 | INFO: Blender create Mesh node Cube.082
+00:32:30 | INFO: Blender create Mesh node Cube.084
+00:32:30 | INFO: Blender create Mesh node Cube.085
+00:32:30 | INFO: Blender create Mesh node Cube.086
+00:32:30 | INFO: Blender create Mesh node Cylinder.016
+00:32:30 | INFO: Blender create Mesh node Cylinder.017
+00:32:30 | INFO: Blender create Mesh node Cylinder.018
+00:32:30 | INFO: Blender create Mesh node Cylinder.019
+00:32:30 | INFO: Blender create Mesh node Cube.090
+00:32:30 | INFO: Blender create Mesh node Cube.091
+00:32:30 | INFO: Blender create Mesh node Cube.093
+00:32:30 | INFO: Blender create Mesh node Cube.094
+00:32:30 | INFO: Blender create Mesh node Cube.095
+00:32:30 | INFO: Blender create Mesh node Cube.096
+00:32:30 | INFO: Blender create Mesh node Cube.097
+00:32:30 | INFO: Blender create Mesh node Cube.087
+00:32:30 | INFO: Blender create Mesh node Cube.088
+00:32:30 | INFO: Blender create Mesh node Cube.074
+00:32:30 | INFO: Blender create Mesh node Cube.062
+00:32:30 | INFO: Blender create Mesh node Cube.065
+00:32:30 | INFO: Blender create Mesh node Cube.071
+00:32:30 | INFO: Blender create Mesh node Cube.063
+00:32:30 | INFO: Blender create Mesh node Cube.064
+00:32:30 | INFO: Blender create Mesh node Cube.066
+00:32:30 | INFO: Blender create Mesh node Cube.067
+00:32:30 | INFO: Blender create Mesh node Cube.068
+00:32:30 | INFO: Blender create Mesh node Cylinder.012
+00:32:30 | INFO: Blender create Mesh node Cylinder.013
+00:32:30 | INFO: Blender create Mesh node Cylinder.014
+00:32:30 | INFO: Blender create Mesh node Cylinder.015
+00:32:30 | INFO: Blender create Mesh node Cube.072
+00:32:30 | INFO: Blender create Mesh node Cube.073
+00:32:30 | INFO: Blender create Mesh node Cube.075
+00:32:30 | INFO: Blender create Mesh node Cube.076
+00:32:30 | INFO: Blender create Mesh node Cube.077
+00:32:30 | INFO: Blender create Mesh node Cube.078
+00:32:30 | INFO: Blender create Mesh node Cube.079
+00:32:30 | INFO: Blender create Mesh node Cube.069
+00:32:30 | INFO: Blender create Mesh node Cube.070
+00:32:30 | INFO: glTF import finished in 0.07s
+02:16.676  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/InspectionBench-fresh.png'
+02:24.370  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/UtilityBench-Receiving-fresh.png'
+02:32.034  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/UtilityBench-Tools-fresh.png'
+02:39.798  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/ControlPedestal-Standard-fresh.png'
+02:47.153  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-static-craft-20261101/ControlPedestal-Crane-fresh.png'
+STATIC_CRAFT_OK {"native": {"InspectionBench": {"meshes": 30, "triangles": 2888, "nonfinite_vertices": 0, "degenerate_triangles": 0}, "UtilityBench": {"meshes": 44, "triangles": 4048, "nonfinite_vertices": 0, "degenerate_triangles": 0}, "ControlPedestal": {"meshes": 44, "triangles": 4048, "nonfinite_vertices": 0, "degenerate_triangles": 0}}, "fresh": {"InspectionBench": {"meshes": 30, "triangles": 2888, "nonfinite_vertices": 0, "degenerate_triangles": 0}, "UtilityBench": {"meshes": 44, "triangles": 4048, "nonfinite_vertices": 0, "degenerate_triangles": 0}, "ControlPedestal": {"meshes": 44, "triangles": 4048, "nonfinite_vertices": 0, "degenerate_triangles": 0}}, "bytes": 2962376}
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

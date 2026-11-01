@@ -1,0 +1,171 @@
+{
+  "source": "/tmp/bobby-world-batch2-c5f79ee1-20261101",
+  "buffer": [
+    1710,
+    931
+  ],
+  "css": [
+    1710,
+    931
+  ],
+  "dpr": 1,
+  "cameraSource": "existing __worldCampQA.close",
+  "views": [
+    {
+      "id": "v1-club-lounger",
+      "families": [
+        "Club flat lounger"
+      ],
+      "position": [
+        78.5,
+        4.2,
+        59
+      ],
+      "target": [
+        74,
+        1.65,
+        63
+      ],
+      "fov": 50,
+      "playerTeleport": [
+        78,
+        3,
+        59
+      ],
+      "noonSnapshot": "before-v1-club-lounger-noon.json",
+      "noonImage": "before-v1-club-lounger-noon.jpg",
+      "midnightImage": "before-v1-club-lounger-midnight.jpg"
+    },
+    {
+      "id": "v2-club-dj",
+      "families": [
+        "DJ console shell",
+        "Monitor speaker pair"
+      ],
+      "position": [
+        43.5,
+        6.3,
+        55
+      ],
+      "target": [
+        33,
+        3,
+        55
+      ],
+      "fov": 50,
+      "playerTeleport": [
+        40,
+        4,
+        55
+      ],
+      "noonSnapshot": "before-v2-club-dj-noon.json",
+      "noonImage": "before-v2-club-dj-noon.jpg",
+      "midnightImage": null
+    },
+    {
+      "id": "v3-camp-fire",
+      "families": [
+        "C05 fire pit",
+        "C06 benches"
+      ],
+      "position": [
+        -33.6,
+        9.2,
+        39
+      ],
+      "target": [
+        -42,
+        5.2,
+        30
+      ],
+      "fov": 50,
+      "playerTeleport": [
+        -34,
+        7,
+        39
+      ],
+      "noonSnapshot": "before-v3-camp-fire-noon.json",
+      "noonImage": "before-v3-camp-fire-noon.jpg",
+      "midnightImage": null
+    },
+    {
+      "id": "v4-camp-desk",
+      "families": [
+        "C07 desk and stool"
+      ],
+      "position": [
+        -48.5,
+        8.2,
+        36.5
+      ],
+      "target": [
+        -52.6066017178,
+        5.6,
+        40.6066017178
+      ],
+      "fov": 50,
+      "playerTeleport": [
+        -48,
+        7,
+        36
+      ],
+      "noonSnapshot": "before-v4-camp-desk-noon.json",
+      "noonImage": "before-v4-camp-desk-noon.jpg",
+      "midnightImage": null
+    },
+    {
+      "id": "v5-ibd-inspection",
+      "families": [
+        "IBD inspection bench",
+        "IBD control pedestal shell"
+      ],
+      "position": [
+        -74,
+        6.3,
+        -177.8
+      ],
+      "target": [
+        -74,
+        1.8,
+        -189
+      ],
+      "fov": 50,
+      "playerTeleport": [
+        -74,
+        3.8,
+        -184.5
+      ],
+      "noonSnapshot": "before-v5-ibd-inspection-noon.json",
+      "noonImage": "before-v5-ibd-inspection-noon.jpg",
+      "midnightImage": null
+    },
+    {
+      "id": "v6-ibd-utility",
+      "families": [
+        "IBD utility bench"
+      ],
+      "position": [
+        -85.7,
+        4.8,
+        -149
+      ],
+      "target": [
+        -92.5,
+        2,
+        -154.5
+      ],
+      "fov": 50,
+      "playerTeleport": [
+        -88,
+        3,
+        -151
+      ],
+      "noonSnapshot": "before-v6-ibd-utility-noon.json",
+      "noonImage": "before-v6-ibd-utility-noon.jpg",
+      "midnightImage": null
+    }
+  ],
+  "nightScope": "Only V1 captured; V2-V6 deferred per coordinator shortened window.",
+  "normalPlayVerified": false,
+  "performanceSampled": false
+}

@@ -1,0 +1,203 @@
+{
+  "revision": "r2",
+  "frozen": "/tmp/bobby-world-batch3-f359504a-20261102",
+  "order": "Candidate Camp/Club/IBD, then triple legacy Camp/Club/IBD. One window per mode/view.",
+  "buffer": [
+    1710,
+    931
+  ],
+  "css": [
+    1710,
+    931
+  ],
+  "dpr": 1,
+  "noScreenshotsDuringSampling": true,
+  "r1Excluded": true,
+  "pairs": [
+    {
+      "view": "n3-camp",
+      "matching": {
+        "cameraPositionMaxDeltaM": 7.105427357601002e-15,
+        "targetMaxDeltaM": 7.105427357601002e-15,
+        "playerMaxDeltaM": 0.0,
+        "yawDelta": 0.0,
+        "pitchDelta": 0.0,
+        "fovDelta": 0
+      },
+      "candidate": {
+        "file": "candidate-after-r2-n3-camp-sample-7.json",
+        "frames": 300,
+        "warmupFrames": 90,
+        "fps": 54.66472303206997,
+        "p50": 16.69999998807907,
+        "p95": 28.5,
+        "max": 49.60000002384186,
+        "over33_4ms": 5,
+        "gpuMs": null,
+        "over50ms": 0,
+        "drawCalls": {
+          "median": 313.0,
+          "min": 313,
+          "max": 313
+        },
+        "triangles": {
+          "median": 862840.0,
+          "min": 862840,
+          "max": 862840
+        }
+      },
+      "legacy": {
+        "file": "legacy-legacy-r2-n3-camp-sample-2.json",
+        "frames": 300,
+        "warmupFrames": 90,
+        "fps": 60,
+        "p50": 16.69999998807907,
+        "p95": 18.599999964237213,
+        "max": 18.80000001192093,
+        "over33_4ms": 0,
+        "gpuMs": null,
+        "over50ms": 0,
+        "drawCalls": {
+          "median": 314.0,
+          "min": 314,
+          "max": 314
+        },
+        "triangles": {
+          "median": 828835.0,
+          "min": 828835,
+          "max": 828835
+        }
+      },
+      "deltaDrawsMedian": -1.0,
+      "deltaTrianglesMedian": 34005.0
+    },
+    {
+      "view": "n2-club",
+      "matching": {
+        "cameraPositionMaxDeltaM": 0.001865386962890625,
+        "targetMaxDeltaM": 0.001865386962890625,
+        "playerMaxDeltaM": 0.001865386962890625,
+        "yawDelta": 0.0,
+        "pitchDelta": 0.0,
+        "fovDelta": 0
+      },
+      "candidate": {
+        "file": "candidate-after-r2-n2-club-sample-9.json",
+        "frames": 300,
+        "warmupFrames": 90,
+        "fps": 57.25627910501468,
+        "p50": 16.69999998807907,
+        "p95": 22.5,
+        "max": 26.19999998807907,
+        "over33_4ms": 0,
+        "gpuMs": null,
+        "over50ms": 0,
+        "drawCalls": {
+          "median": 260.0,
+          "min": 260,
+          "max": 293
+        },
+        "triangles": {
+          "median": 2635664.0,
+          "min": 2635664,
+          "max": 3381357
+        }
+      },
+      "legacy": {
+        "file": "legacy-legacy-r2-n2-club-sample-4.json",
+        "frames": 300,
+        "warmupFrames": 90,
+        "fps": 58.97733304444684,
+        "p50": 16.69999998807907,
+        "p95": 18.700000047683716,
+        "max": 76.60000002384186,
+        "over33_4ms": 2,
+        "gpuMs": null,
+        "over50ms": 2,
+        "drawCalls": {
+          "median": 261.0,
+          "min": 261,
+          "max": 288
+        },
+        "triangles": {
+          "median": 1992028.0,
+          "min": 1992028,
+          "max": 2700979
+        }
+      },
+      "deltaDrawsMedian": -1.0,
+      "deltaTrianglesMedian": 643636.0
+    },
+    {
+      "view": "n5-ibd",
+      "matching": {
+        "cameraPositionMaxDeltaM": 3.552713678800501e-15,
+        "targetMaxDeltaM": 4.440892098500626e-16,
+        "playerMaxDeltaM": 0,
+        "yawDelta": 0.0,
+        "pitchDelta": 0.0,
+        "fovDelta": 0
+      },
+      "candidate": {
+        "file": "candidate-after-r2-n5-ibd-sample-12.json",
+        "frames": 300,
+        "warmupFrames": 90,
+        "fps": 57.28142363418501,
+        "p50": 16.69999998807907,
+        "p95": 26,
+        "max": 94.39999997615814,
+        "over33_4ms": 9,
+        "gpuMs": null,
+        "over50ms": 3,
+        "drawCalls": {
+          "median": 142.0,
+          "min": 142,
+          "max": 210
+        },
+        "triangles": {
+          "median": 823458.0,
+          "min": 806928,
+          "max": 823458
+        }
+      },
+      "legacy": {
+        "file": "legacy-legacy-r2-n5-ibd-sample-6.json",
+        "frames": 300,
+        "warmupFrames": 90,
+        "fps": 60,
+        "p50": 16.69999998807907,
+        "p95": 18.399999976158142,
+        "max": 24.099999964237213,
+        "over33_4ms": 0,
+        "gpuMs": null,
+        "over50ms": 0,
+        "drawCalls": {
+          "median": 200.0,
+          "min": 192,
+          "max": 200
+        },
+        "triangles": {
+          "median": 1109808.0,
+          "min": 695756,
+          "max": 1109808
+        }
+      },
+      "deltaDrawsMedian": -58.0,
+      "deltaTrianglesMedian": -286350.0
+    }
+  ],
+  "functional": {
+    "seatId": "camp-bench-0-a",
+    "stoodWithSeatNull": true,
+    "djModeEntered": true,
+    "crossfaderEvidence": "r2-dj-crossfader-001-ax.txt",
+    "djRestoredEvidence": "r2-dj-restored-paused-ax.txt",
+    "crateHud": "SDIC \u00b7 INVENTORY YARD\n01\nFictional cargo\nResume guidance\nPack A inspection\n\nApproach a device and press E. Resume guidance at any time.\n\nE / Y\nCount, gauge and inspect contents\n\nLid open. Check the contents now.\n\nManifest, observed evidence and exchanges +"
+  },
+  "limits": [
+    "Whole scene and all three switches together; not per-asset causal isolation.",
+    "One short sequential sample each, warning memory pressure, no CPU/GPU timing or thermal measurement.",
+    "Moving wind/fire and actor facing not phase-synchronized; Club settled position differs 1.866mm.",
+    "Do not mix r1 or old baseline samples."
+  ]
+}

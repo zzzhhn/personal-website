@@ -1,0 +1,22 @@
+✔ shell separation preserves colliders, roller contact and every non-shell visual vertex (577.386583ms)
+✔ static equipment QA flag requires explicit opt-in (0.216375ms)
+✔ all 14 placements batch by borrowed physical material and cleanup is idempotent (2.641417ms)
+✔ actual StaticAsset effect survives StrictMode cleanup/replay and disposes after final release (30.661958ms)
+✔ actual portable three-family pack preserves original inspection/utility/control envelopes and owns batching resources (76.840875ms)
+✔ craft QA opt-out needs explicit qa=1 (0.606333ms)
+✔ all instances retain the shared materials, geometry and source transforms (1.360583ms)
+✔ fixed original GLBs used for physical registration and seat anchors are byte-identical (1.828417ms)
+✔ actual pack has three fixed roots, valid geometry and eight true 600mm bench contacts (19.406417ms)
+✔ three-family visual extraction keeps exact collisions, seats, approaches, controls and other accepted packs (1163.439167ms)
+✔ recursive named families preserve local transforms and share only owned material/sampler copies (1.713416ms)
+✔ legacy needs explicit QA and a missing family fails into fallback (0.338084ms)
+✔ actual GLB has three real roots with preserved family dimensions and five fixed placements (21.43075ms)
+✔ production crate export checker rejects a missing asset, merged hinge, nonidentity origin and embedded rig/light (4.777458ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3721.283292

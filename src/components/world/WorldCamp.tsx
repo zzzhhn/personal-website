@@ -17,9 +17,11 @@ import { useIsClaimed } from './WorldVisualClaims';
 import { useWorldStore } from './store';
 import { night as worldNight } from './WorldNight';
 import { campCraftMaterial } from './WorldCraftMaterials';
+import WorldCampCraftProps from './WorldCampCraftProps';
+import type { CampCraftFamily } from './camp-craft-visual';
 import type { Vec3 } from './types';
 
-/** Camp visuals and fitted physics share the same GLB and placement matrices. */
+/** Camp uses fixed source GLBs for fitted physics; craft visuals reuse placement matrices. */
 export type CampBlock = { position: Vec3; size: Vec3; color: string; rotation?: Vec3 };
 export interface CampLayout { pads: CampBlock[]; padObjects: CampBlock[]; tents: CampBlock[]; benches: CampBlock[]; trees: CampBlock[]; lampHeads: CampBlock[] }
 /** tilt rotates about the asset's local X before yaw (re-grounded by bounds); sink buries it. */
@@ -174,8 +176,10 @@ function InstancedAsset({ id, placements, materialMap, label = "instances" }: { 
   const shapes = useMemo(() => campShapes(id, gltf), [id, gltf]);
   useEffect(() => () => parts.forEach(p => { if (p.ownedGeometry) p.geometry.dispose(); p.depth?.dispose(); }), [parts]);
   if (!shapes) throw new Error(`Missing fitted collision recipe for ${id}`);
+  const visuals = parts.map((part, i) => <InstancedPart key={i} part={part} matrices={matrices} id={id} />);
+  const crafted = id === 'C05' || id === 'C06' || id === 'C07';
   return <group name={`camp-asset-${id}-${label}`}>
-    {parts.map((part, i) => <InstancedPart key={i} part={part} matrices={matrices} id={id} />)}
+    {crafted ? <WorldCampCraftProps family={id as CampCraftFamily} matrices={matrices} fallback={visuals} /> : visuals}
     <CampColliders id={id} label={label} shapes={shapes} matrices={matrices} />
   </group>;
 }

@@ -1,0 +1,13 @@
+✔ craft QA opt-out needs explicit qa=1 (0.623125ms)
+✔ instances own shared material clones while borrowing geometry, maps and the renderer environment (2.563042ms)
+✔ fixed original GLBs used for physical registration and seat anchors are byte-identical (1.875334ms)
+✔ actual pack has three fixed roots, valid geometry and eight true 600mm bench contacts (21.774833ms)
+✔ unflipped equirectangular radiance places sky and warm key above the horizon (4.557875ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 806.11975

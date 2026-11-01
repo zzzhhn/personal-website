@@ -1,0 +1,54 @@
+00:13.266  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-furniture-craft-20261101/lounger-before.png'
+00:21.835  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-furniture-craft-20261101/lounger-after.png'
+00:28.172  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-furniture-craft-20261101/console-before.png'
+00:34.897  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-furniture-craft-20261101/console-after.png'
+00:41.570  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-furniture-craft-20261101/speaker-before.png'
+00:49.641  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-furniture-craft-20261101/speaker-after.png'
+Info: Saved as "furniture-editable.blend"
+Warning: No mesh data to join
+INFO Draco mesh compression is available, use library at /Applications/Blender.app/Contents/Resources/5.1/scripts/addons_core/io_scene_gltf2/libextern_draco.dylib
+00:19:52 | INFO: Starting glTF 2.0 export
+00:19:52 | INFO: Extracting primitive: Cube.101
+00:19:52 | INFO: Primitives created: 1
+00:19:52 | INFO: Extracting primitive: Cube.122
+00:19:52 | INFO: Primitives created: 1
+00:19:52 | INFO: Extracting primitive: Lounger | closed crowned tailored teal cushion.001
+00:19:52 | INFO: Primitives created: 1
+00:19:52 | INFO: Extracting primitive: Lounger | continuous welt seam.002
+00:19:52 | INFO: Primitives created: 1
+00:19:52 | INFO: Extracting primitive: Cube.130
+00:19:52 | INFO: Primitives created: 1
+00:19:52 | INFO: Extracting primitive: Cube.135
+00:19:52 | INFO: Primitives created: 1
+00:19:52 | INFO: Extracting primitive: Cube.136
+00:19:52 | INFO: Primitives created: 1
+00:19:52 | INFO: Extracting primitive: Cube.185
+00:19:52 | INFO: Primitives created: 1
+00:19:52 | INFO: Extracting primitive: Speaker | closed woofer cone and surround.002
+00:19:52 | INFO: Primitives created: 1
+00:19:52 | INFO: Extracting primitive: Speaker | concentric driver mounting rim.004
+00:19:52 | INFO: Primitives created: 1
+00:19:52 | INFO: Finished glTF 2.0 export in 0.2845730781555176 s
+
+00:19:52 | INFO: Data are loaded, start creating Blender stuff
+00:19:52 | INFO: Blender create Mesh node Cube.101
+00:19:52 | INFO: Blender create Mesh node Cube.122
+00:19:52 | INFO: Blender create Mesh node Lounger | closed crowned tailored teal cushion.001
+00:19:52 | INFO: Blender create Mesh node Lounger | continuous welt seam.002
+00:19:52 | INFO: Blender create Mesh node Cube.130
+00:19:52 | INFO: Blender create Mesh node Cube.135
+00:19:52 | INFO: Blender create Mesh node Cube.136
+00:19:52 | INFO: Blender create Mesh node Cube.185
+00:19:52 | INFO: Blender create Mesh node Speaker | closed woofer cone and surround.002
+00:19:52 | INFO: Blender create Mesh node Speaker | concentric driver mounting rim.004
+00:19:52 | INFO: glTF import finished in 0.07s
+00:56.172  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-furniture-craft-20261101/lounger-fresh-glb.png'
+01:02.358  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-furniture-craft-20261101/lounger-clay.png'
+01:08.097  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-furniture-craft-20261101/console-fresh-glb.png'
+01:13.329  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-furniture-craft-20261101/console-clay.png'
+01:18.942  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-furniture-craft-20261101/speaker-fresh-glb.png'
+01:24.858  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-furniture-craft-20261101/speaker-clay.png'
+FURNITURE_FINISH_OK {"triangles": {"lounger": 7908, "console": 13596, "speaker": 11776}, "bytes": 2891784}
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

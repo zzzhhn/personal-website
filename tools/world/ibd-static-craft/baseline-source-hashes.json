@@ -1,0 +1,15 @@
+{
+  "baseline_commit": "0118dfccc5ab9942adc7b317c09fb0d1f98f66d3",
+  "baseline_files": {
+    "src/components/world/attractions/ibd-yard-geometry.ts": "7563ae68852ddde9d07caf623124945e24e30a88bcfe478c154a34069fd80545",
+    "src/components/world/attractions/WorldIbdYard.tsx": "77bd637437e03420212d5bbfc939a5ac22360904d1631b5b8c0984fe9fc4462c",
+    "src/components/world/attractions/ibd-craft-geometry.ts": "6eae39512a367d692f84b8586c963beefef26b75e22df1d374f8c767599d2a48",
+    "src/components/world/attractions/ibd-yard-layout.ts": "ddae64f79d3b86b5ec3bbfad9d3d71ac4ea0e1d27050ba9bf41c68a64beeb5f1"
+  },
+  "references": {
+    "docs/world/phase-2-playground/visual-calibration-20261027/ibd-yard-v1.png": "a6187c621435fa51c3313c571b6ee6e47a9ff41809065314cd2856261b2de672",
+    "docs/world/phase-2-playground/visual-calibration-20261027/ibd-yard-night-v1.png": "980b773734042fc306bd96affd0693e309af45b8cc6a802212457b72ea0c5aa1",
+    "docs/world/phase-2-playground/ibd-crate-craft-20261101/crate-fresh-close.png": "3d6047daa467fcbb88d0172ffeb11132ea94dc01a3ccfc99420049af4993903d",
+    "tools/world/ibd-crate-craft/textures/sources.json": "f959b21a141e76f418fc1e80170953e5e74e2052bc237cc65a14aa5239afea33"
+  }
+}

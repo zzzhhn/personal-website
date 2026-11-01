@@ -1,0 +1,175 @@
+{
+ "runId": "after-a1",
+ "mode": "candidate",
+ "active": "v1-club-lounger",
+ "area": "club",
+ "stage": "art-ready",
+ "settings": {
+  "ready": true,
+  "loadingPhase": "ready",
+  "position": [
+   78,
+   1.3688249588012695,
+   59
+  ],
+  "seat": null,
+  "clubMode": null,
+  "paused": false,
+  "shot": "camp-qa-close",
+  "quality": "balanced",
+  "weather": "clear",
+  "light": "noon",
+  "worldMinutes": 720,
+  "timeRunning": false,
+  "hidden": false
+ },
+ "drawingBuffer": [
+  1710,
+  931
+ ],
+ "cssSize": [
+  1710,
+  931
+ ],
+ "pixelRatio": 1,
+ "actualCameraPosition": [
+  78.5,
+  4.2,
+  59
+ ],
+ "camera": {
+  "yaw": 0.7853983063805188,
+  "pitch": 0.4000000310732297,
+  "distance": 12,
+  "desiredDistance": 12,
+  "driveManualZoom": false,
+  "actualDistance": 11.999999967606728,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": false,
+  "hitDistance": null,
+  "fov": 50,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   78.5,
+   4.2,
+   59
+  ],
+  "target": [
+   78,
+   2.01885676791398,
+   59
+  ],
+  "forwardGround": [
+   -0.7474093186836596,
+   0.6643638388299198
+  ],
+  "groundBelowCamera": 0.5500030517578125,
+  "clearanceAboveGround": 3.6499969482421877,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "player": [
+  78,
+  1.3688249588012695,
+  59
+ ],
+ "grounded": true,
+ "velocity": [
+  1.2299315130803734e-05,
+  0,
+  2.0014751100916328e-07
+ ],
+ "frame": 4612,
+ "renderMode": "demand",
+ "night": 0.0002676046107261206,
+ "renderer": {
+  "calls": 114,
+  "triangles": 1405267,
+  "geometries": 503,
+  "textures": 133,
+  "programs": 342
+ },
+ "evidence": {
+  "resources": {
+   "club": {
+    "url": "http://127.0.0.1:4356/assets/world/club/furniture/furniture-v1.glb",
+    "bytes": 2891784,
+    "responseEnd": 30223.899999976158,
+    "duration": 927.3999999761581
+   },
+   "camp": {
+    "url": "http://127.0.0.1:4356/assets/world/camp/craft/camp-props-v1.glb",
+    "bytes": 3313188,
+    "responseEnd": 30661.599999964237,
+    "duration": 162.89999997615814
+   },
+   "ibd": {
+    "url": "http://127.0.0.1:4356/assets/world/ibd/static-craft/static-craft-v1.glb",
+    "bytes": 2962376,
+    "responseEnd": 260681.19999998808,
+    "duration": 9.300000011920929
+   }
+  },
+  "nodes": {
+   "club": [
+    {
+     "root": "djc-crafted-furniture",
+     "present": true,
+     "namedDescendants": 0
+    }
+   ],
+   "camp": [
+    {
+     "root": "camp-craft-C05",
+     "present": true,
+     "namedDescendants": 20
+    },
+    {
+     "root": "camp-craft-C06",
+     "present": true,
+     "namedDescendants": 12
+    },
+    {
+     "root": "camp-craft-C07",
+     "present": true,
+     "namedDescendants": 16
+    }
+   ],
+   "ibd": [
+    {
+     "root": "ibd-static-craft",
+     "present": false,
+     "namedDescendants": 0
+    }
+   ]
+  }
+ },
+ "ibdHud": null,
+ "url": "http://127.0.0.1:4356/world/?qa=1&quality=balanced&paused=1&run=after-a1",
+ "at": 424094,
+ "configuration": {
+  "families": [
+   "Club flat lounger"
+  ],
+  "player": [
+   78,
+   3,
+   59
+  ],
+  "position": [
+   78.5,
+   4.2,
+   59
+  ],
+  "target": [
+   74,
+   1.65,
+   63
+  ]
+ }
+}

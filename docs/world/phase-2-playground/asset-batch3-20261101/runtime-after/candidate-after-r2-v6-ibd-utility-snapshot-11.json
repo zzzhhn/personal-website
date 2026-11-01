@@ -1,0 +1,190 @@
+{
+ "runId": "after-r2",
+ "mode": "candidate",
+ "active": "v6-ibd-utility",
+ "area": "ibd",
+ "stage": "art-ready",
+ "settings": {
+  "ready": true,
+  "loadingPhase": "ready",
+  "position": [
+   -88,
+   1.904481053352356,
+   -151
+  ],
+  "seat": null,
+  "clubMode": null,
+  "paused": false,
+  "shot": "camp-qa-close",
+  "quality": "balanced",
+  "weather": "clear",
+  "light": "night",
+  "worldMinutes": 0,
+  "timeRunning": false,
+  "hidden": false
+ },
+ "drawingBuffer": [
+  1710,
+  931
+ ],
+ "cssSize": [
+  1710,
+  931
+ ],
+ "pixelRatio": 1,
+ "actualCameraPosition": [
+  -85.7,
+  4.8,
+  -149
+ ],
+ "camera": {
+  "yaw": 5.1985987695180036e-08,
+  "pitch": 0.4000000310732297,
+  "distance": 12,
+  "desiredDistance": 12,
+  "driveManualZoom": false,
+  "actualDistance": 2.7183998324522034,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": true,
+  "hitDistance": 2.7684173583984375,
+  "fov": 50,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   -85.7,
+   4.8,
+   -149
+  ],
+  "target": [
+   -88,
+   2.554513317730706,
+   -151
+  ],
+  "forwardGround": [
+   -0.7775110720239841,
+   -0.6288692494311636
+  ],
+  "groundBelowCamera": 1,
+  "clearanceAboveGround": 3.8,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "player": [
+  -88,
+  1.9044638872146606,
+  -151
+ ],
+ "grounded": true,
+ "velocity": [
+  0,
+  -5.8014280879259417e-11,
+  -0.001809644396416843
+ ],
+ "frame": 16986,
+ "renderMode": "demand",
+ "night": 1,
+ "renderer": {
+  "calls": 80,
+  "triangles": 879184,
+  "geometries": 411,
+  "textures": 125,
+  "programs": 247
+ },
+ "evidence": {
+  "resources": {
+   "club": {
+    "url": "http://127.0.0.1:4356/assets/world/club/furniture/furniture-v1.glb",
+    "bytes": 2891784,
+    "responseEnd": 49006.30000001192,
+    "duration": 1001.6999999880791
+   },
+   "camp": {
+    "url": "http://127.0.0.1:4356/assets/world/camp/craft/camp-props-v1.glb",
+    "bytes": 3313188,
+    "responseEnd": 49432,
+    "duration": 234.69999998807907
+   },
+   "ibd": {
+    "url": "http://127.0.0.1:4356/assets/world/ibd/static-craft/static-craft-v1.glb",
+    "bytes": 2962376,
+    "responseEnd": 458762.6999999881,
+    "duration": 137.0999999642372
+   }
+  },
+  "nodes": {
+   "club": [
+    {
+     "root": "djc-crafted-furniture",
+     "present": true,
+     "namedDescendants": 0
+    },
+    {
+     "root": "djc-furniture-lounger",
+     "present": true,
+     "namedDescendants": 0
+    },
+    {
+     "root": "djc-furniture-console",
+     "present": true,
+     "namedDescendants": 0
+    },
+    {
+     "root": "djc-furniture-speaker",
+     "present": true,
+     "namedDescendants": 0
+    }
+   ],
+   "camp": [
+    {
+     "root": "camp-craft-C05",
+     "present": true,
+     "namedDescendants": 20
+    },
+    {
+     "root": "camp-craft-C06",
+     "present": true,
+     "namedDescendants": 12
+    },
+    {
+     "root": "camp-craft-C07",
+     "present": true,
+     "namedDescendants": 16
+    }
+   ],
+   "ibd": [
+    {
+     "root": "ibd-static-craft",
+     "present": true,
+     "namedDescendants": 0
+    }
+   ]
+  }
+ },
+ "ibdHud": null,
+ "url": "http://127.0.0.1:4356/world/?qa=1&quality=balanced&paused=1&run=after-r2",
+ "at": 544688.3000000119,
+ "configuration": {
+  "families": [
+   "IBD utility bench"
+  ],
+  "player": [
+   -88,
+   3,
+   -151
+  ],
+  "position": [
+   -85.7,
+   4.8,
+   -149
+  ],
+  "target": [
+   -92.5,
+   2,
+   -154.5
+  ]
+ }
+}

@@ -1,0 +1,65 @@
+Browser tab: 1395914218, Title: "Bobby’s island · World playtest", URL: "http://127.0.0.1:4356/world/?qa=1&quality=balanced&paused=1&run=after-r2".
+0 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4356/world/?qa=1&quality=balanced&paused=1&run=after-r2
+	1 container Bobby’s island
+		2 container
+			3 text EXPERIENCES · PROJECTS · EXPLORE
+			4 heading Bobby’s island, Value: 1
+				5 text Bobby’s island
+			6 button Return to camp, Help: Keep your ore, mining progress and research results.
+			7 pop up button Map & settings Esc
+		8 container
+			9 container Island map · Island shore
+			10 text Island shore
+		37 container DJC beach club
+			38 container
+				39 text DJC BEACH CLUB
+				40 checkbox Mute, Value: 0
+			44 text Lift the room
+			45 button Bring in the disco
+			46 text Soften the highs, then land a new groove.
+			54 container
+				55 button (expanded) Take manual control, Secondary Actions: Collapse
+					56 text Take manual control
+				57 text DECK  A  ·  118  BPM Backbay Lounge
+				58 checkbox Pause, Value: 1
+				59 button Align beat
+				60 text DECK  B  ·  118  BPM Disco con Tutti
+				61 checkbox Play, Value: 0
+				62 button Align beat
+				63 text Mix A ↔ B
+				64 slider (settable, float) Description: Deck crossfader, Value: 0.009999999776482582, Details: 0.01
+				65 text Filter
+				66 slider (settable, integer) Description: Filter, Value: 1
+				67 text Volume
+				68 slider (settable, float) Description: Volume, Value: 0.550000011920929, Details: 0.55
+			49 button Leave the decks Esc
+				50 text Leave the decks
+				51 text Esc
+			52 link Description: Open full DJC ↗, Value: djc.bobbyzhong.com/
+			42 button (collapsed) Music credits, Secondary Actions: Expand
+				43 text Music credits
+	11 container Batch 3 candidate QA
+		53 text Use actual product E/button · interaction-dj
+		13 button Art v1-club-lounger
+		14 button Art v2-club-dj
+		15 button Art v3-camp-fire
+		16 button Art v4-camp-desk
+		17 button Art v5-ibd-inspection
+		18 button Art v6-ibd-utility
+		19 button Normal n2-club
+		20 button Normal n3-camp
+		21 button Normal n5-ibd
+		22 button Go bench seat
+		23 button Go DJ decks
+		24 button Go IBD manifest
+		25 button Go IBD kit
+		26 button Go IBD crate
+		27 button Noon
+		28 button Midnight
+		29 button Read alignment
+		30 button Snapshot
+		31 button Sample 90 + 300
+		32 button Hide QA 3s
+		33 button Pause
+
+The focused UI element is 64 slider (settable, float) Description: Deck crossfader, Value: 0.009999999776482582, Details: 0.01

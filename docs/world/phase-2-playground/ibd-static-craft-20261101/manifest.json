@@ -1,0 +1,472 @@
+{
+  "schema": 1,
+  "baseline": "0118dfc",
+  "units": "metres",
+  "roots": [
+    {
+      "children": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ],
+      "name": "InspectionBench"
+    },
+    {
+      "children": [
+        53,
+        76
+      ],
+      "name": "UtilityBench"
+    },
+    {
+      "children": [
+        100,
+        123
+      ],
+      "name": "ControlPedestal"
+    }
+  ],
+  "native": {
+    "InspectionBench": {
+      "meshes": 30,
+      "triangles": 2888,
+      "nonfinite_vertices": 0,
+      "degenerate_triangles": 0
+    },
+    "UtilityBench": {
+      "meshes": 44,
+      "triangles": 4048,
+      "nonfinite_vertices": 0,
+      "degenerate_triangles": 0
+    },
+    "ControlPedestal": {
+      "meshes": 44,
+      "triangles": 4048,
+      "nonfinite_vertices": 0,
+      "degenerate_triangles": 0
+    }
+  },
+  "fresh": {
+    "InspectionBench": {
+      "meshes": 30,
+      "triangles": 2888,
+      "nonfinite_vertices": 0,
+      "degenerate_triangles": 0
+    },
+    "UtilityBench": {
+      "meshes": 44,
+      "triangles": 4048,
+      "nonfinite_vertices": 0,
+      "degenerate_triangles": 0
+    },
+    "ControlPedestal": {
+      "meshes": 44,
+      "triangles": 4048,
+      "nonfinite_vertices": 0,
+      "degenerate_triangles": 0
+    }
+  },
+  "variants": {
+    "UtilityBench": {
+      "Receiving": {
+        "meshes": 22,
+        "triangles": 2024,
+        "nonfinite_vertices": 0,
+        "degenerate_triangles": 0
+      },
+      "Tools": {
+        "meshes": 22,
+        "triangles": 2024,
+        "nonfinite_vertices": 0,
+        "degenerate_triangles": 0
+      }
+    },
+    "ControlPedestal": {
+      "Crane": {
+        "meshes": 22,
+        "triangles": 2024,
+        "nonfinite_vertices": 0,
+        "degenerate_triangles": 0
+      },
+      "Standard": {
+        "meshes": 22,
+        "triangles": 2024,
+        "nonfinite_vertices": 0,
+        "degenerate_triangles": 0
+      }
+    }
+  },
+  "runtime_triangles": 30064,
+  "glb_bytes": 2962376,
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "IBD static | galvanized",
+      "normalTexture": {
+        "index": 0,
+        "scale": 0.18000000715255737
+      },
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.4399999976158142,
+          0.5,
+          0.5199999809265137,
+          1
+        ],
+        "metallicFactor": 0.7799999713897705,
+        "metallicRoughnessTexture": {
+          "index": 1
+        }
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "IBD static | paint",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.08500000089406967,
+          0.14000000059604645,
+          0.1599999964237213,
+          1
+        ],
+        "metallicFactor": 0,
+        "metallicRoughnessTexture": {
+          "index": 2
+        }
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "IBD static | brushed",
+      "normalTexture": {
+        "index": 3,
+        "scale": 0.18000000715255737
+      },
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.5199999809265137,
+          0.5600000023841858,
+          0.5699999928474426,
+          1
+        ],
+        "metallicFactor": 0.8399999737739563,
+        "metallicRoughnessTexture": {
+          "index": 4
+        }
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "IBD static | wood",
+      "normalTexture": {
+        "index": 5,
+        "scale": 0.18000000715255737
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 6
+        },
+        "metallicFactor": 0,
+        "metallicRoughnessTexture": {
+          "index": 7
+        }
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "IBD static | amber",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.6800000071525574,
+          0.3400000035762787,
+          0.03500000014901161,
+          1
+        ],
+        "metallicFactor": 0,
+        "metallicRoughnessTexture": {
+          "index": 8
+        }
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "IBD static | rubber",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.02199999988079071,
+          0.028999999165534973,
+          0.03099999949336052,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.9200000166893005
+      }
+    }
+  ],
+  "images": [
+    {
+      "name": "shared-metal-normal",
+      "mimeType": "image/png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 5262,
+      "sha256": "01895fd335089c3889d8153b2d5e0d30ca1f56f7cfdc2fbdb86358f5ecf55dfb"
+    },
+    {
+      "name": "shared-metal-roughness",
+      "mimeType": "image/png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 204244,
+      "sha256": "1288c4b2a6716d3ac9cd463034e74cee885cd2127c7b7e5e5341801711035ca2"
+    },
+    {
+      "name": "shared-coating-roughness",
+      "mimeType": "image/png",
+      "dimensions": [
+        512,
+        512
+      ],
+      "bytes": 220480,
+      "sha256": "e81c4b8960c44ade336630c82fec035ce761ddf565b83786c5e7e5ea2a0e2467"
+    },
+    {
+      "name": "pine-packaging-normal",
+      "mimeType": "image/png",
+      "dimensions": [
+        1024,
+        512
+      ],
+      "bytes": 562034,
+      "sha256": "285001688e2a8ec564bb8e1b56d182bf4d77f65779a12198a52a3a1e3f9c935f"
+    },
+    {
+      "name": "pine-packaging-basecolor",
+      "mimeType": "image/png",
+      "dimensions": [
+        1024,
+        512
+      ],
+      "bytes": 990254,
+      "sha256": "9d1ca082ec21b89d4af41dd7430a4db42c623b4c2eb4424a3fc23fd4063e0a9c"
+    },
+    {
+      "name": "pine-packaging-roughness",
+      "mimeType": "image/png",
+      "dimensions": [
+        1024,
+        512
+      ],
+      "bytes": 187506,
+      "sha256": "f8704ed3978108e7f5e354210b1f1b2ec0846cbc2c450b4793331fb5f8f89526"
+    }
+  ],
+  "blender": "5.1.2",
+  "renderer": "Cycles, AgX, 24 samples, 960x768, 3 threads",
+  "source": {
+    "geometry": "Original authored geometry",
+    "metal_and_coating_maps": "Original deterministic procedural maps, 512x512",
+    "timber": {
+      "asset": "Coated Pine",
+      "asset_url": "https://polyhaven.com/a/coated_pine",
+      "license": "CC0",
+      "license_url": "https://polyhaven.com/license",
+      "authors": [
+        "Charlotte Baglioni (scanning)",
+        "Rico Cilliers (processing)"
+      ],
+      "source_width_m": 0.7,
+      "planned_adaptation": "Photographed grain and knots retained; albedo neutralized toward approved light packaging timber; matte roughness derived from the scan rather than retaining varnish gloss. Not represented as a raw-pine scan.",
+      "files": [
+        {
+          "file": "coated_pine_diff_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/coated_pine/coated_pine_diff_1k.jpg",
+          "bytes": 710600,
+          "sha256": "afee7cfb2ec1716edc712f929cdb3d3dfbac5a0ba290e25943b4472a8144bbaf"
+        },
+        {
+          "file": "coated_pine_nor_gl_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/coated_pine/coated_pine_nor_gl_1k.jpg",
+          "bytes": 443383,
+          "sha256": "91eb707d7b0dd44133502878f37ede93e6be23c2019e64df72dffe46f6985b3a"
+        },
+        {
+          "file": "coated_pine_rough_1k.jpg",
+          "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/coated_pine/coated_pine_rough_1k.jpg",
+          "bytes": 491513,
+          "sha256": "6ecebef8ffde1833ee9656d3bf7cf863694ad99ac041cacf2fc5432b2f5383e1"
+        }
+      ],
+      "derived": {
+        "source_crop_xyxy": [
+          0,
+          24,
+          1024,
+          490
+        ],
+        "derived_size": [
+          1024,
+          512
+        ],
+        "crop_reason": "Actual image review: isolate first photographed board between baked source joints; UV across-grain remains inside this strip to avoid painting false joints onto mesh boards.",
+        "grain_rotation_ccw_90": false,
+        "gradient_source_mean": [
+          0.0111955825850184,
+          0.018378460645068567
+        ],
+        "albedo": "Scanned luminance/median clamped .43..1.40, exponent .72; light timber sRGB target [.80,.67,.48], 13 percent source chroma retained.",
+        "roughness": "Scanned relief variation remapped to matte .71..88, median .79; coating gloss intentionally removed.",
+        "normal": "Original OpenGL normal, vector components rotated consistently with pixels when grain is rotated; runtime strength .22.",
+        "files": [
+          {
+            "file": "pine-packaging-basecolor.png",
+            "sha256": "9d1ca082ec21b89d4af41dd7430a4db42c623b4c2eb4424a3fc23fd4063e0a9c",
+            "bytes": 990254
+          },
+          {
+            "file": "pine-packaging-normal.png",
+            "sha256": "285001688e2a8ec564bb8e1b56d182bf4d77f65779a12198a52a3a1e3f9c935f",
+            "bytes": 562034
+          },
+          {
+            "file": "pine-packaging-roughness.png",
+            "sha256": "7287de6832e55df62336ccd88bb6f48d468dd285d1fe8113b2693227a563318a",
+            "bytes": 95086
+          }
+        ]
+      }
+    }
+  },
+  "runtime": "14 placements, merged by shared physical material, original collision proxies and mechanisms unchanged",
+  "verification": {
+    "fresh_import": true,
+    "clay_rendered": true,
+    "browser": false,
+    "human_visual_acceptance": false,
+    "offline_images_reviewed": [
+      "InspectionBench-fresh.png",
+      "UtilityBench-Receiving-fresh.png",
+      "UtilityBench-Tools-fresh.png",
+      "ControlPedestal-Standard-fresh.png",
+      "ControlPedestal-Crane-fresh.png",
+      "InspectionBench-clay.png",
+      "UtilityBench-Tools-clay.png",
+      "ControlPedestal-Standard-clay.png",
+      "InspectionBench-before.png",
+      "UtilityBench-Tools-before.png",
+      "ControlPedestal-Standard-before.png"
+    ],
+    "focused_tests": {
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    "native_fresh_pixel_difference": {
+      "InspectionBench": {
+        "mean_absolute_rgb_0_255": [
+          0.00198974609375,
+          0.001962619357638889,
+          0.0020277235243055555
+        ]
+      },
+      "UtilityBench-Receiving": {
+        "mean_absolute_rgb_0_255": [
+          0.00017768012152777777,
+          0.0001681857638888889,
+          0.00017768012152777777
+        ]
+      },
+      "UtilityBench-Tools": {
+        "mean_absolute_rgb_0_255": [
+          0.00020887586805555555,
+          0.00017361111111111112,
+          0.00019395616319444443
+        ]
+      },
+      "ControlPedestal-Standard": {
+        "mean_absolute_rgb_0_255": [
+          0.00021430121527777778,
+          0.00022108289930555556,
+          0.00021023220486111112
+        ]
+      },
+      "ControlPedestal-Crane": {
+        "mean_absolute_rgb_0_255": [
+          0.0002739800347222222,
+          0.00021565755208333333,
+          0.00026584201388888887
+        ]
+      }
+    }
+  },
+  "hashes": {
+    "public/assets/world/ibd/static-craft/static-craft-v1.glb": "a78dd5173df444a8d24afa4be7f1bbfd514a58c608348228b58c7856f1a247d5",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/static-craft-editable.blend": "151e7f4025d598028557063afd17922e9976214e909cd73a372013608ef05e42",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/InspectionBench-fresh.png": "4da6b5d50b91b142736c625436d19b61aef982b122a08028905343a84cec90bf",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/ControlPedestal-Crane-fresh.png": "976bd19cc2554b9b117b4d220945a7c36ad6ca80c2129c332e81facd0934bb82",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/ControlPedestal-Crane-before.png": "75c2e6838af280e6e05c7802b130215c0ad3455d527c8ed04865b7aef043ae41",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/UtilityBench-Receiving-before.png": "852962d335960d4fe8dac8d720f66776b14171f36192b79651e5c441ed155936",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/ControlPedestal-Standard-clay.png": "d669a9f5fa93f505a2132b739e1d5108c87343dfb3f312a570cca01941358f1f",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/shared-coating-roughness.png": "d416221609a461b79ebec48d5125a0d39f4d408ac3008bc941d9f8d2fa0db7aa",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/UtilityBench-Receiving-native.png": "45a0a79b44892695d1be58eef2e3d2406e69f170f21951d9bbb559b893257f1a",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/UtilityBench-Receiving-clay.png": "f3f0030ace4ffbda6b24bdb458aae7f2517028c8e272f74712b3840164e6589d",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/shared-metal-normal.png": "01895fd335089c3889d8153b2d5e0d30ca1f56f7cfdc2fbdb86358f5ecf55dfb",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/ControlPedestal-Crane-native.png": "28c3bc262ec0b49c428852524d58df4ff5a543b86e3a603522466131a5ff72a5",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/ControlPedestal-Standard-fresh.png": "c950ffb27fba9038004ce8b918a4909e4a702353d2665580b7d0f5e61f981e89",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/UtilityBench-Tools-clay.png": "62035132f2119e85d55e77ee0e9927b6458a071619e64b3b47a7f1631115b0c6",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/ControlPedestal-Standard-before.png": "061a17d66c6ce7495bb34c45e589b90c4b5321dddd9878643050f9453d588c18",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/UtilityBench-Tools-before.png": "3df450faca723debac7db0227935ac93566a1e4db5dc61c69a1be12291ce29e6",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/shared-metal-roughness.png": "2ecbd32ea56973498c915587440c87a46ffe19274d12991b04d6181e83476a77",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/InspectionBench-before.png": "6847dbf0e712c7527929c8750d791691f9efec06a16bd5c3356e890127af2b44",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/ControlPedestal-Crane-clay.png": "dc47bb403dc1c9cbcac9b1a2747470aef2181e75b807cc288c564f0e9927ada5",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/UtilityBench-Receiving-fresh.png": "247c6774b69cfe61282f26df237ebf81587a1544c754396347c355c3a38f775a",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/UtilityBench-Tools-native.png": "9cca615b13347ebdec9a013f15ef0455b994c6576bfc29fdbc470a9fe5bca73b",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/InspectionBench-native.png": "6b5cff2c69e779fd6bfc3ec19a1e56893b9ad3c497de6dc1eb30250a4b0d8525",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/InspectionBench-clay.png": "028afb212acb4ea01fa13f67124b3427a0c41b104ebd995bbf9bac7344bedce5",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/ControlPedestal-Standard-native.png": "0fd9c8b5534ed077184f419c2cccd167f71d8eabf334431d45c827840c776826",
+    "docs/world/phase-2-playground/ibd-static-craft-20261101/UtilityBench-Tools-fresh.png": "45266e53a967f1a6d769639ad8ac5855be30a5641bd1c35e426187a723de0585",
+    "tools/world/ibd-static-craft/baseline-equipment.json": "9de5ba822bd55281a9df349a6a24a410bd7516fd35fdc7efad3f104c88bf61cf",
+    "tools/world/ibd-static-craft/baseline-source-hashes.json": "aba5407cd8bfd67c9d505b54c2b0a41cc5eee44fc80aebecde6e64683b4bf38e"
+  },
+  "runtime_cost": {
+    "placements": 14,
+    "material_draws": 6,
+    "original_static_triangles": 47669,
+    "replaced_legacy_triangles": 2200,
+    "retained_static_triangles": 45469,
+    "new_pack_triangles": 30064,
+    "total_new_static_triangles": 75533,
+    "preserved_solid_count": 256
+  }
+}

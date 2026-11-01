@@ -1,0 +1,25 @@
+{
+  "previous": "1de43b186d451cec336e06ed072b5371814130fbe69e627ce43e659cc7b169a6",
+  "current": "8290214333f06013be479bf650adddb149b1d5ed96ce32cbeed9a1d08c2baf39",
+  "unaffected": {
+    "C06": {
+      "exact": true,
+      "fingerprint": "080457509054b5372311b4bdac3792ea109e318e862b0dd92d79a0a5a6ed4ac2"
+    },
+    "C07": {
+      "exact": true,
+      "fingerprint": "91697c303c777d69c2d32babb13c3cca68b16364a1d4c8276de50a3d0209274e"
+    }
+  },
+  "c05": {
+    "unchangedTriangles": 1724,
+    "positionsExactToMeters": 0.000001,
+    "materials": [
+      "C05 charcoal | adapted photographed willow fissures",
+      "C05 pale granular ash | authored powder response",
+      "C05 Rock Face 03 | photographed mineral and chipped face",
+      "Camp exposed end grain | authored cut rings",
+      "Camp ridged bark | authored longitudinal response"
+    ]
+  }
+}

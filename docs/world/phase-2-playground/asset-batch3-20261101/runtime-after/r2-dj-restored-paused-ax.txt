@@ -1,0 +1,65 @@
+Browser tab: 1395914218, Title: "Bobby’s island · World playtest", URL: "http://127.0.0.1:4356/world/?qa=1&quality=balanced&paused=1&run=after-r2".
+0 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4356/world/?qa=1&quality=balanced&paused=1&run=after-r2
+	1 container Bobby’s island
+		2 container
+			3 text EXPERIENCES · PROJECTS · EXPLORE
+			4 heading Bobby’s island, Value: 1
+				5 text Bobby’s island
+			6 button Return to camp, Help: Keep your ore, mining progress and research results.
+			7 pop up button Map & settings Esc
+		8 container
+			9 container Island map · Island shore
+			10 text Island shore
+		37 container DJC beach club
+			38 container
+				39 text DJC BEACH CLUB
+				40 checkbox Mute, Value: 0
+			44 text Lift the room
+			45 button Bring in the disco
+			46 text Soften the highs, then land a new groove.
+			76 container
+				77 button (expanded) Take manual control, Secondary Actions: Collapse
+					78 text Take manual control
+				79 text DECK  A  ·  118  BPM Backbay Lounge
+				80 checkbox Play, Value: 0
+				81 button Align beat
+				82 text DECK  B  ·  118  BPM Disco con Tutti
+				83 checkbox Play, Value: 0
+				84 button Align beat
+				85 text Mix A ↔ B
+				86 slider (settable, integer) Description: Deck crossfader, Value: 0
+				87 text Filter
+				88 slider (settable, integer) Description: Filter, Value: 1
+				89 text Volume
+				90 slider (settable, float) Description: Volume, Value: 0.550000011920929, Details: 0.55
+			49 button Leave the decks Esc
+				50 text Leave the decks
+				51 text Esc
+			52 link Description: Open full DJC ↗, Value: djc.bobbyzhong.com/
+			42 button (collapsed) Music credits, Secondary Actions: Expand
+				43 text Music credits
+	53 container Batch 3 candidate QA
+		54 text {"saved":"candidate-after-r2-interaction-dj-snapshot-8","frame":8914,"buffer":[1710,931],"stage":"normal-ready","settings":{"ready":true,"loadingPhase":"ready","position":[31,2.8188247680664062,55.013221740722656],"seat":null,"clubMode":"dj","paused":false,"shot":null,"quality":"balanced","weather":"clear","light":"noon","worldMinutes":720,"timeRunning":false,"hidden":false},"evidence":{"resources":{"club":{"url":"http://127.0.0.1:4356/assets/world/club/furniture/furniture-v1.glb","bytes":2891784,"responseEnd":49006.30000001192,"duration":1001.6999999880791},"camp":{"url":"http://127.0.0.1:4356/assets/world/camp/craft/camp-props-v1.glb","bytes":3313188,"responseEnd":49432,"duration":234.69999998807907},"ibd":null},"nodes":{"club":[{"root":"djc-crafted-furniture","present":true,"namedDescendants":0},{"root":"djc-furniture-lounger","present":true,"namedDescendants":0},{"root":"djc-furniture-console","present":true,"namedDescendants":0},{"root":"djc-furniture-speaker","present":true,"namedDescendants":0}],"camp":[{"root":"camp-craft-C05","present":true,"namedDescendants":20},{"root":"camp-craft-C06","present":true,"namedDescendants":12},{"root":"camp-craft-C07","present":true,"namedDescendants":16}],"ibd":[{"root":"ibd-static-craft","present":false,"namedDescendants":0}]}}}
+		55 button Art v1-club-lounger
+		56 button Art v2-club-dj
+		57 button Art v3-camp-fire
+		58 button Art v4-camp-desk
+		59 button Art v5-ibd-inspection
+		60 button Art v6-ibd-utility
+		61 button Normal n2-club
+		62 button Normal n3-camp
+		63 button Normal n5-ibd
+		64 button Go bench seat
+		65 button Go DJ decks
+		66 button Go IBD manifest
+		67 button Go IBD kit
+		68 button Go IBD crate
+		69 button Noon
+		70 button Midnight
+		71 button Read alignment
+		72 button Snapshot
+		73 button Sample 90 + 300
+		74 button Hide QA 3s
+		75 button Pause
+
+The focused UI element is 80 checkbox Play, Value: 0

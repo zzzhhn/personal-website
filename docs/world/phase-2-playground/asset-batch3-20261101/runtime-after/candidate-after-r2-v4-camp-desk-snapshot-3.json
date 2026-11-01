@@ -1,0 +1,185 @@
+{
+ "runId": "after-r2",
+ "mode": "candidate",
+ "active": "v4-camp-desk",
+ "area": "camp",
+ "stage": "art-ready",
+ "settings": {
+  "ready": true,
+  "loadingPhase": "ready",
+  "position": [
+   -48.007843017578125,
+   5.631676197052002,
+   36.02399826049805
+  ],
+  "seat": null,
+  "clubMode": null,
+  "paused": false,
+  "shot": "camp-qa-close",
+  "quality": "balanced",
+  "weather": "clear",
+  "light": "noon",
+  "worldMinutes": 720,
+  "timeRunning": false,
+  "hidden": false
+ },
+ "drawingBuffer": [
+  1710,
+  931
+ ],
+ "cssSize": [
+  1710,
+  931
+ ],
+ "pixelRatio": 1,
+ "actualCameraPosition": [
+  -48.5,
+  8.2,
+  36.5
+ ],
+ "camera": {
+  "yaw": 0.9272952180016123,
+  "pitch": 0.7853981633974483,
+  "distance": 12,
+  "desiredDistance": 12,
+  "driveManualZoom": false,
+  "actualDistance": 11.999999999999996,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": false,
+  "hitDistance": null,
+  "fov": 50,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   -48.5,
+   8.2,
+   36.5
+  ],
+  "target": [
+   -48.007828660116715,
+   6.28168023454296,
+   36.02395413721568
+  ],
+  "forwardGround": [
+   -0.7071067811865475,
+   0.7071067811865475
+  ],
+  "groundBelowCamera": 4.8161163330078125,
+  "clearanceAboveGround": 3.383883666992187,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "player": [
+  -48.007843017578125,
+  5.631676197052002,
+  36.02404022216797
+ ],
+ "grounded": true,
+ "velocity": [
+  -0.00019245735893491656,
+  3.6528954296954907e-06,
+  0.00047456377069465816
+ ],
+ "frame": 768,
+ "renderMode": "demand",
+ "night": 0,
+ "renderer": {
+  "calls": 135,
+  "triangles": 543131,
+  "geometries": 271,
+  "textures": 73,
+  "programs": 201
+ },
+ "evidence": {
+  "resources": {
+   "club": {
+    "url": "http://127.0.0.1:4356/assets/world/club/furniture/furniture-v1.glb",
+    "bytes": 2891784,
+    "responseEnd": 49006.30000001192,
+    "duration": 1001.6999999880791
+   },
+   "camp": {
+    "url": "http://127.0.0.1:4356/assets/world/camp/craft/camp-props-v1.glb",
+    "bytes": 3313188,
+    "responseEnd": 49432,
+    "duration": 234.69999998807907
+   },
+   "ibd": null
+  },
+  "nodes": {
+   "club": [
+    {
+     "root": "djc-crafted-furniture",
+     "present": true,
+     "namedDescendants": 0
+    },
+    {
+     "root": "djc-furniture-lounger",
+     "present": true,
+     "namedDescendants": 0
+    },
+    {
+     "root": "djc-furniture-console",
+     "present": true,
+     "namedDescendants": 0
+    },
+    {
+     "root": "djc-furniture-speaker",
+     "present": true,
+     "namedDescendants": 0
+    }
+   ],
+   "camp": [
+    {
+     "root": "camp-craft-C05",
+     "present": true,
+     "namedDescendants": 20
+    },
+    {
+     "root": "camp-craft-C06",
+     "present": true,
+     "namedDescendants": 12
+    },
+    {
+     "root": "camp-craft-C07",
+     "present": true,
+     "namedDescendants": 16
+    }
+   ],
+   "ibd": [
+    {
+     "root": "ibd-static-craft",
+     "present": false,
+     "namedDescendants": 0
+    }
+   ]
+  }
+ },
+ "ibdHud": null,
+ "url": "http://127.0.0.1:4356/world/?qa=1&quality=balanced&paused=1&run=after-r2",
+ "at": 130202.19999998808,
+ "configuration": {
+  "families": [
+   "C07 desk and stool"
+  ],
+  "player": [
+   -48,
+   7,
+   36
+  ],
+  "position": [
+   -48.5,
+   8.2,
+   36.5
+  ],
+  "target": [
+   -52.6066017178,
+   5.6,
+   40.6066017178
+  ]
+ }
+}

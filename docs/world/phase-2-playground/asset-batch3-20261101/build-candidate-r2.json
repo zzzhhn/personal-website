@@ -1,0 +1,37 @@
+{
+  "baseline": "0118dfc",
+  "branch": "codex/world-craft-batch3",
+  "frozen": "/tmp/bobby-world-batch3-f359504a-20261102",
+  "build_log": "/tmp/bobby-world-batch3-parity-build.log",
+  "revision": "r2 shared camp environment",
+  "files": {
+    "world/index.html": {
+      "sha256": "f359504aa9f41d051485bfb118cb2201a98a5abd06814dde00a260fa5fee4e0c",
+      "bytes": 52275
+    },
+    "_astro/WorldRuntime.DL2Qiyln.js": {
+      "sha256": "b9f2d19834938c75915df37ab05eef05ae28514b7ad2e9e1bca91f5dc84c61d6",
+      "bytes": 3468932
+    },
+    "assets/world/club/furniture/furniture-v1.glb": {
+      "sha256": "35ca81133737bcee227b7c5686327d428c71d43d19d94b38b6125ca2c533aca3",
+      "bytes": 2891784
+    },
+    "assets/world/camp/craft/camp-props-v1.glb": {
+      "sha256": "8290214333f06013be479bf650adddb149b1d5ed96ce32cbeed9a1d08c2baf39",
+      "bytes": 3313188
+    },
+    "assets/world/ibd/static-craft/static-craft-v1.glb": {
+      "sha256": "a78dd5173df444a8d24afa4be7f1bbfd514a58c608348228b58c7856f1a247d5",
+      "bytes": 2962376
+    }
+  },
+  "tests": {
+    "initial_focused_pass": 14,
+    "parity_targeted_pass": 5,
+    "failed": 0,
+    "skipped": 0
+  },
+  "browser_verified": true,
+  "browser_evidence": "runtime-after/FINAL-R2.md"
+}

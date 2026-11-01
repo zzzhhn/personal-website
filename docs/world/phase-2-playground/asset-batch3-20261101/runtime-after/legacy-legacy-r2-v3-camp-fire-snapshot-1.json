@@ -1,0 +1,176 @@
+{
+ "runId": "legacy-r2",
+ "mode": "legacy",
+ "active": "v3-camp-fire",
+ "area": "camp",
+ "stage": "art-ready",
+ "settings": {
+  "ready": true,
+  "loadingPhase": "ready",
+  "position": [
+   -34.00539016723633,
+   5.618843078613281,
+   39.007328033447266
+  ],
+  "seat": null,
+  "clubMode": null,
+  "paused": false,
+  "shot": "camp-qa-close",
+  "quality": "balanced",
+  "weather": "clear",
+  "light": "night",
+  "worldMinutes": 0,
+  "timeRunning": false,
+  "hidden": false
+ },
+ "drawingBuffer": [
+  1710,
+  931
+ ],
+ "cssSize": [
+  1710,
+  931
+ ],
+ "pixelRatio": 1,
+ "actualCameraPosition": [
+  -33.6,
+  9.2,
+  39
+ ],
+ "camera": {
+  "yaw": 0.9272952180016123,
+  "pitch": 0.7853981633974483,
+  "distance": 12,
+  "desiredDistance": 12,
+  "driveManualZoom": false,
+  "actualDistance": 12,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": false,
+  "hitDistance": null,
+  "fov": 50,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   -33.6,
+   9.2,
+   39
+  ],
+  "target": [
+   -34.005321113356956,
+   6.268844287660348,
+   39.0072544643753
+  ],
+  "forwardGround": [
+   -0.6823182503600109,
+   -0.731055268242869
+  ],
+  "groundBelowCamera": 4.8000030517578125,
+  "clearanceAboveGround": 4.399996948242187,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "player": [
+  -34.00540542602539,
+  5.618843078613281,
+  39.00734329223633
+ ],
+ "grounded": true,
+ "velocity": [
+  -0.0008537964313291013,
+  1.8310757077255602e-10,
+  0.0011696405708789825
+ ],
+ "frame": 538,
+ "renderMode": "demand",
+ "night": 1,
+ "renderer": {
+  "calls": 360,
+  "triangles": 1167538,
+  "geometries": 306,
+  "textures": 66,
+  "programs": 227
+ },
+ "evidence": {
+  "resources": {
+   "club": null,
+   "camp": null,
+   "ibd": null
+  },
+  "nodes": {
+   "club": [
+    {
+     "root": "djc-crafted-furniture",
+     "present": false,
+     "namedDescendants": 0
+    },
+    {
+     "root": "djc-furniture-lounger",
+     "present": false,
+     "namedDescendants": 0
+    },
+    {
+     "root": "djc-furniture-console",
+     "present": false,
+     "namedDescendants": 0
+    },
+    {
+     "root": "djc-furniture-speaker",
+     "present": false,
+     "namedDescendants": 0
+    }
+   ],
+   "camp": [
+    {
+     "root": "camp-craft-C05",
+     "present": false,
+     "namedDescendants": 0
+    },
+    {
+     "root": "camp-craft-C06",
+     "present": false,
+     "namedDescendants": 0
+    },
+    {
+     "root": "camp-craft-C07",
+     "present": false,
+     "namedDescendants": 0
+    }
+   ],
+   "ibd": [
+    {
+     "root": "ibd-static-craft",
+     "present": false,
+     "namedDescendants": 0
+    }
+   ]
+  }
+ },
+ "ibdHud": null,
+ "url": "http://127.0.0.1:4356/world/?qa=1&quality=balanced&paused=1&djcFurniture=legacy&campCraft=legacy&ibdStatic=legacy&run=legacy-r2",
+ "at": 81411.60000002384,
+ "configuration": {
+  "families": [
+   "C05 fire pit",
+   "C06 benches"
+  ],
+  "player": [
+   -34,
+   7,
+   39
+  ],
+  "position": [
+   -33.6,
+   9.2,
+   39
+  ],
+  "target": [
+   -42,
+   5.2,
+   30
+  ]
+ }
+}

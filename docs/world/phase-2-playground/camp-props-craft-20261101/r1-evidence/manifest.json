@@ -1,0 +1,310 @@
+{
+  "assets": {
+    "C05": {
+      "triangles": 1724,
+      "bounds_zup": [
+        [
+          -1.5993759632110596,
+          -1.5993759632110596,
+          0.0
+        ],
+        [
+          1.5993759632110596,
+          1.5993759632110596,
+          0.5715498328208923
+        ]
+      ],
+      "degenerate": 0,
+      "nonfinite": 0,
+      "native_nonmanifold_edges": 0,
+      "parts": 25,
+      "baseline_sha256": "54790864187123a55c4fd00590186a1e958990ca735a9861c00304332a316692",
+      "roundtrip": {
+        "triangles": 1724,
+        "bounds_zup": [
+          [
+            -1.5993759632110596,
+            -1.5993759632110596,
+            0.0
+          ],
+          [
+            1.5993759632110596,
+            1.5993759632110596,
+            0.5715498328208923
+          ]
+        ],
+        "degenerate": 0,
+        "nonfinite": 0,
+        "native_nonmanifold_edges": "not applicable: material batches may have open boundaries",
+        "parts": 4
+      }
+    },
+    "C06": {
+      "triangles": 1112,
+      "bounds_zup": [
+        [
+          -0.3799999952316284,
+          -2.4000000953674316,
+          0.0
+        ],
+        [
+          0.3799999952316284,
+          2.4000000953674316,
+          0.6000000238418579
+        ]
+      ],
+      "degenerate": 0,
+      "nonfinite": 0,
+      "native_nonmanifold_edges": 0,
+      "parts": 53,
+      "baseline_sha256": "401862b7b8ea1cea4cfafbccb26f38760025f34f006ba47463f6072ae5c8a556",
+      "roundtrip": {
+        "triangles": 1112,
+        "bounds_zup": [
+          [
+            -0.3799999952316284,
+            -2.4000000953674316,
+            0.0
+          ],
+          [
+            0.3799999952316284,
+            2.4000000953674316,
+            0.6000000238418579
+          ]
+        ],
+        "degenerate": 0,
+        "nonfinite": 0,
+        "native_nonmanifold_edges": "not applicable: material batches may have open boundaries",
+        "parts": 3
+      }
+    },
+    "C07": {
+      "triangles": 2932,
+      "bounds_zup": [
+        [
+          -0.6469881534576416,
+          -1.0,
+          -0.0003030367661267519
+        ],
+        [
+          0.6470118761062622,
+          1.0,
+          0.8520448207855225
+        ]
+      ],
+      "degenerate": 0,
+      "nonfinite": 0,
+      "native_nonmanifold_edges": 0,
+      "parts": 31,
+      "baseline_sha256": "ea34c4389d8504410746a43ba5b228aba1d46cf525eca3659abcbf34cebc6873",
+      "roundtrip": {
+        "triangles": 2932,
+        "bounds_zup": [
+          [
+            -0.6469881534576416,
+            -1.0,
+            -0.00030303001403808594
+          ],
+          [
+            0.6470118761062622,
+            1.0,
+            0.8520448207855225
+          ]
+        ],
+        "degenerate": 0,
+        "nonfinite": 0,
+        "native_nonmanifold_edges": "not applicable: material batches may have open boundaries",
+        "parts": 4
+      }
+    }
+  },
+  "artifact": {
+    "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/craft/camp-props-v1.glb",
+    "bytes": 1493492,
+    "sha256": "1de43b186d451cec336e06ed072b5371814130fbe69e627ce43e659cc7b169a6"
+  },
+  "blender": "5.1.2",
+  "units": "meters; native Z-up / GLB Y-up",
+  "renderer": {
+    "engine": "Cycles",
+    "samples": 20,
+    "resolution": [
+      1000,
+      760
+    ],
+    "exposure": 0,
+    "transform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "orthographic": true,
+    "cameras": {
+      "C05": [
+        [
+          4,
+          -5,
+          4
+        ],
+        [
+          0,
+          0,
+          0.2
+        ],
+        4.2
+      ],
+      "C06": [
+        [
+          3,
+          -5,
+          3
+        ],
+        [
+          0,
+          0,
+          0.3
+        ],
+        5.9
+      ],
+      "C07": [
+        [
+          3,
+          -4,
+          2.8
+        ],
+        [
+          -0.1,
+          0,
+          0.4
+        ],
+        2.6
+      ]
+    },
+    "area_lights": [
+      [
+        "Key",
+        [
+          1,
+          -4,
+          7
+        ],
+        1150,
+        5
+      ],
+      [
+        "Fill",
+        [
+          -5,
+          -1,
+          4
+        ],
+        700,
+        4
+      ],
+      [
+        "Rim",
+        [
+          3,
+          4,
+          6
+        ],
+        950,
+        3
+      ]
+    ]
+  },
+  "approval": "technical candidate; runtime and user visual acceptance pending",
+  "editableSourceSha256": "e8f39dda7cde453d28659f8f807dd7e4a563354f78eb6f5ba39959f37f245039",
+  "generatorSha256": "c41542b8a25f0786a9ad03d01d348c583acd16268e8c2276ea4ff94c36718676",
+  "exportInventory": {
+    "meshes": 11,
+    "materials": 6,
+    "images": [
+      {
+        "name": "Authored endgrain normal 512",
+        "size": [
+          512,
+          512
+        ],
+        "bytes": 223785,
+        "sha256": "e275871911a69b06d60d82bb692502e9c2db76914369cabb9f835a074c39247f"
+      },
+      {
+        "name": "Authored endgrain color 512",
+        "size": [
+          512,
+          512
+        ],
+        "bytes": 263289,
+        "sha256": "55019cc05044870451aa3810fe90d058c18dd1d33224813f689c7d158a1e2319"
+      },
+      {
+        "name": "Authored bark normal 512",
+        "size": [
+          512,
+          512
+        ],
+        "bytes": 214841,
+        "sha256": "b29caf93631e7086d53d9709dba495622cd145783fca1431dbad38a12d8d0dab"
+      },
+      {
+        "name": "Authored bark color 512",
+        "size": [
+          512,
+          512
+        ],
+        "bytes": 23650,
+        "sha256": "a1f5ae4c403446ba567b70a0965dae3b31f8218695b6e11ba6c947551720c830"
+      },
+      {
+        "name": "Authored stone normal 512",
+        "size": [
+          512,
+          512
+        ],
+        "bytes": 120316,
+        "sha256": "0dec7ec74605d44fb88e94238ac7683476035162cc51c27bed175e9bdab8ea61"
+      },
+      {
+        "name": "Authored stone color 512",
+        "size": [
+          512,
+          512
+        ],
+        "bytes": 73191,
+        "sha256": "9418b5c86a1856c284e505a21bfb49f44c9f1330228a97aae92f904e1bd7b0e6"
+      },
+      {
+        "name": "wood_nor_gl",
+        "size": [
+          1024,
+          1024
+        ],
+        "bytes": 27563,
+        "sha256": "52629129d3df7679398793b3e8c6915ef34f865b2598b918aad01d2b0fe645f7"
+      },
+      {
+        "name": "wood_diff",
+        "size": [
+          1024,
+          1024
+        ],
+        "bytes": 153971,
+        "sha256": "d59806e00816d18df6c3a2f523c3dcf02c11f4c9e0cafc80241653bce5242659"
+      }
+    ],
+    "totalTriangles": 5768,
+    "nativeParts": 109,
+    "renderedInstancesTriangles": 9104
+  },
+  "review": {
+    "imagesOpened": [
+      "C05-fresh-glb.png",
+      "C05-clay-fresh-glb.png",
+      "C06-fresh-glb.png",
+      "C06-clay-fresh-glb.png",
+      "C07-fresh-glb.png",
+      "C07-clay-fresh-glb.png"
+    ],
+    "result": "Opened and inspected final GLB and clay views; no visibly unsupported parts; ring seams, flat seat, saddle contacts and table joinery legible. This is author inspection, not user acceptance.",
+    "correction": "C07 2.0447mm duplicated root recenter corrected at source; endgrain medium-scale contrast refined; full final images correspond to final file.",
+    "tests": "4/4 passed; 72 original world-seat contact rays in 200mm patches"
+  }
+}

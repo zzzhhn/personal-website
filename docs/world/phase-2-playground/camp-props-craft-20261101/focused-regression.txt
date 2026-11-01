@@ -1,0 +1,12 @@
+✔ craft QA opt-out needs explicit qa=1 (0.62675ms)
+✔ all instances retain the shared materials, geometry and source transforms (1.312708ms)
+✔ fixed original GLBs used for physical registration and seat anchors are byte-identical (1.860292ms)
+✔ actual pack has three fixed roots, valid geometry and eight true 600mm bench contacts (21.176291ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 422.248208
