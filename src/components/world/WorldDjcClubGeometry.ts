@@ -2,6 +2,7 @@ import { BufferGeometry, Float32BufferAttribute, Color, Vector2, Vector3, Quater
 import { CLUB, CLUB_POOL, CLUB_DAYBEDS, CLUB_WALKWAYS, CLUB_PALMS, CLUB_SOFT_PLANTS, CLUB_LANTERNS, clubScatterBlocked } from './djc-club-layout';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import { terrainHeight } from './WorldLandform';
+import { DJC_BAR_DANCE_JOIN } from './djc-bar-layout';
 
 type V3 = [number, number, number];
 export type ClubBatch = 'wood' | 'stone' | 'metal' | 'fabric' | 'foliage' | 'glass' | 'amber' | 'cyan';
@@ -69,7 +70,7 @@ class Collision {
 const fromTriangles = (positions: number[]) => { const g = new BufferGeometry(); g.setAttribute('position', new Float32BufferAttribute(positions, 3)); g.computeVertexNormals(); return g; };
 
 /** Deterministic, editable geometry. Only upward support faces enter surface; side guards and props enter solid. */
-export function buildDjcClubGeometry() {
+export function buildDjcClubGeometry({includeNorthBar=false}:{includeNorthBar?:boolean}={}) {
   const batches = Object.fromEntries((['wood','stone','metal','fabric','foliage','glass','amber','cyan'] as ClubBatch[]).map(k => [k, new Batch()])) as Record<ClubBatch, Batch>;
   const surface = new Collision(), solid = new Collision();
   const solidTriangles=(positions:number[])=>{for(let i=0;i<positions.length;i+=9)solid.triangle(positions.slice(i,i+3) as V3,positions.slice(i+3,i+6) as V3,positions.slice(i+6,i+9) as V3);};
@@ -206,8 +207,11 @@ export function buildDjcClubGeometry() {
     const outline=p.map(([x,z])=>[x,1.4+Math.max(0,Math.min(1,(46-x)/6))*.2,z] as V3);
     pavedOutline(outline);
   }
-  // Four-metre landward approach meets the existing entrance without a step.
-  slab('wood',[[35,1.01,40],[40,1.01,40],[40,danceY,46],[35,danceY,46]],.13,C.wood);
+  // Meet the refined deck at its south edge. The old approach continued under the
+  // deck and protruded through the last 34 mm of its surface.
+  const join=DJC_BAR_DANCE_JOIN;
+  slab('wood',includeNorthBar?[[35,1.01,40],[40,1.01,40],[40,danceY,46],[35,danceY,46]]:
+    [[join.minX,join.y,join.z],[40,join.y,join.z],[40,danceY,46],[35,danceY,46]],.13,C.wood);
   const seats=DJC_CLUB_SEATS.map(seat=>({...seat,position:[...seat.position] as V3}));
   // A mineral basin follows the shared analytic floor over 12 radial courses.
   for(let ring=0;ring<12;ring++)for(let i=0;i<CLUB_POOL.segments;i++) {
@@ -282,16 +286,19 @@ export function buildDjcClubGeometry() {
     for(const dx of [-.115,.115])for(const dz of [-.115,.115])rod('wood',[x+dx,1.77,z+dz],[x+dx,2.12,z+dz],.02,C.edge);
     box('wood',[x,2.14,z],[.31,.06,.31],C.edge);
   }
-  // Compact bamboo bar on the north shoulder, with four stools and a woven pitched roof.
-  slab('wood',rect(35.5,46,37.8,42.3,1.2),.2,C.wood);
-  for(const x of [36,45.5]) for(const z of [38.2,41.8]) rod('wood',[x,1.2,z],[x,4.6,z],.13,'#a88042',true);
-  box('wood',[40.8,1.73,38.65],[8.8,1.06,.12],C.edge,0,true);
-  for(let x=36.5;x<45.2;x+=.2) rod('wood',[x,1.2,38.8],[x,2.25,38.8],.07,x%1>.5?C.edge:C.wood);
-  slab('stone',rect(36.3,45.3,38.4,39.25,2.36),.13,C.stone,false);
-  for(let x=37.2;x<=44.5;x+=2.3) {
-    cylinder('wood',[x,1.79,41.35],.33,.33,.11,C.wood,18,0,true);
-    for(const dz of [-.2,.2]) for(const dx of [-.2,.2]) rod('metal',[x+dx,1.2,41.35+dz],[x+dx*.8,1.75,41.35+dz*.8],.027,C.dark,true);
-    for(let k=0;k<3;k++) { const bx=x+(k-1)*.22; cylinder('glass',[bx,2.49,38.85],.045,.055,.2,k===1?'#687f68':'#b79a66',10); cylinder('metal',[bx,2.62,38.85],.025,.025,.07,C.bronze,8); }
+  // The north bar is a separate streamed GLB with its own fixed collision proxies.
+  // The original remains available only for the explicit QA legacy comparison.
+  if(includeNorthBar){
+    slab('wood',rect(35.5,46,37.8,42.3,1.2),.2,C.wood);
+    for(const x of [36,45.5]) for(const z of [38.2,41.8]) rod('wood',[x,1.2,z],[x,4.6,z],.13,'#a88042',true);
+    box('wood',[40.8,1.73,38.65],[8.8,1.06,.12],C.edge,0,true);
+    for(let x=36.5;x<45.2;x+=.2) rod('wood',[x,1.2,38.8],[x,2.25,38.8],.07,x%1>.5?C.edge:C.wood);
+    slab('stone',rect(36.3,45.3,38.4,39.25,2.36),.13,C.stone,false);
+    for(let x=37.2;x<=44.5;x+=2.3) {
+      cylinder('wood',[x,1.79,41.35],.33,.33,.11,C.wood,18,0,true);
+      for(const dz of [-.2,.2]) for(const dx of [-.2,.2]) rod('metal',[x+dx,1.2,41.35+dz],[x+dx*.8,1.75,41.35+dz*.8],.027,C.dark,true);
+      for(let k=0;k<3;k++) { const bx=x+(k-1)*.22; cylinder('glass',[bx,2.49,38.85],.045,.055,.2,k===1?'#687f68':'#b79a66',10); cylinder('metal',[bx,2.62,38.85],.025,.025,.07,C.bronze,8); }
+    }
   }
   yOffset=stageY-1.8;
   // DJ console: tapered stand, front battens, two real jog platters and a mixer section.
@@ -406,13 +413,14 @@ export function buildDjcClubGeometry() {
     const fringe:V3[]=[[x,roofY(x,z),z],[x+.72,roofY(x+.72,z),z],[x+.63,roofY(x+.63,z)-.32,z+sign*.2],[x+.12,roofY(x+.12,z)-.25,z+sign*.22]];
     add('fabric',fromTriangles([...fringe[0],...fringe[1],...fringe[2],...fringe[0],...fringe[2],...fringe[3]]),'#ac884c');
   }
-  // Bar roof repeats the same material language at a quieter scale.
-  for(const sign of [-1,1]) {
-    const z=40+sign*2.9;
-    const canopy=[35,4.5,z,46.5,5.7,40,35,5.7,40,35,4.5,z,46.5,4.5,z,46.5,5.7,40];solidTriangles(canopy);add('fabric',fromTriangles(canopy),'#a58a50');
-    rod('wood',[35,4.45,z],[46.5,4.45,z],.09,C.edge,true);
+  if(includeNorthBar){
+    for(const sign of [-1,1]) {
+      const z=40+sign*2.9;
+      const canopy=[35,4.5,z,46.5,5.7,40,35,5.7,40,35,4.5,z,46.5,4.5,z,46.5,5.7,40];solidTriangles(canopy);add('fabric',fromTriangles(canopy),'#a58a50');
+      rod('wood',[35,4.45,z],[46.5,4.45,z],.09,C.edge,true);
+    }
+    rod('wood',[35,5.65,40],[46.5,5.65,40],.1,C.edge,true);
   }
-  rod('wood',[35,5.65,40],[46.5,5.65,40],.1,C.edge,true);
   // Mirror ball suspension and bounded stage lamps attach to a real cross beam.
   rod('wood',[43.5,8.65,47],[43.5,8.65,63],.13,'#98713f',true);
   rod('metal',[43.5,8.65,55],[43.5,6.95,55],.018,C.dark);
@@ -423,11 +431,14 @@ export function buildDjcClubGeometry() {
   }
   // Small wicker lanterns and a single warm bar strip. They share two emissive batches.
   for(const [x,y,z] of CLUB_LANTERNS) {
+    // The new asset includes its own pendant lamps. Keep the shared array indices
+    // intact: pool-light selection and the pool-only spill use those indices.
+    if(!includeNorthBar&&z===39.6&&(x===37||x===44))continue;
     cylinder('amber',[x,y,z],.11,.11,.3,C.amber,8);
     for(let i=0;i<8;i++) { const a=i*TAU/8; rod('wood',[x+.17*Math.cos(a),y-.2,z+.17*Math.sin(a)],[x+.14*Math.cos(a),y+.2,z+.14*Math.sin(a)],.018,C.edge); }
     cylinder('wood',[x,y+.21,z],.18,.18,.05,C.edge,10);
   }
-  box('amber',[40.8,2.2,38.35],[8.8,.06,.035],C.amber);
+  if(includeNorthBar)box('amber',[40.8,2.2,38.35],[8.8,.06,.035],C.amber);
   // A small architectural DJC wordmark, built as actual rounded strokes on the front bamboo beam.
   rod('wood',[49.96,8.6,51.9],[49.96,8.6,57.6],.12,C.edge);
   for(const z of [51.9,57.6]) rod('wood',[49.96,8.6,z],[49.96,roofY(49.96,z)-.12,z],.07,C.edge);
