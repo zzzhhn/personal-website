@@ -1,0 +1,162 @@
+[
+ {
+  "file": "x_armpit_L_Run_0117_back.png",
+  "joint": "armpit",
+  "side": "L",
+  "clip": "Run",
+  "t_s": 0.1167,
+  "angle_deg": 152.0
+ },
+ {
+  "file": "x_armpit_L_Run_0117_outside.png",
+  "joint": "armpit",
+  "side": "L",
+  "clip": "Run",
+  "t_s": 0.1167,
+  "angle_deg": 152.0
+ },
+ {
+  "file": "x_armpit_R_Run_0317_back.png",
+  "joint": "armpit",
+  "side": "R",
+  "clip": "Run",
+  "t_s": 0.3167,
+  "angle_deg": 152.0
+ },
+ {
+  "file": "x_armpit_R_Run_0317_outside.png",
+  "joint": "armpit",
+  "side": "R",
+  "clip": "Run",
+  "t_s": 0.3167,
+  "angle_deg": 152.0
+ },
+ {
+  "file": "x_hip_L_Run_0083_front_low.png",
+  "joint": "hip",
+  "side": "L",
+  "clip": "Run",
+  "t_s": 0.0833,
+  "angle_deg": 114.3
+ },
+ {
+  "file": "x_hip_L_Run_0083_outside.png",
+  "joint": "hip",
+  "side": "L",
+  "clip": "Run",
+  "t_s": 0.0833,
+  "angle_deg": 114.3
+ },
+ {
+  "file": "x_hip_R_Run_0283_front_low.png",
+  "joint": "hip",
+  "side": "R",
+  "clip": "Run",
+  "t_s": 0.2833,
+  "angle_deg": 114.3
+ },
+ {
+  "file": "x_hip_R_Run_0283_outside.png",
+  "joint": "hip",
+  "side": "R",
+  "clip": "Run",
+  "t_s": 0.2833,
+  "angle_deg": 114.3
+ },
+ {
+  "file": "x_knee_L_Jump_0433_outside.png",
+  "joint": "knee",
+  "side": "L",
+  "clip": "Jump",
+  "t_s": 0.4333,
+  "angle_deg": 68.9
+ },
+ {
+  "file": "x_knee_L_Jump_0433_behind.png",
+  "joint": "knee",
+  "side": "L",
+  "clip": "Jump",
+  "t_s": 0.4333,
+  "angle_deg": 68.9
+ },
+ {
+  "file": "x_knee_L_Land_0100_outside.png",
+  "joint": "knee",
+  "side": "L",
+  "clip": "Land",
+  "t_s": 0.1,
+  "angle_deg": 74.0
+ },
+ {
+  "file": "x_knee_L_Land_0100_behind.png",
+  "joint": "knee",
+  "side": "L",
+  "clip": "Land",
+  "t_s": 0.1,
+  "angle_deg": 74.0
+ },
+ {
+  "file": "x_knee_L_Run_0000_outside.png",
+  "joint": "knee",
+  "side": "L",
+  "clip": "Run",
+  "t_s": 0.0,
+  "angle_deg": 94.7
+ },
+ {
+  "file": "x_knee_L_Run_0000_behind.png",
+  "joint": "knee",
+  "side": "L",
+  "clip": "Run",
+  "t_s": 0.0,
+  "angle_deg": 94.7
+ },
+ {
+  "file": "x_knee_R_Jump_0433_outside.png",
+  "joint": "knee",
+  "side": "R",
+  "clip": "Jump",
+  "t_s": 0.4333,
+  "angle_deg": 82.9
+ },
+ {
+  "file": "x_knee_R_Jump_0433_behind.png",
+  "joint": "knee",
+  "side": "R",
+  "clip": "Jump",
+  "t_s": 0.4333,
+  "angle_deg": 82.9
+ },
+ {
+  "file": "x_knee_R_Land_0100_outside.png",
+  "joint": "knee",
+  "side": "R",
+  "clip": "Land",
+  "t_s": 0.1,
+  "angle_deg": 74.0
+ },
+ {
+  "file": "x_knee_R_Land_0100_behind.png",
+  "joint": "knee",
+  "side": "R",
+  "clip": "Land",
+  "t_s": 0.1,
+  "angle_deg": 74.0
+ },
+ {
+  "file": "x_knee_R_Run_0200_outside.png",
+  "joint": "knee",
+  "side": "R",
+  "clip": "Run",
+  "t_s": 0.2,
+  "angle_deg": 94.7
+ },
+ {
+  "file": "x_knee_R_Run_0200_behind.png",
+  "joint": "knee",
+  "side": "R",
+  "clip": "Run",
+  "t_s": 0.2,
+  "angle_deg": 94.7
+ }
+]

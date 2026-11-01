@@ -1,0 +1,109 @@
+{
+  "passed": true,
+  "method": "Helmet-centre to actual skinned helmet vertices against closed car triangles; sampled breathing and gaze. Not a continuous full-body collision proof.",
+  "companionSha256": "d22db037b845183d9b5f9cb07f462ddc20f3b5b337b2008332717e109ca3c774",
+  "helmetVertices": 1211,
+  "seat": [
+    -0.56,
+    0.31,
+    0.24
+  ],
+  "results": [
+    {
+      "time": 0,
+      "side": -1,
+      "intersections": 0,
+      "headTop": 1.183643255117401
+    },
+    {
+      "time": 0,
+      "side": 1,
+      "intersections": 0,
+      "headTop": 1.183643255117401
+    },
+    {
+      "time": 3,
+      "side": -1,
+      "intersections": 0,
+      "headTop": 1.1787252626834264
+    },
+    {
+      "time": 3,
+      "side": 1,
+      "intersections": 0,
+      "headTop": 1.1787252626834264
+    },
+    {
+      "time": 9,
+      "side": -1,
+      "intersections": 0,
+      "headTop": 1.181130282980445
+    },
+    {
+      "time": 9,
+      "side": 1,
+      "intersections": 0,
+      "headTop": 1.181130282980445
+    },
+    {
+      "time": 10.1,
+      "side": -1,
+      "intersections": 0,
+      "headTop": 1.1885856881448402
+    },
+    {
+      "time": 10.1,
+      "side": 1,
+      "intersections": 0,
+      "headTop": 1.1885856881448402
+    },
+    {
+      "time": 12,
+      "side": -1,
+      "intersections": 0,
+      "headTop": 1.1816084492739483
+    },
+    {
+      "time": 12,
+      "side": 1,
+      "intersections": 0,
+      "headTop": 1.1816084492739483
+    },
+    {
+      "time": 19,
+      "side": -1,
+      "intersections": 0,
+      "headTop": 1.1853316663944895
+    },
+    {
+      "time": 19,
+      "side": 1,
+      "intersections": 0,
+      "headTop": 1.1853316663944895
+    },
+    {
+      "time": 28,
+      "side": -1,
+      "intersections": 0,
+      "headTop": 1.182431649243683
+    },
+    {
+      "time": 28,
+      "side": 1,
+      "intersections": 0,
+      "headTop": 1.182431649243683
+    },
+    {
+      "time": 29.1,
+      "side": -1,
+      "intersections": 0,
+      "headTop": 1.1898110289865733
+    },
+    {
+      "time": 29.1,
+      "side": 1,
+      "intersections": 0,
+      "headTop": 1.1898110289865733
+    }
+  ]
+}

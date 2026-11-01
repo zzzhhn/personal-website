@@ -1,0 +1,1113 @@
+{
+  "base": "http://127.0.0.1:4322",
+  "flags": "&qaWheelGuards=1&qaLowCom=1",
+  "errors": [],
+  "fixtures": [
+    {
+      "t": 1.2,
+      "type": "vehicle",
+      "id": "offroad",
+      "p": [
+        90,
+        7,
+        125
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 1.204,
+      "type": "vehicle",
+      "id": "coupe",
+      "p": [
+        98,
+        7,
+        125
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 1.208,
+      "type": "vehicle",
+      "id": "van",
+      "p": [
+        106,
+        7,
+        125
+      ],
+      "yaw": 0
+    },
+    {
+      "t": 1.209,
+      "type": "vehicle",
+      "id": "van",
+      "p": [
+        -29,
+        6.292,
+        34
+      ],
+      "yaw": 0
+    }
+  ],
+  "limits": [
+    "Explicit fixture starts; no claim of starting the route from the normal spawn.",
+    "Maximum-speed straight uses an isolated visible QA lane.",
+    "M5 Pro only; frame timings during parallel work are not an idle-machine benchmark."
+  ],
+  "surfaceAudit": [
+    {
+      "colliderHandle": 0,
+      "name": "camp-ground-surface",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 10,
+      "position": [
+        -42,
+        2.9000000953674316,
+        30
+      ],
+      "normalCount": 0,
+      "minNormalY": null,
+      "maxNormalY": null,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 5e-324,
+      "name": "park-plaza-surface",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 1,
+      "position": [
+        45,
+        -0.10000000149011612,
+        -45
+      ],
+      "normalCount": 6,
+      "minNormalY": -1,
+      "maxNormalY": 1,
+      "verticalOrDown": 5
+    },
+    {
+      "colliderHandle": 1e-323,
+      "name": "world-surface-0-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -24,
+        4.75,
+        34
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.5e-323,
+      "name": "world-surface-1-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -24,
+        4.75,
+        29.399999618530273
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2e-323,
+      "name": "world-surface-2-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -24,
+        4.75,
+        38.599998474121094
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.5e-323,
+      "name": "world-surface-3-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -11.521566390991211,
+        2.9030168056488037,
+        31.5082950592041
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9664804361291652,
+      "maxNormalY": 0.9664804361291652,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 3e-323,
+      "name": "world-surface-4-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -13.172870635986328,
+        2.9030168056488037,
+        27.21490478515625
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9664804361291652,
+      "maxNormalY": 0.9664804361291652,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 3.5e-323,
+      "name": "world-surface-5-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -9.87026309967041,
+        2.9030168056488037,
+        35.80168533325195
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9664804361291652,
+      "maxNormalY": 0.9664804361291652,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 4e-323,
+      "name": "world-surface-6-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        0.5,
+        1.0499999523162842,
+        26.5
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 4.4e-323,
+      "name": "world-surface-7-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -1.4034935235977173,
+        1.0499999523162842,
+        22.312314987182617
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 5e-323,
+      "name": "world-surface-8-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        2.403493642807007,
+        1.0499999523162842,
+        30.687685012817383
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 5.4e-323,
+      "name": "world-surface-9-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        11,
+        1.0499999523162842,
+        16.5
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 6e-323,
+      "name": "world-surface-10-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        7.1725687980651855,
+        1.0499999523162842,
+        13.948379516601562
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 6.4e-323,
+      "name": "world-surface-11-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        14.827431678771973,
+        1.0499999523162842,
+        19.051620483398438
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 7e-323,
+      "name": "world-surface-12-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        19,
+        1.0499999523162842,
+        -0.5
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 7.4e-323,
+      "name": "world-surface-13-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        14.613519668579102,
+        1.0499999523162842,
+        -1.8852043151855469
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 8e-323,
+      "name": "world-surface-14-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        23.3864803314209,
+        1.0499999523162842,
+        0.8852043151855469
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 8.4e-323,
+      "name": "world-surface-15-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        24,
+        1.0499999523162842,
+        -20
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 9e-323,
+      "name": "world-surface-16-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        19.489328384399414,
+        1.0499999523162842,
+        -20.90213394165039
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 9.4e-323,
+      "name": "world-surface-17-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        28.510671615600586,
+        1.0499999523162842,
+        -19.09786605834961
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1e-322,
+      "name": "world-surface-18-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        26,
+        1.0499999523162842,
+        -36
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.04e-322,
+      "name": "world-surface-19-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        21.399999618530273,
+        1.0499999523162842,
+        -36
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.1e-322,
+      "name": "world-surface-20-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        30.600000381469727,
+        1.0499999523162842,
+        -36
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.14e-322,
+      "name": "world-surface-21-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        34.5,
+        1.0499999523162842,
+        -43
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.2e-322,
+      "name": "world-surface-22-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        33.96253204345703,
+        1.0499999523162842,
+        -47.5684928894043
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.24e-322,
+      "name": "world-surface-23-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        35.03746795654297,
+        1.0499999523162842,
+        -38.4315071105957
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.3e-322,
+      "name": "world-surface-24-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        46,
+        1.0499999523162842,
+        -45
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.33e-322,
+      "name": "world-surface-25-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        44.545352935791016,
+        1.0499999523162842,
+        -49.36394500732422
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.4e-322,
+      "name": "world-surface-26-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        47.454647064208984,
+        1.0499999523162842,
+        -40.63605499267578
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.43e-322,
+      "name": "world-surface-27-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        20,
+        1.0449999570846558,
+        12
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.5e-322,
+      "name": "world-surface-28-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        45,
+        1.0449999570846558,
+        -45
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.53e-322,
+      "name": "world-surface-29-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        56.5,
+        0.9900000095367432,
+        -43
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.6e-322,
+      "name": "world-surface-30-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        66.5,
+        0.9900000095367432,
+        -31
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.63e-322,
+      "name": "world-surface-31-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        62.5,
+        0.9900000095367432,
+        -14.5
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.7e-322,
+      "name": "world-surface-32-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        57.7931022644043,
+        0.9900000095367432,
+        -45.982757568359375
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.73e-322,
+      "name": "world-surface-33-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        59,
+        0.9800000190734863,
+        -49
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.8e-322,
+      "name": "world-surface-34-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        68.28652954101562,
+        0.9900000095367432,
+        -38.968482971191406
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.83e-322,
+      "name": "world-surface-35-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        72,
+        0.9800000190734863,
+        -40
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.9e-322,
+      "name": "world-surface-36-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        72.51289367675781,
+        0.9900000095367432,
+        -26.753582000732422
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.93e-322,
+      "name": "world-surface-37-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        77,
+        0.9800000190734863,
+        -28
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2e-322,
+      "name": "world-surface-38-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        70.37309265136719,
+        0.9900000095367432,
+        -18.276649475097656
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.03e-322,
+      "name": "world-surface-39-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        73,
+        0.9800000190734863,
+        -16
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.08e-322,
+      "name": "world-surface-40-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        62.78934097290039,
+        0.9900000095367432,
+        -18.449237823486328
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.1e-322,
+      "name": "world-surface-41-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        61,
+        0.9800000190734863,
+        -20
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.17e-322,
+      "name": "world-surface-42-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        53,
+        0.9900000095367432,
+        -9.5
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.2e-322,
+      "name": "world-surface-43-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        50,
+        0.9800000190734863,
+        -12
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.27e-322,
+      "name": "world-surface-44-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        7.199999809265137,
+        1.034999966621399,
+        15
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.3e-322,
+      "name": "world-surface-45-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        9.199999809265137,
+        1.034999966621399,
+        5
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.37e-322,
+      "name": "world-surface-46-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        13.699999809265137,
+        1.034999966621399,
+        -7
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.4e-322,
+      "name": "world-surface-47-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        16.200000762939453,
+        1.034999966621399,
+        -19
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.47e-322,
+      "name": "world-surface-48-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        17.700000762939453,
+        1.034999966621399,
+        -31
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.5e-322,
+      "name": "world-surface-49-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        18.700000762939453,
+        1.034999966621399,
+        -43
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.57e-322,
+      "name": "world-surface-50-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -17,
+        1.0499999523162842,
+        -42
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.6e-322,
+      "name": "world-surface-51-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -54,
+        1.0499999523162842,
+        -13
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 2.67e-322,
+      "name": "world-surface-52-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -10,
+        1.0499999523162842,
+        43
+      ],
+      "normalCount": 2,
+      "minNormalY": 1,
+      "maxNormalY": 1,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 8.45e-322,
+      "name": "camp-pad-surface-0-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -27,
+        4.849999904632568,
+        30
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 8.5e-322,
+      "name": "camp-pad-surface-1-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -31.39339828491211,
+        4.849999904632568,
+        40.60660171508789
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 8.55e-322,
+      "name": "camp-pad-surface-2-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -42,
+        4.849999904632568,
+        45
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 8.6e-322,
+      "name": "camp-pad-surface-3-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -52.60660171508789,
+        4.849999904632568,
+        40.60660171508789
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 8.65e-322,
+      "name": "camp-pad-surface-4-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -57,
+        4.849999904632568,
+        30
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 8.7e-322,
+      "name": "camp-pad-surface-5-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -52.60660171508789,
+        4.849999904632568,
+        19.39339828491211
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 8.74e-322,
+      "name": "camp-pad-surface-6-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -42,
+        4.849999904632568,
+        15
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 8.8e-322,
+      "name": "camp-pad-surface-7-top",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        -31.39339828491211,
+        4.849999904632568,
+        19.39339828491211
+      ],
+      "normalCount": 2,
+      "minNormalY": 0.9999999999999999,
+      "maxNormalY": 0.9999999999999999,
+      "verticalOrDown": 0
+    },
+    {
+      "colliderHandle": 1.55e-321,
+      "name": "island-ground-surface",
+      "assetId": null,
+      "kind": "surface",
+      "shapeType": 6,
+      "position": [
+        0,
+        -2,
+        0
+      ],
+      "normalCount": 48,
+      "minNormalY": -0.9999999657714582,
+      "maxNormalY": 0.9999999657714582,
+      "verticalOrDown": 37
+    }
+  ],
+  "inputFixtures": [
+    {
+      "t": 1.21,
+      "to": [
+        -29,
+        5.8,
+        36.5
+      ],
+      "reason": "van road start"
+    }
+  ],
+  "summary": {
+    "total": 1,
+    "passed": 0,
+    "failed": [
+      "van-coast-route"
+    ],
+    "errors": []
+  },
+  "fullEvidence": "report-full.json.gz",
+  "cases": [
+    {
+      "name": "van-coast-route",
+      "reached": false,
+      "maxCrossTrack": 1.8481405828360145,
+      "minY": 2.421562671661377,
+      "passed": false,
+      "sampleCount": 1488
+    }
+  ],
+  "checks": []
+}

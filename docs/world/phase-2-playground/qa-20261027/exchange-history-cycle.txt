@@ -1,0 +1,72 @@
+Browser tab: 1395913741, Title: "Bobby’s island · World playtest", URL: "http://127.0.0.1:4343/world/?start=exchange&quality=balanced&paused=1&qa=1".
+1 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4343/world/?start=exchange&quality=balanced&paused=1&qa=1
+	2 container Bobby 的城岛
+		3 container
+			4 text 经历 · 项目 · 漫游
+			5 heading Bobby 的城岛, Value: 1
+				6 text Bobby 的城岛
+			7 button 回到营地, Help: 保留矿石、挖矿进度和研究结果。
+			8 pop up button 地图与设置 Esc
+		9 container
+			10 container 城岛地图 · 栈道园区
+			11 text 栈道园区
+		28 content list
+			29 container
+				30 text E 卖出 10 份
+		16 container
+			17 button QA · 读取当前渲染开销
+			18 button QA · 读取动作与接触
+			19 button QA · 读取 Club 音频
+			20 button QA · 读取水面接触
+			21 button (disabled) QA · 倾覆当前车辆
+			22 button QA · 上车并定格门洞
+			23 button QA · 定格入座
+			24 button QA · 继续上下车动作
+			25 button QA · 当前角色或车辆落水
+			26 checkbox QA · 模拟回测连接中断, Value: 0
+		27 text {
+ "position": [
+  65.77,
+  1.96,
+  -59.36
+ ],
+ "yaw": 6.33,
+ "grounded": true,
+ "nearby": "alpha-exchange-sell",
+ "vehicle": null,
+ "drive": null,
+ "grass": {
+  "instances": 17,
+  "disturbers": 3,
+  "trampled": 46,
+  "strength": 0.946
+ },
+ "exchange": {
+  "phase": "open",
+  "date": "2023-05-03",
+  "days": 752,
+  "day": 1,
+  "cash": 9993.136014020056,
+  "units": 0,
+  "equity": 9993.136014020056,
+  "message": "sold",
+  "ledger": [
+   {
+    "kind": "buy",
+    "date": "2023-05-02",
+    "units": 10,
+    "value": 100,
+    "cash": 9000
+   },
+   {
+    "kind": "sell",
+    "date": "2023-05-03",
+    "units": 10,
+    "value": 99.31360140200565,
+    "cash": 9993.136014020056
+   }
+  ]
+ }
+}
+
+The focused UI element is 1 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4343/world/?start=exchange&quality=balanced&paused=1&qa=1

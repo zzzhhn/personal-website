@@ -1,0 +1,1386 @@
+{
+ "label": "after-balanced",
+ "base": "http://127.0.0.1:4322",
+ "startedAt": "2026-10-22T13:25:21.993Z",
+ "shots": [
+  {
+   "name": "near-4p5m-default",
+   "shadow": {
+    "mode": "cascaded-follow",
+    "tier": "balanced",
+    "receiverBand_m": [
+     -0.7,
+     12.618829727172852
+    ],
+    "tallReceiversOnScreen": 0,
+    "mapSize": 1536,
+    "atlas": [
+     3072,
+     1536
+    ],
+    "centre": [
+     -44.264683335745694,
+     3.0576712592673356,
+     33.44014151138952
+    ],
+    "halfExtent_m": [
+     8.21978134571691,
+     8.21978134571691
+    ],
+    "lightTexel_m": [
+     0.010744812216623413,
+     0.010744812216623413
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.010744812216623413,
+     "alongSun": 0.031698334240236596
+    },
+    "cascades": [
+     {
+      "viewDepth_m": [
+       0.1,
+       10.918539700035787
+      ],
+      "halfExtent_m": [
+       8.21978134571691,
+       8.21978134571691
+      ],
+      "lightTexel_m": [
+       0.010744812216623413,
+       0.010744812216623413
+      ],
+      "groundTexel_m": {
+       "acrossSun": 0.010744812216623413,
+       "alongSun": 0.031698334240236596
+      },
+      "texelsPerMetre": {
+       "acrossSun": 93.06816906980369,
+       "alongSun": 31.547399065867634
+      },
+      "normalBias_m": 0.03,
+      "tallReceiversOnScreen": 0
+     },
+     {
+      "viewDepth_m": [
+       9.836685730032208,
+       110
+      ],
+      "halfExtent_m": [
+       14.812312887061703,
+       10.403160765672965
+      ],
+      "lightTexel_m": [
+       0.01936250050596301,
+       0.013598902961664007
+      ],
+      "groundTexel_m": {
+       "acrossSun": 0.01936250050596301,
+       "alongSun": 0.04011820427279944
+      },
+      "texelsPerMetre": {
+       "acrossSun": 51.64622202034459,
+       "alongSun": 24.926340002660847
+      },
+      "normalBias_m": 0.03,
+      "tallReceiversOnScreen": 0
+     }
+    ],
+    "split_m": 10.918539700035787,
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.03,
+    "bias": -0.00015,
+    "updates": 276,
+    "applied": {
+     "cameras": [
+      [
+       -8.21978134571691,
+       8.21978134571691,
+       -8.21978134571691,
+       8.21978134571691,
+       1,
+       260
+      ],
+      [
+       -14.812312887061703,
+       14.812312887061703,
+       -10.403160765672965,
+       10.403160765672965,
+       1,
+       260
+      ]
+     ],
+     "cascadeData": [
+      [
+       -10000000000,
+       10.918539700035787,
+       9.836685730032208,
+       0.03
+      ],
+      [
+       9.836685730032208,
+       110,
+       100.09185397000357,
+       0.03
+      ]
+     ],
+     "mapAllocated": [
+      3072,
+      1536
+     ],
+     "sunIntensity": 3.4,
+     "sunInScene": true
+    }
+   },
+   "camera": {
+    "yaw": 0.9272952180016123,
+    "pitch": 0.7853981633974483,
+    "distance": 4.458920292264546,
+    "desiredDistance": 4.458920292264546,
+    "driveManualZoom": false,
+    "actualDistance": 4.458920292264546,
+    "firstPerson": false,
+    "preset": 1,
+    "collided": false,
+    "hitDistance": null,
+    "fov": 50,
+    "mode": "walk",
+    "recentering": false,
+    "position": [
+     -40.10151502346238,
+     9.421762502603418,
+     37.53141757044209
+    ],
+    "target": [
+     -41.993274688720724,
+     6.268829727172855,
+     35.009071350097635
+    ],
+    "forwardGround": [
+     -0.6000000000000003,
+     -0.7999999999999997
+    ],
+    "groundBelowCamera": 4.79998779296875,
+    "clearanceAboveGround": 4.621774709634668,
+    "gamepad": false,
+    "nearPlaneOverlaps": []
+   },
+   "player": [
+    -41.9932746887207,
+    5.618829727172852,
+    35.009071350097656
+   ],
+   "render": {
+    "drawingBuffer": [
+     1920,
+     1080
+    ],
+    "cssSize": [
+     1920,
+     1080
+    ],
+    "pixelRatio": 1,
+    "dprRange": [
+     0,
+     1.5
+    ],
+    "quality": "balanced",
+    "antialias": true,
+    "msaaSamples": 4,
+    "toneMapping": 4,
+    "outputColorSpace": "srgb",
+    "shadowMapSize": 1536,
+    "shadowType": 1,
+    "postprocessing": []
+   },
+   "file": "docs/world/quality-v3/shadows-v4/after-balanced/near-4p5m-default.png",
+   "size": [
+    1920,
+    1080
+   ]
+  },
+  {
+   "name": "near-2p5m-default",
+   "shadow": {
+    "mode": "cascaded-follow",
+    "tier": "balanced",
+    "receiverBand_m": [
+     -0.7,
+     12.618829727172852
+    ],
+    "tallReceiversOnScreen": 0,
+    "mapSize": 1536,
+    "atlas": [
+     3072,
+     1536
+    ],
+    "centre": [
+     -44.5685161091882,
+     2.7139759468186764,
+     33.23095478659137
+    ],
+    "halfExtent_m": [
+     5.773015156388283,
+     8.21978134571691
+    ],
+    "lightTexel_m": [
+     0.007546425041030435,
+     0.010744812216623413
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.007546425041030435,
+     "alongSun": 0.031698334240236596
+    },
+    "cascades": [
+     {
+      "viewDepth_m": [
+       0.1,
+       9.032192624894986
+      ],
+      "halfExtent_m": [
+       5.773015156388283,
+       8.21978134571691
+      ],
+      "lightTexel_m": [
+       0.007546425041030435,
+       0.010744812216623413
+      ],
+      "groundTexel_m": {
+       "acrossSun": 0.007546425041030435,
+       "alongSun": 0.031698334240236596
+      },
+      "texelsPerMetre": {
+       "acrossSun": 132.5130766638416,
+       "alongSun": 31.547399065867634
+      },
+      "normalBias_m": 0.03,
+      "tallReceiversOnScreen": 0
+     },
+     {
+      "viewDepth_m": [
+       8.138973362405487,
+       110
+      ],
+      "halfExtent_m": [
+       14.812312887061703,
+       10.403160765672965
+      ],
+      "lightTexel_m": [
+       0.01936250050596301,
+       0.013598902961664007
+      ],
+      "groundTexel_m": {
+       "acrossSun": 0.01936250050596301,
+       "alongSun": 0.04011820427279944
+      },
+      "texelsPerMetre": {
+       "acrossSun": 51.64622202034459,
+       "alongSun": 24.926340002660847
+      },
+      "normalBias_m": 0.03,
+      "tallReceiversOnScreen": 0
+     }
+    ],
+    "split_m": 9.032192624894986,
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.03,
+    "bias": -0.00015,
+    "updates": 365,
+    "applied": {
+     "cameras": [
+      [
+       -5.773015156388283,
+       5.773015156388283,
+       -8.21978134571691,
+       8.21978134571691,
+       1,
+       260
+      ],
+      [
+       -14.812312887061703,
+       14.812312887061703,
+       -10.403160765672965,
+       10.403160765672965,
+       1,
+       260
+      ]
+     ],
+     "cascadeData": [
+      [
+       -10000000000,
+       9.032192624894986,
+       8.138973362405487,
+       0.03
+      ],
+      [
+       8.138973362405487,
+       110,
+       99.9032192624895,
+       0.03
+      ]
+     ],
+     "mapAllocated": [
+      3072,
+      1536
+     ],
+     "sunIntensity": 3.4,
+     "sunInScene": true
+    }
+   },
+   "camera": {
+    "yaw": 0.9272952180016123,
+    "pitch": 0.7853981633974483,
+    "distance": 2.5725732171237334,
+    "desiredDistance": 2.5725732171237334,
+    "driveManualZoom": false,
+    "actualDistance": 2.5725732171237334,
+    "firstPerson": false,
+    "preset": 1,
+    "collided": false,
+    "hitDistance": null,
+    "fov": 50,
+    "mode": "walk",
+    "recentering": false,
+    "position": [
+     -40.90182430856446,
+     8.087913694099937,
+     36.46433852363932
+    ],
+    "target": [
+     -41.99327468872071,
+     6.268829727172853,
+     35.00907135009765
+    ],
+    "forwardGround": [
+     -0.6,
+     -0.8
+    ],
+    "groundBelowCamera": 4.8000030517578125,
+    "clearanceAboveGround": 3.2879106423421245,
+    "gamepad": false,
+    "nearPlaneOverlaps": []
+   },
+   "player": [
+    -41.9932746887207,
+    5.618829727172852,
+    35.009071350097656
+   ],
+   "render": {
+    "drawingBuffer": [
+     1920,
+     1080
+    ],
+    "cssSize": [
+     1920,
+     1080
+    ],
+    "pixelRatio": 1,
+    "dprRange": [
+     0,
+     1.5
+    ],
+    "quality": "balanced",
+    "antialias": true,
+    "msaaSamples": 4,
+    "toneMapping": 4,
+    "outputColorSpace": "srgb",
+    "shadowMapSize": 1536,
+    "shadowType": 1,
+    "postprocessing": []
+   },
+   "file": "docs/world/quality-v3/shadows-v4/after-balanced/near-2p5m-default.png",
+   "size": [
+    1920,
+    1080
+   ]
+  },
+  {
+   "name": "near-2p5m-orbit-a",
+   "shadow": {
+    "mode": "cascaded-follow",
+    "tier": "balanced",
+    "receiverBand_m": [
+     -0.7,
+     12.618829727172852
+    ],
+    "tallReceiversOnScreen": 0,
+    "mapSize": 1536,
+    "atlas": [
+     3072,
+     1536
+    ],
+    "centre": [
+     -40.340465469765334,
+     3.0229772516926356,
+     38.89502409971599
+    ],
+    "halfExtent_m": [
+     6.494642050936818,
+     5.773015156388283
+    ],
+    "lightTexel_m": [
+     0.00848972817115924,
+     0.007546425041030435
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.00848972817115924,
+     "alongSun": 0.02226275326611953
+    },
+    "cascades": [
+     {
+      "viewDepth_m": [
+       0.1,
+       9.032192624894998
+      ],
+      "halfExtent_m": [
+       6.494642050936818,
+       5.773015156388283
+      ],
+      "lightTexel_m": [
+       0.00848972817115924,
+       0.007546425041030435
+      ],
+      "groundTexel_m": {
+       "acrossSun": 0.00848972817115924,
+       "alongSun": 0.02226275326611953
+      },
+      "texelsPerMetre": {
+       "acrossSun": 117.7894014789703,
+       "alongSun": 44.91807406058106
+      },
+      "normalBias_m": 0.02226275326611953,
+      "tallReceiversOnScreen": 0
+     },
+     {
+      "viewDepth_m": [
+       8.138973362405498,
+       110
+      ],
+      "halfExtent_m": [
+       21.0901876848984,
+       8.21978134571691
+      ],
+      "lightTexel_m": [
+       0.02756887279071686,
+       0.010744812216623413
+      ],
+      "groundTexel_m": {
+       "acrossSun": 0.02756887279071686,
+       "alongSun": 0.031698334240236596
+      },
+      "texelsPerMetre": {
+       "acrossSun": 36.27279242032432,
+       "alongSun": 31.547399065867634
+      },
+      "normalBias_m": 0.03,
+      "tallReceiversOnScreen": 0
+     }
+    ],
+    "split_m": 9.032192624894998,
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.03,
+    "bias": -0.00015,
+    "updates": 436,
+    "applied": {
+     "cameras": [
+      [
+       -6.494642050936818,
+       6.494642050936818,
+       -5.773015156388283,
+       5.773015156388283,
+       1,
+       260
+      ],
+      [
+       -21.0901876848984,
+       21.0901876848984,
+       -8.21978134571691,
+       8.21978134571691,
+       1,
+       260
+      ]
+     ],
+     "cascadeData": [
+      [
+       -10000000000,
+       9.032192624894998,
+       8.138973362405498,
+       0.02226275326611953
+      ],
+      [
+       8.138973362405498,
+       110,
+       99.9032192624895,
+       0.03
+      ]
+     ],
+     "mapAllocated": [
+      3072,
+      1536
+     ],
+     "sunIntensity": 3.4,
+     "sunInScene": true
+    }
+   },
+   "camera": {
+    "yaw": 3.6772952180016123,
+    "pitch": 0.7853981633974483,
+    "distance": 2.5725732171237334,
+    "desiredDistance": 2.5725732171237334,
+    "driveManualZoom": false,
+    "actualDistance": 2.5725732171237334,
+    "firstPerson": false,
+    "preset": 1,
+    "collided": false,
+    "hitDistance": null,
+    "fov": 50,
+    "mode": "walk",
+    "recentering": false,
+    "position": [
+     -43.557523584413545,
+     8.087913694099937,
+     34.08052847491367
+    ],
+    "target": [
+     -41.99327468872071,
+     6.268829727172853,
+     35.00907135009765
+    ],
+    "forwardGround": [
+     0.859910220821343,
+     0.5104453076745729
+    ],
+    "groundBelowCamera": 4.803436279296875,
+    "clearanceAboveGround": 3.284477414803062,
+    "gamepad": false,
+    "nearPlaneOverlaps": []
+   },
+   "player": [
+    -41.9932746887207,
+    5.618829727172852,
+    35.009071350097656
+   ],
+   "render": {
+    "drawingBuffer": [
+     1920,
+     1080
+    ],
+    "cssSize": [
+     1920,
+     1080
+    ],
+    "pixelRatio": 1,
+    "dprRange": [
+     0,
+     1.5
+    ],
+    "quality": "balanced",
+    "antialias": true,
+    "msaaSamples": 4,
+    "toneMapping": 4,
+    "outputColorSpace": "srgb",
+    "shadowMapSize": 1536,
+    "shadowType": 1,
+    "postprocessing": []
+   },
+   "file": "docs/world/quality-v3/shadows-v4/after-balanced/near-2p5m-orbit-a.png",
+   "size": [
+    1920,
+    1080
+   ]
+  },
+  {
+   "name": "near-2p5m-orbit-b",
+   "shadow": {
+    "mode": "cascaded-follow",
+    "tier": "balanced",
+    "receiverBand_m": [
+     -0.7,
+     12.618829727172852
+    ],
+    "tallReceiversOnScreen": 0,
+    "mapSize": 1536,
+    "atlas": [
+     3072,
+     1536
+    ],
+    "centre": [
+     -44.668790084116075,
+     3.0229772516926356,
+     32.9019592490765
+    ],
+    "halfExtent_m": [
+     9.247254013931524,
+     6.494642050936818
+    ],
+    "lightTexel_m": [
+     0.012087913743701339,
+     0.00848972817115924
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.012087913743701339,
+     "alongSun": 0.02504559742438447
+    },
+    "cascades": [
+     {
+      "viewDepth_m": [
+       0.1,
+       9.032192624894988
+      ],
+      "halfExtent_m": [
+       9.247254013931524,
+       6.494642050936818
+      ],
+      "lightTexel_m": [
+       0.012087913743701339,
+       0.00848972817115924
+      ],
+      "groundTexel_m": {
+       "acrossSun": 0.012087913743701339,
+       "alongSun": 0.02504559742438447
+      },
+      "texelsPerMetre": {
+       "acrossSun": 82.72726139538106,
+       "alongSun": 39.927176942738726
+      },
+      "normalBias_m": 0.02504559742438447,
+      "tallReceiversOnScreen": 0
+     },
+     {
+      "viewDepth_m": [
+       8.138973362405489,
+       110
+      ],
+      "halfExtent_m": [
+       21.0901876848984,
+       9.247254013931524
+      ],
+      "lightTexel_m": [
+       0.02756887279071686,
+       0.012087913743701339
+      ],
+      "groundTexel_m": {
+       "acrossSun": 0.02756887279071686,
+       "alongSun": 0.035660626020266165
+      },
+      "texelsPerMetre": {
+       "acrossSun": 36.27279242032432,
+       "alongSun": 28.042132502993457
+      },
+      "normalBias_m": 0.03,
+      "tallReceiversOnScreen": 0
+     }
+    ],
+    "split_m": 9.032192624894988,
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.03,
+    "bias": -0.00015,
+    "updates": 507,
+    "applied": {
+     "cameras": [
+      [
+       -9.247254013931524,
+       9.247254013931524,
+       -6.494642050936818,
+       6.494642050936818,
+       1,
+       260
+      ],
+      [
+       -21.0901876848984,
+       21.0901876848984,
+       -9.247254013931524,
+       9.247254013931524,
+       1,
+       260
+      ]
+     ],
+     "cascadeData": [
+      [
+       -10000000000,
+       9.032192624894988,
+       8.138973362405489,
+       0.02504559742438447
+      ],
+      [
+       8.138973362405489,
+       110,
+       99.9032192624895,
+       0.03
+      ]
+     ],
+     "mapAllocated": [
+      3072,
+      1536
+     ],
+     "sunIntensity": 3.4,
+     "sunInScene": true
+    }
+   },
+   "camera": {
+    "yaw": 6.427295218001612,
+    "pitch": 0.7853981633974483,
+    "distance": 2.5725732171237334,
+    "desiredDistance": 2.5725732171237334,
+    "driveManualZoom": false,
+    "actualDistance": 2.5725732171237334,
+    "firstPerson": false,
+    "preset": 1,
+    "collided": false,
+    "hitDistance": null,
+    "fov": 50,
+    "mode": "walk",
+    "recentering": false,
+    "position": [
+     -40.19304711875277,
+     8.087913694099935,
+     35.27031295294554
+    ],
+    "target": [
+     -41.9932746887207,
+     6.268829727172852,
+     35.009071350097656
+    ],
+    "forwardGround": [
+     -0.9896341250310696,
+     -0.1436116240907719
+    ],
+    "groundBelowCamera": 4.8000030517578125,
+    "clearanceAboveGround": 3.2879106423421227,
+    "gamepad": false,
+    "nearPlaneOverlaps": []
+   },
+   "player": [
+    -41.9932746887207,
+    5.618829727172852,
+    35.009071350097656
+   ],
+   "render": {
+    "drawingBuffer": [
+     1920,
+     1080
+    ],
+    "cssSize": [
+     1920,
+     1080
+    ],
+    "pixelRatio": 1,
+    "dprRange": [
+     0,
+     1.5
+    ],
+    "quality": "balanced",
+    "antialias": true,
+    "msaaSamples": 4,
+    "toneMapping": 4,
+    "outputColorSpace": "srgb",
+    "shadowMapSize": 1536,
+    "shadowType": 1,
+    "postprocessing": []
+   },
+   "file": "docs/world/quality-v3/shadows-v4/after-balanced/near-2p5m-orbit-b.png",
+   "size": [
+    1920,
+    1080
+   ]
+  },
+  {
+   "name": "near-2p5m-orbit-b-high",
+   "shadow": {
+    "mode": "cascaded-follow",
+    "tier": "balanced",
+    "receiverBand_m": [
+     -0.7,
+     12.618829727172852
+    ],
+    "tallReceiversOnScreen": 0,
+    "mapSize": 1536,
+    "atlas": [
+     3072,
+     1536
+    ],
+    "centre": [
+     -43.46464076828026,
+     3.4383069538818667,
+     34.31365540811733
+    ],
+    "halfExtent_m": [
+     9.247254013931524,
+     6.494642050936818
+    ],
+    "lightTexel_m": [
+     0.012087913743701339,
+     0.00848972817115924
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.012087913743701339,
+     "alongSun": 0.02504559742438447
+    },
+    "cascades": [
+     {
+      "viewDepth_m": [
+       0.1,
+       9.19888603764491
+      ],
+      "halfExtent_m": [
+       9.247254013931524,
+       6.494642050936818
+      ],
+      "lightTexel_m": [
+       0.012087913743701339,
+       0.00848972817115924
+      ],
+      "groundTexel_m": {
+       "acrossSun": 0.012087913743701339,
+       "alongSun": 0.02504559742438447
+      },
+      "texelsPerMetre": {
+       "acrossSun": 82.72726139538106,
+       "alongSun": 39.927176942738726
+      },
+      "normalBias_m": 0.02504559742438447,
+      "tallReceiversOnScreen": 0
+     },
+     {
+      "viewDepth_m": [
+       8.288997433880418,
+       110
+      ],
+      "halfExtent_m": [
+       13.166500344054846,
+       5.773015156388283
+      ],
+      "lightTexel_m": [
+       0.01721111156085601,
+       0.007546425041030435
+      ],
+      "groundTexel_m": {
+       "acrossSun": 0.01721111156085601,
+       "alongSun": 0.02226275326611953
+      },
+      "texelsPerMetre": {
+       "acrossSun": 58.10199977288766,
+       "alongSun": 44.91807406058106
+      },
+      "normalBias_m": 0.02226275326611953,
+      "tallReceiversOnScreen": 0
+     }
+    ],
+    "split_m": 9.19888603764491,
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.02226275326611953,
+    "bias": -0.00015,
+    "updates": 578,
+    "applied": {
+     "cameras": [
+      [
+       -9.247254013931524,
+       9.247254013931524,
+       -6.494642050936818,
+       6.494642050936818,
+       1,
+       260
+      ],
+      [
+       -13.166500344054846,
+       13.166500344054846,
+       -5.773015156388283,
+       5.773015156388283,
+       1,
+       260
+      ]
+     ],
+     "cascadeData": [
+      [
+       -10000000000,
+       9.19888603764491,
+       8.288997433880418,
+       0.02504559742438447
+      ],
+      [
+       8.288997433880418,
+       110,
+       99.91988860376449,
+       0.02226275326611953
+      ]
+     ],
+     "mapAllocated": [
+      3072,
+      1536
+     ],
+     "sunIntensity": 3.4,
+     "sunInScene": true
+    }
+   },
+   "camera": {
+    "yaw": 6.427295218001612,
+    "pitch": 1.3,
+    "distance": 2.5725732171237334,
+    "desiredDistance": 2.5725732171237334,
+    "driveManualZoom": false,
+    "actualDistance": 2.5725732171237334,
+    "firstPerson": false,
+    "preset": 1,
+    "collided": false,
+    "hitDistance": null,
+    "fov": 50,
+    "mode": "walk",
+    "recentering": false,
+    "position": [
+     -41.312247750446915,
+     8.747653708117467,
+     35.1078991715938
+    ],
+    "target": [
+     -41.9932746887207,
+     6.268829727172852,
+     35.009071350097656
+    ],
+    "forwardGround": [
+     -0.9896341250310698,
+     -0.14361162409077027
+    ],
+    "groundBelowCamera": 4.8000030517578125,
+    "clearanceAboveGround": 3.947650656359654,
+    "gamepad": false,
+    "nearPlaneOverlaps": []
+   },
+   "player": [
+    -41.9932746887207,
+    5.618829727172852,
+    35.009071350097656
+   ],
+   "render": {
+    "drawingBuffer": [
+     1920,
+     1080
+    ],
+    "cssSize": [
+     1920,
+     1080
+    ],
+    "pixelRatio": 1,
+    "dprRange": [
+     0,
+     1.5
+    ],
+    "quality": "balanced",
+    "antialias": true,
+    "msaaSamples": 4,
+    "toneMapping": 4,
+    "outputColorSpace": "srgb",
+    "shadowMapSize": 1536,
+    "shadowType": 1,
+    "postprocessing": []
+   },
+   "file": "docs/world/quality-v3/shadows-v4/after-balanced/near-2p5m-orbit-b-high.png",
+   "size": [
+    1920,
+    1080
+   ]
+  },
+  {
+   "name": "mid-10m",
+   "shadow": {
+    "mode": "cascaded-follow",
+    "tier": "balanced",
+    "receiverBand_m": [
+     -0.7,
+     12.618829727172852
+    ],
+    "tallReceiversOnScreen": 0,
+    "mapSize": 1536,
+    "atlas": [
+     3072,
+     1536
+    ],
+    "centre": [
+     -43.15290454009936,
+     5.062981777120365,
+     33.74549029437489
+    ],
+    "halfExtent_m": [
+     14.812312887061703,
+     9.247254013931524
+    ],
+    "lightTexel_m": [
+     0.01936250050596301,
+     0.012087913743701339
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.01936250050596301,
+     "alongSun": 0.035660626020266165
+    },
+    "cascades": [
+     {
+      "viewDepth_m": [
+       0.1,
+       16.214750342859105
+      ],
+      "halfExtent_m": [
+       14.812312887061703,
+       9.247254013931524
+      ],
+      "lightTexel_m": [
+       0.01936250050596301,
+       0.012087913743701339
+      ],
+      "groundTexel_m": {
+       "acrossSun": 0.01936250050596301,
+       "alongSun": 0.035660626020266165
+      },
+      "texelsPerMetre": {
+       "acrossSun": 51.64622202034459,
+       "alongSun": 28.042132502993457
+      },
+      "normalBias_m": 0.03,
+      "tallReceiversOnScreen": 0
+     },
+     {
+      "viewDepth_m": [
+       14.603275308573195,
+       110
+      ],
+      "halfExtent_m": [
+       18.746833497687465,
+       7.30647230730392
+      ],
+      "lightTexel_m": [
+       0.02450566470285943,
+       0.009550944192554145
+      ],
+      "groundTexel_m": {
+       "acrossSun": 0.02450566470285943,
+       "alongSun": 0.02817629710243253
+      },
+      "texelsPerMetre": {
+       "acrossSun": 40.80689147286486,
+       "alongSun": 35.490823949101085
+      },
+      "normalBias_m": 0.02817629710243253,
+      "tallReceiversOnScreen": 0
+     }
+    ],
+    "split_m": 16.214750342859105,
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.02817629710243253,
+    "bias": -0.00015,
+    "updates": 702,
+    "applied": {
+     "cameras": [
+      [
+       -14.812312887061703,
+       14.812312887061703,
+       -9.247254013931524,
+       9.247254013931524,
+       1,
+       260
+      ],
+      [
+       -18.746833497687465,
+       18.746833497687465,
+       -7.30647230730392,
+       7.30647230730392,
+       1,
+       260
+      ]
+     ],
+     "cascadeData": [
+      [
+       -10000000000,
+       16.214750342859105,
+       14.603275308573195,
+       0.03
+      ],
+      [
+       14.603275308573195,
+       110,
+       100.62147503428591,
+       0.02817629710243253
+      ]
+     ],
+     "mapAllocated": [
+      3072,
+      1536
+     ],
+     "sunIntensity": 3.4,
+     "sunInScene": true
+    }
+   },
+   "camera": {
+    "yaw": 6.427295218001612,
+    "pitch": 1.3,
+    "distance": 9.630225575549732,
+    "desiredDistance": 9.630225575549732,
+    "driveManualZoom": false,
+    "actualDistance": 9.588437522337932,
+    "firstPerson": false,
+    "preset": 1,
+    "collided": false,
+    "hitDistance": null,
+    "fov": 50,
+    "mode": "walk",
+    "recentering": false,
+    "position": [
+     -39.45496627238409,
+     15.507847187182914,
+     35.37742020235852
+    ],
+    "target": [
+     -41.9932746887207,
+     6.268829727172852,
+     35.009071350097656
+    ],
+    "forwardGround": [
+     -0.9896341250310693,
+     -0.14361162409077413
+    ],
+    "groundBelowCamera": 4.79998779296875,
+    "clearanceAboveGround": 10.707859394214164,
+    "gamepad": false,
+    "nearPlaneOverlaps": []
+   },
+   "player": [
+    -41.9932746887207,
+    5.618829727172852,
+    35.009071350097656
+   ],
+   "render": {
+    "drawingBuffer": [
+     1920,
+     1080
+    ],
+    "cssSize": [
+     1920,
+     1080
+    ],
+    "pixelRatio": 1,
+    "dprRange": [
+     0,
+     1.5
+    ],
+    "quality": "balanced",
+    "antialias": true,
+    "msaaSamples": 4,
+    "toneMapping": 4,
+    "outputColorSpace": "srgb",
+    "shadowMapSize": 1536,
+    "shadowType": 1,
+    "postprocessing": []
+   },
+   "file": "docs/world/quality-v3/shadows-v4/after-balanced/mid-10m.png",
+   "size": [
+    1920,
+    1080
+   ]
+  },
+  {
+   "name": "far-30m",
+   "shadow": {
+    "mode": "cascaded-follow",
+    "tier": "balanced",
+    "receiverBand_m": [
+     -0.7,
+     12.618829727172852
+    ],
+    "tallReceiversOnScreen": 0,
+    "mapSize": 1536,
+    "atlas": [
+     3072,
+     1536
+    ],
+    "centre": [
+     -43.41291417665089,
+     5.797470584913265,
+     32.933483838969444
+    ],
+    "halfExtent_m": [
+     33.78240268569785,
+     14.812312887061703
+    ],
+    "lightTexel_m": [
+     0.044160003510716146,
+     0.01936250050596301
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.044160003510716146,
+     "alongSun": 0.057121427568107015
+    },
+    "cascades": [
+     {
+      "viewDepth_m": [
+       0.1,
+       35.43234834947901
+      ],
+      "halfExtent_m": [
+       33.78240268569785,
+       14.812312887061703
+      ],
+      "lightTexel_m": [
+       0.044160003510716146,
+       0.01936250050596301
+      ],
+      "groundTexel_m": {
+       "acrossSun": 0.044160003510716146,
+       "alongSun": 0.057121427568107015
+      },
+      "texelsPerMetre": {
+       "acrossSun": 22.644925735962264,
+       "alongSun": 17.50656526935851
+      },
+      "normalBias_m": 0.03,
+      "tallReceiversOnScreen": 0
+     },
+     {
+      "viewDepth_m": [
+       31.899113514531106,
+       110
+      ],
+      "halfExtent_m": [
+       38.00520302141008,
+       14.812312887061703
+      ],
+      "lightTexel_m": [
+       0.049680003949555664,
+       0.01936250050596301
+      ],
+      "groundTexel_m": {
+       "acrossSun": 0.049680003949555664,
+       "alongSun": 0.057121427568107015
+      },
+      "texelsPerMetre": {
+       "acrossSun": 20.1288228764109,
+       "alongSun": 17.50656526935851
+      },
+      "normalBias_m": 0.03,
+      "tallReceiversOnScreen": 0
+     }
+    ],
+    "split_m": 35.43234834947901,
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.03,
+    "bias": -0.00015,
+    "updates": 816,
+    "applied": {
+     "cameras": [
+      [
+       -33.78240268569785,
+       33.78240268569785,
+       -14.812312887061703,
+       14.812312887061703,
+       1,
+       260
+      ],
+      [
+       -38.00520302141008,
+       38.00520302141008,
+       -14.812312887061703,
+       14.812312887061703,
+       1,
+       260
+      ]
+     ],
+     "cascadeData": [
+      [
+       -10000000000,
+       35.43234834947901,
+       31.899113514531106,
+       0.03
+      ],
+      [
+       31.899113514531106,
+       110,
+       102.5432348349479,
+       0.03
+      ]
+     ],
+     "mapAllocated": [
+      3072,
+      1536
+     ],
+     "sunIntensity": 3.4,
+     "sunInScene": true
+    }
+   },
+   "camera": {
+    "yaw": 6.427295218001612,
+    "pitch": 1.3,
+    "distance": 28.930796477006492,
+    "desiredDistance": 28.930796477006492,
+    "driveManualZoom": false,
+    "actualDistance": 28.806035528957832,
+    "firstPerson": false,
+    "preset": 1,
+    "collided": false,
+    "hitDistance": null,
+    "fov": 50,
+    "mode": "walk",
+    "recentering": false,
+    "position": [
+     -34.36756901414102,
+     34.02512105051865,
+     36.11568231779264
+    ],
+    "target": [
+     -41.9932746887207,
+     6.268829727172852,
+     35.009071350097656
+    ],
+    "forwardGround": [
+     -0.9896341250310695,
+     -0.14361162409077327
+    ],
+    "groundBelowCamera": 4.800018310546875,
+    "clearanceAboveGround": 29.225102739971774,
+    "gamepad": false,
+    "nearPlaneOverlaps": []
+   },
+   "player": [
+    -41.9932746887207,
+    5.618829727172852,
+    35.009071350097656
+   ],
+   "render": {
+    "drawingBuffer": [
+     1920,
+     1080
+    ],
+    "cssSize": [
+     1920,
+     1080
+    ],
+    "pixelRatio": 1,
+    "dprRange": [
+     0,
+     1.5
+    ],
+    "quality": "balanced",
+    "antialias": true,
+    "msaaSamples": 4,
+    "toneMapping": 4,
+    "outputColorSpace": "srgb",
+    "shadowMapSize": 1536,
+    "shadowType": 1,
+    "postprocessing": []
+   },
+   "file": "docs/world/quality-v3/shadows-v4/after-balanced/far-30m.png",
+   "size": [
+    1920,
+    1080
+   ]
+  }
+ ],
+ "errors": [
+  "console: Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)"
+ ],
+ "finalErrors": [
+  "console: Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)"
+ ],
+ "finishedAt": "2026-10-22T13:25:37.831Z"
+}

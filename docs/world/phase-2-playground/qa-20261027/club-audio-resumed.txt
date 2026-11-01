@@ -1,0 +1,86 @@
+Browser tab: 1395913741, Title: "Bobby’s island · World playtest", URL: "http://127.0.0.1:4343/world/?start=club-decks&quality=balanced&paused=1&qa=1".
+1 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4343/world/?start=club-decks&quality=balanced&paused=1&qa=1
+	2 container Bobby 的城岛
+		3 container
+			4 text 经历 · 项目 · 漫游
+			5 heading Bobby 的城岛, Value: 1
+				6 text Bobby 的城岛
+			7 button 回到营地, Help: 保留矿石、挖矿进度和研究结果。
+			8 pop up button 地图与设置 Esc
+		9 container
+			10 container 城岛地图 · 环岛海岸
+			11 text 环岛海岸
+		12 container DJC beach club
+			13 container
+				14 text DJC BEACH CLUB
+				15 checkbox 静音, Value: 0
+			16 text 把这一刻带起来
+			17 button 来一段 Disco
+			18 text 让音乐渐暗，再让新的律动落下。
+			19 button (collapsed) 自己接管唱盘, Secondary Actions: Expand
+				20 text 自己接管唱盘
+			21 button 离开 DJ 台 Esc
+				22 text 离开 DJ 台
+				23 text Esc
+			24 link Description: 打开完整 DJC ↗, Value: djc.bobbyzhong.com/
+			25 button (collapsed) 音乐署名, Secondary Actions: Expand
+				26 text 音乐署名
+		27 container
+			28 button QA · 读取当前渲染开销
+			29 button QA · 读取动作与接触
+			30 button QA · 读取 Club 音频
+			31 button QA · 读取水面接触
+			32 button (disabled) QA · 倾覆当前车辆
+			33 button QA · 上车并定格门洞
+			34 button QA · 定格入座
+			35 button QA · 继续上下车动作
+			36 button QA · 当前角色或车辆落水
+			37 checkbox QA · 模拟回测连接中断, Value: 0
+			38 text {
+ "club": {
+  "phase": "ready",
+  "context": "running",
+  "sources": 1,
+  "buffers": 2,
+  "contextSeconds": 119.04,
+  "transportBeats": 234.1015111111111,
+  "decodedSeconds": [
+   32.542375,
+   32.542375
+  ],
+  "bufferBytes": 12496272,
+  "owners": 1,
+  "timers": 0
+ },
+ "mode": "dj",
+ "step": 0
+}
+		39 text {
+ "position": [
+  31,
+  2.82,
+  55.07
+ ],
+ "yaw": -1.57,
+ "grounded": true,
+ "vehicle": null,
+ "drive": null,
+ "grass": {
+  "instances": 566,
+  "disturbers": 1,
+  "trampled": 4,
+  "strength": 0.947
+ },
+ "exchange": {
+  "phase": "closed",
+  "days": 0,
+  "day": 0,
+  "cash": 10000,
+  "units": 0,
+  "equity": 10000,
+  "message": "ring-first",
+  "ledger": []
+ }
+}
+
+The focused UI element is 30 button QA · 读取 Club 音频

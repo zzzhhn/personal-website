@@ -1,0 +1,709 @@
+{
+  "base": "b052396",
+  "scope": "existing Stop/Slope target construction only; physical motion, masks, thresholds, GLB and solver count unchanged",
+  "status": "known_float_failure_sink_fixed_on_original_route",
+  "runs": {
+    "baseline": {
+      "byClipCurve": {
+        "n": 417,
+        "maxFloat_mm": 347.7,
+        "maxSink_mm": -66.5,
+        "floatOver20": 92,
+        "sinkOver15": 30
+      },
+      "excludingStopStepSwing": {
+        "n": 303,
+        "maxFloat_mm": 147.5,
+        "maxSink_mm": -56.9,
+        "floatOver20": 12,
+        "sinkOver15": 22
+      },
+      "legacyHeightWindow": {
+        "byClipCurve": {
+          "n": 368,
+          "maxFloat_mm": 347.7,
+          "maxSink_mm": -66.5,
+          "floatOver20": 71,
+          "sinkOver15": 30
+        },
+        "excludingStopStepSwing": {
+          "n": 274,
+          "maxFloat_mm": 70.4,
+          "maxSink_mm": -56.9,
+          "floatOver20": 8,
+          "sinkOver15": 22
+        }
+      },
+      "allStance": {
+        "n": 494,
+        "maxFloat_mm": 347.7,
+        "maxSink_mm": -66.5,
+        "floatOver20": 102,
+        "sinkOver15": 30
+      },
+      "floatsByAnim": {
+        "Run": 4,
+        "Idle": 6,
+        "Idle(stop-step swing)": 80,
+        "Sprint": 2
+      },
+      "errors": [],
+      "framesSha256": "47025cf510ad6426512538378296dc40997f7fb285175f5ff19ff94e3c7c2265"
+    },
+    "candidate1": {
+      "byClipCurve": {
+        "n": 393,
+        "maxFloat_mm": 344.8,
+        "maxSink_mm": -54.8,
+        "floatOver20": 97,
+        "sinkOver15": 29
+      },
+      "excludingStopStepSwing": {
+        "n": 278,
+        "maxFloat_mm": 102.6,
+        "maxSink_mm": -48.6,
+        "floatOver20": 16,
+        "sinkOver15": 21
+      },
+      "legacyHeightWindow": {
+        "byClipCurve": {
+          "n": 367,
+          "maxFloat_mm": 344.8,
+          "maxSink_mm": -54.8,
+          "floatOver20": 77,
+          "sinkOver15": 29
+        },
+        "excludingStopStepSwing": {
+          "n": 271,
+          "maxFloat_mm": 102.6,
+          "maxSink_mm": -48.6,
+          "floatOver20": 15,
+          "sinkOver15": 21
+        }
+      },
+      "allStance": {
+        "n": 493,
+        "maxFloat_mm": 344.8,
+        "maxSink_mm": -54.8,
+        "floatOver20": 116,
+        "sinkOver15": 29
+      },
+      "floatsByAnim": {
+        "Run": 2,
+        "Idle": 11,
+        "Idle(stop-step swing)": 81,
+        "Sprint": 3
+      },
+      "errors": [],
+      "framesSha256": "06e462fc7449c157b295fe1bd45e65f0ab91b4538a06b9609dea5d13d57ba3f2"
+    },
+    "candidate2": {
+      "byClipCurve": {
+        "n": 392,
+        "maxFloat_mm": 357.9,
+        "maxSink_mm": -1.6,
+        "floatOver20": 96,
+        "sinkOver15": 0
+      },
+      "excludingStopStepSwing": {
+        "n": 280,
+        "maxFloat_mm": 144.1,
+        "maxSink_mm": 1.5,
+        "floatOver20": 21,
+        "sinkOver15": 0
+      },
+      "legacyHeightWindow": {
+        "byClipCurve": {
+          "n": 368,
+          "maxFloat_mm": 357.9,
+          "maxSink_mm": -1.6,
+          "floatOver20": 78,
+          "sinkOver15": 0
+        },
+        "excludingStopStepSwing": {
+          "n": 272,
+          "maxFloat_mm": 124.4,
+          "maxSink_mm": 1.5,
+          "floatOver20": 19,
+          "sinkOver15": 0
+        }
+      },
+      "allStance": {
+        "n": 494,
+        "maxFloat_mm": 357.9,
+        "maxSink_mm": -2.2,
+        "floatOver20": 120,
+        "sinkOver15": 0
+      },
+      "floatsByAnim": {
+        "Run": 2,
+        "Idle": 15,
+        "Idle(stop-step swing)": 75,
+        "Sprint": 4
+      },
+      "errors": [],
+      "framesSha256": "a5bc22e96253b52529e227af45efefee4023654dcc2e8ea6a4f602b737ddf23d"
+    },
+    "candidate3": {
+      "byClipCurve": {
+        "n": 394,
+        "maxFloat_mm": 328.7,
+        "maxSink_mm": -0.9,
+        "floatOver20": 79,
+        "sinkOver15": 0
+      },
+      "excludingStopStepSwing": {
+        "n": 294,
+        "maxFloat_mm": 146.8,
+        "maxSink_mm": 1.5,
+        "floatOver20": 8,
+        "sinkOver15": 0
+      },
+      "legacyHeightWindow": {
+        "byClipCurve": {
+          "n": 370,
+          "maxFloat_mm": 328.7,
+          "maxSink_mm": -0.9,
+          "floatOver20": 61,
+          "sinkOver15": 0
+        },
+        "excludingStopStepSwing": {
+          "n": 286,
+          "maxFloat_mm": 90.5,
+          "maxSink_mm": 1.5,
+          "floatOver20": 6,
+          "sinkOver15": 0
+        }
+      },
+      "allStance": {
+        "n": 496,
+        "maxFloat_mm": 328.7,
+        "maxSink_mm": -2.2,
+        "floatOver20": 102,
+        "sinkOver15": 0
+      },
+      "floatsByAnim": {
+        "Run": 2,
+        "Idle": 2,
+        "Idle(stop-step swing)": 71,
+        "Sprint": 4
+      },
+      "errors": [],
+      "framesSha256": "964b789f137886237b5cc25e16cd96333987d5c6b69f4f55eef787f0f52fcc3c"
+    },
+    "final": {
+      "byClipCurve": {
+        "n": 393,
+        "maxFloat_mm": 329,
+        "maxSink_mm": 1.5,
+        "floatOver20": 86,
+        "sinkOver15": 0
+      },
+      "excludingStopStepSwing": {
+        "n": 277,
+        "maxFloat_mm": 93.4,
+        "maxSink_mm": 1.5,
+        "floatOver20": 9,
+        "sinkOver15": 0
+      },
+      "legacyHeightWindow": {
+        "byClipCurve": {
+          "n": 367,
+          "maxFloat_mm": 326.7,
+          "maxSink_mm": 1.5,
+          "floatOver20": 66,
+          "sinkOver15": 0
+        },
+        "excludingStopStepSwing": {
+          "n": 270,
+          "maxFloat_mm": 93.4,
+          "maxSink_mm": 1.5,
+          "floatOver20": 8,
+          "sinkOver15": 0
+        }
+      },
+      "allStance": {
+        "n": 497,
+        "maxFloat_mm": 329,
+        "maxSink_mm": -3.1,
+        "floatOver20": 104,
+        "sinkOver15": 0
+      },
+      "floatsByAnim": {
+        "Run": 2,
+        "Idle": 3,
+        "Idle(stop-step swing)": 77,
+        "Sprint": 4
+      },
+      "errors": [],
+      "framesSha256": "6272c7f4b5d3862669a04abd2c62f975c84d8c5d57da062349896794fdd15234"
+    }
+  },
+  "limits": {
+    "maxSharedPelvisDrop": 0.05,
+    "maxShift": 0.1,
+    "maxPitchDeg": 20,
+    "maxRollDeg": 20
+  },
+  "probeFallbackSamples": 0,
+  "probeMisses": [
+    {
+      "t": 2.2518,
+      "side": "left",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 2.2518,
+      "side": "right",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 2.2688,
+      "side": "left",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 2.2688,
+      "side": "right",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 2.2855,
+      "side": "left",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 2.2855,
+      "side": "right",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 2.6016,
+      "side": "left",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 2.6016,
+      "side": "right",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 4.8021,
+      "side": "left",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 4.8021,
+      "side": "right",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 5.8677,
+      "side": "left",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 5.8677,
+      "side": "right",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 5.8853,
+      "side": "left",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 5.8853,
+      "side": "right",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 5.9005,
+      "side": "left",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 5.9005,
+      "side": "right",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 5.9185,
+      "side": "left",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 5.9185,
+      "side": "right",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 7.3018,
+      "side": "left",
+      "grounded": false,
+      "anim": "Sprint",
+      "contact": 1
+    },
+    {
+      "t": 7.3018,
+      "side": "right",
+      "grounded": false,
+      "anim": "Sprint",
+      "contact": 0
+    },
+    {
+      "t": 7.3186,
+      "side": "left",
+      "grounded": false,
+      "anim": "Sprint",
+      "contact": 1
+    },
+    {
+      "t": 7.3186,
+      "side": "right",
+      "grounded": false,
+      "anim": "Sprint",
+      "contact": 0
+    },
+    {
+      "t": 7.3353,
+      "side": "left",
+      "grounded": false,
+      "anim": "Sprint",
+      "contact": 0
+    },
+    {
+      "t": 7.3353,
+      "side": "right",
+      "grounded": false,
+      "anim": "Sprint",
+      "contact": 0
+    },
+    {
+      "t": 7.351,
+      "side": "left",
+      "grounded": false,
+      "anim": "Sprint",
+      "contact": 0
+    },
+    {
+      "t": 7.351,
+      "side": "right",
+      "grounded": false,
+      "anim": "Sprint",
+      "contact": 0
+    },
+    {
+      "t": 7.3683,
+      "side": "left",
+      "grounded": false,
+      "anim": "Sprint",
+      "contact": 0
+    },
+    {
+      "t": 7.3683,
+      "side": "right",
+      "grounded": false,
+      "anim": "Sprint",
+      "contact": 0
+    },
+    {
+      "t": 7.3852,
+      "side": "left",
+      "grounded": false,
+      "anim": "Sprint",
+      "contact": 0
+    },
+    {
+      "t": 7.3852,
+      "side": "right",
+      "grounded": false,
+      "anim": "Sprint",
+      "contact": 0
+    },
+    {
+      "t": 10.9502,
+      "side": "left",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    },
+    {
+      "t": 10.9502,
+      "side": "right",
+      "grounded": false,
+      "anim": "Run",
+      "contact": 0
+    }
+  ],
+  "a6": {
+    "inputSha256": "dccf05be4bf3519e06f55ed275a629c0d3b060c69c41c5584d378bd1576b50da",
+    "assetSha256": [
+      "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0"
+    ],
+    "sampleStride": 1,
+    "relationsAudited": true,
+    "sameShellPassed": true,
+    "crossShellPassed": true,
+    "passed": true
+  },
+  "a6Samples": 228,
+  "a6Windows": {
+    "windows": [
+      {
+        "reason": "complete-stop-plus-neighbours",
+        "start": 3.7017,
+        "end": 4.3348,
+        "n": 39
+      },
+      {
+        "reason": "complete-stop-plus-neighbours",
+        "start": 6.2187,
+        "end": 7.2854,
+        "n": 65
+      },
+      {
+        "reason": "complete-stop-plus-neighbours",
+        "start": 8.7672,
+        "end": 9.3683,
+        "n": 37
+      },
+      {
+        "reason": "complete-stop-plus-neighbours",
+        "start": 11.7351,
+        "end": 12.3666,
+        "n": 39
+      },
+      {
+        "reason": "high-extension-failure-plus-100ms",
+        "centre": 7.4508,
+        "start": 7.351,
+        "end": 7.5338,
+        "n": 12
+      },
+      {
+        "reason": "high-extension-failure-plus-100ms",
+        "centre": 2.7191,
+        "start": 2.6336,
+        "end": 2.8176,
+        "n": 12
+      },
+      {
+        "reason": "high-extension-failure-plus-100ms",
+        "centre": 2.4189,
+        "start": 2.3356,
+        "end": 2.5188,
+        "n": 12
+      },
+      {
+        "reason": "high-extension-failure-plus-100ms",
+        "centre": 8.0006,
+        "start": 7.9184,
+        "end": 8.1002,
+        "n": 12
+      }
+    ],
+    "total": 228
+  },
+  "rootGroundDiagnostic": {
+    "method": "historical frame reconstruction from captured final skin and frozen GLB; static ground evaluated from same-frame measured ramp plane, not a fresh ray; body center reconstructed from actual JSX visual parent offset .82; source pose evaluated from LINEAR GLB channels; Stop off at both frames",
+    "rows": [
+      {
+        "t": 2.4347,
+        "anim": "Run",
+        "clipTime": 0.3201,
+        "rootGuideY": 4.610033008689765,
+        "bodyCentreY_reconstructed": 5.430033008689765,
+        "PLAYER_CENTER_HEIGHT": 0.88,
+        "bodyMinusCenterHeightY": 4.550033008689765,
+        "actualVisualParentOffset": 0.82,
+        "visualRootPlaneY": 4.610033008689765,
+        "groundAtRootXZ_fromMeasuredStaticPlane": 4.523992548192478,
+        "groundAtAnkleXZ_fromMeasuredStaticPlane": 4.487390052263927,
+        "groundAtLowestSoleXZ_fromMeasuredStaticPlane": 4.481407986080137,
+        "soleMinimumPointXZ": [
+          -17.0765,
+          32.6408
+        ],
+        "sourceHipHeightRelativeGuideRoot": 0.6734710677705419,
+        "postInertialHipHeightRelativeGuideRoot_beforeIK": 0.6734711103998521,
+        "finalHipHeightRelativeGuideRoot": 0.6234711103998523,
+        "inertResidual": [
+          0,
+          0
+        ],
+        "slopeDrop": 0.05,
+        "visualRootAboveGroundAtRootXZ": 0.08604046049728709,
+        "bodyMinusCenterHeightAboveGround": 0.026040460497287476,
+        "groundRootMinusGroundSole": 0.042584562112341295
+      },
+      {
+        "t": 7.0333,
+        "anim": "Sprint",
+        "clipTime": 0.0272,
+        "rootGuideY": 4.8149243583904555,
+        "bodyCentreY_reconstructed": 5.634924358390456,
+        "PLAYER_CENTER_HEIGHT": 0.88,
+        "bodyMinusCenterHeightY": 4.754924358390456,
+        "actualVisualParentOffset": 0.82,
+        "visualRootPlaneY": 4.8149243583904555,
+        "groundAtRootXZ_fromMeasuredStaticPlane": 4.632497142849685,
+        "groundAtAnkleXZ_fromMeasuredStaticPlane": 4.612728913334943,
+        "groundAtLowestSoleXZ_fromMeasuredStaticPlane": 4.6391457345658855,
+        "soleMinimumPointXZ": [
+          -17.5042,
+          33.1829
+        ],
+        "sourceHipHeightRelativeGuideRoot": 0.6526159553191265,
+        "postInertialHipHeightRelativeGuideRoot_beforeIK": 0.654548976128754,
+        "finalHipHeightRelativeGuideRoot": 0.6305489761287539,
+        "inertResidual": [
+          0.1534,
+          0.0015
+        ],
+        "slopeDrop": 0.024,
+        "visualRootAboveGroundAtRootXZ": 0.18242721554077068,
+        "bodyMinusCenterHeightAboveGround": 0.12242721554077107,
+        "groundRootMinusGroundSole": -0.006648591716200691
+      }
+    ]
+  },
+  "reachFeasibility": [
+    {
+      "t": 2.4347,
+      "side": "right",
+      "anim": "Run",
+      "hip": [
+        -17.216725079746443,
+        5.233504119089617,
+        32.64223716141276
+      ],
+      "ankle": [
+        -17.1256603416599,
+        4.672096102286231,
+        32.57571385039267
+      ],
+      "sole_mm": 86.4,
+      "currentDrop_mm": 50.0,
+      "remainingDrop_mm": 0.0,
+      "horizontalFootOffset_mm": 112.77471982606173,
+      "reachLimit_mm": 572.623204363677,
+      "requiredDistanceWithFullPelvisBudget_mm": 657.551035332303,
+      "excess_mm": 84.927830968626
+    },
+    {
+      "t": 7.0333,
+      "side": "left",
+      "anim": "Sprint",
+      "hip": [
+        -17.49333843481327,
+        5.4454733345192095,
+        33.22503858596199
+      ],
+      "ankle": [
+        -17.41107108885618,
+        4.884049286881775,
+        33.14801536550407
+      ],
+      "sole_mm": 146.8,
+      "currentDrop_mm": 24.0,
+      "remainingDrop_mm": 26.000000000000004,
+      "horizontalFootOffset_mm": 112.69646267977012,
+      "reachLimit_mm": 572.6232031239014,
+      "requiredDistanceWithFullPelvisBudget_mm": 691.4695538310684,
+      "excess_mm": 118.84635070716709
+    },
+    {
+      "t": 7.1848,
+      "side": "right",
+      "anim": "Sprint",
+      "hip": [
+        -16.688001421691215,
+        5.152633855071922,
+        32.84942325019098
+      ],
+      "ankle": [
+        -16.609785075706473,
+        4.588745376419198,
+        32.78769911002748
+      ],
+      "sole_mm": 90.5,
+      "currentDrop_mm": 44.1,
+      "remainingDrop_mm": 5.900000000000002,
+      "horizontalFootOffset_mm": 99.63767489322574,
+      "reachLimit_mm": 572.623204363677,
+      "requiredDistanceWithFullPelvisBudget_mm": 656.0982953822185,
+      "excess_mm": 83.47509101854145
+    },
+    {
+      "t": 7.7337,
+      "side": "right",
+      "anim": "Sprint",
+      "hip": [
+        -13.876473295680094,
+        4.21930109773942,
+        30.808737732236096
+      ],
+      "ankle": [
+        -13.785357046495474,
+        3.658059376264217,
+        30.74089222523082
+      ],
+      "sole_mm": 54.0,
+      "currentDrop_mm": 30.599999999999998,
+      "remainingDrop_mm": 19.400000000000006,
+      "horizontalFootOffset_mm": 113.60098453040374,
+      "reachLimit_mm": 572.623204363677,
+      "requiredDistanceWithFullPelvisBudget_mm": 606.5744313246398,
+      "excess_mm": 33.95122696096286
+    }
+  ],
+  "evidenceRoot": "/Users/bobby/Desktop/3D-personal-world/evidence/slope-followup",
+  "evidenceHashes": {
+    "final/runtime-a6.json": "461aea9f75742d075222823a7a715d9f824ee0040f2b1b2be325e13a3b7de4b4",
+    "candidate3/root-ground-diagnostic.json": "fbbcaca0ed62eef998cf2764cacbd87060f622d44a6dc2be40df409ce83bf646",
+    "candidate3/reach-feasibility.json": "2a3be04879e6df618d351c225a08b217e6f74fc70b51702517b1a78110413252",
+    "astro-check-final.log": "e594794cc9c67d67eea810031c61012dffa07d4a863bc343fe95e8a4841915a8"
+  },
+  "normalScreenshots": [
+    "/Users/bobby/Desktop/3D-personal-world/evidence/slope-followup/final/normal-dusk-default.jpg",
+    "/Users/bobby/Desktop/3D-personal-world/evidence/slope-followup/final/normal-dusk-near.jpg",
+    "/Users/bobby/Desktop/3D-personal-world/evidence/slope-followup/final/normal-night-near.jpg"
+  ]
+}

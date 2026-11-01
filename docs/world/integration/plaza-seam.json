@@ -1,0 +1,131 @@
+{
+  "base": "10f285f",
+  "port": 4344,
+  "collisionAndOriginalVertexSoup": {
+    "beforeCollisionAndOriginalVertexSoup": "aef1bed6dd101a6501f8d077d7c0e26159f5f538746ee74ecbbcdb6d824363ad",
+    "afterCollisionAndOriginalVertexSoup": "aef1bed6dd101a6501f8d077d7c0e26159f5f538746ee74ecbbcdb6d824363ad",
+    "identical": true,
+    "variants": [
+      {
+        "chunk": 1,
+        "legacyPrismTriangles": 30,
+        "unclaimedVisualTriangles": 3568,
+        "claimedVisualTriangles": 3557
+      }
+    ],
+    "glbChanged": false
+  },
+  "verification": {
+    "errors": [],
+    "scene": {
+      "module": "/@fs/Users/bobby/Desktop/3D-personal-world/evidence/street-integration/vite-cache/deps/@react-three_fiber.js?v=c9bb3134",
+      "roots": 1,
+      "claimed": [
+        "paved",
+        "boardwalk",
+        "park-plaza",
+        "knockable",
+        "roadblock",
+        "street-fixed",
+        "rail",
+        "roadside",
+        "windmill",
+        "building",
+        "building-forecourt",
+        "massing",
+        "foundation",
+        "booth",
+        "tree",
+        "camp-placeholder",
+        "camp-lamps"
+      ],
+      "names": [
+        "world-greybox-environment",
+        "world-districts-v4",
+        "",
+        "",
+        "",
+        "",
+        "world-town",
+        "world-park",
+        "world-street",
+        "",
+        "world-sun-cascaded",
+        "world-camp-content",
+        "G28-entry",
+        "world-shadow-proxies"
+      ]
+    },
+    "claimSwitch": {
+      "ready": 10761,
+      "fallbackVertices": 10794
+    },
+    "shortWalk": {
+      "fixture": "QA isolated start [39,2.3,-43.53], no later teleport",
+      "legs": [
+        {
+          "target": [
+            43,
+            -44
+          ],
+          "reached": true,
+          "position": [
+            42.25785827636719,
+            -43.972843170166016
+          ]
+        },
+        {
+          "target": [
+            43,
+            -42.2
+          ],
+          "reached": true,
+          "position": [
+            42.76885986328125,
+            -42.75484085083008
+          ]
+        },
+        {
+          "target": [
+            49.75,
+            -42.2
+          ],
+          "reached": true,
+          "position": [
+            48.97511672973633,
+            -41.93270492553711
+          ]
+        },
+        {
+          "target": [
+            53.73,
+            -43.69
+          ],
+          "reached": true,
+          "position": [
+            53.037818908691406,
+            -43.36232376098633
+          ]
+        },
+        {
+          "target": [
+            55.5,
+            -43.4
+          ],
+          "reached": true,
+          "position": [
+            54.717933654785156,
+            -43.41360855102539
+          ]
+        }
+      ]
+    },
+    "normalUrl": "http://127.0.0.1:4344/world/"
+  },
+  "limits": [
+    "Terrain-off diagnostic did not remove the broad flagstone seam pattern; do not call every dark triangle terrain z-fighting.",
+    "Normal-entry screenshot is the true camp spawn; the matching park angle and short walking segment use an explicitly logged isolated QA start.",
+    "Astro has one inherited WorldTownAssets.tsx:123 TS2352 error; this batch does not edit TownAssets. Console/HTTP are not claimed zero."
+  ],
+  "rawEvidence": "/Users/bobby/Desktop/3D-personal-world/evidence/street-integration/plaza-seam"
+}

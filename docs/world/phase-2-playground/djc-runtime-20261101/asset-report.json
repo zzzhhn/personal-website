@@ -1,0 +1,1138 @@
+{
+  "near": {
+    "path": "public/assets/world/club/bar/djc-north-bar-v1.glb",
+    "bytes": 13283808,
+    "sha256": "2bb1309fb7488de7fb5ad96aa5030b17ba80c1ca32b6f728ff56b7410c9bbf2f",
+    "triangles": 303420,
+    "meshes": 18,
+    "materials": 18,
+    "textures": [
+      {
+        "path": "public/assets/world/club/bar/textures/wood_nor_gl-fc9f1d2600e76865.jpg",
+        "bytes": 2326816,
+        "sha256": "fc9f1d2600e7686504b36d805b79bd785a327b752a3e7943a41e7d6e9bdfe399"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/wood_diff-5da68c7ebe8732f0.jpg",
+        "bytes": 3562033,
+        "sha256": "5da68c7ebe8732f029ecbd602cb0d86d2a271e32539df953a0f10efa052b9516"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/teak_rough-83bc1bf52c552ef0.png",
+        "bytes": 839007,
+        "sha256": "83bc1bf52c552ef01833a5531c69dc231f8eabe268a4ed61b62ba82323e740ed"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/dry_palm_normal-3d6daa0e35c24e35.png",
+        "bytes": 1945604,
+        "sha256": "3d6daa0e35c24e352a7ef34a8e25d32916c59de4a0cf309a0d92683f8796b8eb"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/dry_palm_color-5e49fb6cf7709fd5.png",
+        "bytes": 1479424,
+        "sha256": "5e49fb6cf7709fd56f419af7400e4b9e449e505a9967a8176e4e5bc16f96e4eb"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/limestone_normal-8bc422cd0352b9e9.png",
+        "bytes": 2355851,
+        "sha256": "8bc422cd0352b9e9d20029501ade6411b57538a84ce05a59e9766c3f1e33b83c"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/limestone_color-76100c31ddfacd17.png",
+        "bytes": 1366709,
+        "sha256": "76100c31ddfacd17386b919de4d63226622cf96c4fc59f89addf1c30ada24eb7"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/limestone_rough-9bc682ee198d0c20.png",
+        "bytes": 1075749,
+        "sha256": "9bc682ee198d0c2007c908b33105b260ccd8fb6831b5fe4909754fb492fa2c6f"
+      }
+    ],
+    "accessorDataSHA256": [
+      "4c8f2d1ef415499b19c91a7d23e3a675a9f602ef03fa96ec0c1ae8c9e8c76f1a",
+      "655330d39b153d549001e4d9681ed038253a7dd64d0e01559c20acadf586150e",
+      "efe088ad6eb768468845d6f9f3b160c3992a0cc28a85299d7483349d5983f997",
+      "e6415bad3c35642304c3b14b16cb48ac73c0d516b0b72d863bba281a6bdc88d0",
+      "798e61236d5f8dd52153f33302609d3ab9b61045dd650c3263d0328b96ed7e79",
+      "af603f7b48fe5dc91a2eef395eba3d9e70c8bf63419cdde7e3c8abcbf116ea57",
+      "784c53a53ce3ea7346b6741daf483b3f925a09086b44785ef6449fcc55722df8",
+      "96ddb99ff45386e8629509b1ed91e4ec67a54199f866f46b3fd529ff13c37621",
+      "eb19a3eebd459c98d40ba59f7095aeb6f35703d7dbfaaf2b6d6872a34208d754",
+      "a88a71d0a5e7cbc84f4befb78e4ee36553921eed8986acae1cfcdee66f411633",
+      "93239548fd022d1c6c3b75b82547da1a038374ffedc92704decf8ed073277bc2",
+      "19c746dab3999ac7ff5cb4c746a793cf5be55503989db15c74529334c506c0ce",
+      "0816c9a508765493764d304892a73323d71979ec7979956c49e4731c482567b0",
+      "e5ada819a7971eccac5ebc4acabe88976af53ee861ec9be772cdfa17344e6a52",
+      "527498dd39ecf84a7694ebafccaf0595a1d8e89b86a18d7ec5168718830b96cd",
+      "44da38a399c942a8fe7245c702bec002cf8e21be5dce59c907dc9e8ccce05013",
+      "9cedb8a7422efb17d67e8117df36651a9ecf9f61459f2f7c79dfe4d258e2125c",
+      "dd6fa26a218bb4f0c5c71e647dec480657b6174928f594f9933890f02603aee8",
+      "7ef58cbb884c8fec89b3e172cec899f6a479bc41f7c74e78314e83a35d30eebf",
+      "099b9eef6e991c831211e5c571c28667d47b59e0f4f886fcef847fe6bf192627",
+      "34ee886c5fdfddd02a49a2ec6f63f1cfae07b8ba21c52708196b274754366086",
+      "1b9437c03672867513ffb63084f4e31c7fb18818ba294d460610ce888727eec9",
+      "cba82903d0b98fe6a2d9ed1c51aa41a1a7432d83781cd1a3028497194e5909be",
+      "949c6882926b23e3aeafba02b0f76a4fbf22e5b092ae061a30287adfb8ece4fa",
+      "624aef64eee717c3fa8a3bc4fcd90e0471e0035e4c6bdcf8e9b3495a8a8b641f",
+      "bc16ed65b672b94e98da9a0e7deceaab9365751f1a8a85b80ff0e9b571fa8194",
+      "95e03a8f578f921e08152feca18f09efdf03f8cb6301505d0ef29b3d38a0b95b",
+      "156e5bfc78edc264b8550a8a4aadba3a9a4a9df858fe057651a15e3d005eaf85",
+      "25e56154a97bd2239f54d7c314f2573710c4fd510d2fd269e7fbe6f558974850",
+      "4974f67c2360c2d6fb42b035f36cd1e8eab1eb04e6b4f6c9a1370f26c86a63fd",
+      "5c04dd5c82cdc4c30ca683db85b912a36a51b31ab2f35f824046d834129e21fc",
+      "cd7d4e987fecebd5440074d08c4038330b5cc76b22c376f94294abfe3dede5a1",
+      "e55b4cf82ace7b798bf25d4d6d4c91b6ea701c94910b33022b8c835af63b7523",
+      "23a1172c4d3a672f87a254104107c3c1a10b0b2152a759bf5e78b0707992d493",
+      "8d799087fbd86ff660383721115086c1b324fe73c1c2a1dbe2bebe82bb364b10",
+      "996562a8fab4c18f00975db0e907ec6ea2f2ead875e8e892325a0f1d6fa5cc44",
+      "af3976d13862c8e7c3e59ddf9d2bc13bc034b5dd9d301fa8af7a4a2d1993e251",
+      "2a3f4e3cf665d125b151c372842842b1bc543bb3a5dafc84c209d93220833685",
+      "3d8a6b3bd49b6fc47c8949ffec4f11fd31411b7ff25aa929c0464fb828abd238",
+      "b5cec50588f8f52996cc7fd020612c5ee05c7eabb0a2f5ec32f3aa888f04dcf7",
+      "9ce342ea242de35a4792843ca1e1db82988d31eeb04f84b1707f17b547032af1",
+      "3bf953d8d18752c151a6536aa67c34fb60dba0497cceac9d589190240448fc83",
+      "f5e6b6b109fc56ad7134329a9f4d856424a5a8fe6aef4bb892aff1cf58ae1b7d",
+      "8c2823ee16e495a13cb54707647cad81c4e59dea01e8e9c01fbb1c931c6aeaf0",
+      "5ca17080752468cae74f9a4c4c3603b0219370b64b4f494267fc38a39fed8649",
+      "d3b923cc67606a3864292c04eb5090d7adb78556f9448e0806ed32492f098454",
+      "8558561dd55d67bd700a460c13708a098b7f6767a893a5ebb1e4378bb820d020",
+      "fd75a00932594d4a40ee8140cafe95680afb6c9bc1e070cc84180d8b04dca621",
+      "cfc8df7c01b992be605d421dfe3d7c8f1888ec63807268b0df387ed85ff5b69d",
+      "6dbfd1060a8f59c13535120bb75c94c37549cddcb51cdc9896c7db051dddf37d",
+      "648c647d1fa551f886521507c9bbc10ebb3b4a63f837f09f3575d9cbdf29f808",
+      "30a42b724c18dc15e9f622a30dd5c850b6ed192be6c8dbf99508736be589303c",
+      "914ecff5f5115feaa682bbbe53c821969cf1ba7df18e28965d1dd577c9132ecc",
+      "55d242661606855456738a40c25f0ceadbfa8580ebfa42b0c3946fb21dc9dff5",
+      "ec0c39948deedf89b85ed1d144da7f5d8b499bc23c9e200c52d6491f9d23936a",
+      "ea3faa0a51700df3f9f33d4d06e09bd05e1d76016b83c365f63919c2521db826",
+      "8adc3c962406defb9cc4b191104399a576b25dedacd1357ebd5fc132fafbc5c1",
+      "9a0dcd34ab3b4bd2cedfe87b3274204658ba4f0b45f138fa8d5bd2b96a70abdb",
+      "653d7de8f09f15a042481edc6eea6fd4d6f5ae06138cc74535db107c73437296",
+      "ab2e5a51a0e532d3e568439d1dd36a642b45bf8bde320234caebb81629ee12b2",
+      "6212dffdfd255eacaa0fb1b5eea10a9d2bbd64aac7a0370e11370bb947ab97c3",
+      "5dae2e721fef810388b25144b1fe79a023a863c89a65e1227f825ed69e2a9466",
+      "3e30526ba7df3cacf5ee7bd4ff6a5576df369af30a8c13178b2c3355f3d54f8c",
+      "d7932a62d81a80a542b01e3f0db0f3742953b7c6cc7cbc3802ca04f5c684b61c",
+      "a55d2e6e8efb02ff8b56fa92cae58b2dc78e7d3d41efefbd95c5f44cf185848c",
+      "bb0e7b44564d1935d97bf8d0d75d158583102dadc00f4b33847f1a6d02763b63",
+      "ea7d501232fcc82348fc52289aa901485ce5469d692faab30a23189f9e277b10",
+      "72ec130e0d7c61e1a7db638ce19ce1845bbff571096ac8449bb5667feb9c30b1",
+      "085448681e88f30df31f393602a6b939e76d2a22d2ee19663366f5c82a9ae40c",
+      "ed5e5c2193992f8635586c2c122de50445696a0f4079a5926b016c242fffbfac",
+      "f3862800ab66c84a1a291b1ba272d293a1218c3fe09689e939f9e0713b1743f2",
+      "b4416838079273acbccd0538ced3bfcf5358c2d839fa4894ea6b3025152d7f41"
+    ],
+    "transmissionMaterials": [
+      "Clear thick glass",
+      "Olive bottle glass",
+      "Clear water"
+    ],
+    "bufferViewAndAccessorRangesValid": true,
+    "indicesInRange": true,
+    "finiteAccessorFloats": true,
+    "singleFileBelow25MiB": true,
+    "boundsYUp": {
+      "min": [
+        -6.041988849639893,
+        -0.22000000078696758,
+        -3.078183174133301
+      ],
+      "max": [
+        5.872344017028809,
+        4.774338722229004,
+        3.0781383514404297
+      ]
+    }
+  },
+  "far": {
+    "path": "public/assets/world/club/bar/djc-north-bar-lod1-v1.glb",
+    "bytes": 10531556,
+    "sha256": "0add8f8ae011b4088c68e2cebdd07366c109ce85e30f42534f53a71f062bbf3d",
+    "triangles": 204228,
+    "meshes": 18,
+    "materials": 18,
+    "textures": [
+      {
+        "path": "public/assets/world/club/bar/textures/wood_nor_gl-fc9f1d2600e76865.jpg",
+        "bytes": 2326816,
+        "sha256": "fc9f1d2600e7686504b36d805b79bd785a327b752a3e7943a41e7d6e9bdfe399"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/wood_diff-5da68c7ebe8732f0.jpg",
+        "bytes": 3562033,
+        "sha256": "5da68c7ebe8732f029ecbd602cb0d86d2a271e32539df953a0f10efa052b9516"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/teak_rough-83bc1bf52c552ef0.png",
+        "bytes": 839007,
+        "sha256": "83bc1bf52c552ef01833a5531c69dc231f8eabe268a4ed61b62ba82323e740ed"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/limestone_normal-8bc422cd0352b9e9.png",
+        "bytes": 2355851,
+        "sha256": "8bc422cd0352b9e9d20029501ade6411b57538a84ce05a59e9766c3f1e33b83c"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/limestone_color-76100c31ddfacd17.png",
+        "bytes": 1366709,
+        "sha256": "76100c31ddfacd17386b919de4d63226622cf96c4fc59f89addf1c30ada24eb7"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/limestone_rough-9bc682ee198d0c20.png",
+        "bytes": 1075749,
+        "sha256": "9bc682ee198d0c2007c908b33105b260ccd8fb6831b5fe4909754fb492fa2c6f"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/dry_palm_normal-3d6daa0e35c24e35.png",
+        "bytes": 1945604,
+        "sha256": "3d6daa0e35c24e352a7ef34a8e25d32916c59de4a0cf309a0d92683f8796b8eb"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/dry_palm_color-5e49fb6cf7709fd5.png",
+        "bytes": 1479424,
+        "sha256": "5e49fb6cf7709fd56f419af7400e4b9e449e505a9967a8176e4e5bc16f96e4eb"
+      }
+    ],
+    "accessorDataSHA256": [
+      "67cfd157f7b8a647c6a1e169d69f18ed4bee7ea80b3476a601de1798625d283b",
+      "1465828f0df52163b6d123b15f85ff7e8b55ae0c7c95936b217d9191b40be800",
+      "42bf1ebd7e9a21e8184764ff34dfcddae9b33217c392a7c715a05c23c8a6a780",
+      "d85b289c2dc5a6f44367aa5d7890f90a09d02463233a335ad6726d771ad53cb5",
+      "c375cb6e0b28b19e5f12ffd2516ce41bc470867244e9813679b6ca0d981996c1",
+      "9adf521668b1c7fa28e9b8099842f0acbf66c62d022ac576e20668b0ab0b3fbc",
+      "605727c8bff760da6e7951590effb2ec450e4d4b7f35123b37df7a27b4320a89",
+      "351609ed9b26986a9d3e55d8779d8dfd0a134c13e8a05c190e08f194921f5c2d",
+      "9811360478eadac59f7d12a43534e7f2a761c7e4b427b316feb75761f44ad704",
+      "655330d39b153d549001e4d9681ed038253a7dd64d0e01559c20acadf586150e",
+      "4cc502ef6106462ec156f46d592002c929d01ac3fc823743d5c3cc0156822a49",
+      "e6415bad3c35642304c3b14b16cb48ac73c0d516b0b72d863bba281a6bdc88d0",
+      "9667d757733cf1428e9b627bb385a2092a59559e58f601a8c417644675e37926",
+      "ede28671b66062120d7192f0860697f6d0dbb302ef8250301da4b36770d6eae4",
+      "b1c307906dc7e8511d5cb5a697f4c45ca208a234891d290dd0980bf03358c47e",
+      "8c2823ee16e495a13cb54707647cad81c4e59dea01e8e9c01fbb1c931c6aeaf0",
+      "c60dcdac2e6a3803622d1a688255f3ca9f4a9d06c72fbafe623d0b92bfa9e544",
+      "25d6b78cfa6d3397c89fa25642d1f72a3e33117640f5f194399ebb334a858299",
+      "4d8ebdf01533e3ed423e7d0f57b87b4dfc222f83068daea0a0048d95940e7621",
+      "01997ef983bb4998996bae917ff729b05ab7c13892297b42e2f9635a06ba851a",
+      "269e83fd78287aa5297b2f36f0898b235aa255e7f85010c394efcaf19e0fc299",
+      "38b4aa0edb6919464de8b9f0fe388356397ba88950a2c93ee45e545f16102f7a",
+      "be508419a3ecb630fd9747cb02e2f7a3abe5895fe603ceae86f3136dddca7666",
+      "55780d54b83057199ef2dc7e4bc981a8bc3b59fe8879b45910b4ad19f744eb8d",
+      "f38d0974d5cc577fdfcd3b4b5679fe64a72a740ac4ed95742b73ec67cb606558",
+      "623baa3465953578d48fffb5a4ac647aa736f50069ca0ee4d6d55e2a1bef2de6",
+      "32521789f8b30ef19d318ccd74d927a060ec78b7c6191a0e830c1f93faa4ef14",
+      "93085f96221ba91c7f4fd561647b8d2dfd611afdff3e43ef4fd23c56f4b769b9",
+      "47665b6bf66fadc2b4769e7ca0afbce34eca68cf6467eb480992b5da027412f3",
+      "d3b923cc67606a3864292c04eb5090d7adb78556f9448e0806ed32492f098454",
+      "8558561dd55d67bd700a460c13708a098b7f6767a893a5ebb1e4378bb820d020",
+      "17c271341a82cf49972f9f3993090a7c02e6ec5626d75fc77e64ccf0e9e596ce",
+      "5dedfc289918814df6fd9a20aeeb04f0d7ddba89fd9c994c9bdeeffaaa120a6d",
+      "acd3037a98eb4f855b88e6602c16f7d4aa241f3c773ac6f73f98050491390b70",
+      "eece3029119cee121152cfea8d13e13732ba2fa471992367dede281f4fe2fa08",
+      "c86f1c6afb861d4336b0f5251dfb1c5bcec94f0fc93f737d953faf35228c0559",
+      "41345db3185c1b75128a745fb719b8b7032631b916f12bd31c134782d1f38a04",
+      "6dbfd1060a8f59c13535120bb75c94c37549cddcb51cdc9896c7db051dddf37d",
+      "648c647d1fa551f886521507c9bbc10ebb3b4a63f837f09f3575d9cbdf29f808",
+      "30a42b724c18dc15e9f622a30dd5c850b6ed192be6c8dbf99508736be589303c",
+      "4d8cd790448c50c12734fa36a657bb1e0344c2887bbf3948bd88ecb69e82d895",
+      "7999823878cd4ed26ba1ef8a1bd9fabd5c0c292653c09a52b8372fcd50cf2a3d",
+      "8b4f4cb7209254cbcb120b78c15d08270fda5321cf4cb275f2337ac642773356",
+      "df050e7f74752b4466a642e8e7f4a690ea27b519abda06c9c45e15537c9afc90",
+      "a082de65edb9d90184e98b5de0043e667a4b3b4f5de9396391b496cf15e77924",
+      "f26effc1363fc102fe61a7d7cb504805b972ea7199fcd0b665629ec27a85f961",
+      "ea7d501232fcc82348fc52289aa901485ce5469d692faab30a23189f9e277b10",
+      "72ec130e0d7c61e1a7db638ce19ce1845bbff571096ac8449bb5667feb9c30b1",
+      "e55b4cf82ace7b798bf25d4d6d4c91b6ea701c94910b33022b8c835af63b7523",
+      "23a1172c4d3a672f87a254104107c3c1a10b0b2152a759bf5e78b0707992d493",
+      "8d799087fbd86ff660383721115086c1b324fe73c1c2a1dbe2bebe82bb364b10",
+      "996562a8fab4c18f00975db0e907ec6ea2f2ead875e8e892325a0f1d6fa5cc44",
+      "c51c38d44da8a2709015c7ad5d57f77dde80a13d2f12e2dc524691bf56cad851",
+      "ae4a023b8dbef1bce487d96d045a47ea62c9ff890ca63df1af003de51ecb62a9",
+      "bf8ee4eb724d025744319c296f0bfa0b4594d417221579d9940e22d01f8cc819",
+      "59b9c118d0482aaa29a5809a77c8d760005b04199303b44b53ed234244d908a0",
+      "1c1076b04be2a3a5781373ea67ebf6fddcb0d6c9a150632e3ab3fcac9c5d6a07",
+      "6cc21878e3eb62317d9799c0851b360c04a5caf488a7773e0395c436d29d538d",
+      "1688e5552f210198fa8bdf96ea10e05db0f00a3de6fc5126aa23671a3647e0c0",
+      "518e463651f19903959954ec11c1fe344e1887157cd282eee856c1e39dfe81af",
+      "4089a3e1e3b8af585de2f1744a40f932f8cf92aef6850a7ff45936993128e8c1",
+      "64aa5d21aaf653ef8e593884aa43483afcbd464d9ad0e3d53d55740b74be0d36",
+      "9ed381021b27f28e003b507b1d8f59582b4868c93f252c09238c29725b755239",
+      "ada6983658f1b7dc0f3f0dd9eb77db528bd21e5a95adffb81d5c3e99be245e63",
+      "8532745d09e9050010420dfaba7c25f901b5e8c1c599849b9ed33d0babd3d054",
+      "865864eb381b6ea495a38d7710099233baafa4bb09acf1689cb7821a96a3251e",
+      "803a08f5fd13b3eb19abab4cb7c3f4ceaddbd7c1e8a025bb2dba996a3ba9ecde",
+      "153619717657f31d9cc78baecbf57a52931bde107fa2b4938c0b9f8a1ee1b223",
+      "2a8cfc050368ceff556607c4504786c032516d2ed6febf2691e96ac1671e6a0a",
+      "692de2f61e99530c9458fa3654969c33d7ba617ba5ae5c56c5991550dea4c235",
+      "224e905cdcd97a3af38e04dde45c481866541d84139ca7466411623288971cd7",
+      "b5cec50588f8f52996cc7fd020612c5ee05c7eabb0a2f5ec32f3aa888f04dcf7"
+    ],
+    "transmissionMaterials": [
+      "Clear thick glass",
+      "Olive bottle glass",
+      "Clear water"
+    ],
+    "bufferViewAndAccessorRangesValid": true,
+    "indicesInRange": true,
+    "finiteAccessorFloats": true,
+    "singleFileBelow25MiB": true,
+    "boundsYUp": {
+      "min": [
+        -6.041988849639893,
+        -0.2200000286102295,
+        -3.0314741134643555
+      ],
+      "max": [
+        5.872344017028809,
+        4.774338722229004,
+        3.031123638153076
+      ]
+    }
+  },
+  "nearLosslessVerification": {
+    "accessorBytesExact": true,
+    "allGeometryBufferViewsExact": true,
+    "nodesMaterialsTexturesSamplersExact": true,
+    "externalImageBytesExact": true,
+    "accessorsVerified": 72
+  },
+  "sharedImageUris": [
+    "textures/dry_palm_color-5e49fb6cf7709fd5.png",
+    "textures/dry_palm_normal-3d6daa0e35c24e35.png",
+    "textures/limestone_color-76100c31ddfacd17.png",
+    "textures/limestone_normal-8bc422cd0352b9e9.png",
+    "textures/limestone_rough-9bc682ee198d0c20.png",
+    "textures/teak_rough-83bc1bf52c552ef0.png",
+    "textures/wood_diff-5da68c7ebe8732f0.jpg",
+    "textures/wood_nor_gl-fc9f1d2600e76865.jpg"
+  ],
+  "sharedExternalImageBytes": 14951193,
+  "lodMaterialBehaviorExact": true,
+  "texturesDownsampled": false,
+  "worldOrigin": [
+    40.75,
+    1.2,
+    40
+  ],
+  "nativeSource": {
+    "path": "docs/world/phase-2-playground/djc-quality-pilot-20261101/djc-bar-pilot.blend",
+    "bytes": 18295535,
+    "sha256": "287c3641e17e6e7f8cc90309bb8f5bff83de15d8d2fe584a1865133e7fc72eef"
+  },
+  "approvedGlbSource": {
+    "path": "docs/world/phase-2-playground/djc-quality-pilot-20261101/djc-bar-pilot.glb",
+    "bytes": 28235276,
+    "sha256": "afea4d665296ce1a861d26edba2e3cf221622d68e7834c006bb708de84b824dd"
+  },
+  "generatedUnix": 1793518618.181897,
+  "generator": {
+    "path": "tools/world/djc-quality-pilot/runtime-assets.py",
+    "bytes": 22322,
+    "sha256": "2a2ed3b1c30e8a065003e54506794042b620da04a9d18ef1228fbe0c16d18722"
+  },
+  "nearExternalization": {
+    "images": [
+      {
+        "path": "public/assets/world/club/bar/textures/wood_nor_gl-fc9f1d2600e76865.jpg",
+        "bytes": 2326816,
+        "sha256": "fc9f1d2600e7686504b36d805b79bd785a327b752a3e7943a41e7d6e9bdfe399",
+        "imageName": "wood_nor_gl",
+        "uri": "textures/wood_nor_gl-fc9f1d2600e76865.jpg"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/wood_diff-5da68c7ebe8732f0.jpg",
+        "bytes": 3562033,
+        "sha256": "5da68c7ebe8732f029ecbd602cb0d86d2a271e32539df953a0f10efa052b9516",
+        "imageName": "wood_diff",
+        "uri": "textures/wood_diff-5da68c7ebe8732f0.jpg"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/teak_rough-83bc1bf52c552ef0.png",
+        "bytes": 839007,
+        "sha256": "83bc1bf52c552ef01833a5531c69dc231f8eabe268a4ed61b62ba82323e740ed",
+        "imageName": "teak_rough",
+        "uri": "textures/teak_rough-83bc1bf52c552ef0.png"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/dry_palm_normal-3d6daa0e35c24e35.png",
+        "bytes": 1945604,
+        "sha256": "3d6daa0e35c24e352a7ef34a8e25d32916c59de4a0cf309a0d92683f8796b8eb",
+        "imageName": "dry_palm_normal",
+        "uri": "textures/dry_palm_normal-3d6daa0e35c24e35.png"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/dry_palm_color-5e49fb6cf7709fd5.png",
+        "bytes": 1479424,
+        "sha256": "5e49fb6cf7709fd56f419af7400e4b9e449e505a9967a8176e4e5bc16f96e4eb",
+        "imageName": "dry_palm_color",
+        "uri": "textures/dry_palm_color-5e49fb6cf7709fd5.png"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/limestone_normal-8bc422cd0352b9e9.png",
+        "bytes": 2355851,
+        "sha256": "8bc422cd0352b9e9d20029501ade6411b57538a84ce05a59e9766c3f1e33b83c",
+        "imageName": "limestone_normal",
+        "uri": "textures/limestone_normal-8bc422cd0352b9e9.png"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/limestone_color-76100c31ddfacd17.png",
+        "bytes": 1366709,
+        "sha256": "76100c31ddfacd17386b919de4d63226622cf96c4fc59f89addf1c30ada24eb7",
+        "imageName": "limestone_color",
+        "uri": "textures/limestone_color-76100c31ddfacd17.png"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/limestone_rough-9bc682ee198d0c20.png",
+        "bytes": 1075749,
+        "sha256": "9bc682ee198d0c2007c908b33105b260ccd8fb6831b5fe4909754fb492fa2c6f",
+        "imageName": "limestone_rough",
+        "uri": "textures/limestone_rough-9bc682ee198d0c20.png"
+      }
+    ],
+    "removedImageBufferViews": 8,
+    "geometryBufferBytes": 13261744
+  },
+  "farExternalization": {
+    "images": [
+      {
+        "path": "public/assets/world/club/bar/textures/wood_nor_gl-fc9f1d2600e76865.jpg",
+        "bytes": 2326816,
+        "sha256": "fc9f1d2600e7686504b36d805b79bd785a327b752a3e7943a41e7d6e9bdfe399",
+        "imageName": "wood_nor_gl",
+        "uri": "textures/wood_nor_gl-fc9f1d2600e76865.jpg"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/wood_diff-5da68c7ebe8732f0.jpg",
+        "bytes": 3562033,
+        "sha256": "5da68c7ebe8732f029ecbd602cb0d86d2a271e32539df953a0f10efa052b9516",
+        "imageName": "wood_diff",
+        "uri": "textures/wood_diff-5da68c7ebe8732f0.jpg"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/teak_rough-83bc1bf52c552ef0.png",
+        "bytes": 839007,
+        "sha256": "83bc1bf52c552ef01833a5531c69dc231f8eabe268a4ed61b62ba82323e740ed",
+        "imageName": "teak_rough",
+        "uri": "textures/teak_rough-83bc1bf52c552ef0.png"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/limestone_normal-8bc422cd0352b9e9.png",
+        "bytes": 2355851,
+        "sha256": "8bc422cd0352b9e9d20029501ade6411b57538a84ce05a59e9766c3f1e33b83c",
+        "imageName": "limestone_normal",
+        "uri": "textures/limestone_normal-8bc422cd0352b9e9.png"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/limestone_color-76100c31ddfacd17.png",
+        "bytes": 1366709,
+        "sha256": "76100c31ddfacd17386b919de4d63226622cf96c4fc59f89addf1c30ada24eb7",
+        "imageName": "limestone_color",
+        "uri": "textures/limestone_color-76100c31ddfacd17.png"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/limestone_rough-9bc682ee198d0c20.png",
+        "bytes": 1075749,
+        "sha256": "9bc682ee198d0c2007c908b33105b260ccd8fb6831b5fe4909754fb492fa2c6f",
+        "imageName": "limestone_rough",
+        "uri": "textures/limestone_rough-9bc682ee198d0c20.png"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/dry_palm_normal-3d6daa0e35c24e35.png",
+        "bytes": 1945604,
+        "sha256": "3d6daa0e35c24e352a7ef34a8e25d32916c59de4a0cf309a0d92683f8796b8eb",
+        "imageName": "dry_palm_normal",
+        "uri": "textures/dry_palm_normal-3d6daa0e35c24e35.png"
+      },
+      {
+        "path": "public/assets/world/club/bar/textures/dry_palm_color-5e49fb6cf7709fd5.png",
+        "bytes": 1479424,
+        "sha256": "5e49fb6cf7709fd56f419af7400e4b9e449e505a9967a8176e4e5bc16f96e4eb",
+        "imageName": "dry_palm_color",
+        "uri": "textures/dry_palm_color-5e49fb6cf7709fd5.png"
+      }
+    ],
+    "removedImageBufferViews": 8,
+    "geometryBufferBytes": 10509600
+  },
+  "lodDerivation": {
+    "blender": "5.1.2",
+    "sourceCollection": "02 · Refined bar pilot",
+    "sourceObjects": 4217,
+    "sourceTriangles": 303420,
+    "derivedTriangles": 204228,
+    "retainedObjectsBeforeMaterialMerge": 2725,
+    "mergedMeshes": 18,
+    "categories": {
+      "Backbar botanical bottle": {
+        "sourceObjects": 32,
+        "sourceTriangles": 22528,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 22528
+      },
+      "Backbar botanical bottle cork": {
+        "sourceObjects": 32,
+        "sourceTriangles": 2432,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 2432
+      },
+      "Backbar botanical bottle label": {
+        "sourceObjects": 32,
+        "sourceTriangles": 2048,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 2048
+      },
+      "Backbar shelf upright": {
+        "sourceObjects": 3,
+        "sourceTriangles": 564,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 564
+      },
+      "Bamboo node": {
+        "sourceObjects": 16,
+        "sourceTriangles": 8128,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 8128
+      },
+      "Bamboo structural post": {
+        "sourceObjects": 4,
+        "sourceTriangles": 2032,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 2032
+      },
+      "Bar knife": {
+        "sourceObjects": 1,
+        "sourceTriangles": 156,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 156
+      },
+      "Brass arched faucet": {
+        "sourceObjects": 1,
+        "sourceTriangles": 320,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 320
+      },
+      "Brushed steel cocktail shaker": {
+        "sourceObjects": 1,
+        "sourceTriangles": 576,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 576
+      },
+      "Cabinet pull": {
+        "sourceObjects": 8,
+        "sourceTriangles": 352,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 352
+      },
+      "Ceramic fruit bowl": {
+        "sourceObjects": 1,
+        "sourceTriangles": 672,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 672
+      },
+      "Citrus in bowl": {
+        "sourceObjects": 6,
+        "sourceTriangles": 2640,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 2640
+      },
+      "Counter carcass": {
+        "sourceObjects": 1,
+        "sourceTriangles": 188,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 188
+      },
+      "Counter clear bottle": {
+        "sourceObjects": 1,
+        "sourceTriangles": 704,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 704
+      },
+      "Counter clear bottle cork": {
+        "sourceObjects": 1,
+        "sourceTriangles": 76,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 76
+      },
+      "Counter clear bottle label": {
+        "sourceObjects": 1,
+        "sourceTriangles": 64,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 64
+      },
+      "Counter green bottle": {
+        "sourceObjects": 1,
+        "sourceTriangles": 704,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 704
+      },
+      "Counter green bottle cork": {
+        "sourceObjects": 1,
+        "sourceTriangles": 76,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 76
+      },
+      "Counter green bottle label": {
+        "sourceObjects": 1,
+        "sourceTriangles": 64,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 64
+      },
+      "Countersunk deck screw": {
+        "sourceObjects": 92,
+        "sourceTriangles": 2576,
+        "removedObjects": 92,
+        "removedTriangles": 2576,
+        "outputTriangles": 0
+      },
+      "Curved palm leaflet": {
+        "sourceObjects": 352,
+        "sourceTriangles": 45056,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 19712
+      },
+      "Cutting board": {
+        "sourceObjects": 1,
+        "sourceTriangles": 188,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 188
+      },
+      "DJC brass wordmark": {
+        "sourceObjects": 1,
+        "sourceTriangles": 764,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 764
+      },
+      "Deck fascia": {
+        "sourceObjects": 2,
+        "sourceTriangles": 376,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 376
+      },
+      "Deck support": {
+        "sourceObjects": 1,
+        "sourceTriangles": 188,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 188
+      },
+      "Drink water": {
+        "sourceObjects": 4,
+        "sourceTriangles": 624,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 624
+      },
+      "Dry palm eave fibre": {
+        "sourceObjects": 1240,
+        "sourceTriangles": 39680,
+        "removedObjects": 1240,
+        "removedTriangles": 39680,
+        "outputTriangles": 0
+      },
+      "Folded linen bar towel": {
+        "sourceObjects": 1,
+        "sourceTriangles": 3296,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 824
+      },
+      "Foot rail bracket": {
+        "sourceObjects": 3,
+        "sourceTriangles": 180,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 180
+      },
+      "Fresh lime": {
+        "sourceObjects": 3,
+        "sourceTriangles": 1320,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 1320
+      },
+      "Frosted lamp bulb": {
+        "sourceObjects": 3,
+        "sourceTriangles": 1320,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 1320
+      },
+      "Gable tie": {
+        "sourceObjects": 5,
+        "sourceTriangles": 300,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 300
+      },
+      "Guest brass footrail": {
+        "sourceObjects": 1,
+        "sourceTriangles": 92,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 92
+      },
+      "Hemp tie": {
+        "sourceObjects": 16,
+        "sourceTriangles": 6144,
+        "removedObjects": 8,
+        "removedTriangles": 3072,
+        "outputTriangles": 3072
+      },
+      "Honed limestone slab": {
+        "sourceObjects": 1,
+        "sourceTriangles": 188,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 188
+      },
+      "Inset service door": {
+        "sourceObjects": 8,
+        "sourceTriangles": 1504,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 1504
+      },
+      "Knee brace": {
+        "sourceObjects": 4,
+        "sourceTriangles": 1264,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 1264
+      },
+      "Knife handle": {
+        "sourceObjects": 1,
+        "sourceTriangles": 188,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 188
+      },
+      "Layered palm bundle": {
+        "sourceObjects": 1728,
+        "sourceTriangles": 48384,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 48384
+      },
+      "Long eave beam": {
+        "sourceObjects": 2,
+        "sourceTriangles": 760,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 760
+      },
+      "Mounted DJC timber plaque": {
+        "sourceObjects": 1,
+        "sourceTriangles": 188,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 188
+      },
+      "Open display shelf": {
+        "sourceObjects": 3,
+        "sourceTriangles": 564,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 564
+      },
+      "Open gable rafter": {
+        "sourceObjects": 10,
+        "sourceTriangles": 3160,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 3160
+      },
+      "Palm rachis": {
+        "sourceObjects": 16,
+        "sourceTriangles": 2496,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 2496
+      },
+      "Pendant cable": {
+        "sourceObjects": 3,
+        "sourceTriangles": 84,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 84
+      },
+      "Planter": {
+        "sourceObjects": 2,
+        "sourceTriangles": 1152,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 1152
+      },
+      "Plaque hanger": {
+        "sourceObjects": 2,
+        "sourceTriangles": 88,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 88
+      },
+      "Post stone foot": {
+        "sourceObjects": 4,
+        "sourceTriangles": 2032,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 2032
+      },
+      "Rafter purlin bearing": {
+        "sourceObjects": 90,
+        "sourceTriangles": 16920,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 16920
+      },
+      "Rattan lamp rib": {
+        "sourceObjects": 72,
+        "sourceTriangles": 13824,
+        "removedObjects": 48,
+        "removedTriangles": 9216,
+        "outputTriangles": 4608
+      },
+      "Rattan lamp weave": {
+        "sourceObjects": 39,
+        "sourceTriangles": 22464,
+        "removedObjects": 26,
+        "removedTriangles": 14976,
+        "outputTriangles": 7488
+      },
+      "Rear worktop": {
+        "sourceObjects": 1,
+        "sourceTriangles": 188,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 188
+      },
+      "Recessed brass kick": {
+        "sourceObjects": 1,
+        "sourceTriangles": 188,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 188
+      },
+      "Reeded teak frontage": {
+        "sourceObjects": 62,
+        "sourceTriangles": 11656,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 11656
+      },
+      "Ridge pole": {
+        "sourceObjects": 1,
+        "sourceTriangles": 380,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 380
+      },
+      "Roof bearing extension": {
+        "sourceObjects": 4,
+        "sourceTriangles": 1520,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 1520
+      },
+      "Rounded ice cube": {
+        "sourceObjects": 8,
+        "sourceTriangles": 1504,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 1504
+      },
+      "Service basin": {
+        "sourceObjects": 1,
+        "sourceTriangles": 576,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 576
+      },
+      "Service cabinet": {
+        "sourceObjects": 4,
+        "sourceTriangles": 752,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 752
+      },
+      "Shelf brass lip": {
+        "sourceObjects": 3,
+        "sourceTriangles": 132,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 132
+      },
+      "Soil": {
+        "sourceObjects": 2,
+        "sourceTriangles": 1016,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 1016
+      },
+      "Stone edge apron": {
+        "sourceObjects": 1,
+        "sourceTriangles": 188,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 188
+      },
+      "Stool floor foot": {
+        "sourceObjects": 16,
+        "sourceTriangles": 960,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 960
+      },
+      "Stool foot ring": {
+        "sourceObjects": 4,
+        "sourceTriangles": 3072,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 3072
+      },
+      "Stool splayed leg": {
+        "sourceObjects": 16,
+        "sourceTriangles": 960,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 960
+      },
+      "Teak deck board": {
+        "sourceObjects": 46,
+        "sourceTriangles": 8648,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 8648
+      },
+      "Teak seat rim": {
+        "sourceObjects": 4,
+        "sourceTriangles": 1536,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 1536
+      },
+      "Thatch course support": {
+        "sourceObjects": 18,
+        "sourceTriangles": 792,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 792
+      },
+      "Thick drinking tumbler": {
+        "sourceObjects": 4,
+        "sourceTriangles": 1920,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 1920
+      },
+      "Towel woven border": {
+        "sourceObjects": 2,
+        "sourceTriangles": 32,
+        "removedObjects": 2,
+        "removedTriangles": 32,
+        "outputTriangles": 0
+      },
+      "Underside roof lath": {
+        "sourceObjects": 8,
+        "sourceTriangles": 288,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 288
+      },
+      "Woven drink coaster": {
+        "sourceObjects": 4,
+        "sourceTriangles": 1776,
+        "removedObjects": 0,
+        "removedTriangles": 0,
+        "outputTriangles": 1776
+      },
+      "Woven seat warp": {
+        "sourceObjects": 76,
+        "sourceTriangles": 1824,
+        "removedObjects": 38,
+        "removedTriangles": 912,
+        "outputTriangles": 912
+      },
+      "Woven seat weft": {
+        "sourceObjects": 76,
+        "sourceTriangles": 1824,
+        "removedObjects": 38,
+        "removedTriangles": 912,
+        "outputTriangles": 912
+      }
+    },
+    "removedFamilies": [
+      "Countersunk deck screw",
+      "Dry palm eave fibre",
+      "Towel woven border"
+    ],
+    "periodicRetention": {
+      "Rattan lamp rib": 3,
+      "Rattan lamp weave": 3,
+      "Woven seat warp": 2,
+      "Woven seat weft": 2,
+      "Hemp tie": 2
+    },
+    "decimationRatios": {
+      "Curved palm leaflet": 0.45,
+      "Folded linen bar towel": 0.25
+    },
+    "nativeBoundsZUp": {
+      "min": [
+        -6.041988849639893,
+        -3.031123638153076,
+        -0.2199999988079071
+      ],
+      "max": [
+        5.872344017028809,
+        3.0314741134643555,
+        4.774338722229004
+      ]
+    },
+    "groundWitnesses": [
+      {
+        "name": "Post stone foot.004",
+        "minZ": 0.0
+      },
+      {
+        "name": "Post stone foot.005",
+        "minZ": 0.0
+      },
+      {
+        "name": "Post stone foot.006",
+        "minZ": 0.0
+      },
+      {
+        "name": "Post stone foot.007",
+        "minZ": 0.0
+      },
+      {
+        "name": "Stool floor foot.016",
+        "minZ": 0.0
+      },
+      {
+        "name": "Stool floor foot.017",
+        "minZ": 0.0
+      },
+      {
+        "name": "Stool floor foot.018",
+        "minZ": 0.0
+      },
+      {
+        "name": "Stool floor foot.019",
+        "minZ": 0.0
+      },
+      {
+        "name": "Stool floor foot.020",
+        "minZ": 0.0
+      },
+      {
+        "name": "Stool floor foot.021",
+        "minZ": 0.0
+      },
+      {
+        "name": "Stool floor foot.022",
+        "minZ": 0.0
+      },
+      {
+        "name": "Stool floor foot.023",
+        "minZ": 0.0
+      },
+      {
+        "name": "Stool floor foot.024",
+        "minZ": 0.0
+      },
+      {
+        "name": "Stool floor foot.025",
+        "minZ": 0.0
+      },
+      {
+        "name": "Stool floor foot.026",
+        "minZ": 0.0
+      },
+      {
+        "name": "Stool floor foot.027",
+        "minZ": 0.0
+      },
+      {
+        "name": "Stool floor foot.028",
+        "minZ": 0.0
+      },
+      {
+        "name": "Stool floor foot.029",
+        "minZ": 0.0
+      },
+      {
+        "name": "Stool floor foot.030",
+        "minZ": 0.0
+      },
+      {
+        "name": "Stool floor foot.031",
+        "minZ": 0.0
+      }
+    ],
+    "materialNames": [
+      "Blackened steel",
+      "Brushed brass",
+      "Clear thick glass",
+      "Clear water",
+      "Dry palm thatch · longitudinal fibres",
+      "Fresh citrus",
+      "Hemp binding",
+      "Honed limestone · mineral pores",
+      "Lime rind",
+      "Natural linen",
+      "Oiled teak · photographed grain",
+      "Olive bottle glass",
+      "Palm leaf",
+      "Potting soil",
+      "Printed bottle label",
+      "Split rattan",
+      "Warm ceramic glaze",
+      "Warm filament diffuser"
+    ],
+    "nativeSaved": false,
+    "originPolicy": "No object/root recentering; standard glTF Y-up export from native coordinates"
+  },
+  "approvedSourcesUnchanged": true,
+  "licenses": {
+    "photographedWood": {
+      "asset": "Poly Haven Wood Table 001",
+      "license": "CC0",
+      "assetUrl": "https://polyhaven.com/a/wood_table_001",
+      "licenseUrl": "https://polyhaven.com/license",
+      "sourceManifest": {
+        "path": "docs/world/phase-2-playground/djc-quality-pilot-20261101/textures/sources.json",
+        "bytes": 736,
+        "sha256": "75d68b60dba27f8c4fb2393aeb9daf5a25121637e4a10fcb98c33bef467309c9"
+      }
+    },
+    "remainingTexturesAndModels": "Authored for this DJC pilot; extracted unchanged from approved GLB"
+  },
+  "limits": {
+    "maxSingleAssetBytesExclusive": 26214400,
+    "renderedOrBrowserTested": false,
+    "lodCreativeApproval": "Pending runtime review; near asset preserves already approved geometry/materials"
+  }
+}

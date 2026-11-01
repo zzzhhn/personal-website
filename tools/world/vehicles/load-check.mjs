@@ -1,0 +1,12 @@
+import {CHROME,loadPlaywright} from '../playtest/lib.mjs';
+const base=process.env.WORLD_BASE_URL,q=process.env.WORLD_QUERY||'';
+const browser=await loadPlaywright().chromium.launch({executablePath:CHROME,headless:true,args:['--use-angle=metal']});
+const page=await browser.newPage({viewport:{width:1280,height:720}});
+const errs=[];page.on('pageerror',e=>errs.push('PAGE '+e.message));page.on('console',m=>{errs.push(m.type()+' '+m.text().slice(0,300))});
+page.on('response',r=>{if(r.status()>=400)errs.push('HTTP '+r.status()+' '+r.url())});
+await page.goto(base+'/world/'+q,{waitUntil:'networkidle'});
+const ok=await page.waitForFunction(()=>window.__worldDebug?.actor().loaded,undefined,{timeout:60000}).then(()=>true,()=>false);
+await page.waitForTimeout(2500);
+const pre=await page.evaluate(()=>({canvas:document.querySelectorAll('canvas').length,body:document.body.innerText.slice(0,300),has:!!window.__worldDebug,actor:window.__worldDebug?.actor?.(),objs:window.__worldDebug?.sceneObjects?.().filter(n=>/vehicle|guide|camp-loading/.test(n)).slice(0,40)}));console.log(JSON.stringify(pre).slice(0,1500));
+const info=ok?await page.evaluate(()=>({objs:__worldDebug.sceneObjects().filter(n=>n.startsWith('vehicle-')),snap:__worldDebug.snapshot().vehicles.map(v=>({id:v.id,mass:v.mass,pos:v.position.map(x=>+x.toFixed(3)),contacts:v.wheelContacts}))})):null;
+console.log(JSON.stringify({ok,info,errs:errs.slice(0,40)},null,1));await browser.close();

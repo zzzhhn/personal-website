@@ -1,0 +1,336 @@
+{
+  "url": "http://127.0.0.1:4330/world/",
+  "actualUrl": "http://127.0.0.1:4330/world/",
+  "startedAt": "2026-10-24T14:20:37.802Z",
+  "viewport": [
+    1920,
+    1080
+  ],
+  "sourceBefore": {
+    "head": "44a339e4dd6e9297b6dd03acdbe023a9e918f246",
+    "dirtyWorldSources": "",
+    "worldSourcesSha256": "c6623c7ef1aabba905fdb9cc695bf3e4802ba09e59ff49242941b5061164af25",
+    "files": 81
+  },
+  "sourceAfter": {
+    "head": "44a339e4dd6e9297b6dd03acdbe023a9e918f246",
+    "dirtyWorldSources": "",
+    "worldSourcesSha256": "c6623c7ef1aabba905fdb9cc695bf3e4802ba09e59ff49242941b5061164af25",
+    "files": 81
+  },
+  "sourceUnchanged": true,
+  "summary": {
+    "normalEntry": true,
+    "routeReachedPark": true,
+    "allWalkingLegsReached": true,
+    "cardOpenedAndClosed": true,
+    "nightSelected": true,
+    "runJumpInputSent": true,
+    "legsReached": 136,
+    "legsTotal": 136,
+    "eightFrames": true,
+    "allFrameDestinationsReached": true,
+    "videoAtLeast3Minutes": true,
+    "sourceUnchanged": true,
+    "errorCounts": {
+      "page": 0,
+      "console": 1,
+      "http": 1,
+      "network": 0
+    },
+    "fatal": null
+  },
+  "video": {
+    "file": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/final-tour.webm",
+    "seconds": 187.081,
+    "capture": "canvas MediaRecorder 30 fps; HTML HUD appears in screenshots only",
+    "bytes": 122343267
+  },
+  "idleFillMs": 0,
+  "actions": [
+    {
+      "atMs": 16824,
+      "action": "one real content card with E open/close",
+      "passed": true,
+      "before": {
+        "position": [
+          -50.44162368774414,
+          39.3006706237793
+        ],
+        "at": 12605.699999928474,
+        "zone": "Camp",
+        "prompt": "EEducation",
+        "cardOpen": false,
+        "menuOpen": false,
+        "driving": false
+      },
+      "open": {
+        "position": [
+          -50.68864440917969,
+          39.158721923828125
+        ],
+        "at": 13365.099999904633,
+        "zone": "Camp",
+        "prompt": "",
+        "cardOpen": true,
+        "menuOpen": false,
+        "driving": false
+      },
+      "after": {
+        "position": [
+          -50.693599700927734,
+          39.190223693847656
+        ],
+        "at": 16049.899999976158,
+        "zone": "Camp",
+        "prompt": "EEducation",
+        "cardOpen": false,
+        "menuOpen": false,
+        "driving": false
+      }
+    },
+    {
+      "atMs": 19640,
+      "action": "free orbit: real +220/-35 px drag, reversed before walking",
+      "position": [
+        -50.698726654052734,
+        39.22290802001953
+      ]
+    },
+    {
+      "atMs": 56112,
+      "action": "real sprint + Space run jump on avenue",
+      "before": [
+        21.090877532958984,
+        7.747176170349121
+      ],
+      "after": [
+        21.8013973236084,
+        2.961812734603882
+      ],
+      "keys": [
+        "KeyW",
+        "KeyD",
+        "ShiftLeft"
+      ],
+      "limitation": "video visual evidence; no vertical/collision debug measurements"
+    },
+    {
+      "atMs": 86086,
+      "action": "night selected through visible settings",
+      "selected": true,
+      "after": {
+        "position": [
+          34.64384460449219,
+          -42.764930725097656
+        ],
+        "at": 85313.19999992847,
+        "zone": "Island shore",
+        "prompt": "",
+        "cardOpen": false,
+        "menuOpen": false,
+        "driving": false
+      }
+    }
+  ],
+  "errors": {
+    "page": [],
+    "console": [
+      {
+        "atMs": 5422,
+        "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+      }
+    ],
+    "http": [
+      {
+        "atMs": 5422,
+        "status": 404,
+        "url": "http://127.0.0.1:4330/api/events"
+      }
+    ],
+    "network": []
+  },
+  "frames": [
+    {
+      "name": "01-camp-default",
+      "reached": true,
+      "distanceMode": "default 12 m distance",
+      "yawDragPixels": 0,
+      "atMs": 9042,
+      "before": [
+        -41.994239807128906,
+        34.9948616027832
+      ],
+      "after": [
+        -41.994239807128906,
+        34.9948616027832
+      ],
+      "png": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/01-camp-default.png",
+      "jpeg": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/01-camp-default.jpg",
+      "repositoryJpeg": "docs/world/integration/final-tour-01-camp-default.jpg",
+      "bytes": 377479,
+      "quality": 85
+    },
+    {
+      "name": "02-camp-near",
+      "reached": true,
+      "distanceMode": "near: wheel -650 from 12 m, reversed afterwards",
+      "yawDragPixels": 0,
+      "atMs": 22190,
+      "before": [
+        -50.698726654052734,
+        39.22290802001953
+      ],
+      "after": [
+        -50.703487396240234,
+        39.253257751464844
+      ],
+      "png": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/02-camp-near.png",
+      "jpeg": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/02-camp-near.jpg",
+      "repositoryJpeg": "docs/world/integration/final-tour-02-camp-near.jpg",
+      "bytes": 330648,
+      "quality": 77
+    },
+    {
+      "name": "03-town-default",
+      "reached": true,
+      "distanceMode": "default 12 m distance",
+      "yawDragPixels": 0,
+      "atMs": 54793,
+      "before": [
+        21.250850677490234,
+        8.005890846252441
+      ],
+      "after": [
+        21.090877532958984,
+        7.747176170349121
+      ],
+      "png": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/03-town-default.png",
+      "jpeg": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/03-town-default.jpg",
+      "repositoryJpeg": "docs/world/integration/final-tour-03-town-default.jpg",
+      "bytes": 279010,
+      "quality": 85
+    },
+    {
+      "name": "04-town-near",
+      "reached": true,
+      "distanceMode": "near: wheel -650 from 12 m, reversed afterwards",
+      "yawDragPixels": 0,
+      "atMs": 63024,
+      "before": [
+        21.109739303588867,
+        -20.766963958740234
+      ],
+      "after": [
+        20.740644454956055,
+        -21.24135398864746
+      ],
+      "png": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/04-town-near.png",
+      "jpeg": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/04-town-near.jpg",
+      "repositoryJpeg": "docs/world/integration/final-tour-04-town-near.jpg",
+      "bytes": 286026,
+      "quality": 85
+    },
+    {
+      "name": "05-water-default",
+      "reached": true,
+      "distanceMode": "default 12 m distance",
+      "yawDragPixels": -240,
+      "atMs": 75576,
+      "before": [
+        33.80067443847656,
+        -42.80278778076172
+      ],
+      "after": [
+        34.06092834472656,
+        -42.98583221435547
+      ],
+      "png": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/05-water-default.png",
+      "jpeg": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/05-water-default.jpg",
+      "repositoryJpeg": "docs/world/integration/final-tour-05-water-default.jpg",
+      "bytes": 247886,
+      "quality": 85
+    },
+    {
+      "name": "06-water-near",
+      "reached": true,
+      "distanceMode": "near: wheel -650 from 12 m, reversed afterwards",
+      "yawDragPixels": -240,
+      "atMs": 80390,
+      "before": [
+        34.695556640625,
+        -40.53258514404297
+      ],
+      "after": [
+        34.660003662109375,
+        -40.216331481933594
+      ],
+      "png": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/06-water-near.png",
+      "jpeg": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/06-water-near.jpg",
+      "repositoryJpeg": "docs/world/integration/final-tour-06-water-near.jpg",
+      "bytes": 233367,
+      "quality": 85
+    },
+    {
+      "name": "07-park-default-night",
+      "reached": true,
+      "distanceMode": "default 12 m distance",
+      "yawDragPixels": 475,
+      "atMs": 94326,
+      "before": [
+        53.7308464050293,
+        -43.69097137451172
+      ],
+      "after": [
+        54.11209487915039,
+        -43.67877960205078
+      ],
+      "png": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/07-park-default-night.png",
+      "jpeg": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/07-park-default-night.jpg",
+      "repositoryJpeg": "docs/world/integration/final-tour-07-park-default-night.jpg",
+      "bytes": 162704,
+      "quality": 85
+    },
+    {
+      "name": "08-park-near-night",
+      "reached": true,
+      "distanceMode": "near: wheel -650 from 12 m, reversed afterwards",
+      "yawDragPixels": 475,
+      "atMs": 100828,
+      "before": [
+        62.302040100097656,
+        -40.7175178527832
+      ],
+      "after": [
+        62.676963806152344,
+        -40.66049575805664
+      ],
+      "png": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/08-park-near-night.png",
+      "jpeg": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/08-park-near-night.jpg",
+      "repositoryJpeg": "docs/world/integration/final-tour-08-park-near-night.jpg",
+      "bytes": 173839,
+      "quality": 85
+    }
+  ],
+  "videoProbe": {
+    "codec": "vp9",
+    "width": 1920,
+    "height": 1080,
+    "packets": 5589,
+    "firstPacketSeconds": 0.0,
+    "lastPacketSeconds": 187.025,
+    "encodedTimelineSeconds": 187.058,
+    "captureWallSeconds": 187.081,
+    "note": "MediaRecorder streaming WebM has no format duration; duration is measured from actual encoded video packet timestamps. Not an FPS/hardware benchmark."
+  },
+  "rawReport": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/final-tour/report.json",
+  "limits": [
+    "Ordinary /world/ only. All walking is real keyboard input, steered from the visible HUD map anchor, not runtime state.",
+    "Canvas MediaRecorder excludes the HTML HUD. Full-page PNG/JPEG screenshots retain the HUD.",
+    "HUD world x/z reports arrival and horizontal movement; it cannot prove vertical jump height, exact contacts, or collision penetration.",
+    "Camera drags occur only while stationary and are reversed before walking. Wheel zoom is reversed without touching state.",
+    "One final tour, not a repeat of the full interaction/collision suite or a performance acceptance run.",
+    "Script exit code was 1 solely because the existing /api/events 404 generated one HTTP error and one console error; no walking leg or capture failed.",
+    "Parallel budget/driving runs were active; video timing is not a hardware performance certification."
+  ]
+}

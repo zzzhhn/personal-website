@@ -1,0 +1,21 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><title>Driving verification fixture</title>
+<style>body{margin:0;background:#20272c;color:#fff;font:14px monospace}aside{padding:8px;display:flex;gap:8px;flex-wrap:wrap}button{padding:8px}iframe{width:100%;height:78vh;border:0}pre{margin:8px;white-space:pre-wrap;max-height:15vh;overflow:auto}</style>
+<aside><button id="straight">Straight fixture</button><button id="ring">Island ring fixture</button><button id="layby">Normal layby fixture</button><button id="record">Record 20 seconds</button><button id="entry">Held-key entry fixture</button><button id="pause">Pause</button><button id="resume">Resume</button><button id="save">Save report</button></aside>
+<iframe src="/world/?qa=1" title="World driving test"></iframe><pre id="status">Waiting for world</pre><pre id="summary"></pre>
+<script type="module">
+const frame=document.querySelector('iframe'),status=document.querySelector('#status'),rows=[],cases=[];
+let until=0,start=0,current=[];
+const debug=()=>frame.contentWindow.__worldDebug;
+const read=()=>{const d=debug(),s=d.snapshot(),v=s.vehicles.find(v=>v.id==='coupe'),c=d.camera();return {t:performance.now(),step:s.physicsStep,active:s.activeVehicle,p:v.position,velocity:v.velocity,yaw:v.yaw,entering:v.entering,speed:Math.hypot(v.velocity[0],v.velocity[2]),steer:v.steering,drive:v.driving,keys:d.inputState(),camera:{fov:c?.fov,yaw:c?.yaw},paused:d.state().paused};};
+function setup(p,yaw){const d=debug();d.exit();d.clearInput();d.set({quality:'balanced',paused:false,zoom:1});d.teleportVehicle('coupe',p,yaw);d.teleportPlayer([p[0]-Math.sin(yaw)*2.5,p[1]-.15,p[2]-Math.cos(yaw)*2.5]);cases.push({fixture:{p,yaw}});}
+document.querySelector('#straight').onclick=()=>{debug().collisionLane('post',35);setup([70,6.054,120],0);};
+document.querySelector('#ring').onclick=()=>{const r=debug().layout().ring,p=r[2],next=r[3];setup([p[0],p[1]+1.054,p[2]],Math.atan2(-(next[2]-p[2]),next[0]-p[0]));};
+document.querySelector('#layby').onclick=()=>setup([26.2,2.194,2],Math.PI/2);
+const record=()=>{start=performance.now();until=start+20000;current=[];};
+document.querySelector('#record').onclick=record;
+document.querySelector('#entry').onclick=()=>{debug().collisionLane('post',35);setup([70,6.054,120],0);record();cases.push({fixture:'scheduled entry after 1.6 s; driving inputs are real keys'});setTimeout(()=>debug().enter('coupe'),1600);};
+document.querySelector('#pause').onclick=()=>debug().set({paused:true});document.querySelector('#resume').onclick=()=>debug().set({paused:false});
+document.querySelector('#save').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({cases,rows},null,2)],{type:'application/json'}));a.download='driving-runtime.json';a.click();URL.revokeObjectURL(a.href);};
+const summarise=record=>{const r=record.rows,entry=r.filter(x=>x.entering);return {seconds:record.seconds,samples:r.length,maxSpeed:Math.max(...r.map(x=>x.speed)),endSpeed:r.at(-1).speed,maxSlipDegrees:Math.max(...r.map(x=>Math.abs(x.drive.slipAngle)))*180/Math.PI,minNitro:Math.min(...r.map(x=>x.drive.nitro)),endNitro:r.at(-1).drive.nitro,boostSamples:r.filter(x=>x.drive.boosting).length,entrySamples:entry.length,entryMaxEngine:Math.max(0,...entry.map(x=>Math.abs(x.drive.engine))),entryMinNitro:Math.min(1,...entry.map(x=>x.drive.nitro)),end:r.at(-1).p};};
+setInterval(()=>{if(!debug()?.snapshot().vehicles.length)return;const r=read();rows.push(r);if(rows.length>2000)rows.shift();if(until){current.push(r);if(performance.now()>=until){cases.push({record:{seconds:20,rows:current}});until=0;document.querySelector('#summary').textContent=JSON.stringify(cases.map(c=>c.record?summarise(c.record):c),null,2);}}status.textContent=JSON.stringify({recording:!!until,records:cases.length,latest:r},null,2);},50);
+</script></html>

@@ -1,0 +1,43 @@
+{
+  "camera": {
+    "yaw": 1.5707963267948966,
+    "pitch": 0.7853981633974483,
+    "distance": 12,
+    "desiredDistance": 12,
+    "driveManualZoom": false,
+    "actualDistance": 1.9999999999999984,
+    "firstPerson": false,
+    "preset": 1,
+    "collided": false,
+    "hitDistance": null,
+    "fov": 50,
+    "mode": "walk",
+    "recentering": false,
+    "position": [
+      46.745278930664064,
+      3.8830385688580797,
+      -138.9913803096972
+    ],
+    "target": [
+      44.64527893066406,
+      2.468825006484986,
+      -140.4055938720703
+    ],
+    "forwardGround": [
+      -0.8294501308100306,
+      -0.5585807734779482
+    ],
+    "groundBelowCamera": 1.079986572265625,
+    "clearanceAboveGround": 2.8030519965924547,
+    "gamepad": false,
+    "nearPlaneRadius": 0.22,
+    "guideHidden": false,
+    "shoulderOffset": 2.1,
+    "nearPlaneOverlaps": []
+  },
+  "player": [
+    44.64527893066406,
+    1.8188250064849854,
+    -140.4055938720703
+  ]
+}

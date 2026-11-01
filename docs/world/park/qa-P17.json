@@ -1,0 +1,62 @@
+{
+ "asset": "P17",
+ "evaluatedTriangles": 978,
+ "bounds": [
+  [
+   -0.2387,
+   -0.2387,
+   -0.0042
+  ],
+  [
+   0.2387,
+   0.2387,
+   0.8492
+  ]
+ ],
+ "problems": [],
+ "parts": [
+  [
+   "body",
+   850
+  ],
+  [
+   "lamp_glass",
+   96
+  ],
+  [
+   "lamp_flame",
+   32
+  ]
+ ],
+ "glbReadbackTriangles": 978,
+ "readbackBounds": [
+  [
+   -0.2387,
+   -0.2387,
+   -0.0042
+  ],
+  [
+   0.2387,
+   0.2387,
+   0.8492
+  ]
+ ],
+ "readbackProblems": [],
+ "nodes": [
+  "P17",
+  "body",
+  "lamp_flame",
+  "lamp_glass"
+ ],
+ "materials": [
+  "park_accent_orange",
+  "park_accent_slate",
+  "park_brass_matte",
+  "park_bulb_warm",
+  "park_cream_paint",
+  "park_glass_frosted",
+  "park_wood_light",
+  "park_wood_mid"
+ ],
+ "glbBytes": 20044
+}

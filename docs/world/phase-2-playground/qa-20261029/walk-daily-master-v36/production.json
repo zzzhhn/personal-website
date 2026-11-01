@@ -1,0 +1,27 @@
+{
+  "candidate": {
+    "url": "http://127.0.0.1:4343/world/?start=club-decks&quality=balanced&paused=1&qa=1",
+    "ready": true,
+    "paused": true,
+    "diagnostics": "DEV-only controls excluded from production; audio graph verified in dev candidate, exact asset verified over HTTP",
+    "errors": []
+  },
+  "served4341": {
+    "/world/": {
+      "exact": true,
+      "bytes": 52276,
+      "sha256": "e3b7a661f348c208f2deccbf6cf7a3f34ced550dee2d81b35b7636a5ce06a886"
+    },
+    "/assets/world/park/audio/island-walk-daily-v1.wav": {
+      "exact": true,
+      "bytes": 3840044,
+      "sha256": "445a5f620314be6fa92390c831d571d609571d4c33099656aa38e60878832bb9"
+    }
+  },
+  "browser4341": {
+    "url": "http://127.0.0.1:4341/world/?quality=balanced&paused=1",
+    "ready": true,
+    "paused": true,
+    "errors": []
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "round": "quality-v2 r1",
+  "assets": [
+    {
+      "id": "C03",
+      "glb": "public/assets/world/camp/C03.glb",
+      "sha256": "4c6274a202639c407ad68f1e30cf1fadacf3f2bf0ff2c7cd1ac72a506c93acde",
+      "bytes": 53660,
+      "triangles": 1020,
+      "baselineTriangles": 792,
+      "multiplier": 1.2878787878787878,
+      "dimensions": [
+        4.112610340118408,
+        3.299999952316284,
+        5.419186592102051
+      ],
+      "source": "tools/world/camp/shelters-v2/blend/C03.blend",
+      "schema": "camp-tent-shell-v2",
+      "collisionTriangles": 220,
+      "params": {
+        "L": 3.0,
+        "W": 1.6,
+        "hw": 0.6,
+        "hr": 3.0,
+        "dw": 0.7,
+        "dh": 2.25,
+        "jamb": 1.7,
+        "topw": 0.32,
+        "Xh": 2.1,
+        "Yh": 2.75,
+        "H": 3.3,
+        "ovx": 0.16,
+        "ovs": 0.13,
+        "t": 0.07,
+        "win": [
+          0.36,
+          1.32,
+          1.74
+        ]
+      },
+      "machinePass": true,
+      "views": "docs/world/quality-v2/shelters/views/r1/C03_sheet.png",
+      "status": "geometry checked; runtime collision/wind and Fable review pending"
+    },
+    {
+      "id": "C04",
+      "glb": "public/assets/world/camp/C04.glb",
+      "sha256": "0d4b22d1836247b54393ec67e1c01e6c516296a14061e3c00abb76b3553f3f94",
+      "bytes": 54184,
+      "triangles": 1020,
+      "baselineTriangles": 792,
+      "multiplier": 1.2878787878787878,
+      "dimensions": [
+        3.312953472137451,
+        2.5,
+        4.318930149078369
+      ],
+      "source": "tools/world/camp/shelters-v2/blend/C04.blend",
+      "schema": "camp-tent-shell-v2",
+      "collisionTriangles": 220,
+      "params": {
+        "L": 2.4,
+        "W": 1.28,
+        "hw": 0.68,
+        "hr": 2.35,
+        "dw": 0.63,
+        "dh": 1.9,
+        "jamb": 1.36,
+        "topw": 0.3,
+        "Xh": 1.7,
+        "Yh": 2.2,
+        "H": 2.5,
+        "ovx": 0.13,
+        "ovs": 0.11,
+        "t": 0.065,
+        "win": [
+          0.28,
+          1.0,
+          1.32
+        ]
+      },
+      "machinePass": true,
+      "views": "docs/world/quality-v2/shelters/views/r1/C04_sheet.png",
+      "status": "geometry checked; runtime collision/wind and Fable review pending"
+    }
+  ]
+}

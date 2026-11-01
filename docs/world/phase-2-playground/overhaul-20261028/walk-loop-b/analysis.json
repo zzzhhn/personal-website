@@ -1,0 +1,106 @@
+{
+  "date": "2026-10-28",
+  "status": "rendered and technically measured; not listened or accepted; not integrated",
+  "source": "New deterministic composition/synthesis developing the submitted short B motif; no samples, recordings, models or network inputs.",
+  "file": "island-walk-b-loop.wav",
+  "sha256": "feeb5bed7f6d52ecbc3e075e10512811002bd048154ea1fa06ab42a7172d9b6e",
+  "bytes": 3456044,
+  "frames": 864000,
+  "channels": 2,
+  "sample_rate": 24000,
+  "seconds": 36,
+  "bpm": 80,
+  "decoded_bytes": 6912000,
+  "peak_dbfs": -12.507288164867854,
+  "rms_dbfs": -29.688840697777866,
+  "clipped_samples": 0,
+  "integrated_lufs": -25.9,
+  "true_peak_dbtp": -12.5,
+  "loudness_range_lu": 10.6,
+  "seam": [
+    {
+      "channel": 0,
+      "last": 0.015472412109375,
+      "first": 0.0157470703125,
+      "sample_step": 0.000274658203125,
+      "slope_change": 0.000091552734375
+    },
+    {
+      "channel": 1,
+      "last": 0.020233154296875,
+      "first": 0.0206298828125,
+      "sample_step": 0.000396728515625,
+      "slope_change": 0.0001220703125
+    }
+  ],
+  "maximum_interior_sample_step": 0.027313232421875,
+  "sections": [
+    {
+      "id": "A",
+      "startBar": 1,
+      "bars": 4,
+      "development": "repeat",
+      "harmony": [
+        "Cmaj7",
+        "Fmaj7",
+        "rest",
+        "Cmaj7"
+      ],
+      "rms_dbfs": -29.291929068358513,
+      "active_frames": 218589
+    },
+    {
+      "id": "B",
+      "startBar": 5,
+      "bars": 4,
+      "development": "vary",
+      "harmony": [
+        "Am7",
+        "Dm7",
+        "Fm",
+        "G7"
+      ],
+      "rms_dbfs": -27.956725583969572,
+      "active_frames": 285303
+    },
+    {
+      "id": "C",
+      "startBar": 9,
+      "bars": 2,
+      "development": "fragment",
+      "harmony": [
+        "Cmaj7",
+        "Cmaj7"
+      ],
+      "rms_dbfs": -39.4607749525462,
+      "active_frames": 79044
+    },
+    {
+      "id": "D",
+      "startBar": 11,
+      "bars": 2,
+      "development": "contract",
+      "harmony": [
+        "Dm7",
+        "G7 Cmaj7"
+      ],
+      "rms_dbfs": -31.09723210384624,
+      "active_frames": 122778
+    }
+  ],
+  "probe": {
+    "codec_name": "pcm_s16le",
+    "sample_rate": "24000",
+    "channels": 2,
+    "duration": "36.000000"
+  },
+  "loop_method": "Sum finite voices modulo exactly 864000 frames; final Cmaj7 pad and C4 answer continue through the boundary. No global fade/crossfade, no normalization or limiter.",
+  "tools": {
+    "ffmpeg": "ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers"
+  },
+  "source_hashes": {
+    "src/components/world/walk-music-loop.ts": "1cde137d5c0de979c76584e002ff35c5b45c6b757b0097c2e9fdd98d6705d84e",
+    "tools/world/render-walk-music-loop.mjs": "3363f2c22e77d326c2f000b180942d077ae7f7deee07196aebf28389afe243f6"
+  },
+  "elapsed_export_ms": 1061
+}

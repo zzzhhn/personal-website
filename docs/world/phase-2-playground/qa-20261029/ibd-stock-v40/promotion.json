@@ -1,0 +1,40 @@
+{
+  "build": "v40",
+  "pageStatus": 200,
+  "htmlMatchesBuild": true,
+  "htmlSha256": "7349ce8b1166ff9851540d9fbd5880fbc29ccbfce6cd288fb27efb1ae136ceba",
+  "assets": [
+    {
+      "path": "/_astro/WorldApp.B-a2KzTL.js",
+      "status": 200
+    },
+    {
+      "path": "/_astro/WorldApp.CL5m6nP3.css",
+      "status": 200
+    },
+    {
+      "path": "/_astro/WorldIbdHud.BeVh2OUX.css",
+      "status": 200
+    },
+    {
+      "path": "/_astro/WorldIntentHud.-YiVMeyH.css",
+      "status": 200
+    },
+    {
+      "path": "/_astro/client.BINMsa6k.js",
+      "status": 200
+    }
+  ],
+  "productionBrowser": {
+    "ready": true,
+    "walkedToManifest": true,
+    "pickedUpManifest": true,
+    "consoleErrors": [],
+    "pausedAfter": true
+  },
+  "stable4341": {
+    "status": 200,
+    "htmlSha256": "7349ce8b1166ff9851540d9fbd5880fbc29ccbfce6cd288fb27efb1ae136ceba",
+    "matchesCandidate": true
+  }
+}

@@ -1,0 +1,277 @@
+{
+ "base": "http://127.0.0.1:4322",
+ "glbSha256": "a75db2da8010c2b5771d7c3111bd09ab9e8fe534ea56bd935e7941440e885ccb",
+ "startedAt": "2026-10-22T07:52:36.833Z",
+ "cases": {
+  "stand-jump": {
+   "groundBumpFrames": 0,
+   "frames": 132,
+   "animations": [
+    "Idle",
+    "JumpStart",
+    "JumpAir",
+    "Land"
+   ],
+   "takeoffHorizontalSpeed": 0,
+   "jumpKind": "Jump",
+   "flightSeconds": 0.752,
+   "apexMetres": 0.943,
+   "airFrames": 45,
+   "frozenAirFrames": 0,
+   "airPhaseRange": [
+    0,
+    0.959
+   ],
+   "landingAnimations": [
+    "Land",
+    "Idle"
+   ],
+   "landingKind": "stand",
+   "steadyPlaybackRate": {
+    "p05": null,
+    "p50": null,
+    "p95": null,
+    "n": 0
+   },
+   "pelvisDropMax": 0,
+   "slopeShiftMaxAbs": 0,
+   "flatNeutral": {
+    "frames": 87,
+    "mean": 0,
+    "max": 0
+   },
+   "groundSlopeDegMax": 0,
+   "groundedSoleMinRange": [
+    -0.0009,
+    0.0103
+   ]
+  },
+  "run-jump-into-run": {
+   "groundBumpFrames": 0,
+   "frames": 235,
+   "animations": [
+    "Walk",
+    "Run",
+    "RunJumpStart",
+    "RunJumpAir",
+    "Idle"
+   ],
+   "takeoffHorizontalSpeed": 3.424,
+   "jumpKind": "RunJump",
+   "flightSeconds": 0.75,
+   "apexMetres": 0.943,
+   "airFrames": 45,
+   "frozenAirFrames": 0,
+   "airPhaseRange": [
+    0,
+    0.959
+   ],
+   "landingAnimations": [
+    "Run",
+    "Walk"
+   ],
+   "landingKind": "moving-entered",
+   "steadyPlaybackRate": {
+    "p05": 0.954,
+    "p50": 0.967,
+    "p95": 0.974,
+    "n": 69
+   },
+   "pelvisDropMax": 0.0012,
+   "slopeShiftMaxAbs": 0,
+   "flatNeutral": {
+    "frames": 190,
+    "mean": 0,
+    "max": 0
+   },
+   "groundSlopeDegMax": 0.9,
+   "groundedSoleMinRange": [
+    -0.0439,
+    0.0673
+   ]
+  },
+  "sprint-jump-into-sprint": {
+   "groundBumpFrames": 8,
+   "frames": 222,
+   "animations": [
+    "Walk",
+    "Run",
+    "Sprint",
+    "RunJumpStart",
+    "RunJumpAir",
+    "Idle"
+   ],
+   "takeoffHorizontalSpeed": 6.036,
+   "jumpKind": "RunJump",
+   "flightSeconds": 0.75,
+   "apexMetres": 0.943,
+   "airFrames": 45,
+   "frozenAirFrames": 0,
+   "airPhaseRange": [
+    0,
+    0.959
+   ],
+   "landingAnimations": [
+    "Sprint"
+   ],
+   "landingKind": "moving-entered",
+   "steadyPlaybackRate": {
+    "p05": 0.952,
+    "p50": 0.963,
+    "p95": 0.974,
+    "n": 49
+   },
+   "pelvisDropMax": 0,
+   "slopeShiftMaxAbs": 0,
+   "flatNeutral": {
+    "frames": 169,
+    "mean": 0,
+    "max": 0
+   },
+   "groundSlopeDegMax": 0.4,
+   "groundedSoleMinRange": [
+    -0.0436,
+    0.0494
+   ]
+  },
+  "run-jump-land-standing": {
+   "groundBumpFrames": 0,
+   "frames": 196,
+   "animations": [
+    "Walk",
+    "Run",
+    "RunJumpStart",
+    "RunJumpAir",
+    "Land",
+    "Idle"
+   ],
+   "takeoffHorizontalSpeed": 3.449,
+   "jumpKind": "RunJump",
+   "flightSeconds": 0.751,
+   "apexMetres": 0.943,
+   "airFrames": 45,
+   "frozenAirFrames": 0,
+   "airPhaseRange": [
+    0,
+    0.959
+   ],
+   "landingAnimations": [
+    "Land",
+    "Idle"
+   ],
+   "landingKind": "stand",
+   "steadyPlaybackRate": {
+    "p05": 0.955,
+    "p50": 0.966,
+    "p95": 0.976,
+    "n": 39
+   },
+   "pelvisDropMax": 0,
+   "slopeShiftMaxAbs": 0,
+   "flatNeutral": {
+    "frames": 151,
+    "mean": 0,
+    "max": 0
+   },
+   "groundSlopeDegMax": 0,
+   "groundedSoleMinRange": [
+    -0.0069,
+    0.0664
+   ]
+  },
+  "stand-jump-then-run": {
+   "groundBumpFrames": 0,
+   "frames": 216,
+   "animations": [
+    "Idle",
+    "JumpStart",
+    "JumpAir",
+    "Land",
+    "Walk",
+    "Run"
+   ],
+   "takeoffHorizontalSpeed": 0,
+   "jumpKind": "Jump",
+   "flightSeconds": 0.752,
+   "apexMetres": 0.943,
+   "airFrames": 45,
+   "frozenAirFrames": 0,
+   "airPhaseRange": [
+    0,
+    0.959
+   ],
+   "landingAnimations": [
+    "Land",
+    "Walk",
+    "Run"
+   ],
+   "landingKind": "stand",
+   "steadyPlaybackRate": {
+    "p05": 0.954,
+    "p50": 0.969,
+    "p95": 0.978,
+    "n": 39
+   },
+   "pelvisDropMax": 0.004,
+   "slopeShiftMaxAbs": 0,
+   "flatNeutral": {
+    "frames": 171,
+    "mean": 0,
+    "max": 0
+   },
+   "groundSlopeDegMax": 0,
+   "groundedSoleMinRange": [
+    -0.0058,
+    0.0663
+   ]
+  }
+ },
+ "errors": [],
+ "limits": [
+  "Headless Chrome (Metal ANGLE) on M5 Pro, not M1.",
+  "Samples are taken from requestAnimationFrame in the page; the bot input itself is real keyboard events.",
+  "Flat camp ground near spawn; slope cases are measured by the main-thread bot on the ramp route."
+ ],
+ "normalEntry": {
+  "url": "http://127.0.0.1:4322/world/",
+  "debugApiPresent": false,
+  "clips": [
+   {
+    "name": "stand-jump",
+    "file": "docs/world/quality-v3/guide/runtime/normal-near-stand-jump.webm",
+    "seconds": 2.528
+   },
+   {
+    "name": "run-jump-into-run",
+    "file": "docs/world/quality-v3/guide/runtime/normal-near-run-jump-into-run.webm",
+    "seconds": 4.238
+   },
+   {
+    "name": "sprint-jump-into-sprint",
+    "file": "docs/world/quality-v3/guide/runtime/normal-near-sprint-jump-into-sprint.webm",
+    "seconds": 4.04
+   },
+   {
+    "name": "run-jump-land-standing",
+    "file": "docs/world/quality-v3/guide/runtime/normal-near-run-jump-land-standing.webm",
+    "seconds": 3.583
+   },
+   {
+    "name": "stand-jump-then-run",
+    "file": "docs/world/quality-v3/guide/runtime/normal-near-stand-jump-then-run.webm",
+    "seconds": 3.94
+   }
+  ],
+  "zoom": "nearest (one real wheel step up from the default)"
+ },
+ "checks": {
+  "noFrozenAirPose": true,
+  "runJumpWhenFast": true,
+  "movingLandingSkipsLand": true,
+  "standingLandingUsesLand": true,
+  "pelvisDropWithin5cm": true,
+  "slopeNeutralOnFlat": true,
+  "steadyPlaybackIn085to12": true,
+  "noPageErrors": true
+ }
+}

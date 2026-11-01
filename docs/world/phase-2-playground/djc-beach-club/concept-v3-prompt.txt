@@ -1,0 +1,21 @@
+Revise the DJC beach club concept in Image 1. This is a restrained, GAME-STYLE architectural revision, not a luxury resort advertising photograph.
+
+INPUT ROLES AND PRIORITY:
+Image 1: the previous revised bamboo-club concept, edit target. Preserve the broad arrangement of an open bamboo DJ pavilion on the left, pool terrace on the right, sandy island connection in the foreground, and ocean beyond.
+Image 2: actual screenshot from the user's existing browser 3D world. This is the PRIMARY STYLE AUTHORITY: character scale, faceted forms, matte stone/wood, modest material texture, foliage construction, muted sand and sage palette, soft warm sunlight. The result must belong to that same world. Remove the screenshot HUD from consideration.
+Image 3: official FINNS Bali pool photograph. This is ONLY a SPATIAL / ARCHITECTURAL reference for a broad ocean-facing pool, a few circular party daybeds, turquoise cushions, palm-lined beachfront and open club atmosphere. Do not inherit photographic humans, heavy crowds, orange bloom, FINNS lettering or photographic realism.
+
+CHANGE THE DESIGN TO MAKE THE FINNS / BALI CHARACTER CLEARER:
+Give the main bamboo pavilion a broad, LOW, gracefully curved thatch roof with a sweeping saddle-like silhouette and visible bundled bamboo arches beneath it. Make it an airy open-sided beachfront hall, not a tall cathedral or tent. Layered roof panels, finite segmented bamboo beams and believable timber joints, all readable simplified game geometry.
+A generous blue-green lagoon pool is central to the venue, integrated into the terrace rather than a tiny decorative pond. Keep only three white/sand-colored circular daybed islands near its edge, reachable through a shallow shelf; preserve a broad clear area of water. Turquoise cushions and warm dark timber sun loungers at human scale.
+A raised but low DJ booth, one mirrored disco ball, two modest speakers and a clear open dance area sit under the bamboo pavilion. A connected smaller side bar, woven pendant lanterns and light timber stools add Bali character.
+Natural land extension with a curved sandy coast. Show how the venue joins the SAME modest main island in the foreground, with sage-green grass, a few angular coastal stones and two broad accessible walking routes. No detached platform or straight square plot edge.
+One white spherical helmet / navy player character with the exact proportions of Image 2 near the entry. A few stylized guests have simple visible faces, different hair and casual cream/ochre/teal clothes at the same game scale; they are not clones of the player. Only a few guests dancing and relaxing, never a crowd.
+Use chunky modeled palm fronds, restrained grass clusters and broad material color variations. Beautiful through composition and construction, not through photographic detail or excessive props.
+All seating, walkways, DJ equipment and architecture must have clear consistent scale. Water should be clear with broad game-rendered ripples and a subtly visible shallow shelf, not an opaque flat blue slab.
+
+COMPOSITION:
+One coherent landscape 16:9 view, slightly elevated from the island entrance at about 4m height, looking diagonally through the pavilion, dance area, pool, beach and horizon. Main pavilion left third; open pool and ocean right. Show the whole beach-club destination and enough island connection to read it as part of the game.
+Warm afternoon rather than dramatic sunset, quiet warm sky, directional shadows matching Image 2, restrained amber lantern accents. No extreme bloom, no depth-of-field or lens effects.
+Only small physical letters "DJC" on the pavilion. No FINNS logo, no HUD, no border, no collage, no captions.
+The key success criterion is a FINNS-inspired Bali beach club translated into the existing game's stylized real-time world. Never slip into the photoreal tent/amphitheatre resort direction.

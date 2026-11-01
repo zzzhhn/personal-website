@@ -1,0 +1,180 @@
+{
+  "base": "http://127.0.0.1:4322",
+  "scope": "post",
+  "startedAt": "2026-10-22T04:21:01.251Z",
+  "errors": [],
+  "limits": [
+    "Isolated fixture starts are not a continuous all-island traversal.",
+    "M5 Pro browser; no M1 Air hardware certification.",
+    "Sampled cases, not every instance or every collision angle."
+  ],
+  "canvas": {
+    "cssSize": [
+      1920,
+      1080
+    ],
+    "canvasAttr": [
+      1920,
+      1080
+    ],
+    "drawingBuffer": [
+      1920,
+      1080
+    ],
+    "viewport": [
+      0,
+      0,
+      1920,
+      1080
+    ],
+    "devicePixelRatio": 1,
+    "effectiveRenderScale": 1,
+    "windowInner": [
+      1920,
+      1080
+    ],
+    "antialias": true,
+    "preserveDrawingBuffer": false,
+    "maxSamples": 8,
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)"
+  },
+  "fixtures": [
+    {
+      "t": 1.769,
+      "to": [
+        -48,
+        5.85,
+        38
+      ],
+      "reason": "isolated visible QA tyre-side post, real engine/input, not a map-instance coverage claim"
+    },
+    {
+      "t": 5.826,
+      "to": [
+        -48,
+        5.85,
+        38
+      ],
+      "reason": "isolated visible QA tyre-side post, real engine/input, not a map-instance coverage claim"
+    },
+    {
+      "t": 9.884,
+      "to": [
+        -48,
+        5.85,
+        38
+      ],
+      "reason": "isolated visible QA tyre-side post, real engine/input, not a map-instance coverage claim"
+    }
+  ],
+  "events": [
+    {
+      "t": 2.723,
+      "press": "KeyE"
+    },
+    {
+      "t": 6.78,
+      "press": "KeyE"
+    },
+    {
+      "t": 10.838,
+      "press": "KeyE"
+    }
+  ],
+  "finishedAt": "2026-10-22T04:21:15.269Z",
+  "summary": {
+    "passed": 3,
+    "total": 3,
+    "failed": [],
+    "errors": []
+  },
+  "fullEvidence": "report-full.json.gz",
+  "cases": [
+    {
+      "name": "offroad-tyre-only-post",
+      "fixture": {
+        "post": [
+          -42,
+          5.1,
+          41.08
+        ],
+        "halfExtents": [
+          0.12,
+          0.3,
+          0.06
+        ]
+      },
+      "entered": true,
+      "closest": 0.015206698328256607,
+      "maxPenetration": 0,
+      "sampleCount": 58
+    },
+    {
+      "name": "coupe-tyre-only-post",
+      "fixture": {
+        "post": [
+          -42,
+          5.1,
+          41.032
+        ],
+        "halfExtents": [
+          0.12,
+          0.3,
+          0.06
+        ]
+      },
+      "entered": true,
+      "closest": 0.014758061617612839,
+      "maxPenetration": 0,
+      "sampleCount": 58
+    },
+    {
+      "name": "van-tyre-only-post",
+      "fixture": {
+        "post": [
+          -42,
+          5.1,
+          41.175999999999995
+        ],
+        "halfExtents": [
+          0.12,
+          0.3,
+          0.06
+        ]
+      },
+      "entered": true,
+      "closest": 0.015069559216499329,
+      "maxPenetration": 0,
+      "sampleCount": 58
+    }
+  ],
+  "checks": [
+    {
+      "name": "offroad-tyre-only-post tyre volume responds",
+      "passed": true,
+      "evidence": {
+        "entered": true,
+        "closest": 0.015206698328256607,
+        "maxPenetration": 0
+      }
+    },
+    {
+      "name": "coupe-tyre-only-post tyre volume responds",
+      "passed": true,
+      "evidence": {
+        "entered": true,
+        "closest": 0.014758061617612839,
+        "maxPenetration": 0
+      }
+    },
+    {
+      "name": "van-tyre-only-post tyre volume responds",
+      "passed": true,
+      "evidence": {
+        "entered": true,
+        "closest": 0.015069559216499329,
+        "maxPenetration": 0
+      }
+    }
+  ]
+}

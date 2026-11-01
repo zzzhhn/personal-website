@@ -1,0 +1,22 @@
+{
+  "audio": {
+    "owners": 1,
+    "started": true,
+    "timer": true,
+    "subscribed": true,
+    "state": "running",
+    "transitioning": false,
+    "voices": 9,
+    "ticks": 506,
+    "muted": false
+  },
+  "ui": {
+    "consumers": 2,
+    "framePending": false,
+    "listening": true,
+    "connected": false,
+    "samples": 0
+  },
+  "live25": 1,
+  "near": "park-P14-djc"
+}

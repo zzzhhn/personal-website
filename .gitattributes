@@ -1,0 +1,4 @@
+# Preserve hash-verified upstream motion capture bytes and keep raw frame dumps
+# out of source review diffs. Generated runtime clips remain ordinary JSON.
+tools/world/guide/dance/source/*.asf -text -diff -whitespace
+tools/world/guide/dance/source/*.amc -text -diff -whitespace

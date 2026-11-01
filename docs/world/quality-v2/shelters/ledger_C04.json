@@ -1,0 +1,83 @@
+{
+  "asset": "C04",
+  "name": "小帐篷",
+  "recentre_shift": [
+    -0.0,
+    -0.0,
+    -0.0
+  ],
+  "parts": [
+    {
+      "part": "roof fly, chevron section with sag, thickness 0.065 m",
+      "material": "camp_canvas_orange",
+      "relation": "canvas shell",
+      "count": 1
+    },
+    {
+      "part": "gable walls (front door notch) and short side walls, tops buried in roof",
+      "material": "camp_canvas_orange",
+      "relation": "embedded",
+      "count": 4
+    },
+    {
+      "part": "roof edge binding strips wrapping canvas edge",
+      "material": "camp_canvas_binding",
+      "relation": "embedded on edge",
+      "count": 10
+    },
+    {
+      "part": "ridge cap strip",
+      "material": "camp_canvas_binding",
+      "relation": "half-buried in roof top",
+      "count": 1
+    },
+    {
+      "part": "sewn roof panel seams following the sagging slope",
+      "material": "camp_canvas_binding",
+      "relation": "half-buried in roof top",
+      "count": 8
+    },
+    {
+      "part": "six-sided upright doorway with bound edges, two gathered side curtains",
+      "material": "camp_canvas_orange",
+      "relation": "embedded beside doorway; clear centre",
+      "count": 2
+    },
+    {
+      "part": "curtain cuffs",
+      "material": "camp_canvas_cream",
+      "relation": "embedded around gathered cloth",
+      "count": 2
+    },
+    {
+      "part": "rear vent window patch",
+      "material": "camp_canvas_cream",
+      "relation": "embedded in back wall",
+      "count": 1
+    },
+    {
+      "part": "groundsheet / doormat",
+      "material": "camp_groundsheet",
+      "relation": "resting on ground, under walls",
+      "count": 1
+    },
+    {
+      "part": "ridge, rear post, doorway side posts and roof braces",
+      "material": "camp_wood_light",
+      "relation": "structural embedded joints; no central entrance post",
+      "count": 6
+    },
+    {
+      "part": "stakes with caps, leaning outward",
+      "material": "camp_wood_light",
+      "relation": "resting on ground plane",
+      "count": 4
+    },
+    {
+      "part": "guy lines eave->stake, ends buried in binding and stake",
+      "material": "camp_canvas_cream",
+      "relation": "embedded ends",
+      "count": 4
+    }
+  ]
+}

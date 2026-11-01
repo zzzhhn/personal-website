@@ -1,0 +1,1617 @@
+{
+  "baselineCommit": "3cb1f25",
+  "candidateCommit": "27e3638",
+  "vertex": 1001620,
+  "method": "Full original summaries reproduced unchanged. Semantic first RunJumpAir→Run landing, same sole vertex; linear interpolation only for the additional fixed 0 to 100 ms table. Raw samples retained.",
+  "boundary": {
+    "soleBand_mm": 6,
+    "minimumInterval_ms": 50,
+    "unchanged": true,
+    "baseline": "208.0 mm at 49.6 ms is below the duration gate; the next point is 6.6 mm high, outside the sole band.",
+    "candidate": "208.5 mm at 50.2 ms passes the duration gate; 272.7 mm at 67.2 ms is still 5.2 mm high and remains in-band."
+  },
+  "baseline": {
+    "framesPath": "/tmp/bobby-world-motion-20261025/verified-motion/frames-fix.json",
+    "reportPath": "/tmp/bobby-world-motion-20261025/verified-motion/report-fix.json",
+    "assetSha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0",
+    "originalAggregate": {
+      "frames": 1184,
+      "slipByAnim": {
+        "Idle>Run": {
+          "n": 144,
+          "max_mm": 44.5
+        },
+        "Run": {
+          "n": 162,
+          "max_mm": 51.4
+        },
+        "Idle": {
+          "n": 369,
+          "max_mm": 215.7
+        },
+        "Run>Idle": {
+          "n": 3,
+          "max_mm": 9.4
+        },
+        "JumpAir>Land>Idle": {
+          "n": 6,
+          "max_mm": 23.3
+        },
+        "Land>Idle": {
+          "n": 138,
+          "max_mm": 106.1
+        }
+      },
+      "turnSlipMax_mm": 424.1,
+      "slipMax_mm": 215.7,
+      "worstSlips": [
+        {
+          "t0": 14.3365,
+          "t1": 15.1362,
+          "mm": 215.7,
+          "anims": "Idle"
+        },
+        {
+          "t0": 14.3365,
+          "t1": 15.1362,
+          "mm": 215.7,
+          "anims": "Idle"
+        },
+        {
+          "t0": 14.3365,
+          "t1": 15.1362,
+          "mm": 215.7,
+          "anims": "Idle"
+        },
+        {
+          "t0": 14.3365,
+          "t1": 15.1362,
+          "mm": 214.7,
+          "anims": "Idle"
+        },
+        {
+          "t0": 14.3365,
+          "t1": 15.1362,
+          "mm": 214.7,
+          "anims": "Idle"
+        },
+        {
+          "t0": 14.3365,
+          "t1": 15.1362,
+          "mm": 214.7,
+          "anims": "Idle"
+        }
+      ],
+      "poseJumpSteadyP99_mm": 67.6,
+      "poseJumpSwitchMax_mm": 204.2,
+      "stanceSamples": 1045,
+      "stanceMinH_mm": -47.1,
+      "stanceMaxH_mm": 243.3,
+      "switches": [
+        {
+          "t": 6.3539,
+          "from": "Idle",
+          "to": "Run",
+          "maxJump_mm": 7.4,
+          "bone": "hand.R"
+        },
+        {
+          "t": 7.7703,
+          "from": "Run",
+          "to": "Sprint",
+          "maxJump_mm": 46.9,
+          "bone": "foot.R"
+        },
+        {
+          "t": 9.4362,
+          "from": "Sprint",
+          "to": "Idle",
+          "maxJump_mm": 43.4,
+          "bone": "foot.R"
+        },
+        {
+          "t": 10.4695,
+          "from": "Idle",
+          "to": "Run",
+          "maxJump_mm": 8.1,
+          "bone": "hand.R"
+        },
+        {
+          "t": 11.6198,
+          "from": "Run",
+          "to": "Idle",
+          "maxJump_mm": 50.3,
+          "bone": "foot.L"
+        },
+        {
+          "t": 12.737,
+          "from": "Idle",
+          "to": "Run",
+          "maxJump_mm": 43.4,
+          "bone": "foot.R"
+        },
+        {
+          "t": 13.1035,
+          "from": "Run",
+          "to": "Idle",
+          "maxJump_mm": 35,
+          "bone": "foot.L"
+        },
+        {
+          "t": 14.0025,
+          "from": "Idle",
+          "to": "Run",
+          "maxJump_mm": 7.2,
+          "bone": "hand.R"
+        },
+        {
+          "t": 14.3365,
+          "from": "Run",
+          "to": "Idle",
+          "maxJump_mm": 155.1,
+          "bone": "foot.R"
+        },
+        {
+          "t": 15.2033,
+          "from": "Idle",
+          "to": "Run",
+          "maxJump_mm": 43.4,
+          "bone": "foot.L"
+        },
+        {
+          "t": 16.9029,
+          "from": "Run",
+          "to": "Idle",
+          "maxJump_mm": 42.5,
+          "bone": "foot.R"
+        },
+        {
+          "t": 17.7702,
+          "from": "Idle",
+          "to": "JumpStart",
+          "maxJump_mm": 58,
+          "bone": "shin.L"
+        },
+        {
+          "t": 17.8857,
+          "from": "JumpStart",
+          "to": "JumpAir",
+          "maxJump_mm": 34,
+          "bone": "shin.L"
+        },
+        {
+          "t": 18.5527,
+          "from": "JumpAir",
+          "to": "Land",
+          "maxJump_mm": 48.2,
+          "bone": "shin.R"
+        },
+        {
+          "t": 18.8529,
+          "from": "Land",
+          "to": "Idle",
+          "maxJump_mm": 8.4,
+          "bone": "hand.L"
+        },
+        {
+          "t": 19.1694,
+          "from": "Idle",
+          "to": "Run",
+          "maxJump_mm": 46,
+          "bone": "foot.R"
+        },
+        {
+          "t": 19.9862,
+          "from": "Run",
+          "to": "RunJumpStart",
+          "maxJump_mm": 104.8,
+          "bone": "hand.L"
+        },
+        {
+          "t": 20.0695,
+          "from": "RunJumpStart",
+          "to": "RunJumpAir",
+          "maxJump_mm": 92.6,
+          "bone": "hand.R"
+        },
+        {
+          "t": 20.7697,
+          "from": "RunJumpAir",
+          "to": "Run",
+          "maxJump_mm": 62.4,
+          "bone": "foot.R"
+        },
+        {
+          "t": 21.2867,
+          "from": "Run",
+          "to": "Sprint",
+          "maxJump_mm": 35.3,
+          "bone": "shin.R"
+        },
+        {
+          "t": 22.0864,
+          "from": "Sprint",
+          "to": "RunJumpStart",
+          "maxJump_mm": 204.2,
+          "bone": "foot.R"
+        },
+        {
+          "t": 22.1859,
+          "from": "RunJumpStart",
+          "to": "RunJumpAir",
+          "maxJump_mm": 57,
+          "bone": "hand.R"
+        },
+        {
+          "t": 22.8699,
+          "from": "RunJumpAir",
+          "to": "Sprint",
+          "maxJump_mm": 97.4,
+          "bone": "foot.L"
+        },
+        {
+          "t": 23.3025,
+          "from": "Sprint",
+          "to": "RunJumpStart",
+          "maxJump_mm": 128.3,
+          "bone": "foot.R"
+        },
+        {
+          "t": 23.4023,
+          "from": "RunJumpStart",
+          "to": "RunJumpAir",
+          "maxJump_mm": 54.1,
+          "bone": "hand.R"
+        },
+        {
+          "t": 24.0859,
+          "from": "RunJumpAir",
+          "to": "Land",
+          "maxJump_mm": 50.5,
+          "bone": "shin.R"
+        },
+        {
+          "t": 24.3863,
+          "from": "Land",
+          "to": "Idle",
+          "maxJump_mm": 7.6,
+          "bone": "hand.L"
+        }
+      ]
+    },
+    "landing": {
+      "entryTime": 20.7697,
+      "vertex": 1001620,
+      "raw": [
+        {
+          "elapsed_ms": 0,
+          "animation": "Run",
+          "clipTime": 0.4973,
+          "dt": 0.0173,
+          "displacement": [
+            0,
+            0
+          ],
+          "height_mm": 1.8,
+          "root": [
+            -86.3432,
+            1.1398,
+            9.0431
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            0,
+            0
+          ],
+          "inert": [
+            0.857,
+            0.0385
+          ]
+        },
+        {
+          "elapsed_ms": 16.70000000000016,
+          "animation": "Run",
+          "clipTime": 0.5127,
+          "dt": 0.0167,
+          "displacement": [
+            -0.02039999999999509,
+            0.05569999999999986
+          ],
+          "height_mm": -26.1,
+          "root": [
+            -86.3351,
+            1.1411,
+            8.9881
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            0,
+            0
+          ],
+          "inert": [
+            0.7081,
+            0.0334
+          ]
+        },
+        {
+          "elapsed_ms": 33.500000000000085,
+          "animation": "Run",
+          "clipTime": 0.5281,
+          "dt": 0.0168,
+          "displacement": [
+            -0.03489999999999327,
+            0.13020000000000032
+          ],
+          "height_mm": -38.1,
+          "root": [
+            -86.3269,
+            1.1392,
+            8.9329
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            0,
+            0
+          ],
+          "inert": [
+            0.551,
+            0.0276
+          ]
+        },
+        {
+          "elapsed_ms": 49.59999999999809,
+          "animation": "Run",
+          "clipTime": 0.5431,
+          "dt": 0.0161,
+          "displacement": [
+            -0.04749999999999943,
+            0.20250000000000057
+          ],
+          "height_mm": -28.299999999999997,
+          "root": [
+            -86.3191,
+            1.139,
+            8.8796
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            0,
+            0
+          ],
+          "inert": [
+            0.418,
+            0.0223
+          ]
+        },
+        {
+          "elapsed_ms": 65.89999999999918,
+          "animation": "Run",
+          "clipTime": 0.008,
+          "dt": 0.0163,
+          "displacement": [
+            -0.057899999999989404,
+            0.2638999999999996
+          ],
+          "height_mm": 6.6,
+          "root": [
+            -86.3113,
+            1.141,
+            8.8262
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            0,
+            0
+          ],
+          "inert": [
+            0.3081,
+            0.0175
+          ]
+        },
+        {
+          "elapsed_ms": 82.59999999999934,
+          "animation": "Run",
+          "clipTime": 0.0232,
+          "dt": 0.0167,
+          "displacement": [
+            -0.055999999999997385,
+            0.2997999999999994
+          ],
+          "height_mm": 63.6,
+          "root": [
+            -86.3034,
+            1.1412,
+            8.7719
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            0,
+            0
+          ],
+          "inert": [
+            0.2462,
+            0.0135
+          ]
+        },
+        {
+          "elapsed_ms": 100.00000000000142,
+          "animation": "Run",
+          "clipTime": 0.0415,
+          "dt": 0.0174,
+          "displacement": [
+            -0.030599999999992633,
+            0.29879999999999995
+          ],
+          "height_mm": 139.2,
+          "root": [
+            -86.2951,
+            1.1391,
+            8.7148
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            1,
+            0
+          ],
+          "inert": [
+            0.2082,
+            0.0101
+          ]
+        },
+        {
+          "elapsed_ms": 116.80000000000135,
+          "animation": "Run",
+          "clipTime": 0.057,
+          "dt": 0.0168,
+          "displacement": [
+            -0.004899999999992133,
+            0.2643000000000004
+          ],
+          "height_mm": 200.5,
+          "root": [
+            -86.287,
+            1.1415,
+            8.6589
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            1,
+            0
+          ],
+          "inert": [
+            0.1756,
+            0.0076
+          ]
+        },
+        {
+          "elapsed_ms": 133.0999999999989,
+          "animation": "Run",
+          "clipTime": 0.0725,
+          "dt": 0.0163,
+          "displacement": [
+            0.00920000000000698,
+            0.20400000000000063
+          ],
+          "height_mm": 245.4,
+          "root": [
+            -86.2791,
+            1.1463,
+            8.6042
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            1,
+            0
+          ],
+          "inert": [
+            0.1478,
+            0.0057
+          ]
+        },
+        {
+          "elapsed_ms": 150.30000000000143,
+          "animation": "Run",
+          "clipTime": 0.0886,
+          "dt": 0.0172,
+          "displacement": [
+            0.005400000000008731,
+            0.12340000000000018
+          ],
+          "height_mm": 258.7,
+          "root": [
+            -86.2707,
+            1.1464,
+            8.5464
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            1,
+            0
+          ],
+          "inert": [
+            0.1224,
+            0.0042
+          ]
+        }
+      ],
+      "fixed": [
+        {
+          "elapsed_ms": 0,
+          "drift_mm": 0,
+          "height_mm": 1.8
+        },
+        {
+          "elapsed_ms": 16.7,
+          "drift_mm": 59.31820968302833,
+          "height_mm": -26.099999999999735
+        },
+        {
+          "elapsed_ms": 33.3,
+          "drift_mm": 133.8949871648225,
+          "height_mm": -37.9571428571428
+        },
+        {
+          "elapsed_ms": 50,
+          "drift_mm": 209.52163122958547,
+          "height_mm": -27.443558282204553
+        },
+        {
+          "elapsed_ms": 66.7,
+          "drift_mm": 271.83770077193736,
+          "height_mm": 9.330538922158466
+        },
+        {
+          "elapsed_ms": 83.3,
+          "drift_mm": 304.7597708974354,
+          "height_mm": 66.64137931034732
+        },
+        {
+          "elapsed_ms": 100,
+          "drift_mm": 300.36278065033235,
+          "height_mm": 139.19999999999382
+        }
+      ]
+    },
+    "reversal": {
+      "completeInterval": {
+        "id": 1518,
+        "t0": 13.9036,
+        "t1": 14.0193,
+        "x0": -85.8647,
+        "z0": 8.7985,
+        "drift": 0.4240817963553719,
+        "anims": "Idle>Run",
+        "turning": true
+      },
+      "endpoints": [
+        {
+          "time": 13.9036,
+          "animation": "Idle",
+          "root": [
+            -85.9204,
+            1.1395,
+            9.0122
+          ],
+          "facing": 0.4081,
+          "shownYaw": 0.408,
+          "speed": 0,
+          "stepping": [
+            0,
+            0,
+            "exiting"
+          ]
+        },
+        {
+          "time": 14.0193,
+          "animation": "Run",
+          "root": [
+            -85.9247,
+            1.1395,
+            9.0116
+          ],
+          "facing": 2.9997,
+          "shownYaw": 3,
+          "speed": 0.265,
+          "stepping": [
+            0,
+            0,
+            "exiting"
+          ]
+        }
+      ]
+    }
+  },
+  "candidate": {
+    "framesPath": "/tmp/bobby-phase2-integration/final-27e3638/motion/frames-integrated.json",
+    "reportPath": "/tmp/bobby-phase2-integration/final-27e3638/motion/report-integrated.json",
+    "assetSha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0",
+    "originalAggregate": {
+      "frames": 1174,
+      "slipByAnim": {
+        "Idle": {
+          "n": 583,
+          "max_mm": 132.8
+        },
+        "Run": {
+          "n": 229,
+          "max_mm": 269.4
+        },
+        "Sprint>Idle": {
+          "n": 3,
+          "max_mm": 58.7
+        },
+        "Run>Idle": {
+          "n": 6,
+          "max_mm": 57.3
+        },
+        "JumpAir>Land>Idle": {
+          "n": 12,
+          "max_mm": 7.8
+        },
+        "Land>Idle": {
+          "n": 132,
+          "max_mm": 91.4
+        },
+        "RunJumpAir>Sprint": {
+          "n": 6,
+          "max_mm": 72.2
+        }
+      },
+      "turnSlipMax_mm": 395,
+      "slipMax_mm": 269.4,
+      "worstSlips": [
+        {
+          "t0": 18.8203,
+          "t1": 18.8861,
+          "mm": 269.4,
+          "anims": "Run"
+        },
+        {
+          "t0": 18.8203,
+          "t1": 18.8861,
+          "mm": 269.4,
+          "anims": "Run"
+        },
+        {
+          "t0": 18.8203,
+          "t1": 18.8861,
+          "mm": 269.4,
+          "anims": "Run"
+        },
+        {
+          "t0": 18.8203,
+          "t1": 18.8861,
+          "mm": 269.4,
+          "anims": "Run"
+        },
+        {
+          "t0": 11.075,
+          "t1": 11.9047,
+          "mm": 132.8,
+          "anims": "Idle"
+        },
+        {
+          "t0": 11.075,
+          "t1": 11.9047,
+          "mm": 132.8,
+          "anims": "Idle"
+        }
+      ],
+      "poseJumpSteadyP99_mm": 68.6,
+      "poseJumpSwitchMax_mm": 173.9,
+      "stanceSamples": 1178,
+      "stanceMinH_mm": -10.3,
+      "stanceMaxH_mm": 259.6,
+      "switches": [
+        {
+          "t": 2.3843,
+          "from": "Idle",
+          "to": "Run",
+          "maxJump_mm": 24.5,
+          "bone": "foot.L"
+        },
+        {
+          "t": 3.7402,
+          "from": "Run",
+          "to": "Sprint",
+          "maxJump_mm": 113.3,
+          "bone": "foot.R"
+        },
+        {
+          "t": 5.4702,
+          "from": "Sprint",
+          "to": "Idle",
+          "maxJump_mm": 54.3,
+          "bone": "foot.R"
+        },
+        {
+          "t": 8.4405,
+          "from": "Idle",
+          "to": "Run",
+          "maxJump_mm": 23,
+          "bone": "foot.L"
+        },
+        {
+          "t": 9.6359,
+          "from": "Run",
+          "to": "Idle",
+          "maxJump_mm": 53.5,
+          "bone": "foot.L"
+        },
+        {
+          "t": 10.7532,
+          "from": "Idle",
+          "to": "Run",
+          "maxJump_mm": 43.8,
+          "bone": "foot.R"
+        },
+        {
+          "t": 12.0031,
+          "from": "Idle",
+          "to": "Run",
+          "maxJump_mm": 47.2,
+          "bone": "foot.L"
+        },
+        {
+          "t": 12.5031,
+          "from": "Run",
+          "to": "Idle",
+          "maxJump_mm": 40.7,
+          "bone": "shin.L"
+        },
+        {
+          "t": 13.3365,
+          "from": "Idle",
+          "to": "Run",
+          "maxJump_mm": 7.6,
+          "bone": "hand.R"
+        },
+        {
+          "t": 15.0526,
+          "from": "Run",
+          "to": "Idle",
+          "maxJump_mm": 51.5,
+          "bone": "foot.R"
+        },
+        {
+          "t": 15.9429,
+          "from": "JumpStart",
+          "to": "JumpAir",
+          "maxJump_mm": 31.6,
+          "bone": "shin.L"
+        },
+        {
+          "t": 16.6028,
+          "from": "JumpAir",
+          "to": "Land",
+          "maxJump_mm": 51.2,
+          "bone": "shin.R"
+        },
+        {
+          "t": 16.9029,
+          "from": "Land",
+          "to": "Idle",
+          "maxJump_mm": 7.6,
+          "bone": "hand.L"
+        },
+        {
+          "t": 17.2368,
+          "from": "Idle",
+          "to": "Run",
+          "maxJump_mm": 47,
+          "bone": "foot.R"
+        },
+        {
+          "t": 18.0365,
+          "from": "Run",
+          "to": "RunJumpStart",
+          "maxJump_mm": 109.2,
+          "bone": "hand.L"
+        },
+        {
+          "t": 18.1369,
+          "from": "RunJumpStart",
+          "to": "RunJumpAir",
+          "maxJump_mm": 58.2,
+          "bone": "hand.R"
+        },
+        {
+          "t": 18.8203,
+          "from": "RunJumpAir",
+          "to": "Run",
+          "maxJump_mm": 59.6,
+          "bone": "foot.R"
+        },
+        {
+          "t": 19.8028,
+          "from": "Sprint",
+          "to": "RunJumpStart",
+          "maxJump_mm": 141,
+          "bone": "shin.R"
+        },
+        {
+          "t": 19.8931,
+          "from": "RunJumpStart",
+          "to": "RunJumpAir",
+          "maxJump_mm": 96.1,
+          "bone": "hand.R"
+        },
+        {
+          "t": 20.5662,
+          "from": "RunJumpAir",
+          "to": "Sprint",
+          "maxJump_mm": 106.1,
+          "bone": "foot.L"
+        },
+        {
+          "t": 21.099,
+          "from": "Sprint",
+          "to": "RunJumpStart",
+          "maxJump_mm": 173.9,
+          "bone": "foot.R"
+        },
+        {
+          "t": 21.1831,
+          "from": "RunJumpStart",
+          "to": "RunJumpAir",
+          "maxJump_mm": 104.7,
+          "bone": "hand.R"
+        },
+        {
+          "t": 21.8824,
+          "from": "RunJumpAir",
+          "to": "Land",
+          "maxJump_mm": 49.2,
+          "bone": "shin.R"
+        },
+        {
+          "t": 22.1661,
+          "from": "Land",
+          "to": "Idle",
+          "maxJump_mm": 14.3,
+          "bone": "hand.L"
+        }
+      ]
+    },
+    "landing": {
+      "entryTime": 18.8203,
+      "vertex": 1001620,
+      "raw": [
+        {
+          "elapsed_ms": 0,
+          "animation": "Run",
+          "clipTime": 0.4974,
+          "dt": 0.0174,
+          "displacement": [
+            0,
+            0
+          ],
+          "height_mm": 3.1,
+          "root": [
+            -86.7941,
+            1.1412,
+            8.5204
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            0,
+            0
+          ],
+          "inert": [
+            0.8565,
+            0.0385
+          ]
+        },
+        {
+          "elapsed_ms": 16.30000000000109,
+          "animation": "Run",
+          "clipTime": 0.5124,
+          "dt": 0.0163,
+          "displacement": [
+            -0.019900000000006912,
+            0.054199999999999804
+          ],
+          "height_mm": -26,
+          "root": [
+            -86.7862,
+            1.1408,
+            8.4668
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            0,
+            0
+          ],
+          "inert": [
+            0.7112,
+            0.0335
+          ]
+        },
+        {
+          "elapsed_ms": 32.80000000000172,
+          "animation": "Run",
+          "clipTime": 0.5277,
+          "dt": 0.0165,
+          "displacement": [
+            -0.03440000000000509,
+            0.12710000000000043
+          ],
+          "height_mm": -38.9,
+          "root": [
+            -86.7782,
+            1.1385,
+            8.4121
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            0,
+            0
+          ],
+          "inert": [
+            0.5566,
+            0.0278
+          ]
+        },
+        {
+          "elapsed_ms": 48.99999999999949,
+          "animation": "Run",
+          "clipTime": 0.5429,
+          "dt": 0.0162,
+          "displacement": [
+            -0.047100000000000364,
+            0.19989999999999952
+          ],
+          "height_mm": -30,
+          "root": [
+            -86.7702,
+            1.1379,
+            8.3578
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            0,
+            0
+          ],
+          "inert": [
+            0.4219,
+            0.0224
+          ]
+        },
+        {
+          "elapsed_ms": 65.79999999999941,
+          "animation": "Run",
+          "clipTime": 0.0086,
+          "dt": 0.0168,
+          "displacement": [
+            -0.057699999999996976,
+            0.26309999999999967
+          ],
+          "height_mm": 6,
+          "root": [
+            -86.762,
+            1.1396,
+            8.3015
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            0,
+            0
+          ],
+          "inert": [
+            0.3082,
+            0.0176
+          ]
+        },
+        {
+          "elapsed_ms": 83.2000000000015,
+          "animation": "Run",
+          "clipTime": 0.0246,
+          "dt": 0.0174,
+          "displacement": [
+            -0.054500000000004434,
+            0.2983999999999991
+          ],
+          "height_mm": 69.1,
+          "root": [
+            -86.7537,
+            1.1417,
+            8.2444
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            0,
+            0
+          ],
+          "inert": [
+            0.2446,
+            0.0134
+          ]
+        },
+        {
+          "elapsed_ms": 100.00000000000142,
+          "animation": "Run",
+          "clipTime": 0.0423,
+          "dt": 0.0168,
+          "displacement": [
+            -0.028800000000003934,
+            0.29579999999999984
+          ],
+          "height_mm": 143.1,
+          "root": [
+            -86.7458,
+            1.1406,
+            8.1894
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            1,
+            0
+          ],
+          "inert": [
+            0.208,
+            0.0101
+          ]
+        },
+        {
+          "elapsed_ms": 116.70000000000158,
+          "animation": "Run",
+          "clipTime": 0.0578,
+          "dt": 0.0167,
+          "displacement": [
+            -0.0040000000000048885,
+            0.26069999999999993
+          ],
+          "height_mm": 202.3,
+          "root": [
+            -86.7378,
+            1.1419,
+            8.134
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            1,
+            0
+          ],
+          "inert": [
+            0.1755,
+            0.0076
+          ]
+        },
+        {
+          "elapsed_ms": 132.79999999999959,
+          "animation": "Run",
+          "clipTime": 0.073,
+          "dt": 0.0161,
+          "displacement": [
+            0.00929999999999609,
+            0.20069999999999943
+          ],
+          "height_mm": 245.79999999999998,
+          "root": [
+            -86.73,
+            1.1465,
+            8.08
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            1,
+            0
+          ],
+          "inert": [
+            0.1481,
+            0.0057
+          ]
+        },
+        {
+          "elapsed_ms": 149.8999999999988,
+          "animation": "Run",
+          "clipTime": 0.0889,
+          "dt": 0.0171,
+          "displacement": [
+            0.004899999999992133,
+            0.12119999999999997
+          ],
+          "height_mm": 258,
+          "root": [
+            -86.7217,
+            1.1463,
+            8.023
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "contact": [
+            1,
+            0
+          ],
+          "inert": [
+            0.1228,
+            0.0042
+          ]
+        }
+      ],
+      "fixed": [
+        {
+          "elapsed_ms": 0,
+          "drift_mm": 0,
+          "height_mm": 3.1
+        },
+        {
+          "elapsed_ms": 16.7,
+          "drift_mm": 59.51856418345997,
+          "height_mm": -26.312727272726406
+        },
+        {
+          "elapsed_ms": 33.3,
+          "drift_mm": 133.94441234561245,
+          "height_mm": -38.62530864197621
+        },
+        {
+          "elapsed_ms": 50,
+          "drift_mm": 209.1803414913566,
+          "height_mm": -27.857142857141753
+        },
+        {
+          "elapsed_ms": 66.7,
+          "drift_mm": 271.1013262588115,
+          "height_mm": 9.26379310345002
+        },
+        {
+          "elapsed_ms": 83.3,
+          "drift_mm": 303.29346027567027,
+          "height_mm": 69.54047619046959
+        },
+        {
+          "elapsed_ms": 100,
+          "drift_mm": 297.19872139698106,
+          "height_mm": 143.0999999999937
+        }
+      ]
+    },
+    "reversal": {
+      "completeInterval": {
+        "id": 1518,
+        "t0": 17.1359,
+        "t1": 17.2536,
+        "x0": -87.4061,
+        "z0": 13.2988,
+        "drift": 0.39497905007734696,
+        "anims": "Idle>Run",
+        "turning": true
+      },
+      "endpoints": [
+        {
+          "time": 17.1359,
+          "animation": "Idle",
+          "root": [
+            -87.4531,
+            1.1396,
+            13.0827
+          ],
+          "facing": 4.0205,
+          "shownYaw": 4.02,
+          "speed": 0,
+          "stepping": [
+            0,
+            0,
+            "off"
+          ]
+        },
+        {
+          "time": 17.2536,
+          "animation": "Run",
+          "root": [
+            -87.4523,
+            1.1395,
+            13.0769
+          ],
+          "facing": 1.4289,
+          "shownYaw": 1.429,
+          "speed": 0.265,
+          "stepping": [
+            0,
+            0,
+            "exiting"
+          ]
+        }
+      ]
+    }
+  },
+  "integration": {
+    "commit": "27e3638",
+    "readOnlyWorkspace": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration",
+    "runtimeReset": {
+      "errors": [],
+      "checks": [
+        {
+          "name": "teleport-from-seat",
+          "clean": true
+        },
+        {
+          "name": "teleport-from-air",
+          "clean": true
+        },
+        {
+          "name": "death-recovery",
+          "clean": true
+        },
+        {
+          "name": "water-recovery",
+          "clean": true
+        },
+        {
+          "name": "vault-enter-exit",
+          "clean": true
+        },
+        {
+          "name": "no-stale-vault-velocity",
+          "drift": 0.004072528351512142
+        }
+      ],
+      "beforeVault": {
+        "player": [
+          -42.96369552612305,
+          5.636679649353027,
+          40.962833404541016
+        ],
+        "cameraYaw": 0.9272952180016123,
+        "actor": {
+          "vault": false,
+          "movementLocked": false,
+          "animation": "Idle"
+        }
+      },
+      "fixtures": [
+        {
+          "t": 0.044,
+          "to": [
+            -39.0166423781004,
+            5.7,
+            34.176700670659436
+          ],
+          "reason": "seat-front fixture"
+        },
+        {
+          "t": 1.679,
+          "to": [
+            -42,
+            5.68,
+            30
+          ],
+          "reason": "hard QA teleport from SitIdle"
+        },
+        {
+          "t": 2.599,
+          "to": [
+            -42,
+            5.68,
+            30
+          ],
+          "reason": "hard QA teleport from airborne"
+        },
+        {
+          "t": 3.368,
+          "to": [
+            -42,
+            -90,
+            30
+          ],
+          "reason": "fall/death threshold fixture"
+        },
+        {
+          "t": 6.34,
+          "to": [
+            -42.97015050378794,
+            5.68,
+            40.96140707088744
+          ],
+          "reason": "low-vault before vehicle entry"
+        }
+      ]
+    },
+    "interactions": {
+      "errors": [],
+      "checks": [
+        {
+          "name": "sprint-brake",
+          "brakeDistance": 0.44731888839716455,
+          "stoppedSpeed": 0.00015245654967947344
+        },
+        {
+          "name": "jump-land",
+          "grounded": true
+        },
+        {
+          "name": "seat-stand-input",
+          "seat": "camp-bench-0-a",
+          "standingFrames": 26,
+          "drift": 0
+        },
+        {
+          "name": "door-pause-queued-exit",
+          "pausedAnimation": "Run"
+        },
+        {
+          "name": "exit-no-space",
+          "denied": true
+        },
+        {
+          "name": "normal-entry",
+          "qaApi": false
+        }
+      ],
+      "fixtures": [
+        {
+          "t": 0,
+          "to": [
+            -88.6,
+            2.02,
+            24
+          ],
+          "reason": "clear flat west road for braking / reversals"
+        },
+        {
+          "t": 8.694,
+          "to": [
+            -39.0166423781004,
+            5.7,
+            34.176700670659436
+          ],
+          "reason": "approach real seat camp-bench-0-a from its front"
+        },
+        {
+          "t": 13.078,
+          "to": [
+            -88,
+            2.02,
+            14.3
+          ],
+          "reason": "door approach fixture"
+        }
+      ]
+    },
+    "lowVault": {
+      "errors": [],
+      "checks": [
+        {
+          "name": "runtime-low-vault",
+          "activeFrames": 11
+        }
+      ],
+      "fixtures": []
+    },
+    "checks": {
+      "physics": {
+        "pass": 37,
+        "fail": 0,
+        "log": "/tmp/bobby-phase2-integration/physics-tests-final.log"
+      },
+      "typecheck": {
+        "files": 266,
+        "errors": 0,
+        "warnings": 0,
+        "hints": 135,
+        "log": "/tmp/bobby-phase2-integration/check-final.log"
+      },
+      "build": {
+        "pages": 2,
+        "passed": true,
+        "log": "/tmp/bobby-phase2-integration/build-final.log"
+      }
+    },
+    "preview": {
+      "url": "http://127.0.0.1:4345/world/",
+      "pid": 58236,
+      "config": ".astro/character-dev.config.mjs",
+      "mode": "Astro static preview",
+      "keptForMain": true
+    },
+    "browserClosed": true,
+    "heavyLockReleased": true
+  },
+  "startupLimitation": {
+    "alignmentFlagEnabled": true,
+    "actualIdleFacing": 0.6435,
+    "finalFacing": 1.4289,
+    "turnDegrees": 45.000105229574864,
+    "vertex": 1518,
+    "rawSupport": [
+      {
+        "time": 2.3666,
+        "animation": "Idle",
+        "facing": 0.6435,
+        "speed": 0,
+        "point": [
+          1518,
+          -88.5968,
+          23.786,
+          0.0015
+        ],
+        "drift_mm": 0
+      },
+      {
+        "time": 2.3843,
+        "animation": "Run",
+        "facing": 0.8435,
+        "speed": 0.129,
+        "point": [
+          1518,
+          -88.5965,
+          23.7841,
+          0.0015
+        ],
+        "drift_mm": 1.923538406169116
+      },
+      {
+        "time": 2.3999,
+        "animation": "Run",
+        "facing": 1.0435,
+        "speed": 0.252,
+        "point": [
+          1518,
+          -88.6397,
+          23.7877,
+          0.0015
+        ],
+        "drift_mm": 42.93366977094155
+      },
+      {
+        "time": 2.4175,
+        "animation": "Run",
+        "facing": 1.2435,
+        "speed": 0.377,
+        "point": [
+          1518,
+          -88.6801,
+          23.7998,
+          0.0015
+        ],
+        "drift_mm": 84.435359891452
+      },
+      {
+        "time": 2.4341,
+        "animation": "Run",
+        "facing": 1.4289,
+        "speed": 0.505,
+        "point": [
+          1518,
+          -88.7132,
+          23.8181,
+          0.0015
+        ],
+        "drift_mm": 120.74506201083211
+      },
+      {
+        "time": 2.4514,
+        "animation": "Run",
+        "facing": 1.4289,
+        "speed": 0.637,
+        "point": [
+          1518,
+          -88.7132,
+          23.8181,
+          0.0015
+        ],
+        "drift_mm": 120.74506201083211
+      },
+      {
+        "time": 2.4676,
+        "animation": "Run",
+        "facing": 1.4289,
+        "speed": 0.767,
+        "point": [
+          1518,
+          -88.7132,
+          23.8181,
+          0.0015
+        ],
+        "drift_mm": 120.74506201083211
+      },
+      {
+        "time": 2.4853,
+        "animation": "Run",
+        "facing": 1.4289,
+        "speed": 0.898,
+        "point": [
+          1518,
+          -88.7132,
+          23.8181,
+          0.0015
+        ],
+        "drift_mm": 120.74506201083211
+      },
+      {
+        "time": 2.5031,
+        "animation": "Run",
+        "facing": 1.4289,
+        "speed": 1.028,
+        "point": [
+          1518,
+          -88.7132,
+          23.8181,
+          0.0015
+        ],
+        "drift_mm": 120.74506201083211
+      },
+      {
+        "time": 2.5173,
+        "animation": "Run",
+        "facing": 1.4289,
+        "speed": 1.157,
+        "point": [
+          1518,
+          -88.7132,
+          23.8181,
+          0.0015
+        ],
+        "drift_mm": 120.74506201083211
+      },
+      {
+        "time": 2.5342,
+        "animation": "Run",
+        "facing": 1.4289,
+        "speed": 1.286,
+        "point": [
+          1518,
+          -88.7132,
+          23.8181,
+          -0.0011
+        ],
+        "drift_mm": 120.74506201083211
+      },
+      {
+        "time": 2.5533,
+        "animation": "Run",
+        "facing": 1.4289,
+        "speed": 1.543,
+        "point": [
+          1518,
+          -88.7132,
+          23.8181,
+          -0.0011
+        ],
+        "drift_mm": 120.74506201083211
+      },
+      {
+        "time": 2.5727,
+        "animation": "Run",
+        "facing": 1.4289,
+        "speed": 1.671,
+        "point": [
+          1518,
+          -88.7132,
+          23.8181,
+          -0.0011
+        ],
+        "drift_mm": 120.74506201083211
+      }
+    ],
+    "maxDrift_mm": 120.74506201083211,
+    "interpretation": "This startup includes a roughly 45-degree turn. Original turning/time grouping omits the short turn event; zero grouped startup slip is not acceptance of the entire transition or an aligned-start verification."
+  },
+  "limits": [
+    "Single local Chrome samples; inherited turn/landing failure remains open",
+    "Old d54e9b9 reset vault-trigger timeout remains separately attributed; diagnostic run then passed on the same old fixture",
+    "Latest positive reset fixture puts vehicle outside crossing corridor; occupied landing rejection is independently covered by real Rapier tests",
+    "GPU resource ownership checked against installed sources; no GPU-memory stability certification",
+    "No full skin A6, Safari/mobile or production deployment acceptance"
+  ]
+}

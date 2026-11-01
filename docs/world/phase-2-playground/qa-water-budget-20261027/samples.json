@@ -1,0 +1,449 @@
+{
+  "note": "Local Chrome DEV qa=1, balanced, fixed noon, music off. First candidate window was cold and is not used for A/B. Wall load varied; no stable 60 fps claim.",
+  "coldCandidate": {
+    "poolWindow": {
+      "mode": "budgeted",
+      "frames": {
+        "frames": 960,
+        "activeSeconds": 36.16660000000894,
+        "maxMs": 195.70000000298023,
+        "slow25Ratio": 0.6854166666666667,
+        "slow33Ratio": 0.5072916666666667,
+        "percentileSamples": 960,
+        "p50Ms": 33.70000076293945,
+        "p95Ms": 74.4000015258789,
+        "changedDuringWindow": false
+      },
+      "work": {
+        "baseline": {
+          "captures": 0,
+          "reflections": 0,
+          "caustics": 0,
+          "passes": 0,
+          "calls": 0,
+          "triangles": 0,
+          "visits": 0
+        },
+        "budgeted": {
+          "captures": 391,
+          "reflections": 187,
+          "caustics": 242,
+          "passes": 820,
+          "calls": 7348,
+          "triangles": 41222578,
+          "visits": 152489
+        }
+      },
+      "comparable": true,
+      "ending": {
+        "enabled": true,
+        "budgeted": true,
+        "captures": 515,
+        "reflections": 251,
+        "caustics": 323,
+        "passes": 1,
+        "calls": 1,
+        "triangles": 8192,
+        "size": [
+          640,
+          348
+        ],
+        "selected": 28,
+        "skippedSmall": 0,
+        "liveCaptures": 1,
+        "coverage": 1,
+        "totals": {
+          "baseline": {
+            "captures": 0,
+            "reflections": 0,
+            "caustics": 0,
+            "passes": 0,
+            "calls": 0,
+            "triangles": 0,
+            "visits": 0
+          },
+          "budgeted": {
+            "captures": 515,
+            "reflections": 251,
+            "caustics": 323,
+            "passes": 1089,
+            "calls": 9753,
+            "triangles": 54679006,
+            "visits": 204924
+          }
+        }
+      }
+    }
+  },
+  "baseline": {
+    "poolWindow": {
+      "mode": "baseline",
+      "frames": {
+        "frames": 2000,
+        "activeSeconds": 55.99090000000596,
+        "maxMs": 180.29999999701977,
+        "slow25Ratio": 0.485,
+        "slow33Ratio": 0.244,
+        "percentileSamples": 1800,
+        "p50Ms": 25,
+        "p95Ms": 52.900001525878906,
+        "changedDuringWindow": false
+      },
+      "work": {
+        "baseline": {
+          "captures": 849,
+          "reflections": 426,
+          "caustics": 849,
+          "passes": 2124,
+          "calls": 19974,
+          "triangles": 122431407,
+          "visits": 2006187
+        },
+        "budgeted": {
+          "captures": 0,
+          "reflections": 0,
+          "caustics": 0,
+          "passes": 0,
+          "calls": 0,
+          "triangles": 0,
+          "visits": 0
+        }
+      },
+      "comparable": true,
+      "ending": {
+        "enabled": true,
+        "budgeted": false,
+        "captures": 2245,
+        "reflections": 1109,
+        "caustics": 1958,
+        "passes": 0,
+        "calls": 0,
+        "triangles": 0,
+        "size": [
+          768,
+          418
+        ],
+        "selected": 37,
+        "skippedSmall": 0,
+        "liveCaptures": 1,
+        "coverage": 1,
+        "totals": {
+          "baseline": {
+            "captures": 1500,
+            "reflections": 754,
+            "caustics": 1500,
+            "passes": 3754,
+            "calls": 35310,
+            "triangles": 216410070,
+            "visits": 3544500
+          },
+          "budgeted": {
+            "captures": 745,
+            "reflections": 355,
+            "caustics": 458,
+            "passes": 1558,
+            "calls": 13978,
+            "triangles": 78422116,
+            "visits": 295571
+          }
+        }
+      }
+    }
+  },
+  "candidate": {
+    "poolWindow": {
+      "mode": "budgeted",
+      "frames": {
+        "frames": 2231,
+        "activeSeconds": 54.35759999999404,
+        "maxMs": 164.3999999910593,
+        "slow25Ratio": 0.3536530703720305,
+        "slow33Ratio": 0.18825638727028238,
+        "percentileSamples": 1800,
+        "p50Ms": 20.200000762939453,
+        "p95Ms": 47.400001525878906,
+        "changedDuringWindow": false
+      },
+      "work": {
+        "baseline": {
+          "captures": 0,
+          "reflections": 0,
+          "caustics": 0,
+          "passes": 0,
+          "calls": 0,
+          "triangles": 0,
+          "visits": 0
+        },
+        "budgeted": {
+          "captures": 658,
+          "reflections": 297,
+          "caustics": 386,
+          "passes": 1341,
+          "calls": 12079,
+          "triangles": 67884799,
+          "visits": 253827
+        }
+      },
+      "comparable": true,
+      "ending": {
+        "enabled": true,
+        "budgeted": true,
+        "captures": 3157,
+        "reflections": 1520,
+        "caustics": 2496,
+        "passes": 0,
+        "calls": 0,
+        "triangles": 0,
+        "size": [
+          640,
+          348
+        ],
+        "selected": 28,
+        "skippedSmall": 0,
+        "liveCaptures": 1,
+        "coverage": 1,
+        "totals": {
+          "baseline": {
+            "captures": 1507,
+            "reflections": 757,
+            "caustics": 1507,
+            "passes": 3771,
+            "calls": 35467,
+            "triangles": 217381496,
+            "visits": 3561041
+          },
+          "budgeted": {
+            "captures": 1650,
+            "reflections": 763,
+            "caustics": 989,
+            "passes": 3402,
+            "calls": 30584,
+            "triangles": 171754153,
+            "visits": 644970
+          }
+        }
+      }
+    }
+  },
+  "render": {
+    "sampledAt": "2026-10-27T09:36:43.758Z",
+    "calls": 81,
+    "triangles": 330826,
+    "geometries": 185,
+    "textures": 59,
+    "programs": 118,
+    "camera": [
+      49.38150405883789,
+      7.541857368903758,
+      43.83621712002689
+    ],
+    "mode": "always",
+    "frame": 21760,
+    "delta": 0.07160000000894069,
+    "night": 0,
+    "windTime": 348.9983000000698,
+    "frameMs": {
+      "samples": 180,
+      "p50": 38.599998474121094,
+      "p95": 70.5999984741211,
+      "max": 82.5
+    },
+    "drawingBuffer": [
+      1951,
+      1062
+    ],
+    "cssSize": [
+      1710,
+      931
+    ],
+    "pixelRatio": 1.1412731405118963,
+    "dprRange": [
+      0,
+      1.5
+    ],
+    "quality": "balanced",
+    "antialias": true,
+    "msaaSamples": 4,
+    "toneMapping": 4,
+    "outputColorSpace": "srgb",
+    "shadowMapSize": 1254,
+    "shadowType": 1,
+    "postprocessing": []
+  },
+  "pausedBefore": {
+    "poolOptics": {
+      "enabled": true,
+      "budgeted": true,
+      "captures": 4471,
+      "reflections": 2126,
+      "caustics": 3274,
+      "passes": 3,
+      "calls": 27,
+      "triangles": 147266,
+      "size": [
+        640,
+        348
+      ],
+      "selected": 28,
+      "skippedSmall": 0,
+      "liveCaptures": 1,
+      "coverage": 1,
+      "totals": {
+        "baseline": {
+          "captures": 1507,
+          "reflections": 757,
+          "caustics": 1507,
+          "passes": 3771,
+          "calls": 35467,
+          "triangles": 217381496,
+          "visits": 3561041
+        },
+        "budgeted": {
+          "captures": 2964,
+          "reflections": 1369,
+          "caustics": 1767,
+          "passes": 6100,
+          "calls": 54906,
+          "triangles": 308333625,
+          "visits": 1149799
+        }
+      }
+    }
+  },
+  "pausedAfter": {
+    "poolOptics": {
+      "enabled": true,
+      "budgeted": true,
+      "captures": 4471,
+      "reflections": 2126,
+      "caustics": 3274,
+      "passes": 3,
+      "calls": 27,
+      "triangles": 147266,
+      "size": [
+        640,
+        348
+      ],
+      "selected": 28,
+      "skippedSmall": 0,
+      "liveCaptures": 1,
+      "coverage": 1,
+      "totals": {
+        "baseline": {
+          "captures": 1507,
+          "reflections": 757,
+          "caustics": 1507,
+          "passes": 3771,
+          "calls": 35467,
+          "triangles": 217381496,
+          "visits": 3561041
+        },
+        "budgeted": {
+          "captures": 2964,
+          "reflections": 1369,
+          "caustics": 1767,
+          "passes": 6100,
+          "calls": 54906,
+          "triangles": 308333625,
+          "visits": 1149799
+        }
+      }
+    }
+  },
+  "waterContact": {
+    "water": {
+      "emitted": 6,
+      "active": [
+        {
+          "x": 55.202844284058074,
+          "z": 54.97138362121598,
+          "y": 1.35,
+          "at": 388.81330000005516,
+          "strength": 0.240823437694058,
+          "radius": 0.12,
+          "splash": 0.0007161258413785861
+        }
+      ]
+    }
+  },
+  "farBefore": {
+    "poolOptics": {
+      "enabled": true,
+      "budgeted": true,
+      "captures": 5319,
+      "reflections": 2529,
+      "caustics": 3792,
+      "passes": 2,
+      "calls": 19,
+      "triangles": 82637,
+      "size": [
+        640,
+        348
+      ],
+      "selected": 28,
+      "skippedSmall": 0,
+      "liveCaptures": 1,
+      "coverage": 1,
+      "totals": {
+        "baseline": {
+          "captures": 1507,
+          "reflections": 757,
+          "caustics": 1507,
+          "passes": 3771,
+          "calls": 35467,
+          "triangles": 217381496,
+          "visits": 3561041
+        },
+        "budgeted": {
+          "captures": 3812,
+          "reflections": 1772,
+          "caustics": 2285,
+          "passes": 7869,
+          "calls": 74550,
+          "triangles": 397790848,
+          "visits": 1481553
+        }
+      }
+    }
+  },
+  "farAfter": {
+    "poolOptics": {
+      "enabled": true,
+      "budgeted": true,
+      "captures": 5319,
+      "reflections": 2529,
+      "caustics": 3792,
+      "passes": 2,
+      "calls": 19,
+      "triangles": 82637,
+      "size": [
+        640,
+        348
+      ],
+      "selected": 28,
+      "skippedSmall": 0,
+      "liveCaptures": 1,
+      "coverage": 1,
+      "totals": {
+        "baseline": {
+          "captures": 1507,
+          "reflections": 757,
+          "caustics": 1507,
+          "passes": 3771,
+          "calls": 35467,
+          "triangles": 217381496,
+          "visits": 3561041
+        },
+        "budgeted": {
+          "captures": 3812,
+          "reflections": 1772,
+          "caustics": 2285,
+          "passes": 7869,
+          "calls": 74550,
+          "triangles": 397790848,
+          "visits": 1481553
+        }
+      }
+    }
+  }
+}

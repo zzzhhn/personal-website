@@ -1,0 +1,18 @@
+{
+  "url": "http://127.0.0.1:4343/",
+  "durationObserved": 111.7,
+  "finished": true,
+  "seekDuringRun": false,
+  "render": {
+    "calls": 10,
+    "triangles": 73682
+  },
+  "frameSample": {
+    "warmup": 30,
+    "count": 180,
+    "p50ms": 16.7,
+    "p95ms": 18.3,
+    "scope": "early run, not full island"
+  },
+  "consoleErrors": []
+}

@@ -1,0 +1,223 @@
+{
+  "ride": {
+    "active": false,
+    "seat": [
+      50,
+      1.6,
+      -145
+    ],
+    "yaw": 1.5707963267948966,
+    "cameraPosition": [
+      50,
+      6,
+      -136
+    ],
+    "cameraTarget": [
+      50,
+      2,
+      -145
+    ],
+    "firstPerson": false,
+    "fov": 55,
+    "look": {
+      "yaw": 0,
+      "pitch": 0,
+      "zoom": 1
+    }
+  },
+  "camera": {
+    "yaw": 1.5707963267948966,
+    "pitch": 0.7853981633974483,
+    "distance": 12,
+    "desiredDistance": 12,
+    "driveManualZoom": false,
+    "actualDistance": 12.000000000000005,
+    "firstPerson": false,
+    "preset": 1,
+    "collided": false,
+    "hitDistance": null,
+    "fov": 50,
+    "mode": "walk",
+    "recentering": false,
+    "position": [
+      72.98718104503571,
+      14.444296049339924,
+      -346.5488174807083
+    ],
+    "target": [
+      72.98718104503571,
+      5.959014675101351,
+      -355.0340988549469
+    ],
+    "forwardGround": [
+      0,
+      -1
+    ],
+    "groundBelowCamera": 2.0978546142578125,
+    "clearanceAboveGround": 12.346441435082111,
+    "gamepad": false,
+    "nearPlaneRadius": 0.22,
+    "guideHidden": false,
+    "shoulderOffset": 0,
+    "nearPlaneOverlaps": []
+  },
+  "actor": {
+    "animation": "Idle",
+    "root": [
+      72.98674011230469,
+      4.4893744971964065,
+      -355.03521728515625
+    ],
+    "seatSupport": null,
+    "vehicleStage": null,
+    "vehicleRotation": null,
+    "vehicle": null
+  },
+  "doors": {
+    "offroad": {
+      "level": 1,
+      "triangles": 15242,
+      "doors": [
+        {
+          "side": -1,
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "vertices": 540
+        },
+        {
+          "side": 1,
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "vertices": 540
+        }
+      ],
+      "material": "519a75ba-12f6-4aac-9587-d80b3f25d06d",
+      "bodyNear": "56558089-b471-4212-b271-ba357be2ccc4",
+      "bodyFar": "53514251-532a-49ab-b28a-65e8820c34d3",
+      "wheel": "265b754b-9ccb-428a-bbb8-7eaa3b2e9266"
+    },
+    "coupe": {
+      "level": 1,
+      "triangles": 14816,
+      "doors": [
+        {
+          "side": -1,
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "vertices": 636
+        },
+        {
+          "side": 1,
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "vertices": 636
+        }
+      ],
+      "material": "0f644c32-d281-44ff-a7a2-89c5771315cf",
+      "bodyNear": "85ec6316-666b-4ce7-bb3c-d18ecbf17cd3",
+      "bodyFar": "ec9e2956-66ed-4d60-8999-d99390a802df",
+      "wheel": "ddd8d79c-3e3a-49de-8065-9d903015e7d4"
+    },
+    "van": {
+      "level": 1,
+      "triangles": 14273,
+      "doors": [
+        {
+          "side": -1,
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "vertices": 540
+        },
+        {
+          "side": 1,
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "vertices": 540
+        }
+      ],
+      "material": "526bc7d2-57df-46aa-ac37-b43d0c3f1fe7",
+      "bodyNear": "2d724238-6b44-45e5-b030-49c4af4b3d25",
+      "bodyFar": "8183bae0-4920-495e-b490-d73c2e5b7c3b",
+      "wheel": "21130bda-feb4-444a-bc15-19821c448ab7"
+    }
+  },
+  "physics": {
+    "player": [
+      72.98674011230469,
+      5.307871341705322,
+      -355.03521728515625
+    ],
+    "grounded": true,
+    "vehicles": [
+      {
+        "id": "offroad",
+        "position": [
+          -26.005468368530273,
+          5.89796781539917,
+          34
+        ],
+        "waterSeconds": 0,
+        "wheelContacts": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "id": "coupe",
+        "position": [
+          26.199382781982422,
+          2.137481212615967,
+          2.002351999282837
+        ],
+        "waterSeconds": 0,
+        "wheelContacts": [
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      {
+        "id": "van",
+        "position": [
+          45.992557525634766,
+          2.469322681427002,
+          -45
+        ],
+        "waterSeconds": 0,
+        "wheelContacts": [
+          true,
+          true,
+          true,
+          true
+        ]
+      }
+    ]
+  }
+}

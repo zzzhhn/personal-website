@@ -1,0 +1,12 @@
+{
+  "ui": {
+    "consumers": 1,
+    "framePending": true,
+    "listening": true,
+    "connected": true,
+    "samples": 23
+  },
+  "prompt": "Y\nSlide the crossfader",
+  "hints": "[\"move\",\"interact\",\"look\"]",
+  "hintsVisible": false
+}

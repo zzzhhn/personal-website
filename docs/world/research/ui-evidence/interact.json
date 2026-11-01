@@ -1,0 +1,234 @@
+{
+  "base": "http://127.0.0.1:4337",
+  "url": "http://127.0.0.1:4337/world/?qa=1&uitest=1",
+  "checks": [
+    {
+      "name": "fixtures registered",
+      "pass": true,
+      "detail": [
+        "uitest-identity",
+        "uitest-education",
+        "uitest-languages",
+        "uitest-board",
+        "uitest-hunyuan",
+        "uitest-note"
+      ]
+    },
+    {
+      "name": "walked to camp fixtures",
+      "pass": true,
+      "detail": [
+        -45.71683120727539,
+        5.640479564666748,
+        37.78992462158203
+      ]
+    },
+    {
+      "name": "prompt shows nearest",
+      "pass": true,
+      "detail": [
+        {
+          "text": "ETent · Who I am",
+          "active": true
+        },
+        {
+          "text": "Flags · Languages",
+          "active": false
+        },
+        {
+          "text": "Desk · Education",
+          "active": false
+        }
+      ]
+    },
+    {
+      "name": "multi-target list",
+      "pass": true,
+      "detail": [
+        "ETent · Who I am",
+        "Flags · Languages",
+        "Desk · Education"
+      ]
+    },
+    {
+      "name": "Q switches target",
+      "pass": true,
+      "detail": {
+        "before": "ETent · Who I am",
+        "after": "EFlags · Languages",
+        "pick": "uitest-languages"
+      }
+    },
+    {
+      "name": "E opens chosen card",
+      "pass": true,
+      "detail": {
+        "card": {
+          "kind": "about",
+          "id": "languages"
+        },
+        "title": "Languages",
+        "chosen": "EFlags · Languages"
+      }
+    },
+    {
+      "name": "E closes card",
+      "pass": true,
+      "detail": {
+        "card": null,
+        "nearby": "uitest-identity",
+        "pick": null,
+        "lang": "en",
+        "paused": false
+      }
+    },
+    {
+      "name": "E reopens nearest",
+      "pass": true,
+      "detail": {
+        "title": "Quantitative Finance × AI",
+        "eyebrow": "About · About Me",
+        "pager": null,
+        "board": null
+      }
+    },
+    {
+      "name": "Esc closes card without opening menu",
+      "pass": true,
+      "detail": {
+        "card": null,
+        "nearby": "uitest-identity",
+        "pick": null,
+        "lang": "en",
+        "paused": false
+      }
+    },
+    {
+      "name": "close button closes card",
+      "pass": true,
+      "detail": {
+        "card": null,
+        "nearby": "uitest-identity",
+        "pick": null,
+        "lang": "en",
+        "paused": false
+      }
+    },
+    {
+      "name": "experience card",
+      "pass": true,
+      "detail": {
+        "walk": true,
+        "card": {
+          "kind": "experience",
+          "id": "2026-09-24"
+        },
+        "title": "Tencent · Hunyuan Foundation Models"
+      }
+    },
+    {
+      "name": "Esc opens menu",
+      "pass": true,
+      "detail": {
+        "card": null,
+        "nearby": "uitest-hunyuan",
+        "pick": null,
+        "lang": "en",
+        "paused": true
+      }
+    },
+    {
+      "name": "menu closes, lang zh",
+      "pass": true,
+      "detail": {
+        "card": null,
+        "nearby": "uitest-hunyuan",
+        "pick": null,
+        "lang": "zh",
+        "paused": false
+      }
+    },
+    {
+      "name": "zh experience card",
+      "pass": true,
+      "detail": {
+        "title": "腾讯 · 混元基础模型",
+        "eyebrow": "实习 · 06 / 06",
+        "pager": null,
+        "board": null
+      }
+    },
+    {
+      "name": "blackboard pages cycle (4 courses from content)",
+      "pass": true,
+      "detail": {
+        "walk": true,
+        "pages": [
+          {
+            "open": "FIN4210",
+            "pager": "页 1 / 4"
+          },
+          {
+            "open": "FIN3080",
+            "pager": "页 2 / 4"
+          },
+          {
+            "open": "MAT2002",
+            "pager": "页 3 / 4"
+          },
+          {
+            "open": "ACT4253",
+            "pager": "页 4 / 4"
+          },
+          {
+            "open": "FIN4210",
+            "pager": "页 1 / 4"
+          }
+        ]
+      }
+    },
+    {
+      "name": "arrow turns board page",
+      "pass": true,
+      "detail": {
+        "a0": "FIN3080",
+        "a1": "MAT2002"
+      }
+    },
+    {
+      "name": "walking away closes card",
+      "pass": true,
+      "detail": {
+        "card": null,
+        "nearby": null,
+        "pick": null,
+        "lang": "zh",
+        "paused": false
+      }
+    },
+    {
+      "name": "narrow card opens",
+      "pass": true,
+      "detail": {
+        "title": "腾讯 · 混元基础模型",
+        "eyebrow": "实习 · 06 / 06",
+        "pager": null,
+        "board": null
+      }
+    }
+  ],
+  "errors": [],
+  "listed": [
+    "uitest-identity",
+    "uitest-education",
+    "uitest-languages",
+    "uitest-board",
+    "uitest-hunyuan",
+    "uitest-note"
+  ],
+  "fixtureCalls": [],
+  "summary": {
+    "pass": 18,
+    "fail": 0
+  }
+}

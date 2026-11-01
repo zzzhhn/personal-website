@@ -1,0 +1,31 @@
+{
+ "images": [
+  "entrance-close.png"
+ ],
+ "renderer": "BLENDER_EEVEE",
+ "resolution": [
+  1000,
+  760
+ ],
+ "viewTransform": "AgX",
+ "look": "None",
+ "exposure": 0,
+ "gamma": 1,
+ "views": [
+  [
+   "entrance-close",
+   [
+    2.5,
+    2.6,
+    -8.5
+   ],
+   [
+    -6.2,
+    3.8,
+    -25
+   ]
+  ]
+ ],
+ "scope": "fresh exact delivered GLB; studio lights/floor/cameras and basin water are preview only; not game integration or character validation",
+ "glbSha256": "f9d15c1b3a438345d59a9d1f3d0efa86187df976a70785136c2af83d173bcf17"
+}

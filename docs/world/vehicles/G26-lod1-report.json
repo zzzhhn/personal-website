@@ -1,0 +1,156 @@
+{
+  "asset": "G26",
+  "lod": 1,
+  "blender": "4.2.23 LTS",
+  "sourceSha256": "6668d80bd54ee1a7336cd12a224fe7ef2068ff498da1a127c833b9637ece1134",
+  "sha256": "9d8eeb2d3836cfad1f2ecdedda27bf107f1a53f4bf24a207b3ed457b44ea4d5e",
+  "sourceTris": 11250,
+  "bodyTris": 2538,
+  "wheelTris": 200,
+  "totalTris": 3338,
+  "ratio": 0.2967111111111111,
+  "bounds": [
+    [
+      -2.2,
+      -1.065,
+      0.0
+    ],
+    [
+      2.2,
+      1.065,
+      1.29
+    ]
+  ],
+  "sourceBounds": [
+    [
+      -2.205,
+      -1.07,
+      0.0
+    ],
+    [
+      2.2,
+      1.07,
+      1.305
+    ]
+  ],
+  "method": {
+    "reduction": "material-delimited 15deg dissolve",
+    "droppedShells": 4,
+    "dropped": [
+      {
+        "vertices": 24,
+        "faces": 26,
+        "size": [
+          0.1199999749660492,
+          0.12999993562698364,
+          0.10000002384185791
+        ],
+        "roles": [
+          "paint"
+        ]
+      },
+      {
+        "vertices": 24,
+        "faces": 26,
+        "size": [
+          0.1199999749660492,
+          0.12999993562698364,
+          0.10000002384185791
+        ],
+        "roles": [
+          "paint"
+        ]
+      },
+      {
+        "vertices": 30,
+        "faces": 42,
+        "size": [
+          0.006000041961669922,
+          0.06400001049041748,
+          0.06239539384841919
+        ],
+        "roles": [
+          "accent"
+        ]
+      },
+      {
+        "vertices": 30,
+        "faces": 42,
+        "size": [
+          0.006000041961669922,
+          0.06400001049041748,
+          0.06239539384841919
+        ],
+        "roles": [
+          "accent"
+        ]
+      }
+    ],
+    "collapsedFlatShells": 0,
+    "protectedRoles": [
+      "glass",
+      "light_front",
+      "light_brake",
+      "light_reverse",
+      "light_beacon"
+    ]
+  },
+  "checks": {
+    "G26_body": {
+      "tris": 2538,
+      "degenerate": 0,
+      "nonManifoldEdges": 0,
+      "finite": true,
+      "signedVolume": 5.29123
+    },
+    "wheel-front-right": {
+      "tris": 200,
+      "degenerate": 0,
+      "nonManifoldEdges": 0,
+      "finite": true,
+      "signedVolume": 0.04802
+    }
+  },
+  "reimport": {
+    "objects": [
+      "G26",
+      "G26_body",
+      "wheel-front-left",
+      "wheel-front-right",
+      "wheel-rear-left",
+      "wheel-rear-right"
+    ],
+    "tris": {
+      "G26_body": 2538,
+      "wheel-front-left": 200,
+      "wheel-front-right": 200,
+      "wheel-rear-left": 200,
+      "wheel-rear-right": 200
+    },
+    "materials": [
+      "veh_accent_dark",
+      "veh_glass",
+      "veh_light_brake",
+      "veh_light_front",
+      "veh_light_reverse",
+      "veh_metal",
+      "veh_metal_dark",
+      "veh_paint_cream",
+      "veh_paint_slate",
+      "veh_rubber"
+    ],
+    "bounds": [
+      [
+        -2.2,
+        -1.065,
+        0.0
+      ],
+      [
+        2.2,
+        1.065,
+        1.29
+      ]
+    ],
+    "bytes": 41844
+  }
+}

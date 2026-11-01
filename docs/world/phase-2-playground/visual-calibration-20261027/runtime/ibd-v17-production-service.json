@@ -1,0 +1,12 @@
+{
+  "buildSource": "43f9507",
+  "buildDirectory": "/tmp/bobby-world-ibd-v17-20261028",
+  "port": 4341,
+  "pid": 73405,
+  "status": 200,
+  "htmlSha256": "4ed4c93a75661ffe8e3649d72378826e945bc708729f2bb341d9af18e272fcd0",
+  "htmlMatchesBuild": true,
+  "runtimeBrowserVerification": "3D scene loaded; gameplay input and current IBD progress visible; error log empty; left paused in settings",
+  "rollbackBuild": "/tmp/bobby-world-ibd-v16-20261028",
+  "ppid": 1
+}

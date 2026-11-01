@@ -1,0 +1,110 @@
+{
+  "base": "http://127.0.0.1:4321",
+  "checks": [
+    {
+      "check": "Three physical vehicles mounted",
+      "passed": true
+    },
+    {
+      "check": "Keyboard walking moves capsule",
+      "passed": true,
+      "evidence": 1.8331375122427533
+    },
+    {
+      "check": "Shift runs faster than walking",
+      "passed": true,
+      "evidence": {
+        "walked": 1.8331375122427533,
+        "ran": 3.629187774662133
+      }
+    },
+    {
+      "check": "Space performs a grounded jump",
+      "passed": true,
+      "evidence": {
+        "baseY": 5.618858814239502,
+        "jumpY": 6.753400802612305
+      }
+    },
+    {
+      "check": "E enters offroad",
+      "passed": true
+    },
+    {
+      "check": "offroad drives from its parking position",
+      "passed": true,
+      "evidence": {
+        "parked": [
+          -26.006153106689453,
+          5.896547794342041,
+          34
+        ],
+        "after": [
+          -22.09689712524414,
+          5.888882160186768,
+          34
+        ]
+      }
+    },
+    {
+      "check": "E safely exits offroad",
+      "passed": true
+    },
+    {
+      "check": "E enters coupe",
+      "passed": true
+    },
+    {
+      "check": "coupe drives from its parking position",
+      "passed": true,
+      "evidence": {
+        "parked": [
+          19.799999237060547,
+          2.1359031200408936,
+          12.002354621887207
+        ],
+        "after": [
+          19.799999237060547,
+          2.135396957397461,
+          6.966712951660156
+        ]
+      }
+    },
+    {
+      "check": "E safely exits coupe",
+      "passed": true
+    },
+    {
+      "check": "E enters van",
+      "passed": true
+    },
+    {
+      "check": "van drives from its parking position",
+      "passed": true,
+      "evidence": {
+        "parked": [
+          45.992401123046875,
+          2.4549784660339355,
+          -45
+        ],
+        "after": [
+          48.94089126586914,
+          2.445484161376953,
+          -45
+        ]
+      }
+    },
+    {
+      "check": "E safely exits van",
+      "passed": true
+    },
+    {
+      "check": "Flip recovery does not appear before two seconds",
+      "passed": true
+    },
+    {
+      "failed": "page.waitForFunction: Timeout 7000ms exceeded."
+    }
+  ],
+  "errors": []
+}

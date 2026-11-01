@@ -1,0 +1,27 @@
+{
+ "position": [
+  -83.69,
+  1.96,
+  -75.56
+ ],
+ "yaw": -1.57,
+ "grounded": true,
+ "vehicle": null,
+ "drive": null,
+ "grass": {
+  "instances": 206,
+  "disturbers": 1,
+  "trampled": 36,
+  "strength": 0.947
+ },
+ "exchange": {
+  "phase": "closed",
+  "days": 0,
+  "day": 0,
+  "cash": 10000,
+  "units": 0,
+  "equity": 10000,
+  "message": "ring-first",
+  "ledger": []
+ }
+}

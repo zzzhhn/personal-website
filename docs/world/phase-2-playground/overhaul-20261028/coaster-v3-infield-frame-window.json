@@ -1,0 +1,58 @@
+{
+ "frameWindow": {
+  "frames": 5692,
+  "activeSeconds": 94.94639999997615,
+  "maxMs": 53.400000005960464,
+  "slow25Ratio": 0.0010541110330288123,
+  "slow33Ratio": 0.0007027406886858749,
+  "percentileSamples": 1800,
+  "p50Ms": 16.700000762939453,
+  "p95Ms": 17.299999237060547,
+  "changedDuringWindow": false
+ },
+ "render": {
+  "sampledAt": "2026-10-27T19:59:19.220Z",
+  "calls": 36,
+  "triangles": 202269,
+  "geometries": 378,
+  "textures": 70,
+  "programs": 243,
+  "camera": [
+   44.89980697631836,
+   6.944505342395539,
+   -149.25948621377205
+  ],
+  "mode": "always",
+  "frame": 6609,
+  "delta": 0.017099999994039536,
+  "night": 1,
+  "windTime": 107.61559999993453,
+  "frameMs": {
+   "samples": 180,
+   "p50": 16.700000762939453,
+   "p95": 17.299999237060547,
+   "max": 22.100000381469727
+  },
+  "drawingBuffer": [
+   2013,
+   1030
+  ],
+  "cssSize": [
+   1710,
+   875
+  ],
+  "pixelRatio": 1.1772275318111343,
+  "dprRange": [
+   0,
+   1.5
+  ],
+  "quality": "balanced",
+  "antialias": true,
+  "msaaSamples": 4,
+  "toneMapping": 4,
+  "outputColorSpace": "srgb",
+  "shadowMapSize": 1254,
+  "shadowType": 1,
+  "postprocessing": []
+ }
+}

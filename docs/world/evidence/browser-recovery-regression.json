@@ -1,0 +1,67 @@
+{
+  "base": "http://127.0.0.1:4321",
+  "checks": [
+    {
+      "check": "Three physical vehicles mounted",
+      "passed": true
+    },
+    {
+      "check": "Vehicle remains where it was parked after exit",
+      "passed": true,
+      "evidence": {
+        "beforeExit": [
+          -25.00921630859375,
+          5.920347213745117,
+          34
+        ],
+        "afterExit": [
+          -25.01190185546875,
+          5.900374889373779,
+          34
+        ]
+      }
+    },
+    {
+      "check": "Flip recovery does not appear before two seconds",
+      "passed": true
+    },
+    {
+      "check": "R resets an overturned vehicle",
+      "passed": true
+    },
+    {
+      "check": "Vehicle water recovery returns to a road",
+      "passed": true
+    },
+    {
+      "check": "Escape pauses and opens map",
+      "passed": true
+    },
+    {
+      "check": "Paused controls do not move vehicles",
+      "passed": true
+    },
+    {
+      "check": "Language switches to Chinese",
+      "passed": true
+    },
+    {
+      "check": "Night lighting can be selected in menu",
+      "passed": true
+    },
+    {
+      "check": "Wheel selects far zoom",
+      "passed": true
+    },
+    {
+      "check": "Wheel returns to medium zoom",
+      "passed": true
+    },
+    {
+      "check": "No browser page errors",
+      "passed": true,
+      "evidence": []
+    }
+  ],
+  "errors": []
+}

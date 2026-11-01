@@ -1,0 +1,800 @@
+{
+  "capturedAt": "2026-10-21T08:57:28.610Z",
+  "base": "http://127.0.0.1:4321",
+  "sourceHashes": {
+    "src/components/world/WorldCamp.tsx": "09fbff23c03ddb67df31d1d9ddb09897f0768bfb59b480475d7dc27afe37e8ae",
+    "src/components/world/WorldEnvironment.tsx": "87f1e12f3c311388d4e98803e05f532a019cb3e3e4c4d597d5dc3675d259d0d2",
+    "src/components/world/WorldActors.tsx": "cc4bfae9d77e99bf86582feee39583c8ab75776d0864595bdfb8b4fa4cdf8130",
+    "src/components/world/layout.ts": "e005ab3cee287a6321dcaa6b6363b6f1fe1b230a9a27f58b0d3e466cac9e781a"
+  },
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "report": [
+    {
+      "name": "spawn-dusk",
+      "stats": {
+        "calls": 176,
+        "triangles": 36471,
+        "geometries": 110,
+        "textures": 3,
+        "camera": [
+          -36.27243501983453,
+          15.814800413416345,
+          42.63675326588458
+        ]
+      },
+      "state": {
+        "lang": "en",
+        "light": "dusk",
+        "paused": false,
+        "activeVehicle": null,
+        "nearbyVehicle": null,
+        "canRecover": false,
+        "recoverRequest": 0,
+        "speed": 0,
+        "zone": "camp",
+        "position": [
+          -42,
+          5.618858814239502,
+          35
+        ],
+        "ready": true,
+        "zoom": 1,
+        "shot": null
+      },
+      "snapshot": {
+        "player": [
+          -42,
+          5.618858814239502,
+          35
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00619125366211,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              2.0387805221844246e-08,
+              -0.061195146292448044,
+              0
+            ],
+            "mass": 1400,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "coupe",
+            "position": [
+              19.799999237060547,
+              2.1359031200408936,
+              12.002385139465332
+            ],
+            "velocity": [
+              5.7209408765857006e-08,
+              -0.06118990108370781,
+              -1.0553605989116477e-08
+            ],
+            "mass": 1100,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "van",
+            "position": [
+              45.9923095703125,
+              2.4549784660339355,
+              -45
+            ],
+            "velocity": [
+              1.7371894500683993e-07,
+              -0.06119022145867348,
+              1.6136594153244715e-20
+            ],
+            "mass": 2100,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          }
+        ]
+      },
+      "assets": [
+        "camp-asset-C03-large-tent",
+        "camp-asset-C04-x2",
+        "camp-asset-C05-fire-pit",
+        "camp-asset-C06-x4",
+        "camp-asset-C07-pad1",
+        "camp-asset-C08-pad1",
+        "camp-asset-C09-pad2",
+        "camp-asset-C10-pad3",
+        "camp-asset-G16-x2",
+        "camp-asset-G17-x1",
+        "camp-asset-G18-x1",
+        "camp-asset-G19-x5",
+        "camp-asset-G20-x4",
+        "camp-asset-G21-x2",
+        "camp-asset-G22-x4",
+        "camp-asset-G23-x6"
+      ]
+    },
+    {
+      "name": "spawn-zoom-0",
+      "stats": {
+        "calls": 156,
+        "triangles": 32363,
+        "geometries": 110,
+        "textures": 3,
+        "camera": [
+          -36.90360321487692,
+          14.762853455832548,
+          41.795195713160616
+        ]
+      },
+      "state": {
+        "lang": "en",
+        "light": "dusk",
+        "paused": false,
+        "activeVehicle": null,
+        "nearbyVehicle": null,
+        "canRecover": false,
+        "recoverRequest": 0,
+        "speed": 0,
+        "zone": "camp",
+        "position": [
+          -42,
+          5.618858814239502,
+          35
+        ],
+        "ready": true,
+        "zoom": 0,
+        "shot": null
+      },
+      "snapshot": {
+        "player": [
+          -42,
+          5.618858814239502,
+          35
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00619125366211,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              2.475815286118177e-08,
+              -0.061195146292448044,
+              0
+            ],
+            "mass": 1400,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "coupe",
+            "position": [
+              19.799999237060547,
+              2.1359031200408936,
+              12.002385139465332
+            ],
+            "velocity": [
+              5.7209408765857006e-08,
+              -0.06118990108370781,
+              -1.055377474301622e-08
+            ],
+            "mass": 1100,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "van",
+            "position": [
+              45.9923095703125,
+              2.4549784660339355,
+              -45
+            ],
+            "velocity": [
+              2.101664797748981e-08,
+              -0.0611904002726078,
+              8.455361057747488e-21
+            ],
+            "mass": 2100,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          }
+        ]
+      },
+      "assets": [
+        "camp-asset-C03-large-tent",
+        "camp-asset-C04-x2",
+        "camp-asset-C05-fire-pit",
+        "camp-asset-C06-x4",
+        "camp-asset-C07-pad1",
+        "camp-asset-C08-pad1",
+        "camp-asset-C09-pad2",
+        "camp-asset-C10-pad3",
+        "camp-asset-G16-x2",
+        "camp-asset-G17-x1",
+        "camp-asset-G18-x1",
+        "camp-asset-G19-x5",
+        "camp-asset-G20-x4",
+        "camp-asset-G21-x2",
+        "camp-asset-G22-x4",
+        "camp-asset-G23-x6"
+      ]
+    },
+    {
+      "name": "spawn-zoom-2",
+      "stats": {
+        "calls": 187,
+        "triangles": 37591,
+        "geometries": 110,
+        "textures": 3,
+        "camera": [
+          -35.647049502991734,
+          16.857109642584202,
+          43.47060066267476
+        ]
+      },
+      "state": {
+        "lang": "en",
+        "light": "dusk",
+        "paused": false,
+        "activeVehicle": null,
+        "nearbyVehicle": null,
+        "canRecover": false,
+        "recoverRequest": 0,
+        "speed": 0,
+        "zone": "camp",
+        "position": [
+          -42,
+          5.618858814239502,
+          35
+        ],
+        "ready": true,
+        "zoom": 2,
+        "shot": null
+      },
+      "snapshot": {
+        "player": [
+          -42,
+          5.618858814239502,
+          35
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00619125366211,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              4.020709098995212e-08,
+              -0.0611950121819973,
+              0
+            ],
+            "mass": 1400,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "coupe",
+            "position": [
+              19.799999237060547,
+              2.1359031200408936,
+              12.002385139465332
+            ],
+            "velocity": [
+              8.828932607229945e-08,
+              -0.06118987128138542,
+              -2.2225385976071266e-08
+            ],
+            "mass": 1100,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "van",
+            "position": [
+              45.9923095703125,
+              2.4549784660339355,
+              -45
+            ],
+            "velocity": [
+              2.2938213106726835e-08,
+              -0.0611904002726078,
+              -8.920769705756474e-21
+            ],
+            "mass": 2100,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          }
+        ]
+      },
+      "assets": [
+        "camp-asset-C03-large-tent",
+        "camp-asset-C04-x2",
+        "camp-asset-C05-fire-pit",
+        "camp-asset-C06-x4",
+        "camp-asset-C07-pad1",
+        "camp-asset-C08-pad1",
+        "camp-asset-C09-pad2",
+        "camp-asset-C10-pad3",
+        "camp-asset-G16-x2",
+        "camp-asset-G17-x1",
+        "camp-asset-G18-x1",
+        "camp-asset-G19-x5",
+        "camp-asset-G20-x4",
+        "camp-asset-G21-x2",
+        "camp-asset-G22-x4",
+        "camp-asset-G23-x6"
+      ]
+    },
+    {
+      "name": "spawn-night",
+      "stats": {
+        "calls": 176,
+        "triangles": 36471,
+        "geometries": 110,
+        "textures": 3,
+        "camera": [
+          -36.27243491008503,
+          15.814800630764445,
+          42.63675345321995
+        ]
+      },
+      "state": {
+        "lang": "en",
+        "light": "night",
+        "paused": false,
+        "activeVehicle": null,
+        "nearbyVehicle": null,
+        "canRecover": false,
+        "recoverRequest": 0,
+        "speed": 0,
+        "zone": "camp",
+        "position": [
+          -42,
+          5.618858814239502,
+          35
+        ],
+        "ready": true,
+        "zoom": 1,
+        "shot": null
+      },
+      "snapshot": {
+        "player": [
+          -42,
+          5.618858814239502,
+          35
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00619125366211,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              -3.6510825474067587e-09,
+              -0.06119523569941521,
+              0
+            ],
+            "mass": 1400,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "coupe",
+            "position": [
+              19.799999237060547,
+              2.1359031200408936,
+              12.002385139465332
+            ],
+            "velocity": [
+              8.185950406414122e-08,
+              -0.061189908534288406,
+              6.792273410383132e-09
+            ],
+            "mass": 1100,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "van",
+            "position": [
+              45.9923095703125,
+              2.4549784660339355,
+              -45
+            ],
+            "velocity": [
+              2.293820067222896e-08,
+              -0.0611904002726078,
+              -8.920790708389215e-21
+            ],
+            "mass": 2100,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          }
+        ]
+      },
+      "assets": [
+        "camp-asset-C03-large-tent",
+        "camp-asset-C04-x2",
+        "camp-asset-C05-fire-pit",
+        "camp-asset-C06-x4",
+        "camp-asset-C07-pad1",
+        "camp-asset-C08-pad1",
+        "camp-asset-C09-pad2",
+        "camp-asset-C10-pad3",
+        "camp-asset-G16-x2",
+        "camp-asset-G17-x1",
+        "camp-asset-G18-x1",
+        "camp-asset-G19-x5",
+        "camp-asset-G20-x4",
+        "camp-asset-G21-x2",
+        "camp-asset-G22-x4",
+        "camp-asset-G23-x6"
+      ]
+    },
+    {
+      "name": "camp",
+      "stats": {
+        "calls": 205,
+        "triangles": 38807,
+        "geometries": 117,
+        "textures": 3,
+        "camera": [
+          -11,
+          33,
+          67
+        ]
+      },
+      "state": {
+        "lang": "en",
+        "light": "dusk",
+        "paused": false,
+        "activeVehicle": null,
+        "nearbyVehicle": null,
+        "canRecover": false,
+        "recoverRequest": 0,
+        "speed": 0,
+        "zone": "camp",
+        "position": [
+          -42,
+          5,
+          30
+        ],
+        "ready": true,
+        "zoom": 1,
+        "shot": "camp"
+      },
+      "snapshot": {
+        "player": [
+          -42,
+          5.849999904632568,
+          35
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": false,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26,
+              6.015999794006348,
+              34
+            ],
+            "velocity": [
+              0,
+              0,
+              0
+            ],
+            "mass": 7.91856050491333,
+            "wheelContacts": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "coupe",
+            "position": [
+              19.799999237060547,
+              2.194000005722046,
+              12
+            ],
+            "velocity": [
+              0,
+              0,
+              0
+            ],
+            "mass": 6.4510321617126465,
+            "wheelContacts": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "van",
+            "position": [
+              46,
+              2.5920000076293945,
+              -45
+            ],
+            "velocity": [
+              0,
+              0,
+              0
+            ],
+            "mass": 14.145120620727539,
+            "wheelContacts": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          }
+        ]
+      },
+      "assets": [
+        "camp-asset-C03-large-tent",
+        "camp-asset-C04-x2",
+        "camp-asset-C05-fire-pit",
+        "camp-asset-C06-x4",
+        "camp-asset-C07-pad1",
+        "camp-asset-C08-pad1",
+        "camp-asset-C09-pad2",
+        "camp-asset-C10-pad3",
+        "camp-asset-G16-x2",
+        "camp-asset-G17-x1",
+        "camp-asset-G18-x1",
+        "camp-asset-G19-x5",
+        "camp-asset-G20-x4",
+        "camp-asset-G21-x2",
+        "camp-asset-G22-x4",
+        "camp-asset-G23-x6"
+      ]
+    },
+    {
+      "name": "camp-night",
+      "stats": {
+        "calls": 204,
+        "triangles": 38159,
+        "geometries": 116,
+        "textures": 3,
+        "camera": [
+          -16,
+          24,
+          62
+        ]
+      },
+      "state": {
+        "lang": "en",
+        "light": "night",
+        "paused": false,
+        "activeVehicle": null,
+        "nearbyVehicle": null,
+        "canRecover": false,
+        "recoverRequest": 0,
+        "speed": 0,
+        "zone": "camp",
+        "position": [
+          -42,
+          5,
+          30
+        ],
+        "ready": true,
+        "zoom": 1,
+        "shot": "camp-night"
+      },
+      "snapshot": {
+        "player": [
+          -42,
+          5.849999904632568,
+          35
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": false,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26,
+              6.015999794006348,
+              34
+            ],
+            "velocity": [
+              0,
+              0,
+              0
+            ],
+            "mass": 7.91856050491333,
+            "wheelContacts": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "coupe",
+            "position": [
+              19.799999237060547,
+              2.194000005722046,
+              12
+            ],
+            "velocity": [
+              0,
+              0,
+              0
+            ],
+            "mass": 6.4510321617126465,
+            "wheelContacts": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "van",
+            "position": [
+              46,
+              2.5920000076293945,
+              -45
+            ],
+            "velocity": [
+              0,
+              0,
+              0
+            ],
+            "mass": 14.145120620727539,
+            "wheelContacts": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          }
+        ]
+      },
+      "assets": [
+        "camp-asset-C03-large-tent",
+        "camp-asset-C04-x2",
+        "camp-asset-C05-fire-pit",
+        "camp-asset-C06-x4",
+        "camp-asset-C07-pad1",
+        "camp-asset-C08-pad1",
+        "camp-asset-C09-pad2",
+        "camp-asset-C10-pad3",
+        "camp-asset-G16-x2",
+        "camp-asset-G17-x1",
+        "camp-asset-G18-x1",
+        "camp-asset-G19-x5",
+        "camp-asset-G20-x4",
+        "camp-asset-G21-x2",
+        "camp-asset-G22-x4",
+        "camp-asset-G23-x6"
+      ]
+    }
+  ],
+  "errors": [],
+  "missing": [],
+  "videoScope": "Canvas-only actual runtime; default camera and real WASD, no teleport.",
+  "postCaptureSourceChanges": [
+    {
+      "file": "src/components/world/WorldCamp.tsx",
+      "change": "Removed one extra blank line at EOF only; no runtime change.",
+      "finalSha256": "d7a2da2479a57839297194b4ae1dedcdcacf42267e9d3d3d102a79bd0d34a57b"
+    }
+  ]
+}

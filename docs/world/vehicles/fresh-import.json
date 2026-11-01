@@ -1,0 +1,457 @@
+{
+  "blender": "4.2.23 LTS",
+  "assets": [
+    {
+      "asset": "G25",
+      "sha256": "226a272ace74e723cc7347fbc8b00fb97381bfba04a235f491753c45b7d2734d",
+      "bytes": 84400,
+      "bounds": [
+        [
+          -2.04,
+          -1.185,
+          0.0
+        ],
+        [
+          2.06,
+          1.185,
+          2.267
+        ]
+      ],
+      "triangles": {
+        "G25_body": 7748,
+        "wheel-front-left": 1552,
+        "wheel-front-right": 1552,
+        "wheel-rear-left": 1552,
+        "wheel-rear-right": 1552
+      },
+      "totalTris": 13956,
+      "checks": {
+        "G25_body": {
+          "tris": 7748,
+          "degenerate": 0,
+          "nonManifoldEdges": 9216,
+          "finite": true,
+          "signedVolume": 8.58696
+        },
+        "wheel-front-left": {
+          "tris": 1552,
+          "degenerate": 0,
+          "nonManifoldEdges": 1550,
+          "finite": true,
+          "signedVolume": 0.08343
+        },
+        "wheel-front-right": {
+          "tris": 1552,
+          "degenerate": 0,
+          "nonManifoldEdges": 1550,
+          "finite": true,
+          "signedVolume": 0.08343
+        },
+        "wheel-rear-left": {
+          "tris": 1552,
+          "degenerate": 0,
+          "nonManifoldEdges": 1550,
+          "finite": true,
+          "signedVolume": 0.08343
+        },
+        "wheel-rear-right": {
+          "tris": 1552,
+          "degenerate": 0,
+          "nonManifoldEdges": 1550,
+          "finite": true,
+          "signedVolume": 0.08343
+        }
+      },
+      "weldedTopologyDiagnostic": {
+        "G25_body": {
+          "nonManifoldEdges": 0,
+          "tolerance_m": 0.0002
+        },
+        "wheel-front-left": {
+          "nonManifoldEdges": 0,
+          "tolerance_m": 0.0002
+        },
+        "wheel-front-right": {
+          "nonManifoldEdges": 0,
+          "tolerance_m": 0.0002
+        },
+        "wheel-rear-left": {
+          "nonManifoldEdges": 0,
+          "tolerance_m": 0.0002
+        },
+        "wheel-rear-right": {
+          "nonManifoldEdges": 0,
+          "tolerance_m": 0.0002
+        }
+      },
+      "materials": {
+        "veh_paint_slate": "paint",
+        "veh_accent_dark": "accent",
+        "veh_paint_orange": "paint",
+        "veh_glass": "glass",
+        "veh_metal_dark": "metal",
+        "veh_accent_cream": "accent",
+        "veh_light_front": "light_front",
+        "veh_accent_amber": "accent",
+        "veh_metal": "metal",
+        "veh_light_brake": "light_brake",
+        "veh_light_reverse": "light_reverse",
+        "veh_rubber": "rubber"
+      },
+      "hullCount": 11,
+      "nativeBounds": [
+        [
+          -2.04,
+          -1.185,
+          0.0
+        ],
+        [
+          2.06,
+          1.185,
+          2.267
+        ]
+      ],
+      "nativeTris": 13956,
+      "nativeChecks": {
+        "G25_body": {
+          "tris": 7748,
+          "degenerate": 0,
+          "nonManifoldEdges": 0,
+          "finite": true,
+          "signedVolume": 8.58719
+        },
+        "wheel-front-right": {
+          "tris": 1552,
+          "degenerate": 0,
+          "nonManifoldEdges": 0,
+          "finite": true,
+          "signedVolume": 0.08343
+        },
+        "wheel-front-left": {
+          "tris": 1552,
+          "degenerate": 0,
+          "nonManifoldEdges": 0,
+          "finite": true,
+          "signedVolume": 0.08343
+        },
+        "wheel-rear-right": {
+          "tris": 1552,
+          "degenerate": 0,
+          "nonManifoldEdges": 0,
+          "finite": true,
+          "signedVolume": 0.08343
+        },
+        "wheel-rear-left": {
+          "tris": 1552,
+          "degenerate": 0,
+          "nonManifoldEdges": 0,
+          "finite": true,
+          "signedVolume": 0.08343
+        }
+      },
+      "errors": [],
+      "passed": true
+    },
+    {
+      "asset": "G26",
+      "sha256": "6668d80bd54ee1a7336cd12a224fe7ef2068ff498da1a127c833b9637ece1134",
+      "bytes": 50568,
+      "bounds": [
+        [
+          -2.205,
+          -1.07,
+          0.0
+        ],
+        [
+          2.2,
+          1.07,
+          1.305
+        ]
+      ],
+      "triangles": {
+        "G26_body": 3618,
+        "wheel-front-left": 1908,
+        "wheel-front-right": 1908,
+        "wheel-rear-left": 1908,
+        "wheel-rear-right": 1908
+      },
+      "totalTris": 11250,
+      "checks": {
+        "G26_body": {
+          "tris": 3618,
+          "degenerate": 0,
+          "nonManifoldEdges": 3842,
+          "finite": true,
+          "signedVolume": 5.61802
+        },
+        "wheel-front-left": {
+          "tris": 1908,
+          "degenerate": 0,
+          "nonManifoldEdges": 1516,
+          "finite": true,
+          "signedVolume": 0.05192
+        },
+        "wheel-front-right": {
+          "tris": 1908,
+          "degenerate": 0,
+          "nonManifoldEdges": 1516,
+          "finite": true,
+          "signedVolume": 0.05192
+        },
+        "wheel-rear-left": {
+          "tris": 1908,
+          "degenerate": 0,
+          "nonManifoldEdges": 1516,
+          "finite": true,
+          "signedVolume": 0.05192
+        },
+        "wheel-rear-right": {
+          "tris": 1908,
+          "degenerate": 0,
+          "nonManifoldEdges": 1516,
+          "finite": true,
+          "signedVolume": 0.05192
+        }
+      },
+      "weldedTopologyDiagnostic": {
+        "G26_body": {
+          "nonManifoldEdges": 0,
+          "tolerance_m": 0.0002
+        },
+        "wheel-front-left": {
+          "nonManifoldEdges": 0,
+          "tolerance_m": 0.0002
+        },
+        "wheel-front-right": {
+          "nonManifoldEdges": 0,
+          "tolerance_m": 0.0002
+        },
+        "wheel-rear-left": {
+          "nonManifoldEdges": 0,
+          "tolerance_m": 0.0002
+        },
+        "wheel-rear-right": {
+          "nonManifoldEdges": 0,
+          "tolerance_m": 0.0002
+        }
+      },
+      "materials": {
+        "veh_paint_cream": "paint",
+        "veh_accent_dark": "accent",
+        "veh_paint_slate": "paint",
+        "veh_glass": "glass",
+        "veh_metal_dark": "metal",
+        "veh_light_front": "light_front",
+        "veh_light_brake": "light_brake",
+        "veh_light_reverse": "light_reverse",
+        "veh_metal": "metal",
+        "veh_rubber": "rubber"
+      },
+      "hullCount": 10,
+      "nativeBounds": [
+        [
+          -2.205,
+          -1.07,
+          0.0
+        ],
+        [
+          2.2,
+          1.07,
+          1.305
+        ]
+      ],
+      "nativeTris": 11250,
+      "nativeChecks": {
+        "G26_body": {
+          "tris": 3618,
+          "degenerate": 0,
+          "nonManifoldEdges": 0,
+          "finite": true,
+          "signedVolume": 5.61837
+        },
+        "wheel-front-right": {
+          "tris": 1908,
+          "degenerate": 0,
+          "nonManifoldEdges": 0,
+          "finite": true,
+          "signedVolume": 0.05192
+        },
+        "wheel-front-left": {
+          "tris": 1908,
+          "degenerate": 0,
+          "nonManifoldEdges": 0,
+          "finite": true,
+          "signedVolume": 0.05192
+        },
+        "wheel-rear-right": {
+          "tris": 1908,
+          "degenerate": 0,
+          "nonManifoldEdges": 0,
+          "finite": true,
+          "signedVolume": 0.05192
+        },
+        "wheel-rear-left": {
+          "tris": 1908,
+          "degenerate": 0,
+          "nonManifoldEdges": 0,
+          "finite": true,
+          "signedVolume": 0.05192
+        }
+      },
+      "errors": [],
+      "passed": true
+    },
+    {
+      "asset": "G27",
+      "sha256": "51045ff92be23c9826cc76ac4038b579d463e9abeb7075e788d1ccff89553041",
+      "bytes": 61244,
+      "bounds": [
+        [
+          -2.52,
+          -1.33,
+          0.0
+        ],
+        [
+          2.426,
+          1.33,
+          2.602
+        ]
+      ],
+      "triangles": {
+        "G27_body": 5188,
+        "wheel-front-left": 1920,
+        "wheel-front-right": 1920,
+        "wheel-rear-left": 1920,
+        "wheel-rear-right": 1920
+      },
+      "totalTris": 12868,
+      "checks": {
+        "G27_body": {
+          "tris": 5188,
+          "degenerate": 0,
+          "nonManifoldEdges": 6412,
+          "finite": true,
+          "signedVolume": 19.91665
+        },
+        "wheel-front-left": {
+          "tris": 1920,
+          "degenerate": 0,
+          "nonManifoldEdges": 1596,
+          "finite": true,
+          "signedVolume": 0.13072
+        },
+        "wheel-front-right": {
+          "tris": 1920,
+          "degenerate": 0,
+          "nonManifoldEdges": 1596,
+          "finite": true,
+          "signedVolume": 0.13072
+        },
+        "wheel-rear-left": {
+          "tris": 1920,
+          "degenerate": 0,
+          "nonManifoldEdges": 1596,
+          "finite": true,
+          "signedVolume": 0.13072
+        },
+        "wheel-rear-right": {
+          "tris": 1920,
+          "degenerate": 0,
+          "nonManifoldEdges": 1596,
+          "finite": true,
+          "signedVolume": 0.13072
+        }
+      },
+      "weldedTopologyDiagnostic": {
+        "G27_body": {
+          "nonManifoldEdges": 0,
+          "tolerance_m": 0.0002
+        },
+        "wheel-front-left": {
+          "nonManifoldEdges": 0,
+          "tolerance_m": 0.0002
+        },
+        "wheel-front-right": {
+          "nonManifoldEdges": 0,
+          "tolerance_m": 0.0002
+        },
+        "wheel-rear-left": {
+          "nonManifoldEdges": 0,
+          "tolerance_m": 0.0002
+        },
+        "wheel-rear-right": {
+          "nonManifoldEdges": 0,
+          "tolerance_m": 0.0002
+        }
+      },
+      "materials": {
+        "veh_paint_cream": "paint",
+        "veh_accent_slate": "accent",
+        "veh_accent_dark": "accent",
+        "veh_glass": "glass",
+        "veh_accent_amber": "accent",
+        "veh_light_brake": "light_brake",
+        "veh_metal": "metal",
+        "veh_light_front": "light_front",
+        "veh_metal_dark": "metal",
+        "veh_light_reverse": "light_reverse",
+        "veh_light_beacon": "light_beacon",
+        "veh_rubber": "rubber"
+      },
+      "hullCount": 12,
+      "nativeBounds": [
+        [
+          -2.52,
+          -1.33,
+          0.0
+        ],
+        [
+          2.426,
+          1.33,
+          2.602
+        ]
+      ],
+      "nativeTris": 12868,
+      "nativeChecks": {
+        "G27_body": {
+          "tris": 5188,
+          "degenerate": 0,
+          "nonManifoldEdges": 0,
+          "finite": true,
+          "signedVolume": 19.9165
+        },
+        "wheel-front-right": {
+          "tris": 1920,
+          "degenerate": 0,
+          "nonManifoldEdges": 0,
+          "finite": true,
+          "signedVolume": 0.13073
+        },
+        "wheel-front-left": {
+          "tris": 1920,
+          "degenerate": 0,
+          "nonManifoldEdges": 0,
+          "finite": true,
+          "signedVolume": 0.13073
+        },
+        "wheel-rear-right": {
+          "tris": 1920,
+          "degenerate": 0,
+          "nonManifoldEdges": 0,
+          "finite": true,
+          "signedVolume": 0.13073
+        },
+        "wheel-rear-left": {
+          "tris": 1920,
+          "degenerate": 0,
+          "nonManifoldEdges": 0,
+          "finite": true,
+          "signedVolume": 0.13073
+        }
+      },
+      "errors": [],
+      "passed": true
+    }
+  ],
+  "passed": true
+}

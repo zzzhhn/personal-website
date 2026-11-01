@@ -1,0 +1,173 @@
+{
+ "blender": "4.2.23 LTS",
+ "assets": {
+  "G16": {
+   "glb": "public/assets/world/camp/G16.glb",
+   "blend": "tools/world/camp/nature/blend/G16.blend",
+   "sha256": "951d6c001a5536437bf795967d74750de0eacc4757f48ac9c3c0cae727b19472",
+   "glbBytes": 125788,
+   "trianglesEvaluated": 4288,
+   "trianglesGLBReimport": 4288,
+   "declaredBudget": 7000,
+   "baselineTriangles": 532,
+   "multiplier": 8.06,
+   "sizeGLB_xyz_m": [
+    3.554738998413086,
+    5.406573295593262,
+    3.6416754722595215
+   ],
+   "roundtripBoundsMaxDiff_m": 9.5367431640625e-07,
+   "leafCount": 391,
+   "drawCallsPrimitives": 4,
+   "machineChecksAllTrue": true,
+   "failed": []
+  },
+  "G17": {
+   "glb": "public/assets/world/camp/G17.glb",
+   "blend": "tools/world/camp/nature/blend/G17.blend",
+   "sha256": "b03f9dc88f253eb7011b64f607e50785f4410131d2e17079c704c2bb6b1ed116",
+   "glbBytes": 96116,
+   "trianglesEvaluated": 3190,
+   "trianglesGLBReimport": 3190,
+   "declaredBudget": 7000,
+   "baselineTriangles": 416,
+   "multiplier": 7.668,
+   "sizeGLB_xyz_m": [
+    2.2661595344543457,
+    4.8933610916137695,
+    4.412363529205322
+   ],
+   "roundtripBoundsMaxDiff_m": 1.9073486328125e-06,
+   "leafCount": 275,
+   "drawCallsPrimitives": 4,
+   "machineChecksAllTrue": true,
+   "failed": []
+  },
+  "G18": {
+   "glb": "public/assets/world/camp/G18.glb",
+   "blend": "tools/world/camp/nature/blend/G18.blend",
+   "sha256": "2a3e6555426c51dcfd9baeff8d35791fe3658e9c6fcd3915b2a8a5a6e0ece385",
+   "glbBytes": 110956,
+   "trianglesEvaluated": 3860,
+   "trianglesGLBReimport": 3860,
+   "declaredBudget": 7000,
+   "baselineTriangles": 684,
+   "multiplier": 5.643,
+   "sizeGLB_xyz_m": [
+    2.8946032524108887,
+    6.237880706787109,
+    2.643810272216797
+   ],
+   "roundtripBoundsMaxDiff_m": 1.430511474609375e-06,
+   "leafCount": 235,
+   "drawCallsPrimitives": 4,
+   "machineChecksAllTrue": true,
+   "failed": []
+  },
+  "G19": {
+   "glb": "public/assets/world/camp/G19.glb",
+   "blend": "tools/world/camp/nature/blend/G19.blend",
+   "sha256": "a5ecd893344a0188cce3df1915cfe7360dba507e2156adb9b63533157c15ec22",
+   "glbBytes": 36768,
+   "trianglesEvaluated": 990,
+   "trianglesGLBReimport": 990,
+   "declaredBudget": 2500,
+   "baselineTriangles": 96,
+   "multiplier": 10.312,
+   "sizeGLB_xyz_m": [
+    1.4404280185699463,
+    0.972529947757721,
+    1.4391648769378662
+   ],
+   "roundtripBoundsMaxDiff_m": 5.960464477539062e-07,
+   "leafCount": 96,
+   "drawCallsPrimitives": 3,
+   "machineChecksAllTrue": true,
+   "failed": []
+  },
+  "G20": {
+   "glb": "public/assets/world/camp/G20.glb",
+   "blend": "tools/world/camp/nature/blend/G20.blend",
+   "sha256": "9e4421962be721a7a5edd6491936c64f9827a6ab640c7d8ab87002650ff0b921",
+   "glbBytes": 59840,
+   "trianglesEvaluated": 1744,
+   "trianglesGLBReimport": 1744,
+   "declaredBudget": 3500,
+   "baselineTriangles": 170,
+   "multiplier": 10.259,
+   "sizeGLB_xyz_m": [
+    1.4731636047363281,
+    1.0228803157806396,
+    2.08420991897583
+   ],
+   "roundtripBoundsMaxDiff_m": 7.152557373046875e-07,
+   "leafCount": 154,
+   "drawCallsPrimitives": 3,
+   "machineChecksAllTrue": true,
+   "failed": []
+  },
+  "G21": {
+   "glb": "public/assets/world/camp/G21.glb",
+   "blend": "tools/world/camp/nature/blend/G21.blend",
+   "sha256": "98a0a74799d15b11ca4b2dac2518dab8f2be6ce63e834c09d8ca606d325200ed",
+   "glbBytes": 7508,
+   "trianglesEvaluated": 244,
+   "trianglesGLBReimport": 244,
+   "declaredBudget": 800,
+   "baselineTriangles": 44,
+   "multiplier": 5.545,
+   "sizeGLB_xyz_m": [
+    2.1999988555908203,
+    1.5,
+    2.799999952316284
+   ],
+   "roundtripBoundsMaxDiff_m": 1.1920928955078125e-06,
+   "leafCount": 0,
+   "drawCallsPrimitives": 2,
+   "machineChecksAllTrue": true,
+   "failed": []
+  },
+  "G22": {
+   "glb": "public/assets/world/camp/G22.glb",
+   "blend": "tools/world/camp/nature/blend/G22.blend",
+   "sha256": "40f7e4121004bbb06c994e12f841951c25f153b3d3d29ec52c948d4a580f7c73",
+   "glbBytes": 6944,
+   "trianglesEvaluated": 222,
+   "trianglesGLBReimport": 222,
+   "declaredBudget": 600,
+   "baselineTriangles": 46,
+   "multiplier": 4.826,
+   "sizeGLB_xyz_m": [
+    1.299999713897705,
+    0.8499998450279236,
+    1.600000023841858
+   ],
+   "roundtripBoundsMaxDiff_m": 2.384185791015625e-07,
+   "leafCount": 0,
+   "drawCallsPrimitives": 2,
+   "machineChecksAllTrue": true,
+   "failed": []
+  },
+  "G23": {
+   "glb": "public/assets/world/camp/G23.glb",
+   "blend": "tools/world/camp/nature/blend/G23.blend",
+   "sha256": "2c8055759722362e0b37f71bfaeb13e98d57646ea6c2b0940f186fea11125e55",
+   "glbBytes": 6196,
+   "trianglesEvaluated": 162,
+   "trianglesGLBReimport": 162,
+   "declaredBudget": 400,
+   "baselineTriangles": 42,
+   "multiplier": 3.857,
+   "sizeGLB_xyz_m": [
+    0.6499998569488525,
+    0.39999979734420776,
+    0.800000011920929
+   ],
+   "roundtripBoundsMaxDiff_m": 2.086162567138672e-07,
+   "leafCount": 0,
+   "drawCallsPrimitives": 2,
+   "machineChecksAllTrue": true,
+   "failed": []
+  }
+ }
+}

@@ -1,0 +1,923 @@
+{
+  "firstContact": {
+    "exchange": {
+      "phase": "ticket",
+      "checkpoint": 0,
+      "day": 0,
+      "target": 0,
+      "units": 0,
+      "contacts": 1,
+      "lastContact": "pickup",
+      "carried": "ticket",
+      "ticketReturned": false,
+      "error": null,
+      "actor": {
+        "position": [
+          46.439998626708984,
+          2.4086499214172363,
+          -77.34879302978516
+        ],
+        "yaw": 1.5707963267948966,
+        "grounded": true,
+        "available": true
+      },
+      "action": null,
+      "sockets": {
+        "valid": true,
+        "contactError": null,
+        "sampledId": null,
+        "sampledElapsed": 0,
+        "rightHand": [
+          46.61999863392284,
+          2.621500183667473,
+          -77.67879304522324
+        ],
+        "leftHand": [
+          46.19999863182038,
+          2.5915001757987284,
+          -77.54879302452233
+        ]
+      },
+      "receipt": null
+    }
+  },
+  "requests": [
+    {
+      "position": [
+        46.44,
+        2.41,
+        -77.35
+      ],
+      "yaw": 1.57,
+      "grounded": true,
+      "vehicle": null,
+      "drive": null,
+      "grass": {
+        "instances": 96,
+        "disturbers": 3,
+        "trampled": 45,
+        "strength": 0.947
+      },
+      "exchange": {
+        "phase": "ticket",
+        "ticketId": "year-2023",
+        "archive": [
+          {
+            "id": "full",
+            "from": "2023-05-02",
+            "through": "2026-04-30",
+            "days": 752
+          },
+          {
+            "id": "year-2023",
+            "from": "2023-05-02",
+            "through": "2023-12-29",
+            "days": 168
+          },
+          {
+            "id": "year-2024",
+            "from": "2024-01-02",
+            "through": "2024-12-31",
+            "days": 252
+          },
+          {
+            "id": "year-2025",
+            "from": "2025-01-02",
+            "through": "2025-12-31",
+            "days": 250
+          },
+          {
+            "id": "year-2026",
+            "from": "2026-01-02",
+            "through": "2026-04-30",
+            "days": 82
+          }
+        ],
+        "date": "2023-05-02",
+        "day": 0,
+        "checkpoint": 0,
+        "cash": 10000,
+        "units": 0,
+        "equity": 10000,
+        "contacts": 1,
+        "carried": "ticket"
+      }
+    },
+    {
+      "position": [
+        47.36,
+        2.41,
+        -77.35
+      ],
+      "yaw": 1.57,
+      "grounded": true,
+      "vehicle": null,
+      "drive": null,
+      "grass": {
+        "instances": 95,
+        "disturbers": 3,
+        "trampled": 46,
+        "strength": 0.947
+      },
+      "exchange": {
+        "phase": "ticket",
+        "ticketId": "year-2024",
+        "archive": [
+          {
+            "id": "full",
+            "from": "2023-05-02",
+            "through": "2026-04-30",
+            "days": 752
+          },
+          {
+            "id": "year-2023",
+            "from": "2023-05-02",
+            "through": "2023-12-29",
+            "days": 168
+          },
+          {
+            "id": "year-2024",
+            "from": "2024-01-02",
+            "through": "2024-12-31",
+            "days": 252
+          },
+          {
+            "id": "year-2025",
+            "from": "2025-01-02",
+            "through": "2025-12-31",
+            "days": 250
+          },
+          {
+            "id": "year-2026",
+            "from": "2026-01-02",
+            "through": "2026-04-30",
+            "days": 82
+          }
+        ],
+        "date": "2024-01-02",
+        "day": 0,
+        "checkpoint": 0,
+        "cash": 10000,
+        "units": 0,
+        "equity": 10000,
+        "contacts": 2,
+        "carried": "ticket"
+      }
+    },
+    {
+      "position": [
+        48.54,
+        2.41,
+        -77.35
+      ],
+      "yaw": 1.57,
+      "grounded": true,
+      "vehicle": null,
+      "drive": null,
+      "grass": {
+        "instances": 171,
+        "disturbers": 3,
+        "trampled": 45,
+        "strength": 0.946
+      },
+      "exchange": {
+        "phase": "ticket",
+        "ticketId": "year-2025",
+        "archive": [
+          {
+            "id": "full",
+            "from": "2023-05-02",
+            "through": "2026-04-30",
+            "days": 752
+          },
+          {
+            "id": "year-2023",
+            "from": "2023-05-02",
+            "through": "2023-12-29",
+            "days": 168
+          },
+          {
+            "id": "year-2024",
+            "from": "2024-01-02",
+            "through": "2024-12-31",
+            "days": 252
+          },
+          {
+            "id": "year-2025",
+            "from": "2025-01-02",
+            "through": "2025-12-31",
+            "days": 250
+          },
+          {
+            "id": "year-2026",
+            "from": "2026-01-02",
+            "through": "2026-04-30",
+            "days": 82
+          }
+        ],
+        "date": "2025-01-02",
+        "day": 0,
+        "checkpoint": 0,
+        "cash": 10000,
+        "units": 0,
+        "equity": 10000,
+        "contacts": 3,
+        "carried": "ticket"
+      }
+    },
+    {
+      "position": [
+        49.46,
+        2.41,
+        -77.35
+      ],
+      "yaw": 1.57,
+      "grounded": true,
+      "vehicle": null,
+      "drive": null,
+      "grass": {
+        "instances": 170,
+        "disturbers": 3,
+        "trampled": 45,
+        "strength": 0.947
+      },
+      "exchange": {
+        "phase": "ticket",
+        "ticketId": "year-2026",
+        "archive": [
+          {
+            "id": "full",
+            "from": "2023-05-02",
+            "through": "2026-04-30",
+            "days": 752
+          },
+          {
+            "id": "year-2023",
+            "from": "2023-05-02",
+            "through": "2023-12-29",
+            "days": 168
+          },
+          {
+            "id": "year-2024",
+            "from": "2024-01-02",
+            "through": "2024-12-31",
+            "days": 252
+          },
+          {
+            "id": "year-2025",
+            "from": "2025-01-02",
+            "through": "2025-12-31",
+            "days": 250
+          },
+          {
+            "id": "year-2026",
+            "from": "2026-01-02",
+            "through": "2026-04-30",
+            "days": 82
+          }
+        ],
+        "date": "2026-01-02",
+        "day": 0,
+        "checkpoint": 0,
+        "cash": 10000,
+        "units": 0,
+        "equity": 10000,
+        "contacts": 4,
+        "carried": "ticket"
+      }
+    }
+  ],
+  "route": [
+    {
+      "position": [
+        50.82,
+        2.41,
+        -78.52
+      ],
+      "yaw": 0.64,
+      "grounded": true,
+      "vehicle": null,
+      "drive": null,
+      "grass": {
+        "instances": 172,
+        "disturbers": 3,
+        "trampled": 45,
+        "strength": 0.947
+      },
+      "exchange": {
+        "phase": "ticket",
+        "ticketId": "year-2026",
+        "archive": [
+          {
+            "id": "full",
+            "from": "2023-05-02",
+            "through": "2026-04-30",
+            "days": 752
+          },
+          {
+            "id": "year-2023",
+            "from": "2023-05-02",
+            "through": "2023-12-29",
+            "days": 168
+          },
+          {
+            "id": "year-2024",
+            "from": "2024-01-02",
+            "through": "2024-12-31",
+            "days": 252
+          },
+          {
+            "id": "year-2025",
+            "from": "2025-01-02",
+            "through": "2025-12-31",
+            "days": 250
+          },
+          {
+            "id": "year-2026",
+            "from": "2026-01-02",
+            "through": "2026-04-30",
+            "days": 82
+          }
+        ],
+        "date": "2026-01-02",
+        "day": 0,
+        "checkpoint": 0,
+        "cash": 10000,
+        "units": 0,
+        "equity": 10000,
+        "contacts": 4,
+        "carried": "ticket"
+      }
+    },
+    {
+      "position": [
+        50.82,
+        2.41,
+        -76.67
+      ],
+      "yaw": -0.93,
+      "grounded": true,
+      "vehicle": null,
+      "drive": null,
+      "grass": {
+        "instances": 176,
+        "disturbers": 3,
+        "trampled": 52,
+        "strength": 0.946
+      },
+      "exchange": {
+        "phase": "ticket",
+        "ticketId": "year-2026",
+        "archive": [
+          {
+            "id": "full",
+            "from": "2023-05-02",
+            "through": "2026-04-30",
+            "days": 752
+          },
+          {
+            "id": "year-2023",
+            "from": "2023-05-02",
+            "through": "2023-12-29",
+            "days": 168
+          },
+          {
+            "id": "year-2024",
+            "from": "2024-01-02",
+            "through": "2024-12-31",
+            "days": 252
+          },
+          {
+            "id": "year-2025",
+            "from": "2025-01-02",
+            "through": "2025-12-31",
+            "days": 250
+          },
+          {
+            "id": "year-2026",
+            "from": "2026-01-02",
+            "through": "2026-04-30",
+            "days": 82
+          }
+        ],
+        "date": "2026-01-02",
+        "day": 0,
+        "checkpoint": 0,
+        "cash": 10000,
+        "units": 0,
+        "equity": 10000,
+        "contacts": 4,
+        "carried": "ticket"
+      }
+    },
+    {
+      "position": [
+        50.82,
+        2.41,
+        -73.05
+      ],
+      "yaw": -0.93,
+      "grounded": true,
+      "vehicle": null,
+      "drive": null,
+      "grass": {
+        "instances": 145,
+        "disturbers": 3,
+        "trampled": 58,
+        "strength": 0.947
+      },
+      "exchange": {
+        "phase": "ticket",
+        "ticketId": "year-2026",
+        "archive": [
+          {
+            "id": "full",
+            "from": "2023-05-02",
+            "through": "2026-04-30",
+            "days": 752
+          },
+          {
+            "id": "year-2023",
+            "from": "2023-05-02",
+            "through": "2023-12-29",
+            "days": 168
+          },
+          {
+            "id": "year-2024",
+            "from": "2024-01-02",
+            "through": "2024-12-31",
+            "days": 252
+          },
+          {
+            "id": "year-2025",
+            "from": "2025-01-02",
+            "through": "2025-12-31",
+            "days": 250
+          },
+          {
+            "id": "year-2026",
+            "from": "2026-01-02",
+            "through": "2026-04-30",
+            "days": 82
+          }
+        ],
+        "date": "2026-01-02",
+        "day": 0,
+        "checkpoint": 0,
+        "cash": 10000,
+        "units": 0,
+        "equity": 10000,
+        "contacts": 4,
+        "carried": "ticket"
+      }
+    }
+  ],
+  "frames": {
+    "frameWindow": {
+      "frames": 2083,
+      "activeSeconds": 34.7655,
+      "maxMs": 45,
+      "slow25Ratio": 0.0009601536245799327,
+      "slow33Ratio": 0.0009601536245799327,
+      "percentileSamples": 1800,
+      "p50Ms": 16.700000762939453,
+      "p95Ms": 17.899999618530273,
+      "changedDuringWindow": false,
+      "slowestFrames": [
+        {
+          "sample": 1068,
+          "activeElapsedMs": 17827.600000023842,
+          "ms": 45,
+          "context": {
+            "observedAtMs": 618892.6000000238,
+            "lastRenderFrame": 25956,
+            "lastRenderCalls": 102,
+            "lastRenderTriangles": 478847,
+            "geometries": 348,
+            "textures": 68,
+            "programs": 168,
+            "cameraX": 55.909388591708726,
+            "cameraY": 11.543945953464057,
+            "cameraZ": -69.63781838226701,
+            "actorX": 50.81792449951172,
+            "actorY": 2.4086546897888184,
+            "actorZ": -76.3002700805664,
+            "quality": "balanced",
+            "night": 0,
+            "paused": false,
+            "poolInspect": false,
+            "hidden": false,
+            "shot": null,
+            "vehicle": null,
+            "coasterBoundsDistance": 37.699729919433594,
+            "coasterProximityActive": false,
+            "coasterEnabled": false,
+            "coasterRiding": false,
+            "coasterRidePhase": null,
+            "coasterTrackPhase": "station",
+            "coasterElapsed": 0,
+            "coasterClockRiding": false,
+            "coasterRevision": -1
+          }
+        },
+        {
+          "sample": 1069,
+          "activeElapsedMs": 17870.19999998808,
+          "ms": 42.59999996423721,
+          "context": {
+            "observedAtMs": 618918.1999999881,
+            "lastRenderFrame": 25957,
+            "lastRenderCalls": 102,
+            "lastRenderTriangles": 478847,
+            "geometries": 348,
+            "textures": 68,
+            "programs": 168,
+            "cameraX": 55.90922265189023,
+            "cameraY": 11.543941282427461,
+            "cameraZ": -69.58665237788665,
+            "actorX": 50.81792449951172,
+            "actorY": 2.4086546897888184,
+            "actorZ": -76.3002700805664,
+            "quality": "balanced",
+            "night": 0,
+            "paused": false,
+            "poolInspect": false,
+            "hidden": false,
+            "shot": null,
+            "vehicle": null,
+            "coasterBoundsDistance": 37.699729919433594,
+            "coasterProximityActive": false,
+            "coasterEnabled": false,
+            "coasterRiding": false,
+            "coasterRidePhase": null,
+            "coasterTrackPhase": "station",
+            "coasterElapsed": 0,
+            "coasterClockRiding": false,
+            "coasterRevision": -1
+          }
+        }
+      ]
+    },
+    "shadowRebuilds": [],
+    "shadowWork": {
+      "pending": false,
+      "slices": 0,
+      "cpuMs": 0,
+      "maxSliceMs": 0,
+      "cancelled": 0,
+      "error": "",
+      "phases": [],
+      "hullWorker": {
+        "requests": 0,
+        "workerMs": 0,
+        "maxWorkerMs": 0,
+        "maxSource": "",
+        "maxInputVertices": 0
+      }
+    },
+    "sceneWork": [],
+    "coasterStructureMemory": {
+      "variants": 1,
+      "attributeBytes": 19679040
+    },
+    "coasterStructureJobs": {
+      "active": 0,
+      "completed": 0,
+      "failed": 0,
+      "lastWorkerMs": 0,
+      "lastError": ""
+    },
+    "render": {
+      "sampledAt": "2026-10-29T05:07:45.230Z",
+      "calls": 106,
+      "triangles": 523669,
+      "geometries": 348,
+      "textures": 68,
+      "programs": 168,
+      "camera": [
+        55.90898959721585,
+        11.543943911566341,
+        -65.9806290400988
+      ],
+      "mode": "always",
+      "frame": 26972,
+      "delta": 0.017,
+      "night": 0,
+      "windTime": 439.4825000000319,
+      "frameMs": {
+        "samples": 180,
+        "p50": 16.700000762939453,
+        "p95": 18.100000381469727,
+        "max": 20.100000381469727
+      },
+      "drawingBuffer": [
+        2013,
+        1030
+      ],
+      "cssSize": [
+        1710,
+        875
+      ],
+      "pixelRatio": 1.1772275318111343,
+      "dprRange": [
+        0,
+        1.5
+      ],
+      "quality": "balanced",
+      "antialias": true,
+      "msaaSamples": 4,
+      "toneMapping": 4,
+      "outputColorSpace": "srgb",
+      "shadowMapSize": 1254,
+      "shadowType": 1,
+      "postprocessing": [],
+      "coasterVegetation": [
+        {
+          "name": "coaster-ST1-L0",
+          "visible": false,
+          "instances": 0,
+          "triangles": 0,
+          "matrixUploads": 0
+        },
+        {
+          "name": "coaster-ST1-L1",
+          "visible": false,
+          "instances": 0,
+          "triangles": 0,
+          "matrixUploads": 1
+        },
+        {
+          "name": "coaster-ST2-L0",
+          "visible": false,
+          "instances": 0,
+          "triangles": 0,
+          "matrixUploads": 0
+        },
+        {
+          "name": "coaster-ST2-L1",
+          "visible": false,
+          "instances": 0,
+          "triangles": 0,
+          "matrixUploads": 1
+        },
+        {
+          "name": "coaster-G19",
+          "visible": false,
+          "instances": 0,
+          "triangles": 0,
+          "matrixUploads": 0
+        }
+      ]
+    }
+  },
+  "inserted": {
+    "position": [
+      58.62,
+      1.96,
+      -69.99
+    ],
+    "yaw": 1.57,
+    "grounded": true,
+    "nearby": "alpha-exchange-desk",
+    "vehicle": null,
+    "drive": null,
+    "grass": {
+      "instances": 62,
+      "disturbers": 3,
+      "trampled": 46,
+      "strength": 0.946
+    },
+    "exchange": {
+      "phase": "selecting",
+      "ticketId": "year-2026",
+      "archive": [
+        {
+          "id": "full",
+          "from": "2023-05-02",
+          "through": "2026-04-30",
+          "days": 752
+        },
+        {
+          "id": "year-2023",
+          "from": "2023-05-02",
+          "through": "2023-12-29",
+          "days": 168
+        },
+        {
+          "id": "year-2024",
+          "from": "2024-01-02",
+          "through": "2024-12-31",
+          "days": 252
+        },
+        {
+          "id": "year-2025",
+          "from": "2025-01-02",
+          "through": "2025-12-31",
+          "days": 250
+        },
+        {
+          "id": "year-2026",
+          "from": "2026-01-02",
+          "through": "2026-04-30",
+          "days": 82
+        }
+      ],
+      "date": "2026-01-02",
+      "day": 0,
+      "checkpoint": 0,
+      "cash": 10000,
+      "units": 0,
+      "equity": 10000,
+      "contacts": 5,
+      "carried": null
+    }
+  },
+  "interval1": {
+    "phase": "selecting",
+    "ticketId": "year-2026",
+    "archive": [
+      {
+        "id": "full",
+        "from": "2023-05-02",
+        "through": "2026-04-30",
+        "days": 752
+      },
+      {
+        "id": "year-2023",
+        "from": "2023-05-02",
+        "through": "2023-12-29",
+        "days": 168
+      },
+      {
+        "id": "year-2024",
+        "from": "2024-01-02",
+        "through": "2024-12-31",
+        "days": 252
+      },
+      {
+        "id": "year-2025",
+        "from": "2025-01-02",
+        "through": "2025-12-31",
+        "days": 250
+      },
+      {
+        "id": "year-2026",
+        "from": "2026-01-02",
+        "through": "2026-04-30",
+        "days": 82
+      }
+    ],
+    "date": "2026-02-11",
+    "day": 27,
+    "checkpoint": 1,
+    "cash": 9000,
+    "units": 10,
+    "equity": 10012.866490039083,
+    "contacts": 8,
+    "carried": null
+  },
+  "interval2": {
+    "phase": "selecting",
+    "ticketId": "year-2026",
+    "archive": [
+      {
+        "id": "full",
+        "from": "2023-05-02",
+        "through": "2026-04-30",
+        "days": 752
+      },
+      {
+        "id": "year-2023",
+        "from": "2023-05-02",
+        "through": "2023-12-29",
+        "days": 168
+      },
+      {
+        "id": "year-2024",
+        "from": "2024-01-02",
+        "through": "2024-12-31",
+        "days": 252
+      },
+      {
+        "id": "year-2025",
+        "from": "2025-01-02",
+        "through": "2025-12-31",
+        "days": 250
+      },
+      {
+        "id": "year-2026",
+        "from": "2026-01-02",
+        "through": "2026-04-30",
+        "days": 82
+      }
+    ],
+    "date": "2026-03-23",
+    "day": 54,
+    "checkpoint": 2,
+    "cash": 9000,
+    "units": 10,
+    "equity": 9959.32198427917,
+    "contacts": 10,
+    "carried": null
+  },
+  "interval3": {
+    "phase": "clearing",
+    "ticketId": "year-2026",
+    "archive": [
+      {
+        "id": "full",
+        "from": "2023-05-02",
+        "through": "2026-04-30",
+        "days": 752
+      },
+      {
+        "id": "year-2023",
+        "from": "2023-05-02",
+        "through": "2023-12-29",
+        "days": 168
+      },
+      {
+        "id": "year-2024",
+        "from": "2024-01-02",
+        "through": "2024-12-31",
+        "days": 252
+      },
+      {
+        "id": "year-2025",
+        "from": "2025-01-02",
+        "through": "2025-12-31",
+        "days": 250
+      },
+      {
+        "id": "year-2026",
+        "from": "2026-01-02",
+        "through": "2026-04-30",
+        "days": 82
+      }
+    ],
+    "date": "2026-04-30",
+    "day": 81,
+    "checkpoint": 3,
+    "cash": 9000,
+    "units": 10,
+    "equity": 10051.949002444488,
+    "contacts": 12,
+    "carried": null
+  },
+  "receipt": {
+    "exchange": {
+      "phase": "complete",
+      "checkpoint": 3,
+      "day": 81,
+      "target": 10,
+      "units": 10,
+      "contacts": 13,
+      "lastContact": "collect",
+      "carried": "receipt",
+      "ticketReturned": false,
+      "error": null,
+      "actor": {
+        "position": [
+          71.69999694824219,
+          2.4086499214172363,
+          -80.30880737304688
+        ],
+        "yaw": 1.5707963267948966,
+        "grounded": true,
+        "available": true
+      },
+      "action": {
+        "kind": "collect",
+        "phase": "perform",
+        "elapsed": 0.9700000234693289,
+        "target": [
+          71.7,
+          2.63,
+          -80.8
+        ]
+      },
+      "sockets": {
+        "valid": true,
+        "contactError": 0.22691036708276383,
+        "sampledId": 13,
+        "sampledElapsed": 0.9700000234693289,
+        "rightHand": [
+          71.86893189627166,
+          2.622023367381947,
+          -80.64871648323835
+        ],
+        "leftHand": [
+          71.4599969494744,
+          2.591500892125721,
+          -80.51095892404157
+        ]
+      },
+      "receipt": {
+        "equity": 10051.949002444488,
+        "pnl": 51.94900244448763,
+        "choices": 3
+      }
+    }
+  },
+  "errors": []
+}

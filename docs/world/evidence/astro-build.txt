@@ -1,0 +1,37 @@
+
+> personal-website@0.0.1 build
+> astro build
+
+11:14:39 [content] Syncing content
+11:14:39 [content] Synced content
+11:14:39 [types] Generated 190ms
+11:14:39 [build] output: "static"
+11:14:39 [build] mode: "static"
+11:14:39 [build] directory: /Users/bobby/WorkBuddy/personal-website/personal-website/dist/
+11:14:39 [build] Collecting build info...
+11:14:39 [build] ✓ Completed in 202ms.
+11:14:39 [build] Building static entrypoints...
+11:14:39 [vite] ✓ built in 745ms
+11:14:41 [WARN] [vite]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+11:14:41 [vite] ✓ built in 2.05s
+11:14:41 [build] Rearranging server assets...
+
+ generating static routes
+11:14:41   ├─ /projects/alpha-agent/index.html (+10ms)
+11:14:41   ├─ /projects/djc/index.html (+3ms)
+11:14:41   ├─ /projects/evalforge/index.html (+3ms)
+11:14:41   ├─ /projects/hepai/index.html (+3ms)
+11:14:41   ├─ /projects/interactive-learning-platforms/index.html (+3ms)
+11:14:41   ├─ /projects/kindred/index.html (+3ms)
+11:14:41   ├─ /world/index.html (+3ms)
+11:14:41   ├─ /index.html (+193ms)
+11:14:42 ✓ Completed in 240ms.
+
+11:14:42 [build] ✓ Completed in 3.06s.
+11:14:42 [@astrojs/sitemap] `sitemap-index.xml` created at `dist`
+11:14:42 [build] 8 page(s) built in 3.27s
+11:14:42 [build] Complete!

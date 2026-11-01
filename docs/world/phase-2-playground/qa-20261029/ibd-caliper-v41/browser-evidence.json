@@ -1,0 +1,554 @@
+{
+  "m8": {
+    "view": {
+      "pack": "parts-a",
+      "selected": 0,
+      "gap": 0.46,
+      "busy": false,
+      "feedback": "measured",
+      "round": 1,
+      "itemId": "parts-a"
+    },
+    "visual": {
+      "pack": "parts-a",
+      "index": 0,
+      "progress": 1,
+      "jaw": 0.46,
+      "retracting": false
+    },
+    "actor": {
+      "position": [
+        -78,
+        1.9039127826690674,
+        -186.52000427246094
+      ],
+      "yaw": 1.5707963267948966,
+      "grounded": true,
+      "available": true,
+      "mode": "guide"
+    },
+    "held": {
+      "spec": "M8"
+    },
+    "action": null,
+    "sockets": {
+      "valid": true,
+      "reachable": true,
+      "sampledId": null,
+      "sampledElapsed": 0,
+      "leftHand": [
+        -78.11260359261348,
+        2.1084518441636777,
+        -186.92987824623387
+      ],
+      "rightHand": [
+        -77.78000000746007,
+        2.076499944343859,
+        -186.81000426427914
+      ],
+      "leftContactError": null,
+      "rightContactError": null,
+      "contactError": null
+    },
+    "inspection": {
+      "itemId": "parts-a",
+      "held": 0,
+      "measurement": "M8",
+      "notice": "measured",
+      "slots": [
+        {
+          "index": 0,
+          "present": true,
+          "specId": "M8",
+          "complete": false,
+          "reading": null
+        },
+        {
+          "index": 1,
+          "present": true,
+          "specId": "M8",
+          "complete": false,
+          "reading": null
+        },
+        {
+          "index": 2,
+          "present": true,
+          "specId": "M8",
+          "complete": false,
+          "reading": null
+        },
+        {
+          "index": 3,
+          "present": true,
+          "specId": "M8",
+          "complete": false,
+          "reading": null
+        }
+      ]
+    },
+    "loaded": []
+  },
+  "m8Returned": {
+    "view": {
+      "pack": "parts-a",
+      "selected": 1,
+      "gap": 0.46,
+      "busy": false,
+      "feedback": "",
+      "round": 1,
+      "itemId": "parts-a"
+    },
+    "visual": {
+      "pack": "parts-a",
+      "index": 0,
+      "progress": 0,
+      "jaw": 0.54,
+      "retracting": false
+    },
+    "actor": {
+      "position": [
+        -78,
+        1.9039127826690674,
+        -186.52000427246094
+      ],
+      "yaw": 1.5707963267948966,
+      "grounded": true,
+      "available": true,
+      "mode": "guide"
+    },
+    "held": null,
+    "action": null,
+    "sockets": {
+      "valid": false,
+      "reachable": false,
+      "sampledId": null,
+      "sampledElapsed": 0,
+      "leftHand": [
+        -78.22000000448716,
+        2.066500080401055,
+        -186.77000424853188
+      ],
+      "rightHand": [
+        -77.77999999452278,
+        2.076500075943623,
+        -186.8100042580036
+      ],
+      "leftContactError": null,
+      "rightContactError": null,
+      "contactError": null
+    },
+    "inspection": {
+      "itemId": "parts-a",
+      "held": null,
+      "measurement": null,
+      "notice": "returned",
+      "slots": [
+        {
+          "index": 0,
+          "present": true,
+          "specId": "M8",
+          "complete": true,
+          "reading": "M8"
+        },
+        {
+          "index": 1,
+          "present": true,
+          "specId": "M8",
+          "complete": false,
+          "reading": null
+        },
+        {
+          "index": 2,
+          "present": true,
+          "specId": "M8",
+          "complete": false,
+          "reading": null
+        },
+        {
+          "index": 3,
+          "present": true,
+          "specId": "M8",
+          "complete": false,
+          "reading": null
+        }
+      ]
+    },
+    "loaded": []
+  },
+  "m6Paused": {
+    "view": {
+      "pack": "parts-b",
+      "selected": 0,
+      "gap": 0.54,
+      "busy": true,
+      "feedback": "closing",
+      "round": 1,
+      "itemId": "parts-b"
+    },
+    "visual": {
+      "pack": "parts-b",
+      "index": 0,
+      "progress": 1,
+      "jaw": 0.45420116417506695,
+      "retracting": false
+    },
+    "actor": {
+      "position": [
+        -70,
+        1.9039127826690674,
+        -186.52000427246094
+      ],
+      "yaw": 1.5707963267948966,
+      "grounded": true,
+      "available": true,
+      "mode": "guide"
+    },
+    "held": {
+      "spec": "M6"
+    },
+    "action": {
+      "kind": "measure",
+      "phase": "perform",
+      "elapsed": 0.6500000339001417,
+      "committed": false,
+      "anchor": {
+        "stand": [
+          -70,
+          1.1,
+          -186.52
+        ],
+        "yaw": 1.5707963267948966,
+        "leftTarget": [
+          -70.09,
+          2.105,
+          -186.89813466520528
+        ],
+        "rightTarget": [
+          -69.77579883582493,
+          2.2800000000000002,
+          -186.79
+        ]
+      }
+    },
+    "sockets": {
+      "valid": true,
+      "reachable": true,
+      "sampledId": 5,
+      "sampledElapsed": 0.6500000339001417,
+      "leftHand": [
+        -70.08999999319599,
+        2.104999995344801,
+        -186.89813468250154
+      ],
+      "rightHand": [
+        -69.77579884421228,
+        2.2799999833107085,
+        -186.79000001806196
+      ],
+      "leftContactError": 1.916053396472752e-8,
+      "rightContactError": 2.5982969715751663e-8,
+      "contactError": 2.5982969715751663e-8
+    },
+    "inspection": {
+      "itemId": "parts-b",
+      "held": 0,
+      "measurement": null,
+      "notice": "held",
+      "slots": [
+        {
+          "index": 0,
+          "present": true,
+          "specId": "M6",
+          "complete": false,
+          "reading": null
+        },
+        {
+          "index": 1,
+          "present": true,
+          "specId": "M6",
+          "complete": false,
+          "reading": null
+        },
+        {
+          "index": 2,
+          "present": true,
+          "specId": "M6",
+          "complete": false,
+          "reading": null
+        },
+        {
+          "index": 3,
+          "present": true,
+          "specId": "M6",
+          "complete": false,
+          "reading": null
+        }
+      ]
+    },
+    "loaded": []
+  },
+  "m6": {
+    "view": {
+      "pack": "parts-b",
+      "selected": 0,
+      "gap": 0.28,
+      "busy": false,
+      "feedback": "measured",
+      "round": 1,
+      "itemId": "parts-b"
+    },
+    "visual": {
+      "pack": "parts-b",
+      "index": 0,
+      "progress": 1,
+      "jaw": 0.28,
+      "retracting": false
+    },
+    "actor": {
+      "position": [
+        -70,
+        1.9039127826690674,
+        -186.52000427246094
+      ],
+      "yaw": 1.5707963267948966,
+      "grounded": true,
+      "available": true,
+      "mode": "guide"
+    },
+    "held": {
+      "spec": "M6"
+    },
+    "action": null,
+    "sockets": {
+      "valid": true,
+      "reachable": true,
+      "sampledId": null,
+      "sampledElapsed": 0,
+      "leftHand": [
+        -70.11305881993336,
+        2.1086454060296926,
+        -186.92865824348252
+      ],
+      "rightHand": [
+        -69.77999998928628,
+        2.0765001154045413,
+        -186.8100042603844
+      ],
+      "leftContactError": null,
+      "rightContactError": null,
+      "contactError": null
+    },
+    "inspection": {
+      "itemId": "parts-b",
+      "held": 0,
+      "measurement": "M6",
+      "notice": "measured",
+      "slots": [
+        {
+          "index": 0,
+          "present": true,
+          "specId": "M6",
+          "complete": false,
+          "reading": null
+        },
+        {
+          "index": 1,
+          "present": true,
+          "specId": "M6",
+          "complete": false,
+          "reading": null
+        },
+        {
+          "index": 2,
+          "present": true,
+          "specId": "M6",
+          "complete": false,
+          "reading": null
+        },
+        {
+          "index": 3,
+          "present": true,
+          "specId": "M6",
+          "complete": false,
+          "reading": null
+        }
+      ]
+    },
+    "loaded": []
+  },
+  "m6Returned": {
+    "view": {
+      "pack": "parts-b",
+      "selected": 1,
+      "gap": 0.28,
+      "busy": false,
+      "feedback": "",
+      "round": 1,
+      "itemId": "parts-b"
+    },
+    "visual": {
+      "pack": "parts-b",
+      "index": 0,
+      "progress": 0,
+      "jaw": 0.54,
+      "retracting": false
+    },
+    "actor": {
+      "position": [
+        -70,
+        1.9039127826690674,
+        -186.52000427246094
+      ],
+      "yaw": 1.5707963267948966,
+      "grounded": true,
+      "available": true,
+      "mode": "guide"
+    },
+    "held": null,
+    "action": null,
+    "sockets": {
+      "valid": false,
+      "reachable": false,
+      "sampledId": null,
+      "sampledElapsed": 0,
+      "leftHand": [
+        -70.21999999802512,
+        2.0665002024170405,
+        -186.77000426713437
+      ],
+      "rightHand": [
+        -69.77999999657658,
+        2.076500211825778,
+        -186.8100042673814
+      ],
+      "leftContactError": null,
+      "rightContactError": null,
+      "contactError": null
+    },
+    "inspection": {
+      "itemId": "parts-b",
+      "held": null,
+      "measurement": null,
+      "notice": "returned",
+      "slots": [
+        {
+          "index": 0,
+          "present": true,
+          "specId": "M6",
+          "complete": true,
+          "reading": "M6"
+        },
+        {
+          "index": 1,
+          "present": true,
+          "specId": "M6",
+          "complete": false,
+          "reading": null
+        },
+        {
+          "index": 2,
+          "present": true,
+          "specId": "M6",
+          "complete": false,
+          "reading": null
+        },
+        {
+          "index": 3,
+          "present": true,
+          "specId": "M6",
+          "complete": false,
+          "reading": null
+        }
+      ]
+    },
+    "loaded": []
+  },
+  "cancelled": {
+    "view": {
+      "pack": null,
+      "selected": 1,
+      "gap": 0.42497039242608997,
+      "busy": false,
+      "feedback": "cancelled",
+      "round": 1,
+      "itemId": "parts-b"
+    },
+    "visual": {
+      "pack": "parts-b",
+      "index": 1,
+      "progress": 0,
+      "jaw": 0.54,
+      "retracting": false
+    },
+    "actor": {
+      "position": [
+        -70,
+        1.9039127826690674,
+        -186.52000427246094
+      ],
+      "yaw": 1.5707963267948966,
+      "grounded": true,
+      "available": true,
+      "mode": "guide"
+    },
+    "held": null,
+    "action": null,
+    "sockets": {
+      "valid": false,
+      "reachable": false,
+      "sampledId": null,
+      "sampledElapsed": 0,
+      "leftHand": [
+        -70.22000001471812,
+        2.066499031585206,
+        -186.77000426703435
+      ],
+      "rightHand": [
+        -69.77999998101137,
+        2.076499045551304,
+        -186.8100042580506
+      ],
+      "leftContactError": null,
+      "rightContactError": null,
+      "contactError": null
+    },
+    "inspection": {
+      "itemId": "parts-b",
+      "held": null,
+      "measurement": null,
+      "notice": "cancelled",
+      "slots": [
+        {
+          "index": 0,
+          "present": true,
+          "specId": "M6",
+          "complete": true,
+          "reading": "M6"
+        },
+        {
+          "index": 1,
+          "present": true,
+          "specId": "M6",
+          "complete": false,
+          "reading": null
+        },
+        {
+          "index": 2,
+          "present": true,
+          "specId": "M6",
+          "complete": false,
+          "reading": null
+        },
+        {
+          "index": 3,
+          "present": true,
+          "specId": "M6",
+          "complete": false,
+          "reading": null
+        }
+      ]
+    },
+    "loaded": []
+  },
+  "nightEnglish": "SDIC · INVENTORY YARD\n01\nFictional cargo\nResume guidance\nPack A inspection\n\nPresent → close and read → return. Press E for each step.\n\nPocket 1\nPocket 2\nPocket 3\nPocket 4\n\nContact · Measured\nM8\n\nReturn to pocket\nPut back and leave\nManifest, observed evidence and exchanges +"
+}

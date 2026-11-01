@@ -1,0 +1,60 @@
+{
+ "images": [
+  "overall.png",
+  "entrance.png",
+  "middle.png",
+  "overall-clay.png"
+ ],
+ "renderer": "BLENDER_EEVEE",
+ "resolution": [
+  1100,
+  800
+ ],
+ "viewTransform": "AgX",
+ "look": "None",
+ "exposure": 0,
+ "gamma": 1,
+ "views": [
+  [
+   "overall",
+   [
+    34,
+    25,
+    28
+   ],
+   [
+    0,
+    3,
+    -18
+   ]
+  ],
+  [
+   "entrance",
+   [
+    1.5,
+    1.75,
+    2.2
+   ],
+   [
+    0,
+    3.4,
+    -19
+   ]
+  ],
+  [
+   "middle",
+   [
+    -1.8,
+    6.0,
+    -12
+   ],
+   [
+    -5.0,
+    4.0,
+    -25.6
+   ]
+  ]
+ ],
+ "scope": "fresh exact delivered GLB; studio lights/floor/cameras are preview only; not game integration or character validation",
+ "glbSha256": "dfecfa91751491ae36f3cb96dba2a86b02c3f337fea80c4b21bfbac95e2f6d2d"
+}

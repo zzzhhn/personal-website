@@ -1,0 +1,22 @@
+{
+ "glbSha256": "1dd81e576c14ca84057d6cd8bd54aac07f1429acc629f67e8403dd25e2324141",
+ "views": [
+  "front",
+  "three-quarter",
+  "rear",
+  "side",
+  "top",
+  "near",
+  "night",
+  "clay"
+ ],
+ "resolution": [
+  1600,
+  1200
+ ],
+ "source": "fresh imported GLB",
+ "scaleFigure": "G24 evaluated static pose baked to studio-only geometry, height exactly 1.7m, feet Z=0; bone display helpers excluded",
+ "studioOnlyLighting": "two suns + world; no lights exported",
+ "nightMaterialEmission": 1.2,
+ "duskMaterialEmission": 0.12
+}

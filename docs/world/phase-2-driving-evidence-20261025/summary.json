@@ -1,0 +1,474 @@
+{
+  "source_sha256": "7e0c59e5f9025e9988a39c656a19c8e41ddd0ef8e7fb0700097458e263d7e124",
+  "source_local": ".astro/driving-runtime.json",
+  "sample_interval_ms": 50,
+  "browser_errors_observed": [],
+  "fixtures_are_not_driving": true,
+  "cases": [
+    {
+      "name": "held-key entry + nitro + foot brake",
+      "samples": 387,
+      "max_speed_mps": 21.610271453857425,
+      "max_slip_degrees": 3.258808219612962e-05,
+      "min_nitro": 0.35555552194516143,
+      "min_contacts": 4,
+      "entry_samples": 6,
+      "entry_max_engine": 0,
+      "entry_min_nitro": 1,
+      "peak_fov": 65.82389745681994,
+      "end": {
+        "t": 36532.199999809265,
+        "step": 1806,
+        "active": "coupe",
+        "p": [
+          119.02813720703125,
+          5.99844217300415,
+          120
+        ],
+        "velocity": [
+          -7.886234243414947e-07,
+          -0.06128094345331192,
+          -2.3352841882484654e-09
+        ],
+        "yaw": -1.7159640983455985e-08,
+        "entering": false,
+        "speed": 7.886268819741975e-07,
+        "steer": 0,
+        "drive": {
+          "power": 0,
+          "steering": 0,
+          "rearGrip": 1,
+          "nitro": 1,
+          "boostLock": false,
+          "rechargeDelay": 0,
+          "boosting": false,
+          "handbrake": false,
+          "braking": false,
+          "slipAngle": -5.463462351898252e-09,
+          "speed": -0.00014398690574855268,
+          "lateralSpeed": -1.0926924703796504e-08,
+          "contacts": 4,
+          "engine": 0,
+          "suspension": [
+            0.3678610026836395,
+            0.3678610026836395,
+            0.36102887988090515,
+            0.36102887988090515
+          ]
+        },
+        "keys": [],
+        "camera": {
+          "fov": 55.004204071965304,
+          "yaw": 3.1415905939954483
+        },
+        "paused": false
+      }
+    },
+    {
+      "name": "long handbrake + direct foot brake",
+      "samples": 387,
+      "max_speed_mps": 12.76502799987793,
+      "max_slip_degrees": 50.770969640184965,
+      "min_nitro": 1,
+      "min_contacts": 4,
+      "entry_samples": 14,
+      "entry_max_engine": 0,
+      "entry_min_nitro": 1,
+      "peak_fov": 59.21281120061228,
+      "end": {
+        "t": 104239.19999980927,
+        "step": 5868,
+        "active": "coupe",
+        "p": [
+          92.45722961425781,
+          5.998442649841309,
+          113.94908142089844
+        ],
+        "velocity": [
+          3.7507991379470695e-08,
+          -0.06128436326980591,
+          4.0513331356351046e-08
+        ],
+        "yaw": 2.6266581562813225,
+        "entering": false,
+        "speed": 5.521032000370895e-08,
+        "steer": 0,
+        "drive": {
+          "power": 0,
+          "steering": 0,
+          "rearGrip": 0.9999999999999994,
+          "nitro": 1,
+          "boostLock": false,
+          "rechargeDelay": 0,
+          "boosting": false,
+          "handbrake": false,
+          "braking": false,
+          "slipAngle": 2.9349963577027247e-07,
+          "speed": -0.00014326745351859037,
+          "lateralSpeed": 5.869992715405618e-07,
+          "contacts": 4,
+          "engine": 0,
+          "suspension": [
+            0.36786243319511414,
+            0.36786147952079773,
+            0.36102935671806335,
+            0.36102840304374695
+          ]
+        },
+        "keys": [],
+        "camera": {
+          "fov": 55.00739148671184,
+          "yaw": 1.1479091852239527
+        },
+        "paused": false
+      },
+      "handbrake_last": {
+        "t": 88235.39999985695,
+        "step": 4908,
+        "active": "coupe",
+        "p": [
+          90.53590393066406,
+          5.99840784072876,
+          117.36825561523438
+        ],
+        "velocity": [
+          6.982656002044678,
+          -0.06155111640691757,
+          -6.006462574005127
+        ],
+        "yaw": 1.090389386207395,
+        "entering": false,
+        "speed": 9.210595935975851,
+        "steer": 0.34684860706329346,
+        "drive": {
+          "power": 0,
+          "steering": 0.3468486002716681,
+          "rearGrip": 0.43004715269425076,
+          "nitro": 1,
+          "boostLock": false,
+          "rechargeDelay": 0,
+          "boosting": false,
+          "handbrake": true,
+          "braking": false,
+          "slipAngle": 0.35660308272918856,
+          "speed": 8.735367918134017,
+          "lateralSpeed": 3.2541831132941477,
+          "contacts": 4,
+          "engine": 0,
+          "suspension": [
+            0.35804370045661926,
+            0.37129005789756775,
+            0.35757824778556824,
+            0.3708246648311615
+          ]
+        },
+        "keys": [
+          "KeyA",
+          "KeyX"
+        ],
+        "camera": {
+          "fov": 58.50340659448852,
+          "yaw": 2.656216203460884
+        },
+        "paused": false
+      }
+    },
+    {
+      "name": "short handbrake + countersteer + throttle recovery",
+      "samples": 402,
+      "max_speed_mps": 15.884074260710882,
+      "max_slip_degrees": 14.848558582875864,
+      "min_nitro": 1,
+      "min_contacts": 4,
+      "entry_samples": 14,
+      "entry_max_engine": 0,
+      "entry_min_nitro": 1,
+      "peak_fov": 60.2661150070441,
+      "end": {
+        "t": 152078.19999980927,
+        "step": 8739,
+        "active": "coupe",
+        "p": [
+          109.29306030273438,
+          5.998442649841309,
+          97.91273498535156
+        ],
+        "velocity": [
+          -0.0020046867430210114,
+          -0.061284296214580536,
+          0.002068323316052556
+        ],
+        "yaw": 0.8012730885755388,
+        "entering": false,
+        "speed": 0.0028804045336325297,
+        "steer": 0,
+        "drive": {
+          "power": 0,
+          "steering": 0,
+          "rearGrip": 0.9999999999999994,
+          "nitro": 1,
+          "boostLock": false,
+          "rechargeDelay": 0,
+          "boosting": false,
+          "handbrake": false,
+          "braking": false,
+          "slipAngle": 6.042041094678297e-07,
+          "speed": -0.003024810897273625,
+          "lateralSpeed": 1.2084082189358063e-06,
+          "contacts": 4,
+          "engine": 0,
+          "suspension": [
+            0.36786195635795593,
+            0.36786195635795593,
+            0.36102887988090515,
+            0.36102887988090515
+          ]
+        },
+        "keys": [],
+        "camera": {
+          "fov": 55.005143511891426,
+          "yaw": 2.340636773934905
+        },
+        "paused": false
+      },
+      "handbrake_last": {
+        "t": 135776.59999990463,
+        "step": 7761,
+        "active": "coupe",
+        "p": [
+          88.39566802978516,
+          5.998395919799805,
+          118.68389892578125
+        ],
+        "velocity": [
+          9.158904075622559,
+          -0.061725031584501266,
+          -4.76366662979126
+        ],
+        "yaw": 0.5801942770131232,
+        "entering": false,
+        "speed": 10.323664253851069,
+        "steer": 0.3047248423099518,
+        "drive": {
+          "power": 0,
+          "steering": 0.30472483026660746,
+          "rearGrip": 0.4307754095144933,
+          "nitro": 1,
+          "boostLock": false,
+          "rechargeDelay": 0,
+          "boosting": false,
+          "handbrake": true,
+          "braking": false,
+          "slipAngle": 0.08541830895329088,
+          "speed": 10.352882386853336,
+          "lateralSpeed": 0.8864827667764037,
+          "contacts": 4,
+          "engine": 0,
+          "suspension": [
+            0.35587576031684875,
+            0.36840400099754333,
+            0.36041387915611267,
+            0.3729417026042938
+          ]
+        },
+        "keys": [
+          "KeyA",
+          "KeyX"
+        ],
+        "camera": {
+          "fov": 58.80312363517647,
+          "yaw": 2.9427002849719823
+        },
+        "paused": false
+      },
+      "recovery_before_brake": {
+        "t": 137133.39999985695,
+        "step": 7842,
+        "active": "coupe",
+        "p": [
+          99.78905487060547,
+          5.998225688934326,
+          107.72183227539062
+        ],
+        "velocity": [
+          10.755759239196777,
+          -0.061279457062482834,
+          -11.10285472869873
+        ],
+        "yaw": 0.801275225587955,
+        "entering": false,
+        "speed": 15.458322675444274,
+        "steer": 2.3253556946656317e-07,
+        "drive": {
+          "power": 0.999627394334854,
+          "steering": 2.3253557036616794e-07,
+          "rearGrip": 0.9998272181314221,
+          "nitro": 1,
+          "boostLock": false,
+          "rechargeDelay": 0,
+          "boosting": false,
+          "handbrake": false,
+          "braking": false,
+          "slipAngle": -8.304841798791711e-07,
+          "speed": 15.34664920990794,
+          "lateralSpeed": -1.2745149382986654e-05,
+          "contacts": 4,
+          "engine": 7477.212909624708,
+          "suspension": [
+            0.3957253396511078,
+            0.3957286775112152,
+            0.3331776559352875,
+            0.3331809937953949
+          ]
+        },
+        "keys": [
+          "KeyW"
+        ],
+        "camera": {
+          "fov": 60.05713580752457,
+          "yaw": 2.353387769478843
+        },
+        "paused": false
+      }
+    },
+    {
+      "name": "normal layby to coastal avenue",
+      "samples": 397,
+      "max_speed_mps": 14.53147486377416,
+      "max_slip_degrees": 9.668191308828405,
+      "min_nitro": 1,
+      "min_contacts": 3,
+      "entry_samples": 12,
+      "entry_max_engine": 0,
+      "entry_min_nitro": 1,
+      "peak_fov": 59.84113926369827,
+      "end": {
+        "t": 175476.19999980927,
+        "step": 10130,
+        "active": "coupe",
+        "p": [
+          19.44135093688965,
+          2.1364431381225586,
+          -27.64619255065918
+        ],
+        "velocity": [
+          0.0007060749921947718,
+          -0.06128741055727005,
+          0.0028939994517713785
+        ],
+        "yaw": 1.8100924634058435,
+        "entering": false,
+        "speed": 0.002978888168672313,
+        "steer": 0,
+        "drive": {
+          "power": 0,
+          "steering": 0,
+          "rearGrip": 1,
+          "nitro": 1,
+          "boostLock": false,
+          "rechargeDelay": 0,
+          "boosting": false,
+          "handbrake": false,
+          "braking": false,
+          "slipAngle": -3.779352570536328e-08,
+          "speed": -0.0031233358493647557,
+          "lateralSpeed": -7.55870514107266e-08,
+          "contacts": 4,
+          "engine": 0,
+          "suspension": [
+            0.3678620755672455,
+            0.36786243319511414,
+            0.36102935671806335,
+            0.36102959513664246
+          ]
+        },
+        "keys": [],
+        "camera": {
+          "fov": 55.002718989268736,
+          "yaw": 1.3316513116133029
+        },
+        "paused": false
+      }
+    },
+    {
+      "name": "entry cancelled by E",
+      "samples": 397,
+      "max_speed_mps": 0.00029455014737322927,
+      "max_slip_degrees": 3.3217933077495366e-05,
+      "min_nitro": 1,
+      "min_contacts": 4,
+      "entry_samples": 10,
+      "entry_max_engine": 0,
+      "entry_min_nitro": 1,
+      "peak_fov": 54.84889242396854,
+      "end": {
+        "t": 229026.89999985695,
+        "step": 13199,
+        "active": null,
+        "p": [
+          69.99758911132812,
+          5.998442649841309,
+          120
+        ],
+        "velocity": [
+          6.475399061400822e-08,
+          -0.061284370720386505,
+          -2.4658638153596257e-07
+        ],
+        "yaw": -7.682159314693373e-11,
+        "entering": false,
+        "speed": 2.549469020393038e-07,
+        "steer": 0,
+        "drive": {
+          "power": 0,
+          "steering": 0,
+          "rearGrip": 1,
+          "nitro": 1,
+          "boostLock": false,
+          "rechargeDelay": 0,
+          "boosting": false,
+          "handbrake": false,
+          "braking": false,
+          "slipAngle": -4.051918283162883e-07,
+          "speed": -0.00014330144190054288,
+          "lateralSpeed": -8.10383656632621e-07,
+          "contacts": 4,
+          "engine": 0,
+          "suspension": [
+            0.36786147952079773,
+            0.36786195635795593,
+            0.36102887988090515,
+            0.36102935671806335
+          ]
+        },
+        "keys": [],
+        "camera": {
+          "fov": 50.00735057993182,
+          "yaw": 2.7297136127418113
+        },
+        "paused": false
+      }
+    }
+  ],
+  "paused_input_probe": {
+    "samples": 38,
+    "physics_steps": [
+      10670
+    ],
+    "max_engine": 0,
+    "min_nitro": 1,
+    "keys": []
+  },
+  "physical_comparison": {
+    "baseline": {
+      "zero_to_60_seconds": 2.3,
+      "brake_seconds": 2.167,
+      "brake_metres": 17.375
+    },
+    "candidate": {
+      "zero_to_60_seconds": 2.833,
+      "brake_seconds": 1.7,
+      "brake_metres": 14.045
+    }
+  }
+}

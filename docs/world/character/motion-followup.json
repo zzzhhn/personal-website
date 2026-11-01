@@ -1,0 +1,454 @@
+{
+  "baselineCommit": "44a339e",
+  "status": "candidate-not-A3-accepted",
+  "scope": "entry support filter + advanced planted flags + uncensored measurement; no IK changes",
+  "runs": {
+    "baseline": {
+      "errors": [],
+      "metrics": {
+        "frames": 134,
+        "slipByAnim": {
+          "Idle": {
+            "n": 36,
+            "max_mm": 0
+          },
+          "Idle>TurnL>Run": {
+            "n": 36,
+            "max_mm": 333.5
+          },
+          "Run": {
+            "n": 8,
+            "max_mm": 102.9
+          }
+        },
+        "turnSlipMax_mm": 0,
+        "slipMax_mm": 333.5,
+        "worstSlips": [
+          {
+            "t0": 1.9006,
+            "t1": 2.839,
+            "mm": 333.5,
+            "anims": "Idle>TurnL>Run"
+          },
+          {
+            "t0": 1.9006,
+            "t1": 2.839,
+            "mm": 333.5,
+            "anims": "Idle>TurnL>Run"
+          },
+          {
+            "t0": 1.9006,
+            "t1": 2.839,
+            "mm": 333.5,
+            "anims": "Idle>TurnL>Run"
+          },
+          {
+            "t0": 1.9006,
+            "t1": 2.839,
+            "mm": 324.2,
+            "anims": "Idle>TurnL>Run"
+          },
+          {
+            "t0": 1.9006,
+            "t1": 2.839,
+            "mm": 324.2,
+            "anims": "Idle>TurnL>Run"
+          },
+          {
+            "t0": 1.9006,
+            "t1": 2.839,
+            "mm": 324.2,
+            "anims": "Idle>TurnL>Run"
+          }
+        ],
+        "poseJumpSteadyP99_mm": 66.3,
+        "poseJumpSwitchMax_mm": 26.6,
+        "stanceSamples": 116,
+        "stanceMinH_mm": 1.5,
+        "stanceMaxH_mm": 29.5,
+        "switches": [
+          {
+            "t": 2.7219,
+            "from": "Idle",
+            "to": "TurnL",
+            "maxJump_mm": 14.6,
+            "bone": "foot.L"
+          },
+          {
+            "t": 2.7389,
+            "from": "TurnL",
+            "to": "Run",
+            "maxJump_mm": 26.6,
+            "bone": "foot.L"
+          }
+        ]
+      },
+      "glbSha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0",
+      "firstRun": {
+        "from": "TurnL",
+        "time": 0.1458,
+        "contact": [
+          0,
+          0
+        ]
+      },
+      "soleCounts": [
+        344
+      ],
+      "samplesAtLeast100mm": 23469,
+      "reportSha256": "2a760cd2a4866ac90a5eb9188814ea646841b52aec1eafc81ac932a8e30919ce"
+    },
+    "candidate": {
+      "errors": [],
+      "metrics": {
+        "frames": 133,
+        "slipByAnim": {
+          "Idle": {
+            "n": 3,
+            "max_mm": 0
+          },
+          "Idle>TurnL": {
+            "n": 69,
+            "max_mm": 6.3
+          },
+          "Run": {
+            "n": 10,
+            "max_mm": 167.6
+          }
+        },
+        "turnSlipMax_mm": 0,
+        "slipMax_mm": 167.6,
+        "worstSlips": [
+          {
+            "t0": 2.8411,
+            "t1": 2.9244,
+            "mm": 167.6,
+            "anims": "Run"
+          },
+          {
+            "t0": 2.8411,
+            "t1": 2.9244,
+            "mm": 167.6,
+            "anims": "Run"
+          },
+          {
+            "t0": 2.8411,
+            "t1": 2.9244,
+            "mm": 167.6,
+            "anims": "Run"
+          },
+          {
+            "t0": 2.8411,
+            "t1": 2.9244,
+            "mm": 165.2,
+            "anims": "Run"
+          },
+          {
+            "t0": 2.8411,
+            "t1": 2.9244,
+            "mm": 165.2,
+            "anims": "Run"
+          },
+          {
+            "t0": 2.8411,
+            "t1": 2.9244,
+            "mm": 165.2,
+            "anims": "Run"
+          }
+        ],
+        "poseJumpSteadyP99_mm": 45.7,
+        "poseJumpSwitchMax_mm": 26.2,
+        "stanceSamples": 118,
+        "stanceMinH_mm": 1.5,
+        "stanceMaxH_mm": 29.1,
+        "switches": [
+          {
+            "t": 2.8125,
+            "from": "Idle",
+            "to": "TurnL",
+            "maxJump_mm": 9.9,
+            "bone": "foot.R"
+          },
+          {
+            "t": 2.8411,
+            "from": "TurnL",
+            "to": "Run",
+            "maxJump_mm": 26.2,
+            "bone": "foot.L"
+          }
+        ]
+      },
+      "glbSha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0",
+      "firstRun": {
+        "from": "TurnL",
+        "time": 0.1479,
+        "contact": [
+          0,
+          0
+        ]
+      },
+      "soleCounts": [
+        344
+      ],
+      "samplesAtLeast100mm": 23039,
+      "reportSha256": "e35bd493043c5186d63e9cfd923aa9c92fe9a16a0c7347fc3951a0f36e25c346"
+    },
+    "aligned-baseline": {
+      "errors": [],
+      "metrics": {
+        "frames": 132,
+        "slipByAnim": {
+          "Idle": {
+            "n": 12,
+            "max_mm": 0
+          },
+          "Idle>Run": {
+            "n": 60,
+            "max_mm": 187.1
+          },
+          "Run": {
+            "n": 8,
+            "max_mm": 112.6
+          }
+        },
+        "turnSlipMax_mm": 0,
+        "slipMax_mm": 187.1,
+        "worstSlips": [
+          {
+            "t0": 5.475,
+            "t1": 6.3584,
+            "mm": 187.1,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.475,
+            "t1": 6.3584,
+            "mm": 187.1,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.475,
+            "t1": 6.3584,
+            "mm": 187.1,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.475,
+            "t1": 6.3417,
+            "mm": 162.6,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.475,
+            "t1": 6.3417,
+            "mm": 162.6,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.475,
+            "t1": 6.3417,
+            "mm": 162.6,
+            "anims": "Idle>Run"
+          }
+        ],
+        "poseJumpSteadyP99_mm": 50.2,
+        "poseJumpSwitchMax_mm": 31.7,
+        "stanceSamples": 114,
+        "stanceMinH_mm": 1.5,
+        "stanceMaxH_mm": 28.8,
+        "switches": [
+          {
+            "t": 6.275,
+            "from": "Idle",
+            "to": "Run",
+            "maxJump_mm": 31.7,
+            "bone": "foot.L"
+          }
+        ]
+      },
+      "glbSha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0",
+      "firstRun": {
+        "from": "Idle",
+        "time": 0.1474,
+        "contact": [
+          0,
+          0
+        ]
+      },
+      "soleCounts": [
+        344
+      ],
+      "samplesAtLeast100mm": 23805,
+      "reportSha256": "f940ba3196499eb9e34d2a86847b984ddaf1d427d7825b7369721d615c2bd9df"
+    },
+    "aligned-candidate": {
+      "errors": [],
+      "metrics": {
+        "frames": 132,
+        "slipByAnim": {
+          "Idle": {
+            "n": 54,
+            "max_mm": 0
+          },
+          "Idle>Run": {
+            "n": 18,
+            "max_mm": 181.9
+          },
+          "Run": {
+            "n": 3,
+            "max_mm": 6
+          }
+        },
+        "turnSlipMax_mm": 0,
+        "slipMax_mm": 181.9,
+        "worstSlips": [
+          {
+            "t0": 5.6322,
+            "t1": 6.4654,
+            "mm": 181.9,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.6322,
+            "t1": 6.4654,
+            "mm": 181.9,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.6322,
+            "t1": 6.4654,
+            "mm": 181.9,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.6322,
+            "t1": 6.4487,
+            "mm": 117.7,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.6322,
+            "t1": 6.4487,
+            "mm": 117.7,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.6322,
+            "t1": 6.4487,
+            "mm": 117.7,
+            "anims": "Idle>Run"
+          }
+        ],
+        "poseJumpSteadyP99_mm": 48.2,
+        "poseJumpSwitchMax_mm": 37.8,
+        "stanceSamples": 114,
+        "stanceMinH_mm": 1.5,
+        "stanceMaxH_mm": 34.3,
+        "switches": [
+          {
+            "t": 6.4321,
+            "from": "Idle",
+            "to": "Run",
+            "maxJump_mm": 37.8,
+            "bone": "foot.L"
+          }
+        ]
+      },
+      "glbSha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0",
+      "firstRun": {
+        "from": "Idle",
+        "time": 0.3687,
+        "contact": [
+          0,
+          1
+        ]
+      },
+      "soleCounts": [
+        344
+      ],
+      "samplesAtLeast100mm": 23740,
+      "reportSha256": "d85ce4263b865403fef8648a5d4b8d3abb7aefe7aa6d12f7beee1bbbc8419a13"
+    }
+  },
+  "evidenceRoot": "/Users/bobby/Desktop/3D-personal-world/evidence/motion-followup",
+  "validation": {
+    "syntaxAndDiffCheck": true,
+    "astroCheck": {
+      "errors": 1,
+      "changedFilesErrors": 0,
+      "existingError": "WorldTownAssets.tsx:123 TS2352 Object.fromEntries cast",
+      "warnings": 0,
+      "hints": 135
+    }
+  },
+  "limitations": [
+    "one run per mode; frame timing is not deterministic",
+    "original bot enters TurnL before Run, so direct entry covered by explicit real-key heading-aligned supplement",
+    "Land entry has not been runtime exercised",
+    "old censored sole samples cannot be reconstructed",
+    "not whole route, island, or user acceptance"
+  ],
+  "historicalSlopeReanalysis": {
+    "byClipCurve": {
+      "n": 363,
+      "maxFloat_mm": 99.9,
+      "maxSink_mm": -21.4,
+      "floatOver20": 54,
+      "sinkOver15": 23
+    },
+    "excludingStopStepSwing": {
+      "n": 272,
+      "maxFloat_mm": 85.9,
+      "maxSink_mm": -21.4,
+      "floatOver20": 7,
+      "sinkOver15": 22
+    },
+    "legacyHeightWindow": {
+      "byClipCurve": {
+        "n": 342,
+        "maxFloat_mm": 94.5,
+        "maxSink_mm": -16,
+        "floatOver20": 40,
+        "sinkOver15": 21
+      },
+      "excludingStopStepSwing": {
+        "n": 265,
+        "maxFloat_mm": 85.9,
+        "maxSink_mm": -16,
+        "floatOver20": 5,
+        "sinkOver15": 20
+      }
+    },
+    "probedRamp": {
+      "n": 363,
+      "maxFloat_mm": 99.9,
+      "maxSink_mm": -21.4,
+      "floatOver20": 54,
+      "sinkOver15": 23
+    },
+    "allStance": {
+      "n": 456,
+      "maxFloat_mm": 99.9,
+      "maxSink_mm": -47.4,
+      "floatOver20": 81,
+      "sinkOver15": 46
+    },
+    "missingSoleCount": 30
+  },
+  "originalA6": {
+    "passed": true,
+    "sameShellPassed": true,
+    "crossShellPassed": true,
+    "samples": 17,
+    "reportSha256": "13adaf38d777e383ded3c27a81ace3774bb6cede2c61a23dafe2b32deac7b06a",
+    "scope": "every captured frame: one pre-Run frame through first Run +250 ms; full relation table, every=1"
+  },
+  "alignedA6": {
+    "passed": true,
+    "sameShellPassed": true,
+    "crossShellPassed": true,
+    "samples": 17,
+    "reportSha256": "6f7b1dbd545663c0d2c055cd4073e69e08dc1c1985c1dc626042ad68f78ade1a",
+    "scope": "every captured frame: one pre-Run frame through first Run +250 ms; full relation table, every=1"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "date": "2026-10-28",
+  "stage": "isolated ride-space prototype; not integrated into 4341",
+  "baseCommit": "53b6cf6",
+  "sourceSha256": {
+    "src/components/world/attractions/coaster-thrill-layout.ts": "9b3020f5180b67432ced0ade0f014c772b214f88c6886d387a3586fe9e9de2d0",
+    "src/components/world/attractions/coaster-thrill-frame.ts": "1f484adff4a1db7ef3a0ff7783ca7bd1ba66cf09173d708f7c49914cc9402662",
+    "src/components/world/attractions/coaster-thrill-geometry.ts": "83e122c7e4dc1c371926f1a3564ac264a1e092fa4e05178b62b8213c2a11dcd9",
+    "src/components/world/attractions/coaster-thrill-motion.ts": "baa82adaff43f3de26213c01370cd750c830356a4ad5b098d8bf8247330d2d3d"
+  },
+  "lengthMetres": 1898.4927167316027,
+  "bounds": [
+    [
+      2.6913160360265094,
+      215.12906158872562
+    ],
+    [
+      1.6527616226276405,
+      85.3446637958228
+    ],
+    [
+      -393.56315879120064,
+      -143.8262931322764
+    ]
+  ],
+  "dropAngleDegrees": 107.49070085360317,
+  "minimumNonAdjacentTrackCentreDistanceMetres": 8.814918714600534,
+  "minimumSampledHeadToOtherRailMetres": 6.924039346067846,
+  "clearanceSampleCount": 2400,
+  "adjacentArcExclusionMetres": 15,
+  "durationSeconds": 111.73328921512172,
+  "maximumSpeedMps": 33.26441890575848,
+  "lowRunMinimumSpeedMps": 27.27880143385413,
+  "inversions": [
+    {
+      "id": "giant-loop",
+      "count": 1
+    },
+    {
+      "id": "cobra-in",
+      "count": 1
+    },
+    {
+      "id": "cobra-out",
+      "count": 1
+    },
+    {
+      "id": "stall",
+      "count": 1
+    },
+    {
+      "id": "tilted-loop",
+      "count": 1
+    },
+    {
+      "id": "double-corkscrew",
+      "count": 2
+    },
+    {
+      "id": "water-roll",
+      "count": 1
+    }
+  ],
+  "verification": {
+    "tests": "12/12 including original camera-direction regressions",
+    "types": "strict sample dependency closure: no diagnostics",
+    "rideModel": "kinematic, energy/curvature/roll-rate constrained; not a rigid-body train dynamics simulator",
+    "defaultCamera": "0 sample geometry obstructions at 0.2 s intervals",
+    "support": "sampled train corners and head; final architecture and foundations not yet audited",
+    "art": "not accepted: placeholder ground, supports and seated clearance mannequin",
+    "islandIntegration": "not attempted"
+  }
+}

@@ -1,0 +1,211 @@
+{
+ "tag": "fix",
+ "errors": [],
+ "fixture": [
+  {
+   "t": 0.047,
+   "to": [
+    -19.5,
+    5.74,
+    34.3
+   ],
+   "reason": "camp road ramp top (15 deg) for slope stance metrics"
+  }
+ ],
+ "glbSha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0",
+ "phases": [
+  {
+   "label": "run-down",
+   "t": 1.53
+  },
+  {
+   "label": "stop-on-ramp",
+   "t": 3.236
+  },
+  {
+   "label": "run-up",
+   "t": 4.138
+  },
+  {
+   "label": "stop2",
+   "t": 5.841
+  },
+  {
+   "label": "sprint-down",
+   "t": 6.78
+  },
+  {
+   "label": "stop3",
+   "t": 8.293
+  },
+  {
+   "label": "run-up2",
+   "t": 9.195
+  },
+  {
+   "label": "stop4",
+   "t": 11.405
+  }
+ ],
+ "membership": "union of legacy root-height window and actual tilted foot probe; all stance separately retained",
+ "byClipCurve": {
+  "n": 502,
+  "maxFloat_mm": 284.7,
+  "maxSink_mm": 1.5,
+  "floatOver20": 94,
+  "sinkOver15": 0
+ },
+ "excludingStopStepSwing": {
+  "n": 383,
+  "maxFloat_mm": 75.6,
+  "maxSink_mm": 1.5,
+  "floatOver20": 10,
+  "sinkOver15": 0
+ },
+ "legacyHeightWindow": {
+  "byClipCurve": {
+   "n": 380,
+   "maxFloat_mm": 167.2,
+   "maxSink_mm": 1.5,
+   "floatOver20": 69,
+   "sinkOver15": 0
+  },
+  "excludingStopStepSwing": {
+   "n": 293,
+   "maxFloat_mm": 75.6,
+   "maxSink_mm": 1.5,
+   "floatOver20": 9,
+   "sinkOver15": 0
+  }
+ },
+ "probedRamp": {
+  "n": 502,
+  "maxFloat_mm": 284.7,
+  "maxSink_mm": 1.5,
+  "floatOver20": 94,
+  "sinkOver15": 0
+ },
+ "allStance": {
+  "n": 518,
+  "maxFloat_mm": 284.7,
+  "maxSink_mm": 1.5,
+  "floatOver20": 94,
+  "sinkOver15": 0
+ },
+ "unclassified": {
+  "stats": {
+   "n": 0,
+   "maxFloat_mm": null,
+   "maxSink_mm": null,
+   "floatOver20": 0,
+   "sinkOver15": 0
+  },
+  "missingSoleCount": 0,
+  "missingSoles": []
+ },
+ "floatsByAnim": {
+  "Idle(stop-step swing)": 84,
+  "Idle": 8,
+  "Walk": 1,
+  "Sprint": 1
+ },
+ "stance": {
+  "samples": 518,
+  "rampSamples": 502,
+  "n": 502,
+  "maxFloat_mm": 284.7,
+  "maxSink_mm": 1.5,
+  "floatOver20": 94,
+  "sinkOver15": 0,
+  "worst": [
+   {
+    "t": 3.168,
+    "side": 1,
+    "mm": 75.6,
+    "anim": "Idle",
+    "reachError": 0,
+    "pelvisDrop": 0,
+    "shift": -0.004,
+    "maxShift": 0.0836
+   },
+   {
+    "t": 3.1844,
+    "side": 1,
+    "mm": 66.2,
+    "anim": "Idle",
+    "reachError": 0,
+    "pelvisDrop": 0,
+    "shift": -0.0044,
+    "maxShift": 0.0836
+   },
+   {
+    "t": 3.201,
+    "side": 1,
+    "mm": 54.9,
+    "anim": "Idle",
+    "reachError": 0,
+    "pelvisDrop": 0,
+    "shift": -0.0082,
+    "maxShift": 0.0836
+   },
+   {
+    "t": 8.2845,
+    "side": 1,
+    "mm": 45.5,
+    "anim": "Idle",
+    "reachError": 0,
+    "pelvisDrop": 0,
+    "shift": 0.0003,
+    "maxShift": 0.0836
+   },
+   {
+    "t": 3.2176,
+    "side": 1,
+    "mm": 39.4,
+    "anim": "Idle",
+    "reachError": 0,
+    "pelvisDrop": 0.0034,
+    "shift": -0.0141,
+    "maxShift": 0.0836
+   },
+   {
+    "t": 3.2346,
+    "side": 1,
+    "mm": 29,
+    "anim": "Idle",
+    "reachError": 0.0008,
+    "pelvisDrop": 0.0099,
+    "shift": -0.0212,
+    "maxShift": 0.0836
+   },
+   {
+    "t": 3.2507,
+    "side": 1,
+    "mm": 24.5,
+    "anim": "Idle",
+    "reachError": 0.0012,
+    "pelvisDrop": 0.0099,
+    "shift": -0.0215,
+    "maxShift": 0.0836
+   },
+   {
+    "t": 6.9009,
+    "side": 0,
+    "mm": 21.9,
+    "anim": "Sprint",
+    "reachError": 0,
+    "pelvisDrop": 0.0438,
+    "shift": -0.0171,
+    "maxShift": 0.0568
+   }
+  ]
+ },
+ "limits": {
+  "maxSharedPelvisDrop": 0.05,
+  "maxShift": 0.0836,
+  "maxPitchDeg": 20,
+  "maxRollDeg": 20
+ },
+ "probeFallback": [],
+ "probeMisses": []
+}

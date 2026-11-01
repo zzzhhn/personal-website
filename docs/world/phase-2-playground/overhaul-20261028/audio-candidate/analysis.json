@@ -1,0 +1,332 @@
+{
+  "provenance": {
+    "status": "candidate_not_integrated_not_listened",
+    "date": "2026-10-28",
+    "source": "Original note arrangement and procedural synthesis written for this project",
+    "external_audio_samples": [],
+    "external_models": [],
+    "paid_services": [],
+    "script": "tools/world/render-island-walk-candidate.py",
+    "script_sha256": "26161bf6546732833a41fe2436ea3b09d880abc3e28699fa331b4760c014971c",
+    "arr_spec": "docs/world/phase-2-playground/audio-overhaul-20261028.md",
+    "arr_spec_sha256": "24c608f6f261b974d452345fffe3a41dce33e03b52f1403100947a6041df261e",
+    "seed": 20261028,
+    "numpy_version": "2.4.6",
+    "ffmpeg_version": "ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers",
+    "third_party_music_used": false,
+    "rights_note": "No Club recording, licensed sample pack or model output was used. This records process provenance, not a legal originality certification."
+  },
+  "pcm": {
+    "rate": 24000,
+    "channels": 2,
+    "bits": 16,
+    "frames": 1152000
+  },
+  "meter": "4/4",
+  "bpm": 80,
+  "bars": 16,
+  "fixed_gain_db": 4.2,
+  "premaster": {
+    "integrated_lufs": -24.2,
+    "loudness_range_lu": 6.5,
+    "true_peak_dbtp": -11.7
+  },
+  "files": {
+    "mix": {
+      "file": "island-walk-01-mix.wav",
+      "frames": 1152000,
+      "duration_seconds": 48,
+      "bytes": 4608044,
+      "sha256": "7f2d671cb33b79c9b9042c91d8794eec7e2a0eea3efdc840018d4c24fd200b32",
+      "rms": 0.0664374,
+      "rms_dbfs": -23.5518,
+      "sample_peak_dbfs": -7.5373,
+      "crest_factor_db": 16.0145,
+      "clipped_samples": 0,
+      "integrated_lufs": -20.0,
+      "loudness_range_lu": 6.5,
+      "true_peak_dbtp": -7.5
+    },
+    "mallet": {
+      "file": "01-mallet.wav",
+      "frames": 1152000,
+      "duration_seconds": 48,
+      "bytes": 4608044,
+      "sha256": "da303601c6573cbc7fa57a9478e0ef9882564e083e77c4a63297ad871a6eeb31",
+      "rms": 0.0516622,
+      "rms_dbfs": -25.7365,
+      "sample_peak_dbfs": -9.2022,
+      "crest_factor_db": 16.5343,
+      "clipped_samples": 0,
+      "integrated_lufs": -20.6,
+      "loudness_range_lu": 5.8,
+      "true_peak_dbtp": -9.2
+    },
+    "pad": {
+      "file": "02-pad.wav",
+      "frames": 1152000,
+      "duration_seconds": 48,
+      "bytes": 4608044,
+      "sha256": "fa0348f50e60c46f266f3bdef4819a24e2804c610fd6433c11fa4d09bccc41dc",
+      "rms": 0.0327002,
+      "rms_dbfs": -29.709,
+      "sample_peak_dbfs": -15.4923,
+      "crest_factor_db": 14.2167,
+      "clipped_samples": 0,
+      "integrated_lufs": -25.2,
+      "loudness_range_lu": 2.1,
+      "true_peak_dbtp": -15.5
+    },
+    "bass": {
+      "file": "03-bass.wav",
+      "frames": 1152000,
+      "duration_seconds": 48,
+      "bytes": 4608044,
+      "sha256": "b8758f627a68b3a20aaa2725d4d0a6527927a92a061e41992c324555941a670b",
+      "rms": 0.0235228,
+      "rms_dbfs": -32.5702,
+      "sample_peak_dbfs": -14.2549,
+      "crest_factor_db": 18.3153,
+      "clipped_samples": 0,
+      "integrated_lufs": -26.1,
+      "loudness_range_lu": 4.7,
+      "true_peak_dbtp": -14.3
+    },
+    "wood": {
+      "file": "04-wood.wav",
+      "frames": 1152000,
+      "duration_seconds": 48,
+      "bytes": 4608044,
+      "sha256": "d0e26bea5cb65ea5c09b8df9292f0f350622451972dcac382d33682bf0c638f2",
+      "rms": 0.0017813,
+      "rms_dbfs": -54.9854,
+      "sample_peak_dbfs": -19.7977,
+      "crest_factor_db": 35.1876,
+      "clipped_samples": 0,
+      "integrated_lufs": -41.3,
+      "loudness_range_lu": 6.8,
+      "true_peak_dbtp": -19.8
+    }
+  },
+  "sections": [
+    {
+      "id": "A",
+      "start_seconds": 0.0,
+      "end_seconds": 12.0,
+      "width": 0.35,
+      "parts": {
+        "mix": {
+          "rms": 0.0680091,
+          "rms_dbfs": -23.3487,
+          "sample_peak_dbfs": -8.1512,
+          "crest_factor_db": 15.1974,
+          "clipped_samples": 0
+        },
+        "mallet": {
+          "rms": 0.0576066,
+          "rms_dbfs": -24.7906,
+          "sample_peak_dbfs": -9.4709,
+          "crest_factor_db": 15.3197,
+          "clipped_samples": 0
+        },
+        "pad": {
+          "rms": 0.0326925,
+          "rms_dbfs": -29.711,
+          "sample_peak_dbfs": -17.297,
+          "crest_factor_db": 12.414,
+          "clipped_samples": 0
+        },
+        "bass": {
+          "rms": 0.0,
+          "rms_dbfs": null,
+          "sample_peak_dbfs": null,
+          "crest_factor_db": null,
+          "clipped_samples": 0
+        },
+        "wood": {
+          "rms": 0.0,
+          "rms_dbfs": null,
+          "sample_peak_dbfs": null,
+          "crest_factor_db": null,
+          "clipped_samples": 0
+        }
+      }
+    },
+    {
+      "id": "B",
+      "start_seconds": 12.0,
+      "end_seconds": 24.0,
+      "width": 0.5,
+      "parts": {
+        "mix": {
+          "rms": 0.0772698,
+          "rms_dbfs": -22.2398,
+          "sample_peak_dbfs": -7.5373,
+          "crest_factor_db": 14.7025,
+          "clipped_samples": 0
+        },
+        "mallet": {
+          "rms": 0.0577002,
+          "rms_dbfs": -24.7765,
+          "sample_peak_dbfs": -9.2022,
+          "crest_factor_db": 15.5743,
+          "clipped_samples": 0
+        },
+        "pad": {
+          "rms": 0.0375687,
+          "rms_dbfs": -28.5035,
+          "sample_peak_dbfs": -15.6547,
+          "crest_factor_db": 12.8488,
+          "clipped_samples": 0
+        },
+        "bass": {
+          "rms": 0.0332775,
+          "rms_dbfs": -29.557,
+          "sample_peak_dbfs": -14.2549,
+          "crest_factor_db": 15.3021,
+          "clipped_samples": 0
+        },
+        "wood": {
+          "rms": 0.0035625,
+          "rms_dbfs": -48.9648,
+          "sample_peak_dbfs": -19.7977,
+          "crest_factor_db": 29.167,
+          "clipped_samples": 0
+        }
+      }
+    },
+    {
+      "id": "C",
+      "start_seconds": 24.0,
+      "end_seconds": 30.0,
+      "width": 0.15,
+      "parts": {
+        "mix": {
+          "rms": 0.0250163,
+          "rms_dbfs": -32.0356,
+          "sample_peak_dbfs": -12.5803,
+          "crest_factor_db": 19.4552,
+          "clipped_samples": 0
+        },
+        "mallet": {
+          "rms": 0.0250162,
+          "rms_dbfs": -32.0356,
+          "sample_peak_dbfs": -12.5792,
+          "crest_factor_db": 19.4564,
+          "clipped_samples": 0
+        },
+        "pad": {
+          "rms": 0.0,
+          "rms_dbfs": null,
+          "sample_peak_dbfs": null,
+          "crest_factor_db": null,
+          "clipped_samples": 0
+        },
+        "bass": {
+          "rms": 0.0,
+          "rms_dbfs": null,
+          "sample_peak_dbfs": null,
+          "crest_factor_db": null,
+          "clipped_samples": 0
+        },
+        "wood": {
+          "rms": 0.0,
+          "rms_dbfs": null,
+          "sample_peak_dbfs": null,
+          "crest_factor_db": null,
+          "clipped_samples": 0
+        }
+      }
+    },
+    {
+      "id": "D",
+      "start_seconds": 30.0,
+      "end_seconds": 42.0,
+      "width": 0.5,
+      "parts": {
+        "mix": {
+          "rms": 0.0781114,
+          "rms_dbfs": -22.1457,
+          "sample_peak_dbfs": -7.6702,
+          "crest_factor_db": 14.4755,
+          "clipped_samples": 0
+        },
+        "mallet": {
+          "rms": 0.0576644,
+          "rms_dbfs": -24.7818,
+          "sample_peak_dbfs": -9.2844,
+          "crest_factor_db": 15.4974,
+          "clipped_samples": 0
+        },
+        "pad": {
+          "rms": 0.0391869,
+          "rms_dbfs": -28.1372,
+          "sample_peak_dbfs": -15.4923,
+          "crest_factor_db": 12.6449,
+          "clipped_samples": 0
+        },
+        "bass": {
+          "rms": 0.0332551,
+          "rms_dbfs": -29.5628,
+          "sample_peak_dbfs": -14.2549,
+          "crest_factor_db": 15.308,
+          "clipped_samples": 0
+        },
+        "wood": {
+          "rms": 0.0,
+          "rms_dbfs": null,
+          "sample_peak_dbfs": null,
+          "crest_factor_db": null,
+          "clipped_samples": 0
+        }
+      }
+    },
+    {
+      "id": "E",
+      "start_seconds": 42.0,
+      "end_seconds": 48.0,
+      "width": 0.2,
+      "parts": {
+        "mix": {
+          "rms": 0.035931,
+          "rms_dbfs": -28.8906,
+          "sample_peak_dbfs": -11.688,
+          "crest_factor_db": 17.2026,
+          "clipped_samples": 0
+        },
+        "mallet": {
+          "rms": 0.0279291,
+          "rms_dbfs": -31.0789,
+          "sample_peak_dbfs": -12.3543,
+          "crest_factor_db": 18.7246,
+          "clipped_samples": 0
+        },
+        "pad": {
+          "rms": 0.0228642,
+          "rms_dbfs": -32.8169,
+          "sample_peak_dbfs": -17.4006,
+          "crest_factor_db": 15.4163,
+          "clipped_samples": 0
+        },
+        "bass": {
+          "rms": 0.0,
+          "rms_dbfs": null,
+          "sample_peak_dbfs": null,
+          "crest_factor_db": null,
+          "clipped_samples": 0
+        },
+        "wood": {
+          "rms": 0.0,
+          "rms_dbfs": null,
+          "sample_peak_dbfs": null,
+          "crest_factor_db": null,
+          "clipped_samples": 0
+        }
+      }
+    }
+  ],
+  "stem_sum_max_error_lsb": 4,
+  "last_bar_exact_silence": true,
+  "limiting_or_compression": false,
+  "analysis_note": "RMS and sample peak measured from read-back PCM; LUFS/LRA/true peak from FFmpeg ebur128. Crest factor is peak/RMS, not an undefined DR score."
+}

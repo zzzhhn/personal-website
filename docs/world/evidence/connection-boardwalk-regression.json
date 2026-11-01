@@ -1,0 +1,1576 @@
+{
+  "base": "http://127.0.0.1:4321",
+  "startedAt": "2026-10-21T03:16:03.764Z",
+  "finishedAt": "2026-10-21T03:16:13.972Z",
+  "command": "node scripts/world/connections.mjs --boardwalk-only",
+  "scope": "Only plaza-to-boardwalk traversal through its open entrance using real WASD events. One QA teleport establishes the plaza start. Camp and bridge checks are not rerun.",
+  "routeCorrection": "The initial attempt approached the side rail from the plaza (blocked at [51.829647,-41.347374], about 3.27m from the centreline = 2.85m rail offset + .08m half thickness + .34m capsule radius). This route enters at the open mouth [49,-46]; it does not jump or cross the barrier.",
+  "limitation": "This records automated browser traversal and cannot substitute for Bobby’s five-minute handling/playability sign-off.",
+  "checks": [
+    {
+      "check": "plaza-boardwalk: QA establishes start once",
+      "passed": true,
+      "evidence": [
+        50.8,
+        2.1,
+        -41.6
+      ]
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: walking physics stays active",
+      "passed": true,
+      "evidence": {
+        "paused": false,
+        "shot": null
+      }
+    },
+    {
+      "check": "plaza-boardwalk: endpoint grounded",
+      "passed": true,
+      "evidence": {
+        "position": [
+          61.909488677978516,
+          1.9588621854782104,
+          -40.96798324584961
+        ],
+        "grounded": true
+      }
+    },
+    {
+      "check": "plaza-boardwalk: continuous support across connection",
+      "passed": true,
+      "evidence": {
+        "groundedFraction": 1,
+        "maxUnsupportedMs": 0
+      }
+    },
+    {
+      "check": "plaza-boardwalk: meaningful keyboard traversal",
+      "passed": true,
+      "evidence": {
+        "start": {
+          "position": [
+            50.79999923706055,
+            1.9598424434661865,
+            -41.599998474121094
+          ],
+          "grounded": true
+        },
+        "end": {
+          "position": [
+            61.909488677978516,
+            1.9588621854782104,
+            -40.96798324584961
+          ],
+          "grounded": true
+        }
+      }
+    },
+    {
+      "check": "No browser page errors",
+      "passed": true,
+      "evidence": []
+    }
+  ],
+  "traversals": [
+    {
+      "id": "plaza-boardwalk",
+      "setupTeleport": true,
+      "requestedStart": [
+        50.8,
+        2.1,
+        -41.6
+      ],
+      "start": {
+        "position": [
+          50.79999923706055,
+          1.9598424434661865,
+          -41.599998474121094
+        ],
+        "grounded": true
+      },
+      "started": 1792552565713,
+      "trace": [
+        {
+          "elapsedMs": 1,
+          "position": [
+            50.79999923706055,
+            1.9598424434661865,
+            -41.599998474121094
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 205,
+          "position": [
+            50.61853790283203,
+            1.9593204259872437,
+            -41.62591552734375
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyA",
+            "KeyW"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 328,
+          "position": [
+            50.26647186279297,
+            1.9599345922470093,
+            -41.676456451416016
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyA",
+            "KeyW"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 456,
+          "position": [
+            49.92867660522461,
+            1.9597961902618408,
+            -41.72474670410156
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyA",
+            "KeyW"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 581,
+          "position": [
+            49.5848274230957,
+            1.9596593379974365,
+            -41.77386474609375
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyA",
+            "KeyW"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 708,
+          "position": [
+            49.19064712524414,
+            1.9603073596954346,
+            -41.83006286621094
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyA",
+            "KeyW"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 896,
+          "position": [
+            49.04617691040039,
+            1.959939956665039,
+            -41.84955596923828
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 1093,
+          "position": [
+            49.07209396362305,
+            1.9597200155258179,
+            -42.03095626831055
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyW"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 1217,
+          "position": [
+            49.11582565307617,
+            1.959598183631897,
+            -42.33711242675781
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyW"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 1340,
+          "position": [
+            49.17083740234375,
+            1.9594417810440063,
+            -42.72218704223633
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyW"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 1465,
+          "position": [
+            49.2188835144043,
+            1.9663825035095215,
+            -43.06122589111328
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyW"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 1589,
+          "position": [
+            49.27484893798828,
+            1.9589964151382446,
+            -43.45573425292969
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyW"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 1712,
+          "position": [
+            49.32400894165039,
+            1.9589552879333496,
+            -43.80022430419922
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyW"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 1839,
+          "position": [
+            49.38039016723633,
+            1.9589548110961914,
+            -44.19499969482422
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyW"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 1964,
+          "position": [
+            49.42976760864258,
+            1.9589542150497437,
+            -44.54064178466797
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyW"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 2090,
+          "position": [
+            49.30986022949219,
+            1.9589542150497437,
+            -44.88849639892578
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyW"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 2215,
+          "position": [
+            49.11863327026367,
+            1.9589542150497437,
+            -45.1707878112793
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyW"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 2339,
+          "position": [
+            49.06040573120117,
+            1.9589542150497437,
+            -45.533790588378906
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyW"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 2464,
+          "position": [
+            49.092899322509766,
+            1.9589542150497437,
+            -45.87329864501953
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyW"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 2649,
+          "position": [
+            49.11030960083008,
+            1.9589542150497437,
+            -46.01576614379883
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 2843,
+          "position": [
+            49.2916259765625,
+            1.9589483737945557,
+            -45.98986053466797
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 2968,
+          "position": [
+            49.59772872924805,
+            1.9589333534240723,
+            -45.946128845214844
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 3093,
+          "position": [
+            49.98271179199219,
+            1.958931565284729,
+            -45.89113235473633
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 3217,
+          "position": [
+            50.3265380859375,
+            1.958931565284729,
+            -45.84201431274414
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 3343,
+          "position": [
+            50.72114562988281,
+            1.9589314460754395,
+            -45.785640716552734
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 3468,
+          "position": [
+            51.0667610168457,
+            1.9589314460754395,
+            -45.736270904541016
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 3595,
+          "position": [
+            51.383827209472656,
+            1.9589314460754395,
+            -45.55131149291992
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 3722,
+          "position": [
+            51.63395309448242,
+            1.9589314460754395,
+            -45.254085540771484
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 3848,
+          "position": [
+            51.920013427734375,
+            1.9589314460754395,
+            -45.10837936401367
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 3973,
+          "position": [
+            52.30117416381836,
+            1.9589314460754395,
+            -45.03268051147461
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 4097,
+          "position": [
+            52.5665168762207,
+            1.9589314460754395,
+            -44.85203170776367
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 4220,
+          "position": [
+            52.81618118286133,
+            1.9589310884475708,
+            -44.55424118041992
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 4345,
+          "position": [
+            53.102169036865234,
+            1.9589310884475708,
+            -44.408447265625
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 4471,
+          "position": [
+            53.43467330932617,
+            1.9589310884475708,
+            -44.3406982421875
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 4658,
+          "position": [
+            53.62498092651367,
+            1.9588677883148193,
+            -44.30952453613281
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 4862,
+          "position": [
+            53.768672943115234,
+            1.9588627815246582,
+            -44.28899383544922
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 4987,
+          "position": [
+            54.065834045410156,
+            1.958862543106079,
+            -44.246543884277344
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 5112,
+          "position": [
+            54.44853973388672,
+            1.958862066268921,
+            -44.191871643066406
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 5240,
+          "position": [
+            54.83617401123047,
+            1.9599699974060059,
+            -44.13736343383789
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 5365,
+          "position": [
+            55.17942810058594,
+            1.9598239660263062,
+            -44.08847427368164
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 5490,
+          "position": [
+            55.57394790649414,
+            1.9596675634384155,
+            -44.032142639160156
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 5615,
+          "position": [
+            55.91960525512695,
+            1.9595307111740112,
+            -43.982765197753906
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 5739,
+          "position": [
+            56.31475067138672,
+            1.9593743085861206,
+            -43.926307678222656
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 5862,
+          "position": [
+            56.660526275634766,
+            1.9592374563217163,
+            -43.87690734863281
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 5986,
+          "position": [
+            57.00630187988281,
+            1.959100604057312,
+            -43.82750701904297
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 6110,
+          "position": [
+            57.323448181152344,
+            1.9589611291885376,
+            -43.64250564575195
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 6234,
+          "position": [
+            57.54319381713867,
+            1.958935260772705,
+            -43.38405990600586
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 6359,
+          "position": [
+            57.85965347290039,
+            1.9589319229125977,
+            -43.199562072753906
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 6483,
+          "position": [
+            58.19217300415039,
+            1.9589314460754395,
+            -43.13182830810547
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 6608,
+          "position": [
+            58.48951721191406,
+            1.95893132686615,
+            -42.915645599365234
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 6733,
+          "position": [
+            58.706546783447266,
+            1.95893132686615,
+            -42.652503967285156
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 6861,
+          "position": [
+            59.02250671386719,
+            1.958904504776001,
+            -42.46698760986328
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 6987,
+          "position": [
+            59.35494613647461,
+            1.958870768547058,
+            -42.39909744262695
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 7112,
+          "position": [
+            59.668922424316406,
+            1.9588631391525269,
+            -42.210445404052734
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 7239,
+          "position": [
+            59.918582916259766,
+            1.9588626623153687,
+            -41.91265106201172
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 7365,
+          "position": [
+            60.20457077026367,
+            1.9588624238967896,
+            -41.7668571472168
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 7490,
+          "position": [
+            60.585716247558594,
+            1.9588624238967896,
+            -41.69114303588867
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 7616,
+          "position": [
+            60.85105895996094,
+            1.9588624238967896,
+            -41.51049041748047
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 7740,
+          "position": [
+            61.10072326660156,
+            1.9588621854782104,
+            -41.21269989013672
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 7866,
+          "position": [
+            61.38671112060547,
+            1.9588621854782104,
+            -41.0669059753418
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 7991,
+          "position": [
+            61.76785659790039,
+            1.9588621854782104,
+            -40.99119186401367
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [
+            "KeyD",
+            "KeyS"
+          ],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 8180,
+          "position": [
+            61.909488677978516,
+            1.9588621854782104,
+            -40.96798324584961
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [],
+          "surfaceY": 1.14
+        },
+        {
+          "elapsedMs": 8259,
+          "position": [
+            61.909488677978516,
+            1.9588621854782104,
+            -40.96798324584961
+          ],
+          "grounded": true,
+          "activeVehicle": null,
+          "keys": [],
+          "surfaceY": 1.14
+        }
+      ],
+      "checkpoints": [
+        {
+          "label": "approach",
+          "requested": [
+            49,
+            0,
+            -41.75
+          ],
+          "actual": [
+            49.04617691040039,
+            1.9598690271377563,
+            -41.84955596923828
+          ],
+          "screenshot": "connection-plaza-boardwalk-approach.png"
+        },
+        {
+          "label": "entry-mouth",
+          "requested": [
+            49,
+            0,
+            -46
+          ],
+          "actual": [
+            49.11030960083008,
+            1.9589542150497437,
+            -46.01576614379883
+          ],
+          "screenshot": "connection-plaza-boardwalk-entry-mouth.png"
+        },
+        {
+          "label": "seam",
+          "requested": [
+            53.5,
+            0,
+            -44.2
+          ],
+          "actual": [
+            53.62498092651367,
+            1.9588630199432373,
+            -44.30952453613281
+          ],
+          "screenshot": "connection-plaza-boardwalk-seam.png"
+        },
+        {
+          "label": "end",
+          "requested": [
+            62,
+            0,
+            -40.8
+          ],
+          "actual": [
+            61.909488677978516,
+            1.9588621854782104,
+            -40.96798324584961
+          ],
+          "screenshot": "connection-plaza-boardwalk-end.png"
+        }
+      ],
+      "end": {
+        "position": [
+          61.909488677978516,
+          1.9588621854782104,
+          -40.96798324584961
+        ],
+        "grounded": true
+      },
+      "groundedFraction": 1,
+      "maxUnsupportedMs": 0,
+      "passed": true
+    }
+  ],
+  "errors": []
+}

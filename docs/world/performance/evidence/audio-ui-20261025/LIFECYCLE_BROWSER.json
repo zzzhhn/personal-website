@@ -1,0 +1,98 @@
+[
+  {
+    "name": "running",
+    "audio": {
+      "owners": 1,
+      "started": true,
+      "timer": true,
+      "subscribed": true,
+      "state": "running",
+      "transitioning": false,
+      "voices": 10,
+      "ticks": 16,
+      "muted": false
+    },
+    "rms": 0.012459993933152745
+  },
+  {
+    "name": "paused",
+    "ms": 2001.9000000953674,
+    "ticks": 0,
+    "audioTime": 0,
+    "timer": false,
+    "state": "suspended"
+  },
+  {
+    "name": "resumed",
+    "audio": {
+      "owners": 1,
+      "started": true,
+      "timer": true,
+      "subscribed": true,
+      "state": "running",
+      "transitioning": false,
+      "voices": 10,
+      "ticks": 28,
+      "muted": false
+    }
+  },
+  {
+    "name": "first-release",
+    "subscriptions": 0,
+    "listeners": 0,
+    "remaining": []
+  },
+  {
+    "name": "five-owner-cycles",
+    "closed": 5,
+    "audio": {
+      "owners": 0,
+      "started": false,
+      "timer": false,
+      "subscribed": false,
+      "state": "absent",
+      "transitioning": false,
+      "voices": 0,
+      "ticks": 48,
+      "muted": false
+    },
+    "subscriptions": 0,
+    "listeners": 0
+  },
+  {
+    "name": "ui-no-pad",
+    "ui": {
+      "consumers": 2,
+      "framePending": false,
+      "listening": true,
+      "connected": false,
+      "samples": 0
+    }
+  },
+  {
+    "name": "ui-simulated-pad",
+    "ui": {
+      "consumers": 2,
+      "framePending": true,
+      "listening": true,
+      "connected": true,
+      "samples": 7
+    }
+  },
+  {
+    "name": "ui-released",
+    "ui": {
+      "consumers": 0,
+      "framePending": false,
+      "listening": false,
+      "connected": false,
+      "samples": 7
+    },
+    "listeners": 0
+  },
+  {
+    "name": "complete",
+    "ok": true,
+    "hidden": false
+  }
+]

@@ -1,0 +1,179 @@
+{
+  "frames": 40,
+  "duration": 0.6666666666666666,
+  "sourceDuration": 0.7,
+  "similarityDuration": 0.6684727547682863,
+  "heightScale": 0.9119506609540846,
+  "targetHipHeight": 0.6560000628232956,
+  "sourceHipHeight": 0.719337230521865,
+  "authorRetime": 1.0027091321524295,
+  "contactCorrectionMaxM": {
+    "L": 0.07878030225730627,
+    "R": 0.07469082715817234
+  },
+  "swingGroundLiftMaxM": {
+    "L": 0.00014522671699523926,
+    "R": 2.308189868927002e-05
+  },
+  "pelvisDropMaxM": 0,
+  "ikOverstretchMaxM": 0,
+  "status": "review_required_not_runtime_candidate",
+  "source": {
+    "sourceHipHeight": 0.719337230521865,
+    "sourceStaticFramesZeroBasedInclusive": [
+      88,
+      111
+    ],
+    "source": "CMU mocap 143_03.amc",
+    "sourceFiles": {
+      "143.asf": "6d7207da3bb9eceeaa32f23fb641b69f5836d11242b00c052e7d64f0cbe20a35",
+      "143_03.amc": "0b75ae30f4e40d7199060a3cdd0d8395a938cc5c6ee9206872dbe8074c45bc76"
+    },
+    "license": "CMU mocap free use; acknowledge CMU and NSF EIA-0196217",
+    "framesZeroBasedInclusive": [
+      112,
+      196
+    ],
+    "sourceFps": 120,
+    "contactIntervals": {
+      "L": [
+        [
+          112,
+          155
+        ],
+        [
+          190,
+          196
+        ]
+      ],
+      "R": [
+        [
+          112,
+          129
+        ],
+        [
+          163,
+          177
+        ]
+      ]
+    },
+    "contactRule": "Fixed FK toe velocity, ankle/toe height and first-step events before target baking; no target QA fitting."
+  },
+  "oldClipCount": 15,
+  "lockedHashPreserved": true,
+  "lockedHashes": {
+    "mesh": "ff7c601f22cb00141fb083d8f2df8cdc8cde25aa93300649a7f29d57e1d9807d",
+    "rest": "5dd44962e716bdc1e04077ce170404a75f265cdbace55d53c69c42b425fa6c8a",
+    "clips": {
+      "Idle": "871a7da26c44bb327706216168168c65ef44276e751a14c0e55f0f1dd0b3e319",
+      "IdleLook": "2eb5d331a54bbf6a29ec00b67c25d697c0d02affe448f5ae193844b18f6ae5b9",
+      "JumpAir": "fc47a833f1c0262d7141dd53e192970eebbb9f3d0927613afe0ad709c9945b65",
+      "JumpStart": "2189ea09f955fc72896755534cd3d151ceb15b294b9054808878514a7a836b09",
+      "Land": "4755fb576a06ddf76c34c8d23115d00add8307712c301f3be122f44e8021e484",
+      "Run": "c5cee29434743dfce07636de1ce91e1e929e70acec48c8191b1b69b3ad8ab483",
+      "RunJumpAir": "85cbf70e50cd84dc9a76a618f8f8f06e5d7c2ad6da0e8b2433be807f7066792c",
+      "RunJumpStart": "89580baac7a94c75e4b70b8343bcece4c25de5dcfe12a65beadb7ab8a1f2e684",
+      "SitDown": "1eac57fc87c0a2053a07e1e8f3a53ee2d51c9d177daae3099a6744ee41abd66e",
+      "SitIdle": "1d95b117c4717af74a940aa5c27d0b17f389c5a15bb74ec73d515a061ef9d54d",
+      "Sprint": "03eef799c5fb63fe408a0d949b126b4434742e127cc3bb75ecab1323897343f2",
+      "StandUp": "1541b6f484dd2eb08394638f4add9c11f09aff81c81cb08e65725c3bca36abeb",
+      "TurnL": "a3348c44a5120155a3a1fa932c51c39b66226217d443252c378e0edc842df282",
+      "TurnR": "b22f5c60c04f2941eb44b4758be157e7111c1890efdc00375487d22d7e7cea7a",
+      "Walk": "bde1da41f1c53ff4174101e9b33269b64e0c03878a1e83ee19b39146f8d5c745"
+    }
+  },
+  "reach": {
+    "scope": "Necessary reach bound only; not A3/A6 acceptance. Exact existing response12 used; no physics edits.",
+    "src": "/Users/bobby/Desktop/3D-personal-world/evidence/start-run/CMU-similarity.blend",
+    "fastestPermittedRate": 1.2,
+    "pelvisDropAssumed": 0.05,
+    "legLengths": {
+      "L": 0.5755007266998291,
+      "R": 0.5755007266998291
+    },
+    "firstSupportWorst": {
+      "frame": 20,
+      "sourceFrame": 154.0,
+      "side": "L",
+      "physicalSeconds": 0.2777777777777778,
+      "bodyDistance": 0.7107021980041758,
+      "similarityDistance": 0.23719632908940633,
+      "strideWarpAdditional": 0.4735058689147694,
+      "requiredLegAfterFull5cmDrop": 0.8160735733954998,
+      "legLimit": 0.57262322306633,
+      "unreachableBy": 0.24345035032916984
+    },
+    "allStanceWorst": {
+      "frame": 20,
+      "sourceFrame": 154.0,
+      "side": "L",
+      "physicalSeconds": 0.2777777777777778,
+      "bodyDistance": 0.7107021980041758,
+      "similarityDistance": 0.23719632908940633,
+      "strideWarpAdditional": 0.4735058689147694,
+      "requiredLegAfterFull5cmDrop": 0.8160735733954998,
+      "legLimit": 0.57262322306633,
+      "unreachableBy": 0.24345035032916984
+    }
+  },
+  "evidence": "/Users/bobby/Desktop/3D-personal-world/evidence/start-run",
+  "validation": {
+    "nativeAndOldContentHash": "pass",
+    "sourceFKAndPoseContactSheet": "reviewed",
+    "normalSpeedVideo": "rendered; six pose samples inspected, no claim of user artistic acceptance",
+    "freshDraco": "not run; no export or production change",
+    "newClipA6": "not run; geometric/runtime feasibility failed first",
+    "runtimeA3": "not run; candidate not integrated; prior full startup181.9mm failure remains",
+    "runtimeA6": "not run for new clip"
+  },
+  "productionUnchanged": {
+    "tools/world/guide/blend/G24.blend": "613472c1db277f81a29f3bc1e86f86a9bd217e4e2e11252fdd340d75ebe5b482",
+    "public/assets/world/guide/G24.glb": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0"
+  },
+  "reviewRequest": {
+    "status": "not delivered; parent reports WorkBuddy global quota exhausted and Send disabled",
+    "options": [
+      "Controlled real-start timing retarget; report source/similarity/retime separately, normal-speed visual review",
+      "Coordinate physical acceleration with measured startup timing; requires frozen-owner scope decision"
+    ],
+    "notAuthorizedByThisReport": true
+  },
+  "laterIntegrationReadOnly": {
+    "report": "/Users/bobby/Desktop/3D-personal-world/evidence/integ/motion-followup/motion/report-integ-motion.json",
+    "sha256": "2c3a5a24310801e63e9b292a5d16c6a628f2594c4d390e5ee78057c36790affa",
+    "frames": 1178,
+    "errors": [],
+    "slipByAnim": {
+      "Idle": {
+        "n": 547,
+        "max_mm": 73.7
+      },
+      "Idle>TurnL": {
+        "n": 39,
+        "max_mm": 9.8
+      },
+      "Idle>Run": {
+        "n": 15,
+        "max_mm": 183.8
+      },
+      "Sprint>Idle>Run": {
+        "n": 3,
+        "max_mm": 58.6
+      },
+      "Run>Idle": {
+        "n": 6,
+        "max_mm": 37.7
+      },
+      "Run": {
+        "n": 27,
+        "max_mm": 79.6
+      },
+      "Land>Idle": {
+        "n": 144,
+        "max_mm": 105.5
+      }
+    },
+    "poseJumpSwitchMax_mm": 211.1,
+    "scope": "Full sequence, candidate not mounted; generic buckets not steady-only acceptance"
+  }
+}

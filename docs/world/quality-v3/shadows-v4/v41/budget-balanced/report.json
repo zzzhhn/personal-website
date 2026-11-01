@@ -1,0 +1,1851 @@
+{
+ "base": "http://127.0.0.1:4322",
+ "startedAt": "2026-10-22T19:48:37.867Z",
+ "machine": "Apple M5 Pro, headless Chrome, ANGLE Metal (no M1 claim)",
+ "viewport": [
+  1920,
+  1080
+ ],
+ "sunShadowGroundDeg": -35.83765295427829,
+ "sections": {
+  "perfgrid": {
+   "budget": {
+    "calls": 300,
+    "triangles": 500000
+   },
+   "views": [
+    {
+     "dist": 10,
+     "yaw": 0,
+     "pitch": 0.3,
+     "actual": 9.63,
+     "calls": 182,
+     "triangles": 447571,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 10,
+     "yaw": 1.57,
+     "pitch": 0.3,
+     "actual": 9.63,
+     "calls": 217,
+     "triangles": 497784,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 10,
+     "yaw": 3.14,
+     "pitch": 0.3,
+     "actual": 9.63,
+     "calls": 254,
+     "triangles": 470294,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 10,
+     "yaw": 4.71,
+     "pitch": 0.3,
+     "actual": 9.63,
+     "calls": 142,
+     "triangles": 419117,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 10,
+     "yaw": 6.28,
+     "pitch": 0.79,
+     "actual": 9.63,
+     "calls": 175,
+     "triangles": 442238,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 10,
+     "yaw": 7.85,
+     "pitch": 0.79,
+     "actual": 9.63,
+     "calls": 201,
+     "triangles": 493616,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 10,
+     "yaw": 9.42,
+     "pitch": 0.79,
+     "actual": 9.63,
+     "calls": 195,
+     "triangles": 467100,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 10,
+     "yaw": 11,
+     "pitch": 0.79,
+     "actual": 9.63,
+     "calls": 138,
+     "triangles": 412601,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 10,
+     "yaw": 6.28,
+     "pitch": 1.2,
+     "actual": 9.63,
+     "calls": 145,
+     "triangles": 425432,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 10,
+     "yaw": 7.85,
+     "pitch": 1.2,
+     "actual": 9.63,
+     "calls": 159,
+     "triangles": 432769,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 10,
+     "yaw": 9.42,
+     "pitch": 1.2,
+     "actual": 9.63,
+     "calls": 154,
+     "triangles": 430306,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 10,
+     "yaw": 11,
+     "pitch": 1.2,
+     "actual": 9.63,
+     "calls": 128,
+     "triangles": 404809,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 30,
+     "yaw": 6.28,
+     "pitch": 0.3,
+     "actual": 28.93,
+     "calls": 247,
+     "triangles": 505008,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 30,
+     "yaw": 7.85,
+     "pitch": 0.3,
+     "actual": 28.93,
+     "calls": 282,
+     "triangles": 517688,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 30,
+     "yaw": 9.42,
+     "pitch": 0.3,
+     "actual": 28.93,
+     "calls": 314,
+     "triangles": 504522,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 30,
+     "yaw": 11,
+     "pitch": 0.3,
+     "actual": 28.93,
+     "calls": 218,
+     "triangles": 461680,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 30,
+     "yaw": 6.28,
+     "pitch": 0.79,
+     "actual": 28.93,
+     "calls": 228,
+     "triangles": 499077,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 30,
+     "yaw": 7.85,
+     "pitch": 0.79,
+     "actual": 28.93,
+     "calls": 266,
+     "triangles": 517382,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 30,
+     "yaw": 9.42,
+     "pitch": 0.79,
+     "actual": 28.93,
+     "calls": 268,
+     "triangles": 502404,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 30,
+     "yaw": 11,
+     "pitch": 0.79,
+     "actual": 28.93,
+     "calls": 194,
+     "triangles": 436459,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 30,
+     "yaw": 6.28,
+     "pitch": 1.2,
+     "actual": 28.93,
+     "calls": 228,
+     "triangles": 498253,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 30,
+     "yaw": 7.85,
+     "pitch": 1.2,
+     "actual": 28.93,
+     "calls": 241,
+     "triangles": 501062,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 30,
+     "yaw": 9.42,
+     "pitch": 1.2,
+     "actual": 28.93,
+     "calls": 235,
+     "triangles": 498902,
+     "fireFrames": 20,
+     "frames": 20
+    },
+    {
+     "dist": 30,
+     "yaw": 11,
+     "pitch": 1.2,
+     "actual": 28.93,
+     "calls": 192,
+     "triangles": 436801,
+     "fireFrames": 20,
+     "frames": 20
+    }
+   ],
+   "walk": [
+    {
+     "target": [
+      -46.3,
+      17
+     ],
+     "at": [
+      -46.38542175292969,
+      5.6336236000061035,
+      17.090129852294922
+     ],
+     "reached": true,
+     "seconds": 4.788
+    },
+    {
+     "target": [
+      -48,
+      30
+     ],
+     "at": [
+      -48.1018180847168,
+      5.630320072174072,
+      29.877676010131836
+     ],
+     "reached": true,
+     "seconds": 3.432
+    },
+    {
+     "target": [
+      -42,
+      33.4
+     ],
+     "at": [
+      -42.094058990478516,
+      5.6208696365356445,
+      33.31889724731445
+     ],
+     "reached": true,
+     "seconds": 2.104
+    }
+   ],
+   "peak": {
+    "calls": 314,
+    "triangles": 517688,
+    "worst": {
+     "dist": 30,
+     "yaw": 9.42,
+     "pitch": 0.3,
+     "actual": 28.93,
+     "calls": 314,
+     "triangles": 504522,
+     "fireFrames": 20,
+     "frames": 20
+    }
+   },
+   "worstBreakdown": [
+    {
+     "pass": "main",
+     "name": "world-sea-gerstner",
+     "calls": 1,
+     "triangles": 152352
+    },
+    {
+     "pass": "main",
+     "name": "island-terrain-v3-mesh",
+     "calls": 1,
+     "triangles": 109358
+    },
+    {
+     "pass": "fire-cube",
+     "name": "world-fire-static-casters",
+     "calls": 6,
+     "triangles": 9216
+    },
+    {
+     "pass": "main",
+     "name": "ground-grass-blades",
+     "calls": 1,
+     "triangles": 7155
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G20-crown_1",
+     "calls": 1,
+     "triangles": 6824
+    },
+    {
+     "pass": "sun-c0",
+     "name": "camp-mesh-G16-crown_1#sun0",
+     "calls": 1,
+     "triangles": 6468
+    },
+    {
+     "pass": "sun-c1",
+     "name": "camp-mesh-G16-crown_1#sun1",
+     "calls": 1,
+     "triangles": 6468
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G16-crown_1",
+     "calls": 1,
+     "triangles": 6468
+    },
+    {
+     "pass": "sun-c0",
+     "name": "camp-mesh-G16-crown_3#sun0",
+     "calls": 1,
+     "triangles": 5712
+    },
+    {
+     "pass": "sun-c1",
+     "name": "camp-mesh-G16-crown_3#sun1",
+     "calls": 1,
+     "triangles": 5712
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G16-crown_3",
+     "calls": 1,
+     "triangles": 5712
+    },
+    {
+     "pass": "sun-c2",
+     "name": "camp-mesh-C04-C04_mesh#sun2",
+     "calls": 1,
+     "triangles": 4940
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C04-C04_mesh",
+     "calls": 1,
+     "triangles": 4940
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G19-crown_1",
+     "calls": 1,
+     "triangles": 4560
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G19-crown_3",
+     "calls": 1,
+     "triangles": 4200
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G20-crown_3",
+     "calls": 1,
+     "triangles": 4152
+    },
+    {
+     "pass": "sun-c2",
+     "name": "camp-mesh-C03-C03_mesh#sun2",
+     "calls": 1,
+     "triangles": 4040
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C03-C03_mesh",
+     "calls": 1,
+     "triangles": 4040
+    },
+    {
+     "pass": "sun-c0",
+     "name": "camp-mesh-G16-crown_2#sun0",
+     "calls": 1,
+     "triangles": 3780
+    },
+    {
+     "pass": "sun-c1",
+     "name": "camp-mesh-G16-crown_2#sun1",
+     "calls": 1,
+     "triangles": 3780
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G16-crown_2",
+     "calls": 1,
+     "triangles": 3780
+    },
+    {
+     "pass": "sun-c1",
+     "name": "camp-mesh-G19-crown_1#sun1",
+     "calls": 1,
+     "triangles": 3648
+    },
+    {
+     "pass": "sun-c0",
+     "name": "camp-mesh-G20-crown_1#sun0",
+     "calls": 1,
+     "triangles": 3412
+    },
+    {
+     "pass": "sun-c1",
+     "name": "camp-mesh-G20-crown_1#sun1",
+     "calls": 1,
+     "triangles": 3412
+    },
+    {
+     "pass": "sun-c1",
+     "name": "camp-mesh-G19-crown_3#sun1",
+     "calls": 1,
+     "triangles": 3360
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G20-crown_2",
+     "calls": 1,
+     "triangles": 2808
+    },
+    {
+     "pass": "main",
+     "name": "world-greybox-environment",
+     "calls": 5,
+     "triangles": 2675
+    },
+    {
+     "pass": "sun-c2",
+     "name": "sun-chunk-far--1,0,0",
+     "calls": 1,
+     "triangles": 2653
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G18-crown_3",
+     "calls": 1,
+     "triangles": 2646
+    },
+    {
+     "pass": "sun-c1",
+     "name": "camp-mesh-C04-C04_mesh#sun1",
+     "calls": 1,
+     "triangles": 2470
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G18-crown_1",
+     "calls": 1,
+     "triangles": 2250
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G21-rock_1",
+     "calls": 1,
+     "triangles": 2216
+    },
+    {
+     "pass": "sun-c0",
+     "name": "camp-mesh-G17-crown_1#sun0",
+     "calls": 1,
+     "triangles": 2172
+    },
+    {
+     "pass": "sun-c1",
+     "name": "camp-mesh-G17-crown_1#sun1",
+     "calls": 1,
+     "triangles": 2172
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G17-crown_1",
+     "calls": 1,
+     "triangles": 2172
+    },
+    {
+     "pass": "sun-c0",
+     "name": "camp-mesh-G17-crown_3#sun0",
+     "calls": 1,
+     "triangles": 2142
+    },
+    {
+     "pass": "sun-c1",
+     "name": "camp-mesh-G17-crown_3#sun1",
+     "calls": 1,
+     "triangles": 2142
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G17-crown_3",
+     "calls": 1,
+     "triangles": 2142
+    },
+    {
+     "pass": "sun-c0",
+     "name": "camp-mesh-G20-crown_3#sun0",
+     "calls": 1,
+     "triangles": 2076
+    },
+    {
+     "pass": "sun-c1",
+     "name": "camp-mesh-G20-crown_3#sun1",
+     "calls": 1,
+     "triangles": 2076
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G18-crown_2",
+     "calls": 1,
+     "triangles": 1988
+    },
+    {
+     "pass": "sun-c2",
+     "name": "sun-chunk-far--2,0,2",
+     "calls": 1,
+     "triangles": 1848
+    },
+    {
+     "pass": "main",
+     "name": "ground-pebbles",
+     "calls": 1,
+     "triangles": 1800
+    },
+    {
+     "pass": "sun-c2",
+     "name": "sun-chunk-far--1,1,0",
+     "calls": 1,
+     "triangles": 1782
+    },
+    {
+     "pass": "sun-c2",
+     "name": "sun-chunk-far--2,1,0",
+     "calls": 1,
+     "triangles": 1758
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G22-rock_1",
+     "calls": 1,
+     "triangles": 1659
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G21-rock_2",
+     "calls": 1,
+     "triangles": 1624
+    },
+    {
+     "pass": "main",
+     "name": "camp-placeholder-C11-C12-C13-C14-C15",
+     "calls": 2,
+     "triangles": 1620
+    },
+    {
+     "pass": "sun-c0",
+     "name": "camp-mesh-G17-crown_2#sun0",
+     "calls": 1,
+     "triangles": 1542
+    },
+    {
+     "pass": "sun-c1",
+     "name": "camp-mesh-G17-crown_2#sun1",
+     "calls": 1,
+     "triangles": 1542
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G17-crown_2",
+     "calls": 1,
+     "triangles": 1542
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G19-crown_2",
+     "calls": 1,
+     "triangles": 1500
+    },
+    {
+     "pass": "sun-c0",
+     "name": "sun-chunk--8,5,0",
+     "calls": 1,
+     "triangles": 1492
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--8,5,0",
+     "calls": 1,
+     "triangles": 1492
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G23-rock_1",
+     "calls": 1,
+     "triangles": 1431
+    },
+    {
+     "pass": "sun-c2",
+     "name": "sun-chunk-far--2,0,0",
+     "calls": 1,
+     "triangles": 1413
+    },
+    {
+     "pass": "sun-c0",
+     "name": "camp-mesh-G20-crown_2#sun0",
+     "calls": 1,
+     "triangles": 1404
+    },
+    {
+     "pass": "sun-c1",
+     "name": "camp-mesh-G20-crown_2#sun1",
+     "calls": 1,
+     "triangles": 1404
+    },
+    {
+     "pass": "sun-c0",
+     "name": "camp-mesh-G16-trunk#sun0",
+     "calls": 1,
+     "triangles": 1308
+    },
+    {
+     "pass": "sun-c1",
+     "name": "camp-mesh-G16-trunk#sun1",
+     "calls": 1,
+     "triangles": 1308
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G16-trunk",
+     "calls": 1,
+     "triangles": 1308
+    },
+    {
+     "pass": "sun-c1",
+     "name": "camp-mesh-G19-crown_2#sun1",
+     "calls": 1,
+     "triangles": 1200
+    },
+    {
+     "pass": "sun-c0",
+     "name": "sun-chunk--7,5,2",
+     "calls": 1,
+     "triangles": 1192
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--7,5,2",
+     "calls": 1,
+     "triangles": 1192
+    },
+    {
+     "pass": "sun-c2",
+     "name": "sun-chunk-far-0,-2,0",
+     "calls": 1,
+     "triangles": 1174
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C09-C09_trophies_2",
+     "calls": 1,
+     "triangles": 1144
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G23-rock_2",
+     "calls": 1,
+     "triangles": 1125
+    },
+    {
+     "pass": "sun-c2",
+     "name": "sun-chunk-far-0,0,0",
+     "calls": 1,
+     "triangles": 1074
+    },
+    {
+     "pass": "fire-cube",
+     "name": "G24_mesh_5",
+     "calls": 1,
+     "triangles": 1022
+    },
+    {
+     "pass": "sun-c0",
+     "name": "G24_mesh_5",
+     "calls": 1,
+     "triangles": 1022
+    },
+    {
+     "pass": "main",
+     "name": "G24_mesh_5",
+     "calls": 1,
+     "triangles": 1022
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--3,5,0",
+     "calls": 1,
+     "triangles": 996
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk-3,2,0",
+     "calls": 1,
+     "triangles": 996
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G22-rock_2",
+     "calls": 1,
+     "triangles": 973
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--4,0,0",
+     "calls": 1,
+     "triangles": 947
+    },
+    {
+     "pass": "sun-c0",
+     "name": "camp-mesh-G19-crown_1#sun0",
+     "calls": 1,
+     "triangles": 912
+    },
+    {
+     "pass": "main",
+     "name": "(unnamed)",
+     "calls": 36,
+     "triangles": 912
+    },
+    {
+     "pass": "sun-c0",
+     "name": "sun-chunk--4,1,0",
+     "calls": 1,
+     "triangles": 872
+    },
+    {
+     "pass": "sun-c0",
+     "name": "sun-chunk--7,6,0",
+     "calls": 1,
+     "triangles": 872
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--4,1,0",
+     "calls": 1,
+     "triangles": 872
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--7,6,0",
+     "calls": 1,
+     "triangles": 872
+    },
+    {
+     "pass": "main",
+     "name": "world-solid-visuals",
+     "calls": 1,
+     "triangles": 852
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G18-trunk",
+     "calls": 1,
+     "triangles": 850
+    },
+    {
+     "pass": "sun-c0",
+     "name": "camp-mesh-G19-crown_3#sun0",
+     "calls": 1,
+     "triangles": 840
+    },
+    {
+     "pass": "sun-c0",
+     "name": "sun-chunk--4,5,0",
+     "calls": 1,
+     "triangles": 820
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--4,5,0",
+     "calls": 1,
+     "triangles": 820
+    },
+    {
+     "pass": "sun-c0",
+     "name": "sun-chunk--6,3,2",
+     "calls": 1,
+     "triangles": 816
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--6,3,2",
+     "calls": 1,
+     "triangles": 816
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--5,1,2",
+     "calls": 1,
+     "triangles": 800
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C04-C04_mesh_4",
+     "calls": 1,
+     "triangles": 768
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C06-C06_mesh",
+     "calls": 1,
+     "triangles": 760
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G21-rock_3",
+     "calls": 1,
+     "triangles": 712
+    },
+    {
+     "pass": "main",
+     "name": "camp-C02-flagstones",
+     "calls": 1,
+     "triangles": 672
+    },
+    {
+     "pass": "fire-cube",
+     "name": "G24_mesh_6",
+     "calls": 1,
+     "triangles": 656
+    },
+    {
+     "pass": "sun-c0",
+     "name": "G24_mesh_6",
+     "calls": 1,
+     "triangles": 656
+    },
+    {
+     "pass": "main",
+     "name": "G24_mesh_6",
+     "calls": 1,
+     "triangles": 656
+    },
+    {
+     "pass": "sun-c0",
+     "name": "sun-chunk--3,1,0",
+     "calls": 1,
+     "triangles": 632
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--3,1,0",
+     "calls": 1,
+     "triangles": 632
+    },
+    {
+     "pass": "sun-c2",
+     "name": "camp-mesh-G19-crown_2#sun2",
+     "calls": 1,
+     "triangles": 600
+    },
+    {
+     "pass": "sun-c2",
+     "name": "camp-mesh-G20-crown_1#sun2",
+     "calls": 1,
+     "triangles": 594
+    },
+    {
+     "pass": "sun-c0",
+     "name": "camp-mesh-G17-trunk#sun0",
+     "calls": 1,
+     "triangles": 576
+    },
+    {
+     "pass": "sun-c1",
+     "name": "camp-mesh-G17-trunk#sun1",
+     "calls": 1,
+     "triangles": 576
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C04-C04_mesh_1",
+     "calls": 1,
+     "triangles": 576
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G17-trunk",
+     "calls": 1,
+     "triangles": 576
+    },
+    {
+     "pass": "sun-c2",
+     "name": "sun-chunk-far--3,0,0",
+     "calls": 1,
+     "triangles": 547
+    },
+    {
+     "pass": "main",
+     "name": "world-surface-visuals",
+     "calls": 1,
+     "triangles": 530
+    },
+    {
+     "pass": "sun-c2",
+     "name": "sun-chunk-far--3,1,0",
+     "calls": 1,
+     "triangles": 519
+    },
+    {
+     "pass": "sun-c1",
+     "name": "C10_pole_4",
+     "calls": 1,
+     "triangles": 512
+    },
+    {
+     "pass": "sun-c2",
+     "name": "C10_pole_4",
+     "calls": 1,
+     "triangles": 512
+    },
+    {
+     "pass": "main",
+     "name": "C10_pole_4",
+     "calls": 1,
+     "triangles": 512
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C07-C07_desk_2",
+     "calls": 1,
+     "triangles": 504
+    },
+    {
+     "pass": "fire-cube",
+     "name": "G24_mesh_3",
+     "calls": 1,
+     "triangles": 494
+    },
+    {
+     "pass": "sun-c0",
+     "name": "G24_mesh_3",
+     "calls": 1,
+     "triangles": 494
+    },
+    {
+     "pass": "main",
+     "name": "G24_mesh_3",
+     "calls": 1,
+     "triangles": 494
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G23-rock_3",
+     "calls": 1,
+     "triangles": 468
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G22-rock_4",
+     "calls": 1,
+     "triangles": 448
+    },
+    {
+     "pass": "sun-c2",
+     "name": "sun-chunk-far--2,1,2",
+     "calls": 1,
+     "triangles": 424
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G21-rock_4",
+     "calls": 1,
+     "triangles": 408
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G22-rock_3",
+     "calls": 1,
+     "triangles": 392
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C03-C03_mesh_4",
+     "calls": 1,
+     "triangles": 384
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--5,6,0",
+     "calls": 1,
+     "triangles": 376
+    },
+    {
+     "pass": "fire-cube",
+     "name": "G24_mesh_2",
+     "calls": 1,
+     "triangles": 372
+    },
+    {
+     "pass": "sun-c0",
+     "name": "G24_mesh_2",
+     "calls": 1,
+     "triangles": 372
+    },
+    {
+     "pass": "main",
+     "name": "G24_mesh_2",
+     "calls": 1,
+     "triangles": 372
+    },
+    {
+     "pass": "sun-c2",
+     "name": "camp-mesh-G19-crown_1#sun2",
+     "calls": 1,
+     "triangles": 368
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-G23-rock_4",
+     "calls": 1,
+     "triangles": 360
+    },
+    {
+     "pass": "sun-c2",
+     "name": "camp-mesh-G20-crown_2#sun2",
+     "calls": 1,
+     "triangles": 354
+    },
+    {
+     "pass": "sun-c0",
+     "name": "sun-chunk--4,3,0",
+     "calls": 1,
+     "triangles": 336
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--4,3,0",
+     "calls": 1,
+     "triangles": 336
+    },
+    {
+     "pass": "sun-c2",
+     "name": "camp-mesh-G20-crown_3#sun2",
+     "calls": 1,
+     "triangles": 336
+    },
+    {
+     "pass": "fire-cube",
+     "name": "G24_mesh_4",
+     "calls": 1,
+     "triangles": 324
+    },
+    {
+     "pass": "sun-c0",
+     "name": "G24_mesh_4",
+     "calls": 1,
+     "triangles": 324
+    },
+    {
+     "pass": "sun-c0",
+     "name": "sun-chunk--4,2,0",
+     "calls": 1,
+     "triangles": 324
+    },
+    {
+     "pass": "sun-c0",
+     "name": "sun-chunk--6,5,0",
+     "calls": 1,
+     "triangles": 324
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--4,2,0",
+     "calls": 1,
+     "triangles": 324
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--6,5,0",
+     "calls": 1,
+     "triangles": 324
+    },
+    {
+     "pass": "sun-c2",
+     "name": "sun-chunk-far-2,-1,0",
+     "calls": 1,
+     "triangles": 324
+    },
+    {
+     "pass": "main",
+     "name": "G24_mesh_4",
+     "calls": 1,
+     "triangles": 324
+    },
+    {
+     "pass": "sun-c0",
+     "name": "camp-mesh-G19-crown_2#sun0",
+     "calls": 1,
+     "triangles": 300
+    },
+    {
+     "pass": "sun-c2",
+     "name": "sun-chunk-far-1,-2,0",
+     "calls": 1,
+     "triangles": 300
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C03-C03_mesh_1",
+     "calls": 1,
+     "triangles": 288
+    },
+    {
+     "pass": "sun-c0",
+     "name": "sun-chunk--5,4,2",
+     "calls": 1,
+     "triangles": 240
+    },
+    {
+     "pass": "sun-c0",
+     "name": "sun-chunk--6,4,2",
+     "calls": 1,
+     "triangles": 240
+    },
+    {
+     "pass": "sun-c0",
+     "name": "sun-chunk--5,3,2",
+     "calls": 1,
+     "triangles": 240
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--5,3,2",
+     "calls": 1,
+     "triangles": 240
+    },
+    {
+     "pass": "sun-c2",
+     "name": "sun-chunk-far-1,-1,0",
+     "calls": 1,
+     "triangles": 240
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C04-C04_mesh_2",
+     "calls": 1,
+     "triangles": 232
+    },
+    {
+     "pass": "sun-c1",
+     "name": "C10_pole_3",
+     "calls": 1,
+     "triangles": 220
+    },
+    {
+     "pass": "sun-c2",
+     "name": "C10_pole_3",
+     "calls": 1,
+     "triangles": 220
+    },
+    {
+     "pass": "main",
+     "name": "C10_pole_3",
+     "calls": 1,
+     "triangles": 220
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C05-C05_mesh_3",
+     "calls": 1,
+     "triangles": 210
+    },
+    {
+     "pass": "sun-c2",
+     "name": "camp-mesh-G16-crown_1#sun2",
+     "calls": 1,
+     "triangles": 204
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C06-C06_mesh_1",
+     "calls": 1,
+     "triangles": 200
+    },
+    {
+     "pass": "sun-c0",
+     "name": "(unnamed)",
+     "calls": 6,
+     "triangles": 184
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C09-C09_trophies_1",
+     "calls": 1,
+     "triangles": 176
+    },
+    {
+     "pass": "sun-c2",
+     "name": "sun-chunk-far-2,-2,0",
+     "calls": 1,
+     "triangles": 168
+    },
+    {
+     "pass": "sun-c2",
+     "name": "camp-mesh-G16-crown_3#sun2",
+     "calls": 1,
+     "triangles": 166
+    },
+    {
+     "pass": "sun-c2",
+     "name": "camp-mesh-G18-crown_1#sun2",
+     "calls": 1,
+     "triangles": 160
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C05-C05_mesh",
+     "calls": 1,
+     "triangles": 160
+    },
+    {
+     "pass": "sun-c1",
+     "name": "(unnamed)",
+     "calls": 6,
+     "triangles": 156
+    },
+    {
+     "pass": "sun-c2",
+     "name": "camp-mesh-G18-crown_2#sun2",
+     "calls": 1,
+     "triangles": 142
+    },
+    {
+     "pass": "sun-c2",
+     "name": "camp-mesh-G18-crown_3#sun2",
+     "calls": 1,
+     "triangles": 138
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C09-C09_shelf_1",
+     "calls": 1,
+     "triangles": 132
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C09-C09_shelf_2",
+     "calls": 1,
+     "triangles": 132
+    },
+    {
+     "pass": "sun-c2",
+     "name": "camp-mesh-G16-crown_2#sun2",
+     "calls": 1,
+     "triangles": 130
+    },
+    {
+     "pass": "sun-c2",
+     "name": "camp-mesh-G19-crown_3#sun2",
+     "calls": 1,
+     "triangles": 128
+    },
+    {
+     "pass": "main",
+     "name": "camp-fire-tongues",
+     "calls": 1,
+     "triangles": 125
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C07-C07_stool_2",
+     "calls": 1,
+     "triangles": 120
+    },
+    {
+     "pass": "fire-cube",
+     "name": "G24_mesh_1",
+     "calls": 1,
+     "triangles": 118
+    },
+    {
+     "pass": "sun-c0",
+     "name": "G24_mesh_1",
+     "calls": 1,
+     "triangles": 118
+    },
+    {
+     "pass": "main",
+     "name": "G24_mesh_1",
+     "calls": 1,
+     "triangles": 118
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C03-C03_mesh_2",
+     "calls": 1,
+     "triangles": 116
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C07-C07_stool_1",
+     "calls": 1,
+     "triangles": 116
+    },
+    {
+     "pass": "sun-c1",
+     "name": "C10_pole_1",
+     "calls": 1,
+     "triangles": 108
+    },
+    {
+     "pass": "sun-c2",
+     "name": "C10_pole_1",
+     "calls": 1,
+     "triangles": 108
+    },
+    {
+     "pass": "main",
+     "name": "C10_pole_1",
+     "calls": 1,
+     "triangles": 108
+    },
+    {
+     "pass": "sun-c2",
+     "name": "sun-chunk-far-0,-1,0",
+     "calls": 1,
+     "triangles": 96
+    },
+    {
+     "pass": "sun-c1",
+     "name": "C10_pole_2",
+     "calls": 1,
+     "triangles": 92
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C08-C08_books_2",
+     "calls": 1,
+     "triangles": 92
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C08-C08_books_3",
+     "calls": 1,
+     "triangles": 92
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C08-C08_books_4",
+     "calls": 1,
+     "triangles": 92
+    },
+    {
+     "pass": "main",
+     "name": "C10_pole_2",
+     "calls": 1,
+     "triangles": 92
+    },
+    {
+     "pass": "fire-cube",
+     "name": "G24_mesh_8",
+     "calls": 1,
+     "triangles": 88
+    },
+    {
+     "pass": "sun-c0",
+     "name": "G24_mesh_8",
+     "calls": 1,
+     "triangles": 88
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C07-C07_desk_1",
+     "calls": 1,
+     "triangles": 88
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C09-C09_trophies_3",
+     "calls": 1,
+     "triangles": 88
+    },
+    {
+     "pass": "main",
+     "name": "G24_mesh_8",
+     "calls": 1,
+     "triangles": 88
+    },
+    {
+     "pass": "sun-c2",
+     "name": "sun-chunk-far--2,-1,0",
+     "calls": 1,
+     "triangles": 84
+    },
+    {
+     "pass": "sun-c2",
+     "name": "camp-mesh-G18-trunk#sun2",
+     "calls": 1,
+     "triangles": 82
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C05-C05_mesh_4",
+     "calls": 1,
+     "triangles": 82
+    },
+    {
+     "pass": "sun-c1",
+     "name": "flag_02",
+     "calls": 1,
+     "triangles": 80
+    },
+    {
+     "pass": "sun-c1",
+     "name": "flag_04",
+     "calls": 1,
+     "triangles": 80
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C05-C05_mesh_1",
+     "calls": 1,
+     "triangles": 80
+    },
+    {
+     "pass": "main",
+     "name": "flag_02",
+     "calls": 1,
+     "triangles": 80
+    },
+    {
+     "pass": "main",
+     "name": "flag_04",
+     "calls": 1,
+     "triangles": 80
+    },
+    {
+     "pass": "sun-c1",
+     "name": "flag_01",
+     "calls": 1,
+     "triangles": 72
+    },
+    {
+     "pass": "sun-c1",
+     "name": "flag_03",
+     "calls": 1,
+     "triangles": 72
+    },
+    {
+     "pass": "main",
+     "name": "flag_01",
+     "calls": 1,
+     "triangles": 72
+    },
+    {
+     "pass": "main",
+     "name": "flag_03",
+     "calls": 1,
+     "triangles": 72
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C09-C09_shelf_3",
+     "calls": 1,
+     "triangles": 56
+    },
+    {
+     "pass": "sun-c2",
+     "name": "camp-mesh-G16-trunk#sun2",
+     "calls": 1,
+     "triangles": 52
+    },
+    {
+     "pass": "sun-c2",
+     "name": "sun-chunk-far--1,-1,0",
+     "calls": 1,
+     "triangles": 48
+    },
+    {
+     "pass": "main",
+     "name": "greybox-roadblock",
+     "calls": 4,
+     "triangles": 48
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C08-C08_books_5",
+     "calls": 1,
+     "triangles": 46
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C09-C09_books_2",
+     "calls": 1,
+     "triangles": 46
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C09-C09_books_3",
+     "calls": 1,
+     "triangles": 46
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C05-C05_mesh_2",
+     "calls": 1,
+     "triangles": 44
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C08-C08_books_1",
+     "calls": 1,
+     "triangles": 42
+    },
+    {
+     "pass": "fire-cube",
+     "name": "G24_mesh_7",
+     "calls": 1,
+     "triangles": 32
+    },
+    {
+     "pass": "sun-c0",
+     "name": "G24_mesh_7",
+     "calls": 1,
+     "triangles": 32
+    },
+    {
+     "pass": "main",
+     "name": "G24_mesh_7",
+     "calls": 1,
+     "triangles": 32
+    },
+    {
+     "pass": "sun-c1",
+     "name": "greybox-roadblock",
+     "calls": 2,
+     "triangles": 24
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk-1,2,0",
+     "calls": 1,
+     "triangles": 24
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk-3,0,0",
+     "calls": 1,
+     "triangles": 24
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk-1,0,0",
+     "calls": 1,
+     "triangles": 24
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--4,6,0",
+     "calls": 1,
+     "triangles": 24
+    },
+    {
+     "pass": "sun-c2",
+     "name": "(unnamed)",
+     "calls": 2,
+     "triangles": 24
+    },
+    {
+     "pass": "sun-c2",
+     "name": "sun-chunk-far-0,1,0",
+     "calls": 1,
+     "triangles": 24
+    },
+    {
+     "pass": "main",
+     "name": "camp-exit-lamps",
+     "calls": 2,
+     "triangles": 24
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C04-C04_mesh_3",
+     "calls": 1,
+     "triangles": 24
+    },
+    {
+     "pass": "sun-c0",
+     "name": "greybox-building-sdic",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "sun-c0",
+     "name": "sun-chunk--4,4,0",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "sun-c1",
+     "name": "greybox-building-sdic",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "sun-c1",
+     "name": "greybox-building-worldquant",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "sun-c1",
+     "name": "greybox-building-moe",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--4,4,0",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk-1,1,0",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk-0,2,0",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--2,-1,0",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "sun-c1",
+     "name": "sun-chunk--2,5,0",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "sun-c2",
+     "name": "greybox-building-sdic",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "sun-c2",
+     "name": "greybox-building-worldquant",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "sun-c2",
+     "name": "greybox-building-moe",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "sun-c2",
+     "name": "greybox-building-aime",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "sun-c2",
+     "name": "greybox-building-video-rebirth",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "sun-c2",
+     "name": "greybox-building-hunyuan",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "sun-c2",
+     "name": "greybox-roadblock",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "main",
+     "name": "greybox-submerged-plaza",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "main",
+     "name": "greybox-seabed",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "main",
+     "name": "park-plaza-block",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "main",
+     "name": "greybox-building-sdic",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "main",
+     "name": "greybox-building-worldquant",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "main",
+     "name": "greybox-building-moe",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "main",
+     "name": "greybox-building-aime",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "main",
+     "name": "greybox-building-video-rebirth",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "main",
+     "name": "greybox-building-hunyuan",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C03-C03_mesh_3",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "main",
+     "name": "camp-mesh-C09-C09_books_1",
+     "calls": 1,
+     "triangles": 12
+    },
+    {
+     "pass": "main",
+     "name": "camp-fire-embers",
+     "calls": 1,
+     "triangles": 9.333333333333334
+    },
+    {
+     "pass": "main",
+     "name": "year-sdic",
+     "calls": 1,
+     "triangles": 2
+    },
+    {
+     "pass": "main",
+     "name": "year-worldquant",
+     "calls": 1,
+     "triangles": 2
+    },
+    {
+     "pass": "main",
+     "name": "year-moe",
+     "calls": 1,
+     "triangles": 2
+    },
+    {
+     "pass": "main",
+     "name": "year-aime",
+     "calls": 1,
+     "triangles": 2
+    },
+    {
+     "pass": "main",
+     "name": "year-video-rebirth",
+     "calls": 1,
+     "triangles": 2
+    },
+    {
+     "pass": "main",
+     "name": "year-hunyuan",
+     "calls": 1,
+     "triangles": 2
+    }
+   ]
+  }
+ },
+ "errors": [],
+ "entryUrl": "http://127.0.0.1:4322/world/?qa=1",
+ "pageErrors": [],
+ "finishedAt": "2026-10-22T19:50:00.393Z"
+}

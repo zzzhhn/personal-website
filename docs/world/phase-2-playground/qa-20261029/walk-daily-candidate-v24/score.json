@@ -1,0 +1,1582 @@
+{
+  "bpm": 96,
+  "meter": "4/4",
+  "form": [
+    {
+      "id": "A",
+      "startBar": 1,
+      "bars": 4,
+      "harmony": [
+        "C6",
+        "Fmaj7",
+        "Gsus2",
+        "C6"
+      ]
+    },
+    {
+      "id": "B",
+      "startBar": 5,
+      "bars": 4,
+      "harmony": [
+        "Am7",
+        "Dm7",
+        "G6",
+        "C6"
+      ]
+    },
+    {
+      "id": "C",
+      "startBar": 9,
+      "bars": 4,
+      "harmony": [
+        "Fmaj7",
+        "C/E",
+        "Dm7",
+        "G6"
+      ]
+    },
+    {
+      "id": "D",
+      "startBar": 13,
+      "bars": 4,
+      "harmony": [
+        "Am7",
+        "Fmaj7",
+        "Gsus2",
+        "C6"
+      ]
+    }
+  ],
+  "notes": [
+    {
+      "part": "guitar",
+      "bar": 1,
+      "beat": 0,
+      "at": 0,
+      "midi": 55,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 1,
+      "beat": 0.02,
+      "at": 0.0125,
+      "midi": 48,
+      "duration": 0.82,
+      "velocity": 0.37,
+      "pan": 0
+    },
+    {
+      "part": "melody",
+      "bar": 1,
+      "beat": 0.5,
+      "at": 0.3125,
+      "midi": 64,
+      "duration": 0.8,
+      "velocity": 0.62,
+      "pan": -0.05
+    },
+    {
+      "part": "guitar",
+      "bar": 1,
+      "beat": 0.75,
+      "at": 0.46875,
+      "midi": 57,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "wood",
+      "bar": 1,
+      "beat": 1.25,
+      "at": 0.78125,
+      "midi": 53,
+      "duration": 0.11,
+      "velocity": 0.3,
+      "pan": -0.27
+    },
+    {
+      "part": "guitar",
+      "bar": 1,
+      "beat": 1.5,
+      "at": 0.9375,
+      "midi": 64,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "melody",
+      "bar": 1,
+      "beat": 1.5,
+      "at": 0.9375,
+      "midi": 67,
+      "duration": 0.8,
+      "velocity": 0.44,
+      "pan": -0.05
+    },
+    {
+      "part": "melody",
+      "bar": 1,
+      "beat": 2,
+      "at": 1.25,
+      "midi": 69,
+      "duration": 0.46,
+      "velocity": 0.53,
+      "pan": -0.05
+    },
+    {
+      "part": "bass",
+      "bar": 1,
+      "beat": 2.05,
+      "at": 1.28125,
+      "midi": 55,
+      "duration": 0.58,
+      "velocity": 0.23,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 1,
+      "beat": 2.5,
+      "at": 1.5625,
+      "midi": 55,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "melody",
+      "bar": 1,
+      "beat": 2.5,
+      "at": 1.5625,
+      "midi": 67,
+      "duration": 0.8,
+      "velocity": 0.4,
+      "pan": -0.05
+    },
+    {
+      "part": "guitar",
+      "bar": 1,
+      "beat": 3.25,
+      "at": 2.03125,
+      "midi": 57,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "wood",
+      "bar": 1,
+      "beat": 3.25,
+      "at": 2.03125,
+      "midi": 60,
+      "duration": 0.085,
+      "velocity": 0.22,
+      "pan": 0.24
+    },
+    {
+      "part": "guitar",
+      "bar": 2,
+      "beat": 0,
+      "at": 2.5,
+      "midi": 52,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 2,
+      "beat": 0.02,
+      "at": 2.5124999999999997,
+      "midi": 41,
+      "duration": 0.82,
+      "velocity": 0.37,
+      "pan": 0
+    },
+    {
+      "part": "melody",
+      "bar": 2,
+      "beat": 0.5,
+      "at": 2.8125,
+      "midi": 62,
+      "duration": 0.86,
+      "velocity": 0.49,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 2,
+      "beat": 0.75,
+      "at": 2.96875,
+      "midi": 57,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "wood",
+      "bar": 2,
+      "beat": 1.25,
+      "at": 3.28125,
+      "midi": 53,
+      "duration": 0.11,
+      "velocity": 0.3,
+      "pan": -0.27
+    },
+    {
+      "part": "guitar",
+      "bar": 2,
+      "beat": 1.5,
+      "at": 3.4375,
+      "midi": 60,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "melody",
+      "bar": 2,
+      "beat": 1.75,
+      "at": 3.59375,
+      "midi": 60,
+      "duration": 1.04,
+      "velocity": 0.38,
+      "pan": 0
+    },
+    {
+      "part": "bass",
+      "bar": 2,
+      "beat": 2.05,
+      "at": 3.78125,
+      "midi": 53,
+      "duration": 0.58,
+      "velocity": 0.23,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 2,
+      "beat": 2.5,
+      "at": 4.0625,
+      "midi": 52,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "guitar",
+      "bar": 2,
+      "beat": 3.25,
+      "at": 4.53125,
+      "midi": 57,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "wood",
+      "bar": 2,
+      "beat": 3.25,
+      "at": 4.53125,
+      "midi": 60,
+      "duration": 0.085,
+      "velocity": 0.22,
+      "pan": 0.24
+    },
+    {
+      "part": "guitar",
+      "bar": 3,
+      "beat": 0,
+      "at": 5,
+      "midi": 55,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 3,
+      "beat": 0.02,
+      "at": 5.012499999999999,
+      "midi": 43,
+      "duration": 0.82,
+      "velocity": 0.37,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 3,
+      "beat": 0.75,
+      "at": 5.46875,
+      "midi": 57,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "wood",
+      "bar": 3,
+      "beat": 1.25,
+      "at": 5.78125,
+      "midi": 53,
+      "duration": 0.11,
+      "velocity": 0.3,
+      "pan": -0.27
+    },
+    {
+      "part": "guitar",
+      "bar": 3,
+      "beat": 1.5,
+      "at": 5.9375,
+      "midi": 62,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 3,
+      "beat": 2.05,
+      "at": 6.28125,
+      "midi": 50,
+      "duration": 0.58,
+      "velocity": 0.23,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 3,
+      "beat": 2.5,
+      "at": 6.5625,
+      "midi": 55,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "guitar",
+      "bar": 3,
+      "beat": 3.25,
+      "at": 7.03125,
+      "midi": 57,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "wood",
+      "bar": 3,
+      "beat": 3.25,
+      "at": 7.03125,
+      "midi": 60,
+      "duration": 0.085,
+      "velocity": 0.22,
+      "pan": 0.24
+    },
+    {
+      "part": "guitar",
+      "bar": 4,
+      "beat": 0,
+      "at": 7.5,
+      "midi": 55,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 4,
+      "beat": 0.02,
+      "at": 7.512499999999999,
+      "midi": 48,
+      "duration": 0.82,
+      "velocity": 0.37,
+      "pan": 0
+    },
+    {
+      "part": "melody",
+      "bar": 4,
+      "beat": 0.5,
+      "at": 7.8125,
+      "midi": 60,
+      "duration": 0.8,
+      "velocity": 0.48360000000000003,
+      "pan": -0.05
+    },
+    {
+      "part": "guitar",
+      "bar": 4,
+      "beat": 0.75,
+      "at": 7.96875,
+      "midi": 57,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "guitar",
+      "bar": 4,
+      "beat": 1.5,
+      "at": 8.4375,
+      "midi": 64,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "melody",
+      "bar": 4,
+      "beat": 1.5,
+      "at": 8.4375,
+      "midi": 64,
+      "duration": 0.8,
+      "velocity": 0.3432,
+      "pan": -0.05
+    },
+    {
+      "part": "melody",
+      "bar": 4,
+      "beat": 2,
+      "at": 8.75,
+      "midi": 67,
+      "duration": 0.46,
+      "velocity": 0.41340000000000005,
+      "pan": -0.05
+    },
+    {
+      "part": "guitar",
+      "bar": 4,
+      "beat": 2.5,
+      "at": 9.0625,
+      "midi": 55,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "melody",
+      "bar": 4,
+      "beat": 2.5,
+      "at": 9.0625,
+      "midi": 64,
+      "duration": 0.8,
+      "velocity": 0.31200000000000006,
+      "pan": -0.05
+    },
+    {
+      "part": "guitar",
+      "bar": 4,
+      "beat": 3.25,
+      "at": 9.53125,
+      "midi": 57,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "guitar",
+      "bar": 5,
+      "beat": 0,
+      "at": 10,
+      "midi": 55,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 5,
+      "beat": 0.02,
+      "at": 10.0125,
+      "midi": 45,
+      "duration": 0.82,
+      "velocity": 0.37,
+      "pan": 0
+    },
+    {
+      "part": "melody",
+      "bar": 5,
+      "beat": 0.5,
+      "at": 10.3125,
+      "midi": 64,
+      "duration": 0.8,
+      "velocity": 0.5456,
+      "pan": -0.05
+    },
+    {
+      "part": "guitar",
+      "bar": 5,
+      "beat": 0.75,
+      "at": 10.46875,
+      "midi": 60,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "wood",
+      "bar": 5,
+      "beat": 1.25,
+      "at": 10.78125,
+      "midi": 53,
+      "duration": 0.11,
+      "velocity": 0.3,
+      "pan": -0.27
+    },
+    {
+      "part": "guitar",
+      "bar": 5,
+      "beat": 1.5,
+      "at": 10.9375,
+      "midi": 64,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "melody",
+      "bar": 5,
+      "beat": 1.5,
+      "at": 10.9375,
+      "midi": 67,
+      "duration": 0.8,
+      "velocity": 0.3872,
+      "pan": -0.05
+    },
+    {
+      "part": "melody",
+      "bar": 5,
+      "beat": 2,
+      "at": 11.25,
+      "midi": 71,
+      "duration": 0.46,
+      "velocity": 0.46640000000000004,
+      "pan": -0.05
+    },
+    {
+      "part": "bass",
+      "bar": 5,
+      "beat": 2.05,
+      "at": 11.28125,
+      "midi": 52,
+      "duration": 0.58,
+      "velocity": 0.23,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 5,
+      "beat": 2.5,
+      "at": 11.5625,
+      "midi": 55,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "melody",
+      "bar": 5,
+      "beat": 2.5,
+      "at": 11.5625,
+      "midi": 69,
+      "duration": 0.8,
+      "velocity": 0.35200000000000004,
+      "pan": -0.05
+    },
+    {
+      "part": "guitar",
+      "bar": 5,
+      "beat": 3.25,
+      "at": 12.03125,
+      "midi": 60,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "wood",
+      "bar": 5,
+      "beat": 3.25,
+      "at": 12.03125,
+      "midi": 60,
+      "duration": 0.085,
+      "velocity": 0.22,
+      "pan": 0.24
+    },
+    {
+      "part": "guitar",
+      "bar": 6,
+      "beat": 0,
+      "at": 12.5,
+      "midi": 53,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 6,
+      "beat": 0.02,
+      "at": 12.5125,
+      "midi": 38,
+      "duration": 0.82,
+      "velocity": 0.37,
+      "pan": 0
+    },
+    {
+      "part": "melody",
+      "bar": 6,
+      "beat": 0.5,
+      "at": 12.8125,
+      "midi": 65,
+      "duration": 0.86,
+      "velocity": 0.45,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 6,
+      "beat": 0.75,
+      "at": 12.96875,
+      "midi": 57,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "wood",
+      "bar": 6,
+      "beat": 1.25,
+      "at": 13.28125,
+      "midi": 53,
+      "duration": 0.11,
+      "velocity": 0.3,
+      "pan": -0.27
+    },
+    {
+      "part": "guitar",
+      "bar": 6,
+      "beat": 1.5,
+      "at": 13.4375,
+      "midi": 60,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "melody",
+      "bar": 6,
+      "beat": 1.75,
+      "at": 13.59375,
+      "midi": 62,
+      "duration": 0.93,
+      "velocity": 0.36,
+      "pan": 0
+    },
+    {
+      "part": "bass",
+      "bar": 6,
+      "beat": 2.05,
+      "at": 13.78125,
+      "midi": 50,
+      "duration": 0.58,
+      "velocity": 0.23,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 6,
+      "beat": 2.5,
+      "at": 14.0625,
+      "midi": 53,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "guitar",
+      "bar": 6,
+      "beat": 3.25,
+      "at": 14.53125,
+      "midi": 57,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "wood",
+      "bar": 6,
+      "beat": 3.25,
+      "at": 14.53125,
+      "midi": 60,
+      "duration": 0.085,
+      "velocity": 0.22,
+      "pan": 0.24
+    },
+    {
+      "part": "guitar",
+      "bar": 7,
+      "beat": 0,
+      "at": 15,
+      "midi": 55,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 7,
+      "beat": 0.02,
+      "at": 15.0125,
+      "midi": 43,
+      "duration": 0.82,
+      "velocity": 0.37,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 7,
+      "beat": 0.75,
+      "at": 15.46875,
+      "midi": 59,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "melody",
+      "bar": 7,
+      "beat": 0.75,
+      "at": 15.46875,
+      "midi": 64,
+      "duration": 0.78,
+      "velocity": 0.39,
+      "pan": 0
+    },
+    {
+      "part": "wood",
+      "bar": 7,
+      "beat": 1.25,
+      "at": 15.78125,
+      "midi": 53,
+      "duration": 0.11,
+      "velocity": 0.3,
+      "pan": -0.27
+    },
+    {
+      "part": "guitar",
+      "bar": 7,
+      "beat": 1.5,
+      "at": 15.9375,
+      "midi": 64,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 7,
+      "beat": 2.05,
+      "at": 16.28125,
+      "midi": 50,
+      "duration": 0.58,
+      "velocity": 0.23,
+      "pan": 0
+    },
+    {
+      "part": "melody",
+      "bar": 7,
+      "beat": 2.25,
+      "at": 16.40625,
+      "midi": 62,
+      "duration": 0.85,
+      "velocity": 0.31,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 7,
+      "beat": 2.5,
+      "at": 16.5625,
+      "midi": 55,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "guitar",
+      "bar": 7,
+      "beat": 3.25,
+      "at": 17.03125,
+      "midi": 59,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "wood",
+      "bar": 7,
+      "beat": 3.25,
+      "at": 17.03125,
+      "midi": 60,
+      "duration": 0.085,
+      "velocity": 0.22,
+      "pan": 0.24
+    },
+    {
+      "part": "guitar",
+      "bar": 8,
+      "beat": 0,
+      "at": 17.5,
+      "midi": 55,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 8,
+      "beat": 0.02,
+      "at": 17.5125,
+      "midi": 48,
+      "duration": 0.82,
+      "velocity": 0.37,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 8,
+      "beat": 0.75,
+      "at": 17.96875,
+      "midi": 57,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "guitar",
+      "bar": 8,
+      "beat": 1.5,
+      "at": 18.4375,
+      "midi": 64,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "melody",
+      "bar": 8,
+      "beat": 1.5,
+      "at": 18.4375,
+      "midi": 60,
+      "duration": 1.08,
+      "velocity": 0.34,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 8,
+      "beat": 2.5,
+      "at": 19.0625,
+      "midi": 55,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "guitar",
+      "bar": 8,
+      "beat": 3.25,
+      "at": 19.53125,
+      "midi": 57,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "guitar",
+      "bar": 9,
+      "beat": 0,
+      "at": 20,
+      "midi": 52,
+      "duration": 0.76,
+      "velocity": 0.25,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 9,
+      "beat": 0.02,
+      "at": 20.012500000000003,
+      "midi": 41,
+      "duration": 0.82,
+      "velocity": 0.28,
+      "pan": 0
+    },
+    {
+      "part": "melody",
+      "bar": 9,
+      "beat": 0.75,
+      "at": 20.46875,
+      "midi": 57,
+      "duration": 0.86,
+      "velocity": 0.35,
+      "pan": 0
+    },
+    {
+      "part": "wood",
+      "bar": 9,
+      "beat": 1.25,
+      "at": 20.78125,
+      "midi": 53,
+      "duration": 0.11,
+      "velocity": 0.2,
+      "pan": -0.27
+    },
+    {
+      "part": "guitar",
+      "bar": 9,
+      "beat": 1.5,
+      "at": 20.9375,
+      "midi": 57,
+      "duration": 0.88,
+      "velocity": 0.2175,
+      "pan": 0.22
+    },
+    {
+      "part": "melody",
+      "bar": 9,
+      "beat": 2.25,
+      "at": 21.40625,
+      "midi": 60,
+      "duration": 0.92,
+      "velocity": 0.3,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 9,
+      "beat": 2.75,
+      "at": 21.71875,
+      "midi": 60,
+      "duration": 0.76,
+      "velocity": 0.25,
+      "pan": -0.2
+    },
+    {
+      "part": "guitar",
+      "bar": 10,
+      "beat": 0,
+      "at": 22.5,
+      "midi": 55,
+      "duration": 0.76,
+      "velocity": 0.25,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 10,
+      "beat": 0.02,
+      "at": 22.512500000000003,
+      "midi": 40,
+      "duration": 0.82,
+      "velocity": 0.28,
+      "pan": 0
+    },
+    {
+      "part": "melody",
+      "bar": 10,
+      "beat": 1.25,
+      "at": 23.28125,
+      "midi": 55,
+      "duration": 1.02,
+      "velocity": 0.31,
+      "pan": 0
+    },
+    {
+      "part": "wood",
+      "bar": 10,
+      "beat": 1.25,
+      "at": 23.28125,
+      "midi": 53,
+      "duration": 0.11,
+      "velocity": 0.2,
+      "pan": -0.27
+    },
+    {
+      "part": "guitar",
+      "bar": 10,
+      "beat": 1.5,
+      "at": 23.4375,
+      "midi": 60,
+      "duration": 0.88,
+      "velocity": 0.2175,
+      "pan": 0.22
+    },
+    {
+      "part": "guitar",
+      "bar": 10,
+      "beat": 2.75,
+      "at": 24.21875,
+      "midi": 64,
+      "duration": 0.76,
+      "velocity": 0.25,
+      "pan": -0.2
+    },
+    {
+      "part": "guitar",
+      "bar": 11,
+      "beat": 0,
+      "at": 25,
+      "midi": 53,
+      "duration": 0.76,
+      "velocity": 0.25,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 11,
+      "beat": 0.02,
+      "at": 25.012500000000003,
+      "midi": 38,
+      "duration": 0.82,
+      "velocity": 0.28,
+      "pan": 0
+    },
+    {
+      "part": "melody",
+      "bar": 11,
+      "beat": 0.75,
+      "at": 25.46875,
+      "midi": 57,
+      "duration": 0.84,
+      "velocity": 0.34,
+      "pan": 0
+    },
+    {
+      "part": "wood",
+      "bar": 11,
+      "beat": 1.25,
+      "at": 25.78125,
+      "midi": 53,
+      "duration": 0.11,
+      "velocity": 0.2,
+      "pan": -0.27
+    },
+    {
+      "part": "guitar",
+      "bar": 11,
+      "beat": 1.5,
+      "at": 25.9375,
+      "midi": 57,
+      "duration": 0.88,
+      "velocity": 0.2175,
+      "pan": 0.22
+    },
+    {
+      "part": "guitar",
+      "bar": 11,
+      "beat": 2.75,
+      "at": 26.71875,
+      "midi": 60,
+      "duration": 0.76,
+      "velocity": 0.25,
+      "pan": -0.2
+    },
+    {
+      "part": "guitar",
+      "bar": 12,
+      "beat": 0,
+      "at": 27.5,
+      "midi": 55,
+      "duration": 0.76,
+      "velocity": 0.25,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 12,
+      "beat": 0.02,
+      "at": 27.512500000000003,
+      "midi": 43,
+      "duration": 0.82,
+      "velocity": 0.28,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 12,
+      "beat": 1.5,
+      "at": 28.4375,
+      "midi": 59,
+      "duration": 0.88,
+      "velocity": 0.2175,
+      "pan": 0.22
+    },
+    {
+      "part": "melody",
+      "bar": 12,
+      "beat": 2,
+      "at": 28.75,
+      "midi": 59,
+      "duration": 0.94,
+      "velocity": 0.29,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 12,
+      "beat": 2.75,
+      "at": 29.21875,
+      "midi": 64,
+      "duration": 0.76,
+      "velocity": 0.25,
+      "pan": -0.2
+    },
+    {
+      "part": "guitar",
+      "bar": 13,
+      "beat": 0,
+      "at": 30,
+      "midi": 55,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 13,
+      "beat": 0.02,
+      "at": 30.012500000000003,
+      "midi": 45,
+      "duration": 0.82,
+      "velocity": 0.37,
+      "pan": 0
+    },
+    {
+      "part": "melody",
+      "bar": 13,
+      "beat": 0.5,
+      "at": 30.3125,
+      "midi": 64,
+      "duration": 0.8,
+      "velocity": 0.558,
+      "pan": -0.05
+    },
+    {
+      "part": "guitar",
+      "bar": 13,
+      "beat": 0.75,
+      "at": 30.46875,
+      "midi": 60,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "wood",
+      "bar": 13,
+      "beat": 1.25,
+      "at": 30.78125,
+      "midi": 53,
+      "duration": 0.11,
+      "velocity": 0.3,
+      "pan": -0.27
+    },
+    {
+      "part": "guitar",
+      "bar": 13,
+      "beat": 1.5,
+      "at": 30.9375,
+      "midi": 64,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "melody",
+      "bar": 13,
+      "beat": 1.5,
+      "at": 30.9375,
+      "midi": 67,
+      "duration": 0.8,
+      "velocity": 0.396,
+      "pan": -0.05
+    },
+    {
+      "part": "melody",
+      "bar": 13,
+      "beat": 2,
+      "at": 31.25,
+      "midi": 69,
+      "duration": 0.46,
+      "velocity": 0.47700000000000004,
+      "pan": -0.05
+    },
+    {
+      "part": "bass",
+      "bar": 13,
+      "beat": 2.05,
+      "at": 31.28125,
+      "midi": 52,
+      "duration": 0.58,
+      "velocity": 0.23,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 13,
+      "beat": 2.5,
+      "at": 31.5625,
+      "midi": 55,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "melody",
+      "bar": 13,
+      "beat": 2.5,
+      "at": 31.5625,
+      "midi": 67,
+      "duration": 0.8,
+      "velocity": 0.36000000000000004,
+      "pan": -0.05
+    },
+    {
+      "part": "guitar",
+      "bar": 13,
+      "beat": 3.25,
+      "at": 32.03125,
+      "midi": 60,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "wood",
+      "bar": 13,
+      "beat": 3.25,
+      "at": 32.03125,
+      "midi": 60,
+      "duration": 0.085,
+      "velocity": 0.22,
+      "pan": 0.24
+    },
+    {
+      "part": "guitar",
+      "bar": 14,
+      "beat": 0,
+      "at": 32.5,
+      "midi": 52,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 14,
+      "beat": 0.02,
+      "at": 32.5125,
+      "midi": 41,
+      "duration": 0.82,
+      "velocity": 0.37,
+      "pan": 0
+    },
+    {
+      "part": "melody",
+      "bar": 14,
+      "beat": 0.5,
+      "at": 32.8125,
+      "midi": 65,
+      "duration": 0.85,
+      "velocity": 0.44,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 14,
+      "beat": 0.75,
+      "at": 32.96875,
+      "midi": 57,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "wood",
+      "bar": 14,
+      "beat": 1.25,
+      "at": 33.28125,
+      "midi": 53,
+      "duration": 0.11,
+      "velocity": 0.3,
+      "pan": -0.27
+    },
+    {
+      "part": "guitar",
+      "bar": 14,
+      "beat": 1.5,
+      "at": 33.4375,
+      "midi": 60,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "melody",
+      "bar": 14,
+      "beat": 1.75,
+      "at": 33.59375,
+      "midi": 64,
+      "duration": 0.95,
+      "velocity": 0.35,
+      "pan": 0
+    },
+    {
+      "part": "bass",
+      "bar": 14,
+      "beat": 2.05,
+      "at": 33.78125,
+      "midi": 53,
+      "duration": 0.58,
+      "velocity": 0.23,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 14,
+      "beat": 2.5,
+      "at": 34.0625,
+      "midi": 52,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "guitar",
+      "bar": 14,
+      "beat": 3.25,
+      "at": 34.53125,
+      "midi": 57,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "wood",
+      "bar": 14,
+      "beat": 3.25,
+      "at": 34.53125,
+      "midi": 60,
+      "duration": 0.085,
+      "velocity": 0.22,
+      "pan": 0.24
+    },
+    {
+      "part": "guitar",
+      "bar": 15,
+      "beat": 0,
+      "at": 35,
+      "midi": 55,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 15,
+      "beat": 0.02,
+      "at": 35.0125,
+      "midi": 43,
+      "duration": 0.82,
+      "velocity": 0.37,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 15,
+      "beat": 0.75,
+      "at": 35.46875,
+      "midi": 57,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "melody",
+      "bar": 15,
+      "beat": 0.75,
+      "at": 35.46875,
+      "midi": 62,
+      "duration": 0.87,
+      "velocity": 0.38,
+      "pan": 0
+    },
+    {
+      "part": "wood",
+      "bar": 15,
+      "beat": 1.25,
+      "at": 35.78125,
+      "midi": 53,
+      "duration": 0.11,
+      "velocity": 0.3,
+      "pan": -0.27
+    },
+    {
+      "part": "guitar",
+      "bar": 15,
+      "beat": 1.5,
+      "at": 35.9375,
+      "midi": 62,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 15,
+      "beat": 2.05,
+      "at": 36.28125,
+      "midi": 50,
+      "duration": 0.58,
+      "velocity": 0.23,
+      "pan": 0
+    },
+    {
+      "part": "melody",
+      "bar": 15,
+      "beat": 2.25,
+      "at": 36.40625,
+      "midi": 67,
+      "duration": 0.87,
+      "velocity": 0.3,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 15,
+      "beat": 2.5,
+      "at": 36.5625,
+      "midi": 55,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "guitar",
+      "bar": 15,
+      "beat": 3.25,
+      "at": 37.03125,
+      "midi": 57,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "wood",
+      "bar": 15,
+      "beat": 3.25,
+      "at": 37.03125,
+      "midi": 60,
+      "duration": 0.085,
+      "velocity": 0.22,
+      "pan": 0.24
+    },
+    {
+      "part": "guitar",
+      "bar": 16,
+      "beat": 0,
+      "at": 37.5,
+      "midi": 55,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "bass",
+      "bar": 16,
+      "beat": 0.02,
+      "at": 37.5125,
+      "midi": 48,
+      "duration": 0.82,
+      "velocity": 0.37,
+      "pan": 0
+    },
+    {
+      "part": "melody",
+      "bar": 16,
+      "beat": 0.5,
+      "at": 37.8125,
+      "midi": 64,
+      "duration": 0.9,
+      "velocity": 0.38,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 16,
+      "beat": 0.75,
+      "at": 37.96875,
+      "midi": 57,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "guitar",
+      "bar": 16,
+      "beat": 1.5,
+      "at": 38.4375,
+      "midi": 64,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "guitar",
+      "bar": 16,
+      "beat": 2.5,
+      "at": 39.0625,
+      "midi": 55,
+      "duration": 0.88,
+      "velocity": 0.2784,
+      "pan": 0.22
+    },
+    {
+      "part": "melody",
+      "bar": 16,
+      "beat": 2.75,
+      "at": 39.21875,
+      "midi": 60,
+      "duration": 1.35,
+      "velocity": 0.33,
+      "pan": 0
+    },
+    {
+      "part": "guitar",
+      "bar": 16,
+      "beat": 3.25,
+      "at": 39.53125,
+      "midi": 57,
+      "duration": 0.76,
+      "velocity": 0.32,
+      "pan": -0.2
+    },
+    {
+      "part": "guitar",
+      "bar": 16,
+      "beat": 3.5,
+      "at": 39.6875,
+      "midi": 55,
+      "duration": 1.15,
+      "velocity": 0.19,
+      "pan": 0.17
+    }
+  ]
+}

@@ -1,0 +1,460 @@
+{
+  "productBase": "c9e110c",
+  "status": "experiments failed to close slope float; both physical candidates removed; read-only QA retained",
+  "runs": {
+    "sync-support": {
+      "frames": 637,
+      "byClipCurve": {
+        "n": 390,
+        "maxFloat_mm": 332.3,
+        "maxSink_mm": 1.2,
+        "floatOver20": 86,
+        "sinkOver15": 0
+      },
+      "excludingStopStepSwing": {
+        "n": 277,
+        "maxFloat_mm": 161.6,
+        "maxSink_mm": 1.5,
+        "floatOver20": 8,
+        "sinkOver15": 0
+      },
+      "legacyHeightWindow": {
+        "byClipCurve": {
+          "n": 363,
+          "maxFloat_mm": 325.7,
+          "maxSink_mm": 1.2,
+          "floatOver20": 65,
+          "sinkOver15": 0
+        },
+        "excludingStopStepSwing": {
+          "n": 269,
+          "maxFloat_mm": 88.7,
+          "maxSink_mm": 1.5,
+          "floatOver20": 6,
+          "sinkOver15": 0
+        }
+      },
+      "allStance": {
+        "n": 489,
+        "maxFloat_mm": 332.3,
+        "maxSink_mm": -3,
+        "floatOver20": 101,
+        "sinkOver15": 0
+      },
+      "floatsByAnim": {
+        "Run": 2,
+        "Idle": 2,
+        "Idle(stop-step swing)": 78,
+        "Sprint": 4
+      },
+      "errors": [],
+      "physics": {
+        "Run": {
+          "maxBottomGap_mm": 180.64885616302462,
+          "maxCapsuleDownCast_mm": 161.98095679283142
+        },
+        "Sprint": {
+          "maxBottomGap_mm": 187.81416893005343,
+          "maxCapsuleDownCast_mm": 175.909623503685
+        }
+      },
+      "impulseRecordedFrames": 0,
+      "minImpulseY_Ns": 0,
+      "rawFramesSha256": "e9b3d93ec8d9a8ae2bcfbc1f3c44d791ed52687883d9bcd1bd69cd044091f732",
+      "rawSupportImpulseSha256": "275ce1c26664a196cd09ce2a4cfce9c751bc1a18d456f30a10571a75638501a9"
+    },
+    "adhesion1": {
+      "frames": 638,
+      "byClipCurve": {
+        "n": 370,
+        "maxFloat_mm": 330.3,
+        "maxSink_mm": 1.5,
+        "floatOver20": 64,
+        "sinkOver15": 0
+      },
+      "excludingStopStepSwing": {
+        "n": 276,
+        "maxFloat_mm": 152.3,
+        "maxSink_mm": 1.5,
+        "floatOver20": 8,
+        "sinkOver15": 0
+      },
+      "legacyHeightWindow": {
+        "byClipCurve": {
+          "n": 364,
+          "maxFloat_mm": 330.3,
+          "maxSink_mm": 1.5,
+          "floatOver20": 63,
+          "sinkOver15": 0
+        },
+        "excludingStopStepSwing": {
+          "n": 270,
+          "maxFloat_mm": 115.8,
+          "maxSink_mm": 1.5,
+          "floatOver20": 7,
+          "sinkOver15": 0
+        }
+      },
+      "allStance": {
+        "n": 486,
+        "maxFloat_mm": 330.3,
+        "maxSink_mm": -4.1,
+        "floatOver20": 109,
+        "sinkOver15": 0
+      },
+      "floatsByAnim": {
+        "Run": 1,
+        "Idle": 4,
+        "Idle(stop-step swing)": 56,
+        "Sprint": 3
+      },
+      "errors": [],
+      "physics": {
+        "Run": {
+          "maxBottomGap_mm": 148.32358837127657,
+          "maxCapsuleDownCast_mm": 93.84752810001373
+        },
+        "Sprint": {
+          "maxBottomGap_mm": 186.98626041412325,
+          "maxCapsuleDownCast_mm": 174.35191571712494
+        }
+      },
+      "impulseRecordedFrames": 6,
+      "minImpulseY_Ns": -79.44973273366959,
+      "rawFramesSha256": "1f67e460c6a50ee9a4798504f8d63e439eb77d08bbb072c1c10b84fbcd5ad24a",
+      "rawSupportImpulseSha256": "64895963a04c5c0e40c834e3cb8379e77990365e60765491cc17593bdf9edd4a"
+    },
+    "adhesion2": {
+      "frames": 637,
+      "byClipCurve": {
+        "n": 393,
+        "maxFloat_mm": 337,
+        "maxSink_mm": 1.2,
+        "floatOver20": 77,
+        "sinkOver15": 0
+      },
+      "excludingStopStepSwing": {
+        "n": 284,
+        "maxFloat_mm": 99.3,
+        "maxSink_mm": 1.5,
+        "floatOver20": 8,
+        "sinkOver15": 0
+      },
+      "legacyHeightWindow": {
+        "byClipCurve": {
+          "n": 372,
+          "maxFloat_mm": 328.1,
+          "maxSink_mm": 1.2,
+          "floatOver20": 63,
+          "sinkOver15": 0
+        },
+        "excludingStopStepSwing": {
+          "n": 276,
+          "maxFloat_mm": 99.3,
+          "maxSink_mm": 1.5,
+          "floatOver20": 7,
+          "sinkOver15": 0
+        }
+      },
+      "allStance": {
+        "n": 502,
+        "maxFloat_mm": 337,
+        "maxSink_mm": -3.5,
+        "floatOver20": 103,
+        "sinkOver15": 0
+      },
+      "floatsByAnim": {
+        "Run": 3,
+        "Idle": 2,
+        "Idle(stop-step swing)": 69,
+        "Sprint": 3
+      },
+      "errors": [],
+      "physics": {
+        "Run": {
+          "maxBottomGap_mm": 173.43264102935763,
+          "maxCapsuleDownCast_mm": 153.56910228729248
+        },
+        "Sprint": {
+          "maxBottomGap_mm": 182.49922275543184,
+          "maxCapsuleDownCast_mm": 170.00414431095123
+        }
+      },
+      "impulseRecordedFrames": 43,
+      "minImpulseY_Ns": -87.27552917637999,
+      "rawFramesSha256": "aea7cdf3cd6af87ee954ec755d31f9c749162a6f5fb4d7df23f9a52d407bc8f6",
+      "rawSupportImpulseSha256": "d4ce7fa672e1d1fc2bd0738c374192a89e6904a8d438cc957be7d1c01e3d2474"
+    }
+  },
+  "archive": {
+    "adhesion1": {
+      "base": "c9e110c plus shared read-only support QA instrumentation",
+      "sourceSha256": "988de9604e352191e4180efadad08d68d0f4ed8ce750b3d0543af995f26d0842",
+      "patchSha256": "8d9e6ddcb07b2a38d4e786726a45cc51eeda376e0ec144c81e6fb03779721fc3",
+      "patchPath": "/Users/bobby/Desktop/3D-personal-world/evidence/slope-followup/adhesion1/physical-candidate.patch",
+      "notGitCommit": true
+    },
+    "adhesion2": {
+      "base": "c9e110c plus shared read-only support QA instrumentation",
+      "sourceSha256": "43e121efc3834f7275cc743d5ac0fd24987dbbf078bb38502ae61f359cba048a",
+      "patchSha256": "5799f79d845f5cffe300f06d342f590645dae386f9a6f2dfa9f10689adc6627d",
+      "patchPath": "/Users/bobby/Desktop/3D-personal-world/evidence/slope-followup/adhesion2/physical-candidate.patch",
+      "notGitCommit": true
+    }
+  },
+  "restoration": {
+    "physicsStepMatches_c9e110c_afterRemovingReadOnlyDecisionRecording": true,
+    "basePhysicsStepSha256": "4d6b1b5505f3fb5954e5a1557cad9b2b23024d531036dff8b45f88a95ecdd62c",
+    "restoredPhysicsStepSha256": "4d6b1b5505f3fb5954e5a1557cad9b2b23024d531036dff8b45f88a95ecdd62c"
+  },
+  "syncWorst": [
+    {
+      "t": 6.8752,
+      "anim": "Sprint",
+      "grounded": true,
+      "body": [
+        -17.39434242248535,
+        5.626660346984863,
+        33.25565719604492
+      ],
+      "velocity": [
+        4.418681621551514,
+        -1.0111110210418701,
+        -3.3344337940216064
+      ],
+      "root": [
+        -17.41887412993192,
+        4.811841514520428,
+        33.27416806006346
+      ],
+      "visualMinusBottom_mm": 5.181167535565301,
+      "groundY": 4.61884617805481,
+      "bottomGap_mm": 187.81416893005343,
+      "cast_mm": 175.909623503685,
+      "normalGap_mm": null,
+      "groundNormal": [
+        0.23962730169296265,
+        0.9664804935455322,
+        -0.09216415137052536
+      ],
+      "freshRay": null,
+      "decision": {
+        "step": 456,
+        "body": [
+          -17.468233108520508,
+          5.642266273498535,
+          33.3114128112793
+        ],
+        "velocity": [
+          4.316822528839111,
+          -0.8061481714248657,
+          -3.262644052505493
+        ],
+        "grounded": true,
+        "jumpRequested": false,
+        "ray": {
+          "distance": 0.999782919883728,
+          "normal": [
+            0.23962730169296265,
+            0.9664804935455322,
+            -0.09216415137052536
+          ],
+          "groundY": 4.642483353614807
+        }
+      },
+      "solverDistances": [],
+      "sole_mm": [
+        161.6,
+        252.0
+      ],
+      "contact": [
+        1,
+        0
+      ],
+      "stepping": [
+        0,
+        0,
+        "off"
+      ],
+      "jumpSeq": 0,
+      "dt": 0.0162
+    },
+    {
+      "t": 7.0258,
+      "anim": "Sprint",
+      "grounded": true,
+      "body": [
+        -16.71286964416504,
+        5.33383846282959,
+        32.74245834350586
+      ],
+      "velocity": [
+        4.693381309509277,
+        -2.8254048824310303,
+        -3.5269718170166016
+      ],
+      "root": [
+        -16.736100784414027,
+        4.527438232487599,
+        32.759915008629285
+      ],
+      "visualMinusBottom_mm": 13.599769658009464,
+      "groundY": 4.400944232940674,
+      "bottomGap_mm": 112.89422988891573,
+      "cast_mm": 101.00211948156357,
+      "normalGap_mm": null,
+      "groundNormal": [
+        0.23962730169296265,
+        0.9664804935455322,
+        -0.09216415137052536
+      ],
+      "freshRay": {
+        "distance": 0.932894229888916,
+        "normal": [
+          0.23962730169296265,
+          0.9664804935455322,
+          -0.09216415137052536
+        ],
+        "wouldGround": true
+      },
+      "decision": {
+        "step": 465,
+        "body": [
+          -16.791353225708008,
+          5.379783630371094,
+          32.80143356323242
+        ],
+        "velocity": [
+          4.653459548950195,
+          -2.6264898777008057,
+          -3.498594284057617
+        ],
+        "grounded": true,
+        "jumpRequested": false,
+        "ray": {
+          "distance": 0.9537564516067505,
+          "normal": [
+            0.23962730169296265,
+            0.9664804935455322,
+            -0.09216415137052536
+          ],
+          "groundY": 4.426027178764343
+        }
+      },
+      "solverDistances": [],
+      "sole_mm": [
+        183.10000000000002,
+        88.7
+      ],
+      "contact": [
+        0,
+        1
+      ],
+      "stepping": [
+        0,
+        0,
+        "off"
+      ],
+      "jumpSeq": 0,
+      "dt": 0.0158
+    },
+    {
+      "t": 2.2607,
+      "anim": "Run",
+      "grounded": true,
+      "body": [
+        -17.299402236938477,
+        5.4503326416015625,
+        32.587589263916016
+      ],
+      "velocity": [
+        2.7903616428375244,
+        -2.267378568649292,
+        -2.1169776916503906
+      ],
+      "root": [
+        -17.30882783488276,
+        4.637728561244238,
+        32.59474014267035
+      ],
+      "visualMinusBottom_mm": 7.395919642675608,
+      "groundY": 4.531599581241608,
+      "bottomGap_mm": 98.73306035995455,
+      "cast_mm": 86.62430942058563,
+      "normalGap_mm": null,
+      "groundNormal": [
+        0.23962730169296265,
+        0.9664804935455322,
+        -0.09216415137052536
+      ],
+      "freshRay": {
+        "distance": 0.9187330603599548,
+        "normal": [
+          0.23962730169296265,
+          0.9664804935455322,
+          -0.09216415137052536
+        ],
+        "wouldGround": true
+      },
+      "decision": {
+        "step": 179,
+        "body": [
+          -17.3460636138916,
+          5.486946105957031,
+          32.622989654541016
+        ],
+        "velocity": [
+          2.7818758487701416,
+          -2.066603422164917,
+          -2.1160712242126465
+        ],
+        "grounded": true,
+        "jumpRequested": false,
+        "ray": {
+          "distance": 0.9404016137123108,
+          "normal": [
+            0.23962730169296265,
+            0.9664804935455322,
+            -0.09216415137052536
+          ],
+          "groundY": 4.5465444922447205
+        }
+      },
+      "solverDistances": [],
+      "sole_mm": [
+        83.0,
+        222.5
+      ],
+      "contact": [
+        1,
+        0
+      ],
+      "stepping": [
+        0,
+        0,
+        "off"
+      ],
+      "jumpSeq": 0,
+      "dt": 0.0168
+    }
+  ],
+  "evidenceRoot": "/Users/bobby/Desktop/3D-personal-world/evidence/slope-followup",
+  "ordinaryMedia": [
+    {
+      "file": "/Users/bobby/Desktop/3D-personal-world/evidence/slope-followup/adhesion1-normal/ordinary-ramp-adhesion1.webm",
+      "sha256": "8d29758091ec34d29913345c762831421d45245ec49580ccf138fb6be3a2577f",
+      "scope": "ordinary entry real keyboard canvas video; route crosses camp and grass slope, not exact original road ramp"
+    },
+    {
+      "file": "/Users/bobby/Desktop/3D-personal-world/evidence/slope-followup/adhesion2-normal/ordinary-ramp-adhesion2.webm",
+      "sha256": "ae5e5af471d818ae2f9a69957eba24ba445d4e603038c1a5b1174443cb628361",
+      "scope": "ordinary entry real keyboard canvas video; route crosses camp and grass slope, not exact original road ramp"
+    }
+  ],
+  "checks": {
+    "astro": "254 files, 0 error / 0 warning / 135 hints",
+    "diffCheck": "passed",
+    "botSyntax": "passed",
+    "candidatePatchesApplyCheck": "both passed against retained QA code"
+  }
+}

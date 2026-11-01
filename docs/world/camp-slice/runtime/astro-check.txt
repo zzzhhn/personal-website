@@ -1,0 +1,115 @@
+npm run check (once) — 2026-10-21
+74 files; 0 errors; 0 warnings; 101 hints.
+Full local log: /Users/bobby/Desktop/3D-personal-world/camp-slice-evidence/astro-check.log
+
+Hint locations (compiler labels these lines warning; final Astro summary classifies them as hints):
+{
+  "public/assets/world/draco/draco_decoder.js": 61,
+  "public/assets/world/draco/draco_wasm_wrapper.js": 31,
+  "src/content.config.ts": 2,
+  "src/components/astro/Hero.astro": 4,
+  "src/components/react/WorkflowDiagram.tsx": 2,
+  "src/layouts/BaseLayout.astro": 1
+}
+
+public/assets/world/draco/draco_decoder.js:21:76221 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:72958 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:72034 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:71131 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:70207 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:69304 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:68401 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:67519 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:66574 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:65808 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:65379 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:64602 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:63829 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:62598 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:60866 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:58792 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:58228 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:57390 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:56586 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:56194 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:53644 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:52850 - warning ts(6133): '___stop_em_js' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:21:52800 - warning ts(6133): '___start_em_js' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:21:52578 - warning ts(6133): '_free' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:21:52460 - warning ts(6133): '_malloc' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:21:52344 - warning ts(6133): '___errno_location' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:21:11994 - warning ts(6133): '___wasm_call_ctors' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:21:11973 - warning ts(6133): 'asm' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:21:9284 - warning ts(6133): 'exceptionLast' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:21:7872 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:7483 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_decoder.js:21:6602 - warning ts(80006): This may be converted to an async function.
+public/assets/world/draco/draco_decoder.js:21:6039 - warning ts(6133): 'module' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:21:5338 - warning ts(80006): This may be converted to an async function.
+public/assets/world/draco/draco_decoder.js:21:4150 - warning ts(6133): 'id' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:21:4011 - warning ts(6133): 'id' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:21:3080 - warning ts(6133): 'wasmTable' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:21:2265 - warning ts(6133): 'HEAPF64' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:21:2257 - warning ts(6133): 'HEAPF32' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:21:2234 - warning ts(6133): 'HEAPU16' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:21:2227 - warning ts(6133): 'HEAP16' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:21:312 - warning ts(6133): 'EXITSTATUS' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:12:185004 - warning ts(6133): 'k' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:12:165354 - warning ts(80008): Numeric literals with absolute values equal to 2^53 or greater are too large to be represented accurately as integers.
+public/assets/world/draco/draco_decoder.js:12:165269 - warning ts(80008): Numeric literals with absolute values equal to 2^53 or greater are too large to be represented accurately as integers.
+public/assets/world/draco/draco_decoder.js:12:165247 - warning ts(80008): Numeric literals with absolute values equal to 2^53 or greater are too large to be represented accurately as integers.
+public/assets/world/draco/draco_decoder.js:12:164611 - warning ts(80008): Numeric literals with absolute values equal to 2^53 or greater are too large to be represented accurately as integers.
+public/assets/world/draco/draco_decoder.js:12:164517 - warning ts(80008): Numeric literals with absolute values equal to 2^53 or greater are too large to be represented accurately as integers.
+public/assets/world/draco/draco_decoder.js:12:164492 - warning ts(80008): Numeric literals with absolute values equal to 2^53 or greater are too large to be represented accurately as integers.
+public/assets/world/draco/draco_decoder.js:10:15211 - warning ts(6133): 'T' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:10:14714 - warning ts(6133): 'u' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:10:480 - warning ts(6133): 'q' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:8:4585 - warning ts(6133): 'module' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:8:4557 - warning ts(6133): 'binary' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:8:4018 - warning ts(6133): 'out' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:8:3090 - warning ts(6387): The signature '(from: number, length?: number | undefined): string' of 'scriptDirectory.substr' is deprecated.
+public/assets/world/draco/draco_decoder.js:8:1517 - warning ts(6133): 'setWindowTitle' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:8:1071 - warning ts(6133): 'status' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:8:1064 - warning ts(6133): 'quit_' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:8:1031 - warning ts(6133): 'thisProgram' is declared but its value is never read.
+public/assets/world/draco/draco_decoder.js:8:1013 - warning ts(6133): 'arguments_' is declared but its value is never read.
+public/assets/world/draco/draco_wasm_wrapper.js:37:289 - warning ts(6133): 't' is declared but its value is never read.
+public/assets/world/draco/draco_wasm_wrapper.js:34:406 - warning ts(6387): The signature '(from: number, length?: number | undefined): string' of 'U.substr' is deprecated.
+public/assets/world/draco/draco_wasm_wrapper.js:31:508 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:31:461 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:31:414 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:31:367 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:31:320 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:31:273 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:31:226 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:31:179 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:31:132 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:31:62 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:31:15 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:30:471 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:30:424 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:30:377 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:30:330 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:30:283 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:30:236 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:30:189 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:30:142 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:30:71 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:28:226 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:25:192 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:24:279 - warning ts(80006): This may be converted to an async function.
+public/assets/world/draco/draco_wasm_wrapper.js:16:371 - warning ts(6133): 'n' is declared but its value is never read.
+public/assets/world/draco/draco_wasm_wrapper.js:15:263 - warning ts(6133): 'q' is declared but its value is never read.
+public/assets/world/draco/draco_wasm_wrapper.js:9:390 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:8:125 - warning ts(6133): 'u' is declared but its value is never read.
+public/assets/world/draco/draco_wasm_wrapper.js:8:49 - warning ts(80002): This constructor function may be converted to a class declaration.
+public/assets/world/draco/draco_wasm_wrapper.js:4:5 - warning ts(6133): '$jscomp$lookupPolyfilledValue' is declared but its value is never read.
+src/content.config.ts:28:26 - warning ts(6385): '(params?: string | { normalize?: boolean | undefined; abort?: boolean | undefined; pattern?: RegExp | undefined; hostname?: RegExp | undefined; protocol?: RegExp | undefined; error?: string | ... 1 more ... | undefined; message?: string | undefined; } | undefined): ZodString' is deprecated.
+src/content.config.ts:27:24 - warning ts(6385): '(params?: string | { normalize?: boolean | undefined; abort?: boolean | undefined; pattern?: RegExp | undefined; hostname?: RegExp | undefined; protocol?: RegExp | undefined; error?: string | ... 1 more ... | undefined; message?: string | undefined; } | undefined): ZodString' is deprecated.
+src/components/astro/Hero.astro:1108:5 - warning ts(6199): All variables are unused.
+src/components/astro/Hero.astro:851:27 - warning ts(6133): 't' is declared but its value is never read.
+src/components/astro/Hero.astro:851:24 - warning ts(6133): 'h' is declared but its value is never read.
+src/components/astro/Hero.astro:851:21 - warning ts(6133): 'w' is declared but its value is never read.
+src/components/react/WorkflowDiagram.tsx:94:17 - warning ts(6133): 'x2' is declared but its value is never read.
+src/components/react/WorkflowDiagram.tsx:93:17 - warning ts(6133): 'x1' is declared but its value is never read.
+src/layouts/BaseLayout.astro:125:13 - warning ts(6133): 'raf' is declared but its value is never read.

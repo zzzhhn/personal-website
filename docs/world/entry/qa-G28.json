@@ -1,0 +1,6694 @@
+{
+ "asset": "G28",
+ "blenderVersion": "5.1.2",
+ "source": "tools/world/entry/build_portal.blend",
+ "arcProportions": {
+  "outerRadiiYZ": [
+   1.65,
+   1.65
+  ],
+  "innerRadiiYZ": [
+   1.25,
+   1.25
+  ],
+  "centreHeightM": 1.65,
+  "outerAxisRatio": 1.0,
+  "innerAxisRatio": 1.0,
+  "instanceScale": [
+   1,
+   1,
+   1
+  ]
+ },
+ "glb": "public/assets/world/entry/G28.glb",
+ "sha256": "eaf94d2e83696cdd92309a433720216978b3f548a58f4293703ab99dc30dcfac",
+ "bytes": 51100,
+ "exportOptions": {
+  "export_format": "GLB",
+  "use_selection": true,
+  "export_apply": true,
+  "export_yup": true,
+  "export_normals": true,
+  "export_materials": "EXPORT",
+  "export_cameras": false,
+  "export_lights": false,
+  "export_animations": false,
+  "export_extras": true,
+  "export_texcoords": false,
+  "export_tangents": false,
+  "export_draco_mesh_compression_enable": true,
+  "export_draco_mesh_compression_level": 6,
+  "export_draco_position_quantization": 20,
+  "export_draco_normal_quantization": 12
+ },
+ "native": {
+  "label": "evaluated native after bevel and weighted normals",
+  "triangles": 4392,
+  "meshCount": 30,
+  "boundsMin": [
+   -0.46500808000564575,
+   -1.6552096605300903,
+   0.0
+  ],
+  "boundsMax": [
+   0.46500808000564575,
+   1.6552096605300903,
+   3.319319009780884
+  ],
+  "dimensionsBlenderXYZ": [
+   0.9300161600112915,
+   3.3104193210601807,
+   3.319319009780884
+  ],
+  "objects": [
+   {
+    "name": "G28_stone_01",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.06159017989657e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14238120597193285
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14238120597193285
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_01",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.0001499996997836726,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014636854887215925
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014636854887215925
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_02",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.09060797186871e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14658291214868566
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14658291214868566
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_02",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999968016969194,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015313906738019986
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015313906738019986
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_03",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.091240514831572e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.12128580809597253
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.12128580809597253
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_03",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00015000011389711796,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014298290181062134
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014298290181062134
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_04",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.079769438499566e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14296258842786508
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14296258842786508
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_04",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999930713349645,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015652390181071968
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015652390181071968
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_05",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.068416808821478e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14719509094378203
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14719509094378203
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_05",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999921424437888,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014467544974235597
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014467544974235597
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_06",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.099731832748211e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.13756525474848516
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.13756525474848516
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_06",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999955397401932,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015483159159875487
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015483159159875487
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_07",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.054123527086899e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14239862227067127
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14239862227067127
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_07",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.0001499984045152924,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015313860478801306
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015313860478801306
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_08",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.104134121453074e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.12942674900895787
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.12942674900895787
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_08",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999930454296406,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014467594444885398
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014467594444885398
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_09",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.115870309347377e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14405954253362088
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14405954253362088
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_09",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999921868529418,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.0001565239929419704
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.0001565239929419704
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_10",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.050163575706511e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.13878077470143999
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.13878077470143999
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_10",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999992219863213,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014298260296404428
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014298260296404428
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_11",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.074018857716448e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14240891420376875
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14240891420376875
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_11",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.0001499999188679613,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015313892306748994
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015313892306748994
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_12",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.092599518163584e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.13441868536462506
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.13441868536462506
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_12",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999923644895406,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.0001480610408114795
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.0001480610408114795
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_base_L_foot",
+    "triangles": 108,
+    "vertices": 56,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.0001392532512615297,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.25446597655272607
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.25446597655272607
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_base_L_outer",
+    "triangles": 108,
+    "vertices": 56,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014636392607070641,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.185161401920371
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.185161401920371
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_base_L_toe",
+    "triangles": 108,
+    "vertices": 56,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.0001464768357315528,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.1890369807311401
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.1890369807311401
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_base_R_foot",
+    "triangles": 108,
+    "vertices": 56,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00013925381333505086,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.2545175443651454
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.2545175443651454
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_base_R_outer",
+    "triangles": 108,
+    "vertices": 56,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014636293997062513,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.1851464967890715
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.1851464967890715
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_base_R_toe",
+    "triangles": 108,
+    "vertices": 56,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.0001464768357315528,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.18904012030043588
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.18904012030043588
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  ],
+  "materials": {
+   "G28_stone": {
+    "role": "stone",
+    "hex": "#B4A896",
+    "faces": 1512,
+    "area": 19.05578534382221,
+    "baseColor": [
+     0.4564110338687897,
+     0.3915724754333496,
+     0.3049873113632202,
+     1.0
+    ],
+    "roughness": 0.9200000166893005,
+    "metallic": 0.0,
+    "emissionStrength": 0.0,
+    "emissionColor": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "effectiveEmissionRGB": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "G28_light_cyan": {
+    "role": "light",
+    "hex": "#4FD1C5",
+    "faces": 360,
+    "area": 0.4506016377999913,
+    "baseColor": [
+     0.07818742096424103,
+     0.637596845626831,
+     0.5583403706550598,
+     1.0
+    ],
+    "roughness": 0.75,
+    "metallic": 0.0,
+    "emissionStrength": 0.11999999731779099,
+    "emissionColor": [
+     0.07818742096424103,
+     0.637596845626831,
+     0.5583403706550598,
+     1.0
+    ],
+    "effectiveEmissionRGB": [
+     0.009382490305993918,
+     0.07651161976505172,
+     0.0670008429810216
+    ]
+   },
+   "G28_stone_base": {
+    "role": "stone",
+    "hex": "#8C8276",
+    "faces": 330,
+    "area": 13.02656815230148,
+    "baseColor": [
+     0.2622506618499756,
+     0.22322796285152435,
+     0.18116424977779388,
+     1.0
+    ],
+    "roughness": 0.9399999976158142,
+    "metallic": 0.0,
+    "emissionStrength": 0.0,
+    "emissionColor": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "effectiveEmissionRGB": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "problems": [],
+  "rawTopologyNote": "GLB raw vertices may split at normal seams; retain raw counts and inspect disposable 10um per-object weld, never weld different stones together.",
+  "assembly": {
+   "bodyHeightM": 1.7,
+   "bodyDiameterM": 0.6,
+   "sweptWidthSamples": [
+    {
+     "x": -0.25,
+     "height": 0.03,
+     "left": 0.6078956127166748,
+     "right": 0.6123510599136353,
+     "clearWidth": 1.22024667263031
+    },
+    {
+     "x": -0.25,
+     "height": 0.093,
+     "left": 0.6126293540000916,
+     "right": 0.6170846819877625,
+     "clearWidth": 1.229714035987854
+    },
+    {
+     "x": -0.25,
+     "height": 0.156,
+     "left": 0.6239263415336609,
+     "right": 0.6283816695213318,
+     "clearWidth": 1.2523080110549927
+    },
+    {
+     "x": -0.25,
+     "height": 0.219,
+     "left": 0.6312332153320312,
+     "right": 0.6356885433197021,
+     "clearWidth": 1.2669217586517334
+    },
+    {
+     "x": -0.25,
+     "height": 0.28200000000000003,
+     "left": 0.6365060806274414,
+     "right": 0.6409614086151123,
+     "clearWidth": 1.2774674892425537
+    },
+    {
+     "x": -0.25,
+     "height": 0.345,
+     "left": 0.6417790651321411,
+     "right": 0.6462342739105225,
+     "clearWidth": 1.2880133390426636
+    },
+    {
+     "x": -0.25,
+     "height": 0.40800000000000003,
+     "left": 0.6470519304275513,
+     "right": 0.6515071988105774,
+     "clearWidth": 1.2985591292381287
+    },
+    {
+     "x": -0.25,
+     "height": 0.471,
+     "left": 0.6523247361183167,
+     "right": 0.6567800641059875,
+     "clearWidth": 1.3091048002243042
+    },
+    {
+     "x": -0.25,
+     "height": 0.534,
+     "left": 0.6575977206230164,
+     "right": 0.6620529294013977,
+     "clearWidth": 1.319650650024414
+    },
+    {
+     "x": -0.25,
+     "height": 0.597,
+     "left": 0.6740676164627075,
+     "right": 0.6785283088684082,
+     "clearWidth": 1.3525959253311157
+    },
+    {
+     "x": -0.25,
+     "height": 0.66,
+     "left": 0.7600153684616089,
+     "right": 0.7645028829574585,
+     "clearWidth": 1.5245182514190674
+    },
+    {
+     "x": -0.25,
+     "height": 0.7230000000000001,
+     "left": 0.8360181450843811,
+     "right": 0.8405657410621643,
+     "clearWidth": 1.6765838861465454
+    },
+    {
+     "x": -0.25,
+     "height": 0.786,
+     "left": 0.9008404612541199,
+     "right": 0.9052007794380188,
+     "clearWidth": 1.8060412406921387
+    },
+    {
+     "x": -0.25,
+     "height": 0.849,
+     "left": 0.9569272994995117,
+     "right": 0.9613069891929626,
+     "clearWidth": 1.9182342886924744
+    },
+    {
+     "x": -0.25,
+     "height": 0.912,
+     "left": 1.0061239004135132,
+     "right": 1.0105119943618774,
+     "clearWidth": 2.0166358947753906
+    },
+    {
+     "x": -0.25,
+     "height": 0.9750000000000001,
+     "left": 1.0495938062667847,
+     "right": 1.0563474893569946,
+     "clearWidth": 2.1059412956237793
+    },
+    {
+     "x": -0.25,
+     "height": 1.038,
+     "left": 1.087282419204712,
+     "right": 1.0942009687423706,
+     "clearWidth": 2.1814833879470825
+    },
+    {
+     "x": -0.25,
+     "height": 1.101,
+     "left": 1.120528221130371,
+     "right": 1.1273363828659058,
+     "clearWidth": 2.247864603996277
+    },
+    {
+     "x": -0.25,
+     "height": 1.164,
+     "left": 1.1493641138076782,
+     "right": 1.156191349029541,
+     "clearWidth": 2.3055554628372192
+    },
+    {
+     "x": -0.25,
+     "height": 1.227,
+     "left": 1.1736705303192139,
+     "right": 1.1806864738464355,
+     "clearWidth": 2.3543570041656494
+    },
+    {
+     "x": -0.25,
+     "height": 1.29,
+     "left": 1.194254994392395,
+     "right": 1.2011600732803345,
+     "clearWidth": 2.3954150676727295
+    },
+    {
+     "x": -0.25,
+     "height": 1.353,
+     "left": 1.2113438844680786,
+     "right": 1.218147873878479,
+     "clearWidth": 2.4294917583465576
+    },
+    {
+     "x": -0.25,
+     "height": 1.4160000000000001,
+     "left": 1.2251131534576416,
+     "right": 1.2318252325057983,
+     "clearWidth": 2.45693838596344
+    },
+    {
+     "x": -0.25,
+     "height": 1.479,
+     "left": 1.238814353942871,
+     "right": 1.2410643100738525,
+     "clearWidth": 2.4798786640167236
+    },
+    {
+     "x": -0.25,
+     "height": 1.542,
+     "left": 1.2430473566055298,
+     "right": 1.247362494468689,
+     "clearWidth": 2.4904098510742188
+    },
+    {
+     "x": -0.25,
+     "height": 1.605,
+     "left": 1.2467302083969116,
+     "right": 1.2513177394866943,
+     "clearWidth": 2.498047947883606
+    },
+    {
+     "x": -0.25,
+     "height": 1.668,
+     "left": 1.2472163438796997,
+     "right": 1.251757264137268,
+     "clearWidth": 2.4989736080169678
+    },
+    {
+     "x": -0.25,
+     "height": 1.731,
+     "left": 1.244616150856018,
+     "right": 1.2491111755371094,
+     "clearWidth": 2.4937273263931274
+    },
+    {
+     "x": 0,
+     "height": 0.03,
+     "left": 0.6140832304954529,
+     "right": 0.6185385584831238,
+     "clearWidth": 1.2326217889785767
+    },
+    {
+     "x": 0,
+     "height": 0.093,
+     "left": 0.6183479428291321,
+     "right": 0.6228033304214478,
+     "clearWidth": 1.2411512732505798
+    },
+    {
+     "x": 0,
+     "height": 0.156,
+     "left": 0.6226125359535217,
+     "right": 0.6270678639411926,
+     "clearWidth": 1.2496803998947144
+    },
+    {
+     "x": 0,
+     "height": 0.219,
+     "left": 0.6314740180969238,
+     "right": 0.63592928647995,
+     "clearWidth": 1.2674033045768738
+    },
+    {
+     "x": 0,
+     "height": 0.28200000000000003,
+     "left": 0.637093186378479,
+     "right": 0.6415485143661499,
+     "clearWidth": 1.278641700744629
+    },
+    {
+     "x": 0,
+     "height": 0.345,
+     "left": 0.63876873254776,
+     "right": 0.6432240605354309,
+     "clearWidth": 1.281992793083191
+    },
+    {
+     "x": 0,
+     "height": 0.40800000000000003,
+     "left": 0.6432048678398132,
+     "right": 0.6476601362228394,
+     "clearWidth": 1.2908650040626526
+    },
+    {
+     "x": 0,
+     "height": 0.471,
+     "left": 0.6484777331352234,
+     "right": 0.6529330015182495,
+     "clearWidth": 1.301410734653473
+    },
+    {
+     "x": 0,
+     "height": 0.534,
+     "left": 0.6537506580352783,
+     "right": 0.6582059860229492,
+     "clearWidth": 1.3119566440582275
+    },
+    {
+     "x": 0,
+     "height": 0.597,
+     "left": 0.6740679740905762,
+     "right": 0.6785282492637634,
+     "clearWidth": 1.3525962233543396
+    },
+    {
+     "x": 0,
+     "height": 0.66,
+     "left": 0.7600153088569641,
+     "right": 0.7645028829574585,
+     "clearWidth": 1.5245181918144226
+    },
+    {
+     "x": 0,
+     "height": 0.7230000000000001,
+     "left": 0.8360180854797363,
+     "right": 0.8405657410621643,
+     "clearWidth": 1.6765838265419006
+    },
+    {
+     "x": 0,
+     "height": 0.786,
+     "left": 0.9008404612541199,
+     "right": 0.905200719833374,
+     "clearWidth": 1.806041181087494
+    },
+    {
+     "x": 0,
+     "height": 0.849,
+     "left": 0.9569272398948669,
+     "right": 0.9613069891929626,
+     "clearWidth": 1.9182342290878296
+    },
+    {
+     "x": 0,
+     "height": 0.912,
+     "left": 1.0061239004135132,
+     "right": 1.0105119943618774,
+     "clearWidth": 2.0166358947753906
+    },
+    {
+     "x": 0,
+     "height": 0.9750000000000001,
+     "left": 1.0495940446853638,
+     "right": 1.0536798238754272,
+     "clearWidth": 2.103273868560791
+    },
+    {
+     "x": 0,
+     "height": 1.038,
+     "left": 1.087282419204712,
+     "right": 1.0916297435760498,
+     "clearWidth": 2.1789121627807617
+    },
+    {
+     "x": 0,
+     "height": 1.101,
+     "left": 1.1205281019210815,
+     "right": 1.1248449087142944,
+     "clearWidth": 2.245373010635376
+    },
+    {
+     "x": 0,
+     "height": 1.164,
+     "left": 1.1493642330169678,
+     "right": 1.1537655591964722,
+     "clearWidth": 2.30312979221344
+    },
+    {
+     "x": 0,
+     "height": 1.227,
+     "left": 1.1736705303192139,
+     "right": 1.1782606840133667,
+     "clearWidth": 2.3519312143325806
+    },
+    {
+     "x": 0,
+     "height": 1.29,
+     "left": 1.1942548751831055,
+     "right": 1.1987873315811157,
+     "clearWidth": 2.393042206764221
+    },
+    {
+     "x": 0,
+     "height": 1.353,
+     "left": 1.2113440036773682,
+     "right": 1.215816855430603,
+     "clearWidth": 2.427160859107971
+    },
+    {
+     "x": 0,
+     "height": 1.4160000000000001,
+     "left": 1.2251132726669312,
+     "right": 1.2295252084732056,
+     "clearWidth": 2.4546384811401367
+    },
+    {
+     "x": 0,
+     "height": 1.479,
+     "left": 1.2388148307800293,
+     "right": 1.2410643100738525,
+     "clearWidth": 2.479879140853882
+    },
+    {
+     "x": 0,
+     "height": 1.542,
+     "left": 1.2430473566055298,
+     "right": 1.247362494468689,
+     "clearWidth": 2.4904098510742188
+    },
+    {
+     "x": 0,
+     "height": 1.605,
+     "left": 1.2467304468154907,
+     "right": 1.2513177394866943,
+     "clearWidth": 2.498048186302185
+    },
+    {
+     "x": 0,
+     "height": 1.668,
+     "left": 1.2472163438796997,
+     "right": 1.251757264137268,
+     "clearWidth": 2.4989736080169678
+    },
+    {
+     "x": 0,
+     "height": 1.731,
+     "left": 1.2446162700653076,
+     "right": 1.249111294746399,
+     "clearWidth": 2.4937275648117065
+    },
+    {
+     "x": 0.25,
+     "height": 0.03,
+     "left": 0.6202709674835205,
+     "right": 0.6247262954711914,
+     "clearWidth": 1.244997262954712
+    },
+    {
+     "x": 0.25,
+     "height": 0.093,
+     "left": 0.6245355606079102,
+     "right": 0.6289909482002258,
+     "clearWidth": 1.253526508808136
+    },
+    {
+     "x": 0.25,
+     "height": 0.156,
+     "left": 0.6288002133369446,
+     "right": 0.6332556009292603,
+     "clearWidth": 1.2620558142662048
+    },
+    {
+     "x": 0.25,
+     "height": 0.219,
+     "left": 0.633064866065979,
+     "right": 0.6375201344490051,
+     "clearWidth": 1.2705850005149841
+    },
+    {
+     "x": 0.25,
+     "height": 0.28200000000000003,
+     "left": 0.6390218138694763,
+     "right": 0.6434770822525024,
+     "clearWidth": 1.2824988961219788
+    },
+    {
+     "x": 0.25,
+     "height": 0.345,
+     "left": 0.6475765109062195,
+     "right": 0.6520317792892456,
+     "clearWidth": 1.299608290195465
+    },
+    {
+     "x": 0.25,
+     "height": 0.40800000000000003,
+     "left": 0.6492519974708557,
+     "right": 0.6537073254585266,
+     "clearWidth": 1.3029593229293823
+    },
+    {
+     "x": 0.25,
+     "height": 0.471,
+     "left": 0.6509276032447815,
+     "right": 0.6553828120231628,
+     "clearWidth": 1.3063104152679443
+    },
+    {
+     "x": 0.25,
+     "height": 0.534,
+     "left": 0.652603030204773,
+     "right": 0.6570582985877991,
+     "clearWidth": 1.309661328792572
+    },
+    {
+     "x": 0.25,
+     "height": 0.597,
+     "left": 0.668712317943573,
+     "right": 0.6731676459312439,
+     "clearWidth": 1.341879963874817
+    },
+    {
+     "x": 0.25,
+     "height": 0.66,
+     "left": 0.7645152807235718,
+     "right": 0.764503002166748,
+     "clearWidth": 1.5290182828903198
+    },
+    {
+     "x": 0.25,
+     "height": 0.7230000000000001,
+     "left": 0.8412624597549438,
+     "right": 0.8405658006668091,
+     "clearWidth": 1.681828260421753
+    },
+    {
+     "x": 0.25,
+     "height": 0.786,
+     "left": 0.9062477350234985,
+     "right": 0.9052008390426636,
+     "clearWidth": 1.811448574066162
+    },
+    {
+     "x": 0.25,
+     "height": 0.849,
+     "left": 0.9626898169517517,
+     "right": 0.9613069891929626,
+     "clearWidth": 1.9239968061447144
+    },
+    {
+     "x": 0.25,
+     "height": 0.912,
+     "left": 1.012141466140747,
+     "right": 1.0105119943618774,
+     "clearWidth": 2.0226534605026245
+    },
+    {
+     "x": 0.25,
+     "height": 0.9750000000000001,
+     "left": 1.0495940446853638,
+     "right": 1.0536798238754272,
+     "clearWidth": 2.103273868560791
+    },
+    {
+     "x": 0.25,
+     "height": 1.038,
+     "left": 1.0872822999954224,
+     "right": 1.0916297435760498,
+     "clearWidth": 2.178912043571472
+    },
+    {
+     "x": 0.25,
+     "height": 1.101,
+     "left": 1.1205281019210815,
+     "right": 1.1248447895050049,
+     "clearWidth": 2.2453728914260864
+    },
+    {
+     "x": 0.25,
+     "height": 1.164,
+     "left": 1.1493642330169678,
+     "right": 1.1537655591964722,
+     "clearWidth": 2.30312979221344
+    },
+    {
+     "x": 0.25,
+     "height": 1.227,
+     "left": 1.1736704111099243,
+     "right": 1.1782605648040771,
+     "clearWidth": 2.3519309759140015
+    },
+    {
+     "x": 0.25,
+     "height": 1.29,
+     "left": 1.1942548751831055,
+     "right": 1.1987874507904053,
+     "clearWidth": 2.3930423259735107
+    },
+    {
+     "x": 0.25,
+     "height": 1.353,
+     "left": 1.2113438844680786,
+     "right": 1.2158169746398926,
+     "clearWidth": 2.427160859107971
+    },
+    {
+     "x": 0.25,
+     "height": 1.4160000000000001,
+     "left": 1.2251132726669312,
+     "right": 1.2295252084732056,
+     "clearWidth": 2.4546384811401367
+    },
+    {
+     "x": 0.25,
+     "height": 1.479,
+     "left": 1.2388148307800293,
+     "right": null,
+     "clearWidth": null
+    },
+    {
+     "x": 0.25,
+     "height": 1.542,
+     "left": 1.2430473566055298,
+     "right": null,
+     "clearWidth": null
+    },
+    {
+     "x": 0.25,
+     "height": 1.605,
+     "left": 1.246730089187622,
+     "right": null,
+     "clearWidth": null
+    },
+    {
+     "x": 0.25,
+     "height": 1.668,
+     "left": 1.2472163438796997,
+     "right": null,
+     "clearWidth": null
+    },
+    {
+     "x": 0.25,
+     "height": 1.731,
+     "left": 1.2446162700653076,
+     "right": null,
+     "clearWidth": null
+    }
+   ],
+   "minBodyHeightClearWidth": 1.22024667263031,
+   "centreClearHeight": 2.895289192199707,
+   "stoneBaseContacts": [
+    {
+     "a": "G28_base_L_foot",
+     "b": "G28_base_L_outer",
+     "triangleOverlapPairs": 41,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_L_foot",
+     "b": "G28_base_L_toe",
+     "triangleOverlapPairs": 36,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_L_foot",
+     "b": "G28_stone_12",
+     "triangleOverlapPairs": 25,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_L_outer",
+     "b": "G28_base_L_toe",
+     "triangleOverlapPairs": 39,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_L_outer",
+     "b": "G28_stone_11",
+     "triangleOverlapPairs": 42,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_L_outer",
+     "b": "G28_stone_12",
+     "triangleOverlapPairs": 67,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_L_toe",
+     "b": "G28_stone_12",
+     "triangleOverlapPairs": 73,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_R_foot",
+     "b": "G28_base_R_outer",
+     "triangleOverlapPairs": 39,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_R_foot",
+     "b": "G28_base_R_toe",
+     "triangleOverlapPairs": 36,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_R_foot",
+     "b": "G28_stone_01",
+     "triangleOverlapPairs": 29,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_R_outer",
+     "b": "G28_base_R_toe",
+     "triangleOverlapPairs": 39,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_R_outer",
+     "b": "G28_stone_01",
+     "triangleOverlapPairs": 61,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_R_outer",
+     "b": "G28_stone_02",
+     "triangleOverlapPairs": 55,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_R_toe",
+     "b": "G28_stone_01",
+     "triangleOverlapPairs": 77,
+     "relationship": "intentional embedded load-bearing assembly"
+    }
+   ],
+   "lightEmbedding": [
+    {
+     "light": "G28_light_01",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004999560817144811,
+     "maxFrontProudM": 0.0005000244757160544
+    },
+    {
+     "light": "G28_light_02",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004999577697366476,
+     "maxFrontProudM": 0.0005000160938128829
+    },
+    {
+     "light": "G28_light_03",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004999981076456606,
+     "maxFrontProudM": 0.0005000237190164625
+    },
+    {
+     "light": "G28_light_04",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004999658606015145,
+     "maxFrontProudM": 0.000500021390710026
+    },
+    {
+     "light": "G28_light_05",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004999686545692384,
+     "maxFrontProudM": 0.0005000541616231203
+    },
+    {
+     "light": "G28_light_06",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004999817512929439,
+     "maxFrontProudM": 0.0005000362918712198
+    },
+    {
+     "light": "G28_light_07",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004999228451400995,
+     "maxFrontProudM": 0.0005000125431455671
+    },
+    {
+     "light": "G28_light_08",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004999640561640262,
+     "maxFrontProudM": 0.0005000197608955204
+    },
+    {
+     "light": "G28_light_09",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004999606801196932,
+     "maxFrontProudM": 0.0005000045104883611
+    },
+    {
+     "light": "G28_light_10",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.00049995346236974,
+     "maxFrontProudM": 0.0005000197026878595
+    },
+    {
+     "light": "G28_light_11",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.000499968945607543,
+     "maxFrontProudM": 0.0005000336725264787
+    },
+    {
+     "light": "G28_light_12",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004999800632707774,
+     "maxFrontProudM": 0.0005000355933792889
+    }
+   ],
+   "limit": "BVH surface-intersection and opening rays cover intended joints/opening; not an exhaustive global self-intersection certificate."
+  }
+ },
+ "reopenedBlend": {
+  "label": "reopened native BLEND",
+  "triangles": 4392,
+  "meshCount": 30,
+  "boundsMin": [
+   -0.46500808000564575,
+   -1.6552096605300903,
+   0.0
+  ],
+  "boundsMax": [
+   0.46500808000564575,
+   1.6552096605300903,
+   3.319319009780884
+  ],
+  "dimensionsBlenderXYZ": [
+   0.9300161600112915,
+   3.3104193210601807,
+   3.319319009780884
+  ],
+  "objects": [
+   {
+    "name": "G28_stone_01",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.06159017989657e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14238120597193285
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14238120597193285
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_01",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.0001499996997836726,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014636854887215925
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014636854887215925
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_02",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.09060797186871e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14658291214868566
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14658291214868566
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_02",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999968016969194,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015313906738019986
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015313906738019986
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_03",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.091240514831572e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.12128580809597253
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.12128580809597253
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_03",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00015000011389711796,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014298290181062134
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014298290181062134
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_04",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.079769438499566e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14296258842786508
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14296258842786508
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_04",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999930713349645,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015652390181071968
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015652390181071968
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_05",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.068416808821478e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14719509094378203
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14719509094378203
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_05",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999921424437888,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014467544974235597
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014467544974235597
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_06",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.099731832748211e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.13756525474848516
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.13756525474848516
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_06",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999955397401932,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015483159159875487
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015483159159875487
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_07",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.054123527086899e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14239862227067127
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14239862227067127
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_07",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.0001499984045152924,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015313860478801306
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015313860478801306
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_08",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.104134121453074e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.12942674900895787
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.12942674900895787
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_08",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999930454296406,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014467594444885398
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014467594444885398
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_09",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.115870309347377e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14405954253362088
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14405954253362088
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_09",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999921868529418,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.0001565239929419704
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.0001565239929419704
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_10",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.050163575706511e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.13878077470143999
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.13878077470143999
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_10",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999992219863213,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014298260296404428
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00014298260296404428
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_11",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.074018857716448e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14240891420376875
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.14240891420376875
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_11",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.0001499999188679613,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015313892306748994
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.00015313892306748994
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_12",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.092599518163584e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.13441868536462506
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 126,
+       "signedVolume": 0.13441868536462506
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_12",
+    "triangles": 60,
+    "vertices": 32,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999923644895406,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.0001480610408114795
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 30,
+       "signedVolume": 0.0001480610408114795
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_base_L_foot",
+    "triangles": 108,
+    "vertices": 56,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.0001392532512615297,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.25446597655272607
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.25446597655272607
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_base_L_outer",
+    "triangles": 108,
+    "vertices": 56,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014636392607070641,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.185161401920371
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.185161401920371
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_base_L_toe",
+    "triangles": 108,
+    "vertices": 56,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.0001464768357315528,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.1890369807311401
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.1890369807311401
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_base_R_foot",
+    "triangles": 108,
+    "vertices": 56,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00013925381333505086,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.2545175443651454
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.2545175443651454
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_base_R_outer",
+    "triangles": 108,
+    "vertices": 56,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014636293997062513,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.1851464967890715
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.1851464967890715
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_base_R_toe",
+    "triangles": 108,
+    "vertices": 56,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.0001464768357315528,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.18904012030043588
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 55,
+       "signedVolume": 0.18904012030043588
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  ],
+  "materials": {
+   "G28_stone": {
+    "role": "stone",
+    "hex": "#B4A896",
+    "faces": 1512,
+    "area": 19.05578534382221,
+    "baseColor": [
+     0.4564110338687897,
+     0.3915724754333496,
+     0.3049873113632202,
+     1.0
+    ],
+    "roughness": 0.9200000166893005,
+    "metallic": 0.0,
+    "emissionStrength": 0.0,
+    "emissionColor": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "effectiveEmissionRGB": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "G28_light_cyan": {
+    "role": "light",
+    "hex": "#4FD1C5",
+    "faces": 360,
+    "area": 0.4506016377999913,
+    "baseColor": [
+     0.07818742096424103,
+     0.637596845626831,
+     0.5583403706550598,
+     1.0
+    ],
+    "roughness": 0.75,
+    "metallic": 0.0,
+    "emissionStrength": 0.11999999731779099,
+    "emissionColor": [
+     0.07818742096424103,
+     0.637596845626831,
+     0.5583403706550598,
+     1.0
+    ],
+    "effectiveEmissionRGB": [
+     0.009382490305993918,
+     0.07651161976505172,
+     0.0670008429810216
+    ]
+   },
+   "G28_stone_base": {
+    "role": "stone",
+    "hex": "#8C8276",
+    "faces": 330,
+    "area": 13.02656815230148,
+    "baseColor": [
+     0.2622506618499756,
+     0.22322796285152435,
+     0.18116424977779388,
+     1.0
+    ],
+    "roughness": 0.9399999976158142,
+    "metallic": 0.0,
+    "emissionStrength": 0.0,
+    "emissionColor": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "effectiveEmissionRGB": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "problems": [],
+  "rawTopologyNote": "GLB raw vertices may split at normal seams; retain raw counts and inspect disposable 10um per-object weld, never weld different stones together."
+ },
+ "geometryBaseline": "new L1 asset; image reference has no triangle baseline",
+ "axes": "Blender +X front, YZ arch, Z up; glTF +X front, YZ arch, +Y up, exporter converts once",
+ "budgetTargetTriangles": [
+  5000,
+  8000
+ ],
+ "sourceModifiers": [
+  "geometry-applied 2-segment bevel",
+  "evaluated weighted normals"
+ ],
+ "scope": "Asset QA only. No world placement, collider, trigger, UI, runtime lights or interaction approval.",
+ "glbReadback": {
+  "label": "fresh-process Draco GLB import",
+  "triangles": 4392,
+  "meshCount": 30,
+  "boundsMin": [
+   -0.46500808000564575,
+   -1.655210018157959,
+   0.0
+  ],
+  "boundsMax": [
+   0.46500760316848755,
+   1.6552096605300903,
+   3.319319248199463
+  ],
+  "dimensionsBlenderXYZ": [
+   0.9300156831741333,
+   3.3104196786880493,
+   3.319319248199463
+  ],
+  "objects": [
+   {
+    "name": "G28_base_L_foot",
+    "triangles": 108,
+    "vertices": 56,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00013925325365333671,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 108,
+       "signedVolume": 0.25446613195367945
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 108,
+       "signedVolume": 0.25446613195367945
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_base_L_outer",
+    "triangles": 108,
+    "vertices": 56,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014636507107627266,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 108,
+       "signedVolume": 0.18516139909240678
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 108,
+       "signedVolume": 0.18516139909240678
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_base_L_toe",
+    "triangles": 108,
+    "vertices": 56,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014647984287231584,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 108,
+       "signedVolume": 0.18903694496871748
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 108,
+       "signedVolume": 0.18903694496871748
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_base_R_foot",
+    "triangles": 108,
+    "vertices": 56,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.0001392530965912549,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 108,
+       "signedVolume": 0.2545176893103563
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 108,
+       "signedVolume": 0.2545176893103563
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_base_R_outer",
+    "triangles": 108,
+    "vertices": 56,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014636506993847762,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 108,
+       "signedVolume": 0.1851464351885091
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 108,
+       "signedVolume": 0.1851464351885091
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_base_R_toe",
+    "triangles": 108,
+    "vertices": 56,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014647877038937202,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 108,
+       "signedVolume": 0.18904009511824782
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 108,
+       "signedVolume": 0.18904009511824782
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_01",
+    "triangles": 60,
+    "vertices": 96,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999686202109904,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 96,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 14,
+       "signedVolume": -2.485040917256839e-10
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 14,
+       "signedVolume": -8.765201510209837e-10
+      }
+     ],
+     "negativeShells": 15
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 60,
+       "signedVolume": 0.000146367543065661
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_02",
+    "triangles": 60,
+    "vertices": 96,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.000149996392756283,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 96,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -1.5158245029548803e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 14,
+       "signedVolume": 3.798727258678507e-10
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 14,
+       "signedVolume": -9.715535043142156e-10
+      }
+     ],
+     "negativeShells": 13
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 60,
+       "signedVolume": 0.0001531388876626257
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_03",
+    "triangles": 60,
+    "vertices": 96,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.0001500022262649819,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 96,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -1.5158245029548803e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -2.3684757858670005e-15
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 14,
+       "signedVolume": 5.949137478940734e-10
+      },
+      {
+       "faces": 2,
+       "signedVolume": 7.579122514774402e-14
+      },
+      {
+       "faces": 14,
+       "signedVolume": 9.168109234754714e-10
+      }
+     ],
+     "negativeShells": 15
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 60,
+       "signedVolume": 0.0001429826821208735
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_04",
+    "triangles": 60,
+    "vertices": 96,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.0001499985066568623,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 96,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 6.063298011819521e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 14,
+       "signedVolume": 2.792480321052912e-10
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 14,
+       "signedVolume": 4.47802979882302e-10
+      }
+     ],
+     "negativeShells": 12
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 60,
+       "signedVolume": 0.0001565248718632025
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_05",
+    "triangles": 60,
+    "vertices": 96,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.0001499997915622649,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 96,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 14,
+       "signedVolume": -1.4118010464396022e-10
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 14,
+       "signedVolume": -4.839838159872064e-10
+      }
+     ],
+     "negativeShells": 15
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 60,
+       "signedVolume": 0.00014467635163365838
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_06",
+    "triangles": 60,
+    "vertices": 96,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999911802451518,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 96,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 14,
+       "signedVolume": -7.361361890427058e-10
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 14,
+       "signedVolume": 2.412701149978602e-10
+      }
+     ],
+     "negativeShells": 17
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 60,
+       "signedVolume": 0.00015483153136959993
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_07",
+    "triangles": 60,
+    "vertices": 96,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999693011618698,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 96,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 1.5158245029548803e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -1.5158245029548803e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": -1.5158245029548803e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 7.579122514774402e-14
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 14,
+       "signedVolume": -2.973052914967411e-10
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 14,
+       "signedVolume": -3.0429229506504884e-10
+      }
+     ],
+     "negativeShells": 16
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 60,
+       "signedVolume": 0.00015313938605506405
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_08",
+    "triangles": 60,
+    "vertices": 96,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.0001499966458930065,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 96,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 14,
+       "signedVolume": -8.06489689845572e-11
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 14,
+       "signedVolume": 4.996015453192135e-10
+      }
+     ],
+     "negativeShells": 14
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 60,
+       "signedVolume": 0.00014467582055980682
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_09",
+    "triangles": 60,
+    "vertices": 96,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999517406721823,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 96,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -6.063298011819521e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 14,
+       "signedVolume": 7.65947305580994e-10
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 14,
+       "signedVolume": 6.16481532489388e-10
+      }
+     ],
+     "negativeShells": 16
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 60,
+       "signedVolume": 0.0001565233280569345
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_10",
+    "triangles": 60,
+    "vertices": 96,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.0001499974470272119,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 96,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 7.579122514774402e-14
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.789561257387201e-14
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 7.579122514774402e-14
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -1.5158245029548803e-13
+      },
+      {
+       "faces": 14,
+       "signedVolume": -3.4353083340950735e-10
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 14,
+       "signedVolume": 4.707286412516017e-10
+      }
+     ],
+     "negativeShells": 14
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 60,
+       "signedVolume": 0.00014298216502576605
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_11",
+    "triangles": 60,
+    "vertices": 96,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999535651962767,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 96,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 14,
+       "signedVolume": -1.1923191323148783e-09
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 14,
+       "signedVolume": 1.4364095098547598e-09
+      }
+     ],
+     "negativeShells": 16
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 60,
+       "signedVolume": 0.00015313939854403694
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_light_12",
+    "triangles": 60,
+    "vertices": 96,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 0.00014999696416371935,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 96,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 0.0
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 2,
+       "signedVolume": 3.0316490059097606e-13
+      },
+      {
+       "faces": 14,
+       "signedVolume": 6.992995812045896e-10
+      },
+      {
+       "faces": 2,
+       "signedVolume": -3.0316490059097606e-13
+      },
+      {
+       "faces": 14,
+       "signedVolume": 8.833940986126737e-11
+      }
+     ],
+     "negativeShells": 11
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 60,
+       "signedVolume": 0.00014806022682497174
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_01",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.061886703272595e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.1423811797552669
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.1423811797552669
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_02",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.090431921818838e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.1465828653690033
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.1465828653690033
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_03",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.091532712958765e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.1212858621112529
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.1212858621112529
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_04",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.079820701881556e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.14296265360768662
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.14296265360768662
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_05",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.068312683688792e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.14719506842741983
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.14719506842741983
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_06",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.100084789624303e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.13756524577365883
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.13756524577365883
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_07",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.054178491651801e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.14239869334748337
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.14239869334748337
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_08",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.104444105779514e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.12942668217078213
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.12942668217078213
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_09",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.1156938946379e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.14405951455092678
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.14405951455092678
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_10",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.050376259879074e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.13878079651552439
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.13878079651552439
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_11",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.073890723833334e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.14240889809038398
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.14240889809038398
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   },
+   {
+    "name": "G28_stone_12",
+    "triangles": 252,
+    "vertices": 128,
+    "finite": true,
+    "degenerateTriangles": 0,
+    "minTriangleArea": 9.092363919633696e-05,
+    "badNormals": 0,
+    "copyValidateWouldRepair": false,
+    "rawTopology": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.13441868583972066
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldedDiagnostic": {
+     "nonmanifoldEdges": 0,
+     "badWindingEdges": 0,
+     "shells": [
+      {
+       "faces": 252,
+       "signedVolume": 0.13441868583972066
+      }
+     ],
+     "negativeShells": 0
+    },
+    "weldToleranceM": 1e-05,
+    "origin": [
+     0.0,
+     0.0,
+     0.0
+    ],
+    "scale": [
+     1.0,
+     1.0,
+     1.0
+    ]
+   }
+  ],
+  "materials": {
+   "G28_stone_base": {
+    "role": "stone",
+    "hex": "#8C8276",
+    "faces": 648,
+    "area": 13.03608690368128,
+    "baseColor": [
+     0.2622506618499756,
+     0.22322796285152435,
+     0.18116424977779388,
+     1.0
+    ],
+    "roughness": 0.9399999976158142,
+    "metallic": 0.0,
+    "emissionStrength": 0.0,
+    "emissionColor": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "effectiveEmissionRGB": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "G28_light_cyan": {
+    "role": "light",
+    "hex": "#4FD1C5",
+    "faces": 720,
+    "area": 0.4506014209036948,
+    "baseColor": [
+     0.07818742096424103,
+     0.637596845626831,
+     0.5583403706550598,
+     1.0
+    ],
+    "roughness": 0.75,
+    "metallic": 0.0,
+    "emissionStrength": 1.0,
+    "emissionColor": [
+     0.009382490068674088,
+     0.07651162147521973,
+     0.0670008435845375,
+     1.0
+    ],
+    "effectiveEmissionRGB": [
+     0.009382490068674088,
+     0.07651162147521973,
+     0.0670008435845375
+    ]
+   },
+   "G28_stone": {
+    "role": "stone",
+    "hex": "#B4A896",
+    "faces": 3024,
+    "area": 19.05588215802709,
+    "baseColor": [
+     0.4564110338687897,
+     0.3915724754333496,
+     0.3049873113632202,
+     1.0
+    ],
+    "roughness": 0.9200000166893005,
+    "metallic": 0.0,
+    "emissionStrength": 0.0,
+    "emissionColor": [
+     1.0,
+     1.0,
+     1.0,
+     1.0
+    ],
+    "effectiveEmissionRGB": [
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "problems": [],
+  "rawTopologyNote": "GLB raw vertices may split at normal seams; retain raw counts and inspect disposable 10um per-object weld, never weld different stones together.",
+  "assembly": {
+   "bodyHeightM": 1.7,
+   "bodyDiameterM": 0.6,
+   "sweptWidthSamples": [
+    {
+     "x": -0.25,
+     "height": 0.03,
+     "left": 0.6078957319259644,
+     "right": 0.6123510599136353,
+     "clearWidth": 1.2202467918395996
+    },
+    {
+     "x": -0.25,
+     "height": 0.093,
+     "left": 0.6126292943954468,
+     "right": 0.6170846819877625,
+     "clearWidth": 1.2297139763832092
+    },
+    {
+     "x": -0.25,
+     "height": 0.156,
+     "left": 0.6239262223243713,
+     "right": 0.628381609916687,
+     "clearWidth": 1.2523078322410583
+    },
+    {
+     "x": -0.25,
+     "height": 0.219,
+     "left": 0.631233274936676,
+     "right": 0.6356884837150574,
+     "clearWidth": 1.2669217586517334
+    },
+    {
+     "x": -0.25,
+     "height": 0.28200000000000003,
+     "left": 0.6365060806274414,
+     "right": 0.6409612894058228,
+     "clearWidth": 1.2774673700332642
+    },
+    {
+     "x": -0.25,
+     "height": 0.345,
+     "left": 0.6417790055274963,
+     "right": 0.6462341547012329,
+     "clearWidth": 1.2880131602287292
+    },
+    {
+     "x": -0.25,
+     "height": 0.40800000000000003,
+     "left": 0.6470518112182617,
+     "right": 0.6515070796012878,
+     "clearWidth": 1.2985588908195496
+    },
+    {
+     "x": -0.25,
+     "height": 0.471,
+     "left": 0.6523246765136719,
+     "right": 0.6567798852920532,
+     "clearWidth": 1.309104561805725
+    },
+    {
+     "x": -0.25,
+     "height": 0.534,
+     "left": 0.657597541809082,
+     "right": 0.6620526909828186,
+     "clearWidth": 1.3196502327919006
+    },
+    {
+     "x": -0.25,
+     "height": 0.597,
+     "left": 0.6740676164627075,
+     "right": 0.678528368473053,
+     "clearWidth": 1.3525959849357605
+    },
+    {
+     "x": -0.25,
+     "height": 0.66,
+     "left": 0.7600153684616089,
+     "right": 0.764502763748169,
+     "clearWidth": 1.5245181322097778
+    },
+    {
+     "x": -0.25,
+     "height": 0.7230000000000001,
+     "left": 0.8360180258750916,
+     "right": 0.84056556224823,
+     "clearWidth": 1.6765835881233215
+    },
+    {
+     "x": -0.25,
+     "height": 0.786,
+     "left": 0.9008402824401855,
+     "right": 0.9052006602287292,
+     "clearWidth": 1.8060409426689148
+    },
+    {
+     "x": -0.25,
+     "height": 0.849,
+     "left": 0.9569273591041565,
+     "right": 0.9613069295883179,
+     "clearWidth": 1.9182342886924744
+    },
+    {
+     "x": -0.25,
+     "height": 0.912,
+     "left": 1.0061241388320923,
+     "right": 1.0105117559432983,
+     "clearWidth": 2.0166358947753906
+    },
+    {
+     "x": -0.25,
+     "height": 0.9750000000000001,
+     "left": 1.0495939254760742,
+     "right": 1.0563472509384155,
+     "clearWidth": 2.1059411764144897
+    },
+    {
+     "x": -0.25,
+     "height": 1.038,
+     "left": 1.0872822999954224,
+     "right": 1.094200849533081,
+     "clearWidth": 2.1814831495285034
+    },
+    {
+     "x": -0.25,
+     "height": 1.101,
+     "left": 1.120527982711792,
+     "right": 1.1273362636566162,
+     "clearWidth": 2.247864246368408
+    },
+    {
+     "x": -0.25,
+     "height": 1.164,
+     "left": 1.1493641138076782,
+     "right": 1.156191349029541,
+     "clearWidth": 2.3055554628372192
+    },
+    {
+     "x": -0.25,
+     "height": 1.227,
+     "left": 1.1736704111099243,
+     "right": 1.180686593055725,
+     "clearWidth": 2.3543570041656494
+    },
+    {
+     "x": -0.25,
+     "height": 1.29,
+     "left": 1.194254755973816,
+     "right": 1.2011600732803345,
+     "clearWidth": 2.3954148292541504
+    },
+    {
+     "x": -0.25,
+     "height": 1.353,
+     "left": 1.2113441228866577,
+     "right": 1.2181475162506104,
+     "clearWidth": 2.429491639137268
+    },
+    {
+     "x": -0.25,
+     "height": 1.4160000000000001,
+     "left": 1.2251133918762207,
+     "right": 1.2318252325057983,
+     "clearWidth": 2.456938624382019
+    },
+    {
+     "x": -0.25,
+     "height": 1.479,
+     "left": 1.238814353942871,
+     "right": 1.241064429283142,
+     "clearWidth": 2.479878783226013
+    },
+    {
+     "x": -0.25,
+     "height": 1.542,
+     "left": 1.2430471181869507,
+     "right": 1.247362732887268,
+     "clearWidth": 2.4904098510742188
+    },
+    {
+     "x": -0.25,
+     "height": 1.605,
+     "left": 1.2467303276062012,
+     "right": 1.2513177394866943,
+     "clearWidth": 2.4980480670928955
+    },
+    {
+     "x": -0.25,
+     "height": 1.668,
+     "left": 1.2472161054611206,
+     "right": 1.251757025718689,
+     "clearWidth": 2.4989731311798096
+    },
+    {
+     "x": -0.25,
+     "height": 1.731,
+     "left": 1.244616150856018,
+     "right": 1.2491109371185303,
+     "clearWidth": 2.4937270879745483
+    },
+    {
+     "x": 0,
+     "height": 0.03,
+     "left": 0.614083468914032,
+     "right": 0.6185387969017029,
+     "clearWidth": 1.2326222658157349
+    },
+    {
+     "x": 0,
+     "height": 0.093,
+     "left": 0.6183480024337769,
+     "right": 0.6228033900260925,
+     "clearWidth": 1.2411513924598694
+    },
+    {
+     "x": 0,
+     "height": 0.156,
+     "left": 0.6226125359535217,
+     "right": 0.6270679235458374,
+     "clearWidth": 1.2496804594993591
+    },
+    {
+     "x": 0,
+     "height": 0.219,
+     "left": 0.6314738988876343,
+     "right": 0.6359293460845947,
+     "clearWidth": 1.267403244972229
+    },
+    {
+     "x": 0,
+     "height": 0.28200000000000003,
+     "left": 0.6370933651924133,
+     "right": 0.6415483951568604,
+     "clearWidth": 1.2786417603492737
+    },
+    {
+     "x": 0,
+     "height": 0.345,
+     "left": 0.6387688517570496,
+     "right": 0.6432238221168518,
+     "clearWidth": 1.2819926738739014
+    },
+    {
+     "x": 0,
+     "height": 0.40800000000000003,
+     "left": 0.6432051062583923,
+     "right": 0.647659957408905,
+     "clearWidth": 1.2908650636672974
+    },
+    {
+     "x": 0,
+     "height": 0.471,
+     "left": 0.6484779119491577,
+     "right": 0.6529328227043152,
+     "clearWidth": 1.301410734653473
+    },
+    {
+     "x": 0,
+     "height": 0.534,
+     "left": 0.6537507176399231,
+     "right": 0.6582056879997253,
+     "clearWidth": 1.3119564056396484
+    },
+    {
+     "x": 0,
+     "height": 0.597,
+     "left": 0.674068033695221,
+     "right": 0.6785283088684082,
+     "clearWidth": 1.3525963425636292
+    },
+    {
+     "x": 0,
+     "height": 0.66,
+     "left": 0.7600153684616089,
+     "right": 0.7645024657249451,
+     "clearWidth": 1.524517834186554
+    },
+    {
+     "x": 0,
+     "height": 0.7230000000000001,
+     "left": 0.8360181450843811,
+     "right": 0.84056556224823,
+     "clearWidth": 1.676583707332611
+    },
+    {
+     "x": 0,
+     "height": 0.786,
+     "left": 0.9008402824401855,
+     "right": 0.9052010774612427,
+     "clearWidth": 1.8060413599014282
+    },
+    {
+     "x": 0,
+     "height": 0.849,
+     "left": 0.9569275975227356,
+     "right": 0.9613069891929626,
+     "clearWidth": 1.9182345867156982
+    },
+    {
+     "x": 0,
+     "height": 0.912,
+     "left": 1.0061239004135132,
+     "right": 1.0105117559432983,
+     "clearWidth": 2.0166356563568115
+    },
+    {
+     "x": 0,
+     "height": 0.9750000000000001,
+     "left": 1.0495938062667847,
+     "right": 1.0536797046661377,
+     "clearWidth": 2.1032735109329224
+    },
+    {
+     "x": 0,
+     "height": 1.038,
+     "left": 1.0872820615768433,
+     "right": 1.0916298627853394,
+     "clearWidth": 2.1789119243621826
+    },
+    {
+     "x": 0,
+     "height": 1.101,
+     "left": 1.120528221130371,
+     "right": 1.1248449087142944,
+     "clearWidth": 2.2453731298446655
+    },
+    {
+     "x": 0,
+     "height": 1.164,
+     "left": 1.1493643522262573,
+     "right": 1.1537654399871826,
+     "clearWidth": 2.30312979221344
+    },
+    {
+     "x": 0,
+     "height": 1.227,
+     "left": 1.1736705303192139,
+     "right": 1.1782606840133667,
+     "clearWidth": 2.3519312143325806
+    },
+    {
+     "x": 0,
+     "height": 1.29,
+     "left": 1.1942548751831055,
+     "right": 1.1987875699996948,
+     "clearWidth": 2.3930424451828003
+    },
+    {
+     "x": 0,
+     "height": 1.353,
+     "left": 1.2113440036773682,
+     "right": 1.2158170938491821,
+     "clearWidth": 2.4271610975265503
+    },
+    {
+     "x": 0,
+     "height": 1.4160000000000001,
+     "left": 1.2251131534576416,
+     "right": 1.2295252084732056,
+     "clearWidth": 2.454638361930847
+    },
+    {
+     "x": 0,
+     "height": 1.479,
+     "left": 1.2388149499893188,
+     "right": 1.2410643100738525,
+     "clearWidth": 2.4798792600631714
+    },
+    {
+     "x": 0,
+     "height": 1.542,
+     "left": 1.2430468797683716,
+     "right": 1.247362732887268,
+     "clearWidth": 2.4904096126556396
+    },
+    {
+     "x": 0,
+     "height": 1.605,
+     "left": 1.2467302083969116,
+     "right": 1.2513177394866943,
+     "clearWidth": 2.498047947883606
+    },
+    {
+     "x": 0,
+     "height": 1.668,
+     "left": 1.2472162246704102,
+     "right": 1.2517569065093994,
+     "clearWidth": 2.4989731311798096
+    },
+    {
+     "x": 0,
+     "height": 1.731,
+     "left": 1.244616150856018,
+     "right": 1.2491106986999512,
+     "clearWidth": 2.4937268495559692
+    },
+    {
+     "x": 0.25,
+     "height": 0.03,
+     "left": 0.6202710866928101,
+     "right": 0.6247265338897705,
+     "clearWidth": 1.2449976205825806
+    },
+    {
+     "x": 0.25,
+     "height": 0.093,
+     "left": 0.6245357394218445,
+     "right": 0.6289911866188049,
+     "clearWidth": 1.2535269260406494
+    },
+    {
+     "x": 0.25,
+     "height": 0.156,
+     "left": 0.6288002729415894,
+     "right": 0.633255660533905,
+     "clearWidth": 1.2620559334754944
+    },
+    {
+     "x": 0.25,
+     "height": 0.219,
+     "left": 0.6330648064613342,
+     "right": 0.6375201940536499,
+     "clearWidth": 1.2705850005149841
+    },
+    {
+     "x": 0.25,
+     "height": 0.28200000000000003,
+     "left": 0.6390215754508972,
+     "right": 0.6434769630432129,
+     "clearWidth": 1.28249853849411
+    },
+    {
+     "x": 0.25,
+     "height": 0.345,
+     "left": 0.6475766897201538,
+     "right": 0.6520315408706665,
+     "clearWidth": 1.2996082305908203
+    },
+    {
+     "x": 0.25,
+     "height": 0.40800000000000003,
+     "left": 0.6492521166801453,
+     "right": 0.6537070274353027,
+     "clearWidth": 1.302959144115448
+    },
+    {
+     "x": 0.25,
+     "height": 0.471,
+     "left": 0.650927722454071,
+     "right": 0.655382513999939,
+     "clearWidth": 1.30631023645401
+    },
+    {
+     "x": 0.25,
+     "height": 0.534,
+     "left": 0.652603268623352,
+     "right": 0.6570580005645752,
+     "clearWidth": 1.3096612691879272
+    },
+    {
+     "x": 0.25,
+     "height": 0.597,
+     "left": 0.6687127351760864,
+     "right": 0.6731681227684021,
+     "clearWidth": 1.3418808579444885
+    },
+    {
+     "x": 0.25,
+     "height": 0.66,
+     "left": 0.7645154595375061,
+     "right": 0.7645025849342346,
+     "clearWidth": 1.5290180444717407
+    },
+    {
+     "x": 0.25,
+     "height": 0.7230000000000001,
+     "left": 0.8412628173828125,
+     "right": 0.84056556224823,
+     "clearWidth": 1.6818283796310425
+    },
+    {
+     "x": 0.25,
+     "height": 0.786,
+     "left": 0.9062477350234985,
+     "right": 0.9052011966705322,
+     "clearWidth": 1.8114489316940308
+    },
+    {
+     "x": 0.25,
+     "height": 0.849,
+     "left": 0.9626898765563965,
+     "right": 0.9613068699836731,
+     "clearWidth": 1.9239967465400696
+    },
+    {
+     "x": 0.25,
+     "height": 0.912,
+     "left": 1.012141466140747,
+     "right": 1.0105117559432983,
+     "clearWidth": 2.0226532220840454
+    },
+    {
+     "x": 0.25,
+     "height": 0.9750000000000001,
+     "left": 1.0495936870574951,
+     "right": 1.0536795854568481,
+     "clearWidth": 2.1032732725143433
+    },
+    {
+     "x": 0.25,
+     "height": 1.038,
+     "left": 1.0872819423675537,
+     "right": 1.0916297435760498,
+     "clearWidth": 2.1789116859436035
+    },
+    {
+     "x": 0.25,
+     "height": 1.101,
+     "left": 1.120528221130371,
+     "right": 1.1248451471328735,
+     "clearWidth": 2.2453733682632446
+    },
+    {
+     "x": 0.25,
+     "height": 1.164,
+     "left": 1.1493644714355469,
+     "right": 1.153765320777893,
+     "clearWidth": 2.30312979221344
+    },
+    {
+     "x": 0.25,
+     "height": 1.227,
+     "left": 1.1736706495285034,
+     "right": 1.1782606840133667,
+     "clearWidth": 2.35193133354187
+    },
+    {
+     "x": 0.25,
+     "height": 1.29,
+     "left": 1.1942548751831055,
+     "right": 1.1987875699996948,
+     "clearWidth": 2.3930424451828003
+    },
+    {
+     "x": 0.25,
+     "height": 1.353,
+     "left": 1.2113438844680786,
+     "right": 1.2158172130584717,
+     "clearWidth": 2.4271610975265503
+    },
+    {
+     "x": 0.25,
+     "height": 1.4160000000000001,
+     "left": 1.225113034248352,
+     "right": 1.2295252084732056,
+     "clearWidth": 2.4546382427215576
+    },
+    {
+     "x": 0.25,
+     "height": 1.479,
+     "left": 1.2388149499893188,
+     "right": null,
+     "clearWidth": null
+    },
+    {
+     "x": 0.25,
+     "height": 1.542,
+     "left": 1.2430471181869507,
+     "right": null,
+     "clearWidth": null
+    },
+    {
+     "x": 0.25,
+     "height": 1.605,
+     "left": 1.2467302083969116,
+     "right": null,
+     "clearWidth": null
+    },
+    {
+     "x": 0.25,
+     "height": 1.668,
+     "left": 1.2472162246704102,
+     "right": null,
+     "clearWidth": null
+    },
+    {
+     "x": 0.25,
+     "height": 1.731,
+     "left": 1.2446162700653076,
+     "right": null,
+     "clearWidth": null
+    }
+   ],
+   "minBodyHeightClearWidth": 1.2202467918395996,
+   "centreClearHeight": 2.895289192199707,
+   "stoneBaseContacts": [
+    {
+     "a": "G28_base_L_foot",
+     "b": "G28_base_L_outer",
+     "triangleOverlapPairs": 41,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_L_foot",
+     "b": "G28_base_L_toe",
+     "triangleOverlapPairs": 36,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_L_foot",
+     "b": "G28_stone_12",
+     "triangleOverlapPairs": 25,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_L_outer",
+     "b": "G28_base_L_toe",
+     "triangleOverlapPairs": 39,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_L_outer",
+     "b": "G28_stone_11",
+     "triangleOverlapPairs": 42,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_L_outer",
+     "b": "G28_stone_12",
+     "triangleOverlapPairs": 67,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_L_toe",
+     "b": "G28_stone_12",
+     "triangleOverlapPairs": 73,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_R_foot",
+     "b": "G28_base_R_outer",
+     "triangleOverlapPairs": 36,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_R_foot",
+     "b": "G28_base_R_toe",
+     "triangleOverlapPairs": 36,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_R_foot",
+     "b": "G28_stone_01",
+     "triangleOverlapPairs": 29,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_R_outer",
+     "b": "G28_base_R_toe",
+     "triangleOverlapPairs": 39,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_R_outer",
+     "b": "G28_stone_01",
+     "triangleOverlapPairs": 61,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_R_outer",
+     "b": "G28_stone_02",
+     "triangleOverlapPairs": 55,
+     "relationship": "intentional embedded load-bearing assembly"
+    },
+    {
+     "a": "G28_base_R_toe",
+     "b": "G28_stone_01",
+     "triangleOverlapPairs": 77,
+     "relationship": "intentional embedded load-bearing assembly"
+    }
+   ],
+   "lightEmbedding": [
+    {
+     "light": "G28_light_01",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004998163833282887,
+     "maxFrontProudM": 0.0005002647569403052
+    },
+    {
+     "light": "G28_light_02",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004997589905746281,
+     "maxFrontProudM": 0.0005001139990985393
+    },
+    {
+     "light": "G28_light_03",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004996745894663035,
+     "maxFrontProudM": 0.0005001889123581349
+    },
+    {
+     "light": "G28_light_04",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004998001433908939,
+     "maxFrontProudM": 0.0005003312882967293
+    },
+    {
+     "light": "G28_light_05",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004996948457323014,
+     "maxFrontProudM": 0.0005001435103826224
+    },
+    {
+     "light": "G28_light_06",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004998278502374887,
+     "maxFrontProudM": 0.000500173429120332
+    },
+    {
+     "light": "G28_light_07",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004996147519908845,
+     "maxFrontProudM": 0.0005000194116495549
+    },
+    {
+     "light": "G28_light_08",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004997169064357876,
+     "maxFrontProudM": 0.0005002212176099419
+    },
+    {
+     "light": "G28_light_09",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.000499948747549206,
+     "maxFrontProudM": 0.0005001741858199238
+    },
+    {
+     "light": "G28_light_10",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.000499885534029454,
+     "maxFrontProudM": 0.0005001119036227464
+    },
+    {
+     "light": "G28_light_11",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004999738932587206,
+     "maxFrontProudM": 0.0005003084126859903
+    },
+    {
+     "light": "G28_light_12",
+     "frontTriangleSamples": 14,
+     "misses": 0,
+     "minFrontProudM": 0.0004996392574161291,
+     "maxFrontProudM": 0.0005001564906910061
+    }
+   ],
+   "limit": "BVH surface-intersection and opening rays cover intended joints/opening; not an exhaustive global self-intersection certificate."
+  },
+  "circularity": {
+   "stones": [
+    {
+     "name": "G28_stone_01",
+     "innerRadiusM": 1.2495571286474147
+    },
+    {
+     "name": "G28_stone_02",
+     "innerRadiusM": 1.2495323823661597
+    },
+    {
+     "name": "G28_stone_03",
+     "innerRadiusM": 1.249569484402853
+    },
+    {
+     "name": "G28_stone_04",
+     "innerRadiusM": 1.2495200798768333
+    },
+    {
+     "name": "G28_stone_05",
+     "innerRadiusM": 1.249563028884801
+    },
+    {
+     "name": "G28_stone_06",
+     "innerRadiusM": 1.2495265284731494
+    },
+    {
+     "name": "G28_stone_07",
+     "innerRadiusM": 1.249532404993327
+    },
+    {
+     "name": "G28_stone_08",
+     "innerRadiusM": 1.2495632092795916
+    },
+    {
+     "name": "G28_stone_09",
+     "innerRadiusM": 1.249520229728496
+    },
+    {
+     "name": "G28_stone_10",
+     "innerRadiusM": 1.2495694463346698
+    },
+    {
+     "name": "G28_stone_11",
+     "innerRadiusM": 1.249532616769458
+    },
+    {
+     "name": "G28_stone_12",
+     "innerRadiusM": 1.2495509645760086
+    }
+   ],
+   "minInnerRadiusM": 1.2495200798768333,
+   "maxInnerRadiusM": 1.249569484402853,
+   "radiusSpreadM": 4.940452601975842e-05,
+   "maxNodeScaleError": 0.0,
+   "method": "fresh GLB import in Blender Z-up; minimum radial distance per closed stone to exported authoring centre",
+   "toleranceM": 0.005,
+   "pass": true
+  }
+ },
+ "roundTrip": {
+  "triangleMatch": true,
+  "maxBoundsDeltaM": 4.76837158203125e-07,
+  "materialNamesMatch": true,
+  "maxEffectiveEmissionDelta": 1.7101680072073577e-09,
+  "allNodes": [
+   "G28",
+   "G28_base_L_foot",
+   "G28_base_L_outer",
+   "G28_base_L_toe",
+   "G28_base_R_foot",
+   "G28_base_R_outer",
+   "G28_base_R_toe",
+   "G28_bases",
+   "G28_light_01",
+   "G28_light_02",
+   "G28_light_03",
+   "G28_light_04",
+   "G28_light_05",
+   "G28_light_06",
+   "G28_light_07",
+   "G28_light_08",
+   "G28_light_09",
+   "G28_light_10",
+   "G28_light_11",
+   "G28_light_12",
+   "G28_lights",
+   "G28_stone_01",
+   "G28_stone_02",
+   "G28_stone_03",
+   "G28_stone_04",
+   "G28_stone_05",
+   "G28_stone_06",
+   "G28_stone_07",
+   "G28_stone_08",
+   "G28_stone_09",
+   "G28_stone_10",
+   "G28_stone_11",
+   "G28_stone_12",
+   "G28_stones"
+  ],
+  "unwantedLights": 0,
+  "unwantedCameras": 0
+ }
+}

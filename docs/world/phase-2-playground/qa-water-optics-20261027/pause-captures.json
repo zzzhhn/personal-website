@@ -1,0 +1,34 @@
+{
+  "before": {
+    "poolOptics": {
+      "enabled": true,
+      "captures": 1208,
+      "reflections": 605,
+      "caustics": 1208,
+      "passes": 3,
+      "calls": 33,
+      "triangles": 182138,
+      "size": [
+        768,
+        393
+      ],
+      "selected": 37
+    }
+  },
+  "after": {
+    "poolOptics": {
+      "enabled": true,
+      "captures": 1208,
+      "reflections": 605,
+      "caustics": 1208,
+      "passes": 3,
+      "calls": 33,
+      "triangles": 182138,
+      "size": [
+        768,
+        393
+      ],
+      "selected": 37
+    }
+  }
+}

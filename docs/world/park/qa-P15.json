@@ -1,0 +1,181 @@
+{
+ "asset": "P15",
+ "evaluatedTriangles": 3564,
+ "bounds": [
+  [
+   -1.28,
+   -1.3064,
+   -0.0031
+  ],
+  [
+   1.28,
+   0.1,
+   2.5
+  ]
+ ],
+ "problems": [],
+ "parts": [
+  [
+   "body",
+   1396
+  ],
+  [
+   "record_0",
+   196
+  ],
+  [
+   "record_1",
+   172
+  ],
+  [
+   "record_2",
+   144
+  ],
+  [
+   "record_3",
+   196
+  ],
+  [
+   "record_4",
+   172
+  ],
+  [
+   "record_5",
+   144
+  ],
+  [
+   "record_6",
+   196
+  ],
+  [
+   "record_7",
+   172
+  ],
+  [
+   "record_8",
+   144
+  ],
+  [
+   "cord_h00",
+   28
+  ],
+  [
+   "cord_h01",
+   28
+  ],
+  [
+   "cord_h10",
+   28
+  ],
+  [
+   "cord_h11",
+   28
+  ],
+  [
+   "cord_h20",
+   28
+  ],
+  [
+   "cord_h21",
+   28
+  ],
+  [
+   "cord_v00",
+   28
+  ],
+  [
+   "cord_v01",
+   28
+  ],
+  [
+   "cord_v10",
+   28
+  ],
+  [
+   "cord_v11",
+   28
+  ],
+  [
+   "cord_v20",
+   28
+  ],
+  [
+   "cord_v21",
+   28
+  ],
+  [
+   "stool",
+   296
+  ]
+ ],
+ "glbReadbackTriangles": 3564,
+ "readbackBounds": [
+  [
+   -1.28,
+   -1.3064,
+   -0.0031
+  ],
+  [
+   1.28,
+   0.1,
+   2.5
+  ]
+ ],
+ "readbackProblems": [
+  {
+   "name": "body",
+   "triangles": 1396,
+   "shells": 22,
+   "negative_shells": 0,
+   "degenerate_faces": 0,
+   "nonmanifold_edges": 4,
+   "materials": [
+    "park_wood_light",
+    "park_wood_dark",
+    "park_wood_mid",
+    "park_brass_matte"
+   ]
+  }
+ ],
+ "nodes": [
+  "P15",
+  "body",
+  "cord_h00",
+  "cord_h01",
+  "cord_h10",
+  "cord_h11",
+  "cord_h20",
+  "cord_h21",
+  "cord_v00",
+  "cord_v01",
+  "cord_v10",
+  "cord_v11",
+  "cord_v20",
+  "cord_v21",
+  "record_0",
+  "record_1",
+  "record_2",
+  "record_3",
+  "record_4",
+  "record_5",
+  "record_6",
+  "record_7",
+  "record_8",
+  "stool"
+ ],
+ "materials": [
+  "park_accent_brick",
+  "park_accent_olive",
+  "park_accent_orange",
+  "park_accent_slate",
+  "park_brass_matte",
+  "park_canvas_cream",
+  "park_canvas_olive",
+  "park_cream_paint",
+  "park_vinyl",
+  "park_wood_dark",
+  "park_wood_light",
+  "park_wood_mid"
+ ],
+ "glbBytes": 75788
+}

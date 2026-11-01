@@ -1,0 +1,21 @@
+{
+  "result": "PASS",
+  "inventoryIDs": 80,
+  "markdownRows": 80,
+  "matchingColumns": 9,
+  "finalDracoGLBs": 16,
+  "uniqueTriangles": 8690,
+  "glbBytes": 197156,
+  "checks": [
+    "stable IDs",
+    "all row fields",
+    "skills hardCap false",
+    "16 authorized assets only",
+    "GLB hashes and sizes",
+    "compressed primitives",
+    "actual triangle accessor counts vs manifests",
+    "material roles",
+    "no external textures",
+    "sources and final views exist"
+  ]
+}

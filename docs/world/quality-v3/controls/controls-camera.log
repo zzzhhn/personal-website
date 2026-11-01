@@ -1,0 +1,29 @@
+PASS (a) W walks toward the rotated camera forward (<= 6 deg)
+PASS (a) walking heading is not a 45 deg multiple (>= 5 deg off)
+PASS (a) second drag angle also followed (<= 6 deg)
+PASS (a) W -> W+D sweeps through intermediate headings (>= 3 frames strictly between)
+PASS (b) steering rises continuously while A is held (>= 8 distinct levels, monotone)
+PASS (b) steering at 100 ms of hold is < 40 % of the angle at 600 ms
+PASS (b) steering recentres after release (< 5 % of peak 600 ms later)
+PASS (b) moving full lock is smaller than standing full lock
+PASS (b) chase view widens with speed (FOV > 55, distance > preset)
+PASS (b) drive camera eases back behind the car after manual look
+PASS (b) driving: zoomed-out chase capped at 30 m at speed
+PASS (b) driving: manual scroll in the car reaches 2.5 m (no 7 m floor)
+PASS (c) scroll zoom reaches <= 2.6 m and >= 29.5 m
+PASS (c) scroll zoom is continuous (3 notches change distance by < 50 %)
+PASS (c) V cycles through near, mid, far, first person and back
+PASS (c) first person: W walks along the view, body hidden
+PASS (d) camera stays above walkable ground in every sample (>= 0.25 m)
+PASS (d) camera collision pulls in when an obstacle is behind
+PASS (d) third-person camera never overlaps solids
+PASS (e) first person at a wall: eye/near plane never overlaps solids
+PASS (e) first person in a car: eye never overlaps static solids
+{
+ "passed": 21,
+ "total": 21,
+ "failed": [],
+ "errors": [
+  "Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)"
+ ]
+}

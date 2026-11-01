@@ -1,0 +1,46 @@
+{
+  "codeCommit": "8aeb2ae",
+  "checkedAt": "2026-10-26T11:28:06.575736+08:00",
+  "url": "http://127.0.0.1:4341/world/?start=brain",
+  "htmlStatus": 200,
+  "entryModule": "/_astro/WorldApp.CPGGYEAM.js",
+  "checks": [
+    {
+      "path": "_astro/WorldApp.CPGGYEAM.js",
+      "status": 200,
+      "sha256": "761bb8e8023a01019aacd3c89c0828476af918b937c67c9fa80fac92d3705067",
+      "bytes": 128
+    },
+    {
+      "path": "_astro/WorldApp.txbQDuEF.js",
+      "status": 200,
+      "sha256": "6d274a85027ec38339829ebc97c164eda4f3c188c61a8962a76be04d7197a02c",
+      "bytes": 107799
+    },
+    {
+      "path": "world/alpha-mine/colliders.json",
+      "status": 200,
+      "sha256": "ec21999a87f800e79bfb6763e0508509e4cb2907342a75829abb176b4f24059a",
+      "bytes": 2168523
+    },
+    {
+      "path": "world/alpha-mine/layout.json",
+      "status": 200,
+      "sha256": "59a6ab88059cc70c1bdd04485512cdffaab0629e4ce18dfe47753ce590697ffb",
+      "bytes": 38254
+    },
+    {
+      "path": "world/alpha-mine/quarry-static.glb",
+      "status": 200,
+      "sha256": "51f5cea6b3318b610a8fef5fe6484fef8d0f6e50f3744f8403fd2f918beb56ca",
+      "bytes": 2186512
+    },
+    {
+      "path": "world/alpha-mine/veins.glb",
+      "status": 200,
+      "sha256": "7ff42255aae79cc25752e55f46ec35fbd5850db3e5c45d311c8b05809061adb7",
+      "bytes": 1072016
+    }
+  ],
+  "scope": "HTTP/source byte parity; production browser loaded without QA overlay. Full normal-input online loop and browser limitations documented in quarry-browser-qa-20261026.md."
+}

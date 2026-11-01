@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "scene": "alpha-agent-exchange",
+  "referenceVersion": "v2-tactile-historical-exchange",
+  "approvals": {
+    "style": {
+      "status": "approved",
+      "source": "human-user",
+      "date": "2026-10-29",
+      "quote": "通过，按这个方向做",
+      "scope": "已展示的校准版概念图：切面海岸、白盔人物、奶油石材、胡桃木和低光泽铜件"
+    },
+    "layout": {
+      "status": "approved",
+      "source": "human-user",
+      "date": "2026-10-29",
+      "quote": "通过，按这个方向做",
+      "scope": "中央交易池连接档案室、清算室和连通回廊；取票、送单、调仓与历史重演的空间方向"
+    }
+  },
+  "references": [
+    {
+      "role": "concept-sheet",
+      "path": "docs/world/phase-2-playground/alpha-exchange/rebuild-v2-20261029/exchange-concept-v2.png",
+      "sha256": "17d2cd89482277d8b64f3d62adbc570e6b49123414778f0cb7e852b7c9a099f7"
+    },
+    {
+      "role": "day",
+      "path": "docs/world/phase-2-playground/alpha-exchange/rebuild-v2-20261029/exchange-day-v2.png",
+      "sha256": "d353423f9e3f1e157d55c18c1c5085dc7f55298a83af797ff8ff780ad77b3f9b"
+    },
+    {
+      "role": "night",
+      "path": "docs/world/phase-2-playground/alpha-exchange/rebuild-v2-20261029/exchange-night-v2.png",
+      "sha256": "875f6c5d36d2fc7a677019bae9acfb7102419277ed5750d237ad12657c606145"
+    }
+  ],
+  "reviewViews": [
+    "E01 entrance and connected hall layout, day/night",
+    "E02 player ticket/slider contact at dealing station, day/night",
+    "E03 archive, gallery and two safe exits",
+    "E04 clearing-machine interaction and return route"
+  ],
+  "failureConditions": [
+    "Only more decorative computers, no embodied actions",
+    "Disconnected gallery or blocked exit",
+    "Character/material style drifts into photographic miniature",
+    "Night lights do not illuminate the floor, player and contact surfaces",
+    "Play requires repetitive next-day buttons or reading a large dashboard",
+    "Architecture requires permanent heavy reflections, lights or polling"
+  ],
+  "generation": {
+    "method": "native imagegen",
+    "prompt": "prompt.txt",
+    "styleCorrection": "style-calibration-prompt.txt",
+    "dayNightStatus": "Matching-camera day and midnight edits derived from the approved concept. Illumination implementation references, not separate user acceptance or engine renders."
+  },
+  "runtimeEvidence": {
+    "status": "implemented-v25-primary-verified",
+    "report": "docs/world/phase-2-playground/goal-integration-v25-20261029.md",
+    "note": "Primary reviewed actual same-camera day/night renders, a complete keyboard-played historical round, replay, and bidirectional production entrance traversal. Generated images remain reference material; user acceptance of the implemented scene is pending."
+  },
+  "nightScope": "保持已批准建筑和布局的日夜照明实施参考，未声称用户已独立验收运行画面。"
+}

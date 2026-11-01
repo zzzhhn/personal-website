@@ -1,0 +1,39 @@
+{
+ "images": [
+  "quarry-v4-fracture-detail.png"
+ ],
+ "renderer": "BLENDER_EEVEE",
+ "resolution": [
+  960,
+  760
+ ],
+ "viewTransform": "AgX",
+ "look": "None",
+ "exposure": 0,
+ "gamma": 1,
+ "views": [
+  [
+   "quarry-v4-fracture-detail",
+   [
+    -3.4,
+    1.55,
+    -16.5
+   ],
+   [
+    -7.0,
+    1.65,
+    -21.0
+   ]
+  ]
+ ],
+ "scope": "fresh exact delivered GLB; studio lights/floor/cameras and basin water are preview only; not game integration or character validation",
+ "staticSha256": "61b22e1fd5cc1572df088946dfbf366fe3ca14fc39166e4cf3e23858b0aea10d",
+ "veinsSha256": "ebcc25eb7bf2f1a32a22b359c4f341b191db09213963a2ff884df8fae5ce43b3",
+ "flora": {
+  "grass": 709,
+  "rosettes": 197,
+  "flowers": 214,
+  "scope": "static pose of runtime banks for composition only; not wind or trample verification"
+ },
+ "supersedes": "layered-comparison candidate; comparison panes remain historical evidence of the first pass"
+}

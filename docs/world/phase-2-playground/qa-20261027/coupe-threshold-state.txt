@@ -1,0 +1,232 @@
+Browser tab: 1395913741, Title: "Bobby’s island · World playtest", URL: "http://127.0.0.1:4343/world/?start=coupe&quality=balanced&paused=1&qa=1".
+1 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4343/world/?start=coupe&quality=balanced&paused=1&qa=1
+	2 container Bobby 的城岛
+		3 container
+			4 text 经历 · 项目 · 漫游
+			5 heading Bobby 的城岛, Value: 1
+				6 text Bobby 的城岛
+			7 button 回到营地, Help: 保留矿石、挖矿进度和研究结果。
+			8 pop up button 地图与设置 Esc
+		9 container
+			10 container 城岛地图 · 海岸城区
+			11 text 海岸城区
+		27 container
+			28 text 0 KM/H 轿跑 侧滑角 0 ° W 加速后 A / D + X 氮气就绪 3.0  s
+			29 level indicator Description: 氮气, Value: 100
+			30 text W + Shift 直线加速，松开补充 手柄：RT 加速 · X 手刹 · A 氮气 松开 X，反向轻打方向接回抓地
+		15 container
+			16 button QA · 读取当前渲染开销
+			17 button QA · 读取动作与接触
+			18 button QA · 读取 Club 音频
+			19 button QA · 读取水面接触
+			20 button QA · 倾覆当前车辆
+			21 button QA · 上车并定格门洞
+			22 button QA · 定格入座
+			23 button QA · 继续上下车动作
+			24 button QA · 当前角色或车辆落水
+			25 checkbox QA · 模拟回测连接中断, Value: 0
+			33 text {
+ "actor": {
+  "animation": "Idle",
+  "root": [
+   25.09989343338029,
+   1.076823706626892,
+   2.509709263029389
+  ],
+  "seatSupport": null,
+  "vehicleStage": {
+   "q": 0.66,
+   "approach": 1,
+   "turn": 1,
+   "reach": 1,
+   "open": 1,
+   "align": 1,
+   "threshold": 1,
+   "leadStep": 0.6480000000000008,
+   "sit": 0,
+   "transfer": 0,
+   "opacity": 1,
+   "stage": "step",
+   "duck": 1,
+   "doorOpen": 1
+  }
+ },
+ "doors": {
+  "offroad": {
+   "level": 0,
+   "triangles": 15242,
+   "doors": [
+    {
+     "side": -1,
+     "quaternion": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "vertices": 540
+    },
+    {
+     "side": 1,
+     "quaternion": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "vertices": 540
+    }
+   ]
+  },
+  "coupe": {
+   "level": 0,
+   "triangles": 14816,
+   "doors": [
+    {
+     "side": -1,
+     "quaternion": [
+      0,
+      -0.24178482375128307,
+      -0.47982389283452886,
+      0.8433914458118955
+     ],
+     "vertices": 636
+    },
+    {
+     "side": 1,
+     "quaternion": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "vertices": 636
+    }
+   ]
+  },
+  "van": {
+   "level": 0,
+   "triangles": 14273,
+   "doors": [
+    {
+     "side": -1,
+     "quaternion": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "vertices": 540
+    },
+    {
+     "side": 1,
+     "quaternion": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "vertices": 540
+    }
+   ]
+  }
+ },
+ "physics": {
+  "player": [
+   26.199993133544922,
+   1.956823706626892,
+   4.482407093048096
+  ],
+  "grounded": true,
+  "vehicles": [
+   {
+    "id": "offroad",
+    "position": [
+     -26.005834579467773,
+     5.896548271179199,
+     34
+    ],
+    "waterSeconds": 0,
+    "wheelContacts": [
+     true,
+     true,
+     true,
+     true
+    ]
+   },
+   {
+    "id": "coupe",
+    "position": [
+     26.19895362854004,
+     2.1374425888061523,
+     1.9517102241516113
+    ],
+    "waterSeconds": 0,
+    "wheelContacts": [
+     true,
+     true,
+     true,
+     true
+    ]
+   },
+   {
+    "id": "van",
+    "position": [
+     45.9925422668457,
+     2.4650120735168457,
+     -44.733436584472656
+    ],
+    "waterSeconds": 0,
+    "wheelContacts": [
+     true,
+     true,
+     true,
+     true
+    ]
+   }
+  ]
+ }
+}
+		26 text {
+ "position": [
+  26.2,
+  2.14,
+  1.95
+ ],
+ "yaw": 0,
+ "grounded": true,
+ "vehicle": "coupe",
+ "drive": {
+  "id": "coupe",
+  "nitro": 1,
+  "boosting": false,
+  "boostLock": false,
+  "rechargeDelay": 0,
+  "handbrake": false,
+  "braking": true,
+  "slipAngle": -0.00003608656009717172,
+  "contacts": 4,
+  "speed": -0.00014320534853917388,
+  "power": 0
+ },
+ "grass": {
+  "instances": 69,
+  "disturbers": 2,
+  "trampled": 33,
+  "strength": 0.947
+ },
+ "exchange": {
+  "phase": "closed",
+  "days": 0,
+  "day": 0,
+  "cash": 10000,
+  "units": 0,
+  "equity": 10000,
+  "message": "ring-first",
+  "ledger": []
+ }
+}
+		31 container
+			32 text E 下车
+
+The focused UI element is 17 button QA · 读取动作与接触

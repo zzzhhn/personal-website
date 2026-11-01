@@ -1,0 +1,42 @@
+{
+ "status": "candidate accepted by main-session model-preview review; engine review pending",
+ "assets": {
+  "layout.json": "59a6ab88059cc70c1bdd04485512cdffaab0629e4ce18dfe47753ce590697ffb",
+  "colliders.json": "ec21999a87f800e79bfb6763e0508509e4cb2907342a75829abb176b4f24059a",
+  "quarry-static.glb": "51f5cea6b3318b610a8fef5fe6484fef8d0f6e50f3744f8403fd2f918beb56ca",
+  "veins.glb": "7ff42255aae79cc25752e55f46ec35fbd5850db3e5c45d311c8b05809061adb7"
+ },
+ "staticAndCollisionUnchangedSince143IntegrationTests": true,
+ "focusedTests": {
+  "passed": 20,
+  "skipped": 1,
+  "failed": 0
+ },
+ "deliveredToolsWithExplicitAssetDirectory": {
+  "passed": 1,
+  "skipped": 0,
+  "failed": 0
+ },
+ "additionalRoutes": [
+  "gallery",
+  "westLink",
+  "ravine-to-forecourt",
+  "west-support-to-entrance"
+ ],
+ "portableStoneTexturesEqual": true,
+ "maxImpactSurfaceDistanceM": 4.975521005690098e-05,
+ "previewMatchesExactGLBs": true,
+ "limits": [
+  "No browser or game lighting review in this session",
+  "No new wind/trample runtime acceptance",
+  "Existing solver reports unreachable fixture distances honestly; passing test is not zero residual at every distance"
+ ],
+ "frozen": "src, public and modelling sources frozen before main production build; final writes only handoff and evidence",
+ "mainFollowupTests": {
+  "passed": 21,
+  "skipped": 0,
+  "failed": 0,
+  "source": "main-session reported final explicit ALPHA_MINE_ASSET_DIR suite; original focused receipt preserved"
+ },
+ "mainBuild": "main-session reports production build succeeded, two pages"
+}

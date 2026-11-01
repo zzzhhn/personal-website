@@ -1,0 +1,42 @@
+{
+  "exitDuringPending": [
+    {
+      "pending": false,
+      "slices": 0,
+      "error": "",
+      "worker": {
+        "requests": 2,
+        "workerMs": 3.7000000178813934,
+        "maxWorkerMs": 2.2000000178813934,
+        "maxSource": "C10_pole_3",
+        "maxInputVertices": 768
+      }
+    },
+    {
+      "pending": true,
+      "slices": 10,
+      "error": "",
+      "worker": {
+        "requests": 0,
+        "workerMs": 0,
+        "maxWorkerMs": 0,
+        "maxSource": "",
+        "maxInputVertices": 0
+      }
+    },
+    {
+      "pending": true,
+      "slices": 29,
+      "error": "",
+      "worker": {
+        "requests": 3,
+        "workerMs": 13.200000017881393,
+        "maxWorkerMs": 8.800000011920929,
+        "maxSource": "park-walk-deck",
+        "maxInputVertices": 14502
+      }
+    }
+  ],
+  "exitUrl": "about:blank",
+  "scope": "visible QA state before full page navigation; worker termination itself covered by source tests"
+}

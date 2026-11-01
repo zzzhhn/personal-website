@@ -1,0 +1,73 @@
+{
+  "base": "http://127.0.0.1:4322",
+  "query": "",
+  "quality": "high",
+  "views": [
+    {
+      "name": "near-camp-grass",
+      "teleport": [
+        -54,
+        5.69,
+        44
+      ],
+      "zoom": 0
+    },
+    {
+      "name": "near-west-slope",
+      "teleport": [
+        -66,
+        5.7,
+        26
+      ],
+      "zoom": 0
+    },
+    {
+      "name": "mid-west-coast",
+      "teleport": [
+        -62,
+        3.75,
+        6
+      ],
+      "zoom": 1
+    },
+    {
+      "name": "mid-camp-rim",
+      "teleport": [
+        -42,
+        5.69,
+        52
+      ],
+      "zoom": 2
+    },
+    {
+      "name": "near-beach-north",
+      "teleport": [
+        -22,
+        2.96,
+        56
+      ],
+      "zoom": 0
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "calls": 125,
+    "triangles": 423092,
+    "geometries": 148,
+    "textures": 19,
+    "camera": [
+      -19.36707242379284,
+      6.817382634298294,
+      59.43493282600556
+    ]
+  },
+  "names": [
+    "vehicle-offroad-chassis",
+    "vehicle-offroad-cabin",
+    "vehicle-coupe-chassis",
+    "vehicle-coupe-cabin",
+    "vehicle-van-chassis",
+    "vehicle-van-cabin",
+    "player-capsule"
+  ]
+}

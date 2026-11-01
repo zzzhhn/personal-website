@@ -1,0 +1,24 @@
+{
+  "candidateHttp": {
+    "exact": true,
+    "bytes": 52276,
+    "sha256": "d896403668396f85ddb5043dc3b8fee133997851d348526c5209d441f9af1a8f"
+  },
+  "candidateBrowser": {
+    "url": "http://127.0.0.1:4343/world/?quality=balanced&paused=1",
+    "ready": true,
+    "paused": true,
+    "errors": []
+  },
+  "served4341": {
+    "exact": true,
+    "bytes": 52276,
+    "sha256": "d896403668396f85ddb5043dc3b8fee133997851d348526c5209d441f9af1a8f"
+  },
+  "browser4341": {
+    "url": "http://127.0.0.1:4341/world/?quality=balanced&paused=1",
+    "ready": true,
+    "paused": true,
+    "errors": []
+  }
+}

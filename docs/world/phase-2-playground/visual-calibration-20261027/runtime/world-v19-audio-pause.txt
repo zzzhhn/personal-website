@@ -1,0 +1,41 @@
+Chrome development runtime; UI button snapshots within one tool call.
+PLAYING
+"parkAudio": {
+  "owners": 4,
+  "started": false,
+  "timer": false,
+  "subscribed": true,
+  "state": "running",
+  "transitioning": false,
+  "voices": 0,
+  "ticks": 0,
+  "muted": false,
+  "cueVoices": 0,
+  "cuePending": false,
+  "pcmKeys": 0,
+  "pcmBytes": 0,
+  "candidate": "b",
+  "previewPlaying": true,
+  "previewPending": false,
+  "previewBytes": 2304000
+ }
+PAUSED
+"parkAudio": {
+  "owners": 4,
+  "started": false,
+  "timer": false,
+  "subscribed": true,
+  "state": "suspended",
+  "transitioning": false,
+  "voices": 0,
+  "ticks": 0,
+  "muted": false,
+  "cueVoices": 0,
+  "cuePending": false,
+  "pcmKeys": 0,
+  "pcmBytes": 0,
+  "candidate": "b",
+  "previewPlaying": false,
+  "previewPending": false,
+  "previewBytes": 2304000
+ }

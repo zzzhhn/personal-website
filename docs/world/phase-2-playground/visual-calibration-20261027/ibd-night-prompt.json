@@ -1,0 +1,6 @@
+{
+  "generator": "native imagegen",
+  "date": "2026-10-27",
+  "output": "ibd-yard-night-v1.png",
+  "prompt": "Use case: lighting-weather. Edit the supplied approved daytime faceted 3D island industrial inventory-yard concept into its matched midnight lighting reference. Preserve EXACT composition, camera angle, framing, architecture, all three sheds of different heights, gantry crane, coiled steel, mezzanine inspection walkway and ramp, cargo truck loading shed, parts workshop, character design and scale, coastal landscape and paths. Do not add or remove buildings or change shapes/layout. Keep the same stylized faceted game-world materials and matte surfaces, not photographic. Change only time of day and believable site lighting: deep blue midnight sky, gentle cool moon/sky fill retaining readable building side planes and foliage, warm functional lights below canopies illuminating the actual steel coils, work benches, ground and walkway, subtle amber path bollards and rail edge cues. Character and all primary walkable routes must remain clearly visible without global overexposure. Dark-but-legible background sea. No cyan/pink cyberpunk neon: this is an industrial site, not the coaster park. No extra bloom, haze or lens artifacts. No new text, no watermark. One image, same aspect ratio."
+}

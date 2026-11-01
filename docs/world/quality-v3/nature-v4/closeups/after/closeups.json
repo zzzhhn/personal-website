@@ -1,0 +1,191 @@
+{
+  "base": "http://127.0.0.1:4322",
+  "tag": "after",
+  "startedAt": "2026-10-22T12:32:03.767Z",
+  "views": [
+    {
+      "name": "tree-G16",
+      "camera": [
+        -53.2,
+        8.4,
+        39.6
+      ],
+      "target": [
+        -59,
+        7.4,
+        34
+      ],
+      "light": "dusk",
+      "file": "docs/world/quality-v3/nature-v4/closeups/after/tree-G16.png",
+      "stats": {
+        "calls": 163,
+        "triangles": 445304,
+        "geometries": 148,
+        "textures": 19,
+        "camera": [
+          -53.2,
+          8.4,
+          39.6
+        ]
+      }
+    },
+    {
+      "name": "tree-G17",
+      "camera": [
+        -46.6,
+        8.2,
+        49.8
+      ],
+      "target": [
+        -52,
+        7.2,
+        45
+      ],
+      "light": "dusk",
+      "file": "docs/world/quality-v3/nature-v4/closeups/after/tree-G17.png",
+      "stats": {
+        "calls": 194,
+        "triangles": 460320,
+        "geometries": 148,
+        "textures": 19,
+        "camera": [
+          -46.6,
+          8.2,
+          49.8
+        ]
+      }
+    },
+    {
+      "name": "tree-G18",
+      "camera": [
+        -34.2,
+        9,
+        13.6
+      ],
+      "target": [
+        -40,
+        8,
+        9
+      ],
+      "light": "dusk",
+      "file": "docs/world/quality-v3/nature-v4/closeups/after/tree-G18.png",
+      "stats": {
+        "calls": 168,
+        "triangles": 463607,
+        "geometries": 148,
+        "textures": 19,
+        "camera": [
+          -34.2,
+          9,
+          13.6
+        ]
+      }
+    },
+    {
+      "name": "rocks-west",
+      "camera": [
+        -56.6,
+        6.7,
+        43.6
+      ],
+      "target": [
+        -60,
+        5.1,
+        41
+      ],
+      "light": "dusk",
+      "file": "docs/world/quality-v3/nature-v4/closeups/after/rocks-west.png",
+      "stats": {
+        "calls": 154,
+        "triangles": 441011,
+        "geometries": 148,
+        "textures": 19,
+        "camera": [
+          -56.6,
+          6.7,
+          43.6
+        ]
+      }
+    },
+    {
+      "name": "bush-G19-G20",
+      "camera": [
+        -58,
+        6.4,
+        27.4
+      ],
+      "target": [
+        -61.6,
+        5.2,
+        24.8
+      ],
+      "light": "dusk",
+      "file": "docs/world/quality-v3/nature-v4/closeups/after/bush-G19-G20.png",
+      "stats": {
+        "calls": 155,
+        "triangles": 441868,
+        "geometries": 148,
+        "textures": 19,
+        "camera": [
+          -58,
+          6.4,
+          27.4
+        ]
+      }
+    },
+    {
+      "name": "fire-dusk",
+      "camera": [
+        -39.9,
+        6.25,
+        32.1
+      ],
+      "target": [
+        -42,
+        5.35,
+        30
+      ],
+      "light": "dusk",
+      "file": "docs/world/quality-v3/nature-v4/closeups/after/fire-dusk.png",
+      "stats": {
+        "calls": 193,
+        "triangles": 464682,
+        "geometries": 148,
+        "textures": 19,
+        "camera": [
+          -39.9,
+          6.25,
+          32.1
+        ]
+      }
+    },
+    {
+      "name": "fire-night",
+      "camera": [
+        -39.9,
+        6.25,
+        32.1
+      ],
+      "target": [
+        -42,
+        5.35,
+        30
+      ],
+      "light": "night",
+      "file": "docs/world/quality-v3/nature-v4/closeups/after/fire-night.png",
+      "stats": {
+        "calls": 193,
+        "triangles": 464682,
+        "geometries": 148,
+        "textures": 19,
+        "camera": [
+          -39.9,
+          6.25,
+          32.1
+        ]
+      }
+    }
+  ],
+  "errors": [],
+  "finishedAt": "2026-10-22T12:32:20.361Z"
+}

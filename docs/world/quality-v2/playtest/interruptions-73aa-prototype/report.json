@@ -1,0 +1,2233 @@
+{
+  "base": "http://127.0.0.1:4321",
+  "startedAt": "2026-10-21T13:54:22.159Z",
+  "interruptions": true,
+  "errors": [],
+  "views": [
+    {
+      "zoom": 1,
+      "phases": [
+        {
+          "label": "idle",
+          "keys": [],
+          "start": 2.136,
+          "videoTime_s": 0
+        },
+        {
+          "label": "walk",
+          "keys": [
+            "KeyA"
+          ],
+          "start": 2.64,
+          "videoTime_s": 0.504
+        },
+        {
+          "label": "pre-turn",
+          "keys": [],
+          "start": 3.843,
+          "videoTime_s": 1.7069999999999999
+        },
+        {
+          "label": "turn180",
+          "keys": [
+            "KeyD"
+          ],
+          "start": 4.268,
+          "videoTime_s": 2.1319999999999997
+        },
+        {
+          "label": "settled-turn",
+          "keys": [],
+          "start": 4.976,
+          "videoTime_s": 2.84
+        },
+        {
+          "label": "walk-again",
+          "keys": [
+            "KeyA"
+          ],
+          "start": 6.683,
+          "videoTime_s": 4.547
+        },
+        {
+          "label": "pre-resume",
+          "keys": [],
+          "start": 7.589,
+          "videoTime_s": 5.453
+        },
+        {
+          "label": "resume",
+          "keys": [
+            "KeyA"
+          ],
+          "start": 7.957,
+          "videoTime_s": 5.821
+        },
+        {
+          "label": "pre-jump",
+          "keys": [],
+          "start": 8.611,
+          "videoTime_s": 6.4750000000000005
+        },
+        {
+          "label": "jump-land",
+          "keys": [],
+          "start": 9.017,
+          "videoTime_s": 6.880999999999999
+        },
+        {
+          "label": "walk-pause",
+          "keys": [
+            "KeyD"
+          ],
+          "start": 10.825,
+          "videoTime_s": 8.689
+        },
+        {
+          "label": "pre-pause",
+          "keys": [],
+          "start": 11.686,
+          "videoTime_s": 9.55
+        },
+        {
+          "label": "paused",
+          "keys": [],
+          "start": 12.122,
+          "videoTime_s": 9.986
+        },
+        {
+          "label": "resumed-pause",
+          "keys": [],
+          "start": 12.495,
+          "videoTime_s": 10.358999999999998
+        }
+      ],
+      "segments": {
+        "interrupted-active-stop": {
+          "passed": true,
+          "states": {
+            "pre-turn": "settling",
+            "pre-resume": "settling",
+            "pre-jump": "settling",
+            "pre-pause": "settling"
+          }
+        },
+        "jump-lands": {
+          "passed": true
+        },
+        "stop-completes": {
+          "passed": true
+        },
+        "pause-freezes": {
+          "passed": true
+        },
+        "bone-length-preserved": {
+          "passed": true,
+          "maxError_m": 2.83e-07
+        }
+      },
+      "events": [
+        {
+          "t": 9.016,
+          "press": "Space"
+        },
+        {
+          "t": 12.098,
+          "press": "Escape"
+        },
+        {
+          "t": 12.488,
+          "press": "Escape"
+        }
+      ],
+      "assetSha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7",
+      "stopPrototype": true,
+      "phasePrototype": true,
+      "recordingStart_s": 2.136,
+      "footContact": {
+        "method": "stable deformed vertex IDs within 6 mm of collider foot plane; finite sampling, no slope IK claim",
+        "steadyDefinition": "at least 0.5 s after each commanded phase begins; turning/start/stop retained separately",
+        "threshold_m": 0.0172,
+        "steady": {
+          "idle": {
+            "samples": 0,
+            "continuousPairs": 0,
+            "maxStep_m": 0,
+            "maxIntervalDrift_m": 0,
+            "maxIntervalArc_m": 0,
+            "worstArc": null,
+            "longestInterval_s": 0,
+            "worst": null
+          },
+          "walk": {
+            "samples": 32,
+            "continuousPairs": 882,
+            "maxStep_m": 0.00842177059466248,
+            "maxIntervalDrift_m": 0.00842177059466248,
+            "maxIntervalArc_m": 0.00884089409656622,
+            "worstArc": {
+              "startT": 3.18,
+              "t": 3.414,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:105",
+              "start": [
+                -42.63309301479796,
+                4.803645569212295,
+                35.5543536590035
+              ],
+              "end": [
+                -42.639657579971754,
+                4.801088095729578,
+                35.55938889465282
+              ]
+            },
+            "longestInterval_s": 0.254,
+            "worst": {
+              "startT": 3.18,
+              "t": 3.201,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:105",
+              "start": [
+                -42.63309301479796,
+                4.803645569212295,
+                35.5543536590035
+              ],
+              "end": [
+                -42.63982277640404,
+                4.800359767913819,
+                35.55941691177958
+              ],
+              "animation": "Walk",
+              "speed": 1.7626380920414186
+            }
+          },
+          "pre-turn": {
+            "samples": 0,
+            "continuousPairs": 0,
+            "maxStep_m": 0,
+            "maxIntervalDrift_m": 0,
+            "maxIntervalArc_m": 0,
+            "worstArc": null,
+            "longestInterval_s": 0,
+            "worst": null
+          },
+          "turn180": {
+            "samples": 9,
+            "continuousPairs": 192,
+            "maxStep_m": 0.0002608016327506136,
+            "maxIntervalDrift_m": 0.00046096097943591936,
+            "maxIntervalArc_m": 0.0005981621458061068,
+            "worstArc": {
+              "startT": 4.823,
+              "t": 4.954,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:105",
+              "start": [
+                -42.964081449336746,
+                4.800441796384839,
+                35.64332084274663
+              ],
+              "end": [
+                -42.96449259834381,
+                4.800365277677064,
+                35.64351452632756
+              ]
+            },
+            "longestInterval_s": 0.13099999999999934,
+            "worst": {
+              "startT": 4.78,
+              "t": 4.846,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:193",
+              "start": [
+                -43.07783257525142,
+                4.80036204615899,
+                35.863238862553054
+              ],
+              "end": [
+                -43.078225794171786,
+                4.800383478971292,
+                35.8634794117273
+              ],
+              "animation": "Walk",
+              "speed": 1.761535191535977
+            }
+          },
+          "settled-turn": {
+            "samples": 54,
+            "continuousPairs": 3024,
+            "maxStep_m": 0.0030601576381054274,
+            "maxIntervalDrift_m": 0.009247611554812595,
+            "maxIntervalArc_m": 0.009251163468015338,
+            "worstArc": {
+              "startT": 5.551,
+              "t": 6.66,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:187",
+              "start": [
+                -42.71857625961146,
+                4.8008749766073135,
+                35.719200891485414
+              ],
+              "end": [
+                -42.711171178384184,
+                4.800360262406544,
+                35.71366207543137
+              ]
+            },
+            "longestInterval_s": 1.109,
+            "worst": {
+              "startT": 5.551,
+              "t": 6.321,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:187",
+              "start": [
+                -42.71857625961146,
+                4.8008749766073135,
+                35.719200891485414
+              ],
+              "end": [
+                -42.71117083588828,
+                4.800360250599979,
+                35.713662117347674
+              ],
+              "animation": "Idle",
+              "speed": 2.2487274759037803e-07
+            }
+          },
+          "walk-again": {
+            "samples": 18,
+            "continuousPairs": 444,
+            "maxStep_m": 0.008533480150025188,
+            "maxIntervalDrift_m": 0.008533480150025188,
+            "maxIntervalArc_m": 0.008830265085812172,
+            "worstArc": {
+              "startT": 7.247,
+              "t": 7.461,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:105",
+              "start": [
+                -43.36617394228039,
+                4.803675519371071,
+                36.10400403704806
+              ],
+              "end": [
+                -43.372871938414164,
+                4.800360688365512,
+                36.10906773807898
+              ]
+            },
+            "longestInterval_s": 0.258,
+            "worst": {
+              "startT": 7.247,
+              "t": 7.268,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:105",
+              "start": [
+                -43.36617394228039,
+                4.803675519371071,
+                36.10400403704806
+              ],
+              "end": [
+                -43.37299304129265,
+                4.800360244750977,
+                36.10913435595938
+              ],
+              "animation": "Walk",
+              "speed": 1.7626405954382287
+            }
+          },
+          "pre-resume": {
+            "samples": 0,
+            "continuousPairs": 0,
+            "maxStep_m": 0,
+            "maxIntervalDrift_m": 0,
+            "maxIntervalArc_m": 0,
+            "worstArc": null,
+            "longestInterval_s": 0,
+            "worst": null
+          },
+          "resume": {
+            "samples": 7,
+            "continuousPairs": 216,
+            "maxStep_m": 4.515829848164257e-05,
+            "maxIntervalDrift_m": 4.362573813678188e-05,
+            "maxIntervalArc_m": 0.0001636724512954405,
+            "worstArc": {
+              "startT": 8.462,
+              "t": 8.589,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:193",
+              "start": [
+                -44.722451207871686,
+                4.800362846738034,
+                36.986550888098755
+              ],
+              "end": [
+                -44.72245050156223,
+                4.800361311378799,
+                36.98654593897911
+              ]
+            },
+            "longestInterval_s": 0.12700000000000067,
+            "worst": {
+              "startT": 8.462,
+              "t": 8.568,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:187",
+              "start": [
+                -44.59642825111956,
+                4.800370793815945,
+                36.77661873665061
+              ],
+              "end": [
+                -44.59645708630186,
+                4.800362810173358,
+                36.776585999251665
+              ],
+              "animation": "Walk",
+              "speed": 1.7665546417239733
+            }
+          },
+          "pre-jump": {
+            "samples": 0,
+            "continuousPairs": 0,
+            "maxStep_m": 0,
+            "maxIntervalDrift_m": 0,
+            "maxIntervalArc_m": 0,
+            "worstArc": null,
+            "longestInterval_s": 0,
+            "worst": null
+          },
+          "jump-land": {
+            "samples": 32,
+            "continuousPairs": 1944,
+            "maxStep_m": 5.151774432023729e-07,
+            "maxIntervalDrift_m": 6.254251217369496e-07,
+            "maxIntervalArc_m": 4.10608857784822e-06,
+            "worstArc": {
+              "startT": 10.207,
+              "t": 10.8,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:105",
+              "start": [
+                -44.68478726985994,
+                4.801011234326422,
+                37.10282200857016
+              ],
+              "end": [
+                -44.68478757071248,
+                4.800365053224371,
+                37.10282219343041
+              ]
+            },
+            "longestInterval_s": 0.593,
+            "worst": {
+              "startT": 10.207,
+              "t": 10.624,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:111",
+              "start": [
+                -44.81078829198882,
+                4.801011177723952,
+                37.312767261366375
+              ],
+              "end": [
+                -44.81078881028275,
+                4.800367574958701,
+                37.31276761140635
+              ],
+              "animation": "Idle",
+              "speed": 2.0469466616323914e-06
+            }
+          },
+          "walk-pause": {
+            "samples": 16,
+            "continuousPairs": 384,
+            "maxStep_m": 0.009333745767360378,
+            "maxIntervalDrift_m": 0.009333745767360378,
+            "maxIntervalArc_m": 0.00983102822297131,
+            "worstArc": {
+              "startT": 11.368,
+              "t": 11.602,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:186",
+              "start": [
+                -44.08354848502488,
+                4.803830201756985,
+                36.641917119964255
+              ],
+              "end": [
+                -44.07624960795128,
+                4.801068341710312,
+                36.63655052181371
+              ]
+            },
+            "longestInterval_s": 0.23399999999999999,
+            "worst": {
+              "startT": 11.368,
+              "t": 11.389,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:186",
+              "start": [
+                -44.08354848502488,
+                4.803830201756985,
+                36.641917119964255
+              ],
+              "end": [
+                -44.076074449005375,
+                4.800535358499671,
+                36.63632627068808
+              ],
+              "animation": "Walk",
+              "speed": 1.7602009296417263
+            }
+          },
+          "pre-pause": {
+            "samples": 0,
+            "continuousPairs": 0,
+            "maxStep_m": 0,
+            "maxIntervalDrift_m": 0,
+            "maxIntervalArc_m": 0,
+            "worstArc": null,
+            "longestInterval_s": 0,
+            "worst": null
+          },
+          "paused": {
+            "samples": 0,
+            "continuousPairs": 0,
+            "maxStep_m": 0,
+            "maxIntervalDrift_m": 0,
+            "maxIntervalArc_m": 0,
+            "worstArc": null,
+            "longestInterval_s": 0,
+            "worst": null
+          },
+          "resumed-pause": {
+            "samples": 54,
+            "continuousPairs": 3816,
+            "maxStep_m": 0.0031502963669005845,
+            "maxIntervalDrift_m": 0.00882902426020613,
+            "maxIntervalArc_m": 0.008835740835498658,
+            "worstArc": {
+              "startT": 13,
+              "t": 14.177,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:189",
+              "start": [
+                -43.61782013855962,
+                4.800364553032455,
+                36.457794211141845
+              ],
+              "end": [
+                -43.61075023493091,
+                4.800364589804606,
+                36.45250619960091
+              ]
+            },
+            "longestInterval_s": 1.1769999999999996,
+            "worst": {
+              "startT": 13,
+              "t": 13.91,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:189",
+              "start": [
+                -43.61782013855962,
+                4.800364553032455,
+                36.457794211141845
+              ],
+              "end": [
+                -43.61075001566945,
+                4.80036457271007,
+                36.452506013745264
+              ],
+              "animation": "Idle",
+              "speed": 3.4412919160063874e-06
+            }
+          }
+        },
+        "includingTransitions": {
+          "idle": {
+            "samples": 22,
+            "continuousPairs": 1512,
+            "maxStep_m": 2.368817557721631e-07,
+            "maxIntervalDrift_m": 2.43869634345842e-07,
+            "maxIntervalArc_m": 1.6494578094259134e-06,
+            "worstArc": {
+              "startT": 2.136,
+              "t": 2.614,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:193",
+              "start": [
+                -41.85400023927518,
+                4.800358837938386,
+                35.05199966629796
+              ],
+              "end": [
+                -41.854000203606205,
+                4.800358859045648,
+                35.05199975070941
+              ]
+            },
+            "longestInterval_s": 0.47799999999999976,
+            "worst": {
+              "startT": 2.136,
+              "t": 2.481,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:194",
+              "start": [
+                -41.86400069930428,
+                4.800358838993434,
+                35.042000378735
+              ],
+              "end": [
+                -41.86400047228681,
+                4.800358913849323,
+                35.042000467816244
+              ],
+              "animation": "Idle",
+              "speed": 0
+            }
+          },
+          "walk": {
+            "samples": 56,
+            "continuousPairs": 1776,
+            "maxStep_m": 0.24939557693927838,
+            "maxIntervalDrift_m": 0.440998701017752,
+            "maxIntervalArc_m": 0.5664853294745302,
+            "worstArc": {
+              "startT": 2.64,
+              "t": 2.944,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:112",
+              "start": [
+                -41.864000663789476,
+                4.800358989890422,
+                34.82599943658799
+              ],
+              "end": [
+                -42.03301387412588,
+                4.803982975621922,
+                35.232258332162694
+              ]
+            },
+            "longestInterval_s": 0.32399999999999984,
+            "worst": {
+              "startT": 2.64,
+              "t": 2.794,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:112",
+              "start": [
+                -41.864000663789476,
+                4.800358989890422,
+                34.82599943658799
+              ],
+              "end": [
+                -42.03119042749298,
+                4.8003938906623285,
+                35.23407717086433
+              ],
+              "animation": "Walk",
+              "speed": 0.9838110208511803
+            }
+          },
+          "pre-turn": {
+            "samples": 20,
+            "continuousPairs": 552,
+            "maxStep_m": 0.002214001320191521,
+            "maxIntervalDrift_m": 0.002248717522850804,
+            "maxIntervalArc_m": 0.0025846983139564085,
+            "worstArc": {
+              "startT": 3.843,
+              "t": 4.248,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:109",
+              "start": [
+                -43.55183948775903,
+                4.800362575105069,
+                36.21884358338458
+              ],
+              "end": [
+                -43.55362729873925,
+                4.800360244750976,
+                36.22005962018508
+              ]
+            },
+            "longestInterval_s": 0.40500000000000025,
+            "worst": {
+              "startT": 3.843,
+              "t": 4.227,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:101",
+              "start": [
+                -43.38346221460763,
+                4.800372526587265,
+                36.27227182763967
+              ],
+              "end": [
+                -43.38531107719495,
+                4.804063400736673,
+                36.27355184233912
+              ],
+              "animation": "Idle",
+              "speed": 0.01646045579898571
+            }
+          },
+          "turn180": {
+            "samples": 33,
+            "continuousPairs": 930,
+            "maxStep_m": 0.1910052123220532,
+            "maxIntervalDrift_m": 0.38330548001339754,
+            "maxIntervalArc_m": 0.49621721741589325,
+            "worstArc": {
+              "startT": 4.268,
+              "t": 4.525,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:101",
+              "start": [
+                -43.3853110753752,
+                4.804063404526558,
+                36.27355181912497
+              ],
+              "end": [
+                -43.658564426692365,
+                4.80076745271783,
+                36.00893408266468
+              ]
+            },
+            "longestInterval_s": 0.3420000000000005,
+            "worst": {
+              "startT": 4.268,
+              "t": 4.419,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:101",
+              "start": [
+                -43.3853110753752,
+                4.804063404526558,
+                36.27355181912497
+              ],
+              "end": [
+                -43.65657291500389,
+                4.800458655099542,
+                36.00273803555855
+              ],
+              "animation": "Walk",
+              "speed": 0.8056736528915741
+            }
+          },
+          "settled-turn": {
+            "samples": 78,
+            "continuousPairs": 3498,
+            "maxStep_m": 0.0030601576381054274,
+            "maxIntervalDrift_m": 0.009247611554812595,
+            "maxIntervalArc_m": 0.009251163468015338,
+            "worstArc": {
+              "startT": 5.551,
+              "t": 6.66,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:187",
+              "start": [
+                -42.71857625961146,
+                4.8008749766073135,
+                35.719200891485414
+              ],
+              "end": [
+                -42.711171178384184,
+                4.800360262406544,
+                35.71366207543137
+              ]
+            },
+            "longestInterval_s": 1.109,
+            "worst": {
+              "startT": 5.551,
+              "t": 6.321,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:187",
+              "start": [
+                -42.71857625961146,
+                4.8008749766073135,
+                35.719200891485414
+              ],
+              "end": [
+                -42.71117083588828,
+                4.800360250599979,
+                35.713662117347674
+              ],
+              "animation": "Idle",
+              "speed": 2.2487274759037803e-07
+            }
+          },
+          "walk-again": {
+            "samples": 42,
+            "continuousPairs": 1380,
+            "maxStep_m": 0.17200124976279535,
+            "maxIntervalDrift_m": 0.45717728978122807,
+            "maxIntervalArc_m": 0.7211334690373811,
+            "worstArc": {
+              "startT": 6.683,
+              "t": 7.03,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:112",
+              "start": [
+                -42.7287703134365,
+                4.80036034194339,
+                35.32891689091121
+              ],
+              "end": [
+                -42.766466954117746,
+                4.80478525258353,
+                35.78219513717852
+              ]
+            },
+            "longestInterval_s": 0.3470000000000004,
+            "worst": {
+              "startT": 6.683,
+              "t": 6.88,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:112",
+              "start": [
+                -42.7287703134365,
+                4.80036034194339,
+                35.32891689091121
+              ],
+              "end": [
+                -42.767207133596415,
+                4.800403009199322,
+                35.78447554262107
+              ],
+              "animation": "Walk",
+              "speed": 1.1280020117760925
+            }
+          },
+          "pre-resume": {
+            "samples": 17,
+            "continuousPairs": 576,
+            "maxStep_m": 0.0020738398959166504,
+            "maxIntervalDrift_m": 0.0020780245035695957,
+            "maxIntervalArc_m": 0.0025414609440922308,
+            "worstArc": {
+              "startT": 7.589,
+              "t": 7.935,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:187",
+              "start": [
+                -43.852376129731304,
+                4.800364722745142,
+                36.21865744197498
+              ],
+              "end": [
+                -43.85407609958884,
+                4.800362693250503,
+                36.21985007311614
+              ]
+            },
+            "longestInterval_s": 0.3459999999999992,
+            "worst": {
+              "startT": 7.589,
+              "t": 7.869,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:189",
+              "start": [
+                -43.924354203529546,
+                4.800366537797931,
+                36.20837259685812
+              ],
+              "end": [
+                -43.92605447525108,
+                4.80036377280699,
+                36.2095672775311
+              ],
+              "animation": "Idle",
+              "speed": 0.0683090433588575
+            }
+          },
+          "resume": {
+            "samples": 30,
+            "continuousPairs": 918,
+            "maxStep_m": 0.008338806500661098,
+            "maxIntervalDrift_m": 0.014434801875057409,
+            "maxIntervalArc_m": 0.014437343776087515,
+            "worstArc": {
+              "startT": 7.957,
+              "t": 8.179,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:194",
+              "start": [
+                -43.96607782862654,
+                4.800360817313998,
+                36.4317942385363
+              ],
+              "end": [
+                -43.97789363515338,
+                4.802116387845634,
+                36.44008581385661
+              ]
+            },
+            "longestInterval_s": 0.23799999999999955,
+            "worst": {
+              "startT": 7.957,
+              "t": 8.179,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:194",
+              "start": [
+                -43.96607782862654,
+                4.800360817313998,
+                36.4317942385363
+              ],
+              "end": [
+                -43.97789363515338,
+                4.802116387845634,
+                36.44008581385661
+              ],
+              "animation": "Walk",
+              "speed": 1.6432118892670018
+            }
+          },
+          "pre-jump": {
+            "samples": 18,
+            "continuousPairs": 492,
+            "maxStep_m": 0.00796715157175424,
+            "maxIntervalDrift_m": 0.01155054616195809,
+            "maxIntervalArc_m": 0.012114193109536823,
+            "worstArc": {
+              "startT": 8.633,
+              "t": 8.991,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:104",
+              "start": [
+                -44.7843480985311,
+                4.804161346978573,
+                37.258488239244116
+              ],
+              "end": [
+                -44.79358662128848,
+                4.800361927734787,
+                37.265418589292615
+              ]
+            },
+            "longestInterval_s": 0.35800000000000054,
+            "worst": {
+              "startT": 8.633,
+              "t": 8.991,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:105",
+              "start": [
+                -44.827974617123694,
+                4.804161328843274,
+                37.20031954209152
+              ],
+              "end": [
+                -44.83721435128295,
+                4.800360244750977,
+                37.20725080671681
+              ],
+              "animation": "Idle",
+              "speed": 0.016451064512339082
+            }
+          },
+          "jump-land": {
+            "samples": 33,
+            "continuousPairs": 1944,
+            "maxStep_m": 5.151774432023729e-07,
+            "maxIntervalDrift_m": 6.254251217369496e-07,
+            "maxIntervalArc_m": 4.10608857784822e-06,
+            "worstArc": {
+              "startT": 10.207,
+              "t": 10.8,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:105",
+              "start": [
+                -44.68478726985994,
+                4.801011234326422,
+                37.10282200857016
+              ],
+              "end": [
+                -44.68478757071248,
+                4.800365053224371,
+                37.10282219343041
+              ]
+            },
+            "longestInterval_s": 0.593,
+            "worst": {
+              "startT": 10.207,
+              "t": 10.624,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:111",
+              "start": [
+                -44.81078829198882,
+                4.801011177723952,
+                37.312767261366375
+              ],
+              "end": [
+                -44.81078881028275,
+                4.800367574958701,
+                37.31276761140635
+              ],
+              "animation": "Idle",
+              "speed": 2.0469466616323914e-06
+            }
+          },
+          "walk-pause": {
+            "samples": 40,
+            "continuousPairs": 1308,
+            "maxStep_m": 0.17740936323101542,
+            "maxIntervalDrift_m": 0.461651249670039,
+            "maxIntervalArc_m": 0.7255920585047899,
+            "worstArc": {
+              "startT": 10.825,
+              "t": 11.172,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:191",
+              "start": [
+                -45.007588695833824,
+                4.80036507173257,
+                37.05036735211283
+              ],
+              "end": [
+                -44.54938887248669,
+                4.804187393983854,
+                37.10671269980509
+              ]
+            },
+            "longestInterval_s": 0.3470000000000013,
+            "worst": {
+              "startT": 10.825,
+              "t": 11.172,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:191",
+              "start": [
+                -45.007588695833824,
+                4.80036507173257,
+                37.05036735211283
+              ],
+              "end": [
+                -44.54938887248669,
+                4.804187393983854,
+                37.10671269980509
+              ],
+              "animation": "Walk",
+              "speed": 1.6837834358216657
+            }
+          },
+          "pre-pause": {
+            "samples": 19,
+            "continuousPairs": 648,
+            "maxStep_m": 0.002111677573463239,
+            "maxIntervalDrift_m": 0.0021117127411588643,
+            "maxIntervalArc_m": 0.002474531273684333,
+            "worstArc": {
+              "startT": 11.686,
+              "t": 12.076,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:109",
+              "start": [
+                -43.6000944726059,
+                4.800365595161395,
+                36.14466485815794
+              ],
+              "end": [
+                -43.59840463200589,
+                4.800367355137622,
+                36.14340112889144
+              ]
+            },
+            "longestInterval_s": 0.39000000000000057,
+            "worst": {
+              "startT": 11.686,
+              "t": 12.076,
+              "side": "left",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:101",
+              "start": [
+                -43.76847235909483,
+                4.800373064544651,
+                36.091238627722554
+              ],
+              "end": [
+                -43.76678194266395,
+                4.800381088370674,
+                36.089972996263015
+              ],
+              "animation": "Idle",
+              "speed": 0.016454696406760942
+            }
+          },
+          "paused": {
+            "samples": 17,
+            "continuousPairs": 576,
+            "maxStep_m": 0,
+            "maxIntervalDrift_m": 0,
+            "maxIntervalArc_m": 0,
+            "worstArc": null,
+            "longestInterval_s": 0.34500000000000064,
+            "worst": null
+          },
+          "resumed-pause": {
+            "samples": 77,
+            "continuousPairs": 4896,
+            "maxStep_m": 0.0031502963669005845,
+            "maxIntervalDrift_m": 0.009264930287969361,
+            "maxIntervalArc_m": 0.00927221416421215,
+            "worstArc": {
+              "startT": 12.56,
+              "t": 14.177,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:187",
+              "start": [
+                -43.6901477601706,
+                4.802973133237687,
+                36.44777243766616
+              ],
+              "end": [
+                -43.682728645351936,
+                4.800364592801239,
+                36.44222355881818
+              ]
+            },
+            "longestInterval_s": 1.616999999999999,
+            "worst": {
+              "startT": 12.56,
+              "t": 13.91,
+              "side": "right",
+              "vertex": "c65f7c12-e090-4516-af86-6c3946e28693:178",
+              "start": [
+                -43.56000159423603,
+                4.8029729709341265,
+                36.414429296905396
+              ],
+              "end": [
+                -43.55258226261055,
+                4.800364614998533,
+                36.40888020225202
+              ],
+              "animation": "Idle",
+              "speed": 3.4412919160063874e-06
+            }
+          }
+        },
+        "steadyWalkRunPassed": false
+      },
+      "phaseGateTimeouts": 0,
+      "fixtures": [],
+      "passed": true,
+      "samplesCount": 554
+    },
+    {
+      "zoom": 0,
+      "phases": [
+        {
+          "label": "idle",
+          "keys": [],
+          "start": 2.096,
+          "videoTime_s": 0
+        },
+        {
+          "label": "walk",
+          "keys": [
+            "KeyA"
+          ],
+          "start": 2.61,
+          "videoTime_s": 0.5139999999999998
+        },
+        {
+          "label": "pre-turn",
+          "keys": [],
+          "start": 3.819,
+          "videoTime_s": 1.7229999999999999
+        },
+        {
+          "label": "turn180",
+          "keys": [
+            "KeyD"
+          ],
+          "start": 4.252,
+          "videoTime_s": 2.1559999999999997
+        },
+        {
+          "label": "settled-turn",
+          "keys": [],
+          "start": 4.967,
+          "videoTime_s": 2.8709999999999996
+        },
+        {
+          "label": "walk-again",
+          "keys": [
+            "KeyA"
+          ],
+          "start": 6.684,
+          "videoTime_s": 4.588
+        },
+        {
+          "label": "pre-resume",
+          "keys": [],
+          "start": 7.594,
+          "videoTime_s": 5.498
+        },
+        {
+          "label": "resume",
+          "keys": [
+            "KeyA"
+          ],
+          "start": 7.962,
+          "videoTime_s": 5.866
+        },
+        {
+          "label": "pre-jump",
+          "keys": [],
+          "start": 8.614,
+          "videoTime_s": 6.518000000000001
+        },
+        {
+          "label": "jump-land",
+          "keys": [],
+          "start": 9.026,
+          "videoTime_s": 6.93
+        },
+        {
+          "label": "walk-pause",
+          "keys": [
+            "KeyD"
+          ],
+          "start": 10.835,
+          "videoTime_s": 8.739
+        },
+        {
+          "label": "pre-pause",
+          "keys": [],
+          "start": 11.705,
+          "videoTime_s": 9.609
+        },
+        {
+          "label": "paused",
+          "keys": [],
+          "start": 12.134,
+          "videoTime_s": 10.038
+        },
+        {
+          "label": "resumed-pause",
+          "keys": [],
+          "start": 12.507,
+          "videoTime_s": 10.411
+        }
+      ],
+      "segments": {
+        "interrupted-active-stop": {
+          "passed": true,
+          "states": {
+            "pre-turn": "settling",
+            "pre-resume": "settling",
+            "pre-jump": "settling",
+            "pre-pause": "settling"
+          }
+        },
+        "jump-lands": {
+          "passed": true
+        },
+        "stop-completes": {
+          "passed": true
+        },
+        "pause-freezes": {
+          "passed": true
+        },
+        "bone-length-preserved": {
+          "passed": true,
+          "maxError_m": 3.21e-07
+        }
+      },
+      "events": [
+        {
+          "t": 9.026,
+          "press": "Space"
+        },
+        {
+          "t": 12.119,
+          "press": "Escape"
+        },
+        {
+          "t": 12.504,
+          "press": "Escape"
+        }
+      ],
+      "assetSha256": "73aa0bb63b2e7ba5dfea4237bcfa361343fc2028626a65265d1d1eec10162bf7",
+      "stopPrototype": true,
+      "phasePrototype": true,
+      "recordingStart_s": 2.096,
+      "footContact": {
+        "method": "stable deformed vertex IDs within 6 mm of collider foot plane; finite sampling, no slope IK claim",
+        "steadyDefinition": "at least 0.5 s after each commanded phase begins; turning/start/stop retained separately",
+        "threshold_m": 0.0172,
+        "steady": {
+          "idle": {
+            "samples": 0,
+            "continuousPairs": 0,
+            "maxStep_m": 0,
+            "maxIntervalDrift_m": 0,
+            "maxIntervalArc_m": 0,
+            "worstArc": null,
+            "longestInterval_s": 0,
+            "worst": null
+          },
+          "walk": {
+            "samples": 32,
+            "continuousPairs": 882,
+            "maxStep_m": 0.009063150456619576,
+            "maxIntervalDrift_m": 0.009063150456619576,
+            "maxIntervalArc_m": 0.009561396058299872,
+            "worstArc": {
+              "startT": 3.129,
+              "t": 3.367,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:186",
+              "start": [
+                -42.70905368094655,
+                4.8037589934318286,
+                35.4522096921749
+              ],
+              "end": [
+                -42.71614022892894,
+                4.801022993163963,
+                35.45741432215423
+              ]
+            },
+            "longestInterval_s": 0.238,
+            "worst": {
+              "startT": 3.129,
+              "t": 3.152,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:186",
+              "start": [
+                -42.70905368094655,
+                4.8037589934318286,
+                35.4522096921749
+              ],
+              "end": [
+                -42.716311096079444,
+                4.8005344309027675,
+                35.45763837726322
+              ],
+              "animation": "Walk",
+              "speed": 1.7602010488510715
+            }
+          },
+          "pre-turn": {
+            "samples": 0,
+            "continuousPairs": 0,
+            "maxStep_m": 0,
+            "maxIntervalDrift_m": 0,
+            "maxIntervalArc_m": 0,
+            "worstArc": null,
+            "longestInterval_s": 0,
+            "worst": null
+          },
+          "turn180": {
+            "samples": 10,
+            "continuousPairs": 240,
+            "maxStep_m": 0.0028186931033730004,
+            "maxIntervalDrift_m": 0.0026305620172429704,
+            "maxIntervalArc_m": 0.0030267736824733773,
+            "worstArc": {
+              "startT": 4.752,
+              "t": 4.815,
+              "side": "left",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:111",
+              "start": [
+                -43.197987636976684,
+                4.800371314831495,
+                35.703241927967554
+              ],
+              "end": [
+                -43.19584935122001,
+                4.801326883584969,
+                35.70174239028654
+              ]
+            },
+            "longestInterval_s": 0.1510000000000007,
+            "worst": {
+              "startT": 4.752,
+              "t": 4.815,
+              "side": "left",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:109",
+              "start": [
+                -43.13080120065,
+                4.800360244750976,
+                35.79285242279644
+              ],
+              "end": [
+                -43.12864780073566,
+                4.801325514344185,
+                35.79134155373014
+              ],
+              "animation": "Walk",
+              "speed": 1.761535191535977
+            }
+          },
+          "settled-turn": {
+            "samples": 55,
+            "continuousPairs": 3072,
+            "maxStep_m": 0.0021458942844243844,
+            "maxIntervalDrift_m": 0.00762124810757609,
+            "maxIntervalArc_m": 0.00762408279024207,
+            "worstArc": {
+              "startT": 5.562,
+              "t": 6.661,
+              "side": "left",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:111",
+              "start": [
+                -42.69721920406606,
+                4.800475750375295,
+                35.31775388553257
+              ],
+              "end": [
+                -42.69111871810092,
+                4.80036040670845,
+                35.31318623733035
+              ]
+            },
+            "longestInterval_s": 1.0989999999999993,
+            "worst": {
+              "startT": 5.562,
+              "t": 6.218,
+              "side": "left",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:103",
+              "start": [
+                -42.85656420713288,
+                4.800475744800518,
+                35.39755217234391
+              ],
+              "end": [
+                -42.85046346255077,
+                4.800360254166955,
+                35.39298442254109
+              ],
+              "animation": "Idle",
+              "speed": 1.5026562709263256e-06
+            }
+          },
+          "walk-again": {
+            "samples": 19,
+            "continuousPairs": 486,
+            "maxStep_m": 0.008988342410108737,
+            "maxIntervalDrift_m": 0.008988342410108737,
+            "maxIntervalArc_m": 0.009343366270515567,
+            "worstArc": {
+              "startT": 7.229,
+              "t": 7.444,
+              "side": "left",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:105",
+              "start": [
+                -43.342168104502626,
+                4.803789543701341,
+                36.086006887636394
+              ],
+              "end": [
+                -43.34922145609925,
+                4.800360683332056,
+                36.09133510065525
+              ]
+            },
+            "longestInterval_s": 0.2370000000000001,
+            "worst": {
+              "startT": 7.229,
+              "t": 7.25,
+              "side": "left",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:105",
+              "start": [
+                -43.342168104502626,
+                4.803789543701341,
+                36.086006887636394
+              ],
+              "end": [
+                -43.34935121173306,
+                4.800360244750976,
+                36.09140996729502
+              ],
+              "animation": "Walk",
+              "speed": 1.7615426778795311
+            }
+          },
+          "pre-resume": {
+            "samples": 0,
+            "continuousPairs": 0,
+            "maxStep_m": 0,
+            "maxIntervalDrift_m": 0,
+            "maxIntervalArc_m": 0,
+            "worstArc": null,
+            "longestInterval_s": 0,
+            "worst": null
+          },
+          "resume": {
+            "samples": 6,
+            "continuousPairs": 180,
+            "maxStep_m": 6.08683167451256e-05,
+            "maxIntervalDrift_m": 6.270910523877533e-05,
+            "maxIntervalArc_m": 0.00016515852416390002,
+            "worstArc": {
+              "startT": 8.482,
+              "t": 8.59,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:193",
+              "start": [
+                -44.69905489537285,
+                4.800363190042156,
+                36.96898128304007
+              ],
+              "end": [
+                -44.69903088275238,
+                4.800361490824996,
+                36.96901750122956
+              ]
+            },
+            "longestInterval_s": 0.10800000000000054,
+            "worst": {
+              "startT": 8.482,
+              "t": 8.525,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:191",
+              "start": [
+                -44.766252355749074,
+                4.800375578517505,
+                36.87937906662089
+              ],
+              "end": [
+                -44.76621675160111,
+                4.8003623805434446,
+                36.8794306880944
+              ],
+              "animation": "Walk",
+              "speed": 1.7657584667206523
+            }
+          },
+          "pre-jump": {
+            "samples": 0,
+            "continuousPairs": 0,
+            "maxStep_m": 0,
+            "maxIntervalDrift_m": 0,
+            "maxIntervalArc_m": 0,
+            "worstArc": null,
+            "longestInterval_s": 0,
+            "worst": null
+          },
+          "jump-land": {
+            "samples": 32,
+            "continuousPairs": 1944,
+            "maxStep_m": 5.966670802518033e-07,
+            "maxIntervalDrift_m": 5.921028216703474e-07,
+            "maxIntervalArc_m": 4.871535498110132e-06,
+            "worstArc": {
+              "startT": 10.206,
+              "t": 10.813,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:186",
+              "start": [
+                -44.77124986141211,
+                4.8009680401603845,
+                36.988586669420386
+              ],
+              "end": [
+                -44.77124992291632,
+                4.8003654904327515,
+                36.98858670480547
+              ]
+            },
+            "longestInterval_s": 0.6070000000000011,
+            "worst": {
+              "startT": 10.206,
+              "t": 10.364,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:186",
+              "start": [
+                -44.77124986141211,
+                4.8009680401603845,
+                36.988586669420386
+              ],
+              "end": [
+                -44.771250073163294,
+                4.8005829698551,
+                36.98858611647628
+              ],
+              "animation": "Land",
+              "speed": 1.6580561648870482e-05
+            }
+          },
+          "walk-pause": {
+            "samples": 17,
+            "continuousPairs": 408,
+            "maxStep_m": 0.0038999871733124583,
+            "maxIntervalDrift_m": 0.003427572873937549,
+            "maxIntervalArc_m": 0.0043833961602157785,
+            "worstArc": {
+              "startT": 11.335,
+              "t": 11.422,
+              "side": "left",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:109",
+              "start": [
+                -44.31947182136353,
+                4.800365656083438,
+                36.684272876725714
+              ],
+              "end": [
+                -44.31668949179846,
+                4.801583103103982,
+                36.682278769927755
+              ]
+            },
+            "longestInterval_s": 0.21799999999999997,
+            "worst": {
+              "startT": 11.335,
+              "t": 11.422,
+              "side": "left",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:111",
+              "start": [
+                -44.38667696721476,
+                4.800365110240821,
+                36.594676421121704
+              ],
+              "end": [
+                -44.38389108798053,
+                4.801584523522723,
+                36.59267964053826
+              ],
+              "animation": "Walk",
+              "speed": 1.7626405000691885
+            }
+          },
+          "pre-pause": {
+            "samples": 0,
+            "continuousPairs": 0,
+            "maxStep_m": 0,
+            "maxIntervalDrift_m": 0,
+            "maxIntervalArc_m": 0,
+            "worstArc": null,
+            "longestInterval_s": 0,
+            "worst": null
+          },
+          "paused": {
+            "samples": 0,
+            "continuousPairs": 0,
+            "maxStep_m": 0,
+            "maxIntervalDrift_m": 0,
+            "maxIntervalArc_m": 0,
+            "worstArc": null,
+            "longestInterval_s": 0,
+            "worst": null
+          },
+          "resumed-pause": {
+            "samples": 54,
+            "continuousPairs": 3816,
+            "maxStep_m": 0.0022836161714288486,
+            "maxIntervalDrift_m": 0.00737663340625189,
+            "maxIntervalArc_m": 0.0073835076754294555,
+            "worstArc": {
+              "startT": 13.016,
+              "t": 14.201,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:191",
+              "start": [
+                -43.49592049460057,
+                4.800364059448242,
+                36.32669595102014
+              ],
+              "end": [
+                -43.490015643073455,
+                4.800364099365752,
+                36.322275243667534
+              ]
+            },
+            "longestInterval_s": 1.1850000000000005,
+            "worst": {
+              "startT": 13.016,
+              "t": 13.912,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:189",
+              "start": [
+                -43.61714341968993,
+                4.800364076117013,
+                36.45732362966907
+              ],
+              "end": [
+                -43.61123829691945,
+                4.8003640958729115,
+                36.45290274226089
+              ],
+              "animation": "Idle",
+              "speed": 2.732229388004038e-06
+            }
+          }
+        },
+        "includingTransitions": {
+          "idle": {
+            "samples": 23,
+            "continuousPairs": 1584,
+            "maxStep_m": 2.754685997333305e-07,
+            "maxIntervalDrift_m": 3.184207428706986e-07,
+            "maxIntervalArc_m": 2.794307095763746e-06,
+            "worstArc": {
+              "startT": 2.096,
+              "t": 2.587,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:192",
+              "start": [
+                -41.86400065805652,
+                4.800358850798247,
+                35.17400053760826
+              ],
+              "end": [
+                -41.864000629107096,
+                4.800358838812936,
+                35.174000469322884
+              ]
+            },
+            "longestInterval_s": 0.4910000000000001,
+            "worst": {
+              "startT": 2.096,
+              "t": 2.454,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:191",
+              "start": [
+                -41.85400019746818,
+                4.800358851691837,
+                35.164000070012165
+              ],
+              "end": [
+                -41.85400016036877,
+                4.800358870191865,
+                35.163999753760045
+              ],
+              "animation": "Idle",
+              "speed": 0
+            }
+          },
+          "walk": {
+            "samples": 56,
+            "continuousPairs": 1782,
+            "maxStep_m": 0.17200130561320387,
+            "maxIntervalDrift_m": 0.42708815240257747,
+            "maxIntervalArc_m": 0.5751802816118052,
+            "worstArc": {
+              "startT": 2.61,
+              "t": 2.935,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:191",
+              "start": [
+                -41.85400032663,
+                4.80035892016463,
+                35.16400006704505
+              ],
+              "end": [
+                -42.24269692227016,
+                4.804056435936149,
+                34.987027621561595
+              ]
+            },
+            "longestInterval_s": 0.3250000000000002,
+            "worst": {
+              "startT": 2.61,
+              "t": 2.935,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:191",
+              "start": [
+                -41.85400032663,
+                4.80035892016463,
+                35.16400006704505
+              ],
+              "end": [
+                -42.24269692227016,
+                4.804056435936149,
+                34.987027621561595
+              ],
+              "animation": "Walk",
+              "speed": 1.6649085164072102
+            }
+          },
+          "pre-turn": {
+            "samples": 20,
+            "continuousPairs": 552,
+            "maxStep_m": 0.0017422498424109305,
+            "maxIntervalDrift_m": 0.0017922688734640846,
+            "maxIntervalArc_m": 0.0020809822022485164,
+            "worstArc": {
+              "startT": 3.819,
+              "t": 4.23,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:183",
+              "start": [
+                -43.50356899488804,
+                4.800360437507169,
+                36.112130140240495
+              ],
+              "end": [
+                -43.50499904188974,
+                4.804789241819232,
+                36.11316155005855
+              ]
+            },
+            "longestInterval_s": 0.4110000000000005,
+            "worst": {
+              "startT": 3.819,
+              "t": 4.209,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:178",
+              "start": [
+                -43.60889048176863,
+                4.800368227691612,
+                35.97169983132969
+              ],
+              "end": [
+                -43.61034377890803,
+                4.804811648817315,
+                35.97274871413506
+              ],
+              "animation": "Idle",
+              "speed": 0.01646045579898571
+            }
+          },
+          "turn180": {
+            "samples": 33,
+            "continuousPairs": 942,
+            "maxStep_m": 0.20327357487165176,
+            "maxIntervalDrift_m": 0.4056614938867333,
+            "maxIntervalArc_m": 0.7946879456765032,
+            "worstArc": {
+              "startT": 4.252,
+              "t": 4.49,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:178",
+              "start": [
+                -43.61034375782872,
+                4.804811646357883,
+                35.97274869380415
+              ],
+              "end": [
+                -43.433207868323315,
+                4.800736597793203,
+                36.30947880142802
+              ]
+            },
+            "longestInterval_s": 0.3260000000000005,
+            "worst": {
+              "startT": 4.252,
+              "t": 4.362,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:178",
+              "start": [
+                -43.61034375782872,
+                4.804811646357883,
+                35.97274869380415
+              ],
+              "end": [
+                -43.49326172743672,
+                4.800754559831218,
+                36.36114674449661
+              ],
+              "animation": "Walk",
+              "speed": 0.323042565600396
+            }
+          },
+          "settled-turn": {
+            "samples": 79,
+            "continuousPairs": 3474,
+            "maxStep_m": 0.0021458942844243844,
+            "maxIntervalDrift_m": 0.008172240678811796,
+            "maxIntervalArc_m": 0.008172256492274838,
+            "worstArc": {
+              "startT": 5.097,
+              "t": 5.203,
+              "side": "left",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:104",
+              "start": [
+                -42.65405498552004,
+                4.803201796693718,
+                35.31993023940619
+              ],
+              "end": [
+                -42.647514648522,
+                4.800726183071553,
+                35.315030289440685
+              ]
+            },
+            "longestInterval_s": 1.0989999999999993,
+            "worst": {
+              "startT": 5.097,
+              "t": 5.203,
+              "side": "left",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:104",
+              "start": [
+                -42.65405498552004,
+                4.803201796693718,
+                35.31993023940619
+              ],
+              "end": [
+                -42.647514648522,
+                4.800726183071553,
+                35.315030289440685
+              ],
+              "animation": "Idle",
+              "speed": 0.10253439620455297
+            }
+          },
+          "walk-again": {
+            "samples": 42,
+            "continuousPairs": 1368,
+            "maxStep_m": 0.18176547259382445,
+            "maxIntervalDrift_m": 0.46119742298279703,
+            "maxIntervalArc_m": 0.7307231706192138,
+            "worstArc": {
+              "startT": 6.684,
+              "t": 7.012,
+              "side": "left",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:111",
+              "start": [
+                -42.69111855207876,
+                4.800360347452929,
+                35.31318626199345
+              ],
+              "end": [
+                -42.76480238205368,
+                4.8039419989195125,
+                35.76845953835195
+              ]
+            },
+            "longestInterval_s": 0.3279999999999994,
+            "worst": {
+              "startT": 6.684,
+              "t": 7.012,
+              "side": "left",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:111",
+              "start": [
+                -42.69111855207876,
+                4.800360347452929,
+                35.31318626199345
+              ],
+              "end": [
+                -42.76480238205368,
+                4.8039419989195125,
+                35.76845953835195
+              ],
+              "animation": "Walk",
+              "speed": 1.664908015728653
+            }
+          },
+          "pre-resume": {
+            "samples": 17,
+            "continuousPairs": 576,
+            "maxStep_m": 0.0017989907700540417,
+            "maxIntervalDrift_m": 0.0018008069662944705,
+            "maxIntervalArc_m": 0.0022449127656628625,
+            "worstArc": {
+              "startT": 7.594,
+              "t": 7.94,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:186",
+              "start": [
+                -43.785107628172405,
+                4.80036172030453,
+                36.259085954695166
+              ],
+              "end": [
+                -43.786570691899094,
+                4.800360660626368,
+                36.26013432848714
+              ]
+            },
+            "longestInterval_s": 0.3460000000000001,
+            "worst": {
+              "startT": 7.594,
+              "t": 7.918,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:178",
+              "start": [
+                -43.958879365168684,
+                4.800365236928325,
+                36.23425996895493
+              ],
+              "end": [
+                -43.96034264326218,
+                4.800361788404579,
+                36.23530959886635
+              ],
+              "animation": "Idle",
+              "speed": 0.03028740664451488
+            }
+          },
+          "resume": {
+            "samples": 30,
+            "continuousPairs": 915,
+            "maxStep_m": 0.008294567575342568,
+            "maxIntervalDrift_m": 0.01474377770500751,
+            "maxIntervalArc_m": 0.014746150326162675,
+            "worstArc": {
+              "startT": 7.962,
+              "t": 8.156,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:194",
+              "start": [
+                -43.94219786031827,
+                4.800360509405287,
+                36.41391086073335
+              ],
+              "end": [
+                -43.95426974494644,
+                4.802166324591355,
+                36.42237540930601
+              ]
+            },
+            "longestInterval_s": 0.23799999999999955,
+            "worst": {
+              "startT": 7.962,
+              "t": 8.156,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:194",
+              "start": [
+                -43.94219786031827,
+                4.800360509405287,
+                36.41391086073335
+              ],
+              "end": [
+                -43.95426974494644,
+                4.802166324591355,
+                36.42237540930601
+              ],
+              "animation": "Walk",
+              "speed": 1.6151899576189415
+            }
+          },
+          "pre-jump": {
+            "samples": 19,
+            "continuousPairs": 570,
+            "maxStep_m": 0.008320522330445107,
+            "maxIntervalDrift_m": 0.01187354564752396,
+            "maxIntervalArc_m": 0.012687925594537722,
+            "worstArc": {
+              "startT": 8.614,
+              "t": 8.745,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:193",
+              "start": [
+                -44.6989360795032,
+                4.800360244750976,
+                36.96898754600718
+              ],
+              "end": [
+                -44.70843959052121,
+                4.804353883962631,
+                36.97610543646534
+              ]
+            },
+            "longestInterval_s": 0.3899999999999988,
+            "worst": {
+              "startT": 8.614,
+              "t": 8.745,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:193",
+              "start": [
+                -44.6989360795032,
+                4.800360244750976,
+                36.96898754600718
+              ],
+              "end": [
+                -44.70843959052121,
+                4.804353883962631,
+                36.97610543646534
+              ],
+              "animation": "Walk",
+              "speed": 0.4256996452811989
+            }
+          },
+          "jump-land": {
+            "samples": 33,
+            "continuousPairs": 1944,
+            "maxStep_m": 5.966670802518033e-07,
+            "maxIntervalDrift_m": 5.921028216703474e-07,
+            "maxIntervalArc_m": 4.871535498110132e-06,
+            "worstArc": {
+              "startT": 10.206,
+              "t": 10.813,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:186",
+              "start": [
+                -44.77124986141211,
+                4.8009680401603845,
+                36.988586669420386
+              ],
+              "end": [
+                -44.77124992291632,
+                4.8003654904327515,
+                36.98858670480547
+              ]
+            },
+            "longestInterval_s": 0.6070000000000011,
+            "worst": {
+              "startT": 10.206,
+              "t": 10.364,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:186",
+              "start": [
+                -44.77124986141211,
+                4.8009680401603845,
+                36.988586669420386
+              ],
+              "end": [
+                -44.771250073163294,
+                4.8005829698551,
+                36.98858611647628
+              ],
+              "animation": "Land",
+              "speed": 1.6580561648870482e-05
+            }
+          },
+          "walk-pause": {
+            "samples": 40,
+            "continuousPairs": 1290,
+            "maxStep_m": 0.18144451394733138,
+            "maxIntervalDrift_m": 0.4607881152928932,
+            "maxIntervalArc_m": 0.7286829867802154,
+            "worstArc": {
+              "startT": 10.835,
+              "t": 11.163,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:191",
+              "start": [
+                -45.00807697552568,
+                4.8003655409391,
+                37.05076407993175
+              ],
+              "end": [
+                -44.55083587139784,
+                4.803788735790413,
+                37.107827727651866
+              ]
+            },
+            "longestInterval_s": 0.3279999999999994,
+            "worst": {
+              "startT": 10.835,
+              "t": 11.163,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:191",
+              "start": [
+                -45.00807697552568,
+                4.8003655409391,
+                37.05076407993175
+              ],
+              "end": [
+                -44.55083587139784,
+                4.803788735790413,
+                37.107827727651866
+              ],
+              "animation": "Walk",
+              "speed": 1.6649080634118283
+            }
+          },
+          "pre-pause": {
+            "samples": 19,
+            "continuousPairs": 648,
+            "maxStep_m": 0.001738006221984396,
+            "maxIntervalDrift_m": 0.001750505036777815,
+            "maxIntervalArc_m": 0.002148781848665916,
+            "worstArc": {
+              "startT": 11.705,
+              "t": 12.097,
+              "side": "left",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:109",
+              "start": [
+                -43.60058694691247,
+                4.800367805075507,
+                36.14504341792737
+              ],
+              "end": [
+                -43.59918690271696,
+                4.800366796610068,
+                36.14402869729501
+              ]
+            },
+            "longestInterval_s": 0.39199999999999946,
+            "worst": {
+              "startT": 11.705,
+              "t": 12.031,
+              "side": "left",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:101",
+              "start": [
+                -43.76897225060267,
+                4.800385745179584,
+                36.091640537504034
+              ],
+              "end": [
+                -43.767564173982706,
+                4.800380128788205,
+                36.09060054321747
+              ],
+              "animation": "Idle",
+              "speed": 0.030284315348291062
+            }
+          },
+          "paused": {
+            "samples": 17,
+            "continuousPairs": 576,
+            "maxStep_m": 0,
+            "maxIntervalDrift_m": 0,
+            "maxIntervalArc_m": 0,
+            "worstArc": null,
+            "longestInterval_s": 0.347999999999999,
+            "worst": null
+          },
+          "resumed-pause": {
+            "samples": 77,
+            "continuousPairs": 4896,
+            "maxStep_m": 0.0022836161714288486,
+            "maxIntervalDrift_m": 0.007737687566340356,
+            "maxIntervalArc_m": 0.007745080839761787,
+            "worstArc": {
+              "startT": 12.572,
+              "t": 14.201,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:191",
+              "start": [
+                -43.496209720047226,
+                4.803307509154089,
+                36.32691210248759
+              ],
+              "end": [
+                -43.490015643073455,
+                4.800364099365752,
+                36.322275243667534
+              ]
+            },
+            "longestInterval_s": 1.6290000000000013,
+            "worst": {
+              "startT": 12.572,
+              "t": 13.912,
+              "side": "right",
+              "vertex": "1a0883a9-1adc-4899-a702-7e259ec45fb9:178",
+              "start": [
+                -43.55926486404099,
+                4.803307673900491,
+                36.413913977928985
+              ],
+              "end": [
+                -43.55307054386055,
+                4.800364138161375,
+                36.409276930767646
+              ],
+              "animation": "Idle",
+              "speed": 2.732229388004038e-06
+            }
+          }
+        },
+        "steadyWalkRunPassed": false
+      },
+      "phaseGateTimeouts": 0,
+      "fixtures": [],
+      "passed": true,
+      "samplesCount": 556
+    }
+  ],
+  "finishedAt": "2026-10-21T13:54:51.286Z",
+  "fullCapture": {
+    "path": "skin-poses.json.gz",
+    "uncompressedSha256": "c06a2221df2812876a87c6bce97ecd120c7981fa57a8d1d5ecb4b70775edf1e2",
+    "note": "Lossless gzip of the original report including every recorded skin matrix and topology. report.json omits only these large arrays; no samples removed."
+  },
+  "fullReport": {
+    "path": "report-full.json.gz",
+    "uncompressedSha256": "97f2eb8bf0f5397ff7252e729e659a92381bfa4a03c14004cd8306b853ff1a87",
+    "note": "Lossless original report. Compact JSON omits only long samples/rows arrays; counts, metrics, phases, failures and verdicts are retained. Expand the archive for frame-level evidence."
+  }
+}

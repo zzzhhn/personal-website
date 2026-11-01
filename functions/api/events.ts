@@ -32,6 +32,9 @@ const ALLOWED_EVENTS = new Set([
   "motion_video_load",
   "contact_email_click",
   "mobile_desktop_hint_dismiss",
+  "world_enter",
+  "world_vehicle_enter",
+  "world_booth_open",
 ]);
 
 const ALLOWED_LANGUAGES = new Set(["en", "zh"]);

@@ -1,0 +1,5215 @@
+{
+  "startedAt": "2026-10-22T12:32:16.982Z",
+  "base": "http://127.0.0.1:4322",
+  "fixtures": [
+    {
+      "case": "walk-grass",
+      "teleport": [
+        -46,
+        1.95,
+        -24
+      ]
+    },
+    {
+      "case": "drive-grass",
+      "vehicle": [
+        -50,
+        1.9,
+        -12
+      ],
+      "player": [
+        -50,
+        1.95,
+        -9.6
+      ]
+    },
+    {
+      "case": "sea-clear-spot",
+      "teleport": [
+        -74,
+        1.2,
+        -2
+      ]
+    },
+    {
+      "case": "walk-trail-still-camera",
+      "teleport": [
+        -46,
+        1.95,
+        -30
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "name": "walk-grass",
+      "samples": [
+        {
+          "t": 1792672342412,
+          "label": "walk",
+          "grass": {
+            "instances": 3231,
+            "triangles": 48465,
+            "disturbers": 1,
+            "trampleActive": 80,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -46,
+            1.8189713954925537,
+            -24
+          ]
+        },
+        {
+          "t": 1792672342491,
+          "label": "walk",
+          "grass": {
+            "instances": 3231,
+            "triangles": 48465,
+            "disturbers": 1,
+            "trampleActive": 76,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -45.91038513183594,
+            1.818928837776184,
+            -23.98716926574707
+          ]
+        },
+        {
+          "t": 1792672342564,
+          "label": "walk",
+          "grass": {
+            "instances": 3231,
+            "triangles": 48465,
+            "disturbers": 1,
+            "trampleActive": 78,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -45.69122314453125,
+            1.8188525438308716,
+            -23.955835342407227
+          ]
+        },
+        {
+          "t": 1792672342637,
+          "label": "walk",
+          "grass": {
+            "instances": 3231,
+            "triangles": 48465,
+            "disturbers": 1,
+            "trampleActive": 81,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -45.48033142089844,
+            1.8188334703445435,
+            -23.925691604614258
+          ]
+        },
+        {
+          "t": 1792672342710,
+          "label": "walk",
+          "grass": {
+            "instances": 3231,
+            "triangles": 48465,
+            "disturbers": 1,
+            "trampleActive": 85,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -45.19953918457031,
+            1.81882643699646,
+            -23.885568618774414
+          ]
+        },
+        {
+          "t": 1792672342785,
+          "label": "walk",
+          "grass": {
+            "instances": 3231,
+            "triangles": 48465,
+            "disturbers": 1,
+            "trampleActive": 88,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -44.96919250488281,
+            1.8188250064849854,
+            -23.852663040161133
+          ]
+        },
+        {
+          "t": 1792672342857,
+          "label": "walk",
+          "grass": {
+            "instances": 3231,
+            "triangles": 48465,
+            "disturbers": 1,
+            "trampleActive": 91,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -44.73677062988281,
+            1.8188247680664062,
+            -23.819459915161133
+          ]
+        },
+        {
+          "t": 1792672342930,
+          "label": "walk",
+          "grass": {
+            "instances": 3231,
+            "triangles": 48465,
+            "disturbers": 1,
+            "trampleActive": 95,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -44.44502258300781,
+            1.8188247680664062,
+            -23.777780532836914
+          ]
+        },
+        {
+          "t": 1792672343005,
+          "label": "walk",
+          "grass": {
+            "instances": 3231,
+            "triangles": 48465,
+            "disturbers": 1,
+            "trampleActive": 99,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -44.21122741699219,
+            1.8188247680664062,
+            -23.7443790435791
+          ]
+        },
+        {
+          "t": 1792672343078,
+          "label": "walk",
+          "grass": {
+            "instances": 3359,
+            "triangles": 50385,
+            "disturbers": 1,
+            "trampleActive": 99,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -43.926536560058594,
+            1.8447296619415283,
+            -23.702608108520508
+          ]
+        },
+        {
+          "t": 1792672343150,
+          "label": "walk",
+          "grass": {
+            "instances": 3359,
+            "triangles": 50385,
+            "disturbers": 1,
+            "trampleActive": 102,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -43.69988250732422,
+            1.8470269441604614,
+            -23.66916847229004
+          ]
+        },
+        {
+          "t": 1792672343223,
+          "label": "walk",
+          "grass": {
+            "instances": 3359,
+            "triangles": 50385,
+            "disturbers": 1,
+            "trampleActive": 104,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -43.469093322753906,
+            1.8198434114456177,
+            -23.63572120666504
+          ]
+        },
+        {
+          "t": 1792672343295,
+          "label": "walk",
+          "grass": {
+            "instances": 3359,
+            "triangles": 50385,
+            "disturbers": 1,
+            "trampleActive": 105,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -43.178184509277344,
+            1.8195796012878418,
+            -23.59391212463379
+          ]
+        },
+        {
+          "t": 1792672343367,
+          "label": "walk",
+          "grass": {
+            "instances": 3359,
+            "triangles": 50385,
+            "disturbers": 1,
+            "trampleActive": 107,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -42.94463348388672,
+            1.8193855285644531,
+            -23.56046485900879
+          ]
+        },
+        {
+          "t": 1792672343439,
+          "label": "walk",
+          "grass": {
+            "instances": 3359,
+            "triangles": 50385,
+            "disturbers": 1,
+            "trampleActive": 106,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -42.710792541503906,
+            1.819192886352539,
+            -23.52701759338379
+          ]
+        },
+        {
+          "t": 1792672343512,
+          "label": "walk",
+          "grass": {
+            "instances": 3359,
+            "triangles": 50385,
+            "disturbers": 1,
+            "trampleActive": 110,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -42.418312072753906,
+            1.8189568519592285,
+            -23.48520851135254
+          ]
+        },
+        {
+          "t": 1792672343585,
+          "label": "walk",
+          "grass": {
+            "instances": 3359,
+            "triangles": 50385,
+            "disturbers": 1,
+            "trampleActive": 110,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -42.18427276611328,
+            1.818867564201355,
+            -23.45176124572754
+          ]
+        },
+        {
+          "t": 1792672343657,
+          "label": "walk",
+          "grass": {
+            "instances": 3505,
+            "triangles": 52575,
+            "disturbers": 1,
+            "trampleActive": 113,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -41.95377731323242,
+            1.833481788635254,
+            -23.41831398010254
+          ]
+        },
+        {
+          "t": 1792672343729,
+          "label": "walk",
+          "grass": {
+            "instances": 3505,
+            "triangles": 52575,
+            "disturbers": 1,
+            "trampleActive": 119,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -41.66744613647461,
+            1.8255821466445923,
+            -23.37650489807129
+          ]
+        },
+        {
+          "t": 1792672343802,
+          "label": "walk",
+          "grass": {
+            "instances": 3505,
+            "triangles": 52575,
+            "disturbers": 1,
+            "trampleActive": 122,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -41.43534469604492,
+            1.819743037223816,
+            -23.34305763244629
+          ]
+        },
+        {
+          "t": 1792672343876,
+          "label": "walk",
+          "grass": {
+            "instances": 3505,
+            "triangles": 52575,
+            "disturbers": 1,
+            "trampleActive": 124,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -41.14982986450195,
+            1.819907307624817,
+            -23.346332550048828
+          ]
+        },
+        {
+          "t": 1792672343948,
+          "label": "walk",
+          "grass": {
+            "instances": 3505,
+            "triangles": 52575,
+            "disturbers": 1,
+            "trampleActive": 126,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -40.94112014770508,
+            1.8197137117385864,
+            -23.425334930419922
+          ]
+        },
+        {
+          "t": 1792672344021,
+          "label": "walk",
+          "grass": {
+            "instances": 3505,
+            "triangles": 52575,
+            "disturbers": 1,
+            "trampleActive": 127,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -40.74330520629883,
+            1.8195210695266724,
+            -23.53933334350586
+          ]
+        },
+        {
+          "t": 1792672344094,
+          "label": "walk",
+          "grass": {
+            "instances": 3505,
+            "triangles": 52575,
+            "disturbers": 1,
+            "trampleActive": 132,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -40.48379898071289,
+            1.8192802667617798,
+            -23.65939712524414
+          ]
+        },
+        {
+          "t": 1792672344166,
+          "label": "walk",
+          "grass": {
+            "instances": 3505,
+            "triangles": 52575,
+            "disturbers": 1,
+            "trampleActive": 136,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -40.260196685791016,
+            1.8190876245498657,
+            -23.68588638305664
+          ]
+        },
+        {
+          "t": 1792672344239,
+          "label": "walk",
+          "grass": {
+            "instances": 3505,
+            "triangles": 52575,
+            "disturbers": 1,
+            "trampleActive": 136,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -40.03196334838867,
+            1.8230395317077637,
+            -23.679027557373047
+          ]
+        },
+        {
+          "t": 1792672344311,
+          "label": "walk",
+          "grass": {
+            "instances": 3689,
+            "triangles": 55335,
+            "disturbers": 1,
+            "trampleActive": 138,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -39.75333786010742,
+            1.846921443939209,
+            -23.650745391845703
+          ]
+        },
+        {
+          "t": 1792672344383,
+          "label": "walk",
+          "grass": {
+            "instances": 3689,
+            "triangles": 55335,
+            "disturbers": 1,
+            "trampleActive": 140,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -39.5251579284668,
+            1.8198931217193604,
+            -23.64968490600586
+          ]
+        },
+        {
+          "t": 1792672344456,
+          "label": "walk",
+          "grass": {
+            "instances": 3689,
+            "triangles": 55335,
+            "disturbers": 1,
+            "trampleActive": 136,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -39.3127555847168,
+            1.819672703742981,
+            -23.717243194580078
+          ]
+        },
+        {
+          "t": 1792672344528,
+          "label": "walk",
+          "grass": {
+            "instances": 3689,
+            "triangles": 55335,
+            "disturbers": 1,
+            "trampleActive": 116,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -39.06449508666992,
+            1.819429636001587,
+            -23.856800079345703
+          ]
+        },
+        {
+          "t": 1792672344601,
+          "label": "walk",
+          "grass": {
+            "instances": 3689,
+            "triangles": 55335,
+            "disturbers": 1,
+            "trampleActive": 119,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -38.8593864440918,
+            1.8192369937896729,
+            -23.961383819580078
+          ]
+        },
+        {
+          "t": 1792672344673,
+          "label": "walk",
+          "grass": {
+            "instances": 3689,
+            "triangles": 55335,
+            "disturbers": 1,
+            "trampleActive": 122,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -38.63821029663086,
+            1.8199728727340698,
+            -24.000532150268555
+          ]
+        },
+        {
+          "t": 1792672344815,
+          "label": "walk2",
+          "grass": {
+            "instances": 3689,
+            "triangles": 55335,
+            "disturbers": 1,
+            "trampleActive": 123,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -38.381404876708984,
+            1.8197909593582153,
+            -24.003238677978516
+          ]
+        },
+        {
+          "t": 1792672344887,
+          "label": "walk2",
+          "grass": {
+            "instances": 3689,
+            "triangles": 55335,
+            "disturbers": 1,
+            "trampleActive": 122,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -38.299800872802734,
+            1.8197122812271118,
+            -23.93128204345703
+          ]
+        },
+        {
+          "t": 1792672344960,
+          "label": "walk2",
+          "grass": {
+            "instances": 3689,
+            "triangles": 55335,
+            "disturbers": 1,
+            "trampleActive": 123,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -38.1530876159668,
+            1.819471836090088,
+            -23.754417419433594
+          ]
+        },
+        {
+          "t": 1792672345033,
+          "label": "walk2",
+          "grass": {
+            "instances": 3689,
+            "triangles": 55335,
+            "disturbers": 1,
+            "trampleActive": 128,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -38.02120590209961,
+            1.820940613746643,
+            -23.58405303955078
+          ]
+        },
+        {
+          "t": 1792672345106,
+          "label": "walk2",
+          "grass": {
+            "instances": 3873,
+            "triangles": 58095,
+            "disturbers": 1,
+            "trampleActive": 129,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -37.88639450073242,
+            1.8199361562728882,
+            -23.403228759765625
+          ]
+        },
+        {
+          "t": 1792672345179,
+          "label": "walk2",
+          "grass": {
+            "instances": 3873,
+            "triangles": 58095,
+            "disturbers": 1,
+            "trampleActive": 129,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -37.712642669677734,
+            1.8196860551834106,
+            -23.1710205078125
+          ]
+        },
+        {
+          "t": 1792672345252,
+          "label": "walk2",
+          "grass": {
+            "instances": 3873,
+            "triangles": 58095,
+            "disturbers": 1,
+            "trampleActive": 134,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -37.5719108581543,
+            1.8194925785064697,
+            -22.983200073242188
+          ]
+        },
+        {
+          "t": 1792672345326,
+          "label": "walk2",
+          "grass": {
+            "instances": 3873,
+            "triangles": 58095,
+            "disturbers": 1,
+            "trampleActive": 140,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -37.39512252807617,
+            1.8192517757415771,
+            -22.7474365234375
+          ]
+        },
+        {
+          "t": 1792672345399,
+          "label": "walk2",
+          "grass": {
+            "instances": 3873,
+            "triangles": 58095,
+            "disturbers": 1,
+            "trampleActive": 142,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -37.25344467163086,
+            1.819059133529663,
+            -22.558494567871094
+          ]
+        },
+        {
+          "t": 1792672345472,
+          "label": "walk2",
+          "grass": {
+            "instances": 3873,
+            "triangles": 58095,
+            "disturbers": 1,
+            "trampleActive": 144,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -37.11166000366211,
+            1.8189047574996948,
+            -22.369430541992188
+          ]
+        },
+        {
+          "t": 1792672345545,
+          "label": "walk2",
+          "grass": {
+            "instances": 3873,
+            "triangles": 58095,
+            "disturbers": 1,
+            "trampleActive": 147,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -36.93435287475586,
+            1.818844199180603,
+            -22.133026123046875
+          ]
+        },
+        {
+          "t": 1792672345618,
+          "label": "walk2",
+          "grass": {
+            "instances": 3873,
+            "triangles": 58095,
+            "disturbers": 1,
+            "trampleActive": 150,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -36.79250717163086,
+            1.8290107250213623,
+            -21.947717666625977
+          ]
+        },
+        {
+          "t": 1792672345690,
+          "label": "walk2",
+          "grass": {
+            "instances": 3967,
+            "triangles": 59505,
+            "disturbers": 1,
+            "trampleActive": 150,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -36.65066146850586,
+            1.819883942604065,
+            -21.762269973754883
+          ]
+        },
+        {
+          "t": 1792672345762,
+          "label": "walk2",
+          "grass": {
+            "instances": 3967,
+            "triangles": 59505,
+            "disturbers": 1,
+            "trampleActive": 153,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -36.47335433959961,
+            1.8196278810501099,
+            -21.5277042388916
+          ]
+        },
+        {
+          "t": 1792672345835,
+          "label": "walk2",
+          "grass": {
+            "instances": 3967,
+            "triangles": 59505,
+            "disturbers": 1,
+            "trampleActive": 157,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -36.33150863647461,
+            1.8194340467453003,
+            -21.339143753051758
+          ]
+        },
+        {
+          "t": 1792672345909,
+          "label": "walk2",
+          "grass": {
+            "instances": 3967,
+            "triangles": 59505,
+            "disturbers": 1,
+            "trampleActive": 162,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -36.124202728271484,
+            1.8191932439804077,
+            -21.1391544342041
+          ]
+        },
+        {
+          "t": 1792672345982,
+          "label": "walk2",
+          "grass": {
+            "instances": 3967,
+            "triangles": 59505,
+            "disturbers": 1,
+            "trampleActive": 163,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -35.92449188232422,
+            1.8359122276306152,
+            -21.047304153442383
+          ]
+        },
+        {
+          "t": 1792672346054,
+          "label": "walk2",
+          "grass": {
+            "instances": 3967,
+            "triangles": 59505,
+            "disturbers": 1,
+            "trampleActive": 164,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -35.70800018310547,
+            1.8209173679351807,
+            -20.98797035217285
+          ]
+        },
+        {
+          "t": 1792672346127,
+          "label": "walk2",
+          "grass": {
+            "instances": 3967,
+            "triangles": 59505,
+            "disturbers": 1,
+            "trampleActive": 167,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -35.424354553222656,
+            1.8196344375610352,
+            -20.933008193969727
+          ]
+        },
+        {
+          "t": 1792672346199,
+          "label": "walk2",
+          "grass": {
+            "instances": 3967,
+            "triangles": 59505,
+            "disturbers": 1,
+            "trampleActive": 169,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -35.19310760498047,
+            1.8194395303726196,
+            -20.895402908325195
+          ]
+        },
+        {
+          "t": 1792672346272,
+          "label": "walk2",
+          "grass": {
+            "instances": 3967,
+            "triangles": 59505,
+            "disturbers": 1,
+            "trampleActive": 172,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.969566345214844,
+            1.8192466497421265,
+            -20.83354377746582
+          ]
+        },
+        {
+          "t": 1792672346344,
+          "label": "walk2",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 175,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.74066925048828,
+            1.8190058469772339,
+            -20.671945571899414
+          ]
+        },
+        {
+          "t": 1792672346417,
+          "label": "walk2",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 179,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.58252716064453,
+            1.8188834190368652,
+            -20.506410598754883
+          ]
+        },
+        {
+          "t": 1792672346552,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 177,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.44573211669922,
+            1.8188306093215942,
+            -20.353029251098633
+          ]
+        },
+        {
+          "t": 1792672346805,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 173,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.413856506347656,
+            1.8188248872756958,
+            -20.317277908325195
+          ]
+        },
+        {
+          "t": 1792672347060,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 163,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.412315368652344,
+            1.8188248872756958,
+            -20.315561294555664
+          ]
+        },
+        {
+          "t": 1792672347313,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 152,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        },
+        {
+          "t": 1792672347567,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 140,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        },
+        {
+          "t": 1792672347821,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 127,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        },
+        {
+          "t": 1792672348075,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 115,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        },
+        {
+          "t": 1792672348328,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 101,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        },
+        {
+          "t": 1792672348583,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 91,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        },
+        {
+          "t": 1792672348836,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 81,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        },
+        {
+          "t": 1792672349090,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 71,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        },
+        {
+          "t": 1792672349343,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 64,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        },
+        {
+          "t": 1792672349596,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 56,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        },
+        {
+          "t": 1792672349850,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 49,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        },
+        {
+          "t": 1792672350104,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 42,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        },
+        {
+          "t": 1792672350357,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 35,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        },
+        {
+          "t": 1792672350609,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 27,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        },
+        {
+          "t": 1792672350862,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 19,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        },
+        {
+          "t": 1792672351115,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 14,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        },
+        {
+          "t": 1792672351369,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 14,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        },
+        {
+          "t": 1792672351622,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 14,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        },
+        {
+          "t": 1792672351876,
+          "label": "recover",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 1,
+            "trampleActive": 14,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -34.41228485107422,
+            1.8188248872756958,
+            -20.315507888793945
+          ]
+        }
+      ],
+      "probeCount": 35,
+      "travel": 11.94,
+      "trail": [
+        [
+          -46,
+          -24
+        ],
+        [
+          -44.73677062988281,
+          -23.819459915161133
+        ],
+        [
+          -43.178184509277344,
+          -23.59391212463379
+        ],
+        [
+          -41.66744613647461,
+          -23.37650489807129
+        ],
+        [
+          -40.260196685791016,
+          -23.68588638305664
+        ],
+        [
+          -38.8593864440918,
+          -23.961383819580078
+        ],
+        [
+          -37.88639450073242,
+          -23.403228759765625
+        ]
+      ],
+      "recoveryCurve": [
+        [
+          0,
+          [
+            0.367,
+            0.383,
+            0.397,
+            0.41,
+            0.427,
+            0.443,
+            0.46,
+            0.473,
+            0.49,
+            0.504,
+            0.504,
+            0.517,
+            0.533,
+            0.55,
+            0.563,
+            0.583,
+            0.625,
+            0.647,
+            0.653,
+            0.67,
+            0.67,
+            0.688,
+            0.707,
+            0.724,
+            0.74,
+            0.76,
+            0.76,
+            0.777,
+            0.797,
+            0.81,
+            0.813,
+            0.843,
+            0.847,
+            0.86,
+            0.877
+          ]
+        ],
+        [
+          0.3,
+          [
+            0.317,
+            0.333,
+            0.347,
+            0.36,
+            0.377,
+            0.393,
+            0.41,
+            0.423,
+            0.44,
+            0.453,
+            0.453,
+            0.467,
+            0.483,
+            0.5,
+            0.513,
+            0.533,
+            0.575,
+            0.597,
+            0.603,
+            0.62,
+            0.62,
+            0.638,
+            0.657,
+            0.673,
+            0.69,
+            0.71,
+            0.71,
+            0.727,
+            0.747,
+            0.76,
+            0.763,
+            0.793,
+            0.797,
+            0.81,
+            0.827
+          ]
+        ],
+        [
+          0.5,
+          [
+            0.263,
+            0.28,
+            0.293,
+            0.307,
+            0.323,
+            0.34,
+            0.357,
+            0.37,
+            0.387,
+            0.4,
+            0.4,
+            0.413,
+            0.43,
+            0.447,
+            0.46,
+            0.48,
+            0.522,
+            0.543,
+            0.55,
+            0.567,
+            0.567,
+            0.585,
+            0.603,
+            0.62,
+            0.637,
+            0.657,
+            0.657,
+            0.673,
+            0.693,
+            0.707,
+            0.71,
+            0.74,
+            0.743,
+            0.757,
+            0.773
+          ]
+        ],
+        [
+          0.8,
+          [
+            0.213,
+            0.23,
+            0.243,
+            0.257,
+            0.273,
+            0.29,
+            0.307,
+            0.32,
+            0.337,
+            0.35,
+            0.35,
+            0.363,
+            0.38,
+            0.397,
+            0.41,
+            0.43,
+            0.472,
+            0.493,
+            0.5,
+            0.517,
+            0.517,
+            0.535,
+            0.553,
+            0.57,
+            0.587,
+            0.607,
+            0.607,
+            0.623,
+            0.643,
+            0.657,
+            0.66,
+            0.69,
+            0.693,
+            0.707,
+            0.723
+          ]
+        ],
+        [
+          1,
+          [
+            0.163,
+            0.18,
+            0.193,
+            0.207,
+            0.223,
+            0.24,
+            0.257,
+            0.27,
+            0.287,
+            0.3,
+            0.3,
+            0.313,
+            0.33,
+            0.347,
+            0.36,
+            0.38,
+            0.422,
+            0.443,
+            0.45,
+            0.467,
+            0.467,
+            0.485,
+            0.503,
+            0.52,
+            0.537,
+            0.557,
+            0.557,
+            0.573,
+            0.593,
+            0.607,
+            0.61,
+            0.64,
+            0.643,
+            0.657,
+            0.673
+          ]
+        ],
+        [
+          1.3,
+          [
+            0.113,
+            0.13,
+            0.143,
+            0.157,
+            0.173,
+            0.19,
+            0.207,
+            0.22,
+            0.237,
+            0.25,
+            0.25,
+            0.263,
+            0.28,
+            0.297,
+            0.31,
+            0.33,
+            0.372,
+            0.393,
+            0.4,
+            0.417,
+            0.417,
+            0.435,
+            0.453,
+            0.47,
+            0.487,
+            0.507,
+            0.507,
+            0.523,
+            0.543,
+            0.557,
+            0.56,
+            0.59,
+            0.593,
+            0.607,
+            0.623
+          ]
+        ],
+        [
+          1.5,
+          [
+            0.063,
+            0.08,
+            0.093,
+            0.107,
+            0.123,
+            0.14,
+            0.157,
+            0.17,
+            0.187,
+            0.2,
+            0.2,
+            0.213,
+            0.23,
+            0.247,
+            0.26,
+            0.28,
+            0.322,
+            0.343,
+            0.35,
+            0.367,
+            0.367,
+            0.385,
+            0.403,
+            0.42,
+            0.437,
+            0.457,
+            0.457,
+            0.473,
+            0.493,
+            0.507,
+            0.51,
+            0.54,
+            0.543,
+            0.557,
+            0.573
+          ]
+        ],
+        [
+          1.8,
+          [
+            0.01,
+            0.027,
+            0.04,
+            0.053,
+            0.07,
+            0.087,
+            0.103,
+            0.117,
+            0.133,
+            0.147,
+            0.147,
+            0.16,
+            0.177,
+            0.193,
+            0.207,
+            0.227,
+            0.268,
+            0.29,
+            0.297,
+            0.313,
+            0.313,
+            0.331,
+            0.35,
+            0.367,
+            0.383,
+            0.403,
+            0.403,
+            0.42,
+            0.44,
+            0.453,
+            0.457,
+            0.487,
+            0.49,
+            0.503,
+            0.52
+          ]
+        ],
+        [
+          2,
+          [
+            0,
+            0,
+            0,
+            0.003,
+            0.02,
+            0.037,
+            0.053,
+            0.067,
+            0.083,
+            0.097,
+            0.097,
+            0.11,
+            0.127,
+            0.143,
+            0.157,
+            0.177,
+            0.218,
+            0.24,
+            0.247,
+            0.263,
+            0.263,
+            0.281,
+            0.3,
+            0.317,
+            0.333,
+            0.353,
+            0.353,
+            0.37,
+            0.39,
+            0.403,
+            0.407,
+            0.437,
+            0.44,
+            0.453,
+            0.47
+          ]
+        ],
+        [
+          2.3,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.003,
+            0.017,
+            0.033,
+            0.047,
+            0.047,
+            0.06,
+            0.077,
+            0.093,
+            0.107,
+            0.127,
+            0.168,
+            0.19,
+            0.197,
+            0.213,
+            0.213,
+            0.231,
+            0.25,
+            0.267,
+            0.283,
+            0.303,
+            0.303,
+            0.32,
+            0.34,
+            0.353,
+            0.357,
+            0.387,
+            0.39,
+            0.403,
+            0.42
+          ]
+        ],
+        [
+          2.5,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.01,
+            0.027,
+            0.043,
+            0.057,
+            0.077,
+            0.118,
+            0.14,
+            0.147,
+            0.163,
+            0.163,
+            0.181,
+            0.2,
+            0.217,
+            0.233,
+            0.253,
+            0.253,
+            0.27,
+            0.29,
+            0.303,
+            0.307,
+            0.337,
+            0.34,
+            0.353,
+            0.37
+          ]
+        ],
+        [
+          2.8,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.003,
+            0.023,
+            0.065,
+            0.087,
+            0.093,
+            0.11,
+            0.11,
+            0.128,
+            0.147,
+            0.163,
+            0.18,
+            0.2,
+            0.2,
+            0.217,
+            0.237,
+            0.25,
+            0.253,
+            0.283,
+            0.287,
+            0.3,
+            0.317
+          ]
+        ],
+        [
+          3,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.015,
+            0.037,
+            0.043,
+            0.06,
+            0.06,
+            0.078,
+            0.097,
+            0.113,
+            0.13,
+            0.15,
+            0.15,
+            0.167,
+            0.187,
+            0.2,
+            0.203,
+            0.233,
+            0.237,
+            0.25,
+            0.267
+          ]
+        ],
+        [
+          3.3,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.01,
+            0.01,
+            0.028,
+            0.047,
+            0.063,
+            0.08,
+            0.1,
+            0.1,
+            0.117,
+            0.137,
+            0.15,
+            0.153,
+            0.183,
+            0.187,
+            0.2,
+            0.217
+          ]
+        ],
+        [
+          3.6,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.013,
+            0.03,
+            0.05,
+            0.05,
+            0.067,
+            0.087,
+            0.1,
+            0.103,
+            0.133,
+            0.137,
+            0.15,
+            0.167
+          ]
+        ],
+        [
+          3.8,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.017,
+            0.037,
+            0.05,
+            0.053,
+            0.083,
+            0.087,
+            0.1,
+            0.117
+          ]
+        ],
+        [
+          4.1,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.03,
+            0.033,
+            0.047,
+            0.063
+          ]
+        ],
+        [
+          4.3,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.013
+          ]
+        ],
+        [
+          4.6,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          4.8,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          5.1,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          5.3,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "recoveredAt": 4.3,
+      "passed": true
+    },
+    {
+      "name": "drive-grass",
+      "samples": [
+        {
+          "t": 1792672354431,
+          "label": "drive",
+          "grass": {
+            "instances": 2922,
+            "triangles": 43830,
+            "disturbers": 2,
+            "trampleActive": 170,
+            "maxTrample": 0.946,
+            "profile": "high"
+          },
+          "v": [
+            -50.0047607421875,
+            2.2065467834472656,
+            -12
+          ]
+        },
+        {
+          "t": 1792672354515,
+          "label": "drive",
+          "grass": {
+            "instances": 2922,
+            "triangles": 43830,
+            "disturbers": 2,
+            "trampleActive": 168,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -50.00130844116211,
+            2.2066495418548584,
+            -12
+          ]
+        },
+        {
+          "t": 1792672354598,
+          "label": "drive",
+          "grass": {
+            "instances": 2922,
+            "triangles": 43830,
+            "disturbers": 2,
+            "trampleActive": 168,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -49.98371887207031,
+            2.2065906524658203,
+            -12
+          ]
+        },
+        {
+          "t": 1792672354681,
+          "label": "drive",
+          "grass": {
+            "instances": 2922,
+            "triangles": 43830,
+            "disturbers": 2,
+            "trampleActive": 169,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -49.940921783447266,
+            2.2058749198913574,
+            -12
+          ]
+        },
+        {
+          "t": 1792672354763,
+          "label": "drive",
+          "grass": {
+            "instances": 2922,
+            "triangles": 43830,
+            "disturbers": 2,
+            "trampleActive": 179,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -49.86194610595703,
+            2.204651355743408,
+            -12
+          ]
+        },
+        {
+          "t": 1792672354846,
+          "label": "drive",
+          "grass": {
+            "instances": 2922,
+            "triangles": 43830,
+            "disturbers": 2,
+            "trampleActive": 183,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -49.73923873901367,
+            2.203188180923462,
+            -12
+          ]
+        },
+        {
+          "t": 1792672354928,
+          "label": "drive",
+          "grass": {
+            "instances": 2922,
+            "triangles": 43830,
+            "disturbers": 2,
+            "trampleActive": 191,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -49.572662353515625,
+            2.2022621631622314,
+            -12
+          ]
+        },
+        {
+          "t": 1792672355011,
+          "label": "drive",
+          "grass": {
+            "instances": 2922,
+            "triangles": 43830,
+            "disturbers": 2,
+            "trampleActive": 205,
+            "maxTrample": 0.946,
+            "profile": "high"
+          },
+          "v": [
+            -49.36259078979492,
+            2.2021055221557617,
+            -12
+          ]
+        },
+        {
+          "t": 1792672355094,
+          "label": "drive",
+          "grass": {
+            "instances": 2922,
+            "triangles": 43830,
+            "disturbers": 2,
+            "trampleActive": 218,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -49.10932922363281,
+            2.202467918395996,
+            -12
+          ]
+        },
+        {
+          "t": 1792672355177,
+          "label": "drive",
+          "grass": {
+            "instances": 2922,
+            "triangles": 43830,
+            "disturbers": 2,
+            "trampleActive": 234,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -48.813297271728516,
+            2.203010082244873,
+            -12
+          ]
+        },
+        {
+          "t": 1792672355260,
+          "label": "drive",
+          "grass": {
+            "instances": 2922,
+            "triangles": 43830,
+            "disturbers": 2,
+            "trampleActive": 248,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -48.474830627441406,
+            2.203463554382324,
+            -12
+          ]
+        },
+        {
+          "t": 1792672355343,
+          "label": "drive",
+          "grass": {
+            "instances": 2922,
+            "triangles": 43830,
+            "disturbers": 2,
+            "trampleActive": 264,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -48.100738525390625,
+            2.2001278400421143,
+            -12
+          ]
+        },
+        {
+          "t": 1792672355426,
+          "label": "drive",
+          "grass": {
+            "instances": 3061,
+            "triangles": 45915,
+            "disturbers": 2,
+            "trampleActive": 278,
+            "maxTrample": 0.946,
+            "profile": "high"
+          },
+          "v": [
+            -47.709651947021484,
+            2.175527334213257,
+            -12
+          ]
+        },
+        {
+          "t": 1792672355509,
+          "label": "drive",
+          "grass": {
+            "instances": 3061,
+            "triangles": 45915,
+            "disturbers": 2,
+            "trampleActive": 296,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -47.29403305053711,
+            2.1409060955047607,
+            -12
+          ]
+        },
+        {
+          "t": 1792672355594,
+          "label": "drive",
+          "grass": {
+            "instances": 3061,
+            "triangles": 45915,
+            "disturbers": 2,
+            "trampleActive": 313,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -46.834625244140625,
+            2.1303346157073975,
+            -12
+          ]
+        },
+        {
+          "t": 1792672355677,
+          "label": "drive",
+          "grass": {
+            "instances": 3061,
+            "triangles": 45915,
+            "disturbers": 2,
+            "trampleActive": 329,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -46.334022521972656,
+            2.1283323764801025,
+            -12
+          ]
+        },
+        {
+          "t": 1792672355759,
+          "label": "drive",
+          "grass": {
+            "instances": 3187,
+            "triangles": 47805,
+            "disturbers": 2,
+            "trampleActive": 347,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -45.79302215576172,
+            2.1287989616394043,
+            -12
+          ]
+        },
+        {
+          "t": 1792672355843,
+          "label": "drive",
+          "grass": {
+            "instances": 3187,
+            "triangles": 47805,
+            "disturbers": 2,
+            "trampleActive": 368,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -45.21104049682617,
+            2.122399091720581,
+            -12
+          ]
+        },
+        {
+          "t": 1792672355926,
+          "label": "drive",
+          "grass": {
+            "instances": 3187,
+            "triangles": 47805,
+            "disturbers": 2,
+            "trampleActive": 385,
+            "maxTrample": 0.946,
+            "profile": "high"
+          },
+          "v": [
+            -44.58819580078125,
+            2.1016359329223633,
+            -12
+          ]
+        },
+        {
+          "t": 1792672356009,
+          "label": "drive",
+          "grass": {
+            "instances": 3187,
+            "triangles": 47805,
+            "disturbers": 2,
+            "trampleActive": 409,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -43.926639556884766,
+            2.082636833190918,
+            -12
+          ]
+        },
+        {
+          "t": 1792672356093,
+          "label": "drive",
+          "grass": {
+            "instances": 3314,
+            "triangles": 49710,
+            "disturbers": 2,
+            "trampleActive": 433,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -43.226806640625,
+            2.0695598125457764,
+            -12
+          ]
+        },
+        {
+          "t": 1792672356176,
+          "label": "drive",
+          "grass": {
+            "instances": 3314,
+            "triangles": 49710,
+            "disturbers": 2,
+            "trampleActive": 451,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -42.488895416259766,
+            2.0617809295654297,
+            -12
+          ]
+        },
+        {
+          "t": 1792672356259,
+          "label": "drive",
+          "grass": {
+            "instances": 3441,
+            "triangles": 51615,
+            "disturbers": 2,
+            "trampleActive": 481,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -41.71312713623047,
+            2.0576090812683105,
+            -12
+          ]
+        },
+        {
+          "t": 1792672356343,
+          "label": "drive",
+          "grass": {
+            "instances": 3441,
+            "triangles": 51615,
+            "disturbers": 2,
+            "trampleActive": 509,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -40.8997917175293,
+            2.055568218231201,
+            -12
+          ]
+        },
+        {
+          "t": 1792672356426,
+          "label": "drive",
+          "grass": {
+            "instances": 3441,
+            "triangles": 51615,
+            "disturbers": 2,
+            "trampleActive": 537,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -40.0491828918457,
+            2.0546653270721436,
+            -12
+          ]
+        },
+        {
+          "t": 1792672356509,
+          "label": "drive",
+          "grass": {
+            "instances": 3598,
+            "triangles": 53970,
+            "disturbers": 2,
+            "trampleActive": 569,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -39.161624908447266,
+            2.0543172359466553,
+            -12
+          ]
+        },
+        {
+          "t": 1792672356594,
+          "label": "drive",
+          "grass": {
+            "instances": 3598,
+            "triangles": 53970,
+            "disturbers": 2,
+            "trampleActive": 595,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -38.23747634887695,
+            2.0542142391204834,
+            -12
+          ]
+        },
+        {
+          "t": 1792672356676,
+          "label": "drive",
+          "grass": {
+            "instances": 3709,
+            "triangles": 55635,
+            "disturbers": 2,
+            "trampleActive": 629,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -37.27706527709961,
+            2.054206132888794,
+            -12
+          ]
+        },
+        {
+          "t": 1792672356760,
+          "label": "drive",
+          "grass": {
+            "instances": 3709,
+            "triangles": 55635,
+            "disturbers": 2,
+            "trampleActive": 663,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -36.28075408935547,
+            2.0542263984680176,
+            -12
+          ]
+        },
+        {
+          "t": 1792672356842,
+          "label": "drive",
+          "grass": {
+            "instances": 3860,
+            "triangles": 57900,
+            "disturbers": 2,
+            "trampleActive": 694,
+            "maxTrample": 0.946,
+            "profile": "high"
+          },
+          "v": [
+            -35.2489013671875,
+            2.0542495250701904,
+            -12
+          ]
+        },
+        {
+          "t": 1792672356926,
+          "label": "drive",
+          "grass": {
+            "instances": 3860,
+            "triangles": 57900,
+            "disturbers": 2,
+            "trampleActive": 730,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -34.181861877441406,
+            2.0542681217193604,
+            -12
+          ]
+        },
+        {
+          "t": 1792672357009,
+          "label": "drive",
+          "grass": {
+            "instances": 3996,
+            "triangles": 59940,
+            "disturbers": 2,
+            "trampleActive": 766,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -33.079959869384766,
+            2.0542807579040527,
+            -12
+          ]
+        },
+        {
+          "t": 1792672357094,
+          "label": "drive",
+          "grass": {
+            "instances": 3996,
+            "triangles": 59940,
+            "disturbers": 2,
+            "trampleActive": 798,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -31.943559646606445,
+            2.054288864135742,
+            -12
+          ]
+        },
+        {
+          "t": 1792672357177,
+          "label": "drive",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 2,
+            "trampleActive": 834,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -30.773025512695312,
+            2.054293155670166,
+            -12
+          ]
+        },
+        {
+          "t": 1792672357260,
+          "label": "drive",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 2,
+            "trampleActive": 870,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -29.56867027282715,
+            2.0542962551116943,
+            -12
+          ]
+        },
+        {
+          "t": 1792672357342,
+          "label": "drive",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 2,
+            "trampleActive": 910,
+            "maxTrample": 0.946,
+            "profile": "high"
+          },
+          "v": [
+            -28.33082389831543,
+            2.054297924041748,
+            -12
+          ]
+        },
+        {
+          "t": 1792672357426,
+          "label": "drive",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 2,
+            "trampleActive": 950,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -27.05983543395996,
+            2.0542993545532227,
+            -12
+          ]
+        },
+        {
+          "t": 1792672357509,
+          "label": "drive",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 2,
+            "trampleActive": 988,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -25.756017684936523,
+            2.054300546646118,
+            -12
+          ]
+        },
+        {
+          "t": 1792672357593,
+          "label": "drive",
+          "grass": {
+            "instances": 4000,
+            "triangles": 60000,
+            "disturbers": 2,
+            "trampleActive": 1028,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "v": [
+            -24.419713973999023,
+            2.054299831390381,
+            -12
+          ]
+        }
+      ],
+      "probeCount": 22,
+      "entered": true,
+      "travel": 25.59,
+      "maxDisturbers": 2,
+      "recoveryCurve": [
+        [
+          0,
+          [
+            0.34,
+            0.353,
+            0.363,
+            0.383,
+            0.393,
+            0.41,
+            0.423,
+            0.44,
+            0.453,
+            0.467,
+            0.48,
+            0.497,
+            0.513,
+            0.527,
+            0.54,
+            0.56,
+            0.573,
+            0.587,
+            0.607,
+            0.62,
+            0.637,
+            0.65
+          ]
+        ],
+        [
+          0.3,
+          [
+            0.29,
+            0.303,
+            0.313,
+            0.333,
+            0.343,
+            0.36,
+            0.373,
+            0.39,
+            0.403,
+            0.417,
+            0.43,
+            0.447,
+            0.463,
+            0.477,
+            0.49,
+            0.51,
+            0.523,
+            0.537,
+            0.557,
+            0.57,
+            0.587,
+            0.6
+          ]
+        ],
+        [
+          0.5,
+          [
+            0.237,
+            0.25,
+            0.26,
+            0.28,
+            0.29,
+            0.307,
+            0.32,
+            0.337,
+            0.35,
+            0.363,
+            0.377,
+            0.393,
+            0.41,
+            0.423,
+            0.437,
+            0.457,
+            0.47,
+            0.483,
+            0.503,
+            0.517,
+            0.533,
+            0.547
+          ]
+        ],
+        [
+          0.8,
+          [
+            0.187,
+            0.2,
+            0.21,
+            0.23,
+            0.24,
+            0.257,
+            0.27,
+            0.287,
+            0.3,
+            0.313,
+            0.327,
+            0.344,
+            0.36,
+            0.374,
+            0.387,
+            0.407,
+            0.42,
+            0.433,
+            0.454,
+            0.467,
+            0.484,
+            0.497
+          ]
+        ],
+        [
+          1,
+          [
+            0.137,
+            0.15,
+            0.16,
+            0.18,
+            0.19,
+            0.207,
+            0.22,
+            0.237,
+            0.25,
+            0.263,
+            0.277,
+            0.294,
+            0.31,
+            0.324,
+            0.337,
+            0.357,
+            0.37,
+            0.383,
+            0.404,
+            0.417,
+            0.434,
+            0.447
+          ]
+        ],
+        [
+          1.3,
+          [
+            0.087,
+            0.1,
+            0.11,
+            0.13,
+            0.14,
+            0.157,
+            0.17,
+            0.187,
+            0.2,
+            0.213,
+            0.227,
+            0.243,
+            0.26,
+            0.273,
+            0.287,
+            0.307,
+            0.32,
+            0.333,
+            0.353,
+            0.367,
+            0.383,
+            0.397
+          ]
+        ],
+        [
+          1.5,
+          [
+            0.037,
+            0.05,
+            0.06,
+            0.08,
+            0.09,
+            0.107,
+            0.12,
+            0.137,
+            0.15,
+            0.163,
+            0.177,
+            0.193,
+            0.21,
+            0.223,
+            0.237,
+            0.257,
+            0.27,
+            0.283,
+            0.303,
+            0.317,
+            0.333,
+            0.347
+          ]
+        ],
+        [
+          1.8,
+          [
+            0,
+            0,
+            0.01,
+            0.03,
+            0.04,
+            0.057,
+            0.07,
+            0.087,
+            0.1,
+            0.113,
+            0.127,
+            0.143,
+            0.16,
+            0.173,
+            0.187,
+            0.207,
+            0.22,
+            0.233,
+            0.253,
+            0.267,
+            0.283,
+            0.297
+          ]
+        ],
+        [
+          2,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.007,
+            0.02,
+            0.037,
+            0.05,
+            0.063,
+            0.077,
+            0.093,
+            0.11,
+            0.123,
+            0.137,
+            0.157,
+            0.17,
+            0.183,
+            0.203,
+            0.217,
+            0.233,
+            0.247
+          ]
+        ],
+        [
+          2.3,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.01,
+            0.023,
+            0.04,
+            0.057,
+            0.07,
+            0.083,
+            0.103,
+            0.117,
+            0.13,
+            0.15,
+            0.163,
+            0.18,
+            0.193
+          ]
+        ],
+        [
+          2.5,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.007,
+            0.02,
+            0.033,
+            0.053,
+            0.067,
+            0.08,
+            0.1,
+            0.113,
+            0.13,
+            0.143
+          ]
+        ],
+        [
+          2.8,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.003,
+            0.017,
+            0.03,
+            0.05,
+            0.063,
+            0.08,
+            0.093
+          ]
+        ],
+        [
+          3,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0.013,
+            0.03,
+            0.043
+          ]
+        ],
+        [
+          3.3,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          3.5,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          3.8,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          4,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          4.3,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          4.5,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          4.8,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          5,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          5.3,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          5.6,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          5.8,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          6.1,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        [
+          6.3,
+          [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ]
+      ],
+      "recoveredAt": 3.3,
+      "passed": true
+    },
+    {
+      "name": "sea-clear-spot",
+      "samples": [
+        {
+          "t": 1792672367909,
+          "label": "wade",
+          "grass": {
+            "instances": 1166,
+            "triangles": 17490,
+            "disturbers": 1,
+            "trampleActive": 107,
+            "maxTrample": 0.946,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -74.6130599975586,
+            0.6544222831726074,
+            -2.176299810409546
+          ]
+        },
+        {
+          "t": 1792672367983,
+          "label": "wade",
+          "grass": {
+            "instances": 1166,
+            "triangles": 17490,
+            "disturbers": 1,
+            "trampleActive": 102,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -74.63167572021484,
+            0.6485258340835571,
+            -2.1831369400024414
+          ]
+        },
+        {
+          "t": 1792672368056,
+          "label": "wade",
+          "grass": {
+            "instances": 1166,
+            "triangles": 17490,
+            "disturbers": 1,
+            "trampleActive": 98,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -74.70123291015625,
+            0.6257315874099731,
+            -2.208244562149048
+          ]
+        },
+        {
+          "t": 1792672368129,
+          "label": "wade",
+          "grass": {
+            "instances": 1166,
+            "triangles": 17490,
+            "disturbers": 1,
+            "trampleActive": 99,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -74.90975189208984,
+            0.563668966293335,
+            -2.2827506065368652
+          ]
+        },
+        {
+          "t": 1792672368202,
+          "label": "wade",
+          "grass": {
+            "instances": 1166,
+            "triangles": 17490,
+            "disturbers": 1,
+            "trampleActive": 99,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -75.1148452758789,
+            0.4916055202484131,
+            -2.3556509017944336
+          ]
+        },
+        {
+          "t": 1792672368276,
+          "label": "wade",
+          "grass": {
+            "instances": 1166,
+            "triangles": 17490,
+            "disturbers": 1,
+            "trampleActive": 104,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -75.39484405517578,
+            0.4089718461036682,
+            -2.409226417541504
+          ]
+        },
+        {
+          "t": 1792672368348,
+          "label": "wade",
+          "grass": {
+            "instances": 1166,
+            "triangles": 17490,
+            "disturbers": 1,
+            "trampleActive": 103,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -75.6251220703125,
+            0.35222214460372925,
+            -2.3783488273620605
+          ]
+        },
+        {
+          "t": 1792672368420,
+          "label": "wade",
+          "grass": {
+            "instances": 1166,
+            "triangles": 17490,
+            "disturbers": 1,
+            "trampleActive": 104,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -75.85326385498047,
+            0.31908637285232544,
+            -2.3121464252471924
+          ]
+        },
+        {
+          "t": 1792672368494,
+          "label": "wade",
+          "grass": {
+            "instances": 1031,
+            "triangles": 15465,
+            "disturbers": 1,
+            "trampleActive": 108,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -76.1314926147461,
+            0.2862609028816223,
+            -2.2071893215179443
+          ]
+        },
+        {
+          "t": 1792672368567,
+          "label": "wade",
+          "grass": {
+            "instances": 1031,
+            "triangles": 15465,
+            "disturbers": 1,
+            "trampleActive": 109,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -76.35362243652344,
+            0.2537307143211365,
+            -2.1158716678619385
+          ]
+        },
+        {
+          "t": 1792672368642,
+          "label": "wade",
+          "grass": {
+            "instances": 1031,
+            "triangles": 15465,
+            "disturbers": 1,
+            "trampleActive": 114,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -76.63006591796875,
+            0.2272896021604538,
+            -1.9973609447479248
+          ]
+        },
+        {
+          "t": 1792672368714,
+          "label": "wade",
+          "grass": {
+            "instances": 1031,
+            "triangles": 15465,
+            "disturbers": 1,
+            "trampleActive": 112,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -76.84957122802734,
+            0.19257709383964539,
+            -1.9009244441986084
+          ]
+        },
+        {
+          "t": 1792672368787,
+          "label": "wade",
+          "grass": {
+            "instances": 1031,
+            "triangles": 15465,
+            "disturbers": 1,
+            "trampleActive": 115,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [],
+          "p": [
+            -77.07808685302734,
+            0.17598426342010498,
+            -1.8331804275512695
+          ]
+        },
+        {
+          "t": 1792672368860,
+          "label": "wade",
+          "grass": {
+            "instances": 1031,
+            "triangles": 15465,
+            "disturbers": 1,
+            "trampleActive": 120,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -77.3,
+              "z": -1.84,
+              "radius": 1.5,
+              "strength": 0.2
+            }
+          ],
+          "p": [
+            -77.3620834350586,
+            0.1259477138519287,
+            -1.8460698127746582
+          ]
+        },
+        {
+          "t": 1792672368932,
+          "label": "wade",
+          "grass": {
+            "instances": 1031,
+            "triangles": 15465,
+            "disturbers": 1,
+            "trampleActive": 122,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -77.53,
+              "z": -1.88,
+              "radius": 1.5,
+              "strength": 0.46
+            }
+          ],
+          "p": [
+            -77.5918960571289,
+            0.10214108973741531,
+            -1.9031481742858887
+          ]
+        },
+        {
+          "t": 1792672369006,
+          "label": "wade",
+          "grass": {
+            "instances": 1031,
+            "triangles": 15465,
+            "disturbers": 1,
+            "trampleActive": 126,
+            "maxTrample": 0.946,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -77.75,
+              "z": -1.95,
+              "radius": 1.5,
+              "strength": 0.73
+            }
+          ],
+          "p": [
+            -77.8174819946289,
+            0.06144309788942337,
+            -1.9750232696533203
+          ]
+        },
+        {
+          "t": 1792672369079,
+          "label": "wade",
+          "grass": {
+            "instances": 911,
+            "triangles": 13665,
+            "disturbers": 1,
+            "trampleActive": 127,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -78.03,
+              "z": -2.05,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -78.10115814208984,
+            0.01372559368610382,
+            -2.0696332454681396
+          ]
+        },
+        {
+          "t": 1792672369151,
+          "label": "wade",
+          "grass": {
+            "instances": 911,
+            "triangles": 13665,
+            "disturbers": 1,
+            "trampleActive": 128,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -78.26,
+              "z": -2.13,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -78.33073425292969,
+            -0.023761725053191185,
+            -2.1505818367004395
+          ]
+        },
+        {
+          "t": 1792672369225,
+          "label": "wade",
+          "grass": {
+            "instances": 911,
+            "triangles": 13665,
+            "disturbers": 1,
+            "trampleActive": 133,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -78.56,
+              "z": -2.2,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -78.62340545654297,
+            -0.06264480948448181,
+            -2.2056429386138916
+          ]
+        },
+        {
+          "t": 1792672369298,
+          "label": "wade",
+          "grass": {
+            "instances": 911,
+            "triangles": 13665,
+            "disturbers": 1,
+            "trampleActive": 133,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -78.79,
+              "z": -2.19,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -78.85275268554688,
+            -0.093839630484581,
+            -2.172873020172119
+          ]
+        },
+        {
+          "t": 1792672369371,
+          "label": "wade",
+          "grass": {
+            "instances": 911,
+            "triangles": 13665,
+            "disturbers": 1,
+            "trampleActive": 133,
+            "maxTrample": 0.946,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -79.01,
+              "z": -2.13,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -79.07597351074219,
+            -0.11969204992055893,
+            -2.103634834289551
+          ]
+        },
+        {
+          "t": 1792672369443,
+          "label": "wade",
+          "grass": {
+            "instances": 911,
+            "triangles": 13665,
+            "disturbers": 1,
+            "trampleActive": 135,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -79.29,
+              "z": -2.02,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -79.35464477539062,
+            -0.156509667634964,
+            -1.9976556301116943
+          ]
+        },
+        {
+          "t": 1792672369516,
+          "label": "wade",
+          "grass": {
+            "instances": 911,
+            "triangles": 13665,
+            "disturbers": 1,
+            "trampleActive": 136,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -79.52,
+              "z": -1.95,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -79.5846939086914,
+            -0.18364374339580536,
+            -1.9345216751098633
+          ]
+        },
+        {
+          "t": 1792672369587,
+          "label": "wade",
+          "grass": {
+            "instances": 911,
+            "triangles": 13665,
+            "disturbers": 1,
+            "trampleActive": 136,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -79.75,
+              "z": -1.94,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -79.81104278564453,
+            -0.20422013103961945,
+            -1.9429302215576172
+          ]
+        },
+        {
+          "t": 1792672369660,
+          "label": "wade",
+          "grass": {
+            "instances": 804,
+            "triangles": 12060,
+            "disturbers": 1,
+            "trampleActive": 139,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -80.03,
+              "z": -1.99,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -80.0916519165039,
+            -0.2352718710899353,
+            -2.0087180137634277
+          ]
+        },
+        {
+          "t": 1792672369733,
+          "label": "wade",
+          "grass": {
+            "instances": 804,
+            "triangles": 12060,
+            "disturbers": 1,
+            "trampleActive": 141,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -80.25,
+              "z": -2.06,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -80.3138198852539,
+            -0.2752681076526642,
+            -2.078737735748291
+          ]
+        },
+        {
+          "t": 1792672369805,
+          "label": "wade",
+          "grass": {
+            "instances": 804,
+            "triangles": 12060,
+            "disturbers": 1,
+            "trampleActive": 143,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -80.48,
+              "z": -2.12,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -80.544677734375,
+            -0.3068307340145111,
+            -2.1285879611968994
+          ]
+        },
+        {
+          "t": 1792672369878,
+          "label": "wade",
+          "grass": {
+            "instances": 804,
+            "triangles": 12060,
+            "disturbers": 1,
+            "trampleActive": 145,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -80.76,
+              "z": -2.11,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -80.82696533203125,
+            -0.34863781929016113,
+            -2.0932822227478027
+          ]
+        },
+        {
+          "t": 1792672369950,
+          "label": "wade",
+          "grass": {
+            "instances": 804,
+            "triangles": 12060,
+            "disturbers": 1,
+            "trampleActive": 148,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -80.99,
+              "z": -2.05,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -81.05204772949219,
+            -0.370402455329895,
+            -2.025277614593506
+          ]
+        },
+        {
+          "t": 1792672370023,
+          "label": "wade",
+          "grass": {
+            "instances": 804,
+            "triangles": 12060,
+            "disturbers": 1,
+            "trampleActive": 147,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -81.21,
+              "z": -1.97,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -81.27010345458984,
+            -0.3662347197532654,
+            -1.9450072050094604
+          ]
+        },
+        {
+          "t": 1792672370222,
+          "label": "deeper",
+          "grass": {
+            "instances": 804,
+            "triangles": 12060,
+            "disturbers": 1,
+            "trampleActive": 146,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -81.54,
+              "z": -1.85,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -81.55296325683594,
+            -0.41642728447914124,
+            -1.8453474044799805
+          ]
+        },
+        {
+          "t": 1792672370294,
+          "label": "deeper",
+          "grass": {
+            "instances": 804,
+            "triangles": 12060,
+            "disturbers": 1,
+            "trampleActive": 149,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -81.65,
+              "z": -1.87,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -81.69806671142578,
+            -0.43406662344932556,
+            -1.8876137733459473
+          ]
+        },
+        {
+          "t": 1792672370368,
+          "label": "deeper",
+          "grass": {
+            "instances": 804,
+            "triangles": 12060,
+            "disturbers": 1,
+            "trampleActive": 152,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -81.82,
+              "z": -1.93,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -81.88082122802734,
+            -0.4608099162578583,
+            -1.9508033990859985
+          ]
+        },
+        {
+          "t": 1792672370441,
+          "label": "deeper",
+          "grass": {
+            "instances": 711,
+            "triangles": 10665,
+            "disturbers": 1,
+            "trampleActive": 127,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -82.08,
+              "z": -2.02,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -82.14210510253906,
+            -0.48201072216033936,
+            -2.0457992553710938
+          ]
+        },
+        {
+          "t": 1792672370514,
+          "label": "deeper",
+          "grass": {
+            "instances": 711,
+            "triangles": 10665,
+            "disturbers": 1,
+            "trampleActive": 129,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -82.3,
+              "z": -2.1,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -82.3594741821289,
+            -0.5257105827331543,
+            -2.1254079341888428
+          ]
+        },
+        {
+          "t": 1792672370585,
+          "label": "deeper",
+          "grass": {
+            "instances": 711,
+            "triangles": 10665,
+            "disturbers": 1,
+            "trampleActive": 132,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -82.52,
+              "z": -2.18,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -82.58472442626953,
+            -0.5562451481819153,
+            -2.209200620651245
+          ]
+        },
+        {
+          "t": 1792672370658,
+          "label": "deeper",
+          "grass": {
+            "instances": 711,
+            "triangles": 10665,
+            "disturbers": 1,
+            "trampleActive": 136,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -82.81,
+              "z": -2.26,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -82.87513732910156,
+            -0.592069685459137,
+            -2.268982410430908
+          ]
+        },
+        {
+          "t": 1792672370730,
+          "label": "deeper",
+          "grass": {
+            "instances": 711,
+            "triangles": 10665,
+            "disturbers": 1,
+            "trampleActive": 136,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -83.04,
+              "z": -2.25,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -83.10408020019531,
+            -0.6147652268409729,
+            -2.2391772270202637
+          ]
+        },
+        {
+          "t": 1792672370802,
+          "label": "deeper",
+          "grass": {
+            "instances": 711,
+            "triangles": 10665,
+            "disturbers": 1,
+            "trampleActive": 138,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -83.26,
+              "z": -2.19,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -83.32926940917969,
+            -0.6344423890113831,
+            -2.173295259475708
+          ]
+        },
+        {
+          "t": 1792672370875,
+          "label": "deeper",
+          "grass": {
+            "instances": 711,
+            "triangles": 10665,
+            "disturbers": 1,
+            "trampleActive": 146,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -83.54,
+              "z": -2.1,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -83.6083984375,
+            -0.6571398973464966,
+            -2.0695180892944336
+          ]
+        },
+        {
+          "t": 1792672370946,
+          "label": "deeper",
+          "grass": {
+            "instances": 711,
+            "triangles": 10665,
+            "disturbers": 1,
+            "trampleActive": 147,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -83.77,
+              "z": -2.01,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -83.83079528808594,
+            -0.6742457151412964,
+            -1.9797555208206177
+          ]
+        },
+        {
+          "t": 1792672371018,
+          "label": "deeper",
+          "grass": {
+            "instances": 711,
+            "triangles": 10665,
+            "disturbers": 1,
+            "trampleActive": 148,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -83.99,
+              "z": -1.93,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -84.0569076538086,
+            -0.6814371347427368,
+            -1.9151357412338257
+          ]
+        },
+        {
+          "t": 1792672371093,
+          "label": "deeper",
+          "grass": {
+            "instances": 613,
+            "triangles": 9195,
+            "disturbers": 1,
+            "trampleActive": 150,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -84.27,
+              "z": -1.92,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -84.33672332763672,
+            -0.7124462723731995,
+            -1.9302486181259155
+          ]
+        },
+        {
+          "t": 1792672371166,
+          "label": "deeper",
+          "grass": {
+            "instances": 613,
+            "triangles": 9195,
+            "disturbers": 1,
+            "trampleActive": 153,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -84.5,
+              "z": -1.97,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -84.56370544433594,
+            -0.7492936253547668,
+            -1.9868292808532715
+          ]
+        },
+        {
+          "t": 1792672371237,
+          "label": "deeper",
+          "grass": {
+            "instances": 613,
+            "triangles": 9195,
+            "disturbers": 1,
+            "trampleActive": 156,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -84.72,
+              "z": -2.04,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -84.7923583984375,
+            -0.7771010994911194,
+            -2.059171438217163
+          ]
+        },
+        {
+          "t": 1792672371310,
+          "label": "deeper",
+          "grass": {
+            "instances": 613,
+            "triangles": 9195,
+            "disturbers": 1,
+            "trampleActive": 161,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -85.02,
+              "z": -2.11,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -85.08401489257812,
+            -0.81040358543396,
+            -2.1127402782440186
+          ]
+        },
+        {
+          "t": 1792672371383,
+          "label": "deeper",
+          "grass": {
+            "instances": 613,
+            "triangles": 9195,
+            "disturbers": 1,
+            "trampleActive": 162,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -85.25,
+              "z": -2.09,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -85.31300354003906,
+            -0.8313170671463013,
+            -2.0809099674224854
+          ]
+        },
+        {
+          "t": 1792672371846,
+          "label": "in",
+          "grass": {
+            "instances": 613,
+            "triangles": 9195,
+            "disturbers": 1,
+            "trampleActive": 153,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -85.61,
+              "z": -2.06,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -85.60770416259766,
+            -0.8600597977638245,
+            -2.0599570274353027
+          ]
+        },
+        {
+          "t": 1792672371947,
+          "label": "in",
+          "grass": {
+            "instances": 613,
+            "triangles": 9195,
+            "disturbers": 1,
+            "trampleActive": 150,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -85.62,
+              "z": -2.07,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -85.61888885498047,
+            -0.8617228865623474,
+            -2.0673701763153076
+          ]
+        },
+        {
+          "t": 1792672372050,
+          "label": "in",
+          "grass": {
+            "instances": 613,
+            "triangles": 9195,
+            "disturbers": 1,
+            "trampleActive": 151,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -85.63,
+              "z": -2.07,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -85.62965393066406,
+            -0.8633362054824829,
+            -2.0748465061187744
+          ]
+        },
+        {
+          "t": 1792672372152,
+          "label": "in",
+          "grass": {
+            "instances": 613,
+            "triangles": 9195,
+            "disturbers": 1,
+            "trampleActive": 148,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -85.64,
+              "z": -2.08,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -85.64028930664062,
+            -0.8649362325668335,
+            -2.082340717315674
+          ]
+        },
+        {
+          "t": 1792672372255,
+          "label": "in",
+          "grass": {
+            "instances": 613,
+            "triangles": 9195,
+            "disturbers": 1,
+            "trampleActive": 145,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -85.65,
+              "z": -2.09,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -85.65087127685547,
+            -0.866531491279602,
+            -2.0898396968841553
+          ]
+        },
+        {
+          "t": 1792672372359,
+          "label": "in",
+          "grass": {
+            "instances": 613,
+            "triangles": 9195,
+            "disturbers": 1,
+            "trampleActive": 145,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -85.66,
+              "z": -2.1,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -85.6632080078125,
+            -0.8683903813362122,
+            -2.0985898971557617
+          ]
+        },
+        {
+          "t": 1792672372461,
+          "label": "in",
+          "grass": {
+            "instances": 613,
+            "triangles": 9195,
+            "disturbers": 1,
+            "trampleActive": 145,
+            "maxTrample": 0.947,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -85.67,
+              "z": -2.1,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -85.67378234863281,
+            -0.8699840307235718,
+            -2.106091260910034
+          ]
+        },
+        {
+          "t": 1792672372563,
+          "label": "in",
+          "grass": {
+            "instances": 613,
+            "triangles": 9195,
+            "disturbers": 1,
+            "trampleActive": 139,
+            "maxTrample": 0.946,
+            "profile": "high"
+          },
+          "sea": [
+            {
+              "id": "player",
+              "x": -85.68,
+              "z": -2.11,
+              "radius": 1.5,
+              "strength": 1
+            }
+          ],
+          "p": [
+            -85.68435668945312,
+            -0.8715776801109314,
+            -2.1135928630828857
+          ]
+        }
+      ],
+      "firstSpot": [
+        -77.3620834350586,
+        0.1259477138519287,
+        -1.8460698127746582
+      ],
+      "maxStrength": 1,
+      "spotRadius": 1.5,
+      "minPlayerY": -0.8715776801109314,
+      "passed": true,
+      "spotsOnLand": 0
+    },
+    {
+      "name": "walk-trail-still-camera",
+      "cameraBefore": [
+        -48.651890785162344,
+        6.015153149218298,
+        -31.47857812342179
+      ]
+    }
+  ],
+  "timing": {
+    "high": {
+      "meadow": {
+        "frames": 301,
+        "seconds": 5,
+        "fps": 60.2,
+        "p50": 16.7,
+        "p90": 16.7,
+        "p95": 16.8,
+        "p99": 16.8,
+        "max": 16.8,
+        "over33ms": 0
+      },
+      "grass": {
+        "instances": 2921,
+        "triangles": 43815,
+        "disturbers": 3,
+        "trampleActive": 162,
+        "maxTrample": 0.947,
+        "profile": "high"
+      },
+      "stats": {
+        "calls": 220,
+        "triangles": 467506,
+        "geometries": 152,
+        "textures": 19,
+        "camera": [
+          -60.77290442651811,
+          6.015299538225335,
+          -27.92021516260577
+        ]
+      },
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1,
+        "dprRange": [
+          0,
+          2
+        ],
+        "quality": "high",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 4096,
+        "shadowType": 1,
+        "postprocessing": []
+      },
+      "camp": {
+        "frames": 301,
+        "seconds": 5,
+        "fps": 60.2,
+        "p50": 16.7,
+        "p90": 16.7,
+        "p95": 16.7,
+        "p99": 16.8,
+        "max": 16.8,
+        "over33ms": 0
+      }
+    },
+    "balanced": {
+      "meadow": {
+        "frames": 301,
+        "seconds": 5,
+        "fps": 60.2,
+        "p50": 16.7,
+        "p90": 16.7,
+        "p95": 16.7,
+        "p99": 16.8,
+        "max": 16.8,
+        "over33ms": 0
+      },
+      "grass": {
+        "instances": 1151,
+        "triangles": 17265,
+        "disturbers": 3,
+        "trampleActive": 162,
+        "maxTrample": 0.947,
+        "profile": "balanced"
+      },
+      "stats": {
+        "calls": 220,
+        "triangles": 440956,
+        "geometries": 152,
+        "textures": 19,
+        "camera": [
+          -60.772904426518544,
+          6.015299538225478,
+          -27.92021516260591
+        ]
+      },
+      "render": {
+        "drawingBuffer": [
+          1920,
+          1080
+        ],
+        "cssSize": [
+          1920,
+          1080
+        ],
+        "pixelRatio": 1,
+        "dprRange": [
+          0,
+          1.5
+        ],
+        "quality": "balanced",
+        "antialias": true,
+        "msaaSamples": 4,
+        "toneMapping": 4,
+        "outputColorSpace": "srgb",
+        "shadowMapSize": 2048,
+        "shadowType": 1,
+        "postprocessing": []
+      },
+      "camp": {
+        "frames": 301,
+        "seconds": 5,
+        "fps": 60.2,
+        "p50": 16.7,
+        "p90": 16.7,
+        "p95": 16.7,
+        "p99": 16.8,
+        "max": 16.8,
+        "over33ms": 0
+      }
+    }
+  },
+  "errors": [],
+  "pageErrors": []
+}

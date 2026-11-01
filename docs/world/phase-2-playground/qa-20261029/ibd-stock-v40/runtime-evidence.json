@@ -1,0 +1,369 @@
+{
+  "baseline": "351ab22",
+  "fixture": "case 1, prior evidence and verdict seeded; quarantine and reserve interactions played in UI",
+  "snapshots": [
+    {
+      "reserve": {
+        "stock": {
+          "originalReturned": true,
+          "requested": true,
+          "assigned": null
+        },
+        "pending": null,
+        "notice": "stock-requested",
+        "goods": [
+          {
+            "id": "coil-front",
+            "spec": "steel-A",
+            "quantity": 1
+          },
+          {
+            "id": "coil-rear",
+            "spec": "steel-A",
+            "quantity": 1
+          },
+          {
+            "id": "parts-a",
+            "spec": "M8",
+            "quantity": 4
+          },
+          {
+            "id": "parts-b",
+            "spec": "M8",
+            "quantity": 3
+          }
+        ],
+        "samples": {}
+      }
+    },
+    {
+      "reserveContact": {
+        "view": {
+          "pack": "stock-b",
+          "selected": 0,
+          "gap": 0.28,
+          "busy": false,
+          "feedback": "measured",
+          "round": 1,
+          "itemId": "reserve:1:stock-b"
+        },
+        "visual": {
+          "pack": "stock-b",
+          "index": 0,
+          "progress": 1,
+          "jaw": 0.28,
+          "retracting": false
+        },
+        "actor": {
+          "position": [
+            -62.00025939941406,
+            1.9039127826690674,
+            -193.31654357910156
+          ],
+          "yaw": 1.5707963267948966,
+          "grounded": true,
+          "available": true,
+          "mode": "guide"
+        },
+        "held": {
+          "spec": "M6"
+        },
+        "action": null,
+        "sockets": {
+          "valid": true,
+          "reachable": true,
+          "sampledId": null,
+          "sampledElapsed": 0,
+          "leftHand": [
+            -62.1131219430235,
+            2.1086378737864244,
+            -193.72606810542354
+          ],
+          "rightHand": [
+            -61.780259408180854,
+            2.0765001756298114,
+            -193.60654357263454
+          ],
+          "leftContactError": null,
+          "rightContactError": null,
+          "contactError": null
+        },
+        "inspection": {
+          "itemId": "reserve:1:stock-b",
+          "held": 0,
+          "measurement": "M6",
+          "notice": "measured",
+          "slots": [
+            {
+              "index": 0,
+              "present": true,
+              "specId": "M6",
+              "complete": false,
+              "reading": null
+            },
+            {
+              "index": 1,
+              "present": true,
+              "specId": "M6",
+              "complete": false,
+              "reading": null
+            },
+            {
+              "index": 2,
+              "present": true,
+              "specId": "M6",
+              "complete": false,
+              "reading": null
+            },
+            {
+              "index": 3,
+              "present": true,
+              "specId": "M6",
+              "complete": false,
+              "reading": null
+            }
+          ]
+        },
+        "loaded": []
+      }
+    },
+    {
+      "reserve": {
+        "stock": {
+          "originalReturned": true,
+          "requested": false,
+          "assigned": "stock-b"
+        },
+        "pending": null,
+        "notice": "stock-selected",
+        "goods": [
+          {
+            "id": "coil-front",
+            "spec": "steel-A",
+            "quantity": 1
+          },
+          {
+            "id": "coil-rear",
+            "spec": "steel-A",
+            "quantity": 1
+          },
+          {
+            "id": "parts-a",
+            "spec": "M8",
+            "quantity": 4
+          },
+          {
+            "id": "reserve:1:stock-b",
+            "spec": "M6",
+            "quantity": 4
+          }
+        ],
+        "samples": {}
+      }
+    },
+    {
+      "wrongFullyInspected": {
+        "reserve": {
+          "stock": {
+            "originalReturned": true,
+            "requested": false,
+            "assigned": "stock-b"
+          },
+          "pending": null,
+          "notice": "judgement-different",
+          "goods": [
+            {
+              "id": "coil-front",
+              "spec": "steel-A",
+              "quantity": 1
+            },
+            {
+              "id": "coil-rear",
+              "spec": "steel-A",
+              "quantity": 1
+            },
+            {
+              "id": "parts-a",
+              "spec": "M8",
+              "quantity": 4
+            },
+            {
+              "id": "reserve:1:stock-b",
+              "spec": "M6",
+              "quantity": 4
+            }
+          ],
+          "samples": {
+            "reserve:1:stock-b": {
+              "held": null,
+              "readings": [
+                "M6",
+                "M6",
+                "M6",
+                "M6"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "returned": {
+        "reserve": {
+          "stock": {
+            "originalReturned": true,
+            "requested": true,
+            "assigned": null
+          },
+          "pending": null,
+          "notice": "stock-returned",
+          "goods": [
+            {
+              "id": "coil-front",
+              "spec": "steel-A",
+              "quantity": 1
+            },
+            {
+              "id": "coil-rear",
+              "spec": "steel-A",
+              "quantity": 1
+            },
+            {
+              "id": "parts-a",
+              "spec": "M8",
+              "quantity": 4
+            },
+            {
+              "id": "parts-b",
+              "spec": "M8",
+              "quantity": 3
+            }
+          ],
+          "samples": {}
+        }
+      }
+    },
+    {
+      "correctSelected": {
+        "reserve": {
+          "stock": {
+            "originalReturned": true,
+            "requested": false,
+            "assigned": "stock-a"
+          },
+          "pending": null,
+          "notice": "stock-selected",
+          "goods": [
+            {
+              "id": "coil-front",
+              "spec": "steel-A",
+              "quantity": 1
+            },
+            {
+              "id": "coil-rear",
+              "spec": "steel-A",
+              "quantity": 1
+            },
+            {
+              "id": "parts-a",
+              "spec": "M8",
+              "quantity": 4
+            },
+            {
+              "id": "reserve:1:stock-a",
+              "spec": "M8",
+              "quantity": 4
+            }
+          ],
+          "samples": {}
+        }
+      }
+    },
+    {
+      "crossAisleWalk": {
+        "position": [
+          -62.8,
+          1.9,
+          -191.3
+        ],
+        "yaw": 0,
+        "grounded": true,
+        "vehicle": null,
+        "drive": null,
+        "grass": {
+          "instances": 35,
+          "disturbers": 1,
+          "trampled": 10,
+          "strength": 0.929
+        },
+        "exchange": {
+          "phase": "cancelled",
+          "ticketId": null,
+          "archive": [],
+          "equity": null,
+          "contacts": 0,
+          "carried": null
+        }
+      }
+    },
+    {
+      "correctFullyInspected": {
+        "reserve": {
+          "stock": {
+            "originalReturned": true,
+            "requested": false,
+            "assigned": "stock-a"
+          },
+          "pending": null,
+          "notice": "judgement-clear",
+          "goods": [
+            {
+              "id": "coil-front",
+              "spec": "steel-A",
+              "quantity": 1
+            },
+            {
+              "id": "coil-rear",
+              "spec": "steel-A",
+              "quantity": 1
+            },
+            {
+              "id": "parts-a",
+              "spec": "M8",
+              "quantity": 4
+            },
+            {
+              "id": "reserve:1:stock-a",
+              "spec": "M8",
+              "quantity": 4
+            }
+          ],
+          "samples": {
+            "reserve:1:stock-a": {
+              "held": null,
+              "readings": [
+                "M8",
+                "M8",
+                "M8",
+                "M8"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "loaded": [
+        "reserve:1:stock-a"
+      ]
+    }
+  ],
+  "consoleErrors": [],
+  "performance": {
+    "file": "night-inspection-frame-window.json",
+    "frames": 7448,
+    "activeSeconds": 124.15059999996424,
+    "p95Ms": 17.100000381469727,
+    "maxMs": 32.59999996423721
+  }
+}

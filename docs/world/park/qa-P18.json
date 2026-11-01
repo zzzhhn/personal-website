@@ -1,0 +1,79 @@
+{
+ "asset": "P18",
+ "evaluatedTriangles": 832,
+ "bounds": [
+  [
+   -1.16,
+   -1.26,
+   0.0
+  ],
+  [
+   1.55,
+   0.38,
+   2.26
+  ]
+ ],
+ "problems": [],
+ "parts": [
+  [
+   "body",
+   620
+  ],
+  [
+   "board",
+   188
+  ],
+  [
+   "display_front",
+   12
+  ],
+  [
+   "display_back",
+   12
+  ]
+ ],
+ "glbReadbackTriangles": 832,
+ "readbackBounds": [
+  [
+   -1.16,
+   -1.26,
+   0.0
+  ],
+  [
+   1.55,
+   0.38,
+   2.26
+  ]
+ ],
+ "readbackProblems": [
+  {
+   "name": "board",
+   "triangles": 188,
+   "shells": 2,
+   "negative_shells": 0,
+   "degenerate_faces": 0,
+   "nonmanifold_edges": 4,
+   "materials": [
+    "park_chalkboard",
+    "park_wood_mid"
+   ]
+  }
+ ],
+ "nodes": [
+  "P18",
+  "board",
+  "body",
+  "display_back",
+  "display_front"
+ ],
+ "materials": [
+  "park_accent_orange",
+  "park_brass_matte",
+  "park_chalkboard",
+  "park_cream_paint",
+  "park_wood_dark",
+  "park_wood_light",
+  "park_wood_mid"
+ ],
+ "glbBytes": 20068
+}

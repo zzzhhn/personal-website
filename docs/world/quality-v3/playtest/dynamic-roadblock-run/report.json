@@ -1,0 +1,19 @@
+{
+  "base": "http://127.0.0.1:4322",
+  "cases": [],
+  "errors": [
+    "page.waitForFunction: Timeout 30000ms exceeded.\n    at /Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/playtest/dynamic-roadblock.mjs:14:103"
+  ],
+  "limits": [
+    "Map roadblock at [24,1.64,-18], directed 5 m/s frontal impact; not every impact angle.",
+    "QA fixture starts only; real keyboard acceleration and braking."
+  ],
+  "summary": {
+    "total": 0,
+    "passed": 0,
+    "failed": [],
+    "errors": [
+      "page.waitForFunction: Timeout 30000ms exceeded.\n    at /Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/playtest/dynamic-roadblock.mjs:14:103"
+    ]
+  }
+}

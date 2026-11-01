@@ -1,0 +1,737 @@
+{
+ "errors": [],
+ "rec": [
+  {
+   "place": "town-hunyuan",
+   "zoom": 1,
+   "mode": "old",
+   "file": "/tmp/sh/band/town-hunyuan-zoom1-old.png",
+   "shadow": {
+    "mode": "follow-frustum",
+    "receiverBand_m": [
+     -2.0411373376846313,
+     8.958862662315369
+    ],
+    "mapSize": 4096,
+    "centre": [
+     17.010757421604023,
+     -0.3662191903032195,
+     -44.24659319924452
+    ],
+    "halfExtent_m": [
+     22,
+     14
+    ],
+    "lightTexel_m": [
+     0.0107421875,
+     0.0068359375
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.0107421875,
+     "alongSun": 0.02016673975792032
+    },
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.02016673975792032,
+    "bias": -0.00015,
+    "updates": 194,
+    "applied": {
+     "camera": [
+      -22,
+      22,
+      -14,
+      14,
+      1,
+      260
+     ],
+     "mapAllocated": [
+      4096,
+      4096
+     ],
+     "lightPosition": [
+      -72.98924257839597,
+      39.63378080969678,
+      20.753406800755478
+     ],
+     "targetWorld": [
+      17.010757421604023,
+      -0.3662191903032195,
+      -44.24659319924452
+     ],
+     "targetInScene": true
+    }
+   }
+  },
+  {
+   "place": "town-hunyuan",
+   "zoom": 1,
+   "mode": "new",
+   "file": "/tmp/sh/band/town-hunyuan-zoom1-new.png",
+   "shadow": {
+    "mode": "follow-frustum",
+    "receiverBand_m": [
+     -2.0411373376846313,
+     16.5
+    ],
+    "mapSize": 4096,
+    "centre": [
+     6.169659946459138,
+     -16.74012714701353,
+     -49.18109249916186
+    ],
+    "halfExtent_m": [
+     28,
+     28
+    ],
+    "lightTexel_m": [
+     0.013671875,
+     0.013671875
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.013671875,
+     "alongSun": 0.04033347951584064
+    },
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.03,
+    "bias": -0.00015,
+    "updates": 216,
+    "applied": {
+     "camera": [
+      -28,
+      28,
+      -28,
+      28,
+      1,
+      260
+     ],
+     "mapAllocated": [
+      4096,
+      4096
+     ],
+     "lightPosition": [
+      -83.83034005354087,
+      23.25987285298647,
+      15.818907500838137
+     ],
+     "targetWorld": [
+      6.169659946459138,
+      -16.74012714701353,
+      -49.18109249916186
+     ],
+     "targetInScene": true
+    }
+   }
+  },
+  {
+   "place": "town-hunyuan",
+   "zoom": 2,
+   "mode": "old",
+   "file": "/tmp/sh/band/town-hunyuan-zoom2-old.png",
+   "shadow": {
+    "mode": "follow-frustum",
+    "receiverBand_m": [
+     -2.0411373376846313,
+     8.958862662315369
+    ],
+    "mapSize": 4096,
+    "centre": [
+     12.982377541069013,
+     1.1166383701350284,
+     -50.73687768640884
+    ],
+    "halfExtent_m": [
+     30,
+     16
+    ],
+    "lightTexel_m": [
+     0.0146484375,
+     0.0078125
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.0146484375,
+     "alongSun": 0.023047702580480365
+    },
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.023047702580480365,
+    "bias": -0.00015,
+    "updates": 292,
+    "applied": {
+     "camera": [
+      -30,
+      30,
+      -16,
+      16,
+      1,
+      260
+     ],
+     "mapAllocated": [
+      4096,
+      4096
+     ],
+     "lightPosition": [
+      -77.01762245893099,
+      41.11663837013503,
+      14.263122313591161
+     ],
+     "targetWorld": [
+      12.982377541069013,
+      1.1166383701350284,
+      -50.73687768640884
+     ],
+     "targetInScene": true
+    }
+   }
+  },
+  {
+   "place": "town-hunyuan",
+   "zoom": 2,
+   "mode": "new",
+   "file": "/tmp/sh/band/town-hunyuan-zoom2-new.png",
+   "shadow": {
+    "mode": "follow-frustum",
+    "receiverBand_m": [
+     -2.0411373376846313,
+     16.5
+    ],
+    "mapSize": 4096,
+    "centre": [
+     7.662289558610876,
+     -13.28012617265762,
+     -49.243605943478485
+    ],
+    "halfExtent_m": [
+     30,
+     30
+    ],
+    "lightTexel_m": [
+     0.0146484375,
+     0.0146484375
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.0146484375,
+     "alongSun": 0.04321444233840069
+    },
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.03,
+    "bias": -0.00015,
+    "updates": 313,
+    "applied": {
+     "camera": [
+      -30,
+      30,
+      -30,
+      30,
+      1,
+      260
+     ],
+     "mapAllocated": [
+      4096,
+      4096
+     ],
+     "lightPosition": [
+      -82.33771044138912,
+      26.71987382734238,
+      15.756394056521515
+     ],
+     "targetWorld": [
+      7.662289558610876,
+      -13.28012617265762,
+      -49.243605943478485
+     ],
+     "targetInScene": true
+    }
+   }
+  },
+  {
+   "place": "town-worldquant",
+   "zoom": 1,
+   "mode": "old",
+   "file": "/tmp/sh/band/town-worldquant-zoom1-old.png",
+   "shadow": {
+    "mode": "follow-frustum",
+    "receiverBand_m": [
+     -2.0411373376846313,
+     8.958862662315369
+    ],
+    "mapSize": 4096,
+    "centre": [
+     11.014412513132749,
+     -0.36263517465150663,
+     -2.24373785137504
+    ],
+    "halfExtent_m": [
+     22,
+     14
+    ],
+    "lightTexel_m": [
+     0.0107421875,
+     0.0068359375
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.0107421875,
+     "alongSun": 0.02016673975792032
+    },
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.02016673975792032,
+    "bias": -0.00015,
+    "updates": 522,
+    "applied": {
+     "camera": [
+      -22,
+      22,
+      -14,
+      14,
+      1,
+      260
+     ],
+     "mapAllocated": [
+      4096,
+      4096
+     ],
+     "lightPosition": [
+      -78.98558748686725,
+      39.63736482534849,
+      62.75626214862496
+     ],
+     "targetWorld": [
+      11.014412513132749,
+      -0.36263517465150663,
+      -2.24373785137504
+     ],
+     "targetInScene": true
+    }
+   }
+  },
+  {
+   "place": "town-worldquant",
+   "zoom": 1,
+   "mode": "new",
+   "file": "/tmp/sh/band/town-worldquant-zoom1-new.png",
+   "shadow": {
+    "mode": "follow-frustum",
+    "receiverBand_m": [
+     -2.0411373376846313,
+     16.5
+    ],
+    "mapSize": 4096,
+    "centre": [
+     0.16702558867898798,
+     -16.73654313136182,
+     -7.186945619566211
+    ],
+    "halfExtent_m": [
+     28,
+     28
+    ],
+    "lightTexel_m": [
+     0.013671875,
+     0.013671875
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.013671875,
+     "alongSun": 0.04033347951584064
+    },
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.03,
+    "bias": -0.00015,
+    "updates": 544,
+    "applied": {
+     "camera": [
+      -28,
+      28,
+      -28,
+      28,
+      1,
+      260
+     ],
+     "mapAllocated": [
+      4096,
+      4096
+     ],
+     "lightPosition": [
+      -89.83297441132102,
+      23.26345686863818,
+      57.81305438043379
+     ],
+     "targetWorld": [
+      0.16702558867898798,
+      -16.73654313136182,
+      -7.186945619566211
+     ],
+     "targetInScene": true
+    }
+   }
+  },
+  {
+   "place": "town-worldquant",
+   "zoom": 2,
+   "mode": "old",
+   "file": "/tmp/sh/band/town-worldquant-zoom2-old.png",
+   "shadow": {
+    "mode": "follow-frustum",
+    "receiverBand_m": [
+     -2.0411373376846313,
+     8.958862662315369
+    ],
+    "mapSize": 4096,
+    "centre": [
+     6.986102744419526,
+     1.1165473980285294,
+     -8.731663729704142
+    ],
+    "halfExtent_m": [
+     30,
+     16
+    ],
+    "lightTexel_m": [
+     0.0146484375,
+     0.0078125
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.0146484375,
+     "alongSun": 0.023047702580480365
+    },
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.023047702580480365,
+    "bias": -0.00015,
+    "updates": 619,
+    "applied": {
+     "camera": [
+      -30,
+      30,
+      -16,
+      16,
+      1,
+      260
+     ],
+     "mapAllocated": [
+      4096,
+      4096
+     ],
+     "lightPosition": [
+      -83.01389725558047,
+      41.11654739802853,
+      56.26833627029586
+     ],
+     "targetWorld": [
+      6.986102744419526,
+      1.1165473980285294,
+      -8.731663729704142
+     ],
+     "targetInScene": true
+    }
+   }
+  },
+  {
+   "place": "town-worldquant",
+   "zoom": 2,
+   "mode": "new",
+   "file": "/tmp/sh/band/town-worldquant-zoom2-new.png",
+   "shadow": {
+    "mode": "follow-frustum",
+    "receiverBand_m": [
+     -2.0411373376846313,
+     16.5
+    ],
+    "mapSize": 4096,
+    "centre": [
+     1.6644046253370997,
+     -13.285729626401436,
+     -7.2372291103229065
+    ],
+    "halfExtent_m": [
+     30,
+     30
+    ],
+    "lightTexel_m": [
+     0.0146484375,
+     0.0146484375
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.0146484375,
+     "alongSun": 0.04321444233840069
+    },
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.03,
+    "bias": -0.00015,
+    "updates": 640,
+    "applied": {
+     "camera": [
+      -30,
+      30,
+      -30,
+      30,
+      1,
+      260
+     ],
+     "mapAllocated": [
+      4096,
+      4096
+     ],
+     "lightPosition": [
+      -88.3355953746629,
+      26.714270373598566,
+      57.76277088967709
+     ],
+     "targetWorld": [
+      1.6644046253370997,
+      -13.285729626401436,
+      -7.2372291103229065
+     ],
+     "targetInScene": true
+    }
+   }
+  },
+  {
+   "place": "camp-desk",
+   "zoom": 1,
+   "mode": "old",
+   "file": "/tmp/sh/band/camp-desk-zoom1-old.png",
+   "shadow": {
+    "mode": "follow-frustum",
+    "receiverBand_m": [
+     1.6188654899597168,
+     12.618865489959717
+    ],
+    "mapSize": 4096,
+    "centre": [
+     -57.38553753452292,
+     3.2917402022526723,
+     32.65979799865306
+    ],
+    "halfExtent_m": [
+     22,
+     14
+    ],
+    "lightTexel_m": [
+     0.0107421875,
+     0.0068359375
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.0107421875,
+     "alongSun": 0.02016673975792032
+    },
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.02016673975792032,
+    "bias": -0.00015,
+    "updates": 848,
+    "applied": {
+     "camera": [
+      -22,
+      22,
+      -14,
+      14,
+      1,
+      260
+     ],
+     "mapAllocated": [
+      4096,
+      4096
+     ],
+     "lightPosition": [
+      -147.3855375345229,
+      43.29174020225267,
+      97.65979799865306
+     ],
+     "targetWorld": [
+      -57.38553753452292,
+      3.2917402022526723,
+      32.65979799865306
+     ],
+     "targetInScene": true
+    }
+   }
+  },
+  {
+   "place": "camp-desk",
+   "zoom": 1,
+   "mode": "new",
+   "file": "/tmp/sh/band/camp-desk-zoom1-new.png",
+   "shadow": {
+    "mode": "follow-frustum",
+    "receiverBand_m": [
+     -0.7,
+     12.618865489959717
+    ],
+    "mapSize": 4096,
+    "centre": [
+     -59.80531667627979,
+     1.4965086823664642,
+     30.414092429996593
+    ],
+    "halfExtent_m": [
+     24,
+     16
+    ],
+    "lightTexel_m": [
+     0.01171875,
+     0.0078125
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.01171875,
+     "alongSun": 0.023047702580480365
+    },
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.023047702580480365,
+    "bias": -0.00015,
+    "updates": 870,
+    "applied": {
+     "camera": [
+      -24,
+      24,
+      -16,
+      16,
+      1,
+      260
+     ],
+     "mapAllocated": [
+      4096,
+      4096
+     ],
+     "lightPosition": [
+      -149.8053166762798,
+      41.49650868236647,
+      95.4140924299966
+     ],
+     "targetWorld": [
+      -59.80531667627979,
+      1.4965086823664642,
+      30.414092429996593
+     ],
+     "targetInScene": true
+    }
+   }
+  },
+  {
+   "place": "camp-desk",
+   "zoom": 2,
+   "mode": "old",
+   "file": "/tmp/sh/band/camp-desk-zoom2-old.png",
+   "shadow": {
+    "mode": "follow-frustum",
+    "receiverBand_m": [
+     1.6188654899597168,
+     12.618865489959717
+    ],
+    "mapSize": 4096,
+    "centre": [
+     -61.41906332812882,
+     4.774597762690917,
+     26.162388401082886
+    ],
+    "halfExtent_m": [
+     30,
+     16
+    ],
+    "lightTexel_m": [
+     0.0146484375,
+     0.0078125
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.0146484375,
+     "alongSun": 0.023047702580480365
+    },
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.023047702580480365,
+    "bias": -0.00015,
+    "updates": 946,
+    "applied": {
+     "camera": [
+      -30,
+      30,
+      -16,
+      16,
+      1,
+      260
+     ],
+     "mapAllocated": [
+      4096,
+      4096
+     ],
+     "lightPosition": [
+      -151.41906332812883,
+      44.77459776269092,
+      91.1623884010829
+     ],
+     "targetWorld": [
+      -61.41906332812882,
+      4.774597762690917,
+      26.162388401082886
+     ],
+     "targetInScene": true
+    }
+   }
+  },
+  {
+   "place": "camp-desk",
+   "zoom": 2,
+   "mode": "new",
+   "file": "/tmp/sh/band/camp-desk-zoom2-new.png",
+   "shadow": {
+    "mode": "follow-frustum",
+    "receiverBand_m": [
+     -0.7,
+     12.618865489959717
+    ],
+    "mapSize": 4096,
+    "centre": [
+     -61.74285692775406,
+     4.693748032010269,
+     25.76381248202064
+    ],
+    "halfExtent_m": [
+     30,
+     16
+    ],
+    "lightTexel_m": [
+     0.0146484375,
+     0.0078125
+    ],
+    "groundTexel_m": {
+     "acrossSun": 0.0146484375,
+     "alongSun": 0.023047702580480365
+    },
+    "sunElevation_deg": 19.814186858126565,
+    "pcfRadiusTexels": 2,
+    "normalBias_m": 0.023047702580480365,
+    "bias": -0.00015,
+    "updates": 968,
+    "applied": {
+     "camera": [
+      -30,
+      30,
+      -16,
+      16,
+      1,
+      260
+     ],
+     "mapAllocated": [
+      4096,
+      4096
+     ],
+     "lightPosition": [
+      -151.74285692775408,
+      44.69374803201027,
+      90.76381248202064
+     ],
+     "targetWorld": [
+      -61.74285692775406,
+      4.693748032010269,
+      25.76381248202064
+     ],
+     "targetInScene": true
+    }
+   }
+  }
+ ]
+}

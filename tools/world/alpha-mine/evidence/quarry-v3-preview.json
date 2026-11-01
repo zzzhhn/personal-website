@@ -1,0 +1,52 @@
+{
+ "images": [
+  "alpha-quarry-v3-overall.png",
+  "alpha-quarry-v3-seam.png"
+ ],
+ "renderer": "BLENDER_EEVEE",
+ "resolution": [
+  1000,
+  760
+ ],
+ "viewTransform": "AgX",
+ "look": "None",
+ "exposure": 0,
+ "gamma": 1,
+ "views": [
+  [
+   "alpha-quarry-v3-overall",
+   [
+    43,
+    34,
+    29
+   ],
+   [
+    0,
+    3,
+    -25
+   ]
+  ],
+  [
+   "alpha-quarry-v3-seam",
+   [
+    -3.4,
+    2.0,
+    -16.5
+   ],
+   [
+    -7.0,
+    1.7,
+    -21.0
+   ]
+  ]
+ ],
+ "scope": "exact fresh GLBs; temporary flat host ground/lights/water and flora pose; no browser or creative approval claim",
+ "staticSha256": "51f5cea6b3318b610a8fef5fe6484fef8d0f6e50f3744f8403fd2f918beb56ca",
+ "veinsSha256": "7ff42255aae79cc25752e55f46ec35fbd5850db3e5c45d311c8b05809061adb7",
+ "flora": {
+  "grass": 716,
+  "rosettes": 174,
+  "flowers": 195,
+  "scope": "static pose of runtime banks for composition only; not wind or trample verification"
+ }
+}

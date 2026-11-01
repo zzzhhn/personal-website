@@ -1,0 +1,337 @@
+{
+  "blender": "4.2.23 LTS",
+  "axes": "GLB metres, +Y up, +X front; size = [x depth, y height, z width]",
+  "compression": "KHR_draco_mesh_compression (Blender bundled libextern_draco), position 20 bit, normal 10 bit, level 6",
+  "assets": {
+    "G16": {
+      "title": "medium round broadleaf tree (4 clumps)",
+      "kind": "tree",
+      "glb": "public/assets/world/camp/G16.glb",
+      "blend": "tools/world/camp/nature/blend/G16.blend",
+      "sizeGLB_xyz_m": [
+        3.8,
+        5.4,
+        3.4028
+      ],
+      "targetGLB_xyz_m": [
+        3.8,
+        5.4,
+        3.8
+      ],
+      "trianglesEvaluated": 532,
+      "trianglesGLBReimport": 532,
+      "declaredBudget": 900,
+      "legacyEstimate": 900,
+      "ratioToLegacyEstimate": 0.59,
+      "drawCallsPrimitives": 4,
+      "nodes": [
+        "crown",
+        "trunk",
+        "G16"
+      ],
+      "trianglesPerNode": {
+        "trunk": 212,
+        "crown": 320
+      },
+      "materials": {
+        "foliage_dark": "foliage",
+        "foliage_mid": "foliage",
+        "foliage_light": "foliage",
+        "wood_trunk": "wood"
+      },
+      "nativeComponents": 5,
+      "roundtripBoundsMaxDiff_m": 1.7e-06,
+      "glbBytes": 16476,
+      "sha256": "adb2f94a21b1da0af1fea743c417cdb693a7efca7a146dd9717efa2e83215f1d",
+      "machineChecksAllTrue": true,
+      "trunkAxisXY_blender": [
+        -0.0,
+        -0.0
+      ],
+      "clumpCount": 4
+    },
+    "G17": {
+      "title": "low wide-crown tree (3 clumps)",
+      "kind": "tree",
+      "glb": "public/assets/world/camp/G17.glb",
+      "blend": "tools/world/camp/nature/blend/G17.blend",
+      "sizeGLB_xyz_m": [
+        2.9528,
+        4.8,
+        4.4
+      ],
+      "targetGLB_xyz_m": [
+        3.8,
+        4.8,
+        3.8
+      ],
+      "trianglesEvaluated": 416,
+      "trianglesGLBReimport": 416,
+      "declaredBudget": 900,
+      "legacyEstimate": 900,
+      "ratioToLegacyEstimate": 0.46,
+      "drawCallsPrimitives": 4,
+      "nodes": [
+        "crown",
+        "trunk",
+        "G17"
+      ],
+      "trianglesPerNode": {
+        "trunk": 176,
+        "crown": 240
+      },
+      "materials": {
+        "foliage_dark": "foliage",
+        "foliage_mid": "foliage",
+        "foliage_light": "foliage",
+        "wood_trunk": "wood"
+      },
+      "nativeComponents": 4,
+      "roundtripBoundsMaxDiff_m": 7e-07,
+      "glbBytes": 13800,
+      "sha256": "1bcc77d2693c7a5fe46f2c44b35b4427d78236fe256c1fc553eed08ad36ac03e",
+      "machineChecksAllTrue": true,
+      "trunkAxisXY_blender": [
+        -0.0,
+        -0.0
+      ],
+      "clumpCount": 3
+    },
+    "G18": {
+      "title": "tall stacked tree (5 clumps)",
+      "kind": "tree",
+      "glb": "public/assets/world/camp/G18.glb",
+      "blend": "tools/world/camp/nature/blend/G18.blend",
+      "sizeGLB_xyz_m": [
+        2.8493,
+        6.3,
+        3.0
+      ],
+      "targetGLB_xyz_m": [
+        3.8,
+        6.3,
+        3.8
+      ],
+      "trianglesEvaluated": 684,
+      "trianglesGLBReimport": 684,
+      "declaredBudget": 900,
+      "legacyEstimate": 900,
+      "ratioToLegacyEstimate": 0.76,
+      "drawCallsPrimitives": 4,
+      "nodes": [
+        "crown",
+        "trunk",
+        "G18"
+      ],
+      "trianglesPerNode": {
+        "trunk": 284,
+        "crown": 400
+      },
+      "materials": {
+        "foliage_dark": "foliage",
+        "foliage_mid": "foliage",
+        "foliage_light": "foliage",
+        "wood_trunk": "wood"
+      },
+      "nativeComponents": 6,
+      "roundtripBoundsMaxDiff_m": 2e-07,
+      "glbBytes": 19392,
+      "sha256": "cf740f2186cb72b6dbb470c088ccdf74b0a4ce5f03569d15a57568cbafe3eca3",
+      "machineChecksAllTrue": true,
+      "trunkAxisXY_blender": [
+        -0.0,
+        -0.0
+      ],
+      "clumpCount": 5
+    },
+    "G19": {
+      "title": "single-clump bush",
+      "kind": "bush",
+      "glb": "public/assets/world/camp/G19.glb",
+      "blend": "tools/world/camp/nature/blend/G19.blend",
+      "sizeGLB_xyz_m": [
+        1.4151,
+        1.0045,
+        1.2957
+      ],
+      "targetGLB_xyz_m": [
+        1.4,
+        1.0,
+        1.3
+      ],
+      "trianglesEvaluated": 96,
+      "trianglesGLBReimport": 96,
+      "declaredBudget": 300,
+      "legacyEstimate": 300,
+      "ratioToLegacyEstimate": 0.32,
+      "drawCallsPrimitives": 1,
+      "nodes": [
+        "G19"
+      ],
+      "trianglesPerNode": {
+        "G19": 96
+      },
+      "materials": {
+        "foliage_dark": "foliage"
+      },
+      "nativeComponents": 1,
+      "roundtripBoundsMaxDiff_m": 7e-07,
+      "glbBytes": 3480,
+      "sha256": "15dd0b94ccfdeb78977741796cc382efd5190b6e21896376d7b922f3f4061762",
+      "machineChecksAllTrue": true
+    },
+    "G20": {
+      "title": "double-clump bush",
+      "kind": "bush",
+      "glb": "public/assets/world/camp/G20.glb",
+      "blend": "tools/world/camp/nature/blend/G20.blend",
+      "sizeGLB_xyz_m": [
+        1.4212,
+        1.0386,
+        1.9963
+      ],
+      "targetGLB_xyz_m": [
+        1.4,
+        1.05,
+        2.1
+      ],
+      "trianglesEvaluated": 170,
+      "trianglesGLBReimport": 170,
+      "declaredBudget": 300,
+      "legacyEstimate": 300,
+      "ratioToLegacyEstimate": 0.57,
+      "drawCallsPrimitives": 2,
+      "nodes": [
+        "G20"
+      ],
+      "trianglesPerNode": {
+        "G20": 170
+      },
+      "materials": {
+        "foliage_dark": "foliage",
+        "foliage_mid": "foliage"
+      },
+      "nativeComponents": 2,
+      "roundtripBoundsMaxDiff_m": 7e-07,
+      "glbBytes": 6220,
+      "sha256": "51db25751ac8dc52b7c188075babc00d8d232ecc856353eaf6af30a9b7de8721",
+      "machineChecksAllTrue": true
+    },
+    "G21": {
+      "title": "large rock",
+      "kind": "rock",
+      "glb": "public/assets/world/camp/G21.glb",
+      "blend": "tools/world/camp/nature/blend/G21.blend",
+      "sizeGLB_xyz_m": [
+        2.2,
+        1.5,
+        2.8
+      ],
+      "targetGLB_xyz_m": [
+        2.2,
+        1.5,
+        2.8
+      ],
+      "trianglesEvaluated": 44,
+      "trianglesGLBReimport": 44,
+      "declaredBudget": 120,
+      "legacyEstimate": 100,
+      "ratioToLegacyEstimate": 0.44,
+      "drawCallsPrimitives": 2,
+      "nodes": [
+        "G21"
+      ],
+      "trianglesPerNode": {
+        "G21": 44
+      },
+      "materials": {
+        "stone_base": "stone",
+        "stone_top": "stone"
+      },
+      "nativeComponents": 1,
+      "roundtripBoundsMaxDiff_m": 1e-06,
+      "glbBytes": 3308,
+      "sha256": "c936ffb2547fc5c86e64a416eaf27c58c6a42a2ec628572207c0b61888075479",
+      "machineChecksAllTrue": true
+    },
+    "G22": {
+      "title": "medium rock",
+      "kind": "rock",
+      "glb": "public/assets/world/camp/G22.glb",
+      "blend": "tools/world/camp/nature/blend/G22.blend",
+      "sizeGLB_xyz_m": [
+        1.3,
+        0.85,
+        1.6
+      ],
+      "targetGLB_xyz_m": [
+        1.3,
+        0.85,
+        1.6
+      ],
+      "trianglesEvaluated": 46,
+      "trianglesGLBReimport": 46,
+      "declaredBudget": 120,
+      "legacyEstimate": 100,
+      "ratioToLegacyEstimate": 0.46,
+      "drawCallsPrimitives": 2,
+      "nodes": [
+        "G22"
+      ],
+      "trianglesPerNode": {
+        "G22": 46
+      },
+      "materials": {
+        "stone_base": "stone",
+        "stone_top": "stone"
+      },
+      "nativeComponents": 1,
+      "roundtripBoundsMaxDiff_m": 2e-07,
+      "glbBytes": 3348,
+      "sha256": "eef7f598cc74e2e609b2cf31bd63bd5485565a311f47ca2a619cb04d0a68c163",
+      "machineChecksAllTrue": true
+    },
+    "G23": {
+      "title": "small rock",
+      "kind": "rock",
+      "glb": "public/assets/world/camp/G23.glb",
+      "blend": "tools/world/camp/nature/blend/G23.blend",
+      "sizeGLB_xyz_m": [
+        0.65,
+        0.4,
+        0.8
+      ],
+      "targetGLB_xyz_m": [
+        0.65,
+        0.4,
+        0.8
+      ],
+      "trianglesEvaluated": 42,
+      "trianglesGLBReimport": 42,
+      "declaredBudget": 120,
+      "legacyEstimate": 100,
+      "ratioToLegacyEstimate": 0.42,
+      "drawCallsPrimitives": 2,
+      "nodes": [
+        "G23"
+      ],
+      "trianglesPerNode": {
+        "G23": 42
+      },
+      "materials": {
+        "stone_base": "stone",
+        "stone_top": "stone"
+      },
+      "nativeComponents": 1,
+      "roundtripBoundsMaxDiff_m": 2e-07,
+      "glbBytes": 3308,
+      "sha256": "9f71a4188ce1a9bf1b8b0d5921752f6b9ac19923df7f3562cf1257977f95fe54",
+      "machineChecksAllTrue": true
+    }
+  },
+  "integrationReview": {
+    "assetStatus": "Fable passed final GLB colour views, 2026-10-21",
+    "runtimeStatus": "Fable camp sample design passed on r4 stills and r3 walk; see ../README.md",
+    "userAccepted": false
+  }
+}

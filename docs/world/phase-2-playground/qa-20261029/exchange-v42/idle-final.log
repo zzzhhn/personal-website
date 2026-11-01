@@ -1,0 +1,15 @@
+✔ an existing dev rig upgrades its retained pre-cache ref on the first frame (1.662125ms)
+✔ 120 changing jaw frames update only the owning rig, with actual pose/anchor/setter counts (4.901208ms)
+✔ ownership exit returns a palm-held sample once and restores all occupied pockets (0.547583ms)
+✔ idle crate flushes opening/loading, parent identity/transform, reparenting and resource replacement once (0.389292ms)
+✔ Alpha idle/away frames perform one initial update; ticket and receipt state changes flush exactly once (0.538333ms)
+✔ Alpha adjust/ring/collect retain interpolation and completion/cancel applies the resting pose once (0.313541ms)
+✔ Alpha pause/hidden/card/shot/pool and missing refs preserve one final sync on return (0.135709ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 680.006917

@@ -1,0 +1,22 @@
+{
+  "ready": true,
+  "audio": {
+    "owners": 1,
+    "started": false,
+    "timer": false,
+    "subscribed": false,
+    "state": "absent",
+    "transitioning": false,
+    "voices": 0,
+    "ticks": 0,
+    "muted": false
+  },
+  "ui": {
+    "consumers": 0,
+    "framePending": false,
+    "listening": false,
+    "connected": false,
+    "samples": 0
+  },
+  "hints": "[\"move\"]"
+}

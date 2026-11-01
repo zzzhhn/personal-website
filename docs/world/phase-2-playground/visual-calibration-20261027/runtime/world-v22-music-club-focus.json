@@ -1,0 +1,47 @@
+{
+  "club": {
+    "phase": "ready",
+    "context": "running",
+    "sources": 1,
+    "buffers": 2,
+    "contextSeconds": 23.034666666666666,
+    "transportBeats": 45.30151111111111,
+    "decodedSeconds": [
+      32.542375,
+      32.542375
+    ],
+    "bufferBytes": 12496272,
+    "owners": 1,
+    "timers": 0
+  },
+  "park": {
+    "owners": 3,
+    "started": true,
+    "timer": false,
+    "subscribed": true,
+    "state": "suspended",
+    "transitioning": false,
+    "voices": 0,
+    "ticks": 0,
+    "muted": false,
+    "cueVoices": 0,
+    "cuePending": false,
+    "pcmKeys": 0,
+    "pcmBytes": 0,
+    "candidate": null,
+    "previewPlaying": false,
+    "previewPending": false,
+    "previewBytes": 0,
+    "roaming": {
+      "phase": "ready",
+      "sources": 0,
+      "buffers": 1,
+      "loading": false,
+      "decoding": false,
+      "bytes": 6912000,
+      "seconds": 36,
+      "offset": 7.120000000000012,
+      "level": -1
+    }
+  }
+}

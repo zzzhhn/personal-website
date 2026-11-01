@@ -1,0 +1,178 @@
+{
+  "startedAt": "2026-10-22T05:16:55.981Z",
+  "base": "http://127.0.0.1:4322",
+  "fixtures": [
+    {
+      "name": "coast-west",
+      "teleport": [
+        -62,
+        1.9,
+        4
+      ]
+    },
+    {
+      "name": "coast-north",
+      "teleport": [
+        -20,
+        1.9,
+        52
+      ]
+    },
+    {
+      "name": "camp-edge",
+      "teleport": [
+        -42,
+        5.7,
+        52
+      ]
+    },
+    {
+      "name": "coast-east",
+      "teleport": [
+        24,
+        1.9,
+        -4
+      ]
+    },
+    {
+      "name": "coast-west",
+      "teleport": [
+        -62,
+        1.9,
+        4
+      ]
+    },
+    {
+      "name": "coast-north",
+      "teleport": [
+        -20,
+        1.9,
+        52
+      ]
+    },
+    {
+      "name": "camp-edge",
+      "teleport": [
+        -42,
+        5.7,
+        52
+      ]
+    },
+    {
+      "name": "coast-east",
+      "teleport": [
+        24,
+        1.9,
+        -4
+      ]
+    }
+  ],
+  "shots": [
+    {
+      "name": "shot-overview-dusk",
+      "note": "fixed QA camera (wind clock paused in shot mode)"
+    },
+    {
+      "name": "shot-camp-dusk",
+      "note": "fixed QA camera (wind clock paused in shot mode)"
+    },
+    {
+      "name": "shot-bridge-dusk",
+      "note": "fixed QA camera (wind clock paused in shot mode)"
+    },
+    {
+      "name": "coast-west-dusk",
+      "note": "player camera after fixture teleport"
+    },
+    {
+      "name": "coast-north-dusk",
+      "note": "player camera after fixture teleport"
+    },
+    {
+      "name": "camp-edge-dusk",
+      "note": "player camera after fixture teleport"
+    },
+    {
+      "name": "coast-east-dusk",
+      "note": "player camera after fixture teleport"
+    },
+    {
+      "name": "shot-overview-night",
+      "note": "fixed QA camera (wind clock paused in shot mode)"
+    },
+    {
+      "name": "shot-camp-night",
+      "note": "fixed QA camera (wind clock paused in shot mode)"
+    },
+    {
+      "name": "shot-bridge-night",
+      "note": "fixed QA camera (wind clock paused in shot mode)"
+    },
+    {
+      "name": "coast-west-night",
+      "note": "player camera after fixture teleport"
+    },
+    {
+      "name": "coast-north-night",
+      "note": "player camera after fixture teleport"
+    },
+    {
+      "name": "camp-edge-night",
+      "note": "player camera after fixture teleport"
+    },
+    {
+      "name": "coast-east-night",
+      "note": "player camera after fixture teleport"
+    }
+  ],
+  "timing": {
+    "coastWest": {
+      "frames": 301,
+      "seconds": 5,
+      "fps": 60.2,
+      "p50": 16.7,
+      "p90": 16.7,
+      "p95": 16.7,
+      "p99": 16.8,
+      "max": 16.8,
+      "over33ms": 0
+    }
+  },
+  "errors": [],
+  "readyMs": 2596,
+  "pageErrors": [],
+  "stats": {
+    "calls": 175,
+    "triangles": 376289,
+    "geometries": 145,
+    "textures": 18,
+    "camera": [
+      -35.66211333492482,
+      16.897840675898813,
+      60.447271789192044
+    ]
+  },
+  "renderInfo": {
+    "drawingBuffer": [
+      1440,
+      900
+    ],
+    "cssSize": [
+      1440,
+      900
+    ],
+    "pixelRatio": 1,
+    "dprRange": [
+      0,
+      2
+    ],
+    "quality": "high",
+    "antialias": true,
+    "msaaSamples": 4,
+    "toneMapping": 4,
+    "outputColorSpace": "srgb",
+    "shadowMapSize": 4096,
+    "shadowType": 1,
+    "postprocessing": []
+  }
+}

@@ -1,0 +1,50 @@
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-art/tools/world/alpha-mine/props.py:24: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m = bpy.data.materials.new(name); m.use_nodes = True
+00:09.272  blend            | Read blend: "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-art/tools/world/alpha-mine/props.blend"
+Info: Saved as "props.blend"
+INFO Draco mesh compression is available, use library at /Applications/Blender.app/Contents/Resources/5.1/scripts/addons_core/io_scene_gltf2/libextern_draco.dylib
+19:30:55 | INFO: Starting glTF 2.0 export
+19:30:55 | INFO: Extracting primitive: case_screw
+19:30:55 | INFO: Primitives created: 9
+19:30:55 | INFO: Finished glTF 2.0 export in 0.11154317855834961 s
+
+19:30:55 | INFO: Data are loaded, start creating Blender stuff
+19:30:55 | INFO: Blender create Mesh node case_screw
+19:30:56 | INFO: glTF import finished in 0.04s
+PROP_PASS detector [0.3110000118613243, 0.4429999962449074, 0.20600000023841858] 2824 9 145956
+00:11.481  blend            | Read blend: "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-art/tools/world/alpha-mine/props.blend"
+19:30:56 | INFO: Starting glTF 2.0 export
+19:30:56 | INFO: Extracting primitive: ash_handle
+19:30:56 | INFO: Primitives created: 8
+19:30:56 | INFO: Finished glTF 2.0 export in 0.04102611541748047 s
+
+19:30:56 | INFO: Data are loaded, start creating Blender stuff
+19:30:56 | INFO: Blender create Mesh node ash_handle
+19:30:56 | INFO: glTF import finished in 0.03s
+PROP_PASS pickaxe [0.5649999976158142, 0.879999965429306, 0.09000000357627869] 1800 8 101388
+00:11.763  blend            | Read blend: "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-art/tools/world/alpha-mine/props.blend"
+19:30:56 | INFO: Starting glTF 2.0 export
+19:30:56 | INFO: Extracting primitive: embedded_mineral_0
+19:30:56 | INFO: Primitives created: 5
+19:30:56 | INFO: Finished glTF 2.0 export in 0.0410311222076416 s
+
+19:30:56 | INFO: Data are loaded, start creating Blender stuff
+19:30:56 | INFO: Blender create Mesh node embedded_mineral_0
+19:30:56 | INFO: glTF import finished in 0.01s
+PROP_PASS ore [0.30873551964759827, 0.3068390190601349, 0.3005005717277527] 334 5 25764
+19:30:56 | INFO: Data are loaded, start creating Blender stuff
+19:30:56 | INFO: Blender create Mesh node case_screw
+19:30:56 | INFO: glTF import finished in 0.03s
+19:30:56 | INFO: Data are loaded, start creating Blender stuff
+19:30:56 | INFO: Blender create Mesh node ash_handle
+19:30:56 | INFO: glTF import finished in 0.03s
+19:30:56 | INFO: Data are loaded, start creating Blender stuff
+19:30:56 | INFO: Blender create Mesh node embedded_mineral_0
+19:30:56 | INFO: glTF import finished in 0.01s
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-art/tools/world/alpha-mine/props.py:274: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  world=bpy.data.worlds.new('Prop_studio');world.use_nodes=True;scene.world=world
+02:13.818  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-art/tools/world/alpha-mine/props-evidence/props-board.png'
+PROPS_COMPLETE
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

@@ -1,0 +1,623 @@
+{
+ "baseline": "06b367e",
+ "ordinaryEntry": {
+  "url": "http://127.0.0.1:4331/world/",
+  "debugApiPresent": false,
+  "pass": true,
+  "steps": [
+   {
+    "target": [
+     -42,
+     42
+    ],
+    "reached": true,
+    "at": [
+     -42.5093994140625,
+     41.3671875
+    ],
+    "seconds": 1.98
+   },
+   {
+    "target": [
+     -42,
+     48
+    ],
+    "reached": true,
+    "at": [
+     -42.09346389770508,
+     48.100887298583984
+    ],
+    "seconds": 2.06
+   },
+   {
+    "target": [
+     -44,
+     55
+    ],
+    "reached": true,
+    "at": [
+     -43.68729782104492,
+     54.71555709838867
+    ],
+    "seconds": 2.1
+   },
+   {
+    "target": [
+     -47,
+     63
+    ],
+    "reached": true,
+    "at": [
+     -46.75369644165039,
+     62.93461990356445
+    ],
+    "seconds": 2.54
+   },
+   {
+    "target": [
+     -47,
+     69
+    ],
+    "reached": true,
+    "at": [
+     -47.23584747314453,
+     68.2530288696289
+    ],
+    "seconds": 1.58
+   },
+   {
+    "target": [
+     -50,
+     77
+    ],
+    "reached": true,
+    "at": [
+     -49.525882720947266,
+     76.5925521850586
+    ],
+    "seconds": 2.72
+   },
+   {
+    "target": [
+     -54,
+     84
+    ],
+    "reached": true,
+    "at": [
+     -53.52305221557617,
+     83.56269836425781
+    ],
+    "seconds": 2.52
+   },
+   {
+    "target": [
+     -57,
+     88
+    ],
+    "reached": true,
+    "at": [
+     -56.5311279296875,
+     87.5761489868164
+    ],
+    "seconds": 1.46
+   },
+   {
+    "target": [
+     -58,
+     91
+    ],
+    "reached": true,
+    "at": [
+     -57.538726806640625,
+     90.41755676269531
+    ],
+    "seconds": 0.87
+   }
+  ],
+  "telemetryErrors": [
+   "HTTP 404 http://127.0.0.1:4331/api/events"
+  ],
+  "errors": []
+ },
+ "trample": {
+  "cases": [
+   {
+    "name": "west-meadow",
+    "pass": true,
+    "point": [
+     -60.215,
+     -37.518
+    ],
+    "reached": true,
+    "before": 0.856,
+    "alias": 0,
+    "frozen": 0.853,
+    "paused": 0.853,
+    "after": 0,
+    "curve": [
+     0.853,
+     0.744,
+     0.639,
+     0.54,
+     0.439,
+     0.332,
+     0.232,
+     0.132,
+     0.032,
+     0,
+     0,
+     0
+    ],
+    "triangles": 33195,
+    "bytes": 933156
+   },
+   {
+    "name": "south-meadow",
+    "pass": true,
+    "point": [
+     -24.719,
+     62.762
+    ],
+    "reached": true,
+    "before": 0.857,
+    "alias": 0,
+    "frozen": 0.85,
+    "paused": 0.85,
+    "after": 0,
+    "curve": [
+     0.85,
+     0.739,
+     0.633,
+     0.531,
+     0.431,
+     0.33,
+     0.231,
+     0.129,
+     0.027,
+     0,
+     0,
+     0
+    ],
+    "triangles": 22680,
+    "bytes": 933156
+   },
+   {
+    "name": "vehicle-grass",
+    "active": "offroad",
+    "travel": 15.67318344116211,
+    "during": 0.923,
+    "after": 0,
+    "pass": true
+   },
+   {
+    "name": "airborne-no-imprint",
+    "value": 0,
+    "pass": true
+   }
+  ],
+  "errors": [],
+  "fixtures": [
+   {
+    "type": "vehicle",
+    "id": "offroad",
+    "p": [
+     -72,
+     2.42,
+     -38
+    ]
+   },
+   {
+    "t": 1.432,
+    "to": [
+     -66,
+     1.98,
+     -38
+    ],
+    "reason": "west-meadow"
+   },
+   {
+    "t": 12.232,
+    "to": [
+     -30,
+     1.98,
+     62
+    ],
+    "reason": "south-meadow"
+   },
+   {
+    "t": 22.847,
+    "to": [
+     -72,
+     1.98,
+     -35.5
+    ],
+    "reason": "board car"
+   },
+   {
+    "t": 26.895,
+    "to": [
+     -52.32681655883789,
+     2.1,
+     -33.94385528564453
+    ],
+    "reason": "observe tyre tracks"
+   },
+   {
+    "t": 32.638,
+    "to": [
+     -65,
+     20,
+     -48
+    ],
+    "reason": "airborne rejection"
+   }
+  ]
+ },
+ "geometryAgainstBaseline": {
+  "positions": "identical SHA256 ed40f6b603f93fd4a37a5852f620030081b3b860f3fc1cc7d8424e2e5d5a579a",
+  "indices": "identical",
+  "surface": "identical",
+  "solid": "identical"
+ },
+ "scatter": {
+  "grassCandidates": 18922,
+  "pebbleCandidates": 740,
+  "onPaving": 0
+ },
+ "cost": {
+  "base": "http://127.0.0.1:4331",
+  "startedAt": "2026-10-24T12:18:43.390Z",
+  "views": [
+   {
+    "name": "camp",
+    "at": [
+     -42,
+     30
+    ],
+    "zoom": 2,
+    "full": {
+     "calls": 216,
+     "tri": 440705
+    },
+    "groups": {
+     "terrain": {
+      "objects": 4,
+      "calls": 4,
+      "tri": 56807
+     },
+     "paving": {
+      "objects": 1,
+      "calls": 4,
+      "tri": 17100
+     },
+     "detail": {
+      "objects": 2,
+      "calls": 2,
+      "tri": 27585
+     }
+    },
+    "lod": {
+     "triangles": 56807,
+     "fineTiles": 16,
+     "updates": 2
+    },
+    "detail": {
+     "grassTufts": 1751,
+     "grassTriangles": 26265,
+     "pebbles": 66,
+     "pebbleTriangles": 1320,
+     "totalTriangles": 27585,
+     "budget": 40000,
+     "grassBuildMs": 4072
+    }
+   },
+   {
+    "name": "camp-exit",
+    "at": [
+     -8,
+     30.5
+    ],
+    "zoom": 2,
+    "full": {
+     "calls": 154,
+     "tri": 438471
+    },
+    "groups": {
+     "terrain": {
+      "objects": 4,
+      "calls": 4,
+      "tri": 46377
+     },
+     "paving": {
+      "objects": 1,
+      "calls": 4,
+      "tri": 17100
+     },
+     "detail": {
+      "objects": 2,
+      "calls": 2,
+      "tri": 18855
+     }
+    },
+    "lod": {
+     "triangles": 46377,
+     "fineTiles": 16,
+     "updates": 3
+    },
+    "detail": {
+     "grassTufts": 1237,
+     "grassTriangles": 18555,
+     "pebbles": 15,
+     "pebbleTriangles": 300,
+     "totalTriangles": 18855,
+     "budget": 40000,
+     "grassBuildMs": 4072
+    }
+   },
+   {
+    "name": "avenue",
+    "at": [
+     17.5,
+     8
+    ],
+    "zoom": 2,
+    "full": {
+     "calls": 134,
+     "tri": 387757
+    },
+    "groups": {
+     "terrain": {
+      "objects": 4,
+      "calls": 4,
+      "tri": 39733
+     },
+     "paving": {
+      "objects": 1,
+      "calls": 4,
+      "tri": 17100
+     },
+     "detail": {
+      "objects": 2,
+      "calls": 2,
+      "tri": 9565
+     }
+    },
+    "lod": {
+     "triangles": 39733,
+     "fineTiles": 21,
+     "updates": 4
+    },
+    "detail": {
+     "grassTufts": 603,
+     "grassTriangles": 9045,
+     "pebbles": 26,
+     "pebbleTriangles": 520,
+     "totalTriangles": 9565,
+     "budget": 40000,
+     "grassBuildMs": 4072
+    }
+   },
+   {
+    "name": "j3",
+    "at": [
+     14.5,
+     -36
+    ],
+    "zoom": 2,
+    "full": {
+     "calls": 99,
+     "tri": 255025
+    },
+    "groups": {
+     "terrain": {
+      "objects": 4,
+      "calls": 3,
+      "tri": 23481
+     },
+     "paving": {
+      "objects": 1,
+      "calls": 3,
+      "tri": 13780
+     },
+     "detail": {
+      "objects": 2,
+      "calls": 2,
+      "tri": 6955
+     }
+    },
+    "lod": {
+     "triangles": 30587,
+     "fineTiles": 17,
+     "updates": 5
+    },
+    "detail": {
+     "grassTufts": 429,
+     "grassTriangles": 6435,
+     "pebbles": 26,
+     "pebbleTriangles": 520,
+     "totalTriangles": 6955,
+     "budget": 40000,
+     "grassBuildMs": 4072
+    }
+   },
+   {
+    "name": "hill",
+    "at": [
+     -40,
+     -62
+    ],
+    "zoom": 2,
+    "full": {
+     "calls": 64,
+     "tri": 115416
+    },
+    "groups": {
+     "terrain": {
+      "objects": 4,
+      "calls": 2,
+      "tri": 26864
+     },
+     "paving": {
+      "objects": 1,
+      "calls": 2,
+      "tri": 6180
+     },
+     "detail": {
+      "objects": 2,
+      "calls": 2,
+      "tri": 37530
+     }
+    },
+    "lod": {
+     "triangles": 40502,
+     "fineTiles": 16,
+     "updates": 6
+    },
+    "detail": {
+     "grassTufts": 2450,
+     "grassTriangles": 36750,
+     "pebbles": 39,
+     "pebbleTriangles": 780,
+     "totalTriangles": 37530,
+     "budget": 40000,
+     "grassBuildMs": 4072
+    }
+   },
+   {
+    "name": "south",
+    "at": [
+     -30,
+     84
+    ],
+    "zoom": 2,
+    "full": {
+     "calls": 91,
+     "tri": 193481
+    },
+    "groups": {
+     "terrain": {
+      "objects": 4,
+      "calls": 4,
+      "tri": 45673
+     },
+     "paving": {
+      "objects": 1,
+      "calls": 4,
+      "tri": 17100
+     },
+     "detail": {
+      "objects": 2,
+      "calls": 2,
+      "tri": 11780
+     }
+    },
+    "lod": {
+     "triangles": 45673,
+     "fineTiles": 17,
+     "updates": 7
+    },
+    "detail": {
+     "grassTufts": 612,
+     "grassTriangles": 9180,
+     "pebbles": 130,
+     "pebbleTriangles": 2600,
+     "totalTriangles": 11780,
+     "budget": 40000,
+     "grassBuildMs": 4072
+    }
+   },
+   {
+    "name": "west",
+    "at": [
+     -96,
+     4
+    ],
+    "zoom": 2,
+    "full": {
+     "calls": 58,
+     "tri": 103035
+    },
+    "groups": {
+     "terrain": {
+      "objects": 4,
+      "calls": 2,
+      "tri": 29219
+     },
+     "paving": {
+      "objects": 1,
+      "calls": 2,
+      "tri": 5902
+     },
+     "detail": {
+      "objects": 2,
+      "calls": 2,
+      "tri": 18370
+     }
+    },
+    "lod": {
+     "triangles": 42097,
+     "fineTiles": 18,
+     "updates": 8
+    },
+    "detail": {
+     "grassTufts": 1046,
+     "grassTriangles": 15690,
+     "pebbles": 134,
+     "pebbleTriangles": 2680,
+     "totalTriangles": 18370,
+     "budget": 40000,
+     "grassBuildMs": 4072
+    }
+   },
+   {
+    "name": "camp-near",
+    "at": [
+     -42,
+     24
+    ],
+    "zoom": 0,
+    "full": {
+     "calls": 151,
+     "tri": 370227
+    },
+    "groups": {
+     "terrain": {
+      "objects": 4,
+      "calls": 4,
+      "tri": 57878
+     },
+     "paving": {
+      "objects": 1,
+      "calls": 4,
+      "tri": 17100
+     },
+     "detail": {
+      "objects": 2,
+      "calls": 2,
+      "tri": 28005
+     }
+    },
+    "lod": {
+     "triangles": 57878,
+     "fineTiles": 18,
+     "updates": 9
+    },
+    "detail": {
+     "grassTufts": 1807,
+     "grassTriangles": 27105,
+     "pebbles": 45,
+     "pebbleTriangles": 900,
+     "totalTriangles": 28005,
+     "budget": 40000,
+     "grassBuildMs": 4072
+    }
+   }
+  ],
+  "errors": []
+ },
+ "astro": {
+  "errors": 0,
+  "warnings": 0
+ },
+ "evidenceRoot": "/Users/bobby/Desktop/3D-personal-world/evidence/terrain"
+}

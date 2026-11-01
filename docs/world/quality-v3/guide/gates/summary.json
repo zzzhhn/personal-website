@@ -1,0 +1,418 @@
+{
+ "release": "v3c",
+ "glb_sha256_draco": "0fa1c34f9942e6d5c5845e748b4195ce03970bac879fc151cae57985ca696c46",
+ "glb_sha256_uncompressed": "20d0653f4243d69987027104883b629bec081b2d5fd281d6130f772152256126",
+ "previous": "a75db2da (reports kept in gates/a75d/)",
+ "triangles": 3106,
+ "triangles_previous": 2842,
+ "triangles_delta_note": "visor band 32x4 segments (was coarser), radial faces smooth-shaded; rims and end caps flat",
+ "topology": {
+  "boundary_edges": 0,
+  "nonmanifold_edges": 0,
+  "zero_area_faces": 0,
+  "components": 11
+ },
+ "weights": {
+  "vertices": 1575,
+  "unweighted": 0,
+  "negative": 0,
+  "max_influences": 2,
+  "max_sum_error": 2.9802322387695312e-08,
+  "non_deform_groups_used": 0,
+  "left_right_mixed_vertices": 0
+ },
+ "clips": {
+  "Idle": {
+   "frames": 144,
+   "design_speed_mps": 0.0,
+   "penetration_m": 2.706803456931084e-07,
+   "contact_vertex_slip_cumulative_max_m": 3.0321666218526114e-07,
+   "sole_centroid_drift_virtual_world_m": 2.644956111907959e-07
+  },
+  "Walk": {
+   "frames": 46,
+   "design_speed_mps": 1.544833807008197,
+   "penetration_m": 0.0,
+   "contact_vertex_slip_cumulative_max_m": 0.0025331419701750055,
+   "sole_centroid_drift_virtual_world_m": 0.012613776113264752
+  },
+  "Run": {
+   "frames": 33,
+   "design_speed_mps": 3.5868927013465224,
+   "penetration_m": 0.0036392658948898315,
+   "contact_vertex_slip_cumulative_max_m": 0.006616353991386452,
+   "sole_centroid_drift_virtual_world_m": 0.00633856987748771
+  },
+  "Sprint": {
+   "frames": 17,
+   "design_speed_mps": 6.19907993969661,
+   "penetration_m": 0.0022593215107917786,
+   "contact_vertex_slip_cumulative_max_m": 0.0033031255008426864,
+   "sole_centroid_drift_virtual_world_m": 0.00606767152702492
+  },
+  "Land": {
+   "frames": 24,
+   "design_speed_mps": 0.0,
+   "penetration_m": 0.00248489947989583,
+   "contact_vertex_slip_cumulative_max_m": 0.00018142757158835982,
+   "sole_centroid_drift_virtual_world_m": 0.0014373324811458588
+  },
+  "JumpStart": {
+   "frames": 6,
+   "design_speed_mps": 0.0,
+   "penetration_m": 0.003409050405025482,
+   "contact_vertex_slip_cumulative_max_m": 0.00039492550913632426,
+   "sole_centroid_drift_virtual_world_m": 0.007698606699705124
+  },
+  "RunJumpAir": {
+   "frames": 24,
+   "design_speed_mps": 0.0,
+   "penetration_m": 0.0,
+   "contact_vertex_slip_cumulative_max_m": 0.0,
+   "sole_centroid_drift_virtual_world_m": 0.0
+  },
+  "RunJumpStart": {
+   "frames": 5,
+   "design_speed_mps": 3.6,
+   "penetration_m": 0.0009496621787548065,
+   "contact_vertex_slip_cumulative_max_m": 0.004027156847882093,
+   "sole_centroid_drift_virtual_world_m": 0.0021163722872734048
+  },
+  "JumpAir": {
+   "frames": 24,
+   "design_speed_mps": 0.0,
+   "penetration_m": 6.658956408500671e-08,
+   "contact_vertex_slip_cumulative_max_m": 0.0,
+   "sole_centroid_drift_virtual_world_m": 0.0
+  }
+ },
+ "qa_glb_uncompressed": {
+  "sha256": "20d0653f4243d69987027104883b629bec081b2d5fd281d6130f772152256126",
+  "triangles": 3106,
+  "triangles_equal_native": true,
+  "material_mismatch": [],
+  "joint_keyframes_max_m": 7.237325892396274e-07,
+  "joint_halfframes_max_m": 2.5552807576975428e-05,
+  "vertex_cloud_max_m": 7.459888138328097e-07,
+  "bounds_max_m": 2.1904706954956055e-05
+ },
+ "qa_glb_draco": {
+  "sha256": "0fa1c34f9942e6d5c5845e748b4195ce03970bac879fc151cae57985ca696c46",
+  "triangles": 3106,
+  "triangles_equal_native": true,
+  "material_mismatch": [],
+  "joint_keyframes_max_m": 7.237325892396274e-07,
+  "joint_halfframes_max_m": 2.5552807576975428e-05,
+  "vertex_cloud_max_m": 1.313417101300729e-06,
+  "bounds_max_m": 2.2172927856445312e-05
+ },
+ "selfx_native": {
+  "source": "native",
+  "samples": 656,
+  "samples_with_strict_crossings": 0
+ },
+ "selfx_glb_uncompressed": {
+  "source": "20d0653f4243d69987027104883b629bec081b2d5fd281d6130f772152256126",
+  "samples": 656,
+  "samples_with_strict_crossings": 0
+ },
+ "selfx_glb_draco": {
+  "source": "0fa1c34f9942e6d5c5845e748b4195ce03970bac879fc151cae57985ca696c46",
+  "samples": 656,
+  "samples_with_strict_crossings": 0
+ },
+ "relations_native": {
+  "source": "native",
+  "passed": true,
+  "samples": 656,
+  "unintended": {},
+  "summary": {
+   "helmet/collar": {
+    "min_burial_m": 0.0226,
+    "min_exposed_m": 0.08827,
+    "passed": true
+   },
+   "boot.R/trouser": {
+    "min_burial_m": 0.06027,
+    "min_exposed_m": 0.128,
+    "passed": true
+   },
+   "boot.L/trouser": {
+    "min_burial_m": 0.05238,
+    "min_exposed_m": 0.12904,
+    "passed": true
+   },
+   "mitten.R/sleeve": {
+    "min_burial_m": 0.02574,
+    "min_exposed_m": 0.0711,
+    "passed": true
+   },
+   "mitten.L/sleeve": {
+    "min_burial_m": 0.02574,
+    "min_exposed_m": 0.0711,
+    "passed": true
+   },
+   "bag/jacket": {
+    "min_burial_m": 0.00905,
+    "min_exposed_m": 0.0756,
+    "passed": true
+   },
+   "bagflap/jacket": {
+    "min_burial_m": 0.00272,
+    "min_exposed_m": 0.0868,
+    "passed": true
+   },
+   "bagflap/bag": {
+    "min_burial_m": 0.03525,
+    "min_exposed_m": 0.0156,
+    "passed": true
+   },
+   "zip/chest": {
+    "min_burial_m": 0.01474,
+    "min_exposed_m": 0.01978,
+    "passed": true
+   },
+   "visor/helmet": {
+    "min_burial_m": 0.02029,
+    "min_exposed_m": 0.0182,
+    "passed": true
+   },
+   "dot/helmet": {
+    "min_burial_m": 0.00989,
+    "min_exposed_m": 0.03202,
+    "passed": true
+   }
+  }
+ },
+ "relations_glb_uncompressed": {
+  "source": "20d0653f4243d69987027104883b629bec081b2d5fd281d6130f772152256126",
+  "passed": true,
+  "samples": 656,
+  "unintended": {},
+  "summary": {
+   "helmet/collar": {
+    "min_burial_m": 0.0226,
+    "min_exposed_m": 0.08827,
+    "passed": true
+   },
+   "boot.R/trouser": {
+    "min_burial_m": 0.06027,
+    "min_exposed_m": 0.128,
+    "passed": true
+   },
+   "boot.L/trouser": {
+    "min_burial_m": 0.05238,
+    "min_exposed_m": 0.12904,
+    "passed": true
+   },
+   "mitten.R/sleeve": {
+    "min_burial_m": 0.02574,
+    "min_exposed_m": 0.0711,
+    "passed": true
+   },
+   "mitten.L/sleeve": {
+    "min_burial_m": 0.02574,
+    "min_exposed_m": 0.0711,
+    "passed": true
+   },
+   "bag/jacket": {
+    "min_burial_m": 0.00905,
+    "min_exposed_m": 0.0756,
+    "passed": true
+   },
+   "bagflap/jacket": {
+    "min_burial_m": 0.00272,
+    "min_exposed_m": 0.0868,
+    "passed": true
+   },
+   "bagflap/bag": {
+    "min_burial_m": 0.03525,
+    "min_exposed_m": 0.0156,
+    "passed": true
+   },
+   "zip/chest": {
+    "min_burial_m": 0.01474,
+    "min_exposed_m": 0.01978,
+    "passed": true
+   },
+   "visor/helmet": {
+    "min_burial_m": 0.02029,
+    "min_exposed_m": 0.0182,
+    "passed": true
+   },
+   "dot/helmet": {
+    "min_burial_m": 0.00989,
+    "min_exposed_m": 0.03202,
+    "passed": true
+   }
+  }
+ },
+ "relations_glb_draco": {
+  "source": "0fa1c34f9942e6d5c5845e748b4195ce03970bac879fc151cae57985ca696c46",
+  "passed": true,
+  "samples": 656,
+  "unintended": {},
+  "summary": {
+   "helmet/collar": {
+    "min_burial_m": 0.0226,
+    "min_exposed_m": 0.08827,
+    "passed": true
+   },
+   "boot.R/trouser": {
+    "min_burial_m": 0.06027,
+    "min_exposed_m": 0.128,
+    "passed": true
+   },
+   "boot.L/trouser": {
+    "min_burial_m": 0.05238,
+    "min_exposed_m": 0.12904,
+    "passed": true
+   },
+   "mitten.R/sleeve": {
+    "min_burial_m": 0.02574,
+    "min_exposed_m": 0.0711,
+    "passed": true
+   },
+   "mitten.L/sleeve": {
+    "min_burial_m": 0.02574,
+    "min_exposed_m": 0.0711,
+    "passed": true
+   },
+   "bag/jacket": {
+    "min_burial_m": 0.00905,
+    "min_exposed_m": 0.0756,
+    "passed": true
+   },
+   "bagflap/jacket": {
+    "min_burial_m": 0.00272,
+    "min_exposed_m": 0.0868,
+    "passed": true
+   },
+   "bagflap/bag": {
+    "min_burial_m": 0.03525,
+    "min_exposed_m": 0.0156,
+    "passed": true
+   },
+   "zip/chest": {
+    "min_burial_m": 0.01474,
+    "min_exposed_m": 0.01978,
+    "passed": true
+   },
+   "visor/helmet": {
+    "min_burial_m": 0.02029,
+    "min_exposed_m": 0.0182,
+    "passed": true
+   },
+   "dot/helmet": {
+    "min_burial_m": 0.00989,
+    "min_exposed_m": 0.03202,
+    "passed": true
+   }
+  }
+ },
+ "mainthread_checker_native": {
+  "source": "8ca2fb322808713e16e0a887b8ca3af66adeacee08db1f22c595dc98d43fb091",
+  "rest": 0,
+  "clips": {
+   "Idle": {
+    "samples": 289,
+    "unresolved_or_confirmed_max": 0
+   },
+   "JumpAir": {
+    "samples": 49,
+    "unresolved_or_confirmed_max": 0
+   },
+   "JumpStart": {
+    "samples": 13,
+    "unresolved_or_confirmed_max": 0
+   },
+   "Land": {
+    "samples": 49,
+    "unresolved_or_confirmed_max": 0
+   },
+   "Run": {
+    "samples": 67,
+    "unresolved_or_confirmed_max": 0
+   },
+   "RunJumpAir": {
+    "samples": 49,
+    "unresolved_or_confirmed_max": 0
+   },
+   "RunJumpStart": {
+    "samples": 11,
+    "unresolved_or_confirmed_max": 0
+   },
+   "Sprint": {
+    "samples": 35,
+    "unresolved_or_confirmed_max": 0
+   },
+   "Walk": {
+    "samples": 93,
+    "unresolved_or_confirmed_max": 0
+   }
+  }
+ },
+ "mainthread_checker_draco": {
+  "source": "0fa1c34f9942e6d5c5845e748b4195ce03970bac879fc151cae57985ca696c46",
+  "rest": 0,
+  "clips": {
+   "Idle": {
+    "samples": 289,
+    "unresolved_or_confirmed_max": 0
+   },
+   "JumpAir": {
+    "samples": 49,
+    "unresolved_or_confirmed_max": 0
+   },
+   "JumpStart": {
+    "samples": 13,
+    "unresolved_or_confirmed_max": 0
+   },
+   "Land": {
+    "samples": 49,
+    "unresolved_or_confirmed_max": 0
+   },
+   "Run": {
+    "samples": 67,
+    "unresolved_or_confirmed_max": 0
+   },
+   "RunJumpAir": {
+    "samples": 49,
+    "unresolved_or_confirmed_max": 0
+   },
+   "RunJumpStart": {
+    "samples": 11,
+    "unresolved_or_confirmed_max": 0
+   },
+   "Sprint": {
+    "samples": 35,
+    "unresolved_or_confirmed_max": 0
+   },
+   "Walk": {
+    "samples": 93,
+    "unresolved_or_confirmed_max": 0
+   }
+  }
+ },
+ "wrist": {
+  "min_inside": 23,
+  "min_overlap": 0.017962583457119763,
+  "min_inside_at": "Idle_G24@0.R",
+  "min_overlap_at": "Idle_G24@72.R"
+ },
+ "inspect_glb_rig": {
+  "passed": true,
+  "errors": [],
+  "clips": [
+   "Idle",
+   "JumpAir",
+   "JumpStart",
+   "Land",
+   "Run",
+   "RunJumpAir",
+   "RunJumpStart",
+   "Sprint",
+   "Walk"
+  ]
+ }
+}

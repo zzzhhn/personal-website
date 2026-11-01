@@ -1,0 +1,260 @@
+{
+  "base": "http://127.0.0.1:4322",
+  "scope": "drive",
+  "startedAt": "2026-10-22T04:22:07.533Z",
+  "errors": [],
+  "limits": [
+    "Isolated fixture starts are not a continuous all-island traversal.",
+    "M5 Pro browser; no M1 Air hardware certification.",
+    "Sampled cases, not every instance or every collision angle."
+  ],
+  "canvas": {
+    "cssSize": [
+      1920,
+      1080
+    ],
+    "canvasAttr": [
+      1920,
+      1080
+    ],
+    "drawingBuffer": [
+      1920,
+      1080
+    ],
+    "viewport": [
+      0,
+      0,
+      1920,
+      1080
+    ],
+    "devicePixelRatio": 1,
+    "effectiveRenderScale": 1,
+    "windowInner": [
+      1920,
+      1080
+    ],
+    "antialias": true,
+    "preserveDrawingBuffer": false,
+    "maxSamples": 8,
+    "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M5 Pro, Unspecified Version)"
+  },
+  "treeFixture": {
+    "id": "G16",
+    "key": "camp-collider-G16-instances-0-trunk-0",
+    "instance": 0,
+    "label": "instances",
+    "part": "trunk",
+    "kind": "trimesh",
+    "aabb": {
+      "min": [
+        -59.36943817138672,
+        4.800000190734863,
+        33.34025573730469
+      ],
+      "max": [
+        -57.88301467895508,
+        8.794986724853516,
+        35.09921646118164
+      ]
+    }
+  },
+  "fixtures": [
+    {
+      "t": 1.769,
+      "to": [
+        24,
+        3,
+        -10
+      ],
+      "reason": "offroad high-speed road start; car placed separately"
+    },
+    {
+      "t": 9.109,
+      "to": [
+        24,
+        3,
+        -10
+      ],
+      "reason": "coupe high-speed road start; car placed separately"
+    },
+    {
+      "t": 16.417,
+      "to": [
+        24,
+        3,
+        -10
+      ],
+      "reason": "van high-speed road start; car placed separately"
+    }
+  ],
+  "events": [
+    {
+      "t": 2.922,
+      "press": "KeyE"
+    },
+    {
+      "t": 10.262,
+      "press": "KeyE"
+    },
+    {
+      "t": 17.57,
+      "press": "KeyE"
+    }
+  ],
+  "finishedAt": "2026-10-22T04:22:31.449Z",
+  "summary": {
+    "passed": 3,
+    "total": 3,
+    "failed": [],
+    "errors": []
+  },
+  "fullEvidence": "report-full.json.gz",
+  "cases": [
+    {
+      "name": "reset-cars-fixture",
+      "t": 1.768,
+      "placements": [
+        {
+          "id": "offroad",
+          "p": [
+            -26,
+            6.1,
+            34
+          ]
+        },
+        {
+          "id": "coupe",
+          "p": [
+            19.8,
+            2.3,
+            12
+          ]
+        },
+        {
+          "id": "van",
+          "p": [
+            46,
+            2.7,
+            -45
+          ]
+        }
+      ],
+      "sampleCount": 0
+    },
+    {
+      "name": "offroad-high-speed",
+      "maxSpeed": 17.596734843074405,
+      "entered": true,
+      "minY": 2.1545424461364746,
+      "sampleCount": 127,
+      "solidContactCount": 0
+    },
+    {
+      "name": "reset-cars-fixture",
+      "t": 9.108,
+      "placements": [
+        {
+          "id": "offroad",
+          "p": [
+            -26,
+            6.1,
+            34
+          ]
+        },
+        {
+          "id": "coupe",
+          "p": [
+            19.8,
+            2.3,
+            12
+          ]
+        },
+        {
+          "id": "van",
+          "p": [
+            46,
+            2.7,
+            -45
+          ]
+        }
+      ],
+      "sampleCount": 0
+    },
+    {
+      "name": "coupe-high-speed",
+      "maxSpeed": 19.84668220052742,
+      "entered": true,
+      "minY": 2.119823932647705,
+      "sampleCount": 127,
+      "solidContactCount": 4
+    },
+    {
+      "name": "reset-cars-fixture",
+      "t": 16.416,
+      "placements": [
+        {
+          "id": "offroad",
+          "p": [
+            -26,
+            6.1,
+            34
+          ]
+        },
+        {
+          "id": "coupe",
+          "p": [
+            19.8,
+            2.3,
+            12
+          ]
+        },
+        {
+          "id": "van",
+          "p": [
+            46,
+            2.7,
+            -45
+          ]
+        }
+      ],
+      "sampleCount": 0
+    },
+    {
+      "name": "van-high-speed",
+      "maxSpeed": 15.034146039042136,
+      "entered": true,
+      "minY": 2.419724702835083,
+      "sampleCount": 128,
+      "solidContactCount": 0
+    }
+  ],
+  "checks": [
+    {
+      "name": "offroad-high-speed real acceleration/brake",
+      "passed": true,
+      "evidence": {
+        "entered": true,
+        "maxSpeed": 17.596734843074405,
+        "minY": 2.1545424461364746
+      }
+    },
+    {
+      "name": "coupe-high-speed real acceleration/brake",
+      "passed": true,
+      "evidence": {
+        "entered": true,
+        "maxSpeed": 19.84668220052742,
+        "minY": 2.119823932647705
+      }
+    },
+    {
+      "name": "van-high-speed real acceleration/brake",
+      "passed": true,
+      "evidence": {
+        "entered": true,
+        "maxSpeed": 15.034146039042136,
+        "minY": 2.419724702835083
+      }
+    }
+  ]
+}

@@ -1,0 +1,586 @@
+{
+ "base": "http://127.0.0.1:4341",
+ "tag": "fix",
+ "startedAt": "2026-10-24T17:40:23.730Z",
+ "errors": [],
+ "phases": [
+  {
+   "label": "idle",
+   "keys": [],
+   "press": null,
+   "t": 5.808
+  },
+  {
+   "label": "start-run",
+   "keys": [
+    "KeyW",
+    "KeyD"
+   ],
+   "press": null,
+   "t": 6.614
+  },
+  {
+   "label": "sprint",
+   "keys": [
+    "KeyW",
+    "KeyD",
+    "ShiftLeft"
+   ],
+   "press": null,
+   "t": 8.022
+  },
+  {
+   "label": "sprint-stop",
+   "keys": [],
+   "press": null,
+   "t": 9.524
+  },
+  {
+   "label": "run",
+   "keys": [
+    "KeyW",
+    "KeyD"
+   ],
+   "press": null,
+   "t": 10.729
+  },
+  {
+   "label": "run-stop",
+   "keys": [],
+   "press": null,
+   "t": 11.737
+  },
+  {
+   "label": "turn90",
+   "keys": [
+    "KeyS",
+    "KeyD"
+   ],
+   "press": null,
+   "t": 12.943
+  },
+  {
+   "label": "turn90-stop",
+   "keys": [],
+   "press": null,
+   "t": 13.253
+  },
+  {
+   "label": "turn180",
+   "keys": [
+    "KeyW",
+    "KeyA"
+   ],
+   "press": null,
+   "t": 14.158
+  },
+  {
+   "label": "turn180-stop",
+   "keys": [],
+   "press": null,
+   "t": 14.51
+  },
+  {
+   "label": "run-curve",
+   "keys": [
+    "KeyS",
+    "KeyA"
+   ],
+   "press": null,
+   "t": 15.413
+  },
+  {
+   "label": "run-curve2",
+   "keys": [
+    "KeyS",
+    "KeyA"
+   ],
+   "press": null,
+   "t": 16.116
+  },
+  {
+   "label": "run-stop2",
+   "keys": [],
+   "press": null,
+   "t": 17.02
+  },
+  {
+   "label": "stand-jump",
+   "keys": [],
+   "press": "Space",
+   "t": 18.024
+  },
+  {
+   "label": "run-for-jump",
+   "keys": [
+    "KeyW",
+    "KeyD"
+   ],
+   "press": null,
+   "t": 19.327
+  },
+  {
+   "label": "run-jump",
+   "keys": [
+    "KeyW",
+    "KeyD"
+   ],
+   "press": "Space",
+   "t": 20.236
+  },
+  {
+   "label": "sprint-for-jump",
+   "keys": [
+    "KeyW",
+    "KeyD",
+    "ShiftLeft"
+   ],
+   "press": null,
+   "t": 21.541
+  },
+  {
+   "label": "sprint-jump",
+   "keys": [
+    "KeyW",
+    "KeyD",
+    "ShiftLeft"
+   ],
+   "press": "Space",
+   "t": 22.343
+  },
+  {
+   "label": "jump-land-stand",
+   "keys": [],
+   "press": "Space",
+   "t": 23.555
+  },
+  {
+   "label": "end",
+   "keys": [],
+   "press": null,
+   "t": 24.956
+  }
+ ],
+ "glbSha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0",
+ "glbBytes": 726680,
+ "keyMap": {
+  "north": [
+   "KeyW",
+   "KeyD"
+  ],
+  "south": [
+   "KeyS",
+   "KeyA"
+  ],
+  "east": [
+   "KeyS",
+   "KeyD"
+  ],
+  "west": [
+   "KeyW",
+   "KeyA"
+  ]
+ },
+ "alignedStartup": true,
+ "fixtures": [
+  {
+   "t": 0.065,
+   "to": [
+    -88.6,
+    2.02,
+    24
+   ],
+   "reason": "west ring road straight (flat, ~45 m clear) for motion metrics"
+  },
+  {
+   "t": 4.041,
+   "to": [
+    -88.6,
+    2.02,
+    24
+   ],
+   "reason": "supplemental aligned-heading start; position reset after real-key alignment"
+  }
+ ],
+ "entryMode": "support",
+ "transitionMode": "gait-turn-exit",
+ "scope": "full",
+ "recorded": 1184,
+ "metrics": {
+  "frames": 1184,
+  "slipByAnim": {
+   "Idle>Run": {
+    "n": 144,
+    "max_mm": 44.5
+   },
+   "Run": {
+    "n": 162,
+    "max_mm": 51.4
+   },
+   "Idle": {
+    "n": 369,
+    "max_mm": 215.7
+   },
+   "Run>Idle": {
+    "n": 3,
+    "max_mm": 9.4
+   },
+   "JumpAir>Land>Idle": {
+    "n": 6,
+    "max_mm": 23.3
+   },
+   "Land>Idle": {
+    "n": 138,
+    "max_mm": 106.1
+   }
+  },
+  "turnSlipMax_mm": 424.1,
+  "slipMax_mm": 215.7,
+  "worstSlips": [
+   {
+    "t0": 14.3365,
+    "t1": 15.1362,
+    "mm": 215.7,
+    "anims": "Idle"
+   },
+   {
+    "t0": 14.3365,
+    "t1": 15.1362,
+    "mm": 215.7,
+    "anims": "Idle"
+   },
+   {
+    "t0": 14.3365,
+    "t1": 15.1362,
+    "mm": 215.7,
+    "anims": "Idle"
+   },
+   {
+    "t0": 14.3365,
+    "t1": 15.1362,
+    "mm": 214.7,
+    "anims": "Idle"
+   },
+   {
+    "t0": 14.3365,
+    "t1": 15.1362,
+    "mm": 214.7,
+    "anims": "Idle"
+   },
+   {
+    "t0": 14.3365,
+    "t1": 15.1362,
+    "mm": 214.7,
+    "anims": "Idle"
+   }
+  ],
+  "poseJumpSteadyP99_mm": 67.6,
+  "poseJumpSwitchMax_mm": 204.2,
+  "stanceSamples": 1045,
+  "stanceMinH_mm": -47.1,
+  "stanceMaxH_mm": 243.3,
+  "switches": [
+   {
+    "t": 6.3539,
+    "from": "Idle",
+    "to": "Run",
+    "maxJump_mm": 7.4,
+    "bone": "hand.R"
+   },
+   {
+    "t": 7.7703,
+    "from": "Run",
+    "to": "Sprint",
+    "maxJump_mm": 46.9,
+    "bone": "foot.R"
+   },
+   {
+    "t": 9.4362,
+    "from": "Sprint",
+    "to": "Idle",
+    "maxJump_mm": 43.4,
+    "bone": "foot.R"
+   },
+   {
+    "t": 10.4695,
+    "from": "Idle",
+    "to": "Run",
+    "maxJump_mm": 8.1,
+    "bone": "hand.R"
+   },
+   {
+    "t": 11.6198,
+    "from": "Run",
+    "to": "Idle",
+    "maxJump_mm": 50.3,
+    "bone": "foot.L"
+   },
+   {
+    "t": 12.737,
+    "from": "Idle",
+    "to": "Run",
+    "maxJump_mm": 43.4,
+    "bone": "foot.R"
+   },
+   {
+    "t": 13.1035,
+    "from": "Run",
+    "to": "Idle",
+    "maxJump_mm": 35,
+    "bone": "foot.L"
+   },
+   {
+    "t": 14.0025,
+    "from": "Idle",
+    "to": "Run",
+    "maxJump_mm": 7.2,
+    "bone": "hand.R"
+   },
+   {
+    "t": 14.3365,
+    "from": "Run",
+    "to": "Idle",
+    "maxJump_mm": 155.1,
+    "bone": "foot.R"
+   },
+   {
+    "t": 15.2033,
+    "from": "Idle",
+    "to": "Run",
+    "maxJump_mm": 43.4,
+    "bone": "foot.L"
+   },
+   {
+    "t": 16.9029,
+    "from": "Run",
+    "to": "Idle",
+    "maxJump_mm": 42.5,
+    "bone": "foot.R"
+   },
+   {
+    "t": 17.7702,
+    "from": "Idle",
+    "to": "JumpStart",
+    "maxJump_mm": 58,
+    "bone": "shin.L"
+   },
+   {
+    "t": 17.8857,
+    "from": "JumpStart",
+    "to": "JumpAir",
+    "maxJump_mm": 34,
+    "bone": "shin.L"
+   },
+   {
+    "t": 18.5527,
+    "from": "JumpAir",
+    "to": "Land",
+    "maxJump_mm": 48.2,
+    "bone": "shin.R"
+   },
+   {
+    "t": 18.8529,
+    "from": "Land",
+    "to": "Idle",
+    "maxJump_mm": 8.4,
+    "bone": "hand.L"
+   },
+   {
+    "t": 19.1694,
+    "from": "Idle",
+    "to": "Run",
+    "maxJump_mm": 46,
+    "bone": "foot.R"
+   },
+   {
+    "t": 19.9862,
+    "from": "Run",
+    "to": "RunJumpStart",
+    "maxJump_mm": 104.8,
+    "bone": "hand.L"
+   },
+   {
+    "t": 20.0695,
+    "from": "RunJumpStart",
+    "to": "RunJumpAir",
+    "maxJump_mm": 92.6,
+    "bone": "hand.R"
+   },
+   {
+    "t": 20.7697,
+    "from": "RunJumpAir",
+    "to": "Run",
+    "maxJump_mm": 62.4,
+    "bone": "foot.R"
+   },
+   {
+    "t": 21.2867,
+    "from": "Run",
+    "to": "Sprint",
+    "maxJump_mm": 35.3,
+    "bone": "shin.R"
+   },
+   {
+    "t": 22.0864,
+    "from": "Sprint",
+    "to": "RunJumpStart",
+    "maxJump_mm": 204.2,
+    "bone": "foot.R"
+   },
+   {
+    "t": 22.1859,
+    "from": "RunJumpStart",
+    "to": "RunJumpAir",
+    "maxJump_mm": 57,
+    "bone": "hand.R"
+   },
+   {
+    "t": 22.8699,
+    "from": "RunJumpAir",
+    "to": "Sprint",
+    "maxJump_mm": 97.4,
+    "bone": "foot.L"
+   },
+   {
+    "t": 23.3025,
+    "from": "Sprint",
+    "to": "RunJumpStart",
+    "maxJump_mm": 128.3,
+    "bone": "foot.R"
+   },
+   {
+    "t": 23.4023,
+    "from": "RunJumpStart",
+    "to": "RunJumpAir",
+    "maxJump_mm": 54.1,
+    "bone": "hand.R"
+   },
+   {
+    "t": 24.0859,
+    "from": "RunJumpAir",
+    "to": "Land",
+    "maxJump_mm": 50.5,
+    "bone": "shin.R"
+   },
+   {
+    "t": 24.3863,
+    "from": "Land",
+    "to": "Idle",
+    "maxJump_mm": 7.6,
+    "bone": "hand.L"
+   }
+  ]
+ },
+ "actor": {
+  "inert": {
+   "switches": 30,
+   "lastJump": {
+    "angle": 0.017904939860762584,
+    "pelvis": 0.00028126631289539965,
+    "bone": "upperarmL"
+   },
+   "residual": {
+    "angle": 2.2923038613996636e-8,
+    "pelvis": 1.436038331733646e-13
+   }
+  },
+  "stop": [
+   {
+    "t": 15.187,
+    "event": "begin from Idle startup; steps none"
+   },
+   {
+    "t": 15.187,
+    "event": "exiting: animation:Run (hold left+right)"
+   },
+   {
+    "t": 15.253,
+    "event": "left hold released (lifted by gait)"
+   },
+   {
+    "t": 15.403,
+    "event": "right hold released (lifted by gait)"
+   },
+   {
+    "t": 15.537,
+    "event": "off after exiting"
+   },
+   {
+    "t": 16.887,
+    "event": "begin from Run; steps right(swing) 43.8cm, left(swing) 17.6cm"
+   },
+   {
+    "t": 16.903,
+    "event": "right step 43.8cm"
+   },
+   {
+    "t": 17.253,
+    "event": "right landed 43.8cm in 0.35s lift 8.0cm"
+   },
+   {
+    "t": 17.32,
+    "event": "left step 13.9cm"
+   },
+   {
+    "t": 17.636,
+    "event": "left landed 13.9cm in 0.31s lift 7.1cm"
+   },
+   {
+    "t": 17.703,
+    "event": "releasing: settled"
+   },
+   {
+    "t": 17.753,
+    "event": "exiting: jump"
+   },
+   {
+    "t": 17.836,
+    "event": "off after exiting"
+   },
+   {
+    "t": 18.837,
+    "event": "begin from Land; steps none"
+   },
+   {
+    "t": 18.853,
+    "event": "releasing: settled"
+   },
+   {
+    "t": 19.037,
+    "event": "off after releasing"
+   },
+   {
+    "t": 19.153,
+    "event": "begin from Idle startup; steps none"
+   },
+   {
+    "t": 19.153,
+    "event": "exiting: animation:Run (hold left+right)"
+   },
+   {
+    "t": 19.22,
+    "event": "left hold released (lifted by gait)"
+   },
+   {
+    "t": 19.353,
+    "event": "right hold released (lifted by gait)"
+   },
+   {
+    "t": 19.503,
+    "event": "off after exiting"
+   },
+   {
+    "t": 24.37,
+    "event": "begin from Land; steps none"
+   },
+   {
+    "t": 24.386,
+    "event": "releasing: settled"
+   },
+   {
+    "t": 24.57,
+    "event": "off after releasing"
+   }
+  ]
+ }
+}

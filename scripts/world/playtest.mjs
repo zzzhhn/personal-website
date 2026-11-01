@@ -1,0 +1,100 @@
+/** One directed browser regression of the greybox's input and recovery flow. */
+import { createRequire } from 'node:module';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+const require = createRequire(import.meta.url);
+const repo = fileURLToPath(new URL('../../', import.meta.url));
+const { chromium } = require(require.resolve('playwright', { paths: [process.env.WORLD_BROWSER_MODULES || repo] }));
+const output = path.join(repo, 'docs/world/evidence');
+await mkdir(output, { recursive: true });
+const browser = await chromium.launch({ executablePath: process.env.WORLD_CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: true });
+const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
+const errors = [], checks = [];
+page.on('pageerror', error => errors.push(error.message));
+const assert = (condition, message, evidence) => { checks.push({ check: message, passed: !!condition, evidence }); if (!condition) throw new Error(message); };
+const snapshot = () => page.evaluate(() => window.__worldDebug.snapshot());
+const state = () => page.evaluate(() => window.__worldDebug.state());
+const distance = (a, b) => Math.hypot(a[0] - b[0], a[2] - b[2]);
+try {
+  await page.goto(`${process.env.WORLD_BASE_URL || 'http://127.0.0.1:4321'}/world?qa=1`, { waitUntil: 'networkidle' });
+  await page.waitForFunction(() => window.__worldDebug?.state().ready, undefined, { timeout: 30000 });
+  await page.waitForTimeout(1000);
+  assert((await snapshot()).vehicles.length === 3, 'Three physical vehicles mounted');
+  if (!process.argv.includes('--recovery-only')) {
+  const spawn = (await snapshot()).player;
+  await page.keyboard.down('KeyD'); await page.waitForTimeout(650); await page.keyboard.up('KeyD');
+  const walked = distance(spawn, (await snapshot()).player);
+  assert(walked > .5, 'Keyboard walking moves capsule', walked);
+  await page.evaluate(p => window.__worldDebug.teleportPlayer(p), spawn); await page.waitForTimeout(150);
+  await page.keyboard.down('ShiftLeft'); await page.keyboard.down('KeyD'); await page.waitForTimeout(650); await page.keyboard.up('KeyD'); await page.keyboard.up('ShiftLeft');
+  const ran = distance(spawn, (await snapshot()).player);
+  assert(ran > walked * 1.4, 'Shift runs faster than walking', { walked, ran });
+  await page.evaluate(p => window.__worldDebug.teleportPlayer(p), spawn);
+  await page.waitForFunction(() => window.__worldDebug.snapshot().grounded);
+  const baseY = (await snapshot()).player[1];
+  await page.keyboard.press('Space'); await page.waitForTimeout(250);
+  const jumpY = (await snapshot()).player[1];
+  assert(jumpY > baseY + .5, 'Space performs a grounded jump', { baseY, jumpY });
+  await page.waitForFunction(() => window.__worldDebug.snapshot().grounded);
+  for (const id of ['offroad', 'coupe', 'van']) {
+    const parked = (await snapshot()).vehicles.find(v => v.id === id).position;
+    await page.evaluate(p => window.__worldDebug.teleportPlayer([p[0], p[1] + .2, p[2] + 2.3]), parked);
+    await page.waitForFunction(id => window.__worldDebug.state().nearbyVehicle === id, id);
+    await page.keyboard.press('KeyE');
+    await page.waitForFunction(id => window.__worldDebug.state().activeVehicle === id, id);
+    assert((await state()).activeVehicle === id, `E enters ${id}`);
+    await page.keyboard.down('KeyW'); await page.waitForTimeout(900); await page.keyboard.up('KeyW');
+    await page.keyboard.down('Space'); await page.waitForTimeout(450); await page.keyboard.up('Space');
+    const after = (await snapshot()).vehicles.find(v => v.id === id).position;
+    assert(distance(parked, after) > .5, `${id} drives from its parking position`, { parked, after });
+    await page.keyboard.press('KeyE'); await page.waitForTimeout(100);
+    assert((await state()).activeVehicle === null, `E safely exits ${id}`);
+  }
+  }
+  await page.evaluate(() => window.__worldDebug.enter('offroad'));
+  await page.waitForTimeout(150);
+  const moved = (await snapshot()).vehicles.find(v => v.id === 'offroad').position;
+  await page.evaluate(p => window.__worldDebug.teleportVehicle('offroad', [p[0] + 1, p[1] + .1, p[2]]), moved);
+  await page.waitForTimeout(300);
+  const beforeExit = (await snapshot()).vehicles.find(v => v.id === 'offroad').position;
+  await page.keyboard.press('KeyE'); await page.waitForTimeout(200);
+  const afterExit = (await snapshot()).vehicles.find(v => v.id === 'offroad').position;
+  assert(distance(beforeExit, afterExit) < .3, 'Vehicle remains where it was parked after exit', { beforeExit, afterExit });
+  await page.evaluate(() => window.__worldDebug.enter('offroad'));
+  await page.waitForTimeout(150);
+  await page.evaluate(() => window.__worldDebug.flip());
+  await page.waitForTimeout(1000);
+  assert(!(await state()).canRecover, 'Flip recovery does not appear before two seconds');
+  await page.waitForFunction(() => window.__worldDebug.state().canRecover, undefined, { timeout: 7000 });
+  await page.keyboard.press('KeyR'); await page.waitForTimeout(150);
+  assert(!(await state()).canRecover, 'R resets an overturned vehicle');
+  await page.evaluate(() => window.__worldDebug.water());
+  await page.waitForFunction(() => window.__worldDebug.snapshot().vehicles.find(v => v.id === 'offroad').position[1] > 0, undefined, { timeout: 7000 });
+  assert((await snapshot()).vehicles.find(v => v.id === 'offroad').position[0] < 100, 'Vehicle water recovery returns to a road');
+  await page.keyboard.press('Escape');
+  assert((await state()).paused, 'Escape pauses and opens map');
+  const pausedPosition = (await snapshot()).vehicles.find(v => v.id === 'offroad').position;
+  await page.keyboard.down('KeyW'); await page.waitForTimeout(300); await page.keyboard.up('KeyW');
+  assert(distance(pausedPosition, (await snapshot()).vehicles.find(v => v.id === 'offroad').position) < .001, 'Paused controls do not move vehicles');
+  await page.getByRole('button', { name: '中文', exact: true }).click();
+  assert((await state()).lang === 'zh', 'Language switches to Chinese');
+  await page.getByRole('button', { name: '夜晚', exact: true }).click();
+  assert((await state()).light === 'night', 'Night lighting can be selected in menu');
+  await page.getByRole('button', { name: '继续探索', exact: true }).click();
+  await page.waitForTimeout(2200);
+  await page.mouse.move(900, 450); await page.mouse.wheel(0, 200); await page.waitForTimeout(100);
+  assert((await state()).zoom === 2, 'Wheel selects far zoom');
+  await page.mouse.wheel(0, -200); await page.waitForTimeout(100);
+  assert((await state()).zoom === 1, 'Wheel returns to medium zoom');
+  assert(errors.length === 0, 'No browser page errors', errors);
+  await page.screenshot({ path: path.join(output, 'playtest-night.png') });
+} catch (error) {
+  await page.screenshot({ path: path.join(output, 'playtest-failure.png') });
+  checks.push({ failed: error.message });
+  process.exitCode = 1;
+} finally {
+  await writeFile(path.join(output, process.argv.includes('--recovery-only') ? 'browser-recovery-regression.json' : 'browser-regression.json'), JSON.stringify({ base: process.env.WORLD_BASE_URL || 'http://127.0.0.1:4321', checks, errors }, null, 2) + '\n');
+  console.log(JSON.stringify({ checks, errors }, null, 2));
+  await browser.close();
+}

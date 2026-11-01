@@ -1,0 +1,15 @@
+{
+  "sha256": "bd51bb16815f367de300eaa4fdbb5fe8f0e72c292e9e9a3c6d883eb0aeb05aa0",
+  "htmlExact": true,
+  "bytes": 52276,
+  "candidateURL": "http://127.0.0.1:4343/world/?quality=balanced&paused=1",
+  "settingsVisible": true,
+  "loadingCount": 0,
+  "qaControls": false,
+  "errors": [],
+  "stableURL": "http://127.0.0.1:4341/world/",
+  "stableHTMLExact": true,
+  "stableBrowserReady": true,
+  "stablePaused": true,
+  "stableErrors": []
+}

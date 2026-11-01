@@ -1,0 +1,129 @@
+{
+  "file": "out/G24_uncompressed.glb",
+  "inspector": "smoke checks only, not full Khronos validation",
+  "skins": 1,
+  "clips": [
+    {
+      "name": "Idle",
+      "channels": 54,
+      "varying_channels": 14,
+      "start_seconds": 0.0,
+      "end_seconds": 2.4000000953674316
+    },
+    {
+      "name": "Jump",
+      "channels": 54,
+      "varying_channels": 16,
+      "start_seconds": 0.0,
+      "end_seconds": 0.5
+    },
+    {
+      "name": "Land",
+      "channels": 54,
+      "varying_channels": 16,
+      "start_seconds": 0.0,
+      "end_seconds": 0.4000000059604645
+    },
+    {
+      "name": "Run",
+      "channels": 54,
+      "varying_channels": 16,
+      "start_seconds": 0.0,
+      "end_seconds": 0.4000000059604645
+    },
+    {
+      "name": "Walk",
+      "channels": 54,
+      "varying_channels": 16,
+      "start_seconds": 0.0,
+      "end_seconds": 0.6000000238418579
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "mesh_definition_triangles": 1978,
+  "default_scene_instance_triangles": 1978,
+  "skin_primitives": [
+    {
+      "node": "G24_mesh",
+      "primitive": 0,
+      "vertices": 354,
+      "joints": 18,
+      "max_influences": 2,
+      "max_weight_sum_error": 2.9802322387695312e-08,
+      "blended_vertices": 310,
+      "inverse_bind_present": true
+    },
+    {
+      "node": "G24_mesh",
+      "primitive": 1,
+      "vertices": 1052,
+      "joints": 18,
+      "max_influences": 2,
+      "max_weight_sum_error": 2.9802322387695312e-08,
+      "blended_vertices": 696,
+      "inverse_bind_present": true
+    },
+    {
+      "node": "G24_mesh",
+      "primitive": 2,
+      "vertices": 1334,
+      "joints": 18,
+      "max_influences": 2,
+      "max_weight_sum_error": 2.9802322387695312e-08,
+      "blended_vertices": 480,
+      "inverse_bind_present": true
+    },
+    {
+      "node": "G24_mesh",
+      "primitive": 3,
+      "vertices": 628,
+      "joints": 18,
+      "max_influences": 1,
+      "max_weight_sum_error": 0,
+      "blended_vertices": 0,
+      "inverse_bind_present": true
+    },
+    {
+      "node": "G24_mesh",
+      "primitive": 4,
+      "vertices": 800,
+      "joints": 18,
+      "max_influences": 1,
+      "max_weight_sum_error": 0,
+      "blended_vertices": 0,
+      "inverse_bind_present": true
+    },
+    {
+      "node": "G24_mesh",
+      "primitive": 5,
+      "vertices": 300,
+      "joints": 18,
+      "max_influences": 1,
+      "max_weight_sum_error": 0,
+      "blended_vertices": 0,
+      "inverse_bind_present": true
+    },
+    {
+      "node": "G24_mesh",
+      "primitive": 6,
+      "vertices": 60,
+      "joints": 18,
+      "max_influences": 1,
+      "max_weight_sum_error": 0,
+      "blended_vertices": 0,
+      "inverse_bind_present": true
+    },
+    {
+      "node": "G24_mesh",
+      "primitive": 7,
+      "vertices": 192,
+      "joints": 18,
+      "max_influences": 1,
+      "max_weight_sum_error": 0,
+      "blended_vertices": 0,
+      "inverse_bind_present": true
+    }
+  ],
+  "passed": true
+}

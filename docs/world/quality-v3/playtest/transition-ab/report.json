@@ -1,0 +1,2436 @@
+{
+  "base": "http://127.0.0.1:4322",
+  "errors": [],
+  "limits": [
+    "Visible QA profile fixtures outside the island, not actual map steps.",
+    "Curb 18cm, pad 10cm, coplanar bridge seam, 15/30cm stair pair; actual keyboard traversal.",
+    "Finite browser samples; no M1 claim.",
+    "Baseline offroad 12m/s did not enter; no valid comparison for that run. Candidate vehicles blocked at first curb, so later profiles were not reached and cannot be evaluated."
+  ],
+  "comparisons": [
+    {
+      "id": "offroad",
+      "speed": 5,
+      "profile": "curb",
+      "riseDelta": 0.04047727584838867,
+      "pitchRatio": 1.4078764593006006,
+      "baseline": {
+        "name": "curb",
+        "samples": 96,
+        "maxRise": 0.026952266693115234,
+        "maxPitch": 0.03227046808164592,
+        "minSpeed": 4.736224174499512,
+        "approachSpeed": 4.946417331695557
+      },
+      "candidate": {
+        "name": "curb",
+        "samples": 1130,
+        "maxRise": 0.0674295425415039,
+        "maxPitch": 0.04543283234276071,
+        "minSpeed": 0.010278836050882059,
+        "approachSpeed": 4.954216003417972
+      },
+      "passed": false,
+      "valid": true,
+      "reason": "measured"
+    },
+    {
+      "id": "offroad",
+      "speed": 5,
+      "profile": "pad",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "pad",
+        "samples": 97,
+        "maxRise": 0.05868053436279297,
+        "maxPitch": 0.047656693939429486,
+        "minSpeed": 4.822490692138672,
+        "approachSpeed": 4.913142204284668
+      },
+      "candidate": {
+        "name": "pad",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    },
+    {
+      "id": "offroad",
+      "speed": 5,
+      "profile": "bridge-seam",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "bridge-seam",
+        "samples": 109,
+        "maxRise": 0.0007886886596679688,
+        "maxPitch": 0.014976390302148554,
+        "minSpeed": 4.744817733764648,
+        "approachSpeed": 4.942451000213623
+      },
+      "candidate": {
+        "name": "bridge-seam",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    },
+    {
+      "id": "offroad",
+      "speed": 5,
+      "profile": "stairs",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "stairs",
+        "samples": 130,
+        "maxRise": 0.2726621627807617,
+        "maxPitch": 0.11383212701034197,
+        "minSpeed": 4.730517864227295,
+        "approachSpeed": 4.897945880889893
+      },
+      "candidate": {
+        "name": "stairs",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    },
+    {
+      "id": "offroad",
+      "speed": 12,
+      "profile": "curb",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "curb",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "candidate": {
+        "name": "curb",
+        "samples": 1219,
+        "maxRise": 0.33597564697265625,
+        "maxPitch": 0.22011255082894965,
+        "minSpeed": 0.006737301011922738,
+        "approachSpeed": 11.936419486999512
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    },
+    {
+      "id": "offroad",
+      "speed": 12,
+      "profile": "pad",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "pad",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "candidate": {
+        "name": "pad",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    },
+    {
+      "id": "offroad",
+      "speed": 12,
+      "profile": "bridge-seam",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "bridge-seam",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "candidate": {
+        "name": "bridge-seam",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    },
+    {
+      "id": "offroad",
+      "speed": 12,
+      "profile": "stairs",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "stairs",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "candidate": {
+        "name": "stairs",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    },
+    {
+      "id": "coupe",
+      "speed": 5,
+      "profile": "curb",
+      "riseDelta": 0.033261775970458984,
+      "pitchRatio": 1.0473958769624792,
+      "baseline": {
+        "name": "curb",
+        "samples": 96,
+        "maxRise": 0.05614757537841797,
+        "maxPitch": 0.041838231084998366,
+        "minSpeed": 4.8852367401124,
+        "approachSpeed": 4.980336189270108
+      },
+      "candidate": {
+        "name": "curb",
+        "samples": 1137,
+        "maxRise": 0.08940935134887695,
+        "maxPitch": 0.043821190737830716,
+        "minSpeed": 0.0028889756243176854,
+        "approachSpeed": 5.004290580749512
+      },
+      "passed": false,
+      "valid": true,
+      "reason": "measured"
+    },
+    {
+      "id": "coupe",
+      "speed": 5,
+      "profile": "pad",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "pad",
+        "samples": 97,
+        "maxRise": 0.05788421630859375,
+        "maxPitch": 0.04074447148040437,
+        "minSpeed": 4.885271072387736,
+        "approachSpeed": 5.044406890869227
+      },
+      "candidate": {
+        "name": "pad",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    },
+    {
+      "id": "coupe",
+      "speed": 5,
+      "profile": "bridge-seam",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "bridge-seam",
+        "samples": 107,
+        "maxRise": 0.0003743171691894531,
+        "maxPitch": 0.00919825870026026,
+        "minSpeed": 4.877997398376565,
+        "approachSpeed": 5.008196830749606
+      },
+      "candidate": {
+        "name": "bridge-seam",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    },
+    {
+      "id": "coupe",
+      "speed": 5,
+      "profile": "stairs",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "stairs",
+        "samples": 129,
+        "maxRise": 0.2923140525817871,
+        "maxPitch": 0.1127613290668326,
+        "minSpeed": 4.882999897003291,
+        "approachSpeed": 4.925401210785014
+      },
+      "candidate": {
+        "name": "stairs",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    },
+    {
+      "id": "coupe",
+      "speed": 12,
+      "profile": "curb",
+      "riseDelta": 0.34962987899780273,
+      "pitchRatio": 10.3709807092076,
+      "baseline": {
+        "name": "curb",
+        "samples": 41,
+        "maxRise": 0.02904510498046875,
+        "maxPitch": 0.02542816619608959,
+        "minSpeed": 11.874822616577148,
+        "approachSpeed": 11.909974098205566
+      },
+      "candidate": {
+        "name": "curb",
+        "samples": 1260,
+        "maxRise": 0.3786749839782715,
+        "maxPitch": 0.26371502109017,
+        "minSpeed": 0.0019345942288554723,
+        "approachSpeed": 11.894649505615234
+      },
+      "passed": false,
+      "valid": true,
+      "reason": "measured"
+    },
+    {
+      "id": "coupe",
+      "speed": 12,
+      "profile": "pad",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "pad",
+        "samples": 40,
+        "maxRise": 0.04969596862792969,
+        "maxPitch": 0.03790289488209992,
+        "minSpeed": 11.868857383728027,
+        "approachSpeed": 12.057581901550293
+      },
+      "candidate": {
+        "name": "pad",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    },
+    {
+      "id": "coupe",
+      "speed": 12,
+      "profile": "bridge-seam",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "bridge-seam",
+        "samples": 45,
+        "maxRise": 0.003852367401123047,
+        "maxPitch": 0.011177906040430154,
+        "minSpeed": 11.855995178222656,
+        "approachSpeed": 11.845940589904785
+      },
+      "candidate": {
+        "name": "bridge-seam",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    },
+    {
+      "id": "coupe",
+      "speed": 12,
+      "profile": "stairs",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "stairs",
+        "samples": 55,
+        "maxRise": 0.26627302169799805,
+        "maxPitch": 0.09497950945686953,
+        "minSpeed": 11.868496894836426,
+        "approachSpeed": 12.031996726989746
+      },
+      "candidate": {
+        "name": "stairs",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    },
+    {
+      "id": "van",
+      "speed": 5,
+      "profile": "curb",
+      "riseDelta": 0.10122299194335938,
+      "pitchRatio": 1.6203502263889882,
+      "baseline": {
+        "name": "curb",
+        "samples": 100,
+        "maxRise": 0.02364492416381836,
+        "maxPitch": 0.028667087429852557,
+        "minSpeed": 4.884727478027344,
+        "approachSpeed": 4.9617133140563965
+      },
+      "candidate": {
+        "name": "curb",
+        "samples": 1078,
+        "maxRise": 0.12486791610717773,
+        "maxPitch": 0.04645072160687451,
+        "minSpeed": 0.02146719256329864,
+        "approachSpeed": 4.930654525756836
+      },
+      "passed": false,
+      "valid": true,
+      "reason": "measured"
+    },
+    {
+      "id": "van",
+      "speed": 5,
+      "profile": "pad",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "pad",
+        "samples": 99,
+        "maxRise": 0.04790067672729492,
+        "maxPitch": 0.04408764663322222,
+        "minSpeed": 4.8689165115356445,
+        "approachSpeed": 4.943664073944092
+      },
+      "candidate": {
+        "name": "pad",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    },
+    {
+      "id": "van",
+      "speed": 5,
+      "profile": "bridge-seam",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "bridge-seam",
+        "samples": 109,
+        "maxRise": -0.00012683868408203125,
+        "maxPitch": 0.014493126113516492,
+        "minSpeed": 4.880577087402344,
+        "approachSpeed": 4.960872173309326
+      },
+      "candidate": {
+        "name": "bridge-seam",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    },
+    {
+      "id": "van",
+      "speed": 5,
+      "profile": "stairs",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "stairs",
+        "samples": 130,
+        "maxRise": 0.24666833877563477,
+        "maxPitch": 0.09089405801161979,
+        "minSpeed": 4.877781867980957,
+        "approachSpeed": 4.940478324890137
+      },
+      "candidate": {
+        "name": "stairs",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    },
+    {
+      "id": "van",
+      "speed": 12,
+      "profile": "curb",
+      "riseDelta": 0.5221214294433594,
+      "pitchRatio": 10.511160462240765,
+      "baseline": {
+        "name": "curb",
+        "samples": 40,
+        "maxRise": 0.013966560363769531,
+        "maxPitch": 0.032107577311379025,
+        "minSpeed": 11.852134704589844,
+        "approachSpeed": 11.939567565917969
+      },
+      "candidate": {
+        "name": "curb",
+        "samples": 1193,
+        "maxRise": 0.5360879898071289,
+        "maxPitch": 0.33748789717370586,
+        "minSpeed": 0.004522806755903438,
+        "approachSpeed": 11.937681198120117
+      },
+      "passed": false,
+      "valid": true,
+      "reason": "measured"
+    },
+    {
+      "id": "van",
+      "speed": 12,
+      "profile": "pad",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "pad",
+        "samples": 41,
+        "maxRise": 0.03789567947387695,
+        "maxPitch": 0.040804070352098556,
+        "minSpeed": 11.878363609313965,
+        "approachSpeed": 11.880766868591309
+      },
+      "candidate": {
+        "name": "pad",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    },
+    {
+      "id": "van",
+      "speed": 12,
+      "profile": "bridge-seam",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "bridge-seam",
+        "samples": 45,
+        "maxRise": -0.0010123252868652344,
+        "maxPitch": 0.022496586550598906,
+        "minSpeed": 11.846268653869629,
+        "approachSpeed": 11.937650680541992
+      },
+      "candidate": {
+        "name": "bridge-seam",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    },
+    {
+      "id": "van",
+      "speed": 12,
+      "profile": "stairs",
+      "riseDelta": null,
+      "pitchRatio": null,
+      "baseline": {
+        "name": "stairs",
+        "samples": 54,
+        "maxRise": 0.16466093063354492,
+        "maxPitch": 0.06884392240141957,
+        "minSpeed": 11.850044250488281,
+        "approachSpeed": 11.905235290527344
+      },
+      "candidate": {
+        "name": "stairs",
+        "samples": 0,
+        "maxRise": null,
+        "maxPitch": null,
+        "minSpeed": null,
+        "approachSpeed": null
+      },
+      "passed": false,
+      "valid": false,
+      "reason": "not reached; no comparison"
+    }
+  ],
+  "summary": {
+    "comparisons": 24,
+    "failed": [
+      {
+        "id": "offroad",
+        "speed": 5,
+        "profile": "curb",
+        "riseDelta": 0.04047727584838867,
+        "pitchRatio": 1.4078764593006006,
+        "baseline": {
+          "name": "curb",
+          "samples": 96,
+          "maxRise": 0.026952266693115234,
+          "maxPitch": 0.03227046808164592,
+          "minSpeed": 4.736224174499512,
+          "approachSpeed": 4.946417331695557
+        },
+        "candidate": {
+          "name": "curb",
+          "samples": 1130,
+          "maxRise": 0.0674295425415039,
+          "maxPitch": 0.04543283234276071,
+          "minSpeed": 0.010278836050882059,
+          "approachSpeed": 4.954216003417972
+        },
+        "passed": false,
+        "valid": true,
+        "reason": "measured"
+      },
+      {
+        "id": "offroad",
+        "speed": 5,
+        "profile": "pad",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "pad",
+          "samples": 97,
+          "maxRise": 0.05868053436279297,
+          "maxPitch": 0.047656693939429486,
+          "minSpeed": 4.822490692138672,
+          "approachSpeed": 4.913142204284668
+        },
+        "candidate": {
+          "name": "pad",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      },
+      {
+        "id": "offroad",
+        "speed": 5,
+        "profile": "bridge-seam",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "bridge-seam",
+          "samples": 109,
+          "maxRise": 0.0007886886596679688,
+          "maxPitch": 0.014976390302148554,
+          "minSpeed": 4.744817733764648,
+          "approachSpeed": 4.942451000213623
+        },
+        "candidate": {
+          "name": "bridge-seam",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      },
+      {
+        "id": "offroad",
+        "speed": 5,
+        "profile": "stairs",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "stairs",
+          "samples": 130,
+          "maxRise": 0.2726621627807617,
+          "maxPitch": 0.11383212701034197,
+          "minSpeed": 4.730517864227295,
+          "approachSpeed": 4.897945880889893
+        },
+        "candidate": {
+          "name": "stairs",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      },
+      {
+        "id": "offroad",
+        "speed": 12,
+        "profile": "curb",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "curb",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "candidate": {
+          "name": "curb",
+          "samples": 1219,
+          "maxRise": 0.33597564697265625,
+          "maxPitch": 0.22011255082894965,
+          "minSpeed": 0.006737301011922738,
+          "approachSpeed": 11.936419486999512
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      },
+      {
+        "id": "offroad",
+        "speed": 12,
+        "profile": "pad",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "pad",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "candidate": {
+          "name": "pad",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      },
+      {
+        "id": "offroad",
+        "speed": 12,
+        "profile": "bridge-seam",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "bridge-seam",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "candidate": {
+          "name": "bridge-seam",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      },
+      {
+        "id": "offroad",
+        "speed": 12,
+        "profile": "stairs",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "stairs",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "candidate": {
+          "name": "stairs",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      },
+      {
+        "id": "coupe",
+        "speed": 5,
+        "profile": "curb",
+        "riseDelta": 0.033261775970458984,
+        "pitchRatio": 1.0473958769624792,
+        "baseline": {
+          "name": "curb",
+          "samples": 96,
+          "maxRise": 0.05614757537841797,
+          "maxPitch": 0.041838231084998366,
+          "minSpeed": 4.8852367401124,
+          "approachSpeed": 4.980336189270108
+        },
+        "candidate": {
+          "name": "curb",
+          "samples": 1137,
+          "maxRise": 0.08940935134887695,
+          "maxPitch": 0.043821190737830716,
+          "minSpeed": 0.0028889756243176854,
+          "approachSpeed": 5.004290580749512
+        },
+        "passed": false,
+        "valid": true,
+        "reason": "measured"
+      },
+      {
+        "id": "coupe",
+        "speed": 5,
+        "profile": "pad",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "pad",
+          "samples": 97,
+          "maxRise": 0.05788421630859375,
+          "maxPitch": 0.04074447148040437,
+          "minSpeed": 4.885271072387736,
+          "approachSpeed": 5.044406890869227
+        },
+        "candidate": {
+          "name": "pad",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      },
+      {
+        "id": "coupe",
+        "speed": 5,
+        "profile": "bridge-seam",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "bridge-seam",
+          "samples": 107,
+          "maxRise": 0.0003743171691894531,
+          "maxPitch": 0.00919825870026026,
+          "minSpeed": 4.877997398376565,
+          "approachSpeed": 5.008196830749606
+        },
+        "candidate": {
+          "name": "bridge-seam",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      },
+      {
+        "id": "coupe",
+        "speed": 5,
+        "profile": "stairs",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "stairs",
+          "samples": 129,
+          "maxRise": 0.2923140525817871,
+          "maxPitch": 0.1127613290668326,
+          "minSpeed": 4.882999897003291,
+          "approachSpeed": 4.925401210785014
+        },
+        "candidate": {
+          "name": "stairs",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      },
+      {
+        "id": "coupe",
+        "speed": 12,
+        "profile": "curb",
+        "riseDelta": 0.34962987899780273,
+        "pitchRatio": 10.3709807092076,
+        "baseline": {
+          "name": "curb",
+          "samples": 41,
+          "maxRise": 0.02904510498046875,
+          "maxPitch": 0.02542816619608959,
+          "minSpeed": 11.874822616577148,
+          "approachSpeed": 11.909974098205566
+        },
+        "candidate": {
+          "name": "curb",
+          "samples": 1260,
+          "maxRise": 0.3786749839782715,
+          "maxPitch": 0.26371502109017,
+          "minSpeed": 0.0019345942288554723,
+          "approachSpeed": 11.894649505615234
+        },
+        "passed": false,
+        "valid": true,
+        "reason": "measured"
+      },
+      {
+        "id": "coupe",
+        "speed": 12,
+        "profile": "pad",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "pad",
+          "samples": 40,
+          "maxRise": 0.04969596862792969,
+          "maxPitch": 0.03790289488209992,
+          "minSpeed": 11.868857383728027,
+          "approachSpeed": 12.057581901550293
+        },
+        "candidate": {
+          "name": "pad",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      },
+      {
+        "id": "coupe",
+        "speed": 12,
+        "profile": "bridge-seam",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "bridge-seam",
+          "samples": 45,
+          "maxRise": 0.003852367401123047,
+          "maxPitch": 0.011177906040430154,
+          "minSpeed": 11.855995178222656,
+          "approachSpeed": 11.845940589904785
+        },
+        "candidate": {
+          "name": "bridge-seam",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      },
+      {
+        "id": "coupe",
+        "speed": 12,
+        "profile": "stairs",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "stairs",
+          "samples": 55,
+          "maxRise": 0.26627302169799805,
+          "maxPitch": 0.09497950945686953,
+          "minSpeed": 11.868496894836426,
+          "approachSpeed": 12.031996726989746
+        },
+        "candidate": {
+          "name": "stairs",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      },
+      {
+        "id": "van",
+        "speed": 5,
+        "profile": "curb",
+        "riseDelta": 0.10122299194335938,
+        "pitchRatio": 1.6203502263889882,
+        "baseline": {
+          "name": "curb",
+          "samples": 100,
+          "maxRise": 0.02364492416381836,
+          "maxPitch": 0.028667087429852557,
+          "minSpeed": 4.884727478027344,
+          "approachSpeed": 4.9617133140563965
+        },
+        "candidate": {
+          "name": "curb",
+          "samples": 1078,
+          "maxRise": 0.12486791610717773,
+          "maxPitch": 0.04645072160687451,
+          "minSpeed": 0.02146719256329864,
+          "approachSpeed": 4.930654525756836
+        },
+        "passed": false,
+        "valid": true,
+        "reason": "measured"
+      },
+      {
+        "id": "van",
+        "speed": 5,
+        "profile": "pad",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "pad",
+          "samples": 99,
+          "maxRise": 0.04790067672729492,
+          "maxPitch": 0.04408764663322222,
+          "minSpeed": 4.8689165115356445,
+          "approachSpeed": 4.943664073944092
+        },
+        "candidate": {
+          "name": "pad",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      },
+      {
+        "id": "van",
+        "speed": 5,
+        "profile": "bridge-seam",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "bridge-seam",
+          "samples": 109,
+          "maxRise": -0.00012683868408203125,
+          "maxPitch": 0.014493126113516492,
+          "minSpeed": 4.880577087402344,
+          "approachSpeed": 4.960872173309326
+        },
+        "candidate": {
+          "name": "bridge-seam",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      },
+      {
+        "id": "van",
+        "speed": 5,
+        "profile": "stairs",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "stairs",
+          "samples": 130,
+          "maxRise": 0.24666833877563477,
+          "maxPitch": 0.09089405801161979,
+          "minSpeed": 4.877781867980957,
+          "approachSpeed": 4.940478324890137
+        },
+        "candidate": {
+          "name": "stairs",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      },
+      {
+        "id": "van",
+        "speed": 12,
+        "profile": "curb",
+        "riseDelta": 0.5221214294433594,
+        "pitchRatio": 10.511160462240765,
+        "baseline": {
+          "name": "curb",
+          "samples": 40,
+          "maxRise": 0.013966560363769531,
+          "maxPitch": 0.032107577311379025,
+          "minSpeed": 11.852134704589844,
+          "approachSpeed": 11.939567565917969
+        },
+        "candidate": {
+          "name": "curb",
+          "samples": 1193,
+          "maxRise": 0.5360879898071289,
+          "maxPitch": 0.33748789717370586,
+          "minSpeed": 0.004522806755903438,
+          "approachSpeed": 11.937681198120117
+        },
+        "passed": false,
+        "valid": true,
+        "reason": "measured"
+      },
+      {
+        "id": "van",
+        "speed": 12,
+        "profile": "pad",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "pad",
+          "samples": 41,
+          "maxRise": 0.03789567947387695,
+          "maxPitch": 0.040804070352098556,
+          "minSpeed": 11.878363609313965,
+          "approachSpeed": 11.880766868591309
+        },
+        "candidate": {
+          "name": "pad",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      },
+      {
+        "id": "van",
+        "speed": 12,
+        "profile": "bridge-seam",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "bridge-seam",
+          "samples": 45,
+          "maxRise": -0.0010123252868652344,
+          "maxPitch": 0.022496586550598906,
+          "minSpeed": 11.846268653869629,
+          "approachSpeed": 11.937650680541992
+        },
+        "candidate": {
+          "name": "bridge-seam",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      },
+      {
+        "id": "van",
+        "speed": 12,
+        "profile": "stairs",
+        "riseDelta": null,
+        "pitchRatio": null,
+        "baseline": {
+          "name": "stairs",
+          "samples": 54,
+          "maxRise": 0.16466093063354492,
+          "maxPitch": 0.06884392240141957,
+          "minSpeed": 11.850044250488281,
+          "approachSpeed": 11.905235290527344
+        },
+        "candidate": {
+          "name": "stairs",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        "passed": false,
+        "valid": false,
+        "reason": "not reached; no comparison"
+      }
+    ],
+    "errors": [],
+    "measuredComparisons": 5,
+    "notReached": 19
+  },
+  "fullEvidence": "report-full.json.gz",
+  "cases": [
+    {
+      "id": "offroad",
+      "candidate": false,
+      "targetSpeed": 5,
+      "fixtures": [
+        {
+          "t": 2.406,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 18.718,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 19.726,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 35.821,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 43.592,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 60.099,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        }
+      ],
+      "reached": true,
+      "profiles": [
+        {
+          "name": "curb",
+          "samples": 96,
+          "maxRise": 0.026952266693115234,
+          "maxPitch": 0.03227046808164592,
+          "minSpeed": 4.736224174499512,
+          "approachSpeed": 4.946417331695557
+        },
+        {
+          "name": "pad",
+          "samples": 97,
+          "maxRise": 0.05868053436279297,
+          "maxPitch": 0.047656693939429486,
+          "minSpeed": 4.822490692138672,
+          "approachSpeed": 4.913142204284668
+        },
+        {
+          "name": "bridge-seam",
+          "samples": 109,
+          "maxRise": 0.0007886886596679688,
+          "maxPitch": 0.014976390302148554,
+          "minSpeed": 4.744817733764648,
+          "approachSpeed": 4.942451000213623
+        },
+        {
+          "name": "stairs",
+          "samples": 130,
+          "maxRise": 0.2726621627807617,
+          "maxPitch": 0.11383212701034197,
+          "minSpeed": 4.730517864227295,
+          "approachSpeed": 4.897945880889893
+        }
+      ],
+      "sampleCount": 826
+    },
+    {
+      "id": "offroad",
+      "candidate": false,
+      "targetSpeed": 12,
+      "fixtures": [
+        {
+          "t": 2.406,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 18.718,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 19.726,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 35.821,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 43.592,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 60.099,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        }
+      ],
+      "reached": false,
+      "profiles": [
+        {
+          "name": "curb",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        {
+          "name": "pad",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        {
+          "name": "bridge-seam",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        {
+          "name": "stairs",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        }
+      ],
+      "sampleCount": 1
+    },
+    {
+      "id": "coupe",
+      "candidate": false,
+      "targetSpeed": 5,
+      "fixtures": [
+        {
+          "t": 2.406,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 18.718,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 19.726,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 35.821,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 43.592,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 60.099,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        }
+      ],
+      "reached": true,
+      "profiles": [
+        {
+          "name": "curb",
+          "samples": 96,
+          "maxRise": 0.05614757537841797,
+          "maxPitch": 0.041838231084998366,
+          "minSpeed": 4.8852367401124,
+          "approachSpeed": 4.980336189270108
+        },
+        {
+          "name": "pad",
+          "samples": 97,
+          "maxRise": 0.05788421630859375,
+          "maxPitch": 0.04074447148040437,
+          "minSpeed": 4.885271072387736,
+          "approachSpeed": 5.044406890869227
+        },
+        {
+          "name": "bridge-seam",
+          "samples": 107,
+          "maxRise": 0.0003743171691894531,
+          "maxPitch": 0.00919825870026026,
+          "minSpeed": 4.877997398376565,
+          "approachSpeed": 5.008196830749606
+        },
+        {
+          "name": "stairs",
+          "samples": 129,
+          "maxRise": 0.2923140525817871,
+          "maxPitch": 0.1127613290668326,
+          "minSpeed": 4.882999897003291,
+          "approachSpeed": 4.925401210785014
+        }
+      ],
+      "sampleCount": 813
+    },
+    {
+      "id": "coupe",
+      "candidate": false,
+      "targetSpeed": 12,
+      "fixtures": [
+        {
+          "t": 2.406,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 18.718,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 19.726,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 35.821,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 43.592,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 60.099,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        }
+      ],
+      "reached": true,
+      "profiles": [
+        {
+          "name": "curb",
+          "samples": 41,
+          "maxRise": 0.02904510498046875,
+          "maxPitch": 0.02542816619608959,
+          "minSpeed": 11.874822616577148,
+          "approachSpeed": 11.909974098205566
+        },
+        {
+          "name": "pad",
+          "samples": 40,
+          "maxRise": 0.04969596862792969,
+          "maxPitch": 0.03790289488209992,
+          "minSpeed": 11.868857383728027,
+          "approachSpeed": 12.057581901550293
+        },
+        {
+          "name": "bridge-seam",
+          "samples": 45,
+          "maxRise": 0.003852367401123047,
+          "maxPitch": 0.011177906040430154,
+          "minSpeed": 11.855995178222656,
+          "approachSpeed": 11.845940589904785
+        },
+        {
+          "name": "stairs",
+          "samples": 55,
+          "maxRise": 0.26627302169799805,
+          "maxPitch": 0.09497950945686953,
+          "minSpeed": 11.868496894836426,
+          "approachSpeed": 12.031996726989746
+        }
+      ],
+      "sampleCount": 366
+    },
+    {
+      "id": "van",
+      "candidate": false,
+      "targetSpeed": 5,
+      "fixtures": [
+        {
+          "t": 2.406,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 18.718,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 19.726,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 35.821,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 43.592,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 60.099,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        }
+      ],
+      "reached": true,
+      "profiles": [
+        {
+          "name": "curb",
+          "samples": 100,
+          "maxRise": 0.02364492416381836,
+          "maxPitch": 0.028667087429852557,
+          "minSpeed": 4.884727478027344,
+          "approachSpeed": 4.9617133140563965
+        },
+        {
+          "name": "pad",
+          "samples": 99,
+          "maxRise": 0.04790067672729492,
+          "maxPitch": 0.04408764663322222,
+          "minSpeed": 4.8689165115356445,
+          "approachSpeed": 4.943664073944092
+        },
+        {
+          "name": "bridge-seam",
+          "samples": 109,
+          "maxRise": -0.00012683868408203125,
+          "maxPitch": 0.014493126113516492,
+          "minSpeed": 4.880577087402344,
+          "approachSpeed": 4.960872173309326
+        },
+        {
+          "name": "stairs",
+          "samples": 130,
+          "maxRise": 0.24666833877563477,
+          "maxPitch": 0.09089405801161979,
+          "minSpeed": 4.877781867980957,
+          "approachSpeed": 4.940478324890137
+        }
+      ],
+      "sampleCount": 838
+    },
+    {
+      "id": "van",
+      "candidate": false,
+      "targetSpeed": 12,
+      "fixtures": [
+        {
+          "t": 2.406,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 18.718,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 19.726,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 35.821,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 43.592,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 60.099,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        }
+      ],
+      "reached": true,
+      "profiles": [
+        {
+          "name": "curb",
+          "samples": 40,
+          "maxRise": 0.013966560363769531,
+          "maxPitch": 0.032107577311379025,
+          "minSpeed": 11.852134704589844,
+          "approachSpeed": 11.939567565917969
+        },
+        {
+          "name": "pad",
+          "samples": 41,
+          "maxRise": 0.03789567947387695,
+          "maxPitch": 0.040804070352098556,
+          "minSpeed": 11.878363609313965,
+          "approachSpeed": 11.880766868591309
+        },
+        {
+          "name": "bridge-seam",
+          "samples": 45,
+          "maxRise": -0.0010123252868652344,
+          "maxPitch": 0.022496586550598906,
+          "minSpeed": 11.846268653869629,
+          "approachSpeed": 11.937650680541992
+        },
+        {
+          "name": "stairs",
+          "samples": 54,
+          "maxRise": 0.16466093063354492,
+          "maxPitch": 0.06884392240141957,
+          "minSpeed": 11.850044250488281,
+          "approachSpeed": 11.905235290527344
+        }
+      ],
+      "sampleCount": 408
+    },
+    {
+      "id": "offroad",
+      "candidate": true,
+      "targetSpeed": 5,
+      "fixtures": [
+        {
+          "t": 1.655,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 28.688,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 55.733,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 82.779,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 109.819,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 136.876,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        }
+      ],
+      "reached": false,
+      "profiles": [
+        {
+          "name": "curb",
+          "samples": 1130,
+          "maxRise": 0.0674295425415039,
+          "maxPitch": 0.04543283234276071,
+          "minSpeed": 0.010278836050882059,
+          "approachSpeed": 4.954216003417972
+        },
+        {
+          "name": "pad",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        {
+          "name": "bridge-seam",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        {
+          "name": "stairs",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        }
+      ],
+      "sampleCount": 1415
+    },
+    {
+      "id": "offroad",
+      "candidate": true,
+      "targetSpeed": 12,
+      "fixtures": [
+        {
+          "t": 1.655,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 28.688,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 55.733,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 82.779,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 109.819,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 136.876,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        }
+      ],
+      "reached": false,
+      "profiles": [
+        {
+          "name": "curb",
+          "samples": 1219,
+          "maxRise": 0.33597564697265625,
+          "maxPitch": 0.22011255082894965,
+          "minSpeed": 0.006737301011922738,
+          "approachSpeed": 11.936419486999512
+        },
+        {
+          "name": "pad",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        {
+          "name": "bridge-seam",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        {
+          "name": "stairs",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        }
+      ],
+      "sampleCount": 1381
+    },
+    {
+      "id": "coupe",
+      "candidate": true,
+      "targetSpeed": 5,
+      "fixtures": [
+        {
+          "t": 1.655,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 28.688,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 55.733,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 82.779,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 109.819,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 136.876,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        }
+      ],
+      "reached": false,
+      "profiles": [
+        {
+          "name": "curb",
+          "samples": 1137,
+          "maxRise": 0.08940935134887695,
+          "maxPitch": 0.043821190737830716,
+          "minSpeed": 0.0028889756243176854,
+          "approachSpeed": 5.004290580749512
+        },
+        {
+          "name": "pad",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        {
+          "name": "bridge-seam",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        {
+          "name": "stairs",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        }
+      ],
+      "sampleCount": 1413
+    },
+    {
+      "id": "coupe",
+      "candidate": true,
+      "targetSpeed": 12,
+      "fixtures": [
+        {
+          "t": 1.655,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 28.688,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 55.733,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 82.779,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 109.819,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 136.876,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        }
+      ],
+      "reached": false,
+      "profiles": [
+        {
+          "name": "curb",
+          "samples": 1260,
+          "maxRise": 0.3786749839782715,
+          "maxPitch": 0.26371502109017,
+          "minSpeed": 0.0019345942288554723,
+          "approachSpeed": 11.894649505615234
+        },
+        {
+          "name": "pad",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        {
+          "name": "bridge-seam",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        {
+          "name": "stairs",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        }
+      ],
+      "sampleCount": 1406
+    },
+    {
+      "id": "van",
+      "candidate": true,
+      "targetSpeed": 5,
+      "fixtures": [
+        {
+          "t": 1.655,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 28.688,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 55.733,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 82.779,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 109.819,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 136.876,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        }
+      ],
+      "reached": false,
+      "profiles": [
+        {
+          "name": "curb",
+          "samples": 1078,
+          "maxRise": 0.12486791610717773,
+          "maxPitch": 0.04645072160687451,
+          "minSpeed": 0.02146719256329864,
+          "approachSpeed": 4.930654525756836
+        },
+        {
+          "name": "pad",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        {
+          "name": "bridge-seam",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        {
+          "name": "stairs",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        }
+      ],
+      "sampleCount": 1361
+    },
+    {
+      "id": "van",
+      "candidate": true,
+      "targetSpeed": 12,
+      "fixtures": [
+        {
+          "t": 1.655,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 28.688,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 55.733,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 82.779,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 109.819,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        },
+        {
+          "t": 136.876,
+          "to": [
+            80,
+            6,
+            117.5
+          ],
+          "reason": "QA transition A/B start"
+        }
+      ],
+      "reached": false,
+      "profiles": [
+        {
+          "name": "curb",
+          "samples": 1193,
+          "maxRise": 0.5360879898071289,
+          "maxPitch": 0.33748789717370586,
+          "minSpeed": 0.004522806755903438,
+          "approachSpeed": 11.937681198120117
+        },
+        {
+          "name": "pad",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        {
+          "name": "bridge-seam",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        },
+        {
+          "name": "stairs",
+          "samples": 0,
+          "maxRise": null,
+          "maxPitch": null,
+          "minSpeed": null,
+          "approachSpeed": null
+        }
+      ],
+      "sampleCount": 1365
+    }
+  ],
+  "checks": []
+}

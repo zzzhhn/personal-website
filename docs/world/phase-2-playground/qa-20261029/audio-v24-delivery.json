@@ -1,0 +1,15 @@
+{
+  "4341": {
+    "status": 200,
+    "matchesBuild": true,
+    "htmlSHA256": "b63410afde5dc10f3203db950c3c6e182cbbad07dd506173c9352effa7e8bb8b"
+  },
+  "4343": {
+    "status": 200,
+    "matchesBuild": true,
+    "htmlSHA256": "b63410afde5dc10f3203db950c3c6e182cbbad07dd506173c9352effa7e8bb8b"
+  },
+  "build": "/tmp/bobby-world-v24-20261029",
+  "baseCommit": "fca244e",
+  "patch": "Park source trims only; candidate track offline"
+}

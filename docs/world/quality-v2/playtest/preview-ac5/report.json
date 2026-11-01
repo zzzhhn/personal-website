@@ -1,0 +1,265 @@
+{
+  "base": "https://5baceb96.personal-website-aew.pages.dev",
+  "checkedAt": "2026-10-21T11:47:31.592Z",
+  "commit": "ac5eb16cda5cb4b3baaab6e8a6c83cd244fc2301",
+  "assets": [
+    {
+      "id": "G16",
+      "status": 200,
+      "sha256": "951d6c001a5536437bf795967d74750de0eacc4757f48ac9c3c0cae727b19472",
+      "matches": true
+    },
+    {
+      "id": "G17",
+      "status": 200,
+      "sha256": "b03f9dc88f253eb7011b64f607e50785f4410131d2e17079c704c2bb6b1ed116",
+      "matches": true
+    },
+    {
+      "id": "G18",
+      "status": 200,
+      "sha256": "2a3e6555426c51dcfd9baeff8d35791fe3658e9c6fcd3915b2a8a5a6e0ece385",
+      "matches": true
+    },
+    {
+      "id": "G19",
+      "status": 200,
+      "sha256": "a5ecd893344a0188cce3df1915cfe7360dba507e2156adb9b63533157c15ec22",
+      "matches": true
+    },
+    {
+      "id": "G20",
+      "status": 200,
+      "sha256": "9e4421962be721a7a5edd6491936c64f9827a6ab640c7d8ab87002650ff0b921",
+      "matches": true
+    },
+    {
+      "id": "G21",
+      "status": 200,
+      "sha256": "98a0a74799d15b11ca4b2dac2518dab8f2be6ce63e834c09d8ca606d325200ed",
+      "matches": true
+    },
+    {
+      "id": "G22",
+      "status": 200,
+      "sha256": "40f7e4121004bbb06c994e12f841951c25f153b3d3d29ec52c948d4a580f7c73",
+      "matches": true
+    },
+    {
+      "id": "G23",
+      "status": 200,
+      "sha256": "2c8055759722362e0b37f71bfaeb13e98d57646ea6c2b0940f186fea11125e55",
+      "matches": true
+    },
+    {
+      "id": "G24",
+      "status": 200,
+      "sha256": "d3ccc5919af10f6614e91c3d31d548c6135bb4c0ba29dbaca6da558c0ac89357",
+      "matches": true
+    },
+    {
+      "id": "C03",
+      "status": 200,
+      "sha256": "4c6274a202639c407ad68f1e30cf1fadacf3f2bf0ff2c7cd1ac72a506c93acde",
+      "matches": true
+    },
+    {
+      "id": "C04",
+      "status": 200,
+      "sha256": "0d4b22d1836247b54393ec67e1c01e6c516296a14061e3c00abb76b3553f3f94",
+      "matches": true
+    },
+    {
+      "id": "C05",
+      "status": 200,
+      "sha256": "54790864187123a55c4fd00590186a1e958990ca735a9861c00304332a316692",
+      "matches": true
+    },
+    {
+      "id": "C06",
+      "status": 200,
+      "sha256": "401862b7b8ea1cea4cfafbccb26f38760025f34f006ba47463f6072ae5c8a556",
+      "matches": true
+    },
+    {
+      "id": "C07",
+      "status": 200,
+      "sha256": "ea34c4389d8504410746a43ba5b228aba1d46cf525eca3659abcbf34cebc6873",
+      "matches": true
+    },
+    {
+      "id": "C08",
+      "status": 200,
+      "sha256": "4e37c8ef5f4f4476b8f2f4a16efd1374d63c5c7667cfc8ce4101cf4816e85208",
+      "matches": true
+    },
+    {
+      "id": "C09",
+      "status": 200,
+      "sha256": "c69ff479cdc85e4dacd6acee8dac97a0405c1f8d3896f709d17773f44e74b525",
+      "matches": true
+    },
+    {
+      "id": "C10",
+      "status": 200,
+      "sha256": "abc8d47e2e3525412f495f0b1285c2cb70b9a6002c9405f72e10e175a79c6f32",
+      "matches": true
+    }
+  ],
+  "errors": [],
+  "httpErrors": [],
+  "pageStatus": 200,
+  "runtime": {
+    "actor": {
+      "loaded": true,
+      "moving": false,
+      "running": false,
+      "airborne": false,
+      "animation": "Idle",
+      "animationTime": 2.2998000000119196,
+      "animationTimeScale": 1,
+      "mixerTime": 2.2998000000119196,
+      "speedMps": 0,
+      "visible": true,
+      "root": [
+        -42,
+        4.800358790774122,
+        35
+      ],
+      "soleCorrection": 0.0014999765346201386,
+      "soles": {
+        "left": {
+          "minY": 4.800358959273986,
+          "position": [
+            -41.9613544566125,
+            4.800358959273986,
+            34.89199970422929
+          ]
+        },
+        "right": {
+          "minY": 4.800358814239502,
+          "position": [
+            -41.96135449281842,
+            4.800358814239502,
+            35.108000049676804
+          ]
+        }
+      }
+    },
+    "render": {
+      "drawingBuffer": [
+        1920,
+        1080
+      ],
+      "cssSize": [
+        1920,
+        1080
+      ],
+      "pixelRatio": 1,
+      "dprRange": [
+        0,
+        2
+      ],
+      "quality": "high",
+      "antialias": true,
+      "msaaSamples": 4,
+      "toneMapping": 4,
+      "outputColorSpace": "srgb",
+      "shadowMapSize": 4096,
+      "shadowType": 1,
+      "postprocessing": []
+    },
+    "campShapes": 98,
+    "snapshot": {
+      "player": [
+        -42,
+        5.618858814239502,
+        35
+      ],
+      "activeVehicle": null,
+      "canRecover": false,
+      "grounded": true,
+      "playerVelocity": [
+        0,
+        0,
+        0
+      ],
+      "playerCollider": {
+        "radius": 0.34,
+        "halfHeight": 0.48,
+        "centerHeight": 0.8200000000000001
+      },
+      "playerYaw": 0,
+      "physicsStep": 304,
+      "vehicles": [
+        {
+          "id": "offroad",
+          "position": [
+            -26.00619125366211,
+            5.896547794342041,
+            34
+          ],
+          "velocity": [
+            4.0140641033303837e-8,
+            -0.06119502708315849,
+            0
+          ],
+          "mass": 1400,
+          "wheelContacts": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "upsideDownSeconds": 0,
+          "waterSeconds": 0
+        },
+        {
+          "id": "coupe",
+          "position": [
+            19.799999237060547,
+            2.1359031200408936,
+            12.002385139465332
+          ],
+          "velocity": [
+            3.747414467625276e-8,
+            -0.0611899234354496,
+            1.0700636821070475e-8
+          ],
+          "mass": 1100,
+          "wheelContacts": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "upsideDownSeconds": 0,
+          "waterSeconds": 0
+        },
+        {
+          "id": "van",
+          "position": [
+            45.9923095703125,
+            2.4549784660339355,
+            -45
+          ],
+          "velocity": [
+            2.0939149081300457e-8,
+            -0.0611904002726078,
+            8.349914108899017e-21
+          ],
+          "mass": 2100,
+          "wheelContacts": [
+            true,
+            true,
+            true,
+            true
+          ],
+          "upsideDownSeconds": 0,
+          "waterSeconds": 0
+        }
+      ]
+    }
+  },
+  "passed": true
+}

@@ -1,0 +1,333 @@
+{
+ "ribbons": [
+  {
+   "components": [
+    {
+     "segments": 49,
+     "sharedRingVertices": 400,
+     "arcLengthM": 7.068873977334804,
+     "widthRangeM": [
+      0.020239874413696884,
+      0.22597274449402827
+     ],
+     "closedSignedVolumeM3": 0.054687426580737004,
+     "surface": "mineral"
+    },
+    {
+     "segments": 49,
+     "sharedRingVertices": 400,
+     "arcLengthM": 5.742703355158003,
+     "widthRangeM": [
+      0.041432173389605996,
+      0.2289995485879424
+     ],
+     "closedSignedVolumeM3": 0.0452951065963134,
+     "surface": "mineral"
+    }
+   ],
+   "projectedSamples": 408,
+   "maxEdgeProjectionM": 0.07986069470643997
+  },
+  {
+   "components": [
+    {
+     "segments": 8,
+     "sharedRingVertices": 72,
+     "arcLengthM": 0.902500761228166,
+     "widthRangeM": [
+      0.007567914309893734,
+      0.06988235700841605
+     ],
+     "closedSignedVolumeM3": 0.0017388610479732323,
+     "surface": "mineral"
+    },
+    {
+     "segments": 9,
+     "sharedRingVertices": 80,
+     "arcLengthM": 1.271011301710209,
+     "widthRangeM": [
+      0.014352798335179934,
+      0.05308145145436057
+     ],
+     "closedSignedVolumeM3": 0.00152652399568372,
+     "surface": "mineral"
+    }
+   ],
+   "projectedSamples": 76,
+   "maxEdgeProjectionM": 0.015399985015392303
+  },
+  {
+   "components": [
+    {
+     "segments": 15,
+     "sharedRingVertices": 128,
+     "arcLengthM": 0.9468538455425511,
+     "widthRangeM": [
+      0.007567851156237337,
+      0.06559514695566833
+     ],
+     "closedSignedVolumeM3": 0.0010250958924492236,
+     "surface": "mineral"
+    }
+   ],
+   "projectedSamples": 68,
+   "maxEdgeProjectionM": 0.027422448620200157
+  },
+  {
+   "components": [
+    {
+     "segments": 14,
+     "sharedRingVertices": 120,
+     "arcLengthM": 0.6074970689338347,
+     "widthRangeM": [
+      0.006166172138948471,
+      0.03140836722816472
+     ],
+     "closedSignedVolumeM3": 0.0005576044398670397,
+     "surface": "mineral"
+    }
+   ],
+   "projectedSamples": 64,
+   "maxEdgeProjectionM": 0.00019520065688993782
+  },
+  {
+   "components": [
+    {
+     "segments": 9,
+     "sharedRingVertices": 80,
+     "arcLengthM": 0.3376964570555531,
+     "widthRangeM": [
+      0.006796526369882417,
+      0.03140802485222589
+     ],
+     "closedSignedVolumeM3": 0.0003567424137145288,
+     "surface": "mineral"
+    }
+   ],
+   "projectedSamples": 64,
+   "maxEdgeProjectionM": 0.005612273700535297
+  },
+  {
+   "components": [
+    {
+     "segments": 14,
+     "sharedRingVertices": 120,
+     "arcLengthM": 0.6264782066354906,
+     "widthRangeM": [
+      0.006167130650414178,
+      0.03140874365351157
+     ],
+     "closedSignedVolumeM3": 0.0006434399401769038,
+     "surface": "mineral"
+    }
+   ],
+   "projectedSamples": 64,
+   "maxEdgeProjectionM": 0.003626852994784713
+  },
+  {
+   "components": [
+    {
+     "segments": 7,
+     "sharedRingVertices": 64,
+     "arcLengthM": 0.35851584541825887,
+     "widthRangeM": [
+      0.006830337957941692,
+      0.03140819520814114
+     ],
+     "closedSignedVolumeM3": 0.0002897864857610933,
+     "surface": "mineral"
+    }
+   ],
+   "projectedSamples": 64,
+   "maxEdgeProjectionM": 0.0015697268536314368
+  },
+  {
+   "components": [
+    {
+     "segments": 8,
+     "sharedRingVertices": 72,
+     "arcLengthM": 1.0603660984613872,
+     "widthRangeM": [
+      0.008111070500033781,
+      0.02268352443069875
+     ],
+     "closedSignedVolumeM3": 0.0008039249999759091,
+     "surface": "fracture"
+    }
+   ],
+   "projectedSamples": 76,
+   "maxEdgeProjectionM": 0.0036329864524304867
+  },
+  {
+   "components": [
+    {
+     "segments": 5,
+     "sharedRingVertices": 48,
+     "arcLengthM": 0.5322033562388132,
+     "widthRangeM": [
+      0.008111875308545884,
+      0.022684472165225286
+     ],
+     "closedSignedVolumeM3": 0.0003693162774046244,
+     "surface": "fracture"
+    },
+    {
+     "segments": 9,
+     "sharedRingVertices": 80,
+     "arcLengthM": 0.9836107160378059,
+     "widthRangeM": [
+      0.006798163765262864,
+      0.021289334710070676
+     ],
+     "closedSignedVolumeM3": 0.0005886723132183156,
+     "surface": "fracture"
+    }
+   ],
+   "projectedSamples": 76,
+   "maxEdgeProjectionM": 0.0018211319111287594
+  },
+  {
+   "components": [
+    {
+     "segments": 80,
+     "sharedRingVertices": 648,
+     "arcLengthM": 9.233684604557167,
+     "widthRangeM": [
+      0.05006545245220285,
+      0.2838661170153757
+     ],
+     "closedSignedVolumeM3": 0.09145182460391273,
+     "surface": "mineral"
+    }
+   ],
+   "projectedSamples": 324,
+   "maxEdgeProjectionM": 0.09025171399116516
+  },
+  {
+   "components": [
+    {
+     "segments": 18,
+     "sharedRingVertices": 152,
+     "arcLengthM": 1.806124985992595,
+     "widthRangeM": [
+      0.011023917398569113,
+      0.07456016518570707
+     ],
+     "closedSignedVolumeM3": 0.0037158805256088607,
+     "surface": "mineral"
+    }
+   ],
+   "projectedSamples": 76,
+   "maxEdgeProjectionM": 0.011411787010729313
+  },
+  {
+   "components": [
+    {
+     "segments": 18,
+     "sharedRingVertices": 152,
+     "arcLengthM": 2.271676857196709,
+     "widthRangeM": [
+      0.011024088341287862,
+      0.07456108589499018
+     ],
+     "closedSignedVolumeM3": 0.004901797200242673,
+     "surface": "mineral"
+    }
+   ],
+   "projectedSamples": 76,
+   "maxEdgeProjectionM": 0.004371223505586386
+  },
+  {
+   "components": [
+    {
+     "segments": 16,
+     "sharedRingVertices": 136,
+     "arcLengthM": 4.609842883702414,
+     "widthRangeM": [
+      0.05330045467517265,
+      0.2843896981460276
+     ],
+     "closedSignedVolumeM3": 0.04082015032569572,
+     "surface": "mineral"
+    },
+    {
+     "segments": 6,
+     "sharedRingVertices": 56,
+     "arcLengthM": 1.3082015361438986,
+     "widthRangeM": [
+      0.12276086049784878,
+      0.2780419883229184
+     ],
+     "closedSignedVolumeM3": 0.01515848189592362,
+     "surface": "mineral"
+    },
+    {
+     "segments": 42,
+     "sharedRingVertices": 344,
+     "arcLengthM": 11.780298956311213,
+     "widthRangeM": [
+      0.12124505223577478,
+      0.28727858205188667
+     ],
+     "closedSignedVolumeM3": 0.12397346905587858,
+     "surface": "mineral"
+    },
+    {
+     "segments": 5,
+     "sharedRingVertices": 48,
+     "arcLengthM": 1.300530380324149,
+     "widthRangeM": [
+      0.029995936830136672,
+      0.23360639605920935
+     ],
+     "closedSignedVolumeM3": 0.002932538588841755,
+     "surface": "mineral"
+    }
+   ],
+   "projectedSamples": 308,
+   "maxEdgeProjectionM": 0.07727625966072083
+  },
+  {
+   "components": [
+    {
+     "segments": 17,
+     "sharedRingVertices": 144,
+     "arcLengthM": 2.1498639528487744,
+     "widthRangeM": [
+      0.013238679191149709,
+      0.08433916080493319
+     ],
+     "closedSignedVolumeM3": 5.96581182132358e-05,
+     "surface": "mineral"
+    }
+   ],
+   "projectedSamples": 76,
+   "maxEdgeProjectionM": 0.0016690834891051054
+  },
+  {
+   "components": [
+    {
+     "segments": 12,
+     "sharedRingVertices": 104,
+     "arcLengthM": 0.959790593014595,
+     "widthRangeM": [
+      0.01581490098726949,
+      0.08433673055411194
+     ],
+     "closedSignedVolumeM3": 0.0027048798898855904,
+     "surface": "mineral"
+    }
+   ],
+   "projectedSamples": 52,
+   "maxEdgeProjectionM": 3.82214057026431e-06
+  }
+ ],
+ "edgeFractureGrains": 24,
+ "frontOffsetRangeM": [
+  0.0015,
+  0.014
+ ],
+ "embeddedThicknessM": 0.045,
+ "construction": "shared eight-vertex jagged rings with narrow mineral core and host-coloured lips; end caps only at actual terminations",
+ "collision": "visual inlay; existing host wall collider retained"
+}

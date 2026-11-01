@@ -1,0 +1,165 @@
+{
+  "passed": true,
+  "baselineRevision": "2d1b9c89b9ffdad87143c3d49d92759565804cd7",
+  "assets": [
+    {
+      "asset": "G25",
+      "triangles": 14802,
+      "baseline": 13956,
+      "triangleDeltaRatio": 0.06061908856405851,
+      "materialsExact": true,
+      "closedBoundsMaxDeltaM": 0.0,
+      "closedBoundsToleranceM": 0,
+      "doorParentage": true,
+      "hinges": true,
+      "glbSha256": "9099415b66c084be65c70fdb57c4715948e7768eb9bff1c2b19dec52c62fbfef",
+      "bounds": [
+        [
+          -2.04,
+          -1.185,
+          0.0
+        ],
+        [
+          2.06,
+          1.185,
+          2.267
+        ]
+      ]
+    },
+    {
+      "asset": "G25-lod1",
+      "triangles": 4820,
+      "baseline": 3696,
+      "triangleDeltaRatio": 0.3041125541125542,
+      "materialsExact": true,
+      "closedBoundsMaxDeltaM": 0.0009000000000001229,
+      "closedBoundsToleranceM": 0.001,
+      "doorParentage": true,
+      "hinges": true,
+      "glbSha256": "3fe679a5060a3e04cde06d3691479e92a39c603d2230c8fe30fd51f7d98e28c0",
+      "bounds": [
+        [
+          -2.0354,
+          -1.1767,
+          0.0
+        ],
+        [
+          2.058,
+          1.1758,
+          2.2691
+        ]
+      ]
+    },
+    {
+      "asset": "G26",
+      "triangles": 12414,
+      "baseline": 11250,
+      "triangleDeltaRatio": 0.1034666666666666,
+      "materialsExact": true,
+      "closedBoundsMaxDeltaM": 0.0,
+      "closedBoundsToleranceM": 0,
+      "doorParentage": true,
+      "hinges": true,
+      "glbSha256": "e394ee84a4aa687551e804e6915c3356cd601907d85906871e195087710f7999",
+      "bounds": [
+        [
+          -2.205,
+          -1.07,
+          0.0
+        ],
+        [
+          2.2,
+          1.07,
+          1.305
+        ]
+      ]
+    },
+    {
+      "asset": "G26-lod1",
+      "triangles": 4618,
+      "baseline": 3338,
+      "triangleDeltaRatio": 0.3834631515877771,
+      "materialsExact": true,
+      "closedBoundsMaxDeltaM": 0.0,
+      "closedBoundsToleranceM": 0.001,
+      "doorParentage": true,
+      "hinges": true,
+      "glbSha256": "6597aa2c90d9d75ee77b2048e9f45385e783f42da46acb841f11ff3dba2d1128",
+      "bounds": [
+        [
+          -2.2,
+          -1.065,
+          0.0
+        ],
+        [
+          2.2,
+          1.065,
+          1.29
+        ]
+      ]
+    },
+    {
+      "asset": "G27",
+      "triangles": 13830,
+      "baseline": 12868,
+      "triangleDeltaRatio": 0.07475909232203914,
+      "materialsExact": true,
+      "closedBoundsMaxDeltaM": 0.0,
+      "closedBoundsToleranceM": 0,
+      "doorParentage": true,
+      "hinges": true,
+      "glbSha256": "822c27860bc26e6683369307cac0a0817d4ca256fc631d0c6c9e82b25f46f428",
+      "bounds": [
+        [
+          -2.52,
+          -1.33,
+          0.0
+        ],
+        [
+          2.426,
+          1.33,
+          2.602
+        ]
+      ]
+    },
+    {
+      "asset": "G27-lod1",
+      "triangles": 4456,
+      "baseline": 3256,
+      "triangleDeltaRatio": 0.3685503685503686,
+      "materialsExact": true,
+      "closedBoundsMaxDeltaM": 0.0,
+      "closedBoundsToleranceM": 0.001,
+      "doorParentage": true,
+      "hinges": true,
+      "glbSha256": "5a5a81e53a1a2dbc05bd8d154801794f0d7640dd27e3b62dffb0c8c158cfcde4",
+      "bounds": [
+        [
+          -2.5154,
+          -1.3217,
+          0.0
+        ],
+        [
+          2.4252,
+          1.3217,
+          2.6043
+        ]
+      ]
+    }
+  ],
+  "sourceSha256": {
+    "build_doors.py": "278066c74f0164e8b57dea745f962b70e3e33fbbbffab0c82bb934fb39183e38",
+    "qa_doors.py": "fb547895788e91cac77363505bbe805d2bbea31b302ffedb6264a772a22ec8d7",
+    "build_vehicle.py": "86607365815eb3b6a6d0dbfd00dd094e34306ade7f3a0773f4e7c1713ada3689",
+    "build_lod.py": "0051fb26c807034e812b2b3ac42ca6f3dbc8bf245604ce108449b00297134046",
+    "vehlib.py": "36b1d22d84d272aefc0a35b809b09879757de78be540e533890ce9e06d45a066",
+    "door-contract.json": "659e50d21b16fdf9a31d3ff5ad7a498d3ffc639de14a3aad6e860f0b5a7da72f"
+  },
+  "colliderSha256": "22aa21565e3cb50b7aeb960fcd3d84fc7fc644db7a4254fb3872819a5d5f3dd7",
+  "temporaryFitCompanion": {
+    "path": "/tmp/vehicle-door-G26-uncompressed.glb",
+    "sha256": "d22db037b845183d9b5f9cb07f462ddc20f3b5b337b2008332717e109ca3c774",
+    "bytes": 312072,
+    "owner": "primary runtime fit analysis; remove after acceptance"
+  }
+}

@@ -1,0 +1,124 @@
+{
+ "baseline": "3870aef",
+ "panes": {
+  "left": "baseline",
+  "right": "candidate"
+ },
+ "images": [
+  "/tmp/quarry-v4-entrance-comparison.png",
+  "/tmp/quarry-v4-seam-comparison.png"
+ ],
+ "resolution": [
+  1280,
+  640
+ ],
+ "runs": {
+  "before": {
+   "images": [
+    "quarry-v4-before-entrance.png",
+    "quarry-v4-before-seam.png"
+   ],
+   "renderer": "BLENDER_EEVEE",
+   "resolution": [
+    640,
+    640
+   ],
+   "viewTransform": "AgX",
+   "look": "None",
+   "exposure": 0,
+   "gamma": 1,
+   "views": [
+    [
+     "quarry-v4-before-entrance",
+     [
+      2.8,
+      1.55,
+      -7.0
+     ],
+     [
+      -5.5,
+      3.0,
+      -24.0
+     ]
+    ],
+    [
+     "quarry-v4-before-seam",
+     [
+      -3.4,
+      1.55,
+      -16.5
+     ],
+     [
+      -7.0,
+      1.65,
+      -21.0
+     ]
+    ]
+   ],
+   "scope": "fresh exact delivered GLB; studio lights/floor/cameras and basin water are preview only; not game integration or character validation",
+   "flora": {
+    "grass": 716,
+    "rosettes": 174,
+    "flowers": 195,
+    "scope": "static pose of runtime banks for composition only; not wind or trample verification"
+   },
+   "staticSha256": "51f5cea6b3318b610a8fef5fe6484fef8d0f6e50f3744f8403fd2f918beb56ca",
+   "veinsSha256": "7ff42255aae79cc25752e55f46ec35fbd5850db3e5c45d311c8b05809061adb7"
+  },
+  "after": {
+   "images": [
+    "quarry-v4-after-entrance.png",
+    "quarry-v4-after-seam.png"
+   ],
+   "renderer": "BLENDER_EEVEE",
+   "resolution": [
+    640,
+    640
+   ],
+   "viewTransform": "AgX",
+   "look": "None",
+   "exposure": 0,
+   "gamma": 1,
+   "views": [
+    [
+     "quarry-v4-after-entrance",
+     [
+      2.8,
+      1.55,
+      -7.0
+     ],
+     [
+      -5.5,
+      3.0,
+      -24.0
+     ]
+    ],
+    [
+     "quarry-v4-after-seam",
+     [
+      -3.4,
+      1.55,
+      -16.5
+     ],
+     [
+      -7.0,
+      1.65,
+      -21.0
+     ]
+    ]
+   ],
+   "scope": "fresh exact delivered GLB; studio lights/floor/cameras and basin water are preview only; not game integration or character validation",
+   "flora": {
+    "grass": 709,
+    "rosettes": 197,
+    "flowers": 214,
+    "scope": "static pose of runtime banks for composition only; not wind or trample verification"
+   },
+   "staticSha256": "ea408556a70832e5eae6d4ee593d578d63c79656510cab271af38393e6949e2f",
+   "veinsSha256": "77892e38b68bc73cc84ecc9b9df189cc8b1d1ee6eee4240b3ba5600753ad2230"
+  }
+ },
+ "sameLightingAndColorManagement": true,
+ "floraSource": "same current runtime bank in both panes",
+ "limits": "exact GLB asset comparison; not browser, wind/trample, long-running performance or user acceptance"
+}

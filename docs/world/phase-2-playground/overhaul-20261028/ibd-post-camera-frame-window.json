@@ -1,0 +1,108 @@
+{
+  "frameWindow": {
+    "frames": 2282,
+    "activeSeconds": 38.03540000000596,
+    "maxMs": 23,
+    "slow25Ratio": 0,
+    "slow33Ratio": 0,
+    "percentileSamples": 1800,
+    "p50Ms": 16.700000762939453,
+    "p95Ms": 17.299999237060547,
+    "changedDuringWindow": false,
+    "slowestFrames": []
+  },
+  "shadowRebuilds": [
+    {
+      "frame": 24151,
+      "elapsedMs": 340.69999998807907,
+      "durationMs": 280.30000001192093,
+      "rigidCasters": 183,
+      "trainCasters": 3,
+      "trainMergedBefore": 0,
+      "trainRigid": 0,
+      "chunks": 380
+    }
+  ],
+  "render": {
+    "sampledAt": "2026-10-28T02:50:59.193Z",
+    "calls": 58,
+    "triangles": 182566,
+    "geometries": 287,
+    "textures": 60,
+    "programs": 167,
+    "camera": [
+      -83.65,
+      3.968036818865708,
+      -173.48578033411127
+    ],
+    "mode": "always",
+    "frame": 26467,
+    "delta": 0.0195,
+    "night": 0,
+    "windTime": 439.79919999999424,
+    "frameMs": {
+      "samples": 180,
+      "p50": 16.700000762939453,
+      "p95": 17.299999237060547,
+      "max": 23
+    },
+    "drawingBuffer": [
+      1951,
+      1062
+    ],
+    "cssSize": [
+      1710,
+      931
+    ],
+    "pixelRatio": 1.1412731405118963,
+    "dprRange": [
+      0,
+      1.5
+    ],
+    "quality": "balanced",
+    "antialias": true,
+    "msaaSamples": 4,
+    "toneMapping": 4,
+    "outputColorSpace": "srgb",
+    "shadowMapSize": 1254,
+    "shadowType": 1,
+    "postprocessing": [],
+    "coasterVegetation": [
+      {
+        "name": "coaster-ST1-L0",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      },
+      {
+        "name": "coaster-ST1-L1",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      },
+      {
+        "name": "coaster-ST2-L0",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      },
+      {
+        "name": "coaster-ST2-L1",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      },
+      {
+        "name": "coaster-G19",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 7
+      }
+    ]
+  }
+}

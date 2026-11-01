@@ -1,0 +1,1338 @@
+{
+ "staticRatioPass": true,
+ "distanceSwitchPass": true,
+ "instanceRatioPass": true,
+ "colliderHandlesStable": true,
+ "wallBlocked": true,
+ "errors": [],
+ "rawEvidence": "/Users/bobby/Desktop/3D-personal-world/evidence/park-integration/lod-final/lod-bot.json",
+ "runs": [
+  {
+   "id": "near-park",
+   "lod": [
+    {
+     "id": "plaza",
+     "center": [
+      45,
+      1.15,
+      -45
+     ],
+     "distance": 15.844516453537276,
+     "level": 0,
+     "nearTriangles": 8300,
+     "farTriangles": 110,
+     "ratio": 0.01325301204819277,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "walk-0",
+     "center": [
+      56.5,
+      1.14,
+      -43
+     ],
+     "distance": 17.55255418602539,
+     "level": 0,
+     "nearTriangles": 1417,
+     "farTriangles": 362,
+     "ratio": 0.255469301340861,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "walk-1",
+     "center": [
+      66.5,
+      1.14,
+      -31
+     ],
+     "distance": 31.63069227930571,
+     "level": 0,
+     "nearTriangles": 2087,
+     "farTriangles": 474,
+     "ratio": 0.22712026832774318,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "walk-2",
+     "center": [
+      62.5,
+      1.14,
+      -14.5
+     ],
+     "distance": 44.806659039610686,
+     "level": 0,
+     "nearTriangles": 2155,
+     "farTriangles": 518,
+     "ratio": 0.24037122969837588,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "lamp-pools",
+     "center": [
+      64,
+      1.14,
+      -28
+     ],
+     "distance": 33.01003604562357,
+     "level": 0,
+     "nearTriangles": 0,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "signs",
+     "center": [
+      64,
+      1.14,
+      -28
+     ],
+     "distance": 33.01003604562357,
+     "level": 0,
+     "nearTriangles": 5054,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "hut-alpha-agent",
+     "center": [
+      59,
+      2.1399999999999997,
+      -49
+     ],
+     "distance": 14.105973183429551,
+     "level": 0,
+     "nearTriangles": 3104,
+     "farTriangles": 360,
+     "ratio": 0.11597938144329897,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "hut-evalforge",
+     "center": [
+      72,
+      2.1399999999999997,
+      -40
+     ],
+     "distance": 28.434033555319115,
+     "level": 0,
+     "nearTriangles": 3228,
+     "farTriangles": 360,
+     "ratio": 0.11152416356877323,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "hut-djc",
+     "center": [
+      77,
+      2.1399999999999997,
+      -28
+     ],
+     "distance": 39.90880168084893,
+     "level": 0,
+     "nearTriangles": 3360,
+     "farTriangles": 360,
+     "ratio": 0.10714285714285714,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "hut-hepai",
+     "center": [
+      73,
+      2.1399999999999997,
+      -16
+     ],
+     "distance": 47.20792319249417,
+     "level": 0,
+     "nearTriangles": 3264,
+     "farTriangles": 360,
+     "ratio": 0.11029411764705882,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "hut-accompany",
+     "center": [
+      61,
+      2.1399999999999997,
+      -20
+     ],
+     "distance": 39.0229235620575,
+     "level": 0,
+     "nearTriangles": 3032,
+     "farTriangles": 360,
+     "ratio": 0.11873350923482849,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "hut-interactive-learning",
+     "center": [
+      50,
+      2.1399999999999997,
+      -12.000000000000002
+     ],
+     "distance": 45.42086550581671,
+     "level": 0,
+     "nearTriangles": 3300,
+     "farTriangles": 360,
+     "ratio": 0.10909090909090909,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "exhibits-alpha-agent",
+     "center": [
+      59.06499336836197,
+      2.1399999999999997,
+      -49.16248342090492
+     ],
+     "distance": 14.057904416543902,
+     "level": 0,
+     "nearTriangles": 2476,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "exhibits-evalforge",
+     "center": [
+      72.16861563418523,
+      2.1399999999999997,
+      -40.04683767616257
+     ],
+     "distance": 28.53454776408131,
+     "level": 0,
+     "nearTriangles": 1236,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "exhibits-djc",
+     "center": [
+      77.16861563418523,
+      2.1399999999999997,
+      -28.046837676162564
+     ],
+     "distance": 39.987506243712,
+     "level": 0,
+     "nearTriangles": 2588,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "exhibits-hepai",
+     "center": [
+      73.1322455894882,
+      2.1399999999999997,
+      -15.885387155776879
+     ],
+     "distance": 47.36978819643849,
+     "level": 0,
+     "nearTriangles": 3268,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "exhibits-accompany",
+     "center": [
+      60.867754410511786,
+      2.1399999999999997,
+      -20.114612844223124
+     ],
+     "distance": 38.87970921450763,
+     "level": 0,
+     "nearTriangles": 2074,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "exhibits-interactive-learning",
+     "center": [
+      49.86556127607046,
+      2.1399999999999997,
+      -12.112032269941285
+     ],
+     "distance": 45.31232164615924,
+     "level": 0,
+     "nearTriangles": 832,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    }
+   ],
+   "instances": [
+    {
+     "id": "rail",
+     "nearCount": 42,
+     "farCount": 0,
+     "nearTrianglesEach": 84,
+     "farTrianglesEach": 24
+    },
+    {
+     "id": "lamp",
+     "nearCount": 9,
+     "farCount": 0,
+     "nearTrianglesEach": 324,
+     "farTrianglesEach": 36
+    },
+    {
+     "id": "exhibit-P12-stool",
+     "nearCount": 1,
+     "farCount": 0,
+     "nearTrianglesEach": 296,
+     "farTrianglesEach": 0
+    },
+    {
+     "id": "exhibit-P14-crate",
+     "nearCount": 1,
+     "farCount": 0,
+     "nearTrianglesEach": 296,
+     "farTrianglesEach": 0
+    },
+    {
+     "id": "exhibit-P15-stool",
+     "nearCount": 1,
+     "farCount": 0,
+     "nearTrianglesEach": 296,
+     "farTrianglesEach": 0
+    }
+   ],
+   "total": {
+    "calls": 152,
+    "triangles": 270421
+   },
+   "park": {
+    "main": {
+     "calls": 46,
+     "triangles": 58125
+    },
+    "shadow": {
+     "calls": 23,
+     "triangles": 102489
+    }
+   }
+  },
+  {
+   "id": "lod-transition",
+   "lod": [
+    {
+     "id": "plaza",
+     "center": [
+      45,
+      1.15,
+      -45
+     ],
+     "distance": 46.13400186270955,
+     "level": 0,
+     "nearTriangles": 8300,
+     "farTriangles": 110,
+     "ratio": 0.01325301204819277,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "walk-0",
+     "center": [
+      56.5,
+      1.14,
+      -43
+     ],
+     "distance": 56.30839545019856,
+     "level": 0,
+     "nearTriangles": 1417,
+     "farTriangles": 362,
+     "ratio": 0.255469301340861,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "walk-1",
+     "center": [
+      66.5,
+      1.14,
+      -31
+     ],
+     "distance": 66.47203028791964,
+     "level": 1,
+     "nearTriangles": 2087,
+     "farTriangles": 474,
+     "ratio": 0.22712026832774318,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "walk-2",
+     "center": [
+      62.5,
+      1.14,
+      -14.5
+     ],
+     "distance": 67.66552051611676,
+     "level": 1,
+     "nearTriangles": 2155,
+     "farTriangles": 518,
+     "ratio": 0.24037122969837588,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "lamp-pools",
+     "center": [
+      64,
+      1.14,
+      -28
+     ],
+     "distance": 64.7518877209984,
+     "level": 1,
+     "nearTriangles": 0,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "signs",
+     "center": [
+      64,
+      1.14,
+      -28
+     ],
+     "distance": 64.7518877209984,
+     "level": 1,
+     "nearTriangles": 5054,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "hut-alpha-agent",
+     "center": [
+      59,
+      2.1399999999999997,
+      -49
+     ],
+     "distance": 58.62502428086021,
+     "level": 0,
+     "nearTriangles": 3104,
+     "farTriangles": 360,
+     "ratio": 0.11597938144329897,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "hut-evalforge",
+     "center": [
+      72,
+      2.1399999999999997,
+      -40
+     ],
+     "distance": 70.44258301301863,
+     "level": 1,
+     "nearTriangles": 3228,
+     "farTriangles": 360,
+     "ratio": 0.11152416356877323,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "hut-djc",
+     "center": [
+      77,
+      2.1399999999999997,
+      -28
+     ],
+     "distance": 76.47290509518598,
+     "level": 1,
+     "nearTriangles": 3360,
+     "farTriangles": 360,
+     "ratio": 0.10714285714285714,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "hut-hepai",
+     "center": [
+      73,
+      2.1399999999999997,
+      -16
+     ],
+     "distance": 75.95358494081151,
+     "level": 1,
+     "nearTriangles": 3264,
+     "farTriangles": 360,
+     "ratio": 0.11029411764705882,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "hut-accompany",
+     "center": [
+      61,
+      2.1399999999999997,
+      -20
+     ],
+     "distance": 63.96461975772899,
+     "level": 1,
+     "nearTriangles": 3032,
+     "farTriangles": 360,
+     "ratio": 0.11873350923482849,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "hut-interactive-learning",
+     "center": [
+      50,
+      2.1399999999999997,
+      -12.000000000000002
+     ],
+     "distance": 58.29912218957716,
+     "level": 0,
+     "nearTriangles": 3300,
+     "farTriangles": 360,
+     "ratio": 0.10909090909090909,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "exhibits-alpha-agent",
+     "center": [
+      59.06499336836197,
+      2.1399999999999997,
+      -49.16248342090492
+     ],
+     "distance": 58.70438203358895,
+     "level": 0,
+     "nearTriangles": 2476,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "exhibits-evalforge",
+     "center": [
+      72.16861563418523,
+      2.1399999999999997,
+      -40.04683767616257
+     ],
+     "distance": 70.60141488623711,
+     "level": 1,
+     "nearTriangles": 1236,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "exhibits-djc",
+     "center": [
+      77.16861563418523,
+      2.1399999999999997,
+      -28.046837676162564
+     ],
+     "distance": 76.62290485359998,
+     "level": 1,
+     "nearTriangles": 2588,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "exhibits-hepai",
+     "center": [
+      73.1322455894882,
+      2.1399999999999997,
+      -15.885387155776879
+     ],
+     "distance": 76.1110709827745,
+     "level": 1,
+     "nearTriangles": 3268,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "exhibits-accompany",
+     "center": [
+      60.867754410511786,
+      2.1399999999999997,
+      -20.114612844223124
+     ],
+     "distance": 63.80969022702183,
+     "level": 1,
+     "nearTriangles": 2074,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "exhibits-interactive-learning",
+     "center": [
+      49.86556127607046,
+      2.1399999999999997,
+      -12.112032269941285
+     ],
+     "distance": 58.13798367316115,
+     "level": 0,
+     "nearTriangles": 832,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    }
+   ],
+   "instances": [
+    {
+     "id": "rail",
+     "nearCount": 4,
+     "farCount": 38,
+     "nearTrianglesEach": 84,
+     "farTrianglesEach": 24
+    },
+    {
+     "id": "lamp",
+     "nearCount": 1,
+     "farCount": 8,
+     "nearTrianglesEach": 324,
+     "farTrianglesEach": 36
+    },
+    {
+     "id": "exhibit-P12-stool",
+     "nearCount": 1,
+     "farCount": 0,
+     "nearTrianglesEach": 296,
+     "farTrianglesEach": 0
+    },
+    {
+     "id": "exhibit-P14-crate",
+     "nearCount": 0,
+     "farCount": 0,
+     "nearTrianglesEach": 296,
+     "farTrianglesEach": 0
+    },
+    {
+     "id": "exhibit-P15-stool",
+     "nearCount": 0,
+     "farCount": 0,
+     "nearTrianglesEach": 296,
+     "farTrianglesEach": 0
+    }
+   ],
+   "total": {
+    "calls": 166,
+    "triangles": 235592
+   },
+   "park": {
+    "main": {
+     "calls": 32,
+     "triangles": 24017
+    },
+    "shadow": {
+     "calls": 18,
+     "triangles": 55737
+    }
+   }
+  },
+  {
+   "id": "far-park",
+   "lod": [
+    {
+     "id": "plaza",
+     "center": [
+      45,
+      1.15,
+      -45
+     ],
+     "distance": 87.64885909126257,
+     "level": 1,
+     "nearTriangles": 8300,
+     "farTriangles": 110,
+     "ratio": 0.01325301204819277,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "walk-0",
+     "center": [
+      56.5,
+      1.14,
+      -43
+     ],
+     "distance": 79.80193982604683,
+     "level": 1,
+     "nearTriangles": 1417,
+     "farTriangles": 362,
+     "ratio": 0.255469301340861,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "walk-1",
+     "center": [
+      66.5,
+      1.14,
+      -31
+     ],
+     "distance": 66.62093965113371,
+     "level": 1,
+     "nearTriangles": 2087,
+     "farTriangles": 474,
+     "ratio": 0.22712026832774318,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "walk-2",
+     "center": [
+      62.5,
+      1.14,
+      -14.5
+     ],
+     "distance": 59.38517996941661,
+     "level": 0,
+     "nearTriangles": 2155,
+     "farTriangles": 518,
+     "ratio": 0.24037122969837588,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "lamp-pools",
+     "center": [
+      64,
+      1.14,
+      -28
+     ],
+     "distance": 65.93253824933483,
+     "level": 1,
+     "nearTriangles": 0,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "signs",
+     "center": [
+      64,
+      1.14,
+      -28
+     ],
+     "distance": 65.93253824933483,
+     "level": 1,
+     "nearTriangles": 5054,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "hut-alpha-agent",
+     "center": [
+      59,
+      2.1399999999999997,
+      -49
+     ],
+     "distance": 82.45228680879627,
+     "level": 1,
+     "nearTriangles": 3104,
+     "farTriangles": 360,
+     "ratio": 0.11597938144329897,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "hut-evalforge",
+     "center": [
+      72,
+      2.1399999999999997,
+      -40
+     ],
+     "distance": 70.13115997899935,
+     "level": 1,
+     "nearTriangles": 3228,
+     "farTriangles": 360,
+     "ratio": 0.11152416356877323,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "hut-djc",
+     "center": [
+      77,
+      2.1399999999999997,
+      -28
+     ],
+     "distance": 59.62700394955293,
+     "level": 0,
+     "nearTriangles": 3360,
+     "farTriangles": 360,
+     "ratio": 0.10714285714285714,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "hut-hepai",
+     "center": [
+      73,
+      2.1399999999999997,
+      -16
+     ],
+     "distance": 53.84588749384673,
+     "level": 0,
+     "nearTriangles": 3264,
+     "farTriangles": 360,
+     "ratio": 0.11029411764705882,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "hut-accompany",
+     "center": [
+      61,
+      2.1399999999999997,
+      -20
+     ],
+     "distance": 62.38092336604196,
+     "level": 1,
+     "nearTriangles": 3032,
+     "farTriangles": 360,
+     "ratio": 0.11873350923482849,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "hut-interactive-learning",
+     "center": [
+      50,
+      2.1399999999999997,
+      -12.000000000000002
+     ],
+     "distance": 66.04831262038418,
+     "level": 1,
+     "nearTriangles": 3300,
+     "farTriangles": 360,
+     "ratio": 0.10909090909090909,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "exhibits-alpha-agent",
+     "center": [
+      59.06499336836197,
+      2.1399999999999997,
+      -49.16248342090492
+     ],
+     "distance": 82.54385916868667,
+     "level": 1,
+     "nearTriangles": 2476,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "exhibits-evalforge",
+     "center": [
+      72.16861563418523,
+      2.1399999999999997,
+      -40.04683767616257
+     ],
+     "distance": 70.10425811386638,
+     "level": 1,
+     "nearTriangles": 1236,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "exhibits-djc",
+     "center": [
+      77.16861563418523,
+      2.1399999999999997,
+      -28.046837676162564
+     ],
+     "distance": 59.60007598828672,
+     "level": 0,
+     "nearTriangles": 2588,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "exhibits-hepai",
+     "center": [
+      73.1322455894882,
+      2.1399999999999997,
+      -15.885387155776879
+     ],
+     "distance": 53.72290387312146,
+     "level": 0,
+     "nearTriangles": 3268,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "exhibits-accompany",
+     "center": [
+      60.867754410511786,
+      2.1399999999999997,
+      -20.114612844223124
+     ],
+     "distance": 62.520083543936934,
+     "level": 1,
+     "nearTriangles": 2074,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": false,
+     "farVisible": true
+    },
+    {
+     "id": "exhibits-interactive-learning",
+     "center": [
+      49.86556127607046,
+      2.1399999999999997,
+      -12.112032269941285
+     ],
+     "distance": 66.18850320104164,
+     "level": 1,
+     "nearTriangles": 832,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": false,
+     "farVisible": true
+    }
+   ],
+   "instances": [
+    {
+     "id": "rail",
+     "nearCount": 10,
+     "farCount": 32,
+     "nearTrianglesEach": 84,
+     "farTrianglesEach": 24
+    },
+    {
+     "id": "lamp",
+     "nearCount": 2,
+     "farCount": 7,
+     "nearTrianglesEach": 324,
+     "farTrianglesEach": 36
+    },
+    {
+     "id": "exhibit-P12-stool",
+     "nearCount": 0,
+     "farCount": 0,
+     "nearTrianglesEach": 296,
+     "farTrianglesEach": 0
+    },
+    {
+     "id": "exhibit-P14-crate",
+     "nearCount": 0,
+     "farCount": 0,
+     "nearTrianglesEach": 296,
+     "farTrianglesEach": 0
+    },
+    {
+     "id": "exhibit-P15-stool",
+     "nearCount": 1,
+     "farCount": 0,
+     "nearTrianglesEach": 296,
+     "farTrianglesEach": 0
+    }
+   ],
+   "total": {
+    "calls": 156,
+    "triangles": 235639
+   },
+   "park": {
+    "main": {
+     "calls": 29,
+     "triangles": 19825
+    },
+    "shadow": {
+     "calls": 7,
+     "triangles": 5934
+    }
+   }
+  },
+  {
+   "id": "return-near",
+   "lod": [
+    {
+     "id": "plaza",
+     "center": [
+      45,
+      1.15,
+      -45
+     ],
+     "distance": 15.747830242108968,
+     "level": 0,
+     "nearTriangles": 8300,
+     "farTriangles": 110,
+     "ratio": 0.01325301204819277,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "walk-0",
+     "center": [
+      56.5,
+      1.14,
+      -43
+     ],
+     "distance": 17.42088688918715,
+     "level": 0,
+     "nearTriangles": 1417,
+     "farTriangles": 362,
+     "ratio": 0.255469301340861,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "walk-1",
+     "center": [
+      66.5,
+      1.14,
+      -31
+     ],
+     "distance": 31.50100629239739,
+     "level": 0,
+     "nearTriangles": 2087,
+     "farTriangles": 474,
+     "ratio": 0.22712026832774318,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "walk-2",
+     "center": [
+      62.5,
+      1.14,
+      -14.5
+     ],
+     "distance": 44.67932572679609,
+     "level": 0,
+     "nearTriangles": 2155,
+     "farTriangles": 518,
+     "ratio": 0.24037122969837588,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "lamp-pools",
+     "center": [
+      64,
+      1.14,
+      -28
+     ],
+     "distance": 32.8795329477508,
+     "level": 0,
+     "nearTriangles": 0,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "signs",
+     "center": [
+      64,
+      1.14,
+      -28
+     ],
+     "distance": 32.8795329477508,
+     "level": 0,
+     "nearTriangles": 5054,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "hut-alpha-agent",
+     "center": [
+      59,
+      2.1399999999999997,
+      -49
+     ],
+     "distance": 13.984056263203877,
+     "level": 0,
+     "nearTriangles": 3104,
+     "farTriangles": 360,
+     "ratio": 0.11597938144329897,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "hut-evalforge",
+     "center": [
+      72,
+      2.1399999999999997,
+      -40
+     ],
+     "distance": 28.316960660786425,
+     "level": 0,
+     "nearTriangles": 3228,
+     "farTriangles": 360,
+     "ratio": 0.11152416356877323,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "hut-djc",
+     "center": [
+      77,
+      2.1399999999999997,
+      -28
+     ],
+     "distance": 39.786557071000146,
+     "level": 0,
+     "nearTriangles": 3360,
+     "farTriangles": 360,
+     "ratio": 0.10714285714285714,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "hut-hepai",
+     "center": [
+      73,
+      2.1399999999999997,
+      -16
+     ],
+     "distance": 47.08098090728668,
+     "level": 0,
+     "nearTriangles": 3264,
+     "farTriangles": 360,
+     "ratio": 0.11029411764705882,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "hut-accompany",
+     "center": [
+      61,
+      2.1399999999999997,
+      -20
+     ],
+     "distance": 38.89540577206812,
+     "level": 0,
+     "nearTriangles": 3032,
+     "farTriangles": 360,
+     "ratio": 0.11873350923482849,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "hut-interactive-learning",
+     "center": [
+      50,
+      2.1399999999999997,
+      -12.000000000000002
+     ],
+     "distance": 45.303877226039816,
+     "level": 0,
+     "nearTriangles": 3300,
+     "farTriangles": 360,
+     "ratio": 0.10909090909090909,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "exhibits-alpha-agent",
+     "center": [
+      59.06499336836197,
+      2.1399999999999997,
+      -49.16248342090492
+     ],
+     "distance": 13.936611175046338,
+     "level": 0,
+     "nearTriangles": 2476,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "exhibits-evalforge",
+     "center": [
+      72.16861563418523,
+      2.1399999999999997,
+      -40.04683767616257
+     ],
+     "distance": 28.417781242709466,
+     "level": 0,
+     "nearTriangles": 1236,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "exhibits-djc",
+     "center": [
+      77.16861563418523,
+      2.1399999999999997,
+      -28.046837676162564
+     ],
+     "distance": 39.865426190771714,
+     "level": 0,
+     "nearTriangles": 2588,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "exhibits-hepai",
+     "center": [
+      73.1322455894882,
+      2.1399999999999997,
+      -15.885387155776879
+     ],
+     "distance": 47.24288107144508,
+     "level": 0,
+     "nearTriangles": 3268,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "exhibits-accompany",
+     "center": [
+      60.867754410511786,
+      2.1399999999999997,
+      -20.114612844223124
+     ],
+     "distance": 38.75220752856437,
+     "level": 0,
+     "nearTriangles": 2074,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    },
+    {
+     "id": "exhibits-interactive-learning",
+     "center": [
+      49.86556127607046,
+      2.1399999999999997,
+      -12.112032269941285
+     ],
+     "distance": 45.19546641459422,
+     "level": 0,
+     "nearTriangles": 832,
+     "farTriangles": 0,
+     "ratio": 0,
+     "nearVisible": true,
+     "farVisible": false
+    }
+   ],
+   "instances": [
+    {
+     "id": "rail",
+     "nearCount": 42,
+     "farCount": 0,
+     "nearTrianglesEach": 84,
+     "farTrianglesEach": 24
+    },
+    {
+     "id": "lamp",
+     "nearCount": 9,
+     "farCount": 0,
+     "nearTrianglesEach": 324,
+     "farTrianglesEach": 36
+    },
+    {
+     "id": "exhibit-P12-stool",
+     "nearCount": 1,
+     "farCount": 0,
+     "nearTrianglesEach": 296,
+     "farTrianglesEach": 0
+    },
+    {
+     "id": "exhibit-P14-crate",
+     "nearCount": 1,
+     "farCount": 0,
+     "nearTrianglesEach": 296,
+     "farTrianglesEach": 0
+    },
+    {
+     "id": "exhibit-P15-stool",
+     "nearCount": 1,
+     "farCount": 0,
+     "nearTrianglesEach": 296,
+     "farTrianglesEach": 0
+    }
+   ],
+   "total": {
+    "calls": 151,
+    "triangles": 270381
+   },
+   "park": {
+    "main": {
+     "calls": 46,
+     "triangles": 58125
+    },
+    "shadow": {
+     "calls": 23,
+     "triangles": 102489
+    }
+   }
+  }
+ ],
+ "contact": {
+  "raw": "/Users/bobby/Desktop/3D-personal-world/evidence/park-integration/lod-contact/lod-contact.json",
+  "pass": true,
+  "rail": {
+   "id": "rail-1-l-0",
+   "home": [
+    68.02251812915229,
+    1.14,
+    -35.34542566518543
+   ],
+   "position": [
+    71.98909759521484,
+    -1.836448311805725,
+    -36.26810073852539
+   ],
+   "knocked": true,
+   "fade": 1,
+   "sleeping": false
+  },
+  "errors": []
+ },
+ "snapshotCommit": "6763657",
+ "followUp": "P04 now uses shared generator: 766/146 triangles (19.1 percent), see qa-P04-shared.json and qa-P04-runtime.json. Other LOD groups unchanged."
+}

@@ -1,0 +1,196 @@
+{
+  "coaster": {
+    "location": "coaster northern drop shoulder near x80 z-363; ordinary walking, fixed noon, clear, balanced",
+    "frameWindow": {
+      "activeSeconds": 29.62340000000596,
+      "changedDuringWindow": false,
+      "frames": 1766,
+      "maxMs": 200.10000002384183,
+      "p50Ms": 16.700000762939453,
+      "p95Ms": 18.100000381469727,
+      "percentileSamples": 1766,
+      "slow25Ratio": 0.0022650056625141564,
+      "slow33Ratio": 0.0016987542468856172
+    },
+    "render": {
+      "antialias": true,
+      "calls": 67,
+      "camera": [
+        80.22614618080928,
+        13.899799549917532,
+        -346.33354484904544
+      ],
+      "coasterVegetation": [
+        {
+          "instances": 1,
+          "matrixUploads": 4,
+          "name": "coaster-ST1-L0",
+          "triangles": 4526,
+          "visible": true
+        },
+        {
+          "instances": 0,
+          "matrixUploads": 0,
+          "name": "coaster-ST1-L1",
+          "triangles": 0,
+          "visible": false
+        },
+        {
+          "instances": 1,
+          "matrixUploads": 1,
+          "name": "coaster-ST2-L0",
+          "triangles": 4644,
+          "visible": true
+        },
+        {
+          "instances": 0,
+          "matrixUploads": 0,
+          "name": "coaster-ST2-L1",
+          "triangles": 0,
+          "visible": false
+        },
+        {
+          "instances": 1,
+          "matrixUploads": 4,
+          "name": "coaster-G19",
+          "triangles": 2052,
+          "visible": true
+        }
+      ],
+      "cssSize": [
+        1710,
+        875
+      ],
+      "delta": 0.01730000001192093,
+      "dprRange": [
+        0,
+        1.5
+      ],
+      "drawingBuffer": [
+        2013,
+        1030
+      ],
+      "frame": 1970,
+      "frameMs": {
+        "max": 18.700000762939453,
+        "p50": 16.700000762939453,
+        "p95": 18.100000381469727,
+        "samples": 180
+      },
+      "geometries": 349,
+      "mode": "always",
+      "msaaSamples": 4,
+      "night": 0,
+      "outputColorSpace": "srgb",
+      "pixelRatio": 1.1772275318111345,
+      "postprocessing": [],
+      "programs": 143,
+      "quality": "balanced",
+      "sampledAt": "2026-10-28T21:30:12.782Z",
+      "shadowMapSize": 1254,
+      "shadowType": 1,
+      "textures": 61,
+      "toneMapping": 4,
+      "triangles": 424702,
+      "windTime": 29.97849999999995
+    },
+    "errors": []
+  },
+  "ibd": {
+    "location": "receiving area and inner lane; ordinary walking, fixed noon, clear, balanced",
+    "frameWindow": {
+      "activeSeconds": 42.91220000001788,
+      "changedDuringWindow": false,
+      "frames": 2575,
+      "maxMs": 25.399999976158146,
+      "p50Ms": 16.700000762939453,
+      "p95Ms": 18,
+      "percentileSamples": 1800,
+      "slow25Ratio": 0.0003883495145631068,
+      "slow33Ratio": 0
+    },
+    "render": {
+      "antialias": true,
+      "calls": 75,
+      "camera": [
+        -81.73320391847753,
+        7.742901857034558,
+        -160.25800695603365
+      ],
+      "coasterVegetation": [
+        {
+          "instances": 0,
+          "matrixUploads": 4,
+          "name": "coaster-ST1-L0",
+          "triangles": 0,
+          "visible": false
+        },
+        {
+          "instances": 0,
+          "matrixUploads": 0,
+          "name": "coaster-ST1-L1",
+          "triangles": 0,
+          "visible": false
+        },
+        {
+          "instances": 0,
+          "matrixUploads": 1,
+          "name": "coaster-ST2-L0",
+          "triangles": 0,
+          "visible": false
+        },
+        {
+          "instances": 0,
+          "matrixUploads": 0,
+          "name": "coaster-ST2-L1",
+          "triangles": 0,
+          "visible": false
+        },
+        {
+          "instances": 0,
+          "matrixUploads": 4,
+          "name": "coaster-G19",
+          "triangles": 0,
+          "visible": false
+        }
+      ],
+      "cssSize": [
+        1710,
+        875
+      ],
+      "delta": 0.01610000002384186,
+      "dprRange": [
+        0,
+        1.5
+      ],
+      "drawingBuffer": [
+        2013,
+        1030
+      ],
+      "frame": 4611,
+      "frameMs": {
+        "max": 18.700000762939453,
+        "p50": 16.700000762939453,
+        "p95": 17.899999618530273,
+        "samples": 180
+      },
+      "geometries": 343,
+      "mode": "always",
+      "msaaSamples": 4,
+      "night": 0,
+      "outputColorSpace": "srgb",
+      "pixelRatio": 1.1772275318111345,
+      "postprocessing": [],
+      "programs": 167,
+      "quality": "balanced",
+      "sampledAt": "2026-10-28T21:31:16.658Z",
+      "shadowMapSize": 1254,
+      "shadowType": 1,
+      "textures": 61,
+      "toneMapping": 4,
+      "triangles": 435107,
+      "windTime": 74.1775999999953
+    },
+    "errors": []
+  }
+}

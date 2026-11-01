@@ -1,0 +1,48 @@
+{
+ "asset": "P16",
+ "evaluatedTriangles": 1096,
+ "bounds": [
+  [
+   -0.31,
+   -1.0048,
+   -0.0162
+  ],
+  [
+   0.31,
+   1.0048,
+   0.9
+  ]
+ ],
+ "problems": [],
+ "parts": [
+  [
+   "body",
+   1096
+  ]
+ ],
+ "glbReadbackTriangles": 1096,
+ "readbackBounds": [
+  [
+   -0.31,
+   -1.0048,
+   -0.0162
+  ],
+  [
+   0.31,
+   1.0048,
+   0.9
+  ]
+ ],
+ "readbackProblems": [],
+ "nodes": [
+  "P16",
+  "body"
+ ],
+ "materials": [
+  "park_brass_matte",
+  "park_canvas_cream",
+  "park_canvas_olive",
+  "park_wood_light"
+ ],
+ "glbBytes": 18436
+}

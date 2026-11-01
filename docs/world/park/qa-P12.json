@@ -1,0 +1,96 @@
+{
+ "asset": "P12",
+ "evaluatedTriangles": 2772,
+ "bounds": [
+  [
+   -0.85,
+   -1.0064,
+   -0.0023
+  ],
+  [
+   0.85,
+   0.39,
+   2.075
+  ]
+ ],
+ "problems": [],
+ "parts": [
+  [
+   "body",
+   1172
+  ],
+  [
+   "screen",
+   12
+  ],
+  [
+   "stamp",
+   172
+  ],
+  [
+   "lever_0",
+   224
+  ],
+  [
+   "lever_1",
+   224
+  ],
+  [
+   "lever_2",
+   224
+  ],
+  [
+   "lever_3",
+   224
+  ],
+  [
+   "lever_4",
+   224
+  ],
+  [
+   "stool",
+   296
+  ]
+ ],
+ "glbReadbackTriangles": 2772,
+ "readbackBounds": [
+  [
+   -0.85,
+   -1.0064,
+   -0.0023
+  ],
+  [
+   0.85,
+   0.39,
+   2.075
+  ]
+ ],
+ "readbackProblems": [],
+ "nodes": [
+  "P12",
+  "body",
+  "lever_0",
+  "lever_1",
+  "lever_2",
+  "lever_3",
+  "lever_4",
+  "screen",
+  "stamp",
+  "stool"
+ ],
+ "materials": [
+  "park_accent_brick",
+  "park_accent_olive",
+  "park_accent_orange",
+  "park_accent_slate",
+  "park_brass_matte",
+  "park_cream_paint",
+  "park_iron_matte",
+  "park_rubber",
+  "park_screen",
+  "park_wood_dark",
+  "park_wood_light",
+  "park_wood_mid"
+ ],
+ "glbBytes": 52268
+}

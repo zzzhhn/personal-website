@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-25",
+  "scope": "Alpha factor-mine pilot, root integration",
+  "tests": {
+    "passed": 92,
+    "failed": 0,
+    "skipped": 0,
+    "command": "ALPHA_MINE_ASSET_DIR=public/world/alpha-mine node --import ./tools/world/alpha-mine-tests/register.mjs --test --test-concurrency=1 src/components/world/*.test.mjs"
+  },
+  "browser": {
+    "surface": "existing Chrome desktop tab",
+    "input": "ordinary keyboard and visible UI",
+    "levelsMined": [
+      "lower",
+      "middle",
+      "upper"
+    ],
+    "twoDistinctPoolResults": true,
+    "thirdOreReplacedBayB": true,
+    "recoveryPreservedResults": true,
+    "temporaryShelfPickup": true,
+    "missingDataRetryPreservedProgress": true,
+    "pauseResume": true,
+    "separateProjectAndExperienceCards": true,
+    "ascendingRampsAndBridge": true,
+    "westRampCarriedDescent": true,
+    "fullEastReturnRoute": "not certified; player walked off platform edge and landed with ore"
+  },
+  "privacy": {
+    "historicalResultsCommitted": false,
+    "resultScreenshotsCommitted": false,
+    "publicPermission": "unconfirmed"
+  },
+  "quality": {
+    "userVisualAcceptance": "pending",
+    "mocapClaim": false,
+    "longDurationPerformanceMeasured": false
+  },
+  "typecheck": {
+    "files": 290,
+    "errors": 0
+  },
+  "build": {
+    "pages": 2,
+    "passed": true,
+    "historicalResultFileOrHashIncluded": false
+  }
+}

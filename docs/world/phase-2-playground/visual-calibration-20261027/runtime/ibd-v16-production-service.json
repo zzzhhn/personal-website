@@ -1,0 +1,8 @@
+{
+  "pid": 55209,
+  "httpStatus": 200,
+  "build": "/tmp/bobby-world-ibd-v16-20261028",
+  "sourceCommit": "21ee16f",
+  "htmlSha256": "d5879ce22308b41dd69eb30876792d1db5e31c8d3bfd8d32e68d52447142d278",
+  "buildHtmlMatches": true
+}

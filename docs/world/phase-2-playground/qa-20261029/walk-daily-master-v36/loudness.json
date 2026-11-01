@@ -1,0 +1,6 @@
+{
+  "method": "ffmpeg loudnorm measurement; input values only, output discarded",
+  "input_integrated_lufs": -27.48,
+  "input_true_peak_dbtp": -13.44,
+  "input_loudness_range_lu": 6.6
+}

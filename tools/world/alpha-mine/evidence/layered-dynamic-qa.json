@@ -1,0 +1,22 @@
+{
+ "author": "character session",
+ "reportCommit": "19cfbb9",
+ "reportPath": "docs/world/phase-2-playground/quarry-detail-final-dynamic-qa-20261026.md",
+ "reportSha256": "cfff454a370bd320311c3c544697f9fec1fa4972d426ce35e11ae1c6fd540428",
+ "codeRevision": "92fbc0d",
+ "assetSha256": {
+  "quarry-static.glb": "61b22e1fd5cc1572df088946dfbf366fe3ca14fc39166e4cf3e23858b0aea10d",
+  "colliders.json": "1316cedc6b207d7458f8bb5b5ae114e829f4555e1ee3b75f644d4cfcff86572e",
+  "layout.json": "5ac05059833ca8fd4b547a2326e217e0898d3e911d63df252fb8dd3cc9afc4df"
+ },
+ "tests": 20,
+ "passed": 20,
+ "failed": 0,
+ "skipped": 0,
+ "runtimeSuites": [
+  "alpha-mine-foundation.test.mjs",
+  "quarry-traversal.test.mjs"
+ ],
+ "scope": "continuous production capsule simulation, real terrain patch, original assertions; no browser or aesthetic acceptance",
+ "verification": "read committed report plus original log; all final candidate asset hashes match"
+}

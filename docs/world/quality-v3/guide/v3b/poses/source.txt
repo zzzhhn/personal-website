@@ -1,0 +1,1 @@
+fresh import G24_candidate.glb sha256=995673919e32

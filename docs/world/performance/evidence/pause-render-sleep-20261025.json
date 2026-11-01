@@ -1,0 +1,126 @@
+{
+  "date": "2026-10-25",
+  "sourceCommit": "0ac1342",
+  "integrationCodeCommit": "8379c9e",
+  "provenance": "Performance session final production-build samples, reviewed by coordinator; not a second runtime measurement.",
+  "pause": {
+    "ms": 60001.89999985695,
+    "frames": 0,
+    "steps": 0,
+    "wind": 0,
+    "start": 9323,
+    "end": 9323,
+    "mode": "demand"
+  },
+  "light": [
+    [
+      1023,
+      0.0007692834402660433,
+      9245
+    ],
+    [
+      1627,
+      0.1630535681362305,
+      9263
+    ],
+    [
+      2228,
+      0.5804626893288378,
+      9287
+    ],
+    [
+      2837,
+      0.943800941912634,
+      9311
+    ],
+    [
+      3438,
+      1,
+      9323
+    ],
+    [
+      4039,
+      1,
+      9323
+    ]
+  ],
+  "hidden": {
+    "hidden": [
+      true,
+      true
+    ],
+    "modes": [
+      "never",
+      "never"
+    ],
+    "frames": 0,
+    "steps": 0,
+    "start": 9323,
+    "end": 9323
+  },
+  "wake": {
+    "source": "Native Chrome DevTools console FINAL_WAKE_SAMPLE, final build 0ac1342",
+    "before": {
+      "frame": 2231,
+      "physicsStep": 5356
+    },
+    "firstFrames": [
+      {
+        "frame": 2232,
+        "delta": 0.08380000019073486,
+        "physicsStep": 5361
+      },
+      {
+        "frame": 2233,
+        "delta": 0.0175,
+        "physicsStep": 5363
+      },
+      {
+        "frame": 2234,
+        "delta": 0.014799999952316284,
+        "physicsStep": 5363
+      },
+      {
+        "frame": 2235,
+        "delta": 0.016200000047683717,
+        "physicsStep": 5364
+      }
+    ],
+    "quality": "balanced",
+    "dpr": 1.3886623455355702,
+    "buffer": [
+      1603,
+      1292
+    ],
+    "css": [
+      1155,
+      931
+    ]
+  },
+  "resize": {
+    "buffer": [
+      2013,
+      1030
+    ],
+    "css": [
+      1710,
+      875
+    ],
+    "menu": true,
+    "hidden": false
+  },
+  "sha256": {
+    "final-evidence.txt": "1d6ed8a0fe5c5944ac1a5c63a9c90cd50814f625b1203fbe2c25526c18a10119",
+    "final-hidden-sample.txt": "acbd813433adc2a2f337d8ac821f1a8a0dabdd072835c01c092400fd59614354",
+    "final-wake-sample.json": "eb88557714d14aeb869c9f0214e5104133b999433699ae5cc4cd07ecd4b6b51d",
+    "final-resize.json": "244d842221abb91d19662db14cc9b7bf22ff18de38549bfc9c05ecacfda72c49",
+    "final-paused-night.jpg": "fcd7ec47b97854d575117c7403b3b24c3ee832ca8be5a56bee474d62e75eebe7"
+  },
+  "limits": [
+    "No CPU/GPU/energy percentage measurement",
+    "First observed resume delta 83.8 ms; not a 60 fps pass",
+    "Hidden sample interval configured as 3 seconds; actual wall time not recorded",
+    "No long-session memory, Safari, full vehicle or audio regression",
+    "4341 retained at f4e4f40"
+  ]
+}

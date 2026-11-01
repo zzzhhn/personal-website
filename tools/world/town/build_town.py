@@ -1,0 +1,974 @@
+"""Town L1 buildings and props (docs/world/town/DESIGN.md).
+
+Run: tools/blender-run.sh town tools/world/town/build_town.py <repo_root> T01 [T02 ...]
+Footprints come from BUILDINGS_V4 (layout-v4-flag.ts); Blender X = world X, Blender Y = -world Z,
+so the +X facade faces the avenue. Origin at footprint centre, ground level.
+"""
+import sys, os, math, json
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from townlib import *  # noqa
+
+ARGS = sys.argv[sys.argv.index('--') + 1:] if '--' in sys.argv else []
+REPO = os.path.abspath(ARGS[0]) if ARGS else os.getcwd()
+ONLY = ARGS[1:]
+
+PLAZA = 0.15   # forecourt top above the building base (world 1.15 vs 1.0)
+
+# ============================================================== T01 SDIC: stone, square columns, revolving door
+def build_T01():
+    A = Asset('T01')
+    X0, X1, Y = -4.5, 4.5, 4.0            # footprint 9 (x) x 8 (y), height 8
+    CX = 2.0                              # core front (portico recess wall)
+    A.extras.update(building='sdic', footprint=[9, 8, 8])
+    # plinth under the core, portico platform flush with the forecourt
+    A.box((X0, -Y, 0), (CX - 0.2, Y, 0.6), 'town_stone_dark', 0.02)
+    A.box((CX - 0.2, -Y, 0), (X1, Y, PLAZA), 'town_stone_dark', 0.01)
+    for i in range(9):  # paving joints as shallow real slabs (2 mm proud, not coplanar)
+        y = -Y + 0.45 + i * 0.89
+        A.box((CX, y - 0.015, PLAZA), (X1 - 0.05, y + 0.015, PLAZA + 0.004), 'town_stone')
+    A.col_box((X0, -Y, 0), (CX, Y, 8.0), 'col_core', shadow_top=7.1)
+    A.col_box((CX - 0.2, -Y, -0.2), (X1, Y, PLAZA), 'col_portico_floor')
+    # core walls with real openings
+    Z0, Z1 = 0.6, 6.6
+    side_p, side_n = Face('y', 1, Y - 0.1), Face('y', -1, -Y + 0.1)
+    back, front = Face('x', -1, X0 + 0.1), Face('x', 1, CX)
+    for F, k in ((side_p, 'sp'), (side_n, 'sn')):
+        facade(A, F, X0 + 0.1, CX, Z0, Z1, 4, 2, 0.95, 2.05, 'town_stone', 'T01' + k, wz=0.45)
+        wall(A, F, X0 + 0.1, CX, Z1, 7.2, 'town_stone')
+    facade(A, back, -Y + 0.3, Y - 0.3, Z0, Z1, 3, 2, 1.0, 2.05, 'town_stone', 'T01b', wz=0.45)
+    wall(A, back, -Y + 0.3, Y - 0.3, Z1, 7.2, 'town_stone')
+    # front recess wall: two tall ground windows, revolving-door bay, three upper windows
+    bay = (-Y + 0.3 + (2 * Y - 0.6) / 3, -Y + 0.3 + 2 * (2 * Y - 0.6) / 3)
+    facade(A, front, -Y + 0.3, bay[0], PLAZA, 3.6, 1, 1, 1.1, 2.4, 'town_stone', 'T01fl', wz=0.35)
+    facade(A, front, bay[1], Y - 0.3, PLAZA, 3.6, 1, 1, 1.1, 2.4, 'town_stone', 'T01fr', wz=0.35)
+    facade(A, front, -Y + 0.3, Y - 0.3, 3.6, Z1, 3, 1, 1.1, 2.1, 'town_stone', 'T01f1', wz=0.4)
+    wall(A, front, -Y + 0.3, Y - 0.3, Z1, 7.2, 'town_stone')
+    # door bay behind the drum: dark glass doors under a transom (the bay itself was skipped above)
+    A.box(*front.box(-0.2, 0, bay[0], bay[1], 3.0, 3.6), 'town_stone')
+    A.box(*front.box(-0.23, -0.12, bay[0], bay[1], PLAZA, 3.0), 'town_glass_dark')
+    A.box(*front.box(-0.12, -0.06, bay[0], bay[1], 2.62, 2.7), 'town_metal')
+    for u in (bay[0], bay[1] - 0.08):
+        A.box(*front.box(-0.12, -0.04, u, u + 0.08, PLAZA, 3.0), 'town_metal')
+    # string course, cornice band, corner quoins on the core
+    for z0, z1, out in ((3.55, 3.7, 0.06), (6.6, 6.75, 0.08)):
+        A.box((X0, -Y, z0), (CX + out, Y, z1), 'town_stone_dark', 0.015)
+    for sy in (1, -1):   # corner quoins: alternating long/short blocks, 4 cm proud on both faces
+        for k in range(7):
+            z = Z0 + k * 0.86
+            w = 0.28 if k % 2 == 0 else 0.2
+            ys = sorted((sy * (Y - 0.1 + 0.04), sy * (Y - 0.1 - w)))
+            A.box((X0 + 0.06, ys[0], z + 0.02), (X0 + 0.1 + w, ys[1], z + 0.82), 'town_stone_dark', 0.015)
+    # portico: four square columns, entablature with dentils, solid attic over the porch
+    PX = X1 - 0.35
+    for y in (-3.7, -1.25, 1.25, 3.7):
+        A.box((PX - 0.33, y - 0.33, PLAZA), (PX + 0.33, y + 0.33, PLAZA + 0.22), 'town_stone_dark', 0.03)
+        A.box((PX - 0.29, y - 0.29, PLAZA + 0.22), (PX + 0.29, y + 0.29, PLAZA + 0.34), 'town_stone', 0.025)
+        A.box((PX - 0.24, y - 0.24, PLAZA + 0.34), (PX + 0.24, y + 0.24, 5.88), 'town_stone', 0.04)
+        for a in (-0.1, 0.0, 0.1):   # fluting: proud fillets on the three visible faces
+            A.box((PX + 0.235, y + a - 0.022, 0.7), (PX + 0.255, y + a + 0.022, 5.6), 'town_stone_dark')
+            A.box((PX + a - 0.022, y + 0.235, 0.7), (PX + a + 0.022, y + 0.255, 5.6), 'town_stone_dark')
+            A.box((PX + a - 0.022, y - 0.255, 0.7), (PX + a + 0.022, y - 0.235, 5.6), 'town_stone_dark')
+        A.box((PX - 0.3, y - 0.3, 5.88), (PX + 0.3, y + 0.3, 6.02), 'town_stone', 0.02)
+        A.box((PX - 0.36, y - 0.36, 6.02), (PX + 0.36, y + 0.36, 6.2), 'town_stone_dark', 0.03)
+        A.col_box((PX - 0.33, y - 0.33, PLAZA), (PX + 0.33, y + 0.33, 6.2), f'col_column_{y:+.0f}')
+    A.box((CX, -Y, 6.2), (X1 - 0.02, Y, 6.62), 'town_stone', 0.02)                     # architrave + porch ceiling
+    A.box((CX, -Y, 6.62), (X1 - 0.1, Y, 7.0), 'town_stone')               # frieze
+    for i in range(26):
+        y = -Y + 0.2 + i * 0.3
+        A.box((X1 - 0.12, y - 0.07, 6.9), (X1 - 0.02, y + 0.07, 7.0), 'town_stone_dark')
+    A.box((CX, -Y, 7.0), (X1, Y, 7.2), 'town_stone_dark', 0.03)                          # cornice
+    A.col_box((CX - 0.2, -Y, 6.2), (X1, Y, 8.0), 'col_attic', shadow_top=7.15)
+    # roof, parapet (attic band with sign panel), coping, roof plant box
+    A.box((X0 + 0.15, -Y + 0.15, 6.95), (CX, Y - 0.15, 7.15), 'town_roof')
+    for mn, mx in (((X0, -Y, 7.2), (X0 + 0.25, Y, 7.9)), ((X1 - 0.25, -Y, 7.2), (X1, Y, 7.9)),
+                   ((X0 + 0.25, -Y, 7.2), (X1 - 0.25, -Y + 0.25, 7.9)), ((X0 + 0.25, Y - 0.25, 7.2), (X1 - 0.25, Y, 7.9))):
+        A.box(mn, mx, 'town_stone')
+    A.box((X0 - 0.0, -Y, 7.9), (X1, Y, 8.0), 'town_trim', 0.02)
+    # low pediment over the portico: raking cornice (proud, darker) around a recessed tympanum
+    A.add(gable(CX + 0.6, X1 + 0.06, -Y - 0.06, Y + 0.06, 8.0, 9.0), 'town_stone_dark')
+    A.add(gable(CX + 0.4, X1 - 0.06, -Y + 0.3, Y - 0.3, 8.0, 8.78), 'town_stone')
+    A.box((CX + 0.5, -Y - 0.06, 7.94), (X1 + 0.08, Y + 0.06, 8.06), 'town_stone_dark', 0.02)
+    A.box((X1, -2.3, 7.28), (X1 + 0.03, 2.3, 7.84), 'town_dark')                          # sign panel (runtime face)
+    A.anchor('anchor_sign', (X1 + 0.035, 0, 7.56), w=4.4, h=0.5, normal='+X')
+    A.box((-2.6, -1.6, 7.15), (-0.6, 0.6, 8.3), 'town_metal', 0.03)
+    for k in range(6):
+        A.box((-0.6, -1.5 + k * 0.35, 7.4), (-0.56, -1.3 + k * 0.35, 8.1), 'town_dark')
+    # revolving door: glass drum (two curved glass walls), metal rings, canopy, four wings
+    D = (CX + 0.95, 0.0)
+    R = 1.05
+    for a0, a1 in ((math.radians(35), math.radians(145)), (math.radians(215), math.radians(325))):
+        A.add(arc_wall(D, R - 0.05, R, a0, a1, PLAZA, 2.55, 8), 'town_glass_dark', smooth=True)
+        for a in (a0, a1):
+            A.add(cyl((D[0] + R * math.cos(a), D[1] + R * math.sin(a)), 0.05, PLAZA, 2.55, 8), 'town_metal', smooth=True)
+    A.add(cyl(D, R + 0.08, 2.55, 2.85, 24), 'town_metal', smooth=True)
+    A.add(cyl(D, R + 0.02, PLAZA, PLAZA + 0.03, 24), 'town_metal', smooth=True)
+    A.add(cyl(D, 0.06, PLAZA, 2.55, 10), 'town_metal', smooth=True)
+    for k in range(4):
+        a = math.radians(20 + 90 * k)
+        w = box((0.06, -0.025, PLAZA + 0.05), (R - 0.08, 0.025, 2.45))
+        rot_z(w, a)
+        xform(w, Matrix.Translation((D[0], D[1], 0)))
+        A.add(w, 'town_glass_dark')
+    A.col_bm(cyl(D, R + 0.08, PLAZA, 2.85, 16), 'col_drum')
+    # flagless poles: two bronze wall lamps flanking the door (unlit metal + small warm glass)
+    for u in (-1.75, 1.75):
+        A.box(*front.box(0, 0.12, u - 0.08, u + 0.08, 2.4, 2.75), 'town_metal', 0.01)
+        A.box(*front.box(0.12, 0.2, u - 0.06, u + 0.06, 2.45, 2.7), 'town_glass_lit')
+    return A
+
+
+# ============================================================== shared bits for the curtain-wall towers
+def curtain(A, F, u0, u1, z0, z1, pitch_u, floor_h, key, fin='town_slate', band='town_slate', fin_out=0.14,
+            glass_set=0.12, lit_share=0.6, skip=None):
+    """Curtain wall on plane F: glass panes set back, vertical fins every pitch_u, spandrel band per floor."""
+    nu = max(1, round((u1 - u0) / pitch_u)); pu = (u1 - u0) / nu
+    nf = max(1, round((z1 - z0) / floor_h)); fh = (z1 - z0) / nf
+    A.box(*F.box(-0.35, -glass_set - 0.02, u0, u1, z0, z1), 'town_dark')       # backing slab (never seen through)
+    for f in range(nf):
+        zb = z0 + f * fh
+        A.box(*F.box(-glass_set - 0.02, 0.02, u0, u1, zb, zb + 0.55), band)    # spandrel band
+        for c in range(nu):
+            if skip and skip(c, f):
+                continue
+            a, b = u0 + c * pu, u0 + (c + 1) * pu
+            g = 'town_glass_lit' if lit(f'{key}:{c}:{f}', lit_share) else 'town_glass_dark'
+            A.box(*F.box(-glass_set - 0.02, -glass_set, a + 0.03, b - 0.03, zb + 0.55, zb + fh), g)
+            A.box(*F.box(-glass_set, -glass_set + 0.03, a + 0.03, b - 0.03, zb + fh * 0.62, zb + fh * 0.62 + 0.04), 'town_metal')
+    for c in range(nu + 1):
+        u = u0 + c * pu
+        A.box(*F.box(-glass_set - 0.02, fin_out, u - 0.05, u + 0.05, z0, z1), fin)
+    return nu, nf
+
+def parapet(A, x0, x1, y0, y1, z0, h, mat, t=0.25, coping='town_trim'):
+    for mn, mx in (((x0, y0, z0), (x0 + t, y1, z0 + h)), ((x1 - t, y0, z0), (x1, y1, z0 + h)),
+                   ((x0 + t, y0, z0), (x1 - t, y0 + t, z0 + h)), ((x0 + t, y1 - t, z0), (x1 - t, y1, z0 + h))):
+        A.box(mn, mx, mat)
+    A.box((x0 - 0.03, y0 - 0.03, z0 + h), (x1 + 0.03, y1 + 0.03, z0 + h + 0.08), coping, 0.015)
+
+def louvre_box(A, x0, x1, y0, y1, z0, z1, mat='town_metal'):
+    A.box((x0, y0, z0), (x1, y1, z1), 'town_roof', 0.02)
+    n = int((y1 - y0) / 0.22)
+    for k in range(n):
+        y = y0 + 0.11 + k * (y1 - y0 - 0.22) / max(1, n - 1)
+        A.box((x1, y - 0.06, z0 + 0.15), (x1 + 0.04, y + 0.06, z1 - 0.12), mat)
+        A.box((x0 - 0.04, y - 0.06, z0 + 0.15), (x0, y + 0.06, z1 - 0.12), mat)
+    A.box((x0 - 0.05, y0 - 0.05, z1), (x1 + 0.05, y1 + 0.05, z1 + 0.08), 'town_trim', 0.015)
+
+# ============================================================== T02 WorldQuant: glass box, blank screen wall, glazed lobby
+def build_T02():
+    A = Asset('T02')
+    X0, X1, Y, H = -4.5, 4.5, 4.0, 12.0
+    A.extras.update(building='worldquant', footprint=[9, 12, 8])
+    L = 1.2          # lobby setback on the front and both sides
+    LZ = 3.4         # lobby height (upper floors cantilever over it)
+    # plinth / plaza-level floor
+    A.box((X0, -Y, 0), (X1, Y, PLAZA), 'town_stone_dark', 0.01)
+    A.col_box((X0, -Y, -0.2), (X1, Y, PLAZA), 'col_floor')
+    # glazed lobby box set back; corner columns hold the upper block
+    lx0, lx1, ly = X0 + 0.3, X1 - L, Y - L
+    A.box((lx0, -ly, PLAZA), (lx1 - 0.1, ly, LZ), 'town_dark')
+    for F, u0, u1 in ((Face('x', 1, lx1), -ly, ly), (Face('y', 1, ly), lx0, lx1), (Face('y', -1, -ly), lx0, lx1)):
+        n = int(round((u1 - u0) / 1.3))
+        for k in range(n):
+            a, b = u0 + k * (u1 - u0) / n, u0 + (k + 1) * (u1 - u0) / n
+            A.box(*F.box(-0.1, -0.04, a + 0.03, b - 0.03, PLAZA + 0.05, LZ - 0.2), 'town_glass_lit' if lit(f'T02lob{u0}{k}', 0.8) else 'town_glass_dark')
+            A.box(*F.box(-0.04, 0.02, a - 0.03, a + 0.03, PLAZA, LZ - 0.15), 'town_metal')
+        A.box(*F.box(-0.04, 0.02, u1 - 0.03, u1 + 0.03, PLAZA, LZ - 0.15), 'town_metal')
+        A.box(*F.box(-0.04, 0.03, u0, u1, LZ - 0.2, LZ - 0.12), 'town_metal')
+    # double door in the middle of the lobby front (frame proud of the glass)
+    fr = Face('x', 1, lx1)
+    A.box(*fr.box(0.02, 0.08, -1.0, 1.0, PLAZA, 2.5), 'town_metal')
+    A.box(*fr.box(0.03, 0.06, -0.95, 0.95, PLAZA + 0.02, 2.42), 'town_glass_dark')
+    for u in (-0.08, 0.08):
+        A.box(*fr.box(0.06, 0.1, u - 0.02, u + 0.02, 0.9, 1.5), 'town_metal')
+    A.col_box((lx0, -ly, PLAZA), (lx1 + 0.08, ly, LZ), 'col_lobby')
+    A.col_box((X0, -Y, PLAZA), (lx0, Y, LZ), 'col_lobby_back')
+    for (x, y) in ((X1 - 0.35, Y - 0.35), (X1 - 0.35, -Y + 0.35)):
+        A.add(cyl((x, y), 0.3, PLAZA, LZ, 16), 'town_slate', smooth=True)
+        A.add(cyl((x, y), 0.36, PLAZA, PLAZA + 0.08, 16), 'town_metal', smooth=True)
+        A.col_bm(cyl((x, y), 0.3, PLAZA, LZ, 12), f'col_pilotis_{y:+.0f}')
+    # lobby soffit (underside of the cantilever) with recessed downlights
+    A.box((lx1 - 0.1, -Y, LZ - 0.1), (X1, Y, LZ), 'town_trim')
+    A.box((X0 + 0.3, Y - L, LZ - 0.1), (lx1, Y, LZ), 'town_trim')
+    A.box((X0 + 0.3, -Y, LZ - 0.1), (lx1, -Y + L, LZ), 'town_trim')
+    for y in (-3.0, -1.5, 0.0, 1.5, 3.0):
+        A.add(cyl((X1 - 0.6, y), 0.09, LZ - 0.115, LZ - 0.1, 10), 'town_glass_lit')
+    # upper block: transfer slab, curtain walls on four faces
+    A.box((X0, -Y, LZ), (X1, Y, LZ + 0.45), 'town_slate', 0.02)
+    UZ0, UZ1 = LZ + 0.45, H - 0.9
+    front = Face('x', 1, X1)
+    def screen_skip(c, f):  # leave a 3-bay x 2-floor zone for the screen wall
+        return 3 <= c <= 5 and f in (1, 2)
+    nu, nf = curtain(A, front, -Y, Y, UZ0, UZ1, 1.0, (UZ1 - UZ0) / 3, 'T02f', skip=screen_skip)
+    curtain(A, Face('y', 1, Y), X0, X1, UZ0, UZ1, 1.0, (UZ1 - UZ0) / 3, 'T02s')
+    curtain(A, Face('y', -1, -Y), X0, X1, UZ0, UZ1, 1.0, (UZ1 - UZ0) / 3, 'T02n')
+    curtain(A, Face('x', -1, X0), -Y, Y, UZ0, UZ1, 1.0, (UZ1 - UZ0) / 3, 'T02b', fin='town_dark', band='town_dark')
+    A.col_box((X0, -Y, LZ), (X1, Y, H), 'col_upper', shadow_top=UZ1 + 0.3)
+    # blank screen wall: dark panel in a proud slate frame, mounting rails behind (front face, floors 2-3)
+    fh = (UZ1 - UZ0) / 3
+    sz0, sz1 = UZ0 + fh + 0.15, UZ0 + 3 * fh - 0.15
+    su0, su1 = -1.0, 2.0
+    A.box(*front.box(0.0, 0.18, su0 - 0.15, su1 + 0.15, sz0 - 0.15, sz1 + 0.15), 'town_slate', 0.02)
+    A.box(*front.box(0.18, 0.24, su0, su1, sz0, sz1), 'town_screen')
+    A.box(*front.box(0.18, 0.26, su0 - 0.15, su1 + 0.15, sz0 - 0.15, sz0 - 0.05), 'town_dark')
+    A.anchor('anchor_screen', front.point(0.245, (su0 + su1) / 2, (sz0 + sz1) / 2), w=su1 - su0, h=sz1 - sz0, normal='+X')
+    # crown: slate cornice band, parapet, roof, plant room with louvres
+    A.box((X0 - 0.05, -Y - 0.05, UZ1), (X1 + 0.05, Y + 0.05, UZ1 + 0.35), 'town_slate', 0.02)
+    A.box((X0 + 0.2, -Y + 0.2, UZ1 + 0.2), (X1 - 0.2, Y - 0.2, UZ1 + 0.35), 'town_roof')
+    parapet(A, X0, X1, -Y, Y, UZ1 + 0.35, 0.55, 'town_slate')
+    A.box(*front.box(0.0, 0.04, -2.6, 2.6, UZ1 + 0.4, UZ1 + 0.85), 'town_dark')   # sign band on the parapet
+    A.anchor('anchor_sign', front.point(0.045, 0, UZ1 + 0.625), w=5.2, h=0.45, normal='+X')
+    louvre_box(A, -3.4, -0.8, -2.2, 1.6, UZ1 + 0.35, UZ1 + 1.75)
+    A.add(cyl((1.6, 2.2), 0.35, UZ1 + 0.35, UZ1 + 1.2, 14), 'town_metal', smooth=True)
+    A.add(cyl((1.6, 2.2), 0.4, UZ1 + 1.2, UZ1 + 1.28, 14), 'town_metal', smooth=True)
+    return A
+
+
+# ============================================================== T03 MoE Capital: two-storey California flat roof
+def build_T03():
+    A = Asset('T03')
+    X0, X1, Y, H = -5.0, 5.0, 4.0, 5.0
+    A.extras.update(building='moe', footprint=[10, 5, 8])
+    P = 1.8                       # ground-floor porch depth under the upper floor
+    CX = X1 - P                   # ground-floor shopfront plane
+    Z1 = 2.55                     # first floor level
+    A.box((X0, -Y, 0), (X1, Y, PLAZA), 'town_stone_dark', 0.01)
+    for i in range(1, 10):        # terracotta-ish porch paving joints
+        x = CX + i * P / 10
+        A.box((x - 0.012, -Y + 0.05, PLAZA), (x + 0.012, Y - 0.05, PLAZA + 0.004), 'town_stone')
+    A.col_box((X0, -Y, -0.2), (X1, Y, PLAZA), 'col_floor')
+    # ground floor: brick base walls (sides/back with windows), glazed shopfront with double door
+    sp, sn, bk = Face('y', 1, Y), Face('y', -1, -Y), Face('x', -1, X0)
+    for F, k in ((sp, 'gs'), (sn, 'gn')):
+        facade(A, F, X0, CX, PLAZA, Z1, 3, 1, 1.2, 1.2, 'town_brick', 'T03' + k, wz=0.62, sill_mat='town_stone')
+    facade(A, bk, -Y + 0.2, Y - 0.2, PLAZA, Z1, 3, 1, 1.2, 1.2, 'town_brick', 'T03gb', wz=0.62, sill_mat='town_stone')
+    A.col_box((X0, -Y, PLAZA), (CX, Y, Z1), 'col_ground')
+    sf = Face('x', 1, CX)
+    A.box(*sf.box(-0.2, 0, -3.8, 3.8, PLAZA, PLAZA + 0.45), 'town_brick')          # stall riser
+    for k, (a, b) in enumerate(((-3.8, -1.0), (1.0, 3.8))):
+        n = 3
+        for j in range(n):
+            u0, u1 = a + j * (b - a) / n, a + (j + 1) * (b - a) / n
+            A.box(*sf.box(-0.12, -0.06, u0 + 0.03, u1 - 0.03, PLAZA + 0.45, Z1 - 0.35), 'town_glass_lit' if lit(f'T03sf{k}{j}', 0.75) else 'town_glass_dark')
+            A.box(*sf.box(-0.06, 0.0, u0 - 0.03, u0 + 0.03, PLAZA + 0.45, Z1 - 0.3), 'town_wood')
+        A.box(*sf.box(-0.06, 0.0, b - 0.03, b + 0.03, PLAZA + 0.45, Z1 - 0.3), 'town_wood')
+        A.box(*sf.box(-0.06, 0.02, a, b, PLAZA + 0.42, PLAZA + 0.48), 'town_wood')
+    A.box(*sf.box(-0.2, 0, -3.8, 3.8, Z1 - 0.35, Z1), 'town_cream')               # transom band
+    A.box(*sf.box(-0.2, 0, -Y, -3.8, PLAZA, Z1), 'town_brick')
+    A.box(*sf.box(-0.2, 0, 3.8, Y, PLAZA, Z1), 'town_brick')
+    for u0, u1 in ((-1.0, -0.04), (0.04, 1.0)):                                          # double door, wood frame
+        A.box(*sf.box(-0.14, -0.08, u0, u1, PLAZA, Z1 - 0.4), 'town_glass_dark')
+        for a in (u0, u1 - 0.07):
+            A.box(*sf.box(-0.08, -0.02, a, a + 0.07, PLAZA, Z1 - 0.4), 'town_wood')
+        A.box(*sf.box(-0.08, -0.02, u0, u1, Z1 - 0.47, Z1 - 0.4), 'town_wood')
+        A.box(*sf.box(-0.08, -0.02, u0, u1, PLAZA, PLAZA + 0.12), 'town_wood')
+        A.box(*sf.box(-0.02, 0.06, (u0 + u1) / 2 - 0.015 + (0.3 if u0 < 0 else -0.3), (u0 + u1) / 2 + 0.015 + (0.3 if u0 < 0 else -0.3), 0.9, 1.5), 'town_metal')
+    A.box(*sf.box(-0.2, 0, -1.0, 1.0, Z1 - 0.4, Z1 - 0.35), 'town_wood')
+    # porch posts (slender steel) at the porch edge, side return walls
+    for y in (-3.75, 3.75):
+        A.box((X1 - 0.22, y - 0.1, PLAZA), (X1 - 0.02, y + 0.1, Z1), 'town_cream', 0.02)
+        A.col_box((X1 - 0.22, y - 0.1, PLAZA), (X1 - 0.02, y + 0.1, Z1), f'col_post_{y:+.0f}')
+    for y in (-1.3, 1.3):
+        A.add(cyl((X1 - 0.12, y), 0.07, PLAZA, Z1, 10), 'town_metal', smooth=True)
+        A.col_bm(cyl((X1 - 0.12, y), 0.08, PLAZA, Z1, 8), f'col_steel_{y:+.0f}')
+    # first floor slab (porch ceiling), upper floor cream walls with ribbon windows
+    A.box((X0, -Y, Z1), (X1, Y, Z1 + 0.3), 'town_cream', 0.02)
+    A.box((CX, -Y + 0.12, Z1 - 0.02), (X1 - 0.02, Y - 0.12, Z1), 'town_wood')               # wood porch soffit
+    for k in range(9):
+        x = CX + 0.1 + k * 0.2
+        A.box((x - 0.02, -Y + 0.12, Z1 - 0.05), (x + 0.02, Y - 0.12, Z1 - 0.02), 'town_wood')
+    UZ0, UZ1 = Z1 + 0.3, H - 0.25
+    up = Face('x', 1, X1)
+    # ribbon window: long strip broken by thin mullions, wood louvres on the south half
+    A.box(*up.box(-0.2, 0, -Y, Y, UZ0, UZ0 + 0.55), 'town_cream')
+    A.box(*up.box(-0.2, 0, -Y, Y, UZ1 - 0.3, UZ1), 'town_cream')
+    A.box(*up.box(-0.2, 0, -Y, -Y + 0.4, UZ0 + 0.55, UZ1 - 0.3), 'town_cream')
+    A.box(*up.box(-0.2, 0, Y - 0.4, Y, UZ0 + 0.55, UZ1 - 0.3), 'town_cream')
+    n = 8
+    for j in range(n):
+        u0, u1 = -Y + 0.4 + j * (2 * Y - 0.8) / n, -Y + 0.4 + (j + 1) * (2 * Y - 0.8) / n
+        A.box(*up.box(-0.2, -0.12, u0, u1, UZ0 + 0.55, UZ1 - 0.3), 'town_glass_lit' if lit(f'T03up{j}') else 'town_glass_dark')
+        A.box(*up.box(-0.12, -0.06, u0 - 0.025, u0 + 0.025, UZ0 + 0.55, UZ1 - 0.3), 'town_trim')
+    A.box(*up.box(-0.12, 0.08, -Y + 0.35, Y - 0.35, UZ0 + 0.5, UZ0 + 0.56), 'town_trim', 0.01)  # continuous sill
+    for k in range(16):                                    # vertical cedar slats screening the south half
+        u = 0.3 + k * 0.22
+        A.box(*up.box(0.1, 0.18, u - 0.035, u + 0.035, UZ0 + 0.5, UZ1 - 0.25), 'town_wood')
+    A.box(*up.box(0.02, 0.18, 0.2, 3.8, UZ1 - 0.3, UZ1 - 0.22), 'town_wood')
+    A.box(*up.box(0.02, 0.18, 0.2, 3.8, UZ0 + 0.44, UZ0 + 0.5), 'town_wood')
+    for u in (0.25, 3.75):
+        A.box(*up.box(0.0, 0.18, u - 0.04, u + 0.04, UZ0 + 0.44, UZ1 - 0.22), 'town_wood')
+    for F, k in ((sp, 'us'), (sn, 'un')):
+        facade(A, F, X0, X1, UZ0, UZ1, 4, 1, 1.5, 1.05, 'town_cream', 'T03' + k, wz=0.55)
+    facade(A, bk, -Y + 0.2, Y - 0.2, UZ0, UZ1, 3, 1, 1.4, 1.05, 'town_cream', 'T03ub', wz=0.55)
+    A.col_box((X0, -Y, Z1), (X1, Y, H), 'col_upper', shadow_top=UZ1 + 0.25)
+    # thin flat roof plate with deep overhang (0.6 m) and fascia; roof deck, AC unit, skylight
+    A.box((X0 - 0.6, -Y - 0.6, UZ1), (X1 + 0.6, Y + 0.6, UZ1 + 0.18), 'town_trim', 0.02)
+    A.box((X0 - 0.62, -Y - 0.62, UZ1 + 0.18), (X1 + 0.62, Y + 0.62, UZ1 + 0.26), 'town_cream', 0.02)
+    A.box((X0 + 0.1, -Y + 0.1, UZ1 + 0.26), (X1 - 0.1, Y - 0.1, UZ1 + 0.3), 'town_roof')
+    A.box((-3.2, -2.6, UZ1 + 0.3), (-1.8, -1.4, UZ1 + 0.95), 'town_trim', 0.03)
+    A.add(cyl((-2.5, -2.0), 0.42, UZ1 + 0.95, UZ1 + 0.99, 16), 'town_metal', smooth=True)
+    A.box((0.5, 0.8, UZ1 + 0.3), (2.3, 2.6, UZ1 + 0.5), 'town_metal', 0.02)
+    A.box((0.58, 0.88, UZ1 + 0.5), (2.22, 2.52, UZ1 + 0.53), 'town_glass_dark')
+    # sign: wood letters board on the porch fascia (runtime face)
+    A.box(*up.box(0.0, 0.05, -2.4, 2.4, Z1 + 0.04, Z1 + 0.28), 'town_wood')
+    A.anchor('anchor_sign', up.point(0.055, 0, Z1 + 0.16), w=4.6, h=0.22, normal='+X')
+    # planter boxes either side of the door (succulent mounds)
+    for y in (-2.3, 2.3):
+        A.box((CX + 0.15, y - 0.55, PLAZA), (CX + 0.75, y + 0.55, PLAZA + 0.45), 'town_cream', 0.03)
+        A.box((CX + 0.2, y - 0.5, PLAZA + 0.38), (CX + 0.7, y + 0.5, PLAZA + 0.43), 'town_brick')
+        for k in range(3):
+            A.add(lathe([(0, 0), (0.14, 0.03), (0.17, 0.12), (0.1, 0.24), (0, 0.27)], 8, (CX + 0.45, y - 0.3 + k * 0.3, PLAZA + 0.42), k), 'palm_leaf', smooth=True)
+        A.col_box((CX + 0.15, y - 0.55, PLAZA), (CX + 0.75, y + 0.55, PLAZA + 0.7), f'col_planter_{y:+.0f}')
+    return A
+
+
+
+# ============================================================== T12 palms (two variants as child parts; leaves carry _WIND)
+def palm(A, tag, height, lean, lean_dir, n_fronds, seed, origin=(0, 0, 0)):
+    import random
+    rnd = random.Random(seed)
+    A.use(f'T12_{tag}_trunk')
+    # curved trunk: stacked tapering rings (one ring per ~0.32 m), each ring a slightly flared frustum
+    segs = int(height / 0.32)
+    d = Vector((math.cos(lean_dir), math.sin(lean_dir), 0))
+    def axis(t):  # quadratic lean
+        return Vector(origin) + d * (lean * t * t) + Vector((0, 0, height * t))
+    sides = 9
+    for i in range(segs):
+        t0, t1 = i / segs, (i + 1) / segs
+        p0, p1 = axis(t0), axis(t1)
+        r0 = 0.2 - 0.07 * t0 + (0.05 if i == 0 else 0)
+        r1 = 0.2 - 0.07 * t1
+        prof = [(r0 * 0.9, 0.0), (r0, 0.06), (r1 * 1.08, (p1 - p0).length * 0.92), (r1 * 0.92, (p1 - p0).length)]
+        bm = lathe(prof, sides, (0, 0, 0), rot=i * 0.35)
+        q = Vector((0, 0, 1)).rotation_difference((p1 - p0).normalized())
+        xform(bm, Matrix.Translation(p0) @ q.to_matrix().to_4x4())
+        A.add(bm, 'palm_trunk', smooth=True,
+              wind=lambda co, h=height: (min(1.0, (co.z / h) ** 2), 0.0, 0.0, 0.0))
+    top = axis(1.0)
+    # crown shaft + boot and coconut cluster
+    A.add(lathe([(0.0, -0.05), (0.15, 0.0), (0.2, 0.18), (0.17, 0.42), (0.08, 0.55), (0.0, 0.6)], 10, tuple(top)), 'palm_trunk', smooth=True,
+          wind=lambda co, h=height: (min(1.0, (co.z / h) ** 2), 0.0, 0.0, 0.0))
+    for k in range(5):
+        a = k * 2 * math.pi / 5 + rnd.random() * 0.4
+        c = top + Vector((math.cos(a) * 0.17, math.sin(a) * 0.17, 0.05 + 0.05 * (k % 2)))
+        bm = bmesh.new(); bmesh.ops.create_icosphere(bm, subdivisions=1, radius=0.1)
+        xform(bm, Matrix.Translation(c))
+        A.add(bm, 'palm_trunk', smooth=True, wind=lambda co, h=height: (min(1.0, (co.z / h) ** 2), 0.0, 0.0, 0.0))
+    A.use(f'T12_{tag}_leaves')
+    for f in range(n_fronds):
+        az = f * 2 * math.pi / n_fronds + rnd.uniform(-0.15, 0.15)
+        L = rnd.uniform(2.3, 2.9)
+        rise = rnd.uniform(0.35, 0.75) if f % 3 else rnd.uniform(0.1, 0.3)
+        droop = rnd.uniform(1.3, 1.9)
+        dirv = Vector((math.cos(az), math.sin(az), 0))
+        side = Vector((-math.sin(az), math.cos(az), 0))
+        n = 9
+        def rachis(t):
+            return top + Vector((0, 0, 0.45)) + dirv * (L * t) + Vector((0, 0, rise * t * 2.2 - droop * t * t))
+        bm = bmesh.new()
+        # midrib: thin quad strip (two-sided card) + pinnae as folded V blades either side
+        prev = None
+        for i in range(n + 1):
+            t = i / n
+            c = rachis(t)
+            w = 0.035 * (1 - t) + 0.008
+            a_ = bm.verts.new(c - side * w); b_ = bm.verts.new(c + side * w)
+            if prev:
+                bm.faces.new((prev[0], prev[1], b_, a_))
+            prev = (a_, b_)
+        for i in range(1, n):
+            t = i / n
+            c = rachis(t)
+            tang = (rachis(min(1, t + 0.05)) - rachis(max(0, t - 0.05))).normalized()
+            span = 0.62 * math.sin(math.pi * min(1, t * 1.05)) + 0.1
+            for sgn in (-1, 1):
+                tip = c + side * sgn * span + tang * 0.18 - Vector((0, 0, 0.16 + 0.25 * t))
+                fold = Vector((0, 0, 0.045))
+                r0 = c + tang * -0.07
+                r1 = c + tang * 0.07
+                mid = (c + tip) / 2 + fold + tang * 0.06
+                v = [bm.verts.new(x) for x in (r0, r1, mid, tip)]
+                bm.faces.new((v[0], v[2], v[3])); bm.faces.new((v[2], v[1], v[3]))
+                bm.faces.new((v[0], v[1], v[2]))
+        grp = (f % 8 + 0.5) / 8
+        def w(co, base=top, Ln=L, g=grp, h=height):
+            r = min(1.0, (co - base).length / Ln)
+            return (1.0, r, r * r, g)
+        A.add(bm, 'palm_leaf' if f % 2 else 'palm_leaf_dark', smooth=False, closed=False, wind=w)
+    # trunk collider: slim hull along the lower 3 m (leaves have none)
+    pts = [axis(t) for t in (0.0, min(1.0, 3.0 / height))]
+    bm = bmesh.new()
+    for p, r in ((pts[0], 0.24), (pts[1], 0.2)):
+        for k in range(8):
+            a = k * math.pi / 4
+            bm.verts.new((p.x + r * math.cos(a), p.y + r * math.sin(a), p.z))
+    bmesh.ops.convex_hull(bm, input=bm.verts)
+    A.col_bm(bm, f'col_{tag}_trunk')
+
+def build_T12():
+    A = Asset('T12')
+    A.extras.update(kind='palm', variants=['a', 'b'], windAttribute='_WIND xyzw=bend,branch,leaf,phaseGroup')
+    palm(A, 'a', 6.4, 0.7, 0.4, 11, 7)
+    palm(A, 'b', 5.3, 1.0, 2.6, 10, 19, origin=(0, -4.0, 0))
+    # variant b is authored 4 m along Blender -Y (glTF +Z); runtime subtracts variantOrigin
+    A.part_extras = {f'T12_{v}_{p}': {'variant': v, 'variantOriginGLB': [0, 0, 0] if v == 'a' else [0, 0, 4.0]} for v in 'ab' for p in ('trunk', 'leaves')}
+    return A
+
+# ============================================================== T04 ByteDance: cream + slate colour blocks, big sign board
+def build_T04():
+    A = Asset('T04')
+    X0, X1, Y, H = -4.5, 4.5, 4.0, 10.0
+    A.extras.update(building='aime', footprint=[9, 10, 8])
+    NX, NY = 3.0, 3.2            # entrance notch carved out of the south-east (Blender -Y) ground corner
+    FZ = 3.3                     # ground floor height; upper floors 3 x 2.1 m
+    A.box((X0, -Y, 0), (X1, Y, PLAZA), 'town_stone_dark', 0.01)
+    A.col_box((X0, -Y, -0.2), (X1, Y, PLAZA), 'col_floor')
+    front, sp, sn, bk = Face('x', 1, X1), Face('y', 1, Y), Face('y', -1, -Y), Face('x', -1, X0)
+    # ---- ground floor (cream) with the notch
+    facade(A, front, -Y + NY, Y, PLAZA, FZ, 2, 1, 1.7, 2.1, 'town_cream', 'T04g', wz=0.4)
+    facade(A, sp, X0, X1, PLAZA, FZ, 3, 1, 1.4, 1.6, 'town_cream', 'T04gs', wz=0.5)
+    facade(A, bk, -Y, Y, PLAZA, FZ, 3, 1, 1.4, 1.6, 'town_cream', 'T04gb', wz=0.5)
+    facade(A, sn, X0, X1 - NX, PLAZA, FZ, 2, 1, 1.4, 1.6, 'town_cream', 'T04gn', wz=0.5)
+    nf = Face('x', 1, X1 - NX)   # notch inner faces: glass door wall (facing avenue) and glass side (facing south)
+    ns = Face('y', -1, -Y + NY)
+    A.box(*nf.box(-0.2, 0, -Y, -Y + NY, FZ - 0.5, FZ), 'town_cream')
+    A.box(*ns.box(-0.2, 0, X1 - NX, X1, FZ - 0.5, FZ), 'town_cream')
+    A.box(*nf.box(-0.2, -0.1, -Y + 0.05, -Y + NY - 0.2, PLAZA, FZ - 0.5), 'town_glass_lit')
+    A.box(*ns.box(-0.2, -0.1, X1 - NX + 0.05, X1 - 0.05, PLAZA, FZ - 0.5), 'town_glass_lit')
+    for u in (-Y + 0.05, -Y + 1.0, -Y + 1.9, -Y + NY - 0.25):
+        A.box(*nf.box(-0.1, 0.0, u, u + 0.05, PLAZA, FZ - 0.5), 'town_metal')
+    for u in (X1 - NX + 0.05, X1 - 1.5, X1 - 0.1):
+        A.box(*ns.box(-0.1, 0.0, u, u + 0.05, PLAZA, FZ - 0.5), 'town_metal')
+    A.box(*nf.box(-0.1, 0.02, -Y + 0.95, -Y + 2.0, PLAZA, 2.45), 'town_slate')
+    A.box(*nf.box(0.0, 0.03, -Y + 1.02, -Y + 1.93, PLAZA, 2.38), 'town_glass_dark')
+    A.box(*nf.box(0.03, 0.08, -Y + 1.44, -Y + 1.51, 0.8, 1.7), 'town_metal')
+    A.add(cyl((X1 - 0.25, -Y + 0.25), 0.18, PLAZA, FZ, 14), 'town_slate', smooth=True)     # corner column
+    A.col_bm(cyl((X1 - 0.25, -Y + 0.25), 0.18, PLAZA, FZ, 10), 'col_corner')
+    A.col_box((X0, -Y + NY, PLAZA), (X1, Y, FZ), 'col_ground_main')
+    A.col_box((X0, -Y, PLAZA), (X1 - NX, -Y + NY, FZ), 'col_ground_side')
+    # canopy over the notch (slate blade on two steel tie rods)
+    A.box((X1 - NX, -Y - 0.4, FZ - 0.55), (X1 + 0.6, -Y + NY, FZ - 0.4), 'town_slate', 0.02)
+    # ---- floor slab band
+    A.box((X0 - 0.06, -Y - 0.06, FZ), (X1 + 0.06, Y + 0.06, FZ + 0.25), 'town_trim', 0.02)
+    UZ0, UZ1 = FZ + 0.25, H - 0.6
+    # ---- upper floors: cream body with ribbon windows; slate block wraps the south-east corner
+    SB = 3.6                     # slate block width along the front (south part)
+    facade(A, front, -Y + SB, Y, UZ0, UZ1, 2, 3, 1.5, 1.25, 'town_cream', 'T04uf', wz=0.5)
+    facade(A, sp, X0, X1, UZ0, UZ1, 3, 3, 1.4, 1.25, 'town_cream', 'T04us', wz=0.5)
+    facade(A, bk, -Y, Y, UZ0, UZ1, 3, 3, 1.4, 1.25, 'town_cream', 'T04ub', wz=0.5)
+    facade(A, sn, X0, X1 - SB, UZ0, UZ1, 2, 3, 1.3, 1.25, 'town_cream', 'T04un', wz=0.5)
+    # slate block: 0.35 m proud box with horizontal ribbon windows on both faces
+    sfF, sfS = Face('x', 1, X1 + 0.35), Face('y', -1, -Y - 0.35)
+    facade(A, sfF, -Y - 0.35, -Y + SB, UZ0, UZ1, 1, 3, SB - 0.9, 1.15, 'town_slate', 'T04bf', depth=0.55, wz=0.5, frame='town_dark', sill_mat='town_dark')
+    facade(A, sfS, X1 - SB, X1 + 0.35, UZ0, UZ1, 1, 3, SB - 0.9, 1.15, 'town_slate', 'T04bs', depth=0.55, wz=0.5, frame='town_dark', sill_mat='town_dark')
+    A.box((X1 - SB, -Y - 0.35, UZ0 - 0.06), (X1 + 0.35, -Y + SB, UZ0), 'town_slate')
+    A.box((X1 - SB, -Y - 0.35, UZ1), (X1 + 0.35, -Y + SB, UZ1 + 0.9), 'town_slate', 0.02)
+    A.col_box((X0, -Y, FZ), (X1, Y, H), 'col_upper', shadow_top=UZ1 + 0.05)
+    # vertical slate strip on the cream front (between ribbon bays)
+    A.box(*front.box(0, 0.12, 0.45, 0.85, UZ0, UZ1 + 0.3), 'town_slate')
+    # ---- crown: parapet + big sign board frame on the front (runtime abstract symbol + name)
+    A.box((X0 + 0.15, -Y + 0.15, UZ1 - 0.05), (X1 - 0.15, Y - 0.15, UZ1 + 0.1), 'town_roof')
+    parapet(A, X0, X1 - SB, -Y, Y, UZ1, 0.6, 'town_cream')
+    A.box(*front.box(0.1, 0.35, -Y + SB + 0.2, Y - 0.2, UZ1 + 0.25, UZ1 + 1.75), 'town_trim', 0.02)
+    A.box(*front.box(0.35, 0.4, -Y + SB + 0.32, Y - 0.32, UZ1 + 0.37, UZ1 + 1.63), 'town_dark')
+    for u in (-Y + SB + 0.6, Y - 0.6):
+        A.box(*front.box(-0.3, 0.12, u - 0.05, u + 0.05, UZ1 - 0.05, UZ1 + 1.6), 'town_metal')
+    A.anchor('anchor_sign', front.point(0.405, (-Y + SB + Y) / 2, UZ1 + 1.0), w=2 * Y - SB - 0.64, h=1.26, normal='+X')
+    louvre_box(A, -3.6, -1.6, -1.0, 2.2, UZ1 + 0.1, UZ1 + 1.2)
+    for k in range(3):     # small rooftop vent stacks
+        A.add(cyl((-0.6 + k * 0.6, 3.0), 0.12, UZ1 + 0.1, UZ1 + 0.7, 10), 'town_metal', smooth=True)
+        A.add(cyl((-0.6 + k * 0.6, 3.0), 0.16, UZ1 + 0.7, UZ1 + 0.76, 10), 'town_metal', smooth=True)
+    return A
+
+# ============================================================== T05 Video Rebirth: Hong Kong tong lau, arcade + narrow balconies
+def balcony(A, F, u0, u1, z, depth, key):
+    """Narrow cantilevered balcony on plane F at floor level z: slab, edge beam, square balusters, handrail."""
+    A.box(*F.box(-0.05, depth, u0, u1, z - 0.14, z), 'town_trim', 0.015)
+    A.box(*F.box(depth - 0.08, depth, u0, u1, z - 0.24, z - 0.14), 'town_trim')
+    n = int((u1 - u0) / 0.16)
+    for k in range(n + 1):
+        u = u0 + 0.05 + k * (u1 - u0 - 0.1) / n
+        A.box(*F.box(depth - 0.06, depth - 0.03, u - 0.015, u + 0.015, z, z + 0.95), 'town_metal')
+    for uu in (u0 + 0.02, u1 - 0.07):  # end returns
+        for k in range(1, int(depth / 0.16) + 1):
+            n_ = k * (depth - 0.06) / (int(depth / 0.16) + 1)
+            A.box(*F.box(n_ - 0.015, n_ + 0.015, uu, uu + 0.05, z, z + 0.95), 'town_metal')
+    A.box(*F.box(depth - 0.08, depth - 0.01, u0, u1, z + 0.95, z + 1.0), 'town_metal')
+    A.box(*F.box(0.0, depth - 0.01, u0, u0 + 0.05, z + 0.95, z + 1.0), 'town_metal')
+    A.box(*F.box(0.0, depth - 0.01, u1 - 0.05, u1, z + 0.95, z + 1.0), 'town_metal')
+    A.box(*F.box(depth - 0.08, depth - 0.01, u0, u1, z + 0.1, z + 0.14), 'town_metal')
+
+def ac_unit(A, F, u, z, key):
+    A.box(*F.box(0.0, 0.45, u - 0.4, u + 0.4, z, z + 0.55), 'town_trim', 0.02)
+    A.add(xform(cyl((0, 0), 0.19, 0, 0.02, 14), F_axis_matrix(F, 0.45, u - 0.08, z + 0.27)), 'town_metal', smooth=True)
+    for k in range(3):
+        A.box(*F.box(0.45, 0.47, u + 0.17, u + 0.33, z + 0.12 + k * 0.12, z + 0.17 + k * 0.12), 'town_metal')
+    A.box(*F.box(0.05, 0.4, u - 0.35, u - 0.3, z - 0.12, z), 'town_metal')
+    A.box(*F.box(0.05, 0.4, u + 0.3, u + 0.35, z - 0.12, z), 'town_metal')
+
+def F_axis_matrix(F, n, u, z):
+    """Matrix placing a +Z-axis disc onto plane F (disc normal = outward), centre at (n, u, z)."""
+    p = Vector(F.point(n, u, z))
+    if F.axis == 'x':
+        r = Matrix.Rotation(math.radians(90 * F.sign), 4, 'Y')
+    else:
+        r = Matrix.Rotation(math.radians(-90 * F.sign), 4, 'X')
+    return Matrix.Translation(p) @ r
+
+def build_T05():
+    A = Asset('T05')
+    X0, X1, Y, H = -4.0, 4.0, 4.0, 11.0
+    A.extras.update(building='video-rebirth', footprint=[8, 11, 8])
+    AD = 2.4                   # arcade depth (kerb side, through-walk)
+    AZ = 3.4                   # arcade height
+    SX = X1 - AD               # shopfront plane
+    A.box((X0, -Y, 0), (X1, Y, PLAZA), 'town_stone_dark', 0.01)
+    for i in range(1, 12):
+        y = -Y + i * 2 * Y / 12
+        A.box((SX, y - 0.012, PLAZA), (X1 - 0.05, y + 0.012, PLAZA + 0.004), 'town_stone')
+    A.col_box((X0, -Y, -0.2), (X1, Y, PLAZA), 'col_floor')
+    sp, sn, bk = Face('y', 1, Y), Face('y', -1, -Y), Face('x', -1, X0)
+    # ground floor behind the arcade: two shop bays with rolling-shutter boxes and a stair door
+    sf = Face('x', 1, SX)
+    A.box(*sf.box(-0.2, 0, -Y, Y, AZ - 0.55, AZ), 'town_brick')
+    bays = ((-3.8, -0.9, 'shop'), (-0.6, 0.6, 'door'), (0.9, 3.8, 'shop'))
+    edges = [-Y] + [x for a, b, _ in bays for x in (a, b)] + [Y]
+    for i in range(0, len(edges), 2):
+        A.box(*sf.box(-0.2, 0, edges[i], edges[i + 1], PLAZA, AZ - 0.55), 'town_brick')
+    for a, b, kind in bays:
+        if kind == 'shop':
+            A.box(*sf.box(-0.2, -0.12, a, b, PLAZA, AZ - 0.55), 'town_glass_lit' if lit(f'T05s{a}', 0.8) else 'town_glass_dark')
+            for k in range(4):
+                u = a + k * (b - a) / 3
+                A.box(*sf.box(-0.12, -0.06, u - 0.03, u + 0.03, PLAZA, AZ - 0.55), 'town_metal')
+            A.box(*sf.box(-0.12, 0.02, a, b, PLAZA + 0.9, PLAZA + 0.95), 'town_metal')
+            A.box(*sf.box(0.0, 0.22, a - 0.05, b + 0.05, AZ - 0.85, AZ - 0.55), 'town_metal', 0.02)   # shutter box
+            for k in range(5):  # half-raised shutter slats
+                A.box(*sf.box(-0.05, 0.02, a + 0.02, b - 0.02, AZ - 0.86 - k * 0.06, AZ - 0.82 - k * 0.06), 'town_metal')
+        else:
+            A.box(*sf.box(-0.2, -0.1, a, b, PLAZA, 2.3), 'town_wood')
+            for k in range(3):
+                A.box(*sf.box(-0.1, -0.08, a + 0.12, b - 0.12, PLAZA + 0.25 + k * 0.7, PLAZA + 0.75 + k * 0.7), 'town_wood')
+            A.box(*sf.box(-0.2, -0.1, a, b, 2.3, AZ - 0.55), 'town_glass_lit')
+            A.box(*sf.box(-0.1, -0.05, a + 0.1, a + 0.14, 1.0, 1.25), 'town_metal')
+    facade(A, sp, X0, SX, PLAZA, AZ, 2, 1, 1.0, 1.5, 'town_brick', 'T05gs', wz=0.55, sill_mat='town_stone')
+    facade(A, sn, X0, SX, PLAZA, AZ, 2, 1, 1.0, 1.5, 'town_brick', 'T05gn', wz=0.55, sill_mat='town_stone')
+    facade(A, bk, -Y, Y, PLAZA, AZ, 3, 1, 1.0, 1.5, 'town_brick', 'T05gb', wz=0.55, sill_mat='town_stone')
+    A.col_box((X0, -Y, PLAZA), (SX, Y, AZ), 'col_ground')
+    # arcade columns (square, plinth + capital) at the kerb, four across; arcade open on both ends
+    for y in (-3.7, -1.25, 1.25, 3.7):
+        x = X1 - 0.3
+        A.box((x - 0.3, y - 0.3, PLAZA), (x + 0.3, y + 0.3, PLAZA + 0.35), 'town_stone_dark', 0.02)
+        A.box((x - 0.24, y - 0.24, PLAZA + 0.35), (x + 0.24, y + 0.24, AZ - 0.25), 'town_brick', 0.02)
+        A.box((x - 0.3, y - 0.3, AZ - 0.25), (x + 0.3, y + 0.3, AZ), 'town_trim', 0.02)
+        A.col_box((x - 0.3, y - 0.3, PLAZA), (x + 0.3, y + 0.3, AZ), f'col_arcade_{y:+.1f}')
+    A.box((SX, -Y, AZ - 0.08), (X1, Y, AZ), 'town_trim')       # arcade ceiling
+    for y in (-2.5, 0.0, 2.5):  # ceiling lamps (warm)
+        A.add(cyl((SX + 1.2, y), 0.14, AZ - 0.14, AZ - 0.08, 12), 'town_glass_lit', smooth=True)
+    # upper floors: brick body, per-floor narrow balconies across the front, windows behind them
+    A.box((X0 - 0.05, -Y - 0.05, AZ), (X1 + 0.05, Y + 0.05, AZ + 0.3), 'town_trim', 0.02)
+    UZ0, UZ1 = AZ + 0.3, H - 0.7
+    front = Face('x', 1, X1)
+    nfl = 3
+    fh = (UZ1 - UZ0) / nfl
+    facade(A, front, -Y, Y, UZ0, UZ1, 3, nfl, 1.25, 1.6, 'town_brick', 'T05uf', wz=0.25)
+    facade(A, sp, X0, X1, UZ0, UZ1, 3, nfl, 0.9, 1.3, 'town_brick', 'T05us', wz=0.45)
+    facade(A, sn, X0, X1, UZ0, UZ1, 3, nfl, 0.9, 1.3, 'town_brick', 'T05un', wz=0.45)
+    facade(A, bk, -Y, Y, UZ0, UZ1, 3, nfl, 0.9, 1.3, 'town_brick', 'T05ub', wz=0.45)
+    for f in range(nfl):
+        z = UZ0 + f * fh + 0.12
+        balcony(A, front, -Y + 0.2, Y - 0.2, z, 0.75, f'T05b{f}')
+        A.box((X1 - 0.02, -Y - 0.03, UZ0 + f * fh - 0.05), (X1 + 0.06, Y + 0.03, UZ0 + f * fh + 0.02), 'town_trim')
+    # AC units on the side walls, drain pipe, floor bands
+    for f in range(nfl):
+        z = UZ0 + f * fh + 0.25
+        ac_unit(A, sp, 1.2 - f * 1.9, z, f'acs{f}')
+        ac_unit(A, sn, -1.6 + f * 1.4, z + 0.2, f'acn{f}')
+    A.add(cyl((X0 + 0.25, Y + 0.08), 0.06, PLAZA, H - 0.4, 8), 'town_metal', smooth=True)
+    A.col_box((X0, -Y, AZ), (X1, Y, H), 'col_upper', shadow_top=UZ1 + 0.05)
+    # vertical unlit sign frame cantilevered from the south corner (Art Lock: frame stays dark)
+    A.box((X1 + 0.0, -Y + 0.15, AZ + 0.6), (X1 + 0.9, -Y + 0.25, AZ + 0.68), 'town_metal')
+    A.box((X1 + 0.0, -Y + 0.15, UZ1 - 0.5), (X1 + 0.9, -Y + 0.25, UZ1 - 0.42), 'town_metal')
+    A.box((X1 + 0.8, -Y + 0.05, AZ + 0.4), (X1 + 1.05, -Y + 0.35, UZ1 - 0.2), 'town_dark', 0.02)
+    A.box((X1 + 0.83, -Y + 0.03, AZ + 0.5), (X1 + 1.02, -Y + 0.37, UZ1 - 0.3), 'town_screen')
+    A.anchor('anchor_vsign', (X1 + 0.925, -Y + 0.37, (AZ + UZ1) / 2), w=0.19, h=UZ1 - AZ - 0.8, normal='-Y', lit=False)
+    # parapet with a front name band, roof water tank on four legs, stair hut
+    A.box((X0 + 0.15, -Y + 0.15, UZ1 - 0.05), (X1 - 0.15, Y - 0.15, UZ1 + 0.1), 'town_roof')
+    parapet(A, X0, X1, -Y, Y, UZ1, 0.6, 'town_brick', coping='town_trim')
+    A.box(*front.box(0.0, 0.05, -2.8, 2.8, UZ1 + 0.08, UZ1 + 0.55), 'town_trim')
+    A.anchor('anchor_sign', front.point(0.055, 0, UZ1 + 0.315), w=5.4, h=0.4, normal='+X')
+    for (x, y) in ((-2.8, 1.0), (-1.4, 1.0), (-2.8, 2.6), (-1.4, 2.6)):
+        A.box((x - 0.06, y - 0.06, UZ1 + 0.1), (x + 0.06, y + 0.06, UZ1 + 1.2), 'town_metal')
+    A.box((-3.0, 0.8, UZ1 + 1.2), (-1.2, 2.8, UZ1 + 1.3), 'town_metal')
+    A.add(cyl((-2.1, 1.8), 0.85, UZ1 + 1.3, UZ1 + 2.4, 16), 'town_cream', smooth=True)
+    A.add(lathe([(0.88, 0), (0.6, 0.18), (0.0, 0.26)], 16, (-2.1, 1.8, UZ1 + 2.4)), 'town_cream', smooth=True)
+    A.box((0.8, -2.8, UZ1 + 0.1), (2.8, -0.8, UZ1 + 2.2), 'town_brick', 0.02)
+    A.box((0.75, -2.85, UZ1 + 2.2), (2.85, -0.75, UZ1 + 2.32), 'town_trim', 0.02)
+    A.box((2.8, -2.2, UZ1 + 0.1), (2.84, -1.4, UZ1 + 2.0), 'town_wood')
+    return A
+
+# ============================================================== T06 Tencent Hunyuan: dark glass tower, roof glow ring
+def build_T06():
+    A = Asset('T06')
+    X0, X1, Y, H = -5.0, 5.0, 4.0, 15.0
+    A.extras.update(building='hunyuan', footprint=[10, 15, 8])
+    LD = 2.0                     # lobby recess under the tower front
+    LZ = 4.2                     # double-height lobby
+    A.box((X0, -Y, 0), (X1, Y, PLAZA), 'town_stone_dark', 0.01)
+    for i in range(1, 10):
+        y = -Y + i * 0.8
+        A.box((X1 - LD, y - 0.012, PLAZA), (X1 - 0.05, y + 0.012, PLAZA + 0.004), 'town_stone')
+    A.col_box((X0, -Y, -0.2), (X1, Y, PLAZA), 'col_floor')
+    # lobby glass wall with a central door, dark frame; two round columns at the front edge
+    lf = Face('x', 1, X1 - LD)
+    A.box(*lf.box(-0.3, -0.15, -Y + 0.2, Y - 0.2, PLAZA, LZ), 'town_dark')
+    n = 6
+    for k in range(n):
+        a, b = -Y + 0.2 + k * (2 * Y - 0.4) / n, -Y + 0.2 + (k + 1) * (2 * Y - 0.4) / n
+        A.box(*lf.box(-0.15, -0.1, a + 0.03, b - 0.03, PLAZA + 0.05, LZ - 0.1), 'town_glass_lit' if lit(f'T06l{k}', 0.85) else 'town_glass_dark')
+        A.box(*lf.box(-0.1, 0.0, a - 0.04, a + 0.04, PLAZA, LZ), 'town_dark')
+    A.box(*lf.box(-0.1, 0.0, Y - 0.24, Y - 0.16, PLAZA, LZ), 'town_dark')
+    A.box(*lf.box(-0.1, 0.02, -Y + 0.2, Y - 0.2, 2.7, 2.78), 'town_dark')
+    A.box(*lf.box(0.0, 0.08, -1.1, 1.1, PLAZA, 2.7), 'town_dark')
+    A.box(*lf.box(0.02, 0.06, -1.05, -0.03, PLAZA + 0.02, 2.62), 'town_glass_dark')
+    A.box(*lf.box(0.02, 0.06, 0.03, 1.05, PLAZA + 0.02, 2.62), 'town_glass_dark')
+    for u in (-0.15, 0.15):
+        A.box(*lf.box(0.06, 0.1, u - 0.02, u + 0.02, 0.8, 1.9), 'town_metal')
+    for F, side in ((Face('y', 1, Y), 'p'), (Face('y', -1, -Y), 'n')):   # solid stone side walls of the lobby
+        A.box(*F.box(-0.3, 0, X0, X1 - LD, PLAZA, LZ), 'town_stone_dark')
+    A.box(*Face('x', -1, X0).box(-0.3, 0, -Y, Y, PLAZA, LZ), 'town_stone_dark')
+    A.col_box((X0, -Y, PLAZA), (X1 - LD, Y, LZ), 'col_lobby')
+    for y in (-2.0, 2.0):
+        A.add(cyl((X1 - 0.4, y), 0.32, PLAZA, LZ, 20), 'town_dark', smooth=True)
+        A.add(cyl((X1 - 0.4, y), 0.38, PLAZA, PLAZA + 0.1, 20), 'town_metal', smooth=True)
+        A.col_bm(cyl((X1 - 0.4, y), 0.32, PLAZA, LZ, 12), f'col_column_{y:+.0f}')
+    A.box((X1 - LD, -Y, LZ - 0.1), (X1, Y, LZ), 'town_dark')   # soffit
+    for y in (-3.0, -1.0, 1.0, 3.0):
+        A.box((X1 - 1.2, y - 0.5, LZ - 0.12), (X1 - 0.8, y + 0.5, LZ - 0.1), 'town_glass_lit')
+    # tower: transfer band, four curtain walls with dark fins, one recessed floor band near the top
+    A.box((X0 - 0.05, -Y - 0.05, LZ), (X1 + 0.05, Y + 0.05, LZ + 0.4), 'town_dark', 0.02)
+    TZ0, TZ1 = LZ + 0.4, H - 0.8
+    for F, u0, u1, key in ((Face('x', 1, X1), -Y, Y, 'f'), (Face('x', -1, X0), -Y, Y, 'b'),
+                            (Face('y', 1, Y), X0, X1, 's'), (Face('y', -1, -Y), X0, X1, 'n')):
+        curtain(A, F, u0, u1, TZ0, TZ1, 1.0, (TZ1 - TZ0) / 3, 'T06' + key, fin='town_dark', band='town_dark', fin_out=0.22, glass_set=0.14)
+    A.col_box((X0, -Y, LZ), (X1, Y, H), 'col_tower', shadow_top=H - 0.15)
+    # crown band (0.8 m) with a recessed reveal, sign band on the front
+    A.box((X0 - 0.08, -Y - 0.08, TZ1), (X1 + 0.08, Y + 0.08, TZ1 + 0.12), 'town_metal', 0.02)
+    A.box((X0 + 0.05, -Y + 0.05, TZ1 + 0.12), (X1 - 0.05, Y - 0.05, TZ1 + 0.24), 'town_dark')
+    A.box((X0 - 0.08, -Y - 0.08, TZ1 + 0.24), (X1 + 0.08, Y + 0.08, H), 'town_dark', 0.02)
+    A.box((X0 + 0.2, -Y + 0.2, H - 0.25), (X1 - 0.2, Y - 0.2, H - 0.1), 'town_roof')
+    front = Face('x', 1, X1 + 0.08)
+    A.box(*front.box(0.0, 0.03, -2.8, 2.8, TZ1 + 0.3, H - 0.08), 'town_screen')
+    A.anchor('anchor_sign', front.point(0.035, 0, (TZ1 + 0.3 + H - 0.08) / 2), w=5.6, h=H - 0.08 - TZ1 - 0.3, normal='+X')
+    # roof: plinth deck, four short posts carrying the glow ring (torus-like ring of 32 segments)
+    A.box((-3.0, -3.0, H - 0.1), (3.0, 3.0, H + 0.12), 'town_metal', 0.03)
+    RZ = H + 0.6
+    A.use('T06_ring')
+    bm = bmesh.new()
+    seg, mi = 40, 10
+    grid = []
+    for i in range(seg):
+        a = 2 * math.pi * i / seg
+        row = []
+        for j in range(mi):
+            b = 2 * math.pi * j / mi
+            rr = 2.5 + 0.07 * math.cos(b)
+            row.append(bm.verts.new((rr * math.cos(a), rr * math.sin(a), RZ + 0.07 * math.sin(b))))
+        grid.append(row)
+    for i in range(seg):
+        for j in range(mi):
+            bm.faces.new((grid[i][j], grid[(i + 1) % seg][j], grid[(i + 1) % seg][(j + 1) % mi], grid[i][(j + 1) % mi]))
+    A.add(bm, 'town_cyan', smooth=True)
+    A.use('T06_body')
+    for k in range(4):
+        a = math.pi / 4 + k * math.pi / 2
+        c = (2.5 * math.cos(a), 2.5 * math.sin(a))
+        A.add(cyl(c, 0.06, H + 0.12, RZ - 0.04, 10), 'town_metal', smooth=True)
+        A.add(cyl(c, 0.1, H + 0.12, H + 0.2, 10), 'town_metal', smooth=True)
+    A.anchor('anchor_ring', (0, 0, RZ), r=2.5)
+    louvre_box(A, -4.3, -3.3, -2.4, 2.4, H - 0.1, H + 0.9)
+    return A
+
+# ============================================================== T07 background low-rise (seven, sized to the v4 massing boxes)
+# (world x, world z, w(x), d(z), h, facing) - mirrors solidsV4() massing entries; runtime verifies sizes.
+T07_SPEC = [(-13.5, -42, 8, 8, 6, 1), (-30.5, -42, 7, 8, 4, 1), (-14, -33, 9, 7, 4.5, 1), (-13, -2, 7, 7, 4, 1),
+            (-68, -15, 6, 6, 3, -1), (-76, -14, 5, 5, 2.6, -1), (-74, -5, 6, 5, 3.4, -1)]
+
+def lowrise(A, i, w, d, h, facing):
+    """Mediterranean low-rise reduced per the codex-native-v2 review: flat roof + parapet + tank/chimney,
+    framed windows with sills, framed door with a step stone, brick plinth, sand quoin bands.
+    Built facing +X then mirrored for facing = -1. Height h includes the parapet."""
+    A.use(f'T07_{i}')
+    X0, X1, Y = -w / 2, w / 2, d / 2
+    floors = 2 if h >= 4 else 1
+    PH = 0.45                         # parapet height
+    top = h - PH
+    fh = top / floors
+    wall_main = 'town_cream' if i % 2 == 0 else 'town_sand'
+    A.box((X0 - 0.06, -Y - 0.06, 0), (X1 + 0.06, Y + 0.06, 0.55), 'town_brick')       # plinth
+    front, back, sp, sn = Face('x', 1, X1), Face('x', -1, X0), Face('y', 1, Y), Face('y', -1, -Y)
+    for F, u0, u1, k in ((front, -Y, Y, 'f'), (back, -Y, Y, 'b'), (sp, X0, X1, 'p'), (sn, X0, X1, 'n')):
+        cols = max(1, int((u1 - u0) / 2.2))
+        skip = ()
+        if k == 'f':
+            skip = ((cols // 2, 0),)
+        facade(A, F, u0, u1, 0.55, top, cols, floors, 0.9, min(1.25, fh * 0.5), wall_main, f'T07{i}{k}', wz=0.55,
+               frame='town_wood', sill_mat='town_trim', mullion=(k == 'f'), sill_bevel=0.0)
+        if k == 'f':
+            pitch = (u1 - u0) / cols
+            c = u0 + (cols // 2 + 0.5) * pitch
+            # door bay: real recessed wood door, stone frame, step stone, small canopy
+            A.box(*F.box(-0.2, 0, c - pitch / 2 + 0.01, c - 0.55, 0.55, 0.55 + fh - 0.01), wall_main) if pitch / 2 > 0.6 else None
+            A.box(*F.box(-0.2, 0, c + 0.55, c + pitch / 2 - 0.01, 0.55, 0.55 + fh - 0.01), wall_main) if pitch / 2 > 0.6 else None
+            A.box(*F.box(-0.2, 0, c - 0.55, c + 0.55, 2.55, 0.55 + fh - 0.01), wall_main) if fh + 0.55 > 2.6 else None
+            A.box(*F.box(-0.24, -0.12, c - 0.45, c + 0.45, 0.0, 2.45), 'town_wood')
+            for kk in range(2):
+                A.box(*F.box(-0.12, -0.09, c - 0.36 + kk * 0.38, c - 0.02 + kk * 0.38, 0.4, 2.1), 'town_wood')
+            A.box(*F.box(-0.12, 0.05, c - 0.55, c - 0.45, 0.0, 2.55), 'town_trim')
+            A.box(*F.box(-0.12, 0.05, c + 0.45, c + 0.55, 0.0, 2.55), 'town_trim')
+            A.box(*F.box(-0.12, 0.05, c - 0.55, c + 0.55, 2.45, 2.55), 'town_trim')
+            A.box(*F.box(0.0, 0.4, c - 0.6, c + 0.6, 0.0, 0.14), 'town_stone_dark', 0.02)
+            A.box(*F.box(0.0, 0.5, c - 0.75, c + 0.75, 2.7, 2.8), 'town_trim', 0.02)
+    # quoin bands on the four vertical corners (sand / cream alternating, proud 3 cm)
+    qm = 'town_sand' if wall_main == 'town_cream' else 'town_cream'
+    nq = int((top - 0.55) / 0.5)
+    for (x, y) in ((X1, Y), (X1, -Y)):
+        sx, sy = (1 if x > 0 else -1), (1 if y > 0 else -1)
+        for k in range(nq):
+            z = 0.6 + k * 0.5
+            L = 0.35 if k % 2 == 0 else 0.22
+            xs = sorted((x + sx * 0.03, x - sx * L)); ys = sorted((y + sy * 0.03, y - sy * 0.22))
+            A.box((xs[0], ys[0], z), (xs[1], ys[1], z + 0.44), qm)
+            xs = sorted((x + sx * 0.03, x - sx * 0.22)); ys = sorted((y + sy * 0.03, y - sy * L))
+            A.box((xs[0], ys[0], z), (xs[1], ys[1], z + 0.44), qm)
+    if floors > 1:
+        A.box((X0 - 0.05, -Y - 0.05, 0.55 + fh - 0.06), (X1 + 0.05, Y + 0.05, 0.55 + fh + 0.04), 'town_trim', 0.01)
+    A.box((X0 + 0.15, -Y + 0.15, top - 0.15), (X1 - 0.15, Y - 0.15, top), 'town_roof')
+    parapet(A, X0, X1, -Y, Y, top, PH - 0.08, wall_main, t=0.2)
+    # roof object: water tank (taller blocks) or chimney + vent (small)
+    if i % 3 == 0:
+        A.box((X0 + 0.8, -0.6, top), (X0 + 2.0, 0.6, top + 0.9), 'town_trim', 0.03)
+        A.box((X0 + 0.75, -0.65, top + 0.9), (X0 + 2.05, 0.65, top + 0.98), 'town_sand', 0.02)
+    elif i % 3 == 1:
+        A.add(cyl((X0 + 1.2, Y - 1.2), 0.5, top + 0.2, top + 1.0, 14), 'town_metal', smooth=True)
+        for kk in range(4):
+            a = kk * math.pi / 2 + math.pi / 4
+            A.box((X0 + 1.2 + 0.4 * math.cos(a) - 0.04, Y - 1.2 + 0.4 * math.sin(a) - 0.04, top), (X0 + 1.2 + 0.4 * math.cos(a) + 0.04, Y - 1.2 + 0.4 * math.sin(a) + 0.04, top + 0.2), 'town_metal')
+    else:
+        A.box((X0 + 0.6, -Y + 0.6, top), (X0 + 1.1, -Y + 1.1, top + 1.1), wall_main, 0.02)
+        A.box((X0 + 0.52, -Y + 0.52, top + 1.1), (X0 + 1.18, -Y + 1.18, top + 1.2), 'town_trim', 0.02)
+    A.add(cyl((X1 - 1.0, 0.5), 0.1, top, top + 0.6, 8), 'town_metal', smooth=True)
+    A.col_box((X0, -Y, 0), (X1, Y, h), f'col_T07_{i}', shadow_top=top - 0.05)
+
+def build_T07():
+    A = Asset('T07')
+    A.extras.update(kind='background-lowrise', spec=[list(x) for x in T07_SPEC], note='Blender X = world X; Blender Y = -world Z; each part T07_i authored at its own origin facing +X (facing -1 parts are rotated 180 deg at runtime)')
+    for i, (x, z, w, d, h, facing) in enumerate(T07_SPEC):
+        # author in local space; world placement happens at runtime (keeps one GLB, seven child meshes)
+        n0 = len(A.cols)
+        lowrise(A, i, w, d, h, facing)
+        A.part_extras[f'T07_{i}'] = {'worldX': x, 'worldZ': z, 'facing': facing, 'size': [w, h, d]}
+        A.cols[n0] = (f'col_T07_{i}', A.cols[n0][1])
+    return A
+
+# ============================================================== T08 year pillar (instanced x6): stone base, slate shaft, cyan strip, year plates
+def build_T08():
+    A = Asset('T08')
+    A.extras.update(kind='year-pillar', note='origin at base; place at y = 1.0 (base buried 0.15 in the sidewalk)')
+    A.box((-0.34, -0.34, 0), (0.34, 0.34, 0.32), 'town_stone_dark', 0.03)
+    A.box((-0.3, -0.3, 0.32), (0.3, 0.3, 0.4), 'town_stone', 0.02)
+    A.box((-0.2, -0.2, 0.4), (0.2, 0.2, 2.75), 'town_slate', 0.025)
+    for z in (0.9, 1.6):  # shallow shadow grooves (proud collars, no coplanar overlay)
+        A.box((-0.21, -0.21, z), (0.21, 0.21, z + 0.03), 'town_dark')
+    A.use('T08_strip')
+    A.box((0.2, -0.05, 0.6), (0.235, 0.05, 2.15), 'town_cyan', 0.008)        # avenue-facing light strip (+X)
+    A.box((-0.235, -0.05, 0.6), (-0.2, 0.05, 2.15), 'town_cyan', 0.008)      # back strip (seen from the building)
+    A.use('T08_body')
+    A.box((-0.24, -0.24, 2.75), (0.24, 0.24, 2.83), 'town_metal', 0.015)
+    A.box((-0.18, -0.36, 2.83), (0.18, 0.36, 3.33), 'town_dark', 0.02)        # year plate housing (spans Y)
+    A.box((-0.26, -0.26, 3.33), (0.26, 0.26, 3.42), 'town_stone', 0.02)
+    A.add(lathe([(0.12, 0), (0.06, 0.12), (0, 0.16)], 12, (0, 0, 3.42)), 'town_metal', smooth=True)
+    A.anchor('anchor_year_px', (0.181, 0, 3.08), w=0.66, h=0.4, normal='+X')
+    A.anchor('anchor_year_nx', (-0.181, 0, 3.08), w=0.66, h=0.4, normal='-X')
+    pts = bmesh.new()
+    for x in (-0.34, 0.34):
+        for y in (-0.36, 0.36):
+            for z in (0.0, 3.42):
+                pts.verts.new((x, y, z))
+    bmesh.ops.convex_hull(pts, input=pts.verts)
+    A.col_bm(pts, 'col_pillar')
+    return A
+
+# ============================================================== T09 exhibit plaque (instanced x6): stone foot, two posts, tilted framed board
+def build_T09():
+    A = Asset('T09')
+    A.extras.update(kind='exhibit-plaque', note='front +X faces the avenue; board face anchor gets the runtime canvas')
+    A.box((-0.3, -0.85, 0), (0.3, 0.85, 0.22), 'town_stone_dark', 0.03)
+    A.box((-0.26, -0.81, 0.22), (0.26, 0.81, 0.28), 'town_stone', 0.015)
+    for y in (-0.62, 0.62):
+        A.add(cyl((0, y), 0.045, 0.28, 1.75, 10), 'town_metal', smooth=True)
+        A.add(cyl((0, y), 0.07, 0.28, 0.34, 10), 'town_metal', smooth=True)
+    # board tilted back 10 deg about Y around its centre
+    tilt = Matrix.Translation((0.06, 0, 1.25)) @ Matrix.Rotation(math.radians(-10), 4, 'Y') @ Matrix.Translation((-0.06, 0, -1.25))
+    for mn, mx, m in (((0.0, -0.78, 0.68), (0.1, 0.78, 1.82), 'town_slate'),
+                      ((0.1, -0.7, 0.76), (0.12, 0.7, 1.74), 'town_trim'),
+                      ((0.1, -0.78, 1.74), (0.16, 0.78, 1.82), 'town_slate'),
+                      ((0.1, -0.78, 0.68), (0.16, 0.78, 0.76), 'town_slate'),
+                      ((0.1, -0.78, 0.76), (0.16, -0.7, 1.74), 'town_slate'),
+                      ((0.1, 0.7, 0.76), (0.16, 0.78, 1.74), 'town_slate'),
+                      ((-0.04, -0.82, 1.82), (0.2, 0.82, 1.88), 'town_metal')):
+        A.add(xform(box(mn, mx, 0.008), tilt), m)
+    c = tilt @ Vector((0.121, 0, 1.25))
+    A.anchor('anchor_board', tuple(c), w=1.4, h=0.98, normal='+X', tiltDeg=10)
+    A.col_box((-0.3, -0.85, 0), (0.3, 0.85, 1.9), 'col_plaque')
+    return A
+
+# ============================================================== T10 beach kiosks (two variants, 2.6 m cube footprint)
+def kiosk(A, tag, canvas):
+    A.use(f'T10_{tag}')
+    S = 1.3
+    A.box((-S, -S, 0), (S, S, 0.25), 'town_stone_dark', 0.02)
+    # timber frame: corner posts, back + side boards, open front counter
+    for (x, y) in ((S - 0.08, S - 0.08), (S - 0.08, -S + 0.08), (-S + 0.08, S - 0.08), (-S + 0.08, -S + 0.08)):
+        A.box((x - 0.07, y - 0.07, 0.25), (x + 0.07, y + 0.07, 2.35), 'town_wood', 0.012)
+    for k in range(8):  # horizontal board cladding on back and sides (real boards, 1 cm overlap step)
+        z = 0.25 + k * 0.26
+        A.box((-S + 0.02, -S + 0.15, z), (-S + 0.1, S - 0.15, z + 0.24), 'town_cream' if canvas == 'town_canvas' else 'town_slate', 0.006)
+        A.box((-S + 0.15, S - 0.1, z), (S - 0.15, S - 0.02, z + 0.24), 'town_cream' if canvas == 'town_canvas' else 'town_slate', 0.006)
+        A.box((-S + 0.15, -S + 0.02, z), (S - 0.15, -S + 0.1, z + 0.24), 'town_cream' if canvas == 'town_canvas' else 'town_slate', 0.006)
+    for k in range(4):  # lower front panel below the counter
+        z = 0.25 + k * 0.22
+        A.box((S - 0.1, -S + 0.15, z), (S - 0.02, S - 0.15, z + 0.2), 'town_cream' if canvas == 'town_canvas' else 'town_slate', 0.006)
+    A.box((S - 0.5, -S + 0.1, 1.13), (S + 0.15, S - 0.1, 1.2), 'town_wood', 0.012)     # counter top
+    A.box((-S + 0.1, -S + 0.1, 0.25), (S - 0.1, S - 0.1, 0.28), 'town_wood')
+    # interior back shelf + a few jars (read through the open front)
+    A.box((-S + 0.1, -0.9, 1.5), (-S + 0.45, 0.9, 1.54), 'town_wood')
+    for k in range(5):
+        A.add(cyl((-S + 0.28, -0.7 + k * 0.35), 0.08, 1.54, 1.75, 10), 'town_glass_lit' if k % 2 else 'town_trim', smooth=True)
+    # flat roof with overhang + striped canvas awning folding down over the front
+    A.box((-S - 0.15, -S - 0.15, 2.35), (S + 0.15, S + 0.15, 2.5), 'town_wood', 0.02)
+    A.box((-S - 0.2, -S - 0.2, 2.5), (S + 0.2, S + 0.2, 2.56), 'town_trim', 0.01)
+    for k in range(6):
+        y0 = -S - 0.1 + k * (2 * S + 0.2) / 6
+        y1 = y0 + (2 * S + 0.2) / 6
+        m = canvas if k % 2 == 0 else 'town_canvas_cream'
+        pts = [(S + 0.15, y0, 2.34), (S + 0.15, y1, 2.34), (S + 0.85, y1, 1.92), (S + 0.85, y0, 1.92)]
+        bm = bmesh.new()
+        lo = [bm.verts.new(p) for p in pts]
+        hi = [bm.verts.new((p[0], p[1], p[2] + 0.03)) for p in pts]
+        bm.faces.new(lo[::-1]); bm.faces.new(hi)
+        for i in range(4):
+            j = (i + 1) % 4
+            bm.faces.new((lo[i], lo[j], hi[j], hi[i]))
+        A.add(bm, m)
+        A.box((S + 0.84, y0 + 0.005, 1.74), (S + 0.88, y1 - 0.005, 1.95), m)   # valance
+    for y in (-S + 0.02, S - 0.02):
+        A.add(cyl((S + 0.82, y), 0.025, 1.2, 1.94, 8), 'town_metal', smooth=True)
+    A.col_box((-S, -S, 0), (S, S, 2.56), f'col_{tag}_body')
+    A.part_extras[f'T10_{tag}'] = {'variant': tag}
+
+def build_T10():
+    A = Asset('T10')
+    A.extras.update(kind='beach-kiosk', note='two variants authored at the same origin; place part T10_a / T10_b separately, front +X')
+    kiosk(A, 'a', 'town_canvas')
+    kiosk(A, 'b', 'town_slate')
+    return A
+
+# ============================================================== T11 lifeguard tower (2.2 x 5.8 x 2.2 footprint, base buried 1 m)
+def build_T11():
+    A = Asset('T11')
+    A.extras.update(kind='lifeguard-tower', note='origin at base; place at y = -1 like the greybox (lower ~1 m of the piles is buried)')
+    B = 1.0                    # buried depth
+    S = 1.05
+    PZ = B + 2.0               # platform deck height (2 m above nominal sand)
+    for (x, y) in ((S, S), (S, -S), (-S, S), (-S, -S)):
+        A.add(cyl((x, y), 0.09, 0, PZ, 10, r1=0.08), 'town_wood', smooth=True)
+        A.col_bm(cyl((x, y), 0.1, 0, PZ, 8), None)
+    for a, b in (((S, S), (S, -S)), ((-S, S), (-S, -S)), ((S, S), (-S, S)), ((S, -S), (-S, -S))):
+        # X braces between piles
+        for z0, z1 in ((B + 0.2, PZ - 0.2), (PZ - 0.2, B + 0.2)):
+            p0, p1 = Vector((a[0], a[1], z0)), Vector((b[0], b[1], z1))
+            d = p1 - p0
+            bm = lathe([(0.035, 0), (0.035, d.length)], 6)
+            q = Vector((0, 0, 1)).rotation_difference(d.normalized())
+            xform(bm, Matrix.Translation(p0) @ q.to_matrix().to_4x4())
+            A.add(bm, 'town_wood', smooth=True)
+    A.box((-S - 0.25, -S - 0.25, PZ), (S + 0.25, S + 0.25, PZ + 0.12), 'town_wood', 0.015)
+    for k in range(9):
+        x = -S - 0.2 + k * (2 * S + 0.4) / 8
+        A.box((x - 0.012, -S - 0.25, PZ + 0.12), (x + 0.012, S + 0.25, PZ + 0.124), 'town_wood')
+    # railing on the front (+X) and sides of the deck (deck wider than the hut by 0.25 front)
+    for y in (-S - 0.2, S + 0.2):
+        A.box((-S - 0.2, y - 0.03, PZ + 0.12), (S + 0.2, y + 0.03, PZ + 0.18), 'town_trim')
+        A.box((-S - 0.2, y - 0.03, PZ + 0.95), (S + 0.2, y + 0.03, PZ + 1.0), 'town_trim')
+    A.box((S + 0.17, -S - 0.2, PZ + 0.95), (S + 0.23, S + 0.2, PZ + 1.0), 'town_trim')
+    for k in range(7):
+        y = -S - 0.2 + k * (2 * S + 0.4) / 6
+        A.box((S + 0.17, y - 0.025, PZ + 0.12), (S + 0.23, y + 0.025, PZ + 0.95), 'town_trim')
+    for y in (-S - 0.2, S + 0.2):
+        for k in range(6):
+            x = -S - 0.2 + k * (2 * S + 0.4) / 5
+            A.box((x - 0.025, y - 0.025, PZ + 0.12), (x + 0.025, y + 0.025, PZ + 0.95), 'town_trim')
+    # hut: cream boards, front window opening, orange door on the back, hipped roof
+    hx0, hx1, hy = -S + 0.05, S - 0.45, S - 0.1
+    HZ = PZ + 0.12
+    facade(A, Face('x', 1, hx1), -hy, hy, HZ, HZ + 1.75, 1, 1, 1.2, 0.8, 'town_cream', 'T11f', depth=0.08, recess=0.05, wz=0.7, sill_mat='town_wood')
+    for F, u0, u1 in ((Face('y', 1, hy), hx0, hx1), (Face('y', -1, -hy), hx0, hx1), (Face('x', -1, hx0), -hy, hy)):
+        A.box(*F.box(-0.08, 0, u0, u1, HZ, HZ + 1.75), 'town_cream')
+        for k in range(6):
+            A.box(*F.box(0, 0.015, u0, u1, HZ + 0.27 * k + 0.25, HZ + 0.27 * k + 0.27), 'town_trim')
+    A.box(*Face('x', -1, hx0).box(0, 0.04, -0.35, 0.35, HZ, HZ + 1.55), 'town_canvas')
+    # pyramid roof
+    bm = bmesh.new()
+    rz = HZ + 1.75
+    cx = (hx0 + hx1) / 2
+    base = [bm.verts.new(p) for p in ((hx0 - 0.3, -hy - 0.3, rz), (hx1 + 0.3, -hy - 0.3, rz), (hx1 + 0.3, hy + 0.3, rz), (hx0 - 0.3, hy + 0.3, rz))]
+    apex = bm.verts.new((cx, 0, rz + 0.7))
+    bm.faces.new(base[::-1])
+    for i in range(4):
+        bm.faces.new((base[i], base[(i + 1) % 4], apex))
+    A.add(bm, 'town_canvas')
+    A.box((hx0 - 0.3, -hy - 0.3, rz - 0.08), (hx1 + 0.3, hy + 0.3, rz), 'town_trim')
+    # flag pole + orange pennant
+    A.add(cyl((cx, 0), 0.025, rz + 0.6, rz + 1.6, 8), 'town_metal', smooth=True)
+    pts = [(cx, 0.02, rz + 1.55), (cx, 0.02, rz + 1.15), (cx, 0.62, rz + 1.35)]
+    bm = bmesh.new()
+    a = [bm.verts.new((p[0] - 0.01, p[1], p[2])) for p in pts]; b = [bm.verts.new((p[0] + 0.01, p[1], p[2])) for p in pts]
+    bm.faces.new(a); bm.faces.new(b[::-1])
+    for i in range(3):
+        j = (i + 1) % 3
+        bm.faces.new((a[i], b[i], b[j], a[j]))
+    A.add(bm, 'town_canvas')
+    # ladder down the back to the sand (rails + rungs)
+    for y in (-0.32, 0.32):
+        p0, p1 = Vector((-S - 1.3, y, B)), Vector((-S - 0.25, y, PZ + 0.1))
+        d = p1 - p0
+        bm = lathe([(0.04, 0), (0.04, d.length)], 6)
+        xform(bm, Matrix.Translation(p0) @ Vector((0, 0, 1)).rotation_difference(d.normalized()).to_matrix().to_4x4())
+        A.add(bm, 'town_wood', smooth=True)
+    for k in range(1, 8):
+        t = k / 8
+        x, z = -S - 1.3 + t * 1.05, B + t * (PZ + 0.1 - B)
+        A.box((x - 0.04, -0.32, z - 0.02), (x + 0.04, 0.32, z + 0.02), 'town_wood')
+    A.col_box((-S - 0.25, -S - 0.25, PZ), (S + 0.25, S + 0.25, rz + 0.7), 'col_hut')
+    A.col_box((-S - 0.1, -S - 0.1, 0), (S + 0.1, S + 0.1, PZ), 'col_piles')
+    A.cols = [c for c in A.cols if c[0] in ('col_hut', 'col_piles')]
+    return A
+
+BUILDERS = {k[6:]: v for k, v in globals().items() if k.startswith('build_T')}
+
+def main():
+    ids = ONLY or sorted(BUILDERS)
+    report = {}
+    for aid in ids:
+        reset_scene()
+        A = BUILDERS[aid]()
+        objs, lo, hi = finalize(A)
+        glb = export(A, objs, REPO)
+        tris = sum(sum(len(p.vertices) - 2 for p in o.data.polygons) for o in objs if o.type == 'MESH' and not o.name.startswith('col_'))
+        report[aid] = dict(glb=os.path.relpath(glb, REPO), tris=tris, bounds=[list(lo), list(hi)], colliders=len(A.cols))
+        print(f'[town] {aid} tris={tris} bounds={tuple(round(v,3) for v in lo)}..{tuple(round(v,3) for v in hi)} cols={len(A.cols)}')
+    print('[town-report]', json.dumps(report))
+
+main()

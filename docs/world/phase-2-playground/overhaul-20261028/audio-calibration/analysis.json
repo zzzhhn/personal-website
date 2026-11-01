@@ -1,0 +1,542 @@
+{
+  "version": 1,
+  "date": "2026-10-28",
+  "status": "rendered; not listened or accepted",
+  "source": "Original deterministic synthesis, no recordings, samples, model or network input.",
+  "third_party_audio_used": false,
+  "tool": "ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers",
+  "source_hashes": {
+    "src/components/world/walk-music-candidate.ts": "c8819c3d3fa50452c0230876ab16baa393c2baa17c64b3dc4bac4aa1d056c6a7",
+    "src/components/world/WorldParkAudio.ts": "c6a1bdde3e61bdc22bd5a2142262c701615146b7f399836bc9c26f48aa59fd20",
+    "tools/world/render-audio-calibration.mjs": "dcafa211eedd338ba88493602337786a2aca837298b0b28676e900a8063435f1"
+  },
+  "scores": {
+    "a": [
+      {
+        "part": "mallet",
+        "at": 0,
+        "midi": 64,
+        "duration": 0.85,
+        "velocity": 0.68,
+        "pan": -0.12
+      },
+      {
+        "part": "bass",
+        "at": 0.15000000000000002,
+        "midi": 36,
+        "duration": 0.7,
+        "velocity": 0.48,
+        "pan": 0
+      },
+      {
+        "part": "pad",
+        "at": 0.26249999999999996,
+        "midi": 52,
+        "duration": 1.8,
+        "velocity": 0.36,
+        "pan": -0.24
+      },
+      {
+        "part": "pad",
+        "at": 0.26249999999999996,
+        "midi": 55,
+        "duration": 1.8,
+        "velocity": 0.36,
+        "pan": -0.08
+      },
+      {
+        "part": "pad",
+        "at": 0.26249999999999996,
+        "midi": 59,
+        "duration": 1.8,
+        "velocity": 0.36,
+        "pan": 0.08
+      },
+      {
+        "part": "pad",
+        "at": 0.26249999999999996,
+        "midi": 60,
+        "duration": 1.8,
+        "velocity": 0.36,
+        "pan": 0.24
+      },
+      {
+        "part": "mallet",
+        "at": 0.75,
+        "midi": 67,
+        "duration": 0.85,
+        "velocity": 0.68,
+        "pan": -0.12
+      },
+      {
+        "part": "mallet",
+        "at": 1.125,
+        "midi": 69,
+        "duration": 0.42,
+        "velocity": 0.68,
+        "pan": -0.12
+      },
+      {
+        "part": "mallet",
+        "at": 1.5,
+        "midi": 67,
+        "duration": 0.85,
+        "velocity": 0.68,
+        "pan": -0.12
+      },
+      {
+        "part": "mallet",
+        "at": 3,
+        "midi": 62,
+        "duration": 0.85,
+        "velocity": 0.68,
+        "pan": -0.12
+      },
+      {
+        "part": "bass",
+        "at": 3.1500000000000004,
+        "midi": 41,
+        "duration": 0.7,
+        "velocity": 0.48,
+        "pan": 0
+      },
+      {
+        "part": "pad",
+        "at": 3.2624999999999997,
+        "midi": 53,
+        "duration": 1.8,
+        "velocity": 0.36,
+        "pan": -0.24
+      },
+      {
+        "part": "pad",
+        "at": 3.2624999999999997,
+        "midi": 57,
+        "duration": 1.8,
+        "velocity": 0.36,
+        "pan": -0.08
+      },
+      {
+        "part": "pad",
+        "at": 3.2624999999999997,
+        "midi": 60,
+        "duration": 1.8,
+        "velocity": 0.36,
+        "pan": 0.08
+      },
+      {
+        "part": "pad",
+        "at": 3.2624999999999997,
+        "midi": 64,
+        "duration": 1.8,
+        "velocity": 0.36,
+        "pan": 0.24
+      },
+      {
+        "part": "mallet",
+        "at": 3.75,
+        "midi": 60,
+        "duration": 0.85,
+        "velocity": 0.68,
+        "pan": -0.12
+      },
+      {
+        "part": "mallet",
+        "at": 6,
+        "midi": 65,
+        "duration": 0.85,
+        "velocity": 0.68,
+        "pan": -0.12
+      },
+      {
+        "part": "bass",
+        "at": 6.1499999999999995,
+        "midi": 41,
+        "duration": 0.7,
+        "velocity": 0.48,
+        "pan": 0
+      },
+      {
+        "part": "pad",
+        "at": 6.262499999999999,
+        "midi": 53,
+        "duration": 1.8,
+        "velocity": 0.36,
+        "pan": -0.24
+      },
+      {
+        "part": "pad",
+        "at": 6.262499999999999,
+        "midi": 56,
+        "duration": 1.8,
+        "velocity": 0.36,
+        "pan": -0.08
+      },
+      {
+        "part": "pad",
+        "at": 6.262499999999999,
+        "midi": 60,
+        "duration": 1.8,
+        "velocity": 0.36,
+        "pan": 0.08
+      },
+      {
+        "part": "mallet",
+        "at": 6.75,
+        "midi": 67,
+        "duration": 0.85,
+        "velocity": 0.68,
+        "pan": -0.12
+      },
+      {
+        "part": "mallet",
+        "at": 7.125,
+        "midi": 68,
+        "duration": 0.42,
+        "velocity": 0.68,
+        "pan": -0.12
+      },
+      {
+        "part": "mallet",
+        "at": 7.5,
+        "midi": 67,
+        "duration": 0.85,
+        "velocity": 0.68,
+        "pan": -0.12
+      },
+      {
+        "part": "mallet",
+        "at": 9,
+        "midi": 62,
+        "duration": 0.85,
+        "velocity": 0.68,
+        "pan": -0.12
+      },
+      {
+        "part": "bass",
+        "at": 9.149999999999999,
+        "midi": 36,
+        "duration": 0.7,
+        "velocity": 0.48,
+        "pan": 0
+      },
+      {
+        "part": "pad",
+        "at": 9.2625,
+        "midi": 52,
+        "duration": 1.6,
+        "velocity": 0.36,
+        "pan": -0.24
+      },
+      {
+        "part": "pad",
+        "at": 9.2625,
+        "midi": 55,
+        "duration": 1.6,
+        "velocity": 0.36,
+        "pan": -0.08
+      },
+      {
+        "part": "pad",
+        "at": 9.2625,
+        "midi": 60,
+        "duration": 1.6,
+        "velocity": 0.36,
+        "pan": 0.08
+      },
+      {
+        "part": "mallet",
+        "at": 9.75,
+        "midi": 60,
+        "duration": 0.85,
+        "velocity": 0.68,
+        "pan": -0.12
+      }
+    ],
+    "b": [
+      {
+        "part": "mallet",
+        "at": 0,
+        "midi": 64,
+        "duration": 0.85,
+        "velocity": 0.74,
+        "pan": -0.12
+      },
+      {
+        "part": "pad",
+        "at": 0.26249999999999996,
+        "midi": 52,
+        "duration": 1.8,
+        "velocity": 0.39,
+        "pan": -0.24
+      },
+      {
+        "part": "pad",
+        "at": 0.3825,
+        "midi": 55,
+        "duration": 1.8,
+        "velocity": 0.365,
+        "pan": -0.08
+      },
+      {
+        "part": "pad",
+        "at": 0.5025,
+        "midi": 59,
+        "duration": 1.8,
+        "velocity": 0.34,
+        "pan": 0.08
+      },
+      {
+        "part": "pad",
+        "at": 0.6224999999999999,
+        "midi": 60,
+        "duration": 1.8,
+        "velocity": 0.315,
+        "pan": 0.24
+      },
+      {
+        "part": "mallet",
+        "at": 0.75,
+        "midi": 67,
+        "duration": 0.85,
+        "velocity": 0.52,
+        "pan": -0.12
+      },
+      {
+        "part": "mallet",
+        "at": 1.125,
+        "midi": 69,
+        "duration": 0.42,
+        "velocity": 0.63,
+        "pan": -0.12
+      },
+      {
+        "part": "mallet",
+        "at": 1.5,
+        "midi": 67,
+        "duration": 0.85,
+        "velocity": 0.47,
+        "pan": -0.12
+      },
+      {
+        "part": "mallet",
+        "at": 3,
+        "midi": 62,
+        "duration": 0.85,
+        "velocity": 0.58,
+        "pan": -0.12
+      },
+      {
+        "part": "bass",
+        "at": 3.1500000000000004,
+        "midi": 41,
+        "duration": 0.7,
+        "velocity": 0.48,
+        "pan": 0
+      },
+      {
+        "part": "pad",
+        "at": 3.2624999999999997,
+        "midi": 53,
+        "duration": 1.8,
+        "velocity": 0.39,
+        "pan": -0.24
+      },
+      {
+        "part": "pad",
+        "at": 3.3825,
+        "midi": 57,
+        "duration": 1.8,
+        "velocity": 0.365,
+        "pan": -0.08
+      },
+      {
+        "part": "pad",
+        "at": 3.5025,
+        "midi": 60,
+        "duration": 1.8,
+        "velocity": 0.34,
+        "pan": 0.08
+      },
+      {
+        "part": "pad",
+        "at": 3.6225,
+        "midi": 64,
+        "duration": 1.8,
+        "velocity": 0.315,
+        "pan": 0.24
+      },
+      {
+        "part": "mallet",
+        "at": 3.75,
+        "midi": 60,
+        "duration": 0.85,
+        "velocity": 0.43,
+        "pan": -0.12
+      },
+      {
+        "part": "mallet",
+        "at": 9,
+        "midi": 62,
+        "duration": 0.85,
+        "velocity": 0.49299999999999994,
+        "pan": -0.12
+      },
+      {
+        "part": "pad",
+        "at": 9.2625,
+        "midi": 52,
+        "duration": 1.25,
+        "velocity": 0.39,
+        "pan": -0.24
+      },
+      {
+        "part": "pad",
+        "at": 9.3825,
+        "midi": 55,
+        "duration": 1.25,
+        "velocity": 0.365,
+        "pan": -0.08
+      },
+      {
+        "part": "pad",
+        "at": 9.5025,
+        "midi": 60,
+        "duration": 1.25,
+        "velocity": 0.34,
+        "pan": 0.08
+      },
+      {
+        "part": "mallet",
+        "at": 9.75,
+        "midi": 60,
+        "duration": 0.85,
+        "velocity": 0.3655,
+        "pan": -0.12
+      }
+    ]
+  },
+  "files": [
+    {
+      "file": "music-a.wav",
+      "bytes": 1152044,
+      "sha256": "f3942c60859765be4bd66c13ec24bec08be396d7a7680ee8acb6aa9dd37fe5f4",
+      "channels": 2,
+      "frames": 288000,
+      "sample_rate": 24000,
+      "seconds": 12,
+      "decoded_bytes": 2304000,
+      "sample_peak_dbfs": -14.911117982950978,
+      "rms_dbfs": -29.50785574179161,
+      "integrated_lufs": -25.2,
+      "loudness_note": "",
+      "true_peak_dbtp": -14.9
+    },
+    {
+      "file": "intake-a.wav",
+      "bytes": 11564,
+      "sha256": "7fa066ed68a4b5df81f98239a230ac7a2e16247a855e6899735bafea655f45e5",
+      "channels": 1,
+      "frames": 5760,
+      "sample_rate": 24000,
+      "seconds": 0.24,
+      "decoded_bytes": 23040,
+      "sample_peak_dbfs": -10.385772831834217,
+      "rms_dbfs": -26.159916987057535,
+      "integrated_lufs": null,
+      "loudness_note": "Below the 400 ms R128 window; pair matched by full-duration RMS.",
+      "true_peak_dbtp": -10.1
+    },
+    {
+      "file": "bell-a.wav",
+      "bytes": 33644,
+      "sha256": "935ecf76e4007371be2001a296a6b53a51b15eeff5c8c367c1cc492d08f817c6",
+      "channels": 1,
+      "frames": 16800,
+      "sample_rate": 24000,
+      "seconds": 0.7,
+      "decoded_bytes": 67200,
+      "sample_peak_dbfs": -10.237203355411562,
+      "rms_dbfs": -26.12672977329567,
+      "integrated_lufs": -27.8,
+      "loudness_note": "",
+      "true_peak_dbtp": -10.2
+    },
+    {
+      "file": "success-a.wav",
+      "bytes": 23084,
+      "sha256": "5ba4f1082f5622478dfdbb932ccd1a60428ba27bfe0d14ac61ee5bb53f3377c0",
+      "channels": 1,
+      "frames": 11520,
+      "sample_rate": 24000,
+      "seconds": 0.48,
+      "decoded_bytes": 46080,
+      "sample_peak_dbfs": -10.232036258508398,
+      "rms_dbfs": -25.717582679228194,
+      "integrated_lufs": -25.4,
+      "loudness_note": "",
+      "true_peak_dbtp": -10.2
+    },
+    {
+      "file": "music-b.wav",
+      "bytes": 1152044,
+      "sha256": "ce421e2ddc66ff019700ad698896d831ebede1b19f91411efc55c3ad4bfc0dae",
+      "channels": 2,
+      "frames": 288000,
+      "sample_rate": 24000,
+      "seconds": 12,
+      "decoded_bytes": 2304000,
+      "sample_peak_dbfs": -13.41945518428073,
+      "rms_dbfs": -30.74457466396312,
+      "integrated_lufs": -25.2,
+      "loudness_note": "",
+      "true_peak_dbtp": -13.4
+    },
+    {
+      "file": "intake-b.wav",
+      "bytes": 11564,
+      "sha256": "b0176628718d0ecc42e52de49c317b46bcc41b9cdd721f4eba42b4ee15c68e9f",
+      "channels": 1,
+      "frames": 5760,
+      "sample_rate": 24000,
+      "seconds": 0.24,
+      "decoded_bytes": 23040,
+      "sample_peak_dbfs": -13.638407064021486,
+      "rms_dbfs": -26.160214283010408,
+      "integrated_lufs": null,
+      "loudness_note": "Below the 400 ms R128 window; pair matched by full-duration RMS.",
+      "true_peak_dbtp": -13.6
+    },
+    {
+      "file": "bell-b.wav",
+      "bytes": 33644,
+      "sha256": "cab82da4d31b531c5bc5a8abdcafd8af9e8479e1c81d139f38e39192b8bc0392",
+      "channels": 1,
+      "frames": 16800,
+      "sample_rate": 24000,
+      "seconds": 0.7,
+      "decoded_bytes": 67200,
+      "sample_peak_dbfs": -12.247198959355487,
+      "rms_dbfs": -26.12626033852575,
+      "integrated_lufs": -27.5,
+      "loudness_note": "",
+      "true_peak_dbtp": -12.2
+    },
+    {
+      "file": "success-b.wav",
+      "bytes": 23084,
+      "sha256": "cfee92983ba29b90b0ae96fb638c0ae18a1d25db595193334999ff8674d99abf",
+      "channels": 1,
+      "frames": 11520,
+      "sample_rate": 24000,
+      "seconds": 0.48,
+      "decoded_bytes": 46080,
+      "sample_peak_dbfs": -14.112419477836635,
+      "rms_dbfs": -25.717857224839044,
+      "integrated_lufs": -25.6,
+      "loudness_note": "",
+      "true_peak_dbtp": -14.1
+    }
+  ],
+  "total_file_bytes": 2440672
+}

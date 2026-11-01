@@ -1,0 +1,512 @@
+{
+  "views": [
+    {
+      "light": "dusk",
+      "frames": [
+        {
+          "total": {
+            "calls": 172,
+            "triangles": 460794
+          },
+          "byPass": {
+            "fire": {
+              "calls": 10,
+              "triangles": 12322
+            },
+            "sun0": {
+              "calls": 20,
+              "triangles": 68760
+            },
+            "sun1": {
+              "calls": 29,
+              "triangles": 81124
+            },
+            "sun2": {
+              "calls": 18,
+              "triangles": 37968
+            },
+            "main": {
+              "calls": 95,
+              "triangles": 260620
+            },
+            "sun": {
+              "calls": 67,
+              "triangles": 187852
+            }
+          },
+          "entry": [
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_stone",
+              "calls": 1,
+              "triangles": 3024
+            },
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_light_cyan",
+              "calls": 1,
+              "triangles": 720
+            },
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_stone_base",
+              "calls": 1,
+              "triangles": 648
+            }
+          ]
+        },
+        {
+          "total": {
+            "calls": 172,
+            "triangles": 460794
+          },
+          "byPass": {
+            "fire": {
+              "calls": 10,
+              "triangles": 12322
+            },
+            "sun0": {
+              "calls": 20,
+              "triangles": 68760
+            },
+            "sun1": {
+              "calls": 29,
+              "triangles": 81124
+            },
+            "sun2": {
+              "calls": 18,
+              "triangles": 37968
+            },
+            "main": {
+              "calls": 95,
+              "triangles": 260620
+            },
+            "sun": {
+              "calls": 67,
+              "triangles": 187852
+            }
+          },
+          "entry": [
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_stone",
+              "calls": 1,
+              "triangles": 3024
+            },
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_light_cyan",
+              "calls": 1,
+              "triangles": 720
+            },
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_stone_base",
+              "calls": 1,
+              "triangles": 648
+            }
+          ]
+        },
+        {
+          "total": {
+            "calls": 172,
+            "triangles": 460794
+          },
+          "byPass": {
+            "fire": {
+              "calls": 10,
+              "triangles": 12322
+            },
+            "sun0": {
+              "calls": 20,
+              "triangles": 68760
+            },
+            "sun1": {
+              "calls": 29,
+              "triangles": 81124
+            },
+            "sun2": {
+              "calls": 18,
+              "triangles": 37968
+            },
+            "main": {
+              "calls": 95,
+              "triangles": 260620
+            },
+            "sun": {
+              "calls": 67,
+              "triangles": 187852
+            }
+          },
+          "entry": [
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_stone",
+              "calls": 1,
+              "triangles": 3024
+            },
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_light_cyan",
+              "calls": 1,
+              "triangles": 720
+            },
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_stone_base",
+              "calls": 1,
+              "triangles": 648
+            }
+          ]
+        },
+        {
+          "total": {
+            "calls": 172,
+            "triangles": 460794
+          },
+          "byPass": {
+            "fire": {
+              "calls": 10,
+              "triangles": 12322
+            },
+            "sun0": {
+              "calls": 20,
+              "triangles": 68760
+            },
+            "sun1": {
+              "calls": 29,
+              "triangles": 81124
+            },
+            "sun2": {
+              "calls": 18,
+              "triangles": 37968
+            },
+            "main": {
+              "calls": 95,
+              "triangles": 260620
+            },
+            "sun": {
+              "calls": 67,
+              "triangles": 187852
+            }
+          },
+          "entry": [
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_stone",
+              "calls": 1,
+              "triangles": 3024
+            },
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_light_cyan",
+              "calls": 1,
+              "triangles": 720
+            },
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_stone_base",
+              "calls": 1,
+              "triangles": 648
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "light": "night",
+      "frames": [
+        {
+          "total": {
+            "calls": 173,
+            "triangles": 461522
+          },
+          "byPass": {
+            "fire": {
+              "calls": 10,
+              "triangles": 12322
+            },
+            "sun0": {
+              "calls": 20,
+              "triangles": 68760
+            },
+            "sun1": {
+              "calls": 29,
+              "triangles": 81124
+            },
+            "sun2": {
+              "calls": 18,
+              "triangles": 37968
+            },
+            "main": {
+              "calls": 96,
+              "triangles": 261348
+            },
+            "sun": {
+              "calls": 67,
+              "triangles": 187852
+            }
+          },
+          "entry": [
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_stone",
+              "calls": 1,
+              "triangles": 3024
+            },
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_light_cyan",
+              "calls": 1,
+              "triangles": 720
+            },
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_stone_base",
+              "calls": 1,
+              "triangles": 648
+            }
+          ]
+        },
+        {
+          "total": {
+            "calls": 173,
+            "triangles": 461522
+          },
+          "byPass": {
+            "fire": {
+              "calls": 10,
+              "triangles": 12322
+            },
+            "sun0": {
+              "calls": 20,
+              "triangles": 68760
+            },
+            "sun1": {
+              "calls": 29,
+              "triangles": 81124
+            },
+            "sun2": {
+              "calls": 18,
+              "triangles": 37968
+            },
+            "main": {
+              "calls": 96,
+              "triangles": 261348
+            },
+            "sun": {
+              "calls": 67,
+              "triangles": 187852
+            }
+          },
+          "entry": [
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_stone",
+              "calls": 1,
+              "triangles": 3024
+            },
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_light_cyan",
+              "calls": 1,
+              "triangles": 720
+            },
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_stone_base",
+              "calls": 1,
+              "triangles": 648
+            }
+          ]
+        },
+        {
+          "total": {
+            "calls": 173,
+            "triangles": 461522
+          },
+          "byPass": {
+            "fire": {
+              "calls": 10,
+              "triangles": 12322
+            },
+            "sun0": {
+              "calls": 20,
+              "triangles": 68760
+            },
+            "sun1": {
+              "calls": 29,
+              "triangles": 81124
+            },
+            "sun2": {
+              "calls": 18,
+              "triangles": 37968
+            },
+            "main": {
+              "calls": 96,
+              "triangles": 261348
+            },
+            "sun": {
+              "calls": 67,
+              "triangles": 187852
+            }
+          },
+          "entry": [
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_stone",
+              "calls": 1,
+              "triangles": 3024
+            },
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_light_cyan",
+              "calls": 1,
+              "triangles": 720
+            },
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_stone_base",
+              "calls": 1,
+              "triangles": 648
+            }
+          ]
+        },
+        {
+          "total": {
+            "calls": 173,
+            "triangles": 461522
+          },
+          "byPass": {
+            "fire": {
+              "calls": 10,
+              "triangles": 12322
+            },
+            "sun0": {
+              "calls": 20,
+              "triangles": 68760
+            },
+            "sun1": {
+              "calls": 29,
+              "triangles": 81124
+            },
+            "sun2": {
+              "calls": 18,
+              "triangles": 37968
+            },
+            "main": {
+              "calls": 96,
+              "triangles": 261348
+            },
+            "sun": {
+              "calls": 67,
+              "triangles": 187852
+            }
+          },
+          "entry": [
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_stone",
+              "calls": 1,
+              "triangles": 3024
+            },
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_light_cyan",
+              "calls": 1,
+              "triangles": 720
+            },
+            {
+              "pass": "main",
+              "zone": "camp",
+              "name": "G28-high-G28_stone_base",
+              "calls": 1,
+              "triangles": 648
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "far": {
+    "position": [
+      -33.5,
+      4.8,
+      34
+    ],
+    "highTriangles": 4392,
+    "lowTriangles": 360,
+    "materials": 3,
+    "nearVisible": false,
+    "farVisible": true,
+    "colliderCount": 0,
+    "shadowCasters": 2
+  },
+  "culled": {
+    "position": [
+      -33.5,
+      4.8,
+      34
+    ],
+    "highTriangles": 4392,
+    "lowTriangles": 360,
+    "materials": 3,
+    "nearVisible": false,
+    "farVisible": false,
+    "colliderCount": 0,
+    "shadowCasters": 2
+  },
+  "fixtures": [
+    {
+      "t": 0.003,
+      "to": [
+        -34.3,
+        5.85,
+        34
+      ],
+      "reason": "G28 local render-cost view"
+    },
+    {
+      "t": 5.474,
+      "to": [
+        30,
+        2,
+        34
+      ],
+      "reason": "G28 60m LOD boundary evidence only"
+    },
+    {
+      "t": 6.527,
+      "to": [
+        130,
+        2,
+        34
+      ],
+      "reason": "G28 140m cull evidence only"
+    }
+  ]
+}

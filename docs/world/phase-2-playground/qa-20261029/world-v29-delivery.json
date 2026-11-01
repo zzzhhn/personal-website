@@ -1,0 +1,12 @@
+{
+  "verifiedAt": "2026-10-28T21:35:30.768688+00:00",
+  "port": 4341,
+  "status": 200,
+  "buildPath": "/tmp/bobby-world-v29-20261029",
+  "htmlSHA256": "e3c12a9a6a5cdac58b092bdabd9d163f77a897dbb212a600f75b98e9c0df5883",
+  "liveSHA256": "e3c12a9a6a5cdac58b092bdabd9d163f77a897dbb212a600f75b98e9c0df5883",
+  "byteEqual": true,
+  "rollback": "/tmp/bobby-world-v28-20261029",
+  "candidateBrowserReady": true,
+  "candidateBrowserErrors": []
+}

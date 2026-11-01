@@ -1,0 +1,10 @@
+{
+  "startedAt": "2026-10-22T05:13:26.182Z",
+  "base": "http://127.0.0.1:4337",
+  "fixtures": [],
+  "shots": [],
+  "timing": {},
+  "errors": [
+    "page.goto: net::ERR_CONNECTION_REFUSED at http://127.0.0.1:4337/world?qa=1\nCall log:\n\u001b[2m  - navigating to \"http://127.0.0.1:4337/world?qa=1\", waiting until \"domcontentloaded\"\u001b[22m\n\n    at openWorld (/Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/playtest/lib.mjs:139:14)\n    at async file:///Users/bobby/WorkBuddy/personal-website/personal-website/tools/world/environment/capture.mjs:13:37"
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "scene": "intent-coaster",
+  "referenceVersion": "v3-cliff-overhaul",
+  "approvals": {
+    "style": {
+      "status": "approved",
+      "source": "human-user",
+      "date": "2026-10-28",
+      "quote": "过山车的示意图的视觉方向没问题",
+      "scope": "继承既有切面海岸与冷暖技术照明方向；新图本身尚未经用户视觉验收"
+    },
+    "layout": {
+      "status": "approved",
+      "source": "human-user",
+      "date": "2026-10-28",
+      "quote": "过山车园区依旧不够大（大小可以翻倍）、不够刺激、不够有画面感、不够有体验感，这可能是多方面的综合问题，得系统性优化。",
+      "scope": "用户授权继续返工，扩大约两倍且新区不规则；v3是主控依该指令生成的实施参考，并非用户已确认每个新图细节",
+      "requestedChange": "不规则海崖半岛、海湾、连续实体意图机器、约翻倍空间及可读夜间体积"
+    }
+  },
+  "references": [
+    {
+      "role": "day",
+      "path": "docs/world/phase-2-playground/overhaul-20261028/coaster-day-v3.png",
+      "sha256": "79fd965bbe3920edf49ea468a4075728776a80fc20c8879318ff16332aa319a1"
+    },
+    {
+      "role": "night",
+      "path": "docs/world/phase-2-playground/overhaul-20261028/coaster-night-v3.png",
+      "sha256": "1f029db33a314551092010178892e5545b3a8860c0eb6c493db13d1765a2ef3a"
+    }
+  ],
+  "reviewViews": [
+    "C01 entrance day/night",
+    "C02 overview day/night",
+    "C03 boarding day/night",
+    "C04 full ride"
+  ],
+  "failureConditions": [
+    "整体轮廓仍为规则方圆",
+    "夜间只有灯线没有受光实体",
+    "参考图轨道不可作为工程拓扑",
+    "三台文字卡替代了实体玩法",
+    "列车角色或镜头穿模"
+  ],
+  "runtimeEvidence": {
+    "status": "candidate-implemented",
+    "date": "2026-10-28",
+    "userVisualAcceptance": "pending",
+    "note": "已完成最终日夜同机位对照、工坊链路、IBD首单与安全联锁、完整乘坐和生产构建验证，作为可试玩迭代交付。连续地形、站房构造与太阳阴影已接入；植被密度、多层建筑及音乐音色仍待继续完善，不代表参考图最终复现或用户美术认可。端口与提交记录见 journal。",
+    "journal": "docs/world/phase-2-playground/OVERHAUL-20261028.md"
+  }
+}

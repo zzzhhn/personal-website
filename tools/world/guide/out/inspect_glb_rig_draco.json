@@ -1,0 +1,8 @@
+{
+  "file": "../../../public/assets/world/guide/G24.glb",
+  "passed": false,
+  "errors": [
+    "Draco compression unsupported"
+  ],
+  "inspector": "smoke checks only, not full Khronos validation"
+}

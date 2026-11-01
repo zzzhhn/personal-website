@@ -1,0 +1,44 @@
+{
+  "date": "2026-10-29",
+  "status": "direction approved; final master numerical QC; runtime and listening verification separate",
+  "source": "docs/world/phase-2-playground/qa-20261029/walk-daily-candidate-v24/walk-daily-candidate.wav",
+  "sourceSha256": "695e2902aea13630d2db43afa7fbacf8b0218daa152929d41d737f8a2f0c9b1c",
+  "settings": {
+    "rmsDb": -29.7,
+    "reflections": [
+      {
+        "seconds": 0.041,
+        "gain": 0.055
+      },
+      {
+        "seconds": 0.073,
+        "gain": 0.035
+      }
+    ]
+  },
+  "gainDb": 2.7471422173535194,
+  "sha256": "445a5f620314be6fa92390c831d571d609571d4c33099656aa38e60878832bb9",
+  "asset": "public/assets/world/park/audio/island-walk-daily-v1.wav",
+  "seconds": 40,
+  "bpm": 96,
+  "rate": 24000,
+  "channels": 2,
+  "frames": 960000,
+  "fileBytes": 3840044,
+  "decodedBytesAt24k": 7680000,
+  "peakDbfs": -13.445589408796401,
+  "rmsDbfs": -29.700266149946998,
+  "seam": [
+    {
+      "channel": 0,
+      "step": 0.000152587890625,
+      "slopeChange": 0.000091552734375
+    },
+    {
+      "channel": 1,
+      "step": 0,
+      "slopeChange": 0.000091552734375
+    }
+  ],
+  "codeSha256": "7f25dcded6196f2059ebc3cba0026ffc10ae5a025a581a849fc910c1c6e34c0e"
+}

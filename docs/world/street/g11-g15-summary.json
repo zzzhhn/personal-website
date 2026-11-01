@@ -1,0 +1,363 @@
+{
+  "rawEvidence": "/Users/bobby/Desktop/3D-personal-world/evidence/street-integration",
+  "sourceDates": {
+    "en": [
+      "2025-05-01",
+      "2025-08-01",
+      "2025-11-01",
+      "2025-12-01",
+      "2026-02-01",
+      "2026-09-24"
+    ],
+    "zh": [
+      "2025-05-01",
+      "2025-08-01",
+      "2025-11-01",
+      "2025-12-01",
+      "2026-02-01",
+      "2026-09-24"
+    ]
+  },
+  "datesMatch": true,
+  "noOldTownYearNodes": true,
+  "placements": [
+    {
+      "id": "year-sdic",
+      "home": [
+        16.5,
+        1.15,
+        18.5
+      ],
+      "sourceId": "sdic",
+      "sourceDate": "2025-05-01",
+      "label": "2025.05",
+      "sleeping": true
+    },
+    {
+      "id": "year-worldquant",
+      "home": [
+        16.5,
+        1.15,
+        7.5
+      ],
+      "sourceId": "worldquant",
+      "sourceDate": "2025-08-01",
+      "label": "2025.08",
+      "sleeping": true
+    },
+    {
+      "id": "year-moe",
+      "home": [
+        16.5,
+        1.15,
+        -2.5
+      ],
+      "sourceId": "moe",
+      "sourceDate": "2025-11-01",
+      "label": "2025.11",
+      "sleeping": true
+    },
+    {
+      "id": "year-aime",
+      "home": [
+        16.5,
+        1.15,
+        -21.5
+      ],
+      "sourceId": "aime",
+      "sourceDate": "2025-12-01",
+      "label": "2025.12",
+      "sleeping": true
+    },
+    {
+      "id": "year-video-rebirth",
+      "home": [
+        16.5,
+        1.15,
+        -32.5
+      ],
+      "sourceId": "video-rebirth",
+      "sourceDate": "2026-02-01",
+      "label": "2026.02",
+      "sleeping": true
+    },
+    {
+      "id": "year-hunyuan",
+      "home": [
+        16.5,
+        1.15,
+        -43
+      ],
+      "sourceId": "hunyuan",
+      "sourceDate": "2026-09-24",
+      "label": "2026.09",
+      "sleeping": true
+    },
+    {
+      "id": "billboard-0",
+      "home": [
+        6.411751584240968,
+        1,
+        36.944458809734854
+      ],
+      "sourceId": null,
+      "sourceDate": null,
+      "label": "慢一点，看见更多 / TAKE THE SCENIC ROUTE",
+      "sleeping": true
+    },
+    {
+      "id": "billboard-1",
+      "home": [
+        -44.452251150949536,
+        1,
+        -46.5
+      ],
+      "sourceId": null,
+      "sourceDate": null,
+      "label": "向海而行 / MEET THE COAST",
+      "sleeping": true
+    },
+    {
+      "id": "billboard-2",
+      "home": [
+        -81.11073277256637,
+        1,
+        7.877552448459537
+      ],
+      "sourceId": null,
+      "sourceDate": null,
+      "label": "让想法生长 / GIVE IDEAS ROOM",
+      "sleeping": true
+    }
+  ],
+  "nearHighlights": [
+    {
+      "id": "year-sdic",
+      "highlight": 1.42
+    },
+    {
+      "id": "year-worldquant",
+      "highlight": 1.42
+    },
+    {
+      "id": "year-moe",
+      "highlight": 1.42
+    },
+    {
+      "id": "year-aime",
+      "highlight": 1.42
+    },
+    {
+      "id": "year-video-rebirth",
+      "highlight": 1.42
+    },
+    {
+      "id": "year-hunyuan",
+      "highlight": 1.42
+    },
+    {
+      "id": "year-sdic",
+      "highlight": 1.42
+    }
+  ],
+  "farHighlights": [
+    {
+      "id": "year-sdic",
+      "highlight": 1
+    },
+    {
+      "id": "year-worldquant",
+      "highlight": 1
+    },
+    {
+      "id": "year-moe",
+      "highlight": 1
+    },
+    {
+      "id": "year-aime",
+      "highlight": 1
+    },
+    {
+      "id": "year-video-rebirth",
+      "highlight": 1
+    },
+    {
+      "id": "year-hunyuan",
+      "highlight": 1
+    }
+  ],
+  "visualPeak": {
+    "calls": 214,
+    "triangles": 492930
+  },
+  "errors": [],
+  "cases": [
+    {
+      "name": "person-year",
+      "target": "year-hunyuan",
+      "home": [
+        16.5,
+        1.15,
+        -43
+      ],
+      "firstContact": {
+        "t": 10318.600000023842,
+        "actorSpeed": 0.9927161951592312
+      },
+      "approachSpeed": 6.043333981465684,
+      "maxActorRise": 0,
+      "maxPropRise": 0,
+      "maxPropSpeed": 0,
+      "propDisplaced": 0,
+      "propKnocked": false,
+      "reset": null,
+      "errors": [],
+      "visualBodyTranslationErrorMax": 0,
+      "visualBodyRotationMatrixErrorMax": 1.5149566934269387e-08
+    },
+    {
+      "name": "coupe-year",
+      "target": "year-sdic",
+      "home": [
+        16.5,
+        1.15,
+        18.5
+      ],
+      "firstContact": {
+        "t": 9905.900000035763,
+        "actorSpeed": 4.640746116989249
+      },
+      "approachSpeed": 4.843039626970949,
+      "maxActorRise": 0.009741067886352539,
+      "maxPropRise": 0.15946016311645517,
+      "maxPropSpeed": 5.23,
+      "propDisplaced": 4.7406419854780975,
+      "propKnocked": true,
+      "reset": {
+        "elapsed": 27.174,
+        "state": {
+          "p": [
+            16.5,
+            1.149999976158142,
+            18.5
+          ],
+          "sleeping": true,
+          "knocked": false,
+          "phase": "home",
+          "q": [
+            0,
+            0.7071068286895752,
+            0,
+            0.7071068286895752
+          ],
+          "visualMatrix": [
+            -1.3435885648505064e-07,
+            0,
+            -1.0000001192092896,
+            0,
+            0,
+            1,
+            0,
+            0,
+            1.0000001192092896,
+            0,
+            -1.3435885648505064e-07,
+            0,
+            16.5,
+            1.149999976158142,
+            18.5,
+            1
+          ],
+          "highlight": 1
+        },
+        "passed": true
+      },
+      "errors": [],
+      "visualBodyTranslationErrorMax": 0,
+      "visualBodyRotationMatrixErrorMax": 2.8954646791312655e-08
+    },
+    {
+      "name": "person-billboard-final",
+      "target": "billboard-0",
+      "home": [
+        6.411751584240968,
+        1,
+        36.944458809734854
+      ],
+      "firstContact": {
+        "t": 9057.100000023842,
+        "actorSpeed": 4.114223368773132
+      },
+      "approachSpeed": 6.025853579695589,
+      "maxActorRise": 0.0002505779266357422,
+      "maxPropRise": 0.34753429889678955,
+      "maxPropSpeed": 2.21,
+      "propDisplaced": 0.921223801337536,
+      "propKnocked": true,
+      "reset": null,
+      "errors": [],
+      "visualBodyTranslationErrorMax": 0,
+      "visualBodyRotationMatrixErrorMax": 2.9779580246191983e-08
+    },
+    {
+      "name": "van-billboard-reset",
+      "target": "billboard-0",
+      "home": [
+        6.411751584240968,
+        1,
+        36.944458809734854
+      ],
+      "firstContact": {
+        "t": 9523.300000011921,
+        "actorSpeed": 4.905481646635295
+      },
+      "approachSpeed": 4.905481646635295,
+      "maxActorRise": 0.09512972831726074,
+      "maxPropRise": 2.247363567352295,
+      "maxPropSpeed": 9.95,
+      "propDisplaced": 6.625994415570367,
+      "propKnocked": true,
+      "reset": {
+        "elapsed": 27.337,
+        "state": {
+          "p": [
+            6.411771297454834,
+            0.9998716115951538,
+            36.94438552856445
+          ],
+          "sleeping": true,
+          "knocked": false,
+          "phase": "home",
+          "q": [
+            5.557390977628529e-06,
+            0.999814510345459,
+            -5.605003752862103e-05,
+            0.019260544329881668
+          ],
+          "visualMatrix": [
+            -0.9992581009864807,
+            8.95361154107377e-06,
+            -0.038513943552970886,
+            0,
+            1.3271828720462508e-05,
+            1,
+            -0.00011186520714545622,
+            0,
+            0.038513943552970886,
+            -0.00011229336087126285,
+            -0.9992581009864807,
+            0,
+            6.411771297454834,
+            0.9998716115951538,
+            36.94438552856445,
+            1
+          ]
+        },
+        "passed": true
+      },
+      "errors": [],
+      "visualBodyTranslationErrorMax": 0,
+      "visualBodyRotationMatrixErrorMax": 2.9630978559680443e-08
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "pid": 85633,
+  "sourceCommit": "65490a1",
+  "build": "/tmp/bobby-world-v22-20261028",
+  "requests": [
+    {
+      "asset": "world/index.html",
+      "status": 200,
+      "bytes": 52276,
+      "sha256": "5440a4786d312609669d54c26c2ab4cd35adc1a6b3a10e1097590aa16c7aa993",
+      "matchesBuild": true
+    },
+    {
+      "asset": "assets/world/park/audio/island-walk-b-loop.wav",
+      "status": 200,
+      "bytes": 3456044,
+      "sha256": "feeb5bed7f6d52ecbc3e075e10512811002bd048154ea1fa06ab42a7172d9b6e",
+      "matchesBuild": true
+    }
+  ]
+}

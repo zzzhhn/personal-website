@@ -1,0 +1,2439 @@
+{
+  "schema": "alpha-mine-props-qa-v1",
+  "blender": "5.1.2",
+  "source": "tools/world/alpha-mine/props.blend",
+  "sourceSha256": "2b7ec4ed457212beddb22479aab86f8395460ac151f7288b7b16f41068da931e",
+  "axes": "metres; +Y up, +X working direction, +Z right; socket rotations identity",
+  "assets": {
+    "detector": {
+      "file": "public/world/alpha-mine/detector.glb",
+      "bytes": 145956,
+      "sha256": "486065b47765528a13456ba481b230f179dd9cf72074483f3375069eb8d2ed13",
+      "source": {
+        "triangles": 2824,
+        "meshCount": 39,
+        "boundsYUp": [
+          [
+            -0.054999999701976776,
+            -0.10499999672174454,
+            -0.10300000011920929
+          ],
+          [
+            0.25600001215934753,
+            0.33799999952316284,
+            0.10300000011920929
+          ]
+        ],
+        "dimensionsYUp": [
+          0.3110000118613243,
+          0.4429999962449074,
+          0.20600000023841858
+        ],
+        "materials": {
+          "steel_worn": {
+            "Base Color": [
+              0.2788942754268646,
+              0.31854677200317383,
+              0.2917706370353699,
+              1.0
+            ],
+            "Roughness": 0.38999998569488525,
+            "Metallic": 0.7799999713897705,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "signal_copper": {
+            "Base Color": [
+              0.3324515223503113,
+              0.109461709856987,
+              0.045186202973127365,
+              1.0
+            ],
+            "Roughness": 0.4699999988079071,
+            "Metallic": 0.6399999856948853,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "brass_edge": {
+            "Base Color": [
+              0.5840784311294556,
+              0.4019777774810791,
+              0.14995978772640228,
+              1.0
+            ],
+            "Roughness": 0.3199999928474426,
+            "Metallic": 0.7200000286102295,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "dial_ivory": {
+            "Base Color": [
+              0.6795424818992615,
+              0.5972017645835876,
+              0.3915724754333496,
+              1.0
+            ],
+            "Roughness": 0.7200000286102295,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "aged_brass": {
+            "Base Color": [
+              0.366252601146698,
+              0.2158605009317398,
+              0.061246052384376526,
+              1.0
+            ],
+            "Roughness": 0.3799999952316284,
+            "Metallic": 0.7200000286102295,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "dial_ink": {
+            "Base Color": [
+              0.017641954123973846,
+              0.04817182570695877,
+              0.045186202973127365,
+              1.0
+            ],
+            "Roughness": 0.6499999761581421,
+            "Metallic": 0.05000000074505806,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "grip_leather": {
+            "Base Color": [
+              0.05780543014407158,
+              0.0423114113509655,
+              0.02518685907125473,
+              1.0
+            ],
+            "Roughness": 0.8700000047683716,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "forged_iron": {
+            "Base Color": [
+              0.04970656707882881,
+              0.0666259378194809,
+              0.06847816705703735,
+              1.0
+            ],
+            "Roughness": 0.5799999833106995,
+            "Metallic": 0.75,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "waxed_ash": {
+            "Base Color": [
+              0.30946892499923706,
+              0.12213877588510513,
+              0.040915198624134064,
+              1.0
+            ],
+            "Roughness": 0.5699999928474426,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          }
+        },
+        "sockets": {
+          "grip_R": {
+            "positionYUp": [
+              0.0,
+              0.0,
+              -0.0
+            ],
+            "matrixBlender": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "matrixYUp": [
+              [
+                1,
+                0,
+                0,
+                0.0
+              ],
+              [
+                0,
+                1,
+                0,
+                0.0
+              ],
+              [
+                0,
+                0,
+                1,
+                -0.0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "scan_origin": {
+            "positionYUp": [
+              0.257999986410141,
+              0.23499999940395355,
+              -0.0
+            ],
+            "matrixBlender": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.257999986410141
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.23499999940395355
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "matrixYUp": [
+              [
+                1,
+                0,
+                0,
+                0.257999986410141
+              ],
+              [
+                0,
+                1,
+                0,
+                0.23499999940395355
+              ],
+              [
+                0,
+                0,
+                1,
+                -0.0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ]
+          }
+        },
+        "problems": []
+      },
+      "freshGLB": {
+        "triangles": 2824,
+        "meshCount": 1,
+        "boundsYUp": [
+          [
+            -0.054999999701976776,
+            -0.10499999672174454,
+            -0.10300000011920929
+          ],
+          [
+            0.25600001215934753,
+            0.33799999952316284,
+            0.10300000011920929
+          ]
+        ],
+        "dimensionsYUp": [
+          0.3110000118613243,
+          0.4429999962449074,
+          0.20600000023841858
+        ],
+        "materials": {
+          "steel_worn": {
+            "Base Color": [
+              0.2788942754268646,
+              0.31854677200317383,
+              0.2917706370353699,
+              1.0
+            ],
+            "Roughness": 0.38999998569488525,
+            "Metallic": 0.7799999713897705,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "waxed_ash": {
+            "Base Color": [
+              0.30946892499923706,
+              0.12213877588510513,
+              0.040915198624134064,
+              1.0
+            ],
+            "Roughness": 0.5699999928474426,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "grip_leather": {
+            "Base Color": [
+              0.05780543014407158,
+              0.0423114113509655,
+              0.02518685907125473,
+              1.0
+            ],
+            "Roughness": 0.8700000047683716,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "aged_brass": {
+            "Base Color": [
+              0.366252601146698,
+              0.2158605009317398,
+              0.061246052384376526,
+              1.0
+            ],
+            "Roughness": 0.3799999952316284,
+            "Metallic": 0.7200000286102295,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "brass_edge": {
+            "Base Color": [
+              0.5840784311294556,
+              0.4019777774810791,
+              0.14995978772640228,
+              1.0
+            ],
+            "Roughness": 0.3199999928474426,
+            "Metallic": 0.7200000286102295,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "dial_ivory": {
+            "Base Color": [
+              0.6795424818992615,
+              0.5972017645835876,
+              0.3915724754333496,
+              1.0
+            ],
+            "Roughness": 0.7200000286102295,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "dial_ink": {
+            "Base Color": [
+              0.017641954123973846,
+              0.04817182570695877,
+              0.045186202973127365,
+              1.0
+            ],
+            "Roughness": 0.6499999761581421,
+            "Metallic": 0.05000000074505806,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "signal_copper": {
+            "Base Color": [
+              0.3324515223503113,
+              0.109461709856987,
+              0.045186202973127365,
+              1.0
+            ],
+            "Roughness": 0.4699999988079071,
+            "Metallic": 0.6399999856948853,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "forged_iron": {
+            "Base Color": [
+              0.04970656707882881,
+              0.0666259378194809,
+              0.06847816705703735,
+              1.0
+            ],
+            "Roughness": 0.5799999833106995,
+            "Metallic": 0.75,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          }
+        },
+        "sockets": {
+          "grip_R": {
+            "positionYUp": [
+              0.0,
+              0.0,
+              -0.0
+            ],
+            "matrixBlender": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "matrixYUp": [
+              [
+                1,
+                0,
+                0,
+                0.0
+              ],
+              [
+                0,
+                1,
+                0,
+                0.0
+              ],
+              [
+                0,
+                0,
+                1,
+                -0.0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "scan_origin": {
+            "positionYUp": [
+              0.257999986410141,
+              0.23499999940395355,
+              -0.0
+            ],
+            "matrixBlender": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.257999986410141
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.23499999940395355
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "matrixYUp": [
+              [
+                1,
+                0,
+                0,
+                0.257999986410141
+              ],
+              [
+                0,
+                1,
+                0,
+                0.23499999940395355
+              ],
+              [
+                0,
+                0,
+                1,
+                -0.0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ]
+          }
+        },
+        "problems": []
+      },
+      "maxBoundsDeltaM": 0.0,
+      "serializedMaterials": [
+        {
+          "doubleSided": true,
+          "name": "steel_worn",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.2788942754268646,
+              0.31854677200317383,
+              0.2917706370353699,
+              1
+            ],
+            "metallicFactor": 0.7799999713897705,
+            "roughnessFactor": 0.38999998569488525
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "waxed_ash",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.30946892499923706,
+              0.12213877588510513,
+              0.040915198624134064,
+              1
+            ],
+            "metallicFactor": 0,
+            "roughnessFactor": 0.5699999928474426
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "grip_leather",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.05780543014407158,
+              0.0423114113509655,
+              0.02518685907125473,
+              1
+            ],
+            "metallicFactor": 0,
+            "roughnessFactor": 0.8700000047683716
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "aged_brass",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.366252601146698,
+              0.2158605009317398,
+              0.061246052384376526,
+              1
+            ],
+            "metallicFactor": 0.7200000286102295,
+            "roughnessFactor": 0.3799999952316284
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "brass_edge",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.5840784311294556,
+              0.4019777774810791,
+              0.14995978772640228,
+              1
+            ],
+            "metallicFactor": 0.7200000286102295,
+            "roughnessFactor": 0.3199999928474426
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "dial_ivory",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.6795424818992615,
+              0.5972017645835876,
+              0.3915724754333496,
+              1
+            ],
+            "metallicFactor": 0,
+            "roughnessFactor": 0.7200000286102295
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "dial_ink",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.017641954123973846,
+              0.04817182570695877,
+              0.045186202973127365,
+              1
+            ],
+            "metallicFactor": 0.05000000074505806,
+            "roughnessFactor": 0.6499999761581421
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "signal_copper",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.3324515223503113,
+              0.109461709856987,
+              0.045186202973127365,
+              1
+            ],
+            "metallicFactor": 0.6399999856948853,
+            "roughnessFactor": 0.4699999988079071
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "forged_iron",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.04970656707882881,
+              0.0666259378194809,
+              0.06847816705703735,
+              1
+            ],
+            "metallicFactor": 0.75,
+            "roughnessFactor": 0.5799999833106995
+          }
+        }
+      ],
+      "serializedSocketNodes": {
+        "grip_R": {
+          "extras": {
+            "socketId": "grip_R"
+          },
+          "name": "grip_R"
+        },
+        "scan_origin": {
+          "extras": {
+            "socketId": "scan_origin"
+          },
+          "name": "scan_origin",
+          "translation": [
+            0.257999986410141,
+            0.23499999940395355,
+            0
+          ]
+        }
+      },
+      "serializedRootNode": {
+        "children": [
+          0,
+          1,
+          2
+        ],
+        "extras": {
+          "units": "metres",
+          "runtimeAxes": "+Y up / +X working direction / +Z right",
+          "assembly": "single-hand grip seated below instrument; cast housing supports neck and open induction loop; dial is geometric"
+        },
+        "name": "detector"
+      },
+      "serializedTriangleCount": 2824,
+      "serializedSceneCount": 4,
+      "defaultSceneIndex": 0
+    },
+    "pickaxe": {
+      "file": "public/world/alpha-mine/pickaxe.glb",
+      "bytes": 101388,
+      "sha256": "d503fae7675e0ec7f80613b130d83834b88de3c94fa640249d0589683aaf80c4",
+      "source": {
+        "triangles": 1800,
+        "meshCount": 19,
+        "boundsYUp": [
+          [
+            -0.24500000476837158,
+            -0.23899999260902405,
+            -0.04500000178813934
+          ],
+          [
+            0.3199999928474426,
+            0.640999972820282,
+            0.04500000178813934
+          ]
+        ],
+        "dimensionsYUp": [
+          0.5649999976158142,
+          0.879999965429306,
+          0.09000000357627869
+        ],
+        "materials": {
+          "waxed_ash": {
+            "Base Color": [
+              0.30946892499923706,
+              0.12213877588510513,
+              0.040915198624134064,
+              1.0
+            ],
+            "Roughness": 0.5699999928474426,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "ash_light": {
+            "Base Color": [
+              0.4910208582878113,
+              0.24228112399578094,
+              0.08650045841932297,
+              1.0
+            ],
+            "Roughness": 0.5899999737739563,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "ash_grain": {
+            "Base Color": [
+              0.17464740574359894,
+              0.0802198201417923,
+              0.03688944876194,
+              1.0
+            ],
+            "Roughness": 0.6700000166893005,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "aged_brass": {
+            "Base Color": [
+              0.366252601146698,
+              0.2158605009317398,
+              0.061246052384376526,
+              1.0
+            ],
+            "Roughness": 0.3799999952316284,
+            "Metallic": 0.7200000286102295,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "forged_iron": {
+            "Base Color": [
+              0.04970656707882881,
+              0.0666259378194809,
+              0.06847816705703735,
+              1.0
+            ],
+            "Roughness": 0.5799999833106995,
+            "Metallic": 0.75,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "brass_edge": {
+            "Base Color": [
+              0.5840784311294556,
+              0.4019777774810791,
+              0.14995978772640228,
+              1.0
+            ],
+            "Roughness": 0.3199999928474426,
+            "Metallic": 0.7200000286102295,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "steel_worn": {
+            "Base Color": [
+              0.2788942754268646,
+              0.31854677200317383,
+              0.2917706370353699,
+              1.0
+            ],
+            "Roughness": 0.38999998569488525,
+            "Metallic": 0.7799999713897705,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "grip_leather": {
+            "Base Color": [
+              0.05780543014407158,
+              0.0423114113509655,
+              0.02518685907125473,
+              1.0
+            ],
+            "Roughness": 0.8700000047683716,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          }
+        },
+        "sockets": {
+          "grip_L": {
+            "positionYUp": [
+              0.0,
+              0.17000000178813934,
+              -0.0
+            ],
+            "matrixBlender": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.17000000178813934
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "matrixYUp": [
+              [
+                1,
+                0,
+                0,
+                0.0
+              ],
+              [
+                0,
+                1,
+                0,
+                0.17000000178813934
+              ],
+              [
+                0,
+                0,
+                1,
+                -0.0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "grip_R": {
+            "positionYUp": [
+              0.0,
+              0.0,
+              -0.0
+            ],
+            "matrixBlender": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "matrixYUp": [
+              [
+                1,
+                0,
+                0,
+                0.0
+              ],
+              [
+                0,
+                1,
+                0,
+                0.0
+              ],
+              [
+                0,
+                0,
+                1,
+                -0.0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "head_contact": {
+            "positionYUp": [
+              0.3199999928474426,
+              0.5199999809265137,
+              -0.0
+            ],
+            "matrixBlender": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.3199999928474426
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.5199999809265137
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "matrixYUp": [
+              [
+                1,
+                0,
+                0,
+                0.3199999928474426
+              ],
+              [
+                0,
+                1,
+                0,
+                0.5199999809265137
+              ],
+              [
+                0,
+                0,
+                1,
+                -0.0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ]
+          }
+        },
+        "problems": []
+      },
+      "freshGLB": {
+        "triangles": 1800,
+        "meshCount": 1,
+        "boundsYUp": [
+          [
+            -0.24500000476837158,
+            -0.23899999260902405,
+            -0.04500000178813934
+          ],
+          [
+            0.3199999928474426,
+            0.640999972820282,
+            0.04500000178813934
+          ]
+        ],
+        "dimensionsYUp": [
+          0.5649999976158142,
+          0.879999965429306,
+          0.09000000357627869
+        ],
+        "materials": {
+          "waxed_ash": {
+            "Base Color": [
+              0.30946892499923706,
+              0.12213877588510513,
+              0.040915198624134064,
+              1.0
+            ],
+            "Roughness": 0.5699999928474426,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "ash_light": {
+            "Base Color": [
+              0.4910208582878113,
+              0.24228112399578094,
+              0.08650045841932297,
+              1.0
+            ],
+            "Roughness": 0.5899999737739563,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "ash_grain": {
+            "Base Color": [
+              0.17464740574359894,
+              0.0802198201417923,
+              0.03688944876194,
+              1.0
+            ],
+            "Roughness": 0.6700000166893005,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "aged_brass": {
+            "Base Color": [
+              0.366252601146698,
+              0.2158605009317398,
+              0.061246052384376526,
+              1.0
+            ],
+            "Roughness": 0.3799999952316284,
+            "Metallic": 0.7200000286102295,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "grip_leather": {
+            "Base Color": [
+              0.05780543014407158,
+              0.0423114113509655,
+              0.02518685907125473,
+              1.0
+            ],
+            "Roughness": 0.8700000047683716,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "forged_iron": {
+            "Base Color": [
+              0.04970656707882881,
+              0.0666259378194809,
+              0.06847816705703735,
+              1.0
+            ],
+            "Roughness": 0.5799999833106995,
+            "Metallic": 0.75,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "steel_worn": {
+            "Base Color": [
+              0.2788942754268646,
+              0.31854677200317383,
+              0.2917706370353699,
+              1.0
+            ],
+            "Roughness": 0.38999998569488525,
+            "Metallic": 0.7799999713897705,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "brass_edge": {
+            "Base Color": [
+              0.5840784311294556,
+              0.4019777774810791,
+              0.14995978772640228,
+              1.0
+            ],
+            "Roughness": 0.3199999928474426,
+            "Metallic": 0.7200000286102295,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          }
+        },
+        "sockets": {
+          "grip_L": {
+            "positionYUp": [
+              0.0,
+              0.17000000178813934,
+              -0.0
+            ],
+            "matrixBlender": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.17000000178813934
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "matrixYUp": [
+              [
+                1,
+                0,
+                0,
+                0.0
+              ],
+              [
+                0,
+                1,
+                0,
+                0.17000000178813934
+              ],
+              [
+                0,
+                0,
+                1,
+                -0.0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "grip_R": {
+            "positionYUp": [
+              0.0,
+              0.0,
+              -0.0
+            ],
+            "matrixBlender": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "matrixYUp": [
+              [
+                1,
+                0,
+                0,
+                0.0
+              ],
+              [
+                0,
+                1,
+                0,
+                0.0
+              ],
+              [
+                0,
+                0,
+                1,
+                -0.0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "head_contact": {
+            "positionYUp": [
+              0.3199999928474426,
+              0.5199999809265137,
+              -0.0
+            ],
+            "matrixBlender": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.3199999928474426
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.5199999809265137
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "matrixYUp": [
+              [
+                1,
+                0,
+                0,
+                0.3199999928474426
+              ],
+              [
+                0,
+                1,
+                0,
+                0.5199999809265137
+              ],
+              [
+                0,
+                0,
+                1,
+                -0.0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ]
+          }
+        },
+        "problems": []
+      },
+      "maxBoundsDeltaM": 0.0,
+      "serializedMaterials": [
+        {
+          "doubleSided": true,
+          "name": "waxed_ash",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.30946892499923706,
+              0.12213877588510513,
+              0.040915198624134064,
+              1
+            ],
+            "metallicFactor": 0,
+            "roughnessFactor": 0.5699999928474426
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "ash_light",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.4910208582878113,
+              0.24228112399578094,
+              0.08650045841932297,
+              1
+            ],
+            "metallicFactor": 0,
+            "roughnessFactor": 0.5899999737739563
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "ash_grain",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.17464740574359894,
+              0.0802198201417923,
+              0.03688944876194,
+              1
+            ],
+            "metallicFactor": 0,
+            "roughnessFactor": 0.6700000166893005
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "aged_brass",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.366252601146698,
+              0.2158605009317398,
+              0.061246052384376526,
+              1
+            ],
+            "metallicFactor": 0.7200000286102295,
+            "roughnessFactor": 0.3799999952316284
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "grip_leather",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.05780543014407158,
+              0.0423114113509655,
+              0.02518685907125473,
+              1
+            ],
+            "metallicFactor": 0,
+            "roughnessFactor": 0.8700000047683716
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "forged_iron",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.04970656707882881,
+              0.0666259378194809,
+              0.06847816705703735,
+              1
+            ],
+            "metallicFactor": 0.75,
+            "roughnessFactor": 0.5799999833106995
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "steel_worn",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.2788942754268646,
+              0.31854677200317383,
+              0.2917706370353699,
+              1
+            ],
+            "metallicFactor": 0.7799999713897705,
+            "roughnessFactor": 0.38999998569488525
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "brass_edge",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.5840784311294556,
+              0.4019777774810791,
+              0.14995978772640228,
+              1
+            ],
+            "metallicFactor": 0.7200000286102295,
+            "roughnessFactor": 0.3199999928474426
+          }
+        }
+      ],
+      "serializedSocketNodes": {
+        "grip_L": {
+          "extras": {
+            "socketId": "grip_L"
+          },
+          "name": "grip_L",
+          "translation": [
+            0,
+            0.17000000178813934,
+            0
+          ]
+        },
+        "grip_R": {
+          "extras": {
+            "socketId": "grip_R"
+          },
+          "name": "grip_R"
+        },
+        "head_contact": {
+          "extras": {
+            "socketId": "head_contact"
+          },
+          "name": "head_contact",
+          "translation": [
+            0.3199999928474426,
+            0.5199999809265137,
+            0
+          ]
+        }
+      },
+      "serializedRootNode": {
+        "children": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "extras": {
+          "units": "metres",
+          "runtimeAxes": "+Y up / +X working direction / +Z right",
+          "assembly": "continuous wood shaft enters fitted forged eye; fixed band/rivets; curved pick and rear adze are one metal mesh"
+        },
+        "name": "pickaxe"
+      },
+      "serializedTriangleCount": 1800,
+      "serializedSceneCount": 4,
+      "defaultSceneIndex": 2
+    },
+    "ore": {
+      "file": "public/world/alpha-mine/ore.glb",
+      "bytes": 25764,
+      "sha256": "5b78f5e81179c9a2d2d18e30a9a75d46f9a8d4e5040d0335ba3af04b46644ce6",
+      "source": {
+        "triangles": 334,
+        "meshCount": 7,
+        "boundsYUp": [
+          [
+            -0.15436775982379913,
+            -0.15341950953006744,
+            -0.15025028586387634
+          ],
+          [
+            0.15436775982379913,
+            0.15341950953006744,
+            0.15025028586387634
+          ]
+        ],
+        "dimensionsYUp": [
+          0.30873551964759827,
+          0.3068390190601349,
+          0.3005005717277527
+        ],
+        "materials": {
+          "ore_mineral": {
+            "Base Color": [
+              0.10702310502529144,
+              0.3277781009674072,
+              0.28314873576164246,
+              1.0
+            ],
+            "Roughness": 0.4699999988079071,
+            "Metallic": 0.2800000011920929,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "ore_stone": {
+            "Base Color": [
+              0.23074005544185638,
+              0.17464740574359894,
+              0.1119324266910553,
+              1.0
+            ],
+            "Roughness": 0.9399999976158142,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "ore_stone_light": {
+            "Base Color": [
+              0.366252601146698,
+              0.2961382567882538,
+              0.18447498977184296,
+              1.0
+            ],
+            "Roughness": 0.9100000262260437,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "ore_stone_dark": {
+            "Base Color": [
+              0.13286831974983215,
+              0.11443537473678589,
+              0.08437620848417282,
+              1.0
+            ],
+            "Roughness": 0.9599999785423279,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "quartz": {
+            "Base Color": [
+              0.6514056324958801,
+              0.6038273572921753,
+              0.41788506507873535,
+              1.0
+            ],
+            "Roughness": 0.6399999856948853,
+            "Metallic": 0.03999999910593033,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          }
+        },
+        "sockets": {
+          "grip_L": {
+            "positionYUp": [
+              0.0,
+              0.0,
+              -0.15000000596046448
+            ],
+            "matrixBlender": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.15000000596046448
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "matrixYUp": [
+              [
+                1,
+                0,
+                0,
+                0.0
+              ],
+              [
+                0,
+                1,
+                0,
+                0.0
+              ],
+              [
+                0,
+                0,
+                1,
+                -0.15000000596046448
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "grip_R": {
+            "positionYUp": [
+              0.0,
+              0.0,
+              0.15000000596046448
+            ],
+            "matrixBlender": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                -0.15000000596046448
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "matrixYUp": [
+              [
+                1,
+                0,
+                0,
+                0.0
+              ],
+              [
+                0,
+                1,
+                0,
+                0.0
+              ],
+              [
+                0,
+                0,
+                1,
+                0.15000000596046448
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "release": {
+            "positionYUp": [
+              0.0,
+              0.0,
+              -0.0
+            ],
+            "matrixBlender": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "matrixYUp": [
+              [
+                1,
+                0,
+                0,
+                0.0
+              ],
+              [
+                0,
+                1,
+                0,
+                0.0
+              ],
+              [
+                0,
+                0,
+                1,
+                -0.0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ]
+          }
+        },
+        "problems": []
+      },
+      "freshGLB": {
+        "triangles": 334,
+        "meshCount": 1,
+        "boundsYUp": [
+          [
+            -0.15436775982379913,
+            -0.15341950953006744,
+            -0.15025028586387634
+          ],
+          [
+            0.15436775982379913,
+            0.15341950953006744,
+            0.15025028586387634
+          ]
+        ],
+        "dimensionsYUp": [
+          0.30873551964759827,
+          0.3068390190601349,
+          0.3005005717277527
+        ],
+        "materials": {
+          "ore_mineral": {
+            "Base Color": [
+              0.10702310502529144,
+              0.3277781009674072,
+              0.28314873576164246,
+              1.0
+            ],
+            "Roughness": 0.4699999988079071,
+            "Metallic": 0.2800000011920929,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "ore_stone": {
+            "Base Color": [
+              0.23074005544185638,
+              0.17464740574359894,
+              0.1119324266910553,
+              1.0
+            ],
+            "Roughness": 0.9399999976158142,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "ore_stone_light": {
+            "Base Color": [
+              0.366252601146698,
+              0.2961382567882538,
+              0.18447498977184296,
+              1.0
+            ],
+            "Roughness": 0.9100000262260437,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "ore_stone_dark": {
+            "Base Color": [
+              0.13286831974983215,
+              0.11443537473678589,
+              0.08437620848417282,
+              1.0
+            ],
+            "Roughness": 0.9599999785423279,
+            "Metallic": 0.0,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          },
+          "quartz": {
+            "Base Color": [
+              0.6514056324958801,
+              0.6038273572921753,
+              0.41788506507873535,
+              1.0
+            ],
+            "Roughness": 0.6399999856948853,
+            "Metallic": 0.03999999910593033,
+            "Alpha": 1.0,
+            "IOR": 1.5,
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0
+          }
+        },
+        "sockets": {
+          "grip_L": {
+            "positionYUp": [
+              0.0,
+              0.0,
+              -0.15000000596046448
+            ],
+            "matrixBlender": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.15000000596046448
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "matrixYUp": [
+              [
+                1,
+                0,
+                0,
+                0.0
+              ],
+              [
+                0,
+                1,
+                0,
+                0.0
+              ],
+              [
+                0,
+                0,
+                1,
+                -0.15000000596046448
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "grip_R": {
+            "positionYUp": [
+              0.0,
+              0.0,
+              0.15000000596046448
+            ],
+            "matrixBlender": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                -0.15000000596046448
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "matrixYUp": [
+              [
+                1,
+                0,
+                0,
+                0.0
+              ],
+              [
+                0,
+                1,
+                0,
+                0.0
+              ],
+              [
+                0,
+                0,
+                1,
+                0.15000000596046448
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ]
+          },
+          "release": {
+            "positionYUp": [
+              0.0,
+              0.0,
+              -0.0
+            ],
+            "matrixBlender": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "matrixYUp": [
+              [
+                1,
+                0,
+                0,
+                0.0
+              ],
+              [
+                0,
+                1,
+                0,
+                0.0
+              ],
+              [
+                0,
+                0,
+                1,
+                -0.0
+              ],
+              [
+                0,
+                0,
+                0,
+                1
+              ]
+            ]
+          }
+        },
+        "problems": []
+      },
+      "maxBoundsDeltaM": 0.0,
+      "serializedMaterials": [
+        {
+          "doubleSided": true,
+          "name": "ore_mineral",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.10702310502529144,
+              0.3277781009674072,
+              0.28314873576164246,
+              1
+            ],
+            "metallicFactor": 0.2800000011920929,
+            "roughnessFactor": 0.4699999988079071
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "ore_stone",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.23074005544185638,
+              0.17464740574359894,
+              0.1119324266910553,
+              1
+            ],
+            "metallicFactor": 0,
+            "roughnessFactor": 0.9399999976158142
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "ore_stone_light",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.366252601146698,
+              0.2961382567882538,
+              0.18447498977184296,
+              1
+            ],
+            "metallicFactor": 0,
+            "roughnessFactor": 0.9100000262260437
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "ore_stone_dark",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.13286831974983215,
+              0.11443537473678589,
+              0.08437620848417282,
+              1
+            ],
+            "metallicFactor": 0,
+            "roughnessFactor": 0.9599999785423279
+          }
+        },
+        {
+          "doubleSided": true,
+          "name": "quartz",
+          "pbrMetallicRoughness": {
+            "baseColorFactor": [
+              0.6514056324958801,
+              0.6038273572921753,
+              0.41788506507873535,
+              1
+            ],
+            "metallicFactor": 0.03999999910593033,
+            "roughnessFactor": 0.6399999856948853
+          }
+        }
+      ],
+      "serializedSocketNodes": {
+        "grip_L": {
+          "extras": {
+            "socketId": "grip_L"
+          },
+          "name": "grip_L",
+          "translation": [
+            0,
+            0,
+            -0.15000000596046448
+          ]
+        },
+        "grip_R": {
+          "extras": {
+            "socketId": "grip_R"
+          },
+          "name": "grip_R",
+          "translation": [
+            0,
+            0,
+            0.15000000596046448
+          ]
+        },
+        "release": {
+          "extras": {
+            "socketId": "release"
+          },
+          "name": "release"
+        }
+      },
+      "serializedRootNode": {
+        "children": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "extras": {
+          "units": "metres",
+          "runtimeAxes": "+Y up / +X working direction / +Z right",
+          "assembly": "closed irregular rock host with jagged mineral and quartz strata; small crystal roots embedded in the host"
+        },
+        "name": "ore"
+      },
+      "serializedTriangleCount": 334,
+      "serializedSceneCount": 4,
+      "defaultSceneIndex": 1
+    }
+  },
+  "pickaxeContactDistanceM": 0.6105734887061178,
+  "limits": [
+    "Rigid authored props; no G24 IK or browser claim.",
+    "Wood grain and metal wear use facet colour/material variation, no image textures.",
+    "Deliberate fitted component intersections at collars, rivets, sensor spokes and mineral roots; not a Boolean union or mechanical simulation.",
+    "Native source prefixes socket names only because Blender globally deduplicates object names; independent GLBs contain exact contract names.",
+    "GLBs retain empty inactive source-scene records; the default scene contains exactly one corresponding named root, mesh and sockets."
+  ],
+  "render": {
+    "image": "props-board.png",
+    "renderer": "CPU Cycles",
+    "samples": 24,
+    "resolution": [
+      900,
+      650
+    ],
+    "colorManagement": {
+      "view": "AgX",
+      "look": "AgX - Medium High Contrast",
+      "exposure": 0,
+      "gamma": 1
+    },
+    "scope": "actual reimported three exported GLBs at metre-relative scale; studio plinths, lights, camera not exported",
+    "sha256": "078081a354a6c902be2833b356abac21de688661f2991f3b028f320c4e8f2bb6"
+  },
+  "visualReview": {
+    "reviewer": "alpha_mine_props agent",
+    "image": "props-board.png",
+    "result": "inspected actual 900x650 render; fitted handle/head, mechanical detector grip and open loop, mineral/quartz strata visible",
+    "userApproval": false,
+    "scope": "internal static prop visual review only"
+  },
+  "builderSha256": "c4a603616a584e4438cd7e1cd0153902d0a09aab56f8bbe2beb66d2cf4dc7bee"
+}

@@ -1,0 +1,1011 @@
+{
+  "baseline": {
+    "offroad": {
+      "level": 1,
+      "triangles": 15242,
+      "doors": [
+        {
+          "side": -1,
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "vertices": 540
+        },
+        {
+          "side": 1,
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "vertices": 540
+        }
+      ],
+      "material": "f0fe1528-662f-41fc-8ff3-0d4c62187905",
+      "bodyNear": "2d0eefad-daab-4d27-ba3b-d552f4c76b7d",
+      "bodyFar": "50442069-040c-4fbe-ae5d-05ac0e410feb",
+      "wheel": "64b9b335-d2f0-411d-87d3-f2b4a471baf0"
+    },
+    "coupe": {
+      "level": 1,
+      "triangles": 14816,
+      "doors": [
+        {
+          "side": -1,
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "vertices": 636
+        },
+        {
+          "side": 1,
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "vertices": 636
+        }
+      ],
+      "material": "036bc119-001e-4c33-8bc0-f997f28e9d63",
+      "bodyNear": "6909e8e3-8e12-4c63-97b2-c5535283c839",
+      "bodyFar": "4b63c555-fa73-475f-baa2-51e3de5c6685",
+      "wheel": "c046a052-3ddb-4885-bb95-21d212422aee"
+    },
+    "van": {
+      "level": 1,
+      "triangles": 14273,
+      "doors": [
+        {
+          "side": -1,
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "vertices": 540
+        },
+        {
+          "side": 1,
+          "quaternion": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "vertices": 540
+        }
+      ],
+      "material": "298815a5-01cf-402f-b36b-6595f704a1e5",
+      "bodyNear": "98393f01-dcce-43a8-bc36-097bbb9e5764",
+      "bodyFar": "10e8ba13-ad1a-45d7-844c-9dcc1dd2917e",
+      "wheel": "0d254d61-05d3-4a03-8b57-97190e83bb98"
+    }
+  },
+  "runs": [
+    {
+      "probe": {
+        "status": "complete",
+        "reason": "rendered",
+        "limit": 5,
+        "triggerAtMs": 142495.40000000596,
+        "clockResetAtMs": 142680.40000000596,
+        "clockResets": 2,
+        "endAtMs": 142735.19999998808,
+        "baseline": {
+          "atMs": 142495.40000000596,
+          "state": {
+            "paused": true,
+            "poolInspect": false,
+            "shot": null,
+            "hidden": false
+          },
+          "lastRenderFrame": 2930,
+          "programs": 148
+        },
+        "coverage": {
+          "worldStep": true,
+          "renderer": true,
+          "shadow": true,
+          "programGrowthDraws": true
+        },
+        "unavailable": {
+          "fullPhysicsCpuMs": null,
+          "actorBeforeAfterStepCpuMs": null,
+          "reactCommitCpuMs": null,
+          "gpuMs": null
+        },
+        "meanings": {
+          "clock": "All timestamps and CPU wall spans use performance.now; rawDeltaMs is the unchanged R3F callback delta.",
+          "entry": "DEV priority -1000 useFrame entry, before default-priority physics and scene callbacks; not browser RAF entry.",
+          "baseline": "Trigger-time state and counters from the previous render; no pre-trigger CPU frame was sampled.",
+          "worldStep": "Actual world.step calls (fixed simulation ticks, not internal CCD/solver iterations), including Rapier and hooks invoked inside it; excludes React-Rapier before/after-step callbacks, interpolation and event processing outside world.step.",
+          "render": "Sum of outermost renderer.render wall spans, inclusive of shadow rendering, JS submission and possible driver stalls; not GPU execution time.",
+          "shadow": "Sum of outermost shadowMap.render spans; normally nested inside rendererCpuMs, so do not add them together.",
+          "growth": "Net program count and at most 3 largest draw spans with count growth per frame; a draw span is not shader-compile-only CPU. Names are truncated to 120 characters.",
+          "overhead": "This explicit five-frame probe times draw calls and perturbs timing. No per-draw log, GPU wait or continuous sampling."
+        },
+        "restorationConflicts": [],
+        "unattributedWorldStepCalls": 0,
+        "frames": [
+          {
+            "index": 1,
+            "entryAtMs": 142680.40000000596,
+            "endAtMs": 142685.80000001192,
+            "rawDeltaMs": 0,
+            "state": {
+              "paused": false,
+              "poolInspect": false,
+              "shot": null,
+              "hidden": false
+            },
+            "lastRenderFrameAtEntry": 2930,
+            "lastRenderFrameAtEnd": 2931,
+            "worldStepCalls": 0,
+            "worldStepCpuMs": 0,
+            "worldStepThrew": false,
+            "firstWorldStepAtMs": null,
+            "lastWorldStepEndAtMs": null,
+            "rendererCalls": 1,
+            "rendererCpuMs": 3.100000023841858,
+            "shadowCalls": 1,
+            "shadowCpuMs": 1.0999999940395355,
+            "firstRenderAtMs": 142682.69999998808,
+            "lastRenderEndAtMs": 142685.80000001192,
+            "entryToFirstRenderMs": 2.2999999821186066,
+            "programsAtEntry": 148,
+            "programsAtEnd": 148,
+            "programNetGrowth": 0,
+            "drawGrowthEvents": 0,
+            "drawProgramsAdded": 0,
+            "largestGrowthDraws": [],
+            "completion": "rendered"
+          },
+          {
+            "index": 2,
+            "entryAtMs": 142691.69999998808,
+            "endAtMs": 142696.80000001192,
+            "rawDeltaMs": 11.299999982118607,
+            "state": {
+              "paused": false,
+              "poolInspect": false,
+              "shot": null,
+              "hidden": false
+            },
+            "lastRenderFrameAtEntry": 2931,
+            "lastRenderFrameAtEnd": 2932,
+            "worldStepCalls": 0,
+            "worldStepCpuMs": 0,
+            "worldStepThrew": false,
+            "firstWorldStepAtMs": null,
+            "lastWorldStepEndAtMs": null,
+            "rendererCalls": 1,
+            "rendererCpuMs": 3.5,
+            "shadowCalls": 1,
+            "shadowCpuMs": 1.199999988079071,
+            "firstRenderAtMs": 142693.19999998808,
+            "lastRenderEndAtMs": 142696.69999998808,
+            "entryToFirstRenderMs": 1.5,
+            "programsAtEntry": 148,
+            "programsAtEnd": 148,
+            "programNetGrowth": 0,
+            "drawGrowthEvents": 0,
+            "drawProgramsAdded": 0,
+            "largestGrowthDraws": [],
+            "completion": "rendered"
+          },
+          {
+            "index": 3,
+            "entryAtMs": 142697.90000000596,
+            "endAtMs": 142705.40000000596,
+            "rawDeltaMs": 6.200000017881393,
+            "state": {
+              "paused": false,
+              "poolInspect": false,
+              "shot": null,
+              "hidden": false
+            },
+            "lastRenderFrameAtEntry": 2932,
+            "lastRenderFrameAtEnd": 2933,
+            "worldStepCalls": 1,
+            "worldStepCpuMs": 1.5,
+            "worldStepThrew": false,
+            "firstWorldStepAtMs": 142699.69999998808,
+            "lastWorldStepEndAtMs": 142701.19999998808,
+            "rendererCalls": 1,
+            "rendererCpuMs": 2.800000011920929,
+            "shadowCalls": 1,
+            "shadowCpuMs": 0.9000000059604645,
+            "firstRenderAtMs": 142702.59999999404,
+            "lastRenderEndAtMs": 142705.40000000596,
+            "entryToFirstRenderMs": 4.699999988079071,
+            "programsAtEntry": 148,
+            "programsAtEnd": 148,
+            "programNetGrowth": 0,
+            "drawGrowthEvents": 0,
+            "drawProgramsAdded": 0,
+            "largestGrowthDraws": [],
+            "completion": "rendered"
+          },
+          {
+            "index": 4,
+            "entryAtMs": 142710.59999999404,
+            "endAtMs": 142715.80000001192,
+            "rawDeltaMs": 12.599999994039536,
+            "state": {
+              "paused": false,
+              "poolInspect": false,
+              "shot": null,
+              "hidden": false
+            },
+            "lastRenderFrameAtEntry": 2933,
+            "lastRenderFrameAtEnd": 2934,
+            "worldStepCalls": 1,
+            "worldStepCpuMs": 0.5,
+            "worldStepThrew": false,
+            "firstWorldStepAtMs": 142711.30000001192,
+            "lastWorldStepEndAtMs": 142711.80000001192,
+            "rendererCalls": 1,
+            "rendererCpuMs": 3,
+            "shadowCalls": 1,
+            "shadowCpuMs": 0.9000000059604645,
+            "firstRenderAtMs": 142712.80000001192,
+            "lastRenderEndAtMs": 142715.80000001192,
+            "entryToFirstRenderMs": 2.2000000178813934,
+            "programsAtEntry": 148,
+            "programsAtEnd": 148,
+            "programNetGrowth": 0,
+            "drawGrowthEvents": 0,
+            "drawProgramsAdded": 0,
+            "largestGrowthDraws": [],
+            "completion": "rendered"
+          },
+          {
+            "index": 5,
+            "entryAtMs": 142729.90000000596,
+            "endAtMs": 142735.19999998808,
+            "rawDeltaMs": 19.400000005960464,
+            "state": {
+              "paused": false,
+              "poolInspect": false,
+              "shot": null,
+              "hidden": false
+            },
+            "lastRenderFrameAtEntry": 2934,
+            "lastRenderFrameAtEnd": 2935,
+            "worldStepCalls": 1,
+            "worldStepCpuMs": 0.5,
+            "worldStepThrew": false,
+            "firstWorldStepAtMs": 142730.59999999404,
+            "lastWorldStepEndAtMs": 142731.09999999404,
+            "rendererCalls": 1,
+            "rendererCpuMs": 2.899999976158142,
+            "shadowCalls": 1,
+            "shadowCpuMs": 0.8999999761581421,
+            "firstRenderAtMs": 142732.30000001192,
+            "lastRenderEndAtMs": 142735.19999998808,
+            "entryToFirstRenderMs": 2.4000000059604645,
+            "programsAtEntry": 148,
+            "programsAtEnd": 148,
+            "programNetGrowth": 0,
+            "drawGrowthEvents": 0,
+            "drawProgramsAdded": 0,
+            "largestGrowthDraws": [],
+            "completion": "rendered"
+          }
+        ]
+      },
+      "vehicles": {
+        "offroad": {
+          "level": 1,
+          "triangles": 15242,
+          "doors": [
+            {
+              "side": -1,
+              "quaternion": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "vertices": 540
+            },
+            {
+              "side": 1,
+              "quaternion": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "vertices": 540
+            }
+          ],
+          "material": "f0fe1528-662f-41fc-8ff3-0d4c62187905",
+          "bodyNear": "2d0eefad-daab-4d27-ba3b-d552f4c76b7d",
+          "bodyFar": "50442069-040c-4fbe-ae5d-05ac0e410feb",
+          "wheel": "64b9b335-d2f0-411d-87d3-f2b4a471baf0"
+        },
+        "coupe": {
+          "level": 1,
+          "triangles": 14816,
+          "doors": [
+            {
+              "side": -1,
+              "quaternion": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "vertices": 636
+            },
+            {
+              "side": 1,
+              "quaternion": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "vertices": 636
+            }
+          ],
+          "material": "036bc119-001e-4c33-8bc0-f997f28e9d63",
+          "bodyNear": "6909e8e3-8e12-4c63-97b2-c5535283c839",
+          "bodyFar": "4b63c555-fa73-475f-baa2-51e3de5c6685",
+          "wheel": "c046a052-3ddb-4885-bb95-21d212422aee"
+        },
+        "van": {
+          "level": 1,
+          "triangles": 14273,
+          "doors": [
+            {
+              "side": -1,
+              "quaternion": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "vertices": 540
+            },
+            {
+              "side": 1,
+              "quaternion": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "vertices": 540
+            }
+          ],
+          "material": "298815a5-01cf-402f-b36b-6595f704a1e5",
+          "bodyNear": "98393f01-dcce-43a8-bc36-097bbb9e5764",
+          "bodyFar": "10e8ba13-ad1a-45d7-844c-9dcc1dd2917e",
+          "wheel": "0d254d61-05d3-4a03-8b57-97190e83bb98"
+        }
+      }
+    },
+    {
+      "probe": {
+        "status": "complete",
+        "reason": "rendered",
+        "limit": 5,
+        "triggerAtMs": 167260.40000000596,
+        "clockResetAtMs": 167404.90000000596,
+        "clockResets": 2,
+        "endAtMs": 167460.5,
+        "baseline": {
+          "atMs": 167260.40000000596,
+          "state": {
+            "paused": true,
+            "poolInspect": false,
+            "shot": null,
+            "hidden": false
+          },
+          "lastRenderFrame": 4337,
+          "programs": 148
+        },
+        "coverage": {
+          "worldStep": true,
+          "renderer": true,
+          "shadow": true,
+          "programGrowthDraws": true
+        },
+        "unavailable": {
+          "fullPhysicsCpuMs": null,
+          "actorBeforeAfterStepCpuMs": null,
+          "reactCommitCpuMs": null,
+          "gpuMs": null
+        },
+        "meanings": {
+          "clock": "All timestamps and CPU wall spans use performance.now; rawDeltaMs is the unchanged R3F callback delta.",
+          "entry": "DEV priority -1000 useFrame entry, before default-priority physics and scene callbacks; not browser RAF entry.",
+          "baseline": "Trigger-time state and counters from the previous render; no pre-trigger CPU frame was sampled.",
+          "worldStep": "Actual world.step calls (fixed simulation ticks, not internal CCD/solver iterations), including Rapier and hooks invoked inside it; excludes React-Rapier before/after-step callbacks, interpolation and event processing outside world.step.",
+          "render": "Sum of outermost renderer.render wall spans, inclusive of shadow rendering, JS submission and possible driver stalls; not GPU execution time.",
+          "shadow": "Sum of outermost shadowMap.render spans; normally nested inside rendererCpuMs, so do not add them together.",
+          "growth": "Net program count and at most 3 largest draw spans with count growth per frame; a draw span is not shader-compile-only CPU. Names are truncated to 120 characters.",
+          "overhead": "This explicit five-frame probe times draw calls and perturbs timing. No per-draw log, GPU wait or continuous sampling."
+        },
+        "restorationConflicts": [],
+        "unattributedWorldStepCalls": 0,
+        "frames": [
+          {
+            "index": 1,
+            "entryAtMs": 167404.90000000596,
+            "endAtMs": 167408.09999999404,
+            "rawDeltaMs": 0,
+            "state": {
+              "paused": false,
+              "poolInspect": false,
+              "shot": null,
+              "hidden": false
+            },
+            "lastRenderFrameAtEntry": 4337,
+            "lastRenderFrameAtEnd": 4338,
+            "worldStepCalls": 0,
+            "worldStepCpuMs": 0,
+            "worldStepThrew": false,
+            "firstWorldStepAtMs": null,
+            "lastWorldStepEndAtMs": null,
+            "rendererCalls": 1,
+            "rendererCpuMs": 2.4000000059604645,
+            "shadowCalls": 1,
+            "shadowCpuMs": 0.7999999821186066,
+            "firstRenderAtMs": 167405.69999998808,
+            "lastRenderEndAtMs": 167408.09999999404,
+            "entryToFirstRenderMs": 0.7999999821186066,
+            "programsAtEntry": 148,
+            "programsAtEnd": 148,
+            "programNetGrowth": 0,
+            "drawGrowthEvents": 0,
+            "drawProgramsAdded": 0,
+            "largestGrowthDraws": [],
+            "completion": "rendered"
+          },
+          {
+            "index": 2,
+            "entryAtMs": 167415.30000001192,
+            "endAtMs": 167419.90000000596,
+            "rawDeltaMs": 10.400000005960464,
+            "state": {
+              "paused": false,
+              "poolInspect": false,
+              "shot": null,
+              "hidden": false
+            },
+            "lastRenderFrameAtEntry": 4338,
+            "lastRenderFrameAtEnd": 4339,
+            "worldStepCalls": 1,
+            "worldStepCpuMs": 0.30000001192092896,
+            "worldStepThrew": false,
+            "firstWorldStepAtMs": 167416.19999998808,
+            "lastWorldStepEndAtMs": 167416.5,
+            "rendererCalls": 1,
+            "rendererCpuMs": 2.7000000178813934,
+            "shadowCalls": 1,
+            "shadowCpuMs": 0.9000000059604645,
+            "firstRenderAtMs": 167417.19999998808,
+            "lastRenderEndAtMs": 167419.90000000596,
+            "entryToFirstRenderMs": 1.899999976158142,
+            "programsAtEntry": 148,
+            "programsAtEnd": 148,
+            "programNetGrowth": 0,
+            "drawGrowthEvents": 0,
+            "drawProgramsAdded": 0,
+            "largestGrowthDraws": [],
+            "completion": "rendered"
+          },
+          {
+            "index": 3,
+            "entryAtMs": 167421.90000000596,
+            "endAtMs": 167425.5,
+            "rawDeltaMs": 6.5999999940395355,
+            "state": {
+              "paused": false,
+              "poolInspect": false,
+              "shot": null,
+              "hidden": false
+            },
+            "lastRenderFrameAtEntry": 4339,
+            "lastRenderFrameAtEnd": 4340,
+            "worldStepCalls": 0,
+            "worldStepCpuMs": 0,
+            "worldStepThrew": false,
+            "firstWorldStepAtMs": null,
+            "lastWorldStepEndAtMs": null,
+            "rendererCalls": 1,
+            "rendererCpuMs": 2.4000000059604645,
+            "shadowCalls": 1,
+            "shadowCpuMs": 0.7999999821186066,
+            "firstRenderAtMs": 167423.09999999404,
+            "lastRenderEndAtMs": 167425.5,
+            "entryToFirstRenderMs": 1.199999988079071,
+            "programsAtEntry": 148,
+            "programsAtEnd": 148,
+            "programNetGrowth": 0,
+            "drawGrowthEvents": 0,
+            "drawProgramsAdded": 0,
+            "largestGrowthDraws": [],
+            "completion": "rendered"
+          },
+          {
+            "index": 4,
+            "entryAtMs": 167438.59999999404,
+            "endAtMs": 167443.5,
+            "rawDeltaMs": 16.69999998807907,
+            "state": {
+              "paused": false,
+              "poolInspect": false,
+              "shot": null,
+              "hidden": false
+            },
+            "lastRenderFrameAtEntry": 4340,
+            "lastRenderFrameAtEnd": 4341,
+            "worldStepCalls": 1,
+            "worldStepCpuMs": 0.30000001192092896,
+            "worldStepThrew": false,
+            "firstWorldStepAtMs": 167439.19999998808,
+            "lastWorldStepEndAtMs": 167439.5,
+            "rendererCalls": 1,
+            "rendererCpuMs": 2.4000000059604645,
+            "shadowCalls": 1,
+            "shadowCpuMs": 0.7999999821186066,
+            "firstRenderAtMs": 167441.09999999404,
+            "lastRenderEndAtMs": 167443.5,
+            "entryToFirstRenderMs": 2.5,
+            "programsAtEntry": 148,
+            "programsAtEnd": 148,
+            "programNetGrowth": 0,
+            "drawGrowthEvents": 0,
+            "drawProgramsAdded": 0,
+            "largestGrowthDraws": [],
+            "completion": "rendered"
+          },
+          {
+            "index": 5,
+            "entryAtMs": 167455.30000001192,
+            "endAtMs": 167460.5,
+            "rawDeltaMs": 16.700000017881393,
+            "state": {
+              "paused": false,
+              "poolInspect": false,
+              "shot": null,
+              "hidden": false
+            },
+            "lastRenderFrameAtEntry": 4341,
+            "lastRenderFrameAtEnd": 4342,
+            "worldStepCalls": 1,
+            "worldStepCpuMs": 0.4000000059604645,
+            "worldStepThrew": false,
+            "firstWorldStepAtMs": 167455.90000000596,
+            "lastWorldStepEndAtMs": 167456.30000001192,
+            "rendererCalls": 1,
+            "rendererCpuMs": 3.199999988079071,
+            "shadowCalls": 1,
+            "shadowCpuMs": 0.699999988079071,
+            "firstRenderAtMs": 167457.30000001192,
+            "lastRenderEndAtMs": 167460.5,
+            "entryToFirstRenderMs": 2,
+            "programsAtEntry": 148,
+            "programsAtEnd": 148,
+            "programNetGrowth": 0,
+            "drawGrowthEvents": 0,
+            "drawProgramsAdded": 0,
+            "largestGrowthDraws": [],
+            "completion": "rendered"
+          }
+        ]
+      },
+      "vehicles": {
+        "offroad": {
+          "level": 1,
+          "triangles": 15242,
+          "doors": [
+            {
+              "side": -1,
+              "quaternion": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "vertices": 540
+            },
+            {
+              "side": 1,
+              "quaternion": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "vertices": 540
+            }
+          ],
+          "material": "f0fe1528-662f-41fc-8ff3-0d4c62187905",
+          "bodyNear": "2d0eefad-daab-4d27-ba3b-d552f4c76b7d",
+          "bodyFar": "50442069-040c-4fbe-ae5d-05ac0e410feb",
+          "wheel": "64b9b335-d2f0-411d-87d3-f2b4a471baf0"
+        },
+        "coupe": {
+          "level": 1,
+          "triangles": 14816,
+          "doors": [
+            {
+              "side": -1,
+              "quaternion": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "vertices": 636
+            },
+            {
+              "side": 1,
+              "quaternion": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "vertices": 636
+            }
+          ],
+          "material": "036bc119-001e-4c33-8bc0-f997f28e9d63",
+          "bodyNear": "6909e8e3-8e12-4c63-97b2-c5535283c839",
+          "bodyFar": "4b63c555-fa73-475f-baa2-51e3de5c6685",
+          "wheel": "c046a052-3ddb-4885-bb95-21d212422aee"
+        },
+        "van": {
+          "level": 1,
+          "triangles": 14273,
+          "doors": [
+            {
+              "side": -1,
+              "quaternion": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "vertices": 540
+            },
+            {
+              "side": 1,
+              "quaternion": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "vertices": 540
+            }
+          ],
+          "material": "298815a5-01cf-402f-b36b-6595f704a1e5",
+          "bodyNear": "98393f01-dcce-43a8-bc36-097bbb9e5764",
+          "bodyFar": "10e8ba13-ad1a-45d7-844c-9dcc1dd2917e",
+          "wheel": "0d254d61-05d3-4a03-8b57-97190e83bb98"
+        }
+      }
+    },
+    {
+      "probe": {
+        "status": "complete",
+        "reason": "rendered",
+        "limit": 5,
+        "triggerAtMs": 169912.69999998808,
+        "clockResetAtMs": 170047.40000000596,
+        "clockResets": 2,
+        "endAtMs": 170094.69999998808,
+        "baseline": {
+          "atMs": 169912.69999998808,
+          "state": {
+            "paused": true,
+            "poolInspect": false,
+            "shot": null,
+            "hidden": false
+          },
+          "lastRenderFrame": 4419,
+          "programs": 148
+        },
+        "coverage": {
+          "worldStep": true,
+          "renderer": true,
+          "shadow": true,
+          "programGrowthDraws": true
+        },
+        "unavailable": {
+          "fullPhysicsCpuMs": null,
+          "actorBeforeAfterStepCpuMs": null,
+          "reactCommitCpuMs": null,
+          "gpuMs": null
+        },
+        "meanings": {
+          "clock": "All timestamps and CPU wall spans use performance.now; rawDeltaMs is the unchanged R3F callback delta.",
+          "entry": "DEV priority -1000 useFrame entry, before default-priority physics and scene callbacks; not browser RAF entry.",
+          "baseline": "Trigger-time state and counters from the previous render; no pre-trigger CPU frame was sampled.",
+          "worldStep": "Actual world.step calls (fixed simulation ticks, not internal CCD/solver iterations), including Rapier and hooks invoked inside it; excludes React-Rapier before/after-step callbacks, interpolation and event processing outside world.step.",
+          "render": "Sum of outermost renderer.render wall spans, inclusive of shadow rendering, JS submission and possible driver stalls; not GPU execution time.",
+          "shadow": "Sum of outermost shadowMap.render spans; normally nested inside rendererCpuMs, so do not add them together.",
+          "growth": "Net program count and at most 3 largest draw spans with count growth per frame; a draw span is not shader-compile-only CPU. Names are truncated to 120 characters.",
+          "overhead": "This explicit five-frame probe times draw calls and perturbs timing. No per-draw log, GPU wait or continuous sampling."
+        },
+        "restorationConflicts": [],
+        "unattributedWorldStepCalls": 0,
+        "frames": [
+          {
+            "index": 1,
+            "entryAtMs": 170047.40000000596,
+            "endAtMs": 170050.90000000596,
+            "rawDeltaMs": 0,
+            "state": {
+              "paused": false,
+              "poolInspect": false,
+              "shot": null,
+              "hidden": false
+            },
+            "lastRenderFrameAtEntry": 4419,
+            "lastRenderFrameAtEnd": 4420,
+            "worldStepCalls": 0,
+            "worldStepCpuMs": 0,
+            "worldStepThrew": false,
+            "firstWorldStepAtMs": null,
+            "lastWorldStepEndAtMs": null,
+            "rendererCalls": 1,
+            "rendererCpuMs": 2.5,
+            "shadowCalls": 1,
+            "shadowCpuMs": 0.9000000059604645,
+            "firstRenderAtMs": 170048.40000000596,
+            "lastRenderEndAtMs": 170050.90000000596,
+            "entryToFirstRenderMs": 1,
+            "programsAtEntry": 148,
+            "programsAtEnd": 148,
+            "programNetGrowth": 0,
+            "drawGrowthEvents": 0,
+            "drawProgramsAdded": 0,
+            "largestGrowthDraws": [],
+            "completion": "rendered"
+          },
+          {
+            "index": 2,
+            "entryAtMs": 170057.5,
+            "endAtMs": 170061.90000000596,
+            "rawDeltaMs": 10.099999994039536,
+            "state": {
+              "paused": false,
+              "poolInspect": false,
+              "shot": null,
+              "hidden": false
+            },
+            "lastRenderFrameAtEntry": 4420,
+            "lastRenderFrameAtEnd": 4421,
+            "worldStepCalls": 1,
+            "worldStepCpuMs": 0.4000000059604645,
+            "worldStepThrew": false,
+            "firstWorldStepAtMs": 170058.19999998808,
+            "lastWorldStepEndAtMs": 170058.59999999404,
+            "rendererCalls": 1,
+            "rendererCpuMs": 2.5,
+            "shadowCalls": 1,
+            "shadowCpuMs": 0.800000011920929,
+            "firstRenderAtMs": 170059.40000000596,
+            "lastRenderEndAtMs": 170061.90000000596,
+            "entryToFirstRenderMs": 1.9000000059604645,
+            "programsAtEntry": 148,
+            "programsAtEnd": 148,
+            "programNetGrowth": 0,
+            "drawGrowthEvents": 0,
+            "drawProgramsAdded": 0,
+            "largestGrowthDraws": [],
+            "completion": "rendered"
+          },
+          {
+            "index": 3,
+            "entryAtMs": 170062.5,
+            "endAtMs": 170065.69999998808,
+            "rawDeltaMs": 5,
+            "state": {
+              "paused": false,
+              "poolInspect": false,
+              "shot": null,
+              "hidden": false
+            },
+            "lastRenderFrameAtEntry": 4421,
+            "lastRenderFrameAtEnd": 4422,
+            "worldStepCalls": 0,
+            "worldStepCpuMs": 0,
+            "worldStepThrew": false,
+            "firstWorldStepAtMs": null,
+            "lastWorldStepEndAtMs": null,
+            "rendererCalls": 1,
+            "rendererCpuMs": 2.399999976158142,
+            "shadowCalls": 1,
+            "shadowCpuMs": 0.9000000059604645,
+            "firstRenderAtMs": 170063.30000001192,
+            "lastRenderEndAtMs": 170065.69999998808,
+            "entryToFirstRenderMs": 0.800000011920929,
+            "programsAtEntry": 148,
+            "programsAtEnd": 148,
+            "programNetGrowth": 0,
+            "drawGrowthEvents": 0,
+            "drawProgramsAdded": 0,
+            "largestGrowthDraws": [],
+            "completion": "rendered"
+          },
+          {
+            "index": 4,
+            "entryAtMs": 170074,
+            "endAtMs": 170078.40000000596,
+            "rawDeltaMs": 11.5,
+            "state": {
+              "paused": false,
+              "poolInspect": false,
+              "shot": null,
+              "hidden": false
+            },
+            "lastRenderFrameAtEntry": 4422,
+            "lastRenderFrameAtEnd": 4423,
+            "worldStepCalls": 1,
+            "worldStepCpuMs": 0.29999998211860657,
+            "worldStepThrew": false,
+            "firstWorldStepAtMs": 170074.40000000596,
+            "lastWorldStepEndAtMs": 170074.69999998808,
+            "rendererCalls": 1,
+            "rendererCpuMs": 3,
+            "shadowCalls": 1,
+            "shadowCpuMs": 1,
+            "firstRenderAtMs": 170075.40000000596,
+            "lastRenderEndAtMs": 170078.40000000596,
+            "entryToFirstRenderMs": 1.4000000059604645,
+            "programsAtEntry": 148,
+            "programsAtEnd": 148,
+            "programNetGrowth": 0,
+            "drawGrowthEvents": 0,
+            "drawProgramsAdded": 0,
+            "largestGrowthDraws": [],
+            "completion": "rendered"
+          },
+          {
+            "index": 5,
+            "entryAtMs": 170088.40000000596,
+            "endAtMs": 170094.69999998808,
+            "rawDeltaMs": 14.400000005960464,
+            "state": {
+              "paused": false,
+              "poolInspect": false,
+              "shot": null,
+              "hidden": false
+            },
+            "lastRenderFrameAtEntry": 4423,
+            "lastRenderFrameAtEnd": 4424,
+            "worldStepCalls": 1,
+            "worldStepCpuMs": 0.800000011920929,
+            "worldStepThrew": false,
+            "firstWorldStepAtMs": 170089.09999999404,
+            "lastWorldStepEndAtMs": 170089.90000000596,
+            "rendererCalls": 1,
+            "rendererCpuMs": 2.0999999940395355,
+            "shadowCalls": 1,
+            "shadowCpuMs": 0.7999999821186066,
+            "firstRenderAtMs": 170092.59999999404,
+            "lastRenderEndAtMs": 170094.69999998808,
+            "entryToFirstRenderMs": 4.199999988079071,
+            "programsAtEntry": 148,
+            "programsAtEnd": 148,
+            "programNetGrowth": 0,
+            "drawGrowthEvents": 0,
+            "drawProgramsAdded": 0,
+            "largestGrowthDraws": [],
+            "completion": "rendered"
+          }
+        ]
+      },
+      "vehicles": {
+        "offroad": {
+          "level": 1,
+          "triangles": 15242,
+          "doors": [
+            {
+              "side": -1,
+              "quaternion": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "vertices": 540
+            },
+            {
+              "side": 1,
+              "quaternion": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "vertices": 540
+            }
+          ],
+          "material": "f0fe1528-662f-41fc-8ff3-0d4c62187905",
+          "bodyNear": "2d0eefad-daab-4d27-ba3b-d552f4c76b7d",
+          "bodyFar": "50442069-040c-4fbe-ae5d-05ac0e410feb",
+          "wheel": "64b9b335-d2f0-411d-87d3-f2b4a471baf0"
+        },
+        "coupe": {
+          "level": 1,
+          "triangles": 14816,
+          "doors": [
+            {
+              "side": -1,
+              "quaternion": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "vertices": 636
+            },
+            {
+              "side": 1,
+              "quaternion": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "vertices": 636
+            }
+          ],
+          "material": "036bc119-001e-4c33-8bc0-f997f28e9d63",
+          "bodyNear": "6909e8e3-8e12-4c63-97b2-c5535283c839",
+          "bodyFar": "4b63c555-fa73-475f-baa2-51e3de5c6685",
+          "wheel": "c046a052-3ddb-4885-bb95-21d212422aee"
+        },
+        "van": {
+          "level": 1,
+          "triangles": 14273,
+          "doors": [
+            {
+              "side": -1,
+              "quaternion": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "vertices": 540
+            },
+            {
+              "side": 1,
+              "quaternion": [
+                0,
+                0,
+                0,
+                1
+              ],
+              "vertices": 540
+            }
+          ],
+          "material": "298815a5-01cf-402f-b36b-6595f704a1e5",
+          "bodyNear": "98393f01-dcce-43a8-bc36-097bbb9e5764",
+          "bodyFar": "10e8ba13-ad1a-45d7-844c-9dcc1dd2917e",
+          "wheel": "0d254d61-05d3-4a03-8b57-97190e83bb98"
+        }
+      }
+    }
+  ]
+}

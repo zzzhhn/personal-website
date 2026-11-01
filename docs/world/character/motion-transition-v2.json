@@ -1,0 +1,589 @@
+{
+  "base": "b052396",
+  "status": "minimal-turn-exit-fix-A3-still-fails",
+  "evidenceRoot": "/Users/bobby/Desktop/3D-personal-world/evidence/motion-transition-v2",
+  "runs": {
+    "aligned-baseline": {
+      "retained": false,
+      "errors": [],
+      "metrics": {
+        "frames": 133,
+        "slipByAnim": {
+          "Idle": {
+            "n": 54,
+            "max_mm": 0
+          },
+          "Idle>Run": {
+            "n": 18,
+            "max_mm": 263
+          }
+        },
+        "turnSlipMax_mm": 0,
+        "slipMax_mm": 263,
+        "worstSlips": [
+          {
+            "t0": 5.5907,
+            "t1": 6.424,
+            "mm": 263,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.5907,
+            "t1": 6.424,
+            "mm": 263,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.5907,
+            "t1": 6.424,
+            "mm": 263,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.5907,
+            "t1": 6.4074,
+            "mm": 195.4,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.5907,
+            "t1": 6.4074,
+            "mm": 195.4,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.5907,
+            "t1": 6.4074,
+            "mm": 195.4,
+            "anims": "Idle>Run"
+          }
+        ],
+        "poseJumpSteadyP99_mm": 57.3,
+        "poseJumpSwitchMax_mm": 35.9,
+        "stanceSamples": 114,
+        "stanceMinH_mm": 1.5,
+        "stanceMaxH_mm": 23.2,
+        "switches": [
+          {
+            "t": 6.3903,
+            "from": "Idle",
+            "to": "Run",
+            "maxJump_mm": 35.9,
+            "bone": "foot.L"
+          }
+        ]
+      },
+      "reportSha256": "09c9d759d431194a5280e9f5980ddab9de0a1446806711b67b96a9e422bb160b",
+      "assetSha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0"
+    },
+    "aligned-source-release": {
+      "retained": false,
+      "errors": [],
+      "metrics": {
+        "frames": 133,
+        "slipByAnim": {
+          "Idle": {
+            "n": 66,
+            "max_mm": 0
+          },
+          "Idle>Run": {
+            "n": 6,
+            "max_mm": 68.9
+          }
+        },
+        "turnSlipMax_mm": 0,
+        "slipMax_mm": 68.9,
+        "worstSlips": [
+          {
+            "t0": 5.5813,
+            "t1": 6.431,
+            "mm": 68.9,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.5813,
+            "t1": 6.431,
+            "mm": 68.9,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.5813,
+            "t1": 6.431,
+            "mm": 68.9,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.5813,
+            "t1": 6.3805,
+            "mm": 47.6,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.5813,
+            "t1": 6.3805,
+            "mm": 47.6,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.5813,
+            "t1": 6.3805,
+            "mm": 47.6,
+            "anims": "Idle>Run"
+          }
+        ],
+        "poseJumpSteadyP99_mm": 56,
+        "poseJumpSwitchMax_mm": 266.8,
+        "stanceSamples": 114,
+        "stanceMinH_mm": 1.5,
+        "stanceMaxH_mm": 20.7,
+        "switches": [
+          {
+            "t": 6.3805,
+            "from": "Idle",
+            "to": "Run",
+            "maxJump_mm": 266.8,
+            "bone": "foot.L"
+          }
+        ]
+      },
+      "reportSha256": "654055d6a395f7a8d6a3eedb0c95b38834f0c0fbbc6caf4c8ace528133192395",
+      "assetSha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0"
+    },
+    "aligned-predict": {
+      "retained": false,
+      "errors": [],
+      "metrics": {
+        "frames": 133,
+        "slipByAnim": {
+          "Idle": {
+            "n": 57,
+            "max_mm": 0
+          },
+          "Idle>Run": {
+            "n": 15,
+            "max_mm": 134.1
+          },
+          "Run": {
+            "n": 3,
+            "max_mm": 4.6
+          }
+        },
+        "turnSlipMax_mm": 0,
+        "slipMax_mm": 134.1,
+        "worstSlips": [
+          {
+            "t0": 5.6433,
+            "t1": 6.4601,
+            "mm": 134.1,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.6433,
+            "t1": 6.4601,
+            "mm": 134.1,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.6433,
+            "t1": 6.4601,
+            "mm": 134.1,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.6433,
+            "t1": 6.4601,
+            "mm": 133.8,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.6433,
+            "t1": 6.4601,
+            "mm": 133.8,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.6433,
+            "t1": 6.4601,
+            "mm": 133.8,
+            "anims": "Idle>Run"
+          }
+        ],
+        "poseJumpSteadyP99_mm": 41.7,
+        "poseJumpSwitchMax_mm": 39,
+        "stanceSamples": 115,
+        "stanceMinH_mm": 1.5,
+        "stanceMaxH_mm": 30.7,
+        "switches": [
+          {
+            "t": 6.445,
+            "from": "Idle",
+            "to": "Run",
+            "maxJump_mm": 39,
+            "bone": "foot.L"
+          }
+        ]
+      },
+      "reportSha256": "c54212c2e375070923c461f44c3ce0f127cd5cb022be8193e1926ec7eb157d40",
+      "assetSha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0"
+    },
+    "aligned-both-support": {
+      "retained": false,
+      "errors": [],
+      "metrics": {
+        "frames": 132,
+        "slipByAnim": {
+          "Idle": {
+            "n": 54,
+            "max_mm": 0
+          },
+          "Idle>Run": {
+            "n": 18,
+            "max_mm": 188.4
+          },
+          "Run": {
+            "n": 3,
+            "max_mm": 6.7
+          }
+        },
+        "turnSlipMax_mm": 0,
+        "slipMax_mm": 188.4,
+        "worstSlips": [
+          {
+            "t0": 5.7452,
+            "t1": 6.5775,
+            "mm": 188.4,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.7452,
+            "t1": 6.5775,
+            "mm": 188.4,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.7452,
+            "t1": 6.5775,
+            "mm": 188.4,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.7452,
+            "t1": 6.5618,
+            "mm": 126,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.7452,
+            "t1": 6.5618,
+            "mm": 126,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.7452,
+            "t1": 6.5618,
+            "mm": 126,
+            "anims": "Idle>Run"
+          }
+        ],
+        "poseJumpSteadyP99_mm": 66.3,
+        "poseJumpSwitchMax_mm": 39.5,
+        "stanceSamples": 114,
+        "stanceMinH_mm": 1.5,
+        "stanceMaxH_mm": 20.7,
+        "switches": [
+          {
+            "t": 6.5448,
+            "from": "Idle",
+            "to": "Run",
+            "maxJump_mm": 39.5,
+            "bone": "foot.L"
+          }
+        ]
+      },
+      "reportSha256": "228d2b81b3d896c12b5c80ed24b94658c6ec33624b5df23509c2caaa57ccac8e",
+      "assetSha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0"
+    },
+    "turn-baseline": {
+      "retained": false,
+      "errors": [],
+      "metrics": {
+        "frames": 128,
+        "slipByAnim": {
+          "Idle": {
+            "n": 36,
+            "max_mm": 0
+          },
+          "Idle>TurnL>Run": {
+            "n": 36,
+            "max_mm": 333.1
+          },
+          "Run": {
+            "n": 10,
+            "max_mm": 102.4
+          }
+        },
+        "turnSlipMax_mm": 0,
+        "slipMax_mm": 333.1,
+        "worstSlips": [
+          {
+            "t0": 1.972,
+            "t1": 2.7748,
+            "mm": 333.1,
+            "anims": "Idle>TurnL>Run"
+          },
+          {
+            "t0": 1.972,
+            "t1": 2.7748,
+            "mm": 333.1,
+            "anims": "Idle>TurnL>Run"
+          },
+          {
+            "t0": 1.972,
+            "t1": 2.7748,
+            "mm": 333.1,
+            "anims": "Idle>TurnL>Run"
+          },
+          {
+            "t0": 1.972,
+            "t1": 2.7748,
+            "mm": 323.9,
+            "anims": "Idle>TurnL>Run"
+          },
+          {
+            "t0": 1.972,
+            "t1": 2.7748,
+            "mm": 323.9,
+            "anims": "Idle>TurnL>Run"
+          },
+          {
+            "t0": 1.972,
+            "t1": 2.7748,
+            "mm": 323.9,
+            "anims": "Idle>TurnL>Run"
+          }
+        ],
+        "poseJumpSteadyP99_mm": 54.8,
+        "poseJumpSwitchMax_mm": 27.6,
+        "stanceSamples": 107,
+        "stanceMinH_mm": 1.5,
+        "stanceMaxH_mm": 29.1,
+        "switches": [
+          {
+            "t": 2.6578,
+            "from": "Idle",
+            "to": "TurnL",
+            "maxJump_mm": 14.5,
+            "bone": "foot.L"
+          },
+          {
+            "t": 2.6755,
+            "from": "TurnL",
+            "to": "Run",
+            "maxJump_mm": 27.6,
+            "bone": "foot.L"
+          }
+        ]
+      },
+      "reportSha256": "91e50f9d44db2809c216e48ee6ad7a33475195273dffb70c944c1c474b31d2a1",
+      "assetSha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0"
+    },
+    "turn-final": {
+      "retained": true,
+      "errors": [],
+      "metrics": {
+        "frames": 132,
+        "slipByAnim": {
+          "Idle": {
+            "n": 36,
+            "max_mm": 0
+          },
+          "Idle>TurnL": {
+            "n": 27,
+            "max_mm": 11.7
+          },
+          "Idle>TurnL>Run": {
+            "n": 9,
+            "max_mm": 237.9
+          }
+        },
+        "turnSlipMax_mm": 0,
+        "slipMax_mm": 237.9,
+        "worstSlips": [
+          {
+            "t0": 1.9348,
+            "t1": 2.8181,
+            "mm": 237.9,
+            "anims": "Idle>TurnL>Run"
+          },
+          {
+            "t0": 1.9348,
+            "t1": 2.8181,
+            "mm": 237.9,
+            "anims": "Idle>TurnL>Run"
+          },
+          {
+            "t0": 1.9348,
+            "t1": 2.8181,
+            "mm": 237.9,
+            "anims": "Idle>TurnL>Run"
+          },
+          {
+            "t0": 1.9348,
+            "t1": 2.7847,
+            "mm": 201.9,
+            "anims": "Idle>TurnL>Run"
+          },
+          {
+            "t0": 1.9348,
+            "t1": 2.7847,
+            "mm": 201.9,
+            "anims": "Idle>TurnL>Run"
+          },
+          {
+            "t0": 1.9348,
+            "t1": 2.7847,
+            "mm": 201.9,
+            "anims": "Idle>TurnL>Run"
+          }
+        ],
+        "poseJumpSteadyP99_mm": 41.8,
+        "poseJumpSwitchMax_mm": 39.1,
+        "stanceSamples": 115,
+        "stanceMinH_mm": 1.5,
+        "stanceMaxH_mm": 14.8,
+        "switches": [
+          {
+            "t": 2.7491,
+            "from": "Idle",
+            "to": "TurnL",
+            "maxJump_mm": 28.8,
+            "bone": "foot.R"
+          },
+          {
+            "t": 2.7677,
+            "from": "TurnL",
+            "to": "Run",
+            "maxJump_mm": 39.1,
+            "bone": "foot.R"
+          }
+        ]
+      },
+      "reportSha256": "f3036633d65c6c26990cb3318cd305aa1074dba591578653d0f450dbc7a9d58b",
+      "assetSha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0",
+      "a6": {
+        "passed": true,
+        "sameShellPassed": true,
+        "crossShellPassed": true,
+        "samples": 16,
+        "reportSha256": "7d291d1f3b5c38a0195f852f06b157d431ae6873ef77647cd8dda84a3a7c0bd9",
+        "scope": "all captured frames from pre-Run frame through Run+250ms; every=1; complete relations"
+      }
+    },
+    "aligned-final": {
+      "retained": true,
+      "errors": [],
+      "metrics": {
+        "frames": 133,
+        "slipByAnim": {
+          "Idle": {
+            "n": 54,
+            "max_mm": 0
+          },
+          "Idle>Run": {
+            "n": 18,
+            "max_mm": 181.9
+          },
+          "Run": {
+            "n": 3,
+            "max_mm": 6.4
+          }
+        },
+        "turnSlipMax_mm": 0,
+        "slipMax_mm": 181.9,
+        "worstSlips": [
+          {
+            "t0": 5.6367,
+            "t1": 6.4869,
+            "mm": 181.9,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.6367,
+            "t1": 6.4869,
+            "mm": 181.9,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.6367,
+            "t1": 6.4869,
+            "mm": 181.9,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.6367,
+            "t1": 6.4703,
+            "mm": 118.1,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.6367,
+            "t1": 6.4703,
+            "mm": 118.1,
+            "anims": "Idle>Run"
+          },
+          {
+            "t0": 5.6367,
+            "t1": 6.4703,
+            "mm": 118.1,
+            "anims": "Idle>Run"
+          }
+        ],
+        "poseJumpSteadyP99_mm": 51.1,
+        "poseJumpSwitchMax_mm": 38.2,
+        "stanceSamples": 116,
+        "stanceMinH_mm": 1.5,
+        "stanceMaxH_mm": 35.9,
+        "switches": [
+          {
+            "t": 6.4537,
+            "from": "Idle",
+            "to": "Run",
+            "maxJump_mm": 38.2,
+            "bone": "foot.L"
+          }
+        ]
+      },
+      "reportSha256": "8ca106370929d459bdbd77dd9fbce01a9befaa2b7b337acb2d97f4732af02e15",
+      "assetSha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0",
+      "a6": {
+        "passed": true,
+        "sameShellPassed": true,
+        "crossShellPassed": true,
+        "samples": 17,
+        "reportSha256": "110ff7861a044ecad8efccbe84a1b809ac4350ff628ba6c381e8cbb59f6a91c4",
+        "scope": "all captured frames from pre-Run frame through Run+250ms; every=1; complete relations"
+      }
+    }
+  },
+  "validation": {
+    "targetedTypeScript": [],
+    "nodeCheck": true,
+    "diffCheck": true
+  },
+  "sourceReadOnly": [
+    {
+      "take": "35_01",
+      "frames": 358,
+      "firstHalfSecondMedian_mps": 1.2063513482091168,
+      "firstTwoSecondsMedian_mps": 1.257855051663502,
+      "firstHalfSecondMax_mps": 2.530294982008524
+    },
+    {
+      "take": "09_01",
+      "frames": 148,
+      "firstHalfSecondMedian_mps": 3.627779222171611,
+      "firstTwoSecondsMedian_mps": 3.625757306203202,
+      "firstHalfSecondMax_mps": 3.961214956350946
+    }
+  ]
+}

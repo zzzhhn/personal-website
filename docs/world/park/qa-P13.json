@@ -1,0 +1,85 @@
+{
+ "asset": "P13",
+ "evaluatedTriangles": 1236,
+ "bounds": [
+  [
+   -0.78,
+   -0.87,
+   0.0
+  ],
+  [
+   0.78,
+   0.34,
+   2.56
+  ]
+ ],
+ "problems": [],
+ "parts": [
+  [
+   "body",
+   984
+  ],
+  [
+   "display_clip0",
+   12
+  ],
+  [
+   "display_clip1",
+   12
+  ],
+  [
+   "bar_0",
+   12
+  ],
+  [
+   "bar_1",
+   12
+  ],
+  [
+   "button",
+   180
+  ],
+  [
+   "selector",
+   24
+  ]
+ ],
+ "glbReadbackTriangles": 1236,
+ "readbackBounds": [
+  [
+   -0.78,
+   -0.87,
+   0.0
+  ],
+  [
+   0.78,
+   0.34,
+   2.56
+  ]
+ ],
+ "readbackProblems": [],
+ "nodes": [
+  "P13",
+  "bar_0",
+  "bar_1",
+  "body",
+  "button",
+  "display_clip0",
+  "display_clip1",
+  "selector"
+ ],
+ "materials": [
+  "park_accent_orange",
+  "park_accent_slate",
+  "park_brass_matte",
+  "park_glass_frosted",
+  "park_iron_matte",
+  "park_roof_slate",
+  "park_screen",
+  "park_slate_paint",
+  "park_wood_dark",
+  "park_wood_light",
+  "park_wood_mid"
+ ],
+ "glbBytes": 28092
+}

@@ -1,0 +1,2374 @@
+{
+  "capturedAt": "2026-10-21T08:50:08.235Z",
+  "base": "http://127.0.0.1:4321",
+  "sourceHashes": {
+    "src/components/world/WorldCamp.tsx": "eb0b5019db3d5873ad8b36f7f8aeccd2b657e99e8d6b7934502aa1c4111abfa9",
+    "src/components/world/WorldEnvironment.tsx": "87f1e12f3c311388d4e98803e05f532a019cb3e3e4c4d597d5dc3675d259d0d2",
+    "src/components/world/WorldActors.tsx": "cc4bfae9d77e99bf86582feee39583c8ab75776d0864595bdfb8b4fa4cdf8130",
+    "src/components/world/layout.ts": "e005ab3cee287a6321dcaa6b6363b6f1fe1b230a9a27f58b0d3e466cac9e781a"
+  },
+  "viewport": {
+    "width": 1440,
+    "height": 900
+  },
+  "report": [
+    {
+      "name": "spawn-dusk",
+      "stats": {
+        "calls": 179,
+        "triangles": 36683,
+        "geometries": 110,
+        "textures": 3,
+        "camera": [
+          -36.27243501352378,
+          15.814800446351015,
+          42.63675326937529
+        ]
+      },
+      "state": {
+        "lang": "en",
+        "light": "dusk",
+        "paused": false,
+        "activeVehicle": null,
+        "nearbyVehicle": null,
+        "canRecover": false,
+        "recoverRequest": 0,
+        "speed": 0,
+        "zone": "camp",
+        "position": [
+          -42,
+          5.618858814239502,
+          35
+        ],
+        "ready": true,
+        "zoom": 1,
+        "shot": null
+      },
+      "snapshot": {
+        "player": [
+          -42,
+          5.618858814239502,
+          35
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00619125366211,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              3.018783445440931e-8,
+              -0.06119502708315849,
+              0
+            ],
+            "mass": 1400,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "coupe",
+            "position": [
+              19.799999237060547,
+              2.1359031200408936,
+              12.002385139465332
+            ],
+            "velocity": [
+              8.828932607229945e-8,
+              -0.06118987128138542,
+              -2.2225160378752662e-8
+            ],
+            "mass": 1100,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "van",
+            "position": [
+              45.9923095703125,
+              2.4549784660339355,
+              -45
+            ],
+            "velocity": [
+              1.7995830603467766e-7,
+              -0.061190176755189896,
+              -7.132594891346347e-20
+            ],
+            "mass": 2100,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          }
+        ]
+      },
+      "assets": [
+        "camp-asset-C03-large-tent",
+        "camp-asset-C04-x2",
+        "camp-asset-C05-fire-pit",
+        "camp-asset-C06-x4",
+        "camp-asset-C07-pad1",
+        "camp-asset-C08-pad1",
+        "camp-asset-C09-pad2",
+        "camp-asset-C10-pad3",
+        "camp-asset-G16-x2",
+        "camp-asset-G17-x1",
+        "camp-asset-G18-x1",
+        "camp-asset-G19-x5",
+        "camp-asset-G20-x4",
+        "camp-asset-G21-x2",
+        "camp-asset-G22-x4",
+        "camp-asset-G23-x6"
+      ]
+    },
+    {
+      "name": "spawn-zoom-0",
+      "stats": {
+        "calls": 156,
+        "triangles": 32627,
+        "geometries": 110,
+        "textures": 3,
+        "camera": [
+          -36.903587507392885,
+          14.76287963516342,
+          41.79521665643109
+        ]
+      },
+      "state": {
+        "lang": "en",
+        "light": "dusk",
+        "paused": false,
+        "activeVehicle": null,
+        "nearbyVehicle": null,
+        "canRecover": false,
+        "recoverRequest": 0,
+        "speed": 0,
+        "zone": "camp",
+        "position": [
+          -42,
+          5.618858814239502,
+          35
+        ],
+        "ready": true,
+        "zoom": 0,
+        "shot": null
+      },
+      "snapshot": {
+        "player": [
+          -42,
+          5.618858814239502,
+          35
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00619125366211,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              9.487629570870126e-10,
+              -0.06119523569941521,
+              0
+            ],
+            "mass": 1400,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "coupe",
+            "position": [
+              19.799999237060547,
+              2.1359031200408936,
+              12.002385139465332
+            ],
+            "velocity": [
+              1.4834836292720865e-7,
+              -0.06118983402848244,
+              -2.832784495865326e-8
+            ],
+            "mass": 1100,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "van",
+            "position": [
+              45.9923095703125,
+              2.4549784660339355,
+              -45
+            ],
+            "velocity": [
+              2.1050848175718784e-8,
+              -0.0611904002726078,
+              8.501892390584297e-21
+            ],
+            "mass": 2100,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          }
+        ]
+      },
+      "assets": [
+        "camp-asset-C03-large-tent",
+        "camp-asset-C04-x2",
+        "camp-asset-C05-fire-pit",
+        "camp-asset-C06-x4",
+        "camp-asset-C07-pad1",
+        "camp-asset-C08-pad1",
+        "camp-asset-C09-pad2",
+        "camp-asset-C10-pad3",
+        "camp-asset-G16-x2",
+        "camp-asset-G17-x1",
+        "camp-asset-G18-x1",
+        "camp-asset-G19-x5",
+        "camp-asset-G20-x4",
+        "camp-asset-G21-x2",
+        "camp-asset-G22-x4",
+        "camp-asset-G23-x6"
+      ]
+    },
+    {
+      "name": "spawn-zoom-2",
+      "stats": {
+        "calls": 187,
+        "triangles": 37591,
+        "geometries": 110,
+        "textures": 3,
+        "camera": [
+          -35.647549243335654,
+          16.856276742012643,
+          43.46993434221568
+        ]
+      },
+      "state": {
+        "lang": "en",
+        "light": "dusk",
+        "paused": false,
+        "activeVehicle": null,
+        "nearbyVehicle": null,
+        "canRecover": false,
+        "recoverRequest": 0,
+        "speed": 0,
+        "zone": "camp",
+        "position": [
+          -42,
+          5.618858814239502,
+          35
+        ],
+        "ready": true,
+        "zoom": 2,
+        "shot": null
+      },
+      "snapshot": {
+        "player": [
+          -42,
+          5.618858814239502,
+          35
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00619125366211,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              9.488174690375217e-10,
+              -0.06119523569941521,
+              0
+            ],
+            "mass": 1400,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "coupe",
+            "position": [
+              19.799999237060547,
+              2.1359031200408936,
+              12.002385139465332
+            ],
+            "velocity": [
+              1.4834836292720865e-7,
+              -0.06118983402848244,
+              -2.832784495865326e-8
+            ],
+            "mass": 1100,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "van",
+            "position": [
+              45.9923095703125,
+              2.4549784660339355,
+              -45
+            ],
+            "velocity": [
+              2.093916862122569e-8,
+              -0.0611904002726078,
+              8.349937534912458e-21
+            ],
+            "mass": 2100,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          }
+        ]
+      },
+      "assets": [
+        "camp-asset-C03-large-tent",
+        "camp-asset-C04-x2",
+        "camp-asset-C05-fire-pit",
+        "camp-asset-C06-x4",
+        "camp-asset-C07-pad1",
+        "camp-asset-C08-pad1",
+        "camp-asset-C09-pad2",
+        "camp-asset-C10-pad3",
+        "camp-asset-G16-x2",
+        "camp-asset-G17-x1",
+        "camp-asset-G18-x1",
+        "camp-asset-G19-x5",
+        "camp-asset-G20-x4",
+        "camp-asset-G21-x2",
+        "camp-asset-G22-x4",
+        "camp-asset-G23-x6"
+      ]
+    },
+    {
+      "name": "spawn-night",
+      "stats": {
+        "calls": 179,
+        "triangles": 36683,
+        "geometries": 110,
+        "textures": 3,
+        "camera": [
+          -36.2724348992526,
+          15.814800648818505,
+          42.6367534676632
+        ]
+      },
+      "state": {
+        "lang": "en",
+        "light": "night",
+        "paused": false,
+        "activeVehicle": null,
+        "nearbyVehicle": null,
+        "canRecover": false,
+        "recoverRequest": 0,
+        "speed": 0,
+        "zone": "camp",
+        "position": [
+          -42,
+          5.618858814239502,
+          35
+        ],
+        "ready": true,
+        "zoom": 1,
+        "shot": null
+      },
+      "snapshot": {
+        "player": [
+          -42,
+          5.618858814239502,
+          35
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00619125366211,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              9.488174690375217e-10,
+              -0.06119523569941521,
+              0
+            ],
+            "mass": 1400,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "coupe",
+            "position": [
+              19.799999237060547,
+              2.1359031200408936,
+              12.002385139465332
+            ],
+            "velocity": [
+              -4.700906330867838e-8,
+              -0.0611899234354496,
+              4.870104319820712e-9
+            ],
+            "mass": 1100,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "van",
+            "position": [
+              45.9923095703125,
+              2.4549784660339355,
+              -45
+            ],
+            "velocity": [
+              2.0939149081300457e-8,
+              -0.0611904002726078,
+              8.349914108899017e-21
+            ],
+            "mass": 2100,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          }
+        ]
+      },
+      "assets": [
+        "camp-asset-C03-large-tent",
+        "camp-asset-C04-x2",
+        "camp-asset-C05-fire-pit",
+        "camp-asset-C06-x4",
+        "camp-asset-C07-pad1",
+        "camp-asset-C08-pad1",
+        "camp-asset-C09-pad2",
+        "camp-asset-C10-pad3",
+        "camp-asset-G16-x2",
+        "camp-asset-G17-x1",
+        "camp-asset-G18-x1",
+        "camp-asset-G19-x5",
+        "camp-asset-G20-x4",
+        "camp-asset-G21-x2",
+        "camp-asset-G22-x4",
+        "camp-asset-G23-x6"
+      ]
+    },
+    {
+      "name": "camp",
+      "stats": {
+        "calls": 205,
+        "triangles": 38807,
+        "geometries": 117,
+        "textures": 3,
+        "camera": [
+          -11,
+          33,
+          67
+        ]
+      },
+      "state": {
+        "lang": "en",
+        "light": "dusk",
+        "paused": false,
+        "activeVehicle": null,
+        "nearbyVehicle": null,
+        "canRecover": false,
+        "recoverRequest": 0,
+        "speed": 0,
+        "zone": "camp",
+        "position": [
+          -42,
+          5,
+          30
+        ],
+        "ready": true,
+        "zoom": 1,
+        "shot": "camp"
+      },
+      "snapshot": {
+        "player": [
+          -42,
+          5.849999904632568,
+          35
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": false,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26,
+              6.015999794006348,
+              34
+            ],
+            "velocity": [
+              0,
+              0,
+              0
+            ],
+            "mass": 7.91856050491333,
+            "wheelContacts": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "coupe",
+            "position": [
+              19.799999237060547,
+              2.194000005722046,
+              12
+            ],
+            "velocity": [
+              0,
+              0,
+              0
+            ],
+            "mass": 6.4510321617126465,
+            "wheelContacts": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "van",
+            "position": [
+              46,
+              2.5920000076293945,
+              -45
+            ],
+            "velocity": [
+              0,
+              0,
+              0
+            ],
+            "mass": 14.145120620727539,
+            "wheelContacts": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          }
+        ]
+      },
+      "assets": [
+        "camp-asset-C03-large-tent",
+        "camp-asset-C04-x2",
+        "camp-asset-C05-fire-pit",
+        "camp-asset-C06-x4",
+        "camp-asset-C07-pad1",
+        "camp-asset-C08-pad1",
+        "camp-asset-C09-pad2",
+        "camp-asset-C10-pad3",
+        "camp-asset-G16-x2",
+        "camp-asset-G17-x1",
+        "camp-asset-G18-x1",
+        "camp-asset-G19-x5",
+        "camp-asset-G20-x4",
+        "camp-asset-G21-x2",
+        "camp-asset-G22-x4",
+        "camp-asset-G23-x6"
+      ]
+    },
+    {
+      "name": "camp-night",
+      "stats": {
+        "calls": 204,
+        "triangles": 38159,
+        "geometries": 116,
+        "textures": 3,
+        "camera": [
+          -16,
+          24,
+          62
+        ]
+      },
+      "state": {
+        "lang": "en",
+        "light": "night",
+        "paused": false,
+        "activeVehicle": null,
+        "nearbyVehicle": null,
+        "canRecover": false,
+        "recoverRequest": 0,
+        "speed": 0,
+        "zone": "camp",
+        "position": [
+          -42,
+          5,
+          30
+        ],
+        "ready": true,
+        "zoom": 1,
+        "shot": "camp-night"
+      },
+      "snapshot": {
+        "player": [
+          -42,
+          5.849999904632568,
+          35
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": false,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26,
+              6.015999794006348,
+              34
+            ],
+            "velocity": [
+              0,
+              0,
+              0
+            ],
+            "mass": 7.91856050491333,
+            "wheelContacts": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "coupe",
+            "position": [
+              19.799999237060547,
+              2.194000005722046,
+              12
+            ],
+            "velocity": [
+              0,
+              0,
+              0
+            ],
+            "mass": 6.4510321617126465,
+            "wheelContacts": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "van",
+            "position": [
+              46,
+              2.5920000076293945,
+              -45
+            ],
+            "velocity": [
+              0,
+              0,
+              0
+            ],
+            "mass": 14.145120620727539,
+            "wheelContacts": [
+              false,
+              false,
+              false,
+              false
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          }
+        ]
+      },
+      "assets": [
+        "camp-asset-C03-large-tent",
+        "camp-asset-C04-x2",
+        "camp-asset-C05-fire-pit",
+        "camp-asset-C06-x4",
+        "camp-asset-C07-pad1",
+        "camp-asset-C08-pad1",
+        "camp-asset-C09-pad2",
+        "camp-asset-C10-pad3",
+        "camp-asset-G16-x2",
+        "camp-asset-G17-x1",
+        "camp-asset-G18-x1",
+        "camp-asset-G19-x5",
+        "camp-asset-G20-x4",
+        "camp-asset-G21-x2",
+        "camp-asset-G22-x4",
+        "camp-asset-G23-x6"
+      ]
+    },
+    {
+      "name": "exit-dusk",
+      "stats": {
+        "calls": 163,
+        "triangles": 31919,
+        "geometries": 116,
+        "textures": 3,
+        "camera": [
+          -17.26733214052535,
+          15.8548086227401,
+          42.13634882298011
+        ]
+      },
+      "state": {
+        "lang": "en",
+        "light": "dusk",
+        "paused": false,
+        "activeVehicle": null,
+        "nearbyVehicle": "offroad",
+        "canRecover": false,
+        "recoverRequest": 0,
+        "speed": 0,
+        "zone": "camp",
+        "position": [
+          -23.055641174316406,
+          5.658864974975586,
+          34.37306213378906
+        ],
+        "ready": true,
+        "zoom": 1,
+        "shot": null
+      },
+      "snapshot": {
+        "player": [
+          -23.055641174316406,
+          5.658864974975586,
+          34.37306213378906
+        ],
+        "activeVehicle": null,
+        "canRecover": false,
+        "grounded": true,
+        "vehicles": [
+          {
+            "id": "offroad",
+            "position": [
+              -26.00619125366211,
+              5.896547794342041,
+              34
+            ],
+            "velocity": [
+              2.47581812828912e-8,
+              -0.061195146292448044,
+              0
+            ],
+            "mass": 1400,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "coupe",
+            "position": [
+              19.799999237060547,
+              2.1359031200408936,
+              12.002385139465332
+            ],
+            "velocity": [
+              1.482050038248417e-7,
+              -0.06118987873196602,
+              9.409669710080948e-10
+            ],
+            "mass": 1100,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          },
+          {
+            "id": "van",
+            "position": [
+              45.9923095703125,
+              2.4549784660339355,
+              -45
+            ],
+            "velocity": [
+              2.0939149081300457e-8,
+              -0.0611904002726078,
+              8.349914108899017e-21
+            ],
+            "mass": 2100,
+            "wheelContacts": [
+              true,
+              true,
+              true,
+              true
+            ],
+            "upsideDownSeconds": 0,
+            "waterSeconds": 0
+          }
+        ]
+      },
+      "assets": [
+        "camp-asset-C03-large-tent",
+        "camp-asset-C04-x2",
+        "camp-asset-C05-fire-pit",
+        "camp-asset-C06-x4",
+        "camp-asset-C07-pad1",
+        "camp-asset-C08-pad1",
+        "camp-asset-C09-pad2",
+        "camp-asset-C10-pad3",
+        "camp-asset-G16-x2",
+        "camp-asset-G17-x1",
+        "camp-asset-G18-x1",
+        "camp-asset-G19-x5",
+        "camp-asset-G20-x4",
+        "camp-asset-G21-x2",
+        "camp-asset-G22-x4",
+        "camp-asset-G23-x6"
+      ]
+    },
+    {
+      "name": "walk-to-exit",
+      "elapsedMs": 20242,
+      "waypointReached": 8,
+      "waypoints": [
+        [
+          -42,
+          39
+        ],
+        [
+          -34,
+          39
+        ],
+        [
+          -32,
+          30
+        ],
+        [
+          -35,
+          23
+        ],
+        [
+          -32,
+          30
+        ],
+        [
+          -32,
+          39
+        ],
+        [
+          -23,
+          39
+        ],
+        [
+          -23,
+          34
+        ]
+      ],
+      "realKeyboardOnly": true,
+      "trace": [
+        {
+          "elapsedMs": 11,
+          "position": [
+            -42,
+            5.618858814239502,
+            35
+          ],
+          "grounded": true,
+          "waypoint": 0
+        },
+        {
+          "elapsedMs": 153,
+          "position": [
+            -42.05922317504883,
+            5.618859767913818,
+            35.21787643432617
+          ],
+          "grounded": true,
+          "waypoint": 0
+        },
+        {
+          "elapsedMs": 295,
+          "position": [
+            -42.12548065185547,
+            5.618861675262451,
+            35.64876174926758
+          ],
+          "grounded": true,
+          "waypoint": 0
+        },
+        {
+          "elapsedMs": 438,
+          "position": [
+            -42.18514633178711,
+            5.618861675262451,
+            36.062103271484375
+          ],
+          "grounded": true,
+          "waypoint": 0
+        },
+        {
+          "elapsedMs": 580,
+          "position": [
+            -42.25252914428711,
+            5.618861675262451,
+            36.532928466796875
+          ],
+          "grounded": true,
+          "waypoint": 0
+        },
+        {
+          "elapsedMs": 723,
+          "position": [
+            -42.31246566772461,
+            5.618861675262451,
+            36.95238494873047
+          ],
+          "grounded": true,
+          "waypoint": 0
+        },
+        {
+          "elapsedMs": 865,
+          "position": [
+            -42.3798942565918,
+            5.618861675262451,
+            37.42445373535156
+          ],
+          "grounded": true,
+          "waypoint": 0
+        },
+        {
+          "elapsedMs": 1008,
+          "position": [
+            -42.4398307800293,
+            5.618861675262451,
+            37.84410095214844
+          ],
+          "grounded": true,
+          "waypoint": 0
+        },
+        {
+          "elapsedMs": 1151,
+          "position": [
+            -42.291683197021484,
+            5.618861675262451,
+            38.259552001953125
+          ],
+          "grounded": true,
+          "waypoint": 0
+        },
+        {
+          "elapsedMs": 1295,
+          "position": [
+            -42.02507781982422,
+            5.618861675262451,
+            38.64490509033203
+          ],
+          "grounded": true,
+          "waypoint": 1
+        },
+        {
+          "elapsedMs": 1436,
+          "position": [
+            -41.67869567871094,
+            5.618861675262451,
+            38.82203674316406
+          ],
+          "grounded": true,
+          "waypoint": 1
+        },
+        {
+          "elapsedMs": 1579,
+          "position": [
+            -41.22080612182617,
+            5.618861675262451,
+            38.910133361816406
+          ],
+          "grounded": true,
+          "waypoint": 1
+        },
+        {
+          "elapsedMs": 1720,
+          "position": [
+            -40.80326843261719,
+            5.618861675262451,
+            38.9727783203125
+          ],
+          "grounded": true,
+          "waypoint": 1
+        },
+        {
+          "elapsedMs": 1863,
+          "position": [
+            -40.33157730102539,
+            5.618861675262451,
+            39.04070281982422
+          ],
+          "grounded": true,
+          "waypoint": 1
+        },
+        {
+          "elapsedMs": 2005,
+          "position": [
+            -39.9119873046875,
+            5.618861675262451,
+            39.100711822509766
+          ],
+          "grounded": true,
+          "waypoint": 1
+        },
+        {
+          "elapsedMs": 2147,
+          "position": [
+            -39.43989181518555,
+            5.618861675262451,
+            39.16814041137695
+          ],
+          "grounded": true,
+          "waypoint": 1
+        },
+        {
+          "elapsedMs": 2290,
+          "position": [
+            -39.02024459838867,
+            5.618861675262451,
+            39.22807693481445
+          ],
+          "grounded": true,
+          "waypoint": 1
+        },
+        {
+          "elapsedMs": 2432,
+          "position": [
+            -38.54814147949219,
+            5.618861675262451,
+            39.29550552368164
+          ],
+          "grounded": true,
+          "waypoint": 1
+        },
+        {
+          "elapsedMs": 2574,
+          "position": [
+            -38.12849426269531,
+            5.618861675262451,
+            39.35544204711914
+          ],
+          "grounded": true,
+          "waypoint": 1
+        },
+        {
+          "elapsedMs": 2717,
+          "position": [
+            -37.65639114379883,
+            5.618861675262451,
+            39.42287063598633
+          ],
+          "grounded": true,
+          "waypoint": 1
+        },
+        {
+          "elapsedMs": 2860,
+          "position": [
+            -37.184288024902344,
+            5.618861675262451,
+            39.490299224853516
+          ],
+          "grounded": true,
+          "waypoint": 1
+        },
+        {
+          "elapsedMs": 3002,
+          "position": [
+            -36.76464080810547,
+            5.618861675262451,
+            39.550235748291016
+          ],
+          "grounded": true,
+          "waypoint": 1
+        },
+        {
+          "elapsedMs": 3145,
+          "position": [
+            -36.292537689208984,
+            5.618861675262451,
+            39.6176643371582
+          ],
+          "grounded": true,
+          "waypoint": 1
+        },
+        {
+          "elapsedMs": 3287,
+          "position": [
+            -35.920684814453125,
+            5.618861675262451,
+            39.495811462402344
+          ],
+          "grounded": true,
+          "waypoint": 1
+        },
+        {
+          "elapsedMs": 3429,
+          "position": [
+            -35.53425216674805,
+            5.618861675262451,
+            39.233917236328125
+          ],
+          "grounded": true,
+          "waypoint": 1
+        },
+        {
+          "elapsedMs": 3571,
+          "position": [
+            -35.149085998535156,
+            5.618861675262451,
+            39.16526794433594
+          ],
+          "grounded": true,
+          "waypoint": 1
+        },
+        {
+          "elapsedMs": 3714,
+          "position": [
+            -34.68424606323242,
+            5.618861675262451,
+            39.20967483520508
+          ],
+          "grounded": true,
+          "waypoint": 1
+        },
+        {
+          "elapsedMs": 3856,
+          "position": [
+            -34.31350326538086,
+            5.618861675262451,
+            39.08475875854492
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 3998,
+          "position": [
+            -34.11990737915039,
+            5.618861675262451,
+            38.71031951904297
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 4140,
+          "position": [
+            -34.04363250732422,
+            5.618861675262451,
+            38.30491256713867
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 4282,
+          "position": [
+            -33.97331619262695,
+            5.618861675262451,
+            37.83565139770508
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 4424,
+          "position": [
+            -33.912986755371094,
+            5.618861675262451,
+            37.41642379760742
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 4567,
+          "position": [
+            -33.84548568725586,
+            5.618861675262451,
+            36.94439697265625
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 4709,
+          "position": [
+            -33.78554916381836,
+            5.618861675262451,
+            36.524757385253906
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 4851,
+          "position": [
+            -33.71812057495117,
+            5.618861675262451,
+            36.05265426635742
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 4993,
+          "position": [
+            -33.650691986083984,
+            5.618861675262451,
+            35.58055114746094
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 5136,
+          "position": [
+            -33.590755462646484,
+            5.618861675262451,
+            35.16090393066406
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 5277,
+          "position": [
+            -33.5233268737793,
+            5.618861675262451,
+            34.68880081176758
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 5419,
+          "position": [
+            -33.4633903503418,
+            5.618861675262451,
+            34.2691535949707
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 5561,
+          "position": [
+            -33.39596176147461,
+            5.618861675262451,
+            33.79705047607422
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 5703,
+          "position": [
+            -33.33602523803711,
+            5.618861675262451,
+            33.377403259277344
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 5845,
+          "position": [
+            -33.26859664916992,
+            5.618861675262451,
+            32.90530014038086
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 5988,
+          "position": [
+            -33.20866012573242,
+            5.618861675262451,
+            32.485652923583984
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 6130,
+          "position": [
+            -33.141231536865234,
+            5.618861675262451,
+            32.0135498046875
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 6273,
+          "position": [
+            -33.081295013427734,
+            5.618861675262451,
+            31.593889236450195
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 6414,
+          "position": [
+            -32.82273864746094,
+            5.618861675262451,
+            31.236536026000977
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 6557,
+          "position": [
+            -32.500572204589844,
+            5.618861675262451,
+            30.973388671875
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 6699,
+          "position": [
+            -32.314701080322266,
+            5.618861675262451,
+            30.573383331298828
+          ],
+          "grounded": true,
+          "waypoint": 2
+        },
+        {
+          "elapsedMs": 6841,
+          "position": [
+            -32.239295959472656,
+            5.618861675262451,
+            30.16416358947754
+          ],
+          "grounded": true,
+          "waypoint": 3
+        },
+        {
+          "elapsedMs": 6984,
+          "position": [
+            -32.384674072265625,
+            5.618861675262451,
+            29.750825881958008
+          ],
+          "grounded": true,
+          "waypoint": 3
+        },
+        {
+          "elapsedMs": 7126,
+          "position": [
+            -32.6508674621582,
+            5.618861675262451,
+            29.365835189819336
+          ],
+          "grounded": true,
+          "waypoint": 3
+        },
+        {
+          "elapsedMs": 7269,
+          "position": [
+            -32.902462005615234,
+            5.618861675262451,
+            29.026397705078125
+          ],
+          "grounded": true,
+          "waypoint": 3
+        },
+        {
+          "elapsedMs": 7412,
+          "position": [
+            -33.18809127807617,
+            5.618861675262451,
+            28.64484405517578
+          ],
+          "grounded": true,
+          "waypoint": 3
+        },
+        {
+          "elapsedMs": 7553,
+          "position": [
+            -33.44236755371094,
+            5.618861675262451,
+            28.305702209472656
+          ],
+          "grounded": true,
+          "waypoint": 3
+        },
+        {
+          "elapsedMs": 7694,
+          "position": [
+            -33.7285041809082,
+            5.618861675262451,
+            27.92416763305664
+          ],
+          "grounded": true,
+          "waypoint": 3
+        },
+        {
+          "elapsedMs": 7837,
+          "position": [
+            -33.98286819458008,
+            5.618861675262451,
+            27.585025787353516
+          ],
+          "grounded": true,
+          "waypoint": 3
+        },
+        {
+          "elapsedMs": 7979,
+          "position": [
+            -34.052730560302734,
+            5.618861675262451,
+            27.149511337280273
+          ],
+          "grounded": true,
+          "waypoint": 3
+        },
+        {
+          "elapsedMs": 8121,
+          "position": [
+            -34.01099395751953,
+            5.618861675262451,
+            26.73563003540039
+          ],
+          "grounded": true,
+          "waypoint": 3
+        },
+        {
+          "elapsedMs": 8264,
+          "position": [
+            -34.16241455078125,
+            5.618861675262451,
+            26.32135009765625
+          ],
+          "grounded": true,
+          "waypoint": 3
+        },
+        {
+          "elapsedMs": 8406,
+          "position": [
+            -34.21629333496094,
+            5.618861675262451,
+            25.932912826538086
+          ],
+          "grounded": true,
+          "waypoint": 3
+        },
+        {
+          "elapsedMs": 8550,
+          "position": [
+            -34.384735107421875,
+            5.618861675262451,
+            25.52363395690918
+          ],
+          "grounded": true,
+          "waypoint": 3
+        },
+        {
+          "elapsedMs": 8693,
+          "position": [
+            -34.438148498535156,
+            5.618861675262451,
+            25.084821701049805
+          ],
+          "grounded": true,
+          "waypoint": 3
+        },
+        {
+          "elapsedMs": 8834,
+          "position": [
+            -34.57596969604492,
+            5.618861675262451,
+            24.717945098876953
+          ],
+          "grounded": true,
+          "waypoint": 3
+        },
+        {
+          "elapsedMs": 8977,
+          "position": [
+            -34.62474822998047,
+            5.618861675262451,
+            24.278026580810547
+          ],
+          "grounded": true,
+          "waypoint": 3
+        },
+        {
+          "elapsedMs": 9119,
+          "position": [
+            -34.761959075927734,
+            5.618861675262451,
+            23.910993576049805
+          ],
+          "grounded": true,
+          "waypoint": 3
+        },
+        {
+          "elapsedMs": 9262,
+          "position": [
+            -35.02662658691406,
+            5.618861675262451,
+            23.525371551513672
+          ],
+          "grounded": true,
+          "waypoint": 3
+        },
+        {
+          "elapsedMs": 9405,
+          "position": [
+            -35.09566116333008,
+            5.618861675262451,
+            23.140308380126953
+          ],
+          "grounded": true,
+          "waypoint": 4
+        },
+        {
+          "elapsedMs": 9548,
+          "position": [
+            -34.926116943359375,
+            5.618861675262451,
+            23.197343826293945
+          ],
+          "grounded": true,
+          "waypoint": 4
+        },
+        {
+          "elapsedMs": 9690,
+          "position": [
+            -34.69181442260742,
+            5.618861675262451,
+            23.489551544189453
+          ],
+          "grounded": true,
+          "waypoint": 4
+        },
+        {
+          "elapsedMs": 9832,
+          "position": [
+            -34.410064697265625,
+            5.618861675262451,
+            23.86164093017578
+          ],
+          "grounded": true,
+          "waypoint": 4
+        },
+        {
+          "elapsedMs": 9974,
+          "position": [
+            -34.156429290771484,
+            5.618861675262451,
+            24.19935417175293
+          ],
+          "grounded": true,
+          "waypoint": 4
+        },
+        {
+          "elapsedMs": 10117,
+          "position": [
+            -33.87043380737305,
+            5.618861675262451,
+            24.580591201782227
+          ],
+          "grounded": true,
+          "waypoint": 4
+        },
+        {
+          "elapsedMs": 10260,
+          "position": [
+            -33.58432388305664,
+            5.618861675262451,
+            24.962066650390625
+          ],
+          "grounded": true,
+          "waypoint": 4
+        },
+        {
+          "elapsedMs": 10401,
+          "position": [
+            -33.329959869384766,
+            5.618861675262451,
+            25.30119514465332
+          ],
+          "grounded": true,
+          "waypoint": 4
+        },
+        {
+          "elapsedMs": 10544,
+          "position": [
+            -33.043800354003906,
+            5.618861675262451,
+            25.682723999023438
+          ],
+          "grounded": true,
+          "waypoint": 4
+        },
+        {
+          "elapsedMs": 10686,
+          "position": [
+            -32.97184753417969,
+            5.618861675262451,
+            26.06736946105957
+          ],
+          "grounded": true,
+          "waypoint": 4
+        },
+        {
+          "elapsedMs": 10829,
+          "position": [
+            -33.01567459106445,
+            5.618861675262451,
+            26.532119750976562
+          ],
+          "grounded": true,
+          "waypoint": 4
+        },
+        {
+          "elapsedMs": 10971,
+          "position": [
+            -32.89067459106445,
+            5.618861675262451,
+            26.90284538269043
+          ],
+          "grounded": true,
+          "waypoint": 4
+        },
+        {
+          "elapsedMs": 11114,
+          "position": [
+            -32.62821578979492,
+            5.618861675262451,
+            27.289079666137695
+          ],
+          "grounded": true,
+          "waypoint": 4
+        },
+        {
+          "elapsedMs": 11256,
+          "position": [
+            -32.559486389160156,
+            5.618861675262451,
+            27.674217224121094
+          ],
+          "grounded": true,
+          "waypoint": 4
+        },
+        {
+          "elapsedMs": 11398,
+          "position": [
+            -32.603885650634766,
+            5.618861675262451,
+            28.139074325561523
+          ],
+          "grounded": true,
+          "waypoint": 4
+        },
+        {
+          "elapsedMs": 11540,
+          "position": [
+            -32.47896957397461,
+            5.618861675262451,
+            28.50982093811035
+          ],
+          "grounded": true,
+          "waypoint": 4
+        },
+        {
+          "elapsedMs": 11683,
+          "position": [
+            -32.216522216796875,
+            5.618861675262451,
+            28.896059036254883
+          ],
+          "grounded": true,
+          "waypoint": 4
+        },
+        {
+          "elapsedMs": 11827,
+          "position": [
+            -32.150020599365234,
+            5.618861675262451,
+            29.332090377807617
+          ],
+          "grounded": true,
+          "waypoint": 4
+        },
+        {
+          "elapsedMs": 11969,
+          "position": [
+            -32.192195892333984,
+            5.618861675262451,
+            29.74605369567871
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 12111,
+          "position": [
+            -32.25642776489258,
+            5.618861675262451,
+            30.21693992614746
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 12254,
+          "position": [
+            -32.31595230102539,
+            5.618861675262451,
+            30.636398315429688
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 12396,
+          "position": [
+            -32.38332748413086,
+            5.618861675262451,
+            31.10846710205078
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 12538,
+          "position": [
+            -32.44326400756836,
+            5.618861675262451,
+            31.52811622619629
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 12680,
+          "position": [
+            -32.51069259643555,
+            5.618861675262451,
+            32.00023651123047
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 12822,
+          "position": [
+            -32.57062911987305,
+            5.618861675262451,
+            32.419883728027344
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 12964,
+          "position": [
+            -32.638057708740234,
+            5.618861675262451,
+            32.89198684692383
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 13106,
+          "position": [
+            -32.697994232177734,
+            5.618861675262451,
+            33.3116340637207
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 13249,
+          "position": [
+            -32.76542282104492,
+            5.618861675262451,
+            33.78373718261719
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 13391,
+          "position": [
+            -32.82535934448242,
+            5.618861675262451,
+            34.20338439941406
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 13533,
+          "position": [
+            -32.89278793334961,
+            5.618861675262451,
+            34.67548751831055
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 13677,
+          "position": [
+            -32.9602165222168,
+            5.618861675262451,
+            35.14759063720703
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 13820,
+          "position": [
+            -33.0201530456543,
+            5.618861675262451,
+            35.567237854003906
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 13962,
+          "position": [
+            -32.87200927734375,
+            5.618861675262451,
+            35.982688903808594
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 14104,
+          "position": [
+            -32.63640594482422,
+            5.618861675262451,
+            36.325523376464844
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 14246,
+          "position": [
+            -32.569984436035156,
+            5.618861675262451,
+            36.76157760620117
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 14389,
+          "position": [
+            -32.61216354370117,
+            5.618861675262451,
+            37.17552947998047
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 14532,
+          "position": [
+            -32.4608268737793,
+            5.618861675262451,
+            37.58982467651367
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 14673,
+          "position": [
+            -32.224796295166016,
+            5.618861675262451,
+            37.932491302490234
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 14816,
+          "position": [
+            -32.158294677734375,
+            5.618861675262451,
+            38.368507385253906
+          ],
+          "grounded": true,
+          "waypoint": 5
+        },
+        {
+          "elapsedMs": 14959,
+          "position": [
+            -32.20722961425781,
+            5.618861675262451,
+            38.834651947021484
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 15101,
+          "position": [
+            -32.11660385131836,
+            5.6747260093688965,
+            38.89705276489258
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 15244,
+          "position": [
+            -31.792863845825195,
+            5.722583770751953,
+            38.915931701660156
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 15385,
+          "position": [
+            -31.412078857421875,
+            5.718739032745361,
+            38.965572357177734
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 15528,
+          "position": [
+            -30.9583740234375,
+            5.688983917236328,
+            39.029483795166016
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 15670,
+          "position": [
+            -30.543745040893555,
+            5.618358135223389,
+            39.088539123535156
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 15812,
+          "position": [
+            -30.15117073059082,
+            5.666175365447998,
+            39.148311614990234
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 15954,
+          "position": [
+            -29.76757049560547,
+            5.658066749572754,
+            39.205509185791016
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 16095,
+          "position": [
+            -29.33087730407715,
+            5.658796310424805,
+            39.26826477050781
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 16237,
+          "position": [
+            -28.936952590942383,
+            5.6588544845581055,
+            39.3245849609375
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 16380,
+          "position": [
+            -28.491796493530273,
+            5.65688943862915,
+            39.389076232910156
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 16522,
+          "position": [
+            -28.092296600341797,
+            5.6427083015441895,
+            39.45631790161133
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 16664,
+          "position": [
+            -27.641666412353516,
+            5.617879867553711,
+            39.54524230957031
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 16806,
+          "position": [
+            -27.23049545288086,
+            5.618676662445068,
+            39.61052322387695
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 16949,
+          "position": [
+            -26.76007843017578,
+            5.618758201599121,
+            39.678890228271484
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 17092,
+          "position": [
+            -26.288217544555664,
+            5.618730068206787,
+            39.74646759033203
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 17234,
+          "position": [
+            -25.86860466003418,
+            5.6187357902526855,
+            39.80640411376953
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 17376,
+          "position": [
+            -25.453157424926758,
+            5.618743896484375,
+            39.658260345458984
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 17519,
+          "position": [
+            -25.127958297729492,
+            5.645003795623779,
+            39.4525146484375
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 17661,
+          "position": [
+            -24.7103328704834,
+            5.65151309967041,
+            39.42424774169922
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 17804,
+          "position": [
+            -24.313343048095703,
+            5.630890846252441,
+            39.488006591796875
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 17946,
+          "position": [
+            -23.9487361907959,
+            5.657373428344727,
+            39.39690017700195
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 18088,
+          "position": [
+            -23.62726402282715,
+            5.659832954406738,
+            39.18714904785156
+          ],
+          "grounded": true,
+          "waypoint": 6
+        },
+        {
+          "elapsedMs": 18231,
+          "position": [
+            -23.26788902282715,
+            5.659489631652832,
+            38.92273712158203
+          ],
+          "grounded": true,
+          "waypoint": 7
+        },
+        {
+          "elapsedMs": 18373,
+          "position": [
+            -23.10671043395996,
+            5.659184455871582,
+            38.59249496459961
+          ],
+          "grounded": true,
+          "waypoint": 7
+        },
+        {
+          "elapsedMs": 18515,
+          "position": [
+            -23.026857376098633,
+            5.658905029296875,
+            38.16000747680664
+          ],
+          "grounded": true,
+          "waypoint": 7
+        },
+        {
+          "elapsedMs": 18656,
+          "position": [
+            -22.968616485595703,
+            5.659976959228516,
+            37.76768112182617
+          ],
+          "grounded": true,
+          "waypoint": 7
+        },
+        {
+          "elapsedMs": 18798,
+          "position": [
+            -22.904808044433594,
+            5.659647464752197,
+            37.32362365722656
+          ],
+          "grounded": true,
+          "waypoint": 7
+        },
+        {
+          "elapsedMs": 18939,
+          "position": [
+            -22.848312377929688,
+            5.659342288970947,
+            36.928462982177734
+          ],
+          "grounded": true,
+          "waypoint": 7
+        },
+        {
+          "elapsedMs": 19082,
+          "position": [
+            -22.78476333618164,
+            5.658998966217041,
+            36.483829498291016
+          ],
+          "grounded": true,
+          "waypoint": 7
+        },
+        {
+          "elapsedMs": 19224,
+          "position": [
+            -22.72832489013672,
+            5.658876419067383,
+            36.08867645263672
+          ],
+          "grounded": true,
+          "waypoint": 7
+        },
+        {
+          "elapsedMs": 19366,
+          "position": [
+            -22.664844512939453,
+            5.658864974975586,
+            35.64420700073242
+          ],
+          "grounded": true,
+          "waypoint": 7
+        },
+        {
+          "elapsedMs": 19511,
+          "position": [
+            -22.601364135742188,
+            5.658864974975586,
+            35.19974136352539
+          ],
+          "grounded": true,
+          "waypoint": 7
+        },
+        {
+          "elapsedMs": 19653,
+          "position": [
+            -22.721282958984375,
+            5.658864974975586,
+            34.85186767578125
+          ],
+          "grounded": true,
+          "waypoint": 7
+        },
+        {
+          "elapsedMs": 19794,
+          "position": [
+            -22.970630645751953,
+            5.658864974975586,
+            34.48958206176758
+          ],
+          "grounded": true,
+          "waypoint": 8
+        },
+        {
+          "elapsedMs": 19937,
+          "position": [
+            -23.05471420288086,
+            5.658864974975586,
+            34.37432861328125
+          ],
+          "grounded": true,
+          "waypoint": 8
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "missing": [],
+  "videoScope": "Canvas-only actual runtime; default camera and real WASD, no teleport."
+}

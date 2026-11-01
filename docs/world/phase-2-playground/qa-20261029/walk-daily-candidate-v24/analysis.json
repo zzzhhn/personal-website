@@ -1,0 +1,85 @@
+{
+  "date": "2026-10-29",
+  "status": "offline candidate; numerical QC only; not listened, accepted, or integrated",
+  "source": "Original E-G-A-G / D-C motif with picked harmonic accompaniment, restrained bass and damped wood. No recordings, samples, external model or third-party melody.",
+  "file": "walk-daily-candidate.wav",
+  "sha256": "695e2902aea13630d2db43afa7fbacf8b0218daa152929d41d737f8a2f0c9b1c",
+  "seconds": 40,
+  "bpm": 96,
+  "sample_rate": 24000,
+  "channels": 2,
+  "frames": 960000,
+  "bytes": 3840044,
+  "decoded_bytes": 7680000,
+  "peak_dbfs": -16.39236324266051,
+  "rms_dbfs": -32.592930335061645,
+  "clipped_samples": 0,
+  "seam": [
+    {
+      "channel": 0,
+      "sample_step": 0.00006103515625,
+      "slope_change": 0.00006103515625
+    },
+    {
+      "channel": 1,
+      "sample_step": -0.00006103515625,
+      "slope_change": 0.000091552734375
+    }
+  ],
+  "maximum_interior_sample_step": 0.023773193359375,
+  "sections": [
+    {
+      "id": "A",
+      "startBar": 1,
+      "bars": 4,
+      "harmony": [
+        "C6",
+        "Fmaj7",
+        "Gsus2",
+        "C6"
+      ],
+      "rms_dbfs": -31.168753785346436
+    },
+    {
+      "id": "B",
+      "startBar": 5,
+      "bars": 4,
+      "harmony": [
+        "Am7",
+        "Dm7",
+        "G6",
+        "C6"
+      ],
+      "rms_dbfs": -32.34553995125192
+    },
+    {
+      "id": "C",
+      "startBar": 9,
+      "bars": 4,
+      "harmony": [
+        "Fmaj7",
+        "C/E",
+        "Dm7",
+        "G6"
+      ],
+      "rms_dbfs": -36.49483777701808
+    },
+    {
+      "id": "D",
+      "startBar": 13,
+      "bars": 4,
+      "harmony": [
+        "Am7",
+        "Fmaj7",
+        "Gsus2",
+        "C6"
+      ],
+      "rms_dbfs": -32.00073898484072
+    }
+  ],
+  "source_hashes": {
+    "src/components/world/walk-music-daily.ts": "e3e04a0ebe82986ee7095bda6ac99c551b9b463843f646f04ef4a21a37d091f4",
+    "tools/world/render-walk-music-daily.mjs": "40fe098a7bae49c4f2624deee40270bf64e495ce5ef88bc3222764cc2fdcec17"
+  },
+  "elapsed_export_ms": 215
+}

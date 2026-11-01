@@ -1,0 +1,443 @@
+{
+ "started": "2026-10-24T08:47:56.114Z",
+ "huts": [
+  {
+   "id": "alpha-agent",
+   "reachedOpening": true,
+   "reachedInside": true,
+   "inside": [
+    58.77555847167969,
+    1.9588584899902344,
+    -48.91550064086914
+   ],
+   "grounded": true,
+   "backWall": {
+    "blocked": true,
+    "travelledBack_m": 1.21,
+    "limit_m": 1.55,
+    "pass": true
+   }
+  },
+  {
+   "id": "evalforge",
+   "reachedOpening": true,
+   "reachedInside": true,
+   "inside": [
+    71.86151123046875,
+    1.9588348865509033,
+    -40.132816314697266
+   ],
+   "grounded": true,
+   "backWall": {
+    "blocked": true,
+    "travelledBack_m": 1.21,
+    "limit_m": 1.55,
+    "pass": true
+   }
+  },
+  {
+   "id": "djc",
+   "reachedOpening": true,
+   "reachedInside": true,
+   "inside": [
+    76.85213470458984,
+    1.9588435888290405,
+    -28.01972198486328
+   ],
+   "grounded": true,
+   "backWall": {
+    "blocked": true,
+    "travelledBack_m": 1.21,
+    "limit_m": 1.55,
+    "pass": true
+   }
+  },
+  {
+   "id": "hepai",
+   "reachedOpening": true,
+   "reachedInside": true,
+   "inside": [
+    72.89717102050781,
+    1.975136399269104,
+    -15.855704307556152
+   ],
+   "grounded": true,
+   "backWall": {
+    "blocked": true,
+    "travelledBack_m": 1.21,
+    "limit_m": 1.55,
+    "pass": true
+   }
+  },
+  {
+   "id": "accompany",
+   "reachedOpening": true,
+   "reachedInside": true,
+   "inside": [
+    61.29387664794922,
+    1.9588409662246704,
+    -20.00568389892578
+   ],
+   "grounded": true,
+   "backWall": {
+    "blocked": true,
+    "travelledBack_m": 1.21,
+    "limit_m": 1.55,
+    "pass": true
+   }
+  },
+  {
+   "id": "interactive-learning",
+   "reachedOpening": true,
+   "reachedInside": true,
+   "inside": [
+    50.21574401855469,
+    1.9588744640350342,
+    -11.869199752807617
+   ],
+   "grounded": true,
+   "backWall": {
+    "blocked": true,
+    "travelledBack_m": 1.21,
+    "limit_m": 1.55,
+    "pass": true
+   }
+  }
+ ],
+ "walls": [],
+ "rail": {
+  "id": "rail-1-l-0",
+  "home": [
+   68.02251812915229,
+   1.14,
+   -35.34542566518543
+  ],
+  "after": {
+   "id": "rail-1-l-0",
+   "home": [
+    68.02251812915229,
+    1.14,
+    -35.34542566518543
+   ],
+   "position": [
+    74.83690643310547,
+    -4.182313442230225,
+    -37.81385803222656
+   ],
+   "knocked": true,
+   "fade": 1,
+   "sleeping": false
+  },
+  "player": [
+   70.41345977783203,
+   -4.281185150146484,
+   -35.39834213256836
+  ]
+ },
+ "lamp": null,
+ "van": {
+  "inVan": "van",
+  "knockedByVan": [
+   {
+    "id": "rail-0-l-0",
+    "position": [
+     62.02,
+     -4.99,
+     -46.47
+    ]
+   },
+   {
+    "id": "rail-0-l-1",
+    "position": [
+     63.85,
+     -4.66,
+     -45.61
+    ]
+   }
+  ],
+  "maxUpwardVel": 0.14,
+  "maxY": 2.47,
+  "end": [
+   68.9412841796875,
+   -3.457355499267578,
+   -44.96329879760742
+  ],
+  "track": [
+   {
+    "p": [
+     45.98,
+     2.47,
+     -45
+    ],
+    "vy": -0.06,
+    "speed": 0.12
+   },
+   {
+    "p": [
+     46.01,
+     2.46,
+     -45
+    ],
+    "vy": -0.07,
+    "speed": 0.38
+   },
+   {
+    "p": [
+     46.07,
+     2.46,
+     -45
+    ],
+    "vy": -0.08,
+    "speed": 0.78
+   },
+   {
+    "p": [
+     46.18,
+     2.46,
+     -45
+    ],
+    "vy": -0.08,
+    "speed": 1.27
+   },
+   {
+    "p": [
+     46.33,
+     2.46,
+     -45
+    ],
+    "vy": -0.07,
+    "speed": 1.75
+   },
+   {
+    "p": [
+     46.58,
+     2.46,
+     -45
+    ],
+    "vy": -0.06,
+    "speed": 2.3
+   },
+   {
+    "p": [
+     46.83,
+     2.46,
+     -45
+    ],
+    "vy": -0.06,
+    "speed": 2.77
+   },
+   {
+    "p": [
+     47.14,
+     2.46,
+     -45
+    ],
+    "vy": -0.06,
+    "speed": 3.24
+   },
+   {
+    "p": [
+     47.49,
+     2.46,
+     -45
+    ],
+    "vy": -0.06,
+    "speed": 3.69
+   },
+   {
+    "p": [
+     47.89,
+     2.46,
+     -45
+    ],
+    "vy": -0.06,
+    "speed": 4.15
+   },
+   {
+    "p": [
+     48.41,
+     2.46,
+     -45
+    ],
+    "vy": -0.06,
+    "speed": 4.67
+   },
+   {
+    "p": [
+     48.9,
+     2.46,
+     -45
+    ],
+    "vy": -0.06,
+    "speed": 5.11
+   },
+   {
+    "p": [
+     49.44,
+     2.46,
+     -45
+    ],
+    "vy": -0.06,
+    "speed": 5.54
+   },
+   {
+    "p": [
+     50.02,
+     2.46,
+     -45
+    ],
+    "vy": -0.06,
+    "speed": 5.97
+   },
+   {
+    "p": [
+     50.64,
+     2.46,
+     -45
+    ],
+    "vy": -0.06,
+    "speed": 6.4
+   },
+   {
+    "p": [
+     51.42,
+     2.46,
+     -45
+    ],
+    "vy": -0.06,
+    "speed": 6.89
+   },
+   {
+    "p": [
+     52.14,
+     2.46,
+     -45
+    ],
+    "vy": -0.06,
+    "speed": 7.3
+   },
+   {
+    "p": [
+     52.89,
+     2.46,
+     -45
+    ],
+    "vy": -0.07,
+    "speed": 7.71
+   },
+   {
+    "p": [
+     53.69,
+     2.46,
+     -45
+    ],
+    "vy": -0.07,
+    "speed": 8.12
+   },
+   {
+    "p": [
+     54.53,
+     2.46,
+     -45
+    ],
+    "vy": -0.07,
+    "speed": 8.52
+   },
+   {
+    "p": [
+     55.55,
+     2.46,
+     -45
+    ],
+    "vy": -0.07,
+    "speed": 8.98
+   },
+   {
+    "p": [
+     56.48,
+     2.46,
+     -45
+    ],
+    "vy": -0.08,
+    "speed": 9.37
+   },
+   {
+    "p": [
+     57.44,
+     2.46,
+     -45
+    ],
+    "vy": -0.08,
+    "speed": 9.75
+   },
+   {
+    "p": [
+     58.42,
+     2.47,
+     -45.01
+    ],
+    "vy": 0.14,
+    "speed": 9.71
+   },
+   {
+    "p": [
+     59.4,
+     2.47,
+     -45.01
+    ],
+    "vy": -0.15,
+    "speed": 9.89
+   },
+   {
+    "p": [
+     60.55,
+     2.47,
+     -45.02
+    ],
+    "vy": 0.03,
+    "speed": 9.68
+   }
+  ]
+ },
+ "errors": [
+  "console: Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)"
+ ],
+ "boardwalk": [
+  {
+   "target": [
+    52,
+    -44.8
+   ],
+   "reached": true,
+   "recoveries": 0,
+   "minY": 1.959
+  },
+  {
+   "target": [
+    64,
+    -40
+   ],
+   "reached": true,
+   "recoveries": 0,
+   "minY": 1.959
+  },
+  {
+   "target": [
+    69,
+    -22
+   ],
+   "reached": true,
+   "recoveries": 0,
+   "minY": 1.959
+  },
+  {
+   "target": [
+    56.5,
+    -7.5
+   ],
+   "reached": true,
+   "recoveries": 0,
+   "minY": 1.959
+  }
+ ]
+}

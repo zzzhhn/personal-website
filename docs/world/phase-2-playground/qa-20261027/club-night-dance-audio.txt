@@ -1,0 +1,81 @@
+Browser tab: 1395913741, Title: "Bobby’s island · World playtest", URL: "http://127.0.0.1:4343/world/?start=club-dance&quality=balanced&paused=1&qa=1".
+1 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4343/world/?start=club-dance&quality=balanced&paused=1&qa=1
+	2 container Bobby 的城岛
+		3 container
+			4 text 经历 · 项目 · 漫游
+			5 heading Bobby 的城岛, Value: 1
+				6 text Bobby 的城岛
+			7 button 回到营地, Help: 保留矿石、挖矿进度和研究结果。
+			8 pop up button 地图与设置 Esc
+		9 container
+			10 container 城岛地图 · 栈道园区
+			11 text 栈道园区
+		15 container DJC beach club
+			16 container
+				17 text DJC BEACH CLUB
+				18 checkbox 静音, Value: 0
+			35 checkbox 1 Groove, Value: 0
+			36 checkbox 2 Twist, Value: 1
+			37 text WASD 走开 · E / Esc 停下
+			20 button (collapsed) 音乐署名, Secondary Actions: Expand
+				21 text 音乐署名
+		22 container
+			23 button QA · 读取当前渲染开销
+			24 button QA · 读取动作与接触
+			25 button QA · 读取 Club 音频
+			26 button QA · 读取水面接触
+			27 button (disabled) QA · 倾覆当前车辆
+			28 button (disabled) QA · 侧翻当前车辆
+			29 button QA · 上车并定格门洞
+			30 button QA · 定格入座
+			31 button QA · 继续上下车动作
+			32 button QA · 当前角色或车辆落水
+			33 checkbox QA · 模拟回测连接中断, Value: 0
+			38 text {
+ "club": {
+  "phase": "ready",
+  "context": "running",
+  "sources": 1,
+  "buffers": 2,
+  "contextSeconds": 246.60266666666666,
+  "transportBeats": 484.9747555555556,
+  "decodedSeconds": [
+   32.542375,
+   32.542375
+  ],
+  "bufferBytes": 12496272,
+  "owners": 1,
+  "timers": 0
+ },
+ "mode": "dance",
+ "step": 1
+}
+		34 text {
+ "position": [
+  41,
+  2.42,
+  55
+ ],
+ "yaw": -1.57,
+ "grounded": true,
+ "vehicle": null,
+ "drive": null,
+ "grass": {
+  "instances": 328,
+  "disturbers": 1,
+  "trampled": 5,
+  "strength": 0.944
+ },
+ "exchange": {
+  "phase": "closed",
+  "days": 0,
+  "day": 0,
+  "cash": 10000,
+  "units": 0,
+  "equity": 10000,
+  "message": "ring-first",
+  "ledger": []
+ }
+}
+
+The focused UI element is 25 button QA · 读取 Club 音频

@@ -1,0 +1,258 @@
+Browser tab: 1395913741, Title: "Bobby’s island · World playtest", URL: "http://127.0.0.1:4343/world/?start=offroad&quality=balanced&paused=1&qa=1".
+1 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4343/world/?start=offroad&quality=balanced&paused=1&qa=1
+	2 container Bobby 的城岛
+		3 container
+			4 text 经历 · 项目 · 漫游
+			5 heading Bobby 的城岛, Value: 1
+				6 text Bobby 的城岛
+			7 button 回到营地, Help: 保留矿石、挖矿进度和研究结果。
+			8 pop up button 地图与设置 Esc
+		9 container
+			10 container 城岛地图 · 营地
+			11 text 营地
+		28 container
+			29 text 0 KM/H 越野车
+		15 container
+			16 button QA · 读取当前渲染开销
+			17 button QA · 读取动作与接触
+			18 button QA · 读取 Club 音频
+			19 button QA · 读取水面接触
+			20 button QA · 倾覆当前车辆
+			21 button QA · 侧翻当前车辆
+			22 button QA · 上车并定格门洞
+			23 button QA · 定格入座
+			24 button QA · 继续上下车动作
+			25 button QA · 当前角色或车辆落水
+			26 checkbox QA · 模拟回测连接中断, Value: 0
+			30 text {
+ "actor": {
+  "animation": "Idle",
+  "root": [
+   -25.953191951192796,
+   4.778827781677246,
+   35.21999999760942
+  ],
+  "seatSupport": null,
+  "vehicleStage": {
+   "q": 0.66,
+   "approach": 1,
+   "turn": 1,
+   "reach": 1,
+   "open": 1,
+   "align": 1,
+   "threshold": 1,
+   "leadStep": 0.6480000000000008,
+   "sit": 0,
+   "transfer": 0,
+   "opacity": 1,
+   "stage": "step",
+   "duck": 1,
+   "doorOpen": 1
+  },
+  "vehicleRotation": [
+   -0.001919338808033456,
+   0.7071041680423125,
+   0.0019193421091092035,
+   0.7071041845451453
+  ],
+  "vehicle": {
+   "id": "offroad",
+   "phase": "enter",
+   "t": 0.66,
+   "door": [
+    -25.95594212815327,
+    4.778827781677246,
+    36.25000000001012
+   ],
+   "cabin": [
+    -25.954386263929322,
+    5.61022345027164,
+    34.419999998650276
+   ],
+   "yaw": -2.0238795873177653e-10,
+   "approach": [],
+   "frame": {
+    "id": "offroad",
+    "side": 1,
+    "position": [
+     -26.000205432260007,
+     4.839963363841255,
+     33.99999999500107
+    ],
+    "rotation": [
+     2.3657351633232793e-9,
+     -5.578434242314856e-11,
+     0.00271435733884573,
+     0.9999963045120239
+    ],
+    "groundY": 4.778827781677246
+   }
+  }
+ },
+ "doors": {
+  "offroad": {
+   "level": 0,
+   "triangles": 15242,
+   "doors": [
+    {
+     "side": -1,
+     "quaternion": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "vertices": 540
+    },
+    {
+     "side": 1,
+     "quaternion": [
+      0,
+      0.5735764363526719,
+      0,
+      0.8191520442878534
+     ],
+     "vertices": 540
+    }
+   ]
+  },
+  "coupe": {
+   "level": 1,
+   "triangles": 14816,
+   "doors": [
+    {
+     "side": -1,
+     "quaternion": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "vertices": 636
+    },
+    {
+     "side": 1,
+     "quaternion": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "vertices": 636
+    }
+   ]
+  },
+  "van": {
+   "level": 1,
+   "triangles": 14273,
+   "doors": [
+    {
+     "side": -1,
+     "quaternion": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "vertices": 540
+    },
+    {
+     "side": 1,
+     "quaternion": [
+      0,
+      0,
+      0,
+      1
+     ],
+     "vertices": 540
+    }
+   ]
+  }
+ },
+ "physics": {
+  "player": [
+   -26,
+   5.658827781677246,
+   36
+  ],
+  "grounded": true,
+  "vehicles": [
+   {
+    "id": "offroad",
+    "position": [
+     -26.00594139099121,
+     5.896547794342041,
+     34
+    ],
+    "waterSeconds": 0,
+    "wheelContacts": [
+     true,
+     true,
+     true,
+     true
+    ]
+   },
+   {
+    "id": "coupe",
+    "position": [
+     26.199382781982422,
+     2.1374425888061523,
+     2.002410411834717
+    ],
+    "waterSeconds": 0,
+    "wheelContacts": [
+     true,
+     true,
+     true,
+     true
+    ]
+   },
+   {
+    "id": "van",
+    "position": [
+     45.992454528808594,
+     2.464979648590088,
+     -45
+    ],
+    "waterSeconds": 0,
+    "wheelContacts": [
+     true,
+     true,
+     true,
+     true
+    ]
+   }
+  ]
+ }
+}
+		27 text {
+ "position": [
+  -26.01,
+  5.9,
+  34
+ ],
+ "yaw": 0,
+ "grounded": true,
+ "vehicle": "offroad",
+ "drive": null,
+ "grass": {
+  "instances": 130,
+  "disturbers": 2,
+  "trampled": 42,
+  "strength": 0.947
+ },
+ "exchange": {
+  "phase": "closed",
+  "days": 0,
+  "day": 0,
+  "cash": 10000,
+  "units": 0,
+  "equity": 10000,
+  "message": "ring-first",
+  "ledger": []
+ }
+}
+		31 container
+			32 text E 下车
+
+The focused UI element is 1 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4343/world/?start=offroad&quality=balanced&paused=1&qa=1

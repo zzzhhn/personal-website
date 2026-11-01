@@ -1,0 +1,3102 @@
+{
+  "clearing": {
+    "exchange": {
+      "phase": "complete",
+      "checkpoint": 3,
+      "day": 751,
+      "target": 10,
+      "units": 10,
+      "contacts": 10,
+      "lastContact": "collect",
+      "carried": "receipt",
+      "ticketReturned": false,
+      "error": null,
+      "actor": {
+        "position": [
+          71.67770385742188,
+          2.4086499214172363,
+          -80.33667755126953
+        ],
+        "yaw": 20.420352248333657,
+        "grounded": true,
+        "available": true
+      },
+      "action": null,
+      "sockets": {
+        "valid": true,
+        "contactError": null,
+        "sampledId": null,
+        "sampledElapsed": 0,
+        "rightHand": [
+          71.85770387547062,
+          2.6215000252053304,
+          -80.66667757326073
+        ],
+        "leftHand": [
+          71.43770385565209,
+          2.5914999946710235,
+          -80.53667759411472
+        ]
+      },
+      "receipt": {
+        "equity": 10749.245448349722,
+        "pnl": 749.2454483497222,
+        "choices": 3
+      }
+    }
+  },
+  "review": {
+    "exchangeReview": {
+      "index": 0,
+      "phase": "complete",
+      "intervals": 3,
+      "contact": "review",
+      "contacts": 11,
+      "carried": null,
+      "selection": {
+        "from": "2023-05-02",
+        "through": "2024-04-30",
+        "units": 10,
+        "pnl": 221.83818518157932,
+        "previousPnl": null,
+        "difference": null,
+        "marks": 251,
+        "previousMarks": 0
+      }
+    }
+  },
+  "route": [
+    {
+      "label": "sealed-at-desk",
+      "position": [
+        58.67,
+        1.96,
+        -69.98
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 10000,
+        "checkpoint": 0,
+        "contacts": 4,
+        "date": "2023-05-02",
+        "day": 0,
+        "equity": 10000,
+        "phase": "sealed",
+        "ticketId": "full",
+        "units": 0
+      }
+    },
+    {
+      "label": "west-of-desk",
+      "position": [
+        54.26,
+        1.96,
+        -70.61
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 10000,
+        "checkpoint": 0,
+        "contacts": 4,
+        "date": "2023-05-02",
+        "day": 0,
+        "equity": 10000,
+        "phase": "sealed",
+        "ticketId": "full",
+        "units": 0
+      }
+    },
+    {
+      "label": "west-aisle",
+      "position": [
+        55.3,
+        1.96,
+        -80.27
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 10000,
+        "checkpoint": 0,
+        "contacts": 4,
+        "date": "2023-05-02",
+        "day": 0,
+        "equity": 10000,
+        "phase": "sealed",
+        "ticketId": "full",
+        "units": 0
+      }
+    },
+    {
+      "label": "rear-ramp-approach",
+      "position": [
+        57.6,
+        1.96,
+        -80.2
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 10000,
+        "checkpoint": 0,
+        "contacts": 4,
+        "date": "2023-05-02",
+        "day": 0,
+        "equity": 10000,
+        "phase": "sealed",
+        "ticketId": "full",
+        "units": 0
+      }
+    },
+    {
+      "label": "rear-ramp-aligned",
+      "position": [
+        58.52,
+        1.96,
+        -80.06
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 10000,
+        "checkpoint": 0,
+        "contacts": 4,
+        "date": "2023-05-02",
+        "day": 0,
+        "equity": 10000,
+        "phase": "sealed",
+        "ticketId": "full",
+        "units": 0
+      }
+    },
+    {
+      "label": "rear-upper-walk",
+      "position": [
+        59.91,
+        2.41,
+        -85.05
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 10000,
+        "checkpoint": 0,
+        "contacts": 4,
+        "date": "2023-05-02",
+        "day": 0,
+        "equity": 10000,
+        "phase": "sealed",
+        "ticketId": "full",
+        "units": 0
+      }
+    },
+    {
+      "label": "bell-approach",
+      "position": [
+        60.51,
+        2.41,
+        -90.76
+      ],
+      "grounded": true,
+      "nearby": "alpha-exchange-bell",
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 10000,
+        "checkpoint": 0,
+        "contacts": 4,
+        "date": "2023-05-02",
+        "day": 0,
+        "equity": 10000,
+        "phase": "sealed",
+        "ticketId": "full",
+        "units": 0
+      }
+    },
+    {
+      "label": "first-bell-complete",
+      "position": [
+        60.02,
+        2.41,
+        -91.18
+      ],
+      "grounded": true,
+      "nearby": "alpha-exchange-project",
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 1,
+        "contacts": 5,
+        "date": "2024-04-30",
+        "day": 250,
+        "equity": 10221.83818518158,
+        "phase": "selecting",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "return-to-rear-ramp",
+      "position": [
+        59.08,
+        2.41,
+        -84.92
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 1,
+        "contacts": 5,
+        "date": "2024-04-30",
+        "day": 250,
+        "equity": 10221.83818518158,
+        "phase": "selecting",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "descend-rear-ramp",
+      "position": [
+        58.69,
+        2.17,
+        -81.69
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 1,
+        "contacts": 5,
+        "date": "2024-04-30",
+        "day": 250,
+        "equity": 10221.83818518158,
+        "phase": "selecting",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "return-west-aisle",
+      "position": [
+        54.82,
+        1.96,
+        -81.76
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 1,
+        "contacts": 5,
+        "date": "2024-04-30",
+        "day": 250,
+        "equity": 10221.83818518158,
+        "phase": "selecting",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "front-of-west-aisle",
+      "position": [
+        52.85,
+        2.06,
+        -70.68
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 1,
+        "contacts": 5,
+        "date": "2024-04-30",
+        "day": 250,
+        "equity": 10221.83818518158,
+        "phase": "selecting",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "desk-second-visit",
+      "position": [
+        56.39,
+        1.96,
+        -69.41
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 1,
+        "contacts": 5,
+        "date": "2024-04-30",
+        "day": 250,
+        "equity": 10221.83818518158,
+        "phase": "selecting",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "desk-reached",
+      "position": [
+        58.22,
+        1.96,
+        -69.22
+      ],
+      "grounded": true,
+      "nearby": "alpha-exchange-desk",
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 1,
+        "contacts": 5,
+        "date": "2024-04-30",
+        "day": 250,
+        "equity": 10221.83818518158,
+        "phase": "selecting",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "second-seal",
+      "position": [
+        58.65,
+        1.96,
+        -69.96
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 1,
+        "contacts": 6,
+        "date": "2024-04-30",
+        "day": 250,
+        "equity": 10221.83818518158,
+        "phase": "sealed",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "second-west-aisle",
+      "position": [
+        54.29,
+        1.96,
+        -70.58
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 1,
+        "contacts": 6,
+        "date": "2024-04-30",
+        "day": 250,
+        "equity": 10221.83818518158,
+        "phase": "sealed",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "second-rear-approach",
+      "position": [
+        55.18,
+        1.96,
+        -80.29
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 1,
+        "contacts": 6,
+        "date": "2024-04-30",
+        "day": 250,
+        "equity": 10221.83818518158,
+        "phase": "sealed",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "second-rear-ramp",
+      "position": [
+        58.56,
+        1.96,
+        -80.31
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 1,
+        "contacts": 6,
+        "date": "2024-04-30",
+        "day": 250,
+        "equity": 10221.83818518158,
+        "phase": "sealed",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "second-bell",
+      "position": [
+        60.59,
+        2.41,
+        -90.7
+      ],
+      "grounded": true,
+      "nearby": "alpha-exchange-bell",
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 1,
+        "contacts": 6,
+        "date": "2024-04-30",
+        "day": 250,
+        "equity": 10221.83818518158,
+        "phase": "sealed",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "second-interval-complete",
+      "position": [
+        60.02,
+        2.41,
+        -91.19
+      ],
+      "grounded": true,
+      "nearby": "alpha-exchange-project",
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 2,
+        "contacts": 7,
+        "date": "2025-05-01",
+        "day": 501,
+        "equity": 10359.336968162788,
+        "phase": "selecting",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "third-ramp-return",
+      "position": [
+        58.7,
+        2.21,
+        -81.91
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 2,
+        "contacts": 7,
+        "date": "2025-05-01",
+        "day": 501,
+        "equity": 10359.336968162788,
+        "phase": "selecting",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "third-west-aisle",
+      "position": [
+        55.22,
+        1.96,
+        -81.52
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 2,
+        "contacts": 7,
+        "date": "2025-05-01",
+        "day": 501,
+        "equity": 10359.336968162788,
+        "phase": "selecting",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "third-front-approach",
+      "position": [
+        52.72,
+        2.06,
+        -70.66
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 2,
+        "contacts": 7,
+        "date": "2025-05-01",
+        "day": 501,
+        "equity": 10359.336968162788,
+        "phase": "selecting",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "third-desk",
+      "position": [
+        58.11,
+        1.96,
+        -69.46
+      ],
+      "grounded": true,
+      "nearby": "alpha-exchange-desk",
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 2,
+        "contacts": 7,
+        "date": "2025-05-01",
+        "day": 501,
+        "equity": 10359.336968162788,
+        "phase": "selecting",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "third-seal",
+      "position": [
+        58.65,
+        1.96,
+        -69.95
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 2,
+        "contacts": 8,
+        "date": "2025-05-01",
+        "day": 501,
+        "equity": 10359.336968162788,
+        "phase": "sealed",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "third-outbound-west",
+      "position": [
+        54.23,
+        1.96,
+        -70.58
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 2,
+        "contacts": 8,
+        "date": "2025-05-01",
+        "day": 501,
+        "equity": 10359.336968162788,
+        "phase": "sealed",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "third-outbound-rear",
+      "position": [
+        55.13,
+        1.96,
+        -80.42
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 2,
+        "contacts": 8,
+        "date": "2025-05-01",
+        "day": 501,
+        "equity": 10359.336968162788,
+        "phase": "sealed",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "last-rear-ramp",
+      "position": [
+        58.45,
+        1.96,
+        -80.21
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 2,
+        "contacts": 8,
+        "date": "2025-05-01",
+        "day": 501,
+        "equity": 10359.336968162788,
+        "phase": "sealed",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "last-bell",
+      "position": [
+        60.33,
+        2.41,
+        -89.97
+      ],
+      "grounded": true,
+      "nearby": "alpha-exchange-project",
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 2,
+        "contacts": 8,
+        "date": "2025-05-01",
+        "day": 501,
+        "equity": 10359.336968162788,
+        "phase": "sealed",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "last-bell-in-range",
+      "position": [
+        60.42,
+        2.41,
+        -90.7
+      ],
+      "grounded": true,
+      "nearby": "alpha-exchange-bell",
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 2,
+        "contacts": 8,
+        "date": "2025-05-01",
+        "day": 501,
+        "equity": 10359.336968162788,
+        "phase": "sealed",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "clearing-unlocked",
+      "position": [
+        60.02,
+        2.41,
+        -91.19
+      ],
+      "grounded": true,
+      "nearby": "alpha-exchange-project",
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 9,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "clearing",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "rear-walk-to-clearing",
+      "position": [
+        59.44,
+        2.41,
+        -87.13
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 9,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "clearing",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "clearing-wing",
+      "position": [
+        70.43,
+        2.41,
+        -84.84
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 9,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "clearing",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "clearing-counter-approach",
+      "position": [
+        70.01,
+        2.41,
+        -83.15
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 9,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "clearing",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "outside-clearing-cabinet",
+      "position": [
+        69.54,
+        2.41,
+        -83.22
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 9,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "clearing",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "clearing-front-walk",
+      "position": [
+        69.18,
+        2.41,
+        -79.13
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 9,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "clearing",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "clearing-in-reach",
+      "position": [
+        70.57,
+        2.41,
+        -79.96
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 9,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "clearing",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "receipt-to-stair-approach",
+      "position": [
+        70.87,
+        2.41,
+        -70.8
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": "receipt",
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "right-stair-front",
+      "position": [
+        74.06,
+        2.41,
+        -69.74
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": "receipt",
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "stair-foot",
+      "position": [
+        73.47,
+        2.41,
+        -65.4
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": "receipt",
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "stair-foot-aligned",
+      "position": [
+        74.79,
+        2.41,
+        -64.32
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": "receipt",
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "stair-lower-flight",
+      "position": [
+        76.21,
+        2.41,
+        -65.48
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": "receipt",
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "stair-center",
+      "position": [
+        75.94,
+        2.41,
+        -65.48
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": "receipt",
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "stair-retry",
+      "position": [
+        75.57,
+        2.41,
+        -65.48
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": "receipt",
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "after-stair-fix",
+      "position": [
+        75.57,
+        2.41,
+        -65.48
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "fixed-lower-flight",
+      "position": [
+        76.28,
+        3.5,
+        -70.12
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "stair-lane-corrected",
+      "position": [
+        76.08,
+        3.53,
+        -70.19
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "stair-middle",
+      "position": [
+        76.56,
+        4.62,
+        -74.59
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "stair-midline",
+      "position": [
+        75.05,
+        4.67,
+        -74.69
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "stair-upper",
+      "position": [
+        76.08,
+        6.57,
+        -82.46
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "gallery-landing",
+      "position": [
+        76.59,
+        7.16,
+        -85.7
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "gallery-east-aisle",
+      "position": [
+        72.95,
+        7.16,
+        -86.2
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "rear-gallery-east",
+      "position": [
+        73.16,
+        7.16,
+        -92.33
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "review-approach",
+      "position": [
+        59.4,
+        7.16,
+        -93.88
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "review-front",
+      "position": [
+        58.31,
+        7.16,
+        -93.16
+      ],
+      "grounded": true,
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "review-reached",
+      "position": [
+        57.08,
+        7.16,
+        -93.04
+      ],
+      "grounded": true,
+      "nearby": "alpha-exchange-review",
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 10,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    },
+    {
+      "label": "review-first-interval",
+      "position": [
+        56.98,
+        7.16,
+        -93.27
+      ],
+      "grounded": true,
+      "nearby": "alpha-exchange-review",
+      "exchange": {
+        "archive": [
+          {
+            "days": 752,
+            "from": "2023-05-02",
+            "id": "full",
+            "through": "2026-04-30"
+          },
+          {
+            "days": 168,
+            "from": "2023-05-02",
+            "id": "year-2023",
+            "through": "2023-12-29"
+          },
+          {
+            "days": 252,
+            "from": "2024-01-02",
+            "id": "year-2024",
+            "through": "2024-12-31"
+          },
+          {
+            "days": 250,
+            "from": "2025-01-02",
+            "id": "year-2025",
+            "through": "2025-12-31"
+          },
+          {
+            "days": 82,
+            "from": "2026-01-02",
+            "id": "year-2026",
+            "through": "2026-04-30"
+          }
+        ],
+        "carried": null,
+        "cash": 9000,
+        "checkpoint": 3,
+        "contacts": 11,
+        "date": "2026-04-30",
+        "day": 751,
+        "equity": 10749.245448349722,
+        "phase": "complete",
+        "ticketId": "full",
+        "units": 10
+      }
+    }
+  ]
+}

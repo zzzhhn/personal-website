@@ -1,0 +1,55 @@
+{
+ "packInspection": {
+  "view": {
+   "pack": null,
+   "selected": 0,
+   "gap": 0.54,
+   "busy": false,
+   "feedback": "",
+   "round": 0,
+   "itemId": ""
+  },
+  "visual": {
+   "pack": null,
+   "index": 0,
+   "progress": 0,
+   "jaw": 0.54,
+   "retracting": false
+  },
+  "actor": {
+   "position": [
+    -81.01316833496094,
+    1.9038249254226685,
+    -183.6106414794922
+   ],
+   "yaw": -1.5707963267948966,
+   "grounded": true,
+   "available": true,
+   "mode": "guide"
+  },
+  "held": null,
+  "action": null,
+  "sockets": {
+   "valid": false,
+   "reachable": false,
+   "sampledId": null,
+   "sampledElapsed": 0,
+   "leftHand": [
+    -78.21999999439397,
+    2.0665000725526412,
+    -186.76699831838988
+   ],
+   "rightHand": [
+    -77.77999999995603,
+    2.0765000780005183,
+    -186.8069983139374
+   ],
+   "leftContactError": null,
+   "rightContactError": null,
+   "contactError": null
+  },
+  "loaded": [
+   "parts-a"
+  ]
+ }
+}

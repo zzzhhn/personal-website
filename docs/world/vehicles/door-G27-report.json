@@ -1,0 +1,1008 @@
+{
+  "asset": "G27",
+  "lod": 0,
+  "blender": "5.1.2",
+  "baselineTris": 12868,
+  "totalTris": 13830,
+  "deltaRatio": 0.07475909232203914,
+  "triangles": {
+    "G27_body": 5790,
+    "wheel-front-right": 1920,
+    "wheel-front-left": 1920,
+    "wheel-rear-right": 1920,
+    "wheel-rear-left": 1920,
+    "door-left": 180,
+    "door-right": 180
+  },
+  "bounds": [
+    [
+      -2.52,
+      -1.33,
+      0.0
+    ],
+    [
+      2.426,
+      1.33,
+      2.602
+    ]
+  ],
+  "doorBounds": {
+    "min": [
+      -0.9670000076293945,
+      -0.437000036239624,
+      -0.10782003402709961
+    ],
+    "max": [
+      0.006999969482421875,
+      0.7669999599456787,
+      0.02499997615814209
+    ]
+  },
+  "checks": {
+    "G27_body": {
+      "tris": 5790,
+      "degenerate": 0,
+      "nonManifoldEdges": 0,
+      "finite": true,
+      "signedVolume": 17.78262
+    },
+    "door-left": {
+      "tris": 180,
+      "degenerate": 0,
+      "nonManifoldEdges": 0,
+      "finite": true,
+      "signedVolume": 0.0345
+    },
+    "door-right": {
+      "tris": 180,
+      "degenerate": 0,
+      "nonManifoldEdges": 0,
+      "finite": true,
+      "signedVolume": 0.0345
+    }
+  },
+  "modifiedClosedShells": 18,
+  "nativeSha256": "5150b4ff6908583e7c439fa82a6f945cbe48bee1dc2454d3717e8f9ecb029e68",
+  "glbSha256": "822c27860bc26e6683369307cac0a0817d4ca256fc631d0c6c9e82b25f46f428",
+  "bytes": 83880,
+  "reimport": {
+    "objects": [
+      "G27",
+      "G27_body",
+      "door-left",
+      "door-right",
+      "wheel-front-left",
+      "wheel-front-right",
+      "wheel-rear-left",
+      "wheel-rear-right"
+    ],
+    "tris": {
+      "door-left": 180,
+      "door-right": 180,
+      "G27_body": 5790,
+      "wheel-front-left": 1920,
+      "wheel-front-right": 1920,
+      "wheel-rear-left": 1920,
+      "wheel-rear-right": 1920
+    },
+    "materials": [
+      "veh_accent_amber",
+      "veh_accent_dark",
+      "veh_accent_slate",
+      "veh_glass",
+      "veh_light_beacon",
+      "veh_light_brake",
+      "veh_light_front",
+      "veh_light_reverse",
+      "veh_metal",
+      "veh_metal_dark",
+      "veh_paint_cream",
+      "veh_rubber"
+    ],
+    "bounds": [
+      [
+        -2.52,
+        -1.33,
+        0.0
+      ],
+      [
+        2.426,
+        1.33,
+        2.602
+      ]
+    ],
+    "bytes": 83880
+  },
+  "nativeReopenTriangles": 13830,
+  "witnesses": {
+    "apertureSideRays": [
+      {
+        "side": -1,
+        "x": 1.06,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": -1,
+        "x": 1.06,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": -1,
+        "x": 1.06,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": -1,
+        "x": 1.18,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": -1,
+        "x": 1.18,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": -1,
+        "x": 1.18,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": -1,
+        "x": 1.2999999999999998,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": -1,
+        "x": 1.2999999999999998,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": -1,
+        "x": 1.2999999999999998,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": 1,
+        "x": 1.06,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": 1,
+        "x": 1.06,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": 1,
+        "x": 1.06,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": 1,
+        "x": 1.18,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": 1,
+        "x": 1.18,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": 1,
+        "x": 1.18,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": 1,
+        "x": 1.2999999999999998,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": 1,
+        "x": 1.2999999999999998,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": 1,
+        "x": 1.2999999999999998,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      }
+    ],
+    "openDoorTransferRays": [
+      {
+        "door": "door-left",
+        "x": 1.0799999999999998,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-left",
+        "x": 1.0799999999999998,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-left",
+        "x": 1.0799999999999998,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-left",
+        "x": 1.18,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-left",
+        "x": 1.18,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-left",
+        "x": 1.18,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-left",
+        "x": 1.28,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-left",
+        "x": 1.28,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-left",
+        "x": 1.28,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-right",
+        "x": 1.0799999999999998,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-right",
+        "x": 1.0799999999999998,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-right",
+        "x": 1.0799999999999998,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-right",
+        "x": 1.18,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-right",
+        "x": 1.18,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-right",
+        "x": 1.18,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-right",
+        "x": 1.28,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-right",
+        "x": 1.28,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-right",
+        "x": 1.28,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      }
+    ],
+    "doorMotion": [
+      {
+        "door": "door-left",
+        "hinge": [
+          1.97,
+          1.2,
+          -1.1
+        ],
+        "samples": [
+          {
+            "fraction": 0,
+            "point": [
+              1.003,
+              1.18,
+              -1.058
+            ],
+            "rise": 0.0,
+            "outward": 0.0
+          },
+          {
+            "fraction": 0.25,
+            "point": [
+              1.0351,
+              1.18,
+              -1.3507
+            ],
+            "rise": 0.0,
+            "outward": 0.29272639751434326
+          },
+          {
+            "fraction": 0.5,
+            "point": [
+              1.1538,
+              1.18,
+              -1.6202
+            ],
+            "rise": 0.0,
+            "outward": 0.5622440576553345
+          },
+          {
+            "fraction": 0.75,
+            "point": [
+              1.348,
+              1.18,
+              -1.8416
+            ],
+            "rise": 0.0,
+            "outward": 0.783604621887207
+          },
+          {
+            "fraction": 1,
+            "point": [
+              1.5998,
+              1.18,
+              -1.9943
+            ],
+            "rise": 0.0,
+            "outward": 0.936318039894104
+          }
+        ]
+      },
+      {
+        "door": "door-right",
+        "hinge": [
+          1.97,
+          1.2,
+          1.1
+        ],
+        "samples": [
+          {
+            "fraction": 0,
+            "point": [
+              1.003,
+              1.18,
+              1.058
+            ],
+            "rise": 0.0,
+            "outward": -0.0
+          },
+          {
+            "fraction": 0.25,
+            "point": [
+              1.0351,
+              1.18,
+              1.3507
+            ],
+            "rise": 0.0,
+            "outward": 0.29272639751434326
+          },
+          {
+            "fraction": 0.5,
+            "point": [
+              1.1538,
+              1.18,
+              1.6202
+            ],
+            "rise": 0.0,
+            "outward": 0.5622440576553345
+          },
+          {
+            "fraction": 0.75,
+            "point": [
+              1.348,
+              1.18,
+              1.8416
+            ],
+            "rise": 0.0,
+            "outward": 0.783604621887207
+          },
+          {
+            "fraction": 1,
+            "point": [
+              1.5998,
+              1.18,
+              1.9943
+            ],
+            "rise": 0.0,
+            "outward": 0.936318039894104
+          }
+        ]
+      }
+    ],
+    "seatSupport": {
+      "floorY": 0.79,
+      "cushionTopY": 0.93,
+      "cushionBottomY": 0.8,
+      "pedestalBottomY": 0.77,
+      "pedestalTopY": 0.81,
+      "cushionHalfWidth": 0.22,
+      "seatCenterSideZ": 0.45,
+      "betweenCushions": 0.46,
+      "apertureSillY": 0.755,
+      "ceilingSamples": [
+        {
+          "seatSide": -1,
+          "x": 1.0799999999999998,
+          "ceilingY": 1.9550001621246338,
+          "abovePosterior": 1.0250001621246336
+        },
+        {
+          "seatSide": 1,
+          "x": 1.0799999999999998,
+          "ceilingY": 1.9550001621246338,
+          "abovePosterior": 1.0250001621246336
+        },
+        {
+          "seatSide": -1,
+          "x": 1.18,
+          "ceilingY": 1.9550000429153442,
+          "abovePosterior": 1.025000042915344
+        },
+        {
+          "seatSide": 1,
+          "x": 1.18,
+          "ceilingY": 1.9550001621246338,
+          "abovePosterior": 1.0250001621246336
+        },
+        {
+          "seatSide": -1,
+          "x": 1.28,
+          "ceilingY": 1.9550001621246338,
+          "abovePosterior": 1.0250001621246336
+        },
+        {
+          "seatSide": 1,
+          "x": 1.28,
+          "ceilingY": 1.9550001621246338,
+          "abovePosterior": 1.0250001621246336
+        }
+      ]
+    },
+    "scope": "Finite surface rays into clear side corridor and five sampled rear-corner poses; not exhaustive all-mesh continuous collision proof."
+  },
+  "freshImportWitnesses": {
+    "apertureSideRays": [
+      {
+        "side": -1,
+        "x": 1.06,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": -1,
+        "x": 1.06,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": -1,
+        "x": 1.06,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": -1,
+        "x": 1.18,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": -1,
+        "x": 1.18,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": -1,
+        "x": 1.18,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": -1,
+        "x": 1.2999999999999998,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": -1,
+        "x": 1.2999999999999998,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": -1,
+        "x": 1.2999999999999998,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": 1,
+        "x": 1.06,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": 1,
+        "x": 1.06,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": 1,
+        "x": 1.06,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": 1,
+        "x": 1.18,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": 1,
+        "x": 1.18,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": 1,
+        "x": 1.18,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": 1,
+        "x": 1.2999999999999998,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": 1,
+        "x": 1.2999999999999998,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "side": 1,
+        "x": 1.2999999999999998,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      }
+    ],
+    "openDoorTransferRays": [
+      {
+        "door": "door-left",
+        "x": 1.0799999999999998,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-left",
+        "x": 1.0799999999999998,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-left",
+        "x": 1.0799999999999998,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-left",
+        "x": 1.18,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-left",
+        "x": 1.18,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-left",
+        "x": 1.18,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-left",
+        "x": 1.28,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-left",
+        "x": 1.28,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-left",
+        "x": 1.28,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-right",
+        "x": 1.0799999999999998,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-right",
+        "x": 1.0799999999999998,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-right",
+        "x": 1.0799999999999998,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-right",
+        "x": 1.18,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-right",
+        "x": 1.18,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-right",
+        "x": 1.18,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-right",
+        "x": 1.28,
+        "height": 0.89,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-right",
+        "x": 1.28,
+        "height": 1.35,
+        "clear": true,
+        "hit": null
+      },
+      {
+        "door": "door-right",
+        "x": 1.28,
+        "height": 1.81,
+        "clear": true,
+        "hit": null
+      }
+    ],
+    "doorMotion": [
+      {
+        "door": "door-left",
+        "hinge": [
+          1.97,
+          1.2,
+          -1.1
+        ],
+        "samples": [
+          {
+            "fraction": 0,
+            "point": [
+              1.003,
+              1.18,
+              -1.058
+            ],
+            "rise": 0.0,
+            "outward": 0.0
+          },
+          {
+            "fraction": 0.25,
+            "point": [
+              1.0351,
+              1.18,
+              -1.3507
+            ],
+            "rise": 0.0,
+            "outward": 0.29272615909576416
+          },
+          {
+            "fraction": 0.5,
+            "point": [
+              1.1538,
+              1.18,
+              -1.6202
+            ],
+            "rise": 0.0,
+            "outward": 0.5622434616088867
+          },
+          {
+            "fraction": 0.75,
+            "point": [
+              1.348,
+              1.18,
+              -1.8416
+            ],
+            "rise": 0.0,
+            "outward": 0.7836031913757324
+          },
+          {
+            "fraction": 1,
+            "point": [
+              1.5998,
+              1.18,
+              -1.9943
+            ],
+            "rise": 0.0,
+            "outward": 0.936315655708313
+          }
+        ]
+      },
+      {
+        "door": "door-right",
+        "hinge": [
+          1.97,
+          1.2,
+          1.1
+        ],
+        "samples": [
+          {
+            "fraction": 0,
+            "point": [
+              1.003,
+              1.18,
+              1.104
+            ],
+            "rise": 0.0,
+            "outward": -0.0
+          },
+          {
+            "fraction": 0.25,
+            "point": [
+              1.049,
+              1.18,
+              1.3946
+            ],
+            "rise": 0.0,
+            "outward": 0.29059767723083496
+          },
+          {
+            "fraction": 0.5,
+            "point": [
+              1.1802,
+              1.18,
+              1.6579
+            ],
+            "rise": 0.0,
+            "outward": 0.5539267063140869
+          },
+          {
+            "fraction": 0.75,
+            "point": [
+              1.3845,
+              1.18,
+              1.8696
+            ],
+            "rise": 0.0,
+            "outward": 0.765610933303833
+          },
+          {
+            "fraction": 1,
+            "point": [
+              1.643,
+              1.18,
+              2.01
+            ],
+            "rise": 0.0,
+            "outward": 0.9060561656951904
+          }
+        ]
+      }
+    ],
+    "seatSupport": {
+      "floorY": 0.79,
+      "cushionTopY": 0.93,
+      "cushionBottomY": 0.8,
+      "pedestalBottomY": 0.77,
+      "pedestalTopY": 0.81,
+      "cushionHalfWidth": 0.22,
+      "seatCenterSideZ": 0.45,
+      "betweenCushions": 0.46,
+      "apertureSillY": 0.755,
+      "ceilingSamples": [
+        {
+          "seatSide": -1,
+          "x": 1.0799999999999998,
+          "ceilingY": 1.9550347328186035,
+          "abovePosterior": 1.0250347328186034
+        },
+        {
+          "seatSide": 1,
+          "x": 1.0799999999999998,
+          "ceilingY": 1.9550347328186035,
+          "abovePosterior": 1.0250347328186034
+        },
+        {
+          "seatSide": -1,
+          "x": 1.18,
+          "ceilingY": 1.9550347328186035,
+          "abovePosterior": 1.0250347328186034
+        },
+        {
+          "seatSide": 1,
+          "x": 1.18,
+          "ceilingY": 1.9550347328186035,
+          "abovePosterior": 1.0250347328186034
+        },
+        {
+          "seatSide": -1,
+          "x": 1.28,
+          "ceilingY": 1.9550347328186035,
+          "abovePosterior": 1.0250347328186034
+        },
+        {
+          "seatSide": 1,
+          "x": 1.28,
+          "ceilingY": 1.9550347328186035,
+          "abovePosterior": 1.0250347328186034
+        }
+      ]
+    },
+    "scope": "Finite surface rays into clear side corridor and five sampled rear-corner poses; not exhaustive all-mesh continuous collision proof."
+  },
+  "contract": {
+    "seat": [
+      1.18,
+      0.93,
+      0.45
+    ],
+    "standingX": 1.18,
+    "hinge": [
+      1.97,
+      1.2,
+      1.1
+    ],
+    "axis": [
+      0,
+      1,
+      0
+    ],
+    "angle": 1.2217304764,
+    "doorBounds": {
+      "min": [
+        -0.9670000076293945,
+        -0.437000036239624,
+        -0.10782003402709961
+      ],
+      "max": [
+        0.006999969482421875,
+        0.7669999599456787,
+        0.02499997615814209
+      ]
+    }
+  }
+}

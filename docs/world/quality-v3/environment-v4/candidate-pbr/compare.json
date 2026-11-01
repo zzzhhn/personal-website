@@ -1,0 +1,75 @@
+{
+  "base": "http://127.0.0.1:4322",
+  "query": "&groundPbr=1",
+  "quality": "high",
+  "views": [
+    {
+      "name": "near-camp-grass",
+      "teleport": [
+        -54,
+        5.69,
+        44
+      ],
+      "zoom": 0
+    },
+    {
+      "name": "near-west-slope",
+      "teleport": [
+        -66,
+        5.7,
+        26
+      ],
+      "zoom": 0
+    },
+    {
+      "name": "mid-west-coast",
+      "teleport": [
+        -62,
+        3.75,
+        6
+      ],
+      "zoom": 1
+    },
+    {
+      "name": "mid-camp-rim",
+      "teleport": [
+        -42,
+        5.69,
+        52
+      ],
+      "zoom": 2
+    },
+    {
+      "name": "near-beach-north",
+      "teleport": [
+        -22,
+        2.96,
+        56
+      ],
+      "zoom": 0
+    }
+  ],
+  "errors": [
+    "console: Failed to load resource: the server responded with a status of 504 (Outdated Optimize Dep)"
+  ],
+  "stats": {
+    "calls": 108,
+    "triangles": 426442,
+    "geometries": 103,
+    "textures": 20,
+    "camera": [
+      -19.335695841922817,
+      6.800223526038078,
+      59.472228438629415
+    ]
+  },
+  "names": [
+    "vehicle-offroad-chassis",
+    "vehicle-offroad-cabin",
+    "vehicle-coupe-chassis",
+    "vehicle-coupe-cabin",
+    "vehicle-van-chassis",
+    "vehicle-van-cabin",
+    "player-capsule"
+  ]
+}

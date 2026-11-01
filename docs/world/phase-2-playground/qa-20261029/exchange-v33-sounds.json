@@ -1,0 +1,82 @@
+{
+  "source": "Original deterministic material synthesis. No sampled recordings or network generation.",
+  "audition": "Source trims applied; excludes shared master, SFX bus, distance and music ducking. Not a loudness calibration of game output.",
+  "listening": "Not human-auditioned or creatively accepted.",
+  "rate": 24000,
+  "seconds": 8.51,
+  "bytes": 408524,
+  "sha256": "cea6fdf989a595f7ff4ef2d820319e04fbdf2e6d494baba138b153e2cfd7ef64",
+  "source_sha256": "8de4dc54f6c0cde1b5e8d50cc7988227e902c2955e892eeb3cd9a7d106b1be66",
+  "cues": [
+    {
+      "action": "pickup",
+      "kind": "paper",
+      "level": 0.75,
+      "render_ms": 4.375124999999969,
+      "start_seconds": 0.65,
+      "seconds": 0.28,
+      "peak_dbfs": -10.846569088440551,
+      "rms_dbfs": -25.64483472721004
+    },
+    {
+      "action": "insert",
+      "kind": "slot",
+      "level": 0.82,
+      "render_ms": 2.617040999999972,
+      "start_seconds": 1.58,
+      "seconds": 0.34,
+      "peak_dbfs": -10.109673834520816,
+      "rms_dbfs": -26.20590793867139
+    },
+    {
+      "action": "adjust",
+      "kind": "detent",
+      "level": 0.75,
+      "render_ms": 1.1114170000000172,
+      "start_seconds": 2.57,
+      "seconds": 0.18,
+      "peak_dbfs": -10.913633298208511,
+      "rms_dbfs": -29.297856547316165
+    },
+    {
+      "action": "seal",
+      "kind": "stamp",
+      "level": 0.9,
+      "render_ms": 2.207583999999997,
+      "start_seconds": 3.4,
+      "seconds": 0.28,
+      "peak_dbfs": -6.02367809319678,
+      "rms_dbfs": -23.615950539862535
+    },
+    {
+      "action": "ring",
+      "kind": "bell",
+      "level": 0.85,
+      "render_ms": 11.064833000000021,
+      "start_seconds": 4.33,
+      "seconds": 1.6,
+      "peak_dbfs": -6.784241111663237,
+      "rms_dbfs": -24.170268520509687
+    },
+    {
+      "action": "collect",
+      "kind": "receipt",
+      "level": 0.78,
+      "render_ms": 2.40300000000002,
+      "start_seconds": 6.58,
+      "seconds": 0.45,
+      "peak_dbfs": -9.937515262927194,
+      "rms_dbfs": -25.76835920751042
+    },
+    {
+      "action": "review",
+      "kind": "detent",
+      "level": 0.65,
+      "render_ms": 0.7050830000000019,
+      "start_seconds": 7.68,
+      "seconds": 0.18,
+      "peak_dbfs": -12.156591433185401,
+      "rms_dbfs": -30.540814682293068
+    }
+  ]
+}

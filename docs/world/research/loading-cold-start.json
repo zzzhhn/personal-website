@@ -1,0 +1,73 @@
+{
+  "url": "http://127.0.0.1:4344/world/",
+  "viewport": [
+    1920,
+    1080
+  ],
+  "throttleMbps": 100,
+  "environment": "local Astro dev; not production timing acceptance",
+  "errors": [
+    {
+      "type": "http",
+      "status": 404,
+      "url": "http://127.0.0.1:4344/api/events"
+    },
+    {
+      "type": "console",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    }
+  ],
+  "frames": [
+    {
+      "file": "loading-01.jpg",
+      "at": 359,
+      "fraction": 0.04
+    },
+    {
+      "file": "loading-02.jpg",
+      "at": 3543,
+      "fraction": 0.3
+    },
+    {
+      "file": "loading-03.jpg",
+      "at": 4551,
+      "fraction": 0.54
+    },
+    {
+      "file": "loading-04.jpg",
+      "at": 5549,
+      "fraction": 0.94
+    }
+  ],
+  "readyLocalMs": 5683,
+  "normalEntry": {
+    "href": "http://127.0.0.1:4344/world/",
+    "qaDebug": false,
+    "overflow": false,
+    "duplicateSVGIds": []
+  },
+  "before": [
+    -41.994239807128906,
+    34.9948616027832
+  ],
+  "after": [
+    -43.9431266784668,
+    32.431331634521484
+  ],
+  "walkDistance": 3.2202245163107994,
+  "observedTransitions": 70,
+  "observedStages": [
+    "Finding our way to camp…",
+    "Bringing the island into view…",
+    "A place to begin…"
+  ],
+  "allLoadingSamplesHidePlayer": true,
+  "allLoadingSamplesHaveUniqueSVGIds": true,
+  "allLayersShareViewBox": true,
+  "rawEvidence": "/Users/bobby/Desktop/3D-personal-world/evidence/street-integration/loading/report.json",
+  "testLimitations": [
+    "Raw report coreLoading was a post-run dynamic import of a second Vite module instance, so it is not runtime state evidence and is excluded here.",
+    "The final loading-04 screenshot raced the cover removal; use loading-02/03 to inspect the loading UI.",
+    "After this sole cold run, a visual high-water mark was added to avoid retreat when the denominator grows. No second cold run or production timing pass was made."
+  ]
+}

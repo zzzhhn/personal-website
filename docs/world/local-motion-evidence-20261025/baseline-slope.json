@@ -1,0 +1,393 @@
+{
+ "tag": "baseline",
+ "errors": [],
+ "fixture": [
+  {
+   "t": 0.925,
+   "to": [
+    -19.5,
+    5.74,
+    34.3
+   ],
+   "reason": "camp road ramp top (15 deg) for slope stance metrics"
+  }
+ ],
+ "glbSha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0",
+ "phases": [
+  {
+   "label": "run-down",
+   "t": 4.222
+  },
+  {
+   "label": "stop-on-ramp",
+   "t": 5.931
+  },
+  {
+   "label": "run-up",
+   "t": 6.842
+  },
+  {
+   "label": "stop2",
+   "t": 8.827
+  },
+  {
+   "label": "sprint-down",
+   "t": 9.757
+  },
+  {
+   "label": "stop3",
+   "t": 11.287
+  },
+  {
+   "label": "run-up2",
+   "t": 12.191
+  },
+  {
+   "label": "stop4",
+   "t": 14.474
+  }
+ ],
+ "membership": "union of legacy root-height window and actual tilted foot probe; all stance separately retained",
+ "byClipCurve": {
+  "n": 119,
+  "maxFloat_mm": 113.3,
+  "maxSink_mm": 1.5,
+  "floatOver20": 28,
+  "sinkOver15": 0
+ },
+ "excludingStopStepSwing": {
+  "n": 93,
+  "maxFloat_mm": 77.4,
+  "maxSink_mm": 1.5,
+  "floatOver20": 5,
+  "sinkOver15": 0
+ },
+ "legacyHeightWindow": {
+  "byClipCurve": {
+   "n": 113,
+   "maxFloat_mm": 113.3,
+   "maxSink_mm": 1.5,
+   "floatOver20": 26,
+   "sinkOver15": 0
+  },
+  "excludingStopStepSwing": {
+   "n": 87,
+   "maxFloat_mm": 77.4,
+   "maxSink_mm": 1.5,
+   "floatOver20": 3,
+   "sinkOver15": 0
+  }
+ },
+ "probedRamp": {
+  "n": 119,
+  "maxFloat_mm": 113.3,
+  "maxSink_mm": 1.5,
+  "floatOver20": 28,
+  "sinkOver15": 0
+ },
+ "allStance": {
+  "n": 238,
+  "maxFloat_mm": 257.3,
+  "maxSink_mm": -24.2,
+  "floatOver20": 85,
+  "sinkOver15": 14
+ },
+ "unclassified": {
+  "stats": {
+   "n": 0,
+   "maxFloat_mm": null,
+   "maxSink_mm": null,
+   "floatOver20": 0,
+   "sinkOver15": 0
+  },
+  "missingSoleCount": 0,
+  "missingSoles": []
+ },
+ "floatsByAnim": {
+  "Run": 4,
+  "Idle(stop-step swing)": 23,
+  "Idle": 1
+ },
+ "stance": {
+  "samples": 238,
+  "rampSamples": 119,
+  "n": 119,
+  "maxFloat_mm": 113.3,
+  "maxSink_mm": 1.5,
+  "floatOver20": 28,
+  "sinkOver15": 0,
+  "worst": [
+   {
+    "t": 1.3507,
+    "side": 1,
+    "mm": 77.4,
+    "anim": "Idle",
+    "reachError": 0,
+    "pelvisDrop": 0,
+    "shift": -0.003,
+    "maxShift": 0.003
+   },
+   {
+    "t": 2.5928,
+    "side": 0,
+    "mm": 59.5,
+    "anim": "Run",
+    "reachError": 0.0178,
+    "pelvisDrop": 0.0462,
+    "shift": -0.0987,
+    "maxShift": 0.1
+   },
+   {
+    "t": 2.5608,
+    "side": 0,
+    "mm": 58.1,
+    "anim": "Run",
+    "reachError": 0,
+    "pelvisDrop": 0.027,
+    "shift": -0.0511,
+    "maxShift": 0.1
+   },
+   {
+    "t": 0.9745,
+    "side": 0,
+    "mm": 45.7,
+    "anim": "Run",
+    "reachError": 0.044,
+    "pelvisDrop": 0.05,
+    "shift": -0.0932,
+    "maxShift": 0.1
+   },
+   {
+    "t": 1.8885,
+    "side": 0,
+    "mm": 24.7,
+    "anim": "Run",
+    "reachError": 0,
+    "pelvisDrop": 0,
+    "shift": -0.0266,
+    "maxShift": 0.1
+   },
+   {
+    "t": 6.3247,
+    "side": 0,
+    "mm": 6.8,
+    "anim": "Idle",
+    "reachError": 0,
+    "pelvisDrop": 0.0112,
+    "shift": -0.0028,
+    "maxShift": 0.1
+   },
+   {
+    "t": 6.355,
+    "side": 0,
+    "mm": 6.3,
+    "anim": "Idle",
+    "reachError": 0,
+    "pelvisDrop": 0.0114,
+    "shift": -0.0029,
+    "maxShift": 0.1
+   },
+   {
+    "t": 7.5143,
+    "side": 0,
+    "mm": 6.1,
+    "anim": "Run",
+    "reachError": 0,
+    "pelvisDrop": 0.0094,
+    "shift": -0.0042,
+    "maxShift": 0.1
+   }
+  ]
+ },
+ "limits": {
+  "maxSharedPelvisDrop": 0.05,
+  "maxShift": 0.1,
+  "maxPitchDeg": 20,
+  "maxRollDeg": 20
+ },
+ "probeFallback": [],
+ "probeMisses": [
+  {
+   "t": 2.4889,
+   "side": "left",
+   "grounded": false,
+   "anim": "Run",
+   "contact": 0
+  },
+  {
+   "t": 2.4889,
+   "side": "right",
+   "grounded": false,
+   "anim": "Run",
+   "contact": 0
+  },
+  {
+   "t": 2.5269,
+   "side": "left",
+   "grounded": false,
+   "anim": "Run",
+   "contact": 1
+  },
+  {
+   "t": 2.5269,
+   "side": "right",
+   "grounded": false,
+   "anim": "Run",
+   "contact": 0
+  },
+  {
+   "t": 2.793,
+   "side": "left",
+   "grounded": false,
+   "anim": "Run",
+   "contact": 0
+  },
+  {
+   "t": 2.793,
+   "side": "right",
+   "grounded": false,
+   "anim": "Run",
+   "contact": 0
+  },
+  {
+   "t": 4.7127,
+   "side": "left",
+   "grounded": false,
+   "anim": "Sprint",
+   "contact": 0
+  },
+  {
+   "t": 4.7127,
+   "side": "right",
+   "grounded": false,
+   "anim": "Sprint",
+   "contact": 0
+  },
+  {
+   "t": 4.7399,
+   "side": "left",
+   "grounded": false,
+   "anim": "Sprint",
+   "contact": 0
+  },
+  {
+   "t": 4.7399,
+   "side": "right",
+   "grounded": false,
+   "anim": "Sprint",
+   "contact": 0
+  },
+  {
+   "t": 4.7725,
+   "side": "left",
+   "grounded": false,
+   "anim": "Sprint",
+   "contact": 0
+  },
+  {
+   "t": 4.7725,
+   "side": "right",
+   "grounded": false,
+   "anim": "Sprint",
+   "contact": 0
+  },
+  {
+   "t": 4.8128,
+   "side": "left",
+   "grounded": false,
+   "anim": "Sprint",
+   "contact": 0
+  },
+  {
+   "t": 4.8128,
+   "side": "right",
+   "grounded": false,
+   "anim": "Sprint",
+   "contact": 0
+  },
+  {
+   "t": 4.8928,
+   "side": "left",
+   "grounded": false,
+   "anim": "JumpAir",
+   "contact": 0
+  },
+  {
+   "t": 4.8928,
+   "side": "right",
+   "grounded": false,
+   "anim": "JumpAir",
+   "contact": 0
+  },
+  {
+   "t": 4.9536,
+   "side": "left",
+   "grounded": false,
+   "anim": "JumpAir",
+   "contact": 0
+  },
+  {
+   "t": 4.9536,
+   "side": "right",
+   "grounded": false,
+   "anim": "JumpAir",
+   "contact": 0
+  },
+  {
+   "t": 4.9644,
+   "side": "left",
+   "grounded": false,
+   "anim": "JumpAir",
+   "contact": 0
+  },
+  {
+   "t": 4.9644,
+   "side": "right",
+   "grounded": false,
+   "anim": "JumpAir",
+   "contact": 0
+  },
+  {
+   "t": 5.0104,
+   "side": "left",
+   "grounded": false,
+   "anim": "JumpAir",
+   "contact": 0
+  },
+  {
+   "t": 5.0104,
+   "side": "right",
+   "grounded": false,
+   "anim": "JumpAir",
+   "contact": 0
+  },
+  {
+   "t": 8.5568,
+   "side": "left",
+   "grounded": false,
+   "anim": "Run",
+   "contact": 0
+  },
+  {
+   "t": 8.5568,
+   "side": "right",
+   "grounded": false,
+   "anim": "Run",
+   "contact": 0
+  },
+  {
+   "t": 8.7771,
+   "side": "left",
+   "grounded": false,
+   "anim": "Run",
+   "contact": 1
+  },
+  {
+   "t": 8.7771,
+   "side": "right",
+   "grounded": false,
+   "anim": "Run",
+   "contact": 0
+  }
+ ]
+}
