@@ -1,0 +1,6 @@
+{"memory_pressure_level": 2, "swap_used_gib": 10.95, "disk_free_gib": 5.56, "resource_state": "constrained", "heavy_work_policy": "defer_or_serialize", "processes": {"codex_app": {"count": 127, "rss_mib": 2660.3}, "image_mcp": {"count": 0, "rss_mib": 0.0}, "chrome_devtools_mcp": {"count": 0, "rss_mib": 0.0}, "agent_browser": {"count": 0, "rss_mib": 0.0}}, "rss_note": "RSS excludes some compressed/swapped memory; use footprint for manual diagnosis.", "cache_busy": {"npm": false, "pnpm": false, "uv": false, "docker": false}}
+00:01.051  blend            | Read blend: "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-crate-craft-20261101/crate-editable.blend"
+00:12.859  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-crate-craft-20261101/crate-open-native.png'
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

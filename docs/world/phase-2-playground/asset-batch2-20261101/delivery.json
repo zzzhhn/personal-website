@@ -1,0 +1,34 @@
+{
+  "url": "http://127.0.0.1:4341/world/",
+  "directory": "/tmp/bobby-world-batch2-c5f79ee1-20261101",
+  "pid": 93949,
+  "previousDirectory": "/tmp/bobby-world-craft-2ed93e9e-20261101",
+  "previousPid": 85664,
+  "httpChecks": {
+    "world/index.html": {
+      "sha256": "c5f79ee1b48787bb6644ec309fcab3f6072ffe116163665ce6d6caab2c49d0e2",
+      "bytes": 52275,
+      "matched": true
+    },
+    "_astro/WorldRuntime.BM-BS5VK.js": {
+      "sha256": "d920e5270f1fbb55d954b52a52bc428ac3a0c14053d63f2a836d494f4badc194",
+      "bytes": 3462720,
+      "matched": true
+    },
+    "assets/world/club/umbrella/umbrella-v1.glb": {
+      "sha256": "acabe5cd136560ea73f6957904c5e1d7e1569a7b66e258d8db553d7d50aae592",
+      "bytes": 2471556,
+      "matched": true
+    },
+    "assets/world/ibd/crate/crate-v1.glb": {
+      "sha256": "a01de057e34cc1788684d0874b5da50682ab9fdfeae2f794a5140411b207723e",
+      "bytes": 4161428,
+      "matched": true
+    }
+  },
+  "cloudDeployment": false,
+  "publicGitPush": false,
+  "browserReadback": "delivery-browser-readback.md",
+  "browserScreenshot": "delivery-4341-world.jpg",
+  "userFacingState": "normal 4341 product URL, no QA/legacy flags, paused settings overlay, same existing tab"
+}

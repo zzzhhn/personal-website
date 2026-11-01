@@ -1,5 +1,6 @@
 import { readFileSync, statSync } from 'node:fs';
 import { dirname, resolve, relative } from 'node:path';
+import { checkWorldCraftAssets } from './check-world-craft-assets.mjs';
 
 // Runtime-only GLBs and external images can be absent in sparse worktrees.
 const root = resolve(process.argv.slice(2).find(arg => !arg.startsWith('--')) ?? 'public');
@@ -38,3 +39,5 @@ for (const url of urls) {
   }
 }
 console.log(`Club furniture: ${urls.length} GLBs and ${images} external image references present.`);
+const craft=checkWorldCraftAssets(root);
+console.log(`World craft: ${craft.length} production GLBs present; ${craft.map(asset=>`${asset.kind} ${asset.primitives} batches`).join(', ')}.`);

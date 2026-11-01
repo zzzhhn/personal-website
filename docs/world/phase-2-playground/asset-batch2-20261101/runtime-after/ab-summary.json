@@ -1,0 +1,121 @@
+{
+  "scope": "same candidate bundle, default candidate then both legacy flags; 2 views, 1 window per mode/view",
+  "buffer": [
+    1710,
+    931
+  ],
+  "css": [
+    1710,
+    931
+  ],
+  "dpr": 1,
+  "warmupFrames": 90,
+  "sampleFrames": 300,
+  "capturesDuringSampling": false,
+  "comparability": [
+    {
+      "view": "umbrella",
+      "sameSettings": true,
+      "cameraPositionMaxDelta": 1.4210854715202004e-14,
+      "fovDeltaDegrees": 0
+    },
+    {
+      "view": "ibd",
+      "sameSettings": true,
+      "cameraPositionMaxDelta": 0.0,
+      "fovDeltaDegrees": 0.0023687918358774596
+    }
+  ],
+  "rows": [
+    {
+      "file": "candidate-ibd-sample-8.json",
+      "frames": 300,
+      "fps": 60,
+      "p50": 16.69999998807907,
+      "p95": 18.599999964237213,
+      "gpuMs": null,
+      "maxMs": 21.399999976158142,
+      "over33_4ms": 0,
+      "over50ms": 0,
+      "drawCalls": {
+        "median": 131.0,
+        "min": 131,
+        "max": 131
+      },
+      "triangles": {
+        "median": 716948.0,
+        "min": 716948,
+        "max": 716948
+      }
+    },
+    {
+      "file": "candidate-umbrella-sample-3.json",
+      "frames": 300,
+      "fps": 59.99880002371343,
+      "p50": 16.69999998807907,
+      "p95": 17.099999964237213,
+      "gpuMs": null,
+      "maxMs": 17.80000001192093,
+      "over33_4ms": 0,
+      "over50ms": 0,
+      "drawCalls": {
+        "median": 81.0,
+        "min": 81,
+        "max": 108
+      },
+      "triangles": {
+        "median": 2187636.0,
+        "min": 2187636,
+        "max": 2902175
+      }
+    },
+    {
+      "file": "legacy-ibd-sample-4.json",
+      "frames": 300,
+      "fps": 59.61488782451152,
+      "p50": 16.69999998807907,
+      "p95": 17.600000023841858,
+      "gpuMs": null,
+      "maxMs": 31.300000011920933,
+      "over33_4ms": 0,
+      "over50ms": 0,
+      "drawCalls": {
+        "median": 90.0,
+        "min": 90,
+        "max": 90
+      },
+      "triangles": {
+        "median": 477466.0,
+        "min": 477466,
+        "max": 477466
+      }
+    },
+    {
+      "file": "legacy-umbrella-sample-2.json",
+      "frames": 300,
+      "fps": 60.014403456686516,
+      "p50": 16.69999998807907,
+      "p95": 17.600000023841858,
+      "gpuMs": null,
+      "maxMs": 17.80000001192093,
+      "over33_4ms": 0,
+      "over50ms": 0,
+      "drawCalls": {
+        "median": 81.0,
+        "min": 81,
+        "max": 104
+      },
+      "triangles": {
+        "median": 1921854.0,
+        "min": 1921854,
+        "max": 2551921
+      }
+    }
+  ],
+  "limitations": [
+    "Sequential single windows; not CPU/GPU timing or memory measurement.",
+    "Old before buffer1951x1062 and disturbed54.2FPS are not direct comparison.",
+    "Renderer counts include scene and render passes, not isolated per-asset cost.",
+    "Crate sample FOV differs by less than0.01deg due normal camera settling."
+  ]
+}

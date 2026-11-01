@@ -70,16 +70,17 @@ class Collision {
 const fromTriangles = (positions: number[]) => { const g = new BufferGeometry(); g.setAttribute('position', new Float32BufferAttribute(positions, 3)); g.computeVertexNormals(); return g; };
 
 /** Deterministic, editable geometry. Only upward support faces enter surface; side guards and props enter solid. */
-export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=false,separatePoolLanterns=false}:{includeNorthBar?:boolean;separateDaybeds?:boolean;separatePoolLanterns?:boolean}={}) {
+export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=false,separatePoolLanterns=false,separateUmbrellas=false}:{includeNorthBar?:boolean;separateDaybeds?:boolean;separatePoolLanterns?:boolean;separateUmbrellas?:boolean}={}) {
   const batches = Object.fromEntries((['wood','stone','metal','fabric','foliage','glass','amber','cyan'] as ClubBatch[]).map(k => [k, new Batch()])) as Record<ClubBatch, Batch>;
   const daybedBatches = Object.fromEntries(Object.keys(batches).map(k => [k, new Batch()])) as Record<ClubBatch, Batch>;
   const poolLanternBatches = Object.fromEntries(Object.keys(batches).map(k => [k, new Batch()])) as Record<ClubBatch, Batch>;
+  const umbrellaBatches = Object.fromEntries(Object.keys(batches).map(k => [k, new Batch()])) as Record<ClubBatch, Batch>;
   const surface = new Collision(), solid = new Collision();
   const solidTriangles=(positions:number[])=>{for(let i=0;i<positions.length;i+=9)solid.triangle(positions.slice(i,i+3) as V3,positions.slice(i+3,i+6) as V3,positions.slice(i+6,i+9) as V3);};
-  let yOffset = 0, collectingDaybed = false, collectingPoolLantern = false;
+  let yOffset = 0, collectingDaybed = false, collectingPoolLantern = false, collectingUmbrella = false;
   // Only the visible furniture moves into a replaceable group. All support,
   // guard and approach triangles continue through the original collision path.
-  const add = (kind: ClubBatch, g: BufferGeometry, color: string, wind = 0) => (separateDaybeds && collectingDaybed ? daybedBatches : separatePoolLanterns && collectingPoolLantern ? poolLanternBatches : batches)[kind].add(g, color, wind);
+  const add = (kind: ClubBatch, g: BufferGeometry, color: string, wind = 0) => (separateDaybeds && collectingDaybed ? daybedBatches : separatePoolLanterns && collectingPoolLantern ? poolLanternBatches : separateUmbrellas && collectingUmbrella ? umbrellaBatches : batches)[kind].add(g, color, wind);
   const box = (kind: ClubBatch, p: V3, size: V3, color: string, rotate = 0, collide = false) => {
     const g = kind==='fabric' ? new RoundedBoxGeometry(...size,1,Math.min(.055,...size.map(n=>n*.2))) : new BoxGeometry(...size); g.rotateY(rotate); g.translate(p[0],p[1]+yOffset,p[2]);
     if (collide) { const raw = g.index ? g.toNonIndexed() : g, m=raw.getAttribute('position'); for (let i = 0; i < m.count; i += 3) solid.triangle([m.getX(i),m.getY(i),m.getZ(i)], [m.getX(i+1),m.getY(i+1),m.getZ(i+1)], [m.getX(i+2),m.getY(i+2),m.getZ(i+2)]); if(raw!==g)raw.dispose(); }
@@ -559,8 +560,10 @@ export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=fals
     }
   }
   for(const z of [47,63]) {
+    collectingUmbrella=true;
     cylinder('wood',[74,2.7,z],.05,.065,2.6,C.edge,8,0,true);
     const umbrella=new CylinderGeometry(.05,1.65,.65,8,1,true); umbrella.translate(74,3.9,z);const raw=umbrella.toNonIndexed();solidTriangles(Array.from(raw.getAttribute('position').array));raw.dispose();add('fabric',umbrella,'#c6b17d');
+    collectingUmbrella=false;
     box('wood',[74,1.42,z],[1.2,.16,2.4],C.edge,0,true); box('fabric',[74,1.6,z],[1.12,.19,2.3],'#43827e',0,true);
   }
   // Pool water has its own transparent draw, no support or side collider.
@@ -581,5 +584,6 @@ export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=fals
   built.foliage.userData={worldWind:true,softPush:true,pushMax:.62};
   const daybeds=Object.fromEntries(Object.entries(daybedBatches).map(([key,batch])=>[key,batch.geometry()])) as Record<ClubBatch,BufferGeometry>;
   const poolLanterns=Object.fromEntries(Object.entries(poolLanternBatches).map(([key,batch])=>[key,batch.geometry()])) as Record<ClubBatch,BufferGeometry>;
-  return { batches: built, daybeds, poolLanterns, colliders: { surface: surface.data(), solid: solid.data() }, seats, pool,daybedApproaches };
+  const umbrellas=Object.fromEntries(Object.entries(umbrellaBatches).map(([key,batch])=>[key,batch.geometry()])) as Record<ClubBatch,BufferGeometry>;
+  return { batches: built, daybeds, poolLanterns, umbrellas, colliders: { surface: surface.data(), solid: solid.data() }, seats, pool,daybedApproaches };
 }

@@ -1,0 +1,68 @@
+{
+  "status": "delivered_local_candidate",
+  "asset": "Club standalone umbrella visual",
+  "baseline_revision": "34754d28173691dc0913910474c43796ab7cc0a3",
+  "output": "umbrella.glb",
+  "units": "meters",
+  "export_axes": "Three glTF Y-up; Blender Z-up converted once at export",
+  "root": "center of existing wooden pole at its bottom",
+  "mount_world_positions": [
+    [
+      74,
+      1.4,
+      47
+    ],
+    [
+      74,
+      1.4,
+      63
+    ]
+  ],
+  "front_world": [
+    0,
+    0,
+    -1
+  ],
+  "front_blender": [
+    0,
+    1,
+    0
+  ],
+  "blender_transform_from_first_world": "(x-74,47-z,y-1.4)",
+  "maximum_horizontal_radius_m": 1.65,
+  "local_min_y_m": 0,
+  "local_max_y_m": 2.825,
+  "canopy_eave_local_y_m": 2.175,
+  "original_pole_local_top_y_m": 2.6,
+  "material_plan": [
+    "sand cloth",
+    "cloth binding and stitching",
+    "un-tinted photographed wood",
+    "dark joint metal"
+  ],
+  "native_parts": "individually named editable components",
+  "runtime_batching": "may merge by material; same geometry/material shared by two instances",
+  "fabric": "closed thin physical sheets with readable reverse, opaque PBR",
+  "ao": "default absent; optional bounded geometry-only AO on independent UV1 with explicit short distance",
+  "excluded": [
+    "lounger",
+    "collision meshes",
+    "seats",
+    "lights",
+    "camera",
+    "ground",
+    "other world props"
+  ],
+  "runtime_responsibility": "main coordinator; preserve original fallback and all collision/seat behavior",
+  "visual_review": "Final offline before/after, fresh underside/top and clay opened; runtime pending",
+  "browser_validation": "not performed",
+  "actual_glb_sha256": "acabe5cd136560ea73f6957904c5e1d7e1569a7b66e258d8db553d7d50aae592",
+  "actual_glb_bytes": 2471556,
+  "actual_triangles": 42268,
+  "actual_materials": 4,
+  "actual_radius_m": 1.6430000066757202,
+  "actual_local_y_range_m": [
+    0,
+    2.825000047683716
+  ]
+}

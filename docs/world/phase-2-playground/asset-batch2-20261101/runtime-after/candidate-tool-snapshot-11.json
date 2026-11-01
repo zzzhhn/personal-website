@@ -1,0 +1,132 @@
+{
+ "calls": 162,
+ "triangles": 1082517,
+ "geometries": 271,
+ "textures": 104,
+ "programs": 238,
+ "camera": {
+  "yaw": 1.5697036732051028,
+  "pitch": 0.55,
+  "distance": 12,
+  "desiredDistance": 12,
+  "driveManualZoom": false,
+  "actualDistance": 12.000000000000007,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": false,
+  "hitDistance": null,
+  "fov": 42,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   -80.7,
+   4.9,
+   -185
+  ],
+  "target": [
+   -78,
+   2.5500000000000003,
+   -187.35
+  ],
+  "forwardGround": [
+   0.7543047194311457,
+   -0.6565244780234021
+  ],
+  "groundBelowCamera": 1,
+  "clearanceAboveGround": 3.9000000000000004,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "mode": "always",
+ "frame": 24169,
+ "delta": 0.01780000001192093,
+ "night": 0,
+ "windTime": 347.0657000000378,
+ "at": 421234.89999997616,
+ "position": [
+  -78,
+  1.9039127826690674,
+  -186.5164794921875
+ ],
+ "seat": null,
+ "shot": null,
+ "paused": false,
+ "worldMinutes": 720,
+ "light": "noon",
+ "weather": "clear",
+ "quality": "balanced",
+ "hidden": false,
+ "drawingBuffer": [
+  1710,
+  931
+ ],
+ "cssSize": [
+  1710,
+  931
+ ],
+ "pixelRatio": 1,
+ "url": "http://127.0.0.1:4356/world/?qa=1&quality=balanced&start=club&paused=1&case=candidate-umbrella",
+ "player": [
+  -78,
+  1.9039127826690674,
+  -186.5164794921875
+ ],
+ "grounded": true,
+ "velocity": [
+  0,
+  -1.0333793543093606e-10,
+  -2.802596928649634e-45
+ ],
+ "objects": [
+  "djc-umbrella-visuals",
+  "djc-crafted-umbrellas",
+  "djc-umbrella-DJC_Umbrella_03_Un-tinted_oiled_timber",
+  "djc-umbrella-DJC_Umbrella_04_Aged_joint_metal",
+  "djc-umbrella-DJC_Umbrella_01_Sand_canvas",
+  "djc-umbrella-DJC_Umbrella_02_Folded_canvas_binding_and_lock_stitches",
+  "ibd-cargo-coil-front",
+  "ibd-cargo-coil-rear",
+  "ibd-cargo-parts-a",
+  "ibd-inspection-parts-a",
+  "ibd-crafted-crate-lid",
+  "ibd-cargo-parts-b",
+  "ibd-inspection-parts-b",
+  "ibd-crafted-crate-lid",
+  "ibd-crafted-crate-lid",
+  "ibd-crafted-crate-lid",
+  "ibd-cargo-checked-coil-front",
+  "ibd-cargo-checked-coil-rear",
+  "ibd-cargo-checked-parts-a",
+  "ibd-cargo-checked-parts-b",
+  "djc-umbrella-DJC_Umbrella_03_Un-tinted_oiled_timber#sun0",
+  "djc-umbrella-DJC_Umbrella_03_Un-tinted_oiled_timber#sun1",
+  "djc-umbrella-DJC_Umbrella_03_Un-tinted_oiled_timber#sun2",
+  "djc-umbrella-DJC_Umbrella_04_Aged_joint_metal#sun0",
+  "djc-umbrella-DJC_Umbrella_04_Aged_joint_metal#sun1",
+  "djc-umbrella-DJC_Umbrella_04_Aged_joint_metal#sun2",
+  "djc-umbrella-DJC_Umbrella_01_Sand_canvas#sun0",
+  "djc-umbrella-DJC_Umbrella_01_Sand_canvas#sun1",
+  "djc-umbrella-DJC_Umbrella_01_Sand_canvas#sun2",
+  "djc-umbrella-DJC_Umbrella_02_Folded_canvas_binding_and_lock_stitches#sun0",
+  "djc-umbrella-DJC_Umbrella_02_Folded_canvas_binding_and_lock_stitches#sun1",
+  "djc-umbrella-DJC_Umbrella_02_Folded_canvas_binding_and_lock_stitches#sun2"
+ ],
+ "assets": [
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/umbrella/umbrella-v1.glb",
+   "duration": 178.10000002384186,
+   "responseEnd": 46348.69999998808,
+   "decodedBodySize": 2471556
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/ibd/crate/crate-v1.glb",
+   "duration": 82.5,
+   "responseEnd": 260201.30000001192,
+   "decodedBodySize": 4161428
+  }
+ ],
+ "ibdHud": "SDIC \u00b7 INVENTORY YARD\n01\nFictional cargo\nResume guidance\nPack A inspection\n\nPresent \u2192 close and read \u2192 return. Press E for each step.\n\nPocket 1\nPocket 2\nPocket 3\nPocket 4\n\nPress E or the button below to close the jaws and read the gauge.\n\nClose and read\nPut back and leave\nManifest, observed evidence and exchanges +"
+}

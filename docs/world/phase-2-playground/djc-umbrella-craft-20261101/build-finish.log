@@ -1,0 +1,28 @@
+00:00.827  blend            | Read blend: "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-umbrella-craft-20261101/umbrella-editable.blend"
+INFO Draco mesh compression is available, use library at /Applications/Blender.app/Contents/Resources/5.1/scripts/addons_core/io_scene_gltf2/libextern_draco.dylib
+22:48:54 | INFO: Starting glTF 2.0 export
+22:48:54 | INFO: Extracting primitive: Tapered central timber pole | original bottom root.001
+22:48:54 | INFO: Primitives created: 1
+22:48:54 | INFO: Extracting primitive: Sliding metal runner | surrounds timber pole.001
+22:48:54 | INFO: Primitives created: 1
+22:48:54 | INFO: Extracting primitive: Canvas gore 01 | closed 2.5mm tailored sheet.001
+22:48:54 | INFO: Primitives created: 1
+22:48:54 | INFO: Extracting primitive: Radial panel seam 01.001
+22:48:54 | INFO: Primitives created: 1
+22:48:54 | INFO: Finished glTF 2.0 export in 0.20920872688293457 s
+
+22:48:54 | INFO: Data are loaded, start creating Blender stuff
+22:48:54 | INFO: Blender create Mesh node Tapered central timber pole | original bottom root.001
+22:48:54 | INFO: Blender create Mesh node Sliding metal runner | surrounds timber pole.001
+22:48:54 | INFO: Blender create Mesh node Canvas gore 01 | closed 2.5mm tailored sheet.001
+22:48:54 | INFO: Blender create Mesh node Radial panel seam 01.001
+22:48:54 | INFO: glTF import finished in 0.06s
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/tools/world/djc-umbrella-craft/build.py:22: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m=bpy.data.materials.new(name);m.use_nodes=True;p=m.node_tree.nodes.get('Principled BSDF')
+00:19.487  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-umbrella-craft-20261101/umbrella-close-fresh-glb.png'
+00:32.251  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-umbrella-craft-20261101/umbrella-top-fresh-glb.png'
+00:46.285  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-umbrella-craft-20261101/umbrella-clay.png'
+FINISH_OK {"triangles": 42268, "meshes": 4, "bytes": 2471556, "bounds": [[-1.6430000066757202, -1.6430000066757202, 0.0], [1.6430000066757202, 1.6430000066757202, 2.825000047683716]]}
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

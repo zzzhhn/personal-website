@@ -1,0 +1,478 @@
+{
+  "status": "candidate_technical_checks_complete",
+  "source": "Actual first standalone umbrella captured from frozen 34754d2 source; pole and canopy only. Offline source comparison, not a production screenshot.",
+  "source_hashes": {
+    "WorldDjcClubGeometry.ts": "1e8cde980887a0c38591739cc8b38d558c246e9eb35e7b05849aeab04977790f",
+    "WorldDjcClubVisual.tsx": "1c2fd5675cccd2e18f258d41b5a9dbf807acdbe48b9927b0d4873889b9a8411c",
+    "djc-club-layout.ts": "6cb167906ac87c2ef53c904d9a91983a5747192d7247afcc9b2c419ebe14a360"
+  },
+  "baseline_triangles": 48,
+  "native": {
+    "meshes": 567,
+    "triangles": 42268,
+    "materials": [
+      "01 Sand canvas | tailored tension panels",
+      "02 Folded canvas binding and lock stitches",
+      "03 Un-tinted oiled timber | CC0 photograph",
+      "04 Aged joint metal | hinge pins and sleeve"
+    ],
+    "bounds_min": [
+      -1.6430000066757202,
+      -1.6430000066757202,
+      0.0
+    ],
+    "bounds_max": [
+      1.6430000066757202,
+      1.6430000066757202,
+      2.825000047683716
+    ],
+    "dimensions": [
+      3.2860000133514404,
+      3.2860000133514404,
+      2.825000047683716
+    ],
+    "max_horizontal_radius": 1.6430000066757202,
+    "nonfinite_vertices": 0,
+    "degenerate_triangles": 0,
+    "nonmanifold_parts": []
+  },
+  "connections": [
+    {
+      "index": 0,
+      "runner_pin": [
+        0.08100000023841858,
+        0.0,
+        1.9079999923706055
+      ],
+      "rib_pin": [
+        0.8006600141525269,
+        0.0,
+        2.5588903427124023
+      ],
+      "stretcher_endpoint_gap_m": 0
+    },
+    {
+      "index": 1,
+      "runner_pin": [
+        0.05727564916014671,
+        0.05727564916014671,
+        1.9079999923706055
+      ],
+      "rib_pin": [
+        0.5661520957946777,
+        0.5661520957946777,
+        2.5588903427124023
+      ],
+      "stretcher_endpoint_gap_m": 0
+    },
+    {
+      "index": 2,
+      "runner_pin": [
+        4.959819620621032e-18,
+        0.08100000023841858,
+        1.9079999923706055
+      ],
+      "rib_pin": [
+        4.9026286839413605e-17,
+        0.8006600141525269,
+        2.5588903427124023
+      ],
+      "stretcher_endpoint_gap_m": 0
+    },
+    {
+      "index": 3,
+      "runner_pin": [
+        -0.05727564916014671,
+        0.05727564916014671,
+        1.9079999923706055
+      ],
+      "rib_pin": [
+        -0.5661520957946777,
+        0.5661520957946777,
+        2.5588903427124023
+      ],
+      "stretcher_endpoint_gap_m": 0
+    },
+    {
+      "index": 4,
+      "runner_pin": [
+        -0.08100000023841858,
+        9.919639241242064e-18,
+        1.9079999923706055
+      ],
+      "rib_pin": [
+        -0.8006600141525269,
+        9.805257367882721e-17,
+        2.5588903427124023
+      ],
+      "stretcher_endpoint_gap_m": 0
+    },
+    {
+      "index": 5,
+      "runner_pin": [
+        -0.05727564916014671,
+        -0.05727564916014671,
+        1.9079999923706055
+      ],
+      "rib_pin": [
+        -0.5661520957946777,
+        -0.5661520957946777,
+        2.5588903427124023
+      ],
+      "stretcher_endpoint_gap_m": 0
+    },
+    {
+      "index": 6,
+      "runner_pin": [
+        -1.4879458861863095e-17,
+        -0.08100000023841858,
+        1.9079999923706055
+      ],
+      "rib_pin": [
+        -1.4707885390079591e-16,
+        -0.8006600141525269,
+        2.5588903427124023
+      ],
+      "stretcher_endpoint_gap_m": 0
+    },
+    {
+      "index": 7,
+      "runner_pin": [
+        0.05727564916014671,
+        -0.05727564916014671,
+        1.9079999923706055
+      ],
+      "rib_pin": [
+        0.5661520957946777,
+        -0.5661520957946777,
+        2.5588903427124023
+      ],
+      "stretcher_endpoint_gap_m": 0
+    }
+  ],
+  "origin_world": [
+    74,
+    1.4,
+    47
+  ],
+  "instances_world": [
+    [
+      74,
+      1.4,
+      47
+    ],
+    [
+      74,
+      1.4,
+      63
+    ]
+  ],
+  "front_world": [
+    0,
+    0,
+    -1
+  ],
+  "blender": "5.1.2",
+  "render": {
+    "engine": "Cycles CPU",
+    "threads": 4,
+    "resolution": [
+      1280,
+      1100
+    ],
+    "view_transform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "exposure": 0,
+    "camera": [
+      4.4,
+      5.6,
+      3.5
+    ],
+    "target": [
+      0,
+      0,
+      1.5
+    ],
+    "ortho_scale": 4.15,
+    "samples": 24,
+    "lights": [
+      {
+        "name": "Sea window",
+        "position": [
+          0,
+          3.8,
+          6
+        ],
+        "energy": 800,
+        "size": 4.2,
+        "color": [
+          0.87,
+          0.95,
+          1
+        ]
+      },
+      {
+        "name": "Warm side",
+        "position": [
+          4,
+          -1,
+          4
+        ],
+        "energy": 600,
+        "size": 3.5,
+        "color": [
+          1,
+          0.85,
+          0.64
+        ]
+      },
+      {
+        "name": "Soft rear rim",
+        "position": [
+          -3,
+          -3,
+          4
+        ],
+        "energy": 650,
+        "size": 3.2,
+        "color": [
+          0.83,
+          0.96,
+          1
+        ]
+      }
+    ],
+    "light_target": [
+      0,
+      0,
+      1.5
+    ],
+    "world_color": [
+      0.2,
+      0.2,
+      0.2
+    ],
+    "depth_of_field": false
+  },
+  "ao": "absent",
+  "browser_validation": "not performed",
+  "runtime": {
+    "meshes": 4,
+    "triangles": 42268,
+    "materials": [
+      "01 Sand canvas | tailored tension panels",
+      "02 Folded canvas binding and lock stitches",
+      "03 Un-tinted oiled timber | CC0 photograph",
+      "04 Aged joint metal | hinge pins and sleeve"
+    ],
+    "bounds_min": [
+      -1.6430000066757202,
+      -1.6430000066757202,
+      0.0
+    ],
+    "bounds_max": [
+      1.6430000066757202,
+      1.6430000066757202,
+      2.825000047683716
+    ],
+    "dimensions": [
+      3.2860000133514404,
+      3.2860000133514404,
+      2.825000047683716
+    ],
+    "max_horizontal_radius": 1.6430000066757202,
+    "nonfinite_vertices": 0,
+    "degenerate_triangles": 0,
+    "nonmanifold_parts": []
+  },
+  "fresh_glb": {
+    "meshes": 4,
+    "triangles": 42268,
+    "materials": [
+      "01 Sand canvas | tailored tension panels",
+      "02 Folded canvas binding and lock stitches",
+      "03 Un-tinted oiled timber | CC0 photograph",
+      "04 Aged joint metal | hinge pins and sleeve"
+    ],
+    "bounds_min": [
+      -1.6430000066757202,
+      -1.6430000066757202,
+      0.0
+    ],
+    "bounds_max": [
+      1.6430000066757202,
+      1.6430000066757202,
+      2.825000047683716
+    ],
+    "dimensions": [
+      3.2860000133514404,
+      3.2860000133514404,
+      2.825000047683716
+    ],
+    "max_horizontal_radius": 1.6430000066757202,
+    "nonfinite_vertices": 0,
+    "degenerate_triangles": 0,
+    "nonmanifold_parts": []
+  },
+  "glb_bytes": 2471556,
+  "embedded_images": 5,
+  "fresh_images": [
+    {
+      "name": "Authored canvas roughness 1024",
+      "size": [
+        1024,
+        1024
+      ],
+      "colorspace": "Non-Color"
+    },
+    {
+      "name": "Authored neutral sand canvas color 1024",
+      "size": [
+        1024,
+        1024
+      ],
+      "colorspace": "sRGB"
+    },
+    {
+      "name": "Authored restrained canvas normal 1024",
+      "size": [
+        1024,
+        1024
+      ],
+      "colorspace": "Non-Color"
+    },
+    {
+      "name": "wood_diff",
+      "size": [
+        1024,
+        1024
+      ],
+      "colorspace": "sRGB"
+    },
+    {
+      "name": "wood_nor_gl",
+      "size": [
+        1024,
+        1024
+      ],
+      "colorspace": "Non-Color"
+    }
+  ],
+  "extensions": [],
+  "top_level_nodes": [
+    {
+      "mesh": 0,
+      "name": "DJC_Umbrella_03_Un-tinted_oiled_timber"
+    },
+    {
+      "mesh": 1,
+      "name": "DJC_Umbrella_04_Aged_joint_metal"
+    },
+    {
+      "mesh": 2,
+      "name": "DJC_Umbrella_01_Sand_canvas"
+    },
+    {
+      "mesh": 3,
+      "name": "DJC_Umbrella_02_Folded_canvas_binding_and_lock_stitches"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "name": "03 Un-tinted oiled timber | CC0 photograph",
+      "normalTexture": {
+        "index": 0,
+        "scale": 0.2800000011920929
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 1
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.6600000262260437
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "04 Aged joint metal | hinge pins and sleeve",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.05951123684644699,
+          0.0666259378194809,
+          0.05126945674419403,
+          1
+        ],
+        "metallicFactor": 0.6499999761581421,
+        "roughnessFactor": 0.46000000834465027
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "01 Sand canvas | tailored tension panels",
+      "normalTexture": {
+        "index": 2,
+        "scale": 0.5
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 3
+        },
+        "metallicFactor": 0,
+        "metallicRoughnessTexture": {
+          "index": 4
+        }
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "02 Folded canvas binding and lock stitches",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.6444796919822693,
+          0.5394794940948486,
+          0.34191441535949707,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.9100000262260437
+      }
+    }
+  ],
+  "hashes": {
+    "umbrella-editable.blend": "826cfb8168b3ca65a01d0ca65dc458118b38dfe472899451cceff5f4995c3cf6",
+    "umbrella.glb": "acabe5cd136560ea73f6957904c5e1d7e1569a7b66e258d8db553d7d50aae592",
+    "umbrella-before.png": "fe4681c94b6b22aa647ba1ea6a1a89bb0b75cfc5f7c8d8837a1d98022027dd13",
+    "umbrella-after.png": "73372289aed6b8f04b8be9db9190e81e73c483310f0ce4c7c157519f5f65e242",
+    "umbrella-close-fresh-glb.png": "c9469e455dda918065013943ba39c54288a87037654de8b627c2c802dc7ecee8",
+    "umbrella-top-fresh-glb.png": "cffd2cb62a8649cac044afe610b457beb607c78ed902c3c7a6cec7104ecc5133",
+    "umbrella-clay.png": "175595d22cc650ade154beaee66cc68f3f3b2c34eb667416ce0f450a8b05481a",
+    "baseline-captured.json": "1aaad88ab0aa8a73a8e9ecd969ca7d407629dca42a42fd958cc4fce6be0711f3"
+  },
+  "scripts": {
+    "build.py": "c4d50f582f30961aa54c3dfaea5cc6897a2b69be0da73ce0cf588e47179fd0bc",
+    "capture-baseline.mjs": "7320e141c5115f49e300ccb30cb81a914387b5636b707aeee8f0619177e46385",
+    "run.py": "4491352a857e23882e5354f2bf56ecc4cc2ade09c2a3c07d34b3a611ba5f5541"
+  },
+  "images_inspected": true,
+  "limits": [
+    "Offline images are source-faithful studio comparison, not production screenshots.",
+    "No runtime performance or user visual acceptance claimed.",
+    "Native named parts remain separate; runtime derivative merges by physical material."
+  ],
+  "inspected_final_images": [
+    "umbrella-before.png",
+    "umbrella-after.png",
+    "umbrella-close-fresh-glb.png",
+    "umbrella-top-fresh-glb.png",
+    "umbrella-clay.png"
+  ],
+  "visual_review_notes": [
+    "Low curved canopy and construction connections retained.",
+    "Slope-aligned tip pockets removed top-face bright blocks; checked final native and fresh GLB views.",
+    "Runtime appearance and performance not yet measured by this task."
+  ],
+  "axes": "Native and fresh Blender stats use Z-up; GLB exported Three Y-up exactly once.",
+  "source_texture_record": "texture-sources.json",
+  "heavy_work_complete": true
+}

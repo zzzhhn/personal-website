@@ -1,0 +1,1995 @@
+[
+  {
+    "name": "Lid full length plank",
+    "volume": 0.12014875870178068,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      -1.2095714807510376,
+      0.0,
+      1.25
+    ]
+  },
+  {
+    "name": "Lid full length plank.001",
+    "volume": 0.11954882949987292,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      -0.8057143092155457,
+      0.0,
+      1.25
+    ]
+  },
+  {
+    "name": "Lid full length plank.002",
+    "volume": 0.11954882949987292,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      -0.4028571546077728,
+      0.0,
+      1.25
+    ]
+  },
+  {
+    "name": "Lid full length plank.003",
+    "volume": 0.11954882949987292,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      1.25
+    ]
+  },
+  {
+    "name": "Lid full length plank.004",
+    "volume": 0.11954882949987292,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.4028571546077728,
+      0.0,
+      1.25
+    ]
+  },
+  {
+    "name": "Lid full length plank.005",
+    "volume": 0.11954882949987292,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.8057143092155457,
+      0.0,
+      1.25
+    ]
+  },
+  {
+    "name": "Lid full length plank.006",
+    "volume": 0.12014875870178068,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      1.2095714807510376,
+      0.0,
+      1.25
+    ]
+  },
+  {
+    "name": "Original amber lid band",
+    "volume": 0.00893396206868014,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | amber lid straps"
+    ],
+    "position_three": [
+      -0.800000011920929,
+      0.07000000029802322,
+      1.25
+    ]
+  },
+  {
+    "name": "Original amber lid band.001",
+    "volume": 0.00893396206868014,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | amber lid straps"
+    ],
+    "position_three": [
+      0.800000011920929,
+      0.07000000029802322,
+      1.25
+    ]
+  },
+  {
+    "name": "Lid hinge leaf",
+    "volume": 0.001465653974098606,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      -0.9300000071525574,
+      -0.03799999877810478,
+      0.10499999672174454
+    ]
+  },
+  {
+    "name": "True-axis split hinge sleeve",
+    "volume": 0.00029865978471467307,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Hinge leaf screw",
+    "volume": 3.3255405513563137e-06,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Hinge leaf screw.001",
+    "volume": 3.3255364218249445e-06,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Lid hinge leaf.001",
+    "volume": 0.001465653974098606,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.9300000071525574,
+      -0.03799999877810478,
+      0.10499999672174454
+    ]
+  },
+  {
+    "name": "True-axis split hinge sleeve.001",
+    "volume": 0.0002986597847146733,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Hinge leaf screw.002",
+    "volume": 3.3255364218249377e-06,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Hinge leaf screw.003",
+    "volume": 3.3255405513563307e-06,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Pallet longitudinal bearer",
+    "volume": 0.16947159468816278,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      -1.2000000476837158,
+      -0.05999999865889549,
+      -0.0
+    ]
+  },
+  {
+    "name": "Pallet longitudinal bearer.001",
+    "volume": 0.16947159468816278,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.0,
+      -0.05999999865889549,
+      -0.0
+    ]
+  },
+  {
+    "name": "Pallet longitudinal bearer.002",
+    "volume": 0.16947159468816278,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      1.2000000476837158,
+      -0.05999999865889549,
+      -0.0
+    ]
+  },
+  {
+    "name": "Load distributing steel chassis",
+    "volume": 0.9643089297564427,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      -0.30000001192092896,
+      -0.0
+    ]
+  },
+  {
+    "name": "Pallet deck board",
+    "volume": 0.14377559029907444,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.0,
+      0.05999999865889549,
+      -1.0
+    ]
+  },
+  {
+    "name": "Pallet deck board.001",
+    "volume": 0.14377559029907444,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.0,
+      0.05999999865889549,
+      -0.5
+    ]
+  },
+  {
+    "name": "Pallet deck board.002",
+    "volume": 0.14377559029907444,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.0,
+      0.05999999865889549,
+      -0.0
+    ]
+  },
+  {
+    "name": "Pallet deck board.003",
+    "volume": 0.14377559029907444,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.0,
+      0.05999999865889549,
+      0.5
+    ]
+  },
+  {
+    "name": "Pallet deck board.004",
+    "volume": 0.14377559029907444,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.0,
+      0.05999999865889549,
+      1.0
+    ]
+  },
+  {
+    "name": "Protected internal base",
+    "volume": 1.2942928226359882,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | charcoal rubber"
+    ],
+    "position_three": [
+      0.0,
+      0.23000000417232513,
+      -0.0
+    ]
+  },
+  {
+    "name": "Side horizontal plank",
+    "volume": 0.08359600567851334,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      -1.350000023841858,
+      0.3370000123977661,
+      -0.0
+    ]
+  },
+  {
+    "name": "Side horizontal plank.001",
+    "volume": 0.08359600567851334,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      -1.350000023841858,
+      0.6200000047683716,
+      -0.0
+    ]
+  },
+  {
+    "name": "Side horizontal plank.002",
+    "volume": 0.08359600567851334,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      -1.350000023841858,
+      0.902999997138977,
+      -0.0
+    ]
+  },
+  {
+    "name": "Side horizontal plank.003",
+    "volume": 0.08359600567851334,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      1.350000023841858,
+      0.3370000123977661,
+      -0.0
+    ]
+  },
+  {
+    "name": "Side horizontal plank.004",
+    "volume": 0.08359600567851334,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      1.350000023841858,
+      0.6200000047683716,
+      -0.0
+    ]
+  },
+  {
+    "name": "Side horizontal plank.005",
+    "volume": 0.08359600567851334,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      1.350000023841858,
+      0.902999997138977,
+      -0.0
+    ]
+  },
+  {
+    "name": "End horizontal plank",
+    "volume": 0.09028480809777417,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.0,
+      0.3370000123977661,
+      -1.2200000286102295
+    ]
+  },
+  {
+    "name": "End horizontal plank.001",
+    "volume": 0.09028480809777417,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.0,
+      0.6200000047683716,
+      -1.2200000286102295
+    ]
+  },
+  {
+    "name": "End horizontal plank.002",
+    "volume": 0.09028480809777417,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.0,
+      0.902999997138977,
+      -1.2200000286102295
+    ]
+  },
+  {
+    "name": "End horizontal plank.003",
+    "volume": 0.09028480809777417,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.0,
+      0.3370000123977661,
+      1.2200000286102295
+    ]
+  },
+  {
+    "name": "End horizontal plank.004",
+    "volume": 0.09028480809777417,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.0,
+      0.6200000047683716,
+      1.2200000286102295
+    ]
+  },
+  {
+    "name": "End horizontal plank.005",
+    "volume": 0.09028480809777417,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.0,
+      0.902999997138977,
+      1.2200000286102295
+    ]
+  },
+  {
+    "name": "Original rim top datum",
+    "volume": 0.010457628622508965,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      -1.350000023841858,
+      1.027500033378601,
+      -0.0
+    ]
+  },
+  {
+    "name": "Original rim top datum.001",
+    "volume": 0.010457628622508965,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      1.350000023841858,
+      1.027500033378601,
+      -0.0
+    ]
+  },
+  {
+    "name": "Side corner timber batten",
+    "volume": 0.006456963125894253,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      -1.440000057220459,
+      0.6000000238418579,
+      -1.159999966621399
+    ]
+  },
+  {
+    "name": "Side corner timber batten.001",
+    "volume": 0.006456963125894253,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      -1.440000057220459,
+      0.6000000238418579,
+      1.159999966621399
+    ]
+  },
+  {
+    "name": "Side center timber batten",
+    "volume": 0.0038664630133432845,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      -1.440000057220459,
+      0.6000000238418579,
+      -0.0
+    ]
+  },
+  {
+    "name": "Side corner timber batten.002",
+    "volume": 0.006456963125894253,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      1.440000057220459,
+      0.6000000238418579,
+      -1.159999966621399
+    ]
+  },
+  {
+    "name": "Side corner timber batten.003",
+    "volume": 0.006456963125894253,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      1.440000057220459,
+      0.6000000238418579,
+      1.159999966621399
+    ]
+  },
+  {
+    "name": "Side center timber batten.001",
+    "volume": 0.0038664630133432845,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      1.440000057220459,
+      0.6000000238418579,
+      -0.0
+    ]
+  },
+  {
+    "name": "Front back horizontal rail",
+    "volume": 0.00944883803337604,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.0,
+      0.25999999046325684,
+      -1.2949999570846558
+    ]
+  },
+  {
+    "name": "Front back horizontal rail.001",
+    "volume": 0.00944883803337604,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.0,
+      0.9399999976158142,
+      -1.2949999570846558
+    ]
+  },
+  {
+    "name": "Front back corner post",
+    "volume": 0.0023172690812812684,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      -1.2699999809265137,
+      0.6200000047683716,
+      -1.2949999570846558
+    ]
+  },
+  {
+    "name": "Front back corner post.001",
+    "volume": 0.0023172690812812684,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      1.2699999809265137,
+      0.6200000047683716,
+      -1.2949999570846558
+    ]
+  },
+  {
+    "name": "Front back horizontal rail.002",
+    "volume": 0.00944883803337604,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.0,
+      0.25999999046325684,
+      1.2949999570846558
+    ]
+  },
+  {
+    "name": "Front back horizontal rail.003",
+    "volume": 0.00944883803337604,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      0.0,
+      0.9399999976158142,
+      1.2949999570846558
+    ]
+  },
+  {
+    "name": "Front back corner post.002",
+    "volume": 0.0023172690812812684,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      -1.2699999809265137,
+      0.6200000047683716,
+      1.2949999570846558
+    ]
+  },
+  {
+    "name": "Front back corner post.003",
+    "volume": 0.0023172690812812684,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | light sawn timber",
+      "IBD | cut timber endgrain"
+    ],
+    "position_three": [
+      1.2699999809265137,
+      0.6200000047683716,
+      1.2949999570846558
+    ]
+  },
+  {
+    "name": "Folded corner plate side",
+    "volume": 0.001225565554790683,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      -1.4140000343322754,
+      0.6299999952316284,
+      -1.1799999475479126
+    ]
+  },
+  {
+    "name": "Folded corner plate end",
+    "volume": 0.0012255655547908288,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      -1.340000033378601,
+      0.6299999952316284,
+      -1.2860000133514404
+    ]
+  },
+  {
+    "name": "Corner through bolt",
+    "volume": 1.6461464381611314e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Corner bolt end",
+    "volume": 1.7957847619034712e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Corner through bolt.001",
+    "volume": 1.6461478009115577e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Corner bolt end.001",
+    "volume": 1.7957862485312476e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Folded corner plate side.001",
+    "volume": 0.001225565554790683,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      -1.4140000343322754,
+      0.6299999952316284,
+      1.1799999475479126
+    ]
+  },
+  {
+    "name": "Folded corner plate end.001",
+    "volume": 0.0012255655547908288,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      -1.340000033378601,
+      0.6299999952316284,
+      1.2860000133514404
+    ]
+  },
+  {
+    "name": "Corner through bolt.002",
+    "volume": 1.6461464381612513e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Corner bolt end.002",
+    "volume": 1.795784761903526e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Corner through bolt.003",
+    "volume": 1.64614780091161e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Corner bolt end.003",
+    "volume": 1.7957862485311887e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Folded corner plate side.002",
+    "volume": 0.001225565554790683,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      1.4140000343322754,
+      0.6299999952316284,
+      -1.1799999475479126
+    ]
+  },
+  {
+    "name": "Folded corner plate end.002",
+    "volume": 0.0012255655547908288,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      1.340000033378601,
+      0.6299999952316284,
+      -1.2860000133514404
+    ]
+  },
+  {
+    "name": "Corner through bolt.004",
+    "volume": 1.646146438161162e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Corner bolt end.004",
+    "volume": 1.795784761903451e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Corner through bolt.005",
+    "volume": 1.646147800911385e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Corner bolt end.005",
+    "volume": 1.795786248531022e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Folded corner plate side.003",
+    "volume": 0.001225565554790683,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      1.4140000343322754,
+      0.6299999952316284,
+      1.1799999475479126
+    ]
+  },
+  {
+    "name": "Folded corner plate end.003",
+    "volume": 0.0012255655547908288,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      1.340000033378601,
+      0.6299999952316284,
+      1.2860000133514404
+    ]
+  },
+  {
+    "name": "Corner through bolt.006",
+    "volume": 1.646146438161165e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Corner bolt end.006",
+    "volume": 1.7957847619033858e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Corner through bolt.007",
+    "volume": 1.64614780091184e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Corner bolt end.007",
+    "volume": 1.7957862485311934e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Retained front webbing",
+    "volume": 0.000504865618687078,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | muted blue webbing"
+    ],
+    "position_three": [
+      -0.8799999952316284,
+      0.6000000238418579,
+      1.2890000343322754
+    ]
+  },
+  {
+    "name": "Retained strap buckle",
+    "volume": 0.00022166898115169194,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      -0.8799999952316284,
+      0.7799999713897705,
+      1.3075000047683716
+    ]
+  },
+  {
+    "name": "Buckle center webbing",
+    "volume": 1.5013701892972243e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | muted blue webbing"
+    ],
+    "position_three": [
+      -0.8799999952316284,
+      0.7799999713897705,
+      1.3220000267028809
+    ]
+  },
+  {
+    "name": "Retained front webbing.001",
+    "volume": 0.000504865618687078,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | muted blue webbing"
+    ],
+    "position_three": [
+      0.8799999952316284,
+      0.6000000238418579,
+      1.2890000343322754
+    ]
+  },
+  {
+    "name": "Retained strap buckle.001",
+    "volume": 0.00022166898115169194,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.8799999952316284,
+      0.7799999713897705,
+      1.3075000047683716
+    ]
+  },
+  {
+    "name": "Buckle center webbing.001",
+    "volume": 1.5013701892972243e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | muted blue webbing"
+    ],
+    "position_three": [
+      0.8799999952316284,
+      0.7799999713897705,
+      1.3220000267028809
+    ]
+  },
+  {
+    "name": "Retained side restraint",
+    "volume": 0.0014154488672280243,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | muted blue webbing"
+    ],
+    "position_three": [
+      -1.4149999618530273,
+      0.3199999928474426,
+      -0.0
+    ]
+  },
+  {
+    "name": "Retained side restraint.001",
+    "volume": 0.0014154488672280243,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | muted blue webbing"
+    ],
+    "position_three": [
+      -1.4149999618530273,
+      0.9200000166893005,
+      -0.0
+    ]
+  },
+  {
+    "name": "Retained side restraint.002",
+    "volume": 0.0014154488672280243,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | muted blue webbing"
+    ],
+    "position_three": [
+      1.4149999618530273,
+      0.3199999928474426,
+      -0.0
+    ]
+  },
+  {
+    "name": "Retained side restraint.003",
+    "volume": 0.0014154488672280243,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | muted blue webbing"
+    ],
+    "position_three": [
+      1.4149999618530273,
+      0.9200000166893005,
+      -0.0
+    ]
+  },
+  {
+    "name": "Original slot fork-channel pad",
+    "volume": 0.011947111364507821,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | charcoal rubber"
+    ],
+    "position_three": [
+      -0.9300000071525574,
+      0.3700000047683716,
+      -0.5
+    ]
+  },
+  {
+    "name": "Original slot fork-channel pad.001",
+    "volume": 0.011947111364507821,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | charcoal rubber"
+    ],
+    "position_three": [
+      -0.3700000047683716,
+      0.3700000047683716,
+      -0.5
+    ]
+  },
+  {
+    "name": "Original slot fork-channel pad.002",
+    "volume": 0.011947111364507821,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | charcoal rubber"
+    ],
+    "position_three": [
+      -0.9300000071525574,
+      0.3700000047683716,
+      0.6000000238418579
+    ]
+  },
+  {
+    "name": "Original slot fork-channel pad.003",
+    "volume": 0.011947111364507821,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | charcoal rubber"
+    ],
+    "position_three": [
+      -0.3700000047683716,
+      0.3700000047683716,
+      0.6000000238418579
+    ]
+  },
+  {
+    "name": "Original slot fork-channel pad.004",
+    "volume": 0.011947111364507821,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | charcoal rubber"
+    ],
+    "position_three": [
+      0.3700000047683716,
+      0.3700000047683716,
+      -0.5
+    ]
+  },
+  {
+    "name": "Original slot fork-channel pad.005",
+    "volume": 0.011947111364507821,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | charcoal rubber"
+    ],
+    "position_three": [
+      0.9300000071525574,
+      0.3700000047683716,
+      -0.5
+    ]
+  },
+  {
+    "name": "Original slot fork-channel pad.006",
+    "volume": 0.011947111364507821,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | charcoal rubber"
+    ],
+    "position_three": [
+      0.3700000047683716,
+      0.3700000047683716,
+      0.6000000238418579
+    ]
+  },
+  {
+    "name": "Original slot fork-channel pad.007",
+    "volume": 0.011947111364507821,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | charcoal rubber"
+    ],
+    "position_three": [
+      0.9300000071525574,
+      0.3700000047683716,
+      0.6000000238418579
+    ]
+  },
+  {
+    "name": "Retained M8 four unit label",
+    "volume": 0.016610420758497828,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | retained label card"
+    ],
+    "position_three": [
+      0.0,
+      0.6399999856948853,
+      1.2999999523162842
+    ]
+  },
+  {
+    "name": "Retained exact M8 4 ink stroke",
+    "volume": 7.436014059074248e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | retained label ink"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Retained exact M8 4 ink stroke.001",
+    "volume": 5.5022423707577e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | retained label ink"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Retained exact M8 4 ink stroke.002",
+    "volume": 5.502244355005915e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | retained label ink"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Retained exact M8 4 ink stroke.003",
+    "volume": 7.436005535601392e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | retained label ink"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Retained exact M8 4 ink stroke.004",
+    "volume": 7.436007133752561e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | retained label ink"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Retained exact M8 4 ink stroke.005",
+    "volume": 7.436009797337799e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | retained label ink"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Retained exact M8 4 ink stroke.006",
+    "volume": 4.394007763910751e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | retained label ink"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Retained exact M8 4 ink stroke.007",
+    "volume": 4.3940077639107616e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | retained label ink"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Retained exact M8 4 ink stroke.008",
+    "volume": 4.3940077639107724e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | retained label ink"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Retained exact M8 4 ink stroke.009",
+    "volume": 4.990512812636666e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | retained label ink"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Retained exact M8 4 ink stroke.010",
+    "volume": 5.408008896950079e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | retained label ink"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Retained exact M8 4 ink stroke.011",
+    "volume": 7.43601405907414e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | retained label ink"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Original hoist stub base",
+    "volume": 0.0038804291523037815,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | muted blue webbing"
+    ],
+    "position_three": [
+      1.1799999475479126,
+      0.33000001311302185,
+      -0.949999988079071
+    ]
+  },
+  {
+    "name": "Original stowed hoist stub",
+    "volume": 0.00564916874522945,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Original hoist stub collar",
+    "volume": 0.0017940290518458897,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | retained label ink"
+    ],
+    "position_three": [
+      1.1799999475479126,
+      0.4000000059604645,
+      -0.949999988079071
+    ]
+  },
+  {
+    "name": "Original hoist stub collar.001",
+    "volume": 0.0017940290518458897,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | retained label ink"
+    ],
+    "position_three": [
+      1.1799999475479126,
+      0.8999999761581421,
+      -0.949999988079071
+    ]
+  },
+  {
+    "name": "Caster mounting plate",
+    "volume": 0.004199527670077291,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      -1.2000000476837158,
+      -0.39500001072883606,
+      -0.8999999761581421
+    ]
+  },
+  {
+    "name": "Caster swivel bearing",
+    "volume": 0.001647487393369859,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Caster wheel fork cheek",
+    "volume": 0.001859027361045326,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      -1.315999984741211,
+      -0.5879999995231628,
+      -0.8999999761581421
+    ]
+  },
+  {
+    "name": "Caster axle cap",
+    "volume": 6.244995832847133e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Caster wheel fork cheek.001",
+    "volume": 0.001859027361045326,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      -1.0839999914169312,
+      -0.5879999995231628,
+      -0.8999999761581421
+    ]
+  },
+  {
+    "name": "Caster axle cap.001",
+    "volume": 6.244995832846849e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Rounded rubber caster tire",
+    "volume": 0.025353812738179847,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | charcoal rubber"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Recessed pressed wheel hub",
+    "volume": 0.009625143215162512,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Wheel through axle",
+    "volume": 0.001087586630259926,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Caster mounting plate.001",
+    "volume": 0.004199527670077291,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      -1.2000000476837158,
+      -0.39500001072883606,
+      0.8999999761581421
+    ]
+  },
+  {
+    "name": "Caster swivel bearing.001",
+    "volume": 0.0016474873933698608,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Caster wheel fork cheek.002",
+    "volume": 0.001859027361045326,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      -1.315999984741211,
+      -0.5879999995231628,
+      0.8999999761581421
+    ]
+  },
+  {
+    "name": "Caster axle cap.002",
+    "volume": 6.244995832847147e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Caster wheel fork cheek.003",
+    "volume": 0.001859027361045326,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      -1.0839999914169312,
+      -0.5879999995231628,
+      0.8999999761581421
+    ]
+  },
+  {
+    "name": "Caster axle cap.003",
+    "volume": 6.244995832846965e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Rounded rubber caster tire.001",
+    "volume": 0.025353812738179847,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | charcoal rubber"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Recessed pressed wheel hub.001",
+    "volume": 0.009625143215162503,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Wheel through axle.001",
+    "volume": 0.0010875866302599263,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Caster mounting plate.002",
+    "volume": 0.004199527670077291,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      1.2000000476837158,
+      -0.39500001072883606,
+      -0.8999999761581421
+    ]
+  },
+  {
+    "name": "Caster swivel bearing.002",
+    "volume": 0.0016474873933698584,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Caster wheel fork cheek.004",
+    "volume": 0.001859027361045326,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      1.0839999914169312,
+      -0.5879999995231628,
+      -0.8999999761581421
+    ]
+  },
+  {
+    "name": "Caster axle cap.004",
+    "volume": 6.244995832847068e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Caster wheel fork cheek.005",
+    "volume": 0.001859027361045326,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      1.315999984741211,
+      -0.5879999995231628,
+      -0.8999999761581421
+    ]
+  },
+  {
+    "name": "Caster axle cap.005",
+    "volume": 6.244995832846922e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Rounded rubber caster tire.002",
+    "volume": 0.02535381273817982,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | charcoal rubber"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Recessed pressed wheel hub.002",
+    "volume": 0.009625143215162505,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Wheel through axle.002",
+    "volume": 0.0010875866302599265,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Caster mounting plate.003",
+    "volume": 0.004199527670077291,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      1.2000000476837158,
+      -0.39500001072883606,
+      0.8999999761581421
+    ]
+  },
+  {
+    "name": "Caster swivel bearing.003",
+    "volume": 0.0016474873933698588,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Caster wheel fork cheek.006",
+    "volume": 0.001859027361045326,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      1.0839999914169312,
+      -0.5879999995231628,
+      0.8999999761581421
+    ]
+  },
+  {
+    "name": "Caster axle cap.006",
+    "volume": 6.244995832846824e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Caster wheel fork cheek.007",
+    "volume": 0.001859027361045326,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      1.315999984741211,
+      -0.5879999995231628,
+      0.8999999761581421
+    ]
+  },
+  {
+    "name": "Caster axle cap.007",
+    "volume": 6.244995832847128e-05,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Rounded rubber caster tire.003",
+    "volume": 0.025353812738179833,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | charcoal rubber"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Recessed pressed wheel hub.003",
+    "volume": 0.009625143215162505,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  },
+  {
+    "name": "Wheel through axle.003",
+    "volume": 0.001087586630259923,
+    "nonmanifold_edges": 0,
+    "material": [
+      "IBD | formed galvanized steel"
+    ],
+    "position_three": [
+      0.0,
+      0.0,
+      -0.0
+    ]
+  }
+]

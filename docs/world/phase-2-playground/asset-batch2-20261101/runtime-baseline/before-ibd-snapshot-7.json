@@ -1,0 +1,96 @@
+{
+ "calls": 107,
+ "triangles": 888376,
+ "geometries": 243,
+ "textures": 98,
+ "programs": 191,
+ "camera": {
+  "yaw": 1.5697036732051028,
+  "pitch": 0.55,
+  "distance": 12,
+  "desiredDistance": 12,
+  "driveManualZoom": false,
+  "actualDistance": 12.00000000000001,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": false,
+  "hitDistance": null,
+  "fov": 50.00838368497436,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   -77.98882183447127,
+   8.826159529836984,
+   -175.76971184221787
+  ],
+  "target": [
+   -78,
+   2.5539127826690673,
+   -186
+  ],
+  "forwardGround": [
+   -0.001092653372375451,
+   -0.9999994030541256
+  ],
+  "groundBelowCamera": 1,
+  "clearanceAboveGround": 7.826159529836984,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "mode": "always",
+ "frame": 29874,
+ "delta": 0.015100000023841858,
+ "night": 0,
+ "windTime": 479.6951000002489,
+ "at": 529135,
+ "position": [
+  -78,
+  1.9039127826690674,
+  -186
+ ],
+ "seat": null,
+ "shot": null,
+ "paused": false,
+ "worldMinutes": 720,
+ "light": "noon",
+ "weather": "clear",
+ "quality": "balanced",
+ "hidden": false,
+ "drawingBuffer": [
+  1951,
+  1062
+ ],
+ "cssSize": [
+  1710,
+  931
+ ],
+ "pixelRatio": 1.1412731405118963,
+ "url": "http://127.0.0.1:4356/world/?qa=1&quality=balanced&start=club&paused=1&case=before-umbrella",
+ "player": [
+  -78,
+  1.9039127826690674,
+  -186
+ ],
+ "grounded": true,
+ "velocity": [
+  0,
+  0,
+  4.382337283459492e-05
+ ],
+ "objects": [
+  "ibd-cargo-coil-front",
+  "ibd-cargo-coil-rear",
+  "ibd-cargo-parts-a",
+  "ibd-inspection-parts-a",
+  "ibd-cargo-parts-b",
+  "ibd-inspection-parts-b",
+  "ibd-cargo-checked-coil-front",
+  "ibd-cargo-checked-coil-rear",
+  "ibd-cargo-checked-parts-a",
+  "ibd-cargo-checked-parts-b"
+ ],
+ "ibdHud": "SDIC \u00b7 INVENTORY YARD\n01\nFictional cargo\nResume guidance\nPack A inspection\n\nApproach a device and press E. Resume guidance at any time.\n\nE / Y\nCount, gauge and inspect contents\n\nLid open. Check the contents now.\n\nManifest, observed evidence and exchanges +"
+}

@@ -1,0 +1,12 @@
+{
+  "commit": "34754d2",
+  "sha256": {
+    "src/components/world/WorldStreetGeometry.ts": "b240724f8ef8784d716d44372078733fdf5750bffe7b71728ed7f205234a6134",
+    "src/components/world/attractions/ibd-pack-geometry.ts": "6f73e53da9b0229fe3dc0e5e36553d1d087978359acdc25128cc0e5832f37e24",
+    "src/components/world/attractions/ibd-yard-geometry.ts": "7563ae68852ddde9d07caf623124945e24e30a88bcfe478c154a34069fd80545",
+    "src/components/world/attractions/ibd-stock-craft.ts": "3c5c2c5d3b31beaea87529c9795eef018821376a12816428a4ba5d4027b86de2",
+    "src/components/world/attractions/ibd-pack-layout.ts": "51631df2a6407b034d1a324f44c3a2c74d8112fe2f326a693f5b67e51df90699",
+    "src/components/world/attractions/ibd-yard-palette.ts": "b3eb4c09e60bcd952974f0f328b1d7392f8a054f27cb1f7f4c3f743529d1adf3",
+    "src/components/world/attractions/WorldIbdMechanisms.tsx": "8041bec5e799d8c5d000b48d19019eba02cb6ded8169ea0beb16151c56eabda8"
+  }
+}

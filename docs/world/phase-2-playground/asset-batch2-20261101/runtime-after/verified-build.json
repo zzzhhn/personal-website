@@ -1,0 +1,24 @@
+{
+  "directory": "/tmp/bobby-world-batch2-c5f79ee1-20261101",
+  "sourceBaseline": "34754d28173691dc0913910474c43796ab7cc0a3",
+  "branch": "codex/world-craft-batch2",
+  "build": "npm run build: passed",
+  "files": {
+    "world/index.html": {
+      "sha256": "c5f79ee1b48787bb6644ec309fcab3f6072ffe116163665ce6d6caab2c49d0e2",
+      "bytes": 52275
+    },
+    "_astro/WorldRuntime.BM-BS5VK.js": {
+      "sha256": "d920e5270f1fbb55d954b52a52bc428ac3a0c14053d63f2a836d494f4badc194",
+      "bytes": 3462720
+    },
+    "assets/world/club/umbrella/umbrella-v1.glb": {
+      "sha256": "acabe5cd136560ea73f6957904c5e1d7e1569a7b66e258d8db553d7d50aae592",
+      "bytes": 2471556
+    },
+    "assets/world/ibd/crate/crate-v1.glb": {
+      "sha256": "a01de057e34cc1788684d0874b5da50682ab9fdfeae2f794a5140411b207723e",
+      "bytes": 4161428
+    }
+  }
+}

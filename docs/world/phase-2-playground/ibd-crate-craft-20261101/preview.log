@@ -1,0 +1,17 @@
+{"memory_pressure_level": 2, "swap_used_gib": 10.57, "disk_free_gib": 6.62, "resource_state": "constrained", "heavy_work_policy": "defer_or_serialize", "processes": {"codex_app": {"count": 127, "rss_mib": 3647.5}, "image_mcp": {"count": 0, "rss_mib": 0.0}, "chrome_devtools_mcp": {"count": 0, "rss_mib": 0.0}, "agent_browser": {"count": 0, "rss_mib": 0.0}}, "rss_note": "RSS excludes some compressed/swapped memory; use footprint for manual diagnosis.", "cache_busy": {"npm": false, "pnpm": false, "uv": false, "docker": false}}
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/tools/world/ibd-crate-craft/build.py:19: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m=bpy.data.materials.new(name);m.use_nodes=True
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/tools/world/ibd-crate-craft/build.py:211: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  scene.world=bpy.data.worlds.new('Neutral inspection world');scene.world.use_nodes=True
+00:10.676  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-crate-craft-20261101/crate-before.png'
+00:19.470  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-crate-craft-20261101/crate-before-night.png'
+00:29.116  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-crate-craft-20261101/crate-after.png'
+00:38.983  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-crate-craft-20261101/crate-after-night.png'
+00:48.481  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-crate-craft-20261101/crate-clay.png'
+01:03.388  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-crate-craft-20261101/crate-close.png'
+01:21.098  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/ibd-crate-craft-20261101/crate-open-native.png'
+Info: Saved as "crate-editable.blend"
+PREVIEW_OK {"Shell": {"triangles": 21068, "materials": ["IBD | charcoal rubber", "IBD | cut timber endgrain", "IBD | formed galvanized steel", "IBD | light sawn timber", "IBD | muted blue webbing", "IBD | retained label card", "IBD | retained label ink"], "bounds_three": {"min": [-1.5, -1.0099999904632568, -1.350000023841858], "max": [1.5, 1.0450000762939453, 1.350000023841858]}, "nonfinite_vertices": 0, "degenerate_triangles": 0}, "Lid": {"triangles": 2412, "materials": ["IBD | amber lid straps", "IBD | cut timber endgrain", "IBD | formed galvanized steel", "IBD | light sawn timber"], "bounds_three": {"min": [-1.4100000858306885, -0.05999999865889549, -0.0], "max": [1.4100000858306885, 0.08500000089406967, 2.5]}, "nonfinite_vertices": 0, "degenerate_triangles": 0}}
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

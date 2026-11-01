@@ -1,0 +1,118 @@
+{
+ "calls": 102,
+ "triangles": 1675685,
+ "geometries": 165,
+ "textures": 93,
+ "programs": 121,
+ "camera": {
+  "yaw": -1.5707963267948966,
+  "pitch": 0.4,
+  "distance": 12,
+  "desiredDistance": 12,
+  "driveManualZoom": false,
+  "actualDistance": 12,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": false,
+  "hitDistance": null,
+  "fov": 50,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   76.51952362060545,
+   6.694236524062754,
+   30.96113449652592
+  ],
+  "target": [
+   76.51952362060545,
+   2.0212164163589486,
+   42.01386642456054
+  ],
+  "forwardGround": [
+   0,
+   1
+  ],
+  "groundBelowCamera": 1.399993896484375,
+  "clearanceAboveGround": 5.294242627578379,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "mode": "always",
+ "frame": 560,
+ "delta": 0.01659999996423721,
+ "night": 0,
+ "windTime": 8.697199999988083,
+ "at": 79821.5,
+ "position": [
+  76.51952362060547,
+  1.3712164163589478,
+  42.01386642456055
+ ],
+ "seat": null,
+ "shot": null,
+ "paused": false,
+ "worldMinutes": 720,
+ "light": "noon",
+ "weather": "clear",
+ "quality": "balanced",
+ "hidden": false,
+ "drawingBuffer": [
+  2013,
+  1030
+ ],
+ "cssSize": [
+  1710,
+  875
+ ],
+ "pixelRatio": 1.1772275318111343,
+ "url": "http://127.0.0.1:4356/world/?qa=1&quality=balanced&start=club&paused=1&case=candidate-umbrella",
+ "player": [
+  76.51952362060547,
+  1.3712164163589478,
+  42.01386642456055
+ ],
+ "grounded": true,
+ "velocity": [
+  -3.7021070511400467e-06,
+  2.578372182426847e-08,
+  1.8873121007345617e-05
+ ],
+ "objects": [
+  "djc-umbrella-visuals",
+  "djc-crafted-umbrellas",
+  "djc-umbrella-DJC_Umbrella_03_Un-tinted_oiled_timber",
+  "djc-umbrella-DJC_Umbrella_04_Aged_joint_metal",
+  "djc-umbrella-DJC_Umbrella_01_Sand_canvas",
+  "djc-umbrella-DJC_Umbrella_02_Folded_canvas_binding_and_lock_stitches",
+  "ibd-cargo-coil-front",
+  "ibd-cargo-coil-rear",
+  "ibd-cargo-parts-a",
+  "ibd-inspection-parts-a",
+  "ibd-cargo-parts-b",
+  "ibd-inspection-parts-b",
+  "djc-umbrella-DJC_Umbrella_03_Un-tinted_oiled_timber#sun0",
+  "djc-umbrella-DJC_Umbrella_03_Un-tinted_oiled_timber#sun1",
+  "djc-umbrella-DJC_Umbrella_03_Un-tinted_oiled_timber#sun2",
+  "djc-umbrella-DJC_Umbrella_04_Aged_joint_metal#sun0",
+  "djc-umbrella-DJC_Umbrella_04_Aged_joint_metal#sun1",
+  "djc-umbrella-DJC_Umbrella_04_Aged_joint_metal#sun2",
+  "djc-umbrella-DJC_Umbrella_01_Sand_canvas#sun0",
+  "djc-umbrella-DJC_Umbrella_01_Sand_canvas#sun1",
+  "djc-umbrella-DJC_Umbrella_01_Sand_canvas#sun2",
+  "djc-umbrella-DJC_Umbrella_02_Folded_canvas_binding_and_lock_stitches#sun0",
+  "djc-umbrella-DJC_Umbrella_02_Folded_canvas_binding_and_lock_stitches#sun1",
+  "djc-umbrella-DJC_Umbrella_02_Folded_canvas_binding_and_lock_stitches#sun2"
+ ],
+ "assets": [
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/umbrella/umbrella-v1.glb",
+   "duration": 178.10000002384186,
+   "responseEnd": 46348.69999998808,
+   "decodedBodySize": 2471556
+  }
+ ],
+ "ibdHud": null
+}

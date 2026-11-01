@@ -30,4 +30,4 @@
 
 最终包为 `build-final.json`，实际使用 `pool-lantern-v2.glb`。45 项相关测试在独立 release 和共享 integration checkout 均通过；r2 只变材质资产及 URL，重新通过资产合同检查和正式构建。最终普通 approach 的 300 帧为 59.805 FPS、p95 17.4 ms，1951×1062，GPU timing 不可用。前一轮同几何样本约 60 FPS；保留 r1 与 r2 的原始回执，不把短测当整岛保证。
 
-4341 已切换冻结快照 `/tmp/bobby-world-craft-2ed93e9e-20261101`，HTML、runtime bundle、AO 日床与 v2 灯具通过 HTTP hash 核对，见 `delivery.json`。共享整合代码按精确补丁和三方合并更新，保留 `useGreyboxClaim('club-basin')` 与全部无关改动，见 `integration-receipt.json`。本轮不 Git push、不公开部署。用户视觉接受仍待试玩反馈。
+4341 已切换冻结快照 `/tmp/bobby-world-craft-2ed93e9e-20261101`，HTML、runtime bundle、AO 日床与 v2 灯具通过 HTTP hash 核对，见 `delivery.json`。共享整合代码按精确补丁和三方合并更新，保留 `useGreyboxClaim('club-basin')` 与全部无关改动，见 `integration-receipt.json`。本轮不 Git push、不公开部署。用户随后于 2026-11-01 明确接受了本次实际网页修复和细节质感方向，并授权继续其它资产批次。此接受不延伸至尚未制作的资产。

@@ -1,0 +1,10 @@
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/tools/world/djc-umbrella-craft/build.py:22: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m=bpy.data.materials.new(name);m.use_nodes=True;p=m.node_tree.nodes.get('Principled BSDF')
+00:17.080  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-umbrella-craft-20261101/umbrella-before.png'
+00:30.922  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-umbrella-craft-20261101/umbrella-after.png'
+00:44.715  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-umbrella-craft-20261101/umbrella-structure-preview.png'
+Info: Saved as "umbrella-editable.blend"
+PREVIEW_OK {"meshes": 567, "triangles": 42268, "materials": ["01 Sand canvas | tailored tension panels", "02 Folded canvas binding and lock stitches", "03 Un-tinted oiled timber | CC0 photograph", "04 Aged joint metal | hinge pins and sleeve"], "bounds_min": [-1.6430000066757202, -1.6430000066757202, 0.0], "bounds_max": [1.6430000066757202, 1.6430000066757202, 2.825000047683716], "dimensions": [3.2860000133514404, 3.2860000133514404, 2.825000047683716], "max_horizontal_radius": 1.6430000066757202, "nonfinite_vertices": 0, "degenerate_triangles": 0, "nonmanifold_parts": []}
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

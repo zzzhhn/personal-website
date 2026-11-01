@@ -1,0 +1,93 @@
+{
+ "calls": 135,
+ "triangles": 2088219,
+ "geometries": 347,
+ "textures": 92,
+ "programs": 195,
+ "camera": {
+  "yaw": -1.5707963267948966,
+  "pitch": 0.4,
+  "distance": 12,
+  "desiredDistance": 12,
+  "driveManualZoom": false,
+  "actualDistance": 12,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": false,
+  "hitDistance": null,
+  "fov": 50,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   76.51952362060545,
+   6.694236524062754,
+   30.96113449652592
+  ],
+  "target": [
+   76.51952362060545,
+   2.021216416358948,
+   42.01386642456054
+  ],
+  "forwardGround": [
+   0,
+   1
+  ],
+  "groundBelowCamera": 1.399993896484375,
+  "clearanceAboveGround": 5.294242627578379,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "mode": "always",
+ "frame": 846,
+ "delta": 0.016900000035762787,
+ "night": 0,
+ "windTime": 13.805299999833121,
+ "at": 69057.90000003576,
+ "position": [
+  76.51952362060547,
+  1.3712164163589478,
+  42.01386642456055
+ ],
+ "seat": null,
+ "shot": null,
+ "paused": false,
+ "worldMinutes": 720,
+ "light": "noon",
+ "weather": "clear",
+ "quality": "balanced",
+ "hidden": false,
+ "drawingBuffer": [
+  1710,
+  931
+ ],
+ "cssSize": [
+  1710,
+  931
+ ],
+ "pixelRatio": 1,
+ "url": "http://127.0.0.1:4356/world/?qa=1&quality=balanced&start=club&paused=1&djcUmbrellas=legacy&ibdCrates=legacy&case=legacy-umbrella",
+ "player": [
+  76.51952362060547,
+  1.3712164163589478,
+  42.01386642456055
+ ],
+ "grounded": true,
+ "velocity": [
+  -3.7021070511400467e-06,
+  2.578372182426847e-08,
+  1.8873121007345617e-05
+ ],
+ "objects": [
+  "ibd-cargo-coil-front",
+  "ibd-cargo-coil-rear",
+  "ibd-cargo-parts-a",
+  "ibd-inspection-parts-a",
+  "ibd-cargo-parts-b",
+  "ibd-inspection-parts-b"
+ ],
+ "assets": [],
+ "ibdHud": null
+}

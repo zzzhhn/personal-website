@@ -1,0 +1,196 @@
+{
+  "source_commit": "34754d2",
+  "source_hashes": {
+    "src/components/world/WorldStreetGeometry.ts": "b240724f8ef8784d716d44372078733fdf5750bffe7b71728ed7f205234a6134",
+    "src/components/world/attractions/ibd-pack-geometry.ts": "6f73e53da9b0229fe3dc0e5e36553d1d087978359acdc25128cc0e5832f37e24",
+    "src/components/world/attractions/ibd-yard-geometry.ts": "7563ae68852ddde9d07caf623124945e24e30a88bcfe478c154a34069fd80545",
+    "src/components/world/attractions/ibd-stock-craft.ts": "3c5c2c5d3b31beaea87529c9795eef018821376a12816428a4ba5d4027b86de2",
+    "src/components/world/attractions/ibd-pack-layout.ts": "51631df2a6407b034d1a324f44c3a2c74d8112fe2f326a693f5b67e51df90699",
+    "src/components/world/attractions/ibd-yard-palette.ts": "b3eb4c09e60bcd952974f0f328b1d7392f8a054f27cb1f7f4c3f743529d1adf3",
+    "src/components/world/attractions/WorldIbdMechanisms.tsx": "8041bec5e799d8c5d000b48d19019eba02cb6ded8169ea0beb16151c56eabda8"
+  },
+  "units": "metres",
+  "native_axes": "Z-up",
+  "runtime_axes": "Y-up; front +Z",
+  "baseline": {
+    "Shell": {
+      "bounds": {
+        "min": [
+          -1.5,
+          -1.0099999904632568,
+          -1.350000023841858
+        ],
+        "max": [
+          1.5,
+          1.0449999570846558,
+          1.350000023841858
+        ]
+      },
+      "triangles": 1180
+    },
+    "Lid": {
+      "bounds": {
+        "min": [
+          -1.409999966621399,
+          -0.05999999865889549,
+          0
+        ],
+        "max": [
+          1.409999966621399,
+          0.08500000089406967,
+          2.5
+        ]
+      },
+      "triangles": 132
+    }
+  },
+  "native": {
+    "Shell": {
+      "triangles": 21068,
+      "materials": [
+        "IBD | charcoal rubber",
+        "IBD | cut timber endgrain",
+        "IBD | formed galvanized steel",
+        "IBD | light sawn timber",
+        "IBD | muted blue webbing",
+        "IBD | retained label card",
+        "IBD | retained label ink"
+      ],
+      "bounds_three": {
+        "min": [
+          -1.5,
+          -1.0099999904632568,
+          -1.350000023841858
+        ],
+        "max": [
+          1.5,
+          1.0450000762939453,
+          1.350000023841858
+        ]
+      },
+      "nonfinite_vertices": 0,
+      "degenerate_triangles": 0
+    },
+    "Lid": {
+      "triangles": 2412,
+      "materials": [
+        "IBD | amber lid straps",
+        "IBD | cut timber endgrain",
+        "IBD | formed galvanized steel",
+        "IBD | light sawn timber"
+      ],
+      "bounds_three": {
+        "min": [
+          -1.4100000858306885,
+          -0.05999999865889549,
+          -0.0
+        ],
+        "max": [
+          1.4100000858306885,
+          0.08500000089406967,
+          2.5
+        ]
+      },
+      "nonfinite_vertices": 0,
+      "degenerate_triangles": 0
+    }
+  },
+  "rig": {
+    "camera_three": [
+      4.8,
+      3.3,
+      5.6
+    ],
+    "target_three": [
+      0,
+      0.25,
+      0
+    ],
+    "ortho_scale": 5.5,
+    "resolution": [
+      1000,
+      800
+    ],
+    "samples": 24,
+    "view_transform": "AgX",
+    "look": "Medium High Contrast",
+    "exposure": 0
+  },
+  "textures": {
+    "asset": "Coated Pine",
+    "asset_url": "https://polyhaven.com/a/coated_pine",
+    "license": "CC0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": [
+      "Charlotte Baglioni (scanning)",
+      "Rico Cilliers (processing)"
+    ],
+    "source_width_m": 0.7,
+    "planned_adaptation": "Photographed grain and knots retained; albedo neutralized toward approved light packaging timber; matte roughness derived from the scan rather than retaining varnish gloss. Not represented as a raw-pine scan.",
+    "files": [
+      {
+        "file": "coated_pine_diff_1k.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/coated_pine/coated_pine_diff_1k.jpg",
+        "bytes": 710600,
+        "sha256": "afee7cfb2ec1716edc712f929cdb3d3dfbac5a0ba290e25943b4472a8144bbaf"
+      },
+      {
+        "file": "coated_pine_nor_gl_1k.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/coated_pine/coated_pine_nor_gl_1k.jpg",
+        "bytes": 443383,
+        "sha256": "91eb707d7b0dd44133502878f37ede93e6be23c2019e64df72dffe46f6985b3a"
+      },
+      {
+        "file": "coated_pine_rough_1k.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/coated_pine/coated_pine_rough_1k.jpg",
+        "bytes": 491513,
+        "sha256": "6ecebef8ffde1833ee9656d3bf7cf863694ad99ac041cacf2fc5432b2f5383e1"
+      }
+    ],
+    "derived": {
+      "source_crop_xyxy": [
+        0,
+        24,
+        1024,
+        490
+      ],
+      "derived_size": [
+        1024,
+        512
+      ],
+      "crop_reason": "Actual image review: isolate first photographed board between baked source joints; UV across-grain remains inside this strip to avoid painting false joints onto mesh boards.",
+      "grain_rotation_ccw_90": false,
+      "gradient_source_mean": [
+        0.0111955825850184,
+        0.018378460645068567
+      ],
+      "albedo": "Scanned luminance/median clamped .43..1.40, exponent .72; light timber sRGB target [.80,.67,.48], 13 percent source chroma retained.",
+      "roughness": "Scanned relief variation remapped to matte .71..88, median .79; coating gloss intentionally removed.",
+      "normal": "Original OpenGL normal, vector components rotated consistently with pixels when grain is rotated; runtime strength .22.",
+      "files": [
+        {
+          "file": "pine-packaging-basecolor.png",
+          "sha256": "9d1ca082ec21b89d4af41dd7430a4db42c623b4c2eb4424a3fc23fd4063e0a9c",
+          "bytes": 990254
+        },
+        {
+          "file": "pine-packaging-normal.png",
+          "sha256": "285001688e2a8ec564bb8e1b56d182bf4d77f65779a12198a52a3a1e3f9c935f",
+          "bytes": 562034
+        },
+        {
+          "file": "pine-packaging-roughness.png",
+          "sha256": "7287de6832e55df62336ccd88bb6f48d468dd285d1fe8113b2693227a563318a",
+          "bytes": 95086
+        }
+      ]
+    }
+  },
+  "references": [
+    "visual-calibration-20261027/ibd-yard-v1.png",
+    "visual-calibration-20261027/ibd-yard-night-v1.png"
+  ],
+  "limitations": [
+    "Offline matched geometry renders only; browser behavior and user visual acceptance pending."
+  ]
+}

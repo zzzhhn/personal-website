@@ -1,0 +1,90 @@
+{
+  "method": "scoped git diff HEAD + git apply --check; explicit new file copies",
+  "destination": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration",
+  "preserved": "existing useGreyboxClaim and all unrelated integration edits; no whole-tree replacement",
+  "files": {
+    "src/components/world/WorldDjcClubGeometry.ts": {
+      "before": "1e8cde980887a0c38591739cc8b38d558c246e9eb35e7b05849aeab04977790f",
+      "after": "cbda8632ad23dd9f8344b338297e963c6411598a38a0c4261d9bf44feab128ee"
+    },
+    "src/components/world/WorldDjcClubVisual.tsx": {
+      "before": "0d87a1e29fe9ca607e5cdc312734572d0cf5567b9513cd32f024e3d2b73cec2d",
+      "after": "11634fb19fdab433d7f5a3ce2ec0bed5f51363da371d1364538d3d4552d03838"
+    },
+    "src/components/world/WorldDjcFurnitureEnvironment.ts": {
+      "before": "1ed6cc82e17116815ee6df93a9190fc1eab70f1b0f0f27f4cf2c4b9d252573e2",
+      "after": "d3e5dc1c367400f79df93df6071b054a1afb42887a716e958b2c1be7ca3e4ac9"
+    },
+    "src/components/world/attractions/WorldIbdMechanisms.tsx": {
+      "before": "8041bec5e799d8c5d000b48d19019eba02cb6ded8169ea0beb16151c56eabda8",
+      "after": "d092a4928e39bc1f141ab970a3ec7532985685302f29d4b9b05303b632befbd9"
+    },
+    "src/components/world/attractions/ibd-pack-geometry.ts": {
+      "before": "6f73e53da9b0229fe3dc0e5e36553d1d087978359acdc25128cc0e5832f37e24",
+      "after": "4ad380a9f1a69b42d4ade359aeb44f1fa5370dfd5e510dba53e011062ae26c45"
+    },
+    "tools/world/check-club-assets.mjs": {
+      "before": "90f9ba91819a521a61e1570e7b7ff5416a1f2f67d643909bcc7e5b9ed485afe5",
+      "after": "e2275502bae8685f024371ab20b2539a8ac0b4620c983e1f9978e43c8cfe86fe"
+    },
+    "src/components/world/WorldDjcClubUmbrellas.tsx": {
+      "before": null,
+      "after": "5d12a3407142fd0ec9da138bb0b075fee64f4f0585e945dc448071b271c65d28"
+    },
+    "src/components/world/djc-umbrella-visual.ts": {
+      "before": null,
+      "after": "3aed9b8a8c9cf82536ffe0b6997750c8047d1a4e9447f46f59e2b2f6f470eb02"
+    },
+    "src/components/world/djc-umbrella-visual.test.mjs": {
+      "before": null,
+      "after": "0c3d1fe2de53082e7495922fd24fb0620363340eae65b9202ea65e7ddc925c82"
+    },
+    "src/components/world/world-craft-gltf-test.mjs": {
+      "before": null,
+      "after": "cc766467de24cde176d68505de656fa3c61d30c17438a2ad9b8d59964ac53672"
+    },
+    "src/components/world/attractions/WorldIbdCratePart.tsx": {
+      "before": null,
+      "after": "9ad4e358ebd90317bae6f8b214a9a60967d7060a907c62a6e3864d2ecbd4e3e0"
+    },
+    "src/components/world/attractions/ibd-crate-visual.ts": {
+      "before": null,
+      "after": "b37fd3782cd6a2c32070c81794025e301b490213da88e178f0c44bf59071933e"
+    },
+    "src/components/world/attractions/ibd-crate-visual.test.mjs": {
+      "before": null,
+      "after": "3d6890b397c13cb3d55a3d76edb925c972674151c89505d878cabe13a098a215"
+    },
+    "tools/world/check-world-craft-assets.mjs": {
+      "before": null,
+      "after": "38d6103fbd6bc2a8888129f78b43078874e9877e6fb9767b68c506857fdb1393"
+    },
+    "tools/world/check-world-craft-assets.test.mjs": {
+      "before": null,
+      "after": "f5b283b78f4e8b7e54576a2284cbb6821a7bc70a539b9ccdee953b270055c35c"
+    },
+    "public/assets/world/club/umbrella/umbrella-v1.glb": {
+      "before": null,
+      "after": "acabe5cd136560ea73f6957904c5e1d7e1569a7b66e258d8db553d7d50aae592"
+    },
+    "public/assets/world/club/umbrella/LICENSES.md": {
+      "before": null,
+      "after": "7da0e4a4b58b35a653a5ffb0fcdc33e78927efecbd73dc221a4b0327295263c4"
+    },
+    "public/assets/world/ibd/crate/crate-v1.glb": {
+      "before": null,
+      "after": "a01de057e34cc1788684d0874b5da50682ab9fdfeae2f794a5140411b207723e"
+    },
+    "public/assets/world/ibd/crate/LICENSES.md": {
+      "before": null,
+      "after": "a09519c32d32252b83a1b4c3155d0cda88fc5e4e0de04c01e62a2e54e3571281"
+    }
+  },
+  "status": "scoped integration complete; assets checked; real candidate browser review accepted by coordinator",
+  "focusedIntegrationTests": {
+    "count": 12,
+    "passed": 12,
+    "log": "/tmp/bobby-world-batch2-integration-tests.log",
+    "scope": "both real GLBs, collider/interface and resource ownership, checker"
+  }
+}

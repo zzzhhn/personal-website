@@ -16,12 +16,15 @@ import { isIbdCoilCheck } from './ibd-coil-inspection.ts';
 import { craneMayAdvance,craneLanded,craneControl } from './ibd-crane-control';
 import WorldIbdCraneLevers from './WorldIbdCraneLevers';
 import { ibdStockItem } from './ibd-stock';
+import WorldIbdCratePart from './WorldIbdCratePart';
+import { IBD_CRATE_LID_PIVOT, ibdCrateLegacy } from './ibd-crate-visual';
 
-const cargoGeometry = (item: IbdItem) => item.kind === 'coil' ? buildIbdCoil(!!item.defects['quality-rear'], item.id.includes('rear') ? 2 : 1) : buildIbdPack(item.quantity, item.specId);
+const cargoGeometry = (item: IbdItem,includeShell=true) => item.kind === 'coil' ? buildIbdCoil(!!item.defects['quality-rear'], item.id.includes('rear') ? 2 : 1) : buildIbdPack(item.quantity, item.specId,{includeShell});
 const movable = { movable: true, solid: true, assetId: 'ibd-yard-cargo' };
 /** Four controlled cargo bodies. No per-frame React updates and no free debris simulation. */
 export default function WorldIbdMechanisms({ material, active }: { material: MeshStandardMaterial; active: boolean }) {
   const game = useIbdYardStore(s => s.game);
+  const legacyCrates=useMemo(()=>ibdCrateLegacy(typeof window==='undefined'?'':window.location.search),[]);
   const { world, rapier, colliderStates } = useRapier();
   const safety = useMemo(() => createIbdSafety(rapier, game), [rapier, game.pending, game.core, game.exchanges]);
   const playerCollider = useRef<RapierCollider | null>(null), lookupDelay = useRef(0), completeToken = useRef<number | null>(null);
@@ -44,9 +47,11 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
   const resources = useMemo(() => {
     const scenario = yardCase(game);
     const goods = Object.fromEntries(IBD_SLOTS.map(slot => [slot, slot.startsWith('parts')?buildIbdPackShell():cargoGeometry(scenario.items.find(i => i.id === yardItemId(game, slot))!)])) as Record<IbdSlot, BufferGeometry>;
-    const fresh = Object.fromEntries(IBD_SLOTS.map(slot => [slot, cargoGeometry(IBD_ALL_CLEAR.items.find(i => i.id === slot)!)])) as Record<IbdSlot, BufferGeometry>;
-    const returned = game.exchanges.map(e => ({ slot: e.slot, geometry: cargoGeometry(e.original) }));
-    if(game.stock.originalReturned)returned.push({slot:'parts-b',geometry:cargoGeometry(IBD_CASES[game.caseIndex].items.find(i=>i.id==='parts-b')!)});
+    // Samples remain separate from the replaceable shell, including the spare
+    // and quarantine props. Their original quantity/specification stays intact.
+    const fresh = Object.fromEntries(IBD_SLOTS.map(slot => [slot, cargoGeometry(IBD_ALL_CLEAR.items.find(i => i.id === slot)!,false)])) as Record<IbdSlot, BufferGeometry>;
+    const returned = game.exchanges.map(e => ({ slot: e.slot, geometry: cargoGeometry(e.original,false) }));
+    if(game.stock.originalReturned)returned.push({slot:'parts-b',geometry:cargoGeometry(IBD_CASES[game.caseIndex].items.find(i=>i.id==='parts-b')!,false)});
     return { goods, fresh, returned };
   }, [game.caseIndex, game.exchanges, game.stock.originalReturned]);
   const fixed = useMemo(() => ({ lid: buildIbdLid(), crane: buildIbdCrane(), hook: buildIbdHook(), cables: buildIbdCables(), shutter: buildIbdShutter(), rotation: new Quaternion(), up: new Vector3(0, 1, 0) }), []);
@@ -131,10 +136,11 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
         position={IBD_CARGO_HOME[slot]} name={`ibd-cargo-${slot}`} userData={movable}>
         <CuboidCollider args={coil ? [2, 2, 1.4] : [1.4, .55, 1.3]} position={coil ? [0, 0, 0] : [0, .45, 0]} friction={.8} />
         <group visible={slot!=='parts-b'||bVisible}>
-        <mesh ref={m => { meshes.current[slot] = m; }} geometry={resources.goods[slot]} material={material} castShadow receiveShadow userData={movable} />
+        {coil?<mesh ref={m => { meshes.current[slot] = m; }} geometry={resources.goods[slot]} material={material} castShadow receiveShadow userData={movable} />:
+          <WorldIbdCratePart part="Shell" active={active} legacy={legacyCrates} fallback={<mesh ref={m => { meshes.current[slot] = m; }} geometry={resources.goods[slot]} material={material} castShadow receiveShadow userData={movable}/>}/>}
         {!coil&&(slot==='parts-a'||slot==='parts-b')&&<WorldIbdPackInspection key={itemFor(slot).id} slot={slot} item={itemFor(slot)} material={material}/>}
-        {!coil && <group ref={g => { lids.current[slot] = g; }} position={[0, 1.08, -1.25]}>
-          <mesh geometry={fixed.lid} material={material} castShadow userData={movable} />
+        {!coil && <group ref={g => { lids.current[slot] = g; }} position={IBD_CRATE_LID_PIVOT}>
+          <WorldIbdCratePart part="Lid" active={active} legacy={legacyCrates} fallback={<mesh geometry={fixed.lid} material={material} castShadow userData={movable}/>}/>
         </group>}
         </group>
       </RigidBody>;
@@ -143,10 +149,10 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
       const item=ibdStockItem(game.round,game.caseIndex,key);
       return <RigidBody key={key} type="fixed" colliders={false} position={IBD_STOCK_HOME[key]} userData={movable}>
         <CuboidCollider args={[1.4,.55,1.3]} position={[0,.45,0]} friction={.8}/>
-        <mesh geometry={resources.goods['parts-b']} material={material} castShadow receiveShadow userData={movable}/>
+        <WorldIbdCratePart part="Shell" active={active} legacy={legacyCrates} fallback={<mesh geometry={resources.goods['parts-b']} material={material} castShadow receiveShadow userData={movable}/>}/>
         <WorldIbdPackInspection slot={key} item={item} material={material}/>
-        <group ref={g=>{stockLids.current[key]=g;}} position={[0,1.08,-1.25]} rotation={[game.core.opened.includes(item.id)?-2:0,0,0]}>
-          <mesh geometry={fixed.lid} material={material} castShadow userData={movable}/>
+        <group ref={g=>{stockLids.current[key]=g;}} position={IBD_CRATE_LID_PIVOT} rotation={[game.core.opened.includes(item.id)?-2:0,0,0]}>
+          <WorldIbdCratePart part="Lid" active={active} legacy={legacyCrates} fallback={<mesh geometry={fixed.lid} material={material} castShadow userData={movable}/>}/>
         </group>
       </RigidBody>;
     })}
@@ -162,12 +168,16 @@ export default function WorldIbdMechanisms({ material, active }: { material: Mes
       position={ibdPhysicalCargoPose(game, exchanging, 0, true).at} userData={movable}>
       <CuboidCollider args={exchanging.startsWith('coil') ? [2,2,1.4] : [1.4,.55,1.3]} position={exchanging.startsWith('coil') ? [0,0,0] : [0,.45,0]} />
       <mesh geometry={resources.fresh[exchanging]} material={material} castShadow receiveShadow userData={movable} />
-      {!exchanging.startsWith('coil') && <mesh geometry={fixed.lid} material={material} position={[0,1.08,-1.25]} castShadow />}
+      {!exchanging.startsWith('coil') && <>
+        <WorldIbdCratePart part="Shell" active={active} legacy={legacyCrates} fallback={<mesh geometry={resources.goods['parts-b']} material={material} castShadow receiveShadow userData={movable}/>}/>
+        <group position={IBD_CRATE_LID_PIVOT}><WorldIbdCratePart part="Lid" active={active} legacy={legacyCrates} fallback={<mesh geometry={fixed.lid} material={material} castShadow/>}/></group>
+      </>}
     </RigidBody>}
     {resources.returned.map(r => <RigidBody key={r.slot} type="fixed" colliders={false} userData={{ solid: true, assetId: 'ibd-quarantine' }}
       position={r.slot.startsWith('coil') ? [-17, 2.35, 12] : [14, 1.1, -16.3]} rotation={[0, Math.PI, 0]}>
       <CuboidCollider args={r.slot.startsWith('coil') ? [2, 2, 1.4] : [1.4, .55, 1.3]} position={r.slot.startsWith('coil') ? [0, 0, 0] : [0, .45, 0]} />
       <mesh geometry={r.geometry} material={material} castShadow receiveShadow />
+      {!r.slot.startsWith('coil')&&<WorldIbdCratePart part="Shell" active={active} legacy={legacyCrates} fallback={<mesh geometry={resources.goods['parts-b']} material={material} castShadow receiveShadow/>}/>}
     </RigidBody>)}
   </group>;
 }

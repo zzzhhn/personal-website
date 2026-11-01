@@ -1,0 +1,614 @@
+{
+  "source_commit": "34754d2",
+  "source_hashes": {
+    "src/components/world/WorldStreetGeometry.ts": "b240724f8ef8784d716d44372078733fdf5750bffe7b71728ed7f205234a6134",
+    "src/components/world/attractions/ibd-pack-geometry.ts": "6f73e53da9b0229fe3dc0e5e36553d1d087978359acdc25128cc0e5832f37e24",
+    "src/components/world/attractions/ibd-yard-geometry.ts": "7563ae68852ddde9d07caf623124945e24e30a88bcfe478c154a34069fd80545",
+    "src/components/world/attractions/ibd-stock-craft.ts": "3c5c2c5d3b31beaea87529c9795eef018821376a12816428a4ba5d4027b86de2",
+    "src/components/world/attractions/ibd-pack-layout.ts": "51631df2a6407b034d1a324f44c3a2c74d8112fe2f326a693f5b67e51df90699",
+    "src/components/world/attractions/ibd-yard-palette.ts": "b3eb4c09e60bcd952974f0f328b1d7392f8a054f27cb1f7f4c3f743529d1adf3",
+    "src/components/world/attractions/WorldIbdMechanisms.tsx": "8041bec5e799d8c5d000b48d19019eba02cb6ded8169ea0beb16151c56eabda8"
+  },
+  "units": "metres",
+  "native_axes": "Z-up",
+  "runtime_axes": "Y-up; front +Z",
+  "baseline": {
+    "Shell": {
+      "bounds": {
+        "min": [
+          -1.5,
+          -1.0099999904632568,
+          -1.350000023841858
+        ],
+        "max": [
+          1.5,
+          1.0449999570846558,
+          1.350000023841858
+        ]
+      },
+      "triangles": 1180
+    },
+    "Lid": {
+      "bounds": {
+        "min": [
+          -1.409999966621399,
+          -0.05999999865889549,
+          0
+        ],
+        "max": [
+          1.409999966621399,
+          0.08500000089406967,
+          2.5
+        ]
+      },
+      "triangles": 132
+    }
+  },
+  "native": {
+    "Shell": {
+      "triangles": 21068,
+      "materials": [
+        "IBD | charcoal rubber",
+        "IBD | cut timber endgrain",
+        "IBD | formed galvanized steel",
+        "IBD | light sawn timber",
+        "IBD | muted blue webbing",
+        "IBD | retained label card",
+        "IBD | retained label ink"
+      ],
+      "bounds_three": {
+        "min": [
+          -1.5,
+          -1.0099999904632568,
+          -1.350000023841858
+        ],
+        "max": [
+          1.5,
+          1.0450000762939453,
+          1.350000023841858
+        ]
+      },
+      "nonfinite_vertices": 0,
+      "degenerate_triangles": 0
+    },
+    "Lid": {
+      "triangles": 2412,
+      "materials": [
+        "IBD | amber lid straps",
+        "IBD | cut timber endgrain",
+        "IBD | formed galvanized steel",
+        "IBD | light sawn timber"
+      ],
+      "bounds_three": {
+        "min": [
+          -1.4100000858306885,
+          -0.05999999865889549,
+          -0.0
+        ],
+        "max": [
+          1.4100000858306885,
+          0.08500000089406967,
+          2.5
+        ]
+      },
+      "nonfinite_vertices": 0,
+      "degenerate_triangles": 0
+    }
+  },
+  "rig": {
+    "camera_three": [
+      4.8,
+      3.3,
+      5.6
+    ],
+    "target_three": [
+      0,
+      0.25,
+      0
+    ],
+    "ortho_scale": 5.5,
+    "resolution": [
+      1000,
+      800
+    ],
+    "samples": 24,
+    "view_transform": "AgX",
+    "look": "Medium High Contrast",
+    "exposure": 0
+  },
+  "textures": {
+    "asset": "Coated Pine",
+    "asset_url": "https://polyhaven.com/a/coated_pine",
+    "license": "CC0",
+    "license_url": "https://polyhaven.com/license",
+    "authors": [
+      "Charlotte Baglioni (scanning)",
+      "Rico Cilliers (processing)"
+    ],
+    "source_width_m": 0.7,
+    "planned_adaptation": "Photographed grain and knots retained; albedo neutralized toward approved light packaging timber; matte roughness derived from the scan rather than retaining varnish gloss. Not represented as a raw-pine scan.",
+    "files": [
+      {
+        "file": "coated_pine_diff_1k.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/coated_pine/coated_pine_diff_1k.jpg",
+        "bytes": 710600,
+        "sha256": "afee7cfb2ec1716edc712f929cdb3d3dfbac5a0ba290e25943b4472a8144bbaf"
+      },
+      {
+        "file": "coated_pine_nor_gl_1k.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/coated_pine/coated_pine_nor_gl_1k.jpg",
+        "bytes": 443383,
+        "sha256": "91eb707d7b0dd44133502878f37ede93e6be23c2019e64df72dffe46f6985b3a"
+      },
+      {
+        "file": "coated_pine_rough_1k.jpg",
+        "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/coated_pine/coated_pine_rough_1k.jpg",
+        "bytes": 491513,
+        "sha256": "6ecebef8ffde1833ee9656d3bf7cf863694ad99ac041cacf2fc5432b2f5383e1"
+      }
+    ],
+    "derived": {
+      "source_crop_xyxy": [
+        0,
+        24,
+        1024,
+        490
+      ],
+      "derived_size": [
+        1024,
+        512
+      ],
+      "crop_reason": "Actual image review: isolate first photographed board between baked source joints; UV across-grain remains inside this strip to avoid painting false joints onto mesh boards.",
+      "grain_rotation_ccw_90": false,
+      "gradient_source_mean": [
+        0.0111955825850184,
+        0.018378460645068567
+      ],
+      "albedo": "Scanned luminance/median clamped .43..1.40, exponent .72; light timber sRGB target [.80,.67,.48], 13 percent source chroma retained.",
+      "roughness": "Scanned relief variation remapped to matte .71..88, median .79; coating gloss intentionally removed.",
+      "normal": "Original OpenGL normal, vector components rotated consistently with pixels when grain is rotated; runtime strength .22.",
+      "files": [
+        {
+          "file": "pine-packaging-basecolor.png",
+          "sha256": "9d1ca082ec21b89d4af41dd7430a4db42c623b4c2eb4424a3fc23fd4063e0a9c",
+          "bytes": 990254
+        },
+        {
+          "file": "pine-packaging-normal.png",
+          "sha256": "285001688e2a8ec564bb8e1b56d182bf4d77f65779a12198a52a3a1e3f9c935f",
+          "bytes": 562034
+        },
+        {
+          "file": "pine-packaging-roughness.png",
+          "sha256": "7287de6832e55df62336ccd88bb6f48d468dd285d1fe8113b2693227a563318a",
+          "bytes": 95086
+        }
+      ]
+    }
+  },
+  "references": [
+    "visual-calibration-20261027/ibd-yard-v1.png",
+    "visual-calibration-20261027/ibd-yard-night-v1.png"
+  ],
+  "limitations": [
+    "Offline matched geometry renders only; browser behavior and user visual acceptance pending."
+  ],
+  "blender": "5.1.2",
+  "fresh": {
+    "Shell": {
+      "triangles": 21068,
+      "materials": [
+        "IBD | charcoal rubber",
+        "IBD | cut timber endgrain",
+        "IBD | formed galvanized steel",
+        "IBD | light sawn timber",
+        "IBD | muted blue webbing",
+        "IBD | retained label card",
+        "IBD | retained label ink"
+      ],
+      "bounds_three": {
+        "min": [
+          -1.5,
+          -1.0099999904632568,
+          -1.350000023841858
+        ],
+        "max": [
+          1.5,
+          1.0450000762939453,
+          1.350000023841858
+        ]
+      },
+      "nonfinite_vertices": 0,
+      "degenerate_triangles": 0
+    },
+    "Lid": {
+      "triangles": 2412,
+      "materials": [
+        "IBD | amber lid straps",
+        "IBD | cut timber endgrain",
+        "IBD | formed galvanized steel",
+        "IBD | light sawn timber"
+      ],
+      "bounds_three": {
+        "min": [
+          -1.4100000858306885,
+          -0.05999999865889549,
+          -0.0
+        ],
+        "max": [
+          1.409999966621399,
+          0.08500000089406967,
+          2.5
+        ]
+      },
+      "nonfinite_vertices": 0,
+      "degenerate_triangles": 0
+    }
+  },
+  "ao": {
+    "size": [
+      1024,
+      1024
+    ],
+    "distance_m": 0.055,
+    "scene_samples": 64,
+    "node_samples": 16,
+    "only_local": true,
+    "atlas_uv_area": 0.5671778189613546,
+    "uv_channel": 1,
+    "exposed_lid_center": {
+      "count": 6,
+      "mean": 1.0,
+      "std": 0.0
+    },
+    "excluded_materials": [
+      "IBD | charcoal rubber"
+    ],
+    "exclusion_reason": "Fresh AO-only review found a tiny tire UV edge fragment; rubber retains original PBR and runtime shadows. AO is limited to structural timber/metal/straps/label contacts."
+  },
+  "glb_roots": [
+    {
+      "children": [
+        0
+      ],
+      "extras": {
+        "contract": "Three Y-up metres; identity group; runtime owns placement and hinge"
+      },
+      "name": "Shell"
+    },
+    {
+      "children": [
+        2
+      ],
+      "extras": {
+        "contract": "Three Y-up metres; identity group; runtime owns placement and hinge"
+      },
+      "name": "Lid"
+    }
+  ],
+  "glb_materials": [
+    {
+      "doubleSided": true,
+      "name": "IBD | light sawn timber",
+      "normalTexture": {
+        "index": 0,
+        "scale": 0.2199999988079071
+      },
+      "occlusionTexture": {
+        "index": 1,
+        "texCoord": 1
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 2
+        },
+        "metallicFactor": 0,
+        "metallicRoughnessTexture": {
+          "index": 3
+        }
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "IBD | cut timber endgrain",
+      "occlusionTexture": {
+        "index": 4,
+        "texCoord": 1
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 5
+        },
+        "metallicFactor": 0,
+        "roughnessFactor": 0.8399999737739563
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "IBD | formed galvanized steel",
+      "occlusionTexture": {
+        "index": 6,
+        "texCoord": 1
+      },
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.47999998927116394,
+          0.5600000023841858,
+          0.5899999737739563,
+          1
+        ],
+        "metallicFactor": 0.7799999713897705,
+        "roughnessFactor": 0.4300000071525574
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "IBD | charcoal rubber",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.02199999988079071,
+          0.028999999165534973,
+          0.03099999949336052,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.9100000262260437
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "IBD | muted blue webbing",
+      "occlusionTexture": {
+        "index": 7,
+        "texCoord": 1
+      },
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.11999999731779099,
+          0.23999999463558197,
+          0.30000001192092896,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.7900000214576721
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "IBD | retained label card",
+      "occlusionTexture": {
+        "index": 8,
+        "texCoord": 1
+      },
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.800000011920929,
+          0.7799999713897705,
+          0.6700000166893005,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.8399999737739563
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "IBD | retained label ink",
+      "occlusionTexture": {
+        "index": 9,
+        "texCoord": 1
+      },
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.02800000086426735,
+          0.04500000178813934,
+          0.052000001072883606,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.7799999713897705
+      }
+    },
+    {
+      "doubleSided": true,
+      "name": "IBD | amber lid straps",
+      "occlusionTexture": {
+        "index": 10,
+        "texCoord": 1
+      },
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.7799999713897705,
+          0.41999998688697815,
+          0.04500000178813934,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.6600000262260437
+      }
+    }
+  ],
+  "extensions": [],
+  "glb_bytes": 4161428,
+  "verified": [
+    "Actual frozen builder baseline captured.",
+    "Fresh GLB import, identity named Shell/Lid root groups, local lid hinge contract.",
+    "Finite nondegenerate geometry, normal uncompressed indexed glTF, shared PBR maps and UV1 short range AO."
+  ],
+  "hashes": {
+    "crate-wood-endgrain.png": "b3e1ffe164f2f1c8782a6ef3ae15e0ef9e9cb55aa09e8c8fb2c8f38e1049d79b",
+    "crate-fresh-night.png": "a418219e55374077bbcf2470bcfd0c318f8b1b277b35921f3c13dd3a6e6a61f8",
+    "crate-fresh-close.png": "3d6047daa467fcbb88d0172ffeb11132ea94dc01a3ccfc99420049af4993903d",
+    "crate-ao-uv1.png": "b68be62a3a1c5f802aa7bcd29fc4b5f1543270a85443124607f8471ae16aa981",
+    "crate-after-night.png": "88a02cc3c07bc1ad0717dcef8a5daa1e3829e8fd9f15dfc09d5870bd56ae22af",
+    "crate-after.png": "38490eb121b1e173a7ab3dee593beecb96cdfc1ea335aea26a5c00d9f2d68fb2",
+    "crate-before-night.png": "727881b0d15655c0626288ea01257f3de0c21c303fb55779f06d5ff7141f0f7a",
+    "crate-clay.png": "b8bbef9b2cffcc206dc1e2e23168da7af422d0efb2235f308bdb5a6196a0489b",
+    "crate-fresh-open.png": "2dd3686380c936c9dd443b5bbdf5ec0f4d9db530955f25eb1c181fa5fc368193",
+    "crate-open-native.png": "af82b6db8ae553f25a74b8ea39822446d229064c8705bd4efb3d16acfa747e37",
+    "crate-before.png": "3c1ea7a40dbc1744a18d4226cda2fb24ea68ad5be7e5f542cc150d75146884f7",
+    "crate-close.png": "2807c1ac4cc7679d9273075fd072cfc48bc08e7017901b6d81e6458a8581c670",
+    "crate-ao-only-fresh.png": "c8111072216f522dc1880a06b23f7e27f1f9eb04fe077788bde99dea8b80c371",
+    "crate.glb": "a01de057e34cc1788684d0874b5da50682ab9fdfeae2f794a5140411b207723e",
+    "crate-fresh-closed.png": "1fa36105c8e8a58c0d2edea06121c0bc47dc1c6df66ed3f8e198c869282f912e",
+    "crate-editable.blend": "3d1cf4becbbae29cadf6d5d23ef4ef91e6e7d072b7775aa57a482c0079a87f0e"
+  },
+  "images_embedded": [
+    {
+      "name": "pine-packaging-normal",
+      "size": [
+        1024,
+        512
+      ],
+      "mime": "image/png",
+      "bytes": 562034,
+      "sha256": "285001688e2a8ec564bb8e1b56d182bf4d77f65779a12198a52a3a1e3f9c935f"
+    },
+    {
+      "name": "crate-ao-uv1",
+      "size": [
+        1024,
+        1024
+      ],
+      "mime": "image/png",
+      "bytes": 473177,
+      "sha256": "b68be62a3a1c5f802aa7bcd29fc4b5f1543270a85443124607f8471ae16aa981"
+    },
+    {
+      "name": "pine-packaging-basecolor",
+      "size": [
+        1024,
+        512
+      ],
+      "mime": "image/png",
+      "bytes": 990254,
+      "sha256": "9d1ca082ec21b89d4af41dd7430a4db42c623b4c2eb4424a3fc23fd4063e0a9c"
+    },
+    {
+      "name": "pine-packaging-roughness",
+      "size": [
+        1024,
+        512
+      ],
+      "mime": "image/png",
+      "bytes": 187506,
+      "sha256": "f8704ed3978108e7f5e354210b1f1b2ec0846cbc2c450b4793331fb5f8f89526"
+    },
+    {
+      "name": "crate-wood-endgrain",
+      "size": [
+        512,
+        512
+      ],
+      "mime": "image/png",
+      "bytes": 132349,
+      "sha256": "b3e1ffe164f2f1c8782a6ef3ae15e0ef9e9cb55aa09e8c8fb2c8f38e1049d79b"
+    }
+  ],
+  "primitives": 11,
+  "material_count": 8,
+  "source_scripts": {
+    "build.py": "41de799bf25b30a395b0b07533acf0afddc893a52c5efc8a2b70f6f8c7da0143",
+    "run.py": "432d689a002046c68714507e7285df10dcadd202b8d27cc98dfd0d8a8e9ffc00",
+    "prepare-textures.py": "a5a58e35c14ab9b6c658e5274d180bf94ccab45dc93f2aed916b2cb46edef6fe",
+    "finalize-manifest.py": "24d7bf3401a8066989ff106c5067c43b3f24cc1d02bf5c1c3cc517aa4eeb7629",
+    "capture-baseline.mjs": "3087cecc822fb39577a1f2183aa0adb1275623dc9f1d89cb4778ea39a9c6ec3c"
+  },
+  "commands": [
+    "node tools/world/ibd-crate-craft/capture-baseline.mjs",
+    "python3 tools/world/ibd-crate-craft/prepare-textures.py",
+    "python3 tools/world/ibd-crate-craft/run.py preview",
+    "python3 tools/world/ibd-crate-craft/run.py finish"
+  ],
+  "root_matrices_three": {
+    "Shell": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1
+    ],
+    "Lid": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0,
+      0,
+      1
+    ]
+  },
+  "hinge": {
+    "runtime_pivot_three": [
+      0,
+      1.08,
+      -1.25
+    ],
+    "production_rotation_x_closed_open": [
+      0,
+      -2
+    ],
+    "native_transform": "p(x,y,z)=(x,-z,y); X rotations keep their sign.",
+    "fresh_import_rotation": "Root rotation_mode is explicitly XYZ before applying production -2."
+  },
+  "open_rig": {
+    "camera_three": [
+      5.8,
+      4.4,
+      7
+    ],
+    "target_three": [
+      0,
+      1.2,
+      0
+    ],
+    "ortho_scale": 7.5,
+    "reason": "Entire production -2 lid is visible; closed day/night comparisons retain their matched rig."
+  },
+  "review": {
+    "inspected_final_images": [
+      "crate-fresh-closed.png",
+      "crate-fresh-close.png",
+      "crate-fresh-open.png",
+      "crate-fresh-night.png",
+      "crate-ao-only-fresh.png"
+    ],
+    "inspected_native_images": [
+      "crate-before.png",
+      "crate-after.png",
+      "crate-clay.png",
+      "crate-open-native.png",
+      "crate-before-night.png",
+      "crate-after-night.png"
+    ],
+    "repairs": [
+      "Scanned pine field cropped between photographed board joints; each mesh board samples a real board segment.",
+      "Low contrast irregular endgrain replaces repeated target-like rings.",
+      "Frame post and rail visible surfaces separated by a real lap; through axle terminates inside forks so caps exclusively own exposed ends.",
+      "150 pre-repair native components had positive signed volume and zero nonmanifold edges; visible black patches were traced to equal-distance coplanar surfaces.",
+      "UV1 uses zero-margin projection followed by explicit 3px packing; final occupied UV area .5672.",
+      "Rubber excluded from baked AO after an isolated tire UV fragment was found; original rubber PBR and runtime shadows retained."
+    ],
+    "acceptance": "Offline source/fresh-import visual inspection completed by crate_craft. Parent preview direction review completed. Browser/runtime visuals, performance and end-user acceptance are separate primary-owned checks."
+  }
+}

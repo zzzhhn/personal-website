@@ -1,0 +1,201 @@
+{
+  "status": "preview_built_not_visually_accepted",
+  "source": "Actual first standalone umbrella captured from frozen 34754d2 source; pole and canopy only. Offline source comparison, not a production screenshot.",
+  "source_hashes": {
+    "WorldDjcClubGeometry.ts": "1e8cde980887a0c38591739cc8b38d558c246e9eb35e7b05849aeab04977790f",
+    "WorldDjcClubVisual.tsx": "1c2fd5675cccd2e18f258d41b5a9dbf807acdbe48b9927b0d4873889b9a8411c",
+    "djc-club-layout.ts": "6cb167906ac87c2ef53c904d9a91983a5747192d7247afcc9b2c419ebe14a360"
+  },
+  "baseline_triangles": 48,
+  "native": {
+    "meshes": 567,
+    "triangles": 42268,
+    "materials": [
+      "01 Sand canvas | tailored tension panels",
+      "02 Folded canvas binding and lock stitches",
+      "03 Un-tinted oiled timber | CC0 photograph",
+      "04 Aged joint metal | hinge pins and sleeve"
+    ],
+    "bounds_min": [
+      -1.6430000066757202,
+      -1.6430000066757202,
+      0.0
+    ],
+    "bounds_max": [
+      1.6430000066757202,
+      1.6430000066757202,
+      2.825000047683716
+    ],
+    "dimensions": [
+      3.2860000133514404,
+      3.2860000133514404,
+      2.825000047683716
+    ],
+    "max_horizontal_radius": 1.6430000066757202,
+    "nonfinite_vertices": 0,
+    "degenerate_triangles": 0,
+    "nonmanifold_parts": []
+  },
+  "connections": [
+    {
+      "index": 0,
+      "runner_pin": [
+        0.08100000023841858,
+        0.0,
+        1.9079999923706055
+      ],
+      "rib_pin": [
+        0.8006600141525269,
+        0.0,
+        2.5588903427124023
+      ],
+      "stretcher_endpoint_gap_m": 0
+    },
+    {
+      "index": 1,
+      "runner_pin": [
+        0.05727564916014671,
+        0.05727564916014671,
+        1.9079999923706055
+      ],
+      "rib_pin": [
+        0.5661520957946777,
+        0.5661520957946777,
+        2.5588903427124023
+      ],
+      "stretcher_endpoint_gap_m": 0
+    },
+    {
+      "index": 2,
+      "runner_pin": [
+        4.959819620621032e-18,
+        0.08100000023841858,
+        1.9079999923706055
+      ],
+      "rib_pin": [
+        4.9026286839413605e-17,
+        0.8006600141525269,
+        2.5588903427124023
+      ],
+      "stretcher_endpoint_gap_m": 0
+    },
+    {
+      "index": 3,
+      "runner_pin": [
+        -0.05727564916014671,
+        0.05727564916014671,
+        1.9079999923706055
+      ],
+      "rib_pin": [
+        -0.5661520957946777,
+        0.5661520957946777,
+        2.5588903427124023
+      ],
+      "stretcher_endpoint_gap_m": 0
+    },
+    {
+      "index": 4,
+      "runner_pin": [
+        -0.08100000023841858,
+        9.919639241242064e-18,
+        1.9079999923706055
+      ],
+      "rib_pin": [
+        -0.8006600141525269,
+        9.805257367882721e-17,
+        2.5588903427124023
+      ],
+      "stretcher_endpoint_gap_m": 0
+    },
+    {
+      "index": 5,
+      "runner_pin": [
+        -0.05727564916014671,
+        -0.05727564916014671,
+        1.9079999923706055
+      ],
+      "rib_pin": [
+        -0.5661520957946777,
+        -0.5661520957946777,
+        2.5588903427124023
+      ],
+      "stretcher_endpoint_gap_m": 0
+    },
+    {
+      "index": 6,
+      "runner_pin": [
+        -1.4879458861863095e-17,
+        -0.08100000023841858,
+        1.9079999923706055
+      ],
+      "rib_pin": [
+        -1.4707885390079591e-16,
+        -0.8006600141525269,
+        2.5588903427124023
+      ],
+      "stretcher_endpoint_gap_m": 0
+    },
+    {
+      "index": 7,
+      "runner_pin": [
+        0.05727564916014671,
+        -0.05727564916014671,
+        1.9079999923706055
+      ],
+      "rib_pin": [
+        0.5661520957946777,
+        -0.5661520957946777,
+        2.5588903427124023
+      ],
+      "stretcher_endpoint_gap_m": 0
+    }
+  ],
+  "origin_world": [
+    74,
+    1.4,
+    47
+  ],
+  "instances_world": [
+    [
+      74,
+      1.4,
+      47
+    ],
+    [
+      74,
+      1.4,
+      63
+    ]
+  ],
+  "front_world": [
+    0,
+    0,
+    -1
+  ],
+  "blender": "5.1.2",
+  "render": {
+    "engine": "Cycles CPU",
+    "threads": 4,
+    "resolution": [
+      1280,
+      1100
+    ],
+    "view_transform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "exposure": 0,
+    "camera": [
+      4.4,
+      5.6,
+      3.5
+    ],
+    "target": [
+      0,
+      0,
+      1.5
+    ],
+    "ortho_scale": 4.15,
+    "samples": 24
+  },
+  "ao": "absent",
+  "browser_validation": "not performed"
+}

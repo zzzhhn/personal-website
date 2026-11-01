@@ -36,8 +36,8 @@ function addSample(b:Builder,spec:string){
   lathe(b,[[0,0],[d.headRadius,0],[d.headRadius,.13],[r,.13],[r,h],[0,h]],P.steel,{sides:6,faceted:true});
   for(let y=.18;y+.025<=h;y+=.08)lathe(b,[[r,y],[r+.02,y],[r+.02,y+.025],[r,y+.025]],P.dark,{sides:8});
 }
-export function buildIbdPack(quantity:number,spec:string){
-  const b=new Builder();addPackShell(b);
+export function buildIbdPack(quantity:number,spec:string,{includeShell=true}:{includeShell?:boolean}={}){
+  const b=new Builder();if(includeShell)addPackShell(b);
   for(const s of IBD_PACK_SLOTS)if(s.index<clamp(Math.floor(quantity),0,4))b.tr(s.at,[0,0,0],()=>addSample(b,spec));
   return b.build();
 }

@@ -1,0 +1,24 @@
+[
+  {
+    "filename": "wood_diff.jpg",
+    "sha256": "5da68c7ebe8732f029ecbd602cb0d86d2a271e32539df953a0f10efa052b9516",
+    "license": "CC0",
+    "asset_url": "https://polyhaven.com/a/wood_table_001",
+    "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/wood_table_001/wood_table_001_diff_4k.jpg",
+    "license_url": "https://polyhaven.com/license",
+    "usage": "Read-only approved local photograph; 1024px derivative packed"
+  },
+  {
+    "filename": "wood_nor_gl.jpg",
+    "sha256": "fc9f1d2600e7686504b36d805b79bd785a327b752a3e7943a41e7d6e9bdfe399",
+    "license": "CC0",
+    "asset_url": "https://polyhaven.com/a/wood_table_001",
+    "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/wood_table_001/wood_table_001_nor_gl_4k.jpg",
+    "license_url": "https://polyhaven.com/license",
+    "usage": "Read-only approved local photograph; 1024px derivative packed"
+  },
+  {
+    "source": "Deterministically authored by build.py",
+    "usage": "Canvas maps; 0.6m tile, 2mm thread pitch; not a scan"
+  }
+]
