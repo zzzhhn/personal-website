@@ -1,0 +1,14 @@
+{
+  "world/index.html": {
+    "bytes": 52275,
+    "sha256": "d5d72f99a001b628390fea404309a3128bebbac1b92ed915913cb4d2cc4f8155"
+  },
+  "_astro/WorldRuntime.DTY0nMau.js": {
+    "bytes": 3454899,
+    "sha256": "80ca5eb1b7af3fe951c2f376bb75c2d6b7c6b226a654ffddcebcb86e2eda6b5f"
+  },
+  "assets/world/club/daybed/daybed-v1.glb": {
+    "bytes": 9875476,
+    "sha256": "5cdd0dde5d0418888e06422828d426eac07f7f9b27e0f762ef190aae211395d8"
+  }
+}

@@ -1,39 +1,13 @@
 import { Component, Suspense, startTransition, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { useFrame, useLoader, useThree } from '@react-three/fiber';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
-import { DataTexture, EquirectangularReflectionMapping, FloatType, LinearSRGBColorSpace, PMREMGenerator, RGBAFormat, type Group, type Texture } from 'three';
+import type { Group, Texture } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { withWorldAssetDecoder } from './WorldAssetDecoder';
 import { night } from './WorldNight';
+import { useDjcFurnitureEnvironment as useBarEnvironment } from './WorldDjcFurnitureEnvironment';
 import { DJC_BAR_ASSETS, DJC_BAR_BOXES, DJC_BAR_ORIGIN, buildDjcBarProxy, cloneDjcBarVisual, djcBarLod, djcBarQaOpaque, djcBarQaMode, djcBarQaSceneTransmission, shareDjcBarTexture } from './djc-bar-layout';
 
-/** A small private outdoor reflection map. No scene environment, exposure or global lights change. */
-function useBarEnvironment() {
-  const renderer = useThree(s => s.gl), [map, setMap] = useState<Texture | null>(null);
-  useEffect(() => {
-    const width = 256, height = 128, pixels = new Float32Array(width * height * 4);
-    for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
-      const sky = Math.max(0, 1 - y / (height / 2)), ground = y > height / 2;
-      const key = Math.exp(-(((x - width * .32) / 18) ** 2 + ((y - height * .3) / 12) ** 2));
-      const i = (y * width + x) * 4;
-      pixels[i] = (ground ? .16 : .7 - sky * .32) + key * 1.3;
-      pixels[i + 1] = (ground ? .145 : .76 - sky * .23) + key * 1.1;
-      pixels[i + 2] = (ground ? .11 : .82 - sky * .08) + key * .8; pixels[i + 3] = 1;
-    }
-    const source = new DataTexture(pixels, width, height, RGBAFormat, FloatType);
-    source.mapping = EquirectangularReflectionMapping; source.colorSpace = LinearSRGBColorSpace; source.needsUpdate = true;
-    const generator = new PMREMGenerator(renderer);
-    let target: ReturnType<PMREMGenerator['fromEquirectangular']> | undefined;
-    try { target = generator.fromEquirectangular(source); }
-    catch (error) { console.warn('[djc-bar] private reflections unavailable; PBR textures retained', error); }
-    finally { source.dispose(); generator.dispose(); }
-    if (!target) return;
-    const owned = target;
-    setMap(target.texture);
-    return () => owned.dispose();
-  }, [renderer]);
-  return map;
-}
 function BarAsset({ url, environment, opaque, textures, sceneTransmission }: { url: string; environment: Texture | null; opaque: boolean; textures: Map<string, Texture>; sceneTransmission: boolean }) {
   const gltf = useLoader(GLTFLoader, url, withWorldAssetDecoder);
   const visual = useMemo(() => cloneDjcBarVisual(gltf.scene, opaque, environment, texture => {

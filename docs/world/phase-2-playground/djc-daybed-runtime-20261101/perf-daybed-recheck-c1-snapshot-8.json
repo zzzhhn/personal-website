@@ -1,0 +1,158 @@
+{
+ "at": 150916.10000002384,
+ "calls": 176,
+ "triangles": 2149062,
+ "geometries": 198,
+ "textures": 76,
+ "programs": 148,
+ "camera": {
+  "yaw": -0.19579632679489656,
+  "pitch": 0.4,
+  "distance": 4.583242191647386,
+  "desiredDistance": 4.583242191647386,
+  "driveManualZoom": false,
+  "actualDistance": 4.5832421916473844,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": false,
+  "hitDistance": null,
+  "fov": 50,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   67.09078745120705,
+   4.4597985766703925,
+   40.3287289582877
+  ],
+  "target": [
+   62.95000076293943,
+   2.675000000000001,
+   41.150001525878885
+  ],
+  "forwardGround": [
+   -0.9808930570231558,
+   0.19454770798898735
+  ],
+  "groundBelowCamera": 0.553924560546875,
+  "clearanceAboveGround": 3.9058740161235175,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "mode": "always",
+ "frame": 5841,
+ "delta": 0.017,
+ "night": 0,
+ "windTime": 68.20770000004778,
+ "position": [
+  62.95000076293945,
+  2.634999990463257,
+  41.150001525878906
+ ],
+ "paused": false,
+ "shot": null,
+ "seat": {
+  "id": "djc-daybed-0-1",
+  "position": [
+   62.95,
+   1.755,
+   41.15
+  ],
+  "yaw": 1.5707963267948966
+ },
+ "quality": "balanced",
+ "weather": "clear",
+ "light": "noon",
+ "worldMinutes": 720,
+ "drawingBuffer": [
+  2013,
+  1030
+ ],
+ "cssSize": [
+  1710,
+  875
+ ],
+ "pixelRatio": 1.1772275318111343,
+ "hidden": false,
+ "url": "http://127.0.0.1:4356/world/?qa=1&quality=balanced&start=club&paused=1&case=perf-daybed-recheck-c1",
+ "renderInfo": {
+  "drawingBuffer": [
+   2013,
+   1030
+  ],
+  "cssSize": [
+   1710,
+   875
+  ],
+  "pixelRatio": 1.1772275318111343,
+  "dprRange": [
+   0,
+   1.5
+  ],
+  "quality": "balanced",
+  "antialias": true,
+  "msaaSamples": 4,
+  "toneMapping": 4,
+  "outputColorSpace": "srgb",
+  "shadowMapSize": 1254,
+  "shadowType": 1,
+  "postprocessing": []
+ },
+ "player": [
+  62.95000076293945,
+  2.634999990463257,
+  41.150001525878906
+ ],
+ "grounded": false,
+ "velocity": [
+  -1.4281373392904806e-12,
+  0,
+  -5.324934164434305e-44
+ ],
+ "daybedObjects": [
+  "djc-daybed-visuals",
+  "djc-crafted-daybeds",
+  "djc-daybed-DJC_Daybed_Honed_limestone",
+  "djc-daybed-DJC_Daybed_Oiled_timber",
+  "djc-daybed-DJC_Daybed_Sea_teal_tailored_mattress",
+  "djc-daybed-DJC_Daybed_Seafoam_upholstery_welting",
+  "djc-daybed-DJC_Daybed_Deep_teal_back_cushions",
+  "djc-daybed-DJC_Daybed_Aged_marine_metal",
+  "djc-daybed-DJC_Daybed_Lagoon_accent_cushions",
+  "djc-daybed-DJC_Daybed_Opaque_amber_lantern_diffuser",
+  "djc-daybed-DJC_Daybed_Honed_limestone#sun0",
+  "djc-daybed-DJC_Daybed_Honed_limestone#sun1",
+  "djc-daybed-DJC_Daybed_Honed_limestone#sun2",
+  "djc-daybed-DJC_Daybed_Oiled_timber#sun0",
+  "djc-daybed-DJC_Daybed_Oiled_timber#sun1",
+  "djc-daybed-DJC_Daybed_Oiled_timber#sun2",
+  "djc-daybed-DJC_Daybed_Sea_teal_tailored_mattress#sun0",
+  "djc-daybed-DJC_Daybed_Sea_teal_tailored_mattress#sun1",
+  "djc-daybed-DJC_Daybed_Sea_teal_tailored_mattress#sun2",
+  "djc-daybed-DJC_Daybed_Seafoam_upholstery_welting#sun0",
+  "djc-daybed-DJC_Daybed_Seafoam_upholstery_welting#sun1",
+  "djc-daybed-DJC_Daybed_Seafoam_upholstery_welting#sun2",
+  "djc-daybed-DJC_Daybed_Deep_teal_back_cushions#sun0",
+  "djc-daybed-DJC_Daybed_Deep_teal_back_cushions#sun1",
+  "djc-daybed-DJC_Daybed_Deep_teal_back_cushions#sun2",
+  "djc-daybed-DJC_Daybed_Aged_marine_metal#sun0",
+  "djc-daybed-DJC_Daybed_Aged_marine_metal#sun1",
+  "djc-daybed-DJC_Daybed_Aged_marine_metal#sun2",
+  "djc-daybed-DJC_Daybed_Lagoon_accent_cushions#sun0",
+  "djc-daybed-DJC_Daybed_Lagoon_accent_cushions#sun1",
+  "djc-daybed-DJC_Daybed_Lagoon_accent_cushions#sun2",
+  "djc-daybed-DJC_Daybed_Opaque_amber_lantern_diffuser#sun0",
+  "djc-daybed-DJC_Daybed_Opaque_amber_lantern_diffuser#sun1",
+  "djc-daybed-DJC_Daybed_Opaque_amber_lantern_diffuser#sun2"
+ ],
+ "daybedRequests": [
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/daybed/daybed-v1.glb",
+   "duration": 956.1000000238419,
+   "transferSize": 9875776,
+   "decodedBodySize": 9875476
+  }
+ ]
+}

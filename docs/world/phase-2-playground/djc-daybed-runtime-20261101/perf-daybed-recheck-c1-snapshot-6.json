@@ -1,0 +1,150 @@
+{
+ "at": 119144.30000001192,
+ "calls": 76,
+ "triangles": 1318234,
+ "geometries": 115,
+ "textures": 71,
+ "programs": 132,
+ "camera": {
+  "yaw": -1.5707963267948966,
+  "pitch": 0.4,
+  "distance": 12,
+  "desiredDistance": 12,
+  "driveManualZoom": false,
+  "actualDistance": 12,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": false,
+  "hitDistance": null,
+  "fov": 50,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   60.3,
+   2.75,
+   39.6
+  ],
+  "target": [
+   62,
+   3.219329270887858,
+   39.49861267213533
+  ],
+  "forwardGround": [
+   0.4608152706470574,
+   0.8874960768017396
+  ],
+  "groundBelowCamera": 0.81646728515625,
+  "clearanceAboveGround": 1.93353271484375,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "mode": "demand",
+ "frame": 4178,
+ "delta": 0.039599999964237215,
+ "night": 0,
+ "windTime": 48.560800000071666,
+ "position": [
+  62,
+  2.5581374168395996,
+  39.49666976928711
+ ],
+ "paused": false,
+ "shot": "djc-daybed-close-day",
+ "seat": null,
+ "quality": "balanced",
+ "weather": "clear",
+ "light": "noon",
+ "worldMinutes": 720,
+ "drawingBuffer": [
+  2013,
+  1030
+ ],
+ "cssSize": [
+  1710,
+  875
+ ],
+ "pixelRatio": 1.1772275318111343,
+ "hidden": false,
+ "url": "http://127.0.0.1:4356/world/?qa=1&quality=balanced&start=club&paused=1&case=perf-daybed-recheck-c1",
+ "renderInfo": {
+  "drawingBuffer": [
+   2013,
+   1030
+  ],
+  "cssSize": [
+   1710,
+   875
+  ],
+  "pixelRatio": 1.1772275318111343,
+  "dprRange": [
+   0,
+   1.5
+  ],
+  "quality": "balanced",
+  "antialias": true,
+  "msaaSamples": 4,
+  "toneMapping": 4,
+  "outputColorSpace": "srgb",
+  "shadowMapSize": 1254,
+  "shadowType": 1,
+  "postprocessing": []
+ },
+ "player": [
+  62,
+  2.5579986572265625,
+  39.4955940246582
+ ],
+ "grounded": true,
+ "velocity": [
+  -1.8905977412941866e-05,
+  -0.008199114352464676,
+  -0.06489566713571548
+ ],
+ "daybedObjects": [
+  "djc-daybed-visuals",
+  "djc-crafted-daybeds",
+  "djc-daybed-DJC_Daybed_Honed_limestone",
+  "djc-daybed-DJC_Daybed_Oiled_timber",
+  "djc-daybed-DJC_Daybed_Sea_teal_tailored_mattress",
+  "djc-daybed-DJC_Daybed_Seafoam_upholstery_welting",
+  "djc-daybed-DJC_Daybed_Deep_teal_back_cushions",
+  "djc-daybed-DJC_Daybed_Aged_marine_metal",
+  "djc-daybed-DJC_Daybed_Lagoon_accent_cushions",
+  "djc-daybed-DJC_Daybed_Opaque_amber_lantern_diffuser",
+  "djc-daybed-DJC_Daybed_Honed_limestone#sun0",
+  "djc-daybed-DJC_Daybed_Honed_limestone#sun1",
+  "djc-daybed-DJC_Daybed_Honed_limestone#sun2",
+  "djc-daybed-DJC_Daybed_Oiled_timber#sun0",
+  "djc-daybed-DJC_Daybed_Oiled_timber#sun1",
+  "djc-daybed-DJC_Daybed_Oiled_timber#sun2",
+  "djc-daybed-DJC_Daybed_Sea_teal_tailored_mattress#sun0",
+  "djc-daybed-DJC_Daybed_Sea_teal_tailored_mattress#sun1",
+  "djc-daybed-DJC_Daybed_Sea_teal_tailored_mattress#sun2",
+  "djc-daybed-DJC_Daybed_Seafoam_upholstery_welting#sun0",
+  "djc-daybed-DJC_Daybed_Seafoam_upholstery_welting#sun1",
+  "djc-daybed-DJC_Daybed_Seafoam_upholstery_welting#sun2",
+  "djc-daybed-DJC_Daybed_Deep_teal_back_cushions#sun0",
+  "djc-daybed-DJC_Daybed_Deep_teal_back_cushions#sun1",
+  "djc-daybed-DJC_Daybed_Deep_teal_back_cushions#sun2",
+  "djc-daybed-DJC_Daybed_Aged_marine_metal#sun0",
+  "djc-daybed-DJC_Daybed_Aged_marine_metal#sun1",
+  "djc-daybed-DJC_Daybed_Aged_marine_metal#sun2",
+  "djc-daybed-DJC_Daybed_Lagoon_accent_cushions#sun0",
+  "djc-daybed-DJC_Daybed_Lagoon_accent_cushions#sun1",
+  "djc-daybed-DJC_Daybed_Lagoon_accent_cushions#sun2",
+  "djc-daybed-DJC_Daybed_Opaque_amber_lantern_diffuser#sun0",
+  "djc-daybed-DJC_Daybed_Opaque_amber_lantern_diffuser#sun1",
+  "djc-daybed-DJC_Daybed_Opaque_amber_lantern_diffuser#sun2"
+ ],
+ "daybedRequests": [
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/daybed/daybed-v1.glb",
+   "duration": 956.1000000238419,
+   "transferSize": 9875776,
+   "decodedBodySize": 9875476
+  }
+ ]
+}

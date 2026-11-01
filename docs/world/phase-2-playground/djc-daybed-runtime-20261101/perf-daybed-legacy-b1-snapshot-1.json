@@ -1,0 +1,108 @@
+{
+ "at": 89338.5,
+ "calls": 73,
+ "triangles": 773634,
+ "geometries": 305,
+ "textures": 76,
+ "programs": 149,
+ "camera": {
+  "yaw": -1.5707963267948966,
+  "pitch": 0.4,
+  "distance": 12,
+  "desiredDistance": 12,
+  "driveManualZoom": false,
+  "actualDistance": 12,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": false,
+  "hitDistance": null,
+  "fov": 50,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   62,
+   7.8798877387087645,
+   28.442823052498778
+  ],
+  "target": [
+   62,
+   3.2068676310049584,
+   39.4955549805334
+  ],
+  "forwardGround": [
+   0,
+   1
+  ],
+  "groundBelowCamera": 1.12689208984375,
+  "clearanceAboveGround": 6.7529956488650145,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "mode": "always",
+ "frame": 527,
+ "delta": 0.036200000047683714,
+ "night": 0,
+ "windTime": 8.539000000059604,
+ "position": [
+  62,
+  2.556847095489502,
+  39.495399475097656
+ ],
+ "paused": false,
+ "shot": null,
+ "seat": null,
+ "quality": "balanced",
+ "weather": "clear",
+ "light": "noon",
+ "worldMinutes": 720,
+ "drawingBuffer": [
+  2013,
+  1030
+ ],
+ "cssSize": [
+  1710,
+  875
+ ],
+ "pixelRatio": 1.1772275318111343,
+ "hidden": false,
+ "url": "http://127.0.0.1:4356/world/?qa=1&quality=balanced&start=club&paused=1&djcDaybeds=legacy&case=perf-daybed-legacy-b1",
+ "renderInfo": {
+  "drawingBuffer": [
+   2013,
+   1030
+  ],
+  "cssSize": [
+   1710,
+   875
+  ],
+  "pixelRatio": 1.1772275318111343,
+  "dprRange": [
+   0,
+   1.5
+  ],
+  "quality": "balanced",
+  "antialias": true,
+  "msaaSamples": 4,
+  "toneMapping": 4,
+  "outputColorSpace": "srgb",
+  "shadowMapSize": 1254,
+  "shadowType": 1,
+  "postprocessing": []
+ },
+ "player": [
+  62,
+  2.556837797164917,
+  39.495323181152344
+ ],
+ "grounded": true,
+ "velocity": [
+  -1.8033006199402735e-05,
+  -0.0005511020426638424,
+  -0.004252805840224028
+ ],
+ "daybedObjects": [],
+ "daybedRequests": []
+}

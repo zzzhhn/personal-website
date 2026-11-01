@@ -6,6 +6,10 @@ const root = resolve(process.argv[2] ?? 'public');
 const source = readFileSync(new URL('../../src/components/world/djc-bar-layout.ts', import.meta.url), 'utf8');
 const urls = [...source.matchAll(/['"]([^'"]+\.glb)['"]/g)].map(m => m[1]);
 if (urls.length !== 2) throw new Error('Review the two north-bar asset URLs before building.');
+const daybed = readFileSync(new URL('../../src/components/world/djc-daybed-visual.ts', import.meta.url), 'utf8');
+const daybedUrls = [...daybed.matchAll(/['"]([^'"]+\.glb)['"]/g)].map(m => m[1]);
+if (daybedUrls.length !== 1) throw new Error('Review the shared daybed asset URL before building.');
+urls.push(...daybedUrls);
 let images = 0;
 for (const url of urls) {
   const file = resolve(root, `.${url}`), bytes = readFileSync(file);
@@ -18,4 +22,4 @@ for (const url of urls) {
     images++;
   }
 }
-console.log(`Club bar: ${urls.length} GLBs and ${images} external image references present.`);
+console.log(`Club furniture: ${urls.length} GLBs and ${images} external image references present.`);

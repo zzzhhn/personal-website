@@ -1,0 +1,92 @@
+{
+  "source": "Actual first daybed geometry, captured from frozen current release source in memory; no hand reconstruction, no ramp or other world geometry.",
+  "source_hashes": {
+    "WorldDjcClubGeometry.ts": "6f7b388924a9b163d6b45f36427dc597a0891d9e63de33289a175ce274b22ecc",
+    "djc-club-layout.ts": "6cb167906ac87c2ef53c904d9a91983a5747192d7247afcc9b2c419ebe14a360",
+    "WorldDjcClubVisual.tsx": "7b30b1ebf8f48c3b235a517fd1f5a9eac790722450d18e8dd69969b53974e6c7"
+  },
+  "baseline_triangles": 1556,
+  "native": {
+    "meshes": 804,
+    "triangles": 113664,
+    "materials": [
+      "01 Oiled timber | CC0 photographed grain",
+      "02 Honed limestone | shallow mineral pores",
+      "03 Sea teal tailored mattress",
+      "04 Deep teal back cushions",
+      "05 Lagoon accent cushions",
+      "06 Seafoam upholstery welting",
+      "07 Aged marine metal | recesses and lantern",
+      "08 Opaque amber lantern diffuser"
+    ],
+    "degenerate_triangles": 0,
+    "nonfinite_vertices": 0,
+    "nonmanifold_parts": [],
+    "bounds_min": [
+      -1.649999976158142,
+      -1.649999976158142,
+      -1.0
+    ],
+    "bounds_max": [
+      1.649999976158142,
+      1.649999976158142,
+      0.7114251255989075
+    ],
+    "dimensions": [
+      3.299999952316284,
+      3.299999952316284,
+      1.7114251255989075
+    ],
+    "max_horizontal_radius": 1.6500000629700573
+  },
+  "seats": {
+    "world_seat_y": 1.755,
+    "local_seat_z": 0.255,
+    "samples": 50,
+    "sample_patch_size_m": 0.2,
+    "max_plane_deviation_m": 3.623962402388159e-07,
+    "height_min": 0.25499963760375977,
+    "height_max": 0.25500035285949707
+  },
+  "origin_world": [
+    62,
+    1.5,
+    42
+  ],
+  "front_world": [
+    0,
+    0,
+    -1
+  ],
+  "front_blender": [
+    0,
+    1,
+    0
+  ],
+  "blender": "5.1.2",
+  "render": {
+    "engine": "Cycles CPU",
+    "threads": 4,
+    "resolution": [
+      1440,
+      1080
+    ],
+    "view_transform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "exposure": 0,
+    "overview": {
+      "position": [
+        4.2,
+        5.8,
+        3.3
+      ],
+      "target": [
+        -0.02,
+        0,
+        -0.12
+      ],
+      "ortho_scale": 4.38,
+      "samples": 24
+    }
+  }
+}

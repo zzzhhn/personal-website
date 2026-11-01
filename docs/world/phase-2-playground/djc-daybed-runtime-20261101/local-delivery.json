@@ -1,0 +1,25 @@
+{
+  "url": "http://127.0.0.1:4341/world/?quality=balanced&start=club&paused=1",
+  "snapshot": "/tmp/bobby-world-daybed-20261101",
+  "pid": 42018,
+  "http_verified": [
+    "world/index.html",
+    "_astro/WorldRuntime.t9qlAWpO.js",
+    "assets/world/club/daybed/daybed-v1.glb"
+  ],
+  "hashes": {
+    "world/index.html": {
+      "bytes": 52275,
+      "sha256": "b254d3faf0ceb0d2a00a1702e72c9a83448798b15a427defffb9e81864fd08be"
+    },
+    "_astro/WorldRuntime.t9qlAWpO.js": {
+      "bytes": 3455285,
+      "sha256": "59f3574854345c1eb80b05ad69e8a91370935db77e7c72889f813d2521e7f60b"
+    },
+    "assets/world/club/daybed/daybed-v1.glb": {
+      "bytes": 9875476,
+      "sha256": "5cdd0dde5d0418888e06422828d426eac07f7f9b27e0f762ef190aae211395d8"
+    }
+  },
+  "deployment": "local only; no push or public deployment"
+}

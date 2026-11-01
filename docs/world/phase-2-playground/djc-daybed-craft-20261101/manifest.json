@@ -1,0 +1,280 @@
+{
+  "source": "Actual first daybed geometry, captured from frozen current release source in memory; no hand reconstruction, no ramp or other world geometry.",
+  "source_hashes": {
+    "WorldDjcClubGeometry.ts": "6f7b388924a9b163d6b45f36427dc597a0891d9e63de33289a175ce274b22ecc",
+    "djc-club-layout.ts": "6cb167906ac87c2ef53c904d9a91983a5747192d7247afcc9b2c419ebe14a360",
+    "WorldDjcClubVisual.tsx": "7b30b1ebf8f48c3b235a517fd1f5a9eac790722450d18e8dd69969b53974e6c7"
+  },
+  "baseline_triangles": 1556,
+  "native": {
+    "meshes": 804,
+    "triangles": 113664,
+    "materials": [
+      "01 Oiled timber | CC0 photographed grain",
+      "02 Honed limestone | shallow mineral pores",
+      "03 Sea teal tailored mattress",
+      "04 Deep teal back cushions",
+      "05 Lagoon accent cushions",
+      "06 Seafoam upholstery welting",
+      "07 Aged marine metal | recesses and lantern",
+      "08 Opaque amber lantern diffuser"
+    ],
+    "degenerate_triangles": 0,
+    "nonfinite_vertices": 0,
+    "nonmanifold_parts": [],
+    "bounds_min": [
+      -1.649999976158142,
+      -1.649999976158142,
+      -1.0
+    ],
+    "bounds_max": [
+      1.649999976158142,
+      1.649999976158142,
+      0.7114251255989075
+    ],
+    "dimensions": [
+      3.299999952316284,
+      3.299999952316284,
+      1.7114251255989075
+    ],
+    "max_horizontal_radius": 1.6500000629700573
+  },
+  "seats": {
+    "world_seat_y": 1.755,
+    "local_seat_z": 0.255,
+    "samples": 50,
+    "sample_patch_size_m": 0.2,
+    "max_plane_deviation_m": 3.623962402388159e-07,
+    "height_min": 0.25499963760375977,
+    "height_max": 0.25500035285949707
+  },
+  "origin_world": [
+    62,
+    1.5,
+    42
+  ],
+  "front_world": [
+    0,
+    0,
+    -1
+  ],
+  "front_blender": [
+    0,
+    1,
+    0
+  ],
+  "blender": "5.1.2",
+  "render": {
+    "engine": "Cycles CPU",
+    "threads": 4,
+    "resolution": [
+      1440,
+      1080
+    ],
+    "view_transform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "exposure": 0,
+    "overview": {
+      "position": [
+        4.2,
+        5.8,
+        3.3
+      ],
+      "target": [
+        -0.02,
+        0,
+        -0.12
+      ],
+      "ortho_scale": 4.38,
+      "samples": 24
+    }
+  },
+  "runtime": {
+    "meshes": 8,
+    "triangles": 113664,
+    "materials": [
+      "01 Oiled timber | CC0 photographed grain",
+      "02 Honed limestone | shallow mineral pores",
+      "03 Sea teal tailored mattress",
+      "04 Deep teal back cushions",
+      "05 Lagoon accent cushions",
+      "06 Seafoam upholstery welting",
+      "07 Aged marine metal | recesses and lantern",
+      "08 Opaque amber lantern diffuser"
+    ],
+    "degenerate_triangles": 0,
+    "nonfinite_vertices": 0,
+    "nonmanifold_parts": [],
+    "bounds_min": [
+      -1.649999976158142,
+      -1.649999976158142,
+      -1.0
+    ],
+    "bounds_max": [
+      1.649999976158142,
+      1.649999976158142,
+      0.7114251255989075
+    ],
+    "dimensions": [
+      3.299999952316284,
+      3.299999952316284,
+      1.7114251255989075
+    ],
+    "max_horizontal_radius": 1.6500000629700573
+  },
+  "fresh_glb": {
+    "meshes": 8,
+    "triangles": 113664,
+    "materials": [
+      "01 Oiled timber | CC0 photographed grain",
+      "02 Honed limestone | shallow mineral pores",
+      "03 Sea teal tailored mattress",
+      "04 Deep teal back cushions",
+      "05 Lagoon accent cushions",
+      "06 Seafoam upholstery welting",
+      "07 Aged marine metal | recesses and lantern",
+      "08 Opaque amber lantern diffuser"
+    ],
+    "degenerate_triangles": 0,
+    "nonfinite_vertices": 0,
+    "nonmanifold_parts": [],
+    "bounds_min": [
+      -1.649999976158142,
+      -1.649999976158142,
+      -1.0
+    ],
+    "bounds_max": [
+      1.649999976158142,
+      1.649999976158142,
+      0.7114251255989075
+    ],
+    "dimensions": [
+      3.299999952316284,
+      3.299999952316284,
+      1.7114251255989075
+    ],
+    "max_horizontal_radius": 1.6500000629700573
+  },
+  "fresh_seats": {
+    "world_seat_y": 1.755,
+    "local_seat_z": 0.255,
+    "samples": 50,
+    "sample_patch_size_m": 0.2,
+    "max_plane_deviation_m": 3.623962402388159e-07,
+    "height_min": 0.25499963760375977,
+    "height_max": 0.25500035285949707
+  },
+  "glb_bytes": 9875476,
+  "embedded_images": 8,
+  "fresh_images": [
+    {
+      "name": "Authored limestone mineral color 1024",
+      "size": [
+        1024,
+        1024
+      ],
+      "colorspace": "sRGB"
+    },
+    {
+      "name": "Authored limestone pore normal 1024",
+      "size": [
+        1024,
+        1024
+      ],
+      "colorspace": "Non-Color"
+    },
+    {
+      "name": "Authored limestone pore roughness 1024",
+      "size": [
+        1024,
+        1024
+      ],
+      "colorspace": "Non-Color"
+    },
+    {
+      "name": "Shared authored woven fabric normal 2048",
+      "size": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color"
+    },
+    {
+      "name": "Shared authored woven fiber color 2048",
+      "size": [
+        2048,
+        2048
+      ],
+      "colorspace": "sRGB"
+    },
+    {
+      "name": "Shared authored woven fiber roughness 2048",
+      "size": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color"
+    },
+    {
+      "name": "wood_diff",
+      "size": [
+        2048,
+        2048
+      ],
+      "colorspace": "sRGB"
+    },
+    {
+      "name": "wood_nor_gl",
+      "size": [
+        2048,
+        2048
+      ],
+      "colorspace": "Non-Color"
+    }
+  ],
+  "extensions": [],
+  "hashes": {
+    "daybed-editable.blend": "5bd519dafcbb9fb003d206fb689b9cb767da3656e76452f26e7a76c41470696c",
+    "daybed-v1.glb": "5cdd0dde5d0418888e06422828d426eac07f7f9b27e0f762ef190aae211395d8",
+    "daybed-before.png": "1b042ffb936beabffacbd6b12d7a2006b0be19f9c4b9a840433e0ebb6b6cae57",
+    "daybed-after.png": "6cc7b4002c41bd68a5ce08bcc828b758d768f74c9f405b9b19aba4200d42635e",
+    "daybed-close-fresh-glb.png": "698e03485f39945fb5561666808c8c1665cfa671eb5ca85a5f5a6c55b22a7bd3",
+    "daybed-clay.png": "db3d6ed5dc75e31217e476aaa0808c4bad61490fc9d3fb99e39152050e9c46d6",
+    "baseline-captured.json": "0de1f98ef1c7fbd8f215603dc0d70fbbb7823dae0333becaaef745bed7088ee2"
+  },
+  "scripts": {
+    "build.py": "14858a4fca820b3b0db11c4b24693d998219fdc1d473e9d9a845c2b878f7be36",
+    "capture-baseline.mjs": "12d497f87a86444954b9da62db044f96d0101eae94abb87df1cc546113f2db09",
+    "run.py": "dd37e985bdac42ddd9c2b1b975c82eae65e71d61b7de22bb96f601e1634e23ab"
+  },
+  "close": {
+    "position": [
+      -3.3,
+      2.8,
+      1.8
+    ],
+    "target": [
+      -0.85,
+      -0.2,
+      0.2
+    ],
+    "ortho_scale": 1.95,
+    "samples": 32
+  },
+  "clay": "Fresh GLB, neutral material override; same overview camera and lighting as before/after",
+  "verification_notes": [
+    "Native evaluated closed-volume check passed before export.",
+    "Fresh GLB compared bounds, triangles, material inventory, 50 seat-height ray samples, images and opaque material semantics.",
+    "Four cloth materials preserve distinct tint factors, one shared fiber color texture, a roughness texture and a normal texture.",
+    "glTF UV/normal vertex splitting is not interpreted as broken source volume.",
+    "No browser runtime or user visual acceptance claimed."
+  ],
+  "final_images_inspected": true,
+  "texture_sources": "texture-sources.json",
+  "export_review_fixes": [
+    "Preserved source triangle ordering before applying captured normals.",
+    "Replaced legacy MixRGB with exportable RGBA Mix Multiply and verified exact cloth tint factors.",
+    "Normalized one UVMap per copied mesh before material batching; all texture references use UV0.",
+    "Verified semantic shared image, sampler and UV rather than requiring identical texture entry indices."
+  ]
+}

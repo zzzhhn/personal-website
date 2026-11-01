@@ -1,0 +1,48 @@
+00:01.642  blend            | Read blend: "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-daybed-craft-20261101/daybed-editable.blend"
+Warning: No mesh data to join
+Warning: No mesh data to join
+INFO Draco mesh compression is available, use library at /Applications/Blender.app/Contents/Resources/5.1/scripts/addons_core/io_scene_gltf2/libextern_draco.dylib
+18:25:33 | INFO: Starting glTF 2.0 export
+18:25:33 | INFO: Extracting primitive: Cylinder.004
+18:25:33 | INFO: Primitives created: 1
+18:25:33 | INFO: Extracting primitive: Radial timber rim | jointed segment 00.001
+18:25:34 | INFO: Primitives created: 1
+18:25:34 | INFO: Extracting primitive: Sea teal circular mattress | sewn inflated shell.001
+18:25:34 | INFO: Primitives created: 1
+18:25:34 | INFO: Extracting primitive: Mattress continuous perimeter welting.002
+18:25:34 | INFO: Primitives created: 1
+18:25:34 | INFO: Extracting primitive: Hidden rear upholstery zipper tape.001
+18:25:34 | INFO: Primitives created: 1
+18:25:34 | INFO: Extracting primitive: Cube.071
+18:25:34 | INFO: Primitives created: 1
+18:25:34 | INFO: Extracting primitive: Loose lumbar cushion 0.001
+18:25:34 | INFO: Primitives created: 1
+18:25:34 | INFO: Extracting primitive: Cylinder.007
+18:25:34 | INFO: Primitives created: 1
+18:25:34 | INFO: Finished glTF 2.0 export in 1.0554299354553223 s
+
+18:25:34 | INFO: Data are loaded, start creating Blender stuff
+18:25:34 | INFO: Blender create Mesh node Cylinder.004
+18:25:35 | INFO: Blender create Mesh node Radial timber rim | jointed segment 00.001
+18:25:35 | INFO: Blender create Mesh node Sea teal circular mattress | sewn inflated shell.001
+18:25:35 | INFO: Blender create Mesh node Mattress continuous perimeter welting.002
+18:25:35 | INFO: Blender create Mesh node Hidden rear upholstery zipper tape.001
+18:25:35 | INFO: Blender create Mesh node Cube.071
+18:25:35 | INFO: Blender create Mesh node Loose lumbar cushion 0.001
+18:25:35 | INFO: Blender create Mesh node Cylinder.007
+18:25:35 | INFO: glTF import finished in 0.24s
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/tools/world/djc-daybed-craft/build.py:22: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m=bpy.data.materials.new(name);m.use_nodes=True;p=m.node_tree.nodes.get('Principled BSDF')
+01:01.835  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-daybed-craft-20261101/daybed-close-fresh-glb.png'
+01:59.105  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-daybed-craft-20261101/daybed-clay.png'
+Traceback (most recent call last):
+  File "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/tools/world/djc-daybed-craft/build.py", line 458, in <module>
+    if phase=='finish':finish()
+                       ~~~~~~^^
+  File "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/tools/world/djc-daybed-craft/build.py", line 444, in finish
+    assert len({m['pbrMetallicRoughness']['baseColorTexture']['index'] for m in cloth})==1
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

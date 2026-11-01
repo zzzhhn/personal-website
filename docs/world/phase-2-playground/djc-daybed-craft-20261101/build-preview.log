@@ -1,0 +1,9 @@
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/tools/world/djc-daybed-craft/build.py:22: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m=bpy.data.materials.new(name);m.use_nodes=True;p=m.node_tree.nodes.get('Principled BSDF')
+00:44.786  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-daybed-craft-20261101/daybed-before.png'
+01:22.690  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-daybed-craft-20261101/daybed-after.png'
+Info: Saved as "daybed-editable.blend"
+PREVIEW_OK {"native": {"meshes": 804, "triangles": 113664, "materials": ["01 Oiled timber | CC0 photographed grain", "02 Honed limestone | shallow mineral pores", "03 Sea teal tailored mattress", "04 Deep teal back cushions", "05 Lagoon accent cushions", "06 Seafoam upholstery welting", "07 Aged marine metal | recesses and lantern", "08 Opaque amber lantern diffuser"], "degenerate_triangles": 0, "nonfinite_vertices": 0, "nonmanifold_parts": [], "bounds_min": [-1.649999976158142, -1.649999976158142, -1.0], "bounds_max": [1.649999976158142, 1.649999976158142, 0.7114251255989075], "dimensions": [3.299999952316284, 3.299999952316284, 1.7114251255989075], "max_horizontal_radius": 1.6500000629700573}, "seats": {"world_seat_y": 1.755, "local_seat_z": 0.255, "samples": 50, "sample_patch_size_m": 0.2, "max_plane_deviation_m": 3.623962402388159e-07, "height_min": 0.25499963760375977, "height_max": 0.25500035285949707}}
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

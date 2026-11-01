@@ -70,12 +70,15 @@ class Collision {
 const fromTriangles = (positions: number[]) => { const g = new BufferGeometry(); g.setAttribute('position', new Float32BufferAttribute(positions, 3)); g.computeVertexNormals(); return g; };
 
 /** Deterministic, editable geometry. Only upward support faces enter surface; side guards and props enter solid. */
-export function buildDjcClubGeometry({includeNorthBar=false}:{includeNorthBar?:boolean}={}) {
+export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=false}:{includeNorthBar?:boolean;separateDaybeds?:boolean}={}) {
   const batches = Object.fromEntries((['wood','stone','metal','fabric','foliage','glass','amber','cyan'] as ClubBatch[]).map(k => [k, new Batch()])) as Record<ClubBatch, Batch>;
+  const daybedBatches = Object.fromEntries(Object.keys(batches).map(k => [k, new Batch()])) as Record<ClubBatch, Batch>;
   const surface = new Collision(), solid = new Collision();
   const solidTriangles=(positions:number[])=>{for(let i=0;i<positions.length;i+=9)solid.triangle(positions.slice(i,i+3) as V3,positions.slice(i+3,i+6) as V3,positions.slice(i+6,i+9) as V3);};
-  let yOffset = 0;
-  const add = (kind: ClubBatch, g: BufferGeometry, color: string, wind = 0) => batches[kind].add(g, color, wind);
+  let yOffset = 0, collectingDaybed = false;
+  // Only the visible furniture moves into a replaceable group. All support,
+  // guard and approach triangles continue through the original collision path.
+  const add = (kind: ClubBatch, g: BufferGeometry, color: string, wind = 0) => (separateDaybeds && collectingDaybed ? daybedBatches : batches)[kind].add(g, color, wind);
   const box = (kind: ClubBatch, p: V3, size: V3, color: string, rotate = 0, collide = false) => {
     const g = kind==='fabric' ? new RoundedBoxGeometry(...size,1,Math.min(.055,...size.map(n=>n*.2))) : new BoxGeometry(...size); g.rotateY(rotate); g.translate(p[0],p[1]+yOffset,p[2]);
     if (collide) { const raw = g.index ? g.toNonIndexed() : g, m=raw.getAttribute('position'); for (let i = 0; i < m.count; i += 3) solid.triangle([m.getX(i),m.getY(i),m.getZ(i)], [m.getX(i+1),m.getY(i+1),m.getZ(i+1)], [m.getX(i+2),m.getY(i+2),m.getZ(i+2)]); if(raw!==g)raw.dispose(); }
@@ -261,8 +264,33 @@ export function buildDjcClubGeometry({includeNorthBar=false}:{includeNorthBar?:b
     for(let i=0;i<rows.length-1;i++){const [a,b]=rows[i],[d,c]=rows[i+1];top.push(...a,...c,...b,...a,...d,...c);surface.triangle(a,c,b);surface.triangle(a,d,c);}
     const outline=[rows[0][0],...rows.map(r=>r[1]),...rows.slice(1).reverse().map(r=>r[0])];
     for(let i=0;i<outline.length;i++){const a=outline[i],b=outline[(i+1)%outline.length],c:V3=[b[0],b[1]-.12,b[2]],d:V3=[a[0],a[1]-.12,a[2]];sides.push(...a,...b,...c,...a,...c,...d);}
-    add('wood',fromTriangles(top),C.wood);add('wood',fromTriangles(sides),C.edge);solidTriangles(sides);
+    let visibleTop=top,visibleSides=sides;
+    if(separateDaybeds){
+      // Match the GLB's flat mattress rim, including its 192-sided tessellation.
+      // The eased slope and all collision triangles retain their original data.
+      // A straight cut at the front centre would leave gaps at both outer corners.
+      const arc:V3[]=[],radius=1.425,segments=192;
+      visibleTop=top.slice(0,-18);
+      for(let i=segments/2;i<segments;i++){
+        const a:V3=[x+radius*Math.cos(i*TAU/segments),DJC_DAYBED_TOP,z+radius*Math.sin(i*TAU/segments)];
+        const b:V3=[x+radius*Math.cos((i+1)*TAU/segments),DJC_DAYBED_TOP,z+radius*Math.sin((i+1)*TAU/segments)];
+        if(b[0]<=x-half||a[0]>=x+half)continue;
+        const at=(px:number):V3=>[px,DJC_DAYBED_TOP,a[2]+(b[2]-a[2])*(px-a[0])/(b[0]-a[0])];
+        const left=at(Math.max(a[0],x-half)),right=at(Math.min(b[0],x+half));
+        if(!arc.length)arc.push(left);arc.push(right);
+        const nearLeft:V3=[left[0],DJC_DAYBED_TOP,landing],nearRight:V3=[right[0],DJC_DAYBED_TOP,landing];
+        visibleTop.push(...nearLeft,...right,...nearRight,...nearLeft,...left,...right);
+      }
+      const visualOutline=[rows[0][0],...rows.slice(0,-1).map(r=>r[1]),...arc.slice().reverse(),...rows.slice(1,-1).reverse().map(r=>r[0])];
+      visibleSides=[];
+      for(let i=0;i<visualOutline.length;i++){
+        const a=visualOutline[i],b=visualOutline[(i+1)%visualOutline.length],c:V3=[b[0],b[1]-.12,b[2]],d:V3=[a[0],a[1]-.12,a[2]];
+        visibleSides.push(...a,...b,...c,...a,...c,...d);
+      }
+    }
+    add('wood',fromTriangles(visibleTop),C.wood);add('wood',fromTriangles(visibleSides),C.edge);solidTriangles(sides);
     daybedApproaches.push({from:[x,(left+right)/2,start],to:[x,DJC_DAYBED_TOP,end],width:DJC_DAYBED_ACCESS.width});
+    collectingDaybed = true;
     // The timber rim occupies the old stone envelope, leaving access and leg lanes unchanged.
     slab('stone',ellipse(x,z,1.65,1.65,1.38,32),.88,'#c4bda6');
     slab('wood',ellipse(x,z,1.65,1.65,1.5,32),.12,'#956a43');
@@ -282,6 +310,7 @@ export function buildDjcClubGeometry({includeNorthBar=false}:{includeNorthBar?:b
     cylinder('amber',[tx,2.02,tz],.07,.07,.22,C.amber,8);
     for(const dx of [-.095,.095])for(const dz of [-.095,.095])rod('wood',[tx+dx,1.88,tz+dz],[tx+dx,2.16,tz+dz],.018,C.edge);
     box('wood',[tx,2.17,tz],[.24,.045,.24],C.edge);
+    collectingDaybed = false;
   }
   for(let i=0;i<12;i++) {
     const a=i*TAU/12+.15;if(Math.abs(Math.cos(a))<.2)continue;
@@ -547,5 +576,6 @@ export function buildDjcClubGeometry({includeNorthBar=false}:{includeNorthBar?:b
   const built=Object.fromEntries(Object.entries(batches).map(([key,batch])=>[key,batch.geometry()])) as Record<ClubBatch,BufferGeometry>;
   built.foliage.boundingBox?.expandByScalar(.75);if(built.foliage.boundingSphere)built.foliage.boundingSphere.radius+=.75;
   built.foliage.userData={worldWind:true,softPush:true,pushMax:.62};
-  return { batches: built, colliders: { surface: surface.data(), solid: solid.data() }, seats, pool,daybedApproaches };
+  const daybeds=Object.fromEntries(Object.entries(daybedBatches).map(([key,batch])=>[key,batch.geometry()])) as Record<ClubBatch,BufferGeometry>;
+  return { batches: built, daybeds, colliders: { surface: surface.data(), solid: solid.data() }, seats, pool,daybedApproaches };
 }

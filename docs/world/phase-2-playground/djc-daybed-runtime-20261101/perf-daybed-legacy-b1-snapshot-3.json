@@ -1,0 +1,108 @@
+{
+ "at": 125298,
+ "calls": 63,
+ "triangles": 267097,
+ "geometries": 339,
+ "textures": 76,
+ "programs": 150,
+ "camera": {
+  "yaw": -1.5707963267948966,
+  "pitch": 0.4,
+  "distance": 12,
+  "desiredDistance": 12,
+  "driveManualZoom": false,
+  "actualDistance": 12,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": false,
+  "hitDistance": null,
+  "fov": 50,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   60.3,
+   2.75,
+   39.6
+  ],
+  "target": [
+   62,
+   3.206826829910279,
+   39.495246887207045
+  ],
+  "forwardGround": [
+   0.4608152706470574,
+   0.8874960768017396
+  ],
+  "groundBelowCamera": 0.81646728515625,
+  "clearanceAboveGround": 1.93353271484375,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "mode": "demand",
+ "frame": 2787,
+ "delta": 0.015699999988079073,
+ "night": 0,
+ "windTime": 36.94170000004802,
+ "position": [
+  62,
+  2.5568268299102783,
+  39.49524688720703
+ ],
+ "paused": false,
+ "shot": "djc-daybed-close-day",
+ "seat": null,
+ "quality": "balanced",
+ "weather": "clear",
+ "light": "noon",
+ "worldMinutes": 720,
+ "drawingBuffer": [
+  2013,
+  1030
+ ],
+ "cssSize": [
+  1710,
+  875
+ ],
+ "pixelRatio": 1.1772275318111343,
+ "hidden": false,
+ "url": "http://127.0.0.1:4356/world/?qa=1&quality=balanced&start=club&paused=1&djcDaybeds=legacy&case=perf-daybed-legacy-b1",
+ "renderInfo": {
+  "drawingBuffer": [
+   2013,
+   1030
+  ],
+  "cssSize": [
+   1710,
+   875
+  ],
+  "pixelRatio": 1.1772275318111343,
+  "dprRange": [
+   0,
+   1.5
+  ],
+  "quality": "balanced",
+  "antialias": true,
+  "msaaSamples": 4,
+  "toneMapping": 4,
+  "outputColorSpace": "srgb",
+  "shadowMapSize": 1254,
+  "shadowType": 1,
+  "postprocessing": []
+ },
+ "player": [
+  62,
+  2.5568268299102783,
+  39.49524688720703
+ ],
+ "grounded": true,
+ "velocity": [
+  0.00013586090062744915,
+  -1.1007153261743952e-05,
+  -8.493821951560676e-05
+ ],
+ "daybedObjects": [],
+ "daybedRequests": []
+}

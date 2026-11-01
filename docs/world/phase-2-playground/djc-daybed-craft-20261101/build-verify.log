@@ -1,0 +1,17 @@
+00:01.449  blend            | Read blend: "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-daybed-craft-20261101/daybed-editable.blend"
+Warning: No mesh data to join
+Warning: No mesh data to join
+18:29:58 | INFO: Data are loaded, start creating Blender stuff
+18:29:58 | INFO: Blender create Mesh node Cylinder.004
+18:29:58 | INFO: Blender create Mesh node Radial timber rim | jointed segment 00.001
+18:29:58 | INFO: Blender create Mesh node Sea teal circular mattress | sewn inflated shell.001
+18:29:58 | INFO: Blender create Mesh node Mattress continuous perimeter welting.002
+18:29:58 | INFO: Blender create Mesh node Hidden rear upholstery zipper tape.001
+18:29:58 | INFO: Blender create Mesh node Cube.071
+18:29:58 | INFO: Blender create Mesh node Loose lumbar cushion 0.001
+18:29:58 | INFO: Blender create Mesh node Cylinder.007
+18:29:58 | INFO: glTF import finished in 0.19s
+FINISH_OK {"triangles": 113664, "materials": 8, "meshes": 8, "bytes": 9875476, "seat_max_deviation": 3.623962402388159e-07, "images": [{"name": "Authored limestone mineral color 1024", "size": [1024, 1024], "colorspace": "sRGB"}, {"name": "Authored limestone pore normal 1024", "size": [1024, 1024], "colorspace": "Non-Color"}, {"name": "Authored limestone pore roughness 1024", "size": [1024, 1024], "colorspace": "Non-Color"}, {"name": "Shared authored woven fabric normal 2048", "size": [2048, 2048], "colorspace": "Non-Color"}, {"name": "Shared authored woven fiber color 2048", "size": [2048, 2048], "colorspace": "sRGB"}, {"name": "Shared authored woven fiber roughness 2048", "size": [2048, 2048], "colorspace": "Non-Color"}, {"name": "wood_diff", "size": [2048, 2048], "colorspace": "sRGB"}, {"name": "wood_nor_gl", "size": [2048, 2048], "colorspace": "Non-Color"}]}
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit
