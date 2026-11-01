@@ -1,0 +1,215 @@
+{
+ "at": 111807,
+ "calls": 268,
+ "triangles": 1324742,
+ "geometries": 450,
+ "textures": 86,
+ "programs": 212,
+ "camera": {
+  "yaw": 1.5697036732051028,
+  "pitch": 0.4,
+  "distance": 2.5,
+  "desiredDistance": 2.5,
+  "driveManualZoom": false,
+  "actualDistance": 2.499999999999998,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": false,
+  "hitDistance": null,
+  "fov": 50,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   40.75251600100315,
+   3.6423716251960636,
+   44.00265187338776
+  ],
+  "target": [
+   40.75,
+   2.6688257694244384,
+   41.70000076293945
+  ],
+  "forwardGround": [
+   -0.0010926533723752173,
+   -0.9999994030541257
+  ],
+  "groundBelowCamera": 1.5878448486328125,
+  "clearanceAboveGround": 2.054526776563251,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "mode": "always",
+ "frame": 5859,
+ "delta": 0.0255,
+ "night": 0.72,
+ "windTime": 80.39600000005919,
+ "position": [
+  40.75,
+  2.0188257694244385,
+  41.70000076293945
+ ],
+ "paused": false,
+ "quality": "balanced",
+ "weather": "clear",
+ "light": "evening",
+ "worldMinutes": 1140,
+ "hidden": false,
+ "url": "http://127.0.0.1:4356/world/?qa=1&quality=balanced&start=club&paused=1&case=glass-ramp-d1",
+ "renderInfo": {
+  "drawingBuffer": [
+   1280,
+   720
+  ],
+  "cssSize": [
+   1280,
+   720
+  ],
+  "pixelRatio": 1,
+  "dprRange": [
+   0,
+   1.5
+  ],
+  "quality": "balanced",
+  "antialias": true,
+  "msaaSamples": 4,
+  "toneMapping": 4,
+  "outputColorSpace": "srgb",
+  "shadowMapSize": 1254,
+  "shadowType": 1,
+  "postprocessing": []
+ },
+ "player": [
+  40.75,
+  2.0188257694244385,
+  41.70000076293945
+ ],
+ "grounded": true,
+ "velocity": [
+  -2.802596928649634e-45,
+  0,
+  1.979198032131535e-07
+ ],
+ "barObjects": [
+  "djc-north-bar",
+  "djc-north-bar-visual",
+  "DJC_\u00b7_Oiled_teak_\u00b7_photographed_grain",
+  "DJC_\u00b7_Split_rattan",
+  "djc-bar-surface",
+  "djc-bar-surface-proxy",
+  "djc-bar-solid",
+  "djc-bar-solid-proxy"
+ ],
+ "barRequests": [
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/bar/djc-north-bar-lod1-v1.glb",
+   "duration": 139.69999998807907,
+   "transferSize": 10531856,
+   "decodedBodySize": 10531556
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/bar/textures/wood_diff-5da68c7ebe8732f0.jpg",
+   "duration": 611.5,
+   "transferSize": 3562333,
+   "decodedBodySize": 3562033
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/bar/textures/teak_rough-83bc1bf52c552ef0.png",
+   "duration": 13.899999976158142,
+   "transferSize": 839307,
+   "decodedBodySize": 839007
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/bar/textures/wood_nor_gl-fc9f1d2600e76865.jpg",
+   "duration": 589.6999999880791,
+   "transferSize": 2327116,
+   "decodedBodySize": 2326816
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/bar/textures/limestone_color-76100c31ddfacd17.png",
+   "duration": 22.80000001192093,
+   "transferSize": 1367009,
+   "decodedBodySize": 1366709
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/bar/textures/limestone_rough-9bc682ee198d0c20.png",
+   "duration": 15.900000035762787,
+   "transferSize": 1076049,
+   "decodedBodySize": 1075749
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/bar/textures/dry_palm_color-5e49fb6cf7709fd5.png",
+   "duration": 28.100000023841858,
+   "transferSize": 1479724,
+   "decodedBodySize": 1479424
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/bar/textures/limestone_normal-8bc422cd0352b9e9.png",
+   "duration": 592.5,
+   "transferSize": 2356151,
+   "decodedBodySize": 2355851
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/bar/textures/dry_palm_normal-3d6daa0e35c24e35.png",
+   "duration": 47.10000002384186,
+   "transferSize": 1945904,
+   "decodedBodySize": 1945604
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/bar/djc-north-bar-v1.glb",
+   "duration": 173.5,
+   "transferSize": 13284108,
+   "decodedBodySize": 13283808
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/bar/textures/wood_diff-5da68c7ebe8732f0.jpg",
+   "duration": 23.5,
+   "transferSize": 300,
+   "decodedBodySize": 3562033
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/bar/textures/teak_rough-83bc1bf52c552ef0.png",
+   "duration": 13.399999976158142,
+   "transferSize": 300,
+   "decodedBodySize": 839007
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/bar/textures/wood_nor_gl-fc9f1d2600e76865.jpg",
+   "duration": 22,
+   "transferSize": 300,
+   "decodedBodySize": 2326816
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/bar/textures/dry_palm_color-5e49fb6cf7709fd5.png",
+   "duration": 16.100000023841858,
+   "transferSize": 300,
+   "decodedBodySize": 1479424
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/bar/textures/dry_palm_normal-3d6daa0e35c24e35.png",
+   "duration": 17.30000001192093,
+   "transferSize": 300,
+   "decodedBodySize": 1945604
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/bar/textures/limestone_color-76100c31ddfacd17.png",
+   "duration": 16.600000023841858,
+   "transferSize": 300,
+   "decodedBodySize": 1366709
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/bar/textures/limestone_rough-9bc682ee198d0c20.png",
+   "duration": 14,
+   "transferSize": 300,
+   "decodedBodySize": 1075749
+  },
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/bar/textures/limestone_normal-8bc422cd0352b9e9.png",
+   "duration": 19.19999998807907,
+   "transferSize": 300,
+   "decodedBodySize": 2355851
+  }
+ ]
+}

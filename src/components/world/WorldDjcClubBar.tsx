@@ -5,7 +5,7 @@ import { DataTexture, EquirectangularReflectionMapping, FloatType, LinearSRGBCol
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { withWorldAssetDecoder } from './WorldAssetDecoder';
 import { night } from './WorldNight';
-import { DJC_BAR_ASSETS, DJC_BAR_BOXES, DJC_BAR_ORIGIN, buildDjcBarProxy, cloneDjcBarVisual, djcBarLod, djcBarQaOpaque, djcBarQaMode, shareDjcBarTexture } from './djc-bar-layout';
+import { DJC_BAR_ASSETS, DJC_BAR_BOXES, DJC_BAR_ORIGIN, buildDjcBarProxy, cloneDjcBarVisual, djcBarLod, djcBarQaOpaque, djcBarQaMode, djcBarQaSceneTransmission, shareDjcBarTexture } from './djc-bar-layout';
 
 /** A small private outdoor reflection map. No scene environment, exposure or global lights change. */
 function useBarEnvironment() {
@@ -34,7 +34,7 @@ function useBarEnvironment() {
   }, [renderer]);
   return map;
 }
-function BarAsset({ url, environment, opaque, textures }: { url: string; environment: Texture | null; opaque: boolean; textures: Map<string, Texture> }) {
+function BarAsset({ url, environment, opaque, textures, sceneTransmission }: { url: string; environment: Texture | null; opaque: boolean; textures: Map<string, Texture>; sceneTransmission: boolean }) {
   const gltf = useLoader(GLTFLoader, url, withWorldAssetDecoder);
   const visual = useMemo(() => cloneDjcBarVisual(gltf.scene, opaque, environment, texture => {
     const index = gltf.parser.associations.get(texture)?.textures;
@@ -42,7 +42,7 @@ function BarAsset({ url, environment, opaque, textures }: { url: string; environ
     const uri = definition ? gltf.parser.json.images?.[definition.source]?.uri : undefined;
     const resolved = uri ? new URL(uri, `https://world.local${url}`).href : undefined;
     return shareDjcBarTexture(texture, resolved, textures);
-  }), [gltf, opaque, environment, textures, url]);
+  }, sceneTransmission), [gltf, opaque, environment, textures, url, sceneTransmission]);
   useEffect(() => () => visual.dispose(), [visual]);
   useFrame(() => { for (const m of visual.materials) m.envMapIntensity = .35 * (1 - night.value * .88); });
   return <primitive object={visual.root} dispose={null} />;
@@ -71,6 +71,7 @@ function ActiveBarVisual({ fallback }: { fallback: ReactNode }) {
   const [lod, setLod] = useState<'near' | 'far'>(() => mode === 'near' || mode === 'far' ? mode : djcBarLod(distance(), 'far'));
   const requested = useRef(lod), environment = useBarEnvironment();
   const opaque = useMemo(() => typeof window !== 'undefined' && djcBarQaOpaque(window.location.search), []);
+  const sceneTransmission = useMemo(() => typeof window !== 'undefined' && djcBarQaSceneTransmission(window.location.search), []);
   useFrame(() => {
     const next = mode === 'near' || mode === 'far' ? mode : djcBarLod(distance(), requested.current);
     if (next !== requested.current) {
@@ -81,7 +82,7 @@ function ActiveBarVisual({ fallback }: { fallback: ReactNode }) {
     }
   });
   return <BarBoundary fallback={fallback}><Suspense fallback={fallback}>
-    <BarAsset url={DJC_BAR_ASSETS[lod]} environment={environment} opaque={opaque} textures={textures.current} />
+    <BarAsset url={DJC_BAR_ASSETS[lod]} environment={environment} opaque={opaque} textures={textures.current} sceneTransmission={sceneTransmission} />
   </Suspense></BarBoundary>;
 }
 /** Collision is always present. Asset caches activate once and remain bounded to two LODs. */

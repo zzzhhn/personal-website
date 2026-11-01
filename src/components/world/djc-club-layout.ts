@@ -84,7 +84,7 @@ export const CLUB_SCATTER_BLOCKERS = [
   { minX: 27.4, maxX: 36.6, minZ: 47.4, maxZ: 62.6 }, // raised stage
   { minX: 22.8, maxX: 30.5, minZ: 38.7, maxZ: 44.6 }, // shore entrance
   { minX: 28, maxX: 36.5, minZ: 41.6, maxZ: 47.3 }, // approach to timber floors
-  { minX: 35, maxX: 46.5, minZ: 37.5, maxZ: 42.7 }, // bar and stools
+  { minX: 35, maxX: 46.5, minZ: 37.5, maxZ: 43.25 }, // bar, stools and shallow front threshold
 ];
 
 /** Exact intersections with the final terrain triangles, stitched by mesh-edge identity.

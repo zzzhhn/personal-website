@@ -212,6 +212,11 @@ export function buildDjcClubGeometry({includeNorthBar=false}:{includeNorthBar?:b
   const join=DJC_BAR_DANCE_JOIN;
   slab('wood',includeNorthBar?[[35,1.01,40],[40,1.01,40],[40,danceY,46],[35,danceY,46]]:
     [[join.minX,join.y,join.z],[40,join.y,join.z],[40,danceY,46],[35,danceY,46]],.13,C.wood);
+  // A shallow front threshold lets visitors approach from the open ground too.
+  // It meets (rather than overlaps) the deck and the existing left bridge. The
+  // pool-side walkway remains above this strip, avoiding coplanar new paving.
+  if(!includeNorthBar)slab('wood',[[40,join.y,join.z],[46.025,join.y,join.z],
+    [46.025,1.01,43.2],[40,1.01,43.2]],.1,C.wood);
   const seats=DJC_CLUB_SEATS.map(seat=>({...seat,position:[...seat.position] as V3}));
   // A mineral basin follows the shared analytic floor over 12 radial courses.
   for(let ring=0;ring<12;ring++)for(let i=0;i<CLUB_POOL.segments;i++) {

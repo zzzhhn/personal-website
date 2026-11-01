@@ -35,6 +35,10 @@ export function djcBarQaOpaque(search: string) {
   const q = new URLSearchParams(search);
   return q.get('qa') === '1' && q.get('djcBarTransmission') === '0';
 }
+export function djcBarQaSceneTransmission(search: string) {
+  const q = new URLSearchParams(search);
+  return q.get('qa') === '1' && q.get('djcBarTransmission') === '1';
+}
 export function djcBarQaMode(search: string): 'legacy' | 'near' | 'far' | 'auto' {
   const q = new URLSearchParams(search), mode = q.get('djcBar');
   return q.get('qa') === '1' && (mode === 'legacy' || mode === 'near' || mode === 'far') ? mode : 'auto';
@@ -78,7 +82,7 @@ export function buildDjcBarProxy() {
   return { surface: data(surface), solid: data(solid), roof: geometry(roof) };
 }
 /** Keep loader-owned textures and geometries shared; only private material copies are released. */
-export function cloneDjcBarVisual(source: Object3D, opaque: boolean, environment: Texture | null, textureFor: (texture: Texture) => Texture = texture => texture) {
+export function cloneDjcBarVisual(source: Object3D, opaque: boolean, environment: Texture | null, textureFor: (texture: Texture) => Texture = texture => texture, sceneTransmission = false) {
   const root = source.clone(true), materials = new Map<MeshStandardMaterial, MeshStandardMaterial>();
   root.traverse(object => {
     if (!(object instanceof Mesh)) return;
@@ -92,7 +96,16 @@ export function cloneDjcBarVisual(source: Object3D, opaque: boolean, environment
           if (value && typeof value === 'object' && 'isTexture' in value && key !== 'envMap')
             (m as unknown as Record<string, unknown>)[key] = textureFor(value as Texture);
         }
-        if (opaque && 'transmission' in m) (m as MeshStandardMaterial & { transmission: number }).transmission = 0;
+        if ('transmission' in m && Number(m.transmission) > 0 && !sceneTransmission) {
+          (m as MeshStandardMaterial & { transmission: number }).transmission = 0;
+          if (!opaque) {
+            // Tiny hollow glassware keeps its real walls, Fresnel reflection and
+            // visible contents without rendering the entire island a second time.
+            // The approved source GLB stays intact; QA can restore scene refraction.
+            m.transparent = true; m.depthWrite = false; m.forceSinglePass = true;
+            m.opacity = /water/i.test(m.name) ? .2 : .16;
+          }
+        }
         materials.set(original, m);
       }
       return materials.get(original)!;

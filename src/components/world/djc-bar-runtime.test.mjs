@@ -103,6 +103,18 @@ test('legacy bar stools, roof and emitters are removed from procedural venue', (
     assert.ok(!(x > 36.5 && x < 44.5 && y > 2 && y < 4 && z > 38 && z < 40), 'old bar light removed');
   }
 });
+test('ground approach crosses the bar front lip instead of meeting a 20 cm vertical wall', () => {
+  for (const x of [40.75, 41.8, 43]) {
+    let previous = 1.01;
+    for (let z = 43.19; z >= DJC_BAR_DANCE_JOIN.z; z -= .04) {
+      const point = hit(club.colliders.surface, [x, 1.3, z], [0, -1, 0]);
+      assert.ok(point, `missing threshold at ${x},${z}`);
+      assert.ok(point.y >= previous - 1e-5 && point.y - previous < .02);
+      previous = point.y;
+    }
+    assert.ok(Math.abs(previous - DJC_BAR_DANCE_JOIN.y) < .015);
+  }
+});
 test('LOD hysteresis and QA-only opaque comparison do not change collision contract', () => {
   assert.equal(djcBarLod(25, 'far'), 'near'); assert.equal(djcBarLod(27, 'far'), 'far');
   assert.equal(djcBarLod(29, 'near'), 'near'); assert.equal(djcBarLod(31, 'near'), 'far');
@@ -168,7 +180,7 @@ test('two LODs share external GPU textures while sampler/color-space variants re
   registry.clear(); assert.equal(disposed, 0, 'loader-owned canonical texture is never disposed by the bar');
   near.dispose(); far.dispose(); variant.dispose();
 });
-test('PBR clones retain maps/transmission; release only owned materials exactly once', () => {
+test('runtime glass keeps maps and source PBR while avoiding a whole-scene transmission pass', () => {
   const source = new Group(), map = new Texture(), env = new Texture(), geometry = new BoxGeometry();
   const material = new MeshPhysicalMaterial({ name: 'Oiled teak', map, transmission: 1, roughness: .23 });
   source.add(new Mesh(geometry, material), new Mesh(geometry, material));
@@ -176,13 +188,17 @@ test('PBR clones retain maps/transmission; release only owned materials exactly 
   material.addEventListener('dispose', () => sourceDisposals++); map.addEventListener('dispose', () => textureDisposals++);
   geometry.addEventListener('dispose', () => geometryDisposals++);
   const normal = cloneDjcBarVisual(source, false, env), opaque = cloneDjcBarVisual(source, true, env);
+  const full = cloneDjcBarVisual(source, false, env, undefined, true);
   assert.equal(normal.materials.length, 1); assert.equal(normal.materials[0].map, map);
-  assert.equal(normal.materials[0].transmission, 1); assert.equal(normal.materials[0].envMap, env);
+  assert.equal(normal.materials[0].transmission, 0); assert.equal(normal.materials[0].envMap, env);
+  assert.equal(normal.materials[0].transparent, true); assert.equal(normal.materials[0].depthWrite, false);
+  assert.ok(normal.materials[0].opacity > 0 && normal.materials[0].opacity < .3);
+  assert.equal(full.materials[0].transmission, 1); assert.equal(full.materials[0].transparent, false);
   assert.equal(opaque.materials[0].transmission, 0); assert.equal(material.transmission, 1);
   assert.equal(normal.root.children[0].geometry, geometry);
   assert.equal(normal.root.children[0].material, normal.root.children[1].material);
   normal.materials[0].addEventListener('dispose', () => cloneDisposals++);
-  normal.dispose(); normal.dispose(); opaque.dispose();
+  normal.dispose(); normal.dispose(); opaque.dispose(); full.dispose();
   assert.equal(cloneDisposals, 1); assert.equal(sourceDisposals + textureDisposals + geometryDisposals, 0);
   material.dispose(); geometry.dispose(); map.dispose(); env.dispose();
 });
