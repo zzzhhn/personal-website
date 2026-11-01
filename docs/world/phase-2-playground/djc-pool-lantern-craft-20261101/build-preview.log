@@ -1,0 +1,11 @@
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/tools/world/djc-pool-lantern-craft/build.py:33: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m=bpy.data.materials.new(name);m.use_nodes=True;p=m.node_tree.nodes.get('Principled BSDF')
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/tools/world/djc-pool-lantern-craft/build.py:201: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  s.world=bpy.data.worlds.new('Neutral inspection world');s.world.use_nodes=True;s.world.node_tree.nodes['Background'].inputs[0].default_value=(.64,.71,.78,1);s.world.node_tree.nodes['Background'].inputs[1].default_value=.42
+00:16.325  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-pool-lantern-craft-20261101/lantern-before.png'
+00:32.512  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-pool-lantern-craft-20261101/lantern-after.png'
+Info: Saved as "pool-lantern-editable.blend"
+PREVIEW_OK {"meshes": 54, "triangles": 11304, "materials": ["DJC_Lantern_Brass", "DJC_Lantern_Diffuser", "DJC_Lantern_Inset", "DJC_Lantern_Timber"], "bounds": [[-0.1550000011920929, -0.1550000011920929, 0.0], [0.1550000011920929, 0.1550000011920929, 0.7699999809265137]], "dimensions": [0.3100000023841858, 0.3100000023841858, 0.7699999809265137], "degenerate_triangles": 0, "nonfinite_vertices": 0, "nonmanifold_parts": []}
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

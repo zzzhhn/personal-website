@@ -1,0 +1,58 @@
+19:52:03 | INFO: Data are loaded, start creating Blender stuff
+19:52:03 | INFO: Blender create Mesh node Cylinder.004
+19:52:03 | INFO: Blender create Mesh node Radial timber rim | jointed segment 00.001
+19:52:03 | INFO: Blender create Mesh node Sea teal circular mattress | sewn inflated shell.001
+19:52:03 | INFO: Blender create Mesh node Mattress continuous perimeter welting.002
+19:52:03 | INFO: Blender create Mesh node Hidden rear upholstery zipper tape.001
+19:52:03 | INFO: Blender create Mesh node Cube.071
+19:52:03 | INFO: Blender create Mesh node Loose lumbar cushion 0.001
+19:52:03 | INFO: Blender create Mesh node Cylinder.007
+19:52:03 | INFO: glTF import finished in 0.18s
+AO_STAGE proxy UV1 transferred; coverage 0.317; source UV0/positions/normals byte-identical 7.76
+AO_STAGE bake start 7.76
+Info: Baking map saved to internal image, save it externally or pack it
+AO_STAGE bake complete 11.9
+INFO Draco mesh compression is available, use library at /Applications/Blender.app/Contents/Resources/5.1/scripts/addons_core/io_scene_gltf2/libextern_draco.dylib
+19:52:15 | INFO: Starting glTF 2.0 export
+19:52:15 | INFO: Extracting primitive: Cylinder.004
+19:52:15 | INFO: Primitives created: 1
+19:52:15 | INFO: Extracting primitive: Cylinder.002
+19:52:15 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+19:52:15 | INFO: Primitives created: 1
+19:52:15 | INFO: Extracting primitive: Cylinder.003
+19:52:15 | INFO: Primitives created: 1
+19:52:15 | INFO: Extracting primitive: Cylinder.005
+19:52:15 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+19:52:15 | INFO: Primitives created: 1
+19:52:15 | INFO: Extracting primitive: Cylinder.006
+19:52:15 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+19:52:16 | INFO: Primitives created: 1
+19:52:16 | INFO: Extracting primitive: Cylinder.008
+19:52:16 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+19:52:16 | INFO: Primitives created: 1
+19:52:16 | INFO: Extracting primitive: Cylinder.009
+19:52:16 | INFO: Primitives created: 1
+19:52:16 | INFO: Extracting primitive: Cylinder.010
+19:52:16 | WARNING: More than one shader node tex image used for a texture. The resulting glTF sampler will behave like the first shader node tex image.
+19:52:16 | INFO: Primitives created: 1
+19:52:16 | INFO: Finished glTF 2.0 export in 0.22988295555114746 s
+
+AO_STAGE GLB exported; PBR images and factors unchanged 12.79
+19:52:16 | INFO: Data are loaded, start creating Blender stuff
+19:52:16 | INFO: Blender create Mesh node Cylinder.004
+19:52:16 | INFO: Blender create Mesh node Cylinder.002
+19:52:16 | INFO: Blender create Mesh node Cylinder.003
+19:52:16 | INFO: Blender create Mesh node Cylinder.005
+19:52:16 | INFO: Blender create Mesh node Cylinder.006
+19:52:16 | INFO: Blender create Mesh node Cylinder.008
+19:52:16 | INFO: Blender create Mesh node Cylinder.009
+19:52:16 | INFO: Blender create Mesh node Cylinder.010
+19:52:16 | INFO: glTF import finished in 0.21s
+AO_STAGE fresh import validated 13.31
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/tools/world/djc-render-parity/prepare_asset_ao.py:201: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  debug=bpy.data.materials.new('AO debug only');debug.use_nodes=True;nodes=debug.node_tree.nodes;links=debug.node_tree.links
+00:15.705  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-render-parity-20261101/asset-ao/daybed-ao-debug.png'
+AO_STAGE AO diagnostic complete 14.81
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

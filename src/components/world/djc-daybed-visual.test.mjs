@@ -108,14 +108,15 @@ test('four placements share geometry and borrowed environment while owning only 
 });
 test('oblique texture sampling retains source PBR data and shares owned samplers across materials',()=>{
   const source=new Group(),geometry=new BoxGeometry(1,1,1);
-  const color=new Texture(),normal=new Texture(),roughness=new Texture();
+  const color=new Texture(),normal=new Texture(),roughness=new Texture(),ao=new Texture();
+  ao.channel=1;ao.colorSpace=NoColorSpace;
   color.colorSpace=SRGBColorSpace;normal.colorSpace=NoColorSpace;roughness.colorSpace=NoColorSpace;
   color.repeat.set(3,4);color.offset.set(.2,.3);color.rotation=.4;color.updateMatrix();
-  const wood=new MeshStandardMaterial({color:'#956a43',map:color,normalMap:normal,roughnessMap:roughness,metalnessMap:roughness,roughness:.64,metalness:0});
+  const wood=new MeshStandardMaterial({color:'#956a43',map:color,normalMap:normal,roughnessMap:roughness,metalnessMap:roughness,aoMap:ao,aoMapIntensity:.75,roughness:.64,metalness:0});
   wood.normalScale.set(.30,.30);
   const cloth=wood.clone();cloth.color.set('#3e8582');cloth.normalScale.set(.75,.75);cloth.roughness=.93;
   source.add(new Mesh(geometry,wood),new Mesh(geometry,cloth));
-  const sourceTextures=[color,normal,roughness];let sourceDisposals=0,ownedDisposals=0;
+  const sourceTextures=[color,normal,roughness,ao];let sourceDisposals=0,ownedDisposals=0;
   sourceTextures.forEach(t=>t.addEventListener('dispose',()=>sourceDisposals++));
   const limited=createDjcDaybedVisual(source);
   assert.equal(limited.materials[0].map,color,'unknown renderer capabilities must retain the supported source sampler');limited.dispose();
@@ -125,17 +126,18 @@ test('oblique texture sampling retains source PBR data and shares owned samplers
   for(const [original,copied]of [[wood,copiedWood],[cloth,copiedCloth]]){
     assert.deepEqual(copied.color,original.color);assert.deepEqual(copied.normalScale,original.normalScale);
     assert.equal(copied.roughness,original.roughness);assert.equal(copied.metalness,original.metalness);
+    assert.equal(copied.aoMapIntensity,.75);assert.equal(copied.aoMap.channel,1,'baked geometry occlusion must retain its independent UV atlas');
     assert.equal(copied.emissive.getHex(),0,'cloth and timber must remain non-emissive');
-    for(const key of ['map','normalMap','roughnessMap','metalnessMap']){
+    for(const key of ['map','normalMap','roughnessMap','metalnessMap','aoMap']){
       assert.notEqual(copied[key],original[key]);assert.equal(copied[key].source,original[key].source);
       assert.equal(copied[key].colorSpace,original[key].colorSpace);assert.deepEqual(copied[key].matrix,original[key].matrix);
       assert.equal(copied[key].anisotropy,4);assert.equal(original[key].anisotropy,1);
       assert.equal(copied[key],copiedWood[key],'one sampler per source texture across the furniture group');
     }
   }
-  const owned=new Set([copiedWood.map,copiedWood.normalMap,copiedWood.roughnessMap,copiedWood.metalnessMap]);
-  assert.equal(owned.size,3);owned.forEach(t=>t.addEventListener('dispose',()=>ownedDisposals++));
-  visual.dispose();assert.equal(ownedDisposals,3);assert.equal(sourceDisposals,0);
+  const owned=new Set([copiedWood.map,copiedWood.normalMap,copiedWood.roughnessMap,copiedWood.metalnessMap,copiedWood.aoMap]);
+  assert.equal(owned.size,4);owned.forEach(t=>t.addEventListener('dispose',()=>ownedDisposals++));
+  visual.dispose();assert.equal(ownedDisposals,4);assert.equal(sourceDisposals,0);
   geometry.dispose();wood.dispose();cloth.dispose();sourceTextures.forEach(t=>t.dispose());
 });
 test('legacy comparison requires explicit QA and does not alter normal play',()=>{

@@ -1,0 +1,82 @@
+{
+ "at": 70276.5,
+ "calls": 121,
+ "triangles": 2319653,
+ "geometries": 331,
+ "textures": 88,
+ "programs": 173,
+ "camera": {
+  "yaw": -1.5707963267948966,
+  "pitch": 0.12,
+  "distance": 20,
+  "desiredDistance": 0,
+  "driveManualZoom": false,
+  "actualDistance": 0,
+  "firstPerson": true,
+  "preset": 3,
+  "collided": false,
+  "hitDistance": null,
+  "fov": 69.99747033330569,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   61.45641326904297,
+   2.307474660873413,
+   29.343956756591798
+  ],
+  "target": [
+   61.45641326904297,
+   2.307474660873413,
+   29.043956756591797
+  ],
+  "forwardGround": [
+   0,
+   1
+  ],
+  "groundBelowCamera": 1.2290802001953125,
+  "clearanceAboveGround": 1.0783944606781004,
+  "gamepad": false,
+  "nearPlaneRadius": 0.20231696712294692,
+  "guideHidden": true,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "mode": "always",
+ "frame": 751,
+ "delta": 0.016799999952316284,
+ "night": 0,
+ "windTime": 11.742600000023824,
+ "position": [
+  61.45641326904297,
+  2.007474660873413,
+  29.043956756591797
+ ],
+ "paused": false,
+ "shot": null,
+ "seat": null,
+ "quality": "balanced",
+ "weather": "clear",
+ "light": "noon",
+ "worldMinutes": 720,
+ "drawingBuffer": [
+  1951,
+  1062
+ ],
+ "cssSize": [
+  1710,
+  931
+ ],
+ "pixelRatio": 1.1412731405118963,
+ "hidden": false,
+ "url": "http://127.0.0.1:4356/world/?qa=1&quality=balanced&start=club&paused=1&djcLanterns=legacy&case=perf-lantern-legacy-b1",
+ "player": [
+  61.45641326904297,
+  2.007474660873413,
+  29.043956756591797
+ ],
+ "grounded": true,
+ "objects": [
+  "djc-lantern-spill"
+ ],
+ "requests": []
+}

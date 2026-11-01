@@ -1,0 +1,81 @@
+{
+  "method": "scoped git diff + git apply --check; conflict-free three-way merge of Visual against a66770e",
+  "destination": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration",
+  "preserved": "useGreyboxClaim('club-basin') and unrelated dirty files",
+  "files": {
+    "src/components/world/WorldDjcClubGeometry.ts": {
+      "before": "148e5dc76c3bc81dacdf56c634c649e302d6cca5bae9b745c0bedfc0ae07a680",
+      "after": "1e8cde980887a0c38591739cc8b38d558c246e9eb35e7b05849aeab04977790f"
+    },
+    "src/components/world/WorldDjcFurnitureEnvironment.ts": {
+      "before": "497201d761286ee8c1e2c689b960b47ecfa116d6a8c31a7aea29498411bedc0b",
+      "after": "1ed6cc82e17116815ee6df93a9190fc1eab70f1b0f0f27f4cf2c4b9d252573e2"
+    },
+    "src/components/world/djc-daybed-visual.ts": {
+      "before": "793fb4f2d385db8b504042c09f14c8dc8eb61a00b10a20600615d945648ec831",
+      "after": "be1622d3fef1e3ebb114cfa189b27524e057edc00febe79ed3677da958787805"
+    },
+    "src/components/world/djc-daybed-visual.test.mjs": {
+      "before": "b02723ccd36f71472b956c17cb8b41bfcb8b319701f14e7ffa3a9f2ba98861f7",
+      "after": "e860ea63e03f945a62aabaab19a09faa769b91d3137f164658f5ce69b65beaef"
+    },
+    "tools/world/check-club-assets.mjs": {
+      "before": "2044c34f420ab2c1f29dd75b6ad4f6205abe5ad26c8a813af5b98d79475cd647",
+      "after": "90f9ba91819a521a61e1570e7b7ff5416a1f2f67d643909bcc7e5b9ed485afe5"
+    },
+    "public/assets/world/club/daybed/LICENSES.md": {
+      "before": "161fbc243e80e1fdd89e9ff571057aab41f020133add1d2171a406e793a80214",
+      "after": "4d8ec9e0fa0b95211933ccf85495ef85d600fa1839e9728d4723290f6e8ee27c"
+    },
+    "src/components/world/WorldDjcClubVisual.tsx": {
+      "before": "016d70ac164bf8b89728536ddd6accbc92a27846f1e35522bcb94d37a88fb51b",
+      "after": "0d87a1e29fe9ca607e5cdc312734572d0cf5567b9513cd32f024e3d2b73cec2d"
+    },
+    "src/components/world/WorldDjcClubLanterns.tsx": {
+      "before": null,
+      "after": "ec4b5b14cded46970a751a6fd32b9f200a6b3a87ece77c77189faee6381a7ced"
+    },
+    "src/components/world/djc-environment-radiance.ts": {
+      "before": null,
+      "after": "9b1f22be10caec134c73d5f74131ae62d14793f6b0645e45a12f093487a37172"
+    },
+    "src/components/world/djc-environment-radiance.test.mjs": {
+      "before": null,
+      "after": "2a34bbd9456c9b68fe26053ba04d4f224079504b0f9e0cb5cec0ef761204cb68"
+    },
+    "src/components/world/djc-pool-lantern-visual.ts": {
+      "before": null,
+      "after": "5677ded7747eda6ce4d86e8e0c60ef9c9e869abb9a585c7fce0cd1247b973732"
+    },
+    "src/components/world/djc-pool-lantern-visual.test.mjs": {
+      "before": null,
+      "after": "4a2b5cfc8687f44706f283da59232555ba18a0efc71409ec9ae5b7acf0a4c7c9"
+    },
+    "public/assets/world/club/daybed/daybed-ao-v1.glb": {
+      "before": null,
+      "after": "99a0abd938b967d9654d882b4d35b126fadfdc3cd1f053f513ac9f3a5e11594e"
+    },
+    "public/assets/world/club/lantern/pool-lantern-v1.glb": {
+      "before": null,
+      "after": "8a8cd28f44fa9b2e842f1d9e03972869d5328b4c9d8bee8bcba170a892b69cf4"
+    },
+    "public/assets/world/club/lantern/LICENSES.md": {
+      "before": null,
+      "after": "43baea4fccdcd31d41f3613116dfd5a0c9ee7f5ad1de4568e137b20db47a0826"
+    }
+  },
+  "removedUnusedPreviousRuntimeAsset": true,
+  "materialCalibration": {
+    "asset": "pool-lantern-v2.glb",
+    "sha256": "30022ad90d063a6d267f07c69dc1e42b76bb93d702d19b3f00ffb0212789fbbe",
+    "geometryUvUnchanged": true,
+    "destination": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration",
+    "removedRuntimeAsset": "pool-lantern-v1.glb"
+  },
+  "integrationTests": {
+    "tests": 45,
+    "passed": 45,
+    "log": "/tmp/djc-integration-check.log",
+    "scope": "affected Club geometry/seats/material sampling/ownership/environment; r2 asset contract checked separately"
+  }
+}

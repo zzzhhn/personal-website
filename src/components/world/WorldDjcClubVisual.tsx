@@ -13,6 +13,8 @@ import WorldDjcClubBar from './WorldDjcClubBar';
 import { djcBarQaMode } from './djc-bar-layout';
 import WorldDjcClubDaybeds from './WorldDjcClubDaybeds';
 import { djcDaybedLegacy } from './djc-daybed-visual';
+import WorldDjcClubLanterns from './WorldDjcClubLanterns';
+import { djcPoolLanternCandidate } from './djc-pool-lantern-visual';
 
 const RUNNING_RADIUS_SQ=180*180;
 const keys:ClubBatch[]=['wood','stone','metal','fabric','foliage','glass','amber','cyan'];
@@ -59,14 +61,16 @@ function spotMaterial() {
 export default function WorldDjcClubVisual({beat,energy}:{beat?:()=>number;energy?:()=>number}) {
   const legacyNorthBar=useMemo(()=>djcBarQaMode(typeof window==='undefined'?'':window.location.search)==='legacy',[]);
   const legacyDaybeds=useMemo(()=>djcDaybedLegacy(typeof window==='undefined'?'':window.location.search),[]);
+  const candidatePoolLanterns=useMemo(()=>djcPoolLanternCandidate(typeof window==='undefined'?'':window.location.search),[]);
   const group=useRef<Group>(null),mirror=useRef<Mesh>(null),spots=useRef<Mesh>(null);
   const lights=useRef<(PointLight|null)[]>([]),beams=useRef<(Mesh|null)[]>([]);
-  const resources=useMemo(()=>({geometry:buildDjcClubGeometry({includeNorthBar:legacyNorthBar,separateDaybeds:!legacyDaybeds}),mirror:buildDjcMirrorGeometry(),spots:buildDjcSpotsGeometry(),materials:materials(),
+  const resources=useMemo(()=>({geometry:buildDjcClubGeometry({includeNorthBar:legacyNorthBar,separateDaybeds:!legacyDaybeds,separatePoolLanterns:candidatePoolLanterns}),mirror:buildDjcMirrorGeometry(),spots:buildDjcSpotsGeometry(),materials:materials(),
     mirrorMaterial:createClubMirrorMaterial(),spot:spotMaterial(),spill:createClubLightSpill(),
-    beamGeometry:new CylinderGeometry(.035,1,1,18,1,true),beamMaterial:createClubBeamMaterial(),up:new Vector3(0,1,0),start:new Vector3(),target:new Vector3(),direction:new Vector3()}),[legacyNorthBar,legacyDaybeds]);
+    beamGeometry:new CylinderGeometry(.035,1,1,18,1,true),beamMaterial:createClubBeamMaterial(),up:new Vector3(0,1,0),start:new Vector3(),target:new Vector3(),direction:new Vector3()}),[legacyNorthBar,legacyDaybeds,candidatePoolLanterns]);
   useEffect(()=>()=>{
     Object.values(resources.geometry.batches).forEach(g=>g.dispose());resources.geometry.pool.dispose();resources.mirror.dispose();resources.spots.dispose();
     Object.values(resources.geometry.daybeds).forEach(g=>g.dispose());
+    Object.values(resources.geometry.poolLanterns).forEach(g=>g.dispose());
     Object.values(resources.materials).forEach(m=>m.dispose());resources.mirrorMaterial.dispose();resources.spot.dispose();
     resources.spill.geometry.dispose();resources.spill.material.dispose();resources.beamGeometry.dispose();resources.beamMaterial.dispose();
   },[resources]);
@@ -107,6 +111,9 @@ export default function WorldDjcClubVisual({beat,energy}:{beat?:()=>number;energ
     {!legacyNorthBar&&<WorldDjcClubBar />}
     {!legacyDaybeds&&<WorldDjcClubDaybeds fallback={<group name="djc-original-daybeds">
       {keys.filter(key=>resources.geometry.daybeds[key].attributes.position.count>0).map(key=><mesh key={key} geometry={resources.geometry.daybeds[key]} material={resources.materials[key]} castShadow receiveShadow dispose={null}/>)}
+    </group>}/>}
+    {candidatePoolLanterns&&<WorldDjcClubLanterns fallback={<group name="djc-original-pool-lanterns">
+      {keys.filter(key=>resources.geometry.poolLanterns[key].attributes.position.count>0).map(key=><mesh key={key} geometry={resources.geometry.poolLanterns[key]} material={resources.materials[key]} castShadow={key==='wood'} receiveShadow dispose={null}/>)}
     </group>}/>}
     <group ref={group} name="djc-beach-club-visual" dispose={null}>
       {keys.map(key=><mesh key={key} name={`djc-${key}`} geometry={resources.geometry.batches[key]} material={resources.materials[key]} receiveShadow castShadow={key==='wood'||key==='fabric'||key==='foliage'} customDepthMaterial={key==='foliage'?resources.materials.foliageDepth:undefined} />)}

@@ -1,0 +1,14 @@
+20:06:49 | INFO: Data are loaded, start creating Blender stuff
+20:06:49 | INFO: Blender create Mesh node Cube.042
+20:06:49 | INFO: glTF import finished in 0.04s
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/tools/world/djc-pool-lantern-craft/build.py:201: DeprecationWarning: 'World.use_nodes' is expected to be removed in Blender 6.0
+  s.world=bpy.data.worlds.new('Neutral inspection world');s.world.use_nodes=True;s.world.node_tree.nodes['Background'].inputs[0].default_value=(.64,.71,.78,1);s.world.node_tree.nodes['Background'].inputs[1].default_value=.42
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/tools/world/djc-pool-lantern-craft/build.py:33: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m=bpy.data.materials.new(name);m.use_nodes=True;p=m.node_tree.nodes.get('Principled BSDF')
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/tools/world/djc-pool-lantern-craft/build.py:224: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  if m.use_nodes and m.name.startswith('DJC_Lantern_Diffuser'):
+00:22.542  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-pool-lantern-craft-20261101/lantern-evening-fresh-glb.png'
+EVENING_OK
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

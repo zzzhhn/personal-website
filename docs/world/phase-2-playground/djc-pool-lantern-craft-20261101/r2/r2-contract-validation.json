@@ -1,0 +1,81 @@
+{
+  "geometry_and_indices_and_UV0_UV1_byte_identical": true,
+  "attribute_hashes": {
+    "DJC_Lantern_Timber_Runtime": {
+      "POSITION": "5170407f768d49a58ae9adfa4aebf6e49e83341d2e23eeb16371cdd558e1a2f6",
+      "NORMAL": "0b21bb6eda3def464858de8a1f733385624c019d85de684787a69205b06cca00",
+      "TEXCOORD_0": "2c18dac8f7ec892b4acabf01ba0a554b212f9ca7ced0041349fcb7e600abf554",
+      "TEXCOORD_1": "8ee834d0f081d40b96e64520be9c94593422c83bebccf8f2384a34a94cbcc6b1",
+      "indices": "114b1a0b7116ea17b7dc56764b5fbe63d511be6173af3165857f0217137961c5"
+    },
+    "DJC_Lantern_Inset_Runtime": {
+      "POSITION": "ca927d51f5c0f975224ddfe5916bb1b46b494a1fa41eb79a8bd2e92ad4c79a06",
+      "NORMAL": "7e8d56c8b5fa234079caf1e17e429722672592b546ad71b786eed9b2e8bea905",
+      "TEXCOORD_0": "4bfb02ee83d26337e6aefe37b0850a4f3fbe4aed50d347c8e452ceb574aac76b",
+      "TEXCOORD_1": "8590589b76415652c60e34dfc09bf1934e7498174be60eb00d848d9ff02de614",
+      "indices": "4dc00a2af69e8e99851372928a3f381bd9d0b1c70ccba9c69b19a23d6c592bb5"
+    },
+    "DJC_Lantern_Brass_Runtime": {
+      "POSITION": "1bfe1a77d56de77b7947716491384cd46746c798c41a4eeabf9cb64c330b5d54",
+      "NORMAL": "f535c038174e2e51597fd738e4e92e3dc625e792d2d84e040372cf4f6c44dc17",
+      "TEXCOORD_0": "249e5b814237a8bd6b6ad35bf0db315f88e2a53eac793bc4203554b87aad742c",
+      "TEXCOORD_1": "26bfc1a7e41fe81427059d38790fd511080264038e475957cfd6ee06604ba381",
+      "indices": "54e8265c3446c07fd8c17cfa0fd473065190ac8a904cfdabe396359034e5beef"
+    },
+    "DJC_Lantern_Diffuser_Runtime": {
+      "POSITION": "89d031088916d229bcf4c8f67bd845bc4ee005f3a9830709c0ca37ffdc34e77d",
+      "NORMAL": "7d8ac6e86186f24153c56e25b75e772a83148d7219f61fbd23a0d2dd0850d1fa",
+      "TEXCOORD_0": "b5d1c5b6c290be54e9e7e0dcc869e31d218936ad8d5b404d754cd5ba1145771a",
+      "TEXCOORD_1": "3d85ddf8c70ba7fc719595449fc10b15b33d03b01c0e2c846b9e722d8e05d0b9",
+      "indices": "ecad2c3c88e285d672221dff591d5eb76316d6f711e866fb19418d9e23a26dca"
+    }
+  },
+  "unchanged_maps": [
+    "DJC_Lantern_Timber_Runtime normalTexture",
+    "DJC_Lantern_Timber_Runtime baseColor image",
+    "DJC_Lantern_Timber_Runtime roughness pixels",
+    "DJC_Lantern_Diffuser_Runtime normalTexture",
+    "DJC_Lantern_Diffuser_Runtime baseColor image"
+  ],
+  "wood_baseColorFactor": [
+    1,
+    1,
+    1,
+    1
+  ],
+  "triangles": 11304,
+  "materials": 4,
+  "primitives": 4,
+  "glb_bytes": 1358944,
+  "image_bytes": 505283,
+  "glb_sha256": "30022ad90d063a6d267f07c69dc1e42b76bb93d702d19b3f00ffb0212789fbbe",
+  "parent_sha256": "8a8cd28f44fa9b2e842f1d9e03972869d5328b4c9d8bee8bcba170a892b69cf4",
+  "cloth_ao_same_pixel_region": {
+    "r1": {
+      "pixels": 1116,
+      "mean_rgb255": 119.20340501792114,
+      "std_rgb255": 14.39598793735919,
+      "percentiles": [
+        80.0,
+        96.0,
+        120.0,
+        135.0,
+        151.0
+      ],
+      "high_frequency_residual_std_5pxmedian_rgb255": 10.347618728246239
+    },
+    "r2": {
+      "pixels": 1116,
+      "mean_rgb255": 243.16039426523298,
+      "std_rgb255": 13.435038494279159,
+      "percentiles": [
+        200.0,
+        225.5,
+        247.0,
+        255.0,
+        255.0
+      ],
+      "high_frequency_residual_std_5pxmedian_rgb255": 0.9070986408007383
+    }
+  }
+}

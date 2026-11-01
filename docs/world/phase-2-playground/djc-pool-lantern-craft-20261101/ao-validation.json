@@ -1,0 +1,15 @@
+{
+  "atlas_size": [
+    512,
+    512
+  ],
+  "uv_area_fraction": 0.5171966249812185,
+  "surface_area_m2": 3.0953145246165867,
+  "mean_texels_per_meter": 209.2885211595071,
+  "cloth_uv_area_fraction": 0.06467277225087363,
+  "cloth_surface_area_m2": 0.3844668815145269,
+  "cloth_mean_texels_per_meter": 209.99126622906084,
+  "unwrap_source": "Original connected Blender topology before export, no imported glTF unweld/split UV proxy",
+  "pack_margin_pixels": 3,
+  "bake_margin_pixels": 3
+}

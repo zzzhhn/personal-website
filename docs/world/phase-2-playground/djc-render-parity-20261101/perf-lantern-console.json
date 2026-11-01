@@ -1,0 +1,14 @@
+[
+  {
+    "level": "warn",
+    "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+    "timestamp": "2026-11-01T12:17:19.795Z",
+    "url": "http://127.0.0.1:4356/_astro/three.core.4qsrzqCC.js"
+  },
+  {
+    "level": "warn",
+    "message": "using deprecated parameters for the initialization function; pass a single object instead",
+    "timestamp": "2026-11-01T12:17:19.795Z",
+    "url": "http://127.0.0.1:4356/_astro/WorldRuntime.DDEokzaR.js"
+  }
+]

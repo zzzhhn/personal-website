@@ -1,0 +1,38 @@
+[
+  {
+    "command": [
+      "node",
+      "--import",
+      "./tools/world/alpha-mine-tests/register.mjs",
+      "--test",
+      "src/components/world/djc-environment-radiance.test.mjs",
+      "src/components/world/djc-daybed-visual.test.mjs",
+      "src/components/world/djc-pool-lantern-visual.test.mjs",
+      "src/components/world/djc-bar-runtime.test.mjs",
+      "src/components/world/club-geometry.test.mjs",
+      "src/components/world/club-seating.test.mjs"
+    ],
+    "exit": 0,
+    "seconds": 3.14,
+    "log": "/tmp/djc-final-check-0.log"
+  },
+  {
+    "command": [
+      "node",
+      "tools/world/check-club-assets.mjs"
+    ],
+    "exit": 0,
+    "seconds": 0.09,
+    "log": "/tmp/djc-final-check-1.log"
+  },
+  {
+    "command": [
+      "npm",
+      "run",
+      "build"
+    ],
+    "exit": 0,
+    "seconds": 7.65,
+    "log": "/tmp/djc-final-check-2.log"
+  }
+]

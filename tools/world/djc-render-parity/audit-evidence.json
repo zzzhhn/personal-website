@@ -1,0 +1,382 @@
+{
+  "file": "docs/world/phase-2-playground/djc-daybed-craft-20261101/daybed-v1.glb",
+  "sha256": "5cdd0dde5d0418888e06422828d426eac07f7f9b27e0f762ef190aae211395d8",
+  "bytes": 9875476,
+  "materials": [
+    {
+      "name": "02 Honed limestone | shallow mineral pores",
+      "has_ao": false,
+      "ao": null,
+      "base_factor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "base_texture": {
+        "index": 1
+      },
+      "normal_texture": {
+        "index": 0,
+        "scale": 0.6499999761581421
+      },
+      "roughness_texture": {
+        "index": 2
+      }
+    },
+    {
+      "name": "01 Oiled timber | CC0 photographed grain",
+      "has_ao": false,
+      "ao": null,
+      "base_factor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "base_texture": {
+        "index": 4
+      },
+      "normal_texture": {
+        "index": 3,
+        "scale": 0.30000001192092896
+      },
+      "roughness_texture": null
+    },
+    {
+      "name": "03 Sea teal tailored mattress",
+      "has_ao": false,
+      "ao": null,
+      "base_factor": [
+        0.04817182570695877,
+        0.2345505803823471,
+        0.22322796285152435,
+        1
+      ],
+      "base_texture": {
+        "index": 6
+      },
+      "normal_texture": {
+        "index": 5,
+        "scale": 0.75
+      },
+      "roughness_texture": {
+        "index": 7
+      }
+    },
+    {
+      "name": "06 Seafoam upholstery welting",
+      "has_ao": false,
+      "ao": null,
+      "base_factor": [
+        0.11697066575288773,
+        0.30946892499923706,
+        0.28744083642959595,
+        1
+      ],
+      "base_texture": {
+        "index": 9
+      },
+      "normal_texture": {
+        "index": 8,
+        "scale": 0.75
+      },
+      "roughness_texture": {
+        "index": 10
+      }
+    },
+    {
+      "name": "04 Deep teal back cushions",
+      "has_ao": false,
+      "ao": null,
+      "base_factor": [
+        0.03071344457566738,
+        0.13286831974983215,
+        0.1441284716129303,
+        1
+      ],
+      "base_texture": {
+        "index": 12
+      },
+      "normal_texture": {
+        "index": 11,
+        "scale": 0.75
+      },
+      "roughness_texture": {
+        "index": 13
+      }
+    },
+    {
+      "name": "07 Aged marine metal | recesses and lantern",
+      "has_ao": false,
+      "ao": null,
+      "base_factor": [
+        0.040915198624134064,
+        0.04666508734226227,
+        0.03560131415724754,
+        1
+      ],
+      "base_texture": null,
+      "normal_texture": null,
+      "roughness_texture": null
+    },
+    {
+      "name": "05 Lagoon accent cushions",
+      "has_ao": false,
+      "ao": null,
+      "base_factor": [
+        0.01850022003054619,
+        0.07818742096424103,
+        0.09084171056747437,
+        1
+      ],
+      "base_texture": {
+        "index": 15
+      },
+      "normal_texture": {
+        "index": 14,
+        "scale": 0.75
+      },
+      "roughness_texture": {
+        "index": 16
+      }
+    },
+    {
+      "name": "08 Opaque amber lantern diffuser",
+      "has_ao": false,
+      "ao": null,
+      "base_factor": [
+        0.8962693810462952,
+        0.6514056324958801,
+        0.35640013217926025,
+        1
+      ],
+      "base_texture": null,
+      "normal_texture": null,
+      "roughness_texture": null
+    }
+  ],
+  "images": [
+    {
+      "index": 0,
+      "name": "Authored limestone pore normal 1024",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "index": 1,
+      "name": "Authored limestone mineral color 1024",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "index": 2,
+      "name": "Authored limestone pore roughness 1024",
+      "size": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "index": 3,
+      "name": "wood_nor_gl",
+      "size": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "index": 4,
+      "name": "wood_diff",
+      "size": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "index": 5,
+      "name": "Shared authored woven fabric normal 2048",
+      "size": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "index": 6,
+      "name": "Shared authored woven fiber color 2048",
+      "size": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "index": 7,
+      "name": "Shared authored woven fiber roughness 2048",
+      "size": [
+        2048,
+        2048
+      ]
+    }
+  ],
+  "primitives": [
+    {
+      "material": 0,
+      "vertices": 44184,
+      "uv_sets": [
+        "TEXCOORD_0"
+      ]
+    },
+    {
+      "material": 1,
+      "vertices": 38546,
+      "uv_sets": [
+        "TEXCOORD_0"
+      ]
+    },
+    {
+      "material": 2,
+      "vertices": 3083,
+      "uv_sets": [
+        "TEXCOORD_0"
+      ]
+    },
+    {
+      "material": 3,
+      "vertices": 16224,
+      "uv_sets": [
+        "TEXCOORD_0"
+      ]
+    },
+    {
+      "material": 4,
+      "vertices": 8678,
+      "uv_sets": [
+        "TEXCOORD_0"
+      ]
+    },
+    {
+      "material": 5,
+      "vertices": 16128,
+      "uv_sets": [
+        "TEXCOORD_0"
+      ]
+    },
+    {
+      "material": 6,
+      "vertices": 5572,
+      "uv_sets": [
+        "TEXCOORD_0"
+      ]
+    },
+    {
+      "material": 7,
+      "vertices": 128,
+      "uv_sets": [
+        "TEXCOORD_0"
+      ]
+    }
+  ],
+  "cloth_mips": {
+    "color": [
+      {
+        "size": 2048,
+        "mean": 0.8706333637237549,
+        "std": 0.06796703487634659,
+        "std_retained": 1.0
+      },
+      {
+        "size": 1024,
+        "mean": 0.8706333637237549,
+        "std": 0.05634176731109619,
+        "std_retained": 0.8289572596549988
+      },
+      {
+        "size": 512,
+        "mean": 0.8706334233283997,
+        "std": 0.023878851905465126,
+        "std_retained": 0.35132989287376404
+      },
+      {
+        "size": 256,
+        "mean": 0.8706334829330444,
+        "std": 0.01711760088801384,
+        "std_retained": 0.25185152888298035
+      },
+      {
+        "size": 128,
+        "mean": 0.8706331849098206,
+        "std": 1.7881393432617188e-07,
+        "std_retained": 2.6308921405870933e-06
+      },
+      {
+        "size": 64,
+        "mean": 0.8706331849098206,
+        "std": 1.7881393432617188e-07,
+        "std_retained": 2.6308921405870933e-06
+      }
+    ],
+    "roughness": [
+      {
+        "size": 2048,
+        "mean": 0.9151195287704468,
+        "std": 0.040411196649074554,
+        "std_retained": 1.0
+      },
+      {
+        "size": 1024,
+        "mean": 0.9151195287704468,
+        "std": 0.033509839326143265,
+        "std_retained": 0.8292216658592224
+      },
+      {
+        "size": 512,
+        "mean": 0.9151195287704468,
+        "std": 0.014153941534459591,
+        "std_retained": 0.3502480089664459
+      },
+      {
+        "size": 256,
+        "mean": 0.9151195287704468,
+        "std": 0.010048862546682358,
+        "std_retained": 0.24866530299186707
+      },
+      {
+        "size": 128,
+        "mean": 0.9151193499565125,
+        "std": 1.1920928955078125e-07,
+        "std_retained": 2.9499074116756674e-06
+      },
+      {
+        "size": 64,
+        "mean": 0.9151193499565125,
+        "std": 1.1920928955078125e-07,
+        "std_retained": 2.9499074116756674e-06
+      }
+    ]
+  },
+  "public_bytes_identical": true,
+  "total_vertices": 132543,
+  "estimated_uv1_attribute_bytes_without_new_seams": 1060344,
+  "authored_cloth": {
+    "tile_m": 0.75,
+    "thread_cycles_per_tile": 384,
+    "thread_pitch_mm": 1.953125,
+    "projected_pillow_width_px_estimate": [
+      140,
+      180
+    ],
+    "pillow_width_m": 0.66,
+    "pixels_per_thread_estimate": [
+      0.41429924242424243,
+      0.5326704545454545
+    ],
+    "fractional_mip_level_estimate": [
+      3.3237223325328977,
+      3.686292411917606
+    ]
+  }
+}

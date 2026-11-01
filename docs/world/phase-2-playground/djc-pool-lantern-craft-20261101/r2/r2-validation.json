@@ -1,0 +1,236 @@
+{
+  "parent_glb_sha256": "8a8cd28f44fa9b2e842f1d9e03972869d5328b4c9d8bee8bcba170a892b69cf4",
+  "blender": "5.1.2",
+  "geometry_uv_hashes_before": {
+    "position": "d5e5f5b50ea16b841ae49f6379acdad9631e3fa3b05b39502a40cc88288bc504",
+    "corner_normal": "d0d152926220daebb78d6cd4cb221cda4d1d9c363a3e4107022e5cfe6ae5ce86",
+    "loop_vertex": "6eb7e6a5ad96325160b4d74eef9abc891a99015fffdd9d873552a4a25c301d27",
+    "UVMap": "7cb262e40adbf90e11f2a6de2917b2969bceb131b881f7d5e83ac62e48f62e50",
+    "UV1_AO": "61aa1689c2ad7a2c1f2cfb0e265aad73e5459d6c0a258cb6299b4456c125e989"
+  },
+  "geometry_uv_hashes_after": {
+    "position": "d5e5f5b50ea16b841ae49f6379acdad9631e3fa3b05b39502a40cc88288bc504",
+    "corner_normal": "d0d152926220daebb78d6cd4cb221cda4d1d9c363a3e4107022e5cfe6ae5ce86",
+    "loop_vertex": "6eb7e6a5ad96325160b4d74eef9abc891a99015fffdd9d873552a4a25c301d27",
+    "UVMap": "7cb262e40adbf90e11f2a6de2917b2969bceb131b881f7d5e83ac62e48f62e50",
+    "UV1_AO": "61aa1689c2ad7a2c1f2cfb0e265aad73e5459d6c0a258cb6299b4456c125e989"
+  },
+  "wood_materials_changed": [
+    "DJC_Lantern_Timber",
+    "DJC_Lantern_Timber_Runtime"
+  ],
+  "changes": [
+    "Wood extra multiplier removed; photographed source image unchanged.",
+    "AO replaced by explicit geometry-only AO, .06m distance, Only Local, 256 scene samples, node samples 16.",
+    "RIG ground and all presentation geometry excluded from bake."
+  ],
+  "unchanged": [
+    "11304 triangles,4 materials,UV0,UV1,placement",
+    "Cloth baseColor,normal scale .48,roughness .92",
+    "512px AO atlas and 3px margin"
+  ],
+  "ao": {
+    "distance_m": 0.06,
+    "only_local": true,
+    "scene_samples": 256,
+    "node_samples": 16,
+    "image_size": [
+      512,
+      512
+    ],
+    "center": {
+      "samples": 72,
+      "mean": 0.9932462076346079,
+      "std": 0.010502780612998985,
+      "percentiles": [
+        0.9686275124549866,
+        0.9764706492424011,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "high_frequency_residual_std_5pxmedian": 0.0013026427048293588,
+      "selection": {
+        "outer_front_native_y_max": -0.0938,
+        "abs_x_max": 0.045,
+        "z_range": [
+          0.51,
+          0.63
+        ]
+      }
+    },
+    "comparison_region": {
+      "samples": 144,
+      "mean": 0.9638344637221761,
+      "std": 0.03911052507289924,
+      "percentiles": [
+        0.8543530094623566,
+        0.9098039865493774,
+        0.9764706492424011,
+        1.0,
+        1.0
+      ],
+      "high_frequency_residual_std_5pxmedian": 0.003564935768934505,
+      "selection": {
+        "outer_front_native_y_max": -0.0938,
+        "abs_x_max": 0.065,
+        "z_range": [
+          0.475,
+          0.665
+        ]
+      }
+    }
+  },
+  "fresh": {
+    "meshes": 1,
+    "triangles": 11304,
+    "materials": [
+      "DJC_Lantern_Brass_Runtime",
+      "DJC_Lantern_Diffuser_Runtime",
+      "DJC_Lantern_Inset_Runtime",
+      "DJC_Lantern_Timber_Runtime"
+    ],
+    "bounds": [
+      [
+        -0.1550000011920929,
+        -0.1550000011920929,
+        0.0
+      ],
+      [
+        0.1550000011920929,
+        0.1550000011920929,
+        0.7699999809265137
+      ]
+    ],
+    "dimensions": [
+      0.3100000023841858,
+      0.3100000023841858,
+      0.7699999809265137
+    ],
+    "degenerate_triangles": 0,
+    "nonfinite_vertices": 0,
+    "nonmanifold_parts": []
+  },
+  "files": {
+    "pool-lantern-r2.glb": {
+      "bytes": 1358944,
+      "sha256": "30022ad90d063a6d267f07c69dc1e42b76bb93d702d19b3f00ffb0212789fbbe"
+    },
+    "pool-lantern-r2-editable.blend": {
+      "bytes": 3304099,
+      "sha256": "be83e838ae9c4075f4d8579e1bec90d791ad11d8d8a71ddc2becaecf1cae0a39"
+    },
+    "lantern-r2-ao-uv1.png": {
+      "bytes": 132648,
+      "sha256": "a8c6bd66a7dac63cb78f306cc53c1f1a37a9600a6f37eafd89963b1316944656"
+    },
+    "lantern-r2-ao-only.png": {
+      "bytes": 1168828,
+      "sha256": "8cefdcab73bd8f7e777b34664d5a43908646f34e09d56d0d4034a9f66341e8ec"
+    },
+    "lantern-r2-day-fresh-glb.png": {
+      "bytes": 1359046,
+      "sha256": "b553e6302d901d56461ae08a84792e3bf205ba1aa2934ae78b6e2d16a264752f"
+    }
+  },
+  "binary_contract": {
+    "geometry_and_indices_and_UV0_UV1_byte_identical": true,
+    "attribute_hashes": {
+      "DJC_Lantern_Timber_Runtime": {
+        "POSITION": "5170407f768d49a58ae9adfa4aebf6e49e83341d2e23eeb16371cdd558e1a2f6",
+        "NORMAL": "0b21bb6eda3def464858de8a1f733385624c019d85de684787a69205b06cca00",
+        "TEXCOORD_0": "2c18dac8f7ec892b4acabf01ba0a554b212f9ca7ced0041349fcb7e600abf554",
+        "TEXCOORD_1": "8ee834d0f081d40b96e64520be9c94593422c83bebccf8f2384a34a94cbcc6b1",
+        "indices": "114b1a0b7116ea17b7dc56764b5fbe63d511be6173af3165857f0217137961c5"
+      },
+      "DJC_Lantern_Inset_Runtime": {
+        "POSITION": "ca927d51f5c0f975224ddfe5916bb1b46b494a1fa41eb79a8bd2e92ad4c79a06",
+        "NORMAL": "7e8d56c8b5fa234079caf1e17e429722672592b546ad71b786eed9b2e8bea905",
+        "TEXCOORD_0": "4bfb02ee83d26337e6aefe37b0850a4f3fbe4aed50d347c8e452ceb574aac76b",
+        "TEXCOORD_1": "8590589b76415652c60e34dfc09bf1934e7498174be60eb00d848d9ff02de614",
+        "indices": "4dc00a2af69e8e99851372928a3f381bd9d0b1c70ccba9c69b19a23d6c592bb5"
+      },
+      "DJC_Lantern_Brass_Runtime": {
+        "POSITION": "1bfe1a77d56de77b7947716491384cd46746c798c41a4eeabf9cb64c330b5d54",
+        "NORMAL": "f535c038174e2e51597fd738e4e92e3dc625e792d2d84e040372cf4f6c44dc17",
+        "TEXCOORD_0": "249e5b814237a8bd6b6ad35bf0db315f88e2a53eac793bc4203554b87aad742c",
+        "TEXCOORD_1": "26bfc1a7e41fe81427059d38790fd511080264038e475957cfd6ee06604ba381",
+        "indices": "54e8265c3446c07fd8c17cfa0fd473065190ac8a904cfdabe396359034e5beef"
+      },
+      "DJC_Lantern_Diffuser_Runtime": {
+        "POSITION": "89d031088916d229bcf4c8f67bd845bc4ee005f3a9830709c0ca37ffdc34e77d",
+        "NORMAL": "7d8ac6e86186f24153c56e25b75e772a83148d7219f61fbd23a0d2dd0850d1fa",
+        "TEXCOORD_0": "b5d1c5b6c290be54e9e7e0dcc869e31d218936ad8d5b404d754cd5ba1145771a",
+        "TEXCOORD_1": "3d85ddf8c70ba7fc719595449fc10b15b33d03b01c0e2c846b9e722d8e05d0b9",
+        "indices": "ecad2c3c88e285d672221dff591d5eb76316d6f711e866fb19418d9e23a26dca"
+      }
+    },
+    "unchanged_maps": [
+      "DJC_Lantern_Timber_Runtime normalTexture",
+      "DJC_Lantern_Timber_Runtime baseColor image",
+      "DJC_Lantern_Timber_Runtime roughness pixels",
+      "DJC_Lantern_Diffuser_Runtime normalTexture",
+      "DJC_Lantern_Diffuser_Runtime baseColor image"
+    ],
+    "wood_baseColorFactor": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "triangles": 11304,
+    "materials": 4,
+    "primitives": 4,
+    "glb_bytes": 1358944,
+    "image_bytes": 505283,
+    "glb_sha256": "30022ad90d063a6d267f07c69dc1e42b76bb93d702d19b3f00ffb0212789fbbe",
+    "parent_sha256": "8a8cd28f44fa9b2e842f1d9e03972869d5328b4c9d8bee8bcba170a892b69cf4",
+    "cloth_ao_same_pixel_region": {
+      "r1": {
+        "pixels": 1116,
+        "mean_rgb255": 119.20340501792114,
+        "std_rgb255": 14.39598793735919,
+        "percentiles": [
+          80.0,
+          96.0,
+          120.0,
+          135.0,
+          151.0
+        ],
+        "high_frequency_residual_std_5pxmedian_rgb255": 10.347618728246239
+      },
+      "r2": {
+        "pixels": 1116,
+        "mean_rgb255": 243.16039426523298,
+        "std_rgb255": 13.435038494279159,
+        "percentiles": [
+          200.0,
+          225.5,
+          247.0,
+          255.0,
+          255.0
+        ],
+        "high_frequency_residual_std_5pxmedian_rgb255": 0.9070986408007383
+      }
+    }
+  },
+  "scripts": {
+    "build-r2.py": "000d3e44d35e8db42dca9ab7aac04d2fc8b80c23be7672631a46d2e5ea2e74f8",
+    "verify-r2.py": "57f4261f9d1db9c9ed4c5d15000c93e963621213efbb13b2b2899bfa81729b31",
+    "run.py": "eeae914e1622d34f682c3b946b51b0df8eee9fb0d489cd66e1e745f464916764"
+  },
+  "visual_review": {
+    "inspected_images": [
+      "lantern-r2-ao-only.png",
+      "lantern-r2-day-fresh-glb.png"
+    ],
+    "observations": [
+      "AO-only center is near unoccluded, with smooth contact gradients at the timber frame.",
+      "Fresh daytime retains original geometry and fabric response; timber grain and joinery are more readable."
+    ],
+    "browser_visual_verification": false,
+    "performance_verification": false,
+    "user_visual_acceptance": false
+  },
+  "license_provenance": "../texture-sources.json; source photographs unchanged; r2 AO authored from unchanged native geometry."
+}

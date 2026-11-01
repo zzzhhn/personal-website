@@ -1,0 +1,18 @@
+{
+  "world/index.html": {
+    "bytes": 52275,
+    "sha256": "bcfda3daf323ab6816e33ee73abfd841cd70de54ebd641c639418c3878f08aeb"
+  },
+  "_astro/WorldRuntime.DDEokzaR.js": {
+    "bytes": 3459250,
+    "sha256": "663c946054e27abc7d0a2fac15c1e77259e50cef7d027d5fe5cc2d69e0de653b"
+  },
+  "assets/world/club/daybed/daybed-ao-v1.glb": {
+    "bytes": 13905392,
+    "sha256": "99a0abd938b967d9654d882b4d35b126fadfdc3cd1f053f513ac9f3a5e11594e"
+  },
+  "assets/world/club/lantern/pool-lantern-v1.glb": {
+    "bytes": 1318580,
+    "sha256": "8a8cd28f44fa9b2e842f1d9e03972869d5328b4c9d8bee8bcba170a892b69cf4"
+  }
+}

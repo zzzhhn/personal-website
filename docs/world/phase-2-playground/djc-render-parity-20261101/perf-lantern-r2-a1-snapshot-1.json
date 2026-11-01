@@ -1,0 +1,150 @@
+{
+ "at": 66923.09999996424,
+ "calls": 128,
+ "triangles": 2407446,
+ "geometries": 330,
+ "textures": 93,
+ "programs": 130,
+ "camera": {
+  "yaw": -1.5707963267948966,
+  "pitch": 0.4,
+  "distance": 12,
+  "desiredDistance": 12,
+  "driveManualZoom": false,
+  "actualDistance": 12,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": false,
+  "hitDistance": null,
+  "fov": 50,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   62,
+   7.879847099024571,
+   28.44251103233692
+  ],
+  "target": [
+   62,
+   3.2068269913207645,
+   39.49524296037154
+  ],
+  "forwardGround": [
+   0,
+   1
+  ],
+  "groundBelowCamera": 1.1268463134765625,
+  "clearanceAboveGround": 6.753000785548008,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "mode": "always",
+ "frame": 668,
+ "delta": 0.01669999998807907,
+ "night": 0,
+ "windTime": 9.161400000095371,
+ "position": [
+  62,
+  2.5568459033966064,
+  39.495391845703125
+ ],
+ "paused": false,
+ "shot": null,
+ "seat": null,
+ "quality": "balanced",
+ "weather": "clear",
+ "light": "noon",
+ "worldMinutes": 720,
+ "drawingBuffer": [
+  1951,
+  1062
+ ],
+ "cssSize": [
+  1710,
+  931
+ ],
+ "pixelRatio": 1.1412731405118963,
+ "hidden": false,
+ "url": "http://127.0.0.1:4356/world/?qa=1&quality=balanced&start=club&paused=1&case=perf-lantern-r2-a1",
+ "renderInfo": {
+  "drawingBuffer": [
+   1951,
+   1062
+  ],
+  "cssSize": [
+   1710,
+   931
+  ],
+  "pixelRatio": 1.1412731405118963,
+  "dprRange": [
+   0,
+   1.5
+  ],
+  "quality": "balanced",
+  "antialias": true,
+  "msaaSamples": 4,
+  "toneMapping": 4,
+  "outputColorSpace": "srgb",
+  "shadowMapSize": 1254,
+  "shadowType": 1,
+  "postprocessing": []
+ },
+ "player": [
+  62,
+  2.5568184852600098,
+  39.495174407958984
+ ],
+ "grounded": true,
+ "velocity": [
+  -1.959736800927203e-05,
+  -9.057141141965985e-05,
+  -0.0006989375106059015
+ ],
+ "daybedObjects": [
+  "djc-daybed-visuals",
+  "djc-crafted-daybeds",
+  "djc-daybed-Daybed_AO_working_geometry",
+  "djc-daybed-Daybed_AO_working_geometry001",
+  "djc-daybed-Daybed_AO_working_geometry002",
+  "djc-daybed-Daybed_AO_working_geometry003",
+  "djc-daybed-Daybed_AO_working_geometry004",
+  "djc-daybed-Daybed_AO_working_geometry005",
+  "djc-daybed-Daybed_AO_working_geometry006",
+  "djc-daybed-Daybed_AO_working_geometry007",
+  "djc-daybed-Daybed_AO_working_geometry#sun0",
+  "djc-daybed-Daybed_AO_working_geometry#sun1",
+  "djc-daybed-Daybed_AO_working_geometry#sun2",
+  "djc-daybed-Daybed_AO_working_geometry001#sun0",
+  "djc-daybed-Daybed_AO_working_geometry001#sun1",
+  "djc-daybed-Daybed_AO_working_geometry001#sun2",
+  "djc-daybed-Daybed_AO_working_geometry002#sun0",
+  "djc-daybed-Daybed_AO_working_geometry002#sun1",
+  "djc-daybed-Daybed_AO_working_geometry002#sun2",
+  "djc-daybed-Daybed_AO_working_geometry003#sun0",
+  "djc-daybed-Daybed_AO_working_geometry003#sun1",
+  "djc-daybed-Daybed_AO_working_geometry003#sun2",
+  "djc-daybed-Daybed_AO_working_geometry004#sun0",
+  "djc-daybed-Daybed_AO_working_geometry004#sun1",
+  "djc-daybed-Daybed_AO_working_geometry004#sun2",
+  "djc-daybed-Daybed_AO_working_geometry005#sun0",
+  "djc-daybed-Daybed_AO_working_geometry005#sun1",
+  "djc-daybed-Daybed_AO_working_geometry005#sun2",
+  "djc-daybed-Daybed_AO_working_geometry006#sun0",
+  "djc-daybed-Daybed_AO_working_geometry006#sun1",
+  "djc-daybed-Daybed_AO_working_geometry006#sun2",
+  "djc-daybed-Daybed_AO_working_geometry007#sun0",
+  "djc-daybed-Daybed_AO_working_geometry007#sun1",
+  "djc-daybed-Daybed_AO_working_geometry007#sun2"
+ ],
+ "daybedRequests": [
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/daybed/daybed-ao-v1.glb",
+   "duration": 446.39999997615814,
+   "transferSize": 13905692,
+   "decodedBodySize": 13905392
+  }
+ ]
+}

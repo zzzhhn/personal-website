@@ -1,0 +1,107 @@
+{
+ "at": 102753.80000001192,
+ "calls": 118,
+ "triangles": 1838643,
+ "geometries": 179,
+ "textures": 91,
+ "programs": 123,
+ "camera": {
+  "yaw": -1.5707963267948966,
+  "pitch": 0.4,
+  "distance": 4.309434330971868,
+  "desiredDistance": 4.309434330971868,
+  "driveManualZoom": false,
+  "actualDistance": 4.309434330971866,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": false,
+  "hitDistance": null,
+  "fov": 50,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   60.84413909912108,
+   4.146997779940039,
+   23.729894402276855
+  ],
+  "target": [
+   60.84413909912108,
+   2.468825006484986,
+   27.69914627075196
+  ],
+  "forwardGround": [
+   0,
+   1
+  ],
+  "groundBelowCamera": 0.8109588623046875,
+  "clearanceAboveGround": 3.336038917635351,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "mode": "always",
+ "frame": 2768,
+ "delta": 0.017400000035762787,
+ "night": 0,
+ "windTime": 34.865800000012484,
+ "position": [
+  60.844139099121094,
+  1.8188250064849854,
+  27.699146270751953
+ ],
+ "paused": false,
+ "shot": null,
+ "seat": null,
+ "quality": "balanced",
+ "weather": "clear",
+ "light": "noon",
+ "worldMinutes": 720,
+ "drawingBuffer": [
+  1951,
+  1062
+ ],
+ "cssSize": [
+  1710,
+  931
+ ],
+ "pixelRatio": 1.1412731405118963,
+ "hidden": false,
+ "url": "http://127.0.0.1:4356/world/?qa=1&quality=balanced&start=club&paused=1&case=perf-lantern-new-a1",
+ "player": [
+  60.844139099121094,
+  1.8188250064849854,
+  27.699146270751953
+ ],
+ "grounded": true,
+ "objects": [
+  "djc-pool-lantern-visuals",
+  "djc-crafted-pool-lanterns",
+  "djc-pool-lantern-Cube042",
+  "djc-pool-lantern-Cube042_1",
+  "djc-pool-lantern-Cube042_2",
+  "djc-pool-lantern-Cube042_3",
+  "djc-lantern-spill",
+  "djc-pool-lantern-Cube042#sun0",
+  "djc-pool-lantern-Cube042#sun1",
+  "djc-pool-lantern-Cube042#sun2",
+  "djc-pool-lantern-Cube042_1#sun0",
+  "djc-pool-lantern-Cube042_1#sun1",
+  "djc-pool-lantern-Cube042_1#sun2",
+  "djc-pool-lantern-Cube042_2#sun0",
+  "djc-pool-lantern-Cube042_2#sun1",
+  "djc-pool-lantern-Cube042_2#sun2",
+  "djc-pool-lantern-Cube042_3#sun0",
+  "djc-pool-lantern-Cube042_3#sun1",
+  "djc-pool-lantern-Cube042_3#sun2"
+ ],
+ "requests": [
+  {
+   "url": "http://127.0.0.1:4356/assets/world/club/lantern/pool-lantern-v1.glb",
+   "duration": 20.19999998807907,
+   "transferSize": 1318880,
+   "decodedBodySize": 1318580
+  }
+ ]
+}

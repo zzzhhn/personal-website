@@ -1,7 +1,7 @@
 import { Group, InstancedMesh, Matrix4, type Mesh, type MeshStandardMaterial, type Texture } from 'three';
 import { CLUB_DAYBEDS } from './djc-club-layout';
 
-export const DJC_DAYBED_ASSET='/assets/world/club/daybed/daybed-v1.glb';
+export const DJC_DAYBED_ASSET='/assets/world/club/daybed/daybed-ao-v1.glb';
 export const DJC_DAYBED_ORIGIN_Y=1.5;
 // The private outdoor map contains LDR radiance, not an HDR studio key. Keep
 // enough indirect irradiance for shaded timber/cloth, including a dim night floor.
@@ -42,7 +42,7 @@ export function createDjcDaybedVisual(source:Group,environment:Texture|null=null
         const copy=m.clone();copy.envMap=environment;copy.envMapIntensity=DAYBED_ENVIRONMENT_DAY;
         // Retain image sources, UV transforms, color spaces and all PBR factors.
         // Only the owned sampler changes, keeping oblique weave/grain mipmaps legible.
-        for(const key of ['map','normalMap','roughnessMap','metalnessMap'] as const)copy[key]=sampledTexture(m[key]);
+        for(const key of ['map','normalMap','roughnessMap','metalnessMap','aoMap'] as const)copy[key]=sampledTexture(m[key]);
         materials.set(m,copy);
         if(copy.emissive?.getHex())lamps.push({material:copy,intensity:copy.emissiveIntensity});
       }

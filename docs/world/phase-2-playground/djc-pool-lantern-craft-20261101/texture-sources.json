@@ -1,0 +1,31 @@
+[
+  {
+    "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/wood_table_001/wood_table_001_diff_4k.jpg",
+    "source_filename": "wood_diff.jpg",
+    "sha256": "5da68c7ebe8732f029ecbd602cb0d86d2a271e32539df953a0f10efa052b9516",
+    "declared_sha256": "5da68c7ebe8732f029ecbd602cb0d86d2a271e32539df953a0f10efa052b9516",
+    "license": "CC0",
+    "license_url": "https://polyhaven.com/license",
+    "asset_url": "https://polyhaven.com/a/wood_table_001",
+    "usage": "Read-only reused local CC0 source; actual packed 1024 px derivative. No new download."
+  },
+  {
+    "source_url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/4k/wood_table_001/wood_table_001_nor_gl_4k.jpg",
+    "source_filename": "wood_nor_gl.jpg",
+    "sha256": "fc9f1d2600e7686504b36d805b79bd785a327b752a3e7943a41e7d6e9bdfe399",
+    "declared_sha256": "fc9f1d2600e7686504b36d805b79bd785a327b752a3e7943a41e7d6e9bdfe399",
+    "license": "CC0",
+    "license_url": "https://polyhaven.com/license",
+    "asset_url": "https://polyhaven.com/a/wood_table_001",
+    "usage": "Read-only reused local CC0 source; actual packed 1024 px derivative. No new download."
+  },
+  {
+    "kind": "authored",
+    "sources": [
+      "512 px linen color and tangent normal",
+      "512 px timber roughness",
+      "512 px baked AO on independent UV1"
+    ],
+    "license": "Original project-authored maps; no external source assets."
+  }
+]

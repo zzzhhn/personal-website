@@ -70,15 +70,16 @@ class Collision {
 const fromTriangles = (positions: number[]) => { const g = new BufferGeometry(); g.setAttribute('position', new Float32BufferAttribute(positions, 3)); g.computeVertexNormals(); return g; };
 
 /** Deterministic, editable geometry. Only upward support faces enter surface; side guards and props enter solid. */
-export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=false}:{includeNorthBar?:boolean;separateDaybeds?:boolean}={}) {
+export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=false,separatePoolLanterns=false}:{includeNorthBar?:boolean;separateDaybeds?:boolean;separatePoolLanterns?:boolean}={}) {
   const batches = Object.fromEntries((['wood','stone','metal','fabric','foliage','glass','amber','cyan'] as ClubBatch[]).map(k => [k, new Batch()])) as Record<ClubBatch, Batch>;
   const daybedBatches = Object.fromEntries(Object.keys(batches).map(k => [k, new Batch()])) as Record<ClubBatch, Batch>;
+  const poolLanternBatches = Object.fromEntries(Object.keys(batches).map(k => [k, new Batch()])) as Record<ClubBatch, Batch>;
   const surface = new Collision(), solid = new Collision();
   const solidTriangles=(positions:number[])=>{for(let i=0;i<positions.length;i+=9)solid.triangle(positions.slice(i,i+3) as V3,positions.slice(i+3,i+6) as V3,positions.slice(i+6,i+9) as V3);};
-  let yOffset = 0, collectingDaybed = false;
+  let yOffset = 0, collectingDaybed = false, collectingPoolLantern = false;
   // Only the visible furniture moves into a replaceable group. All support,
   // guard and approach triangles continue through the original collision path.
-  const add = (kind: ClubBatch, g: BufferGeometry, color: string, wind = 0) => (separateDaybeds && collectingDaybed ? daybedBatches : batches)[kind].add(g, color, wind);
+  const add = (kind: ClubBatch, g: BufferGeometry, color: string, wind = 0) => (separateDaybeds && collectingDaybed ? daybedBatches : separatePoolLanterns && collectingPoolLantern ? poolLanternBatches : batches)[kind].add(g, color, wind);
   const box = (kind: ClubBatch, p: V3, size: V3, color: string, rotate = 0, collide = false) => {
     const g = kind==='fabric' ? new RoundedBoxGeometry(...size,1,Math.min(.055,...size.map(n=>n*.2))) : new BoxGeometry(...size); g.rotateY(rotate); g.translate(p[0],p[1]+yOffset,p[2]);
     if (collide) { const raw = g.index ? g.toNonIndexed() : g, m=raw.getAttribute('position'); for (let i = 0; i < m.count; i += 3) solid.triangle([m.getX(i),m.getY(i),m.getZ(i)], [m.getX(i+1),m.getY(i+1),m.getZ(i+1)], [m.getX(i+2),m.getY(i+2),m.getZ(i+2)]); if(raw!==g)raw.dispose(); }
@@ -315,10 +316,12 @@ export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=fals
   for(let i=0;i<12;i++) {
     const a=i*TAU/12+.15;if(Math.abs(Math.cos(a))<.2)continue;
     const [x,z]=CLUB_POOL.boundary(a,2.25);
+    collectingPoolLantern = true;
     box('wood',[x,1.6,z],[.3,.4,.3],C.edge,0,true);
     box('amber',[x,1.93,z],[.19,.27,.19],C.amber);
     for(const dx of [-.115,.115])for(const dz of [-.115,.115])rod('wood',[x+dx,1.77,z+dz],[x+dx,2.12,z+dz],.02,C.edge);
     box('wood',[x,2.14,z],[.31,.06,.31],C.edge);
+    collectingPoolLantern = false;
   }
   // The north bar is a separate streamed GLB with its own fixed collision proxies.
   // The original remains available only for the explicit QA legacy comparison.
@@ -577,5 +580,6 @@ export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=fals
   built.foliage.boundingBox?.expandByScalar(.75);if(built.foliage.boundingSphere)built.foliage.boundingSphere.radius+=.75;
   built.foliage.userData={worldWind:true,softPush:true,pushMax:.62};
   const daybeds=Object.fromEntries(Object.entries(daybedBatches).map(([key,batch])=>[key,batch.geometry()])) as Record<ClubBatch,BufferGeometry>;
-  return { batches: built, daybeds, colliders: { surface: surface.data(), solid: solid.data() }, seats, pool,daybedApproaches };
+  const poolLanterns=Object.fromEntries(Object.entries(poolLanternBatches).map(([key,batch])=>[key,batch.geometry()])) as Record<ClubBatch,BufferGeometry>;
+  return { batches: built, daybeds, poolLanterns, colliders: { surface: surface.data(), solid: solid.data() }, seats, pool,daybedApproaches };
 }

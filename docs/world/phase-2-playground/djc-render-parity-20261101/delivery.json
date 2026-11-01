@@ -1,0 +1,32 @@
+{
+  "preview": "http://127.0.0.1:4341/world/?start=club&quality=balanced&paused=1",
+  "artifact": "/tmp/bobby-world-craft-2ed93e9e-20261101",
+  "pid": 85664,
+  "replacedOwnedPid": 42018,
+  "httpVerified": {
+    "world/index.html": {
+      "bytes": 52275,
+      "sha256": "2ed93e9ec9136e31529984c9d9396db38bdfef7fae8ae4559dda94da39bc0f94"
+    },
+    "_astro/WorldRuntime.cIQS8_h2.js": {
+      "bytes": 3459250,
+      "sha256": "cdf1c6d076185dbeefc31a9dab45f4ff109ec18b4145131541ce52e03b86948f"
+    },
+    "assets/world/club/daybed/daybed-ao-v1.glb": {
+      "bytes": 13905392,
+      "sha256": "99a0abd938b967d9654d882b4d35b126fadfdc3cd1f053f513ac9f3a5e11594e"
+    },
+    "assets/world/club/lantern/pool-lantern-v2.glb": {
+      "bytes": 1358944,
+      "sha256": "30022ad90d063a6d267f07c69dc1e42b76bb93d702d19b3f00ffb0212789fbbe"
+    }
+  },
+  "publicDeployed": false,
+  "githubPushed": false,
+  "browserDelivery": {
+    "status": "actual 3D world loaded, then paused and handed off",
+    "evidence": "perf-lantern-r2-delivery.md",
+    "image": "perf-lantern-r2-delivered-4341-world.jpg",
+    "tab": "1395914218"
+  }
+}

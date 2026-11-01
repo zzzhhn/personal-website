@@ -1,0 +1,340 @@
+{
+  "source": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-daybed-craft-20261101/daybed-v1.glb",
+  "source_sha256": "5cdd0dde5d0418888e06422828d426eac07f7f9b27e0f762ef190aae211395d8",
+  "out": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-render-parity-20261101/asset-ao",
+  "atlas": 2048,
+  "distance_m": 0.2,
+  "cycles_samples": 8,
+  "ao_node_samples": 8,
+  "threads": 4,
+  "padding_px": 6,
+  "occlusion_strength": 0.75,
+  "atlas_allocation": {
+    "uv_triangle_area_coverage": 0.3167131852749444,
+    "receiver_density": {
+      "02 Honed limestone | shallow mineral pores": {
+        "world_area": 46.40348432875646,
+        "uv_area": 0.14600380821703304,
+        "pixels_per_m": 114.87796882917348
+      },
+      "01 Oiled timber | CC0 photographed grain": {
+        "world_area": 32.67949259364224,
+        "uv_area": 0.10749460273458515,
+        "pixels_per_m": 117.4588188853898
+      },
+      "03 Sea teal tailored mattress": {
+        "world_area": 15.18100463913288,
+        "uv_area": 0.04982267702579232,
+        "pixels_per_m": 117.32571925053888
+      },
+      "06 Seafoam upholstery welting": {
+        "world_area": 0.5540027642597636,
+        "uv_area": 0.0016421032019316578,
+        "pixels_per_m": 111.49983133181044
+      },
+      "04 Deep teal back cushions": {
+        "world_area": 2.706845437267475,
+        "uv_area": 0.008092057439039735,
+        "pixels_per_m": 111.97670959720892
+      },
+      "07 Aged marine metal | recesses and lantern": {
+        "world_area": 0.15329958370202945,
+        "uv_area": 0.0005056891154844034,
+        "pixels_per_m": 117.62544176630335
+      },
+      "05 Lagoon accent cushions": {
+        "world_area": 0.918550847494771,
+        "uv_area": 0.002771126020125081,
+        "pixels_per_m": 112.48807617699592
+      },
+      "08 Opaque amber lantern diffuser": {
+        "world_area": 0.12324764979166503,
+        "uv_area": 0.0003811215209532648,
+        "pixels_per_m": 113.8865312798092
+      }
+    },
+    "proxy_components": 804,
+    "tiny_components_kept": 638,
+    "unmatched_proxy_triangles_white": 0,
+    "packing": "smart_project margin 0, then pack_islands FRACTION margin 6/2048",
+    "source_geometry_uv0_normals_byte_identical": true
+  },
+  "before": {
+    "triangles": 113664,
+    "bounds_min": [
+      -1.649999976158142,
+      -1.649999976158142,
+      -1.0
+    ],
+    "bounds_max": [
+      1.649999976158142,
+      1.649999976158142,
+      0.7114251255989075
+    ],
+    "seat_samples": 50,
+    "seat_max_deviation_m": 3.623962402388159e-07
+  },
+  "fresh": {
+    "triangles": 113664,
+    "bounds_min": [
+      -1.649999976158142,
+      -1.649999976158142,
+      -1.0
+    ],
+    "bounds_max": [
+      1.649999976158142,
+      1.649999976158142,
+      0.7114251255989075
+    ],
+    "seat_samples": 50,
+    "seat_max_deviation_m": 3.623962402388159e-07
+  },
+  "ao_stats": {
+    "min": 0.0,
+    "mean": 0.6589174270629883,
+    "max": 1.0,
+    "dark_fraction": 0.38938021659851074
+  },
+  "uv0_byte_hash_before_after": "63a6d91a726b6e4971e8dc0216807b240b017acbf5976edafe11c52d081c39d6",
+  "positions_byte_hash_before_after": "5b37288b99860e5a9d015c10d2e545ceb2be79b39e1a4dc903699ea6e8f3b14f",
+  "source_pbr_signature": {
+    "02 Honed limestone | shallow mineral pores": {
+      "baseColorFactor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 1,
+      "alphaMode": "OPAQUE",
+      "emissiveFactor": [
+        0,
+        0,
+        0
+      ],
+      "base": {
+        "image_sha256": "eaf8c5f86321d52f1aea1fe0d61d4a70c7b295638e892e4a10e9b299d8b53e24",
+        "uv": 0,
+        "scale": 1
+      },
+      "rough": {
+        "image_sha256": "5ae824c0be11552639d8dac78eb0573b755b1da13f791bc369dddffaaa6fb373",
+        "uv": 0,
+        "scale": 1
+      },
+      "normal": {
+        "image_sha256": "aa69b6aece1f3d936fc38278df6205f7e6960ee35b4c9a418e9816a2d859dac5",
+        "uv": 0,
+        "scale": 0.6499999761581421
+      }
+    },
+    "01 Oiled timber | CC0 photographed grain": {
+      "baseColorFactor": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 0.6399999856948853,
+      "alphaMode": "OPAQUE",
+      "emissiveFactor": [
+        0,
+        0,
+        0
+      ],
+      "base": {
+        "image_sha256": "0acf36a2f5b7e3d0d0f1a355e7cebf20df0d65a567be6728047fdd67dfc88ed4",
+        "uv": 0,
+        "scale": 1
+      },
+      "normal": {
+        "image_sha256": "005c2cb2cd863af9aad7f1a58ea5977fe81c096f654b68b4964baa8a007b19d4",
+        "uv": 0,
+        "scale": 0.30000001192092896
+      }
+    },
+    "03 Sea teal tailored mattress": {
+      "baseColorFactor": [
+        0.04817182570695877,
+        0.2345505803823471,
+        0.22322796285152435,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 1,
+      "alphaMode": "OPAQUE",
+      "emissiveFactor": [
+        0,
+        0,
+        0
+      ],
+      "base": {
+        "image_sha256": "d741a08f67aa8d9b41c1b203bdb123e7e61efbe6161f966509ebcf2cf04ac54e",
+        "uv": 0,
+        "scale": 1
+      },
+      "rough": {
+        "image_sha256": "028c88fbadea3055ae98df3089a41305ac0af0371c01e548707a9d9028e6ffcc",
+        "uv": 0,
+        "scale": 1
+      },
+      "normal": {
+        "image_sha256": "504d66fdd473fb5a4ffddcf22bba3d682a8fb339d4c325f7ec2d6de1c2a14fab",
+        "uv": 0,
+        "scale": 0.75
+      }
+    },
+    "06 Seafoam upholstery welting": {
+      "baseColorFactor": [
+        0.11697066575288773,
+        0.30946892499923706,
+        0.28744083642959595,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 1,
+      "alphaMode": "OPAQUE",
+      "emissiveFactor": [
+        0,
+        0,
+        0
+      ],
+      "base": {
+        "image_sha256": "d741a08f67aa8d9b41c1b203bdb123e7e61efbe6161f966509ebcf2cf04ac54e",
+        "uv": 0,
+        "scale": 1
+      },
+      "rough": {
+        "image_sha256": "028c88fbadea3055ae98df3089a41305ac0af0371c01e548707a9d9028e6ffcc",
+        "uv": 0,
+        "scale": 1
+      },
+      "normal": {
+        "image_sha256": "504d66fdd473fb5a4ffddcf22bba3d682a8fb339d4c325f7ec2d6de1c2a14fab",
+        "uv": 0,
+        "scale": 0.75
+      }
+    },
+    "04 Deep teal back cushions": {
+      "baseColorFactor": [
+        0.03071344457566738,
+        0.13286831974983215,
+        0.1441284716129303,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 1,
+      "alphaMode": "OPAQUE",
+      "emissiveFactor": [
+        0,
+        0,
+        0
+      ],
+      "base": {
+        "image_sha256": "d741a08f67aa8d9b41c1b203bdb123e7e61efbe6161f966509ebcf2cf04ac54e",
+        "uv": 0,
+        "scale": 1
+      },
+      "rough": {
+        "image_sha256": "028c88fbadea3055ae98df3089a41305ac0af0371c01e548707a9d9028e6ffcc",
+        "uv": 0,
+        "scale": 1
+      },
+      "normal": {
+        "image_sha256": "504d66fdd473fb5a4ffddcf22bba3d682a8fb339d4c325f7ec2d6de1c2a14fab",
+        "uv": 0,
+        "scale": 0.75
+      }
+    },
+    "07 Aged marine metal | recesses and lantern": {
+      "baseColorFactor": [
+        0.040915198624134064,
+        0.04666508734226227,
+        0.03560131415724754,
+        1
+      ],
+      "metallicFactor": 0.6000000238418579,
+      "roughnessFactor": 0.47999998927116394,
+      "alphaMode": "OPAQUE",
+      "emissiveFactor": [
+        0,
+        0,
+        0
+      ]
+    },
+    "05 Lagoon accent cushions": {
+      "baseColorFactor": [
+        0.01850022003054619,
+        0.07818742096424103,
+        0.09084171056747437,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 1,
+      "alphaMode": "OPAQUE",
+      "emissiveFactor": [
+        0,
+        0,
+        0
+      ],
+      "base": {
+        "image_sha256": "d741a08f67aa8d9b41c1b203bdb123e7e61efbe6161f966509ebcf2cf04ac54e",
+        "uv": 0,
+        "scale": 1
+      },
+      "rough": {
+        "image_sha256": "028c88fbadea3055ae98df3089a41305ac0af0371c01e548707a9d9028e6ffcc",
+        "uv": 0,
+        "scale": 1
+      },
+      "normal": {
+        "image_sha256": "504d66fdd473fb5a4ffddcf22bba3d682a8fb339d4c325f7ec2d6de1c2a14fab",
+        "uv": 0,
+        "scale": 0.75
+      }
+    },
+    "08 Opaque amber lantern diffuser": {
+      "baseColorFactor": [
+        0.8962693810462952,
+        0.6514056324958801,
+        0.35640013217926025,
+        1
+      ],
+      "metallicFactor": 0,
+      "roughnessFactor": 0.5,
+      "alphaMode": "OPAQUE",
+      "emissiveFactor": [
+        0.07999999821186066,
+        0.053230980636977066,
+        0.02622224749127966
+      ]
+    }
+  },
+  "ao_shared_texture_count": 1,
+  "elapsed_seconds": 13.2,
+  "candidate_bytes": 13905392,
+  "candidate_sha256": "99a0abd938b967d9654d882b4d35b126fadfdc3cd1f053f513ac9f3a5e11594e",
+  "source_encoded_pbr_images_and_all_factors_exact": true,
+  "source_normals_uv0_positions_bytewise_preserved_during_uv_transfer": true,
+  "uv0_export_max_numeric_difference": 0.0,
+  "vertices_before": 132543,
+  "vertices_after": 172808,
+  "source_bytes": 9875476,
+  "embedded_images_before": 8,
+  "embedded_images_after": 9,
+  "ao_debug_inspected": true,
+  "hashes": {
+    "daybed-ao-v1.glb": "99a0abd938b967d9654d882b4d35b126fadfdc3cd1f053f513ac9f3a5e11594e",
+    "daybed-ao-uv1.png": "818fefdab3726d8e2524cd7ee42737d13176d06e9404e6febb2ed3a0926e07cf",
+    "daybed-ao-debug.png": "3f5d20c28de38d6e0b1d73c71104084ac8539d211b861e9c7d3d07c6e94bc555"
+  },
+  "scripts": {
+    "verify_existing_ao.py": "b77930d8ddc700fd347379b88fbf749f6c17b953f0697b3e2a65564403bf9f5f",
+    "prepare_asset_ao.py": "7d74275899fe567ff6295b8599c92957e3231670476e1ca01746d52b14bacb6e",
+    "run_ao.py": "7cb065a22324eb0a75ade4b9831f5d2af59292c23a1bb88c024a64718421dcee",
+    "inspect_glb.py": "4a320ae7e1993ca797fe1eeb3ea9b99ae4cf7783a7ca33c82e2d1c6a64dfeda0"
+  },
+  "full_material_semantics_exact_excluding_new_occlusionTexture": true
+}

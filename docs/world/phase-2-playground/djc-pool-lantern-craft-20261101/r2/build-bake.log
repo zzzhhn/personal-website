@@ -1,0 +1,8 @@
+00:01.137  blend            | Read blend: "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-pool-lantern-craft-20261101/pool-lantern-editable.blend"
+00:23.675  render           | Saved: '/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/djc-pool-lantern-craft-20261101/r2/lantern-r2-ao-only.png'
+Info: Baking map saved to internal image, save it externally or pack it
+Info: Saved as "pool-lantern-r2-editable.blend"
+BAKE_OK {"samples": 72, "mean": 0.9932462076346079, "std": 0.010502780612998985, "percentiles": [0.9686275124549866, 0.9764706492424011, 1.0, 1.0, 1.0], "high_frequency_residual_std_5pxmedian": 0.0013026427048293588, "selection": {"outer_front_native_y_max": -0.0938, "abs_x_max": 0.045, "z_range": [0.51, 0.63]}}
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

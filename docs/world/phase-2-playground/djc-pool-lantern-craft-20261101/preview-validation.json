@@ -1,0 +1,222 @@
+{
+  "source": "Actual first pool lantern captured from frozen production source in memory, including its unmodified BoxGeometry and CylinderGeometry. Before render is a controlled offline render of actual source geometry, not a production screenshot.",
+  "source_revision": "a66770e43fe4fbfa0ee8e9af057e38909706b2b2",
+  "source_hashes": {
+    "WorldDjcClubGeometry.ts": "148e5dc76c3bc81dacdf56c634c649e302d6cca5bae9b745c0bedfc0ae07a680",
+    "WorldDjcClubVisual.tsx": "a3d2ce06d1bbc44b3b96e79661a8e96c672dc6e64e1b925b3c583bb2d588ef86",
+    "djc-club-layout.ts": "6cb167906ac87c2ef53c904d9a91983a5747192d7247afcc9b2c419ebe14a360"
+  },
+  "baseline_triangles": 164,
+  "native": {
+    "meshes": 54,
+    "triangles": 11304,
+    "materials": [
+      "DJC_Lantern_Brass",
+      "DJC_Lantern_Diffuser",
+      "DJC_Lantern_Inset",
+      "DJC_Lantern_Timber"
+    ],
+    "bounds": [
+      [
+        -0.1550000011920929,
+        -0.1550000011920929,
+        0.0
+      ],
+      [
+        0.1550000011920929,
+        0.1550000011920929,
+        0.7699999809265137
+      ]
+    ],
+    "dimensions": [
+      0.3100000023841858,
+      0.3100000023841858,
+      0.7699999809265137
+    ],
+    "degenerate_triangles": 0,
+    "nonfinite_vertices": 0,
+    "nonmanifold_parts": []
+  },
+  "blender": "5.1.2",
+  "origin_world": [
+    88.65072293356089,
+    1.4,
+    59.10392764852853
+  ],
+  "placements": [
+    {
+      "index": 0,
+      "position": [
+        88.65072293356089,
+        1.4,
+        59.10392764852853
+      ],
+      "yaw": 0
+    },
+    {
+      "index": 1,
+      "position": [
+        83.08361776888378,
+        1.4,
+        70.79223425471233
+      ],
+      "yaw": 0
+    },
+    {
+      "index": 2,
+      "position": [
+        74.89443141158237,
+        1.4,
+        78.05541267354013
+      ],
+      "yaw": 0
+    },
+    {
+      "index": 4,
+      "position": [
+        55.563043463618584,
+        1.4,
+        75.46173853633064
+      ],
+      "yaw": 0
+    },
+    {
+      "index": 5,
+      "position": [
+        48.83713171531411,
+        1.4,
+        64.87349258898588
+      ],
+      "yaw": 0
+    },
+    {
+      "index": 6,
+      "position": [
+        50.58303643302326,
+        1.4,
+        51.55730195861178
+      ],
+      "yaw": 0
+    },
+    {
+      "index": 7,
+      "position": [
+        52.99271824623304,
+        1.4,
+        39.29019497650709
+      ],
+      "yaw": 0
+    },
+    {
+      "index": 8,
+      "position": [
+        60.84315109343884,
+        1.4,
+        31.038905791575008
+      ],
+      "yaw": 0
+    },
+    {
+      "index": 10,
+      "position": [
+        79.57944964601269,
+        1.4,
+        35.99185734428228
+      ],
+      "yaw": 0
+    },
+    {
+      "index": 11,
+      "position": [
+        84.68139933819842,
+        1.4,
+        46.44259243142099
+      ],
+      "yaw": 0
+    }
+  ],
+  "collision_contract": {
+    "baseCenterLocalY": 0.2,
+    "baseSize": [
+      0.3,
+      0.4,
+      0.3
+    ],
+    "owner": "Existing world solid triangles, must remain unchanged during runtime visual replacement."
+  },
+  "coordinate_contract": {
+    "native": "meters Z-up, +Y front",
+    "runtime": "meters Y-up, -Z front",
+    "origin": "base bottom center, world Y=1.4",
+    "maximum_runtime_dimensions": [
+      0.31,
+      0.77,
+      0.31
+    ]
+  },
+  "render": {
+    "engine": "Cycles CPU",
+    "threads": 3,
+    "resolution": [
+      1200,
+      1200
+    ],
+    "view_transform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "exposure": 0,
+    "overview": {
+      "position": [
+        1.2,
+        -1.7,
+        1.05
+      ],
+      "target": [
+        0,
+        0,
+        0.38
+      ],
+      "ortho_scale": 0.99,
+      "samples": 24
+    },
+    "world": {
+      "color": [
+        0.64,
+        0.71,
+        0.78
+      ],
+      "strength": 0.42
+    },
+    "area_lights": [
+      {
+        "name": "Key",
+        "position": [
+          1.5,
+          -2.0,
+          2.799999952316284
+        ],
+        "energy": 125.0,
+        "size": 2.200000047683716,
+        "color": [
+          1.0,
+          0.9100000262260437,
+          0.7799999713897705
+        ]
+      },
+      {
+        "name": "Sky",
+        "position": [
+          -1.0,
+          1.5,
+          2.0999999046325684
+        ],
+        "energy": 85.0,
+        "size": 2.5,
+        "color": [
+          0.7699999809265137,
+          0.8700000047683716,
+          1.0
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "reviewer": "Pool-lantern craft agent, direct image inspection",
+  "inspected_images": [
+    "lantern-before.png",
+    "lantern-after.png",
+    "lantern-after-fresh-glb.png",
+    "lantern-close-fresh-glb.png",
+    "lantern-clay-fresh-glb.png",
+    "lantern-evening-fresh-glb.png",
+    "lantern-ao-uv1.png"
+  ],
+  "retained": [
+    "Supported inset timber boards, corner posts and rebated shade rails.",
+    "Closed 3 mm cream textile panels with visible fine weave in fresh close view.",
+    "Physical cap thickness and four sloped faces, restrained brass ferrules.",
+    "Fresh daytime export retains timber and fabric PBR response of native render.",
+    "Evening uses the runtime warm color and strength plus existing linen color map; no added light source."
+  ],
+  "corrected": [
+    "Baseline split source triangle loop order and imported custom normals preserved; no volume normal repair on disconnected triangles.",
+    "AO unwrap uses native continuous topology and separate packing; 51.72 percent occupied UV area.",
+    "Evening inspection explicitly replaces tiny exported daytime emission factor before setting night intensity."
+  ],
+  "limits": [
+    "Offline renders are inspection views, not browser parity or performance evidence.",
+    "Dark timber remains intentionally dark; actual world night readability and emissive calibration remain primary-owned.",
+    "10 ordinary clones imply about 40 main-pass material draws and 113040 visible triangles; sharing resources is not hardware instancing."
+  ],
+  "user_visual_acceptance": false,
+  "browser_visual_verification": false,
+  "performance_verification": false
+}

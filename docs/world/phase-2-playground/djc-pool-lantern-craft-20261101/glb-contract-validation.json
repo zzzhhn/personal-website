@@ -1,0 +1,46 @@
+{
+  "sha256": "8a8cd28f44fa9b2e842f1d9e03972869d5328b4c9d8bee8bcba170a892b69cf4",
+  "glb_bytes": 1318580,
+  "triangles": 11304,
+  "meshes": 1,
+  "primitives": 4,
+  "materials": 4,
+  "images": [
+    {
+      "name": "wood_nor_gl",
+      "mime_type": "image/jpeg",
+      "embedded_bytes": 27563
+    },
+    {
+      "name": "Pool lantern ambient occlusion UV1 512-Authored low contrast timber roughness 512",
+      "mime_type": "image/png",
+      "embedded_bytes": 120001
+    },
+    {
+      "name": "wood_diff",
+      "mime_type": "image/jpeg",
+      "embedded_bytes": 153971
+    },
+    {
+      "name": "lantern-ao-uv1",
+      "mime_type": "image/png",
+      "embedded_bytes": 111632
+    },
+    {
+      "name": "Authored linen tangent normal 512",
+      "mime_type": "image/png",
+      "embedded_bytes": 27155
+    },
+    {
+      "name": "Authored linen cream fiber color 512",
+      "mime_type": "image/png",
+      "embedded_bytes": 24517
+    }
+  ],
+  "image_bytes": 464839,
+  "uv0": "All 4 primitives",
+  "uv1": "All 4 primitives; AO only",
+  "exported_lights": 0,
+  "opaque": true,
+  "source_collision": "Untouched by asset-only files"
+}

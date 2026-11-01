@@ -1,0 +1,50 @@
+{
+  "uv_triangle_area_coverage": 0.3167131852749444,
+  "receiver_density": {
+    "02 Honed limestone | shallow mineral pores": {
+      "world_area": 46.40348432875646,
+      "uv_area": 0.14600380821703304,
+      "pixels_per_m": 114.87796882917348
+    },
+    "01 Oiled timber | CC0 photographed grain": {
+      "world_area": 32.67949259364224,
+      "uv_area": 0.10749460273458515,
+      "pixels_per_m": 117.4588188853898
+    },
+    "03 Sea teal tailored mattress": {
+      "world_area": 15.18100463913288,
+      "uv_area": 0.04982267702579232,
+      "pixels_per_m": 117.32571925053888
+    },
+    "06 Seafoam upholstery welting": {
+      "world_area": 0.5540027642597636,
+      "uv_area": 0.0016421032019316578,
+      "pixels_per_m": 111.49983133181044
+    },
+    "04 Deep teal back cushions": {
+      "world_area": 2.706845437267475,
+      "uv_area": 0.008092057439039735,
+      "pixels_per_m": 111.97670959720892
+    },
+    "07 Aged marine metal | recesses and lantern": {
+      "world_area": 0.15329958370202945,
+      "uv_area": 0.0005056891154844034,
+      "pixels_per_m": 117.62544176630335
+    },
+    "05 Lagoon accent cushions": {
+      "world_area": 0.918550847494771,
+      "uv_area": 0.002771126020125081,
+      "pixels_per_m": 112.48807617699592
+    },
+    "08 Opaque amber lantern diffuser": {
+      "world_area": 0.12324764979166503,
+      "uv_area": 0.0003811215209532648,
+      "pixels_per_m": 113.8865312798092
+    }
+  },
+  "proxy_components": 804,
+  "tiny_components_kept": 638,
+  "unmatched_proxy_triangles_white": 0,
+  "packing": "smart_project margin 0, then pack_islands FRACTION margin 6/2048",
+  "source_geometry_uv0_normals_byte_identical": true
+}
