@@ -1,0 +1,10 @@
+{
+  "family": "P02",
+  "sourceJSONSHA256": "d116dac83a613f0745d16fceb9ec702b011913589846a4699cebfe04aeb74ac3",
+  "triangles": 7621,
+  "freshBoundsDelta": 0.0,
+  "parts": 454,
+  "images": 3,
+  "portableSHA256": "158ab5f99468208fb8c0a6aca640093f90b4514438611f44bfe0b6eeec1566a9",
+  "status": "exported/fresh-imported; actual runtime visual verdict separate"
+}
