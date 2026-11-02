@@ -1,0 +1,32 @@
+{
+  "r9-v-c15-noon.png": {
+    "receipt": "r9-v-c15-snapshot-1.json",
+    "sha256": "5039fe127ff6f5027666206b5ad71bf86f0c19e798d91bf06e65ab60aaa83dd5",
+    "camera": [
+      -28.4,
+      5.7,
+      28.8
+    ],
+    "worldMinutes": 720
+  },
+  "r9-v-c15-night.png": {
+    "receipt": "r9-v-c15-snapshot-2.json",
+    "sha256": "48d27a5896ab474a1e6a76e36a4e2830b0c111d3afcfce7145b7e818c22b5d5e",
+    "camera": [
+      -28.4,
+      5.7,
+      28.8
+    ],
+    "worldMinutes": 0
+  },
+  "r9-v-c15-low-noon.png": {
+    "receipt": "r9-v-c15-low-snapshot-3.json",
+    "sha256": "334f3ddf4053d2cdb38e71dda356d34796bdac2f076a285c93a0bd9c676cac33",
+    "camera": [
+      -28.35,
+      5.03,
+      28.65
+    ],
+    "worldMinutes": 720
+  }
+}

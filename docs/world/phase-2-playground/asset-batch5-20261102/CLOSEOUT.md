@@ -1,1 +1,5 @@
-十四项生产候选已完成实现与限定验证。G17 R3视觉样板已由主协调通过；十三设施待主协调最终视觉／集成决定；性能未决；地表R4被否决并排除默认产品。任务源／新GLB与冻结R5身份核对通过。原4341 URL已恢复为 `http://127.0.0.1:4341/world/?start=camp&quality=balanced&paused=1`，中文暂停菜单有截图／DOM证据，viewport override已reset。4359临时Python服务在核对PID和完整命令后停止；自有heavy lock核对owner后释放；未关闭其他标签、服务或进程。原djc-release当前tracked status为空，HEAD e89b28f为并行协调进展，未由本任务改写其源码／dist／分支。协作ledger三个dispatch均已终结并核验，nature-two为partial，run完整关闭，无未核验dispatch。下一地表轮次独立，不把历史R4图改身份。
+十四项已完成制作及C13／C15限定返修，指定视角的视觉接受由主协调确认。最新生产源码6ffeeeb，冻结R10为60文件／12源码身份匹配，实际入口图无缺失。原生E候车亭坐立与开放侧坐姿可见回归通过，相机9／9及接触／街道28／28测试通过。固定六窗全部有效，无补采；原始尖峰、679.306秒审阅间隔及旧A/B几何差异完整保留，独立性能判读不由执行侧替代。
+
+当前证据见RESULT.md、review.html和runtime-r10。地表R4仍排除默认产品；独立ground-shoulder仅正午方向获接受，夜间／风踏压／成本未完成，不混入十四项。协作ledger三项原dispatch均已关闭并核验，独立地表ledger只覆盖源码和正午方向。
+
+原4341精确URL及中文暂停菜单已恢复，viewport override已reset；仅核对并停止自有4359 PID18927、释放owner=batch5-r8-01a19a62的heavy lock。恢复截图／DOM和清理收据保留。未关闭用户标签或他人服务，未push、deploy或切换4341。

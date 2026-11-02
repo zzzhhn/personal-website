@@ -1,0 +1,113 @@
+{
+  "scope": "Exact copies of canonical coordinator runtime evidence. No source/fixture/package mutation.",
+  "files": [
+    {
+      "file": "r10-old-a-legacy-camp-sample-1.json",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r10-old-a-legacy-camp-sample-1.json",
+      "sha256": "e626fb07f7367d3b21a4d262b8d31e6b1de71b80f475f6c1dc6af9e052107598",
+      "bytes": 118472
+    },
+    {
+      "file": "r10-resource-before.json",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r10-resource-before.json",
+      "sha256": "67d45c20d335e2bafa9f89a4bf56c91e7ea09eacdc8c93f19494b40118ef9342",
+      "bytes": 530
+    },
+    {
+      "file": "r10-behavior-candidate-shelter-snapshot-1.json",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r10-behavior-candidate-shelter-snapshot-1.json",
+      "sha256": "8fc84c8901a3ae7e85ea2e6022c9519c57a767d82901ed55b1841dac34cfc138",
+      "bytes": 3248
+    },
+    {
+      "file": "r10-old-b-legacy-street-sample-2.json",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r10-old-b-legacy-street-sample-2.json",
+      "sha256": "f796c71bef29ee2661b86d230be96bc89a2bb9b44f8ba27dc7229c38b40a440b",
+      "bytes": 122259
+    },
+    {
+      "file": "r10-old-a-legacy-street-sample-2.json",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r10-old-a-legacy-street-sample-2.json",
+      "sha256": "dcdf56a862232f25dd6a4bdb43880c635be4a45bad4edf74a0daca7fff7359bc",
+      "bytes": 122746
+    },
+    {
+      "file": "r10-old-b-legacy-camp-sample-1.json",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r10-old-b-legacy-camp-sample-1.json",
+      "sha256": "4854845630397a2aa37b31e35d5757e55814fcfbd0b723d05195a2a15ae34d82",
+      "bytes": 118266
+    },
+    {
+      "file": "r10-new-candidate-camp-sample-1.json",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r10-new-candidate-camp-sample-1.json",
+      "sha256": "caff42541a7b9579cb9c19666f7febfc60cddeca27d2c696f5f9dec30c4a908c",
+      "bytes": 119095
+    },
+    {
+      "file": "r10-behavior-candidate-shelter-snapshot-2.json",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r10-behavior-candidate-shelter-snapshot-2.json",
+      "sha256": "fcf9f0ca02135549fb6fed866f036c59ce028fdd579e9093c1838fbae2cb257f",
+      "bytes": 3071
+    },
+    {
+      "file": "r10-new-candidate-street-sample-2.json",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r10-new-candidate-street-sample-2.json",
+      "sha256": "17c5e0721e1273fdfcf777d6815dd1a0a846d83c7f3ee33ac36fcf894b9f855b",
+      "bytes": 122996
+    },
+    {
+      "file": "r10-shelter-stand-visible.png",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r10-shelter-stand-visible.png",
+      "sha256": "3ccfdb6b0e29ec9c59bb435efea07e85be011a2d2b9ae82ff6f7c6fb6edb4445",
+      "bytes": 135420
+    },
+    {
+      "file": "r10-shelter-sit-visible.png",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r10-shelter-sit-visible.png",
+      "sha256": "bf9eb1fda34251f02a1b46178816709a1a66b883f4c2cc7784e14f1b522941d9",
+      "bytes": 148407
+    },
+    {
+      "file": "r10-restored-4341.png",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r10-restored-4341.png",
+      "sha256": "4bb109409dbdfc3eca33e802eb9e0c03c3aaf33216f9e71301813b533c81fcdb",
+      "bytes": 87613
+    },
+    {
+      "file": "r10-restored-4341.txt",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r10-restored-4341.txt",
+      "sha256": "b1c7416792dfe2fc2412498782af30464eb52366908fc9ac89004c87bf141275",
+      "bytes": 3375
+    },
+    {
+      "file": "executor-behavior-r10.json",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/executor-behavior-r10.json",
+      "sha256": "3e8206b9f51a99d417b0af4d59ad05aa5d89ff8301821dcdec963af980884c88",
+      "bytes": 913
+    },
+    {
+      "file": "executor-wait-note-r10.json",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/executor-wait-note-r10.json",
+      "sha256": "72e3224f7a31600ced9abc27c0b0ebfa3713571ed385f0325ed2b503a3880edf",
+      "bytes": 1250
+    },
+    {
+      "file": "executor-six-window-audit-r10.json",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/executor-six-window-audit-r10.json",
+      "sha256": "03a324c3a0bf773fbb09def518872f5cff3161b64416d3a185f98d0d700c0137",
+      "bytes": 6632
+    },
+    {
+      "file": "executor-cleanup-r10.json",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/executor-cleanup-r10.json",
+      "sha256": "0425f445cb8ee3880ec75c7e5067a2216d8d4ac52973e8f31f4b626ac788ea90",
+      "bytes": 744
+    },
+    {
+      "file": "executor-wait-literal-approved.txt",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/executor-wait-literal-approved.txt",
+      "sha256": "6b86bdfd2e23f7d6d706a0aabf9b31fad4956fcffeaa948e501e63c5ed9d2882",
+      "bytes": 1575
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+✔ actual C15 yields exactly four low tire shells, using real vertices without altering loader resources (8.241ms)
+✔ actual tire dimensions and the shader expose a bounded 1–2 cm halo without raising peak opacity (2.626667ms)
+✔ enlarged real-wheel halos disappear individually when their corners leave finite support (3.435084ms)
+✔ support cache respects actual rotated instance triangles and finite edges, not a height plane or bounding box (0.180417ms)
+✔ real-wheel patches follow translation and vanish off paving, below it, or when tipped over (3.144833ms)
+✔ support boundaries reject patch corners beyond geometry even with a supported wheel centre (3.007375ms)
+✔ tilted wheel contact uses the transformed shell minimum rather than its original bottom point (0.191375ms)
+✔ visible feedback lift attenuates by real support distance; fade alone performs no new support query (3.524792ms)
+✔ 300 unchanged normal frames cause zero support queries and zero uploads; disposal stays inert (2.335ms)
+✔ craft registration ignores stale unmounts and fallback has no current contact root (0.147208ms)
+✔ actual craft ready effect registers only mounted C15 candidates and releases the matching generation (6.019417ms)
+✔ mounted component owns just one eight-triangle mesh and cleans up without disposing the pack (9.322ms)
+✔ new component/helper pass strict semantic checking (815.6655ms)
+✔ pushable registers late deep Suspense swaps at the current fade and restores native surface flags (1.714375ms)
+✔ steady pushables do no tree search or opacity writes; effect replay releases registrations without disposing shared assets (0.340792ms)
+✔ craft effect replay defers owned-material disposal and never releases loader geometry (4.471167ms)
+✔ night lighting only writes when the clamped amount changes (0.210333ms)
+✔ actual pack keeps main surfaces double-sided and casting while strings, glass and wick stop casting (8.724083ms)
+✔ every paper/brass shell selected for FrontSide is closed, consistently wound and outward in the actual GLB (24.847542ms)
+✔ PBR copies preserve exported physical classes while borrowing loader geometry/images (0.362417ms)
+✔ articulated subtree keeps geometry local and removes the already applied wok pivot once (0.940584ms)
+✔ runtime adapter parses and legacy query bypasses candidate independent of qa flag (49.369417ms)
+✔ legacy static/glow batches reproduce frozen batch-4 inputs with no extra stove/lantern draw (83.714833ms)
+(node:45848) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ all eight facility families keep exact baseline hulls and legacy geometry (36.683ms)
+✔ candidate attributes, triangle winding and geometric normals are valid (15.996166ms)
+✔ seat datums, atlas faces, lighting codes and untouched lamp variants keep their interfaces (8.48525ms)
+✔ varying rail lengths retain their roots and baseline physics; static trimeshes use the proxy (16.343333ms)
+✔ all four roadblock steel legs meet their original rubber feet and upper hinge (0.625542ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1247.563834

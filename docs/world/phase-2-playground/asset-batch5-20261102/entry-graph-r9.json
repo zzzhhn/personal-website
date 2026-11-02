@@ -1,0 +1,44 @@
+{
+  "status": "PASS",
+  "build": "/tmp/bobby-world-batch5-r9-fourteen-01a19a62",
+  "checkedModules": 25,
+  "app": [
+    "_astro/WorldApp.kyI3W9ni.js",
+    "_astro/WorldApp.BVoCjssk.js"
+  ],
+  "runtime": [
+    "_astro/WorldRuntime.D7NGFd4R.js"
+  ],
+  "missing": [],
+  "externalOrigins": [],
+  "nonliteralImportsNotResolved": 0,
+  "limitation": "Local literal module references only; does not certify WebGL, gameplay, or non-module assets.",
+  "files": {
+    "world/index.html": "9ef367be6371d636c7bcd1f7e76db7ccd7bc7b4e0c5899cd6ce3389114daf749",
+    "_astro/WorldApp.kyI3W9ni.js": "5699f0f6cdb42fbf569098110bbd4a9006660e98d5962f7e3e3602cc3345e03f",
+    "_astro/client.BINMsa6k.js": "bd8e88b321e8e849e10322175edc3529f05ed07d1e9e3f02f9c99a5a6e1d3f88",
+    "_astro/WorldApp.BVoCjssk.js": "b6c335bc00c00dcfb633d8420e6f82faff3912831ddd426a1afa3083459099d0",
+    "_astro/jsx-runtime.u17CrQMm.js": "158671ca747dc8bd9874f7dc436ba4576af1f90ea02dba567022f0b3b81e231f",
+    "_astro/index.DP38BoPS.js": "6f9497145656a20d500d279519ad0273c3a5a9a813061a7067bbc72e5433508f",
+    "_astro/client.BogH9A_j.js": "d59721b343eecba74c7a79e0f17fa8602a0ff9893f1526697fbf8ce755fa18c9",
+    "_astro/projectStatus.Bt-t_QXW.js": "160c8019f4f23dcb9a5c7697ffe2d9341d9fe5ea5d9b3e5643f15e553e54e522",
+    "_astro/analytics.CZcLqhSq.js": "7e8308ed02c15cda4728fbae437f93e33c8cf7cf96bf4a065a29c96de4c4d842",
+    "_astro/WorldLandform.DVemwmPb.js": "250c980e00edbb8dd024addd927f7dc0ab13e1409a7527f034924d3e290d3247",
+    "_astro/coaster-track.CIyrv1uA.js": "00df1bdcdd0cee4a89b242bfbb8bb438a4301a0394420c16b0df817215cfc339",
+    "_astro/WorldLoadProgress._saYDh0-.js": "8d23b676cbc2cf190c8c31d4e7fc3249d2fea15db2499d36e5e528e416466021",
+    "_astro/WorldRuntime.D7NGFd4R.js": "961457ab7a7b006b81656879cc01b899691f6dbe935eba91d77ef1a134c8fe1f",
+    "_astro/WorldIbdHud.DDEqm0LV.js": "0e00006007fed8e1c96f8da444e4a2f3dbdc2d330b04735a28bbaa524eb4b5ef",
+    "_astro/WorldIntentHud.CArL_Pff.js": "3701d7ba49ec0f9d2d0f3698297f160e3fb85f9662669b8800ef41f0f14a9d2a",
+    "_astro/WorldUiTest.CQsJcIRt.js": "a9a0b72a1cdc4c83dbc9c1c10d3ff762af19c071974945586b889ab9af9c9269",
+    "_astro/three.module.CvbuiVxb.js": "49389ff617c4b530774d67d5e99cdfc449714cf1457e036703eaa7d2992be16b",
+    "_astro/three.core.hRBAa5ew.js": "123bdd341a4cf925fefd71d2c3011ed34f799fece3848945ad176517faee5bcf",
+    "_astro/actor-physics.C7mIiVjT.js": "b1dae54359645b913374876dbdd6a0f3ae87c6b0116900daa35721221b601017",
+    "_astro/ibd-pack-play.D6FfYSq7.js": "d34f15ba7bed400004dfa4cf89e9fb81dace10aaea1398388ec6c85aabd84447",
+    "_astro/intent-state.DLcLw13K.js": "32f25f28413be872f0782af4047c17731812d10022034626ba456904b16f88f9",
+    "_astro/WorldIbdYard.CbuGMm1Q.js": "d1af6f0ab080601c6124153120bb97f7b8371a2660489719dfd06597fdfe1b60",
+    "_astro/WorldIntentCoaster.oXtvqzw7.js": "e89c25cfc9aaf1f6f2f58ed23cbe0e667914e0df4ab50a9cb78c5812ccce789b",
+    "_astro/WorldDistricts.CaODWDsr.js": "de4bed407c55b986be49e15f470eb2a52c66912099ca45fe0f6aa1d3ca77ec12",
+    "_astro/ibd-yard-guide.DVaqZqJO.js": "2a504b854518920b033ec999adf084d75f6238c724e7f01b39dfeb8b3d9a6ced",
+    "_astro/intent-workshop-runtime.CpvxZYCw.js": "595a744e1a30895f55762778bfe2b57bcab22d7333a251037eb657856ac4ca4f"
+  }
+}

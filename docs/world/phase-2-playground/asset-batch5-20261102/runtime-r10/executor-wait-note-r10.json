@@ -1,0 +1,17 @@
+{
+  "phase": "first old-a camp",
+  "fixtureRaw": "r10-old-a-legacy-camp-sample-1.json",
+  "fixtureValid": true,
+  "executorWait": "55s timeout; regex wait did not return on already-saved JSON. Direct DOM read immediately after timeout showed successful save.",
+  "sampleRepeated": false,
+  "otherWindowsStarted": false,
+  "pagePausedAfterWindow": true,
+  "scope": "UI executor receipt detection issue; frozen QA/serve/source/package unchanged. Subsequent windows held for coordinator protocol judgment.",
+  "coordinatorDecision": "Keep independently verified valid first window; literal exact receipt detection approved; continue only remaining five in original order.",
+  "firstRawSHA256": "e626fb07f7367d3b21a4d262b8d31e6b1de71b80f475f6c1dc6af9e052107598",
+  "firstRawSavedAtUTC": "2026-11-02T15:58:35.169127+00:00",
+  "resumedSecondWindowPreparationAtUTC": "2026-11-02T16:09:54.475495+00:00",
+  "gapFromFirstSaveToSecondPreparationSeconds": 679.3063683509827,
+  "detectorFix": "Direct visible text read on every loop plus literal exact saved filename; no regex. Stable executor control object; one preparation stop-flag alias error caused no click/sample. Frozen QA/serve unchanged.",
+  "nextExpectedReceipt": "r10-old-a-legacy-street-sample-2"
+}

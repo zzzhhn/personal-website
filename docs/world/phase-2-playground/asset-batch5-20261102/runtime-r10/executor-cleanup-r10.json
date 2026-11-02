@@ -1,0 +1,13 @@
+{
+  "atUTC": "2026-11-02T16:17:44.250720+00:00",
+  "ownServerPID": 18927,
+  "verifiedCommand": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/serve.py /tmp/bobby-world-batch5-r10-fourteen-01a19a62 4359",
+  "signal": "SIGTERM",
+  "lockOwner": "batch5-r8-01a19a62",
+  "lockRemoved": true,
+  "restoredURL": "http://127.0.0.1:4341/world/?start=camp&quality=balanced&paused=1",
+  "viewportReset": true,
+  "pauseDOM": "r10-restored-4341.txt",
+  "screenshot": "r10-restored-4341.png",
+  "otherServicesStopped": false
+}

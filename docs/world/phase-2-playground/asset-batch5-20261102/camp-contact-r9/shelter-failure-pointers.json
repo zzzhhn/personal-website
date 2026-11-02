@@ -1,0 +1,21 @@
+{
+  "scope": "Original failed camera evidence is retained at canonical performance-session paths; no second execution or scene dump.",
+  "files": {
+    "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r9-behavior-candidate-shelter-snapshot-1.json": "ee7fbd7980345878104e03d3b5c012be790711758081603c88ce43ea5cdff4f4",
+    "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r9-behavior-candidate-shelter-snapshot-2.json": "ecb4dc67877ca48c92c5585d21b1f5357dfe2206da47f5d5dbafacca57f67a0a",
+    "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r9-shelter-sit-obstructed.png": "dd0cf4ff44a50879385325b524c3d00531ca44cfdf1f27bade9974f2d80c4fea",
+    "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r9-shelter-stand.png": "8ed96b1382d6d6cc6e02ec8fd5c2185954e45a8451b2a5a6bf946ecc92201fba"
+  },
+  "facts": {
+    "realESeat": true,
+    "realEStand": true,
+    "standGrounded": true,
+    "sitActualCameraDistance": 0,
+    "sitGuideHidden": true,
+    "sitNearPlaneOverlap": "street-fixed",
+    "nativeYawAfterDrag": 3.143795218001612,
+    "nativePitchAfterDrag": 0.18039816339744813
+  },
+  "performanceWindows": 0,
+  "status": "Paused before ABA as requested; coordinator investigates narrow seat anchor/hull issue; no source/QA/package edits."
+}

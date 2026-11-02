@@ -1,0 +1,23 @@
+using deprecated parameters for the initialization function; pass a single object instead
+✔ near-plane corners fit the collision sphere at wide aspect ratios and first-person FOV (0.668334ms)
+✔ cave camera stays below the roof instead of lifting onto a higher walking deck (7.484417ms)
+✔ thin walls constrain orbit, lagging pivot and first-person eye without crossing or overlap (0.372ms)
+✔ forced-close orbit hides its own helmet/body and restores drawing only after safe clearance (0.167792ms)
+✔ actual quarry route camera sweeps stay clear at near/far distance and low/high orbit angles (29.631125ms)
+ℹ 720 actual quarry camera placements
+✔ quarry walls stay opaque while ordinary view-corridor fading still works (2.853917ms)
+using deprecated parameters for the initialization function; pass a single object instead
+(node:17681) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ actual old and crafted shelter hulls reproduce zero-distance seating and allow a safe open-side orbit at eight facings (171.957542ms)
+✔ seated correction preserves clear pivots and cannot move deeper into a backrest or through a second thin wall (0.314375ms)
+✔ seated clearance respects sensor and excluded-body filters (0.145792ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 545.111459

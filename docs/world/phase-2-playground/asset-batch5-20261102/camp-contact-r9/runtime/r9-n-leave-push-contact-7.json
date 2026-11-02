@@ -1,0 +1,388 @@
+{
+ "url": "http://127.0.0.1:4359/world/?qa=1&start=camp&quality=balanced&paused=0&review=r9-contact",
+ "active": "n-leave-push",
+ "configuration": {
+  "player": [
+   -24,
+   5.8,
+   32
+  ]
+ },
+ "settings": {
+  "paused": false,
+  "shot": null,
+  "quality": "balanced",
+  "weather": "clear",
+  "light": "noon",
+  "worldMinutes": 720,
+  "timeRunning": false,
+  "seat": null,
+  "card": null
+ },
+ "snapshot": {
+  "player": [
+   -24,
+   5.658827781677246,
+   32
+  ],
+  "activeVehicle": null,
+  "canRecover": false,
+  "grounded": true,
+  "playerVelocity": [
+   3.493886470096186e-05,
+   0,
+   -3.6422861739993095e-05
+  ],
+  "playerCollider": {
+   "radius": 0.34,
+   "halfHeight": 0.48,
+   "centerHeight": 0.8200000000000001
+  },
+  "playerYaw": 2.214297435588181,
+  "physicsStep": 23532,
+  "vehicles": [
+   {
+    "id": "offroad",
+    "position": [
+     -26.00594139099121,
+     5.896547794342041,
+     34
+    ],
+    "velocity": [
+     -2.4941306797643392e-09,
+     -0.06118862330913544,
+     -1.8893838671374397e-07
+    ],
+    "yaw": -1.4636914657061767e-10,
+    "entering": false,
+    "mass": 1400,
+    "com": [
+     -0.06864000111818314,
+     -0.37525999546051025,
+     0
+    ],
+    "inertia": [
+     1946.348876953125,
+     579.1201782226562,
+     1645.604248046875
+    ],
+    "inertiaFrame": [
+     -3.37274053130443e-09,
+     -4.6737113734707236e-08,
+     -0.7180261015892029,
+     0.696016252040863
+    ],
+    "wheelContacts": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "upsideDownSeconds": 0,
+    "waterSeconds": 0,
+    "steering": 0,
+    "steerInput": 0,
+    "throttleInput": 0,
+    "driving": null
+   },
+   {
+    "id": "coupe",
+    "position": [
+     26.199382781982422,
+     2.1374423503875732,
+     2.002410411834717
+    ],
+    "velocity": [
+     7.698869097794159e-08,
+     -0.061286233365535736,
+     1.1470269178914805e-08
+    ],
+    "yaw": 1.570805955596117,
+    "entering": false,
+    "mass": 1100,
+    "com": [
+     -0.07568001002073288,
+     -0.10298000276088715,
+     0
+    ],
+    "inertia": [
+     1750.152099609375,
+     1504.3792724609375,
+     378.1474304199219
+    ],
+    "inertiaFrame": [
+     -0.49476608633995056,
+     0.5051798820495605,
+     -0.5051797032356262,
+     0.4947660267353058
+    ],
+    "wheelContacts": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "upsideDownSeconds": 0,
+    "waterSeconds": 0,
+    "steering": 0,
+    "steerInput": 0,
+    "throttleInput": 0,
+    "driving": {
+     "power": 0,
+     "steering": 0,
+     "rearGrip": 1,
+     "nitro": 1,
+     "boostLock": false,
+     "rechargeDelay": 0,
+     "boosting": false,
+     "handbrake": false,
+     "braking": false,
+     "slipAngle": -3.615038202117603e-05,
+     "speed": -0.0001432157124516542,
+     "lateralSpeed": -7.230076407384748e-05,
+     "contacts": 4,
+     "engine": 0,
+     "suspension": [
+      0.36793622374534607,
+      0.3677878677845001,
+      0.3611036241054535,
+      0.3609550893306732
+     ]
+    }
+   },
+   {
+    "id": "van",
+    "position": [
+     45.992454528808594,
+     2.464979648590088,
+     -45
+    ],
+    "velocity": [
+     4.406597398087797e-08,
+     -0.061189789324998856,
+     -3.416331408055416e-22
+    ],
+    "yaw": -4.0301506532856916e-12,
+    "entering": false,
+    "mass": 2100,
+    "com": [
+     -0.07919997721910477,
+     -0.3244398534297943,
+     0
+    ],
+    "inertia": [
+     3808.346435546875,
+     3423.21826171875,
+     1211.8272705078125
+    ],
+    "inertiaFrame": [
+     -0.5098779201507568,
+     -0.4899229407310486,
+     0.4899231493473053,
+     0.5098777413368225
+    ],
+    "wheelContacts": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "upsideDownSeconds": 0,
+    "waterSeconds": 0,
+    "steering": 0,
+    "steerInput": 0,
+    "throttleInput": 0,
+    "driving": null
+   }
+  ]
+ },
+ "camera": {
+  "yaw": 0.9272952180016123,
+  "pitch": 0.7853981633974483,
+  "distance": 12,
+  "desiredDistance": 12,
+  "driveManualZoom": false,
+  "actualDistance": 12,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": false,
+  "hitDistance": null,
+  "fov": 50,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   -18.908831175456857,
+   14.794109155915816,
+   38.78822509939086
+  ],
+  "target": [
+   -24,
+   6.3088277816772464,
+   32
+  ],
+  "forwardGround": [
+   -0.6,
+   -0.7999999999999999
+  ],
+  "groundBelowCamera": 4.839996337890625,
+  "clearanceAboveGround": 9.954112818025191,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "renderInfo": {
+  "drawingBuffer": [
+   1710,
+   931
+  ],
+  "cssSize": [
+   1710,
+   931
+  ],
+  "pixelRatio": 1,
+  "dprRange": [
+   0,
+   1.5
+  ],
+  "quality": "balanced",
+  "antialias": true,
+  "msaaSamples": 4,
+  "toneMapping": 4,
+  "outputColorSpace": "srgb",
+  "shadowMapSize": 1254,
+  "shadowType": 1,
+  "postprocessing": [],
+  "coasterVegetation": [
+   {
+    "name": "coaster-ST1-L0",
+    "visible": false,
+    "instances": 0,
+    "triangles": 0,
+    "matrixUploads": 0
+   },
+   {
+    "name": "coaster-ST1-L1",
+    "visible": false,
+    "instances": 0,
+    "triangles": 0,
+    "matrixUploads": 0
+   },
+   {
+    "name": "coaster-ST2-L0",
+    "visible": false,
+    "instances": 0,
+    "triangles": 0,
+    "matrixUploads": 0
+   },
+   {
+    "name": "coaster-ST2-L1",
+    "visible": false,
+    "instances": 0,
+    "triangles": 0,
+    "matrixUploads": 0
+   },
+   {
+    "name": "coaster-G19",
+    "visible": false,
+    "instances": 0,
+    "triangles": 0,
+    "matrixUploads": 0
+   }
+  ]
+ },
+ "stats": {
+  "calls": 192,
+  "triangles": 678430,
+  "geometries": 366,
+  "textures": 109,
+  "programs": 229,
+  "camera": [
+   -18.908831175456857,
+   14.794109155915816,
+   38.78822509939086
+  ]
+ },
+ "loop": {
+  "mode": "always",
+  "frame": 16211,
+  "delta": 0.016700000047683714,
+  "night": 0,
+  "windTime": 381.2641999996787,
+  "frameMs": null
+ },
+ "contact": {
+  "body": {
+   "id": "C15",
+   "home": [
+    -27,
+    4.9,
+    30
+   ],
+   "position": [
+    -26.999984741210938,
+    4.898956298828125,
+    29.999935150146484
+   ],
+   "sleeping": true,
+   "displacedFor": null
+  },
+  "colliderRotation": [
+   -1.3372135072131641e-05,
+   1,
+   -2.396013223915361e-05,
+   3.6939431993232574e-06
+  ],
+  "wheelBottom": [
+   -27.09594626903114,
+   4.898523080795613,
+   29.793934461334043
+  ],
+  "floorHits": [
+   {
+    "point": [
+     -27.09594626903114,
+     4.899999771267176,
+     29.793934461334043
+    ],
+    "distance": 0.24852330952843715,
+    "name": "camp-C02-flagstones",
+    "instanceId": 3
+   },
+   {
+    "point": [
+     -27.09594626903114,
+     4.870000038295984,
+     29.793934461334043
+    ],
+    "distance": 0.27852304249962856,
+    "name": "camp-C02-flagstones",
+    "instanceId": 0
+   },
+   {
+    "point": [
+     -27.09594626903114,
+     4.840000152587891,
+     29.793934461334043
+    ],
+    "distance": 0.3085229282077222,
+    "name": "paving-v4-chunk-3",
+    "instanceId": null
+   },
+   {
+    "point": [
+     -27.09594626903114,
+     4.800000190734863,
+     29.793934461334043
+    ],
+    "distance": 0.34852289006074955,
+    "name": "island-terrain-v4-chunk-3",
+    "instanceId": null
+   }
+  ],
+  "gapToNearestFloor": -0.001476690471562847,
+  "method": "Actual GLB lower-wheel vertices transformed by live rigid collider quaternion and body position; raycast visible untagged paving/terrain under lowest point."
+ },
+ "feedback": []
+}
