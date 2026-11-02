@@ -20,9 +20,15 @@ The isolated ground-shoulder daylight direction is now accepted in two actual we
 
 R6 was rejected because an old generated HTML page referenced a missing entry module. R7 was rebuilt from a public-resource-only overlay, and the coordinator's reusable entry-graph check verifies 25 reachable modules with no missing imports. Final revised packages must pass the same check. Receipt hash agreement alone is insufficient.
 
+R8 passed the final entry/source identity check (60 files, 10 source files), but its three C15 web views were not accepted: the contact remained visually too weak. A bounded read-only GPU observation confirms the helper is actually rendered as one draw/eight triangles, all sixteen strengths are one, the program and both shaders compile, and the model transform is correct. All four wheel/support gaps are approximately -1.46 mm. This rules out missing rendering and geometric suspension for the observed defect. The existing patch ends before 1 cm outside the tire, with most of its darker area hidden by the wheel. The next correction extends the footprint 30 mm beyond each actual tire half-width, retains peak opacity 0.32, and uses radial^1.5 falloff. Raw diagnosis remains in the execution tree's `camp-contact-r8/runtime/r8-helper-diagnostic-1.json`; no performance sample has been taken.
+
+Source review also reproduced an independent optional-shading limitation: if the paving is absent when C15 first registers, the helper stays hidden until another registration. That did not occur in R8. This round does not introduce persistent scene polling to work around it.
+
+The bounded rim correction is committed as `db69721`; the coordinator reviewed its two production-line changes and ran all affected camp/contact/street tests: 28 passed. Actual four-wheel radii are approximately 58.53 by 44.00 mm. It adds no draw, texture, light or shadow pass. The execution session is preparing R9 for the final three web views; visual and performance acceptance remain open.
+
 ## Pending before preview promotion
 
-- R8 C15 contact shading in day/night/low views and a bounded physical check that moving, tipping, lifting and resetting leave no stale patches. C13 and R7's geometric displacement/reset checks are already complete.
+- R9 C15 contact shading in day/night/low views and a bounded physical check that moving, tipping, lifting and resetting leave no stale patches. C13 and R7's geometric displacement/reset checks are already complete.
 - Final source/asset identity, normal browser behavior, and an unobstructed shelter sitting/standing observation.
 - One bounded camp/street old-new-old performance sequence on the final frozen package, independently interpreted by the performance session. Stop on invalid samples rather than selecting favorable windows.
 - Preserve the shared integration tree's existing roadblock/roof coplanar-surface fixes and its unrelated terrain changes.
