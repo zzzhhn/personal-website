@@ -1,0 +1,36 @@
+21:07:25 [content] Syncing content
+21:07:25 [content] Synced content
+21:07:25 [types] Generated 317ms
+21:07:25 [build] output: "static"
+21:07:25 [build] mode: "static"
+21:07:25 [build] directory: /tmp/bobby-world-batch5-r7-fourteen-01a19a62/
+21:07:25 [build] Collecting build info...
+21:07:25 [build] ✓ Completed in 335ms.
+21:07:25 [build] Building static entrypoints...
+21:07:35 [vite] ✓ built in 9.75s
+21:07:39 [WARN] [vite] [plugin vite:reporter]
+(!) /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/src/components/world/layout-v4.ts is dynamically imported by /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/src/components/world/WorldMap.tsx but also statically imported by /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/src/components/world/WorldDistricts.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/src/components/world/WorldLandform.ts, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/src/components/world/WorldStreetBillboards.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/src/components/world/WorldStreetConstructionSigns.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/src/components/world/WorldStreetFixed.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/src/components/world/WorldStreetKnock.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/src/components/world/WorldStreetLandmarks.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/src/components/world/WorldStreetRails.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/src/components/world/WorldStreetTrees.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/src/components/world/WorldStreetYears.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/src/components/world/WorldTerrain.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/src/components/world/WorldTerrainPaving.ts, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/src/components/world/WorldTownAssets.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/src/components/world/layout.ts, dynamic import will not move module into another chunk.
+
+21:07:40 [WARN] [vite]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+21:07:40 [vite] ✓ built in 4.86s
+21:07:40 [build] Rearranging server assets...
+
+ generating static routes
+21:07:40   ├─ /projects/alpha-agent/index.html (+28ms)
+21:07:40   ├─ /projects/djc/index.html (+12ms)
+21:07:40   ├─ /projects/evalforge/index.html (+7ms)
+21:07:40   ├─ /projects/hepai/index.html (+2ms)
+21:07:40   ├─ /projects/interactive-learning-platforms/index.html (+3ms)
+21:07:40   ├─ /projects/kindred/index.html (+2ms)
+21:07:40   ├─ /world/index.html (+7ms)
+21:07:40   ├─ /index.html (+129ms)
+21:07:40 ✓ Completed in 238ms.
+
+21:07:40 [build] ✓ Completed in 14.89s.
+21:07:40 [@astrojs/sitemap] `sitemap-index.xml` created at `../../../../../../tmp/bobby-world-batch5-r7-fourteen-01a19a62`
+21:07:40 [build] 8 page(s) built in 15.23s
+21:07:40 [build] Complete!

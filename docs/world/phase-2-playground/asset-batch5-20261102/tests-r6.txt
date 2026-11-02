@@ -1,0 +1,26 @@
+✔ pushable registers late deep Suspense swaps at the current fade and restores native surface flags (1.824167ms)
+✔ steady pushables do no tree search or opacity writes; effect replay releases registrations without disposing shared assets (0.265292ms)
+✔ craft effect replay defers owned-material disposal and never releases loader geometry (5.113833ms)
+✔ night lighting only writes when the clamped amount changes (1.4745ms)
+✔ actual pack keeps main surfaces double-sided and casting while strings, glass and wick stop casting (17.941833ms)
+✔ every paper/brass shell selected for FrontSide is closed, consistently wound and outward in the actual GLB (31.766417ms)
+✔ PBR copies preserve exported physical classes while borrowing loader geometry/images (0.408791ms)
+✔ articulated subtree keeps geometry local and removes the already applied wok pivot once (1.025417ms)
+✔ runtime adapter parses and legacy query bypasses candidate independent of qa flag (68.978083ms)
+✔ legacy static/glow batches reproduce frozen batch-4 inputs with no extra stove/lantern draw (77.99825ms)
+(node:23741) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ all eight facility families keep exact baseline hulls and legacy geometry (36.33525ms)
+✔ candidate attributes, triangle winding and geometric normals are valid (15.385417ms)
+✔ seat datums, atlas faces, lighting codes and untouched lamp variants keep their interfaces (8.673833ms)
+✔ varying rail lengths retain their roots and baseline physics; static trimeshes use the proxy (17.66325ms)
+✔ all four roadblock steel legs meet their original rubber feet and upper hinge (0.635833ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 732.040166

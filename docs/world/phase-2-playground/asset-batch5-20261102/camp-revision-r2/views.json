@@ -1,0 +1,69 @@
+{
+  "v-c13": {
+    "player": [
+      -43.13061748157483,
+      6.52,
+      19.488764980009865
+    ],
+    "position": [
+      -41.8,
+      5.55,
+      16.8
+    ],
+    "target": [
+      -41.075,
+      5.02,
+      15.335
+    ],
+    "cameraRevision": "r4-inspected-construction-and-clearance"
+  },
+  "v-c15": {
+    "player": [
+      -30.67776980709589,
+      6.83,
+      26.847625879632094
+    ],
+    "position": [
+      -28.4,
+      5.7,
+      28.8
+    ],
+    "target": [
+      -27,
+      5.33,
+      30
+    ],
+    "cameraRevision": "r4-inspected-construction-and-clearance"
+  },
+  "v-c15-low": {
+    "player": [
+      -30.5,
+      6,
+      27
+    ],
+    "position": [
+      -28.35,
+      5.03,
+      28.65
+    ],
+    "target": [
+      -27,
+      4.96,
+      30
+    ]
+  },
+  "n-c15-push": {
+    "player": [
+      -26.52,
+      5.8,
+      30.64
+    ]
+  },
+  "n-leave-push": {
+    "player": [
+      -24,
+      5.8,
+      32
+    ]
+  }
+}

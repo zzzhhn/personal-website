@@ -1,0 +1,3 @@
+import config from './astro.config.mjs';
+// Task-only overlay: frozen R5 baseline plus current candidate assets.
+export default { ...config, publicDir: '/tmp/bobby-world-batch5-public-r6-01a19a62' };

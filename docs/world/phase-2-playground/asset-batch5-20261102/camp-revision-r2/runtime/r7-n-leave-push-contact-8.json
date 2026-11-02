@@ -1,0 +1,419 @@
+{
+ "url": "http://127.0.0.1:4359/world/?qa=1&start=camp&quality=balanced&paused=0&review=r7-corrections",
+ "active": "n-leave-push",
+ "configuration": {
+  "player": [
+   -24,
+   5.8,
+   32
+  ]
+ },
+ "settings": {
+  "lang": "en",
+  "light": "noon",
+  "worldMinutes": 720,
+  "timeRevision": 53,
+  "timeRunning": false,
+  "weather": "clear",
+  "paused": false,
+  "poolInspect": false,
+  "campReturnRequest": 0,
+  "activeVehicle": null,
+  "nearbyVehicle": "offroad",
+  "nearbyInteract": null,
+  "card": null,
+  "seat": null,
+  "toast": null,
+  "clubMode": null,
+  "danceStep": 0,
+  "canVault": false,
+  "canRecover": false,
+  "recoverRequest": 0,
+  "speed": 0,
+  "zone": "camp",
+  "position": [
+   -24,
+   5.658827781677246,
+   32
+  ],
+  "ready": true,
+  "zoom": 1,
+  "quality": "balanced",
+  "shot": null,
+  "waypoint": null,
+  "interactPick": null,
+  "loading": {
+   "phase": "ready",
+   "loaded": 227,
+   "total": 227,
+   "active": false,
+   "failed": 0
+  }
+ },
+ "snapshot": {
+  "player": [
+   -24,
+   5.658827781677246,
+   32
+  ],
+  "activeVehicle": null,
+  "canRecover": false,
+  "grounded": true,
+  "playerVelocity": [
+   3.493886470096186e-05,
+   0,
+   -3.6422861739993095e-05
+  ],
+  "playerCollider": {
+   "radius": 0.34,
+   "halfHeight": 0.48,
+   "centerHeight": 0.8200000000000001
+  },
+  "playerYaw": 2.214297435588181,
+  "physicsStep": 3890,
+  "vehicles": [
+   {
+    "id": "offroad",
+    "position": [
+     -26.00594139099121,
+     5.896547794342041,
+     34
+    ],
+    "velocity": [
+     -5.427998051033001e-09,
+     -0.061188675463199615,
+     7.611672714347151e-08
+    ],
+    "yaw": -1.0295114897154258e-10,
+    "entering": false,
+    "mass": 1400,
+    "com": [
+     -0.06864000111818314,
+     -0.37525999546051025,
+     0
+    ],
+    "inertia": [
+     1946.348876953125,
+     579.1201782226562,
+     1645.604248046875
+    ],
+    "inertiaFrame": [
+     -3.37274053130443e-09,
+     -4.6737113734707236e-08,
+     -0.7180261015892029,
+     0.696016252040863
+    ],
+    "wheelContacts": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "upsideDownSeconds": 0,
+    "waterSeconds": 0,
+    "steering": 0,
+    "steerInput": 0,
+    "throttleInput": 0,
+    "driving": null
+   },
+   {
+    "id": "coupe",
+    "position": [
+     26.199382781982422,
+     2.1374423503875732,
+     2.002410411834717
+    ],
+    "velocity": [
+     -1.284501252030168e-07,
+     -0.061286501586437225,
+     7.499631138330187e-09
+    ],
+    "yaw": 1.5708059555938023,
+    "entering": false,
+    "mass": 1100,
+    "com": [
+     -0.07568001002073288,
+     -0.10298000276088715,
+     0
+    ],
+    "inertia": [
+     1750.152099609375,
+     1504.3792724609375,
+     378.1474304199219
+    ],
+    "inertiaFrame": [
+     -0.49476608633995056,
+     0.5051798820495605,
+     -0.5051797032356262,
+     0.4947660267353058
+    ],
+    "wheelContacts": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "upsideDownSeconds": 0,
+    "waterSeconds": 0,
+    "steering": 0,
+    "steerInput": 0,
+    "throttleInput": 0,
+    "driving": {
+     "power": 0,
+     "steering": 0,
+     "rearGrip": 1,
+     "nitro": 1,
+     "boostLock": false,
+     "rechargeDelay": 0,
+     "boosting": false,
+     "handbrake": false,
+     "braking": false,
+     "slipAngle": -3.614883354062186e-05,
+     "speed": -0.00014322219268362945,
+     "lateralSpeed": -7.229766711273509e-05,
+     "contacts": 4,
+     "engine": 0,
+     "suspension": [
+      0.36793622374534607,
+      0.3677878677845001,
+      0.3611036241054535,
+      0.3609550893306732
+     ]
+    }
+   },
+   {
+    "id": "van",
+    "position": [
+     45.992454528808594,
+     2.464979648590088,
+     -45
+    ],
+    "velocity": [
+     4.406597398087797e-08,
+     -0.061189789324998856,
+     -3.4163316604909055e-22
+    ],
+    "yaw": -4.0301506532856916e-12,
+    "entering": false,
+    "mass": 2100,
+    "com": [
+     -0.07919997721910477,
+     -0.3244398534297943,
+     0
+    ],
+    "inertia": [
+     3808.346435546875,
+     3423.21826171875,
+     1211.8272705078125
+    ],
+    "inertiaFrame": [
+     -0.5098779201507568,
+     -0.4899229407310486,
+     0.4899231493473053,
+     0.5098777413368225
+    ],
+    "wheelContacts": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "upsideDownSeconds": 0,
+    "waterSeconds": 0,
+    "steering": 0,
+    "steerInput": 0,
+    "throttleInput": 0,
+    "driving": null
+   }
+  ]
+ },
+ "camera": {
+  "yaw": 0.9272952180016123,
+  "pitch": 0.7853981633974483,
+  "distance": 12,
+  "desiredDistance": 12,
+  "driveManualZoom": false,
+  "actualDistance": 11.999999999999998,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": false,
+  "hitDistance": null,
+  "fov": 50,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   -18.90883117545686,
+   14.794109155915823,
+   38.78822509939086
+  ],
+  "target": [
+   -24,
+   6.308827781677254,
+   32
+  ],
+  "forwardGround": [
+   -0.6,
+   -0.8000000000000002
+  ],
+  "groundBelowCamera": 4.839996337890625,
+  "clearanceAboveGround": 9.954112818025198,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "renderInfo": {
+  "drawingBuffer": [
+   1710,
+   931
+  ],
+  "cssSize": [
+   1710,
+   931
+  ],
+  "pixelRatio": 1,
+  "dprRange": [
+   0,
+   1.5
+  ],
+  "quality": "balanced",
+  "antialias": true,
+  "msaaSamples": 4,
+  "toneMapping": 4,
+  "outputColorSpace": "srgb",
+  "shadowMapSize": 1254,
+  "shadowType": 1,
+  "postprocessing": [],
+  "coasterVegetation": [
+   {
+    "name": "coaster-ST1-L0",
+    "visible": false,
+    "instances": 0,
+    "triangles": 0,
+    "matrixUploads": 0
+   },
+   {
+    "name": "coaster-ST1-L1",
+    "visible": false,
+    "instances": 0,
+    "triangles": 0,
+    "matrixUploads": 0
+   },
+   {
+    "name": "coaster-ST2-L0",
+    "visible": false,
+    "instances": 0,
+    "triangles": 0,
+    "matrixUploads": 0
+   },
+   {
+    "name": "coaster-ST2-L1",
+    "visible": false,
+    "instances": 0,
+    "triangles": 0,
+    "matrixUploads": 0
+   },
+   {
+    "name": "coaster-G19",
+    "visible": false,
+    "instances": 0,
+    "triangles": 0,
+    "matrixUploads": 0
+   }
+  ]
+ },
+ "stats": {
+  "calls": 268,
+  "triangles": 1011311,
+  "geometries": 398,
+  "textures": 103,
+  "programs": 246,
+  "camera": [
+   -18.90883117545686,
+   14.794109155915823,
+   38.78822509939086
+  ]
+ },
+ "loop": {
+  "mode": "always",
+  "frame": 2211,
+  "delta": 0.017,
+  "night": 0,
+  "windTime": 54.773699999810155,
+  "frameMs": null
+ },
+ "contact": {
+  "body": {
+   "id": "C15",
+   "home": [
+    -27,
+    4.9,
+    30
+   ],
+   "position": [
+    -27.64059066772461,
+    5.042962074279785,
+    29.599414825439453
+   ],
+   "sleeping": true,
+   "displacedFor": 3.62
+  },
+  "colliderRotation": [
+   -0.6467341780662537,
+   0.6465194225311279,
+   -0.28613901138305664,
+   0.28613293170928955
+  ],
+  "wheelBottom": [
+   -27.773027715175687,
+   4.935568157257103,
+   29.7153574619364
+  ],
+  "floorHits": [
+   {
+    "point": [
+     -27.773027715175687,
+     4.899999771267176,
+     29.715357461936403
+    ],
+    "distance": 0.2855683859899276,
+    "name": "camp-C02-flagstones",
+    "instanceId": 1
+   },
+   {
+    "point": [
+     -27.773027715175687,
+     4.870000038295984,
+     29.7153574619364
+    ],
+    "distance": 0.315568118961119,
+    "name": "camp-C02-flagstones",
+    "instanceId": 0
+   },
+   {
+    "point": [
+     -27.773027715175687,
+     4.840000152587891,
+     29.7153574619364
+    ],
+    "distance": 0.34556800466921267,
+    "name": "paving-v4-chunk-3",
+    "instanceId": null
+   },
+   {
+    "point": [
+     -27.773027715175687,
+     4.800000190734863,
+     29.7153574619364
+    ],
+    "distance": 0.38556796652224,
+    "name": "island-terrain-v4-chunk-3",
+    "instanceId": null
+   }
+  ],
+  "gapToNearestFloor": 0.03556838598992762,
+  "method": "Actual GLB lower-wheel vertices transformed by live rigid collider quaternion and body position; raycast visible untagged paving/terrain under lowest point."
+ },
+ "feedback": []
+}

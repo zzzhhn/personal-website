@@ -1,0 +1,9 @@
+{
+  "build": "/tmp/bobby-world-batch5-r7-fourteen-01a19a62",
+  "files": {
+    "qa.js": "e5df3d2c10b5d1b4dc036e6cf6888540a352bcc76c25ed0483a160185c47a0f0",
+    "serve.py": "0d5487ab14128b11ac1f6be404c3db8bd61f018eca9f535f5f1e04a303fabeb5",
+    "views.json": "9fb0c98f8012a9f195136e18ec2f8ecbc295e48a33466444b0881a34a60e85d5",
+    "wheel-points.json": "2508f65a819ffc3902ec8986c10e1e6e5c553976b8ffac0aa58428c1962e06fc"
+  }
+}
