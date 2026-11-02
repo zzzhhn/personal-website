@@ -1,0 +1,52 @@
+{
+  "at": "2026-11-03T01:20:51.292599+08:00",
+  "status": "SOURCE_ONLY_RECOMMENDATIONS_NO_RUNTIME_OR_ART_ACCEPTANCE",
+  "head": "d10d90246f0d56b47a056fbf2ad51b04bf5a9279",
+  "branch": "codex/world-craft-batch6-coordination",
+  "qualityContract": "docs/world/phase-2-playground/asset-batch6-20261103/QUALITY-AND-BATCH.md",
+  "files": {
+    "src/components/world/WorldStreetMaterial.ts": "fff5b62561a401040ed706421c538909dd9a1ded3567cbcf62d1f1da1e873a27",
+    "src/components/world/WorldStreetGeometry.ts": "b240724f8ef8784d716d44372078733fdf5750bffe7b71728ed7f205234a6134",
+    "src/components/world/WorldStreetBatch.ts": "1da205cba2f926ea08752806a960b8389efefaf3edc4094b06d3e2be32f90e3a",
+    "src/components/world/WorldStreetStatic.tsx": "762b023154bb25bcc2b03b61dd4482983a78e929dffb9a3426fb7d69529fd807",
+    "src/components/world/WorldParkKit.ts": "55a6d413838057244b1dfe64896804f10aa9c7db9a5f5c9b3753af6287ca7e11",
+    "src/components/world/WorldParkLOD.tsx": "b2d71cd705a1577a10ab8d7e508ea1c5a4beaad0b2687f05541159b831e4ee9f",
+    "src/components/world/WorldParkWalk.tsx": "5cd4a277558b82fff6e7b8390b5abd4224e3fa691b4c271fa088a7bff575a983",
+    "src/components/world/WorldParkExhibits.tsx": "3ebef40c880aa50ba72851a9062fdec13380b718aad01dc13766013d6afff8d2",
+    "src/components/world/WorldCraftMaterials.ts": "55d4980defc85adb8bc7f44acefb5fa5560e1f85edc2c7b5e471723095fff23c",
+    "src/components/world/WorldDjcFurnitureEnvironment.ts": "d3e5dc1c367400f79df93df6071b054a1afb42887a716e958b2c1be7ca3e4ac9",
+    "src/components/world/WorldCampFacilityCraft.tsx": "fdb70ce3d27e9c66e29f12a02c6442153f07e9497051040c8656c76cc033a72e",
+    "src/components/world/WorldCampPushableVisual.ts": "0e25f3be20f24507cff0e2ad4c385a6574f78bfd394682beafa9126d4b374994",
+    "src/components/world/camp-craft-visual.ts": "4afaf50aa97e79a85211e9c15d6542ab9365fcb9b30c41124723fb83cc36d8cd",
+    "src/components/world/djc-furniture-visual.ts": "1c29889132bec11d24ddae4724294dd92a6b4ac5ef0ebfd723ae87e5cb82360b",
+    "src/components/world/WorldNatureMotion.tsx": "3cbc2206d5069562b4f6546b50e57409f899519305d9f3885801124613ba06be",
+    "src/components/world/WorldWind.ts": "e00127b9487bf7c5b87955349b5335cd9612cc50e68f78728368062e4341e7a0",
+    "src/components/world/WorldNight.ts": "973d9ac3451d2ea3654035d7a0a9341d0fdbd3df493e5a9f8a55b464f20b5c38",
+    "src/components/world/WorldRuntime.tsx": "427d4bb9cd878937c9566659ddea6732b4255e7b240f3c40630db8733a2f7c2a",
+    "src/components/world/performance-render-policy.ts": "0c88c152ab602355b13ccbed6d50c1d436f7cbd875156583cb110acf67ec9983",
+    "src/components/world/WorldShadows.ts": "83a87817ea68031ac5b6c06c1b44c814a98c67603a4ccd29274bb867764aecb0"
+  },
+  "installedThree": {
+    "version": "0.186.1",
+    "MaterialSourceSHA256": "79a2574f1ee57fec5f73acccb2fb0053c134a663446074930b8989193fb40377",
+    "WebGLTexturesSourceSHA256": "a1947fd09ac98b3a57e40018dc8eccfce9c40f2cf4b6200b3180a00af5406451"
+  },
+  "lightweightProbe": {
+    "rendererCreated": false,
+    "materialClonePreservesOnBeforeCompile": false,
+    "materialClonePreservesCustomProgramCacheKey": false,
+    "scope": "One MeshStandardMaterial constructed/cloned/disposed in Node using current installed Three; no WebGL."
+  },
+  "productionEdits": false,
+  "browserOpened": false,
+  "serviceStarted": false,
+  "heavyLockTaken": false,
+  "buildRun": false,
+  "R10Resampled": false,
+  "communication": {
+    "parkStreet": "01a17194-2fce-7a21-978a-e441e9e39765",
+    "natureCamp": "01a19a62-2107-73a3-b811-07f3c66a5a24",
+    "coordinator": "01a121e9-58d6-7aa2-80e2-10005566c39c"
+  },
+  "report": "SHARED-MATERIAL-PLAN.md"
+}

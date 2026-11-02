@@ -37,4 +37,8 @@
 
 已按 `skill-creator` 对本机 `blender-material-craft` 做窄幅修订：增加普通视角的提升验收、实际运行消费链追踪、遗留材质限制的识别，以及用户反馈与旧技术验收的区分。参考段落为 `references/review-and-runtime.md#visible-impact-and-runtime-authorship`，结构校验通过。本批四个首样是后续实际使用检验；尚不宣称修改已提高Sol产出质量。
 
+本次进一步补齐 `Runtime material-path check`：实际加载源、合批属性、多材质、克隆后的着色钩子、最终shader及LOD/夜景等变体需要有对应证据。`orchestration-harness` 增加视觉批次的两项独立判断：正确性、改善幅度。首样交接采用该skill中的简短记录，不另建重复规范。独立 GPT 6.1 Sol / high 在未见本批诊断文档的情况下重现了关键链路问题；这是源码诊断试用通过，不是美术结果通过，详见 [HARNESS-REVIEW.md](HARNESS-REVIEW.md)。
+
+共享实现边界已通知两制作线：园区/街道的材质适配及新增共享pack模块归设施会话；自然/营地保留各自现有适配所有权。真正跨两线的全局缓存/光照API由主协调确定集成，避免两方同时修改。性能报告见 [SHARED-MATERIAL-PLAN.md](performance/SHARED-MATERIAL-PLAN.md)。
+
 资产总账见 `INVENTORY.md` 和 `inventory.json`；136族是暂定拆分口径，未完成部分约120族，不承诺用一批16族解决整个世界。
