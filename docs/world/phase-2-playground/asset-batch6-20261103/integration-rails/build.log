@@ -1,0 +1,41 @@
+
+> personal-website@0.0.1 prebuild
+> node tools/world/check-club-audio.mjs
+
+Club furniture: 4 GLBs and 16 external image references present.
+World craft: 5 production GLBs present; umbrella 4 batches, crate 11 batches, furniture 10 batches, camp 12 batches, ibdStatic 118 batches.
+Club audio: 2 runtime assets present in public.
+
+> personal-website@0.0.1 build
+> astro build --outDir /tmp/bobby-world-batch6-rails-root
+
+06:13:19 [content] Syncing content
+06:13:19 [content] Synced content
+06:13:19 [types] Generated 305ms
+06:13:19 [build] output: "static"
+06:13:19 [build] mode: "static"
+06:13:19 [build] directory: /tmp/bobby-world-batch6-rails-root/
+06:13:19 [build] Collecting build info...
+06:13:19 [build] ✓ Completed in 315ms.
+06:13:19 [build] Building static entrypoints...
+06:13:29 [vite] ✓ built in 10.09s
+06:13:33 [WARN] [vite] [plugin vite:reporter] 
+(!) /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/src/components/world/layout-v4.ts is dynamically imported by /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/src/components/world/WorldMap.tsx but also statically imported by /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/src/components/world/WorldDistricts.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/src/components/world/WorldFacilityCraftQA.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/src/components/world/WorldLandform.ts, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/src/components/world/WorldStreetBillboards.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/src/components/world/WorldStreetConstructionSigns.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/src/components/world/WorldStreetFixed.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/src/components/world/WorldStreetKnock.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/src/components/world/WorldStreetLandmarks.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/src/components/world/WorldStreetRails.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/src/components/world/WorldStreetTrees.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/src/components/world/WorldStreetYears.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/src/components/world/WorldTerrain.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/src/components/world/WorldTerrainPaving.ts, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/src/components/world/WorldTownAssets.tsx, /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/src/components/world/layout.ts, dynamic import will not move module into another chunk.
+
+06:13:33 [WARN] [vite] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+06:13:33 [vite] ✓ built in 4.37s
+06:13:33 [build] Rearranging server assets...
+
+ generating static routes 
+06:13:33   ├─ /world/index.html (+33ms) 
+06:13:33   ├─ /index.html (+126ms) 
+06:13:34 ✓ Completed in 218ms.
+
+06:13:34 [build] ✓ Completed in 14.70s.
+06:13:34 [@astrojs/sitemap] `sitemap-index.xml` created at `../../../../../../tmp/bobby-world-batch6-rails-root`
+06:13:34 [build] 2 page(s) built in 15.02s
+06:13:34 [build] Complete!
