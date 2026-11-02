@@ -1,0 +1,26 @@
+{
+  "source": "df45dea5042e2ce510be7e0cae40b86273aa78cc",
+  "frozenGeometry": {
+    "mode": "--check",
+    "id": "G21",
+    "triangles": 5962,
+    "orientedPositionNormalUVHash": "5f23f6936eddfd99734620a70988ba17818f54d45bf15a055cf2f010285e28ba",
+    "nodeTransformHash": "45534b04a40de97f454b7fa1bfc9f50cddd6c8df043ef656dc259af791aa15af",
+    "GLBSHA": "a31ae02a6af323c54d5af7e9645927fcac41df3b23caef77c4a10ee8f3c5fc5f"
+  },
+  "nativeAndRuntimeHashChecks": [
+    {
+      "path": "tools/world/nature-camp-craft/blend/G21.blend",
+      "sha256": "3e9f0f40c77a6e1721f7be4941d70ff1921e618346696a481435efeec0153849"
+    },
+    {
+      "path": "public/assets/world/nature-camp-craft/G21.glb",
+      "sha256": "a31ae02a6af323c54d5af7e9645927fcac41df3b23caef77c4a10ee8f3c5fc5f"
+    },
+    {
+      "path": "public/assets/world/nature-camp-craft/textures/6f361f0d505ca603a6f05e5a.png",
+      "sha256": "6f361f0d505ca603a6f05e5a40ebd336b7be77b8a74ca5c668742e213624dbec"
+    }
+  ],
+  "nightRuntimePending": true
+}
