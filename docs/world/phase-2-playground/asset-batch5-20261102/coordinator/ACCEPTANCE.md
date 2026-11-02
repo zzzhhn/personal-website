@@ -32,6 +32,10 @@ R9's real C15 sequence used native W input: the body moved about 0.448 m, tipped
 
 ## Pending before preview promotion
 
+R9 shelter validation exposed a pre-existing seated-camera defect before any performance sampling: native E seating and standing worked, but the seated camera's actual distance stayed at zero even toward the open -X side. The seat's valid buttock datum is local X=0.4. The rear convex hull begins at X=0.61, so the 0.22 m camera sphere at the buttock XZ starts 1 cm inside it. The exported `SHELTER_SEAT_LOCAL` X=-0.05 is stale and unused; using it would move the actual posterior support outside the bench and is not the fix.
+
+Commit `de7e8f4` preserves the seat and colliders. Only an initially overlapping seated camera origin may move 15 cm toward the seated facing, using a full-sphere cast that permits an exit from starting penetration and a complete endpoint-clearance check. Any hit or remaining overlap keeps the original constrained origin. The desired target uses the same safe XZ. Six targeted tests passed, including actual old/crafted shelter hulls at eight orientations, thin-wall rejection and existing camera envelopes. An independent explorer reviewed the implementation with no blocking finding. R10 must verify native visible sitting/standing; its source identity includes the previous ten files plus `WorldActors.tsx` and `camera-collision.ts`. R9's accepted assets and C15 views are unchanged and need no repeat. No performance window has yet been collected.
+
 - Final source/asset identity, normal browser behavior, and an unobstructed shelter sitting/standing observation.
 - One bounded camp/street old-new-old performance sequence on the final frozen package, independently interpreted by the performance session. Stop on invalid samples rather than selecting favorable windows.
 - Preserve the shared integration tree's existing roadblock/roof coplanar-surface fixes and its unrelated terrain changes.
