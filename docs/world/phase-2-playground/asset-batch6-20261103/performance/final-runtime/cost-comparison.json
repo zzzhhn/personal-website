@@ -1,0 +1,150 @@
+{
+  "shelter": {
+    "candidateFile": "4364-shelter-sample-9.json",
+    "baselineFile": "4365-shelter-sample-1.json",
+    "valid": [
+      true,
+      true
+    ],
+    "candidate": {
+      "frames": 300,
+      "warmupFrames": 90,
+      "fps": 60.00360021687137,
+      "p50": 16.699999928474426,
+      "p95": 17.799999952316284,
+      "max": 42.89999997615814,
+      "gpuMs": null
+    },
+    "baseline": {
+      "frames": 300,
+      "warmupFrames": 90,
+      "fps": 59.996400216559174,
+      "p50": 16.699999928474426,
+      "p95": 17.899999976158142,
+      "max": 18.700000047683716,
+      "gpuMs": null
+    },
+    "poseDelta": {
+      "player": 0.0,
+      "camera": 1.4242263226549312e-06,
+      "target": 0.0
+    },
+    "stats": {
+      "candidate": {
+        "calls": 139,
+        "triangles": 660426,
+        "geometries": 383,
+        "textures": 120,
+        "programs": 232,
+        "camera": [
+          18.11471906112334,
+          11.098824193261699,
+          -20.400986473163496
+        ]
+      },
+      "baseline": {
+        "calls": 138,
+        "triangles": 682829,
+        "geometries": 393,
+        "textures": 100,
+        "programs": 246,
+        "camera": [
+          18.114719060962933,
+          11.098824193261702,
+          -20.400985048937173
+        ]
+      }
+    },
+    "sameBufferQuality": true,
+    "ready": [
+      {
+        "phase": "ready",
+        "loaded": 256,
+        "total": 256,
+        "active": false,
+        "failed": 0
+      },
+      {
+        "phase": "ready",
+        "loaded": 269,
+        "total": 269,
+        "active": false,
+        "failed": 0
+      }
+    ]
+  },
+  "hut": {
+    "candidateFile": "4364-hut-sample-10.json",
+    "baselineFile": "4365-hut-sample-2.json",
+    "valid": [
+      true,
+      true
+    ],
+    "candidate": {
+      "frames": 300,
+      "warmupFrames": 90,
+      "fps": 60.00240009657609,
+      "p50": 16.699999928474426,
+      "p95": 16.800000071525574,
+      "max": 18.700000047683716,
+      "gpuMs": null
+    },
+    "baseline": {
+      "frames": 300,
+      "warmupFrames": 90,
+      "fps": 60.019206146253,
+      "p50": 16.699999928474426,
+      "p95": 17.700000047683716,
+      "max": 18.700000047683716,
+      "gpuMs": null
+    },
+    "poseDelta": {
+      "player": 0.0,
+      "camera": 1.3721490930151958e-06,
+      "target": 0.0
+    },
+    "stats": {
+      "candidate": {
+        "calls": 99,
+        "triangles": 626768,
+        "geometries": 383,
+        "textures": 120,
+        "programs": 232,
+        "camera": [
+          60.22498671263631,
+          11.094106247209147,
+          -36.72642730416113
+        ]
+      },
+      "baseline": {
+        "calls": 95,
+        "triangles": 608244,
+        "geometries": 405,
+        "textures": 102,
+        "programs": 244,
+        "camera": [
+          60.22498709424806,
+          11.09410624720915,
+          -36.726425932012035
+        ]
+      }
+    },
+    "sameBufferQuality": true,
+    "ready": [
+      {
+        "phase": "ready",
+        "loaded": 256,
+        "total": 256,
+        "active": false,
+        "failed": 0
+      },
+      {
+        "phase": "ready",
+        "loaded": 269,
+        "total": 269,
+        "active": false,
+        "failed": 0
+      }
+    ]
+  }
+}

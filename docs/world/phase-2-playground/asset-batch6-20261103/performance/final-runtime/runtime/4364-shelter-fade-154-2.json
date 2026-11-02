@@ -1,0 +1,169 @@
+{
+ "at": 55245.300000071526,
+ "point": "shelter",
+ "url": "http://127.0.0.1:4364/world/?start=camp&quality=balanced&paused=1&qa=1",
+ "settings": {
+  "paused": false,
+  "shot": "camp-qa-close",
+  "quality": "balanced",
+  "weather": "clear",
+  "light": "dusk",
+  "worldMinutes": 1065.0093999998376,
+  "timeRunning": false,
+  "seat": null,
+  "card": null,
+  "clubMode": null,
+  "loading": {
+   "phase": "ready",
+   "loaded": 224,
+   "total": 224,
+   "active": false,
+   "failed": 0
+  },
+  "nearby": null,
+  "hidden": false
+ },
+ "player": [
+  -41.99941635131836,
+  5.619417190551758,
+  35.006927490234375
+ ],
+ "grounded": true,
+ "velocity": [
+  -0.00014307753008324653,
+  3.1632830541639123e-06,
+  0.00029523164266720414
+ ],
+ "camera": {
+  "yaw": 0.9272952180016123,
+  "pitch": 0.7853981633974483,
+  "distance": 12,
+  "desiredDistance": 12,
+  "driveManualZoom": false,
+  "actualDistance": 12,
+  "firstPerson": false,
+  "preset": 1,
+  "collided": false,
+  "hitDistance": null,
+  "fov": 50,
+  "mode": "walk",
+  "recentering": false,
+  "position": [
+   -52.9354469303947,
+   111.1972625738596,
+   25.8530260724415
+  ],
+  "target": [
+   -41.99941635131836,
+   6.269417190551758,
+   35.006927490234375
+  ],
+  "forwardGround": [
+   0.8741572761215377,
+   -0.48564293117863205
+  ],
+  "groundBelowCamera": 4.8191070556640625,
+  "clearanceAboveGround": 106.37815551819554,
+  "gamepad": false,
+  "nearPlaneRadius": 0.22,
+  "guideHidden": false,
+  "shoulderOffset": 0,
+  "nearPlaneOverlaps": []
+ },
+ "renderInfo": {
+  "drawingBuffer": [
+   1710,
+   931
+  ],
+  "cssSize": [
+   1710,
+   931
+  ],
+  "pixelRatio": 1,
+  "dprRange": [
+   0,
+   1.5
+  ],
+  "quality": "balanced",
+  "antialias": true,
+  "msaaSamples": 4,
+  "toneMapping": 4,
+  "outputColorSpace": "srgb",
+  "shadowMapSize": 1254,
+  "shadowType": 1,
+  "postprocessing": [],
+  "coasterVegetation": [
+   {
+    "name": "coaster-ST1-L0",
+    "visible": false,
+    "instances": 0,
+    "triangles": 0,
+    "matrixUploads": 0
+   },
+   {
+    "name": "coaster-ST1-L1",
+    "visible": false,
+    "instances": 0,
+    "triangles": 0,
+    "matrixUploads": 0
+   },
+   {
+    "name": "coaster-ST2-L0",
+    "visible": false,
+    "instances": 0,
+    "triangles": 0,
+    "matrixUploads": 0
+   },
+   {
+    "name": "coaster-ST2-L1",
+    "visible": false,
+    "instances": 0,
+    "triangles": 0,
+    "matrixUploads": 0
+   },
+   {
+    "name": "coaster-G19",
+    "visible": false,
+    "instances": 0,
+    "triangles": 0,
+    "matrixUploads": 0
+   }
+  ]
+ },
+ "stats": {
+  "calls": 336,
+  "triangles": 1409928,
+  "geometries": 381,
+  "textures": 111,
+  "programs": 249,
+  "camera": [
+   -52.9354469303947,
+   111.1972625738596,
+   25.8530260724415
+  ]
+ },
+ "loop": {
+  "mode": "demand",
+  "frame": 1009,
+  "delta": 0.019200000047683716,
+  "night": 0.056093690418795875,
+  "windTime": 14.870500000000025,
+  "frameMs": null
+ },
+ "shadow": {
+  "pending": true,
+  "slices": 60,
+  "cpuMs": 375.7000000476837,
+  "maxSliceMs": 132.20000004768372,
+  "cancelled": 0,
+  "error": "",
+  "phases": [],
+  "hullWorker": {
+   "requests": 0,
+   "workerMs": 0,
+   "maxWorkerMs": 0,
+   "maxSource": "",
+   "maxInputVertices": 0
+  }
+ }
+}

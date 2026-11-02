@@ -1,0 +1,37 @@
+{
+ "at": 84509.60000002384,
+ "paused": true,
+ "shot": null,
+ "quality": "balanced",
+ "light": "noon",
+ "worldMinutes": 720,
+ "timeRunning": true,
+ "loading": {
+  "phase": "ready",
+  "loaded": 224,
+  "total": 224,
+  "active": false,
+  "failed": 0
+ },
+ "hidden": false,
+ "loop": {
+  "mode": "demand",
+  "frame": 201,
+  "delta": 0.025800000071525574,
+  "night": 0,
+  "windTime": 0,
+  "frameMs": null
+ },
+ "stats": {
+  "calls": 396,
+  "triangles": 1315436,
+  "geometries": 311,
+  "textures": 86,
+  "programs": 225,
+  "camera": [
+   -32,
+   18.85,
+   45
+  ]
+ }
+}

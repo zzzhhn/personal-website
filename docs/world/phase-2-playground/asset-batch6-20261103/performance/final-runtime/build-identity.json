@@ -1,0 +1,26 @@
+{
+  "candidate": {
+    "root": "/tmp/bobby-world-batch6-final-01a171f1",
+    "htmlSha256": "ef09eca18abfd0c37263027da932dd3a79d52f146c6a7effb9ee7822d3f289d6",
+    "entryJs": [
+      "/_astro/WorldApp.BR5bHpFj.js",
+      "/_astro/WorldApp.BgyCrFIj.js",
+      "/_astro/WorldRuntime.BrLdUJ7h.js"
+    ],
+    "entryGraphFiles": 25,
+    "missing": []
+  },
+  "baseline": {
+    "root": "/tmp/bobby-world-batch5-r10-fourteen-01a19a62",
+    "htmlSha256": "ab16953b8a77ca1b4ca5887d37164d3b1699bc0d87823c40d72a4d7a08993a03",
+    "entryJs": [
+      "/_astro/WorldApp.CFES6A1d.js",
+      "/_astro/WorldApp.Cd8SXF-f.js",
+      "/_astro/WorldRuntime.CDhmzaiM.js"
+    ],
+    "entryGraphFiles": 25,
+    "missing": []
+  },
+  "runtimeSource": "f61a327aa057282dda6b384aef1231a71e9ee738",
+  "runtimeSourceDiffEmpty": true
+}

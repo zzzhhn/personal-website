@@ -1,0 +1,20 @@
+{
+  "status": "waiting-for-coordinator-asset-restoration",
+  "runtimeSource": "f61a327aa057282dda6b384aef1231a71e9ee738",
+  "checkoutHead": "31964e0c256139818c5e163c4f7a0c6f358494d0",
+  "headDifference": "FACILITIES-INTEGRATION.md only; src/public/package/config diff empty",
+  "preflight": {"memoryPressure":1,"swapGiB":16.8,"freeDiskGiB":24.06,"state":"normal"},
+  "browserInventory": {"chromeProfiles":2,"tabsByProfile":[4,2],"user4341Tab":"1395914218","user4341Untouched":true},
+  "heavyLock": {"path":"/tmp/bobby-world-phase2-heavy.lock","token":"facilities-final-20261103-01a171f1","exclusiveAcquired":true,"released":true},
+  "command": "npm run build -- --outDir /tmp/bobby-world-batch6-final-01a171f1",
+  "exitCode": 1,
+  "phase": "prebuild, before Astro",
+  "error": "ENOENT public/assets/world/club/bar/djc-north-bar-v1.glb",
+  "diagnosis": {"tracked":true,"indexFlag":"S (skip-worktree)","blobBytes":13283808,"directoryAbsent":true},
+  "candidateOutputCreated": false,
+  "temporaryArchive": {"path":"/tmp/bobby-world-batch6-final-source-01a171f1","purpose":"exact-source temporary expansion without shared-tree mutation","cancelledOnCoordinatorMessage":true,"extractStarted":false,"sizeBytes":0,"processExitCode":143},
+  "browserVerification": "not started; latest native inventory still reported Mac locked after user's unlock message",
+  "taskOwnedTabOrServerStarted": false,
+  "implementationChanged": false,
+  "next": "Coordinator restores tracked build assets; reacquire lock and build candidate using formal config. Do not bypass prebuild."
+}

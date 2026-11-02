@@ -1,0 +1,6690 @@
+{
+ "valid": true,
+ "summary": {
+  "frames": 300,
+  "warmupFrames": 90,
+  "fps": 60.00360021687137,
+  "p50": 16.699999928474426,
+  "p95": 17.799999952316284,
+  "max": 42.89999997615814,
+  "gpuMs": null
+ },
+ "arrival": {
+  "at": 264559,
+  "point": "shelter",
+  "url": "http://127.0.0.1:4364/world/?start=camp&quality=balanced&paused=1&qa=1",
+  "settings": {
+   "paused": false,
+   "shot": null,
+   "quality": "balanced",
+   "weather": "clear",
+   "light": "noon",
+   "worldMinutes": 720,
+   "timeRunning": false,
+   "seat": null,
+   "card": null,
+   "clubMode": null,
+   "loading": {
+    "phase": "ready",
+    "loaded": 256,
+    "total": 256,
+    "active": false,
+    "failed": 0
+   },
+   "nearby": null,
+   "hidden": false
+  },
+  "player": [
+   26.600000381469727,
+   1.9635428190231323,
+   -20.4000301361084
+  ],
+  "grounded": true,
+  "velocity": [
+   -0.00022432082914747298,
+   9.282285162726112e-09,
+   1.617191628611181e-05
+  ],
+  "camera": {
+   "yaw": 3.1417053589928257,
+   "pitch": 0.7853981633974483,
+   "distance": 12,
+   "desiredDistance": 12,
+   "driveManualZoom": false,
+   "actualDistance": 11.999999999999995,
+   "firstPerson": false,
+   "preset": 1,
+   "collided": false,
+   "hitDistance": null,
+   "fov": 50,
+   "mode": "walk",
+   "recentering": false,
+   "position": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163492
+   ],
+   "target": [
+    26.600000381469727,
+    2.613542819023133,
+    -20.40003013610839
+   ],
+   "forwardGround": [
+    0.9999999936487461,
+    0.00011270540279340078
+   ],
+   "groundBelowCamera": 1.13800048828125,
+   "clearanceAboveGround": 9.960823704980449,
+   "gamepad": false,
+   "nearPlaneRadius": 0.22,
+   "guideHidden": false,
+   "shoulderOffset": 0,
+   "nearPlaneOverlaps": []
+  },
+  "renderInfo": {
+   "drawingBuffer": [
+    1710,
+    931
+   ],
+   "cssSize": [
+    1710,
+    931
+   ],
+   "pixelRatio": 1,
+   "dprRange": [
+    0,
+    1.5
+   ],
+   "quality": "balanced",
+   "antialias": true,
+   "msaaSamples": 4,
+   "toneMapping": 4,
+   "outputColorSpace": "srgb",
+   "shadowMapSize": 1254,
+   "shadowType": 1,
+   "postprocessing": [],
+   "coasterVegetation": [
+    {
+     "name": "coaster-ST1-L0",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-ST1-L1",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-ST2-L0",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-ST2-L1",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-G19",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    }
+   ]
+  },
+  "stats": {
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163492
+   ]
+  },
+  "loop": {
+   "mode": "always",
+   "frame": 13515,
+   "delta": 0.017100000023841856,
+   "night": 0,
+   "windTime": 231.00630000040425,
+   "frameMs": null
+  },
+  "shadow": {
+   "pending": false,
+   "slices": 0,
+   "cpuMs": 0,
+   "maxSliceMs": 0,
+   "cancelled": 1,
+   "error": "",
+   "phases": [],
+   "hullWorker": {
+    "requests": 0,
+    "workerMs": 0,
+    "maxWorkerMs": 0,
+    "maxSource": "",
+    "maxInputVertices": 0
+   }
+  }
+ },
+ "settled": {
+  "at": 274571.60000002384,
+  "point": "shelter",
+  "url": "http://127.0.0.1:4364/world/?start=camp&quality=balanced&paused=1&qa=1",
+  "settings": {
+   "paused": false,
+   "shot": null,
+   "quality": "balanced",
+   "weather": "clear",
+   "light": "noon",
+   "worldMinutes": 720,
+   "timeRunning": false,
+   "seat": null,
+   "card": null,
+   "clubMode": null,
+   "loading": {
+    "phase": "ready",
+    "loaded": 256,
+    "total": 256,
+    "active": false,
+    "failed": 0
+   },
+   "nearby": null,
+   "hidden": false
+  },
+  "player": [
+   26.600000381469727,
+   1.9635428190231323,
+   -20.4000301361084
+  ],
+  "grounded": true,
+  "velocity": [
+   -0.00022432082914747298,
+   9.282285162726112e-09,
+   1.617191628611181e-05
+  ],
+  "camera": {
+   "yaw": 3.1417053589928257,
+   "pitch": 0.7853981633974483,
+   "distance": 12,
+   "desiredDistance": 12,
+   "driveManualZoom": false,
+   "actualDistance": 11.999999999999995,
+   "firstPerson": false,
+   "preset": 1,
+   "collided": false,
+   "hitDistance": null,
+   "fov": 50,
+   "mode": "walk",
+   "recentering": false,
+   "position": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "target": [
+    26.600000381469727,
+    2.6135428190231327,
+    -20.400030136108395
+   ],
+   "forwardGround": [
+    0.9999999936487461,
+    0.00011270540279340078
+   ],
+   "groundBelowCamera": 1.13800048828125,
+   "clearanceAboveGround": 9.960823704980449,
+   "gamepad": false,
+   "nearPlaneRadius": 0.22,
+   "guideHidden": false,
+   "shoulderOffset": 0,
+   "nearPlaneOverlaps": []
+  },
+  "renderInfo": {
+   "drawingBuffer": [
+    1710,
+    931
+   ],
+   "cssSize": [
+    1710,
+    931
+   ],
+   "pixelRatio": 1,
+   "dprRange": [
+    0,
+    1.5
+   ],
+   "quality": "balanced",
+   "antialias": true,
+   "msaaSamples": 4,
+   "toneMapping": 4,
+   "outputColorSpace": "srgb",
+   "shadowMapSize": 1254,
+   "shadowType": 1,
+   "postprocessing": [],
+   "coasterVegetation": [
+    {
+     "name": "coaster-ST1-L0",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-ST1-L1",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-ST2-L0",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-ST2-L1",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-G19",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    }
+   ]
+  },
+  "stats": {
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ]
+  },
+  "loop": {
+   "mode": "always",
+   "frame": 14114,
+   "delta": 0.01859999990463257,
+   "night": 0,
+   "windTime": 241.02200000033108,
+   "frameMs": null
+  },
+  "shadow": {
+   "pending": false,
+   "slices": 0,
+   "cpuMs": 0,
+   "maxSliceMs": 0,
+   "cancelled": 1,
+   "error": "",
+   "phases": [],
+   "hullWorker": {
+    "requests": 0,
+    "workerMs": 0,
+    "maxWorkerMs": 0,
+    "maxSource": "",
+    "maxInputVertices": 0
+   }
+  }
+ },
+ "before": {
+  "at": 276092,
+  "point": "shelter",
+  "url": "http://127.0.0.1:4364/world/?start=camp&quality=balanced&paused=1&qa=1",
+  "settings": {
+   "paused": false,
+   "shot": null,
+   "quality": "balanced",
+   "weather": "clear",
+   "light": "noon",
+   "worldMinutes": 720,
+   "timeRunning": false,
+   "seat": null,
+   "card": null,
+   "clubMode": null,
+   "loading": {
+    "phase": "ready",
+    "loaded": 256,
+    "total": 256,
+    "active": false,
+    "failed": 0
+   },
+   "nearby": null,
+   "hidden": false
+  },
+  "player": [
+   26.600000381469727,
+   1.9635428190231323,
+   -20.4000301361084
+  ],
+  "grounded": true,
+  "velocity": [
+   -0.00022432082914747298,
+   9.282285162726112e-09,
+   1.617191628611181e-05
+  ],
+  "camera": {
+   "yaw": 3.1417053589928257,
+   "pitch": 0.7853981633974483,
+   "distance": 12,
+   "desiredDistance": 12,
+   "driveManualZoom": false,
+   "actualDistance": 11.999999999999995,
+   "firstPerson": false,
+   "preset": 1,
+   "collided": false,
+   "hitDistance": null,
+   "fov": 50,
+   "mode": "walk",
+   "recentering": false,
+   "position": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "target": [
+    26.600000381469727,
+    2.6135428190231327,
+    -20.400030136108395
+   ],
+   "forwardGround": [
+    0.9999999936487461,
+    0.00011270540279340078
+   ],
+   "groundBelowCamera": 1.13800048828125,
+   "clearanceAboveGround": 9.960823704980449,
+   "gamepad": false,
+   "nearPlaneRadius": 0.22,
+   "guideHidden": false,
+   "shoulderOffset": 0,
+   "nearPlaneOverlaps": []
+  },
+  "renderInfo": {
+   "drawingBuffer": [
+    1710,
+    931
+   ],
+   "cssSize": [
+    1710,
+    931
+   ],
+   "pixelRatio": 1,
+   "dprRange": [
+    0,
+    1.5
+   ],
+   "quality": "balanced",
+   "antialias": true,
+   "msaaSamples": 4,
+   "toneMapping": 4,
+   "outputColorSpace": "srgb",
+   "shadowMapSize": 1254,
+   "shadowType": 1,
+   "postprocessing": [],
+   "coasterVegetation": [
+    {
+     "name": "coaster-ST1-L0",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-ST1-L1",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-ST2-L0",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-ST2-L1",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-G19",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    }
+   ]
+  },
+  "stats": {
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ]
+  },
+  "loop": {
+   "mode": "always",
+   "frame": 14205,
+   "delta": 0.016699999928474426,
+   "night": 0,
+   "windTime": 242.5386000003546,
+   "frameMs": null
+  },
+  "shadow": {
+   "pending": false,
+   "slices": 0,
+   "cpuMs": 0,
+   "maxSliceMs": 0,
+   "cancelled": 1,
+   "error": "",
+   "phases": [],
+   "hullWorker": {
+    "requests": 0,
+    "workerMs": 0,
+    "maxWorkerMs": 0,
+    "maxSource": "",
+    "maxInputVertices": 0
+   }
+  }
+ },
+ "after": {
+  "at": 281070.89999997616,
+  "point": "shelter",
+  "url": "http://127.0.0.1:4364/world/?start=camp&quality=balanced&paused=1&qa=1",
+  "settings": {
+   "paused": false,
+   "shot": null,
+   "quality": "balanced",
+   "weather": "clear",
+   "light": "noon",
+   "worldMinutes": 720,
+   "timeRunning": false,
+   "seat": null,
+   "card": null,
+   "clubMode": null,
+   "loading": {
+    "phase": "ready",
+    "loaded": 256,
+    "total": 256,
+    "active": false,
+    "failed": 0
+   },
+   "nearby": null,
+   "hidden": false
+  },
+  "player": [
+   26.600000381469727,
+   1.9635428190231323,
+   -20.4000301361084
+  ],
+  "grounded": true,
+  "velocity": [
+   -0.00022432082914747298,
+   9.282285162726112e-09,
+   1.617191628611181e-05
+  ],
+  "camera": {
+   "yaw": 3.1417053589928257,
+   "pitch": 0.7853981633974483,
+   "distance": 12,
+   "desiredDistance": 12,
+   "driveManualZoom": false,
+   "actualDistance": 11.999999999999995,
+   "firstPerson": false,
+   "preset": 1,
+   "collided": false,
+   "hitDistance": null,
+   "fov": 50,
+   "mode": "walk",
+   "recentering": false,
+   "position": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "target": [
+    26.600000381469727,
+    2.6135428190231327,
+    -20.400030136108395
+   ],
+   "forwardGround": [
+    0.9999999936487461,
+    0.00011270540279340078
+   ],
+   "groundBelowCamera": 1.13800048828125,
+   "clearanceAboveGround": 9.960823704980449,
+   "gamepad": false,
+   "nearPlaneRadius": 0.22,
+   "guideHidden": false,
+   "shoulderOffset": 0,
+   "nearPlaneOverlaps": []
+  },
+  "renderInfo": {
+   "drawingBuffer": [
+    1710,
+    931
+   ],
+   "cssSize": [
+    1710,
+    931
+   ],
+   "pixelRatio": 1,
+   "dprRange": [
+    0,
+    1.5
+   ],
+   "quality": "balanced",
+   "antialias": true,
+   "msaaSamples": 4,
+   "toneMapping": 4,
+   "outputColorSpace": "srgb",
+   "shadowMapSize": 1254,
+   "shadowType": 1,
+   "postprocessing": [],
+   "coasterVegetation": [
+    {
+     "name": "coaster-ST1-L0",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-ST1-L1",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-ST2-L0",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-ST2-L1",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-G19",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    }
+   ]
+  },
+  "stats": {
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ]
+  },
+  "loop": {
+   "mode": "always",
+   "frame": 14504,
+   "delta": 0.01660000002384186,
+   "night": 0,
+   "windTime": 247.52160000035354,
+   "frameMs": null
+  },
+  "shadow": {
+   "pending": false,
+   "slices": 0,
+   "cpuMs": 0,
+   "maxSliceMs": 0,
+   "cancelled": 1,
+   "error": "",
+   "phases": [],
+   "hullWorker": {
+    "requests": 0,
+    "workerMs": 0,
+    "maxWorkerMs": 0,
+    "maxSource": "",
+    "maxInputVertices": 0
+   }
+  }
+ },
+ "samples": [
+  {
+   "frame": 14205,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14206,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14207,
+   "dt": 16,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14208,
+   "dt": 17,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14209,
+   "dt": 17.100000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14210,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14211,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14212,
+   "dt": 14.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14213,
+   "dt": 18.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14214,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14215,
+   "dt": 15.200000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14216,
+   "dt": 18.100000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14217,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14218,
+   "dt": 15.800000071525576,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14219,
+   "dt": 17.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14220,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14221,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14222,
+   "dt": 16.799999952316284,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14223,
+   "dt": 16.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14224,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14225,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14226,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14227,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14228,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14229,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14230,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14231,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14232,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14233,
+   "dt": 16.799999952316284,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14234,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14235,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14236,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14237,
+   "dt": 16.800000071525574,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14238,
+   "dt": 16.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14239,
+   "dt": 16.799999952316284,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14240,
+   "dt": 16.100000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14241,
+   "dt": 17.299999952316284,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14242,
+   "dt": 16.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14243,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14244,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14245,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14246,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14247,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14248,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14249,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14250,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14251,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14252,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14253,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14254,
+   "dt": 15.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14255,
+   "dt": 17.800000071525574,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14256,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14257,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14258,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14259,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14260,
+   "dt": 16.899999976158142,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14261,
+   "dt": 16.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14262,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14263,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14264,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14265,
+   "dt": 16.899999976158142,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14266,
+   "dt": 14.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14267,
+   "dt": 18.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14268,
+   "dt": 16.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14269,
+   "dt": 16.90000009536743,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14270,
+   "dt": 14.899999976158142,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14271,
+   "dt": 18.399999976158142,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14272,
+   "dt": 15.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14273,
+   "dt": 17.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14274,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14275,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14276,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14277,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14278,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14279,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14280,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14281,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14282,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14283,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14284,
+   "dt": 16.799999952316284,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14285,
+   "dt": 14.899999976158142,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14286,
+   "dt": 18.399999976158142,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14287,
+   "dt": 16.300000071525574,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14288,
+   "dt": 17.100000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14289,
+   "dt": 15.299999952316284,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14290,
+   "dt": 16,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14291,
+   "dt": 18.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14292,
+   "dt": 16.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14293,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14294,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14295,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14296,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14297,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14298,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14299,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14300,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14301,
+   "dt": 16.899999976158142,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14302,
+   "dt": 42.89999997615814,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14303,
+   "dt": 6.100000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14304,
+   "dt": 4.399999976158142,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14305,
+   "dt": 13.200000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14306,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14307,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14308,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14309,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14310,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14311,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14312,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14313,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14314,
+   "dt": 16.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14315,
+   "dt": 16.90000009536743,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14316,
+   "dt": 16.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14317,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14318,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14319,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14320,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14321,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14322,
+   "dt": 16.799999952316284,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14323,
+   "dt": 16.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14324,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14325,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14326,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14327,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14328,
+   "dt": 17.199999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14329,
+   "dt": 14.400000095367432,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14330,
+   "dt": 17.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14331,
+   "dt": 16,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14332,
+   "dt": 18.199999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14333,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14334,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14335,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14336,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14337,
+   "dt": 15.399999976158142,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14338,
+   "dt": 16.200000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14339,
+   "dt": 18.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14340,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14341,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14342,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14343,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14344,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14345,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14346,
+   "dt": 15.799999952316284,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14347,
+   "dt": 17.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14348,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14349,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14350,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14351,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14352,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14353,
+   "dt": 16.799999952316284,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14354,
+   "dt": 16.100000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14355,
+   "dt": 17.200000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14356,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14357,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14358,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14359,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14360,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14361,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14362,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14363,
+   "dt": 16.800000071525574,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14364,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14365,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14366,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14367,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14368,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14369,
+   "dt": 15.700000047683718,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14370,
+   "dt": 17.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14371,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14372,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14373,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14374,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14375,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14376,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14377,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14378,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14379,
+   "dt": 14.799999952316284,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14380,
+   "dt": 18.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14381,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14382,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14383,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14384,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14385,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14386,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14387,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14388,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14389,
+   "dt": 16.799999952316284,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14390,
+   "dt": 15,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14391,
+   "dt": 18.300000071525574,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14392,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14393,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14394,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14395,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14396,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14397,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14398,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14399,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14400,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14401,
+   "dt": 16.09999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14402,
+   "dt": 17.200000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14403,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14404,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14405,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14406,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14407,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14408,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14409,
+   "dt": 16.800000071525574,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14410,
+   "dt": 16.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14411,
+   "dt": 16.899999976158142,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14412,
+   "dt": 16.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14413,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14414,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14415,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14416,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14417,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14418,
+   "dt": 16.300000071525574,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14419,
+   "dt": 17.09999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14420,
+   "dt": 14.900000095367432,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14421,
+   "dt": 18.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14422,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14423,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14424,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14425,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14426,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14427,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14428,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14429,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14430,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14431,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14432,
+   "dt": 15.700000047683718,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14433,
+   "dt": 17.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14434,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14435,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14436,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14437,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14438,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14439,
+   "dt": 16.200000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14440,
+   "dt": 16.199999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14441,
+   "dt": 17.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14442,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14443,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14444,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14445,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14446,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14447,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14448,
+   "dt": 16.800000071525574,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14449,
+   "dt": 16.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14450,
+   "dt": 15.899999976158142,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14451,
+   "dt": 17.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14452,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14453,
+   "dt": 16.799999952316284,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14454,
+   "dt": 15.799999952316284,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14455,
+   "dt": 17.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14456,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14457,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14458,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14459,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14460,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14461,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14462,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14463,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14464,
+   "dt": 16.200000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14465,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14466,
+   "dt": 17.300000071525574,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14467,
+   "dt": 15.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14468,
+   "dt": 17.799999952316284,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14469,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14470,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14471,
+   "dt": 15.199999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14472,
+   "dt": 18.200000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14473,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14474,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14475,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14476,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14477,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14478,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14479,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14480,
+   "dt": 16.100000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14481,
+   "dt": 16.199999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14482,
+   "dt": 17.899999976158142,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14483,
+   "dt": 15.400000095367432,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14484,
+   "dt": 16.899999976158142,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14485,
+   "dt": 17.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14486,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14487,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14488,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14489,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14490,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14491,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14492,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14493,
+   "dt": 16.800000071525574,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14494,
+   "dt": 16.59999990463257,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14495,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14496,
+   "dt": 16.5,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14497,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14498,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14499,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14500,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14501,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14502,
+   "dt": 16.700000047683716,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14503,
+   "dt": 16.699999928474426,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  },
+  {
+   "frame": 14504,
+   "dt": 16.600000023841858,
+   "calls": 139,
+   "triangles": 660426,
+   "geometries": 383,
+   "textures": 120,
+   "programs": 232,
+   "camera": [
+    18.11471906112334,
+    11.098824193261699,
+    -20.400986473163496
+   ],
+   "player": [
+    26.600000381469727,
+    1.9635428190231323,
+    -20.4000301361084
+   ],
+   "shadowPending": false
+  }
+ ]
+}

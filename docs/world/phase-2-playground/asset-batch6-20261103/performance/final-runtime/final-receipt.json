@@ -1,0 +1,50 @@
+{
+  "runtimeSource": "f61a327aa057282dda6b384aef1231a71e9ee738",
+  "formalBuild": "passed",
+  "costWindows": 4,
+  "additionalCostRetries": 0,
+  "menu": {
+    "readings": 12,
+    "ordinaryMenu": true,
+    "shot": null,
+    "finalCounter": 201,
+    "firstAt": 53010.60000002384,
+    "lastAt": 84509.60000002384,
+    "idleMs": 31499.0,
+    "files": [
+      "4364-none-1793649860980-menu-probe-6.json",
+      "4364-none-1793649860980-menu-probe-7.json",
+      "4364-none-1793649860980-menu-probe-8.json",
+      "4364-none-1793649860980-menu-probe-9.json",
+      "4364-none-1793649860980-menu-probe-10.json",
+      "4364-none-1793649860980-menu-probe-11.json",
+      "4364-none-1793649860980-menu-probe-12.json"
+    ],
+    "nightHighCounter": 118,
+    "nightHighValue": 1,
+    "noonBalancedNightValue": 0,
+    "windFrozen": true
+  },
+  "replacementEntranceReceipt": "runtime/4364-shelter-1793649860980-snapshot-13.json",
+  "capturedFinalConsole": {
+    "warnings": 2,
+    "errors": 0,
+    "scope": "final candidate load only; not all historic browser logs"
+  },
+  "cleanup": {
+    "taskTab1395914315Closed": true,
+    "viewportReset": true,
+    "taskServerPID92640TerminatedExit143": true,
+    "ports4364and4365Free": true,
+    "ownHeavyLockReleased": true,
+    "emptyTemporarySourceRemoved": true,
+    "4341PreservedURL": "http://127.0.0.1:4341/world/?start=camp&quality=balanced&paused=1"
+  },
+  "limits": [
+    "cross-build loading totals and full-scene work differ",
+    "baseline phase memory pressure2",
+    "60Hz cap and no GPU timer",
+    "far fade not fully accepted; two stale fixed-shot reads retained and excluded",
+    "one early raw entrance file overwritten; replacement independently retained"
+  ]
+}

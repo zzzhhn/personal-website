@@ -1,0 +1,134 @@
+{
+  "checkedAt": "2026-11-03T03:41:16.670254+08:00",
+  "status": "RECORDED_LIFECYCLE_GOALS_SUPPORTED_WITH_SCOPE_LIMITS",
+  "candidateImplementation": "ad7ee76d68ce240d9ed8e4f1657a5e637e62700c",
+  "QACommit": "91faac8d7d6a3ed8b2e57f9841013cacd04f144d",
+  "checks": {
+    "38QAPathsExact": true,
+    "productionSourceConfigUnchanged": true,
+    "31ArtifactHashes": true,
+    "formal4SourceIdentity": true,
+    "fixture4SourceIdentity": true,
+    "idle1_2": true,
+    "idle3_4": true,
+    "idle8_9": true,
+    "idle10_11": true,
+    "idle21_22": true,
+    "coldMapsHeldNotUploaded": true,
+    "lateColorRenderAndUpload": true,
+    "oldRootUnmountBeforeNormalArrival": true,
+    "root2PartialCacheGPUUploaded": true,
+    "root2LateRoughRenderUpload": true,
+    "sameTextureUUIDsAcrossRoots": true,
+    "allCachedRoot3GPUUploaded": true,
+    "oneRequestDeliveryPerMap": true,
+    "noNotificationAfterCleanupInRecordedStages": true,
+    "nightHighAndNoonBalancedResults": true,
+    "finalOwnerRendererCountersAgree": true,
+    "finalEnvAndAlphaPreserved": true,
+    "twoRetainedUnmountWarnings": true
+  },
+  "idlePairs": [
+    {
+      "stages": [
+        1,
+        2
+      ],
+      "seconds": 31.635,
+      "frameA": 198,
+      "frameB": 198,
+      "shotA": "lifecycle-hut-close",
+      "shotB": "lifecycle-hut-close"
+    },
+    {
+      "stages": [
+        3,
+        4
+      ],
+      "seconds": 20.283,
+      "frameA": 288,
+      "frameB": 288,
+      "shotA": "lifecycle-hut-close",
+      "shotB": "lifecycle-hut-close"
+    },
+    {
+      "stages": [
+        8,
+        9
+      ],
+      "seconds": 14.326,
+      "frameA": 1812,
+      "frameB": 1812,
+      "shotA": "lifecycle-hut-close",
+      "shotB": "lifecycle-hut-close"
+    },
+    {
+      "stages": [
+        10,
+        11
+      ],
+      "seconds": 69.731,
+      "frameA": 1902,
+      "frameB": 1902,
+      "shotA": "lifecycle-hut-close",
+      "shotB": "lifecycle-hut-close"
+    },
+    {
+      "stages": [
+        21,
+        22
+      ],
+      "seconds": 51.301,
+      "frameA": 1619,
+      "frameB": 1619,
+      "shotA": "lifecycle-shelter-far",
+      "shotB": "lifecycle-shelter-far"
+    }
+  ],
+  "textureFrameProgress": {
+    "root1Color": [
+      198,
+      288
+    ],
+    "root2Rough": [
+      1812,
+      1902
+    ]
+  },
+  "coverage": {
+    "lateUploadAndIdlePairsUseFixedShot": true,
+    "shotNullCachedRemountStage13": true,
+    "ordinaryPauseShotNullLateArrivalAndPairedIdleTracePresent": false,
+    "globalShadowSettled": false,
+    "continuousTransparencySortingVerified": false,
+    "resourceReleaseCurveVerified": false,
+    "FPSMeasured": false,
+    "independentBrowserReplay": false,
+    "independentImageView": false
+  },
+  "warnings": [
+    {
+      "level": "error",
+      "message": "Attempted to synchronously unmount a root while React was already rendering. React cannot finish unmounting the root until the current render has completed, which may lead to a race condition.",
+      "timestamp": "2026-11-02T19:16:54.489Z",
+      "url": "http://127.0.0.1:4349/.astro/node_modules/.vite/deps/chunk-6GNFD5N2.js?v=754dcf74"
+    },
+    {
+      "level": "error",
+      "message": "Attempted to synchronously unmount a root while React was already rendering. React cannot finish unmounting the root until the current render has completed, which may lead to a race condition.",
+      "timestamp": "2026-11-02T19:22:37.726Z",
+      "url": "http://127.0.0.1:4349/.astro/node_modules/.vite/deps/chunk-6GNFD5N2.js?v=754dcf74"
+    }
+  ],
+  "limitations": [
+    "Late upload and long idle evidence uses paused+demand+fixed-shot. Stage13 is paused/shot=null cached upload at one instant; it is not an ordinary-menu delayed-image/paired-idle trace.",
+    "Three render.frame includes possible extra passes;90 render-count increments per late image are a bounded shot burst, not one displayed frame or FPS.",
+    "shadow.pending remains true/error empty during final idle; no global shadow-completion claim.",
+    "Three sequential retained renderer references cannot establish concurrent Canvas safety or memory recovery.",
+    "Adaptive buffer/DPR, occluded far-view18 and corrected view19 remain; no new R2 matched visual or full LOD/fade runtime acceptance.",
+    "Captured console has two React development unmount errors; no new Shader/WebGL error among these captured entries.",
+    "Manifest checked independently; producer validate.mjs was read but not executed because it rewrites producer manifest."
+  ],
+  "artifactManifestSHA256": "4436022e3718dd58f0b6d3621a1b591d2c0a0af1e6fabfb24dd47349f5ebce7b",
+  "report": "FACILITIES-R2-REVIEW.md"
+}
