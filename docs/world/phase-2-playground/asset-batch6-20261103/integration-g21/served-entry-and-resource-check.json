@@ -1,0 +1,11 @@
+{
+  "entryFiles": 30,
+  "servedFileChecks": 136,
+  "missing": [],
+  "runtime": [
+    "_astro/WorldRuntime.D1H0RpZU.js"
+  ],
+  "servedHttp200": true,
+  "allServedBytesMatchBuild": true,
+  "testInjectionNotServed": true
+}

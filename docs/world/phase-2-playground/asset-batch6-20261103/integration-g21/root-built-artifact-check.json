@@ -1,0 +1,29 @@
+{
+  "rootSource": "e19ec792e7a2fb7e10aa2d321850cfc6ebf1b574",
+  "builtSource": "3873fc76c60df481fe0b60d192cf4e40173b890d",
+  "runtimeTreesEqual": true,
+  "preservedBaseFiles": 182,
+  "regeneratedBuildMetadata": [
+    {
+      "path": "sitemap-0.xml",
+      "reason": "Astro regenerated sitemap includes six existing project routes plus home/world",
+      "routes": 8,
+      "allRoutesExist": true
+    }
+  ],
+  "newRuntimeFiles": 5,
+  "consumerReceiptHashesVerified": 137,
+  "browserObservedLocalResources": 131,
+  "C03OriginalUnchanged": true,
+  "night": {
+    "exposure": 1,
+    "envGains": [
+      0.22050493951312897,
+      0.22050493951312897,
+      0.22050493951312897
+    ],
+    "fallbacks": [],
+    "consoleErrors": 0
+  },
+  "buildReusedWithoutRerun": true
+}
