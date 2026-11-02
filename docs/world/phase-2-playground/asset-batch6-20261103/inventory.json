@@ -1,0 +1,3256 @@
+{
+  "schema": "bobby-world-asset-family-inventory-v1",
+  "date": "2026-11-03",
+  "repository": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release",
+  "branch": "codex/world-craft-batch5-integration",
+  "head": "7702c3d",
+  "runtimeTarget": {
+    "port": 4341,
+    "frozenDirectory": "/tmp/bobby-world-batch5-r10-fourteen-01a19a62",
+    "basis": "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md",
+    "auditMethod": "Read-only HEAD source and tracked documentation; no runtime/browser/build/Blender/network job."
+  },
+  "scope": {
+    "kind": "provisional-whole-project-coarse-model-family-inventory",
+    "definition": "能作为完整视觉模型/装配独立替换、独立验收的单元；同族尺寸/树种/状态/规格/重复实例合并；固定装配内的零件/GLB/primitive/材质不另计。",
+    "exactWithinThisWorkingList": true,
+    "notAFormalFinalAssetRegistry": true,
+    "wholeProjectPlanningRange": {
+      "min": 120,
+      "max": 150
+    },
+    "rangeBasis": "大体量建筑/植栽/工具套件可合理合并或拆分约10至15族；不是统计置信区间。",
+    "excludes": [
+      "纯shader与海水/风/光/粒子/性能机制",
+      "不可见碰撞代理/LOD/fallback/状态/纹理图/物理实例",
+      "已退役P12与Alpha独立旧小屋实例",
+      "规划占位地基/建设牌",
+      "独立ground-shoulder材质pilot未接入R10，且不另算建模资产族"
+    ],
+    "registered80Coverage": "80 ID全部一对一映射至66个归并条目；其中62个当前建模族、4个排除条目；P06归旧小屋族但其旧Alpha实例不计新增资产。"
+  },
+  "counts": {
+    "allEntries": 140,
+    "inScopeModelFamilies": 136,
+    "specialistCraftIntegrated": 14,
+    "craftedOrPilotNeedsVisualReview": 57,
+    "noThisRoundSpecialistCraftEvidence": 65,
+    "excludedEntries": 4,
+    "remainingQualityClosure": 122,
+    "registeredIdsMapped": 80,
+    "registeredActiveFamilies": 62,
+    "extensionFamilies": 15,
+    "supplementalSourceFamilies": 59,
+    "personAndVehicleFamilies": 4,
+    "remainingExcludingPersonAndVehicles": 118
+  },
+  "statusLegend": {
+    "1": "已专项精修且已有接入4341证据；不等于全部获用户最终视觉接受",
+    "2": "已制作/历史美术/pilot或本批候选，仍需视觉复核/返修",
+    "3": "当前模型存在，但未找到这一轮专项高质精修证据",
+    "4": "范围未定义/退役/纯机制，暂不计入"
+  },
+  "importantLimitations": [
+    "用户最新反馈batch5效果不够明显，十四项全部保留复核状态，主协调接受和技术接入不当作用户最终质量通过。",
+    "batch5 G17只是代表样板；全树族含G16/G18/街树，不能把树种变体逐个凑完成量。",
+    "batch4六项中两项为纯材质（地表/水），不作为模型族新增；岩石、树、草丛、展示架是四个模型族。",
+    "旧80 ID生产字段主要是2026-10-24快照，当前记录用HEAD源码重新对照，未沿用其integrated-candidate作为高质验收。",
+    "14个工程交付闭合项：Club7＋Camp3＋IBD4；其中用户明确接受证据见pilot/batch2/batch3前言，共5族（吧台/日床/池灯/伞/运输箱）；batch3九族缺独立用户最终确认。",
+    "全项目粗粒度工作账，不是逐模型最终验收台账。57项包含成熟度不同的历史美术/pilot，不能都说已经做完精修。",
+    "源码存在与运行包加载分开：除batch5当前升4341记录外，本次未逐项重验每个继承模型的HTTP和显示。"
+  ],
+  "sceneCounts": {
+    "全局与地形": {
+      "total": 7,
+      "craftedIntegrated": 0,
+      "reviewOrRework": 0,
+      "noRoundCraftEvidence": 7
+    },
+    "街道": {
+      "total": 18,
+      "craftedIntegrated": 0,
+      "reviewOrRework": 8,
+      "noRoundCraftEvidence": 10
+    },
+    "自然模型": {
+      "total": 4,
+      "craftedIntegrated": 0,
+      "reviewOrRework": 3,
+      "noRoundCraftEvidence": 1
+    },
+    "人物与车辆": {
+      "total": 4,
+      "craftedIntegrated": 0,
+      "reviewOrRework": 0,
+      "noRoundCraftEvidence": 4
+    },
+    "营地": {
+      "total": 15,
+      "craftedIntegrated": 3,
+      "reviewOrRework": 6,
+      "noRoundCraftEvidence": 6
+    },
+    "城区": {
+      "total": 12,
+      "craftedIntegrated": 0,
+      "reviewOrRework": 0,
+      "noRoundCraftEvidence": 12
+    },
+    "旧园区": {
+      "total": 13,
+      "craftedIntegrated": 0,
+      "reviewOrRework": 0,
+      "noRoundCraftEvidence": 13
+    },
+    "DJC Club": {
+      "total": 12,
+      "craftedIntegrated": 7,
+      "reviewOrRework": 4,
+      "noRoundCraftEvidence": 1
+    },
+    "IBD工场": {
+      "total": 15,
+      "craftedIntegrated": 4,
+      "reviewOrRework": 6,
+      "noRoundCraftEvidence": 5
+    },
+    "Alpha矿场": {
+      "total": 8,
+      "craftedIntegrated": 0,
+      "reviewOrRework": 8,
+      "noRoundCraftEvidence": 0
+    },
+    "Alpha交易所": {
+      "total": 7,
+      "craftedIntegrated": 0,
+      "reviewOrRework": 7,
+      "noRoundCraftEvidence": 0
+    },
+    "过山车": {
+      "total": 12,
+      "craftedIntegrated": 0,
+      "reviewOrRework": 7,
+      "noRoundCraftEvidence": 5
+    },
+    "Intent车间": {
+      "total": 9,
+      "craftedIntegrated": 0,
+      "reviewOrRework": 8,
+      "noRoundCraftEvidence": 1
+    }
+  },
+  "candidatePriority": [
+    {
+      "priority": 1,
+      "ids": [
+        "G-tree",
+        "G-bush",
+        "N-grass"
+      ],
+      "reason": "正常游玩中重复最多；先改树枝/冠层空隙、灌木大轮廓和叶簇，避免只换贴图。"
+    },
+    {
+      "priority": 2,
+      "ids": [
+        "C-tent",
+        "C-tools",
+        "C-books"
+      ],
+      "reason": "营地主视角大轮廓与中尺度物件尚无专项精修，轮廓/布料受力/工具陈列能直接形成差异。"
+    },
+    {
+      "priority": 3,
+      "ids": [
+        "P-hut",
+        "P02",
+        "P03"
+      ],
+      "reason": "旧园区小屋与连续栈道是长视距主要结构，优化承重/檐口/接头可成片改善。"
+    },
+    {
+      "priority": 4,
+      "ids": [
+        "T01",
+        "T02",
+        "T03"
+      ],
+      "reason": "城区主立面的大尺度入口/窗深/体块层次比零散小件更有视觉收益。"
+    },
+    {
+      "priority": 5,
+      "ids": [
+        "I-shed",
+        "I-truck"
+      ],
+      "reason": "钢结构厂房与货车主轮廓面积大；历史样板已有基础，先做可读的真实日夜对照。"
+    },
+    {
+      "priority": 6,
+      "ids": [
+        "R-station",
+        "R-train"
+      ],
+      "reason": "登乘普通视角的站房和车身最靠近角色，优先承重/车体连接和材质尺度。"
+    },
+    {
+      "priority": 7,
+      "ids": [
+        "E-building",
+        "A-quarry"
+      ],
+      "reason": "大场景入口的岩壁/建筑比例与表面层次，避免把大场景留旧、只提高小道具。"
+    }
+  ],
+  "families": [
+    {
+      "id": "G-landform",
+      "scene": "全局与地形",
+      "name": "岛体/崖壁",
+      "registeredIds": [
+        "G01"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldLandform.ts",
+        "src/components/world/WorldTerrain.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "G-beach",
+      "scene": "全局与地形",
+      "name": "沙滩/浅滩实体岸线",
+      "registeredIds": [
+        "G02"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldLandform.ts",
+        "src/components/world/WorldTerrain.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch4-20261102/coordinator/REVIEW.md"
+      ],
+      "note": "地表shader有增量，岸线/沙滩模型结构未有本轮独立高质升级验收。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "X-sea",
+      "scene": "范围外",
+      "name": "海面/浅水材质",
+      "registeredIds": [
+        "G03"
+      ],
+      "status": 4,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldWater.ts",
+        "src/components/world/WorldSea.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch4-20261102/coordinator/REVIEW.md"
+      ],
+      "note": "纯shader/水面机制不纳入建模分母。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "excluded",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "G-road",
+      "scene": "全局与地形",
+      "name": "主路/支路/下降坡道路",
+      "registeredIds": [
+        "G04",
+        "G05"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldTerrainRoads.tsx",
+        "src/components/world/WorldTerrainPaving.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。 道路分支和坡段归同族。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "G-bridge",
+      "scene": "全局与地形",
+      "name": "连接桥实体",
+      "registeredIds": [
+        "G06"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldLandform.ts",
+        "src/components/world/WorldTerrain.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "G-curb",
+      "scene": "全局与地形",
+      "name": "路缘石模块",
+      "registeredIds": [
+        "G07"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldTerrainPaving.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "G-seawalk",
+      "scene": "全局与地形",
+      "name": "海堤/滨海步道实体",
+      "registeredIds": [
+        "G08"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldLandform.ts",
+        "src/components/world/WorldTerrain.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "G-seawall-rail",
+      "scene": "街道",
+      "name": "海堤金属栏杆",
+      "registeredIds": [
+        "G09"
+      ],
+      "status": 2,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldStreetFacilityCraft.ts",
+        "src/components/world/WorldStreetRails.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "note": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5用户反馈效果不够明显，列复核。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "coordinator/ACCEPTANCE.md确认R10已升4341；用户最新视觉质量反馈仍未闭合"
+    },
+    {
+      "id": "G-lamp",
+      "scene": "街道",
+      "name": "街道路灯",
+      "registeredIds": [
+        "G10"
+      ],
+      "status": 2,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldStreetAssets.ts",
+        "src/components/world/WorldStreetFacilityCraft.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "note": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5用户反馈效果不够明显，列复核。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "coordinator/ACCEPTANCE.md确认R10已升4341；用户最新视觉质量反馈仍未闭合"
+    },
+    {
+      "id": "G-barrier",
+      "scene": "街道",
+      "name": "施工路障",
+      "registeredIds": [
+        "G12"
+      ],
+      "status": 2,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldStreetAssets.ts",
+        "src/components/world/WorldStreetFacilityCraft.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "note": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5用户反馈效果不够明显，列复核。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "coordinator/ACCEPTANCE.md确认R10已升4341；用户最新视觉质量反馈仍未闭合"
+    },
+    {
+      "id": "G-bin",
+      "scene": "街道",
+      "name": "街道垃圾箱",
+      "registeredIds": [
+        "G13"
+      ],
+      "status": 2,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldStreetAssets.ts",
+        "src/components/world/WorldStreetFacilityCraft.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "note": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5用户反馈效果不够明显，列复核。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "coordinator/ACCEPTANCE.md确认R10已升4341；用户最新视觉质量反馈仍未闭合"
+    },
+    {
+      "id": "G-bench",
+      "scene": "街道",
+      "name": "街边长椅",
+      "registeredIds": [
+        "G14"
+      ],
+      "status": 2,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldStreetAssets.ts",
+        "src/components/world/WorldStreetFacilityCraft.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "note": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5用户反馈效果不够明显，列复核。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "coordinator/ACCEPTANCE.md确认R10已升4341；用户最新视觉质量反馈仍未闭合"
+    },
+    {
+      "id": "G-year",
+      "scene": "街道",
+      "name": "年份灯柱",
+      "registeredIds": [
+        "G11"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldStreetYears.tsx",
+        "src/components/world/WorldStreetAssets.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "G-billboard",
+      "scene": "街道",
+      "name": "广告牌",
+      "registeredIds": [
+        "G15"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldStreetBillboards.tsx",
+        "src/components/world/WorldStreetAssets.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "G-tree",
+      "scene": "自然模型",
+      "name": "团簇阔叶树（全部尺寸/街树变体）",
+      "registeredIds": [
+        "G16",
+        "G17",
+        "G18"
+      ],
+      "status": 2,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldCamp.tsx",
+        "src/components/world/WorldStreetTrees.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch4-20261102/coordinator/REVIEW.md",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "note": "G17完成batch5代表样板，G16/G18及街树仍是batch4树冠；不能把样板算全树族完成。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "coordinator/ACCEPTANCE.md确认R10已升4341；用户最新视觉质量反馈仍未闭合"
+    },
+    {
+      "id": "G-bush",
+      "scene": "自然模型",
+      "name": "团簇灌木",
+      "registeredIds": [
+        "G19",
+        "G20"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldCamp.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。 单/双团簇属变体。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "G-rock",
+      "scene": "自然模型",
+      "name": "层理岩石（大小变体）",
+      "registeredIds": [
+        "G21",
+        "G22",
+        "G23"
+      ],
+      "status": 2,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldCamp.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch4-20261102/coordinator/REVIEW.md"
+      ],
+      "note": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch4仅有限改善。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "G-guide",
+      "scene": "人物与车辆",
+      "name": "向导B/角色骨骼",
+      "registeredIds": [
+        "G24"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldGuide.tsx",
+        "src/components/world/WorldActors.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。 角色动作修复不等于高质建模。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "G25",
+      "scene": "人物与车辆",
+      "name": "方正4×4",
+      "registeredIds": [
+        "G25"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldVehicleAssets.ts",
+        "src/components/world/WorldVehicleVisual.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。 车辆门/座椅/驾驶修复不等于整车高质建模。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "G26",
+      "scene": "人物与车辆",
+      "name": "Fastback轿跑",
+      "registeredIds": [
+        "G26"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldVehicleAssets.ts",
+        "src/components/world/WorldVehicleVisual.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。 车辆门/座椅/驾驶修复不等于整车高质建模。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "G27",
+      "scene": "人物与车辆",
+      "name": "方盒厢式货车",
+      "registeredIds": [
+        "G27"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldVehicleAssets.ts",
+        "src/components/world/WorldVehicleVisual.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。 车辆门/座椅/驾驶修复不等于整车高质建模。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "G-entry",
+      "scene": "全局与地形",
+      "name": "入口传送门装配",
+      "registeredIds": [
+        "G28"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldEntry.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "G-windmill",
+      "scene": "街道",
+      "name": "远景风车装配",
+      "registeredIds": [
+        "G29"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldStreetLandmarks.tsx",
+        "src/components/world/WorldStreetAssets.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "C-ground",
+      "scene": "营地",
+      "name": "篝火广场/土路实体",
+      "registeredIds": [
+        "C01"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldLandform.ts",
+        "src/components/world/WorldTerrain.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "C-pad",
+      "scene": "营地",
+      "name": "物件石板模块",
+      "registeredIds": [
+        "C02"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldCamp.tsx",
+        "src/components/world/WorldTerrain.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "C-tent",
+      "scene": "营地",
+      "name": "帐篷（大/小变体）",
+      "registeredIds": [
+        "C03",
+        "C04"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldCamp.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "C-books",
+      "scene": "营地",
+      "name": "书堆",
+      "registeredIds": [
+        "C08"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldCampContent.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "C-flags",
+      "scene": "营地",
+      "name": "旗杆/旗帜装配",
+      "registeredIds": [
+        "C10"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldCamp.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "C-tools",
+      "scene": "营地",
+      "name": "工具墙装配",
+      "registeredIds": [
+        "C11"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldCampContent.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "C05",
+      "scene": "营地",
+      "name": "石火坑/柴",
+      "registeredIds": [
+        "C05"
+      ],
+      "status": 1,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldCamp.tsx",
+        "src/components/world/WorldCampCraftProps.tsx",
+        "src/components/world/camp-craft-visual.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch3-20261101/README.md"
+      ],
+      "note": "专项精修、网页审阅与本地4341交付链路已有记录；不是新增用户最终审美签字。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "specialist-craft-integrated",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "继承专项交付记录；本次未新开浏览器或逐件HTTP回读"
+    },
+    {
+      "id": "C06",
+      "scene": "营地",
+      "name": "原木长凳",
+      "registeredIds": [
+        "C06"
+      ],
+      "status": 1,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldCamp.tsx",
+        "src/components/world/WorldCampCraftProps.tsx",
+        "src/components/world/camp-craft-visual.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch3-20261101/README.md"
+      ],
+      "note": "专项精修、网页审阅与本地4341交付链路已有记录；不是新增用户最终审美签字。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "specialist-craft-integrated",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "继承专项交付记录；本次未新开浏览器或逐件HTTP回读"
+    },
+    {
+      "id": "C07",
+      "scene": "营地",
+      "name": "书桌/凳装配",
+      "registeredIds": [
+        "C07"
+      ],
+      "status": 1,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldCamp.tsx",
+        "src/components/world/WorldCampCraftProps.tsx",
+        "src/components/world/camp-craft-visual.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch3-20261101/README.md"
+      ],
+      "note": "专项精修、网页审阅与本地4341交付链路已有记录；不是新增用户最终审美签字。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "specialist-craft-integrated",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "继承专项交付记录；本次未新开浏览器或逐件HTTP回读"
+    },
+    {
+      "id": "C09",
+      "scene": "营地",
+      "name": "奖杯展示架/奖杯",
+      "registeredIds": [
+        "C09"
+      ],
+      "status": 2,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldCamp.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch4-20261102/coordinator/REVIEW.md"
+      ],
+      "note": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "C12",
+      "scene": "营地",
+      "name": "吉他",
+      "registeredIds": [
+        "C12"
+      ],
+      "status": 2,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldCampContent.tsx",
+        "src/components/world/WorldCampFacilityCraft.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "note": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5五件列复核；C13握把/C15接触修补不代表用户总体质量接受。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "coordinator/ACCEPTANCE.md确认R10已升4341；用户最新视觉质量反馈仍未闭合"
+    },
+    {
+      "id": "C13",
+      "scene": "营地",
+      "name": "哑铃",
+      "registeredIds": [
+        "C13"
+      ],
+      "status": 2,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldCampContent.tsx",
+        "src/components/world/WorldCampFacilityCraft.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "note": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5五件列复核；C13握把/C15接触修补不代表用户总体质量接受。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "coordinator/ACCEPTANCE.md确认R10已升4341；用户最新视觉质量反馈仍未闭合"
+    },
+    {
+      "id": "C14",
+      "scene": "营地",
+      "name": "炉灶/炒锅装配",
+      "registeredIds": [
+        "C14"
+      ],
+      "status": 2,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldCampContent.tsx",
+        "src/components/world/WorldCampFacilityCraft.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "note": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5五件列复核；C13握把/C15接触修补不代表用户总体质量接受。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "coordinator/ACCEPTANCE.md确认R10已升4341；用户最新视觉质量反馈仍未闭合"
+    },
+    {
+      "id": "C15",
+      "scene": "营地",
+      "name": "行李箱",
+      "registeredIds": [
+        "C15"
+      ],
+      "status": 2,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldCampContent.tsx",
+        "src/components/world/WorldCampFacilityCraft.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "note": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5五件列复核；C13握把/C15接触修补不代表用户总体质量接受。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "coordinator/ACCEPTANCE.md确认R10已升4341；用户最新视觉质量反馈仍未闭合"
+    },
+    {
+      "id": "C16",
+      "scene": "营地",
+      "name": "桌上提灯",
+      "registeredIds": [
+        "C16"
+      ],
+      "status": 2,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldCampContent.tsx",
+        "src/components/world/WorldCampFacilityCraft.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "note": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5五件列复核；C13握把/C15接触修补不代表用户总体质量接受。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "coordinator/ACCEPTANCE.md确认R10已升4341；用户最新视觉质量反馈仍未闭合"
+    },
+    {
+      "id": "T01",
+      "scene": "城区",
+      "name": "国投证券楼",
+      "registeredIds": [
+        "T01"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldTownAssets.tsx",
+        "src/components/world/WorldTownCanvas.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "T02",
+      "scene": "城区",
+      "name": "WorldQuant楼",
+      "registeredIds": [
+        "T02"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldTownAssets.tsx",
+        "src/components/world/WorldTownCanvas.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "T03",
+      "scene": "城区",
+      "name": "MoE Capital楼",
+      "registeredIds": [
+        "T03"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldTownAssets.tsx",
+        "src/components/world/WorldTownCanvas.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "T04",
+      "scene": "城区",
+      "name": "ByteDance楼",
+      "registeredIds": [
+        "T04"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldTownAssets.tsx",
+        "src/components/world/WorldTownCanvas.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "T05",
+      "scene": "城区",
+      "name": "Video Rebirth楼",
+      "registeredIds": [
+        "T05"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldTownAssets.tsx",
+        "src/components/world/WorldTownCanvas.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "T06",
+      "scene": "城区",
+      "name": "腾讯混元楼",
+      "registeredIds": [
+        "T06"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldTownAssets.tsx",
+        "src/components/world/WorldTownCanvas.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "T07",
+      "scene": "城区",
+      "name": "第二排低楼",
+      "registeredIds": [
+        "T07"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldTownAssets.tsx",
+        "src/components/world/WorldTownCanvas.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "T09",
+      "scene": "城区",
+      "name": "楼前展板",
+      "registeredIds": [
+        "T09"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldTownAssets.tsx",
+        "src/components/world/WorldTownCanvas.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "T10",
+      "scene": "城区",
+      "name": "楼顶/立面招牌",
+      "registeredIds": [
+        "T10"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldTownAssets.tsx",
+        "src/components/world/WorldTownCanvas.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "T11",
+      "scene": "城区",
+      "name": "混元楼发光环实体",
+      "registeredIds": [
+        "T11"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldTownAssets.tsx",
+        "src/components/world/WorldTownCanvas.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "T12",
+      "scene": "城区",
+      "name": "城区棕榈树",
+      "registeredIds": [
+        "T12"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldTownAssets.tsx",
+        "src/components/world/WorldTownCanvas.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "T08",
+      "scene": "城区",
+      "name": "楼前广场铺装实体",
+      "registeredIds": [
+        "T08"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldTerrain.tsx",
+        "src/components/world/WorldTerrainPaving.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "P01",
+      "scene": "旧园区",
+      "name": "桥头入口广场",
+      "registeredIds": [
+        "P01"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldParkWalk.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "P02",
+      "scene": "旧园区",
+      "name": "栈道面/支柱装配",
+      "registeredIds": [
+        "P02"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldParkWalk.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "P03",
+      "scene": "旧园区",
+      "name": "栈道矮栏",
+      "registeredIds": [
+        "P03"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldParkWalk.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "P04",
+      "scene": "旧园区",
+      "name": "栈道灯柱",
+      "registeredIds": [
+        "P04"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldParkLamp.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "P05",
+      "scene": "旧园区",
+      "name": "园区总牌",
+      "registeredIds": [
+        "P05"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldParkSigns.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "P-hut",
+      "scene": "旧园区",
+      "name": "展位小屋（A/B及项目变体）",
+      "registeredIds": [
+        "P06",
+        "P07",
+        "P08",
+        "P09",
+        "P10",
+        "P11"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldPark.tsx",
+        "src/components/world/WorldParkLayout.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。 P06 Alpha小屋已移除，P07..P11仍用共享小屋族；P06不额外算待做。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "P13",
+      "scene": "旧园区",
+      "name": "评审亭双屏/按钮装配",
+      "registeredIds": [
+        "P13"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldParkExhibits.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "P14",
+      "scene": "旧园区",
+      "name": "旧展位双唱盘DJ台",
+      "registeredIds": [
+        "P14"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldParkExhibits.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "P15",
+      "scene": "旧园区",
+      "name": "九格唱片墙",
+      "registeredIds": [
+        "P15"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldParkExhibits.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "P16",
+      "scene": "旧园区",
+      "name": "露营椅",
+      "registeredIds": [
+        "P16"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldParkExhibits.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "P17",
+      "scene": "旧园区",
+      "name": "椅间桌/灯装配",
+      "registeredIds": [
+        "P17"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldParkExhibits.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "P18",
+      "scene": "旧园区",
+      "name": "黑板/讲台装配",
+      "registeredIds": [
+        "P18"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldParkExhibits.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "P19",
+      "scene": "旧园区",
+      "name": "项目小牌",
+      "registeredIds": [
+        "P19"
+      ],
+      "status": 3,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldParkSigns.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "X-P12",
+      "scene": "范围外",
+      "name": "旧研究台",
+      "registeredIds": [
+        "P12"
+      ],
+      "status": 4,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldParkLayout.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "EXHIBITS不再放置P12；归档登记不算当前模型待做。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "excluded",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "X-foundations",
+      "scene": "范围外",
+      "name": "三处预留地基",
+      "registeredIds": [
+        "F01",
+        "F02",
+        "F03"
+      ],
+      "status": 4,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldStreetLandmarks.tsx",
+        "src/components/world/WorldStreetAssets.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "同族尺寸/位置变体；规划占位不计本轮高质资产完成率。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "excluded",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "X-construction",
+      "scene": "范围外",
+      "name": "建设中牌",
+      "registeredIds": [
+        "F04"
+      ],
+      "status": 4,
+      "scope": "registered",
+      "source": [
+        "src/components/world/WorldStreetConstructionSigns.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "规划占位，不计本轮建模分母。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "excluded",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "S-shelter",
+      "scene": "街道",
+      "name": "候车亭",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "extension",
+      "source": [
+        "src/components/world/WorldStreetFixed.tsx",
+        "src/components/world/WorldStreetFacilityCraft.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "note": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5已接入4341。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "coordinator/ACCEPTANCE.md确认R10已升4341；用户最新视觉质量反馈仍未闭合"
+    },
+    {
+      "id": "S-signal",
+      "scene": "街道",
+      "name": "交通信号机",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "extension",
+      "source": [
+        "src/components/world/WorldStreetAssets.ts",
+        "src/components/world/WorldStreetFacilityCraft.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "note": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5已接入4341。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "coordinator/ACCEPTANCE.md确认R10已升4341；用户最新视觉质量反馈仍未闭合"
+    },
+    {
+      "id": "S-timber",
+      "scene": "街道",
+      "name": "山路木栏",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "extension",
+      "source": [
+        "src/components/world/WorldStreetRails.tsx",
+        "src/components/world/WorldStreetFacilityCraft.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "note": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5已接入4341。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "coordinator/ACCEPTANCE.md确认R10已升4341；用户最新视觉质量反馈仍未闭合"
+    },
+    {
+      "id": "N-grass",
+      "scene": "自然模型",
+      "name": "草丛模型",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "extension",
+      "source": [
+        "src/components/world/WorldGrass.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/asset-batch4-20261102/coordinator/REVIEW.md"
+      ],
+      "note": "batch4叶片形态增量；主协调指出仍偏硬偏宽，需视觉返修。纯风/踏压shader不另算族。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "D-bar",
+      "scene": "DJC Club",
+      "name": "北侧吧台建筑/家具整套",
+      "registeredIds": [],
+      "status": 1,
+      "scope": "extension",
+      "source": [
+        "src/components/world/WorldDjcClubBar.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/djc-runtime-20261101/RELEASE.md"
+      ],
+      "note": "专项精修、网页审阅与本地4341交付链路已有记录；不是新增用户最终审美签字。 吧台内凳/植栽/吊灯属于其可替换装配，不按小件重复累计。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "specialist-craft-integrated",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "继承专项交付记录；本次未新开浏览器或逐件HTTP回读"
+    },
+    {
+      "id": "D-daybed",
+      "scene": "DJC Club",
+      "name": "圆形日床/边桌整套",
+      "registeredIds": [],
+      "status": 1,
+      "scope": "extension",
+      "source": [
+        "src/components/world/WorldDjcClubDaybeds.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/djc-render-parity-20261101/README.md"
+      ],
+      "note": "专项精修、网页审阅与本地4341交付链路已有记录；不是新增用户最终审美签字。 吧台内凳/植栽/吊灯属于其可替换装配，不按小件重复累计。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "specialist-craft-integrated",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "继承专项交付记录；本次未新开浏览器或逐件HTTP回读"
+    },
+    {
+      "id": "D-lantern",
+      "scene": "DJC Club",
+      "name": "池边编织灯",
+      "registeredIds": [],
+      "status": 1,
+      "scope": "extension",
+      "source": [
+        "src/components/world/WorldDjcClubLanterns.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/djc-render-parity-20261101/README.md"
+      ],
+      "note": "专项精修、网页审阅与本地4341交付链路已有记录；不是新增用户最终审美签字。 吧台内凳/植栽/吊灯属于其可替换装配，不按小件重复累计。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "specialist-craft-integrated",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "继承专项交付记录；本次未新开浏览器或逐件HTTP回读"
+    },
+    {
+      "id": "D-umbrella",
+      "scene": "DJC Club",
+      "name": "独立遮阳伞",
+      "registeredIds": [],
+      "status": 1,
+      "scope": "extension",
+      "source": [
+        "src/components/world/WorldDjcClubUmbrellas.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/asset-batch2-20261101/README.md"
+      ],
+      "note": "专项精修、网页审阅与本地4341交付链路已有记录；不是新增用户最终审美签字。 吧台内凳/植栽/吊灯属于其可替换装配，不按小件重复累计。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "specialist-craft-integrated",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "继承专项交付记录；本次未新开浏览器或逐件HTTP回读"
+    },
+    {
+      "id": "D-lounger",
+      "scene": "DJC Club",
+      "name": "平躺椅",
+      "registeredIds": [],
+      "status": 1,
+      "scope": "extension",
+      "source": [
+        "src/components/world/WorldDjcClubFurniture.tsx",
+        "src/components/world/djc-furniture-visual.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/asset-batch3-20261101/README.md"
+      ],
+      "note": "专项精修、网页审阅与本地4341交付链路已有记录；不是新增用户最终审美签字。 吧台内凳/植栽/吊灯属于其可替换装配，不按小件重复累计。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "specialist-craft-integrated",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "继承专项交付记录；本次未新开浏览器或逐件HTTP回读"
+    },
+    {
+      "id": "D-console",
+      "scene": "DJC Club",
+      "name": "Club DJ台外壳",
+      "registeredIds": [],
+      "status": 1,
+      "scope": "extension",
+      "source": [
+        "src/components/world/WorldDjcClubFurniture.tsx",
+        "src/components/world/djc-furniture-visual.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/asset-batch3-20261101/README.md"
+      ],
+      "note": "专项精修、网页审阅与本地4341交付链路已有记录；不是新增用户最终审美签字。 吧台内凳/植栽/吊灯属于其可替换装配，不按小件重复累计。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "specialist-craft-integrated",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "继承专项交付记录；本次未新开浏览器或逐件HTTP回读"
+    },
+    {
+      "id": "D-speaker",
+      "scene": "DJC Club",
+      "name": "监听音箱",
+      "registeredIds": [],
+      "status": 1,
+      "scope": "extension",
+      "source": [
+        "src/components/world/WorldDjcClubFurniture.tsx",
+        "src/components/world/djc-furniture-visual.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/asset-batch3-20261101/README.md"
+      ],
+      "note": "专项精修、网页审阅与本地4341交付链路已有记录；不是新增用户最终审美签字。 吧台内凳/植栽/吊灯属于其可替换装配，不按小件重复累计。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "specialist-craft-integrated",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "继承专项交付记录；本次未新开浏览器或逐件HTTP回读"
+    },
+    {
+      "id": "I-transport",
+      "scene": "IBD工场",
+      "name": "可开盖运输零件箱",
+      "registeredIds": [],
+      "status": 1,
+      "scope": "extension",
+      "source": [
+        "src/components/world/attractions/WorldIbdCratePart.tsx",
+        "src/components/world/attractions/ibd-crate-visual.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/asset-batch2-20261101/README.md"
+      ],
+      "note": "专项精修、网页审阅与本地4341交付链路已有记录；不是新增用户最终审美签字。 高低变体、放置实例、壳盖不另计。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "specialist-craft-integrated",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "继承专项交付记录；本次未新开浏览器或逐件HTTP回读"
+    },
+    {
+      "id": "I-inspect",
+      "scene": "IBD工场",
+      "name": "拆检台",
+      "registeredIds": [],
+      "status": 1,
+      "scope": "extension",
+      "source": [
+        "src/components/world/attractions/WorldIbdStaticCraft.tsx",
+        "src/components/world/attractions/ibd-static-craft-visual.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/asset-batch3-20261101/README.md"
+      ],
+      "note": "专项精修、网页审阅与本地4341交付链路已有记录；不是新增用户最终审美签字。 高低变体、放置实例、壳盖不另计。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "specialist-craft-integrated",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "继承专项交付记录；本次未新开浏览器或逐件HTTP回读"
+    },
+    {
+      "id": "I-utility",
+      "scene": "IBD工场",
+      "name": "接收/工具工作桌",
+      "registeredIds": [],
+      "status": 1,
+      "scope": "extension",
+      "source": [
+        "src/components/world/attractions/WorldIbdStaticCraft.tsx",
+        "src/components/world/attractions/ibd-static-craft-visual.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/asset-batch3-20261101/README.md"
+      ],
+      "note": "专项精修、网页审阅与本地4341交付链路已有记录；不是新增用户最终审美签字。 高低变体、放置实例、壳盖不另计。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "specialist-craft-integrated",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "继承专项交付记录；本次未新开浏览器或逐件HTTP回读"
+    },
+    {
+      "id": "I-control",
+      "scene": "IBD工场",
+      "name": "控制柜/控制台",
+      "registeredIds": [],
+      "status": 1,
+      "scope": "extension",
+      "source": [
+        "src/components/world/attractions/WorldIbdStaticCraft.tsx",
+        "src/components/world/attractions/ibd-static-craft-visual.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/asset-batch3-20261101/README.md"
+      ],
+      "note": "专项精修、网页审阅与本地4341交付链路已有记录；不是新增用户最终审美签字。 高低变体、放置实例、壳盖不另计。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "specialist-craft-integrated",
+      "evidenceLimit": "按所列专项或旧登记读取；登记integrated-candidate不构成本轮精修通过。",
+      "served4341Evidence": "继承专项交付记录；本次未新开浏览器或逐件HTTP回读"
+    },
+    {
+      "id": "D-pavilion",
+      "scene": "DJC Club",
+      "name": "主舞台/竹拱茅草主亭装配",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldDjcClubGeometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/djc-beach-club/refinement-20261027.md"
+      ],
+      "note": "历史场景构造pass，未见本轮专门模型替换验收。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "D-basin",
+      "scene": "DJC Club",
+      "name": "泳池实体盆体/池岸装配",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldDjcClubGeometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/djc-beach-club/refinement-20261027.md"
+      ],
+      "note": "水shader另列范围外；实体部分仍需质量复核。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "D-palms",
+      "scene": "DJC Club",
+      "name": "Club棕榈植栽模型",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldDjcClubGeometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/djc-beach-club/refinement-20261027.md"
+      ],
+      "note": "与城区棕榈是不同几何实现；有羽状叶造型pass。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "D-planting",
+      "scene": "DJC Club",
+      "name": "Club低矮热带植栽套件",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldDjcClubGeometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/djc-beach-club/refinement-20261027.md"
+      ],
+      "note": "保留组合植栽为一可替换套件，不逐叶/逐岛算。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "D-mirror",
+      "scene": "DJC Club",
+      "name": "镜球/舞台吊挂灯装配",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldDjcClubGeometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/djc-beach-club/refinement-20261027.md"
+      ],
+      "note": "旧几何存在，未见本轮专项建模。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "A-quarry",
+      "scene": "Alpha矿场",
+      "name": "采石场岩壁/平台/入口实体",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldAlphaMine.tsx",
+        "src/components/world/WorldAlphaMineFoundation.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-pilot/integration-status.md"
+      ],
+      "note": "已做pilot原生资产/多轮美术，现记录明确不代表最终视觉接受；本轮专项精修未闭合。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "A-vein",
+      "scene": "Alpha矿场",
+      "name": "矿脉模型（完整/破损/打开状态）",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldAlphaMine.tsx",
+        "src/components/world/alpha-mine-assets.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-pilot/integration-status.md"
+      ],
+      "note": "已做pilot原生资产/多轮美术，现记录明确不代表最终视觉接受；本轮专项精修未闭合。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "A-ore",
+      "scene": "Alpha矿场",
+      "name": "可携带矿石（因子变体）",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldAlphaMine.tsx",
+        "src/components/world/alpha-mine-assets.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-pilot/integration-status.md"
+      ],
+      "note": "已做pilot原生资产/多轮美术，现记录明确不代表最终视觉接受；本轮专项精修未闭合。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "A-detector",
+      "scene": "Alpha矿场",
+      "name": "探测器",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldAlphaMine.tsx",
+        "src/components/world/alpha-mine-assets.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-pilot/integration-status.md"
+      ],
+      "note": "已做pilot原生资产/多轮美术，现记录明确不代表最终视觉接受；本轮专项精修未闭合。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "A-pickaxe",
+      "scene": "Alpha矿场",
+      "name": "镐",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldAlphaMine.tsx",
+        "src/components/world/alpha-mine-assets.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-pilot/integration-status.md"
+      ],
+      "note": "已做pilot原生资产/多轮美术，现记录明确不代表最终视觉接受；本轮专项精修未闭合。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "A-rack",
+      "scene": "Alpha矿场",
+      "name": "工具架",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldAlphaMine.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-pilot/integration-status.md"
+      ],
+      "note": "已做pilot原生资产/多轮美术，现记录明确不代表最终视觉接受；本轮专项精修未闭合。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "A-pool",
+      "scene": "Alpha矿场",
+      "name": "结果池实体/回收架/显示站装配",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldAlphaMine.tsx",
+        "src/components/world/WorldMinePool.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-pilot/integration-status.md"
+      ],
+      "note": "已做pilot原生资产/多轮美术，现记录明确不代表最终视觉接受；本轮专项精修未闭合。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "A-sign",
+      "scene": "Alpha矿场",
+      "name": "矿场信息牌",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldAlphaMine.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-pilot/integration-status.md"
+      ],
+      "note": "已做pilot原生资产/多轮美术，现记录明确不代表最终视觉接受；本轮专项精修未闭合。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "E-building",
+      "scene": "Alpha交易所",
+      "name": "交易所建筑/楼廊/栏杆",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldAlphaExchangeGeometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-exchange/implementation-20261027.md"
+      ],
+      "note": "存在历史crafted几何与独立装配；未找到本轮高质模型/最终用户接受凭据。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "E-desk",
+      "scene": "Alpha交易所",
+      "name": "环形交易桌/CRT/银行灯装配",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldAlphaExchangeGeometry.ts",
+        "src/components/world/alpha-exchange-interior-craft.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-exchange/implementation-20261027.md"
+      ],
+      "note": "存在历史crafted几何与独立装配；未找到本轮高质模型/最终用户接受凭据。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "E-archive",
+      "scene": "Alpha交易所",
+      "name": "档案柜/业务台/文件槽装配",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldAlphaExchangeGeometry.ts",
+        "src/components/world/alpha-exchange-interior-craft.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-exchange/implementation-20261027.md"
+      ],
+      "note": "存在历史crafted几何与独立装配；未找到本轮高质模型/最终用户接受凭据。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "E-press",
+      "scene": "Alpha交易所",
+      "name": "清算压机",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldAlphaExchangeGeometry.ts",
+        "src/components/world/alpha-exchange-clearing-craft.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-exchange/implementation-20261027.md"
+      ],
+      "note": "存在历史crafted几何与独立装配；未找到本轮高质模型/最终用户接受凭据。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "E-gallery",
+      "scene": "Alpha交易所",
+      "name": "楼廊读图控制台",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldAlphaExchangeGeometry.ts",
+        "src/components/world/alpha-exchange-gallery-craft.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-exchange/implementation-20261027.md"
+      ],
+      "note": "存在历史crafted几何与独立装配；未找到本轮高质模型/最终用户接受凭据。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "E-bell",
+      "scene": "Alpha交易所",
+      "name": "交易钟/敲锤装配",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldAlphaExchangeGeometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-exchange/implementation-20261027.md"
+      ],
+      "note": "存在历史crafted几何与独立装配；未找到本轮高质模型/最终用户接受凭据。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "E-clock",
+      "scene": "Alpha交易所",
+      "name": "后墙时钟/行情板装配",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldAlphaExchangeGeometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-exchange/implementation-20261027.md"
+      ],
+      "note": "存在历史crafted几何与独立装配；未找到本轮高质模型/最终用户接受凭据。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "I-shed",
+      "scene": "IBD工场",
+      "name": "工场厂房装配（coil/parts/dispatch变体）",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/ibd-yard-architecture.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/ibd-art-20261028/cab-handoff.md"
+      ],
+      "note": "三种厂房按共用钢构建造系统归一族；若日后独立建筑美术目标不同再拆。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "I-site",
+      "scene": "IBD工场",
+      "name": "工场场坪/沟槽/道路实体",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/ibd-yard-site.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/ibd-art-20261028/cab-handoff.md"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "I-truck",
+      "scene": "IBD工场",
+      "name": "装卸货车（含驾驶室）",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/ibd-truck-geometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/ibd-art-20261028/cab-handoff.md"
+      ],
+      "note": "驾驶室做过样板；交接明确运行日夜审阅待接，不能把整车视为完成。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "I-crane",
+      "scene": "IBD工场",
+      "name": "桥式起重机/吊具装配",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/ibd-yard-geometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/ibd-art-20261028/cab-handoff.md"
+      ],
+      "note": "几何有绞盘/齿轮箱/夹具深化；缺当前质量验收。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "I-coil",
+      "scene": "IBD工场",
+      "name": "钢卷/移动托架装配",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/ibd-yard-geometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/ibd-art-20261028/cab-handoff.md"
+      ],
+      "note": "完整/损坏卷不按状态重复算。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "I-rack",
+      "scene": "IBD工场",
+      "name": "后库开放钢货架",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/ibd-stock-craft.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/ibd-stock-craft-20261029/handoff.md"
+      ],
+      "note": "v42构造pass；原交接待网页日夜接受。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "I-stockcrate",
+      "scene": "IBD工场",
+      "name": "静态仓储木箱",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/ibd-stock-craft.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/ibd-stock-craft-20261029/handoff.md"
+      ],
+      "note": "不同于可取样运输箱装配；静态箱同尺寸/实例合并。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "I-tool",
+      "scene": "IBD工场",
+      "name": "手持量具/检验工具套件",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/ibd-pack-geometry.ts",
+        "src/components/world/attractions/ibd-yard-geometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/ibd-art-20261028/cab-handoff.md"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。 量具上下颚归完整工具，不拆零件。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "I-sample",
+      "scene": "IBD工场",
+      "name": "机械样品（M6/M8等规格）",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/ibd-pack-geometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/ibd-art-20261028/cab-handoff.md"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。 规格变体合并。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "I-shutter",
+      "scene": "IBD工场",
+      "name": "工场卷闸门",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/ibd-yard-geometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/ibd-art-20261028/cab-handoff.md"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "I-sign",
+      "scene": "IBD工场",
+      "name": "工场导向/工位牌套件",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/WorldIbdSigns.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/ibd-art-20261028/cab-handoff.md"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "R-track",
+      "scene": "过山车",
+      "name": "过山车轨道/支架/连接结构",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/coaster-geometry.ts",
+        "src/components/world/attractions/coaster-detailing.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-building-art-handoff.md"
+      ],
+      "note": "历史结构与连接深化；未见本轮高质资产闭环。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "R-train",
+      "scene": "过山车",
+      "name": "过山车列车",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/coaster-geometry.ts",
+        "src/components/world/attractions/WorldIntentCoaster.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-building-art-handoff.md"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。 车厢重复实例合并。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "R-station",
+      "scene": "过山车",
+      "name": "过山车站房/候车厅",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/coaster-geometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-building-art-handoff.md"
+      ],
+      "note": "有站房构造pass；交接保留参考差距及待真实日夜验收。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "R-equipment",
+      "scene": "过山车",
+      "name": "设备楼套件",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/coaster-geometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-building-art-handoff.md"
+      ],
+      "note": "东/西服务体及设备楼按同建造系统合并。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "R-tower",
+      "scene": "过山车",
+      "name": "过山车服务塔",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/coaster-thrill-tower.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-tower-art-handoff.md"
+      ],
+      "note": "历史美术样板，缺本轮用户质量确认。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "R-tunnel",
+      "scene": "过山车",
+      "name": "过山车隧道壳体",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/coaster-geometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-building-art-handoff.md"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "R-lookout",
+      "scene": "过山车",
+      "name": "观景台/步阶装配",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/coaster-lookout-sample.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-lookout-sample-handoff.md"
+      ],
+      "note": "历史代表样板，未当作用户最终接受。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "R-landscape",
+      "scene": "过山车",
+      "name": "过山车崖壁/内场岩景",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/coaster-landscape.ts",
+        "src/components/world/attractions/coaster-landscape-cliffs.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-infield-terrain-handoff.md"
+      ],
+      "note": "与全局散布石块不同，为场景地形装配；历史地形美术待复核。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "R-flora",
+      "scene": "过山车",
+      "name": "过山车植被套件",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/WorldCoasterVegetation.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-vegetation-handoff.md"
+      ],
+      "note": "场景独立植被，树种/摆放不重复算。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "R-fence",
+      "scene": "过山车",
+      "name": "过山车外围护栏",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/coaster-geometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-building-art-handoff.md"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "R-gate",
+      "scene": "过山车",
+      "name": "入口双扇门",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/WorldIntentDevices.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-building-art-handoff.md"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "R-chest",
+      "scene": "过山车",
+      "name": "宝箱/锁/钥匙整套",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/WorldIntentDevices.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-building-art-handoff.md"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "W-intake",
+      "scene": "Intent车间",
+      "name": "入料滚筒台",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/intent-workshop-geometry.ts",
+        "src/components/world/attractions/WorldIntentWorkshop.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
+      ],
+      "note": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "W-lookup",
+      "scene": "Intent车间",
+      "name": "lookup扫描工位",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/intent-workshop-geometry.ts",
+        "src/components/world/attractions/WorldIntentWorkshop.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
+      ],
+      "note": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "W-act",
+      "scene": "Intent车间",
+      "name": "act执行工位",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/intent-workshop-geometry.ts",
+        "src/components/world/attractions/WorldIntentWorkshop.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
+      ],
+      "note": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "W-plan",
+      "scene": "Intent车间",
+      "name": "plan规划工位",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/intent-workshop-geometry.ts",
+        "src/components/world/attractions/WorldIntentWorkshop.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
+      ],
+      "note": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "W-debug",
+      "scene": "Intent车间",
+      "name": "debug维修工位",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/intent-workshop-geometry.ts",
+        "src/components/world/attractions/WorldIntentWorkshop.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
+      ],
+      "note": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "W-rewrite",
+      "scene": "Intent车间",
+      "name": "rewrite滚压工位",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/intent-workshop-geometry.ts",
+        "src/components/world/attractions/WorldIntentWorkshop.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
+      ],
+      "note": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "W-extract",
+      "scene": "Intent车间",
+      "name": "extract分拣工位",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/intent-workshop-geometry.ts",
+        "src/components/world/attractions/WorldIntentWorkshop.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
+      ],
+      "note": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "W-carrier",
+      "scene": "Intent车间",
+      "name": "架空分支输送轨/中枢",
+      "registeredIds": [],
+      "status": 2,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/intent-workshop-geometry.ts",
+        "src/components/world/attractions/WorldIntentWorkshop.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
+      ],
+      "note": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "crafted-or-pilot-requires-visual-review",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "W-capsule",
+      "scene": "Intent车间",
+      "name": "运载胶囊",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/attractions/intent-workshop-geometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "S-stop",
+      "scene": "街道",
+      "name": "停车标志",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldStreetAssets.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。 新增于旧80 ID登记之外。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "S-direction",
+      "scene": "街道",
+      "name": "道路方向牌",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldStreetAssets.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。 新增于旧80 ID登记之外。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "S-chevron",
+      "scene": "街道",
+      "name": "转弯警示牌",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldStreetAssets.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。 新增于旧80 ID登记之外。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "S-delineator",
+      "scene": "街道",
+      "name": "反光导向柱",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldStreetAssets.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。 新增于旧80 ID登记之外。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "S-bollard",
+      "scene": "街道",
+      "name": "防撞柱",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldStreetAssets.ts",
+        "src/components/world/WorldStreetFixed.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。 新增于旧80 ID登记之外。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "S-guardrail",
+      "scene": "街道",
+      "name": "道路金属防护栏",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldStreetAssets.ts",
+        "src/components/world/WorldStreetRails.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。 新增于旧80 ID登记之外。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    },
+    {
+      "id": "S-parapet",
+      "scene": "街道",
+      "name": "桥侧实体护墙/桥墩装配",
+      "registeredIds": [],
+      "status": 3,
+      "scope": "supplemental",
+      "source": [
+        "src/components/world/WorldStreetAssets.ts",
+        "src/components/world/WorldStreetRails.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json"
+      ],
+      "note": "本轮未找到专项精修/审图证据；已有正式或程序化模型不自动算本轮精修。 新增于旧80 ID登记之外。",
+      "userVisualAcceptance": "not-established-by-this-audit",
+      "sourcePresentAtAuditedHead": true,
+      "modelingCompletion": "no-this-round-specialist-craft-evidence",
+      "evidenceLimit": "源码确认视觉装配存在；所附历史文档提供场景/工艺上下文，不能替代该族当前冻结包逐件视觉验收。",
+      "served4341Evidence": "仅当前release源码/历史局部交付证据；本次未独立逐件确认4341加载"
+    }
+  ],
+  "referencePathValidation": {
+    "referencedPaths": 89,
+    "missing": []
+  }
+}
