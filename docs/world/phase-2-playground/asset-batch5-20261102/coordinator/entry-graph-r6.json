@@ -1,0 +1,22 @@
+{
+  "status": "FAIL",
+  "build": "/tmp/bobby-world-batch5-r6-fourteen-01a19a62",
+  "checkedModules": 4,
+  "app": [],
+  "runtime": [],
+  "missing": [
+    {
+      "path": "_astro/WorldApp.CIE8wzml.js",
+      "referencedBy": "world/index.html"
+    }
+  ],
+  "externalOrigins": [],
+  "nonliteralImportsNotResolved": 0,
+  "limitation": "Local literal module references only; does not certify WebGL, gameplay, or non-module assets.",
+  "files": {
+    "world/index.html": "d160f7b159f81c89dea544d30807978d15526f680ad75829f6d9fcc94d725146",
+    "_astro/client.BINMsa6k.js": "bd8e88b321e8e849e10322175edc3529f05ed07d1e9e3f02f9c99a5a6e1d3f88",
+    "_astro/index.DP38BoPS.js": "6f9497145656a20d500d279519ad0273c3a5a9a813061a7067bbc72e5433508f",
+    "_astro/client.BogH9A_j.js": "d59721b343eecba74c7a79e0f17fa8602a0ff9893f1526697fbf8ce755fa18c9"
+  }
+}
