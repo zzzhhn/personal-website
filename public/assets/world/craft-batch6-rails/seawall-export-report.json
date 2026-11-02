@@ -1,0 +1,10 @@
+{
+  "family": "seawall",
+  "sourceJSONSHA256": "a209f730b6f8486b678bee8fe97e29d5971164644acc5174bebdff68cda4c279",
+  "triangles": 1060,
+  "freshBoundsDelta": 0.0,
+  "parts": 5,
+  "images": 0,
+  "portableSHA256": "625a6aba43852618ecb8c797bf395e0f3499589f380428188ed5d62fa00ca53f",
+  "status": "exported/fresh-imported; actual runtime visual verdict separate"
+}

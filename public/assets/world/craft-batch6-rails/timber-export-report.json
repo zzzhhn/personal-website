@@ -1,0 +1,10 @@
+{
+  "family": "timber",
+  "sourceJSONSHA256": "188184881ee271916d3d99bbf8c0ae5937a14d6c126e9e4d0d296605c9516ccd",
+  "triangles": 916,
+  "freshBoundsDelta": 0.0,
+  "parts": 11,
+  "images": 3,
+  "portableSHA256": "ca3c0990a5b3f3eeb9ca7adbee6c97e7e76dc8edf53837b3a1e15c9d7c881c25",
+  "status": "exported/fresh-imported; actual runtime visual verdict separate"
+}

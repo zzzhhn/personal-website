@@ -5,7 +5,8 @@ const sha=x=>createHash('sha256').update(x).digest('hex');
 function node(B,name,matrix=new Matrix4()){
  const n=new Matrix3().getNormalMatrix(matrix),p=new Vector3(),position=[],normal=[];
  for(let i=0;i<B.pos.length;i+=3){position.push(...p.fromArray(B.pos,i).applyMatrix4(matrix).toArray());normal.push(...p.fromArray(B.nrm,i).applyNormalMatrix(n).toArray());}
- return{name,translation:[0,0,0],position,normal,color:B.col,aMat:B.mat,aSuv:B.suv,index:B.idx,parts:B.parts.map(p=>({...p,end:p.end<0?B.pos.length/3:p.end}))};
+ const hulls=B.hulls().map(h=>[...h]);const baselineHullSHA256=sha(JSON.stringify(hulls));
+ return{name,translation:[0,0,0],position,normal,color:B.col,aMat:B.mat,aSuv:B.suv,index:B.idx,baselineHullSHA256,parts:B.parts.map(p=>({...p,end:p.end<0?B.pos.length/3:p.end}))};
 }
 const sea=f.actual.kinds.find(k=>k.id==='seawallBay'),end=f.actual.kinds.find(k=>k.id==='seawallEnd'),span=base.actual.seaStep;
 const seaNodes=[node(sea.L0,'bay'),node(end.L0,'terminal-unit-fixture',new Matrix4().makeTranslation(span,0,0))];
