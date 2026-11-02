@@ -1,0 +1,620 @@
+{
+  "verifiedAt": "2026-11-03T00:23:19.309772+08:00",
+  "status": "SIX_WINDOWS_VALID_BOUNDED_LOCAL_PLAYTEST_SUPPORTED",
+  "errors": [],
+  "windows": [
+    {
+      "name": "r10-old-a-legacy-camp-sample-1.json",
+      "sha256": "e626fb07f7367d3b21a4d262b8d31e6b1de71b80f475f6c1dc6af9e052107598",
+      "savedAtUTC": "2026-11-02T15:58:35.169127+00:00",
+      "valid": true,
+      "checks": {
+        "executorSHA": true,
+        "valid": true,
+        "300UniqueConsecutive": true,
+        "frameBoundaries": true,
+        "90Warm": true,
+        "settle10to20sStable60": true,
+        "arrivalIdentity": true,
+        "arrivalNormal": true,
+        "arrivalSettings": true,
+        "arrivalBuffer": true,
+        "arrivalCamera": true,
+        "settledIdentity": true,
+        "settledNormal": true,
+        "settledSettings": true,
+        "settledBuffer": true,
+        "settledCamera": true,
+        "beforeIdentity": true,
+        "beforeNormal": true,
+        "beforeSettings": true,
+        "beforeBuffer": true,
+        "beforeCamera": true,
+        "afterIdentity": true,
+        "afterNormal": true,
+        "afterSettings": true,
+        "afterBuffer": true,
+        "afterCamera": true,
+        "stableSettledMeasuredCounters": true,
+        "shadowIdleDuringSettleAndMeasurement": true,
+        "driftUnder01mm": true,
+        "finitePositiveDeltas": true,
+        "summaryMatches": true,
+        "under30s": true,
+        "assetModeAndNoFallback": true
+      },
+      "summary": {
+        "frames": 300,
+        "warmupFrames": 90,
+        "fps": 59.40594059405941,
+        "p50": 16.699999928474426,
+        "p95": 17.399999976158142,
+        "max": 57,
+        "over33_4ms": 1,
+        "gpuMs": null
+      },
+      "constantCounters": {
+        "calls": 162,
+        "triangles": 621902,
+        "geometries": 252,
+        "textures": 84,
+        "programs": 183
+      },
+      "cameraMaxDriftM": 0.0,
+      "playerMaxDriftM": 0.0,
+      "settleMs": 10010.300000071526,
+      "reportedStableFrames": 599,
+      "arrivalCounters": {
+        "calls": 162,
+        "triangles": 621902,
+        "geometries": 252,
+        "textures": 84,
+        "programs": 183
+      },
+      "measuredCamera": [
+        -25.408831175456857,
+        14.854108621858199,
+        48.23822586233031
+      ],
+      "measuredPlayer": [
+        -30.5,
+        5.718827247619629,
+        41.45000076293945
+      ]
+    },
+    {
+      "name": "r10-old-a-legacy-street-sample-2.json",
+      "sha256": "dcdf56a862232f25dd6a4bdb43880c635be4a45bad4edf74a0daca7fff7359bc",
+      "savedAtUTC": "2026-11-02T16:13:11.293518+00:00",
+      "valid": true,
+      "checks": {
+        "executorSHA": true,
+        "valid": true,
+        "300UniqueConsecutive": true,
+        "frameBoundaries": true,
+        "90Warm": true,
+        "settle10to20sStable60": true,
+        "arrivalIdentity": true,
+        "arrivalNormal": true,
+        "arrivalSettings": true,
+        "arrivalBuffer": true,
+        "arrivalCamera": true,
+        "settledIdentity": true,
+        "settledNormal": true,
+        "settledSettings": true,
+        "settledBuffer": true,
+        "settledCamera": true,
+        "beforeIdentity": true,
+        "beforeNormal": true,
+        "beforeSettings": true,
+        "beforeBuffer": true,
+        "beforeCamera": true,
+        "afterIdentity": true,
+        "afterNormal": true,
+        "afterSettings": true,
+        "afterBuffer": true,
+        "afterCamera": true,
+        "stableSettledMeasuredCounters": true,
+        "shadowIdleDuringSettleAndMeasurement": true,
+        "driftUnder01mm": true,
+        "finitePositiveDeltas": true,
+        "summaryMatches": true,
+        "under30s": true,
+        "assetModeAndNoFallback": true
+      },
+      "summary": {
+        "frames": 300,
+        "warmupFrames": 90,
+        "fps": 59.97960693307075,
+        "p50": 16.699999928474426,
+        "p95": 17.800000071525574,
+        "max": 22,
+        "over33_4ms": 0,
+        "gpuMs": null
+      },
+      "constantCounters": {
+        "calls": 140,
+        "triangles": 544799,
+        "geometries": 309,
+        "textures": 92,
+        "programs": 188
+      },
+      "cameraMaxDriftM": 0.0,
+      "playerMaxDriftM": 0.0,
+      "settleMs": 10012.200000047684,
+      "reportedStableFrames": 600,
+      "arrivalCounters": {
+        "calls": 140,
+        "triangles": 544799,
+        "geometries": 309,
+        "textures": 92,
+        "programs": 188
+      },
+      "measuredCamera": [
+        18.39121765266814,
+        11.104106356881697,
+        -18.01177413766969
+      ],
+      "measuredPlayer": [
+        13.300048828125,
+        1.9688249826431274,
+        -24.799999237060547
+      ]
+    },
+    {
+      "name": "r10-new-candidate-camp-sample-1.json",
+      "sha256": "caff42541a7b9579cb9c19666f7febfc60cddeca27d2c696f5f9dec30c4a908c",
+      "savedAtUTC": "2026-11-02T16:14:14.408833+00:00",
+      "valid": true,
+      "checks": {
+        "executorSHA": true,
+        "valid": true,
+        "300UniqueConsecutive": true,
+        "frameBoundaries": true,
+        "90Warm": true,
+        "settle10to20sStable60": true,
+        "arrivalIdentity": true,
+        "arrivalNormal": true,
+        "arrivalSettings": true,
+        "arrivalBuffer": true,
+        "arrivalCamera": true,
+        "settledIdentity": true,
+        "settledNormal": true,
+        "settledSettings": true,
+        "settledBuffer": true,
+        "settledCamera": true,
+        "beforeIdentity": true,
+        "beforeNormal": true,
+        "beforeSettings": true,
+        "beforeBuffer": true,
+        "beforeCamera": true,
+        "afterIdentity": true,
+        "afterNormal": true,
+        "afterSettings": true,
+        "afterBuffer": true,
+        "afterCamera": true,
+        "stableSettledMeasuredCounters": true,
+        "shadowIdleDuringSettleAndMeasurement": true,
+        "driftUnder01mm": true,
+        "finitePositiveDeltas": true,
+        "summaryMatches": true,
+        "under30s": true,
+        "assetModeAndNoFallback": true
+      },
+      "summary": {
+        "frames": 300,
+        "warmupFrames": 90,
+        "fps": 59.99880002371343,
+        "p50": 16.699999928474426,
+        "p95": 18.100000023841858,
+        "max": 18.799999952316284,
+        "over33_4ms": 0,
+        "gpuMs": null
+      },
+      "constantCounters": {
+        "calls": 208,
+        "triangles": 737011,
+        "geometries": 350,
+        "textures": 90,
+        "programs": 172
+      },
+      "cameraMaxDriftM": 0.0,
+      "playerMaxDriftM": 0.0,
+      "settleMs": 10018.399999976158,
+      "reportedStableFrames": 493,
+      "arrivalCounters": {
+        "calls": 297,
+        "triangles": 1070225,
+        "geometries": 329,
+        "textures": 90,
+        "programs": 172
+      },
+      "measuredCamera": [
+        -25.40883117545686,
+        14.854108621858199,
+        48.23822586233031
+      ],
+      "measuredPlayer": [
+        -30.5,
+        5.718827247619629,
+        41.45000076293945
+      ]
+    },
+    {
+      "name": "r10-new-candidate-street-sample-2.json",
+      "sha256": "17c5e0721e1273fdfcf777d6815dd1a0a846d83c7f3ee33ac36fcf894b9f855b",
+      "savedAtUTC": "2026-11-02T16:14:46.009331+00:00",
+      "valid": true,
+      "checks": {
+        "executorSHA": true,
+        "valid": true,
+        "300UniqueConsecutive": true,
+        "frameBoundaries": true,
+        "90Warm": true,
+        "settle10to20sStable60": true,
+        "arrivalIdentity": true,
+        "arrivalNormal": true,
+        "arrivalSettings": true,
+        "arrivalBuffer": true,
+        "arrivalCamera": true,
+        "settledIdentity": true,
+        "settledNormal": true,
+        "settledSettings": true,
+        "settledBuffer": true,
+        "settledCamera": true,
+        "beforeIdentity": true,
+        "beforeNormal": true,
+        "beforeSettings": true,
+        "beforeBuffer": true,
+        "beforeCamera": true,
+        "afterIdentity": true,
+        "afterNormal": true,
+        "afterSettings": true,
+        "afterBuffer": true,
+        "afterCamera": true,
+        "stableSettledMeasuredCounters": true,
+        "shadowIdleDuringSettleAndMeasurement": true,
+        "driftUnder01mm": true,
+        "finitePositiveDeltas": true,
+        "summaryMatches": true,
+        "under30s": true,
+        "assetModeAndNoFallback": true
+      },
+      "summary": {
+        "frames": 300,
+        "warmupFrames": 90,
+        "fps": 59.57108816521048,
+        "p50": 16.699999928474426,
+        "p95": 17.300000071525574,
+        "max": 58,
+        "over33_4ms": 1,
+        "gpuMs": null
+      },
+      "constantCounters": {
+        "calls": 141,
+        "triangles": 584554,
+        "geometries": 392,
+        "textures": 96,
+        "programs": 175
+      },
+      "cameraMaxDriftM": 0.0,
+      "playerMaxDriftM": 0.0,
+      "settleMs": 10011,
+      "reportedStableFrames": 404,
+      "arrivalCounters": {
+        "calls": 134,
+        "triangles": 1000540,
+        "geometries": 360,
+        "textures": 96,
+        "programs": 175
+      },
+      "measuredCamera": [
+        18.391217652668143,
+        11.104106356881697,
+        -18.01177413766969
+      ],
+      "measuredPlayer": [
+        13.300048828125,
+        1.9688249826431274,
+        -24.799999237060547
+      ]
+    },
+    {
+      "name": "r10-old-b-legacy-camp-sample-1.json",
+      "sha256": "4854845630397a2aa37b31e35d5757e55814fcfbd0b723d05195a2a15ae34d82",
+      "savedAtUTC": "2026-11-02T16:16:07.269287+00:00",
+      "valid": true,
+      "checks": {
+        "executorSHA": true,
+        "valid": true,
+        "300UniqueConsecutive": true,
+        "frameBoundaries": true,
+        "90Warm": true,
+        "settle10to20sStable60": true,
+        "arrivalIdentity": true,
+        "arrivalNormal": true,
+        "arrivalSettings": true,
+        "arrivalBuffer": true,
+        "arrivalCamera": true,
+        "settledIdentity": true,
+        "settledNormal": true,
+        "settledSettings": true,
+        "settledBuffer": true,
+        "settledCamera": true,
+        "beforeIdentity": true,
+        "beforeNormal": true,
+        "beforeSettings": true,
+        "beforeBuffer": true,
+        "beforeCamera": true,
+        "afterIdentity": true,
+        "afterNormal": true,
+        "afterSettings": true,
+        "afterBuffer": true,
+        "afterCamera": true,
+        "stableSettledMeasuredCounters": true,
+        "shadowIdleDuringSettleAndMeasurement": true,
+        "driftUnder01mm": true,
+        "finitePositiveDeltas": true,
+        "summaryMatches": true,
+        "under30s": true,
+        "assetModeAndNoFallback": true
+      },
+      "summary": {
+        "frames": 300,
+        "warmupFrames": 90,
+        "fps": 59.9880023995201,
+        "p50": 16.699999928474426,
+        "p95": 17.5,
+        "max": 17.700000047683716,
+        "over33_4ms": 0,
+        "gpuMs": null
+      },
+      "constantCounters": {
+        "calls": 162,
+        "triangles": 644686,
+        "geometries": 325,
+        "textures": 87,
+        "programs": 170
+      },
+      "cameraMaxDriftM": 0.0,
+      "playerMaxDriftM": 0.0,
+      "settleMs": 10012,
+      "reportedStableFrames": 458,
+      "arrivalCounters": {
+        "calls": 246,
+        "triangles": 987500,
+        "geometries": 306,
+        "textures": 87,
+        "programs": 170
+      },
+      "measuredCamera": [
+        -25.40883117545686,
+        14.854108621858199,
+        48.23822586233031
+      ],
+      "measuredPlayer": [
+        -30.5,
+        5.718827247619629,
+        41.45000076293945
+      ]
+    },
+    {
+      "name": "r10-old-b-legacy-street-sample-2.json",
+      "sha256": "f796c71bef29ee2661b86d230be96bc89a2bb9b44f8ba27dc7229c38b40a440b",
+      "savedAtUTC": "2026-11-02T16:16:43.336282+00:00",
+      "valid": true,
+      "checks": {
+        "executorSHA": true,
+        "valid": true,
+        "300UniqueConsecutive": true,
+        "frameBoundaries": true,
+        "90Warm": true,
+        "settle10to20sStable60": true,
+        "arrivalIdentity": true,
+        "arrivalNormal": true,
+        "arrivalSettings": true,
+        "arrivalBuffer": true,
+        "arrivalCamera": true,
+        "settledIdentity": true,
+        "settledNormal": true,
+        "settledSettings": true,
+        "settledBuffer": true,
+        "settledCamera": true,
+        "beforeIdentity": true,
+        "beforeNormal": true,
+        "beforeSettings": true,
+        "beforeBuffer": true,
+        "beforeCamera": true,
+        "afterIdentity": true,
+        "afterNormal": true,
+        "afterSettings": true,
+        "afterBuffer": true,
+        "afterCamera": true,
+        "stableSettledMeasuredCounters": true,
+        "shadowIdleDuringSettleAndMeasurement": true,
+        "driftUnder01mm": true,
+        "finitePositiveDeltas": true,
+        "summaryMatches": true,
+        "under30s": true,
+        "assetModeAndNoFallback": true
+      },
+      "summary": {
+        "frames": 300,
+        "warmupFrames": 90,
+        "fps": 60.00240009514547,
+        "p50": 16.699999928474426,
+        "p95": 17.600000023841858,
+        "max": 17.899999976158142,
+        "over33_4ms": 0,
+        "gpuMs": null
+      },
+      "constantCounters": {
+        "calls": 140,
+        "triangles": 560413,
+        "geometries": 380,
+        "textures": 93,
+        "programs": 173
+      },
+      "cameraMaxDriftM": 0.0,
+      "playerMaxDriftM": 0.0,
+      "settleMs": 10012.399999976158,
+      "reportedStableFrames": 600,
+      "arrivalCounters": {
+        "calls": 140,
+        "triangles": 560413,
+        "geometries": 380,
+        "textures": 93,
+        "programs": 173
+      },
+      "measuredCamera": [
+        18.39121765266814,
+        11.104106356881696,
+        -18.01177413766969
+      ],
+      "measuredPlayer": [
+        13.300048828125,
+        1.9688249826431274,
+        -24.799999237060547
+      ]
+    }
+  ],
+  "comparisons": {
+    "camp": {
+      "crossWindowCameraMaxDriftM": 3.552713678800501e-15,
+      "crossWindowPlayerMaxDriftM": 0.0,
+      "crossWindowTargetMaxDriftM": 1.7763568394002505e-15,
+      "oldA": {
+        "calls": 162,
+        "triangles": 621902,
+        "geometries": 252,
+        "textures": 84,
+        "programs": 183
+      },
+      "candidate": {
+        "calls": 208,
+        "triangles": 737011,
+        "geometries": 350,
+        "textures": 90,
+        "programs": 172
+      },
+      "oldB": {
+        "calls": 162,
+        "triangles": 644686,
+        "geometries": 325,
+        "textures": 87,
+        "programs": 170
+      },
+      "oldBMinusOldA": {
+        "calls": 0,
+        "triangles": 22784,
+        "geometries": 73,
+        "textures": 3,
+        "programs": -13
+      },
+      "oldBvsOldATriangleChangePercent": 3.663599731147351,
+      "candidateVsOldTriangleChangesPercent": [
+        18.50918633482446,
+        14.32092522561371
+      ],
+      "strictEqualLoad": false
+    },
+    "street": {
+      "crossWindowCameraMaxDriftM": 3.552713678800501e-15,
+      "crossWindowPlayerMaxDriftM": 0.0,
+      "crossWindowTargetMaxDriftM": 1.7763568394002505e-15,
+      "oldA": {
+        "calls": 140,
+        "triangles": 544799,
+        "geometries": 309,
+        "textures": 92,
+        "programs": 188
+      },
+      "candidate": {
+        "calls": 141,
+        "triangles": 584554,
+        "geometries": 392,
+        "textures": 96,
+        "programs": 175
+      },
+      "oldB": {
+        "calls": 140,
+        "triangles": 560413,
+        "geometries": 380,
+        "textures": 93,
+        "programs": 173
+      },
+      "oldBMinusOldA": {
+        "calls": 0,
+        "triangles": 15614,
+        "geometries": 71,
+        "textures": 1,
+        "programs": -15
+      },
+      "oldBvsOldATriangleChangePercent": 2.866011134381671,
+      "candidateVsOldTriangleChangesPercent": [
+        7.29718666884484,
+        4.307715916654325
+      ],
+      "strictEqualLoad": false
+    }
+  },
+  "sampleFileCount": 6,
+  "failedFiles": [],
+  "reviewGapSeconds": 679.3063683509827,
+  "cleanupReceipt": {
+    "atUTC": "2026-11-02T16:17:44.250720+00:00",
+    "ownServerPID": 18927,
+    "verifiedCommand": "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/serve.py /tmp/bobby-world-batch5-r10-fourteen-01a19a62 4359",
+    "signal": "SIGTERM",
+    "lockOwner": "batch5-r8-01a19a62",
+    "lockRemoved": true,
+    "restoredURL": "http://127.0.0.1:4341/world/?start=camp&quality=balanced&paused=1",
+    "viewportReset": true,
+    "pauseDOM": "r10-restored-4341.txt",
+    "screenshot": "r10-restored-4341.png",
+    "otherServicesStopped": false
+  },
+  "pausedMenuInSavedDOM": true,
+  "independentVisualReview": {
+    "images": [
+      "runtime/r10-shelter-sit-visible.png",
+      "runtime/r10-shelter-stand-visible.png"
+    ],
+    "result": "Avatar and seat relationship visible from open side; stand image returns E Sit. Camera no longer obscured by backrest/roof or hiding guide. Does not certify anatomical sitting-animation quality.",
+    "actualMediaType": "image/jpeg",
+    "dimensions": [
+      1710,
+      875
+    ],
+    "viewedAfterSamplingFinished": true,
+    "imageHashesRechecked": true
+  },
+  "localCandidatePlaytestSupported": true,
+  "strictEqualLoadCostClaimSupported": false,
+  "zeroOverheadClaimSupported": false,
+  "wholeIslandPerformanceClaimSupported": false,
+  "limitations": [
+    "Six short windows, one nonrandomized ABA per point; 679.306s first-save to second-preparation review gap retained.",
+    "Within-window counts stable does not imply equal cross-load residency, geometry, shader state or streaming completion. Legacy A/B counts differ despite effectively identical poses.",
+    "gl.info calls/triangles include scene and shadow work; allocated geometry/texture/program counts are not a list of visible assets. Missing per-asset state prevents attribution of the legacy difference.",
+    "Near60FPS results are refresh-limited observations, not GPU/CPU timing or proof of performance headroom.57ms and58ms spikes retained.",
+    "No new tests, samples, browser control, server or lock acquired by independent reviewer."
+  ],
+  "cleanupIndependentCheck": {
+    "port4359NotListening": true,
+    "heavyLockAbsent": true,
+    "retained4341ListenerPID": "11644",
+    "savedPauseMenuVerified": true,
+    "savedDOMContainsInitialLoadingOverlay": true,
+    "scope": "Current listener/lock checks plus recorded pause DOM and inventory URL. No live browser frame/state manipulation; no claim4341 now serves R10."
+  },
+  "resourceAtIndependentImageReview": {
+    "memoryPressure": 2,
+    "swapGiB": 13.69,
+    "diskFreeGiB": 29.27,
+    "npmBusy": true,
+    "thirdPartyDevtoolsProcesses": 3,
+    "imagesViewedSerially": true,
+    "browserControlAcquired": false
+  }
+}

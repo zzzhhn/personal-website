@@ -12,7 +12,7 @@
 
 C15当前轮底clearance为0，其他道具和legacy仍为4毫米。接触辅助仅四片小面、1 draw、8 triangles，无新贴图、灯或shadow pass。实际W轻推500毫秒后箱体偏移并倾倒，等待30秒后回到原位，睡眠稳定。`camp-contact-r9/runtime/` 保存位移、普通镜头和复位低角度截图及原始读数。可见区域没有残留接触印迹；倾倒箱体遮住部分旧接触点，没有声称四点都在图中可见。主协调结合28项测试接受了此覆盖边界。
 
-R10在同一候车亭用原生E坐下，再从开放-X侧普通相机明确看到坐姿。实际相机距离11.911米并收敛到12米，guideHidden=false，无near-overlap，人物座位点仍为原值。再次原生E起身后seat=null且grounded。`runtime-r10/r10-shelter-sit-visible.png`、`r10-shelter-stand-visible.png` 及两份snapshot留证，R9 distance0失败记录没有删除。相机定向测试9／9、营地接触及街道测试28／28通过。
+R10在同一候车亭用原生E坐下，再从开放-X侧普通相机明确看到坐姿。实际相机距离11.911米并收敛到12米，guideHidden=false，无near-overlap，人物座位点仍为原值。再次原生E起身后seat=null且grounded。`runtime-r10/r10-shelter-sit-visible.png`、`r10-shelter-stand-visible.png` 及两份snapshot留证，R9 distance0失败记录没有删除。相机定向测试9／9、营地接触及街道测试28／28通过。独立会话已实际串行查看坐／站原图并接受相机可见性，不扩大为人体坐姿动画美术或全地图物理验收。行为图片为JPEG字节、1710×875，保留原`.png`文件名和SHA；行为图尺寸不替代性能窗口的1710×931门槛。
 
 其余实际机制沿用原版本收据：4件营地展品真实E反馈／恢复、长椅坐立；G17在31.5／32.5米切换L0／L1，35032／8122 triangles；四通道风与depth／distance绑定，普通相机36真实帧、0.5997秒风钟推进。没有新增未拍摄的车辆撞击／复位试玩结论。
 
@@ -27,7 +27,7 @@ R10唯一一组旧A→候选→旧B固定六窗全部有效，没有重采或第
 | 营地 | 59.4059／17.4 | 59.9988／18.1 | 59.9880／17.5 |
 | 街道 | 59.9796／17.8 | 59.5711／17.3 | 60.0024／17.6 |
 
-旧A营地57ms和候选街道58ms各有一次尖峰，完整保留。旧A/B跨加载几何计数不同，营地triangles为621902／644686，街道为544799／560413，资源缓存计数也不同；不能把各窗稳定写成跨窗场景完全相同，或把结果孤立归因于某段代码。GPU时间为空。独立性能判读及集成取舍另由主协调记录，此处不宣称性能验收通过或保证60FPS。
+旧A营地57ms和候选街道58ms各有一次尖峰，完整保留。旧A/B跨加载几何计数不同，营地triangles为621902／644686，街道为544799／560413，资源缓存计数也不同；不能把各窗稳定写成跨窗场景完全相同，或把结果孤立归因于某段代码。GPU时间为空。独立判读现已完成，结论为足够支持本机本地候选试玩，不代表全岛稳定60FPS、严格等载的资产净成本或零开销认证。报告与逐帧重算见 `runtime-r10/independent/FINAL-R10.md` 和 `final-audit-r10.json`，保留原SHA及canonical重放脚本路径。正式集成和发布仍由主协调决定。
 
 首窗已保存且有效，但执行器regex完成检测误报超时。主协调与性能会话独立核对后批准保留首窗，只修literal精确回执读取，继续原剩五窗。首窗保存至第二窗准备相隔679.306秒，审阅间隔保留，不称无间断ABA。候选及旧B首载入的短控件等待超时均发生采样前，没有触发或补采窗口。全部raw、SHA、执行审计与异常说明在 `runtime-r10/`，与canonical coordinator/performance/runtime逐文件同SHA。
 
@@ -35,6 +35,6 @@ R10唯一一组旧A→候选→旧B固定六窗全部有效，没有重采或第
 
 独立地表修复在 `personal-world-ground-shoulder`／`codex/world-ground-shoulder`。源码补丁 `d46435d` 默认关闭，仅 `groundShoulder=1` 开启；主协调已接受两张实际正午方向图，夜间、风动／踏压和成本后续QA尚未完成。它不混入本十四项冻结包，不把正午方向接受写成完整通过。
 
-R10执行完毕后原用户标签已恢复 `http://127.0.0.1:4341/world/?start=camp&quality=balanced&paused=1`，中文暂停菜单有DOM和实际截图；临时viewport override已reset。核对owner及PID18927完整命令后仅停止自有4359服务、释放heavy lock。4341和其他标签／服务均保留，未推送、发布或切换稳定服务。详见 `runtime-r10/executor-cleanup-r10.json`。
+R10执行完毕后原用户标签已恢复 `http://127.0.0.1:4341/world/?start=camp&quality=balanced&paused=1`，中文暂停菜单有DOM和实际截图；临时viewport override已reset。恢复时DOM仍含初始加载提示，因此恢复证据只确认原URL与暂停菜单，不作为R10已交付4341或完整加载验收。核对owner及PID18927完整命令后仅停止自有4359服务、释放heavy lock。4341和其他标签／服务均保留，未推送、发布或切换稳定服务。详见 `runtime-r10/executor-cleanup-r10.json`。
 
 更早构建、失败、图像和数字见 `RESULT-R5-HISTORICAL.md` 与各相邻版本文件，保持原始身份，不作为新包重测。取用生产改动与集成由主协调完成；本次只交付源文件、原生工程、GLB、冻结包和可复查证据。

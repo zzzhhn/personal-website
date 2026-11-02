@@ -1,0 +1,1 @@
+独立会话于2026-11-03完成判读。此目录保留报告、审计与脚本的原样副本，SHA及原路径见manifest.json。脚本依赖canonical目录中的protocol-frozen.json与runtime原始收据，应在原路径重放；副本未为目录结构调整或改变判读。

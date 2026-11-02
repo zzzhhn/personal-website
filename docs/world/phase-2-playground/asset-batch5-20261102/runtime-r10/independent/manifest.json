@@ -1,0 +1,20 @@
+{
+  "scope": "Exact independent report/audit/script copies. Replay original analyze-r10.py from its canonical performance directory, where protocol-frozen.json and runtime inputs remain.",
+  "files": [
+    {
+      "file": "FINAL-R10.md",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/FINAL-R10.md",
+      "sha256": "516a5d62228028c4b39a6d15436939963ba558b4f81ca8b0b6aca680598f2802"
+    },
+    {
+      "file": "final-audit-r10.json",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/final-audit-r10.json",
+      "sha256": "6e0e6c830d66016aa9cff2e3b42fa656095008cb3922ba26e6fc05778b4f91b2"
+    },
+    {
+      "file": "analyze-r10.py",
+      "canonical": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/analyze-r10.py",
+      "sha256": "05e9c3b33101459d4d4de814cc2bf4b6e977a3e037b6f4baa8358c929b0098c4"
+    }
+  ]
+}
