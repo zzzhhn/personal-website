@@ -24,11 +24,13 @@ R8 passed the final entry/source identity check (60 files, 10 source files), but
 
 Source review also reproduced an independent optional-shading limitation: if the paving is absent when C15 first registers, the helper stays hidden until another registration. That did not occur in R8. This round does not introduce persistent scene polling to work around it.
 
-The bounded rim correction is committed as `db69721`; the coordinator reviewed its two production-line changes and ran all affected camp/contact/street tests: 28 passed. Actual four-wheel radii are approximately 58.53 by 44.00 mm. It adds no draw, texture, light or shadow pass. The execution session is preparing R9 for the final three web views; visual and performance acceptance remain open.
+The bounded rim correction is committed as `db69721`; the coordinator reviewed its two production-line changes and ran all affected camp/contact/street tests: 28 passed. Actual four-wheel radii are approximately 58.53 by 44.00 mm. It adds no draw, texture, light or shadow pass. The coordinator personally opened R9's daylight, midnight and low daylight views and accepts the sampled contact appearance: the exposed rim is readable without an oversized dark disk. Camera/time/raw identities and image hashes are in `CAMP-R9-images.json`. No further visual-strength adjustment is requested. R9's 25-module entry graph also passes; its runtime is `WorldRuntime.D7NGFd4R.js`.
+
+The coordinator has released R9's visual sampling hold. The execution session owns the remaining real interaction checks and the sole browser/heavy-work slot; the performance session owns independent identity and paired-window interpretation. Both report automatically. Performance and preview-promotion decisions remain open.
 
 ## Pending before preview promotion
 
-- R9 C15 contact shading in day/night/low views and a bounded physical check that moving, tipping, lifting and resetting leave no stale patches. C13 and R7's geometric displacement/reset checks are already complete.
+- A bounded R9 physical check that moving, tipping, lifting and resetting leave no stale patches. C13 and C15 visual review and R7's geometric displacement/reset checks are already complete.
 - Final source/asset identity, normal browser behavior, and an unobstructed shelter sitting/standing observation.
 - One bounded camp/street old-new-old performance sequence on the final frozen package, independently interpreted by the performance session. Stop on invalid samples rather than selecting favorable windows.
 - Preserve the shared integration tree's existing roadblock/roof coplanar-surface fixes and its unrelated terrain changes.

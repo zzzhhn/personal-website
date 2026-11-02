@@ -1,0 +1,92 @@
+{
+  "decision": "primary visual acceptance at sampled views; behavior/performance pending",
+  "build": "/tmp/bobby-world-batch5-r9-fourteen-01a19a62",
+  "images": [
+    {
+      "image": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-contact-r9/runtime/r9-v-c15-noon.png",
+      "sha256": "5039fe127ff6f5027666206b5ad71bf86f0c19e798d91bf06e65ab60aaa83dd5",
+      "raw": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-contact-r9/runtime/r9-v-c15-snapshot-1.json",
+      "raw_sha256": "4423e6e50aca99fa9daedcb6929a8955a8d39996f4c0f30b2af3dd2614845095",
+      "configuration": {
+        "player": [
+          -30.67776980709589,
+          6.83,
+          26.847625879632094
+        ],
+        "position": [
+          -28.4,
+          5.7,
+          28.8
+        ],
+        "target": [
+          -27,
+          5.33,
+          30
+        ],
+        "cameraRevision": "r4-inspected-construction-and-clearance"
+      },
+      "worldMinutes": 720,
+      "drawingBuffer": [
+        1710,
+        931
+      ]
+    },
+    {
+      "image": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-contact-r9/runtime/r9-v-c15-night.png",
+      "sha256": "48d27a5896ab474a1e6a76e36a4e2830b0c111d3afcfce7145b7e818c22b5d5e",
+      "raw": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-contact-r9/runtime/r9-v-c15-snapshot-2.json",
+      "raw_sha256": "373ddc28f50f2128bbdfe832d6a5ef25f81600093038c8fa69443e76714097e8",
+      "configuration": {
+        "player": [
+          -30.67776980709589,
+          6.83,
+          26.847625879632094
+        ],
+        "position": [
+          -28.4,
+          5.7,
+          28.8
+        ],
+        "target": [
+          -27,
+          5.33,
+          30
+        ],
+        "cameraRevision": "r4-inspected-construction-and-clearance"
+      },
+      "worldMinutes": 0,
+      "drawingBuffer": [
+        1710,
+        931
+      ]
+    },
+    {
+      "image": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-contact-r9/runtime/r9-v-c15-low-noon.png",
+      "sha256": "334f3ddf4053d2cdb38e71dda356d34796bdac2f076a285c93a0bd9c676cac33",
+      "raw": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-contact-r9/runtime/r9-v-c15-low-snapshot-3.json",
+      "raw_sha256": "6e4d91f11b36886eb4d18e145da36505e20d7fe747a9b36252fae133fd349ed2",
+      "configuration": {
+        "player": [
+          -30.5,
+          6,
+          27
+        ],
+        "position": [
+          -28.35,
+          5.03,
+          28.65
+        ],
+        "target": [
+          -27,
+          4.96,
+          30
+        ]
+      },
+      "worldMinutes": 720,
+      "drawingBuffer": [
+        1710,
+        931
+      ]
+    }
+  ]
+}
