@@ -1,6 +1,6 @@
 import { Component, Suspense, useEffect, useMemo, type ReactNode } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
-import { type Mesh, type MeshStandardMaterial, type Material, type Object3D, type Texture } from 'three';
+import { FrontSide, type Mesh, type MeshStandardMaterial, type Material, type Object3D, type Texture } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { useDjcFurnitureEnvironment } from './WorldDjcFurnitureEnvironment';
 import { night } from './WorldNight';
@@ -29,6 +29,9 @@ export function createCampFacilityVisual(scene: Object3D, family: CampFacilityFa
         let material = copies.get(original);
         if (!material) {
           material = original.clone() as MeshStandardMaterial;
+          // Only the pack's closed binding/inlay and brass fitting shells. Main surfaces,
+          // glass and cookware retain their exported sidedness (topology checked in runtime.test).
+          if (material.name === 'camp_craft_paper' || material.name === 'camp_craft_brass') material.side = FrontSide;
           material.envMap = environment; material.envMapIntensity = 1.5;
           material.userData = { ...material.userData, facilityCraft: true, restEmissive: material.emissiveIntensity };
           copies.set(original, material);
@@ -36,10 +39,24 @@ export function createCampFacilityVisual(scene: Object3D, family: CampFacilityFa
         return material;
       };
       mesh.material = Array.isArray(mesh.material) ? mesh.material.map(cloneMaterial) : cloneMaterial(mesh.material);
-      mesh.castShadow = true; mesh.receiveShadow = true;
+      // Tiny strings and the transparent/emissive lantern inserts add no useful shadow shape.
+      const nonCaster = object.name === 'camp-content-C12-strings' ||
+        (Array.isArray(mesh.material) ? mesh.material.every(m => m.name === 'camp_craft_glass' || m.name === 'camp_craft_wick') :
+          mesh.material.name === 'camp_craft_glass' || mesh.material.name === 'camp_craft_wick');
+      mesh.castShadow = !nonCaster; mesh.receiveShadow = true;
       mesh.userData = { ...mesh.userData, assetId: family, facilityCraft: true };
     });
-    return { root, materials: [...copies.values()], users: 0 };
+    return { root, materials: [...copies.values()], users: 0, nightAmount: NaN };
+}
+
+export function updateCampFacilityNight(visual: { materials: MeshStandardMaterial[]; nightAmount: number }, value: number) {
+  const amount = Math.max(0, Math.min(1, value));
+  if (visual.nightAmount === amount) return;
+  visual.nightAmount = amount;
+  for (const material of visual.materials) {
+    material.envMapIntensity = 1.5 - amount;
+    if (material.name === 'camp_craft_wick') material.emissiveIntensity = 0.12 + amount * 2.1;
+  }
 }
 
 function CraftVisual({ family, node }: { family: CampFacilityFamily; node?: string }) {
@@ -50,13 +67,7 @@ function CraftVisual({ family, node }: { family: CampFacilityFamily; node?: stri
     visual.users++;
     return () => { visual.users--; queueMicrotask(() => { if (!visual.users) visual.materials.forEach(material => material.dispose()); }); };
   }, [visual]);
-  useFrame(() => {
-    const amount = Math.max(0, Math.min(1, night.value));
-    visual.materials.forEach(material => {
-      material.envMapIntensity = 1.5 - amount;
-      if (material.name === 'camp_craft_wick') material.emissiveIntensity = 0.12 + amount * 2.1;
-    });
-  });
+  useFrame(() => updateCampFacilityNight(visual, night.value));
   return <primitive object={visual.root} dispose={null} />;
 }
 class CraftBoundary extends Component<{ children: ReactNode; fallback: ReactNode }, { failed: boolean }> {

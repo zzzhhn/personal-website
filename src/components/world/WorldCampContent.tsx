@@ -14,6 +14,7 @@ import type { Vec3 } from './types';
 import { bake, drawLabels, glowMaterial, localPoints, localTrimesh, nodeParts, placementMatrix, poolTexture, useContentGltfs, vertexColourMaterial, type NodePart } from './WorldCampContentAssets';
 import { CAMP_TOP, CONTENT_PAD, EXIT_POSTS, PAD, PAD_TOP, benches, bookStack, onPad, padCentre, padOffset, towardFire, yawFacing, yawToFire, type Place } from './WorldCampContentLayout';
 import WorldCampFacilityCraft, { campFacilityLegacy } from './WorldCampFacilityCraft';
+import { bindCampPushableVisual } from './WorldCampPushableVisual';
 
 /**
  * Camp content (owner: camp session): C11 tool wall, C12 guitar, C13 dumbbells, C14 wok + stove, C15
@@ -242,17 +243,13 @@ function Pushable({ id, home, hull, mass, feedbackKey, children }: { id: string;
   // Own material copy so the 30 s fade touches only this prop.
   const material = useMemo(() => vertexColourMaterial(`camp-content-${id}`), [id]);
   useEffect(() => () => material.dispose(), [material]);
-  // Suspense can replace legacy art after this effect. Reconcile during the existing frame loop;
-  // candidate PBR materials retain physical responses and receive only the parent's reset fade.
-  const adaptVisual = () => { visual.current?.traverse(o => {
-    const mesh = o as Mesh; if (!mesh.isMesh) return;
-    if (!mesh.userData.facilityCraft) mesh.material = material;
-    else for (const candidate of (Array.isArray(mesh.material) ? mesh.material : [mesh.material])) {
-      if (candidate.transparent !== material.transparent) { candidate.transparent = material.transparent; candidate.depthWrite = material.depthWrite; candidate.needsUpdate = true; }
-      candidate.opacity = material.opacity;
-    }
-  }); };
-  useLayoutEffect(adaptVisual, [material]);
+  const binding = useRef<ReturnType<typeof bindCampPushableVisual> | null>(null);
+  useLayoutEffect(() => {
+    if (!visual.current) return;
+    const registered = bindCampPushableVisual(visual.current, material);
+    binding.current = registered;
+    return () => { registered.dispose(); binding.current = null; };
+  }, [material]);
   const start = useMemo(() => [home.position[0], home.position[1] + 0.004, home.position[2]] as Vec3, [home]);
   useEffect(() => { pushables.set(id, { body, home: start, state: state.current }); body.current?.sleep(); return () => { pushables.delete(id); }; }, [id, start]);
   useBeforePhysicsStep(world => {
@@ -263,23 +260,21 @@ function Pushable({ id, home, hull, mass, feedbackKey, children }: { id: string;
     if (s.displacedAt < 0 && moved) s.displacedAt = s.clock;
     const t = s.displacedAt < 0 ? -1 : s.clock - s.displacedAt;
     const fade = t > RESET_SECONDS - 0.6 ? Math.max(0, (RESET_SECONDS - t) / 0.6) : 1;
-    if ((fade < 1) !== material.transparent) { material.transparent = fade < 1; material.depthWrite = fade >= 1; material.needsUpdate = true; }
-    material.opacity = fade;
+    binding.current?.setFade(fade);
     if (t >= RESET_SECONDS) {
       const half = home.yaw / 2;
       b.setTranslation({ x: start[0], y: start[1], z: start[2] }, false);
       b.setRotation({ x: 0, y: Math.sin(half), z: 0, w: Math.cos(half) }, false);
       b.setLinvel({ x: 0, y: 0, z: 0 }, false); b.setAngvel({ x: 0, y: 0, z: 0 }, false); b.sleep();
-      s.displacedAt = -1; material.opacity = 1;
+      s.displacedAt = -1; binding.current?.setFade(1);
     }
   });
   // <= 2 s visual-only feedback on the child group; the body and its collider never move for it.
   useFrame(() => {
     const v = visual.current; if (!v) return;
-    adaptVisual();
     const t = fbT(feedbackKey), k = decay(t);
     v.position.set(0, 0, 0); v.rotation.set(0, 0, 0);
-    const strings = feedbackKey === 'guitar' ? v.getObjectByName('camp-content-C12-strings') : undefined;
+    const strings = feedbackKey === 'guitar' ? binding.current?.strings : undefined;
     if (strings) strings.position.x = t < 0 ? 0 : 0.003 * Math.sin(t * 140) * k;
     if (t < 0) return;
     if (feedbackKey === 'guitar') v.rotation.x = 0.02 * Math.sin(t * 22) * k;
