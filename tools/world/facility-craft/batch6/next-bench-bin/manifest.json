@@ -1,0 +1,40 @@
+{
+  "status": "wired-source-only-unrendered",
+  "frozenCandidate": "ad7ee76d68ce240d9ed8e4f1657a5e637e62700c",
+  "assets": {
+    "bench": {
+      "source": "bench.source.json",
+      "triangles": 1328,
+      "slots": {
+        "-2": 1472,
+        "-3": 192,
+        "-1": 768
+      },
+      "contractUnchanged": true,
+      "L1Unchanged": true,
+      "sourceSHA256": "f33028270ef0fd10e18463f887b1fec3e6b3f78922c1d8cbe5012696a4862ea2"
+    },
+    "bin": {
+      "source": "bin.source.json",
+      "triangles": 2180,
+      "slots": {
+        "0": 384,
+        "-2": 2304,
+        "-3": 232
+      },
+      "contractUnchanged": true,
+      "L1Unchanged": true,
+      "sourceSHA256": "c01617f8e1883c748df7e0ec7c039ea2683a960b55330e0aad5a03e954ddce27"
+    }
+  },
+  "protectedSources": {
+    "src/components/world/WorldStreetKnock.tsx": "ae79e58879eb6a4fe42978e82de7ec5a789beccda34b20535cae7b60162a80c1",
+    "src/components/world/WorldStreetFixed.tsx": "01a9ecdb89f765158727260ca9c482c8ee03c60564c6280459456e2e17f72c42",
+    "src/components/world/WorldStreetStatic.tsx": "3524893ce6096c9211b34d7c56497fd55336c35f0bcfa5188e2aa950a370dc61",
+    "src/components/world/WorldStreetBatch.ts": "1da205cba2f926ea08752806a960b8389efefaf3edc4094b06d3e2be32f90e3a",
+    "src/components/world/layout-v4.ts": "a1e482136f2e05d79bbc98aca43ffa6bf190a2ed68d16120f615deedece466c1",
+    "src/components/world/WorldFacilitySurface.ts": "e859b94b637d8a129e453a9ac297e4d828ca887218ca1a77bd411a6462c6c379",
+    "src/components/world/WorldPark.tsx": "f74cadd13de76be17a560157a11e3d97d3f4dc2591a367a6ef2a9c2ff0670f34",
+    "src/components/world/WorldStreetMaterial.ts": "07da94774ac0962ddfcc8178e058561ca1efe6371b65bed18003f0799309958a"
+  }
+}

@@ -2,6 +2,7 @@
  * Keep editable named parts here; collision always comes from the unchanged pre-craft Builder. */
 import { Builder, S, bar, bezier, box, cyl, lathe, plate, rectPoly, tube, type Surf, type V3 } from './WorldStreetGeometry.ts';
 import { facilityCraftEnabled, tagShelterSurfaces } from './WorldFacilitySurface';
+import { tagBenchBinSurfaces } from './WorldBenchBinSurface';
 
 export type StreetFacility = 'bench' | 'shelter' | 'lamp' | 'signal' | 'bin' | 'roadblock' | 'seawallBay' | 'timberPost' | 'timberBeam';
 export interface FacilityOptions { height?: number; arm?: number; pole?: Surf; base?: Surf; cyanRing?: boolean; len?: number }
@@ -277,6 +278,7 @@ export function finishStreetFacility(baseline: Builder, kind: StreetFacility, lo
   else if (kind === 'timberPost') timberPost(B);
   else timberBeam(B, o.len ?? 4.2);
   if (kind === 'shelter') tagShelterSurfaces(B);
+  if (kind === 'bench' || kind === 'bin') tagBenchBinSurfaces(B, kind);
   collisionSource.set(B, baseline);
   B.hulls = () => baseline.hulls();
   return B;

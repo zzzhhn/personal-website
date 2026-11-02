@@ -1,0 +1,10 @@
+docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/OWNED-PATHS.txt
+docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/SOURCE-HANDOFF.md
+src/components/world/WorldBenchBinSurface.ts
+src/components/world/WorldStreetFacilityCraft.ts
+tools/world/facility-craft/batch6/bench-bin.test.mjs
+tools/world/facility-craft/batch6/build_bench_bin.py
+tools/world/facility-craft/batch6/next-bench-bin/bench.source.json
+tools/world/facility-craft/batch6/next-bench-bin/bin.source.json
+tools/world/facility-craft/batch6/next-bench-bin/manifest.json
+tools/world/facility-craft/batch6/prepare_bench_bin.mjs
