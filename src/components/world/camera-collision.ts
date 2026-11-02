@@ -34,6 +34,22 @@ export function sweepCamera(world: World, rapier: Pick<typeof Rapier, 'Ball'>,
     hit: hit ? hit.time_of_impact : null };
 }
 
+/** A seat's buttock datum can put the camera sphere slightly inside its backrest.
+ * Keep the actor on the seat; only move the camera pivot up to 15 cm toward the
+ * seated torso. Rapier must allow a continuous exit from the initial overlap,
+ * and the entire sphere must be clear at the end. Other walls stay solid. */
+export function seatedCameraOrigin(world: World, rapier: Pick<typeof Rapier, 'Ball'>,
+  from: Point, yaw: number, radius: number, exclude: RigidBody | undefined, solid: (collider: Collider) => boolean): Point {
+  const sphere = new rapier.Ball(radius), rotation = { x: 0, y: 0, z: 0, w: 1 };
+  const overlaps = (point: Point) => world.intersectionWithShape(point, rotation, sphere, undefined, undefined, undefined, exclude, solid);
+  if (!overlaps(from)) return from;
+  const direction = { x: Math.cos(yaw), y: 0, z: -Math.sin(yaw) }, distance = .15;
+  const candidate = { x: from.x + direction.x * distance, y: from.y, z: from.z + direction.z * distance };
+  const hit = world.castShape(from, rotation, direction, sphere, 0, distance, false,
+    undefined, undefined, undefined, exclude, solid);
+  return !hit && !overlaps(candidate) ? candidate : from;
+}
+
 /** A thin post can compress an otherwise open orbit into the guide's helmet.
  * Try a small shoulder translation, never an automatic change to input yaw/pitch.
  * Both the lateral pivot and its orbit must be reachable; broad walls/low roofs

@@ -37,7 +37,7 @@ import { vehicleHulls } from './WorldVehicleAssets';
 import { VEHICLE_DOORS, vehicleDoorStanding, vehicleDoorQuaternion, vehicleDoorUpright, type DoorSide, type VehicleDoorState } from './WorldVehicleDoors';
 import { guideVehicleProgress, guideVehicleSample, guideVehicleOrientation, type GuideVehicleFrame } from './WorldGuideVehicle';
 import { WorldOcclusion } from './WorldOcclusion';
-import { cameraCollisionRadius, cameraLookTarget, cameraOverlapsGuide, cameraShoulderPivot, sweepCamera } from './camera-collision';
+import { cameraCollisionRadius, cameraLookTarget, cameraOverlapsGuide, cameraShoulderPivot, seatedCameraOrigin, sweepCamera } from './camera-collision';
 import { returnPlayerToCamp } from './world-recovery';
 import { configureCoupeSuspension, createDrivingState, stepCoupeDrive, type DrivingInput, type DrivingState } from './vehicle-driving';
 import { publishDrivingTelemetry } from './vehicle-telemetry';
@@ -1363,9 +1363,6 @@ export default function WorldActors() {
     // seated body instead: fresh GLB runtime samples put the helmet centre at +0.884-0.956 m.
     // Keep the sweep above the chair back; the orbit view frames the chest separately below.
     const targetY=cameraSeat?cameraSeat.position[1]+.92:Math.max(p.y,WATER_Y)+(c.firstPerson?eye:car?car.spec.size[1]*.6:.65);
-    const desiredTarget=new Vector3(p.x,targetY,p.z);
-    if(!cameraReady.current){target.current.copy(desiredTarget);cameraReady.current=true;cameraShoulder.current={offset:0,previous:null};}
-    target.current.lerp(desiredTarget,c.firstPerson?1:1-Math.exp(-delta*10));
     const dir=orbitDirection(c.yaw,c.pitch);
     const exclude=car?.body??player.current??undefined;
     const radius=camera instanceof PerspectiveCamera
@@ -1376,12 +1373,16 @@ export default function WorldActors() {
       const ud=b.userData as {vehicle?:string;obstacle?:boolean}|undefined;
       return !ud?.obstacle&&!(ud?.vehicle&&b.handle===car?.body.handle);
     };
+    const bodyOrigin={x:p.x,y:Math.max(p.y,WATER_Y),z:p.z};
+    const origin=cameraSeat?seatedCameraOrigin(world,rapier,bodyOrigin,cameraSeat.yaw,radius,exclude,solid):bodyOrigin;
+    const desiredTarget=new Vector3(origin.x,targetY,origin.z);
+    if(!cameraReady.current){target.current.copy(desiredTarget);cameraReady.current=true;cameraShoulder.current={offset:0,previous:null};}
+    target.current.lerp(desiredTarget,c.firstPerson?1:1-Math.exp(-delta*10));
     // All corrections share the same physical sweep, including the smoothed pivot itself.
     const probe=(from:{x:number;y:number;z:number},d:{x:number;y:number;z:number},len:number,radius:number)=>{
       const result=sweepCamera(world,rapier,from,{x:from.x+d.x*len,y:from.y+d.y*len,z:from.z+d.z*len},radius,exclude,solid);
       return {free:result.distance,hit:result.hit};
     };
-    const origin={x:p.x,y:Math.max(p.y,WATER_Y),z:p.z};
     // A lagging pivot can cut a corner even though the player capsule stayed outside the wall.
     const pivot=sweepCamera(world,rapier,origin,target.current,radius,exclude,solid);
     target.current.set(pivot.position.x,pivot.position.y,pivot.position.z);
