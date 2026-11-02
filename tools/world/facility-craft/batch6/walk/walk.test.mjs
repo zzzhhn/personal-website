@@ -13,7 +13,7 @@ for(let l=0;l<2;l++)test(`P02 L${l}: support slabs, P01 plaza, rail/lamp placeme
 test('P03 explicit 40 kg cuboid, knock/sleep/reset and LOD controller unchanged',()=>{
  assert.deepEqual(JSON.parse(JSON.stringify(W.RAIL.spec)),frozen.rail.spec);
  const source=readFileSync(ROOT+'/src/components/world/WorldParkWalk.tsx','utf8'),old=execFileSync('git',['show',frozen.base+':src/components/world/WorldParkWalk.tsx'],{cwd:ROOT,encoding:'utf8'});
- const cut=s=>s.slice(s.indexOf('type KState ='),s.indexOf('export const RAIL ='));assert.equal(cut(source),cut(old));
+ const cut=s=>s.slice(s.indexOf('type KState ='),s.indexOf('export const RAIL =')).replace(/  const seededBodies =[^\n]*\n  const initialPose =[^\n]*\n/, '').replace(/      \/\/ Sleeping bodies can precede[\s\S]*?      }\n(?=      const near)/, '');assert.equal(cut(source),cut(old));
  assert.equal(sha(geom(W.LAMP.geometry)),sha(geom(base.LAMP.geometry)));
 });
 test('P03 near/far agree at .97 m; adjacent authored sections touch at the handrail',()=>{
@@ -44,4 +44,17 @@ test('manufactured handrail/post grain axes and underside-bearing hardware conta
 test('cylinder long grain has local origin and no UV interpolation across its wrap seam',()=>{
  const C=loadWorldModule('WorldWalkCraft.ts'),g=new C.WalkCraftGeo();g.cyl([64,-2.6,-40],[64,.86,-40],.15,.13,8,'#8E6E55',{smooth:true});const b=g.build(),m=b.getAttribute('aMat'),uv=b.getAttribute('aSuv'),period=2*Math.PI*.14/(.7*466/1024);
  let side=0,cut=0;for(let t=0;t<m.count;t+=3){if(m.getW(t)===-1){side++;const v=[uv.getY(t),uv.getY(t+1),uv.getY(t+2)];assert.ok(Math.max(...v)-Math.min(...v)<period/2+1e-6);}else cut++;}assert.equal(side,16);assert.equal(cut,16);
+});
+test('actual visual initializer handles origin, late/recreated bodies and transformed parent without physics mutations',async()=>{
+ const{Matrix4,Quaternion,Vector3}=await import('three'),{runInNewContext}=await import('node:vm');const source=readFileSync(ROOT+'/src/components/world/WorldParkWalk.tsx','utf8');const start=source.indexOf('      const body = bodies.current?.[i];',source.indexOf('const syncVisuals')),end=source.indexOf('      const near =',start);assert.ok(start>0&&end>start);const code='{ '+source.slice(start,end)+' }';
+ let reads=0,writes=0;const stored=new Matrix4(),matrix=new Matrix4(),parent=new Matrix4().compose(new Vector3(4,2,7),new Quaternion().setFromAxisAngle(new Vector3(0,1,0),.4),new Vector3(2,3,4));
+ const proxy={matrixWorld:parent,updateWorldMatrix(){},getWorldScale(v){return v.set(2,3,4);},setMatrixAt(i,m){writes++;stored.copy(m);},instanceMatrix:{needsUpdate:false}},make=(position,valid=true)=>({isValid:()=>valid,translation(){reads++;return position;},rotation(){return{x:0,y:0,z:0,w:1};}});
+ const context={i:0,bodies:{current:[null]},seededBodies:{current:[]},matrix,e:matrix.elements,initialPose:{inverse:new Matrix4(),position:new Vector3(),rotation:new Quaternion(),scale:new Vector3()},proxy};
+ runInNewContext(code,context);assert.equal(writes,0);
+ context.bodies.current[0]=make({x:0,y:0,z:0},false);runInNewContext(code,context);assert.equal(writes,0);
+ const origin=make({x:0,y:0,z:0});context.bodies.current[0]=origin;runInNewContext(code,context);assert.equal(writes,1);assert.equal(reads,1);assert.equal(context.seededBodies.current[0],origin);
+ const world=parent.clone().multiply(stored),expected=new Matrix4().makeScale(2,3,4);assert.ok(world.elements.every((v,i)=>Math.abs(v-expected.elements[i])<1e-9));
+ runInNewContext(code,context);assert.equal(writes,1);assert.equal(reads,1);
+ const replacement=make({x:68.56,y:1.14,z:-33.4});context.bodies.current[0]=replacement;runInNewContext(code,context);assert.equal(writes,2);assert.equal(reads,2);const final=parent.clone().multiply(stored);assert.ok(Math.abs(final.elements[12]-68.56)<1e-9);assert.ok(Math.abs(final.elements[13]-1.14)<1e-9);assert.ok(Math.abs(final.elements[14]+33.4)<1e-9);
+ runInNewContext(code,context);assert.equal(writes,2);assert.equal(reads,2);
 });

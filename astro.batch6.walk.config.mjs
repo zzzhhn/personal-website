@@ -19,9 +19,9 @@ const review={name:'walk-review',enforce:'pre',transform(source,id){
       return { name, uuid: texture?.uuid, width: image?.width ?? 0, height: image?.height ?? 0, version: texture?.version ?? 0,
         gpuVersion: texture ? gl.properties.get(texture).__version ?? 0 : 0 };
     });
-    const texturesReady = textures.length === 3 && textures.every(t => t.width > 0 && t.height > 0 && t.version > 0 && t.gpuVersion === t.version);
-    return { viewId: view.id, currentMode, expectedMode: railModeAtMount, cameraPosition: camera.position.toArray(), cameraDirection: direction.toArray(), cameraReady, textures, texturesReady,
-      ready: cameraReady && currentMode === railModeAtMount && texturesReady };
+    const proxy = scene.getObjectByName('park-rail-physics-proxy') as any, poses = proxy?.instanceMatrix?.array as Float32Array | undefined;\n    const instancesReady = !!poses && proxy.count === 42 && Array.from({length:42},(_,i) => Math.abs(poses[i*16+12])+Math.abs(poses[i*16+13])+Math.abs(poses[i*16+14]) > 1).every(Boolean);\n    const texturesReady = textures.length === 3 && textures.every(t => t.width > 0 && t.height > 0 && t.version > 0 && t.gpuVersion === t.version);
+    return { viewId: view.id, currentMode, expectedMode: railModeAtMount, instancesReady, cameraPosition: camera.position.toArray(), cameraDirection: direction.toArray(), cameraReady, textures, texturesReady,
+      ready: cameraReady && currentMode === railModeAtMount && texturesReady && instancesReady };
   };
   useEffect(() => {\n    const previous`);
  source=source.replace("baseline: '7702c3d'",`baseline: 'c4f7fca', sourceVersion: ${JSON.stringify(sourceVersion)}, group: 'walk', surfaceMode: new URLSearchParams(location.search).get('walkCraft') === 'baseline' ? 'baseline' : 'candidate'`)
@@ -33,6 +33,13 @@ const review={name:'walk-review',enforce:'pre',transform(source,id){
   .replace('warm.current.changed >= 1000','warm.current.changed >= 3000')
   .replace('!loading.active && targetReady','!loading.active && targetReady && railReviewStatus().ready')
   .replace('stableAgeMs: Math.round(performance.now() - warm.current.changed), checks: warm.current.stable });','stableAgeMs: Math.round(performance.now() - warm.current.changed), checks: warm.current.stable, review: railReviewStatus() });');
+ // Read actual instance poses in addition to material/camera readiness.
+ source=source.replace('materialRevision: 6,', `walkInstances: ['park-rail','park-rail-far','park-rail-physics-proxy'].map(name => {
+    const mesh = scene.getObjectByName(name) as any;
+    const a = mesh?.instanceMatrix?.array as Float32Array | undefined, count = mesh?.count ?? 0;
+    return { name, count, nonZeroPositions: a ? Array.from({length: count}, (_,i) => [a[i*16+12],a[i*16+13],a[i*16+14]]).filter(p => p.some(v => Math.abs(v) > .01)).length : 0,
+      firstPositions: a ? Array.from({length: Math.min(3,count)},(_,i) => [a[i*16+12],a[i*16+13],a[i*16+14]]) : [] };
+  }), materialRevision: 6,`);
  return{code:source,map:null};
 }};
 export default{...config,vite:{...config.vite,plugins:[review,...config.vite.plugins],server:{...config.vite.server,fs:{allow:[...config.vite.server.fs.allow,

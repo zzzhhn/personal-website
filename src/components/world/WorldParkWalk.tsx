@@ -3,7 +3,7 @@ import { facilityCraftEnabled, registerFacilityMaterial } from './WorldFacilityS
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { ConvexHullCollider, CuboidCollider, InstancedRigidBodies, type RapierRigidBody, type InstancedRigidBodyProps } from '@react-three/rapier';
-import { AdditiveBlending, BufferAttribute, BufferGeometry, CanvasTexture, Color, InstancedBufferAttribute, InstancedMesh, Matrix4, MeshBasicMaterial } from 'three';
+import { AdditiveBlending, BufferAttribute, BufferGeometry, CanvasTexture, Color, InstancedBufferAttribute, InstancedMesh, Matrix4, MeshBasicMaterial, Quaternion, Vector3 } from 'three';
 import { BOARDWALK_POINTS, BOARDWALK_WIDTH } from './layout';
 import { ParkGeo, clipHalf, hash, parkMaterial, parkNight, plankPoly, slab, type P2 } from './WorldParkKit';
 import { DECK_Y, HUTS, HUT_FRONT_Z } from './WorldParkLayout';
@@ -279,6 +279,8 @@ export function Knockables({ name, items, source, farSource, spec, hull, hulls, 
     return () => { lodInstanceQa.delete(name); };
   }, [name, source, farSource]);
   const tick = useRef(0), matrix = useMemo(() => new Matrix4(), []);
+  const seededBodies = useRef<(RapierRigidBody | null)[]>([]);
+  const initialPose = useMemo(() => ({ inverse: new Matrix4(), position: new Vector3(), rotation: new Quaternion(), scale: new Vector3() }), []);
   const syncVisuals = (camera: { position: { x: number; y: number; z: number } }) => {
     const hi = nearMesh.current, lo = farMesh.current, proxy = mesh.current;
     if (!hi || !proxy) return;
@@ -286,6 +288,18 @@ export function Knockables({ name, items, source, farSource, spec, hull, hulls, 
     const hf = geometry.getAttribute('aInstFade') as InstancedBufferAttribute, lf = farGeometry?.getAttribute('aInstFade') as InstancedBufferAttribute | undefined;
     items.forEach((_, i) => {
       proxy.getMatrixAt(i, matrix); const e = matrix.elements;
+      // Sleeping bodies can precede Rapier's first matrix publication. Each
+      // instance seeds once per actual body identity, including valid origin poses.
+      const body = bodies.current?.[i];
+      if (body && seededBodies.current[i] !== body && body.isValid()) {
+        const p = body.translation(), q = body.rotation();
+        if ([p.x, p.y, p.z, q.x, q.y, q.z, q.w].every(Number.isFinite) && q.x*q.x + q.y*q.y + q.z*q.z + q.w*q.w > .5) {
+          proxy.updateWorldMatrix(true, false); proxy.getWorldScale(initialPose.scale);
+          initialPose.inverse.copy(proxy.matrixWorld).invert();
+          matrix.compose(initialPose.position.set(p.x, p.y, p.z), initialPose.rotation.set(q.x, q.y, q.z, q.w), initialPose.scale).premultiply(initialPose.inverse);
+          proxy.setMatrixAt(i, matrix); proxy.instanceMatrix.needsUpdate = true; seededBodies.current[i] = body;
+        }
+      }
       const near = Math.hypot(camera.position.x - e[12], camera.position.y - e[13], camera.position.z - e[14]) < 60;
       if (near) { hi.setMatrixAt(hn, matrix); hf.setX(hn++, states.current[i]?.fade ?? 1); }
       else if (lo) { lo.setMatrixAt(ln, matrix); lf?.setX(ln++, states.current[i]?.fade ?? 1); }
