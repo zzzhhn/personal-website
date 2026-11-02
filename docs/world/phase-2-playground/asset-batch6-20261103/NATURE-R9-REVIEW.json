@@ -1,0 +1,43 @@
+{
+  "comparison": "ordinary rock-walk noon",
+  "settingsEqual": true,
+  "reviewEqual": true,
+  "viewEqual": true,
+  "renderInfoEqual": true,
+  "cameraPositionMaxError": 7.105427357601002e-15,
+  "fov": [
+    50,
+    50
+  ],
+  "shadowPending": [
+    false,
+    false
+  ],
+  "reviewedFiles": [
+    {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch6-nature-camp/docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/runtime/b6-r6-baseline-rock-walk-noon.png",
+      "sha256": "3ab88e161a3b73db23002b84c464e4e7520d2e64d6b2f5bc33b92c337623a404"
+    },
+    {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch6-nature-camp/docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/runtime/b6-r7-candidate-rock-walk-noon.png",
+      "sha256": "5e5e5b4e66ce89681aae315289d73f45d4e7794f7cad992588ce1320cc97c508"
+    },
+    {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch6-nature-camp/docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/runtime/b6-r9-candidate-rock-walk-noon.png",
+      "sha256": "4d65b78ec3facded36105721617302b84d4d95e715090229ce163471edae1e50"
+    },
+    {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch6-nature-camp/docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/runtime/b6-r6-baseline-rock-walk-snapshot-1.json",
+      "sha256": "7e8bfb54f07b512afd1e5ac54619bb92cce43d8de5e8468c9a0fdc84e2ac378b"
+    },
+    {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch6-nature-camp/docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/runtime/b6-r9-candidate-rock-walk-snapshot-1.json",
+      "sha256": "b4d9854b5334a8871d2a8e4d972576c0bb4337b4b53f65bd91ca2e330060fd7b"
+    }
+  ],
+  "verdict": {
+    "geometry": "accepted direction",
+    "material": "rework",
+    "integrated": false
+  }
+}
