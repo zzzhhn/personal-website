@@ -14,8 +14,9 @@
   "unchangedWorldCampBaseConfirmedAgainstLatestMain": true,
   "initialWorldCampByteBaseReadFrom": "3ba6ac05c4378faa9cd336d57bc1e7cb28e3f042",
   "validatedSourceCommit": "3873fc76c60df481fe0b60d192cf4e40173b890d",
-  "coordinatorNightVisualReviewPending": true,
+  "coordinatorNightVisualReviewPending": false,
   "G21RendererExposureProbeReadOnly": true,
   "consumerReceipt": "G21-INTEGRATION-CONSUMER.json",
-  "nightReceipt": "G21-INTEGRATION-NIGHT-REVIEW.json"
+  "nightReceipt": "G21-INTEGRATION-NIGHT-REVIEW.json",
+  "coordinatorNightVisualAccepted": true
 }

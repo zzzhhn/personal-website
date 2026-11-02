@@ -44,5 +44,12 @@
   ],
   "publicOrNativeAssetChangesInSupplement": [],
   "C03ChangesInSupplement": [],
-  "rootCheckoutOr4341WritesByThisTask": false
+  "rootCheckoutOr4341WritesByThisTask": false,
+  "evidenceArchiveCommit": "e3a2698",
+  "coordinatorAcceptanceSupplementOwnedPaths": [
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-INTEGRATION-NIGHT-REVIEW.json",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-INTEGRATION-VERIFY.json",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-RESOURCE-OWNERSHIP.json",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-INTEGRATION-SUPPLEMENT-PATHS.json"
+  ]
 }

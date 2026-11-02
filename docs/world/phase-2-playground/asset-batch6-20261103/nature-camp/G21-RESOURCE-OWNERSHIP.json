@@ -1,0 +1,21 @@
+{
+  "atUTC": "2026-11-02T22:50:57.362773+00:00",
+  "acceptedSourceCommit": "3873fc76c60df481fe0b60d192cf4e40173b890d",
+  "finalFormalBuild": {
+    "path": "/tmp/bobby-world-batch6-g21-integrated-root",
+    "ownerThread": "01a121e9-58d6-7aa2-80e2-10005566c39c",
+    "ownershipAcceptedByCoordinator": true,
+    "cleanupAllowedByThisTask": false,
+    "purpose": "Coordinator will reuse the byte-verified formal output for 4341 after runtime-tree checks; do not rebuild same source or clean this directory"
+  },
+  "previousSourceBuild": {
+    "path": "/tmp/bobby-world-batch6-g21-integrated-root-source448ffd2",
+    "action": "Retain unchanged; resource session may later assess it",
+    "cleanupAllowedByThisTask": false
+  },
+  "otherOldRootsAndFrozenR10": "Preserve; no cleanup authorization",
+  "taskBrowserTabs": [],
+  "task4363ServerStopped": true,
+  "taskHeavyLeaseReleased": true,
+  "nextHeavyWindow": "Facilities P02/P03 has been directly notified; this task continues C03 lightweight only"
+}

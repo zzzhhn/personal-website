@@ -7,7 +7,7 @@
   "rawSHA": "ebd5e3771bee91219472ea7a82a6a866032aec839be178f8a717ea4831e97d78",
   "actualPrimaryImageInspected": true,
   "primaryJudgment": "Night silhouette, fractured shoulders and recesses remain legible in the existing cool fill; no emission or overbright private environment. Necessary single night observation satisfies the scoped primary check.",
-  "coordinatorNightVisualAccepted": false,
+  "coordinatorNightVisualAccepted": true,
   "userFinalVisualAccepted": false,
   "scope": "Single necessary ordinary night image, not a new near/side/performance/traversal matrix",
   "exposure": 1,
@@ -31,5 +31,6 @@
   "geometryFrozen": true,
   "cleanup": "runtime/cleanup-g21-integration.json",
   "4341ChangedByThisTask": false,
-  "remaining": "Coordinator independently reviews this night image and may reuse the verified formal output for 4341. C03 remains independent and unaccepted."
+  "remaining": "Coordinator checks runtime tree and adopts the verified formal output for 4341. No further G21 tuning or new window by this task. User final visual acceptance remains separate; C03 remains independent and unaccepted.",
+  "coordinatorApprovalScope": "Coordinator actually opened the final minimal integration night image and read raw/consumer; night material and silhouette accepted, no daylight reflection residue or emission issue"
 }
