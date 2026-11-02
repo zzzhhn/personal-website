@@ -11,9 +11,17 @@ export const facilityCraftEnabled = () => typeof window === 'undefined'
   || new URLSearchParams(window.location.search).get('craft6') !== 'baseline';
 const textureRoot = '/assets/world/craft-batch6-facilities/';
 let shared: ReturnType<typeof loadSurfaces> | null = null;
+const surfaceWakeups = new Set<() => void>();
+/** Current single-Canvas owner subscribes for bounded asset-ready frames.
+ * Mount also wakes once, covering textures that finished before subscription. */
+export function registerFacilitySurfaceWakeup(wakeup: () => void) {
+  surfaceWakeups.add(wakeup); wakeup();
+  return () => { surfaceWakeups.delete(wakeup); };
+}
+function surfaceReady() { for (const wakeup of surfaceWakeups) wakeup(); }
 function loadSurfaces() {
   const load = (name: string, color = false) => {
-    const texture = typeof document === 'undefined' || !facilityCraftEnabled() ? null : new TextureLoader().load(textureRoot + name);
+    const texture = typeof document === 'undefined' || !facilityCraftEnabled() ? null : new TextureLoader().load(textureRoot + name, surfaceReady);
     if (texture) {
       if (color) texture.colorSpace = SRGBColorSpace;
       texture.flipY = false; // Manufactured UVs and retained glTF UVs use the glTF image convention.

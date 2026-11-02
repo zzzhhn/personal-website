@@ -1,8 +1,33 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import vm from 'node:vm';
+import ts from 'typescript';
 import { BufferGeometry, Float32BufferAttribute, Group, Matrix4, Mesh, MeshStandardMaterial, ShaderLib, PerspectiveCamera, Vector4 } from 'three';
 import { loadWorldModule } from '../street/runtime.mjs';
 const sameValues = (a, b) => assert.equal(JSON.stringify(a), JSON.stringify(b));
+
+test('late shared texture completion wakes the mounted owner once and stops after unmount', () => {
+  const requests=[];
+  class DeferredLoader { load(url,onLoad) { const texture={};requests.push({url,onLoad,texture});return texture; } }
+  const module={exports:{}};
+  const source=readFileSync(new URL('../../../../src/components/world/WorldFacilitySurface.ts',import.meta.url),'utf8');
+  const code=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText;
+  vm.runInNewContext(code,{module,exports:module.exports,document:{},window:{location:{search:''}},URLSearchParams,
+    require:specifier=>{
+      if(specifier==='three')return{TextureLoader:DeferredLoader,RepeatWrapping:1000,SRGBColorSpace:'srgb',ShaderChunk:{envmap_physical_pars_fragment:''}};
+      if(specifier==='./WorldNight')return{night:{value:0}};
+      throw Error(specifier);
+    }});
+  const api=module.exports,pack=api.facilitySurfaceUniforms();assert.equal(requests.length,3);
+  requests[0].onLoad(); // An image can finish before the Canvas effect mounts.
+  let wakes=0;const unsubscribe=api.registerFacilitySurfaceWakeup(()=>wakes++);assert.equal(wakes,1);
+  requests[1].onLoad();requests[2].onLoad();assert.equal(wakes,3);
+  assert.equal(api.facilitySurfaceUniforms(),pack);assert.equal(requests.length,3);
+  unsubscribe();requests[0].onLoad();assert.equal(wakes,3);
+  let remountWakes=0;const release=api.registerFacilitySurfaceWakeup(()=>remountWakes++);
+  assert.equal(remountWakes,1);release();requests[2].onLoad();assert.equal(remountWakes,1);
+});
 
 test('shelter manufacturing slots retain exact sign faces, frozen proxy and seat datum', () => {
   const A = loadWorldModule(), base = loadWorldModule('WorldStreetAssets.ts', '?craft6=baseline');

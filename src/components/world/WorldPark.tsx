@@ -1,5 +1,5 @@
 import { memo, Component, Suspense, useEffect, useMemo, type ReactNode } from 'react';
-import { useFrame, useLoader } from '@react-three/fiber';
+import { useFrame, useLoader, useThree } from '@react-three/fiber';
 import WorldAlphaExchange from './WorldAlphaExchange';
 import WorldDjcClub from './WorldDjcClub';
 import { RigidBody, TrimeshCollider } from '@react-three/rapier';
@@ -17,7 +17,7 @@ import WorldParkSigns from './WorldParkSigns';
 import { ParkLOD, hutLOD } from './WorldParkLOD';
 import { ParkExhibits, placeExhibits, useExhibitGltfs } from './WorldParkExhibits';
 import { buildWalk, Knockables, LampPools, LAMP, RAIL, parkKnockables } from './WorldParkWalk';
-import { facilityCraftEnabled, setFacilityEnvironment } from './WorldFacilitySurface';
+import { facilityCraftEnabled, registerFacilitySurfaceWakeup, setFacilityEnvironment } from './WorldFacilitySurface';
 import WorldFacilityCraftQA from './WorldFacilityCraftQA';
 import { useDjcFurnitureEnvironment } from './WorldDjcFurnitureEnvironment';
 
@@ -123,8 +123,12 @@ function ParkClock() {
 
 /** Reuse the established renderer cache; never change scene.environment. */
 function FacilityReflections() {
-  const map = useDjcFurnitureEnvironment();
-  useEffect(() => { setFacilityEnvironment(map); return () => setFacilityEnvironment(null); }, [map]);
+  const map = useDjcFurnitureEnvironment(), invalidate = useThree(s => s.invalidate);
+  useEffect(() => {
+    const unsubscribe = registerFacilitySurfaceWakeup(invalidate);
+    setFacilityEnvironment(map);
+    return () => { unsubscribe(); setFacilityEnvironment(null); };
+  }, [map, invalidate]);
   return null;
 }
 

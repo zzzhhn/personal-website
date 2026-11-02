@@ -1,6 +1,7 @@
 astro.batch6.facilities.config.mjs
 docs/world/phase-2-playground/asset-batch6-20261103/facilities/FIRST-SAMPLES.md
 docs/world/phase-2-playground/asset-batch6-20261103/facilities/OWNED-PATHS.txt
+docs/world/phase-2-playground/asset-batch6-20261103/facilities/READY-WAKEUP.md
 docs/world/phase-2-playground/asset-batch6-20261103/facilities/REVISION-2.md
 docs/world/phase-2-playground/asset-batch6-20261103/facilities/hut-source-equivalence.json
 docs/world/phase-2-playground/asset-batch6-20261103/facilities/manifest-r2.json
