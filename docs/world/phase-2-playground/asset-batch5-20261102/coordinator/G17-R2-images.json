@@ -1,0 +1,45 @@
+{
+  "source_directory": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/runtime",
+  "images": [
+    {
+      "file": "legacy-v-tree-medium-noon.png",
+      "bytes": 146566,
+      "sha256": "f3d80a72dbb8c701013dfd7e347bb97e2d0cf14623c18ae347f484fa2c780e9b"
+    },
+    {
+      "file": "legacy-v-tree-medium-night.png",
+      "bytes": 109422,
+      "sha256": "56d12e6b70e4700142c07b92555bedd98410c272e526f469fbcc6e4cd986a9dc"
+    },
+    {
+      "file": "legacy-v-tree-close-noon.png",
+      "bytes": 128095,
+      "sha256": "82497788c2cbbd36575d7516f3b502167ef8a411c0464c1b903c68cd9ee63ee8"
+    },
+    {
+      "file": "legacy-v-tree-close-night.png",
+      "bytes": 94017,
+      "sha256": "6aec3aab4ebdec77e17a4e0dd8d8986d7bfaa7289f8571ed7db93611f02adb9b"
+    },
+    {
+      "file": "candidate-v-tree-medium-noon.png",
+      "bytes": 149676,
+      "sha256": "0d9d9578c13d3fa0b40baee9628864907bd70cf9efedbbf953fd2a3fd2dc6edb"
+    },
+    {
+      "file": "candidate-v-tree-medium-night.png",
+      "bytes": 110233,
+      "sha256": "179cf97fce450b594b4a6b0a12069600386f2791a742369d39db0d70ff36387d"
+    },
+    {
+      "file": "candidate-v-tree-close-noon.png",
+      "bytes": 146413,
+      "sha256": "7de105783d02fae7cfa1ae9517ebefeecdb8ae80cb53510c0bdbe150ca4f2260"
+    },
+    {
+      "file": "candidate-v-tree-close-night.png",
+      "bytes": 102271,
+      "sha256": "a61edb7559485847b5e7989823e0df4112db35287ca13af50430ded7e7ac3ff1"
+    }
+  ]
+}
