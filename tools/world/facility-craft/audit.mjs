@@ -8,8 +8,11 @@ const root = path.resolve(fileURLToPath(new URL('../../..', import.meta.url)));
 const evidence = path.join(root, 'docs/world/phase-2-playground/asset-batch5-20261102');
 const hash = data => createHash('sha256').update(data).digest('hex');
 const frozen = JSON.parse(await readFile(path.join(evidence, 'baseline.json')));
+const inputFlag = process.argv.indexOf('--baseline-assets-dir');
+const baselineAssetsDir = inputFlag < 0 ? path.join(frozen.asset_source_root, 'public/assets/world')
+  : path.resolve(process.argv[inputFlag + 1]);
 for (const [name, expected] of Object.entries(frozen.assets)) {
-  const data = await readFile(path.join(frozen.asset_source_root, 'public/assets/world', name));
+  const data = await readFile(path.join(baselineAssetsDir, name));
   assert.equal(hash(data), expected.sha256, `Original asset changed: ${name}`);
 }
 
@@ -48,7 +51,7 @@ for (const file of await walk(path.join(root, 'public/assets/world/facility-craf
     extensionNames: json.extensionsUsed || [],
   });
 }
-const report = { baselineAssetsUnchanged: Object.keys(frozen.assets).length, assets,
+const report = { baselineAssetsUnchanged: Object.keys(frozen.assets).length, baselineAssetsDir, assets,
   glbBytes: assets.reduce((total, asset) => total + asset.bytes, 0),
   note: 'LOD levels counted together in GLB inventory; runtime active triangles require actual renderer evidence.' };
 await writeFile(path.join(evidence, 'asset-costs.json'), JSON.stringify(report, null, 2) + '\n');

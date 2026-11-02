@@ -147,7 +147,7 @@ function CampContent() {
     {data.dumbbells.map((home, i) => <Pushable key={i} id={`C13-${i}`} home={home} hull={data.dumbbell.hull} mass={16} feedbackKey="dumbbell">
       <group scale={SCALE.C13}><WorldCampFacilityCraft family="C13" fallback={<mesh geometry={data.dumbbell.geometry} scale={1 / SCALE.C13} material={vc} castShadow receiveShadow />} /></group>
     </Pushable>)}
-    <Pushable id="C15" home={data.place.C15} hull={data.suitcase.hull} mass={12} feedbackKey="suitcase">
+    <Pushable id="C15" home={data.place.C15} hull={data.suitcase.hull} mass={12} feedbackKey="suitcase" clearance={legacy ? 0.004 : 0}>
       <WorldCampFacilityCraft family="C15" fallback={<mesh geometry={data.suitcase.geometry} material={vc} castShadow receiveShadow />} />
     </Pushable>
     <LightPools lantern={data.lanternPos} />
@@ -237,7 +237,7 @@ function LabelPlates({ plates, frame, lang }: { plates: { centre: Vec3; w: numbe
 
 const pushables = new Map<string, { body: RefObject<RapierRigidBody | null>; home: Vec3; state: { displacedAt: number; clock: number } }>();
 /** Pushable prop: sleeping dynamic convex hull; 30 s after it leaves home it fades and returns. */
-function Pushable({ id, home, hull, mass, feedbackKey, children }: { id: string; home: Place; hull: Float32Array; mass: number; feedbackKey: FeedbackKey; children: ReactNode }) {
+function Pushable({ id, home, hull, mass, feedbackKey, children, clearance = 0.004 }: { id: string; home: Place; hull: Float32Array; mass: number; feedbackKey: FeedbackKey; children: ReactNode; clearance?: number }) {
   const body = useRef<RapierRigidBody>(null), visual = useRef<Group>(null);
   const state = useRef({ displacedAt: -1, clock: 0 });
   // Own material copy so the 30 s fade touches only this prop.
@@ -250,7 +250,9 @@ function Pushable({ id, home, hull, mass, feedbackKey, children }: { id: string;
     binding.current = registered;
     return () => { registered.dispose(); binding.current = null; };
   }, [material]);
-  const start = useMemo(() => [home.position[0], home.position[1] + 0.004, home.position[2]] as Vec3, [home]);
+  // The original sleeping 4 mm clearance visibly floated C15 above its pad. Only
+  // its candidate opts into zero clearance; the same start drives home/reset.
+  const start = useMemo(() => [home.position[0], home.position[1] + clearance, home.position[2]] as Vec3, [home, clearance]);
   useEffect(() => { pushables.set(id, { body, home: start, state: state.current }); body.current?.sleep(); return () => { pushables.delete(id); }; }, [id, start]);
   useBeforePhysicsStep(world => {
     const b = body.current; if (!b) return;

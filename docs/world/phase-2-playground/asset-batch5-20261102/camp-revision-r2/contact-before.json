@@ -1,0 +1,11 @@
+{
+  "receipt": "runtime/candidate-v-c15-noon-32.json",
+  "sleeping": true,
+  "bodyY": 4.9039998054504395,
+  "padTopY": 4.9,
+  "GLBLocalWheelMinY": -0.00042077977559529245,
+  "wheelBottomY": 4.903579025674844,
+  "gapMetres": 0.003579025674844,
+  "fix": "Candidate C15 clearance=0; legacy and all other props retain 0.004. Same start drives reset. Hull, mass, damping and algorithm unchanged. No contact shadow added.",
+  "runtimeAfterFix": "Pending frozen R6 actual rest / push / reset verification."
+}

@@ -3,6 +3,7 @@ from pathlib import Path
 import hashlib
 import json
 import math
+import subprocess
 
 ROOT = Path(__file__).resolve().parents[3]
 OUT = ROOT / 'docs/world/phase-2-playground/asset-batch5-20261102'
@@ -14,10 +15,18 @@ source_locations = {}
 for name, digest in build['source'].items():
     # R4's ground was rejected after review. Its evidence retains that version;
     # the fourteen-item product restores the baseline terrain instead.
-    source = (OUT / 'rejected-ground-r4' / name if name == 'WorldTerrain.tsx'
-              else ROOT / 'src/components/world' / name)
-    assert sha(source) == digest, f'Changed R4 evidence source: {name}'
-    source_locations[name] = str(source.relative_to(ROOT))
+    if name == 'WorldTerrain.tsx':
+        source = OUT / 'rejected-ground-r4' / name
+        actual = sha(source)
+        source_locations[name] = str(source.relative_to(ROOT))
+    else:
+        # Later approved revisions may change current files. R4 images must
+        # remain attached to the exact original delivery commit, not those edits.
+        path = 'src/components/world/' + name
+        original = subprocess.check_output(['git', 'show', 'cdb31de:' + path], cwd=ROOT)
+        actual = hashlib.sha256(original).hexdigest()
+        source_locations[name] = 'git:cdb31de:' + path
+    assert actual == digest, f'Changed R4 evidence source: {name}'
 for name, digest in build['files'].items():
     assert sha(Path(build['build']) / name) == digest, f'Changed frozen output: {name}'
 

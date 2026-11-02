@@ -60,7 +60,7 @@
         0.11777946352958679,
         0.1697119027376175
       ],
-      "triangles": 5556,
+      "triangles": 4788,
       "materials": [
         "camp_craft_darkmetal",
         "camp_craft_rubber",
@@ -180,7 +180,7 @@
   },
   "glb": {
     "path": "public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
-    "bytes": 1501644,
-    "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+    "bytes": 1441740,
+    "sha256": "140775157095ffef464897093aece407ad28781f7cc282962a165a4f655f3703"
   }
 }

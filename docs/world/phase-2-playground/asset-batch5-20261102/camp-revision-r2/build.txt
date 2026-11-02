@@ -1,0 +1,33 @@
+/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/build_camp.py:316: DeprecationWarning: 'Material.use_nodes' is expected to be removed in Blender 6.0
+  m=bpy.data.materials.new('camp_craft_'+cls); m.use_nodes=True
+INFO Draco mesh compression is available, use library at /Applications/Blender.app/Contents/Resources/5.1/scripts/addons_core/io_scene_gltf2/libextern_draco.dylib
+20:49:59 | INFO: Starting glTF 2.0 export
+20:49:59 | INFO: Extracting primitive: C12_guitar
+20:49:59 | INFO: Primitives created: 5
+20:49:59 | INFO: Extracting primitive: C12_stand
+20:49:59 | INFO: Primitives created: 2
+20:49:59 | INFO: Extracting primitive: C12_strings
+20:49:59 | INFO: Primitives created: 1
+20:49:59 | INFO: Extracting primitive: C13_dumbbell
+20:49:59 | INFO: Primitives created: 3
+20:49:59 | INFO: Extracting primitive: C14_stove
+20:49:59 | INFO: Primitives created: 4
+20:49:59 | INFO: Extracting primitive: C14_wok
+20:49:59 | INFO: Primitives created: 3
+20:49:59 | INFO: Extracting primitive: C15_case
+20:49:59 | INFO: Primitives created: 5
+20:49:59 | INFO: Extracting primitive: C15_handle
+20:49:59 | INFO: Primitives created: 3
+20:49:59 | INFO: Extracting primitive: C16_frame
+20:49:59 | INFO: Primitives created: 2
+20:49:59 | INFO: Extracting primitive: C16_glass
+20:49:59 | INFO: Primitives created: 1
+20:49:59 | INFO: Extracting primitive: C16_wick
+20:49:59 | INFO: Primitives created: 2
+20:49:59 | INFO: Finished glTF 2.0 export in 0.056224822998046875 s
+
+Info: Saved as "camp-facilities-source.blend"
+{"written": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb", "families": {"C12": 8776, "C13": 4788, "C14": 5348, "C15": 9964, "C16": 3256}, "bytes": 1441740}
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

@@ -1,11 +1,12 @@
 {
   "baselineAssetsUnchanged": 7,
+  "baselineAssetsDir": "/tmp/bobby-world-batch5-r5-fourteen-01a19a62/assets/world",
   "assets": [
     {
       "path": "public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
-      "bytes": 1501644,
-      "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b",
-      "triangles": 32900,
+      "bytes": 1441740,
+      "sha256": "140775157095ffef464897093aece407ad28781f7cc282962a165a4f655f3703",
+      "triangles": 32132,
       "primitives": 31,
       "materials": 10,
       "textures": 0,
@@ -210,6 +211,6 @@
       "extensionNames": []
     }
   ],
-  "glbBytes": 3194684,
+  "glbBytes": 3134780,
   "note": "LOD levels counted together in GLB inventory; runtime active triangles require actual renderer evidence."
 }

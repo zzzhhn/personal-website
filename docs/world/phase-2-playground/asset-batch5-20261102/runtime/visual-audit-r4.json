@@ -2,12 +2,12 @@
   "frozenFilesMatched": 53,
   "sourceFilesMatched": 7,
   "sourceLocations": {
-    "WorldCamp.tsx": "src/components/world/WorldCamp.tsx",
-    "WorldCampContent.tsx": "src/components/world/WorldCampContent.tsx",
-    "WorldCampFacilityCraft.tsx": "src/components/world/WorldCampFacilityCraft.tsx",
-    "WorldStreetAssets.ts": "src/components/world/WorldStreetAssets.ts",
-    "WorldStreetFacilityCraft.ts": "src/components/world/WorldStreetFacilityCraft.ts",
-    "WorldStreetStatic.tsx": "src/components/world/WorldStreetStatic.tsx",
+    "WorldCamp.tsx": "git:cdb31de:src/components/world/WorldCamp.tsx",
+    "WorldCampContent.tsx": "git:cdb31de:src/components/world/WorldCampContent.tsx",
+    "WorldCampFacilityCraft.tsx": "git:cdb31de:src/components/world/WorldCampFacilityCraft.tsx",
+    "WorldStreetAssets.ts": "git:cdb31de:src/components/world/WorldStreetAssets.ts",
+    "WorldStreetFacilityCraft.ts": "git:cdb31de:src/components/world/WorldStreetFacilityCraft.ts",
+    "WorldStreetStatic.tsx": "git:cdb31de:src/components/world/WorldStreetStatic.tsx",
     "WorldTerrain.tsx": "docs/world/phase-2-playground/asset-batch5-20261102/rejected-ground-r4/WorldTerrain.tsx"
   },
   "screenshots": {

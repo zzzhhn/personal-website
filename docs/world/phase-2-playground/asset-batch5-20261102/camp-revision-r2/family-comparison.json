@@ -1,0 +1,25 @@
+{
+  "scope": "Exact node transforms/extras, attribute bytes and PBR materials; oriented triangle multiset ignores face order only.",
+  "before": {
+    "C12": "2ada8a6fe8c38d10d1137db1f69e29c85539797de2aba2f6893c956c9bc13d48",
+    "C13": "baa225740c46da354c2ae285968b28b5ba46c42641f8201f19122a4608a5c639",
+    "C14": "a64f42f50416e4d6cf5a0dd8178b553fa6ea1acb8c56209f1735157825446500",
+    "C15": "01f0c5906a9bc339161d70bbf96a6d281bb629ed44dfba3915fdba19a48f5f3a",
+    "C16": "65181e876bfe95ab0e27f98e31e5cd9ad41e612b40c84b6bc0f357c6b4edf9b6"
+  },
+  "after": {
+    "C12": "2ada8a6fe8c38d10d1137db1f69e29c85539797de2aba2f6893c956c9bc13d48",
+    "C13": "d6dfa985eceb12083fe87407f6c075d9ff53c2371f7adfa22c41428dc16aa4e9",
+    "C14": "a64f42f50416e4d6cf5a0dd8178b553fa6ea1acb8c56209f1735157825446500",
+    "C15": "01f0c5906a9bc339161d70bbf96a6d281bb629ed44dfba3915fdba19a48f5f3a",
+    "C16": "65181e876bfe95ab0e27f98e31e5cd9ad41e612b40c84b6bc0f357c6b4edf9b6"
+  },
+  "unchanged": {
+    "C12": true,
+    "C13": false,
+    "C14": true,
+    "C15": true,
+    "C16": true
+  },
+  "exportNote": "C12 rubber stand and C14 painted stove index face ordering changed on regeneration; vertex data and oriented triangles are identical."
+}

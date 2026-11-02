@@ -1,0 +1,12 @@
+✔ PBR copies preserve exported physical classes while borrowing loader geometry/images (1.902625ms)
+✔ articulated subtree keeps geometry local and removes the already applied wok pivot once (0.95875ms)
+✔ runtime adapter parses and legacy query bypasses candidate independent of qa flag (48.6135ms)
+✔ legacy static/glow batches reproduce frozen batch-4 inputs with no extra stove/lantern draw (70.8125ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 458.860334

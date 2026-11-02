@@ -1,11 +1,11 @@
 {
-  "glbSha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b",
-  "bytes": 1501644,
+  "glbSha256": "140775157095ffef464897093aece407ad28781f7cc282962a165a4f655f3703",
+  "bytes": 1441740,
   "images": 0,
   "native": {
     "path": "tools/world/facility-craft/camp/source/camp-facilities-source.blend",
-    "bytes": 803102,
-    "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+    "bytes": 773282,
+    "sha256": "f6fc41ffc39059622ad43b943d973a0d063da999cc0601367d593b684190c3d6"
   },
   "families": {
     "C12": {
@@ -29,7 +29,7 @@
       "meshNodeCount": 4
     },
     "C13": {
-      "triangles": 5556,
+      "triangles": 4788,
       "dimensionsGLB": [
         0.1290000081062317,
         0.11777946352958679,

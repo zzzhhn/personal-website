@@ -147,16 +147,16 @@ def guitar(parts):
 def dumbbell(parts):
     grip = parts[0]
     height = .068 * math.cos(math.pi/6)
-    # Raised machined diamond knurl, 0.6 mm high, in opposed helices over a 120 mm grip.
-    # Fewer broad rings cannot explain grip; these intersecting helical ridges can.
+    # Shallow partly embedded knurl, subordinate to the continuous steel core.
+    # 0.3 mm ridge diameter and subdued iron response avoid a bright wire wrap.
     for sign in [-1,1]:
-        for start in range(10):
+        for start in range(8):
             points=[]
             for k in range(17):
                 y=-.065+.13*k/16
-                theta=start*math.tau/10 + sign*y*math.tau/.09
-                points.append((.0168*math.cos(theta),y,height+.0168*math.sin(theta)))
-            path(grip,points,.0007,'steel',4)
+                theta=start*math.tau/8 + sign*y*math.tau/.09
+                points.append((.01615*math.cos(theta),y,height+.01615*math.sin(theta)))
+            path(grip,points,.00015,'iron',4)
         # Shoulder bearing/pressed sleeve at each head, ring around inset axial end plug.
         grip.add(strut((0,sign*.076,height),(0,sign*.093,height),.024,.028,16),'steel')
         grip.add(strut((0,sign*.165,height),(0,sign*.168,height),.041,.038,12,bevel=.001),'iron_dark')
