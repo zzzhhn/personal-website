@@ -1,0 +1,14 @@
+Browser tab: 1395914218, Title: "Bobby’s island · World playtest", URL: "http://127.0.0.1:4341/world/?start=camp&quality=balanced&paused=1".
+0 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4341/world/?start=camp&quality=balanced&paused=1
+	1 container Bobby 的城岛
+		2 container
+			3 text 经历 · 项目 · 漫游
+			4 heading Bobby 的城岛, Value: 1
+				5 text Bobby 的城岛
+			6 button 回到营地, Help: 保留矿石、挖矿进度和研究结果。
+			7 pop up button 地图与设置 Esc
+		8 container
+			9 container 城岛地图 · 营地
+			10 text 营地
+
+The focused UI element is 0 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4341/world/?start=camp&quality=balanced&paused=1

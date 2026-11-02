@@ -1,0 +1,74 @@
+Browser tab: 1395914218, Title: "Bobby’s island · World playtest", URL: "http://127.0.0.1:4341/world/?start=camp&quality=balanced&paused=1".
+0 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4341/world/?start=camp&quality=balanced&paused=1
+	1 container 地图与设置
+		2 text BOBBY 的城岛
+		3 heading 地图与设置, Value: 2
+			4 text 地图与设置
+		5 container 城岛地图. 点击地图设置航点，再点一次航点取消。
+		6 text 你
+		7 text 实习楼（由旧到新）
+		8 text 项目展位
+		9 text 预留地块
+		10 text 点击地图设置航点，再点一次航点取消。
+		11 container 继续探索 回到营地 保留矿石、挖矿进度和研究结果。 语言 时间 岛上时间 时间自然流逝 现实 1 秒 = 岛上 1 分钟。暂停世界时，时间也会暂停。 天气 画面质量 如果移动时卡顿，可以切换到流畅。 声音 操作 致谢 ← 回到简历
+			12 button 继续探索
+			13 button 回到营地
+			14 text 保留矿石、挖矿进度和研究结果。
+			15 container 语言
+				16 text 语言
+				17 checkbox English, Value: 0
+				18 checkbox 中文, Value: 1
+			19 container 时间 岛上时间
+				20 container
+					21 text 时间
+					22 container 岛上时间
+						23 text 17:52
+				24 checkbox 清晨 06:00, Value: 0
+					25 text 清晨
+					26 text 06:00
+				27 checkbox 正午 12:00, Value: 0
+					28 text 正午
+					29 text 12:00
+				30 checkbox 午后 15:00, Value: 0
+					31 text 午后
+					32 text 15:00
+				33 checkbox 黄昏 17:30, Value: 1
+					34 text 黄昏
+					35 text 17:30
+				36 checkbox 傍晚 19:00, Value: 0
+					37 text 傍晚
+					38 text 19:00
+				39 checkbox 深夜 00:00, Value: 0
+					40 text 深夜
+					41 text 00:00
+			42 container
+				43 checkbox (settable, integer) Description: 时间自然流逝, Value: 1
+				44 text 时间自然流逝
+			45 text 现实 1 秒 = 岛上 1 分钟。暂停世界时，时间也会暂停。
+			46 container 天气
+				47 text 天气
+				48 checkbox 晴天, Value: 1
+				49 checkbox 下雨, Value: 0
+				50 checkbox 下雪, Value: 0
+			51 container 画面质量
+				52 text 画面质量
+				53 checkbox 流畅, Value: 1
+				54 checkbox 高清, Value: 0
+			55 text 如果移动时卡顿，可以切换到流畅。
+			56 container 声音
+				57 text 声音
+				58 checkbox 主静音, Value: 0
+				59 text 声音已开启
+				60 container
+					61 text 音乐
+					62 slider (settable, integer) Description: 音乐, Value: 1
+				63 container
+					64 text 音效
+					65 slider (settable, integer) Description: 音效, Value: 1
+			66 button (collapsed) 操作, Secondary Actions: Expand
+				67 text 操作
+			68 button (collapsed) 致谢, Secondary Actions: Expand
+				69 text 致谢
+			70 link Description: ← 回到简历, Value: 127.0.0.1:4341/#about
+
+The focused UI element is 11 container 继续探索 回到营地 保留矿石、挖矿进度和研究结果。 语言 时间 岛上时间 时间自然流逝 现实 1 秒 = 岛上 1 分钟。暂停世界时，时间也会暂停。 天气 画面质量 如果移动时卡顿，可以切换到流畅。 声音 操作 致谢 ← 回到简历

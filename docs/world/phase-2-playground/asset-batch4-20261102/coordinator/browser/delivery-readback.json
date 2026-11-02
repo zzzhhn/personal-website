@@ -1,0 +1,13 @@
+{
+  "url": "http://127.0.0.1:4341/world/?start=camp&quality=balanced&paused=1",
+  "htmlSHA256": "8d41cbde726c9bacdd5b7f8685acb8c7f09fcedca2bae76c0a5cd9051281244c",
+  "bytes": 52275,
+  "serverPID": 11644,
+  "frozen": "/tmp/bobby-world-batch4-r2-01a19a62",
+  "htmlHTTPMatched": true,
+  "preflight": {
+    "pressure": 1,
+    "swapGiB": 10.29,
+    "freeDiskGiB": 35.28
+  }
+}

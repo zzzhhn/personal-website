@@ -1,0 +1,159 @@
+{
+  "source_commit": "2f22560fff2174195d8ce70b855ae4b871a388a7",
+  "target": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration",
+  "sources": [
+    {
+      "path": "src/components/world/WorldCamp.tsx",
+      "before": "d563b6391b26e6e3b35e79a0a0f1a8fa6480245a4ee07c024aac1ed3d648eec1",
+      "after": "7f5b4fa31be8806c39ab2183f0792ee7f07a5c088783fea8e850cdbdb047588e",
+      "equals_release": true
+    },
+    {
+      "path": "src/components/world/WorldGrass.tsx",
+      "before": "467e6bd6a7ad8703bb073f46e8a574ad06cdda6e0bf27c00a8e5c0c8a52b447c",
+      "after": "7c642f98f42ce18ce891c0acce60d42b11f4f54653b409ec0f9631c82df13648",
+      "equals_release": true
+    },
+    {
+      "path": "src/components/world/WorldStreetTrees.tsx",
+      "before": "e13d4830af45eb4741069a9f5dd0d8516f6d1125d61c9ab0ccf4a70b4c1a6d35",
+      "after": "e177c0601fbfcaee777cdc6b26053f1a254a274243a5bda76357f0567e5091b9",
+      "equals_release": true
+    },
+    {
+      "path": "src/components/world/WorldTerrain.tsx",
+      "before": "fc5c6503fd635bae2bca262824c5a36aa789af322587eea43da075962a7472de",
+      "after": "520ff4acb1fbc2641ce6d5d602493228e00e8ce064b2bb28bee93b70054b1b7f",
+      "equals_release": false
+    },
+    {
+      "path": "src/components/world/WorldWater.ts",
+      "before": "0fa7b1dd8d61ba29250c3b341fd91fcf9ea77f6fcbf103b5a373cb68e288d060",
+      "after": "477b210797f862d1f6117d8cc8e0c66ad4ddf0ffcb7ce308497a96e8c28dd2be",
+      "equals_release": true
+    },
+    {
+      "path": "src/components/world/camp-craft-visual.test.mjs",
+      "before": "074d00898969bc3db4d6ff33fbde331e8b230c70c812507892d16035a69adf9c",
+      "after": "33ce6c34ff53c20da26a6fde5559cda09739dde5067bdfc69bd82a592339e718",
+      "equals_release": true
+    }
+  ],
+  "new_files": [
+    {
+      "path": "public/assets/world/nature-craft/C09.glb",
+      "sha256": "bf5285269db9bbe8a7b3366f5b0480f67e96a86ae0a8c68ff32d61b39ab29946"
+    },
+    {
+      "path": "public/assets/world/nature-craft/G16.glb",
+      "sha256": "91ca0feffa8b2e77075ae6bdea5ebf9b5cd1551d8bea5040e99a26c1ee72382b"
+    },
+    {
+      "path": "public/assets/world/nature-craft/G17.glb",
+      "sha256": "d4c98d8a8bd8b59d61d6b0c40fdc84fab9cdccda27f546a5fdd0b612dc9c0e59"
+    },
+    {
+      "path": "public/assets/world/nature-craft/G18.glb",
+      "sha256": "01eef69069ae9fe8b4f9f9d6396e0c0b9f5104cc2333136abbe6bfba741aac57"
+    },
+    {
+      "path": "public/assets/world/nature-craft/G21.glb",
+      "sha256": "ed36a3539b0c70995f9711f675e54744b4a1c0a143a1b3b4bad02f4ed90f1dbf"
+    },
+    {
+      "path": "public/assets/world/nature-craft/G22.glb",
+      "sha256": "82b47704527f523f4d6f5c113167993084a75017d33b87948acc58efc17527fb"
+    },
+    {
+      "path": "public/assets/world/nature-craft/G23.glb",
+      "sha256": "0a94d27f62cde4d7ba961e3b6dc97d59603234d9c1769f1869024aa4ce964a85"
+    },
+    {
+      "path": "public/assets/world/nature-craft/ST1.glb",
+      "sha256": "f2cbeb1331fa72ddeb1e627e01dc578cff95668a9f839214dd7875b2f6930df6"
+    },
+    {
+      "path": "public/assets/world/nature-craft/ST2.glb",
+      "sha256": "d4aecdcec1f36fec0ca7d180fdd1f32dbf455de575a8bcf42f1c47dea193c34d"
+    },
+    {
+      "path": "public/assets/world/nature-craft/grass.glb",
+      "sha256": "7d984a67dbaeef4654baac65be878854b7a4736a0954b1361af9ce8dbe903b48"
+    },
+    {
+      "path": "tools/world/nature-craft/blend/C09.blend",
+      "sha256": "9fc58ae38778f74a07bad6a2917219fc5e096e2088b308e91cb5ecb4922482fb"
+    },
+    {
+      "path": "tools/world/nature-craft/blend/G16.blend",
+      "sha256": "cdaa38ce2361bf2fad76913b00de76046bc38cd9e8fed27180db2b17d981fcaf"
+    },
+    {
+      "path": "tools/world/nature-craft/blend/G17.blend",
+      "sha256": "4be6a5312b30fb759da525dbea5f73fe2832dd75aeacb5e59ba859c73296fe66"
+    },
+    {
+      "path": "tools/world/nature-craft/blend/G18.blend",
+      "sha256": "5ad9c72d21ef9d333d3d8e3d6348d1ca9fbbbc3596a86f627776be48700b7531"
+    },
+    {
+      "path": "tools/world/nature-craft/blend/G21.blend",
+      "sha256": "ddb862cc1a477b194fe2ba2ab00dd066ac1f243cf1b5d340c03e015bc143133f"
+    },
+    {
+      "path": "tools/world/nature-craft/blend/G22.blend",
+      "sha256": "572ed42102bdfc1255e53ba65f38ed26d4b07e2ecbf9bf0dd94584786483c8e4"
+    },
+    {
+      "path": "tools/world/nature-craft/blend/G23.blend",
+      "sha256": "d6d8729bf42a2a732f42415b6616b94af576487b7db67b99bfd9f5f781f78f27"
+    },
+    {
+      "path": "tools/world/nature-craft/blend/ST1.blend",
+      "sha256": "78446ce05605a15ee6d828dce7710ebe66c2c8938b7dec5ad7b0a915006c0206"
+    },
+    {
+      "path": "tools/world/nature-craft/blend/ST2.blend",
+      "sha256": "3b210bc939a52013dd878f77e819bfc27de595a6381f087b0900eeced30d3c0e"
+    },
+    {
+      "path": "tools/world/nature-craft/blend/grass.blend",
+      "sha256": "31a257534422debb02ea459a848bed6454d58f8d903880e3252c8378d7da92a4"
+    },
+    {
+      "path": "tools/world/nature-craft/build_props.py",
+      "sha256": "a8dcd4dc67aee9673ddd76269ce59ef7c9903341d756a0e8ad7575ca45a01a3b"
+    },
+    {
+      "path": "tools/world/nature-craft/build_trees.py",
+      "sha256": "892f2d70cc1ff69ea13cba8200b505b4ea1d2f136fb219b597666a45d6e0727c"
+    },
+    {
+      "path": "tools/world/nature-craft/grass.test.mjs",
+      "sha256": "c1357cee0ecfc7a68361608568d7f3330f9bf81d07e20063db9c6b4a5375b0af"
+    },
+    {
+      "path": "tools/world/nature-craft/ground-water.test.mjs",
+      "sha256": "f82c7368283d7d563287cc320ae5a87dab4bd01d479aabf6c5ae8ba47812a9d9"
+    },
+    {
+      "path": "tools/world/nature-craft/probe.py",
+      "sha256": "b919452972a3e75911f0ee901caa45a41fc9c4e2e43607d09111d3ed77f5959c"
+    },
+    {
+      "path": "tools/world/nature-craft/render_clay.py",
+      "sha256": "48168f3f674acd3b5cfca8087c1961f00e54b3fde32f60a747ded4ec99a8dfa2"
+    },
+    {
+      "path": "tools/world/nature-craft/summarize_runtime.py",
+      "sha256": "fc175575c271724825d24f066144a03a262345c4fa0bcb708591c579772c5a54"
+    }
+  ],
+  "preserved": [
+    "club basin terrain mask and mounted uniform",
+    "factory vegetation exclusions",
+    "all unrelated working changes"
+  ],
+  "evidence_home": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch4-20261102",
+  "pre_integration_materials": "/var/folders/yb/h40dwzw136jbjdldyfw6dlcr0000gn/T/bobby-batch4-merge-_ew4ik6a"
+}

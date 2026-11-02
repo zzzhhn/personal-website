@@ -1,0 +1,30 @@
+{
+  "reviewed_batch": {
+    "source_commit": "2f22560fff2174195d8ce70b855ae4b871a388a7",
+    "status": "accepted_incremental_and_local_preview_updated",
+    "review": "REVIEW.md",
+    "integration": "integration.json",
+    "preview": "preview-4341.json",
+    "browser": "browser/FINAL-4341.md"
+  },
+  "next_batch": {
+    "thread_id": "01a19a62-2107-73a3-b811-07f3c66a5a24",
+    "host": "local",
+    "branch": "codex/world-craft-batch5",
+    "checkout": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5",
+    "status": "active",
+    "new_props": 13,
+    "nature_refinements": 2,
+    "primary_review_required_for_nature_samples": true
+  },
+  "automatic_reports": {
+    "human_authorization": "本轮用户明确要求工作完成后自动与主协调沟通统筹",
+    "destination_thread": "01a121e9-58d6-7aa2-80e2-10005566c39c",
+    "events": [
+      "reviewable sub-batch completion",
+      "cross-task decision",
+      "batch completion"
+    ]
+  },
+  "public_deployment": false
+}
