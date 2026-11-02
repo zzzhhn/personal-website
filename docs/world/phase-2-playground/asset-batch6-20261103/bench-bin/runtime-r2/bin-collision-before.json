@@ -1,0 +1,132 @@
+{
+  "elapsedMs": 125324,
+  "actionResult": {
+    "kind": "actual-Rapier-player-capsule-shape-cast",
+    "from": [
+      15.4,
+      2.11,
+      -25.8
+    ],
+    "to": [
+      15.4,
+      2.11,
+      -24.25
+    ]
+  },
+  "probe": {
+    "hit": true,
+    "toi": 0.3599693477153778,
+    "other": {
+      "colliderHandle": 3.09e-321,
+      "name": "street-knock-bin-0",
+      "assetId": "street-bin",
+      "kind": "obstacle"
+    },
+    "normal": null
+  },
+  "resetComplete": false,
+  "events": [
+    {
+      "elapsedMs": 1062,
+      "phase": "home",
+      "t": 0,
+      "body": {
+        "id": "bin-0",
+        "phase": "home",
+        "phaseSeconds": 0,
+        "home": [
+          15.4,
+          1.15,
+          -24.6
+        ],
+        "position": [
+          15.399999618530273,
+          1.149999976158142,
+          -24.600000381469727
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "mass": 0.24126282334327698,
+        "localCom": [
+          1.7416132980230259e-9,
+          0.4850573241710663,
+          -2.5822621818605285e-9
+        ],
+        "colliders": 2,
+        "sleeping": false,
+        "displacement": 5.394796601857992e-7,
+        "locked": false
+      }
+    }
+  ],
+  "paused": false,
+  "shot": "craft6-bin-normal",
+  "seat": null,
+  "nearby": null,
+  "player": [
+    -42.52485656738281,
+    12.553522109985352,
+    26.214780807495117
+  ],
+  "grounded": false,
+  "physicsStep": 2317,
+  "guide": {
+    "loaded": true,
+    "animation": "JumpAir",
+    "root": [
+      -42.51612417606455,
+      11.488578290130407,
+      26.298200942619076
+    ],
+    "movementLocked": false,
+    "seatSupport": null
+  },
+  "bin": {
+    "id": "bin-0",
+    "phase": "home",
+    "phaseSeconds": 0,
+    "home": [
+      15.4,
+      1.15,
+      -24.6
+    ],
+    "position": [
+      15.399999618530273,
+      1.149999976158142,
+      -24.600000381469727
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "mass": 16,
+    "localCom": [
+      0,
+      0.30000001192092896,
+      0
+    ],
+    "colliders": 2,
+    "sleeping": true,
+    "displacement": 5.394796601857992e-7,
+    "locked": false
+  },
+  "renderer": {
+    "render": {
+      "frame": 3362,
+      "calls": 291,
+      "triangles": 700317,
+      "points": 28,
+      "lines": 0
+    },
+    "memory": {
+      "geometries": 413,
+      "textures": 110
+    }
+  }
+}

@@ -1,4 +1,6 @@
-# Bin R2：构造源，尚未渲染
+# Bin R2：构造源检查点
+
+本页记录7253ec6冻结前的构造与验证；后续原生导出及实际普通／夜景／交互结果见`R2-NATIVE-EXPORT.md`和`R2-REVIEW.md`。
 
 根据主协调对R1四图的独立复核，只返修bin；bench的木纹与漆面已保留，不重做、不加密纹理或螺钉。R2没有改变已审共享shader、环境或全局灯光。
 
@@ -14,6 +16,6 @@ R2外包络与R1逐轴相等：X/Z为±.305m，Y为0至.995m。原hull和`street
 
 R2为4436tri，R1为2180tri，增加2256tri，仅近景。接地带在原桶底.215m半径之外实际露出，底鞋与垫圈搭接，不把藏在旧几何中的新增零件算作可见改善。这个数字不代表实际GPU开销，普通视角若无明显增益，本轮不能交付。初步14项源检查通过，覆盖包络／代理／远景／冻结族／源几何法线／座位／接地，R1原生与四图17文件证据仍通过原校验。
 
-开发对照：`benchBin=r1`为R1几何与材质；默认R2为新构造。旧`benchBin=baseline`继续关闭本组材质与R2构造。`astro.batch6.bin-r2.config.mjs`只保留原bin-normal机位，比较R1与R2同一普通视角；未改变生产QA模块。
+开发对照：`benchBin=r1`为R1几何与材质；默认R2为新构造。旧`benchBin=baseline`继续关闭本组材质与R2构造。`astro.batch6.bin-r2.config.mjs`在普通对照阶段只保留bin-normal机位，随后为获授权的必要夜景／坐立加入原bench-normal与开发交互控件；未改变生产QA模块。
 
-提取与导出：`node tools/world/facility-craft/batch6/prepare_bin_r2.mjs`；在下一独占窗口中运行`build_bench_bin.py --revision r2 --surface-dir /path/to/frozen-R2/pack`。仅导出bin至独立`craft-batch6-bin-r2`及`native-bin-r2`，不覆盖R1和bench归档。普通图明显改善前不扩近景／夜景或其它族。当前未导出、未打开新预览、未获得视觉接受，也未集成。
+提取与导出：`node tools/world/facility-craft/batch6/prepare_bin_r2.mjs`；在独占窗口中运行`build_bench_bin.py --revision r2 --surface-dir /path/to/frozen-R2/pack`。仅导出bin至独立`craft-batch6-bin-r2`及`native-bin-r2`，不覆盖R1和bench归档。普通图获主协调独立接受后才补两族必要夜景与交互，均已完成；仍未更新集成或4341。

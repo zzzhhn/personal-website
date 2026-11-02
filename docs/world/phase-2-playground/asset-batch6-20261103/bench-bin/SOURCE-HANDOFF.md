@@ -1,6 +1,8 @@
 # Bench／bin 小组：轻量源制作
 
-状态：**R1 已完成原生导出和两对普通视角实拍，自评 bin 增益仍弱，继续独立返修，不建议集成。** 基线为 `ad7ee76d68ce240d9ed8e4f1657a5e637e62700c`，即已审的hut／shelter方案及一次性贴图完成唤醒。原设施工作树和主协调集成候选未修改。实拍与当前判断见 `R1-REVIEW.md`。
+当前状态：**bench保留R1；bin R2普通提升已获主协调独立接受，所需有限夜景／交互验证通过，交下一集成候选。** 最新结果见`R2-REVIEW.md`，完整owned范围见`OWNED-PATHS-FINAL.txt`。这不等于用户审美接受或全岛GPU保证。以下保留R1源制作与第一轮检查背景；R1的“不建议集成”只针对已归档的旧bin处理。
+
+基线为 `ad7ee76d68ce240d9ed8e4f1657a5e637e62700c`，即已审的hut／shelter方案及一次性贴图完成唤醒。原设施工作树和主协调集成候选未修改。第一轮实拍与判断见 `R1-REVIEW.md`。
 
 工作树：`personal-world-craft-batch6-bench-bin`；分支：`codex/world-craft-batch6-bench-bin`。稀疏检出源／既有设施工具，node_modules与public资源借用现有链接，没有复制纹理或依赖缓存；本组新portable输出使用独立真实目录。导出与4350预览均在共享锁下串行完成，自有标签／服务器已关闭，锁已释放。
 

@@ -1,0 +1,67 @@
+{
+  "status": "main ordinary-view candidate accepted; required bounded night/interaction checks pass; user visual acceptance and full-island GPU cost remain separate",
+  "sourceCommit": "7253ec60b053370d449efde37f09f64d347b3118",
+  "checks": [
+    "same ordinary view/day settings; two settled night views; only expected street geometry digest changes",
+    "actual registered bench E sit/stand; measured post-skin seat contact and grounded standing",
+    "actual bin capsule collision before/after; impulse response; unmodified 30s/fade reset; mass/COM/2 colliders unchanged",
+    "exact frozen production source/native source; protected adapters/shared shader unchanged; no browser errors"
+  ],
+  "observations": {
+    "calls": [
+      293,
+      293
+    ],
+    "textures": [
+      89,
+      89
+    ],
+    "nearTriangles": [
+      2180,
+      4436
+    ],
+    "addedNearTriangles": 2256,
+    "addedSourceBufferBytes": 162432,
+    "resetDelayMs": 30002
+  },
+  "sources": {
+    "src/components/world/WorldBenchBinSurface.ts": "3d3ef6a6288b30c6fda6d0726fd18be5fb3e540eca83690bdb92310099e75daa",
+    "src/components/world/WorldBinConstruction.ts": "0aefd0f1e99377ad01ab3b44dc73a5db677b593254147ef0f1a3a2884e9863f5",
+    "src/components/world/WorldStreetFacilityCraft.ts": "918cb4fad121a62c8f06d7a0f1a45e6be853fbc34050a7ba99a554ebe32802a5",
+    "src/components/world/WorldStreetKnock.tsx": "ae79e58879eb6a4fe42978e82de7ec5a789beccda34b20535cae7b60162a80c1",
+    "src/components/world/WorldStreetFixed.tsx": "01a9ecdb89f765158727260ca9c482c8ee03c60564c6280459456e2e17f72c42",
+    "src/components/world/WorldStreetStatic.tsx": "3524893ce6096c9211b34d7c56497fd55336c35f0bcfa5188e2aa950a370dc61",
+    "src/components/world/WorldStreetBatch.ts": "1da205cba2f926ea08752806a960b8389efefaf3edc4094b06d3e2be32f90e3a",
+    "src/components/world/layout-v4.ts": "a1e482136f2e05d79bbc98aca43ffa6bf190a2ed68d16120f615deedece466c1",
+    "src/components/world/WorldFacilitySurface.ts": "e859b94b637d8a129e453a9ac297e4d828ca887218ca1a77bd411a6462c6c379",
+    "src/components/world/WorldPark.tsx": "f74cadd13de76be17a560157a11e3d97d3f4dc2591a367a6ef2a9c2ff0670f34",
+    "src/components/world/WorldStreetMaterial.ts": "07da94774ac0962ddfcc8178e058561ca1efe6371b65bed18003f0799309958a"
+  },
+  "hashes": {
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bench-approach.json": "95e4147f19618c5e181f713d41682c332a9ccc5cd48542e030f4c3f20e9bd778",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bench-normal-night-r1.jpg": "379dc2e1196d6ad89b5716f1fd92dd0ab2cc989097b1475f8ff8dc5bf615a735",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bench-normal-night-r1.json": "7fe4b9eeca014192106846eab9bf430fdedb03059b9568145fab5d161329e1e1",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bench-seated.jpg": "8cc22c109a67bd5e96ed1658c4be48b042f8f7faaedd915e40751ebc82a54ee4",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bench-seated.json": "330fc4583bf5118a4ef3aafad18da597bc23ca4b325df4ec84f2729994ef83a0",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bench-standing.jpg": "e576981610cccdc3d3c74f7562a94814c488001fa8a802e86d4e7dcc4f54b34e",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bench-standing.json": "2ec1a325b542e99cf21640da71a5304d27c157e389126ab452abbb0066ba60d0",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bin-collision-after.json": "9a69d152e39195d3e0c46fdae2f6f5ccd3e5cc91b418ab215c1471f193f2352f",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bin-collision-before.json": "2ac3ccacad3a49a9e8d8e622c479d83f7ecc1974a09fe2dec6d0e854e97d59c4",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bin-normal-night-r2.jpg": "4ffae0b6d474f80627d2ade8cda61514aeef9b17ce9d82dba89b9fd9462a9c23",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bin-normal-night-r2.json": "b75749a7242f726e618eb9184ea8eaa368d9b9efd54d927f7bb5af2687887c04",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bin-normal-noon-r1.jpg": "4021c16cf12efb3bb2980d126d9007da06f3e8647b676d1e1608158a18aaba63",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bin-normal-noon-r1.json": "656798c2f5a56c63f638f0a0adcbb263e3aacb806e43ea616362fb2679ff6276",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bin-normal-noon-r2.jpg": "b7979393940e2f20cf9595285b2eeaf10882e7a001d630bbcc6484552cd1adcb",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bin-normal-noon-r2.json": "c68d770efe6809ed98839240301845787f4c255d06b705279518b785aecf527c",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bin-pushed.jpg": "6abe45a08a7ccbdcb53a5168bae5c9fd9d89264d6dbcf69b11f93064a9eb07c8",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bin-pushed.json": "97e9aeadf9612faa57d8be76b3b7fcf2307cda5a2a03c7b1df954c416c79126a",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bin-restored.jpg": "c7c846f7b20f491d4a10114fbbf01b7ec2354d00aab4419a45152284a25a6c5c",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/bin-restored.json": "14eb0157522a28cd788ee5cd3691bcc883b2ec28d4884265cd8d03f993a87074",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r2/console-errors.json": "3ba5711f221dc4e91a2325616e295f37d97191e3c14277556a96a047261fd0cf",
+    "public/assets/world/craft-batch6-bin-r2/bin-portable.glb": "efc6b55269980df6f5aff9b4b33b9b2fed9dbdda4b1ffb0bcbb8b878b326ee68",
+    "public/assets/world/craft-batch6-bin-r2/bin-export-report.json": "c61b4767bf765d4532b14bc17873501fefa7d8a124d1794a3ad09a39f38b0df5",
+    "tools/world/facility-craft/batch6/native-bin-r2/bin.blend": "530df8d7df2939906b3afb03fa317b903d2099bbeebd16a371746cc6f71dda1b",
+    "astro.batch6.bin-r2.config.mjs": "4438f32b2590081c057eb0a1e5ae797a9c51edb6a4f0eefc87443bf2d9de281c",
+    "tools/world/facility-craft/batch6/interactions.ts": "ed8934bfe1a0c8e22593e14609e8d5e4bc52f84709aa7420177167db3a6d36a2"
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "elapsedMs": 144626,
+  "actionResult": {
+    "kind": "fixture-20Ns-impulse-on-actual-bin-body",
+    "point": [
+      15.399999618530273,
+      1.9499999761581421,
+      -24.600000381469727
+    ]
+  },
+  "probe": {
+    "hit": true,
+    "toi": 0.3599693477153778,
+    "other": {
+      "colliderHandle": 3.09e-321,
+      "name": "street-knock-bin-0",
+      "assetId": "street-bin",
+      "kind": "obstacle"
+    },
+    "normal": null
+  },
+  "resetComplete": false,
+  "events": [
+    {
+      "elapsedMs": 1062,
+      "phase": "home",
+      "t": 0,
+      "body": {
+        "id": "bin-0",
+        "phase": "home",
+        "phaseSeconds": 0,
+        "home": [
+          15.4,
+          1.15,
+          -24.6
+        ],
+        "position": [
+          15.399999618530273,
+          1.149999976158142,
+          -24.600000381469727
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "mass": 0.24126282334327698,
+        "localCom": [
+          1.7416132980230259e-9,
+          0.4850573241710663,
+          -2.5822621818605285e-9
+        ],
+        "colliders": 2,
+        "sleeping": false,
+        "displacement": 5.394796601857992e-7,
+        "locked": false
+      }
+    },
+    {
+      "elapsedMs": 138152,
+      "phase": "knocked",
+      "t": 0,
+      "body": {
+        "id": "bin-0",
+        "phase": "knocked",
+        "phaseSeconds": 0,
+        "home": [
+          15.4,
+          1.15,
+          -24.6
+        ],
+        "position": [
+          15.393028259277344,
+          1.2418155670166016,
+          -24.595674514770508
+        ],
+        "rotation": [
+          0.18150770664215088,
+          0.015587564557790756,
+          -0.022645486518740654,
+          0.9830051064491272
+        ],
+        "mass": 16,
+        "localCom": [
+          0,
+          0.30000001192092896,
+          0
+        ],
+        "colliders": 2,
+        "sleeping": false,
+        "displacement": 0.008204571358365763,
+        "locked": false
+      }
+    }
+  ],
+  "paused": false,
+  "shot": null,
+  "seat": null,
+  "nearby": null,
+  "player": [
+    -42.6876220703125,
+    5.62783670425415,
+    23.929096221923828
+  ],
+  "grounded": true,
+  "physicsStep": 2711,
+  "guide": {
+    "loaded": true,
+    "animation": "Idle",
+    "root": [
+      -42.6876220703125,
+      4.81114031952424,
+      23.929096221923828
+    ],
+    "movementLocked": false,
+    "seatSupport": null
+  },
+  "bin": {
+    "id": "bin-0",
+    "phase": "knocked",
+    "phaseSeconds": 6.474199999928463,
+    "home": [
+      15.4,
+      1.15,
+      -24.6
+    ],
+    "position": [
+      15.450725555419922,
+      1.4249745607376099,
+      -24.34181022644043
+    ],
+    "rotation": [
+      0.6800944805145264,
+      0.029296783730387688,
+      -0.16449804604053497,
+      0.7138302326202393
+    ],
+    "mass": 16,
+    "localCom": [
+      0,
+      0.30000001192092896,
+      0
+    ],
+    "colliders": 2,
+    "sleeping": true,
+    "displacement": 0.26312552354988755,
+    "locked": false
+  },
+  "renderer": {
+    "render": {
+      "frame": 3835,
+      "calls": 332,
+      "triangles": 772824,
+      "points": 28,
+      "lines": 0
+    },
+    "memory": {
+      "geometries": 437,
+      "textures": 110
+    }
+  }
+}

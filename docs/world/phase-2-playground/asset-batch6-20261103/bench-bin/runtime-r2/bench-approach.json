@@ -1,0 +1,126 @@
+{
+  "elapsedMs": 91933,
+  "actionResult": {
+    "kind": "fixture-teleport-to-actual-seat-anchor",
+    "seatId": "street-bench-34",
+    "anchor": [
+      29.65,
+      1.62,
+      -28
+    ],
+    "ok": true
+  },
+  "probe": null,
+  "resetComplete": false,
+  "events": [
+    {
+      "elapsedMs": 1062,
+      "phase": "home",
+      "t": 0,
+      "body": {
+        "id": "bin-0",
+        "phase": "home",
+        "phaseSeconds": 0,
+        "home": [
+          15.4,
+          1.15,
+          -24.6
+        ],
+        "position": [
+          15.399999618530273,
+          1.149999976158142,
+          -24.600000381469727
+        ],
+        "rotation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "mass": 0.24126282334327698,
+        "localCom": [
+          1.7416132980230259e-9,
+          0.4850573241710663,
+          -2.5822621818605285e-9
+        ],
+        "colliders": 2,
+        "sleeping": false,
+        "displacement": 5.394796601857992e-7,
+        "locked": false
+      }
+    }
+  ],
+  "paused": false,
+  "shot": null,
+  "seat": null,
+  "nearby": {
+    "id": "street-bench-34",
+    "label": {
+      "en": "Sit",
+      "zh": "坐下"
+    },
+    "kind": "seat"
+  },
+  "player": [
+    29.10573959350586,
+    1.8188250064849854,
+    -28.00557518005371
+  ],
+  "grounded": true,
+  "physicsStep": 330,
+  "guide": {
+    "loaded": true,
+    "animation": "Idle",
+    "root": [
+      29.10573959350586,
+      1.0015001444453353,
+      -28.00557518005371
+    ],
+    "movementLocked": false,
+    "seatSupport": null
+  },
+  "bin": {
+    "id": "bin-0",
+    "phase": "home",
+    "phaseSeconds": 0,
+    "home": [
+      15.4,
+      1.15,
+      -24.6
+    ],
+    "position": [
+      15.399999618530273,
+      1.149999976158142,
+      -24.600000381469727
+    ],
+    "rotation": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "mass": 16,
+    "localCom": [
+      0,
+      0.30000001192092896,
+      0
+    ],
+    "colliders": 2,
+    "sleeping": true,
+    "displacement": 5.394796601857992e-7,
+    "locked": false
+  },
+  "renderer": {
+    "render": {
+      "frame": 1383,
+      "calls": 220,
+      "triangles": 1336266,
+      "points": 28,
+      "lines": 0
+    },
+    "memory": {
+      "geometries": 363,
+      "textures": 110
+    }
+  }
+}
