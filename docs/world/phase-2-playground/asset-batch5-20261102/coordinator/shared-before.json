@@ -1,0 +1,27 @@
+{
+  "release_commit": "3aea470829028a9abebf186f512db2e126eea9a7",
+  "shared_branch": "codex/world-alpha-pilot",
+  "untouched_shared_files": {
+    "src/components/world/WorldCamp.tsx": {
+      "sha256": "7f5b4fa31be8806c39ab2183f0792ee7f07a5c088783fea8e850cdbdb047588e",
+      "bytes": 38500
+    },
+    "src/components/world/WorldCampContent.tsx": {
+      "sha256": "c505fd7eac26e1f8cc5f48ee96d75d97aba62ec9661e554accf288a99d825c11",
+      "bytes": 29836
+    },
+    "src/components/world/WorldStreetAssets.ts": {
+      "sha256": "98002dde9bf81df4ad1b32e555ee6615e247e17eea7a29ea98c389ddae5239a7",
+      "bytes": 33949
+    },
+    "src/components/world/WorldStreetStatic.tsx": {
+      "sha256": "fb6948faf918900751da963d64abb237f264922d1681f8516f9439770c53ed3a",
+      "bytes": 6001
+    },
+    "src/components/world/WorldTerrain.tsx": {
+      "sha256": "520ff4acb1fbc2641ce6d5d602493228e00e8ce064b2bb28bee93b70054b1b7f",
+      "bytes": 30018
+    }
+  },
+  "status": "prepared; no shared writes or preview change"
+}
