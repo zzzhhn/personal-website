@@ -15,6 +15,8 @@ import type { Builder, V3 } from './WorldStreetGeometry';
 import { StreetBatch, type BatchKind } from './WorldStreetBatch';
 import { createStreetMaterial } from './WorldStreetMaterial';
 import { streetFacilityCollision } from './WorldStreetFacilityCraft';
+import { facilityCraftEnabled } from './WorldFacilitySurface';
+import { createShelterGlazingMaterial, splitShelterGlazing } from './WorldFacilityGlazing';
 import type { CanvasTexture } from 'three';
 import type { Vec3 } from './types';
 
@@ -45,8 +47,20 @@ export default function StreetStatic({ name, claims, kinds, placements, atlas, s
     const index = new Map(kinds.map((k, i) => [k.id, i]));
     const counts = kinds.map(k => placements.filter(p => p.kind === k.id).length);
     const material = createStreetMaterial(atlas ?? null, `street-static-${atlas ? 'atlas' : 'plain'}-v1`);
-    const bk: BatchKind[] = kinds.map(k => ({ id: k.id, L0: k.L0.build(), L1: k.L1.build(), lodNear: k.lodNear, far: k.far }));
+    const glassKinds: BatchKind[] = [], glassCounts: number[] = [], glassIndex = new Map<string, number>();
+    const bk: BatchKind[] = kinds.map((k, i) => {
+      let L0 = k.L0.build(), L1 = k.L1.build();
+      if (k.id === 'shelter' && facilityCraftEnabled()) {
+        const near = splitShelterGlazing(L0), far = splitShelterGlazing(L1);
+        L0.dispose(); L1.dispose(); L0 = near.opaque; L1 = far.opaque;
+        glassIndex.set(k.id, glassKinds.length); glassCounts.push(counts[i]);
+        glassKinds.push({ id: k.id, L0: near.glass, L1: far.glass, lodNear: k.lodNear, far: k.far });
+      }
+      return { id: k.id, L0, L1, lodNear: k.lodNear, far: k.far };
+    });
     const batch = new StreetBatch(name, bk, counts, material);
+    const glassMaterial = glassKinds.length ? createShelterGlazingMaterial() : null;
+    const glassBatch = glassMaterial ? new StreetBatch(`${name}-glazing`, glassKinds, glassCounts, glassMaterial) : null;
     const hulls: { key: string; points: Float32Array }[] = [], tris: { key: string; pos: Float32Array; idx: Uint32Array; surface: boolean }[] = [];
     const local = kinds.map((k, i) => {
       const proxy = streetFacilityCollision(k.L0);
@@ -55,6 +69,7 @@ export default function StreetStatic({ name, claims, kinds, placements, atlas, s
     });
     placements.forEach((p, n) => {
       const i = index.get(p.kind)!; batch.add(i, p.matrix);
+      const gi = glassIndex.get(p.kind); if (gi !== undefined) glassBatch!.add(gi, p.matrix);
       const mode = kinds[i].collide ?? 'hull';
       if (mode === 'hull') local[i].hulls.forEach((h, j) => hulls.push({ key: `${n}-${j}`, points: transform(h, p.matrix) }));
       else if (mode === 'trimesh') {
@@ -64,19 +79,24 @@ export default function StreetStatic({ name, claims, kinds, placements, atlas, s
     });
     local.forEach((p, i) => { if (p.geo !== bk[i].L0) p.geo.dispose(); });
     batch.finish(1);
+    if (glassBatch) {
+      glassBatch.finish(1); glassBatch.mesh.castShadow = false; glassBatch.mesh.receiveShadow = true;
+      glassBatch.mesh.userData.noOcclusionFade = true; glassBatch.mesh.userData.assetId = assetId;
+    }
     batch.mesh.castShadow = shadow; batch.mesh.receiveShadow = true;
     if (occluder) batch.mesh.userData.occluder = true; else batch.mesh.userData.noOcclusionFade = true;
     batch.mesh.userData.assetId = assetId;
     batch.mesh.userData.streetKinds = kinds.map(k => k.id);
     const last = { l0: 0, l1: 0 };
     batch.mesh.userData.streetStats = () => ({ tris: last.l0 + last.l1, ...last, instances: batch.count, colliders: hulls.length + tris.length });
-    return { batch, material, hulls, tris, last };
+    return { batch, material, glassBatch, glassMaterial, hulls, tris, last };
   }, [name, kinds, placements, atlas, shadow, occluder, assetId]);
-  useEffect(() => () => { built.batch.dispose(); built.material.dispose(); }, [built]);
-  useFrame(({ camera }) => { Object.assign(built.last, built.batch.update(camera)); });
+  useEffect(() => () => { built.batch.dispose(); built.material.dispose(); built.glassBatch?.dispose(); built.glassMaterial?.dispose(); }, [built]);
+  useFrame(({ camera }) => { Object.assign(built.last, built.batch.update(camera)); built.glassBatch?.update(camera); });
   const ud = useMemo(() => ({ solid: true, assetId }), [assetId]);
   return <group name={`${name}-group`}>
     <primitive object={built.batch.mesh} />
+    {built.glassBatch && <primitive object={built.glassBatch.mesh} />}
     {built.hulls.length > 0 && <RigidBody type="fixed" colliders={false} userData={ud} name={`${name}-body`}>
       {built.hulls.map(h => <ConvexHullCollider key={h.key} args={[h.points]} friction={.65} restitution={.1} />)}
     </RigidBody>}

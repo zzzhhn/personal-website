@@ -67,15 +67,40 @@
       }
     ]
   },
-  "reusedBy": "batch6 facilities",
-  "runtimeFiles": {
-    "wood-color.png": "pine-packaging-basecolor.png",
-    "wood-normal.png": "pine-packaging-normal.png",
-    "wood-rough.png": "pine-packaging-roughness.png"
-  },
+  "facilityRevision": 2,
   "runtimeUV": {
-    "longRepeatMeters": 2.4,
-    "crossRepeatMeters": 0.24,
-    "visualScaleAcceptance": "pending; first sample looks too coarse"
+    "tileMetres": [
+      0.7,
+      0.3185546875
+    ],
+    "cropPhysicalHeight": "0.7m * 466/1024, independent of resizing to 512px",
+    "grainAxis": "longest construction axis",
+    "endFaces": "planar cross-section; no collapsed grain UV",
+    "textureFlipY": false
+  },
+  "facilityAlbedo": {
+    "role": "neutral grain modulation multiplied by source pigment / .8 in both portable PBR and runtime",
+    "linearNeutral": 0.8,
+    "broadContrast": 0.18,
+    "fineContrast": 0.42,
+    "clampBeforeNeutral": [
+      0.75,
+      1.2
+    ],
+    "lowPassRadiusPx": 24
+  },
+  "facilityFiles": {
+    "wood-color.png": {
+      "bytes": 388568,
+      "sha256": "b24a337f946fae4ed3d94843cba75249a92880b22aad86e4d5e0fa7a61c15e02"
+    },
+    "wood-normal.png": {
+      "bytes": 562034,
+      "sha256": "285001688e2a8ec564bb8e1b56d182bf4d77f65779a12198a52a3a1e3f9c935f"
+    },
+    "wood-rough.png": {
+      "bytes": 95086,
+      "sha256": "7287de6832e55df62336ccd88bb6f48d468dd285d1fe8113b2693227a563318a"
+    }
   }
 }

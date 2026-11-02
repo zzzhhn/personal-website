@@ -1,0 +1,1003 @@
+{
+  "schema": "facility-batch6-r2-v1",
+  "status": "coordinator-approved-integration-candidate",
+  "visualAcceptance": false,
+  "baseline": "7702c3de674f0b39ab8b0e2a098e586b54b03aee",
+  "parentFirstSampleCommit": "b59ee51eee5845a5d1e2f48d142cb8b359a49260",
+  "captures": [
+    {
+      "file": "runtime-r2/baseline-hut-close-night.jpg",
+      "bytes": 79603,
+      "sha256": "2678c6244ce26185ede3d528126e77af1a2f00784c91714b013959f1bf545d93"
+    },
+    {
+      "file": "runtime-r2/baseline-hut-close-night.json",
+      "bytes": 3319,
+      "sha256": "a777cb5a3beb79cacf9247f7a0427395a6da4c125c066e16afa8d0f577410746"
+    },
+    {
+      "file": "runtime-r2/baseline-hut-close-noon.jpg",
+      "bytes": 114784,
+      "sha256": "d723717511c1f951499d8bce494e91c8b7b5b13553c5aa70f045038342228116"
+    },
+    {
+      "file": "runtime-r2/baseline-hut-close-noon.json",
+      "bytes": 3321,
+      "sha256": "a6e817d882df7c3d97e30cb4caf3a576935e248bd324fcaca13a26eb091018f3"
+    },
+    {
+      "file": "runtime-r2/baseline-hut-normal-night.jpg",
+      "bytes": 84201,
+      "sha256": "334d6699ec6197218afb696b68559aa7ca3c92acc07dd5d96b451a477010fa85"
+    },
+    {
+      "file": "runtime-r2/baseline-hut-normal-night.json",
+      "bytes": 3318,
+      "sha256": "f24abbb12a994f0384f17ab6efdfce70e87b4b9569e4827440dce9eb3ac4d560"
+    },
+    {
+      "file": "runtime-r2/baseline-hut-normal-noon.jpg",
+      "bytes": 130294,
+      "sha256": "d730a0759f3cb592e1b56363f1ff95ca4ab39709c120589571484d515b23db70"
+    },
+    {
+      "file": "runtime-r2/baseline-hut-normal-noon.json",
+      "bytes": 3320,
+      "sha256": "3ac516bfefff4e671e25aef71255c26f582e9bd9edeabd8a2ad415e939d46787"
+    },
+    {
+      "file": "runtime-r2/baseline-shelter-close-night.jpg",
+      "bytes": 95515,
+      "sha256": "af8c94eed0a29b803e4517443b2b458180280a3616ad25183b4db2faaac454d2"
+    },
+    {
+      "file": "runtime-r2/baseline-shelter-close-night.json",
+      "bytes": 3283,
+      "sha256": "9ae43030a5f7a1ae9b912646ea994cdbbcb925dfd15b1336b598f3d003af328c"
+    },
+    {
+      "file": "runtime-r2/baseline-shelter-close-noon.jpg",
+      "bytes": 156323,
+      "sha256": "1fc6fea228cf780ad91c2192a83de1825e098c91d4e52685d461cd130e80f01b"
+    },
+    {
+      "file": "runtime-r2/baseline-shelter-close-noon.json",
+      "bytes": 3285,
+      "sha256": "be230f0c27d1346d91bf596866fe56187900e285502ea0c112aa9dad8920590a"
+    },
+    {
+      "file": "runtime-r2/baseline-shelter-normal-night.jpg",
+      "bytes": 110509,
+      "sha256": "d81ea5f3f8ebd02058eb1b0ce60a424fd1aa1631e3106943aa78a4e1582883ac"
+    },
+    {
+      "file": "runtime-r2/baseline-shelter-normal-night.json",
+      "bytes": 3286,
+      "sha256": "98b799479e19bb3f0a3e6ff8de656e7df1815b05e793d758f26b509d3f43c47d"
+    },
+    {
+      "file": "runtime-r2/baseline-shelter-normal-noon.jpg",
+      "bytes": 192576,
+      "sha256": "402c99e59ac0cc571f00be77130ced003a38f510bd66339cac92529ca057a4a7"
+    },
+    {
+      "file": "runtime-r2/baseline-shelter-normal-noon.json",
+      "bytes": 3288,
+      "sha256": "8deed7190493a59ef08b5995b3893237ba8ac3ef15bf3ea7ea4cae9d647da1c0"
+    },
+    {
+      "file": "runtime-r2/candidate-hut-close-night.jpg",
+      "bytes": 89545,
+      "sha256": "4f32d2cad9bcf335b16f936760a90350b6a823f753bf5a2a99f2850a2597e175"
+    },
+    {
+      "file": "runtime-r2/candidate-hut-close-night.json",
+      "bytes": 3320,
+      "sha256": "a5da369befa16a8c0aa0af3139d7446a17d46b33d6ee5853ced2f0ef875340b5"
+    },
+    {
+      "file": "runtime-r2/candidate-hut-close-noon.jpg",
+      "bytes": 131188,
+      "sha256": "4cee7de624c67d32691a77f9f331fbc353c127a36c4143323ca1aff6894709eb"
+    },
+    {
+      "file": "runtime-r2/candidate-hut-close-noon.json",
+      "bytes": 3322,
+      "sha256": "2b9bed3c411770aa84b68cc964a9949e6e9824839d8ce120c00fc2323de1f775"
+    },
+    {
+      "file": "runtime-r2/candidate-hut-normal-night.jpg",
+      "bytes": 85024,
+      "sha256": "2140e2b84c3f6ca9a93285b6bc7fa211f78bc4bf079466ed1ede9c2eb477efd9"
+    },
+    {
+      "file": "runtime-r2/candidate-hut-normal-night.json",
+      "bytes": 3319,
+      "sha256": "c34cf45573da1a46f4448f36d92d6ec8e38056721b18538c5833b3d46bd2e960"
+    },
+    {
+      "file": "runtime-r2/candidate-hut-normal-noon.jpg",
+      "bytes": 131351,
+      "sha256": "4fa065e12af1b9d65b17ce2bf0086dbcd6892b5bdef8e6cb9018720f51e2649c"
+    },
+    {
+      "file": "runtime-r2/candidate-hut-normal-noon.json",
+      "bytes": 3321,
+      "sha256": "1bb750027bfe93953dd709bcfeb31ff80af6fa46217b353290ed220b404214cf"
+    },
+    {
+      "file": "runtime-r2/candidate-shelter-close-night.jpg",
+      "bytes": 106356,
+      "sha256": "b96da9e99d1364dc467e01a48c64e623c5e047ffb786cb01cf9740460bf62884"
+    },
+    {
+      "file": "runtime-r2/candidate-shelter-close-night.json",
+      "bytes": 3332,
+      "sha256": "59c1c7e91d3ab990ddc885e3932026818f3b2fc4a6d06b2f435ecafdedbe4f8d"
+    },
+    {
+      "file": "runtime-r2/candidate-shelter-close-noon.jpg",
+      "bytes": 177170,
+      "sha256": "1fcbc2394ba860437c2133d7c30af4eaaf86317fae4cd47d88e81c02e7d6f139"
+    },
+    {
+      "file": "runtime-r2/candidate-shelter-close-noon.json",
+      "bytes": 3334,
+      "sha256": "8874c91d73fc4f37c4574017ffa793b2625fe7f0017f356e4ea49cb81415ba26"
+    },
+    {
+      "file": "runtime-r2/candidate-shelter-glass-grazing-noon.jpg",
+      "bytes": 163205,
+      "sha256": "4d4c79d044152e400a9ab284726de1e6254edd90d181b663a84cb13c97b70214"
+    },
+    {
+      "file": "runtime-r2/candidate-shelter-glass-grazing-noon.json",
+      "bytes": 3279,
+      "sha256": "ad45b29ccf4eb0d776c503b2c9aa3f6672b47a1a12a2d186889af89d1fd7305c"
+    },
+    {
+      "file": "runtime-r2/candidate-shelter-glass-rear-noon.jpg",
+      "bytes": 181978,
+      "sha256": "27af283fdaab0463facf611a8c25e81a25df85f8b9d6fc275c9278c44ef16889"
+    },
+    {
+      "file": "runtime-r2/candidate-shelter-glass-rear-noon.json",
+      "bytes": 3273,
+      "sha256": "2c493b2fa4ef454560577170fd37a29f3c706ffd9a709d1996cb5d879a23eea1"
+    },
+    {
+      "file": "runtime-r2/candidate-shelter-normal-night.jpg",
+      "bytes": 112934,
+      "sha256": "b151a5f1c265c3d9c398759bce042a71ccb31a4215b38cf2984e7420e278cbb7"
+    },
+    {
+      "file": "runtime-r2/candidate-shelter-normal-night.json",
+      "bytes": 3335,
+      "sha256": "47959bd2a5b086e3f46d88cadfd4ff753af0b15fe4b0919d83cb61bca4f09adc"
+    },
+    {
+      "file": "runtime-r2/candidate-shelter-normal-noon.jpg",
+      "bytes": 198219,
+      "sha256": "93c025b0b04db4d91ab8c28c0855f8009e5743bfd739d96bc2781b2e7c874e6f"
+    },
+    {
+      "file": "runtime-r2/candidate-shelter-normal-noon.json",
+      "bytes": 3337,
+      "sha256": "6ac0b74886d9ade9166b3eff983f8977d96e277becd934f986d757cacd3cf069"
+    }
+  ],
+  "pairs": [
+    {
+      "view": "shelter-normal",
+      "time": "noon",
+      "parametersMatch": true,
+      "relatedBackgroundRootsMatch": true,
+      "rootDifferences": {
+        "world-park": {
+          "baseline": {
+            "present": true,
+            "meshes": 205,
+            "visible": 118,
+            "nominalTriangles": 515942,
+            "registeredSet": "27ec2341",
+            "visibleSet": "4102ce64",
+            "assetIds": [
+              "P13",
+              "P14",
+              "P15",
+              "P16",
+              "P17",
+              "P18",
+              "djc-club",
+              "djc-north-bar",
+              "djc-pool-lanterns",
+              "exhibit-P14-crate",
+              "exhibit-P15-stool",
+              "lamp"
+            ],
+            "assetIdsCount": 15
+          },
+          "candidate": {
+            "present": true,
+            "meshes": 205,
+            "visible": 118,
+            "nominalTriangles": 516382,
+            "registeredSet": "ee0fe8d1",
+            "visibleSet": "be1a41c8",
+            "assetIds": [
+              "P13",
+              "P14",
+              "P15",
+              "P16",
+              "P17",
+              "P18",
+              "djc-club",
+              "djc-north-bar",
+              "djc-pool-lanterns",
+              "exhibit-P14-crate",
+              "exhibit-P15-stool",
+              "lamp"
+            ],
+            "assetIdsCount": 15
+          }
+        },
+        "world-street": {
+          "baseline": {
+            "present": true,
+            "meshes": 17,
+            "visible": 12,
+            "nominalTriangles": 47396,
+            "registeredSet": "1df30e3b",
+            "visibleSet": "4d556cdc",
+            "assetIds": [
+              "F04",
+              "street-fixed",
+              "street-foundation",
+              "street-rail",
+              "street-windmill"
+            ],
+            "assetIdsCount": 5
+          },
+          "candidate": {
+            "present": true,
+            "meshes": 18,
+            "visible": 13,
+            "nominalTriangles": 48144,
+            "registeredSet": "c6e3294c",
+            "visibleSet": "308169e9",
+            "assetIds": [
+              "F04",
+              "street-fixed",
+              "street-foundation",
+              "street-rail",
+              "street-windmill"
+            ],
+            "assetIdsCount": 5
+          }
+        }
+      },
+      "renderCounterDelta": {
+        "triangles": 3097,
+        "calls": 1
+      }
+    },
+    {
+      "view": "shelter-normal",
+      "time": "night",
+      "parametersMatch": true,
+      "relatedBackgroundRootsMatch": true,
+      "rootDifferences": {
+        "world-park": {
+          "baseline": {
+            "present": true,
+            "meshes": 205,
+            "visible": 118,
+            "nominalTriangles": 515942,
+            "registeredSet": "27ec2341",
+            "visibleSet": "4102ce64",
+            "assetIds": [
+              "P13",
+              "P14",
+              "P15",
+              "P16",
+              "P17",
+              "P18",
+              "djc-club",
+              "djc-north-bar",
+              "djc-pool-lanterns",
+              "exhibit-P14-crate",
+              "exhibit-P15-stool",
+              "lamp"
+            ],
+            "assetIdsCount": 15
+          },
+          "candidate": {
+            "present": true,
+            "meshes": 205,
+            "visible": 118,
+            "nominalTriangles": 516382,
+            "registeredSet": "ee0fe8d1",
+            "visibleSet": "be1a41c8",
+            "assetIds": [
+              "P13",
+              "P14",
+              "P15",
+              "P16",
+              "P17",
+              "P18",
+              "djc-club",
+              "djc-north-bar",
+              "djc-pool-lanterns",
+              "exhibit-P14-crate",
+              "exhibit-P15-stool",
+              "lamp"
+            ],
+            "assetIdsCount": 15
+          }
+        },
+        "world-street": {
+          "baseline": {
+            "present": true,
+            "meshes": 17,
+            "visible": 13,
+            "nominalTriangles": 47396,
+            "registeredSet": "1df30e3b",
+            "visibleSet": "3404b434",
+            "assetIds": [
+              "F04",
+              "street-fixed",
+              "street-foundation",
+              "street-rail",
+              "street-windmill"
+            ],
+            "assetIdsCount": 5
+          },
+          "candidate": {
+            "present": true,
+            "meshes": 18,
+            "visible": 14,
+            "nominalTriangles": 48144,
+            "registeredSet": "c6e3294c",
+            "visibleSet": "29219451",
+            "assetIds": [
+              "F04",
+              "street-fixed",
+              "street-foundation",
+              "street-rail",
+              "street-windmill"
+            ],
+            "assetIdsCount": 5
+          }
+        }
+      },
+      "renderCounterDelta": {
+        "triangles": 3097,
+        "calls": 1
+      }
+    },
+    {
+      "view": "shelter-close",
+      "time": "noon",
+      "parametersMatch": true,
+      "relatedBackgroundRootsMatch": true,
+      "rootDifferences": {
+        "world-park": {
+          "baseline": {
+            "present": true,
+            "meshes": 205,
+            "visible": 118,
+            "nominalTriangles": 515942,
+            "registeredSet": "27ec2341",
+            "visibleSet": "4102ce64",
+            "assetIds": [
+              "P13",
+              "P14",
+              "P15",
+              "P16",
+              "P17",
+              "P18",
+              "djc-club",
+              "djc-north-bar",
+              "djc-pool-lanterns",
+              "exhibit-P14-crate",
+              "exhibit-P15-stool",
+              "lamp"
+            ],
+            "assetIdsCount": 15
+          },
+          "candidate": {
+            "present": true,
+            "meshes": 205,
+            "visible": 118,
+            "nominalTriangles": 516382,
+            "registeredSet": "ee0fe8d1",
+            "visibleSet": "be1a41c8",
+            "assetIds": [
+              "P13",
+              "P14",
+              "P15",
+              "P16",
+              "P17",
+              "P18",
+              "djc-club",
+              "djc-north-bar",
+              "djc-pool-lanterns",
+              "exhibit-P14-crate",
+              "exhibit-P15-stool",
+              "lamp"
+            ],
+            "assetIdsCount": 15
+          }
+        },
+        "world-street": {
+          "baseline": {
+            "present": true,
+            "meshes": 17,
+            "visible": 12,
+            "nominalTriangles": 47396,
+            "registeredSet": "1df30e3b",
+            "visibleSet": "4d556cdc",
+            "assetIds": [
+              "F04",
+              "street-fixed",
+              "street-foundation",
+              "street-rail",
+              "street-windmill"
+            ],
+            "assetIdsCount": 5
+          },
+          "candidate": {
+            "present": true,
+            "meshes": 18,
+            "visible": 13,
+            "nominalTriangles": 48144,
+            "registeredSet": "c6e3294c",
+            "visibleSet": "308169e9",
+            "assetIds": [
+              "F04",
+              "street-fixed",
+              "street-foundation",
+              "street-rail",
+              "street-windmill"
+            ],
+            "assetIdsCount": 5
+          }
+        }
+      },
+      "renderCounterDelta": {
+        "triangles": 3097,
+        "calls": 1
+      }
+    },
+    {
+      "view": "shelter-close",
+      "time": "night",
+      "parametersMatch": true,
+      "relatedBackgroundRootsMatch": true,
+      "rootDifferences": {
+        "world-park": {
+          "baseline": {
+            "present": true,
+            "meshes": 205,
+            "visible": 118,
+            "nominalTriangles": 515942,
+            "registeredSet": "27ec2341",
+            "visibleSet": "4102ce64",
+            "assetIds": [
+              "P13",
+              "P14",
+              "P15",
+              "P16",
+              "P17",
+              "P18",
+              "djc-club",
+              "djc-north-bar",
+              "djc-pool-lanterns",
+              "exhibit-P14-crate",
+              "exhibit-P15-stool",
+              "lamp"
+            ],
+            "assetIdsCount": 15
+          },
+          "candidate": {
+            "present": true,
+            "meshes": 205,
+            "visible": 118,
+            "nominalTriangles": 516382,
+            "registeredSet": "ee0fe8d1",
+            "visibleSet": "be1a41c8",
+            "assetIds": [
+              "P13",
+              "P14",
+              "P15",
+              "P16",
+              "P17",
+              "P18",
+              "djc-club",
+              "djc-north-bar",
+              "djc-pool-lanterns",
+              "exhibit-P14-crate",
+              "exhibit-P15-stool",
+              "lamp"
+            ],
+            "assetIdsCount": 15
+          }
+        },
+        "world-street": {
+          "baseline": {
+            "present": true,
+            "meshes": 17,
+            "visible": 13,
+            "nominalTriangles": 47396,
+            "registeredSet": "1df30e3b",
+            "visibleSet": "3404b434",
+            "assetIds": [
+              "F04",
+              "street-fixed",
+              "street-foundation",
+              "street-rail",
+              "street-windmill"
+            ],
+            "assetIdsCount": 5
+          },
+          "candidate": {
+            "present": true,
+            "meshes": 18,
+            "visible": 14,
+            "nominalTriangles": 48144,
+            "registeredSet": "c6e3294c",
+            "visibleSet": "29219451",
+            "assetIds": [
+              "F04",
+              "street-fixed",
+              "street-foundation",
+              "street-rail",
+              "street-windmill"
+            ],
+            "assetIdsCount": 5
+          }
+        }
+      },
+      "renderCounterDelta": {
+        "triangles": 3097,
+        "calls": 1
+      }
+    },
+    {
+      "view": "hut-normal",
+      "time": "noon",
+      "parametersMatch": true,
+      "relatedBackgroundRootsMatch": true,
+      "rootDifferences": {
+        "world-park": {
+          "baseline": {
+            "present": true,
+            "meshes": 205,
+            "visible": 118,
+            "nominalTriangles": 515942,
+            "registeredSet": "27ec2341",
+            "visibleSet": "4102ce64",
+            "assetIds": [
+              "P13",
+              "P14",
+              "P15",
+              "P16",
+              "P17",
+              "P18",
+              "djc-club",
+              "djc-north-bar",
+              "djc-pool-lanterns",
+              "exhibit-P14-crate",
+              "exhibit-P15-stool",
+              "lamp"
+            ],
+            "assetIdsCount": 15
+          },
+          "candidate": {
+            "present": true,
+            "meshes": 205,
+            "visible": 118,
+            "nominalTriangles": 516382,
+            "registeredSet": "ee0fe8d1",
+            "visibleSet": "be1a41c8",
+            "assetIds": [
+              "P13",
+              "P14",
+              "P15",
+              "P16",
+              "P17",
+              "P18",
+              "djc-club",
+              "djc-north-bar",
+              "djc-pool-lanterns",
+              "exhibit-P14-crate",
+              "exhibit-P15-stool",
+              "lamp"
+            ],
+            "assetIdsCount": 15
+          }
+        },
+        "world-street": {
+          "baseline": {
+            "present": true,
+            "meshes": 17,
+            "visible": 12,
+            "nominalTriangles": 47396,
+            "registeredSet": "1df30e3b",
+            "visibleSet": "4d556cdc",
+            "assetIds": [
+              "F04",
+              "street-fixed",
+              "street-foundation",
+              "street-rail",
+              "street-windmill"
+            ],
+            "assetIdsCount": 5
+          },
+          "candidate": {
+            "present": true,
+            "meshes": 18,
+            "visible": 13,
+            "nominalTriangles": 48144,
+            "registeredSet": "c6e3294c",
+            "visibleSet": "308169e9",
+            "assetIds": [
+              "F04",
+              "street-fixed",
+              "street-foundation",
+              "street-rail",
+              "street-windmill"
+            ],
+            "assetIdsCount": 5
+          }
+        }
+      },
+      "renderCounterDelta": {
+        "triangles": 1906,
+        "calls": 0
+      }
+    },
+    {
+      "view": "hut-normal",
+      "time": "night",
+      "parametersMatch": true,
+      "relatedBackgroundRootsMatch": true,
+      "rootDifferences": {
+        "world-park": {
+          "baseline": {
+            "present": true,
+            "meshes": 205,
+            "visible": 118,
+            "nominalTriangles": 515942,
+            "registeredSet": "27ec2341",
+            "visibleSet": "4102ce64",
+            "assetIds": [
+              "P13",
+              "P14",
+              "P15",
+              "P16",
+              "P17",
+              "P18",
+              "djc-club",
+              "djc-north-bar",
+              "djc-pool-lanterns",
+              "exhibit-P14-crate",
+              "exhibit-P15-stool",
+              "lamp"
+            ],
+            "assetIdsCount": 15
+          },
+          "candidate": {
+            "present": true,
+            "meshes": 205,
+            "visible": 118,
+            "nominalTriangles": 516382,
+            "registeredSet": "ee0fe8d1",
+            "visibleSet": "be1a41c8",
+            "assetIds": [
+              "P13",
+              "P14",
+              "P15",
+              "P16",
+              "P17",
+              "P18",
+              "djc-club",
+              "djc-north-bar",
+              "djc-pool-lanterns",
+              "exhibit-P14-crate",
+              "exhibit-P15-stool",
+              "lamp"
+            ],
+            "assetIdsCount": 15
+          }
+        },
+        "world-street": {
+          "baseline": {
+            "present": true,
+            "meshes": 17,
+            "visible": 13,
+            "nominalTriangles": 47396,
+            "registeredSet": "1df30e3b",
+            "visibleSet": "3404b434",
+            "assetIds": [
+              "F04",
+              "street-fixed",
+              "street-foundation",
+              "street-rail",
+              "street-windmill"
+            ],
+            "assetIdsCount": 5
+          },
+          "candidate": {
+            "present": true,
+            "meshes": 18,
+            "visible": 14,
+            "nominalTriangles": 48144,
+            "registeredSet": "c6e3294c",
+            "visibleSet": "29219451",
+            "assetIds": [
+              "F04",
+              "street-fixed",
+              "street-foundation",
+              "street-rail",
+              "street-windmill"
+            ],
+            "assetIdsCount": 5
+          }
+        }
+      },
+      "renderCounterDelta": {
+        "triangles": 1906,
+        "calls": 0
+      }
+    },
+    {
+      "view": "hut-close",
+      "time": "noon",
+      "parametersMatch": true,
+      "relatedBackgroundRootsMatch": true,
+      "rootDifferences": {
+        "world-park": {
+          "baseline": {
+            "present": true,
+            "meshes": 205,
+            "visible": 118,
+            "nominalTriangles": 515942,
+            "registeredSet": "27ec2341",
+            "visibleSet": "4102ce64",
+            "assetIds": [
+              "P13",
+              "P14",
+              "P15",
+              "P16",
+              "P17",
+              "P18",
+              "djc-club",
+              "djc-north-bar",
+              "djc-pool-lanterns",
+              "exhibit-P14-crate",
+              "exhibit-P15-stool",
+              "lamp"
+            ],
+            "assetIdsCount": 15
+          },
+          "candidate": {
+            "present": true,
+            "meshes": 205,
+            "visible": 118,
+            "nominalTriangles": 516382,
+            "registeredSet": "ee0fe8d1",
+            "visibleSet": "be1a41c8",
+            "assetIds": [
+              "P13",
+              "P14",
+              "P15",
+              "P16",
+              "P17",
+              "P18",
+              "djc-club",
+              "djc-north-bar",
+              "djc-pool-lanterns",
+              "exhibit-P14-crate",
+              "exhibit-P15-stool",
+              "lamp"
+            ],
+            "assetIdsCount": 15
+          }
+        },
+        "world-street": {
+          "baseline": {
+            "present": true,
+            "meshes": 17,
+            "visible": 12,
+            "nominalTriangles": 47396,
+            "registeredSet": "1df30e3b",
+            "visibleSet": "4d556cdc",
+            "assetIds": [
+              "F04",
+              "street-fixed",
+              "street-foundation",
+              "street-rail",
+              "street-windmill"
+            ],
+            "assetIdsCount": 5
+          },
+          "candidate": {
+            "present": true,
+            "meshes": 18,
+            "visible": 13,
+            "nominalTriangles": 48144,
+            "registeredSet": "c6e3294c",
+            "visibleSet": "308169e9",
+            "assetIds": [
+              "F04",
+              "street-fixed",
+              "street-foundation",
+              "street-rail",
+              "street-windmill"
+            ],
+            "assetIdsCount": 5
+          }
+        }
+      },
+      "renderCounterDelta": {
+        "triangles": 1818,
+        "calls": 0
+      }
+    },
+    {
+      "view": "hut-close",
+      "time": "night",
+      "parametersMatch": true,
+      "relatedBackgroundRootsMatch": true,
+      "rootDifferences": {
+        "world-park": {
+          "baseline": {
+            "present": true,
+            "meshes": 205,
+            "visible": 118,
+            "nominalTriangles": 515942,
+            "registeredSet": "27ec2341",
+            "visibleSet": "4102ce64",
+            "assetIds": [
+              "P13",
+              "P14",
+              "P15",
+              "P16",
+              "P17",
+              "P18",
+              "djc-club",
+              "djc-north-bar",
+              "djc-pool-lanterns",
+              "exhibit-P14-crate",
+              "exhibit-P15-stool",
+              "lamp"
+            ],
+            "assetIdsCount": 15
+          },
+          "candidate": {
+            "present": true,
+            "meshes": 205,
+            "visible": 118,
+            "nominalTriangles": 516382,
+            "registeredSet": "ee0fe8d1",
+            "visibleSet": "be1a41c8",
+            "assetIds": [
+              "P13",
+              "P14",
+              "P15",
+              "P16",
+              "P17",
+              "P18",
+              "djc-club",
+              "djc-north-bar",
+              "djc-pool-lanterns",
+              "exhibit-P14-crate",
+              "exhibit-P15-stool",
+              "lamp"
+            ],
+            "assetIdsCount": 15
+          }
+        },
+        "world-street": {
+          "baseline": {
+            "present": true,
+            "meshes": 17,
+            "visible": 13,
+            "nominalTriangles": 47396,
+            "registeredSet": "1df30e3b",
+            "visibleSet": "3404b434",
+            "assetIds": [
+              "F04",
+              "street-fixed",
+              "street-foundation",
+              "street-rail",
+              "street-windmill"
+            ],
+            "assetIdsCount": 5
+          },
+          "candidate": {
+            "present": true,
+            "meshes": 18,
+            "visible": 14,
+            "nominalTriangles": 48144,
+            "registeredSet": "c6e3294c",
+            "visibleSet": "29219451",
+            "assetIds": [
+              "F04",
+              "street-fixed",
+              "street-foundation",
+              "street-rail",
+              "street-windmill"
+            ],
+            "assetIdsCount": 5
+          }
+        }
+      },
+      "renderCounterDelta": {
+        "triangles": 1818,
+        "calls": 0
+      }
+    }
+  ],
+  "assetHashes": {
+    "hut-export-report.json": "ef0fe6e70f1a33d67ef5cf3f1f349495c7f34bee4d42761bd8635aac9e3025af",
+    "hut-portable.glb": "c61f51bbd749e82bdd02742e7f35fdfadf0f4ffff96a3bf9898c68b2c9d66ebd",
+    "hut-runtime.glb": "2773a10b595d15720b95c9431648643e671913e784291bfff16d7baf2d9973ac",
+    "shelter-export-report.json": "9dc4d69764b9912ae8e94cb20bb27de19184d1faa9fa57ce1d83154508371237",
+    "shelter-portable.glb": "4d309d6b1f5452392095de2455d4029bb4458016a944a10e58d9c97784e93010",
+    "sources.json": "3cdc884bcbb978563db07783884ecb201fa8a8bcb5ec2eabaa248ccbce9c6931",
+    "wood-color.png": "b24a337f946fae4ed3d94843cba75249a92880b22aad86e4d5e0fa7a61c15e02",
+    "wood-normal.png": "285001688e2a8ec564bb8e1b56d182bf4d77f65779a12198a52a3a1e3f9c935f",
+    "wood-rough.png": "7287de6832e55df62336ccd88bb6f48d468dd285d1fe8113b2693227a563318a"
+  },
+  "nativeEquivalence": {
+    "equal": true,
+    "firstCaptureNative": {
+      "meshes": 304,
+      "semanticSHA256": "5dd73c8076da9c54e3c287a5394bdede5eb5ff6cf912eece5ac361ab3adba4b1",
+      "packedImageHashes": {
+        "wood-color.png": "b24a337f946fae4ed3d94843cba75249a92880b22aad86e4d5e0fa7a61c15e02",
+        "wood-normal.png": "285001688e2a8ec564bb8e1b56d182bf4d77f65779a12198a52a3a1e3f9c935f",
+        "wood-rough.png": "7287de6832e55df62336ccd88bb6f48d468dd285d1fe8113b2693227a563318a"
+      }
+    },
+    "finalNative": {
+      "meshes": 304,
+      "semanticSHA256": "5dd73c8076da9c54e3c287a5394bdede5eb5ff6cf912eece5ac361ab3adba4b1",
+      "packedImageHashes": {
+        "wood-color.png": "b24a337f946fae4ed3d94843cba75249a92880b22aad86e4d5e0fa7a61c15e02",
+        "wood-normal.png": "285001688e2a8ec564bb8e1b56d182bf4d77f65779a12198a52a3a1e3f9c935f",
+        "wood-rough.png": "7287de6832e55df62336ccd88bb6f48d468dd285d1fe8113b2693227a563318a"
+      }
+    },
+    "scope": "Exact native names/parents/transforms/vertex coordinates/oriented polygon corner positions/material assignments/smooth flags/corner UV and packed image bytes, canonicalized only for vertex/face enumeration. Final re-export changes portable material factors only; runtime container hashes can vary with exporter ordering.",
+    "inputs": {
+      "firstCapture": "tools/world/facility-craft/batch6/native/huts-r2-captured.blend",
+      "final": "tools/world/facility-craft/batch6/native/huts.blend",
+      "firstCaptureRawSHA256": "654ea2f3b5870da024c845080c75a55725862b7a1714ec544cd17f11e2e1c8cc"
+    }
+  },
+  "capturedHutRuntimeSHA256": "5135478f3efb7cd624a0b14e641051f183180c4fca8e31affebf1fd661205957",
+  "performanceBoundary": "Snapshot render counters only; no normal-play FPS or GPU timing claim. Root summaries are bounded and not whole-scene proof.",
+  "resourceCleanup": {
+    "taskTabClosed": "1395914299",
+    "viewportReset": true,
+    "serverStopped": 4348
+  },
+  "sourceHashes": {
+    "src/components/world/WorldFacilitySurface.ts": "5f93cb884bc2c892b784c7024557d82cbfbc69e3f9e220445d5ba7b500505e54",
+    "src/components/world/WorldFacilityGlazing.ts": "8daac6fe423d928ab42f57e1e0adea0d782d8ce36181cc6bee4e36abd6d94921",
+    "src/components/world/WorldFacilityCraftQA.tsx": "c17d8217fb2346b291f0de2af51e70a22b0f21723bb3c527491b2ef00c6b1ead",
+    "src/components/world/WorldStreetStatic.tsx": "3524893ce6096c9211b34d7c56497fd55336c35f0bcfa5188e2aa950a370dc61",
+    "src/components/world/WorldStreetFacilityCraft.ts": "514b89e4f7bb17154d88bbf6f76a6f03474cfd525773908c35166aeaa00066f6",
+    "src/components/world/WorldStreetMaterial.ts": "07da94774ac0962ddfcc8178e058561ca1efe6371b65bed18003f0799309958a",
+    "src/components/world/WorldParkKit.ts": "f2618c15e591692cb8263326e6e2990d84f8dae71dbd7c3e2804f32074225da3"
+  },
+  "nativeHashes": {
+    "tools/world/facility-craft/batch6/native/huts.blend": "46f525cd9c1d1fb4f5641eb04e3b62a769b1d696e2260f7f12548e23c0eaed7d",
+    "tools/world/facility-craft/batch6/native/huts-r2-captured.blend": "654ea2f3b5870da024c845080c75a55725862b7a1714ec544cd17f11e2e1c8cc",
+    "tools/world/facility-craft/batch6/native/shelter.blend": "1d72169305e6fc0a8761d149f3ee3da780369ddb3dd255d344ec92cb74bb27fd"
+  },
+  "coordinatorReviewScope": "R2 ordinary day/night 4, hut close day/night 2, glazing grazing/rear 2, baseline ordinary noon 2; previous blockers removed. No full-family or user aesthetic acceptance."
+}

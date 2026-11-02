@@ -1,0 +1,27 @@
+{
+  "equal": true,
+  "firstCaptureNative": {
+    "meshes": 304,
+    "semanticSHA256": "5dd73c8076da9c54e3c287a5394bdede5eb5ff6cf912eece5ac361ab3adba4b1",
+    "packedImageHashes": {
+      "wood-color.png": "b24a337f946fae4ed3d94843cba75249a92880b22aad86e4d5e0fa7a61c15e02",
+      "wood-normal.png": "285001688e2a8ec564bb8e1b56d182bf4d77f65779a12198a52a3a1e3f9c935f",
+      "wood-rough.png": "7287de6832e55df62336ccd88bb6f48d468dd285d1fe8113b2693227a563318a"
+    }
+  },
+  "finalNative": {
+    "meshes": 304,
+    "semanticSHA256": "5dd73c8076da9c54e3c287a5394bdede5eb5ff6cf912eece5ac361ab3adba4b1",
+    "packedImageHashes": {
+      "wood-color.png": "b24a337f946fae4ed3d94843cba75249a92880b22aad86e4d5e0fa7a61c15e02",
+      "wood-normal.png": "285001688e2a8ec564bb8e1b56d182bf4d77f65779a12198a52a3a1e3f9c935f",
+      "wood-rough.png": "7287de6832e55df62336ccd88bb6f48d468dd285d1fe8113b2693227a563318a"
+    }
+  },
+  "scope": "Exact native names/parents/transforms/vertex coordinates/oriented polygon corner positions/material assignments/smooth flags/corner UV and packed image bytes, canonicalized only for vertex/face enumeration. Final re-export changes portable material factors only; runtime container hashes can vary with exporter ordering.",
+  "inputs": {
+    "firstCapture": "tools/world/facility-craft/batch6/native/huts-r2-captured.blend",
+    "final": "tools/world/facility-craft/batch6/native/huts.blend",
+    "firstCaptureRawSHA256": "654ea2f3b5870da024c845080c75a55725862b7a1714ec544cd17f11e2e1c8cc"
+  }
+}

@@ -1,7 +1,7 @@
 import { BufferAttribute, BufferGeometry, Color, DataTexture, Euler, FloatType, Matrix3, Matrix4, Mesh, MeshDepthMaterial, MeshStandardMaterial, Quaternion, RGBADepthPacking, RGBAFormat, Vector3, type Object3D } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 import { addParkSurfaceAttributes, parkSurfaceSlot, facilityCraftEnabled, registerFacilityMaterial, facilitySurfaceUniforms, facilitySurfaceHead,
-  facilitySurfaceColor, facilitySurfaceRough, facilitySurfaceNormal } from './WorldFacilitySurface';
+  facilitySurfaceColor, facilitySurfaceRough, facilitySurfaceNormal, facilityEnvironmentChunk } from './WorldFacilitySurface';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import type { Vec3 } from './types';
@@ -54,10 +54,11 @@ export function parkMaterial() {
       .replace('#include <color_fragment>', '#include <color_fragment>' + facilitySurfaceColor)
       .replace('#include <metalnessmap_fragment>', '#include <metalnessmap_fragment>' + facilitySurfaceRough)
       .replace('#include <normal_fragment_maps>', '#include <normal_fragment_maps>' + facilitySurfaceNormal)
+      .replace('#include <envmap_physical_pars_fragment>', facilityEnvironmentChunk)
       .replace('#include <emissivemap_fragment>',
       '#include <emissivemap_fragment>\n  vec3 parkEmit = mix(diffuseColor.rgb, vec3(1.0, 0.79, 0.47) * max(max(diffuseColor.r, diffuseColor.g), 0.55), vEmit.z);\n  totalEmissiveRadiance += parkEmit * (vEmit.x + vEmit.y * uParkNight);');
   };
-  m.customProgramCacheKey = () => 'park-static-surface-v3';
+  m.customProgramCacheKey = () => 'park-static-surface-v4';
   registerFacilityMaterial(m);
   sharedMaterial = m;
   return m;

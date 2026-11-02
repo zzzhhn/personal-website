@@ -1,0 +1,21 @@
+{
+  "revision": 2,
+  "sourceJSONSHA256": "cae025079887a3d0c020436f0cdcd7f38b0eaa088ae541227fbf30c5979d9d69",
+  "runtimeSourceSHA256": {
+    "WorldStreetAssets.ts": "2b8eb883b69c7c88593b3ae7285f464e5baec4dfe0f730d65cea8c934ea6626b",
+    "WorldStreetFacilityCraft.ts": "514b89e4f7bb17154d88bbf6f76a6f03474cfd525773908c35166aeaa00066f6",
+    "WorldStreetGeometry.ts": "b240724f8ef8784d716d44372078733fdf5750bffe7b71728ed7f205234a6134",
+    "WorldFacilitySurface.ts": "5f93cb884bc2c892b784c7024557d82cbfbc69e3f9e220445d5ba7b500505e54",
+    "WorldFacilityGlazing.ts": "8daac6fe423d928ab42f57e1e0adea0d782d8ce36181cc6bee4e36abd6d94921",
+    "WorldStreetStatic.tsx": "3524893ce6096c9211b34d7c56497fd55336c35f0bcfa5188e2aa950a370dc61",
+    "WorldStreetMaterial.ts": "07da94774ac0962ddfcc8178e058561ca1efe6371b65bed18003f0799309958a"
+  },
+  "nativeTriangles": 2576,
+  "freshTriangles": 2576,
+  "boundsDelta": 0.0,
+  "archiveBoundary": "Exact TS geometry/UV/slot/color and frozen hull source. Portable PBR uses the same wood multiplier and alpha glass, but cannot represent runtime atlas, dither, shared time/env intensity or broad procedural paint variation. It is an editable archive, not final appearance acceptance.",
+  "portableGlassBlendFrontSide": 1,
+  "portableWoodWithColorAndNormal": 1,
+  "glbBytes": 1426464,
+  "glbSHA256": "4d309d6b1f5452392095de2455d4029bb4458016a944a10e58d9c97784e93010"
+}

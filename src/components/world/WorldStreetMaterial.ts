@@ -11,7 +11,7 @@
  */
 import { CanvasTexture, LinearMipmapLinearFilter, MeshDepthMaterial, MeshStandardMaterial, RGBADepthPacking, SRGBColorSpace } from 'three';
 import { windUniforms } from './WorldWind';
-import { registerFacilityMaterial, facilitySurfaceUniforms, facilitySurfaceHead, facilitySurfaceColor, facilitySurfaceRough, facilitySurfaceNormal } from './WorldFacilitySurface';
+import { registerFacilityMaterial, facilitySurfaceUniforms, facilitySurfaceHead, facilitySurfaceColor, facilitySurfaceRough, facilitySurfaceNormal, facilityEnvironmentChunk } from './WorldFacilitySurface';
 
 export const streetUniforms = { uNight: { value: 0 } };
 
@@ -89,9 +89,10 @@ export function createStreetMaterial(atlas: CanvasTexture | null, key = 'street-
       .replace('#include <roughnessmap_fragment>', 'float roughnessFactor = vMat.x;')
       .replace('#include <metalnessmap_fragment>', 'float metalnessFactor = vMat.y;' + facilitySurfaceRough)
       .replace('#include <normal_fragment_maps>', '#include <normal_fragment_maps>' + facilitySurfaceNormal)
+      .replace('#include <envmap_physical_pars_fragment>', facilityEnvironmentChunk)
       .replace('#include <emissivemap_fragment>', fragmentEmissive);
   };
-  m.customProgramCacheKey = () => key + '-facility-surface-v1';
+  m.customProgramCacheKey = () => key + '-facility-surface-v2';
   return registerFacilityMaterial(m);
 }
 

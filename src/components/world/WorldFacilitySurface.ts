@@ -1,9 +1,12 @@
 /** Shared batch-6 surface treatment. Physical slots ride the existing sign
  * attribute as negative values; positive sign-atlas flags remain untouched. */
-import { RepeatWrapping, SRGBColorSpace, TextureLoader, type BufferGeometry, type MeshStandardMaterial, type Texture } from 'three';
+import { RepeatWrapping, ShaderChunk, SRGBColorSpace, TextureLoader, type BufferGeometry, type MeshStandardMaterial, type Texture } from 'three';
 import type { Builder } from './WorldStreetGeometry';
+import { night } from './WorldNight';
 
 export const FACILITY_SURFACE = { wood: 1, paint: 2, metal: 3, glass: 4, roof: 5 } as const;
+// Original scan is .7m wide; the reused crop is 466 of its 1024 vertical pixels.
+export const FACILITY_WOOD_TILE = [.7, .7 * 466 / 1024] as const;
 export const facilityCraftEnabled = () => typeof window === 'undefined'
   || new URLSearchParams(window.location.search).get('craft6') !== 'baseline';
 const textureRoot = '/assets/world/craft-batch6-facilities/';
@@ -13,11 +16,12 @@ function loadSurfaces() {
     const texture = typeof document === 'undefined' || !facilityCraftEnabled() ? null : new TextureLoader().load(textureRoot + name);
     if (texture) {
       if (color) texture.colorSpace = SRGBColorSpace;
+      texture.flipY = false; // Manufactured UVs and retained glTF UVs use the glTF image convention.
       texture.wrapS = texture.wrapT = RepeatWrapping; texture.anisotropy = 4;
     }
     return { value: texture };
   };
-  return { uFacilityWood: load('wood-color.png', true), uFacilityRough: load('wood-rough.png'), uFacilityNormal: load('wood-normal.png') };
+  return { uFacilityWood: load('wood-color.png', true), uFacilityRough: load('wood-rough.png'), uFacilityNormal: load('wood-normal.png'), uFacilityNight: night };
 }
 /** Borrowed by shared park/street materials. Never disposed by a mesh or LOD. */
 export const facilitySurfaceUniforms = () => shared ??= loadSurfaces();
@@ -26,7 +30,7 @@ let borrowedEnvironment: Texture | null = null;
 /** Only references the existing renderer-scoped PMREM; does not create or own it. */
 export function registerFacilityMaterial(material: MeshStandardMaterial) {
   if (!facilityCraftEnabled()) return material;
-  variants.add(material); material.envMap = borrowedEnvironment; material.envMapIntensity = .65;
+  variants.add(material); material.envMap = borrowedEnvironment; material.envMapIntensity = .35;
   material.addEventListener('dispose', () => variants.delete(material));
   return material;
 }
@@ -34,6 +38,11 @@ export function setFacilityEnvironment(map: Texture | null) {
   borrowedEnvironment = map;
   for (const material of variants) if (material.envMap !== map) { material.envMap = map; material.needsUpdate = true; }
 }
+/** Environment is evaluated per surface, so unreviewed slot-0 street/park faces
+ * keep their original zero-IBL response despite sharing an opaque batch. */
+export const facilityEnvironmentChunk = ShaderChunk.envmap_physical_pars_fragment
+  .replaceAll('#ifdef ENVMAP_TYPE_CUBE_UV', 'if (vFacilityKind < .5) return vec3(0.0);\n #ifdef ENVMAP_TYPE_CUBE_UV')
+  .replaceAll('envMapIntensity', '(envMapIntensity * step(.5, vFacilityKind) * (1.0 - .90 * uFacilityNight))');
 
 export function tagShelterSurfaces(B: Builder) {
   if (!facilityCraftEnabled()) return;
@@ -49,8 +58,8 @@ export function tagShelterSurfaces(B: Builder) {
       if (!kind) continue;
       B.mat[at + 3] = -kind;
       // Seat slats run along local Z; long grain cannot cross the board width.
-      B.suv[i * 2] = B.pos[i * 3 + 2] / 2.4 + part.start * .013;
-      B.suv[i * 2 + 1] = B.pos[i * 3] / .24;
+      B.suv[i * 2] = B.pos[i * 3 + 2] / FACILITY_WOOD_TILE[0] + part.start * .013;
+      B.suv[i * 2 + 1] = B.pos[i * 3] / FACILITY_WOOD_TILE[1];
     }
   }
 }
@@ -69,6 +78,7 @@ export const facilitySurfaceHead = /* glsl */`
 uniform sampler2D uFacilityWood;
 uniform sampler2D uFacilityRough;
 uniform sampler2D uFacilityNormal;
+uniform float uFacilityNight;
 varying vec2 vFacilityUv;
 varying vec3 vFacilityPoint;
 varying float vFacilityKind;
@@ -80,10 +90,10 @@ export const facilitySurfaceColor = /* glsl */`
 float facilityKind = floor(vFacilityKind + .5);
 float facilityBroad = facilityNoise(vFacilityPoint * .9);
 if (facilityKind == 1.0) {
-  vec3 grain = texture2D(uFacilityWood, vFacilityUv).rgb / vec3(.604, .407, .196);
-  diffuseColor.rgb *= mix(vec3(1.0), clamp(grain, vec3(.48), vec3(1.65)), .82);
+  vec3 grain = texture2D(uFacilityWood, vFacilityUv).rgb / .8;
+  diffuseColor.rgb *= grain;
 } else if (facilityKind == 2.0 || facilityKind == 5.0) {
-  diffuseColor.rgb *= 1.0 + .065 * facilityBroad;
+  diffuseColor.rgb *= 1.0 + .012 * facilityBroad;
 } else if (facilityKind == 3.0) diffuseColor.rgb *= 1.0 + .035 * facilityBroad;
 `;
 export const facilitySurfaceRough = /* glsl */`
@@ -101,7 +111,7 @@ if (vFacilityKind > .5 && vFacilityKind < 1.5) {
   vec3 T = q1p * st0.x + q0p * st1.x, B = q1p * st0.y + q0p * st1.y;
   float scale = inversesqrt(max(max(dot(T,T), dot(B,B)), 1e-8));
   vec3 detail = texture2D(uFacilityNormal, vFacilityUv).xyz * 2.0 - 1.0;
-  detail.xy *= .24;
+  detail.xy *= .18;
   normal = normalize(mat3(T * scale, B * scale, normal) * normalize(detail));
 }
 `;

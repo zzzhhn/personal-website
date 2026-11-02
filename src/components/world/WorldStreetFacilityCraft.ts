@@ -61,7 +61,25 @@ function bench(B: Builder) {
 }
 
 function shelter(B: Builder, old: Builder) {
-  retain(B, old, ['slab', 'post', 'rear', 'end', 'poster']);
+  retain(B, old, ['slab', 'post', ...(facilityCraftEnabled() ? [] : ['rear']), 'end', 'poster']);
+  if (facilityCraftEnabled()) {
+    // Source identity: WorldStreetAssets specifies frosted glass, not a solid
+    // white enclosure. Keep the outer rear frame/kick rail and inset 12mm panes.
+    for (let i = 0; i < 3; i++) part(B, `rear.frosted-pane-${i}`, () => {
+      const z0 = -1.5 + i, z1 = z0 + .97;
+      box(B, [.624, .34, z0 + .012], [.636, 2.28, z1 - .012], S.glass);
+      // Continuous EPDM pocket and metal pressure beads explain how the pane
+      // meets its frame; exposed glass edges retain their actual thickness.
+      for (const z of [z0, z1]) {
+        box(B, [.608, .32, z - .008], [.65, 2.3, z + .008], S.rubber, .002);
+        box(B, [.6, .32, z - .014], [.616, 2.3, z + .014], S.slate, .003);
+      }
+    });
+    part(B, 'rear.original-kick-and-mullions', () => {
+      box(B, [.61, .2, -1.54], [.66, .32, 1.54], S.slate, .008);
+      for (const z of [-.515, .485]) box(B, [.61, .32, z - .02], [.66, 2.3, z + .02], S.slate, .006);
+    });
+  }
   part(B, 'roof.primary-frame', () => {
     for (const x of [-.62, .64]) box(B, [x - .035, 2.23, -1.57], [x + .035, 2.39, 1.57], S.slate, .009);
     for (const z of [-1.54, 0, 1.54]) box(B, [-.65, 2.28, z - .04], [.67, 2.38, z + .04], S.slate, .009);

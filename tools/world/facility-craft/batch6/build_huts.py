@@ -4,7 +4,7 @@ Runtime GLB shares three external textures through the facility batch shader;
 portable GLB embeds the same PBR textures for independent round-trip review.
 """
 from pathlib import Path
-import sys, importlib.util, json, hashlib, shutil, math
+import sys, importlib.util, json, hashlib, math, struct
 import bpy, bmesh
 
 ROOT = Path.cwd()
@@ -28,9 +28,14 @@ class CraftPart(OriginalPart):
         uv = src.loops.layers.uv.verify()
         for face in src.faces:
             face.normal_update()
-            other = max((i for i in range(3) if i != axis), key=lambda i: (hi[i]-lo[i]) * (1-abs(face.normal[i])))
+            cross = [i for i in range(3) if i != axis]
+            other = max(cross, key=lambda i: (hi[i]-lo[i]) * (1-abs(face.normal[i])))
             for loop in face.loops:
-                loop[uv].uv = (loop.vert.co[axis]/2.4 + len(records)*.137, loop.vert.co[other]/.24)
+                # The 466px crop of the original 1024px scan covers .31855m.
+                # End faces
+                # use both cross-section axes instead of a collapsed long axis.
+                axes = cross if abs(face.normal[axis]) > .8 else [axis, other]
+                loop[uv].uv = (loop.vert.co[axes[0]]/.7 + len(records)*.137, loop.vert.co[axes[1]]/(.7*466/1024))
         records.append((self.name, mat, src.copy(), self.smooth if smooth is None else smooth))
         return super().add(src, mat, smooth=smooth)
 lib.Part = CraftPart
@@ -60,8 +65,7 @@ for variant, width in hut.VARIANTS.items():
         bpy.context.scene.collection.objects.link(obj); obj.parent = root
 
 texture_names = [('pine-packaging-basecolor.png','wood-color.png'),('pine-packaging-normal.png','wood-normal.png'),('pine-packaging-roughness.png','wood-rough.png')]
-for source, target in texture_names:
-    shutil.copyfile(ROOT/'tools/world/ibd-crate-craft/textures'/source, OUT/target)
+assert json.loads((OUT/'sources.json').read_text())['facilityRevision'] == 2, 'Run prepare_surfaces.py first'
 images = {}
 for _, filename in texture_names:
     image = bpy.data.images.load(str(OUT/filename), check_existing=True)
@@ -74,7 +78,7 @@ for material in bpy.data.materials:
     if 'wood' in material.name:
         old = list(p.inputs['Base Color'].default_value)
         # Keep the project pigment while the shared scan supplies its grain.
-        factor = [old[i]/[.604,.407,.196][i] for i in range(3)]
+        factor = [old[i]/.8 for i in range(3)]
         color = material.node_tree.nodes.new('ShaderNodeTexImage'); color.image = images['wood-color.png']
         multiply = material.node_tree.nodes.new('ShaderNodeMixRGB'); multiply.blend_type='MULTIPLY'
         multiply.inputs[0].default_value=1; multiply.inputs[2].default_value=(*factor,1)
@@ -83,7 +87,7 @@ for material in bpy.data.materials:
         rough = material.node_tree.nodes.new('ShaderNodeTexImage'); rough.image=images['wood-rough.png']
         material.node_tree.links.new(rough.outputs['Color'],p.inputs['Roughness'])
         normal = material.node_tree.nodes.new('ShaderNodeTexImage'); normal.image=images['wood-normal.png']
-        bump = material.node_tree.nodes.new('ShaderNodeNormalMap'); bump.inputs['Strength'].default_value=.24
+        bump = material.node_tree.nodes.new('ShaderNodeNormalMap'); bump.inputs['Strength'].default_value=.18
         material.node_tree.links.new(normal.outputs['Color'],bump.inputs['Color'])
         material.node_tree.links.new(bump.outputs['Normal'],p.inputs['Normal'])
     elif 'roof' in material.name: p.inputs['Roughness'].default_value=.38; p.inputs['Metallic'].default_value=.24
@@ -99,6 +103,20 @@ def export(name):
     bpy.ops.export_scene.gltf(filepath=str(OUT/name),export_format='GLB',use_selection=True,
         export_yup=True,export_normals=True,export_texcoords=True,export_cameras=False,export_lights=False,export_animations=False,export_extras=True)
 export('hut-portable.glb')
+# Blender's exporter retains the shared image but omits the legacy MixRGB
+# constant multiplier. This explicit glTF material adapter carries the native
+# pigment/.8 factor without baking four duplicate color images or changing mesh.
+portable_path=OUT/'hut-portable.glb'
+raw=portable_path.read_bytes();json_size=struct.unpack_from('<I',raw,12)[0]
+document=json.loads(raw[20:20+json_size])
+for material in document['materials']:
+    name=material.get('name','')
+    if 'wood' in name:
+        pigment=lib.hex_lin(lib.MATS[name][0])
+        material['pbrMetallicRoughness']['baseColorFactor']=[pigment[i]/.8 for i in range(3)]+[1]
+encoded=json.dumps(document,separators=(',',':')).encode();encoded+=b' '*((-len(encoded))%4)
+tail=raw[20+json_size:]
+portable_path.write_bytes(struct.pack('<4sII',b'glTF',2,20+len(encoded)+len(tail))+struct.pack('<I4s',len(encoded),b'JSON')+encoded+tail)
 # Web batches borrow external shared maps; no second embedded image residency.
 for material in bpy.data.materials:
     if not material.use_nodes: continue
@@ -114,6 +132,23 @@ for root in [o for o in bpy.data.objects if o.name.startswith('hut_') and o.type
     meshes=[o for o in root.children_recursive if o.type=='MESH']
     for o in meshes: o.data.calc_loop_triangles()
     report['roots'][root.name]={'triangles':sum(len(o.data.loop_triangles) for o in meshes),'parts':len(meshes),'allUv':all(len(o.data.uv_layers)>0 for o in meshes)}
-report['hashes']={p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in OUT.iterdir() if p.is_file()}
+def document(filename):
+    raw=(OUT/filename).read_bytes();size=struct.unpack_from('<I',raw,12)[0]
+    return json.loads(raw[20:20+size])
+portable,runtime=document('hut-portable.glb'),document('hut-runtime.glb')
+wood=[m for m in portable['materials'] if 'wood' in m.get('name','')]
+assert wood and all('baseColorTexture' in m['pbrMetallicRoughness'] and 'normalTexture' in m for m in wood)
+for material in wood:
+    expected=lib.hex_lin(lib.MATS[material['name']][0])
+    actual=material['pbrMetallicRoughness']['baseColorFactor']
+    assert max(abs(actual[i]-expected[i]/.8) for i in range(3))<1e-6
+assert not runtime.get('images')
+assert all('TEXCOORD_0' in p['attributes'] for m in runtime['meshes'] for p in m['primitives'])
+report['revision']=2
+report['materialPath']={'portableWoodMaterialsWithColorAndNormal':len(wood),'runtimeImages':len(runtime.get('images',[])),
+    'tileMetres':[.7,.7*466/1024],'textureFlipY':False,'linearNeutral':.8,'portablePigmentFactorVerified':True,
+    'archiveBoundary':'PBR texture/pigment formula and geometry shared; runtime-only broad paint/noise, aEmit and time/environment remain outside the portable archive.'}
+files=['wood-color.png','wood-normal.png','wood-rough.png','hut-portable.glb','hut-runtime.glb','sources.json']
+report['hashes']={name:hashlib.sha256((OUT/name).read_bytes()).hexdigest() for name in files}
 (OUT/'hut-export-report.json').write_text(json.dumps(report,indent=2))
 print('BATCH6_HUT_REPORT '+json.dumps(report))

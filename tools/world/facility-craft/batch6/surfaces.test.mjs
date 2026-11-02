@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { BufferGeometry, Float32BufferAttribute, Group, Matrix4, Mesh, MeshStandardMaterial, ShaderLib } from 'three';
+import { BufferGeometry, Float32BufferAttribute, Group, Matrix4, Mesh, MeshStandardMaterial, ShaderLib, PerspectiveCamera, Vector4 } from 'three';
 import { loadWorldModule } from '../street/runtime.mjs';
 const sameValues = (a, b) => assert.equal(JSON.stringify(a), JSON.stringify(b));
 
@@ -49,8 +49,44 @@ test('both live shaders retain their own lighting/fade contracts and sample the 
     assert.ok(shader.uniforms.uFacilityWood);assert.ok(shader.uniforms.uFacilityNormal);assert.ok(shader.uniforms.uFacilityRough);
     assert.match(shader.fragmentShader,/texture2D\(uFacilityWood, vFacilityUv\)/);
     assert.match(shader.fragmentShader,/roughnessFactor = clamp\(texture2D\(uFacilityRough/);
-    assert.match(shader.fragmentShader,/detail.xy \*= .24/);
+    assert.match(shader.fragmentShader,/detail.xy \*= .18/);
+    assert.match(shader.fragmentShader,/step\(.5, vFacilityKind\) \* \(1.0 - .90 \* uFacilityNight\)/);
+    assert.ok(shader.uniforms.uFacilityNight);
   }
   assert.match(shaders[0].fragmentShader,/streetBayer/);assert.match(shaders[0].fragmentShader,/texture2D\(uAtlas, vSuv\)/);
   assert.match(shaders[1].fragmentShader,/uParkNight/);assert.match(shaders[1].vertexShader,/vEmit = aEmit/);
+});
+
+test('shelter glass splits exactly once, leaves frozen proxy and has no transmission pass', () => {
+  const A=loadWorldModule(), G=loadWorldModule('WorldFacilityGlazing.ts');
+  const builder=A.shelterGeometry(0,[0,0,1,1]), geometry=builder.build();
+  const split=G.splitShelterGlazing(geometry), material=G.createShelterGlazingMaterial();
+  try {
+    assert.equal(split.opaque.index.count+split.glass.index.count,geometry.index.count);
+    assert.ok(split.glass.index.count>0);
+    const slots=(g)=>Array.from(g.index.array,i=>g.attributes.aMat.getW(i));
+    assert.ok(slots(split.glass).every(slot=>slot===-4));assert.ok(slots(split.opaque).every(slot=>slot!==-4));
+    assert.equal(material.transparent,true);assert.equal(material.depthWrite,false);
+    assert.equal(material.opacity,.45);assert.ok(!material.transmission);
+    const xs=Array.from(split.glass.index.array,i=>split.glass.attributes.position.getX(i));
+    assert.ok(Math.abs(Math.max(...xs)-Math.min(...xs)-.012)<1e-6);
+  } finally {geometry.dispose();split.opaque.dispose();split.glass.dispose();material.dispose();}
+});
+
+test('glazing uses street LOD/fade/hide and releases both private geometries', () => {
+  const A=loadWorldModule(), G=loadWorldModule('WorldFacilityGlazing.ts'), {StreetBatch}=loadWorldModule('WorldStreetBatch.ts');
+  const source=[0,1].map(lod=>A.shelterGeometry(lod,[0,0,1,1]).build());
+  const split=source.map(g=>G.splitShelterGlazing(g));
+  const material=G.createShelterGlazingMaterial(), camera=new PerspectiveCamera(), color=new Vector4();
+  let disposed=0;for(const p of split)p.glass.addEventListener('dispose',()=>disposed++);
+  const batch=new StreetBatch('shelter-glass-test',[{id:'shelter',L0:split[0].glass,L1:split[1].glass,lodNear:40,far:160}],[1],material);
+  batch.add(0,new Matrix4());batch.finish(1);
+  camera.position.set(0,0,10);assert.ok(batch.update(camera).l0>0);
+  camera.position.set(0,0,50);assert.ok(batch.update(camera).l1>0);
+  camera.position.set(0,0,154);batch.update(camera);batch.mesh.getColorAt(0,color);assert.ok(Math.abs(color.w-.5)<1e-6);
+  batch.setHidden(0,true);batch.update(camera);assert.equal(batch.mesh.getVisibleAt(0),false);
+  batch.setHidden(0,false);camera.position.set(0,0,10);batch.update(camera);assert.equal(batch.mesh.getVisibleAt(0),true);
+  camera.position.set(0,0,180);batch.update(camera);assert.equal(batch.mesh.getVisibleAt(0),false);
+  batch.dispose();assert.equal(disposed,2);material.dispose();
+  source.forEach(g=>g.dispose());split.forEach(p=>p.opaque.dispose());
 });
