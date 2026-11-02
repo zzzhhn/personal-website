@@ -1,0 +1,173 @@
+{
+  "revision": "r10-effective-albedo-calibration",
+  "source": {
+    "file": "../personal-world-bruno/static/bay/assets/coast-natural/pbr/stone-color.jpg",
+    "sha256": "ea48e0e47ad42c8bd312476178b1248ec66f0eb19156a26a1c222f2a40caaf2d",
+    "asset": "https://polyhaven.com/a/rock_face_03",
+    "authors": {
+      "Dario Barresi": "Photography",
+      "Rico Cilliers": "Processing"
+    },
+    "license": "CC0-1.0",
+    "licenseUrl": "https://polyhaven.com/license"
+  },
+  "beforeGLBSHA": "783f494a7151e6029085f4e79da1e76a1d4df8aa476eb2263ecc6da373c4703b",
+  "afterGLBSHA": "a31ae02a6af323c54d5af7e9645927fcac41df3b23caef77c4a10ee8f3c5fc5f",
+  "image": {
+    "uri": "textures/6f361f0d505ca603a6f05e5a.png",
+    "sha256": "6f361f0d505ca603a6f05e5a40ebd336b7be77b8a74ca5c668742e213624dbec",
+    "size": [
+      512,
+      512
+    ]
+  },
+  "geometryPolicy": "Only existing COLOR_0 RGB component bytes changed in BIN; material baseColor image URI and descriptive extras changed in JSON. Normals, positions, UVs, index topology, AO, roughness, normal maps, alpha, transforms and all other material fields preserved.",
+  "nativePending": false,
+  "runtimePending": false,
+  "recipe": {
+    "revision": "r10-effective-albedo-calibration",
+    "scope": "G21 only; R9 geometry, normals, UV0, UV1, transforms and collider frozen",
+    "artDirection": "Weathered warm-gray layered stone, cool-gray fresh matrix, a pale warm mineral bed, darker friable recesses and localized earth at the foot. This is material art direction, not verified petrography of the CC0 photograph.",
+    "sourceTexture": "../personal-world-bruno/static/bay/assets/coast-natural/pbr/stone-color.jpg",
+    "texture": {
+      "linearMeanRGB": [
+        0.35,
+        0.32,
+        0.28
+      ],
+      "luminancePower": 0.72,
+      "ratioClamp": [
+        0.45,
+        1.9
+      ],
+      "localChromaPower": 0.4,
+      "size": 512
+    },
+    "pigment": {
+      "centerXY": [
+        0,
+        0
+      ],
+      "bottom": 0,
+      "height": 1.5,
+      "fault": [
+        -0.08,
+        0.08,
+        0.43,
+        0.105
+      ],
+      "bedDip": [
+        -0.24,
+        0.14
+      ],
+      "bedEdges": [
+        0.4,
+        0.51,
+        0.7,
+        0.81
+      ],
+      "thickness": 0.055,
+      "host": [
+        0.5,
+        0.53,
+        0.56
+      ],
+      "mineral": [
+        0.9,
+        0.84,
+        0.73
+      ],
+      "cleavedHost": [
+        0.62,
+        0.65,
+        0.66
+      ],
+      "cleavedMineral": [
+        0.98,
+        0.91,
+        0.78
+      ],
+      "friableHost": [
+        0.3,
+        0.28,
+        0.25
+      ],
+      "friableMineral": [
+        0.5,
+        0.46,
+        0.4
+      ],
+      "foot": [
+        0.24,
+        0.21,
+        0.16
+      ],
+      "footDepth": [
+        0.07,
+        0.23
+      ],
+      "footMix": 0.55
+    },
+    "localEnvironmentGain": 1.1,
+    "conditionalDiagnosticEnvironmentGain": 0.55,
+    "evidence": {
+      "R9SurfaceMeanLinearAlbedo": 0.30743352857139183,
+      "G23ReferenceSurfaceMeanLinearAlbedo": 0.235136452046532,
+      "R9FriableMeanLinearAlbedo": 0.29891304669247654,
+      "R9HostMeanLinearAlbedo": 0.2756308820829859,
+      "reason": "The neutralized photograph was lifted and desaturated before an unusually pale COLOR_0 multiplication; friable material even averaged brighter than matrix. Reconstruct the map in explicit linear color and restore object-space mineral/host/recess/foot separation. The first ordinary image retains G21 local IBL 1.1 to isolate the albedo revision. A reversible 0.55 comparison is permitted only if that image still shows excessive reflection; all global lights/exposure and the night gate stay unchanged.",
+      "boundary": "Albedo audit is source evidence; ordinary engine appearance and final coordinator acceptance remain pending. Reference values are scale checks, not numerical matching targets."
+    }
+  },
+  "native": {
+    "archivedR9SHA": "c94b886f620d79ee282c2bd3ebd0d9e12dd7771fb2c89fe00d88e36b2a049c1e",
+    "beforeThisSyncSHA": "cf4231ccdbb4970b0b0e31d53c6c64bff81fa35d447dc66b671935e7c3a5e89b",
+    "afterSHA": "3e9f0f40c77a6e1721f7be4941d70ff1921e618346696a481435efeec0153849",
+    "geometryBeforeAndAfterHash": "e3e9263185ed6d57af16db8526249e2cc111ae063209599b2fd9a11e7e6957f6",
+    "persistedGeometryUnchanged": true,
+    "GLBColorsChecked": 13809,
+    "GLBMaxQuantizationError": 7.629510948348184e-06,
+    "persistedNativeMaxColorError": 2.9785622523981203e-08,
+    "persistedNativeMaps": [
+      {
+        "material": "B6 rock | mineral beds",
+        "packedImageSHA": "6f361f0d505ca603a6f05e5a40ebd336b7be77b8a74ca5c668742e213624dbec",
+        "colorSpace": "sRGB"
+      },
+      {
+        "material": "B6 rock | cleaved shoulders",
+        "packedImageSHA": "6f361f0d505ca603a6f05e5a40ebd336b7be77b8a74ca5c668742e213624dbec",
+        "colorSpace": "sRGB"
+      },
+      {
+        "material": "B6 rock | recessed friable seams",
+        "packedImageSHA": "6f361f0d505ca603a6f05e5a40ebd336b7be77b8a74ca5c668742e213624dbec",
+        "colorSpace": "sRGB"
+      }
+    ],
+    "freshImportCornersChecked": 17886,
+    "freshImportMaxColorErrorFrom8BitStorage": 0.004304489047210258,
+    "freshImportStorage": "Blender 5.1 glTF importer mesh.py creates BYTE_COLOR and stores incoming linear normalized uint16 colors as sRGB bytes; final GLB remains uint16 and saved editable native remains FLOAT_COLOR",
+    "freshImportMaxErrorAgainstExact8BitConversion": 0.0,
+    "freshImportMaps": [
+      {
+        "material": "B6 rock | mineral beds",
+        "imageSHA": "6f361f0d505ca603a6f05e5a40ebd336b7be77b8a74ca5c668742e213624dbec",
+        "colorSpace": "sRGB"
+      },
+      {
+        "material": "B6 rock | recessed friable seams",
+        "imageSHA": "6f361f0d505ca603a6f05e5a40ebd336b7be77b8a74ca5c668742e213624dbec",
+        "colorSpace": "sRGB"
+      },
+      {
+        "material": "B6 rock | cleaved shoulders",
+        "imageSHA": "6f361f0d505ca603a6f05e5a40ebd336b7be77b8a74ca5c668742e213624dbec",
+        "colorSpace": "sRGB"
+      }
+    ]
+  },
+  "runtimeEvidence": "R10-G21-ORDINARY-REVIEW.json",
+  "coordinatorAccepted": true,
+  "approvalScope": "Ordinary-view candidate; not user final visual acceptance or completed natural assets"
+}

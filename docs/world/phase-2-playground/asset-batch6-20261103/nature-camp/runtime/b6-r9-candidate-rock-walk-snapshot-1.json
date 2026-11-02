@@ -1,0 +1,971 @@
+{
+  "mode": "candidate",
+  "active": "rock-walk",
+  "phase": "full",
+  "diagnosticOnly": false,
+  "url": "http://127.0.0.1:4363/world/?qa=1&natureReview=1&start=camp&quality=balanced&paused=0",
+  "view": {
+    "player": [
+      -57,
+      6.5,
+      43
+    ],
+    "zoom": 1
+  },
+  "review": {
+    "fixedDpr": true,
+    "toneMappingExposure": 1
+  },
+  "settings": {
+    "paused": false,
+    "shot": null,
+    "quality": "balanced",
+    "weather": "clear",
+    "light": "noon",
+    "worldMinutes": 720,
+    "timeRunning": false,
+    "seat": null,
+    "card": null,
+    "zoom": 1
+  },
+  "snapshot": {
+    "player": [
+      -56.99064636230469,
+      5.65650749206543,
+      43.00489044189453
+    ],
+    "activeVehicle": null,
+    "canRecover": false,
+    "grounded": true,
+    "playerVelocity": [
+      0.00022022017219569534,
+      -1.4054403436603025e-06,
+      -7.742988236714154e-05
+    ],
+    "playerCollider": {
+      "radius": 0.34,
+      "halfHeight": 0.48,
+      "centerHeight": 0.8200000000000001
+    },
+    "playerYaw": 0,
+    "physicsStep": 5458,
+    "vehicles": [
+      {
+        "id": "offroad",
+        "position": [
+          -26.00594139099121,
+          5.896547794342041,
+          34
+        ],
+        "velocity": [
+          -9.355147767564631e-10,
+          -0.0611887201666832,
+          -1.4536155390487693e-07
+        ],
+        "yaw": 5.649551287808411e-11,
+        "entering": false,
+        "mass": 1400,
+        "com": [
+          -0.06864000111818314,
+          -0.37525999546051025,
+          0
+        ],
+        "inertia": [
+          1946.348876953125,
+          579.1201782226562,
+          1645.604248046875
+        ],
+        "inertiaFrame": [
+          -3.37274053130443e-09,
+          -4.6737113734707236e-08,
+          -0.7180261015892029,
+          0.696016252040863
+        ],
+        "wheelContacts": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "upsideDownSeconds": 0,
+        "waterSeconds": 0,
+        "steering": 0,
+        "steerInput": 0,
+        "throttleInput": 0,
+        "driving": null
+      },
+      {
+        "id": "coupe",
+        "position": [
+          26.199382781982422,
+          2.1374423503875732,
+          2.002410411834717
+        ],
+        "velocity": [
+          -1.284501252030168e-07,
+          -0.061286501586437225,
+          7.499631138330187e-09
+        ],
+        "yaw": 1.5708059555938023,
+        "entering": false,
+        "mass": 1100,
+        "com": [
+          -0.07568001002073288,
+          -0.10298000276088715,
+          0
+        ],
+        "inertia": [
+          1750.152099609375,
+          1504.3792724609375,
+          378.1474304199219
+        ],
+        "inertiaFrame": [
+          -0.49476608633995056,
+          0.5051798820495605,
+          -0.5051797032356262,
+          0.4947660267353058
+        ],
+        "wheelContacts": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "upsideDownSeconds": 0,
+        "waterSeconds": 0,
+        "steering": 0,
+        "steerInput": 0,
+        "throttleInput": 0,
+        "driving": {
+          "power": 0,
+          "steering": 0,
+          "rearGrip": 1,
+          "nitro": 1,
+          "boostLock": false,
+          "rechargeDelay": 0,
+          "boosting": false,
+          "handbrake": false,
+          "braking": false,
+          "slipAngle": -3.614883354062186e-05,
+          "speed": -0.00014322219268362945,
+          "lateralSpeed": -7.229766711273509e-05,
+          "contacts": 4,
+          "engine": 0,
+          "suspension": [
+            0.36793622374534607,
+            0.3677878677845001,
+            0.3611036241054535,
+            0.3609550893306732
+          ]
+        }
+      },
+      {
+        "id": "van",
+        "position": [
+          45.992454528808594,
+          2.464979648590088,
+          -45
+        ],
+        "velocity": [
+          4.406597398087797e-08,
+          -0.061189789324998856,
+          -3.4163316604909055e-22
+        ],
+        "yaw": -4.0301506532856916e-12,
+        "entering": false,
+        "mass": 2100,
+        "com": [
+          -0.07919997721910477,
+          -0.3244398534297943,
+          0
+        ],
+        "inertia": [
+          3808.346435546875,
+          3423.21826171875,
+          1211.8272705078125
+        ],
+        "inertiaFrame": [
+          -0.5098779201507568,
+          -0.4899229407310486,
+          0.4899231493473053,
+          0.5098777413368225
+        ],
+        "wheelContacts": [
+          true,
+          true,
+          true,
+          true
+        ],
+        "upsideDownSeconds": 0,
+        "waterSeconds": 0,
+        "steering": 0,
+        "steerInput": 0,
+        "throttleInput": 0,
+        "driving": null
+      }
+    ]
+  },
+  "camera": {
+    "yaw": 0.9272952180016123,
+    "pitch": 0.7853981633974483,
+    "distance": 12,
+    "desiredDistance": 12,
+    "driveManualZoom": false,
+    "actualDistance": 11.999999999999996,
+    "firstPerson": false,
+    "preset": 1,
+    "collided": false,
+    "hitDistance": null,
+    "fov": 50,
+    "mode": "walk",
+    "recentering": false,
+    "position": [
+      -51.899477537761555,
+      14.791788866304,
+      49.79311554128538
+    ],
+    "target": [
+      -56.990646362304695,
+      6.306507492065431,
+      43.004890441894524
+    ],
+    "forwardGround": [
+      -0.6,
+      -0.8000000000000002
+    ],
+    "groundBelowCamera": 4.8258819580078125,
+    "clearanceAboveGround": 9.965906908296187,
+    "gamepad": false,
+    "nearPlaneRadius": 0.22,
+    "guideHidden": false,
+    "shoulderOffset": 0,
+    "nearPlaneOverlaps": []
+  },
+  "renderInfo": {
+    "drawingBuffer": [
+      1710,
+      931
+    ],
+    "cssSize": [
+      1710,
+      931
+    ],
+    "pixelRatio": 1,
+    "dprRange": [
+      0,
+      1.5
+    ],
+    "quality": "balanced",
+    "antialias": true,
+    "msaaSamples": 4,
+    "toneMapping": 4,
+    "outputColorSpace": "srgb",
+    "shadowMapSize": 1254,
+    "shadowType": 1,
+    "postprocessing": [],
+    "coasterVegetation": [
+      {
+        "name": "coaster-ST1-L0",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      },
+      {
+        "name": "coaster-ST1-L1",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      },
+      {
+        "name": "coaster-ST2-L0",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      },
+      {
+        "name": "coaster-ST2-L1",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      },
+      {
+        "name": "coaster-G19",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      }
+    ]
+  },
+  "loop": {
+    "mode": "always",
+    "frame": 3941,
+    "delta": 0.018100000023841857,
+    "night": 0,
+    "windTime": 87.28620000004821,
+    "frameMs": null
+  },
+  "stats": {
+    "calls": 143,
+    "triangles": 556157,
+    "geometries": 261,
+    "textures": 92,
+    "programs": 191,
+    "camera": [
+      -51.899477537761555,
+      14.791788866304,
+      49.79311554128538
+    ]
+  },
+  "shadowWork": {
+    "pending": false,
+    "slices": 0,
+    "cpuMs": 0,
+    "maxSliceMs": 0,
+    "cancelled": 0,
+    "error": "",
+    "phases": [],
+    "hullWorker": {
+      "requests": 88,
+      "workerMs": 844.3999997377396,
+      "maxWorkerMs": 248,
+      "maxSource": "DJC_\u00b7_Oiled_teak_\u00b7_photographed_grain",
+      "maxInputVertices": 368460
+    }
+  },
+  "materials": {
+    "C03/Draped_low_canvas_wall": {
+      "id": "C03",
+      "name": "camp-mesh-C03-Draped_low_canvas_wall",
+      "instances": 1,
+      "materials": [
+        {
+          "name": "camp_canvas_orange",
+          "map": {
+            "uuid": "c21c4dfb-31c3-4728-9499-d65a864cd7d3",
+            "sourceUUID": "0b957266-1056-43fe-95fe-410e821cdce2",
+            "name": "canvas-original-color",
+            "colorSpace": "srgb",
+            "channel": 0,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "normalMap": {
+            "uuid": "3213583f-59d5-4e9b-adc5-57d37b807b54",
+            "sourceUUID": "a561f449-9e5a-4cb3-9174-ee1e8bf9eb1a",
+            "name": "canvas-original-normal",
+            "colorSpace": "",
+            "channel": 0,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "roughnessMap": {
+            "uuid": "300d1887-e817-40a1-bdf9-ee4199f310ad",
+            "sourceUUID": "2019246a-d134-49f0-a9b4-401625b70b91",
+            "name": "canvas-original-roughness",
+            "colorSpace": "",
+            "channel": 0,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "aoMap": null,
+          "envMap": {
+            "uuid": "983dfb88-5800-49b4-bc4c-e0d700508ce6",
+            "sourceUUID": "22c50516-c04d-4b36-b7b3-0a728e66135f",
+            "name": "PMREM.cubeUv",
+            "colorSpace": "srgb-linear",
+            "channel": 0,
+            "size": [
+              336,
+              256
+            ]
+          },
+          "envMapIntensity": 0.799625795024034,
+          "color": "ffffff",
+          "emissive": "ff9a4a",
+          "vertexColors": false,
+          "roughness": 1,
+          "metalness": 0,
+          "opacity": 1,
+          "emissiveIntensity": 1.4904497889047132e-09,
+          "program": "tent-wind-C03-nature-review-local-gain",
+          "side": 0,
+          "flatShading": false
+        }
+      ],
+      "diagnostic": "none",
+      "receiveShadow": true,
+      "reviewWindGain": 1,
+      "geometry": {
+        "vertices": 70860,
+        "uv": {
+          "count": 70860,
+          "range": [
+            -3.620833396911621,
+            3.620833396911621,
+            -5.497503757476807,
+            7.497503757476807
+          ]
+        },
+        "uv1": null,
+        "normal": true,
+        "color": false,
+        "cloth": true,
+        "wind": false,
+        "curtainShells": 2
+      },
+      "depthProgram": "tent-wind-depth-C03-nature-review-local-gain",
+      "distanceProgram": null
+    },
+    "C03/Draped_low_canvas_wall_1": {
+      "id": "C03",
+      "name": "camp-mesh-C03-Draped_low_canvas_wall_1",
+      "instances": 1,
+      "materials": [
+        {
+          "name": "camp_canvas_binding",
+          "map": null,
+          "normalMap": null,
+          "roughnessMap": null,
+          "aoMap": null,
+          "envMap": {
+            "uuid": "983dfb88-5800-49b4-bc4c-e0d700508ce6",
+            "sourceUUID": "22c50516-c04d-4b36-b7b3-0a728e66135f",
+            "name": "PMREM.cubeUv",
+            "colorSpace": "srgb-linear",
+            "channel": 0,
+            "size": [
+              336,
+              256
+            ]
+          },
+          "envMapIntensity": 0.799625795024034,
+          "color": "b9602a",
+          "emissive": "000000",
+          "vertexColors": false,
+          "roughness": 0.75,
+          "metalness": 0,
+          "opacity": 1,
+          "emissiveIntensity": 1,
+          "program": "onBeforeCompile(){}",
+          "side": 0,
+          "flatShading": false
+        }
+      ],
+      "diagnostic": "none",
+      "receiveShadow": true,
+      "reviewWindGain": null,
+      "geometry": {
+        "vertices": 120,
+        "uv": {
+          "count": 120,
+          "range": [
+            -1.5104166269302368,
+            3.214583396911621,
+            -3.7395834922790527,
+            2.5104165077209473
+          ]
+        },
+        "uv1": null,
+        "normal": true,
+        "color": false,
+        "cloth": false,
+        "wind": false,
+        "curtainShells": null
+      },
+      "depthProgram": null,
+      "distanceProgram": null
+    },
+    "C03/Draped_low_canvas_wall_2": {
+      "id": "C03",
+      "name": "camp-mesh-C03-Draped_low_canvas_wall_2",
+      "instances": 1,
+      "materials": [
+        {
+          "name": "camp_canvas_cream",
+          "map": null,
+          "normalMap": null,
+          "roughnessMap": null,
+          "aoMap": null,
+          "envMap": {
+            "uuid": "983dfb88-5800-49b4-bc4c-e0d700508ce6",
+            "sourceUUID": "22c50516-c04d-4b36-b7b3-0a728e66135f",
+            "name": "PMREM.cubeUv",
+            "colorSpace": "srgb-linear",
+            "channel": 0,
+            "size": [
+              336,
+              256
+            ]
+          },
+          "envMapIntensity": 0.799625795024034,
+          "color": "e6dccb",
+          "emissive": "000000",
+          "vertexColors": false,
+          "roughness": 0.8999999761581421,
+          "metalness": 0,
+          "opacity": 1,
+          "emissiveIntensity": 1,
+          "program": "onBeforeCompile(){}",
+          "side": 0,
+          "flatShading": false
+        }
+      ],
+      "diagnostic": "none",
+      "receiveShadow": true,
+      "reviewWindGain": null,
+      "geometry": {
+        "vertices": 216,
+        "uv": {
+          "count": 216,
+          "range": [
+            -5.541464328765869,
+            5.541464328765869,
+            -4.541464328765869,
+            6.541464328765869
+          ]
+        },
+        "uv1": null,
+        "normal": true,
+        "color": false,
+        "cloth": false,
+        "wind": false,
+        "curtainShells": null
+      },
+      "depthProgram": null,
+      "distanceProgram": null
+    },
+    "C03/Draped_low_canvas_wall_3": {
+      "id": "C03",
+      "name": "camp-mesh-C03-Draped_low_canvas_wall_3",
+      "instances": 1,
+      "materials": [
+        {
+          "name": "camp_groundsheet",
+          "map": null,
+          "normalMap": null,
+          "roughnessMap": null,
+          "aoMap": null,
+          "envMap": {
+            "uuid": "983dfb88-5800-49b4-bc4c-e0d700508ce6",
+            "sourceUUID": "22c50516-c04d-4b36-b7b3-0a728e66135f",
+            "name": "PMREM.cubeUv",
+            "colorSpace": "srgb-linear",
+            "channel": 0,
+            "size": [
+              336,
+              256
+            ]
+          },
+          "envMapIntensity": 0.799625795024034,
+          "color": "5a4634",
+          "emissive": "000000",
+          "vertexColors": false,
+          "roughness": 0.949999988079071,
+          "metalness": 0,
+          "opacity": 1,
+          "emissiveIntensity": 1,
+          "program": "onBeforeCompile(){}",
+          "side": 0,
+          "flatShading": false
+        }
+      ],
+      "diagnostic": "none",
+      "receiveShadow": true,
+      "reviewWindGain": null,
+      "geometry": {
+        "vertices": 24,
+        "uv": {
+          "count": 24,
+          "range": [
+            -3.2916667461395264,
+            3.3333334922790527,
+            -2.2916667461395264,
+            4.2916669845581055
+          ]
+        },
+        "uv1": null,
+        "normal": true,
+        "color": false,
+        "cloth": false,
+        "wind": false,
+        "curtainShells": null
+      },
+      "depthProgram": null,
+      "distanceProgram": null
+    },
+    "C03/Draped_low_canvas_wall_4": {
+      "id": "C03",
+      "name": "camp-mesh-C03-Draped_low_canvas_wall_4",
+      "instances": 1,
+      "materials": [
+        {
+          "name": "camp_wood_light",
+          "map": null,
+          "normalMap": null,
+          "roughnessMap": null,
+          "aoMap": null,
+          "envMap": {
+            "uuid": "983dfb88-5800-49b4-bc4c-e0d700508ce6",
+            "sourceUUID": "22c50516-c04d-4b36-b7b3-0a728e66135f",
+            "name": "PMREM.cubeUv",
+            "colorSpace": "srgb-linear",
+            "channel": 0,
+            "size": [
+              336,
+              256
+            ]
+          },
+          "envMapIntensity": 0.799625795024034,
+          "color": "b99469",
+          "emissive": "000000",
+          "vertexColors": false,
+          "roughness": 0.7200000286102295,
+          "metalness": 0,
+          "opacity": 1,
+          "emissiveIntensity": 1,
+          "program": "onBeforeCompile(){}",
+          "side": 0,
+          "flatShading": false
+        }
+      ],
+      "diagnostic": "none",
+      "receiveShadow": true,
+      "reviewWindGain": null,
+      "geometry": {
+        "vertices": 672,
+        "uv": {
+          "count": 672,
+          "range": [
+            -5.644986152648926,
+            5.644986152648926,
+            -5.875,
+            6.644986152648926
+          ]
+        },
+        "uv1": null,
+        "normal": true,
+        "color": false,
+        "cloth": false,
+        "wind": false,
+        "curtainShells": null
+      },
+      "depthProgram": null,
+      "distanceProgram": null
+    },
+    "G21/G21_bed_01_surface": {
+      "id": "G21",
+      "name": "camp-mesh-G21-G21_bed_01_surface",
+      "instances": 8,
+      "materials": [
+        {
+          "name": "B6 rock | mineral beds",
+          "map": {
+            "uuid": "d6b0029b-5472-48e8-939a-baf1101d2adc",
+            "sourceUUID": "f8518828-07cc-4fd2-b079-a3a7afa3c400",
+            "name": "B6 | CC0 derived mineral fracture 512",
+            "colorSpace": "srgb",
+            "channel": 0,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "normalMap": {
+            "uuid": "df09d8da-6569-4435-b704-f44a9be11fe0",
+            "sourceUUID": "2b4f0fb9-5b61-4496-a02f-cc6780525272",
+            "name": "stone-normal",
+            "colorSpace": "",
+            "channel": 0,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "roughnessMap": {
+            "uuid": "ce1287d1-daa8-473c-9656-29844b93b9d2",
+            "sourceUUID": "676ebf1a-c3da-49df-9373-865016bcf5ce",
+            "name": "B6 | authored ORM from CC0 roughness 512",
+            "colorSpace": "",
+            "channel": 0,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "aoMap": {
+            "uuid": "1f08eca6-7467-454e-bbb5-b9b7619e4e2e",
+            "sourceUUID": "f2944899-3a37-40ad-aa16-ac965d0f3887",
+            "name": "B6 rock geometry AO UV1",
+            "colorSpace": "",
+            "channel": 1,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "envMap": {
+            "uuid": "983dfb88-5800-49b4-bc4c-e0d700508ce6",
+            "sourceUUID": "22c50516-c04d-4b36-b7b3-0a728e66135f",
+            "name": "PMREM.cubeUv",
+            "colorSpace": "srgb-linear",
+            "channel": 0,
+            "size": [
+              336,
+              256
+            ]
+          },
+          "envMapIntensity": 1.0994854681580468,
+          "color": "ffffff",
+          "emissive": "000000",
+          "vertexColors": true,
+          "roughness": 0.9399999976158142,
+          "metalness": 0,
+          "opacity": 1,
+          "emissiveIntensity": 1,
+          "program": "onBeforeCompile(){}",
+          "side": 0,
+          "flatShading": false
+        }
+      ],
+      "diagnostic": "none",
+      "receiveShadow": true,
+      "reviewWindGain": null,
+      "geometry": {
+        "vertices": 4999,
+        "uv": {
+          "count": 4999,
+          "range": [
+            -0.668226420879364,
+            1.0035072565078735,
+            -0.17904484272003174,
+            1.4714434146881104
+          ]
+        },
+        "uv1": {
+          "count": 4999
+        },
+        "normal": true,
+        "color": true,
+        "cloth": false,
+        "wind": false,
+        "curtainShells": null
+      },
+      "depthProgram": null,
+      "distanceProgram": null
+    },
+    "G21/G21_bed_01_surface_1": {
+      "id": "G21",
+      "name": "camp-mesh-G21-G21_bed_01_surface_1",
+      "instances": 8,
+      "materials": [
+        {
+          "name": "B6 rock | recessed friable seams",
+          "map": {
+            "uuid": "d6b0029b-5472-48e8-939a-baf1101d2adc",
+            "sourceUUID": "f8518828-07cc-4fd2-b079-a3a7afa3c400",
+            "name": "B6 | CC0 derived mineral fracture 512",
+            "colorSpace": "srgb",
+            "channel": 0,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "normalMap": {
+            "uuid": "df09d8da-6569-4435-b704-f44a9be11fe0",
+            "sourceUUID": "2b4f0fb9-5b61-4496-a02f-cc6780525272",
+            "name": "stone-normal",
+            "colorSpace": "",
+            "channel": 0,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "roughnessMap": {
+            "uuid": "ce1287d1-daa8-473c-9656-29844b93b9d2",
+            "sourceUUID": "676ebf1a-c3da-49df-9373-865016bcf5ce",
+            "name": "B6 | authored ORM from CC0 roughness 512",
+            "colorSpace": "",
+            "channel": 0,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "aoMap": {
+            "uuid": "361aec0c-59ff-4304-9cf3-cfe2ee36547b",
+            "sourceUUID": "f2944899-3a37-40ad-aa16-ac965d0f3887",
+            "name": "B6 rock geometry AO UV1",
+            "colorSpace": "",
+            "channel": 1,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "envMap": {
+            "uuid": "983dfb88-5800-49b4-bc4c-e0d700508ce6",
+            "sourceUUID": "22c50516-c04d-4b36-b7b3-0a728e66135f",
+            "name": "PMREM.cubeUv",
+            "colorSpace": "srgb-linear",
+            "channel": 0,
+            "size": [
+              336,
+              256
+            ]
+          },
+          "envMapIntensity": 1.0994854681580468,
+          "color": "ffffff",
+          "emissive": "000000",
+          "vertexColors": true,
+          "roughness": 1,
+          "metalness": 0,
+          "opacity": 1,
+          "emissiveIntensity": 1,
+          "program": "onBeforeCompile(){}",
+          "side": 0,
+          "flatShading": false
+        }
+      ],
+      "diagnostic": "none",
+      "receiveShadow": true,
+      "reviewWindGain": null,
+      "geometry": {
+        "vertices": 2092,
+        "uv": {
+          "count": 2092,
+          "range": [
+            -0.5361671447753906,
+            0.8561705350875854,
+            -0.15513265132904053,
+            1.208518147468567
+          ]
+        },
+        "uv1": {
+          "count": 2092
+        },
+        "normal": true,
+        "color": true,
+        "cloth": false,
+        "wind": false,
+        "curtainShells": null
+      },
+      "depthProgram": null,
+      "distanceProgram": null
+    },
+    "G21/G21_bed_01_surface_2": {
+      "id": "G21",
+      "name": "camp-mesh-G21-G21_bed_01_surface_2",
+      "instances": 8,
+      "materials": [
+        {
+          "name": "B6 rock | cleaved shoulders",
+          "map": {
+            "uuid": "d6b0029b-5472-48e8-939a-baf1101d2adc",
+            "sourceUUID": "f8518828-07cc-4fd2-b079-a3a7afa3c400",
+            "name": "B6 | CC0 derived mineral fracture 512",
+            "colorSpace": "srgb",
+            "channel": 0,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "normalMap": {
+            "uuid": "df09d8da-6569-4435-b704-f44a9be11fe0",
+            "sourceUUID": "2b4f0fb9-5b61-4496-a02f-cc6780525272",
+            "name": "stone-normal",
+            "colorSpace": "",
+            "channel": 0,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "roughnessMap": {
+            "uuid": "ce1287d1-daa8-473c-9656-29844b93b9d2",
+            "sourceUUID": "676ebf1a-c3da-49df-9373-865016bcf5ce",
+            "name": "B6 | authored ORM from CC0 roughness 512",
+            "colorSpace": "",
+            "channel": 0,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "aoMap": {
+            "uuid": "ea897497-dff3-49ae-8fa2-823e602eed9f",
+            "sourceUUID": "f2944899-3a37-40ad-aa16-ac965d0f3887",
+            "name": "B6 rock geometry AO UV1",
+            "colorSpace": "",
+            "channel": 1,
+            "size": [
+              512,
+              512
+            ]
+          },
+          "envMap": {
+            "uuid": "983dfb88-5800-49b4-bc4c-e0d700508ce6",
+            "sourceUUID": "22c50516-c04d-4b36-b7b3-0a728e66135f",
+            "name": "PMREM.cubeUv",
+            "colorSpace": "srgb-linear",
+            "channel": 0,
+            "size": [
+              336,
+              256
+            ]
+          },
+          "envMapIntensity": 1.0994854681580468,
+          "color": "ffffff",
+          "emissive": "000000",
+          "vertexColors": true,
+          "roughness": 0.8399999737739563,
+          "metalness": 0,
+          "opacity": 1,
+          "emissiveIntensity": 1,
+          "program": "onBeforeCompile(){}",
+          "side": 0,
+          "flatShading": false
+        }
+      ],
+      "diagnostic": "none",
+      "receiveShadow": true,
+      "reviewWindGain": null,
+      "geometry": {
+        "vertices": 6718,
+        "uv": {
+          "count": 6718,
+          "range": [
+            -0.5689915418624878,
+            0.8873917460441589,
+            -0.18272733688354492,
+            1.5374999046325684
+          ]
+        },
+        "uv1": {
+          "count": 6718
+        },
+        "normal": true,
+        "color": true,
+        "cloth": false,
+        "wind": false,
+        "curtainShells": null
+      },
+      "depthProgram": null,
+      "distanceProgram": null
+    }
+  },
+  "fallbacks": []
+}

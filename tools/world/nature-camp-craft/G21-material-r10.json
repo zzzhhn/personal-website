@@ -1,0 +1,41 @@
+{
+  "revision": "r10-effective-albedo-calibration",
+  "scope": "G21 only; R9 geometry, normals, UV0, UV1, transforms and collider frozen",
+  "artDirection": "Weathered warm-gray layered stone, cool-gray fresh matrix, a pale warm mineral bed, darker friable recesses and localized earth at the foot. This is material art direction, not verified petrography of the CC0 photograph.",
+  "sourceTexture": "../personal-world-bruno/static/bay/assets/coast-natural/pbr/stone-color.jpg",
+  "texture": {
+    "linearMeanRGB": [0.35, 0.32, 0.28],
+    "luminancePower": 0.72,
+    "ratioClamp": [0.45, 1.9],
+    "localChromaPower": 0.4,
+    "size": 512
+  },
+  "pigment": {
+    "centerXY": [0, 0],
+    "bottom": 0,
+    "height": 1.5,
+    "fault": [-0.08, 0.08, 0.43, 0.105],
+    "bedDip": [-0.24, 0.14],
+    "bedEdges": [0.40, 0.51, 0.70, 0.81],
+    "thickness": 0.055,
+    "host": [0.50, 0.53, 0.56],
+    "mineral": [0.90, 0.84, 0.73],
+    "cleavedHost": [0.62, 0.65, 0.66],
+    "cleavedMineral": [0.98, 0.91, 0.78],
+    "friableHost": [0.30, 0.28, 0.25],
+    "friableMineral": [0.50, 0.46, 0.40],
+    "foot": [0.24, 0.21, 0.16],
+    "footDepth": [0.07, 0.23],
+    "footMix": 0.55
+  },
+  "localEnvironmentGain": 1.1,
+  "conditionalDiagnosticEnvironmentGain": 0.55,
+  "evidence": {
+    "R9SurfaceMeanLinearAlbedo": 0.30743352857139183,
+    "G23ReferenceSurfaceMeanLinearAlbedo": 0.235136452046532,
+    "R9FriableMeanLinearAlbedo": 0.29891304669247654,
+    "R9HostMeanLinearAlbedo": 0.2756308820829859,
+    "reason": "The neutralized photograph was lifted and desaturated before an unusually pale COLOR_0 multiplication; friable material even averaged brighter than matrix. Reconstruct the map in explicit linear color and restore object-space mineral/host/recess/foot separation. The first ordinary image retains G21 local IBL 1.1 to isolate the albedo revision. A reversible 0.55 comparison is permitted only if that image still shows excessive reflection; all global lights/exposure and the night gate stay unchanged.",
+    "boundary": "Albedo audit is source evidence; ordinary engine appearance and final coordinator acceptance remain pending. Reference values are scale checks, not numerical matching targets."
+  }
+}

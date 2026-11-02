@@ -1,0 +1,85 @@
+{
+  "scope": "G21 only, existing eight placements; source/count budgets, not a measured FPS/GPU-allocation benchmark",
+  "before": {
+    "asset": "public/assets/world/nature-craft/G21.glb",
+    "networkBytes": 301604,
+    "trianglesPerAsset": 620,
+    "primitives": 4,
+    "attributeVertices": 1700,
+    "images": 3
+  },
+  "after": {
+    "asset": "public/assets/world/nature-camp-craft/G21.glb",
+    "GLBBytes": 704928,
+    "externalImages": [
+      {
+        "uri": "textures/bcf66369ea932720bda81136.jpg",
+        "bytes": 58062,
+        "sha256": "bcf66369ea932720bda811365cd7ec25c05b8d6f11c89c376b70a20f3e59db3f",
+        "resolution": [
+          512,
+          512
+        ]
+      },
+      {
+        "uri": "textures/6f361f0d505ca603a6f05e5a.png",
+        "bytes": 542797,
+        "sha256": "6f361f0d505ca603a6f05e5a40ebd336b7be77b8a74ca5c668742e213624dbec",
+        "resolution": [
+          512,
+          512
+        ]
+      },
+      {
+        "uri": "textures/345303abbf4a10e5bd821ac7.png",
+        "bytes": 171174,
+        "sha256": "345303abbf4a10e5bd821ac7148f22eda1f5d830c08ee3dfdc863471cd4a46d8",
+        "resolution": [
+          512,
+          512
+        ]
+      },
+      {
+        "uri": "textures/f2d95671ea0e6b54f63997c6.png",
+        "bytes": 95534,
+        "sha256": "f2d95671ea0e6b54f63997c697180e83f8eded07d4a0e7da38a3e4b93b0b5f94",
+        "resolution": [
+          512,
+          512
+        ]
+      }
+    ],
+    "networkBytes": 1572495,
+    "trianglesPerAsset": 5962,
+    "primitives": 3,
+    "attributeVertices": 13809,
+    "images": 4
+  },
+  "instancesFromActualRuntimeProbe": 8,
+  "submittedTriangleUpperCountBefore": 4960,
+  "submittedTriangleUpperCountAfter": 47696,
+  "submittedTriangleIncrement": 42736,
+  "drawCountPerPassBefore": 4,
+  "drawCountPerPassAfter": 3,
+  "geometrySharedAcrossInstances": true,
+  "geometryAttributeAndIndexPayloadBytesAfter": 698606,
+  "estimatedRGBA8MipmappedImageMiBBefore": 4.0,
+  "estimatedRGBA8MipmappedImageMiBAfter": 5.333333333333333,
+  "estimatedImageIncrementMiB": 1.3333333333333333,
+  "GPUAllocationMeasured": false,
+  "GPUAllocationBoundary": "Actual three AO Texture UUIDs borrow one Source UUID; actual renderer allocation and frame-cost delta were not measured. Estimates assume one RGBA8+mipmap allocation per unique image.",
+  "extraReflectionTargets": 0,
+  "reflectionTargetBoundary": "Uses the existing renderer-owned PMREM already retained by C09/furniture; no new API, private generator, pass, point light or clock.",
+  "materialCopies": 3,
+  "normalRoughAOAlphaPreservedFromR9": true,
+  "collider": {
+    "path": "public/assets/world/camp/G21.glb",
+    "bytes": 17188,
+    "sha256": "dbfcdc52a9cf5b07f10a9f7ab7a3990392bb05ce407fdc6c3f08438234477230",
+    "trianglesPerAsset": 620,
+    "changed": false,
+    "visualRecessionMaximumMetres": 0.1575,
+    "boundary": "Frozen original collider remains conservative around the accepted recessed visual shape; no new collider complexity or placement/layout changes."
+  },
+  "remaining": "One final necessary night view and integration consumer check in the coordinator window; no heavy benchmark claimed"
+}

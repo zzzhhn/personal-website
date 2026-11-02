@@ -51,7 +51,8 @@ const NATURE_CRAFT = typeof window === 'undefined' || new URLSearchParams(window
 // returns batch4. This sample never silently overrides a requested old nature pack.
 const FACILITY_TREE_CRAFT = typeof window === 'undefined' || (new URLSearchParams(window.location.search).get('facilityCraft') !== 'legacy' && new URLSearchParams(window.location.search).get('natureCraft') !== 'legacy');
 const CRAFT_IDS = new Set(['G16', 'G17', 'G18', 'G21', 'G22', 'G23', 'C09']);
-const useCampGltf = (id: string) => useLoader(GLTFLoader, `/assets/world/${FACILITY_TREE_CRAFT && id === 'G17' ? 'facility-craft/nature' : NATURE_CRAFT && CRAFT_IDS.has(id) ? 'nature-craft' : 'camp'}/${id}.glb`, withDraco) as GLTF;
+const G21_CRAFT = NATURE_CRAFT && (typeof window === 'undefined' || new URLSearchParams(window.location.search).get('natureCampCraft') !== 'legacy');
+const useCampGltf = (id: string) => useLoader(GLTFLoader, `/assets/world/${G21_CRAFT && id === 'G21' ? 'nature-camp-craft' : FACILITY_TREE_CRAFT && id === 'G17' ? 'facility-craft/nature' : NATURE_CRAFT && CRAFT_IDS.has(id) ? 'nature-craft' : 'camp'}/${id}.glb`, withDraco) as GLTF;
 
 const BOX = new BoxGeometry(1, 1, 1);
 const BUNDLE = new RoundedBoxGeometry(1, 1, 1, 2, 0.16);
@@ -167,6 +168,33 @@ function InstancedPart({ part, matrices, id }: { part: Part; matrices: Matrix4[]
     mesh.computeBoundingSphere();
     return detach;
   }, [part, matrices]);
+  useEffect(() => {
+    if (id !== 'G21' || new URLSearchParams(window.location.search).get('qa') !== '1') return;
+    const host = window as typeof window & { __worldG21Craft?: Record<string, () => unknown> };
+    const registry = host.__worldG21Craft ??= {};
+    const read = () => {
+      const mesh = ref.current;
+      if (!mesh) return null;
+      const texture = (map: MeshStandardMaterial['map']) => map ? {
+        uuid: map.uuid, sourceUUID: map.source.uuid, name: map.name, channel: map.channel, colorSpace: map.colorSpace,
+        size: [map.image?.width ?? null, map.image?.height ?? null],
+      } : null;
+      const geometry = mesh.geometry, color = geometry.getAttribute('color');
+      return { id: 'G21', candidate: G21_CRAFT, instances: mesh.count, night: worldNight.value,
+        trianglesPerInstance: (geometry.index?.count ?? geometry.getAttribute('position').count) / 3,
+        geometry: { vertices: geometry.getAttribute('position').count, normal: !!geometry.getAttribute('normal'),
+          uv0: !!geometry.getAttribute('uv'), uv1: !!geometry.getAttribute('uv1'), colorNormalized: color?.normalized, colorItemSize: color?.itemSize },
+        materials: [mesh.material].flat().map(m => {
+          const material = m as MeshStandardMaterial;
+          return { name: material.name, map: texture(material.map), normalMap: texture(material.normalMap),
+            roughnessMap: texture(material.roughnessMap), aoMap: texture(material.aoMap), envMap: texture(material.envMap),
+            envMapIntensity: material.envMapIntensity, vertexColors: material.vertexColors, roughness: material.roughness,
+            metalness: material.metalness, transparent: material.transparent, opacity: material.opacity, emissiveIntensity: material.emissiveIntensity };
+        }) };
+    };
+    registry[part.name] = read;
+    return () => { if (registry[part.name] === read) delete registry[part.name]; if (!Object.keys(registry).length && host.__worldG21Craft === registry) delete host.__worldG21Craft; };
+  }, [id, part]);
   const soft = id === 'G19' || id === 'G20';
   return <instancedMesh name={`camp-mesh-${id}-${part.name}`} userData={soft ? { assetId: id, softBush: true, semantic: part.name } : { assetId: id, solid: true, semantic: part.name }} ref={ref} args={[part.geometry, part.material, matrices.length]} customDepthMaterial={part.depth} castShadow receiveShadow />;
 }
@@ -284,6 +312,27 @@ function useCampScene(id: string, materialMap?: MaterialMap) {
 function SingleAsset({ id, label, placement, materialMap }: { id: string; label: string; placement: Placement; materialMap?: MaterialMap }) {
   const placements = useMemo(() => [placement], [placement]);
   return <InstancedAsset id={id} label={label} placements={placements} materialMap={materialMap} />;
+}
+/** G21 owns three material copies and borrows existing maps/renderer PMREM.
+ * InstancedAsset keeps original camp geometry for placement and collision. */
+function G21Craft({ placements }: { placements: Placement[] }) {
+  const environment = useDjcFurnitureEnvironment();
+  const mapped = useMemo(() => {
+    const copies: MeshStandardMaterial[] = [];
+    return { copies, map: (source: Material) => {
+      if (!(source instanceof MeshStandardMaterial)) return source;
+      const copy = source.clone(); copy.envMap = environment;
+      copy.envMapIntensity = 1.1 * (1 - .8 * worldNight.value);
+      copies.push(copy); return copy;
+    } };
+  }, [environment]);
+  const lastNight = useRef(-1);
+  useFrame(() => {
+    if (Math.abs(lastNight.current - worldNight.value) < .001) return;
+    lastNight.current = worldNight.value;
+    for (const material of mapped.copies) material.envMapIntensity = 1.1 * (1 - .8 * worldNight.value);
+  });
+  return <InstancedAsset id="G21" placements={placements} materialMap={mapped.map} />;
 }
 function CabinetCraft({ placement }: { placement: Placement }) {
   const environment = useDjcFurnitureEnvironment();
@@ -680,7 +729,7 @@ export default memo(function WorldCamp({ layout }: { layout: CampLayout }) {
       <InstancedAsset id={id} placements={placements} />
     </AssetGuard>)}
     {nature.map(({ id, placements }) => <AssetGuard key={id} id={id} fallback={null}>
-      <InstancedAsset id={id} placements={placements} />
+      {id === 'G21' && G21_CRAFT ? <G21Craft placements={placements} /> : <InstancedAsset id={id} placements={placements} />}
     </AssetGuard>)}
   </group>;
 });

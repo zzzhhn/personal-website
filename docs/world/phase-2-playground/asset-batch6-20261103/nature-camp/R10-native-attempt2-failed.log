@@ -1,0 +1,16 @@
+00:01.275  blend            | Read blend: "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch6-nature-camp/tools/world/nature-camp-craft/blend/G21.blend"
+00:01.613  blend            | Read blend: "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch6-nature-camp/tools/world/nature-camp-craft/blend/G21.blend"
+信息: 已另存为 "G21.blend"
+06:01:38 | INFO: Data are loaded, start creating Blender stuff
+06:01:38 | INFO: Blender create Mesh node G21 bed 01 surface
+06:01:38 | INFO: glTF import finished in 0.05s
+Traceback (most recent call last):
+  File "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch6-nature-camp/tools/world/nature-camp-craft/sync_rock_material.py", line 170, in <module>
+    assert fresh_corners == 5962 * 3 and fresh_storage_error < 1e-6, (fresh_corners, fresh_storage_error)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: (17886, 0.00392159083310295)
+
+Error: script failed, file: 'tools/world/nature-camp-craft/sync_rock_material.py', exiting.
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
+
+Blender quit

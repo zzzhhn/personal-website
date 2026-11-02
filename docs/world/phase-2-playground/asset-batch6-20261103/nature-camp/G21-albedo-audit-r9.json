@@ -1,0 +1,191 @@
+{
+  "scope": "Encoded diffuse maps and decoded linear reflectance, not lit pixels",
+  "licensed": {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-bruno/static/bay/assets/coast-natural/pbr/stone-color.jpg",
+    "size": [
+      1024,
+      1024
+    ],
+    "linearLuminance": {
+      "p10": 0.10170877208671125,
+      "median": 0.15210968665109748,
+      "p90": 0.22744484029176057,
+      "mean": 0.15948429573417636
+    },
+    "encodedRGBmedian": [
+      131,
+      104,
+      79
+    ],
+    "encodedChromaMedian": 0.19999999999999996
+  },
+  "R9": {
+    "file": "public/assets/world/nature-camp-craft/textures/1ddaf50710e1695e06d228bf.png",
+    "size": [
+      512,
+      512
+    ],
+    "linearLuminance": {
+      "p10": 0.37994380003935285,
+      "median": 0.4445183501113973,
+      "p90": 0.5289572790861284,
+      "mean": 0.4503167797347791
+    },
+    "encodedRGBmedian": [
+      182,
+      177,
+      172
+    ],
+    "encodedChromaMedian": 0.039215686274509776
+  },
+  "G21_R9": {
+    "materials": [
+      {
+        "name": "B6 rock | mineral beds",
+        "pbr": {
+          "baseColorTexture": {
+            "index": 1
+          },
+          "metallicFactor": 0,
+          "metallicRoughnessTexture": {
+            "index": 2
+          },
+          "roughnessFactor": 0.9399999976158142
+        },
+        "normalScale": 0.4000000059604645
+      },
+      {
+        "name": "B6 rock | recessed friable seams",
+        "pbr": {
+          "baseColorTexture": {
+            "index": 1
+          },
+          "metallicFactor": 0,
+          "metallicRoughnessTexture": {
+            "index": 2
+          }
+        },
+        "normalScale": 0.46000000834465027
+      },
+      {
+        "name": "B6 rock | cleaved shoulders",
+        "pbr": {
+          "baseColorTexture": {
+            "index": 1
+          },
+          "metallicFactor": 0,
+          "metallicRoughnessTexture": {
+            "index": 2
+          },
+          "roughnessFactor": 0.8399999737739563
+        },
+        "normalScale": 0.3199999928474426
+      }
+    ],
+    "colorAccessors": [
+      {
+        "bufferView": 4,
+        "componentType": 5123,
+        "count": 4999,
+        "normalized": true,
+        "type": "VEC4"
+      },
+      {
+        "bufferView": 10,
+        "componentType": 5123,
+        "count": 2092,
+        "normalized": true,
+        "type": "VEC4"
+      },
+      {
+        "bufferView": 16,
+        "componentType": 5123,
+        "count": 6718,
+        "normalized": true,
+        "type": "VEC4"
+      }
+    ]
+  },
+  "G23_reference": {
+    "materials": [
+      {
+        "name": "stone_base",
+        "pbr": {
+          "baseColorTexture": {
+            "index": 1
+          },
+          "metallicFactor": 0,
+          "metallicRoughnessTexture": {
+            "index": 2
+          }
+        },
+        "normalScale": 0.3199999928474426
+      },
+      {
+        "name": "stone_top",
+        "pbr": {
+          "baseColorTexture": {
+            "index": 4
+          },
+          "metallicFactor": 0,
+          "metallicRoughnessTexture": {
+            "index": 5
+          }
+        },
+        "normalScale": 0.3199999928474426
+      },
+      {
+        "name": "stone_weathered",
+        "pbr": {
+          "baseColorTexture": {
+            "index": 7
+          },
+          "metallicFactor": 0,
+          "metallicRoughnessTexture": {
+            "index": 8
+          }
+        },
+        "normalScale": 0.3199999928474426
+      },
+      {
+        "name": "stone_moss",
+        "pbr": {
+          "baseColorTexture": {
+            "index": 10
+          },
+          "metallicFactor": 0,
+          "metallicRoughnessTexture": {
+            "index": 11
+          }
+        },
+        "normalScale": 0.3199999928474426
+      }
+    ],
+    "colorAccessors": [
+      {
+        "componentType": 5123,
+        "count": 387,
+        "normalized": true,
+        "type": "VEC4"
+      },
+      {
+        "componentType": 5123,
+        "count": 343,
+        "normalized": true,
+        "type": "VEC4"
+      },
+      {
+        "componentType": 5123,
+        "count": 150,
+        "normalized": true,
+        "type": "VEC4"
+      },
+      {
+        "componentType": 5123,
+        "count": 106,
+        "normalized": true,
+        "type": "VEC4"
+      }
+    ]
+  }
+}

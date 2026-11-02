@@ -1,0 +1,16 @@
+{
+  "preparedAgainstMainCommit": "3ba6ac05c4378faa9cd336d57bc1e7cb28e3f042",
+  "sourceAssetArchiveCommit": "503f17e",
+  "minimalAdapterSHA256": "d3e6548c5b0380a586325aaf83a765868e561a4b5b88d381268055ef0f013435",
+  "syntaxTranspilePassed": true,
+  "semanticTypecheck": false,
+  "patchAppliesToCurrentMainCheckout": true,
+  "unpassedC03AssetMaterialWindOrCandidatePathIncluded": false,
+  "globalEnvironmentCacheLightingExposureChanges": false,
+  "actualIntegratedBuildAndConsumerValidated": false,
+  "acceptedProductionIBL": 1.1,
+  "temporaryDiagnostic055IncludedInProduction": false,
+  "nightViewPendingInCoordinatorWindow": true,
+  "integrationParentCommit": "c4f7fca427cd68294fa5abed344e999713fcf01a",
+  "unchangedWorldCampBaseConfirmedAgainstLatestMain": true
+}

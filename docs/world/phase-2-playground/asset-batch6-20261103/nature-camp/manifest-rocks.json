@@ -1,0 +1,752 @@
+{
+  "schema": "batch6-rocks-v2",
+  "baselineRevision": "7702c3d",
+  "generator": {
+    "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch6-nature-camp/tools/world/nature-camp-craft/build_rocks.py",
+    "bytes": 54245,
+    "sha256": "9e00bfc65bb02e068627ac95ce9250e3d82dbd3425f577e5df62cb920db34462"
+  },
+  "blenderVersion": "5.1.2",
+  "coordinates": "metres; native Z-up/+X front; glTF exporter export_yup exactly once",
+  "command": [
+    "/Applications/Blender.app/Contents/MacOS/Blender",
+    "-b",
+    "-t",
+    "2",
+    "--python-exit-code",
+    "1",
+    "-P",
+    "tools/world/nature-camp-craft/build_rocks.py",
+    "--",
+    "--ids",
+    "G21"
+  ],
+  "sharedImages": "Identical family image content; runtime adapter must share actual GPU texture identity.",
+  "assets": {
+    "G21": {
+      "revision": "r9-visible-joint-and-shoulders",
+      "diagnostic": {
+        "previousResult": "R7 insufficient; R8D six clay/local-environment observations established almost unchanged visible mass and insufficient mesoscale form",
+        "previousEvidence": [
+          "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch6-nature-camp/docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/runtime/b6-r8d-baseline-rock-walk-clay.png",
+          "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch6-nature-camp/docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/runtime/b6-r8d-candidate-rock-walk-clay.png"
+        ],
+        "humanCritique": "\u5148\u6539\u4e2d\u5c3a\u5ea6\u6574\u4f53\u5f62\u4f53\uff1a\u5c42\u7406\u7a7f\u8fc7\u5ca9\u4f53\u5e76\u88ab\u5c40\u90e8\u65ad\u88c2/\u7f3a\u53e3\u6253\u65ad\uff0c\u539a\u8584\u3001\u6df1\u6d45\u548c\u9732\u51fa\u957f\u5ea6\u6709\u4f9d\u636e\u7684\u5dee\u5f02\uff0c\u4e0d\u8ba9\u6bcf\u4e00\u5c42\u6cbf\u5168\u5468\u7b49\u8ddd\u9000\u53f0\uff0c\u4e0d\u9760\u968f\u673a\u52a0\u566a\u58f0\u63a9\u76d6\u3002\u4fdd\u7559\u627f\u5149\u5927\u9762\u3001\u73b0\u6709\u78b0\u649e/\u5360\u5730\u8fb9\u754c\u4e0e\u5207\u9762\u4e16\u754c\u98ce\u683c\u3002\u4e00\u4e2a\u81ea\u7136\u7684\u6574\u4f53\u5ca9\u5757\u6bd4\u89c4\u5219\u6761\u5e26\u66f4\u91cd\u8981\uff0c\u5148\u4fee\u6700\u5927\u4e24\u5757\u8f6e\u5ed3\uff0c\u518d\u8c08\u7ec6\u7eb9\u3002",
+        "cause": "Protecting every vertex of the two major planes and the upper 23 percent left visible geometry almost unchanged; micro PBR and 3.71 percent side erosion could not supply a macro upgrade",
+        "revision": "Keep pigment/environment and contact/extrema; allow the major faces to form a finite oblique body joint and two unequal shoulder chips, with fresh geometry AO",
+        "previousImagesInspectedByScriptAuthor": true,
+        "newVisualAcceptance": "pending primary actual-engine comparison of largest background pair"
+      },
+      "inputs": {
+        "editable": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch6-nature-camp/tools/world/nature-craft/blend/G21.blend",
+          "bytes": 894155,
+          "sha256": "ddb862cc1a477b194fe2ba2ab00dd066ac1f243cf1b5d340c03e015bc143133f"
+        },
+        "runtime": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch6-nature-camp/public/assets/world/nature-craft/G21.glb",
+          "bytes": 301604,
+          "sha256": "ed36a3539b0c70995f9711f675e54744b4a1c0a143a1b3b4bad02f4ed90f1dbf"
+        },
+        "fixedCollider": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch6-nature-camp/public/assets/world/camp/G21.glb",
+          "bytes": 17188,
+          "sha256": "dbfcdc52a9cf5b07f10a9f7ab7a3990392bb05ce407fdc6c3f08438234477230"
+        }
+      },
+      "baseline": {
+        "objects": 1,
+        "verticesIncludingPartSeams": 312,
+        "triangles": 620,
+        "materials": [
+          "stone_base",
+          "stone_moss",
+          "stone_top",
+          "stone_weathered"
+        ],
+        "boundsZUp": [
+          [
+            -1.100000023841858,
+            -1.399999976158142,
+            0.0
+          ],
+          [
+            1.100000023841858,
+            1.399999976158142,
+            1.5
+          ]
+        ],
+        "weldedBoundaryEdges": 0,
+        "weldedNonmanifoldEdges": 0,
+        "degenerateFaces": 0,
+        "signedVolume": 3.955817023052998,
+        "finite": true
+      },
+      "baselineGlb": {
+        "triangles": 620,
+        "primitiveCount": 4,
+        "materials": [
+          {
+            "name": "stone_base",
+            "alphaMode": "OPAQUE",
+            "pbr": {
+              "baseColorTexture": {
+                "index": 1
+              },
+              "metallicFactor": 0,
+              "metallicRoughnessTexture": {
+                "index": 2
+              }
+            },
+            "normalTexture": {
+              "index": 0,
+              "scale": 0.3199999928474426
+            },
+            "occlusionTexture": null,
+            "extensions": {}
+          },
+          {
+            "name": "stone_top",
+            "alphaMode": "OPAQUE",
+            "pbr": {
+              "baseColorTexture": {
+                "index": 4
+              },
+              "metallicFactor": 0,
+              "metallicRoughnessTexture": {
+                "index": 5
+              }
+            },
+            "normalTexture": {
+              "index": 3,
+              "scale": 0.3199999928474426
+            },
+            "occlusionTexture": null,
+            "extensions": {}
+          },
+          {
+            "name": "stone_weathered",
+            "alphaMode": "OPAQUE",
+            "pbr": {
+              "baseColorTexture": {
+                "index": 7
+              },
+              "metallicFactor": 0,
+              "metallicRoughnessTexture": {
+                "index": 8
+              }
+            },
+            "normalTexture": {
+              "index": 6,
+              "scale": 0.3199999928474426
+            },
+            "occlusionTexture": null,
+            "extensions": {}
+          },
+          {
+            "name": "stone_moss",
+            "alphaMode": "OPAQUE",
+            "pbr": {
+              "baseColorTexture": {
+                "index": 10
+              },
+              "metallicFactor": 0,
+              "metallicRoughnessTexture": {
+                "index": 11
+              }
+            },
+            "normalTexture": {
+              "index": 9,
+              "scale": 0.3199999928474426
+            },
+            "occlusionTexture": null,
+            "extensions": {}
+          }
+        ],
+        "images": [
+          {
+            "name": "stone-normal",
+            "mimeType": "image/jpeg",
+            "uri": null,
+            "embedded": true
+          },
+          {
+            "name": "Rock mineral luminance | CC0 adapted 512",
+            "mimeType": "image/png",
+            "uri": null,
+            "embedded": true
+          },
+          {
+            "name": "Mineral roughness",
+            "mimeType": "image/png",
+            "uri": null,
+            "embedded": true
+          }
+        ],
+        "attributes": [
+          "COLOR_0",
+          "NORMAL",
+          "POSITION",
+          "TEXCOORD_0"
+        ],
+        "nodes": [
+          "rock",
+          "G21"
+        ],
+        "extensionsUsed": [
+          "KHR_draco_mesh_compression"
+        ]
+      },
+      "rootMatrixZUp": [
+        [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "inheritedPigmentLinearRGB": [
+        0.2622029483318329,
+        0.22274096310138702,
+        0.17931996285915375
+      ],
+      "construction": {
+        "levelsZUp": [
+          0.5325,
+          0.9525
+        ],
+        "dipXY": [
+          0.075,
+          -0.035
+        ],
+        "maxHorizontalInsetMetres": 0.15726653433074475,
+        "maxSurfaceRecessionMetres": 0.1575000140076083,
+        "contactBeltZMax": 0.18,
+        "upperMassUntouchedZMin": 1.44,
+        "unchangedContactAndUpperVertices": 482,
+        "boundsRootZUp": [
+          [
+            -1.100000023841858,
+            -1.399999976158142,
+            0.0
+          ],
+          [
+            1.100000023841858,
+            1.399999976158142,
+            1.5
+          ]
+        ],
+        "originalExtremaAnchors": 15,
+        "exposure": {
+          "center": [
+            0.0,
+            0.0,
+            0.75
+          ],
+          "exposureNormal": [
+            -0.40157637000083923,
+            0.915825605392456,
+            0.0
+          ],
+          "exposureTangent": [
+            -0.915825605392456,
+            -0.40157637000083923,
+            0.0
+          ],
+          "normalRadius": 1.3854181319475174,
+          "tangentRadius": 1.1865964233875275,
+          "dipXY": [
+            0.075,
+            -0.035
+          ],
+          "zMin": 0.0,
+          "height": 1.5,
+          "seams": [
+            {
+              "level": 0.355,
+              "below": 0.072,
+              "above": 0.029,
+              "depth": 0.088,
+              "span": [
+                -0.78,
+                0.18
+              ],
+              "faultSide": -1,
+              "levelZ": 0.5325,
+              "belowMetres": 0.10799999999999998,
+              "aboveMetres": 0.043500000000000004
+            },
+            {
+              "level": 0.635,
+              "below": 0.039,
+              "above": 0.018,
+              "depth": 0.043,
+              "span": [
+                -0.2,
+                0.64
+              ],
+              "faultSide": 1,
+              "levelZ": 0.9525,
+              "belowMetres": 0.058499999999999996,
+              "aboveMetres": 0.026999999999999996
+            }
+          ],
+          "bodyJoint": {
+            "normal": [
+              0.3099845051765442,
+              0.879956066608429,
+              0.35998204350471497
+            ],
+            "offset": 0.0225,
+            "halfWidth": 0.17250000000000001,
+            "depth": 0.1575
+          },
+          "shoulderChips": [
+            {
+              "normal": [
+                -0.6016870737075806,
+                0.5014058947563171,
+                0.6217433214187622
+              ],
+              "start": 0.27,
+              "full": 0.42000000000000004,
+              "depth": 0.0975
+            },
+            {
+              "normal": [
+                0.6818777322769165,
+                -0.40110453963279724,
+                0.6116844415664673
+              ],
+              "start": 0.33,
+              "full": 0.48,
+              "depth": 0.06
+            }
+          ]
+        },
+        "movedVertexCount": 1583,
+        "shellVertexCount": 2983,
+        "erodedSurfaceAreaFraction": 0.38101100422334716,
+        "originalMajorFractures": [
+          {
+            "normal": [
+              0.9312300086021423,
+              0.3135097026824951,
+              0.18580195307731628
+            ],
+            "planeOffset": 0.9448360353708267,
+            "area": 0.7413120141718537
+          },
+          {
+            "normal": [
+              -0.7444095015525818,
+              -0.09563194215297699,
+              0.6608396172523499
+            ],
+            "planeOffset": 1.0259743900969625,
+            "area": 0.6078966077766381
+          }
+        ],
+        "majorFaceVertexCount": 203,
+        "majorFaceLocks": false,
+        "majorFaceMaxMovement": 0.1575000140076083,
+        "orientationConstrainedRecession": {
+          "initialInvertedOrNearTangentFaces": 399,
+          "initialMinimumNormalDot": -0.9999970644712448,
+          "iterations": 8,
+          "constrainedMovingVertices": 756,
+          "shellVertices": 2983,
+          "finalMinimumNormalDot": 0.03469614498317242,
+          "noFaceDeletionOrPostExportRepair": true
+        },
+        "deformation": "Finite oblique whole-body joint and unequal shoulder chips; inherited-normal recession, fixed contact/extrema, no radial rings",
+        "cavityAO": {
+          "size": [
+            512,
+            512
+          ],
+          "distanceMetres": 0.24,
+          "cyclesSamples": 64,
+          "nodeSamples": 16,
+          "onlyLocal": true,
+          "UVChannel": 1,
+          "atlasCoverage": 0.5876893294245458,
+          "triangleCenterAO": {
+            "min": 0.0,
+            "mean": 0.9085239528921107,
+            "p10": 0.7062745273113251
+          },
+          "exposedCap": {
+            "samples": 359,
+            "mean": 0.974886695820641
+          },
+          "content": "Geometry-only ambient occlusion; no directional lights or painted shadows; original UV0/PBR retained"
+        },
+        "retainedVolumeFraction": 0.940673920871461
+      },
+      "native": {
+        "objects": 3,
+        "verticesIncludingPartSeams": 3216,
+        "triangles": 5962,
+        "materials": [
+          "B6 rock | cleaved shoulders",
+          "B6 rock | mineral beds",
+          "B6 rock | recessed friable seams"
+        ],
+        "boundsZUp": [
+          [
+            -1.100000023841858,
+            -1.399999976158142,
+            0.0
+          ],
+          [
+            1.100000023841858,
+            1.399999976158142,
+            1.5
+          ]
+        ],
+        "weldedBoundaryEdges": 0,
+        "weldedNonmanifoldEdges": 0,
+        "degenerateFaces": 0,
+        "signedVolume": 3.721133909325334,
+        "finite": true
+      },
+      "runtime": {
+        "objects": 1,
+        "verticesIncludingPartSeams": 2983,
+        "triangles": 5962,
+        "materials": [
+          "B6 rock | cleaved shoulders",
+          "B6 rock | mineral beds",
+          "B6 rock | recessed friable seams"
+        ],
+        "boundsZUp": [
+          [
+            -1.100000023841858,
+            -1.399999976158142,
+            0.0
+          ],
+          [
+            1.100000023841858,
+            1.399999976158142,
+            1.5
+          ]
+        ],
+        "weldedBoundaryEdges": 0,
+        "weldedNonmanifoldEdges": 0,
+        "degenerateFaces": 0,
+        "signedVolume": 3.721133909325334,
+        "finite": true
+      },
+      "freshImport": {
+        "objects": 1,
+        "verticesIncludingPartSeams": 13809,
+        "triangles": 5962,
+        "materials": [
+          "B6 rock | cleaved shoulders",
+          "B6 rock | mineral beds",
+          "B6 rock | recessed friable seams"
+        ],
+        "boundsZUp": [
+          [
+            -1.100000023841858,
+            -1.399999976158142,
+            0.0
+          ],
+          [
+            1.100000023841858,
+            1.399999976158142,
+            1.5
+          ]
+        ],
+        "weldedBoundaryEdges": 0,
+        "weldedNonmanifoldEdges": 0,
+        "degenerateFaces": 0,
+        "signedVolume": 3.7211339093253257,
+        "finite": true
+      },
+      "glb": {
+        "triangles": 5962,
+        "primitiveCount": 3,
+        "materials": [
+          {
+            "name": "B6 rock | mineral beds",
+            "alphaMode": "OPAQUE",
+            "pbr": {
+              "baseColorTexture": {
+                "index": 1
+              },
+              "metallicFactor": 0,
+              "metallicRoughnessTexture": {
+                "index": 2
+              },
+              "roughnessFactor": 0.9399999976158142
+            },
+            "normalTexture": {
+              "index": 0,
+              "scale": 0.4000000059604645
+            },
+            "occlusionTexture": {
+              "index": 3,
+              "texCoord": 1,
+              "strength": 1.0
+            },
+            "extensions": {}
+          },
+          {
+            "name": "B6 rock | recessed friable seams",
+            "alphaMode": "OPAQUE",
+            "pbr": {
+              "baseColorTexture": {
+                "index": 1
+              },
+              "metallicFactor": 0,
+              "metallicRoughnessTexture": {
+                "index": 2
+              }
+            },
+            "normalTexture": {
+              "index": 0,
+              "scale": 0.46000000834465027
+            },
+            "occlusionTexture": {
+              "index": 3,
+              "texCoord": 1,
+              "strength": 1.0
+            },
+            "extensions": {}
+          },
+          {
+            "name": "B6 rock | cleaved shoulders",
+            "alphaMode": "OPAQUE",
+            "pbr": {
+              "baseColorTexture": {
+                "index": 1
+              },
+              "metallicFactor": 0,
+              "metallicRoughnessTexture": {
+                "index": 2
+              },
+              "roughnessFactor": 0.8399999737739563
+            },
+            "normalTexture": {
+              "index": 0,
+              "scale": 0.3199999928474426
+            },
+            "occlusionTexture": {
+              "index": 3,
+              "texCoord": 1,
+              "strength": 1.0
+            },
+            "extensions": {}
+          }
+        ],
+        "images": [
+          {
+            "name": "stone-normal",
+            "mimeType": "image/jpeg",
+            "uri": "textures/bcf66369ea932720bda81136.jpg",
+            "embedded": false
+          },
+          {
+            "name": "B6 | CC0 derived mineral fracture 512",
+            "mimeType": "image/png",
+            "uri": "textures/1ddaf50710e1695e06d228bf.png",
+            "embedded": false
+          },
+          {
+            "name": "B6 | authored ORM from CC0 roughness 512",
+            "mimeType": "image/png",
+            "uri": "textures/345303abbf4a10e5bd821ac7.png",
+            "embedded": false
+          },
+          {
+            "name": "B6 rock geometry AO UV1",
+            "mimeType": "image/png",
+            "uri": "textures/f2d95671ea0e6b54f63997c6.png",
+            "embedded": false
+          }
+        ],
+        "attributes": [
+          "COLOR_0",
+          "NORMAL",
+          "POSITION",
+          "TEXCOORD_0",
+          "TEXCOORD_1"
+        ],
+        "nodes": [
+          "rock",
+          "G21"
+        ],
+        "extensionsUsed": []
+      },
+      "images": [
+        {
+          "name": "B6 rock geometry AO UV1",
+          "size": [
+            512,
+            512
+          ],
+          "colorSpace": "Non-Color"
+        },
+        {
+          "name": "B6 | authored ORM from CC0 roughness 512",
+          "size": [
+            512,
+            512
+          ],
+          "colorSpace": "Non-Color"
+        },
+        {
+          "name": "B6 | CC0 derived mineral fracture 512",
+          "size": [
+            512,
+            512
+          ],
+          "colorSpace": "sRGB"
+        },
+        {
+          "name": "stone-normal",
+          "size": [
+            512,
+            512
+          ],
+          "colorSpace": "Non-Color"
+        }
+      ],
+      "artifacts": {
+        "native": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch6-nature-camp/tools/world/nature-camp-craft/blend/G21.blend",
+          "bytes": 1904983,
+          "sha256": "c94b886f620d79ee282c2bd3ebd0d9e12dd7771fb2c89fe00d88e36b2a049c1e"
+        },
+        "glb": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch6-nature-camp/public/assets/world/nature-camp-craft/G21.glb",
+          "bytes": 704868,
+          "sha256": "783f494a7151e6029085f4e79da1e76a1d4df8aa476eb2263ecc6da373c4703b"
+        }
+      },
+      "sources": {
+        "sourceManifest": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-bruno/static/bay/assets/coast-natural/pbr/SOURCES.json",
+          "bytes": 6562,
+          "sha256": "b3cb3c9d79feb78e4820ff8a0bca09134d39c464b33298cdb6bd8e954797c713"
+        },
+        "maps": [
+          {
+            "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-bruno/static/bay/assets/coast-natural/pbr/stone-color.jpg",
+            "bytes": 927082,
+            "sha256": "ea48e0e47ad42c8bd312476178b1248ec66f0eb19156a26a1c222f2a40caaf2d",
+            "download": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rock_face_03/rock_face_03_diff_1k.jpg",
+            "asset": "https://polyhaven.com/a/rock_face_03",
+            "authors": {
+              "Dario Barresi": "Photography",
+              "Rico Cilliers": "Processing"
+            },
+            "license": "CC0-1.0",
+            "licenseUrl": "https://polyhaven.com/license"
+          },
+          {
+            "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-bruno/static/bay/assets/coast-natural/pbr/stone-normal.jpg",
+            "bytes": 1146788,
+            "sha256": "c6423169583f31715cf0636954bad524e806848a5f2861fcea6794275f726ff0",
+            "download": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rock_face_03/rock_face_03_nor_gl_1k.jpg",
+            "asset": "https://polyhaven.com/a/rock_face_03",
+            "authors": {
+              "Dario Barresi": "Photography",
+              "Rico Cilliers": "Processing"
+            },
+            "license": "CC0-1.0",
+            "licenseUrl": "https://polyhaven.com/license"
+          },
+          {
+            "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-bruno/static/bay/assets/coast-natural/pbr/stone-arm.jpg",
+            "bytes": 793241,
+            "sha256": "a1f8e60eaf4f119071840e36e165d3a9185be62bd3ac7068ab6d886aa639d29f",
+            "download": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rock_face_03/rock_face_03_arm_1k.jpg",
+            "asset": "https://polyhaven.com/a/rock_face_03",
+            "authors": {
+              "Dario Barresi": "Photography",
+              "Rico Cilliers": "Processing"
+            },
+            "license": "CC0-1.0",
+            "licenseUrl": "https://polyhaven.com/license"
+          }
+        ]
+      },
+      "sharedImages": [
+        {
+          "name": "stone-normal",
+          "uri": "textures/bcf66369ea932720bda81136.jpg",
+          "sha256": "bcf66369ea932720bda811365cd7ec25c05b8d6f11c89c376b70a20f3e59db3f",
+          "bytes": 58062
+        },
+        {
+          "name": "B6 | CC0 derived mineral fracture 512",
+          "uri": "textures/1ddaf50710e1695e06d228bf.png",
+          "sha256": "1ddaf50710e1695e06d228bf891ad1f9d8812e8d697c0d70facd9364bfe5ea3a",
+          "bytes": 429674
+        },
+        {
+          "name": "B6 | authored ORM from CC0 roughness 512",
+          "uri": "textures/345303abbf4a10e5bd821ac7.png",
+          "sha256": "345303abbf4a10e5bd821ac7148f22eda1f5d830c08ee3dfdc863471cd4a46d8",
+          "bytes": 171174
+        },
+        {
+          "name": "B6 rock geometry AO UV1",
+          "uri": "textures/f2d95671ea0e6b54f63997c6.png",
+          "sha256": "f2d95671ea0e6b54f63997c697180e83f8eded07d4a0e7da38a3e4b93b0b5f94",
+          "bytes": 95534
+        }
+      ],
+      "reviewRenders": [],
+      "evidence": {
+        "geometryValidated": true,
+        "freshImportValidated": true,
+        "rendersGenerated": false,
+        "rendersInspected": false,
+        "runtimeValidated": false,
+        "humanVisualAccepted": false
+      },
+      "limitations": [
+        "Fixed collider may exceed recessed visual seams by the recorded inset.",
+        "Named native beds are open surface patches; welded aggregate is the solid.",
+        "Ordinary engine daylight/night comparison and tilted/buried placement review remain required."
+      ]
+    }
+  },
+  "revision": "r9-visible-joint-and-shoulders",
+  "previousReceipt": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch6-nature-camp/docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/manifest-rocks-before-r9-visible-joint-and-shoulders.json",
+  "sharedImageExporter": {
+    "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch6-nature-camp/tools/world/nature-camp-craft/shared_images.py",
+    "bytes": 3297,
+    "sha256": "431839cc730b29ccfa65f7c3476553d66b895e650fa534c783139ddda35b62df"
+  },
+  "revisionDiagnostic": {
+    "humanCritique": "\u5148\u6539\u4e2d\u5c3a\u5ea6\u6574\u4f53\u5f62\u4f53\uff1a\u5c42\u7406\u7a7f\u8fc7\u5ca9\u4f53\u5e76\u88ab\u5c40\u90e8\u65ad\u88c2/\u7f3a\u53e3\u6253\u65ad\uff0c\u539a\u8584\u3001\u6df1\u6d45\u548c\u9732\u51fa\u957f\u5ea6\u6709\u4f9d\u636e\u7684\u5dee\u5f02\uff0c\u4e0d\u8ba9\u6bcf\u4e00\u5c42\u6cbf\u5168\u5468\u7b49\u8ddd\u9000\u53f0\uff0c\u4e0d\u9760\u968f\u673a\u52a0\u566a\u58f0\u63a9\u76d6\u3002\u4fdd\u7559\u627f\u5149\u5927\u9762\u3001\u73b0\u6709\u78b0\u649e/\u5360\u5730\u8fb9\u754c\u4e0e\u5207\u9762\u4e16\u754c\u98ce\u683c\u3002\u4e00\u4e2a\u81ea\u7136\u7684\u6574\u4f53\u5ca9\u5757\u6bd4\u89c4\u5219\u6761\u5e26\u66f4\u91cd\u8981\uff0c\u5148\u4fee\u6700\u5927\u4e24\u5757\u8f6e\u5ed3\uff0c\u518d\u8c08\u7ec6\u7eb9\u3002",
+    "previousVisualResult": "R7 unaccepted (76e701c); R8D six observations and restored-state evidence frozen in 3372cbb",
+    "acceptance": "Pending primary actual-engine largest-background-pair review"
+  },
+  "status": "exported-awaiting-visual-review",
+  "checkpointScope": "R9 geometry construction checkpoint, preserved for frozen shape and R10 reproduction. Current G21 material/native/GLB artifacts are in G21-material-r10.json; R10 ordinary candidate is coordinator-accepted, night/user acceptance remain separate.",
+  "currentG21MaterialReceipt": "G21-material-r10.json"
+}

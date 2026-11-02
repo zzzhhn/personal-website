@@ -1,0 +1,51 @@
+{
+  "revision": "R10 G21 only material calibration",
+  "sourceCommit": "db48f17",
+  "materialSyncScriptSHA": "fec7750c8367cf56950765b3ba4798a2275abca72b2a17ebafe2ed49be01b0d5",
+  "observations": [
+    {
+      "phase": "full",
+      "image": "b6-r10-candidate-rock-walk-full-noon.png",
+      "imageSHA": "d9f8d00d1d3ad08389ba68025099df0c90b1a676ea6b21c113b7d2241999b71f",
+      "raw": "b6-r10-candidate-rock-walk-full-snapshot-1.json",
+      "rawSHA": "7ec0d3a3989066d76a772e240c9d3a79c9941fe7fcf4896cf4a7f0d6e53f49b6",
+      "actuallyInspected": true,
+      "IBL": 1.1
+    },
+    {
+      "phase": "env055",
+      "image": "b6-r10-candidate-rock-walk-env055-noon.png",
+      "imageSHA": "68a7ef1f877656674346ef82508ac4c1744c39f77a8b4d8ebfe02f999f59a47d",
+      "raw": "b6-r10-candidate-rock-walk-env055-snapshot-2.json",
+      "rawSHA": "0ac6d3e8fd73d405c469c8ad1c5da18db9a472dfc44b08d3b37202a9d57567d7",
+      "actuallyInspected": true,
+      "IBL": 0.55
+    }
+  ],
+  "geometryFreeze": "G21-geometry-check-r10.json",
+  "nativeAndFreshImport": "G21-material-r10.json",
+  "sourceAlbedoAudit": "G21-effective-albedo-r10.json",
+  "comparisonToArchivedR9": {
+    "cameraMaxDelta": 0.0,
+    "settingsMatched": true,
+    "R9ActuallyInspected": true
+  },
+  "primaryJudgment": "Albedo revision makes friable recesses and mineral/matrix differences clearer, preserving the accepted R9 shape. Conditional IBL0.55 adds little; retain production IBL1.1. Coordinator final material acceptance is pending.",
+  "productionLocalIBLChanged": false,
+  "temporaryEnv055Restored": true,
+  "restorationRaw": "b6-r10-candidate-rock-walk-full-snapshot-3.json",
+  "restoredG21MaterialFieldsExact": true,
+  "otherG21FieldsDuringEnv055Exact": true,
+  "coordinatorAccepted": true,
+  "integratedInto4341": false,
+  "C03": "R9 assets unchanged; R10 fold source preparation only, independently pending",
+  "remaining": [
+    "G21 final necessary single night image in a later integration acceptance window",
+    "Coordinator integration build and actual consumer validation",
+    "User final visual acceptance remains separate",
+    "C03 independent repair; other families unstarted"
+  ],
+  "coordinatorApprovalScope": "Ordinary-view G21 candidate only; retain IBL1.1, no further tuning or expansion",
+  "userFinalVisualAccepted": false,
+  "coordinatorSourceThread": "01a121e9-58d6-7aa2-80e2-10005566c39c"
+}

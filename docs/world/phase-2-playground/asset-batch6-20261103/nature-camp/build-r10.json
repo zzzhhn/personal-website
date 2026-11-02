@@ -1,0 +1,9 @@
+{
+  "sourceCommit": "db48f177e59406138e8392714dcc3aef984d1e1c",
+  "build": "/tmp/bobby-world-batch6-nature-r10-01a19a62",
+  "entryGraphPassed": true,
+  "assetScope": "G21 R10 material; C03 remains archived R9",
+  "globalLightingExposureChanged": false,
+  "IBLFirstImage": 1.1,
+  "runtimeReviewPending": true
+}
