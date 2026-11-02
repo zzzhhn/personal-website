@@ -12,6 +12,7 @@ import { useMemo } from 'react';
 import { Matrix4, Quaternion, Vector3 } from 'three';
 import { solidsV4, TRAIL_V4, type SolidBox } from './layout-v4';
 import * as A from './WorldStreetAssets';
+import {craftSeawallBay,craftSeawallEnd,craftTimberPost} from './WorldRailCraft';
 import StreetKnockables, { type Item } from './WorldStreetKnock';
 import StreetStatic, { StreetClaim, type StaticKind, type StaticPlacement } from './WorldStreetStatic';
 
@@ -79,11 +80,13 @@ export function railLayout() {
 export default function StreetRails() {
   const { kinds, placements, beams } = useMemo(() => {
     const { placements, beams, parapets } = railLayout();
+    const sea = placements.filter(p => p.kind === 'seawallBay');
+    const span = sea.length > 1 ? new Vector3().setFromMatrixPosition(sea[1].matrix).distanceTo(new Vector3().setFromMatrixPosition(sea[0].matrix)) : 2;
     const kinds: StaticKind[] = [
-      { id: 'seawallBay', L0: A.seawallBay(0, 2), L1: A.seawallBay(1, 2), lodNear: 24, far: 120 },
-      { id: 'seawallEnd', L0: A.railEndPost(0, 'seawall'), L1: A.railEndPost(1, 'seawall'), lodNear: 24, far: 120 },
+      { id: 'seawallBay', L0: craftSeawallBay(A.seawallBay(0, 2), span, 0), L1: craftSeawallBay(A.seawallBay(1, 2), span, 1), lodNear: 24, far: 120 },
+      { id: 'seawallEnd', L0: craftSeawallEnd(A.railEndPost(0, 'seawall'), 0), L1: craftSeawallEnd(A.railEndPost(1, 'seawall'), 1), lodNear: 24, far: 120 },
       { id: 'guardPost', L0: A.guardPost(0), L1: A.guardPost(1), lodNear: 24, far: 120 },
-      { id: 'timberPost', L0: A.timberPost(0), L1: A.timberPost(1), lodNear: 24, far: 120 },
+      { id: 'timberPost', L0: craftTimberPost(A.timberPost(0), 0), L1: craftTimberPost(A.timberPost(1), 1), lodNear: 24, far: 120 },
       { id: 'pier', L0: A.bridgePier(0, 2.95), L1: A.bridgePier(1, 2.95), lodNear: 40, far: 180 },
       ...parapets.map(p => ({ id: `parapet-${p.id}`, L0: A.parapet(0, p.len), L1: A.parapet(1, p.len), lodNear: 45, far: 200 })),
     ];

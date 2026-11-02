@@ -26,6 +26,7 @@ import { night } from './WorldNight';
 import { terrainHeight } from './WorldLandform';
 import { StreetClaim } from './WorldStreetStatic';
 import * as A from './WorldStreetAssets';
+import {craftTimberBeam} from './WorldRailCraft';
 import { StreetBatch, type BatchKind } from './WorldStreetBatch';
 import { createStreetDepthMaterial, createStreetMaterial, streetUniforms } from './WorldStreetMaterial';
 import { chevronCell, directionCellFor, stopCell, streetAtlas } from './WorldStreetSigns';
@@ -135,7 +136,7 @@ export default function StreetKnockables({ set, beams, customItems, customAtlas 
     items.forEach((it, n) => {
       const key = keys[n];
       if (!kindOf.has(key)) {
-        const b = it.kind === 'year' ? { L0: A.yearPillar(0, it.cell!), L1: A.yearPillar(1, it.cell!) } : it.kind === 'billboard' ? { L0: A.billboard(0, it.cell!), L1: A.billboard(1, it.cell!) } : it.kind === 'beam' ? { L0: A.timberBeam(0, it.len!), L1: A.timberBeam(1, it.len!) } : it.kind === 'guard' ? { L0: A.guardPanel(0, it.len!), L1: A.guardPanel(1, it.len!) } : buildersFor(it.kind, it.kind === 'direction' ? dirIndex++ : 0);
+        const b = it.kind === 'year' ? { L0: A.yearPillar(0, it.cell!), L1: A.yearPillar(1, it.cell!) } : it.kind === 'billboard' ? { L0: A.billboard(0, it.cell!), L1: A.billboard(1, it.cell!) } : it.kind === 'beam' ? { L0: craftTimberBeam(A.timberBeam(0, it.len!), it.len!, 0), L1: craftTimberBeam(A.timberBeam(1, it.len!), it.len!, 1) } : it.kind === 'guard' ? { L0: A.guardPanel(0, it.len!), L1: A.guardPanel(1, it.len!) } : buildersFor(it.kind, it.kind === 'direction' ? dirIndex++ : 0);
         kindOf.set(key, kinds.length); counts.push(0);
         kinds.push({ id: key, L0: b.L0.build(), L1: b.L1.build(), lodNear: SPEC[it.kind].lod, far: SPEC[it.kind].far });
         hulls.set(key, b.L0.hulls().map((h, i) => (i === 0 && it.kind !== 'beam' && it.kind !== 'guard' && it.kind !== 'billboard' ? verticalPrism(h) : h)));

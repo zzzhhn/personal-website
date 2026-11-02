@@ -10,6 +10,13 @@ export interface FacilityOptions { height?: number; arm?: number; pole?: Surf; b
 const collisionSource = new WeakMap<Builder, Builder>();
 /** Fixed trimeshes must read this source too; .hulls() is separately bound for dynamic consumers. */
 export const streetFacilityCollision = (visual: Builder) => collisionSource.get(visual) ?? visual;
+/** Explicitly separate visual geometry from the complete original proxy. */
+export function bindStreetFacilityCollision(visual: Builder, original: Builder) {
+  const proxy = streetFacilityCollision(original);
+  if (visual === proxy) throw new Error('A visual Builder cannot bind itself as its collision proxy');
+  collisionSource.set(visual, proxy); visual.hulls = () => proxy.hulls();
+  return visual;
+}
 
 /** Copy selected original named parts without welding or changing vertex/atlas/material semantics. */
 function retain(B: Builder, old: Builder, names: string[]) {
@@ -286,7 +293,5 @@ export function finishStreetFacility(baseline: Builder, kind: StreetFacility, lo
   else timberBeam(B, o.len ?? 4.2);
   if (kind === 'shelter') tagShelterSurfaces(B);
   if (kind === 'bench' || kind === 'bin') tagBenchBinSurfaces(B, kind);
-  collisionSource.set(B, baseline);
-  B.hulls = () => baseline.hulls();
-  return B;
+  return bindStreetFacilityCollision(B, baseline);
 }

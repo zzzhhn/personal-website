@@ -33,7 +33,8 @@ export function loadWorldModule(entry = 'WorldStreetAssets.ts', search = '', bas
     }, { filename: file, timeout: 2000 });
     return module.exports;
   };
-  return run(path.resolve(world, entry));
+  // Related adapters/proxies must share this module cache in fixture tests.
+  return Array.isArray(entry) ? entry.map(name => run(path.resolve(world, name))) : run(path.resolve(world, entry));
 }
 export function families(A) {
   return {

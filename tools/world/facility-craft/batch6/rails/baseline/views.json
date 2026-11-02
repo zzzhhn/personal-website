@@ -1,0 +1,30 @@
+[
+  {
+    "id": "seawall-normal",
+    "eye": [
+      27.6,
+      2.6,
+      -6.507407
+    ],
+    "target": [
+      31,
+      1.62,
+      -6.307407
+    ],
+    "representative": "seawall bay 16"
+  },
+  {
+    "id": "timber-normal",
+    "eye": [
+      -45.866776,
+      3.873,
+      -77.736201
+    ],
+    "target": [
+      -49.269301,
+      2.893,
+      -77.202041
+    ],
+    "representative": "rail-beam-5"
+  }
+]

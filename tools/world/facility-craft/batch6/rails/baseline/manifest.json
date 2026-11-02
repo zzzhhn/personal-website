@@ -1,0 +1,165 @@
+{
+  "status": "current-source baseline only; cameras planned, not browser-verified",
+  "baselineCommit": "97c95467bb0a4e9ac68bf33f2beaca4138aeb0fe",
+  "sources": {
+    "src/components/world/WorldStreetRails.tsx": "dada23ef5550751e81fc568dfa919c2892fd41e322c6bb598e7bd990fa19638a",
+    "src/components/world/layout-v4.ts": "a1e482136f2e05d79bbc98aca43ffa6bf190a2ed68d16120f615deedece466c1",
+    "src/components/world/WorldStreetFacilityCraft.ts": "918cb4fad121a62c8f06d7a0f1a45e6be853fbc34050a7ba99a554ebe32802a5",
+    "src/components/world/WorldStreetAssets.ts": "2b8eb883b69c7c88593b3ae7285f464e5baec4dfe0f730d65cea8c934ea6626b",
+    "src/components/world/WorldStreetStatic.tsx": "3524893ce6096c9211b34d7c56497fd55336c35f0bcfa5188e2aa950a370dc61",
+    "src/components/world/WorldStreetKnock.tsx": "ae79e58879eb6a4fe42978e82de7ec5a789beccda34b20535cae7b60162a80c1",
+    "src/components/world/WorldStreetBatch.ts": "1da205cba2f926ea08752806a960b8389efefaf3edc4094b06d3e2be32f90e3a",
+    "src/components/world/WorldFacilitySurface.ts": "e859b94b637d8a129e453a9ac297e4d828ca887218ca1a77bd411a6462c6c379",
+    "src/components/world/WorldStreetMaterial.ts": "07da94774ac0962ddfcc8178e058561ca1efe6371b65bed18003f0799309958a",
+    "src/components/world/WorldPark.tsx": "f74cadd13de76be17a560157a11e3d97d3f4dc2591a367a6ef2a9c2ff0670f34",
+    "src/components/world/WorldBinConstruction.ts": "0aefd0f1e99377ad01ab3b44dc73a5db677b593254147ef0f1a3a2884e9863f5",
+    "src/components/world/WorldBenchBinSurface.ts": "3d3ef6a6288b30c6fda6d0726fd18be5fb3e540eca83690bdb92310099e75daa"
+  },
+  "contracts": {
+    "bench": [
+      "bff1453345a10f46e31178dc200fca8fbbbb230e3e71b44396f291d25ef399d3",
+      "b71b68bba188fc330c8da0b9f576c3eeea3e0a1365262de0065bc5fd8b0b4bf0"
+    ],
+    "shelter": [
+      "4ba8727a3ec00a24df6f422225747a9ac8409497b603f4e9274918f8198457aa",
+      "82bc05986568a6075d8c6298f3978c56775b8c56e42501512c29711dd34fb040"
+    ],
+    "lamp": [
+      "66539e884cb22c9fb8194a6cb1f87e7acfbfba32c279f74f02dbd92e048f79df",
+      "7def04897722ba8d19a5360b66138c4346ca1e34277b4667f327d9fb0b9212f3"
+    ],
+    "signal": [
+      "ffae0cb9dee29762d32b402be666436ffe4e09ac9bed4a06aafc1a0d322d4c18",
+      "5eaaaca8748c34d683a6d6bd1ab895f2ee508832debd9f372ccd47dbbab7387b"
+    ],
+    "bin": [
+      "49ccb8675f2d9cafa77244a7fa945d00df4c66e4b28dea1750e63d1b48b38637",
+      "69be7844cf115628dfc67948ea2d51f7485d411c0f3bdce22b35161568732d1a"
+    ],
+    "roadblock": [
+      "c0f5c11e346efccabd52bf69428ddd143b5a2252b69e5ba8092143b2eece8f35",
+      "d1e4b47c31fc8b1320bf7806aaf0ffdbad3dbb4bacbff7aa9cd8fec24ea2b140"
+    ],
+    "seawallBay": [
+      "d610387c61b9cce4de2662c9fa7969b1d1426d362f981ce3f6fba658bc212249",
+      "cb2a46f06d60160d682704fb8429adb6de605dadf67435e6e1a394a6268e2e1f"
+    ],
+    "timberPost": [
+      "194adc5b889cc4f4af8d108ec05a523ce919f4bbc737c636b3cc1916bbfe118f",
+      "1a8a31615a23a0ab7885d7c7318d33049a96e900cea6e0a8588e57b73c716bf6"
+    ],
+    "timberBeam": [
+      "cec5a79f71140b7ffb9116b10cc9830e81a8a88c90c1c723b6423d29be8da0e6",
+      "a12c7c67699c5533c1bae0b3b711f6a2b08408e62198625fa2aeaa3bb31326d6"
+    ]
+  },
+  "actual": {
+    "seaBayCount": 27,
+    "seaNominalGeometryLength": 2,
+    "seaStep": 1.962962962962962,
+    "selectedSea": 16,
+    "timberBeamCount": 10,
+    "timberPostCount": 20,
+    "selectedTimber": {
+      "id": "rail-beam-5",
+      "kind": "beam",
+      "position": [
+        -49.26196794292906,
+        3.0164999999999997,
+        -78.7765730108525
+      ],
+      "yaw": 1.5661392725143644,
+      "pitch": 0.07783577663982143,
+      "len": 4.26,
+      "road": "hill-road"
+    },
+    "selectedTimberPosts": [
+      [
+        0.004657037446731627,
+        0,
+        -0.9999891559423131,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0.9999891559423131,
+        0,
+        0.004657037446731627,
+        0,
+        -49.27232774980996,
+        2.273,
+        -76.55204837323635,
+        1
+      ],
+      [
+        0.004657037446731627,
+        0,
+        -0.9999891559423131,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0.9999891559423131,
+        0,
+        0.004657037446731627,
+        0,
+        -49.25160813604816,
+        2.62,
+        -81.00109764846866,
+        1
+      ]
+    ],
+    "beamMatrix": [
+      0.004642937450763163,
+      0.07775720696035417,
+      -0.9969615137494289,
+      0,
+      -0.00036211822456763687,
+      0.9969723249748333,
+      0.07775636375671631,
+      0,
+      0.999989155942313,
+      0,
+      0.004657037446731849,
+      0,
+      -49.26196794292906,
+      3.0164999999999997,
+      -78.7765730108525,
+      1
+    ],
+    "placementSHA256": "bc991ea03447cd7c9a71891066ca133cae7b4804a6b452d01f2385b707077538",
+    "beamLayoutSHA256": "eeca087a729f423755aae79a511d493198de5b76e1696ecc2667757d09e77ced"
+  },
+  "views": [
+    {
+      "id": "seawall-normal",
+      "eye": [
+        27.6,
+        2.6,
+        -6.507407
+      ],
+      "target": [
+        31,
+        1.62,
+        -6.307407
+      ],
+      "representative": "seawall bay 16"
+    },
+    {
+      "id": "timber-normal",
+      "eye": [
+        -45.866776,
+        3.873,
+        -77.736201
+      ],
+      "target": [
+        -49.269301,
+        2.893,
+        -77.202041
+      ],
+      "representative": "rail-beam-5"
+    }
+  ]
+}

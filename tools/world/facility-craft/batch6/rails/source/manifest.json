@@ -1,0 +1,10 @@
+{
+  "seawall": {
+    "triangles": 1060,
+    "sourceSHA256": "890908d90097b788069f5fcddd2515f05b6b5b0c9a1a85aa9aab7fb2c745831f"
+  },
+  "timber": {
+    "triangles": 916,
+    "sourceSHA256": "aafb632db616e0511b9eaa2e321a66ab799997a03ba9b775fa6caa1f1e174bdb"
+  }
+}
