@@ -1,0 +1,26 @@
+{
+  "source": "67b5b49611458266628ffc69971b97feec50d70c",
+  "ownedFilesMatched": 52,
+  "g21SourcePreserved": true,
+  "restoredAdditionalMissingOwned": [
+    "astro.batch6.walk.config.mjs"
+  ],
+  "buildOutput": "/tmp/bobby-world-batch6-walk-integrated-root",
+  "buildSeconds": 15.932,
+  "exitCode": 0,
+  "log": "/tmp/bobby-world-batch6-walk-integrated-build-all-routes.log",
+  "initialBuild": {
+    "source": "67b5b49611458266628ffc69971b97feec50d70c",
+    "ownedFilesMatched": 52,
+    "g21SourcePreserved": true,
+    "restoredAdditionalMissingOwned": [
+      "astro.batch6.walk.config.mjs"
+    ],
+    "buildOutput": "/tmp/bobby-world-batch6-walk-integrated-root",
+    "buildSeconds": 17.026,
+    "exitCode": 0,
+    "log": "/tmp/bobby-world-batch6-walk-integrated-build.log"
+  },
+  "restoredExistingRoute": "src/pages/projects/[slug].astro",
+  "retryReason": "Sparse checkout omitted existing six project routes; restored unchanged tracked source before delivery"
+}
