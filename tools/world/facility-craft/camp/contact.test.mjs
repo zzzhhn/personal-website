@@ -35,10 +35,36 @@ test('actual C15 yields exactly four low tire shells, using real vertices withou
   assert.equal(wheels.length, 4);
   for (const wheel of wheels) {
     assert.equal(wheel.vertices.length / 3, 120, 'welded real tire vertices, not box corners');
-    assert.ok(wheel.radiusX < .04 && wheel.radiusZ < .02);
+    assert.ok(Math.abs(wheel.radiusX - .0585307) < 1e-6 && Math.abs(wheel.radiusZ - .044) < 1e-6);
   }
   for (const [geometry, values, material] of before) { assert.deepEqual(geometry.getAttribute('position').array, values); assert.ok(material); }
   assert.equal(pure.suitcaseContactWheels(new THREE.Group()).length, 0);
+});
+
+test('actual tire dimensions and the shader expose a bounded 1–2 cm halo without raising peak opacity', () => {
+  const component = fs.readFileSync(new URL('src/components/world/WorldCampSuitcaseContact.tsx', root), 'utf8');
+  const fragment = component.match(/fragmentShader: '([^']+)'/)[1];
+  const expression = fragment.match(/gl_FragColor = vec4\(0.0, 0.0, 0.0, (.*?)\);/)[1];
+  const alpha = vm.runInNewContext(`(radial, contactStrength) => (${expression})`, { pow: Math.pow });
+  assert.equal(alpha(1, 1), .32); assert.equal(alpha(0, 1), 0); assert.equal(alpha(1, 0), 0);
+  for (const wheel of pure.suitcaseContactWheels(candidate())) {
+    for (const [coordinate, radius, expected1, expected2] of [[0, wheel.radiusX, .136494, .055905], [2, wheel.radiusZ, .188408, .081834]]) {
+      const values = Array.from(wheel.vertices).filter((_, index) => index % 3 === coordinate);
+      const half = (Math.max(...values) - Math.min(...values)) / 2;
+      assert.ok(Math.abs(radius - half - .03) < 1e-9);
+      const at = distance => alpha(Math.max(0, 1 - ((half + distance) / radius) ** 2), 1);
+      assert.ok(Math.abs(at(.01) - expected1) < 1e-5);
+      assert.ok(Math.abs(at(.02) - expected2) < 1e-5);
+      assert.equal(at(.03), 0); assert.equal(at(.04), 0);
+    }
+  }
+});
+
+test('enlarged real-wheel halos disappear individually when their corners leave finite support', () => {
+  const f = fixture(paving(.33, 2.4)); f.model.update(pose(), 1);
+  assert.equal([0, 4, 8, 12].filter(index => f.records.at(-1).strengths[index] > 0).length, 4);
+  f.model.update(pose(.03), 1);
+  assert.equal([0, 4, 8, 12].filter(index => f.records.at(-1).strengths[index] > 0).length, 2, 'two supported tire centres are rejected because their expanded halos cross the tile edge');
 });
 
 test('support cache respects actual rotated instance triangles and finite edges, not a height plane or bounding box', () => {

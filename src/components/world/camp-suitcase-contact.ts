@@ -47,7 +47,8 @@ export function suitcaseContactWheels(root: Object3D): ContactWheel[] {
   const wheels = components.filter(component => component.low < low + .003);
   // Unknown/future packs fail closed instead of drawing shadows under guessed corners.
   if (wheels.length !== 4) return [];
-  return wheels.map(wheel => ({ vertices: wheel.vertices, radiusX: Math.min(.045, wheel.dx * .65), radiusZ: Math.min(.045, wheel.dz * .65) }));
+  // Expose a narrow 30 mm halo beyond each real tire shell; support checks still gate every corner.
+  return wheels.map(wheel => ({ vertices: wheel.vertices, radiusX: wheel.dx / 2 + .03, radiusZ: wheel.dz / 2 + .03 }));
 }
 
 export type ContactSupport = { heightAt: (x: number, z: number) => number | null };

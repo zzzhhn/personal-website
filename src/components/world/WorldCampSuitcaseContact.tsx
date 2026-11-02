@@ -19,7 +19,7 @@ export default function WorldCampSuitcaseContact({ slot }: { slot: SuitcaseConta
     geometry.setAttribute('uv', new BufferAttribute(new Float32Array(uv), 2)); geometry.setIndex(indices);
     const material = new ShaderMaterial({ transparent: true, depthWrite: false, toneMapped: false, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1,
       vertexShader: 'attribute float strength; varying vec2 contactUv; varying float contactStrength; void main() { contactUv = uv; contactStrength = strength; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }',
-      fragmentShader: 'varying vec2 contactUv; varying float contactStrength; void main() { vec2 q = contactUv * 2.0 - 1.0; float radial = max(0.0, 1.0 - dot(q, q)); gl_FragColor = vec4(0.0, 0.0, 0.0, .32 * contactStrength * radial * radial); }',
+      fragmentShader: 'varying vec2 contactUv; varying float contactStrength; void main() { vec2 q = contactUv * 2.0 - 1.0; float radial = max(0.0, 1.0 - dot(q, q)); gl_FragColor = vec4(0.0, 0.0, 0.0, .32 * contactStrength * pow(radial, 1.5)); }',
     });
     const mesh = new Mesh(geometry, material); mesh.name = 'camp-content-C15-wheel-contact'; mesh.visible = false;
     mesh.raycast = () => {}; // Optional shading must never intercept exploration/interaction rays.
