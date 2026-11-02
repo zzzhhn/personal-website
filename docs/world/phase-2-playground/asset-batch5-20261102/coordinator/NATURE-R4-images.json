@@ -1,0 +1,89 @@
+{
+  "frozen_build": "/tmp/bobby-world-batch5-r4-01a19a62",
+  "build_manifest_sha256": "bec385a0bf94dece4ba8a8097752e1d2ab888e3fee8d88e6979c437f394b92f4",
+  "source_directory": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/runtime",
+  "images": [
+    {
+      "file": "legacy-v-tree-medium-noon.png",
+      "sha256": "27c7433ff66a4250b5ab6eaaeee89e3826f17ccf92239f893b967a04c5a64cc5",
+      "receipt": "legacy-v-tree-medium-noon-13.json"
+    },
+    {
+      "file": "legacy-v-tree-medium-night.png",
+      "sha256": "7fc130bf2d7406866d8d244d24b5bc84d8480f676c2205382dee0a4c8cb258e2",
+      "receipt": "legacy-v-tree-medium-night-14.json"
+    },
+    {
+      "file": "legacy-v-tree-close-noon.png",
+      "sha256": "af2838446f3a13ccf8e9377d64d7e6e6849d7848e14985e6ce6247ef387c1a45",
+      "receipt": "legacy-v-tree-close-noon-15.json"
+    },
+    {
+      "file": "legacy-v-tree-close-night.png",
+      "sha256": "caf2e5e236bd091b7eb0afed1bf5a2d4108c5148b62760b812cd92e4e68ce05f",
+      "receipt": "legacy-v-tree-close-night-16.json"
+    },
+    {
+      "file": "candidate-v-tree-medium-noon.png",
+      "sha256": "7a8bdc2915b5e85586fe9341ad6ecc5648aee3fd8fbc9c973982752250b3e8d5",
+      "receipt": "candidate-v-tree-medium-noon-5.json"
+    },
+    {
+      "file": "candidate-v-tree-medium-night.png",
+      "sha256": "42d70f6b351c905b78c46e81128a54ac4c5f670791517822c8d3fc3a822a25ae",
+      "receipt": "candidate-v-tree-medium-night-6.json"
+    },
+    {
+      "file": "candidate-v-tree-close-noon.png",
+      "sha256": "1be0b63aa19d2775bd8ca7f398267453a45bc1d3f93e9d946e1aced87f0e3df9",
+      "receipt": "candidate-v-tree-close-noon-7.json"
+    },
+    {
+      "file": "candidate-v-tree-close-night.png",
+      "sha256": "09030a9676cca28383cdfabf60910f6d055e2602f56c035d86a96a86418b5067",
+      "receipt": "candidate-v-tree-close-night-8.json"
+    },
+    {
+      "file": "legacy-v-patches-medium-noon.png",
+      "sha256": "86814bb99c150f42afc820febcb4832a0394e47c47afbfb26489260cae361091",
+      "receipt": "legacy-v-patches-medium-noon-17.json"
+    },
+    {
+      "file": "legacy-v-patches-medium-night.png",
+      "sha256": "cff7e0f7fd85f3ba46d5aafd18d290579d89234e906315688e4536dceb53530c",
+      "receipt": "legacy-v-patches-medium-night-18.json"
+    },
+    {
+      "file": "legacy-v-patches-close-noon.png",
+      "sha256": "9b5dc5b6256804f2d2cc06acf39e054cd25a432c1d798b0457e44c9f98f4e260",
+      "receipt": "legacy-v-patches-close-noon-19.json"
+    },
+    {
+      "file": "legacy-v-patches-close-night.png",
+      "sha256": "536f22ec3a390ece6a47f91f8010c9d339d3b305a5509a07e81a283cf9d5ad7a",
+      "receipt": "legacy-v-patches-close-night-20.json"
+    },
+    {
+      "file": "candidate-v-patches-medium-noon.png",
+      "sha256": "fe1b0ce8587ead018954fc3a5cc88ba04a1fbdef062819134fe57c66729f0950",
+      "receipt": "candidate-v-patches-medium-noon-1.json"
+    },
+    {
+      "file": "candidate-v-patches-medium-night.png",
+      "sha256": "2ccd642e8e4bb810975a73c2aeff710cb0caba8e9e5d75624876ffc483d8bfe0",
+      "receipt": "candidate-v-patches-medium-night-2.json"
+    },
+    {
+      "file": "candidate-v-patches-close-noon.png",
+      "sha256": "3c885348b87aad95652ae79cdd8c4afefd227460f39524f37251ad7093584c2e",
+      "receipt": "candidate-v-patches-close-noon-3.json"
+    },
+    {
+      "file": "candidate-v-patches-close-night.png",
+      "sha256": "192c91c1b1cb5e807f4577f3158822bcb410ac7b0c546c9b2f4a83594bf3cb67",
+      "receipt": "candidate-v-patches-close-night-4.json"
+    }
+  ],
+  "tree_visual": "accepted_sample",
+  "ground_visual": "rejected"
+}
