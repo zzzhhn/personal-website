@@ -1,0 +1,1191 @@
+{
+  "schema": "world-visual-rework-queue-v1",
+  "date": "2026-11-03",
+  "coordinationBaseline": "cb82d7c",
+  "inventoryFile": "inventory.json",
+  "inventorySHA256": "0d420eda4cc492cf9ae123acbc99b7d3ff270ce5c3bbba7a50ff2f799f5b184d",
+  "scope": "All 57 status-2 families; does not replace the current 16-family batch or change historical acceptance.",
+  "counts": {
+    "total": 57,
+    "alreadyInBatch6": 8,
+    "additionalQueued": 49
+  },
+  "lanes": {
+    "nature-camp": {
+      "ownerThread": "01a19a62-2107-73a3-b811-07f3c66a5a24",
+      "title": "Phase 2 · 全局自然资产与场景批量精修",
+      "ids": [
+        "G-tree",
+        "G-rock",
+        "N-grass",
+        "C09",
+        "C12",
+        "C13",
+        "C14",
+        "C15",
+        "C16",
+        "D-palms",
+        "D-planting"
+      ],
+      "dispatchReceipt": {
+        "state": "acknowledged-current-work-continues",
+        "evidence": "Thread confirmed 11 families; follow-on queue recorded in its HANDOFF.md at c842af8."
+      }
+    },
+    "facilities": {
+      "ownerThread": "01a17194-2fce-7a21-978a-e441e9e39765",
+      "title": "Phase 2 · 场景美术与圆形传送门",
+      "ids": [
+        "G-seawall-rail",
+        "G-lamp",
+        "G-barrier",
+        "G-bin",
+        "G-bench",
+        "S-shelter",
+        "S-signal",
+        "S-timber",
+        "D-pavilion",
+        "D-basin",
+        "I-shed",
+        "I-truck",
+        "I-crane",
+        "I-coil",
+        "I-rack",
+        "I-stockcrate"
+      ],
+      "dispatchReceipt": {
+        "state": "acknowledged-current-work-continues",
+        "evidence": "Thread confirmed 16 families; first two current runtime samples continue before expansion."
+      }
+    },
+    "coaster-workshop": {
+      "ownerThread": "01a17d21-6795-7873-9447-a1efc1c8d950",
+      "title": "Phase 2 · 字节意图过山车",
+      "ids": [
+        "R-track",
+        "R-station",
+        "R-equipment",
+        "R-tower",
+        "R-lookout",
+        "R-landscape",
+        "R-flora",
+        "W-intake",
+        "W-lookup",
+        "W-act",
+        "W-plan",
+        "W-debug",
+        "W-rewrite",
+        "W-extract",
+        "W-carrier"
+      ],
+      "dispatchReceipt": {
+        "state": "source-review-delivered",
+        "evidence": "15-family source audit and 4-sample plan inspected by coordinator; no new runtime visual acceptance.",
+        "worktree": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-rework-coaster",
+        "report": "docs/world/phase-2-playground/asset-batch6-20261103/rework/COASTER-REVIEW.md"
+      }
+    },
+    "alpha": {
+      "ownerAgent": "/root/alpha_visual_rework",
+      "title": "Alpha资产复核与返修",
+      "ids": [
+        "A-quarry",
+        "A-vein",
+        "A-ore",
+        "A-detector",
+        "A-pickaxe",
+        "A-rack",
+        "A-pool",
+        "A-sign",
+        "E-building",
+        "E-desk",
+        "E-archive",
+        "E-press",
+        "E-gallery",
+        "E-bell",
+        "E-clock"
+      ],
+      "dispatchReceipt": {
+        "state": "source-review-delivered",
+        "evidence": "15-family report inspected and exact family coverage verified by coordinator; no new runtime visual acceptance.",
+        "report": "rework/ALPHA-REVIEW.md"
+      }
+    }
+  },
+  "entries": [
+    {
+      "id": "G-tree",
+      "name": "团簇阔叶树（全部尺寸/街树变体）",
+      "scene": "自然模型",
+      "lane": "nature-camp",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "in-current-batch6",
+      "treatment": "repair-current-treatment",
+      "source": [
+        "src/components/world/WorldCamp.tsx",
+        "src/components/world/WorldStreetTrees.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch4-20261102/coordinator/REVIEW.md",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "baselineNote": "G17完成batch5代表样板，G16/G18及街树仍是batch4树冠；不能把样板算全树族完成。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "G-rock",
+      "name": "层理岩石（大小变体）",
+      "scene": "自然模型",
+      "lane": "nature-camp",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "in-current-batch6",
+      "treatment": "repair-current-treatment",
+      "source": [
+        "src/components/world/WorldCamp.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch4-20261102/coordinator/REVIEW.md"
+      ],
+      "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch4仅有限改善。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "N-grass",
+      "name": "草丛模型",
+      "scene": "自然模型",
+      "lane": "nature-camp",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "in-current-batch6",
+      "treatment": "repair-current-treatment",
+      "source": [
+        "src/components/world/WorldGrass.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/asset-batch4-20261102/coordinator/REVIEW.md"
+      ],
+      "baselineNote": "batch4叶片形态增量；主协调指出仍偏硬偏宽，需视觉返修。纯风/踏压shader不另算族。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "C09",
+      "name": "奖杯展示架/奖杯",
+      "scene": "营地",
+      "lane": "nature-camp",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldCamp.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch4-20261102/coordinator/REVIEW.md"
+      ],
+      "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "C12",
+      "name": "吉他",
+      "scene": "营地",
+      "lane": "nature-camp",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "repair-current-treatment",
+      "source": [
+        "src/components/world/WorldCampContent.tsx",
+        "src/components/world/WorldCampFacilityCraft.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5五件列复核；C13握把/C15接触修补不代表用户总体质量接受。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "C13",
+      "name": "哑铃",
+      "scene": "营地",
+      "lane": "nature-camp",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "repair-current-treatment",
+      "source": [
+        "src/components/world/WorldCampContent.tsx",
+        "src/components/world/WorldCampFacilityCraft.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5五件列复核；C13握把/C15接触修补不代表用户总体质量接受。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "C14",
+      "name": "炉灶/炒锅装配",
+      "scene": "营地",
+      "lane": "nature-camp",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "repair-current-treatment",
+      "source": [
+        "src/components/world/WorldCampContent.tsx",
+        "src/components/world/WorldCampFacilityCraft.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5五件列复核；C13握把/C15接触修补不代表用户总体质量接受。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "C15",
+      "name": "行李箱",
+      "scene": "营地",
+      "lane": "nature-camp",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "repair-current-treatment",
+      "source": [
+        "src/components/world/WorldCampContent.tsx",
+        "src/components/world/WorldCampFacilityCraft.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5五件列复核；C13握把/C15接触修补不代表用户总体质量接受。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "C16",
+      "name": "桌上提灯",
+      "scene": "营地",
+      "lane": "nature-camp",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "repair-current-treatment",
+      "source": [
+        "src/components/world/WorldCampContent.tsx",
+        "src/components/world/WorldCampFacilityCraft.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5五件列复核；C13握把/C15接触修补不代表用户总体质量接受。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "D-palms",
+      "name": "Club棕榈植栽模型",
+      "scene": "DJC Club",
+      "lane": "nature-camp",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldDjcClubGeometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/djc-beach-club/refinement-20261027.md"
+      ],
+      "baselineNote": "与城区棕榈是不同几何实现；有羽状叶造型pass。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "D-planting",
+      "name": "Club低矮热带植栽套件",
+      "scene": "DJC Club",
+      "lane": "nature-camp",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldDjcClubGeometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/djc-beach-club/refinement-20261027.md"
+      ],
+      "baselineNote": "保留组合植栽为一可替换套件，不逐叶/逐岛算。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "G-seawall-rail",
+      "name": "海堤金属栏杆",
+      "scene": "街道",
+      "lane": "facilities",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "in-current-batch6",
+      "treatment": "repair-current-treatment",
+      "source": [
+        "src/components/world/WorldStreetFacilityCraft.ts",
+        "src/components/world/WorldStreetRails.tsx"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5用户反馈效果不够明显，列复核。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "G-lamp",
+      "name": "街道路灯",
+      "scene": "街道",
+      "lane": "facilities",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "repair-current-treatment",
+      "source": [
+        "src/components/world/WorldStreetAssets.ts",
+        "src/components/world/WorldStreetFacilityCraft.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5用户反馈效果不够明显，列复核。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "G-barrier",
+      "name": "施工路障",
+      "scene": "街道",
+      "lane": "facilities",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "repair-current-treatment",
+      "source": [
+        "src/components/world/WorldStreetAssets.ts",
+        "src/components/world/WorldStreetFacilityCraft.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5用户反馈效果不够明显，列复核。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "G-bin",
+      "name": "街道垃圾箱",
+      "scene": "街道",
+      "lane": "facilities",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "in-current-batch6",
+      "treatment": "repair-current-treatment",
+      "source": [
+        "src/components/world/WorldStreetAssets.ts",
+        "src/components/world/WorldStreetFacilityCraft.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5用户反馈效果不够明显，列复核。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "G-bench",
+      "name": "街边长椅",
+      "scene": "街道",
+      "lane": "facilities",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "in-current-batch6",
+      "treatment": "repair-current-treatment",
+      "source": [
+        "src/components/world/WorldStreetAssets.ts",
+        "src/components/world/WorldStreetFacilityCraft.ts"
+      ],
+      "evidence": [
+        "docs/world/assets-v1.json",
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5用户反馈效果不够明显，列复核。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "S-shelter",
+      "name": "候车亭",
+      "scene": "街道",
+      "lane": "facilities",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "in-current-batch6",
+      "treatment": "repair-current-treatment",
+      "source": [
+        "src/components/world/WorldStreetFixed.tsx",
+        "src/components/world/WorldStreetFacilityCraft.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5已接入4341。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "S-signal",
+      "name": "交通信号机",
+      "scene": "街道",
+      "lane": "facilities",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "repair-current-treatment",
+      "source": [
+        "src/components/world/WorldStreetAssets.ts",
+        "src/components/world/WorldStreetFacilityCraft.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5已接入4341。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "S-timber",
+      "name": "山路木栏",
+      "scene": "街道",
+      "lane": "facilities",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "in-current-batch6",
+      "treatment": "repair-current-treatment",
+      "source": [
+        "src/components/world/WorldStreetRails.tsx",
+        "src/components/world/WorldStreetFacilityCraft.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
+      ],
+      "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5已接入4341。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "D-pavilion",
+      "name": "主舞台/竹拱茅草主亭装配",
+      "scene": "DJC Club",
+      "lane": "facilities",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldDjcClubGeometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/djc-beach-club/refinement-20261027.md"
+      ],
+      "baselineNote": "历史场景构造pass，未见本轮专门模型替换验收。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "D-basin",
+      "name": "泳池实体盆体/池岸装配",
+      "scene": "DJC Club",
+      "lane": "facilities",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldDjcClubGeometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/djc-beach-club/refinement-20261027.md"
+      ],
+      "baselineNote": "水shader另列范围外；实体部分仍需质量复核。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "I-shed",
+      "name": "工场厂房装配（coil/parts/dispatch变体）",
+      "scene": "IBD工场",
+      "lane": "facilities",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/ibd-yard-architecture.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/ibd-art-20261028/cab-handoff.md"
+      ],
+      "baselineNote": "三种厂房按共用钢构建造系统归一族；若日后独立建筑美术目标不同再拆。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "I-truck",
+      "name": "装卸货车（含驾驶室）",
+      "scene": "IBD工场",
+      "lane": "facilities",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/ibd-truck-geometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/ibd-art-20261028/cab-handoff.md"
+      ],
+      "baselineNote": "驾驶室做过样板；交接明确运行日夜审阅待接，不能把整车视为完成。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "I-crane",
+      "name": "桥式起重机/吊具装配",
+      "scene": "IBD工场",
+      "lane": "facilities",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/ibd-yard-geometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/ibd-art-20261028/cab-handoff.md"
+      ],
+      "baselineNote": "几何有绞盘/齿轮箱/夹具深化；缺当前质量验收。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "I-coil",
+      "name": "钢卷/移动托架装配",
+      "scene": "IBD工场",
+      "lane": "facilities",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/ibd-yard-geometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/ibd-art-20261028/cab-handoff.md"
+      ],
+      "baselineNote": "完整/损坏卷不按状态重复算。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "I-rack",
+      "name": "后库开放钢货架",
+      "scene": "IBD工场",
+      "lane": "facilities",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/ibd-stock-craft.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/ibd-stock-craft-20261029/handoff.md"
+      ],
+      "baselineNote": "v42构造pass；原交接待网页日夜接受。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "I-stockcrate",
+      "name": "静态仓储木箱",
+      "scene": "IBD工场",
+      "lane": "facilities",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/ibd-stock-craft.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/ibd-stock-craft-20261029/handoff.md"
+      ],
+      "baselineNote": "不同于可取样运输箱装配；静态箱同尺寸/实例合并。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "R-track",
+      "name": "过山车轨道/支架/连接结构",
+      "scene": "过山车",
+      "lane": "coaster-workshop",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/coaster-geometry.ts",
+        "src/components/world/attractions/coaster-detailing.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-building-art-handoff.md"
+      ],
+      "baselineNote": "历史结构与连接深化；未见本轮高质资产闭环。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "R-station",
+      "name": "过山车站房/候车厅",
+      "scene": "过山车",
+      "lane": "coaster-workshop",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/coaster-geometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-building-art-handoff.md"
+      ],
+      "baselineNote": "有站房构造pass；交接保留参考差距及待真实日夜验收。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "R-equipment",
+      "name": "设备楼套件",
+      "scene": "过山车",
+      "lane": "coaster-workshop",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/coaster-geometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-building-art-handoff.md"
+      ],
+      "baselineNote": "东/西服务体及设备楼按同建造系统合并。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "R-tower",
+      "name": "过山车服务塔",
+      "scene": "过山车",
+      "lane": "coaster-workshop",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/coaster-thrill-tower.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-tower-art-handoff.md"
+      ],
+      "baselineNote": "历史美术样板，缺本轮用户质量确认。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "R-lookout",
+      "name": "观景台/步阶装配",
+      "scene": "过山车",
+      "lane": "coaster-workshop",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/coaster-lookout-sample.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-lookout-sample-handoff.md"
+      ],
+      "baselineNote": "历史代表样板，未当作用户最终接受。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "R-landscape",
+      "name": "过山车崖壁/内场岩景",
+      "scene": "过山车",
+      "lane": "coaster-workshop",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/coaster-landscape.ts",
+        "src/components/world/attractions/coaster-landscape-cliffs.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-infield-terrain-handoff.md"
+      ],
+      "baselineNote": "与全局散布石块不同，为场景地形装配；历史地形美术待复核。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "R-flora",
+      "name": "过山车植被套件",
+      "scene": "过山车",
+      "lane": "coaster-workshop",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/WorldCoasterVegetation.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-vegetation-handoff.md"
+      ],
+      "baselineNote": "场景独立植被，树种/摆放不重复算。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "W-intake",
+      "name": "入料滚筒台",
+      "scene": "Intent车间",
+      "lane": "coaster-workshop",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/intent-workshop-geometry.ts",
+        "src/components/world/attractions/WorldIntentWorkshop.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
+      ],
+      "baselineNote": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "W-lookup",
+      "name": "lookup扫描工位",
+      "scene": "Intent车间",
+      "lane": "coaster-workshop",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/intent-workshop-geometry.ts",
+        "src/components/world/attractions/WorldIntentWorkshop.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
+      ],
+      "baselineNote": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "W-act",
+      "name": "act执行工位",
+      "scene": "Intent车间",
+      "lane": "coaster-workshop",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/intent-workshop-geometry.ts",
+        "src/components/world/attractions/WorldIntentWorkshop.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
+      ],
+      "baselineNote": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "W-plan",
+      "name": "plan规划工位",
+      "scene": "Intent车间",
+      "lane": "coaster-workshop",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/intent-workshop-geometry.ts",
+        "src/components/world/attractions/WorldIntentWorkshop.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
+      ],
+      "baselineNote": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "W-debug",
+      "name": "debug维修工位",
+      "scene": "Intent车间",
+      "lane": "coaster-workshop",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/intent-workshop-geometry.ts",
+        "src/components/world/attractions/WorldIntentWorkshop.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
+      ],
+      "baselineNote": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "W-rewrite",
+      "name": "rewrite滚压工位",
+      "scene": "Intent车间",
+      "lane": "coaster-workshop",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/intent-workshop-geometry.ts",
+        "src/components/world/attractions/WorldIntentWorkshop.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
+      ],
+      "baselineNote": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "W-extract",
+      "name": "extract分拣工位",
+      "scene": "Intent车间",
+      "lane": "coaster-workshop",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/intent-workshop-geometry.ts",
+        "src/components/world/attractions/WorldIntentWorkshop.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
+      ],
+      "baselineNote": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "W-carrier",
+      "name": "架空分支输送轨/中枢",
+      "scene": "Intent车间",
+      "lane": "coaster-workshop",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/attractions/intent-workshop-geometry.ts",
+        "src/components/world/attractions/WorldIntentWorkshop.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
+      ],
+      "baselineNote": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "A-quarry",
+      "name": "采石场岩壁/平台/入口实体",
+      "scene": "Alpha矿场",
+      "lane": "alpha",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldAlphaMine.tsx",
+        "src/components/world/WorldAlphaMineFoundation.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-pilot/integration-status.md"
+      ],
+      "baselineNote": "已做pilot原生资产/多轮美术，现记录明确不代表最终视觉接受；本轮专项精修未闭合。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "A-vein",
+      "name": "矿脉模型（完整/破损/打开状态）",
+      "scene": "Alpha矿场",
+      "lane": "alpha",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldAlphaMine.tsx",
+        "src/components/world/alpha-mine-assets.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-pilot/integration-status.md"
+      ],
+      "baselineNote": "已做pilot原生资产/多轮美术，现记录明确不代表最终视觉接受；本轮专项精修未闭合。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "A-ore",
+      "name": "可携带矿石（因子变体）",
+      "scene": "Alpha矿场",
+      "lane": "alpha",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldAlphaMine.tsx",
+        "src/components/world/alpha-mine-assets.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-pilot/integration-status.md"
+      ],
+      "baselineNote": "已做pilot原生资产/多轮美术，现记录明确不代表最终视觉接受；本轮专项精修未闭合。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "A-detector",
+      "name": "探测器",
+      "scene": "Alpha矿场",
+      "lane": "alpha",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldAlphaMine.tsx",
+        "src/components/world/alpha-mine-assets.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-pilot/integration-status.md"
+      ],
+      "baselineNote": "已做pilot原生资产/多轮美术，现记录明确不代表最终视觉接受；本轮专项精修未闭合。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "A-pickaxe",
+      "name": "镐",
+      "scene": "Alpha矿场",
+      "lane": "alpha",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldAlphaMine.tsx",
+        "src/components/world/alpha-mine-assets.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-pilot/integration-status.md"
+      ],
+      "baselineNote": "已做pilot原生资产/多轮美术，现记录明确不代表最终视觉接受；本轮专项精修未闭合。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "A-rack",
+      "name": "工具架",
+      "scene": "Alpha矿场",
+      "lane": "alpha",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldAlphaMine.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-pilot/integration-status.md"
+      ],
+      "baselineNote": "已做pilot原生资产/多轮美术，现记录明确不代表最终视觉接受；本轮专项精修未闭合。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "A-pool",
+      "name": "结果池实体/回收架/显示站装配",
+      "scene": "Alpha矿场",
+      "lane": "alpha",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldAlphaMine.tsx",
+        "src/components/world/WorldMinePool.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-pilot/integration-status.md"
+      ],
+      "baselineNote": "已做pilot原生资产/多轮美术，现记录明确不代表最终视觉接受；本轮专项精修未闭合。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "A-sign",
+      "name": "矿场信息牌",
+      "scene": "Alpha矿场",
+      "lane": "alpha",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldAlphaMine.tsx"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-pilot/integration-status.md"
+      ],
+      "baselineNote": "已做pilot原生资产/多轮美术，现记录明确不代表最终视觉接受；本轮专项精修未闭合。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "E-building",
+      "name": "交易所建筑/楼廊/栏杆",
+      "scene": "Alpha交易所",
+      "lane": "alpha",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldAlphaExchangeGeometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-exchange/implementation-20261027.md"
+      ],
+      "baselineNote": "存在历史crafted几何与独立装配；未找到本轮高质模型/最终用户接受凭据。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "E-desk",
+      "name": "环形交易桌/CRT/银行灯装配",
+      "scene": "Alpha交易所",
+      "lane": "alpha",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldAlphaExchangeGeometry.ts",
+        "src/components/world/alpha-exchange-interior-craft.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-exchange/implementation-20261027.md"
+      ],
+      "baselineNote": "存在历史crafted几何与独立装配；未找到本轮高质模型/最终用户接受凭据。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "E-archive",
+      "name": "档案柜/业务台/文件槽装配",
+      "scene": "Alpha交易所",
+      "lane": "alpha",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldAlphaExchangeGeometry.ts",
+        "src/components/world/alpha-exchange-interior-craft.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-exchange/implementation-20261027.md"
+      ],
+      "baselineNote": "存在历史crafted几何与独立装配；未找到本轮高质模型/最终用户接受凭据。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "E-press",
+      "name": "清算压机",
+      "scene": "Alpha交易所",
+      "lane": "alpha",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldAlphaExchangeGeometry.ts",
+        "src/components/world/alpha-exchange-clearing-craft.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-exchange/implementation-20261027.md"
+      ],
+      "baselineNote": "存在历史crafted几何与独立装配；未找到本轮高质模型/最终用户接受凭据。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "E-gallery",
+      "name": "楼廊读图控制台",
+      "scene": "Alpha交易所",
+      "lane": "alpha",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldAlphaExchangeGeometry.ts",
+        "src/components/world/alpha-exchange-gallery-craft.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-exchange/implementation-20261027.md"
+      ],
+      "baselineNote": "存在历史crafted几何与独立装配；未找到本轮高质模型/最终用户接受凭据。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "E-bell",
+      "name": "交易钟/敲锤装配",
+      "scene": "Alpha交易所",
+      "lane": "alpha",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldAlphaExchangeGeometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-exchange/implementation-20261027.md"
+      ],
+      "baselineNote": "存在历史crafted几何与独立装配；未找到本轮高质模型/最终用户接受凭据。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    },
+    {
+      "id": "E-clock",
+      "name": "后墙时钟/行情板装配",
+      "scene": "Alpha交易所",
+      "lane": "alpha",
+      "inventoryStatusUnchanged": 2,
+      "executionState": "queued",
+      "treatment": "review-existing-evidence-then-repair",
+      "source": [
+        "src/components/world/WorldAlphaExchangeGeometry.ts"
+      ],
+      "evidence": [
+        "docs/world/phase-2-playground/alpha-exchange/implementation-20261027.md"
+      ],
+      "baselineNote": "存在历史crafted几何与独立装配；未找到本轮高质模型/最终用户接受凭据。",
+      "visualAcceptance": "pending",
+      "completionEvidence": null
+    }
+  ]
+}
