@@ -1,7 +1,7 @@
 /**
  * Street props: static groups (street session). One BatchedMesh visual per group plus one fixed RigidBody
- * whose colliders are the convex hulls of the same generated parts under the same placement matrices
- * (collision and visual from one source). Used by street-fixed (benches, bollards, shelter), rails and
+ * whose colliders use the original Builder proxy under the same placement matrices. Crafted visual
+ * detail does not alter physical hulls or trimeshes. Used by street-fixed (benches, bollards, shelter), rails and
  * foundations. A group claims its greybox key(s) only once its visual and colliders are mounted.
  */
 import { useEffect, useMemo } from 'react';
@@ -14,6 +14,7 @@ import { useGreyboxClaim, type GreyboxKey } from './WorldVisualClaims';
 import type { Builder, V3 } from './WorldStreetGeometry';
 import { StreetBatch, type BatchKind } from './WorldStreetBatch';
 import { createStreetMaterial } from './WorldStreetMaterial';
+import { streetFacilityCollision } from './WorldStreetFacilityCraft';
 import type { CanvasTexture } from 'three';
 import type { Vec3 } from './types';
 
@@ -47,7 +48,11 @@ export default function StreetStatic({ name, claims, kinds, placements, atlas, s
     const bk: BatchKind[] = kinds.map(k => ({ id: k.id, L0: k.L0.build(), L1: k.L1.build(), lodNear: k.lodNear, far: k.far }));
     const batch = new StreetBatch(name, bk, counts, material);
     const hulls: { key: string; points: Float32Array }[] = [], tris: { key: string; pos: Float32Array; idx: Uint32Array; surface: boolean }[] = [];
-    const local = kinds.map(k => ({ hulls: k.collide === 'none' ? [] : k.L0.hulls(), geo: bk[index.get(k.id)!].L0 }));
+    const local = kinds.map((k, i) => {
+      const proxy = streetFacilityCollision(k.L0);
+      return { hulls: k.collide === 'none' ? [] : proxy.hulls(),
+        geo: k.collide === 'trimesh' && proxy !== k.L0 ? proxy.build() : bk[i].L0 };
+    });
     placements.forEach((p, n) => {
       const i = index.get(p.kind)!; batch.add(i, p.matrix);
       const mode = kinds[i].collide ?? 'hull';
@@ -57,6 +62,7 @@ export default function StreetStatic({ name, claims, kinds, placements, atlas, s
         tris.push({ key: `${n}`, pos: transform(g.getAttribute('position').array as Float32Array, p.matrix), idx: new Uint32Array(g.index!.array), surface: !!p.surface });
       }
     });
+    local.forEach((p, i) => { if (p.geo !== bk[i].L0) p.geo.dispose(); });
     batch.finish(1);
     batch.mesh.castShadow = shadow; batch.mesh.receiveShadow = true;
     if (occluder) batch.mesh.userData.occluder = true; else batch.mesh.userData.noOcclusionFade = true;

@@ -1,0 +1,165 @@
+{
+  "asset": "roadblock",
+  "sourceJSONSHA256": "a5d2e58566a8faa702f49d30a2affbdea4e0363a95eac82785611e3924097636",
+  "runtimeSourceSHA256": {
+    "WorldStreetAssets.ts": "2b8eb883b69c7c88593b3ae7285f464e5baec4dfe0f730d65cea8c934ea6626b",
+    "WorldStreetFacilityCraft.ts": "2dc1e4f73a675b690c90d4bf1ac82b400dedb27f7c681518d526144f30503561",
+    "WorldStreetGeometry.ts": "b240724f8ef8784d716d44372078733fdf5750bffe7b71728ed7f205234a6134"
+  },
+  "blend": {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/street/native/roadblock.blend",
+    "sha256": "46507396cb97203c57932f286b162d3e78afd69671994dd3c6d3368978d6c5a7"
+  },
+  "glb": {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/street/roadblock.glb",
+    "sha256": "ac0080b640295921a1e419c9db7d90ef04fec4e96a27eee890d62b20dbcfb6e1",
+    "bytes": 140912
+  },
+  "baselineTriangles": 856,
+  "nativeTriangles": 1440,
+  "freshTriangles": 1440,
+  "nativeBoundsBlender": [
+    [
+      -0.6499999761581421,
+      -0.3700000047683716,
+      0.0
+    ],
+    [
+      0.6499999761581421,
+      0.3700000047683716,
+      0.9900000095367432
+    ]
+  ],
+  "freshBoundsBlender": [
+    [
+      -0.6499999761581421,
+      -0.3700000047683716,
+      0.0
+    ],
+    [
+      0.6499999761581421,
+      0.3700000047683716,
+      0.9900000095367432
+    ]
+  ],
+  "freshBoundsMaxDelta": 0.0,
+  "dimensionsMetres": [
+    1.2999999523162842,
+    0.7400000095367432,
+    0.9900000095367432
+  ],
+  "nativeParts": 4,
+  "nativeMaterialResponses": 8,
+  "renderer": "5.1.2",
+  "rig": {
+    "camera": [
+      1.7866793870925903,
+      2.5523993968963623,
+      2.1165194511413574
+    ],
+    "rotation": [
+      1.0921852588653564,
+      1.3164616063932044e-07,
+      2.530866861343384
+    ],
+    "orthoScale": 1.8459999561309814,
+    "resolution": [
+      640,
+      640
+    ],
+    "samples": 16,
+    "viewTransform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "exposure": 0,
+    "lights": [
+      {
+        "name": "RIG.key",
+        "location": [
+          -3.0,
+          1.0,
+          5.5
+        ],
+        "rotation": [
+          0.5639426112174988,
+          -1.0737549160921844e-07,
+          -1.8925468921661377
+        ],
+        "energy": 850.0,
+        "size": 1.6899999380111694,
+        "colour": [
+          1.0,
+          0.9100000262260437,
+          0.800000011920929
+        ]
+      },
+      {
+        "name": "RIG.fill",
+        "location": [
+          3.0,
+          2.0,
+          3.5
+        ],
+        "rotation": [
+          0.876815676689148,
+          5.441737371825184e-08,
+          2.158798933029175
+        ],
+        "energy": 500.0,
+        "size": 1.6899999380111694,
+        "colour": [
+          0.7699999809265137,
+          0.8700000047683716,
+          1.0
+        ]
+      },
+      {
+        "name": "RIG.rim",
+        "location": [
+          0.0,
+          -3.0,
+          4.5
+        ],
+        "rotation": [
+          0.6435011029243469,
+          -0.0,
+          0.0
+        ],
+        "energy": 600.0,
+        "size": 1.6899999380111694,
+        "colour": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  },
+  "images": [
+    {
+      "stage": "baseline",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/roadblock-baseline.png",
+      "sha256": "90927b654431f9e1c5ee1a337e27eca4d12afea24b25bee15608a8fe6105dadc"
+    },
+    {
+      "stage": "native",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/roadblock-native.png",
+      "sha256": "2772bf4f047997d64a5fa590faff5197bad183eabbc1eaed52b4859f9a77c61d"
+    },
+    {
+      "stage": "fresh",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/roadblock-fresh.png",
+      "sha256": "5ff780ae0d85a3e9b207c7014e7ac13687185d8ade85ca7b50016217a046ef01"
+    },
+    {
+      "stage": "clay",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/roadblock-clay.png",
+      "sha256": "764772408d8876706b53d5d50282ca8697eed5c2b2aa3bc3e54225396635c51b"
+    }
+  ],
+  "status": "generated; visual acceptance pending primary inspection",
+  "limitations": [
+    "Runtime Builder geometry is authoritative; GLB is the fresh portable proof.",
+    "Offline neutral poster placeholder and fixed signal state; runtime atlas/clock remain unchanged.",
+    "No browser/performance/interaction acceptance is implied."
+  ]
+}

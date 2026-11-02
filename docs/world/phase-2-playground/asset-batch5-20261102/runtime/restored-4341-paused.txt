@@ -1,0 +1,105 @@
+- main "Bobby 的城岛":
+  - generic: 经历 · 项目 · 漫游
+  - heading "Bobby 的城岛" [level=1]
+  - button "回到营地":
+    - generic: 回到营地
+  - button "地图与设置 Esc":
+    - generic: 地图与设置
+    - generic: Esc
+  - complementary:
+    - img "城岛地图 · 营地":
+      - generic: 物资清点场
+      - generic: 意图过山车
+      - generic: 交易所
+      - generic: DJC 海边 Club
+      - generic: "1"
+      - generic: "2"
+      - generic: "3"
+      - generic: "4"
+      - generic: "5"
+      - generic: "6"
+      - generic "Alpha 因子矿场入口"
+    - generic: "N"
+    - generic: 营地
+  - status
+  - dialog "地图与设置":
+    - generic: Bobby 的城岛
+    - heading "地图与设置" [level=2]
+    - img "城岛地图. 点击地图设置航点，再点一次航点取消。":
+      - generic: 物资清点场
+      - generic: 意图过山车
+      - generic: 交易所
+      - generic: DJC 海边 Club
+      - generic: "1"
+      - generic: "2"
+      - generic: "3"
+      - generic: "4"
+      - generic: "5"
+      - generic: "6"
+      - generic "Alpha 因子矿场入口"
+      - generic: WorldQuant 因子矿场
+      - generic: 营地
+      - generic: 海岸城区
+      - generic: 栈道园区
+      - generic: 风车山丘
+      - generic: 环岛海岸
+    - generic: 你
+    - generic: 实习楼（由旧到新）
+    - generic: 项目展位
+    - generic: 预留地块
+    - generic: 点击地图设置航点，再点一次航点取消。
+    - button "继续探索"
+    - button "回到营地"
+    - paragraph: 保留矿石、挖矿进度和研究结果。
+    - group "语言":
+      - generic: 语言
+      - button "English"
+      - button "中文" [pressed]
+    - group "时间 岛上时间":
+      - text: 时间
+      - generic "岛上时间": 17:30
+      - button "清晨 06:00":
+        - generic: 清晨
+        - generic: 06:00
+      - button "正午 12:00":
+        - generic: 正午
+        - generic: 12:00
+      - button "午后 15:00":
+        - generic: 午后
+        - generic: 15:00
+      - button "黄昏 17:30" [pressed]:
+        - generic: 黄昏
+        - generic: 17:30
+      - button "傍晚 19:00":
+        - generic: 傍晚
+        - generic: 19:00
+      - button "深夜 00:00":
+        - generic: 深夜
+        - generic: 00:00
+    - checkbox "时间自然流逝" [checked]
+    - generic: 时间自然流逝
+    - paragraph: 现实 1 秒 = 岛上 1 分钟。暂停世界时，时间也会暂停。
+    - group "天气":
+      - generic: 天气
+      - button "晴天" [pressed]
+      - button "下雨"
+      - button "下雪"
+    - group "画面质量":
+      - generic: 画面质量
+      - button "流畅" [pressed]
+      - button "高清"
+    - paragraph: 如果移动时卡顿，可以切换到流畅。
+    - group "声音":
+      - generic: 声音
+      - button "主静音"
+      - generic: 声音已开启
+      - generic: 音乐
+      - generic: 100%
+      - slider "音乐": "1"
+      - generic: 音效
+      - generic: 100%
+      - slider "音效": "1"
+    - generic "操作"
+    - generic "致谢"
+    - link "← 回到简历":
+      - /url: /#about

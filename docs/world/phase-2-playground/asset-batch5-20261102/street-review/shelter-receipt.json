@@ -1,0 +1,165 @@
+{
+  "asset": "shelter",
+  "sourceJSONSHA256": "494e93739c6f2d8f5a61b38244cde1d537174c73633a3d126b43574261cacb36",
+  "runtimeSourceSHA256": {
+    "WorldStreetAssets.ts": "2b8eb883b69c7c88593b3ae7285f464e5baec4dfe0f730d65cea8c934ea6626b",
+    "WorldStreetFacilityCraft.ts": "2dc1e4f73a675b690c90d4bf1ac82b400dedb27f7c681518d526144f30503561",
+    "WorldStreetGeometry.ts": "b240724f8ef8784d716d44372078733fdf5750bffe7b71728ed7f205234a6134"
+  },
+  "blend": {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/street/native/shelter.blend",
+    "sha256": "479d71769b6a8613eb598905439bfe12c29c50c745addab478bcd97e864b5b45"
+  },
+  "glb": {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/street/shelter.glb",
+    "sha256": "c60fb6d3e6fd2ca5c9cfb3047ddf9a2b7d094a5e38e3fc348cf98e415c1ad6e3",
+    "bytes": 204844
+  },
+  "baselineTriangles": 720,
+  "nativeTriangles": 1828,
+  "freshTriangles": 1828,
+  "nativeBoundsBlender": [
+    [
+      -0.9869999885559082,
+      -1.7380000352859497,
+      0.0
+    ],
+    [
+      0.800000011920929,
+      1.7380000352859497,
+      2.4752933979034424
+    ]
+  ],
+  "freshBoundsBlender": [
+    [
+      -0.9869999885559082,
+      -1.7380000352859497,
+      0.0
+    ],
+    [
+      0.800000011920929,
+      1.7380000352859497,
+      2.4752933979034424
+    ]
+  ],
+  "freshBoundsMaxDelta": 0.0,
+  "dimensionsMetres": [
+    1.7870000004768372,
+    3.4760000705718994,
+    2.4752933979034424
+  ],
+  "nativeParts": 17,
+  "nativeMaterialResponses": 9,
+  "renderer": "5.1.2",
+  "rig": {
+    "camera": [
+      -5.197051525115967,
+      6.654850482940674,
+      5.454738616943359
+    ],
+    "rotation": [
+      1.1050570011138916,
+      -1.2469731913711257e-08,
+      -2.4875102043151855
+    ],
+    "orthoScale": 4.935920238494873,
+    "resolution": [
+      640,
+      640
+    ],
+    "samples": 16,
+    "viewTransform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "exposure": 0,
+    "lights": [
+      {
+        "name": "RIG.key",
+        "location": [
+          -5.830399990081787,
+          1.9118000268936157,
+          10.798999786376953
+        ],
+        "rotation": [
+          0.5639426708221436,
+          -6.093124227390945e-08,
+          -1.8925468921661377
+        ],
+        "energy": 2054.0380859375,
+        "size": 4.518800258636475,
+        "colour": [
+          1.0,
+          0.9100000262260437,
+          0.800000011920929
+        ]
+      },
+      {
+        "name": "RIG.fill",
+        "location": [
+          5.640400409698486,
+          3.8236000537872314,
+          6.975399971008301
+        ],
+        "rotation": [
+          0.876815676689148,
+          5.441737371825184e-08,
+          2.158798933029175
+        ],
+        "energy": 1208.2576904296875,
+        "size": 4.518800258636475,
+        "colour": [
+          0.7699999809265137,
+          0.8700000047683716,
+          1.0
+        ]
+      },
+      {
+        "name": "RIG.rim",
+        "location": [
+          -0.0949999988079071,
+          -5.735400199890137,
+          8.887200355529785
+        ],
+        "rotation": [
+          0.6435012817382812,
+          -0.0,
+          0.0
+        ],
+        "energy": 1449.9091796875,
+        "size": 4.518800258636475,
+        "colour": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  },
+  "images": [
+    {
+      "stage": "baseline",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/shelter-baseline.png",
+      "sha256": "a1cfd52c24e1101993f1a7005461484b5d95b032d301e613839e72428e810cb5"
+    },
+    {
+      "stage": "native",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/shelter-native.png",
+      "sha256": "0f08e508824eb83f6bb71e3592a4e407c544453a5cc6cac2ee722720cfb736a8"
+    },
+    {
+      "stage": "fresh",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/shelter-fresh.png",
+      "sha256": "ab4080a2a3e8e419626a04108eeba12d8f664465fd11a6f1370b5f179f729bf9"
+    },
+    {
+      "stage": "clay",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/shelter-clay.png",
+      "sha256": "8e3a787f7a91d03b0236e55af9c138762f5b53fd48730e4b6889442013e621ed"
+    }
+  ],
+  "status": "generated; visual acceptance pending primary inspection",
+  "limitations": [
+    "Runtime Builder geometry is authoritative; GLB is the fresh portable proof.",
+    "Offline neutral poster placeholder and fixed signal state; runtime atlas/clock remain unchanged.",
+    "No browser/performance/interaction acceptance is implied."
+  ]
+}

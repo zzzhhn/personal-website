@@ -12,6 +12,7 @@
 import {
   Builder, S, bar, bezier, box, cbox, cyl, lathe, plate, rectPoly, regularPoly, tube, type Surf, type V3,
 } from './WorldStreetGeometry.ts';
+import { finishStreetFacility } from './WorldStreetFacilityCraft.ts';
 
 export type Lod = { L0: Builder; L1: Builder };
 type Cell = [number, number, number, number];
@@ -72,7 +73,7 @@ export function lampGeometry(o: LampOpts) {
     lathe(B, [[0, -.075], [R * .9, -.075], [R, -.06]], S.lensWarm, { sides: hi ? 16 : 6, caps: false });
     if (o.cyanRing !== false && hi) lathe(B, [[R + .016, -.045], [R + .016, -.03]], S.cyan, { sides: 16, caps: false });
   });
-  return B;
+  return finishStreetFacility(B, 'lamp', o.lod ?? 0, o);
 }
 export const lamp = (): Lod => ({ L0: lampGeometry({ height: 4.4, arm: 1.35 }), L1: lampGeometry({ height: 4.4, arm: 1.35, lod: 1 }) });
 /** Ground point of the lamp light (local), for the night light pool. */
@@ -117,7 +118,7 @@ export function signalGeometry(lod: 0 | 1) {
   B.part('head');
   B.tr([0, 4.98, -3.05], [0, 0, 0], () => { bar(B, [0, .46, 0], [0, .3, 0], .03, S.slate, 6); signalHead(B, hi); });
   if (hi) { B.part('near-head'); B.tr([-.16, 2.1, 0], [0, 0, 0], () => signalHead(B, hi)); }
-  return B;
+  return finishStreetFacility(B, 'signal', lod);
 }
 export const signal = (): Lod => ({ L0: signalGeometry(0), L1: signalGeometry(1) });
 
@@ -189,7 +190,7 @@ export function binGeometry(lod: 0 | 1) {
     B.tr([0, .93, .2], [-.55, 0, 0], () => box(B, [-.11, -.006, -.05], [.11, .006, .05], S.black, .003));
     lathe(B, [[.277, .7], [.279, .72], [.277, .74]], S.galv, { sides: n, caps: false, smooth: 60 });
   }
-  return B;
+  return finishStreetFacility(B, 'bin', lod);
 }
 export const bin = (): Lod => ({ L0: binGeometry(0), L1: binGeometry(1) });
 export const delineator = (): Lod => ({ L0: delineatorGeometry(0), L1: delineatorGeometry(1) });
@@ -234,7 +235,7 @@ export function roadblockGeometry(lod: 0 | 1) {
   };
   B.part('boards', false);
   for (const side of [-1, 1]) { board(.66, .22, side); board(.38, .2, side); }
-  return B;
+  return finishStreetFacility(B, 'roadblock', lod);
 }
 export const roadblock = (): Lod => ({ L0: roadblockGeometry(0), L1: roadblockGeometry(1) });
 
@@ -264,7 +265,7 @@ export function benchGeometry(lod: 0 | 1) {
   const nb = hi ? 3 : 2;
   for (let i = 0; i < nb; i++) { const t = (i + .5) / nb, y = .55 + t * .3, z = .24 + t * .06; B.tr([0, y, z], [-.2, 0, 0], () => box(B, [-L / 2, -.04, -.015], [L / 2, .04, .015], S.woodLight, hi ? .008 : 0)); }
   if (hi) { B.part('bolts', false); for (const x of [-.78, .78]) for (let i = 0; i < ns; i++) { const z = -.24 + i * .48 / (ns - 1); B.tr([x, 0, z], [0, 0, 0], () => cyl(B, .009, .009, .47, .476, S.iron, 6)); } }
-  return B;
+  return finishStreetFacility(B, 'bench', lod);
 }
 export const bench = (): Lod => ({ L0: benchGeometry(0), L1: benchGeometry(1) });
 
@@ -310,7 +311,7 @@ export function shelterGeometry(lod: 0 | 1, posterCell: Cell) {
   B.part('perch');
   box(B, [D / 2 - .5, .46, -L / 2 + .3], [D / 2 - .1, .5, L / 2 - .3], S.woodLight, hi ? .01 : 0);
   for (const z of [-L / 2 + .45, 0, L / 2 - .45]) box(B, [D / 2 - .14, .04, z - .03], [D / 2 - .1, .46, z + .03], S.slate, hi ? .006 : 0);
-  return B;
+  return finishStreetFacility(B, 'shelter', lod);
 }
 
 Object.assign(BUDGET, { roadblock: [900, 270], bench: [1700, 400], bollard: [380, 110], shelter: [1100, 400] });
@@ -333,7 +334,7 @@ export function seawallBay(lod: 0 | 1, len = 2) {
     bar(B, [0, .14, 0], [len, .14, 0], .02, paint, 6);
     for (let i = 1; i <= 3; i++) bar(B, [len * i / 4, .14, 0], [len * i / 4, .98, 0], .012, paint, 5);
   }
-  return B;
+  return finishStreetFacility(B, 'seawallBay', lod, { len });
 }
 /** Collision solid of a rail run (same extent as the visual): one thin box per bay span. */
 export function railCollider(len: number, h: number, thick: number) {
@@ -379,7 +380,7 @@ export function timberPost(lod: 0 | 1) {
   const B = new Builder(), hi = lod === 0, n = hi ? 10 : 5;
   B.part('post');
   lathe(B, hi ? [[.1, -.45], [.1, .4], [.096, .5], [.07, .55], [0, .57]] : [[.1, -.45], [.1, .5], [0, .57]], S.woodMid, { sides: n, smooth: 50 });
-  return B;
+  return finishStreetFacility(B, 'timberPost', lod);
 }
 /** Hill timber rail beam (knockable): log along local X centred on 0, resting on the post domes.
  * Origin at its bottom centre. Bark rings (low ridges) every 0.8 m on L0. */
@@ -392,7 +393,7 @@ export function timberBeam(lod: 0 | 1, len: number) {
     prof.push([r, len - .02], [r * .8, len]);
     lathe(B, prof, S.woodMid, { sides: hi ? 10 : 5, smooth: 40, surfs: prof.slice(1).map((_, i) => (i === 0 || i === prof.length - 2 ? S.woodLight : S.woodMid)) });
   });
-  return B;
+  return finishStreetFacility(B, 'timberBeam', lod, { len });
 }
 
 /** Bridge parapet (structural, fixed): local X along the deck from 0 to len, deck level y = 0, height 1.25.
@@ -517,3 +518,6 @@ export function billboard(lod: 0 | 1, cell: Cell) {
 const _extra3 = extraAssets3;
 export const extraAssets4 = () => ({ ..._extra3(), yearPillar: { L0: yearPillar(0, [0, 0, 1, 1]), L1: yearPillar(1, [0, 0, 1, 1]) }, billboard: { L0: billboard(0, [0, 0, 1, 1]), L1: billboard(1, [0, 0, 1, 1]) } });
 Object.assign(BUDGET, { yearPillar: [1100, 300], billboard: [1000, 300] });
+// Batch 5 measured close-range construction, with unchanged distant geometry and collision proxies.
+Object.assign(BUDGET, { lamp: [2200, 420], signal: [3300, 560], bin: [2250, 270], shelter: [1900, 400],
+  roadblock: [1500, 270], seawallBay: [680, 130], timberPost: [300, 30] });

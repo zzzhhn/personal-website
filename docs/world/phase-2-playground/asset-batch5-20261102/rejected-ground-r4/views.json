@@ -1,0 +1,411 @@
+{
+  "v-canopy": {
+    "player": [
+      -35,
+      7,
+      39
+    ],
+    "position": [
+      -33.6,
+      9.2,
+      39
+    ],
+    "target": [
+      -42,
+      7.1,
+      30
+    ]
+  },
+  "v-ground": {
+    "player": [
+      -66,
+      3,
+      4
+    ],
+    "position": [
+      -61,
+      4.0,
+      8
+    ],
+    "target": [
+      -66,
+      1.45,
+      4
+    ]
+  },
+  "n-camp": {
+    "player": [
+      -30.5,
+      6.5,
+      41.45
+    ],
+    "purpose": "Full camp normal follow view; standing on the existing flat C14 display-pad corner. No physics or camera freeze."
+  },
+  "n-grass": {
+    "player": [
+      -100,
+      2.3,
+      6
+    ]
+  },
+  "n-water": {
+    "player": [
+      -112,
+      2,
+      4
+    ]
+  },
+  "v-tree-medium": {
+    "player": [
+      -43.2956,
+      6.5,
+      53.0348
+    ],
+    "position": [
+      -45.5,
+      7.4,
+      51
+    ],
+    "target": [
+      -52,
+      7.2,
+      45
+    ]
+  },
+  "v-tree-close": {
+    "player": [
+      -46.0319,
+      6.5,
+      49.6418
+    ],
+    "position": [
+      -48.4,
+      7.1,
+      47.8
+    ],
+    "target": [
+      -52,
+      7.6,
+      45
+    ]
+  },
+  "v-patches-medium": {
+    "player": [
+      -55.8787,
+      6.5,
+      41.1213
+    ],
+    "position": [
+      -58,
+      7.3,
+      39
+    ],
+    "target": [
+      -63,
+      4.85,
+      34
+    ]
+  },
+  "v-patches-close": {
+    "player": [
+      -57.6953,
+      6.5,
+      37.7206
+    ],
+    "position": [
+      -60,
+      6.3,
+      35.8
+    ],
+    "target": [
+      -62.4,
+      4.85,
+      33.8
+    ]
+  },
+  "v-bench": {
+    "player": [
+      24.9,
+      3.13,
+      -31.9
+    ],
+    "position": [
+      27.3,
+      2.3,
+      -30.1
+    ],
+    "target": [
+      30.1,
+      1.63,
+      -28
+    ],
+    "note": "Promenade bench; front is local -Z. Seat datum unchanged."
+  },
+  "v-shelter": {
+    "player": [
+      24.0473,
+      3.9,
+      -25.3894
+    ],
+    "position": [
+      26.2,
+      2.85,
+      -23.3
+    ],
+    "target": [
+      29.6,
+      2.4,
+      -20
+    ],
+    "note": "Look through the open -X street side; show roof frame and cantilever perch."
+  },
+  "v-lamp": {
+    "player": [
+      25.531,
+      5.25,
+      18.8106
+    ],
+    "position": [
+      23,
+      4.45,
+      17.2
+    ],
+    "target": [
+      16.4,
+      3.75,
+      13
+    ],
+    "note": "Actual lamp-0 on avenue; preserve existing light/traffic interfaces."
+  },
+  "v-signal": {
+    "player": [
+      18.26727314891603,
+      5.5,
+      7.103729225331769
+    ],
+    "position": [
+      20.5,
+      4.2,
+      5.1
+    ],
+    "target": [
+      28.3,
+      4.0,
+      -1.9
+    ],
+    "note": "Actual signal-2 on avenue; preserve existing light/traffic interfaces.",
+    "cameraRevision": "r4-inspected-construction-and-clearance"
+  },
+  "v-bin": {
+    "player": [
+      18.6846,
+      3.35,
+      -28.4929
+    ],
+    "position": [
+      16.75,
+      2.55,
+      -26.2
+    ],
+    "target": [
+      15.4,
+      1.85,
+      -24.6
+    ],
+    "note": "Actual bin-0 on street; preserve existing light/traffic interfaces."
+  },
+  "v-roadblock": {
+    "player": [
+      0.6,
+      3.14,
+      23.2
+    ],
+    "position": [
+      -1.2,
+      2.44,
+      25.6
+    ],
+    "target": [
+      -3,
+      1.64,
+      28
+    ],
+    "note": "Actual OBSTACLES_V4[0]; examine folding trestle from an oblique front view."
+  },
+  "v-seawallBay": {
+    "player": [
+      25.48675371782889,
+      3.2,
+      -26.041943067470783
+    ],
+    "position": [
+      28.3,
+      2.45,
+      -25
+    ],
+    "target": [
+      31,
+      1.7,
+      -24
+    ],
+    "note": "First real seawall bay; post includes the original 0.5 m underground sink.",
+    "cameraRevision": "r4-inspected-construction-and-clearance"
+  },
+  "v-timberRail": {
+    "player": [
+      -56.72555867585308,
+      4.45,
+      -75.34647301405913
+    ],
+    "position": [
+      -54,
+      4.0,
+      -76.6
+    ],
+    "target": [
+      -49.26,
+      2.95,
+      -78.78
+    ],
+    "note": "Real hill rail start post; beam datum postY+0.57, sunk base -0.45. Frame wider if the next bay curves.",
+    "cameraRevision": "r4-inspected-construction-and-clearance"
+  },
+  "v-c12": {
+    "player": [
+      -41.5511,
+      7.02,
+      40.0121
+    ],
+    "position": [
+      -41.82,
+      6.16,
+      43.0
+    ],
+    "target": [
+      -42.0,
+      5.5200000000000005,
+      45.0
+    ]
+  },
+  "v-c13": {
+    "player": [
+      -43.13061748157483,
+      6.52,
+      19.488764980009865
+    ],
+    "position": [
+      -41.8,
+      5.55,
+      16.8
+    ],
+    "target": [
+      -41.075,
+      5.02,
+      15.335
+    ],
+    "cameraRevision": "r4-inspected-construction-and-clearance"
+  },
+  "v-c14": {
+    "player": [
+      -34.3116,
+      6.78,
+      36.9737
+    ],
+    "position": [
+      -32.43284525054601,
+      5.808,
+      39.31259630822683
+    ],
+    "target": [
+      -31.393398282201787,
+      5.28,
+      40.60660171779821
+    ]
+  },
+  "v-c15": {
+    "player": [
+      -30.67776980709589,
+      6.83,
+      26.847625879632094
+    ],
+    "position": [
+      -28.4,
+      5.7,
+      28.8
+    ],
+    "target": [
+      -27,
+      5.33,
+      30
+    ],
+    "cameraRevision": "r4-inspected-construction-and-clearance"
+  },
+  "v-c16": {
+    "player": [
+      -51.4348,
+      7.41,
+      37.223
+    ],
+    "position": [
+      -52.95242323878849,
+      6.1404000000000005,
+      39.81083960795382
+    ],
+    "target": [
+      -53.327850634608495,
+      5.91,
+      40.451038225937175
+    ]
+  },
+  "n-patches": {
+    "player": [
+      -59,
+      6.5,
+      37
+    ]
+  },
+  "n-street": {
+    "player": [
+      13.3,
+      2.03,
+      -24.8
+    ],
+    "purpose": "Normal follow view on the existing AIME fixed planar forecourt; no camera or physics freeze. Fixed support top y=1.15."
+  },
+  "v-tree-lod-near": {
+    "player": [
+      -26.925451536040836,
+      6.5,
+      68.28509368512151
+    ],
+    "position": [
+      -28.925451536040836,
+      7.4,
+      66.28509368512151
+    ],
+    "target": [
+      -52,
+      7.2,
+      45
+    ],
+    "expectedRootDistanceM": 31.5
+  },
+  "v-tree-lod-far": {
+    "player": [
+      -26.187979225350553,
+      6.5,
+      68.965374265595
+    ],
+    "position": [
+      -28.187979225350553,
+      7.4,
+      66.965374265595
+    ],
+    "target": [
+      -52,
+      7.2,
+      45
+    ],
+    "expectedRootDistanceM": 32.5
+  }
+}

@@ -1,0 +1,1082 @@
+{
+  "C12_rest_clay": {
+    "position": [
+      3.1966006755828857,
+      -3.1966006755828857,
+      2.699340581893921
+    ],
+    "target": [
+      0.0,
+      0.0,
+      0.6215500235557556
+    ],
+    "orthoScale": 1.7413589477539062,
+    "resolution": 512,
+    "exposure": 0,
+    "worldStrength": 0.55,
+    "keyEnergy": 2.6,
+    "fillEnergy": 0.8,
+    "viewTransform": "Standard",
+    "look": "None",
+    "engine": "BLENDER_EEVEE",
+    "samples": 32,
+    "blenderVersion": "5.1.2",
+    "reviewScript": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/review_camp.py",
+      "bytes": 10206,
+      "sha256": "ceefd620583a05f1466c90e61b3c720c83528550399b449d312535d02891609a"
+    },
+    "sourceNative": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+      "bytes": 803102,
+      "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+    },
+    "freshGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+      "bytes": 1501644,
+      "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+    },
+    "baselineGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C12.glb",
+      "bytes": 26888,
+      "sha256": "6447bb09b27ae63e4518e06c373a9cdb0dba0b3ed1692cd4ce145bc088e04429"
+    },
+    "renders": {
+      "baseline": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C12.glb",
+          "bytes": 26888,
+          "sha256": "6447bb09b27ae63e4518e06c373a9cdb0dba0b3ed1692cd4ce145bc088e04429"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C12_rest_clay_baseline.png",
+          "bytes": 223972,
+          "sha256": "d1f342933515db5fb4b135ff57c7893d7571a230cde925456c2dcff59c9459d3"
+        }
+      },
+      "native": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+          "bytes": 803102,
+          "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C12_rest_clay_native.png",
+          "bytes": 224400,
+          "sha256": "5db19ec802741631a3a51c356de75c8c067017b9c98e2602d59fac520d918f76"
+        }
+      },
+      "fresh": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+          "bytes": 1501644,
+          "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C12_rest_clay_fresh.png",
+          "bytes": 224301,
+          "sha256": "dcf1478f9173bcdedf48833208bdd3269e624ba38dfe1397bf9596f6da2b5083"
+        }
+      }
+    }
+  },
+  "C13_rest_clay": {
+    "position": [
+      1.9274778366088867,
+      -1.9274778366088867,
+      1.3117605447769165
+    ],
+    "target": [
+      0.0,
+      0.0,
+      0.05889999866485596
+    ],
+    "orthoScale": 0.47519332766532896,
+    "resolution": 512,
+    "exposure": 0,
+    "worldStrength": 0.55,
+    "keyEnergy": 2.6,
+    "fillEnergy": 0.8,
+    "viewTransform": "Standard",
+    "look": "None",
+    "engine": "BLENDER_EEVEE",
+    "samples": 32,
+    "blenderVersion": "5.1.2",
+    "reviewScript": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/review_camp.py",
+      "bytes": 10206,
+      "sha256": "ceefd620583a05f1466c90e61b3c720c83528550399b449d312535d02891609a"
+    },
+    "sourceNative": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+      "bytes": 803102,
+      "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+    },
+    "freshGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+      "bytes": 1501644,
+      "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+    },
+    "baselineGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C13.glb",
+      "bytes": 7384,
+      "sha256": "3d725e051f99cb214afa9da1991917169641834ff0b3394c314fe2a950366ac8"
+    },
+    "renders": {
+      "baseline": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C13.glb",
+          "bytes": 7384,
+          "sha256": "3d725e051f99cb214afa9da1991917169641834ff0b3394c314fe2a950366ac8"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C13_rest_clay_baseline.png",
+          "bytes": 226472,
+          "sha256": "3adac1f1fd32a6353c92ae9d4335003e57fb29470585bd39a4d1791694d3d4f6"
+        }
+      },
+      "native": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+          "bytes": 803102,
+          "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C13_rest_clay_native.png",
+          "bytes": 229180,
+          "sha256": "d30a44928eec114de4fac564b4bdbc32a5f7ee0b5625d160db892ee485b7d4b7"
+        }
+      },
+      "fresh": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+          "bytes": 1501644,
+          "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C13_rest_clay_fresh.png",
+          "bytes": 229070,
+          "sha256": "2f574131ec55d78af71479d1af4e6e7714f885b34c2fa92879756a3af26d1aa3"
+        }
+      }
+    }
+  },
+  "C14_rest_clay": {
+    "position": [
+      2.583865165710449,
+      -2.583865165710449,
+      1.9476124048233032
+    ],
+    "target": [
+      0.0,
+      0.0,
+      0.26809999346733093
+    ],
+    "orthoScale": 1.4075692653656005,
+    "resolution": 512,
+    "exposure": 0,
+    "worldStrength": 0.55,
+    "keyEnergy": 2.6,
+    "fillEnergy": 0.8,
+    "viewTransform": "Standard",
+    "look": "None",
+    "engine": "BLENDER_EEVEE",
+    "samples": 32,
+    "blenderVersion": "5.1.2",
+    "reviewScript": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/review_camp.py",
+      "bytes": 10206,
+      "sha256": "ceefd620583a05f1466c90e61b3c720c83528550399b449d312535d02891609a"
+    },
+    "sourceNative": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+      "bytes": 803102,
+      "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+    },
+    "freshGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+      "bytes": 1501644,
+      "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+    },
+    "baselineGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C14.glb",
+      "bytes": 28112,
+      "sha256": "c45760c5875e665654079cf1cceee9ee9da72cf6f00b19365f20b085a63c44b7"
+    },
+    "renders": {
+      "baseline": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C14.glb",
+          "bytes": 28112,
+          "sha256": "c45760c5875e665654079cf1cceee9ee9da72cf6f00b19365f20b085a63c44b7"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C14_rest_clay_baseline.png",
+          "bytes": 235646,
+          "sha256": "11fb17ab8ce01abe13794dc922f0b05f4d1fe0cb3390c2d4448c3b364f3d7623"
+        }
+      },
+      "native": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+          "bytes": 803102,
+          "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C14_rest_clay_native.png",
+          "bytes": 237619,
+          "sha256": "a8cdc13253b53eb21582dc1a1f85f2291caaba2bb629e7fcc17cd8440453c302"
+        }
+      },
+      "fresh": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+          "bytes": 1501644,
+          "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C14_rest_clay_fresh.png",
+          "bytes": 237513,
+          "sha256": "a454ca99c2ec8aea4c9136882ba908caf56de5d0a8bf3b654db332b26021cf94"
+        }
+      }
+    }
+  },
+  "C15_rest_clay": {
+    "position": [
+      2.221818447113037,
+      -2.221818447113037,
+      1.8762319087982178
+    ],
+    "target": [
+      0.0,
+      0.0,
+      0.4320499897003174
+    ],
+    "orthoScale": 1.2103429984126706,
+    "resolution": 512,
+    "exposure": 0,
+    "worldStrength": 0.55,
+    "keyEnergy": 2.6,
+    "fillEnergy": 0.8,
+    "viewTransform": "Standard",
+    "look": "None",
+    "engine": "BLENDER_EEVEE",
+    "samples": 32,
+    "blenderVersion": "5.1.2",
+    "reviewScript": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/review_camp.py",
+      "bytes": 10206,
+      "sha256": "ceefd620583a05f1466c90e61b3c720c83528550399b449d312535d02891609a"
+    },
+    "sourceNative": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+      "bytes": 803102,
+      "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+    },
+    "freshGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+      "bytes": 1501644,
+      "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+    },
+    "baselineGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C15.glb",
+      "bytes": 19700,
+      "sha256": "19784c0ff5c7e7cadf7b1e62c3b9befb0e6c63c0ce4ae3a022e395cfa12efdab"
+    },
+    "renders": {
+      "baseline": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C15.glb",
+          "bytes": 19700,
+          "sha256": "19784c0ff5c7e7cadf7b1e62c3b9befb0e6c63c0ce4ae3a022e395cfa12efdab"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C15_rest_clay_baseline.png",
+          "bytes": 224386,
+          "sha256": "e5110ece95ace82840a74dcac2eb95f4d09f73e91a260d7eb1b7b31ae0d4a2fd"
+        }
+      },
+      "native": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+          "bytes": 803102,
+          "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C15_rest_clay_native.png",
+          "bytes": 228911,
+          "sha256": "99f5a52239dda68ff41ec5d40548fc21b2f2c54b0de1eb6b3564709583335d8e"
+        }
+      },
+      "fresh": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+          "bytes": 1501644,
+          "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C15_rest_clay_fresh.png",
+          "bytes": 228913,
+          "sha256": "0c6e1c1661d5c4d998a4fde9f07903f5007dca7a527ee49fe1cccbae52f50524"
+        }
+      }
+    }
+  },
+  "C16_rest_clay": {
+    "position": [
+      1.9274778366088867,
+      -1.9274778366088867,
+      1.4091604948043823
+    ],
+    "target": [
+      0.0,
+      0.0,
+      0.15629999339580536
+    ],
+    "orthoScale": 0.4381210505962371,
+    "resolution": 512,
+    "exposure": 0,
+    "worldStrength": 0.55,
+    "keyEnergy": 2.6,
+    "fillEnergy": 0.8,
+    "viewTransform": "Standard",
+    "look": "None",
+    "engine": "BLENDER_EEVEE",
+    "samples": 32,
+    "blenderVersion": "5.1.2",
+    "reviewScript": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/review_camp.py",
+      "bytes": 10206,
+      "sha256": "ceefd620583a05f1466c90e61b3c720c83528550399b449d312535d02891609a"
+    },
+    "sourceNative": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+      "bytes": 803102,
+      "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+    },
+    "freshGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+      "bytes": 1501644,
+      "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+    },
+    "baselineGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C16.glb",
+      "bytes": 12988,
+      "sha256": "f64d0543150c866377296dbd4f1a66435de5cc81f5255f4f6faddc67810c3691"
+    },
+    "renders": {
+      "baseline": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C16.glb",
+          "bytes": 12988,
+          "sha256": "f64d0543150c866377296dbd4f1a66435de5cc81f5255f4f6faddc67810c3691"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C16_rest_clay_baseline.png",
+          "bytes": 236308,
+          "sha256": "def295af3b478a2522cc5c4515ecbc241cede90af8e9defbe3024db05ca58928"
+        }
+      },
+      "native": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+          "bytes": 803102,
+          "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C16_rest_clay_native.png",
+          "bytes": 239473,
+          "sha256": "2c8cdc4469e007165525e5b4bfcb2d3e6bbfb9bde43f5283f0fc19e9e7c1088e"
+        }
+      },
+      "fresh": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+          "bytes": 1501644,
+          "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C16_rest_clay_fresh.png",
+          "bytes": 239384,
+          "sha256": "53934474e66d8477203b4def9775292987d70432e3880b7ddf63df002858a93d"
+        }
+      }
+    }
+  },
+  "C12_motion_overview": {
+    "position": [
+      3.1966006755828857,
+      -3.1966006755828857,
+      2.699340581893921
+    ],
+    "target": [
+      0.0,
+      0.0,
+      0.6215500235557556
+    ],
+    "orthoScale": 1.7413589477539062,
+    "resolution": 512,
+    "exposure": 0,
+    "worldStrength": 0.55,
+    "keyEnergy": 2.6,
+    "fillEnergy": 0.8,
+    "viewTransform": "Standard",
+    "look": "None",
+    "engine": "BLENDER_EEVEE",
+    "samples": 32,
+    "blenderVersion": "5.1.2",
+    "reviewScript": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/review_camp.py",
+      "bytes": 10206,
+      "sha256": "ceefd620583a05f1466c90e61b3c720c83528550399b449d312535d02891609a"
+    },
+    "sourceNative": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+      "bytes": 803102,
+      "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+    },
+    "freshGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+      "bytes": 1501644,
+      "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+    },
+    "baselineGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C12.glb",
+      "bytes": 26888,
+      "sha256": "6447bb09b27ae63e4518e06c373a9cdb0dba0b3ed1692cd4ce145bc088e04429"
+    },
+    "renders": {
+      "baseline": {
+        "status": "captured-after-successful-render",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C12.glb",
+          "bytes": 26888,
+          "sha256": "6447bb09b27ae63e4518e06c373a9cdb0dba0b3ed1692cd4ce145bc088e04429"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C12_motion_overview_baseline.png",
+          "bytes": 239896,
+          "sha256": "71e4b199c732726e5373ab102bd140e061c27409ef544ad01996fdcedb4f5f93"
+        }
+      },
+      "native": {
+        "status": "captured-after-successful-render",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+          "bytes": 803102,
+          "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C12_motion_overview_native.png",
+          "bytes": 244256,
+          "sha256": "69baa630b867ecef48c22263ba126b750a6f33c6a54b9f03fd6aa79a790aa758"
+        }
+      },
+      "fresh": {
+        "status": "captured-after-successful-render",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+          "bytes": 1501644,
+          "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C12_motion_overview_fresh.png",
+          "bytes": 243710,
+          "sha256": "9afece93adb01e32bd69da4b5f2794833b3fb331e779a9215243c9b8028e054d"
+        }
+      }
+    }
+  },
+  "C14_motion_overview": {
+    "position": [
+      2.583865165710449,
+      -2.583865165710449,
+      1.9476124048233032
+    ],
+    "target": [
+      0.0,
+      0.0,
+      0.26809999346733093
+    ],
+    "orthoScale": 1.4075692653656005,
+    "resolution": 512,
+    "exposure": 0,
+    "worldStrength": 0.55,
+    "keyEnergy": 2.6,
+    "fillEnergy": 0.8,
+    "viewTransform": "Standard",
+    "look": "None",
+    "engine": "BLENDER_EEVEE",
+    "samples": 32,
+    "blenderVersion": "5.1.2",
+    "reviewScript": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/review_camp.py",
+      "bytes": 10206,
+      "sha256": "ceefd620583a05f1466c90e61b3c720c83528550399b449d312535d02891609a"
+    },
+    "sourceNative": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+      "bytes": 803102,
+      "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+    },
+    "freshGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+      "bytes": 1501644,
+      "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+    },
+    "baselineGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C14.glb",
+      "bytes": 28112,
+      "sha256": "c45760c5875e665654079cf1cceee9ee9da72cf6f00b19365f20b085a63c44b7"
+    },
+    "renders": {
+      "baseline": {
+        "status": "captured-after-successful-render",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C14.glb",
+          "bytes": 28112,
+          "sha256": "c45760c5875e665654079cf1cceee9ee9da72cf6f00b19365f20b085a63c44b7"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C14_motion_overview_baseline.png",
+          "bytes": 255301,
+          "sha256": "2a06527acffda409e7fb783d9d2fbe9d509b94cbace96a71b4df65e29b633803"
+        }
+      },
+      "native": {
+        "status": "captured-after-successful-render",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+          "bytes": 803102,
+          "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C14_motion_overview_native.png",
+          "bytes": 261327,
+          "sha256": "ed54676c9877ea3f63bccfe6942c7616656be5ccdf8e1cf7d9f95cdfabe7d69b"
+        }
+      },
+      "fresh": {
+        "status": "captured-after-successful-render",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+          "bytes": 1501644,
+          "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C14_motion_overview_fresh.png",
+          "bytes": 262100,
+          "sha256": "a0341096790830251a3b79d3b5764f574603563f4deb9b457a328438d1cad6d6"
+        }
+      }
+    }
+  },
+  "C12_rest_overview": {
+    "position": [
+      3.1966006755828857,
+      -3.1966006755828857,
+      2.699340581893921
+    ],
+    "target": [
+      0.0,
+      0.0,
+      0.6215500235557556
+    ],
+    "orthoScale": 1.7413589477539062,
+    "resolution": 512,
+    "exposure": 0,
+    "worldStrength": 0.55,
+    "keyEnergy": 2.6,
+    "fillEnergy": 0.8,
+    "viewTransform": "Standard",
+    "look": "None",
+    "engine": "BLENDER_EEVEE",
+    "samples": 32,
+    "blenderVersion": "5.1.2",
+    "reviewScript": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/review_camp.py",
+      "bytes": 10206,
+      "sha256": "ceefd620583a05f1466c90e61b3c720c83528550399b449d312535d02891609a"
+    },
+    "sourceNative": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+      "bytes": 803102,
+      "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+    },
+    "freshGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+      "bytes": 1501644,
+      "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+    },
+    "baselineGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C12.glb",
+      "bytes": 26888,
+      "sha256": "6447bb09b27ae63e4518e06c373a9cdb0dba0b3ed1692cd4ce145bc088e04429"
+    },
+    "renders": {
+      "baseline": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C12.glb",
+          "bytes": 26888,
+          "sha256": "6447bb09b27ae63e4518e06c373a9cdb0dba0b3ed1692cd4ce145bc088e04429"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C12_rest_overview_baseline.png",
+          "bytes": 240174,
+          "sha256": "94c6dc936a52175be1961941703982855180ca2fabecf05c5edcf3d6165a87d6"
+        }
+      },
+      "native": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+          "bytes": 803102,
+          "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C12_rest_overview_native.png",
+          "bytes": 243881,
+          "sha256": "bfb7787af83e9cf204f7633c6083ad40c73d17bb6960e11970eb0b45134e7905"
+        }
+      },
+      "fresh": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+          "bytes": 1501644,
+          "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C12_rest_overview_fresh.png",
+          "bytes": 243807,
+          "sha256": "0d7d9a8fffbd0064d8719a5867d04416c91482c93182d259eb23bbd4dfbfff33"
+        }
+      }
+    }
+  },
+  "C13_rest_overview": {
+    "position": [
+      1.9274778366088867,
+      -1.9274778366088867,
+      1.3117605447769165
+    ],
+    "target": [
+      0.0,
+      0.0,
+      0.05889999866485596
+    ],
+    "orthoScale": 0.47519332766532896,
+    "resolution": 512,
+    "exposure": 0,
+    "worldStrength": 0.55,
+    "keyEnergy": 2.6,
+    "fillEnergy": 0.8,
+    "viewTransform": "Standard",
+    "look": "None",
+    "engine": "BLENDER_EEVEE",
+    "samples": 32,
+    "blenderVersion": "5.1.2",
+    "reviewScript": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/review_camp.py",
+      "bytes": 10206,
+      "sha256": "ceefd620583a05f1466c90e61b3c720c83528550399b449d312535d02891609a"
+    },
+    "sourceNative": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+      "bytes": 803102,
+      "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+    },
+    "freshGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+      "bytes": 1501644,
+      "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+    },
+    "baselineGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C13.glb",
+      "bytes": 7384,
+      "sha256": "3d725e051f99cb214afa9da1991917169641834ff0b3394c314fe2a950366ac8"
+    },
+    "renders": {
+      "baseline": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C13.glb",
+          "bytes": 7384,
+          "sha256": "3d725e051f99cb214afa9da1991917169641834ff0b3394c314fe2a950366ac8"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C13_rest_overview_baseline.png",
+          "bytes": 236548,
+          "sha256": "c41f93088ead4eed882041f3cc91972a6e27c100e52eaea8dc7b9fc8946cf545"
+        }
+      },
+      "native": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+          "bytes": 803102,
+          "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C13_rest_overview_native.png",
+          "bytes": 238996,
+          "sha256": "651f7ba311ae1e74d40320536950610826d271ff538c245478d634eb2fb5c977"
+        }
+      },
+      "fresh": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+          "bytes": 1501644,
+          "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C13_rest_overview_fresh.png",
+          "bytes": 238849,
+          "sha256": "e3200e1cbe1b6c6c21fe816901a197154c035bc63be80f56fc12a4c3a9aee24b"
+        }
+      }
+    }
+  },
+  "C14_rest_overview": {
+    "position": [
+      2.583865165710449,
+      -2.583865165710449,
+      1.9476124048233032
+    ],
+    "target": [
+      0.0,
+      0.0,
+      0.26809999346733093
+    ],
+    "orthoScale": 1.4075692653656005,
+    "resolution": 512,
+    "exposure": 0,
+    "worldStrength": 0.55,
+    "keyEnergy": 2.6,
+    "fillEnergy": 0.8,
+    "viewTransform": "Standard",
+    "look": "None",
+    "engine": "BLENDER_EEVEE",
+    "samples": 32,
+    "blenderVersion": "5.1.2",
+    "reviewScript": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/review_camp.py",
+      "bytes": 10206,
+      "sha256": "ceefd620583a05f1466c90e61b3c720c83528550399b449d312535d02891609a"
+    },
+    "sourceNative": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+      "bytes": 803102,
+      "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+    },
+    "freshGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+      "bytes": 1501644,
+      "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+    },
+    "baselineGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C14.glb",
+      "bytes": 28112,
+      "sha256": "c45760c5875e665654079cf1cceee9ee9da72cf6f00b19365f20b085a63c44b7"
+    },
+    "renders": {
+      "baseline": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C14.glb",
+          "bytes": 28112,
+          "sha256": "c45760c5875e665654079cf1cceee9ee9da72cf6f00b19365f20b085a63c44b7"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C14_rest_overview_baseline.png",
+          "bytes": 251578,
+          "sha256": "cf5f4c686311277c81721b54632c9919956919883f0fe1d026cb736f18255e2c"
+        }
+      },
+      "native": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+          "bytes": 803102,
+          "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C14_rest_overview_native.png",
+          "bytes": 258067,
+          "sha256": "b958af00ed8f72817e0afe04d3c915ecec43007afce35d11811f157ab1d6dafa"
+        }
+      },
+      "fresh": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+          "bytes": 1501644,
+          "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C14_rest_overview_fresh.png",
+          "bytes": 257836,
+          "sha256": "daa648b51e5bc4de38696798ede46606caa781b78a4cb21e6dccf5d34e7a50cd"
+        }
+      }
+    }
+  },
+  "C15_rest_overview": {
+    "position": [
+      2.221818447113037,
+      -2.221818447113037,
+      1.8762319087982178
+    ],
+    "target": [
+      0.0,
+      0.0,
+      0.4320499897003174
+    ],
+    "orthoScale": 1.2103429984126706,
+    "resolution": 512,
+    "exposure": 0,
+    "worldStrength": 0.55,
+    "keyEnergy": 2.6,
+    "fillEnergy": 0.8,
+    "viewTransform": "Standard",
+    "look": "None",
+    "engine": "BLENDER_EEVEE",
+    "samples": 32,
+    "blenderVersion": "5.1.2",
+    "reviewScript": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/review_camp.py",
+      "bytes": 10206,
+      "sha256": "ceefd620583a05f1466c90e61b3c720c83528550399b449d312535d02891609a"
+    },
+    "sourceNative": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+      "bytes": 803102,
+      "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+    },
+    "freshGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+      "bytes": 1501644,
+      "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+    },
+    "baselineGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C15.glb",
+      "bytes": 19700,
+      "sha256": "19784c0ff5c7e7cadf7b1e62c3b9befb0e6c63c0ce4ae3a022e395cfa12efdab"
+    },
+    "renders": {
+      "baseline": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C15.glb",
+          "bytes": 19700,
+          "sha256": "19784c0ff5c7e7cadf7b1e62c3b9befb0e6c63c0ce4ae3a022e395cfa12efdab"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C15_rest_overview_baseline.png",
+          "bytes": 240028,
+          "sha256": "9c77166bf4abf6a9ad184b9810a141d20ae9528cbc27f1d92935e7b383addbe8"
+        }
+      },
+      "native": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+          "bytes": 803102,
+          "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C15_rest_overview_native.png",
+          "bytes": 251813,
+          "sha256": "64ca3f681b4b15d424e5f43b1cae900a9aa4594f067345a864ba6fcf48305e96"
+        }
+      },
+      "fresh": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+          "bytes": 1501644,
+          "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C15_rest_overview_fresh.png",
+          "bytes": 251780,
+          "sha256": "c10a1d3f39dd9cb8696ebfd40d6f07db84b75c783bd51c733672f8e560192586"
+        }
+      }
+    }
+  },
+  "C16_rest_overview": {
+    "position": [
+      1.9274778366088867,
+      -1.9274778366088867,
+      1.4091604948043823
+    ],
+    "target": [
+      0.0,
+      0.0,
+      0.15629999339580536
+    ],
+    "orthoScale": 0.4381210505962371,
+    "resolution": 512,
+    "exposure": 0,
+    "worldStrength": 0.55,
+    "keyEnergy": 2.6,
+    "fillEnergy": 0.8,
+    "viewTransform": "Standard",
+    "look": "None",
+    "engine": "BLENDER_EEVEE",
+    "samples": 32,
+    "blenderVersion": "5.1.2",
+    "reviewScript": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/review_camp.py",
+      "bytes": 10206,
+      "sha256": "ceefd620583a05f1466c90e61b3c720c83528550399b449d312535d02891609a"
+    },
+    "sourceNative": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+      "bytes": 803102,
+      "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+    },
+    "freshGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+      "bytes": 1501644,
+      "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+    },
+    "baselineGLB": {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C16.glb",
+      "bytes": 12988,
+      "sha256": "f64d0543150c866377296dbd4f1a66435de5cc81f5255f4f6faddc67810c3691"
+    },
+    "renders": {
+      "baseline": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/public/assets/world/camp/C16.glb",
+          "bytes": 12988,
+          "sha256": "f64d0543150c866377296dbd4f1a66435de5cc81f5255f4f6faddc67810c3691"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C16_rest_overview_baseline.png",
+          "bytes": 254845,
+          "sha256": "6cbb030bfa340ee7447fdfc2eb5118b5d7e96923e9eae0ebe28c665f994cb072"
+        }
+      },
+      "native": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/camp/source/camp-facilities-source.blend",
+          "bytes": 803102,
+          "sha256": "58bd588fe4eb16412bc914dbbab1b583ffff7250cf1b920dc8db393fadb09bbc"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C16_rest_overview_native.png",
+          "bytes": 267182,
+          "sha256": "04d888cd088f597157d9fcdcc31ad0661fbe7a2ec068e61bdc8a8c698e041fe8"
+        }
+      },
+      "fresh": {
+        "status": "recovered-from-deterministic-rig-and-existing-image",
+        "engine": "BLENDER_EEVEE",
+        "blenderVersion": "5.1.2",
+        "input": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+          "bytes": 1501644,
+          "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+        },
+        "image": {
+          "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-review/C16_rest_overview_fresh.png",
+          "bytes": 259212,
+          "sha256": "e4179fd64e9c03b65757aa8bf168d8d3730bb894b87a67218a440023c50a1def"
+        }
+      }
+    }
+  }
+}

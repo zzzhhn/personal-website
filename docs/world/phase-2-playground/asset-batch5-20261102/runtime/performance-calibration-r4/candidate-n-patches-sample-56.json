@@ -1,0 +1,5236 @@
+{
+ "before": {
+  "mode": "candidate",
+  "active": "n-patches",
+  "stage": "normal",
+  "url": "http://127.0.0.1:4359/world/?qa=1&start=camp&quality=balanced&paused=0&review=r4",
+  "at": 1313332.2000000477,
+  "configuration": {
+   "player": [
+    -59,
+    6.5,
+    37
+   ]
+  },
+  "settings": {
+   "paused": false,
+   "shot": null,
+   "position": [
+    -59.01536178588867,
+    5.646768093109131,
+    37.01067352294922
+   ],
+   "quality": "balanced",
+   "light": "noon",
+   "worldMinutes": 720,
+   "timeRunning": false,
+   "weather": "clear",
+   "seat": null,
+   "card": null,
+   "nearbyInteract": null,
+   "activeVehicle": null
+  },
+  "renderInfo": {
+   "drawingBuffer": [
+    1710,
+    931
+   ],
+   "cssSize": [
+    1710,
+    931
+   ],
+   "pixelRatio": 1,
+   "dprRange": [
+    0,
+    1.5
+   ],
+   "quality": "balanced",
+   "antialias": true,
+   "msaaSamples": 4,
+   "toneMapping": 4,
+   "outputColorSpace": "srgb",
+   "shadowMapSize": 1254,
+   "shadowType": 1,
+   "postprocessing": [],
+   "coasterVegetation": [
+    {
+     "name": "coaster-ST1-L0",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-ST1-L1",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 3
+    },
+    {
+     "name": "coaster-ST2-L0",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-ST2-L1",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 3
+    },
+    {
+     "name": "coaster-G19",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    }
+   ]
+  },
+  "player": [
+   -59.01536178588867,
+   5.646768093109131,
+   37.01067352294922
+  ],
+  "grounded": true,
+  "camera": {
+   "yaw": 0.9272952180016123,
+   "pitch": 0.7853981633974483,
+   "distance": 12,
+   "desiredDistance": 12,
+   "driveManualZoom": false,
+   "actualDistance": 11.999999999999996,
+   "firstPerson": false,
+   "preset": 1,
+   "collided": false,
+   "hitDistance": null,
+   "fov": 50,
+   "mode": "walk",
+   "recentering": false,
+   "position": [
+    -53.92419296134552,
+    14.7820494673477,
+    43.79889862234006
+   ],
+   "target": [
+    -59.01536178588866,
+    6.296768093109133,
+    37.010673522949205
+   ],
+   "forwardGround": [
+    -0.6,
+    -0.8000000000000002
+   ],
+   "groundBelowCamera": 4.821502685546875,
+   "clearanceAboveGround": 9.960546781800826,
+   "gamepad": false,
+   "nearPlaneRadius": 0.22,
+   "guideHidden": false,
+   "shoulderOffset": 0,
+   "nearPlaneOverlaps": []
+  },
+  "stats": {
+   "calls": 135,
+   "triangles": 466443,
+   "geometries": 720,
+   "textures": 147,
+   "programs": 390,
+   "camera": [
+    -53.92419296134552,
+    14.7820494673477,
+    43.79889862234006
+   ]
+  },
+  "loop": {
+   "mode": "always",
+   "frame": 17556,
+   "delta": 0.017399999976158143,
+   "night": 0,
+   "windTime": 247.77320000002746,
+   "frameMs": null
+  },
+  "ground": {
+   "candidates": 867,
+   "culled": 394,
+   "uploads": 7104,
+   "instances": 473,
+   "triangles": 7095,
+   "disturbers": 3,
+   "trampleActive": 47,
+   "maxTrample": 0.947,
+   "profile": "balanced",
+   "trampleBytes": 4239972,
+   "atPlayer": 0.947
+  },
+  "bush": {
+   "steps": 15192,
+   "lastInside": [],
+   "horizontalImpulseTotal": 0,
+   "verticalImpulseTotal": 0
+  },
+  "motion": {
+   "time": 247.77320000002746,
+   "strength": 1,
+   "meshes": [
+    {
+     "name": "camp-mesh-C03-C03_mesh",
+     "cloth": true,
+     "wind": false,
+     "curtainShells": 2,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-mesh-C04-C04_mesh",
+     "cloth": true,
+     "wind": false,
+     "curtainShells": 2,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-mesh-G16-crown",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G16-trunk",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L0_leaves",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L0_wood",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L1_leaves",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L1_wood",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G18-crown",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G18-trunk",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_3",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_3",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "town-palms-palm_leaf_dark",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "town-palms-palm_leaf",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "town-palms-palm_trunk",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST1-L0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST1-L1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST2-L0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST2-L1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-G19",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST1-L0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST1-L1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST2-L0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST2-L1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-C03-C03_mesh#sun0",
+     "cloth": true,
+     "wind": false,
+     "curtainShells": 2,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-mesh-C03-C03_mesh#sun1",
+     "cloth": true,
+     "wind": false,
+     "curtainShells": 2,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-mesh-C03-C03_mesh#sun2",
+     "cloth": true,
+     "wind": false,
+     "curtainShells": 2,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-mesh-C04-C04_mesh#sun0",
+     "cloth": true,
+     "wind": false,
+     "curtainShells": 2,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-mesh-C04-C04_mesh#sun1",
+     "cloth": true,
+     "wind": false,
+     "curtainShells": 2,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-mesh-C04-C04_mesh#sun2",
+     "cloth": true,
+     "wind": false,
+     "curtainShells": 2,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-mesh-G16-crown#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G16-crown#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G16-crown#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G16-trunk#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G16-trunk#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G16-trunk#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L0_leaves#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L0_leaves#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L0_leaves#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L0_wood#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L0_wood#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L0_wood#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L1_leaves#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L1_leaves#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L1_leaves#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L1_wood#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L1_wood#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L1_wood#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G18-crown#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G18-crown#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G18-crown#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G18-trunk#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G18-trunk#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G18-trunk#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_1#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_1#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_1#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_2#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_2#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_2#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_3#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_3#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_3#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_1#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_1#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_1#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_2#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_2#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_2#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_3#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_3#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_3#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST1-L0#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST1-L0#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST1-L0#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST1-L1#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST1-L1#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST1-L1#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST2-L0#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST2-L0#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST2-L0#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST2-L1#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST2-L1#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST2-L1#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST1-L0#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST1-L0#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST1-L0#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST1-L1#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST1-L1#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST1-L1#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST2-L0#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST2-L0#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST2-L0#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST2-L1#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST2-L1#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST2-L1#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-asset-G16-instances#group-sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G16-instances#group-sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G16-instances#group-sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G18-instances#group-sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G18-instances#group-sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G18-instances#group-sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G19-instances#group-sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G19-instances#group-sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G19-instances#group-sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G20-instances#group-sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G20-instances#group-sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G20-instances#group-sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "coaster-vegetation#group-sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "coaster-vegetation#group-sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "coaster-vegetation#group-sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    }
+   ]
+  },
+  "street": {
+   "groups": [
+    "street-knock-group",
+    "street-roadblock-group",
+    "street-fixed-group",
+    "street-rails-group",
+    "street-trees-group",
+    "street-foundations-group",
+    "street-windmill-group",
+    "street-year-group",
+    "street-billboard-group"
+   ],
+   "meshes": {
+    "street-knock": {
+     "tris": 6870,
+     "l0": 0,
+     "l1": 6870,
+     "instances": 56
+    },
+    "street-roadblock": {
+     "tris": 384,
+     "l0": 0,
+     "l1": 384,
+     "instances": 4
+    },
+    "street-fixed": {
+     "tris": 2040,
+     "l0": 0,
+     "l1": 2040,
+     "instances": 26,
+     "colliders": 73
+    },
+    "street-rails": {
+     "tris": 1620,
+     "l0": 0,
+     "l1": 1620,
+     "instances": 70,
+     "colliders": 72
+    },
+    "street-rail": {
+     "tris": 288,
+     "l0": 0,
+     "l1": 288,
+     "instances": 22
+    },
+    "street-tree-ST1-L0": {
+     "tris": 0,
+     "instances": 0
+    },
+    "street-tree-ST1-L1": {
+     "tris": 1040,
+     "instances": 1
+    },
+    "street-tree-ST2-L0": {
+     "tris": 0,
+     "instances": 0
+    },
+    "street-tree-ST2-L1": {
+     "tris": 0,
+     "instances": 0
+    },
+    "street-foundation-slabs": {
+     "tris": 36,
+     "l0": 0,
+     "l1": 36,
+     "instances": 3,
+     "colliders": 3
+    },
+    "street-windmill-tower": {
+     "tris": 84,
+     "l0": 0,
+     "l1": 84,
+     "instances": 1,
+     "colliders": 5
+    },
+    "street-windmill-rotor": {
+     "tris": 82,
+     "instances": 1
+    },
+    "street-year": {
+     "tris": 1020,
+     "l0": 0,
+     "l1": 1020,
+     "instances": 6
+    },
+    "street-billboard": {
+     "tris": 396,
+     "l0": 0,
+     "l1": 396,
+     "instances": 3
+    }
+   },
+   "estimatedTriangles": 13860,
+   "frame": {
+    "calls": 135,
+    "triangles": 466443
+   }
+  },
+  "tree": [
+   {
+    "assetId": "G17",
+    "semantic": "L0_leaves",
+    "level": 0,
+    "visible": true,
+    "count": 1,
+    "trianglesPerInstance": 24960,
+    "triangles": 24960,
+    "actualRootMatrices": [
+     [
+      0.8253356218338013,
+      0,
+      -0.5646424889564514,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0.5646424889564514,
+      0,
+      0.8253356218338013,
+      0,
+      -52,
+      4.800000190734863,
+      45,
+      1
+     ]
+    ],
+    "placementRootMatrices": [
+     [
+      0.8253356149096783,
+      0,
+      -0.5646424733950353,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0.5646424733950353,
+      0,
+      0.8253356149096783,
+      0,
+      -52,
+      4.799999999999999,
+      45,
+      1
+     ]
+    ],
+    "wind": {
+     "attribute": true,
+     "itemSize": 4,
+     "pointCount": 21840,
+     "amplitudeMax": 0.13,
+     "depth": true,
+     "distance": true,
+     "sharedClockSeconds": 247.77320000002746
+    }
+   },
+   {
+    "assetId": "G17",
+    "semantic": "L0_wood",
+    "level": 0,
+    "visible": true,
+    "count": 1,
+    "trianglesPerInstance": 10072,
+    "triangles": 10072,
+    "actualRootMatrices": [
+     [
+      0.8253356218338013,
+      0,
+      -0.5646424889564514,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0.5646424889564514,
+      0,
+      0.8253356218338013,
+      0,
+      -52,
+      4.800000190734863,
+      45,
+      1
+     ]
+    ],
+    "placementRootMatrices": [
+     [
+      0.8253356149096783,
+      0,
+      -0.5646424733950353,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0.5646424733950353,
+      0,
+      0.8253356149096783,
+      0,
+      -52,
+      4.799999999999999,
+      45,
+      1
+     ]
+    ],
+    "wind": {
+     "attribute": true,
+     "itemSize": 4,
+     "pointCount": 6545,
+     "amplitudeMax": 0.13,
+     "depth": true,
+     "distance": true,
+     "sharedClockSeconds": 247.77320000002746
+    }
+   },
+   {
+    "assetId": "G17",
+    "semantic": "L1_leaves",
+    "level": 1,
+    "visible": false,
+    "count": 0,
+    "trianglesPerInstance": 4800,
+    "triangles": 0,
+    "actualRootMatrices": [],
+    "placementRootMatrices": [
+     [
+      0.8253356149096783,
+      0,
+      -0.5646424733950353,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0.5646424733950353,
+      0,
+      0.8253356149096783,
+      0,
+      -52,
+      4.799999999999999,
+      45,
+      1
+     ]
+    ],
+    "wind": {
+     "attribute": true,
+     "itemSize": 4,
+     "pointCount": 4800,
+     "amplitudeMax": 0.13,
+     "depth": true,
+     "distance": true,
+     "sharedClockSeconds": 247.77320000002746
+    }
+   },
+   {
+    "assetId": "G17",
+    "semantic": "L1_wood",
+    "level": 1,
+    "visible": false,
+    "count": 0,
+    "trianglesPerInstance": 3322,
+    "triangles": 0,
+    "actualRootMatrices": [],
+    "placementRootMatrices": [
+     [
+      0.8253356149096783,
+      0,
+      -0.5646424733950353,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0.5646424733950353,
+      0,
+      0.8253356149096783,
+      0,
+      -52,
+      4.799999999999999,
+      45,
+      1
+     ]
+    ],
+    "wind": {
+     "attribute": true,
+     "itemSize": 4,
+     "pointCount": 2583,
+     "amplitudeMax": 0.13,
+     "depth": true,
+     "distance": true,
+     "sharedClockSeconds": 247.77320000002746
+    }
+   }
+  ],
+  "camp": {
+   "placements": {
+    "C11": {
+     "position": [
+      -31.39339828220179,
+      4.9,
+      19.393398282201787
+     ],
+     "yaw": -2.356194490192345
+    },
+    "C14": {
+     "position": [
+      -31.393398282201787,
+      4.9,
+      40.60660171779821
+     ],
+     "yaw": 2.356194490192345
+    },
+    "C12": {
+     "position": [
+      -42,
+      4.9,
+      45
+     ],
+     "yaw": 1.5707963267948966
+    },
+    "C15": {
+     "position": [
+      -27,
+      4.9,
+      30
+     ],
+     "yaw": 3.141592653589793
+    },
+    "C13": [
+     {
+      "position": [
+       -41.05,
+       4.9,
+       15.05
+      ],
+      "yaw": -1.6207963267948966
+     },
+     {
+      "position": [
+       -41.1,
+       4.9,
+       15.62
+      ],
+      "yaw": -1.4507963267948965
+     }
+    ],
+    "C16": [
+     -53.327850634608495,
+     5.75,
+     40.451038225937175
+    ],
+    "L01": [
+     [
+      -30,
+      4.8,
+      31
+     ],
+     [
+      -30,
+      4.8,
+      37
+     ]
+    ],
+    "benchTop": {
+     "y": 0.6000006198883057,
+     "x": 0
+    }
+   },
+   "pushables": [
+    {
+     "id": "C12",
+     "home": [
+      -42,
+      4.904,
+      45
+     ],
+     "position": [
+      -42,
+      4.9039998054504395,
+      45
+     ],
+     "sleeping": true,
+     "displacedFor": null
+    },
+    {
+     "id": "C13-0",
+     "home": [
+      -41.05,
+      4.904,
+      15.05
+     ],
+     "position": [
+      -41.04999923706055,
+      4.9039998054504395,
+      15.050000190734863
+     ],
+     "sleeping": true,
+     "displacedFor": null
+    },
+    {
+     "id": "C13-1",
+     "home": [
+      -41.1,
+      4.904,
+      15.62
+     ],
+     "position": [
+      -41.099998474121094,
+      4.9039998054504395,
+      15.619999885559082
+     ],
+     "sleeping": true,
+     "displacedFor": null
+    },
+    {
+     "id": "C15",
+     "home": [
+      -27,
+      4.904,
+      30
+     ],
+     "position": [
+      -27,
+      4.9039998054504395,
+      30
+     ],
+     "sleeping": true,
+     "displacedFor": null
+    }
+   ],
+   "feedback": [],
+   "checks": {
+    "deskOnPad3": true,
+    "trophyOnPad5": true,
+    "flagsOnPad4": true,
+    "benches": [
+     true,
+     true,
+     true,
+     true
+    ]
+   }
+  },
+  "nodes": [
+   "camp-asset-C09-pad2",
+   "camp-asset-G16-instances",
+   "camp-asset-G17-instances",
+   "camp-asset-G18-instances",
+   "camp-asset-G19-instances",
+   "camp-asset-G20-instances",
+   "camp-asset-G21-instances",
+   "camp-asset-G22-instances",
+   "camp-asset-G23-instances",
+   "street-trees-group",
+   "street-tree-ST1-L0",
+   "street-tree-ST1-L1",
+   "street-tree-ST2-L0",
+   "street-tree-ST2-L1",
+   "street-tree-trunks",
+   "street-tree-ST1-L0#sun0",
+   "street-tree-ST1-L0#sun1",
+   "street-tree-ST1-L0#sun2",
+   "street-tree-ST1-L1#sun0",
+   "street-tree-ST1-L1#sun1",
+   "street-tree-ST1-L1#sun2",
+   "street-tree-ST2-L0#sun0",
+   "street-tree-ST2-L0#sun1",
+   "street-tree-ST2-L0#sun2",
+   "street-tree-ST2-L1#sun0",
+   "street-tree-ST2-L1#sun1",
+   "street-tree-ST2-L1#sun2",
+   "camp-asset-G16-instances#group-sun0",
+   "camp-asset-G16-instances#group-sun1",
+   "camp-asset-G16-instances#group-sun2",
+   "camp-asset-G18-instances#group-sun0",
+   "camp-asset-G18-instances#group-sun1",
+   "camp-asset-G18-instances#group-sun2",
+   "camp-asset-G19-instances#group-sun0",
+   "camp-asset-G19-instances#group-sun1",
+   "camp-asset-G19-instances#group-sun2",
+   "camp-asset-G20-instances#group-sun0",
+   "camp-asset-G20-instances#group-sun1",
+   "camp-asset-G20-instances#group-sun2",
+   "world-camp-content",
+   "camp-content-static",
+   "camp-content-glow",
+   "camp-facility-C14-C14_stove",
+   "camp-facility-C16-whole",
+   "camp-content-body-C11",
+   "camp-content-collider-C11",
+   "camp-content-body-C14",
+   "camp-content-collider-C14",
+   "camp-content-body-L01-0",
+   "camp-content-collider-L01-0",
+   "camp-content-body-L01-1",
+   "camp-content-collider-L01-1",
+   "camp-content-C11-tools",
+   "camp-content-C14-wok",
+   "camp-facility-C14-C14_wok",
+   "camp-content-C11-labels",
+   "camp-content-push-C12",
+   "camp-content-C12",
+   "camp-facility-C12-whole",
+   "camp-content-C12-strings",
+   "camp-content-push-C13-0",
+   "camp-content-C13-0",
+   "camp-facility-C13-whole",
+   "camp-content-push-C13-1",
+   "camp-content-C13-1",
+   "camp-facility-C13-whole",
+   "camp-content-push-C15",
+   "camp-content-C15",
+   "camp-facility-C15-whole",
+   "camp-content-light-pools",
+   "camp-content-page-flip"
+  ],
+  "resources": [
+   {
+    "url": "http://127.0.0.1:4359/assets/world/nature-craft/C09.glb",
+    "bytes": 127324,
+    "end": 14147.800000071526
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/camp/C10.glb",
+    "bytes": 23844,
+    "end": 14148
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/nature-craft/G16.glb",
+    "bytes": 311788,
+    "end": 14149.5
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/facility-craft/nature/G17.glb",
+    "bytes": 587904,
+    "end": 14158.600000023842
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/nature-craft/G18.glb",
+    "bytes": 273592,
+    "end": 14156
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/nature-craft/G22.glb",
+    "bytes": 296956,
+    "end": 14158.100000023842
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/nature-craft/G21.glb",
+    "bytes": 301604,
+    "end": 14158.200000047684
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/nature-craft/G23.glb",
+    "bytes": 293268,
+    "end": 14158.700000047684
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/nature-craft/ST1.glb",
+    "bytes": 193500,
+    "end": 25004.800000071526
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/nature-craft/ST2.glb",
+    "bytes": 181260,
+    "end": 25004.600000023842
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/camp/C11.glb",
+    "bytes": 38972,
+    "end": 25019.700000047684
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/camp/C12.glb",
+    "bytes": 26888,
+    "end": 25019.5
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/camp/C13.glb",
+    "bytes": 7384,
+    "end": 25020.100000023842
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/camp/C14.glb",
+    "bytes": 28112,
+    "end": 25021
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/camp/C16.glb",
+    "bytes": 12988,
+    "end": 25021.800000071526
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/camp/C15.glb",
+    "bytes": 19700,
+    "end": 25022.899999976158
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/street/ST2.glb",
+    "bytes": 149308,
+    "end": 28727.399999976158
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/street/ST1.glb",
+    "bytes": 154668,
+    "end": 28727.200000047684
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+    "bytes": 1501644,
+    "end": 28768.300000071526
+   }
+  ]
+ },
+ "after": {
+  "mode": "candidate",
+  "active": "n-patches",
+  "stage": "normal",
+  "url": "http://127.0.0.1:4359/world/?qa=1&start=camp&quality=balanced&paused=0&review=r4",
+  "at": 1319829.6000000238,
+  "configuration": {
+   "player": [
+    -59,
+    6.5,
+    37
+   ]
+  },
+  "settings": {
+   "paused": false,
+   "shot": null,
+   "position": [
+    -59.01536178588867,
+    5.646768093109131,
+    37.01067352294922
+   ],
+   "quality": "balanced",
+   "light": "noon",
+   "worldMinutes": 720,
+   "timeRunning": false,
+   "weather": "clear",
+   "seat": null,
+   "card": null,
+   "nearbyInteract": null,
+   "activeVehicle": null
+  },
+  "renderInfo": {
+   "drawingBuffer": [
+    1710,
+    931
+   ],
+   "cssSize": [
+    1710,
+    931
+   ],
+   "pixelRatio": 1,
+   "dprRange": [
+    0,
+    1.5
+   ],
+   "quality": "balanced",
+   "antialias": true,
+   "msaaSamples": 4,
+   "toneMapping": 4,
+   "outputColorSpace": "srgb",
+   "shadowMapSize": 1254,
+   "shadowType": 1,
+   "postprocessing": [],
+   "coasterVegetation": [
+    {
+     "name": "coaster-ST1-L0",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-ST1-L1",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 3
+    },
+    {
+     "name": "coaster-ST2-L0",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    },
+    {
+     "name": "coaster-ST2-L1",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 3
+    },
+    {
+     "name": "coaster-G19",
+     "visible": false,
+     "instances": 0,
+     "triangles": 0,
+     "matrixUploads": 0
+    }
+   ]
+  },
+  "player": [
+   -59.01536178588867,
+   5.646768093109131,
+   37.01067352294922
+  ],
+  "grounded": true,
+  "camera": {
+   "yaw": 0.9272952180016123,
+   "pitch": 0.7853981633974483,
+   "distance": 12,
+   "desiredDistance": 12,
+   "driveManualZoom": false,
+   "actualDistance": 11.999999999999996,
+   "firstPerson": false,
+   "preset": 1,
+   "collided": false,
+   "hitDistance": null,
+   "fov": 50,
+   "mode": "walk",
+   "recentering": false,
+   "position": [
+    -53.92419296134552,
+    14.7820494673477,
+    43.79889862234006
+   ],
+   "target": [
+    -59.01536178588866,
+    6.296768093109133,
+    37.010673522949205
+   ],
+   "forwardGround": [
+    -0.6,
+    -0.8000000000000002
+   ],
+   "groundBelowCamera": 4.821502685546875,
+   "clearanceAboveGround": 9.960546781800826,
+   "gamepad": false,
+   "nearPlaneRadius": 0.22,
+   "guideHidden": false,
+   "shoulderOffset": 0,
+   "nearPlaneOverlaps": []
+  },
+  "stats": {
+   "calls": 135,
+   "triangles": 466443,
+   "geometries": 720,
+   "textures": 147,
+   "programs": 390,
+   "camera": [
+    -53.92419296134552,
+    14.7820494673477,
+    43.79889862234006
+   ]
+  },
+  "loop": {
+   "mode": "always",
+   "frame": 17946,
+   "delta": 0.016700000047683714,
+   "night": 0,
+   "windTime": 254.27310000000253,
+   "frameMs": null
+  },
+  "ground": {
+   "candidates": 867,
+   "culled": 394,
+   "uploads": 7104,
+   "instances": 473,
+   "triangles": 7095,
+   "disturbers": 3,
+   "trampleActive": 47,
+   "maxTrample": 0.947,
+   "profile": "balanced",
+   "trampleBytes": 4239972,
+   "atPlayer": 0.947
+  },
+  "bush": {
+   "steps": 15582,
+   "lastInside": [],
+   "horizontalImpulseTotal": 0,
+   "verticalImpulseTotal": 0
+  },
+  "motion": {
+   "time": 254.27310000000253,
+   "strength": 1,
+   "meshes": [
+    {
+     "name": "camp-mesh-C03-C03_mesh",
+     "cloth": true,
+     "wind": false,
+     "curtainShells": 2,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-mesh-C04-C04_mesh",
+     "cloth": true,
+     "wind": false,
+     "curtainShells": 2,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-mesh-G16-crown",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G16-trunk",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L0_leaves",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L0_wood",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L1_leaves",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L1_wood",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G18-crown",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G18-trunk",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_3",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_3",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "town-palms-palm_leaf_dark",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "town-palms-palm_leaf",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "town-palms-palm_trunk",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST1-L0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST1-L1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST2-L0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST2-L1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-G19",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST1-L0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST1-L1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST2-L0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST2-L1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-C03-C03_mesh#sun0",
+     "cloth": true,
+     "wind": false,
+     "curtainShells": 2,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-mesh-C03-C03_mesh#sun1",
+     "cloth": true,
+     "wind": false,
+     "curtainShells": 2,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-mesh-C03-C03_mesh#sun2",
+     "cloth": true,
+     "wind": false,
+     "curtainShells": 2,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-mesh-C04-C04_mesh#sun0",
+     "cloth": true,
+     "wind": false,
+     "curtainShells": 2,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-mesh-C04-C04_mesh#sun1",
+     "cloth": true,
+     "wind": false,
+     "curtainShells": 2,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-mesh-C04-C04_mesh#sun2",
+     "cloth": true,
+     "wind": false,
+     "curtainShells": 2,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-mesh-G16-crown#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G16-crown#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G16-crown#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G16-trunk#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G16-trunk#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G16-trunk#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L0_leaves#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L0_leaves#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L0_leaves#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L0_wood#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L0_wood#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L0_wood#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L1_leaves#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L1_leaves#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L1_leaves#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L1_wood#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L1_wood#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-tree-craft-G17-L1_wood#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G18-crown#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G18-crown#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G18-crown#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G18-trunk#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G18-trunk#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G18-trunk#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_1#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_1#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_1#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_2#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_2#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_2#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_3#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_3#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G19-crown_3#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_1#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_1#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_1#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_2#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_2#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_2#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_3#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_3#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-mesh-G20-crown_3#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST1-L0#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST1-L0#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST1-L0#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST1-L1#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST1-L1#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST1-L1#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST2-L0#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST2-L0#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST2-L0#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST2-L1#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST2-L1#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "coaster-ST2-L1#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST1-L0#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST1-L0#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST1-L0#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST1-L1#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST1-L1#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST1-L1#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST2-L0#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST2-L0#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST2-L0#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST2-L1#sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST2-L1#sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "street-tree-ST2-L1#sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": true
+    },
+    {
+     "name": "camp-asset-G16-instances#group-sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G16-instances#group-sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G16-instances#group-sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G18-instances#group-sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G18-instances#group-sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G18-instances#group-sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G19-instances#group-sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G19-instances#group-sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G19-instances#group-sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G20-instances#group-sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G20-instances#group-sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "camp-asset-G20-instances#group-sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "coaster-vegetation#group-sun0",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "coaster-vegetation#group-sun1",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    },
+    {
+     "name": "coaster-vegetation#group-sun2",
+     "cloth": false,
+     "wind": true,
+     "curtainShells": null,
+     "matchingDepth": true,
+     "matchingDistance": false
+    }
+   ]
+  },
+  "street": {
+   "groups": [
+    "street-knock-group",
+    "street-roadblock-group",
+    "street-fixed-group",
+    "street-rails-group",
+    "street-trees-group",
+    "street-foundations-group",
+    "street-windmill-group",
+    "street-year-group",
+    "street-billboard-group"
+   ],
+   "meshes": {
+    "street-knock": {
+     "tris": 6870,
+     "l0": 0,
+     "l1": 6870,
+     "instances": 56
+    },
+    "street-roadblock": {
+     "tris": 384,
+     "l0": 0,
+     "l1": 384,
+     "instances": 4
+    },
+    "street-fixed": {
+     "tris": 2040,
+     "l0": 0,
+     "l1": 2040,
+     "instances": 26,
+     "colliders": 73
+    },
+    "street-rails": {
+     "tris": 1620,
+     "l0": 0,
+     "l1": 1620,
+     "instances": 70,
+     "colliders": 72
+    },
+    "street-rail": {
+     "tris": 288,
+     "l0": 0,
+     "l1": 288,
+     "instances": 22
+    },
+    "street-tree-ST1-L0": {
+     "tris": 0,
+     "instances": 0
+    },
+    "street-tree-ST1-L1": {
+     "tris": 1040,
+     "instances": 1
+    },
+    "street-tree-ST2-L0": {
+     "tris": 0,
+     "instances": 0
+    },
+    "street-tree-ST2-L1": {
+     "tris": 0,
+     "instances": 0
+    },
+    "street-foundation-slabs": {
+     "tris": 36,
+     "l0": 0,
+     "l1": 36,
+     "instances": 3,
+     "colliders": 3
+    },
+    "street-windmill-tower": {
+     "tris": 84,
+     "l0": 0,
+     "l1": 84,
+     "instances": 1,
+     "colliders": 5
+    },
+    "street-windmill-rotor": {
+     "tris": 82,
+     "instances": 1
+    },
+    "street-year": {
+     "tris": 1020,
+     "l0": 0,
+     "l1": 1020,
+     "instances": 6
+    },
+    "street-billboard": {
+     "tris": 396,
+     "l0": 0,
+     "l1": 396,
+     "instances": 3
+    }
+   },
+   "estimatedTriangles": 13860,
+   "frame": {
+    "calls": 135,
+    "triangles": 466443
+   }
+  },
+  "tree": [
+   {
+    "assetId": "G17",
+    "semantic": "L0_leaves",
+    "level": 0,
+    "visible": true,
+    "count": 1,
+    "trianglesPerInstance": 24960,
+    "triangles": 24960,
+    "actualRootMatrices": [
+     [
+      0.8253356218338013,
+      0,
+      -0.5646424889564514,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0.5646424889564514,
+      0,
+      0.8253356218338013,
+      0,
+      -52,
+      4.800000190734863,
+      45,
+      1
+     ]
+    ],
+    "placementRootMatrices": [
+     [
+      0.8253356149096783,
+      0,
+      -0.5646424733950353,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0.5646424733950353,
+      0,
+      0.8253356149096783,
+      0,
+      -52,
+      4.799999999999999,
+      45,
+      1
+     ]
+    ],
+    "wind": {
+     "attribute": true,
+     "itemSize": 4,
+     "pointCount": 21840,
+     "amplitudeMax": 0.13,
+     "depth": true,
+     "distance": true,
+     "sharedClockSeconds": 254.27310000000253
+    }
+   },
+   {
+    "assetId": "G17",
+    "semantic": "L0_wood",
+    "level": 0,
+    "visible": true,
+    "count": 1,
+    "trianglesPerInstance": 10072,
+    "triangles": 10072,
+    "actualRootMatrices": [
+     [
+      0.8253356218338013,
+      0,
+      -0.5646424889564514,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0.5646424889564514,
+      0,
+      0.8253356218338013,
+      0,
+      -52,
+      4.800000190734863,
+      45,
+      1
+     ]
+    ],
+    "placementRootMatrices": [
+     [
+      0.8253356149096783,
+      0,
+      -0.5646424733950353,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0.5646424733950353,
+      0,
+      0.8253356149096783,
+      0,
+      -52,
+      4.799999999999999,
+      45,
+      1
+     ]
+    ],
+    "wind": {
+     "attribute": true,
+     "itemSize": 4,
+     "pointCount": 6545,
+     "amplitudeMax": 0.13,
+     "depth": true,
+     "distance": true,
+     "sharedClockSeconds": 254.27310000000253
+    }
+   },
+   {
+    "assetId": "G17",
+    "semantic": "L1_leaves",
+    "level": 1,
+    "visible": false,
+    "count": 0,
+    "trianglesPerInstance": 4800,
+    "triangles": 0,
+    "actualRootMatrices": [],
+    "placementRootMatrices": [
+     [
+      0.8253356149096783,
+      0,
+      -0.5646424733950353,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0.5646424733950353,
+      0,
+      0.8253356149096783,
+      0,
+      -52,
+      4.799999999999999,
+      45,
+      1
+     ]
+    ],
+    "wind": {
+     "attribute": true,
+     "itemSize": 4,
+     "pointCount": 4800,
+     "amplitudeMax": 0.13,
+     "depth": true,
+     "distance": true,
+     "sharedClockSeconds": 254.27310000000253
+    }
+   },
+   {
+    "assetId": "G17",
+    "semantic": "L1_wood",
+    "level": 1,
+    "visible": false,
+    "count": 0,
+    "trianglesPerInstance": 3322,
+    "triangles": 0,
+    "actualRootMatrices": [],
+    "placementRootMatrices": [
+     [
+      0.8253356149096783,
+      0,
+      -0.5646424733950353,
+      0,
+      0,
+      1,
+      0,
+      0,
+      0.5646424733950353,
+      0,
+      0.8253356149096783,
+      0,
+      -52,
+      4.799999999999999,
+      45,
+      1
+     ]
+    ],
+    "wind": {
+     "attribute": true,
+     "itemSize": 4,
+     "pointCount": 2583,
+     "amplitudeMax": 0.13,
+     "depth": true,
+     "distance": true,
+     "sharedClockSeconds": 254.27310000000253
+    }
+   }
+  ],
+  "camp": {
+   "placements": {
+    "C11": {
+     "position": [
+      -31.39339828220179,
+      4.9,
+      19.393398282201787
+     ],
+     "yaw": -2.356194490192345
+    },
+    "C14": {
+     "position": [
+      -31.393398282201787,
+      4.9,
+      40.60660171779821
+     ],
+     "yaw": 2.356194490192345
+    },
+    "C12": {
+     "position": [
+      -42,
+      4.9,
+      45
+     ],
+     "yaw": 1.5707963267948966
+    },
+    "C15": {
+     "position": [
+      -27,
+      4.9,
+      30
+     ],
+     "yaw": 3.141592653589793
+    },
+    "C13": [
+     {
+      "position": [
+       -41.05,
+       4.9,
+       15.05
+      ],
+      "yaw": -1.6207963267948966
+     },
+     {
+      "position": [
+       -41.1,
+       4.9,
+       15.62
+      ],
+      "yaw": -1.4507963267948965
+     }
+    ],
+    "C16": [
+     -53.327850634608495,
+     5.75,
+     40.451038225937175
+    ],
+    "L01": [
+     [
+      -30,
+      4.8,
+      31
+     ],
+     [
+      -30,
+      4.8,
+      37
+     ]
+    ],
+    "benchTop": {
+     "y": 0.6000006198883057,
+     "x": 0
+    }
+   },
+   "pushables": [
+    {
+     "id": "C12",
+     "home": [
+      -42,
+      4.904,
+      45
+     ],
+     "position": [
+      -42,
+      4.9039998054504395,
+      45
+     ],
+     "sleeping": true,
+     "displacedFor": null
+    },
+    {
+     "id": "C13-0",
+     "home": [
+      -41.05,
+      4.904,
+      15.05
+     ],
+     "position": [
+      -41.04999923706055,
+      4.9039998054504395,
+      15.050000190734863
+     ],
+     "sleeping": true,
+     "displacedFor": null
+    },
+    {
+     "id": "C13-1",
+     "home": [
+      -41.1,
+      4.904,
+      15.62
+     ],
+     "position": [
+      -41.099998474121094,
+      4.9039998054504395,
+      15.619999885559082
+     ],
+     "sleeping": true,
+     "displacedFor": null
+    },
+    {
+     "id": "C15",
+     "home": [
+      -27,
+      4.904,
+      30
+     ],
+     "position": [
+      -27,
+      4.9039998054504395,
+      30
+     ],
+     "sleeping": true,
+     "displacedFor": null
+    }
+   ],
+   "feedback": [],
+   "checks": {
+    "deskOnPad3": true,
+    "trophyOnPad5": true,
+    "flagsOnPad4": true,
+    "benches": [
+     true,
+     true,
+     true,
+     true
+    ]
+   }
+  },
+  "nodes": [
+   "camp-asset-C09-pad2",
+   "camp-asset-G16-instances",
+   "camp-asset-G17-instances",
+   "camp-asset-G18-instances",
+   "camp-asset-G19-instances",
+   "camp-asset-G20-instances",
+   "camp-asset-G21-instances",
+   "camp-asset-G22-instances",
+   "camp-asset-G23-instances",
+   "street-trees-group",
+   "street-tree-ST1-L0",
+   "street-tree-ST1-L1",
+   "street-tree-ST2-L0",
+   "street-tree-ST2-L1",
+   "street-tree-trunks",
+   "street-tree-ST1-L0#sun0",
+   "street-tree-ST1-L0#sun1",
+   "street-tree-ST1-L0#sun2",
+   "street-tree-ST1-L1#sun0",
+   "street-tree-ST1-L1#sun1",
+   "street-tree-ST1-L1#sun2",
+   "street-tree-ST2-L0#sun0",
+   "street-tree-ST2-L0#sun1",
+   "street-tree-ST2-L0#sun2",
+   "street-tree-ST2-L1#sun0",
+   "street-tree-ST2-L1#sun1",
+   "street-tree-ST2-L1#sun2",
+   "camp-asset-G16-instances#group-sun0",
+   "camp-asset-G16-instances#group-sun1",
+   "camp-asset-G16-instances#group-sun2",
+   "camp-asset-G18-instances#group-sun0",
+   "camp-asset-G18-instances#group-sun1",
+   "camp-asset-G18-instances#group-sun2",
+   "camp-asset-G19-instances#group-sun0",
+   "camp-asset-G19-instances#group-sun1",
+   "camp-asset-G19-instances#group-sun2",
+   "camp-asset-G20-instances#group-sun0",
+   "camp-asset-G20-instances#group-sun1",
+   "camp-asset-G20-instances#group-sun2",
+   "world-camp-content",
+   "camp-content-static",
+   "camp-content-glow",
+   "camp-facility-C14-C14_stove",
+   "camp-facility-C16-whole",
+   "camp-content-body-C11",
+   "camp-content-collider-C11",
+   "camp-content-body-C14",
+   "camp-content-collider-C14",
+   "camp-content-body-L01-0",
+   "camp-content-collider-L01-0",
+   "camp-content-body-L01-1",
+   "camp-content-collider-L01-1",
+   "camp-content-C11-tools",
+   "camp-content-C14-wok",
+   "camp-facility-C14-C14_wok",
+   "camp-content-C11-labels",
+   "camp-content-push-C12",
+   "camp-content-C12",
+   "camp-facility-C12-whole",
+   "camp-content-C12-strings",
+   "camp-content-push-C13-0",
+   "camp-content-C13-0",
+   "camp-facility-C13-whole",
+   "camp-content-push-C13-1",
+   "camp-content-C13-1",
+   "camp-facility-C13-whole",
+   "camp-content-push-C15",
+   "camp-content-C15",
+   "camp-facility-C15-whole",
+   "camp-content-light-pools",
+   "camp-content-page-flip"
+  ],
+  "resources": [
+   {
+    "url": "http://127.0.0.1:4359/assets/world/nature-craft/C09.glb",
+    "bytes": 127324,
+    "end": 14147.800000071526
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/camp/C10.glb",
+    "bytes": 23844,
+    "end": 14148
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/nature-craft/G16.glb",
+    "bytes": 311788,
+    "end": 14149.5
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/facility-craft/nature/G17.glb",
+    "bytes": 587904,
+    "end": 14158.600000023842
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/nature-craft/G18.glb",
+    "bytes": 273592,
+    "end": 14156
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/nature-craft/G22.glb",
+    "bytes": 296956,
+    "end": 14158.100000023842
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/nature-craft/G21.glb",
+    "bytes": 301604,
+    "end": 14158.200000047684
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/nature-craft/G23.glb",
+    "bytes": 293268,
+    "end": 14158.700000047684
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/nature-craft/ST1.glb",
+    "bytes": 193500,
+    "end": 25004.800000071526
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/nature-craft/ST2.glb",
+    "bytes": 181260,
+    "end": 25004.600000023842
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/camp/C11.glb",
+    "bytes": 38972,
+    "end": 25019.700000047684
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/camp/C12.glb",
+    "bytes": 26888,
+    "end": 25019.5
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/camp/C13.glb",
+    "bytes": 7384,
+    "end": 25020.100000023842
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/camp/C14.glb",
+    "bytes": 28112,
+    "end": 25021
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/camp/C16.glb",
+    "bytes": 12988,
+    "end": 25021.800000071526
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/camp/C15.glb",
+    "bytes": 19700,
+    "end": 25022.899999976158
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/street/ST2.glb",
+    "bytes": 149308,
+    "end": 28727.399999976158
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/street/ST1.glb",
+    "bytes": 154668,
+    "end": 28727.200000047684
+   },
+   {
+    "url": "http://127.0.0.1:4359/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+    "bytes": 1501644,
+    "end": 28768.300000071526
+   }
+  ]
+ },
+ "samples": [
+  {
+   "frame": 17647,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17648,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17649,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17650,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17651,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17652,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17653,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17654,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17655,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17656,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17657,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17658,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17659,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17660,
+   "dt": 16.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17661,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17662,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17663,
+   "dt": 16.199999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17664,
+   "dt": 17.300000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17665,
+   "dt": 16.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17666,
+   "dt": 15.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17667,
+   "dt": 17,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17668,
+   "dt": 16.200000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17669,
+   "dt": 16.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17670,
+   "dt": 17.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17671,
+   "dt": 16.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17672,
+   "dt": 16.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17673,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17674,
+   "dt": 16.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17675,
+   "dt": 16.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17676,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17677,
+   "dt": 16,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17678,
+   "dt": 16.299999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17679,
+   "dt": 17,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17680,
+   "dt": 16.300000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17681,
+   "dt": 17.100000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17682,
+   "dt": 16.299999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17683,
+   "dt": 17,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17684,
+   "dt": 16.200000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17685,
+   "dt": 17.09999990463257,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17686,
+   "dt": 17.300000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17687,
+   "dt": 16,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17688,
+   "dt": 17.299999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17689,
+   "dt": 16.100000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17690,
+   "dt": 16.299999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17691,
+   "dt": 17,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17692,
+   "dt": 16.300000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17693,
+   "dt": 17.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17694,
+   "dt": 16.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17695,
+   "dt": 16.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17696,
+   "dt": 15.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17697,
+   "dt": 17,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17698,
+   "dt": 16.300000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17699,
+   "dt": 17.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17700,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17701,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17702,
+   "dt": 15.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17703,
+   "dt": 17.199999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17704,
+   "dt": 17.100000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17705,
+   "dt": 16.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17706,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17707,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17708,
+   "dt": 18.399999976158142,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17709,
+   "dt": 14.899999976158142,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17710,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17711,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17712,
+   "dt": 16.59999990463257,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17713,
+   "dt": 16.800000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17714,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17715,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17716,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17717,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17718,
+   "dt": 16.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17719,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17720,
+   "dt": 16.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17721,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17722,
+   "dt": 15.899999976158142,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17723,
+   "dt": 17.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17724,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17725,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17726,
+   "dt": 15.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17727,
+   "dt": 17.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17728,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17729,
+   "dt": 16,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17730,
+   "dt": 17.199999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17731,
+   "dt": 16,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17732,
+   "dt": 17.300000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17733,
+   "dt": 16.09999990463257,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17734,
+   "dt": 17.300000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17735,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17736,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17737,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17738,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17739,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17740,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17741,
+   "dt": 16.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17742,
+   "dt": 15.899999976158142,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17743,
+   "dt": 17.200000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17744,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17745,
+   "dt": 16.59999990463257,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17746,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17747,
+   "dt": 16.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17748,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17749,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17750,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17751,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17752,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17753,
+   "dt": 15.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17754,
+   "dt": 17.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17755,
+   "dt": 16,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17756,
+   "dt": 16.399999976158142,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17757,
+   "dt": 17.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17758,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17759,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17760,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17761,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17762,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17763,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17764,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17765,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17766,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17767,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17768,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17769,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17770,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17771,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17772,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17773,
+   "dt": 16.800000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17774,
+   "dt": 16.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17775,
+   "dt": 16.199999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17776,
+   "dt": 17.200000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17777,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17778,
+   "dt": 15.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17779,
+   "dt": 17.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17780,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17781,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17782,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17783,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17784,
+   "dt": 15.700000047683718,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17785,
+   "dt": 17.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17786,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17787,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17788,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17789,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17790,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17791,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17792,
+   "dt": 16.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17793,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17794,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17795,
+   "dt": 16,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17796,
+   "dt": 16.399999976158142,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17797,
+   "dt": 17.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17798,
+   "dt": 16.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17799,
+   "dt": 16.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17800,
+   "dt": 16.800000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17801,
+   "dt": 16.399999976158142,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17802,
+   "dt": 16.899999976158142,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17803,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17804,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17805,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17806,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17807,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17808,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17809,
+   "dt": 16.100000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17810,
+   "dt": 19.100000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17811,
+   "dt": 14.299999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17812,
+   "dt": 16.200000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17813,
+   "dt": 17.100000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17814,
+   "dt": 16.199999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17815,
+   "dt": 16.800000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17816,
+   "dt": 17.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17817,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17818,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17819,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17820,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17821,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17822,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17823,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17824,
+   "dt": 15.800000071525576,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17825,
+   "dt": 17.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17826,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17827,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17828,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17829,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17830,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17831,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17832,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17833,
+   "dt": 16.800000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17834,
+   "dt": 16.59999990463257,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17835,
+   "dt": 16.800000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17836,
+   "dt": 16.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17837,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17838,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17839,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17840,
+   "dt": 15.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17841,
+   "dt": 17.199999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17842,
+   "dt": 17.200000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17843,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17844,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17845,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17846,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17847,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17848,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17849,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17850,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17851,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17852,
+   "dt": 16.899999976158142,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17853,
+   "dt": 16.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17854,
+   "dt": 16.800000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17855,
+   "dt": 16.199999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17856,
+   "dt": 16.100000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17857,
+   "dt": 17.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17858,
+   "dt": 15.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17859,
+   "dt": 17,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17860,
+   "dt": 17.300000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17861,
+   "dt": 16.100000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17862,
+   "dt": 17.199999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17863,
+   "dt": 16.100000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17864,
+   "dt": 16.399999976158142,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17865,
+   "dt": 17.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17866,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17867,
+   "dt": 15.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17868,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17869,
+   "dt": 17,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17870,
+   "dt": 17.299999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17871,
+   "dt": 15.700000047683718,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17872,
+   "dt": 17,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17873,
+   "dt": 17.299999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17874,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17875,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17876,
+   "dt": 16.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17877,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17878,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17879,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17880,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17881,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17882,
+   "dt": 16.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17883,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17884,
+   "dt": 16.800000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17885,
+   "dt": 16.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17886,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17887,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17888,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17889,
+   "dt": 16.59999990463257,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17890,
+   "dt": 16.800000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17891,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17892,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17893,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17894,
+   "dt": 16.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17895,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17896,
+   "dt": 15.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17897,
+   "dt": 17,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17898,
+   "dt": 16.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17899,
+   "dt": 17.200000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17900,
+   "dt": 15.699999928474424,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17901,
+   "dt": 17.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17902,
+   "dt": 15.800000071525576,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17903,
+   "dt": 17,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17904,
+   "dt": 16.299999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17905,
+   "dt": 17.100000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17906,
+   "dt": 16.299999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17907,
+   "dt": 17,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17908,
+   "dt": 16.300000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17909,
+   "dt": 17.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17910,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17911,
+   "dt": 19.800000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17912,
+   "dt": 15.699999928474424,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17913,
+   "dt": 14,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17914,
+   "dt": 16.200000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17915,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17916,
+   "dt": 17.199999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17917,
+   "dt": 17.200000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17918,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17919,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17920,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17921,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17922,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17923,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17924,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17925,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17926,
+   "dt": 15.700000047683718,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17927,
+   "dt": 17.100000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17928,
+   "dt": 16.199999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17929,
+   "dt": 17.800000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17930,
+   "dt": 16.399999976158142,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17931,
+   "dt": 16.799999952316284,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17932,
+   "dt": 16.800000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17933,
+   "dt": 16.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17934,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17935,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17936,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17937,
+   "dt": 16.699999928474426,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17938,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17939,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17940,
+   "dt": 16.100000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17941,
+   "dt": 17.5,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17942,
+   "dt": 16.59999990463257,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17943,
+   "dt": 16.600000023841858,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17944,
+   "dt": 16.800000071525574,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17945,
+   "dt": 16.59999990463257,
+   "calls": 135,
+   "triangles": 466443
+  },
+  {
+   "frame": 17946,
+   "dt": 16.700000047683716,
+   "calls": 135,
+   "triangles": 466443
+  }
+ ],
+ "summary": {
+  "fps": 59.99880002371343,
+  "p50": 16.699999928474426,
+  "p95": 17.5,
+  "max": 19.800000071525574,
+  "over33": 0,
+  "gpuMs": null
+ }
+}

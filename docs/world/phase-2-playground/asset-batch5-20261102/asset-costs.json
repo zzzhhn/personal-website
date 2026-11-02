@@ -1,0 +1,215 @@
+{
+  "baselineAssetsUnchanged": 7,
+  "assets": [
+    {
+      "path": "public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+      "bytes": 1501644,
+      "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b",
+      "triangles": 32900,
+      "primitives": 31,
+      "materials": 10,
+      "textures": 0,
+      "nodes": [
+        "C12_guitar",
+        "C12_stand",
+        "C12_strings",
+        "C12",
+        "C13_dumbbell",
+        "C13",
+        "C14_stove",
+        "C14_wok",
+        "C14",
+        "C15_case",
+        "C15_handle",
+        "C15",
+        "C16_frame",
+        "C16_glass",
+        "C16_wick",
+        "C16"
+      ],
+      "extensionNames": []
+    },
+    {
+      "path": "public/assets/world/facility-craft/nature/G17.glb",
+      "bytes": 587904,
+      "sha256": "e6f3d4c944b2060db5c2bf967f2c6b0a60db2e18ea7506560bbb1469a12ee506",
+      "triangles": 43154,
+      "primitives": 4,
+      "materials": 2,
+      "textures": 3,
+      "nodes": [
+        "L0_leaves",
+        "L0_wood",
+        "L1_leaves",
+        "L1_wood",
+        "G17"
+      ],
+      "extensionNames": [
+        "KHR_draco_mesh_compression"
+      ]
+    },
+    {
+      "path": "public/assets/world/facility-craft/street/bench.glb",
+      "bytes": 127148,
+      "sha256": "b910f7fc22727c4587edb7cdd6512ed4b617f7be1279a3514f13a9e0ce7451af",
+      "triangles": 1328,
+      "primitives": 14,
+      "materials": 4,
+      "textures": 0,
+      "nodes": [
+        "bench.native.L0.bench.back.slat-0.8",
+        "bench.native.L0.bench.back.slat-1.9",
+        "bench.native.L0.bench.back.slat-2.10",
+        "bench.native.L0.bench.leg-0.78.0",
+        "bench.native.L0.bench.leg0.78.1",
+        "bench.native.L0.bench.seat.slat-0.3",
+        "bench.native.L0.bench.seat.slat-1.4",
+        "bench.native.L0.bench.seat.slat-2.5",
+        "bench.native.L0.bench.seat.slat-3.6",
+        "bench.native.L0.bench.seat.slat-4.7",
+        "bench.native.L0.bench.seat.underframe.2",
+        "bench.native.L0.ROOT"
+      ],
+      "extensionNames": []
+    },
+    {
+      "path": "public/assets/world/facility-craft/street/bin.glb",
+      "bytes": 151532,
+      "sha256": "419a43e1b89033ef71182fe02185a22e52cb1aeb78388cdff541cde942417481",
+      "triangles": 2180,
+      "primitives": 7,
+      "materials": 5,
+      "textures": 0,
+      "nodes": [
+        "bin.native.L0.bin.drum.0",
+        "bin.native.L0.bin.lid.1",
+        "bin.native.L0.bin.lid.hinge.3",
+        "bin.native.L0.bin.mouth.inner-baffle.2",
+        "bin.native.L0.ROOT"
+      ],
+      "extensionNames": []
+    },
+    {
+      "path": "public/assets/world/facility-craft/street/lamp.glb",
+      "bytes": 142104,
+      "sha256": "b101410f6efd9d503587778f4ddd66803c8e5a11a13af8a4bf760e9256f382c4",
+      "triangles": 2118,
+      "primitives": 15,
+      "materials": 7,
+      "textures": 0,
+      "nodes": [
+        "lamp.native.L0.lamp.arm.3",
+        "lamp.native.L0.lamp.base.0",
+        "lamp.native.L0.lamp.cap.2",
+        "lamp.native.L0.lamp.hatch.4",
+        "lamp.native.L0.lamp.head.5",
+        "lamp.native.L0.lamp.shaft.1",
+        "lamp.native.L0.ROOT"
+      ],
+      "extensionNames": []
+    },
+    {
+      "path": "public/assets/world/facility-craft/street/roadblock.glb",
+      "bytes": 140912,
+      "sha256": "5127e410e7770e3a88bbfa3ec0a97243244635d8a1d0192914a4a733a4159022",
+      "triangles": 1440,
+      "primitives": 14,
+      "materials": 8,
+      "textures": 0,
+      "nodes": [
+        "roadblock.native.L0.roadblock.boards.0",
+        "roadblock.native.L0.roadblock.boards.edge-channels.3",
+        "roadblock.native.L0.roadblock.frame.trestle--0.56.1",
+        "roadblock.native.L0.roadblock.frame.trestle-0.56.2",
+        "roadblock.native.L0.ROOT"
+      ],
+      "extensionNames": []
+    },
+    {
+      "path": "public/assets/world/facility-craft/street/seawallBay.glb",
+      "bytes": 49696,
+      "sha256": "b4bed1b1ecb9d06db1a63af1a98adbd895fb4161cddf1309676a37807868e388",
+      "triangles": 636,
+      "primitives": 4,
+      "materials": 2,
+      "textures": 0,
+      "nodes": [
+        "seawallBay.native.L0.seawallBay.balusters.2",
+        "seawallBay.native.L0.seawallBay.handrail.1",
+        "seawallBay.native.L0.seawallBay.post.0",
+        "seawallBay.native.L0.ROOT"
+      ],
+      "extensionNames": []
+    },
+    {
+      "path": "public/assets/world/facility-craft/street/shelter.glb",
+      "bytes": 204844,
+      "sha256": "c60fb6d3e6fd2ca5c9cfb3047ddf9a2b7d094a5e38e3fc348cf98e415c1ad6e3",
+      "triangles": 1828,
+      "primitives": 25,
+      "materials": 9,
+      "textures": 0,
+      "nodes": [
+        "shelter.native.L0.shelter.end.6",
+        "shelter.native.L0.shelter.perch.bracket--1.15.11",
+        "shelter.native.L0.shelter.perch.bracket-0.12",
+        "shelter.native.L0.shelter.perch.bracket-1.15.13",
+        "shelter.native.L0.shelter.perch.slat-0.14",
+        "shelter.native.L0.shelter.perch.slat-1.15",
+        "shelter.native.L0.shelter.perch.slat-2.16",
+        "shelter.native.L0.shelter.post.1",
+        "shelter.native.L0.shelter.post.2",
+        "shelter.native.L0.shelter.post.3",
+        "shelter.native.L0.shelter.post.4",
+        "shelter.native.L0.shelter.poster.7",
+        "shelter.native.L0.shelter.rear.5",
+        "shelter.native.L0.shelter.rear.glazing-beads.10",
+        "shelter.native.L0.shelter.roof.folded-pan.9",
+        "shelter.native.L0.shelter.roof.primary-frame.8",
+        "shelter.native.L0.shelter.slab.0",
+        "shelter.native.L0.ROOT"
+      ],
+      "extensionNames": []
+    },
+    {
+      "path": "public/assets/world/facility-craft/street/signal.glb",
+      "bytes": 218436,
+      "sha256": "4cd0ae0b3c33741f77b217c18321fd60b14966837d5a909451155255b5c68094",
+      "triangles": 3210,
+      "primitives": 23,
+      "materials": 9,
+      "textures": 0,
+      "nodes": [
+        "signal.native.L0.signal.base.0",
+        "signal.native.L0.signal.hatch.2",
+        "signal.native.L0.signal.head.5",
+        "signal.native.L0.signal.head.hanger.4",
+        "signal.native.L0.signal.mast.3",
+        "signal.native.L0.signal.near-head.6",
+        "signal.native.L0.signal.shaft.1",
+        "signal.native.L0.ROOT"
+      ],
+      "extensionNames": []
+    },
+    {
+      "path": "public/assets/world/facility-craft/street/timberRail.glb",
+      "bytes": 70464,
+      "sha256": "b1c0654da480cdd15447a952620ab6c7a1dcfb79b7a8ebc2684b1309e76f1770",
+      "triangles": 780,
+      "primitives": 7,
+      "materials": 4,
+      "textures": 0,
+      "nodes": [
+        "timberRail.native.L0.timberBeam.beam.0",
+        "timberRail.native.L0.timberPost.end.post.0",
+        "timberRail.native.L0.timberPost.end.post.saddle.1",
+        "timberRail.native.L0.timberPost.start.post.0",
+        "timberRail.native.L0.timberPost.start.post.saddle.1",
+        "timberRail.native.L0.ROOT"
+      ],
+      "extensionNames": []
+    }
+  ],
+  "glbBytes": 3194684,
+  "note": "LOD levels counted together in GLB inventory; runtime active triangles require actual renderer evidence."
+}

@@ -1,0 +1,44 @@
+{
+  "commit": "2f22560fff2174195d8ce70b855ae4b871a388a7",
+  "sources": {
+    "src/components/world/WorldCamp.tsx": "7f5b4fa31be8806c39ab2183f0792ee7f07a5c088783fea8e850cdbdb047588e",
+    "src/components/world/WorldCampContent.tsx": "c505fd7eac26e1f8cc5f48ee96d75d97aba62ec9661e554accf288a99d825c11",
+    "src/components/world/WorldStreetAssets.ts": "549c386132312ff490eafa2370cc3a3db46e2966e4ca5c685855316950eb93e2",
+    "src/components/world/WorldStreetGeometry.ts": "b240724f8ef8784d716d44372078733fdf5750bffe7b71728ed7f205234a6134",
+    "src/components/world/WorldStreetStatic.tsx": "fb6948faf918900751da963d64abb237f264922d1681f8516f9439770c53ed3a",
+    "src/components/world/WorldTerrain.tsx": "ed9860242739385cdfd3fd28c8c920d1a02a7249d56b390658b3801868b7644a",
+    "src/components/world/WorldGrass.tsx": "7c642f98f42ce18ce891c0acce60d42b11f4f54653b409ec0f9631c82df13648",
+    "src/components/world/WorldNatureMotion.tsx": "3cbc2206d5069562b4f6546b50e57409f899519305d9f3885801124613ba06be"
+  },
+  "asset_source_root": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release",
+  "assets": {
+    "camp/C12.glb": {
+      "sha256": "6447bb09b27ae63e4518e06c373a9cdb0dba0b3ed1692cd4ce145bc088e04429",
+      "bytes": 26888
+    },
+    "camp/C13.glb": {
+      "sha256": "3d725e051f99cb214afa9da1991917169641834ff0b3394c314fe2a950366ac8",
+      "bytes": 7384
+    },
+    "camp/C14.glb": {
+      "sha256": "c45760c5875e665654079cf1cceee9ee9da72cf6f00b19365f20b085a63c44b7",
+      "bytes": 28112
+    },
+    "camp/C15.glb": {
+      "sha256": "19784c0ff5c7e7cadf7b1e62c3b9befb0e6c63c0ce4ae3a022e395cfa12efdab",
+      "bytes": 19700
+    },
+    "camp/C16.glb": {
+      "sha256": "f64d0543150c866377296dbd4f1a66435de5cc81f5255f4f6faddc67810c3691",
+      "bytes": 12988
+    },
+    "camp/G17.glb": {
+      "sha256": "9281efdf0b37757afb66aa725d7ddf85d4c411fb5e6b4e46bd29bc7684726c0f",
+      "bytes": 184956
+    },
+    "nature-craft/G17.glb": {
+      "sha256": "d4c98d8a8bd8b59d61d6b0c40fdc84fab9cdccda27f546a5fdd0b612dc9c0e59",
+      "bytes": 234644
+    }
+  }
+}

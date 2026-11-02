@@ -1,0 +1,50 @@
+[
+  {
+    "file": "legacy-v-patches-close-night-12.json",
+    "source": "rejected-ground-r1/legacy-v-patches-close-night-12.json",
+    "sha256": "e4241d2cd500484b1d677cc0fdde97a7b666eac044ce4f9e9764721bd60d2d83",
+    "note": "Previous actual legacy capture reused; not claimed newly captured for R3"
+  },
+  {
+    "file": "legacy-v-patches-close-night.png",
+    "source": "rejected-ground-r1/legacy-v-patches-close-night.png",
+    "sha256": "63e79b96c5cd9622b2d830f6e33620d45139ed880a050ebf3121e77ae5936315",
+    "note": "Previous actual legacy capture reused; not claimed newly captured for R3"
+  },
+  {
+    "file": "legacy-v-patches-close-noon-11.json",
+    "source": "rejected-ground-r1/legacy-v-patches-close-noon-11.json",
+    "sha256": "872346083c24dfb47f88e0147137d15cbfc627c5e646277b067c78c820480629",
+    "note": "Previous actual legacy capture reused; not claimed newly captured for R3"
+  },
+  {
+    "file": "legacy-v-patches-close-noon.png",
+    "source": "rejected-ground-r1/legacy-v-patches-close-noon.png",
+    "sha256": "4a466c7586998a214baea8784157a2517c249f9fe8c0094256c76ec33a908e36",
+    "note": "Previous actual legacy capture reused; not claimed newly captured for R3"
+  },
+  {
+    "file": "legacy-v-patches-medium-night-10.json",
+    "source": "rejected-ground-r1/legacy-v-patches-medium-night-10.json",
+    "sha256": "9ffe1b6f5bbcfe78ca074538c424bc707fef42aa51d60140f3b4cc6f79d80fe7",
+    "note": "Previous actual legacy capture reused; not claimed newly captured for R3"
+  },
+  {
+    "file": "legacy-v-patches-medium-night.png",
+    "source": "rejected-ground-r1/legacy-v-patches-medium-night.png",
+    "sha256": "b3558de17176052c6a5492ee668c16b108afcbcfa41bea09b13a0d2ad36f8995",
+    "note": "Previous actual legacy capture reused; not claimed newly captured for R3"
+  },
+  {
+    "file": "legacy-v-patches-medium-noon-9.json",
+    "source": "rejected-ground-r1/legacy-v-patches-medium-noon-9.json",
+    "sha256": "08e9cf52f71907bb4f5f014d80db8ff00e683e80a9df3db77b6050922a9fb03d",
+    "note": "Previous actual legacy capture reused; not claimed newly captured for R3"
+  },
+  {
+    "file": "legacy-v-patches-medium-noon.png",
+    "source": "rejected-ground-r1/legacy-v-patches-medium-noon.png",
+    "sha256": "4cd4f9d7f76bd5f5608adfbb2fc7fd9fd9d2c976e471b1b563a670f0f5a5f1a7",
+    "note": "Previous actual legacy capture reused; not claimed newly captured for R3"
+  }
+]

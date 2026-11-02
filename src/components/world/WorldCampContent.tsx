@@ -13,14 +13,16 @@ import { CAMP_CENTER } from './layout';
 import type { Vec3 } from './types';
 import { bake, drawLabels, glowMaterial, localPoints, localTrimesh, nodeParts, placementMatrix, poolTexture, useContentGltfs, vertexColourMaterial, type NodePart } from './WorldCampContentAssets';
 import { CAMP_TOP, CONTENT_PAD, EXIT_POSTS, PAD, PAD_TOP, benches, bookStack, onPad, padCentre, padOffset, towardFire, yawFacing, yawToFire, type Place } from './WorldCampContentLayout';
+import WorldCampFacilityCraft, { campFacilityLegacy } from './WorldCampFacilityCraft';
 
 /**
  * Camp content (owner: camp session): C11 tool wall, C12 guitar, C13 dumbbells, C14 wok + stove, C15
  * suitcase on the ring pads, C16 lantern on the C07 desk, the two exit lamp posts (L01), the About
  * interactables (E -> store.card about/<id>) with a <= 2 s feedback, and eight bench seats.
  *
- * Main-pass draws: static merge 1, tool-wall tools 1, wok 1, guitar 2 (body, strings), dumbbells 2,
- * suitcase 1, glow 1, label plates 1, light pools 1 = 11 (+1 page-flip quad only during its 1.8 s).
+ * facilityCraft=legacy retains the batch-4 static/glow merge paths, including the stove and lantern.
+ * Candidate art separates PBR material responses and articulated parts; its actual render and
+ * shadow-pass cost must be measured in the running scene rather than inferred from the old batch.
  * Pushables are plain Meshes (never InstancedMesh), so WorldShadows re-renders their shadows where
  * they are instead of baking them into its static chunks. No light source is added; claiming
  * 'camp-lamps' also removes the greybox lamp-pool point light (one point light fewer than before).
@@ -72,6 +74,7 @@ const SCALE = { C13: 1.7, C14: 1.3 } as const;
 function CampContent() {
   const g = useContentGltfs();
   const lang = useWorldStore(s => s.lang);
+  const legacy = useMemo(() => typeof window !== 'undefined' && campFacilityLegacy(window.location.search), []);
   const data = useMemo(() => {
     const parts = Object.fromEntries(Object.entries(g).map(([id, gltf]) => [id, nodeParts(gltf)])) as Record<keyof typeof g, NodePart[]>;
     const byName = (id: keyof typeof g, name: string) => parts[id].filter(p => p.name === name);
@@ -82,11 +85,18 @@ function CampContent() {
     const postM = EXIT_POSTS.map(p => placementMatrix(p, 0));
     const m11 = placementMatrix(place.C11.position, place.C11.yaw), m14 = placementMatrix(place.C14.position, place.C14.yaw, SCALE.C14);
     // Static merge: everything that never moves (tool-wall body, stove, lantern frame, both posts).
-    const staticGeometry = mergeGeometries([
+    const staticGeometry = legacy ? mergeGeometries([
       ...byName('C11', 'C11_body').map(p => bake(p, m11)), ...byName('C14', 'C14_stove').map(p => bake(p, m14)),
       ...byName('C16', 'C16_frame').map(p => bake(p, lanternM)), ...postM.flatMap(m => byName('L01', 'L01_post').map(p => bake(p, m))),
+    ])! : mergeGeometries([
+      ...byName('C11', 'C11_body').map(p => bake(p, m11)), ...postM.flatMap(m => byName('L01', 'L01_post').map(p => bake(p, m))),
     ])!;
-    const glowGeometry = mergeGeometries([...byName('C16', 'C16_glass').map(p => glowBake(p, lanternM, true)), ...postM.flatMap(m => byName('L01', 'L01_lens').map(p => glowBake(p, m, false)))])!;
+    const glowGeometry = legacy
+      ? mergeGeometries([...byName('C16', 'C16_glass').map(p => glowBake(p, lanternM, true)), ...postM.flatMap(m => byName('L01', 'L01_lens').map(p => glowBake(p, m, false)))])!
+      : mergeGeometries(postM.flatMap(m => byName('L01', 'L01_lens').map(p => glowBake(p, m, false))))!;
+    const stoveGeometry = mergeGeometries(byName('C14', 'C14_stove').map(p => bake(p, new Matrix4())))!;
+    const lanternFrame = mergeGeometries(byName('C16', 'C16_frame').map(p => bake(p, new Matrix4())))!;
+    const lanternGlass = mergeGeometries(byName('C16', 'C16_glass').map(p => glowBake(p, new Matrix4(), true)))!;
     const hard = [
       { id: 'C11', mesh: localTrimesh(parts.C11), matrix: m11 }, { id: 'C14', mesh: localTrimesh(parts.C14), matrix: m14 },
       ...postM.map((m, i) => ({ id: `L01-${i}`, mesh: localTrimesh(byName('L01', 'L01_post')), matrix: m })),
@@ -96,15 +106,15 @@ function CampContent() {
     const dumbbells: Place[] = [padOffset(CONTENT_PAD.C13, -0.05, 0.95), padOffset(CONTENT_PAD.C13, -0.62, 0.9)].map((p, i) => ({ position: p, yaw: yawToFire(CONTENT_PAD.C13) + (i ? 0.12 : -0.05) }));
     const local = (list: NodePart[]) => mergeGeometries(list.map(p => bake(p, new Matrix4())))!;
     return {
-      place, lanternPos, staticGeometry, glowGeometry, hard, dumbbells, benchTop: seatTop(parts.C06),
+      place, lanternPos, staticGeometry, glowGeometry, stoveGeometry, lanternFrame, lanternGlass, m14, lanternM, hard, dumbbells, benchTop: seatTop(parts.C06),
       tools: sub('C11', 'C11_tools', m11), wok: sub('C14', 'C14_wok', m14),
       guitar: { body: local([...byName('C12', 'C12_guitar'), ...byName('C12', 'C12_stand')]), strings: local(byName('C12', 'C12_strings')), hull: localPoints(parts.C12) },
       dumbbell: { geometry: mergeGeometries(parts.C13.map(p => bake(p, new Matrix4().makeScale(SCALE.C13, SCALE.C13, SCALE.C13))))!, hull: localPoints(parts.C13, SCALE.C13) },
       suitcase: { geometry: local(parts.C15), hull: localPoints(byName('C15', 'C15_case')) },
       plates: JSON.parse(String(g.C11.scene.getObjectByName('C11')?.userData.labelPlatesGLB ?? '[]')) as { centre: Vec3; w: number; h: number }[], m11,
     };
-  }, [g]);
-  useEffect(() => () => { for (const geo of [data.staticGeometry, data.glowGeometry, data.tools.geometry, data.wok.geometry, data.guitar.body, data.guitar.strings, data.dumbbell.geometry, data.suitcase.geometry]) geo.dispose(); }, [data]);
+  }, [g, legacy]);
+  useEffect(() => () => { for (const geo of [data.staticGeometry, data.glowGeometry, data.stoveGeometry, data.lanternFrame, data.lanternGlass, data.tools.geometry, data.wok.geometry, data.guitar.body, data.guitar.strings, data.dumbbell.geometry, data.suitcase.geometry]) geo.dispose(); }, [data]);
 
   // Formal replacements for the five pad stand-ins and both exit lamps are mounted (visual + collider).
   useGreyboxClaim('camp-placeholder', 'camp-lamps');
@@ -120,19 +130,24 @@ function CampContent() {
   return <group name="world-camp-content">
     <mesh name="camp-content-static" geometry={data.staticGeometry} material={vc} castShadow receiveShadow userData={{ assetId: 'camp-content', solid: true }} />
     <mesh name="camp-content-glow" geometry={data.glowGeometry} material={glow.material} userData={{ noOcclusionFade: true }} />
+    {!legacy && <group matrix={data.m14} matrixAutoUpdate={false}>
+      <WorldCampFacilityCraft family="C14" node="C14_stove" fallback={<mesh geometry={data.stoveGeometry} material={vc} castShadow receiveShadow userData={{ assetId: 'C14', solid: true }} />} />
+    </group>}
+    {!legacy && <group matrix={data.lanternM} matrixAutoUpdate={false}>
+      <WorldCampFacilityCraft family="C16" fallback={<><mesh geometry={data.lanternFrame} material={vc} castShadow receiveShadow /><mesh geometry={data.lanternGlass} material={glow.material} userData={{ noOcclusionFade: true }} /></>} />
+    </group>}
     <HardColliders hard={data.hard} />
     <Animated name="camp-content-C11-tools" geometry={data.tools.geometry} frame={data.tools.frame} kind="tools" />
-    <Animated name="camp-content-C14-wok" geometry={data.wok.geometry} frame={data.wok.frame} kind="wok" />
+    <Animated name="camp-content-C14-wok" geometry={data.wok.geometry} frame={data.wok.frame} kind="wok"><WorldCampFacilityCraft family="C14" node="C14_wok" fallback={<mesh geometry={data.wok.geometry} material={vc} castShadow receiveShadow />} /></Animated>
     <LabelPlates plates={data.plates} frame={data.m11} lang={lang} />
     <Pushable id="C12" home={data.place.C12} hull={data.guitar.hull} mass={4} feedbackKey="guitar">
-      <mesh geometry={data.guitar.body} material={vc} castShadow receiveShadow />
-      <mesh name="camp-content-C12-strings" geometry={data.guitar.strings} material={vc} />
+      <WorldCampFacilityCraft family="C12" fallback={<><mesh geometry={data.guitar.body} material={vc} castShadow receiveShadow /><mesh name="camp-content-C12-strings" geometry={data.guitar.strings} material={vc} /></>} />
     </Pushable>
     {data.dumbbells.map((home, i) => <Pushable key={i} id={`C13-${i}`} home={home} hull={data.dumbbell.hull} mass={16} feedbackKey="dumbbell">
-      <mesh geometry={data.dumbbell.geometry} material={vc} castShadow receiveShadow />
+      <group scale={SCALE.C13}><WorldCampFacilityCraft family="C13" fallback={<mesh geometry={data.dumbbell.geometry} scale={1 / SCALE.C13} material={vc} castShadow receiveShadow />} /></group>
     </Pushable>)}
     <Pushable id="C15" home={data.place.C15} hull={data.suitcase.hull} mass={12} feedbackKey="suitcase">
-      <mesh geometry={data.suitcase.geometry} material={vc} castShadow receiveShadow />
+      <WorldCampFacilityCraft family="C15" fallback={<mesh geometry={data.suitcase.geometry} material={vc} castShadow receiveShadow />} />
     </Pushable>
     <LightPools lantern={data.lanternPos} />
     <SceneFeedback />
@@ -174,8 +189,8 @@ function HardColliders({ hard }: { hard: { id: string; vertices: Float32Array; i
 }
 
 /** A sub-part that only moves during its feedback (tool swing, wok toss); pivot = its GLB node origin. */
-function Animated({ name, geometry, frame, kind }: { name: string; geometry: BufferGeometry; frame: Matrix4; kind: 'tools' | 'wok' }) {
-  const ref = useRef<Group>(null), inner = useRef<Mesh>(null);
+function Animated({ name, geometry, frame, kind, children }: { name: string; geometry: BufferGeometry; frame: Matrix4; kind: 'tools' | 'wok'; children?: ReactNode }) {
+  const ref = useRef<Group>(null), inner = useRef<Group>(null);
   useLayoutEffect(() => { const o = ref.current; if (o) frame.decompose(o.position, o.quaternion, o.scale); }, [frame]);
   useFrame(() => {
     const m = inner.current; if (!m) return;
@@ -183,7 +198,7 @@ function Animated({ name, geometry, frame, kind }: { name: string; geometry: Buf
     if (kind === 'tools') m.rotation.z = t < 0 ? 0 : 0.2 * Math.abs(Math.sin(t * 6.5)) * decay(t);
     else { m.position.y = t < 0 || t > 0.6 ? 0 : 0.09 * Math.sin(Math.PI * t / 0.6); m.rotation.z = t < 0 ? 0 : 0.12 * Math.sin(t * 9) * decay(t); }
   });
-  return <group ref={ref} name={name}><mesh ref={inner} geometry={geometry} material={vc} castShadow receiveShadow userData={{ assetId: name, solid: true }} /></group>;
+  return <group ref={ref} name={name}><group ref={inner}>{children ?? <mesh geometry={geometry} material={vc} castShadow receiveShadow userData={{ assetId: name, solid: true }} />}</group></group>;
 }
 
 /** Five bilingual category labels on the tool wall from UI.about.techCategories (same order as the
@@ -227,7 +242,17 @@ function Pushable({ id, home, hull, mass, feedbackKey, children }: { id: string;
   // Own material copy so the 30 s fade touches only this prop.
   const material = useMemo(() => vertexColourMaterial(`camp-content-${id}`), [id]);
   useEffect(() => () => material.dispose(), [material]);
-  useLayoutEffect(() => { visual.current?.traverse(o => { if ((o as Mesh).isMesh) (o as Mesh).material = material; }); }, [material]);
+  // Suspense can replace legacy art after this effect. Reconcile during the existing frame loop;
+  // candidate PBR materials retain physical responses and receive only the parent's reset fade.
+  const adaptVisual = () => { visual.current?.traverse(o => {
+    const mesh = o as Mesh; if (!mesh.isMesh) return;
+    if (!mesh.userData.facilityCraft) mesh.material = material;
+    else for (const candidate of (Array.isArray(mesh.material) ? mesh.material : [mesh.material])) {
+      if (candidate.transparent !== material.transparent) { candidate.transparent = material.transparent; candidate.depthWrite = material.depthWrite; candidate.needsUpdate = true; }
+      candidate.opacity = material.opacity;
+    }
+  }); };
+  useLayoutEffect(adaptVisual, [material]);
   const start = useMemo(() => [home.position[0], home.position[1] + 0.004, home.position[2]] as Vec3, [home]);
   useEffect(() => { pushables.set(id, { body, home: start, state: state.current }); body.current?.sleep(); return () => { pushables.delete(id); }; }, [id, start]);
   useBeforePhysicsStep(world => {
@@ -251,6 +276,7 @@ function Pushable({ id, home, hull, mass, feedbackKey, children }: { id: string;
   // <= 2 s visual-only feedback on the child group; the body and its collider never move for it.
   useFrame(() => {
     const v = visual.current; if (!v) return;
+    adaptVisual();
     const t = fbT(feedbackKey), k = decay(t);
     v.position.set(0, 0, 0); v.rotation.set(0, 0, 0);
     const strings = feedbackKey === 'guitar' ? v.getObjectByName('camp-content-C12-strings') : undefined;

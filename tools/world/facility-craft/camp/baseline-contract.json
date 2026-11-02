@@ -1,0 +1,151 @@
+{
+  "baselineRevision": "2f22560fff2174195d8ce70b855ae4b871a388a7",
+  "baseRoot": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release",
+  "files": {
+    "tools/world/camp-content/build_assets.py": "884e71d1207ad1366ace16eff10411e38cfdd8e067af6c3454693f2592976ea3",
+    "tools/world/camp-content/cc_lib.py": "6e6de9642f442b8931710b7456befb797a1ce7b58023ce27415ef54b484f706b",
+    "tools/world/camp/props/build_props.py": "2c1c136a58243bb4069491972ddb9f9220e4aa9488e8be7616d361d41fb316de",
+    "src/components/world/WorldCampContent.tsx": "c505fd7eac26e1f8cc5f48ee96d75d97aba62ec9661e554accf288a99d825c11",
+    "src/components/world/WorldCampContentLayout.ts": "f1e5e01a25fc974254353ec17db55b27899e983a6e43304bf47fc13ff12cb461",
+    "public/assets/world/camp/C12.glb": "6447bb09b27ae63e4518e06c373a9cdb0dba0b3ed1692cd4ce145bc088e04429",
+    "tools/world/camp-content/blend/C12.blend": "90e5948a76ef43f3f6d9bbf85d7b6dc652ca01637b85eaa1a68d5f1350492302",
+    "public/assets/world/camp/C13.glb": "3d725e051f99cb214afa9da1991917169641834ff0b3394c314fe2a950366ac8",
+    "tools/world/camp-content/blend/C13.blend": "594169131b583d7d5d1504be200ff1359a4861e165dc6912aef55edf9d1ed44e",
+    "public/assets/world/camp/C14.glb": "c45760c5875e665654079cf1cceee9ee9da72cf6f00b19365f20b085a63c44b7",
+    "tools/world/camp-content/blend/C14.blend": "8ca1d4ac7d31e3f4503d2affcde480302d29511479c9a3dbc64a149eda8f1814",
+    "public/assets/world/camp/C15.glb": "19784c0ff5c7e7cadf7b1e62c3b9befb0e6c63c0ce4ae3a022e395cfa12efdab",
+    "tools/world/camp-content/blend/C15.blend": "c4f0c5882bac98deaa471ae2f44152b5b9cdfe5433d9f765fa30457cc18161a8",
+    "public/assets/world/camp/C16.glb": "f64d0543150c866377296dbd4f1a66435de5cc81f5255f4f6faddc67810c3691",
+    "tools/world/camp-content/blend/C16.blend": "fbc5159b271e1cfff4bb88248905e5cbc4f810c54e975fae7d9a0b931cfac0ce"
+  },
+  "assets": {
+    "C12": {
+      "bytes": 26888,
+      "sha256": "6447bb09b27ae63e4518e06c373a9cdb0dba0b3ed1692cd4ce145bc088e04429",
+      "triangles": 2384,
+      "materials": 1,
+      "images": 0,
+      "dimensionsGLB": [
+        0.5604,
+        1.2431,
+        0.492
+      ],
+      "nodes": [
+        {
+          "name": "C12_guitar"
+        },
+        {
+          "name": "C12_stand"
+        },
+        {
+          "name": "C12_strings"
+        },
+        {
+          "name": "C12"
+        }
+      ]
+    },
+    "C13": {
+      "bytes": 7384,
+      "sha256": "3d725e051f99cb214afa9da1991917169641834ff0b3394c314fe2a950366ac8",
+      "triangles": 836,
+      "materials": 1,
+      "images": 0,
+      "dimensionsGLB": [
+        0.129,
+        0.1178,
+        0.338
+      ],
+      "nodes": [
+        {
+          "name": "C13_dumbbell"
+        },
+        {
+          "name": "C13"
+        }
+      ]
+    },
+    "C14": {
+      "bytes": 28112,
+      "sha256": "c45760c5875e665654079cf1cceee9ee9da72cf6f00b19365f20b085a63c44b7",
+      "triangles": 2724,
+      "materials": 1,
+      "images": 0,
+      "dimensionsGLB": [
+        0.8501,
+        0.5362,
+        1.0054
+      ],
+      "nodes": [
+        {
+          "name": "C14_stove"
+        },
+        {
+          "name": "C14_wok",
+          "translation": [
+            0.027671098709106445,
+            0.3179999887943268,
+            -0.07235637307167053
+          ]
+        },
+        {
+          "name": "C14"
+        }
+      ]
+    },
+    "C15": {
+      "bytes": 19700,
+      "sha256": "19784c0ff5c7e7cadf7b1e62c3b9befb0e6c63c0ce4ae3a022e395cfa12efdab",
+      "triangles": 1964,
+      "materials": 1,
+      "images": 0,
+      "dimensionsGLB": [
+        0.288,
+        0.8641,
+        0.502
+      ],
+      "nodes": [
+        {
+          "name": "C15_case"
+        },
+        {
+          "name": "C15_handle"
+        },
+        {
+          "name": "C15"
+        }
+      ]
+    },
+    "C16": {
+      "bytes": 12988,
+      "sha256": "f64d0543150c866377296dbd4f1a66435de5cc81f5255f4f6faddc67810c3691",
+      "triangles": 952,
+      "materials": 2,
+      "images": 0,
+      "dimensionsGLB": [
+        0.164,
+        0.3126,
+        0.186
+      ],
+      "nodes": [
+        {
+          "name": "C16_frame"
+        },
+        {
+          "name": "C16_glass"
+        },
+        {
+          "name": "C16"
+        }
+      ]
+    }
+  },
+  "physics": "All fixed trimeshes/hulls continue to derive from original /assets/world/camp GLBs, never the candidate pack.",
+  "motion": {
+    "C12": "strings local X +/- .003 * sin(t*140); whole local X rotation .02*sin(t*22)",
+    "C13": "local X rotation .16*sin(t*8), original 1.7 scale, two 16 kg bodies",
+    "C14": "wok node frame is ORIGINAL GLB pivot; local Y +.09*sin(pi*t/.6), local Z .12*sin(t*9)",
+    "C15": "whole local Y +.05*abs(sin(pi*min(t,.9)/.45)); no lid hinge exists in actual baseline",
+    "C16": "desk local [-.4,.85,-.62], original warm light pools; no collider or new light"
+  }
+}

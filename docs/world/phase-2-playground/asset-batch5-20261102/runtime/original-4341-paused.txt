@@ -1,0 +1,3 @@
+Browser tab: 1395914218, Title: "Bobby’s island · World playtest", URL: "http://127.0.0.1:4341/world/?start=camp&quality=balanced&paused=1".
+There has been no change in the accessibility tree.
+The focused UI element is 11 container 继续探索 回到营地 保留矿石、挖矿进度和研究结果。 语言 时间 岛上时间 时间自然流逝 现实 1 秒 = 岛上 1 分钟。暂停世界时，时间也会暂停。 天气 画面质量 如果移动时卡顿，可以切换到流畅。 声音 操作 致谢 ← 回到简历

@@ -1,0 +1,24 @@
+✔ PBR copies preserve exported physical classes while borrowing loader geometry/images (4.998875ms)
+✔ articulated subtree keeps geometry local and removes the already applied wok pivot once (3.148667ms)
+✔ runtime adapter parses and legacy query bypasses candidate independent of qa flag (320.968208ms)
+✔ legacy static/glow batches reproduce frozen batch-4 inputs with no extra stove/lantern draw (804.911042ms)
+✔ facility legacy returns the exact batch4 material; older nature legacy retains priority (861.4925ms)
+✔ candidate retains vertex ABI and 18 reads, with no unmasked pigment correction (49.871167ms)
+✔ coverage remap is finite; outside scope is exact; pure shoulders can become islands or bare soil (4.281167ms)
+✔ continuous boundary preserves bare core/outer turf, with connected lobes rather than a dot carpet (48.420584ms)
+(node:43321) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ all eight facility families keep exact baseline hulls and legacy geometry (79.175833ms)
+✔ candidate attributes, triangle winding and geometric normals are valid (42.292791ms)
+✔ seat datums, atlas faces, lighting codes and untouched lamp variants keep their interfaces (15.045125ms)
+✔ varying rail lengths retain their roots and baseline physics; static trimeshes use the proxy (28.785959ms)
+✔ all four roadblock steel legs meet their original rubber feet and upper hinge (1.140333ms)
+ℹ tests 13
+ℹ suites 0
+ℹ pass 13
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2008.440708

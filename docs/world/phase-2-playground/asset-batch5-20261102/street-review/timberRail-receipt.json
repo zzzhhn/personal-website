@@ -1,0 +1,165 @@
+{
+  "asset": "timberRail",
+  "sourceJSONSHA256": "ab1e10f0a4468f5ad31402f518af5765390af8d74ae6ecf0fa3fd8e28d728bf5",
+  "runtimeSourceSHA256": {
+    "WorldStreetAssets.ts": "2b8eb883b69c7c88593b3ae7285f464e5baec4dfe0f730d65cea8c934ea6626b",
+    "WorldStreetFacilityCraft.ts": "2dc1e4f73a675b690c90d4bf1ac82b400dedb27f7c681518d526144f30503561",
+    "WorldStreetGeometry.ts": "b240724f8ef8784d716d44372078733fdf5750bffe7b71728ed7f205234a6134"
+  },
+  "blend": {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/street/native/timberRail.blend",
+    "sha256": "c25538a459d8c6ae83209ea596941df716e8d6fd1a9a192a821ce771df29d3a6"
+  },
+  "glb": {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/street/timberRail.glb",
+    "sha256": "b1c0654da480cdd15447a952620ab6c7a1dcfb79b7a8ebc2684b1309e76f1770",
+    "bytes": 70464
+  },
+  "baselineTriangles": 472,
+  "nativeTriangles": 780,
+  "freshTriangles": 780,
+  "nativeBoundsBlender": [
+    [
+      -2.315000057220459,
+      -0.10499999672174454,
+      -0.44999998807907104
+    ],
+    [
+      2.315000057220459,
+      0.10499999672174454,
+      0.7410160303115845
+    ]
+  ],
+  "freshBoundsBlender": [
+    [
+      -2.315000057220459,
+      -0.10499999672174454,
+      -0.44999998807907104
+    ],
+    [
+      2.315000057220459,
+      0.10499999672174454,
+      0.7410160303115845
+    ]
+  ],
+  "freshBoundsMaxDelta": 0.0,
+  "dimensionsMetres": [
+    4.630000114440918,
+    0.20999999344348907,
+    1.1910160183906555
+  ],
+  "nativeParts": 5,
+  "nativeMaterialResponses": 4,
+  "renderer": "5.1.2",
+  "rig": {
+    "camera": [
+      6.363327503204346,
+      9.090468406677246,
+      5.904421806335449
+    ],
+    "rotation": [
+      1.0921852588653564,
+      1.5676721432100749e-07,
+      2.530866861343384
+    ],
+    "orthoScale": 6.5746002197265625,
+    "resolution": [
+      640,
+      640
+    ],
+    "samples": 16,
+    "viewTransform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "exposure": 0,
+    "lights": [
+      {
+        "name": "RIG.key",
+        "location": [
+          -7.639499664306641,
+          2.5464999675750732,
+          12.87962532043457
+        ],
+        "rotation": [
+          0.5639427304267883,
+          -1.8314313621203837e-08,
+          -1.8925471305847168
+        ],
+        "energy": 3644.273193359375,
+        "size": 6.019000053405762,
+        "colour": [
+          1.0,
+          0.9100000262260437,
+          0.800000011920929
+        ]
+      },
+      {
+        "name": "RIG.fill",
+        "location": [
+          7.639499664306641,
+          5.0929999351501465,
+          7.786624908447266
+        ],
+        "rotation": [
+          0.8768157958984375,
+          8.303939580400765e-08,
+          2.158798933029175
+        ],
+        "energy": 2143.690185546875,
+        "size": 6.019000053405762,
+        "colour": [
+          0.7699999809265137,
+          0.8700000047683716,
+          1.0
+        ]
+      },
+      {
+        "name": "RIG.rim",
+        "location": [
+          0.0,
+          -7.639499664306641,
+          10.333125114440918
+        ],
+        "rotation": [
+          0.6435011029243469,
+          -0.0,
+          0.0
+        ],
+        "energy": 2572.42822265625,
+        "size": 6.019000053405762,
+        "colour": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  },
+  "images": [
+    {
+      "stage": "baseline",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/timberRail-baseline.png",
+      "sha256": "b3daea2d53c9c6f2c3278ef7e044eaf89e992770f97a7698aad7722cd57e9f44"
+    },
+    {
+      "stage": "native",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/timberRail-native.png",
+      "sha256": "e1f8ab5bdd68dbf1559761a3c65f4350ccbe02b2c60a2fbb964c8ac08e831006"
+    },
+    {
+      "stage": "fresh",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/timberRail-fresh.png",
+      "sha256": "a1b68215036ec50c7c22b8ca3da0cf31333af84375255f7dc56b39b8b9f24498"
+    },
+    {
+      "stage": "clay",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/timberRail-clay.png",
+      "sha256": "a458c6ee96dc3f80ef56fb914dbc2580050a88777e12be41ba51be2a071e3f7e"
+    }
+  ],
+  "status": "generated; visual acceptance pending primary inspection",
+  "limitations": [
+    "Runtime Builder geometry is authoritative; GLB is the fresh portable proof.",
+    "Offline neutral poster placeholder and fixed signal state; runtime atlas/clock remain unchanged.",
+    "No browser/performance/interaction acceptance is implied."
+  ]
+}

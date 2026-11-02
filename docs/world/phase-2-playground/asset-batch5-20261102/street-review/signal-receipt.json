@@ -1,0 +1,165 @@
+{
+  "asset": "signal",
+  "sourceJSONSHA256": "9e47cea502f1de8f35588e844a18804ea788804f6e11721b5d40a0bdefc7ea79",
+  "runtimeSourceSHA256": {
+    "WorldStreetAssets.ts": "2b8eb883b69c7c88593b3ae7285f464e5baec4dfe0f730d65cea8c934ea6626b",
+    "WorldStreetFacilityCraft.ts": "2dc1e4f73a675b690c90d4bf1ac82b400dedb27f7c681518d526144f30503561",
+    "WorldStreetGeometry.ts": "b240724f8ef8784d716d44372078733fdf5750bffe7b71728ed7f205234a6134"
+  },
+  "blend": {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/street/native/signal.blend",
+    "sha256": "02bf61e20d92531fd304a9061259aee46a4519dc85c997c66bccd6d5e46b835b"
+  },
+  "glb": {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/street/signal.glb",
+    "sha256": "4cd0ae0b3c33741f77b217c18321fd60b14966837d5a909451155255b5c68094",
+    "bytes": 218436
+  },
+  "baselineTriangles": 1406,
+  "nativeTriangles": 3210,
+  "freshTriangles": 3210,
+  "nativeBoundsBlender": [
+    [
+      -0.4309999942779541,
+      -0.2800000011920929,
+      0.0
+    ],
+    [
+      0.23999999463558197,
+      3.3299999237060547,
+      5.570000171661377
+    ]
+  ],
+  "freshBoundsBlender": [
+    [
+      -0.4309999942779541,
+      -0.2800000011920929,
+      0.0
+    ],
+    [
+      0.23999999463558197,
+      3.3299999237060547,
+      5.570000171661377
+    ]
+  ],
+  "freshBoundsMaxDelta": 0.0,
+  "dimensionsMetres": [
+    0.6709999889135361,
+    3.6099999248981476,
+    5.570000171661377
+  ],
+  "nativeParts": 7,
+  "nativeMaterialResponses": 9,
+  "renderer": "5.1.2",
+  "rig": {
+    "camera": [
+      -8.271112442016602,
+      12.1888427734375,
+      9.538766860961914
+    ],
+    "rotation": [
+      1.1050571203231812,
+      -1.5948357301454053e-08,
+      -2.4875099658966064
+    ],
+    "orthoScale": 7.909400463104248,
+    "resolution": [
+      640,
+      640
+    ],
+    "samples": 16,
+    "viewTransform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "exposure": 0,
+    "lights": [
+      {
+        "name": "RIG.key",
+        "location": [
+          -9.28600025177002,
+          4.588500022888184,
+          18.102500915527344
+        ],
+        "rotation": [
+          0.5639426708221436,
+          6.911911043516739e-08,
+          -1.8925468921661377
+        ],
+        "energy": 5274.2333984375,
+        "size": 7.241000175476074,
+        "colour": [
+          1.0,
+          0.9100000262260437,
+          0.800000011920929
+        ]
+      },
+      {
+        "name": "RIG.fill",
+        "location": [
+          9.095000267028809,
+          7.652000427246094,
+          11.975500106811523
+        ],
+        "rotation": [
+          0.8768157958984375,
+          8.303939580400765e-08,
+          2.158798933029175
+        ],
+        "energy": 3102.490234375,
+        "size": 7.241000175476074,
+        "colour": [
+          0.7699999809265137,
+          0.8700000047683716,
+          1.0
+        ]
+      },
+      {
+        "name": "RIG.rim",
+        "location": [
+          -0.09549999982118607,
+          -7.665500164031982,
+          15.039000511169434
+        ],
+        "rotation": [
+          0.6435011029243469,
+          -0.0,
+          0.0
+        ],
+        "energy": 3722.98828125,
+        "size": 7.241000175476074,
+        "colour": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  },
+  "images": [
+    {
+      "stage": "baseline",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/signal-baseline.png",
+      "sha256": "4185d7eea3fa6c24da905a6ec4cacc3cfb98a2aff664b859d77a0e07d893c809"
+    },
+    {
+      "stage": "native",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/signal-native.png",
+      "sha256": "c4670a96f3637ebfda33fc5bb52891f11a336ee84819434b23aab73d971ffdd9"
+    },
+    {
+      "stage": "fresh",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/signal-fresh.png",
+      "sha256": "9ca85eba1f5d45d346869c6d7ed7cf00d5636a175894bfc87427f611fb7f6974"
+    },
+    {
+      "stage": "clay",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/signal-clay.png",
+      "sha256": "0a69c2cfb34bdf05b886a1523cf3fb8890b74b1bb75c6c42596071c86674740e"
+    }
+  ],
+  "status": "generated; visual acceptance pending primary inspection",
+  "limitations": [
+    "Runtime Builder geometry is authoritative; GLB is the fresh portable proof.",
+    "Offline neutral poster placeholder and fixed signal state; runtime atlas/clock remain unchanged.",
+    "No browser/performance/interaction acceptance is implied."
+  ]
+}

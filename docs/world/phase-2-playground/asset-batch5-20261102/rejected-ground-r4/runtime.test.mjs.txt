@@ -1,0 +1,150 @@
+/** No renderer/service: compile the affected material factory and check its contracts. */
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import test from 'node:test';
+import vm from 'node:vm';
+import ts from 'typescript';
+import * as THREE from 'three';
+
+const path = 'src/components/world/WorldTerrain.tsx';
+const current = readFileSync(path, 'utf8');
+const baselineRevision = '2f22560fff2174195d8ce70b855ae4b871a388a7';
+const baseline = execFileSync('git', ['show', `${baselineRevision}:${path}`], { encoding: 'utf8', maxBuffer: 1024 * 1024 });
+const westPath = JSON.parse(readFileSync('src/components/world/WorldLandform.ts', 'utf8').match(/\[\[-59, 33\][^\n]+\]/)[0]);
+function ground(source, search) {
+  const prefix = source.slice(0, source.indexOf('/** Footprints where ground detail')).replace(/^import[\s\S]*?from ['"][^'"]+['"];\s*/gm, '');
+  const code = ts.transpileModule(`${prefix}\nexports.make = createGroundMaterial;`, {
+    compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.CommonJS },
+  }).outputText;
+  const context = { ...THREE, exports: {}, window: { location: { search } }, URLSearchParams,
+    GROUND_Y: .22, SHORE_GLSL: '', shoreUniforms: () => ({}), weatherUniforms: {},
+    windUniforms: { uWindTime: { value: 0 }, uWindStrength: { value: 1 } },
+    WORN_PATHS: [[], [], westPath],
+  };
+  vm.runInNewContext(code, context, { timeout: 1000 });
+  const material = context.exports.make(Array.from({ length: 6 }, () => new THREE.Texture()));
+  const shader = { vertexShader: THREE.ShaderLib.standard.vertexShader, fragmentShader: THREE.ShaderLib.standard.fragmentShader, uniforms: {} };
+  material.onBeforeCompile(shader);
+  return { shader, key: material.customProgramCacheKey() };
+}
+
+test('facility legacy returns the exact batch4 material; older nature legacy retains priority', () => {
+  const old = ground(baseline, '');
+  const legacy = ground(current, '?facilityCraft=legacy');
+  assert.equal(legacy.shader.vertexShader, old.shader.vertexShader);
+  assert.equal(legacy.shader.fragmentShader, old.shader.fragmentShader);
+  assert.equal(legacy.key, old.key);
+  const ancient = ground(baseline, '?natureCraft=legacy');
+  for (const query of ['?natureCraft=legacy', '?natureCraft=legacy&facilityCraft=legacy']) {
+    const actual = ground(current, query);
+    assert.equal(actual.shader.fragmentShader, ancient.shader.fragmentShader);
+    assert.equal(actual.key, ancient.key);
+  }
+});
+
+test('candidate retains vertex ABI and 18 reads, with no unmasked pigment correction', () => {
+  const actual = ground(current, '').shader, old = ground(baseline, '').shader;
+  assert.equal(actual.vertexShader, old.vertexShader);
+  assert.equal((actual.fragmentShader.match(/tileMix\(uAlb/g) || []).length, 3);
+  assert.equal((actual.fragmentShader.match(/tileNormalMix\(uNr/g) || []).length, 3);
+  assert.equal((actual.fragmentShader.match(/texture2D\(/g) || []).length, 6); // two helpers, three reads each
+  assert.ok(actual.fragmentShader.includes('vec3 gw = max(vGroundMix.xyz, vec3(0.0));'));
+  assert.ok(actual.fragmentShader.includes('if (patchScope > 0.0)'));
+  assert.ok(actual.fragmentShader.includes('if (natureSample > 0.0 && tWalk > 0.001)'));
+  assert.ok(actual.fragmentShader.includes('vec2(-61.5, 34.0)'));
+  assert.equal((actual.fragmentShader.match(/d = min\(d, naturePathSegment/g) || []).length, westPath.length - 1);
+  assert.ok(actual.fragmentShader.includes('smoothstep(0.55, 0.78, pathD)'));
+  assert.ok(actual.fragmentShader.includes('vec3 patchWeights = vec3(clamp(grassCover'));
+});
+
+test('coverage remap is finite; outside scope is exact; pure shoulders can become islands or bare soil', () => {
+  const remap = (raw, grass, scope) => {
+    const nonnegative = raw.map(x => Math.max(0, x));
+    const sum = Math.max(nonnegative.reduce((a, b) => a + b, 0), .001);
+    const gw = nonnegative.map(x => x / sum);
+    if (scope === 0 || !nonnegative.some(Boolean)) return gw;
+    const desired = [grass, 0, 1 - grass];
+    const result = gw.map((x, i) => x * (1 - scope) + desired[i] * scope);
+    const norm = Math.max(result.reduce((a, b) => a + b, 0), .001);
+    return result.map(x => x / norm);
+  };
+  for (const raw of [[-.5, .4, .8], [1, 0, 0], [0, 0, 1], [0, 0, 0], [.4, .2, .4]]) {
+    const nonnegative = raw.map(x => Math.max(0, x));
+    const sum = Math.max(nonnegative.reduce((a, b) => a + b, 0), .001);
+    const weights = nonnegative.map(x => x / sum);
+    for (const cover of [0, .5, 1]) {
+      for (const scope of [0, .5, 1]) remap(raw, cover, scope).forEach(x => { assert.ok(Number.isFinite(x)); assert.ok(x >= 0); });
+      assert.deepEqual(remap(raw, cover, 0), weights);
+    }
+  }
+  assert.ok(remap([1, 0, 0], .02, 1)[2] > .95);
+  assert.ok(remap([0, 0, 1], .98, 1)[0] > .95);
+  assert.deepEqual(remap([.4, .2, .4], 0, 1), [0, 0, 1]); // explicit bare path core
+});
+
+test('continuous boundary preserves bare core/outer turf, with connected lobes rather than a dot carpet', () => {
+  const fract = x => x - Math.floor(x);
+  const hash = (x, y) => {
+    x = fract(x * 123.34); y = fract(y * 456.21);
+    const d = x * (x + 45.32) + y * (y + 45.32);
+    return fract((x + d) * (y + d));
+  };
+  const noise = (x, y) => {
+    const ix = Math.floor(x), iy = Math.floor(y), fx = fract(x), fy = fract(y), u = fx * fx * (3 - 2 * fx), v = fy * fy * (3 - 2 * fy);
+    return (hash(ix, iy) * (1 - u) + hash(ix + 1, iy) * u) * (1 - v)
+      + (hash(ix, iy + 1) * (1 - u) + hash(ix + 1, iy + 1) * u) * v;
+  };
+  const smooth = (a, b, x) => { const t = Math.max(0, Math.min(1, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+  const distance = (x, y) => {
+    let d = Infinity;
+    for (let i = 1; i < westPath.length; i++) {
+      const a = westPath[i - 1], b = westPath[i], dx = b[0] - a[0], dy = b[1] - a[1];
+      const t = Math.max(0, Math.min(1, ((x - a[0]) * dx + (y - a[1]) * dy) / (dx * dx + dy * dy)));
+      d = Math.min(d, Math.hypot(x - a[0] - dx * t, y - a[1] - dy * t));
+    }
+    return d;
+  };
+  const cover = (x, y, d) => {
+    const wx = noise(x / 1.8 + 5.2, y / 1.8 + 17.3) - .5, wy = noise(x / 2.1 + 31.1, y / 2.1 + 9.7) - .5;
+    const px = x + wx * .85, py = y + wy * .85;
+    const main = noise(px / 1.8 + 17.4, py / 1.8 + 8.2);
+    const secondary = noise((px + wx * .21) / .55 + 9.6, (py + wy * .21) / .55 + 29.3);
+    const sourceGrass = smooth(.55, 1.3, d);
+    const field = d - 1.13 + (main - .5) * 1.35 + (secondary - .5) * .38 + (sourceGrass - .5) * .30;
+    let grass = smooth(-.025, .025, field);
+    const outer = smooth(2.15, 2.5, d);
+    grass = grass * (1 - outer) + outer;
+    return grass * smooth(.55, .78, d);
+  };
+  const nx = 140, ny = 90, step = .08, cells = new Uint8Array(nx * ny), connected = new Uint8Array(cells.length), queue = [];
+  let grassCells = 0;
+  for (let iy = 0; iy < ny; iy++) for (let ix = 0; ix < nx; ix++) {
+    const x = -68 + ix * step, y = 30.4 + iy * step, d = distance(x, y), c = cover(x, y, d), index = iy * nx + ix;
+    assert.ok(Number.isFinite(c));
+    if (d <= .55) assert.equal(c, 0);
+    if (d >= 2.5) assert.equal(c, 1);
+    if (c > .5) { cells[index] = 1; grassCells++; if (d > 2.1) { connected[index] = 1; queue.push(index); } }
+  }
+  for (let head = 0; head < queue.length; head++) {
+    const i = queue[head], x = i % nx, y = Math.floor(i / nx);
+    for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) {
+      const a = x + dx, b = y + dy, next = b * nx + a;
+      if (a < 0 || a >= nx || b < 0 || b >= ny || !cells[next] || connected[next]) continue;
+      connected[next] = 1; queue.push(next);
+    }
+  }
+  assert.ok(queue.length / grassCells > .96, 'Most turf must connect to the exterior banks');
+  const crossings = [];
+  for (let x = -67; x < -59; x += .10) {
+    const centerZ = x < -64 ? 33.5 + (-x - 64) * .2 : 33 + (-x - 59) * .1;
+    for (let offset = .55; offset < 2.2; offset += .025) {
+      const y = centerZ + offset;
+      if (cover(x, y, distance(x, y)) > .5) { crossings.push(offset); break; }
+    }
+  }
+  assert.ok(Math.max(...crossings) - Math.min(...crossings) > .35, 'The connected edge must have visible peninsulas/bites');
+  const shader = ground(current, '').shader.fragmentShader;
+  assert.ok(!shader.includes('natureGrassIsland'));
+  assert.ok(shader.includes('float turfBoundary = pathD - 1.13'));
+});

@@ -1,0 +1,200 @@
+{
+  "source": "WorldCampContentLayout.ts + WorldCampContent.tsx at frozen batch4; proposals, not browser-observed cameras",
+  "placements": {
+    "C12": [
+      {
+        "position": [
+          -42.0,
+          4.9,
+          45.0
+        ],
+        "yaw": 1.5707963267948966,
+        "scale": 1,
+        "groundPlane": 4.9,
+        "bodyStartY": 4.904
+      }
+    ],
+    "C13": [
+      {
+        "position": [
+          -41.05,
+          4.9,
+          15.05
+        ],
+        "yaw": -1.6207963267948966,
+        "scale": 1.7,
+        "groundPlane": 4.9,
+        "bodyStartY": 4.904
+      },
+      {
+        "position": [
+          -41.1,
+          4.9,
+          15.62
+        ],
+        "yaw": -1.4507963267948965,
+        "scale": 1.7,
+        "groundPlane": 4.9,
+        "bodyStartY": 4.904
+      }
+    ],
+    "C14": [
+      {
+        "position": [
+          -31.393398282201787,
+          4.9,
+          40.60660171779821
+        ],
+        "yaw": 2.356194490192345,
+        "scale": 1.3,
+        "groundPlane": 4.9
+      }
+    ],
+    "C15": [
+      {
+        "position": [
+          -27.0,
+          4.9,
+          30.0
+        ],
+        "yaw": 3.141592653589793,
+        "scale": 1,
+        "groundPlane": 4.9,
+        "bodyStartY": 4.904
+      }
+    ],
+    "C16": [
+      {
+        "position": [
+          -53.327850634608495,
+          5.75,
+          40.451038225937175
+        ],
+        "yaw": 1.2853981633974483,
+        "scale": 1,
+        "supportPlane": 5.75
+      }
+    ]
+  },
+  "suggestedCameras": {
+    "C12": {
+      "position": [
+        -41.82,
+        6.16,
+        43.0
+      ],
+      "target": [
+        -42.0,
+        5.5200000000000005,
+        45.0
+      ],
+      "fov": 50
+    },
+    "C13": {
+      "position": [
+        -41.27975421614177,
+        5.3500000000000005,
+        16.039754009926245
+      ],
+      "target": [
+        -41.05,
+        5.03,
+        15.05
+      ],
+      "fov": 50
+    },
+    "C14": {
+      "position": [
+        -32.43284525054601,
+        5.808,
+        39.31259630822683
+      ],
+      "target": [
+        -31.393398282201787,
+        5.28,
+        40.60660171779821
+      ],
+      "fov": 50
+    },
+    "C15": {
+      "position": [
+        -28.65,
+        5.8580000000000005,
+        29.82
+      ],
+      "target": [
+        -27.0,
+        5.33,
+        30.0
+      ],
+      "fov": 50
+    },
+    "C16": {
+      "position": [
+        -52.95242323878849,
+        6.1404000000000005,
+        39.81083960795382
+      ],
+      "target": [
+        -53.327850634608495,
+        5.91,
+        40.451038225937175
+      ],
+      "fov": 50
+    }
+  },
+  "interactionAnchors": {
+    "C12": {
+      "id": "camp-about-guitar",
+      "position": [
+        -42,
+        5.4,
+        44.1
+      ],
+      "radius": 1.8,
+      "feedback": "guitar"
+    },
+    "C13": {
+      "id": "camp-about-dumbbell",
+      "position": [
+        -41.05,
+        5.3,
+        16.55
+      ],
+      "radius": 1.5,
+      "feedback": "dumbbell"
+    },
+    "C14": {
+      "id": "camp-about-wok",
+      "position": [
+        -32.02979438526968,
+        5.4,
+        39.97020561473032
+      ],
+      "radius": 1.8,
+      "feedback": "wok"
+    },
+    "C15": {
+      "id": "camp-about-suitcase",
+      "position": [
+        -27.85,
+        5.3,
+        30
+      ],
+      "radius": 1.8,
+      "feedback": "suitcase"
+    }
+  },
+  "capture": {
+    "query": "?qa=1",
+    "legacyQuery": "?qa=1&facilityCraft=legacy",
+    "timeHours": [
+      12,
+      0
+    ],
+    "api": "window.__worldCampQA.close(position,target)",
+    "release": "window.__worldCampQA.release()",
+    "viewport": "match coordinator viewport and quality; do not compare different sizes"
+  },
+  "feedback": "Trigger actual E near each anchor; close camera shot pauses motion clocks. Capture interaction after releasing QA close. No direct synthetic feedback API is added."
+}

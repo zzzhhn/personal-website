@@ -1,0 +1,152 @@
+- main "Bobby’s island":
+  - generic: Experiences · Projects · Explore
+  - heading "Bobby’s island" [level=1]
+  - button "Return to camp":
+    - generic: Return to camp
+  - button "Map & settings Esc":
+    - generic: Map & settings
+    - generic: Esc
+  - complementary:
+    - img "Island map · Camp":
+      - generic: INVENTORY YARD
+      - generic: INTENT COASTER
+      - generic: EXCHANGE
+      - generic: DJC Beach Club
+      - generic: "1"
+      - generic: "2"
+      - generic: "3"
+      - generic: "4"
+      - generic: "5"
+      - generic: "6"
+      - generic "Alpha factor mine entrance"
+    - generic: "N"
+    - generic: Camp
+  - status
+  - dialog "Map & settings":
+    - generic: Bobby’s island
+    - heading "Map & settings" [level=2]
+    - img "Island map. Click the map to set a waypoint; click it again to clear.":
+      - generic: INVENTORY YARD
+      - generic: INTENT COASTER
+      - generic: EXCHANGE
+      - generic: DJC Beach Club
+      - generic: "1"
+      - generic: "2"
+      - generic: "3"
+      - generic: "4"
+      - generic: "5"
+      - generic: "6"
+      - generic "Alpha factor mine entrance"
+      - generic: WorldQuant factor quarry
+      - generic: Camp
+      - generic: Coastal town
+      - generic: Boardwalk park
+      - generic: Windmill hill
+      - generic: Island shore
+    - generic: You
+    - generic: Internships (oldest → newest)
+    - generic: Project booths
+    - generic: Plots for later
+    - generic: Click the map to set a waypoint; click it again to clear.
+    - button "Back to the island"
+    - button "Return to camp"
+    - paragraph: Keep your ore, mining progress and research results.
+    - group "Language":
+      - generic: Language
+      - button "English" [pressed]
+      - button "中文"
+    - group "Time of day Island time":
+      - text: Time of day
+      - generic "Island time": 12:00
+      - button "Morning 06:00":
+        - generic: Morning
+        - generic: 06:00
+      - button "Noon 12:00" [pressed]:
+        - generic: Noon
+        - generic: 12:00
+      - button "Afternoon 15:00":
+        - generic: Afternoon
+        - generic: 15:00
+      - button "Sunset 17:30":
+        - generic: Sunset
+        - generic: 17:30
+      - button "Evening 19:00":
+        - generic: Evening
+        - generic: 19:00
+      - button "Late night 00:00":
+        - generic: Late night
+        - generic: 00:00
+    - checkbox "Let time flow"
+    - generic: Let time flow
+    - paragraph: 1 real second = 1 island minute. Pauses with the world.
+    - group "Weather":
+      - generic: Weather
+      - button "Clear" [pressed]
+      - button "Rain"
+      - button "Snow"
+    - group "Image quality":
+      - generic: Image quality
+      - button "Balanced" [pressed]
+      - button "High"
+    - paragraph: Choose Balanced if movement becomes choppy.
+    - group "Audio":
+      - generic: Audio
+      - button "Mute all"
+      - generic: Sound on
+      - generic: Music
+      - generic: 100%
+      - slider "Music": "1"
+      - generic: Sound effects
+      - generic: 100%
+      - slider "Sound effects": "1"
+    - generic "Controls"
+    - generic "Credits"
+    - link "← Back to portfolio":
+      - /url: /#about
+- navigation "Batch 5 QA":
+  - status: "Error: Sampling interrupted"
+  - button "v-canopy"
+  - button "v-ground"
+  - button "n-camp"
+  - button "n-grass"
+  - button "n-water"
+  - button "v-tree-medium"
+  - button "v-tree-close"
+  - button "v-patches-medium"
+  - button "v-patches-close"
+  - button "v-bench"
+  - button "v-shelter"
+  - button "v-lamp"
+  - button "v-signal"
+  - button "v-bin"
+  - button "v-roadblock"
+  - button "v-seawallBay"
+  - button "v-timberRail"
+  - button "v-c12"
+  - button "v-c13"
+  - button "v-c14"
+  - button "v-c15"
+  - button "v-c16"
+  - button "n-patches"
+  - button "n-street"
+  - button "v-tree-lod-near"
+  - button "v-tree-lod-far"
+  - button "Noon"
+  - button "Midnight"
+  - button "Snapshot"
+  - button "Inspect"
+  - button "Motion 0.6s"
+  - button "Sample 90 + 300"
+  - button "Mark trail"
+  - button "Trail reading"
+  - button "Go grass"
+  - button "Go bush"
+  - button "Arm E probe"
+  - button "Go guitar"
+  - button "Go dumbbell"
+  - button "Go stove"
+  - button "Go suitcase"
+  - button "Go street bench"
+  - button "Go shelter seat"
+  - button "Hide QA 4s"
+  - button "Pause"

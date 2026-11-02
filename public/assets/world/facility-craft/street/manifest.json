@@ -1,0 +1,187 @@
+{
+  "base": "2f22560fff2174195d8ce70b855ae4b871a388a7",
+  "units": "metres",
+  "runtimeUp": "+Y",
+  "nativeConversion": "(x, -z, y)",
+  "runtimeSourceSHA256": {
+    "WorldStreetAssets.ts": "2b8eb883b69c7c88593b3ae7285f464e5baec4dfe0f730d65cea8c934ea6626b",
+    "WorldStreetFacilityCraft.ts": "2d6bbd9ed7c5a13f4d025b4b9c228897b2a1c5f394311883cc80c83cbdda2d9a",
+    "WorldStreetGeometry.ts": "b240724f8ef8784d716d44372078733fdf5750bffe7b71728ed7f205234a6134"
+  },
+  "baselineSourceSHA256": "549c386132312ff490eafa2370cc3a3db46e2966e4ca5c685855316950eb93e2",
+  "originalGlb": null,
+  "originalGlbReason": "These eight facility families are procedural Builder geometry; no baseline GLB existed.",
+  "textureSources": [],
+  "licence": "Project-authored geometry; inherited project Art Lock surface vocabulary, no new third-party media.",
+  "generatedAt": "2026-11-02T10:13:59.004Z",
+  "assets": {
+    "bench": {
+      "source": "tools/world/facility-craft/street/source/bench.source.json",
+      "sourceBytes": 799324,
+      "sourceSHA256": "d1ace109ae434417f187ccff3dfa362579905d59358c1f102b09c5e028e64632",
+      "baseline": {
+        "triangles": 1392,
+        "parts": 5,
+        "materialResponses": 4
+      },
+      "candidate": {
+        "triangles": 1328,
+        "parts": 11,
+        "materialResponses": 4
+      },
+      "L1": {
+        "triangles": 132,
+        "parts": 4,
+        "materialResponses": 2
+      },
+      "runtimeMaterialBatches": 1
+    },
+    "shelter": {
+      "source": "tools/world/facility-craft/street/source/shelter.source.json",
+      "sourceBytes": 920892,
+      "sourceSHA256": "a2345b07a0bb0c2db10ed18a8625b467e6c0a065cd11df4437e16c002666aee5",
+      "baseline": {
+        "triangles": 720,
+        "parts": 10,
+        "materialResponses": 8
+      },
+      "candidate": {
+        "triangles": 1828,
+        "parts": 17,
+        "materialResponses": 9
+      },
+      "L1": {
+        "triangles": 180,
+        "parts": 10,
+        "materialResponses": 7
+      },
+      "runtimeMaterialBatches": 1
+    },
+    "lamp": {
+      "source": "tools/world/facility-craft/street/source/lamp.source.json",
+      "sourceBytes": 739632,
+      "sourceSHA256": "46c25aab9a76db02a88f4f09d10b97fad9b44cd31f70da24d34ef8f24029a440",
+      "baseline": {
+        "triangles": 1110,
+        "parts": 6,
+        "materialResponses": 5
+      },
+      "candidate": {
+        "triangles": 2118,
+        "parts": 6,
+        "materialResponses": 7
+      },
+      "L1": {
+        "triangles": 192,
+        "parts": 4,
+        "materialResponses": 4
+      },
+      "runtimeMaterialBatches": 1
+    },
+    "signal": {
+      "source": "tools/world/facility-craft/street/source/signal.source.json",
+      "sourceBytes": 1187170,
+      "sourceSHA256": "a8432a22525884fb05169b9892af9e3c37fd9c1d52c6c47315390809c0caae84",
+      "baseline": {
+        "triangles": 1406,
+        "parts": 6,
+        "materialResponses": 8
+      },
+      "candidate": {
+        "triangles": 3210,
+        "parts": 7,
+        "materialResponses": 9
+      },
+      "L1": {
+        "triangles": 214,
+        "parts": 4,
+        "materialResponses": 6
+      },
+      "runtimeMaterialBatches": 1
+    },
+    "bin": {
+      "source": "tools/world/facility-craft/street/source/bin.source.json",
+      "sourceBytes": 733078,
+      "sourceSHA256": "2fa41869cb108976c96be28805270caa09d56cd69a7e68573301abf6ad9d1559",
+      "baseline": {
+        "triangles": 874,
+        "parts": 3,
+        "materialResponses": 5
+      },
+      "candidate": {
+        "triangles": 2180,
+        "parts": 4,
+        "materialResponses": 5
+      },
+      "L1": {
+        "triangles": 118,
+        "parts": 2,
+        "materialResponses": 3
+      },
+      "runtimeMaterialBatches": 1
+    },
+    "roadblock": {
+      "source": "tools/world/facility-craft/street/source/roadblock.source.json",
+      "sourceBytes": 799275,
+      "sourceSHA256": "2f98ac64d441e47cc2d0689f97dc08d6f0352821be3b7a41c7bab6ffc6bc0030",
+      "baseline": {
+        "triangles": 856,
+        "parts": 2,
+        "materialResponses": 5
+      },
+      "candidate": {
+        "triangles": 1440,
+        "parts": 4,
+        "materialResponses": 8
+      },
+      "L1": {
+        "triangles": 192,
+        "parts": 2,
+        "materialResponses": 4
+      },
+      "runtimeMaterialBatches": 1
+    },
+    "seawallBay": {
+      "source": "tools/world/facility-craft/street/source/seawallBay.source.json",
+      "sourceBytes": 215057,
+      "sourceSHA256": "7f6ba92844dd11347fe93821d60d6e0043487a0977edcdb58680e6542984f2db",
+      "baseline": {
+        "triangles": 256,
+        "parts": 1,
+        "materialResponses": 2
+      },
+      "candidate": {
+        "triangles": 636,
+        "parts": 3,
+        "materialResponses": 2
+      },
+      "L1": {
+        "triangles": 40,
+        "parts": 1,
+        "materialResponses": 1
+      },
+      "runtimeMaterialBatches": 1
+    },
+    "timberRail": {
+      "source": "tools/world/facility-craft/street/source/timberRail.source.json",
+      "sourceBytes": 340779,
+      "sourceSHA256": "65a53904397ca57933367497df696fbcc3039448de1afa2ff604bad1fb5df0ad",
+      "baseline": {
+        "triangles": 472,
+        "parts": 3,
+        "materialResponses": 2
+      },
+      "candidate": {
+        "triangles": 780,
+        "parts": 5,
+        "materialResponses": 4
+      },
+      "L1": {
+        "triangles": 72,
+        "parts": 3,
+        "materialResponses": 2
+      },
+      "runtimeMaterialBatches": 1
+    }
+  }
+}

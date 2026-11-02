@@ -1,0 +1,165 @@
+{
+  "asset": "seawallBay",
+  "sourceJSONSHA256": "f25709efd9cf9651612fa7cd1d38c6fd901d8bf3700c5b723f7917b75b336e83",
+  "runtimeSourceSHA256": {
+    "WorldStreetAssets.ts": "2b8eb883b69c7c88593b3ae7285f464e5baec4dfe0f730d65cea8c934ea6626b",
+    "WorldStreetFacilityCraft.ts": "2dc1e4f73a675b690c90d4bf1ac82b400dedb27f7c681518d526144f30503561",
+    "WorldStreetGeometry.ts": "b240724f8ef8784d716d44372078733fdf5750bffe7b71728ed7f205234a6134"
+  },
+  "blend": {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/street/native/seawallBay.blend",
+    "sha256": "9a6dd13a76a4d99dcfdd53ccc027b2d6d9eec35c9c1611798ddd888413192a0c"
+  },
+  "glb": {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/street/seawallBay.glb",
+    "sha256": "b4bed1b1ecb9d06db1a63af1a98adbd895fb4161cddf1309676a37807868e388",
+    "bytes": 49696
+  },
+  "baselineTriangles": 256,
+  "nativeTriangles": 636,
+  "freshTriangles": 636,
+  "nativeBoundsBlender": [
+    [
+      -0.0949999988079071,
+      -0.0949999988079071,
+      -0.5
+    ],
+    [
+      2.0,
+      0.0949999988079071,
+      1.0429999828338623
+    ]
+  ],
+  "freshBoundsBlender": [
+    [
+      -0.0949999988079071,
+      -0.0949999988079071,
+      -0.5
+    ],
+    [
+      2.0,
+      0.0949999988079071,
+      1.0429999828338623
+    ]
+  ],
+  "freshBoundsMaxDelta": 0.0,
+  "dimensionsMetres": [
+    2.094999998807907,
+    0.1899999976158142,
+    1.5429999828338623
+  ],
+  "nativeParts": 3,
+  "nativeMaterialResponses": 2,
+  "renderer": "5.1.2",
+  "rig": {
+    "camera": [
+      3.8318028450012207,
+      4.113289833068848,
+      2.8765835762023926
+    ],
+    "rotation": [
+      1.0921852588653564,
+      8.830082265376404e-08,
+      2.530866861343384
+    ],
+    "orthoScale": 2.974900007247925,
+    "resolution": [
+      640,
+      640
+    ],
+    "samples": 16,
+    "viewTransform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "exposure": 0,
+    "lights": [
+      {
+        "name": "RIG.key",
+        "location": [
+          -2.5042500495910645,
+          1.152250051498413,
+          6.032750606536865
+        ],
+        "rotation": [
+          0.5639426708221436,
+          -8.798068051873997e-08,
+          -1.8925471305847168
+        ],
+        "energy": 850.0,
+        "size": 2.7235000133514404,
+        "colour": [
+          1.0,
+          0.9100000262260437,
+          0.800000011920929
+        ]
+      },
+      {
+        "name": "RIG.fill",
+        "location": [
+          4.409250259399414,
+          2.304500102996826,
+          3.728250026702881
+        ],
+        "rotation": [
+          0.8768157958984375,
+          1.0219068968808642e-07,
+          2.158798933029175
+        ],
+        "energy": 500.0,
+        "size": 2.7235000133514404,
+        "colour": [
+          0.7699999809265137,
+          0.8700000047683716,
+          1.0
+        ]
+      },
+      {
+        "name": "RIG.rim",
+        "location": [
+          0.9524999856948853,
+          -3.4567501544952393,
+          4.880500316619873
+        ],
+        "rotation": [
+          0.6435012817382812,
+          -0.0,
+          0.0
+        ],
+        "energy": 600.0,
+        "size": 2.7235000133514404,
+        "colour": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  },
+  "images": [
+    {
+      "stage": "baseline",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/seawallBay-baseline.png",
+      "sha256": "62747daf11cdc309066ee2a8a6543538b5def7ecc01be99f808f06ac226e8f6c"
+    },
+    {
+      "stage": "native",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/seawallBay-native.png",
+      "sha256": "48803fc87270bd5d72d3bdedfc8d66ac14821a8016e5ca0e8e2bbf98ba22e426"
+    },
+    {
+      "stage": "fresh",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/seawallBay-fresh.png",
+      "sha256": "5e05c8be93e9c215fee74b9d1b83c892f5bc71da497cdafec970bcf94fc21979"
+    },
+    {
+      "stage": "clay",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/seawallBay-clay.png",
+      "sha256": "9fdcb2e5972ac5b9df6d62a8bc5a998efbfde7fc54f9919250428ec073abf45e"
+    }
+  ],
+  "status": "generated; visual acceptance pending primary inspection",
+  "limitations": [
+    "Runtime Builder geometry is authoritative; GLB is the fresh portable proof.",
+    "Offline neutral poster placeholder and fixed signal state; runtime atlas/clock remain unchanged.",
+    "No browser/performance/interaction acceptance is implied."
+  ]
+}

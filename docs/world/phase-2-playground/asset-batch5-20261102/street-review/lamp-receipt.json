@@ -1,0 +1,165 @@
+{
+  "asset": "lamp",
+  "sourceJSONSHA256": "0d91213f274622eaccd4477e3988a60c11bc9159981dd2066da11b8463bfdf82",
+  "runtimeSourceSHA256": {
+    "WorldStreetAssets.ts": "2b8eb883b69c7c88593b3ae7285f464e5baec4dfe0f730d65cea8c934ea6626b",
+    "WorldStreetFacilityCraft.ts": "2dc1e4f73a675b690c90d4bf1ac82b400dedb27f7c681518d526144f30503561",
+    "WorldStreetGeometry.ts": "b240724f8ef8784d716d44372078733fdf5750bffe7b71728ed7f205234a6134"
+  },
+  "blend": {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/tools/world/facility-craft/street/native/lamp.blend",
+    "sha256": "5a72a70d1417995e1cd72d3d91acaf2fa753d958bf4b77ac3b255a63400b1408"
+  },
+  "glb": {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/public/assets/world/facility-craft/street/lamp.glb",
+    "sha256": "b101410f6efd9d503587778f4ddd66803c8e5a11a13af8a4bf760e9256f382c4",
+    "bytes": 142104
+  },
+  "baselineTriangles": 1110,
+  "nativeTriangles": 2118,
+  "freshTriangles": 2118,
+  "nativeBoundsBlender": [
+    [
+      -0.3160000145435333,
+      -0.19021129608154297,
+      0.0
+    ],
+    [
+      0.3160000145435333,
+      1.6660000085830688,
+      4.869999885559082
+    ]
+  ],
+  "freshBoundsBlender": [
+    [
+      -0.3160000145435333,
+      -0.19021129608154297,
+      0.0
+    ],
+    [
+      0.3160000145435333,
+      1.6660000085830688,
+      4.869999885559082
+    ]
+  ],
+  "freshBoundsMaxDelta": 0.0,
+  "dimensionsMetres": [
+    0.6320000290870667,
+    1.8562113046646118,
+    4.869999885559082
+  ],
+  "nativeParts": 6,
+  "nativeMaterialResponses": 7,
+  "renderer": "5.1.2",
+  "rig": {
+    "camera": [
+      6.693175315856934,
+      10.29957389831543,
+      8.490730285644531
+    ],
+    "rotation": [
+      1.0921852588653564,
+      1.4779081425331242e-07,
+      2.530866861343384
+    ],
+    "orthoScale": 6.91540002822876,
+    "resolution": [
+      640,
+      640
+    ],
+    "samples": 16,
+    "viewTransform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "exposure": 0,
+    "lights": [
+      {
+        "name": "RIG.key",
+        "location": [
+          -8.035499572753906,
+          3.4163942337036133,
+          15.827499389648438
+        ],
+        "rotation": [
+          0.5639426708221436,
+          -4.1536434736144656e-08,
+          -1.8925471305847168
+        ],
+        "energy": 4031.872802734375,
+        "size": 6.330999851226807,
+        "colour": [
+          1.0,
+          0.9100000262260437,
+          0.800000011920929
+        ]
+      },
+      {
+        "name": "RIG.fill",
+        "location": [
+          8.035499572753906,
+          6.0948944091796875,
+          10.470499038696289
+        ],
+        "rotation": [
+          0.8768157958984375,
+          1.0070787936911074e-07,
+          2.158798933029175
+        ],
+        "energy": 2371.68994140625,
+        "size": 6.330999851226807,
+        "colour": [
+          0.7699999809265137,
+          0.8700000047683716,
+          1.0
+        ]
+      },
+      {
+        "name": "RIG.rim",
+        "location": [
+          0.0,
+          -7.297605037689209,
+          13.14900016784668
+        ],
+        "rotation": [
+          0.6435011029243469,
+          -0.0,
+          0.0
+        ],
+        "energy": 2846.02783203125,
+        "size": 6.330999851226807,
+        "colour": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    ]
+  },
+  "images": [
+    {
+      "stage": "baseline",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/lamp-baseline.png",
+      "sha256": "bb6efa4abf9a8f10e4c2c4ba298da692f7fd21bf517031c1e8548c9df38dd039"
+    },
+    {
+      "stage": "native",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/lamp-native.png",
+      "sha256": "c0a9c1ad7903306595eac2176245276fcb76c6d27ca02c829869e282664bff2a"
+    },
+    {
+      "stage": "fresh",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/lamp-fresh.png",
+      "sha256": "14c12855ed006ed656d124ea67c524410ac2a567401129cebaa06f11e03a40c9"
+    },
+    {
+      "stage": "clay",
+      "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/street-review/lamp-clay.png",
+      "sha256": "cf0f79f67bd2ab250ea2d870e1936fff8594a83fa907eaedfb784491c711abfb"
+    }
+  ],
+  "status": "generated; visual acceptance pending primary inspection",
+  "limitations": [
+    "Runtime Builder geometry is authoritative; GLB is the fresh portable proof.",
+    "Offline neutral poster placeholder and fixed signal state; runtime atlas/clock remain unchanged.",
+    "No browser/performance/interaction acceptance is implied."
+  ]
+}

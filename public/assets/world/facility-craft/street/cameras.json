@@ -1,0 +1,235 @@
+{
+  "source": "actual layout-v4 solidsV4/knockablesV4/OBSTACLES_V4, matching current StreetFixed/Rails/Knock adapters",
+  "port": 4359,
+  "note": "Suggested numerical replay cameras, not browser-verified screenshots. Keep camera/time/exposure/viewport identical for baseline and candidate.",
+  "cameras": [
+    {
+      "id": "bench",
+      "root": [
+        30.1,
+        1.15,
+        -28
+      ],
+      "yaw": 1.5708,
+      "contactY": 1.15,
+      "camera": [
+        27.3,
+        2.3,
+        -30.1
+      ],
+      "target": [
+        30.1,
+        1.63,
+        -28
+      ],
+      "fov": 45,
+      "time": [
+        12,
+        0
+      ],
+      "quality": "balanced",
+      "suggestedDistanceM": 3.5,
+      "note": "Promenade bench; front is local -Z. Seat datum unchanged."
+    },
+    {
+      "id": "shelter",
+      "root": [
+        29.6,
+        1.15,
+        -20
+      ],
+      "yaw": 0,
+      "contactY": 1.15,
+      "camera": [
+        26.2,
+        2.85,
+        -23.3
+      ],
+      "target": [
+        29.6,
+        2.4,
+        -20
+      ],
+      "fov": 45,
+      "time": [
+        12,
+        0
+      ],
+      "quality": "balanced",
+      "suggestedDistanceM": 4.7381,
+      "note": "Look through the open -X street side; show roof frame and cantilever perch."
+    },
+    {
+      "id": "lamp",
+      "root": [
+        16.4,
+        1.15,
+        13
+      ],
+      "yaw": -1.5708,
+      "contactY": 1.15,
+      "camera": [
+        23,
+        4.45,
+        17.2
+      ],
+      "target": [
+        16.4,
+        3.75,
+        13
+      ],
+      "fov": 45,
+      "time": [
+        12,
+        0
+      ],
+      "quality": "balanced",
+      "suggestedDistanceM": 7.823,
+      "note": "Actual lamp-0 on avenue; preserve existing light/traffic interfaces.",
+      "instanceId": "lamp-0"
+    },
+    {
+      "id": "signal",
+      "root": [
+        29.8,
+        1.15,
+        -1.9
+      ],
+      "yaw": 1.5708,
+      "contactY": 1.15,
+      "camera": [
+        24,
+        4.55,
+        3.1
+      ],
+      "target": [
+        29.8,
+        3.95,
+        -1.9
+      ],
+      "fov": 45,
+      "time": [
+        12,
+        0
+      ],
+      "quality": "balanced",
+      "suggestedDistanceM": 7.6577,
+      "note": "Actual signal-2 on avenue; preserve existing light/traffic interfaces.",
+      "instanceId": "signal-2"
+    },
+    {
+      "id": "bin",
+      "root": [
+        15.4,
+        1.15,
+        -24.6
+      ],
+      "yaw": 0,
+      "contactY": 1.15,
+      "camera": [
+        16.75,
+        2.55,
+        -26.2
+      ],
+      "target": [
+        15.4,
+        1.85,
+        -24.6
+      ],
+      "fov": 45,
+      "time": [
+        12,
+        0
+      ],
+      "quality": "balanced",
+      "suggestedDistanceM": 2.0934,
+      "note": "Actual bin-0 on street; preserve existing light/traffic interfaces.",
+      "instanceId": "bin-0"
+    },
+    {
+      "id": "roadblock",
+      "root": [
+        -3,
+        1.14,
+        28
+      ],
+      "yaw": 0,
+      "contactY": 1.14,
+      "camera": [
+        -1.2,
+        2.44,
+        25.6
+      ],
+      "target": [
+        -3,
+        1.64,
+        28
+      ],
+      "fov": 45,
+      "time": [
+        12,
+        0
+      ],
+      "quality": "balanced",
+      "suggestedDistanceM": 3,
+      "note": "Actual OBSTACLES_V4[0]; examine folding trestle from an oblique front view."
+    },
+    {
+      "id": "seawallBay",
+      "root": [
+        31,
+        1,
+        26
+      ],
+      "yaw": 1.5708,
+      "contactY": 1,
+      "camera": [
+        28.4,
+        2.35,
+        25
+      ],
+      "target": [
+        31,
+        1.6,
+        25
+      ],
+      "fov": 45,
+      "time": [
+        12,
+        0
+      ],
+      "quality": "balanced",
+      "suggestedDistanceM": 2.7857,
+      "note": "First real seawall bay; post includes the original 0.5 m underground sink."
+    },
+    {
+      "id": "timberRail",
+      "root": [
+        -49.2723,
+        2.273,
+        -76.552
+      ],
+      "yaw": 1.5661,
+      "contactY": 2.273,
+      "camera": [
+        -52.0653,
+        3.473,
+        -78.0651
+      ],
+      "target": [
+        -49.2723,
+        2.853,
+        -76.552
+      ],
+      "fov": 45,
+      "time": [
+        12,
+        0
+      ],
+      "quality": "balanced",
+      "suggestedDistanceM": 3.1765,
+      "note": "Real hill rail start post; beam datum postY+0.57, sunk base -0.45. Frame wider if the next bay curves.",
+      "bayLength": 4.4490975215024795
+    }
+  ]
+}

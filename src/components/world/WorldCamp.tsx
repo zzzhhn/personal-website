@@ -47,8 +47,11 @@ function withDraco(loader: GLTFLoader) {
   loader.setDRACOLoader(draco);
 }
 const NATURE_CRAFT = typeof window === 'undefined' || new URLSearchParams(window.location.search).get('natureCraft') !== 'legacy';
+// The older explicit global legacy request wins; facilityCraft=legacy by itself
+// returns batch4. This sample never silently overrides a requested old nature pack.
+const FACILITY_TREE_CRAFT = typeof window === 'undefined' || (new URLSearchParams(window.location.search).get('facilityCraft') !== 'legacy' && new URLSearchParams(window.location.search).get('natureCraft') !== 'legacy');
 const CRAFT_IDS = new Set(['G16', 'G17', 'G18', 'G21', 'G22', 'G23', 'C09']);
-const useCampGltf = (id: string) => useLoader(GLTFLoader, `/assets/world/${NATURE_CRAFT && CRAFT_IDS.has(id) ? 'nature-craft' : 'camp'}/${id}.glb`, withDraco) as GLTF;
+const useCampGltf = (id: string) => useLoader(GLTFLoader, `/assets/world/${FACILITY_TREE_CRAFT && id === 'G17' ? 'facility-craft/nature' : NATURE_CRAFT && CRAFT_IDS.has(id) ? 'nature-craft' : 'camp'}/${id}.glb`, withDraco) as GLTF;
 
 const BOX = new BoxGeometry(1, 1, 1);
 const BUNDLE = new RoundedBoxGeometry(1, 1, 1, 2, 0.16);
@@ -92,7 +95,7 @@ function Boxes({ items, geometry = BOX, shadow = true, name, collisionId }: { it
   </instancedMesh></>;
 }
 
-type Part = { geometry: BufferGeometry; material: Material | Material[]; matrix: Matrix4; name: string; depth?: Material; ownedGeometry?: boolean };
+type Part = { geometry: BufferGeometry; material: Material | Material[]; matrix: Matrix4; name: string; depth?: Material; ownedGeometry?: boolean; treeLod?: number };
 type MaterialMap = (material: Material) => Material;
 /** Maps each distinct source material once; returns only newly created runtime copies. */
 function mapper(map?: MaterialMap) {
@@ -128,7 +131,9 @@ function collectParts(gltf: GLTF, id: string, map?: MaterialMap) {
         depth = applyTentWind(material as MeshStandardMaterial, id, params);
       }
     }
-    parts.push({ geometry, material, matrix: mesh.matrixWorld.clone(), name: mesh.name, depth, ownedGeometry });
+    const treeLod = id === 'G17' && gltf.scene.getObjectByName('G17')?.userData.facilityCraft === 'batch5-branch-canopy'
+      ? Number(/^L([01])_/.exec(mesh.name)?.[1] ?? -1) : undefined;
+    parts.push({ geometry, material, matrix: mesh.matrixWorld.clone(), name: mesh.name, depth, ownedGeometry, treeLod });
   });
   return { parts, copies: materials.copies };
 }
@@ -166,6 +171,76 @@ function InstancedPart({ part, matrices, id }: { part: Part; matrices: Matrix4[]
   return <instancedMesh name={`camp-mesh-${id}-${part.name}`} userData={soft ? { assetId: id, softBush: true, semantic: part.name } : { assetId: id, solid: true, semantic: part.name }} ref={ref} args={[part.geometry, part.material, matrices.length]} customDepthMaterial={part.depth} castShadow receiveShadow />;
 }
 
+/** The single G17 review tree owns two complete batches. The original camp GLB still
+ * supplies every placement and collider; this only selects its visual crown density. */
+function TreeCraftPart({ part, matrices }: { part: Part; matrices: Matrix4[] }) {
+  const ref = useRef<InstancedMesh>(null);
+  const previousLods = useRef<Int8Array | null>(null);
+  const tmp = useMemo(() => ({ matrix: new Matrix4(), point: new Vector3(), lods: new Int8Array(matrices.length) }), [matrices]);
+  useLayoutEffect(() => {
+    const mesh = ref.current;
+    if (!mesh) return;
+    matrices.forEach((placement, i) => mesh.setMatrixAt(i, tmp.matrix.multiplyMatrices(placement, part.matrix)));
+    mesh.instanceMatrix.needsUpdate = true;
+    mesh.computeBoundingSphere();
+    previousLods.current = new Int8Array(matrices.length).fill(-1);
+    return attachNatureWind(mesh);
+  }, [part, matrices, tmp]);
+  useFrame(({ camera }) => {
+    const mesh = ref.current;
+    const previous = previousLods.current;
+    if (!mesh || !previous) return;
+    let changed = false;
+    matrices.forEach((placement, i) => {
+      tmp.point.setFromMatrixPosition(placement).applyMatrix4(mesh.matrixWorld);
+      tmp.lods[i] = tmp.point.distanceTo(camera.position) < 32 ? 0 : 1;
+      if (previous[i] !== tmp.lods[i]) changed = true;
+    });
+    if (!changed) return;
+    previous.set(tmp.lods);
+    let count = 0;
+    for (let i = 0; i < matrices.length; i++) {
+      if (tmp.lods[i] !== part.treeLod) continue;
+      const placement = matrices[i];
+      mesh.setMatrixAt(count++, tmp.matrix.multiplyMatrices(placement, part.matrix));
+    }
+    mesh.count = count;
+    mesh.visible = count > 0;
+    if (count) mesh.instanceMatrix.needsUpdate = true;
+  });
+  useEffect(() => {
+    if (typeof window === 'undefined' || new URLSearchParams(window.location.search).get('qa') !== '1') return;
+    const host = window as typeof window & { __worldFacilityTree?: Record<string, () => unknown> };
+    const registry = host.__worldFacilityTree ??= {};
+    const read = () => {
+      const mesh = ref.current;
+      if (!mesh) return null;
+      mesh.updateWorldMatrix(true, false);
+      const actualRootMatrices: number[][] = [], matrix = new Matrix4(), inversePart = part.matrix.clone().invert();
+      for (let i = 0; i < mesh.count; i++) {
+        mesh.getMatrixAt(i, matrix);
+        actualRootMatrices.push(matrix.multiply(inversePart).premultiply(mesh.matrixWorld).toArray());
+      }
+      const wind = part.geometry.getAttribute('_wind');
+      const trianglesPerInstance = (part.geometry.index?.count ?? part.geometry.getAttribute('position').count) / 3;
+      return {
+        assetId: 'G17', semantic: part.name, level: part.treeLod, visible: mesh.visible, count: mesh.count,
+        trianglesPerInstance, triangles: trianglesPerInstance * mesh.count, actualRootMatrices,
+        placementRootMatrices: matrices.map(p => new Matrix4().multiplyMatrices(mesh.matrixWorld, p).toArray()),
+        wind: { attribute: !!wind, itemSize: wind?.itemSize, pointCount: wind?.count,
+          amplitudeMax: mesh.userData.windAmplitudeMax, depth: !!mesh.customDepthMaterial, distance: !!mesh.customDistanceMaterial,
+          sharedClockSeconds: windUniforms.uWindTime.value },
+      };
+    };
+    registry[part.name] = read;
+    return () => {
+      if (registry[part.name] === read) delete registry[part.name];
+      if (Object.keys(registry).length === 0 && host.__worldFacilityTree === registry) delete host.__worldFacilityTree;
+    };
+  }, [part, matrices]);
+  return <instancedMesh ref={ref} name={`camp-tree-craft-G17-${part.name}`} args={[part.geometry, part.material, matrices.length]} userData={{ assetId: 'G17', solid: true, semantic: part.name, natureSample: true }} castShadow receiveShadow />;
+}
+
 /** Repeated static assets: one instanced draw per GLB primitive, shared materials. */
 function InstancedAsset({ id, placements, materialMap, label = "instances" }: { id: string; placements: Placement[]; materialMap?: MaterialMap; label?: string }) {
   const gltf = useCampGltf(id);
@@ -180,7 +255,9 @@ function InstancedAsset({ id, placements, materialMap, label = "instances" }: { 
   const shapes = useMemo(() => campShapes(id, physics), [id, physics]);
   useEffect(() => () => parts.forEach(p => { if (p.ownedGeometry) p.geometry.dispose(); p.depth?.dispose(); }), [parts]);
   if (!shapes) throw new Error(`Missing fitted collision recipe for ${id}`);
-  const visuals = parts.map((part, i) => <InstancedPart key={i} part={part} matrices={matrices} id={id} />);
+  const visuals = parts.map((part, i) => part.treeLod !== undefined
+    ? <TreeCraftPart key={i} part={part} matrices={matrices} />
+    : <InstancedPart key={i} part={part} matrices={matrices} id={id} />);
   const crafted = id === 'C05' || id === 'C06' || id === 'C07';
   return <group name={`camp-asset-${id}-${label}`}>
     {crafted ? <WorldCampCraftProps family={id as CampCraftFamily} matrices={matrices} fallback={visuals} /> : visuals}

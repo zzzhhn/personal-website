@@ -1,0 +1,16 @@
+{
+  "motionReceipt": "candidate-n-camp-motion-14.json",
+  "normalPlay": true,
+  "renderFrames": 36,
+  "windSeconds": 0.5996999999285251,
+  "motionProbeCameraMaxDeltaM": 0.0,
+  "screenshotROI": [
+    520,
+    50,
+    780,
+    330
+  ],
+  "screenshotMeanRGBChange": 9.57234001159668,
+  "screenshotFractionAnyChannelOver8": 0.35532967032967033,
+  "note": "The screenshot pair is separate from the 0.6-second clock probe; no exact screenshot interval is asserted."
+}

@@ -1,0 +1,186 @@
+{
+  "version": "camp-facilities-v1",
+  "blender": "5.1.2",
+  "units": "metres",
+  "front": "+X",
+  "sourceLicence": "Original authored geometry; existing project camp-content geometry reused. No external textures or downloaded sources.",
+  "images": [],
+  "textureBytes": 0,
+  "families": {
+    "C12": {
+      "dimensionsGLB": [
+        0.5604338645935059,
+        1.2438278198242188,
+        0.492000013589859
+      ],
+      "minGLB": [
+        -0.28021693229675293,
+        0.0,
+        -0.2460000067949295
+      ],
+      "maxGLB": [
+        0.28021693229675293,
+        1.2438278198242188,
+        0.2460000067949295
+      ],
+      "triangles": 8776,
+      "materials": [
+        "camp_craft_brass",
+        "camp_craft_darkmetal",
+        "camp_craft_paint",
+        "camp_craft_paper",
+        "camp_craft_rubber",
+        "camp_craft_steel",
+        "camp_craft_wood"
+      ],
+      "meshNodes": [
+        "C12_guitar",
+        "C12_strings",
+        "C12_stand"
+      ],
+      "frozenRecenterBlender": [
+        0.0950000137090683,
+        -0.0,
+        0.010598674416542053
+      ]
+    },
+    "C13": {
+      "dimensionsGLB": [
+        0.1290000081062317,
+        0.11777946352958679,
+        0.339423805475235
+      ],
+      "minGLB": [
+        -0.06450000405311584,
+        0.0,
+        -0.1697119027376175
+      ],
+      "maxGLB": [
+        0.06450000405311584,
+        0.11777946352958679,
+        0.1697119027376175
+      ],
+      "triangles": 5556,
+      "materials": [
+        "camp_craft_darkmetal",
+        "camp_craft_rubber",
+        "camp_craft_steel"
+      ],
+      "meshNodes": [
+        "C13_dumbbell"
+      ],
+      "frozenRecenterBlender": [
+        -0.0,
+        -0.0,
+        2.958318923163006e-09
+      ]
+    },
+    "C14": {
+      "dimensionsGLB": [
+        0.8527240753173828,
+        0.5361788868904114,
+        1.0054066181182861
+      ],
+      "minGLB": [
+        -0.4250529706478119,
+        0.0,
+        -0.5027033090591431
+      ],
+      "maxGLB": [
+        0.4276711046695709,
+        0.5361788868904114,
+        0.5027033090591431
+      ],
+      "triangles": 5348,
+      "materials": [
+        "camp_craft_darkmetal",
+        "camp_craft_paint",
+        "camp_craft_steel",
+        "camp_craft_stone",
+        "camp_craft_wood"
+      ],
+      "meshNodes": [
+        "C14_stove",
+        "C14_wok"
+      ],
+      "frozenRecenterBlender": [
+        0.027671098709106445,
+        0.07235637307167053,
+        -0.0
+      ]
+    },
+    "C15": {
+      "dimensionsGLB": [
+        0.28599998354911804,
+        0.8645307131519075,
+        0.5060000121593475
+      ],
+      "minGLB": [
+        -0.14399999380111694,
+        -0.00042077977559529245,
+        -0.2580000162124634
+      ],
+      "maxGLB": [
+        0.1419999897480011,
+        0.8641099333763123,
+        0.24799999594688416
+      ],
+      "triangles": 9964,
+      "materials": [
+        "camp_craft_darkmetal",
+        "camp_craft_paint",
+        "camp_craft_paper",
+        "camp_craft_rubber",
+        "camp_craft_steel"
+      ],
+      "meshNodes": [
+        "C15_case",
+        "C15_handle"
+      ],
+      "frozenRecenterBlender": [
+        0.007999993860721588,
+        -0.015000000596046448,
+        -0.0008900827961042523
+      ]
+    },
+    "C16": {
+      "dimensionsGLB": [
+        0.164000004529953,
+        0.31294360756874084,
+        0.1859985664486885
+      ],
+      "minGLB": [
+        -0.0820000022649765,
+        0.0,
+        -0.09299927949905396
+      ],
+      "maxGLB": [
+        0.0820000022649765,
+        0.31294360756874084,
+        0.09299928694963455
+      ],
+      "triangles": 3256,
+      "materials": [
+        "camp_craft_brass",
+        "camp_craft_darkmetal",
+        "camp_craft_glass",
+        "camp_craft_wick"
+      ],
+      "meshNodes": [
+        "C16_frame",
+        "C16_glass",
+        "C16_wick"
+      ],
+      "frozenRecenterBlender": [
+        -0.0,
+        -7.450580596923828e-09,
+        -0.0
+      ]
+    }
+  },
+  "glb": {
+    "path": "public/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+    "bytes": 1501644,
+    "sha256": "d4b3588d67b4348efe209c8a17011e5b84b21b3fa615350d870298118c2ee07b"
+  }
+}

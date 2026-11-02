@@ -1,0 +1,136 @@
+{
+  "scope": "Actual browser receipts from frozen R3/R4. Fourteen-item R5 keeps the same six asset adapter sources and ten GLBs; rejected ground is excluded.",
+  "interactions": [
+    {
+      "receipt": "candidate-interact-camp-about-guitar-interaction-57.json",
+      "trustedKeyE": true,
+      "feedbackActiveThenRecovered": true
+    },
+    {
+      "receipt": "candidate-interact-camp-about-dumbbell-interaction-58.json",
+      "trustedKeyE": true,
+      "feedbackActiveThenRecovered": true
+    },
+    {
+      "receipt": "candidate-interact-camp-about-wok-interaction-59.json",
+      "trustedKeyE": true,
+      "feedbackActiveThenRecovered": true
+    },
+    {
+      "receipt": "candidate-interact-camp-about-suitcase-interaction-60.json",
+      "trustedKeyE": true,
+      "feedbackActiveThenRecovered": true
+    },
+    {
+      "receipt": "candidate-interact-street-bench-24-interaction-61.json",
+      "trustedKeyE": true,
+      "seatState": "sit"
+    },
+    {
+      "receipt": "candidate-interact-street-bench-24-interaction-62.json",
+      "trustedKeyE": true,
+      "seatState": "stand"
+    },
+    {
+      "receipt": "candidate-interact-street-shelter-seat-interaction-63.json",
+      "trustedKeyE": true,
+      "seatState": "sit"
+    },
+    {
+      "receipt": "candidate-interact-street-shelter-seat-interaction-64.json",
+      "trustedKeyE": true,
+      "seatState": "stand"
+    }
+  ],
+  "cardTiming": "About card opens at the first 60ms sample. A subsequent actual E closed the last three cards while their feedback recovery probe continued; later card state is not required to stay open.",
+  "seatLimit": "State transition and grounded exit verified. Shelter sit screenshot is camera-occluded; it does not prove a visually correct seated pose.",
+  "treeLOD": [
+    {
+      "receipt": "candidate-v-tree-lod-near-noon-9.json",
+      "rootDistanceM": 31.5,
+      "activeLevel": 0,
+      "activeTriangles": 35032
+    },
+    {
+      "receipt": "candidate-v-tree-lod-far-noon-11.json",
+      "rootDistanceM": 32.5,
+      "activeLevel": 1,
+      "activeTriangles": 8122
+    }
+  ],
+  "treeWind": {
+    "receipt": "candidate-n-camp-motion-14.json",
+    "windSeconds": 0.5996999999285251,
+    "frames": 36,
+    "visualROI": "tree-wind-visual-audit-r3.json"
+  },
+  "trample": {
+    "movementKey": "Actual W held 1200ms",
+    "distanceM": 3.759776104333671,
+    "amounts": [
+      0.947,
+      0.78,
+      0
+    ],
+    "scope": "Existing trample behavior retained in R4; rejected ground appearance is not accepted by this check."
+  },
+  "validWindows": {
+    "legacy-n-camp-sample-6.json": {
+      "fps": 55.46311702717693,
+      "p50": 16.699999928474426,
+      "p95": 31.100000023841858,
+      "max": 62.5,
+      "over33": 10,
+      "gpuMs": null,
+      "calls": 162,
+      "triangles": 621902,
+      "cameraSpanM": 0.0
+    },
+    "legacy-n-patches-sample-12.json": {
+      "fps": 45.12296006618034,
+      "p50": 17.399999976158142,
+      "p95": 42.800000071525574,
+      "max": 62.300000071525574,
+      "over33": 39,
+      "gpuMs": null,
+      "calls": 135,
+      "triangles": 469049,
+      "cameraSpanM": 0.0
+    },
+    "candidate-n-patches-sample-6.json": {
+      "fps": 40.15043027890594,
+      "p50": 22.299999952316284,
+      "p95": 41.199999928474426,
+      "max": 115.40000009536743,
+      "over33": 56,
+      "gpuMs": null,
+      "calls": 134,
+      "triangles": 467766,
+      "cameraSpanM": 0.0
+    },
+    "legacy-n-street-sample-6.json": {
+      "fps": 59.43536404160476,
+      "p50": 16.600000023841858,
+      "p95": 21.600000023841858,
+      "max": 33.40000009536743,
+      "over33": 1,
+      "gpuMs": null,
+      "calls": 140,
+      "triangles": 544799,
+      "cameraSpanM": 0.0
+    },
+    "candidate-n-street-sample-10.json": {
+      "fps": 48.4488299605699,
+      "p50": 17.199999928474426,
+      "p95": 33.799999952316284,
+      "max": 56.10000002384186,
+      "over33": 18,
+      "gpuMs": null,
+      "calls": 140,
+      "triangles": 568420,
+      "cameraSpanM": 0.0
+    }
+  },
+  "performanceConclusion": "Frame-time acceptance unresolved. Sequential single windows with host variation cannot isolate asset cost. Camp candidate never yielded a final stable complete window: initial geometry changed; final attempt was interrupted and no sample was saved. Stop condition reached; no best-of selection.",
+  "groundWindowScope": "Patches pair measures rejected R4 ground only, not fourteen-item R5 terrain."
+}
