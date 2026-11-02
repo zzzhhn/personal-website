@@ -41,3 +41,7 @@ test('manufactured handrail/post grain axes and underside-bearing hardware conta
  // Stringer bottom .86, crossbeam top .86; the .014 m strap crosses this interface.
  assert.ok(b.boundingBox.min.y<.86&&b.boundingBox.max.y>.86);assert.ok(b.boundingBox.min.x<-.07&&b.boundingBox.max.x>.07);
 });
+test('cylinder long grain has local origin and no UV interpolation across its wrap seam',()=>{
+ const C=loadWorldModule('WorldWalkCraft.ts'),g=new C.WalkCraftGeo();g.cyl([64,-2.6,-40],[64,.86,-40],.15,.13,8,'#8E6E55',{smooth:true});const b=g.build(),m=b.getAttribute('aMat'),uv=b.getAttribute('aSuv'),period=2*Math.PI*.14/(.7*466/1024);
+ let side=0,cut=0;for(let t=0;t<m.count;t+=3){if(m.getW(t)===-1){side++;const v=[uv.getY(t),uv.getY(t+1),uv.getY(t+2)];assert.ok(Math.max(...v)-Math.min(...v)<period/2+1e-6);}else cut++;}assert.equal(side,16);assert.equal(cut,16);
+});
