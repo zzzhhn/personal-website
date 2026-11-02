@@ -6,6 +6,7 @@ import argparse, copy, hashlib, importlib.util, json, struct, sys
 import bpy
 ROOT=Path.cwd();HERE=ROOT/'tools/world/facility-craft/batch6/rails'
 parser=argparse.ArgumentParser();parser.add_argument('--surface-dir',type=Path,required=True)
+parser.add_argument('--only',choices=['all','seawall','timber'],default='all')
 args=parser.parse_args(sys.argv[sys.argv.index('--')+1:]if'--'in sys.argv else[])
 spec=importlib.util.spec_from_file_location('street_archive',HERE.parents[1]/'street/build_native.py')
 archive=importlib.util.module_from_spec(spec);spec.loader.exec_module(archive);original_material=archive.material
@@ -29,6 +30,7 @@ def material(signature):
 archive.material=material
 out=ROOT/'public/assets/world/craft-batch6-rails';native=HERE/'native';out.mkdir(parents=True,exist_ok=True);native.mkdir(parents=True,exist_ok=True)
 for family in['seawall','timber']:
+    if args.only!='all'and family!=args.only:continue
     bpy.ops.wm.read_factory_settings(use_empty=True);archive.MATERIALS={}
     source=HERE/'source'/f'{family}.source.json';original=json.loads(source.read_text());data=copy.deepcopy(original)
     for node in data['nodes']:

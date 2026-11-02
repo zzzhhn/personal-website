@@ -1,0 +1,174 @@
+{
+  "baseline": "97c9546",
+  "group": "rails",
+  "surfaceMode": "candidate",
+  "view": {
+    "id": "seawall-normal",
+    "eye": [
+      27.6,
+      2.6,
+      -6.507407
+    ],
+    "target": [
+      31,
+      1.62,
+      -6.307407
+    ],
+    "representative": "seawall bay 16"
+  },
+  "fov": 50,
+  "time": 720,
+  "canvas": [
+    1710,
+    931
+  ],
+  "exposure": 1,
+  "renderer": {
+    "render": {
+      "frame": 1571,
+      "calls": 148,
+      "triangles": 1348604,
+      "points": 124,
+      "lines": 0
+    },
+    "memory": {
+      "geometries": 197,
+      "textures": 90
+    }
+  },
+  "quality": "balanced",
+  "night": 0,
+  "blend": 1,
+  "loading": {
+    "phase": "ready",
+    "loaded": 0,
+    "total": 0,
+    "active": false,
+    "failed": 0
+  },
+  "registeredAssets": {
+    "world-park": {
+      "present": true,
+      "meshes": 207,
+      "visible": 123,
+      "nominalTriangles": 558554,
+      "registeredSet": "ab5855c",
+      "visibleSet": "abd8882f",
+      "assetIds": [
+        "P13",
+        "P14",
+        "P15",
+        "P16",
+        "P17",
+        "P18",
+        "djc-club",
+        "djc-north-bar",
+        "djc-pool-lanterns",
+        "exhibit-P14-crate",
+        "exhibit-P15-stool",
+        "lamp"
+      ],
+      "assetIdsCount": 15
+    },
+    "world-street": {
+      "present": true,
+      "meshes": 18,
+      "visible": 13,
+      "nominalTriangles": 52096,
+      "registeredSet": "2fe5758e",
+      "visibleSet": "743860bf",
+      "assetIds": [
+        "F04",
+        "street-fixed",
+        "street-foundation",
+        "street-rail",
+        "street-windmill"
+      ],
+      "assetIdsCount": 5
+    },
+    "djc-beach-club": {
+      "present": true,
+      "meshes": 60,
+      "visible": 60,
+      "nominalTriangles": 465871,
+      "registeredSet": "721cef0e",
+      "visibleSet": "721cef0e",
+      "assetIds": [
+        "djc-club",
+        "djc-north-bar",
+        "djc-pool-lanterns"
+      ],
+      "assetIdsCount": 3
+    },
+    "djc-north-bar-visual": {
+      "present": true,
+      "meshes": 18,
+      "visible": 18,
+      "nominalTriangles": 204228,
+      "registeredSet": "de1e20e9",
+      "visibleSet": "de1e20e9",
+      "assetIds": [
+        "djc-north-bar"
+      ],
+      "assetIdsCount": 1
+    },
+    "djc-furniture-visuals": {
+      "present": true,
+      "meshes": 10,
+      "visible": 10,
+      "nominalTriangles": 33280,
+      "registeredSet": "125a9867",
+      "visibleSet": "125a9867",
+      "assetIds": [
+        "djc-club"
+      ],
+      "assetIdsCount": 1
+    },
+    "world-camp-slice": {
+      "present": true,
+      "meshes": 69,
+      "visible": 67,
+      "nominalTriangles": 89043,
+      "registeredSet": "c2897fb3",
+      "visibleSet": "71a08fab",
+      "assetIds": [
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "G16",
+        "G17",
+        "G18",
+        "G19"
+      ],
+      "assetIdsCount": 16
+    }
+  },
+  "loadedGlbs": [],
+  "materialRevision": 5,
+  "shadow": {
+    "pending": false,
+    "slices": 0,
+    "cpuMs": 0,
+    "maxSliceMs": 0,
+    "cancelled": 0,
+    "error": "",
+    "phases": [],
+    "hullWorker": {
+      "requests": 69,
+      "workerMs": 193.99999940395355,
+      "maxWorkerMs": 36.39999997615814,
+      "maxSource": "DJC_·_Oiled_teak_·_photographed_grain",
+      "maxInputVertices": 109189
+    },
+    "centre": [
+      -65.96459819790317,
+      46.48776847029037,
+      66.83796406127192
+    ]
+  }
+}

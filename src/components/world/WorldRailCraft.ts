@@ -40,13 +40,15 @@ function surfaces(source:Builder,woodAxis:'x'|'y'|null){
  return B;
 }
 function seawall(B:Builder,span:number,lod:0|1){
- part(B,'post',()=>{box(B,[-.045,-.5,-.045],[.045,.968,.045],S.creamPaint,lod===0?.009:0);
-  if(lod===0){cap(B,.06,1);box(B,[-.095,.005,-.095],[.095,.03,.095],S.galv,.007);box(B,[-.063,.03,-.063],[.063,.105,.063],S.creamPaint,.006);}});
+ part(B,'post',()=>{box(B,[-.045,-.5,-.045],[.045,lod===0?.943:.968,.045],S.creamPaint,lod===0?.009:0);
+  // The cap supports the underside of the tube coupling; it no longer cuts
+  // halfway through the handrail as a solid plastic-looking block.
+  if(lod===0){cap(B,.06,.965);box(B,[-.095,.005,-.095],[.095,.03,.095],S.galv,.007);box(B,[-.063,.03,-.063],[.063,.105,.063],S.creamPaint,.006);}});
  part(B,'handrail',()=>{
   bar(B,[0,1,0],[span,1,0],.034,S.creamPaint,lod===0?12:5);
   bar(B,[0,.55,0],[span,.55,0],.022,S.creamPaint,lod===0?8:4);
   if(lod===0){bar(B,[0,.14,0],[span,.14,0],.023,S.creamPaint,8);
-   for(const y of[.14,.55,1])bar(B,[-.055,y,0],[.055,y,0],y===1?.041:.029,S.creamPaint,10);}
+   for(const y of[.14,.55,1])bar(B,[-.055,y,0],[.055,y,0],y===1?.041:.029,S.galv,10);}
  });
  if(lod===0)part(B,'balusters',()=>{for(let i=1;i<=3;i++)bar(B,[span*i/4,.14,0],[span*i/4,.98,0],.014,S.creamPaint,8);});
 }
@@ -59,7 +61,7 @@ export function craftSeawallEnd(original:Builder,lod:0|1){
  if(!railCraftEnabled())return original;const B=lod===0?new Builder():clone(original);
  if(lod===0){part(B,'terminal.post',()=>{box(B,[-.06,-.5,-.06],[.06,1.04,.06],S.creamPaint,.01);cap(B,.075,1.06);
   box(B,[-.075,.005,-.075],[.075,.03,.075],S.galv,.007);});
-  part(B,'terminal.sockets',()=>{for(const y of[.14,.55,1])bar(B,[-.055,y,0],[0,y,0],y===1?.041:.029,S.creamPaint,10);});}
+  part(B,'terminal.sockets',()=>{for(const y of[.14,.55,1])bar(B,[-.055,y,0],[0,y,0],y===1?.041:.029,S.galv,10);});}
  return bindStreetFacilityCollision(surfaces(B,null),original);
 }
 export function craftTimberPost(original:Builder,lod:0|1){
