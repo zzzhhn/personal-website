@@ -189,7 +189,8 @@ function InstancedPart({ part, matrices, id }: { part: Part; matrices: Matrix4[]
           return { name: material.name, map: texture(material.map), normalMap: texture(material.normalMap),
             roughnessMap: texture(material.roughnessMap), aoMap: texture(material.aoMap), envMap: texture(material.envMap),
             envMapIntensity: material.envMapIntensity, vertexColors: material.vertexColors, roughness: material.roughness,
-            metalness: material.metalness, transparent: material.transparent, opacity: material.opacity, emissiveIntensity: material.emissiveIntensity };
+            metalness: material.metalness, transparent: material.transparent, opacity: material.opacity,
+            emissive: material.emissive.getHexString(), emissiveIntensity: material.emissiveIntensity };
         }) };
     };
     registry[part.name] = read;

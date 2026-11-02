@@ -68,8 +68,7 @@
   "estimatedImageIncrementMiB": 1.3333333333333333,
   "GPUAllocationMeasured": false,
   "GPUAllocationBoundary": "Actual three AO Texture UUIDs borrow one Source UUID; actual renderer allocation and frame-cost delta were not measured. Estimates assume one RGBA8+mipmap allocation per unique image.",
-  "extraReflectionTargets": 0,
-  "reflectionTargetBoundary": "Uses the existing renderer-owned PMREM already retained by C09/furniture; no new API, private generator, pass, point light or clock.",
+  "reflectionTargetBoundary": "Borrows the existing renderer cache. If another consumer already retains it, no additional target is created; if G21 is the first consumer, the renderer unique shared PMREM target is created. No cache API changes or per-G21 private target.",
   "materialCopies": 3,
   "normalRoughAOAlphaPreservedFromR9": true,
   "collider": {
@@ -81,5 +80,7 @@
     "visualRecessionMaximumMetres": 0.1575,
     "boundary": "Frozen original collider remains conservative around the accepted recessed visual shape; no new collider complexity or placement/layout changes."
   },
-  "remaining": "One final necessary night view and integration consumer check in the coordinator window; no heavy benchmark claimed"
+  "remaining": "One final necessary night view and integration consumer check in the coordinator window; no heavy benchmark claimed",
+  "additionalReflectionTargetWhenSharedConsumerAlreadyRetained": 0,
+  "rendererUniqueSharedTargetCreatedIfG21IsFirstConsumer": 1
 }

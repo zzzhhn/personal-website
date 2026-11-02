@@ -1,10 +1,10 @@
 # G21 独立集成交付
 
-普通候选已由主协调实际看图通过，保留局部IBL1.1。仅交付G21，不含C03 GLB、材质、风动或其候选路径，也不扩大G22/G23。完整制作／审阅归档为本线 `503f17e`；独立集成提交另由主协调接收，基于主线 `3ba6ac05c4378faa9cd336d57bc1e7cb28e3f042` 整理，未改动主线checkout。精确文件清单见 `G21-OWNED-PATHS.json`。
+普通候选已由主协调实际看图通过，保留局部IBL1.1。仅交付G21，不含C03 GLB、材质、风动或其候选路径，也不扩大G22/G23。完整制作／审阅归档为本线 `503f17e`；独立集成提交 `8e9185c` 的精确parent是主线 `c4f7fca427cd68294fa5abed344e999713fcf01a`，已由主协调接为 `df45dea`。本次独立候选树从该已集成源建立，未改动主线checkout。精确文件清单见 `G21-OWNED-PATHS.json`。
 
 集成适配仅在 `WorldCamp.tsx`：G21视觉改读 `nature-camp-craft/G21.glb`，原 `camp/G21.glb` 仍独供八处放置矩阵／碰撞。`natureCraft=legacy` 和 `natureCampCraft=legacy` 保留回退。既有 GLTFLoader/本地 Draco 配置不变，无新增loader插件；baseColor/normal/roughness使用UV0，独立几何AO使用UV1。新增只读 `qa=1` 探针 `window.__worldG21Craft`，无候选临时材质模式。
 
-三个材质副本由既有 `collectParts`/`useRegisteredCopies` 管理并dispose；纹理和PMREM仅借用。调用现有 `useDjcFurnitureEnvironment`，使用C09／家具已经持有的renderer目标，沿用既有retain/release与微任务宽限，不改缓存API或创建另一环境目标。夜间保持 `1.1 * (1 - 0.8 * night)`，正午1.1、深夜0.22；无新灯、时钟、反射渲染通道或自发光。其他已交付资产与C03消费链逐字保留。
+三个材质副本由既有 `collectParts`/`useRegisteredCopies` 管理并dispose；纹理和PMREM仅借用。调用现有 `useDjcFurnitureEnvironment`，沿用既有retain/release与微任务宽限，不改缓存API。已有C09／家具等消费者retain时不新增目标；若G21是首个消费者，则建立该renderer唯一的共享PMREM目标，不能绝对声称新增目标总是0。夜间保持 `1.1 * (1 - 0.8 * night)`，正午1.1、深夜0.22；无新灯、时钟、独立反射通道或自发光。其他已交付资产与C03消费链逐字保留。
 
 `G21-material-r10.json` 记录原生实际保存重开、浮点角点、打包sRGB图像、fresh GLB回读以及16位normalized量化；`G21-geometry-check-r10.json` 证明5962三角、Position/Normal/UV0/UV1有向三角集和node变换仍与已接受R9完全一致。原生AO图保留在UV1节点并独立附到glTF，避免Blender把它与UV0粗糙度合并。原碰撞文件哈希和尺度／退蚀边界见 `G21-INCREMENTAL-COST.json`。
 
