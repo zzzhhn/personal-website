@@ -1,0 +1,26 @@
+[
+  {
+    "level": "warn",
+    "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+    "timestamp": "2026-11-02T21:48:26.799Z",
+    "url": "http://127.0.0.1:4350/.astro/node_modules/.vite/deps/chunk-NPZSTR2C.js?v=b2251483"
+  },
+  {
+    "level": "warn",
+    "message": "using deprecated parameters for the initialization function; pass a single object instead",
+    "timestamp": "2026-11-02T21:48:27.059Z",
+    "url": "http://127.0.0.1:4350/.astro/node_modules/.vite/deps/chunk-HP2EFJ7V.js?v=b2251483"
+  },
+  {
+    "level": "warn",
+    "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+    "timestamp": "2026-11-02T21:51:12.342Z",
+    "url": "http://127.0.0.1:4350/.astro/node_modules/.vite/deps/chunk-NPZSTR2C.js?v=b2251483"
+  },
+  {
+    "level": "warn",
+    "message": "using deprecated parameters for the initialization function; pass a single object instead",
+    "timestamp": "2026-11-02T21:51:12.429Z",
+    "url": "http://127.0.0.1:4350/.astro/node_modules/.vite/deps/chunk-HP2EFJ7V.js?v=b2251483"
+  }
+]

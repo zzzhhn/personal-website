@@ -18,6 +18,10 @@ test('near/far visuals bind the exact full original collision Builder and never 
  for(const lod of[0,1])for(const[name,old,craft]of variants(lod)){const root=C.streetFacilityCollision(old),before=hash(proxy(root)),visual=craft(old);
   assert.notEqual(visual,root,name);assert.equal(C.streetFacilityCollision(visual),root,name);assert.equal(hash(proxy(root)),before,name+' proxy positions/index/hulls');
   assert.deepEqual(visual.hulls(),root.hulls());
+  if(lod===1&&['post','beam'].includes(name)){
+    const expanded=b=>b.idx.map(i=>[...b.pos.slice(i*3,i*3+3),...b.nrm.slice(i*3,i*3+3),...b.col.slice(i*3,i*3+3)]);
+    assert.equal(hash(expanded(visual)),hash(expanded(old)),name+' far triangle shape/normal/color');
+  }
  }
 });
 test('both seawall LOD spans close all adjacent placements and the terminal post without length compensation elsewhere',()=>{

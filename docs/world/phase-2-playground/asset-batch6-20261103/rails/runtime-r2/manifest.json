@@ -1,0 +1,73 @@
+{
+  "status": "main accepted ordinary candidates; bounded night/source checks; user visual acceptance separate",
+  "sourceCommit": "e6152bf227016f775e94376439c441e7e7631751",
+  "checks": [
+    "seawall: matched ordinary pair and one night; actual camera/mode, CPU/GPU texture upload, shadow and new stability window",
+    "timber: matched ordinary pair and one night; actual camera/mode, CPU/GPU texture upload, shadow and new stability window",
+    "owned source and original shared maps; native source/portable hashes and fresh import; no browser errors",
+    "bounded actual static/dynamic kind costs; no FPS or GPU-time inference"
+  ],
+  "observations": {
+    "seawall": {
+      "calls": [
+        148,
+        148
+      ],
+      "textures": [
+        90,
+        90
+      ]
+    },
+    "timber": {
+      "calls": [
+        126,
+        126
+      ],
+      "textures": [
+        101,
+        101
+      ]
+    },
+    "geometry": {
+      "baseline": {
+        "kinds": 13,
+        "nearTriangles": 3242,
+        "farTriangles": 430,
+        "sourceBufferBytes": 397884
+      },
+      "candidate": {
+        "kinds": 13,
+        "nearTriangles": 4938,
+        "farTriangles": 430,
+        "sourceBufferBytes": 1030656
+      }
+    }
+  },
+  "textureHashes": {
+    "public/assets/world/craft-batch6-facilities/wood-color.png": "b24a337f946fae4ed3d94843cba75249a92880b22aad86e4d5e0fa7a61c15e02",
+    "public/assets/world/craft-batch6-facilities/wood-normal.png": "285001688e2a8ec564bb8e1b56d182bf4d77f65779a12198a52a3a1e3f9c935f",
+    "public/assets/world/craft-batch6-facilities/wood-rough.png": "7287de6832e55df62336ccd88bb6f48d468dd285d1fe8113b2693227a563318a"
+  },
+  "hashes": {
+    "docs/world/phase-2-playground/asset-batch6-20261103/rails/runtime-r2/console-errors.json": "a4fc7257fa2eb150ab12e0f5978a07c89716a35662c8f0895cd2c6557352c47c",
+    "docs/world/phase-2-playground/asset-batch6-20261103/rails/runtime-r2/seawall-normal-night-candidate.jpg": "0d339e9ad7d9a20e4e84bc931c4b0c8c9c46cb110486c8b6f596876f8408ee5d",
+    "docs/world/phase-2-playground/asset-batch6-20261103/rails/runtime-r2/seawall-normal-night-candidate.json": "e55e006ee074ff8c67b733afaef37e70ce38ebf5bd2de082da872fabdc4cdd39",
+    "docs/world/phase-2-playground/asset-batch6-20261103/rails/runtime-r2/seawall-normal-noon-baseline.jpg": "2203c98362e984e96604c675319010c5d8cc777b58f91378d28bcc99ff254520",
+    "docs/world/phase-2-playground/asset-batch6-20261103/rails/runtime-r2/seawall-normal-noon-baseline.json": "fcebf6f03f5c19bbf21a02ec49be83ccda8f3760b3dbfe61a55f32ca6af1bea8",
+    "docs/world/phase-2-playground/asset-batch6-20261103/rails/runtime-r2/seawall-normal-noon-candidate.jpg": "00ecfd81fea4c4b69c158787d61cb3c6dd5556bb10cf369b7f2a0cc7dc5bac3c",
+    "docs/world/phase-2-playground/asset-batch6-20261103/rails/runtime-r2/seawall-normal-noon-candidate.json": "8720448843cfdc35c04301fd0aff76fc0868e727687ebbd5ce9ab7b79f3f6c48",
+    "docs/world/phase-2-playground/asset-batch6-20261103/rails/runtime-r2/timber-normal-night-candidate.jpg": "abab858235a553e992202765eb0b4dc97279a0b028ae31427d91a752d1de21a2",
+    "docs/world/phase-2-playground/asset-batch6-20261103/rails/runtime-r2/timber-normal-night-candidate.json": "508f41f47590276e2daef1fd82e70ed0f170ea51f40299a7586eafd12447a251",
+    "docs/world/phase-2-playground/asset-batch6-20261103/rails/runtime-r2/timber-normal-noon-baseline.jpg": "e9664086057d7f53db1d5f205b83c21c7a1eaa9ad7711016225e9b58955228d3",
+    "docs/world/phase-2-playground/asset-batch6-20261103/rails/runtime-r2/timber-normal-noon-baseline.json": "72a0e797c3cac824f10e8ed439b80608828c65ddbcdfcce77976ba3ee3062dc2",
+    "docs/world/phase-2-playground/asset-batch6-20261103/rails/runtime-r2/timber-normal-noon-candidate.jpg": "3485205724812c42f92537f778b6ddc4a68916b9de123515ec65db891633d617",
+    "docs/world/phase-2-playground/asset-batch6-20261103/rails/runtime-r2/timber-normal-noon-candidate.json": "d80ed629c0fbbc880a304cf1f0f1670c4c33c87a35c87a57e84995cb7d14895f",
+    "public/assets/world/craft-batch6-rails/seawall-portable.glb": "09578ee0a371a7c712133f859d2f4abb14926c52b2e436dfe582031d117bee2e",
+    "public/assets/world/craft-batch6-rails/seawall-export-report.json": "c5c455b2fdae49c415391240fb5bebbf9b48c83da33d992ed9253c1d8f0f30c4",
+    "tools/world/facility-craft/batch6/rails/native/seawall.blend": "f88b4c721056430daa87132c75cc191017d128822d6a92add226a8ff451e637e",
+    "public/assets/world/craft-batch6-rails/timber-portable.glb": "ca3c0990a5b3f3eeb9ca7adbee6c97e7e76dc8edf53837b3a1e15c9d7c881c25",
+    "public/assets/world/craft-batch6-rails/timber-export-report.json": "99bb8235e7c48ec5878de4c9da6cd73f844bc03efb2904475631ea5041be09ca",
+    "tools/world/facility-craft/batch6/rails/native/timber.blend": "61fe6771c38481bd044d5536e2e2b7fa60139b10a9c03b1176402845346092b3",
+    "astro.batch6.rails.config.mjs": "e442433d4b1ecdc6f5695cfd889aa6220bd8c141a957fdb0d7bd0699f4b373bf"
+  }
+}

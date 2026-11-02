@@ -1,0 +1,234 @@
+{
+  "baseline": "97c9546",
+  "sourceVersion": {
+    "baseCommit": "97c9546",
+    "hashes": {
+      "WorldRailCraft.ts": "32ec60c225b4cb68632c21ec27ead0b57d36a4ace930f829a36d2a4f42268f10",
+      "WorldStreetRails.tsx": "a8ed14a0373e4298a2f446db45623a2f51a5e9708e9aaee94fa37b61e636c05c",
+      "WorldStreetKnock.tsx": "75a5203717049a9253336f3e806d8092a9d6cec3d6e026833a87f854db9492fe",
+      "WorldStreetFacilityCraft.ts": "94f41168cfa145d446b252beb522c0feaca6ef16fcf211dd0109e63bce31fdaf",
+      "WorldStreetMaterial.ts": "07da94774ac0962ddfcc8178e058561ca1efe6371b65bed18003f0799309958a",
+      "WorldFacilitySurface.ts": "e859b94b637d8a129e453a9ac297e4d828ca887218ca1a77bd411a6462c6c379"
+    }
+  },
+  "group": "rails",
+  "surfaceMode": "candidate",
+  "view": {
+    "id": "seawall-normal",
+    "eye": [
+      27.6,
+      2.6,
+      -6.507407
+    ],
+    "target": [
+      31,
+      1.62,
+      -6.307407
+    ],
+    "representative": "seawall bay 16"
+  },
+  "fov": 50,
+  "time": 720,
+  "canvas": [
+    1710,
+    931
+  ],
+  "exposure": 1,
+  "renderer": {
+    "render": {
+      "frame": 1751,
+      "calls": 148,
+      "triangles": 1348601,
+      "points": 124,
+      "lines": 0
+    },
+    "memory": {
+      "geometries": 197,
+      "textures": 90
+    }
+  },
+  "quality": "balanced",
+  "night": 0,
+  "blend": 1,
+  "loading": {
+    "phase": "ready",
+    "loaded": 0,
+    "total": 0,
+    "active": false,
+    "failed": 0
+  },
+  "registeredAssets": {
+    "world-park": {
+      "present": true,
+      "meshes": 207,
+      "visible": 123,
+      "nominalTriangles": 558554,
+      "registeredSet": "ab5855c",
+      "visibleSet": "abd8882f",
+      "assetIds": [
+        "P13",
+        "P14",
+        "P15",
+        "P16",
+        "P17",
+        "P18",
+        "djc-club",
+        "djc-north-bar",
+        "djc-pool-lanterns",
+        "exhibit-P14-crate",
+        "exhibit-P15-stool",
+        "lamp"
+      ],
+      "assetIdsCount": 15
+    },
+    "world-street": {
+      "present": true,
+      "meshes": 18,
+      "visible": 13,
+      "nominalTriangles": 52096,
+      "registeredSet": "2fe5758e",
+      "visibleSet": "743860bf",
+      "assetIds": [
+        "F04",
+        "street-fixed",
+        "street-foundation",
+        "street-rail",
+        "street-windmill"
+      ],
+      "assetIdsCount": 5
+    },
+    "djc-beach-club": {
+      "present": true,
+      "meshes": 60,
+      "visible": 60,
+      "nominalTriangles": 465871,
+      "registeredSet": "721cef0e",
+      "visibleSet": "721cef0e",
+      "assetIds": [
+        "djc-club",
+        "djc-north-bar",
+        "djc-pool-lanterns"
+      ],
+      "assetIdsCount": 3
+    },
+    "djc-north-bar-visual": {
+      "present": true,
+      "meshes": 18,
+      "visible": 18,
+      "nominalTriangles": 204228,
+      "registeredSet": "de1e20e9",
+      "visibleSet": "de1e20e9",
+      "assetIds": [
+        "djc-north-bar"
+      ],
+      "assetIdsCount": 1
+    },
+    "djc-furniture-visuals": {
+      "present": true,
+      "meshes": 10,
+      "visible": 10,
+      "nominalTriangles": 33280,
+      "registeredSet": "125a9867",
+      "visibleSet": "125a9867",
+      "assetIds": [
+        "djc-club"
+      ],
+      "assetIdsCount": 1
+    },
+    "world-camp-slice": {
+      "present": true,
+      "meshes": 69,
+      "visible": 67,
+      "nominalTriangles": 89043,
+      "registeredSet": "c2897fb3",
+      "visibleSet": "71a08fab",
+      "assetIds": [
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "G16",
+        "G17",
+        "G18",
+        "G19"
+      ],
+      "assetIdsCount": 16
+    }
+  },
+  "loadedGlbs": [],
+  "materialRevision": 6,
+  "reviewReady": {
+    "viewId": "seawall-normal",
+    "currentMode": "candidate",
+    "expectedMode": "candidate",
+    "cameraPosition": [
+      27.6,
+      2.6,
+      -6.507407
+    ],
+    "cameraDirection": [
+      0.9593502254154203,
+      -0.2765185943844448,
+      0.05643236620090697
+    ],
+    "cameraReady": true,
+    "textures": [
+      {
+        "name": "uFacilityWood",
+        "uuid": "c8f85ed1-b2f3-43db-ad27-35773ed0af66",
+        "width": 1024,
+        "height": 512,
+        "version": 1,
+        "gpuVersion": 1
+      },
+      {
+        "name": "uFacilityRough",
+        "uuid": "f051e09c-a203-429d-ad7c-a707b239fe99",
+        "width": 1024,
+        "height": 512,
+        "version": 1,
+        "gpuVersion": 1
+      },
+      {
+        "name": "uFacilityNormal",
+        "uuid": "7ba1c887-25d4-4bd8-a3b0-db1213f3973d",
+        "width": 1024,
+        "height": 512,
+        "version": 1,
+        "gpuVersion": 1
+      }
+    ],
+    "texturesReady": true,
+    "ready": true
+  },
+  "reviewWarmup": {
+    "stableAgeMs": 81645,
+    "checks": 3,
+    "minimumStableMs": 3000
+  },
+  "shadow": {
+    "pending": false,
+    "slices": 0,
+    "cpuMs": 0,
+    "maxSliceMs": 0,
+    "cancelled": 0,
+    "error": "",
+    "phases": [],
+    "hullWorker": {
+      "requests": 84,
+      "workerMs": 341.9000002145767,
+      "maxWorkerMs": 100.20000004768372,
+      "maxSource": "intent-coaster",
+      "maxInputVertices": 368460
+    },
+    "centre": [
+      -65.96459819790317,
+      46.48776847029037,
+      66.83796406127192
+    ]
+  }
+}

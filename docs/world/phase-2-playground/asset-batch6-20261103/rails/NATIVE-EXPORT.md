@@ -11,4 +11,4 @@ seawall的端柱放在单位跨末端是构造fixture，不冒充完整27跨实�
 
 档案位于`tools/world/facility-craft/batch6/rails/native/`；portable与逐族报告位于`public/assets/world/craft-batch6-rails/`。木材借用已有R2共享3图，制造UV沿构件长轴、角点在背部／下方解缝，法线强度.18；端面色环为程序色，不称照片扫描。全部primitive含COLOR_0，wood含TEXCOORD_0、颜色与法线图。
 
-静态PBR档案不含游戏环境缓存／night／距离fade／重置；运行时仍使用Builder→原批次→共享Surface／StreetMaterial。没有把portable被保存或fresh-import通过当作WebGL视觉接受。首次提取遗漏旧导出器要求的代理hash字段，补齐真实hash后重导；当前源JSON与导出报告SHA逐项一致。普通视角复核正在进行。
+静态PBR档案不含游戏环境缓存／night／距离fade／重置；运行时仍使用Builder→原批次→共享Surface／StreetMaterial。没有把portable被保存或fresh-import通过当作WebGL视觉接受。首次提取遗漏旧导出器要求的代理hash字段，补齐真实hash后重导；当前源JSON与导出报告SHA逐项一致。后续海堤R2仅重导海堤，木构档案保持原值；最终普通候选接受及必要夜景见`REVIEW.md`。
