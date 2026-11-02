@@ -1,0 +1,13 @@
+{
+  "port": 4341,
+  "pid": 89762,
+  "root": "/tmp/bobby-world-batch6-bench-bin-root",
+  "runtimeSource": "55cc63fb6aaee484e7569d57acb8fd8742a13f1e",
+  "htmlSha256": "2eac8bb06d9732d028e76f49cbcf1fe51c5cfb2fd23a507760ca4c53058e16e2",
+  "entries": [
+    "/_astro/WorldApp.DIcvkGgP.js"
+  ],
+  "rollbackRoot": "/tmp/bobby-world-batch6-final-01a171f1",
+  "frozenR10Root": "/tmp/bobby-world-batch5-r10-fourteen-01a19a62",
+  "publicDeployment": false
+}
