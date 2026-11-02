@@ -6,7 +6,7 @@ import { loadWorldModule, ROOT } from '../street/runtime.mjs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
-const A=loadWorldModule(), baseline=loadWorldModule('WorldStreetAssets.ts','?benchBin=baseline');
+const A=loadWorldModule('WorldStreetAssets.ts','?benchBin=r1'), baseline=loadWorldModule('WorldStreetAssets.ts','?benchBin=baseline');
 const out=path.join(ROOT,'tools/world/facility-craft/batch6/next-bench-bin');mkdirSync(out,{recursive:true});
 const hash=value=>createHash('sha256').update(JSON.stringify(value)).digest('hex');
 const base='ad7ee76d68ce240d9ed8e4f1657a5e637e62700c';

@@ -1,0 +1,11 @@
+astro.batch6.bin-r2.config.mjs
+docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/OWNED-PATHS-R2-SOURCE.txt
+docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/R2-SOURCE.md
+src/components/world/WorldBinConstruction.ts
+src/components/world/WorldStreetFacilityCraft.ts
+tools/world/facility-craft/batch6/bench-bin.test.mjs
+tools/world/facility-craft/batch6/build_bench_bin.py
+tools/world/facility-craft/batch6/next-bin-r2/bin.source.json
+tools/world/facility-craft/batch6/next-bin-r2/manifest.json
+tools/world/facility-craft/batch6/prepare_bench_bin.mjs
+tools/world/facility-craft/batch6/prepare_bin_r2.mjs

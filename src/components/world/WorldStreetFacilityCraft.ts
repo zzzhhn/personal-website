@@ -3,6 +3,7 @@
 import { Builder, S, bar, bezier, box, cyl, lathe, plate, rectPoly, tube, type Surf, type V3 } from './WorldStreetGeometry.ts';
 import { facilityCraftEnabled, tagShelterSurfaces } from './WorldFacilitySurface';
 import { tagBenchBinSurfaces } from './WorldBenchBinSurface';
+import { binR2Enabled, buildBinR2Details } from './WorldBinConstruction';
 
 export type StreetFacility = 'bench' | 'shelter' | 'lamp' | 'signal' | 'bin' | 'roadblock' | 'seawallBay' | 'timberPost' | 'timberBeam';
 export interface FacilityOptions { height?: number; arm?: number; pole?: Surf; base?: Surf; cyanRing?: boolean; len?: number }
@@ -272,6 +273,12 @@ export function finishStreetFacility(baseline: Builder, kind: StreetFacility, lo
   else if (kind === 'shelter') shelter(B, baseline);
   else if (kind === 'lamp') lamp(B, baseline, o);
   else if (kind === 'signal') signal(B, baseline);
+  else if (kind === 'bin' && binR2Enabled()) {
+    const reference = new Builder(); bin(reference);
+    retain(B, reference, ['drum']);
+    buildBinR2Details(B);
+    retain(B, reference, ['lid.hinge']);
+  }
   else if (kind === 'bin') bin(B);
   else if (kind === 'roadblock') roadblock(B, baseline);
   else if (kind === 'seawallBay') seawall(B, o.len ?? 2);

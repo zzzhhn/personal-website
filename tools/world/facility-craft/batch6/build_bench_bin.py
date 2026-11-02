@@ -17,6 +17,7 @@ ROOT=Path.cwd()
 HERE=ROOT/'tools/world/facility-craft/batch6'
 parser=argparse.ArgumentParser()
 parser.add_argument('--surface-dir',type=Path,required=True)
+parser.add_argument('--revision',choices=['r1','r2'],default='r1')
 args=parser.parse_args(sys.argv[sys.argv.index('--')+1:] if '--'in sys.argv else [])
 spec=importlib.util.spec_from_file_location('street_archive',HERE.parent/'street/build_native.py')
 archive=importlib.util.module_from_spec(spec);spec.loader.exec_module(archive)
@@ -51,12 +52,12 @@ def material(signature):
 
 
 archive.material=material
-out=ROOT/'public/assets/world/craft-batch6-bench-bin'
-native=HERE/'native-bench-bin'
+out=ROOT/('public/assets/world/craft-batch6-bin-r2' if args.revision=='r2' else 'public/assets/world/craft-batch6-bench-bin')
+native=HERE/('native-bin-r2' if args.revision=='r2' else 'native-bench-bin')
 out.mkdir(parents=True,exist_ok=True);native.mkdir(parents=True,exist_ok=True)
-for family in ['bench','bin']:
+for family in (['bin'] if args.revision=='r2' else ['bench','bin']):
     bpy.ops.wm.read_factory_settings(use_empty=True);archive.MATERIALS={}
-    source=HERE/'next-bench-bin'/f'{family}.source.json'
+    source=HERE/('next-bin-r2' if args.revision=='r2' else 'next-bench-bin')/f'{family}.source.json'
     original=json.loads(source.read_text());data=copy.deepcopy(original)
     # Source UV is already in the glTF/Three image convention, with flipY=false.
     data['aSuv'][1::2]=[1-v for v in data['aSuv'][1::2]]
