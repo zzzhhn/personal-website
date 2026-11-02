@@ -28,9 +28,10 @@ The bounded rim correction is committed as `db69721`; the coordinator reviewed i
 
 The coordinator has released R9's visual sampling hold. The execution session owns the remaining real interaction checks and the sole browser/heavy-work slot; the performance session owns independent identity and paired-window interpretation. Both report automatically. Performance and preview-promotion decisions remain open.
 
+R9's real C15 sequence used native W input: the body moved about 0.448 m, tipped approximately 90 degrees, then returned to its home position and sleeping state through the existing 30-second reset mechanism after the player left. The coordinator opened the displaced and reset low-angle images. No stale patch is visible in the exposed area and contact returns after reset; the fallen body obscures part of the four previous contact locations, so this is not claimed as a fully unobstructed four-point observation. Together with the targeted support/lift/tilt/fade tests, this is sufficient for the local change. No additional screenshot or runtime probe is requested. See the execution tree's `camp-contact-r9/runtime/r9-C15-displaced-low.png` and `r9-C15-reset-low.png` and corresponding raw snapshots 4–8.
+
 ## Pending before preview promotion
 
-- A bounded R9 physical check that moving, tipping, lifting and resetting leave no stale patches. C13 and C15 visual review and R7's geometric displacement/reset checks are already complete.
 - Final source/asset identity, normal browser behavior, and an unobstructed shelter sitting/standing observation.
 - One bounded camp/street old-new-old performance sequence on the final frozen package, independently interpreted by the performance session. Stop on invalid samples rather than selecting favorable windows.
 - Preserve the shared integration tree's existing roadblock/roof coplanar-surface fixes and its unrelated terrain changes.
