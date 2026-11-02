@@ -1,0 +1,3302 @@
+{
+  "assets": {
+    "G17": {
+      "source": "tools/world/camp/nature-v4/blend/G17.blend",
+      "sourceSha256": "086865abb0844f1f55ee3551a5c00f747f7fce88effc0b1c972c9a48cd81297f",
+      "nativeFile": "tools/world/nature-craft/blend/G17.blend",
+      "nativeSha256": "4be6a5312b30fb759da525dbea5f73fe2832dd75aeacb5e59ba859c73296fe66",
+      "glb": "public/assets/world/nature-craft/G17.glb",
+      "glbSha256": "d4c98d8a8bd8b59d61d6b0c40fdc84fab9cdccda27f546a5fdd0b612dc9c0e59",
+      "glbBytes": 234644,
+      "baseline": {
+        "crown": {
+          "vertices": 5908,
+          "triangles": 5856,
+          "geometryHash": "7adeed1a59d93a06f728b131c4b863b28a1ad95c9da925fbbf901d9f986f41aa",
+          "windHash": "0cfe95bac5c660a405e3de3bb3c48ed30a29d8a01a0e56480a6d45a982ed3eab",
+          "faceReferencedVertices": 5908,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -1.200200080871582,
+              -2.1950879096984863,
+              2.8438191413879395
+            ],
+            [
+              1.200200080871582,
+              2.1950879096984863,
+              4.825892448425293
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "G17",
+          "materials": [
+            "foliage_dark",
+            "foliage_mid",
+            "foliage_light"
+          ],
+          "windRange": [
+            [
+              0.35101160407066345,
+              1.0
+            ],
+            [
+              1.0,
+              1.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1875,
+              0.4375
+            ]
+          ]
+        },
+        "trunk": {
+          "vertices": 290,
+          "triangles": 576,
+          "geometryHash": "805d09c8839cab05cf72e103257dd73934736c9261405ea4a6da5ac32b0f6678",
+          "windHash": "721ed683fd4f229bab3db27cd63c9f9d933921ed47b88b929312c8f30c9ff638",
+          "faceReferencedVertices": 290,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.2944532632827759,
+              -1.3488963842391968,
+              0.0
+            ],
+            [
+              0.3402153551578522,
+              1.3902995586395264,
+              3.5244803428649902
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "G17",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              0.0,
+              0.5391476154327393
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.4375
+            ]
+          ]
+        }
+      },
+      "native": {
+        "crown": {
+          "vertices": 5908,
+          "triangles": 5856,
+          "geometryHash": "00b5380bdc8a352d533a903b1e58171e18837319020f79d52d6f6ad9b8149c90",
+          "windHash": "0cfe95bac5c660a405e3de3bb3c48ed30a29d8a01a0e56480a6d45a982ed3eab",
+          "faceReferencedVertices": 5908,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -1.200200080871582,
+              -2.1950879096984863,
+              2.8438191413879395
+            ],
+            [
+              1.200200080871582,
+              2.1950879096984863,
+              4.825892448425293
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "G17",
+          "materials": [
+            "nature-craft-leaf-pigment"
+          ],
+          "windRange": [
+            [
+              0.35101160407066345,
+              1.0
+            ],
+            [
+              1.0,
+              1.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1875,
+              0.4375
+            ]
+          ]
+        },
+        "trunk": {
+          "vertices": 290,
+          "triangles": 576,
+          "geometryHash": "805d09c8839cab05cf72e103257dd73934736c9261405ea4a6da5ac32b0f6678",
+          "windHash": "721ed683fd4f229bab3db27cd63c9f9d933921ed47b88b929312c8f30c9ff638",
+          "faceReferencedVertices": 290,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.2944532632827759,
+              -1.3488963842391968,
+              0.0
+            ],
+            [
+              0.3402153551578522,
+              1.3902995586395264,
+              3.5244803428649902
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "G17",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              0.0,
+              0.5391476154327393
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.4375
+            ]
+          ]
+        }
+      },
+      "freshGLB": {
+        "crown": {
+          "vertices": 17568,
+          "triangles": 5856,
+          "geometryHash": "f3a709dbd63bd8c2b67e37beb3294189dfaf57a52f0928dfffc0ec2d802d151a",
+          "windHash": "414f4163b2e4657a3574d1d7b87116b9774b2b99eb69f8b75469304e2e11e884",
+          "faceReferencedVertices": 17568,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -1.200200080871582,
+              -2.1950879096984863,
+              2.8438191413879395
+            ],
+            [
+              1.2001981735229492,
+              2.1950879096984863,
+              4.825892925262451
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "G17",
+          "materials": [
+            "nature-craft-leaf-pigment"
+          ],
+          "windRange": [
+            [
+              0.35101160407066345,
+              0.999993085861206
+            ],
+            [
+              1.0,
+              1.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1875,
+              0.4375038146972656
+            ]
+          ],
+          "vertexContract": {
+            "allFaceReferencedAuthoredVerticesCovered": true,
+            "everyImportedWindMatched": true,
+            "coverageScope": "all face-referenced source vertices; original loose native vertices retained but not exported",
+            "originalUnreferencedVertices": 0,
+            "maxPositionErrorMetres": 2.6226043701171875e-06,
+            "maxWindError": 7.68899917602539e-06,
+            "trunkColliderUnchangedWithinExportPrecision": false,
+            "maxLinearColorError": 0.002549976110458374
+          }
+        },
+        "trunk": {
+          "vertices": 1316,
+          "triangles": 576,
+          "geometryHash": "bac7272c7e9a4ea8f472efdad78ef212ee602a99eec5455b9643dfebffbacd92",
+          "windHash": "babf0a76f08b4549688d64bd579209b44f7d864166aca2ec18d4c5ca53324ae3",
+          "faceReferencedVertices": 1316,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.2944532632827759,
+              -1.3488945960998535,
+              0.0
+            ],
+            [
+              0.34021371603012085,
+              1.3902995586395264,
+              3.5244803428649902
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "G17",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              0.0,
+              0.5391470193862915
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.43750667572021484
+            ]
+          ],
+          "vertexContract": {
+            "allFaceReferencedAuthoredVerticesCovered": true,
+            "everyImportedWindMatched": true,
+            "coverageScope": "all face-referenced source vertices; original loose native vertices retained but not exported",
+            "originalUnreferencedVertices": 0,
+            "maxPositionErrorMetres": 1.7881393432617188e-06,
+            "maxWindError": 7.592141628265381e-06,
+            "trunkColliderUnchangedWithinExportPrecision": true
+          }
+        }
+      },
+      "invariants": {
+        "crown": {
+          "topologyCountExact": true,
+          "rootAndParentExact": true,
+          "windAllFourChannelsExact": true,
+          "envelopeExact": true,
+          "trunkEveryVertexAndFaceExact": false,
+          "originalGeometryHash": "7adeed1a59d93a06f728b131c4b863b28a1ad95c9da925fbbf901d9f986f41aa",
+          "candidateGeometryHash": "00b5380bdc8a352d533a903b1e58171e18837319020f79d52d6f6ad9b8149c90"
+        },
+        "trunk": {
+          "topologyCountExact": true,
+          "rootAndParentExact": true,
+          "windAllFourChannelsExact": true,
+          "envelopeExact": true,
+          "trunkEveryVertexAndFaceExact": true,
+          "originalGeometryHash": "805d09c8839cab05cf72e103257dd73934736c9261405ea4a6da5ac32b0f6678",
+          "candidateGeometryHash": "805d09c8839cab05cf72e103257dd73934736c9261405ea4a6da5ac32b0f6678"
+        }
+      },
+      "edits": {
+        "crown": {
+          "rolledBlades": 736,
+          "originalLeafVertices": 5152,
+          "colors": 17568,
+          "lodGeometryRetained": false,
+          "petioleTipAndCoreVerticesExact": 2228
+        }
+      },
+      "renders": {
+        "baseline": {
+          "path": "docs/world/phase-2-playground/asset-batch4-20261102/trees-G17-baseline.png",
+          "sha256": "ed875d90b78f430b60fdf605c4d71629da73f834235f36aeb61dce6fadbece12",
+          "rig": {
+            "camera": [
+              8.0,
+              -11.0,
+              6.300000190734863
+            ],
+            "target": [
+              0.0,
+              0.0,
+              3.0
+            ],
+            "orthoScale": 7.300000190734863,
+            "resolution": [
+              768,
+              768
+            ],
+            "samples": 24,
+            "renderer": "Cycles CPU",
+            "exposure": 0,
+            "viewTransform": "Standard",
+            "look": "None",
+            "environmentStrength": 0.45,
+            "keyFillRimWatts": [
+              1050,
+              450,
+              700
+            ],
+            "lod": "L0 only"
+          }
+        },
+        "native": {
+          "path": "docs/world/phase-2-playground/asset-batch4-20261102/trees-G17-native.png",
+          "sha256": "6d42d9d6c21d25414a3b9f297cbe192103926e389ed90ccb78fbc7008abd0dbd",
+          "rig": {
+            "camera": [
+              8.0,
+              -11.0,
+              6.300000190734863
+            ],
+            "target": [
+              0.0,
+              0.0,
+              3.0
+            ],
+            "orthoScale": 7.300000190734863,
+            "resolution": [
+              768,
+              768
+            ],
+            "samples": 24,
+            "renderer": "Cycles CPU",
+            "exposure": 0,
+            "viewTransform": "Standard",
+            "look": "None",
+            "environmentStrength": 0.45,
+            "keyFillRimWatts": [
+              1050,
+              450,
+              700
+            ],
+            "lod": "L0 only"
+          }
+        },
+        "freshGLB": {
+          "path": "docs/world/phase-2-playground/asset-batch4-20261102/trees-G17-fresh.png",
+          "sha256": "145ffaeae954dead85404c5d0604f0071b9484edfafb57432ed81acc5ed3a841",
+          "rig": {
+            "camera": [
+              8.0,
+              -11.0,
+              6.300000190734863
+            ],
+            "target": [
+              0.0,
+              0.0,
+              3.0
+            ],
+            "orthoScale": 7.300000190734863,
+            "resolution": [
+              768,
+              768
+            ],
+            "samples": 24,
+            "renderer": "Cycles CPU",
+            "exposure": 0,
+            "viewTransform": "Standard",
+            "look": "None",
+            "environmentStrength": 0.45,
+            "keyFillRimWatts": [
+              1050,
+              450,
+              700
+            ],
+            "lod": "L0 only"
+          }
+        }
+      },
+      "roundTripToleranceMetres": 5e-05,
+      "roundTripWindRangeTolerance": 0.001,
+      "nativeRoots": {
+        "allRootParentsAndTransformsMatched": true,
+        "tolerance": 0,
+        "roots": {
+          "G17": {
+            "parent": null,
+            "local": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "world": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        }
+      },
+      "glbRoot": {
+        "sceneRoot": "G17",
+        "matrix": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "maxError": 0.0,
+        "nativeZToGlbYAppliedOnce": true
+      },
+      "freshRoots": {
+        "allRootParentsAndTransformsMatched": true,
+        "tolerance": 1e-06,
+        "roots": {
+          "G17": {
+            "parent": null,
+            "local": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "world": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "G16": {
+      "source": "tools/world/camp/nature-v4/blend/G16.blend",
+      "sourceSha256": "1b8c1f6921c5b6103b2cb3db2bad8f18ca35fc4c59a653239d92982e45e3a286",
+      "nativeFile": "tools/world/nature-craft/blend/G16.blend",
+      "nativeSha256": "cdaa38ce2361bf2fad76913b00de76046bc38cd9e8fed27180db2b17d981fcaf",
+      "glb": "public/assets/world/nature-craft/G16.glb",
+      "glbSha256": "91ca0feffa8b2e77075ae6bdea5ebf9b5cd1551d8bea5040e99a26c1ee72382b",
+      "glbBytes": 311788,
+      "baseline": {
+        "crown": {
+          "vertices": 8078,
+          "triangles": 7980,
+          "geometryHash": "e312c2bf86561665e2b819379e51675a0c22d5512f5fa9d070426c8d98588f4c",
+          "windHash": "2bb6d0454ce1751c58238ef85e0454d87f8f66e60c657db5dbbf635ad09b2e1b",
+          "faceReferencedVertices": 8078,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -1.8651461601257324,
+              -1.9100178480148315,
+              2.75776743888855
+            ],
+            [
+              1.8651461601257324,
+              1.9100178480148315,
+              5.393087863922119
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "G16",
+          "materials": [
+            "foliage_dark",
+            "foliage_mid",
+            "foliage_light"
+          ],
+          "windRange": [
+            [
+              0.26081210374832153,
+              0.9974415898323059
+            ],
+            [
+              1.0,
+              1.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1875,
+              0.5625
+            ]
+          ]
+        },
+        "trunk": {
+          "vertices": 329,
+          "triangles": 654,
+          "geometryHash": "7a62e1c7126a693de510f58c4c9b0a62b0d2461c10cfcfc666f9824029c3bc8e",
+          "windHash": "c988283dd9a6c851aee2e6499efb7c7da504aa851ff3de29fe64f892b0fbbe86",
+          "faceReferencedVertices": 329,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.8352137207984924,
+              -0.9296262264251709,
+              0.0
+            ],
+            [
+              0.7788218855857849,
+              0.8874644041061401,
+              4.054287910461426
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "G16",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              0.0,
+              0.5636917352676392
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.5625
+            ]
+          ]
+        }
+      },
+      "native": {
+        "crown": {
+          "vertices": 8078,
+          "triangles": 7980,
+          "geometryHash": "e79e15cec5de56b3ba73e28458204651d354adf64ab0cbfdacf9ec2ef68b6ddb",
+          "windHash": "2bb6d0454ce1751c58238ef85e0454d87f8f66e60c657db5dbbf635ad09b2e1b",
+          "faceReferencedVertices": 8078,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -1.8651461601257324,
+              -1.9100178480148315,
+              2.75776743888855
+            ],
+            [
+              1.8651461601257324,
+              1.9100178480148315,
+              5.393087863922119
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "G16",
+          "materials": [
+            "nature-craft-leaf-pigment"
+          ],
+          "windRange": [
+            [
+              0.26081210374832153,
+              0.9974415898323059
+            ],
+            [
+              1.0,
+              1.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1875,
+              0.5625
+            ]
+          ]
+        },
+        "trunk": {
+          "vertices": 329,
+          "triangles": 654,
+          "geometryHash": "7a62e1c7126a693de510f58c4c9b0a62b0d2461c10cfcfc666f9824029c3bc8e",
+          "windHash": "c988283dd9a6c851aee2e6499efb7c7da504aa851ff3de29fe64f892b0fbbe86",
+          "faceReferencedVertices": 329,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.8352137207984924,
+              -0.9296262264251709,
+              0.0
+            ],
+            [
+              0.7788218855857849,
+              0.8874644041061401,
+              4.054287910461426
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "G16",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              0.0,
+              0.5636917352676392
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.5625
+            ]
+          ]
+        }
+      },
+      "freshGLB": {
+        "crown": {
+          "vertices": 23940,
+          "triangles": 7980,
+          "geometryHash": "4de6ae95288ebd7e22a58c486c31fdde0194d3269f83848ca305386acde04ac2",
+          "windHash": "0e30a92944fb85f1b20a9562f4a4fd924c4a083c8020f7b8f0402ecbe35e5003",
+          "faceReferencedVertices": 23940,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -1.8651461601257324,
+              -1.9100178480148315,
+              2.75776743888855
+            ],
+            [
+              1.8651459217071533,
+              1.9100178480148315,
+              5.3930864334106445
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "G16",
+          "materials": [
+            "nature-craft-leaf-pigment"
+          ],
+          "windRange": [
+            [
+              0.26081210374832153,
+              0.9974414110183716
+            ],
+            [
+              1.0,
+              1.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1875,
+              0.5625057220458984
+            ]
+          ],
+          "vertexContract": {
+            "allFaceReferencedAuthoredVerticesCovered": true,
+            "everyImportedWindMatched": true,
+            "coverageScope": "all face-referenced source vertices; original loose native vertices retained but not exported",
+            "originalUnreferencedVertices": 0,
+            "maxPositionErrorMetres": 2.0265579223632812e-06,
+            "maxWindError": 7.62939453125e-06,
+            "trunkColliderUnchangedWithinExportPrecision": false,
+            "maxLinearColorError": 0.002549976110458374
+          }
+        },
+        "trunk": {
+          "vertices": 1428,
+          "triangles": 654,
+          "geometryHash": "c51080c3d6540097b1184acd8380d9476c384625f7a26224f1cde069d1cdedac",
+          "windHash": "1d3a33ed569bb47693900f5560a9fe56417ae1bb89002fd991656aca874497ff",
+          "faceReferencedVertices": 1428,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.8352137207984924,
+              -0.929627537727356,
+              0.0
+            ],
+            [
+              0.7788226008415222,
+              0.8874644041061401,
+              4.054287910461426
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "G16",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              0.0,
+              0.5636987686157227
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.5624933242797852
+            ]
+          ],
+          "vertexContract": {
+            "allFaceReferencedAuthoredVerticesCovered": true,
+            "everyImportedWindMatched": true,
+            "coverageScope": "all face-referenced source vertices; original loose native vertices retained but not exported",
+            "originalUnreferencedVertices": 0,
+            "maxPositionErrorMetres": 1.9669532775878906e-06,
+            "maxWindError": 7.614493370056152e-06,
+            "trunkColliderUnchangedWithinExportPrecision": true
+          }
+        }
+      },
+      "invariants": {
+        "crown": {
+          "topologyCountExact": true,
+          "rootAndParentExact": true,
+          "windAllFourChannelsExact": true,
+          "envelopeExact": true,
+          "trunkEveryVertexAndFaceExact": false,
+          "originalGeometryHash": "e312c2bf86561665e2b819379e51675a0c22d5512f5fa9d070426c8d98588f4c",
+          "candidateGeometryHash": "e79e15cec5de56b3ba73e28458204651d354adf64ab0cbfdacf9ec2ef68b6ddb"
+        },
+        "trunk": {
+          "topologyCountExact": true,
+          "rootAndParentExact": true,
+          "windAllFourChannelsExact": true,
+          "envelopeExact": true,
+          "trunkEveryVertexAndFaceExact": true,
+          "originalGeometryHash": "7a62e1c7126a693de510f58c4c9b0a62b0d2461c10cfcfc666f9824029c3bc8e",
+          "candidateGeometryHash": "7a62e1c7126a693de510f58c4c9b0a62b0d2461c10cfcfc666f9824029c3bc8e"
+        }
+      },
+      "edits": {
+        "crown": {
+          "rolledBlades": 1010,
+          "originalLeafVertices": 7070,
+          "colors": 23940,
+          "lodGeometryRetained": false,
+          "petioleTipAndCoreVerticesExact": 3028
+        }
+      },
+      "renders": {},
+      "roundTripToleranceMetres": 5e-05,
+      "roundTripWindRangeTolerance": 0.001,
+      "nativeRoots": {
+        "allRootParentsAndTransformsMatched": true,
+        "tolerance": 0,
+        "roots": {
+          "G16": {
+            "parent": null,
+            "local": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "world": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        }
+      },
+      "glbRoot": {
+        "sceneRoot": "G16",
+        "matrix": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "maxError": 0.0,
+        "nativeZToGlbYAppliedOnce": true
+      },
+      "freshRoots": {
+        "allRootParentsAndTransformsMatched": true,
+        "tolerance": 1e-06,
+        "roots": {
+          "G16": {
+            "parent": null,
+            "local": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "world": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "G18": {
+      "source": "tools/world/camp/nature-v4/blend/G18.blend",
+      "sourceSha256": "b1b6904551b3bf517f7d9eecc3ebd50431c58a0f3f19c83b99573a507bb7bc2c",
+      "nativeFile": "tools/world/nature-craft/blend/G18.blend",
+      "nativeSha256": "5ad9c72d21ef9d333d3d8e3d6348d1ca9fbbbc3596a86f627776be48700b7531",
+      "glb": "public/assets/world/nature-craft/G18.glb",
+      "glbSha256": "01eef69069ae9fe8b4f9f9d6396e0c0b9f5104cc2333136abbe6bfba741aac57",
+      "glbBytes": 273592,
+      "baseline": {
+        "crown": {
+          "vertices": 6748,
+          "triangles": 6884,
+          "geometryHash": "c1670810034617922b72e8e8e93725f1f38698364784c2627d0296fcd86480c6",
+          "windHash": "c598ec29151ec586f1731143b62654559c24f274349636af38a224bb48d942a8",
+          "faceReferencedVertices": 6748,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -1.5112385749816895,
+              -1.413199782371521,
+              2.9158403873443604
+            ],
+            [
+              1.5112385749816895,
+              1.413199782371521,
+              6.3464274406433105
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "G18",
+          "materials": [
+            "foliage_dark",
+            "foliage_mid",
+            "foliage_light"
+          ],
+          "windRange": [
+            [
+              0.2142132818698883,
+              1.0
+            ],
+            [
+              0.6248263120651245,
+              1.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1875,
+              0.3125
+            ]
+          ]
+        },
+        "trunk": {
+          "vertices": 427,
+          "triangles": 850,
+          "geometryHash": "547a10a236d2de0c33ba15041870cb75195acf2e88b3290ad5e37202cc64aa38",
+          "windHash": "edb7fb2ad1df93ba3c1d7c3b80e9c24829987c3c7b62544366615fea9dc65600",
+          "faceReferencedVertices": 427,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.7485270500183105,
+              -0.6519266366958618,
+              0.0
+            ],
+            [
+              0.781172513961792,
+              0.7041113376617432,
+              5.346445560455322
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "G18",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              0.0,
+              0.7201935052871704
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.3125
+            ]
+          ]
+        }
+      },
+      "native": {
+        "crown": {
+          "vertices": 6748,
+          "triangles": 6884,
+          "geometryHash": "74f9814d52b911d9df64197ede2f9ca68b56809f4305de0bad35d9bdb5db2b7a",
+          "windHash": "c598ec29151ec586f1731143b62654559c24f274349636af38a224bb48d942a8",
+          "faceReferencedVertices": 6748,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -1.5112385749816895,
+              -1.413199782371521,
+              2.9158403873443604
+            ],
+            [
+              1.5112385749816895,
+              1.413199782371521,
+              6.3464274406433105
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "G18",
+          "materials": [
+            "nature-craft-leaf-pigment"
+          ],
+          "windRange": [
+            [
+              0.2142132818698883,
+              1.0
+            ],
+            [
+              0.6248263120651245,
+              1.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1875,
+              0.3125
+            ]
+          ]
+        },
+        "trunk": {
+          "vertices": 427,
+          "triangles": 850,
+          "geometryHash": "547a10a236d2de0c33ba15041870cb75195acf2e88b3290ad5e37202cc64aa38",
+          "windHash": "edb7fb2ad1df93ba3c1d7c3b80e9c24829987c3c7b62544366615fea9dc65600",
+          "faceReferencedVertices": 427,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.7485270500183105,
+              -0.6519266366958618,
+              0.0
+            ],
+            [
+              0.781172513961792,
+              0.7041113376617432,
+              5.346445560455322
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "G18",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              0.0,
+              0.7201935052871704
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.3125
+            ]
+          ]
+        }
+      },
+      "freshGLB": {
+        "crown": {
+          "vertices": 20652,
+          "triangles": 6884,
+          "geometryHash": "dfcfbc7b19ba39d8fe27584a1ac6e7a5e22e82b070bafc3377992e440b40d85c",
+          "windHash": "024dce9ca85bf07dd5227199a6124f314811c009f4451df0d193c4c82dfca5b3",
+          "faceReferencedVertices": 20652,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -1.5112385749816895,
+              -1.4131990671157837,
+              2.9158403873443604
+            ],
+            [
+              1.511237621307373,
+              1.413199782371521,
+              6.3464274406433105
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "G18",
+          "materials": [
+            "nature-craft-leaf-pigment"
+          ],
+          "windRange": [
+            [
+              0.2142132818698883,
+              1.000007152557373
+            ],
+            [
+              0.6248263120651245,
+              0.9999998807907104
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1875,
+              0.3125019073486328
+            ]
+          ],
+          "vertexContract": {
+            "allFaceReferencedAuthoredVerticesCovered": true,
+            "everyImportedWindMatched": true,
+            "coverageScope": "all face-referenced source vertices; original loose native vertices retained but not exported",
+            "originalUnreferencedVertices": 0,
+            "maxPositionErrorMetres": 2.0265579223632812e-06,
+            "maxWindError": 7.62939453125e-06,
+            "trunkColliderUnchangedWithinExportPrecision": false,
+            "maxLinearColorError": 0.002549976110458374
+          }
+        },
+        "trunk": {
+          "vertices": 2026,
+          "triangles": 850,
+          "geometryHash": "4c2bdfe746da926fe612b14bbc386d9e49a22e44c64191cd88c5fbde86e73ff9",
+          "windHash": "295f0957d23fe2f030d3a7c2f13fe451ecb81fcf1704b6fcd6ae5e46afd22f87",
+          "faceReferencedVertices": 2026,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.7485270500183105,
+              -0.6519277095794678,
+              0.0
+            ],
+            [
+              0.7811710834503174,
+              0.7041113376617432,
+              5.346445560455322
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "G18",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              0.0,
+              0.7201952934265137
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.31250476837158203
+            ]
+          ],
+          "vertexContract": {
+            "allFaceReferencedAuthoredVerticesCovered": true,
+            "everyImportedWindMatched": true,
+            "coverageScope": "all face-referenced source vertices; original loose native vertices retained but not exported",
+            "originalUnreferencedVertices": 0,
+            "maxPositionErrorMetres": 2.86102294921875e-06,
+            "maxWindError": 7.6107680797576904e-06,
+            "trunkColliderUnchangedWithinExportPrecision": true
+          }
+        }
+      },
+      "invariants": {
+        "crown": {
+          "topologyCountExact": true,
+          "rootAndParentExact": true,
+          "windAllFourChannelsExact": true,
+          "envelopeExact": true,
+          "trunkEveryVertexAndFaceExact": false,
+          "originalGeometryHash": "c1670810034617922b72e8e8e93725f1f38698364784c2627d0296fcd86480c6",
+          "candidateGeometryHash": "74f9814d52b911d9df64197ede2f9ca68b56809f4305de0bad35d9bdb5db2b7a"
+        },
+        "trunk": {
+          "topologyCountExact": true,
+          "rootAndParentExact": true,
+          "windAllFourChannelsExact": true,
+          "envelopeExact": true,
+          "trunkEveryVertexAndFaceExact": true,
+          "originalGeometryHash": "547a10a236d2de0c33ba15041870cb75195acf2e88b3290ad5e37202cc64aa38",
+          "candidateGeometryHash": "547a10a236d2de0c33ba15041870cb75195acf2e88b3290ad5e37202cc64aa38"
+        }
+      },
+      "edits": {
+        "crown": {
+          "rolledBlades": 814,
+          "originalLeafVertices": 5698,
+          "colors": 20652,
+          "lodGeometryRetained": false,
+          "petioleTipAndCoreVerticesExact": 2678
+        }
+      },
+      "renders": {},
+      "roundTripToleranceMetres": 5e-05,
+      "roundTripWindRangeTolerance": 0.001,
+      "nativeRoots": {
+        "allRootParentsAndTransformsMatched": true,
+        "tolerance": 0,
+        "roots": {
+          "G18": {
+            "parent": null,
+            "local": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "world": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        }
+      },
+      "glbRoot": {
+        "sceneRoot": "G18",
+        "matrix": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "maxError": 0.0,
+        "nativeZToGlbYAppliedOnce": true
+      },
+      "freshRoots": {
+        "allRootParentsAndTransformsMatched": true,
+        "tolerance": 1e-06,
+        "roots": {
+          "G18": {
+            "parent": null,
+            "local": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "world": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        }
+      }
+    },
+    "ST1": {
+      "source": "tools/world/street/blend/ST1.blend",
+      "sourceSha256": "ac7e1662fc14212a87953f01df088b0c29b63275225b9d21af92eeb3df0579f4",
+      "nativeFile": "tools/world/nature-craft/blend/ST1.blend",
+      "nativeSha256": "78446ce05605a15ee6d828dce7710ebe66c2c8938b7dec5ad7b0a915006c0206",
+      "glb": "public/assets/world/nature-craft/ST1.glb",
+      "glbSha256": "f2cbeb1331fa72ddeb1e627e01dc578cff95668a9f839214dd7875b2f6930df6",
+      "glbBytes": 193500,
+      "baseline": {
+        "L0-crown": {
+          "vertices": 3675,
+          "triangles": 3942,
+          "geometryHash": "e3575b262eaf72bf0cf63724cbff8528dfbbc2ada151e8425ca665399bda0b6b",
+          "windHash": "2c82e63be33a46e18fa33c2a324903ad3780516cf0af4a60a3722c0d0f10f76a",
+          "faceReferencedVertices": 3675,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -1.1698678731918335,
+              -2.144001007080078,
+              2.793097972869873
+            ],
+            [
+              1.1698678731918335,
+              2.144001007080078,
+              4.80607795715332
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST1",
+          "materials": [
+            "foliage_dark",
+            "foliage_mid",
+            "foliage_light"
+          ],
+          "windRange": [
+            [
+              0.3386022746562958,
+              1.0
+            ],
+            [
+              1.0,
+              1.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1875,
+              0.4375
+            ]
+          ]
+        },
+        "L0-trunk": {
+          "vertices": 294,
+          "triangles": 584,
+          "geometryHash": "b90aad795a7eccbf858106b227c9c2ee3a15ac5bbfe30b9a4f28d58966c3e653",
+          "windHash": "52485cd2fc5f263c9e204947fe902ccfdaf5ae3cede325c718c64f79912e1657",
+          "faceReferencedVertices": 294,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.34177058935165405,
+              -1.2931320667266846,
+              0.0
+            ],
+            [
+              0.2702988386154175,
+              1.345658540725708,
+              3.4982047080993652
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST1",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              0.0,
+              0.5311387181282043
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.4375
+            ]
+          ]
+        },
+        "L1-crown": {
+          "vertices": 1635,
+          "triangles": 906,
+          "geometryHash": "dbd5ca30d028225887881ed9da81bf8a7b73d5868431056e4cf1667085c5d351",
+          "windHash": "05bc88aa4c4a38f209f76aeac9c85607d6a9150b01b69f04c2439144b0729685",
+          "faceReferencedVertices": 1567,
+          "unreferencedVertices": 68,
+          "bounds": [
+            [
+              -1.1453317403793335,
+              -2.144001007080078,
+              2.8287320137023926
+            ],
+            [
+              1.1698678731918335,
+              2.1583220958709717,
+              4.80607795715332
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST1",
+          "materials": [
+            "foliage_dark",
+            "foliage_mid",
+            "foliage_light"
+          ],
+          "windRange": [
+            [
+              0.3486520051956177,
+              1.0
+            ],
+            [
+              1.0,
+              1.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1874999850988388,
+              0.4375000298023224
+            ]
+          ]
+        },
+        "L1-trunk": {
+          "vertices": 69,
+          "triangles": 134,
+          "geometryHash": "cb00edf56328a13e3a86ec425c9658c3b21eca3d84478ca790e3d764d0b397cf",
+          "windHash": "1e6109b0e53aa55b555f9ae53ae202aaa5758edd541c280c6c09f98d71a542d2",
+          "faceReferencedVertices": 69,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.34962818026542664,
+              -1.2861005067825317,
+              0.00011218892905162647
+            ],
+            [
+              0.26921212673187256,
+              1.3423852920532227,
+              3.497337818145752
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST1",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              9.344900320229499e-08,
+              0.5306891202926636
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.4375
+            ]
+          ]
+        }
+      },
+      "native": {
+        "L0-crown": {
+          "vertices": 3675,
+          "triangles": 3942,
+          "geometryHash": "0fe0320d652fb70b519c99c048fe919e1d71b2313e68387114a2ecab1fa4ac34",
+          "windHash": "2c82e63be33a46e18fa33c2a324903ad3780516cf0af4a60a3722c0d0f10f76a",
+          "faceReferencedVertices": 3675,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -1.1698678731918335,
+              -2.144001007080078,
+              2.793097972869873
+            ],
+            [
+              1.1698678731918335,
+              2.144001007080078,
+              4.80607795715332
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST1",
+          "materials": [
+            "nature-craft-leaf-pigment"
+          ],
+          "windRange": [
+            [
+              0.3386022746562958,
+              1.0
+            ],
+            [
+              1.0,
+              1.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1875,
+              0.4375
+            ]
+          ]
+        },
+        "L0-trunk": {
+          "vertices": 294,
+          "triangles": 584,
+          "geometryHash": "b90aad795a7eccbf858106b227c9c2ee3a15ac5bbfe30b9a4f28d58966c3e653",
+          "windHash": "52485cd2fc5f263c9e204947fe902ccfdaf5ae3cede325c718c64f79912e1657",
+          "faceReferencedVertices": 294,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.34177058935165405,
+              -1.2931320667266846,
+              0.0
+            ],
+            [
+              0.2702988386154175,
+              1.345658540725708,
+              3.4982047080993652
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST1",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              0.0,
+              0.5311387181282043
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.4375
+            ]
+          ]
+        },
+        "L1-crown": {
+          "vertices": 1635,
+          "triangles": 906,
+          "geometryHash": "dbd5ca30d028225887881ed9da81bf8a7b73d5868431056e4cf1667085c5d351",
+          "windHash": "05bc88aa4c4a38f209f76aeac9c85607d6a9150b01b69f04c2439144b0729685",
+          "faceReferencedVertices": 1567,
+          "unreferencedVertices": 68,
+          "bounds": [
+            [
+              -1.1453317403793335,
+              -2.144001007080078,
+              2.8287320137023926
+            ],
+            [
+              1.1698678731918335,
+              2.1583220958709717,
+              4.80607795715332
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST1",
+          "materials": [
+            "nature-craft-leaf-pigment"
+          ],
+          "windRange": [
+            [
+              0.3486520051956177,
+              1.0
+            ],
+            [
+              1.0,
+              1.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1874999850988388,
+              0.4375000298023224
+            ]
+          ]
+        },
+        "L1-trunk": {
+          "vertices": 69,
+          "triangles": 134,
+          "geometryHash": "cb00edf56328a13e3a86ec425c9658c3b21eca3d84478ca790e3d764d0b397cf",
+          "windHash": "1e6109b0e53aa55b555f9ae53ae202aaa5758edd541c280c6c09f98d71a542d2",
+          "faceReferencedVertices": 69,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.34962818026542664,
+              -1.2861005067825317,
+              0.00011218892905162647
+            ],
+            [
+              0.26921212673187256,
+              1.3423852920532227,
+              3.497337818145752
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST1",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              9.344900320229499e-08,
+              0.5306891202926636
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.4375
+            ]
+          ]
+        }
+      },
+      "freshGLB": {
+        "L0-crown": {
+          "vertices": 11826,
+          "triangles": 3942,
+          "geometryHash": "66ce455ae1d899dbc0a4b796e9d5ae8308ea5bd8d3d93ca6d77c207a31e3c594",
+          "windHash": "0abe8b14a667acf6931278a0b221fd983f7843d8614bde1bdf32382414223b78",
+          "faceReferencedVertices": 11826,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -1.1698678731918335,
+              -2.144001007080078,
+              2.793097972869873
+            ],
+            [
+              1.1698685884475708,
+              2.144001007080078,
+              4.80607795715332
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST1",
+          "materials": [
+            "nature-craft-leaf-pigment"
+          ],
+          "windRange": [
+            [
+              0.3386022746562958,
+              1.000004529953003
+            ],
+            [
+              1.0,
+              1.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1875,
+              0.4375038146972656
+            ]
+          ],
+          "vertexContract": {
+            "allFaceReferencedAuthoredVerticesCovered": true,
+            "everyImportedWindMatched": true,
+            "coverageScope": "all face-referenced source vertices; original loose native vertices retained but not exported",
+            "originalUnreferencedVertices": 0,
+            "maxPositionErrorMetres": 2.6226043701171875e-06,
+            "maxWindError": 7.62939453125e-06,
+            "trunkColliderUnchangedWithinExportPrecision": false,
+            "maxLinearColorError": 0.002549976110458374
+          }
+        },
+        "L0-trunk": {
+          "vertices": 294,
+          "triangles": 584,
+          "geometryHash": "08e3d326d37646ff08169fedaba6fab4e65b1a2bb4259cc61e5c8c3330528432",
+          "windHash": "6ab65b87c9bdcb7e1e3826337385c28e72e1599dc3e8433ac86c9411e8feb810",
+          "faceReferencedVertices": 294,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.34177058935165405,
+              -1.2931334972381592,
+              0.0
+            ],
+            [
+              0.2702997326850891,
+              1.345658540725708,
+              3.4982047080993652
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST1",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              0.0,
+              0.5311360359191895
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.43750667572021484
+            ]
+          ],
+          "vertexContract": {
+            "allFaceReferencedAuthoredVerticesCovered": true,
+            "everyImportedWindMatched": true,
+            "coverageScope": "all face-referenced source vertices; original loose native vertices retained but not exported",
+            "originalUnreferencedVertices": 0,
+            "maxPositionErrorMetres": 1.6689300537109375e-06,
+            "maxWindError": 7.62939453125e-06,
+            "trunkColliderUnchangedWithinExportPrecision": true
+          }
+        },
+        "L1-crown": {
+          "vertices": 2718,
+          "triangles": 906,
+          "geometryHash": "003155cd3c3a9f136be742af1f09788f1e84484eb83a560732b9ce78ab8f8fa1",
+          "windHash": "614e43627c7fb20af6773133bd07188924d6ba3b62aad6b8f6edfa214bd61c19",
+          "faceReferencedVertices": 2718,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -1.1453317403793335,
+              -2.1440012454986572,
+              2.8287320137023926
+            ],
+            [
+              1.169866681098938,
+              2.1583220958709717,
+              4.806079864501953
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST1",
+          "materials": [
+            "nature-craft-leaf-pigment"
+          ],
+          "windRange": [
+            [
+              0.3486520051956177,
+              0.9999986290931702
+            ],
+            [
+              1.0,
+              1.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1874999850988388,
+              0.4375038146972656
+            ]
+          ],
+          "vertexContract": {
+            "allFaceReferencedAuthoredVerticesCovered": true,
+            "everyImportedWindMatched": true,
+            "coverageScope": "all face-referenced source vertices; original loose native vertices retained but not exported",
+            "originalUnreferencedVertices": 68,
+            "maxPositionErrorMetres": 2.6226043701171875e-06,
+            "maxWindError": 7.62939453125e-06,
+            "trunkColliderUnchangedWithinExportPrecision": false,
+            "maxLinearColorError": 0.002549976110458374
+          }
+        },
+        "L1-trunk": {
+          "vertices": 69,
+          "triangles": 134,
+          "geometryHash": "1a156dd8c8346e46f33cb50e12ad66fe2c5533fe2cea55856c20e24bde78aa0b",
+          "windHash": "7d48d007d9a6dae71d9c7ec1b7d8a4c3c018030403220daf257a90486c77de87",
+          "faceReferencedVertices": 69,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.34962818026542664,
+              -1.2860994338989258,
+              0.00011218892905162647
+            ],
+            [
+              0.26921138167381287,
+              1.3423852920532227,
+              3.497337818145752
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST1",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              9.344900320229499e-08,
+              0.5306936502456665
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.43750667572021484
+            ]
+          ],
+          "vertexContract": {
+            "allFaceReferencedAuthoredVerticesCovered": true,
+            "everyImportedWindMatched": true,
+            "coverageScope": "all face-referenced source vertices; original loose native vertices retained but not exported",
+            "originalUnreferencedVertices": 0,
+            "maxPositionErrorMetres": 1.7881393432617188e-06,
+            "maxWindError": 7.62939453125e-06,
+            "trunkColliderUnchangedWithinExportPrecision": true
+          }
+        }
+      },
+      "invariants": {
+        "L0-crown": {
+          "topologyCountExact": true,
+          "rootAndParentExact": true,
+          "windAllFourChannelsExact": true,
+          "envelopeExact": true,
+          "trunkEveryVertexAndFaceExact": false,
+          "originalGeometryHash": "e3575b262eaf72bf0cf63724cbff8528dfbbc2ada151e8425ca665399bda0b6b",
+          "candidateGeometryHash": "0fe0320d652fb70b519c99c048fe919e1d71b2313e68387114a2ecab1fa4ac34"
+        },
+        "L0-trunk": {
+          "topologyCountExact": true,
+          "rootAndParentExact": true,
+          "windAllFourChannelsExact": true,
+          "envelopeExact": true,
+          "trunkEveryVertexAndFaceExact": true,
+          "originalGeometryHash": "b90aad795a7eccbf858106b227c9c2ee3a15ac5bbfe30b9a4f28d58966c3e653",
+          "candidateGeometryHash": "b90aad795a7eccbf858106b227c9c2ee3a15ac5bbfe30b9a4f28d58966c3e653"
+        },
+        "L1-crown": {
+          "topologyCountExact": true,
+          "rootAndParentExact": true,
+          "windAllFourChannelsExact": true,
+          "envelopeExact": true,
+          "trunkEveryVertexAndFaceExact": false,
+          "originalGeometryHash": "dbd5ca30d028225887881ed9da81bf8a7b73d5868431056e4cf1667085c5d351",
+          "candidateGeometryHash": "dbd5ca30d028225887881ed9da81bf8a7b73d5868431056e4cf1667085c5d351"
+        },
+        "L1-trunk": {
+          "topologyCountExact": true,
+          "rootAndParentExact": true,
+          "windAllFourChannelsExact": true,
+          "envelopeExact": true,
+          "trunkEveryVertexAndFaceExact": true,
+          "originalGeometryHash": "cb00edf56328a13e3a86ec425c9658c3b21eca3d84478ca790e3d764d0b397cf",
+          "candidateGeometryHash": "cb00edf56328a13e3a86ec425c9658c3b21eca3d84478ca790e3d764d0b397cf"
+        }
+      },
+      "nativeRoots": {
+        "allRootParentsAndTransformsMatched": true,
+        "tolerance": 0,
+        "roots": {
+          "ST1": {
+            "parent": null,
+            "local": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "world": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        }
+      },
+      "glbRoot": {
+        "sceneRoot": "ST1",
+        "matrix": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "maxError": 0.0,
+        "nativeZToGlbYAppliedOnce": true
+      },
+      "freshRoots": {
+        "allRootParentsAndTransformsMatched": true,
+        "tolerance": 1e-06,
+        "roots": {
+          "ST1": {
+            "parent": null,
+            "local": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "world": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        }
+      },
+      "edits": {
+        "L0-crown": {
+          "rolledBlades": 417,
+          "originalLeafVertices": 2919,
+          "colors": 11826,
+          "lodGeometryRetained": false,
+          "petioleTipAndCoreVerticesExact": 1590
+        },
+        "L1-crown": {
+          "rolledBlades": 0,
+          "originalLeafVertices": 1390,
+          "colors": 2718,
+          "lodGeometryRetained": true,
+          "petioleTipAndCoreVerticesExact": 404
+        }
+      },
+      "renders": {
+        "baseline": {
+          "path": "docs/world/phase-2-playground/asset-batch4-20261102/trees-ST1-baseline.png",
+          "sha256": "b17e4c63011d2cd11d8680d0185e13b558ac7f9982d973ce0a308d0cdd948284",
+          "rig": {
+            "camera": [
+              8.0,
+              -11.0,
+              6.300000190734863
+            ],
+            "target": [
+              0.0,
+              0.0,
+              3.0
+            ],
+            "orthoScale": 7.300000190734863,
+            "resolution": [
+              768,
+              768
+            ],
+            "samples": 24,
+            "renderer": "Cycles CPU",
+            "exposure": 0,
+            "viewTransform": "Standard",
+            "look": "None",
+            "environmentStrength": 0.45,
+            "keyFillRimWatts": [
+              1050,
+              450,
+              700
+            ],
+            "lod": "L0 only"
+          }
+        },
+        "native": {
+          "path": "docs/world/phase-2-playground/asset-batch4-20261102/trees-ST1-native.png",
+          "sha256": "a7f533d3eb5c59a089819b47ea08773231071cc8ed6d20df42457fda517638a7",
+          "rig": {
+            "camera": [
+              8.0,
+              -11.0,
+              6.300000190734863
+            ],
+            "target": [
+              0.0,
+              0.0,
+              3.0
+            ],
+            "orthoScale": 7.300000190734863,
+            "resolution": [
+              768,
+              768
+            ],
+            "samples": 24,
+            "renderer": "Cycles CPU",
+            "exposure": 0,
+            "viewTransform": "Standard",
+            "look": "None",
+            "environmentStrength": 0.45,
+            "keyFillRimWatts": [
+              1050,
+              450,
+              700
+            ],
+            "lod": "L0 only"
+          }
+        },
+        "freshGLB": {
+          "path": "docs/world/phase-2-playground/asset-batch4-20261102/trees-ST1-fresh.png",
+          "sha256": "8f078d3a57e71c51673ed7286fa66ae8415746e5efd6b023046d05acb8be71f9",
+          "rig": {
+            "camera": [
+              8.0,
+              -11.0,
+              6.300000190734863
+            ],
+            "target": [
+              0.0,
+              0.0,
+              3.0
+            ],
+            "orthoScale": 7.300000190734863,
+            "resolution": [
+              768,
+              768
+            ],
+            "samples": 24,
+            "renderer": "Cycles CPU",
+            "exposure": 0,
+            "viewTransform": "Standard",
+            "look": "None",
+            "environmentStrength": 0.45,
+            "keyFillRimWatts": [
+              1050,
+              450,
+              700
+            ],
+            "lod": "L0 only"
+          }
+        }
+      },
+      "roundTripToleranceMetres": 5e-05,
+      "roundTripWindRangeTolerance": 0.001
+    },
+    "ST2": {
+      "source": "tools/world/street/blend/ST2.blend",
+      "sourceSha256": "59910a5682796249ac2fa9271f636d9b62dbc6b9b0baf81c475f7aca44af3c30",
+      "nativeFile": "tools/world/nature-craft/blend/ST2.blend",
+      "nativeSha256": "3b210bc939a52013dd878f77e819bfc27de595a6381f087b0900eeced30d3c0e",
+      "glb": "public/assets/world/nature-craft/ST2.glb",
+      "glbSha256": "d4aecdcec1f36fec0ca7d180fdd1f32dbf455de575a8bcf42f1c47dea193c34d",
+      "glbBytes": 181260,
+      "baseline": {
+        "L0-crown": {
+          "vertices": 3143,
+          "triangles": 3794,
+          "geometryHash": "bb67aefc3c8d06e30876017afdec2415795792f24680d95ae0471869a6039b33",
+          "windHash": "b0229b759dd226f3e0b7391cedfe77f219178f120bc0c0b813246879af7464f4",
+          "faceReferencedVertices": 3143,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -1.4814488887786865,
+              -1.4186006784439087,
+              2.907679796218872
+            ],
+            [
+              1.4814488887786865,
+              1.4186006784439087,
+              6.279129981994629
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST2",
+          "materials": [
+            "foliage_dark",
+            "foliage_mid",
+            "foliage_light"
+          ],
+          "windRange": [
+            [
+              0.21301591396331787,
+              0.9933855533599854
+            ],
+            [
+              0.6247876286506653,
+              1.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1875,
+              0.3125
+            ]
+          ]
+        },
+        "L0-trunk": {
+          "vertices": 427,
+          "triangles": 850,
+          "geometryHash": "7ee5171286ea09e96deab823a97dc3f319e50186d03a431644580027e328034a",
+          "windHash": "c5e21fe1f3d79475f2e78b2daf7c7efb61463a5df94c7e1df6a9c04c44de20d5",
+          "faceReferencedVertices": 427,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.7465847730636597,
+              -0.637660562992096,
+              0.0
+            ],
+            [
+              0.7803633809089661,
+              0.7136772871017456,
+              5.3517327308654785
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST2",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              0.0,
+              0.72161865234375
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.3125
+            ]
+          ]
+        },
+        "L1-crown": {
+          "vertices": 1339,
+          "triangles": 872,
+          "geometryHash": "668f2cf71ed8c9c3bb47121f48552d1f6b4521162c70950713867ed3dcc242a8",
+          "windHash": "d19bbfd2e49c12f54eec1f316263fbe18242e67312d76da8e3ebe5d07c45e303",
+          "faceReferencedVertices": 1291,
+          "unreferencedVertices": 48,
+          "bounds": [
+            [
+              -1.4814488887786865,
+              -1.4186006784439087,
+              2.894690752029419
+            ],
+            [
+              1.4814488887786865,
+              1.4186006784439087,
+              6.3204426765441895
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST2",
+          "materials": [
+            "foliage_dark",
+            "foliage_mid",
+            "foliage_light"
+          ],
+          "windRange": [
+            [
+              0.2152826488018036,
+              0.9806567430496216
+            ],
+            [
+              0.6247875690460205,
+              1.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1874999850988388,
+              0.3125
+            ]
+          ]
+        },
+        "L1-trunk": {
+          "vertices": 99,
+          "triangles": 194,
+          "geometryHash": "6296e4c6f97b9f78b6c9fec876182dbb214679ee3e6f8c522700961906b42c23",
+          "windHash": "5e65862fd85baf1924d9044ee676db63eabb00204d777db1c4f445909d2d649b",
+          "faceReferencedVertices": 99,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.7402752637863159,
+              -0.6348845362663269,
+              5.2927600336261094e-05
+            ],
+            [
+              0.7659128308296204,
+              0.6941034197807312,
+              5.35186243057251
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST2",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              2.321940115734833e-07,
+              0.7213289141654968
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.3125
+            ]
+          ]
+        }
+      },
+      "native": {
+        "L0-crown": {
+          "vertices": 3143,
+          "triangles": 3794,
+          "geometryHash": "80f647f73b2f6899db9a4cf353faa04c9bb6f50be238eb00bea600f85decafd5",
+          "windHash": "b0229b759dd226f3e0b7391cedfe77f219178f120bc0c0b813246879af7464f4",
+          "faceReferencedVertices": 3143,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -1.4814488887786865,
+              -1.4186006784439087,
+              2.907679796218872
+            ],
+            [
+              1.4814488887786865,
+              1.4186006784439087,
+              6.279129981994629
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST2",
+          "materials": [
+            "nature-craft-leaf-pigment"
+          ],
+          "windRange": [
+            [
+              0.21301591396331787,
+              0.9933855533599854
+            ],
+            [
+              0.6247876286506653,
+              1.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1875,
+              0.3125
+            ]
+          ]
+        },
+        "L0-trunk": {
+          "vertices": 427,
+          "triangles": 850,
+          "geometryHash": "7ee5171286ea09e96deab823a97dc3f319e50186d03a431644580027e328034a",
+          "windHash": "c5e21fe1f3d79475f2e78b2daf7c7efb61463a5df94c7e1df6a9c04c44de20d5",
+          "faceReferencedVertices": 427,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.7465847730636597,
+              -0.637660562992096,
+              0.0
+            ],
+            [
+              0.7803633809089661,
+              0.7136772871017456,
+              5.3517327308654785
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST2",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              0.0,
+              0.72161865234375
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.3125
+            ]
+          ]
+        },
+        "L1-crown": {
+          "vertices": 1339,
+          "triangles": 872,
+          "geometryHash": "668f2cf71ed8c9c3bb47121f48552d1f6b4521162c70950713867ed3dcc242a8",
+          "windHash": "d19bbfd2e49c12f54eec1f316263fbe18242e67312d76da8e3ebe5d07c45e303",
+          "faceReferencedVertices": 1291,
+          "unreferencedVertices": 48,
+          "bounds": [
+            [
+              -1.4814488887786865,
+              -1.4186006784439087,
+              2.894690752029419
+            ],
+            [
+              1.4814488887786865,
+              1.4186006784439087,
+              6.3204426765441895
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST2",
+          "materials": [
+            "nature-craft-leaf-pigment"
+          ],
+          "windRange": [
+            [
+              0.2152826488018036,
+              0.9806567430496216
+            ],
+            [
+              0.6247875690460205,
+              1.0
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1874999850988388,
+              0.3125
+            ]
+          ]
+        },
+        "L1-trunk": {
+          "vertices": 99,
+          "triangles": 194,
+          "geometryHash": "6296e4c6f97b9f78b6c9fec876182dbb214679ee3e6f8c522700961906b42c23",
+          "windHash": "5e65862fd85baf1924d9044ee676db63eabb00204d777db1c4f445909d2d649b",
+          "faceReferencedVertices": 99,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.7402752637863159,
+              -0.6348845362663269,
+              5.2927600336261094e-05
+            ],
+            [
+              0.7659128308296204,
+              0.6941034197807312,
+              5.35186243057251
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST2",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              2.321940115734833e-07,
+              0.7213289141654968
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.3125
+            ]
+          ]
+        }
+      },
+      "freshGLB": {
+        "L0-crown": {
+          "vertices": 11382,
+          "triangles": 3794,
+          "geometryHash": "57b0df516618c3999a58577ab6bd9816683f9a2c228d306f79fe0e844e9bd8b8",
+          "windHash": "ef12a9554e015fe716163109938e250d9ad3bf8754cf83ae5d1d17ef9ee2ce1d",
+          "faceReferencedVertices": 11382,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -1.4814488887786865,
+              -1.4186004400253296,
+              2.907679796218872
+            ],
+            [
+              1.481449842453003,
+              1.4186006784439087,
+              6.279129981994629
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST2",
+          "materials": [
+            "nature-craft-leaf-pigment"
+          ],
+          "windRange": [
+            [
+              0.21301591396331787,
+              0.993392825126648
+            ],
+            [
+              0.6247876286506653,
+              1.000006914138794
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1875,
+              0.3125019073486328
+            ]
+          ],
+          "vertexContract": {
+            "allFaceReferencedAuthoredVerticesCovered": true,
+            "everyImportedWindMatched": true,
+            "coverageScope": "all face-referenced source vertices; original loose native vertices retained but not exported",
+            "originalUnreferencedVertices": 0,
+            "maxPositionErrorMetres": 1.9073486328125e-06,
+            "maxWindError": 7.62939453125e-06,
+            "trunkColliderUnchangedWithinExportPrecision": false,
+            "maxLinearColorError": 0.002549976110458374
+          }
+        },
+        "L0-trunk": {
+          "vertices": 427,
+          "triangles": 850,
+          "geometryHash": "d8acbbd0eafb85d9ef1904d0d3b02a425cadb3928e9c2fd057d526a48a67043c",
+          "windHash": "8953540c27858420604041c17f0f5290e0fd3d8099c8bc233b333bfe8592112a",
+          "faceReferencedVertices": 427,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.7465847730636597,
+              -0.6376597881317139,
+              0.0
+            ],
+            [
+              0.7803643941879272,
+              0.7136772871017456,
+              5.3517327308654785
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST2",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              0.0,
+              0.721614420413971
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.31250476837158203
+            ]
+          ],
+          "vertexContract": {
+            "allFaceReferencedAuthoredVerticesCovered": true,
+            "everyImportedWindMatched": true,
+            "coverageScope": "all face-referenced source vertices; original loose native vertices retained but not exported",
+            "originalUnreferencedVertices": 0,
+            "maxPositionErrorMetres": 2.86102294921875e-06,
+            "maxWindError": 7.621943950653076e-06,
+            "trunkColliderUnchangedWithinExportPrecision": true
+          }
+        },
+        "L1-crown": {
+          "vertices": 2616,
+          "triangles": 872,
+          "geometryHash": "f37615f94c5d93336e9ea67f098881b1910d15208d8ee0baeeb6ad18530a7ff1",
+          "windHash": "ffc52ee66d32586b1c179e24a83d537b4e47f022452a9ea8cb881e35b671f91d",
+          "faceReferencedVertices": 2616,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -1.4814488887786865,
+              -1.418601155281067,
+              2.894690752029419
+            ],
+            [
+              1.4814496040344238,
+              1.4186006784439087,
+              6.3204426765441895
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST2",
+          "materials": [
+            "nature-craft-leaf-pigment"
+          ],
+          "windRange": [
+            [
+              0.2152826488018036,
+              0.9806599617004395
+            ],
+            [
+              0.6247875690460205,
+              1.000006914138794
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.1874999850988388,
+              0.3125019073486328
+            ]
+          ],
+          "vertexContract": {
+            "allFaceReferencedAuthoredVerticesCovered": true,
+            "everyImportedWindMatched": true,
+            "coverageScope": "all face-referenced source vertices; original loose native vertices retained but not exported",
+            "originalUnreferencedVertices": 48,
+            "maxPositionErrorMetres": 2.0265579223632812e-06,
+            "maxWindError": 7.68899917602539e-06,
+            "trunkColliderUnchangedWithinExportPrecision": false,
+            "maxLinearColorError": 0.002549976110458374
+          }
+        },
+        "L1-trunk": {
+          "vertices": 99,
+          "triangles": 194,
+          "geometryHash": "cc5e96179fcd577d09fb2df8f809c752d87430e6a6f5381785ada896588c3f11",
+          "windHash": "7a7efa3a4de3ee17a97d9106b7495a934358695fe85fdc93adcf3f37b71d437f",
+          "faceReferencedVertices": 99,
+          "unreferencedVertices": 0,
+          "bounds": [
+            [
+              -0.7402752637863159,
+              -0.6348827481269836,
+              5.2927600336261094e-05
+            ],
+            [
+              0.7659127712249756,
+              0.6941034197807312,
+              5.35186243057251
+            ]
+          ],
+          "degenerate": 0,
+          "rootHash": "2163c9d76567ed72097e8c4d524c30a2163c6be4ef7565c48b3eb350242b07ae",
+          "parent": "ST2",
+          "materials": [
+            "wood_trunk"
+          ],
+          "windRange": [
+            [
+              2.321940115734833e-07,
+              0.7213247418403625
+            ],
+            [
+              0.0,
+              1.0
+            ],
+            [
+              0.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.31250476837158203
+            ]
+          ],
+          "vertexContract": {
+            "allFaceReferencedAuthoredVerticesCovered": true,
+            "everyImportedWindMatched": true,
+            "coverageScope": "all face-referenced source vertices; original loose native vertices retained but not exported",
+            "originalUnreferencedVertices": 0,
+            "maxPositionErrorMetres": 2.86102294921875e-06,
+            "maxWindError": 7.623508281540126e-06,
+            "trunkColliderUnchangedWithinExportPrecision": true
+          }
+        }
+      },
+      "invariants": {
+        "L0-crown": {
+          "topologyCountExact": true,
+          "rootAndParentExact": true,
+          "windAllFourChannelsExact": true,
+          "envelopeExact": true,
+          "trunkEveryVertexAndFaceExact": false,
+          "originalGeometryHash": "bb67aefc3c8d06e30876017afdec2415795792f24680d95ae0471869a6039b33",
+          "candidateGeometryHash": "80f647f73b2f6899db9a4cf353faa04c9bb6f50be238eb00bea600f85decafd5"
+        },
+        "L0-trunk": {
+          "topologyCountExact": true,
+          "rootAndParentExact": true,
+          "windAllFourChannelsExact": true,
+          "envelopeExact": true,
+          "trunkEveryVertexAndFaceExact": true,
+          "originalGeometryHash": "7ee5171286ea09e96deab823a97dc3f319e50186d03a431644580027e328034a",
+          "candidateGeometryHash": "7ee5171286ea09e96deab823a97dc3f319e50186d03a431644580027e328034a"
+        },
+        "L1-crown": {
+          "topologyCountExact": true,
+          "rootAndParentExact": true,
+          "windAllFourChannelsExact": true,
+          "envelopeExact": true,
+          "trunkEveryVertexAndFaceExact": false,
+          "originalGeometryHash": "668f2cf71ed8c9c3bb47121f48552d1f6b4521162c70950713867ed3dcc242a8",
+          "candidateGeometryHash": "668f2cf71ed8c9c3bb47121f48552d1f6b4521162c70950713867ed3dcc242a8"
+        },
+        "L1-trunk": {
+          "topologyCountExact": true,
+          "rootAndParentExact": true,
+          "windAllFourChannelsExact": true,
+          "envelopeExact": true,
+          "trunkEveryVertexAndFaceExact": true,
+          "originalGeometryHash": "6296e4c6f97b9f78b6c9fec876182dbb214679ee3e6f8c522700961906b42c23",
+          "candidateGeometryHash": "6296e4c6f97b9f78b6c9fec876182dbb214679ee3e6f8c522700961906b42c23"
+        }
+      },
+      "nativeRoots": {
+        "allRootParentsAndTransformsMatched": true,
+        "tolerance": 0,
+        "roots": {
+          "ST2": {
+            "parent": null,
+            "local": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "world": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        }
+      },
+      "glbRoot": {
+        "sceneRoot": "ST2",
+        "matrix": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ],
+        "maxError": 0.0,
+        "nativeZToGlbYAppliedOnce": true
+      },
+      "freshRoots": {
+        "allRootParentsAndTransformsMatched": true,
+        "tolerance": 1e-06,
+        "roots": {
+          "ST2": {
+            "parent": null,
+            "local": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ],
+            "world": [
+              [
+                1.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                1.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                1.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+              ]
+            ]
+          }
+        }
+      },
+      "edits": {
+        "L0-crown": {
+          "rolledBlades": 299,
+          "originalLeafVertices": 2093,
+          "colors": 11382,
+          "lodGeometryRetained": false,
+          "petioleTipAndCoreVerticesExact": 1648
+        },
+        "L1-crown": {
+          "rolledBlades": 0,
+          "originalLeafVertices": 1060,
+          "colors": 2616,
+          "lodGeometryRetained": true,
+          "petioleTipAndCoreVerticesExact": 436
+        }
+      },
+      "renders": {},
+      "roundTripToleranceMetres": 5e-05,
+      "roundTripWindRangeTolerance": 0.001
+    }
+  },
+  "generator": "tools/world/nature-craft/build_trees.py",
+  "units": "metres",
+  "nativeUp": "Z",
+  "glbUp": "Y",
+  "sourceLicense": "Existing project-authored nature-v4/street assets; no external maps",
+  "imageMaps": 0,
+  "runtime": "one merged draw per species/LOD, existing wind shader",
+  "visualAcceptance": "pending primary review and actual day/night runtime comparison",
+  "nativeFamilyOverview": {
+    "path": "docs/world/phase-2-playground/asset-batch4-20261102/trees-native-overview.png",
+    "sha256": "618828884adeb102be8ce1a27ec7c61c82539064a6be7485357fedd2c2769418",
+    "rig": {
+      "camera": [
+        0.0,
+        -25.0,
+        10.0
+      ],
+      "target": [
+        0.0,
+        0.0,
+        3.0
+      ],
+      "orthoScale": 33,
+      "resolution": [
+        1536,
+        640
+      ],
+      "samples": 24,
+      "renderer": "Cycles CPU",
+      "exposure": 0,
+      "viewTransform": "Standard",
+      "look": "None",
+      "environmentStrength": 0.45,
+      "lod": "L0 only",
+      "placementsX": [
+        -12.4,
+        -6.2,
+        0.0,
+        6.2,
+        12.4
+      ],
+      "note": "Native family review; same source dimensions; L0 only",
+      "sun": {
+        "energy": 2.0,
+        "angle": 0.35,
+        "rotationDegrees": [
+          28,
+          -25,
+          -32
+        ]
+      }
+    }
+  }
+}

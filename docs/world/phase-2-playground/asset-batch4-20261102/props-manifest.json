@@ -1,0 +1,2463 @@
+{
+  "G21": {
+    "native": [
+      {
+        "name": "rock",
+        "triangles": 620,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -1.100000023841858,
+            -1.399999976158142,
+            0.0
+          ],
+          [
+            1.100000023841858,
+            1.399999976158142,
+            1.5
+          ]
+        ],
+        "materials": [
+          "stone_base",
+          "stone_top",
+          "stone_weathered",
+          "stone_moss"
+        ]
+      }
+    ],
+    "bytes": 301604,
+    "sha256": "ed36a3539b0c70995f9711f675e54744b4a1c0a143a1b3b4bad02f4ed90f1dbf",
+    "geometryExact": true,
+    "fresh": [
+      {
+        "name": "rock",
+        "triangles": 620,
+        "degenerate": 0,
+        "nonmanifold": 1700,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -1.100000023841858,
+            -1.399999976158142,
+            0.0
+          ],
+          [
+            1.0999988317489624,
+            1.399999976158142,
+            1.5000007152557373
+          ]
+        ],
+        "materials": [
+          "stone_base",
+          "stone_top",
+          "stone_weathered",
+          "stone_moss"
+        ]
+      }
+    ],
+    "nativeVerified": [
+      {
+        "name": "rock",
+        "triangles": 620,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -1.100000023841858,
+            -1.399999976158142,
+            0.0
+          ],
+          [
+            1.100000023841858,
+            1.399999976158142,
+            1.5
+          ]
+        ],
+        "materials": [
+          "stone_base",
+          "stone_top",
+          "stone_weathered",
+          "stone_moss"
+        ]
+      }
+    ]
+  },
+  "G22": {
+    "native": [
+      {
+        "name": "rock",
+        "triangles": 496,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.6499999761581421,
+            -0.800000011920929,
+            0.0
+          ],
+          [
+            0.6499999761581421,
+            0.800000011920929,
+            0.8500000238418579
+          ]
+        ],
+        "materials": [
+          "stone_base",
+          "stone_top",
+          "stone_weathered",
+          "stone_moss"
+        ]
+      }
+    ],
+    "bytes": 296956,
+    "sha256": "82b47704527f523f4d6f5c113167993084a75017d33b87948acc58efc17527fb",
+    "geometryExact": true,
+    "fresh": [
+      {
+        "name": "rock",
+        "triangles": 496,
+        "degenerate": 0,
+        "nonmanifold": 1390,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.6499999761581421,
+            -0.800000011920929,
+            0.0
+          ],
+          [
+            0.649999737739563,
+            0.800000011920929,
+            0.8499999046325684
+          ]
+        ],
+        "materials": [
+          "stone_base",
+          "stone_top",
+          "stone_weathered",
+          "stone_moss"
+        ]
+      }
+    ],
+    "nativeVerified": [
+      {
+        "name": "rock",
+        "triangles": 496,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.6499999761581421,
+            -0.800000011920929,
+            0.0
+          ],
+          [
+            0.6499999761581421,
+            0.800000011920929,
+            0.8500000238418579
+          ]
+        ],
+        "materials": [
+          "stone_base",
+          "stone_top",
+          "stone_weathered",
+          "stone_moss"
+        ]
+      }
+    ]
+  },
+  "G23": {
+    "native": [
+      {
+        "name": "rock",
+        "triangles": 376,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.32499998807907104,
+            -0.4000000059604645,
+            0.0
+          ],
+          [
+            0.32499998807907104,
+            0.4000000059604645,
+            0.4000000059604645
+          ]
+        ],
+        "materials": [
+          "stone_base",
+          "stone_top",
+          "stone_weathered",
+          "stone_moss"
+        ]
+      }
+    ],
+    "bytes": 293268,
+    "sha256": "0a94d27f62cde4d7ba961e3b6dc97d59603234d9c1769f1869024aa4ce964a85",
+    "geometryExact": true,
+    "fresh": [
+      {
+        "name": "rock",
+        "triangles": 376,
+        "degenerate": 0,
+        "nonmanifold": 986,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.32499998807907104,
+            -0.4000000059604645,
+            0.0
+          ],
+          [
+            0.3249998688697815,
+            0.4000000059604645,
+            0.40000012516975403
+          ]
+        ],
+        "materials": [
+          "stone_base",
+          "stone_top",
+          "stone_weathered",
+          "stone_moss"
+        ]
+      }
+    ],
+    "nativeVerified": [
+      {
+        "name": "rock",
+        "triangles": 376,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.32499998807907104,
+            -0.4000000059604645,
+            0.0
+          ],
+          [
+            0.32499998807907104,
+            0.4000000059604645,
+            0.4000000059604645
+          ]
+        ],
+        "materials": [
+          "stone_base",
+          "stone_top",
+          "stone_weathered",
+          "stone_moss"
+        ]
+      }
+    ]
+  },
+  "C09-baseline": [
+    {
+      "name": "C09_shelf",
+      "triangles": 320,
+      "degenerate": 0,
+      "nonmanifold": 0,
+      "bounds": [
+        [
+          -0.29250001907348633,
+          -0.8849999904632568,
+          0.0
+        ],
+        [
+          0.29250001907348633,
+          0.8849999904632568,
+          1.159999966621399
+        ]
+      ],
+      "materials": [
+        "props_wood_mid",
+        "props_wood_light",
+        "props_wood_dark"
+      ]
+    },
+    {
+      "name": "C09_trophies",
+      "triangles": 1408,
+      "degenerate": 0,
+      "nonmanifold": 0,
+      "bounds": [
+        [
+          -0.2709808945655823,
+          -0.6244999766349792,
+          0.12800000607967377
+        ],
+        [
+          0.1287318915128708,
+          0.7099999785423279,
+          1.6825000047683716
+        ]
+      ],
+      "materials": [
+        "props_wood_dark",
+        "props_brass_matte",
+        "props_wood_mid"
+      ]
+    },
+    {
+      "name": "C09_books",
+      "triangles": 104,
+      "degenerate": 0,
+      "nonmanifold": 0,
+      "bounds": [
+        [
+          -0.13238748908042908,
+          -0.6000000238418579,
+          0.1289999932050705
+        ],
+        [
+          0.1073874831199646,
+          -0.2999999523162842,
+          0.22300000488758087
+        ]
+      ],
+      "materials": [
+        "props_paper",
+        "props_cover_slate",
+        "props_cover_orange"
+      ]
+    }
+  ],
+  "C09": {
+    "native": [
+      {
+        "name": "Side | continuous 40mm upright",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.27000001072883606,
+            -0.85999995470047,
+            0.0
+          ],
+          [
+            0.27000001072883606,
+            -0.8199999928474426,
+            1.125
+          ]
+        ],
+        "materials": [
+          "C09 | fabrication aligned timber"
+        ]
+      },
+      {
+        "name": "Side | continuous 40mm upright.001",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.27000001072883606,
+            0.8199999928474426,
+            0.0
+          ],
+          [
+            0.27000001072883606,
+            0.85999995470047,
+            1.125
+          ]
+        ],
+        "materials": [
+          "C09 | fabrication aligned timber"
+        ]
+      },
+      {
+        "name": "Top | eased overhang",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.2800000011920929,
+            -0.8849999904632568,
+            1.1200000047683716
+          ],
+          [
+            0.304999977350235,
+            0.8849999904632568,
+            1.159999966621399
+          ]
+        ],
+        "materials": [
+          "C09 | fabrication aligned timber"
+        ]
+      },
+      {
+        "name": "Plinth | recessed bearing",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.25,
+            -0.824999988079071,
+            0.0
+          ],
+          [
+            0.22999998927116394,
+            0.824999988079071,
+            0.09000000357627869
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Shelf | seated between uprights",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.257999986410141,
+            -0.8240000009536743,
+            0.09000000357627869
+          ],
+          [
+            0.27000001072883606,
+            0.8240000009536743,
+            0.12999999523162842
+          ]
+        ],
+        "materials": [
+          "C09 | fabrication aligned timber"
+        ]
+      },
+      {
+        "name": "Shelf | seated between uprights.001",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.257999986410141,
+            -0.8240000009536743,
+            0.6050000190734863
+          ],
+          [
+            0.27000001072883606,
+            0.8240000009536743,
+            0.6399999856948853
+          ]
+        ],
+        "materials": [
+          "C09 | fabrication aligned timber"
+        ]
+      },
+      {
+        "name": "Divider | tenoned into shelves",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.2549999952316284,
+            -0.019999999552965164,
+            0.125
+          ],
+          [
+            0.25999999046325684,
+            0.019999999552965164,
+            1.1200000047683716
+          ]
+        ],
+        "materials": [
+          "C09 | fabrication aligned timber"
+        ]
+      },
+      {
+        "name": "Backing | tongue and groove board 0",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.27399998903274536,
+            0.41249996423721313,
+            0.09000003337860107
+          ],
+          [
+            -0.25,
+            0.8215000033378601,
+            1.1200000047683716
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Backing | tongue and groove board 1",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.27399998903274536,
+            0.0014999955892562866,
+            0.09000003337860107
+          ],
+          [
+            -0.25,
+            0.4104999899864197,
+            1.1200000047683716
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Backing | tongue and groove board 2",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.27399998903274536,
+            -0.40950000286102295,
+            0.09000003337860107
+          ],
+          [
+            -0.25,
+            -0.0004999935626983643,
+            1.1200000047683716
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Backing | tongue and groove board 3",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.27399998903274536,
+            -0.8205000162124634,
+            0.09000003337860107
+          ],
+          [
+            -0.25,
+            -0.4114999771118164,
+            1.1200000047683716
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cabinet | flush hardwood dowel",
+        "triangles": 40,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            0.2680000066757202,
+            -0.8438041806221008,
+            0.14600001275539398
+          ],
+          [
+            0.27000001072883606,
+            -0.8361957669258118,
+            0.15399999916553497
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cabinet | flush hardwood dowel.001",
+        "triangles": 40,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            0.2680000066757202,
+            -0.8438041806221008,
+            0.6359999775886536
+          ],
+          [
+            0.27000001072883606,
+            -0.8361957669258118,
+            0.6439999938011169
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cabinet | flush hardwood dowel.002",
+        "triangles": 40,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            0.2680000066757202,
+            -0.8438041806221008,
+            1.096000075340271
+          ],
+          [
+            0.27000001072883606,
+            -0.8361957669258118,
+            1.1039999723434448
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cabinet | flush hardwood dowel.003",
+        "triangles": 40,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            0.2680000066757202,
+            0.8361957669258118,
+            0.14600001275539398
+          ],
+          [
+            0.27000001072883606,
+            0.8438041806221008,
+            0.15399999916553497
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cabinet | flush hardwood dowel.004",
+        "triangles": 40,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            0.2680000066757202,
+            0.8361957669258118,
+            0.6359999775886536
+          ],
+          [
+            0.27000001072883606,
+            0.8438041806221008,
+            0.6439999938011169
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cabinet | flush hardwood dowel.005",
+        "triangles": 40,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            0.2680000066757202,
+            0.8361957669258118,
+            1.096000075340271
+          ],
+          [
+            0.27000001072883606,
+            0.8438041806221008,
+            1.1039999723434448
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cup | timber plinth",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.12656250596046448,
+            -0.07656250894069672,
+            1.1579999923706055
+          ],
+          [
+            0.12656250596046448,
+            0.17656250298023224,
+            1.2423748970031738
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cup | closed foot stem bowl wall and rolled rim",
+        "triangles": 832,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.148499995470047,
+            -0.09849999845027924,
+            1.24037504196167
+          ],
+          [
+            0.148499995470047,
+            0.19849999248981476,
+            1.6825000047683716
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Cup | handle attached at bowl shoulder and base",
+        "triangles": 108,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.010125000029802322,
+            -0.16588953137397766,
+            1.5308467149734497
+          ],
+          [
+            0.010125000029802322,
+            -0.05931274965405464,
+            1.6704908609390259
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Cup | handle attached at bowl shoulder and base.001",
+        "triangles": 108,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.010125000029802322,
+            0.15931275486946106,
+            1.5308467149734497
+          ],
+          [
+            0.010125000029802322,
+            0.2658895254135132,
+            1.6704908609390259
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Cup | timber plinth.001",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.08906249701976776,
+            -0.6090624928474426,
+            1.1579999923706055
+          ],
+          [
+            0.08906249701976776,
+            -0.4309374690055847,
+            1.2173750400543213
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cup | closed foot stem bowl wall and rolled rim.001",
+        "triangles": 832,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.10450000315904617,
+            -0.6244999766349792,
+            1.2153749465942383
+          ],
+          [
+            0.10450000315904617,
+            -0.4154999852180481,
+            1.5264999866485596
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Cup | timber plinth.002",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.04437500238418579,
+            -0.5243750214576721,
+            0.6380000114440918
+          ],
+          [
+            0.12437500059604645,
+            -0.3556250035762787,
+            0.6942499876022339
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cup | closed foot stem bowl wall and rolled rim.002",
+        "triangles": 832,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.05900000035762787,
+            -0.5389999747276306,
+            0.6922500133514404
+          ],
+          [
+            0.13899999856948853,
+            -0.3409999907016754,
+            0.9869999885559082
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Cup | handle attached at bowl shoulder and base.002",
+        "triangles": 108,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            0.033250000327825546,
+            -0.5839263796806335,
+            0.8858977556228638
+          ],
+          [
+            0.04674999788403511,
+            -0.5128751397132874,
+            0.9789938926696777
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Cup | handle attached at bowl shoulder and base.003",
+        "triangles": 108,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            0.033250000327825546,
+            -0.3671248257160187,
+            0.8858977556228638
+          ],
+          [
+            0.04674999788403511,
+            -0.29607364535331726,
+            0.9789938926696777
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Cup | timber plinth.003",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.03968749940395355,
+            0.3803125023841858,
+            0.12800000607967377
+          ],
+          [
+            0.11968749761581421,
+            0.5396875143051147,
+            0.1811250001192093
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cup | closed foot stem bowl wall and rolled rim.003",
+        "triangles": 832,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.05350000411272049,
+            0.36650002002716064,
+            0.17912499606609344
+          ],
+          [
+            0.13350000977516174,
+            0.5534999966621399,
+            0.45749998092651367
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Plaque | timber backing",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.22209632396697998,
+            0.30000001192092896,
+            0.6388147473335266
+          ],
+          [
+            -0.1179036796092987,
+            0.5799999833106995,
+            0.9971852898597717
+          ]
+        ],
+        "materials": [
+          "C09 | fabrication aligned timber"
+        ]
+      },
+      {
+        "name": "Plaque | inset blank brass face",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.17784428596496582,
+            0.3400000035762787,
+            0.7148892879486084
+          ],
+          [
+            -0.12415570020675659,
+            0.5400000214576721,
+            0.9411107301712036
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Plaque | timber backing.001",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.13572998344898224,
+            0.4399999976158142,
+            1.1573721170425415
+          ],
+          [
+            -0.0642700120806694,
+            0.7199999690055847,
+            1.4586278200149536
+          ]
+        ],
+        "materials": [
+          "C09 | fabrication aligned timber"
+        ]
+      },
+      {
+        "name": "Plaque | inset blank brass face.001",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.09580051898956299,
+            0.47999998927116394,
+            1.2334096431732178
+          ],
+          [
+            -0.06619948148727417,
+            0.6800000071525574,
+            1.402590274810791
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Book | distinct cloth cover",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.11400000005960464,
+            -0.6039999723434448,
+            0.1289999932050705
+          ],
+          [
+            0.11400000005960464,
+            -0.29600000381469727,
+            0.13300000131130219
+          ]
+        ],
+        "materials": [
+          "C09 | slate book cloth"
+        ]
+      },
+      {
+        "name": "Book | distinct cloth cover.001",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.11400000005960464,
+            -0.6039999723434448,
+            0.17499999701976776
+          ],
+          [
+            0.11400000005960464,
+            -0.29600000381469727,
+            0.17900000512599945
+          ]
+        ],
+        "materials": [
+          "C09 | slate book cloth"
+        ]
+      },
+      {
+        "name": "Book | inset page block",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.10099999606609344,
+            -0.5924999713897705,
+            0.1340000033378601
+          ],
+          [
+            0.10899999737739563,
+            -0.3075000047683716,
+            0.17399999499320984
+          ]
+        ],
+        "materials": [
+          "C09 | warm page blocks"
+        ]
+      },
+      {
+        "name": "Book | cloth spine",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.1145000010728836,
+            -0.6039999723434448,
+            0.1289999932050705
+          ],
+          [
+            -0.1054999977350235,
+            -0.29600000381469727,
+            0.17900000512599945
+          ]
+        ],
+        "materials": [
+          "C09 | slate book cloth"
+        ]
+      },
+      {
+        "name": "Book | distinct cloth cover.002",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.10400000214576721,
+            -0.5889999866485596,
+            0.17800000309944153
+          ],
+          [
+            0.10400000214576721,
+            -0.3109999895095825,
+            0.18200001120567322
+          ]
+        ],
+        "materials": [
+          "C09 | orange book cloth"
+        ]
+      },
+      {
+        "name": "Book | distinct cloth cover.003",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.10400000214576721,
+            -0.5889999866485596,
+            0.21899999678134918
+          ],
+          [
+            0.10400000214576721,
+            -0.3109999895095825,
+            0.22300000488758087
+          ]
+        ],
+        "materials": [
+          "C09 | orange book cloth"
+        ]
+      },
+      {
+        "name": "Book | inset page block.001",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.09099999815225601,
+            -0.5774999856948853,
+            0.18299999833106995
+          ],
+          [
+            0.0989999994635582,
+            -0.32249999046325684,
+            0.21799999475479126
+          ]
+        ],
+        "materials": [
+          "C09 | warm page blocks"
+        ]
+      },
+      {
+        "name": "Book | cloth spine.001",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "bounds": [
+          [
+            -0.10450000315904617,
+            -0.5889999866485596,
+            0.17800000309944153
+          ],
+          [
+            -0.09549999982118607,
+            -0.3109999895095825,
+            0.22299998998641968
+          ]
+        ],
+        "materials": [
+          "C09 | orange book cloth"
+        ]
+      }
+    ],
+    "bytes": 127324,
+    "sha256": "bf5285269db9bbe8a7b3366f5b0480f67e96a86ae0a8c68ff32d61b39ab29946",
+    "fresh": [
+      {
+        "name": "C09-runtime | shared physical materials",
+        "triangles": 6916,
+        "degenerate": 0,
+        "nonmanifold": 7700,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.2800000011920929,
+            -0.8850000500679016,
+            0.0
+          ],
+          [
+            0.30500009655952454,
+            0.8849999308586121,
+            1.6825001239776611
+          ]
+        ],
+        "materials": [
+          "C09 | fabrication aligned timber",
+          "C09 | recessed dark backing",
+          "C09 | satin brass",
+          "C09 | slate book cloth",
+          "C09 | warm page blocks",
+          "C09 | orange book cloth"
+        ]
+      }
+    ],
+    "nativeVerified": [
+      {
+        "name": "Side | continuous 40mm upright",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.27000001072883606,
+            -0.85999995470047,
+            0.0
+          ],
+          [
+            0.27000001072883606,
+            -0.8199999928474426,
+            1.125
+          ]
+        ],
+        "materials": [
+          "C09 | fabrication aligned timber"
+        ]
+      },
+      {
+        "name": "Side | continuous 40mm upright.001",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.27000001072883606,
+            0.8199999928474426,
+            0.0
+          ],
+          [
+            0.27000001072883606,
+            0.85999995470047,
+            1.125
+          ]
+        ],
+        "materials": [
+          "C09 | fabrication aligned timber"
+        ]
+      },
+      {
+        "name": "Top | eased overhang",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.2800000011920929,
+            -0.8849999904632568,
+            1.1200000047683716
+          ],
+          [
+            0.304999977350235,
+            0.8849999904632568,
+            1.159999966621399
+          ]
+        ],
+        "materials": [
+          "C09 | fabrication aligned timber"
+        ]
+      },
+      {
+        "name": "Plinth | recessed bearing",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.25,
+            -0.824999988079071,
+            0.0
+          ],
+          [
+            0.22999998927116394,
+            0.824999988079071,
+            0.09000000357627869
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Shelf | seated between uprights",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.257999986410141,
+            -0.8240000009536743,
+            0.09000000357627869
+          ],
+          [
+            0.27000001072883606,
+            0.8240000009536743,
+            0.12999999523162842
+          ]
+        ],
+        "materials": [
+          "C09 | fabrication aligned timber"
+        ]
+      },
+      {
+        "name": "Shelf | seated between uprights.001",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.257999986410141,
+            -0.8240000009536743,
+            0.6050000190734863
+          ],
+          [
+            0.27000001072883606,
+            0.8240000009536743,
+            0.6399999856948853
+          ]
+        ],
+        "materials": [
+          "C09 | fabrication aligned timber"
+        ]
+      },
+      {
+        "name": "Divider | tenoned into shelves",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.2549999952316284,
+            -0.019999999552965164,
+            0.125
+          ],
+          [
+            0.25999999046325684,
+            0.019999999552965164,
+            1.1200000047683716
+          ]
+        ],
+        "materials": [
+          "C09 | fabrication aligned timber"
+        ]
+      },
+      {
+        "name": "Backing | tongue and groove board 0",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.27399998903274536,
+            0.41249996423721313,
+            0.09000003337860107
+          ],
+          [
+            -0.25,
+            0.8215000033378601,
+            1.1200000047683716
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Backing | tongue and groove board 1",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.27399998903274536,
+            0.0014999955892562866,
+            0.09000003337860107
+          ],
+          [
+            -0.25,
+            0.4104999899864197,
+            1.1200000047683716
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Backing | tongue and groove board 2",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.27399998903274536,
+            -0.40950000286102295,
+            0.09000003337860107
+          ],
+          [
+            -0.25,
+            -0.0004999935626983643,
+            1.1200000047683716
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Backing | tongue and groove board 3",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.27399998903274536,
+            -0.8205000162124634,
+            0.09000003337860107
+          ],
+          [
+            -0.25,
+            -0.4114999771118164,
+            1.1200000047683716
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cabinet | flush hardwood dowel",
+        "triangles": 40,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            0.2680000066757202,
+            -0.8438041806221008,
+            0.14600001275539398
+          ],
+          [
+            0.27000001072883606,
+            -0.8361957669258118,
+            0.15399999916553497
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cabinet | flush hardwood dowel.001",
+        "triangles": 40,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            0.2680000066757202,
+            -0.8438041806221008,
+            0.6359999775886536
+          ],
+          [
+            0.27000001072883606,
+            -0.8361957669258118,
+            0.6439999938011169
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cabinet | flush hardwood dowel.002",
+        "triangles": 40,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            0.2680000066757202,
+            -0.8438041806221008,
+            1.096000075340271
+          ],
+          [
+            0.27000001072883606,
+            -0.8361957669258118,
+            1.1039999723434448
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cabinet | flush hardwood dowel.003",
+        "triangles": 40,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            0.2680000066757202,
+            0.8361957669258118,
+            0.14600001275539398
+          ],
+          [
+            0.27000001072883606,
+            0.8438041806221008,
+            0.15399999916553497
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cabinet | flush hardwood dowel.004",
+        "triangles": 40,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            0.2680000066757202,
+            0.8361957669258118,
+            0.6359999775886536
+          ],
+          [
+            0.27000001072883606,
+            0.8438041806221008,
+            0.6439999938011169
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cabinet | flush hardwood dowel.005",
+        "triangles": 40,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            0.2680000066757202,
+            0.8361957669258118,
+            1.096000075340271
+          ],
+          [
+            0.27000001072883606,
+            0.8438041806221008,
+            1.1039999723434448
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cup | timber plinth",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.12656250596046448,
+            -0.07656250894069672,
+            1.1579999923706055
+          ],
+          [
+            0.12656250596046448,
+            0.17656250298023224,
+            1.2423748970031738
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cup | closed foot stem bowl wall and rolled rim",
+        "triangles": 832,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.148499995470047,
+            -0.09849999845027924,
+            1.24037504196167
+          ],
+          [
+            0.148499995470047,
+            0.19849999248981476,
+            1.6825000047683716
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Cup | handle attached at bowl shoulder and base",
+        "triangles": 108,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.010125000029802322,
+            -0.16588953137397766,
+            1.5308467149734497
+          ],
+          [
+            0.010125000029802322,
+            -0.05931274965405464,
+            1.6704908609390259
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Cup | handle attached at bowl shoulder and base.001",
+        "triangles": 108,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.010125000029802322,
+            0.15931275486946106,
+            1.5308467149734497
+          ],
+          [
+            0.010125000029802322,
+            0.2658895254135132,
+            1.6704908609390259
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Cup | timber plinth.001",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.08906249701976776,
+            -0.6090624928474426,
+            1.1579999923706055
+          ],
+          [
+            0.08906249701976776,
+            -0.4309374690055847,
+            1.2173750400543213
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cup | closed foot stem bowl wall and rolled rim.001",
+        "triangles": 832,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.10450000315904617,
+            -0.6244999766349792,
+            1.2153749465942383
+          ],
+          [
+            0.10450000315904617,
+            -0.4154999852180481,
+            1.5264999866485596
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Cup | timber plinth.002",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.04437500238418579,
+            -0.5243750214576721,
+            0.6380000114440918
+          ],
+          [
+            0.12437500059604645,
+            -0.3556250035762787,
+            0.6942499876022339
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cup | closed foot stem bowl wall and rolled rim.002",
+        "triangles": 832,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.05900000035762787,
+            -0.5389999747276306,
+            0.6922500133514404
+          ],
+          [
+            0.13899999856948853,
+            -0.3409999907016754,
+            0.9869999885559082
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Cup | handle attached at bowl shoulder and base.002",
+        "triangles": 108,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            0.033250000327825546,
+            -0.5839263796806335,
+            0.8858977556228638
+          ],
+          [
+            0.04674999788403511,
+            -0.5128751397132874,
+            0.9789938926696777
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Cup | handle attached at bowl shoulder and base.003",
+        "triangles": 108,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            0.033250000327825546,
+            -0.3671248257160187,
+            0.8858977556228638
+          ],
+          [
+            0.04674999788403511,
+            -0.29607364535331726,
+            0.9789938926696777
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Cup | timber plinth.003",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.03968749940395355,
+            0.3803125023841858,
+            0.12800000607967377
+          ],
+          [
+            0.11968749761581421,
+            0.5396875143051147,
+            0.1811250001192093
+          ]
+        ],
+        "materials": [
+          "C09 | recessed dark backing"
+        ]
+      },
+      {
+        "name": "Cup | closed foot stem bowl wall and rolled rim.003",
+        "triangles": 832,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.05350000411272049,
+            0.36650002002716064,
+            0.17912499606609344
+          ],
+          [
+            0.13350000977516174,
+            0.5534999966621399,
+            0.45749998092651367
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Plaque | timber backing",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.22209632396697998,
+            0.30000001192092896,
+            0.6388147473335266
+          ],
+          [
+            -0.1179036796092987,
+            0.5799999833106995,
+            0.9971852898597717
+          ]
+        ],
+        "materials": [
+          "C09 | fabrication aligned timber"
+        ]
+      },
+      {
+        "name": "Plaque | inset blank brass face",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.17784428596496582,
+            0.3400000035762787,
+            0.7148892879486084
+          ],
+          [
+            -0.12415570020675659,
+            0.5400000214576721,
+            0.9411107301712036
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Plaque | timber backing.001",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.13572998344898224,
+            0.4399999976158142,
+            1.1573721170425415
+          ],
+          [
+            -0.0642700120806694,
+            0.7199999690055847,
+            1.4586278200149536
+          ]
+        ],
+        "materials": [
+          "C09 | fabrication aligned timber"
+        ]
+      },
+      {
+        "name": "Plaque | inset blank brass face.001",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.09580051898956299,
+            0.47999998927116394,
+            1.2334096431732178
+          ],
+          [
+            -0.06619948148727417,
+            0.6800000071525574,
+            1.402590274810791
+          ]
+        ],
+        "materials": [
+          "C09 | satin brass"
+        ]
+      },
+      {
+        "name": "Book | distinct cloth cover",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.11400000005960464,
+            -0.6039999723434448,
+            0.1289999932050705
+          ],
+          [
+            0.11400000005960464,
+            -0.29600000381469727,
+            0.13300000131130219
+          ]
+        ],
+        "materials": [
+          "C09 | slate book cloth"
+        ]
+      },
+      {
+        "name": "Book | distinct cloth cover.001",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.11400000005960464,
+            -0.6039999723434448,
+            0.17499999701976776
+          ],
+          [
+            0.11400000005960464,
+            -0.29600000381469727,
+            0.17900000512599945
+          ]
+        ],
+        "materials": [
+          "C09 | slate book cloth"
+        ]
+      },
+      {
+        "name": "Book | inset page block",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.10099999606609344,
+            -0.5924999713897705,
+            0.1340000033378601
+          ],
+          [
+            0.10899999737739563,
+            -0.3075000047683716,
+            0.17399999499320984
+          ]
+        ],
+        "materials": [
+          "C09 | warm page blocks"
+        ]
+      },
+      {
+        "name": "Book | cloth spine",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.1145000010728836,
+            -0.6039999723434448,
+            0.1289999932050705
+          ],
+          [
+            -0.1054999977350235,
+            -0.29600000381469727,
+            0.17900000512599945
+          ]
+        ],
+        "materials": [
+          "C09 | slate book cloth"
+        ]
+      },
+      {
+        "name": "Book | distinct cloth cover.002",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.10400000214576721,
+            -0.5889999866485596,
+            0.17800000309944153
+          ],
+          [
+            0.10400000214576721,
+            -0.3109999895095825,
+            0.18200001120567322
+          ]
+        ],
+        "materials": [
+          "C09 | orange book cloth"
+        ]
+      },
+      {
+        "name": "Book | distinct cloth cover.003",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.10400000214576721,
+            -0.5889999866485596,
+            0.21899999678134918
+          ],
+          [
+            0.10400000214576721,
+            -0.3109999895095825,
+            0.22300000488758087
+          ]
+        ],
+        "materials": [
+          "C09 | orange book cloth"
+        ]
+      },
+      {
+        "name": "Book | inset page block.001",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.09099999815225601,
+            -0.5774999856948853,
+            0.18299999833106995
+          ],
+          [
+            0.0989999994635582,
+            -0.32249999046325684,
+            0.21799999475479126
+          ]
+        ],
+        "materials": [
+          "C09 | warm page blocks"
+        ]
+      },
+      {
+        "name": "Book | cloth spine.001",
+        "triangles": 12,
+        "degenerate": 0,
+        "nonmanifold": 0,
+        "weldedNonmanifold": 0,
+        "bounds": [
+          [
+            -0.10450000315904617,
+            -0.5889999866485596,
+            0.17800000309944153
+          ],
+          [
+            -0.09549999982118607,
+            -0.3109999895095825,
+            0.22299998998641968
+          ]
+        ],
+        "materials": [
+          "C09 | orange book cloth"
+        ]
+      }
+    ]
+  },
+  "grass": {
+    "native": [
+      {
+        "name": "Blade 0 | cupped shoulder, narrow root, swept tip",
+        "triangles": 3,
+        "degenerate": 0,
+        "nonmanifold": 5,
+        "bounds": [
+          [
+            0.029999999329447746,
+            -0.03220000118017197,
+            0.0
+          ],
+          [
+            0.1899999976158142,
+            0.03220000118017197,
+            0.2939999997615814
+          ]
+        ],
+        "materials": [
+          "Grass | root to tip 0"
+        ]
+      },
+      {
+        "name": "Blade 1 | cupped shoulder, narrow root, swept tip",
+        "triangles": 3,
+        "degenerate": 0,
+        "nonmanifold": 5,
+        "bounds": [
+          [
+            -0.14448803663253784,
+            -0.2813044786453247,
+            0.0
+          ],
+          [
+            -0.002863815287128091,
+            -0.04371201992034912,
+            0.335999995470047
+          ]
+        ],
+        "materials": [
+          "Grass | root to tip 1"
+        ]
+      },
+      {
+        "name": "Blade 2 | cupped shoulder, narrow root, swept tip",
+        "triangles": 3,
+        "degenerate": 0,
+        "nonmanifold": 5,
+        "bounds": [
+          [
+            -0.21062207221984863,
+            -0.11841598153114319,
+            0.0
+          ],
+          [
+            -0.0534064918756485,
+            -0.03144924342632294,
+            0.3779999911785126
+          ]
+        ],
+        "materials": [
+          "Grass | root to tip 2"
+        ]
+      },
+      {
+        "name": "Blade 3 | cupped shoulder, narrow root, swept tip",
+        "triangles": 3,
+        "degenerate": 0,
+        "nonmanifold": 5,
+        "bounds": [
+          [
+            -0.05594119429588318,
+            0.0245002880692482,
+            0.0
+          ],
+          [
+            0.011483600363135338,
+            0.28823938965797424,
+            0.41999998688697815
+          ]
+        ],
+        "materials": [
+          "Grass | root to tip 3"
+        ]
+      },
+      {
+        "name": "Blade 4 | cupped shoulder, narrow root, swept tip",
+        "triangles": 3,
+        "degenerate": 0,
+        "nonmanifold": 5,
+        "bounds": [
+          [
+            -0.0013119032373651862,
+            0.046359531581401825,
+            0.0
+          ],
+          [
+            0.09306823462247849,
+            0.19582466781139374,
+            0.2939999997615814
+          ]
+        ],
+        "materials": [
+          "Grass | root to tip 4"
+        ]
+      }
+    ],
+    "bytes": 5520,
+    "sha256": "7d984a67dbaeef4654baac65be878854b7a4736a0954b1361af9ce8dbe903b48",
+    "fresh": [
+      {
+        "name": "Blade 0 | cupped shoulder, narrow root, swept tip",
+        "triangles": 3,
+        "degenerate": 0,
+        "nonmanifold": 9,
+        "weldedNonmanifold": 5,
+        "bounds": [
+          [
+            0.029999999329447746,
+            -0.03220003843307495,
+            0.0
+          ],
+          [
+            0.18999998271465302,
+            0.03220000118017197,
+            0.2939999997615814
+          ]
+        ],
+        "materials": [
+          "Grass | root to tip 0"
+        ]
+      },
+      {
+        "name": "Blade 1 | cupped shoulder, narrow root, swept tip",
+        "triangles": 3,
+        "degenerate": 0,
+        "nonmanifold": 9,
+        "weldedNonmanifold": 5,
+        "bounds": [
+          [
+            -0.14448803663253784,
+            -0.2813045382499695,
+            0.0
+          ],
+          [
+            -0.0028638243675231934,
+            -0.04371201992034912,
+            0.335999995470047
+          ]
+        ],
+        "materials": [
+          "Grass | root to tip 1"
+        ]
+      },
+      {
+        "name": "Blade 2 | cupped shoulder, narrow root, swept tip",
+        "triangles": 3,
+        "degenerate": 0,
+        "nonmanifold": 9,
+        "weldedNonmanifold": 5,
+        "bounds": [
+          [
+            -0.21062207221984863,
+            -0.11841582506895065,
+            0.0
+          ],
+          [
+            -0.053406596183776855,
+            -0.03144924342632294,
+            0.3779999911785126
+          ]
+        ],
+        "materials": [
+          "Grass | root to tip 2"
+        ]
+      },
+      {
+        "name": "Blade 3 | cupped shoulder, narrow root, swept tip",
+        "triangles": 3,
+        "degenerate": 0,
+        "nonmanifold": 9,
+        "weldedNonmanifold": 5,
+        "bounds": [
+          [
+            -0.05594119429588318,
+            0.024500280618667603,
+            0.0
+          ],
+          [
+            0.011483505368232727,
+            0.28823938965797424,
+            0.41999998688697815
+          ]
+        ],
+        "materials": [
+          "Grass | root to tip 3"
+        ]
+      },
+      {
+        "name": "Blade 4 | cupped shoulder, narrow root, swept tip",
+        "triangles": 3,
+        "degenerate": 0,
+        "nonmanifold": 9,
+        "weldedNonmanifold": 5,
+        "bounds": [
+          [
+            -0.0013119032373651862,
+            0.046359434723854065,
+            0.0
+          ],
+          [
+            0.09306837618350983,
+            0.19582466781139374,
+            0.2939999997615814
+          ]
+        ],
+        "materials": [
+          "Grass | root to tip 4"
+        ]
+      }
+    ],
+    "nativeVerified": [
+      {
+        "name": "Blade 0 | cupped shoulder, narrow root, swept tip",
+        "triangles": 3,
+        "degenerate": 0,
+        "nonmanifold": 5,
+        "weldedNonmanifold": 5,
+        "bounds": [
+          [
+            0.029999999329447746,
+            -0.03220000118017197,
+            0.0
+          ],
+          [
+            0.1899999976158142,
+            0.03220000118017197,
+            0.2939999997615814
+          ]
+        ],
+        "materials": [
+          "Grass | root to tip 0"
+        ]
+      },
+      {
+        "name": "Blade 1 | cupped shoulder, narrow root, swept tip",
+        "triangles": 3,
+        "degenerate": 0,
+        "nonmanifold": 5,
+        "weldedNonmanifold": 5,
+        "bounds": [
+          [
+            -0.14448803663253784,
+            -0.2813044786453247,
+            0.0
+          ],
+          [
+            -0.002863815287128091,
+            -0.04371201992034912,
+            0.335999995470047
+          ]
+        ],
+        "materials": [
+          "Grass | root to tip 1"
+        ]
+      },
+      {
+        "name": "Blade 2 | cupped shoulder, narrow root, swept tip",
+        "triangles": 3,
+        "degenerate": 0,
+        "nonmanifold": 5,
+        "weldedNonmanifold": 5,
+        "bounds": [
+          [
+            -0.21062207221984863,
+            -0.11841598153114319,
+            0.0
+          ],
+          [
+            -0.0534064918756485,
+            -0.03144924342632294,
+            0.3779999911785126
+          ]
+        ],
+        "materials": [
+          "Grass | root to tip 2"
+        ]
+      },
+      {
+        "name": "Blade 3 | cupped shoulder, narrow root, swept tip",
+        "triangles": 3,
+        "degenerate": 0,
+        "nonmanifold": 5,
+        "weldedNonmanifold": 5,
+        "bounds": [
+          [
+            -0.05594119429588318,
+            0.0245002880692482,
+            0.0
+          ],
+          [
+            0.011483600363135338,
+            0.28823938965797424,
+            0.41999998688697815
+          ]
+        ],
+        "materials": [
+          "Grass | root to tip 3"
+        ]
+      },
+      {
+        "name": "Blade 4 | cupped shoulder, narrow root, swept tip",
+        "triangles": 3,
+        "degenerate": 0,
+        "nonmanifold": 5,
+        "weldedNonmanifold": 5,
+        "bounds": [
+          [
+            -0.0013119032373651862,
+            0.046359531581401825,
+            0.0
+          ],
+          [
+            0.09306823462247849,
+            0.19582466781139374,
+            0.2939999997615814
+          ]
+        ],
+        "materials": [
+          "Grass | root to tip 4"
+        ]
+      }
+    ]
+  }
+}

@@ -42,7 +42,9 @@ test('fixed original GLBs used for physical registration and seat anchors are by
   const expected = { C05:'54790864187123a55c4fd00590186a1e958990ca735a9861c00304332a316692',C06:'401862b7b8ea1cea4cfafbccb26f38760025f34f006ba47463f6072ae5c8a556',C07:'ea34c4389d8504410746a43ba5b228aba1d46cf525eca3659abcbf34cebc6873' };
   for (const [id,hash] of Object.entries(expected)) assert.equal(createHash('sha256').update(readFileSync(new URL(`../../../public/assets/world/camp/${id}.glb`,import.meta.url))).digest('hex'),hash);
   const camp = readFileSync(new URL('./WorldCamp.tsx', import.meta.url),'utf8');
-  assert.match(camp, /campShapes\(id, gltf\)/); assert.match(camp, /<CampColliders id=\{id\} label=\{label\} shapes=\{shapes\} matrices=\{matrices\}/);
+  // Batch4 can load a separate visual GLB. Physics must still read the fixed original URL.
+  assert.ok(camp.includes('const physics = useLoader(GLTFLoader, `/assets/world/camp/${id}.glb`, withDraco)'));
+  assert.match(camp, /campShapes\(id, physics\)/); assert.match(camp, /<CampColliders id=\{id\} label=\{label\} shapes=\{shapes\} matrices=\{matrices\}/);
   assert.match(camp, /<CampFire position=\{\[firePosition\[0\], CAMP_TOP \+ 0\.06, firePosition\[2\]\]\}/);
 });
 test('actual pack has three fixed roots, valid geometry and eight true 600mm bench contacts', async t => {

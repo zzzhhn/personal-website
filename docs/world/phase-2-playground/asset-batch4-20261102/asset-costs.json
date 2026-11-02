@@ -1,0 +1,83 @@
+[
+  {
+    "id": "C09",
+    "bytes": 127324,
+    "old_bytes": 32404,
+    "materials": 6,
+    "primitives": 6,
+    "images": 2,
+    "triangles": 6916
+  },
+  {
+    "id": "G16",
+    "bytes": 311788,
+    "old_bytes": 246400,
+    "materials": 2,
+    "primitives": 2,
+    "images": 0,
+    "triangles": 8634
+  },
+  {
+    "id": "G17",
+    "bytes": 234644,
+    "old_bytes": 184956,
+    "materials": 2,
+    "primitives": 2,
+    "images": 0,
+    "triangles": 6432
+  },
+  {
+    "id": "G18",
+    "bytes": 273592,
+    "old_bytes": 219100,
+    "materials": 2,
+    "primitives": 2,
+    "images": 0,
+    "triangles": 7734
+  },
+  {
+    "id": "G21",
+    "bytes": 301604,
+    "old_bytes": 17188,
+    "materials": 4,
+    "primitives": 4,
+    "images": 3,
+    "triangles": 620
+  },
+  {
+    "id": "G22",
+    "bytes": 296956,
+    "old_bytes": 14748,
+    "materials": 4,
+    "primitives": 4,
+    "images": 3,
+    "triangles": 496
+  },
+  {
+    "id": "G23",
+    "bytes": 293268,
+    "old_bytes": 12184,
+    "materials": 4,
+    "primitives": 4,
+    "images": 3,
+    "triangles": 376
+  },
+  {
+    "id": "ST1",
+    "bytes": 193500,
+    "old_bytes": 154668,
+    "materials": 2,
+    "primitives": 4,
+    "images": 0,
+    "triangles": 5566
+  },
+  {
+    "id": "ST2",
+    "bytes": 181260,
+    "old_bytes": 149308,
+    "materials": 2,
+    "primitives": 4,
+    "images": 0,
+    "triangles": 5710
+  }
+]

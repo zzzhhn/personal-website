@@ -1,0 +1,76 @@
+{
+  "checks": [
+    {
+      "path": "world/index.html",
+      "match": true,
+      "bytes": 52275
+    },
+    {
+      "path": "_astro/WorldRuntime.D1ZcyyG2.js",
+      "match": true,
+      "bytes": 3474716
+    },
+    {
+      "path": "assets/world/nature-craft/C09.glb",
+      "match": true,
+      "bytes": 127324
+    },
+    {
+      "path": "assets/world/nature-craft/G16.glb",
+      "match": true,
+      "bytes": 311788
+    },
+    {
+      "path": "assets/world/nature-craft/G17.glb",
+      "match": true,
+      "bytes": 234644
+    },
+    {
+      "path": "assets/world/nature-craft/G18.glb",
+      "match": true,
+      "bytes": 273592
+    },
+    {
+      "path": "assets/world/nature-craft/G21.glb",
+      "match": true,
+      "bytes": 301604
+    },
+    {
+      "path": "assets/world/nature-craft/G22.glb",
+      "match": true,
+      "bytes": 296956
+    },
+    {
+      "path": "assets/world/nature-craft/G23.glb",
+      "match": true,
+      "bytes": 293268
+    },
+    {
+      "path": "assets/world/nature-craft/ST1.glb",
+      "match": true,
+      "bytes": 193500
+    },
+    {
+      "path": "assets/world/nature-craft/ST2.glb",
+      "match": true,
+      "bytes": 181260
+    },
+    {
+      "path": "assets/world/nature-craft/grass.glb",
+      "match": true,
+      "bytes": 5520
+    }
+  ],
+  "unchangedGLBsFromR1": [
+    "assets/world/nature-craft/C09.glb",
+    "assets/world/nature-craft/G16.glb",
+    "assets/world/nature-craft/G17.glb",
+    "assets/world/nature-craft/G18.glb",
+    "assets/world/nature-craft/G21.glb",
+    "assets/world/nature-craft/G22.glb",
+    "assets/world/nature-craft/G23.glb",
+    "assets/world/nature-craft/ST1.glb",
+    "assets/world/nature-craft/ST2.glb",
+    "assets/world/nature-craft/grass.glb"
+  ]
+}

@@ -12,7 +12,7 @@ import { StreetClaim } from './WorldStreetStatic';
 let draco: DRACOLoader | null = null;
 const loader = (l: GLTFLoader) => { draco ??= new DRACOLoader().setDecoderPath('/assets/world/draco/'); l.setDRACOLoader(draco); };
 const IDS = ['ST1', 'ST2'];
-function merged(gltf: GLTF, prefix: string) {
+function merged(gltf: GLTF, prefix: string, craft: boolean) {
   const parts: BufferGeometry[] = [];
   gltf.scene.updateMatrixWorld(true);
   gltf.scene.traverse(o => {
@@ -23,12 +23,24 @@ function merged(gltf: GLTF, prefix: string) {
     const src = m.geometry, mats = Array.isArray(m.material) ? m.material : [m.material];
     const geo = (src.index ? src.toNonIndexed() : src.clone()).applyMatrix4(m.matrixWorld);
     const count = geo.getAttribute('position').count, col = new Float32Array(count * 3), color = new Color();
+    const authored = craft ? geo.getAttribute('color') : undefined;
     for (const group of src.groups.length ? src.groups : [{ start: 0, count, materialIndex: 0 }]) {
       color.copy((mats[group.materialIndex ?? 0] as MeshStandardMaterial).color);
-      for (let i = group.start; i < Math.min(count, group.start + group.count); i++) col.set(color.toArray(), i * 3);
+      for (let i = group.start; i < Math.min(count, group.start + group.count); i++) {
+        col[i * 3] = color.r * (authored?.getX(i) ?? 1);
+        col[i * 3 + 1] = color.g * (authored?.getY(i) ?? 1);
+        col[i * 3 + 2] = color.b * (authored?.getZ(i) ?? 1);
+      }
     }
     geo.setAttribute('color', new Float32BufferAttribute(col, 3));
-    for (const key of Object.keys(geo.attributes)) if (!['position', 'normal', 'color', '_wind'].includes(key)) geo.deleteAttribute(key);
+    if (craft) {
+      // One merged material still distinguishes opaque bark from waxier leaf blades.
+      // Attribute exists on every merged part, so no material groups/draws are added.
+      let part = m as import('three').Object3D | null, crown = false;
+      while (part) { if (part.name.toLowerCase().includes('crown')) crown = true; part = part.parent; }
+      geo.setAttribute('treeLeaf', new Float32BufferAttribute(new Float32Array(count).fill(crown ? 1 : 0), 1));
+    }
+    for (const key of Object.keys(geo.attributes)) if (!['position', 'normal', 'color', '_wind', ...(craft ? ['treeLeaf'] : [])].includes(key)) geo.deleteAttribute(key);
     if (!geo.getAttribute('_wind')) throw new Error('missing authored wind: ' + m.name);
     geo.clearGroups(); parts.push(geo);
   });
@@ -36,7 +48,8 @@ function merged(gltf: GLTF, prefix: string) {
   const out = mergeGeometries(parts, false)!; parts.forEach(p => p.dispose()); return out;
 }
 export default function StreetTrees() {
-  const files = useLoader(GLTFLoader, IDS.map(id => `/assets/world/street/${id}.glb`), loader) as GLTF[];
+  const craft = typeof window === 'undefined' || new URLSearchParams(window.location.search).get('natureCraft') !== 'legacy';
+  const files = useLoader(GLTFLoader, IDS.map(id => `/assets/world/${craft ? 'nature-craft' : 'street'}/${id}.glb`), loader) as GLTF[];
   const built = useMemo(() => {
     const northTrees=[[-17,1,-115],[-3,1,-116],[-24,1,-132],[-39,1,-134],[-52,1,-139],[-70,1,-139],[-104,1,-147],[-118,1,-172],[-114,1,-207],[-83,1,-209],[-62,1,-205],[5,1,-137],[15,1,-132],[38,1,-116],[89,1,-150],[93,1,-180],[77,1,-221],[43,1,-226]];
     const points = [...TREES_V4.filter(p => p[1] < 2), ...solidsV4().filter(s => s.kind === 'trunk').map(s => [s.position[0], s.position[1] - s.size[1] / 2, s.position[2]]),...northTrees];
@@ -44,11 +57,25 @@ export default function StreetTrees() {
     const meshes: InstancedMesh[] = [], clean: (() => void)[] = [];
     files.forEach((g, kind) => {
       for (const lod of [0, 1]) {
-        const geo = merged(g, `L${lod}`), mat = new MeshStandardMaterial({ vertexColors: true, roughness: .93, metalness: 0, side: DoubleSide });
+        const geo = merged(g, `L${lod}`, craft), mat = new MeshStandardMaterial({ vertexColors: true, roughness: .93, metalness: 0, side: DoubleSide });
         const mesh = new InstancedMesh(geo, mat, placements.filter(p => p.kind === kind).length);
         mesh.name = `street-tree-${IDS[kind]}-L${lod}`; mesh.count = 0; mesh.castShadow = true; mesh.receiveShadow = true; mesh.frustumCulled = false;
         mesh.userData.occluder = true; mesh.userData.streetStats = () => ({ tris: mesh.count * geo.getAttribute('position').count / 3, instances: mesh.count });
-        const detach = attachNatureWind(mesh); clean.push(() => { detach(); geo.dispose(); mat.dispose(); mesh.dispose(); }); meshes.push(mesh);
+        const detach = attachNatureWind(mesh);
+        if (craft) {
+          // attachNatureWind owns the displacement/depth patch. Extend its cloned surface
+          // material afterwards, retaining the identical wind and shadow implementation.
+          const surface = mesh.material as MeshStandardMaterial, windCompile = surface.onBeforeCompile;
+          const windKey = surface.customProgramCacheKey();
+          surface.onBeforeCompile = function (shader, renderer) {
+            windCompile.call(this, shader, renderer);
+            shader.vertexShader = 'attribute float treeLeaf;\nvarying float vTreeLeaf;\n' + shader.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\nvTreeLeaf = treeLeaf;');
+            shader.fragmentShader = 'varying float vTreeLeaf;\n' + shader.fragmentShader.replace('#include <roughnessmap_fragment>', '#include <roughnessmap_fragment>\nroughnessFactor = mix(0.95, 0.87, vTreeLeaf);');
+          };
+          surface.customProgramCacheKey = () => windKey + '-tree-craft-pigment-v1';
+          surface.needsUpdate = true;
+        }
+        clean.push(() => { detach(); geo.dispose(); mat.dispose(); mesh.dispose(); }); meshes.push(mesh);
       }
     });
     const colliders = placements.map((p, i) => {
@@ -59,7 +86,7 @@ export default function StreetTrees() {
       return { pos, idx, key: i };
     });
     return { placements, meshes, clean, colliders };
-  }, [files]);
+  }, [files, craft]);
   useEffect(() => () => built.clean.forEach(c => c()), [built]);
   const frustum = useMemo(() => new Frustum(), []), view = useMemo(() => new Matrix4(), []), sphere = useMemo(() => new Sphere(), []);
   useFrame(({ camera }) => {

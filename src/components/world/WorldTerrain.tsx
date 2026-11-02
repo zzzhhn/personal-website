@@ -60,6 +60,7 @@ function loadPbr() {
 }
 
 function createGroundMaterial(pbr: Texture[] | null) {
+  const legacy = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('natureCraft') === 'legacy';
   const material = new MeshStandardMaterial({ vertexColors: true, flatShading: !pbr, roughness: 1, metalness: 0 });
   material.name = pbr ? 'island-terrain-v4-pbr' : 'island-terrain-v4';
   material.onBeforeCompile = shader => {
@@ -194,8 +195,39 @@ vec4 tileMix(sampler2D t, vec2 uv, vec3 w) { return texture2D(t, uv) * w.x + tex
       #include <lights_physical_fragment>
       // Weaker dielectric specular for soil/grass: removes the plastic grazing sheen.
       material.specularColor = vec3(0.016); material.specularColorBlended = vec3(0.016); material.specularF90 = 0.4;`);
+    if (!legacy && pbr) {
+      // Reuse the same 18 texture reads. Colour and normal share coverage and UV scale;
+      // normal XY must follow the inverse of each anti-tiling sample rotation.
+      shader.fragmentShader = shader.fragmentShader.replace('vec4 tileMix(sampler2D t, vec2 uv, vec3 w)', `vec4 tileNormalMix(sampler2D t, vec2 uv, vec3 w) {
+  vec4 a = texture2D(t, uv), b = texture2D(t, rotA(uv)), c = texture2D(t, rotB(uv));
+  vec2 slope = (a.rg * 2.0 - 1.0) * w.x
+    + mat2(0.7986, 0.6018, -0.6018, 0.7986) * (b.rg * 2.0 - 1.0) * (1.13 * w.y)
+    + mat2(0.3256, -0.9455, 0.9455, 0.3256) * (c.rg * 2.0 - 1.0) * (0.87 * w.z);
+  return vec4(slope * 0.5 + 0.5, dot(vec3(a.b, b.b, c.b), w), 1.0);
+}
+vec4 tileMix(sampler2D t, vec2 uv, vec3 w)`)
+        .replace('vec3 gw = vGroundMix.xyz / max(vGroundMix.x + vGroundMix.y + vGroundMix.z, 1e-3);', `// Derivative helper lanes extrapolate outside triangles, so even valid CPU weights
+      // can be negative here. Clamp before fractional coverage powers: NaN would reach
+      // sandWeight -> groundBump -> dFdx/dFdy and blacken the covered triangle edge.
+      vec3 gw = max(vGroundMix.xyz, vec3(0.0));
+      gw /= max(dot(gw, vec3(1.0)), 1e-3);`)
+        .replace('vec3 dirt = tileMix(uAlb2, puv * 1.2, pm).rgb / uMean2;', `// Grass scan covers 1.85 m rather than 2.5 m; sand/dirt keep their established scale.
+      vec3 grassDetail = tileMix(uAlb0, puv * 1.35, pm).rgb / uMean0;
+      vec3 sandDetail = tileMix(uAlb1, puv * 1.6, pm).rgb / uMean1;
+      vec3 dirt = tileMix(uAlb2, puv * 1.2, pm).rgb / uMean2;`)
+        .replace('vec3 ratio = gw.x * tileMix(uAlb0, puv, pm).rgb / uMean0 + gw.y * tileMix(uAlb1, puv * 1.6, pm).rgb / uMean1 + gw.z * dirt;', `// Existing scan luminance supplies tuft/grain coverage, not a claimed height map.
+      // Only mixed boundaries change: zero weights stay zero; the far field stays unchanged.
+      vec3 coverage = clamp(vec3(dot(grassDetail, vec3(0.299, 0.587, 0.114)),
+        dot(sandDetail, vec3(0.299, 0.587, 0.114)), dirt.r) - 1.0, -0.5, 0.5);
+      vec3 edgeWeights = pow(gw * (1.0 + coverage * 0.7), vec3(1.35));
+      edgeWeights /= max(dot(edgeWeights, vec3(1.0)), 1e-3);
+      gw = mix(gw, edgeWeights, tFine * 0.75);
+      sandWeight = gw.y * tWalk;
+      vec3 ratio = gw.x * grassDetail + gw.y * sandDetail + gw.z * dirt;`)
+        .replace('vec4 nrS = gw.x * tileMix(uNr0, puv, pm) + gw.y * tileMix(uNr1, puv * 1.6, pm) + gw.z * tileMix(uNr2, puv * 1.2, pm);', 'vec4 nrS = gw.x * tileNormalMix(uNr0, puv * 1.35, pm) + gw.y * tileNormalMix(uNr1, puv * 1.6, pm) + gw.z * tileNormalMix(uNr2, puv * 1.2, pm);');
+    }
   };
-  material.customProgramCacheKey = () => pbr ? 'island-terrain-v5-pbr' : 'island-terrain-v5';
+  material.customProgramCacheKey = () => pbr ? (legacy ? 'island-terrain-v5-pbr' : 'island-terrain-v7-coverage-helper-safe-pbr') : 'island-terrain-v5';
   return material;
 }
 

@@ -1,0 +1,74 @@
+Browser tab: 1395914218, Title: "Bobby’s island · World playtest", URL: "http://127.0.0.1:4357/world/?qa=1&start=camp&quality=balanced&paused=1&natureCraft=legacy&r2=1".
+1 AXWebArea Bobby’s island · World playtest, URL: 127.0.0.1:4357/world/?qa=1&start=camp&quality=balanced&paused=1&natureCraft=legacy&r2=1
+	2 container Map & settings
+		3 text BOBBY’S ISLAND
+		4 heading Map & settings, Value: 2
+			5 text Map & settings
+		6 container Island map. Click the map to set a waypoint; click it again to clear.
+		7 text You
+		8 text Internships (oldest → newest)
+		9 text Project booths
+		10 text Plots for later
+		11 text Click the map to set a waypoint; click it again to clear.
+		12 container Back to the island Return to camp Keep your ore, mining progress and research results. LANGUAGE TIME OF DAY Island time Let time flow 1 real second = 1 island minute. Pauses with the world. WEATHER IMAGE QUALITY Choose Balanced if movement becomes choppy. AUDIO Controls Credits ← Back to portfolio
+			13 button Back to the island
+			14 button Return to camp
+			15 text Keep your ore, mining progress and research results.
+			16 container LANGUAGE
+				17 text LANGUAGE
+				18 checkbox English, Value: 1
+				19 checkbox 中文, Value: 0
+			20 container TIME OF DAY Island time
+				21 container
+					22 text TIME OF DAY
+					23 container Island time
+						24 text 12:00
+				25 checkbox Morning 06:00, Value: 0
+					26 text Morning
+					27 text 06:00
+				28 checkbox Noon 12:00, Value: 1
+					29 text Noon
+					30 text 12:00
+				31 checkbox Afternoon 15:00, Value: 0
+					32 text Afternoon
+					33 text 15:00
+				34 checkbox Sunset 17:30, Value: 0
+					35 text Sunset
+					36 text 17:30
+				37 checkbox Evening 19:00, Value: 0
+					38 text Evening
+					39 text 19:00
+				40 checkbox Late night 00:00, Value: 0
+					41 text Late night
+					42 text 00:00
+			43 container
+				44 checkbox (settable, integer) Description: Let time flow, Value: 0
+				45 text Let time flow
+			46 text 1 real second = 1 island minute. Pauses with the world.
+			47 container WEATHER
+				48 text WEATHER
+				49 checkbox Clear, Value: 1
+				50 checkbox Rain, Value: 0
+				51 checkbox Snow, Value: 0
+			52 container IMAGE QUALITY
+				53 text IMAGE QUALITY
+				54 checkbox Balanced, Value: 1
+				55 checkbox High, Value: 0
+			56 text Choose Balanced if movement becomes choppy.
+			57 container AUDIO
+				58 text AUDIO
+				59 checkbox Mute all, Value: 0
+				60 text Sound on
+				61 container
+					62 text Music
+					63 slider (settable, integer) Description: Music, Value: 1
+				64 container
+					65 text Sound effects
+					66 slider (settable, integer) Description: Sound effects, Value: 1
+			67 button (collapsed) Controls, Secondary Actions: Expand
+				68 text Controls
+			69 button (collapsed) Credits, Secondary Actions: Expand
+				70 text Credits
+			71 link Description: ← Back to portfolio, Value: 127.0.0.1:4357/#about
+
+The focused UI element is 12 container Back to the island Return to camp Keep your ore, mining progress and research results. LANGUAGE TIME OF DAY Island time Let time flow 1 real second = 1 island minute. Pauses with the world. WEATHER IMAGE QUALITY Choose Balanced if movement becomes choppy. AUDIO Controls Credits ← Back to portfolio

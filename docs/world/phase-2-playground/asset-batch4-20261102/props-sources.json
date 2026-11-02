@@ -1,0 +1,81 @@
+[
+  {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-bruno/static/bay/assets/coast-natural/pbr/stone-color.jpg",
+    "sha256": "ea48e0e47ad42c8bd312476178b1248ec66f0eb19156a26a1c222f2a40caaf2d",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rock_face_03/rock_face_03_diff_1k.jpg",
+    "asset": "https://polyhaven.com/a/rock_face_03",
+    "authors": {
+      "Dario Barresi": "Photography",
+      "Rico Cilliers": "Processing"
+    },
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "original_dimensions": [
+      1024,
+      1024
+    ],
+    "color_space": "sRGB",
+    "usage_dimensions": [
+      512,
+      512
+    ]
+  },
+  {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-bruno/static/bay/assets/coast-natural/pbr/stone-normal.jpg",
+    "sha256": "c6423169583f31715cf0636954bad524e806848a5f2861fcea6794275f726ff0",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rock_face_03/rock_face_03_nor_gl_1k.jpg",
+    "asset": "https://polyhaven.com/a/rock_face_03",
+    "authors": {
+      "Dario Barresi": "Photography",
+      "Rico Cilliers": "Processing"
+    },
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "original_dimensions": [
+      1024,
+      1024
+    ],
+    "color_space": "Non-Color",
+    "usage_dimensions": [
+      512,
+      512
+    ]
+  },
+  {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-bruno/static/bay/assets/coast-natural/pbr/stone-arm.jpg",
+    "sha256": "a1f8e60eaf4f119071840e36e165d3a9185be62bd3ac7068ab6d886aa639d29f",
+    "url": "https://dl.polyhaven.org/file/ph-assets/Textures/jpg/1k/rock_face_03/rock_face_03_arm_1k.jpg",
+    "asset": "https://polyhaven.com/a/rock_face_03",
+    "authors": {
+      "Dario Barresi": "Photography",
+      "Rico Cilliers": "Processing"
+    },
+    "license": "CC0-1.0",
+    "license_url": "https://polyhaven.com/license",
+    "original_dimensions": [
+      1024,
+      1024
+    ],
+    "color_space": "Non-Color",
+    "usage_dimensions": [
+      256,
+      256
+    ]
+  },
+  {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/docs/world/phase-2-playground/djc-quality-pilot-20261101/textures/wood_diff.jpg",
+    "sha256": "5da68c7ebe8732f029ecbd602cb0d86d2a271e32539df953a0f10efa052b9516",
+    "asset": "https://polyhaven.com/a/wood_table_001",
+    "license": "CC0",
+    "license_url": "https://polyhaven.com/license",
+    "usage": "512px fabrication-aligned cabinet timber"
+  },
+  {
+    "file": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-phase2-integration/docs/world/phase-2-playground/djc-quality-pilot-20261101/textures/wood_nor_gl.jpg",
+    "sha256": "fc9f1d2600e7686504b36d805b79bd785a327b752a3e7943a41e7d6e9bdfe399",
+    "asset": "https://polyhaven.com/a/wood_table_001",
+    "license": "CC0",
+    "license_url": "https://polyhaven.com/license",
+    "usage": "512px fabrication-aligned cabinet timber"
+  }
+]

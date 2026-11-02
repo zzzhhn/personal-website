@@ -1,0 +1,159 @@
+{
+  "snapshots": [
+    {
+      "file": "candidate-v-cabinet-night-4.json",
+      "view": "v-cabinet",
+      "light": "night",
+      "night": 0.9998500991401728,
+      "camera": [
+        -48.6,
+        6.8,
+        23.4
+      ]
+    },
+    {
+      "file": "candidate-v-cabinet-noon-3.json",
+      "view": "v-cabinet",
+      "light": "noon",
+      "night": 0.00037766613303721994,
+      "camera": [
+        -48.6,
+        6.8,
+        23.4
+      ]
+    },
+    {
+      "file": "candidate-v-canopy-night-6.json",
+      "view": "v-canopy",
+      "light": "night",
+      "night": 0.9995467417352655,
+      "camera": [
+        -33.6,
+        9.2,
+        39
+      ]
+    },
+    {
+      "file": "candidate-v-canopy-noon-5.json",
+      "view": "v-canopy",
+      "light": "noon",
+      "night": 0.00036632120509757685,
+      "camera": [
+        -33.6,
+        9.2,
+        39
+      ]
+    },
+    {
+      "file": "candidate-v-ground-night-8.json",
+      "view": "v-ground",
+      "light": "night",
+      "night": 0.9996083178047441,
+      "camera": [
+        -61,
+        4,
+        8
+      ]
+    },
+    {
+      "file": "candidate-v-ground-noon-7.json",
+      "view": "v-ground",
+      "light": "noon",
+      "night": 0.0003742823869548635,
+      "camera": [
+        -61,
+        4,
+        8
+      ]
+    },
+    {
+      "file": "candidate-v-rocks-night-2.json",
+      "view": "v-rocks",
+      "light": "night",
+      "night": 0.9996987288895414,
+      "camera": [
+        -55,
+        8,
+        47
+      ]
+    },
+    {
+      "file": "candidate-v-rocks-noon-1.json",
+      "view": "v-rocks",
+      "light": "noon",
+      "night": 1.3296666411468715e-05,
+      "camera": [
+        -55,
+        8,
+        47
+      ]
+    },
+    {
+      "file": "candidate-v-shore-night-15.json",
+      "view": "v-shore",
+      "light": "night",
+      "night": 0.9993152796151644,
+      "camera": [
+        -109,
+        2.4,
+        7
+      ]
+    },
+    {
+      "file": "candidate-v-shore-noon-14.json",
+      "view": "v-shore",
+      "light": "noon",
+      "night": 0,
+      "camera": [
+        -109,
+        2.4,
+        7
+      ]
+    },
+    {
+      "file": "candidate-v-street-night-10.json",
+      "view": "v-street",
+      "light": "night",
+      "night": 0.9996473431784673,
+      "camera": [
+        -9,
+        7,
+        -107
+      ]
+    },
+    {
+      "file": "candidate-v-street-noon-9.json",
+      "view": "v-street",
+      "light": "noon",
+      "night": 0.00019238730565481225,
+      "camera": [
+        -9,
+        7,
+        -107
+      ]
+    },
+    {
+      "file": "candidate-v-water-night-17.json",
+      "view": "v-water",
+      "light": "night",
+      "night": 0.9997392764938484,
+      "camera": [
+        -113,
+        3.8,
+        7
+      ]
+    },
+    {
+      "file": "candidate-v-water-noon-16.json",
+      "view": "v-water",
+      "light": "noon",
+      "night": 0.0003403622725449187,
+      "camera": [
+        -113,
+        3.8,
+        7
+      ]
+    }
+  ],
+  "frozenFileHashesStillMatch": true
+}

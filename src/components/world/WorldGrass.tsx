@@ -79,6 +79,7 @@ function createTrample() {
 /* ------------------------------------------------------------------ geometry + material */
 
 const BLADE_H = .42;
+const NATURE_CRAFT = typeof window === 'undefined' || new URLSearchParams(window.location.search).get('natureCraft') !== 'legacy';
 /** Five blades, each a two-segment taper (quad + tip = 3 triangles): 15 triangles per tuft.
  * aBlade.x = packed quarry detail, aBlade.y = island blade phase, aBlade.z = island cross-width.
  * Bend weight is derived from the selected geometry's height, not the original grass bank. */
@@ -89,9 +90,14 @@ export function grassTuftGeometry() {
     const h = BLADE_H * (.7 + .3 * ((k * 5) % 4) / 3), w = .035;
     const bx = Math.cos(a) * r, bz = Math.sin(a) * r, dx = Math.cos(a) * lean, dz = Math.sin(a) * lean;
     const tx = -Math.sin(a) * w, tz = Math.cos(a) * w;
-    const p0 = [bx - tx, 0, bz - tz], p1 = [bx + tx, 0, bz + tz];
-    const m0 = [bx - tx * .7 + dx * .35, h * .55, bz - tz * .7 + dz * .35], m1 = [bx + tx * .7 + dx * .35, h * .55, bz + tz * .7 + dz * .35];
-    const tip = [bx + dx, h, bz + dz];
+    // A narrow attached base opens into a cupped, twisted shoulder then sweeps to a tip.
+    // Keep exactly 45 vertices: quarry flora banks share these attribute slots.
+    const rootWidth = NATURE_CRAFT ? .55 : 1, shoulder = NATURE_CRAFT ? .92 : .7;
+    const p0 = [bx - tx * rootWidth, 0, bz - tz * rootWidth], p1 = [bx + tx * rootWidth, 0, bz + tz * rootWidth];
+    const m0 = [bx - tx * shoulder + dx * .28, h * .55, bz - tz * shoulder + dz * .28];
+    const m1 = [bx + tx * shoulder + dx * (NATURE_CRAFT ? .44 : .35), h * (NATURE_CRAFT ? .59 : .55), bz + tz * shoulder + dz * (NATURE_CRAFT ? .44 : .35)];
+    if (!NATURE_CRAFT) { m0[0] = bx - tx * .7 + dx * .35; m0[2] = bz - tz * .7 + dz * .35; }
+    const tip = [bx + dx + (NATURE_CRAFT ? tx * .8 : 0), h, bz + dz + (NATURE_CRAFT ? tz * .8 : 0)];
     const tris = [p0, p1, m1, p0, m1, m0, m0, m1, tip];
     tris.forEach((v, i) => {
       pos.push(...v);

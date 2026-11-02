@@ -1,0 +1,14 @@
+{
+  "crop": [
+    50,
+    520,
+    650,
+    820
+  ],
+  "counts": {
+    "r1-rejected": 3,
+    "r2": 0,
+    "legacy": 0
+  },
+  "note": "Fixed empty ground patch, selected to avoid objects; bounded pixel evidence, not whole-frame visual certification."
+}

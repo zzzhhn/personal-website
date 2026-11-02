@@ -1,0 +1,38 @@
+[
+  {
+    "level": "warn",
+    "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+    "timestamp": "2026-11-02T04:20:24.497Z",
+    "url": "http://127.0.0.1:4357/_astro/three.core.hRBAa5ew.js"
+  },
+  {
+    "level": "warn",
+    "message": "using deprecated parameters for the initialization function; pass a single object instead",
+    "timestamp": "2026-11-02T04:20:24.498Z",
+    "url": "http://127.0.0.1:4357/_astro/WorldRuntime.4t9fvsbE.js"
+  },
+  {
+    "level": "warn",
+    "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+    "timestamp": "2026-11-02T04:25:47.369Z",
+    "url": "http://127.0.0.1:4357/_astro/three.core.hRBAa5ew.js"
+  },
+  {
+    "level": "warn",
+    "message": "using deprecated parameters for the initialization function; pass a single object instead",
+    "timestamp": "2026-11-02T04:25:47.522Z",
+    "url": "http://127.0.0.1:4357/_astro/WorldRuntime.4t9fvsbE.js"
+  },
+  {
+    "level": "warn",
+    "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+    "timestamp": "2026-11-02T04:34:04.806Z",
+    "url": "http://127.0.0.1:4357/_astro/three.core.hRBAa5ew.js"
+  },
+  {
+    "level": "warn",
+    "message": "using deprecated parameters for the initialization function; pass a single object instead",
+    "timestamp": "2026-11-02T04:34:04.918Z",
+    "url": "http://127.0.0.1:4357/_astro/WorldRuntime.D1ZcyyG2.js"
+  }
+]

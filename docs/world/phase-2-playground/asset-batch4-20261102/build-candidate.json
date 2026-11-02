@@ -1,0 +1,58 @@
+{
+  "baseline": "362e68d",
+  "branch": "codex/world-craft-batch4",
+  "revision": "r2-helper-safe-ground",
+  "frozen": "/tmp/bobby-world-batch4-r2-01a19a62",
+  "files": {
+    "world/index.html": {
+      "bytes": 52275,
+      "sha256": "8d41cbde726c9bacdd5b7f8685acb8c7f09fcedca2bae76c0a5cd9051281244c"
+    },
+    "_astro/WorldRuntime.D1ZcyyG2.js": {
+      "bytes": 3474716,
+      "sha256": "77a1be49e3c067954632e3c8c8dddac36bc374453d8cc4469a250fe0dfa45095"
+    },
+    "assets/world/nature-craft/C09.glb": {
+      "bytes": 127324,
+      "sha256": "bf5285269db9bbe8a7b3366f5b0480f67e96a86ae0a8c68ff32d61b39ab29946"
+    },
+    "assets/world/nature-craft/G16.glb": {
+      "bytes": 311788,
+      "sha256": "91ca0feffa8b2e77075ae6bdea5ebf9b5cd1551d8bea5040e99a26c1ee72382b"
+    },
+    "assets/world/nature-craft/G17.glb": {
+      "bytes": 234644,
+      "sha256": "d4c98d8a8bd8b59d61d6b0c40fdc84fab9cdccda27f546a5fdd0b612dc9c0e59"
+    },
+    "assets/world/nature-craft/G18.glb": {
+      "bytes": 273592,
+      "sha256": "01eef69069ae9fe8b4f9f9d6396e0c0b9f5104cc2333136abbe6bfba741aac57"
+    },
+    "assets/world/nature-craft/G21.glb": {
+      "bytes": 301604,
+      "sha256": "ed36a3539b0c70995f9711f675e54744b4a1c0a143a1b3b4bad02f4ed90f1dbf"
+    },
+    "assets/world/nature-craft/G22.glb": {
+      "bytes": 296956,
+      "sha256": "82b47704527f523f4d6f5c113167993084a75017d33b87948acc58efc17527fb"
+    },
+    "assets/world/nature-craft/G23.glb": {
+      "bytes": 293268,
+      "sha256": "0a94d27f62cde4d7ba961e3b6dc97d59603234d9c1769f1869024aa4ce964a85"
+    },
+    "assets/world/nature-craft/ST1.glb": {
+      "bytes": 193500,
+      "sha256": "f2cbeb1331fa72ddeb1e627e01dc578cff95668a9f839214dd7875b2f6930df6"
+    },
+    "assets/world/nature-craft/ST2.glb": {
+      "bytes": 181260,
+      "sha256": "d4aecdcec1f36fec0ca7d180fdd1f32dbf455de575a8bcf42f1c47dea193c34d"
+    },
+    "assets/world/nature-craft/grass.glb": {
+      "bytes": 5520,
+      "sha256": "7d984a67dbaeef4654baac65be878854b7a4736a0954b1361af9ce8dbe903b48"
+    }
+  },
+  "tests_passed": 29,
+  "tests_command": "node_modules/.bin/tsx --test tools/world/nature-craft/*.test.mjs src/components/world/camp-craft-visual.test.mjs src/components/world/grass-trample-uploads.test.mjs src/components/world/djc-furniture-visual.test.mjs"
+}

@@ -1,0 +1,360 @@
+{
+  "revision": "r2-helper-safe-ground",
+  "windows": [
+    {
+      "mode": "candidate",
+      "view": "n-camp",
+      "file": "candidate-n-camp-sample-13.json",
+      "fps": 60,
+      "p50": 16.699999928474426,
+      "p95": 18,
+      "max": 20.59999990463257,
+      "over33": 0,
+      "gpuMs": null,
+      "counterVariants": [
+        [
+          178,
+          677521
+        ]
+      ],
+      "buffer": [
+        1710,
+        931
+      ],
+      "camera": {
+        "yaw": 0.9272952180016123,
+        "pitch": 0.7853981633974483,
+        "distance": 12,
+        "desiredDistance": 12,
+        "driveManualZoom": false,
+        "actualDistance": 11.999999999999995,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -28.915010985027166,
+          14.754116346620158,
+          45.803262636011944
+        ],
+        "target": [
+          -34.006179809570305,
+          6.268834972381593,
+          39.01503753662109
+        ],
+        "forwardGround": [
+          -0.6,
+          -0.8000000000000002
+        ],
+        "groundBelowCamera": 4.8000030517578125,
+        "clearanceAboveGround": 9.954113294862346,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "allocationsBefore": {
+        "geometries": 413,
+        "textures": 102,
+        "programs": 336
+      },
+      "allocationsAfter": {
+        "geometries": 413,
+        "textures": 102,
+        "programs": 336
+      }
+    },
+    {
+      "mode": "candidate",
+      "view": "n-water",
+      "file": "candidate-n-water-sample-20.json",
+      "fps": 60.0012000242866,
+      "p50": 16.699999928474426,
+      "p95": 18,
+      "max": 19.5,
+      "over33": 0,
+      "gpuMs": null,
+      "counterVariants": [
+        [
+          33,
+          123375
+        ]
+      ],
+      "buffer": [
+        1710,
+        931
+      ],
+      "camera": {
+        "yaw": -4.647721043818387e-06,
+        "pitch": 0.3002980962587766,
+        "distance": 12,
+        "desiredDistance": 12,
+        "driveManualZoom": false,
+        "actualDistance": 11.999999999999996,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -100.52670482016573,
+          6.018484715607823,
+          4.000599036497942
+        ],
+        "target": [
+          -111.98968505859376,
+          2.4688250064849857,
+          4.000652313232421
+        ],
+        "forwardGround": [
+          -0.9999999999891993,
+          4.647721043395992e-06
+        ],
+        "groundBelowCamera": 1,
+        "clearanceAboveGround": 5.018484715607823,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "allocationsBefore": {
+        "geometries": 418,
+        "textures": 102,
+        "programs": 356
+      },
+      "allocationsAfter": {
+        "geometries": 418,
+        "textures": 102,
+        "programs": 356
+      }
+    },
+    {
+      "mode": "legacy",
+      "view": "n-camp",
+      "file": "legacy-n-camp-sample-7.json",
+      "fps": 40.44598438811004,
+      "p50": 20.09999990463257,
+      "p95": 47.5,
+      "max": 120.30000007152557,
+      "over33": 52,
+      "gpuMs": null,
+      "counterVariants": [
+        [
+          180,
+          676267
+        ]
+      ],
+      "buffer": [
+        1710,
+        931
+      ],
+      "camera": {
+        "yaw": 0.9272952180016123,
+        "pitch": 0.7853981633974484,
+        "distance": 12,
+        "desiredDistance": 12,
+        "driveManualZoom": false,
+        "actualDistance": 11.999999999999998,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -28.915010985027173,
+          14.754116346620162,
+          45.80326263601195
+        ],
+        "target": [
+          -34.00617980957031,
+          6.268834972381592,
+          39.015037536621094
+        ],
+        "forwardGround": [
+          -0.5999999999999999,
+          -0.7999999999999999
+        ],
+        "groundBelowCamera": 4.8000030517578125,
+        "clearanceAboveGround": 9.95411329486235,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "allocationsBefore": {
+        "geometries": 378,
+        "textures": 85,
+        "programs": 253
+      },
+      "allocationsAfter": {
+        "geometries": 378,
+        "textures": 85,
+        "programs": 253
+      }
+    },
+    {
+      "mode": "legacy",
+      "view": "n-water",
+      "file": "legacy-n-water-sample-6.json",
+      "fps": 60.0012000242866,
+      "p50": 16.699999928474426,
+      "p95": 16.899999976158142,
+      "max": 19.100000023841858,
+      "over33": 0,
+      "gpuMs": null,
+      "counterVariants": [
+        [
+          33,
+          123375
+        ]
+      ],
+      "buffer": [
+        1710,
+        931
+      ],
+      "camera": {
+        "yaw": -4.647721043818387e-06,
+        "pitch": 0.3002980962587766,
+        "distance": 12,
+        "desiredDistance": 12,
+        "driveManualZoom": false,
+        "actualDistance": 11.999999999999996,
+        "firstPerson": false,
+        "preset": 1,
+        "collided": false,
+        "hitDistance": null,
+        "fov": 50,
+        "mode": "walk",
+        "recentering": false,
+        "position": [
+          -100.52670482016573,
+          6.018484715607823,
+          4.000599036497942
+        ],
+        "target": [
+          -111.98968505859376,
+          2.4688250064849857,
+          4.000652313232421
+        ],
+        "forwardGround": [
+          -0.9999999999891993,
+          4.647721043395992e-06
+        ],
+        "groundBelowCamera": 1,
+        "clearanceAboveGround": 5.018484715607823,
+        "gamepad": false,
+        "nearPlaneRadius": 0.22,
+        "guideHidden": false,
+        "shoulderOffset": 0,
+        "nearPlaneOverlaps": []
+      },
+      "allocationsBefore": {
+        "geometries": 376,
+        "textures": 85,
+        "programs": 254
+      },
+      "allocationsAfter": {
+        "geometries": 376,
+        "textures": 85,
+        "programs": 254
+      }
+    }
+  ],
+  "pairs": [
+    {
+      "view": "n-camp",
+      "maxCameraPositionErrorM": 7.105427357601002e-15,
+      "maxPlayerPositionErrorM": 0.0,
+      "maxCameraAngleDistanceError": 1.1102230246251565e-16
+    },
+    {
+      "view": "n-water",
+      "maxCameraPositionErrorM": 0.0,
+      "maxPlayerPositionErrorM": 0.0,
+      "maxCameraAngleDistanceError": 0.0
+    }
+  ],
+  "grassTrail": [
+    {
+      "file": "candidate-n-grass-trail-21.json",
+      "amount": 0.947,
+      "player": [
+        -100,
+        1.8189713954925537,
+        5.999659061431885
+      ],
+      "at": 641428.8999999762
+    },
+    {
+      "file": "candidate-n-grass-trail-22.json",
+      "amount": 0.813,
+      "player": [
+        -102.92903137207031,
+        1.8196989297866821,
+        5.998983860015869
+      ],
+      "at": 642926.2000000477
+    },
+    {
+      "file": "candidate-n-grass-trail-23.json",
+      "amount": 0,
+      "player": [
+        -103.04475402832031,
+        1.8188387155532837,
+        5.9471940994262695
+      ],
+      "at": 719400.5
+    }
+  ],
+  "motion": [
+    {
+      "file": "candidate-n-water-motion-19.json",
+      "view": "n-water",
+      "windSeconds": 0.6002999999522842,
+      "frames": 36
+    },
+    {
+      "file": "candidate-n-camp-motion-12.json",
+      "view": "n-camp",
+      "windSeconds": 0.598399999976202,
+      "frames": 36
+    }
+  ],
+  "limits": "Sequential single300-frame windows, no GPU timing/randomization/thermal control; stable counters do not prove equal GPU cost or whole-island performance.",
+  "bush": [
+    {
+      "file": "candidate-interaction-bush-noon-24.json",
+      "inside": 0,
+      "verticalImpulseTotal": 0,
+      "at": 742061.2000000477
+    },
+    {
+      "file": "candidate-interaction-bush-noon-25.json",
+      "inside": 1,
+      "verticalImpulseTotal": 0,
+      "at": 743745.2999999523
+    },
+    {
+      "file": "candidate-interaction-bush-noon-26.json",
+      "inside": 0,
+      "verticalImpulseTotal": 0,
+      "at": 770676.8999999762
+    },
+    {
+      "file": "candidate-interaction-bush-noon-27.json",
+      "inside": 0,
+      "verticalImpulseTotal": 0,
+      "at": 808629.2999999523
+    }
+  ]
+}

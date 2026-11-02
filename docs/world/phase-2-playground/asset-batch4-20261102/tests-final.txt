@@ -1,0 +1,41 @@
+✔ craft QA opt-out needs explicit qa=1 (0.554ms)
+✔ instances own shared material clones while borrowing geometry, maps and the renderer environment (2.730416ms)
+✔ fixed original GLBs used for physical registration and seat anchors are byte-identical (1.858917ms)
+✔ actual pack has three fixed roots, valid geometry and eight true 600mm bench contacts (30.818959ms)
+✔ three-family visual extraction keeps exact collisions, seats, approaches, controls and other accepted packs (871.353709ms)
+✔ recursive named families preserve local transforms and share only owned material/sampler copies (1.732666ms)
+✔ legacy needs explicit QA and a missing family fails into fallback (0.26375ms)
+✔ actual GLB has three real roots with preserved family dimensions and five fixed placements (20.374042ms)
+✔ initial upload stays full even after multiple unseen frames of edits (1.869791ms)
+✔ pending RGBA changes union by row until acknowledged and do not grow per frame (0.344792ms)
+✔ unchanged quantized bytes do not request an upload (0.156125ms)
+✔ direction, height and final decay-to-zero are uploaded with all RGBA bytes intact (0.184458ms)
+✔ sparse row call limit falls back to one full upload and stays full until consumed (0.199708ms)
+✔ broad coverage falls back before the row call limit, without splitting rows (0.158625ms)
+✔ long offscreen edits retain bounded pending ranges and catch up exactly once (1.448125ms)
+✔ reset requests full data again, including pending changes, and disposal restores callbacks (0.09725ms)
+✔ byte conversion matches the original Uint8Array assignment (0.147333ms)
+✔ real frame path matches legacy RGBA through walking, height changes, multiple actors and full recovery (86.402625ms)
+✔ real offscreen frames, separated wheel tracks and context restoration lose no pending bytes (16.491875ms)
+✔ real stationary, walking and vehicle tracks report both bytes and bounded upload call counts (43.379042ms)
+ℹ {"scenario":"stationary","frames":240,"speedMps":0,"legacyBytes":254738880,"updatedBytes":20,"partialRows":3,"maxRowsPerUpload":3,"fullFallbacks":0,"modeledTexSubImageCalls":3}
+ℹ {"scenario":"walk","frames":240,"speedMps":1.5,"legacyBytes":254738880,"updatedBytes":9716,"partialRows":702,"maxRowsPerUpload":3,"fullFallbacks":0,"modeledTexSubImageCalls":702}
+ℹ {"scenario":"vehicle-slow","frames":240,"speedMps":1.5,"legacyBytes":254738880,"updatedBytes":93544,"partialRows":2452,"maxRowsPerUpload":16,"fullFallbacks":0,"modeledTexSubImageCalls":2452}
+ℹ {"scenario":"vehicle-fast","frames":240,"speedMps":8,"legacyBytes":254738880,"updatedBytes":141249284,"partialRows":1992,"maxRowsPerUpload":32,"fullFallbacks":133,"modeledTexSubImageCalls":2125}
+✔ the real context-restoration listener is released with the grass component (0.791167ms)
+✔ effect cleanup/setup can reuse the same memoized texture without losing its upload acknowledgement (1.114166ms)
+✔ legacy grass is identical to production including quarry banks and packed attributes (1.647959ms)
+✔ cupped blades preserve flora ABI, root anchoring, triangle budget and valid geometry (0.296583ms)
+✔ legacy reproduces complete pre-batch-4 ground/water shaders and cache keys (1.175667ms)
+✔ new materials preserve all vertex displacement and material alpha/interaction code (0.13775ms)
+✔ ground coverage uses the existing scans and correctly reorients their normal data (2.697208ms)
+✔ water refinement changes meaningful surface terms without extra evaluations (0.429334ms)
+✔ actual terrainColours boundary weights stay finite in extrapolated derivative helper lanes (11.498166ms)
+ℹ tests 29
+ℹ suites 0
+ℹ pass 29
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1411.113459

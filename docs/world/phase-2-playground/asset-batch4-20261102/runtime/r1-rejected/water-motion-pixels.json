@@ -1,0 +1,12 @@
+{
+  "crop": [
+    800,
+    225,
+    1500,
+    330
+  ],
+  "meanAbsRGB": 6.114022675736962,
+  "fractionMeanDiffOver8": 0.19073469387755101,
+  "screenshotSecondsApart": 6.997718811035156,
+  "note": "same normal camera, no controls between stills; interval differs from separate0.6s clock probe"
+}
