@@ -1,0 +1,23 @@
+{
+  "roots": {
+    "hut_A": {
+      "triangles": 3084,
+      "parts": 149,
+      "allUv": true
+    },
+    "hut_B": {
+      "triangles": 3156,
+      "parts": 155,
+      "allUv": true
+    }
+  },
+  "runtimeBytes": 596156,
+  "portableBytes": 2337880,
+  "hashes": {
+    "wood-color.png": "9d1ca082ec21b89d4af41dd7430a4db42c623b4c2eb4424a3fc23fd4063e0a9c",
+    "wood-normal.png": "285001688e2a8ec564bb8e1b56d182bf4d77f65779a12198a52a3a1e3f9c935f",
+    "hut-portable.glb": "819e8c337804beccb84ce9927a407300c74ca2614f0565d34b95e8dc86faa089",
+    "wood-rough.png": "7287de6832e55df62336ccd88bb6f48d468dd285d1fe8113b2693227a563318a",
+    "hut-runtime.glb": "3df9a0f86ab7ca0bb58bece0e76047b1d0d8d6a2c468eeb20fbf3e1746e55f23"
+  }
+}

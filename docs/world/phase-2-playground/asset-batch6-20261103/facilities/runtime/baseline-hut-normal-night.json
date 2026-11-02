@@ -1,0 +1,60 @@
+{
+  "baseline": "7702c3d",
+  "view": {
+    "id": "hut-normal",
+    "eye": [
+      61.13633556892241,
+      4.74,
+      -43.52085502810608
+    ],
+    "target": [
+      71.78320847033326,
+      2.49,
+      -39.93978013064813
+    ]
+  },
+  "fov": 50,
+  "time": 0,
+  "canvas": [
+    1710,
+    875
+  ],
+  "exposure": 1,
+  "renderer": {
+    "render": {
+      "frame": 4200,
+      "calls": 82,
+      "triangles": 455497,
+      "points": 124,
+      "lines": 0
+    },
+    "memory": {
+      "geometries": 218,
+      "textures": 98
+    }
+  },
+  "quality": "balanced",
+  "night": 1,
+  "blend": 1,
+  "shadow": {
+    "pending": false,
+    "slices": 0,
+    "cpuMs": 0,
+    "maxSliceMs": 0,
+    "cancelled": 0,
+    "error": "",
+    "phases": [],
+    "hullWorker": {
+      "requests": 0,
+      "workerMs": 0,
+      "maxWorkerMs": 0,
+      "maxSource": "",
+      "maxInputVertices": 0
+    },
+    "centre": [
+      -25.37888209301343,
+      47.35684192687031,
+      34.25244980502454
+    ]
+  }
+}

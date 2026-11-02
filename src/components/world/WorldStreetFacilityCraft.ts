@@ -1,6 +1,7 @@
 /** Batch 5 street construction. Runtime remains a single attributed/batched mesh per group.
  * Keep editable named parts here; collision always comes from the unchanged pre-craft Builder. */
 import { Builder, S, bar, bezier, box, cyl, lathe, plate, rectPoly, tube, type Surf, type V3 } from './WorldStreetGeometry.ts';
+import { facilityCraftEnabled, tagShelterSurfaces } from './WorldFacilitySurface';
 
 export type StreetFacility = 'bench' | 'shelter' | 'lamp' | 'signal' | 'bin' | 'roadblock' | 'seawallBay' | 'timberPost' | 'timberBeam';
 export interface FacilityOptions { height?: number; arm?: number; pole?: Surf; base?: Surf; cyanRing?: boolean; len?: number }
@@ -72,6 +73,12 @@ function shelter(B: Builder, old: Builder) {
     for (const z of [-1.72, 1.72]) box(B, [-.96, 2.365, z - .018], [.79, 2.47, z + .018], S.slate, .008);
     box(B, [-.98, 2.30, -1.72], [-.92, 2.46, 1.72], S.slate, .01);
     box(B, [-.987, 2.325, -1.6], [-.981, 2.342, 1.6], S.cyan);
+    if (facilityCraftEnabled()) {
+      // A folded weather cap and three standing seams read at walking range.
+      for (const z of [-1.68, 1.68]) box(B, [-.95, 2.44, z - .028], [.78, 2.49, z + .028], S.galv, .009);
+      for (const z of [-.82, 0, .82]) B.tr([-.085, 2.425, z], [0, 0, -.018], () =>
+        box(B, [-.85, .035, -.018], [.85, .075, .018], S.slate, .006));
+    }
   });
   part(B, 'rear.glazing-beads', () => {
     for (const y of [.33, 2.29]) box(B, [.598, y - .018, -1.5], [.656, y + .018, 1.5], S.galv, .004);
@@ -251,6 +258,7 @@ export function finishStreetFacility(baseline: Builder, kind: StreetFacility, lo
   else if (kind === 'seawallBay') seawall(B, o.len ?? 2);
   else if (kind === 'timberPost') timberPost(B);
   else timberBeam(B, o.len ?? 4.2);
+  if (kind === 'shelter') tagShelterSurfaces(B);
   collisionSource.set(B, baseline);
   B.hulls = () => baseline.hulls();
   return B;

@@ -1,0 +1,127 @@
+{
+  "schema": "facility-batch6-first-samples-v1",
+  "baseline": "7702c3de674f0b39ab8b0e2a098e586b54b03aee",
+  "status": "first-sample-review-pending",
+  "visualAcceptance": false,
+  "captures": [
+    {
+      "stem": "baseline-shelter-normal-noon",
+      "sha256": "bae62878f739e142eae3af03638f0f07fe1b0577a40ce7ac54950d7b6f3b3cd1",
+      "bytes": 193163,
+      "metadata": "baseline-shelter-normal-noon.json"
+    },
+    {
+      "stem": "candidate-shelter-normal-noon",
+      "sha256": "6ffcbd2d6c129718963e24d52d2fb1b58e2ff1ed3db8e55610c1e93674f16001",
+      "bytes": 194292,
+      "metadata": "candidate-shelter-normal-noon.json"
+    },
+    {
+      "stem": "baseline-shelter-normal-night",
+      "sha256": "3089e3e04da58b33079a53a5e9f4ebbeda634f00b78c457d6991a6ee95f721f8",
+      "bytes": 109164,
+      "metadata": "baseline-shelter-normal-night.json"
+    },
+    {
+      "stem": "candidate-shelter-normal-night",
+      "sha256": "18b6c772c8f6b0ae5382a732916b363fb5e9046486b55fca8537dec222ad5d2b",
+      "bytes": 131589,
+      "metadata": "candidate-shelter-normal-night.json"
+    },
+    {
+      "stem": "baseline-shelter-close-noon",
+      "sha256": "d5164982290211f9fa1f73385f127f8b258c806bf9e4686c5ff9dcd65bcb9496",
+      "bytes": 155262,
+      "metadata": "baseline-shelter-close-noon.json"
+    },
+    {
+      "stem": "candidate-shelter-close-noon",
+      "sha256": "e24d24b0007cef660d52d61d4cd07ac295f9d2ea259f45c2de0fcac3cc2c281c",
+      "bytes": 156762,
+      "metadata": "candidate-shelter-close-noon.json"
+    },
+    {
+      "stem": "baseline-shelter-close-night",
+      "sha256": "0094253b5f6563d44f5b4e7a1df4c1a3fcfa273c1f586228ed0a066f1e04f9c3",
+      "bytes": 93327,
+      "metadata": "baseline-shelter-close-night.json"
+    },
+    {
+      "stem": "candidate-shelter-close-night",
+      "sha256": "4cb084be65897d6d7d94305243e06eb7e1fd2dded201185abe84577c4badbee5",
+      "bytes": 122084,
+      "metadata": "candidate-shelter-close-night.json"
+    },
+    {
+      "stem": "baseline-hut-normal-noon",
+      "sha256": "c2d3aa0fcc3af782b412635a6821363f8236019750164a10cd35c2b97f25c67e",
+      "bytes": 129479,
+      "metadata": "baseline-hut-normal-noon.json"
+    },
+    {
+      "stem": "candidate-hut-normal-noon",
+      "sha256": "1cbeda4dfc6df20df8debb4d9524b38699c1f4c6c527b8b47d8913ed1b7dc6a0",
+      "bytes": 134557,
+      "metadata": "candidate-hut-normal-noon.json"
+    },
+    {
+      "stem": "baseline-hut-normal-night",
+      "sha256": "fc4850815dc18965f4eb21dda04d074e38659f1253c50646074e132af240b83e",
+      "bytes": 82409,
+      "metadata": "baseline-hut-normal-night.json"
+    },
+    {
+      "stem": "candidate-hut-normal-night",
+      "sha256": "5c30fbdea20d0da83761ba67bd3853684986a0c61da22a8094daac2ba519804e",
+      "bytes": 113911,
+      "metadata": "candidate-hut-normal-night.json"
+    },
+    {
+      "stem": "baseline-hut-close-noon",
+      "sha256": "2782c43b311983936d3ac5a083f70e8b2dc3208d6acd18cec99f6a861ee137c6",
+      "bytes": 112598,
+      "metadata": "baseline-hut-close-noon.json"
+    },
+    {
+      "stem": "candidate-hut-close-noon",
+      "sha256": "f64094d92fca7d9650ba6f88dd1a72960578bf9c80db831285fa77f5fd167232",
+      "bytes": 141713,
+      "metadata": "candidate-hut-close-noon.json"
+    },
+    {
+      "stem": "baseline-hut-close-night",
+      "sha256": "a501bada8d366267f718582d3dde69e4c353632163e4b0e33c5cac5e99e146d3",
+      "bytes": 76896,
+      "metadata": "baseline-hut-close-night.json"
+    },
+    {
+      "stem": "candidate-hut-close-night",
+      "sha256": "01fd52b71237fa2457af8d2777cd7b02d38a3712c5c0aa0c376ba71f67b6695f",
+      "bytes": 127683,
+      "metadata": "candidate-hut-close-night.json"
+    }
+  ],
+  "exports": {
+    "roots": {
+      "hut_A": {
+        "triangles": 3084,
+        "parts": 149,
+        "allUv": true
+      },
+      "hut_B": {
+        "triangles": 3156,
+        "parts": 155,
+        "allUv": true
+      }
+    },
+    "runtimeBytes": 596156,
+    "portableBytes": 2337880,
+    "hashes": {
+      "wood-color.png": "9d1ca082ec21b89d4af41dd7430a4db42c623b4c2eb4424a3fc23fd4063e0a9c",
+      "wood-normal.png": "285001688e2a8ec564bb8e1b56d182bf4d77f65779a12198a52a3a1e3f9c935f",
+      "hut-portable.glb": "819e8c337804beccb84ce9927a407300c74ca2614f0565d34b95e8dc86faa089",
+      "wood-rough.png": "7287de6832e55df62336ccd88bb6f48d468dd285d1fe8113b2693227a563318a",
+      "hut-runtime.glb": "3df9a0f86ab7ca0bb58bece0e76047b1d0d8d6a2c468eeb20fbf3e1746e55f23"
+    }
+  }
+}

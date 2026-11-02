@@ -1,0 +1,60 @@
+{
+  "baseline": "7702c3d",
+  "view": {
+    "id": "shelter-close",
+    "eye": [
+      27.200000000000003,
+      2.75,
+      -22.2
+    ],
+    "target": [
+      29.8,
+      2.4,
+      -20
+    ]
+  },
+  "fov": 50,
+  "time": 720,
+  "canvas": [
+    1710,
+    875
+  ],
+  "exposure": 1,
+  "renderer": {
+    "render": {
+      "frame": 2699,
+      "calls": 179,
+      "triangles": 1375455,
+      "points": 124,
+      "lines": 0
+    },
+    "memory": {
+      "geometries": 209,
+      "textures": 96
+    }
+  },
+  "quality": "balanced",
+  "night": 0,
+  "blend": 1,
+  "shadow": {
+    "pending": false,
+    "slices": 0,
+    "cpuMs": 0,
+    "maxSliceMs": 0,
+    "cancelled": 0,
+    "error": "",
+    "phases": [],
+    "hullWorker": {
+      "requests": 0,
+      "workerMs": 0,
+      "maxWorkerMs": 0,
+      "maxSource": "",
+      "maxInputVertices": 0
+    },
+    "centre": [
+      -68.10072550569433,
+      47.266481748158995,
+      55.49978613616407
+    ]
+  }
+}

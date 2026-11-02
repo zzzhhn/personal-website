@@ -1,5 +1,7 @@
 import { BufferAttribute, BufferGeometry, Color, DataTexture, Euler, FloatType, Matrix3, Matrix4, Mesh, MeshDepthMaterial, MeshStandardMaterial, Quaternion, RGBADepthPacking, RGBAFormat, Vector3, type Object3D } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { addParkSurfaceAttributes, parkSurfaceSlot, facilityCraftEnabled, registerFacilityMaterial, facilitySurfaceUniforms, facilitySurfaceHead,
+  facilitySurfaceColor, facilitySurfaceRough, facilitySurfaceNormal } from './WorldFacilitySurface';
 import { GLTFLoader, type GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import type { Vec3 } from './types';
@@ -45,20 +47,28 @@ export function parkMaterial() {
   const m = new MeshStandardMaterial({ vertexColors: true, roughness: 0.86, metalness: 0 });
   m.name = 'park-static-matte';
   m.onBeforeCompile = shader => {
+    Object.assign(shader.uniforms, facilitySurfaceUniforms());
     shader.uniforms.uParkNight = parkNight;
-    shader.vertexShader = 'attribute vec3 aEmit;\nvarying vec3 vEmit;\n' + shader.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n  vEmit = aEmit;');
-    shader.fragmentShader = 'uniform float uParkNight;\nvarying vec3 vEmit;\n' + shader.fragmentShader.replace('#include <emissivemap_fragment>',
+    shader.vertexShader = 'attribute vec3 aEmit; attribute vec4 aMat; attribute vec2 aSuv;\nvarying vec3 vEmit; varying vec2 vFacilityUv; varying vec3 vFacilityPoint; varying float vFacilityKind;\n' + shader.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n  vEmit = aEmit; vFacilityUv = aSuv; vFacilityPoint = position; vFacilityKind = max(0.0, -aMat.w);');
+    shader.fragmentShader = facilitySurfaceHead + 'uniform float uParkNight;\nvarying vec3 vEmit;\n' + shader.fragmentShader
+      .replace('#include <color_fragment>', '#include <color_fragment>' + facilitySurfaceColor)
+      .replace('#include <metalnessmap_fragment>', '#include <metalnessmap_fragment>' + facilitySurfaceRough)
+      .replace('#include <normal_fragment_maps>', '#include <normal_fragment_maps>' + facilitySurfaceNormal)
+      .replace('#include <emissivemap_fragment>',
       '#include <emissivemap_fragment>\n  vec3 parkEmit = mix(diffuseColor.rgb, vec3(1.0, 0.79, 0.47) * max(max(diffuseColor.r, diffuseColor.g), 0.55), vEmit.z);\n  totalEmissiveRadiance += parkEmit * (vEmit.x + vEmit.y * uParkNight);');
   };
-  m.customProgramCacheKey = () => 'park-static-matte-v2';
+  m.customProgramCacheKey = () => 'park-static-surface-v3';
+  registerFacilityMaterial(m);
   sharedMaterial = m;
   return m;
 }
 
 const tmpColor = new Color();
 /** Non-indexed geometry with the batch layout, baked into world space by `matrix`. */
-export function toBatch(source: BufferGeometry, matrix: Matrix4, color: string, emit: Emit = [0, 0, 0], jitter = 0, seed = 0) {
+export function toBatch(source: BufferGeometry, matrix: Matrix4, color: string, emit: Emit = [0, 0, 0], jitter = 0, seed = 0, surfaceSlot = 0) {
   const g = (source.index ? source.toNonIndexed() : source.clone());
+  const sourceUv = g.getAttribute('uv'), count = g.getAttribute('position').count;
+  const uv = sourceUv ? Float32Array.from(sourceUv.array) : new Float32Array(count * 2);
   for (const name of Object.keys(g.attributes)) if (name !== 'position' && name !== 'normal') g.deleteAttribute(name);
   if (!g.getAttribute('normal')) g.computeVertexNormals();
   g.applyMatrix4(matrix);
@@ -69,6 +79,9 @@ export function toBatch(source: BufferGeometry, matrix: Matrix4, color: string, 
   for (let i = 0; i < n; i++) { col[i * 3] = tmpColor.r * k; col[i * 3 + 1] = tmpColor.g * k; col[i * 3 + 2] = tmpColor.b * k; em[i * 3] = emit[0]; em[i * 3 + 1] = emit[1]; em[i * 3 + 2] = emit[2] ?? 0; }
   g.setAttribute('color', new BufferAttribute(col, 3));
   g.setAttribute('aEmit', new BufferAttribute(em, 3));
+  const surface = addParkSurfaceAttributes(g, surfaceSlot, uv);
+  g.setAttribute('aMat', new BufferAttribute(surface.mat, 4));
+  g.setAttribute('aSuv', new BufferAttribute(surface.uv, 2));
   return g;
 }
 export const hash = (n: number) => { const s = Math.sin(n * 127.1 + 311.7) * 43758.5453; return s - Math.floor(s); };
@@ -96,9 +109,22 @@ export function gltfPieces(root: Object3D, placement: Matrix4, keep: (node: stri
     if (!mesh.isMesh) return;
     const node = topName(mesh, root);
     if (!keep(node)) return;
-    const name = (Array.isArray(mesh.material) ? mesh.material[0] : mesh.material).name;
-    const spec = PARK_MATERIALS[name] ?? { color: '#FF00FF' };
-    out.push(toBatch(mesh.geometry, m.multiplyMatrices(placement, mesh.matrixWorld), spec.color, spec.emit));
+    const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+    const groups = mesh.geometry.groups.length ? mesh.geometry.groups : [{ start: 0,
+      count: mesh.geometry.index?.count ?? mesh.geometry.getAttribute('position').count, materialIndex: 0 }];
+    const source = mesh.geometry.index ? mesh.geometry.toNonIndexed() : mesh.geometry;
+    for (const group of groups) {
+      const material = materials[group.materialIndex ?? 0];
+      if (!material) throw new Error(`Park mesh ${mesh.name} has an invalid material group`);
+      const name = material.name, spec = PARK_MATERIALS[name] ?? { color: '#FF00FF' };
+      const piece = new BufferGeometry();
+      for (const [key, attr] of Object.entries(source.attributes)) piece.setAttribute(key,
+        new BufferAttribute(attr.array.slice(group.start * attr.itemSize, (group.start + group.count) * attr.itemSize), attr.itemSize, attr.normalized));
+      out.push(toBatch(piece, m.multiplyMatrices(placement, mesh.matrixWorld), spec.color, spec.emit, 0, 0,
+        root.name.startsWith('hut_') ? parkSurfaceSlot(name) : 0));
+      piece.dispose();
+    }
+    if (source !== mesh.geometry) source.dispose();
   });
   return out;
 }
@@ -303,13 +329,13 @@ export class PartBatch {
           .replace('#include <beginnormal_vertex>', '#include <beginnormal_vertex>\n  mat4 partM = partMatrix(int(aPart + 0.5));\n  objectNormal = normalize(mat3(partM) * objectNormal);\n  vPartEmit = texelFetch(uParts, ivec2(4, int(aPart + 0.5)), 0).x;')
           .replace('#include <begin_vertex>', '#include <begin_vertex>\n  transformed = (partM * vec4(position, 1.0)).xyz;');
     };
-    const m = parkMaterial().clone(), prev = m.onBeforeCompile;
+    const source = parkMaterial(), m = source.clone(), prev = facilityCraftEnabled() ? source.onBeforeCompile : m.onBeforeCompile;
     m.onBeforeCompile = (shader, r) => {
       prev.call(m, shader, r); patch(shader);
       shader.fragmentShader = 'varying float vPartEmit;\n' + shader.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n  totalEmissiveRadiance += vec3(1.0, 0.79, 0.47) * vPartEmit;');
     };
-    m.customProgramCacheKey = () => 'park-part-batch-v1';
-    this.material = m;
+    m.customProgramCacheKey = () => source.customProgramCacheKey() + '-part-batch-v2';
+    this.material = registerFacilityMaterial(m);
     const d = new MeshDepthMaterial({ depthPacking: RGBADepthPacking });
     d.onBeforeCompile = shader => {
       patch(shader);

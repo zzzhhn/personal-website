@@ -1,3 +1,4 @@
+import { facilityCraftEnabled, registerFacilityMaterial } from './WorldFacilitySurface';
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { ConvexHullCollider, CuboidCollider, InstancedRigidBodies, type RapierRigidBody, type InstancedRigidBodyProps } from '@react-three/rapier';
@@ -237,7 +238,7 @@ export function Knockables({ name, items, source, farSource, spec, hull, hulls, 
   }, [source, items]);
   const farGeometry = useMemo(() => { if (!farSource) return null; const g = farSource.clone(); g.setAttribute('aInstFade', new InstancedBufferAttribute(new Float32Array(items.length).fill(1), 1)); return g; }, [farSource, items]);
   const material = useMemo(() => {
-    const base = parkMaterial().clone(), prev = base.onBeforeCompile;
+    const source = parkMaterial(), base = source.clone(), prev = facilityCraftEnabled() ? source.onBeforeCompile : base.onBeforeCompile;
     base.onBeforeCompile = (shader, r) => {
       prev.call(base, shader, r);
       shader.vertexShader = 'attribute float aInstFade;\nvarying float vFade;\n' + shader.vertexShader.replace('#include <begin_vertex>', '#include <begin_vertex>\n  vFade = aInstFade;');
@@ -246,8 +247,8 @@ export function Knockables({ name, items, source, farSource, spec, hull, hulls, 
         if (vFade < 0.999) { ivec2 q = ivec2(gl_FragCoord.xy) % 4; int i = q.x * 4 + q.y;
           float b = float((i * 11 + 3) % 16) / 16.0; if (vFade <= b) discard; }`);
     };
-    base.customProgramCacheKey = () => 'park-knock-fade-v1';
-    return base;
+    base.customProgramCacheKey = () => source.customProgramCacheKey() + '-knock-fade-v2';
+    return registerFacilityMaterial(base);
   }, []);
   useEffect(() => () => { material.dispose(); geometry.dispose(); farGeometry?.dispose(); }, [material, geometry, farGeometry]);
   const instances = useMemo<InstancedRigidBodyProps[]>(() => items.map(it => ({

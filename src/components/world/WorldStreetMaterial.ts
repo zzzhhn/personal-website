@@ -11,6 +11,7 @@
  */
 import { CanvasTexture, LinearMipmapLinearFilter, MeshDepthMaterial, MeshStandardMaterial, RGBADepthPacking, SRGBColorSpace } from 'three';
 import { windUniforms } from './WorldWind';
+import { registerFacilityMaterial, facilitySurfaceUniforms, facilitySurfaceHead, facilitySurfaceColor, facilitySurfaceRough, facilitySurfaceNormal } from './WorldFacilitySurface';
 
 export const streetUniforms = { uNight: { value: 0 } };
 
@@ -20,9 +21,13 @@ attribute vec2 aSuv;
 varying vec4 vMat;
 varying vec2 vSuv;
 varying float vPhase;
+varying vec2 vFacilityUv;
+varying vec3 vFacilityPoint;
+varying float vFacilityKind;
 `;
 const vertexBody = /* glsl */`#include <begin_vertex>
   vMat = aMat; vSuv = aSuv; vPhase = 0.0;
+  vFacilityUv = aSuv; vFacilityPoint = position; vFacilityKind = max(0.0, -aMat.w);
   #ifdef USE_BATCHING
   {
     // Signal phase from the instance heading: crossing approaches run half a cycle apart.
@@ -74,18 +79,20 @@ const fragmentEmissive = /* glsl */`#include <emissivemap_fragment>
 export function createStreetMaterial(atlas: CanvasTexture | null, key = 'street-props-v1') {
   const m = new MeshStandardMaterial({ vertexColors: true, roughness: 1, metalness: 0 });
   m.onBeforeCompile = shader => {
+    Object.assign(shader.uniforms, facilitySurfaceUniforms());
     shader.uniforms.uNight = streetUniforms.uNight;
     shader.uniforms.uTime = windUniforms.uWindTime;
     shader.uniforms.uAtlas = { value: atlas };
     shader.vertexShader = vertexHead + shader.vertexShader.replace('#include <begin_vertex>', vertexBody);
-    shader.fragmentShader = fragmentHead + shader.fragmentShader
-      .replace('#include <color_fragment>', fragmentColor)
+    shader.fragmentShader = facilitySurfaceHead + fragmentHead + shader.fragmentShader
+      .replace('#include <color_fragment>', fragmentColor + facilitySurfaceColor)
       .replace('#include <roughnessmap_fragment>', 'float roughnessFactor = vMat.x;')
-      .replace('#include <metalnessmap_fragment>', 'float metalnessFactor = vMat.y;')
+      .replace('#include <metalnessmap_fragment>', 'float metalnessFactor = vMat.y;' + facilitySurfaceRough)
+      .replace('#include <normal_fragment_maps>', '#include <normal_fragment_maps>' + facilitySurfaceNormal)
       .replace('#include <emissivemap_fragment>', fragmentEmissive);
   };
-  m.customProgramCacheKey = () => key;
-  return m;
+  m.customProgramCacheKey = () => key + '-facility-surface-v1';
+  return registerFacilityMaterial(m);
 }
 
 /** Shadow depth for batched / instanced props that honours the per-instance dither fade (a faded

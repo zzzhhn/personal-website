@@ -17,6 +17,9 @@ import WorldParkSigns from './WorldParkSigns';
 import { ParkLOD, hutLOD } from './WorldParkLOD';
 import { ParkExhibits, placeExhibits, useExhibitGltfs } from './WorldParkExhibits';
 import { buildWalk, Knockables, LampPools, LAMP, RAIL, parkKnockables } from './WorldParkWalk';
+import { facilityCraftEnabled, setFacilityEnvironment } from './WorldFacilitySurface';
+import WorldFacilityCraftQA from './WorldFacilityCraftQA';
+import { useDjcFurnitureEnvironment } from './WorldDjcFurnitureEnvironment';
 
 /**
  * Park district (owner: park session). Every static park part is batched into two draws per group:
@@ -46,6 +49,8 @@ function FixedMesh({ name, mesh }: { name: string; mesh: { vertices: Float32Arra
 /** P06-P11: six huts from hut.glb (variants A / B), their floors and spurs to the boardwalk. */
 function ParkHuts({ projects }: { projects: WorldProject[] }) {
   const gltf = useLoader(GLTFLoader, parkUrl('hut'), withDraco) as GLTF;
+  const visualGltf = useLoader(GLTFLoader, facilityCraftEnabled()
+    ? '/assets/world/craft-batch6-facilities/hut-runtime.glb' : parkUrl('hut'), withDraco) as GLTF;
   const exhibitGltfs = useExhibitGltfs();
   const built = useMemo(() => {
     const visuals: { id: string; center: Vec3; solid: BufferGeometry; deck: BufferGeometry; low: ReturnType<typeof hutLOD>; triangles: number }[] = [];
@@ -53,10 +58,12 @@ function ParkHuts({ projects }: { projects: WorldProject[] }) {
     const surfaces: { position: Vec3; size: Vec3; rotation: Vec3 }[] = [];
     HUTS.forEach((h, i) => {
       const root = gltf.scene.getObjectByName(`hut_${h.variant}`);
+      const visualRoot = visualGltf.scene.getObjectByName(`hut_${h.variant}`);
       if (!root) throw new Error(`hut.glb lacks hut_${h.variant}`);
+      if (!visualRoot) throw new Error(`hut visual GLB lacks hut_${h.variant}`);
       const spurs = new ParkGeo(), solid: BufferGeometry[] = [], deckParts: BufferGeometry[] = [];
-      solid.push(...gltfPieces(root, h.matrix, n => !n.startsWith('floor')));
-      deckParts.push(...gltfPieces(root, h.matrix, n => n.startsWith('floor')));
+      solid.push(...gltfPieces(visualRoot, h.matrix, n => !n.startsWith('floor')));
+      deckParts.push(...gltfPieces(visualRoot, h.matrix, n => n.startsWith('floor')));
       shells.push(gltfTrimesh(root, h.matrix, n => n.startsWith('shell') || n.startsWith('piles')));
       surfaces.push({ position: h.local(0, -0.125, (HUT_FRONT_Z + HUT_BACK_Z) / 2), size: [h.width, 0.25, HUT_FRONT_Z - HUT_BACK_Z], rotation: [0, h.yaw, 0] });
       if (h.spur) {
@@ -75,7 +82,7 @@ function ParkHuts({ projects }: { projects: WorldProject[] }) {
     });
     const ex = placeExhibits(exhibitGltfs);
     return { visuals, shells: [...shells, ...ex.fixed], surfaces, placed: ex.placed };
-  }, [gltf, exhibitGltfs]);
+  }, [gltf, visualGltf, exhibitGltfs]);
   useGreyboxClaim('booth');
   return <group name="park-huts">
     {built.visuals.map(v => <ParkLOD key={v.id} id={`hut-${v.id}`} center={v.center} nearTriangles={v.triangles} farTriangles={v.low.triangles}
@@ -114,9 +121,18 @@ function ParkClock() {
   return null;
 }
 
+/** Reuse the established renderer cache; never change scene.environment. */
+function FacilityReflections() {
+  const map = useDjcFurnitureEnvironment();
+  useEffect(() => { setFacilityEnvironment(map); return () => setFacilityEnvironment(null); }, [map]);
+  return null;
+}
+
 export default memo(function WorldPark({ projects }: { projects: WorldContent['projects'] }) {
   useEffect(() => parkAudio.retain(), []);
   return <group name="world-park">
+    {facilityCraftEnabled() && <FacilityReflections />}
+    <WorldFacilityCraftQA />
     <ParkClock />
     <ParkGuard id="huts"><ParkHuts projects={projects} /></ParkGuard>
     <ParkGuard id="walk"><ParkWalk /></ParkGuard>
