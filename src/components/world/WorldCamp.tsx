@@ -317,7 +317,15 @@ function SingleAsset({ id, label, placement, materialMap }: { id: string; label:
 /** G21 owns three material copies and borrows existing maps/renderer PMREM.
  * InstancedAsset keeps original camp geometry for placement and collision. */
 function G21Craft({ placements }: { placements: Placement[] }) {
+  const renderer = useThree(s => s.gl);
   const environment = useDjcFurnitureEnvironment();
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('qa') !== '1') return;
+    const host = window as typeof window & { __worldG21CraftRenderer?: () => { toneMappingExposure: number } };
+    const read = () => ({ toneMappingExposure: renderer.toneMappingExposure });
+    host.__worldG21CraftRenderer = read;
+    return () => { if (host.__worldG21CraftRenderer === read) delete host.__worldG21CraftRenderer; };
+  }, [renderer]);
   const mapped = useMemo(() => {
     const copies: MeshStandardMaterial[] = [];
     return { copies, map: (source: Material) => {
