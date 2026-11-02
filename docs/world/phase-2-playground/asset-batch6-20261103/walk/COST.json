@@ -1,0 +1,50 @@
+{
+  "status": "Source-owned typed arrays; not full scene GPU allocation, FPS or frame time. Existing shared textures/PMREM/material and batches reused.",
+  "baseline": {
+    "P02Near": {
+      "triangles": 5677,
+      "bytes": 1226232
+    },
+    "P02Far": {
+      "triangles": 1354,
+      "bytes": 292464
+    },
+    "P03Near": {
+      "triangles": 84,
+      "bytes": 18144
+    },
+    "P03Far": {
+      "triangles": 24,
+      "bytes": 5184
+    },
+    "railInstances": 42
+  },
+  "candidate": {
+    "P02Near": {
+      "triangles": 7621,
+      "bytes": 1646136
+    },
+    "P02Far": {
+      "triangles": 1354,
+      "bytes": 292464
+    },
+    "P03Near": {
+      "triangles": 156,
+      "bytes": 33696
+    },
+    "P03Far": {
+      "triangles": 36,
+      "bytes": 7776
+    },
+    "railInstances": 42
+  },
+  "delta": {
+    "P02NearTriangles": 1944,
+    "P03NearPerSection": 72,
+    "P03FarPerSection": 12,
+    "sourceBytes": 438048,
+    "addedMaterial": 0,
+    "addedTextures": 0,
+    "addedLights": 0
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "P02": {
+    "triangles": 7621,
+    "sha256": "d116dac83a613f0745d16fceb9ec702b011913589846a4699cebfe04aeb74ac3",
+    "nodes": 6,
+    "parts": 454
+  },
+  "P03": {
+    "triangles": 312,
+    "sha256": "f870674548f2ad0feb0e34d9127552383e9342ecb306749bc1eaa52b4c21e056",
+    "nodes": 2,
+    "parts": 26
+  }
+}

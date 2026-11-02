@@ -1,3 +1,4 @@
+import { WalkCraftGeo, craftParkRail, walkBearing, walkCraftEnabled } from './WorldWalkCraft';
 import { facilityCraftEnabled, registerFacilityMaterial } from './WorldFacilitySurface';
 import { useEffect, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
@@ -79,7 +80,8 @@ export function buildWalk(low = false) {
   const surfaces: { position: Vec3; size: Vec3; rotation: Vec3 }[] = [];
   // ---------------- P02 boardwalk deck: planks across the walk, stringers, pile bents every ~2.6 m
   segs.forEach((s, i) => {
-    const deck = new ParkGeo(), solid = new ParkGeo();
+    const craft = walkCraftEnabled();
+    const deck = craft ? new WalkCraftGeo([-s.dir[1], 0, s.dir[0]]) : new ParkGeo(), solid = craft ? new WalkCraftGeo() : new ParkGeo();
     if (low) slab(deck, s.quad, DECK_Y, DECK_Y - .06, '#9C7A58');
     else plankPoly(deck, s.quad, perp(s.dir), DECK_Y, 11 + i);
     const n = perp(s.dir), start = i === 0 ? dot(sub([PLAZA.x1, s.a[1]], s.a), s.dir) + 0.4 : 0.6;
@@ -92,13 +94,21 @@ export function buildWalk(low = false) {
     for (const side of [-1, 1]) {
       const a = add(add(s.a, n, side * (W2 + 0.02)), s.dir, i === 0 ? start - 0.4 : 0), b = add(add(s.b, n, side * (W2 + 0.02)), s.dir, 0);
       const L = Math.hypot(b[0] - a[0], b[1] - a[1]);
-      solid.box([(a[0] + b[0]) / 2, DECK_Y - 0.13, (a[1] + b[1]) / 2], [0.05, 0.2, L], '#7A5F45', { yaw: Math.atan2(s.dir[0], s.dir[1]), jitter: 0.04, seed: i * 2 + side });
+      if (craft && !low) {
+        const bays = Math.ceil(L / 2.6), yaw = Math.atan2(s.dir[0], s.dir[1]);
+        for (let bay = 0; bay < bays; bay++) {
+          const c = add(a, s.dir, L * (bay + .5) / bays);
+          (solid as WalkCraftGeo).named('fascia.butt-jointed-board', () => solid.box([c[0], DECK_Y - .13, c[1]], [.08, .2, L / bays - .008], '#7A5F45', { yaw, inset: .008, jitter: .04, seed: i * 2 + side }));
+        }
+        (solid as WalkCraftGeo).named('fascia.lower-return', () => solid.box([(a[0] + b[0]) / 2, DECK_Y - .225, (a[1] + b[1]) / 2], [.055, .035, L], '#6E563F', { yaw, inset: .006 }));
+      } else solid.box([(a[0] + b[0]) / 2, DECK_Y - 0.13, (a[1] + b[1]) / 2], [0.05, 0.2, L], '#7A5F45', { yaw: Math.atan2(s.dir[0], s.dir[1]), jitter: 0.04, seed: i * 2 + side });
     }
     for (let t = start, k = 0; t < s.L - 0.3; t += 2.6, k++) {
       const c = add(s.a, s.dir, t);
       const ends = [add(c, n, -W2 + 0.2), add(c, n, W2 - 0.2)];
       for (const [e, p] of ends.entries()) solid.cyl([p[0], -2.6, p[1]], [p[0], DECK_Y - 0.28, p[1]], 0.15, 0.13, low ? 4 : 8, '#8E6E55', { jitter: 0.06, seed: i * 50 + k * 2 + e, smooth: true });
       solid.box([c[0], DECK_Y - 0.36, c[1]], [BOARDWALK_WIDTH + 0.1, 0.16, 0.16], '#5A4634', { yaw: Math.atan2(s.dir[0], s.dir[1]) + Math.PI / 2 });
+      if (craft && !low) for (const [j, e] of ends.entries()) walkBearing(solid as WalkCraftGeo, [e[0] + n[0] * (j ? .02 : -.02), DECK_Y - .17, e[1] + n[1] * (j ? .02 : -.02)], Math.atan2(s.dir[0], s.dir[1]));
       if (k % 2 === 0) { // diagonal brace under every second bent
         const A = ends[0], B = ends[1];
         solid.cyl([A[0], -1.2, A[1]], [B[0], DECK_Y - 0.48, B[1]], 0.045, 0.045, 6, '#5A4634');
@@ -321,7 +331,7 @@ export function Knockables({ name, items, source, farSource, spec, hull, hulls, 
   </group>;
 }
 
-export const RAIL = { ...railGeometryCached(), far: farRail(), spec: { half: [0.06, 0.48, 1.0] as Vec3, offset: [0, 0.48, 0] as Vec3, mass: 40 } };
+export const RAIL = { ...railGeometryCached(), far: walkCraftEnabled() ? craftParkRail(true).geometry : farRail(), spec: { half: [0.06, 0.48, 1.0] as Vec3, offset: [0, 0.48, 0] as Vec3, mass: 40 } };
 export const LAMP = PARK_LAMP;
 function farRail() {
   const g = new ParkGeo();
@@ -338,7 +348,7 @@ function farRail() {
   member([0, .95, 0], [.12, .1, 2], 2, '#B99469');
   return g.build();
 }
-function railGeometryCached() { return railGeometry(); }
+function railGeometryCached() { return walkCraftEnabled() ? craftParkRail() : railGeometry(); }
 
 /** Warm ground pools under every lamp: one additive draw of flat quads, intensity follows night. */
 export function LampPools({ lamps, extra = [] }: { lamps: LampPost[]; extra?: { position: Vec3; radius: number }[] }) {
