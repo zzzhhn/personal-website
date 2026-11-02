@@ -1,0 +1,22 @@
+{
+  "r7-v-c13-noon.png": {
+    "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-revision-r2/runtime/r7-v-c13-noon.png",
+    "sha256": "c615e68f305cbac2ae77e1f6c302645eed39067a96ca239b25b9b974e9824f77"
+  },
+  "r7-v-c13-night.png": {
+    "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-revision-r2/runtime/r7-v-c13-night.png",
+    "sha256": "11e717bb9884cf16edbd2f907b4577580a56557626decf245352821be5868db5"
+  },
+  "r7-v-c15-noon.png": {
+    "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-revision-r2/runtime/r7-v-c15-noon.png",
+    "sha256": "0a287e635baef17e95416b467f538141e9761f2377415badf3713b1b349323b7"
+  },
+  "r7-v-c15-night.png": {
+    "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-revision-r2/runtime/r7-v-c15-night.png",
+    "sha256": "d012c4fb9c24ee91a8c4a2c6a5d5204cbfcd0653eacdea017db504f3c6157894"
+  },
+  "r7-v-c15-low-noon.png": {
+    "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/camp-revision-r2/runtime/r7-v-c15-low-noon.png",
+    "sha256": "08aca87d3c2ee98e7a9f1fc7035b6779684b21a75f549544c02bc558a99d5780"
+  }
+}
