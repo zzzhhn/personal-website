@@ -1,0 +1,7 @@
+[astro] Unable to load astro.batch6.g21.integration.config.mjs
+
+Failed to load url ./tools/world/alpha-mine-data/local-replay-plugin.mjs (resolved id: ./tools/world/alpha-mine-data/local-replay-plugin.mjs) in /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-batch6-g21-integration/astro.config.mjs. Does the file exist?
+  Location:
+    /Users/a22309/Desktop/Side-projects/Artifacts/personal-website-world/node_modules/vite/dist/node/chunks/config.js:22663:33
+  Stack trace:
+    at loadAndTransform (file:///Users/a22309/Desktop/Side-projects/Artifacts/personal-website-world/node_modules/vite/dist/node/chunks/config.js:22663:33)

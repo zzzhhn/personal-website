@@ -1,0 +1,16 @@
+06:33:25 [content] Syncing content
+06:33:25 [content] Synced content
+06:33:25 [types] Generated 425ms
+06:33:25 [build] output: "static"
+06:33:25 [build] mode: "static"
+06:33:25 [build] directory: /tmp/bobby-world-batch6-g21-integrated-root/
+06:33:25 [build] Collecting build info...
+06:33:25 [build] ✓ Completed in 437ms.
+06:33:25 [build] Building static entrypoints...
+06:33:26 [vite] ✓ built in 815ms
+06:33:27 [ERROR] [vite] ✗ Build failed in 1.35s
+Could not resolve "../../../tools/world/vehicles/door-contract.json" from "src/components/world/WorldVehicleDoors.ts"
+file: /Users/a22309/Desktop/Side-projects/Artifacts/personal-world-batch6-g21-integration/src/components/world/WorldVehicleDoors.ts
+  Stack trace:
+    at getRollupError (file:///Users/a22309/Desktop/Side-projects/Artifacts/personal-website-world/node_modules/rollup/dist/es/shared/parseAst.js:406:41)
+    at ModuleLoader.handleInvalidResolvedId (file:///Users/a22309/Desktop/Side-projects/Artifacts/personal-website-world/node_modules/rollup/dist/es/shared/node-entry.js:22120:24)

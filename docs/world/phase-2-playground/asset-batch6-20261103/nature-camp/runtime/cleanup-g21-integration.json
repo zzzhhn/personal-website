@@ -1,0 +1,16 @@
+{
+  "atUTC": "2026-11-02T22:47:04.249891+00:00",
+  "taskTab": "1395914355",
+  "taskPagePausedBeforeClose": true,
+  "viewportResetBeforeClose": true,
+  "taskTabsEmptyConfirmed": true,
+  "serverPID": 48539,
+  "wrapperPID": 48098,
+  "ownedCommandVerifiedBeforeSIGTERM": true,
+  "wrapperExit": 241,
+  "leaseOwner": "batch6-g21-integration-01a19a62",
+  "ownedTokenLeaseReleased": true,
+  "lockAbsentImmediatelyAfterExit": true,
+  "4341Touched": false,
+  "retainedBuild": "/tmp/bobby-world-batch6-g21-integrated-root"
+}

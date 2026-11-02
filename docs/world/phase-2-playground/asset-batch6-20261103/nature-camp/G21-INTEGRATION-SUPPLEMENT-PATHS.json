@@ -1,0 +1,48 @@
+{
+  "scope": "Supplemental G21-only integration source, configuration, actual consumer and one night evidence",
+  "baseDelivery": "8e9185c7094e2dcf057d77b3a2298cbfc67dda6d",
+  "rootIntegratedBase": "df45dea5042e2ce510be7e0cae40b86273aa78cc",
+  "finalBuildSource": "3873fc76c60df481fe0b60d192cf4e40173b890d",
+  "commits": {
+    "5d6b455": [
+      "src/components/world/WorldCamp.tsx",
+      "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-INTEGRATION.md",
+      "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-INCREMENTAL-COST.json"
+    ],
+    "448ffd2": [
+      "astro.batch6.g21.integration.config.mjs",
+      "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-INTEGRATION-PUBLIC.json",
+      "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/qa-g21-integration.js",
+      "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/serve-g21-integration.py"
+    ],
+    "3873fc7": [
+      "src/components/world/WorldCamp.tsx",
+      "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/qa-g21-integration.js"
+    ]
+  },
+  "evidenceOwnedPaths": [
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-INTEGRATION.md",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-INTEGRATION-VERIFY.json",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-INTEGRATION-BUILD.json",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-INTEGRATION-ENTRY.json",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-INTEGRATION-GEOMETRY.json",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-INTEGRATION-CONSUMER.json",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-INTEGRATION-NIGHT-REVIEW.json",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-config-load-failed.log",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-sparse-dependency-failed.log",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-INTEGRATION-BUILD-448ffd2.json",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-INTEGRATION-ENTRY-448ffd2.json",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-INTEGRATION-GEOMETRY-448ffd2.json",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/g21-integration-build-448ffd2.log",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/g21-integration-build.log",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/g21-integration-server.log",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/runtime/b6-g21-integrated-night.png",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/runtime/b6-g21-integrated-night-snapshot-1.json",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/runtime/g21-integrated-console-errors.json",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/runtime/cleanup-g21-integration.json",
+    "docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/G21-INTEGRATION-SUPPLEMENT-PATHS.json"
+  ],
+  "publicOrNativeAssetChangesInSupplement": [],
+  "C03ChangesInSupplement": [],
+  "rootCheckoutOr4341WritesByThisTask": false
+}

@@ -1,0 +1,532 @@
+{
+  "scope": "G21 minimal integration, single ordinary night view",
+  "url": "http://127.0.0.1:4363/world/?start=camp&quality=balanced&qa=1",
+  "view": {
+    "player": [
+      -57,
+      6.5,
+      43
+    ],
+    "zoom": 1
+  },
+  "review": {
+    "toneMappingExposure": 1
+  },
+  "settings": {
+    "paused": false,
+    "shot": null,
+    "quality": "balanced",
+    "weather": "clear",
+    "light": "night",
+    "worldMinutes": 0,
+    "timeRunning": false,
+    "seat": null,
+    "card": null,
+    "zoom": 1
+  },
+  "camera": {
+    "yaw": 0.9272952180016123,
+    "pitch": 0.7853981633974483,
+    "distance": 12,
+    "desiredDistance": 12,
+    "driveManualZoom": false,
+    "actualDistance": 11.999999999999996,
+    "firstPerson": false,
+    "preset": 1,
+    "collided": false,
+    "hitDistance": null,
+    "fov": 50,
+    "mode": "walk",
+    "recentering": false,
+    "position": [
+      -51.89947753776156,
+      14.791788866304,
+      49.793115541285374
+    ],
+    "target": [
+      -56.9906463623047,
+      6.306507492065432,
+      43.00489044189452
+    ],
+    "forwardGround": [
+      -0.6,
+      -0.8000000000000002
+    ],
+    "groundBelowCamera": 4.8258819580078125,
+    "clearanceAboveGround": 9.965906908296187,
+    "gamepad": false,
+    "nearPlaneRadius": 0.22,
+    "guideHidden": false,
+    "shoulderOffset": 0,
+    "nearPlaneOverlaps": []
+  },
+  "renderInfo": {
+    "drawingBuffer": [
+      1710,
+      931
+    ],
+    "cssSize": [
+      1710,
+      931
+    ],
+    "pixelRatio": 1,
+    "dprRange": [
+      0,
+      1.5
+    ],
+    "quality": "balanced",
+    "antialias": true,
+    "msaaSamples": 4,
+    "toneMapping": 4,
+    "outputColorSpace": "srgb",
+    "shadowMapSize": 1254,
+    "shadowType": 1,
+    "postprocessing": [],
+    "coasterVegetation": [
+      {
+        "name": "coaster-ST1-L0",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      },
+      {
+        "name": "coaster-ST1-L1",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      },
+      {
+        "name": "coaster-ST2-L0",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      },
+      {
+        "name": "coaster-ST2-L1",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      },
+      {
+        "name": "coaster-G19",
+        "visible": false,
+        "instances": 0,
+        "triangles": 0,
+        "matrixUploads": 0
+      }
+    ]
+  },
+  "loop": {
+    "mode": "always",
+    "frame": 2157,
+    "delta": 0.01660000002384186,
+    "night": 1,
+    "windTime": 43.118899999857874,
+    "frameMs": null
+  },
+  "shadowWork": {
+    "pending": false,
+    "slices": 0,
+    "cpuMs": 0,
+    "maxSliceMs": 0,
+    "cancelled": 0,
+    "error": "",
+    "phases": [],
+    "hullWorker": {
+      "requests": 88,
+      "workerMs": 293.7999997138977,
+      "maxWorkerMs": 102.89999997615814,
+      "maxSource": "intent-coaster",
+      "maxInputVertices": 368460
+    }
+  },
+  "materials": {
+    "G21_bed_01_surface": {
+      "id": "G21",
+      "candidate": true,
+      "instances": 8,
+      "night": 1,
+      "trianglesPerInstance": 2575,
+      "geometry": {
+        "vertices": 4999,
+        "normal": true,
+        "uv0": true,
+        "uv1": true,
+        "colorNormalized": true,
+        "colorItemSize": 4
+      },
+      "materials": [
+        {
+          "name": "B6 rock | mineral beds",
+          "map": {
+            "uuid": "2fbda3e1-360b-4e5a-a9bf-79b1203d39db",
+            "sourceUUID": "a8e1cf52-2b81-4aa8-8ddf-db211618e223",
+            "name": "B6 | linear-calibrated CC0 mineral photograph 512",
+            "channel": 0,
+            "colorSpace": "srgb",
+            "size": [
+              512,
+              512
+            ]
+          },
+          "normalMap": {
+            "uuid": "673521cc-9d32-42cc-b252-5a4b46bdf8ae",
+            "sourceUUID": "d2daf8fd-9fc5-46b3-af8d-6033baa9f60f",
+            "name": "stone-normal",
+            "channel": 0,
+            "colorSpace": "",
+            "size": [
+              512,
+              512
+            ]
+          },
+          "roughnessMap": {
+            "uuid": "9d0c1595-8554-4380-876d-019cb234ddd8",
+            "sourceUUID": "dfc8ffc0-43d4-4d90-a32c-723fb2bfb90c",
+            "name": "B6 | authored ORM from CC0 roughness 512",
+            "channel": 0,
+            "colorSpace": "",
+            "size": [
+              512,
+              512
+            ]
+          },
+          "aoMap": {
+            "uuid": "f522afa0-5979-4d96-b091-df6e90df0b86",
+            "sourceUUID": "22c41587-7b23-47de-9124-e2a8fc2d7210",
+            "name": "B6 rock geometry AO UV1",
+            "channel": 1,
+            "colorSpace": "",
+            "size": [
+              512,
+              512
+            ]
+          },
+          "envMap": {
+            "uuid": "8217e909-aacf-4b8a-9ed7-7ec2da4be75d",
+            "sourceUUID": "f3bd507f-feec-4f0c-b9bc-0d83049fc601",
+            "name": "PMREM.cubeUv",
+            "channel": 0,
+            "colorSpace": "srgb-linear",
+            "size": [
+              336,
+              256
+            ]
+          },
+          "envMapIntensity": 0.22050493951312897,
+          "vertexColors": true,
+          "roughness": 0.9399999976158142,
+          "metalness": 0,
+          "transparent": false,
+          "opacity": 1,
+          "emissive": "000000",
+          "emissiveIntensity": 1
+        }
+      ]
+    },
+    "G21_bed_01_surface_1": {
+      "id": "G21",
+      "candidate": true,
+      "instances": 8,
+      "night": 1,
+      "trianglesPerInstance": 700,
+      "geometry": {
+        "vertices": 2092,
+        "normal": true,
+        "uv0": true,
+        "uv1": true,
+        "colorNormalized": true,
+        "colorItemSize": 4
+      },
+      "materials": [
+        {
+          "name": "B6 rock | recessed friable seams",
+          "map": {
+            "uuid": "2fbda3e1-360b-4e5a-a9bf-79b1203d39db",
+            "sourceUUID": "a8e1cf52-2b81-4aa8-8ddf-db211618e223",
+            "name": "B6 | linear-calibrated CC0 mineral photograph 512",
+            "channel": 0,
+            "colorSpace": "srgb",
+            "size": [
+              512,
+              512
+            ]
+          },
+          "normalMap": {
+            "uuid": "673521cc-9d32-42cc-b252-5a4b46bdf8ae",
+            "sourceUUID": "d2daf8fd-9fc5-46b3-af8d-6033baa9f60f",
+            "name": "stone-normal",
+            "channel": 0,
+            "colorSpace": "",
+            "size": [
+              512,
+              512
+            ]
+          },
+          "roughnessMap": {
+            "uuid": "9d0c1595-8554-4380-876d-019cb234ddd8",
+            "sourceUUID": "dfc8ffc0-43d4-4d90-a32c-723fb2bfb90c",
+            "name": "B6 | authored ORM from CC0 roughness 512",
+            "channel": 0,
+            "colorSpace": "",
+            "size": [
+              512,
+              512
+            ]
+          },
+          "aoMap": {
+            "uuid": "ac8d520c-f9ca-4624-ba92-1d0a8daacd60",
+            "sourceUUID": "22c41587-7b23-47de-9124-e2a8fc2d7210",
+            "name": "B6 rock geometry AO UV1",
+            "channel": 1,
+            "colorSpace": "",
+            "size": [
+              512,
+              512
+            ]
+          },
+          "envMap": {
+            "uuid": "8217e909-aacf-4b8a-9ed7-7ec2da4be75d",
+            "sourceUUID": "f3bd507f-feec-4f0c-b9bc-0d83049fc601",
+            "name": "PMREM.cubeUv",
+            "channel": 0,
+            "colorSpace": "srgb-linear",
+            "size": [
+              336,
+              256
+            ]
+          },
+          "envMapIntensity": 0.22050493951312897,
+          "vertexColors": true,
+          "roughness": 1,
+          "metalness": 0,
+          "transparent": false,
+          "opacity": 1,
+          "emissive": "000000",
+          "emissiveIntensity": 1
+        }
+      ]
+    },
+    "G21_bed_01_surface_2": {
+      "id": "G21",
+      "candidate": true,
+      "instances": 8,
+      "night": 1,
+      "trianglesPerInstance": 2687,
+      "geometry": {
+        "vertices": 6718,
+        "normal": true,
+        "uv0": true,
+        "uv1": true,
+        "colorNormalized": true,
+        "colorItemSize": 4
+      },
+      "materials": [
+        {
+          "name": "B6 rock | cleaved shoulders",
+          "map": {
+            "uuid": "2fbda3e1-360b-4e5a-a9bf-79b1203d39db",
+            "sourceUUID": "a8e1cf52-2b81-4aa8-8ddf-db211618e223",
+            "name": "B6 | linear-calibrated CC0 mineral photograph 512",
+            "channel": 0,
+            "colorSpace": "srgb",
+            "size": [
+              512,
+              512
+            ]
+          },
+          "normalMap": {
+            "uuid": "673521cc-9d32-42cc-b252-5a4b46bdf8ae",
+            "sourceUUID": "d2daf8fd-9fc5-46b3-af8d-6033baa9f60f",
+            "name": "stone-normal",
+            "channel": 0,
+            "colorSpace": "",
+            "size": [
+              512,
+              512
+            ]
+          },
+          "roughnessMap": {
+            "uuid": "9d0c1595-8554-4380-876d-019cb234ddd8",
+            "sourceUUID": "dfc8ffc0-43d4-4d90-a32c-723fb2bfb90c",
+            "name": "B6 | authored ORM from CC0 roughness 512",
+            "channel": 0,
+            "colorSpace": "",
+            "size": [
+              512,
+              512
+            ]
+          },
+          "aoMap": {
+            "uuid": "1f595073-f5d1-4b92-b786-d4ae7d939c23",
+            "sourceUUID": "22c41587-7b23-47de-9124-e2a8fc2d7210",
+            "name": "B6 rock geometry AO UV1",
+            "channel": 1,
+            "colorSpace": "",
+            "size": [
+              512,
+              512
+            ]
+          },
+          "envMap": {
+            "uuid": "8217e909-aacf-4b8a-9ed7-7ec2da4be75d",
+            "sourceUUID": "f3bd507f-feec-4f0c-b9bc-0d83049fc601",
+            "name": "PMREM.cubeUv",
+            "channel": 0,
+            "colorSpace": "srgb-linear",
+            "size": [
+              336,
+              256
+            ]
+          },
+          "envMapIntensity": 0.22050493951312897,
+          "vertexColors": true,
+          "roughness": 0.8399999737739563,
+          "metalness": 0,
+          "transparent": false,
+          "opacity": 1,
+          "emissive": "000000",
+          "emissiveIntensity": 1
+        }
+      ]
+    }
+  },
+  "fallbacks": [],
+  "resources": [
+    "/__g21-integration.js",
+    "/_astro/WorldApp.Bi2XWpnY.js",
+    "/_astro/WorldApp.CL5m6nP3.css",
+    "/_astro/WorldApp.HDMnXX6t.js",
+    "/_astro/WorldDistricts.CIGLJqZL.js",
+    "/_astro/WorldIbdHud.9j8jc17r.js",
+    "/_astro/WorldIbdHud.BFP9lrI4.css",
+    "/_astro/WorldIbdYard.DzXppwBF.js",
+    "/_astro/WorldIntentCoaster.D9D97PcZ.js",
+    "/_astro/WorldIntentHud.-YiVMeyH.css",
+    "/_astro/WorldIntentHud.BZZcsKvK.js",
+    "/_astro/WorldLandform.DnFrdOKb.js",
+    "/_astro/WorldLoadProgress.Dq7ILgbi.js",
+    "/_astro/WorldRuntime.D1H0RpZU.js",
+    "/_astro/actor-physics.C7mIiVjT.js",
+    "/_astro/analytics.CZcLqhSq.js",
+    "/_astro/client.BINMsa6k.js",
+    "/_astro/client.BogH9A_j.js",
+    "/_astro/coaster-track.BtrIA-Yj.js",
+    "/_astro/ibd-pack-play.D8o18iX3.js",
+    "/_astro/ibd-yard-guide.CyQZPR0D.js",
+    "/_astro/index.DP38BoPS.js",
+    "/_astro/intent-state.B-WaouM8.js",
+    "/_astro/intent-workshop-runtime.3id1o7g4.js",
+    "/_astro/jsx-runtime.u17CrQMm.js",
+    "/_astro/projectStatus.Bt-t_QXW.js",
+    "/_astro/shadow-chunk-hull.worker-xfxZf1i5.js",
+    "/_astro/three.core.hRBAa5ew.js",
+    "/_astro/three.module.CvbuiVxb.js",
+    "/assets/world/camp/C03.glb",
+    "/assets/world/camp/C04.glb",
+    "/assets/world/camp/C05.glb",
+    "/assets/world/camp/C06.glb",
+    "/assets/world/camp/C07.glb",
+    "/assets/world/camp/C08.glb",
+    "/assets/world/camp/C09.glb",
+    "/assets/world/camp/C10.glb",
+    "/assets/world/camp/C11.glb",
+    "/assets/world/camp/C12.glb",
+    "/assets/world/camp/C13.glb",
+    "/assets/world/camp/C14.glb",
+    "/assets/world/camp/C15.glb",
+    "/assets/world/camp/C16.glb",
+    "/assets/world/camp/G16.glb",
+    "/assets/world/camp/G17.glb",
+    "/assets/world/camp/G18.glb",
+    "/assets/world/camp/G19.glb",
+    "/assets/world/camp/G20.glb",
+    "/assets/world/camp/G21.glb",
+    "/assets/world/camp/G22.glb",
+    "/assets/world/camp/G23.glb",
+    "/assets/world/camp/L01.glb",
+    "/assets/world/camp/craft/camp-props-v1.glb",
+    "/assets/world/club/bar/djc-north-bar-lod1-v1.glb",
+    "/assets/world/club/bar/textures/dry_palm_color-5e49fb6cf7709fd5.png",
+    "/assets/world/club/bar/textures/dry_palm_normal-3d6daa0e35c24e35.png",
+    "/assets/world/club/bar/textures/limestone_color-76100c31ddfacd17.png",
+    "/assets/world/club/bar/textures/limestone_normal-8bc422cd0352b9e9.png",
+    "/assets/world/club/bar/textures/limestone_rough-9bc682ee198d0c20.png",
+    "/assets/world/club/bar/textures/teak_rough-83bc1bf52c552ef0.png",
+    "/assets/world/club/bar/textures/wood_diff-5da68c7ebe8732f0.jpg",
+    "/assets/world/club/bar/textures/wood_nor_gl-fc9f1d2600e76865.jpg",
+    "/assets/world/club/furniture/furniture-v1.glb",
+    "/assets/world/craft-batch6-facilities/hut-runtime.glb",
+    "/assets/world/craft-batch6-facilities/wood-color.png",
+    "/assets/world/craft-batch6-facilities/wood-normal.png",
+    "/assets/world/craft-batch6-facilities/wood-rough.png",
+    "/assets/world/draco/draco_decoder.wasm",
+    "/assets/world/draco/draco_wasm_wrapper.js",
+    "/assets/world/entry/G28.glb",
+    "/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+    "/assets/world/facility-craft/nature/G17.glb",
+    "/assets/world/guide/G24.glb",
+    "/assets/world/nature-camp-craft/G21.glb",
+    "/assets/world/nature-camp-craft/textures/345303abbf4a10e5bd821ac7.png",
+    "/assets/world/nature-camp-craft/textures/6f361f0d505ca603a6f05e5a.png",
+    "/assets/world/nature-camp-craft/textures/bcf66369ea932720bda81136.jpg",
+    "/assets/world/nature-camp-craft/textures/f2d95671ea0e6b54f63997c6.png",
+    "/assets/world/nature-craft/C09.glb",
+    "/assets/world/nature-craft/G16.glb",
+    "/assets/world/nature-craft/G18.glb",
+    "/assets/world/nature-craft/G22.glb",
+    "/assets/world/nature-craft/G23.glb",
+    "/assets/world/nature-craft/ST1.glb",
+    "/assets/world/nature-craft/ST2.glb",
+    "/assets/world/park/P13.glb",
+    "/assets/world/park/P14.glb",
+    "/assets/world/park/P15.glb",
+    "/assets/world/park/P16.glb",
+    "/assets/world/park/P17.glb",
+    "/assets/world/park/P18.glb",
+    "/assets/world/park/audio/island-walk-daily-v1.wav",
+    "/assets/world/park/hut.glb",
+    "/assets/world/park/signs.glb",
+    "/assets/world/street/ST1.glb",
+    "/assets/world/street/ST2.glb",
+    "/assets/world/terrain/dirt_albedo.jpg",
+    "/assets/world/terrain/dirt_nr.png",
+    "/assets/world/terrain/grass_albedo.jpg",
+    "/assets/world/terrain/grass_nr.png",
+    "/assets/world/terrain/sand_albedo.jpg",
+    "/assets/world/terrain/sand_nr.png",
+    "/assets/world/town/T01.glb",
+    "/assets/world/town/T02.glb",
+    "/assets/world/town/T03.glb",
+    "/assets/world/town/T04.glb",
+    "/assets/world/town/T05.glb",
+    "/assets/world/town/T06.glb",
+    "/assets/world/town/T07.glb",
+    "/assets/world/town/T09.glb",
+    "/assets/world/town/T10.glb",
+    "/assets/world/town/T11.glb",
+    "/assets/world/town/T12.glb",
+    "/assets/world/vehicles/G25-lod1.glb",
+    "/assets/world/vehicles/G25.glb",
+    "/assets/world/vehicles/G26-lod1.glb",
+    "/assets/world/vehicles/G26.glb",
+    "/assets/world/vehicles/G27-lod1.glb",
+    "/assets/world/vehicles/G27.glb",
+    "/favicon.svg",
+    "/fonts/GeistSans-Medium.woff2",
+    "/fonts/GeistSans-Regular.woff2",
+    "/fonts/GeistSans-SemiBold.woff2",
+    "/fonts/InstrumentSerif-Regular.woff2",
+    "/world/alpha-mine/colliders.json",
+    "/world/alpha-mine/detector.glb",
+    "/world/alpha-mine/layout.json",
+    "/world/alpha-mine/ore.glb",
+    "/world/alpha-mine/pickaxe.glb",
+    "/world/alpha-mine/quarry-static.glb",
+    "/world/alpha-mine/veins.glb"
+  ]
+}

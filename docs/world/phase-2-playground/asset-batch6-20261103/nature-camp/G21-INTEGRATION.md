@@ -19,6 +19,6 @@ python3 tools/world/facility-craft/verify_build_graph.py /tmp/bobby-world-batch6
 git diff --check
 ```
 
-第三条路径是下次主协调受控正式构建的目标目录，须先沿用主线既有受控public白名单构建，并纳入本次精确五个runtime文件；本交付不替换主线构建配置或4341服务。当前最小G21适配只做语法与补丁可应用核查，尚未执行这份独立集成源的正式构建／实际消费检查，不能将制作线R10构建混称集成验证。
+第三条路径现为已验证正式产物。最终source `3873fc76c60df481fe0b60d192cf4e40173b890d` 在稀疏隔离树中完成7.177秒正式构建，使用主线rails版本183项资源及G21精确5文件，排除旧HTML/_astro与C03候选；137个HTTP运行文件（含29个实际入口依赖）与构建字节完全一致，浏览器实际消费131个本地资源。所检构建文件均为实体文件，无symlink依赖。主协调可复用该产物，不必同源再构建；本线未替换root checkout、主线构建配置或4341服务。过程中的稀疏依赖缺漏和QA接口修正、旧源成功构建均单独保留，不混称最终源一次验证。
 
-下一集成验收窗只需补一张必要普通夜景，核探针G21加载、全局参数不变、三材质envMapIntensity约0.22、无G21fallback、AO channel1及baseColor sRGB；不立即开启新的近／侧／多因素矩阵。用户最终视觉接受仍独立，C03和其余自然资产不因此完成。不要对已交付R10再运行材料改写器；重建本轮须在隔离树恢复归档R9 `54616a3` 的GLB/native/manifest，再按配方执行一次。
+唯一必要普通夜景现已实际查看并保存，见G21-INTEGRATION-NIGHT-REVIEW.json：1710×931、DPR1、G21专属只读探针实际曝光1，三材质envMapIntensity约0.220505，emissive黑，AO channel1及baseColor sRGB，console errors和G21/C03 fallback均0，相机对已接受普通正午最大差7.1e-15。实际请求camp/C03及其字节与rails基线一致，无C03候选；G21碰撞也仍是原camp/G21同一哈希。主协调独立夜景审阅／是否切4341和用户最终视觉接受仍独立，C03及其余自然资产不因此完成。没有近／侧／性能／通行新矩阵。不要对已交付R10再运行材料改写器；重建本轮须在隔离树恢复归档R9 `54616a3` 的GLB/native/manifest，再按配方执行一次。

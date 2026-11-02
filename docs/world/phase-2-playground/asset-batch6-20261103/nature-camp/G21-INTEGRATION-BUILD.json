@@ -1,0 +1,34 @@
+{
+  "sourceCommit": "3873fc76c60df481fe0b60d192cf4e40173b890d",
+  "rootParent": "df45dea5042e2ce510be7e0cae40b86273aa78cc",
+  "latestRootRuntimeTreeParityCheckedAgainst": "eb69102",
+  "build": "/tmp/bobby-world-batch6-g21-integrated-root",
+  "formalBuildSeconds": 7.177,
+  "configSHA": "4e513b30c2cc9a6483b851ed3c2176a1174f314655b0f1861a4036ccd2ddc6ec",
+  "configurationLoadFailureBeforeBuild": "G21-config-load-failed.log",
+  "oneFormalBuildPassed": true,
+  "entryGraphPassed": true,
+  "geometryFreezePassed": true,
+  "sourceScope": "Minimal G21 delivery; no C03 candidate source/assets. Probe-only emissive field and documentation corrections.",
+  "runtimeConsumerPending": false,
+  "runtimeConsumerEvidence": "G21-INTEGRATION-CONSUMER.json",
+  "finalSourceSuccessfulBuildCount": 1,
+  "priorSourceSuccessfulBuild": {
+    "source": "448ffd282d76b746c3e5057068c98cb3ec12eb9d",
+    "build": "/tmp/bobby-world-batch6-g21-integrated-root-source448ffd2",
+    "reasonForNewSource": "QA fixture mistakenly called a production-line-only review API; final source adds a G21 scoped read-only renderer exposure getter. No geometry/material change."
+  },
+  "priorSparsePackagingFailures": {
+    "configurationLoadsBeforeBundling": 2,
+    "bundleDependencyFailure": 1,
+    "fixedByCheckoutOnly": [
+      "tools/world/alpha-mine-data/local-replay-plugin.mjs",
+      "tools/world/vehicles/door-contract.json"
+    ],
+    "sourceFilesModified": false,
+    "failedLogs": [
+      "G21-config-load-failed.log",
+      "G21-sparse-dependency-failed.log"
+    ]
+  }
+}

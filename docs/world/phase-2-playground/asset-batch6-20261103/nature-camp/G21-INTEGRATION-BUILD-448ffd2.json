@@ -1,0 +1,15 @@
+{
+  "sourceCommit": "448ffd282d76b746c3e5057068c98cb3ec12eb9d",
+  "rootParent": "df45dea5042e2ce510be7e0cae40b86273aa78cc",
+  "latestRootRuntimeTreeParityCheckedAgainst": "eb69102",
+  "build": "/tmp/bobby-world-batch6-g21-integrated-root",
+  "formalBuildSeconds": 7.071,
+  "configSHA": "4e513b30c2cc9a6483b851ed3c2176a1174f314655b0f1861a4036ccd2ddc6ec",
+  "configurationLoadFailureBeforeBuild": "G21-config-load-failed.log",
+  "successfulFormalBuilds": 1,
+  "oneFormalBuildPassed": true,
+  "entryGraphPassed": true,
+  "geometryFreezePassed": true,
+  "sourceScope": "Minimal G21 delivery; no C03 candidate source/assets. Probe-only emissive field and documentation corrections.",
+  "runtimeConsumerPending": true
+}

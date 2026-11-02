@@ -1,0 +1,35 @@
+{
+  "sourceCommit": "3873fc76c60df481fe0b60d192cf4e40173b890d",
+  "build": "/tmp/bobby-world-batch6-g21-integrated-root",
+  "image": "runtime/b6-g21-integrated-night.png",
+  "imageSHA": "5728d00266bc4ed18d54ca63ef9e04a6c5c72f34a5520186cdd8228536164c7f",
+  "raw": "runtime/b6-g21-integrated-night-snapshot-1.json",
+  "rawSHA": "ebd5e3771bee91219472ea7a82a6a866032aec839be178f8a717ea4831e97d78",
+  "actualPrimaryImageInspected": true,
+  "primaryJudgment": "Night silhouette, fractured shoulders and recesses remain legible in the existing cool fill; no emission or overbright private environment. Necessary single night observation satisfies the scoped primary check.",
+  "coordinatorNightVisualAccepted": false,
+  "userFinalVisualAccepted": false,
+  "scope": "Single necessary ordinary night image, not a new near/side/performance/traversal matrix",
+  "exposure": 1,
+  "DPR": 1,
+  "imageSize": [
+    1710,
+    931
+  ],
+  "cameraMaxDeltaFromAcceptedOrdinaryNoon": 7.105427357601002e-15,
+  "G21NightEnvironmentIntensity": [
+    0.22050493951312897,
+    0.22050493951312897,
+    0.22050493951312897
+  ],
+  "HTTPFileParityPassed": true,
+  "filesChecked": 137,
+  "consoleErrors": 0,
+  "fallbacks": [],
+  "C03OriginalPathAndBytesConfirmed": true,
+  "G21OriginalCollisionSourceConfirmed": true,
+  "geometryFrozen": true,
+  "cleanup": "runtime/cleanup-g21-integration.json",
+  "4341ChangedByThisTask": false,
+  "remaining": "Coordinator independently reviews this night image and may reuse the verified formal output for 4341. C03 remains independent and unaccepted."
+}
