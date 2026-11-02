@@ -1,0 +1,258 @@
+{
+  "baseline": "c4f7fca",
+  "sourceVersion": {
+    "baseCommit": "c4f7fca",
+    "hashes": {
+      "WorldWalkCraft.ts": "7b05ff8dc6682dec14a103ddd1d643f7204e56a8e7e06db225c12e4c117b21ae",
+      "WorldParkWalk.tsx": "28851d2bc2cb8188406145f722a3a844cbe94c94908478d3be00b1b9c8382f51",
+      "WorldPark.tsx": "f74cadd13de76be17a560157a11e3d97d3f4dc2591a367a6ef2a9c2ff0670f34",
+      "WorldParkKit.ts": "f2618c15e591692cb8263326e6e2990d84f8dae71dbd7c3e2804f32074225da3",
+      "WorldParkLayout.ts": "dfe69600910ce4424907030fb5f8d6b367b4bf380f1785922fdb448599012f3b",
+      "WorldFacilitySurface.ts": "e859b94b637d8a129e453a9ac297e4d828ca887218ca1a77bd411a6462c6c379"
+    }
+  },
+  "group": "walk",
+  "surfaceMode": "baseline",
+  "view": {
+    "id": "P02-normal",
+    "eye": [
+      64,
+      3.3,
+      -42.8
+    ],
+    "target": [
+      66,
+      1.1,
+      -30
+    ]
+  },
+  "fov": 50,
+  "time": 720,
+  "canvas": [
+    1710,
+    931
+  ],
+  "exposure": 1,
+  "renderer": {
+    "render": {
+      "frame": 3168,
+      "calls": 169,
+      "triangles": 755580,
+      "points": 124,
+      "lines": 0
+    },
+    "memory": {
+      "geometries": 206,
+      "textures": 83
+    }
+  },
+  "quality": "balanced",
+  "night": 0,
+  "blend": 1,
+  "loading": {
+    "phase": "ready",
+    "loaded": 234,
+    "total": 234,
+    "active": false,
+    "failed": 0
+  },
+  "registeredAssets": {
+    "world-park": {
+      "present": true,
+      "meshes": 199,
+      "visible": 115,
+      "nominalTriangles": 399278,
+      "registeredSet": "bcb9703e",
+      "visibleSet": "4606c853",
+      "assetIds": [
+        "P13",
+        "P14",
+        "P15",
+        "P16",
+        "P17",
+        "P18",
+        "djc-club",
+        "djc-north-bar",
+        "djc-pool-lanterns",
+        "exhibit-P14-crate",
+        "exhibit-P15-stool",
+        "lamp"
+      ],
+      "assetIdsCount": 15
+    },
+    "world-street": {
+      "present": true,
+      "meshes": 18,
+      "visible": 13,
+      "nominalTriangles": 52096,
+      "registeredSet": "2fe5758e",
+      "visibleSet": "743860bf",
+      "assetIds": [
+        "F04",
+        "street-fixed",
+        "street-foundation",
+        "street-rail",
+        "street-windmill"
+      ],
+      "assetIdsCount": 5
+    },
+    "djc-beach-club": {
+      "present": true,
+      "meshes": 52,
+      "visible": 52,
+      "nominalTriangles": 306595,
+      "registeredSet": "8f0214d2",
+      "visibleSet": "8f0214d2",
+      "assetIds": [
+        "djc-club",
+        "djc-north-bar",
+        "djc-pool-lanterns"
+      ],
+      "assetIdsCount": 3
+    },
+    "djc-north-bar-visual": {
+      "present": true,
+      "meshes": 18,
+      "visible": 18,
+      "nominalTriangles": 204228,
+      "registeredSet": "de1e20e9",
+      "visibleSet": "de1e20e9",
+      "assetIds": [
+        "djc-north-bar"
+      ],
+      "assetIdsCount": 1
+    },
+    "djc-furniture-visuals": {
+      "present": true,
+      "meshes": 10,
+      "visible": 10,
+      "nominalTriangles": 33280,
+      "registeredSet": "125a9867",
+      "visibleSet": "125a9867",
+      "assetIds": [
+        "djc-club"
+      ],
+      "assetIdsCount": 1
+    },
+    "world-camp-slice": {
+      "present": true,
+      "meshes": 69,
+      "visible": 67,
+      "nominalTriangles": 89043,
+      "registeredSet": "c2897fb3",
+      "visibleSet": "71a08fab",
+      "assetIds": [
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "G16",
+        "G17",
+        "G18",
+        "G19"
+      ],
+      "assetIdsCount": 16
+    }
+  },
+  "loadedGlbs": [
+    "/assets/world/camp/C03.glb",
+    "/assets/world/camp/C04.glb",
+    "/assets/world/camp/C05.glb",
+    "/assets/world/camp/C06.glb",
+    "/assets/world/camp/C07.glb",
+    "/assets/world/camp/C08.glb",
+    "/assets/world/camp/C09.glb",
+    "/assets/world/camp/C10.glb",
+    "/assets/world/camp/C11.glb",
+    "/assets/world/camp/C12.glb",
+    "/assets/world/camp/C13.glb",
+    "/assets/world/camp/C14.glb",
+    "/assets/world/camp/C15.glb",
+    "/assets/world/camp/C16.glb",
+    "/assets/world/camp/G16.glb",
+    "/assets/world/camp/G17.glb",
+    "/assets/world/camp/G18.glb",
+    "/assets/world/camp/G19.glb",
+    "/assets/world/camp/G20.glb",
+    "/assets/world/camp/G21.glb",
+    "/assets/world/camp/G22.glb",
+    "/assets/world/camp/G23.glb",
+    "/assets/world/camp/L01.glb",
+    "/assets/world/camp/craft/camp-props-v1.glb"
+  ],
+  "materialRevision": 6,
+  "reviewReady": {
+    "viewId": "P02-normal",
+    "currentMode": "baseline",
+    "expectedMode": "baseline",
+    "cameraPosition": [
+      64,
+      3.3,
+      -42.8
+    ],
+    "cameraDirection": [
+      0.15219801057192686,
+      -0.1674178116291196,
+      0.9740672676603317
+    ],
+    "cameraReady": true,
+    "textures": [
+      {
+        "name": "uFacilityWood",
+        "uuid": "ab7b432a-88e8-4c17-b5e5-8cc7775237bc",
+        "width": 1024,
+        "height": 512,
+        "version": 1,
+        "gpuVersion": 1
+      },
+      {
+        "name": "uFacilityRough",
+        "uuid": "1252c807-a9ff-4f39-8ebe-8c18f894faba",
+        "width": 1024,
+        "height": 512,
+        "version": 1,
+        "gpuVersion": 1
+      },
+      {
+        "name": "uFacilityNormal",
+        "uuid": "6bc53a53-8dab-436a-b68b-d9cc8dd1cf3c",
+        "width": 1024,
+        "height": 512,
+        "version": 1,
+        "gpuVersion": 1
+      }
+    ],
+    "texturesReady": true,
+    "ready": true
+  },
+  "reviewWarmup": {
+    "stableAgeMs": 99769,
+    "checks": 3,
+    "minimumStableMs": 3000
+  },
+  "shadow": {
+    "pending": false,
+    "slices": 0,
+    "cpuMs": 0,
+    "maxSliceMs": 0,
+    "cancelled": 0,
+    "error": "",
+    "phases": [],
+    "hullWorker": {
+      "requests": 87,
+      "workerMs": 1620,
+      "maxWorkerMs": 585.3999999761581,
+      "maxSource": "intent-coaster",
+      "maxInputVertices": 368460
+    },
+    "centre": [
+      -34.339866707307834,
+      45.96888784356862,
+      46.862287364885034
+    ]
+  }
+}

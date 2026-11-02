@@ -1,0 +1,71 @@
+{
+  "status": "Actual paired ordinary views; contextual renderer snapshots, not a frame-time benchmark",
+  "pairs": [
+    {
+      "view": "P02-normal",
+      "sourceCameraExposureQualityPosesExact": true,
+      "calls": [
+        170,
+        166
+      ],
+      "textures": [
+        83,
+        81
+      ],
+      "unrelatedVisibilityDifferences": {
+        "world-park": [
+          112,
+          110
+        ],
+        "djc-beach-club": [
+          49,
+          47
+        ]
+      }
+    },
+    {
+      "view": "P03-normal",
+      "sourceCameraExposureQualityPosesExact": true,
+      "calls": [
+        74,
+        72
+      ],
+      "textures": [
+        85,
+        82
+      ],
+      "unrelatedVisibilityDifferences": {
+        "world-park": [
+          116,
+          114
+        ],
+        "djc-beach-club": [
+          53,
+          51
+        ]
+      }
+    },
+    {
+      "view": "P02-bearing",
+      "sourceCameraExposureQualityPosesExact": true,
+      "calls": [
+        244,
+        242
+      ],
+      "textures": [
+        105,
+        102
+      ],
+      "unrelatedVisibilityDifferences": {
+        "world-park": [
+          120,
+          118
+        ],
+        "djc-beach-club": [
+          57,
+          55
+        ]
+      }
+    }
+  ]
+}

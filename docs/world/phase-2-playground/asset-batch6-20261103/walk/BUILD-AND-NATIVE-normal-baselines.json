@@ -1,0 +1,110 @@
+{
+  "outDir": "/tmp/bobby-world-batch6-walk-review-r4",
+  "productionBuildSeconds": 14.94,
+  "prebuild": "Club furniture 4 GLBs/16 images; World craft 5 GLBs; Club audio 2, passed",
+  "sourceCommit": "ed3bffc",
+  "sameAdapterForBaselineAndCandidate": true,
+  "nativeFreshImport": {
+    "P02": {
+      "family": "P02",
+      "sourceJSONSHA256": "d116dac83a613f0745d16fceb9ec702b011913589846a4699cebfe04aeb74ac3",
+      "triangles": 7621,
+      "freshBoundsDelta": 0.0,
+      "parts": 454,
+      "images": 3,
+      "portableSHA256": "158ab5f99468208fb8c0a6aca640093f90b4514438611f44bfe0b6eeec1566a9",
+      "status": "exported/fresh-imported; actual runtime visual verdict separate"
+    },
+    "P03": {
+      "family": "P03",
+      "sourceJSONSHA256": "f870674548f2ad0feb0e34d9127552383e9342ecb306749bc1eaa52b4c21e056",
+      "triangles": 312,
+      "freshBoundsDelta": 0.0,
+      "parts": 26,
+      "images": 3,
+      "portableSHA256": "a9e5e9ee1c2dc683eeeba9c79a651700bd5636c13f529a961717564bb8b3d6d1",
+      "status": "exported/fresh-imported; actual runtime visual verdict separate"
+    }
+  },
+  "http": [
+    {
+      "url": "/world/index.html",
+      "status": 200,
+      "bytes": 52276,
+      "sha256": "4b3ca9258ee289e6bf345dfac4f6ceaaf14f0d8194da639848d24378c045522f"
+    },
+    {
+      "url": "/_astro/WorldRuntime.Cp0vF8lL.js",
+      "status": 200,
+      "bytes": 3524340,
+      "sha256": "fcfe223cb29f68a82c535e3552a0227ef520d0e9031de7798ef2d14758bfca19"
+    },
+    {
+      "url": "/assets/world/craft-batch6-facilities/wood-color.png",
+      "status": 200,
+      "bytes": 388568,
+      "sha256": "b24a337f946fae4ed3d94843cba75249a92880b22aad86e4d5e0fa7a61c15e02"
+    },
+    {
+      "url": "/assets/world/craft-batch6-facilities/wood-normal.png",
+      "status": 200,
+      "bytes": 562034,
+      "sha256": "285001688e2a8ec564bb8e1b56d182bf4d77f65779a12198a52a3a1e3f9c935f"
+    },
+    {
+      "url": "/assets/world/craft-batch6-facilities/wood-rough.png",
+      "status": 200,
+      "bytes": 95086,
+      "sha256": "7287de6832e55df62336ccd88bb6f48d468dd285d1fe8113b2693227a563318a"
+    },
+    {
+      "url": "/assets/world/park/P13.glb",
+      "status": 200,
+      "bytes": 28092,
+      "sha256": "01a7e555f94693b3b45092ecba5a8bda19dbd0d00ca9741df605c4e41ead57c5"
+    },
+    {
+      "url": "/assets/world/park/P14.glb",
+      "status": 200,
+      "bytes": 55800,
+      "sha256": "4267c54a636fb1e2be9bac40f36517890b1f656afeb7164a43069c242d571c74"
+    },
+    {
+      "url": "/assets/world/park/P15.glb",
+      "status": 200,
+      "bytes": 75788,
+      "sha256": "b9b846f17f60f6d6f55e1fbf48c47a82f6e9589f66f5009fa2e29b4851141fed"
+    },
+    {
+      "url": "/assets/world/park/P16.glb",
+      "status": 200,
+      "bytes": 18436,
+      "sha256": "881b6a383b3de096a83c9326fcb8f8eaa778e086ddf96cc919d4ae257c3635d9"
+    },
+    {
+      "url": "/assets/world/park/P17.glb",
+      "status": 200,
+      "bytes": 20044,
+      "sha256": "269dddf0d8e3feb2700e31b056ae3dd86ebfeb580e286696f206a011cd2b6ae1"
+    },
+    {
+      "url": "/assets/world/park/P18.glb",
+      "status": 200,
+      "bytes": 20068,
+      "sha256": "ab80160ed6f53173af0fb7a1eafc052a79e8379d8a4eca743cd09aefc6f4a479"
+    },
+    {
+      "url": "/assets/world/park/hut.glb",
+      "status": 200,
+      "bytes": 95064,
+      "sha256": "78f2e502af31e845b29768349772f6410b9816115df8a7509044ada5ae43ccda"
+    },
+    {
+      "url": "/assets/world/park/signs.glb",
+      "status": 200,
+      "bytes": 37420,
+      "sha256": "2cede25941d7804135387c15c1f32b4a6d035df9f9429fc645028b7ff983ae30"
+    }
+  ],
+  "http404": 0
+}

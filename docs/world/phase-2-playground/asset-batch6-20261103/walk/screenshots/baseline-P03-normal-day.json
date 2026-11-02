@@ -1,0 +1,311 @@
+{
+  "baseline": "c4f7fca",
+  "sourceVersion": {
+    "baseCommit": "c4f7fca",
+    "hashes": {
+      "WorldWalkCraft.ts": "7b05ff8dc6682dec14a103ddd1d643f7204e56a8e7e06db225c12e4c117b21ae",
+      "WorldParkWalk.tsx": "f1bd70c698a31fd54f721a1399a5fb958169050a77c584ffecbe295e4224a92a",
+      "WorldPark.tsx": "f74cadd13de76be17a560157a11e3d97d3f4dc2591a367a6ef2a9c2ff0670f34",
+      "WorldParkKit.ts": "f2618c15e591692cb8263326e6e2990d84f8dae71dbd7c3e2804f32074225da3",
+      "WorldParkLayout.ts": "dfe69600910ce4424907030fb5f8d6b367b4bf380f1785922fdb448599012f3b",
+      "WorldFacilitySurface.ts": "e859b94b637d8a129e453a9ac297e4d828ca887218ca1a77bd411a6462c6c379"
+    }
+  },
+  "group": "walk",
+  "surfaceMode": "baseline",
+  "view": {
+    "id": "P03-normal",
+    "eye": [
+      65.135,
+      2.74,
+      -34.525
+    ],
+    "target": [
+      68.7,
+      1.72,
+      -32.9
+    ]
+  },
+  "fov": 50,
+  "time": 720,
+  "canvas": [
+    1710,
+    931
+  ],
+  "exposure": 1,
+  "renderer": {
+    "render": {
+      "frame": 4595,
+      "calls": 74,
+      "triangles": 372666,
+      "points": 28,
+      "lines": 0
+    },
+    "memory": {
+      "geometries": 207,
+      "textures": 85
+    }
+  },
+  "quality": "balanced",
+  "night": 0,
+  "blend": 1,
+  "loading": {
+    "phase": "ready",
+    "loaded": 222,
+    "total": 222,
+    "active": false,
+    "failed": 0
+  },
+  "registeredAssets": {
+    "world-park": {
+      "present": true,
+      "meshes": 203,
+      "visible": 116,
+      "nominalTriangles": 451114,
+      "registeredSet": "92a6405",
+      "visibleSet": "a1ab7fd6",
+      "assetIds": [
+        "P13",
+        "P14",
+        "P15",
+        "P16",
+        "P17",
+        "P18",
+        "djc-club",
+        "djc-north-bar",
+        "djc-pool-lanterns",
+        "exhibit-P14-crate",
+        "exhibit-P15-stool",
+        "lamp"
+      ],
+      "assetIdsCount": 15
+    },
+    "world-street": {
+      "present": true,
+      "meshes": 18,
+      "visible": 13,
+      "nominalTriangles": 52096,
+      "registeredSet": "2fe5758e",
+      "visibleSet": "743860bf",
+      "assetIds": [
+        "F04",
+        "street-fixed",
+        "street-foundation",
+        "street-rail",
+        "street-windmill"
+      ],
+      "assetIdsCount": 5
+    },
+    "djc-beach-club": {
+      "present": true,
+      "meshes": 56,
+      "visible": 53,
+      "nominalTriangles": 358431,
+      "registeredSet": "fb8a85f9",
+      "visibleSet": "b08e27b9",
+      "assetIds": [
+        "djc-club",
+        "djc-north-bar",
+        "djc-pool-lanterns"
+      ],
+      "assetIdsCount": 3
+    },
+    "djc-north-bar-visual": {
+      "present": true,
+      "meshes": 18,
+      "visible": 18,
+      "nominalTriangles": 204228,
+      "registeredSet": "de1e20e9",
+      "visibleSet": "de1e20e9",
+      "assetIds": [
+        "djc-north-bar"
+      ],
+      "assetIdsCount": 1
+    },
+    "djc-furniture-visuals": {
+      "present": true,
+      "meshes": 10,
+      "visible": 10,
+      "nominalTriangles": 33280,
+      "registeredSet": "125a9867",
+      "visibleSet": "125a9867",
+      "assetIds": [
+        "djc-club"
+      ],
+      "assetIdsCount": 1
+    },
+    "world-camp-slice": {
+      "present": true,
+      "meshes": 68,
+      "visible": 66,
+      "nominalTriangles": 84919,
+      "registeredSet": "eae76693",
+      "visibleSet": "9f00bd8b",
+      "assetIds": [
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "G16",
+        "G17",
+        "G18",
+        "G19"
+      ],
+      "assetIdsCount": 16
+    }
+  },
+  "loadedGlbs": [
+    "/assets/world/camp/C03.glb",
+    "/assets/world/camp/C04.glb",
+    "/assets/world/camp/C05.glb",
+    "/assets/world/camp/C06.glb",
+    "/assets/world/camp/C07.glb",
+    "/assets/world/camp/C08.glb",
+    "/assets/world/camp/C09.glb",
+    "/assets/world/camp/C10.glb",
+    "/assets/world/camp/C11.glb",
+    "/assets/world/camp/C12.glb",
+    "/assets/world/camp/C13.glb",
+    "/assets/world/camp/C14.glb",
+    "/assets/world/camp/C15.glb",
+    "/assets/world/camp/C16.glb",
+    "/assets/world/camp/G16.glb",
+    "/assets/world/camp/G17.glb",
+    "/assets/world/camp/G18.glb",
+    "/assets/world/camp/G19.glb",
+    "/assets/world/camp/G20.glb",
+    "/assets/world/camp/G21.glb",
+    "/assets/world/camp/G22.glb",
+    "/assets/world/camp/G23.glb",
+    "/assets/world/camp/L01.glb",
+    "/assets/world/club/bar/djc-north-bar-lod1-v1.glb"
+  ],
+  "walkInstances": [
+    {
+      "name": "park-rail",
+      "count": 42,
+      "nonZeroPositions": 42,
+      "firstPositions": [
+        [
+          60.749916076660156,
+          1.1399999856948853,
+          -44.13262939453125
+        ],
+        [
+          62.62543869018555,
+          1.1399999856948853,
+          -43.382423400878906
+        ],
+        [
+          53.6057243347168,
+          1.1399999856948853,
+          -41.32511520385742
+        ]
+      ]
+    },
+    {
+      "name": "park-rail-far",
+      "count": 0,
+      "nonZeroPositions": 0,
+      "firstPositions": []
+    },
+    {
+      "name": "park-rail-physics-proxy",
+      "count": 42,
+      "nonZeroPositions": 42,
+      "firstPositions": [
+        [
+          60.749916076660156,
+          1.1399999856948853,
+          -44.13262939453125
+        ],
+        [
+          62.62543869018555,
+          1.1399999856948853,
+          -43.382423400878906
+        ],
+        [
+          53.6057243347168,
+          1.1399999856948853,
+          -41.32511520385742
+        ]
+      ]
+    }
+  ],
+  "materialRevision": 6,
+  "reviewReady": {
+    "viewId": "P03-normal",
+    "currentMode": "baseline",
+    "expectedMode": "baseline",
+    "instancesReady": true,
+    "cameraPosition": [
+      65.135,
+      2.74,
+      -34.525
+    ],
+    "cameraDirection": [
+      0.8805757984553326,
+      -0.25194595075019355,
+      0.40138448036182783
+    ],
+    "cameraReady": true,
+    "textures": [
+      {
+        "name": "uFacilityWood",
+        "uuid": "79bf0ac3-4371-44ff-8437-47812cc63be0",
+        "width": 1024,
+        "height": 512,
+        "version": 1,
+        "gpuVersion": 1
+      },
+      {
+        "name": "uFacilityRough",
+        "uuid": "538e2dbe-7a8e-4ed8-8d3e-97ef43d2b1d8",
+        "width": 1024,
+        "height": 512,
+        "version": 1,
+        "gpuVersion": 1
+      },
+      {
+        "name": "uFacilityNormal",
+        "uuid": "c3b0f157-e2df-4fa0-8b9b-49262831db97",
+        "width": 1024,
+        "height": 512,
+        "version": 1,
+        "gpuVersion": 1
+      }
+    ],
+    "texturesReady": true,
+    "ready": true
+  },
+  "reviewWarmup": {
+    "stableAgeMs": 64090,
+    "checks": 3,
+    "minimumStableMs": 3000
+  },
+  "shadow": {
+    "pending": false,
+    "slices": 0,
+    "cpuMs": 0,
+    "maxSliceMs": 0,
+    "cancelled": 1,
+    "error": "",
+    "phases": [],
+    "hullWorker": {
+      "requests": 0,
+      "workerMs": 0,
+      "maxWorkerMs": 0,
+      "maxSource": "",
+      "maxInputVertices": 0
+    },
+    "centre": [
+      -28.612316293635175,
+      46.58995961759593,
+      41.676033597617746
+    ]
+  }
+}

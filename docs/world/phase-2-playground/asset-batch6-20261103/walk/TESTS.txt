@@ -1,0 +1,21 @@
+(node:9022) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ baseline switch reproduces c4f7fca original geometry, P01 and contracts (67.743959ms)
+✔ P02 L0: support slabs, P01 plaza, rail/lamp placements and walking geometry remain exact (58.01625ms)
+✔ P02 L1: support slabs, P01 plaza, rail/lamp placements and walking geometry remain exact (7.747333ms)
+✔ P03 explicit 40 kg cuboid, knock/sleep/reset and LOD controller unchanged (25.017459ms)
+✔ P03 near/far agree at .97 m; adjacent authored sections touch at the handrail (36.855958ms)
+✔ UVs and slots survive batch merge and dynamic clone, finite cylinder seam unwrap (62.710083ms)
+✔ bounded source triangle additions, no new draw/material/per-frame owner (0.27925ms)
+✔ manufactured handrail/post grain axes and underside-bearing hardware contact (2.794584ms)
+✔ cylinder long grain has local origin and no UV interpolation across its wrap seam (2.237792ms)
+✔ actual visual initializer handles origin, late/recreated bodies and transformed parent without physics mutations (0.982ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1068.757042
