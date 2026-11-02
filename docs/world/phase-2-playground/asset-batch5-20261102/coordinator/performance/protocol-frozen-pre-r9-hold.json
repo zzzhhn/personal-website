@@ -1,0 +1,47 @@
+{
+  "status": "R8_identity_verified_sampling_hold_waiting_coordinator_three_C15_image_acceptance",
+  "browserExecuted": false,
+  "files": {
+    "qa.js": "39f54c002cfd19e63edd19a294dea1cbd60b26898dd79c422804349a53d56801",
+    "serve.py": "d56542d91e09f8305147c5502e06323732b7f8f20242c57541177b6df805e0d9"
+  },
+  "maxWindows": 6,
+  "ordering": [
+    "old-a camp",
+    "old-a street",
+    "new camp",
+    "new street",
+    "old-b camp",
+    "old-b street"
+  ],
+  "sameFrozenBuildBothModes": true,
+  "minimumSettleMs": 10000,
+  "maximumSettleMs": 20000,
+  "stableDistinctFrames": 60,
+  "warmupDistinctFrames": 90,
+  "sampleDistinctFrames": 300,
+  "maximumSampleMs": 30000,
+  "requiredCSSAndBuffer": [
+    1710,
+    931
+  ],
+  "requiredDPR": 1,
+  "maximumCameraPlayerDriftM": 0.0001,
+  "stopOnFirstInvalid": true,
+  "sourceEdits": false,
+  "runLabels": [
+    "r8-old-a",
+    "r8-new",
+    "r8-old-b"
+  ],
+  "requiredIdentity": "R8 fresh receipt: original 8 sources plus WorldCampSuitcaseContact.tsx and camp-suitcase-contact.ts; full frozen hashes and entry graph.",
+  "browserRuntimeVerified": false,
+  "samplingHold": true,
+  "holdReason": "R8 identity and entry graph passed; wait for coordinator actual acceptance of three C15 images and explicit hold release.",
+  "identityRecordRetained": "verified-build-r7.json remains valid for R7 identity and entry graph only",
+  "activeProtocol": "PROTOCOL-R8.md",
+  "priorIdentityRecordRetained": "verified-build-r7.json, identity only; not R8 and not performance acceptance",
+  "identityReceiptPath": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/verified-build-r8.json",
+  "identityReceiptSHA256": "964dd089d9ca954651e3073295ee92acdee2f57aa0a8918337ee21eb9e753283",
+  "frozenRoot": "/private/tmp/bobby-world-batch5-r8-fourteen-01a19a62"
+}

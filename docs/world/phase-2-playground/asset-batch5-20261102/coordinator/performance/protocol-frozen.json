@@ -1,0 +1,77 @@
+{
+  "status": "R10_six_valid_windows_independent_review_complete_local_trial_supported",
+  "browserExecuted": true,
+  "files": {
+    "qa.js": "39f54c002cfd19e63edd19a294dea1cbd60b26898dd79c422804349a53d56801",
+    "serve.py": "d56542d91e09f8305147c5502e06323732b7f8f20242c57541177b6df805e0d9"
+  },
+  "maxWindows": 6,
+  "ordering": [
+    "old-a camp",
+    "old-a street",
+    "new camp",
+    "new street",
+    "old-b camp",
+    "old-b street"
+  ],
+  "sameFrozenBuildBothModes": true,
+  "minimumSettleMs": 10000,
+  "maximumSettleMs": 20000,
+  "stableDistinctFrames": 60,
+  "warmupDistinctFrames": 90,
+  "sampleDistinctFrames": 300,
+  "maximumSampleMs": 30000,
+  "requiredCSSAndBuffer": [
+    1710,
+    931
+  ],
+  "requiredDPR": 1,
+  "maximumCameraPlayerDriftM": 0.0001,
+  "stopOnFirstInvalid": true,
+  "sourceEdits": false,
+  "runLabels": [
+    "r10-old-a",
+    "r10-new",
+    "r10-old-b"
+  ],
+  "requiredIdentity": "verified-build-r10.json:60 frozen files/12 sources/actual entry graph",
+  "browserRuntimeVerified": false,
+  "samplingHold": false,
+  "holdReason": null,
+  "identityRecordRetained": "verified-build-r7.json remains valid for R7 identity and entry graph only",
+  "activeProtocol": "PROTOCOL-R10.md",
+  "priorIdentityRecordRetained": "verified-build-r7.json, identity only; not R8 and not performance acceptance",
+  "identityReceiptPath": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/verified-build-r10.json",
+  "identityReceiptSHA256": "2bb2221e36608c4f7b7305de9f80b6c6e07244bcbb204542d67a02ee1a407430",
+  "frozenRoot": "/private/tmp/bobby-world-batch5-r10-fourteen-01a19a62",
+  "holdReleasedBy": "Main coordinator 01a121e9-58d6-7aa2-80e2-10005566c39c explicitly accepted R9 C15 day/night/low originals and released visual hold",
+  "performanceAccepted": false,
+  "preSamplingRequirements": [
+    "R10 onsite shelter native-E sit/stand visible normal-camera acceptance"
+  ],
+  "expectedNextSourceCount": 12,
+  "priorEvidenceRetained": "R9 14-asset visuals/C15 behavior accepted; R9 shelter failure and zero ABA windows retained separately",
+  "holdReleaseRule": "Holder records R10 onsite shelter visibility pass; release automatically for this same R10 protocol",
+  "holdReleaseEvidence": "precondition-r10.json: independent JSON/hash pass; holder actual image acceptance attested; independent visual deferred to avoid sampling load",
+  "executorCompletionDetectionException": {
+    "approvedBy": "Main coordinator 01a121e9-58d6-7aa2-80e2-10005566c39c",
+    "issue": "First completed/saved raw was not recognized by executor regex within55s; measurement itself valid.",
+    "retainedFirstWindow": "runtime/r10-old-a-legacy-camp-sample-1.json",
+    "retainedSHA256": "e626fb07f7367d3b21a4d262b8d31e6b1de71b80f475f6c1dc6af9e052107598",
+    "independentAudit": "first-window-audit-r10.json",
+    "remainingWindows": 5,
+    "allowedChange": "Executor completion detection only: literal saved/direct UI read matching expected run/mode/area filename. No QA/serve/package/gate change, no resample, no seventh window.",
+    "noDuplicateApprovalRequired": true,
+    "pauseGapRecordedBy": "Executor"
+  },
+  "samplingClosed": true,
+  "additionalSamplingAuthorized": false,
+  "completedWindows": 6,
+  "remainingWindows": 0,
+  "browserExecutor": "01a19a62-2107-73a3-b811-07f3c66a5a24",
+  "independentReviewerControlledBrowser": false,
+  "localCandidatePlaytestSupported": true,
+  "boundedPerformanceEvidenceAccepted": true,
+  "performanceAcceptanceScope": "Local candidate trial at two fixed ordinary views and shelter usability only; no strict equal-load, zero-overhead or whole-island guarantee",
+  "finalIndependentAudit": "final-audit-r10.json"
+}

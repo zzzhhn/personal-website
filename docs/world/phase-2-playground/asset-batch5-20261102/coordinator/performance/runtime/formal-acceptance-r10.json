@@ -1,0 +1,45 @@
+{
+  "atUTC": "2026-11-02T16:30:34.990605+00:00",
+  "atAsiaShanghai": "2026-11-03T00:30:34.990742+08:00",
+  "scope": "One formal 4341 ordinary page reload and visible acceptance only; no QA injection, window, viewport override, or sampling.",
+  "browser": "Existing Chrome2/tab1395914218",
+  "result": "PASS: initialization complete, visible normal camp scene, observed R10 loaded resources, no blocking console error, Chinese paused menu retained.",
+  "url": "http://127.0.0.1:4341/world/?start=camp&quality=balanced&paused=1",
+  "observedRuntime": "WorldRuntime.CDhmzaiM.js",
+  "consoleErrors": 0,
+  "consoleWarnings": [
+    "THREE.Clock deprecated; use THREE.Timer",
+    "Rapier initialization deprecated parameters"
+  ],
+  "resourcePreflight": {
+    "memoryPressure": 2,
+    "swapGiB": 12.25,
+    "freeDiskGiB": 30.7,
+    "policy": "reused existing browser and serialized work"
+  },
+  "heavyLockReleased": true,
+  "formalServerLeftRunning": "71234 /Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/Resources/Python.app/Contents/MacOS/Python -m http.server 4341 --bind 127.0.0.1 --directory /tmp/bobby-world-batch5-r10-fourteen-01a19a62",
+  "proof": [
+    {
+      "file": "formal-4341-r10-running.png",
+      "sha256": "b358194393ea88ae0729d27466be11b5806634b456e8a19a9bb2c49651a4bbc6",
+      "bytes": 189776
+    },
+    {
+      "file": "formal-4341-r10-paused.png",
+      "sha256": "a0ec05c9445c23e9d241532f05c8fe1881c8db1e4655a82b7ee4474ae19f1513",
+      "bytes": 89000
+    },
+    {
+      "file": "formal-4341-r10-paused.txt",
+      "sha256": "92cc85b7657970731f752e4ce14ae7f6c59024e172c14eaa6c1c8dc71c56aa7b",
+      "bytes": 3154
+    },
+    {
+      "file": "formal-4341-r10-browser-evidence.json",
+      "sha256": "0900895307c57e07c6ce2ce41eaed014d65d73081b09f3ce01314fb0c911baed",
+      "bytes": 2346
+    }
+  ],
+  "limits": "Single local camp initialization/page acceptance; independent R10 performance conclusion unchanged; no whole-world or zero-cost certification."
+}

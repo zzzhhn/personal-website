@@ -1,0 +1,75 @@
+{
+  "status": "STATE_AND_IMAGE_HASH_PASS",
+  "scope": "Independent lightweight JSON, actual JPEG-header and SHA checks while ABA runs. No browser, image viewer, service or lock used. Independent visual inspection deferred until samples finish; native E provenance is executor attestation, not newly replayed here.",
+  "sitActualDistance": 11.911283953923473,
+  "sitDesiredDistance": 12,
+  "sitSeat": {
+    "id": "street-shelter-seat",
+    "position": [
+      30,
+      1.65,
+      -20.4
+    ],
+    "yaw": -3.141592653589793
+  },
+  "sitCameraTarget": [
+    29.849999999948118,
+    2.570000000010847,
+    -20.399999618530273
+  ],
+  "standGrounded": true,
+  "checks": {
+    "candidateR10Run": true,
+    "actualSeatID": true,
+    "seatPositionPreserved": true,
+    "normalCameraNoShot": true,
+    "worldVisible": true,
+    "guideVisible": true,
+    "nearPlaneClear": true,
+    "seatedCameraRecovered": true,
+    "seatedTargetExit15cm": true,
+    "cameraOpenNegativeXSide": true,
+    "standSeatClearedGrounded": true,
+    "executorNativeEAttestation": true,
+    "hash:r10-shelter-sit-visible.png": true,
+    "hash:r10-shelter-stand-visible.png": true
+  },
+  "images": [
+    {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r10-shelter-sit-visible.png",
+      "sha256": "bf9eb1fda34251f02a1b46178816709a1a66b883f4c2cc7784e14f1b522941d9",
+      "receiptSHA256": "bf9eb1fda34251f02a1b46178816709a1a66b883f4c2cc7784e14f1b522941d9",
+      "matched": true,
+      "actualMediaType": "image/jpeg",
+      "dimensions": [
+        1710,
+        875
+      ]
+    },
+    {
+      "path": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release/docs/world/phase-2-playground/asset-batch5-20261102/coordinator/performance/runtime/r10-shelter-stand-visible.png",
+      "sha256": "3ccfdb6b0e29ec9c59bb435efea07e85be011a2d2b9ae82ff6f7c6fb6edb4445",
+      "receiptSHA256": "3ccfdb6b0e29ec9c59bb435efea07e85be011a2d2b9ae82ff6f7c6fb6edb4445",
+      "matched": true,
+      "actualMediaType": "image/jpeg",
+      "dimensions": [
+        1710,
+        875
+      ]
+    }
+  ],
+  "sourceEvidenceSHA256": {
+    "executor-behavior-r10.json": "3e8206b9f51a99d417b0af4d59ad05aa5d89ff8301821dcdec963af980884c88",
+    "r10-behavior-candidate-shelter-snapshot-1.json": "8fc84c8901a3ae7e85ea2e6022c9519c57a767d82901ed55b1841dac34cfc138",
+    "r10-behavior-candidate-shelter-snapshot-2.json": "fcf9f0ca02135549fb6fed866f036c59ce028fdd579e9093c1838fbae2cb257f"
+  },
+  "performanceAccepted": false,
+  "contradictionRequiringStop": false,
+  "note": "Behavioral shots use natural evening time; fixed Noon/Clear/Balanced requirements apply separately to performance windows. Images preserve executor filenames ending.png but bytes are JPEG.",
+  "finalVisualReview": {
+    "completedAfterSampling": true,
+    "status": "VISIBLE_SIT_STAND_CAMERA_PASS",
+    "report": "FINAL-R10.md",
+    "scope": "Actual existing originals viewed serially; avatar and seat relationship visible, stand E Sit returns. No sitting-animation aesthetic or broad physics acceptance implied."
+  }
+}

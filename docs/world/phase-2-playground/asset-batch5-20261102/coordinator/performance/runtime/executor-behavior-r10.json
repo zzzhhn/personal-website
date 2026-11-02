@@ -1,0 +1,28 @@
+{
+  "actualNativeE": "sit then stand",
+  "artShotUsed": false,
+  "sceneHidden": false,
+  "sitCamera": {
+    "actualDistance": 11.911283953923473,
+    "guideHidden": false,
+    "nearPlaneOverlaps": [],
+    "position": [
+      18.132036833774222,
+      4.707137929859643,
+      -20.425809228915742
+    ],
+    "target": [
+      29.849999999948118,
+      2.570000000010847,
+      -20.399999618530273
+    ]
+  },
+  "standGrounded": true,
+  "sitImage": "r10-shelter-sit-visible.png",
+  "standImage": "r10-shelter-stand-visible.png",
+  "imageSHA256": {
+    "r10-shelter-sit-visible.png": "bf9eb1fda34251f02a1b46178816709a1a66b883f4c2cc7784e14f1b522941d9",
+    "r10-shelter-stand-visible.png": "3ccfdb6b0e29ec9c59bb435efea07e85be011a2d2b9ae82ff6f7c6fb6edb4445"
+  },
+  "scope": "Primary inspected seated image: person and seat relationship visible. R10 protocol behavioral precondition met; performance not yet sampled."
+}

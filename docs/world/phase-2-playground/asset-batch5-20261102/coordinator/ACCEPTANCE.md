@@ -2,6 +2,16 @@
 
 This batch contains eight street facility families, five camp props and one G17 tree family. Ground-shoulder refinement is isolated and excluded from the fourteen-item candidate.
 
+## Current decision — 2026-11-03
+
+The coordinator accepts the fourteen-item R10 package for local playtesting. All scoped asset visual reviews are accepted, including the coordinator's common-tree/street review, C13 grip repair, and C15 contact refinement. The coordinator personally opened both R10 shelter behavior images: the seated guide remains visible and standing restores the interaction prompt. This accepts the narrow camera repair, not a new full-body sitting-animation art pass.
+
+The performance session independently recomputed all six original windows. Candidate camp/street measured 60.00/59.57 FPS and p95 18.1/17.3 ms under the documented local Balanced test conditions. Each window is valid; none was discarded or repeated. Both old A/B loads have different geometry/resource counts, and the 679.306-second review interval and 57/58 ms spikes are retained. These measurements support local playtesting; they do not prove zero cost, strict matched-load improvement, spare GPU capacity, or whole-island 60 FPS. See `performance/FINAL-R10.md` and its raw audit.
+
+The coordinator switched the task-owned 4341 service from batch four to frozen R10 after validating all 60 frozen files and the served HTML/runtime hashes. Batch four remains intact for rollback. The execution owner verified the existing normal 4341 browser page: initialization completed, the camp was visibly rendered, R10 runtime/G17/camp assets actually loaded, and the console had no errors (two deprecation warnings remain). It restored the Chinese pause menu and released the heavy-work lock. This is one normal camp-load acceptance, not a whole-world replay. Browser evidence is recorded in `preview-promotion-r10.json` and `performance/runtime/formal-acceptance-r10.json`; source identity alone is not delivery. No public deployment is performed.
+
+Source integration is on `codex/world-craft-batch5-integration`. The separate shared integration worktree, including its existing roadblock/roof surface fixes, terrain work and actor changes, is untouched. The isolated ground-shoulder pilot remains excluded until its night/disturbance/cost checks pass. Sections below retain the chronological repair and rejection history rather than silently rewriting earlier outcomes.
+
 The coordinator personally compared the G17 and ground day/night web captures. G17 R3 is visually accepted at the sampled scale; ground R4 was returned for its hard carpet-like path boundary. See `NATURE-R4-REVIEW.md`. This is not permission to propagate the tree to every species.
 
 The independent facility reviewer examined forty web images and accepted eleven of thirteen facility families. The coordinator inspected the two reported defects in the original web images and agreed with the findings: C13's bright, raised grip lines read as wrapped wire, and C15 needs credible wheel contact. See `FACILITIES-REVIEW.md`. The measured C15 resting wheel gap is approximately 3.58 mm above the 4.9 m paving surface; the narrow correction is to remove its candidate-only 4 mm spawn clearance, preserving legacy mode and other props.
@@ -30,7 +40,7 @@ The coordinator has released R9's visual sampling hold. The execution session ow
 
 R9's real C15 sequence used native W input: the body moved about 0.448 m, tipped approximately 90 degrees, then returned to its home position and sleeping state through the existing 30-second reset mechanism after the player left. The coordinator opened the displaced and reset low-angle images. No stale patch is visible in the exposed area and contact returns after reset; the fallen body obscures part of the four previous contact locations, so this is not claimed as a fully unobstructed four-point observation. Together with the targeted support/lift/tilt/fade tests, this is sufficient for the local change. No additional screenshot or runtime probe is requested. See the execution tree's `camp-contact-r9/runtime/r9-C15-displaced-low.png` and `r9-C15-reset-low.png` and corresponding raw snapshots 4–8.
 
-## Pending before preview promotion
+## Historical pre-promotion hold
 
 R9 shelter validation exposed a pre-existing seated-camera defect before any performance sampling: native E seating and standing worked, but the seated camera's actual distance stayed at zero even toward the open -X side. The seat's valid buttock datum is local X=0.4. The rear convex hull begins at X=0.61, so the 0.22 m camera sphere at the buttock XZ starts 1 cm inside it. The exported `SHELTER_SEAT_LOCAL` X=-0.05 is stale and unused; using it would move the actual posterior support outside the bench and is not the fix.
 

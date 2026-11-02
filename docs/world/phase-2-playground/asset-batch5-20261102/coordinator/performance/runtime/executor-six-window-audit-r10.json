@@ -1,0 +1,238 @@
+{
+  "scope": "Executor audit only; independent performance interpretation pending. One ABA, six windows, no repeat. Review gap preserved in executor-wait-note-r10.json.",
+  "allChecksPass": true,
+  "samples": [
+    {
+      "name": "r10-old-a-legacy-camp-sample-1",
+      "sha256": "e626fb07f7367d3b21a4d262b8d31e6b1de71b80f475f6c1dc6af9e052107598",
+      "mtimeUTC": "2026-11-02T15:58:35.169127+00:00",
+      "checks": {
+        "valid": true,
+        "frames300": true,
+        "unique300": true,
+        "consecutive": true,
+        "warm90": true,
+        "stable60": true,
+        "settle10to20": true,
+        "countersInvariant": true,
+        "shadowClear": true,
+        "playerDrift": true,
+        "cameraDrift": true,
+        "runningVisible": true,
+        "bufferFixed": true
+      },
+      "summary": {
+        "frames": 300,
+        "warmupFrames": 90,
+        "fps": 59.40594059405941,
+        "p50": 16.699999928474426,
+        "p95": 17.399999976158142,
+        "max": 57,
+        "over33_4ms": 1,
+        "gpuMs": null
+      },
+      "stats": {
+        "calls": 162,
+        "triangles": 621902,
+        "geometries": 252,
+        "textures": 84,
+        "programs": 183
+      }
+    },
+    {
+      "name": "r10-old-a-legacy-street-sample-2",
+      "sha256": "dcdf56a862232f25dd6a4bdb43880c635be4a45bad4edf74a0daca7fff7359bc",
+      "mtimeUTC": "2026-11-02T16:13:11.293518+00:00",
+      "checks": {
+        "valid": true,
+        "frames300": true,
+        "unique300": true,
+        "consecutive": true,
+        "warm90": true,
+        "stable60": true,
+        "settle10to20": true,
+        "countersInvariant": true,
+        "shadowClear": true,
+        "playerDrift": true,
+        "cameraDrift": true,
+        "runningVisible": true,
+        "bufferFixed": true
+      },
+      "summary": {
+        "frames": 300,
+        "warmupFrames": 90,
+        "fps": 59.97960693307075,
+        "p50": 16.699999928474426,
+        "p95": 17.800000071525574,
+        "max": 22,
+        "over33_4ms": 0,
+        "gpuMs": null
+      },
+      "stats": {
+        "calls": 140,
+        "triangles": 544799,
+        "geometries": 309,
+        "textures": 92,
+        "programs": 188
+      }
+    },
+    {
+      "name": "r10-new-candidate-camp-sample-1",
+      "sha256": "caff42541a7b9579cb9c19666f7febfc60cddeca27d2c696f5f9dec30c4a908c",
+      "mtimeUTC": "2026-11-02T16:14:14.408833+00:00",
+      "checks": {
+        "valid": true,
+        "frames300": true,
+        "unique300": true,
+        "consecutive": true,
+        "warm90": true,
+        "stable60": true,
+        "settle10to20": true,
+        "countersInvariant": true,
+        "shadowClear": true,
+        "playerDrift": true,
+        "cameraDrift": true,
+        "runningVisible": true,
+        "bufferFixed": true
+      },
+      "summary": {
+        "frames": 300,
+        "warmupFrames": 90,
+        "fps": 59.99880002371343,
+        "p50": 16.699999928474426,
+        "p95": 18.100000023841858,
+        "max": 18.799999952316284,
+        "over33_4ms": 0,
+        "gpuMs": null
+      },
+      "stats": {
+        "calls": 208,
+        "triangles": 737011,
+        "geometries": 350,
+        "textures": 90,
+        "programs": 172
+      }
+    },
+    {
+      "name": "r10-new-candidate-street-sample-2",
+      "sha256": "17c5e0721e1273fdfcf777d6815dd1a0a846d83c7f3ee33ac36fcf894b9f855b",
+      "mtimeUTC": "2026-11-02T16:14:46.009331+00:00",
+      "checks": {
+        "valid": true,
+        "frames300": true,
+        "unique300": true,
+        "consecutive": true,
+        "warm90": true,
+        "stable60": true,
+        "settle10to20": true,
+        "countersInvariant": true,
+        "shadowClear": true,
+        "playerDrift": true,
+        "cameraDrift": true,
+        "runningVisible": true,
+        "bufferFixed": true
+      },
+      "summary": {
+        "frames": 300,
+        "warmupFrames": 90,
+        "fps": 59.57108816521048,
+        "p50": 16.699999928474426,
+        "p95": 17.300000071525574,
+        "max": 58,
+        "over33_4ms": 1,
+        "gpuMs": null
+      },
+      "stats": {
+        "calls": 141,
+        "triangles": 584554,
+        "geometries": 392,
+        "textures": 96,
+        "programs": 175
+      }
+    },
+    {
+      "name": "r10-old-b-legacy-camp-sample-1",
+      "sha256": "4854845630397a2aa37b31e35d5757e55814fcfbd0b723d05195a2a15ae34d82",
+      "mtimeUTC": "2026-11-02T16:16:07.269287+00:00",
+      "checks": {
+        "valid": true,
+        "frames300": true,
+        "unique300": true,
+        "consecutive": true,
+        "warm90": true,
+        "stable60": true,
+        "settle10to20": true,
+        "countersInvariant": true,
+        "shadowClear": true,
+        "playerDrift": true,
+        "cameraDrift": true,
+        "runningVisible": true,
+        "bufferFixed": true
+      },
+      "summary": {
+        "frames": 300,
+        "warmupFrames": 90,
+        "fps": 59.9880023995201,
+        "p50": 16.699999928474426,
+        "p95": 17.5,
+        "max": 17.700000047683716,
+        "over33_4ms": 0,
+        "gpuMs": null
+      },
+      "stats": {
+        "calls": 162,
+        "triangles": 644686,
+        "geometries": 325,
+        "textures": 87,
+        "programs": 170
+      }
+    },
+    {
+      "name": "r10-old-b-legacy-street-sample-2",
+      "sha256": "f796c71bef29ee2661b86d230be96bc89a2bb9b44f8ba27dc7229c38b40a440b",
+      "mtimeUTC": "2026-11-02T16:16:43.336282+00:00",
+      "checks": {
+        "valid": true,
+        "frames300": true,
+        "unique300": true,
+        "consecutive": true,
+        "warm90": true,
+        "stable60": true,
+        "settle10to20": true,
+        "countersInvariant": true,
+        "shadowClear": true,
+        "playerDrift": true,
+        "cameraDrift": true,
+        "runningVisible": true,
+        "bufferFixed": true
+      },
+      "summary": {
+        "frames": 300,
+        "warmupFrames": 90,
+        "fps": 60.00240009514547,
+        "p50": 16.699999928474426,
+        "p95": 17.600000023841858,
+        "max": 17.899999976158142,
+        "over33_4ms": 0,
+        "gpuMs": null
+      },
+      "stats": {
+        "calls": 140,
+        "triangles": 560413,
+        "geometries": 380,
+        "textures": 93,
+        "programs": 173
+      }
+    }
+  ],
+  "preparationEvents": [
+    {
+      "phase": "candidate navigation",
+      "event": "Normal camp click timed out before load controls appeared; no sample click or raw generated; waited until visible then primed once."
+    },
+    {
+      "phase": "oldB navigation",
+      "event": "First 3s visible wait timed out before controls; bounded readiness wait succeeded; no sample click or raw generated."
+    }
+  ]
+}

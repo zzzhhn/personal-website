@@ -1,0 +1,667 @@
+{
+  "verifiedAt": "2026-11-02T22:12:15.912188+08:00",
+  "status": "IDENTITY_AND_ENTRY_GRAPH_PASS",
+  "receiptPath": "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5/docs/world/phase-2-playground/asset-batch5-20261102/build-r9-fourteen.json",
+  "receiptSHA256": "5f5a19826a5c86cabec5d2d4366febb5821701a1785370083756f01c9c1add87",
+  "frozenRoot": "/private/tmp/bobby-world-batch5-r9-fourteen-01a19a62",
+  "sourceCommit": "ba35d23303f8d4891de57a1b2e554c92a72f133e",
+  "observedHeads": {
+    "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-craft-batch5": "ba35d23303f8d4891de57a1b2e554c92a72f133e",
+    "/Users/a22309/Desktop/Side-projects/Artifacts/personal-world-djc-release": "9ca4d9fb8f9d9ff09ec7a2f5e6d535349b6ac524"
+  },
+  "frozenMatched": 60,
+  "frozenTotal": 60,
+  "sourceMatchedBothTrees": 10,
+  "sourceTotal": 10,
+  "baselineTerrainSHA256": "ed9860242739385cdfd3fd28c8c920d1a02a7249d56b390658b3801868b7644a",
+  "files": [
+    {
+      "path": "index.html",
+      "expectedSHA256": "e8cc2bd8a922c12d0dcb90af963f0e243613b2a0ddb1ec3ab7266fac297fb5a3",
+      "actualSHA256": "e8cc2bd8a922c12d0dcb90af963f0e243613b2a0ddb1ec3ab7266fac297fb5a3",
+      "matched": true
+    },
+    {
+      "path": "world/index.html",
+      "expectedSHA256": "9ef367be6371d636c7bcd1f7e76db7ccd7bc7b4e0c5899cd6ce3389114daf749",
+      "actualSHA256": "9ef367be6371d636c7bcd1f7e76db7ccd7bc7b4e0c5899cd6ce3389114daf749",
+      "matched": true
+    },
+    {
+      "path": "_astro/index.DP38BoPS.js",
+      "expectedSHA256": "6f9497145656a20d500d279519ad0273c3a5a9a813061a7067bbc72e5433508f",
+      "actualSHA256": "6f9497145656a20d500d279519ad0273c3a5a9a813061a7067bbc72e5433508f",
+      "matched": true
+    },
+    {
+      "path": "_astro/WorldDistricts.CaODWDsr.js",
+      "expectedSHA256": "de4bed407c55b986be49e15f470eb2a52c66912099ca45fe0f6aa1d3ca77ec12",
+      "actualSHA256": "de4bed407c55b986be49e15f470eb2a52c66912099ca45fe0f6aa1d3ca77ec12",
+      "matched": true
+    },
+    {
+      "path": "_astro/actor-physics.C7mIiVjT.js",
+      "expectedSHA256": "b1dae54359645b913374876dbdd6a0f3ae87c6b0116900daa35721221b601017",
+      "actualSHA256": "b1dae54359645b913374876dbdd6a0f3ae87c6b0116900daa35721221b601017",
+      "matched": true
+    },
+    {
+      "path": "_astro/index.BzumvINc.js",
+      "expectedSHA256": "c66b1944abad892a3a6ef9520645c0b33ff353cc4976f9e96e7ea4a189605c59",
+      "actualSHA256": "c66b1944abad892a3a6ef9520645c0b33ff353cc4976f9e96e7ea4a189605c59",
+      "matched": true
+    },
+    {
+      "path": "_astro/WorldIbdHud.DDEqm0LV.js",
+      "expectedSHA256": "0e00006007fed8e1c96f8da444e4a2f3dbdc2d330b04735a28bbaa524eb4b5ef",
+      "actualSHA256": "0e00006007fed8e1c96f8da444e4a2f3dbdc2d330b04735a28bbaa524eb4b5ef",
+      "matched": true
+    },
+    {
+      "path": "_astro/WorldApp.BVoCjssk.js",
+      "expectedSHA256": "b6c335bc00c00dcfb633d8420e6f82faff3912831ddd426a1afa3083459099d0",
+      "actualSHA256": "b6c335bc00c00dcfb633d8420e6f82faff3912831ddd426a1afa3083459099d0",
+      "matched": true
+    },
+    {
+      "path": "_astro/projectStatus.Bt-t_QXW.js",
+      "expectedSHA256": "160c8019f4f23dcb9a5c7697ffe2d9341d9fe5ea5d9b3e5643f15e553e54e522",
+      "actualSHA256": "160c8019f4f23dcb9a5c7697ffe2d9341d9fe5ea5d9b3e5643f15e553e54e522",
+      "matched": true
+    },
+    {
+      "path": "_astro/ExperienceTimeline.BzMuRL-H.js",
+      "expectedSHA256": "a3457b121f8c3a8836babe589ceceae09b838c236d0ae81951f2e36177ef3a84",
+      "actualSHA256": "a3457b121f8c3a8836babe589ceceae09b838c236d0ae81951f2e36177ef3a84",
+      "matched": true
+    },
+    {
+      "path": "_astro/ibd-pack-play.D6FfYSq7.js",
+      "expectedSHA256": "d34f15ba7bed400004dfa4cf89e9fb81dace10aaea1398388ec6c85aabd84447",
+      "actualSHA256": "d34f15ba7bed400004dfa4cf89e9fb81dace10aaea1398388ec6c85aabd84447",
+      "matched": true
+    },
+    {
+      "path": "_astro/BioParagraph.BdysohDM.js",
+      "expectedSHA256": "f0c3c89eb6050a4bbc5f829b6ec95266bdc1a02e61072761e16f4141723fdba1",
+      "actualSHA256": "f0c3c89eb6050a4bbc5f829b6ec95266bdc1a02e61072761e16f4141723fdba1",
+      "matched": true
+    },
+    {
+      "path": "_astro/client.BINMsa6k.js",
+      "expectedSHA256": "bd8e88b321e8e849e10322175edc3529f05ed07d1e9e3f02f9c99a5a6e1d3f88",
+      "actualSHA256": "bd8e88b321e8e849e10322175edc3529f05ed07d1e9e3f02f9c99a5a6e1d3f88",
+      "matched": true
+    },
+    {
+      "path": "_astro/Strands.DVBGmts1.js",
+      "expectedSHA256": "592c920a198eea2ca35527f835347f14c7f19c005ab2e43f2424b86cb044c824",
+      "actualSHA256": "592c920a198eea2ca35527f835347f14c7f19c005ab2e43f2424b86cb044c824",
+      "matched": true
+    },
+    {
+      "path": "_astro/ProjectShowcase.4hy2O0wF.js",
+      "expectedSHA256": "6642a2e19cd98bb786c331193f412819c0427ff71004862dae2876c5c4fd0eaf",
+      "actualSHA256": "6642a2e19cd98bb786c331193f412819c0427ff71004862dae2876c5c4fd0eaf",
+      "matched": true
+    },
+    {
+      "path": "_astro/MotionPortfolio.CEOKIuMr.js",
+      "expectedSHA256": "34e1773e94aee5f98e125420e678b68a42db76b5ee5e1c60238607dfcbd9de07",
+      "actualSHA256": "34e1773e94aee5f98e125420e678b68a42db76b5ee5e1c60238607dfcbd9de07",
+      "matched": true
+    },
+    {
+      "path": "_astro/coaster-structure.worker-CDOZ3Rn7.js",
+      "expectedSHA256": "2f4ee1a732d659a041275456678740d983b6ada53e40675af4decf909967b0fe",
+      "actualSHA256": "2f4ee1a732d659a041275456678740d983b6ada53e40675af4decf909967b0fe",
+      "matched": true
+    },
+    {
+      "path": "_astro/intent-workshop-runtime.CpvxZYCw.js",
+      "expectedSHA256": "595a744e1a30895f55762778bfe2b57bcab22d7333a251037eb657856ac4ca4f",
+      "actualSHA256": "595a744e1a30895f55762778bfe2b57bcab22d7333a251037eb657856ac4ca4f",
+      "matched": true
+    },
+    {
+      "path": "_astro/draco_wasm_wrapper.DxJM36Ib.js",
+      "expectedSHA256": "e8049906ef3f8f75d3456c22a3f31bfdfe5b5b5bd09ccdec613b9e9a49d554d8",
+      "actualSHA256": "e8049906ef3f8f75d3456c22a3f31bfdfe5b5b5bd09ccdec613b9e9a49d554d8",
+      "matched": true
+    },
+    {
+      "path": "_astro/WorldApp.kyI3W9ni.js",
+      "expectedSHA256": "5699f0f6cdb42fbf569098110bbd4a9006660e98d5962f7e3e3602cc3345e03f",
+      "actualSHA256": "5699f0f6cdb42fbf569098110bbd4a9006660e98d5962f7e3e3602cc3345e03f",
+      "matched": true
+    },
+    {
+      "path": "_astro/TypewriterText.DNpYniWD.js",
+      "expectedSHA256": "72d19f47422048f8e69d0917a3a47ae52f0847a959ae6e4d51b7d47a04a9e3a8",
+      "actualSHA256": "72d19f47422048f8e69d0917a3a47ae52f0847a959ae6e4d51b7d47a04a9e3a8",
+      "matched": true
+    },
+    {
+      "path": "_astro/WorldUiTest.CQsJcIRt.js",
+      "expectedSHA256": "a9a0b72a1cdc4c83dbc9c1c10d3ff762af19c071974945586b889ab9af9c9269",
+      "actualSHA256": "a9a0b72a1cdc4c83dbc9c1c10d3ff762af19c071974945586b889ab9af9c9269",
+      "matched": true
+    },
+    {
+      "path": "_astro/draco_decoder.fzg4nYZr.js",
+      "expectedSHA256": "30e4d486fa020737af10e3c56197693e5b904bdc05b8bfa5d7b06751dec6da04",
+      "actualSHA256": "30e4d486fa020737af10e3c56197693e5b904bdc05b8bfa5d7b06751dec6da04",
+      "matched": true
+    },
+    {
+      "path": "_astro/draco_wasm_wrapper.fZCQGLGb.js",
+      "expectedSHA256": "8bb2952d2ba7d67e1414f8df819410cb0434a666be53f671fff75f68843d76f6",
+      "actualSHA256": "8bb2952d2ba7d67e1414f8df819410cb0434a666be53f671fff75f68843d76f6",
+      "matched": true
+    },
+    {
+      "path": "_astro/WorldIntentHud.CArL_Pff.js",
+      "expectedSHA256": "3701d7ba49ec0f9d2d0f3698297f160e3fb85f9662669b8800ef41f0f14a9d2a",
+      "actualSHA256": "3701d7ba49ec0f9d2d0f3698297f160e3fb85f9662669b8800ef41f0f14a9d2a",
+      "matched": true
+    },
+    {
+      "path": "_astro/WorldLoadProgress._saYDh0-.js",
+      "expectedSHA256": "8d23b676cbc2cf190c8c31d4e7fc3249d2fea15db2499d36e5e528e416466021",
+      "actualSHA256": "8d23b676cbc2cf190c8c31d4e7fc3249d2fea15db2499d36e5e528e416466021",
+      "matched": true
+    },
+    {
+      "path": "_astro/WorldLandform.DVemwmPb.js",
+      "expectedSHA256": "250c980e00edbb8dd024addd927f7dc0ab13e1409a7527f034924d3e290d3247",
+      "actualSHA256": "250c980e00edbb8dd024addd927f7dc0ab13e1409a7527f034924d3e290d3247",
+      "matched": true
+    },
+    {
+      "path": "_astro/coaster-track.CIyrv1uA.js",
+      "expectedSHA256": "00df1bdcdd0cee4a89b242bfbb8bb438a4301a0394420c16b0df817215cfc339",
+      "actualSHA256": "00df1bdcdd0cee4a89b242bfbb8bb438a4301a0394420c16b0df817215cfc339",
+      "matched": true
+    },
+    {
+      "path": "_astro/ibd-yard-guide.DVaqZqJO.js",
+      "expectedSHA256": "2a504b854518920b033ec999adf084d75f6238c724e7f01b39dfeb8b3d9a6ced",
+      "actualSHA256": "2a504b854518920b033ec999adf084d75f6238c724e7f01b39dfeb8b3d9a6ced",
+      "matched": true
+    },
+    {
+      "path": "_astro/analytics.CZcLqhSq.js",
+      "expectedSHA256": "7e8308ed02c15cda4728fbae437f93e33c8cf7cf96bf4a065a29c96de4c4d842",
+      "actualSHA256": "7e8308ed02c15cda4728fbae437f93e33c8cf7cf96bf4a065a29c96de4c4d842",
+      "matched": true
+    },
+    {
+      "path": "_astro/WorldRuntime.D7NGFd4R.js",
+      "expectedSHA256": "961457ab7a7b006b81656879cc01b899691f6dbe935eba91d77ef1a134c8fe1f",
+      "actualSHA256": "961457ab7a7b006b81656879cc01b899691f6dbe935eba91d77ef1a134c8fe1f",
+      "matched": true
+    },
+    {
+      "path": "_astro/jsx-runtime.u17CrQMm.js",
+      "expectedSHA256": "158671ca747dc8bd9874f7dc436ba4576af1f90ea02dba567022f0b3b81e231f",
+      "actualSHA256": "158671ca747dc8bd9874f7dc436ba4576af1f90ea02dba567022f0b3b81e231f",
+      "matched": true
+    },
+    {
+      "path": "_astro/proxy.fmCGwqvs.js",
+      "expectedSHA256": "d97f83168392521dc7ebe1e25aaf28a481a2d1febc83558901b5d963215b2dd7",
+      "actualSHA256": "d97f83168392521dc7ebe1e25aaf28a481a2d1febc83558901b5d963215b2dd7",
+      "matched": true
+    },
+    {
+      "path": "_astro/three.core.hRBAa5ew.js",
+      "expectedSHA256": "123bdd341a4cf925fefd71d2c3011ed34f799fece3848945ad176517faee5bcf",
+      "actualSHA256": "123bdd341a4cf925fefd71d2c3011ed34f799fece3848945ad176517faee5bcf",
+      "matched": true
+    },
+    {
+      "path": "_astro/shadow-chunk-hull.worker-xfxZf1i5.js",
+      "expectedSHA256": "51495d2b4799f21a11d5e74ec58b886f55d25390128fa3175ea59f5200b01220",
+      "actualSHA256": "51495d2b4799f21a11d5e74ec58b886f55d25390128fa3175ea59f5200b01220",
+      "matched": true
+    },
+    {
+      "path": "_astro/WorldIbdYard.CbuGMm1Q.js",
+      "expectedSHA256": "d1af6f0ab080601c6124153120bb97f7b8371a2660489719dfd06597fdfe1b60",
+      "actualSHA256": "d1af6f0ab080601c6124153120bb97f7b8371a2660489719dfd06597fdfe1b60",
+      "matched": true
+    },
+    {
+      "path": "_astro/three.module.CvbuiVxb.js",
+      "expectedSHA256": "49389ff617c4b530774d67d5e99cdfc449714cf1457e036703eaa7d2992be16b",
+      "actualSHA256": "49389ff617c4b530774d67d5e99cdfc449714cf1457e036703eaa7d2992be16b",
+      "matched": true
+    },
+    {
+      "path": "_astro/BaseLayout.astro_astro_type_script_index_0_lang.CmrUZ3VW.js",
+      "expectedSHA256": "a7024d267e29a00ea139960a9b0d30827e81862f2f85bcf97260db8e1830d8c6",
+      "actualSHA256": "a7024d267e29a00ea139960a9b0d30827e81862f2f85bcf97260db8e1830d8c6",
+      "matched": true
+    },
+    {
+      "path": "_astro/LanguageRotator.B5Onp-4o.js",
+      "expectedSHA256": "ee56eb2d3ca38d46729c074739923f6c05cfbc57d11ce7dd24f280761bcec7d8",
+      "actualSHA256": "ee56eb2d3ca38d46729c074739923f6c05cfbc57d11ce7dd24f280761bcec7d8",
+      "matched": true
+    },
+    {
+      "path": "_astro/client.BogH9A_j.js",
+      "expectedSHA256": "d59721b343eecba74c7a79e0f17fa8602a0ff9893f1526697fbf8ce755fa18c9",
+      "actualSHA256": "d59721b343eecba74c7a79e0f17fa8602a0ff9893f1526697fbf8ce755fa18c9",
+      "matched": true
+    },
+    {
+      "path": "_astro/ScrollExpand.CPMTg2tF.js",
+      "expectedSHA256": "f2866e6c0174ae1778ba56a873659c698256e6a8243d722104898185cc857f9f",
+      "actualSHA256": "f2866e6c0174ae1778ba56a873659c698256e6a8243d722104898185cc857f9f",
+      "matched": true
+    },
+    {
+      "path": "_astro/AwardsGrid.BOuP0LTB.js",
+      "expectedSHA256": "a429dd35cf701d607fb0ae56519e74cd8c98c4de51cb57d329bafaba16dbf617",
+      "actualSHA256": "a429dd35cf701d607fb0ae56519e74cd8c98c4de51cb57d329bafaba16dbf617",
+      "matched": true
+    },
+    {
+      "path": "_astro/WorldIntentCoaster.oXtvqzw7.js",
+      "expectedSHA256": "e89c25cfc9aaf1f6f2f58ed23cbe0e667914e0df4ab50a9cb78c5812ccce789b",
+      "actualSHA256": "e89c25cfc9aaf1f6f2f58ed23cbe0e667914e0df4ab50a9cb78c5812ccce789b",
+      "matched": true
+    },
+    {
+      "path": "_astro/intent-state.DLcLw13K.js",
+      "expectedSHA256": "32f25f28413be872f0782af4047c17731812d10022034626ba456904b16f88f9",
+      "actualSHA256": "32f25f28413be872f0782af4047c17731812d10022034626ba456904b16f88f9",
+      "matched": true
+    },
+    {
+      "path": "assets/world/facility-craft/camp/camp-facilities-v1.glb",
+      "expectedSHA256": "140775157095ffef464897093aece407ad28781f7cc282962a165a4f655f3703",
+      "actualSHA256": "140775157095ffef464897093aece407ad28781f7cc282962a165a4f655f3703",
+      "matched": true
+    },
+    {
+      "path": "assets/world/facility-craft/nature/G17.glb",
+      "expectedSHA256": "e6f3d4c944b2060db5c2bf967f2c6b0a60db2e18ea7506560bbb1469a12ee506",
+      "actualSHA256": "e6f3d4c944b2060db5c2bf967f2c6b0a60db2e18ea7506560bbb1469a12ee506",
+      "matched": true
+    },
+    {
+      "path": "assets/world/facility-craft/street/bin.glb",
+      "expectedSHA256": "419a43e1b89033ef71182fe02185a22e52cb1aeb78388cdff541cde942417481",
+      "actualSHA256": "419a43e1b89033ef71182fe02185a22e52cb1aeb78388cdff541cde942417481",
+      "matched": true
+    },
+    {
+      "path": "assets/world/facility-craft/street/roadblock.glb",
+      "expectedSHA256": "5127e410e7770e3a88bbfa3ec0a97243244635d8a1d0192914a4a733a4159022",
+      "actualSHA256": "5127e410e7770e3a88bbfa3ec0a97243244635d8a1d0192914a4a733a4159022",
+      "matched": true
+    },
+    {
+      "path": "assets/world/facility-craft/street/seawallBay.glb",
+      "expectedSHA256": "b4bed1b1ecb9d06db1a63af1a98adbd895fb4161cddf1309676a37807868e388",
+      "actualSHA256": "b4bed1b1ecb9d06db1a63af1a98adbd895fb4161cddf1309676a37807868e388",
+      "matched": true
+    },
+    {
+      "path": "assets/world/facility-craft/street/lamp.glb",
+      "expectedSHA256": "b101410f6efd9d503587778f4ddd66803c8e5a11a13af8a4bf760e9256f382c4",
+      "actualSHA256": "b101410f6efd9d503587778f4ddd66803c8e5a11a13af8a4bf760e9256f382c4",
+      "matched": true
+    },
+    {
+      "path": "assets/world/facility-craft/street/shelter.glb",
+      "expectedSHA256": "c60fb6d3e6fd2ca5c9cfb3047ddf9a2b7d094a5e38e3fc348cf98e415c1ad6e3",
+      "actualSHA256": "c60fb6d3e6fd2ca5c9cfb3047ddf9a2b7d094a5e38e3fc348cf98e415c1ad6e3",
+      "matched": true
+    },
+    {
+      "path": "assets/world/facility-craft/street/bench.glb",
+      "expectedSHA256": "b910f7fc22727c4587edb7cdd6512ed4b617f7be1279a3514f13a9e0ce7451af",
+      "actualSHA256": "b910f7fc22727c4587edb7cdd6512ed4b617f7be1279a3514f13a9e0ce7451af",
+      "matched": true
+    },
+    {
+      "path": "assets/world/facility-craft/street/signal.glb",
+      "expectedSHA256": "4cd0ae0b3c33741f77b217c18321fd60b14966837d5a909451155255b5c68094",
+      "actualSHA256": "4cd0ae0b3c33741f77b217c18321fd60b14966837d5a909451155255b5c68094",
+      "matched": true
+    },
+    {
+      "path": "assets/world/facility-craft/street/timberRail.glb",
+      "expectedSHA256": "b1c0654da480cdd15447a952620ab6c7a1dcfb79b7a8ebc2684b1309e76f1770",
+      "actualSHA256": "b1c0654da480cdd15447a952620ab6c7a1dcfb79b7a8ebc2684b1309e76f1770",
+      "matched": true
+    },
+    {
+      "path": "projects/djc/index.html",
+      "expectedSHA256": "8c97dab7751bcb75a30a12183b58a32fc78e5e71f93227c104858a1b144029af",
+      "actualSHA256": "8c97dab7751bcb75a30a12183b58a32fc78e5e71f93227c104858a1b144029af",
+      "matched": true
+    },
+    {
+      "path": "projects/interactive-learning-platforms/index.html",
+      "expectedSHA256": "3067ea83c4cda95b687397b75ba2f1ac80f6fd7759df7bd6040e7120b44cec92",
+      "actualSHA256": "3067ea83c4cda95b687397b75ba2f1ac80f6fd7759df7bd6040e7120b44cec92",
+      "matched": true
+    },
+    {
+      "path": "projects/evalforge/index.html",
+      "expectedSHA256": "8c905fc64139f7745ec819df612d19b0a9059183b42a8e1e3517414261a6870f",
+      "actualSHA256": "8c905fc64139f7745ec819df612d19b0a9059183b42a8e1e3517414261a6870f",
+      "matched": true
+    },
+    {
+      "path": "projects/hepai/index.html",
+      "expectedSHA256": "6cea319b59f4717cbca8688e07bd6992228fe27cdb63bb5e278964d97a9f4b6e",
+      "actualSHA256": "6cea319b59f4717cbca8688e07bd6992228fe27cdb63bb5e278964d97a9f4b6e",
+      "matched": true
+    },
+    {
+      "path": "projects/alpha-agent/index.html",
+      "expectedSHA256": "3b68e33616c292aaa36c00865327851a3df1648b78e004086ae44440e6747531",
+      "actualSHA256": "3b68e33616c292aaa36c00865327851a3df1648b78e004086ae44440e6747531",
+      "matched": true
+    },
+    {
+      "path": "projects/kindred/index.html",
+      "expectedSHA256": "cc56d5dec7ec87bca21136d98123ea05b45c9b078d812bf8e6251fd2c40100b0",
+      "actualSHA256": "cc56d5dec7ec87bca21136d98123ea05b45c9b078d812bf8e6251fd2c40100b0",
+      "matched": true
+    }
+  ],
+  "sources": [
+    {
+      "path": "src/components/world/WorldCamp.tsx",
+      "expectedSHA256": "8c094f6d907ba8cb11fa49247e561180bf969ec04bc5564b88413a8019d99925",
+      "authorSHA256": "8c094f6d907ba8cb11fa49247e561180bf969ec04bc5564b88413a8019d99925",
+      "releaseSHA256": "8c094f6d907ba8cb11fa49247e561180bf969ec04bc5564b88413a8019d99925",
+      "matched": true
+    },
+    {
+      "path": "src/components/world/WorldCampContent.tsx",
+      "expectedSHA256": "27746218afafd92b7de4c9f166e5fd6dc09dcdcd630964b6b963f40e12091e84",
+      "authorSHA256": "27746218afafd92b7de4c9f166e5fd6dc09dcdcd630964b6b963f40e12091e84",
+      "releaseSHA256": "27746218afafd92b7de4c9f166e5fd6dc09dcdcd630964b6b963f40e12091e84",
+      "matched": true
+    },
+    {
+      "path": "src/components/world/WorldCampFacilityCraft.tsx",
+      "expectedSHA256": "fdb70ce3d27e9c66e29f12a02c6442153f07e9497051040c8656c76cc033a72e",
+      "authorSHA256": "fdb70ce3d27e9c66e29f12a02c6442153f07e9497051040c8656c76cc033a72e",
+      "releaseSHA256": "fdb70ce3d27e9c66e29f12a02c6442153f07e9497051040c8656c76cc033a72e",
+      "matched": true
+    },
+    {
+      "path": "src/components/world/WorldStreetAssets.ts",
+      "expectedSHA256": "2b8eb883b69c7c88593b3ae7285f464e5baec4dfe0f730d65cea8c934ea6626b",
+      "authorSHA256": "2b8eb883b69c7c88593b3ae7285f464e5baec4dfe0f730d65cea8c934ea6626b",
+      "releaseSHA256": "2b8eb883b69c7c88593b3ae7285f464e5baec4dfe0f730d65cea8c934ea6626b",
+      "matched": true
+    },
+    {
+      "path": "src/components/world/WorldStreetFacilityCraft.ts",
+      "expectedSHA256": "2d6bbd9ed7c5a13f4d025b4b9c228897b2a1c5f394311883cc80c83cbdda2d9a",
+      "authorSHA256": "2d6bbd9ed7c5a13f4d025b4b9c228897b2a1c5f394311883cc80c83cbdda2d9a",
+      "releaseSHA256": "2d6bbd9ed7c5a13f4d025b4b9c228897b2a1c5f394311883cc80c83cbdda2d9a",
+      "matched": true
+    },
+    {
+      "path": "src/components/world/WorldStreetStatic.tsx",
+      "expectedSHA256": "762b023154bb25bcc2b03b61dd4482983a78e929dffb9a3426fb7d69529fd807",
+      "authorSHA256": "762b023154bb25bcc2b03b61dd4482983a78e929dffb9a3426fb7d69529fd807",
+      "releaseSHA256": "762b023154bb25bcc2b03b61dd4482983a78e929dffb9a3426fb7d69529fd807",
+      "matched": true
+    },
+    {
+      "path": "src/components/world/WorldTerrain.tsx",
+      "expectedSHA256": "ed9860242739385cdfd3fd28c8c920d1a02a7249d56b390658b3801868b7644a",
+      "authorSHA256": "ed9860242739385cdfd3fd28c8c920d1a02a7249d56b390658b3801868b7644a",
+      "releaseSHA256": "ed9860242739385cdfd3fd28c8c920d1a02a7249d56b390658b3801868b7644a",
+      "matched": true
+    },
+    {
+      "path": "src/components/world/WorldCampPushableVisual.ts",
+      "expectedSHA256": "0e25f3be20f24507cff0e2ad4c385a6574f78bfd394682beafa9126d4b374994",
+      "authorSHA256": "0e25f3be20f24507cff0e2ad4c385a6574f78bfd394682beafa9126d4b374994",
+      "releaseSHA256": "0e25f3be20f24507cff0e2ad4c385a6574f78bfd394682beafa9126d4b374994",
+      "matched": true
+    },
+    {
+      "path": "src/components/world/WorldCampSuitcaseContact.tsx",
+      "expectedSHA256": "b7e386b502fb149a1df98af50358975de497385121d5bf529d6e2260c73a8f72",
+      "authorSHA256": "b7e386b502fb149a1df98af50358975de497385121d5bf529d6e2260c73a8f72",
+      "releaseSHA256": "b7e386b502fb149a1df98af50358975de497385121d5bf529d6e2260c73a8f72",
+      "matched": true
+    },
+    {
+      "path": "src/components/world/camp-suitcase-contact.ts",
+      "expectedSHA256": "885f9d4fc54d36c776ae7300886722f092c04639f9c562eae61111de95db588f",
+      "authorSHA256": "885f9d4fc54d36c776ae7300886722f092c04639f9c562eae61111de95db588f",
+      "releaseSHA256": "885f9d4fc54d36c776ae7300886722f092c04639f9c562eae61111de95db588f",
+      "matched": true
+    }
+  ],
+  "entryGraph": {
+    "status": "PASS",
+    "directHTMLModules": [
+      "_astro/WorldApp.kyI3W9ni.js",
+      "_astro/client.BINMsa6k.js"
+    ],
+    "runtimePaths": {
+      "_astro/WorldRuntime.D7NGFd4R.js": [
+        "world/index.html",
+        "_astro/WorldApp.kyI3W9ni.js",
+        "_astro/WorldApp.BVoCjssk.js",
+        "_astro/WorldRuntime.D7NGFd4R.js"
+      ]
+    },
+    "checkedLocalJSFiles": 30,
+    "missing": [],
+    "nonliteralImports": [],
+    "references": {
+      "world/index.html": [
+        "_astro/WorldApp.kyI3W9ni.js",
+        "_astro/client.BINMsa6k.js"
+      ],
+      "_astro/WorldApp.kyI3W9ni.js": [
+        "_astro/WorldApp.BVoCjssk.js",
+        "_astro/index.DP38BoPS.js",
+        "_astro/jsx-runtime.u17CrQMm.js"
+      ],
+      "_astro/client.BINMsa6k.js": [
+        "_astro/client.BogH9A_j.js",
+        "_astro/index.DP38BoPS.js"
+      ],
+      "_astro/WorldApp.BVoCjssk.js": [
+        "_astro/WorldIbdHud.DDEqm0LV.js",
+        "_astro/WorldIntentHud.CArL_Pff.js",
+        "_astro/WorldLandform.DVemwmPb.js",
+        "_astro/WorldLoadProgress._saYDh0-.js",
+        "_astro/WorldRuntime.D7NGFd4R.js",
+        "_astro/WorldUiTest.CQsJcIRt.js",
+        "_astro/actor-physics.C7mIiVjT.js",
+        "_astro/analytics.CZcLqhSq.js",
+        "_astro/client.BogH9A_j.js",
+        "_astro/coaster-track.CIyrv1uA.js",
+        "_astro/ibd-pack-play.D6FfYSq7.js",
+        "_astro/ibd-yard-guide.DVaqZqJO.js",
+        "_astro/index.DP38BoPS.js",
+        "_astro/intent-state.DLcLw13K.js",
+        "_astro/intent-workshop-runtime.CpvxZYCw.js",
+        "_astro/jsx-runtime.u17CrQMm.js",
+        "_astro/projectStatus.Bt-t_QXW.js",
+        "_astro/three.core.hRBAa5ew.js",
+        "_astro/three.module.CvbuiVxb.js"
+      ],
+      "_astro/index.DP38BoPS.js": [],
+      "_astro/jsx-runtime.u17CrQMm.js": [],
+      "_astro/client.BogH9A_j.js": [
+        "_astro/index.DP38BoPS.js"
+      ],
+      "_astro/WorldIbdHud.DDEqm0LV.js": [
+        "_astro/WorldApp.BVoCjssk.js",
+        "_astro/ibd-pack-play.D6FfYSq7.js",
+        "_astro/ibd-yard-guide.DVaqZqJO.js",
+        "_astro/index.DP38BoPS.js",
+        "_astro/jsx-runtime.u17CrQMm.js"
+      ],
+      "_astro/WorldIntentHud.CArL_Pff.js": [
+        "_astro/WorldApp.BVoCjssk.js",
+        "_astro/coaster-track.CIyrv1uA.js",
+        "_astro/index.DP38BoPS.js",
+        "_astro/intent-state.DLcLw13K.js",
+        "_astro/intent-workshop-runtime.CpvxZYCw.js",
+        "_astro/jsx-runtime.u17CrQMm.js"
+      ],
+      "_astro/WorldLandform.DVemwmPb.js": [
+        "_astro/WorldApp.BVoCjssk.js",
+        "_astro/three.core.hRBAa5ew.js",
+        "_astro/three.module.CvbuiVxb.js"
+      ],
+      "_astro/WorldLoadProgress._saYDh0-.js": [
+        "_astro/WorldApp.BVoCjssk.js",
+        "_astro/three.core.hRBAa5ew.js"
+      ],
+      "_astro/WorldRuntime.D7NGFd4R.js": [
+        "_astro/WorldApp.BVoCjssk.js",
+        "_astro/WorldDistricts.CaODWDsr.js",
+        "_astro/WorldIbdYard.CbuGMm1Q.js",
+        "_astro/WorldIntentCoaster.oXtvqzw7.js",
+        "_astro/WorldLandform.DVemwmPb.js",
+        "_astro/actor-physics.C7mIiVjT.js",
+        "_astro/analytics.CZcLqhSq.js",
+        "_astro/client.BogH9A_j.js",
+        "_astro/coaster-track.CIyrv1uA.js",
+        "_astro/draco_decoder.fzg4nYZr.js",
+        "_astro/draco_wasm_wrapper.DxJM36Ib.js",
+        "_astro/draco_wasm_wrapper.fZCQGLGb.js",
+        "_astro/ibd-pack-play.D6FfYSq7.js",
+        "_astro/ibd-yard-guide.DVaqZqJO.js",
+        "_astro/index.DP38BoPS.js",
+        "_astro/intent-state.DLcLw13K.js",
+        "_astro/intent-workshop-runtime.CpvxZYCw.js",
+        "_astro/jsx-runtime.u17CrQMm.js",
+        "_astro/projectStatus.Bt-t_QXW.js",
+        "_astro/shadow-chunk-hull.worker-xfxZf1i5.js",
+        "_astro/three.core.hRBAa5ew.js",
+        "_astro/three.module.CvbuiVxb.js"
+      ],
+      "_astro/WorldUiTest.CQsJcIRt.js": [
+        "_astro/WorldApp.BVoCjssk.js",
+        "_astro/index.DP38BoPS.js",
+        "_astro/jsx-runtime.u17CrQMm.js"
+      ],
+      "_astro/actor-physics.C7mIiVjT.js": [],
+      "_astro/analytics.CZcLqhSq.js": [],
+      "_astro/coaster-track.CIyrv1uA.js": [
+        "_astro/WorldApp.BVoCjssk.js",
+        "_astro/three.core.hRBAa5ew.js",
+        "_astro/three.module.CvbuiVxb.js"
+      ],
+      "_astro/ibd-pack-play.D6FfYSq7.js": [
+        "_astro/WorldApp.BVoCjssk.js",
+        "_astro/actor-physics.C7mIiVjT.js"
+      ],
+      "_astro/ibd-yard-guide.DVaqZqJO.js": [
+        "_astro/ibd-pack-play.D6FfYSq7.js"
+      ],
+      "_astro/intent-state.DLcLw13K.js": [
+        "_astro/WorldApp.BVoCjssk.js",
+        "_astro/actor-physics.C7mIiVjT.js",
+        "_astro/coaster-track.CIyrv1uA.js",
+        "_astro/three.core.hRBAa5ew.js",
+        "_astro/three.module.CvbuiVxb.js"
+      ],
+      "_astro/intent-workshop-runtime.CpvxZYCw.js": [
+        "_astro/WorldApp.BVoCjssk.js",
+        "_astro/coaster-track.CIyrv1uA.js",
+        "_astro/intent-state.DLcLw13K.js"
+      ],
+      "_astro/projectStatus.Bt-t_QXW.js": [],
+      "_astro/three.core.hRBAa5ew.js": [],
+      "_astro/three.module.CvbuiVxb.js": [
+        "_astro/three.core.hRBAa5ew.js"
+      ],
+      "_astro/WorldDistricts.CaODWDsr.js": [
+        "_astro/WorldApp.BVoCjssk.js",
+        "_astro/WorldLandform.DVemwmPb.js",
+        "_astro/WorldRuntime.D7NGFd4R.js",
+        "_astro/index.DP38BoPS.js",
+        "_astro/jsx-runtime.u17CrQMm.js",
+        "_astro/three.core.hRBAa5ew.js",
+        "_astro/three.module.CvbuiVxb.js"
+      ],
+      "_astro/WorldIbdYard.CbuGMm1Q.js": [
+        "_astro/WorldApp.BVoCjssk.js",
+        "_astro/WorldRuntime.D7NGFd4R.js",
+        "_astro/ibd-pack-play.D6FfYSq7.js",
+        "_astro/ibd-yard-guide.DVaqZqJO.js",
+        "_astro/index.DP38BoPS.js",
+        "_astro/intent-state.DLcLw13K.js",
+        "_astro/jsx-runtime.u17CrQMm.js",
+        "_astro/three.core.hRBAa5ew.js",
+        "_astro/three.module.CvbuiVxb.js"
+      ],
+      "_astro/WorldIntentCoaster.oXtvqzw7.js": [
+        "_astro/WorldApp.BVoCjssk.js",
+        "_astro/WorldRuntime.D7NGFd4R.js",
+        "_astro/coaster-structure.worker-CDOZ3Rn7.js",
+        "_astro/coaster-track.CIyrv1uA.js",
+        "_astro/index.DP38BoPS.js",
+        "_astro/intent-state.DLcLw13K.js",
+        "_astro/intent-workshop-runtime.CpvxZYCw.js",
+        "_astro/jsx-runtime.u17CrQMm.js",
+        "_astro/three.core.hRBAa5ew.js",
+        "_astro/three.module.CvbuiVxb.js"
+      ],
+      "_astro/draco_decoder.fzg4nYZr.js": [],
+      "_astro/draco_wasm_wrapper.DxJM36Ib.js": [],
+      "_astro/draco_wasm_wrapper.fZCQGLGb.js": [],
+      "_astro/shadow-chunk-hull.worker-xfxZf1i5.js": [],
+      "_astro/coaster-structure.worker-CDOZ3Rn7.js": []
+    },
+    "hashes": {
+      "_astro/WorldApp.kyI3W9ni.js": "5699f0f6cdb42fbf569098110bbd4a9006660e98d5962f7e3e3602cc3345e03f",
+      "_astro/client.BINMsa6k.js": "bd8e88b321e8e849e10322175edc3529f05ed07d1e9e3f02f9c99a5a6e1d3f88",
+      "_astro/WorldApp.BVoCjssk.js": "b6c335bc00c00dcfb633d8420e6f82faff3912831ddd426a1afa3083459099d0",
+      "_astro/index.DP38BoPS.js": "6f9497145656a20d500d279519ad0273c3a5a9a813061a7067bbc72e5433508f",
+      "_astro/jsx-runtime.u17CrQMm.js": "158671ca747dc8bd9874f7dc436ba4576af1f90ea02dba567022f0b3b81e231f",
+      "_astro/client.BogH9A_j.js": "d59721b343eecba74c7a79e0f17fa8602a0ff9893f1526697fbf8ce755fa18c9",
+      "_astro/WorldIbdHud.DDEqm0LV.js": "0e00006007fed8e1c96f8da444e4a2f3dbdc2d330b04735a28bbaa524eb4b5ef",
+      "_astro/WorldIntentHud.CArL_Pff.js": "3701d7ba49ec0f9d2d0f3698297f160e3fb85f9662669b8800ef41f0f14a9d2a",
+      "_astro/WorldLandform.DVemwmPb.js": "250c980e00edbb8dd024addd927f7dc0ab13e1409a7527f034924d3e290d3247",
+      "_astro/WorldLoadProgress._saYDh0-.js": "8d23b676cbc2cf190c8c31d4e7fc3249d2fea15db2499d36e5e528e416466021",
+      "_astro/WorldRuntime.D7NGFd4R.js": "961457ab7a7b006b81656879cc01b899691f6dbe935eba91d77ef1a134c8fe1f",
+      "_astro/WorldUiTest.CQsJcIRt.js": "a9a0b72a1cdc4c83dbc9c1c10d3ff762af19c071974945586b889ab9af9c9269",
+      "_astro/actor-physics.C7mIiVjT.js": "b1dae54359645b913374876dbdd6a0f3ae87c6b0116900daa35721221b601017",
+      "_astro/analytics.CZcLqhSq.js": "7e8308ed02c15cda4728fbae437f93e33c8cf7cf96bf4a065a29c96de4c4d842",
+      "_astro/coaster-track.CIyrv1uA.js": "00df1bdcdd0cee4a89b242bfbb8bb438a4301a0394420c16b0df817215cfc339",
+      "_astro/ibd-pack-play.D6FfYSq7.js": "d34f15ba7bed400004dfa4cf89e9fb81dace10aaea1398388ec6c85aabd84447",
+      "_astro/ibd-yard-guide.DVaqZqJO.js": "2a504b854518920b033ec999adf084d75f6238c724e7f01b39dfeb8b3d9a6ced",
+      "_astro/intent-state.DLcLw13K.js": "32f25f28413be872f0782af4047c17731812d10022034626ba456904b16f88f9",
+      "_astro/intent-workshop-runtime.CpvxZYCw.js": "595a744e1a30895f55762778bfe2b57bcab22d7333a251037eb657856ac4ca4f",
+      "_astro/projectStatus.Bt-t_QXW.js": "160c8019f4f23dcb9a5c7697ffe2d9341d9fe5ea5d9b3e5643f15e553e54e522",
+      "_astro/three.core.hRBAa5ew.js": "123bdd341a4cf925fefd71d2c3011ed34f799fece3848945ad176517faee5bcf",
+      "_astro/three.module.CvbuiVxb.js": "49389ff617c4b530774d67d5e99cdfc449714cf1457e036703eaa7d2992be16b",
+      "_astro/WorldDistricts.CaODWDsr.js": "de4bed407c55b986be49e15f470eb2a52c66912099ca45fe0f6aa1d3ca77ec12",
+      "_astro/WorldIbdYard.CbuGMm1Q.js": "d1af6f0ab080601c6124153120bb97f7b8371a2660489719dfd06597fdfe1b60",
+      "_astro/WorldIntentCoaster.oXtvqzw7.js": "e89c25cfc9aaf1f6f2f58ed23cbe0e667914e0df4ab50a9cb78c5812ccce789b",
+      "_astro/draco_decoder.fzg4nYZr.js": "30e4d486fa020737af10e3c56197693e5b904bdc05b8bfa5d7b06751dec6da04",
+      "_astro/draco_wasm_wrapper.DxJM36Ib.js": "e8049906ef3f8f75d3456c22a3f31bfdfe5b5b5bd09ccdec613b9e9a49d554d8",
+      "_astro/draco_wasm_wrapper.fZCQGLGb.js": "8bb2952d2ba7d67e1414f8df819410cb0434a666be53f671fff75f68843d76f6",
+      "_astro/shadow-chunk-hull.worker-xfxZf1i5.js": "51495d2b4799f21a11d5e74ec58b886f55d25390128fa3175ea59f5200b01220",
+      "_astro/coaster-structure.worker-CDOZ3Rn7.js": "2f4ee1a732d659a041275456678740d983b6ada53e40675af4decf909967b0fe"
+    },
+    "limitation": "Local literal JS reference existence and hashes only; nonliteral imports reported rather than evaluated; no WebGL, gameplay, asset loading or performance claim."
+  },
+  "browserRuntimeVerified": false,
+  "errors": [],
+  "scope": "Independent lightweight identity and actual local entry-reference graph verification. No service, browser, lock, build or test suite started."
+}

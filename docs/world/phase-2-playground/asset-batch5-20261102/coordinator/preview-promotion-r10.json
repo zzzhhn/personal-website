@@ -1,0 +1,17 @@
+{
+  "timestamp": "2026-11-03T00:28:11+0800",
+  "previousPid": 11644,
+  "previousRoot": "/tmp/bobby-world-batch4-r2-01a19a62",
+  "pid": 71234,
+  "root": "/tmp/bobby-world-batch5-r10-fourteen-01a19a62",
+  "verifiedFiles": 60,
+  "worldHtmlSha256": "ab16953b8a77ca1b4ca5887d37164d3b1699bc0d87823c40d72a4d7a08993a03",
+  "runtime": "_astro/WorldRuntime.CDhmzaiM.js",
+  "runtimeSha256": "e057e78f7df3711c72bc81a2dede20a2136ab4488d6f4ac3962221ba4345c93c",
+  "httpVerified": true,
+  "browserVerified": true,
+  "rollbackRetained": true,
+  "browserEvidence": "performance/runtime/formal-acceptance-r10.json",
+  "browserEvidenceSha256": "532e9fa6c7f1b9c2a2b27c5f268df7b705b60a00d46bf594549d7fea6e2c3b6d",
+  "browserScope": "One normal camp load on the pre-existing Chrome tab, initialization complete, actual R10 runtime and candidate assets loaded, no console errors; returned to Chinese pause menu."
+}

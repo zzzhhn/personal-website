@@ -1,0 +1,32 @@
+{
+  "status": "frozen_waiting_for_coordinator_R6",
+  "browserExecuted": false,
+  "files": {
+    "qa.js": "39f54c002cfd19e63edd19a294dea1cbd60b26898dd79c422804349a53d56801",
+    "serve.py": "d56542d91e09f8305147c5502e06323732b7f8f20242c57541177b6df805e0d9"
+  },
+  "maxWindows": 6,
+  "ordering": [
+    "old-a camp",
+    "old-a street",
+    "new camp",
+    "new street",
+    "old-b camp",
+    "old-b street"
+  ],
+  "sameFrozenBuildBothModes": true,
+  "minimumSettleMs": 10000,
+  "maximumSettleMs": 20000,
+  "stableDistinctFrames": 60,
+  "warmupDistinctFrames": 90,
+  "sampleDistinctFrames": 300,
+  "maximumSampleMs": 30000,
+  "requiredCSSAndBuffer": [
+    1710,
+    931
+  ],
+  "requiredDPR": 1,
+  "maximumCameraPlayerDriftM": 0.0001,
+  "stopOnFirstInvalid": true,
+  "sourceEdits": false
+}
