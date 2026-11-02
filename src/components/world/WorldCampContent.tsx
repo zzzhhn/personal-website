@@ -15,6 +15,8 @@ import { bake, drawLabels, glowMaterial, localPoints, localTrimesh, nodeParts, p
 import { CAMP_TOP, CONTENT_PAD, EXIT_POSTS, PAD, PAD_TOP, benches, bookStack, onPad, padCentre, padOffset, towardFire, yawFacing, yawToFire, type Place } from './WorldCampContentLayout';
 import WorldCampFacilityCraft, { campFacilityLegacy } from './WorldCampFacilityCraft';
 import { bindCampPushableVisual } from './WorldCampPushableVisual';
+import WorldCampSuitcaseContact, { CampSuitcaseContactContext } from './WorldCampSuitcaseContact';
+import { createSuitcaseContactSlot } from './camp-suitcase-contact';
 
 /**
  * Camp content (owner: camp session): C11 tool wall, C12 guitar, C13 dumbbells, C14 wok + stove, C15
@@ -147,7 +149,7 @@ function CampContent() {
     {data.dumbbells.map((home, i) => <Pushable key={i} id={`C13-${i}`} home={home} hull={data.dumbbell.hull} mass={16} feedbackKey="dumbbell">
       <group scale={SCALE.C13}><WorldCampFacilityCraft family="C13" fallback={<mesh geometry={data.dumbbell.geometry} scale={1 / SCALE.C13} material={vc} castShadow receiveShadow />} /></group>
     </Pushable>)}
-    <Pushable id="C15" home={data.place.C15} hull={data.suitcase.hull} mass={12} feedbackKey="suitcase" clearance={legacy ? 0.004 : 0}>
+    <Pushable id="C15" home={data.place.C15} hull={data.suitcase.hull} mass={12} feedbackKey="suitcase" clearance={legacy ? 0.004 : 0} contactEnabled={!legacy}>
       <WorldCampFacilityCraft family="C15" fallback={<mesh geometry={data.suitcase.geometry} material={vc} castShadow receiveShadow />} />
     </Pushable>
     <LightPools lantern={data.lanternPos} />
@@ -237,9 +239,10 @@ function LabelPlates({ plates, frame, lang }: { plates: { centre: Vec3; w: numbe
 
 const pushables = new Map<string, { body: RefObject<RapierRigidBody | null>; home: Vec3; state: { displacedAt: number; clock: number } }>();
 /** Pushable prop: sleeping dynamic convex hull; 30 s after it leaves home it fades and returns. */
-function Pushable({ id, home, hull, mass, feedbackKey, children, clearance = 0.004 }: { id: string; home: Place; hull: Float32Array; mass: number; feedbackKey: FeedbackKey; children: ReactNode; clearance?: number }) {
+function Pushable({ id, home, hull, mass, feedbackKey, children, clearance = 0.004, contactEnabled = false }: { id: string; home: Place; hull: Float32Array; mass: number; feedbackKey: FeedbackKey; children: ReactNode; clearance?: number; contactEnabled?: boolean }) {
   const body = useRef<RapierRigidBody>(null), visual = useRef<Group>(null);
   const state = useRef({ displacedAt: -1, clock: 0 });
+  const contact = useMemo(createSuitcaseContactSlot, []);
   // Own material copy so the 30 s fade touches only this prop.
   const material = useMemo(() => vertexColourMaterial(`camp-content-${id}`), [id]);
   useEffect(() => () => material.dispose(), [material]);
@@ -263,12 +266,14 @@ function Pushable({ id, home, hull, mass, feedbackKey, children, clearance = 0.0
     const t = s.displacedAt < 0 ? -1 : s.clock - s.displacedAt;
     const fade = t > RESET_SECONDS - 0.6 ? Math.max(0, (RESET_SECONDS - t) / 0.6) : 1;
     binding.current?.setFade(fade);
+    if (contactEnabled) contact.fade = fade;
     if (t >= RESET_SECONDS) {
       const half = home.yaw / 2;
       b.setTranslation({ x: start[0], y: start[1], z: start[2] }, false);
       b.setRotation({ x: 0, y: Math.sin(half), z: 0, w: Math.cos(half) }, false);
       b.setLinvel({ x: 0, y: 0, z: 0 }, false); b.setAngvel({ x: 0, y: 0, z: 0 }, false); b.sleep();
       s.displacedAt = -1; binding.current?.setFade(1);
+      if (contactEnabled) contact.fade = 1;
     }
   });
   // <= 2 s visual-only feedback on the child group; the body and its collider never move for it.
@@ -278,16 +283,17 @@ function Pushable({ id, home, hull, mass, feedbackKey, children, clearance = 0.0
     v.position.set(0, 0, 0); v.rotation.set(0, 0, 0);
     const strings = feedbackKey === 'guitar' ? binding.current?.strings : undefined;
     if (strings) strings.position.x = t < 0 ? 0 : 0.003 * Math.sin(t * 140) * k;
-    if (t < 0) return;
+    if (t < 0) { contact.update?.(); return; }
     if (feedbackKey === 'guitar') v.rotation.x = 0.02 * Math.sin(t * 22) * k;
     if (feedbackKey === 'dumbbell') v.rotation.x = 0.16 * Math.sin(t * 8) * k;
     if (feedbackKey === 'suitcase') v.position.y = 0.05 * Math.abs(Math.sin(Math.PI * Math.min(t, 0.9) / 0.45));
+    contact.update?.();
   });
-  return <RigidBody ref={body} name={`camp-content-push-${id}`} position={start} rotation={[0, home.yaw, 0]} colliders={false} canSleep ccd
+  return <><RigidBody ref={body} name={`camp-content-push-${id}`} position={start} rotation={[0, home.yaw, 0]} colliders={false} canSleep ccd
     linearDamping={0.35} angularDamping={0.8} userData={{ obstacle: true, assetId: id.slice(0, 3), interactable: id }}>
     <ConvexHullCollider args={[hull]} mass={mass} friction={0.7} restitution={0.12} />
-    <group ref={visual} name={`camp-content-${id}`} userData={{ assetId: id.slice(0, 3) }}>{children}</group>
-  </RigidBody>;
+    <group ref={visual} name={`camp-content-${id}`} userData={{ assetId: id.slice(0, 3) }}>{contactEnabled ? <CampSuitcaseContactContext.Provider value={contact.register}>{children}</CampSuitcaseContactContext.Provider> : children}</group>
+  </RigidBody>{contactEnabled && <WorldCampSuitcaseContact slot={contact} />}</>;
 }
 
 /** Additive ground pools in one draw: lantern (desk top + pad), cyan under each exit lamp, and a warm

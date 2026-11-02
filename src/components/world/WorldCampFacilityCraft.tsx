@@ -1,9 +1,10 @@
-import { Component, Suspense, useEffect, useMemo, type ReactNode } from 'react';
+import { Component, Suspense, useContext, useEffect, useLayoutEffect, useMemo, type ReactNode } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import { FrontSide, type Mesh, type MeshStandardMaterial, type Material, type Object3D, type Texture } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { useDjcFurnitureEnvironment } from './WorldDjcFurnitureEnvironment';
 import { night } from './WorldNight';
+import { CampSuitcaseContactContext } from './WorldCampSuitcaseContact';
 
 export type CampFacilityFamily = 'C12' | 'C13' | 'C14' | 'C15' | 'C16';
 export const CAMP_FACILITY_URL = '/assets/world/facility-craft/camp/camp-facilities-v1.glb';
@@ -63,6 +64,8 @@ function CraftVisual({ family, node }: { family: CampFacilityFamily; node?: stri
   const gltf = useLoader(GLTFLoader, CAMP_FACILITY_URL);
   const environment = useDjcFurnitureEnvironment();
   const visual = useMemo(() => createCampFacilityVisual(gltf.scene, family, node, environment), [gltf, family, node, environment]);
+  const registerContact = useContext(CampSuitcaseContactContext);
+  useLayoutEffect(() => family === 'C15' ? registerContact?.(visual.root) : undefined, [family, registerContact, visual]);
   useEffect(() => {
     visual.users++;
     return () => { visual.users--; queueMicrotask(() => { if (!visual.users) visual.materials.forEach(material => material.dispose()); }); };

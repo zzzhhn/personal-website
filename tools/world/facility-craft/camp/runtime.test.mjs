@@ -86,6 +86,7 @@ test('craft effect replay defers owned-material disposal and never releases load
     GLTFLoader: null, CAMP_FACILITY_URL: '', night: { value: 0 },
     useLoader: () => ({ scene: source }), useDjcFurnitureEnvironment: () => null,
     useMemo: create => create(), useEffect: effect => effects.push(effect), useFrame: () => {},
+    useContext: () => null, useLayoutEffect: () => {}, CampSuitcaseContactContext: null,
     createCampFacilityVisual: context.create, updateCampFacilityNight: context.updateNight,
     queueMicrotask: callback => microtasks.push(callback), React: { createElement: (_tag, props) => { primitive = props.object; } },
   });
