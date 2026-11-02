@@ -1,0 +1,27 @@
+{
+  "status": "ordinary R1 self-reviewed; bin improvement weak; not integration-ready",
+  "sourceCommit": "2c3f7a0c0e4b76ed20c3895d625172a87f298c13",
+  "checks": [
+    "bench: matched ordinary pair, settled gates, same asset sets, exact native source",
+    "bin: matched ordinary pair, settled gates, same asset sets, exact native source"
+  ],
+  "hashes": {
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r1/bench-normal-noon-baseline.jpg": "9739b42c7c75be9d5971e21ff81ca74fb88e2940d3c459f7c6aa8f6b8347870d",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r1/bench-normal-noon-baseline.json": "f61899eee35b1c126f86942cca768ede6548cfb512b089da681d72e38cb529c2",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r1/bench-normal-noon-candidate.jpg": "cfbf53fd1e6b2775b47985cdb29dbe1ba39ffabe663eaa9d25f61089732b2eeb",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r1/bench-normal-noon-candidate.json": "da5072aa24032e22cac708f55aa75c47f80377631f19817d38b451d05cd26418",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r1/bin-normal-noon-baseline.jpg": "b2649d7164a8714712b80072763758f3de8cf80f7e77b26c028a93e3122ec46b",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r1/bin-normal-noon-baseline.json": "9babdecdbf8271cb7307be94b8e48847206fbafe111f6d15a4573551741daced",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r1/bin-normal-noon-candidate.jpg": "b0225e6dfdf76ea77aa5c0e2d20dbf14e30c8f9c0f25c32abdd3e9dd4a0e5c45",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r1/bin-normal-noon-candidate.json": "f7599ca5ce19fd7c368ea6479bfdf7876cbdcf9bdc0d9cacf237680e59b3518e",
+    "docs/world/phase-2-playground/asset-batch6-20261103/bench-bin/runtime-r1/console-errors.json": "8c8523296815eac1f77b62e6165eed1d1cc15defb6a619d7838ed0f42f0f432e",
+    "public/assets/world/craft-batch6-bench-bin/bench-portable.glb": "b3c60ee2760c8f4f59386f64f32ccfc5c400b1e5a1aff19ef8cb1b523cbfafdf",
+    "public/assets/world/craft-batch6-bench-bin/bench-export-report.json": "30d75548ccb904edc19a4dfb6e20cdf5217fefde483a55ed02d47fa50f9998a3",
+    "tools/world/facility-craft/batch6/native-bench-bin/bench.blend": "3921d6b8b71960cc6bbd8b48a59e9e19549b58fc17e7de0d919c2210844357ea",
+    "public/assets/world/craft-batch6-bench-bin/bin-portable.glb": "44a8754969eb3ba0fcf9c67781f2097dd7b85c0dd88926f2920138dd8c50152f",
+    "public/assets/world/craft-batch6-bench-bin/bin-export-report.json": "4715ae17c6b51bc4469a9d4684f76abf3fa4ea2ff3c1a6c90fbbded2fe6ead91",
+    "tools/world/facility-craft/batch6/native-bench-bin/bin.blend": "ed9b37753a6a9c0c553b6b66df5b602978c0ca1b12e9c0c359e3d31d8d47b5c3",
+    "astro.batch6.bench-bin.config.mjs": "086e15a86fd33e245f8516af447c8479ba5c3594d9c870e36bdcd3319aba5da6",
+    "tools/world/facility-craft/batch6/next-bench-bin/review-views.json": "487f64df9739cf54c9810aecf37f70c7d8e970d507afe8a2d6b8ae8bcb2aac2e"
+  }
+}

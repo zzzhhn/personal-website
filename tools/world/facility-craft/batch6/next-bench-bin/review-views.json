@@ -1,0 +1,44 @@
+[
+  {
+    "id": "bench-normal",
+    "eye": [
+      26.7,
+      2.75,
+      -30.4
+    ],
+    "target": [
+      30.1,
+      1.7,
+      -28
+    ],
+    "instanceId": "bench at x=30.1",
+    "root": [
+      30.1,
+      1.15,
+      -28
+    ],
+    "yaw": 1.5707963267948966,
+    "horizontalDistanceM": 4.161730409336963
+  },
+  {
+    "id": "bin-normal",
+    "eye": [
+      17.5,
+      2.75,
+      -27.1
+    ],
+    "target": [
+      15.4,
+      1.7,
+      -24.6
+    ],
+    "instanceId": "bin-0",
+    "root": [
+      15.4,
+      1.15,
+      -24.6
+    ],
+    "yaw": 0,
+    "horizontalDistanceM": 3.2649655434629015
+  }
+]

@@ -29,4 +29,18 @@ for(const family of ['bench','bin']) {
   manifest.assets[family]={source:file,triangles:B.idx.length/3,slots,contractUnchanged:true,L1Unchanged:true,sourceSHA256:hash(data)};
 }
 assert.equal(hash(A.BENCH_SEAT_LOCAL),hash(baseline.BENCH_SEAT_LOCAL));
+const layout=loadWorldModule('layout-v4.ts','?layout=v4');
+const bench=layout.solidsV4().find(s=>s.kind==='bench'&&s.position[0]===30.1);
+const knockables=layout.knockablesV4();
+const bin=knockables.find(s=>s.kind==='bin'&&s.road==='avenue')??knockables.find(s=>s.kind==='bin');
+assert.ok(bench&&bin,'Representative placement missing');
+const longZ=bench.size[2]>bench.size[0];
+const benchYaw=bench.yaw+(longZ?(bench.position[0]<21?-Math.PI/2:Math.PI/2):(bench.position[2]<-42?Math.PI:0));
+const view=(id,root,yaw,offset,targetY,instanceId)=>{
+  const world=p=>[root[0]+Math.cos(yaw)*p[0]+Math.sin(yaw)*p[2],root[1]+p[1],root[2]-Math.sin(yaw)*p[0]+Math.cos(yaw)*p[2]].map(x=>+x.toFixed(6));
+  return {id,eye:world(offset),target:world([0,targetY,0]),instanceId,root,yaw,horizontalDistanceM:Math.hypot(offset[0],offset[2])};
+};
+const views=[view('bench-normal',[bench.position[0],bench.position[1]-bench.size[1]/2,bench.position[2]],benchYaw,[2.4,1.6,-3.4],.55,'bench at x=30.1'),
+  view('bin-normal',bin.position,bin.yaw,[2.1,1.6,-2.5],.55,bin.id)];
+writeFileSync(path.join(out,'review-views.json'),JSON.stringify(views,null,2)+'\n');
 writeFileSync(path.join(out,'manifest.json'),JSON.stringify(manifest,null,2)+'\n');console.log(JSON.stringify(manifest));

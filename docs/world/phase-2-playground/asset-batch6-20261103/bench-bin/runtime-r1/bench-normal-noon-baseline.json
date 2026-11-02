@@ -1,0 +1,181 @@
+{
+  "baseline": "ad7ee76",
+  "group": "bench-bin",
+  "surfaceMode": "baseline",
+  "view": {
+    "id": "bench-normal",
+    "eye": [
+      26.7,
+      2.75,
+      -30.4
+    ],
+    "target": [
+      30.1,
+      1.7,
+      -28
+    ],
+    "instanceId": "bench at x=30.1",
+    "root": [
+      30.1,
+      1.15,
+      -28
+    ],
+    "yaw": 1.5707963267948966,
+    "horizontalDistanceM": 4.161730409336963
+  },
+  "fov": 50,
+  "time": 720,
+  "canvas": [
+    1710,
+    931
+  ],
+  "exposure": 1,
+  "renderer": {
+    "render": {
+      "frame": 1009,
+      "calls": 162,
+      "triangles": 730933,
+      "points": 124,
+      "lines": 0
+    },
+    "memory": {
+      "geometries": 196,
+      "textures": 83
+    }
+  },
+  "quality": "balanced",
+  "night": 0,
+  "blend": 1,
+  "loading": {
+    "phase": "ready",
+    "loaded": 0,
+    "total": 0,
+    "active": false,
+    "failed": 0
+  },
+  "registeredAssets": {
+    "world-park": {
+      "present": true,
+      "meshes": 199,
+      "visible": 115,
+      "nominalTriangles": 399278,
+      "registeredSet": "bcb9703e",
+      "visibleSet": "4606c853",
+      "assetIds": [
+        "P13",
+        "P14",
+        "P15",
+        "P16",
+        "P17",
+        "P18",
+        "djc-club",
+        "djc-north-bar",
+        "djc-pool-lanterns",
+        "exhibit-P14-crate",
+        "exhibit-P15-stool",
+        "lamp"
+      ],
+      "assetIdsCount": 15
+    },
+    "world-street": {
+      "present": true,
+      "meshes": 18,
+      "visible": 13,
+      "nominalTriangles": 48144,
+      "registeredSet": "c6e3294c",
+      "visibleSet": "308169e9",
+      "assetIds": [
+        "F04",
+        "street-fixed",
+        "street-foundation",
+        "street-rail",
+        "street-windmill"
+      ],
+      "assetIdsCount": 5
+    },
+    "djc-beach-club": {
+      "present": true,
+      "meshes": 52,
+      "visible": 52,
+      "nominalTriangles": 306595,
+      "registeredSet": "8f0214d2",
+      "visibleSet": "8f0214d2",
+      "assetIds": [
+        "djc-club",
+        "djc-north-bar",
+        "djc-pool-lanterns"
+      ],
+      "assetIdsCount": 3
+    },
+    "djc-north-bar-visual": {
+      "present": true,
+      "meshes": 18,
+      "visible": 18,
+      "nominalTriangles": 204228,
+      "registeredSet": "de1e20e9",
+      "visibleSet": "de1e20e9",
+      "assetIds": [
+        "djc-north-bar"
+      ],
+      "assetIdsCount": 1
+    },
+    "djc-furniture-visuals": {
+      "present": true,
+      "meshes": 10,
+      "visible": 10,
+      "nominalTriangles": 33280,
+      "registeredSet": "125a9867",
+      "visibleSet": "125a9867",
+      "assetIds": [
+        "djc-club"
+      ],
+      "assetIdsCount": 1
+    },
+    "world-camp-slice": {
+      "present": true,
+      "meshes": 69,
+      "visible": 67,
+      "nominalTriangles": 89043,
+      "registeredSet": "c2897fb3",
+      "visibleSet": "71a08fab",
+      "assetIds": [
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "G16",
+        "G17",
+        "G18",
+        "G19"
+      ],
+      "assetIdsCount": 16
+    }
+  },
+  "loadedGlbs": [],
+  "materialRevision": 3,
+  "shadow": {
+    "pending": false,
+    "slices": 0,
+    "cpuMs": 0,
+    "maxSliceMs": 0,
+    "cancelled": 0,
+    "error": "",
+    "phases": [],
+    "hullWorker": {
+      "requests": 84,
+      "workerMs": 303.7000002861023,
+      "maxWorkerMs": 98.60000002384186,
+      "maxSource": "intent-coaster",
+      "maxInputVertices": 368460
+    },
+    "centre": [
+      -67.59202176160255,
+      46.56603665857989,
+      47.215238768524614
+    ]
+  }
+}

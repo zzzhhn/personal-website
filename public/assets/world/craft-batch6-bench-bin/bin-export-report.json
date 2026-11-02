@@ -1,0 +1,10 @@
+{
+  "family": "bin",
+  "sourceJSONSHA256": "c01617f8e1883c748df7e0ec7c039ea2683a960b55330e0aad5a03e954ddce27",
+  "triangles": 2180,
+  "freshBoundsDelta": 0.0,
+  "parts": 4,
+  "images": 0,
+  "portableSHA256": "44a8754969eb3ba0fcf9c67781f2097dd7b85c0dd88926f2920138dd8c50152f",
+  "status": "exported/fresh-imported; offline and runtime visual acceptance pending"
+}

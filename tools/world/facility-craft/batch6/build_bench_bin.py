@@ -1,7 +1,7 @@
 """Current TS bench/bin -> editable native + portable archive; no new geometry.
 Run prepare_bench_bin.mjs, then Blender under the shared heavy lock.
 Pass --surface-dir pointing at the frozen R2 shared pack; never duplicate it
-into the runtime per instance. This script is prepared, not yet executed.
+into the runtime per instance. Archive output stays separate from runtime geometry.
 """
 from pathlib import Path
 import argparse

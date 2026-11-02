@@ -1,0 +1,10 @@
+{
+  "family": "bench",
+  "sourceJSONSHA256": "f33028270ef0fd10e18463f887b1fec3e6b3f78922c1d8cbe5012696a4862ea2",
+  "triangles": 1328,
+  "freshBoundsDelta": 0.0,
+  "parts": 11,
+  "images": 3,
+  "portableSHA256": "b3c60ee2760c8f4f59386f64f32ccfc5c400b1e5a1aff19ef8cb1b523cbfafdf",
+  "status": "exported/fresh-imported; offline and runtime visual acceptance pending"
+}
