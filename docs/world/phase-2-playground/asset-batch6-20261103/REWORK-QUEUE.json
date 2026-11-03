@@ -352,7 +352,7 @@
       "scene": "街道",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "queued",
+      "executionState": "accepted-local-refinement-awaiting-build",
       "treatment": "repair-current-treatment",
       "source": [
         "src/components/world/WorldStreetAssets.ts",
@@ -363,8 +363,8 @@
         "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
       ],
       "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5用户反馈效果不够明显，列复核。",
-      "visualAcceptance": "pending",
-      "completionEvidence": null
+      "visualAcceptance": "coordinator-accepted-ordinary-day-night; user-review-pending",
+      "completionEvidence": "docs/world/phase-2-playground/asset-batch6-20261103/street-rework/ROOT-REVIEW.md"
     },
     {
       "id": "G-barrier",
@@ -372,7 +372,7 @@
       "scene": "街道",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "queued",
+      "executionState": "accepted-local-refinement-awaiting-build",
       "treatment": "repair-current-treatment",
       "source": [
         "src/components/world/WorldStreetAssets.ts",
@@ -383,8 +383,8 @@
         "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
       ],
       "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5用户反馈效果不够明显，列复核。",
-      "visualAcceptance": "pending",
-      "completionEvidence": null
+      "visualAcceptance": "coordinator-accepted-ordinary-day-night; user-review-pending",
+      "completionEvidence": "docs/world/phase-2-playground/asset-batch6-20261103/street-rework/ROOT-REVIEW.md"
     },
     {
       "id": "G-bin",
@@ -451,7 +451,7 @@
       "scene": "街道",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "queued",
+      "executionState": "accepted-local-refinement-awaiting-build",
       "treatment": "repair-current-treatment",
       "source": [
         "src/components/world/WorldStreetAssets.ts",
@@ -461,8 +461,8 @@
         "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
       ],
       "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5已接入4341。",
-      "visualAcceptance": "pending",
-      "completionEvidence": null
+      "visualAcceptance": "coordinator-accepted-ordinary-day-night; user-review-pending",
+      "completionEvidence": "docs/world/phase-2-playground/asset-batch6-20261103/street-rework/ROOT-REVIEW.md"
     },
     {
       "id": "S-timber",
