@@ -1,0 +1,13 @@
+# C03 R10 held after ordinary-view review
+
+2026-11-03. This is a rejected candidate, not delivered to 4341. Candidate source is `e55ae4d` in `personal-world-batch6-c03-r10-candidate`, based on current root `71f05d7`; actual GLB SHA256 `c9e5bf444f6fdf0d6ae46e568a3fb1f938a6eef0a623d75513f0a0bd848a3b07`.
+
+Main inspected the original ordinary baseline/candidate images at `docs/world/phase-2-playground/asset-batch6-20261103/nature-camp/runtime/b6-c03-r10-{baseline,candidate}-tent-walk-noon.png` in that candidate checkout. The candidate removes the rigid roof stripes, but the broad rear roof still reads as a uniform orange plane; weak internal folds and lost edge/seam definition do not constitute adequate visual improvement. No night expansion or integration is approved on this result. Native export/contact/texture-upload correctness does not establish aesthetic acceptance.
+
+The bounded candidate adds 28,412 triangles per geometry pass (4,840→33,252), with 13,608→99,072 vertices after the current runtime path; five material draws remain five for one C03. Additional source geometry payload is 3,524,904 B, texture RGBA8/mipmap estimate 4 MiB and network 921,984 B. These are source/format counts, not FPS or measured VRAM. The visual result does not justify accepting this cost.
+
+A separate read-only source diagnosis did not support blaming the 91 contact samples. Those are acceptance samples, while the height function clamps against real timber ray hits. The reviewer sampled 6,480 internal XY positions: 217 (3.35%) reached the clamp, and none of 2,104 positions with a free fold amplitude above 3 cm did. This is reported CPU point-sampling evidence, not independently rerun main evidence or screen-area measurement. The source places 0.10–0.18 m internal folds with zero envelopes at ridge/eave/ends; same-color 4/8 mm seams and 3.75 mm weave have little ordinary-view readability.
+
+Next authorized experiment is one frozen-candidate ordinary-view pair isolating C03's local environment intensity (~0.8 versus 0), with camera/time/exposure/global lighting unchanged. It diagnoses local response; zero intensity is not approved as a shipping setting. If this does not reveal form, focus the next bounded reconstruction on a few broad load-bearing folds, readable eave/hem transitions and reduced regular-grid/tiny-tube cost. Preserve timber/doorway/anchors/collision and existing contact tolerances. No global light/shader changes, other tent expansion, public deployment or modification of 4341.
+
+The author closed its only task page and service and released its token before this review. The failed candidate remains isolated for diagnosis. Current 4341 remains the accepted G21 plus P02/P03 integrated build.
