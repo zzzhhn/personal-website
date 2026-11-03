@@ -1,0 +1,10 @@
+[
+  {
+    "message": "Error: Could not load /world/alpha-mine/layout.json: fetch for \"http://127.0.0.1:4367/world/alpha-mine/layout.json\" responded with 404: File not found\n    at Object.onError (http://127.0.0.1:4367/_astro/WorldRuntime.CLlNQLl7.js:2:30570)\n    at http://127.0.0.1:4367/_astro/three.core.hRBAa5ew.js:5:35728",
+    "url": "http://127.0.0.1:4367/_astro/WorldRuntime.CLlNQLl7.js"
+  },
+  {
+    "message": "[alpha-mine] asset loading failed Error: Could not load /world/alpha-mine/layout.json: fetch for \"http://127.0.0.1:4367/world/alpha-mine/layout.json\" responded with 404: File not found\n    at Object.onError (http://127.0.0.1:4367/_astro/WorldRuntime.CLlNQLl7.js:2:30570)\n    at http://127.0.0.1:4367/_astro/three.core.hRBAa5ew.js:5:35728",
+    "url": "http://127.0.0.1:4367/_astro/WorldRuntime.CLlNQLl7.js"
+  }
+]

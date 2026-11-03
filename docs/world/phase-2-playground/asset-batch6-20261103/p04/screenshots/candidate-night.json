@@ -1,0 +1,172 @@
+{
+  "view": {
+    "id": "P04-normal",
+    "eye": [
+      66.24,
+      2.74,
+      -36.68
+    ],
+    "target": [
+      62.397348543648874,
+      2.54,
+      -37.063946814266544
+    ]
+  },
+  "fov": 50,
+  "time": 0,
+  "canvas": [
+    1710,
+    931
+  ],
+  "exposure": 1,
+  "dpr": 1,
+  "devicePixelRatio": 2,
+  "quality": "balanced",
+  "night": 1,
+  "blend": 1,
+  "sourceVersion": {
+    "baseCommit": "4ac2360",
+    "hashes": {
+      "WorldParkLamp.ts": "e29558221503c4c3db2ce0e5824ead01b9f13fa7507374a719496f5fa0a6e896",
+      "WorldStreetAssets.ts": "2b8eb883b69c7c88593b3ae7285f464e5baec4dfe0f730d65cea8c934ea6626b",
+      "WorldStreetFacilityCraft.ts": "94f41168cfa145d446b252beb522c0feaca6ef16fcf211dd0109e63bce31fdaf",
+      "WorldStreetGeometry.ts": "b240724f8ef8784d716d44372078733fdf5750bffe7b71728ed7f205234a6134",
+      "WorldEnvironment.tsx": "f80cc2a24cada8c193539f6cd73230d271b7a2d8a818b65abb95c24e9a3b956a",
+      "WorldParkWalk.tsx": "f1bd70c698a31fd54f721a1399a5fb958169050a77c584ffecbe295e4224a92a",
+      "WorldPark.tsx": "f74cadd13de76be17a560157a11e3d97d3f4dc2591a367a6ef2a9c2ff0670f34",
+      "WorldParkKit.ts": "f2618c15e591692cb8263326e6e2990d84f8dae71dbd7c3e2804f32074225da3",
+      "WorldParkLayout.ts": "dfe69600910ce4424907030fb5f8d6b367b4bf380f1785922fdb448599012f3b",
+      "WorldFacilitySurface.ts": "e859b94b637d8a129e453a9ac297e4d828ca887218ca1a77bd411a6462c6c379"
+    }
+  },
+  "reviewReady": {
+    "viewId": "P04-normal",
+    "currentMode": "candidate",
+    "expectedMode": "candidate",
+    "instancesReady": true,
+    "sampleHome": [
+      62.397348543648874,
+      1.14,
+      -37.063946814266544
+    ],
+    "sampleReady": true,
+    "geometryReady": true,
+    "slots": [
+      0,
+      1,
+      2
+    ],
+    "lensFaces": 48,
+    "cameraPosition": [
+      66.24,
+      2.74,
+      -36.68
+    ],
+    "cameraDirection": [
+      -0.9937135941851667,
+      -0.05172020441993308,
+      -0.09928903860123886
+    ],
+    "cameraReady": true,
+    "textures": [
+      {
+        "name": "uFacilityWood",
+        "uuid": "b27430c5-8794-47d1-8215-a326e8b7fb9f",
+        "width": 1024,
+        "height": 512,
+        "version": 1,
+        "gpuVersion": 1
+      },
+      {
+        "name": "uFacilityRough",
+        "uuid": "f7730839-f648-4b88-9b6d-0543aed65737",
+        "width": 1024,
+        "height": 512,
+        "version": 1,
+        "gpuVersion": 1
+      },
+      {
+        "name": "uFacilityNormal",
+        "uuid": "8796742a-ab48-4779-8dcc-64132c96ce2b",
+        "width": 1024,
+        "height": 512,
+        "version": 1,
+        "gpuVersion": 1
+      }
+    ],
+    "texturesReady": true,
+    "ready": true
+  },
+  "reviewWarmup": {
+    "stableAgeMs": 12831,
+    "checks": 3,
+    "minimumStableMs": 3000
+  },
+  "lampInstances": [
+    {
+      "name": "park-lamp",
+      "count": 9,
+      "nonZeroPositions": 9,
+      "firstPositions": [
+        [
+          54.03005599975586,
+          1.1399999856948853,
+          -41.478492736816406
+        ],
+        [
+          61.45787048339844,
+          1.1399999856948853,
+          -38.50736618041992
+        ],
+        [
+          67.8240966796875,
+          1.1399999856948853,
+          -34.9388542175293
+        ]
+      ]
+    },
+    {
+      "name": "park-lamp-far",
+      "count": 0,
+      "nonZeroPositions": 0,
+      "firstPositions": []
+    },
+    {
+      "name": "park-lamp-physics-proxy",
+      "count": 9,
+      "nonZeroPositions": 9,
+      "firstPositions": [
+        [
+          54.03005599975586,
+          1.1399999856948853,
+          -41.478492736816406
+        ],
+        [
+          61.45787048339844,
+          1.1399999856948853,
+          -38.50736618041992
+        ],
+        [
+          67.8240966796875,
+          1.1399999856948853,
+          -34.9388542175293
+        ]
+      ]
+    }
+  ],
+  "surfaceMode": "candidate",
+  "shadowPending": false,
+  "renderer": {
+    "render": {
+      "frame": 1967,
+      "calls": 299,
+      "triangles": 808688,
+      "points": 152,
+      "lines": 0
+    },
+    "memory": {
+      "geometries": 343,
+      "textures": 88
+    }
+  }
+}
