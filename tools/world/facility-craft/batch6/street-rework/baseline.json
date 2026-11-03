@@ -1,0 +1,71 @@
+{
+  "commit": "689484bf2e0f52c2b0cd3adc57c6c96bcd6bfd59",
+  "families": {
+    "lamp": {
+      "placements": 26,
+      "home": "7558e68da10c83ce42b156e6265e04d2d4597d9e1a5d06931303a0e286107bbf",
+      "lods": [
+        {
+          "triangles": 2118,
+          "vertices": 2544,
+          "bytes": 178056,
+          "visual": "71444947570e73df91ed7dba07f58af2aeff98012aaceb4c59bf91ea1dece70d",
+          "hulls": "6e4a9c2a987f00bd13f35cc2f8296ca4a1e3f95c9632959b2d215b04344a3633",
+          "emit": "f39f4d7fba30313da8933088c87c467b83f48c19b6dd1d80662061b625e992a7"
+        },
+        {
+          "triangles": 192,
+          "vertices": 233,
+          "bytes": 16284,
+          "visual": "719588272e6037c7faa6f7901b09b9353ab415e39f23b1dfb4957e187ab88b72",
+          "hulls": "1560b482607114be21469b3c335e214dd0049fdabe17c09343bb79572e9d71e7",
+          "emit": "1bccb33df153ec113082c9eedd00bb853dac09c0f72cc62e1e412c96d71752e6"
+        }
+      ]
+    },
+    "roadblock": {
+      "placements": 4,
+      "home": "195ea7705fe3061b494c41aadae5d9c46e33905d9222a5f5045eba07e0f0286d",
+      "lods": [
+        {
+          "triangles": 1440,
+          "vertices": 2688,
+          "bytes": 178560,
+          "visual": "35d129729bfe37ea7d0ac6cfdcf91d99553f08a7d3d9d862e7f6da4e07a6d2ee",
+          "hulls": "3edc3ceee208985a5c6c76f1475dc34addba397c3b6d0e0596ccfced99d454a8",
+          "emit": "38a8b991c4f8180ed2c283dfdb08bd650312979ca5821cdba8a603e3d181dcfd"
+        },
+        {
+          "triangles": 192,
+          "vertices": 352,
+          "bytes": 23424,
+          "visual": "e4a75a7ab55a51569d3a1814c2931e0c734ca71613e37cb5b55b44bee7bbd55c",
+          "hulls": "8c07a1a10771bb7f355ee2faeef4345ca5d69341045e2226c2424b144fb21fae",
+          "emit": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+        }
+      ]
+    },
+    "signal": {
+      "placements": 4,
+      "home": "87f986be88a8e070a7d63bb62f744461c2b5e7016c42e3106485cdd268a3078a",
+      "lods": [
+        {
+          "triangles": 3210,
+          "vertices": 4134,
+          "bytes": 286560,
+          "visual": "7459f4b1da66c61995d87373dcf7ce2fab440a61c5c296da9e9d57642fad0329",
+          "hulls": "5e2b664d9ccc374b4184e710beca360d70a4d7a030932e83ca77a3ab194fc5e8",
+          "emit": "22e013d4d07db1f29a0682efa9ded99a398e1bd0b2bab41939da1e44cf8666fe"
+        },
+        {
+          "triangles": 214,
+          "vertices": 276,
+          "bytes": 19128,
+          "visual": "8fd611a867245ca3de0160d7b54b0d6e95b130e6dcf25b80087837036bb1edd0",
+          "hulls": "1ca7a3fdf5e34b7fecee9c8a8a061a9becf878a2d734feebfbbe3ff68b32039c",
+          "emit": "3b464df41c0e7c825a057161d9505c1a7d38049125319176d78d26f994dc35da"
+        }
+      ]
+    }
+  }
+}
