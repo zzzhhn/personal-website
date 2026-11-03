@@ -1,0 +1,219 @@
+{
+  "source": {
+    "baseline": {
+      "commit": "8cba9bdc68a8374ba71c2e74b0a7ef6a19bca18d",
+      "geometrySha256": "87a3fb81f6e0a819d739d8b863fb750a413bc29228b081847d0ae6926e5bcecc"
+    },
+    "candidate": {
+      "commit": "a6a0089f49a5d33d5b61afd3d541859d271c1fc9",
+      "geometrySha256": "ce7687509f592c6425c17c0f6ae78be9e215b10740517ab601ebf6a2cc8d9f9b"
+    }
+  },
+  "buildTreeSha256": "3f12bf39000098d3ac41340fc5647ab76b52173f51e6ec8256e8e027583fdac8",
+  "buildFiles": 59,
+  "localResponses": {
+    "200": 32,
+    "304": 214,
+    "404": 1
+  },
+  "localFailedPaths": [
+    "/favicon.ico"
+  ],
+  "frames": {
+    "day-after": {
+      "conditions": {
+        "shot": "craft-intake-day",
+        "quality": "balanced",
+        "time": 720,
+        "weather": "clear",
+        "position": [
+          31.1,
+          3.55,
+          -115.6
+        ],
+        "direction": [
+          0.4058425636220487,
+          -0.1819294250719529,
+          -0.8956525542003841
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 0,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ],
+        "drawCalls": 101
+      },
+      "assembly": {
+        "baseline": false,
+        "roles": {
+          "0": 25272,
+          "3": 864,
+          "4": 1296,
+          "5": 180
+        },
+        "vertices": 27612
+      },
+      "renderInfo": {
+        "frame": 2807,
+        "triangles": 561025,
+        "compiledCraftPrograms": 2,
+        "shadowCancelled": 0
+      },
+      "secondsFromHtmlToScreenshot": 99.9
+    },
+    "day-before": {
+      "conditions": {
+        "shot": "craft-intake-day",
+        "quality": "balanced",
+        "time": 720,
+        "weather": "clear",
+        "position": [
+          31.1,
+          3.55,
+          -115.6
+        ],
+        "direction": [
+          0.4058425636220487,
+          -0.1819294250719529,
+          -0.8956525542003841
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 0,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ],
+        "drawCalls": 101
+      },
+      "assembly": {
+        "baseline": true,
+        "roles": {
+          "0": 25272,
+          "3": 864,
+          "4": 1128,
+          "5": 60
+        },
+        "vertices": 27324
+      },
+      "renderInfo": {
+        "frame": 4337,
+        "triangles": 560737,
+        "compiledCraftPrograms": 2,
+        "shadowCancelled": 0
+      },
+      "secondsFromHtmlToScreenshot": 136.8
+    },
+    "night-after": {
+      "conditions": {
+        "shot": "craft-intake-night",
+        "quality": "balanced",
+        "time": 0,
+        "weather": "clear",
+        "position": [
+          31.1,
+          3.55,
+          -115.6
+        ],
+        "direction": [
+          0.4058425636220487,
+          -0.1819294250719529,
+          -0.8956525542003841
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 1,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ],
+        "drawCalls": 101
+      },
+      "assembly": {
+        "baseline": false,
+        "roles": {
+          "0": 25272,
+          "3": 864,
+          "4": 1296,
+          "5": 180
+        },
+        "vertices": 27612
+      },
+      "renderInfo": {
+        "frame": 5507,
+        "triangles": 561025,
+        "compiledCraftPrograms": 1,
+        "shadowCancelled": 0
+      },
+      "secondsFromHtmlToScreenshot": 210.4
+    },
+    "night-before": {
+      "conditions": {
+        "shot": "craft-intake-night",
+        "quality": "balanced",
+        "time": 0,
+        "weather": "clear",
+        "position": [
+          31.1,
+          3.55,
+          -115.6
+        ],
+        "direction": [
+          0.4058425636220487,
+          -0.1819294250719529,
+          -0.8956525542003841
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 1,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ],
+        "drawCalls": 101
+      },
+      "assembly": {
+        "baseline": true,
+        "roles": {
+          "0": 25272,
+          "3": 864,
+          "4": 1128,
+          "5": 60
+        },
+        "vertices": 27324
+      },
+      "renderInfo": {
+        "frame": 3707,
+        "triangles": 560737,
+        "compiledCraftPrograms": 2,
+        "shadowCancelled": 0
+      },
+      "secondsFromHtmlToScreenshot": 123.7
+    }
+  },
+  "evidenceSha256": {
+    "assets/blend.json": "a66bca026c651d347128ce2d32e15302cd706707f451c8ef6977a34921f6c0ee",
+    "assets/glb.json": "a5fdab61c614e0ba361ad34c9a8a18dfe88c8706fe3a9361311311bfb0c1488a",
+    "assets/intake-bench.blend": "fef662570d6495fa0db3eb401557c799bb53704070233f122da2793b60b5ad3c",
+    "assets/intake-bench.glb": "da5a70ee8374af8fff2b87837d42fe394b30f1433281d2a0046537cde640491e",
+    "runtime/day-after.jpg": "c30dbb5c6a3a701d13e0c51627ea657927b645a9e4fb91b1e038a930144c8f9e",
+    "runtime/day-after.json": "1aeca54b6efef1bdc820bd19198d352bfe509685d9411e1a9d9f1639c3e154f3",
+    "runtime/day-before.jpg": "6475f3451c956257ad7230d96b5e207b37134599fc0d0fb1b8324ccbf9aa922e",
+    "runtime/day-before.json": "3dae924a0d9defe57f10684c5b019f49007c538ccd166f5e262d94c947b519a0",
+    "runtime/night-after.jpg": "6005748fac2dd1f2aee83a0bc66ebaf1b38c0a9a9e8c02c406d6b89bc8178031",
+    "runtime/night-after.json": "13217f5b14bafc0e6f38833800ee08882fd4bbcf1fd297083d9de69148dce112",
+    "runtime/night-before.jpg": "16d784b4d243ff70d1772d6a6fd67e17e79d93888c80d5b6b8748f3c46eb9ac2",
+    "runtime/night-before.json": "f7a9cf6b60d44c248597bf5650d77f57fcb0ccd56205ca0b356003c76a2d4aa6",
+    "source-receipt.json": "84d814f9e043b39d316a24149411a6935df4862728e42c6f9a7b811dcbafffe9"
+  }
+}

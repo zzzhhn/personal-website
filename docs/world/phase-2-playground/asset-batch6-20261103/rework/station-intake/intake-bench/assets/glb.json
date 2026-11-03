@@ -1,0 +1,22 @@
+{
+  "mode": "glb",
+  "objects": 14,
+  "triangles": 168,
+  "materials": [
+    "Blue-gray cabinet coat",
+    "Dark support coat",
+    "Folded steel"
+  ],
+  "bounds": [
+    [
+      -1.4,
+      -1.15,
+      0.3
+    ],
+    [
+      1.4,
+      1.15,
+      1.33
+    ]
+  ]
+}
