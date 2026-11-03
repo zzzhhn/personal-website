@@ -529,15 +529,17 @@
       "scene": "IBD工场",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "queued",
+      "executionState": "representative-coil-bay-production-dispatch",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/attractions/ibd-yard-architecture.ts"
       ],
       "evidence": [
-        "docs/world/phase-2-playground/ibd-art-20261028/cab-handoff.md"
+        "docs/world/phase-2-playground/visual-calibration-20261027/ibd.json",
+        "docs/world/phase-2-playground/visual-calibration-20261027/runtime/world-v18-ibd-coil-day.png",
+        "docs/world/phase-2-playground/asset-batch6-20261103/rework/IBD-NEXT-SAMPLE.md"
       ],
-      "baselineNote": "三种厂房按共用钢构建造系统归一族；若日后独立建筑美术目标不同再拆。",
+      "baselineNote": "三种厂房按共用钢构建造系统归一族。已核对代表棚跨方案与当前运行材质入口；先制作 coil 前部一跨，同机位日夜复核后再扩展。旧 cab-handoff 只证明驾驶室，不作为厂棚验收。",
       "visualAcceptance": "pending",
       "completionEvidence": null
     },
@@ -601,7 +603,7 @@
       "scene": "IBD工场",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "queued",
+      "executionState": "planned-after-coil-bay-review",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/attractions/ibd-stock-craft.ts"
@@ -609,7 +611,7 @@
       "evidence": [
         "docs/world/phase-2-playground/ibd-stock-craft-20261029/handoff.md"
       ],
-      "baselineNote": "v42构造pass；原交接待网页日夜接受。",
+      "baselineNote": "v42 已开放侧面并补层梁，仍待本轮网页日夜视觉接受。下一样板方案已归档；先完成 coil 棚跨的运行材质验证，再开展货架，避免重复平面着色处理。",
       "visualAcceptance": "pending",
       "completionEvidence": null
     },
