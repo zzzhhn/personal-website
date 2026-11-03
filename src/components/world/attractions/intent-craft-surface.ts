@@ -10,6 +10,23 @@ export function markIntentCraft(geometry: BufferGeometry, surface: number) {
   craftRoles.set(geometry, surface);
 }
 
+const trackSurfaceRoles = {
+  runningSteel: INTENT_CRAFT.runningSteel,
+  spineCoat: INTENT_CRAFT.structuralCoat,
+  tieCoat: INTENT_CRAFT.structuralCoat,
+  railSeat: INTENT_CRAFT.galvanized,
+  supportCoat: INTENT_CRAFT.structuralCoat,
+  connectionSteel: INTENT_CRAFT.galvanized,
+  grout: INTENT_CRAFT.concreteBase,
+} as const;
+
+/** The short-span generator calls this after adding the final, non-indexed part. */
+export const COASTER_TRACK_CRAFT = {
+  mark(geometry: BufferGeometry, surface: keyof typeof trackSurfaceRoles) {
+    markIntentCraft(geometry, trackSurfaceRoles[surface]);
+  },
+};
+
 const structureRoles = {
   runningSteel: INTENT_CRAFT.runningSteel,
   structuralCoat: INTENT_CRAFT.structuralCoat,
