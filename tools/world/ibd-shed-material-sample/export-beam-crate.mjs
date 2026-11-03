@@ -12,8 +12,8 @@ const options = { separateCraftShells: true, shedExpansion: true, rackMode: 'fam
 const baseline = buildIbdStatic(options);
 const variant = {
   bridge: buildIbdStatic({ ...options, bridgeSample: true }),
-  crate: buildIbdStatic({ ...options, crateSample: true }),
-  combined: buildIbdStatic({ ...options, bridgeSample: true, crateSample: true }),
+  crate: buildIbdStatic({ ...options, crateSample: 'reference' }),
+  combined: buildIbdStatic({ ...options, bridgeSample: true, crateSample: 'reference' }),
 };
 const sha = (...values) => {
   const hash = createHash('sha256');

@@ -52,10 +52,12 @@ export default memo(function WorldIbdYard({ active = true }: { active?: boolean 
     const rack = query?.get('qa') === '1' ? query.get('ibdRack') : 'family-v2';
     const rackMode = rack === 'sample-v2' ? 'sample' : rack === 'family-v2' ? 'family' : undefined;
     const bridgeSample = query?.get('qa') === '1' && query.get('ibdBridge') === 'candidate';
-    const crateSample = query?.get('qa') === '1' && query.get('ibdStockCrate') === 'candidate';
+    const crate = query?.get('qa') === '1' ? query.get('ibdStockCrate') : null;
+    const crateSample = crate === 'grain-v2' ? 'grain' : crate === 'candidate' ? 'reference' : undefined;
+    const wood = crateSample === 'grain';
     return { ...buildIbdStatic({ separateCraftShells: true, coilBaySample, shedExpansion, rackMode, bridgeSample, crateSample }), uniform,
       material: createIbdMaterial(true, uniform),
-      coilMaterial: coilBaySample || shedExpansion ? applyCoilBayMaterial(createIbdMaterial(true, uniform), shedExpansion) : null,
+      coilMaterial: coilBaySample || shedExpansion || wood ? applyCoilBayMaterial(createIbdMaterial(true, uniform), shedExpansion, wood) : null,
       movingMaterial: createIbdMaterial(false, uniform) };
   }, []);
   useEffect(() => { useIbdYardStore.setState({ active }); return () => { useIbdYardStore.setState({ active: false }); }; }, [active]);

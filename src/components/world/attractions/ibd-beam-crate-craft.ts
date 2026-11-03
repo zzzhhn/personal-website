@@ -1,5 +1,6 @@
 import { box, cbox, type Builder, type Surf, type V3 } from '../WorldStreetGeometry.ts';
 import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
+import type { CoilBayFinish } from './ibd-coil-bay';
 import { IBD_CRANE_Y } from './ibd-yard-layout.ts';
 
 const web: Surf = { color: '#be8c31', rough: .63, metal: .10 };
@@ -40,7 +41,10 @@ function timberFace(b: Builder, at: (along: number, across: number) => V3, outwa
   }
 }
 
-export function addIbdStockCrateSample(b: Builder, x: number, y: number, z: number) {
+export function addIbdStockCrateSample(b: Builder, x: number, y: number, z: number, finish?: CoilBayFinish) {
+  const timber = (axis: 0 | 1 | 2, board: number, emit: () => void) => finish
+    ? finish.markWood(emit, axis, board)
+    : emit();
   b.tr([x,y,z], [0,0,0], () => {
     cbox(b, [0,-.022,0], [2.07, 1.456, 1.54], backing);
     for (let course = 0; course < 4; course++) {
@@ -48,28 +52,36 @@ export function addIbdStockCrateSample(b: Builder, x: number, y: number, z: numb
       for (const side of [-1, 1]) {
         const ends = [side*.77,side*.802].sort((a,c) => a-c);
         const edges = [side*1.035,side*1.067].sort((a,c) => a-c);
-        box(b, [-1.035,bottom,ends[0]], [1.035,top,ends[1]], boards, 0, side > 0 ? { pz: null } : { nz: null });
-        box(b, [edges[0],bottom,-.77], [edges[1],top,.77], boards, 0, side > 0 ? { px: null } : { nx: null });
-        timberFace(b, (u,v) => [-1.035+2.07*u,bottom+(top-bottom)*v,side*.802], [0,0,side], course+side);
-        timberFace(b, (u,v) => [side*1.067,bottom+(top-bottom)*v,-.77+1.54*u], [side,0,0], course+5+side);
+        if (finish) {
+          timber(0, course + (side > 0 ? 1 : 5), () => box(b, [-1.035,bottom,ends[0]], [1.035,top,ends[1]], boards));
+          timber(2, course + (side > 0 ? 9 : 5), () => box(b, [edges[0],bottom,-.77], [edges[1],top,.77], boards));
+        } else {
+          box(b, [-1.035,bottom,ends[0]], [1.035,top,ends[1]], boards, 0, side > 0 ? { pz: null } : { nz: null });
+          box(b, [edges[0],bottom,-.77], [edges[1],top,.77], boards, 0, side > 0 ? { px: null } : { nx: null });
+          timberFace(b, (u,v) => [-1.035+2.07*u,bottom+(top-bottom)*v,side*.802], [0,0,side], course+side);
+          timberFace(b, (u,v) => [side*1.067,bottom+(top-bottom)*v,-.77+1.54*u], [side,0,0], course+5+side);
+        }
       }
     }
     for (let plank = 0; plank < 5; plank++) {
       const minX = -1.035+plank*.414, maxX = minX+.402;
-      box(b, [minX,.683,-.8], [maxX,.727,.8], boards, 0, { py: null });
-      timberFace(b, (u,v) => [minX+(maxX-minX)*v,.727,-.8+1.6*u], [0,1,0], plank+11);
+      if (finish) timber(2, plank + 1, () => box(b, [minX,.683,-.8], [maxX,.727,.8], boards));
+      else {
+        box(b, [minX,.683,-.8], [maxX,.727,.8], boards, 0, { py: null });
+        timberFace(b, (u,v) => [minX+(maxX-minX)*v,.727,-.8+1.6*u], [0,1,0], plank+11);
+      }
     }
     for (const xx of [-.96,.96]) for (const zz of [-.785,.785]) {
-      cbox(b, [xx,0,zz], [.23,1.50,.19], timberFrame, .012);
+      timber(1, xx > 0 ? 3 : 1, () => cbox(b, [xx,0,zz], [.23,1.50,.19], timberFrame, .012));
     }
     for (const zz of [-.85,.85]) for (const yy of [-.6,.6]) {
-      cbox(b, [0,yy,zz], [2.18,.12,.1], timberFrame, .009);
+      timber(0, yy > 0 ? 2 : 4, () => cbox(b, [0,yy,zz], [2.18,.12,.1], timberFrame, .009));
     }
     for (const xx of [-1.052,1.052]) for (const yy of [-.6,.6]) {
-      cbox(b, [xx,yy,0], [.096,.12,1.56], timberFrame, .008);
+      timber(2, yy > 0 ? 3 : 5, () => cbox(b, [xx,yy,0], [.096,.12,1.56], timberFrame, .008));
     }
-    for (const zz of [-.73,.73]) cbox(b, [0,.768,zz], [2.18,.08,.1], timberFrame, .008);
-    for (const xx of [-.66,0,.66]) cbox(b, [xx,-.84,0], [.22,.18,1.6], P.endgrain);
+    for (const zz of [-.73,.73]) timber(0, 5, () => cbox(b, [0,.768,zz], [2.18,.08,.1], timberFrame, .008));
+    for (const xx of [-.66,0,.66]) timber(2, 6, () => cbox(b, [xx,-.84,0], [.22,.18,1.6], P.endgrain));
     for (const xx of [-.484,.484]) {
       cbox(b, [xx,0,.902], [.045,1.38,.018], P.blue);
       cbox(b, [xx,.773,0], [.045,.035,1.52], P.blue);

@@ -30,6 +30,16 @@ export class CoilBayFinish {
     }
   }
 
+  markWood(emit: () => void, axis: 0 | 1 | 2, board: number) {
+    const { pos, nrm } = this.builder;
+    const start = pos.length / 3;
+    emit();
+    for (let i = start; i < pos.length / 3; i++) {
+      const endGrain = Math.abs(nrm[i * 3 + axis]) > .78;
+      this.roles[i] = (endGrain ? 10 : 7) + axis + board * 16;
+    }
+  }
+
   bind(g: BufferGeometry) {
     const roles = new Uint8Array(g.getAttribute('position').count);
     for (let i = 0; i < this.roles.length; i++) roles[i] = this.roles[i] ?? 0;

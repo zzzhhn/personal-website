@@ -1,5 +1,6 @@
 import { IBD_SHEDS } from './ibd-yard-layout';
 import type { MeshStandardMaterial } from 'three';
+import { IBD_STOCK_WOOD } from './ibd-stock-wood-material';
 
 const cladding = (expanded: boolean) => /* glsl */`
 varying vec4 vCoilCladding;
@@ -44,25 +45,28 @@ vec4 coilFinish(vec3 p, float role, float building) {
 
 /** Decorates the actual IBD static draw's own material. Existing light, ground
  * and work-light code compiles first; no cloned or borrowed textures. */
-export function applyCoilBayMaterial(material: MeshStandardMaterial, expanded: boolean) {
+export function applyCoilBayMaterial(material: MeshStandardMaterial, expanded: boolean, wood = false) {
   const baseCompile = material.onBeforeCompile;
   const baseKey = material.customProgramCacheKey();
-  material.customProgramCacheKey = () => baseKey + (expanded ? ':ibd-envelope-v2' : ':coil-bay-v1');
+  material.customProgramCacheKey = () => baseKey + (expanded ? ':ibd-envelope-v2' : ':coil-bay-v1') + (wood ? ':stock-wood-v2' : '');
   material.onBeforeCompile = (shader, renderer) => {
     baseCompile.call(material, shader, renderer);
     shader.vertexShader = 'attribute float aIbdCladding; varying vec4 vCoilCladding;\n' + shader.vertexShader
       .replace('#include <begin_vertex>', '#include <begin_vertex>\nvCoilCladding = vec4(position, aIbdCladding);');
-    shader.fragmentShader = cladding(expanded) + shader.fragmentShader
+    shader.fragmentShader = cladding(expanded) + (wood ? IBD_STOCK_WOOD : '') + shader.fragmentShader
       .replace('#include <color_fragment>', `#include <color_fragment>
         float coilRole = mod(vCoilCladding.w, 16.);
         vec4 coilResponse = vec4(1., vIbdSurface.x, vIbdSurface.y, 0.);
-        if (coilRole > .5) coilResponse = coilFinish(vCoilCladding.xyz, coilRole, floor(vCoilCladding.w / 16.));
+        float stockBoard = floor(vCoilCladding.w / 16.);
+        ${wood ? 'if (coilRole > 6.5) coilResponse = stockWoodFinish(vCoilCladding.xyz, coilRole, stockBoard, vIbdSurface.x); else' : ''}
+        if (coilRole > .5) coilResponse = coilFinish(vCoilCladding.xyz, coilRole, stockBoard);
         diffuseColor.rgb *= coilResponse.x;`)
       .replace('roughnessFactor = vIbdSurface.x;', 'roughnessFactor = coilResponse.y;')
       .replace('metalnessFactor = vIbdSurface.y;', 'metalnessFactor = coilResponse.z;')
       .replace('#include <normal_fragment_maps>', `#include <normal_fragment_maps>
         if (coilRole > .5) normal = ibdConcreteNormal(-vViewPosition, normal, coilResponse.w, faceDirection);`);
     material.userData.ibdCladdingCompiled = true;
+    if (wood) material.userData.ibdStockWoodCompiled = true;
   };
   return material;
 }
