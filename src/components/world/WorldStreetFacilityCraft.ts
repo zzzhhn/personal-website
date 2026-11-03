@@ -1,7 +1,7 @@
 /** Batch 5 street construction. Runtime remains a single attributed/batched mesh per group.
  * Keep editable named parts here; collision always comes from the unchanged pre-craft Builder. */
 import { Builder, S, bar, bezier, box, cyl, lathe, plate, rectPoly, tube, type Surf, type V3 } from './WorldStreetGeometry.ts';
-import { facilityCraftEnabled, tagShelterSurfaces } from './WorldFacilitySurface';
+import { FACILITY_SURFACE, facilityCraftEnabled, tagShelterSurfaces } from './WorldFacilitySurface';
 import { tagBenchBinSurfaces } from './WorldBenchBinSurface';
 import { binR2Enabled, buildBinR2Details } from './WorldBinConstruction';
 
@@ -271,15 +271,125 @@ function timberBeam(B: Builder, len: number) {
   }));
 }
 
+function lampRework(B: Builder, old: Builder, o: FacilityOptions) {
+  lamp(B, old, o);
+  const height = o.height ?? 4.4, reach = o.arm ?? 1.35;
+  part(B, 'base.anchor-sleeve', () => lathe(B,
+    [[.167,.078],[.174,.092],[.169,.13],[.152,.15],[.143,.145],[.145,.105],[.153,.078],[.167,.078]],
+    S.galv, { sides:12, smooth:42, caps:false }));
+  part(B, 'arm.shaft-sleeve', () => lathe(B,
+    [[.072,height-.22],[.092,height-.19],[.092,height+.035],[.074,height+.06],
+      [.055,height+.048],[.055,height-.21],[.072,height-.22]],
+    S.slateDark, { sides:12, smooth:42, caps:false }));
+  const arm = bezier([0,height-.1,0], [0,height+.44,-reach*.35], [0,height+.32,-reach], 10);
+  part(B, 'arm.root-coupling', () => tube(B, arm.slice(0,4), [.065,.063,.055,.048], S.galv, 8));
+  part(B, 'head.arm-socket', () => tube(B, arm.slice(6,10), [.038,.041,.047,.052], S.galv, 8));
+}
+
+function signalRework(B: Builder, old: Builder) {
+  signal(B, old);
+  part(B, 'mount.overhead-saddle', () => {
+    box(B, [-.076,5.275,-3.126], [.076,5.445,-2.974], S.galv, .014);
+  });
+  part(B, 'mount.pole-brackets', () => {
+    for (const y of [1.80,2.40]) box(B, [-.103,y-.043,-.069], [.075,y+.043,.069], S.galv, .01);
+  });
+  for (const [label, origin] of [['head', [0,4.98,-3.05]], ['near-head',[-.16,2.1,0]]] as const) {
+    part(B, label+'.folded-side-rails', () => B.tr([...origin], [0,0,0], () => {
+      for (const side of [-1,1]) {
+        const z = side * .151;
+        box(B, [-.103,-.40,z-.014], [.135,.40,z+.014], S.galv, .007);
+      }
+    }));
+  }
+}
+
+/** Slots use the existing street shader and skip the original active optical faces. */
+function tagReworkSurfaces(builder: Builder) {
+  for (let at = 0; at < builder.mat.length; at += 4) {
+    const [roughness, metalness, glow, atlas] = builder.mat.slice(at, at + 4);
+    if (glow || atlas) continue;
+    const matches = (surface: Surf) => roughness === surface.rough && metalness === surface.metal;
+    if (matches(S.galv) || matches(S.iron)) builder.mat[at + 3] = -FACILITY_SURFACE.metal;
+    else if ([S.slate, S.slateDark, S.creamPaint, S.orange].some(matches)) builder.mat[at + 3] = -FACILITY_SURFACE.paint;
+  }
+}
+
+function roadblockRework(B: Builder, old: Builder) {
+  retain(B, old, ['boards']);
+  // Offset the upper leg behind the two raked sign faces while retaining the foot spread.
+  const legProfile = [[.02, .30], [.30, .155], [.62, .042], [.96, .042]];
+  const legDepth = (y: number) => {
+    const i = legProfile.findIndex(([top]) => top >= y);
+    const [lo, z0] = legProfile[i - 1], [hi, z1] = legProfile[i];
+    return z0 + (z1 - z0) * (y - lo) / (hi - lo);
+  };
+  for (const x of [-.56, .56]) {
+    part(B, `frame.splayed-legs-${x}`, () => {
+      const section: [number, number][] = [[-.035,-.017],[.035,-.017],[.035,.017],[-.035,.017]];
+      const outward: V3[] = [[0,0,-1],[1,0,0],[0,0,1],[-1,0,0]];
+      for (const side of [-1, 1]) {
+        const rings = legProfile.map(([y,z]) => section.map(([dx,dz]): V3 => [x+dx,y,side*z+dz]));
+        B.face(rings[0], S.galv, [0,-1,0]);
+        B.face(rings[rings.length-1], S.galv, [0,1,0]);
+        for (let i = 1; i < rings.length; i++) for (let edge = 0; edge < 4; edge++) {
+          const next = (edge + 1) % 4;
+          B.face([rings[i-1][edge],rings[i-1][next],rings[i][next],rings[i][edge]], S.galv, outward[edge]);
+        }
+      }
+    });
+    part(B, `frame.shoes-${x}`, () => {
+      for (const side of [-1, 1]) {
+        const z = side * .3;
+        box(B, [x - .072, 0, z - .074], [x + .072, .048, z + .074], S.rubber, .01);
+      }
+    });
+    part(B, `frame.hinge-${x}`, () => {
+      box(B, [x - .049, .905, -.088], [x + .049, .984, .088], S.slateDark, .008);
+      bar(B, [x - .065, .943, 0], [x + .065, .943, 0], .029, S.galv, 10);
+    });
+    part(B, `frame.lock-brace-${x}`, () => {
+      box(B, [x - .017, .327, -.151], [x + .017, .365, .151], S.slateDark, .005);
+    });
+    for (const y of [.48, .77]) part(B, `boards.saddles-${x}-${y}`, () => {
+      const inner = legDepth(y);
+      const outer = .3 * (1 - y) + .045 - .009;
+      for (const side of [-1, 1]) {
+        const z0 = side * (inner - .012), z1 = side * outer;
+        box(B, [x - .04, y - .025, Math.min(z0, z1)], [x + .04, y + .025, Math.max(z0, z1)], S.slateDark, .006);
+      }
+    });
+  }
+  part(B, 'boards.folded-edges', () => {
+    for (const [y, height] of [[.48, .20], [.77, .22]]) for (const side of [-1, 1]) {
+      const z = side * (.3 * (1 - y) + .045);
+      B.tr([0, y, z], [Math.atan2(.3, 1) * side, 0, 0], () => {
+        for (const edge of [-1, 1]) {
+          const top = edge * height / 2;
+          box(B, [-.65, top - .008, -.015], [.65, top + .008, .015], S.creamPaint, .004);
+        }
+      });
+    }
+  });
+}
+
 export function finishStreetFacility(baseline: Builder, kind: StreetFacility, lod: 0 | 1, o: FacilityOptions = {}): Builder {
   const legacy = typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('facilityCraft') === 'legacy';
   // Existing far geometry is intentionally reused; no extra per-instance draw or update loop.
   if (legacy || lod === 1 || (kind === 'lamp' && o.arm === 0)) return baseline;
+  const rework = facilityCraftEnabled() && (typeof window === 'undefined' ||
+    new URLSearchParams(window.location.search).get('streetRework') !== 'baseline');
   const B = new Builder(); B.cell = [...baseline.cell];
   if (kind === 'bench') bench(B);
   else if (kind === 'shelter') shelter(B, baseline);
-  else if (kind === 'lamp') lamp(B, baseline, o);
-  else if (kind === 'signal') signal(B, baseline);
+  else if (kind === 'lamp') {
+    if (rework) { lampRework(B, baseline, o); tagReworkSurfaces(B); }
+    else lamp(B, baseline, o);
+  }
+  else if (kind === 'signal') {
+    if (rework) { signalRework(B, baseline); tagReworkSurfaces(B); }
+    else signal(B, baseline);
+  }
   else if (kind === 'bin' && binR2Enabled()) {
     const reference = new Builder(); bin(reference);
     retain(B, reference, ['drum']);
@@ -287,7 +397,10 @@ export function finishStreetFacility(baseline: Builder, kind: StreetFacility, lo
     retain(B, reference, ['lid.hinge']);
   }
   else if (kind === 'bin') bin(B);
-  else if (kind === 'roadblock') roadblock(B, baseline);
+  else if (kind === 'roadblock') {
+    if (rework) { roadblockRework(B, baseline); tagReworkSurfaces(B); }
+    else roadblock(B, baseline);
+  }
   else if (kind === 'seawallBay') seawall(B, o.len ?? 2);
   else if (kind === 'timberPost') timberPost(B);
   else timberBeam(B, o.len ?? 4.2);
