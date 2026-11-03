@@ -8,6 +8,7 @@ import { IBD_ACTION_LABEL } from './ibd-yard-copy.ts';
 import { cancelIbdAction, dispatchIbdAction, ibdActor, useIbdYardStore } from './ibd-yard-store.ts';
 import { applyCoilBayMaterial } from './ibd-coil-bay-material';
 import { buildIbdStatic } from './ibd-yard-geometry.ts';
+import { ibdCraftOptions } from './ibd-craft-options.ts';
 import WorldIbdMechanisms from './WorldIbdMechanisms';
 import WorldIbdSigns from './WorldIbdSigns';
 import WorldIbdLighting from './WorldIbdLighting';
@@ -45,19 +46,10 @@ export default memo(function WorldIbdYard({ active = true }: { active?: boolean 
   const data = useMemo(() => {
     const uniform = { value: night.value };
     const query = typeof window === 'undefined' ? null : new URLSearchParams(window.location.search);
-    const coilBaySample = query?.get('qa') === '1' && query.get('ibdCoilBay') === 'candidate';
-    // Ship the accepted three-shed treatment. Explicit QA keeps the frozen
-    // baseline and first-bay controls for repeatable comparisons.
-    const shedExpansion = query?.get('qa') !== '1' || query.get('ibdSheds') === 'candidate';
-    const rack = query?.get('qa') === '1' ? query.get('ibdRack') : 'family-v2';
-    const rackMode = rack === 'sample-v2' ? 'sample' : rack === 'family-v2' ? 'family' : undefined;
-    const bridgeSample = query?.get('qa') === '1' && query.get('ibdBridge') === 'candidate';
-    const crate = query?.get('qa') === '1' ? query.get('ibdStockCrate') : null;
-    const crateSample = crate === 'grain-v2' ? 'grain' : crate === 'candidate' ? 'reference' : undefined;
-    const wood = crateSample === 'grain';
-    return { ...buildIbdStatic({ separateCraftShells: true, coilBaySample, shedExpansion, rackMode, bridgeSample, crateSample }), uniform,
+    const craft = ibdCraftOptions(query), wood = craft.crateSample === 'grain';
+    return { ...buildIbdStatic({ separateCraftShells: true, ...craft }), uniform,
       material: createIbdMaterial(true, uniform),
-      coilMaterial: coilBaySample || shedExpansion || wood ? applyCoilBayMaterial(createIbdMaterial(true, uniform), shedExpansion, wood) : null,
+      coilMaterial: craft.coilBaySample || craft.shedExpansion || wood ? applyCoilBayMaterial(createIbdMaterial(true, uniform), craft.shedExpansion, wood) : null,
       movingMaterial: createIbdMaterial(false, uniform) };
   }, []);
   useEffect(() => { useIbdYardStore.setState({ active }); return () => { useIbdYardStore.setState({ active: false }); }; }, [active]);

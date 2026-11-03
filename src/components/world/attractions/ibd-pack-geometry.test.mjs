@@ -4,6 +4,7 @@ import { DoubleSide, Matrix4, Mesh, MeshBasicMaterial, Raycaster, Vector3 } from
 import { buildIbdPack,buildIbdPackParts,buildIbdPackShell } from './ibd-pack-geometry.ts';
 import { IBD_PACK_SLOTS,IBD_PACK_SAMPLE_DIMENSIONS,IBD_PACK_INSPECTION,ibdPackInspectAnchors,ibdPackTransferPose } from './ibd-pack-layout.ts';
 import { IBD_GEOMETRY_BUDGET } from './ibd-geometry-budget.ts';
+import { ibdCraftOptions } from './ibd-craft-options.ts';
 import { buildIbdCraneLever } from './ibd-craft-geometry.ts';
 const triangles=g=>g.index.count/3,near=(a,b,e=1e-6)=>assert.ok(Math.abs(a-b)<e,`${a} != ${b}`);
 const material=new MeshBasicMaterial({side:DoubleSide});
@@ -120,6 +121,7 @@ test('four real cartons and the single active inspection rig stay within the res
   // Four physical cartons total, never a fifth copy when one changes locations.
   // Three full M8 cartons + one M6 is the highest-detail starting fixture.
   const family=y.buildIbdStatic({shedExpansion:true,rackMode:'family'}).geometry;
+  const release=y.buildIbdStatic({separateCraftShells:true,...ibdCraftOptions(null)});
   const all=[y.buildIbdStatic().geometry,y.buildIbdCoil(false),y.buildIbdCoil(true,2),y.buildIbdPack(4,'M8'),y.buildIbdPack(4,'M8'),
     y.buildIbdLid(),y.buildIbdLid(),y.buildIbdCrane(),buildIbdCraneLever(),buildIbdCraneLever(),y.buildIbdHook(),y.buildIbdCables(),y.buildIbdShutter(),y.buildIbdTorch(),
     y.buildIbdPack(4,'M6'),y.buildIbdPack(4,'M8'),y.buildIbdLid(),y.buildIbdLid()];
@@ -131,7 +133,13 @@ test('four real cartons and the single active inspection rig stay within the res
     assert.ok(total<IBD_GEOMETRY_BUDGET.representative,`${total} representative visible triangles including four cartons and one deployed rig`);
     const familyTotal=total-triangles(all[0])+triangles(family);
     assert.ok(familyTotal<IBD_GEOMETRY_BUDGET.representative,`${familyTotal} representative triangles with the three rack candidate`);
-    console.log(JSON.stringify({representativeVisibleWithReserve:total,rackFamilyRepresentative:familyTotal,budget:IBD_GEOMETRY_BUDGET.representative}));
-  }finally{all.forEach(g=>g.dispose());family.dispose();parts.dispose();}
+    // Production splits the 2,200-triangle legacy equipment fallback out of
+    // the static draw. Keep that fallback in the conservative authored fixture.
+    const releaseTotal=total-triangles(all[0])+triangles(release.geometry)+triangles(release.craftShellGeometry);
+    console.log(JSON.stringify({releaseStatic:triangles(release.geometry),fallback:triangles(release.craftShellGeometry),releaseRepresentative:releaseTotal}));
+    assert.ok(triangles(release.geometry)<IBD_GEOMETRY_BUDGET.static,`${triangles(release.geometry)} static triangles with the actual release selection`);
+    assert.ok(releaseTotal<IBD_GEOMETRY_BUDGET.representative,`${releaseTotal} representative triangles with the actual release selection`);
+    console.log(JSON.stringify({representativeVisibleWithReserve:total,rackFamilyRepresentative:familyTotal,releaseRepresentative:releaseTotal,releaseStatic:triangles(release.geometry),budget:IBD_GEOMETRY_BUDGET.representative}));
+  }finally{all.forEach(g=>g.dispose());family.dispose();release.geometry.dispose();release.craftShellGeometry.dispose();parts.dispose();}
 });
 test.after(()=>material.dispose());
