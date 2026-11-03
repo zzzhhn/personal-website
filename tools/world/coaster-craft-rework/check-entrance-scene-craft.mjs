@@ -55,6 +55,7 @@ try {
   sameGeometry(before.glow, after.glow);
   receipt.workshop = { before: stats(before.body), after: stats(after.body) };
   assert.equal(receipt.workshop.before.roles[3], receipt.workshop.after.roles[3]);
+  for (const role of [12, 13, 16, 17]) assert.ok(receipt.workshop.after.roles[role] > 0, `Missing workshop role ${role}`);
   for (const result of [before, after]) { result.body.dispose(); result.glow.dispose(); }
   console.log(JSON.stringify(receipt));
 } finally {

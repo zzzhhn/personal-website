@@ -11,7 +11,7 @@ function workshopArt(b: CoasterBatch, at: Vec3, kind: IntentClass | 'intake') {
   const [x, y, z] = coasterWorld(at);
   const point = (p: Vec3): Vec3 => [x + p[0], y + p[1], z + p[2]];
   const box = (p: Vec3, size: Vec3, color = P.dark) => b.box(point(p), size, color);
-  const shell = (p: Vec3, size: Vec3, color = P.white, role = INTENT_CRAFT.structuralCoat as number) => {
+  const shell = (p: Vec3, size: Vec3, color = P.white, role: number = INTENT_CRAFT.structuralCoat) => {
     b.housing(point(p), size, color);
     if (kind !== 'intake') markIntentCraft(b.parts[b.parts.length - 1], role);
   };
@@ -71,9 +71,9 @@ function workshopArt(b: CoasterBatch, at: Vec3, kind: IntentClass | 'intake') {
       const sx = -.7 + i * .58;
       rod([sx, 1.33, -.2], [sx, 1.49, -.2], .09, P.steel);
       shell([sx, 1.49, -.2], [.43, .15, .48], P.copper);
-      shell([sx, 1.59, -.17], [.34, .08, .37], P.dark);
+      shell([sx, 1.59, -.17], [.34, .08, .37], P.dark, INTENT_CRAFT.rubber);
       shell([sx, 1.74, -.44], [.43, .46, .14], P.copper);
-      shell([sx, 1.75, -.35], [.31, .3, .045], P.dark);
+      shell([sx, 1.75, -.35], [.31, .3, .045], P.dark, INTENT_CRAFT.rubber);
       for (const side of [-1, 1]) {
         rod([sx + side * .21, 1.5, -.03], [sx + side * .21, 1.73, -.03], .025);
         rod([sx + side * .21, 1.73, -.38], [sx + side * .21, 1.73, .06], .035, P.rail);
