@@ -1,7 +1,7 @@
 import { BufferAttribute, type BufferGeometry } from 'three';
 
 export const INTENT_CRAFT = { roofSheet: 1, flashing: 2, roller: 3, powderCoat: 4, worktop: 5,
-  entryFascia: 6, bedrock: 7, coping: 8, carrierCoat: 9, lookoutMetal: 10, carrierMetal: 11 } as const;
+  entryFascia: 6, bedrock: 7, coping: 8, carrierCoat: 9, lookoutMetal: 10, carrierMetal: 11, runningSteel: 12, structuralCoat: 13, galvanized: 14, concreteBase: 15 } as const;
 export const INTENT_CRAFT_ATTRIBUTE = 'intentCraftSurface';
 const craftRoles = new WeakMap<BufferGeometry, number>();
 
@@ -10,11 +10,24 @@ export function markIntentCraft(geometry: BufferGeometry, surface: number) {
   craftRoles.set(geometry, surface);
 }
 
+const structureRoles = {
+  runningSteel: INTENT_CRAFT.runningSteel,
+  structuralCoat: INTENT_CRAFT.structuralCoat,
+  galvanized: INTENT_CRAFT.galvanized,
+  concreteBase: INTENT_CRAFT.concreteBase,
+} as const;
+
+function roleFor(part: BufferGeometry) {
+  const role: unknown = part.userData.coasterCraftRole;
+  return craftRoles.get(part) ?? (typeof role === 'string' && Object.hasOwn(structureRoles, role)
+    ? structureRoles[role as keyof typeof structureRoles] : 0);
+}
+
 export function attachIntentCraftBatch(parts: readonly BufferGeometry[]) {
-  if (!parts.some(part => craftRoles.has(part))) return;
+  if (!parts.some(roleFor)) return;
   for (const part of parts) {
     const tag = new Uint8Array(part.getAttribute('position').count);
-    tag.fill(craftRoles.get(part) ?? 0);
+    tag.fill(roleFor(part));
     part.setAttribute(INTENT_CRAFT_ATTRIBUTE, new BufferAttribute(tag, 1));
   }
 }
@@ -43,6 +56,12 @@ float intentMineral(vec2 p) {
 IntentFinish intentFinish(vec3 pigment, float rough, float metal) {
   vec3 p = vIntentCraftPoint;
   vec3 n = normalize(vIntentCraftNormal);
+  if (vIntentCraft > 11.5 && vIntentCraft < 15.5) {
+    if (vIntentCraft < 12.5) return IntentFinish(mix(pigment, vec3(0.38, 0.42, 0.44), 0.46), 0.30, 0.63);
+    if (vIntentCraft < 13.5) return IntentFinish(pigment, 0.63, 0.06);
+    if (vIntentCraft < 14.5) return IntentFinish(mix(pigment, vec3(0.36, 0.40, 0.42), 0.44), 0.46, 0.48);
+    return IntentFinish(pigment, 0.88, 0.0);
+  }
   if (vIntentCraft < 0.5) return IntentFinish(pigment, rough, metal);
   if (vIntentCraft < 1.5) {
     // Formed blue-gray sheet and a folded lower lip, within the existing profile.
