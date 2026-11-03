@@ -2,6 +2,13 @@
   "schema": "world-visual-rework-queue-v1",
   "date": "2026-11-03",
   "coordinationBaseline": "cb82d7c",
+  "activeFocus": {
+    "date": "2026-11-04",
+    "scene": "intent-coaster",
+    "reason": "User requested scene-by-scene refinement, prioritizing all intent-coaster assets.",
+    "plan": "docs/world/phase-2-playground/coaster-craft-scene-20261104/README.md",
+    "otherScenes": "preserve candidates and unfinished queue; defer new heavy validation"
+  },
   "inventoryFile": "inventory.json",
   "inventorySHA256": "0d420eda4cc492cf9ae123acbc99b7d3ff270ce5c3bbba7a50ff2f799f5b184d",
   "scope": "All 57 status-2 families; does not replace the current 16-family batch or change historical acceptance.",
@@ -788,7 +795,7 @@
       "scene": "Intent车间",
       "lane": "coaster-workshop",
       "inventoryStatusUnchanged": 2,
-      "executionState": "roller-support-refinement-serving-4341-worktop-cabinet-pending",
+      "executionState": "roller-support-serving4341-worktop-cabinet-source-integrated-scene-material-rework-active",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/attractions/intent-workshop-geometry.ts",
