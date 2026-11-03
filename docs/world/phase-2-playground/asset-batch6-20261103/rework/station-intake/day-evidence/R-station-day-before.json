@@ -1,0 +1,63 @@
+{
+  "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&shot=craft-station-day&craftCompare=baseline",
+  "state": {
+    "canvas": [
+      [
+        3420,
+        1750,
+        1710,
+        875
+      ]
+    ],
+    "dialog": false,
+    "dpr": 2,
+    "loading": false,
+    "viewport": [
+      1710,
+      875
+    ]
+  },
+  "console": [
+    {
+      "level": "warn",
+      "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+      "timestamp": "2026-11-03T06:06:29.610Z",
+      "url": "http://127.0.0.1:4353/_astro/three.core.hRBAa5ew.js"
+    },
+    {
+      "level": "warn",
+      "message": "using deprecated parameters for the initialization function; pass a single object instead",
+      "timestamp": "2026-11-03T06:06:29.610Z",
+      "url": "http://127.0.0.1:4353/_astro/WorldRuntime.C-WuY1yp.js"
+    }
+  ],
+  "image": "R-station-day-before.jpg",
+  "sha256": "2baa805a458b633d3d299249be308f5ab06db3ff6dfdfa4a58529092f81425b3",
+  "mode": "same-build baseline shader",
+  "ready": {
+    "loadingOverlayAbsent": true,
+    "canvasNonzero": true,
+    "modalClosed": true
+  },
+  "camera": {
+    "position": [
+      56,
+      4.1,
+      -127.5
+    ],
+    "target": [
+      48,
+      6.2,
+      -146
+    ],
+    "fov": 50,
+    "basis": "frozen shot config"
+  },
+  "quality": "balanced",
+  "time": "12:00",
+  "weather": "clear",
+  "exposure": {
+    "value": 1.0,
+    "basis": "Three default and no override in app source; not independently sampled at runtime"
+  }
+}

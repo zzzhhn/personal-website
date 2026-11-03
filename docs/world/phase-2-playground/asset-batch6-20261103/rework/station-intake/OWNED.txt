@@ -1,0 +1,9 @@
+src/components/world/attractions/WorldIntentCoaster.tsx
+src/components/world/attractions/WorldIntentSurface.tsx
+src/components/world/attractions/WorldIntentWorkshop.tsx
+src/components/world/attractions/coaster-geometry.ts
+src/components/world/attractions/intent-craft-surface.ts
+src/components/world/attractions/intent-workshop-geometry.ts
+tools/world/coaster-craft-rework/check-surface-freeze.mjs
+tools/world/coaster-craft-rework/review.config.mjs
+tools/world/coaster-craft-rework/serve-review.py

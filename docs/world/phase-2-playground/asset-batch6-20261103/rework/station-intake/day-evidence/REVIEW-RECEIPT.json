@@ -1,0 +1,452 @@
+{
+  "candidateHEAD": "5e57b63f0c027a38524c5aa743415ddf77f7a304",
+  "base": "395cbbfaa2aea60877ad08d9c1590dbe1cd3a0ac",
+  "extractOnly": "357337c94c76628439d08ff75211885ecf6fb43a",
+  "comparison": "same-build shader A/B, R3 full code package; lookout out of review scope",
+  "buildRoot": "/tmp/bobby-world-coaster-craft-r1.0KSsM2/site",
+  "buildTreeSHA256": "16668dbebfeef6e0f51edcb6b40b54c2bdb5cfb872f73e3d9f606c8492c684eb",
+  "buildTreeHashAlgorithm": "SHA256 of sorted relative path TAB file SHA256 LF",
+  "worldHtmlSHA256": "7a230a11992082dc6021b9436adc0394460902759013836de98cf8d1081855f7",
+  "frozenAssetsRoot": "/tmp/bobby-world-batch6-walk-integrated-root",
+  "materialSource": {
+    "src/components/world/attractions/WorldIntentCoaster.tsx": "6979cd5a9e639d36f6f0ac06e1e29e1fcf228fd699909e676b14cf49ab50d50e",
+    "src/components/world/attractions/WorldIntentSurface.tsx": "6cc450e9626a6c0d6da08bf14465f94aa7f32081857966ebc36edec61f9ac3ac",
+    "src/components/world/attractions/WorldIntentWorkshop.tsx": "01b8626346c56dabbeee1509b45c7fc9f3927ff1115a113707c40c5c1a646317",
+    "src/components/world/attractions/coaster-geometry.ts": "a5feaa5b7a7557a97ca0995fad66dfe47a449742e4d9d91e2904ce215b5cda0f",
+    "src/components/world/attractions/intent-craft-surface.ts": "e0f676e98ebdc27b84d10063532d085ef4c9ab864d722b0e286d1604ce6c9de0",
+    "src/components/world/attractions/intent-workshop-geometry.ts": "0a626aefa94668c4b3714c01f6c409d4649649d59af0755fe95afeed0ac28544"
+  },
+  "ownedPaths": [
+    "src/components/world/attractions/WorldIntentCoaster.tsx",
+    "src/components/world/attractions/WorldIntentSurface.tsx",
+    "src/components/world/attractions/WorldIntentWorkshop.tsx",
+    "src/components/world/attractions/coaster-geometry.ts",
+    "src/components/world/attractions/intent-craft-surface.ts",
+    "src/components/world/attractions/intent-workshop-geometry.ts",
+    "tools/world/coaster-craft-rework/check-surface-freeze.mjs",
+    "tools/world/coaster-craft-rework/review.config.mjs",
+    "tools/world/coaster-craft-rework/serve-review.py"
+  ],
+  "pairs": {
+    "R-station": [
+      {
+        "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&shot=craft-station-day&craftCompare=baseline",
+        "state": {
+          "canvas": [
+            [
+              3420,
+              1750,
+              1710,
+              875
+            ]
+          ],
+          "dialog": false,
+          "dpr": 2,
+          "loading": false,
+          "viewport": [
+            1710,
+            875
+          ]
+        },
+        "console": [
+          {
+            "level": "warn",
+            "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+            "timestamp": "2026-11-03T06:06:29.610Z",
+            "url": "http://127.0.0.1:4353/_astro/three.core.hRBAa5ew.js"
+          },
+          {
+            "level": "warn",
+            "message": "using deprecated parameters for the initialization function; pass a single object instead",
+            "timestamp": "2026-11-03T06:06:29.610Z",
+            "url": "http://127.0.0.1:4353/_astro/WorldRuntime.C-WuY1yp.js"
+          }
+        ],
+        "image": "R-station-day-before.jpg",
+        "sha256": "2baa805a458b633d3d299249be308f5ab06db3ff6dfdfa4a58529092f81425b3",
+        "mode": "same-build baseline shader",
+        "ready": {
+          "loadingOverlayAbsent": true,
+          "canvasNonzero": true,
+          "modalClosed": true
+        },
+        "camera": {
+          "position": [
+            56,
+            4.1,
+            -127.5
+          ],
+          "target": [
+            48,
+            6.2,
+            -146
+          ],
+          "fov": 50,
+          "basis": "frozen shot config"
+        },
+        "quality": "balanced",
+        "time": "12:00",
+        "weather": "clear",
+        "exposure": {
+          "value": 1.0,
+          "basis": "Three default and no override in app source; not independently sampled at runtime"
+        }
+      },
+      {
+        "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&shot=craft-station-day",
+        "state": {
+          "canvas": [
+            [
+              3420,
+              1750,
+              1710,
+              875
+            ]
+          ],
+          "dialog": false,
+          "dpr": 2,
+          "loading": false,
+          "viewport": [
+            1710,
+            875
+          ]
+        },
+        "console": [
+          {
+            "level": "warn",
+            "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+            "timestamp": "2026-11-03T06:10:24.772Z",
+            "url": "http://127.0.0.1:4353/_astro/three.core.hRBAa5ew.js"
+          },
+          {
+            "level": "warn",
+            "message": "using deprecated parameters for the initialization function; pass a single object instead",
+            "timestamp": "2026-11-03T06:10:24.772Z",
+            "url": "http://127.0.0.1:4353/_astro/WorldRuntime.C-WuY1yp.js"
+          },
+          {
+            "level": "warn",
+            "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+            "timestamp": "2026-11-03T06:10:44.356Z",
+            "url": "http://127.0.0.1:4353/_astro/three.core.hRBAa5ew.js"
+          },
+          {
+            "level": "warn",
+            "message": "using deprecated parameters for the initialization function; pass a single object instead",
+            "timestamp": "2026-11-03T06:10:44.457Z",
+            "url": "http://127.0.0.1:4353/_astro/WorldRuntime.C-WuY1yp.js"
+          }
+        ],
+        "image": "R-station-day-after.jpg",
+        "sha256": "0e076378241e63d5876f20d6bc65223962d678ee16dd756a2a4c2e86a4530cc8",
+        "mode": "same-build craft shader",
+        "ready": {
+          "loadingOverlayAbsent": true,
+          "canvasNonzero": true,
+          "modalClosed": true
+        },
+        "camera": {
+          "position": [
+            56,
+            4.1,
+            -127.5
+          ],
+          "target": [
+            48,
+            6.2,
+            -146
+          ],
+          "fov": 50,
+          "basis": "frozen shot config"
+        },
+        "quality": "balanced",
+        "time": "12:00",
+        "weather": "clear",
+        "exposure": {
+          "value": 1.0,
+          "basis": "Three default and no override in app source; not independently sampled at runtime"
+        }
+      }
+    ],
+    "W-intake": [
+      {
+        "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&shot=craft-intake-day&craftCompare=baseline",
+        "state": {
+          "canvas": [
+            [
+              3420,
+              1750,
+              1710,
+              875
+            ]
+          ],
+          "dialog": false,
+          "dpr": 2,
+          "loading": false,
+          "viewport": [
+            1710,
+            875
+          ]
+        },
+        "console": [
+          {
+            "level": "warn",
+            "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+            "timestamp": "2026-11-03T06:08:22.796Z",
+            "url": "http://127.0.0.1:4353/_astro/three.core.hRBAa5ew.js"
+          },
+          {
+            "level": "warn",
+            "message": "using deprecated parameters for the initialization function; pass a single object instead",
+            "timestamp": "2026-11-03T06:08:22.796Z",
+            "url": "http://127.0.0.1:4353/_astro/WorldRuntime.C-WuY1yp.js"
+          }
+        ],
+        "image": "W-intake-day-before.jpg",
+        "sha256": "1e715f50d3abad268f3f2292cda1e0e4273bc966873f3ed568134b143f8de354",
+        "mode": "same-build baseline shader",
+        "ready": {
+          "loadingOverlayAbsent": true,
+          "canvasNonzero": true,
+          "modalClosed": true
+        },
+        "camera": {
+          "position": [
+            31.1,
+            3.55,
+            -115.6
+          ],
+          "target": [
+            34,
+            2.25,
+            -122
+          ],
+          "fov": 50,
+          "basis": "frozen shot config"
+        },
+        "quality": "balanced",
+        "time": "12:00",
+        "weather": "clear",
+        "exposure": {
+          "value": 1.0,
+          "basis": "Three default and no override in app source; not independently sampled at runtime"
+        }
+      },
+      {
+        "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&shot=craft-intake-day",
+        "state": {
+          "canvas": [
+            [
+              3420,
+              1750,
+              1710,
+              875
+            ]
+          ],
+          "dialog": false,
+          "dpr": 2,
+          "loading": false,
+          "viewport": [
+            1710,
+            875
+          ]
+        },
+        "console": [
+          {
+            "level": "warn",
+            "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+            "timestamp": "2026-11-03T06:10:24.772Z",
+            "url": "http://127.0.0.1:4353/_astro/three.core.hRBAa5ew.js"
+          },
+          {
+            "level": "warn",
+            "message": "using deprecated parameters for the initialization function; pass a single object instead",
+            "timestamp": "2026-11-03T06:10:24.772Z",
+            "url": "http://127.0.0.1:4353/_astro/WorldRuntime.C-WuY1yp.js"
+          },
+          {
+            "level": "warn",
+            "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+            "timestamp": "2026-11-03T06:10:44.356Z",
+            "url": "http://127.0.0.1:4353/_astro/three.core.hRBAa5ew.js"
+          },
+          {
+            "level": "warn",
+            "message": "using deprecated parameters for the initialization function; pass a single object instead",
+            "timestamp": "2026-11-03T06:10:44.457Z",
+            "url": "http://127.0.0.1:4353/_astro/WorldRuntime.C-WuY1yp.js"
+          },
+          {
+            "level": "warn",
+            "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+            "timestamp": "2026-11-03T06:11:20.856Z",
+            "url": "http://127.0.0.1:4353/_astro/three.core.hRBAa5ew.js"
+          },
+          {
+            "level": "warn",
+            "message": "using deprecated parameters for the initialization function; pass a single object instead",
+            "timestamp": "2026-11-03T06:11:20.926Z",
+            "url": "http://127.0.0.1:4353/_astro/WorldRuntime.C-WuY1yp.js"
+          }
+        ],
+        "image": "W-intake-day-after.jpg",
+        "sha256": "93d022631799b05c8a1fb48e84a4f89f16b418b6db63f8ddbf53c41bbceeb5b1",
+        "mode": "same-build craft shader",
+        "ready": {
+          "loadingOverlayAbsent": true,
+          "canvasNonzero": true,
+          "modalClosed": true
+        },
+        "camera": {
+          "position": [
+            31.1,
+            3.55,
+            -115.6
+          ],
+          "target": [
+            34,
+            2.25,
+            -122
+          ],
+          "fov": 50,
+          "basis": "frozen shot config"
+        },
+        "quality": "balanced",
+        "time": "12:00",
+        "weather": "clear",
+        "exposure": {
+          "value": 1.0,
+          "basis": "Three default and no override in app source; not independently sampled at runtime"
+        }
+      }
+    ],
+    "W-carrier": [
+      {
+        "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&shot=workshop-day&craftCompare=baseline",
+        "state": {
+          "canvas": [
+            [
+              3420,
+              1750,
+              1710,
+              875
+            ]
+          ],
+          "dialog": false,
+          "dpr": 2,
+          "loading": false,
+          "viewport": [
+            1710,
+            875
+          ]
+        },
+        "console": [
+          {
+            "level": "warn",
+            "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+            "timestamp": "2026-11-03T06:09:28.585Z",
+            "url": "http://127.0.0.1:4353/_astro/three.core.hRBAa5ew.js"
+          },
+          {
+            "level": "warn",
+            "message": "using deprecated parameters for the initialization function; pass a single object instead",
+            "timestamp": "2026-11-03T06:09:28.585Z",
+            "url": "http://127.0.0.1:4353/_astro/WorldRuntime.C-WuY1yp.js"
+          }
+        ],
+        "image": "W-carrier-day-before.jpg",
+        "sha256": "15a569416a6f03d522584a4d553ec3501925f45463c09c55b48d4529b1cb4ca6",
+        "mode": "same-build baseline shader",
+        "ready": {
+          "loadingOverlayAbsent": true,
+          "canvasNonzero": true,
+          "modalClosed": true
+        },
+        "camera": {
+          "position": [
+            48,
+            10,
+            -110
+          ],
+          "target": [
+            34,
+            2,
+            -129
+          ],
+          "fov": 50,
+          "basis": "frozen shot config"
+        },
+        "quality": "balanced",
+        "time": "12:00",
+        "weather": "clear",
+        "exposure": {
+          "value": 1.0,
+          "basis": "Three default and no override in app source; not independently sampled at runtime"
+        }
+      },
+      {
+        "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&shot=workshop-day",
+        "state": {
+          "canvas": [
+            [
+              3420,
+              1750,
+              1710,
+              875
+            ]
+          ],
+          "dialog": false,
+          "dpr": 2,
+          "loading": false,
+          "viewport": [
+            1710,
+            875
+          ]
+        },
+        "console": [
+          {
+            "level": "warn",
+            "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+            "timestamp": "2026-11-03T06:10:24.772Z",
+            "url": "http://127.0.0.1:4353/_astro/three.core.hRBAa5ew.js"
+          },
+          {
+            "level": "warn",
+            "message": "using deprecated parameters for the initialization function; pass a single object instead",
+            "timestamp": "2026-11-03T06:10:24.772Z",
+            "url": "http://127.0.0.1:4353/_astro/WorldRuntime.C-WuY1yp.js"
+          }
+        ],
+        "image": "W-carrier-day-after.jpg",
+        "sha256": "14be36a59f05b5eeaffe48d2abf3bf1c266b2945d1a9bc8e4e9790cd50f6c0eb",
+        "mode": "same-build craft shader",
+        "ready": {
+          "loadingOverlayAbsent": true,
+          "canvasNonzero": true,
+          "modalClosed": true
+        },
+        "camera": {
+          "position": [
+            48,
+            10,
+            -110
+          ],
+          "target": [
+            34,
+            2,
+            -129
+          ],
+          "fov": 50,
+          "basis": "frozen shot config"
+        },
+        "quality": "balanced",
+        "time": "12:00",
+        "weather": "clear",
+        "exposure": {
+          "value": 1.0,
+          "basis": "Three default and no override in app source; not independently sampled at runtime"
+        }
+      }
+    ]
+  }
+}
