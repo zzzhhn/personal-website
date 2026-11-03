@@ -1,0 +1,10 @@
+{
+  "file": "_astro/WorldRuntime.EpsQv_la.js",
+  "old": "canvas:[J.width,J.height]})},0);const r=eA(F=>F.shot)",
+  "new": "canvas:[J.width,J.height]});if((F.shot===\"craft-station-night\"||F.shot===\"craft-intake-night\")&&(Pt().pending||Gg.blend<1||F.loading.active))e()},0);const r=eA(F=>F.shot)",
+  "sha256": "4684350a202c715b170db7f6ef75e1cb6d5a6f82f6483de2701769e41c539c5c",
+  "diagnostic": {
+    "old": "shadowPending:Pt().pending,loading:F.loading.active",
+    "new": "shadowPending:Pt().pending,shadowSlices:Pt().slices,shadowCancelled:Pt().cancelled,shadowError:Pt().error,shadowWorker:Pt().hullWorker,loading:F.loading.active"
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&shot=craft-station-night&readback=2",
+  "beforeCapture": {
+    "dialog": false,
+    "dpr": 2,
+    "loading": false,
+    "run": {
+      "blend": 1,
+      "canvas": [
+        3420,
+        1750
+      ],
+      "direction": [
+        -0.3947742213250781,
+        0.10362823309783306,
+        -0.9129153868142432
+      ],
+      "exposure": 1,
+      "fov": 50,
+      "frame": 3355,
+      "loading": false,
+      "night": 1,
+      "pixelRatio": 2,
+      "position": [
+        56,
+        4.1,
+        -127.5
+      ],
+      "quality": "balanced",
+      "shadowCancelled": 0,
+      "shadowError": "",
+      "shadowPending": false,
+      "shadowSlices": 0,
+      "shadowWorker": {
+        "maxInputVertices": 576084,
+        "maxSource": "intent-coaster",
+        "maxWorkerMs": 1070.5999999046326,
+        "requests": 90,
+        "workerMs": 2559.2999992370605
+      },
+      "shot": "craft-station-night",
+      "time": 0,
+      "weather": "clear"
+    }
+  },
+  "afterCapture": {
+    "dialog": false,
+    "dpr": 2,
+    "loading": false,
+    "run": {
+      "blend": 1,
+      "canvas": [
+        3420,
+        1750
+      ],
+      "direction": [
+        -0.3947742213250781,
+        0.10362823309783306,
+        -0.9129153868142432
+      ],
+      "exposure": 1,
+      "fov": 50,
+      "frame": 3361,
+      "loading": false,
+      "night": 1,
+      "pixelRatio": 2,
+      "position": [
+        56,
+        4.1,
+        -127.5
+      ],
+      "quality": "balanced",
+      "shadowCancelled": 0,
+      "shadowError": "",
+      "shadowPending": false,
+      "shadowSlices": 0,
+      "shadowWorker": {
+        "maxInputVertices": 576084,
+        "maxSource": "intent-coaster",
+        "maxWorkerMs": 1070.5999999046326,
+        "requests": 90,
+        "workerMs": 2559.2999992370605
+      },
+      "shot": "craft-station-night",
+      "time": 0,
+      "weather": "clear"
+    }
+  },
+  "console": [
+    {
+      "level": "warn",
+      "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+      "timestamp": "2026-11-03T06:32:51.723Z",
+      "url": "http://127.0.0.1:4353/_astro/three.core.DpqcljzU.js"
+    },
+    {
+      "level": "warn",
+      "message": "using deprecated parameters for the initialization function; pass a single object instead",
+      "timestamp": "2026-11-03T06:32:51.723Z",
+      "url": "http://127.0.0.1:4353/_astro/WorldRuntime.EpsQv_la.js"
+    },
+    {
+      "level": "warn",
+      "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+      "timestamp": "2026-11-03T06:33:28.135Z",
+      "url": "http://127.0.0.1:4353/_astro/three.core.DpqcljzU.js"
+    },
+    {
+      "level": "warn",
+      "message": "using deprecated parameters for the initialization function; pass a single object instead",
+      "timestamp": "2026-11-03T06:33:28.277Z",
+      "url": "http://127.0.0.1:4353/_astro/WorldRuntime.EpsQv_la.js"
+    }
+  ],
+  "image": "R-station-night-after.jpg",
+  "sha256": "368be304c86ae85d7f688b8bb54652f645afb0ffd70ce3e98c6c67e7a58c135b",
+  "status": "ready"
+}

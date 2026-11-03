@@ -1,0 +1,106 @@
+{
+  "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&shot=craft-station-night&readback=2&craftCompare=baseline",
+  "beforeCapture": {
+    "dialog": false,
+    "dpr": 2,
+    "loading": false,
+    "run": {
+      "blend": 1,
+      "canvas": [
+        3420,
+        1750
+      ],
+      "direction": [
+        -0.3947742213250781,
+        0.10362823309783306,
+        -0.9129153868142432
+      ],
+      "exposure": 1,
+      "fov": 50,
+      "frame": 288,
+      "loading": false,
+      "night": 1,
+      "pixelRatio": 2,
+      "position": [
+        56,
+        4.1,
+        -127.5
+      ],
+      "quality": "balanced",
+      "shadowCancelled": 0,
+      "shadowError": "",
+      "shadowPending": false,
+      "shadowSlices": 0,
+      "shadowWorker": {
+        "maxInputVertices": 112416,
+        "maxSource": "alpha-exchange-architecture",
+        "maxWorkerMs": 232.70000004768372,
+        "requests": 23,
+        "workerMs": 675.2000000476837
+      },
+      "shot": "craft-station-night",
+      "time": 0,
+      "weather": "clear"
+    }
+  },
+  "afterCapture": {
+    "dialog": false,
+    "dpr": 2,
+    "loading": false,
+    "run": {
+      "blend": 1,
+      "canvas": [
+        3420,
+        1750
+      ],
+      "direction": [
+        -0.3947742213250781,
+        0.10362823309783306,
+        -0.9129153868142432
+      ],
+      "exposure": 1,
+      "fov": 50,
+      "frame": 288,
+      "loading": false,
+      "night": 1,
+      "pixelRatio": 2,
+      "position": [
+        56,
+        4.1,
+        -127.5
+      ],
+      "quality": "balanced",
+      "shadowCancelled": 0,
+      "shadowError": "",
+      "shadowPending": false,
+      "shadowSlices": 0,
+      "shadowWorker": {
+        "maxInputVertices": 112416,
+        "maxSource": "alpha-exchange-architecture",
+        "maxWorkerMs": 232.70000004768372,
+        "requests": 23,
+        "workerMs": 675.2000000476837
+      },
+      "shot": "craft-station-night",
+      "time": 0,
+      "weather": "clear"
+    }
+  },
+  "console": [
+    {
+      "level": "warn",
+      "message": "THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.",
+      "timestamp": "2026-11-03T06:32:51.723Z",
+      "url": "http://127.0.0.1:4353/_astro/three.core.DpqcljzU.js"
+    },
+    {
+      "level": "warn",
+      "message": "using deprecated parameters for the initialization function; pass a single object instead",
+      "timestamp": "2026-11-03T06:32:51.723Z",
+      "url": "http://127.0.0.1:4353/_astro/WorldRuntime.EpsQv_la.js"
+    }
+  ],
+  "image": "R-station-night-before.jpg",
+  "sha256": "53600c5a6d09ff1c9f9b56ab83029e0513bf657d710739fa0cbd998ea82b850d",
+  "status": "ready"
+}
