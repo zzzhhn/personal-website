@@ -6,6 +6,7 @@ import { IBD_STATIONS, ibdStation, ibdWorld, isIbdStockKey, isIbdPackStation, ty
 import { yardActions } from './ibd-yard-game.ts';
 import { IBD_ACTION_LABEL } from './ibd-yard-copy.ts';
 import { cancelIbdAction, dispatchIbdAction, ibdActor, useIbdYardStore } from './ibd-yard-store.ts';
+import { applyCoilBayMaterial } from './ibd-coil-bay-material';
 import { buildIbdStatic } from './ibd-yard-geometry.ts';
 import WorldIbdMechanisms from './WorldIbdMechanisms';
 import WorldIbdSigns from './WorldIbdSigns';
@@ -43,13 +44,18 @@ function Station({ id, active }: { id: IbdStationId; active: boolean }) {
 export default memo(function WorldIbdYard({ active = true }: { active?: boolean }) {
   const data = useMemo(() => {
     const uniform = { value: night.value };
-    return { ...buildIbdStatic({separateCraftShells:true}), uniform, material: createIbdMaterial(true, uniform), movingMaterial: createIbdMaterial(false, uniform) };
+    const query = typeof window === 'undefined' ? null : new URLSearchParams(window.location.search);
+    const coilBaySample = query?.get('qa') === '1' && query.get('ibdCoilBay') === 'candidate';
+    return { ...buildIbdStatic({ separateCraftShells: true, coilBaySample }), uniform,
+      material: createIbdMaterial(true, uniform),
+      coilMaterial: coilBaySample ? applyCoilBayMaterial(createIbdMaterial(true, uniform)) : null,
+      movingMaterial: createIbdMaterial(false, uniform) };
   }, []);
   useEffect(() => { useIbdYardStore.setState({ active }); return () => { useIbdYardStore.setState({ active: false }); }; }, [active]);
-  useEffect(() => () => { cancelIbdPack(true); cancelIbdAction(); data.geometry.dispose(); data.craftShellGeometry?.dispose(); data.material.dispose(); data.movingMaterial.dispose(); }, [data]);
+  useEffect(() => () => { cancelIbdPack(true); cancelIbdAction(); data.geometry.dispose(); data.craftShellGeometry?.dispose(); data.material.dispose(); data.coilMaterial?.dispose(); data.movingMaterial.dispose(); }, [data]);
   return <group name="world-ibd-yard" position={IBD_YARD.center} dispose={null} userData={{noOcclusionFade:true}}>
     <WorldIbdAudio />
-    <mesh name="ibd-three-sheds-static" geometry={data.geometry} material={data.material} castShadow receiveShadow
+    <mesh name="ibd-three-sheds-static" geometry={data.geometry} material={data.coilMaterial ?? data.material} castShadow receiveShadow
       userData={{ solid: true, assetId: 'ibd-yard-architecture' }} />
     <WorldIbdStaticCraft uniform={data.uniform} fallback={<mesh name="ibd-static-equipment-legacy" geometry={data.craftShellGeometry!} material={data.material} castShadow receiveShadow/>}/>
     <RigidBody type="fixed" colliders={false} name="ibd-yard-architecture" userData={{ solid: true, assetId: 'ibd-yard-architecture' }}>

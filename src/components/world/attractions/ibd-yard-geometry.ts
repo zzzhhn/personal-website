@@ -1,3 +1,4 @@
+import { CoilBayFinish } from './ibd-coil-bay';
 import { Builder, cbox, bar, lathe, type Surf, type V3 } from '../WorldStreetGeometry.ts';
 import { IBD_RAMP } from './ibd-yard-layout.ts';
 import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
@@ -34,7 +35,7 @@ function buildIbdWalkSurface(b: Builder) {
   }
   return { vertices: new Float32Array(vertices), indices: new Uint32Array(indices) };
 }
-export function buildIbdStatic(options: { separateCraftShells?: boolean } = {}) {
+export function buildIbdStatic(options: { separateCraftShells?: boolean; coilBaySample?: boolean } = {}) {
   const b = new Builder(), craftShells = new Builder(), solids: IbdSolid[] = [];
   let shell = false;
   const cube = (at: V3, size: V3, s: Surf, solid = false, bevel = .03, rotation?: V3) => {
@@ -42,7 +43,8 @@ export function buildIbdStatic(options: { separateCraftShells?: boolean } = {}) 
     if (rotation) target.tr(at, rotation, () => cbox(target, [0, 0, 0], size, s, bevel)); else cbox(target, at, size, s, bevel);
     if (solid) solids.push({ at, size, ...(rotation ? { rotation } : {}) });
   };
-  const groundSurface = buildIbdArchitecture(b, cube, solids);
+  const coilFinish = options.coilBaySample ? new CoilBayFinish(b) : undefined;
+  const groundSurface = buildIbdArchitecture(b, cube, solids, coilFinish);
   buildIbdStores(b, cube, solids);
   buildIbdSite(b, cube);
   for (const x of [-20, -12]) for (const z of [-4, ...(x === -12 ? [-9] : [])]) {
@@ -147,7 +149,9 @@ export function buildIbdStatic(options: { separateCraftShells?: boolean } = {}) 
     vertices: new Float32Array([...vertices, ...rollerVertices]),
     indices: new Uint32Array([...indices, ...rollerIndices.map(i => i + vertices.length / 3)]),
   };
-  return { geometry: bakeIbdLight(b.build()), solids, walkSurface, groundSurface,
+  const geometry = bakeIbdLight(b.build());
+  coilFinish?.bind(geometry);
+  return { geometry, solids, walkSurface, groundSurface,
     craftShellGeometry: options.separateCraftShells ? bakeIbdLight(craftShells.build()) : null };
 }
 

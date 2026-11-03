@@ -2,13 +2,14 @@ import { Builder, bar, cbox, lathe, type Surf, type V3 } from '../WorldStreetGeo
 import { IBD_SHEDS, IBD_CRANE_Y } from './ibd-yard-layout.ts';
 import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
 import { buildIbdPaving } from './ibd-yard-site.ts';
+import { COIL_ROLE, addCoilBayWall, addCoilBayEave, type CoilBayFinish } from './ibd-coil-bay';
 import { addIbdStockRack } from './ibd-stock-craft.ts';
 
 export interface IbdSolid { at: V3; size: V3; rotation?: V3 }
 export type IbdCube = (at: V3, size: V3, surface: Surf, solid?: boolean, bevel?: number, rotation?: V3) => void;
 
 /** Three distinct building sections, sharing only construction details and the physical roof contract. */
-export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
+export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid[], coilFinish?: CoilBayFinish) {
   const groundSurface = buildIbdPaving(b);
   const rafter = (a: V3, end: V3) => {
     const angle = Math.atan2(end[1] - a[1], end[0] - a[0]), length = Math.hypot(end[0] - a[0], end[1] - a[1]);
@@ -20,6 +21,7 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
   for (const shed of IBD_SHEDS) {
     const { x, z, width: w, depth: d, eave: h, rise } = shed;
     const left = x - w / 2, right = x + w / 2, back = z - d / 2, front = z + d / 2;
+    const sample = shed.id === 'coil' ? coilFinish : undefined;
     const roof = shed.id === 'coil' ? P.roof : shed.id === 'parts' ? P.blue : P.green;
     cube([x, h - .5, front + .2], [8.2, 1.4, .16], P.dark);
     // Full-height rear and outer side cladding, deliberately open across the working frontage.
@@ -27,10 +29,15 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
       cube([cx, h / 2, cz], side ? [.18, h, length] : [length, h, .18], P.wall, true, 0);
       const n = Math.ceil(length / 2);
       for (let i = 0; i < n; i++) for (let y = 1.4; y < h; y += 2.8) {
+        const panelWidth = length / n - .04;
         const p = -length / 2 + (i + .5) * length / n;
-        cube([cx + (side ? .11 : p), Math.min(y, h - 1.4), cz + (side ? p : .11)],
-          side ? [.04, 2.65, length / n - .04] : [length / n - .04, 2.65, .04], i % 3 ? P.wall : P.pale, false, 0);
+        const usable = sample && side ? Math.min(panelWidth, -p + panelWidth / 2) : panelWidth;
+        if (usable <= 0) continue;
+        const panelCenter = p - (panelWidth - usable) / 2;
+        cube([cx + (side ? .11 : p), Math.min(y, h - 1.4), cz + (side ? panelCenter : .11)],
+          side ? [.04, 2.65, usable] : [length / n - .04, 2.65, .04], i % 3 ? P.wall : P.pale, false, 0);
       }
+      if (sample && side) addCoilBayWall(b, sample, cx + .109, z, front, h);
     };
     // The dispatch rear stays open along both pallet lanes; its east wall forms the long low silhouette.
     if (shed.id !== 'dispatch') wall(x, back, w, false);
@@ -41,7 +48,10 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
         // section has a web and two flanges instead of a solid square post.
         solids.push({ at: [xx, h / 2, zz], size: [.46, h, .55] });
         cube([xx, h / 2, zz], [.12, h, .4], P.dark, false, 0);
-        for (const side of [-1, 1]) cube([xx, h / 2, zz + side * .235], [.46, h, .08], P.steel, false, 0);
+        const flanges = () => {
+          for (const side of [-1, 1]) cube([xx, h / 2, zz + side * .235], [.46, h, .08], P.steel, false, 0);
+        };
+        if (sample && zz === front) sample.add(COIL_ROLE.frame, flanges); else flanges();
         cube([xx, .35, zz], [.86, .7, .95], P.concrete, true);
         cube([xx, .73, zz], [.72, .06, .8], P.dark, false, 0);
         for (const dx of [-.25, .25]) for (const dz of [-.29, .29])
@@ -81,11 +91,26 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
     for (const y of [2.8, h - 1.6]) cube([wallX, y, z], [.12, .13, d - .5], P.dark, false, 0);
     const angle = Math.atan2(rise, w / 2), span = Math.hypot(w / 2, rise);
     for (const side of [-1, 1]) {
-      cube([x + side * w / 4, h + rise / 2, z], [span + .65, .22, d + .9], roof, true, 0, [0, 0, -side * angle]);
+      const at: V3 = [x + side * w / 4, h + rise / 2, z];
+      const size: V3 = [span + .65, .22, d + .9];
+      const rotation: V3 = [0, 0, -side * angle];
+      if (sample) {
+        // Split the visible skin at the existing middle portal. The physical
+        // roof stays the same single box per slope.
+        solids.push({ at, size, rotation });
+        const half = size[2] / 2;
+        cube([at[0], at[1], z-half/2], [size[0],size[1],half], roof, false, 0, rotation);
+        sample.add(i => b.nrm[i+1] < -.55 ? COIL_ROLE.soffit : COIL_ROLE.roof, () =>
+          cube([at[0],at[1],z+half/2], [size[0],size[1],half], roof, false, 0, rotation));
+      } else cube(at, size, roof, true, 0, rotation);
       // Standing seams follow each slope, not arbitrary diagonal decorative bars.
       for (let zz = back - .3; zz <= front + .3; zz += 1.2)
         bar(b, [x + side * (w / 2 + .2), h + .16, zz], [x, h + rise + .16, zz], .035, P.steel, 4);
-      cube([x + side * (w / 2 + .2), h - .03, z], [.25, .32, d + 1], P.dark);
+      const eave = x + side * w / 2;
+      if (sample) {
+        cube([eave+side*.2,h-.03,z-(d+1)/4], [.25,.32,(d+1)/2], P.dark);
+        addCoilBayEave(sample, cube, eave, h, side, z, front);
+      } else cube([eave+side*.2,h-.03,z], [.25,.32,d+1], P.dark);
     }
     // A closed front gable gives a readable shed rather than a pair of floating roof planes.
     for (const zz of [back - .2, front + .2]) {

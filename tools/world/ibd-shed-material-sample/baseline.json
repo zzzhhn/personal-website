@@ -1,0 +1,37 @@
+{
+  "fixed": {
+    "solids": "ad00d1525a6e8602925b1b43253f441332a69503a7a6f013291b00ca73a9a56e",
+    "walkSurface": "489aae1ce87d2d44096aec3dc00dac7bfac88bec0120b9e8a64890104c659481",
+    "groundSurface": "55551b26f5177ddcf20ac8bc7f518fef2b71fb907372f80ea24c0d54e9f2c6de",
+    "stations": "bae2709a9ec452bef1e542338099561fd99737f3740f8b0a2974f098823dfaee",
+    "buildings": "90a55670701ce0c8fc652a126e99a87b1db342fa4953cccadc80b96d1e2c7295",
+    "equipment": {
+      "vertices": 4800,
+      "triangles": 2200,
+      "indexBytes": 26400,
+      "attributes": {
+        "position": 57600,
+        "normal": 57600,
+        "color": 57600,
+        "aMat": 76800,
+        "aSuv": 38400,
+        "aIbdBake": 57600
+      },
+      "hash": "b95f147b35a840103281816c1a141b2c06248bcaa9f55a7be9f08a36da37fed9"
+    }
+  },
+  "architecture": {
+    "vertices": 83473,
+    "triangles": 45469,
+    "indexBytes": 545628,
+    "attributes": {
+      "position": 1001676,
+      "normal": 1001676,
+      "color": 1001676,
+      "aMat": 1335568,
+      "aSuv": 667784,
+      "aIbdBake": 1001676
+    },
+    "hash": "678afe93560c668941a1472d59d87084bb3acd29de71b6f28f23d0fc48e5ce45"
+  }
+}
