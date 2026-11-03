@@ -1,6 +1,7 @@
 import { Euler, ExtrudeGeometry, Matrix4, Quaternion, Shape, Vector3 } from 'three';
 import { coasterWorld } from './coaster-track.ts';
 import { addCoasterLookoutSample } from './coaster-lookout-sample.ts';
+import { INTENT_CRAFT, markIntentCraft } from './intent-craft-surface.ts';
 import type { CoasterBatch, CoasterCollider } from './coaster-geometry.ts';
 import type { Vec3 } from '../types';
 
@@ -18,13 +19,14 @@ export function onCoasterCliffWalk(x: number,z: number,margin=3) {
   }
   return Math.abs(x-55)<6+margin&&Math.abs(z-14)<6+margin;
 }
-export function addCoasterCliffs(steel: CoasterBatch,glow: CoasterBatch,colliders: CoasterCollider[]) {
+export function addCoasterCliffs(steel: CoasterBatch,glow: CoasterBatch,colliders: CoasterCollider[], craftApron = false) {
   // Irregular mineral apron supports the new workshop; its contact positions remain owned by the main session.
   const apron = new Shape();
   [[-34,55],[-3,55],[2,65],[-1,78],[-13,80],[-29,77],[-34,67]].forEach(([x,z],i)=>i?apron.lineTo(x,-z):apron.moveTo(x,-z)); apron.closePath();
   // A four-centimetre lip separates this paving from the retained .08 m forecourt.
   // Coplanar surfaces flickered visibly under the night lighting.
-  steel.add(new ExtrudeGeometry(apron,{depth:.12,bevelEnabled:false}), '#aca48e', new Matrix4().makeTranslation(...coasterWorld([0,0,0])).multiply(new Matrix4().makeRotationX(-Math.PI/2)));
+  steel.add(new ExtrudeGeometry(apron,{depth:.12,bevelEnabled:false}), craftApron ? '#b6b3a7' : '#aca48e', new Matrix4().makeTranslation(...coasterWorld([0,0,0])).multiply(new Matrix4().makeRotationX(-Math.PI/2)));
+  if (craftApron) markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.courtyardPaving);
   colliders.push({position:coasterWorld([-16,.06,67]),half:[11,.06,10],surface:true});
   const addBox=(p:Vector3,size:Vec3,q:Quaternion,color:string,surface=false)=>{
     steel.box(p.toArray() as Vec3,size,color,q);

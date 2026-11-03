@@ -1,4 +1,4 @@
-import { BoxGeometry, BufferGeometry, ExtrudeGeometry, Matrix4, PlaneGeometry, Shape, TorusGeometry } from 'three';
+import { BoxGeometry, BufferGeometry, ExtrudeGeometry, Matrix4, Shape, TorusGeometry } from 'three';
 import { CoasterBatch, COASTER_PALETTE as P } from './coaster-geometry.ts';
 import { coasterWorld } from './coaster-track.ts';
 import { WORKSHOP_HUB, WORKSHOP_INTAKE, WORKSHOP_INTAKE_PANELS, WORKSHOP_POST_TOP, WORKSHOP_RAIL_Y, WORKSHOP_TOOLS } from './intent-workshop-layout.ts';
@@ -308,17 +308,6 @@ export function createWorkshopGeometry() {
     const x = ix + side * 1.15;
     b.beam([x, iy + WORKSHOP_POST_TOP, iz - .85], [x, iy + 4.95, iz + 1.245], .055, P.rail, 6);
     b.beam([x, iy + 4.95, iz + 1.245], [x, iy + 3.2, iz + 1.245], .055, P.rail, 6);
-  }
-  // The forecourt straddles the original 80 mm station apron. Both finishes
-  // sit just above the existing surfaces and share the same joint coordinates.
-  for (const { z, depth, height, color } of [
-    { z: 60.5, depth: 9, height: .089, color: '#aaa9a0' },
-    { z: 71.15, depth: 12.3, height: .009, color: '#a8a79d' },
-  ]) {
-    const paving = new PlaneGeometry(25, depth, 10, Math.ceil(depth / 2));
-    paving.rotateX(-Math.PI / 2);
-    b.add(paving, color, new Matrix4().makeTranslation(...coasterWorld([-16, height, z])));
-    markIntentCraft(b.parts[b.parts.length - 1], INTENT_CRAFT.courtyardPaving);
   }
   // A framed header connects the intake sign to the canopy supports.
   b.box([ix, iy + 4.92, iz + 1.15], [5.58, .14, .30], P.steel);

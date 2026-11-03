@@ -118,7 +118,7 @@ export function createCoasterStructure(detailed: boolean, craftSample = false) {
   addArchitecture(steel, glow, colliders, detailed);
   addTunnel(steel, glow, detailed);
   const art = addCoasterLandscape(steel, glow, colliders, detailed);
-  addCoasterCliffs(steel, glow, colliders);
+  addCoasterCliffs(steel, glow, colliders, true);
   const relief = addCoasterTerrainRelief(steel);
   return { steel: steel.finish(), glow: glow.finish(), colliders, art, relief, track };
   });

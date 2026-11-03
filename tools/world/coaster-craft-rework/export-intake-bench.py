@@ -9,9 +9,11 @@ source, output = (Path(arg).resolve() for arg in sys.argv[sys.argv.index("--") +
 output.mkdir(parents=True, exist_ok=True)
 bpy.ops.wm.read_factory_settings(use_empty=True)
 bpy.context.scene.unit_settings.system = "METRIC"
-collection = bpy.data.collections.new("Intake worktop and cabinets")
+data = json.loads(source.read_text())
+stem = data.get("name", "intake-bench")
+collection = bpy.data.collections.new(stem)
 bpy.context.scene.collection.children.link(collection)
-parts = json.loads(source.read_text())["parts"]
+parts = data["parts"]
 finishes = {part["material"]: part["finish"] for part in parts}
 materials = {}
 for name, (rgb, roughness, metalness) in finishes.items():
@@ -37,5 +39,5 @@ for part in parts:
     mesh.materials.append(materials[part["material"]])
     collection.objects.link(bpy.data.objects.new(part["name"], mesh))
 
-bpy.ops.wm.save_as_mainfile(filepath=str(output / "intake-bench.blend"))
-bpy.ops.export_scene.gltf(filepath=str(output / "intake-bench.glb"), export_format="GLB")
+bpy.ops.wm.save_as_mainfile(filepath=str(output / f"{stem}.blend"))
+bpy.ops.export_scene.gltf(filepath=str(output / f"{stem}.glb"), export_format="GLB")

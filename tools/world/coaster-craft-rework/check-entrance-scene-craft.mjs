@@ -40,6 +40,7 @@ try {
     for (const key of ['track', 'colliders', 'relief']) assert.deepEqual(after[key], before[key]);
     sameGeometry(before.glow, after.glow);
     receipt[detailed ? 'near' : 'far'] = { before: stats(before.steel), after: stats(after.steel) };
+    assert.ok(receipt[detailed ? 'near' : 'far'].after.roles[17] > 0);
     const roleBytes = after.steel.getAttribute('intentCraftSurface').array.slice();
     const { packet, transfer } = packCoasterStructure(after);
     const received = unpackCoasterStructure(structuredClone(packet, { transfer }));
@@ -55,7 +56,7 @@ try {
   sameGeometry(before.glow, after.glow);
   receipt.workshop = { before: stats(before.body), after: stats(after.body) };
   assert.equal(receipt.workshop.before.roles[3], receipt.workshop.after.roles[3]);
-  for (const role of [12, 13, 16, 17]) assert.ok(receipt.workshop.after.roles[role] > 0, `Missing workshop role ${role}`);
+  for (const role of [12, 13, 16]) assert.ok(receipt.workshop.after.roles[role] > 0, `Missing workshop role ${role}`);
   for (const result of [before, after]) { result.body.dispose(); result.glow.dispose(); }
   console.log(JSON.stringify(receipt));
 } finally {

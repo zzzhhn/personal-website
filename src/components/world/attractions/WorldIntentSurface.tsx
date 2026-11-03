@@ -1,4 +1,5 @@
-import type { MeshStandardMaterial } from 'three';
+import type { MeshStandardMaterial, Texture } from 'three';
+import { useDjcFurnitureEnvironment } from '../WorldDjcFurnitureEnvironment';
 import { night } from '../WorldNight';
 import { INTENT_CRAFT, INTENT_CRAFT_FRAGMENT, INTENT_CRAFT_VERTEX } from './intent-craft-surface';
 
@@ -31,8 +32,41 @@ if (vIntentCraft > ${INTENT_CRAFT.roller - 0.5} && vIntentCraft < ${INTENT_CRAFT
 totalEmissiveRadiance += nightRadiance * uIntentNight;`);
 };
 const craftProgramKey = () => 'intent-baked-night-v2-local-craft-r6';
+const compileReflectiveCraft = (shader: Shader) => {
+  compileCraft(shader);
+  shader.fragmentShader = shader.fragmentShader
+    .replace('totalEmissiveRadiance += nightRadiance * uIntentNight;', `
+if (vIntentCraft > 11.5 && vIntentCraft < 14.5) {
+  vec3 incident = vIntentNight / max(bakedPigment, vec3(0.001));
+  nightRadiance = incident * finish.pigment * (1.0 - finish.metalness);
+}
+totalEmissiveRadiance += nightRadiance * uIntentNight;`)
+    .replace('#include <lights_fragment_maps>', `
+#include <lights_fragment_maps>
+#if defined(USE_ENVMAP)
+  bool exposedSteel = (vIntentCraft > 2.5 && vIntentCraft < 3.5)
+    || (vIntentCraft > 4.5 && vIntentCraft < 5.5)
+    || (vIntentCraft > 11.5 && vIntentCraft < 12.5)
+    || (vIntentCraft > 13.5 && vIntentCraft < 14.5);
+  float reflection = mix(0.46, 0.065, uIntentNight);
+  radiance *= exposedSteel ? reflection : 0.0;
+  iblIrradiance *= exposedSteel ? reflection * 0.32 : 0.0;
+#endif
+`);
+};
+const reflectiveProgramKey = () => 'intent-baked-night-v2-local-craft-reflect-r1';
+
+type SurfaceProps = { roughness?: number; metalness?: number; craft?: boolean; environment?: Texture | null; reflective?: boolean };
+
 /** Lighting changes through the shared uniform, with no extra per-frame React state. */
-export default function WorldIntentSurface({ roughness = .8, metalness = .12, craft = false }: { roughness?: number; metalness?: number; craft?: boolean }) {
-  return <meshStandardMaterial vertexColors roughness={roughness} metalness={metalness}
-    onBeforeCompile={craft ? compileCraft : compile} customProgramCacheKey={craft ? craftProgramKey : programKey} />;
+export default function WorldIntentSurface({ roughness = .8, metalness = .12, craft = false, environment, reflective = false }: SurfaceProps) {
+  const onBeforeCompile = reflective ? compileReflectiveCraft : craft ? compileCraft : compile;
+  const customProgramCacheKey = reflective ? reflectiveProgramKey : craft ? craftProgramKey : programKey;
+  return <meshStandardMaterial vertexColors roughness={roughness} metalness={metalness} envMap={environment ?? null}
+    onBeforeCompile={onBeforeCompile} customProgramCacheKey={customProgramCacheKey} />;
+}
+
+export function WorldIntentReflectiveSurface({ reflect = true, ...surface }: Pick<SurfaceProps, 'roughness' | 'metalness'> & { reflect?: boolean }) {
+  const environment = useDjcFurnitureEnvironment();
+  return <WorldIntentSurface {...surface} craft environment={reflect ? environment : null} reflective={reflect} />;
 }
