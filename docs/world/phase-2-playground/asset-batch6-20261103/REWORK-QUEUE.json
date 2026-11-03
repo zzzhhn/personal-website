@@ -607,7 +607,7 @@
       "scene": "IBD工场",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "v2-single-sample-accepted-family-candidate-awaits-runtime-review",
+      "executionState": "rack-family-local-refinement-serving-4341",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/attractions/ibd-stock-craft.ts"
@@ -615,9 +615,13 @@
       "evidence": [
         "docs/world/phase-2-playground/ibd-stock-craft-20261029/handoff.md"
       ],
-      "baselineNote": "第一版白天提升不足，v2同围护四张日夜原图和近景经主复核通过代表样板；三架e17eb9d轻量预算检查74967/75000通过，最终日夜图未验，尚未接入4341。",
-      "visualAcceptance": "coordinator-accepted-single-rack-v2; family-and-user-review-pending",
-      "completionEvidence": null
+      "baselineNote": "主实际查看三架总览及中架共四对日夜原图；回边、承梁、防护条和端部连接可读，三架本轮局部精修已接入4341。用户视觉反馈待收集。",
+      "visualAcceptance": "coordinator-accepted-rack-family-local-refinement; user-review-pending",
+      "completionEvidence": {
+        "source": "0f298aed022c1585cbfa19e92321c230b943bddd",
+        "review": "docs/world/phase-2-playground/asset-batch6-20261103/rework/RACK-INTAKE-ROOT-REVIEW.md",
+        "served": "docs/world/phase-2-playground/asset-batch6-20261103/rework/rack-intake-integration/ROOT-SERVED-CHECK.json"
+      }
     },
     {
       "id": "I-stockcrate",
@@ -772,7 +776,7 @@
       "scene": "Intent车间",
       "lane": "coaster-workshop",
       "inventoryStatusUnchanged": 2,
-      "executionState": "held-pending-night-material-path-fix",
+      "executionState": "night-material-path-fixed-serving-4341-art-refinement-pending",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/attractions/intent-workshop-geometry.ts",
@@ -782,9 +786,14 @@
         "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md",
         "docs/world/phase-2-playground/asset-batch6-20261103/COASTER-P04-ROOT-REVIEW.md"
       ],
-      "baselineNote": "原夜景重拍已稳定，主实际审图仍见旧深蓝。追踪到预烘夜间光乘旧顶点色，与新钢材diffuse分离；角色限定修复正在隔离分支，不改全局照明。",
-      "visualAcceptance": "day-local-improvement; recapture-stable-but-night-material-insufficient; not-delivered",
-      "completionEvidence": null
+      "baselineNote": "主已审看正午及午夜两对原图；滚筒旧深蓝偏色修正，局部材质已接入4341。整台构造仍简化，不计整件精修完成；继续轴端、轴承座与侧梁连接样板。",
+      "visualAcceptance": "coordinator-accepted-correctness-and-local-material-only; full-art-refinement-pending",
+      "completionEvidence": {
+        "source": "0f298aed022c1585cbfa19e92321c230b943bddd",
+        "scope": "night-material-path-correctness-and-local-material-only",
+        "review": "docs/world/phase-2-playground/asset-batch6-20261103/rework/RACK-INTAKE-ROOT-REVIEW.md",
+        "served": "docs/world/phase-2-playground/asset-batch6-20261103/rework/rack-intake-integration/ROOT-SERVED-CHECK.json"
+      }
     },
     {
       "id": "W-lookup",
