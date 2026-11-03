@@ -38,8 +38,10 @@ function workshopArt(b: CoasterBatch, at: Vec3, kind: IntentClass | 'intake') {
       box([-.78 + i * .78, .83, 1.06], [.28, .06, .06]);
     }
   } else {
-    shell([-.9, .7, 0], [.65, 1.1, 1.9], P.steel);
-    shell([.85, .7, 0], [.75, 1.1, 1.9], kind === 'debug' ? P.copper : P.steel);
+    if (kind !== 'intake') {
+      shell([-.9, .7, 0], [.65, 1.1, 1.9], P.steel);
+      shell([.85, .7, 0], [.75, 1.1, 1.9], kind === 'debug' ? P.copper : P.steel);
+    }
     box([0, .72, -.72], [1.2, .9, .3]);
     rod([-.58, .43, .6], [.48, 1.13, .6], .065, P.copper);
     rod([-.58, 1.13, .6], [.48, .43, .6], .065, P.rail);
@@ -49,7 +51,7 @@ function workshopArt(b: CoasterBatch, at: Vec3, kind: IntentClass | 'intake') {
     rod([dx, .53, 1.02], [dx, .83, 1.02], .055, P.copper);
     bolts(dx - .07, dx + .07, 1.07, 1.02);
   }
-  box([0, 1.24, 1.13], [1.65, .09, .035], P.copper);
+  if (kind !== 'intake') box([0, 1.24, 1.13], [1.65, .09, .035], P.copper);
   if (kind === 'intake') {
     wheel([-.8, .8, 1.08], .2);
     return;
@@ -162,6 +164,38 @@ export function addIntakeRollerSupports(batch: CoasterBatch) {
   }
 }
 
+/** Folded worktop, inset support and cabinet faces below the existing roller assembly. */
+export function addIntakeBench(batch: CoasterBatch) {
+  const [x, y, z] = coasterWorld(WORKSHOP_INTAKE);
+  const names: string[] = [];
+  const part = (name: string, position: Vec3, size: Vec3, color: string, role: number) => {
+    batch.box([x + position[0], y + position[1], z + position[2]], size, color);
+    markIntentCraft(batch.parts[batch.parts.length - 1], role);
+    names.push(name);
+  };
+  const steel = INTENT_CRAFT.worktop;
+  const coat = INTENT_CRAFT.powderCoat;
+  part('Worktop plate', [0, 1.3075, 0], [2.8, .045, 2.3], P.rail, steel);
+  for (const side of [-1, 1]) {
+    const end = side < 0 ? 'Rear' : 'Front';
+    const edge = side < 0 ? 'Left' : 'Right';
+    part(`${end} return`, [0, 1.255, side * 1.133], [2.8, .06, .034], P.rail, steel);
+    part(`${edge} return`, [side * 1.383, 1.255, 0], [.034, .06, 2.232], P.rail, steel);
+  }
+  part('Recessed load frame', [0, 1.214, -.01], [2.52, .142, 1.98], P.dark, coat);
+
+  for (const { name, center, width } of [
+    { name: 'Drive', center: -.9, width: .65 },
+    { name: 'Service', center: .85, width: .75 },
+  ]) {
+    part(`${name} plinth`, [center, .366, -.035], [width - .14, .132, 1.66], P.dark, coat);
+    part(`${name} cabinet`, [center, .788, -.01], [width, .712, 1.82], P.steel, coat);
+    part(`${name} door recess`, [center, .78, .915], [width - .064, .602, .03], P.dark, coat);
+    part(`${name} front panel`, [center, .78, .963], [width - .132, .534, .066], P.steel, coat);
+  }
+  return names;
+}
+
 export function createWorkshopGeometry() {
   const b = new CoasterBatch(), glow = new CoasterBatch();
   const contactVertices: number[] = [], contactIndices: number[] = [];
@@ -186,8 +220,8 @@ export function createWorkshopGeometry() {
   for (const { at, id } of [{ at: WORKSHOP_INTAKE, id: 'intake' as const }, ...WORKSHOP_TOOLS]) {
     const [x, y, z] = coasterWorld(at);
     b.housing([x, y + .15, z], [3.1, .3, 2.65], P.concrete);
-    b.housing([x, y + 1.24, z], [2.8, .18, 2.3], P.rail);
-    if (id === 'intake') markIntentCraft(b.parts[b.parts.length - 1], INTENT_CRAFT.worktop);
+    if (id === 'intake') addIntakeBench(b);
+    else b.housing([x, y + 1.24, z], [2.8, .18, 2.3], P.rail);
     const artStart = b.parts.length;
     workshopArt(b, at, id);
     const art = b.parts.slice(artStart);
