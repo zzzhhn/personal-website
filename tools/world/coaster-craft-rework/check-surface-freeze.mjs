@@ -22,11 +22,15 @@ const baseline = name => {
 };
 const geometryDigest = g => Object.fromEntries(Object.entries(g.attributes)
   .filter(([key]) => key !== INTENT_CRAFT_ATTRIBUTE).map(([key, a]) => [key, hash(bytes(a.array))]));
-const geometryCost = (before, after) => {
+const geometryCost = (before, after, expectTags = true) => {
   assert.deepEqual(geometryDigest(after), geometryDigest(before));
   assert.deepEqual(after.index?.array, before.index?.array);
   assert.deepEqual(after.groups, before.groups);
   const tag = after.getAttribute(INTENT_CRAFT_ATTRIBUTE);
+  if (!expectTags) {
+    assert.equal(tag, undefined, 'Held workshop surfaces must retain the baseline material path');
+    return { vertices: after.getAttribute('position').count, extraAttributeBytes: 0, roleVertices: {} };
+  }
   assert.ok(tag?.array instanceof Uint8Array);
   assert.equal(tag.count, after.getAttribute('position').count);
   const counts = {};
@@ -49,7 +53,7 @@ try {
   }
   const before = baseWorkshop.createWorkshopGeometry(), after = createWorkshopGeometry();
   try {
-    result.workshop = geometryCost(before.body, after.body);
+    result.workshop = geometryCost(before.body, after.body, false);
     assert.deepEqual(after.contactSurface, before.contactSurface);
     assert.deepEqual(geometryDigest(after.glow), geometryDigest(before.glow));
   } finally { for (const s of [before, after]) { s.body.dispose(); s.glow.dispose(); } }

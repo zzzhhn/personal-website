@@ -652,17 +652,18 @@
       "scene": "过山车",
       "lane": "coaster-workshop",
       "inventoryStatusUnchanged": 2,
-      "executionState": "queued",
+      "executionState": "accepted-local-material-upgrade-awaiting-local-build",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/attractions/coaster-geometry.ts"
       ],
       "evidence": [
-        "docs/world/phase-2-playground/overhaul-20261028/coaster-building-art-handoff.md"
+        "docs/world/phase-2-playground/overhaul-20261028/coaster-building-art-handoff.md",
+        "docs/world/phase-2-playground/asset-batch6-20261103/COASTER-P04-ROOT-REVIEW.md"
       ],
       "baselineNote": "有站房构造pass；交接保留参考差距及待真实日夜验收。",
-      "visualAcceptance": "pending",
-      "completionEvidence": null
+      "visualAcceptance": "coordinator-accepted-day-night-materials; not-whole-scene-complete",
+      "completionEvidence": "docs/world/phase-2-playground/asset-batch6-20261103/COASTER-P04-ROOT-REVIEW.md"
     },
     {
       "id": "R-equipment",
@@ -706,7 +707,7 @@
       "scene": "过山车",
       "lane": "coaster-workshop",
       "inventoryStatusUnchanged": 2,
-      "executionState": "queued",
+      "executionState": "held-for-visible-impact-rework",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/attractions/coaster-lookout-sample.ts"
@@ -715,7 +716,7 @@
         "docs/world/phase-2-playground/overhaul-20261028/coaster-lookout-sample-handoff.md"
       ],
       "baselineNote": "历史代表样板，未当作用户最终接受。",
-      "visualAcceptance": "pending",
+      "visualAcceptance": "not-accepted-for-current-integration",
       "completionEvidence": null
     },
     {
@@ -761,17 +762,18 @@
       "scene": "Intent车间",
       "lane": "coaster-workshop",
       "inventoryStatusUnchanged": 2,
-      "executionState": "queued",
+      "executionState": "held-pending-valid-night-evidence",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/attractions/intent-workshop-geometry.ts",
         "src/components/world/attractions/WorldIntentWorkshop.tsx"
       ],
       "evidence": [
-        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
+        "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md",
+        "docs/world/phase-2-playground/asset-batch6-20261103/COASTER-P04-ROOT-REVIEW.md"
       ],
       "baselineNote": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
-      "visualAcceptance": "pending",
+      "visualAcceptance": "day-local-material-improvement; night-candidate-invalid; not-delivered",
       "completionEvidence": null
     },
     {
@@ -894,7 +896,7 @@
       "scene": "Intent车间",
       "lane": "coaster-workshop",
       "inventoryStatusUnchanged": 2,
-      "executionState": "queued",
+      "executionState": "held-for-visible-impact-rework",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/attractions/intent-workshop-geometry.ts",
@@ -904,7 +906,7 @@
         "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md"
       ],
       "baselineNote": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
-      "visualAcceptance": "pending",
+      "visualAcceptance": "not-accepted-for-current-integration",
       "completionEvidence": null
     },
     {
