@@ -571,16 +571,17 @@
       "scene": "IBD工场",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "queued",
+      "executionState": "near-beam-construction-sample-reviewed-not-integrated",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/attractions/ibd-yard-geometry.ts"
       ],
       "evidence": [
-        "docs/world/phase-2-playground/ibd-art-20261028/cab-handoff.md"
+        "docs/world/phase-2-playground/ibd-art-20261028/cab-handoff.md",
+        "docs/world/phase-2-playground/asset-batch6-20261103/rework/IBD-BEAM-CRATE-ROOT-REVIEW.md"
       ],
-      "baselineNote": "几何有绞盘/齿轮箱/夹具深化；缺当前质量验收。",
-      "visualAcceptance": "pending",
+      "baselineNote": "c16aa04近侧一根静态横梁普通日夜原图与柱头近图经主协调查看；本轮翼缘/承压构造样板接受，整套吊机材质与成本复核尚未完成。未接入4341。",
+      "visualAcceptance": "coordinator-accepted-single-beam-construction-only; family-pending",
       "completionEvidence": null
     },
     {
@@ -629,16 +630,17 @@
       "scene": "IBD工场",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "queued",
+      "executionState": "single-crate-construction-reviewed-material-rework-requested",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/attractions/ibd-stock-craft.ts"
       ],
       "evidence": [
-        "docs/world/phase-2-playground/ibd-stock-craft-20261029/handoff.md"
+        "docs/world/phase-2-playground/ibd-stock-craft-20261029/handoff.md",
+        "docs/world/phase-2-playground/asset-batch6-20261103/rework/IBD-BEAM-CRATE-ROOT-REVIEW.md"
       ],
-      "baselineNote": "不同于可取样运输箱装配；静态箱同尺寸/实例合并。",
-      "visualAcceptance": "pending",
+      "baselineNote": "c16aa04单箱板缝与封边可读，但普通视距大面积木面仍平色；主退回仅作方向性材质修正，尚未推广和集成。",
+      "visualAcceptance": "construction-direction-valid; material-improvement-insufficient",
       "completionEvidence": null
     },
     {
