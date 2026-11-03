@@ -30,7 +30,7 @@ if (vIntentCraft > ${INTENT_CRAFT.roller - 0.5} && vIntentCraft < ${INTENT_CRAFT
 }
 totalEmissiveRadiance += nightRadiance * uIntentNight;`);
 };
-const craftProgramKey = () => 'intent-baked-night-v2-local-craft-r5';
+const craftProgramKey = () => 'intent-baked-night-v2-local-craft-r6';
 /** Lighting changes through the shared uniform, with no extra per-frame React state. */
 export default function WorldIntentSurface({ roughness = .8, metalness = .12, craft = false }: { roughness?: number; metalness?: number; craft?: boolean }) {
   return <meshStandardMaterial vertexColors roughness={roughness} metalness={metalness}

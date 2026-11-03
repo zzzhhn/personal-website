@@ -11,7 +11,9 @@
 
 ## 共享角色
 
-几何所有者在加入批次后设置 `batch.parts.at(-1).userData.coasterCraftRole`。字符串值为 `runningSteel`、`structuralCoat`、`galvanized`、`concreteBase`，分别映射到角色 12、13、14、15。若需要保留部件方向供资产导出，用 `userData.coasterCraftAxis` 记录已变换、归一化的局部切向三元组。当前着色只消费角色，方向不占用运行顶点通道。旧角色和原有夜间烘焙路径保持原样。
+几何加入批次后，调用 `markIntentCraft(batch.parts.at(-1)!, INTENT_CRAFT.runningSteel)`。结构角色用 `runningSteel`、`structuralCoat`、`galvanized`、`concreteBase`，分别为 12、13、14、15。对生成器已经提交的 `userData.coasterCraftRole` 字符串保留兼容。合批前角色落为非归一化 `Uint8Array` 顶点属性 `intentCraftSurface`，未标记顶点补 0。近远档均已用实际 transfer list 和解包校验角色字节。
+
+`userData.coasterCraftAxis` 是资产导出的方向记录。它采用批次空间中的单位三元组，方向沿钢件长度或磨纹方向。沿轨道部件取行进切向。当前运行着色只消费角色，方向未进入 Worker 包。若未来需要定向法线或拉丝贴图，先确定消费入口，再给必要部件划独立材质批或定义带零值的全批属性。原夜间烘焙光和滚筒漫反射换色沿用原路径。
 
 独立轨道样板从总装的 `craftSample` 参数转发到 `addCoasterRailSections(steel, detailed, spans, craftSample)` 与 `addCoasterSampleNodes(steel, supports, track, craftSample)`。待两端实现后接线，默认关闭独立轨道样板。
 
@@ -26,4 +28,8 @@
 | 工坊 | `[48, 10, -110]` | `[34, 2, -129]` |
 | 园区总览 | `[147, 76, -83]` | `[50, 16, -192]` |
 
-首片区的源码候选在站房柱线补连续檐梁、镀锌柱头承压板与附楼墙板，工坊五台沿用已验入料台的折边台面语汇，在台下补内收承托。已验入料台本身沿用原网格。首片区检查冻结近远景轨道、地形抬升、场景碰撞、工坊三角接触及两组发光几何。站区合批净增 260 三角面，工坊净增 312 三角面。以上为源码与生成网格证据。 [生成检查](entrance-source-receipt.json)
+首片区的源码候选在站房柱线补连续檐梁、镀锌柱头承压板与附楼墙板，工坊六台沿用已验入料台的折边台面语汇，在台下补内收承托。已验入料台本身沿用原网格。首片区检查冻结近远景轨道、地形抬升、场景碰撞、工坊三角接触及两组发光几何。站区合批净增 260 三角面，工坊净增 312 三角面。以上为源码与生成网格证据。 [生成检查](entrance-source-receipt.json)
+
+## 工坊大面材质候选
+
+前场两段铺地沿既有地表标高分段，统一 2.5 × 2.25 m 板缝坐标，配色保留灰暖水泥。钢件、蓝灰涂装壳体和扫描座垫分别使用裸钢、涂装和橡胶角色。说明牌保留原文案、面位置和 UV，放轻字重的视觉占比，并接入入口钢构横梁和收边。新的粗糙度与接缝由现有静态批消费。源检查记录到访路径和物理合同仍一致，视觉、GPU 耗时及冷档交接待同条件实机取证。

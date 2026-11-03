@@ -30,10 +30,11 @@ export default function WorldWorkshopSigns() {
         t('摇铃问清含糊请求 · 选错会退回原件', 'RING TO CLARIFY · WRONG ROUTES RETURN THE ORIGINAL')],
     ];
     rows.forEach(([a, b], i) => {
-      const y = i * 128; c.fillStyle = '#21333b'; c.fillRect(0, y, 1024, 128);
+      const y = i * 128, canopyPanel = i === 0 || i === 7;
+      c.fillStyle = canopyPanel ? '#31434c' : '#21333b'; c.fillRect(0, y, 1024, 128);
       c.textAlign = 'center'; c.textBaseline = 'middle'; c.fillStyle = '#fff1d9';
-      c.font = `600 ${i === 0 ? 36 : 45}px ${zh ? '"Songti SC", serif' : 'sans-serif'}`; c.fillText(a, 512, y + 41, 985);
-      c.fillStyle = '#a8e6df'; c.font = '25px sans-serif'; c.fillText(b, 512, y + 94, 985);
+      c.font = `600 ${canopyPanel ? 31 : 45}px ${zh ? '"Songti SC", serif' : 'sans-serif'}`; c.fillText(a, 512, y + 41, 985);
+      c.fillStyle = '#a8e6df'; c.font = canopyPanel ? '22px sans-serif' : '25px sans-serif'; c.fillText(b, 512, y + 94, 985);
     });
     const texture = new CanvasTexture(canvas); texture.colorSpace = SRGBColorSpace; return texture;
   }, [lang, s.phase, s.taskId, progress, notice]);

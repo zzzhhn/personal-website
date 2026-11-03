@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
 import { unlinkSync, writeFileSync } from 'node:fs';
+import { packCoasterStructure, unpackCoasterStructure } from '../../../src/components/world/attractions/coaster-structure-transfer.ts';
 import { createCoasterStructure } from '../../../src/components/world/attractions/coaster-geometry.ts';
 import { createWorkshopGeometry } from '../../../src/components/world/attractions/intent-workshop-geometry.ts';
 
@@ -39,7 +40,14 @@ try {
     for (const key of ['track', 'colliders', 'relief']) assert.deepEqual(after[key], before[key]);
     sameGeometry(before.glow, after.glow);
     receipt[detailed ? 'near' : 'far'] = { before: stats(before.steel), after: stats(after.steel) };
-    for (const result of [before, after]) { result.steel.dispose(); result.glow.dispose(); }
+    const roleBytes = after.steel.getAttribute('intentCraftSurface').array.slice();
+    const { packet, transfer } = packCoasterStructure(after);
+    const received = unpackCoasterStructure(structuredClone(packet, { transfer }));
+    const roles = received.steel.getAttribute('intentCraftSurface');
+    assert.ok(roles.array instanceof Uint8Array);
+    assert.equal(roles.normalized, false);
+    assert.deepEqual(roles.array, roleBytes);
+    for (const result of [before, after, received]) { result.steel.dispose(); result.glow.dispose(); }
   }
   const before = oldWorkshop.createWorkshopGeometry();
   const after = createWorkshopGeometry();

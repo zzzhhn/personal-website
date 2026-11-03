@@ -1,7 +1,7 @@
 import { BufferAttribute, type BufferGeometry } from 'three';
 
 export const INTENT_CRAFT = { roofSheet: 1, flashing: 2, roller: 3, powderCoat: 4, worktop: 5,
-  entryFascia: 6, bedrock: 7, coping: 8, carrierCoat: 9, lookoutMetal: 10, carrierMetal: 11, runningSteel: 12, structuralCoat: 13, galvanized: 14, concreteBase: 15 } as const;
+  entryFascia: 6, bedrock: 7, coping: 8, carrierCoat: 9, lookoutMetal: 10, carrierMetal: 11, runningSteel: 12, structuralCoat: 13, galvanized: 14, concreteBase: 15, rubber: 16, courtyardPaving: 17 } as const;
 export const INTENT_CRAFT_ATTRIBUTE = 'intentCraftSurface';
 const craftRoles = new WeakMap<BufferGeometry, number>();
 
@@ -56,6 +56,15 @@ float intentMineral(vec2 p) {
 IntentFinish intentFinish(vec3 pigment, float rough, float metal) {
   vec3 p = vIntentCraftPoint;
   vec3 n = normalize(vIntentCraftNormal);
+  if (vIntentCraft > 16.5 && vIntentCraft < 17.5) {
+    vec2 panel = (p.xz - vec2(21.5, -139.0)) / vec2(2.5, 2.25);
+    vec2 edge = min(fract(panel), 1.0 - fract(panel));
+    vec2 seam = 1.0 - smoothstep(vec2(0.004), vec2(0.014) + fwidth(panel), edge);
+    float variation = intentMineralHash(floor(panel));
+    vec3 paving = pigment * mix(0.94, 1.05, variation);
+    return IntentFinish(paving * (1.0 - 0.25 * max(seam.x, seam.y)), 0.91, 0.0);
+  }
+  if (vIntentCraft > 15.5 && vIntentCraft < 16.5) return IntentFinish(pigment, 0.93, 0.0);
   if (vIntentCraft > 11.5 && vIntentCraft < 15.5) {
     if (vIntentCraft < 12.5) return IntentFinish(mix(pigment, vec3(0.38, 0.42, 0.44), 0.46), 0.30, 0.63);
     if (vIntentCraft < 13.5) return IntentFinish(pigment, 0.63, 0.06);
