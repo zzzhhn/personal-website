@@ -51,7 +51,11 @@ function walk(world,start,velocity,steps=180) {
 }
 
 test('all 20 rollers and eight side bars reuse exact closed visual triangles without extra colliders',()=>{
-  assert.equal(data.solids.length,258); // Truck roof now stops a jumping player's head.
+  // The rack-mounted sign replaced two freestanding posts (ab7f0b9), clearing
+  // the carton-transfer corridor without changing roller or truck contacts.
+  assert.equal(data.solids.length,256);
+  assert.ok(data.solids.some(s => s.at.every((v,i)=>v === [16,3.9,12.5][i])
+    && s.size.every((v,i)=>v === [4,.16,9][i])), 'truck roof still stops a jumping player');
   // Near-field truck/control detail may evolve; the contact mesh must still reuse the exact bars.
   assert.ok(data.geometry.index.count/3 < IBD_GEOMETRY_BUDGET.static, 'static yard stays within its geometry allocation');
   assert.equal(rollerVertices.length/3,832);assert.equal(rollerIndices.length/3,720);
