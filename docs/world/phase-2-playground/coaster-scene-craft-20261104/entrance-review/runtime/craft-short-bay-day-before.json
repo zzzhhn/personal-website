@@ -1,0 +1,19 @@
+{
+  "first": {
+    "body": "",
+    "raw": "{\"shot\":\"craft-short-bay-day\",\"quality\":\"balanced\",\"time\":720,\"weather\":\"clear\",\"position\":[69,5.6,-321],\"direction\":[-0.4020223690322059,0.11783414264737074,-0.908016040400329],\"fov\":50,\"exposure\":1,\"blend\":1,\"night\":0,\"shadowPending\":false,\"shadowError\":\"\",\"loading\":false,\"frame\":5779,\"candidate\":false,\"assets\":{\"phase\":\"ready\",\"loaded\":242,\"total\":242,\"active\":false,\"failed\":0},\"drawCalls\":73,\"triangles\":441354,\"craftPrograms\":2,\"reflectivePrograms\":0,\"pixelRatio\":1,\"canvas\":[1710,875]}",
+    "visible": "visible"
+  },
+  "before": {
+    "body": "",
+    "raw": "{\"shot\":\"craft-short-bay-day\",\"quality\":\"balanced\",\"time\":720,\"weather\":\"clear\",\"position\":[69,5.6,-321],\"direction\":[-0.4020223690322059,0.11783414264737074,-0.908016040400329],\"fov\":50,\"exposure\":1,\"blend\":1,\"night\":0,\"shadowPending\":false,\"shadowError\":\"\",\"loading\":false,\"frame\":5779,\"candidate\":false,\"assets\":{\"phase\":\"ready\",\"loaded\":242,\"total\":242,\"active\":false,\"failed\":0},\"drawCalls\":73,\"triangles\":441354,\"craftPrograms\":2,\"reflectivePrograms\":0,\"pixelRatio\":1,\"canvas\":[1710,875]}",
+    "visible": "visible"
+  },
+  "after": {
+    "body": "",
+    "raw": "{\"shot\":\"craft-short-bay-day\",\"quality\":\"balanced\",\"time\":720,\"weather\":\"clear\",\"position\":[69,5.6,-321],\"direction\":[-0.4020223690322059,0.11783414264737074,-0.908016040400329],\"fov\":50,\"exposure\":1,\"blend\":1,\"night\":0,\"shadowPending\":false,\"shadowError\":\"\",\"loading\":false,\"frame\":5779,\"candidate\":false,\"assets\":{\"phase\":\"ready\",\"loaded\":242,\"total\":242,\"active\":false,\"failed\":0},\"drawCalls\":73,\"triangles\":441354,\"craftPrograms\":2,\"reflectivePrograms\":0,\"pixelRatio\":1,\"canvas\":[1710,875]}",
+    "visible": "visible"
+  },
+  "errors": [],
+  "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&shot=workshop-day&sceneCraft=baseline"
+}

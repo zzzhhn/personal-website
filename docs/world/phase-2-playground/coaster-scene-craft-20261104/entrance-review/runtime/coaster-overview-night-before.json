@@ -1,0 +1,19 @@
+{
+  "first": {
+    "body": "",
+    "raw": "{\"shot\":\"coaster-overview-night\",\"quality\":\"balanced\",\"time\":0,\"weather\":\"clear\",\"position\":[147,76,-83],\"direction\":[-0.6148359964503843,-0.380310925639413,-0.6908981815782669],\"fov\":50,\"exposure\":1,\"blend\":1,\"night\":1,\"shadowPending\":false,\"shadowError\":\"\",\"loading\":false,\"frame\":5597,\"candidate\":false,\"assets\":{\"phase\":\"ready\",\"loaded\":242,\"total\":242,\"active\":false,\"failed\":0},\"drawCalls\":224,\"triangles\":957707,\"craftPrograms\":2,\"reflectivePrograms\":0,\"pixelRatio\":1,\"canvas\":[1710,875]}",
+    "visible": "visible"
+  },
+  "before": {
+    "body": "",
+    "raw": "{\"shot\":\"coaster-overview-night\",\"quality\":\"balanced\",\"time\":0,\"weather\":\"clear\",\"position\":[147,76,-83],\"direction\":[-0.6148359964503843,-0.380310925639413,-0.6908981815782669],\"fov\":50,\"exposure\":1,\"blend\":1,\"night\":1,\"shadowPending\":false,\"shadowError\":\"\",\"loading\":false,\"frame\":5599,\"candidate\":false,\"assets\":{\"phase\":\"ready\",\"loaded\":242,\"total\":242,\"active\":false,\"failed\":0},\"drawCalls\":224,\"triangles\":957707,\"craftPrograms\":2,\"reflectivePrograms\":0,\"pixelRatio\":1,\"canvas\":[1710,875]}",
+    "visible": "visible"
+  },
+  "after": {
+    "body": "",
+    "raw": "{\"shot\":\"coaster-overview-night\",\"quality\":\"balanced\",\"time\":0,\"weather\":\"clear\",\"position\":[147,76,-83],\"direction\":[-0.6148359964503843,-0.380310925639413,-0.6908981815782669],\"fov\":50,\"exposure\":1,\"blend\":1,\"night\":1,\"shadowPending\":false,\"shadowError\":\"\",\"loading\":false,\"frame\":5599,\"candidate\":false,\"assets\":{\"phase\":\"ready\",\"loaded\":242,\"total\":242,\"active\":false,\"failed\":0},\"drawCalls\":224,\"triangles\":957707,\"craftPrograms\":2,\"reflectivePrograms\":0,\"pixelRatio\":1,\"canvas\":[1710,875]}",
+    "visible": "visible"
+  },
+  "errors": [],
+  "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&shot=workshop-day&sceneCraft=baseline"
+}

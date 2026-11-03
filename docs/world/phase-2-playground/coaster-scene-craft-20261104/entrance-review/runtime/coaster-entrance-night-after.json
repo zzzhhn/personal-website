@@ -1,0 +1,19 @@
+{
+  "first": {
+    "body": "",
+    "raw": "{\"shot\":\"coaster-entrance-night\",\"quality\":\"balanced\",\"time\":0,\"weather\":\"clear\",\"position\":[50,4.2,-114],\"direction\":[0,0.12159108405522935,-0.9925802780018723],\"fov\":50,\"exposure\":1,\"blend\":1,\"night\":1,\"shadowPending\":false,\"shadowError\":\"\",\"loading\":false,\"frame\":5638,\"candidate\":true,\"assets\":{\"phase\":\"ready\",\"loaded\":248,\"total\":248,\"active\":false,\"failed\":0},\"drawCalls\":97,\"triangles\":590585,\"craftPrograms\":2,\"reflectivePrograms\":2,\"pixelRatio\":1,\"canvas\":[1710,875]}",
+    "visible": "visible"
+  },
+  "before": {
+    "body": "",
+    "raw": "{\"shot\":\"coaster-entrance-night\",\"quality\":\"balanced\",\"time\":0,\"weather\":\"clear\",\"position\":[50,4.2,-114],\"direction\":[0,0.12159108405522935,-0.9925802780018723],\"fov\":50,\"exposure\":1,\"blend\":1,\"night\":1,\"shadowPending\":false,\"shadowError\":\"\",\"loading\":false,\"frame\":5687,\"candidate\":true,\"assets\":{\"phase\":\"ready\",\"loaded\":248,\"total\":248,\"active\":false,\"failed\":0},\"drawCalls\":97,\"triangles\":590585,\"craftPrograms\":2,\"reflectivePrograms\":2,\"pixelRatio\":1,\"canvas\":[1710,875]}",
+    "visible": "visible"
+  },
+  "after": {
+    "body": "",
+    "raw": "{\"shot\":\"coaster-entrance-night\",\"quality\":\"balanced\",\"time\":0,\"weather\":\"clear\",\"position\":[50,4.2,-114],\"direction\":[0,0.12159108405522935,-0.9925802780018723],\"fov\":50,\"exposure\":1,\"blend\":1,\"night\":1,\"shadowPending\":false,\"shadowError\":\"\",\"loading\":false,\"frame\":5687,\"candidate\":true,\"assets\":{\"phase\":\"ready\",\"loaded\":248,\"total\":248,\"active\":false,\"failed\":0},\"drawCalls\":97,\"triangles\":590585,\"craftPrograms\":2,\"reflectivePrograms\":2,\"pixelRatio\":1,\"canvas\":[1710,875]}",
+    "visible": "visible"
+  },
+  "errors": [],
+  "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&shot=workshop-day"
+}

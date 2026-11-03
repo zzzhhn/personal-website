@@ -1,0 +1,922 @@
+{
+  "sources": {
+    "baseline": {
+      "commit": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+      "files": {
+        "coaster-geometry.ts": "a5feaa5b7a7557a97ca0995fad66dfe47a449742e4d9d91e2904ce215b5cda0f",
+        "coaster-landscape-cliffs.ts": "69af69f4367a61af3bc5a55f25b33c842ebb483d760eb931418f397351b69c6f",
+        "intent-workshop-geometry.ts": "87a3fb81f6e0a819d739d8b863fb750a413bc29228b081847d0ae6926e5bcecc",
+        "WorldWorkshopSigns.tsx": "74e9453b1338852e5236c2b31e70e9b55c164c565a9dd722b55b84d2b689ff73",
+        "WorldIntentSurface.tsx": "fa3f614eecf4ff4b8917a6e198e82d707e5df5d0dfeeb78adae1ffcf28f882a3",
+        "coaster-rail-section.ts": "9a4388000ef544886aa2c0259a4cb52349e48c368ab29385017fc1232e0f1af1"
+      }
+    },
+    "candidate": {
+      "commit": "28735d4fbfc27b6bf1aa0a0a3d38265634d12ab1",
+      "files": {
+        "coaster-geometry.ts": "9f980a2192383656840a5e13e1313a2dd6d441739750a5c1941306d5c09c9d86",
+        "coaster-landscape-cliffs.ts": "6e5e99b39aada302274af696f9b41ba5be8b22b1996d5a7ccd83f4760673b828",
+        "intent-workshop-geometry.ts": "79dc57eec964f93940eaf4601fe0b6904e2c22c095803ba3700ffcae3e577724",
+        "WorldWorkshopSigns.tsx": "7cd04c19655ac404dfed6d6cda497afb2196f728b7dc24d99020cb1d598f42e6",
+        "WorldIntentSurface.tsx": "c8509943428e4c9836fca4f28ec0c3345d408d85b5aed5088c511c19a2a1da77",
+        "coaster-rail-section.ts": "607205e65e74ef9d7e030d382ed04f9e35e5e6cfd55acc1e0986b508ed740b66"
+      }
+    }
+  },
+  "buildTreeSha256": "1c422c8414de5209114fcd718f2b185d76fa2f2399b1381de5674b835b6802b2",
+  "localFailedRequests": [],
+  "frames": {
+    "coaster-entrance-day-after": {
+      "conditions": {
+        "shot": "coaster-entrance-day",
+        "quality": "balanced",
+        "time": 720,
+        "weather": "clear",
+        "position": [
+          50,
+          4.2,
+          -114
+        ],
+        "direction": [
+          0,
+          0.12159108405522935,
+          -0.9925802780018723
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 0,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 248,
+        "total": 248,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 5507,
+        "drawCalls": 97,
+        "triangles": 590585,
+        "reflectivePrograms": 2
+      }
+    },
+    "coaster-entrance-day-before": {
+      "conditions": {
+        "shot": "coaster-entrance-day",
+        "quality": "balanced",
+        "time": 720,
+        "weather": "clear",
+        "position": [
+          50,
+          4.2,
+          -114
+        ],
+        "direction": [
+          0,
+          0.12159108405522935,
+          -0.9925802780018723
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 0,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 242,
+        "total": 242,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 5059,
+        "drawCalls": 97,
+        "triangles": 589291,
+        "reflectivePrograms": 0
+      }
+    },
+    "coaster-entrance-night-after": {
+      "conditions": {
+        "shot": "coaster-entrance-night",
+        "quality": "balanced",
+        "time": 0,
+        "weather": "clear",
+        "position": [
+          50,
+          4.2,
+          -114
+        ],
+        "direction": [
+          0,
+          0.12159108405522935,
+          -0.9925802780018723
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 1,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 248,
+        "total": 248,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 5687,
+        "drawCalls": 97,
+        "triangles": 590585,
+        "reflectivePrograms": 2
+      }
+    },
+    "coaster-entrance-night-before": {
+      "conditions": {
+        "shot": "coaster-entrance-night",
+        "quality": "balanced",
+        "time": 0,
+        "weather": "clear",
+        "position": [
+          50,
+          4.2,
+          -114
+        ],
+        "direction": [
+          0,
+          0.12159108405522935,
+          -0.9925802780018723
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 1,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 242,
+        "total": 242,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 5239,
+        "drawCalls": 97,
+        "triangles": 589291,
+        "reflectivePrograms": 0
+      }
+    },
+    "coaster-overview-day-after": {
+      "conditions": {
+        "shot": "coaster-overview-day",
+        "quality": "balanced",
+        "time": 720,
+        "weather": "clear",
+        "position": [
+          147,
+          76,
+          -83
+        ],
+        "direction": [
+          -0.6148359964503843,
+          -0.380310925639413,
+          -0.6908981815782669
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 0,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 248,
+        "total": 248,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 5867,
+        "drawCalls": 223,
+        "triangles": 958805,
+        "reflectivePrograms": 2
+      }
+    },
+    "coaster-overview-day-before": {
+      "conditions": {
+        "shot": "coaster-overview-day",
+        "quality": "balanced",
+        "time": 720,
+        "weather": "clear",
+        "position": [
+          147,
+          76,
+          -83
+        ],
+        "direction": [
+          -0.6148359964503843,
+          -0.380310925639413,
+          -0.6908981815782669
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 0,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 242,
+        "total": 242,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 5419,
+        "drawCalls": 223,
+        "triangles": 956979,
+        "reflectivePrograms": 0
+      }
+    },
+    "coaster-overview-night-after": {
+      "conditions": {
+        "shot": "coaster-overview-night",
+        "quality": "balanced",
+        "time": 0,
+        "weather": "clear",
+        "position": [
+          147,
+          76,
+          -83
+        ],
+        "direction": [
+          -0.6148359964503843,
+          -0.380310925639413,
+          -0.6908981815782669
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 1,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 248,
+        "total": 248,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 6047,
+        "drawCalls": 224,
+        "triangles": 959533,
+        "reflectivePrograms": 2
+      }
+    },
+    "coaster-overview-night-before": {
+      "conditions": {
+        "shot": "coaster-overview-night",
+        "quality": "balanced",
+        "time": 0,
+        "weather": "clear",
+        "position": [
+          147,
+          76,
+          -83
+        ],
+        "direction": [
+          -0.6148359964503843,
+          -0.380310925639413,
+          -0.6908981815782669
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 1,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 242,
+        "total": 242,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 5599,
+        "drawCalls": 224,
+        "triangles": 957707,
+        "reflectivePrograms": 0
+      }
+    },
+    "craft-short-bay-day-after": {
+      "conditions": {
+        "shot": "craft-short-bay-day",
+        "quality": "balanced",
+        "time": 720,
+        "weather": "clear",
+        "position": [
+          69,
+          5.6,
+          -321
+        ],
+        "direction": [
+          -0.4020223690322059,
+          0.11783414264737074,
+          -0.908016040400329
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 0,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 248,
+        "total": 248,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 6227,
+        "drawCalls": 73,
+        "triangles": 442526,
+        "reflectivePrograms": 2
+      }
+    },
+    "craft-short-bay-day-before": {
+      "conditions": {
+        "shot": "craft-short-bay-day",
+        "quality": "balanced",
+        "time": 720,
+        "weather": "clear",
+        "position": [
+          69,
+          5.6,
+          -321
+        ],
+        "direction": [
+          -0.4020223690322059,
+          0.11783414264737074,
+          -0.908016040400329
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 0,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 242,
+        "total": 242,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 5779,
+        "drawCalls": 73,
+        "triangles": 441354,
+        "reflectivePrograms": 0
+      }
+    },
+    "craft-short-bay-night-after": {
+      "conditions": {
+        "shot": "craft-short-bay-night",
+        "quality": "balanced",
+        "time": 0,
+        "weather": "clear",
+        "position": [
+          69,
+          5.6,
+          -321
+        ],
+        "direction": [
+          -0.4020223690322059,
+          0.11783414264737074,
+          -0.908016040400329
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 1,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 248,
+        "total": 248,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 6407,
+        "drawCalls": 73,
+        "triangles": 442526,
+        "reflectivePrograms": 2
+      }
+    },
+    "craft-short-bay-night-before": {
+      "conditions": {
+        "shot": "craft-short-bay-night",
+        "quality": "balanced",
+        "time": 0,
+        "weather": "clear",
+        "position": [
+          69,
+          5.6,
+          -321
+        ],
+        "direction": [
+          -0.4020223690322059,
+          0.11783414264737074,
+          -0.908016040400329
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 1,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 242,
+        "total": 242,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 5959,
+        "drawCalls": 73,
+        "triangles": 441354,
+        "reflectivePrograms": 0
+      }
+    },
+    "craft-station-day-after": {
+      "conditions": {
+        "shot": "craft-station-day",
+        "quality": "balanced",
+        "time": 720,
+        "weather": "clear",
+        "position": [
+          56,
+          4.1,
+          -127.5
+        ],
+        "direction": [
+          -0.3947742213250781,
+          0.10362823309783306,
+          -0.9129153868142432
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 0,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 248,
+        "total": 248,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 5147,
+        "drawCalls": 113,
+        "triangles": 585784,
+        "reflectivePrograms": 2
+      }
+    },
+    "craft-station-day-before": {
+      "conditions": {
+        "shot": "craft-station-day",
+        "quality": "balanced",
+        "time": 720,
+        "weather": "clear",
+        "position": [
+          56,
+          4.1,
+          -127.5
+        ],
+        "direction": [
+          -0.3947742213250781,
+          0.10362823309783306,
+          -0.9129153868142432
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 0,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 242,
+        "total": 242,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 4699,
+        "drawCalls": 113,
+        "triangles": 582842,
+        "reflectivePrograms": 0
+      }
+    },
+    "craft-station-night-after": {
+      "conditions": {
+        "shot": "craft-station-night",
+        "quality": "balanced",
+        "time": 0,
+        "weather": "clear",
+        "position": [
+          56,
+          4.1,
+          -127.5
+        ],
+        "direction": [
+          -0.3947742213250781,
+          0.10362823309783306,
+          -0.9129153868142432
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 1,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 248,
+        "total": 248,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 5327,
+        "drawCalls": 113,
+        "triangles": 585784,
+        "reflectivePrograms": 2
+      }
+    },
+    "craft-station-night-before": {
+      "conditions": {
+        "shot": "craft-station-night",
+        "quality": "balanced",
+        "time": 0,
+        "weather": "clear",
+        "position": [
+          56,
+          4.1,
+          -127.5
+        ],
+        "direction": [
+          -0.3947742213250781,
+          0.10362823309783306,
+          -0.9129153868142432
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 1,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 242,
+        "total": 242,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 4879,
+        "drawCalls": 113,
+        "triangles": 582842,
+        "reflectivePrograms": 0
+      }
+    },
+    "workshop-day-after": {
+      "conditions": {
+        "shot": "workshop-day",
+        "quality": "balanced",
+        "time": 720,
+        "weather": "clear",
+        "position": [
+          48,
+          10,
+          -110
+        ],
+        "direction": [
+          -0.5618006477335896,
+          -0.3210289415620512,
+          -0.7624437362098716
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 0,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 248,
+        "total": 248,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 4787,
+        "drawCalls": 130,
+        "triangles": 625015,
+        "reflectivePrograms": 1
+      }
+    },
+    "workshop-day-before": {
+      "conditions": {
+        "shot": "workshop-day",
+        "quality": "balanced",
+        "time": 720,
+        "weather": "clear",
+        "position": [
+          48,
+          10,
+          -110
+        ],
+        "direction": [
+          -0.5618006477335896,
+          -0.3210289415620512,
+          -0.7624437362098716
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 0,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 242,
+        "total": 242,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 4339,
+        "drawCalls": 130,
+        "triangles": 622142,
+        "reflectivePrograms": 0
+      }
+    },
+    "workshop-night-after": {
+      "conditions": {
+        "shot": "workshop-night",
+        "quality": "balanced",
+        "time": 0,
+        "weather": "clear",
+        "position": [
+          48,
+          10,
+          -110
+        ],
+        "direction": [
+          -0.5618006477335896,
+          -0.3210289415620512,
+          -0.7624437362098716
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 1,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 248,
+        "total": 248,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 4967,
+        "drawCalls": 130,
+        "triangles": 625015,
+        "reflectivePrograms": 2
+      }
+    },
+    "workshop-night-before": {
+      "conditions": {
+        "shot": "workshop-night",
+        "quality": "balanced",
+        "time": 0,
+        "weather": "clear",
+        "position": [
+          48,
+          10,
+          -110
+        ],
+        "direction": [
+          -0.5618006477335896,
+          -0.3210289415620512,
+          -0.7624437362098716
+        ],
+        "fov": 50,
+        "exposure": 1,
+        "blend": 1,
+        "night": 1,
+        "pixelRatio": 1,
+        "canvas": [
+          1710,
+          875
+        ]
+      },
+      "assets": {
+        "phase": "ready",
+        "loaded": 242,
+        "total": 242,
+        "active": false,
+        "failed": 0
+      },
+      "renderInfo": {
+        "frame": 4519,
+        "drawCalls": 130,
+        "triangles": 622142,
+        "reflectivePrograms": 0
+      }
+    }
+  },
+  "deltas": {
+    "coaster-entrance-day": {
+      "drawCalls": 0,
+      "triangles": 1294
+    },
+    "coaster-entrance-night": {
+      "drawCalls": 0,
+      "triangles": 1294
+    },
+    "coaster-overview-day": {
+      "drawCalls": 0,
+      "triangles": 1826
+    },
+    "coaster-overview-night": {
+      "drawCalls": 0,
+      "triangles": 1826
+    },
+    "craft-short-bay-day": {
+      "drawCalls": 0,
+      "triangles": 1172
+    },
+    "craft-short-bay-night": {
+      "drawCalls": 0,
+      "triangles": 1172
+    },
+    "craft-station-day": {
+      "drawCalls": 0,
+      "triangles": 2942
+    },
+    "craft-station-night": {
+      "drawCalls": 0,
+      "triangles": 2942
+    },
+    "workshop-day": {
+      "drawCalls": 0,
+      "triangles": 2873
+    },
+    "workshop-night": {
+      "drawCalls": 0,
+      "triangles": 2873
+    }
+  },
+  "evidenceSha256": {
+    "native/coaster-entrance-workshop-blend.json": "e37370fd77836e1a9798256061fa8995c862c0012db4e1ff240dfbf4eff05586",
+    "native/coaster-entrance-workshop-glb.json": "e37370fd77836e1a9798256061fa8995c862c0012db4e1ff240dfbf4eff05586",
+    "native/coaster-entrance-workshop.blend": "609e50d94179068525cace4b7b04bef1266718e462fb52ec456555c8afee2903",
+    "native/coaster-entrance-workshop.glb": "f4fe08cfe35f40048a2452b5d9f4a6c3150403cf86faddb9a9f6cb9035fa0b2a",
+    "native/coaster-short-bay-blend.json": "0644f6b6508e0a30298dfb9cce5df1d743281229f67a4c4781fcc7c75673e010",
+    "native/coaster-short-bay-glb.json": "0644f6b6508e0a30298dfb9cce5df1d743281229f67a4c4781fcc7c75673e010",
+    "native/coaster-short-bay.blend": "6b5c482dd506ecafce579f707afbd8309cfcfdb7b2c57b8b63dcba71eac596e7",
+    "native/coaster-short-bay.glb": "9766f20457f06206a25f307205781ea38ac4673784b804f1c2f100e474f4e89d",
+    "runtime/coaster-entrance-day-after.jpg": "1a9cbc8c030f3dd5cf6b347b239a4f15d5dad67107c9679f4c52a14b6d126f48",
+    "runtime/coaster-entrance-day-after.json": "94a96af4c1b058e5907e5efd1e26e592283402b420b29d41864f8dba9a4ff03d",
+    "runtime/coaster-entrance-day-before.jpg": "73c8cc917d38ac6a3ee49421e32961dea18ec90e1c4c76fcc03c974e06ccec6e",
+    "runtime/coaster-entrance-day-before.json": "a4685e14a649b3a39eedcadcd43ebe8d36272350d72630ef038f05e72810cc5c",
+    "runtime/coaster-entrance-night-after.jpg": "52fe48781c7787fe9ea304900afab07d39c43fb4c001eba146cb4d3c1f8f138e",
+    "runtime/coaster-entrance-night-after.json": "05ead15346e962cea089d97c563fd070f124f6ba10a138d83ea800c5b6b7cc5e",
+    "runtime/coaster-entrance-night-before.jpg": "1c57996bd7f189d7f98bb4dd5004a0b9ab0482036df9b34723f79f78c16c7a81",
+    "runtime/coaster-entrance-night-before.json": "5213cfd6362b95a3c69d596888d6ce4f0e9b25d86cd94d657bd06e24632174bc",
+    "runtime/coaster-overview-day-after.jpg": "1a5d3dc9ac04ac65fa239641bc6613f306a32090806df4db80cf8429c8fe4d99",
+    "runtime/coaster-overview-day-after.json": "dcb8bba18fdba8906af6c48f1fa7784f03678736bd66cf99c1d4c8bc3c761501",
+    "runtime/coaster-overview-day-before.jpg": "7e1b293e51992b3fad6b4151b1532b495de98c979f786f26f1942922a03b330f",
+    "runtime/coaster-overview-day-before.json": "3cfcb50726c0cd0cd49fc0545cf2ec03500f1f507653c415fd0a48f423327832",
+    "runtime/coaster-overview-night-after.jpg": "249907fe17ea9ac1dc80033fc53a728262026a9243a8f0807038dbb0823c9cb3",
+    "runtime/coaster-overview-night-after.json": "2f6ae9706e5132ff90071ac0472f3e12febbc2ae5a9f221b1dd32f8eee8a4d17",
+    "runtime/coaster-overview-night-before.jpg": "b399d79b9cba16127bb0afc394c7dffbe450116bd24a9d675148e27dd1689c25",
+    "runtime/coaster-overview-night-before.json": "b11da62a7f3a45c81bfff86c50c06de1ff09f5768b6953085306c44a6ff385d6",
+    "runtime/craft-short-bay-day-after.jpg": "474017e4406607fae1c4b34b785ccbd6a65f3516f04a51f6adad140d48b8c247",
+    "runtime/craft-short-bay-day-after.json": "9495c078ec712ed782d448b69dd5e598e7f882c9512cee8734b9f57f7d306014",
+    "runtime/craft-short-bay-day-before.jpg": "c6a92630dfe2e5fb5424f9b2f4dd02487b8b2ebb636c57d6b60f41fd29106a17",
+    "runtime/craft-short-bay-day-before.json": "d7f3ce0548dd7b54d32d3df00463cc55782570fd87bfb1425e074e369ce8175a",
+    "runtime/craft-short-bay-night-after.jpg": "06a241eaf113e9c70fa71755653845e4ac013417a3656aa65bfd3f78a074a05d",
+    "runtime/craft-short-bay-night-after.json": "01fbdce01d7612121bc6bf16f642f5bc7f84d2c1f578bdc73b6864244bf4bdd0",
+    "runtime/craft-short-bay-night-before.jpg": "ee09a2b04e2af1ba388e8c109dd37f8053265c1d22e2727d619060a7b0533436",
+    "runtime/craft-short-bay-night-before.json": "ece0a069a79cbdef25640ca341a1e3c2d9a45b1068b2691b3085b4b9c59ca9d7",
+    "runtime/craft-station-day-after.jpg": "6d8480e160c73a27520f3def75101705d6f3a1a425072b0931cc4fce86ab8bfe",
+    "runtime/craft-station-day-after.json": "9f1c10301d90dbad88810e1b964a1fd00d36a0388f99a5dd9915f16d2ff2bb86",
+    "runtime/craft-station-day-before.jpg": "ce90495dd237bde356dd50884758a598cd0fb56a54ad129e85381742ac881f6a",
+    "runtime/craft-station-day-before.json": "bc78bc6106c7ff91dbcfb434c2b5cd4065f7cf19b91f7e6839e7c99fa2b9099c",
+    "runtime/craft-station-night-after.jpg": "5989947113502dc3f35820b76259986b9dffc7559ed4697d1ac1b296a6dfb6be",
+    "runtime/craft-station-night-after.json": "ae539e57dce4cf2bdd38bfaf593d449b7faaad53e20a8112343b8bdb080ebbd4",
+    "runtime/craft-station-night-before.jpg": "3d5e5d39e89db19a2960d6c8f3b64bf1795e7ce4f396266313ebc6ffa95fd38f",
+    "runtime/craft-station-night-before.json": "eee6edcab4ba157246253707ed316f9dec62016b45f853829d2d4fb2f225ff0a",
+    "runtime/workshop-day-after.jpg": "c7d800986f647460bd005f1eff886b4454823e8edffc07d10b1ac7c173f13982",
+    "runtime/workshop-day-after.json": "a0b22165c49af179a82ad83ab5ac9e288fa3b2fde2ecf25c8e7855195e99b1df",
+    "runtime/workshop-day-before.jpg": "478ff7e5137331ce2fd699b166a432e4008611265bd105b7ba31e5b086cb60ad",
+    "runtime/workshop-day-before.json": "77d9956ed2eaf75daa3318de27cda8220a7a5a4f84c8ad819ebacc8cbfd4474d",
+    "runtime/workshop-night-after.jpg": "0443c35e069a74eedeaf3c6109604816d1c0ce782fe806d86fdaeaee1af5ec3e",
+    "runtime/workshop-night-after.json": "d5d2f2787ea1d2f273e9d3ee229c6613700bb228a2f31a0d708da434e7550646",
+    "runtime/workshop-night-before.jpg": "273469bd3a6c17a9fccef0fbb55e43f18bd63f7dea8d3aec88f513b7e5362c48",
+    "runtime/workshop-night-before.json": "d0e09a7ceab7c6cf016b5495f55555b2e8428c1de78cee73153fc3d781a79cf7"
+  }
+}

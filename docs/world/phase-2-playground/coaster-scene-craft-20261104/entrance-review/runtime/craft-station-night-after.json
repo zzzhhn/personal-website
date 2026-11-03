@@ -1,0 +1,19 @@
+{
+  "first": {
+    "body": "",
+    "raw": "{\"shot\":\"craft-station-night\",\"quality\":\"balanced\",\"time\":0,\"weather\":\"clear\",\"position\":[56,4.1,-127.5],\"direction\":[-0.3947742213250781,0.10362823309783306,-0.9129153868142432],\"fov\":50,\"exposure\":1,\"blend\":1,\"night\":1,\"shadowPending\":false,\"shadowError\":\"\",\"loading\":false,\"frame\":5265,\"candidate\":true,\"assets\":{\"phase\":\"ready\",\"loaded\":248,\"total\":248,\"active\":false,\"failed\":0},\"drawCalls\":113,\"triangles\":585784,\"craftPrograms\":2,\"reflectivePrograms\":2,\"pixelRatio\":1,\"canvas\":[1710,875]}",
+    "visible": "visible"
+  },
+  "before": {
+    "body": "",
+    "raw": "{\"shot\":\"craft-station-night\",\"quality\":\"balanced\",\"time\":0,\"weather\":\"clear\",\"position\":[56,4.1,-127.5],\"direction\":[-0.3947742213250781,0.10362823309783306,-0.9129153868142432],\"fov\":50,\"exposure\":1,\"blend\":1,\"night\":1,\"shadowPending\":false,\"shadowError\":\"\",\"loading\":false,\"frame\":5327,\"candidate\":true,\"assets\":{\"phase\":\"ready\",\"loaded\":248,\"total\":248,\"active\":false,\"failed\":0},\"drawCalls\":113,\"triangles\":585784,\"craftPrograms\":2,\"reflectivePrograms\":2,\"pixelRatio\":1,\"canvas\":[1710,875]}",
+    "visible": "visible"
+  },
+  "after": {
+    "body": "",
+    "raw": "{\"shot\":\"craft-station-night\",\"quality\":\"balanced\",\"time\":0,\"weather\":\"clear\",\"position\":[56,4.1,-127.5],\"direction\":[-0.3947742213250781,0.10362823309783306,-0.9129153868142432],\"fov\":50,\"exposure\":1,\"blend\":1,\"night\":1,\"shadowPending\":false,\"shadowError\":\"\",\"loading\":false,\"frame\":5327,\"candidate\":true,\"assets\":{\"phase\":\"ready\",\"loaded\":248,\"total\":248,\"active\":false,\"failed\":0},\"drawCalls\":113,\"triangles\":585784,\"craftPrograms\":2,\"reflectivePrograms\":2,\"pixelRatio\":1,\"canvas\":[1710,875]}",
+    "visible": "visible"
+  },
+  "errors": [],
+  "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&shot=workshop-day"
+}
