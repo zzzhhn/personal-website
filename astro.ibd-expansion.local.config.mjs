@@ -32,7 +32,21 @@ const review = {
         const mesh = scene.getObjectByName('ibd-three-sheds-static') as Mesh;
         const g = mesh.geometry, m = mesh.material as any;
         const roles = g.getAttribute('aIbdCladding');
-        return { triangles: g.index.count / 3, attributes: Object.fromEntries(Object.entries(g.attributes).map(([k,v]) => [k, v.array.byteLength])),
+        const wood = { vertices: 0, counts: {} as Record<number, number>,
+          min: [Infinity, Infinity, Infinity], max: [-Infinity, -Infinity, -Infinity] };
+        const position = g.getAttribute('position');
+        if (roles) for (let i = 0; i < roles.count; i++) {
+          const role = roles.getX(i) % 16;
+          if (role < 7 || role > 12) continue;
+          wood.vertices++;
+          wood.counts[role] = (wood.counts[role] ?? 0) + 1;
+          [position.getX(i), position.getY(i), position.getZ(i)].forEach((value, axis) => {
+            wood.min[axis] = Math.min(wood.min[axis], value);
+            wood.max[axis] = Math.max(wood.max[axis], value);
+          });
+        }
+        return { wood: wood.vertices ? wood : null, woodCompiled: !!m.userData.ibdStockWoodCompiled,
+          triangles: g.index.count / 3, attributes: Object.fromEntries(Object.entries(g.attributes).map(([k,v]) => [k, v.array.byteLength])),
           roles: roles ? [...new Set(Array.from({length: roles.count}, (_, i) => roles.getX(i)))].sort() : [], material: m.customProgramCacheKey(), compiled: !!m.userData.ibdCladdingCompiled };
       })(), warmup: { stableAgeMs: Math.round(performance.now() - warm.current.changed), checks: warm.current.stable },`)
       .replace('HUTS.every(h => !!scene.getObjectByName(`park-hut-${h.id}-solid`)) && !!scene.getObjectByName(\'street-fixed\')', "!!scene.getObjectByName('ibd-three-sheds-static')")

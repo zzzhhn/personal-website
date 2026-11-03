@@ -1,13 +1,13 @@
 {
   "reference": {
-    "triangles": 48385,
-    "bytes": 7131421
+    "triangles": 48297,
+    "bytes": 7118101
   },
   "grain": {
-    "triangles": 48175,
-    "bytes": 7098241
+    "triangles": 48087,
+    "bytes": 7084921
   },
-  "hash": "98a0185cad1be0d9357d4c02c0e2e5ae48c5030886746314e9ab4abf2ab552fd",
+  "hash": "ce112c481bbcd38bc3d445bea2fcde30709ee3bd24436f75f1af287e099f8c3c",
   "counts": {
     "7": 304,
     "8": 160,

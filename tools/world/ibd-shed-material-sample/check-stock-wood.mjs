@@ -4,7 +4,7 @@ import { buildIbdStatic } from '../../../src/components/world/attractions/ibd-ya
 import { createIbdMaterial } from '../../../src/components/world/attractions/ibd-yard-lighting.ts';
 import { applyCoilBayMaterial } from '../../../src/components/world/attractions/ibd-coil-bay-material.ts';
 
-const options = { separateCraftShells: true, shedExpansion: true, rackMode: 'family', bridgeSample: true };
+const options = { separateCraftShells: true, shedExpansion: true, rackMode: 'family' };
 const reference = buildIbdStatic({ ...options, crateSample: 'reference' });
 const grain = buildIbdStatic({ ...options, crateSample: 'grain' });
 for (const key of ['solids', 'walkSurface', 'groundSurface']) assert.deepEqual(reference[key], grain[key]);
@@ -33,6 +33,7 @@ function outsideCrate(g, expectWood) {
   return { hash: hash.digest('hex'), counts };
 }
 const stock = outsideCrate(grain.geometry, true);
+assert.equal(grain.geometry.index.count / 3, reference.geometry.index.count / 3 - 210);
 assert.equal(outsideCrate(reference.geometry, false).hash, stock.hash);
 assert.deepEqual(Object.keys(stock.counts), ['7', '8', '9', '10', '11', '12']);
 
