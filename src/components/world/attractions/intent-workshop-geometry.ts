@@ -4,6 +4,7 @@ import { coasterWorld } from './coaster-track.ts';
 import { WORKSHOP_HUB, WORKSHOP_INTAKE, WORKSHOP_INTAKE_PANELS, WORKSHOP_POST_TOP, WORKSHOP_RAIL_Y, WORKSHOP_TOOLS } from './intent-workshop-layout.ts';
 import type { IntentClass } from './intent-tasks.ts';
 import type { Vec3 } from '../types';
+import { INTENT_CRAFT, markIntentCraft } from './intent-craft-surface.ts';
 
 // Local bench coordinates keep the motion lanes and the existing collider shell fixed.
 function workshopArt(b: CoasterBatch, at: Vec3, kind: IntentClass | 'intake') {
@@ -152,9 +153,13 @@ export function createWorkshopGeometry() {
     const [x, y, z] = coasterWorld(at);
     b.housing([x, y + .15, z], [3.1, .3, 2.65], P.concrete);
     b.housing([x, y + 1.24, z], [2.8, .18, 2.3], P.rail);
+    if (id === 'intake') markIntentCraft(b.parts[b.parts.length - 1], INTENT_CRAFT.worktop);
     const artStart = b.parts.length;
     workshopArt(b, at, id);
-    contactParts(b.parts.slice(artStart), y + 1.36);
+    const art = b.parts.slice(artStart);
+    // Snapshot the original position-only contact before any render treatment.
+    contactParts(art, y + 1.36);
+    if (id === 'intake') for (const part of art) markIntentCraft(part, INTENT_CRAFT.powderCoat);
     for (const dx of [-1.15, 1.15]) {
       b.beam([x + dx, y + .3, z - .85], [x + dx, y + WORKSHOP_POST_TOP, z - .85], .1, P.steel, 8);
       b.box([x + dx, y + .32, z - .85], [.35, .08, .35], P.copper);
@@ -182,7 +187,9 @@ export function createWorkshopGeometry() {
   const [ix, iy, iz] = coasterWorld(WORKSHOP_INTAKE);
   const rollersStart = b.parts.length;
   for (let n = 0; n < 9; n++) b.beam([ix - .85, iy + 1.42, iz - .6 + n * .15], [ix + .4, iy + 1.42, iz - .6 + n * .15], .07, P.steel, 8);
-  contactParts(b.parts.slice(rollersStart), iy + 1.36);
+  const rollers = b.parts.slice(rollersStart);
+  contactParts(rollers, iy + 1.36);
+  for (const roller of rollers) markIntentCraft(roller, INTENT_CRAFT.roller);
   b.housing([ix - 2.5, iy + .65, iz], [.8, 1.3, .8], P.white);
   b.beam([ix - 2.5, iy + 1.3, iz], [ix - 2.5, iy + 1.7, iz], .22, P.copper, 12);
   for (const { at, size } of WORKSHOP_INTAKE_PANELS) {
