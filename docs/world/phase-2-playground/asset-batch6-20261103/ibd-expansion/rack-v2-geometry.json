@@ -1,0 +1,12 @@
+{
+  "base": {
+    "triangles": 46693,
+    "bytes": 6857077
+  },
+  "sample": {
+    "triangles": 47017,
+    "bytes": 6908269
+  },
+  "surroundingHash": "ff8f4b3b4ba0f9712fd987ba487a0e18844b3a5293a68e5063c11121a48d85ad",
+  "contactY": 2.448
+}

@@ -1,0 +1,90 @@
+{
+  "baseline": "414e86c",
+  "view": {
+    "id": "Middle rack",
+    "eye": [
+      -74.5,
+      2.9,
+      -190
+    ],
+    "target": [
+      -75,
+      3.7,
+      -199
+    ]
+  },
+  "fov": 50,
+  "cameraPosition": [
+    -74.5,
+    2.9,
+    -190
+  ],
+  "quaternion": [
+    0.044228564738947346,
+    0.027718519708186114,
+    -0.0012276247312139022,
+    0.998636075186471
+  ],
+  "exposure": 1,
+  "dpr": 1,
+  "time": 0,
+  "canvas": [
+    1710,
+    931
+  ],
+  "renderer": {
+    "render": {
+      "frame": 4822,
+      "calls": 71,
+      "triangles": 715123,
+      "points": 28,
+      "lines": 0
+    },
+    "memory": {
+      "geometries": 103,
+      "textures": 46
+    }
+  },
+  "quality": "balanced",
+  "night": 1,
+  "blend": 1,
+  "ibd": {
+    "triangles": 45469,
+    "attributes": {
+      "position": 1001676,
+      "normal": 1001676,
+      "color": 1001676,
+      "aMat": 1335568,
+      "aSuv": 667784,
+      "aIbdBake": 1001676
+    },
+    "roles": [],
+    "material": "ibd-industrial-v4-static",
+    "compiled": false
+  },
+  "warmup": {
+    "stableAgeMs": 10223,
+    "checks": 3
+  },
+  "shadow": {
+    "pending": false,
+    "slices": 0,
+    "cpuMs": 0,
+    "maxSliceMs": 0,
+    "cancelled": 0,
+    "error": "",
+    "phases": [],
+    "hullWorker": {
+      "requests": 86,
+      "workerMs": 910.9999994039536,
+      "maxWorkerMs": 172,
+      "maxSource": "DJC_·_Oiled_teak_·_photographed_grain",
+      "maxInputVertices": 109189
+    },
+    "centre": [
+      -176.1763806658651,
+      48.56589354244274,
+      -130.07778064851811
+    ]
+  }
+}

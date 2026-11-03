@@ -166,7 +166,7 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
 }
 
 /** Deep rear stores and maintenance alcove, kept outside inspection faces and every animated pallet lane. */
-export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
+export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[], rackSample = false) {
   const crate = (x: number, y: number, z: number, w = 2.2) => {
     cube([x, y, z], [w, 1.5, 1.65], P.timber, false, .04);
     for (const xx of [-w / 2 + .14, w / 2 - .14]) cube([x + xx, y, z + .84], [.14, 1.5, .08], P.endgrain, false, 0);
@@ -189,7 +189,7 @@ export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[]) {
   };
   for (const x of [5, 13, 23]) {
     solids.push({ at: [x, 2.5, -23], size: [6.4, 5, 3.4] });
-    addIbdStockRack(b, cube, x);
+    addIbdStockRack(b, cube, x, rackSample && x === 13);
     for (const xx of [x - 1.6, x + 1.5]) crate(xx, 1.3, -23);
     if (x === 13) {
       for (const xx of [x - 1.8, x, x + 1.8]) b.tr([xx, 2.6, -23], [0, 0, 0], () => {

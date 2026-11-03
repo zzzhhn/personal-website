@@ -1,0 +1,112 @@
+{
+  "baseline": "414e86c",
+  "view": {
+    "id": "Middle rack",
+    "eye": [
+      -74.5,
+      2.9,
+      -190
+    ],
+    "target": [
+      -75,
+      3.7,
+      -199
+    ]
+  },
+  "fov": 50,
+  "cameraPosition": [
+    -74.5,
+    2.9,
+    -190
+  ],
+  "quaternion": [
+    0.044228564738947346,
+    0.027718519708186114,
+    -0.0012276247312139022,
+    0.998636075186471
+  ],
+  "exposure": 1,
+  "dpr": 1,
+  "time": 720,
+  "canvas": [
+    1710,
+    931
+  ],
+  "renderer": {
+    "render": {
+      "frame": 5631,
+      "calls": 70,
+      "triangles": 716691,
+      "points": 28,
+      "lines": 0
+    },
+    "memory": {
+      "geometries": 102,
+      "textures": 44
+    }
+  },
+  "quality": "balanced",
+  "night": 0,
+  "blend": 1,
+  "ibd": {
+    "triangles": 47677,
+    "attributes": {
+      "position": 1061004,
+      "normal": 1061004,
+      "color": 1061004,
+      "aMat": 1414672,
+      "aSuv": 707336,
+      "aIbdBake": 1061004,
+      "aIbdCladding": 88417
+    },
+    "roles": [
+      0,
+      1,
+      17,
+      18,
+      19,
+      2,
+      20,
+      21,
+      22,
+      3,
+      33,
+      34,
+      35,
+      36,
+      37,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "material": "ibd-industrial-v4-static:ibd-envelope-v2",
+    "compiled": true
+  },
+  "warmup": {
+    "stableAgeMs": 12154,
+    "checks": 3
+  },
+  "shadow": {
+    "pending": false,
+    "slices": 0,
+    "cpuMs": 0,
+    "maxSliceMs": 0,
+    "cancelled": 0,
+    "error": "",
+    "phases": [],
+    "hullWorker": {
+      "requests": 86,
+      "workerMs": 1033.7000000476837,
+      "maxWorkerMs": 210.10000002384186,
+      "maxSource": "DJC_·_Oiled_teak_·_photographed_grain",
+      "maxInputVertices": 109189
+    },
+    "centre": [
+      -176.1763806658651,
+      48.56589354244274,
+      -130.07778064851811
+    ]
+  }
+}
