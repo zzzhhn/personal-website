@@ -84,7 +84,7 @@ export default function WorldIntentWorkshop() {
     } else { capsule.current.position.copy(positions.a); capsule.current.rotation.y = 0; }
   });
   return <group name="intent-workshop">
-    <mesh geometry={geometry.body} receiveShadow castShadow><WorldIntentSurface roughness={.65} metalness={.2} /></mesh>
+    <mesh geometry={geometry.body} receiveShadow castShadow><WorldIntentSurface roughness={.65} metalness={.2} craft /></mesh>
     <mesh geometry={geometry.glow}><meshBasicMaterial vertexColors toneMapped={false} /></mesh>
     <instancedMesh ref={levers} args={[leverGeometry, undefined, 7]} frustumCulled={false}><meshStandardMaterial vertexColors roughness={.55} metalness={.25} /></instancedMesh>
     <group ref={capsule}><mesh geometry={capsuleGeometry}><WorldIntentSurface roughness={.5} /></mesh></group>

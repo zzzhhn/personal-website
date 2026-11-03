@@ -17,6 +17,7 @@ import { addCoasterLandscape } from './coaster-landscape.ts';
 import { addCoasterTerrainRelief } from './coaster-terrain-relief.ts';
 import type { Vec3 } from '../types';
 import { sceneWorkProbe } from '../world-scene-work';
+import { INTENT_CRAFT, attachIntentCraftBatch, markIntentCraft } from './intent-craft-surface.ts';
 
 export const COASTER_PALETTE = { steel: '#526b79', dark: '#273e4e', rail: '#c2ccd1', concrete: '#a9aaa1', copper: '#c38c50', cyan: '#69dedb', gold: '#ffcc83', white: '#d9ddd5' };
 const P = COASTER_PALETTE;
@@ -57,6 +58,7 @@ export class CoasterBatch {
     this.add(geometry, color, new Matrix4().makeTranslation(position[0], position[1], position[2] - d / 2));
   }
   finish() {
+    attachIntentCraftBatch(this.parts);
     const g = mergeGeometries(this.parts, false) ?? new BufferGeometry();
     this.parts.forEach(p => p.dispose()); this.parts.length = 0;
     g.computeBoundingSphere(); return g;
@@ -146,6 +148,7 @@ export function addCoasterStationRoof(steel: CoasterBatch) {
   section.closePath();
   steel.add(new ExtrudeGeometry(section,{depth:23,bevelEnabled:false}),P.steel,
     new Matrix4().makeTranslation(...coasterWorld([-2,0,30])));
+  markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.roofSheet);
 }
 
 /** Static architecture only: existing solids and all luminous geometry retain their owners. */
@@ -159,11 +162,18 @@ export function addCoasterBuildingArt(steel: CoasterBatch, detailed: boolean) {
     box([x,5.8,z],[1.14,.7,1.14],P.copper);
     beam([x,4.75,z],[x+(x<0?.42:-.42),6.15,z],.095,P.rail);
   }
-  for(const z of [31.2,42.8,51.1])box([-2,6.24,z],[17.8,.28,.35],P.rail);
-  for(const x of [-8.65,4.65])box([x,7.4,41.5],[.12,.06,22.8],P.copper);
+  for(const z of [31.2,42.8,51.1]) {
+    box([-2,6.24,z],[17.8,.28,.35],P.rail);
+    markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.flashing);
+  }
+  for(const x of [-8.65,4.65]) {
+    box([x,7.4,41.5],[.12,.06,22.8],P.copper);
+    markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.flashing);
+  }
   // Deep, chamfered front fascia frames the existing warm entrance light and open aisle.
   for(const x of [-9,5])shell([x,6.77,52.95],[3.6,1.05,.14],P.white);
   box([-2,7.2,52.98],[10.4,.32,.16],P.copper);
+  markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.flashing);
   box([-2,6.75,53.02],[6.8,.46,.08],P.dark);
   for(const x of [-4.7,-3.8,-2.9,-2,-1.1,-.2,.7])box([x,6.77,53.075],[.32,.12,.035],P.rail);
   // East annex: opaque lower panels, inset clerestory bays and full-height structural piers.
@@ -319,6 +329,7 @@ function addArchitecture(steel: CoasterBatch, glow: CoasterBatch, colliders: Coa
     light([x, 3.5, COASTER_GATE_Z + .92], [.25, 2.3, .1], P.cyan);
   }
   housing([0, 6.4, COASTER_GATE_Z], [13.2, 1.3, 2], P.dark);
+  markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.entryFascia);
   if (detailed) {
     for (let i = 0; i < 6; i++) box([8.5 + i * .6, 6.9, 43], [.25, .35, 5.5], P.rail);
     for (const x of [-41, -31]) beam([x, 12, 8], [x, 12, 18], .07, P.copper);

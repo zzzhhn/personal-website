@@ -51,7 +51,7 @@ function WorldIntentCoaster({ active }: { active: boolean }) {
     return () => { clearIntentRide(true); useIntentStore.setState({ active: false }); releaseAudio(); };
   }, [enabled]);
   return <><group name="intent-coaster" userData={{noOcclusionFade:true}}>
-    <mesh geometry={structure.steel} castShadow receiveShadow><WorldIntentSurface roughness={.82} metalness={.16} /></mesh>
+    <mesh geometry={structure.steel} castShadow receiveShadow><WorldIntentSurface roughness={.82} metalness={.16} craft /></mesh>
     <mesh geometry={structure.glow}><meshBasicMaterial vertexColors toneMapped={false} /></mesh>
     <CoasterTrain active={enabled} />
     {enabled && <><WorldIntentDevices /><WorldIntentSigns />
