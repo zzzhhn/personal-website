@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {BoxGeometry,Color,Group,Mesh,MeshStandardMaterial,PerspectiveCamera,Scene,Vector3,Vector4} from 'three';
-import {ClubWaterCapture,applyPoolCaustics,clubWaterDebug,waterCaptureSize} from './WorldClubWaterCapture.ts';
+import {ClubWaterCapture,applyPoolCaustics,clubWaterDebug,markClubWaterSurfaceOnly,waterCaptureSize} from './WorldClubWaterCapture.ts';
 import {clubWaterUniforms} from './WorldClubWaterShader.ts';
 
 function fixture(budgeted=false){
@@ -58,6 +58,48 @@ test('basin material patch preserves and restores the existing compile hook',()=
   const shader={uniforms:{},vertexShader:'#include <begin_vertex>',fragmentShader:'#include <color_fragment>'};
   material.onBeforeCompile(shader,{});assert.equal(count,1);assert.ok(shader.uniforms.uCaustics);
   restore();assert.equal(material.onBeforeCompile,original);material.dispose();
+});
+
+test('caustics retain distinct underlying material programs and restore both identities',()=>{
+  const a=new MeshStandardMaterial(),b=new MeshStandardMaterial();
+  const finish=function(shader){shader.fragmentShader+='\n// finish A';};
+  a.onBeforeCompile=finish;a.customProgramCacheKey=()=> 'finish-a';
+  b.onBeforeCompile=function(shader){shader.fragmentShader+='\n// finish B';};
+  const originalA=a.customProgramCacheKey,originalB=b.customProgramCacheKey;
+  const keyA=originalA.call(a),keyB=originalB.call(b);
+  const undoA=applyPoolCaustics(a,clubWaterUniforms()),undoB=applyPoolCaustics(b,clubWaterUniforms());
+  assert.notEqual(a.customProgramCacheKey(),b.customProgramCacheKey());
+  assert.deepEqual(JSON.parse(a.customProgramCacheKey()),[keyA,'club-basin-caustics-v1']);
+  assert.deepEqual(JSON.parse(b.customProgramCacheKey()),[keyB,'club-basin-caustics-v1']);
+  const shader={uniforms:{},vertexShader:'#include <begin_vertex>',fragmentShader:'#include <color_fragment>'};
+  a.onBeforeCompile(shader,{});
+  assert.match(shader.fragmentShader,/finish A/);assert.match(shader.fragmentShader,/uCaustics/);
+  assert.ok(shader.uniforms.uCaustics);
+  undoA();undoB();assert.equal(a.onBeforeCompile,finish);
+  assert.equal(a.customProgramCacheKey,originalA);assert.equal(b.customProgramCacheKey,originalB);
+  assert.equal(b.customProgramCacheKey(),keyB);a.dispose();b.dispose();
+});
+
+test('surface-only finishes retain waterline culling without trusting unknown or replaced hooks',()=>{
+  const f=fixture(true),meshes=[];
+  const add=material=>{const mesh=new Mesh(new BoxGeometry(),material);mesh.position.set(68,5,55);f.club.add(mesh);meshes.push(mesh);return mesh;};
+  const finish=new MeshStandardMaterial();finish.onBeforeCompile=shader=>{shader.fragmentShader+='\n// surface only';};
+  markClubWaterSurfaceOnly(finish);const tagged=add(finish);
+  const unknown=new MeshStandardMaterial();unknown.onBeforeCompile=finish.onBeforeCompile;const untagged=add(unknown);
+  const clone=finish.clone();clone.onBeforeCompile=finish.onBeforeCompile;const cloned=add(clone);
+  const replaced=new MeshStandardMaterial();replaced.onBeforeCompile=finish.onBeforeCompile;markClubWaterSurfaceOnly(replaced);
+  replaced.onBeforeCompile=shader=>{shader.vertexShader+='\n// may deform';};const changed=add(replaced);
+  const wet=new MeshStandardMaterial();wet.onBeforeCompile=finish.onBeforeCompile;markClubWaterSurfaceOnly(wet);
+  const restore=applyPoolCaustics(wet,f.uniforms),composed=add(wet);
+  f.scene.updateMatrixWorld();const base=f.renderer.render;
+  f.renderer.render=function(s,c){if(s===f.scene){
+    assert.equal(c.layers.test(tagged.layers),false);assert.equal(c.layers.test(composed.layers),false);
+    for(const mesh of [untagged,cloned,changed])assert.equal(c.layers.test(mesh.layers),true);
+  }base.call(this,s,c);};
+  f.capture.render(f.renderer,f.scene,f.camera,f.water,0,false,{now:0});
+  restore();f.capture.render(f.renderer,f.scene,f.camera,f.water,2,false,{now:2});
+  for(const mesh of meshes){assert.equal(mesh.layers.mask,1);mesh.geometry.dispose();mesh.material.dispose();}
+  f.capture.dispose();
 });
 
 test('budgeted captures suppress main-scene hooks, preserve underwater geometry, and restore main-scene layers',()=>{

@@ -4,6 +4,13 @@ import { CLUB_WATER_GLSL, createClubCausticMaterial, type ClubWaterUniforms } fr
 import { budgetWaterSize,planClubWater,waterHistory } from './WorldClubWaterBudget';
 
 const CAPTURE_LAYER=29;
+// Opt in only after installing a hook that leaves vertex positions unchanged.
+// Bind that promise to the hook identity: clones and later replacements remain
+// conservative unless their owner registers them again. Weak keys need no cleanup.
+const surfaceOnlyHooks=new WeakMap<Material,Material['onBeforeCompile']>();
+export function markClubWaterSurfaceOnly<T extends Material>(material:T):T{
+  surfaceOnlyHooks.set(material,material.onBeforeCompile);return material;
+}
 const totals=()=>({captures:0,reflections:0,caustics:0,passes:0,calls:0,triangles:0,visits:0});
 export const clubWaterDebug={enabled:true,budgeted:true,captures:0,reflections:0,caustics:0,passes:0,calls:0,triangles:0,size:[0,0],selected:0,
   skippedSmall:0,liveCaptures:0,coverage:1,totals:{baseline:totals(),budgeted:totals()}};
@@ -191,7 +198,8 @@ export class ClubWaterCapture {
       // Only rigid, unmodified geometry can be excluded using its static bounds.
       const materials=Array.isArray(mesh.material)?mesh.material:[mesh.material];
       if((mesh as Mesh&{isSkinnedMesh?:boolean}).isSkinnedMesh||(mesh as Mesh&{isInstancedMesh?:boolean}).isInstancedMesh||mesh.morphTargetInfluences?.length
-        ||materials.some(m=>(m as ShaderMaterial).isShaderMaterial||m.onBeforeCompile!==Material.prototype.onBeforeCompile))return;
+        ||materials.some(m=>(m as ShaderMaterial).isShaderMaterial
+          ||(m.onBeforeCompile!==Material.prototype.onBeforeCompile&&surfaceOnlyHooks.get(m)!==m.onBeforeCompile)))return;
       if(!mesh.geometry.attributes.position)return;
       if(!mesh.geometry.boundingBox)mesh.geometry.computeBoundingBox();
       if(mesh.geometry.boundingBox&&this.box.copy(mesh.geometry.boundingBox).applyMatrix4(mesh.matrixWorld).min.y>CLUB_POOL.waterY+.025)this.above.push(mesh);
@@ -224,6 +232,9 @@ export class ClubWaterCapture {
 /** Apply only below the waterline of the actual basin; paving and furniture keep their material. */
 export function applyPoolCaustics(material:MeshStandardMaterial,uniforms:ClubWaterUniforms){
   const previous=material.onBeforeCompile,key=material.customProgramCacheKey;
+  // Resolve the original key before replacing the hook: Three's default key
+  // reads onBeforeCompile, and would otherwise lose the underlying variation.
+  const baseKey=key.call(material),surfaceOnly=surfaceOnlyHooks.get(material)===previous;
   material.onBeforeCompile=(shader,renderer)=>{
     previous.call(material,shader,renderer);Object.assign(shader.uniforms,uniforms);
     shader.vertexShader='varying vec3 vPoolReceiver;\n'+shader.vertexShader.replace('#include <begin_vertex>','#include <begin_vertex>\nvPoolReceiver=(modelMatrix*vec4(transformed,1.)).xyz;');
@@ -238,6 +249,8 @@ export function applyPoolCaustics(material:MeshStandardMaterial,uniforms:ClubWat
         diffuseColor.rgb*=1.+uOptics*clamp(focus-1.,-.3,2.)*.65*(1.-uNight*.7);
       }`);
   };
-  material.customProgramCacheKey=()=> 'club-basin-caustics-v1';material.needsUpdate=true;
-  return ()=>{material.onBeforeCompile=previous;material.customProgramCacheKey=key;material.needsUpdate=true;};
+  if(surfaceOnly)markClubWaterSurfaceOnly(material);
+  material.customProgramCacheKey=()=>JSON.stringify([baseKey,'club-basin-caustics-v1']);material.needsUpdate=true;
+  return ()=>{material.onBeforeCompile=previous;material.customProgramCacheKey=key;
+    if(surfaceOnly)markClubWaterSurfaceOnly(material);material.needsUpdate=true;};
 }
