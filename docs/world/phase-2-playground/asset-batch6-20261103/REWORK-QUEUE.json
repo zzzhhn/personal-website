@@ -140,7 +140,7 @@
       "scene": "自然模型",
       "lane": "nature-camp",
       "inventoryStatusUnchanged": 2,
-      "executionState": "in-current-batch6",
+      "executionState": "g21-representative-refinement-serving-4341",
       "treatment": "repair-current-treatment",
       "source": [
         "src/components/world/WorldCamp.tsx"
@@ -150,8 +150,8 @@
         "docs/world/phase-2-playground/asset-batch4-20261102/coordinator/REVIEW.md"
       ],
       "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch4仅有限改善。",
-      "visualAcceptance": "pending",
-      "completionEvidence": null
+      "visualAcceptance": "coordinator-accepted-g21-only; other-rocks-and-user-review-pending",
+      "completionEvidence": "docs/world/phase-2-playground/asset-batch6-20261103/G21-INTEGRATION-DELIVERY.md"
     },
     {
       "id": "N-grass",
@@ -332,7 +332,7 @@
       "scene": "街道",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "in-current-batch6",
+      "executionState": "local-refinement-serving-4341",
       "treatment": "repair-current-treatment",
       "source": [
         "src/components/world/WorldStreetFacilityCraft.ts",
@@ -343,8 +343,8 @@
         "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
       ],
       "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5用户反馈效果不够明显，列复核。",
-      "visualAcceptance": "pending",
-      "completionEvidence": null
+      "visualAcceptance": "coordinator-accepted-ordinary-day-night; user-review-pending",
+      "completionEvidence": "docs/world/phase-2-playground/asset-batch6-20261103/RAILS-INTEGRATION.md"
     },
     {
       "id": "G-lamp",
@@ -392,7 +392,7 @@
       "scene": "街道",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "in-current-batch6",
+      "executionState": "local-refinement-serving-4341",
       "treatment": "repair-current-treatment",
       "source": [
         "src/components/world/WorldStreetAssets.ts",
@@ -403,8 +403,8 @@
         "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
       ],
       "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5用户反馈效果不够明显，列复核。",
-      "visualAcceptance": "pending",
-      "completionEvidence": null
+      "visualAcceptance": "coordinator-accepted-ordinary-day-night; user-review-pending",
+      "completionEvidence": "docs/world/phase-2-playground/asset-batch6-20261103/BENCH-BIN-INTEGRATION.md"
     },
     {
       "id": "G-bench",
@@ -412,7 +412,7 @@
       "scene": "街道",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "in-current-batch6",
+      "executionState": "local-refinement-serving-4341",
       "treatment": "repair-current-treatment",
       "source": [
         "src/components/world/WorldStreetAssets.ts",
@@ -423,8 +423,8 @@
         "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
       ],
       "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5用户反馈效果不够明显，列复核。",
-      "visualAcceptance": "pending",
-      "completionEvidence": null
+      "visualAcceptance": "coordinator-accepted-ordinary-day-night; user-review-pending",
+      "completionEvidence": "docs/world/phase-2-playground/asset-batch6-20261103/BENCH-BIN-INTEGRATION.md"
     },
     {
       "id": "S-shelter",
@@ -432,7 +432,7 @@
       "scene": "街道",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "in-current-batch6",
+      "executionState": "local-refinement-serving-4341",
       "treatment": "repair-current-treatment",
       "source": [
         "src/components/world/WorldStreetFixed.tsx",
@@ -442,8 +442,8 @@
         "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
       ],
       "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5已接入4341。",
-      "visualAcceptance": "pending",
-      "completionEvidence": null
+      "visualAcceptance": "coordinator-accepted-r2-local-upgrade; far-fade-and-user-review-pending",
+      "completionEvidence": "docs/world/phase-2-playground/asset-batch6-20261103/FACILITIES-INTEGRATION.md"
     },
     {
       "id": "S-signal",
@@ -470,7 +470,7 @@
       "scene": "街道",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "in-current-batch6",
+      "executionState": "local-refinement-serving-4341",
       "treatment": "repair-current-treatment",
       "source": [
         "src/components/world/WorldStreetRails.tsx",
@@ -480,8 +480,8 @@
         "docs/world/phase-2-playground/asset-batch5-20261102/coordinator/ACCEPTANCE.md"
       ],
       "baselineNote": "有制作/历史美术或主协调审阅记录，仍需用户按本轮质量目标视觉复核。 batch5已接入4341。",
-      "visualAcceptance": "pending",
-      "completionEvidence": null
+      "visualAcceptance": "coordinator-accepted-ordinary-day-night; user-review-pending",
+      "completionEvidence": "docs/world/phase-2-playground/asset-batch6-20261103/RAILS-INTEGRATION.md"
     },
     {
       "id": "D-pavilion",
