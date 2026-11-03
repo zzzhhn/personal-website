@@ -35,7 +35,7 @@ function buildIbdWalkSurface(b: Builder) {
   }
   return { vertices: new Float32Array(vertices), indices: new Uint32Array(indices) };
 }
-export function buildIbdStatic(options: { separateCraftShells?: boolean; coilBaySample?: boolean } = {}) {
+export function buildIbdStatic(options: { separateCraftShells?: boolean; coilBaySample?: boolean; shedExpansion?: boolean } = {}) {
   const b = new Builder(), craftShells = new Builder(), solids: IbdSolid[] = [];
   let shell = false;
   const cube = (at: V3, size: V3, s: Surf, solid = false, bevel = .03, rotation?: V3) => {
@@ -43,8 +43,8 @@ export function buildIbdStatic(options: { separateCraftShells?: boolean; coilBay
     if (rotation) target.tr(at, rotation, () => cbox(target, [0, 0, 0], size, s, bevel)); else cbox(target, at, size, s, bevel);
     if (solid) solids.push({ at, size, ...(rotation ? { rotation } : {}) });
   };
-  const coilFinish = options.coilBaySample ? new CoilBayFinish(b) : undefined;
-  const groundSurface = buildIbdArchitecture(b, cube, solids, coilFinish);
+  const coilFinish = options.coilBaySample || options.shedExpansion ? new CoilBayFinish(b) : undefined;
+  const groundSurface = buildIbdArchitecture(b, cube, solids, coilFinish, options.shedExpansion);
   buildIbdStores(b, cube, solids);
   buildIbdSite(b, cube);
   for (const x of [-20, -12]) for (const z of [-4, ...(x === -12 ? [-9] : [])]) {

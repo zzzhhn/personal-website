@@ -1,4 +1,4 @@
-"""Archive selected visible coil-bay parts from the exact game builder."""
+"""Archive selected visible IBD parts from the exact game builder."""
 import hashlib
 import json
 from pathlib import Path
@@ -22,7 +22,8 @@ def bounds():
 bpy.ops.wm.read_factory_settings(use_empty=True)
 bpy.context.preferences.filepaths.save_version = 0
 directory = Path(sys.argv[sys.argv.index('--') + 1])
-source = directory / 'coil-bay.source.json'
+stem = next(iter(sys.argv[sys.argv.index('--') + 2:]), 'coil-bay')
+source = directory / f'{stem}.source.json'
 data = json.loads(source.read_text())
 scene = bpy.context.scene
 scene['gameSourceSHA256'] = hashlib.sha256(source.read_bytes()).hexdigest()
@@ -58,8 +59,8 @@ for part in data['parts']:
     total += len(indices)
 bpy.context.view_layer.update()
 initial = bounds()
-bpy.ops.wm.save_as_mainfile(filepath=str(directory / 'coil-bay.blend'), compress=True)
-target = directory / 'coil-bay.glb'
+bpy.ops.wm.save_as_mainfile(filepath=str(directory / f'{stem}.blend'), compress=True)
+target = directory / f'{stem}.glb'
 bpy.ops.export_scene.gltf(filepath=str(target), export_format='GLB', export_yup=True, export_extras=True)
 bpy.ops.wm.read_factory_settings(use_empty=True)
 bpy.ops.import_scene.gltf(filepath=str(target))
@@ -68,7 +69,7 @@ objects = [o for o in bpy.context.scene.objects if o.type == 'MESH']
 for obj in objects:
     obj.data.calc_loop_triangles()
 assert sum(len(o.data.loop_triangles) for o in objects) == total
-assert {o['surfaceRole'] for o in objects} == {1, 2, 3, 4, 5}
+assert {o.name: o['surfaceRole'] for o in objects} == {p['part']: p['role'] for p in data['parts']}
 assert all(o.data.color_attributes for o in objects)
 actual = bounds()
 delta = max(abs(actual[a][b] - initial[a][b]) for a in range(2) for b in range(3))

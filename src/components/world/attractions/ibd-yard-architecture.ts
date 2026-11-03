@@ -9,7 +9,7 @@ export interface IbdSolid { at: V3; size: V3; rotation?: V3 }
 export type IbdCube = (at: V3, size: V3, surface: Surf, solid?: boolean, bevel?: number, rotation?: V3) => void;
 
 /** Three distinct building sections, sharing only construction details and the physical roof contract. */
-export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid[], coilFinish?: CoilBayFinish) {
+export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid[], coilFinish?: CoilBayFinish, expanded = false) {
   const groundSurface = buildIbdPaving(b);
   const rafter = (a: V3, end: V3) => {
     const angle = Math.atan2(end[1] - a[1], end[0] - a[0]), length = Math.hypot(end[0] - a[0], end[1] - a[1]);
@@ -18,15 +18,25 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
       for (const y of [-.22, .22]) cbox(b, [0, y, 0], [length, .06, .34], P.steel);
     });
   };
-  for (const shed of IBD_SHEDS) {
+  for (const [building, shed] of IBD_SHEDS.entries()) {
     const { x, z, width: w, depth: d, eave: h, rise } = shed;
     const left = x - w / 2, right = x + w / 2, back = z - d / 2, front = z + d / 2;
-    const sample = shed.id === 'coil' ? coilFinish : undefined;
+    const sample = expanded || shed.id === 'coil' ? coilFinish : undefined;
+    const inward = shed.id === 'coil' ? 1 : -1;
     const roof = shed.id === 'coil' ? P.roof : shed.id === 'parts' ? P.blue : P.green;
     cube([x, h - .5, front + .2], [8.2, 1.4, .16], P.dark);
     // Full-height rear and outer side cladding, deliberately open across the working frontage.
     const wall = (cx: number, cz: number, length: number, side: boolean) => {
       cube([cx, h / 2, cz], side ? [.18, h, length] : [length, h, .18], P.wall, true, 0);
+      if (expanded && sample) {
+        const direction = side ? inward : 1;
+        const along = side ? cz : cx;
+        const plane = side ? cx : cz;
+        for (const face of [direction, -direction]) {
+          addCoilBayWall(b, sample, plane + face * .109, along-length/2, along+length/2, h, face, !side, building);
+        }
+        return;
+      }
       const n = Math.ceil(length / 2);
       for (let i = 0; i < n; i++) for (let y = 1.4; y < h; y += 2.8) {
         const panelWidth = length / n - .04;
@@ -51,7 +61,7 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
         const flanges = () => {
           for (const side of [-1, 1]) cube([xx, h / 2, zz + side * .235], [.46, h, .08], P.steel, false, 0);
         };
-        if (sample && zz === front) sample.add(COIL_ROLE.frame, flanges); else flanges();
+        if (sample && (expanded || zz === front)) sample.add(COIL_ROLE.frame, flanges, building, expanded && building > 0 ? roof.color : undefined); else flanges();
         cube([xx, .35, zz], [.86, .7, .95], P.concrete, true);
         cube([xx, .73, zz], [.72, .06, .8], P.dark, false, 0);
         for (const dx of [-.25, .25]) for (const dz of [-.29, .29])
@@ -94,7 +104,10 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
       const at: V3 = [x + side * w / 4, h + rise / 2, z];
       const size: V3 = [span + .65, .22, d + .9];
       const rotation: V3 = [0, 0, -side * angle];
-      if (sample) {
+      if (sample && expanded) {
+        sample.add(i => b.nrm[i+1] < -.55 ? COIL_ROLE.soffit : COIL_ROLE.roof,
+          () => cube(at, size, roof, true, 0, rotation), building, building > 0 ? roof.color : undefined);
+      } else if (sample) {
         // Split the visible skin at the existing middle portal. The physical
         // roof stays the same single box per slope.
         solids.push({ at, size, rotation });
@@ -107,7 +120,9 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
       for (let zz = back - .3; zz <= front + .3; zz += 1.2)
         bar(b, [x + side * (w / 2 + .2), h + .16, zz], [x, h + rise + .16, zz], .035, P.steel, 4);
       const eave = x + side * w / 2;
-      if (sample) {
+      if (sample && expanded) {
+        addCoilBayEave(sample, cube, eave, h, side, back-.5, front, building, [back,z,front]);
+      } else if (sample) {
         cube([eave+side*.2,h-.03,z-(d+1)/4], [.25,.32,(d+1)/2], P.dark);
         addCoilBayEave(sample, cube, eave, h, side, z, front);
       } else cube([eave+side*.2,h-.03,z], [.25,.32,d+1], P.dark);

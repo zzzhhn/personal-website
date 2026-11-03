@@ -1,0 +1,110 @@
+{
+  "baseline": "414e86c",
+  "view": {
+    "id": "Coil shed walk-up",
+    "eye": [
+      -94,
+      2.9,
+      -164
+    ],
+    "target": [
+      -106,
+      8,
+      -183
+    ]
+  },
+  "fov": 50,
+  "cameraPosition": [
+    -94,
+    2.9,
+    -164
+  ],
+  "quaternion": [
+    0.10696429954030395,
+    0.27622026674976985,
+    -0.030950165123961447,
+    0.9546219618987076
+  ],
+  "exposure": 1,
+  "dpr": 1,
+  "time": 720,
+  "canvas": [
+    1710,
+    931
+  ],
+  "renderer": {
+    "render": {
+      "frame": 7009,
+      "calls": 72,
+      "triangles": 429467,
+      "points": 28,
+      "lines": 0
+    },
+    "memory": {
+      "geometries": 149,
+      "textures": 54
+    }
+  },
+  "quality": "balanced",
+  "night": 0,
+  "blend": 1,
+  "ibd": {
+    "triangles": 46693,
+    "attributes": {
+      "position": 1035084,
+      "normal": 1035084,
+      "color": 1035084,
+      "aMat": 1380112,
+      "aSuv": 690056,
+      "aIbdBake": 1035084,
+      "aIbdCladding": 86257
+    },
+    "roles": [
+      0,
+      1,
+      17,
+      18,
+      19,
+      2,
+      20,
+      21,
+      22,
+      3,
+      33,
+      34,
+      35,
+      36,
+      37,
+      4,
+      5,
+      6
+    ],
+    "material": "ibd-industrial-v4-static:ibd-envelope-v2",
+    "compiled": true
+  },
+  "warmup": {
+    "stableAgeMs": 16811,
+    "checks": 3
+  },
+  "shadow": {
+    "pending": false,
+    "slices": 0,
+    "cpuMs": 0,
+    "maxSliceMs": 0,
+    "cancelled": 0,
+    "error": "",
+    "phases": [],
+    "hullWorker": {
+      "requests": 86,
+      "workerMs": 1318.1000007390976,
+      "maxWorkerMs": 285.5,
+      "maxSource": "AM_batch_wood",
+      "maxInputVertices": 109189
+    },
+    "centre": [
+      -209.09423738163503,
+      52.8700842583968,
+      -113.47368658969556
+    ]
+  }
+}
