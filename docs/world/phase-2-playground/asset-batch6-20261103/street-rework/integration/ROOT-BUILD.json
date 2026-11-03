@@ -1,0 +1,17 @@
+{
+  "source": "c4d998f366cd68c58739b6fbcd817dfc56a16487",
+  "exitCode": 0,
+  "seconds": 16.68,
+  "pages": [
+    "index.html",
+    "projects/alpha-agent/index.html",
+    "projects/djc/index.html",
+    "projects/evalforge/index.html",
+    "projects/hepai/index.html",
+    "projects/interactive-learning-platforms/index.html",
+    "projects/kindred/index.html",
+    "world/index.html"
+  ],
+  "log": "/tmp/bobby-world-street3-build.log",
+  "capturedSourceHashesMatch": true
+}
