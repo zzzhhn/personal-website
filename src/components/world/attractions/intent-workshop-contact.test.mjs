@@ -21,11 +21,20 @@ function fixture(contact=true,base=true) {
 }
 after(()=>{data.body.dispose();data.glow.dispose();material.dispose();});
 
-test('tabletop contacts reuse visible triangles without an enlarged enclosure',()=>{
+test('tabletop contacts reuse visible triangles or the two frozen intake side-rail proxies',()=>{
   const key=ps=>ps.map(p=>p.join(',')).sort().join('|'),visible=new Set(),p=data.body.attributes.position;
   for(let i=0;i<p.count;i+=3)visible.add(key([0,1,2].map(j=>[p.getX(i+j),p.getY(i+j),p.getZ(i+j)])));
   const {vertices,indices}=data.contactSurface;
-  for(let i=0;i<indices.length;i+=3)assert.ok(visible.has(key([0,1,2].map(j=>Array.from(vertices.slice(indices[i+j]*3,indices[i+j]*3+3))))));
+  const [x,y,z]=coasterWorld(WORKSHOP_INTAKE);
+  let proxyTriangles=0;
+  for(let i=0;i<indices.length;i+=3) {
+    const points=[0,1,2].map(j=>Array.from(vertices.slice(indices[i+j]*3,indices[i+j]*3+3)));
+    if(visible.has(key(points))) continue;
+    assert.ok([-.96,.52].some(center=>points.every(([px,py,pz])=>
+      Math.abs(px-x-center)<=.06001 && Math.abs(py-y-1.48)<=.14001 && Math.abs(pz-z)<=.82501)));
+    proxyTriangles++;
+  }
+  assert.ok(proxyTriangles>0 && proxyTriangles<=24);
   assert.equal(workshopColliders().length,44 + WORKSHOP_INTAKE_PANELS.length);
   assert.ok(indices.length/3<4000,'bounded tabletop contact cost');
   console.log(JSON.stringify({visibleTriangles:p.count/3,contactTriangles:indices.length/3,contactVertices:vertices.length/3,

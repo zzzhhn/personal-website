@@ -1,4 +1,4 @@
-import { BufferGeometry, Matrix4, TorusGeometry } from 'three';
+import { BoxGeometry, BufferGeometry, ExtrudeGeometry, Matrix4, Shape, TorusGeometry } from 'three';
 import { CoasterBatch, COASTER_PALETTE as P } from './coaster-geometry.ts';
 import { coasterWorld } from './coaster-track.ts';
 import { WORKSHOP_HUB, WORKSHOP_INTAKE, WORKSHOP_INTAKE_PANELS, WORKSHOP_POST_TOP, WORKSHOP_RAIL_Y, WORKSHOP_TOOLS } from './intent-workshop-layout.ts';
@@ -51,7 +51,6 @@ function workshopArt(b: CoasterBatch, at: Vec3, kind: IntentClass | 'intake') {
   }
   box([0, 1.24, 1.13], [1.65, .09, .035], P.copper);
   if (kind === 'intake') {
-    for (const dx of [-.96, .52]) box([dx, 1.48, 0], [.12, .28, 1.65], P.copper);
     wheel([-.8, .8, 1.08], .2);
     return;
   }
@@ -128,6 +127,41 @@ function workshopArt(b: CoasterBatch, at: Vec3, kind: IntentClass | 'intake') {
   }
 }
 
+const INTAKE_RAILS = [
+  { center: -.96, outward: -1, rollerEnd: -.85 },
+  { center: .52, outward: 1, rollerEnd: .4 },
+] as const;
+const rollerZ = (index: number) => -.6 + index * .15;
+
+/** Inward-facing folded steel channels. The flanges keep the old top and base footprints. */
+export function addIntakeRollerSupports(batch: CoasterBatch) {
+  const [x, y, z] = coasterWorld(WORKSHOP_INTAKE);
+  for (const { center, outward, rollerEnd } of INTAKE_RAILS) {
+    const inner = center - outward * .06;
+    const profile = new Shape();
+    profile.moveTo(inner, 1.34);
+    profile.lineTo(inner + outward * .12, 1.34);
+    profile.lineTo(inner + outward * .12, 1.62);
+    profile.lineTo(inner, 1.62);
+    profile.lineTo(inner, 1.588);
+    profile.lineTo(inner + outward * .09, 1.588);
+    profile.lineTo(inner + outward * .09, 1.372);
+    profile.lineTo(inner, 1.372);
+    profile.closePath();
+    const rail = new ExtrudeGeometry(profile, { depth: 1.65, bevelEnabled: false });
+    batch.add(rail, P.copper, new Matrix4().makeTranslation(x, y, z - .825));
+    markIntentCraft(batch.parts[batch.parts.length - 1], INTENT_CRAFT.powderCoat);
+
+    for (let index = 0; index < 9; index++) {
+      const axleZ = z + rollerZ(index);
+      const at = (offset: number): Vec3 => [x + offset, y + 1.42, axleZ];
+      const bearingFace = inner + outward * .018;
+      batch.beam(at(rollerEnd), at(bearingFace), .029, P.rail, 8);
+      batch.beam(at(bearingFace), at(inner + outward * .091), .053, P.dark, 8);
+    }
+  }
+}
+
 export function createWorkshopGeometry() {
   const b = new CoasterBatch(), glow = new CoasterBatch();
   const contactVertices: number[] = [], contactIndices: number[] = [];
@@ -159,7 +193,18 @@ export function createWorkshopGeometry() {
     const art = b.parts.slice(artStart);
     // Snapshot the original position-only contact before any render treatment.
     contactParts(art, y + 1.36);
-    if (id === 'intake') for (const part of art) markIntentCraft(part, INTENT_CRAFT.powderCoat);
+    if (id === 'intake') {
+      for (const part of art) markIntentCraft(part, INTENT_CRAFT.powderCoat);
+      // Keep the original solid contact proxies. The channels preserve the full
+      // walkable top, while their recessed faces remain behind the old sides.
+      for (const { center } of INTAKE_RAILS) {
+        const proxy = new BoxGeometry(.12, .28, 1.65).translate(x + center, y + 1.48, z);
+        const triangles = proxy.toNonIndexed();
+        contactParts([triangles], y + 1.36);
+        triangles.dispose();
+        proxy.dispose();
+      }
+    }
     for (const dx of [-1.15, 1.15]) {
       b.beam([x + dx, y + .3, z - .85], [x + dx, y + WORKSHOP_POST_TOP, z - .85], .1, P.steel, 8);
       b.box([x + dx, y + .32, z - .85], [.35, .08, .35], P.copper);
@@ -190,6 +235,7 @@ export function createWorkshopGeometry() {
   const rollers = b.parts.slice(rollersStart);
   contactParts(rollers, iy + 1.36);
   for (const roller of rollers) markIntentCraft(roller, INTENT_CRAFT.roller);
+  addIntakeRollerSupports(b);
   b.housing([ix - 2.5, iy + .65, iz], [.8, 1.3, .8], P.white);
   b.beam([ix - 2.5, iy + 1.3, iz], [ix - 2.5, iy + 1.7, iz], .22, P.copper, 12);
   for (const { at, size } of WORKSHOP_INTAKE_PANELS) {
