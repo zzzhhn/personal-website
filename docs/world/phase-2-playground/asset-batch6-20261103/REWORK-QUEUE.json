@@ -778,7 +778,7 @@
       "scene": "Intent车间",
       "lane": "coaster-workshop",
       "inventoryStatusUnchanged": 2,
-      "executionState": "night-material-path-fixed-serving-4341-art-refinement-pending",
+      "executionState": "roller-support-refinement-serving-4341-worktop-cabinet-pending",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/attractions/intent-workshop-geometry.ts",
@@ -786,15 +786,16 @@
       ],
       "evidence": [
         "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md",
-        "docs/world/phase-2-playground/asset-batch6-20261103/COASTER-P04-ROOT-REVIEW.md"
+        "docs/world/phase-2-playground/asset-batch6-20261103/COASTER-P04-ROOT-REVIEW.md",
+        "docs/world/phase-2-playground/asset-batch6-20261103/rework/INTAKE-SUPPORT-ROOT-REVIEW.md"
       ],
-      "baselineNote": "主已审看正午及午夜两对原图；滚筒旧深蓝偏色修正，局部材质已接入4341。整台构造仍简化，不计整件精修完成；继续轴端、轴承座与侧梁连接样板。",
-      "visualAcceptance": "coordinator-accepted-correctness-and-local-material-only; full-art-refinement-pending",
+      "baselineNote": "夜间材质修复后，e96e02f滚筒短轴/轴承座/折槽侧梁已通过主实景复核并集成4341。整台仍未精修完成，继续台面折口承托与柜体底座检修门一组。",
+      "visualAcceptance": "coordinator-accepted-local-material-and-roller-supports; full-asset-finish-pending",
       "completionEvidence": {
-        "source": "0f298aed022c1585cbfa19e92321c230b943bddd",
-        "scope": "night-material-path-correctness-and-local-material-only",
-        "review": "docs/world/phase-2-playground/asset-batch6-20261103/rework/RACK-INTAKE-ROOT-REVIEW.md",
-        "served": "docs/world/phase-2-playground/asset-batch6-20261103/rework/rack-intake-integration/ROOT-SERVED-CHECK.json"
+        "source": "c02ab45e3b5f9c40e8e2e15a05a00a40ac80ada2",
+        "scope": "night-material-and-roller-supports-only",
+        "review": "docs/world/phase-2-playground/asset-batch6-20261103/rework/INTAKE-SUPPORT-ROOT-REVIEW.md",
+        "served": "docs/world/phase-2-playground/asset-batch6-20261103/rework/intake-support-integration/ROOT-SERVED-CHECK.json"
       }
     },
     {
