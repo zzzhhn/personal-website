@@ -11,7 +11,7 @@ const rack = process.argv[3] === 'rack-v2';
 const geometry = () => {
   if (rack) {
     const builder = new Builder();
-    addIbdStockRack(builder, (at, size, surface, _solid, bevel) => cbox(builder, at, size, surface, bevel), 13, true);
+    addIbdStockRack(builder, (at, size, surface, _solid, bevel) => cbox(builder, at, size, surface, bevel), 13, 'sample');
     return builder.build();
   }
   return buildIbdStatic(expanded
