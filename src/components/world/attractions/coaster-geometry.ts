@@ -170,6 +170,16 @@ export function addCoasterBuildingArt(steel: CoasterBatch, detailed: boolean) {
     box([x,7.4,41.5],[.12,.06,22.8],P.copper);
     markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.flashing);
   }
+  // Eave girders and broad bearing plates connect the existing column heads
+  // to the roof. They sit over the column lines and above the passenger aisle.
+  for (const x of [-10, 6]) {
+    box([x, 6.13, 41.5], [.48, .38, 21], P.steel);
+    markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.structuralCoat);
+    for (const z of [31, x < 0 ? 43 : 51]) {
+      box([x, 5.91, z], [1.18, .14, 1.18], P.rail);
+      markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.galvanized);
+    }
+  }
   // Deep, chamfered front fascia frames the existing warm entrance light and open aisle.
   for(const x of [-9,5])shell([x,6.77,52.95],[3.6,1.05,.14],P.white);
   box([-2,7.2,52.98],[10.4,.32,.16],P.copper);
@@ -185,6 +195,13 @@ export function addCoasterBuildingArt(steel: CoasterBatch, detailed: boolean) {
     box([12.8,3.45,z],[.07,1.5,3.05],P.dark);
     for(const y of [2.64,4.26])box([12.84,y,z],[.12,.13,3.3],P.copper);
     box([12.87,3.45,z],[.08,1.55,.1],P.rail);
+    // Broad folded panels land between the existing piers and sill.
+    for (const dy of [-.43, .43]) {
+      box([12.87, 1.55 + dy, z], [.12, .76, 3.16], P.white);
+      markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.structuralCoat);
+    }
+    box([12.89, 2.46, z], [.16, .10, 3.28], P.rail);
+    markIntentCraft(steel.parts[steel.parts.length - 1], INTENT_CRAFT.galvanized);
   }
   // Closed service door is visibly distinct from the open passenger hall.
   shell([10,2.35,50.06],[2.6,4.1,.14],P.steel);

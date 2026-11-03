@@ -164,6 +164,17 @@ export function addIntakeRollerSupports(batch: CoasterBatch) {
   }
 }
 
+function addFoldedWorktop(part: (name: string, position: Vec3, size: Vec3, color: string, role: number) => void) {
+  const steel = INTENT_CRAFT.worktop;
+  part('Worktop plate', [0, 1.3075, 0], [2.8, .045, 2.3], P.rail, steel);
+  for (const side of [-1, 1]) {
+    const end = side < 0 ? 'Rear' : 'Front';
+    const edge = side < 0 ? 'Left' : 'Right';
+    part(`${end} return`, [0, 1.255, side * 1.133], [2.8, .06, .034], P.rail, steel);
+    part(`${edge} return`, [side * 1.383, 1.255, 0], [.034, .06, 2.232], P.rail, steel);
+  }
+}
+
 /** Folded worktop, inset support and cabinet faces below the existing roller assembly. */
 export function addIntakeBench(batch: CoasterBatch) {
   const [x, y, z] = coasterWorld(WORKSHOP_INTAKE);
@@ -173,15 +184,8 @@ export function addIntakeBench(batch: CoasterBatch) {
     markIntentCraft(batch.parts[batch.parts.length - 1], role);
     names.push(name);
   };
-  const steel = INTENT_CRAFT.worktop;
   const coat = INTENT_CRAFT.powderCoat;
-  part('Worktop plate', [0, 1.3075, 0], [2.8, .045, 2.3], P.rail, steel);
-  for (const side of [-1, 1]) {
-    const end = side < 0 ? 'Rear' : 'Front';
-    const edge = side < 0 ? 'Left' : 'Right';
-    part(`${end} return`, [0, 1.255, side * 1.133], [2.8, .06, .034], P.rail, steel);
-    part(`${edge} return`, [side * 1.383, 1.255, 0], [.034, .06, 2.232], P.rail, steel);
-  }
+  addFoldedWorktop(part);
   part('Recessed load frame', [0, 1.214, -.01], [2.52, .142, 1.98], P.dark, coat);
 
   for (const { name, center, width } of [
@@ -221,7 +225,14 @@ export function createWorkshopGeometry() {
     const [x, y, z] = coasterWorld(at);
     b.housing([x, y + .15, z], [3.1, .3, 2.65], P.concrete);
     if (id === 'intake') addIntakeBench(b);
-    else b.housing([x, y + 1.24, z], [2.8, .18, 2.3], P.rail);
+    else {
+      addFoldedWorktop((_name, position, size, color, role) => {
+        b.box([x + position[0], y + position[1], z + position[2]], size, color);
+        markIntentCraft(b.parts[b.parts.length - 1], role);
+      });
+      b.box([x, y + 1.214, z - .04], [2.52, .142, 1.93], P.dark);
+      markIntentCraft(b.parts[b.parts.length - 1], INTENT_CRAFT.structuralCoat);
+    }
     const artStart = b.parts.length;
     workshopArt(b, at, id);
     const art = b.parts.slice(artStart);
