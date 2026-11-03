@@ -1,0 +1,23 @@
+{
+  "mode": "blend",
+  "objects": 47,
+  "triangles": 1496,
+  "materials": [
+    "Bearing steel",
+    "Copper coat",
+    "Shaft steel",
+    "Steel"
+  ],
+  "bounds": [
+    [
+      -1.02,
+      -0.825,
+      1.34
+    ],
+    [
+      0.58,
+      0.825,
+      1.62
+    ]
+  ]
+}

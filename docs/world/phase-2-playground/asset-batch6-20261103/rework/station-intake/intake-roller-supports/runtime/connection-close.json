@@ -1,0 +1,23 @@
+{
+  "url": "http://127.0.0.1:4353/world/?start=coaster&quality=balanced&shot=craft-intake-close-day",
+  "first": {
+    "assembly": "{\"baseline\":false,\"roles\":{\"0\":25272,\"3\":864,\"4\":1128,\"5\":60},\"vertices\":27324}",
+    "body": "",
+    "raw": "{\"shot\":\"craft-intake-close-day\",\"quality\":\"balanced\",\"time\":720,\"weather\":\"clear\",\"position\":[35.05,3.03,-120.55],\"direction\":[-0.8065928950645865,-0.24239579229920205,-0.5391216759758144],\"fov\":50,\"exposure\":1,\"blend\":1,\"night\":0,\"shadowPending\":false,\"shadowError\":\"\",\"loading\":false,\"frame\":5238,\"shadowCancelled\":0,\"compiledCraftPrograms\":1,\"drawCalls\":120,\"triangles\":639907,\"pixelRatio\":1,\"canvas\":[1710,875]}",
+    "visible": "visible"
+  },
+  "before": {
+    "assembly": "{\"baseline\":false,\"roles\":{\"0\":25272,\"3\":864,\"4\":1128,\"5\":60},\"vertices\":27324}",
+    "body": "",
+    "raw": "{\"shot\":\"craft-intake-close-day\",\"quality\":\"balanced\",\"time\":720,\"weather\":\"clear\",\"position\":[35.05,3.03,-120.55],\"direction\":[-0.8065928950645865,-0.24239579229920205,-0.5391216759758144],\"fov\":50,\"exposure\":1,\"blend\":1,\"night\":0,\"shadowPending\":false,\"shadowError\":\"\",\"loading\":false,\"frame\":5238,\"shadowCancelled\":0,\"compiledCraftPrograms\":1,\"drawCalls\":120,\"triangles\":639907,\"pixelRatio\":1,\"canvas\":[1710,875]}",
+    "visible": "visible"
+  },
+  "after": {
+    "assembly": "{\"baseline\":false,\"roles\":{\"0\":25272,\"3\":864,\"4\":1128,\"5\":60},\"vertices\":27324}",
+    "body": "",
+    "raw": "{\"shot\":\"craft-intake-close-day\",\"quality\":\"balanced\",\"time\":720,\"weather\":\"clear\",\"position\":[35.05,3.03,-120.55],\"direction\":[-0.8065928950645865,-0.24239579229920205,-0.5391216759758144],\"fov\":50,\"exposure\":1,\"blend\":1,\"night\":0,\"shadowPending\":false,\"shadowError\":\"\",\"loading\":false,\"frame\":5238,\"shadowCancelled\":0,\"compiledCraftPrograms\":1,\"drawCalls\":120,\"triangles\":639907,\"pixelRatio\":1,\"canvas\":[1710,875]}",
+    "visible": "visible"
+  },
+  "errors": [],
+  "elapsedToCaptureMs": 77126
+}

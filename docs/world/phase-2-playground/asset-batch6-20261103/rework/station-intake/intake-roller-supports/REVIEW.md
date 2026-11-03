@@ -27,4 +27,20 @@ blender --background --python tools/world/coaster-craft-rework/export-intake-rol
   -- /tmp/intake-assembly.json /tmp/intake-assembly-assets
 ```
 
-Extraction produced 47 named parts and 1,496 triangles. The Blender script passed a Python syntax check. Blender output uses editable PBR approximations of the runtime materials and local metric coordinates with +Y toward the front. The export, reimport, same-view noon and midnight captures, connection close-up and runtime cost review await the serial QA window.
+Extraction produced 47 named parts and 1,496 triangles. The Blender script passed a Python syntax check. Blender output uses editable PBR approximations of the runtime materials and local metric coordinates with +Y toward the front. The following section records the completed serial QA.
+
+## Runtime and export review
+
+| Fixed view | Baseline `7789327` | Sample `e96e02f` |
+| --- | --- | --- |
+| Noon | [Original](runtime/day-before.jpg) | [Original](runtime/day-after.jpg) |
+| Midnight | [Original](runtime/night-before.jpg) | [Original](runtime/night-after.jpg) |
+| Bearing and channel close-up | | [Original](runtime/connection-close.jpg) |
+
+The single QA build selects the frozen baseline generator or the candidate at the actual workshop entry point. Both use the approved night shader. All five captures used the same 1710 × 875 screenshot and framebuffer size, DPR 1, balanced quality, exposure 1, clear weather, and a fully settled climate blend. Each had one compiled craft program, 864 roller-role vertices, no console errors, and an idle shadow queue before and after the capture. The local server logs show successful observed scene asset responses and a favicon 404. This verifies the local workshop views using the frozen shared public asset root. [Receipt](receipt.json)
+
+At noon the foremost shaft and seated bearing read clearly. The far channel shows the repeating supports. At midnight the first shaft remains visible, but the darker rear bearings mostly read as a line along the recess. In the close view the bearings meet the far channel web, with no obvious clipping across the visible roller barrels. The near channel hides the connections behind its outer face in that view.
+
+The stable ordinary-view counter stayed at 101 draw calls. The displayed renderer triangle count rose from 557,185 to 560,737 in each pair. The runtime geometry itself adds 1,184 triangles and 174,048 attribute bytes. The displayed count includes the renderer's passes. These are capture-time counters, with no whole-island FPS claim. [Contact fingerprints](contacts.json)
+
+Blender 5.1.2 reopened the [editable Blend](assets/intake-roller-assembly.blend) and freshly imported the [GLB](assets/intake-roller-assembly.glb) into an empty scene. Each read back as 47 mesh objects, four materials, 1,496 triangles, and the same metric bounds. The TypeScript path remains authoritative for runtime day and night materials. [Blend readback](assets/blend.json) · [GLB readback](assets/glb.json)
