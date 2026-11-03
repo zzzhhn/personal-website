@@ -489,15 +489,17 @@
       "scene": "DJC Club",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "dispatched-next-club-refinement",
+      "executionState": "material-sample-revised-awaiting-final-runtime-review",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
-        "src/components/world/WorldDjcClubGeometry.ts"
+        "src/components/world/WorldDjcClubGeometry.ts",
+        "src/components/world/WorldDjcClubVisual.tsx",
+        "src/components/world/WorldDjcFacilityFinish.ts"
       ],
       "evidence": [
         "docs/world/phase-2-playground/djc-beach-club/refinement-20261027.md"
       ],
-      "baselineNote": "历史场景构造pass，未见本轮专门模型替换验收。",
+      "baselineNote": "结构首样未通过材质精修验收；主控实际查看补材质的普通视距预览，方向改善可见。最终稳定昼夜图、慢转及水捕获兼容仍待验。",
       "visualAcceptance": "pending",
       "completionEvidence": null
     },
@@ -507,15 +509,17 @@
       "scene": "DJC Club",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "dispatched-next-club-refinement",
+      "executionState": "material-rework-water-receiver-compatibility",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
-        "src/components/world/WorldDjcClubGeometry.ts"
+        "src/components/world/WorldDjcClubGeometry.ts",
+        "src/components/world/WorldDjcClubVisual.tsx",
+        "src/components/world/WorldDjcFacilityFinish.ts"
       ],
       "evidence": [
         "docs/world/phase-2-playground/djc-beach-club/refinement-20261027.md"
       ],
-      "baselineNote": "水shader另列范围外；实体部分仍需质量复核。",
+      "baselineNote": "实体衬壁与坡口结构候选已制作，主控要求补材质。性能复核发现实际 stone receiver 与焦散绑定分离；主控 5983700 修复共享 hook/key 与静态剔除兼容，候选正在接入；未改水 shader，最终视觉待验。",
       "visualAcceptance": "pending",
       "completionEvidence": null
     },
