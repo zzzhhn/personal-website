@@ -4,12 +4,13 @@ import { IBD_MATERIALS as P } from './ibd-yard-palette.ts';
 import { buildIbdPaving } from './ibd-yard-site.ts';
 import { COIL_ROLE, addCoilBayWall, addCoilBayEave, type CoilBayFinish } from './ibd-coil-bay';
 import { addIbdStockRack } from './ibd-stock-craft.ts';
+import { addIbdBridgeSample, addIbdStockCrateSample } from './ibd-beam-crate-craft';
 
 export interface IbdSolid { at: V3; size: V3; rotation?: V3 }
 export type IbdCube = (at: V3, size: V3, surface: Surf, solid?: boolean, bevel?: number, rotation?: V3) => void;
 
 /** Three distinct building sections, sharing only construction details and the physical roof contract. */
-export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid[], coilFinish?: CoilBayFinish, expanded = false) {
+export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid[], coilFinish?: CoilBayFinish, expanded = false, bridgeSample = false) {
   const groundSurface = buildIbdPaving(b);
   const rafter = (a: V3, end: V3) => {
     const angle = Math.atan2(end[1] - a[1], end[0] - a[0]), length = Math.hypot(end[0] - a[0], end[1] - a[1]);
@@ -152,7 +153,8 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
   }
   // Heavy double bridge over the coil court. Trolley, sling and coil remain independently animated.
   for (const z of [-6, -2]) {
-    cube([-17, IBD_CRANE_Y, z], [27, .78, .5], P.amber);
+    if (bridgeSample && z === -2) addIbdBridgeSample(b, z);
+    else cube([-17, IBD_CRANE_Y, z], [27, .78, .5], P.amber);
     cube([-17, IBD_CRANE_Y + .43, z], [27, .12, .7], P.dark);
     for (const x of [-30, -3.8]) {
       cube([x, IBD_CRANE_Y / 2, z], [.42, IBD_CRANE_Y, .48], P.dark, true);
@@ -166,7 +168,7 @@ export function buildIbdArchitecture(b: Builder, cube: IbdCube, solids: IbdSolid
 }
 
 /** Deep rear stores and maintenance alcove, kept outside inspection faces and every animated pallet lane. */
-export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[], rackMode?: 'sample' | 'family') {
+export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[], rackMode?: 'sample' | 'family', crateSample = false) {
   const crate = (x: number, y: number, z: number, w = 2.2) => {
     cube([x, y, z], [w, 1.5, 1.65], P.timber, false, .04);
     for (const xx of [-w / 2 + .14, w / 2 - .14]) cube([x + xx, y, z + .84], [.14, 1.5, .08], P.endgrain, false, 0);
@@ -190,7 +192,9 @@ export function buildIbdStores(b: Builder, cube: IbdCube, solids: IbdSolid[], ra
   for (const x of [5, 13, 23]) {
     solids.push({ at: [x, 2.5, -23], size: [6.4, 5, 3.4] });
     addIbdStockRack(b, cube, x, rackMode === 'family' || x === 13 ? rackMode : undefined);
-    for (const xx of [x - 1.6, x + 1.5]) crate(xx, 1.3, -23);
+    crate(x - 1.6, 1.3, -23);
+    if (crateSample && x === 13) addIbdStockCrateSample(b, x + 1.5, 1.3, -23);
+    else crate(x + 1.5, 1.3, -23);
     if (x === 13) {
       for (const xx of [x - 1.8, x, x + 1.8]) b.tr([xx, 2.6, -23], [0, 0, 0], () => {
         lathe(b, [[0, 0], [.6, 0], [.65, .12], [.65, 1.5], [.6, 1.65], [0, 1.65]], P.blue, { sides: 10 });

@@ -9,6 +9,8 @@ const views = [
   { id: 'East eave joint', eye: [-57.5, 4.2, -181], target: [-57, 8.0, -185] },
   { id: 'Rack shelf joint', eye: [-70.75, 2.95, -194.2], target: [-71.7, 3.27, -197.45] },
   { id: 'Three racks', eye: [-74, 2.9, -180.5], target: [-74, 3.45, -199] },
+  { id: 'Stock crate', eye: [-71.1, 2.8, -193.2], target: [-73.5, 2.35, -199.4] },
+  { id: 'Bridge bearing', eye: [-90, 3.0, -173], target: [-92.1, 7.6, -179] },
 ];
 const review = {
   name: 'ibd-shed-local-review',
@@ -21,10 +23,10 @@ const review = {
     source = source.slice(0, start) +
       '  const views = useMemo(() => (' + JSON.stringify(views) + ' as Array<{id:string;eye:Vec3;target:Vec3}>), []);' +
       source.slice(end + '  }, []);'.length);
-    return source.replace('selected = useRef(0)', "selected = useRef(Math.min(6, Math.max(0, Number(new URLSearchParams(location.search).get('ibdView')) || 0)))")
+    return source.replace('selected = useRef(0)', "selected = useRef(Math.min(8, Math.max(0, Number(new URLSearchParams(location.search).get('ibdView')) || 0)))")
       .replace('shot: shots[0].id', 'shot: shots[selected.current].id')
       .replace('report.textContent = views[0].id', 'report.textContent = views[selected.current].id')
-      .replace("baseline: '7702c3d'", "baseline: '414e86c'")
+      .replace("baseline: '7702c3d'", "baseline: 'bcf4f66'")
       .replace('fov: 50,', 'fov: camera instanceof PerspectiveCamera ? camera.fov : null, cameraPosition: camera.position.toArray(), quaternion: camera.quaternion.toArray(), dpr: gl.getPixelRatio(),')
       .replace('materialRevision: 2,', `ibd: (() => {
         const mesh = scene.getObjectByName('ibd-three-sheds-static') as Mesh;

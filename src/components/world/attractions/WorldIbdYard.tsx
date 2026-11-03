@@ -51,7 +51,9 @@ export default memo(function WorldIbdYard({ active = true }: { active?: boolean 
     const shedExpansion = query?.get('qa') !== '1' || query.get('ibdSheds') === 'candidate';
     const rack = query?.get('qa') === '1' ? query.get('ibdRack') : 'family-v2';
     const rackMode = rack === 'sample-v2' ? 'sample' : rack === 'family-v2' ? 'family' : undefined;
-    return { ...buildIbdStatic({ separateCraftShells: true, coilBaySample, shedExpansion, rackMode }), uniform,
+    const bridgeSample = query?.get('qa') === '1' && query.get('ibdBridge') === 'candidate';
+    const crateSample = query?.get('qa') === '1' && query.get('ibdStockCrate') === 'candidate';
+    return { ...buildIbdStatic({ separateCraftShells: true, coilBaySample, shedExpansion, rackMode, bridgeSample, crateSample }), uniform,
       material: createIbdMaterial(true, uniform),
       coilMaterial: coilBaySample || shedExpansion ? applyCoilBayMaterial(createIbdMaterial(true, uniform), shedExpansion) : null,
       movingMaterial: createIbdMaterial(false, uniform) };

@@ -1,0 +1,211 @@
+{
+  "baseline": "bcf4f66",
+  "view": {
+    "id": "Stock crate",
+    "eye": [
+      -71.1,
+      2.8,
+      -193.2
+    ],
+    "target": [
+      -73.5,
+      2.35,
+      -199.4
+    ]
+  },
+  "fov": 50,
+  "cameraPosition": [
+    -71.1,
+    2.8,
+    -193.2
+  ],
+  "quaternion": [
+    -0.033210790599024785,
+    0.18351421220438585,
+    0.006203610397084547,
+    0.9824363045637272
+  ],
+  "dpr": 1,
+  "time": 720,
+  "canvas": [
+    1710,
+    931
+  ],
+  "exposure": 1,
+  "renderer": {
+    "render": {
+      "frame": 3325,
+      "calls": 58,
+      "triangles": 617998,
+      "points": 28,
+      "lines": 0
+    },
+    "memory": {
+      "geometries": 159,
+      "textures": 41
+    }
+  },
+  "quality": "balanced",
+  "night": 0,
+  "blend": 1,
+  "loading": {
+    "phase": "ready",
+    "loaded": 172,
+    "total": 172,
+    "active": false,
+    "failed": 29
+  },
+  "registeredAssets": {
+    "world-park": {
+      "present": true,
+      "meshes": 95,
+      "visible": 33,
+      "nominalTriangles": 134146,
+      "registeredSet": "33cdf836",
+      "visibleSet": "f40d5049",
+      "assetIds": [
+        "djc-club",
+        "djc-north-bar",
+        "djc-pool-lanterns",
+        "lamp",
+        "park",
+        "park-deck",
+        "rail"
+      ],
+      "assetIdsCount": 7
+    },
+    "world-street": {
+      "present": true,
+      "meshes": 14,
+      "visible": 13,
+      "nominalTriangles": 41800,
+      "registeredSet": "444c07f5",
+      "visibleSet": "c8c12511",
+      "assetIds": [
+        "F04",
+        "street-fixed",
+        "street-foundation",
+        "street-rail",
+        "street-windmill"
+      ],
+      "assetIdsCount": 5
+    },
+    "djc-beach-club": {
+      "present": true,
+      "meshes": 43,
+      "visible": 0,
+      "nominalTriangles": 72197,
+      "registeredSet": "25b4d90c",
+      "visibleSet": "811c9dc5",
+      "assetIds": [
+        "djc-club",
+        "djc-north-bar",
+        "djc-pool-lanterns"
+      ],
+      "assetIdsCount": 3
+    },
+    "djc-north-bar-visual": {
+      "present": true,
+      "meshes": 16,
+      "visible": 0,
+      "nominalTriangles": 204,
+      "registeredSet": "ad93ed8d",
+      "visibleSet": "811c9dc5",
+      "assetIds": [
+        "djc-north-bar"
+      ],
+      "assetIdsCount": 1
+    },
+    "djc-furniture-visuals": {
+      "present": true,
+      "meshes": 3,
+      "visible": 0,
+      "nominalTriangles": 1350,
+      "registeredSet": "362197f1",
+      "visibleSet": "811c9dc5",
+      "assetIds": [
+        "djc-club"
+      ],
+      "assetIdsCount": 1
+    },
+    "world-camp-slice": {
+      "present": true,
+      "meshes": 46,
+      "visible": 35,
+      "nominalTriangles": 17037,
+      "registeredSet": "59f7f826",
+      "visibleSet": "adb5fa5c",
+      "assetIds": [
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C10",
+        "G19",
+        "G20"
+      ],
+      "assetIdsCount": 9
+    }
+  },
+  "ibd": {
+    "triangles": 47329,
+    "attributes": {
+      "position": 1050348,
+      "normal": 1050348,
+      "color": 1050348,
+      "aMat": 1400464,
+      "aSuv": 700232,
+      "aIbdBake": 1050348,
+      "aIbdCladding": 87529
+    },
+    "roles": [
+      0,
+      1,
+      17,
+      18,
+      19,
+      2,
+      20,
+      21,
+      22,
+      3,
+      33,
+      34,
+      35,
+      36,
+      37,
+      4,
+      5,
+      6
+    ],
+    "material": "ibd-industrial-v4-static:ibd-envelope-v2",
+    "compiled": true
+  },
+  "warmup": {
+    "stableAgeMs": 13661,
+    "checks": 3
+  },
+  "shadow": {
+    "pending": false,
+    "slices": 0,
+    "cpuMs": 0,
+    "maxSliceMs": 0,
+    "cancelled": 0,
+    "error": "",
+    "phases": [],
+    "hullWorker": {
+      "requests": 54,
+      "workerMs": 521.1999995708466,
+      "maxWorkerMs": 163.39999997615814,
+      "maxSource": "AM_batch_wood",
+      "maxInputVertices": 89760
+    },
+    "centre": [
+      -175.90366163569078,
+      47.215861022395025,
+      -130.22137034611188
+    ]
+  }
+}

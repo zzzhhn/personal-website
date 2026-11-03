@@ -1,0 +1,11 @@
+29c4547669d716f1657cfa79e898e8ae3a8206859d0f07d2bc0d393ba0f762af  src/components/world/attractions/ibd-beam-crate-craft.ts
+2ac1754374fe955f469a56024c6e15967ba36f1d2f832d513c31703b57c899d2  src/components/world/attractions/ibd-yard-architecture.ts
+e60f747c6e7f51b390acc7d289b356607cde4b4a00eb946755d34081347afc54  src/components/world/attractions/ibd-yard-geometry.ts
+83011e9edb0b76cc17b8978d42e89eda3f17e5ce2351597f823b71b6ef6ca68f  src/components/world/attractions/WorldIbdYard.tsx
+c10e35e84c4f00204f3bffa531cdc21b493c5919dd9d3a5d542c193624a06ac8  tools/world/ibd-shed-material-sample/export-beam-crate.mjs
+d1a1e5b6a65cb35b76d8b0bea6098d0b6b07e98845b591e3935043b13c0817a3  docs/world/phase-2-playground/asset-batch6-20261103/ibd-beam-crate/native/bridge.source.json
+4b7864514f01c170c82587e7bfc39f5d54d18bbb8797099ed01908f9a9bb42cf  docs/world/phase-2-playground/asset-batch6-20261103/ibd-beam-crate/native/stock-crate.source.json
+17c590fd38e1fb358e9eed02c654899c4e4fce9fecc6e0545665af6f5ce859f9  docs/world/phase-2-playground/asset-batch6-20261103/ibd-beam-crate/native/bridge.blend
+f5409f0040e83ec1c7a405481086ec134ecd6727b8526fdb54b094f19a82a83b  docs/world/phase-2-playground/asset-batch6-20261103/ibd-beam-crate/native/stock-crate.blend
+8cc8cf0724f4a3f7eb7b6a961cfe95458449d45bd81b1776d1150542a06648ee  docs/world/phase-2-playground/asset-batch6-20261103/ibd-beam-crate/native/bridge.glb
+7139732a2cd7c0cba9a793016a9c98d5de5e615f41856b3a3d13a5820a20fcc8  docs/world/phase-2-playground/asset-batch6-20261103/ibd-beam-crate/native/stock-crate.glb
