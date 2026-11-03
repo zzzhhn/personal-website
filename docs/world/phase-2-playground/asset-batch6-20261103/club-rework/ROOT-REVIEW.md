@@ -17,3 +17,9 @@
 - 作者原生归档经 Blender 新场景回读；主控核对两份 GLB 头/长度和文件身份，未再次启动 Blender。GLB 保留几何、顶点色、坐标/角色，最终程序表面在游戏中执行，原生预览不等同游戏质感。
 
 当前记录为源码与图像验收。正式构建、服务字节核对和 4341 收据将保存至 `integration/`；公开部署与用户最终视觉接受不包含在此结论中。
+
+## 4341 本地交付
+
+`393398dfc2b35964448e27fa4e12b44697c9b682` 正式构建完成，8 个页面，15.63 秒。默认只启用主亭的四个实际生产输入与作者最终提交完全一致。服务切换至 `/tmp/bobby-world-batch6-club-pavilion-integrated-root`，30 个入口依赖文件及原有资源共 142 项 HTTP/字节核对通过，102 个此前观察过的静态资源保持原样，G21 已接受石材保留。回滚根为上一版街道交付。
+
+未重开浏览器或改变用户原试玩标签。此处的实景依据是已查看的作者受控日夜画面，加上默认石材回退的逐字节验证；不是新一轮完整游玩或帧率测量。收据见 [ROOT-BUILD.json](integration/ROOT-BUILD.json)、[ROOT-SERVED-CHECK.json](integration/ROOT-SERVED-CHECK.json)、[ROOT-4341.json](integration/ROOT-4341.json)。未公开部署。

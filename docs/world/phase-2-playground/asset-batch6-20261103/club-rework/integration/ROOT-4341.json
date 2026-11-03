@@ -1,0 +1,23 @@
+{
+  "port": 4341,
+  "pid": 77601,
+  "root": "/tmp/bobby-world-batch6-club-pavilion-integrated-root",
+  "runtimeSource": "393398dfc2b35964448e27fa4e12b44697c9b682",
+  "integratedSource": "393398dfc2b35964448e27fa4e12b44697c9b682",
+  "htmlSha256": "03bbe4f206029c2fcc1cea88dfd0ffc904afef599dd5cd2c37aacfdcf5383514",
+  "entries": [
+    "/_astro/WorldApp.BHeU9X9A.js",
+    "/_astro/client.BINMsa6k.js"
+  ],
+  "rollbackRoot": "/tmp/bobby-world-batch6-street3-integrated-root",
+  "preservedBackupRoots": [
+    "/tmp/bobby-world-batch6-street3-integrated-root",
+    "/tmp/bobby-world-batch6-craft2-integrated-root",
+    "/tmp/bobby-world-batch6-walk-integrated-root",
+    "/tmp/bobby-world-batch6-g21-integrated-root",
+    "/tmp/bobby-world-batch6-rails-root",
+    "/tmp/bobby-world-batch6-bench-bin-root",
+    "/tmp/bobby-world-batch6-final-01a171f1"
+  ],
+  "publicDeployment": false
+}

@@ -1,0 +1,21 @@
+{
+  "source": "393398dfc2b35964448e27fa4e12b44697c9b682",
+  "authorSource": "22efd8a79789a348130cbd6b9d969a2eaabe6962",
+  "buildCommand": "npm run build -- --config astro.batch6.g21.integration.config.mjs --outDir /tmp/bobby-world-batch6-club-pavilion-integrated-root",
+  "pages": 8,
+  "defaultRefinements": [
+    "D-pavilion"
+  ],
+  "heldRefinements": [
+    "D-basin"
+  ],
+  "sourceSha256": {
+    "WorldDjcClubGeometry.ts": "272907e01028834ab3c0a67947a052dfb40bb30980468ef6d812b701bf6d7663",
+    "WorldDjcClubVisual.tsx": "313cd7e7d29a3edbb38083329175a83e88847959311ec544168fe662d3bc1198",
+    "WorldDjcFacilityFinish.ts": "efb185b3fbc0121b98ff723b0a924c8a5abbb6cbb19cc725b38a219a4a84e32e",
+    "WorldClubWaterCapture.ts": "f6815176e4e891f3aa138d03e981935b898c77b1ee2cf050f67288fd107e95fc"
+  },
+  "authorProductionInputsMatch": true,
+  "browserReopened": false,
+  "runtimeEvidenceBoundary": "Reviewed author day/night pairs; pavilion geometry/material same, basin default restored and verified against bdd9d2e; no fresh integrated browser capture."
+}

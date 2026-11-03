@@ -1,0 +1,733 @@
+{
+  "source": "393398dfc2b35964448e27fa4e12b44697c9b682",
+  "entryFiles": 30,
+  "servedFileChecks": 142,
+  "allHttp200": true,
+  "allBytesMatchBuild": true,
+  "unchangedPreviouslyObservedResources": 102,
+  "g21Preserved": true,
+  "browserReopened": false,
+  "authorRuntimeEvidence": [
+    "club-rework/structure-stage/pavilion-baseline-*",
+    "club-rework/screenshots/pavilion-candidate-*"
+  ],
+  "entries": [
+    "/_astro/WorldApp.BHeU9X9A.js",
+    "/_astro/client.BINMsa6k.js"
+  ],
+  "runtime": [
+    "/_astro/WorldRuntime.EcZA0Ggf.js"
+  ],
+  "files": [
+    {
+      "url": "/",
+      "bytes": 379453,
+      "sha256": "ddb6cd554285713502d322dd25278ffdfce0c4e6e1ce9bed1258f0462b7b6c64"
+    },
+    {
+      "url": "/_astro/WorldApp.BHeU9X9A.js",
+      "bytes": 128,
+      "sha256": "a9d12b92af6735c66aab9deee1b56eb6d106a2ba70cd69742cbaea50fc73b471"
+    },
+    {
+      "url": "/_astro/WorldApp.BhL5-pL4.js",
+      "bytes": 149439,
+      "sha256": "e85318d94ef2447b9cc4e36b597d24be5100da27ef3135ea4e8d445165acfac8"
+    },
+    {
+      "url": "/_astro/WorldDistricts.dgGs5_mO.js",
+      "bytes": 22847,
+      "sha256": "b159080b40ffb734d01c3bdfb80328733f55d6570e92202bebdab534d8aca717"
+    },
+    {
+      "url": "/_astro/WorldIbdHud.CT20OTq1.js",
+      "bytes": 14598,
+      "sha256": "86b9cefb47cc950273e27746e4c977c55dfeb1ca0e22fcadf9ed7bf4170e687d"
+    },
+    {
+      "url": "/_astro/WorldIbdYard.MjaVByY9.js",
+      "bytes": 74082,
+      "sha256": "7ed461c585724229c3fcf9ef03db43f847051127e697e1e3022fb67324acde4b"
+    },
+    {
+      "url": "/_astro/WorldIntentCoaster.BQaaJi5Y.js",
+      "bytes": 100278,
+      "sha256": "a8355a33b079f1e6b9c123587d76e18241db105034589861e66e9ed9b396cd7d"
+    },
+    {
+      "url": "/_astro/WorldIntentHud.BmI9prxd.js",
+      "bytes": 7993,
+      "sha256": "b396fa75558fe3bb14eff6bee863f2a0b3fbd0bb081104fa9d84bc542822108b"
+    },
+    {
+      "url": "/_astro/WorldLandform.BMo8a2D8.js",
+      "bytes": 44278,
+      "sha256": "d91d36b9c926c5c884079575e89649386683d5c2dd61a76c194844f5230f26d4"
+    },
+    {
+      "url": "/_astro/WorldLoadProgress.D_q94cO0.js",
+      "bytes": 680,
+      "sha256": "416185e431b424d027328626b082a2eb525efd736697b2221cf9b39eb8ac8bb8"
+    },
+    {
+      "url": "/_astro/WorldRuntime.EcZA0Ggf.js",
+      "bytes": 3537040,
+      "sha256": "408b679ace7ab0b3fc2dab83f8b3fdc2b88e2fd1748ca632163546f4592ce4e8"
+    },
+    {
+      "url": "/_astro/WorldUiTest.DZXGwwqT.js",
+      "bytes": 1534,
+      "sha256": "409a505f56802210569bccb5d9155b747717c77a5b812783c1790cb8b5207561"
+    },
+    {
+      "url": "/_astro/actor-physics.C7mIiVjT.js",
+      "bytes": 2111,
+      "sha256": "b1dae54359645b913374876dbdd6a0f3ae87c6b0116900daa35721221b601017"
+    },
+    {
+      "url": "/_astro/analytics.CZcLqhSq.js",
+      "bytes": 841,
+      "sha256": "7e8308ed02c15cda4728fbae437f93e33c8cf7cf96bf4a065a29c96de4c4d842"
+    },
+    {
+      "url": "/_astro/client.BINMsa6k.js",
+      "bytes": 1898,
+      "sha256": "bd8e88b321e8e849e10322175edc3529f05ed07d1e9e3f02f9c99a5a6e1d3f88"
+    },
+    {
+      "url": "/_astro/client.BogH9A_j.js",
+      "bytes": 184037,
+      "sha256": "d59721b343eecba74c7a79e0f17fa8602a0ff9893f1526697fbf8ce755fa18c9"
+    },
+    {
+      "url": "/_astro/coaster-structure.worker-Dd6M9YSn.js",
+      "bytes": 212688,
+      "sha256": "fed646dc1b9e454a51b002fd06bf0cf379155678563206de2469c0020a12a19a"
+    },
+    {
+      "url": "/_astro/coaster-track.BCaEzNNs.js",
+      "bytes": 15186,
+      "sha256": "96412bef6d82ce8eda8439d9d11c3b92ee0024a949a3d6db3704000280c92971"
+    },
+    {
+      "url": "/_astro/draco_decoder.fzg4nYZr.js",
+      "bytes": 719410,
+      "sha256": "30e4d486fa020737af10e3c56197693e5b904bdc05b8bfa5d7b06751dec6da04"
+    },
+    {
+      "url": "/_astro/draco_wasm_wrapper.DxJM36Ib.js",
+      "bytes": 58763,
+      "sha256": "e8049906ef3f8f75d3456c22a3f31bfdfe5b5b5bd09ccdec613b9e9a49d554d8"
+    },
+    {
+      "url": "/_astro/draco_wasm_wrapper.fZCQGLGb.js",
+      "bytes": 58456,
+      "sha256": "8bb2952d2ba7d67e1414f8df819410cb0434a666be53f671fff75f68843d76f6"
+    },
+    {
+      "url": "/_astro/ibd-pack-play.DHca24ht.js",
+      "bytes": 38236,
+      "sha256": "ae60bcf4689bc102e704a7506c80c99827de715d068b1760f7a59f2c6d59bfc4"
+    },
+    {
+      "url": "/_astro/ibd-yard-guide.BpqF-6FT.js",
+      "bytes": 19417,
+      "sha256": "442b5d63027d8a716b27873410cdaccc4ac68c1ed508eb3479a0ceb367dacaf5"
+    },
+    {
+      "url": "/_astro/index.DP38BoPS.js",
+      "bytes": 7746,
+      "sha256": "6f9497145656a20d500d279519ad0273c3a5a9a813061a7067bbc72e5433508f"
+    },
+    {
+      "url": "/_astro/intent-state.DgBrnFyY.js",
+      "bytes": 39015,
+      "sha256": "0b142037112f5c1cf6a24bc7ae5a9c632c22cae43fe360bb3a64336651041569"
+    },
+    {
+      "url": "/_astro/intent-workshop-runtime.BO96OfLh.js",
+      "bytes": 3852,
+      "sha256": "dae49b717ac9a84e743d69e6ee40c65c167e60ede3ebe1596bcdd8e5b4806687"
+    },
+    {
+      "url": "/_astro/jsx-runtime.u17CrQMm.js",
+      "bytes": 479,
+      "sha256": "158671ca747dc8bd9874f7dc436ba4576af1f90ea02dba567022f0b3b81e231f"
+    },
+    {
+      "url": "/_astro/projectStatus.Bt-t_QXW.js",
+      "bytes": 442,
+      "sha256": "160c8019f4f23dcb9a5c7697ffe2d9341d9fe5ea5d9b3e5643f15e553e54e522"
+    },
+    {
+      "url": "/_astro/shadow-chunk-hull.worker-xfxZf1i5.js",
+      "bytes": 95896,
+      "sha256": "51495d2b4799f21a11d5e74ec58b886f55d25390128fa3175ea59f5200b01220"
+    },
+    {
+      "url": "/_astro/three.core.hRBAa5ew.js",
+      "bytes": 383487,
+      "sha256": "123bdd341a4cf925fefd71d2c3011ed34f799fece3848945ad176517faee5bcf"
+    },
+    {
+      "url": "/_astro/three.module.CvbuiVxb.js",
+      "bytes": 369065,
+      "sha256": "49389ff617c4b530774d67d5e99cdfc449714cf1457e036703eaa7d2992be16b"
+    },
+    {
+      "url": "/assets/world/camp/C03.glb",
+      "bytes": 53660,
+      "sha256": "4c6274a202639c407ad68f1e30cf1fadacf3f2bf0ff2c7cd1ac72a506c93acde"
+    },
+    {
+      "url": "/assets/world/camp/C04.glb",
+      "bytes": 54184,
+      "sha256": "0d4b22d1836247b54393ec67e1c01e6c516296a14061e3c00abb76b3553f3f94"
+    },
+    {
+      "url": "/assets/world/camp/C05.glb",
+      "bytes": 11536,
+      "sha256": "54790864187123a55c4fd00590186a1e958990ca735a9861c00304332a316692"
+    },
+    {
+      "url": "/assets/world/camp/C06.glb",
+      "bytes": 4804,
+      "sha256": "401862b7b8ea1cea4cfafbccb26f38760025f34f006ba47463f6072ae5c8a556"
+    },
+    {
+      "url": "/assets/world/camp/C07.glb",
+      "bytes": 15912,
+      "sha256": "ea34c4389d8504410746a43ba5b228aba1d46cf525eca3659abcbf34cebc6873"
+    },
+    {
+      "url": "/assets/world/camp/C08.glb",
+      "bytes": 10584,
+      "sha256": "4e37c8ef5f4f4476b8f2f4a16efd1374d63c5c7667cfc8ce4101cf4816e85208"
+    },
+    {
+      "url": "/assets/world/camp/C09.glb",
+      "bytes": 32404,
+      "sha256": "c69ff479cdc85e4dacd6acee8dac97a0405c1f8d3896f709d17773f44e74b525"
+    },
+    {
+      "url": "/assets/world/camp/C10.glb",
+      "bytes": 23844,
+      "sha256": "abc8d47e2e3525412f495f0b1285c2cb70b9a6002c9405f72e10e175a79c6f32"
+    },
+    {
+      "url": "/assets/world/camp/C11.glb",
+      "bytes": 38972,
+      "sha256": "2b249212e902147bac53bdb8183546871df2f36ccc987c3d5ace270c3c18973e"
+    },
+    {
+      "url": "/assets/world/camp/C12.glb",
+      "bytes": 26888,
+      "sha256": "6447bb09b27ae63e4518e06c373a9cdb0dba0b3ed1692cd4ce145bc088e04429"
+    },
+    {
+      "url": "/assets/world/camp/C13.glb",
+      "bytes": 7384,
+      "sha256": "3d725e051f99cb214afa9da1991917169641834ff0b3394c314fe2a950366ac8"
+    },
+    {
+      "url": "/assets/world/camp/C14.glb",
+      "bytes": 28112,
+      "sha256": "c45760c5875e665654079cf1cceee9ee9da72cf6f00b19365f20b085a63c44b7"
+    },
+    {
+      "url": "/assets/world/camp/C15.glb",
+      "bytes": 19700,
+      "sha256": "19784c0ff5c7e7cadf7b1e62c3b9befb0e6c63c0ce4ae3a022e395cfa12efdab"
+    },
+    {
+      "url": "/assets/world/camp/C16.glb",
+      "bytes": 12988,
+      "sha256": "f64d0543150c866377296dbd4f1a66435de5cc81f5255f4f6faddc67810c3691"
+    },
+    {
+      "url": "/assets/world/camp/G16.glb",
+      "bytes": 246400,
+      "sha256": "c1129f71a59b46bbce88693d194ed40b5a09237e0d6f1e0298cfadb08028554b"
+    },
+    {
+      "url": "/assets/world/camp/G17.glb",
+      "bytes": 184956,
+      "sha256": "9281efdf0b37757afb66aa725d7ddf85d4c411fb5e6b4e46bd29bc7684726c0f"
+    },
+    {
+      "url": "/assets/world/camp/G18.glb",
+      "bytes": 219100,
+      "sha256": "8932431bfae7ee71a4f3bcb2bbdbf7973e1285b8dc217a134ee15d03b21eda63"
+    },
+    {
+      "url": "/assets/world/camp/G19.glb",
+      "bytes": 70320,
+      "sha256": "08f6e076edc5b6e24798936ca6be8564126c97f49c0c18a4da2a1398d3d4f820"
+    },
+    {
+      "url": "/assets/world/camp/G20.glb",
+      "bytes": 112556,
+      "sha256": "c1ae7bffd9c7e00d701c54c2209f76c2b3777444aa38faae1e83caeac3629faf"
+    },
+    {
+      "url": "/assets/world/camp/G21.glb",
+      "bytes": 17188,
+      "sha256": "dbfcdc52a9cf5b07f10a9f7ab7a3990392bb05ce407fdc6c3f08438234477230"
+    },
+    {
+      "url": "/assets/world/camp/G22.glb",
+      "bytes": 14748,
+      "sha256": "fd617ce9a5cd59e22f942fd9a3a314abe358eeb8fe4adbe1814afdc010a1d2b0"
+    },
+    {
+      "url": "/assets/world/camp/G23.glb",
+      "bytes": 12184,
+      "sha256": "5631e18ab802be8fa882425bf7ba73c3965c2d22252ed6677af7e941a7e76c1d"
+    },
+    {
+      "url": "/assets/world/camp/L01.glb",
+      "bytes": 8836,
+      "sha256": "e4c06c8b8e501ba10fb2827a9dbac45c08a74ec4ace9adf88505e882a715b1c9"
+    },
+    {
+      "url": "/assets/world/camp/craft/camp-props-v1.glb",
+      "bytes": 3313188,
+      "sha256": "8290214333f06013be479bf650adddb149b1d5ed96ce32cbeed9a1d08c2baf39"
+    },
+    {
+      "url": "/assets/world/club/bar/djc-north-bar-lod1-v1.glb",
+      "bytes": 10531556,
+      "sha256": "0add8f8ae011b4088c68e2cebdd07366c109ce85e30f42534f53a71f062bbf3d"
+    },
+    {
+      "url": "/assets/world/club/bar/textures/dry_palm_color-5e49fb6cf7709fd5.png",
+      "bytes": 1479424,
+      "sha256": "5e49fb6cf7709fd56f419af7400e4b9e449e505a9967a8176e4e5bc16f96e4eb"
+    },
+    {
+      "url": "/assets/world/club/bar/textures/dry_palm_normal-3d6daa0e35c24e35.png",
+      "bytes": 1945604,
+      "sha256": "3d6daa0e35c24e352a7ef34a8e25d32916c59de4a0cf309a0d92683f8796b8eb"
+    },
+    {
+      "url": "/assets/world/club/bar/textures/limestone_color-76100c31ddfacd17.png",
+      "bytes": 1366709,
+      "sha256": "76100c31ddfacd17386b919de4d63226622cf96c4fc59f89addf1c30ada24eb7"
+    },
+    {
+      "url": "/assets/world/club/bar/textures/limestone_normal-8bc422cd0352b9e9.png",
+      "bytes": 2355851,
+      "sha256": "8bc422cd0352b9e9d20029501ade6411b57538a84ce05a59e9766c3f1e33b83c"
+    },
+    {
+      "url": "/assets/world/club/bar/textures/limestone_rough-9bc682ee198d0c20.png",
+      "bytes": 1075749,
+      "sha256": "9bc682ee198d0c2007c908b33105b260ccd8fb6831b5fe4909754fb492fa2c6f"
+    },
+    {
+      "url": "/assets/world/club/bar/textures/teak_rough-83bc1bf52c552ef0.png",
+      "bytes": 839007,
+      "sha256": "83bc1bf52c552ef01833a5531c69dc231f8eabe268a4ed61b62ba82323e740ed"
+    },
+    {
+      "url": "/assets/world/club/bar/textures/wood_diff-5da68c7ebe8732f0.jpg",
+      "bytes": 3562033,
+      "sha256": "5da68c7ebe8732f029ecbd602cb0d86d2a271e32539df953a0f10efa052b9516"
+    },
+    {
+      "url": "/assets/world/club/bar/textures/wood_nor_gl-fc9f1d2600e76865.jpg",
+      "bytes": 2326816,
+      "sha256": "fc9f1d2600e7686504b36d805b79bd785a327b752a3e7943a41e7d6e9bdfe399"
+    },
+    {
+      "url": "/assets/world/club/furniture/furniture-v1.glb",
+      "bytes": 2891784,
+      "sha256": "35ca81133737bcee227b7c5686327d428c71d43d19d94b38b6125ca2c533aca3"
+    },
+    {
+      "url": "/assets/world/craft-batch6-facilities/hut-runtime.glb",
+      "bytes": 598332,
+      "sha256": "2773a10b595d15720b95c9431648643e671913e784291bfff16d7baf2d9973ac"
+    },
+    {
+      "url": "/assets/world/craft-batch6-facilities/wood-color.png",
+      "bytes": 388568,
+      "sha256": "b24a337f946fae4ed3d94843cba75249a92880b22aad86e4d5e0fa7a61c15e02"
+    },
+    {
+      "url": "/assets/world/craft-batch6-facilities/wood-normal.png",
+      "bytes": 562034,
+      "sha256": "285001688e2a8ec564bb8e1b56d182bf4d77f65779a12198a52a3a1e3f9c935f"
+    },
+    {
+      "url": "/assets/world/craft-batch6-facilities/wood-rough.png",
+      "bytes": 95086,
+      "sha256": "7287de6832e55df62336ccd88bb6f48d468dd285d1fe8113b2693227a563318a"
+    },
+    {
+      "url": "/assets/world/draco/draco_decoder.wasm",
+      "bytes": 192420,
+      "sha256": "a680d927bed9cb864ddbd63521868891af2bfbe755092761b4837487618df8ac"
+    },
+    {
+      "url": "/assets/world/draco/draco_wasm_wrapper.js",
+      "bytes": 58456,
+      "sha256": "8bb2952d2ba7d67e1414f8df819410cb0434a666be53f671fff75f68843d76f6"
+    },
+    {
+      "url": "/assets/world/entry/G28.glb",
+      "bytes": 51100,
+      "sha256": "eaf94d2e83696cdd92309a433720216978b3f548a58f4293703ab99dc30dcfac"
+    },
+    {
+      "url": "/assets/world/facility-craft/camp/camp-facilities-v1.glb",
+      "bytes": 1441740,
+      "sha256": "140775157095ffef464897093aece407ad28781f7cc282962a165a4f655f3703"
+    },
+    {
+      "url": "/assets/world/facility-craft/nature/G17.glb",
+      "bytes": 587904,
+      "sha256": "e6f3d4c944b2060db5c2bf967f2c6b0a60db2e18ea7506560bbb1469a12ee506"
+    },
+    {
+      "url": "/assets/world/guide/G24.glb",
+      "bytes": 726680,
+      "sha256": "5fdb327f8851726a79dbe44029fcfdf411adc5b7594158bb03f57bbf349e54c0"
+    },
+    {
+      "url": "/assets/world/nature-camp-craft/G21.glb",
+      "bytes": 704928,
+      "sha256": "a31ae02a6af323c54d5af7e9645927fcac41df3b23caef77c4a10ee8f3c5fc5f"
+    },
+    {
+      "url": "/assets/world/nature-camp-craft/textures/345303abbf4a10e5bd821ac7.png",
+      "bytes": 171174,
+      "sha256": "345303abbf4a10e5bd821ac7148f22eda1f5d830c08ee3dfdc863471cd4a46d8"
+    },
+    {
+      "url": "/assets/world/nature-camp-craft/textures/6f361f0d505ca603a6f05e5a.png",
+      "bytes": 542797,
+      "sha256": "6f361f0d505ca603a6f05e5a40ebd336b7be77b8a74ca5c668742e213624dbec"
+    },
+    {
+      "url": "/assets/world/nature-camp-craft/textures/bcf66369ea932720bda81136.jpg",
+      "bytes": 58062,
+      "sha256": "bcf66369ea932720bda811365cd7ec25c05b8d6f11c89c376b70a20f3e59db3f"
+    },
+    {
+      "url": "/assets/world/nature-camp-craft/textures/f2d95671ea0e6b54f63997c6.png",
+      "bytes": 95534,
+      "sha256": "f2d95671ea0e6b54f63997c697180e83f8eded07d4a0e7da38a3e4b93b0b5f94"
+    },
+    {
+      "url": "/assets/world/nature-craft/C09.glb",
+      "bytes": 127324,
+      "sha256": "bf5285269db9bbe8a7b3366f5b0480f67e96a86ae0a8c68ff32d61b39ab29946"
+    },
+    {
+      "url": "/assets/world/nature-craft/G16.glb",
+      "bytes": 311788,
+      "sha256": "91ca0feffa8b2e77075ae6bdea5ebf9b5cd1551d8bea5040e99a26c1ee72382b"
+    },
+    {
+      "url": "/assets/world/nature-craft/G18.glb",
+      "bytes": 273592,
+      "sha256": "01eef69069ae9fe8b4f9f9d6396e0c0b9f5104cc2333136abbe6bfba741aac57"
+    },
+    {
+      "url": "/assets/world/nature-craft/G22.glb",
+      "bytes": 296956,
+      "sha256": "82b47704527f523f4d6f5c113167993084a75017d33b87948acc58efc17527fb"
+    },
+    {
+      "url": "/assets/world/nature-craft/G23.glb",
+      "bytes": 293268,
+      "sha256": "0a94d27f62cde4d7ba961e3b6dc97d59603234d9c1769f1869024aa4ce964a85"
+    },
+    {
+      "url": "/assets/world/nature-craft/ST1.glb",
+      "bytes": 193500,
+      "sha256": "f2cbeb1331fa72ddeb1e627e01dc578cff95668a9f839214dd7875b2f6930df6"
+    },
+    {
+      "url": "/assets/world/nature-craft/ST2.glb",
+      "bytes": 181260,
+      "sha256": "d4aecdcec1f36fec0ca7d180fdd1f32dbf455de575a8bcf42f1c47dea193c34d"
+    },
+    {
+      "url": "/assets/world/park/P13.glb",
+      "bytes": 28092,
+      "sha256": "01a7e555f94693b3b45092ecba5a8bda19dbd0d00ca9741df605c4e41ead57c5"
+    },
+    {
+      "url": "/assets/world/park/P14.glb",
+      "bytes": 55800,
+      "sha256": "4267c54a636fb1e2be9bac40f36517890b1f656afeb7164a43069c242d571c74"
+    },
+    {
+      "url": "/assets/world/park/P15.glb",
+      "bytes": 75788,
+      "sha256": "b9b846f17f60f6d6f55e1fbf48c47a82f6e9589f66f5009fa2e29b4851141fed"
+    },
+    {
+      "url": "/assets/world/park/P16.glb",
+      "bytes": 18436,
+      "sha256": "881b6a383b3de096a83c9326fcb8f8eaa778e086ddf96cc919d4ae257c3635d9"
+    },
+    {
+      "url": "/assets/world/park/P17.glb",
+      "bytes": 20044,
+      "sha256": "269dddf0d8e3feb2700e31b056ae3dd86ebfeb580e286696f206a011cd2b6ae1"
+    },
+    {
+      "url": "/assets/world/park/P18.glb",
+      "bytes": 20068,
+      "sha256": "ab80160ed6f53173af0fb7a1eafc052a79e8379d8a4eca743cd09aefc6f4a479"
+    },
+    {
+      "url": "/assets/world/park/audio/island-walk-daily-v1.wav",
+      "bytes": 3840044,
+      "sha256": "445a5f620314be6fa92390c831d571d609571d4c33099656aa38e60878832bb9"
+    },
+    {
+      "url": "/assets/world/park/hut.glb",
+      "bytes": 95064,
+      "sha256": "78f2e502af31e845b29768349772f6410b9816115df8a7509044ada5ae43ccda"
+    },
+    {
+      "url": "/assets/world/park/signs.glb",
+      "bytes": 37420,
+      "sha256": "2cede25941d7804135387c15c1f32b4a6d035df9f9429fc645028b7ff983ae30"
+    },
+    {
+      "url": "/assets/world/street/ST1.glb",
+      "bytes": 154668,
+      "sha256": "09991641dbd71284ac77f1a1baab02838ebc293f559b0ca66de7f54392fb53a9"
+    },
+    {
+      "url": "/assets/world/street/ST2.glb",
+      "bytes": 149308,
+      "sha256": "1a33b3150475ddc3a637f4b9b21bffd20e30efbe1d8b3a281a8c723b2ded9cab"
+    },
+    {
+      "url": "/assets/world/terrain/dirt_albedo.jpg",
+      "bytes": 120583,
+      "sha256": "8ac46a7ddf27f068bf0b6fc696aa3e3bacd49801ccf2e6c9c48aca65e406d889"
+    },
+    {
+      "url": "/assets/world/terrain/dirt_nr.png",
+      "bytes": 603840,
+      "sha256": "5e947542dece3d82cb93779445c79e8b09d71ee40896369985105450b6c2499a"
+    },
+    {
+      "url": "/assets/world/terrain/grass_albedo.jpg",
+      "bytes": 116172,
+      "sha256": "b8596d21e5c7e0bcd74a5ecde5c767a750c00641c4e75ede5dd7e8a7dad200eb"
+    },
+    {
+      "url": "/assets/world/terrain/grass_nr.png",
+      "bytes": 609663,
+      "sha256": "3505572c98287093ca9face00b7180d85a51d4d1d2dd8f06b3a56b1080744e14"
+    },
+    {
+      "url": "/assets/world/terrain/sand_albedo.jpg",
+      "bytes": 56602,
+      "sha256": "c0ebad11a4281bd5d1138c8b17d6e98ef598d2595bec34042b1a99b3a4a8e149"
+    },
+    {
+      "url": "/assets/world/terrain/sand_nr.png",
+      "bytes": 501630,
+      "sha256": "e58a59c41c3487f29b528cef88f9386580e91e84a7d34255815138195f5b4985"
+    },
+    {
+      "url": "/assets/world/town/T01.glb",
+      "bytes": 51788,
+      "sha256": "c788512bbaaf1aedfe81a1ec261ddd9022792c1f89edfba8c54bde1b49b07e95"
+    },
+    {
+      "url": "/assets/world/town/T02.glb",
+      "bytes": 36100,
+      "sha256": "837f9ef5e0beb589faca72c24805b874597467759067e3cae5e9dad1cf1c00ef"
+    },
+    {
+      "url": "/assets/world/town/T03.glb",
+      "bytes": 45828,
+      "sha256": "6151f7e3d5ca10b53f183377166c20a9899c1b28207d359f9b84b5dce3ca112c"
+    },
+    {
+      "url": "/assets/world/town/T04.glb",
+      "bytes": 49136,
+      "sha256": "9671a4cf4d22c621bea9e5361435e2640ca7124d7518b35ca8eb47b934e8f383"
+    },
+    {
+      "url": "/assets/world/town/T05.glb",
+      "bytes": 65020,
+      "sha256": "a5e45f7aa7e7c3209d97319ef60df78f18a49a4a6be6c39ecbb2c95ac7cdbdf2"
+    },
+    {
+      "url": "/assets/world/town/T06.glb",
+      "bytes": 42024,
+      "sha256": "28b528d11074e7a20e77eb9844a57ee24ec2f2cadf75ab7f665bce918324b5b0"
+    },
+    {
+      "url": "/assets/world/town/T07.glb",
+      "bytes": 145444,
+      "sha256": "f05b92b5a4475bed7a872a362be3f613e66807caf31ada5e58759c82f0b35aa3"
+    },
+    {
+      "url": "/assets/world/town/T09.glb",
+      "bytes": 11360,
+      "sha256": "e19275c9252fecc56d613acec2f3a21c09cc56119e3ce50855676bb4d4f352bc"
+    },
+    {
+      "url": "/assets/world/town/T10.glb",
+      "bytes": 36500,
+      "sha256": "3daff9f7a2afcc2a3fc345bb3d010f79f4a29063370271ef71dc4fa6603bfade"
+    },
+    {
+      "url": "/assets/world/town/T11.glb",
+      "bytes": 15596,
+      "sha256": "72fb89c2aed067a590c01bae51c4cd4bece77887358019870c77f395c9c45d67"
+    },
+    {
+      "url": "/assets/world/town/T12.glb",
+      "bytes": 79940,
+      "sha256": "43cd84b11487a75c9def03e437fcaeb48dfe257aaa5219bd20ce40624559ae3a"
+    },
+    {
+      "url": "/assets/world/vehicles/G25-lod1.glb",
+      "bytes": 82744,
+      "sha256": "3fe679a5060a3e04cde06d3691479e92a39c603d2230c8fe30fd51f7d98e28c0"
+    },
+    {
+      "url": "/assets/world/vehicles/G25.glb",
+      "bytes": 114760,
+      "sha256": "9099415b66c084be65c70fdb57c4715948e7768eb9bff1c2b19dec52c62fbfef"
+    },
+    {
+      "url": "/assets/world/vehicles/G26-lod1.glb",
+      "bytes": 72348,
+      "sha256": "6597aa2c90d9d75ee77b2048e9f45385e783f42da46acb841f11ff3dba2d1128"
+    },
+    {
+      "url": "/assets/world/vehicles/G26.glb",
+      "bytes": 74828,
+      "sha256": "e394ee84a4aa687551e804e6915c3356cd601907d85906871e195087710f7999"
+    },
+    {
+      "url": "/assets/world/vehicles/G27-lod1.glb",
+      "bytes": 72048,
+      "sha256": "5a5a81e53a1a2dbc05bd8d154801794f0d7640dd27e3b62dffb0c8c158cfcde4"
+    },
+    {
+      "url": "/assets/world/vehicles/G27.glb",
+      "bytes": 83880,
+      "sha256": "822c27860bc26e6683369307cac0a0817d4ca256fc631d0c6c9e82b25f46f428"
+    },
+    {
+      "url": "/favicon.svg",
+      "bytes": 260,
+      "sha256": "659a851cbd01a74733970940b3381b9fb5694850d71d4a7ad4155d90c0653c88"
+    },
+    {
+      "url": "/fonts/GeistSans-Medium.woff2",
+      "bytes": 46356,
+      "sha256": "0b50074337a05ed834a1474d3d13fc6bd8480e2ce3075d02f1d38c017a8ac2a4"
+    },
+    {
+      "url": "/fonts/GeistSans-Regular.woff2",
+      "bytes": 45172,
+      "sha256": "faed18848df4a6e1b5503b589bbbc055fbdab0e1780781edf5105457395e1e5d"
+    },
+    {
+      "url": "/fonts/GeistSans-SemiBold.woff2",
+      "bytes": 46620,
+      "sha256": "cdb0f3869746b3cb1947ca6026962c3c56803ca8cf233b5616f3f7d3843be917"
+    },
+    {
+      "url": "/fonts/InstrumentSerif-Regular.woff2",
+      "bytes": 18656,
+      "sha256": "f3ae4af3e2e9ad592de4f2aedb75cfe49e008f6c9f2428ef8b98ec0a326742d9"
+    },
+    {
+      "url": "/index.html",
+      "bytes": 379453,
+      "sha256": "ddb6cd554285713502d322dd25278ffdfce0c4e6e1ce9bed1258f0462b7b6c64"
+    },
+    {
+      "url": "/projects/alpha-agent/index.html",
+      "bytes": 41468,
+      "sha256": "0f9ee785c61dc46a52ca4991c952a85ac0758fb00fb3fc6c20c0cdad633269e4"
+    },
+    {
+      "url": "/projects/djc/index.html",
+      "bytes": 42398,
+      "sha256": "57777e84e8955099be9db450fd768f69930e3af4ff98f43b4aee6f85b496c53c"
+    },
+    {
+      "url": "/projects/evalforge/index.html",
+      "bytes": 41884,
+      "sha256": "b8a412e44289a960086d4c7d812f24098883879821a7bd7e7e6cabd135539cf5"
+    },
+    {
+      "url": "/projects/hepai/index.html",
+      "bytes": 41151,
+      "sha256": "c72be99735b236122bb298986aeb7fc60b438432ac69f6f4f1bd97724d60255f"
+    },
+    {
+      "url": "/projects/interactive-learning-platforms/index.html",
+      "bytes": 43027,
+      "sha256": "0e8e2d15d764d602eb93febfba5245f37ffb79cfa68c6b73a227eb31040eb215"
+    },
+    {
+      "url": "/projects/kindred/index.html",
+      "bytes": 41730,
+      "sha256": "d9ab86c4e54eb16d7e1164b2b4766d89c402633ce4fc25c16dd9c77b8d078b06"
+    },
+    {
+      "url": "/world/",
+      "bytes": 52275,
+      "sha256": "03bbe4f206029c2fcc1cea88dfd0ffc904afef599dd5cd2c37aacfdcf5383514"
+    },
+    {
+      "url": "/world/alpha-mine/colliders.json",
+      "bytes": 1936329,
+      "sha256": "1316cedc6b207d7458f8bb5b5ae114e829f4555e1ee3b75f644d4cfcff86572e"
+    },
+    {
+      "url": "/world/alpha-mine/detector.glb",
+      "bytes": 145956,
+      "sha256": "486065b47765528a13456ba481b230f179dd9cf72074483f3375069eb8d2ed13"
+    },
+    {
+      "url": "/world/alpha-mine/layout.json",
+      "bytes": 39277,
+      "sha256": "5ac05059833ca8fd4b547a2326e217e0898d3e911d63df252fb8dd3cc9afc4df"
+    },
+    {
+      "url": "/world/alpha-mine/ore.glb",
+      "bytes": 67084,
+      "sha256": "f07e36cb0e88e06c68aa2267e370d0211bcd1a69b5bb9bc3a15aaac25a7af94c"
+    },
+    {
+      "url": "/world/alpha-mine/pickaxe.glb",
+      "bytes": 101388,
+      "sha256": "d503fae7675e0ec7f80613b130d83834b88de3c94fa640249d0589683aaf80c4"
+    },
+    {
+      "url": "/world/alpha-mine/quarry-static.glb",
+      "bytes": 2301720,
+      "sha256": "61b22e1fd5cc1572df088946dfbf366fe3ca14fc39166e4cf3e23858b0aea10d"
+    },
+    {
+      "url": "/world/alpha-mine/veins.glb",
+      "bytes": 1077004,
+      "sha256": "ebcc25eb7bf2f1a32a22b359c4f341b191db09213963a2ff884df8fae5ce43b3"
+    },
+    {
+      "url": "/world/index.html",
+      "bytes": 52275,
+      "sha256": "03bbe4f206029c2fcc1cea88dfd0ffc904afef599dd5cd2c37aacfdcf5383514"
+    }
+  ]
+}
