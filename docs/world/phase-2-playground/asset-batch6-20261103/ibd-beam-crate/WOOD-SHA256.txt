@@ -1,0 +1,12 @@
+ec98f4927ea6bba8cbbc63279c8e1baa6a27edd864f4c3ee2006f88dd4d65658  src/components/world/attractions/ibd-stock-wood-material.ts
+b881ca6eff1677aa3f060e068f9145438f04881fd4f4d75d10619a5f3f2fe2cf  src/components/world/attractions/ibd-coil-bay-material.ts
+38972875367ddfae15b57a788325ad82becfb2804ffc3bda07641913b0c9c0c2  src/components/world/attractions/ibd-coil-bay.ts
+c57fcc095a3da631c5b3de496ca627f28765c1ec8d99220e54dc3cfb4301202b  src/components/world/attractions/ibd-beam-crate-craft.ts
+de836558774d2c8461ae26da0306a94770ac31daba9cf6a59779ef5a1d19e369  docs/world/phase-2-playground/asset-batch6-20261103/ibd-beam-crate/screenshots/wood-reference-day.jpg
+1a20b94e97da55ad28d9e0b32859b5049d02a061eecf5d0e9d39c66a15a8efb9  docs/world/phase-2-playground/asset-batch6-20261103/ibd-beam-crate/screenshots/wood-reference-day.json
+5cc766472de7ff58e2ce9f656d2328f1d631223edac5b0a0be2dd413efe52092  docs/world/phase-2-playground/asset-batch6-20261103/ibd-beam-crate/screenshots/wood-reference-night.jpg
+85903df71ecad79a516934a68f86d8932a13ee120df06a86c5d8e0d38a1ccd8a  docs/world/phase-2-playground/asset-batch6-20261103/ibd-beam-crate/screenshots/wood-reference-night.json
+3e6e640ac717d546424c958e03acb7bf0c8086dfd253c4aebe8342833af46990  docs/world/phase-2-playground/asset-batch6-20261103/ibd-beam-crate/screenshots/wood-grain-day.jpg
+b597c8bc0571677c88e47e9c25a2d26faa8d02bab0dfd2ec611ec8533050dd57  docs/world/phase-2-playground/asset-batch6-20261103/ibd-beam-crate/screenshots/wood-grain-day.json
+a23bb72b2956426b47f0b917e042fd76beb9a9956e3990eaed5055967fc44214  docs/world/phase-2-playground/asset-batch6-20261103/ibd-beam-crate/screenshots/wood-grain-night.jpg
+62b1011dd65076a38c0f10874542b472a94173d448f319de0cb8fe4fb802fdfd  docs/world/phase-2-playground/asset-batch6-20261103/ibd-beam-crate/screenshots/wood-grain-night.json

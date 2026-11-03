@@ -1,0 +1,320 @@
+{
+  "baseline": "bcf4f66",
+  "view": {
+    "id": "Stock crate",
+    "eye": [
+      -71.1,
+      2.8,
+      -193.2
+    ],
+    "target": [
+      -73.5,
+      2.35,
+      -199.4
+    ]
+  },
+  "fov": 50,
+  "cameraPosition": [
+    -71.1,
+    2.8,
+    -193.2
+  ],
+  "quaternion": [
+    -0.033210790599024785,
+    0.18351421220438585,
+    0.006203610397084547,
+    0.9824363045637272
+  ],
+  "dpr": 1,
+  "time": 720,
+  "canvas": [
+    1710,
+    931
+  ],
+  "exposure": 1,
+  "renderer": {
+    "render": {
+      "frame": 7929,
+      "calls": 63,
+      "triangles": 639712,
+      "points": 28,
+      "lines": 0
+    },
+    "memory": {
+      "geometries": 100,
+      "textures": 45
+    }
+  },
+  "quality": "balanced",
+  "night": 0,
+  "blend": 1,
+  "loading": {
+    "phase": "ready",
+    "loaded": 221,
+    "total": 221,
+    "active": false,
+    "failed": 0
+  },
+  "registeredAssets": {
+    "world-park": {
+      "present": true,
+      "meshes": 199,
+      "visible": 45,
+      "nominalTriangles": 402934,
+      "registeredSet": "a1a6f36f",
+      "visibleSet": "dcc7a1cf",
+      "assetIds": [
+        "P13",
+        "P14",
+        "P15",
+        "P16",
+        "P17",
+        "P18",
+        "djc-club",
+        "djc-north-bar",
+        "djc-pool-lanterns",
+        "exhibit-P14-crate",
+        "exhibit-P15-stool",
+        "lamp"
+      ],
+      "assetIdsCount": 15
+    },
+    "world-street": {
+      "present": true,
+      "meshes": 18,
+      "visible": 14,
+      "nominalTriangles": 53076,
+      "registeredSet": "a99f03c4",
+      "visibleSet": "4fe1377a",
+      "assetIds": [
+        "F04",
+        "street-fixed",
+        "street-foundation",
+        "street-rail",
+        "street-windmill"
+      ],
+      "assetIdsCount": 5
+    },
+    "djc-beach-club": {
+      "present": true,
+      "meshes": 52,
+      "visible": 2,
+      "nominalTriangles": 308151,
+      "registeredSet": "f7c1bec2",
+      "visibleSet": "e0db6821",
+      "assetIds": [
+        "djc-club",
+        "djc-north-bar",
+        "djc-pool-lanterns"
+      ],
+      "assetIdsCount": 3
+    },
+    "djc-north-bar-visual": {
+      "present": true,
+      "meshes": 18,
+      "visible": 0,
+      "nominalTriangles": 204228,
+      "registeredSet": "de1e20e9",
+      "visibleSet": "811c9dc5",
+      "assetIds": [
+        "djc-north-bar"
+      ],
+      "assetIdsCount": 1
+    },
+    "djc-furniture-visuals": {
+      "present": true,
+      "meshes": 10,
+      "visible": 0,
+      "nominalTriangles": 33280,
+      "registeredSet": "125a9867",
+      "visibleSet": "811c9dc5",
+      "assetIds": [
+        "djc-club"
+      ],
+      "assetIdsCount": 1
+    },
+    "world-camp-slice": {
+      "present": true,
+      "meshes": 67,
+      "visible": 54,
+      "nominalTriangles": 90261,
+      "registeredSet": "bade861e",
+      "visibleSet": "4d479630",
+      "assetIds": [
+        "C03",
+        "C04",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "C09",
+        "C10",
+        "G16",
+        "G17",
+        "G18",
+        "G19"
+      ],
+      "assetIdsCount": 16
+    }
+  },
+  "loadedGlbs": [
+    "/assets/world/camp/C03.glb",
+    "/assets/world/camp/C04.glb",
+    "/assets/world/camp/C05.glb",
+    "/assets/world/camp/C06.glb",
+    "/assets/world/camp/C07.glb",
+    "/assets/world/camp/C08.glb",
+    "/assets/world/camp/C09.glb",
+    "/assets/world/camp/C10.glb",
+    "/assets/world/camp/C11.glb",
+    "/assets/world/camp/C12.glb",
+    "/assets/world/camp/C13.glb",
+    "/assets/world/camp/C14.glb",
+    "/assets/world/camp/C15.glb",
+    "/assets/world/camp/C16.glb",
+    "/assets/world/camp/G16.glb",
+    "/assets/world/camp/G17.glb",
+    "/assets/world/camp/G18.glb",
+    "/assets/world/camp/G19.glb",
+    "/assets/world/camp/G20.glb",
+    "/assets/world/camp/G21.glb",
+    "/assets/world/camp/G22.glb",
+    "/assets/world/camp/G23.glb",
+    "/assets/world/camp/L01.glb",
+    "/assets/world/club/bar/djc-north-bar-lod1-v1.glb"
+  ],
+  "ibd": {
+    "wood": {
+      "vertices": 1920,
+      "counts": {
+        "7": 656,
+        "8": 352,
+        "9": 608,
+        "10": 112,
+        "11": 32,
+        "12": 160
+      },
+      "min": [
+        13.399999618530273,
+        0.3700000047683716,
+        -23.899999618530273
+      ],
+      "max": [
+        15.600000381469727,
+        2.1080000400543213,
+        -22.100000381469727
+      ]
+    },
+    "woodCompiled": true,
+    "triangles": 48087,
+    "attributes": {
+      "position": 1069788,
+      "normal": 1069788,
+      "color": 1069788,
+      "aMat": 1426384,
+      "aSuv": 713192,
+      "aIbdBake": 1069788,
+      "aIbdCladding": 89149
+    },
+    "roles": [
+      0,
+      1,
+      103,
+      105,
+      106,
+      108,
+      119,
+      121,
+      122,
+      124,
+      135,
+      137,
+      138,
+      140,
+      153,
+      156,
+      169,
+      17,
+      172,
+      18,
+      185,
+      188,
+      19,
+      2,
+      20,
+      201,
+      204,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      3,
+      33,
+      34,
+      35,
+      36,
+      37,
+      39,
+      4,
+      41,
+      42,
+      44,
+      5,
+      55,
+      56,
+      57,
+      58,
+      59,
+      6,
+      60,
+      71,
+      73,
+      74,
+      76,
+      87,
+      89,
+      90,
+      92
+    ],
+    "material": "ibd-industrial-v4-static:ibd-envelope-v2:stock-wood-v2",
+    "compiled": true
+  },
+  "warmup": {
+    "stableAgeMs": 13839,
+    "checks": 3
+  },
+  "shadow": {
+    "pending": false,
+    "slices": 0,
+    "cpuMs": 0,
+    "maxSliceMs": 0,
+    "cancelled": 0,
+    "error": "",
+    "phases": [],
+    "hullWorker": {
+      "requests": 86,
+      "workerMs": 1195.1999996900558,
+      "maxWorkerMs": 202.10000002384186,
+      "maxSource": "DJC_·_Oiled_teak_·_photographed_grain",
+      "maxInputVertices": 109189
+    },
+    "centre": [
+      -175.90366163569078,
+      47.215861022395025,
+      -130.22137034611188
+    ]
+  },
+  "postCapture": {
+    "enabled": true,
+    "blend": 1,
+    "loading": false,
+    "targetReady": true,
+    "shadowPending": false,
+    "stableAgeMs": 3174,
+    "checks": 3
+  }
+}
