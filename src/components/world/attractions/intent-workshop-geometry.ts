@@ -270,7 +270,12 @@ export function createWorkshopGeometry() {
     // Overhead carrier branches leave a full-height route through the courtyard.
     const hub = coasterWorld(WORKSHOP_HUB), branch: Vec3 = [x, y + WORKSHOP_RAIL_Y, z - .85];
     b.beam([x - 1.25, branch[1], branch[2]], [x + 1.25, branch[1], branch[2]], .13, P.steel, 8);
-    b.housing(branch, [.5, .46, .55], P.copper);
+    b.housing(branch, [.5, .46, .55], P.steel);
+    markIntentCraft(b.parts[b.parts.length - 1], INTENT_CRAFT.structuralCoat);
+    for (const side of [-1, 1]) {
+      b.box([branch[0] + side * .27, branch[1], branch[2]], [.09, .40, .48], P.rail);
+      markIntentCraft(b.parts[b.parts.length - 1], INTENT_CRAFT.galvanized);
+    }
     for (const dx of [-1.15, 1.15]) {
       b.beam([x + dx, y + WORKSHOP_POST_TOP, z - .85],
         [(hub[0] + branch[0]) / 2, branch[1] + .14, (hub[2] + branch[2]) / 2], .035, P.rail, 5);
@@ -281,6 +286,9 @@ export function createWorkshopGeometry() {
   }
   const hub = coasterWorld(WORKSHOP_HUB);
   b.beam(hub, [hub[0], hub[1] + .46, hub[2]], .5, P.steel, 12);
+  markIntentCraft(b.parts[b.parts.length - 1], INTENT_CRAFT.structuralCoat);
+  b.beam([hub[0], hub[1] + .08, hub[2]], [hub[0], hub[1] + .16, hub[2]], .55, P.rail, 12);
+  markIntentCraft(b.parts[b.parts.length - 1], INTENT_CRAFT.galvanized);
   b.beam([hub[0], hub[1] + .46, hub[2]], [hub[0], hub[1] + .53, hub[2]], .34, P.copper, 12);
   glow.beam([hub[0], hub[1] + .34, hub[2]], [hub[0], hub[1] + .39, hub[2]], .505, P.cyan, 12);
   const [ix, iy, iz] = coasterWorld(WORKSHOP_INTAKE);
@@ -333,9 +341,15 @@ export function createWorkshopMoving(tool: IntentClass) {
 }
 export function createWorkshopCapsule() {
   const b = new CoasterBatch();
-  b.housing([0, 0, 0], [.65, .38, .45], P.white);
-  for (const x of [-.24, .24]) b.box([x, 0, 0], [.07, .41, .49], P.copper);
-  b.box([0, .2, 0], [.3, .02, .25], P.cyan);
+  b.housing([0, -.025, 0], [.65, .30, .45], P.white);
+  markIntentCraft(b.parts[b.parts.length - 1], INTENT_CRAFT.structuralCoat);
+  b.box([0, .14, 0], [.57, .09, .39], P.steel);
+  markIntentCraft(b.parts[b.parts.length - 1], INTENT_CRAFT.structuralCoat);
+  for (const x of [-.24, .24]) {
+    b.box([x, 0, 0], [.07, .41, .49], P.rail);
+    markIntentCraft(b.parts[b.parts.length - 1], INTENT_CRAFT.galvanized);
+  }
+  b.box([0, .2, 0], [.30, .02, .25], P.cyan);
   return b.finish();
 }
 export function createWorkshopLever() {

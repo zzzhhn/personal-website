@@ -87,7 +87,7 @@ export default function WorldIntentWorkshop() {
     <mesh geometry={geometry.body} receiveShadow castShadow><WorldIntentSurface roughness={.65} metalness={.2} craft /></mesh>
     <mesh geometry={geometry.glow}><meshBasicMaterial vertexColors toneMapped={false} /></mesh>
     <instancedMesh ref={levers} args={[leverGeometry, undefined, 7]} frustumCulled={false}><meshStandardMaterial vertexColors roughness={.55} metalness={.25} /></instancedMesh>
-    <group ref={capsule}><mesh geometry={capsuleGeometry}><WorldIntentSurface roughness={.5} /></mesh></group>
+    <group ref={capsule}><mesh geometry={capsuleGeometry}><WorldIntentSurface roughness={.5} craft /></mesh></group>
     {WORKSHOP_TOOLS.map(tool => <WorkshopMotion key={tool.id} tool={tool.id} />)}
     {WORKSHOP_TARGETS.map(id => <WorkshopInteraction key={id} id={id} />)}
     <WorldWorkshopSigns />
