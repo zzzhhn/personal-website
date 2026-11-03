@@ -652,7 +652,7 @@
       "scene": "过山车",
       "lane": "coaster-workshop",
       "inventoryStatusUnchanged": 2,
-      "executionState": "accepted-local-material-upgrade-awaiting-local-build",
+      "executionState": "local-material-upgrade-serving-4341",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/attractions/coaster-geometry.ts"

@@ -1,0 +1,16 @@
+{
+  "source": "af4d36acc198c242d7598fd33bb0ba997031f982",
+  "exitCode": 0,
+  "seconds": 19.37,
+  "pages": [
+    "index.html",
+    "projects/alpha-agent/index.html",
+    "projects/djc/index.html",
+    "projects/evalforge/index.html",
+    "projects/hepai/index.html",
+    "projects/interactive-learning-platforms/index.html",
+    "projects/kindred/index.html",
+    "world/index.html"
+  ],
+  "log": "/tmp/bobby-world-craft2-build.log"
+}

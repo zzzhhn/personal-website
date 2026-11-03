@@ -1,0 +1,21 @@
+{
+  "port": 4341,
+  "pid": 23191,
+  "root": "/tmp/bobby-world-batch6-craft2-integrated-root",
+  "runtimeSource": "af4d36acc198c242d7598fd33bb0ba997031f982",
+  "integratedSource": "af4d36acc198c242d7598fd33bb0ba997031f982",
+  "htmlSha256": "22959908d2fe24f2405956c82e11ee5d3fd816131f6f05a39e45440ad46682bc",
+  "entries": [
+    "/_astro/WorldApp.CVx1I9y5.js",
+    "/_astro/client.BINMsa6k.js"
+  ],
+  "rollbackRoot": "/tmp/bobby-world-batch6-walk-integrated-root",
+  "preservedBackupRoots": [
+    "/tmp/bobby-world-batch6-walk-integrated-root",
+    "/tmp/bobby-world-batch6-g21-integrated-root",
+    "/tmp/bobby-world-batch6-rails-root",
+    "/tmp/bobby-world-batch6-bench-bin-root",
+    "/tmp/bobby-world-batch6-final-01a171f1"
+  ],
+  "publicDeployment": false
+}

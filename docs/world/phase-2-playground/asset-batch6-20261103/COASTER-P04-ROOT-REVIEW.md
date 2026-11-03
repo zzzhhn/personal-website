@@ -35,3 +35,9 @@ Night evidence `4306e0d` maps to `5737e87`. Main opened the station before/after
 The intake candidate night capture is diagnostic only: its shadow work did not settle within the bounded window and the settings layer/changed canvas invalidates the pair. It is NOT accepted for this preview. Main restores `WorldIntentWorkshop.tsx` and `intent-workshop-geometry.ts` to `4ac2360`; the full candidate remains in the author branch and immutable commits. The freeze check now explicitly requires the workshop body to have no craft tags. Carrier, lookout and C03 remain held as before.
 
 The selected delivery therefore contains **station and P04 lamp only**. No other family is promoted by this review. This is not a claim of overall scene completion, a new FPS benchmark, or final user acceptance. Final integrated build and 4341 serving evidence will be recorded under `craft2-integration/`.
+
+## Local preview updated
+
+Formal build from `af4d36acc198c242d7598fd33bb0ba997031f982` completed in 19.37 s including the asset precheck and preserved all eight routes. The local 4341 server now serves `/tmp/bobby-world-batch6-craft2-integrated-root`, with rollback to the previous walk-integrated root. The entry graph contains 30 script/style files; 142 served files all returned HTTP 200 and matched the built bytes. The mine layout is explicitly included. The 102 previously observed static resources match the prior build, including the accepted G21 rock; P02/P03 source remains unchanged.
+
+See `craft2-integration/ROOT-BUILD.json`, `ROOT-SERVED-CHECK.json` and `ROOT-4341.json`. No fresh browser was opened after final assembly; visual evidence is the inspected author runtime pairs, with the accepted source changes verified in the integration checkout. No public deployment or GitHub push occurred.
