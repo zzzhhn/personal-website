@@ -1,0 +1,16 @@
+{
+  "enabled": false,
+  "pending": true,
+  "stable": 101624,
+  "review": {
+    "id": "G-barrier",
+    "ready": true,
+    "triangles": 1680,
+    "counts": {
+      "0": 640,
+      "2": 2384,
+      "3": 304
+    },
+    "windTime": 0.006800000071525574
+  }
+}

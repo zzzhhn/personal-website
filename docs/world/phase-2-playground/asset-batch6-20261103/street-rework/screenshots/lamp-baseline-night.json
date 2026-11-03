@@ -1,0 +1,130 @@
+{
+  "view": {
+    "id": "G-lamp",
+    "item": "lamp-0",
+    "group": "knock",
+    "eye": [
+      22,
+      2.75,
+      17
+    ],
+    "target": [
+      17,
+      3.6,
+      13
+    ]
+  },
+  "fov": 50,
+  "time": 0,
+  "canvas": [
+    1710,
+    931
+  ],
+  "exposure": 1,
+  "dpr": 1,
+  "devicePixelRatio": 2,
+  "quality": "balanced",
+  "night": 1,
+  "blend": 1,
+  "sourceVersion": {
+    "baseCommit": "689484b",
+    "hashes": {
+      "WorldParkLamp.ts": "e29558221503c4c3db2ce0e5824ead01b9f13fa7507374a719496f5fa0a6e896",
+      "WorldStreetAssets.ts": "2b8eb883b69c7c88593b3ae7285f464e5baec4dfe0f730d65cea8c934ea6626b",
+      "WorldStreetFacilityCraft.ts": "2435e0bf5352e97624d38d82e6b87c731b68b86f26b0a3193b5fbf7169cccb02",
+      "WorldStreetGeometry.ts": "b240724f8ef8784d716d44372078733fdf5750bffe7b71728ed7f205234a6134",
+      "WorldStreetMaterial.ts": "07da94774ac0962ddfcc8178e058561ca1efe6371b65bed18003f0799309958a",
+      "WorldEnvironment.tsx": "f80cc2a24cada8c193539f6cd73230d271b7a2d8a818b65abb95c24e9a3b956a",
+      "WorldParkWalk.tsx": "f1bd70c698a31fd54f721a1399a5fb958169050a77c584ffecbe295e4224a92a",
+      "WorldPark.tsx": "f74cadd13de76be17a560157a11e3d97d3f4dc2591a367a6ef2a9c2ff0670f34",
+      "WorldParkKit.ts": "f2618c15e591692cb8263326e6e2990d84f8dae71dbd7c3e2804f32074225da3",
+      "WorldParkLayout.ts": "dfe69600910ce4424907030fb5f8d6b367b4bf380f1785922fdb448599012f3b",
+      "WorldFacilitySurface.ts": "e859b94b637d8a129e453a9ac297e4d828ca887218ca1a77bd411a6462c6c379"
+    }
+  },
+  "reviewReady": {
+    "viewId": "G-lamp",
+    "currentMode": "baseline",
+    "expectedMode": "baseline",
+    "sampleHome": [
+      16.4,
+      1.15,
+      13
+    ],
+    "actualHome": [
+      16.399999618530273,
+      1.149999976158142,
+      13
+    ],
+    "sampleReady": true,
+    "geometryReady": true,
+    "counts": {
+      "0": 2544
+    },
+    "glow": {
+      "1": 120,
+      "2": 160
+    },
+    "triangles": 2118,
+    "windTime": 0.001399999976158142,
+    "cameraPosition": [
+      22,
+      2.75,
+      17
+    ],
+    "cameraDirection": [
+      -0.7740782104660161,
+      0.13159329577922274,
+      -0.6192625683728127
+    ],
+    "cameraReady": true,
+    "textures": [
+      {
+        "name": "uFacilityWood",
+        "uuid": "7796ade0-ff15-4cc2-b75f-082ed608b56b",
+        "width": 1024,
+        "height": 512,
+        "version": 1,
+        "gpuVersion": 1
+      },
+      {
+        "name": "uFacilityRough",
+        "uuid": "81a00154-9d2a-406a-8ee6-2ec112f49186",
+        "width": 1024,
+        "height": 512,
+        "version": 1,
+        "gpuVersion": 1
+      },
+      {
+        "name": "uFacilityNormal",
+        "uuid": "5b435894-1678-4882-9a83-a73c652ea3a5",
+        "width": 1024,
+        "height": 512,
+        "version": 1,
+        "gpuVersion": 1
+      }
+    ],
+    "texturesReady": true,
+    "ready": true
+  },
+  "reviewWarmup": {
+    "stableAgeMs": 74964,
+    "checks": 3,
+    "minimumStableMs": 3000
+  },
+  "surfaceMode": "baseline",
+  "shadowPending": false,
+  "renderer": {
+    "render": {
+      "frame": 6800,
+      "calls": 334,
+      "triangles": 958918,
+      "points": 28,
+      "lines": 0
+    },
+    "memory": {
+      "geometries": 464,
+      "textures": 115
+    }
+  }
+}

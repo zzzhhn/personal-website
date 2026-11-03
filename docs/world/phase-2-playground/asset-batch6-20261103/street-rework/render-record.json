@@ -1,0 +1,134 @@
+[
+  {
+    "family": "barrier",
+    "light": "day",
+    "signalState": null,
+    "scene": [
+      {
+        "sha256": "0b3fe4b5eda9cfb0e6688566aff19deab82a2c1fbe50318533fc2de5043c109a",
+        "calls": 168,
+        "triangles": 951376,
+        "geometries": 246,
+        "textures": 93
+      },
+      {
+        "sha256": "b4d671f5eb6b9cfebfab56e6cc4589c3b24188c15487d67a12ec0672d5528b85",
+        "calls": 168,
+        "triangles": 957456,
+        "geometries": 246,
+        "textures": 93
+      }
+    ]
+  },
+  {
+    "family": "barrier",
+    "light": "night",
+    "signalState": null,
+    "scene": [
+      {
+        "sha256": "e728c182277332ccf5ade345ce4dc6c39c77d8d6a957ca0a1df3eaf4e3e9c706",
+        "calls": 169,
+        "triangles": 952104,
+        "geometries": 247,
+        "textures": 94
+      },
+      {
+        "sha256": "52be19b7b75e16693563c1e92fd2024fb9bb4a719bc6d2af594e05a4cc225438",
+        "calls": 169,
+        "triangles": 958184,
+        "geometries": 247,
+        "textures": 94
+      }
+    ]
+  },
+  {
+    "family": "lamp",
+    "light": "day",
+    "signalState": null,
+    "scene": [
+      {
+        "sha256": "492298288be2e3184b9a78b0533d533540c00d04dbaec4a1f3fa941384958466",
+        "calls": 333,
+        "triangles": 958190,
+        "geometries": 464,
+        "textures": 115
+      },
+      {
+        "sha256": "98be6f0c109d79cb44ca28e1ca2dec825364a99ee54150cefbc43c2305b348d3",
+        "calls": 333,
+        "triangles": 965470,
+        "geometries": 464,
+        "textures": 115
+      }
+    ]
+  },
+  {
+    "family": "lamp",
+    "light": "night",
+    "signalState": null,
+    "scene": [
+      {
+        "sha256": "af53428895b98fb7ed91a470b0716c8d98245ad113ce9681ad4fe93dfe454232",
+        "calls": 334,
+        "triangles": 958918,
+        "geometries": 464,
+        "textures": 115
+      },
+      {
+        "sha256": "62506de942b3a8bb9a3c432cceff6356b8d57d7d8f60f1d01b85cd8140aa79a4",
+        "calls": 334,
+        "triangles": 966198,
+        "geometries": 464,
+        "textures": 115
+      }
+    ]
+  },
+  {
+    "family": "signal",
+    "light": "day",
+    "signalState": [
+      "amber",
+      "amber"
+    ],
+    "scene": [
+      {
+        "sha256": "12a4864cb60ccfeccf13391b2a6cfbed36869be164b89de8beb4bbe697b00fbd",
+        "calls": 191,
+        "triangles": 852691,
+        "geometries": 499,
+        "textures": 117
+      },
+      {
+        "sha256": "71c15fc373d47ad4643c8b2177f988450fbbeacfbae23156a20b46ffbd98c0c2",
+        "calls": 191,
+        "triangles": 859723,
+        "geometries": 499,
+        "textures": 117
+      }
+    ]
+  },
+  {
+    "family": "signal",
+    "light": "night",
+    "signalState": [
+      "amber",
+      "amber"
+    ],
+    "scene": [
+      {
+        "sha256": "229a163b43391ef570c3092d4e8ff21e70abff563aa0e8bf61bd57ce7387bfcd",
+        "calls": 192,
+        "triangles": 853419,
+        "geometries": 499,
+        "textures": 117
+      },
+      {
+        "sha256": "7e3c8d23181e13d4ececeba09a974dcb1257279cb44dc744deac5dbc723f40d9",
+        "calls": 192,
+        "triangles": 860451,
+        "geometries": 499,
+        "textures": 117
+      }
+    ]
+  }
+]
