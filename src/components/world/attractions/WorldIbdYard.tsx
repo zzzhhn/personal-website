@@ -46,7 +46,9 @@ export default memo(function WorldIbdYard({ active = true }: { active?: boolean 
     const uniform = { value: night.value };
     const query = typeof window === 'undefined' ? null : new URLSearchParams(window.location.search);
     const coilBaySample = query?.get('qa') === '1' && query.get('ibdCoilBay') === 'candidate';
-    const shedExpansion = query?.get('qa') === '1' && query.get('ibdSheds') === 'candidate';
+    // Ship the accepted three-shed treatment. Explicit QA keeps the frozen
+    // baseline and first-bay controls for repeatable comparisons.
+    const shedExpansion = query?.get('qa') !== '1' || query.get('ibdSheds') === 'candidate';
     return { ...buildIbdStatic({ separateCraftShells: true, coilBaySample, shedExpansion }), uniform,
       material: createIbdMaterial(true, uniform),
       coilMaterial: coilBaySample || shedExpansion ? applyCoilBayMaterial(createIbdMaterial(true, uniform), shedExpansion) : null,
