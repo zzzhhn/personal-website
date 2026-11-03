@@ -1,0 +1,27 @@
+{
+  "port": 4341,
+  "pid": 73696,
+  "root": "/tmp/bobby-world-batch6-beam-wood-integrated-root",
+  "runtimeSource": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+  "integratedSource": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+  "htmlSha256": "e71bf1ac16a4180eac5c53a99cadc88002975f40da7bd17d6e372f6daae49f0a",
+  "entries": [
+    "/_astro/WorldApp.CDV1ZLCF.js",
+    "/_astro/client.BINMsa6k.js"
+  ],
+  "rollbackRoot": "/tmp/bobby-world-batch6-intake-support-integrated-root",
+  "preservedBackupRoots": [
+    "/tmp/bobby-world-batch6-intake-support-integrated-root",
+    "/tmp/bobby-world-batch6-rack-intake-integrated-root",
+    "/tmp/bobby-world-batch6-ibd-sheds-integrated-root",
+    "/tmp/bobby-world-batch6-club-pavilion-integrated-root",
+    "/tmp/bobby-world-batch6-street3-integrated-root",
+    "/tmp/bobby-world-batch6-craft2-integrated-root",
+    "/tmp/bobby-world-batch6-walk-integrated-root",
+    "/tmp/bobby-world-batch6-g21-integrated-root",
+    "/tmp/bobby-world-batch6-rails-root",
+    "/tmp/bobby-world-batch6-bench-bin-root",
+    "/tmp/bobby-world-batch6-final-01a171f1"
+  ],
+  "publicDeployment": false
+}

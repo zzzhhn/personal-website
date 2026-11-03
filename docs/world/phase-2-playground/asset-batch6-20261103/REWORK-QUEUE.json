@@ -571,7 +571,7 @@
       "scene": "IBD工场",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "near-beam-construction-sample-reviewed-not-integrated",
+      "executionState": "single-near-beam-local-refinement-serving4341-family-pending",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/attractions/ibd-yard-geometry.ts"
@@ -580,9 +580,14 @@
         "docs/world/phase-2-playground/ibd-art-20261028/cab-handoff.md",
         "docs/world/phase-2-playground/asset-batch6-20261103/rework/IBD-BEAM-CRATE-ROOT-REVIEW.md"
       ],
-      "baselineNote": "c16aa04近侧一根静态横梁普通日夜原图与柱头近图经主协调查看；本轮翼缘/承压构造样板接受，整套吊机材质与成本复核尚未完成。未接入4341。",
+      "baselineNote": "近侧单梁普通日夜及柱头原图经主协调查看，翼缘/承压构造样板已随9c23282接入4341；另一根横梁和整套吊机仍待推进，不计整族完成。",
       "visualAcceptance": "coordinator-accepted-single-beam-construction-only; family-pending",
-      "completionEvidence": null
+      "completionEvidence": {
+        "scope": "single near beam only; family pending",
+        "runtimeSource": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+        "review": "docs/world/phase-2-playground/asset-batch6-20261103/ibd-beam-crate/ROOT-WOOD-ACCEPTANCE.md",
+        "served": "docs/world/phase-2-playground/asset-batch6-20261103/ibd-beam-crate/integration/ROOT-SERVED-CHECK.json"
+      }
     },
     {
       "id": "I-coil",
@@ -630,7 +635,7 @@
       "scene": "IBD工场",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "single-crate-construction-reviewed-material-rework-requested",
+      "executionState": "single-crate-directional-material-serving4341-family-pending",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/attractions/ibd-stock-craft.ts"
@@ -639,9 +644,14 @@
         "docs/world/phase-2-playground/ibd-stock-craft-20261029/handoff.md",
         "docs/world/phase-2-playground/asset-batch6-20261103/rework/IBD-BEAM-CRATE-ROOT-REVIEW.md"
       ],
-      "baselineNote": "c16aa04单箱板缝与封边可读，但普通视距大面积木面仍平色；主退回仅作方向性材质修正，尚未推广和集成。",
-      "visualAcceptance": "construction-direction-valid; material-improvement-insufficient",
-      "completionEvidence": null
+      "baselineNote": "退回平色处理后，32bec60/085d7a1单箱横板长纹、竖柱与端纹已通过主日夜原图复核，随9c23282接入4341。端纹略醒目、侧面暗，保留局限；未推广到全部8箱，原生档案尚不包含相同程序木纹。",
+      "visualAcceptance": "coordinator-accepted-single-crate-directional-material; family-pending",
+      "completionEvidence": {
+        "scope": "single middle-rack lower-right crate only; family pending",
+        "runtimeSource": "9c2328278570b0d9b40dc3b6ec7a5eccef719022",
+        "review": "docs/world/phase-2-playground/asset-batch6-20261103/ibd-beam-crate/ROOT-WOOD-ACCEPTANCE.md",
+        "served": "docs/world/phase-2-playground/asset-batch6-20261103/ibd-beam-crate/integration/ROOT-SERVED-CHECK.json"
+      }
     },
     {
       "id": "R-track",
