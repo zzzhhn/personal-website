@@ -17,7 +17,7 @@ import { addCoasterLandscape } from './coaster-landscape.ts';
 import { addCoasterTerrainRelief } from './coaster-terrain-relief.ts';
 import type { Vec3 } from '../types';
 import { sceneWorkProbe } from '../world-scene-work';
-import { INTENT_CRAFT, attachIntentCraftBatch, markIntentCraft } from './intent-craft-surface.ts';
+import { COASTER_TRACK_CRAFT, INTENT_CRAFT, attachIntentCraftBatch, markIntentCraft } from './intent-craft-surface.ts';
 
 export const COASTER_PALETTE = { steel: '#526b79', dark: '#273e4e', rail: '#c2ccd1', concrete: '#a9aaa1', copper: '#c38c50', cyan: '#69dedb', gold: '#ffcc83', white: '#d9ddd5' };
 const P = COASTER_PALETTE;
@@ -74,10 +74,11 @@ export interface CoasterCollider {
   rotation?: Vec3;
   surface?: boolean;
 }
-export function createCoasterStructure(detailed: boolean) {
+export function createCoasterStructure(detailed: boolean, craftSample = false) {
   return sceneWorkProbe.measure(`coaster-structure:${detailed ? 'near' : 'far'}`, () => {
   const steel = new CoasterBatch(), glow = new CoasterBatch(), colliders: CoasterCollider[] = [];
-  const spans = coasterRailSpans(detailed), track = addCoasterRailSections(steel, detailed, spans);
+  const craft = craftSample ? COASTER_TRACK_CRAFT : undefined;
+  const spans = coasterRailSpans(detailed), track = addCoasterRailSections(steel, detailed, spans, craft);
   const steps = Math.ceil(COASTER_LENGTH / (detailed ? 1.05 : 3));
   for (let i = 0; i < steps; i++) {
     const a = coasterFrame(i / steps);
@@ -98,7 +99,7 @@ export function createCoasterStructure(detailed: boolean) {
     }
   }
   const supports = coasterSupports(detailed);
-  addCoasterSampleNodes(steel, supports, track);
+  addCoasterSampleNodes(steel, supports, track, craft);
   for (const { a, b, beams, u } of supports) {
     for (const segment of beams) {
       const {a:from,b:to,radius}=segment,d=to.clone().sub(from);
