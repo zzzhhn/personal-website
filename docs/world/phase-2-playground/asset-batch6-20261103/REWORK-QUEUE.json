@@ -529,7 +529,7 @@
       "scene": "IBD工场",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "coil-bay-sample-accepted-three-shed-expansion",
+      "executionState": "three-shed-refinement-serving-4341",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/attractions/ibd-yard-architecture.ts"
@@ -539,9 +539,13 @@
         "docs/world/phase-2-playground/visual-calibration-20261027/runtime/world-v18-ibd-coil-day.png",
         "docs/world/phase-2-playground/asset-batch6-20261103/rework/IBD-NEXT-SAMPLE.md"
       ],
-      "baselineNote": "三种厂房按共用钢构建造系统归一族。已核对代表棚跨方案与当前运行材质入口；先制作 coil 前部一跨，同机位日夜复核后再扩展。旧 cab-handoff 只证明驾驶室，不作为厂棚验收。",
-      "visualAcceptance": "coordinator-accepted-front-coil-bay-only; remaining-sheds-and-user-review-pending",
-      "completionEvidence": null
+      "baselineNote": "三个厂棚按共用钢构系统归一族。首跨验证后扩展三棚，主已打开六对原始日夜图及东檐节点。默认已更新4341；不包含货架。",
+      "visualAcceptance": "coordinator-accepted-three-shed-day-night; user-review-pending",
+      "completionEvidence": {
+        "source": "ac6f4c5cc0969e5c60d9e4652252f3322082c5b1",
+        "review": "docs/world/phase-2-playground/asset-batch6-20261103/ibd-expansion/ROOT-REVIEW.md",
+        "served": "docs/world/phase-2-playground/asset-batch6-20261103/ibd-expansion/integration/ROOT-SERVED-CHECK.json"
+      }
     },
     {
       "id": "I-truck",
@@ -603,7 +607,7 @@
       "scene": "IBD工场",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "planned-after-coil-bay-review",
+      "executionState": "v2-single-sample-accepted-family-candidate-awaits-runtime-review",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/attractions/ibd-stock-craft.ts"
@@ -611,8 +615,8 @@
       "evidence": [
         "docs/world/phase-2-playground/ibd-stock-craft-20261029/handoff.md"
       ],
-      "baselineNote": "v42 已开放侧面并补层梁，仍待本轮网页日夜视觉接受。下一样板方案已归档；先完成 coil 棚跨的运行材质验证，再开展货架，避免重复平面着色处理。",
-      "visualAcceptance": "pending",
+      "baselineNote": "第一版白天提升不足，v2同围护四张日夜原图和近景经主复核通过代表样板；三架e17eb9d轻量预算检查74967/75000通过，最终日夜图未验，尚未接入4341。",
+      "visualAcceptance": "coordinator-accepted-single-rack-v2; family-and-user-review-pending",
       "completionEvidence": null
     },
     {
@@ -768,7 +772,7 @@
       "scene": "Intent车间",
       "lane": "coaster-workshop",
       "inventoryStatusUnchanged": 2,
-      "executionState": "held-pending-valid-night-evidence",
+      "executionState": "held-pending-night-material-path-fix",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/attractions/intent-workshop-geometry.ts",
@@ -778,8 +782,8 @@
         "docs/world/phase-2-playground/overhaul-20261028/intent-workshop-contact-handoff.md",
         "docs/world/phase-2-playground/asset-batch6-20261103/COASTER-P04-ROOT-REVIEW.md"
       ],
-      "baselineNote": "存在独立形体/承重与构造深化；contact/玩法验收不证明本轮高质美术完成。可替换整工位为单位，操作杆/零件不拆新族。",
-      "visualAcceptance": "day-local-material-improvement; night-candidate-invalid; not-delivered",
+      "baselineNote": "原夜景重拍已稳定，主实际审图仍见旧深蓝。追踪到预烘夜间光乘旧顶点色，与新钢材diffuse分离；角色限定修复正在隔离分支，不改全局照明。",
+      "visualAcceptance": "day-local-improvement; recapture-stable-but-night-material-insufficient; not-delivered",
       "completionEvidence": null
     },
     {

@@ -1,0 +1,25 @@
+{
+  "source": "ac6f4c5cc0969e5c60d9e4652252f3322082c5b1",
+  "authorSource": "5c6e58ef81e7077c4de3105d432f0d135d634309",
+  "buildCommand": "node tools/world/check-club-audio.mjs /tmp/bobby-world-batch6-g21-integration-public-01a19a62 && ./node_modules/.bin/astro build --config astro.batch6.g21.integration.config.mjs --outDir /tmp/bobby-world-batch6-ibd-sheds-integrated-root",
+  "pages": 8,
+  "seconds": 17.34,
+  "testsPassed": 26,
+  "sourceSha256": {
+    "src/components/world/attractions/ibd-coil-bay.ts": "155eb28d6b935d60897100013b120f8adc52c6afff42fa169d29d03128599590",
+    "src/components/world/attractions/ibd-coil-bay-material.ts": "756c7442d681804265ecd1bbe999a6376e46745b8fa7d7d993099b2e457d9a67",
+    "src/components/world/attractions/ibd-yard-architecture.ts": "b8148fd88cc6d94ea49e81df59ef24a0ceb4d227240c33b21cfc23413ba58575",
+    "src/components/world/attractions/ibd-yard-geometry.ts": "16b0e6e8e3a70bd9409c9370d3ac4a9f7afb5fd5ee3b523a63f8028df19545c4"
+  },
+  "defaultRefinements": [
+    "I-shed:coil",
+    "I-shed:parts",
+    "I-shed:dispatch"
+  ],
+  "heldRefinements": [
+    "I-rack",
+    "W-intake",
+    "D-basin"
+  ],
+  "runtimeEvidenceBoundary": "Main viewed six author day/night pairs and eave original; geometry and material identical, only non-QA default enabled; no FPS claim."
+}

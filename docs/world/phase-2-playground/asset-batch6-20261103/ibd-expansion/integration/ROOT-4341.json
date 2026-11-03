@@ -1,0 +1,24 @@
+{
+  "port": 4341,
+  "pid": 4486,
+  "root": "/tmp/bobby-world-batch6-ibd-sheds-integrated-root",
+  "runtimeSource": "ac6f4c5cc0969e5c60d9e4652252f3322082c5b1",
+  "integratedSource": "ac6f4c5cc0969e5c60d9e4652252f3322082c5b1",
+  "htmlSha256": "f3c609b206a5b8f7c0376be32a5126d8667a4fa24ca1b69071c6de3d984e34bc",
+  "entries": [
+    "/_astro/WorldApp.CcmIPy7a.js",
+    "/_astro/client.BINMsa6k.js"
+  ],
+  "rollbackRoot": "/tmp/bobby-world-batch6-club-pavilion-integrated-root",
+  "preservedBackupRoots": [
+    "/tmp/bobby-world-batch6-club-pavilion-integrated-root",
+    "/tmp/bobby-world-batch6-street3-integrated-root",
+    "/tmp/bobby-world-batch6-craft2-integrated-root",
+    "/tmp/bobby-world-batch6-walk-integrated-root",
+    "/tmp/bobby-world-batch6-g21-integrated-root",
+    "/tmp/bobby-world-batch6-rails-root",
+    "/tmp/bobby-world-batch6-bench-bin-root",
+    "/tmp/bobby-world-batch6-final-01a171f1"
+  ],
+  "publicDeployment": false
+}
