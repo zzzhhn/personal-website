@@ -1,0 +1,98 @@
+{
+  "baseline": "414e86c",
+  "view": {
+    "id": "Coil shed walk-up",
+    "eye": [
+      -94,
+      2.9,
+      -164
+    ],
+    "target": [
+      -106,
+      8,
+      -183
+    ]
+  },
+  "fov": 50,
+  "cameraPosition": [
+    -94,
+    2.9,
+    -164
+  ],
+  "quaternion": [
+    0.10696429954030395,
+    0.27622026674976985,
+    -0.030950165123961447,
+    0.9546219618987076
+  ],
+  "exposure": 1,
+  "dpr": 1,
+  "time": 720,
+  "canvas": [
+    1710,
+    931
+  ],
+  "renderer": {
+    "render": {
+      "frame": 7249,
+      "calls": 72,
+      "triangles": 427698,
+      "points": 28,
+      "lines": 0
+    },
+    "memory": {
+      "geometries": 105,
+      "textures": 46
+    }
+  },
+  "quality": "balanced",
+  "night": 0,
+  "blend": 1,
+  "ibd": {
+    "triangles": 45745,
+    "attributes": {
+      "position": 1009356,
+      "normal": 1009356,
+      "color": 1009356,
+      "aMat": 1345808,
+      "aSuv": 672904,
+      "aIbdBake": 1009356,
+      "aIbdCladding": 84113
+    },
+    "roles": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "material": "ibd-industrial-v4-static:coil-bay-v1",
+    "compiled": true
+  },
+  "warmup": {
+    "stableAgeMs": 7698,
+    "checks": 3
+  },
+  "shadow": {
+    "pending": false,
+    "slices": 0,
+    "cpuMs": 0,
+    "maxSliceMs": 0,
+    "cancelled": 0,
+    "error": "",
+    "phases": [],
+    "hullWorker": {
+      "requests": 86,
+      "workerMs": 1116.0999997854233,
+      "maxWorkerMs": 191.39999997615814,
+      "maxSource": "DJC_·_Oiled_teak_·_photographed_grain",
+      "maxInputVertices": 109189
+    },
+    "centre": [
+      -209.09423738163503,
+      52.8700842583968,
+      -113.47368658969556
+    ]
+  }
+}

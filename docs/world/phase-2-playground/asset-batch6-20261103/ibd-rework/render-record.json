@@ -1,0 +1,102 @@
+{
+  "day": [
+    {
+      "sha256": "c9e230a509a576582c0aac7e8fa4adfd53c3628f2b2b68e4076d2c977aed6fa6",
+      "ibd": {
+        "triangles": 45469,
+        "attributes": {
+          "position": 1001676,
+          "normal": 1001676,
+          "color": 1001676,
+          "aMat": 1335568,
+          "aSuv": 667784,
+          "aIbdBake": 1001676
+        },
+        "roles": [],
+        "material": "ibd-industrial-v4-static",
+        "compiled": false
+      },
+      "calls": 72,
+      "triangles": 426868,
+      "textures": 46
+    },
+    {
+      "sha256": "88fa7b176b8b2edc2a55fc7032cd22723ce61be1e8eafb6aa6c208707484d855",
+      "ibd": {
+        "triangles": 45745,
+        "attributes": {
+          "position": 1009356,
+          "normal": 1009356,
+          "color": 1009356,
+          "aMat": 1345808,
+          "aSuv": 672904,
+          "aIbdBake": 1009356,
+          "aIbdCladding": 84113
+        },
+        "roles": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "material": "ibd-industrial-v4-static:coil-bay-v1",
+        "compiled": true
+      },
+      "calls": 72,
+      "triangles": 427698,
+      "textures": 46
+    }
+  ],
+  "night": [
+    {
+      "sha256": "6c3015f0548a29ce58c034950bea17bb63b81d1b8fae63f925249e89de61812f",
+      "ibd": {
+        "triangles": 45469,
+        "attributes": {
+          "position": 1001676,
+          "normal": 1001676,
+          "color": 1001676,
+          "aMat": 1335568,
+          "aSuv": 667784,
+          "aIbdBake": 1001676
+        },
+        "roles": [],
+        "material": "ibd-industrial-v4-static",
+        "compiled": false
+      },
+      "calls": 72,
+      "triangles": 426868,
+      "textures": 46
+    },
+    {
+      "sha256": "0ea89e78e87d215b59683173aba7b83e45b684adcd9e3eaf4f7855a06e0cee3a",
+      "ibd": {
+        "triangles": 45745,
+        "attributes": {
+          "position": 1009356,
+          "normal": 1009356,
+          "color": 1009356,
+          "aMat": 1345808,
+          "aSuv": 672904,
+          "aIbdBake": 1009356,
+          "aIbdCladding": 84113
+        },
+        "roles": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "material": "ibd-industrial-v4-static:coil-bay-v1",
+        "compiled": true
+      },
+      "calls": 72,
+      "triangles": 427698,
+      "textures": 46
+    }
+  ]
+}
