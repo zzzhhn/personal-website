@@ -489,7 +489,7 @@
       "scene": "DJC Club",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "queued",
+      "executionState": "dispatched-next-club-refinement",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/WorldDjcClubGeometry.ts"
@@ -507,7 +507,7 @@
       "scene": "DJC Club",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "queued",
+      "executionState": "dispatched-next-club-refinement",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/WorldDjcClubGeometry.ts"
