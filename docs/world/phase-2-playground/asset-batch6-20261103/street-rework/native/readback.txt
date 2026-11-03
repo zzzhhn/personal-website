@@ -1,0 +1,5 @@
+Blender GLB fresh-scene readback (family, triangles, maximum bounds delta in meters)
+NATIVE_CHECK roadblock 1680 0.0
+NATIVE_CHECK lamp 2550 0.0
+NATIVE_CHECK signal 3518 0.0
+Blender 5.1.2 (hash ec6e62d40fa9 built 2026-05-19 01:30:33)
