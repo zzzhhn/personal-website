@@ -1,0 +1,10 @@
+{
+  "url": "http://127.0.0.1:4368/world/?craftReview=1&qa=1&quality=balanced&djcPavilion=baseline",
+  "enabled": false,
+  "blend": 1,
+  "loading": false,
+  "targetReady": true,
+  "shadowPending": false,
+  "stableAgeMs": 716,
+  "checks": 0
+}

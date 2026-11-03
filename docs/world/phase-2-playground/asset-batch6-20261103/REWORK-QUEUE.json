@@ -489,7 +489,7 @@
       "scene": "DJC Club",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "material-sample-revised-awaiting-final-runtime-review",
+      "executionState": "accepted-awaiting-local-build",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/WorldDjcClubGeometry.ts",
@@ -499,9 +499,9 @@
       "evidence": [
         "docs/world/phase-2-playground/djc-beach-club/refinement-20261027.md"
       ],
-      "baselineNote": "结构首样未通过材质精修验收；主控实际查看补材质的普通视距预览，方向改善可见。最终稳定昼夜图、慢转及水捕获兼容仍待验。",
-      "visualAcceptance": "pending",
-      "completionEvidence": null
+      "baselineNote": "结构首样后补齐材质；主控已看过日夜配对与三张慢转抽帧，局部提升通过。默认只启用主亭，池岸保持原版；待本地构建和服务核对。",
+      "visualAcceptance": "coordinator-local-pavilion-upgrade-accepted-user-pending",
+      "completionEvidence": "docs/world/phase-2-playground/asset-batch6-20261103/club-rework/ROOT-REVIEW.md"
     },
     {
       "id": "D-basin",
@@ -509,7 +509,7 @@
       "scene": "DJC Club",
       "lane": "facilities",
       "inventoryStatusUnchanged": 2,
-      "executionState": "material-rework-water-receiver-compatibility",
+      "executionState": "held-weak-visible-material-impact-r2",
       "treatment": "review-existing-evidence-then-repair",
       "source": [
         "src/components/world/WorldDjcClubGeometry.ts",
@@ -519,7 +519,7 @@
       "evidence": [
         "docs/world/phase-2-playground/djc-beach-club/refinement-20261027.md"
       ],
-      "baselineNote": "实体衬壁与坡口结构候选已制作，主控要求补材质。性能复核发现实际 stone receiver 与焦散绑定分离；主控 5983700 修复共享 hook/key 与静态剔除兼容，候选正在接入；未改水 shader，最终视觉待验。",
+      "baselineNote": "R1 规则圆孔被退回；R2 消除圆孔，但普通视距提升仍弱。兼容问题已修复，候选归档且只供显式 QA，生产 stone 完整保留原基线。",
       "visualAcceptance": "pending",
       "completionEvidence": null
     },

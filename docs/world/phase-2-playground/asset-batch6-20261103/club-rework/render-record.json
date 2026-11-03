@@ -1,0 +1,136 @@
+{
+  "revisions": {
+    "pavilion-baseline": "a6c5bef6169b0a998c94a3c1814172343b51ab607a831ef9484639714a3606db",
+    "pavilion-candidate": "734136e9aed2573c502cd47a8af14ceda4ea889447ab5a3ec5a0622fc12ff113",
+    "basin-baseline": "97fd44e65e10a271c06a004a39030ebd1666c50730e3721d801ca7948f70362a",
+    "basin-candidate": "97fd44e65e10a271c06a004a39030ebd1666c50730e3721d801ca7948f70362a"
+  },
+  "records": [
+    {
+      "view": "pavilion",
+      "time": "day",
+      "scene": [
+        {
+          "sha256": "9ec27114ae16e0ae7c22ac232b5daca4ffcfd4857fe9870d218dc962fea602e1",
+          "calls": 246,
+          "triangles": 2719661,
+          "geometries": 272,
+          "textures": 96
+        },
+        {
+          "sha256": "755abbb0887b96b540e5cac4af5fc2f7713e156918afd686e7fc81a91205af88",
+          "calls": 244,
+          "triangles": 2723965,
+          "geometries": 283,
+          "textures": 95
+        }
+      ]
+    },
+    {
+      "view": "pavilion",
+      "time": "night",
+      "scene": [
+        {
+          "sha256": "61ed58bb3f9a3b7919b68f16cfdf3419aa988729afc175de46424c2efe51d23e",
+          "calls": 247,
+          "triangles": 2720389,
+          "geometries": 273,
+          "textures": 97
+        },
+        {
+          "sha256": "a670854df050f3d5a178f24c2a0dea7098c9d17885565f69b27aa90657d2c1f5",
+          "calls": 245,
+          "triangles": 2724693,
+          "geometries": 296,
+          "textures": 97
+        }
+      ]
+    },
+    {
+      "view": "basin",
+      "time": "day",
+      "scene": [
+        {
+          "sha256": "b93fd9a7e08b7a5b7798002fffebe17f3e4916539e76e3b7c9f4df77acc74844",
+          "calls": 91,
+          "triangles": 2336872,
+          "geometries": 137,
+          "textures": 76
+        },
+        {
+          "sha256": "f1e889b56f67ebb6f3f4feb33fa67261a023abae5e0219cbb3fc2c94849483a2",
+          "calls": 91,
+          "triangles": 2340666,
+          "geometries": 137,
+          "textures": 76
+        }
+      ]
+    },
+    {
+      "view": "basin",
+      "time": "night",
+      "scene": [
+        {
+          "sha256": "1a3986de12d139353023d4599396f633060e2e3b07a5edc3c86ca94ca1e183d1",
+          "calls": 92,
+          "triangles": 2337600,
+          "geometries": 142,
+          "textures": 77
+        },
+        {
+          "sha256": "a8ff6a88ccb60056b7d2a5674479935027b82cca43580ae356eec0a2b8aea140",
+          "calls": 92,
+          "triangles": 2341394,
+          "geometries": 142,
+          "textures": 77
+        }
+      ]
+    }
+  ],
+  "water": [
+    {
+      "mode": "baseline",
+      "durationMs": 12000,
+      "yawRadians": 0.064,
+      "enabled": true,
+      "budgeted": true,
+      "targetSize": [
+        640,
+        348
+      ],
+      "delta": {
+        "captures": 483,
+        "reflections": 0,
+        "caustics": 0,
+        "passes": 483,
+        "calls": 14490,
+        "triangles": 348608631,
+        "visits": 135066
+      },
+      "callsPerPass": 30,
+      "trianglesPerPass": 721757
+    },
+    {
+      "mode": "candidate",
+      "durationMs": 12000,
+      "yawRadians": 0.064,
+      "enabled": true,
+      "budgeted": true,
+      "targetSize": [
+        640,
+        348
+      ],
+      "delta": {
+        "captures": 481,
+        "reflections": 0,
+        "caustics": 0,
+        "passes": 481,
+        "calls": 14430,
+        "triangles": 348086713,
+        "visits": 134678
+      },
+      "callsPerPass": 30,
+      "trianglesPerPass": 723673
+    }
+  ]
+}

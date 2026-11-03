@@ -1,0 +1,10 @@
+{
+  "url": "http://127.0.0.1:4368/world/?start=club&craftReview=1&qa=1&quality=balanced",
+  "enabled": false,
+  "blend": 0.06058693718652419,
+  "loading": false,
+  "targetReady": true,
+  "shadowPending": false,
+  "stableAgeMs": 277,
+  "checks": 0
+}

@@ -19,14 +19,26 @@ export const DJC_CLUB_SEATS = CLUB_DAYBEDS.flatMap(([x,z],bed)=>[-.95,.95].map((
 export type DjcClubSeat=(typeof DJC_CLUB_SEATS)[number];
 export const DJC_BOOTH_STAND:V3=[31,CLUB.stage[1],55];
 const TAU = Math.PI * 2;
+const FINISH = { thatch: 1, woven: 2, bamboo: 3, paver: 4, lining: 5, mortar: 6, coping: 7 };
 const C = { wood: '#a77749', edge: '#735035', stone: '#c7b89b', dark: '#242a2a', bronze: '#927550', fabric: '#e5d6b7', cushion: '#d6c7ac', green: '#5c7352', silver: '#9caaa7', amber: '#ffd59b', cyan: '#79cdc5' };
 class Batch {
   positions: number[] = []; normals: number[] = []; colors: number[] = []; wind: number[] = [];
-  add(g: BufferGeometry, color: string, sway = 0) {
+  readonly finish: number[] = [];
+  constructor(private readonly hasFinish = false) {}
+  add(g: BufferGeometry, color: string, sway = 0, role = 0) {
     const mesh = g.index ? g.toNonIndexed() : g, p = mesh.getAttribute('position'), n = mesh.getAttribute('normal'), c = new Color(color);
+    const grain = mesh.getAttribute('aDjcGrain');
     let minY=Infinity,maxY=-Infinity;
     if(sway) for(let i=0;i<p.count;i++) { minY=Math.min(minY,p.getY(i)); maxY=Math.max(maxY,p.getY(i)); }
     for (let i = 0; i < p.count; i++) {
+      if (this.hasFinish) {
+        const x = p.getX(i), y = p.getY(i), z = p.getZ(i);
+        if (!role) this.finish.push(0, 0, 0);
+        else if (grain) this.finish.push(grain.getX(i), grain.getY(i), role);
+        else if (role === FINISH.bamboo) {
+          this.finish.push(Math.abs(n.getX(i)) > Math.abs(n.getZ(i)) ? z : x, y, role);
+        } else this.finish.push(x, z, role);
+      }
       this.positions.push(p.getX(i), p.getY(i), p.getZ(i)); this.normals.push(n.getX(i), n.getY(i), n.getZ(i));
       this.colors.push(c.r, c.g, c.b); this.wind.push(sway ? sway*(p.getY(i)-minY)/Math.max(.1,maxY-minY) : 0);
     }
@@ -36,6 +48,7 @@ class Batch {
     const g = new BufferGeometry();
     g.setAttribute('position', new Float32BufferAttribute(this.positions, 3)); g.setAttribute('normal', new Float32BufferAttribute(this.normals, 3));
     g.setAttribute('color', new Float32BufferAttribute(this.colors, 3)); g.setAttribute('aClubWind', new Float32BufferAttribute(this.wind, 1));
+    if (this.hasFinish) g.setAttribute('aDjcFinish', new Float32BufferAttribute(this.finish, 3));
     g.computeBoundingBox(); g.computeBoundingSphere(); return g;
   }
 }
@@ -70,8 +83,41 @@ class Collision {
 const fromTriangles = (positions: number[]) => { const g = new BufferGeometry(); g.setAttribute('position', new Float32BufferAttribute(positions, 3)); g.computeVertexNormals(); return g; };
 
 /** Deterministic, editable geometry. Only upward support faces enter surface; side guards and props enter solid. */
-export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=false,separatePoolLanterns=false,separateUmbrellas=false,separateFurniture=false}:{includeNorthBar?:boolean;separateDaybeds?:boolean;separatePoolLanterns?:boolean;separateUmbrellas?:boolean;separateFurniture?:boolean}={}) {
-  const batches = Object.fromEntries((['wood','stone','metal','fabric','foliage','glass','amber','cyan'] as ClubBatch[]).map(k => [k, new Batch()])) as Record<ClubBatch, Batch>;
+type ClubAssembly = 'pavilion' | 'basin';
+type ClubAssemblyRange = Partial<Record<ClubBatch, [start: number, end: number]>>;
+type ClubGeometryOptions = {
+  includeNorthBar?: boolean;
+  separateDaybeds?: boolean;
+  separatePoolLanterns?: boolean;
+  separateUmbrellas?: boolean;
+  separateFurniture?: boolean;
+  recordAssembly?: (family: ClubAssembly, part: string, range: ClubAssemblyRange) => void;
+};
+export function buildDjcClubGeometry({
+  includeNorthBar = false, separateDaybeds = false, separatePoolLanterns = false,
+  separateUmbrellas = false, separateFurniture = false, recordAssembly,
+}: ClubGeometryOptions = {}) {
+  const query = typeof window === 'undefined' ? null : new URLSearchParams(window.location.search);
+  const mode = query?.get('djcPavilion');
+  const pavilionCraft = mode !== 'baseline';
+  // The basin material candidate is retained for explicit QA review only.
+  const basinCraft = query?.get('djcBasin') === 'candidate';
+  const pavilionFinish = pavilionCraft && mode !== 'structure';
+  const basinFinish = basinCraft;
+  let finishRole = 0;
+  const batches = Object.fromEntries((['wood','stone','metal','fabric','foliage','glass','amber','cyan'] as ClubBatch[])
+    .map(k => [k, new Batch(k === 'stone' ? basinFinish : pavilionFinish && (k === 'wood' || k === 'fabric'))])) as Record<ClubBatch, Batch>;
+  const assemblyStart = () => recordAssembly ? { wood: batches.wood.positions.length / 3,
+    stone: batches.stone.positions.length / 3, fabric: batches.fabric.positions.length / 3 } : undefined;
+  const assemblyEnd = (family: ClubAssembly, part: string, starts: ReturnType<typeof assemblyStart>) => {
+    if (!starts || !recordAssembly) return;
+    const ranges: ClubAssemblyRange = {};
+    for (const kind of ['wood', 'stone', 'fabric'] as const) {
+      const end = batches[kind].positions.length / 3;
+      if (end > starts[kind]) ranges[kind] = [starts[kind], end];
+    }
+    recordAssembly(family, part, ranges);
+  };
   const daybedBatches = Object.fromEntries(Object.keys(batches).map(k => [k, new Batch()])) as Record<ClubBatch, Batch>;
   const poolLanternBatches = Object.fromEntries(Object.keys(batches).map(k => [k, new Batch()])) as Record<ClubBatch, Batch>;
   const umbrellaBatches = Object.fromEntries(Object.keys(batches).map(k => [k, new Batch()])) as Record<ClubBatch, Batch>;
@@ -81,7 +127,7 @@ export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=fals
   let yOffset = 0, collectingDaybed = false, collectingPoolLantern = false, collectingUmbrella = false, collectingFurniture = false;
   // Only the visible furniture moves into a replaceable group. All support,
   // guard and approach triangles continue through the original collision path.
-  const add = (kind: ClubBatch, g: BufferGeometry, color: string, wind = 0) => (separateFurniture && collectingFurniture ? furnitureBatches : separateDaybeds && collectingDaybed ? daybedBatches : separatePoolLanterns && collectingPoolLantern ? poolLanternBatches : separateUmbrellas && collectingUmbrella ? umbrellaBatches : batches)[kind].add(g, color, wind);
+  const add = (kind: ClubBatch, g: BufferGeometry, color: string, wind = 0) => (separateFurniture && collectingFurniture ? furnitureBatches : separateDaybeds && collectingDaybed ? daybedBatches : separatePoolLanterns && collectingPoolLantern ? poolLanternBatches : separateUmbrellas && collectingUmbrella ? umbrellaBatches : batches)[kind].add(g, color, wind, finishRole);
   const box = (kind: ClubBatch, p: V3, size: V3, color: string, rotate = 0, collide = false) => {
     const g = kind==='fabric' ? new RoundedBoxGeometry(...size,1,Math.min(.055,...size.map(n=>n*.2))) : new BoxGeometry(...size); g.rotateY(rotate); g.translate(p[0],p[1]+yOffset,p[2]);
     if (collide) { const raw = g.index ? g.toNonIndexed() : g, m=raw.getAttribute('position'); for (let i = 0; i < m.count; i += 3) solid.triangle([m.getX(i),m.getY(i),m.getZ(i)], [m.getX(i+1),m.getY(i+1),m.getZ(i+1)], [m.getX(i+2),m.getY(i+2),m.getZ(i+2)]); if(raw!==g)raw.dispose(); }
@@ -97,6 +143,11 @@ export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=fals
   };
   const rod = (kind: ClubBatch, a: V3, b: V3, radius: number, color: string, collide = false) => {
     const av = new Vector3(...a), bv = new Vector3(...b), direction = bv.clone().sub(av), g = new CylinderGeometry(radius,radius,direction.length(),8);
+    if (finishRole === FINISH.bamboo) {
+      const uv = g.getAttribute('uv'), grain: number[] = [], length = direction.length();
+      for (let i = 0; i < uv.count; i++) grain.push(uv.getX(i) * radius * TAU, uv.getY(i) * length + a[1]);
+      g.setAttribute('aDjcGrain', new Float32BufferAttribute(grain, 2));
+    }
     g.applyQuaternion(new Quaternion().setFromUnitVectors(new Vector3(0,1,0),direction.normalize())); const mid=av.add(bv).multiplyScalar(.5); g.translate(mid.x,mid.y+yOffset,mid.z);
     if (collide) { const m = g.toNonIndexed(); const p = m.getAttribute('position'); for(let i=0;i<p.count;i+=3) solid.triangle([p.getX(i),p.getY(i),p.getZ(i)],[p.getX(i+1),p.getY(i+1),p.getZ(i+1)],[p.getX(i+2),p.getY(i+2),p.getZ(i+2)]); m.dispose(); }
     add(kind,g,color);
@@ -139,6 +190,7 @@ export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=fals
       }
       return result;
     };
+    const mortar = !basinCraft ? '#b4ad98' : '#a69a81';
     const emit=(x0:number,x1:number,z0:number,z1:number,color:string)=>{
       let polygon=triangle;
       for(const [axis,bound,greater]of [[0,x0,true],[0,x1,false],[2,z0,true],[2,z1,false]] as [0|2,number,boolean][])polygon=clip(polygon,axis,bound,greater);
@@ -147,21 +199,29 @@ export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=fals
         const [a,b,c]=[polygon[0],polygon[i],polygon[i+1]],area=(b[2]-a[2])*(c[0]-a[0])-(b[0]-a[0])*(c[2]-a[2]);
         if(area<1e-8)continue;points.push(...a,...b,...c);surface.triangle(a,b,c);
       }
-      if(points.length)add('stone',fromTriangles(points),color);
+      if (points.length) {
+        const previousRole = finishRole;
+        if (basinFinish && color === mortar) finishRole = FINISH.mortar;
+        add('stone', fromTriangles(points), color);
+        finishRole = previousRole;
+      }
     };
+    const palette = !basinCraft ? ['#c3bba6','#c0b8a4','#c6bea9'] :
+      triangle.every(p => Math.abs(p[1] - 1.4) < 1e-6) ? ['#d3c6aa','#cabda2','#d8cbaf'] :
+      ['#bfb294','#bbae92','#c4b89a'];
     const tileX=1.8,tileZ=1.25,gap=.012,minZ=Math.min(...triangle.map(p=>p[2])),maxZ=Math.max(...triangle.map(p=>p[2]));
     for(let row=Math.floor(minZ/tileZ);row<=Math.floor(maxZ/tileZ);row++){
       const offset=(row%2)*tileX/2,z0=row*tileZ,z1=z0+tileZ,minX=Math.min(...triangle.map(p=>p[0])),maxX=Math.max(...triangle.map(p=>p[0]));
       for(let col=Math.floor((minX-offset)/tileX);col<=Math.floor((maxX-offset)/tileX);col++){
-        const x0=col*tileX+offset,x1=x0+tileX,color=['#c3bba6','#c0b8a4','#c6bea9'][((row*7+col*13)%3+3)%3];
+        const x0=col*tileX+offset,x1=x0+tileX,color=palette[((row*7+col*13)%3+3)%3];
         emit(x0+gap,x1-gap,z0+gap,z1-gap,color);
-        for(const r of [[x0,x0+gap,z0,z1],[x1-gap,x1,z0,z1],[x0+gap,x1-gap,z0,z0+gap],[x0+gap,x1-gap,z1-gap,z1]])emit(r[0],r[1],r[2],r[3],'#b4ad98');
+        for(const r of [[x0,x0+gap,z0,z1],[x1-gap,x1,z0,z1],[x0+gap,x1-gap,z0,z0+gap],[x0+gap,x1-gap,z1-gap,z1]])emit(r[0],r[1],r[2],r[3],mortar);
       }
     }
     }
   };
   /** Convex polygon slab, including sloped top. Its visible triangles ARE the collider triangles. */
-  const slab = (kind: ClubBatch, outline: V3[], depth: number, color: string, walkable = true, pavers = false) => {
+  const slab = (kind: ClubBatch, outline: V3[], depth: number, color: string, walkable = true, pavers = false, sideColor = color) => {
     outline=outline.map(p=>[p[0],p[1]+yOffset,p[2]]);
     const top: number[] = [], sides: number[] = [];
     for(let i=1;i<outline.length-1;i++) {
@@ -172,7 +232,7 @@ export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=fals
       const a=outline[i],b=outline[(i+1)%outline.length],c:V3=[b[0],b[1]-depth,b[2]],d:V3=[a[0],a[1]-depth,a[2]];
       sides.push(...a,...b,...c,...a,...c,...d); solid.triangle(a,b,c); solid.triangle(a,c,d);
     }
-    if(top.length)add(kind,fromTriangles(top),color);add(kind,fromTriangles(sides),color);
+    if(top.length)add(kind,fromTriangles(top),color);add(kind,fromTriangles(sides),sideColor);
   };
   const pavedOutline=(outline:V3[])=>{
     const top:number[]=[],sides:number[]=[];
@@ -224,6 +284,8 @@ export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=fals
   if(!includeNorthBar)slab('wood',[[40,join.y,join.z],[46.025,join.y,join.z],
     [46.025,1.01,43.2],[40,1.01,43.2]],.1,C.wood);
   const seats=DJC_CLUB_SEATS.map(seat=>({...seat,position:[...seat.position] as V3}));
+  const basinFloor = assemblyStart();
+  finishRole = basinFinish ? FINISH.lining : 0;
   // A mineral basin follows the shared analytic floor over 12 radial courses.
   for(let ring=0;ring<12;ring++)for(let i=0;i<CLUB_POOL.segments;i++) {
     const a=i*TAU/CLUB_POOL.segments,b=(i+1)*TAU/CLUB_POOL.segments;
@@ -232,8 +294,10 @@ export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=fals
     const top=ring===0?[...a0,...b1,...a1]:[...a0,...b1,...a1,...a0,...b0,...b1];
     for(let t=0;t<top.length;t+=9)surface.triangle(top.slice(t,t+3) as V3,top.slice(t+3,t+6) as V3,top.slice(t+6,t+9) as V3);
     // One continuous mineral colour: the radial tessellation must never become a checkerboard.
-    add('stone',fromTriangles(top),'#a4b3ab');
+    add('stone',fromTriangles(top),!basinCraft ? '#a4b3ab' : '#9cafaa');
   }
+  assemblyEnd('basin', 'mineral-floor', basinFloor);
+  const basinRim = assemblyStart();
   // Wide stone deck and bevelled coping follow the same freeform outline.
   for(let i=0;i<CLUB_POOL.segments;i++) {
     const a=i*TAU/CLUB_POOL.segments,b=(i+1)*TAU/CLUB_POOL.segments,mid=(a+b)/2;
@@ -242,15 +306,38 @@ export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=fals
     // Four broad bays keep an exit nearby around the enlarged basin.
     const access=Math.abs(Math.cos(mid))<.22||Math.abs(Math.sin(mid))<.28;
     const coping=access?1.35:.52;
-    slab('stone',[p(a,0,access?1:1.43),p(a,coping,1.43),p(b,coping,1.43),p(b,0,access?1:1.43)],.14,'#d0c7af');
+    finishRole = basinFinish ? FINISH.coping : 0;
+    const copingColor = !basinCraft ? '#d0c7af' : access ? '#c3b79d' : '#e0d3b5';
+    slab('stone',[p(a,0,access?1:1.43),p(a,coping,1.43),p(b,coping,1.43),p(b,0,access?1:1.43)],
+      .14, copingColor, true, false, !basinCraft ? copingColor : '#afa38a');
+    if (basinCraft && !access) {
+      // The return starts at the underside of the existing coping and ends
+      // below the exact edge of the mineral floor. Access slopes stay open.
+      const upperA = p(a, 0, 1.29), upperB = p(b, 0, 1.29);
+      const bottom = ([x, , z]: V3): V3 => [x, CLUB_POOL.floorHeight(x, z) - .006, z];
+      const lowerA = bottom(upperA), lowerB = bottom(upperB);
+      const lining = fromTriangles([...upperB,...upperA,...lowerA,...upperB,...lowerA,...lowerB]);
+      lining.setAttribute('aDjcGrain', new Float32BufferAttribute([
+        b * 20, 1.29, a * 20, 1.29, a * 20, lowerA[1],
+        b * 20, 1.29, a * 20, lowerA[1], b * 20, lowerB[1],
+      ], 2));
+      finishRole = basinFinish ? FINISH.lining : 0;
+      add('stone', lining, '#78968f');
+    }
+    finishRole = basinFinish ? FINISH.paver : 0;
     slab('stone',[p(a,coping,1.4),p(a,width,1.4),p(b,width,1.4),p(b,coping,1.4)],.4,'#c3baa2',true,true);
     slab('stone',[p(a,width,1.4),p(a,width+2.4,1.015),p(b,width+2.4,1.015),p(b,width,1.4)],.1,'#b8ae92',true,true);
   }
+  assemblyEnd('basin', 'coping-liner-and-pavers', basinRim);
+  const basinLedge = assemblyStart();
+  finishRole = basinFinish ? FINISH.coping : 0;
   // A submerged ledge follows the pavilion side, with visible mosaic nosing and room around both ends.
   for(let i=0;i<14;i++) {
     const a=2.79+i*.047,b=a+.047,p=(t:number,o:number):V3=>{const q=CLUB_POOL.boundary(t,o);return[q[0],1.035,q[1]];};
     slab('stone',[p(a,-1.8),p(a,-.8),p(b,-.8),p(b,-1.8)],.42,i%3?'#88a7a0':'#c4cbb8');
   }
+  assemblyEnd('basin', 'submerged-seat-ledge', basinLedge);
+  finishRole = 0;
   const daybedApproaches:{from:V3;to:V3;width:number}[]=[];
   for(const [x,z] of CLUB_DAYBEDS) {
     const half=DJC_DAYBED_ACCESS.width/2,start=z+DJC_DAYBED_ACCESS.fromZ,landing=z+DJC_DAYBED_ACCESS.landingZ,end=z+DJC_DAYBED_ACCESS.toZ;
@@ -377,6 +464,8 @@ export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=fals
     collectingFurniture = false;
   }
   yOffset=0;
+  const pavilionRoof = assemblyStart();
+  finishRole = pavilionFinish ? FINISH.thatch : 0;
   // Main FINNS-inspired roof: broad faceted thatch on three exposed bundled bamboo arches.
   // The swept roof is one opaque shell. Seams are shallow geometry rather than resort textures.
   const roofY=(x:number,z:number)=>7.3+3.6*(1-Math.pow(Math.abs(z-55)/13.2,1.65))+.025*(x-26);
@@ -402,12 +491,40 @@ export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=fals
   for(let j=0;j<28;j++) for(const x of [26,50]) {
     const z=41.8+j*26.4/28,z1=z+26.4/28,a:V3=[x,roofY(x,z),z],b:V3=[x,roofY(x,z1),z1];roofEdge(x>38?a:b,x>38?b:a);
   }
-  add('fabric',fromTriangles(underside),'#947a44');add('fabric',fromTriangles(fascia),'#99783f');
+  finishRole = pavilionFinish ? FINISH.woven : 0;
+  if (pavilionCraft) {
+    // Each shade follows one pair of roof bays. The actual closed shell stays
+    // on its original triangles, including every camera collision face.
+    const soffit = ['#a78850', '#9c7b43', '#b08f54', '#a2844b'];
+    for (let bay = 0; bay < 12; bay++) {
+      const start = bay * 28 * 18;
+      add('fabric', fromTriangles(underside.slice(start, start + 28 * 18)), soffit[(bay >> 1) % soffit.length]);
+    }
+  } else add('fabric', fromTriangles(underside), '#947a44');
+  add('fabric', fromTriangles(fascia), pavilionCraft ? '#806134' : '#99783f');
   // Camera sweeps must hit the same closed shell seen by the player, including its lower face.
   // The decorative 5.5 cm courses and tiny fringe remain visual-only above this bounded guard.
   for(const shell of [roof,underside,fascia])solidTriangles(shell);
-  // Eight broad thatch course edges break up the canopy at a deliberate structural rhythm.
-  for(const x of [28,31,34,37,40,43,46,49]) {
+  if (pavilionCraft) {
+    // The horizontal laps follow the eaves across both slopes. Their thick
+    // exposed ends sit at the downhill edge, where the next mat tucks under.
+    const span = 26.4 / 28;
+    for (const side of [-1, 1]) for (let course = 1; course <= 7; course++) {
+      const edge = 55 + side * (2 * course * span);
+      const upper = edge - side * .52;
+      for (let bay = 0; bay < 12; bay++) {
+        const x = 26 + 2 * bay;
+        const at = (px: number, z: number, dy: number): V3 => [px, roofY(px, z) + dy, z];
+        const a = at(x, upper, .005), b = at(x + 2, upper, .005);
+        const c = at(x + 2, edge, .055), d = at(x, edge, .055);
+        const e = at(x, edge, course === 7 ? .001 : -.085), f = at(x + 2, edge, course === 7 ? .001 : -.085);
+        const top = side > 0 ? [...a,...c,...b,...a,...d,...c] : [...a,...b,...c,...a,...c,...d];
+        const lip = side > 0 ? [...d,...f,...c,...d,...e,...f] : [...d,...c,...f,...d,...f,...e];
+        add('fabric', fromTriangles(top), ['#c2a262','#b89a58','#b99a5a'][(bay + course * 2) % 3]);
+        add('fabric', fromTriangles(lip), '#866837');
+      }
+    }
+  } else for(const x of [28,31,34,37,40,43,46,49]) {
     const course:number[]=[],lip:number[]=[];
     for(let j=0;j<28;j++) {
       const z=41.8+j*26.4/28,z1=z+26.4/28;
@@ -419,6 +536,9 @@ export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=fals
     }
     add('fabric',fromTriangles(course),'#bea162');add('fabric',fromTriangles(lip),'#92733e');
   }
+  assemblyEnd('pavilion', 'thatch-shell-and-courses', pavilionRoof);
+  const pavilionArches = assemblyStart();
+  finishRole = pavilionFinish ? FINISH.bamboo : 0;
   for(const x of [28,37,47]) {
     for(const bundle of [-.17,0,.17]) for(let i=0;i<22;i++) {
       const curve=(t:number):V3=>[x+bundle,1.6+9.05*Math.sin(t*Math.PI),55-11*Math.cos(t*Math.PI)];
@@ -440,10 +560,52 @@ export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=fals
     for(const sign of [-1,1]) {
       rod('wood',[x,1.6,55+sign*11],[x,7.9,55+sign*10.5],.16,'#a77b3f',true);
       rod('wood',[x,3.7,55+sign*10.8],[x-2,7.1,55+sign*7.2],.1,'#bd9651',true);
-      cylinder('wood',[x,1.75,55+sign*11],.28,.3,.3,C.edge,10);
+      cylinder('wood',[x,1.75,55+sign*11],.28,.3,.3,pavilionCraft ? '#75634b' : C.edge,10);
+      if (pavilionCraft) {
+        const postZ = sign < 0 ? 44.15 : 65.65;
+        const kneeZ = sign < 0 ? 50.6 : 59.2;
+        const kneeX = Math.max(26.12, x - 3.35);
+        // Extend the existing guards visually to the purlins. The original
+        // collidable posts and knees still cover the reachable portion.
+        rod('wood', [x, 7.85, 55 + sign * 10.505],
+          [x, roofY(x, postZ) - .17, postZ], .142, '#b28b52');
+        rod('wood', [x - 1.97, 7.049, 55 + sign * 7.254],
+          [kneeX, roofY(kneeX, kneeZ) - .17, kneeZ], .098, '#b28b52');
+        // Bearing blocks bridge the real space between the arch and the
+        // existing purlins. Both ends sit inside their supporting bamboo.
+        for (const z of [52.75, 57.05].filter(z => Math.sign(z - 55) === sign)) {
+          const archY = 1.6 + 9.05 * Math.sqrt(1 - ((z - 55) / 11) ** 2);
+          rod('wood', [x, archY, z], [x, roofY(x, z) - .15, z], .105, '#af884b');
+        }
+      }
     }
   }
+  assemblyEnd('pavilion', 'bundled-arches-and-braces', pavilionArches);
+  const pavilionEaves = assemblyStart();
   for(let z=42;z<=68;z+=2.15) rod('wood',[26,roofY(26,z)-.17,z],[50,roofY(50,z)-.17,z],.085,'#846236',true);
+  finishRole = pavilionFinish ? FINISH.woven : 0;
+  if (pavilionCraft) {
+    // Curved secondary rafters run across the existing long purlins. Keep
+    // their backs inside the shell and their exposed faces below it.
+    for (const x of [28, 31, 34, 37, 40, 43, 47]) {
+      const soffit: number[] = [], sides: number[] = [];
+      for (let j = 0; j < 28; j++) {
+        const z0 = 41.8 + j * 26.4 / 28, z1 = 41.8 + (j + 1) * 26.4 / 28;
+        const at = (dx: number, z: number, dy: number): V3 => [x + dx, roofY(x + dx, z) + dy, z];
+        const a = at(-.094,z0,-.244), b = at(.094,z0,-.244);
+        const c = at(.094,z1,-.244), d = at(-.094,z1,-.244);
+        const e = at(-.094,z0,-.135), f = at(.094,z0,-.135);
+        const g = at(.094,z1,-.135), h = at(-.094,z1,-.135);
+        soffit.push(...a,...b,...c,...a,...c,...d);
+        sides.push(...a,...d,...h,...a,...h,...e,...b,...f,...g,...b,...g,...c);
+        if (j === 0) sides.push(...a,...e,...f,...a,...f,...b);
+        if (j === 27) sides.push(...d,...c,...g,...d,...g,...h);
+      }
+      add('wood', fromTriangles(soffit), '#a9844c');
+      add('wood', fromTriangles(sides), '#775830');
+    }
+  }
+  finishRole = pavilionFinish ? FINISH.bamboo : 0;
   // Continuous rounded bamboo verge caps give the thin thatch cut edge a readable finish.
   // These slightly extend the shell, so the visible cap also participates in camera collision.
   for(const x of [25.965,50.035])for(let j=0;j<28;j++){
@@ -454,8 +616,12 @@ export function buildDjcClubGeometry({includeNorthBar=false,separateDaybeds=fals
     const z=55+sign*13.2; rod('wood',[x,roofY(x,z)-.15,z],[x+.6,roofY(x+.6,z)-.19,z],.09,'#87683b');
     // Sparse, visibly faceted fringe remains part of the roof silhouette.
     const fringe:V3[]=[[x,roofY(x,z),z],[x+.72,roofY(x+.72,z),z],[x+.63,roofY(x+.63,z)-.32,z+sign*.2],[x+.12,roofY(x+.12,z)-.25,z+sign*.22]];
+    finishRole = pavilionFinish ? FINISH.thatch : 0;
     add('fabric',fromTriangles([...fringe[0],...fringe[1],...fringe[2],...fringe[0],...fringe[2],...fringe[3]]),'#ac884c');
+    finishRole = pavilionFinish ? FINISH.bamboo : 0;
   }
+  assemblyEnd('pavilion', 'purlins-rafters-and-eaves', pavilionEaves);
+  finishRole = 0;
   if(includeNorthBar){
     for(const sign of [-1,1]) {
       const z=40+sign*2.9;

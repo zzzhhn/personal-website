@@ -7,7 +7,9 @@ import { CLUB } from './djc-club-layout';
 import { night } from './WorldNight';
 import { isWorldRunning, windUniforms } from './WorldWind';
 import { actorState } from './WorldGrass';
+import { applyDjcFacilityFinish } from './WorldDjcFacilityFinish';
 import WorldClubWater from './WorldClubWater';
+import { markClubWaterSurfaceOnly } from './WorldClubWaterCapture';
 import { CLUB_LIGHTS, createClubBeamMaterial, createClubLightSpill, createClubMirrorMaterial } from './WorldClubLighting';
 import WorldDjcClubBar from './WorldDjcClubBar';
 import { djcBarQaMode } from './djc-bar-layout';
@@ -70,15 +72,21 @@ export default function WorldDjcClubVisual({beat,energy}:{beat?:()=>number;energ
   const legacyFurniture=useMemo(()=>djcFurnitureLegacy(typeof window==='undefined'?'':window.location.search),[]);
   const group=useRef<Group>(null),mirror=useRef<Mesh>(null),spots=useRef<Mesh>(null);
   const lights=useRef<(PointLight|null)[]>([]),beams=useRef<(Mesh|null)[]>([]);
-  const resources=useMemo(()=>({geometry:buildDjcClubGeometry({includeNorthBar:legacyNorthBar,separateDaybeds:!legacyDaybeds,separatePoolLanterns:candidatePoolLanterns,separateUmbrellas:!legacyUmbrellas,separateFurniture:!legacyFurniture}),mirror:buildDjcMirrorGeometry(),spots:buildDjcSpotsGeometry(),materials:materials(),
+  const resources=useMemo(()=>{const geometry=buildDjcClubGeometry({includeNorthBar:legacyNorthBar,separateDaybeds:!legacyDaybeds,separatePoolLanterns:candidatePoolLanterns,separateUmbrellas:!legacyUmbrellas,separateFurniture:!legacyFurniture});
+    const base = materials();
+    const finishes = Object.fromEntries((['wood','fabric','stone'] as const).flatMap(key =>
+      geometry.batches[key].hasAttribute('aDjcFinish') ? [[key, markClubWaterSurfaceOnly(applyDjcFacilityFinish(base[key].clone()))]] : []
+    )) as Partial<Record<ClubBatch, MeshStandardMaterial>>;
+    return {geometry, finishes, mirror:buildDjcMirrorGeometry(),spots:buildDjcSpotsGeometry(),materials:base,
     mirrorMaterial:createClubMirrorMaterial(),spot:spotMaterial(),spill:createClubLightSpill(),
-    beamGeometry:new CylinderGeometry(.035,1,1,18,1,true),beamMaterial:createClubBeamMaterial(),up:new Vector3(0,1,0),start:new Vector3(),target:new Vector3(),direction:new Vector3()}),[legacyNorthBar,legacyDaybeds,candidatePoolLanterns,legacyUmbrellas,legacyFurniture]);
+    beamGeometry:new CylinderGeometry(.035,1,1,18,1,true),beamMaterial:createClubBeamMaterial(),up:new Vector3(0,1,0),start:new Vector3(),target:new Vector3(),direction:new Vector3()};},[legacyNorthBar,legacyDaybeds,candidatePoolLanterns,legacyUmbrellas,legacyFurniture]);
   useEffect(()=>()=>{
     Object.values(resources.geometry.batches).forEach(g=>g.dispose());resources.geometry.pool.dispose();resources.mirror.dispose();resources.spots.dispose();
     Object.values(resources.geometry.daybeds).forEach(g=>g.dispose());
     Object.values(resources.geometry.poolLanterns).forEach(g=>g.dispose());
     Object.values(resources.geometry.umbrellas).forEach(g=>g.dispose());
     Object.values(resources.geometry.furniture).forEach(g=>g.dispose());
+    Object.values(resources.finishes).forEach(m=>m.dispose());
     Object.values(resources.materials).forEach(m=>m.dispose());resources.mirrorMaterial.dispose();resources.spot.dispose();
     resources.spill.geometry.dispose();resources.spill.material.dispose();resources.beamGeometry.dispose();resources.beamMaterial.dispose();
   },[resources]);
@@ -130,8 +138,8 @@ export default function WorldDjcClubVisual({beat,energy}:{beat?:()=>number;energ
       {keys.filter(key=>resources.geometry.poolLanterns[key].attributes.position.count>0).map(key=><mesh key={key} geometry={resources.geometry.poolLanterns[key]} material={resources.materials[key]} castShadow={key==='wood'} receiveShadow dispose={null}/>)}
     </group>}/>}
     <group ref={group} name="djc-beach-club-visual" dispose={null}>
-      {keys.map(key=><mesh key={key} name={`djc-${key}`} geometry={resources.geometry.batches[key]} material={resources.materials[key]} receiveShadow castShadow={key==='wood'||key==='fabric'||key==='foliage'} customDepthMaterial={key==='foliage'?resources.materials.foliageDepth:undefined} />)}
-      <WorldClubWater geometry={resources.geometry.pool} basinMaterial={resources.materials.stone}/>
+      {keys.map(key=><mesh key={key} name={`djc-${key}`} geometry={resources.geometry.batches[key]} material={resources.finishes[key] ?? resources.materials[key]} receiveShadow castShadow={key==='wood'||key==='fabric'||key==='foliage'} customDepthMaterial={key==='foliage'?resources.materials.foliageDepth:undefined} />)}
+      <WorldClubWater geometry={resources.geometry.pool} basinMaterial={resources.finishes.stone ?? resources.materials.stone}/>
       <mesh ref={mirror} name="djc-mirror-ball" position={DJC_MIRROR_POSITION} geometry={resources.mirror} material={resources.mirrorMaterial}/>
       <mesh ref={spots} name="djc-mirror-floor-fragments" position={[CLUB.dance[0],CLUB.dance[1]+.022,CLUB.dance[2]]} geometry={resources.spots} material={resources.spot} renderOrder={3}/>
       <mesh name="djc-lantern-spill" geometry={resources.spill.geometry} material={resources.spill.material} renderOrder={3}/>

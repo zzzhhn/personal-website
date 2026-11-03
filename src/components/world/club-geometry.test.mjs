@@ -53,7 +53,7 @@ test('pool paving uses metre-scale inlaid joints with complete stone and wood un
     const color=palette.findIndex(t=>Math.abs(c.getX(i)-t.r)+Math.abs(c.getY(i)-t.g)+Math.abs(c.getZ(i)-t.b)<1e-5);if(color<0)continue;
     const x=[p.getX(i),p.getX(i+1),p.getX(i+2)],z=[p.getZ(i),p.getZ(i+1),p.getZ(i+2)];
     assert.ok(Math.max(...x)-Math.min(...x)<=1.80002);assert.ok(Math.max(...z)-Math.min(...z)<=1.25002);
-    area+=triangleArea([x[0],z[0]],[x[1],z[1]],[x[2],z[2]]);count++;if(color===3)joints++;
+    area+=triangleArea([x[0],z[0]],[x[1],z[1]],[x[2],z[2]]);count++;if(color===palette.length-1)joints++;
   }
   let expected=0,woodInlay=0;const wood=flatFaces(club.batches.wood);
   for(let i=0;i<CLUB_POOL.segments;i++){
@@ -134,7 +134,7 @@ test('closed roof shell and bounded main bamboo guards share their visual triang
   const key=(p,i)=>Array.from(p.slice(i,i+9)).map(v=>v.toFixed(4)).join(',');
   for(let i=0;i<p.length;i+=9)solid.add(key(p,i));
   let shell=0,structure=0;
-  for(const [batch,colors] of [['fabric',['#b29153','#947a44','#99783f']],['wood',['#c29952','#bd9651','#846236','#98713f']]]) {
+  for(const [batch,colors] of [['fabric',['#b29153','#a78850','#9c7b43','#b08f54','#a2844b','#806134']],['wood',['#c29952','#bd9651','#846236','#98713f']]]) {
     const g=club.batches[batch],points=g.getAttribute('position').array,col=g.getAttribute('color'),targets=colors.map(c=>new Color(c));
     for(let i=0;i<col.count;i+=3)if(targets.some(c=>Math.abs(col.getX(i)-c.r)+Math.abs(col.getY(i)-c.g)+Math.abs(col.getZ(i)-c.b)<1e-5)) {
       assert.ok(solid.has(key(points,i*3)),`${batch} guard triangle ${i/3}`);if(batch==='fabric')shell++;else structure++;

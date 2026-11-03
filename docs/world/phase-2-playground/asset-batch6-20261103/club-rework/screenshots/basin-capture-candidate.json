@@ -1,0 +1,19 @@
+{
+  "durationMs": 12000,
+  "yawRadians": 0.064,
+  "enabled": true,
+  "budgeted": true,
+  "targetSize": [
+    640,
+    348
+  ],
+  "delta": {
+    "captures": 481,
+    "reflections": 0,
+    "caustics": 0,
+    "passes": 481,
+    "calls": 14430,
+    "triangles": 348086713,
+    "visits": 134678
+  }
+}

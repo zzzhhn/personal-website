@@ -28,3 +28,14 @@ Git blob SHA-1。路径均在 `src/components/world` 下。
 | WorldDjcFurnitureEnvironment.ts | fdf32765cd3d56e732dd621d8fbc8d72050e5cac | 同左 |
 
 编辑中工作树 blob：Visual `5edb9696b439e862531b94df3bd7c9fb046a2674`，Geometry `e8e535b7db21771a1e4df91a260d9b00ada64bf8`，新增 WorldDjcFacilityFinish.ts `98d76b43b81a7bce21e01418a65ce06019ec0ab4`。最终候选到齐后按精确差分复核。
+
+## 最终差分复核
+
+候选 `22efd8a79789a348130cbd6b9d969a2eaabe6962`。拆分提交 `422072e` 与最终提交之间无 `src/public` 差分。已复核先前两处风险，未发现阻塞默认主亭集成的缺陷。资源预检 pressure 1，空闲 27.09 GiB。
+
+- 主 stone mesh 和 `WorldClubWater` 现在选择同一材质实例。默认 stone 无 finish 属性，仍走原基线材质。显式开启池岸时两者均用 stone clone。焦散先调用原 finish hook，组合 key 在替换前解析原 key，再拼上焦散版本，清理恢复原 hook 和 key。选择与 clone 都在同一套 memo resources 内，URL 开关不新增逐帧重绑。
+- 静态水线剔除按材质实例和当前 hook 的身份登记。wood/fabric 的 hook 只传递属性并改片段，符合登记条件；焦散包装和恢复会重新登记已获认可的 hook。未登记或后续换 hook 仍走保守路径。登记用 WeakMap，材质释放沿用 Visual cleanup。
+- 默认只为主批次 wood/fabric 创建两份 finish clone。按交付记录，主亭净增 1,556 三角面及 1,201,308 B 属性数组，其中新坐标和角色占 1,014,588 B。新增属性随批次几何释放，clone 独立 dispose。未标记面继续使用原色、粗糙度和法线，但同批仍承担属性传递和分支判断。分离的家具、吧台及植物保留原绑定。新 shader 为程序化表面，未新建贴图、PMREM、draw 或 pass。
+- 已交付的 `render-record.json` 与两份 `basin-capture-*.json` 数字一致。12 秒暂停转头，目标 640×348，基线/双族候选分别 483/481 次折射、每次均 30 draw，三角面每次 721,757→723,673（+1,916）。该差值包含 opt-in 池岸，不能用作默认主亭的实测值。两侧焦散更新均为 0。记录只支持归一化提交量判断，无法给出正常游戏 FPS、更新频率或 GPU 片段成本。日夜记录是拆分前的对应候选数据，视觉结论由主协调确认。
+
+最终 Git blobs，按 Visual / Geometry / Finish / Water / Capture 顺序：`1129ab63ae5b4df6318efa1cefb0d36056153cb7`、`0ca3461841a94fb4c8e081af4a460f47714ba10e`、`f1ce50c3159a154ef0ce9bb5fff09e73ce2ea8a1`、`82701fc91cf24c4705690ef8d068f88a8ea91a97`、`c1e8bca2d4e2d1b22e8051bfeb65af19b501ce2d`。

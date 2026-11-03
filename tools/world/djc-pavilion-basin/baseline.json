@@ -1,0 +1,218 @@
+{
+  "batches": {
+    "wood": {
+      "triangles": 23507,
+      "bytes": 2820840,
+      "hash": "fe57b75efa01f394cd0b2a287e7617c2cea8485fbd5589932a60f0acb385f27e"
+    },
+    "stone": {
+      "triangles": 14324,
+      "bytes": 1718880,
+      "hash": "33adb0650dd9871a3e4f639fdd3131920c62b74a9fa6bc6ac6e5d7d4f36b5d96"
+    },
+    "metal": {
+      "triangles": 3716,
+      "bytes": 445920,
+      "hash": "f115fded5d2f958de877fb7bb231134397e13e123e59f3ad89b99f1426e82d65"
+    },
+    "fabric": {
+      "triangles": 3120,
+      "bytes": 374400,
+      "hash": "da3b3f62e298a81db7b348ba49df6e6ab91d284b535109ae6645d6ad1c420ca3"
+    },
+    "foliage": {
+      "triangles": 6890,
+      "bytes": 826800,
+      "hash": "b995bbbe9edc1d2136f982cfb165055927da60f1f8a0e14aed76200e0e817480"
+    },
+    "glass": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "amber": {
+      "triangles": 544,
+      "bytes": 65280,
+      "hash": "58ca4a9d8a94ad68f7d3cce31559d17f926d7780eaa3d38946ed7c5c30928978"
+    },
+    "cyan": {
+      "triangles": 216,
+      "bytes": 25920,
+      "hash": "b73c64dae4b7ce1c393f8a31fecbfcc6e9e90909a8e1ba36a3a1955ff9fb2e94"
+    }
+  },
+  "daybeds": {
+    "wood": {
+      "triangles": 1512,
+      "bytes": 181440,
+      "hash": "063e9c7e2aa988bdaa2ed7f99cbf761a2e92e20c1879d62ed0e9f05f7240100e"
+    },
+    "stone": {
+      "triangles": 376,
+      "bytes": 45120,
+      "hash": "7e934fa8f43b6c369a2ecb45e822a442ffd354a62b91a81ed75488c0bf2ea349"
+    },
+    "metal": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fabric": {
+      "triangles": 4208,
+      "bytes": 504960,
+      "hash": "8a165c9b5321ed99428e5c7da07aa7b746b8885217a99dfcac88178a872252e5"
+    },
+    "foliage": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "glass": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "amber": {
+      "triangles": 128,
+      "bytes": 15360,
+      "hash": "d38e185799a507bfa902c5f76910ea5e61e61bf81acf9c8d58e3e71672b9c55c"
+    },
+    "cyan": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "poolLanterns": {
+    "wood": {
+      "triangles": 1520,
+      "bytes": 182400,
+      "hash": "fdb31b8cd72350495758eb5254c18a99e15a1700fee9a29d3787e5246be304e7"
+    },
+    "stone": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "metal": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fabric": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "foliage": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "glass": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "amber": {
+      "triangles": 120,
+      "bytes": 14400,
+      "hash": "de72397a1b24cadbd83fa8f72a332718b95997cb32cc9ae9b4f4b8f91819a5de"
+    },
+    "cyan": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "umbrellas": {
+    "wood": {
+      "triangles": 64,
+      "bytes": 7680,
+      "hash": "d7c73478f1b08ac0264b0ced8bb2e59d08c71aece5398f5fd26ee5363dffb625"
+    },
+    "stone": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "metal": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "fabric": {
+      "triangles": 32,
+      "bytes": 3840,
+      "hash": "bb889e4a8d761afe369e575e42d6199a8a6eafb6bc52c5270640dad44e27f03a"
+    },
+    "foliage": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "glass": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "amber": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "cyan": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "furniture": {
+    "wood": {
+      "triangles": 406,
+      "bytes": 48720,
+      "hash": "a400aa90be92733cab27bf81b1ab0d97fd58f836eb1f82600e5e3500528eabc4"
+    },
+    "stone": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "metal": {
+      "triangles": 728,
+      "bytes": 87360,
+      "hash": "2a5c71203f8b0c90713d969cd712dafd34bd830fd33ae95b9abc318aacea9b66"
+    },
+    "fabric": {
+      "triangles": 216,
+      "bytes": 25920,
+      "hash": "231918464cbfaf999547d6ab4432bfb2a32118fa484a30cbd5ec73963444d633"
+    },
+    "foliage": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "glass": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "amber": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "cyan": {
+      "triangles": 0,
+      "bytes": 0,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "colliders": {
+    "surface": "9501526d3a64aefd9c0f3336e6d3a9de21000bb923d8204c7ce307b7c3d7f2da",
+    "solid": "a18ca84c727d3fda73454664e32ed970b97daf94d856bb4b643cc0d38bdb4436"
+  },
+  "seats": "52d527d82c44f6c126268563bedbd632686a5eb5120db4adb0c2b078da90b371",
+  "water": "be0807f637457a3d1eb11096b30fa3afc6095fefe1eb49f318e8cd9c322a33c8"
+}
